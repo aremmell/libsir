@@ -1,7 +1,7 @@
 /*
  *  sir.h : ANSI C Implementation of Standard Incident Reporter (SIR)
  *
- *  Copyright 2003-2004 - All Rights Reserved
+ *  Copyright 2003 - All Rights Reserved
  *
  *  Author:
  *    Ryan Matthew Lederman
