@@ -12,114 +12,111 @@
 #define _SIR_H_INCLUDED
 
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
-#include <time.h>
 
 #ifndef _WIN32
-
-#ifndef SIR_NO_SYSLOG
-#include <syslog.h>
-#endif
-
-/*! \typedef */
-typedef char sirchar_t;
-
-#ifndef _T
-#define _T(x) x
-#endif
-#define sctime ctime
-#define sstrlen strlen
-#define svsnprintf vsnprintf
-#define sfprintf fprintf
-#define sfopen fopen
-#define sstrcmp strcmp
-
+/*! The sequence of characters used to terminate output messages. */
+#define SIR_LINEENDING "\n"
 #else
-
-#include <Windows.h>
-#include <tchar.h>
-
-#define sctime _tctime
-#define sstrlen _tcslen
-#define svsnprintf _vsntprintf
-#define sfprintf _ftprintf
-#define sfopen _tfopen
-#define sstrcmp _tcscmp
-
-typdef TCHAR sirchar_t;
-
+/*! The sequence of characters used to terminate output messages. */
+#define SIR_LINEENDING "\r\n"
 #endif
 
-#define strptr(n) (((n != NULL) && ((*n) != 0)) ? 1 : 0)
-#define smaskset(flags, test) ((flags & test) == test)
-#define safefree(p)  \
-    if (NULL != p) { \
-        free(p);     \
-        p = NULL;    \
-    }
+/*! The maximum number of log files that may be registered. */
+#define SIR_MAXFILES 16
 
-#define SIR_MAXFILES 256
-#define SIR_MAXCALLBACKS 256
-#define SIR_MAXPRINT 2000
-#define SIR_MINPRINT 256
+/*! The maximum number of characters that may be included in one message. */
+#define SIR_MAXMESSAGE 2048
 
+/*! The initial size, in characters, of the buffer used to store messages. */
+#define SIR_MINPRINT 512
+
+/*! The default time format string passed to localtime(). */
 #define SIR_TIMEFORMAT "%T"
-#define SIR_TIMELEN 32
 
-#define SIRO_LF 0x01U
-#define SIRO_FILES 0x02U
-#define SIRO_CALLBACKS 0x04U
-#define SIRO_CRLF 0x08U
-#define SIRO_NODBGCRLF 0x10U
-#define SIRO_NOLEVEL 0x20U
-#define SIRO_NONAME 0x40U
-#define SIRO_NOTIMESTAMP 0x80U
-#define SIRO_DEFAULT (SIRO_TIMESTAMP | SIRO_LF)
+/*! The size, in characters, of the buffer used to hold time format strings. */
+#define SIR_MAXTIME 32
 
+/*! The size, in characters, of the buffer used to hold level format strings. */
+#define SIR_MAXLEVEL 16
+
+/*! The size, in characters, of the buffer used to hold
+ * process/appname format strings.
+ */
+#define SIR_MAXNAME 16
+
+/*! The string representation of the ::SIRL_EMERG level in output. */
 #define SIRL_S_EMERG "EMER"
+
+/*! The string representation of the ::SIRL_ALERT level in output. */
 #define SIRL_S_ALERT "ALRT"
+
+/*! The string representation of the ::SIRL_CRIT level in output. */
 #define SIRL_S_CRIT "CRIT"
+
+/*! The string representation of the ::SIRL_ERROR level in output. */
 #define SIRL_S_ERROR "ERR"
-#define SIRL_S_WARNING "WARN"
+
+/*! The string representation of the ::SIRL_WARN level in output. */
+#define SIRL_S_WARN "WARN"
+
+/*! The string representation of the ::SIRL_NOTICE level in output. */
 #define SIRL_S_NOTICE "NOTF"
+
+/*! The string representation of the ::SIRL_INFO level in output. */
 #define SIRL_S_INFO "INFO"
+
+/*! The string representation of the ::SIRL_DEBUG level in output. */
 #define SIRL_S_DEBUG "DBG"
 
 /*! Logging levels
  *
  * Each enum value corresponds to a function that sends output
  * to all destinations for that level (::sirdebug and pals).
- * 
- * Since the values are also flags (i.e.: powers of two),
- * they can be combined to filter different levels of importance but not strictly linearly. Any
- * combination of levels can be used to configure an output destination.
- */
-enum {
-    SIRL_EMERG   = 0x1,  /*!< Nuclear war, Armageddon, etc.  */
-    SIRL_ALERT   = 0x2,  /*!< Action required ASAP. */
-    SIRL_CRIT    = 0x4,  /*!< Critical errors. */
-    SIRL_ERROR   = 0x8,  /*!< Errors. */
-    SIRL_WARNING = 0x10, /*!< Warnings that could likely be ignored. */
-    SIRL_NOTICE  = 0x20, /*!< Normal but significant. */
-    SIRL_INFO    = 0x40, /*!< Informational messages. */
-    SIRL_DEBUG   = 0x80, /*!< Verbose debugging output. */
-    SIRL_ALL     = 0xFF  /*!< Includes all logging levels. */
-};
-
-/*! Function signature for callback output destinations.
  *
- * \param[in] message The formatted message.
- * \param[in] userData User-defined data to pass along to the callback.
+ * Since the values are also flags (i.e., powers of two), they can be combined
+ * to filter different levels of importance but not strictly linearly.
  */
-typedef void (*sircallbackfn)(const sirchar_t* message, uint64_t userData);
+typedef enum {
+    SIRL_EMERG  = 0x1,  /*!< Nuclear war, Armageddon, etc. */
+    SIRL_ALERT  = 0x2,  /*!< Action required ASAP. */
+    SIRL_CRIT   = 0x4,  /*!< Critical errors. */
+    SIRL_ERROR  = 0x8,  /*!< Errors. */
+    SIRL_WARN   = 0x10, /*!< Warnings that could likely be ignored. */
+    SIRL_NOTICE = 0x20, /*!< Normal but significant. */
+    SIRL_INFO   = 0x40, /*!< Informational messages. */
+    SIRL_DEBUG  = 0x80, /*!< Verbose debugging output. */
+    SIRL_ALL    = 0xff  /*!< Includes all logging levels. */
+} sir_level;
+
+/*! One or more ::sir_level, bitwise OR'd. */
+typedef uint16_t sir_levels;
+
+/*! Output destination options
+ *
+ * Set any desired flags on the corresponding member in the ::sirinit structure
+ * to fine-tune the output formatting for each destination.
+ */
+typedef enum {
+    SIRO_NOLEVEL = 0x100, /*!< Do not include the human-readable logging level in output. */
+    SIRO_NONAME = 0x200,  /*!< Do not include the process/app name in output. */
+    SIRO_NOTIME = 0x400,  /*!< Do not include time stamps in output. */
+} sir_option;
+
+/*! One or more ::sir_option, bitwise OR'd. */
+typedef uint16_t sir_options;
+
+/*! The underlying type to use for characters in output. */
+typedef char sirchar_t;
 
 /*! \struct sirinit
  *
- * \brief Initialization data for the library.
+ * \brief Initialization userData for the library.
  *
  * Allocate an instance of this struct and pass it to ::sir_init
  * in order to begin using the library.
@@ -127,40 +124,50 @@ typedef void (*sircallbackfn)(const sirchar_t* message, uint64_t userData);
  * Don't forget to call ::sir_cleanup when you're done.
  */
 typedef struct {
-    uint32_t         opts;
-    uint32_t         f_stdout;
-    uint32_t         f_stderr;
-    uint32_t         f_debug;
-    uint32_t         f_syslog;
-    const sirchar_t* fmtOverride;
+    /*! Logging levels (::sir_level) to route to stdout. */
+    sir_levels stdOutLevels;
+
+    /*! Output options (::sir_option) for stdout. */
+    sir_options stdOutOptions;
+
+    /*! Logging levels (::sir_level) to route to stderr. */
+    sir_levels stdErrLevels;
+
+    /*! Output options (::sir_option) for stderr. */
+    sir_options stdErrOptions;
+
+#ifndef _WIN32
+    /*! Logging levels (::sir_level) to route to syslog. Only available if
+     * _WIN32 is not defined. */
+    sir_levels sysLogLevels;
+
+    /*! Output options (::sir_option) for syslog. Only available if _WIN32 is
+     * not defined. */
+    sir_options sysLogOptions;
+#endif
+
+    /*! A custom name to include in output (default: process name). If
+     * ::SIRO_NONAME is set in the options for the destination, no name is
+     * included in output. Set to NULL for the default.
+     */
     const sirchar_t* appName;
+
+    /*! A custom time format to use in output (default: ::SIR_TIMEFORMAT). If
+     * ::SIRO_NOTIME is set in the options for the destination, no time is
+     * included in output. Set to NULL for the default.
+     */
+    const sirchar_t* timeFmt;
+
+    /*! Where SIR should send its own internal logging (default: stderr) to
+     * assist in diagnosing any potential issues that may arise.  Set to NULL for the default.
+     *
+     * Note that if
+     * set, you need to use setlinebuf() in order to avoid any delays in output.
+     *
+     * Additionally, if set, SIR will \a not close the stream upon cleanup.
+     */
+    FILE* selfOutput;
 } sirinit;
-
-typedef struct {
-    sirchar_t* path;
-    uint32_t   bitmask;
-} sirfile;
-
-typedef struct {
-    sirfile* files[SIR_MAXFILES];
-    size_t   count;
-} sirfiles;
-
-typedef struct {
-    sircallbackfn cb;
-    uint32_t      mask;
-    uint64_t      data;
-} sircallback;
-
-typedef struct {
-    sircallback* c[SIR_MAXCALLBACKS];
-    size_t       count;
-} sircallbacks;
-
-typedef struct {
-    sirchar_t* ptr;
-    size_t     size;
-} sirbuf;
 
 #ifdef __cplusplus
 extern "C" {
@@ -174,9 +181,10 @@ extern "C" {
  * or you're gonna have a bad time.
  *
  * \param[in] si Pointer a to sirinit struct containing initialization options.
- * \return 0 if successful, or non-zero otherwise.
+ *
+ * \return boolean success
  */
-int sir_init(const sirinit* si);
+bool sir_init(const sirinit* si);
 
 /*! \fn int sirdebug(const sirchar_t *format, ...)
  *
@@ -186,11 +194,12 @@ int sir_init(const sirinit* si);
  * will receive the formatted message.
  *
  * \param[in] format A printf-style format string.
- * \param[in] (varargs) A list of arguments whose type match the format
+ * \param[in] ... A list of arguments whose type match the format
  *  specifier at the same index in the format string.
- * \return 0 if successful, or non-zero otherwise.
+ *
+ * \return boolean success
  */
-int sirdebug(const sirchar_t* format, ...);
+bool sirdebug(const sirchar_t* format, ...);
 
 /*! \fn int sirinfo(const sirchar_t *format, ...)
  *
@@ -200,11 +209,12 @@ int sirdebug(const sirchar_t* format, ...);
  * will receive the formatted message.
  *
  * \param[in] format A printf-style format string.
- * \param[in] (varargs) A list of arguments whose type match the format
+ * \param[in] ... A list of arguments whose type match the format
  *  specifier at the same index in the format string.
- * \return 0 if successful, or non-zero otherwise.
+ *
+ * \return boolean success
  */
-int sirinfo(const sirchar_t* format, ...);
+bool sirinfo(const sirchar_t* format, ...);
 
 /*! \fn int sirnotice(const sirchar_t *format, ...)
  *
@@ -214,25 +224,27 @@ int sirinfo(const sirchar_t* format, ...);
  * will receive the formatted message.
  *
  * \param[in] format A printf-style format string.
- * \param[in] (varargs) A list of arguments whose type match the format
+ * \param[in] ... A list of arguments whose type match the format
  *  specifier at the same index in the format string.
- * \return 0 if successful, or non-zero otherwise.
+ *
+ * \return boolean success
  */
-int sirnotice(const sirchar_t* format, ...);
+bool sirnotice(const sirchar_t* format, ...);
 
 /*! \fn int sirwarn(const sirchar_t *format, ...)
  *
  * \brief Log a formatted warning message.
  *
- * All output destinations whose flags have ::SIRL_WARNING set
+ * All output destinations whose flags have ::SIRL_WARN set
  * will receive the formatted message.
  *
  * \param[in] format A printf-style format string.
- * \param[in] (varargs) A list of arguments whose type match the format
+ * \param[in] ... A list of arguments whose type match the format
  *  specifier at the same index in the format string.
- * \return 0 if successful, or non-zero otherwise.
+ *
+ * \return boolean success
  */
-int sirwarn(const sirchar_t* format, ...);
+bool sirwarn(const sirchar_t* format, ...);
 
 /*! \fn int sirerror(const sirchar_t *format, ...)
  *
@@ -242,11 +254,12 @@ int sirwarn(const sirchar_t* format, ...);
  * will receive the formatted message.
  *
  * \param[in] format A printf-style format string.
- * \param[in] (varargs) A list of arguments whose type match the format
+ * \param[in] ... A list of arguments whose type match the format
  *  specifier at the same index in the format string.
- * \return 0 if successful, or non-zero otherwise.
+ *
+ * \return boolean success
  */
-int sirerror(const sirchar_t* format, ...);
+bool sirerror(const sirchar_t* format, ...);
 
 /*! \fn int sircrit(const sirchar_t *format, ...)
  *
@@ -256,11 +269,12 @@ int sirerror(const sirchar_t* format, ...);
  * will receive the formatted message.
  *
  * \param[in] format A printf-style format string.
- * \param[in] (varargs) A list of arguments whose type match the format
+ * \param[in] ... A list of arguments whose type match the format
  *  specifier at the same index in the format string.
- * \return 0 if successful, or non-zero otherwise.
+ *
+ * \return boolean success
  */
-int sircrit(const sirchar_t* format, ...);
+bool sircrit(const sirchar_t* format, ...);
 
 /*! \fn int siralert(const sirchar_t *format, ...)
  *
@@ -270,11 +284,12 @@ int sircrit(const sirchar_t* format, ...);
  * will receive the formatted message.
  *
  * \param[in] format A printf-style format string.
- * \param[in] (varargs) A list of arguments whose type match the format
+ * \param[in] ... A list of arguments whose type match the format
  *  specifier at the same index in the format string.
- * \return 0 if successful, or non-zero otherwise.
+ *
+ * \return boolean success
  */
-int siralert(const sirchar_t* format, ...);
+bool siralert(const sirchar_t* format, ...);
 
 /*! \fn int siremerg(const sirchar_t *format, ...)
  *
@@ -284,11 +299,12 @@ int siralert(const sirchar_t* format, ...);
  * will receive the formatted message.
  *
  * \param[in] format A printf-style format string.
- * \param[in] (varargs) A list of arguments whose type match the format
+ * \param[in] ... A list of arguments whose type match the format
  *  specifier at the same index in the format string.
- * \return 0 if successful, or non-zero otherwise.
+ *
+ * \return boolean success
  */
-int siremerg(const sirchar_t* format, ...);
+bool siremerg(const sirchar_t* format, ...);
 
 /*! \fn void sir_cleanup()
  *
@@ -301,67 +317,32 @@ int siremerg(const sirchar_t* format, ...);
  */
 void sir_cleanup();
 
-/*
- * FUNCTION: sir_addfile()
+/*! \fn int sir_addfile(const sirchar_t* path, sir_levels levels, sir_options
+ * opts)
  *
- * SYNOPSIS: Adds a disk file as an output destination
- * maintained by the Sir system.  The file will recieve
- * output whenever Sir() is called with any of the flags
- * you specify in <mask>.
+ * \brief Adds a log file output destination.
  *
- * ARGUMENTS: Pointer to a string that contains
- * the path of the file, and an unsigned long bitmask
- * of the types you wish to associate with this file.
- * (SIRT_*)
+ * Adds a log file to be appended to whenever a message
+ * matching any of the ::sir_level flags set in \a levels is emitted.
  *
- * RETURN VALUE: Returns 0 if successful, or -1
- * if an error occurs.
+ * \param[in] path The path to the log file. It will be created if it doesn't
+ * exist. \param[in] levels One or more ::sir_level logging levels for which
+ * output should be append to the file. \param[in] opts Zero or more
+ * ::sir_option flags to control output formatting.
  *
+ * \return A unique identifier for the file, or zero if an error occurs.
  */
+int sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts);
 
-int sir_addfile(const sirchar_t* path, uint32_t mask);
-
-/*
- * FUNCTION: sir_remfile()
+/*! \fn bool sir_remfile(int id)
  *
- * SYNOPSIS: Removes an existing disk file
- * from the Sir system's managed queue.
+ * \brief Removes a previously added log file.
  *
- * ARGUMENTS: Pointer to a string that contains
- * the path of the file.
+ * \param[in] id The identifier returned from ::sir_addfile earlier.
  *
- * RETURN VALUE: Returns 0 if successful, or -1
- * if an error occurs.
- *
+ * \return boolean success
  */
-int sir_remfile(const sirchar_t* path);
-
-/*
- * FUNCTION: sir_addcallback()
- *
- * SYNOPSIS: Adds a callback function as an output destination
- * maintained by the Sir system.  The function will be called
- * whenever Sir() is called with any of the flags you specify
- * in <mask> (SIRT_*).
- *
- * ARGUMENTS: Pointer to a sircallbackfn-type function (sir.h),
- * unsigned long bitmask of types to associate with the function,
- * and an unsigned long that will be maintained by the Sir system
- * and sent to the function whenever it is called.
- *
- * RETURN VALUE: Returns 0 if successful, or -1
- * if an error occurs.
- *
- */
-int sir_addcallback(sircallbackfn cb, uint32_t mask, uint64_t data);
-
-/*! \fn int sir_remcallback(sircallbackfn cb)
- *
- * \brief Remove an existing \ref sircallbackfn from the list of functions that can receive log messages.
- *
- * \return 0 if successful, or non-zero otherwise.
- */
-int sir_remcallback(sircallbackfn cb);
+bool sir_remfile(int id);
 
 #ifdef __cplusplus
 }
@@ -369,37 +350,81 @@ int sir_remcallback(sircallbackfn cb);
 
 /*! \cond PRIVATE */
 
-#define _SIR_L_START()  \
-    va_list args = {0}; \
-    int     r    = 1;
+typedef struct {
+    sirchar_t*  path;
+    sir_levels  levels;
+    sir_options opts;
+    FILE*       f;
+    int         fd;
+    int         id;
+} sirfile;
+
+typedef struct {
+    sirfile* files[SIR_MAXFILES];
+    size_t   count;
+} sirfiles;
+
+typedef struct {
+    sirchar_t* ptr;
+    size_t     size;
+    size_t     used;
+} sirbuf;
+
+typedef struct {
+    sirchar_t timestamp[SIR_MAXTIME];
+    sirchar_t level[SIR_MAXLEVEL];
+    sirchar_t name[SIR_MAXNAME];
+    sirchar_t message[SIR_MAXMESSAGE];
+} siroutput;
+
+#define _SIR_L_START(format) \
+    bool    r = false;       \
+    va_list args;            \
+    va_start(args, format);
 
 #define _SIR_L_END(args) va_end(args);
 
-int _sir_lv(uint32_t type, const sirchar_t* format, va_list args);
+#define validstr(n) (NULL != n && *n != '\0')
 
-int  _sir_dispatchfile(const sirchar_t* path, const sirchar_t* output);
-int  _sir_dispatchall(const sirchar_t* output, uint32_t mask);
-void _sir_dispatch(const sirchar_t* output, uint32_t type);
+#define flagtest(flags, test) ((flags & test) == test)
 
-sirbuf* _sirbuf_create(void);
-int     _sirbuf_append(sirbuf* buf, const sirchar_t* str);
-void    _sirbuf_destroy(sirbuf* buf);
+#define safefree(p) \
+    if (p) {        \
+        free(p);    \
+        p = NULL;   \
+    }
 
-sirfile* _sirfile_create(const sirchar_t* path, uint32_t mask);
+#define safefclose(f) \
+    if (f) {          \
+        fclose(f);    \
+        f = NULL;     \
+    }
+
+bool _sir_lv(sir_level level, const sirchar_t* format, va_list args);
+bool _sir_l(const sirchar_t* format, ...);
+
+bool _sir_dispatch(sir_level level, const siroutput* output);
+
+bool _sirbuf_append(sirbuf* buf, const sirchar_t* str);
+bool _sirbuf_reset(sirbuf* buf, bool realloc);
+
+sirfile* _sirfile_create(int id, const sirchar_t* path, sir_levels levels, sir_options opts);
+bool     _sirfile_write(sirfile* sf, const sirchar_t* output);
 void     _sirfile_destroy(sirfile* sf);
+bool     _sirfile_validate(sirfile* sf);
 
-int _sir_files_add(sirfiles* sfc, sirfile* pf);
-int _sir_files_rem(sirfiles* sfc, const sirchar_t* path);
-int _sir_files_destroy(sirfiles* sfc);
-int _sir_files_dispatch(sirfiles* sfc, const sirchar_t* output, uint32_t mask);
+FILE* _sir_fopen(const sirchar_t* path);
+void  _sir_fclose(FILE** f);
 
-sircallback* _sircallback_create(sircallbackfn cb, uint32_t mask, uint64_t userData);
-void         _sircallback_destroy(sircallback* pco);
+bool _sir_files_add(sirfiles* sfc, const sirchar_t* path, sir_levels levels, sir_options opts);
+bool _sir_files_rem(sirfiles* sfc, int id);
+bool _sir_files_destroy(sirfiles* sfc);
+bool _sir_files_dispatch(sirfiles* sfc, sir_level level, const siroutput* output);
 
-int _sir_callbacks_add(sircallbacks* scc, sircallback* scb);
-int _sir_callbacks_rem(sircallbacks* scc, sircallbackfn cb);
-int _sir_callbacks_destroy(sircallbacks* scc);
-int _sir_callbacks_dispatch(sircallbacks* scc, const sirchar_t* output, uint32_t mask);
+bool _sir_options_sanity(const sirinit* si);
+
+const sirchar_t* _sir_levelstr(sir_level level);
+bool             _sir_destwantslevel(sir_levels destLevels, sir_level level);
 
 /*! \endcond */
 

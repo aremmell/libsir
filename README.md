@@ -42,7 +42,7 @@ int main(int argc, TCHAR *argv[]) {
   ss.f_stdout = SIRL_LOG | SIRT_WARNING;
 
 /*
-  Output of type SIRL_WARNING will be sent
+  Output of type SIRL_WARN will be sent
   to debug.
  */
   ss.f_debug = SIRT_WARNING;
@@ -74,9 +74,9 @@ int main(int argc, TCHAR *argv[]) {
   }
 
 /*
-  Add a file for output of types SIRL_WARNING and SIRT_LOG.
+  Add a file for output of types SIRL_WARN and SIRT_LOG.
  */
-  if(0 != Sir_AddFile(_T("sir.log"), SIRL_WARNING | SIRT_LOG)) {
+  if(0 != Sir_AddFile(_T("sir.log"), SIRL_WARN | SIRT_LOG)) {
     printf("Failed to add file to Sir system!\n");
   } else {
     printf("Successfully associated 'sir.log' with SIRT_WARNING"
@@ -98,10 +98,10 @@ int main(int argc, TCHAR *argv[]) {
  */
 
 /*
-  Sent to all destinations associated with type SIRL_WARNING or SIRT_LOG
+  Sent to all destinations associated with type SIRL_WARN or SIRT_LOG
   (or both).
  */
-  Sir(SIRL_WARNING | SIRT_LOG, _T("This is a test of the Sir system. This is")
+  Sir(SIRL_WARN | SIRT_LOG, _T("This is a test of the Sir system. This is")
       _T(" only a test. %d, %d, %d"), 1, 2, 3);
 
 /*
@@ -140,7 +140,7 @@ int main(int argc, TCHAR *argv[]) {
 #### Logging levels
 * `SIRL_DEBUG`   : For debugging information.
 * `SIRL_ERROR`   : To report errors (non-fatal).
-* `SIRL_WARNING` : To report warnings or notifications.
+* `SIRL_WARN` : To report warnings or notifications.
 * `SIRL_CRIT`   : To report fatal errors.
 * `SIRL_LOG`     : For outputting logging data.
 * `SIRL_SCREEN`  : For outputting information to the user.

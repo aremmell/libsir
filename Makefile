@@ -11,7 +11,7 @@
 CC=gcc
 BUILDDIR=build
 
-GLOBALFLAGS=-Wall -std=c99 -O3
+GLOBALFLAGS=-Wpedantic -std=c99 -O3
 SHAREDFLAGS=-shared -fPIC $(GLOBALFLAGS)
 STATICFLAGS=$(GLOBALFLAGS)
 
@@ -23,6 +23,7 @@ SRCFILES=$(TUS) $(HEADERS)
 
 STATICOUT=$(BUILDDIR)/libsir.a
 SHAREDOUT=$(BUILDDIR)/libsir.so
+TESTOUT=$(BUILDDIR)/sirtest
 
 all: static shared
 
@@ -37,7 +38,7 @@ shared: prep $(SRCFILES)
 	$(CC) $(SHAREDFLAGS) -o $(SHAREDOUT) -c $(TUS) -I.
 
 test: $(TESTTU) $(SRCFILES)
-	$(CC) -o sirtest $(TUS) -I.
+	$(CC) -g -o $(TESTOUT) $(TESTTU) $(TUS) -I.
 
 clean:
-	rm -f $(STATICOUT) $(SHAREDOUT) $(OBJS)
+	rm -f $(STATICOUT) $(SHAREDOUT) $(TESTOUT) $(OBJS)
