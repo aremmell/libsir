@@ -1,38 +1,43 @@
-# @(#) Makefile for sir library.
+#
+# Makefile for the SIR library.
+# Copyright (C) 2003-2018 Ryan M. Lederman <lederman@gmail.com>
+#
+#  Last modified:
+#    April 25, 2018
+#
+#  Version: 1.1.0
+#
 
-
-# This is for normal GCC stuff.
 CC=gcc
-DLFLAGS=-shared -fPIC -Wall -ansi
-SLFLAGS=-Wall -ansi
+BUILDDIR=build
 
+GLOBALFLAGS=-Wall -std=c99 -O3
+SHAREDFLAGS=-shared -fPIC $(GLOBALFLAGS)
+STATICFLAGS=$(GLOBALFLAGS)
 
-# This is for the solaris compiler.
-#CC=cc
-#DLFLAGS=-G -Kpic -errwarn=%all -Xc
-#SLFLAGS=-errwarn=%all -Xc
+TUS=sir.c
+TESTTU=main.c
+HEADERS=sir.h
+OBJS=$(BUILDDIR)/sir.o
+SRCFILES=$(TUS) $(HEADERS)
 
+STATICOUT=$(BUILDDIR)/libsir.a
+SHAREDOUT=$(BUILDDIR)/libsir.so
 
-SRCS=sir.c
-OBJS=sir.o
+all: static shared
 
+prep:
+	mkdir -p $(BUILDDIR)
 
-all:		static dynamic
+static: prep $(SRCFILES)
+	$(CC) $(STATICFLAGS) -o $(OBJS) -c $(TUS) -I.
+	ar -cr $(STATICOUT) $(OBJS)
 
+shared: prep $(SRCFILES)
+	$(CC) $(SHAREDFLAGS) -o $(SHAREDOUT) -c $(TUS) -I.
 
-static:		sir.c sir.h
-		$(CC) $(SLFLAGS) -o sir.o -c sir.c
-		ar -cr libsir.a sir.o
+test: $(TESTTU) $(SRCFILES)
+	$(CC) -o sirtest $(TUS) -I.
 
-dynamic:	sir.c sir.h 
-		$(CC) $(DLFLAGS) -o libsir.so.1.0.4 -c sir.c
-
-
-
-install:	
-		install -f /usr/lib -m 444 -u root -g bin -s libsir.so.1.0.4
-		install -f /usr/lib -m 444 -u root -g bin -s libsir.a
-		ln -s /usr/lib/libsir.so.1.0.4 /usr/lib/libsir.so.1
-		ln -s /usr/lib/libsir.so.1.0.4 /usr/lib/libsir.so
-		mkdir -f /usr/include/sir
-		install -f /usr/include/sir -m 444 -u root -g bin -s sir.h
+clean:
+	rm -f $(STATICOUT) $(SHAREDOUT) $(OBJS)

@@ -33,25 +33,25 @@ Implementing Sir in your application is extremely easy. I have provided it in va
 void SirCallback(TCHAR *out, u_long data);
 
 int main(int argc, TCHAR *argv[]) {
-  SIRSTRUCT ss = {0}; /* Declare the Sir initialization structure */
+  sirinit ss = {0}; /* Declare the Sir initialization structure */
 
 /*
-  Output of types SIRT_LOG and SIRT_WARNING
+  Output of types SIRL_LOG and SIRT_WARNING
   will be sent to stdout.
  */
-  ss.f_stdout = SIRT_LOG | SIRT_WARNING;
+  ss.f_stdout = SIRL_LOG | SIRT_WARNING;
 
 /*
-  Output of type SIRT_WARNING will be sent
+  Output of type SIRL_WARNING will be sent
   to debug.
  */
   ss.f_debug = SIRT_WARNING;
 
 /*
-  Output of types SIRT_ERROR and SIRT_FATAL
+  Output of types SIRL_ERROR and SIRT_CRIT
   will be sent to stderr.
  */
-  ss.f_stderr = SIRT_ERROR | SIRT_FATAL;
+  ss.f_stderr = SIRL_ERROR | SIRT_CRIT;
 
 /*
   Set the option bits (Sir.h);
@@ -74,19 +74,19 @@ int main(int argc, TCHAR *argv[]) {
   }
 
 /*
-  Add a file for output of types SIRT_WARNING and SIRT_LOG.
+  Add a file for output of types SIRL_WARNING and SIRT_LOG.
  */
-  if(0 != Sir_AddFile(_T("sir.log"), SIRT_WARNING | SIRT_LOG)) {
+  if(0 != Sir_AddFile(_T("sir.log"), SIRL_WARNING | SIRT_LOG)) {
     printf("Failed to add file to Sir system!\n");
   } else {
     printf("Successfully associated 'sir.log' with SIRT_WARNING"
-           " and SIRT_LOG output types.\n");
+           " and SIRL_LOG output types.\n");
   }
 
 /*
   Add a callback for output types of SIRT_SCREEN.
  */
-  if(0 != Sir_AddCallback(SirCallback, SIRT_SCREEN, 0U)) {
+  if(0 != Sir_AddCallback(SirCallback, SIRL_SCREEN, 0U)) {
     printf("Failed to add callback to Sir system!\n");
   } else {
     printf("Successfully associated SirCallback() with SIRT_SCREEN"
@@ -98,17 +98,17 @@ int main(int argc, TCHAR *argv[]) {
  */
 
 /*
-  Sent to all destinations associated with type SIRT_WARNING or SIRT_LOG
+  Sent to all destinations associated with type SIRL_WARNING or SIRT_LOG
   (or both).
  */
-  Sir(SIRT_WARNING | SIRT_LOG, _T("This is a test of the Sir system. This is")
+  Sir(SIRL_WARNING | SIRT_LOG, _T("This is a test of the Sir system. This is")
       _T(" only a test. %d, %d, %d"), 1, 2, 3);
 
 /*
-  Sent to all destinations associated with type SIRT_ERROR or SIRT_SCREEN
+  Sent to all destinations associated with type SIRL_ERROR or SIRT_SCREEN
   (or both).
  */
-  Sir(SIRT_ERROR | SIRT_SCREEN, _T("This is a continuation of the Sir system")
+  Sir(SIRL_ERROR | SIRT_SCREEN, _T("This is a continuation of the Sir system")
       _T(" test."));
 
 /*
@@ -138,9 +138,9 @@ int main(int argc, TCHAR *argv[]) {
 * `SIRO_DEFAULT`   : Functionally equivalent to SIRO_TIMESTAMP and SIRO_CRLF.  Sir will use this option if none are specified.
 
 #### Logging levels
-* `SIRT_DEBUG`   : For debugging information.
-* `SIRT_ERROR`   : To report errors (non-fatal).
-* `SIRT_WARNING` : To report warnings or notifications.
-* `SIRT_FATAL`   : To report fatal errors.
-* `SIRT_LOG`     : For outputting logging data.
-* `SIRT_SCREEN`  : For outputting information to the user.
+* `SIRL_DEBUG`   : For debugging information.
+* `SIRL_ERROR`   : To report errors (non-fatal).
+* `SIRL_WARNING` : To report warnings or notifications.
+* `SIRL_CRIT`   : To report fatal errors.
+* `SIRL_LOG`     : For outputting logging data.
+* `SIRL_SCREEN`  : For outputting information to the user.

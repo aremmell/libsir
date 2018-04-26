@@ -1,786 +1,487 @@
-/*
- *  sir.c : ANSI C Implementation of Standard Incident Reporter (SIR)
+/*!
+ * \file sir.c
+ * \brief Implementation of the Standard Incident Reporter (SIR) library.
  *
- *  Copyright 2003 - All Rights Reserved
- *
- *  Author:
- *    Ryan Matthew Lederman
- *    ryan@ript.net
- *
- *  Date:
- *    January 02, 2005
- *
- *  Version: 1.0.4
- *
- *  License:
- *    This software is provided to the end user "as-is", with no warranty
- *    implied or otherwise.  The author is for all intents and purposes
- *    the owner of this source code.  The author grants the end user the
- *    privilege to use this software in any application, commercial or
- *    otherwise, with the following restrictions:
- *      1.) If the end user wishes to modify this source code, he/she must
- *       not distribute the source code as the original source code, and
- *       must clearly document the changes made to the source code in any
- *       distribution of said source code.
- *      2.) This license agreement must always be displayed in any version
- *       of the source code.
- *    The author will not be held liable for ANY damage, loss of data,
- *    loss of income, or any other form of loss that results directly or 
- *    indirectly from the use of this software.
- *
+ * \author Ryan Matthew Lederman <lederman@gmail.com>
+ * \version 1.1.0
+ * \date 2003-2018
+ * \copyright MIT License
  */
 #include "sir.h"
 
-/* 
-  Global state variables
- */
-SIRSTRUCT        sir_s;
-SIRFILECACHE     sir_fc;
-SIRCALLBACKCACHE sir_cc;
+sirinit          sir_s;  /* !< Global data storage (internal) */
+sirfiles     sir_fc; /* !< Global data storage (internal) */
+sircallbacks sir_cc; /* !< Global data storage (internal) */
 
-/*
- * FUNCTION: Sir_Init()
- * 
- * SYNOPSIS: Initializes the Sir system for
- * use in an application.  This must be the
- * first function called.
- * 
- * ARGUMENTS: Pointer to a SIRSTRUCT structure
- * that contains the options being requested
- * from the system.
- * 
- * RETURN VALUE: Returns 0 if successful, or -1
- * if an error occurs.
- * 
-*/
-int Sir_Init(PSIRSTRUCT pss) {
-	
-  int r = -1;
+int sir_init(const sirinit* si) {
 
-  if (NULL != pss) {
+    if (NULL == si || 0 == si->opts)
+        return 1;
 
-    if (0UL == pss->opts) { pss->opts = SIRO_DEFAULT; }
+    sir_cleanup();
+    memcpy(&sir_s, si, sizeof(sirinit));
+    return 0;
+}
 
-    if (0 != _IsValidSirStruct(pss)) {
+int sirdebug(const sirchar_t* format, ...) {
+    _SIR_L_START();
+    r = _sir_lv(SIRL_DEBUG, format, args);
+    _SIR_L_END(args);
+    return r;
+}
 
-      Sir_Reset();
-      memcpy(&sir_s, pss, sizeof(SIRSTRUCT));
-      r = 0;
+int sirinfo(const sirchar_t* format, ...) {
+    _SIR_L_START();
+    r = _sir_lv(SIRL_INFO, format, args);
+    _SIR_L_END(args);
+    return r;
+}
 
+int sirnotice(const sirchar_t* format, ...) {
+    _SIR_L_START();
+    r = _sir_lv(SIRL_NOTICE, format, args);
+    _SIR_L_END(args);
+    return r;
+}
+int sirwarn(const sirchar_t* format, ...) {
+    _SIR_L_START();
+    r = _sir_lv(SIRL_WARNING, format, args);
+    _SIR_L_END(args);
+    return r;
+}
+int sirerror(const sirchar_t* format, ...) {
+    _SIR_L_START();
+    r = _sir_lv(SIRL_ERROR, format, args);
+    _SIR_L_END(args);
+    return r;
+}
+
+int sircrit(const sirchar_t* format, ...) {
+    _SIR_L_START();
+    r = _sir_lv(SIRL_CRIT, format, args);
+    _SIR_L_END(args);
+    return r;
+}
+
+int siralert(const sirchar_t* format, ...) {
+    _SIR_L_START();
+    r = _sir_lv(SIRL_ALERT, format, args);
+    _SIR_L_END(args);
+    return r;
+}
+
+int siremerg(const sirchar_t* format, ...) {
+    _SIR_L_START();
+    r = _sir_lv(SIRL_EMERG, format, args);
+    _SIR_L_END(args);
+    return r;
+}
+
+void sir_cleanup(void) {
+    _sir_files_destroy(&sir_fc);
+    _sir_callbacks_destroy(&sir_cc);
+
+    memset(&sir_s, 0, sizeof(sirinit));
+    memset(&sir_fc, 0, sizeof(sirfiles));
+    memset(&sir_cc, 0, sizeof(sircallback));
+}
+
+int sir_addfile(const sirchar_t* path, uint32_t mask) {
+
+    sirfile* sf = NULL;
+    int      r  = 1;
+
+    if (strptr(path) && 0 != mask) {
+        sf = _sirfile_create(path, mask);
+
+        if (NULL != sf)
+            r = _sir_files_add(&sir_fc, sf);
     }
 
-  }
-
-	return r;
+    return r;
 }
 
-/*
- * FUNCTION: Sir_Reset()
- * 
- * SYNOPSIS: Frees resources allocated by
- * Sir, and resets the internal state variables.
- * 
- * ARGUMENTS: None
- * 
- * RETURN VALUE: None
- * 
-*/
-void Sir_Reset(void) {
+int sir_remfile(const sirchar_t* path) { return _sir_files_rem(&sir_fc, path); }
 
-	_SirFileCache_Destroy(&sir_fc);
-	_SirCallbackCache_Destroy(&sir_cc);
+int sir_addcallback(sircallbackfn cb, uint32_t mask, uint64_t userData) {
 
-	memset(&sir_s,  0, sizeof(SIRSTRUCT));
-	memset(&sir_fc, 0, sizeof(SIRFILECACHE));
-	memset(&sir_cc, 0, sizeof(SIRCALLBACKCACHE));
+    sircallback* scb = NULL;
+    int          r   = 1;
 
-}
+    if (NULL != cb && 0 != mask) {
+        scb = _sircallback_create(cb, mask, userData);
 
-/*
- * FUNCTION: Sir_GetOpts()
- * 
- * SYNOPSIS: Retrieves the bitmask of options
- * in use by the Sir system.
- * 
- * ARGUMENTS: None
- * 
- * RETURN VALUE: Returns an unsigned long bitmask
- * 
-*/
-u_long Sir_GetOpts(void) { return sir_s.opts; }
-
-/*
- * FUNCTION: Sir()
- * 
- * SYNOPSIS: Sir() is the heart of the Sir system.
- * Use this function to send the output to all associated
- * output destinations.  Any destinations with one or more
- * of the bits in <type> will recieve the output.
- * 
- * ARGUMENTS: Unsigned long bitmask of output types
- * to route the output to, and the output (a'la printf())
- * 
- * RETURN VALUE: Returns 0 if successful, or -1
- * if an error occurs.
- * 
-*/
-int Sir(u_long type, TCHAR *out, ...) {
-
-	TCHAR output[SIR_MAXPRINT]  = {0};
-	TCHAR *timestr              = NULL;
-	va_list valist              = {0};
-	PSIRBUF pbuf                = NULL;
-	time_t  now                 = 0;
-  int r                       = -1;
-
-	pbuf = _Sirbuf_Create();
-
-  if (NULL != pbuf) {
-
-    if (sir_s.opts & SIRO_TIMESTAMP) {
-
-      time(&now);
-      timestr = sctime(&now);
-      timestr[sstrlen(timestr)-1] = _T('\0');
-
-      _Sirbuf_Append(pbuf, timestr);
-      _Sirbuf_Append(pbuf, _T(" : "));
-
+        if (NULL != scb)
+            r = _sir_callbacks_add(&sir_cc, scb);
     }
 
-    va_start(valist, out);
-    svsnprintf(output, SIR_MAXPRINT, out, valist);
-    va_end(valist);
-
-    if (0 == _Sirbuf_Append(pbuf, output)) {
-
-      if (sir_s.opts & SIRO_LF) {
-
-        _Sirbuf_Append(pbuf, _T("\n"));
-
-      } else if (sir_s.opts & SIRO_CRLF) {
-
-        _Sirbuf_Append(pbuf, _T("\r\n"));
-
-      }
-
-      r = _Sir_SendToDestinations(pbuf->ptr, type);
-
-    }
-
-    _Sirbuf_Destroy(pbuf);
-  }
-
-	return r; 
+    return r;
 }
 
-/*
- * FUNCTION: Sir_AddFile()
- * 
- * SYNOPSIS: Adds a disk file as an output destination
- * maintained by the Sir system.  The file will recieve
- * output whenever Sir() is called with any of the flags
- * you specify in <mask>.
- * 
- * ARGUMENTS: Pointer to a string that contains
- * the path of the file, and an unsigned long bitmask
- * of the types you wish to associate with this file.
- * (SIRT_*)
- * 
- * RETURN VALUE: Returns 0 if successful, or -1
- * if an error occurs.
- * 
-*/
-int Sir_AddFile(TCHAR *path, u_long mask) {
+int sir_remcallback(sircallbackfn cb) { return _sir_callbacks_rem(&sir_cc, cb); }
 
-	PSIRFILE pf = NULL;
-  int r       = -1;
+/*! \cond PRIVATE */
 
-  if (strptr(path) && (0UL != mask)) {
+int _sir_lv(uint32_t type, const sirchar_t* format, va_list args) {
 
-    pf = _SirFile_Create(path, mask);
+    sirchar_t output[SIR_MAXPRINT] = {0};
+    sirchar_t timestr[SIR_TIMELEN] = {0};
+    sirbuf*   buf                  = NULL;
+    int       r                    = 1;
 
-    if (NULL != pf) {
+    buf = _sirbuf_create();
 
-      r = _SirFileCache_AddFile(&sir_fc, pf);
+    if (NULL != buf) {
+        if (!smaskset(sir_s.opts, SIRO_NOTIMESTAMP)) {
 
-    }
+            time_t now = 0;
+            time(&now);
+            strftime(
+                timestr, SIR_TIMELEN, strptr(sir_s.fmtOverride) ? sir_s.fmtOverride : SIR_TIMEFORMAT, localtime(&now));
 
-  }
-
-  return r;
-}
-
-/*
- * FUNCTION: Sir_AddCallback()
- * 
- * SYNOPSIS: Adds a callback function as an output destination
- * maintained by the Sir system.  The function will be called
- * whenever Sir() is called with any of the flags you specify 
- * in <mask> (SIRT_*).
- * 
- * ARGUMENTS: Pointer to a SIRCALLBACK-type function (sir.h),
- * unsigned long bitmask of types to associate with the function,
- * and an unsigned long that will be maintained by the Sir system
- * and sent to the function whenever it is called.
- * 
- * RETURN VALUE: Returns 0 if successful, or -1
- * if an error occurs.
- * 
-*/
-int Sir_AddCallback(SIRCALLBACK pfn, u_long mask, u_long data) {
-	
-	PSIRCALLBACKOBJ pco = NULL;
-  int r               = -1;
-
-  if ((NULL != pfn) && (0UL != mask)) {
-
-    pco = _SirCallbackObj_Create(pfn, mask, data);
-
-    if (NULL != pco) {
-
-      r = _SirCallbackCache_AddCallback(&sir_cc, pco);
-
-    }
-
-  }
-
-	return r;
-}
-
-/*
- * FUNCTION: Sir_RemFile()
- * 
- * SYNOPSIS: Removes an existing disk file
- * from the Sir system's managed queue.
- * 
- * ARGUMENTS: Pointer to a string that contains
- * the path of the file.
- * 
- * RETURN VALUE: Returns 0 if successful, or -1
- * if an error occurs.
- * 
-*/
-int Sir_RemFile(TCHAR *path) {
-
-	return _SirFileCache_RemFile(&sir_fc, path);
-}
-
-/*
- * FUNCTION: Sir_RemCallback()
- * 
- * SYNOPSIS: Removes an existing callback function
- * from the Sir system's managed queue.
- * 
- * ARGUMENTS: Pointer to the function to remove.
- * 
- * RETURN VALUE: Returns 0 if successful, or -1
- * if an error occurs.
- * 
-*/
-int Sir_RemCallback(SIRCALLBACK pfn) {
-
-	return _SirCallbackCache_RemCallback(&sir_cc, pfn);
-}
-
-/*
- * FUNCTION: Sir_Cleanup()
- * 
- * SYNOPSIS: Frees resources allocated by
- * Sir, and resets the internal state variables.
- * Functionally equivalent to Sir_Reset().
- * 
- * ARGUMENTS: None
- * 
- * RETURN VALUE: None
- * 
-*/
-void Sir_Cleanup(void) { Sir_Reset(); }
-
-/* 
-  Internal Sir functions;
-  These are undocumented because
-  you should not need to access
-  them externally.
- */
-
-int _Sir_SendToDestinations(TCHAR *output, u_long mask) {
-
-  int r = -1;
-
-  if (strptr(output) && (0UL != mask)) {
-
-#ifdef _DEBUG
-    if (mask & SIRT_DEBUG)   {
-    
-      if (sir_s.opts & SIRO_CRLF && sir_s.opts & SIRO_NODBGCRLF) {
-
-        output[sstrlen(output) - 2] = _T('\n');
-        output[sstrlen(output) - 1] = _T('\0');
-
-        _Sir_Dispatch(output, SIRT_DEBUG);
-
-      }
-    
-    }
-#endif // !_DEBUG
-	  if (mask & SIRT_ERROR)   { _Sir_Dispatch(output, SIRT_ERROR); }
-	  if (mask & SIRT_WARNING) { _Sir_Dispatch(output, SIRT_WARNING); }
-	  if (mask & SIRT_FATAL)   { _Sir_Dispatch(output, SIRT_FATAL); }
-	  if (mask & SIRT_LOG)     { _Sir_Dispatch(output, SIRT_LOG); }
-	  if (mask & SIRT_SCREEN)  { _Sir_Dispatch(output, SIRT_SCREEN); }
-	  if (sir_s.opts & SIRO_FILES)     { _SirFileCache_Dispatch(&sir_fc, output, mask); }
-	  if (sir_s.opts & SIRO_CALLBACKS) { _SirCallbackCache_Dispatch(&sir_cc, output, mask); }
-
-    r = 0;
-
-  }
-
-	return r;
-}
-
-void _Sir_Dispatch(TCHAR *output, u_long type) {
-
-#ifdef _DEBUG
-#ifdef Sir_Debug
-	if (sir_s.f_debug & type) { Sir_Debug(output); }
-#endif /* _!Sir_Debug */
-#endif // !_DEBUG
-
-	if (sir_s.f_stderr & type) { sfprintf(stderr, output); }
-
-	if (sir_s.f_stdout & type) { sfprintf(stdout, output); }
-
-}
-
-int _Sir_File(TCHAR *path, TCHAR *output) {
-
-  int r = -1;
-
-  if (strptr(path) && strptr(output)) {
-
-    FILE *f = NULL;
-
-    f = sfopen(path, _T("a'"));
-
-    if (NULL != f) {
-
-      if (0 == fwrite(output, sizeof(TCHAR), sstrlen(output), f)) {
-
-        if ((0 != feof(f)) && (0 == ferror(f))) {
-
-          r = 0;
-
+            timestr[sstrlen(timestr) - 1] = _T('\0');
+            _sirbuf_append(buf, timestr);
         }
 
-      } else {
+        if (!smaskset(sir_s.opts, SIRO_NONAME)) {
+        }
+
+        if (!smaskset(sir_s.opts, SIRO_NOLEVEL)) {
+        }
+
+        svsnprintf(output, SIR_MAXPRINT, format, args);
+
+        if (0 == _sirbuf_append(buf, output)) {
+            if (smaskset(sir_s.opts, SIRO_LF)) {
+                _sirbuf_append(buf, _T("\n"));
+            } else if (smaskset(sir_s.opts, SIRO_CRLF)) {
+                _sirbuf_append(buf, _T("\r\n"));
+            }
+
+            r = _sir_dispatchall(buf->ptr, type);
+        }
+
+        _sirbuf_destroy(buf);
+    }
+
+    return r;
+}
+
+int _sir_dispatchall(const sirchar_t* output, uint32_t mask) {
+
+    int r = 1;
+
+    if (strptr(output) && 0 != mask) {
+
+        /*
+        TODO: this.
+        if (mask & SIRT_ERROR)
+        _sir_dispatch(output, SIRL_ERROR); }
+          if (mask & SIRL_WARNING) { _sir_dispatch(output, SIRT_WARNING); }
+          if (mask & SIRL_CRIT)   { _sir_dispatch(output, SIRT_CRIT); }*/
+
+        if (smaskset(sir_s.opts, SIRO_FILES))
+            _sir_files_dispatch(&sir_fc, output, mask);
+
+        if (smaskset(sir_s.opts, SIRO_CALLBACKS))
+            _sir_callbacks_dispatch(&sir_cc, output, mask);
 
         r = 0;
-
-      }
-
-      fclose(f);
-
     }
 
-  }
-
-	return r; 
+    return r;
 }
 
-PSIRBUF _Sirbuf_Create(void) {
+void _sir_dispatch(const sirchar_t* output, uint32_t type) {
 
-	PSIRBUF pbuf = (PSIRBUF)calloc(1U, sizeof(SIRBUF));
+    if (smaskset(sir_s.f_stderr, type))
+        fputs(output, stderr);
 
-  if (NULL != pbuf) {
+    if (smaskset(sir_s.f_stdout, type))
+        fputs(output, stderr);
+}
 
-		pbuf->ptr = (TCHAR *)malloc(0U);
+int _sir_dispatchfile(const sirchar_t* path, const sirchar_t* output) {
 
-    if (NULL!= pbuf->ptr) {
+    int r = 1;
 
-      pbuf->size = 0U;
-      return pbuf;
+    if (strptr(path) && strptr(output)) {
+        FILE* f = sfopen(path, _T("a'"));
 
+        if (NULL != f) {
+            if (0 == fwrite(output, sizeof(sirchar_t), sstrlen(output), f)) {
+                r = 0 != feof(f) && 0 == ferror(f);
+            } else {
+                r = 0;
+            }
+
+            fclose(f);
+        }
     }
 
-  }
-
-  return (PSIRBUF)(NULL);
+    return r;
 }
 
-int _Sirbuf_Append(PSIRBUF pbuf, TCHAR *str) {
+sirbuf* _sirbuf_create(void) {
 
-  size_t copy = 0U;
-  int r       = -1;
+    sirbuf* buf = (sirbuf*)calloc(1U, sizeof(sirbuf));
 
-  if ((NULL != pbuf) && (NULL != pbuf->ptr)) {
+    if (NULL != buf) {
+        buf->ptr = (sirchar_t*)calloc(SIR_MINPRINT + sizeof(sirchar_t), sizeof(sirchar_t));
 
-    if (strptr(str)) {
-
-      copy = (sstrlen(str) * sizeof(TCHAR));
-
-      if (0U < copy) {
-
-        pbuf->ptr = (TCHAR *)realloc(pbuf->ptr, pbuf->size + copy + sizeof(TCHAR));
-
-        if (NULL != pbuf->ptr) {
-
-          memset(((char *)pbuf->ptr + pbuf->size), 0, copy + sizeof(TCHAR));
-          memcpy(((char *)pbuf->ptr + pbuf->size), str, copy);
-
-          pbuf->size += copy;
-
-          r = 0L;
-        }       
-
-      }
-
+        if (NULL != buf->ptr) {
+            buf->size = 0U;
+            return buf;
+        }
     }
 
-  }
-
-	return r;
+    return buf;
 }
 
-int _Sirbuf_Destroy(PSIRBUF pbuf) {
+int _sirbuf_append(sirbuf* buf, const sirchar_t* str) {
 
-	if ((NULL != pbuf) && (NULL != pbuf->ptr)) {
+    size_t copy = 0U;
+    int    r    = 1;
 
-		free(pbuf->ptr);
-		free(pbuf);
+    if (strptr(str) && NULL != buf && NULL != buf->ptr) {
+        copy = (sstrlen(str) * sizeof(sirchar_t));
 
-		return 0;
-	}
+        if (0U < copy) {
+            buf->ptr = (sirchar_t*)realloc(buf->ptr, buf->size + copy + sizeof(sirchar_t));
 
-	return -1;
-}
-
-PSIRFILE _SirFile_Create(TCHAR *path, u_long mask) {
-	
-	PSIRFILE p = NULL;
-
-  if (strptr(path) && (0UL != mask)) {
-
-    p = (PSIRFILE)calloc(1U, sizeof(SIRFILE));
-
-    if (NULL!= p) {
-
-      p->path = (TCHAR *)calloc(sstrlen(path) + 1U, sizeof(TCHAR));
-
-      if (NULL != p->path) {
-
-        memcpy(p->path, path, sstrlen(path) * sizeof(TCHAR));
-        p->bitmask = mask;
-
-        return p;
-
-      }
-
+            if (NULL != buf->ptr) {
+                memcpy(((char*)buf->ptr + buf->size), str, copy);
+                buf->ptr[buf->size + copy - 1U] = _T('\0');
+                buf->size += copy;
+                r = 0L;
+            }
+        }
     }
 
-  }
-
-	return (PSIRFILE)(NULL);
+    return r;
 }
 
-void _SirFile_Destroy(PSIRFILE pf) {
-
-  if (NULL != pf) {
-
-    if (strptr(pf->path)) { free(pf->path); }
-
-    free(pf);
-
-  }
-
+void _sirbuf_destroy(sirbuf* buf) {
+    safefree(buf->ptr);
+    safefree(buf);
 }
 
-int _SirFileCache_AddFile(PSIRFILECACHE pfc, PSIRFILE pf) {
+sirfile* _sirfile_create(const sirchar_t* path, uint32_t mask) {
 
-  int r = -1;
+    sirfile* sf = NULL;
 
-  if ((NULL != pfc) && (NULL != pf)) {
+    if (strptr(path) && 0 != mask) {
+        sf = (sirfile*)calloc(1U, sizeof(sirfile));
 
-    if (0U < pfc->count) {
+        if (NULL != sf) {
+            sf->path = (sirchar_t*)calloc(sstrlen(path) + 1U, sizeof(sirchar_t));
 
-      pfc->files[pfc->count] = pf;
-      pfc->count++;
+            if (NULL != sf->path) {
+                memcpy(sf->path, path, sstrlen(path) * sizeof(sirchar_t));
+                sf->bitmask = mask;
 
-    } else {
-
-      pfc->files[0] = pf;
-      pfc->count    = 1U;
-
+                return sf;
+            }
+        }
     }
 
-    r = 0;
-
-  }
-
-	return r;
+    return sf;
 }
 
-int _SirFileCache_RemFile(PSIRFILECACHE pfc, TCHAR *path) {
-
-	size_t n  = 0U;
-	size_t i  = 0U;
-  int r     = -1;
-
-  if ((NULL != pfc) && strptr(path) && (0U < pfc->count)) {
-
-	  for (n = 0; n < pfc->count; n++) {
-
-      if ((NULL != pfc->files[n]) && (0 != *pfc->files[n]->path)) {
-
-		    if (0L == sstrcmp(pfc->files[n]->path, path)) {
-
-			    _SirFile_Destroy(pfc->files[n]);
-
-			    for (i = n; i < pfc->count - 1U; i++) {
-				    pfc->files[i] = pfc->files[i + 1];
-			    }
-
-			    pfc->count--;
-			    r = 0;
-          break;
-
-		    }
-
-      }
-
-	  }
-
-  }
-	
-	return r;
+void _sirfile_destroy(sirfile* sf) {
+    safefree(sf->path);
+    safefree(sf);
 }
 
-int _SirFileCache_Destroy(PSIRFILECACHE pfc) {
-	
-  int r = -1;
-
-  if ((NULL != pfc) && (0U < pfc->count)) {
-    
-    size_t n  = 0U;
-
-	  for (; n < pfc->count; n++ ) {
-
-		  _SirFile_Destroy(pfc->files[n]);
-		  pfc->files[n] = NULL;
-		  pfc->count--;
-
-	  }
-
-    r = 0;
-  }
-
-	return r;
-}
-
-int _SirFileCache_Dispatch(PSIRFILECACHE pfc, TCHAR *output, u_long mask) {
-	
-  int r = 0;
-
-  if ((NULL != pfc) && strptr(output) && (0UL != mask)) {
-
-    size_t n = 0U;
-
-	  for (; (n < pfc->count) && (0 == r); n++ ) {
-
-      if ((NULL != pfc->files[n]) && strptr(pfc->files[n]->path)) {
-
-		    if (pfc->files[n]->bitmask & mask) {
-
-			    if (0 == _Sir_File(pfc->files[n]->path, output)) {
-
-				    r = 0;
-
-          } else {
-
-            r = -1;
-
-          }
-
-		    }
-
-      }
-
-	  }
-
-  }
-
-	return r;
-}
-
-PSIRCALLBACKOBJ _SirCallbackObj_Create(SIRCALLBACK pfn, u_long mask, u_long data) {
-
-	PSIRCALLBACKOBJ pco = NULL;
-
-  if ((NULL != pfn) && (0UL != mask)) {
-
-    pco = (PSIRCALLBACKOBJ)calloc(1U, sizeof(SIRCALLBACKOBJ));
-
-    if (NULL != pco) {
-
-	    pco->pfn  = pfn;
-	    pco->mask = mask;
-	    pco->data = data;
-
-      return pco;
-
-    }
-
-  }
-
-	return (PSIRCALLBACKOBJ)(NULL);
-}
-
-void _SirCallbackObj_Destroy(PSIRCALLBACKOBJ pco) {
-	
-  if (NULL != pco) { free(pco); }
-
-}
-
-int _SirCallbackCache_AddCallback(PSIRCALLBACKCACHE pcc, PSIRCALLBACKOBJ pco) {
-	
-  int r = -1;
-
-  if ((NULL != pcc) && (NULL != pco)) {
-
-	  if (0 < pcc->count) {
-
-		  pcc->c[pcc->count] = pco;
-		  pcc->count++;
-
-	  } else {
-
-		  pcc->c[0]  = pco;
-		  pcc->count = 1U;
-
-	  }
-
-    r = 0;
-
-  }
-
-	return r;
-}
-
-int _SirCallbackCache_RemCallback(PSIRCALLBACKCACHE pcc, SIRCALLBACK pfn) {
-	
-  int r = -1;
-
-  if ((NULL != pcc) && (NULL != pfn) && (0UL < pcc->count)) {
-
-    size_t n = 0U;
-	  size_t i = 0U;
-
-	  for (; n < pcc->count; n++ ) {
-
-      if (NULL != pcc->c[n]) {
-
-		    if (pcc->c[n]->pfn == pfn) {
-
-			    _SirCallbackObj_Destroy(pcc->c[n]);
-
-			    for (i = n; i < pcc->count; i++) {
-
-				    pcc->c[i] = pcc->c[i + 1];
-
-			    }
-
-			    pcc->count--;
-			    r = 0;
-          break;
-
-		    }
-
-      }
-
-	  }
-
-  }
-
-	return r;
-}
-
-int _SirCallbackCache_Destroy(PSIRCALLBACKCACHE pcc) {
-	
-  int r = -1;
-
-  if ((NULL != pcc) && (0UL < pcc->count)) {
-
-    size_t n = 0U;
-
-	  for (; n < pcc->count; n++) {
-
-		  _SirCallbackObj_Destroy(pcc->c[n]);
-		  pcc->c[n] = NULL;
-		  pcc->count--;
-
-	  }
-
-    r = 0;
-
-  }
-
-	return r;
-}
-
-int _SirCallbackCache_Dispatch(PSIRCALLBACKCACHE pcc, TCHAR *output, u_long mask) {
-
-  int r = -1;
-	
-  if ((NULL != pcc) && strptr(output) && (0UL != mask)) {
-    
-    size_t n = 0U;
-
-	  for (; n < pcc->count; n++ ) {
-
-		  if (pcc->c[n]->mask & mask) {
-
-			  if ((0L != pcc->c[n]->pfn)) {
-
-				  pcc->c[n]->pfn(output, pcc->c[n]->data);
-
-			  }
-
-		  }
-
-	  }
-
-    r = 0;
-
-  }
-
-	return r;
-}
-
-int _IsValidSirStruct(PSIRSTRUCT pss) {
-
-  int r = 1;
-
-  if (0UL == pss->f_debug) {
-
-    if (0UL == pss->f_stderr) {
-
-      if (0UL == pss->f_stdout) {
-
-        if (0UL == (pss->opts & SIRO_FILES)) {
-
-          if (0UL == (pss->opts & SIRO_CALLBACKS)) {
-
-            r = 0;
-
-          }
-
+int _sir_files_add(sirfiles* sfc, sirfile* sf) {
+
+    int r = 1;
+
+    if (NULL != sfc && NULL != sf) {
+        if (0U < sfc->count) {
+            sfc->files[sfc->count] = sf;
+            sfc->count++;
+        } else {
+            sfc->files[0] = sf;
+            sfc->count    = 1U;
         }
 
-      }
-
+        r = 0;
     }
 
-  }
-
-  return r;
+    return r;
 }
+
+int _sir_files_rem(sirfiles* sfc, const sirchar_t* path) {
+
+    size_t n = 0U;
+    size_t i = 0U;
+    int    r = 1;
+
+    if (NULL != sfc && strptr(path) && 0 < sfc->count) {
+        for (n = 0; n < sfc->count; n++) {
+            if (NULL != sfc->files[n] && 0 != *sfc->files[n]->path) {
+                if (0 == sstrcmp(sfc->files[n]->path, path)) {
+                    _sirfile_destroy(sfc->files[n]);
+
+                    for (i = n; i < sfc->count - 1; i++) {
+                        sfc->files[i] = sfc->files[i + 1];
+                    }
+
+                    sfc->count--;
+                    r = 0;
+                    break;
+                }
+            }
+        }
+    }
+
+    return r;
+}
+
+int _sir_files_destroy(sirfiles* sfc) {
+
+    int r = 1;
+
+    if (NULL != sfc && 0 < sfc->count) {
+        size_t n = 0U;
+
+        for (; n < sfc->count; n++) {
+            _sirfile_destroy(sfc->files[n]);
+            sfc->files[n] = NULL;
+            sfc->count--;
+        }
+
+        r = 0;
+    }
+
+    return r;
+}
+
+int _sir_files_dispatch(sirfiles* sfc, const sirchar_t* output, uint32_t mask) {
+
+    int r = 0;
+
+    if (NULL != sfc && strptr(output) && 0 != mask) {
+        size_t n = 0U;
+
+        for (; (n < sfc->count) && (0 == r); n++) {
+            if (NULL != sfc->files[n] && strptr(sfc->files[n]->path)) {
+                if (sfc->files[n]->bitmask & mask) {
+                    r = _sir_dispatchfile(sfc->files[n]->path, output);
+                }
+            }
+        }
+    }
+
+    return r;
+}
+
+sircallback* _sircallback_create(sircallbackfn cb, uint32_t mask, uint64_t userData) {
+
+    sircallback* scb = NULL;
+
+    if (NULL != cb && 0 != mask) {
+        scb = (sircallback*)calloc(1U, sizeof(sircallback));
+
+        if (NULL != scb) {
+            scb->cb  = cb;
+            scb->mask = mask;
+            scb->data = userData;
+            return scb;
+        }
+    }
+
+    return scb;
+}
+
+void _sircallback_destroy(sircallback* scb) { safefree(scb); }
+
+int _sir_callbacks_add(sircallbacks* scc, sircallback* scb) {
+
+    int r = 1;
+
+    if (NULL != scc && NULL != scb) {
+        if (0 < scc->count) {
+            scc->c[scc->count] = scb;
+            scc->count++;
+        } else {
+            scc->c[0]  = scb;
+            scc->count = 1U;
+        }
+
+        r = 0;
+    }
+
+    return r;
+}
+
+int _sir_callbacks_rem(sircallbacks* scc, sircallbackfn cb) {
+
+    int r = 1;
+
+    if (NULL != scc && NULL != cb && 0 < scc->count) {
+        size_t n = 0U;
+        size_t i = 0U;
+
+        for (; n < scc->count; n++) {
+            if (NULL != scc->c[n]) {
+                if (scc->c[n]->cb == cb) {
+                    _sircallback_destroy(scc->c[n]);
+
+                    for (i = n; i < scc->count; i++) {
+                        scc->c[i] = scc->c[i + 1];
+                    }
+
+                    scc->count--;
+                    r = 0;
+                    break;
+                }
+            }
+        }
+    }
+
+    return r;
+}
+
+int _sir_callbacks_destroy(sircallbacks* scc) {
+
+    int r = 1;
+
+    if (NULL != scc && 0 < scc->count) {
+        size_t n = 0U;
+
+        for (; n < scc->count; n++) {
+            _sircallback_destroy(scc->c[n]);
+            scc->c[n] = NULL;
+            scc->count--;
+        }
+
+        r = 0;
+    }
+
+    return r;
+}
+
+int _sir_callbacks_dispatch(sircallbacks* scc, const sirchar_t* output, uint32_t mask) {
+
+    int r = 1;
+
+    if (NULL != scc && strptr(output) && 0 != mask) {
+        size_t n = 0U;
+
+        for (; n < scc->count; n++) {
+            if (scc->c[n]->mask & mask) {
+                if ((0L != scc->c[n]->cb)) {
+                    scc->c[n]->cb(output, scc->c[n]->data);
+                }
+            }
+        }
+
+        r = 0;
+    }
+
+    return r;
+}
+
+/*! \endcond PRIVATE */

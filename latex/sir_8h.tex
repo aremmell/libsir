@@ -1,0 +1,530 @@
+\hypertarget{sir_8h}{}\section{sir.\+h File Reference}
+\label{sir_8h}\index{sir.\+h@{sir.\+h}}
+
+
+Definitions for the Standard Incident Reporter (S\+IR) library.  
+
+
+{\ttfamily \#include $<$stdarg.\+h$>$}\\*
+{\ttfamily \#include $<$stdint.\+h$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$time.\+h$>$}\\*
+{\ttfamily \#include $<$syslog.\+h$>$}\\*
+Include dependency graph for sir.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{sir_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=115pt]{sir_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structsirinit}{sirinit}
+\begin{DoxyCompactList}\small\item\em Initialization data for the library. \end{DoxyCompactList}\item 
+struct \hyperlink{structsirfile}{sirfile}
+\item 
+struct \hyperlink{structsirfiles}{sirfiles}
+\item 
+struct \hyperlink{structsircallback}{sircallback}
+\item 
+struct \hyperlink{structsircallbacks}{sircallbacks}
+\item 
+struct \hyperlink{structsirbuf}{sirbuf}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define {\bfseries \+\_\+T}(x)~x\hypertarget{sir_8h_ae936e4c15227768f7da4e0951def89c8}{}\label{sir_8h_ae936e4c15227768f7da4e0951def89c8}
+
+\item 
+\#define {\bfseries sctime}~ctime\hypertarget{sir_8h_a3112de066e12cd6f27b8c84255a32b00}{}\label{sir_8h_a3112de066e12cd6f27b8c84255a32b00}
+
+\item 
+\#define {\bfseries sstrlen}~strlen\hypertarget{sir_8h_a0ccf4a636385de89a0b5ff27e9fbd298}{}\label{sir_8h_a0ccf4a636385de89a0b5ff27e9fbd298}
+
+\item 
+\#define {\bfseries svsnprintf}~vsnprintf\hypertarget{sir_8h_a9933d1dd285effe7726536090cf20a62}{}\label{sir_8h_a9933d1dd285effe7726536090cf20a62}
+
+\item 
+\#define {\bfseries sfprintf}~fprintf\hypertarget{sir_8h_a214afd8ddf98a3c09d2135b0a86438d5}{}\label{sir_8h_a214afd8ddf98a3c09d2135b0a86438d5}
+
+\item 
+\#define {\bfseries sfopen}~fopen\hypertarget{sir_8h_a06cdf2c7920dca2da0c622dcf2c7925c}{}\label{sir_8h_a06cdf2c7920dca2da0c622dcf2c7925c}
+
+\item 
+\#define {\bfseries sstrcmp}~strcmp\hypertarget{sir_8h_a2ea7a9343c526b7ed76e57a8fceb6c18}{}\label{sir_8h_a2ea7a9343c526b7ed76e57a8fceb6c18}
+
+\item 
+\#define {\bfseries strptr}(n)~(((n != N\+U\+LL) \&\& (($\ast$n) != 0)) ? 1 \+: 0)\hypertarget{sir_8h_a326b2035467cb9453e0f88204dc11919}{}\label{sir_8h_a326b2035467cb9453e0f88204dc11919}
+
+\item 
+\#define {\bfseries smaskset}(flags,  test)~((flags \& test) == test)\hypertarget{sir_8h_ac7744555c1835465edf84d9c96ffe73c}{}\label{sir_8h_ac7744555c1835465edf84d9c96ffe73c}
+
+\item 
+\#define {\bfseries safefree}(p)
+\item 
+\#define {\bfseries S\+I\+R\+\_\+\+M\+A\+X\+F\+I\+L\+ES}~256\hypertarget{sir_8h_aa1080a4bec531adb6d25c87ac4734399}{}\label{sir_8h_aa1080a4bec531adb6d25c87ac4734399}
+
+\item 
+\#define {\bfseries S\+I\+R\+\_\+\+M\+A\+X\+C\+A\+L\+L\+B\+A\+C\+KS}~256\hypertarget{sir_8h_a37364e1ca242c22f3b3d10949f9d78d9}{}\label{sir_8h_a37364e1ca242c22f3b3d10949f9d78d9}
+
+\item 
+\#define {\bfseries S\+I\+R\+\_\+\+M\+A\+X\+P\+R\+I\+NT}~2000\hypertarget{sir_8h_a142b15da42c01f3f5d949fa1caa25a3d}{}\label{sir_8h_a142b15da42c01f3f5d949fa1caa25a3d}
+
+\item 
+\#define {\bfseries S\+I\+R\+\_\+\+M\+I\+N\+P\+R\+I\+NT}~256\hypertarget{sir_8h_ab6644283e3e822576e9cf599af78b70e}{}\label{sir_8h_ab6644283e3e822576e9cf599af78b70e}
+
+\item 
+\#define {\bfseries S\+I\+R\+\_\+\+T\+I\+M\+E\+F\+O\+R\+M\+AT}~\char`\"{}\%T\char`\"{}\hypertarget{sir_8h_ab1531d6b0d9c880b793362322542794c}{}\label{sir_8h_ab1531d6b0d9c880b793362322542794c}
+
+\item 
+\#define {\bfseries S\+I\+R\+\_\+\+T\+I\+M\+E\+L\+EN}~32\hypertarget{sir_8h_a55f647db36a59c6039f471644724c967}{}\label{sir_8h_a55f647db36a59c6039f471644724c967}
+
+\item 
+\#define {\bfseries S\+I\+R\+O\+\_\+\+LF}~0x01U\hypertarget{sir_8h_ad0e0196a8d2e111b1c281bd85319d517}{}\label{sir_8h_ad0e0196a8d2e111b1c281bd85319d517}
+
+\item 
+\#define {\bfseries S\+I\+R\+O\+\_\+\+F\+I\+L\+ES}~0x02U\hypertarget{sir_8h_a9dc7d723ac48c8a7b4c70844dec683bd}{}\label{sir_8h_a9dc7d723ac48c8a7b4c70844dec683bd}
+
+\item 
+\#define {\bfseries S\+I\+R\+O\+\_\+\+C\+A\+L\+L\+B\+A\+C\+KS}~0x04U\hypertarget{sir_8h_a326417441be7333590225ca521f29c45}{}\label{sir_8h_a326417441be7333590225ca521f29c45}
+
+\item 
+\#define {\bfseries S\+I\+R\+O\+\_\+\+C\+R\+LF}~0x08U\hypertarget{sir_8h_aa780f77f9641579101156b8e0f657158}{}\label{sir_8h_aa780f77f9641579101156b8e0f657158}
+
+\item 
+\#define {\bfseries S\+I\+R\+O\+\_\+\+N\+O\+D\+B\+G\+C\+R\+LF}~0x10U\hypertarget{sir_8h_afdb003a2febf9bae230e457cbe1dd59a}{}\label{sir_8h_afdb003a2febf9bae230e457cbe1dd59a}
+
+\item 
+\#define {\bfseries S\+I\+R\+O\+\_\+\+N\+O\+L\+E\+V\+EL}~0x20U\hypertarget{sir_8h_a3c68d15a3b9b9d5a4f4c8fd092b0e73d}{}\label{sir_8h_a3c68d15a3b9b9d5a4f4c8fd092b0e73d}
+
+\item 
+\#define {\bfseries S\+I\+R\+O\+\_\+\+N\+O\+N\+A\+ME}~0x40U\hypertarget{sir_8h_a0d3bc4aa34b9399e72621632b877b16a}{}\label{sir_8h_a0d3bc4aa34b9399e72621632b877b16a}
+
+\item 
+\#define {\bfseries S\+I\+R\+O\+\_\+\+N\+O\+T\+I\+M\+E\+S\+T\+A\+MP}~0x80U\hypertarget{sir_8h_a0cebdaa1fe51fea4e2c0c6a397bc5e35}{}\label{sir_8h_a0cebdaa1fe51fea4e2c0c6a397bc5e35}
+
+\item 
+\#define {\bfseries S\+I\+R\+O\+\_\+\+D\+E\+F\+A\+U\+LT}~(S\+I\+R\+O\+\_\+\+T\+I\+M\+E\+S\+T\+A\+MP $\vert$ S\+I\+R\+O\+\_\+\+LF)\hypertarget{sir_8h_a2a7a55618343c4cb76d7e428af72232b}{}\label{sir_8h_a2a7a55618343c4cb76d7e428af72232b}
+
+\item 
+\#define {\bfseries S\+I\+R\+L\+\_\+\+S\+\_\+\+E\+M\+E\+RG}~\char`\"{}E\+M\+ER\char`\"{}\hypertarget{sir_8h_a777d150774244d2707818f2c4a1b9538}{}\label{sir_8h_a777d150774244d2707818f2c4a1b9538}
+
+\item 
+\#define {\bfseries S\+I\+R\+L\+\_\+\+S\+\_\+\+A\+L\+E\+RT}~\char`\"{}A\+L\+RT\char`\"{}\hypertarget{sir_8h_a4e02d1cb5e4a8d8535227657781d4a29}{}\label{sir_8h_a4e02d1cb5e4a8d8535227657781d4a29}
+
+\item 
+\#define {\bfseries S\+I\+R\+L\+\_\+\+S\+\_\+\+C\+R\+IT}~\char`\"{}C\+R\+IT\char`\"{}\hypertarget{sir_8h_a362f77b1b5555a0ea57fdfb64ae09229}{}\label{sir_8h_a362f77b1b5555a0ea57fdfb64ae09229}
+
+\item 
+\#define {\bfseries S\+I\+R\+L\+\_\+\+S\+\_\+\+E\+R\+R\+OR}~\char`\"{}E\+RR\char`\"{}\hypertarget{sir_8h_a4237f9dff053a17cf7a134dbbebc5210}{}\label{sir_8h_a4237f9dff053a17cf7a134dbbebc5210}
+
+\item 
+\#define {\bfseries S\+I\+R\+L\+\_\+\+S\+\_\+\+W\+A\+R\+N\+I\+NG}~\char`\"{}W\+A\+RN\char`\"{}\hypertarget{sir_8h_a3b0ba3e0caa729c998cb8c548ad19517}{}\label{sir_8h_a3b0ba3e0caa729c998cb8c548ad19517}
+
+\item 
+\#define {\bfseries S\+I\+R\+L\+\_\+\+S\+\_\+\+N\+O\+T\+I\+CE}~\char`\"{}N\+O\+TF\char`\"{}\hypertarget{sir_8h_a6195821fca239b40498e847d50b82623}{}\label{sir_8h_a6195821fca239b40498e847d50b82623}
+
+\item 
+\#define {\bfseries S\+I\+R\+L\+\_\+\+S\+\_\+\+I\+N\+FO}~\char`\"{}I\+N\+FO\char`\"{}\hypertarget{sir_8h_a1f7c2763d5e7afb0f2b49d4f0636276d}{}\label{sir_8h_a1f7c2763d5e7afb0f2b49d4f0636276d}
+
+\item 
+\#define {\bfseries S\+I\+R\+L\+\_\+\+S\+\_\+\+D\+E\+B\+UG}~\char`\"{}D\+BG\char`\"{}\hypertarget{sir_8h_a04d05c434823f0e5a353a31bb47af16e}{}\label{sir_8h_a04d05c434823f0e5a353a31bb47af16e}
+
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef char {\bfseries sirchar\+\_\+t}\hypertarget{sir_8h_a1d2f790e2dabc69c8a625f2ee5dc583a}{}\label{sir_8h_a1d2f790e2dabc69c8a625f2ee5dc583a}
+
+\item 
+typedef void($\ast$ \hyperlink{sir_8h_ace3ea4091f07fc8e8cde5b1c14b3fd29}{sircallbackfn}) (const sirchar\+\_\+t $\ast$message, uint64\+\_\+t user\+Data)
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \{ \\*
+\hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba4ea9abe160c997d126806c4cca7f0cdc}{S\+I\+R\+L\+\_\+\+E\+M\+E\+RG} = 0x1, 
+\hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba8ea85ed68763f9c00d5ceeeaaf550955}{S\+I\+R\+L\+\_\+\+A\+L\+E\+RT} = 0x2, 
+\hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba803f36256e5e4e3b788b7fa3a267a435}{S\+I\+R\+L\+\_\+\+C\+R\+IT} = 0x4, 
+\hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba9c687f088db1de838ea5d5f8a8beed76}{S\+I\+R\+L\+\_\+\+E\+R\+R\+OR} = 0x8, 
+\\*
+\hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba1ff2ba86cf1863e3673e5f534e021181}{S\+I\+R\+L\+\_\+\+W\+A\+R\+N\+I\+NG} = 0x10, 
+\hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba721700c8091aab00db0b87b53f6eb53a}{S\+I\+R\+L\+\_\+\+N\+O\+T\+I\+CE} = 0x20, 
+\hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba5882fd7e849f6a3c1c7967bde4ef4f7d}{S\+I\+R\+L\+\_\+\+I\+N\+FO} = 0x40, 
+\hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba3553c8c2c35e70495b8f8e826aa3ff9b}{S\+I\+R\+L\+\_\+\+D\+E\+B\+UG} = 0x80, 
+\\*
+\hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba4aa4a7193f36bf34a21ab48a17ffc444}{S\+I\+R\+L\+\_\+\+A\+LL} = 0x\+FF
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{sir_8h_a99c2210334096965d23626fa50dc5d6b}{sir\+\_\+init} (const \hyperlink{structsirinit}{sirinit} $\ast$si)
+\begin{DoxyCompactList}\small\item\em Initializes the library. \end{DoxyCompactList}\item 
+int \hyperlink{sir_8h_a8de8c02ecad7cec29a04c69d6232a491}{sirdebug} (const sirchar\+\_\+t $\ast$format,...)
+\begin{DoxyCompactList}\small\item\em Log a formatted debug-\/level message. \end{DoxyCompactList}\item 
+int \hyperlink{sir_8h_ad413c364d7c168c8e970f50f088ce598}{sirinfo} (const sirchar\+\_\+t $\ast$format,...)
+\begin{DoxyCompactList}\small\item\em Log a formatted informational message. \end{DoxyCompactList}\item 
+int \hyperlink{sir_8h_ac44c70288276f7c63c233bf0e2a1eefd}{sirnotice} (const sirchar\+\_\+t $\ast$format,...)
+\begin{DoxyCompactList}\small\item\em Log a formatted notice message. \end{DoxyCompactList}\item 
+int \hyperlink{sir_8h_aa90777adb85f8cfee1d346ec64c03e99}{sirwarn} (const sirchar\+\_\+t $\ast$format,...)
+\begin{DoxyCompactList}\small\item\em Log a formatted warning message. \end{DoxyCompactList}\item 
+int \hyperlink{sir_8h_a19c0c2c804a0d8b381833a72ec4df870}{sirerror} (const sirchar\+\_\+t $\ast$format,...)
+\begin{DoxyCompactList}\small\item\em Log a formatted error message. \end{DoxyCompactList}\item 
+int \hyperlink{sir_8h_ab15ad77ec64f919167dcea987db00901}{sircrit} (const sirchar\+\_\+t $\ast$format,...)
+\begin{DoxyCompactList}\small\item\em Log a formatted critical message. \end{DoxyCompactList}\item 
+int \hyperlink{sir_8h_af1c051c33a590e5412a0850b354c96cb}{siralert} (const sirchar\+\_\+t $\ast$format,...)
+\begin{DoxyCompactList}\small\item\em Log a formatted alert message. \end{DoxyCompactList}\item 
+int \hyperlink{sir_8h_ad0527210c4cd7bc81e5e90f1fa420135}{siremerg} (const sirchar\+\_\+t $\ast$format,...)
+\begin{DoxyCompactList}\small\item\em Log a formatted emergency message. \end{DoxyCompactList}\item 
+void \hyperlink{sir_8h_ae3d423234ff95592b8d800b8bf092489}{sir\+\_\+cleanup} ()
+\begin{DoxyCompactList}\small\item\em Shuts down the library. \end{DoxyCompactList}\item 
+int {\bfseries sir\+\_\+addfile} (const sirchar\+\_\+t $\ast$path, uint32\+\_\+t mask)\hypertarget{sir_8h_a37c1e914bb3f1662d735aa33af82f0b9}{}\label{sir_8h_a37c1e914bb3f1662d735aa33af82f0b9}
+
+\item 
+int {\bfseries sir\+\_\+remfile} (const sirchar\+\_\+t $\ast$path)\hypertarget{sir_8h_ad460e4612f4cce41c086bd3d89d4d75c}{}\label{sir_8h_ad460e4612f4cce41c086bd3d89d4d75c}
+
+\item 
+int {\bfseries sir\+\_\+addcallback} (\hyperlink{sir_8h_ace3ea4091f07fc8e8cde5b1c14b3fd29}{sircallbackfn} cb, uint32\+\_\+t mask, uint64\+\_\+t data)\hypertarget{sir_8h_acebc548e782dafbebbefe172a3804a74}{}\label{sir_8h_acebc548e782dafbebbefe172a3804a74}
+
+\item 
+int \hyperlink{sir_8h_adea9649e1e9a9dd3ad41c2ad8db65d50}{sir\+\_\+remcallback} (\hyperlink{sir_8h_ace3ea4091f07fc8e8cde5b1c14b3fd29}{sircallbackfn} cb)
+\begin{DoxyCompactList}\small\item\em Remove an existing \hyperlink{sir_8h_ace3ea4091f07fc8e8cde5b1c14b3fd29}{sircallbackfn} from the list of functions that can receive log messages. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Definitions for the Standard Incident Reporter (S\+IR) library. 
+
+\begin{DoxyAuthor}{Author}
+Ryan Matthew Lederman \href{mailto:lederman@gmail.com}{\tt lederman@gmail.\+com} 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2003-\/2018 
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+M\+IT License 
+\end{DoxyCopyright}
+
+
+\subsection{Macro Definition Documentation}
+\index{sir.\+h@{sir.\+h}!safefree@{safefree}}
+\index{safefree@{safefree}!sir.\+h@{sir.\+h}}
+\subsubsection[{\texorpdfstring{safefree}{safefree}}]{\setlength{\rightskip}{0pt plus 5cm}\#define safefree(
+\begin{DoxyParamCaption}
+\item[{}]{p}
+\end{DoxyParamCaption}
+)}\hypertarget{sir_8h_a383ba0e1276fc7c414d28c174b784d86}{}\label{sir_8h_a383ba0e1276fc7c414d28c174b784d86}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{if} (NULL != p) \{ \(\backslash\)
+        free(p);     \(\backslash\)
+        p = NULL;    \(\backslash\)
+    \}
+\end{DoxyCode}
+
+
+\subsection{Typedef Documentation}
+\index{sir.\+h@{sir.\+h}!sircallbackfn@{sircallbackfn}}
+\index{sircallbackfn@{sircallbackfn}!sir.\+h@{sir.\+h}}
+\subsubsection[{\texorpdfstring{sircallbackfn}{sircallbackfn}}]{\setlength{\rightskip}{0pt plus 5cm}typedef void($\ast$ sircallbackfn) (const sirchar\+\_\+t $\ast$message, uint64\+\_\+t user\+Data)}\hypertarget{sir_8h_ace3ea4091f07fc8e8cde5b1c14b3fd29}{}\label{sir_8h_ace3ea4091f07fc8e8cde5b1c14b3fd29}
+Function signature for callback output destinations.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em message} & The formatted message. \\
+\hline
+\mbox{\tt in}  & {\em user\+Data} & User-\/defined data to pass along to the callback. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Enumeration Type Documentation}
+\subsubsection[{\texorpdfstring{anonymous enum}{anonymous enum}}]{\setlength{\rightskip}{0pt plus 5cm}anonymous enum}\hypertarget{sir_8h_a06fc87d81c62e9abb8790b6e5713c55b}{}\label{sir_8h_a06fc87d81c62e9abb8790b6e5713c55b}
+Logging levels
+
+Each enum value corresponds to a function that sends output to all destinations for that level (\hyperlink{sir_8h_a8de8c02ecad7cec29a04c69d6232a491}{sirdebug} and pals).
+
+Since the values are also flags (i.\+e.\+: powers of two), they can be combined to filter different levels of importance but not strictly linearly. Any combination of levels can be used to configure an output destination. \begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{S\+I\+R\+L\+\_\+\+E\+M\+E\+RG@{S\+I\+R\+L\+\_\+\+E\+M\+E\+RG}!sir.\+h@{sir.\+h}}\index{sir.\+h@{sir.\+h}!S\+I\+R\+L\+\_\+\+E\+M\+E\+RG@{S\+I\+R\+L\+\_\+\+E\+M\+E\+RG}}\item[{\em 
+S\+I\+R\+L\+\_\+\+E\+M\+E\+RG\hypertarget{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba4ea9abe160c997d126806c4cca7f0cdc}{}\label{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba4ea9abe160c997d126806c4cca7f0cdc}
+}]Nuclear war, Armageddon, etc. \index{S\+I\+R\+L\+\_\+\+A\+L\+E\+RT@{S\+I\+R\+L\+\_\+\+A\+L\+E\+RT}!sir.\+h@{sir.\+h}}\index{sir.\+h@{sir.\+h}!S\+I\+R\+L\+\_\+\+A\+L\+E\+RT@{S\+I\+R\+L\+\_\+\+A\+L\+E\+RT}}\item[{\em 
+S\+I\+R\+L\+\_\+\+A\+L\+E\+RT\hypertarget{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba8ea85ed68763f9c00d5ceeeaaf550955}{}\label{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba8ea85ed68763f9c00d5ceeeaaf550955}
+}]Action required A\+S\+AP. \index{S\+I\+R\+L\+\_\+\+C\+R\+IT@{S\+I\+R\+L\+\_\+\+C\+R\+IT}!sir.\+h@{sir.\+h}}\index{sir.\+h@{sir.\+h}!S\+I\+R\+L\+\_\+\+C\+R\+IT@{S\+I\+R\+L\+\_\+\+C\+R\+IT}}\item[{\em 
+S\+I\+R\+L\+\_\+\+C\+R\+IT\hypertarget{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba803f36256e5e4e3b788b7fa3a267a435}{}\label{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba803f36256e5e4e3b788b7fa3a267a435}
+}]Critical errors. \index{S\+I\+R\+L\+\_\+\+E\+R\+R\+OR@{S\+I\+R\+L\+\_\+\+E\+R\+R\+OR}!sir.\+h@{sir.\+h}}\index{sir.\+h@{sir.\+h}!S\+I\+R\+L\+\_\+\+E\+R\+R\+OR@{S\+I\+R\+L\+\_\+\+E\+R\+R\+OR}}\item[{\em 
+S\+I\+R\+L\+\_\+\+E\+R\+R\+OR\hypertarget{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba9c687f088db1de838ea5d5f8a8beed76}{}\label{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba9c687f088db1de838ea5d5f8a8beed76}
+}]Errors. \index{S\+I\+R\+L\+\_\+\+W\+A\+R\+N\+I\+NG@{S\+I\+R\+L\+\_\+\+W\+A\+R\+N\+I\+NG}!sir.\+h@{sir.\+h}}\index{sir.\+h@{sir.\+h}!S\+I\+R\+L\+\_\+\+W\+A\+R\+N\+I\+NG@{S\+I\+R\+L\+\_\+\+W\+A\+R\+N\+I\+NG}}\item[{\em 
+S\+I\+R\+L\+\_\+\+W\+A\+R\+N\+I\+NG\hypertarget{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba1ff2ba86cf1863e3673e5f534e021181}{}\label{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba1ff2ba86cf1863e3673e5f534e021181}
+}]Warnings that could likely be ignored. \index{S\+I\+R\+L\+\_\+\+N\+O\+T\+I\+CE@{S\+I\+R\+L\+\_\+\+N\+O\+T\+I\+CE}!sir.\+h@{sir.\+h}}\index{sir.\+h@{sir.\+h}!S\+I\+R\+L\+\_\+\+N\+O\+T\+I\+CE@{S\+I\+R\+L\+\_\+\+N\+O\+T\+I\+CE}}\item[{\em 
+S\+I\+R\+L\+\_\+\+N\+O\+T\+I\+CE\hypertarget{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba721700c8091aab00db0b87b53f6eb53a}{}\label{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba721700c8091aab00db0b87b53f6eb53a}
+}]Normal but significant. \index{S\+I\+R\+L\+\_\+\+I\+N\+FO@{S\+I\+R\+L\+\_\+\+I\+N\+FO}!sir.\+h@{sir.\+h}}\index{sir.\+h@{sir.\+h}!S\+I\+R\+L\+\_\+\+I\+N\+FO@{S\+I\+R\+L\+\_\+\+I\+N\+FO}}\item[{\em 
+S\+I\+R\+L\+\_\+\+I\+N\+FO\hypertarget{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba5882fd7e849f6a3c1c7967bde4ef4f7d}{}\label{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba5882fd7e849f6a3c1c7967bde4ef4f7d}
+}]Informational messages. \index{S\+I\+R\+L\+\_\+\+D\+E\+B\+UG@{S\+I\+R\+L\+\_\+\+D\+E\+B\+UG}!sir.\+h@{sir.\+h}}\index{sir.\+h@{sir.\+h}!S\+I\+R\+L\+\_\+\+D\+E\+B\+UG@{S\+I\+R\+L\+\_\+\+D\+E\+B\+UG}}\item[{\em 
+S\+I\+R\+L\+\_\+\+D\+E\+B\+UG\hypertarget{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba3553c8c2c35e70495b8f8e826aa3ff9b}{}\label{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba3553c8c2c35e70495b8f8e826aa3ff9b}
+}]Verbose debugging output. \index{S\+I\+R\+L\+\_\+\+A\+LL@{S\+I\+R\+L\+\_\+\+A\+LL}!sir.\+h@{sir.\+h}}\index{sir.\+h@{sir.\+h}!S\+I\+R\+L\+\_\+\+A\+LL@{S\+I\+R\+L\+\_\+\+A\+LL}}\item[{\em 
+S\+I\+R\+L\+\_\+\+A\+LL\hypertarget{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba4aa4a7193f36bf34a21ab48a17ffc444}{}\label{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba4aa4a7193f36bf34a21ab48a17ffc444}
+}]Includes all logging levels. \end{description}
+\end{Desc}
+
+
+\subsection{Function Documentation}
+\index{sir.\+h@{sir.\+h}!sir\+\_\+cleanup@{sir\+\_\+cleanup}}
+\index{sir\+\_\+cleanup@{sir\+\_\+cleanup}!sir.\+h@{sir.\+h}}
+\subsubsection[{\texorpdfstring{sir\+\_\+cleanup()}{sir_cleanup()}}]{\setlength{\rightskip}{0pt plus 5cm}void sir\+\_\+cleanup (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{sir_8h_ae3d423234ff95592b8d800b8bf092489}{}\label{sir_8h_ae3d423234ff95592b8d800b8bf092489}
+
+
+Shuts down the library. 
+
+Call to free all allocated memory and reset internal data structures to their default state.
+
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+\index{sir.\+h@{sir.\+h}!sir\+\_\+init@{sir\+\_\+init}}
+\index{sir\+\_\+init@{sir\+\_\+init}!sir.\+h@{sir.\+h}}
+\subsubsection[{\texorpdfstring{sir\+\_\+init(const sirinit $\ast$si)}{sir_init(const sirinit *si)}}]{\setlength{\rightskip}{0pt plus 5cm}int sir\+\_\+init (
+\begin{DoxyParamCaption}
+\item[{const {\bf sirinit} $\ast$}]{si}
+\end{DoxyParamCaption}
+)}\hypertarget{sir_8h_a99c2210334096965d23626fa50dc5d6b}{}\label{sir_8h_a99c2210334096965d23626fa50dc5d6b}
+
+
+Initializes the library. 
+
+You must call this function before any others in the library or you\textquotesingle{}re gonna have a bad time.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em si} & Pointer a to sirinit struct containing initialization options. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if successful, or non-\/zero otherwise. 
+\end{DoxyReturn}
+\index{sir.\+h@{sir.\+h}!sir\+\_\+remcallback@{sir\+\_\+remcallback}}
+\index{sir\+\_\+remcallback@{sir\+\_\+remcallback}!sir.\+h@{sir.\+h}}
+\subsubsection[{\texorpdfstring{sir\+\_\+remcallback(sircallbackfn cb)}{sir_remcallback(sircallbackfn cb)}}]{\setlength{\rightskip}{0pt plus 5cm}int sir\+\_\+remcallback (
+\begin{DoxyParamCaption}
+\item[{{\bf sircallbackfn}}]{cb}
+\end{DoxyParamCaption}
+)}\hypertarget{sir_8h_adea9649e1e9a9dd3ad41c2ad8db65d50}{}\label{sir_8h_adea9649e1e9a9dd3ad41c2ad8db65d50}
+
+
+Remove an existing \hyperlink{sir_8h_ace3ea4091f07fc8e8cde5b1c14b3fd29}{sircallbackfn} from the list of functions that can receive log messages. 
+
+\begin{DoxyReturn}{Returns}
+0 if successful, or non-\/zero otherwise. 
+\end{DoxyReturn}
+\index{sir.\+h@{sir.\+h}!siralert@{siralert}}
+\index{siralert@{siralert}!sir.\+h@{sir.\+h}}
+\subsubsection[{\texorpdfstring{siralert(const sirchar\+\_\+t $\ast$format,...)}{siralert(const sirchar_t *format,...)}}]{\setlength{\rightskip}{0pt plus 5cm}int siralert (
+\begin{DoxyParamCaption}
+\item[{const sirchar\+\_\+t $\ast$}]{format, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}\hypertarget{sir_8h_af1c051c33a590e5412a0850b354c96cb}{}\label{sir_8h_af1c051c33a590e5412a0850b354c96cb}
+
+
+Log a formatted alert message. 
+
+All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba8ea85ed68763f9c00d5ceeeaaf550955}{S\+I\+R\+L\+\_\+\+A\+L\+E\+RT} set will receive the formatted message.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em format} & A printf-\/style format string. \\
+\hline
+\mbox{\tt in}  & {\em (varargs)} & A list of arguments whose type match the format specifier at the same index in the format string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if successful, or non-\/zero otherwise. 
+\end{DoxyReturn}
+\index{sir.\+h@{sir.\+h}!sircrit@{sircrit}}
+\index{sircrit@{sircrit}!sir.\+h@{sir.\+h}}
+\subsubsection[{\texorpdfstring{sircrit(const sirchar\+\_\+t $\ast$format,...)}{sircrit(const sirchar_t *format,...)}}]{\setlength{\rightskip}{0pt plus 5cm}int sircrit (
+\begin{DoxyParamCaption}
+\item[{const sirchar\+\_\+t $\ast$}]{format, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}\hypertarget{sir_8h_ab15ad77ec64f919167dcea987db00901}{}\label{sir_8h_ab15ad77ec64f919167dcea987db00901}
+
+
+Log a formatted critical message. 
+
+All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba803f36256e5e4e3b788b7fa3a267a435}{S\+I\+R\+L\+\_\+\+C\+R\+IT} set will receive the formatted message.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em format} & A printf-\/style format string. \\
+\hline
+\mbox{\tt in}  & {\em (varargs)} & A list of arguments whose type match the format specifier at the same index in the format string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if successful, or non-\/zero otherwise. 
+\end{DoxyReturn}
+\index{sir.\+h@{sir.\+h}!sirdebug@{sirdebug}}
+\index{sirdebug@{sirdebug}!sir.\+h@{sir.\+h}}
+\subsubsection[{\texorpdfstring{sirdebug(const sirchar\+\_\+t $\ast$format,...)}{sirdebug(const sirchar_t *format,...)}}]{\setlength{\rightskip}{0pt plus 5cm}int sirdebug (
+\begin{DoxyParamCaption}
+\item[{const sirchar\+\_\+t $\ast$}]{format, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}\hypertarget{sir_8h_a8de8c02ecad7cec29a04c69d6232a491}{}\label{sir_8h_a8de8c02ecad7cec29a04c69d6232a491}
+
+
+Log a formatted debug-\/level message. 
+
+All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba3553c8c2c35e70495b8f8e826aa3ff9b}{S\+I\+R\+L\+\_\+\+D\+E\+B\+UG} set will receive the formatted message.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em format} & A printf-\/style format string. \\
+\hline
+\mbox{\tt in}  & {\em (varargs)} & A list of arguments whose type match the format specifier at the same index in the format string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if successful, or non-\/zero otherwise. 
+\end{DoxyReturn}
+\index{sir.\+h@{sir.\+h}!siremerg@{siremerg}}
+\index{siremerg@{siremerg}!sir.\+h@{sir.\+h}}
+\subsubsection[{\texorpdfstring{siremerg(const sirchar\+\_\+t $\ast$format,...)}{siremerg(const sirchar_t *format,...)}}]{\setlength{\rightskip}{0pt plus 5cm}int siremerg (
+\begin{DoxyParamCaption}
+\item[{const sirchar\+\_\+t $\ast$}]{format, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}\hypertarget{sir_8h_ad0527210c4cd7bc81e5e90f1fa420135}{}\label{sir_8h_ad0527210c4cd7bc81e5e90f1fa420135}
+
+
+Log a formatted emergency message. 
+
+All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba4ea9abe160c997d126806c4cca7f0cdc}{S\+I\+R\+L\+\_\+\+E\+M\+E\+RG} set will receive the formatted message.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em format} & A printf-\/style format string. \\
+\hline
+\mbox{\tt in}  & {\em (varargs)} & A list of arguments whose type match the format specifier at the same index in the format string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if successful, or non-\/zero otherwise. 
+\end{DoxyReturn}
+\index{sir.\+h@{sir.\+h}!sirerror@{sirerror}}
+\index{sirerror@{sirerror}!sir.\+h@{sir.\+h}}
+\subsubsection[{\texorpdfstring{sirerror(const sirchar\+\_\+t $\ast$format,...)}{sirerror(const sirchar_t *format,...)}}]{\setlength{\rightskip}{0pt plus 5cm}int sirerror (
+\begin{DoxyParamCaption}
+\item[{const sirchar\+\_\+t $\ast$}]{format, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}\hypertarget{sir_8h_a19c0c2c804a0d8b381833a72ec4df870}{}\label{sir_8h_a19c0c2c804a0d8b381833a72ec4df870}
+
+
+Log a formatted error message. 
+
+All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba9c687f088db1de838ea5d5f8a8beed76}{S\+I\+R\+L\+\_\+\+E\+R\+R\+OR} set will receive the formatted message.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em format} & A printf-\/style format string. \\
+\hline
+\mbox{\tt in}  & {\em (varargs)} & A list of arguments whose type match the format specifier at the same index in the format string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if successful, or non-\/zero otherwise. 
+\end{DoxyReturn}
+\index{sir.\+h@{sir.\+h}!sirinfo@{sirinfo}}
+\index{sirinfo@{sirinfo}!sir.\+h@{sir.\+h}}
+\subsubsection[{\texorpdfstring{sirinfo(const sirchar\+\_\+t $\ast$format,...)}{sirinfo(const sirchar_t *format,...)}}]{\setlength{\rightskip}{0pt plus 5cm}int sirinfo (
+\begin{DoxyParamCaption}
+\item[{const sirchar\+\_\+t $\ast$}]{format, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}\hypertarget{sir_8h_ad413c364d7c168c8e970f50f088ce598}{}\label{sir_8h_ad413c364d7c168c8e970f50f088ce598}
+
+
+Log a formatted informational message. 
+
+All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba5882fd7e849f6a3c1c7967bde4ef4f7d}{S\+I\+R\+L\+\_\+\+I\+N\+FO} set will receive the formatted message.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em format} & A printf-\/style format string. \\
+\hline
+\mbox{\tt in}  & {\em (varargs)} & A list of arguments whose type match the format specifier at the same index in the format string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if successful, or non-\/zero otherwise. 
+\end{DoxyReturn}
+\index{sir.\+h@{sir.\+h}!sirnotice@{sirnotice}}
+\index{sirnotice@{sirnotice}!sir.\+h@{sir.\+h}}
+\subsubsection[{\texorpdfstring{sirnotice(const sirchar\+\_\+t $\ast$format,...)}{sirnotice(const sirchar_t *format,...)}}]{\setlength{\rightskip}{0pt plus 5cm}int sirnotice (
+\begin{DoxyParamCaption}
+\item[{const sirchar\+\_\+t $\ast$}]{format, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}\hypertarget{sir_8h_ac44c70288276f7c63c233bf0e2a1eefd}{}\label{sir_8h_ac44c70288276f7c63c233bf0e2a1eefd}
+
+
+Log a formatted notice message. 
+
+All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba721700c8091aab00db0b87b53f6eb53a}{S\+I\+R\+L\+\_\+\+N\+O\+T\+I\+CE} set will receive the formatted message.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em format} & A printf-\/style format string. \\
+\hline
+\mbox{\tt in}  & {\em (varargs)} & A list of arguments whose type match the format specifier at the same index in the format string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if successful, or non-\/zero otherwise. 
+\end{DoxyReturn}
+\index{sir.\+h@{sir.\+h}!sirwarn@{sirwarn}}
+\index{sirwarn@{sirwarn}!sir.\+h@{sir.\+h}}
+\subsubsection[{\texorpdfstring{sirwarn(const sirchar\+\_\+t $\ast$format,...)}{sirwarn(const sirchar_t *format,...)}}]{\setlength{\rightskip}{0pt plus 5cm}int sirwarn (
+\begin{DoxyParamCaption}
+\item[{const sirchar\+\_\+t $\ast$}]{format, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}\hypertarget{sir_8h_aa90777adb85f8cfee1d346ec64c03e99}{}\label{sir_8h_aa90777adb85f8cfee1d346ec64c03e99}
+
+
+Log a formatted warning message. 
+
+All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba1ff2ba86cf1863e3673e5f534e021181}{S\+I\+R\+L\+\_\+\+W\+A\+R\+N\+I\+NG} set will receive the formatted message.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em format} & A printf-\/style format string. \\
+\hline
+\mbox{\tt in}  & {\em (varargs)} & A list of arguments whose type match the format specifier at the same index in the format string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if successful, or non-\/zero otherwise. 
+\end{DoxyReturn}
