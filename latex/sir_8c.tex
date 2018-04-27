@@ -16,47 +16,40 @@ Include dependency graph for sir.\+c\+:\nopagebreak
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-int \hyperlink{sir_8c_a99c2210334096965d23626fa50dc5d6b}{sir\+\_\+init} (const \hyperlink{structsirinit}{sirinit} $\ast$si)
+bool \hyperlink{sir_8c_a99c2210334096965d23626fa50dc5d6b}{sir\+\_\+init} (const \hyperlink{structsirinit}{sirinit} $\ast$si)
 \begin{DoxyCompactList}\small\item\em Initializes the library. \end{DoxyCompactList}\item 
-int \hyperlink{sir_8c_a8de8c02ecad7cec29a04c69d6232a491}{sirdebug} (const sirchar\+\_\+t $\ast$format,...)
+bool \hyperlink{sir_8c_a8de8c02ecad7cec29a04c69d6232a491}{sirdebug} (const \hyperlink{sir_8h_a1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t} $\ast$format,...)
 \begin{DoxyCompactList}\small\item\em Log a formatted debug-\/level message. \end{DoxyCompactList}\item 
-int \hyperlink{sir_8c_ad413c364d7c168c8e970f50f088ce598}{sirinfo} (const sirchar\+\_\+t $\ast$format,...)
+bool \hyperlink{sir_8c_ad413c364d7c168c8e970f50f088ce598}{sirinfo} (const \hyperlink{sir_8h_a1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t} $\ast$format,...)
 \begin{DoxyCompactList}\small\item\em Log a formatted informational message. \end{DoxyCompactList}\item 
-int \hyperlink{sir_8c_ac44c70288276f7c63c233bf0e2a1eefd}{sirnotice} (const sirchar\+\_\+t $\ast$format,...)
+bool \hyperlink{sir_8c_ac44c70288276f7c63c233bf0e2a1eefd}{sirnotice} (const \hyperlink{sir_8h_a1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t} $\ast$format,...)
 \begin{DoxyCompactList}\small\item\em Log a formatted notice message. \end{DoxyCompactList}\item 
-int \hyperlink{sir_8c_aa90777adb85f8cfee1d346ec64c03e99}{sirwarn} (const sirchar\+\_\+t $\ast$format,...)
+bool \hyperlink{sir_8c_aa90777adb85f8cfee1d346ec64c03e99}{sirwarn} (const \hyperlink{sir_8h_a1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t} $\ast$format,...)
 \begin{DoxyCompactList}\small\item\em Log a formatted warning message. \end{DoxyCompactList}\item 
-int \hyperlink{sir_8c_a19c0c2c804a0d8b381833a72ec4df870}{sirerror} (const sirchar\+\_\+t $\ast$format,...)
+bool \hyperlink{sir_8c_a19c0c2c804a0d8b381833a72ec4df870}{sirerror} (const \hyperlink{sir_8h_a1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t} $\ast$format,...)
 \begin{DoxyCompactList}\small\item\em Log a formatted error message. \end{DoxyCompactList}\item 
-int \hyperlink{sir_8c_ab15ad77ec64f919167dcea987db00901}{sircrit} (const sirchar\+\_\+t $\ast$format,...)
+bool \hyperlink{sir_8c_ab15ad77ec64f919167dcea987db00901}{sircrit} (const \hyperlink{sir_8h_a1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t} $\ast$format,...)
 \begin{DoxyCompactList}\small\item\em Log a formatted critical message. \end{DoxyCompactList}\item 
-int \hyperlink{sir_8c_af1c051c33a590e5412a0850b354c96cb}{siralert} (const sirchar\+\_\+t $\ast$format,...)
+bool \hyperlink{sir_8c_af1c051c33a590e5412a0850b354c96cb}{siralert} (const \hyperlink{sir_8h_a1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t} $\ast$format,...)
 \begin{DoxyCompactList}\small\item\em Log a formatted alert message. \end{DoxyCompactList}\item 
-int \hyperlink{sir_8c_ad0527210c4cd7bc81e5e90f1fa420135}{siremerg} (const sirchar\+\_\+t $\ast$format,...)
+bool \hyperlink{sir_8c_ad0527210c4cd7bc81e5e90f1fa420135}{siremerg} (const \hyperlink{sir_8h_a1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t} $\ast$format,...)
 \begin{DoxyCompactList}\small\item\em Log a formatted emergency message. \end{DoxyCompactList}\item 
 void \hyperlink{sir_8c_aac86cb9a57c51ef536747a874a9eb59c}{sir\+\_\+cleanup} (void)
 \begin{DoxyCompactList}\small\item\em Shuts down the library. \end{DoxyCompactList}\item 
-int {\bfseries sir\+\_\+addfile} (const sirchar\+\_\+t $\ast$path, uint32\+\_\+t mask)\hypertarget{sir_8c_a37c1e914bb3f1662d735aa33af82f0b9}{}\label{sir_8c_a37c1e914bb3f1662d735aa33af82f0b9}
-
-\item 
-int {\bfseries sir\+\_\+remfile} (const sirchar\+\_\+t $\ast$path)\hypertarget{sir_8c_ad460e4612f4cce41c086bd3d89d4d75c}{}\label{sir_8c_ad460e4612f4cce41c086bd3d89d4d75c}
-
-\item 
-int {\bfseries sir\+\_\+addcallback} (\hyperlink{sir_8h_ace3ea4091f07fc8e8cde5b1c14b3fd29}{sircallbackfn} cb, uint32\+\_\+t mask, uint64\+\_\+t user\+Data)\hypertarget{sir_8c_ac96c8d7584aa5475b0eb5de863066457}{}\label{sir_8c_ac96c8d7584aa5475b0eb5de863066457}
-
-\item 
-int \hyperlink{sir_8c_adea9649e1e9a9dd3ad41c2ad8db65d50}{sir\+\_\+remcallback} (\hyperlink{sir_8h_ace3ea4091f07fc8e8cde5b1c14b3fd29}{sircallbackfn} cb)
-\begin{DoxyCompactList}\small\item\em Remove an existing \hyperlink{sir_8h_ace3ea4091f07fc8e8cde5b1c14b3fd29}{sircallbackfn} from the list of functions that can receive log messages. \end{DoxyCompactList}\end{DoxyCompactItemize}
+int \hyperlink{sir_8c_a18adb1b96d90816ed91a4259604f84f1}{sir\+\_\+addfile} (const \hyperlink{sir_8h_a1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t} $\ast$path, \hyperlink{sir_8h_a7ee5f2908abd2df9e89bcab0b6608edd}{sir\+\_\+levels} levels, \hyperlink{sir_8h_a858fff8dae5b79ae8849a8021a53c18c}{sir\+\_\+options} opts)
+\begin{DoxyCompactList}\small\item\em Adds a log file output destination. \end{DoxyCompactList}\item 
+bool \hyperlink{sir_8c_a34a36373db97dc24db8e53ff3843ba04}{sir\+\_\+remfile} (int id)
+\begin{DoxyCompactList}\small\item\em Removes a previously added log file. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{structsirinit}{sirinit} {\bfseries sir\+\_\+s}\hypertarget{sir_8c_a6d632ca99b97d3ea242502eeb05a7b89}{}\label{sir_8c_a6d632ca99b97d3ea242502eeb05a7b89}
 
 \item 
-\hyperlink{structsirfiles}{sirfiles} {\bfseries sir\+\_\+fc}\hypertarget{sir_8c_a4d6f28dcf6425bc2e15c561fc83359fc}{}\label{sir_8c_a4d6f28dcf6425bc2e15c561fc83359fc}
+sirfiles {\bfseries sir\+\_\+fc}\hypertarget{sir_8c_a4d6f28dcf6425bc2e15c561fc83359fc}{}\label{sir_8c_a4d6f28dcf6425bc2e15c561fc83359fc}
 
 \item 
-\hyperlink{structsircallbacks}{sircallbacks} {\bfseries sir\+\_\+cc}\hypertarget{sir_8c_a9294d1676da0e44d72a40f17f863d2a6}{}\label{sir_8c_a9294d1676da0e44d72a40f17f863d2a6}
+sirbuf {\bfseries sir\+\_\+b}\hypertarget{sir_8c_acae714794ec2e5ab4548673242651d55}{}\label{sir_8c_acae714794ec2e5ab4548673242651d55}
 
 \end{DoxyCompactItemize}
 
@@ -79,6 +72,33 @@ M\+IT License
 
 
 \subsection{Function Documentation}
+\index{sir.\+c@{sir.\+c}!sir\+\_\+addfile@{sir\+\_\+addfile}}
+\index{sir\+\_\+addfile@{sir\+\_\+addfile}!sir.\+c@{sir.\+c}}
+\subsubsection[{\texorpdfstring{sir\+\_\+addfile(const sirchar\+\_\+t $\ast$path, sir\+\_\+levels levels, sir\+\_\+options opts)}{sir_addfile(const sirchar_t *path, sir_levels levels, sir_options opts)}}]{\setlength{\rightskip}{0pt plus 5cm}int sir\+\_\+addfile (
+\begin{DoxyParamCaption}
+\item[{const {\bf sirchar\+\_\+t} $\ast$}]{path, }
+\item[{{\bf sir\+\_\+levels}}]{levels, }
+\item[{{\bf sir\+\_\+options}}]{opts}
+\end{DoxyParamCaption}
+)}\hypertarget{sir_8c_a18adb1b96d90816ed91a4259604f84f1}{}\label{sir_8c_a18adb1b96d90816ed91a4259604f84f1}
+
+
+Adds a log file output destination. 
+
+Adds a log file to be appended to whenever a message matching any of the \hyperlink{sir_8h_a4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} flags set in {\itshape levels} is emitted.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em path} & The path to the log file. It will be created if it doesn\textquotesingle{}t exist.\\
+\hline
+\mbox{\tt in}  & {\em levels} & One or more \hyperlink{sir_8h_a4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} logging levels for which output should be append to the file.\\
+\hline
+\mbox{\tt in}  & {\em opts} & Zero or more \hyperlink{sir_8h_a9ed1c599dfd76231f4e0dadf46bff40b}{sir\+\_\+option} flags to control output formatting.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A unique identifier for the file, or \hyperlink{sir_8h_af8577c1f2d41e1110bc22b89e2e48646}{S\+I\+R\+\_\+\+I\+N\+V\+A\+L\+ID} (-\/1) if an error occurs. 
+\end{DoxyReturn}
 \index{sir.\+c@{sir.\+c}!sir\+\_\+cleanup@{sir\+\_\+cleanup}}
 \index{sir\+\_\+cleanup@{sir\+\_\+cleanup}!sir.\+c@{sir.\+c}}
 \subsubsection[{\texorpdfstring{sir\+\_\+cleanup(void)}{sir_cleanup(void)}}]{\setlength{\rightskip}{0pt plus 5cm}void sir\+\_\+cleanup (
@@ -110,31 +130,36 @@ You must call this function before any others in the library or you\textquotesin
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in}  & {\em si} & Pointer a to sirinit struct containing initialization options. \\
+\mbox{\tt in}  & {\em si} & Pointer a to sirinit struct containing initialization options.\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-0 if successful, or non-\/zero otherwise. 
+boolean success 
 \end{DoxyReturn}
-\index{sir.\+c@{sir.\+c}!sir\+\_\+remcallback@{sir\+\_\+remcallback}}
-\index{sir\+\_\+remcallback@{sir\+\_\+remcallback}!sir.\+c@{sir.\+c}}
-\subsubsection[{\texorpdfstring{sir\+\_\+remcallback(sircallbackfn cb)}{sir_remcallback(sircallbackfn cb)}}]{\setlength{\rightskip}{0pt plus 5cm}int sir\+\_\+remcallback (
+\index{sir.\+c@{sir.\+c}!sir\+\_\+remfile@{sir\+\_\+remfile}}
+\index{sir\+\_\+remfile@{sir\+\_\+remfile}!sir.\+c@{sir.\+c}}
+\subsubsection[{\texorpdfstring{sir\+\_\+remfile(int id)}{sir_remfile(int id)}}]{\setlength{\rightskip}{0pt plus 5cm}bool sir\+\_\+remfile (
 \begin{DoxyParamCaption}
-\item[{{\bf sircallbackfn}}]{cb}
+\item[{int}]{id}
 \end{DoxyParamCaption}
-)}\hypertarget{sir_8c_adea9649e1e9a9dd3ad41c2ad8db65d50}{}\label{sir_8c_adea9649e1e9a9dd3ad41c2ad8db65d50}
+)}\hypertarget{sir_8c_a34a36373db97dc24db8e53ff3843ba04}{}\label{sir_8c_a34a36373db97dc24db8e53ff3843ba04}
 
 
-Remove an existing \hyperlink{sir_8h_ace3ea4091f07fc8e8cde5b1c14b3fd29}{sircallbackfn} from the list of functions that can receive log messages. 
+Removes a previously added log file. 
 
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em id} & The identifier returned from \hyperlink{sir_8h_a18adb1b96d90816ed91a4259604f84f1}{sir\+\_\+addfile} earlier.\\
+\hline
+\end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-0 if successful, or non-\/zero otherwise. 
+boolean success 
 \end{DoxyReturn}
 \index{sir.\+c@{sir.\+c}!siralert@{siralert}}
 \index{siralert@{siralert}!sir.\+c@{sir.\+c}}
 \subsubsection[{\texorpdfstring{siralert(const sirchar\+\_\+t $\ast$format,...)}{siralert(const sirchar_t *format,...)}}]{\setlength{\rightskip}{0pt plus 5cm}int siralert (
 \begin{DoxyParamCaption}
-\item[{const sirchar\+\_\+t $\ast$}]{format, }
+\item[{const {\bf sirchar\+\_\+t} $\ast$}]{format, }
 \item[{}]{...}
 \end{DoxyParamCaption}
 )}\hypertarget{sir_8c_af1c051c33a590e5412a0850b354c96cb}{}\label{sir_8c_af1c051c33a590e5412a0850b354c96cb}
@@ -142,23 +167,23 @@ Remove an existing \hyperlink{sir_8h_ace3ea4091f07fc8e8cde5b1c14b3fd29}{sircallb
 
 Log a formatted alert message. 
 
-All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba8ea85ed68763f9c00d5ceeeaaf550955}{S\+I\+R\+L\+\_\+\+A\+L\+E\+RT} set will receive the formatted message.
+All output destinations whose flags have \hyperlink{sir_8h_a4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955}{S\+I\+R\+L\+\_\+\+A\+L\+E\+RT} set will receive the formatted message.
 
 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\tt in}  & {\em format} & A printf-\/style format string. \\
 \hline
-\mbox{\tt in}  & {\em (varargs)} & A list of arguments whose type match the format specifier at the same index in the format string. \\
+\mbox{\tt in}  & {\em ...} & A list of arguments whose type match the format specifier at the same index in the format string.\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-0 if successful, or non-\/zero otherwise. 
+boolean success 
 \end{DoxyReturn}
 \index{sir.\+c@{sir.\+c}!sircrit@{sircrit}}
 \index{sircrit@{sircrit}!sir.\+c@{sir.\+c}}
 \subsubsection[{\texorpdfstring{sircrit(const sirchar\+\_\+t $\ast$format,...)}{sircrit(const sirchar_t *format,...)}}]{\setlength{\rightskip}{0pt plus 5cm}int sircrit (
 \begin{DoxyParamCaption}
-\item[{const sirchar\+\_\+t $\ast$}]{format, }
+\item[{const {\bf sirchar\+\_\+t} $\ast$}]{format, }
 \item[{}]{...}
 \end{DoxyParamCaption}
 )}\hypertarget{sir_8c_ab15ad77ec64f919167dcea987db00901}{}\label{sir_8c_ab15ad77ec64f919167dcea987db00901}
@@ -166,23 +191,23 @@ All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb879
 
 Log a formatted critical message. 
 
-All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba803f36256e5e4e3b788b7fa3a267a435}{S\+I\+R\+L\+\_\+\+C\+R\+IT} set will receive the formatted message.
+All output destinations whose flags have \hyperlink{sir_8h_a4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435}{S\+I\+R\+L\+\_\+\+C\+R\+IT} set will receive the formatted message.
 
 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\tt in}  & {\em format} & A printf-\/style format string. \\
 \hline
-\mbox{\tt in}  & {\em (varargs)} & A list of arguments whose type match the format specifier at the same index in the format string. \\
+\mbox{\tt in}  & {\em ...} & A list of arguments whose type match the format specifier at the same index in the format string.\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-0 if successful, or non-\/zero otherwise. 
+boolean success 
 \end{DoxyReturn}
 \index{sir.\+c@{sir.\+c}!sirdebug@{sirdebug}}
 \index{sirdebug@{sirdebug}!sir.\+c@{sir.\+c}}
 \subsubsection[{\texorpdfstring{sirdebug(const sirchar\+\_\+t $\ast$format,...)}{sirdebug(const sirchar_t *format,...)}}]{\setlength{\rightskip}{0pt plus 5cm}int sirdebug (
 \begin{DoxyParamCaption}
-\item[{const sirchar\+\_\+t $\ast$}]{format, }
+\item[{const {\bf sirchar\+\_\+t} $\ast$}]{format, }
 \item[{}]{...}
 \end{DoxyParamCaption}
 )}\hypertarget{sir_8c_a8de8c02ecad7cec29a04c69d6232a491}{}\label{sir_8c_a8de8c02ecad7cec29a04c69d6232a491}
@@ -190,23 +215,23 @@ All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb879
 
 Log a formatted debug-\/level message. 
 
-All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba3553c8c2c35e70495b8f8e826aa3ff9b}{S\+I\+R\+L\+\_\+\+D\+E\+B\+UG} set will receive the formatted message.
+All output destinations whose flags have \hyperlink{sir_8h_a4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b}{S\+I\+R\+L\+\_\+\+D\+E\+B\+UG} set will receive the formatted message.
 
 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\tt in}  & {\em format} & A printf-\/style format string. \\
 \hline
-\mbox{\tt in}  & {\em (varargs)} & A list of arguments whose type match the format specifier at the same index in the format string. \\
+\mbox{\tt in}  & {\em ...} & A list of arguments whose type match the format specifier at the same index in the format string.\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-0 if successful, or non-\/zero otherwise. 
+boolean success 
 \end{DoxyReturn}
 \index{sir.\+c@{sir.\+c}!siremerg@{siremerg}}
 \index{siremerg@{siremerg}!sir.\+c@{sir.\+c}}
 \subsubsection[{\texorpdfstring{siremerg(const sirchar\+\_\+t $\ast$format,...)}{siremerg(const sirchar_t *format,...)}}]{\setlength{\rightskip}{0pt plus 5cm}int siremerg (
 \begin{DoxyParamCaption}
-\item[{const sirchar\+\_\+t $\ast$}]{format, }
+\item[{const {\bf sirchar\+\_\+t} $\ast$}]{format, }
 \item[{}]{...}
 \end{DoxyParamCaption}
 )}\hypertarget{sir_8c_ad0527210c4cd7bc81e5e90f1fa420135}{}\label{sir_8c_ad0527210c4cd7bc81e5e90f1fa420135}
@@ -214,23 +239,23 @@ All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb879
 
 Log a formatted emergency message. 
 
-All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba4ea9abe160c997d126806c4cca7f0cdc}{S\+I\+R\+L\+\_\+\+E\+M\+E\+RG} set will receive the formatted message.
+All output destinations whose flags have \hyperlink{sir_8h_a4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc}{S\+I\+R\+L\+\_\+\+E\+M\+E\+RG} set will receive the formatted message.
 
 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\tt in}  & {\em format} & A printf-\/style format string. \\
 \hline
-\mbox{\tt in}  & {\em (varargs)} & A list of arguments whose type match the format specifier at the same index in the format string. \\
+\mbox{\tt in}  & {\em ...} & A list of arguments whose type match the format specifier at the same index in the format string.\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-0 if successful, or non-\/zero otherwise. 
+boolean success 
 \end{DoxyReturn}
 \index{sir.\+c@{sir.\+c}!sirerror@{sirerror}}
 \index{sirerror@{sirerror}!sir.\+c@{sir.\+c}}
 \subsubsection[{\texorpdfstring{sirerror(const sirchar\+\_\+t $\ast$format,...)}{sirerror(const sirchar_t *format,...)}}]{\setlength{\rightskip}{0pt plus 5cm}int sirerror (
 \begin{DoxyParamCaption}
-\item[{const sirchar\+\_\+t $\ast$}]{format, }
+\item[{const {\bf sirchar\+\_\+t} $\ast$}]{format, }
 \item[{}]{...}
 \end{DoxyParamCaption}
 )}\hypertarget{sir_8c_a19c0c2c804a0d8b381833a72ec4df870}{}\label{sir_8c_a19c0c2c804a0d8b381833a72ec4df870}
@@ -238,23 +263,23 @@ All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb879
 
 Log a formatted error message. 
 
-All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba9c687f088db1de838ea5d5f8a8beed76}{S\+I\+R\+L\+\_\+\+E\+R\+R\+OR} set will receive the formatted message.
+All output destinations whose flags have \hyperlink{sir_8h_a4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76}{S\+I\+R\+L\+\_\+\+E\+R\+R\+OR} set will receive the formatted message.
 
 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\tt in}  & {\em format} & A printf-\/style format string. \\
 \hline
-\mbox{\tt in}  & {\em (varargs)} & A list of arguments whose type match the format specifier at the same index in the format string. \\
+\mbox{\tt in}  & {\em ...} & A list of arguments whose type match the format specifier at the same index in the format string.\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-0 if successful, or non-\/zero otherwise. 
+boolean success 
 \end{DoxyReturn}
 \index{sir.\+c@{sir.\+c}!sirinfo@{sirinfo}}
 \index{sirinfo@{sirinfo}!sir.\+c@{sir.\+c}}
 \subsubsection[{\texorpdfstring{sirinfo(const sirchar\+\_\+t $\ast$format,...)}{sirinfo(const sirchar_t *format,...)}}]{\setlength{\rightskip}{0pt plus 5cm}int sirinfo (
 \begin{DoxyParamCaption}
-\item[{const sirchar\+\_\+t $\ast$}]{format, }
+\item[{const {\bf sirchar\+\_\+t} $\ast$}]{format, }
 \item[{}]{...}
 \end{DoxyParamCaption}
 )}\hypertarget{sir_8c_ad413c364d7c168c8e970f50f088ce598}{}\label{sir_8c_ad413c364d7c168c8e970f50f088ce598}
@@ -262,23 +287,23 @@ All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb879
 
 Log a formatted informational message. 
 
-All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba5882fd7e849f6a3c1c7967bde4ef4f7d}{S\+I\+R\+L\+\_\+\+I\+N\+FO} set will receive the formatted message.
+All output destinations whose flags have \hyperlink{sir_8h_a4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d}{S\+I\+R\+L\+\_\+\+I\+N\+FO} set will receive the formatted message.
 
 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\tt in}  & {\em format} & A printf-\/style format string. \\
 \hline
-\mbox{\tt in}  & {\em (varargs)} & A list of arguments whose type match the format specifier at the same index in the format string. \\
+\mbox{\tt in}  & {\em ...} & A list of arguments whose type match the format specifier at the same index in the format string.\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-0 if successful, or non-\/zero otherwise. 
+boolean success 
 \end{DoxyReturn}
 \index{sir.\+c@{sir.\+c}!sirnotice@{sirnotice}}
 \index{sirnotice@{sirnotice}!sir.\+c@{sir.\+c}}
 \subsubsection[{\texorpdfstring{sirnotice(const sirchar\+\_\+t $\ast$format,...)}{sirnotice(const sirchar_t *format,...)}}]{\setlength{\rightskip}{0pt plus 5cm}int sirnotice (
 \begin{DoxyParamCaption}
-\item[{const sirchar\+\_\+t $\ast$}]{format, }
+\item[{const {\bf sirchar\+\_\+t} $\ast$}]{format, }
 \item[{}]{...}
 \end{DoxyParamCaption}
 )}\hypertarget{sir_8c_ac44c70288276f7c63c233bf0e2a1eefd}{}\label{sir_8c_ac44c70288276f7c63c233bf0e2a1eefd}
@@ -286,23 +311,23 @@ All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb879
 
 Log a formatted notice message. 
 
-All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba721700c8091aab00db0b87b53f6eb53a}{S\+I\+R\+L\+\_\+\+N\+O\+T\+I\+CE} set will receive the formatted message.
+All output destinations whose flags have \hyperlink{sir_8h_a4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a}{S\+I\+R\+L\+\_\+\+N\+O\+T\+I\+CE} set will receive the formatted message.
 
 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\tt in}  & {\em format} & A printf-\/style format string. \\
 \hline
-\mbox{\tt in}  & {\em (varargs)} & A list of arguments whose type match the format specifier at the same index in the format string. \\
+\mbox{\tt in}  & {\em ...} & A list of arguments whose type match the format specifier at the same index in the format string.\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-0 if successful, or non-\/zero otherwise. 
+boolean success 
 \end{DoxyReturn}
 \index{sir.\+c@{sir.\+c}!sirwarn@{sirwarn}}
 \index{sirwarn@{sirwarn}!sir.\+c@{sir.\+c}}
 \subsubsection[{\texorpdfstring{sirwarn(const sirchar\+\_\+t $\ast$format,...)}{sirwarn(const sirchar_t *format,...)}}]{\setlength{\rightskip}{0pt plus 5cm}int sirwarn (
 \begin{DoxyParamCaption}
-\item[{const sirchar\+\_\+t $\ast$}]{format, }
+\item[{const {\bf sirchar\+\_\+t} $\ast$}]{format, }
 \item[{}]{...}
 \end{DoxyParamCaption}
 )}\hypertarget{sir_8c_aa90777adb85f8cfee1d346ec64c03e99}{}\label{sir_8c_aa90777adb85f8cfee1d346ec64c03e99}
@@ -310,15 +335,15 @@ All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb879
 
 Log a formatted warning message. 
 
-All output destinations whose flags have \hyperlink{sir_8h_a06fc87d81c62e9abb8790b6e5713c55ba1ff2ba86cf1863e3673e5f534e021181}{S\+I\+R\+L\+\_\+\+W\+A\+R\+N\+I\+NG} set will receive the formatted message.
+All output destinations whose flags have \hyperlink{sir_8h_a4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881}{S\+I\+R\+L\+\_\+\+W\+A\+RN} set will receive the formatted message.
 
 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\tt in}  & {\em format} & A printf-\/style format string. \\
 \hline
-\mbox{\tt in}  & {\em (varargs)} & A list of arguments whose type match the format specifier at the same index in the format string. \\
+\mbox{\tt in}  & {\em ...} & A list of arguments whose type match the format specifier at the same index in the format string.\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-0 if successful, or non-\/zero otherwise. 
+boolean success 
 \end{DoxyReturn}

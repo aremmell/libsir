@@ -95,11 +95,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>Definitions for the Standard Incident Reporter (SIR) library.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdarg.h&gt;</code><br />
+<code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;stdint.h&gt;</code><br />
 <code>#include &lt;stdio.h&gt;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &lt;string.h&gt;</code><br />
-<code>#include &lt;sys/types.h&gt;</code><br />
+<code>#include &lt;assert.h&gt;</code><br />
 <code>#include &lt;time.h&gt;</code><br />
 <code>#include &lt;syslog.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -123,188 +124,127 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsirinit.html">sirinit</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization data for the library.  <a href="structsirinit.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsirfile.html">sirfile</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsirfiles.html">sirfiles</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsircallback.html">sircallback</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsircallbacks.html">sircallbacks</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsirbuf.html">sirbuf</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ae936e4c15227768f7da4e0951def89c8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae936e4c15227768f7da4e0951def89c8"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>_T</b>(x)&#160;&#160;&#160;x</td></tr>
-<tr class="separator:ae936e4c15227768f7da4e0951def89c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3112de066e12cd6f27b8c84255a32b00"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3112de066e12cd6f27b8c84255a32b00"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>sctime</b>&#160;&#160;&#160;ctime</td></tr>
-<tr class="separator:a3112de066e12cd6f27b8c84255a32b00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ccf4a636385de89a0b5ff27e9fbd298"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0ccf4a636385de89a0b5ff27e9fbd298"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>sstrlen</b>&#160;&#160;&#160;strlen</td></tr>
-<tr class="separator:a0ccf4a636385de89a0b5ff27e9fbd298"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9933d1dd285effe7726536090cf20a62"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9933d1dd285effe7726536090cf20a62"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>svsnprintf</b>&#160;&#160;&#160;vsnprintf</td></tr>
-<tr class="separator:a9933d1dd285effe7726536090cf20a62"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a214afd8ddf98a3c09d2135b0a86438d5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a214afd8ddf98a3c09d2135b0a86438d5"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>sfprintf</b>&#160;&#160;&#160;fprintf</td></tr>
-<tr class="separator:a214afd8ddf98a3c09d2135b0a86438d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06cdf2c7920dca2da0c622dcf2c7925c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a06cdf2c7920dca2da0c622dcf2c7925c"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>sfopen</b>&#160;&#160;&#160;fopen</td></tr>
-<tr class="separator:a06cdf2c7920dca2da0c622dcf2c7925c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ea7a9343c526b7ed76e57a8fceb6c18"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2ea7a9343c526b7ed76e57a8fceb6c18"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>sstrcmp</b>&#160;&#160;&#160;strcmp</td></tr>
-<tr class="separator:a2ea7a9343c526b7ed76e57a8fceb6c18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a326b2035467cb9453e0f88204dc11919"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a326b2035467cb9453e0f88204dc11919"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>strptr</b>(n)&#160;&#160;&#160;(((n != NULL) &amp;&amp; ((*n) != 0)) ? 1 : 0)</td></tr>
-<tr class="separator:a326b2035467cb9453e0f88204dc11919"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7744555c1835465edf84d9c96ffe73c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac7744555c1835465edf84d9c96ffe73c"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>smaskset</b>(flags,  test)&#160;&#160;&#160;((flags &amp; test) == test)</td></tr>
-<tr class="separator:ac7744555c1835465edf84d9c96ffe73c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a383ba0e1276fc7c414d28c174b784d86"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>safefree</b>(p)</td></tr>
-<tr class="separator:a383ba0e1276fc7c414d28c174b784d86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1080a4bec531adb6d25c87ac4734399"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa1080a4bec531adb6d25c87ac4734399"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIR_MAXFILES</b>&#160;&#160;&#160;256</td></tr>
+<tr class="memitem:a3024ccd4a9af5109d24e6c57565d74a1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3024ccd4a9af5109d24e6c57565d74a1"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_POSIX_C_SOURCE</b>&#160;&#160;&#160;200809L</td></tr>
+<tr class="separator:a3024ccd4a9af5109d24e6c57565d74a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fb447618db946a9e2a596d9ea18763f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8fb447618db946a9e2a596d9ea18763f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_DEFAULT_SOURCE</b></td></tr>
+<tr class="separator:a8fb447618db946a9e2a596d9ea18763f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3d8a3bd0c0b677acef144f2c2ef6d73"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad3d8a3bd0c0b677acef144f2c2ef6d73"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_BSD_SOURCE</b></td></tr>
+<tr class="separator:ad3d8a3bd0c0b677acef144f2c2ef6d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e3cbd01c7d420021b12f87b0efe0573"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a9e3cbd01c7d420021b12f87b0efe0573">SIR_LINEENDING</a>&#160;&#160;&#160;&quot;\n&quot;</td></tr>
+<tr class="separator:a9e3cbd01c7d420021b12f87b0efe0573"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1080a4bec531adb6d25c87ac4734399"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#aa1080a4bec531adb6d25c87ac4734399">SIR_MAXFILES</a>&#160;&#160;&#160;16</td></tr>
 <tr class="separator:aa1080a4bec531adb6d25c87ac4734399"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37364e1ca242c22f3b3d10949f9d78d9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a37364e1ca242c22f3b3d10949f9d78d9"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIR_MAXCALLBACKS</b>&#160;&#160;&#160;256</td></tr>
-<tr class="separator:a37364e1ca242c22f3b3d10949f9d78d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a142b15da42c01f3f5d949fa1caa25a3d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a142b15da42c01f3f5d949fa1caa25a3d"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIR_MAXPRINT</b>&#160;&#160;&#160;2000</td></tr>
-<tr class="separator:a142b15da42c01f3f5d949fa1caa25a3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6644283e3e822576e9cf599af78b70e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab6644283e3e822576e9cf599af78b70e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIR_MINPRINT</b>&#160;&#160;&#160;256</td></tr>
+<tr class="memitem:a5f006a2e9ce93ae8d693a2928af33bb2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a5f006a2e9ce93ae8d693a2928af33bb2">SIR_MAXMESSAGE</a>&#160;&#160;&#160;2048</td></tr>
+<tr class="separator:a5f006a2e9ce93ae8d693a2928af33bb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6644283e3e822576e9cf599af78b70e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#ab6644283e3e822576e9cf599af78b70e">SIR_MINPRINT</a>&#160;&#160;&#160;512</td></tr>
 <tr class="separator:ab6644283e3e822576e9cf599af78b70e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1531d6b0d9c880b793362322542794c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab1531d6b0d9c880b793362322542794c"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIR_TIMEFORMAT</b>&#160;&#160;&#160;&quot;%T&quot;</td></tr>
+<tr class="memitem:ab1531d6b0d9c880b793362322542794c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#ab1531d6b0d9c880b793362322542794c">SIR_TIMEFORMAT</a>&#160;&#160;&#160;&quot;%T&quot;</td></tr>
 <tr class="separator:ab1531d6b0d9c880b793362322542794c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55f647db36a59c6039f471644724c967"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a55f647db36a59c6039f471644724c967"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIR_TIMELEN</b>&#160;&#160;&#160;32</td></tr>
-<tr class="separator:a55f647db36a59c6039f471644724c967"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0e0196a8d2e111b1c281bd85319d517"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad0e0196a8d2e111b1c281bd85319d517"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIRO_LF</b>&#160;&#160;&#160;0x01U</td></tr>
-<tr class="separator:ad0e0196a8d2e111b1c281bd85319d517"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9dc7d723ac48c8a7b4c70844dec683bd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9dc7d723ac48c8a7b4c70844dec683bd"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIRO_FILES</b>&#160;&#160;&#160;0x02U</td></tr>
-<tr class="separator:a9dc7d723ac48c8a7b4c70844dec683bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a326417441be7333590225ca521f29c45"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a326417441be7333590225ca521f29c45"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIRO_CALLBACKS</b>&#160;&#160;&#160;0x04U</td></tr>
-<tr class="separator:a326417441be7333590225ca521f29c45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa780f77f9641579101156b8e0f657158"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa780f77f9641579101156b8e0f657158"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIRO_CRLF</b>&#160;&#160;&#160;0x08U</td></tr>
-<tr class="separator:aa780f77f9641579101156b8e0f657158"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdb003a2febf9bae230e457cbe1dd59a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afdb003a2febf9bae230e457cbe1dd59a"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIRO_NODBGCRLF</b>&#160;&#160;&#160;0x10U</td></tr>
-<tr class="separator:afdb003a2febf9bae230e457cbe1dd59a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c68d15a3b9b9d5a4f4c8fd092b0e73d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3c68d15a3b9b9d5a4f4c8fd092b0e73d"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIRO_NOLEVEL</b>&#160;&#160;&#160;0x20U</td></tr>
-<tr class="separator:a3c68d15a3b9b9d5a4f4c8fd092b0e73d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d3bc4aa34b9399e72621632b877b16a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0d3bc4aa34b9399e72621632b877b16a"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIRO_NONAME</b>&#160;&#160;&#160;0x40U</td></tr>
-<tr class="separator:a0d3bc4aa34b9399e72621632b877b16a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0cebdaa1fe51fea4e2c0c6a397bc5e35"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0cebdaa1fe51fea4e2c0c6a397bc5e35"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIRO_NOTIMESTAMP</b>&#160;&#160;&#160;0x80U</td></tr>
-<tr class="separator:a0cebdaa1fe51fea4e2c0c6a397bc5e35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a7a55618343c4cb76d7e428af72232b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2a7a55618343c4cb76d7e428af72232b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIRO_DEFAULT</b>&#160;&#160;&#160;(SIRO_TIMESTAMP | SIRO_LF)</td></tr>
-<tr class="separator:a2a7a55618343c4cb76d7e428af72232b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a777d150774244d2707818f2c4a1b9538"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a777d150774244d2707818f2c4a1b9538"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIRL_S_EMERG</b>&#160;&#160;&#160;&quot;EMER&quot;</td></tr>
+<tr class="memitem:ac1e50274f913ef71f196f20b9dfbbba6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#ac1e50274f913ef71f196f20b9dfbbba6">SIR_MAXTIME</a>&#160;&#160;&#160;32</td></tr>
+<tr class="separator:ac1e50274f913ef71f196f20b9dfbbba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abac0b7b0c1ea5afc9d0708a4421b1a57"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#abac0b7b0c1ea5afc9d0708a4421b1a57">SIR_MAXLEVEL</a>&#160;&#160;&#160;16</td></tr>
+<tr class="separator:abac0b7b0c1ea5afc9d0708a4421b1a57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85ed3139018ee9e7545c74c0885dff55"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a85ed3139018ee9e7545c74c0885dff55">SIR_MAXNAME</a>&#160;&#160;&#160;16</td></tr>
+<tr class="separator:a85ed3139018ee9e7545c74c0885dff55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3e26cb9ac224cb9a695ddf1ed099218"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#ab3e26cb9ac224cb9a695ddf1ed099218">SIR_MAXOUTPUT</a>&#160;&#160;&#160;<a class="el" href="sir_8h.html#a5f006a2e9ce93ae8d693a2928af33bb2">SIR_MAXMESSAGE</a> + <a class="el" href="sir_8h.html#ac1e50274f913ef71f196f20b9dfbbba6">SIR_MAXTIME</a> + <a class="el" href="sir_8h.html#abac0b7b0c1ea5afc9d0708a4421b1a57">SIR_MAXLEVEL</a> + <a class="el" href="sir_8h.html#a85ed3139018ee9e7545c74c0885dff55">SIR_MAXNAME</a></td></tr>
+<tr class="separator:ab3e26cb9ac224cb9a695ddf1ed099218"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1606d95455a68d16b9f64de112cd3c62"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a1606d95455a68d16b9f64de112cd3c62">SIR_MAXPATH</a>&#160;&#160;&#160;65535</td></tr>
+<tr class="separator:a1606d95455a68d16b9f64de112cd3c62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a777d150774244d2707818f2c4a1b9538"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a777d150774244d2707818f2c4a1b9538">SIRL_S_EMERG</a>&#160;&#160;&#160;&quot;EMER&quot;</td></tr>
 <tr class="separator:a777d150774244d2707818f2c4a1b9538"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e02d1cb5e4a8d8535227657781d4a29"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4e02d1cb5e4a8d8535227657781d4a29"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIRL_S_ALERT</b>&#160;&#160;&#160;&quot;ALRT&quot;</td></tr>
+<tr class="memitem:a4e02d1cb5e4a8d8535227657781d4a29"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a4e02d1cb5e4a8d8535227657781d4a29">SIRL_S_ALERT</a>&#160;&#160;&#160;&quot;ALRT&quot;</td></tr>
 <tr class="separator:a4e02d1cb5e4a8d8535227657781d4a29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a362f77b1b5555a0ea57fdfb64ae09229"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a362f77b1b5555a0ea57fdfb64ae09229"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIRL_S_CRIT</b>&#160;&#160;&#160;&quot;CRIT&quot;</td></tr>
+<tr class="memitem:a362f77b1b5555a0ea57fdfb64ae09229"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a362f77b1b5555a0ea57fdfb64ae09229">SIRL_S_CRIT</a>&#160;&#160;&#160;&quot;CRIT&quot;</td></tr>
 <tr class="separator:a362f77b1b5555a0ea57fdfb64ae09229"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4237f9dff053a17cf7a134dbbebc5210"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4237f9dff053a17cf7a134dbbebc5210"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIRL_S_ERROR</b>&#160;&#160;&#160;&quot;ERR&quot;</td></tr>
+<tr class="memitem:a4237f9dff053a17cf7a134dbbebc5210"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a4237f9dff053a17cf7a134dbbebc5210">SIRL_S_ERROR</a>&#160;&#160;&#160;&quot;ERR&quot;</td></tr>
 <tr class="separator:a4237f9dff053a17cf7a134dbbebc5210"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b0ba3e0caa729c998cb8c548ad19517"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3b0ba3e0caa729c998cb8c548ad19517"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIRL_S_WARNING</b>&#160;&#160;&#160;&quot;WARN&quot;</td></tr>
-<tr class="separator:a3b0ba3e0caa729c998cb8c548ad19517"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6195821fca239b40498e847d50b82623"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6195821fca239b40498e847d50b82623"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIRL_S_NOTICE</b>&#160;&#160;&#160;&quot;NOTF&quot;</td></tr>
+<tr class="memitem:a7a2838316cfd52f1af743952e667d9f5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a7a2838316cfd52f1af743952e667d9f5">SIRL_S_WARN</a>&#160;&#160;&#160;&quot;WARN&quot;</td></tr>
+<tr class="separator:a7a2838316cfd52f1af743952e667d9f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6195821fca239b40498e847d50b82623"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a6195821fca239b40498e847d50b82623">SIRL_S_NOTICE</a>&#160;&#160;&#160;&quot;NOTF&quot;</td></tr>
 <tr class="separator:a6195821fca239b40498e847d50b82623"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f7c2763d5e7afb0f2b49d4f0636276d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1f7c2763d5e7afb0f2b49d4f0636276d"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIRL_S_INFO</b>&#160;&#160;&#160;&quot;INFO&quot;</td></tr>
+<tr class="memitem:a1f7c2763d5e7afb0f2b49d4f0636276d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a1f7c2763d5e7afb0f2b49d4f0636276d">SIRL_S_INFO</a>&#160;&#160;&#160;&quot;INFO&quot;</td></tr>
 <tr class="separator:a1f7c2763d5e7afb0f2b49d4f0636276d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04d05c434823f0e5a353a31bb47af16e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a04d05c434823f0e5a353a31bb47af16e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIRL_S_DEBUG</b>&#160;&#160;&#160;&quot;DBG&quot;</td></tr>
+<tr class="memitem:a04d05c434823f0e5a353a31bb47af16e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a04d05c434823f0e5a353a31bb47af16e">SIRL_S_DEBUG</a>&#160;&#160;&#160;&quot;DBG&quot;</td></tr>
 <tr class="separator:a04d05c434823f0e5a353a31bb47af16e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8577c1f2d41e1110bc22b89e2e48646"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#af8577c1f2d41e1110bc22b89e2e48646">SIR_INVALID</a>&#160;&#160;&#160;(int)-1</td></tr>
+<tr class="separator:af8577c1f2d41e1110bc22b89e2e48646"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a1d2f790e2dabc69c8a625f2ee5dc583a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1d2f790e2dabc69c8a625f2ee5dc583a"></a>
-typedef char&#160;</td><td class="memItemRight" valign="bottom"><b>sirchar_t</b></td></tr>
+<tr class="memitem:a7ee5f2908abd2df9e89bcab0b6608edd"><td class="memItemLeft" align="right" valign="top">typedef uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a></td></tr>
+<tr class="separator:a7ee5f2908abd2df9e89bcab0b6608edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a858fff8dae5b79ae8849a8021a53c18c"><td class="memItemLeft" align="right" valign="top">typedef uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a858fff8dae5b79ae8849a8021a53c18c">sir_options</a></td></tr>
+<tr class="separator:a858fff8dae5b79ae8849a8021a53c18c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d2f790e2dabc69c8a625f2ee5dc583a"><td class="memItemLeft" align="right" valign="top">typedef char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a></td></tr>
 <tr class="separator:a1d2f790e2dabc69c8a625f2ee5dc583a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace3ea4091f07fc8e8cde5b1c14b3fd29"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#ace3ea4091f07fc8e8cde5b1c14b3fd29">sircallbackfn</a>) (const sirchar_t *message, uint64_t userData)</td></tr>
-<tr class="separator:ace3ea4091f07fc8e8cde5b1c14b3fd29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a06fc87d81c62e9abb8790b6e5713c55b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <br />
-&#160;&#160;<a class="el" href="sir_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba4ea9abe160c997d126806c4cca7f0cdc">SIRL_EMERG</a> = 0x1, 
-<a class="el" href="sir_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba8ea85ed68763f9c00d5ceeeaaf550955">SIRL_ALERT</a> = 0x2, 
-<a class="el" href="sir_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba803f36256e5e4e3b788b7fa3a267a435">SIRL_CRIT</a> = 0x4, 
-<a class="el" href="sir_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba9c687f088db1de838ea5d5f8a8beed76">SIRL_ERROR</a> = 0x8, 
+<tr class="memitem:a4a3303c67acd49bea38fd3565d458cb2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2">sir_level</a> { <br />
+&#160;&#160;<a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc">SIRL_EMERG</a> = 0x1, 
+<a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955">SIRL_ALERT</a> = 0x2, 
+<a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435">SIRL_CRIT</a> = 0x4, 
+<a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76">SIRL_ERROR</a> = 0x8, 
 <br />
-&#160;&#160;<a class="el" href="sir_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba1ff2ba86cf1863e3673e5f534e021181">SIRL_WARNING</a> = 0x10, 
-<a class="el" href="sir_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba721700c8091aab00db0b87b53f6eb53a">SIRL_NOTICE</a> = 0x20, 
-<a class="el" href="sir_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba5882fd7e849f6a3c1c7967bde4ef4f7d">SIRL_INFO</a> = 0x40, 
-<a class="el" href="sir_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba3553c8c2c35e70495b8f8e826aa3ff9b">SIRL_DEBUG</a> = 0x80, 
+&#160;&#160;<a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881">SIRL_WARN</a> = 0x10, 
+<a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a">SIRL_NOTICE</a> = 0x20, 
+<a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d">SIRL_INFO</a> = 0x40, 
+<a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b">SIRL_DEBUG</a> = 0x80, 
 <br />
-&#160;&#160;<a class="el" href="sir_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba4aa4a7193f36bf34a21ab48a17ffc444">SIRL_ALL</a> = 0xFF
+&#160;&#160;<b>SIRL_ALL</b> = 0xff
 <br />
  }</td></tr>
-<tr class="separator:a06fc87d81c62e9abb8790b6e5713c55b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a4a3303c67acd49bea38fd3565d458cb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ed1c599dfd76231f4e0dadf46bff40b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a9ed1c599dfd76231f4e0dadf46bff40b">sir_option</a> { <a class="el" href="sir_8h.html#a9ed1c599dfd76231f4e0dadf46bff40ba58882ac768eb1c0a0021d140f6b15deb">SIRO_NOLEVEL</a> = 0x100, 
+<a class="el" href="sir_8h.html#a9ed1c599dfd76231f4e0dadf46bff40ba59020fdfee0aaf393ed80ef7bab4bb4e">SIRO_NONAME</a> = 0x200, 
+<a class="el" href="sir_8h.html#a9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d">SIRO_NOTIME</a> = 0x400
+ }</td></tr>
+<tr class="separator:a9ed1c599dfd76231f4e0dadf46bff40b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a99c2210334096965d23626fa50dc5d6b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a99c2210334096965d23626fa50dc5d6b">sir_init</a> (const <a class="el" href="structsirinit.html">sirinit</a> *si)</td></tr>
-<tr class="memdesc:a99c2210334096965d23626fa50dc5d6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the library.  <a href="#a99c2210334096965d23626fa50dc5d6b">More...</a><br /></td></tr>
-<tr class="separator:a99c2210334096965d23626fa50dc5d6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8de8c02ecad7cec29a04c69d6232a491"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a8de8c02ecad7cec29a04c69d6232a491">sirdebug</a> (const sirchar_t *format,...)</td></tr>
-<tr class="memdesc:a8de8c02ecad7cec29a04c69d6232a491"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a formatted debug-level message.  <a href="#a8de8c02ecad7cec29a04c69d6232a491">More...</a><br /></td></tr>
-<tr class="separator:a8de8c02ecad7cec29a04c69d6232a491"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad413c364d7c168c8e970f50f088ce598"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#ad413c364d7c168c8e970f50f088ce598">sirinfo</a> (const sirchar_t *format,...)</td></tr>
-<tr class="memdesc:ad413c364d7c168c8e970f50f088ce598"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a formatted informational message.  <a href="#ad413c364d7c168c8e970f50f088ce598">More...</a><br /></td></tr>
-<tr class="separator:ad413c364d7c168c8e970f50f088ce598"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac44c70288276f7c63c233bf0e2a1eefd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#ac44c70288276f7c63c233bf0e2a1eefd">sirnotice</a> (const sirchar_t *format,...)</td></tr>
-<tr class="memdesc:ac44c70288276f7c63c233bf0e2a1eefd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a formatted notice message.  <a href="#ac44c70288276f7c63c233bf0e2a1eefd">More...</a><br /></td></tr>
-<tr class="separator:ac44c70288276f7c63c233bf0e2a1eefd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa90777adb85f8cfee1d346ec64c03e99"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#aa90777adb85f8cfee1d346ec64c03e99">sirwarn</a> (const sirchar_t *format,...)</td></tr>
-<tr class="memdesc:aa90777adb85f8cfee1d346ec64c03e99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a formatted warning message.  <a href="#aa90777adb85f8cfee1d346ec64c03e99">More...</a><br /></td></tr>
-<tr class="separator:aa90777adb85f8cfee1d346ec64c03e99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19c0c2c804a0d8b381833a72ec4df870"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a19c0c2c804a0d8b381833a72ec4df870">sirerror</a> (const sirchar_t *format,...)</td></tr>
-<tr class="memdesc:a19c0c2c804a0d8b381833a72ec4df870"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a formatted error message.  <a href="#a19c0c2c804a0d8b381833a72ec4df870">More...</a><br /></td></tr>
-<tr class="separator:a19c0c2c804a0d8b381833a72ec4df870"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab15ad77ec64f919167dcea987db00901"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#ab15ad77ec64f919167dcea987db00901">sircrit</a> (const sirchar_t *format,...)</td></tr>
-<tr class="memdesc:ab15ad77ec64f919167dcea987db00901"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a formatted critical message.  <a href="#ab15ad77ec64f919167dcea987db00901">More...</a><br /></td></tr>
-<tr class="separator:ab15ad77ec64f919167dcea987db00901"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1c051c33a590e5412a0850b354c96cb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#af1c051c33a590e5412a0850b354c96cb">siralert</a> (const sirchar_t *format,...)</td></tr>
-<tr class="memdesc:af1c051c33a590e5412a0850b354c96cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a formatted alert message.  <a href="#af1c051c33a590e5412a0850b354c96cb">More...</a><br /></td></tr>
-<tr class="separator:af1c051c33a590e5412a0850b354c96cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0527210c4cd7bc81e5e90f1fa420135"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#ad0527210c4cd7bc81e5e90f1fa420135">siremerg</a> (const sirchar_t *format,...)</td></tr>
-<tr class="memdesc:ad0527210c4cd7bc81e5e90f1fa420135"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a formatted emergency message.  <a href="#ad0527210c4cd7bc81e5e90f1fa420135">More...</a><br /></td></tr>
-<tr class="separator:ad0527210c4cd7bc81e5e90f1fa420135"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14924d3a8225bea378ad568a426be99a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a14924d3a8225bea378ad568a426be99a">sir_init</a> (const <a class="el" href="structsirinit.html">sirinit</a> *si)</td></tr>
+<tr class="memdesc:a14924d3a8225bea378ad568a426be99a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the library.  <a href="#a14924d3a8225bea378ad568a426be99a">More...</a><br /></td></tr>
+<tr class="separator:a14924d3a8225bea378ad568a426be99a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeca7686d30b44890f5a96defb70f7995"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#aeca7686d30b44890f5a96defb70f7995">sirdebug</a> (const <a class="el" href="sir_8h.html#a1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *format,...)</td></tr>
+<tr class="memdesc:aeca7686d30b44890f5a96defb70f7995"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a formatted debug-level message.  <a href="#aeca7686d30b44890f5a96defb70f7995">More...</a><br /></td></tr>
+<tr class="separator:aeca7686d30b44890f5a96defb70f7995"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d4e3f1712d034176e0c8018f88ac0c7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a5d4e3f1712d034176e0c8018f88ac0c7">sirinfo</a> (const <a class="el" href="sir_8h.html#a1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *format,...)</td></tr>
+<tr class="memdesc:a5d4e3f1712d034176e0c8018f88ac0c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a formatted informational message.  <a href="#a5d4e3f1712d034176e0c8018f88ac0c7">More...</a><br /></td></tr>
+<tr class="separator:a5d4e3f1712d034176e0c8018f88ac0c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0af32032cc468f9ed40837ff3baf52da"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a0af32032cc468f9ed40837ff3baf52da">sirnotice</a> (const <a class="el" href="sir_8h.html#a1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *format,...)</td></tr>
+<tr class="memdesc:a0af32032cc468f9ed40837ff3baf52da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a formatted notice message.  <a href="#a0af32032cc468f9ed40837ff3baf52da">More...</a><br /></td></tr>
+<tr class="separator:a0af32032cc468f9ed40837ff3baf52da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72b4699283b0d3d95340a19e86fe3778"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a72b4699283b0d3d95340a19e86fe3778">sirwarn</a> (const <a class="el" href="sir_8h.html#a1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *format,...)</td></tr>
+<tr class="memdesc:a72b4699283b0d3d95340a19e86fe3778"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a formatted warning message.  <a href="#a72b4699283b0d3d95340a19e86fe3778">More...</a><br /></td></tr>
+<tr class="separator:a72b4699283b0d3d95340a19e86fe3778"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa049c60cb243f0346fb0da10310693f4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#aa049c60cb243f0346fb0da10310693f4">sirerror</a> (const <a class="el" href="sir_8h.html#a1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *format,...)</td></tr>
+<tr class="memdesc:aa049c60cb243f0346fb0da10310693f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a formatted error message.  <a href="#aa049c60cb243f0346fb0da10310693f4">More...</a><br /></td></tr>
+<tr class="separator:aa049c60cb243f0346fb0da10310693f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad55907d3754476a3f49e5979000e98c9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#ad55907d3754476a3f49e5979000e98c9">sircrit</a> (const <a class="el" href="sir_8h.html#a1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *format,...)</td></tr>
+<tr class="memdesc:ad55907d3754476a3f49e5979000e98c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a formatted critical message.  <a href="#ad55907d3754476a3f49e5979000e98c9">More...</a><br /></td></tr>
+<tr class="separator:ad55907d3754476a3f49e5979000e98c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c9ec74b821331de38544e95d6688a62"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a9c9ec74b821331de38544e95d6688a62">siralert</a> (const <a class="el" href="sir_8h.html#a1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *format,...)</td></tr>
+<tr class="memdesc:a9c9ec74b821331de38544e95d6688a62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a formatted alert message.  <a href="#a9c9ec74b821331de38544e95d6688a62">More...</a><br /></td></tr>
+<tr class="separator:a9c9ec74b821331de38544e95d6688a62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a242cc0f938e386ffb7fec531a77decec"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a242cc0f938e386ffb7fec531a77decec">siremerg</a> (const <a class="el" href="sir_8h.html#a1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *format,...)</td></tr>
+<tr class="memdesc:a242cc0f938e386ffb7fec531a77decec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a formatted emergency message.  <a href="#a242cc0f938e386ffb7fec531a77decec">More...</a><br /></td></tr>
+<tr class="separator:a242cc0f938e386ffb7fec531a77decec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3d423234ff95592b8d800b8bf092489"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#ae3d423234ff95592b8d800b8bf092489">sir_cleanup</a> ()</td></tr>
 <tr class="memdesc:ae3d423234ff95592b8d800b8bf092489"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shuts down the library.  <a href="#ae3d423234ff95592b8d800b8bf092489">More...</a><br /></td></tr>
 <tr class="separator:ae3d423234ff95592b8d800b8bf092489"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37c1e914bb3f1662d735aa33af82f0b9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a37c1e914bb3f1662d735aa33af82f0b9"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>sir_addfile</b> (const sirchar_t *path, uint32_t mask)</td></tr>
-<tr class="separator:a37c1e914bb3f1662d735aa33af82f0b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad460e4612f4cce41c086bd3d89d4d75c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad460e4612f4cce41c086bd3d89d4d75c"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>sir_remfile</b> (const sirchar_t *path)</td></tr>
-<tr class="separator:ad460e4612f4cce41c086bd3d89d4d75c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acebc548e782dafbebbefe172a3804a74"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acebc548e782dafbebbefe172a3804a74"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>sir_addcallback</b> (<a class="el" href="sir_8h.html#ace3ea4091f07fc8e8cde5b1c14b3fd29">sircallbackfn</a> cb, uint32_t mask, uint64_t data)</td></tr>
-<tr class="separator:acebc548e782dafbebbefe172a3804a74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adea9649e1e9a9dd3ad41c2ad8db65d50"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#adea9649e1e9a9dd3ad41c2ad8db65d50">sir_remcallback</a> (<a class="el" href="sir_8h.html#ace3ea4091f07fc8e8cde5b1c14b3fd29">sircallbackfn</a> cb)</td></tr>
-<tr class="memdesc:adea9649e1e9a9dd3ad41c2ad8db65d50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove an existing <a class="el" href="sir_8h.html#ace3ea4091f07fc8e8cde5b1c14b3fd29">sircallbackfn</a> from the list of functions that can receive log messages.  <a href="#adea9649e1e9a9dd3ad41c2ad8db65d50">More...</a><br /></td></tr>
-<tr class="separator:adea9649e1e9a9dd3ad41c2ad8db65d50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18adb1b96d90816ed91a4259604f84f1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a18adb1b96d90816ed91a4259604f84f1">sir_addfile</a> (const <a class="el" href="sir_8h.html#a1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *path, <a class="el" href="sir_8h.html#a7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a> levels, <a class="el" href="sir_8h.html#a858fff8dae5b79ae8849a8021a53c18c">sir_options</a> opts)</td></tr>
+<tr class="memdesc:a18adb1b96d90816ed91a4259604f84f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a log file output destination.  <a href="#a18adb1b96d90816ed91a4259604f84f1">More...</a><br /></td></tr>
+<tr class="separator:a18adb1b96d90816ed91a4259604f84f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34a36373db97dc24db8e53ff3843ba04"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir_8h.html#a34a36373db97dc24db8e53ff3843ba04">sir_remfile</a> (int id)</td></tr>
+<tr class="memdesc:a34a36373db97dc24db8e53ff3843ba04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a previously added log file.  <a href="#a34a36373db97dc24db8e53ff3843ba04">More...</a><br /></td></tr>
+<tr class="separator:a34a36373db97dc24db8e53ff3843ba04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Definitions for the Standard Incident Reporter (SIR) library. </p>
@@ -313,89 +253,405 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>sir_addcallback</b> (<
 <dl class="section date"><dt>Date</dt><dd>2003-2018 </dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>MIT License </dd></dl>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a class="anchor" id="a383ba0e1276fc7c414d28c174b784d86"></a>
+<a class="anchor" id="af8577c1f2d41e1110bc22b89e2e48646"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define safefree</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">p</td><td>)</td>
-          <td></td>
+          <td class="memname">#define SIR_INVALID&#160;&#160;&#160;(int)-1</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">if</span> (NULL != p) { \</div><div class="line">        free(p);     \</div><div class="line">        p = NULL;    \</div><div class="line">    }</div></div><!-- fragment -->
+<p>The value used to represent an invalid file identifier. </p>
+
+</div>
+</div>
+<a class="anchor" id="a9e3cbd01c7d420021b12f87b0efe0573"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_LINEENDING&#160;&#160;&#160;&quot;\n&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The sequence of characters used to terminate output messages. </p>
+
+</div>
+</div>
+<a class="anchor" id="aa1080a4bec531adb6d25c87ac4734399"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_MAXFILES&#160;&#160;&#160;16</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The maximum number of log files that may be registered. </p>
+
+</div>
+</div>
+<a class="anchor" id="abac0b7b0c1ea5afc9d0708a4421b1a57"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_MAXLEVEL&#160;&#160;&#160;16</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The size, in characters, of the buffer used to hold level format strings. </p>
+
+</div>
+</div>
+<a class="anchor" id="a5f006a2e9ce93ae8d693a2928af33bb2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_MAXMESSAGE&#160;&#160;&#160;2048</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The maximum number of characters that may be included in one message, not including other parts of the output, like the timestamp and level. </p>
+
+</div>
+</div>
+<a class="anchor" id="a85ed3139018ee9e7545c74c0885dff55"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_MAXNAME&#160;&#160;&#160;16</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The size, in characters, of the buffer used to hold process/appname format strings. </p>
+
+</div>
+</div>
+<a class="anchor" id="ab3e26cb9ac224cb9a695ddf1ed099218"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_MAXOUTPUT&#160;&#160;&#160;<a class="el" href="sir_8h.html#a5f006a2e9ce93ae8d693a2928af33bb2">SIR_MAXMESSAGE</a> + <a class="el" href="sir_8h.html#ac1e50274f913ef71f196f20b9dfbbba6">SIR_MAXTIME</a> + <a class="el" href="sir_8h.html#abac0b7b0c1ea5afc9d0708a4421b1a57">SIR_MAXLEVEL</a> + <a class="el" href="sir_8h.html#a85ed3139018ee9e7545c74c0885dff55">SIR_MAXNAME</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The maximum size, in characters, of final formatted output. </p>
+
+</div>
+</div>
+<a class="anchor" id="a1606d95455a68d16b9f64de112cd3c62"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_MAXPATH&#160;&#160;&#160;65535</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A sensible (?) constraint for the limit of a file's path. Note that this value is only used in the absence of PATH_MAX. </p>
+
+</div>
+</div>
+<a class="anchor" id="ac1e50274f913ef71f196f20b9dfbbba6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_MAXTIME&#160;&#160;&#160;32</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The size, in characters, of the buffer used to hold time format strings. </p>
+
+</div>
+</div>
+<a class="anchor" id="ab6644283e3e822576e9cf599af78b70e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_MINPRINT&#160;&#160;&#160;512</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The initial size, in characters, of the buffer used to store messages. </p>
+
+</div>
+</div>
+<a class="anchor" id="ab1531d6b0d9c880b793362322542794c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_TIMEFORMAT&#160;&#160;&#160;&quot;%T&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The default time format string passed to localtime(). </p>
+
+</div>
+</div>
+<a class="anchor" id="a4e02d1cb5e4a8d8535227657781d4a29"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIRL_S_ALERT&#160;&#160;&#160;&quot;ALRT&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The string representation of the <a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955">SIRL_ALERT</a> level in output. </p>
+
+</div>
+</div>
+<a class="anchor" id="a362f77b1b5555a0ea57fdfb64ae09229"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIRL_S_CRIT&#160;&#160;&#160;&quot;CRIT&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The string representation of the <a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435">SIRL_CRIT</a> level in output. </p>
+
+</div>
+</div>
+<a class="anchor" id="a04d05c434823f0e5a353a31bb47af16e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIRL_S_DEBUG&#160;&#160;&#160;&quot;DBG&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The string representation of the <a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b">SIRL_DEBUG</a> level in output. </p>
+
+</div>
+</div>
+<a class="anchor" id="a777d150774244d2707818f2c4a1b9538"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIRL_S_EMERG&#160;&#160;&#160;&quot;EMER&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The string representation of the <a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc">SIRL_EMERG</a> level in output. </p>
+
+</div>
+</div>
+<a class="anchor" id="a4237f9dff053a17cf7a134dbbebc5210"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIRL_S_ERROR&#160;&#160;&#160;&quot;ERR&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The string representation of the <a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76">SIRL_ERROR</a> level in output. </p>
+
+</div>
+</div>
+<a class="anchor" id="a1f7c2763d5e7afb0f2b49d4f0636276d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIRL_S_INFO&#160;&#160;&#160;&quot;INFO&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The string representation of the <a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d">SIRL_INFO</a> level in output. </p>
+
+</div>
+</div>
+<a class="anchor" id="a6195821fca239b40498e847d50b82623"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIRL_S_NOTICE&#160;&#160;&#160;&quot;NOTF&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The string representation of the <a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a">SIRL_NOTICE</a> level in output. </p>
+
+</div>
+</div>
+<a class="anchor" id="a7a2838316cfd52f1af743952e667d9f5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIRL_S_WARN&#160;&#160;&#160;&quot;WARN&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The string representation of the <a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881">SIRL_WARN</a> level in output. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a class="anchor" id="ace3ea4091f07fc8e8cde5b1c14b3fd29"></a>
+<a class="anchor" id="a7ee5f2908abd2df9e89bcab0b6608edd"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef void(* sircallbackfn) (const sirchar_t *message, uint64_t userData)</td>
+          <td class="memname">typedef uint16_t <a class="el" href="sir_8h.html#a7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Function signature for callback output destinations.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">message</td><td>The formatted message. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">userData</td><td>User-defined data to pass along to the callback. </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>One or more <a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2">sir_level</a>, bitwise OR'd. </p>
+
+</div>
+</div>
+<a class="anchor" id="a858fff8dae5b79ae8849a8021a53c18c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef uint16_t <a class="el" href="sir_8h.html#a858fff8dae5b79ae8849a8021a53c18c">sir_options</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>One or more <a class="el" href="sir_8h.html#a9ed1c599dfd76231f4e0dadf46bff40b">sir_option</a>, bitwise OR'd. </p>
+
+</div>
+</div>
+<a class="anchor" id="a1d2f790e2dabc69c8a625f2ee5dc583a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef char <a class="el" href="sir_8h.html#a1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The underlying type to use for characters in output. </p>
 
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55b"></a>
+<a class="anchor" id="a4a3303c67acd49bea38fd3565d458cb2"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">anonymous enum</td>
+          <td class="memname">enum <a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2">sir_level</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Logging levels</p>
-<p>Each enum value corresponds to a function that sends output to all destinations for that level (<a class="el" href="sir_8h.html#a8de8c02ecad7cec29a04c69d6232a491" title="Log a formatted debug-level message. ">sirdebug</a> and pals).</p>
-<p>Since the values are also flags (i.e.: powers of two), they can be combined to filter different levels of importance but not strictly linearly. Any combination of levels can be used to configure an output destination. </p>
+<p>Each enum value corresponds to a function that sends output to all destinations for that level (<a class="el" href="sir_8h.html#aeca7686d30b44890f5a96defb70f7995" title="Log a formatted debug-level message. ">sirdebug</a> and pals).</p>
+<p>Since the values are also flags (i.e., powers of two), they can be combined to filter different levels of importance but not strictly linearly. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55ba4ea9abe160c997d126806c4cca7f0cdc"></a>SIRL_EMERG&#160;</td><td class="fielddoc">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc"></a>SIRL_EMERG&#160;</td><td class="fielddoc">
 <p>Nuclear war, Armageddon, etc. </p>
 </td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55ba8ea85ed68763f9c00d5ceeeaaf550955"></a>SIRL_ALERT&#160;</td><td class="fielddoc">
+<tr><td class="fieldname"><a class="anchor" id="a4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955"></a>SIRL_ALERT&#160;</td><td class="fielddoc">
 <p>Action required ASAP. </p>
 </td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55ba803f36256e5e4e3b788b7fa3a267a435"></a>SIRL_CRIT&#160;</td><td class="fielddoc">
+<tr><td class="fieldname"><a class="anchor" id="a4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435"></a>SIRL_CRIT&#160;</td><td class="fielddoc">
 <p>Critical errors. </p>
 </td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55ba9c687f088db1de838ea5d5f8a8beed76"></a>SIRL_ERROR&#160;</td><td class="fielddoc">
+<tr><td class="fieldname"><a class="anchor" id="a4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76"></a>SIRL_ERROR&#160;</td><td class="fielddoc">
 <p>Errors. </p>
 </td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55ba1ff2ba86cf1863e3673e5f534e021181"></a>SIRL_WARNING&#160;</td><td class="fielddoc">
+<tr><td class="fieldname"><a class="anchor" id="a4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881"></a>SIRL_WARN&#160;</td><td class="fielddoc">
 <p>Warnings that could likely be ignored. </p>
 </td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55ba721700c8091aab00db0b87b53f6eb53a"></a>SIRL_NOTICE&#160;</td><td class="fielddoc">
+<tr><td class="fieldname"><a class="anchor" id="a4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a"></a>SIRL_NOTICE&#160;</td><td class="fielddoc">
 <p>Normal but significant. </p>
 </td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55ba5882fd7e849f6a3c1c7967bde4ef4f7d"></a>SIRL_INFO&#160;</td><td class="fielddoc">
+<tr><td class="fieldname"><a class="anchor" id="a4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d"></a>SIRL_INFO&#160;</td><td class="fielddoc">
 <p>Informational messages. </p>
 </td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55ba3553c8c2c35e70495b8f8e826aa3ff9b"></a>SIRL_DEBUG&#160;</td><td class="fielddoc">
+<tr><td class="fieldname"><a class="anchor" id="a4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b"></a>SIRL_DEBUG&#160;</td><td class="fielddoc">
 <p>Verbose debugging output. </p>
 </td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a06fc87d81c62e9abb8790b6e5713c55ba4aa4a7193f36bf34a21ab48a17ffc444"></a>SIRL_ALL&#160;</td><td class="fielddoc">
-<p>Includes all logging levels. </p>
+</table>
+
+</div>
+</div>
+<a class="anchor" id="a9ed1c599dfd76231f4e0dadf46bff40b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="sir_8h.html#a9ed1c599dfd76231f4e0dadf46bff40b">sir_option</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Output destination options</p>
+<p>Set any desired flags on the corresponding member in the <a class="el" href="structsirinit.html" title="Initialization data for the library. ">sirinit</a> structure to fine-tune the output formatting for each destination. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a9ed1c599dfd76231f4e0dadf46bff40ba58882ac768eb1c0a0021d140f6b15deb"></a>SIRO_NOLEVEL&#160;</td><td class="fielddoc">
+<p>Do not include the human-readable logging level in output. </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9ed1c599dfd76231f4e0dadf46bff40ba59020fdfee0aaf393ed80ef7bab4bb4e"></a>SIRO_NONAME&#160;</td><td class="fielddoc">
+<p>Do not include the process/app name in output. </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d"></a>SIRO_NOTIME&#160;</td><td class="fielddoc">
+<p>Do not include time stamps in output. </p>
 </td></tr>
 </table>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a18adb1b96d90816ed91a4259604f84f1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int sir_addfile </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="sir_8h.html#a1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="sir_8h.html#a7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a>&#160;</td>
+          <td class="paramname"><em>levels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="sir_8h.html#a858fff8dae5b79ae8849a8021a53c18c">sir_options</a>&#160;</td>
+          <td class="paramname"><em>opts</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds a log file output destination. </p>
+<p>Adds a log file to be appended to whenever a message matching any of the <a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2">sir_level</a> flags set in <em>levels</em> is emitted.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>The path to the log file. It will be created if it doesn't exist.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">levels</td><td>One or more <a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2">sir_level</a> logging levels for which output should be append to the file.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">opts</td><td>Zero or more <a class="el" href="sir_8h.html#a9ed1c599dfd76231f4e0dadf46bff40b">sir_option</a> flags to control output formatting.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A unique identifier for the file, or <a class="el" href="sir_8h.html#af8577c1f2d41e1110bc22b89e2e48646">SIR_INVALID</a> (-1) if an error occurs. </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="ae3d423234ff95592b8d800b8bf092489"></a>
 <div class="memitem">
 <div class="memproto">
@@ -416,12 +672,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>sir_addcallback</b> (<
 
 </div>
 </div>
-<a class="anchor" id="a99c2210334096965d23626fa50dc5d6b"></a>
+<a class="anchor" id="a14924d3a8225bea378ad568a426be99a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int sir_init </td>
+          <td class="memname">bool sir_init </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structsirinit.html">sirinit</a> *&#160;</td>
           <td class="paramname"><em>si</em></td><td>)</td>
@@ -434,41 +690,47 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>sir_addcallback</b> (<
 <p>You must call this function before any others in the library or you're gonna have a bad time.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">si</td><td>Pointer a to sirinit struct containing initialization options. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">si</td><td>Pointer a to sirinit struct containing initialization options.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or non-zero otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>boolean success </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="adea9649e1e9a9dd3ad41c2ad8db65d50"></a>
+<a class="anchor" id="a34a36373db97dc24db8e53ff3843ba04"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int sir_remcallback </td>
+          <td class="memname">bool sir_remfile </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="sir_8h.html#ace3ea4091f07fc8e8cde5b1c14b3fd29">sircallbackfn</a>&#160;</td>
-          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Remove an existing <a class="el" href="sir_8h.html#ace3ea4091f07fc8e8cde5b1c14b3fd29">sircallbackfn</a> from the list of functions that can receive log messages. </p>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or non-zero otherwise. </dd></dl>
+<p>Removes a previously added log file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">id</td><td>The identifier returned from <a class="el" href="sir_8h.html#a18adb1b96d90816ed91a4259604f84f1" title="Adds a log file output destination. ">sir_addfile</a> earlier.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>boolean success </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="af1c051c33a590e5412a0850b354c96cb"></a>
+<a class="anchor" id="a9c9ec74b821331de38544e95d6688a62"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int siralert </td>
+          <td class="memname">bool siralert </td>
           <td>(</td>
-          <td class="paramtype">const sirchar_t *&#160;</td>
+          <td class="paramtype">const <a class="el" href="sir_8h.html#a1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *&#160;</td>
           <td class="paramname"><em>format</em>, </td>
         </tr>
         <tr>
@@ -486,26 +748,26 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>sir_addcallback</b> (<
 </div><div class="memdoc">
 
 <p>Log a formatted alert message. </p>
-<p>All output destinations whose flags have <a class="el" href="sir_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba8ea85ed68763f9c00d5ceeeaaf550955">SIRL_ALERT</a> set will receive the formatted message.</p>
+<p>All output destinations whose flags have <a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955">SIRL_ALERT</a> set will receive the formatted message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">format</td><td>A printf-style format string. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">(varargs)</td><td>A list of arguments whose type match the format specifier at the same index in the format string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">...</td><td>A list of arguments whose type match the format specifier at the same index in the format string.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or non-zero otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>boolean success </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="ab15ad77ec64f919167dcea987db00901"></a>
+<a class="anchor" id="ad55907d3754476a3f49e5979000e98c9"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int sircrit </td>
+          <td class="memname">bool sircrit </td>
           <td>(</td>
-          <td class="paramtype">const sirchar_t *&#160;</td>
+          <td class="paramtype">const <a class="el" href="sir_8h.html#a1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *&#160;</td>
           <td class="paramname"><em>format</em>, </td>
         </tr>
         <tr>
@@ -523,26 +785,26 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>sir_addcallback</b> (<
 </div><div class="memdoc">
 
 <p>Log a formatted critical message. </p>
-<p>All output destinations whose flags have <a class="el" href="sir_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba803f36256e5e4e3b788b7fa3a267a435">SIRL_CRIT</a> set will receive the formatted message.</p>
+<p>All output destinations whose flags have <a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435">SIRL_CRIT</a> set will receive the formatted message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">format</td><td>A printf-style format string. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">(varargs)</td><td>A list of arguments whose type match the format specifier at the same index in the format string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">...</td><td>A list of arguments whose type match the format specifier at the same index in the format string.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or non-zero otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>boolean success </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="a8de8c02ecad7cec29a04c69d6232a491"></a>
+<a class="anchor" id="aeca7686d30b44890f5a96defb70f7995"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int sirdebug </td>
+          <td class="memname">bool sirdebug </td>
           <td>(</td>
-          <td class="paramtype">const sirchar_t *&#160;</td>
+          <td class="paramtype">const <a class="el" href="sir_8h.html#a1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *&#160;</td>
           <td class="paramname"><em>format</em>, </td>
         </tr>
         <tr>
@@ -560,26 +822,26 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>sir_addcallback</b> (<
 </div><div class="memdoc">
 
 <p>Log a formatted debug-level message. </p>
-<p>All output destinations whose flags have <a class="el" href="sir_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba3553c8c2c35e70495b8f8e826aa3ff9b">SIRL_DEBUG</a> set will receive the formatted message.</p>
+<p>All output destinations whose flags have <a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b">SIRL_DEBUG</a> set will receive the formatted message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">format</td><td>A printf-style format string. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">(varargs)</td><td>A list of arguments whose type match the format specifier at the same index in the format string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">...</td><td>A list of arguments whose type match the format specifier at the same index in the format string.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or non-zero otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>boolean success </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="ad0527210c4cd7bc81e5e90f1fa420135"></a>
+<a class="anchor" id="a242cc0f938e386ffb7fec531a77decec"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int siremerg </td>
+          <td class="memname">bool siremerg </td>
           <td>(</td>
-          <td class="paramtype">const sirchar_t *&#160;</td>
+          <td class="paramtype">const <a class="el" href="sir_8h.html#a1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *&#160;</td>
           <td class="paramname"><em>format</em>, </td>
         </tr>
         <tr>
@@ -597,26 +859,26 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>sir_addcallback</b> (<
 </div><div class="memdoc">
 
 <p>Log a formatted emergency message. </p>
-<p>All output destinations whose flags have <a class="el" href="sir_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba4ea9abe160c997d126806c4cca7f0cdc">SIRL_EMERG</a> set will receive the formatted message.</p>
+<p>All output destinations whose flags have <a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc">SIRL_EMERG</a> set will receive the formatted message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">format</td><td>A printf-style format string. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">(varargs)</td><td>A list of arguments whose type match the format specifier at the same index in the format string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">...</td><td>A list of arguments whose type match the format specifier at the same index in the format string.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or non-zero otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>boolean success </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="a19c0c2c804a0d8b381833a72ec4df870"></a>
+<a class="anchor" id="aa049c60cb243f0346fb0da10310693f4"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int sirerror </td>
+          <td class="memname">bool sirerror </td>
           <td>(</td>
-          <td class="paramtype">const sirchar_t *&#160;</td>
+          <td class="paramtype">const <a class="el" href="sir_8h.html#a1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *&#160;</td>
           <td class="paramname"><em>format</em>, </td>
         </tr>
         <tr>
@@ -634,26 +896,26 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>sir_addcallback</b> (<
 </div><div class="memdoc">
 
 <p>Log a formatted error message. </p>
-<p>All output destinations whose flags have <a class="el" href="sir_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba9c687f088db1de838ea5d5f8a8beed76">SIRL_ERROR</a> set will receive the formatted message.</p>
+<p>All output destinations whose flags have <a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76">SIRL_ERROR</a> set will receive the formatted message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">format</td><td>A printf-style format string. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">(varargs)</td><td>A list of arguments whose type match the format specifier at the same index in the format string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">...</td><td>A list of arguments whose type match the format specifier at the same index in the format string.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or non-zero otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>boolean success </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="ad413c364d7c168c8e970f50f088ce598"></a>
+<a class="anchor" id="a5d4e3f1712d034176e0c8018f88ac0c7"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int sirinfo </td>
+          <td class="memname">bool sirinfo </td>
           <td>(</td>
-          <td class="paramtype">const sirchar_t *&#160;</td>
+          <td class="paramtype">const <a class="el" href="sir_8h.html#a1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *&#160;</td>
           <td class="paramname"><em>format</em>, </td>
         </tr>
         <tr>
@@ -671,26 +933,26 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>sir_addcallback</b> (<
 </div><div class="memdoc">
 
 <p>Log a formatted informational message. </p>
-<p>All output destinations whose flags have <a class="el" href="sir_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba5882fd7e849f6a3c1c7967bde4ef4f7d">SIRL_INFO</a> set will receive the formatted message.</p>
+<p>All output destinations whose flags have <a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d">SIRL_INFO</a> set will receive the formatted message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">format</td><td>A printf-style format string. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">(varargs)</td><td>A list of arguments whose type match the format specifier at the same index in the format string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">...</td><td>A list of arguments whose type match the format specifier at the same index in the format string.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or non-zero otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>boolean success </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="ac44c70288276f7c63c233bf0e2a1eefd"></a>
+<a class="anchor" id="a0af32032cc468f9ed40837ff3baf52da"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int sirnotice </td>
+          <td class="memname">bool sirnotice </td>
           <td>(</td>
-          <td class="paramtype">const sirchar_t *&#160;</td>
+          <td class="paramtype">const <a class="el" href="sir_8h.html#a1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *&#160;</td>
           <td class="paramname"><em>format</em>, </td>
         </tr>
         <tr>
@@ -708,26 +970,26 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>sir_addcallback</b> (<
 </div><div class="memdoc">
 
 <p>Log a formatted notice message. </p>
-<p>All output destinations whose flags have <a class="el" href="sir_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba721700c8091aab00db0b87b53f6eb53a">SIRL_NOTICE</a> set will receive the formatted message.</p>
+<p>All output destinations whose flags have <a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a">SIRL_NOTICE</a> set will receive the formatted message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">format</td><td>A printf-style format string. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">(varargs)</td><td>A list of arguments whose type match the format specifier at the same index in the format string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">...</td><td>A list of arguments whose type match the format specifier at the same index in the format string.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or non-zero otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>boolean success </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="aa90777adb85f8cfee1d346ec64c03e99"></a>
+<a class="anchor" id="a72b4699283b0d3d95340a19e86fe3778"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int sirwarn </td>
+          <td class="memname">bool sirwarn </td>
           <td>(</td>
-          <td class="paramtype">const sirchar_t *&#160;</td>
+          <td class="paramtype">const <a class="el" href="sir_8h.html#a1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *&#160;</td>
           <td class="paramname"><em>format</em>, </td>
         </tr>
         <tr>
@@ -745,15 +1007,15 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>sir_addcallback</b> (<
 </div><div class="memdoc">
 
 <p>Log a formatted warning message. </p>
-<p>All output destinations whose flags have <a class="el" href="sir_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba1ff2ba86cf1863e3673e5f534e021181">SIRL_WARNING</a> set will receive the formatted message.</p>
+<p>All output destinations whose flags have <a class="el" href="sir_8h.html#a4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881">SIRL_WARN</a> set will receive the formatted message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">format</td><td>A printf-style format string. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">(varargs)</td><td>A list of arguments whose type match the format specifier at the same index in the format string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">...</td><td>A list of arguments whose type match the format specifier at the same index in the format string.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or non-zero otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>boolean success </dd></dl>
 
 </div>
 </div>

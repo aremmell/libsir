@@ -12,35 +12,77 @@ Initialization data for the library.
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-uint32\+\_\+t {\bfseries opts}\hypertarget{structsirinit_a8a16d181e8dde73266d6b6e45e8bd9c0}{}\label{structsirinit_a8a16d181e8dde73266d6b6e45e8bd9c0}
-
+\hyperlink{sir_8h_a7ee5f2908abd2df9e89bcab0b6608edd}{sir\+\_\+levels} \hyperlink{structsirinit_aa93387a8401dbcd2c940455fada80e9b}{std\+Out\+Levels}
 \item 
-uint32\+\_\+t {\bfseries f\+\_\+stdout}\hypertarget{structsirinit_a3cd9b91059bd65f1562ba7f6afd40f8c}{}\label{structsirinit_a3cd9b91059bd65f1562ba7f6afd40f8c}
-
+\hyperlink{sir_8h_a858fff8dae5b79ae8849a8021a53c18c}{sir\+\_\+options} \hyperlink{structsirinit_a32b2ce90a50bf2e08d5a6fbd04483863}{std\+Out\+Options}
 \item 
-uint32\+\_\+t {\bfseries f\+\_\+stderr}\hypertarget{structsirinit_a0bcca99abfd9d8b18d62f263187a28b1}{}\label{structsirinit_a0bcca99abfd9d8b18d62f263187a28b1}
-
+\hyperlink{sir_8h_a7ee5f2908abd2df9e89bcab0b6608edd}{sir\+\_\+levels} \hyperlink{structsirinit_a532ad88eb2e9a0111a452c937fec7441}{std\+Err\+Levels}
 \item 
-uint32\+\_\+t {\bfseries f\+\_\+debug}\hypertarget{structsirinit_abec44c66fd017d2b572d4b4665e49b27}{}\label{structsirinit_abec44c66fd017d2b572d4b4665e49b27}
-
+\hyperlink{sir_8h_a858fff8dae5b79ae8849a8021a53c18c}{sir\+\_\+options} \hyperlink{structsirinit_a15720d258e5c8f8c7944dad05d8a4f63}{std\+Err\+Options}
 \item 
-uint32\+\_\+t {\bfseries f\+\_\+syslog}\hypertarget{structsirinit_a12495a5dc6bff02e01274c2eb38ec362}{}\label{structsirinit_a12495a5dc6bff02e01274c2eb38ec362}
-
+\hyperlink{sir_8h_a7ee5f2908abd2df9e89bcab0b6608edd}{sir\+\_\+levels} \hyperlink{structsirinit_ab3499f342b50831ba3a39410dba38866}{sys\+Log\+Levels}
 \item 
-const sirchar\+\_\+t $\ast$ {\bfseries fmt\+Override}\hypertarget{structsirinit_a240e4460d815b73ae7b34e40d4f703f6}{}\label{structsirinit_a240e4460d815b73ae7b34e40d4f703f6}
-
+\hyperlink{sir_8h_a858fff8dae5b79ae8849a8021a53c18c}{sir\+\_\+options} \hyperlink{structsirinit_ab3340fe95410595d83b6d8337b7037a9}{sys\+Log\+Options}
 \item 
-const sirchar\+\_\+t $\ast$ {\bfseries app\+Name}\hypertarget{structsirinit_aeb5ae1905f653b2ba48bc46230cfc0cc}{}\label{structsirinit_aeb5ae1905f653b2ba48bc46230cfc0cc}
-
+const \hyperlink{sir_8h_a1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t} $\ast$ \hyperlink{structsirinit_aeb5ae1905f653b2ba48bc46230cfc0cc}{app\+Name}
+\item 
+const \hyperlink{sir_8h_a1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t} $\ast$ \hyperlink{structsirinit_a5f1cfe947c23692684183b871395de28}{time\+Fmt}
+\item 
+F\+I\+LE $\ast$ \hyperlink{structsirinit_a373d3dc5117db31c29be3651626ad87d}{self\+Output}
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
 Initialization data for the library. 
 
-Allocate an instance of this struct and pass it to \hyperlink{sir_8h_a99c2210334096965d23626fa50dc5d6b}{sir\+\_\+init} in order to begin using the library.
+Allocate an instance of this struct and pass it to \hyperlink{sir_8h_a14924d3a8225bea378ad568a426be99a}{sir\+\_\+init} in order to begin using the library.
 
 Don\textquotesingle{}t forget to call \hyperlink{sir_8h_ae3d423234ff95592b8d800b8bf092489}{sir\+\_\+cleanup} when you\textquotesingle{}re done. 
+
+\subsection{Member Data Documentation}
+\index{sirinit@{sirinit}!app\+Name@{app\+Name}}
+\index{app\+Name@{app\+Name}!sirinit@{sirinit}}
+\subsubsection[{\texorpdfstring{app\+Name}{processName}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf sirchar\+\_\+t}$\ast$ sirinit\+::app\+Name}\hypertarget{structsirinit_aeb5ae1905f653b2ba48bc46230cfc0cc}{}\label{structsirinit_aeb5ae1905f653b2ba48bc46230cfc0cc}
+A custom name to include in output (default\+: {\itshape none}). If \hyperlink{sir_8h_a9ed1c599dfd76231f4e0dadf46bff40ba59020fdfee0aaf393ed80ef7bab4bb4e}{S\+I\+R\+O\+\_\+\+N\+O\+N\+A\+ME} is set in the options for the destination, no name is included in output. Set to {\itshape N\+U\+LL} for the default. \index{sirinit@{sirinit}!self\+Output@{self\+Output}}
+\index{self\+Output@{self\+Output}!sirinit@{sirinit}}
+\subsubsection[{\texorpdfstring{self\+Output}{selfOutput}}]{\setlength{\rightskip}{0pt plus 5cm}F\+I\+LE$\ast$ sirinit\+::self\+Output}\hypertarget{structsirinit_a373d3dc5117db31c29be3651626ad87d}{}\label{structsirinit_a373d3dc5117db31c29be3651626ad87d}
+Where S\+IR should send its own internal logging (default\+: {\itshape stderr}) to assist in diagnosing any potential issues that may arise. Set to {\itshape N\+U\+LL} for the default.
+
+\begin{DoxyAttention}{Attention}
+Only available if {\itshape D\+E\+B\+UG} is defined in the preprocessor. Use {\itshape setlinebuf(3)} in order to avoid any delays in output if overridden. S\+IR does {\itshape not} call {\itshape fclose(3)} on the stream upon cleanup. 
+\end{DoxyAttention}
+\index{sirinit@{sirinit}!std\+Err\+Levels@{std\+Err\+Levels}}
+\index{std\+Err\+Levels@{std\+Err\+Levels}!sirinit@{sirinit}}
+\subsubsection[{\texorpdfstring{std\+Err\+Levels}{stdErrLevels}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf sir\+\_\+levels} sirinit\+::std\+Err\+Levels}\hypertarget{structsirinit_a532ad88eb2e9a0111a452c937fec7441}{}\label{structsirinit_a532ad88eb2e9a0111a452c937fec7441}
+Logging levels (\hyperlink{sir_8h_a4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}) to route to {\itshape stderr}. \index{sirinit@{sirinit}!std\+Err\+Options@{std\+Err\+Options}}
+\index{std\+Err\+Options@{std\+Err\+Options}!sirinit@{sirinit}}
+\subsubsection[{\texorpdfstring{std\+Err\+Options}{stdErrOptions}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf sir\+\_\+options} sirinit\+::std\+Err\+Options}\hypertarget{structsirinit_a15720d258e5c8f8c7944dad05d8a4f63}{}\label{structsirinit_a15720d258e5c8f8c7944dad05d8a4f63}
+Output options (\hyperlink{sir_8h_a9ed1c599dfd76231f4e0dadf46bff40b}{sir\+\_\+option}) for {\itshape stderr}. \index{sirinit@{sirinit}!std\+Out\+Levels@{std\+Out\+Levels}}
+\index{std\+Out\+Levels@{std\+Out\+Levels}!sirinit@{sirinit}}
+\subsubsection[{\texorpdfstring{std\+Out\+Levels}{stdOutLevels}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf sir\+\_\+levels} sirinit\+::std\+Out\+Levels}\hypertarget{structsirinit_aa93387a8401dbcd2c940455fada80e9b}{}\label{structsirinit_aa93387a8401dbcd2c940455fada80e9b}
+Logging levels (\hyperlink{sir_8h_a4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}) to route to {\itshape stdout}. \index{sirinit@{sirinit}!std\+Out\+Options@{std\+Out\+Options}}
+\index{std\+Out\+Options@{std\+Out\+Options}!sirinit@{sirinit}}
+\subsubsection[{\texorpdfstring{std\+Out\+Options}{stdOutOptions}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf sir\+\_\+options} sirinit\+::std\+Out\+Options}\hypertarget{structsirinit_a32b2ce90a50bf2e08d5a6fbd04483863}{}\label{structsirinit_a32b2ce90a50bf2e08d5a6fbd04483863}
+Output options (\hyperlink{sir_8h_a9ed1c599dfd76231f4e0dadf46bff40b}{sir\+\_\+option}) for {\itshape stdout}. \index{sirinit@{sirinit}!sys\+Log\+Levels@{sys\+Log\+Levels}}
+\index{sys\+Log\+Levels@{sys\+Log\+Levels}!sirinit@{sirinit}}
+\subsubsection[{\texorpdfstring{sys\+Log\+Levels}{sysLogLevels}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf sir\+\_\+levels} sirinit\+::sys\+Log\+Levels}\hypertarget{structsirinit_ab3499f342b50831ba3a39410dba38866}{}\label{structsirinit_ab3499f342b50831ba3a39410dba38866}
+Logging levels (\hyperlink{sir_8h_a4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}) to route to {\itshape syslog(3)}.
+
+\begin{DoxyAttention}{Attention}
+Only available if {\itshape \+\_\+\+W\+I\+N32} is {\itshape not} defined in the preprocessor. 
+\end{DoxyAttention}
+\index{sirinit@{sirinit}!sys\+Log\+Options@{sys\+Log\+Options}}
+\index{sys\+Log\+Options@{sys\+Log\+Options}!sirinit@{sirinit}}
+\subsubsection[{\texorpdfstring{sys\+Log\+Options}{sysLogOptions}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf sir\+\_\+options} sirinit\+::sys\+Log\+Options}\hypertarget{structsirinit_ab3340fe95410595d83b6d8337b7037a9}{}\label{structsirinit_ab3340fe95410595d83b6d8337b7037a9}
+Output options (\hyperlink{sir_8h_a9ed1c599dfd76231f4e0dadf46bff40b}{sir\+\_\+option}) for {\itshape syslog(3)}.
+
+\begin{DoxyAttention}{Attention}
+Only available if {\itshape \+\_\+\+W\+I\+N32} is {\itshape not} defined in the preprocessor. 
+\end{DoxyAttention}
+\index{sirinit@{sirinit}!time\+Fmt@{time\+Fmt}}
+\index{time\+Fmt@{time\+Fmt}!sirinit@{sirinit}}
+\subsubsection[{\texorpdfstring{time\+Fmt}{timeFmt}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf sirchar\+\_\+t}$\ast$ sirinit\+::time\+Fmt}\hypertarget{structsirinit_a5f1cfe947c23692684183b871395de28}{}\label{structsirinit_a5f1cfe947c23692684183b871395de28}
+A custom time format to use in output (default\+: \hyperlink{sir_8h_ab1531d6b0d9c880b793362322542794c}{S\+I\+R\+\_\+\+T\+I\+M\+E\+F\+O\+R\+M\+AT}). If \hyperlink{sir_8h_a9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d}{S\+I\+R\+O\+\_\+\+N\+O\+T\+I\+ME} is set in the options for the destination, no time is included in output. Set to {\itshape N\+U\+LL} for the default. 
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

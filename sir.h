@@ -390,17 +390,24 @@ typedef struct {
 } sirfiles;
 
 typedef struct {
-    sirchar_t* ptr;
-    size_t     size;
-    size_t     used;
-} sirbuf;
-
-typedef struct {
     sirchar_t* timestamp;
     sirchar_t* level;
     sirchar_t* name;
     sirchar_t* message;
 } siroutput;
+
+typedef struct {
+    sirchar_t timestamp[SIR_MAXTIME];
+    sirchar_t level[SIR_MAXLEVEL];
+    sirchar_t name[SIR_MAXNAME];
+    sirchar_t message[SIR_MAXMESSAGE];
+} sirbuf;
+
+#define _SIRBUF_TIME 0
+#define _SIRBUF_LEVEL 1
+#define _SIRBUF_NAME 2
+#define _SIRBUF_MSG 3
+#define _SIRBUF_MAX 3
 
 #define _SIR_L_START(format) \
     bool    r = false;       \
@@ -443,14 +450,8 @@ bool _sir_stderr_write(const sirchar_t* message);
 bool _sir_stdout_write(const sirchar_t* message);
 bool _sir_syslog_write(const sirchar_t* message);
 
-bool _sirbuf_append(sirbuf* buf, const sirchar_t* str);
-bool _sirbuf_resize(sirbuf* buf, size_t bytes);
-bool _sirbuf_seek(sirbuf* buf, size_t bytes);
-sirchar_t* _sirbuf_reserve(sirbuf* buf, size_t bytes);
-sirchar_t* _sirbuf_cursor(sirbuf* buf);
-bool _sirbuf_reset(sirbuf* buf);
-void _sirbuf_destroy(sirbuf* buf);
-bool _sirbuf_validate(sirbuf* buf);
+void _sirbuf_reset(sirbuf* buf);
+sirchar_t* _sirbuf_get(sirbuf* buf, size_t idx);
 
 sirfile* _sirfile_create(int id, const sirchar_t* path, sir_levels levels, sir_options opts);
 bool     _sirfile_write(sirfile* sf, const sirchar_t* output);
