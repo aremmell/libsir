@@ -12,8 +12,5 @@
 *.la
 *.a
 
-# visual studio code
-.vscode
-
 # build products
 build/
