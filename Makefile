@@ -11,9 +11,10 @@
 CC=gcc
 BUILDDIR=build
 
-GLOBALFLAGS=-Wpedantic -std=c99 -O3
-SHAREDFLAGS=-shared -fPIC $(GLOBALFLAGS)
-STATICFLAGS=$(GLOBALFLAGS)
+GLOBALFLAGS=-Wpedantic -std=c99 -I.
+SHAREDFLAGS=-shared -fPIC $(GLOBALFLAGS) -O3
+STATICFLAGS=$(GLOBALFLAGS) -O3
+DEBUGFLAGS=-g -DDEBUG $(GLOBALFLAGS)
 
 TUS=sir.c
 TESTTU=main.c
@@ -31,14 +32,14 @@ prep:
 	mkdir -p $(BUILDDIR)
 
 static: prep $(SRCFILES)
-	$(CC) $(STATICFLAGS) -o $(OBJS) -c $(TUS) -I.
+	$(CC) $(STATICFLAGS) -o $(OBJS) -c $(TUS)
 	ar -cr $(STATICOUT) $(OBJS)
 
 shared: prep $(SRCFILES)
-	$(CC) $(SHAREDFLAGS) -o $(SHAREDOUT) -c $(TUS) -I.
+	$(CC) $(SHAREDFLAGS) -o $(SHAREDOUT) -c $(TUS)
 
 test: $(TESTTU) $(SRCFILES)
-	$(CC) -g -o $(TESTOUT) $(TESTTU) $(TUS) -I.
+	$(CC) $(DEBUGFLAGS) -o $(TESTOUT) $(TESTTU) $(TUS)
 
 clean:
 	rm -f $(STATICOUT) $(SHAREDOUT) $(TESTOUT) $(OBJS)

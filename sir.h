@@ -17,20 +17,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
+#include <assert.h>
+#include <time.h>
 
 #ifndef _WIN32
+#include <syslog.h>
+#ifdef __linux__
+#include <linux/limits.h>
+#endif
 /*! The sequence of characters used to terminate output messages. */
 #define SIR_LINEENDING "\n"
 #else
+#include <Windows.h>
+#define PATH_MAX MAX_PATH
 /*! The sequence of characters used to terminate output messages. */
 #define SIR_LINEENDING "\r\n"
+#define SIR_NO_SYSLOG
 #endif
 
 /*! The maximum number of log files that may be registered. */
 #define SIR_MAXFILES 16
 
-/*! The maximum number of characters that may be included in one message. */
+/*! The maximum number of characters that may be included in one message,
+ * not including other parts of the output, like the timestamp and level. */
 #define SIR_MAXMESSAGE 2048
 
 /*! The initial size, in characters, of the buffer used to store messages. */
@@ -45,10 +54,18 @@
 /*! The size, in characters, of the buffer used to hold level format strings. */
 #define SIR_MAXLEVEL 16
 
-/*! The size, in characters, of the buffer used to hold
- * process/appname format strings.
- */
+/*! The size, in characters, of the buffer used to hold process/appname
+ * format strings. */
 #define SIR_MAXNAME 16
+
+/*! The maximum size, in characters, of final formatted output.
+ */
+#define SIR_MAXOUTPUT \
+    SIR_MAXMESSAGE + SIR_MAXTIME + SIR_MAXLEVEL + SIR_MAXNAME
+
+/*! A sensible (?) constraint for the limit of a file's path. Note that this value
+ * is only used in the absence of PATH_MAX. */
+#define SIR_MAXPATH 65535
 
 /*! The string representation of the ::SIRL_EMERG level in output. */
 #define SIRL_S_EMERG "EMER"
@@ -74,6 +91,9 @@
 /*! The string representation of the ::SIRL_DEBUG level in output. */
 #define SIRL_S_DEBUG "DBG"
 
+/*! The value used to represent an invalid file identifier. */
+#define SIR_INVALID (int)-1
+
 /*! Logging levels
  *
  * Each enum value corresponds to a function that sends output
@@ -91,7 +111,7 @@ typedef enum {
     SIRL_NOTICE = 0x20, /*!< Normal but significant. */
     SIRL_INFO   = 0x40, /*!< Informational messages. */
     SIRL_DEBUG  = 0x80, /*!< Verbose debugging output. */
-    SIRL_ALL    = 0xff  /*!< Includes all logging levels. */
+    SIRL_ALL    = 0xff /*! Includes all logging levels. */
 } sir_level;
 
 /*! One or more ::sir_level, bitwise OR'd. */
@@ -116,7 +136,7 @@ typedef char sirchar_t;
 
 /*! \struct sirinit
  *
- * \brief Initialization userData for the library.
+ * \brief Initialization data for the library.
  *
  * Allocate an instance of this struct and pass it to ::sir_init
  * in order to begin using the library.
@@ -124,47 +144,50 @@ typedef char sirchar_t;
  * Don't forget to call ::sir_cleanup when you're done.
  */
 typedef struct {
-    /*! Logging levels (::sir_level) to route to stdout. */
+    /*! Logging levels (::sir_level) to route to \a stdout. */
     sir_levels stdOutLevels;
 
-    /*! Output options (::sir_option) for stdout. */
+    /*! Output options (::sir_option) for \a stdout. */
     sir_options stdOutOptions;
 
-    /*! Logging levels (::sir_level) to route to stderr. */
+    /*! Logging levels (::sir_level) to route to \a stderr. */
     sir_levels stdErrLevels;
 
-    /*! Output options (::sir_option) for stderr. */
+    /*! Output options (::sir_option) for \a stderr. */
     sir_options stdErrOptions;
 
-#ifndef _WIN32
-    /*! Logging levels (::sir_level) to route to syslog. Only available if
-     * _WIN32 is not defined. */
+    /*! Logging levels (::sir_level) to route to \a syslog(3).
+     *
+     * \attention Only available if \a SIR_NO_SYSLOG is \a not defined in the preprocessor.
+     *  If \a _WIN32 is defined, \a SIR_NO_SYSLOG is automatically defined.
+     */
     sir_levels sysLogLevels;
 
-    /*! Output options (::sir_option) for syslog. Only available if _WIN32 is
-     * not defined. */
-    sir_options sysLogOptions;
-#endif
-
-    /*! A custom name to include in output (default: process name). If
-     * ::SIRO_NONAME is set in the options for the destination, no name is
-     * included in output. Set to NULL for the default.
+    /*! Output options (::sir_option) for \a syslog(3).
+     *
+     * \attention Only available if \a SIR_NO_SYSLOG is \a not defined in the preprocessor.
+     *  If \a _WIN32 is defined, \a SIR_NO_SYSLOG is automatically defined.
      */
-    const sirchar_t* appName;
+    sir_options sysLogOptions;
+
+    /*! A custom name to include in output (default: \a none). If ::SIRO_NONAME
+     * is set in the options for a destination, no name is included in output.
+     * Set to \a NULL for the default.
+     */
+    const sirchar_t* processName;
 
     /*! A custom time format to use in output (default: ::SIR_TIMEFORMAT). If
-     * ::SIRO_NOTIME is set in the options for the destination, no time is
-     * included in output. Set to NULL for the default.
+     * ::SIRO_NOTIME is set in the options for a destination, no time is
+     * included in output. Set to \a NULL for the default.
      */
     const sirchar_t* timeFmt;
 
-    /*! Where SIR should send its own internal logging (default: stderr) to
-     * assist in diagnosing any potential issues that may arise.  Set to NULL for the default.
+    /*! Where SIR should send its own internal logging (default: \a stderr) to
+     * assist in diagnosing any potential issues that may arise. Set to \a NULL for the default.
      *
-     * Note that if
-     * set, you need to use setlinebuf() in order to avoid any delays in output.
-     *
-     * Additionally, if set, SIR will \a not close the stream upon cleanup.
+     * \attention Only available if \a DEBUG is defined in the preprocessor. Use \a setlinebuf(3)
+     * in order to avoid any delays in output if overridden. SIR does \a not call \a fclose(3) 
+     * on the stream upon cleanup.
      */
     FILE* selfOutput;
 } sirinit;
@@ -317,8 +340,7 @@ bool siremerg(const sirchar_t* format, ...);
  */
 void sir_cleanup();
 
-/*! \fn int sir_addfile(const sirchar_t* path, sir_levels levels, sir_options
- * opts)
+/*! \fn int sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts)
  *
  * \brief Adds a log file output destination.
  *
@@ -326,11 +348,14 @@ void sir_cleanup();
  * matching any of the ::sir_level flags set in \a levels is emitted.
  *
  * \param[in] path The path to the log file. It will be created if it doesn't
- * exist. \param[in] levels One or more ::sir_level logging levels for which
- * output should be append to the file. \param[in] opts Zero or more
- * ::sir_option flags to control output formatting.
+ * exist.
+ * 
+ * \param[in] levels One or more ::sir_level logging levels for which
+ * output should be append to the file.
+ * 
+ * \param[in] opts Zero or more ::sir_option flags to control output formatting.
  *
- * \return A unique identifier for the file, or zero if an error occurs.
+ * \return A unique identifier for the file, or ::SIR_INVALID (-1) if an error occurs.
  */
 int sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts);
 
@@ -338,7 +363,7 @@ int sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts);
  *
  * \brief Removes a previously added log file.
  *
- * \param[in] id The identifier returned from ::sir_addfile earlier.
+ * \param[in] id The identifier returned from ::sir_addfile.
  *
  * \return boolean success
  */
@@ -371,10 +396,10 @@ typedef struct {
 } sirbuf;
 
 typedef struct {
-    sirchar_t timestamp[SIR_MAXTIME];
-    sirchar_t level[SIR_MAXLEVEL];
-    sirchar_t name[SIR_MAXNAME];
-    sirchar_t message[SIR_MAXMESSAGE];
+    sirchar_t* timestamp;
+    sirchar_t* level;
+    sirchar_t* name;
+    sirchar_t* message;
 } siroutput;
 
 #define _SIR_L_START(format) \
@@ -382,11 +407,20 @@ typedef struct {
     va_list args;            \
     va_start(args, format);
 
-#define _SIR_L_END(args) va_end(args);
+#define _SIR_L_END(args) \
+    va_end(args);
 
-#define validstr(n) (NULL != n && *n != '\0')
+#define validstr(n) \
+    (NULL != n && *n != '\0')
 
-#define flagtest(flags, test) ((flags & test) == test)
+#define validid(id) \
+    (id >= 0 && id < SIR_MAXFILES)
+
+#define validlevels(levels) \
+    ((levels & SIRL_ALL) != 0)
+
+#define flagtest(flags, test) \
+    ((flags & test) == test)    
 
 #define safefree(p) \
     if (p) {        \
@@ -401,22 +435,33 @@ typedef struct {
     }
 
 bool _sir_lv(sir_level level, const sirchar_t* format, va_list args);
-bool _sir_l(const sirchar_t* format, ...);
+void _sir_l(const sirchar_t* format, ...);
 
+bool _sir_destformat(sirbuf* buf, sir_options opts, const siroutput* output);
 bool _sir_dispatch(sir_level level, const siroutput* output);
+bool _sir_stderr_write(const sirchar_t* message);
+bool _sir_stdout_write(const sirchar_t* message);
+bool _sir_syslog_write(const sirchar_t* message);
 
 bool _sirbuf_append(sirbuf* buf, const sirchar_t* str);
-bool _sirbuf_reset(sirbuf* buf, bool realloc);
+bool _sirbuf_resize(sirbuf* buf, size_t bytes);
+bool _sirbuf_seek(sirbuf* buf, size_t bytes);
+sirchar_t* _sirbuf_reserve(sirbuf* buf, size_t bytes);
+sirchar_t* _sirbuf_cursor(sirbuf* buf);
+bool _sirbuf_reset(sirbuf* buf);
+void _sirbuf_destroy(sirbuf* buf);
+bool _sirbuf_validate(sirbuf* buf);
 
 sirfile* _sirfile_create(int id, const sirchar_t* path, sir_levels levels, sir_options opts);
 bool     _sirfile_write(sirfile* sf, const sirchar_t* output);
+bool _sirfile_writeheader(sirfile* sf);
 void     _sirfile_destroy(sirfile* sf);
 bool     _sirfile_validate(sirfile* sf);
 
 FILE* _sir_fopen(const sirchar_t* path);
 void  _sir_fclose(FILE** f);
 
-bool _sir_files_add(sirfiles* sfc, const sirchar_t* path, sir_levels levels, sir_options opts);
+int _sir_files_add(sirfiles* sfc, const sirchar_t* path, sir_levels levels, sir_options opts);
 bool _sir_files_rem(sirfiles* sfc, int id);
 bool _sir_files_destroy(sirfiles* sfc);
 bool _sir_files_dispatch(sirfiles* sfc, sir_level level, const siroutput* output);
