@@ -21,9 +21,6 @@ bool sir_init(const sirinit* si) {
     sir_cleanup();
     memcpy(&sir_s, si, sizeof(sirinit));
 
-    if (!sir_s.selfOutput)
-        sir_s.selfOutput = stderr;
-
 #ifndef SIR_NO_SYSLOG
     // TODO: if not using process name, use pid for syslog identity?
     if (0 != sir_s.sysLogLevels)
@@ -178,7 +175,7 @@ void _sir_l(const sirchar_t* format, ...) {
     assert(print > 0);
 
     if (print > 0) {
-        int put = fputs(output, sir_s.selfOutput ? sir_s.selfOutput : stderr);
+        int put = fputs(output, stderr);
         assert(put != EOF);
     }
 #else
