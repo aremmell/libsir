@@ -260,7 +260,7 @@ const sirchar_t* _sir_format(sir_options opts, siroutput* output) {
             strncat(output->output, ": ", 2);
 
         strncat(output->output, output->message, SIR_MAXMESSAGE);
-        strncat(output->output, SIR_LINEENDING, 2);
+        strncat(output->output, "\n", 1);
 
         return output->output;
     }
@@ -275,7 +275,7 @@ bool _sir_stderr_write(const sirchar_t* message) {
 }
 
 bool _sir_stdout_write(const sirchar_t* message) {
-    int write = puts(message);
+    int write = fputs(message, stdout);
     assert(write >= 0);
     return write >= 0;
 }

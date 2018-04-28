@@ -42,13 +42,9 @@
 #undef SIR_MSEC_TIMER
 #endif
 
-/*! The sequence of characters used to terminate output messages. */
-#define SIR_LINEENDING "\n"
 #else
 #include <Windows.h>
 #define SIR_MAXPATH MAX_PATH
-/*! The sequence of characters used to terminate output messages. */
-#define SIR_LINEENDING "\r\n"
 #define SIR_NO_SYSLOG
 #undef SIR_MSEC_TIMER
 #endif
@@ -560,7 +556,7 @@ const sirchar_t* _sir_levelstr(sir_level level);
 bool             _sir_destwantslevel(sir_levels destLevels, sir_level level);
 
 bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf);
-bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format, size_t size);
+bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format);
 
 #ifdef _WIN32
     void _sir_invalidparam(
