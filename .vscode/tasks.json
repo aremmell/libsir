@@ -36,6 +36,13 @@
                 "reveal": "always",
                 "panel": "dedicated"
             },
+            "linux": {},
+            "windows": {
+                "command": "mingw32-make",
+                "args": [
+                    "debug"
+                ],
+            },
             "problemMatcher": [
                 "$gcc"
             ]
