@@ -522,6 +522,9 @@ typedef struct {
         f = NULL;     \
     }
 
+#define resetstr(str) \
+    str[0] = (sirchar_t)'\0';
+
 bool _sir_lv(sir_level level, const sirchar_t* format, va_list args);
 void _sir_l(const sirchar_t* format, ...);
 
@@ -533,7 +536,7 @@ bool _sir_stdout_write(const sirchar_t* message);
 int _sir_syslog_maplevel(sir_level level);
 #endif
 
-void _sirbuf_reset(sirbuf* buf);
+void _sirbuf_reset(sirbuf* buf, bool full);
 sirchar_t* _sirbuf_get(sirbuf* buf, size_t idx);
 
 sirfile* _sirfile_create(const sirchar_t* path, sir_levels levels, sir_options opts);

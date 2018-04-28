@@ -100,7 +100,7 @@ void sir_cleanup(void) {
     _sir_files_destroy(&sir_fc);
     memset(&sir_s, 0, sizeof(sirinit));
     memset(&sir_fc, 0, sizeof(sirfiles));
-    _sirbuf_reset(&sir_b);
+    _sirbuf_reset(&sir_b, true);
 }
 
 int sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts) {
@@ -120,6 +120,7 @@ bool _sir_lv(sir_level level, const sirchar_t* format, va_list args) {
 
     siroutput output = {0};
 
+    _sirbuf_reset(&sir_b, false);
     output.timestamp = _sirbuf_get(&sir_b, _SIRBUF_TIME);
     assert(output.timestamp);
 
@@ -163,9 +164,6 @@ bool _sir_lv(sir_level level, const sirchar_t* format, va_list args) {
 
     output.output = _sirbuf_get(&sir_b, _SIRBUF_OUTPUT);
     assert(output.output);
-
-    if (output.output)
-        output.output[0] = (sirchar_t)'\0';
 
     return _sir_dispatch(level, &output);
 }
@@ -299,9 +297,22 @@ int _sir_syslog_maplevel(sir_level level) {
 }
 #endif
 
-void _sirbuf_reset(sirbuf* buf) {
-    if (buf)
-        memset(buf, 0, sizeof(sirbuf));
+void _sirbuf_reset(sirbuf* buf, bool full) {
+
+    assert(buf);
+
+    if (buf) {
+        if (full) {
+            memset(buf, 0, sizeof(sirbuf));
+        } else {
+            resetstr(buf->timestamp);
+            resetstr(buf->msec);
+            resetstr(buf->level);
+            resetstr(buf->name);
+            resetstr(buf->message);
+            resetstr(buf->output);
+        }
+    }
 }
 
 /* in case there's a better way to implement this
@@ -392,6 +403,8 @@ bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
              */
 
             clearerr(sf->f);
+        } else {
+            _sir_fflush(sf->f);
         }
 
         return write == writeLen;
@@ -626,6 +639,8 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
     assert(tbuf);
 
     if (tbuf) {
+        time(tbuf);
+
 #ifdef SIR_MSEC_TIMER
         struct timespec ts = {0};
 
@@ -633,20 +648,16 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
         assert(0 == clock);
 
         if (0 == clock) {
-            *tbuf = ts.tv_sec;
             if (nsecbuf) {
                 *nsecbuf = (ts.tv_nsec / 1e6);
                 assert(*nsecbuf < 1000);
             }
         } else {
-            time(tbuf);
             *nsecbuf = 0;
             _sir_l("%s: clock_gettime failed; errno: %d\n", __func__, errno);
         }
 #else
 #pragma message "no support for millisecond computation on this platform."
-        time(tbuf);
-
         if (nsecbuf)
             *nsecbuf = 0;
 #endif        

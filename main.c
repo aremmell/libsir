@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
     }
 
     sir_options file1opts = 0;
-    int id1 = sir_addfile("test.log", SIRL_ALL, file1opts);
+    int id1 = sir_addfile("test.log", SIRL_ALL,  file1opts);
 
     if (SIR_INVALID == id1) {
         fprintf(stderr, "Failed to add file 1!\n");
