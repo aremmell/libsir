@@ -186,9 +186,10 @@ typedef enum {
     SIRO_NOHDR = 0x1000,
 
     /*! Includes all other options; effectively disables all output formatting except
-     * the original formatted message.
+     * the original formatted message (does not include ::SIRO_NOHDR; set that flag
+     * in addition to remove header messages).
      */
-    SIRO_MSGONLY = 0xff00
+    SIRO_MSGONLY = 0xef00
 } sir_option;
 
 /*! One or more ::sir_option, bitwise OR'd. */
