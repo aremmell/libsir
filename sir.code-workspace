@@ -6,7 +6,10 @@
 	],
     "settings": {
         "files.associations": {
-            "stdlib.h": "c"
+            "stdlib.h": "c",
+            "inttypes.h": "c",
+            "cinttypes": "c",
+            "time.h": "c"
         }
     }
 }

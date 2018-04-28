@@ -7,13 +7,11 @@
  * \date 2003-2018
  * \copyright MIT License
  */
-
-#define _POSIX_C_SOURCE 200809L
 #include "sir.h"
 
-sirinit  sir_s = {0};
+sirinit  sir_s  = {0};
 sirfiles sir_fc = {0};
-sirbuf   sir_b = {0};
+sirbuf   sir_b  = {0};
 
 bool sir_init(const sirinit* si) {
 
@@ -25,6 +23,13 @@ bool sir_init(const sirinit* si) {
 
     if (!sir_s.selfOutput)
         sir_s.selfOutput = stderr;
+
+#ifndef SIR_NO_SYSLOG
+// TODO: if not using process name, use pid for syslog identity?
+    if (0 != sir_s.sysLogLevels)
+        openlog(validstr(sir_s.processName) ? sir_s.processName : "",
+            (sir_s.sysLogIncludePID ? LOG_PID : 0) | LOG_ODELAY, LOG_USER);
+#endif
 
     return true;
 }
@@ -96,65 +101,68 @@ int sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts) {
     return _sir_files_add(&sir_fc, path, levels, opts);
 }
 
-bool sir_remfile(int id) { return _sir_files_rem(&sir_fc, id); }
+bool sir_remfile(int id) {
+    return _sir_files_rem(&sir_fc, id);
+}
 
 /*! \cond PRIVATE */
 
 bool _sir_lv(sir_level level, const sirchar_t* format, va_list args) {
 
-    bool r = false;
-
     assert(0 != level);
     assert(validstr(format));
 
-    siroutput* output = (siroutput*)calloc(1, sizeof(siroutput));
+    siroutput output = {0};
 
-    if (output) {
+    output.timestamp = _sirbuf_get(&sir_b, _SIRBUF_TIME);
+    assert(output.timestamp);
 
-        time_t now;
-        time(&now);
+    time_t now;
+    long nowmsec;
+    bool gettime = _sir_getlocaltime(&now, &nowmsec);
+    assert(gettime);
 
-        output->timestamp = _sirbuf_get(&sir_b, _SIRBUF_TIME);
-        assert(output->timestamp);
+    if (gettime) {
+        const sirchar_t* timeformat = validstr(sir_s.timeFmt) ? sir_s.timeFmt : SIR_TIMEFORMAT;
+        bool fmt = _sir_formattime(now, output.timestamp, timeformat);
+        assert(fmt);
 
-        const sirchar_t* timeformat = validstr(sir_s.timeFmt) ?sir_s.timeFmt : SIR_TIMEFORMAT;
-        size_t fmt = strftime(output->timestamp, SIR_MAXTIME, timeformat, localtime(&now));
-        assert(0 != fmt);
+        output.msec = _sirbuf_get(&sir_b, _SIRBUF_MSEC);
+        assert(output.msec);
 
-        if (0 == fmt)
-            _sir_l("%s: strftime returned 0! check SIR_TIMEFORMAT?", __func__);
-
-        output->level = _sirbuf_get(&sir_b, _SIRBUF_LEVEL);
-        assert(output->level);
-        snprintf(output->level, SIR_MAXLEVEL, "%s", _sir_levelstr(level));
-
-        if (validstr(sir_s.processName)) {
-            output->name = _sirbuf_get(&sir_b, _SIRBUF_NAME);
-            assert(output->name);
-            strncpy(output->name, sir_s.processName, SIR_MAXNAME - 1);
-        }
-
-        output->message = _sirbuf_get(&sir_b, _SIRBUF_MSG);
-        assert(output->message);
-
-        int msgfmt = vsnprintf(output->message, SIR_MAXMESSAGE, format, args);
-        assert(msgfmt >= 0);
-
-        if (msgfmt < 0)
-            _sir_l("%s: vsnprintf returned %d!", __func__, msgfmt);
-
-        _sir_l("%s: timestamp: '%s', level: '%s', name: '%s', message: '%s'\n",
-            __func__, output->timestamp, output->level, output->name, output->message);
-        r = _sir_dispatch(level, output);
-
-        safefree(output);
+        snprintf(output.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec);
     }
 
-    return r;
+    output.level = _sirbuf_get(&sir_b, _SIRBUF_LEVEL);
+    assert(output.level);
+    snprintf(output.level, SIR_MAXLEVEL, "[%s]", _sir_levelstr(level));
+
+    if (validstr(sir_s.processName)) {
+        output.name = _sirbuf_get(&sir_b, _SIRBUF_NAME);
+        assert(output.name);
+        strncpy(output.name, sir_s.processName, SIR_MAXNAME - 1);
+    }
+
+    /*! \todo add support for syslog's %m */
+    output.message = _sirbuf_get(&sir_b, _SIRBUF_MSG);
+    assert(output.message);
+    int msgfmt = vsnprintf(output.message, SIR_MAXMESSAGE, format, args);
+    assert(msgfmt >= 0);
+
+    if (msgfmt < 0)
+        _sir_l("%s: vsnprintf returned %d!", __func__, msgfmt);
+
+    output.output = _sirbuf_get(&sir_b, _SIRBUF_OUTPUT);
+    assert(output.output);
+
+    if (output.output)
+        output.output[0] = (sirchar_t)'\0';
+
+    return _sir_dispatch(level, &output);
 }
 
 void _sir_l(const sirchar_t* format, ...) {
-#ifdef DEBUG
+#ifdef SIR_SELFLOG
     sirchar_t output[SIR_MAXMESSAGE] = {0};
     va_list   args;
 
@@ -170,47 +178,117 @@ void _sir_l(const sirchar_t* format, ...) {
     }
 #else
     format = format;
-#endif    
+#endif
 }
 
-bool _sir_destformat(sirbuf* buf, sir_options opts, const siroutput* output) {
+bool _sir_dispatch(sir_level level, siroutput* output) {
 
-    assert(buf);
-    assert(output);
-
-
-    return false;
-}
-
-bool _sir_dispatch(sir_level level, const siroutput* output) {
-
-    bool r = false;
+    bool r = true;
 
     assert(0 != level);
     assert(output);
-    
+
     if (0 != level && output) {
-        r &= _sir_stderr_write("");
-        r &= _sir_stdout_write("");
+        if (_sir_destwantslevel(sir_s.stdErrLevels, level)) {
+            const sirchar_t* write = _sir_format(sir_s.stdErrOptions, output);
+            assert(write);
+            r &= NULL != write && _sir_stderr_write(write);
+        }
+
+        if (_sir_destwantslevel(sir_s.stdOutLevels, level)) {
+            const sirchar_t* write = _sir_format(sir_s.stdOutOptions, output);
+            assert(write);
+            r &= _sir_stdout_write(output->output);
+        }
+
 #ifndef SIR_NO_SYSLOG
-        r &= _sir_syslog_write("");
+        if (_sir_destwantslevel(sir_s.sysLogLevels, level)) {
+            syslog(_sir_syslog_maplevel(level), "%s", output->message);
+        }
 #endif
+
+        return r && _sir_files_dispatch(&sir_fc, level, output);
     }
 
-    return r;
+    return false;
+}
+
+const sirchar_t* _sir_format(sir_options opts, siroutput* output) {
+
+    assert(validopts(opts));
+    assert(output);
+    assert(output->output);
+
+    /*
+     * [time stamp][msec] [level] [name]: message
+     */
+
+    if (validopts(opts) && output && output->output) {
+        bool first = true;
+
+        if (!flagtest(opts, SIRO_NOTIME)) {
+            strncat(output->output, output->timestamp, SIR_MAXTIME);
+            first = false;
+
+#ifdef SIR_MSEC_TIMER
+            if (!flagtest(opts, SIRO_NOMSEC))
+                strncat(output->output, output->msec, SIR_MAXMSEC);
+#endif                            
+        }
+
+        if (!flagtest(opts, SIRO_NOLEVEL)) {
+            if (!first)
+                strncat(output->output, " ", 1);
+            strncat(output->output, output->level, SIR_MAXLEVEL);
+            first = false;
+        }
+
+        if (!flagtest(opts, SIRO_NONAME)) {
+            if (!first)
+                strncat(output->output, " ", 1);
+            strncat(output->output, output->name, SIR_MAXNAME);
+            first = false;
+        }
+
+        if (!first)
+            strncat(output->output, ": ", 2);
+
+        strncat(output->output, output->message, SIR_MAXMESSAGE);
+        strncat(output->output, SIR_LINEENDING, 2);
+
+        return output->output;
+    }
+
+    return NULL;
 }
 
 bool _sir_stderr_write(const sirchar_t* message) {
-    return false;
+    int write = fputs(message, stderr);
+    assert(write > 0);
+    return write > 0;
 }
 
 bool _sir_stdout_write(const sirchar_t* message) {
-    return false;
+    int write = puts(message);
+    assert(write > 0);
+    return write > 0;
 }
 
-bool _sir_syslog_write(const sirchar_t* message) {
-    return false;
+#ifndef SIR_NO_SYSLOG
+int _sir_syslog_maplevel(sir_level level) {
+    switch (level) {
+        case SIRL_EMERG: return LOG_EMERG;
+        case SIRL_ALERT: return LOG_ALERT;
+        case SIRL_CRIT: return LOG_CRIT;
+        case SIRL_ERROR: return LOG_ERR;
+        case SIRL_WARN: return LOG_WARNING;
+        case SIRL_NOTICE: return LOG_NOTICE;
+        case SIRL_INFO: return LOG_INFO;
+        case SIRL_DEBUG: return LOG_DEBUG;
+        default: assert(false); return LOG_INFO;
+    }
 }
+#endif
 
 void _sirbuf_reset(sirbuf* buf) {
     if (buf)
@@ -218,57 +296,57 @@ void _sirbuf_reset(sirbuf* buf) {
 }
 
 /* in case there's a better way to implement this
- * buffer, abstract it away.
+ * hms, abstract it away.
  */
 sirchar_t* _sirbuf_get(sirbuf* buf, size_t idx) {
 
     assert(idx <= _SIRBUF_MAX);
 
     switch (idx) {
-        case _SIRBUF_TIME:
-            return buf->timestamp;
-        case _SIRBUF_LEVEL:
-            return buf->level;
-        case _SIRBUF_NAME:
-            return buf->name;
-        case _SIRBUF_MSG:
-            return buf->message;
-        default:
-            assert(false);
+        case _SIRBUF_TIME: return buf->timestamp;
+        case _SIRBUF_MSEC: return buf->msec;
+        case _SIRBUF_LEVEL: return buf->level;
+        case _SIRBUF_NAME: return buf->name;
+        case _SIRBUF_MSG: return buf->message;
+        case _SIRBUF_OUTPUT: return buf->output;
+        default: assert(false);
     }
 
     return NULL;
 }
 
-sirfile* _sirfile_create(int id, const sirchar_t* path, sir_levels levels, sir_options opts) {
+sirfile* _sirfile_create(const sirchar_t* path, sir_levels levels, sir_options opts) {
 
     sirfile* sf = NULL;
 
-    assert(validid(id));
-    assert(validlevels(levels));
     assert(validstr(path));
+    assert(validlevels(levels));
+    assert(validopts(opts));
 
-    if (validid(id) && validlevels(levels)) {
+    if (validstr(path) && validlevels(levels) && validopts(opts)) {
         FILE* f = _sir_fopen(path);
         assert(f);
 
         if (f) {
-            sf = (sirfile*)calloc(1, sizeof(sirfile));
-            assert(sf);
+            int fd = fileno(f);
+            validid(fd);
 
-            if (sf) {
-                size_t pathLen = strnlen(path, PATH_MAX);
-                sf->path       = (sirchar_t*)calloc(pathLen + 1, sizeof(sirchar_t));
-                assert(sf->path);
+            if (validid(fd)) {
+                sf = (sirfile*)calloc(1, sizeof(sirfile));
+                assert(sf);
 
-                if (sf->path) {
-                    memcpy(sf->path, path, pathLen);
-                    sf->f      = f;
-                    sf->levels = levels;
-                    sf->opts   = opts;
-                    sf->id     = id;
+                if (sf) {
+                    size_t pathLen = strnlen(path, PATH_MAX);
+                    sf->path       = (sirchar_t*)calloc(pathLen + 1, sizeof(sirchar_t));
+                    assert(sf->path);
 
-                    _sirfile_writeheader(sf);
+                    if (sf->path) {
+                        strncpy(sf->path, path, pathLen);
+                        sf->f      = f;
+                        sf->levels = levels;
+                        sf->opts   = opts;
+                        sf->id     = fd;
+                    }
                 }
             }
 
@@ -282,13 +360,13 @@ sirfile* _sirfile_create(int id, const sirchar_t* path, sir_levels levels, sir_o
 
 bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
 
-    bool r = false;
-
     assert(validstr(output));
 
     if (_sirfile_validate(sf) && validstr(output)) {
         size_t writeLen = strnlen(output, SIR_MAXOUTPUT);
         size_t write    = fwrite(output, sizeof(sirchar_t), writeLen, sf->f);
+
+        assert(write == writeLen);
 
         if (write < writeLen) {
             int err = ferror(sf->f);
@@ -296,8 +374,8 @@ bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
 
             assert(0 == err && 0 == eof);
 
-            _sir_l("%s: wrote only %lu/%lu bytes to {%d, '%s'}; ferror: %d, feof: %d\n",
-                __func__, write, writeLen, sf->id, sf->path, err, eof);
+            _sir_l("%s: wrote %lu/%lu bytes to %d; ferror: %d, feof: %d\n", __func__, write, writeLen,
+                sf->id, err, eof);
 
             /*! \todo
              * If an error occurs on write, consider removing file from targets,
@@ -306,29 +384,68 @@ bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
 
             clearerr(sf->f);
         }
-    }
 
-    return r;
-}
-
-bool _sirfile_writeheader(sirfile* sf) {
-
-    if (_sirfile_validate(sf)) {
-
+        return write == writeLen;
     }
 
     return false;
 }
 
-FILE* _sir_fopen(const sirchar_t* path) { return validstr(path) ? fopen(path, "a") : NULL; }
+bool _sirfile_writeheader(sirfile* sf) {
+
+    assert(_sirfile_validate(sf));
+
+    if (_sirfile_validate(sf)) {
+        time_t now;            
+        bool gettime = _sir_getlocaltime(&now, NULL);
+        assert(gettime);
+
+        if (gettime) {
+            sirchar_t time[SIR_MAXTIME] = {0};      
+            bool fmttime = _sir_formattime(now, time, SIR_FHTIMEFORMAT);
+            assert(fmttime);
+
+            if (fmttime) {
+                sirchar_t header[SIR_MAXOUTPUT] = {0};
+                          
+                int fmt = snprintf(header, SIR_MAXOUTPUT, SIR_FHFORMAT, time);
+                assert(fmt >= 0);
+
+                if (fmt < 0) {
+                    _sir_l("%s: snprintf returned %d!", __func__, fmt); 
+                } else {
+                    return _sirfile_write(sf, header);
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+FILE* _sir_fopen(const sirchar_t* path) {
+    return validstr(path) ? fopen(path, "a") : NULL;
+}
 
 void _sir_fclose(FILE** f) {
-    if (f && *f)
+    if (f && *f) {
         safefclose(*f);
+    }
+}
+
+void _sir_fflush(FILE* f) {
+
+    assert(f);
+
+    if (f) {
+        int flush = fflush(f);
+        assert(0 == flush);
+    }
 }
 
 void _sirfile_destroy(sirfile* sf) {
     if (sf) {
+        _sir_fflush(sf->f);
         _sir_fclose(&sf->f);
         safefree(sf->path);
         safefree(sf);
@@ -343,17 +460,26 @@ bool _sirfile_validate(sirfile* sf) {
 
 int _sir_files_add(sirfiles* sfc, const sirchar_t* path, sir_levels levels, sir_options opts) {
 
-    assert(sfc);
-    assert(validlevels(levels));
+    assert(sfc);    
     assert(validstr(path));
+    assert(validlevels(levels));
+    assert(validopts(opts));
 
-    if (sfc && validlevels(levels) && validstr(path)) {
-        sirfile* sf = _sirfile_create(sfc->count + 1, path, levels, opts);
-        assert(_sirfile_validate(sf));
+    if (sfc && validlevels(levels) && validopts(opts) && validstr(path)) {
+        assert(sfc->count < SIR_MAXFILES);
 
-        if (_sirfile_validate(sf)) {
-            sfc->files[sfc->count++] = sf;
-            return sf->id;
+        if (sfc->count < SIR_MAXFILES) {
+            sirfile* sf = _sirfile_create(path, levels, opts);
+            assert(_sirfile_validate(sf));
+
+            if (_sirfile_validate(sf)) {
+                sfc->files[sfc->count++] = sf;
+                
+                if (!flagtest(sf->opts, SIRO_NOHDR))
+                    _sirfile_writeheader(sf);
+
+                return sf->id;
+            }
         }
     }
 
@@ -364,17 +490,19 @@ bool _sir_files_rem(sirfiles* sfc, int id) {
 
     assert(sfc);
     assert(validid(id));
-    assert(id < sfc->count);
 
-    if (sfc && validid(id) && id < sfc->count) {
+    if (sfc && validid(id)) {
         for (size_t n = 0; n < sfc->count; n++) {
             assert(_sirfile_validate(sfc->files[n]));
 
             if (sfc->files[n]->id == id) {
                 _sirfile_destroy(sfc->files[n]);
-                for (size_t i = n; i < sfc->count - 1; i++) {
-                    sfc->files[i]     = sfc->files[i + 1];
-                    sfc->files[i + 1] = NULL;
+
+                for (size_t i = n; i < sfc->count; i++) {
+                    sfc->files[i] = sfc->files[i + 1];
+
+                    if (i < sfc->count - 1)
+                        sfc->files[i + 1] = NULL;
 
                     assert(sfc->count > 0);
                     sfc->count--;
@@ -407,7 +535,9 @@ bool _sir_files_destroy(sirfiles* sfc) {
     return false;
 }
 
-bool _sir_files_dispatch(sirfiles* sfc, sir_level level, const siroutput* output) {
+bool _sir_files_dispatch(sirfiles* sfc, sir_level level, siroutput* output) {
+
+    bool r = true;
 
     assert(sfc);
     assert(0 != level);
@@ -418,33 +548,42 @@ bool _sir_files_dispatch(sirfiles* sfc, sir_level level, const siroutput* output
         for (size_t n = 0; n < sfc->count; n++) {
             assert(_sirfile_validate(sfc->files[n]));
 
-            if (!_sir_destwantslevel(sfc->files[n]->levels, level))
+            if (!_sir_destwantslevel(sfc->files[n]->levels, level)) {
+                _sir_l("%s: levels for %d (%04lx) not set for (%04lx); skipping...\n",
+                    __func__, sfc->files[n]->id, sfc->files[n]->levels, level, written, sfc->count);
                 continue;
+            }
 
-            /*! \todo format string and write */
-            _sirfile_write(sfc->files[n], "");
-            written++;
+            const sirchar_t* write = _sir_format(sfc->files[n]->opts, output);
+            assert(write);
+
+            if (write && _sirfile_write(sfc->files[n], write)) {
+                r &= true;
+                written++;
+            } else {
+                _sir_l("%s: write to %d failed! errno: %d\n", __func__, sfc->files[n]->id, errno);
+            }
         }
 
-        return 0 != written;
+        _sir_l("%s: wrote to %d/%lu log file(s)\n", __func__, written, sfc->count);
     }
 
-    return false;
+    return r;
 }
 
-bool _sir_options_sanity(const sirinit* si) { 
+bool _sir_options_sanity(const sirinit* si) {
     return true;
 }
 
 const sirchar_t* _sir_levelstr(sir_level level) {
     switch (level) {
-        case SIRL_EMERG: return SIRL_S_EMERG;
-        case SIRL_ALERT: return SIRL_S_ALERT;
-        case SIRL_CRIT: return SIRL_S_CRIT;
-        case SIRL_ERROR: return SIRL_S_ERROR;
-        case SIRL_WARN: return SIRL_S_WARN;
-        case SIRL_NOTICE: return SIRL_S_NOTICE;
         case SIRL_INFO: return SIRL_S_INFO;
+        case SIRL_NOTICE: return SIRL_S_NOTICE;
+        case SIRL_WARN: return SIRL_S_WARN;
+        case SIRL_ERROR: return SIRL_S_ERROR;
+        case SIRL_CRIT: return SIRL_S_CRIT;
+        case SIRL_ALERT: return SIRL_S_ALERT;
+        case SIRL_EMERG: return SIRL_S_EMERG;
         case SIRL_DEBUG:
         default: return SIRL_S_DEBUG;
     }
@@ -452,6 +591,62 @@ const sirchar_t* _sir_levelstr(sir_level level) {
 
 bool _sir_destwantslevel(sir_levels destLevels, sir_level level) {
     return flagtest(destLevels, level);
+}
+
+bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format) {
+
+    assert(now);
+    assert(buffer);
+    assert(validstr(format));
+
+    if (0 != now && buffer && validstr(format)) {
+        size_t fmt = strftime(buffer, SIR_MAXTIME, format, localtime(&now));
+        assert(0 != fmt);
+
+        if (0 == fmt)
+            _sir_l("%s: strftime returned 0; format string: '%s'", __func__, format);
+    
+        return 0 != fmt;
+    }
+
+    return false;
+}
+
+#include <inttypes.h>
+
+bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
+
+    assert(tbuf);
+
+    if (tbuf) {
+#ifdef SIR_MSEC_TIMER
+        struct timespec ts = {0};
+
+        int clock = clock_gettime(SIR_MSECCLOCK, &ts);
+        assert(0 == clock);
+
+        if (0 == clock) {
+            *tbuf = ts.tv_sec;
+            if (nsecbuf) {
+                *nsecbuf = (ts.tv_nsec / 1e6);
+                assert(*nsecbuf < 1000);
+            }
+        } else {
+            time(tbuf);
+            *nsecbuf = 0;
+            _sir_l("%s: clock_gettime failed; errno: %d\n", __func__, errno);
+        }
+#else
+#warning no support for millisecond computation on this platform.
+        time(tbuf);
+
+        if (nsecbuf)
+            *nsecbuf = 0;
+#endif        
+        return true;
+    }
+
+    return false;
 }
 
 /*! \endcond PRIVATE */
