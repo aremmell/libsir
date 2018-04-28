@@ -25,7 +25,7 @@ bool sir_init(const sirinit* si) {
         sir_s.selfOutput = stderr;
 
 #ifndef SIR_NO_SYSLOG
-// TODO: if not using process name, use pid for syslog identity?
+    // TODO: if not using process name, use pid for syslog identity?
     if (0 != sir_s.sysLogLevels)
         openlog(validstr(sir_s.processName) ? sir_s.processName : "",
             (sir_s.sysLogIncludePID ? LOG_PID : 0) | LOG_ODELAY, LOG_USER);
@@ -100,7 +100,7 @@ void sir_cleanup(void) {
     _sir_files_destroy(&sir_fc);
     memset(&sir_s, 0, sizeof(sirinit));
     memset(&sir_fc, 0, sizeof(sirfiles));
-    _sirbuf_reset(&sir_b, true);
+    _sirbuf_reset(&sir_b);
 }
 
 int sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts) {
@@ -120,18 +120,17 @@ bool _sir_lv(sir_level level, const sirchar_t* format, va_list args) {
 
     siroutput output = {0};
 
-    _sirbuf_reset(&sir_b, false);
     output.timestamp = _sirbuf_get(&sir_b, _SIRBUF_TIME);
     assert(output.timestamp);
 
     time_t now;
-    long nowmsec;
-    bool gettime = _sir_getlocaltime(&now, &nowmsec);
+    long   nowmsec;
+    bool   gettime = _sir_getlocaltime(&now, &nowmsec);
     assert(gettime);
 
     if (gettime) {
         const sirchar_t* timeformat = validstr(sir_s.timeFmt) ? sir_s.timeFmt : SIR_TIMEFORMAT;
-        bool fmt = _sir_formattime(now, output.timestamp, timeformat);
+        bool             fmt        = _sir_formattime(now, output.timestamp, timeformat);
         assert(fmt);
 
         output.msec = _sirbuf_get(&sir_b, _SIRBUF_MSEC);
@@ -147,10 +146,9 @@ bool _sir_lv(sir_level level, const sirchar_t* format, va_list args) {
     if (validstr(sir_s.processName)) {
         output.name = _sirbuf_get(&sir_b, _SIRBUF_NAME);
         assert(output.name);
-        //strncpy(output.name, sir_s.processName, SIR_MAXNAME - 1);
+        // strncpy(output.name, sir_s.processName, SIR_MAXNAME - 1);
 #pragma message "TODO: refactor me"
-        snprintf(output.name, SIR_MAXNAME, "%s (%d:%d)", sir_s.processName,
-            _sir_getpid(), _sir_gettid());
+        snprintf(output.name, SIR_MAXNAME, "%s (%d:%d)", sir_s.processName, _sir_getpid(), _sir_gettid());
     }
 
     /*! \todo add support for syslog's %m */
@@ -233,6 +231,8 @@ const sirchar_t* _sir_format(sir_options opts, siroutput* output) {
     if (validopts(opts) && output && output->output) {
         bool first = true;
 
+        resetstr(output->output);
+
         if (!flagtest(opts, SIRO_NOTIME)) {
             strncat(output->output, output->timestamp, SIR_MAXTIME);
             first = false;
@@ -240,7 +240,7 @@ const sirchar_t* _sir_format(sir_options opts, siroutput* output) {
 #ifdef SIR_MSEC_TIMER
             if (!flagtest(opts, SIRO_NOMSEC))
                 strncat(output->output, output->msec, SIR_MAXMSEC);
-#endif                            
+#endif
         }
 
         if (!flagtest(opts, SIRO_NOLEVEL)) {
@@ -297,22 +297,12 @@ int _sir_syslog_maplevel(sir_level level) {
 }
 #endif
 
-void _sirbuf_reset(sirbuf* buf, bool full) {
+void _sirbuf_reset(sirbuf* buf) {
 
     assert(buf);
 
-    if (buf) {
-        if (full) {
-            memset(buf, 0, sizeof(sirbuf));
-        } else {
-            resetstr(buf->timestamp);
-            resetstr(buf->msec);
-            resetstr(buf->level);
-            resetstr(buf->name);
-            resetstr(buf->message);
-            resetstr(buf->output);
-        }
-    }
+    if (buf)
+        memset(buf, 0, sizeof(sirbuf));
 }
 
 /* in case there's a better way to implement this
@@ -394,8 +384,8 @@ bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
 
             assert(0 == err && 0 == eof);
 
-            _sir_l("%s: wrote %lu/%lu bytes to %d; ferror: %d, feof: %d\n", __func__, write, writeLen,
-                sf->id, err, eof);
+            _sir_l("%s: wrote %lu/%lu bytes to %d; ferror: %d, feof: %d\n", __func__, write, writeLen, sf->id,
+                err, eof);
 
             /*! \todo
              * If an error occurs on write, consider removing file from targets,
@@ -418,23 +408,23 @@ bool _sirfile_writeheader(sirfile* sf) {
     assert(_sirfile_validate(sf));
 
     if (_sirfile_validate(sf)) {
-        time_t now;            
-        bool gettime = _sir_getlocaltime(&now, NULL);
+        time_t now;
+        bool   gettime = _sir_getlocaltime(&now, NULL);
         assert(gettime);
 
         if (gettime) {
-            sirchar_t time[SIR_MAXTIME] = {0};      
-            bool fmttime = _sir_formattime(now, time, SIR_FHTIMEFORMAT);
+            sirchar_t time[SIR_MAXTIME] = {0};
+            bool      fmttime           = _sir_formattime(now, time, SIR_FHTIMEFORMAT);
             assert(fmttime);
 
             if (fmttime) {
                 sirchar_t header[SIR_MAXOUTPUT] = {0};
-                          
+
                 int fmt = snprintf(header, SIR_MAXOUTPUT, SIR_FHFORMAT, time);
                 assert(fmt >= 0);
 
                 if (fmt < 0) {
-                    _sir_l("%s: snprintf returned %d!", __func__, fmt); 
+                    _sir_l("%s: snprintf returned %d!", __func__, fmt);
                 } else {
                     return _sirfile_write(sf, header);
                 }
@@ -482,7 +472,7 @@ bool _sirfile_validate(sirfile* sf) {
 
 int _sir_files_add(sirfiles* sfc, const sirchar_t* path, sir_levels levels, sir_options opts) {
 
-    assert(sfc);    
+    assert(sfc);
     assert(validstr(path));
     assert(validlevels(levels));
     assert(validopts(opts));
@@ -496,7 +486,7 @@ int _sir_files_add(sirfiles* sfc, const sirchar_t* path, sir_levels levels, sir_
 
             if (_sirfile_validate(sf)) {
                 sfc->files[sfc->count++] = sf;
-                
+
                 if (!flagtest(sf->opts, SIRO_NOHDR))
                     _sirfile_writeheader(sf);
 
@@ -571,8 +561,8 @@ bool _sir_files_dispatch(sirfiles* sfc, sir_level level, siroutput* output) {
             assert(_sirfile_validate(sfc->files[n]));
 
             if (!_sir_destwantslevel(sfc->files[n]->levels, level)) {
-                _sir_l("%s: levels for %d (%04lx) not set for (%04lx); skipping...\n",
-                    __func__, sfc->files[n]->id, sfc->files[n]->levels, level, written, sfc->count);
+                _sir_l("%s: levels for %d (%04lx) not set for (%04lx); skipping...\n", __func__,
+                    sfc->files[n]->id, sfc->files[n]->levels, level, written, sfc->count);
                 continue;
             }
 
@@ -627,7 +617,7 @@ bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format) {
 
         if (0 == fmt)
             _sir_l("%s: strftime returned 0; format string: '%s'", __func__, format);
-    
+
         return 0 != fmt;
     }
 
@@ -660,7 +650,7 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
 #pragma message "no support for millisecond computation on this platform."
         if (nsecbuf)
             *nsecbuf = 0;
-#endif        
+#endif
         return true;
     }
 
@@ -689,21 +679,17 @@ pid_t _sir_gettid() {
 }
 
 #if defined(_WIN32) && defined(DEBUG)
-    void _sir_invalidparam(
-        const wchar_t * expression,
-        const wchar_t * function,
-        const wchar_t * file,
-        unsigned int line,
-        uintptr_t pReserved
-    ) {
-        const char* format = "%s: invalid paramter handler called:\n{\n\texpression: %S\n\tfunc: %S\n\tfile: %S\n\tline: %d";
+void _sir_invalidparam(const wchar_t* expression, const wchar_t* function, const wchar_t* file,
+    unsigned int line, uintptr_t pReserved) {
+    const char* format =
+        "%s: invalid paramter handler called:\n{\n\texpression: %S\n\tfunc: %S\n\tfile: %S\n\tline: %d";
 #ifndef SIR_SELFLOG
-        fprintf(stderr, format, __func__, expression, function, file, line);
+    fprintf(stderr, format, __func__, expression, function, file, line);
 #else
-        _sir_l(format, __func__, expression, function, file, line);
+    _sir_l(format, __func__, expression, function, file, line);
 #endif
-        abort();
-    }
+    abort();
+}
 #endif
 
 /*! \endcond PRIVATE */
