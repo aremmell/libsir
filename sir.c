@@ -656,16 +656,21 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
 pid_t _sir_getpid() {
 #ifdef _WIN32
     return GetProcessId(GetCurrentProcess());
+#elif __linux__
+    return getpid();
 #else
-    return 0;
+#pragma message "no support for process id on this platform."
 #endif
 }
 
 pid_t _sir_gettid() {
 #ifdef _WIN32
     return GetCurrentThreadId();
+#elif __linux__
+    return getpid();
+#pragma message "TODO: use pthread to get thread id"
 #else
-    return 0;
+#pragma message "no support for thread id on this platform."
 #endif
 }
 
