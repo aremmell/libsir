@@ -1,0 +1,13 @@
+{
+    "files.autoSave": "afterDelay",
+    "editor.detectIndentation": false,
+    "editor.folding": false,
+    "editor.matchBrackets": true,
+    "editor.minimap.enabled": false,
+    "C_Cpp.clang_format_style": "{ BasedOnStyle: Google, Language: Cpp, IndentWidth: 4, AlignAfterOpenBracket: DontAlign, AlignConsecutiveAssignments: true, AlignConsecutiveDeclarations: true, AlignEscapedNewlines: Left, AllowAllParametersOfDeclarationOnNextLine: true, AllowShortCaseLabelsOnASingleLine: true, AlwaysBreakAfterReturnType: None, BinPackArguments: true, BinPackParameters: true, BreakBeforeBraces: Custom, BraceWrapping: { AfterEnum: true, AfterStruct: true, AfterControlStatement: false, AfterFunction: false, BeforeElse: false}, BreakBeforeBraces: Attach, IndentCaseLabels: true, KeepEmptyLinesAtTheStartOfBlocks: true, AllowShortIfStatementsOnASingleLine: false, SpaceBeforeAssignmentOperators: true, SpaceBeforeParens: ControlStatements, UseTab: Never, DerivePointerAlignment: false, PointerAlignment: Left, ColumnLimit: 110, AllowShortFunctionsOnASingleLine: Empty}",
+    "C_Cpp.clang_format_fallbackStyle": "Google",
+    "editor.autoClosingBrackets": false,
+    "editor.tabCompletion": true,
+    "debug.inlineValues": true,
+    "debug.allowBreakpointsEverywhere": true
+}
