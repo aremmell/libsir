@@ -146,7 +146,10 @@ bool _sir_lv(sir_level level, const sirchar_t* format, va_list args) {
     if (validstr(sir_s.processName)) {
         output.name = _sirbuf_get(&sir_b, _SIRBUF_NAME);
         assert(output.name);
-        strncpy(output.name, sir_s.processName, SIR_MAXNAME - 1);
+        //strncpy(output.name, sir_s.processName, SIR_MAXNAME - 1);
+#pragma message "TODO: refactor me"
+        snprintf(output.name, SIR_MAXNAME, "%s (%d:%d)", sir_s.processName,
+            _sir_getpid(), _sir_gettid());
     }
 
     /*! \todo add support for syslog's %m */

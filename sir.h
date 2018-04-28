@@ -65,7 +65,7 @@ typedef DWORD pid_t;
 
 /*! The size, in characters, of the buffer used to hold process/appname
  * format strings. */
-#define SIR_MAXNAME 16
+#define SIR_MAXNAME 32
 
 /*! The maximum size, in characters, of final formatted output. */
 #define SIR_MAXOUTPUT \
