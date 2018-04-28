@@ -47,6 +47,7 @@
 #define SIR_MAXPATH MAX_PATH
 #define SIR_NO_SYSLOG
 #undef SIR_MSEC_TIMER
+typedef DWORD pid_t;
 #endif
 
 /*! The maximum number of log files that may be registered. */
@@ -557,6 +558,8 @@ bool             _sir_destwantslevel(sir_levels destLevels, sir_level level);
 
 bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf);
 bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format);
+pid_t _sir_getpid();
+pid_t _sir_gettid();
 
 #ifdef _WIN32
     void _sir_invalidparam(

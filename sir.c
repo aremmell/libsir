@@ -653,6 +653,22 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
     return false;
 }
 
+pid_t _sir_getpid() {
+#ifdef _WIN32
+    return GetProcessId(GetCurrentProcess());
+#else
+    return 0;
+#endif
+}
+
+pid_t _sir_gettid() {
+#ifdef _WIN32
+    return GetCurrentThreadId();
+#else
+    return 0;
+#endif
+}
+
 #if defined(_WIN32) && defined(DEBUG)
     void _sir_invalidparam(
         const wchar_t * expression,
