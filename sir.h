@@ -560,7 +560,17 @@ const sirchar_t* _sir_levelstr(sir_level level);
 bool             _sir_destwantslevel(sir_levels destLevels, sir_level level);
 
 bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf);
-bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format);
+bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format, size_t size);
+
+#ifdef _WIN32
+    void _sir_invalidparam(
+        const wchar_t * expression,
+        const wchar_t * function,
+        const wchar_t * file,
+        unsigned int line,
+        uintptr_t pReserved
+    );
+#endif
 
 /*! \endcond */
 

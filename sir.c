@@ -31,6 +31,12 @@ bool sir_init(const sirinit* si) {
             (sir_s.sysLogIncludePID ? LOG_PID : 0) | LOG_ODELAY, LOG_USER);
 #endif
 
+#ifdef _WIN32
+#ifdef DEBUG
+    _set_invalid_parameter_handler(_sir_invalidparam);
+#endif
+#endif
+
     return true;
 }
 
@@ -270,8 +276,8 @@ bool _sir_stderr_write(const sirchar_t* message) {
 
 bool _sir_stdout_write(const sirchar_t* message) {
     int write = puts(message);
-    assert(write > 0);
-    return write > 0;
+    assert(write >= 0);
+    return write >= 0;
 }
 
 #ifndef SIR_NO_SYSLOG
@@ -336,7 +342,7 @@ sirfile* _sirfile_create(const sirchar_t* path, sir_levels levels, sir_options o
                 assert(sf);
 
                 if (sf) {
-                    size_t pathLen = strnlen(path, PATH_MAX);
+                    size_t pathLen = strnlen(path, SIR_MAXPATH);
                     sf->path       = (sirchar_t*)calloc(pathLen + 1, sizeof(sirchar_t));
                     assert(sf->path);
 
@@ -612,8 +618,6 @@ bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format) {
     return false;
 }
 
-#include <inttypes.h>
-
 bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
 
     assert(tbuf);
@@ -637,7 +641,7 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
             _sir_l("%s: clock_gettime failed; errno: %d\n", __func__, errno);
         }
 #else
-#warning no support for millisecond computation on this platform.
+#pragma message "no support for millisecond computation on this platform."
         time(tbuf);
 
         if (nsecbuf)
@@ -648,5 +652,23 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
 
     return false;
 }
+
+#if defined(_WIN32) && defined(DEBUG)
+    void _sir_invalidparam(
+        const wchar_t * expression,
+        const wchar_t * function,
+        const wchar_t * file,
+        unsigned int line,
+        uintptr_t pReserved
+    ) {
+        const char* format = "%s: invalid paramter handler called:\n{\n\texpression: %S\n\tfunc: %S\n\tfile: %S\n\tline: %d";
+#ifndef SIR_SELFLOG
+        fprintf(stderr, format, __func__, expression, function, file, line);
+#else
+        _sir_l(format, __func__, expression, function, file, line);
+#endif
+        abort();
+    }
+#endif
 
 /*! \endcond PRIVATE */
