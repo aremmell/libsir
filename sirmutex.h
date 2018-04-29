@@ -1,3 +1,10 @@
+/*!
+ * \file sirmutex.h
+ *
+ * Internal definitions for platform-dependent mutex used by the SIR library.
+ *
+ * \author Ryan Matthew Lederman <lederman@gmail.com>
+ */
 #ifndef _SIR_MUTEX_H_INCLUDED
 #define _SIR_MUTEX_H_INCLUDED
 

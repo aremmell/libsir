@@ -1,13 +1,12 @@
-# ##################################################################
-#
-#	Makefile for the SIR library
-# 	
-#	Copyright (C) 2003-2018. All Rights Reserved 
-#
-#	Author: Ryan M. Lederman <lederman@gmail.com>
-#	Version: 1.1.0
-#
-# ##################################################################
+# ##################################################
+#                                                  #
+#	Makefile for the SIR library                   #
+#                                                  #
+#	Copyright (C) 2003-2018. All Rights Reserved   # 
+#	Author: Ryan M. Lederman <lederman@gmail.com>  #
+#	Version: 1.1.0                                 #
+#                                                  #
+# ##################################################
 
 CC       = gcc
 BUILDDIR = build
@@ -18,11 +17,12 @@ LIBDIR   = $(BUILDDIR)/lib
 LIBS   = -pthread
 CFLAGS = -Wpedantic -std=c99 -I.
 
-TUS     = sir.c sirmutex.c
-DEPS    = sir.h sirmutex.h
+TUS     = sir.c sirmutex.c sirinternal.c sirfilecache.c
+DEPS    = sir.h sirmutex.h sirconfig.h sirinternal.h sirmacros.h \
+		  sirplatform.h sirfilecache.h sirtypes.h
 
-_OBJ = sirmutex.o sir.o
-OBJ  = $(patsubst %,$(INTERDIR)/%,$(_OBJ))
+_OBJ = $(patsubst %.c, %.o, $(TUS))
+OBJ  = $(patsubst %, $(INTERDIR)/%, $(_OBJ))
 
 # console debug app
 _OBJ_DEBUG   = main.o $(_OBJ)

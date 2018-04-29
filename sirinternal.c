@@ -1,4 +1,12 @@
+/*!
+ * \file sirinternal.c
+ *
+ * Core internal implementation of the SIR library.
+ * 
+ * \author Ryan Matthew Lederman <lederman@gmail.com>
+ */
 #include "sirinternal.h"
+#include "sirmacros.h"
 
 /*! \cond PRIVATE */
 

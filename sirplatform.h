@@ -1,12 +1,9 @@
 /*!
  * \file sirplatform.h
  *
- * Platform configuration for the Standard Incident Reporter (SIR) library.
+ * Platform-dependent configuration for the SIR library.
  *
  * \author Ryan Matthew Lederman <lederman@gmail.com>
- * \version 1.1.0
- * \date 2003-2018
- * \copyright MIT License
  */
 #ifndef _SIR_PLATFORM_H_INCLUDED
 #define _SIR_PLATFORM_H_INCLUDED

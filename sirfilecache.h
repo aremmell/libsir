@@ -1,3 +1,10 @@
+/*!
+ * \file sirfilecache.h
+ *
+ * Internal definitions for log file management in the SIR library.
+ * 
+ * \author Ryan Matthew Lederman <lederman@gmail.com>
+ */
 #ifndef _SIR_FILECACHE_H_INCLUDED
 #define _SIR_FILECACHE_H_INCLUDED
 
@@ -15,6 +22,7 @@ bool     _sirfile_validate(sirfile* sf);
 FILE* _sir_fopen(const sirchar_t* path);
 void  _sir_fclose(FILE** f);
 void  _sir_fflush(FILE* f);
+bool _sir_fflush_all();
 
 int  _sir_files_add(sirfiles* sfc, const sirchar_t* path, sir_levels levels, sir_options opts);
 bool _sir_files_rem(sirfiles* sfc, int id);

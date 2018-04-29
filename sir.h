@@ -1,14 +1,10 @@
 /*!
  * \file sir.h
  *
- * Definitions for the Standard Incident Reporter (SIR) library.
+ * Definition of the public interface to the SIR library.
  *
  * \author Ryan Matthew Lederman <lederman@gmail.com>
- * \version 1.1.0
- * \date 2003-2018
- * \copyright MIT License
  */
-
 #ifndef _SIR_H_INCLUDED
 #define _SIR_H_INCLUDED
 
@@ -31,6 +27,17 @@ extern "C" {
  * \return boolean success
  */
 bool sir_init(const sirinit* si);
+
+/*! \fn void sir_cleanup()
+ *
+ * \brief Shuts down the library.
+ *
+ * Call to free all allocated memory and reset internal data structures
+ * to their default state.
+ *
+ * \return none
+ */
+void sir_cleanup();
 
 /*! \fn int sirdebug(const sirchar_t *format, ...)
  *
@@ -159,17 +166,6 @@ bool siralert(const sirchar_t* format, ...);
  * meant to receive this level were successfully processed.
  */
 bool siremerg(const sirchar_t* format, ...);
-
-/*! \fn void sir_cleanup()
- *
- * \brief Shuts down the library.
- *
- * Call to free all allocated memory and reset internal data structures
- * to their default state.
- *
- * \return none
- */
-void sir_cleanup();
 
 /*! \fn int sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts)
  *

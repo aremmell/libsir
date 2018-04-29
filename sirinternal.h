@@ -1,3 +1,10 @@
+/*!
+ * \file sirinternal.h
+ *
+ * Core internal definitions for the SIR library.
+ *
+ * \author Ryan Matthew Lederman <lederman@gmail.com>
+ */
 #ifndef _SIR_INTERNAL_H_INCLUDED
 #define _SIR_INTERNAL_H_INCLUDED
 

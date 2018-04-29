@@ -1,3 +1,10 @@
+/*!
+ * \file sirtypes.h
+ *
+ * Definitions of types used by the SIR library.
+ *
+ * \author Ryan Matthew Lederman <lederman@gmail.com>
+ */
 #ifndef _SIR_TYPES_H_INCLUDED
 #define _SIR_TYPES_H_INCLUDED
 
@@ -135,7 +142,7 @@ typedef struct {
 
 /*! \cond PRIVATE */
 
-#define _SIR_MAGIC 0x0
+#define _SIR_MAGIC 0x60906090
 
 #define _SIRBUF_TIME 0
 #define _SIRBUF_MSEC 1
@@ -175,42 +182,6 @@ typedef struct {
     sirchar_t message[SIR_MAXMESSAGE];
     sirchar_t output[SIR_MAXOUTPUT];
 } sirbuf;
-
-static inline bool validstr(const sirchar_t* str) {
-    return str && *str;
-}
-
-static inline bool validid(int id) {
-    return id >= 0;
-}
-
-static inline bool validlevels(sir_levels levels) {
-    return (levels & SIRL_ALL) != 0 && (levels & SIRO_MSGONLY) == 0;
-}
-
-static inline bool validopts(sir_options opts) {
-    return (opts & SIRL_ALL) == 0 && opts <= SIRO_MSGONLY;
-}
-
-static inline bool flagtest(uint32_t flags, uint32_t test) {
-    return (flags & test) == test;
-}
-
-static inline void safefree(void *p) {
-    if (!p) return;
-    free(p);
-    p = NULL;
-}
-
-static inline void safefclose(FILE* f) {
-    if (!f) return;
-    fclose(f);
-    f = NULL;
-}
-
-static inline void resetstr(sirchar_t* str) {
-    str[0] = (sirchar_t)'\0';
-}
 
 /*! \endcond */
 

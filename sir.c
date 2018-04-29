@@ -1,12 +1,9 @@
 /*!
  * \file sir.c
- * 
- * Implementation of the Standard Incident Reporter (SIR) library.
+ *
+ * Implementation of the public interface to the SIR library.
  *
  * \author Ryan Matthew Lederman <lederman@gmail.com>
- * \version 1.1.0
- * \date 2003-2018
- * \copyright MIT License
  */
 #include "sir.h"
 #include "sirmutex.h"
@@ -38,62 +35,6 @@ bool sir_init(const sirinit* si) {
     return true;
 }
 
-bool sirdebug(const sirchar_t* format, ...) {
-    _SIR_L_START(format);
-    r = _sir_lv(SIRL_DEBUG, format, args);
-    _SIR_L_END(args);
-    return r;
-}
-
-bool sirinfo(const sirchar_t* format, ...) {
-    _SIR_L_START(format);
-    r = _sir_lv(SIRL_INFO, format, args);
-    _SIR_L_END(args);
-    return r;
-}
-
-bool sirnotice(const sirchar_t* format, ...) {
-    _SIR_L_START(format);
-    r = _sir_lv(SIRL_NOTICE, format, args);
-    _SIR_L_END(args);
-    return r;
-}
-
-bool sirwarn(const sirchar_t* format, ...) {
-    _SIR_L_START(format);
-    r = _sir_lv(SIRL_WARN, format, args);
-    _SIR_L_END(args);
-    return r;
-}
-
-bool sirerror(const sirchar_t* format, ...) {
-    _SIR_L_START(format);
-    r = _sir_lv(SIRL_ERROR, format, args);
-    _SIR_L_END(args);
-    return r;
-}
-
-bool sircrit(const sirchar_t* format, ...) {
-    _SIR_L_START(format);
-    r = _sir_lv(SIRL_CRIT, format, args);
-    _SIR_L_END(args);
-    return r;
-}
-
-bool siralert(const sirchar_t* format, ...) {
-    _SIR_L_START(format);
-    r = _sir_lv(SIRL_ALERT, format, args);
-    _SIR_L_END(args);
-    return r;
-}
-
-bool siremerg(const sirchar_t* format, ...) {
-    _SIR_L_START(format);
-    r = _sir_lv(SIRL_EMERG, format, args);
-    _SIR_L_END(args);
-    return r;
-}
-
 void sir_cleanup(void) {
     _sir_files_destroy(&sir_fc);
     memset(&sir_s, 0, sizeof(sirinit));
@@ -101,10 +42,102 @@ void sir_cleanup(void) {
     _sirbuf_reset(&sir_b);
 }
 
+bool sirdebug(const sirchar_t* format, ...) {
+
+    if (!sir_sanity(&sir_s))
+        return false;
+
+    _SIR_L_START(format);
+    r = _sir_lv(SIRL_DEBUG, format, args);
+    _SIR_L_END(args);
+    return r;
+}
+
+bool sirinfo(const sirchar_t* format, ...) {
+
+    if (!sir_sanity(&sir_s))
+        return false;
+
+    _SIR_L_START(format);
+    r = _sir_lv(SIRL_INFO, format, args);
+    _SIR_L_END(args);
+    return r;
+}
+
+bool sirnotice(const sirchar_t* format, ...) {
+
+    if (!sir_sanity(&sir_s))
+        return false;
+
+    _SIR_L_START(format);
+    r = _sir_lv(SIRL_NOTICE, format, args);
+    _SIR_L_END(args);
+    return r;
+}
+
+bool sirwarn(const sirchar_t* format, ...) {
+
+    if (!sir_sanity(&sir_s))
+        return false;
+
+    _SIR_L_START(format);
+    r = _sir_lv(SIRL_WARN, format, args);
+    _SIR_L_END(args);
+    return r;
+}
+
+bool sirerror(const sirchar_t* format, ...) {
+
+    if (!sir_sanity(&sir_s))
+        return false;
+
+    _SIR_L_START(format);
+    r = _sir_lv(SIRL_ERROR, format, args);
+    _SIR_L_END(args);
+    return r;
+}
+
+bool sircrit(const sirchar_t* format, ...) {
+
+    if (!sir_sanity(&sir_s))
+        return false;
+
+    _SIR_L_START(format);
+    r = _sir_lv(SIRL_CRIT, format, args);
+    _SIR_L_END(args);
+    return r;
+}
+
+bool siralert(const sirchar_t* format, ...) {
+
+    if (!sir_sanity(&sir_s))
+        return false;
+
+    _SIR_L_START(format);
+    r = _sir_lv(SIRL_ALERT, format, args);
+    _SIR_L_END(args);
+    return r;
+}
+
+bool siremerg(const sirchar_t* format, ...) {
+
+    if (!sir_sanity(&sir_s))
+        return false;
+
+    _SIR_L_START(format);
+    r = _sir_lv(SIRL_EMERG, format, args);
+    _SIR_L_END(args);
+    return r;
+}
+
 int sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts) {
+        if (!sir_sanity(&sir_s))
+            return SIR_INVALID;
     return _sir_files_add(&sir_fc, path, levels, opts);
 }
 
 bool sir_remfile(int id) {
+    if (!sir_sanity(&sir_s))
+        return false;
     return _sir_files_rem(&sir_fc, id);
 }

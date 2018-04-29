@@ -1,5 +1,13 @@
+/*!
+ * \file sirfilecache.c
+ *
+ * Internal implementation of log file management for the SIR library.
+ *
+ * \author Ryan Matthew Lederman <lederman@gmail.com>
+ */
 #include "sirfilecache.h"
 #include "sirinternal.h"
+#include "sirmacros.h"
 
 /*! \cond PRIVATE */
 
@@ -71,8 +79,6 @@ bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
              */
 
             clearerr(sf->f);
-        } else {
-            _sir_fflush(sf->f);
         }
 
         return write == writeLen;
@@ -131,6 +137,12 @@ void _sir_fflush(FILE* f) {
         int flush = fflush(f);
         assert(0 == flush);
     }
+}
+
+bool _sir_fflush_all() {
+    int flush = fflush(NULL);
+    assert(0 == flush);
+    return 0 == flush;
 }
 
 void _sirfile_destroy(sirfile* sf) {
@@ -255,7 +267,13 @@ bool _sir_files_dispatch(sirfiles* sfc, sir_level level, siroutput* output) {
             }
         }
 
-        _sir_l("%s: wrote to %d/%lu log file(s)\n", __func__, written, sfc->count);
+        if (written > 0) {
+            if (!_sir_fflush_all())
+                _sir_l("%s: fflush failed! errno: %d\n", __func__, errno);
+        }
+
+        if (sfc->count > 0)
+            _sir_l("%s: wrote to %d/%lu log file(s)\n", __func__, written, sfc->count);
     }
 
     return r;
