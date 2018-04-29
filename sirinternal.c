@@ -268,9 +268,18 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
             _sir_selflog("%s: clock_gettime failed; errno: %d\n", __func__, errno);
         }
 #else
-#pragma message "no support for millisecond computation on this platform."
-        if (nsecbuf)
-            *nsecbuf = 0;
+        if (nsecbuf) {
+            FILETIME ftutc = {0};
+            GetSystemTimePreciseAsFileTime(&ftutc);
+
+            FILETIME ftloc = {0};
+            FileTimeToLocalFileTime(&ftutc, &ftloc);
+
+            SYSTEMTIME st = {0};
+            FileTimeToSystemTime(&ftloc, &st);
+
+            *nsecbuf = st.wMilliseconds;
+        }
 #endif
         return true;
     }
