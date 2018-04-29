@@ -45,12 +45,14 @@ CFLAGS_STATIC = $(CFLAGS) -O3
 # targets
 # ##########
 
-$(DOCSDIR): prep
 $(BUILDDIR): prep
 $(INTERDIR) : $(BUILDDIR)
 $(LIBDIR): $(BUILDDIR)
 
-default: $(LIBDIR) $(INTERDIR) $(DOCSDIR)
+$(OBJ_DEBUG): $(INTERDIR)
+$(OBJ_SHARED): $(LIBDIR)
+
+default: $(LIBDIR) $(INTERDIR)
 
 $(INTERDIR)/%.do: %.c
 	$(CC) -c -o $@ $< $(CFLAGS_DEBUG)
@@ -63,24 +65,23 @@ all: debug static shared docs
 prep:
 	$(shell mkdir -p $(INTERDIR) >/dev/null && \
 	        mkdir -p $(LIBDIR) >/dev/null && \
-			mkdir $(DOCSDIR) >/dev/null)
+			mkdir -p $(DOCSDIR) >/dev/null)
 	@echo directories prepared.
 
-debug: $(OBJ_DEBUG) prep
+debug: $(OBJ_DEBUG)
 	$(CC) -o $(OUT_DEBUG) $^ $(CFLAGS_DEBUG) $(LIBS)
 	@echo built $(OUT_DEBUG) successfully.
 
-shared: $(OBJ_SHARED) prep
+shared: $(OBJ_SHARED)
 	$(CC) -shared -o $(OUT_SHARED) $(OBJ_SHARED) $(CFLAGS_SHARED) $(LIBS)
 	@echo built $(OUT_SHARED) successfully.
 
-static: $(OBJ_SHARED) prep
-#	$(CC) -o $(OUT_STATIC) $(OBJ_SHARED) $(CFLAGS_STATIC) $(LIBS)
+static: shared
 	ar crf $(OUT_STATIC) $(OBJ_SHARED)
 	@echo built $(OUT_STATIC) successfully.
 
-docs: $(DOCSDIR)
-	@doxygen
+docs: static
+	@doxygen $(DOCSDIR)/Doxyfile
 	@echo built documentation successfully.
 
 .PHONY: clean
@@ -88,6 +89,5 @@ docs: $(DOCSDIR)
 clean:
 	$(shell rm -f $(BUILDDIR)/*.* >/dev/null && \
 	        rm -f $(LIBDIR)/* >/dev/null && \
-			rm -f $(INTERDIR)/* >/dev/null && \
-			rm -f $(DOCSDIR)/* >/dev/null)
+			rm -f $(INTERDIR)/* >/dev/null)
 	@echo cleared directories.

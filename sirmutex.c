@@ -1,4 +1,16 @@
+/*!
+ * \file sirmutex.c
+ * 
+ * Implementation of mutex platform abstractions for the
+ * Standard Incident Reporter (SIR) library.
+ *
+ * \author Ryan Matthew Lederman <lederman@gmail.com>
+ * \version 1.1.0
+ * \date 2003-2018
+ * \copyright MIT License
+ */
 #include "sirmutex.h"
+#include "sirplatform.h"
 
 /*! \cond PRIVATE */
 

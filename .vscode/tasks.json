@@ -4,23 +4,6 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build test app",
-            "identifier": "build",
-            "type": "shell",
-            "command": "make",
-            "args": [
-                "test"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "reveal": "always",
-                "panel": "dedicated"
-            }
-        },
-        {
             "label": "build debug test app",
             "identifier": "build-debug",
             "type": "shell",

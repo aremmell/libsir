@@ -1,14 +1,25 @@
+/*!
+ * \file sirplatform.h
+ *
+ * Platform configuration for the Standard Incident Reporter (SIR) library.
+ *
+ * \author Ryan Matthew Lederman <lederman@gmail.com>
+ * \version 1.1.0
+ * \date 2003-2018
+ * \copyright MIT License
+ */
 #ifndef _SIR_PLATFORM_H_INCLUDED
 #define _SIR_PLATFORM_H_INCLUDED
 
 #define _POSIX_C_SOURCE 200809L
 #define _DEFAULT_SOURCE
 
+#include <stdint.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <assert.h>
 #include <errno.h>
 #include <stdarg.h>
-#include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -44,6 +55,12 @@ typedef pthread_mutex_t sirmutex_t;
 
 typedef DWORD pid_t;
 typedef HANDLE sirmutex_t;
+#endif
+
+/*! A sensible (?) constraint for the limit of a file's path. Note that this value
+ * is only used in the absence of PATH_MAX. */
+#ifndef SIR_MAXPATH
+#define SIR_MAXPATH 65535
 #endif
 
 #endif /* !_SIR_PLATFORM_H_INCLUDED */

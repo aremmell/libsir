@@ -15,5 +15,8 @@
 # build products
 build/
 
+# compiled documentation
+docs/html/
+
 # test artifacts
 *.log
