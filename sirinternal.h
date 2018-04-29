@@ -46,11 +46,18 @@ pid_t _sir_gettid();
 
 void _sir_handleerr_impl(sirerror_t err, const sirchar_t* func,
     const sirchar_t* file, uint32_t line);
-void _sir_selflog(const sirchar_t* format, ...);
 
+#ifdef SIR_SELFLOG
+void _sir_selflog(const sirchar_t* format, ...);
+#else
+#define _sir_selflog(format, ...) ((void)(0))
+#endif
+
+#ifdef __STDC_LIB_EXT1__
 #ifdef _WIN32
 void _sir_invalidparam(const wchar_t* expression, const wchar_t* function, const wchar_t* file,
     unsigned int line, uintptr_t pReserved);
+#endif
 #endif
 
 /*! \endcond */

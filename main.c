@@ -7,7 +7,7 @@ int main(int argc, char** argv) {
     si.processName = "sir";
 
     si.stdOutLevels  = SIRL_DEBUG | SIRL_ALERT;
-    si.stdOutOptions = SIRO_NOMSEC;
+    si.stdOutOptions = 0;
 
     if (!sir_init(&si)) {
         fprintf(stderr, "Failed to initialize SIR!\n");

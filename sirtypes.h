@@ -130,6 +130,26 @@ typedef struct {
     const sirchar_t* timeFmt;
 } sirinit;
 
+/*! Available colors for console output. See also ::sir_color_attr */
+typedef enum {
+    SIRC_RED = 1,
+    SIRC_GREEN,
+    SIRC_BLUE,
+    SIRC_YELLOW,
+    SIRC_MAGENTA,
+    SIRC_CYAN,
+    SIRC_WHITE,
+    SIRC_BLACK,
+    SIRC_GRAY
+} sir_color;
+
+/*! Available attributes (other than ::sir_color) for console output. */
+typedef enum {
+    SIRA_BRIGHT = 0x1,
+    SIRA_BOLD = 0x2,
+    SIRA_DIM = 0x3
+} sir_color_attr;
+
 /*! \cond PRIVATE */
 
 #define _SIR_MAGIC 0x60906090

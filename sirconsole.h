@@ -9,6 +9,7 @@
 #include "sirplatform.h"
 #include "sirtypes.h"
 
+
 /*
 fg
 30 Black
@@ -75,22 +76,6 @@ static const WORD bgMask( BACKGROUND_BLUE      |
  56      static const WORD bgHiMagenta( bgLoMagenta | BACKGROUND_INTENSITY ); 
  57      static const WORD bgHiYellow ( bgLoYellow  | BACKGROUND_INTENSITY );
  */
-typedef enum {
-    SIRC_RED = 1,
-    SIRC_GREEN,
-    SIRC_BLUE,
-    SIRC_YELLOW,
-    SIRC_MAGENTA,
-    SIRC_CYAN,
-    SIRC_WHITE,
-    SIRC_BLACK,
-    SIRC_GRAY
-} sircolor;
 
-typedef enum {
-    SIRA_BRIGHT = 1,
-    SIRA_BOLD,
-    SIRA_DIM
-} sirattr;
 
 #endif /* !_SIR_CONSOLE_H_INCLUDED */

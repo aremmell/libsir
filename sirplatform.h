@@ -9,6 +9,8 @@
 #define _POSIX_C_SOURCE 200809L
 #define _DEFAULT_SOURCE
 
+#define __STDC_WANT_LIB_EXT1__ 1
+
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>

@@ -248,6 +248,7 @@ bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format) {
 
 bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
     if (tbuf) {
+        time(tbuf);
 #ifdef SIR_MSEC_POSIX
         struct timespec ts = {0};
         int clock = clock_gettime(SIR_MSECCLOCK, &ts);
@@ -288,22 +289,18 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
 }
 
 pid_t _sir_getpid() {
-#ifdef _WIN32
-    return GetProcessId(GetCurrentProcess());
-#elif __linux__
+#ifndef _WIN32
     return getpid();
 #else
-#pragma message "no support for process id on this platform."
+    return GetProcessId(GetCurrentProcess());
 #endif
 }
 
 pid_t _sir_gettid() {
-#ifdef _WIN32
-    return GetCurrentThreadId();
-#elif __linux__
-    return pthread_self();
+#ifndef _WIN32
+    return pthread_self();    
 #else
-#pragma message "no support for thread id on this platform."
+    return GetCurrentThreadId();
 #endif
 }
 
@@ -340,8 +337,8 @@ void _sir_handleerr_impl(sirerror_t err, const sirchar_t* func,
     assert(SIR_NOERROR == err);
 }
 
-void _sir_selflog(const sirchar_t* format, ...) {
 #ifdef SIR_SELFLOG
+void _sir_selflog(const sirchar_t* format, ...) {
     sirchar_t output[SIR_MAXMESSAGE] = {0};
     va_list   args;
 
@@ -355,10 +352,8 @@ void _sir_selflog(const sirchar_t* format, ...) {
         int put = fputs(output, stderr);
         assert(put != EOF);
     }
-#else
-    format = format;
-#endif
 }
+#endif
 
 #ifdef _WIN32
 #ifdef DEBUG

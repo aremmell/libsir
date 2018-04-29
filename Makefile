@@ -15,7 +15,7 @@ INTERDIR = $(BUILDDIR)/obj
 LIBDIR   = $(BUILDDIR)/lib
 
 LIBS   = -pthread
-CFLAGS = -Wpedantic -std=c99 -I.
+CFLAGS = -Wpedantic -std=c11 -I.
 
 ifeq ($(OS),Windows_NT)
 CFLAGS += -D_WIN32
