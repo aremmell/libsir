@@ -1,13 +1,10 @@
 /*!
  * \file sir.c
- *
- * Implementation of the public interface to the SIR library.
- *
+ * \brief Implementation of the public interface to the SIR library.
  * \author Ryan Matthew Lederman <lederman@gmail.com>
  */
 #include "sir.h"
 #include "sirmutex.h"
-#include "sirmacros.h"
 #include "sirinternal.h"
 #include "sirfilecache.h"
 
@@ -32,14 +29,23 @@ bool sir_init(const sirinit* si) {
 #endif
 #endif
 
+    sir_s._sirmagic = _SIR_MAGIC;
+    _sir_selflog("SIR is initialized.\n");
+
     return true;
 }
 
-void sir_cleanup(void) {
+void sir_cleanup() {
+
+    if (!sir_sanity(&sir_s))
+        return;
+
     _sir_files_destroy(&sir_fc);
     memset(&sir_s, 0, sizeof(sirinit));
     memset(&sir_fc, 0, sizeof(sirfiles));
     _sirbuf_reset(&sir_b);
+    
+    _sir_selflog("SIR is cleaned up.\n");
 }
 
 bool sirdebug(const sirchar_t* format, ...) {

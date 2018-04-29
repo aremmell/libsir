@@ -1,8 +1,6 @@
 /*!
  * \file sirtypes.h
- *
- * Definitions of types used by the SIR library.
- *
+ * \brief Definitions of types used by the SIR library.
  * \author Ryan Matthew Lederman <lederman@gmail.com>
  */
 #ifndef _SIR_TYPES_H_INCLUDED

@@ -1,8 +1,6 @@
 /*!
  * \file sirinternal.h
- *
- * Core internal definitions for the SIR library.
- *
+ * \brief Core internal definitions for the SIR library.
  * \author Ryan Matthew Lederman <lederman@gmail.com>
  */
 #ifndef _SIR_INTERNAL_H_INCLUDED
@@ -10,15 +8,18 @@
 
 #include "sirplatform.h"
 #include "sirtypes.h"
+#include "sirmacros.h"
 
 /*! \cond PRIVATE */
+
+#define SIR_MAXERROR 256
+#define SIR_UNKERROR "<unknown>"
 
 extern sirinit  sir_s;
 extern sirfiles sir_fc;
 extern sirbuf   sir_b;
 
 bool _sir_lv(sir_level level, const sirchar_t* format, va_list args);
-void _sir_l(const sirchar_t* format, ...);
 
 bool             _sir_dispatch(sir_level level, siroutput* output);
 const sirchar_t* _sir_format(sir_options, siroutput* output);
@@ -41,6 +42,10 @@ bool  _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format);
 
 pid_t _sir_getpid();
 pid_t _sir_gettid();
+
+void _sir_handleerr_impl(sirerror_t err, const sirchar_t* func,
+    const sirchar_t* file, uint32_t line);
+void _sir_selflog(const sirchar_t* format, ...);
 
 #ifdef _WIN32
 void _sir_invalidparam(const wchar_t* expression, const wchar_t* function, const wchar_t* file,

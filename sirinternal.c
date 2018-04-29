@@ -1,12 +1,10 @@
 /*!
  * \file sirinternal.c
- *
- * Core internal implementation of the SIR library.
- * 
+ * \brief Core internal implementation of the SIR library.
  * \author Ryan Matthew Lederman <lederman@gmail.com>
  */
 #include "sirinternal.h"
-#include "sirmacros.h"
+#include "sirfilecache.h"
 
 /*! \cond PRIVATE */
 
@@ -47,9 +45,9 @@ bool _sir_lv(sir_level level, const sirchar_t* format, va_list args) {
     if (validstr(sir_s.processName)) {
         output.name = _sirbuf_get(&sir_b, _SIRBUF_NAME);
         assert(output.name);
-        // strncpy(output.name, sir_s.processName, SIR_MAXNAME - 1);
-#pragma message "TODO: refactor me"
-        snprintf(output.name, SIR_MAXNAME, "%s (%d:%d)", sir_s.processName, _sir_getpid(), _sir_gettid());
+        strncpy(output.name, sir_s.processName, SIR_MAXNAME - 1);
+#pragma message "TODO: PID/TID"
+        //snprintf(output.name, SIR_MAXNAME, "%s (%d:%d)", sir_s.processName, _sir_getpid(), _sir_gettid());
     }
 
     /*! \todo add support for syslog's %m */
@@ -59,32 +57,12 @@ bool _sir_lv(sir_level level, const sirchar_t* format, va_list args) {
     assert(msgfmt >= 0);
 
     if (msgfmt < 0)
-        _sir_l("%s: vsnprintf returned %d!", __func__, msgfmt);
+        _sir_selflog("%s: vsnprintf returned %d!", __func__, msgfmt);
 
     output.output = _sirbuf_get(&sir_b, _SIRBUF_OUTPUT);
     assert(output.output);
 
     return _sir_dispatch(level, &output);
-}
-
-void _sir_l(const sirchar_t* format, ...) {
-#ifdef SIR_SELFLOG
-    sirchar_t output[SIR_MAXMESSAGE] = {0};
-    va_list   args;
-
-    va_start(args, format);
-    int print = vsnprintf(output, SIR_MAXMESSAGE, format, args);
-    va_end(args);
-
-    assert(print > 0);
-
-    if (print > 0) {
-        int put = fputs(output, stderr);
-        assert(put != EOF);
-    }
-#else
-    format = format;
-#endif
 }
 
 bool _sir_dispatch(sir_level level, siroutput* output) {
@@ -259,7 +237,7 @@ bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format) {
         assert(0 != fmt);
 
         if (0 == fmt)
-            _sir_l("%s: strftime returned 0; format string: '%s'", __func__, format);
+            _sir_selflog("%s: strftime returned 0; format string: '%s'", __func__, format);
 
         return 0 != fmt;
     }
@@ -287,7 +265,7 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
             }
         } else {
             *nsecbuf = 0;
-            _sir_l("%s: clock_gettime failed; errno: %d\n", __func__, errno);
+            _sir_selflog("%s: clock_gettime failed; errno: %d\n", __func__, errno);
         }
 #else
 #pragma message "no support for millisecond computation on this platform."
@@ -314,14 +292,52 @@ pid_t _sir_gettid() {
 #ifdef _WIN32
     return GetCurrentThreadId();
 #elif __linux__
-    return getpid();
-#pragma message "TODO: use pthread to get thread id"
+    return pthread_self();
 #else
 #pragma message "no support for thread id on this platform."
 #endif
 }
 
-#if defined(_WIN32) && defined(DEBUG)
+void _sir_handleerr_impl(sirerror_t err, const sirchar_t* func,
+    const sirchar_t* file, uint32_t line) {
+    if (SIR_NOERROR != err) {
+#ifndef _WIN32
+        errno = SIR_NOERROR;
+
+        sirchar_t buf[SIR_MAXERROR] = {0};
+        int finderr = strerror_r(err, buf, SIR_MAXERROR);
+
+        _sir_selflog("%s: at %s:%d: error: (%d, '%s')\n", __func__, __FILE__,
+            __LINE__, err, 0 == finderr ? buf : SIR_UNKERROR);    
+#else
+#pragma message "TODO: implement error handling on win32"
+#endif
+    }
+    assert(SIR_NOERROR == err);
+}
+
+void _sir_selflog(const sirchar_t* format, ...) {
+#ifdef SIR_SELFLOG
+    sirchar_t output[SIR_MAXMESSAGE] = {0};
+    va_list   args;
+
+    va_start(args, format);
+    int print = vsnprintf(output, SIR_MAXMESSAGE, format, args);
+    va_end(args);
+
+    assert(print > 0);
+
+    if (print > 0) {
+        int put = fputs(output, stderr);
+        assert(put != EOF);
+    }
+#else
+    format = format;
+#endif
+}
+
+#ifdef _WIN32
+#ifdef DEBUG
 void _sir_invalidparam(const wchar_t* expression, const wchar_t* function, const wchar_t* file,
     unsigned int line, uintptr_t pReserved) {
     const char* format =
@@ -329,10 +345,12 @@ void _sir_invalidparam(const wchar_t* expression, const wchar_t* function, const
 #ifndef SIR_SELFLOG
     fprintf(stderr, format, __func__, expression, function, file, line);
 #else
-    _sir_l(format, __func__, expression, function, file, line);
+    _sir_selflog(format, __func__, expression, function, file, line);
 #endif
     abort();
 }
 #endif
+#endif
+
 
 /*! \endcond PRIVATE */

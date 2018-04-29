@@ -1,8 +1,6 @@
 /*!
  * \file sirplatform.h
- *
- * Platform-dependent configuration for the SIR library.
- *
+ * \brief Platform-specific configuration for the SIR library.
  * \author Ryan Matthew Lederman <lederman@gmail.com>
  */
 #ifndef _SIR_PLATFORM_H_INCLUDED
@@ -42,6 +40,7 @@
 #undef SIR_MSEC_TIMER
 #endif
 
+typedef int sirerror_t;
 typedef pthread_mutex_t sirmutex_t;
 
 #else
@@ -51,8 +50,11 @@ typedef pthread_mutex_t sirmutex_t;
 #undef SIR_MSEC_TIMER
 
 typedef DWORD pid_t;
+typedef DWORD sirerror_t;
 typedef HANDLE sirmutex_t;
 #endif
+
+#define SIR_NOERROR (sirerror_t)0
 
 /*! A sensible (?) constraint for the limit of a file's path. Note that this value
  * is only used in the absence of PATH_MAX. */

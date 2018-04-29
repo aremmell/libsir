@@ -52,13 +52,13 @@ $(LIBDIR): $(BUILDDIR)
 $(OBJ_DEBUG): $(INTERDIR)
 $(OBJ_SHARED): $(LIBDIR)
 
-default: $(LIBDIR) $(INTERDIR)
-
 $(INTERDIR)/%.do: %.c
 	$(CC) -c -o $@ $< $(CFLAGS_DEBUG)
 
 $(INTERDIR)/%.lo: %.c
 	$(CC) -c -o $@ $< $(CFLAGS_SHARED)
+
+default: debug
 
 all: debug static shared docs
 

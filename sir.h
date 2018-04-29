@@ -1,8 +1,6 @@
 /*!
  * \file sir.h
- *
- * Definition of the public interface to the SIR library.
- *
+ * \brief Definition of the public interface to the SIR library.
  * \author Ryan Matthew Lederman <lederman@gmail.com>
  */
 #ifndef _SIR_H_INCLUDED

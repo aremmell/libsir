@@ -1,8 +1,6 @@
 /*!
  * \file sirfilecache.h
- *
- * Internal definitions for log file management in the SIR library.
- * 
+ * \brief Internal definitions for log file management in the SIR library.
  * \author Ryan Matthew Lederman <lederman@gmail.com>
  */
 #ifndef _SIR_FILECACHE_H_INCLUDED

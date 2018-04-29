@@ -1,8 +1,6 @@
 /*!
  * \file sirconfig.h
- *
- * Compile-time configuration for the SIR library.
- *
+ * \brief Compile-time configuration for the SIR library.
  * \author Ryan Matthew Lederman <lederman@gmail.com>
  */
 #ifndef _SIR_CONFIG_H_INCLUDED

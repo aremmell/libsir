@@ -1,8 +1,6 @@
 /*!
  * \file sirmacros.h
- *
- * Internal macros for the SIR library.
- *
+ * \brief Internal macros for the SIR library.
  * \author Ryan Matthew Lederman <lederman@gmail.com>
  */
 #ifndef _SIR_MACROS_H_INCLUDED
@@ -17,6 +15,9 @@
     va_start(args, format);
 
 #define _SIR_L_END(args) va_end(args);
+
+#define _sir_handleerr(err) \
+    _sir_handleerr_impl(err, __func__, __FILE__, __LINE__);
 
 static inline bool sir_sanity(sirinit* si) {
     return si && si->_sirmagic == _SIR_MAGIC;

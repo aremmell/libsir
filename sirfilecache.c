@@ -1,13 +1,10 @@
 /*!
  * \file sirfilecache.c
- *
- * Internal implementation of log file management for the SIR library.
- *
+ * \brief Internal implementation of log file management for the SIR library.
  * \author Ryan Matthew Lederman <lederman@gmail.com>
  */
 #include "sirfilecache.h"
 #include "sirinternal.h"
-#include "sirmacros.h"
 
 /*! \cond PRIVATE */
 
@@ -70,7 +67,7 @@ bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
 
             assert(0 == err && 0 == eof);
 
-            _sir_l("%s: wrote %lu/%lu bytes to %d; ferror: %d, feof: %d\n", __func__, write, writeLen, sf->id,
+            _sir_selflog("%s: wrote %lu/%lu bytes to %d; ferror: %d, feof: %d\n", __func__, write, writeLen, sf->id,
                 err, eof);
 
             /*! \todo
@@ -108,7 +105,7 @@ bool _sirfile_writeheader(sirfile* sf) {
                 assert(fmt >= 0);
 
                 if (fmt < 0) {
-                    _sir_l("%s: snprintf returned %d!", __func__, fmt);
+                    _sir_selflog("%s: snprintf returned %d!", __func__, fmt);
                 } else {
                     return _sirfile_write(sf, header);
                 }
@@ -251,7 +248,7 @@ bool _sir_files_dispatch(sirfiles* sfc, sir_level level, siroutput* output) {
             assert(_sirfile_validate(sfc->files[n]));
 
             if (!_sir_destwantslevel(sfc->files[n]->levels, level)) {
-                _sir_l("%s: levels for %d (%04lx) not set for (%04lx); skipping...\n", __func__,
+                _sir_selflog("%s: levels for %d (%04lx) not set for (%04lx); skipping...\n", __func__,
                     sfc->files[n]->id, sfc->files[n]->levels, level, written, sfc->count);
                 continue;
             }
@@ -263,17 +260,17 @@ bool _sir_files_dispatch(sirfiles* sfc, sir_level level, siroutput* output) {
                 r &= true;
                 written++;
             } else {
-                _sir_l("%s: write to %d failed! errno: %d\n", __func__, sfc->files[n]->id, errno);
+                _sir_selflog("%s: write to %d failed! errno: %d\n", __func__, sfc->files[n]->id, errno);
             }
         }
 
         if (written > 0) {
             if (!_sir_fflush_all())
-                _sir_l("%s: fflush failed! errno: %d\n", __func__, errno);
+                _sir_selflog("%s: fflush failed! errno: %d\n", __func__, errno);
         }
 
         if (sfc->count > 0)
-            _sir_l("%s: wrote to %d/%lu log file(s)\n", __func__, written, sfc->count);
+            _sir_selflog("%s: wrote to %d/%lu log file(s)\n", __func__, written, sfc->count);
     }
 
     return r;
