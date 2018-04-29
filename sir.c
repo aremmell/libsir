@@ -36,10 +36,6 @@ bool sir_init(const sirinit* si) {
 }
 
 void sir_cleanup() {
-
-    if (!sir_sanity(&sir_s))
-        return;
-
     _sir_files_destroy(&sir_fc);
     memset(&sir_s, 0, sizeof(sirinit));
     memset(&sir_fc, 0, sizeof(sirfiles));
