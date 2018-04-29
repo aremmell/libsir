@@ -62,11 +62,21 @@ default: debug
 
 all: debug static shared docs
 
+# thanks to the windows folks
 prep:
-	$(shell mkdir -p $(INTERDIR) >/dev/null && \
-	        mkdir -p $(LIBDIR) >/dev/null && \
-			mkdir -p $(DOCSDIR) >/dev/null)
+ifeq ($(OS),Windows_NT)
+	$(shell if not exist "$(BUILDDIR)\NUL" mkdir "$(BUILDDIR)")
+	$(shell if not exist "$(INTERDIR)\NUL" mkdir "$(INTERDIR)")
+	$(shell if not exist "$(LIBDIR)\NUL" mkdir "$(LIBDIR)")
+	$(shell if not exist "$(DOCSDIR)\NUL" mkdir "$(DOCSDIR)")
+	@echo directories prepared.	
+else
+	$(shell mkdir -p $(BUILDDIR) && \
+			mkdir -p $(INTERDIR) && \
+	        mkdir -p $(LIBDIR) && \
+			mkdir -p$(DOCSDIR))
 	@echo directories prepared.
+endif
 
 debug: $(OBJ_DEBUG)
 	$(CC) -o $(OUT_DEBUG) $^ $(CFLAGS_DEBUG) $(LIBS)
