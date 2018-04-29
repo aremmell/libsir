@@ -247,15 +247,9 @@ bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format) {
 }
 
 bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
-
-    assert(tbuf);
-
     if (tbuf) {
-        time(tbuf);
-
-#ifdef SIR_MSEC_TIMER
+#ifdef SIR_MSEC_POSIX
         struct timespec ts = {0};
-
         int clock = clock_gettime(SIR_MSECCLOCK, &ts);
         assert(0 == clock);
 
@@ -268,19 +262,24 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
             *nsecbuf = 0;
             _sir_selflog("%s: clock_gettime failed; errno: %d\n", __func__, errno);
         }
-#else
+#elif defined(SIR_MSEC_WIN32)
+        static const ULONGLONG uepoch = 116444736e9;
+
+        FILETIME ftutc = {0};  
+        GetSystemTimePreciseAsFileTime(&ftutc);
+
+        *tbuf = (((ULONGLONG)ftutc.dwHighDateTime << 32 | ftutc.dwLowDateTime & 0x0000ffff)
+              - uepoch) / 1e7;
+
         if (nsecbuf) {
-            FILETIME ftutc = {0};
-            GetSystemTimePreciseAsFileTime(&ftutc);
-
-            FILETIME ftloc = {0};
-            FileTimeToLocalFileTime(&ftutc, &ftloc);
-
             SYSTEMTIME st = {0};
-            FileTimeToSystemTime(&ftloc, &st);
-
+            FileTimeToSystemTime(&ftutc, &st);
             *nsecbuf = st.wMilliseconds;
         }
+#else
+        time(tbuf);
+        if (nsecbuf)
+            *nsecbuf = 0;
 #endif
         return true;
     }

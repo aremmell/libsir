@@ -36,6 +36,7 @@
 
 #if _POSIX_TIMERS > 0
 #define SIR_MSEC_TIMER
+#define SIR_MSEC_POSIX
 #else
 #undef SIR_MSEC_TIMER
 #endif
@@ -44,10 +45,12 @@ typedef int sirerror_t;
 typedef pthread_mutex_t sirmutex_t;
 
 #else
+#define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #define SIR_MAXPATH MAX_PATH
 #define SIR_NO_SYSLOG
-#undef SIR_MSEC_TIMER
+#define SIR_MSEC_TIMER
+#define SIR_MSEC_WIN32
 
 typedef DWORD pid_t;
 typedef DWORD sirerror_t;

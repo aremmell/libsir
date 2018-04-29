@@ -55,7 +55,6 @@ typedef enum {
      * If ::SIRO_NOTIME is set, this has no effect.
      *
      * \attention Only available if \a SIR_MSEC_TIMER is defined, which varies by platform.
-     * It is never defined if \a _WIN32 is defined.
      */
     SIRO_NOMSEC = 0x800,
 
