@@ -17,6 +17,10 @@ LIBDIR   = $(BUILDDIR)/lib
 LIBS   = -pthread
 CFLAGS = -Wpedantic -std=c99 -I.
 
+ifeq ($(OS),Windows_NT)
+CFLAGS += -D_WIN32
+endif
+
 TUS     = sir.c sirmutex.c sirinternal.c sirfilecache.c
 DEPS    = sir.h sirmutex.h sirconfig.h sirinternal.h sirmacros.h \
 		  sirplatform.h sirfilecache.h sirtypes.h
