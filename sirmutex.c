@@ -90,6 +90,8 @@ bool _sirmutex_destroy(sirmutex_t* mutex) {
 
 #else /* Win32 mutex implementation */
 
+static bool _sirmutex_waitwin32(sirmutex_t mutex, DWORD msec);
+
 bool _sirmutex_create(sirmutex_t* mutex) {
 
     assert(mutex);
@@ -110,11 +112,11 @@ bool _sirmutex_create(sirmutex_t* mutex) {
 }
 
 bool _sirmutex_trylock(sirmutex_t* mutex) {
-    return _sirmutex_waitwin32(mutex, 0);
+    return _sirmutex_waitwin32(*mutex, 0);
 }
 
 bool _sirmutex_lock(sirmutex_t* mutex) {
-    return _sirmutex_waitwin32(mutex, INFINITE);
+    return _sirmutex_waitwin32(*mutex, INFINITE);
 }
 
 bool _sirmutex_unlock(sirmutex_t* mutex) {
@@ -149,12 +151,12 @@ bool _sirmutex_destroy(sirmutex_t* mutex) {
     return false;
 }
 
-static inline bool _sirmutex_waitwin32(sirmutex_t* mutex, DWORD msec) {
+static bool _sirmutex_waitwin32(sirmutex_t mutex, DWORD msec) {
 
     assert(mutex);
 
     if (mutex) {
-        DWORD wait = WaitForSingleObject(*mutex, msec);
+        DWORD wait = WaitForSingleObject(mutex, msec);
 
         switch(wait) {
             case WAIT_ABANDONED:
