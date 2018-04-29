@@ -53,8 +53,8 @@ void _sir_selflog(const sirchar_t* format, ...);
 #define _sir_selflog(format, ...) ((void)(0))
 #endif
 
-#ifdef __STDC_LIB_EXT1__
 #ifdef _WIN32
+#ifdef DEBUG
 void _sir_invalidparam(const wchar_t* expression, const wchar_t* function, const wchar_t* file,
     unsigned int line, uintptr_t pReserved);
 #endif
