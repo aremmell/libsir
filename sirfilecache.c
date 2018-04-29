@@ -268,9 +268,6 @@ bool _sir_files_dispatch(sirfiles* sfc, sir_level level, siroutput* output) {
             if (!_sir_fflush_all())
                 _sir_selflog("%s: fflush failed! errno: %d\n", __func__, errno);
         }
-
-        if (sfc->count > 0)
-            _sir_selflog("%s: wrote to %d/%lu log file(s)\n", __func__, written, sfc->count);
     }
 
     return r;
