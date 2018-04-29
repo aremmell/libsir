@@ -35,9 +35,9 @@ bool sir_init(const sirinit* si) {
 }
 
 void sir_cleanup() {
-    _sir_files_destroy(&sir_fc);
+    _sir_fcache_destroy(&sir_fc);
     memset(&sir_s, 0, sizeof(sirinit));
-    memset(&sir_fc, 0, sizeof(sirfiles));
+    memset(&sir_fc, 0, sizeof(sirfcache));
     _sirbuf_reset(&sir_b);
     
     _sir_selflog("SIR is cleaned up.\n");
@@ -100,9 +100,9 @@ bool siremerg(const sirchar_t* format, ...) {
 }
 
 int sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts) {
-    return _sir_files_add(&sir_fc, path, levels, opts);
+    return _sir_fcache_add(&sir_fc, path, levels, opts);
 }
 
 bool sir_remfile(int id) {
-    return _sir_files_rem(&sir_fc, id);
+    return _sir_fcache_rem(&sir_fc, id);
 }

@@ -116,9 +116,24 @@ bool _sirfile_writeheader(sirfile* sf) {
     return false;
 }
 
+void _sirfile_destroy(sirfile* sf) {
+    if (sf) {
+        _sir_fflush(sf->f);
+        _sir_fclose(&sf->f);
+        safefree(sf->path);
+        safefree(sf);
+    }
+}
+
+bool _sirfile_validate(sirfile* sf) {
+    bool valid = sf && validid(sf->id) && sf->f && validstr(sf->path);
+    assert(valid);
+    return valid;
+}
+
 FILE* _sir_fopen(const sirchar_t* path) {
     if (validstr(path)) {
-#ifdef __STDC_SECURE_LIB__        
+#ifdef __STDC_SECURE_LIB__
         FILE* tmp = NULL;
         errno_t open = fopen_s(&tmp, path, SIR_FOPENMODE);
         _sir_handleerr(open);
@@ -153,22 +168,7 @@ bool _sir_fflush_all() {
     return 0 == flush;
 }
 
-void _sirfile_destroy(sirfile* sf) {
-    if (sf) {
-        _sir_fflush(sf->f);
-        _sir_fclose(&sf->f);
-        safefree(sf->path);
-        safefree(sf);
-    }
-}
-
-bool _sirfile_validate(sirfile* sf) {
-    bool valid = sf && validid(sf->id) && sf->f && validstr(sf->path);
-    assert(valid);
-    return valid;
-}
-
-int _sir_files_add(sirfiles* sfc, const sirchar_t* path, sir_levels levels, sir_options opts) {
+int _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels levels, sir_options opts) {
 
     assert(sfc);
     assert(validstr(path));
@@ -196,7 +196,7 @@ int _sir_files_add(sirfiles* sfc, const sirchar_t* path, sir_levels levels, sir_
     return SIR_INVALID;
 }
 
-bool _sir_files_rem(sirfiles* sfc, int id) {
+bool _sir_fcache_rem(sirfcache* sfc, int id) {
 
     assert(sfc);
     assert(validid(id));
@@ -226,7 +226,7 @@ bool _sir_files_rem(sirfiles* sfc, int id) {
     return false;
 }
 
-bool _sir_files_destroy(sirfiles* sfc) {
+bool _sir_fcache_destroy(sirfcache* sfc) {
 
     assert(sfc);
 
@@ -245,7 +245,7 @@ bool _sir_files_destroy(sirfiles* sfc) {
     return false;
 }
 
-bool _sir_files_dispatch(sirfiles* sfc, sir_level level, siroutput* output) {
+bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output) {
 
     bool r = true;
 

@@ -173,7 +173,7 @@ typedef struct {
 typedef struct {
     sirfile* files[SIR_MAXFILES];
     size_t   count;
-} sirfiles;
+} sirfcache;
 
 typedef struct {
     sirchar_t* timestamp;

@@ -9,6 +9,9 @@
 #include "sirplatform.h"
 #include "sirtypes.h"
 
+#define _CRT_PRINT_STR(d) #d
+#define _CRT_PRINT(d) _CRT_PRINT_STR(d)
+
 #define _SIR_L_START(format) \
     bool    r = false;       \
     va_list args;            \

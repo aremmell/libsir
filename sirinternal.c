@@ -9,9 +9,9 @@
 /*! \cond PRIVATE */
 
 sirinit  sir_s  = {0};
-sirfiles sir_fc = {0};
+sirfcache sir_fc = {0};
 sirbuf   sir_b  = {0};
-uint32_t sir_magic = 0;
+atomic_uint_fast32_t sir_magic = 0;
 
 bool _sir_lv(sir_level level, const sirchar_t* format, va_list args) {
 
@@ -92,7 +92,7 @@ bool _sir_dispatch(sir_level level, siroutput* output) {
         }
 #endif
 
-        return r && _sir_files_dispatch(&sir_fc, level, output);
+        return r && _sir_fcache_dispatch(&sir_fc, level, output);
     }
 
     return false;
