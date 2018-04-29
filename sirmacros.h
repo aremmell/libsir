@@ -19,11 +19,6 @@
 #define _sir_handleerr(err) \
     _sir_handleerr_impl(err, __func__, __FILE__, __LINE__);
 
-
-static inline bool sir_sanity() {
-    return sir_magic == _SIR_MAGIC;
-}
-
 static inline bool validstr(const sirchar_t* str) {
     return str && *str;
 }
