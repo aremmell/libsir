@@ -4,11 +4,18 @@
  * \author Ryan Matthew Lederman <lederman@gmail.com>
  */
 #include "sir.h"
+#include "sirmacros.h"
 #include "sirmutex.h"
 #include "sirinternal.h"
 #include "sirfilecache.h"
+#include "sirdefaults.h"
 
 bool sir_init(const sirinit* si) {
+
+    if (_sir_sanity()) {
+        _sir_selflog("%s: sir appears to already be initialized!\n", __func__);
+        return false;
+    }
 
     if (!si || !_sir_options_sanity(si))
         return false;
@@ -29,72 +36,74 @@ bool sir_init(const sirinit* si) {
 #endif
 #endif
 
+    sir_magic = _SIR_MAGIC;
     _sir_selflog("SIR is initialized.\n");
 
     return true;
 }
 
 void sir_cleanup() {
+
     _sir_fcache_destroy(&sir_fc);
-    memset(&sir_s, 0, sizeof(sirinit));
     memset(&sir_fc, 0, sizeof(sirfcache));
     _sirbuf_reset(&sir_b);
+    memset(&sir_s, 0, sizeof(sirinit));
     
     _sir_selflog("SIR is cleaned up.\n");
 }
 
 bool sirdebug(const sirchar_t* format, ...) {
     _SIR_L_START(format);
-    r = _sir_lv(SIRL_DEBUG, format, args);
+    r = _sir_logv(SIRL_DEBUG, format, args);
     _SIR_L_END(args);
     return r;
 }
 
 bool sirinfo(const sirchar_t* format, ...) {
     _SIR_L_START(format);
-    r = _sir_lv(SIRL_INFO, format, args);
+    r = _sir_logv(SIRL_INFO, format, args);
     _SIR_L_END(args);
     return r;
 }
 
 bool sirnotice(const sirchar_t* format, ...) {
     _SIR_L_START(format);
-    r = _sir_lv(SIRL_NOTICE, format, args);
+    r = _sir_logv(SIRL_NOTICE, format, args);
     _SIR_L_END(args);
     return r;
 }
 
 bool sirwarn(const sirchar_t* format, ...) {
     _SIR_L_START(format);
-    r = _sir_lv(SIRL_WARN, format, args);
+    r = _sir_logv(SIRL_WARN, format, args);
     _SIR_L_END(args);
     return r;
 }
 
 bool sirerror(const sirchar_t* format, ...) {
     _SIR_L_START(format);
-    r = _sir_lv(SIRL_ERROR, format, args);
+    r = _sir_logv(SIRL_ERROR, format, args);
     _SIR_L_END(args);
     return r;
 }
 
 bool sircrit(const sirchar_t* format, ...) {
     _SIR_L_START(format);
-    r = _sir_lv(SIRL_CRIT, format, args);
+    r = _sir_logv(SIRL_CRIT, format, args);
     _SIR_L_END(args);
     return r;
 }
 
 bool siralert(const sirchar_t* format, ...) {
     _SIR_L_START(format);
-    r = _sir_lv(SIRL_ALERT, format, args);
+    r = _sir_logv(SIRL_ALERT, format, args);
     _SIR_L_END(args);
     return r;
 }
 
 bool siremerg(const sirchar_t* format, ...) {
     _SIR_L_START(format);
-    r = _sir_lv(SIRL_EMERG, format, args);
+    r = _sir_logv(SIRL_EMERG, format, args);
     _SIR_L_END(args);
     return r;
 }

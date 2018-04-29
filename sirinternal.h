@@ -20,7 +20,9 @@ extern sirfcache sir_fc;
 extern sirbuf   sir_b;
 extern atomic_uint_fast32_t sir_magic;
 
-bool _sir_lv(sir_level level, const sirchar_t* format, va_list args);
+bool _sir_sanity();
+
+bool _sir_logv(sir_level level, const sirchar_t* format, va_list args);
 
 bool             _sir_dispatch(sir_level level, siroutput* output);
 const sirchar_t* _sir_format(sir_options, siroutput* output);

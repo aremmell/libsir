@@ -12,6 +12,9 @@
 #define _CRT_PRINT_STR(d) #d
 #define _CRT_PRINT(d) _CRT_PRINT_STR(d)
 
+#define _COUNTOF(arr) \
+    (sizeof(arr) / sizeof(arr[0]))
+
 #define _SIR_L_START(format) \
     bool    r = false;       \
     va_list args;            \

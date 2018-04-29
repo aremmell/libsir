@@ -13,7 +13,18 @@ sirfcache sir_fc = {0};
 sirbuf   sir_b  = {0};
 atomic_uint_fast32_t sir_magic = 0;
 
-bool _sir_lv(sir_level level, const sirchar_t* format, va_list args) {
+bool _sir_sanity() {
+    if (_SIR_MAGIC == sir_magic)
+        return true;
+    
+    _sir_selflog("%s: sanity check failed; has sir_init been called?\n", __func__);
+    return false;
+}
+
+bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
+
+    if (!_sir_sanity())
+        return false;
 
     assert(0 != level);
     assert(validstr(format));
@@ -206,6 +217,7 @@ sirchar_t* _sirbuf_get(sirbuf* buf, size_t idx) {
 }
 
 bool _sir_options_sanity(const sirinit* si) {
+#pragma message "_sir_options_sanity"    
     return true;
 }
 
