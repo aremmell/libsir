@@ -60,6 +60,7 @@ typedef DWORD sirerror_t;
 typedef HANDLE sirmutex_t;
 #endif
 
+/*! A value that represents the success condition. */
 #define SIR_NOERROR (sirerror_t)0
 
 /*! A sensible (?) constraint for the limit of a file's path. Note that this value
@@ -68,4 +69,28 @@ typedef HANDLE sirmutex_t;
 #define SIR_MAXPATH 65535
 #endif
 
+#ifndef __STDC_VERSION__
+#define __STDC_VERSION__ 0
+#endif
+
+#ifndef __STDC_SECURE_LIB__
+#define __STDC_SECURE_LIB__ 0
+#endif
+
+#ifndef __STDC_NO_THREADS__
+#define __STDC_NO_THREADS__ 1
+#endif
+#define strdef(d) #d
+#define def(d) strdef(d)
+#pragma message "std version: " def(__STDC_VERSION__)", secure lib: " def(__STDC_SECURE_LIB__) ", stdc threads: " def(__STDC_NO_THREADS__)
+#if __STDC_VERSION__ >= 201112L
+#pragma message "C11 support available."
+#ifdef __STDC_SECURE_LIB__ 
+#pragma message "C11 Annex K support available." 
+#else
+#pragma message "NO C11 Annex K support."
+#endif
+#else
+#pragma message "NO C11 support available."
+#endif
 #endif /* !_SIR_PLATFORM_H_INCLUDED */
