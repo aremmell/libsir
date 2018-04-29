@@ -29,7 +29,6 @@ bool sir_init(const sirinit* si) {
 #endif
 #endif
 
-    sir_s._sirmagic = _SIR_MAGIC;
     _sir_selflog("SIR is initialized.\n");
 
     return true;
@@ -45,10 +44,6 @@ void sir_cleanup() {
 }
 
 bool sirdebug(const sirchar_t* format, ...) {
-
-    if (!sir_sanity(&sir_s))
-        return false;
-
     _SIR_L_START(format);
     r = _sir_lv(SIRL_DEBUG, format, args);
     _SIR_L_END(args);
@@ -56,10 +51,6 @@ bool sirdebug(const sirchar_t* format, ...) {
 }
 
 bool sirinfo(const sirchar_t* format, ...) {
-
-    if (!sir_sanity(&sir_s))
-        return false;
-
     _SIR_L_START(format);
     r = _sir_lv(SIRL_INFO, format, args);
     _SIR_L_END(args);
@@ -67,10 +58,6 @@ bool sirinfo(const sirchar_t* format, ...) {
 }
 
 bool sirnotice(const sirchar_t* format, ...) {
-
-    if (!sir_sanity(&sir_s))
-        return false;
-
     _SIR_L_START(format);
     r = _sir_lv(SIRL_NOTICE, format, args);
     _SIR_L_END(args);
@@ -78,10 +65,6 @@ bool sirnotice(const sirchar_t* format, ...) {
 }
 
 bool sirwarn(const sirchar_t* format, ...) {
-
-    if (!sir_sanity(&sir_s))
-        return false;
-
     _SIR_L_START(format);
     r = _sir_lv(SIRL_WARN, format, args);
     _SIR_L_END(args);
@@ -89,10 +72,6 @@ bool sirwarn(const sirchar_t* format, ...) {
 }
 
 bool sirerror(const sirchar_t* format, ...) {
-
-    if (!sir_sanity(&sir_s))
-        return false;
-
     _SIR_L_START(format);
     r = _sir_lv(SIRL_ERROR, format, args);
     _SIR_L_END(args);
@@ -100,10 +79,6 @@ bool sirerror(const sirchar_t* format, ...) {
 }
 
 bool sircrit(const sirchar_t* format, ...) {
-
-    if (!sir_sanity(&sir_s))
-        return false;
-
     _SIR_L_START(format);
     r = _sir_lv(SIRL_CRIT, format, args);
     _SIR_L_END(args);
@@ -111,10 +86,6 @@ bool sircrit(const sirchar_t* format, ...) {
 }
 
 bool siralert(const sirchar_t* format, ...) {
-
-    if (!sir_sanity(&sir_s))
-        return false;
-
     _SIR_L_START(format);
     r = _sir_lv(SIRL_ALERT, format, args);
     _SIR_L_END(args);
@@ -122,10 +93,6 @@ bool siralert(const sirchar_t* format, ...) {
 }
 
 bool siremerg(const sirchar_t* format, ...) {
-
-    if (!sir_sanity(&sir_s))
-        return false;
-
     _SIR_L_START(format);
     r = _sir_lv(SIRL_EMERG, format, args);
     _SIR_L_END(args);
@@ -133,13 +100,9 @@ bool siremerg(const sirchar_t* format, ...) {
 }
 
 int sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts) {
-        if (!sir_sanity(&sir_s))
-            return SIR_INVALID;
     return _sir_files_add(&sir_fc, path, levels, opts);
 }
 
 bool sir_remfile(int id) {
-    if (!sir_sanity(&sir_s))
-        return false;
     return _sir_files_rem(&sir_fc, id);
 }

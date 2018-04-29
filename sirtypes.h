@@ -129,13 +129,6 @@ typedef struct {
      * for a destination, no time is included in output. Set to \a NULL for the default.
      */
     const sirchar_t* timeFmt;
-
-    /*! Used internally by the library to determine whether or not it is in
-     * valid operational state.
-     * 
-     * \attention For internal library use only. Do not modify.
-     */
-    uint32_t _sirmagic;
 } sirinit;
 
 /*! \cond PRIVATE */

@@ -18,6 +18,7 @@
 extern sirinit  sir_s;
 extern sirfiles sir_fc;
 extern sirbuf   sir_b;
+extern uint32_t sir_magic;
 
 bool _sir_lv(sir_level level, const sirchar_t* format, va_list args);
 
