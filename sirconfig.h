@@ -81,4 +81,7 @@
 /*! The maximum size, in characters, of final formatted output. */
 #define SIR_MAXOUTPUT SIR_MAXMESSAGE + SIR_MAXTIME + SIR_MAXLEVEL + SIR_MAXNAME
 
+/*! The string passed to fopen/fopen_s for log files. */
+#define SIR_FOPENMODE "a"
+
 #endif /* !_SIR_CONFIG_H_INCLUDED */

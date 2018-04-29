@@ -317,8 +317,7 @@ void _sir_handleerr_impl(sirerror_t err, const sirchar_t* func,
             line, err, 0 == finderr ? buf : SIR_UNKERROR);    
 #else
         DWORD flags = FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                      FORMAT_MESSAGE_FROM_SYSTEM |
-                      FORMAT_MESSAGE_IGNORE_INSERTS;
+                      FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS;
         TCHAR* errbuf = NULL;
 
         DWORD fmt = FormatMessage(flags, NULL, err, 0, (LPTSTR)&errbuf, SIR_MAXERROR, NULL);

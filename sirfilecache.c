@@ -117,7 +117,18 @@ bool _sirfile_writeheader(sirfile* sf) {
 }
 
 FILE* _sir_fopen(const sirchar_t* path) {
-    return validstr(path) ? fopen(path, "a") : NULL;
+    if (validstr(path)) {
+#ifdef __STDC_SECURE_LIB__        
+        FILE* tmp = NULL;
+        errno_t open = fopen_s(&tmp, path, SIR_FOPENMODE);
+        _sir_handleerr(open);
+        return tmp;
+#else
+        return fopen(path, SIR_FOPENMODE);
+#endif
+    }
+
+    return NULL;
 }
 
 void _sir_fclose(FILE** f) {
