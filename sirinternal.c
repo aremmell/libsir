@@ -316,10 +316,25 @@ void _sir_handleerr_impl(sirerror_t err, const sirchar_t* func,
         sirchar_t buf[SIR_MAXERROR] = {0};
         int finderr = strerror_r(err, buf, SIR_MAXERROR);
 
-        _sir_selflog("%s: at %s:%d: error: (%d, '%s')\n", __func__, __FILE__,
-            __LINE__, err, 0 == finderr ? buf : SIR_UNKERROR);    
+        _sir_selflog("%s: at %s:%d: error: (%d, '%s')\n", func, file,
+            line, err, 0 == finderr ? buf : SIR_UNKERROR);    
 #else
-#pragma message "TODO: implement error handling on win32"
+        DWORD flags = FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                      FORMAT_MESSAGE_FROM_SYSTEM |
+                      FORMAT_MESSAGE_IGNORE_INSERTS;
+        TCHAR* errbuf = NULL;
+
+        DWORD fmt = FormatMessage(flags, NULL, err, 0, (LPTSTR)&errbuf, SIR_MAXERROR, NULL);
+        assert(fmt > 0);
+
+        if (fmt > 0 && errbuf) {
+            _sir_selflog("%s: at %s:%d: error: (%d, '%s')\n", func, file,
+                line, err, errbuf);
+            BOOL heapfree = HeapFree(GetProcessHeap(), 0, errbuf);
+            assert(0 != heapfree);
+        } else {
+            _sir_selflog("%s: FormatMessage failed; err: %lu\n", __func__, GetLastError());
+        }
 #endif
     }
     assert(SIR_NOERROR == err);
@@ -360,6 +375,5 @@ void _sir_invalidparam(const wchar_t* expression, const wchar_t* function, const
 }
 #endif
 #endif
-
 
 /*! \endcond PRIVATE */
