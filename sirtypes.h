@@ -75,26 +75,25 @@ typedef uint16_t sir_options;
 
 /*! Available styles (i.e., colors, brightness, etc.) for console output. */
 typedef enum {
-    SIRS_NONE = 0x0,
+    SIRS_NONE = 0,
     SIRS_BOLD = 0x1,
     SIRS_BRIGHT = 0x2,
-    SIRS_DIM = 0x5,    
-    SIRS_RED = 0x6,
-    SIRS_GREEN = 0x7,
-    SIRS_BLUE = 0x8,
-    SIRS_YELLOW = 0x9,
-    SIRS_MAGENTA = 0x10,
-    SIRS_CYAN = 0x11,
-    SIRS_WHITE = 0x12,
-    SIRS_BLACK = 0x13,
-    SIRS_BG_RED = 0x20,
-    SIRS_BG_GREEN = 0x21,
-    SIRS_BG_BLUE = 0x22,
-    SIRS_BG_YELLOW = 0x23,
-    SIRS_BG_MAGENTA = 0x24,
-    SIRS_BG_CYAN = 0x25,
-    SIRS_BG_WHITE = 0x26,
-    SIRS_BG_BLACK = 0x27 
+    SIRS_FG_RED = 0x4,
+    SIRS_FG_GREEN = 0x8,
+    SIRS_FG_BLUE = 0x10,
+    SIRS_FG_YELLOW = 0x20,
+    SIRS_FG_MAGENTA = 0x40,
+    SIRS_FG_CYAN = 0x80,
+    SIRS_FG_WHITE = 0x100,
+    SIRS_FG_BLACK = 0x200,
+    SIRS_BG_RED = 0x1000,
+    SIRS_BG_GREEN = 0x200,
+    SIRS_BG_BLUE = 0x400,
+    SIRS_BG_YELLOW = 0x800,
+    SIRS_BG_MAGENTA = 0x1000,
+    SIRS_BG_CYAN = 0x2000,
+    SIRS_BG_WHITE = 0x4000,
+    SIRS_BG_BLACK = 0x8000 
 } sir_textstyle;
 
 /*! The underlying type to use for characters in output. */
@@ -200,7 +199,7 @@ typedef struct {
 
 typedef struct {
     sir_level level;
-    sir_textstyle style;
+    uint32_t styles;
 } sir_level_style_map;
 
 #ifndef _WIN32
@@ -209,11 +208,6 @@ typedef const sirchar_t* sir_textstyle_final;
 typedef enum {
     _SIRS_RESET = 0,
     _SIRS_BRIGHT = 1,
-    _SIRS_DIM = 2,
-    _SIRS_UNDERSCORE = 4,
-    _SIRS_BLINK = 5,
-    _SIRS_REVERSE = 7,
-    _SIRS_HIDDEN = 8,
     _SIRS_FG_BLACK = 30,
     _SIRS_FG_RED = 31,
     _SIRS_FG_GREEN = 32,
@@ -232,79 +226,30 @@ typedef enum {
     _SIRS_BG_WHITE = _SIRS_FG_WHITE + 10
 } sir_textstyle_priv;
 #else
-typedef const WORD sir_textstyle_final;
-/*
-HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-static const WORD bgMask( BACKGROUND_BLUE      | 
- 18                                BACKGROUND_GREEN     | 
- 19                                BACKGROUND_RED       | 
- 20                                BACKGROUND_INTENSITY   );
- 21      static const WORD fgMask( FOREGROUND_BLUE      | 
- 22                                FOREGROUND_GREEN     | 
- 23                                FOREGROUND_RED       | 
- 24                                FOREGROUND_INTENSITY   );
- 25      
- 26      static const WORD fgBlack    ( 0 ); 
- 27      static const WORD fgLoRed    ( FOREGROUND_RED   ); 
- 28      static const WORD fgLoGreen  ( FOREGROUND_GREEN ); 
- 29      static const WORD fgLoBlue   ( FOREGROUND_BLUE  ); 
- 30      static const WORD fgLoCyan   ( fgLoGreen   | fgLoBlue ); 
- 31      static const WORD fgLoMagenta( fgLoRed     | fgLoBlue ); 
- 32      static const WORD fgLoYellow ( fgLoRed     | fgLoGreen ); 
- 33      static const WORD fgLoWhite  ( fgLoRed     | fgLoGreen | fgLoBlue ); 
- 34      static const WORD fgGray     ( fgBlack     | FOREGROUND_INTENSITY ); 
- 35      static const WORD fgHiWhite  ( fgLoWhite   | FOREGROUND_INTENSITY ); 
- 36      static const WORD fgHiBlue   ( fgLoBlue    | FOREGROUND_INTENSITY ); 
- 37      static const WORD fgHiGreen  ( fgLoGreen   | FOREGROUND_INTENSITY ); 
- 38      static const WORD fgHiRed    ( fgLoRed     | FOREGROUND_INTENSITY ); 
- 39      static const WORD fgHiCyan   ( fgLoCyan    | FOREGROUND_INTENSITY ); 
- 40      static const WORD fgHiMagenta( fgLoMagenta | FOREGROUND_INTENSITY ); 
- 41      static const WORD fgHiYellow ( fgLoYellow  | FOREGROUND_INTENSITY );
- 42      static const WORD bgBlack    ( 0 ); 
- 43      static const WORD bgLoRed    ( BACKGROUND_RED   ); 
- 44      static const WORD bgLoGreen  ( BACKGROUND_GREEN ); 
- 45      static const WORD bgLoBlue   ( BACKGROUND_BLUE  ); 
- 46      static const WORD bgLoCyan   ( bgLoGreen   | bgLoBlue ); 
- 47      static const WORD bgLoMagenta( bgLoRed     | bgLoBlue ); 
- 48      static const WORD bgLoYellow ( bgLoRed     | bgLoGreen ); 
- 49      static const WORD bgLoWhite  ( bgLoRed     | bgLoGreen | bgLoBlue ); 
- 50      static const WORD bgGray     ( bgBlack     | BACKGROUND_INTENSITY ); 
- 51      static const WORD bgHiWhite  ( bgLoWhite   | BACKGROUND_INTENSITY ); 
- 52      static const WORD bgHiBlue   ( bgLoBlue    | BACKGROUND_INTENSITY ); 
- 53      static const WORD bgHiGreen  ( bgLoGreen   | BACKGROUND_INTENSITY ); 
- 54      static const WORD bgHiRed    ( bgLoRed     | BACKGROUND_INTENSITY ); 
- 55      static const WORD bgHiCyan   ( bgLoCyan    | BACKGROUND_INTENSITY ); 
- 56      static const WORD bgHiMagenta( bgLoMagenta | BACKGROUND_INTENSITY ); 
- 57      static const WORD bgHiYellow ( bgLoYellow  | BACKGROUND_INTENSITY );
- */
+typedef const WORD sir_textstyle_final;
+
 typedef enum {
-    _SIRS_RESET = 0,
-    _SIRS_BRIGHT = 1,
-    _SIRS_DIM = 2,
-    _SIRS_UNDERSCORE = 4,
-    _SIRS_BLINK = 5,
-    _SIRS_REVERSE = 7,
-    _SIRS_HIDDEN = 8,
-    _SIRS_FG_BLACK = 30,
-    _SIRS_FG_RED = 31,
-    _SIRS_FG_GREEN = 32,
-    _SIRS_FG_YELLOW = 33,
-    _SIRS_FG_BLUE = 34,
-    _SIRS_FG_MAGENTA = 35,
-    _SIRS_FG_CYAN = 36,
-    _SIRS_FG_WHITE = 37,
-    _SIRS_BG_BLACK = _SIRS_FG_BLACK + 10,
-    _SIRS_BG_RED = _SIRS_FG_RED + 10,
-    _SIRS_BG_GREEN = _SIRS_FG_GREEN + 10,
-    _SIRS_BG_YELLOW = _SIRS_FG_YELLOW + 10,
-    _SIRS_BG_BLUE = _SIRS_FG_BLUE + 10,
-    _SIRS_BG_MAGENTA = _SIRS_FG_MAGENTA + 10,
-    _SIRS_BG_CYAN = _SIRS_FG_CYAN + 10,
-    _SIRS_BG_WHITE = _SIRS_FG_WHITE + 10
+    _SIRS_RESET = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE,
+    _SIRS_BRIGHT = FOREGROUND_INTENSITY,
+    _SIRS_FG_BLACK = 0,
+    _SIRS_FG_RED = FOREGROUND_RED,
+    _SIRS_FG_GREEN = FOREGROUND_GREEN,
+    _SIRS_FG_YELLOW = FOREGROUND_RED | FOREGROUND_GREEN,
+    _SIRS_FG_BLUE = FOREGROUND_BLUE,
+    _SIRS_FG_MAGENTA = FOREGROUND_RED | FOREGROUND_BLUE,
+    _SIRS_FG_CYAN = FOREGROUND_GREEN | FOREGROUND_BLUE,
+    _SIRS_FG_WHITE = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE,
+    _SIRS_BG_BLACK = 0,
+    _SIRS_BG_RED = BACKGROUND_RED,
+    _SIRS_BG_GREEN = BACKGROUND_GREEN,
+    _SIRS_BG_YELLOW = BACKGROUND_RED | BACKGROUND_GREEN,
+    _SIRS_BG_BLUE = BACKGROUND_BLUE,
+    _SIRS_BG_MAGENTA = BACKGROUND_RED | BACKGROUND_BLUE,
+    _SIRS_BG_CYAN = BACKGROUND_GREEN | BACKGROUND_BLUE,
+    _SIRS_BG_WHITE = BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE
 } sir_textstyle_priv;
 #endif
-
 
 /*! \endcond */
 

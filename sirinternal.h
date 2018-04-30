@@ -18,7 +18,7 @@
 extern sirinit  sir_s;
 extern sirfcache sir_fc;
 extern sirbuf   sir_b;
-extern atomic_uint_fast32_t sir_magic;
+extern uint32_t sir_magic;
 
 bool _sir_sanity();
 
@@ -26,8 +26,6 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args);
 
 bool             _sir_dispatch(sir_level level, siroutput* output);
 const sirchar_t* _sir_format(sir_options, siroutput* output);
-bool             _sir_stderr_write(const sirchar_t* message);
-bool             _sir_stdout_write(const sirchar_t* message);
 
 #ifndef SIR_NO_SYSLOG
 int _sir_syslog_maplevel(sir_level level);

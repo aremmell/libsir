@@ -14,7 +14,6 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <stdatomic.h>
 #include <stdio.h>
 #include <assert.h>
 #include <errno.h>
@@ -29,6 +28,7 @@
 #include <syslog.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <stdatomic.h>
 
 #ifdef __linux__
 #include <linux/limits.h>

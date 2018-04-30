@@ -5,13 +5,14 @@
  */
 #include "sirinternal.h"
 #include "sirfilecache.h"
+#include "sirconsole.h"
 
 /*! \cond PRIVATE */
 
 sirinit  sir_s  = {0};
 sirfcache sir_fc = {0};
 sirbuf   sir_b  = {0};
-atomic_uint_fast32_t sir_magic = 0;
+uint32_t sir_magic = 0;
 
 bool _sir_sanity() {
     if (_SIR_MAGIC == sir_magic)
@@ -158,18 +159,6 @@ const sirchar_t* _sir_format(sir_options opts, siroutput* output) {
     }
 
     return NULL;
-}
-
-bool _sir_stderr_write(const sirchar_t* message) {
-    int write = fputs(message, stderr);
-    assert(write > 0);
-    return write > 0;
-}
-
-bool _sir_stdout_write(const sirchar_t* message) {
-    int write = fputs(message, stdout);
-    assert(write >= 0);
-    return write >= 0;
 }
 
 #ifndef SIR_NO_SYSLOG
