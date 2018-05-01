@@ -264,7 +264,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output) {
                 continue;
             }
 
-            const sirchar_t* write = _sir_format(sfc->files[n]->opts, output);
+            const sirchar_t* write = _sir_format(false, sfc->files[n]->opts, output);
             assert(write);
 
             if (write && _sirfile_write(sfc->files[n], write)) {

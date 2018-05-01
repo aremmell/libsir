@@ -43,11 +43,9 @@ typedef uint16_t sir_levels;
  */
 typedef enum {
     SIRO_DEFAULT = 0,     /*!< Use the default for this type of destination. */
-    SIRO_NOLEVEL = 0x100, /*!< Do not include the human-readable logging level in output. */
-    SIRO_NONAME  = 0x200, /*!< Do not include the process/app name in output. */
-
-    /*! Do not include time stamps in output. */
-    SIRO_NOTIME = 0x400,
+    SIRO_NOTIME = 0x100, /*!< Do not include time stamps in output. */
+    SIRO_NOLEVEL = 0x200, /*!< Do not include the human-readable logging level in output. */
+    SIRO_NONAME  = 0x400, /*!< Do not include the process/app name in output. */
 
     /*! Do not include milliseconds in time stamps. If \a not set, time stamps
      * in output to this destination will be appended with the current millisecond
@@ -74,8 +72,8 @@ typedef uint16_t sir_options;
 /*! Available styles (i.e., colors, brightness, etc.) for console output. */
 typedef enum {
     SIRS_NONE = 0,
-    SIRS_DEFAULT = 0x1,
-    SIRS_BRIGHT = 0x2,
+    SIRS_BRIGHT = 0x1,
+
     SIRS_FG_BLACK = 0x10,    
     SIRS_FG_RED = 0x20,
     SIRS_FG_GREEN = 0x30,
@@ -84,14 +82,37 @@ typedef enum {
     SIRS_FG_MAGENTA = 0x60,
     SIRS_FG_CYAN = 0x70,
     SIRS_FG_WHITE = 0x80,
-    SIRS_BG_BLACK = 0x90,    
-    SIRS_BG_RED = 0x100,
-    SIRS_BG_GREEN = 0x200,
-    SIRS_BG_YELLOW = 0x400,    
-    SIRS_BG_BLUE = 0x500,
-    SIRS_BG_MAGENTA = 0x600,
-    SIRS_BG_CYAN = 0x700,
-    SIRS_BG_WHITE = 0x800
+
+    SIRS_FG_LGRAY = 0x90,
+    SIRS_FG_DGRAY = 0xa0,
+    SIRS_FG_LRED = 0xb0,
+    SIRS_FG_LGREEN = 0xc0,
+    SIRS_FG_LYELLOW = 0xd0,
+    SIRS_FG_LBLUE = 0xe0,
+    SIRS_FG_LMAGENTA = 0xf0,
+    SIRS_FG_LCYAN = 0xf10,
+    SIRS_FG_DEFAULT = 0xf20,
+
+    SIRS_BG_BLACK = 0x1000,    
+    SIRS_BG_RED = 0x2000,
+    SIRS_BG_GREEN = 0x3000,
+    SIRS_BG_YELLOW = 0x4000,    
+    SIRS_BG_BLUE = 0x5000,
+    SIRS_BG_MAGENTA = 0x6000,
+    SIRS_BG_CYAN = 0x7000,
+    SIRS_BG_WHITE = 0x8000,
+
+    SIRS_BG_LGRAY = 0x9000,
+    SIRS_BG_DGRAY = 0xa000,
+    SIRS_BG_LRED = 0xb000,
+    SIRS_BG_LGREEN = 0xc000,
+    SIRS_BG_LYELLOW = 0xd000,
+    SIRS_BG_LBLUE = 0xe000,
+    SIRS_BG_LMAGENTA = 0xf000,
+    SIRS_BG_LCYAN = 0xf100,
+    SIRS_BG_DEFAULT = 0xf200,    
+
+    SIRS_INVALID = 0xf300
 } sir_textstyle;
 
 /*! The underlying type to use for characters in output. */
@@ -163,19 +184,19 @@ typedef struct {
 /*! \cond PRIVATE */
 
 #define _SIRS_ATTR_MASK 0xf
-#define _SIRS_FG_MASK 0xf0
-#define _SIRS_BG_MASK 0xf00
-#define _SIRS_INVALID 0xf000
+#define _SIRS_FG_MASK 0xff0
+#define _SIRS_BG_MASK 0xff00
 
 #define _SIR_MAGIC 0x60906090
 
-#define _SIRBUF_TIME 0
-#define _SIRBUF_MSEC 1
-#define _SIRBUF_LEVEL 2
-#define _SIRBUF_NAME 3
-#define _SIRBUF_MSG 4
-#define _SIRBUF_OUTPUT 5
-#define _SIRBUF_MAX 5
+#define _SIRBUF_STYLE 0
+#define _SIRBUF_TIME 1
+#define _SIRBUF_MSEC 2
+#define _SIRBUF_LEVEL 3
+#define _SIRBUF_NAME 4
+#define _SIRBUF_MSG 5
+#define _SIRBUF_OUTPUT 6
+#define _SIRBUF_MAX 6
 
 typedef struct {
     sirchar_t*  path;
@@ -190,14 +211,8 @@ typedef struct {
     size_t   count;
 } sirfcache;
 
-#ifndef _WIN32
-#define _SIR_MAXSTYLE 14
-typedef sirchar_t* sir_textstyle_final;
-#else
-typedef WORD sir_textstyle_final;
-#endif
-
 typedef struct {
+    sirchar_t* style;
     sirchar_t* timestamp;
     sirchar_t* msec;
     sirchar_t* level;
@@ -207,6 +222,7 @@ typedef struct {
 } siroutput;
 
 typedef struct {
+    sirchar_t style[SIR_MAXSTYLE];
     sirchar_t timestamp[SIR_MAXTIME];
     sirchar_t msec[SIR_MAXMSEC];
     sirchar_t level[SIR_MAXLEVEL];

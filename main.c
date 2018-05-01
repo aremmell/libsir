@@ -15,15 +15,24 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    sir_options file1opts = SIRO_MSGONLY;
+            sirdebug("debug message: %d", 123);
+            sirinfo("info message: %d", 123);
+            sirnotice("notice message: %d", 123);
+            sirwarn("warning message: %d", 123);
+            sirerror("error message: %d", 123);
+            sircrit("critical message: %d", 123);
+            siralert("alert message: %d", 123);
+            siremerg("emergency message: %d", 123);    
+
+    /*sir_options file1opts = SIRO_MSGONLY;
     int         id1       = sir_addfile("test.log", SIRL_ALL, file1opts);
 
     if (SIR_INVALID == id1) {
         fprintf(stderr, "Failed to add file 1!\n");
         return 1;
-    }
+    }*/
 
-    for (size_t j = 0; j < 10; j++) {
+    /*for (size_t j = 0; j < 10; j++) {
         for (size_t n = 0; n < 100; n++) {
             sirdebug("debug message: %d", (n * j) + n);
             sirinfo("info message: %d", (n * j) + n);
@@ -34,7 +43,7 @@ int main(int argc, char** argv) {
             siralert("alert message: %d", (n * j) + n);
             siremerg("emergency message: %d", (n * j) + n);
         }
-    }
+    }*/
 
     sir_cleanup();
 

@@ -25,7 +25,7 @@ bool _sir_sanity();
 bool _sir_logv(sir_level level, const sirchar_t* format, va_list args);
 
 bool             _sir_dispatch(sir_level level, siroutput* output);
-const sirchar_t* _sir_format(sir_options, siroutput* output);
+const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output);
 
 #ifndef SIR_NO_SYSLOG
 int _sir_syslog_maplevel(sir_level level);

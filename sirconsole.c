@@ -11,24 +11,20 @@
 
 #ifndef _WIN32
 
-static bool _sir_write_std(sir_style_map style, const sirchar_t* message, FILE* stream);
+static bool _sir_write_std(const sirchar_t* message, FILE* stream);
 
 bool _sir_stderr_write(const sirchar_t* message) {
-    sir_style_map style;    
-    return _sir_write_std(style, message, stderr);
+    return _sir_write_std( message, stderr);
 }
 
 bool _sir_stdout_write(const sirchar_t* message) {
-    sir_style_map style;    
-    return _sir_write_std(style, message, stdout);
+    return _sir_write_std(message, stdout);
 }
 
-static bool _sir_write_std(sir_style_map style, const sirchar_t* message, FILE* stream) {
+static bool _sir_write_std(const sirchar_t* message, FILE* stream) {
 
     assert(validstr(message));
     assert(stream);
-
-
 
     int write = validstr(message) ? fputs(message, stream) : -1;
     assert(write >= 0);
@@ -85,90 +81,76 @@ static bool _sir_write_stdwin32(sir_style_map style,const sirchar_t* message, HA
 // 65001
 //https://docs.microsoft.com/en-us/windows/console/setconsoleoutputcp
 
-/*const sir_style_map _sir_getdefstyle(sir_level level) {
 
-    static const sir_style_map invalid = {_SIRS_INVALID};
+sir_textstyle _sir_getdefstyle(sir_level level) {
+
     assert(validlevels(level));
 
     for (size_t n = 0; n < _COUNTOF(sir_default_styles); n++) {
         if (sir_default_styles[n].level == level)
-            return sir_default_styles[n];
+            return sir_default_styles[n].style;
     }
 
-    return invalid;
+    return SIRS_INVALID;
 }
 
-const uint16_t _sir_getprivstyle(uint32_t from) {
+uint16_t _sir_getprivstyle(uint16_t cat) {
 
     for (size_t n = 0; n < _COUNTOF(sir_priv_map); n++) {
-        if (sir_priv_map[n].from == from) {
+        if (sir_priv_map[n].from == cat) {
             return sir_priv_map[n].to;
         }
     }
 
-    return 0;
+    return _sir_getprivstyle(SIRS_NONE);    
 }
 
-void _sir_splitstyle(sir_textstyle style, uint16_t* attr, uint16_t* fg, uint16_t* bg) {
+bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size) {
     
-    uint16_t tmpattr = (style & _SIRS_ATTR_MASK);
-    uint16_t tmpfg = (style & _SIRS_FG_MASK);
-    uint16_t tmpbg = (style & _SIRS_BG_MASK);
-   
-    assert(validstylecat(tmpattr));
-    assert(validstylecat(tmpfg));
-    assert(validstylecat(tmpbg));
+    assert(buf);
 
-    *attr = tmpattr;
-    *fg = tmpfg;
-    *bg = tmpbg;
-}
-
-bool _sir_getfinalstyle(sir_style_map style, sir_textstyle_final* out) {
+    if (buf) {
+        
+        uint16_t attr = (style & _SIRS_ATTR_MASK);
+        uint16_t fg = (style & _SIRS_FG_MASK);
+        uint16_t bg = (style & _SIRS_BG_MASK);
     
-/*     uint16_t attr = (style.attr & _SIRS_ATTR_MASK);
-    validstylecat(attr);
+        bool attrvalid = attr <= SIRS_BRIGHT;
+        bool fgvalid = fg <= SIRS_FG_WHITE;
+        bool bgvalid = bg <= SIRS_BG_WHITE;
 
-    if (SIRS_NONE != attr) {
-        if (SIRS_DEFAULT == attr) {
-        }
-    }
+        assert(attrvalid);
+        assert(fgvalid);
+        assert(bgvalid);
 
-    uint16_t privattr = _sir_getprivstyle(attr);
-    uint16_t privfg = _sir_getprivstyle(fg);
-    uint16_t privbg = _sir_getprivstyle(bg); 
+        if (attrvalid && fgvalid && bgvalid) {
 
-    _sir_selflog("%s: attr = 0x%hx, fg = 0x%hx, bg = 0x%hx, pattr: 0x%hx, pfg: 0x%hx, pbg: 0x%hx\n", __func__,
-        attr, fg, bg, privattr, privfg, privbg);
+            uint16_t privattr = _sir_getprivstyle(attr);
+            uint16_t privfg = _sir_getprivstyle(fg);
+            uint16_t privbg = _sir_getprivstyle(bg);
 
-    return _sir_privtofinal(privattr, privfg, privbg, out);
-}
-
-bool _sir_privtofinal(uint16_t attr, uint16_t fg, uint16_t bg, sir_textstyle_final* out) {
  #ifndef _WIN32
+            sirchar_t fgfmt[4] = {0};
+            sirchar_t bgfmt[4] = {0};
 
-    assert(out);
+            if (privfg != 0)
+                snprintf(fgfmt, 4, ";%2hd", privfg);
 
-    if (out) {
-        bool bright = flagtest(attr, SIRS_BRIGHT);
-        sirchar_t fgfmt[4] = {0};
-        sirchar_t bgfmt[4] = {0};
+            if (privbg != 0)
+                snprintf(bgfmt, 4, ";%2hd", privbg);
 
-        if (fg != 0)
-            snprintf(fgfmt, 4, ";%02hd", fg);
+            /* '\e[nn;nn;nm' */
+            snprintf(buf, size, "\033[%1d%s%sm", privattr, fgfmt, bgfmt);
 
-        if (bg != 0)
-            snprintf(bgfmt, 4, ";%02hd", bg);
-
-        /* '\33[nn;nn;nm' 
-        snprintf(*out, _SIR_MAXSTYLE, "\033[%02d%s%sm", bright ? 1 : 0,
-            fgfmt, bgfmt);
-    }
-
-    return validstr(*out);
+            return validstr(buf);
 #else
 #pragma message "TODO: color finalizing on win32"
+            return false;
 #endif
-}*/
+        }    
+    }
+
+    return false;    
+}
 
 /* \endcond PRIVATE */

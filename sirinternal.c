@@ -33,6 +33,15 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
 
     siroutput output = {0};
 
+    output.style = _sirbuf_get(&sir_b, _SIRBUF_STYLE);
+    assert(output.style);
+
+    sir_textstyle defstyle = _sir_getdefstyle(level);
+    assert(SIRS_INVALID != defstyle);
+
+    bool fmtstyle = _sir_formatstyle(defstyle, output.style, SIR_MAXSTYLE);
+    assert(fmtstyle);
+
     output.timestamp = _sirbuf_get(&sir_b, _SIRBUF_TIME);
     assert(output.timestamp);
 
@@ -88,13 +97,13 @@ bool _sir_dispatch(sir_level level, siroutput* output) {
 
     if (0 != level && output) {
         if (_sir_destwantslevel(sir_s.d_stderr.levels, level)) {
-            const sirchar_t* write = _sir_format(sir_s.d_stderr.opts, output);
+            const sirchar_t* write = _sir_format(true, sir_s.d_stderr.opts, output);
             assert(write);
             r &= NULL != write && _sir_stderr_write(write);
         }
 
         if (_sir_destwantslevel(sir_s.d_stdout.levels, level)) {
-            const sirchar_t* write = _sir_format(sir_s.d_stdout.opts, output);
+            const sirchar_t* write = _sir_format(true, sir_s.d_stdout.opts, output);
             assert(write);
             r &= _sir_stdout_write(output->output);
         }
@@ -111,7 +120,7 @@ bool _sir_dispatch(sir_level level, siroutput* output) {
     return false;
 }
 
-const sirchar_t* _sir_format(sir_options opts, siroutput* output) {
+const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) {
 
     assert(validopts(opts));
     assert(output);
@@ -125,6 +134,12 @@ const sirchar_t* _sir_format(sir_options opts, siroutput* output) {
         bool first = true;
 
         resetstr(output->output);
+
+        if (styling) {
+#ifndef _WIN32
+            strncat(output->output, output->style, SIR_MAXSTYLE);
+#endif
+        }
 
         if (!flagtest(opts, SIRO_NOTIME)) {
             strncat(output->output, output->timestamp, SIR_MAXTIME);
@@ -154,6 +169,13 @@ const sirchar_t* _sir_format(sir_options opts, siroutput* output) {
             strncat(output->output, ": ", 2);
 
         strncat(output->output, output->message, SIR_MAXMESSAGE);
+
+        if (styling) {
+#ifndef _WIN32
+            strncat(output->output, SIR_ENDSTYLE, SIR_MAXSTYLE);
+#endif              
+        }
+
         strncat(output->output, "\n", 1);
 
         return output->output;
@@ -194,6 +216,7 @@ sirchar_t* _sirbuf_get(sirbuf* buf, size_t idx) {
     assert(idx <= _SIRBUF_MAX);
 
     switch (idx) {
+        case _SIRBUF_STYLE: return buf->style;
         case _SIRBUF_TIME: return buf->timestamp;
         case _SIRBUF_MSEC: return buf->msec;
         case _SIRBUF_LEVEL: return buf->level;
