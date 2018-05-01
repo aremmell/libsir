@@ -14,6 +14,7 @@
 static const sir_style_priv_map sir_priv_map[] = {
 
 #ifndef _WIN32
+    {SIRS_NONE, 0},
     {SIRS_BRIGHT, 1},
     /* foreground */
     {SIRS_FG_BLACK, 30},    
@@ -52,10 +53,11 @@ static const sir_style_priv_map sir_priv_map[] = {
     {SIRS_BG_WHITE, 107},
     {SIRS_BG_DEFAULT, 49}    
 #else
+    {SIRS_NONE, 0},
     {SIRS_BRIGHT, FOREGROUND_INTENSITY},
 
     {SIRS_FG_BLACK, 0},    
-    {SIRS_FG_RED, FOREGROUND_RED,
+    {SIRS_FG_RED, FOREGROUND_RED},
     {SIRS_FG_GREEN, FOREGROUND_GREEN},
     {SIRS_FG_YELLOW, FOREGROUND_RED | FOREGROUND_GREEN},
     {SIRS_FG_BLUE, FOREGROUND_BLUE},
@@ -63,7 +65,7 @@ static const sir_style_priv_map sir_priv_map[] = {
     {SIRS_FG_CYAN, FOREGROUND_GREEN | FOREGROUND_BLUE},
     {SIRS_FG_LGRAY, FOREGROUND_INTENSITY},
     {SIRS_FG_DGRAY, FOREGROUND_INTENSITY},
-    {SIRS_FG_LRED, FOREGROUND_RED | FOREGROUND_INTENSITY,
+    {SIRS_FG_LRED, FOREGROUND_RED | FOREGROUND_INTENSITY},
     {SIRS_FG_LGREEN, FOREGROUND_GREEN | FOREGROUND_INTENSITY},
     {SIRS_FG_LYELLOW, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY},
     {SIRS_FG_LBLUE, FOREGROUND_BLUE | FOREGROUND_INTENSITY},
@@ -79,21 +81,26 @@ static const sir_style_priv_map sir_priv_map[] = {
     {SIRS_BG_BLUE, BACKGROUND_BLUE},
     {SIRS_BG_MAGENTA, BACKGROUND_RED | BACKGROUND_BLUE},
     {SIRS_BG_CYAN, BACKGROUND_GREEN | BACKGROUND_BLUE},
-    {SIRS_BG_LGRAY, 0},
-    {SIRS_BG_DGRAY, 0},
-    {SIRS_BG_LRED, BACKGROUND_RED},
-    {SIRS_BG_LGREEN, BACKGROUND_GREEN},
-    {SIRS_BG_LYELLOW, BACKGROUND_RED | BACKGROUND_GREEN},
-    {SIRS_BG_LBLUE, BACKGROUND_BLUE},
-    {SIRS_BG_LMAGENTA, BACKGROUND_RED | BACKGROUND_BLUE},
-    {SIRS_BG_LCYAN, BACKGROUND_GREEN | BACKGROUND_BLUE},     
+    {SIRS_BG_LGRAY, BACKGROUND_INTENSITY},
+    {SIRS_BG_DGRAY, BACKGROUND_INTENSITY},
+    {SIRS_BG_LRED, BACKGROUND_RED | BACKGROUND_INTENSITY},
+    {SIRS_BG_LGREEN, BACKGROUND_GREEN | BACKGROUND_INTENSITY},
+    {SIRS_BG_LYELLOW, BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY},
+    {SIRS_BG_LBLUE, BACKGROUND_BLUE | BACKGROUND_INTENSITY},
+    {SIRS_BG_LMAGENTA, BACKGROUND_RED | BACKGROUND_BLUE | BACKGROUND_INTENSITY},
+    {SIRS_BG_LCYAN, BACKGROUND_GREEN | BACKGROUND_BLUE | BACKGROUND_INTENSITY},     
     {SIRS_BG_WHITE, BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE},    
     {SIRS_BG_DEFAULT, 0}
 #endif
 };
 
+#ifndef _WIN32
 bool             _sir_stderr_write(const sirchar_t* message);
 bool             _sir_stdout_write(const sirchar_t* message);
+#else
+bool             _sir_stderr_write(uint16_t style, const sirchar_t* message);
+bool             _sir_stdout_write(uint16_t style, const sirchar_t* message);
+#endif
 
 sir_textstyle _sir_getdefstyle(sir_level level);
 uint16_t _sir_getprivstyle(uint16_t cat);

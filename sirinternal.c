@@ -99,13 +99,23 @@ bool _sir_dispatch(sir_level level, siroutput* output) {
         if (_sir_destwantslevel(sir_s.d_stderr.levels, level)) {
             const sirchar_t* write = _sir_format(true, sir_s.d_stderr.opts, output);
             assert(write);
+#ifndef _WIN32            
             r &= NULL != write && _sir_stderr_write(write);
+#else
+            uint16_t* style = (uint16_t*)output->style;
+            r &= NULL != write && NULL != style && _sir_stderr_write(*style, write);
+#endif
         }
 
         if (_sir_destwantslevel(sir_s.d_stdout.levels, level)) {
             const sirchar_t* write = _sir_format(true, sir_s.d_stdout.opts, output);
             assert(write);
-            r &= _sir_stdout_write(output->output);
+#ifndef _WIN32            
+            r &= NULL != write && _sir_stout_write(write);
+#else
+            uint16_t* style = (uint16_t*)output->style;
+            r &= NULL != write && NULL != style && _sir_stdout_write(*style, write);
+#endif
         }
 
 #ifndef SIR_NO_SYSLOG

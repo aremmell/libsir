@@ -14,7 +14,7 @@
 static bool _sir_write_std(const sirchar_t* message, FILE* stream);
 
 bool _sir_stderr_write(const sirchar_t* message) {
-    return _sir_write_std( message, stderr);
+    return _sir_write_std(message, stderr);
 }
 
 bool _sir_stdout_write(const sirchar_t* message) {
@@ -34,20 +34,18 @@ static bool _sir_write_std(const sirchar_t* message, FILE* stream) {
 
 #else
 
-static bool _sir_write_stdwin32(sir_style_map style, const sirchar_t* message, HANDLE console);
+static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message, HANDLE console);
 
-bool _sir_stderr_write(const sirchar_t* message) {
-    sir_style_map style;
+bool _sir_stderr_write(uint16_t style, const sirchar_t* message) {
     return _sir_write_stdwin32(style, message, GetStdHandle(STD_ERROR_HANDLE));
 }
 
-bool _sir_stdout_write(const sirchar_t* message) {   
-    sir_style_map style;    
+bool _sir_stdout_write(uint16_t style, const sirchar_t* message) {   
     return _sir_write_stdwin32(style, message, GetStdHandle(STD_OUTPUT_HANDLE));
 }
 
-static bool _sir_write_stdwin32(sir_style_map style,const sirchar_t* message, HANDLE console) {
-#pragma message "apply style on win32"
+static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message, HANDLE console) {
+
     assert(validstr(message));
     assert(INVALID_HANDLE_VALUE != console);
 
@@ -55,6 +53,18 @@ static bool _sir_write_stdwin32(sir_style_map style,const sirchar_t* message, HA
         _sir_handleerr(GetLastError());
         return false;
     }
+
+    CONSOLE_SCREEN_BUFFER_INFO csbfi = {0};
+
+    if (!GetConsoleScreenBufferInfo(console, &csbfi)) {
+        _sir_handleerr(GetLastError());
+        return false;
+    }
+
+    if (!SetConsoleTextAttribute(console, style)) {
+        _sir_handleerr(GetLastError());
+        return false;
+    }        
 
     size_t chars = strnlen(message, SIR_MAXOUTPUT);
     DWORD written = 0;
@@ -70,17 +80,12 @@ static bool _sir_write_stdwin32(sir_style_map style,const sirchar_t* message, HA
         written += pass;
     } while (written < chars);
 
+    SetConsoleTextAttribute(console, csbfi.wAttributes);
+
     return written == chars;    
 }
 
 #endif  /* !_WIN32 */
-
-//https://docs.microsoft.com/en-us/windows/console/getconsolescreenbufferinfo
-//https://docs.microsoft.com/en-us/windows/console/setconsoletextattribute
-
-// 65001
-//https://docs.microsoft.com/en-us/windows/console/setconsoleoutputcp
-
 
 sir_textstyle _sir_getdefstyle(sir_level level) {
 
@@ -144,8 +149,10 @@ bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size) {
 
             return validstr(buf);
 #else
-#pragma message "TODO: color finalizing on win32"
-            return false;
+            uint16_t final = privattr | privfg | privbg;
+            memcpy(buf, &final, sizeof(uint16_t));
+            memset(buf + sizeof(uint16_t), 0, SIR_MAXSTYLE - sizeof(uint16_t));
+            return true;
 #endif
         }    
     }
