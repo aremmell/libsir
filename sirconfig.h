@@ -29,10 +29,13 @@
 #define SIR_FHTIMEFORMAT "%H:%M:%S %a %d %b %y (%z)"
 
 /*! The default format string written to a log file when logging begins
- * or the file is rolled. The \a %s format identifier is the current
+ * or the file is rolled. The \a second %s format identifier is the current
  * date/time (see ::SIR_FHTIMEFORMAT) according to \a localtime.
  */
-#define SIR_FHFORMAT "\n\n----- session begin (%s) -----\n\n"
+#define SIR_FHFORMAT "\n\n----- %s (%s) -----\n\n"
+
+#define SIR_FHBEGIN "session begin"
+#define SIR_FHROLLED "file rolled due to size"
 
 /*! The string representation of the ::SIRL_EMERG level in output. */
 #define SIRL_S_EMERG "EMER"
@@ -86,6 +89,9 @@
 
 /*! The string passed to fopen/fopen_s for log files. */
 #define SIR_FOPENMODE "a"
+
+/*! The size, in bytes, at which a log file will be rolled. */
+#define SIR_FROLLSIZE 1024L * 1024L //* 5L
 
 /* ! The string used to reset any styling applied to text in stdio output. */
 #define SIR_ENDSTYLE "\033[0m"

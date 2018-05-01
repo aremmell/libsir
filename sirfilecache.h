@@ -13,7 +13,9 @@
 
 sirfile* _sirfile_create(const sirchar_t* path, sir_levels levels, sir_options opts);
 bool     _sir_write(sirfile* sf, const sirchar_t* output);
-bool     _sirfile_writeheader(sirfile* sf);
+bool     _sirfile_writeheader(sirfile* sf, const sirchar_t* msg);
+bool _sirfile_needsroll(sirfile* sf);
+bool _sirfile_roll(sirfile* sf);
 void     _sirfile_destroy(sirfile* sf);
 bool     _sirfile_validate(sirfile* sf);
 
@@ -24,6 +26,7 @@ bool _sir_fflush_all();
 
 int  _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels levels, sir_options opts);
 bool _sir_fcache_rem(sirfcache* sfc, int id);
+sirfile* _sir_fcache_find(sirfcache* sfc, int id);
 bool _sir_fcache_destroy(sirfcache* sfc);
 bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output);
 

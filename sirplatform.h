@@ -25,6 +25,7 @@
 
 #ifndef _WIN32
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <syslog.h>
 #include <unistd.h>
 #include <pthread.h>

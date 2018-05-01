@@ -56,6 +56,15 @@ bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
     assert(validstr(output));
 
     if (_sirfile_validate(sf) && validstr(output)) {
+        
+        if (_sirfile_needsroll(sf)) {
+            if (!_sirfile_roll(sf))
+                return false;
+
+            if (!_sirfile_writeheader(sf, SIR_FHROLLED))
+                return false;
+        }
+
         size_t writeLen = strnlen(output, SIR_MAXOUTPUT);
         size_t write    = fwrite(output, sizeof(sirchar_t), writeLen, sf->f);
 
@@ -84,7 +93,7 @@ bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
     return false;
 }
 
-bool _sirfile_writeheader(sirfile* sf) {
+bool _sirfile_writeheader(sirfile* sf, const sirchar_t* msg) {
 
     assert(_sirfile_validate(sf));
 
@@ -101,7 +110,7 @@ bool _sirfile_writeheader(sirfile* sf) {
             if (fmttime) {
                 sirchar_t header[SIR_MAXOUTPUT] = {0};
 
-                int fmt = snprintf(header, SIR_MAXOUTPUT, SIR_FHFORMAT, time);
+                int fmt = snprintf(header, SIR_MAXOUTPUT, SIR_FHFORMAT, msg, time);
                 assert(fmt >= 0);
 
                 if (fmt < 0) {
@@ -111,6 +120,45 @@ bool _sirfile_writeheader(sirfile* sf) {
                 }
             }
         }
+    }
+
+    return false;
+}
+
+bool _sirfile_needsroll(sirfile* sf) {
+
+    assert(_sirfile_validate(sf));
+
+    if (_sirfile_validate(sf)) {
+        struct stat st = {0};
+        int getstat = fstat(sf->id, &st);
+ 
+        if (0 != getstat) {
+            _sir_handleerr(errno);
+            return false;
+        }
+
+        return st.st_size >= SIR_FROLLSIZE;
+    }
+
+    return false;
+}
+
+bool _sirfile_roll(sirfile* sf) {
+
+    assert(_sirfile_validate(sf));
+
+    if (_sirfile_validate(sf)) {
+        int roll = ftruncate(sf->id, 0);
+        assert(0 == roll);
+
+        if (0 != roll) {
+            _sir_handleerr(errno);
+            return false;
+        }
+
+        _sir_selflog("%s: rolled '%s'\n", __func__, sf->path);
+        return true;
     }
 
     return false;
@@ -186,7 +234,7 @@ int _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels levels, si
                 sfc->files[sfc->count++] = sf;
 
                 if (!flagtest(sf->opts, SIRO_NOHDR))
-                    _sirfile_writeheader(sf);
+                    _sirfile_writeheader(sf, SIR_FHBEGIN);
 
                 return sf->id;
             }
@@ -226,6 +274,21 @@ bool _sir_fcache_rem(sirfcache* sfc, int id) {
     return false;
 }
 
+sirfile* _sir_fcache_find(sirfcache* sfc, int id) {
+#pragma message "TODO: use to update file opts/levels at runtime"
+    assert(sfc);
+    assert(validid(id));
+
+    if (sfc && validid(id)) {
+        for (size_t n = 0; n < sfc->count; n++) {
+            if (sfc->files[n]->id == id)
+                return sfc->files[n];
+        }
+    }
+
+    return NULL;
+}
+
 bool _sir_fcache_destroy(sirfcache* sfc) {
 
     assert(sfc);
@@ -250,10 +313,10 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output) {
     bool r = true;
 
     assert(sfc);
-    assert(0 != level);
+    assert(validlevel(level));
     assert(output);
 
-    if (sfc && 0 != level && output) {
+    if (sfc && validlevel(level) && output) {
         size_t written = 0;
         for (size_t n = 0; n < sfc->count; n++) {
             assert(_sirfile_validate(sfc->files[n]));

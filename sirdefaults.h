@@ -3,7 +3,7 @@
 
 #include "sirtypes.h"
 
-static const sir_style_map sir_default_styles[] = {
+static sir_style_map sir_default_styles[] = {
     {SIRL_DEBUG, SIRS_BRIGHT | SIRS_FG_BLACK},
     {SIRL_INFO, SIRS_FG_WHITE},
     {SIRL_NOTICE, SIRS_FG_CYAN},

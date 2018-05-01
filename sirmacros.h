@@ -34,6 +34,10 @@ static inline bool validlevels(sir_levels levels) {
     return (levels & SIRL_ALL) != 0 && (levels & SIRO_MSGONLY) == 0;
 }
 
+static inline bool validlevel(sir_level level) {
+    return 0 != level && !(level & (level - 1));
+}
+
 static inline bool validopts(sir_options opts) {
     return (opts & SIRL_ALL) == 0 && opts <= SIRO_MSGONLY;
 }

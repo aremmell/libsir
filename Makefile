@@ -21,9 +21,11 @@ ifeq ($(OS),Windows_NT)
 CFLAGS += -D_WIN32
 endif
 
-TUS     = sir.c sirmutex.c sirinternal.c sirfilecache.c sirconsole.c
+TUS     = sir.c sirmutex.c sirinternal.c sirfilecache.c sirconsole.c \
+		  sirtextstyle.c
 DEPS    = sir.h sirmutex.h sirconfig.h sirinternal.h sirmacros.h \
-		  sirplatform.h sirfilecache.h sirtypes.h sirconsole.h
+		  sirplatform.h sirfilecache.h sirtypes.h sirconsole.h \
+		  sirtextstyle.h
 
 _OBJ = $(patsubst %.c, %.o, $(TUS))
 OBJ  = $(patsubst %, $(INTERDIR)/%, $(_OBJ))

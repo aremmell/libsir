@@ -8,6 +8,7 @@
 #include "sirmutex.h"
 #include "sirinternal.h"
 #include "sirfilecache.h"
+#include "sirtextstyle.h"
 #include "sirdefaults.h"
 
 bool sir_init(const sirinit* si) {
@@ -108,4 +109,8 @@ int sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts) {
 
 bool sir_remfile(int id) {
     return _sir_fcache_rem(&sir_fc, id);
+}
+
+bool sir_settextstyle(sir_level level, sir_textstyle style) {
+    return _sir_setdefstyle(level, style);
 }

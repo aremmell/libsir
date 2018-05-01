@@ -6,6 +6,7 @@
 #include "sirinternal.h"
 #include "sirfilecache.h"
 #include "sirconsole.h"
+#include "sirtextstyle.h"
 #include "sirdefaults.h"
 
 /*! \cond PRIVATE */
@@ -28,7 +29,7 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
     if (!_sir_sanity())
         return false;
 
-    assert(0 != level);
+    assert(validlevel(level));
     assert(validstr(format));
 
     siroutput output = {0};
@@ -92,10 +93,10 @@ bool _sir_dispatch(sir_level level, siroutput* output) {
 
     bool r = true;
 
-    assert(0 != level);
+    assert(validlevel(level));
     assert(output);
 
-    if (0 != level && output) {
+    if (validlevel(level) && output) {
         if (_sir_destwantslevel(sir_s.d_stderr.levels, level)) {
             const sirchar_t* write = _sir_format(true, sir_s.d_stderr.opts, output);
             assert(write);
@@ -196,6 +197,9 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) 
 
 #ifndef SIR_NO_SYSLOG
 int _sir_syslog_maplevel(sir_level level) {
+
+    assert(validlevel(level));
+
     switch (level) {
         case SIRL_EMERG: return LOG_EMERG;
         case SIRL_ALERT: return LOG_ALERT;
@@ -245,6 +249,9 @@ bool _sir_options_sanity(const sirinit* si) {
 }
 
 const sirchar_t* _sir_levelstr(sir_level level) {
+
+    assert(validlevel(level));
+
     switch (level) {
         case SIRL_INFO: return SIRL_S_INFO;
         case SIRL_NOTICE: return SIRL_S_NOTICE;

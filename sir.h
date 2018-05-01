@@ -194,6 +194,8 @@ int sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts);
  */
 bool sir_remfile(int id);
 
+bool sir_settextstyle(sir_level level, sir_textstyle style);
+
 #ifdef __cplusplus
 }
 #endif /* !__cplusplus */

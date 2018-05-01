@@ -122,7 +122,7 @@ typedef struct {
 
     /*! Output options (::sir_option). Set to ::SIRO_DEFAULT for
     * the default.
-    * */        
+    */        
     sir_options opts;
     
 } sir_stdio_dest;
