@@ -45,6 +45,10 @@ static inline bool flagtest(uint32_t flags, uint32_t test) {
     return (flags & test) == test;
 }
 
+static inline bool validstylecat(uint8_t cat) {
+    return 0 == cat || !(cat & (cat - 1));
+}
+
 static inline void safefree(void *p) {
     if (!p) return;
     free(p);

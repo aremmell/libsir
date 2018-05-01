@@ -6,6 +6,7 @@
 #include "sirinternal.h"
 #include "sirfilecache.h"
 #include "sirconsole.h"
+#include "sirdefaults.h"
 
 /*! \cond PRIVATE */
 
@@ -86,20 +87,20 @@ bool _sir_dispatch(sir_level level, siroutput* output) {
     assert(output);
 
     if (0 != level && output) {
-        if (_sir_destwantslevel(sir_s.stdErrLevels, level)) {
-            const sirchar_t* write = _sir_format(sir_s.stdErrOptions, output);
+        if (_sir_destwantslevel(sir_s.d_stderr.levels, level)) {
+            const sirchar_t* write = _sir_format(sir_s.d_stderr.opts, output);
             assert(write);
             r &= NULL != write && _sir_stderr_write(write);
         }
 
-        if (_sir_destwantslevel(sir_s.stdOutLevels, level)) {
-            const sirchar_t* write = _sir_format(sir_s.stdOutOptions, output);
+        if (_sir_destwantslevel(sir_s.d_stdout.levels, level)) {
+            const sirchar_t* write = _sir_format(sir_s.d_stdout.opts, output);
             assert(write);
             r &= _sir_stdout_write(output->output);
         }
 
 #ifndef SIR_NO_SYSLOG
-        if (_sir_destwantslevel(sir_s.sysLogLevels, level)) {
+        if (_sir_destwantslevel(sir_s.d_syslog.levels, level)) {
             syslog(_sir_syslog_maplevel(level), "%s", output->message);
         }
 #endif
@@ -353,22 +354,6 @@ void _sir_selflog(const sirchar_t* format, ...) {
         assert(put != EOF);
     }
 }
-#endif
-
-#ifdef _WIN32
-#ifdef DEBUG
-void _sir_invalidparam(const wchar_t* expression, const wchar_t* function, const wchar_t* file,
-    unsigned int line, uintptr_t pReserved) {
-    const char* format =
-        "%s: invalid paramter handler called:\n{\n\texpression: %S\n\tfunc: %S\n\tfile: %S\n\tline: %d";
-#ifndef SIR_SELFLOG
-    fprintf(stderr, format, __func__, expression, function, file, line);
-#else
-    _sir_selflog(format, __func__, expression, function, file, line);
-#endif
-    abort();
-}
-#endif
 #endif
 
 /*! \endcond PRIVATE */

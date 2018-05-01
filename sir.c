@@ -25,15 +25,9 @@ bool sir_init(const sirinit* si) {
 
 #ifndef SIR_NO_SYSLOG
     // TODO: if not using process name, use pid for syslog identity?
-    if (0 != sir_s.sysLogLevels)
+    if (0 != sir_s.d_syslog.levels)
         openlog(validstr(sir_s.processName) ? sir_s.processName : "",
-            (sir_s.sysLogIncludePID ? LOG_PID : 0) | LOG_ODELAY, LOG_USER);
-#endif
-
-#ifdef _WIN32
-#ifdef DEBUG
-    _set_invalid_parameter_handler(_sir_invalidparam);
-#endif
+            (sir_s.d_syslog.includePID ? LOG_PID : 0) | LOG_ODELAY, LOG_USER);
 #endif
 
     sir_magic = _SIR_MAGIC;

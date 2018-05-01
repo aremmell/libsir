@@ -24,7 +24,7 @@ DOXYFILE_ENCODING      = UTF-8
 
 PROJECT_NAME           = "SIR"
 PROJECT_NUMBER         = 1.1.0
-PROJECT_BRIEF          = Standard Incident Reporter
+PROJECT_BRIEF          = "Standard Incident Reporter"
 PROJECT_LOGO           =
 OUTPUT_DIRECTORY       = docs
 CREATE_SUBDIRS         = NO

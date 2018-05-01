@@ -53,8 +53,6 @@ typedef enum {
      * in output to this destination will be appended with the current millisecond
      * in addition to the hour, minute, and second. (see ::SIR_MSECFORMAT)
      * If ::SIRO_NOTIME is set, this has no effect.
-     *
-     * \attention Only available if \a SIR_MSEC_TIMER is defined, which varies by platform.
      */
     SIRO_NOMSEC = 0x800,
 
@@ -76,28 +74,58 @@ typedef uint16_t sir_options;
 /*! Available styles (i.e., colors, brightness, etc.) for console output. */
 typedef enum {
     SIRS_NONE = 0,
-    SIRS_BOLD = 0x1,
+    SIRS_DEFAULT = 0x1,
     SIRS_BRIGHT = 0x2,
-    SIRS_FG_RED = 0x4,
-    SIRS_FG_GREEN = 0x8,
-    SIRS_FG_BLUE = 0x10,
-    SIRS_FG_YELLOW = 0x20,
-    SIRS_FG_MAGENTA = 0x40,
-    SIRS_FG_CYAN = 0x80,
-    SIRS_FG_WHITE = 0x100,
-    SIRS_FG_BLACK = 0x200,
-    SIRS_BG_RED = 0x1000,
+    SIRS_FG_BLACK = 0x10,    
+    SIRS_FG_RED = 0x20,
+    SIRS_FG_GREEN = 0x30,
+    SIRS_FG_YELLOW = 0x40,    
+    SIRS_FG_BLUE = 0x50,
+    SIRS_FG_MAGENTA = 0x60,
+    SIRS_FG_CYAN = 0x70,
+    SIRS_FG_WHITE = 0x80,
+    SIRS_BG_BLACK = 0x90,    
+    SIRS_BG_RED = 0x100,
     SIRS_BG_GREEN = 0x200,
-    SIRS_BG_BLUE = 0x400,
-    SIRS_BG_YELLOW = 0x800,
-    SIRS_BG_MAGENTA = 0x1000,
-    SIRS_BG_CYAN = 0x2000,
-    SIRS_BG_WHITE = 0x4000,
-    SIRS_BG_BLACK = 0x8000 
+    SIRS_BG_YELLOW = 0x400,    
+    SIRS_BG_BLUE = 0x500,
+    SIRS_BG_MAGENTA = 0x600,
+    SIRS_BG_CYAN = 0x700,
+    SIRS_BG_WHITE = 0x800
 } sir_textstyle;
 
 /*! The underlying type to use for characters in output. */
 typedef char sirchar_t;
+
+/*! Configuration for \a stdio-type destinations (\a stdout and \a stderr). */
+typedef struct {
+    /*! Logging levels (::sir_level) that will be routed to this
+     * destination. Set to ::SIRL_ALL for all levels, or zero for none.
+     */
+    sir_levels levels;
+
+    /*! Output options (::sir_option). Set to ::SIRO_DEFAULT for
+    * the default.
+    * */        
+    sir_options opts;
+    
+} sir_stdio_dest;
+
+/*! Configuration for the \a syslog destination. */
+typedef struct {
+    /*! Logging levels (::sir_level) that will be routed to this
+     * destination. Set to ::SIRL_ALL for all levels, or zero for none.
+     */
+    sir_levels levels;
+
+    /*! Whether or not to include the current process identifier in messages sent
+    * to \a syslog (default: false).
+    *
+    * \attention Only available if \a SIR_NO_SYSLOG is \a not defined in the preprocessor.
+    *  If \a _WIN32 is defined, \a SIR_NO_SYSLOG is automatically defined.
+    */
+    bool includePID;
+} sir_syslog_dest;
 
 /*! \struct sirinit
  *
@@ -109,36 +137,15 @@ typedef char sirchar_t;
  * Don't forget to call ::sir_cleanup when you're done.
  */
 typedef struct {
-    /*! Logging levels (::sir_level) to route to \a stdout. */
-    sir_levels stdOutLevels;
 
-    /*! Output options (::sir_option) for \a stdout. Set to ::SIRO_DEFAULT (0) to use
-     * the default options for this type of destination (i.e., stdio, file, syslog).
-     */
-    sir_options stdOutOptions;
+    /*! \brief Configuration for stdout */
+    sir_stdio_dest d_stdout;
+    
+    /*! brief Configuration for stderr */
+    sir_stdio_dest d_stderr;
 
-    /*! Logging levels (::sir_level) to route to \a stderr. */
-    sir_levels stdErrLevels;
-
-    /*! Output options (::sir_option) for \a stderr. Set to ::SIRO_DEFAULT (0) to use
-     * the default options for this type of destination (i.e., stdio, file, syslog)
-     */
-    sir_options stdErrOptions;
-
-    /*! Logging levels (::sir_level) to route to \a syslog.
-     *
-     * \attention Only available if \a SIR_NO_SYSLOG is \a not defined in the preprocessor.
-     * If \a _WIN32 is defined, \a SIR_NO_SYSLOG is automatically defined.
-     */
-    sir_levels sysLogLevels;
-
-    /*! Whether or not to include the current process identifier in messages sent
-     * to \a syslog (default: false).
-     *
-     * \attention Only available if \a SIR_NO_SYSLOG is \a not defined in the preprocessor.
-     *  If \a _WIN32 is defined, \a SIR_NO_SYSLOG is automatically defined.
-     */
-    bool sysLogIncludePID;
+    /*! \brief Configuration for syslog */
+    sir_syslog_dest d_syslog;
 
     /*! A custom name to include in output (default: \a none). If ::SIRO_NONAME
      * is set in the options for a destination, no name is included in output.
@@ -155,7 +162,11 @@ typedef struct {
 
 /*! \cond PRIVATE */
 
-#define _SIR_BRIGHT_MASK 0x7
+#define _SIRS_ATTR_MASK 0xf
+#define _SIRS_FG_MASK 0xf0
+#define _SIRS_BG_MASK 0xf00
+#define _SIRS_INVALID 0xf000
+
 #define _SIR_MAGIC 0x60906090
 
 #define _SIRBUF_TIME 0
@@ -179,6 +190,13 @@ typedef struct {
     size_t   count;
 } sirfcache;
 
+#ifndef _WIN32
+#define _SIR_MAXSTYLE 14
+typedef sirchar_t* sir_textstyle_final;
+#else
+typedef WORD sir_textstyle_final;
+#endif
+
 typedef struct {
     sirchar_t* timestamp;
     sirchar_t* msec;
@@ -199,57 +217,13 @@ typedef struct {
 
 typedef struct {
     sir_level level;
-    uint32_t styles;
-} sir_level_style_map;
+    sir_textstyle style;
+} sir_style_map;
 
-#ifndef _WIN32
-typedef const sirchar_t* sir_textstyle_final;
-
-typedef enum {
-    _SIRS_RESET = 0,
-    _SIRS_BRIGHT = 1,
-    _SIRS_FG_BLACK = 30,
-    _SIRS_FG_RED = 31,
-    _SIRS_FG_GREEN = 32,
-    _SIRS_FG_YELLOW = 33,
-    _SIRS_FG_BLUE = 34,
-    _SIRS_FG_MAGENTA = 35,
-    _SIRS_FG_CYAN = 36,
-    _SIRS_FG_WHITE = 37,
-    _SIRS_BG_BLACK = _SIRS_FG_BLACK + 10,
-    _SIRS_BG_RED = _SIRS_FG_RED + 10,
-    _SIRS_BG_GREEN = _SIRS_FG_GREEN + 10,
-    _SIRS_BG_YELLOW = _SIRS_FG_YELLOW + 10,
-    _SIRS_BG_BLUE = _SIRS_FG_BLUE + 10,
-    _SIRS_BG_MAGENTA = _SIRS_FG_MAGENTA + 10,
-    _SIRS_BG_CYAN = _SIRS_FG_CYAN + 10,
-    _SIRS_BG_WHITE = _SIRS_FG_WHITE + 10
-} sir_textstyle_priv;
-#else
-
-typedef const WORD sir_textstyle_final;
-
-typedef enum {
-    _SIRS_RESET = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE,
-    _SIRS_BRIGHT = FOREGROUND_INTENSITY,
-    _SIRS_FG_BLACK = 0,
-    _SIRS_FG_RED = FOREGROUND_RED,
-    _SIRS_FG_GREEN = FOREGROUND_GREEN,
-    _SIRS_FG_YELLOW = FOREGROUND_RED | FOREGROUND_GREEN,
-    _SIRS_FG_BLUE = FOREGROUND_BLUE,
-    _SIRS_FG_MAGENTA = FOREGROUND_RED | FOREGROUND_BLUE,
-    _SIRS_FG_CYAN = FOREGROUND_GREEN | FOREGROUND_BLUE,
-    _SIRS_FG_WHITE = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE,
-    _SIRS_BG_BLACK = 0,
-    _SIRS_BG_RED = BACKGROUND_RED,
-    _SIRS_BG_GREEN = BACKGROUND_GREEN,
-    _SIRS_BG_YELLOW = BACKGROUND_RED | BACKGROUND_GREEN,
-    _SIRS_BG_BLUE = BACKGROUND_BLUE,
-    _SIRS_BG_MAGENTA = BACKGROUND_RED | BACKGROUND_BLUE,
-    _SIRS_BG_CYAN = BACKGROUND_GREEN | BACKGROUND_BLUE,
-    _SIRS_BG_WHITE = BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE
-} sir_textstyle_priv;
-#endif
+typedef struct {
+    uint32_t from;
+    uint16_t to;
+} sir_style_priv_map;
 
 /*! \endcond */
 
