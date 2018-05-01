@@ -111,7 +111,7 @@ bool _sir_dispatch(sir_level level, siroutput* output) {
             const sirchar_t* write = _sir_format(true, sir_s.d_stdout.opts, output);
             assert(write);
 #ifndef _WIN32            
-            r &= NULL != write && _sir_stout_write(write);
+            r &= NULL != write && _sir_stdout_write(write);
 #else
             uint16_t* style = (uint16_t*)output->style;
             r &= NULL != write && NULL != style && _sir_stdout_write(*style, write);

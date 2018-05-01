@@ -66,7 +66,7 @@
 #define SIR_MAXMESSAGE 2048
 
 /*! The size, in characters, of the buffer used to hold text styling data. */
-#define SIR_MAXSTYLE 14
+#define SIR_MAXSTYLE 16
 
 /*! The size, in characters, of the buffer used to hold time format strings. */
 #define SIR_MAXTIME 64

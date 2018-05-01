@@ -73,7 +73,6 @@ typedef uint16_t sir_options;
 typedef enum {
     SIRS_NONE = 0,
     SIRS_BRIGHT = 0x1,
-
     SIRS_FG_BLACK = 0x10,    
     SIRS_FG_RED = 0x20,
     SIRS_FG_GREEN = 0x30,
@@ -82,7 +81,6 @@ typedef enum {
     SIRS_FG_MAGENTA = 0x60,
     SIRS_FG_CYAN = 0x70,
     SIRS_FG_WHITE = 0x80,
-
     SIRS_FG_LGRAY = 0x90,
     SIRS_FG_DGRAY = 0xa0,
     SIRS_FG_LRED = 0xb0,
@@ -92,7 +90,6 @@ typedef enum {
     SIRS_FG_LMAGENTA = 0xf0,
     SIRS_FG_LCYAN = 0xf10,
     SIRS_FG_DEFAULT = 0xf20,
-
     SIRS_BG_BLACK = 0x1000,    
     SIRS_BG_RED = 0x2000,
     SIRS_BG_GREEN = 0x3000,
@@ -101,7 +98,6 @@ typedef enum {
     SIRS_BG_MAGENTA = 0x6000,
     SIRS_BG_CYAN = 0x7000,
     SIRS_BG_WHITE = 0x8000,
-
     SIRS_BG_LGRAY = 0x9000,
     SIRS_BG_DGRAY = 0xa000,
     SIRS_BG_LRED = 0xb000,
@@ -111,7 +107,6 @@ typedef enum {
     SIRS_BG_LMAGENTA = 0xf000,
     SIRS_BG_LCYAN = 0xf100,
     SIRS_BG_DEFAULT = 0xf200,    
-
     SIRS_INVALID = 0xf300
 } sir_textstyle;
 
@@ -233,7 +228,7 @@ typedef struct {
 
 typedef struct {
     sir_level level;
-    sir_textstyle style;
+    uint16_t style;
 } sir_style_map;
 
 typedef struct {

@@ -135,17 +135,17 @@ bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size) {
             uint16_t privbg = _sir_getprivstyle(bg);
 
  #ifndef _WIN32
-            sirchar_t fgfmt[4] = {0};
-            sirchar_t bgfmt[4] = {0};
+            sirchar_t fgfmt[5] = {0};
+            sirchar_t bgfmt[5] = {0};
 
             if (privfg != 0)
-                snprintf(fgfmt, 4, ";%2hd", privfg);
+                snprintf(fgfmt, 5, ";%03hu", privfg);
 
             if (privbg != 0)
-                snprintf(bgfmt, 4, ";%2hd", privbg);
+                snprintf(bgfmt, 5, ";%03hu", privbg);
 
             /* '\e[nn;nn;nm' */
-            snprintf(buf, size, "\033[%1d%s%sm", privattr, fgfmt, bgfmt);
+            snprintf(buf, size, "\033[%1hu%s%sm", privattr, fgfmt, bgfmt);
 
             return validstr(buf);
 #else
