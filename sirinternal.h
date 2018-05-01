@@ -18,7 +18,7 @@
 extern sirinit  sir_s;
 extern sirfcache sir_fc;
 extern sirbuf   sir_b;
-extern uint32_t sir_magic;
+volatile extern uint32_t sir_magic;
 
 bool _sir_sanity();
 
@@ -45,13 +45,16 @@ bool  _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format);
 pid_t _sir_getpid();
 pid_t _sir_gettid();
 
-void _sir_handleerr_impl(sirerror_t err, const sirchar_t* func,
-    const sirchar_t* file, uint32_t line);
-
 #ifdef SIR_SELFLOG
+#define _sir_handleerr(err) \
+    _sir_handleerr_impl(err, __func__, __FILE__, __LINE__);
+
+void _sir_handleerr_impl(sirerror_t err, const sirchar_t* func,
+    const sirchar_t* file, uint32_t line);    
 void _sir_selflog(const sirchar_t* format, ...);
 #else
 #define _sir_selflog(format, ...) ((void)(0))
+#define _sir_handleerr(err) ((void)(0))
 #endif
 
 /*! \endcond */

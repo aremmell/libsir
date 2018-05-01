@@ -13,7 +13,7 @@
 sirinit  sir_s  = {0};
 sirfcache sir_fc = {0};
 sirbuf   sir_b  = {0};
-uint32_t sir_magic = 0;
+volatile uint32_t sir_magic = 0;
 
 bool _sir_sanity() {
     if (_SIR_MAGIC == sir_magic)
@@ -339,6 +339,7 @@ pid_t _sir_gettid() {
 #endif
 }
 
+#ifdef SIR_SELFLOG
 void _sir_handleerr_impl(sirerror_t err, const sirchar_t* func,
     const sirchar_t* file, uint32_t line) {
     if (SIR_NOERROR != err) {
@@ -371,7 +372,6 @@ void _sir_handleerr_impl(sirerror_t err, const sirchar_t* func,
     assert(SIR_NOERROR == err);
 }
 
-#ifdef SIR_SELFLOG
 void _sir_selflog(const sirchar_t* format, ...) {
     sirchar_t output[SIR_MAXMESSAGE] = {0};
     va_list   args;
