@@ -5,7 +5,7 @@ int main(int argc, char** argv) {
 
     sirinit si = {0};
 
-    si.processName = "sir";
+    strcpy(si.processName, "sir");
 
     si.d_stdout.levels = SIRL_ALL;
     si.d_stdout.opts = 0;

@@ -165,15 +165,14 @@ typedef struct {
 
     /*! A custom name to include in output (default: \a none). If ::SIRO_NONAME
      * is set in the options for a destination, no name is included in output.
-     * Set to \a NULL for the default.
      */
-    const sirchar_t* processName;
+    sirchar_t processName[SIR_MAXNAME];
 
     /*! A custom time format passed to \a strftime to use in output
      * (default: ::SIR_TIMEFORMAT). If ::SIRO_NOTIME is set in the options
-     * for a destination, no time is included in output. Set to \a NULL for the default.
+     * for a destination, no time is included in output.
      */
-    const sirchar_t* timeFmt;
+    sirchar_t timeFmt[SIR_MAXTIME];
 } sirinit;
 
 /*! \cond PRIVATE */
@@ -204,7 +203,6 @@ typedef struct {
 typedef struct {
     sirfile* files[SIR_MAXFILES];
     size_t   count;
-    sirmutex_t mutex;
 } sirfcache;
 
 typedef struct {

@@ -140,10 +140,6 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) 
     assert(output);
     assert(output->output);
 
-    /*
-     * [time stamp][msec] [level] [name]: message
-     */
-
     if (validopts(opts) && output && output->output) {
         bool first = true;
 

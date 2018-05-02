@@ -21,7 +21,6 @@ extern sirbuf   sir_b;
 volatile extern uint32_t sir_magic;
 
 bool _sir_sanity();
-
 bool _sir_logv(sir_level level, const sirchar_t* format, va_list args);
 
 bool             _sir_dispatch(sir_level level, siroutput* output);

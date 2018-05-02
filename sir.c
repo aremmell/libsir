@@ -21,7 +21,6 @@ bool sir_init(const sirinit* si) {
     if (!si || !_sir_options_sanity(si))
         return false;
 
-    sir_cleanup();
     memcpy(&sir_s, si, sizeof(sirinit));
 
 #ifndef SIR_NO_SYSLOG
@@ -38,6 +37,9 @@ bool sir_init(const sirinit* si) {
 }
 
 void sir_cleanup() {
+
+    if (!_sir_sanity())
+        return;
 
     _sir_fcache_destroy(&sir_fc);
     memset(&sir_fc, 0, sizeof(sirfcache));
