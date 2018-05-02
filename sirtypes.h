@@ -204,6 +204,7 @@ typedef struct {
 typedef struct {
     sirfile* files[SIR_MAXFILES];
     size_t   count;
+    sirmutex_t mutex;
 } sirfcache;
 
 typedef struct {

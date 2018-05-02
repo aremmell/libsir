@@ -1,4 +1,5 @@
 #include "sir.h"
+#include "tests.h"
 
 int main(int argc, char** argv) {
 
@@ -13,6 +14,8 @@ int main(int argc, char** argv) {
         fprintf(stderr, "Failed to initialize SIR!\n");
         return 1;
     }
+
+    int test = sirtest_mthread_race();
 
     sirdebug("debug message: %d", 123);
     sirinfo("info message: %d", 123);

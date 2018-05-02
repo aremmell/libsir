@@ -31,11 +31,11 @@ _OBJ = $(patsubst %.c, %.o, $(TUS))
 OBJ  = $(patsubst %, $(INTERDIR)/%, $(_OBJ))
 
 # console debug app
-_OBJ_DEBUG   = main.o $(_OBJ)
+_OBJ_DEBUG   = main.o tests.o $(_OBJ)
 OBJ_DEBUG    = $(patsubst %.o, $(INTERDIR)/%.do, $(_OBJ_DEBUG))
 OUT_DEBUG    = $(BUILDDIR)/sirdebug
 CFLAGS_DEBUG = $(CFLAGS) -g -DDEBUG -DSIR_SELFLOG
-DEBUGTU = $(TUS) main.c
+DEBUGTU = $(TUS) main.c tests.c
 
 # shared library
 OBJ_SHARED    = $(patsubst %.o, $(INTERDIR)/%.lo, $(_OBJ))

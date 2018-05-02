@@ -5,6 +5,7 @@
  */
 #include "sirfilecache.h"
 #include "sirinternal.h"
+#include "sirmutex.h"
 
 /*! \cond PRIVATE */
 
@@ -228,6 +229,8 @@ int _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels levels, si
     assert(validopts(opts));
 
     if (sfc && validlevels(levels) && validopts(opts) && validstr(path)) {
+
+        //sirfile* existing = _sir_fcache_find(sfc, int id)
         assert(sfc->count < SIR_MAXFILES);
 
         if (sfc->count < SIR_MAXFILES) {
@@ -277,15 +280,24 @@ bool _sir_fcache_rem(sirfcache* sfc, int id) {
 
     return false;
 }
+bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
+    const sirchar_t* path = (const sirchar_t*)match;
+#ifndef _WIN32
+    return 0 == strncmp(path, iter->path, SIR_MAXPATH);
+#else
+    /* paths/file names are not case sensitive on windows. */
+#endif
+}
 
-sirfile* _sir_fcache_find(sirfcache* sfc, int id) {
-#pragma message "TODO: use to update file opts/levels at runtime"
+sirfile* _sir_fcache_find(sirfcache* sfc, const void* match, sir_fcache_pred pred)
+{
     assert(sfc);
-    assert(validid(id));
+    assert(match);
+    assert(pred);
 
-    if (sfc && validid(id)) {
+    if (sfc && match && pred) {
         for (size_t n = 0; n < sfc->count; n++) {
-            if (sfc->files[n]->id == id)
+            if (pred(match, sfc->files[n]))
                 return sfc->files[n];
         }
     }
