@@ -9,8 +9,8 @@ bool _sir_validstyle(sir_textstyle style, uint16_t* pattr, uint16_t *pfg, uint16
     uint16_t bg = (style & _SIRS_BG_MASK);
 
     bool attrvalid = attr <= SIRS_BRIGHT;
-    bool fgvalid = fg <= SIRS_FG_WHITE;
-    bool bgvalid = bg <= SIRS_BG_WHITE;
+    bool fgvalid = fg <= SIRS_FG_DEFAULT;
+    bool bgvalid = bg <= SIRS_BG_DEFAULT;
 
     assert(attrvalid);
     assert(fgvalid);
@@ -27,6 +27,9 @@ bool _sir_validstyle(sir_textstyle style, uint16_t* pattr, uint16_t *pfg, uint16
 
 bool _sir_setdefstyle(sir_level level, sir_textstyle style) {
 
+    if (!_sir_sanity())
+        return false;
+
     assert(validlevel(level));
 
     if (validlevel(level)) {
@@ -34,11 +37,20 @@ bool _sir_setdefstyle(sir_level level, sir_textstyle style) {
         assert(validstyle);
 
         if (validstyle) {
-            for (size_t n = 0; n < _COUNTOF(sir_default_styles); n++) {
-                if (sir_default_styles[n].level == level) {
-                    sir_default_styles[n].style = style;
-                    return true;
+            sir_style_map* map = _sir_locksection(_SIRM_TEXTSTYLE);
+            assert(map);
+
+            if (map) {
+                bool updated = false;                
+                for (size_t n = 0; n < _COUNTOF(map); n++) {
+                    if (map[n].level == level) {
+                        map[n].style = style;
+                        updated = true;
+                        break;
+                    }
                 }
+
+                return _sir_unlocksection(_SIRM_TEXTSTYLE) && updated;
             }
         }
     }
@@ -50,9 +62,22 @@ sir_textstyle _sir_getdefstyle(sir_level level) {
 
     assert(validlevel(level));
 
-    for (size_t n = 0; n < _COUNTOF(sir_default_styles); n++) {
-        if (sir_default_styles[n].level == level)
-            return sir_default_styles[n].style;
+    if (validlevel(level)) {
+        sir_style_map* map = _sir_locksection(_SIRM_TEXTSTYLE);
+        assert(map);
+
+        if (map) {
+            sir_textstyle found = SIRS_INVALID;
+            for (size_t n = 0; n < _COUNTOF(map); n++) {
+                if (map[n].level == level) {
+                    found = map[n].style;
+                    break;
+                }
+            }
+
+            if (_sir_unlocksection(_SIRM_TEXTSTYLE))
+                return found;
+        }
     }
 
     return SIRS_INVALID;

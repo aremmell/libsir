@@ -76,25 +76,11 @@ bool sir_emerg(const sirchar_t* format, ...) {
 }
 
 int sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts) {
-    sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
-
-    if (sfc) {
-        bool r = _sir_fcache_add(sfc, path, levels, opts);
-        return r && _sir_unlocksection(_SIRM_FILECACHE);
-    }
-
-    return false;
+    return _sir_addfile(path, levels, opts);
 }
 
 bool sir_remfile(int id) {
-    sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
-
-    if (sfc) {
-        bool r = _sir_fcache_rem(sfc, id);
-        return r && _sir_unlocksection(_SIRM_FILECACHE);
-    }
-
-    return false;
+    return _sir_remfile(id);
 }
 
 bool sir_settextstyle(sir_level level, sir_textstyle style) {

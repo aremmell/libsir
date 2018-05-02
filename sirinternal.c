@@ -12,10 +12,22 @@
 
 /*! \cond PRIVATE */
 
-static sirstate _sir_state = {0};
+static sirinit _sir_si = {0};
+static sirfcache _sir_fc = {0};
+
+static sirmutex_t si_mutex;
+static sironce_t si_once = SIR_ONCE_INIT;
+
+static sirmutex_t fc_mutex;
+static sironce_t fc_once = SIR_ONCE_INIT;
+
+static sirmutex_t ts_mutex;
+static sironce_t ts_once = SIR_ONCE_INIT;
+
+static volatile uint32_t _sir_magic;
 
 bool _sir_sanity() {
-    if (_SIR_MAGIC == _sir_state.magic)
+    if (_SIR_MAGIC == _sir_magic)
         return true;
     
     _sir_selflog("%s: sanity check failed; has sir_init been called?\n", __func__);
@@ -48,10 +60,10 @@ bool _sir_init(const sirinit* si) {
         openlog(validstr(_si->processName) ? _si->processName : "",
             (_si->d_syslog.includePID ? LOG_PID : 0) | LOG_ODELAY, LOG_USER);
 #endif
-        _sir_state.magic = _SIR_MAGIC;
+        _sir_magic = _SIR_MAGIC;
 
         _sir_unlocksection(_SIRM_INIT);
-        _sir_selflog("SIR is initialized.\n");
+        _sir_selflog("SIR is initialized\n");
         return true;    
     }
 
@@ -100,18 +112,18 @@ bool _sir_mapmutexid(sir_mutex_id mid, sirmutex_t** m, void** section) {
 
     switch (mid) {
         case _SIRM_INIT:
-            _sir_initmutex_si_once();
-            tmpm = &_sir_state.si_mutex;
-            tmpsec = &_sir_state.si;
+            _sir_once(&si_once, _sir_initmutex_si_once);
+            tmpm = &si_mutex;
+            tmpsec = &_sir_si;
         break;
         case _SIRM_FILECACHE:
-            _sir_initmutex_fc_once();
-            tmpm = &_sir_state.fc_mutex;
-            tmpsec = &_sir_state.fc;
+            _sir_once(&fc_once, _sir_initmutex_fc_once);
+            tmpm = &fc_mutex;
+            tmpsec = &_sir_fc;
         break;
         case _SIRM_TEXTSTYLE:
-            _sir_initmutex_ts_once();
-            tmpm = &_sir_state.ts_mutex;
+            _sir_once(&ts_once, _sir_initmutex_ts_once);
+            tmpm = &ts_mutex;
             tmpsec = sir_default_styles;
         break;
         default:
@@ -133,6 +145,7 @@ bool _sir_cleanup() {
     bool cleanup = true;
     sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
     assert(sfc);
+    cleanup &= NULL != sfc;
 
     if (sfc) {
         bool destroyfc = _sir_fcache_destroy(sfc);
@@ -142,53 +155,60 @@ bool _sir_cleanup() {
 
     sirinit* si = _sir_locksection(_SIRM_INIT);
     assert(si);
+    cleanup &= NULL != si;
 
-    if (si)
+    if (si) {
         memset(si, 0, sizeof(sirinit));
+        cleanup &= _sir_unlocksection(_SIRM_INIT);
+    }
 
-    cleanup &= si && _sir_unlocksection(_SIRM_INIT);
-
-    _sir_state.magic = 0;
+    _sir_magic = 0;
+    _sir_selflog("%s: SIR is cleaned up\n", __func__);
     return cleanup;
 }
 
-/* void _sir_initmutex_si_once() {
-    _sir_initmutex(&_sir_state.si_mutex);
+#ifndef _WIN32
+void _sir_initmutex_si_once() {
+    _sir_initmutex(&si_mutex);
 }
 
 void _sir_initmutex_fc_once() {
-    _sir_initmutex(&_sir_state.fc_mutex);
+    _sir_initmutex(&fc_mutex);
 }
 
 void _sir_initmutex_ts_once() {
-    _sir_initmutex(&_sir_state.ts_mutex);
+    _sir_initmutex(&ts_mutex);
+}
+#else
+BOOL CALLBACK _sir_initmutex_si_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
+    _sir_initmutex(&si_mutex);
+    return TRUE;    
 }
 
-#ifndef _WIN32
+BOOL CALLBACK _sir_initmutex_fc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
+    _sir_initmutex(&fc_mutex);
+    return TRUE;    
+}
+
+BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
+    _sir_initmutex(&ts_mutex);
+    return TRUE;
+}
+#endif
+
 void _sir_initmutex(sirmutex_t* mutex) {
     bool init = _sirmutex_create(mutex);
     assert(init);
 }
+
+void _sir_once(sironce_t* once, sir_once_fn func) {
+#ifndef _WIN32
+    pthread_once(once, func);
 #else
-void _sir_initmutex_si_once() {
-    _sir_initmutex(&_sir_state.si_mutex);
+    BOOL result = InitOnceExecuteOnce(once, func, NULL, NULL);
+    assert(FALSE != result);
+#endif
 }
-
-void _sir_initmutex_fc_once() {
-    _sir_initmutex(&_sir_state.fc_mutex);
-}
-
-void _sir_initmutex_ts_once() {
-    _sir_initmutex(&_sir_state.ts_mutex);
-}
-
-BOOL CALLBACK _sir_initmutex(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
-
-    bool init = _sirmutex_create((sirmutex_t*)param);
-    assert(init);
-    return init ?  TRUE : FALSE;
-}
-#endif */
 
 bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
 

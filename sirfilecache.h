@@ -13,6 +13,9 @@
 
 typedef bool (*sir_fcache_pred)(const void* match, sirfile* iter);
 
+int _sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts);
+bool _sir_remfile(int id);
+
 sirfile* _sirfile_create(const sirchar_t* path, sir_levels levels, sir_options opts);
 bool     _sir_write(sirfile* sf, const sirchar_t* output);
 bool     _sirfile_writeheader(sirfile* sf, const sirchar_t* msg);

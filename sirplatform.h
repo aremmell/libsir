@@ -50,6 +50,9 @@
 typedef int sirerror_t;
 typedef pthread_mutex_t sirmutex_t;
 typedef pthread_once_t sironce_t;
+typedef void (*sir_once_fn)();
+
+#define SIR_ONCE_INIT PTHREAD_ONCE_INIT
 
 #else
 #define WIN32_LEAN_AND_MEAN
@@ -63,6 +66,9 @@ typedef pthread_once_t sironce_t;
 typedef DWORD sirerror_t;
 typedef HANDLE sirmutex_t;
 typedef INIT_ONCE sironce_t;
+typedef BOOL (CALLBACK *sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
+
+#define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
 
 #endif
 

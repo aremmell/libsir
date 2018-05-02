@@ -15,7 +15,9 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    //int test = sirtest_mthread_race();
+    int test = sirtest_mthread_race();
+
+return 0;
 
     sir_debug("debug message: %d", 123);
     sir_info("info message: %d", 123);

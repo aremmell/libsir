@@ -9,6 +9,35 @@
 
 /*! \cond PRIVATE */
 
+int _sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts) {
+
+    if (_sir_sanity()) {
+        sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
+
+        if (sfc) {
+            int r = _sir_fcache_add(sfc, path, levels, opts);
+            _sir_unlocksection(_SIRM_FILECACHE);
+            return r;
+        }
+    }
+
+    return SIR_INVALID;
+}
+
+bool _sir_remfile(int id) {
+
+    if (_sir_sanity()) {
+        sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
+
+        if (sfc) {
+            bool r = _sir_fcache_rem(sfc, id);
+            return _sir_unlocksection(_SIRM_FILECACHE) && r;
+        }
+    }
+
+    return false;    
+}
+
 sirfile* _sirfile_create(const sirchar_t* path, sir_levels levels, sir_options opts) {
 
     sirfile* sf = NULL;
@@ -185,9 +214,6 @@ bool _sirfile_validate(sirfile* sf) {
 }
 
 int _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels levels, sir_options opts) {
-
-    if (!_sir_sanity())
-        return false;
         
     assert(sfc);
     assert(validstr(path));
@@ -224,9 +250,6 @@ int _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels levels, si
 }
 
 bool _sir_fcache_rem(sirfcache* sfc, int id) {
-
-    if (!_sir_sanity())
-        return false;
 
     assert(sfc);
     assert(validid(id));

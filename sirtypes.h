@@ -238,16 +238,6 @@ typedef struct {
     uint16_t to;
 } sir_style_priv_map;
 
-typedef struct {
-    sirinit si;
-    sirfcache fc;
-    sirmutex_t si_mutex;
-    sirmutex_t fc_mutex;
-    sirmutex_t ts_mutex;
-    sironce_t mutex_once;
-    volatile uint32_t magic;
-} sirstate;
-
 typedef enum {
     _SIRM_INIT = 0,
     _SIRM_FILECACHE,

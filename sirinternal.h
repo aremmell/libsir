@@ -21,14 +21,18 @@ bool _sir_unlocksection(sir_mutex_id mid);
 bool _sir_mapmutexid(sir_mutex_id mid, sirmutex_t** m, void** section);
 bool _sir_cleanup();
 
-/* void _sir_initmutex_si_once();
+#ifndef _WIN32
+void _sir_initmutex_si_once();
 void _sir_initmutex_fc_once();
 void _sir_initmutex_ts_once();
-void _sir_initmutex(sirmutex_t* mutex);
+#else
+BOOL CALLBACK _sir_initmutex_si_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
+BOOL CALLBACK _sir_initmutex_fc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
+BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
+#endif 
 
-#ifdef _WIN32
-BOOL CALLBACK _sir_initmutex(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
-#endif */
+void _sir_initmutex(sirmutex_t* mutex);
+void _sir_once(sironce_t* once, sir_once_fn func);
 
 bool _sir_logv(sir_level level, const sirchar_t* format, va_list args);
 
