@@ -68,8 +68,12 @@
  * not including other parts of the output, like the timestamp and level. */
 #define SIR_MAXMESSAGE 2048
 
+#ifndef _WIN32
 /*! The size, in characters, of the buffer used to hold text styling data. */
 #define SIR_MAXSTYLE 16
+#else
+#define SIR_MAXSTYLE sizeof(uint16_t)
+#endif
 
 /*! The size, in characters, of the buffer used to hold time format strings. */
 #define SIR_MAXTIME 64
@@ -85,13 +89,14 @@
 #define SIR_MAXNAME 32
 
 /*! The maximum size, in characters, of final formatted output. */
-#define SIR_MAXOUTPUT SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME + SIR_MAXLEVEL + SIR_MAXNAME
+#define SIR_MAXOUTPUT SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME \
+    + SIR_MAXLEVEL + SIR_MAXNAME + 1
 
 /*! The string passed to fopen/fopen_s for log files. */
 #define SIR_FOPENMODE "a"
 
 /*! The size, in bytes, at which a log file will be rolled. */
-#define SIR_FROLLSIZE 1024L * 1024L //* 5L
+#define SIR_FROLLSIZE 1024L * 1024L * 5L
 
 /* ! The string used to reset any styling applied to text in stdio output. */
 #define SIR_ENDSTYLE "\033[0m"

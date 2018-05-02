@@ -4,7 +4,7 @@
  * \author Ryan Matthew Lederman <lederman@gmail.com>
  */
 #include "sirconsole.h"
-#include "sirmacros.h"
+#include "sirinternal.h"
 #include "sirtextstyle.h"
 
 /* \cond PRIVATE */
@@ -66,13 +66,13 @@ static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message, HANDLE
         return false;
     }        
 
-    size_t chars = strnlen(message, SIR_MAXOUTPUT);
+    size_t chars = strnlen(message, SIR_MAXOUTPUT) - 1;
     DWORD written = 0;
 
     do {
         DWORD pass = 0;
 
-        if (!WriteConsole(console, message, chars, &pass, NULL)) {
+        if (!WriteConsole(console, message + written, chars - written, &pass, NULL)) {
             _sir_handleerr(GetLastError());
             break;
         }
@@ -80,7 +80,11 @@ static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message, HANDLE
         written += pass;
     } while (written < chars);
 
+    /* Have to set the attributes back before writing the newline
+     * or you'll get background color artifacting before the next output.
+     */
     SetConsoleTextAttribute(console, csbfi.wAttributes);
+    WriteConsole(console, "\n", 1, &written, NULL);
 
     return written == chars;    
 }

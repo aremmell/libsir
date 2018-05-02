@@ -149,7 +149,11 @@ bool _sirfile_roll(sirfile* sf) {
     assert(_sirfile_validate(sf));
 
     if (_sirfile_validate(sf)) {
+#ifndef _WIN32
         int roll = ftruncate(sf->id, 0);
+#else
+        int roll = _chsize(sf->id, 0);
+#endif
         assert(0 == roll);
 
         if (0 != roll) {

@@ -188,7 +188,6 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) 
         }
 
         strncat(output->output, "\n", 1);
-
         return output->output;
     }
 

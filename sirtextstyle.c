@@ -102,7 +102,6 @@ bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size) {
 #else
             uint16_t final = privattr | privfg | privbg;
             memcpy(buf, &final, sizeof(uint16_t));
-            memset(buf + sizeof(uint16_t), 0, SIR_MAXSTYLE - sizeof(uint16_t));
             return true;
 #endif
         }    

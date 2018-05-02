@@ -22,10 +22,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-
-#ifndef _WIN32
 #include <sys/types.h>
 #include <sys/stat.h>
+
+#ifndef _WIN32
 #include <syslog.h>
 #include <unistd.h>
 #include <pthread.h>
@@ -52,12 +52,12 @@ typedef pthread_mutex_t sirmutex_t;
 #else
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
+#include <io.h>
 #define SIR_MAXPATH MAX_PATH
 #define SIR_NO_SYSLOG
 #define SIR_MSEC_TIMER
 #define SIR_MSEC_WIN32
 
-typedef DWORD pid_t;
 typedef DWORD sirerror_t;
 typedef HANDLE sirmutex_t;
 #endif
