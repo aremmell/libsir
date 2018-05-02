@@ -192,6 +192,9 @@ typedef struct {
 #define _SIRBUF_OUTPUT 6
 #define _SIRBUF_MAX 6
 
+#define SIR_MAXERROR 256
+#define SIR_UNKERROR "<unknown>"
+
 typedef struct {
     sirchar_t*  path;
     sir_levels  levels;
@@ -234,6 +237,22 @@ typedef struct {
     uint32_t from;
     uint16_t to;
 } sir_style_priv_map;
+
+typedef struct {
+    sirinit si;
+    sirfcache fc;
+    sirmutex_t si_mutex;
+    sirmutex_t fc_mutex;
+    sirmutex_t ts_mutex;
+    sironce_t mutex_once;
+    volatile uint32_t magic;
+} sirstate;
+
+typedef enum {
+    _SIRM_INIT = 0,
+    _SIRM_FILECACHE,
+    _SIRM_TEXTSTYLE
+} sir_mutex_id;
 
 /*! \endcond */
 

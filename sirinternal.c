@@ -4,6 +4,7 @@
  * \author Ryan Matthew Lederman <lederman@gmail.com>
  */
 #include "sirinternal.h"
+#include "sirmutex.h"
 #include "sirfilecache.h"
 #include "sirconsole.h"
 #include "sirtextstyle.h"
@@ -11,18 +12,183 @@
 
 /*! \cond PRIVATE */
 
-sirinit  sir_s  = {0};
-sirfcache sir_fc = {0};
-sirbuf   sir_b  = {0};
-volatile uint32_t sir_magic = 0;
+static sirstate _sir_state = {0};
 
 bool _sir_sanity() {
-    if (_SIR_MAGIC == sir_magic)
+    if (_SIR_MAGIC == _sir_state.magic)
         return true;
     
     _sir_selflog("%s: sanity check failed; has sir_init been called?\n", __func__);
     return false;
 }
+
+bool _sir_options_sanity(const sirinit* si) {
+#pragma message "_sir_options_sanity"
+    return true;
+}
+
+bool _sir_init(const sirinit* si) {
+    if (_sir_sanity()) {
+        _sir_selflog("%s: sir appears to already be initialized!\n", __func__);
+        return false;
+    }
+
+    if (!si || !_sir_options_sanity(si))
+        return false;
+
+    sirinit* _si = _sir_locksection(_SIRM_INIT);
+    assert(_si);
+
+    if (_si) {
+        memcpy(_si, si, sizeof(sirinit));
+
+#ifndef SIR_NO_SYSLOG
+    // TODO: if not using process name, use pid for syslog identity?
+    if (0 != _si->d_syslog.levels)
+        openlog(validstr(_si->processName) ? _si->processName : "",
+            (_si->d_syslog.includePID ? LOG_PID : 0) | LOG_ODELAY, LOG_USER);
+#endif
+        _sir_state.magic = _SIR_MAGIC;
+
+        _sir_unlocksection(_SIRM_INIT);
+        _sir_selflog("SIR is initialized.\n");
+        return true;    
+    }
+
+    return false;
+}
+
+void* _sir_locksection(sir_mutex_id mid) {
+
+    sirmutex_t* m = NULL;
+    void* sec = NULL;
+
+    if (_sir_mapmutexid(mid, &m, &sec)) {
+        bool enter = _sirmutex_lock(m);
+        assert(enter);
+
+        return enter ? sec : NULL; 
+    }
+
+    return NULL;
+}
+
+bool _sir_unlocksection(sir_mutex_id mid) {
+
+    sirmutex_t* m = NULL;
+    void* sec = NULL;
+
+    if (_sir_mapmutexid(mid, &m, &sec)) {
+        bool leave = _sirmutex_unlock(m);
+        assert(leave);
+
+        return leave;
+    }
+
+    return false;
+}
+
+bool _sir_mapmutexid(sir_mutex_id mid, sirmutex_t** m, void** section) {
+
+    assert(m);
+
+    if (!m)
+        return false;
+
+    sirmutex_t *tmpm;
+    void* tmpsec;
+
+    switch (mid) {
+        case _SIRM_INIT:
+            _sir_initmutex_si_once();
+            tmpm = &_sir_state.si_mutex;
+            tmpsec = &_sir_state.si;
+        break;
+        case _SIRM_FILECACHE:
+            _sir_initmutex_fc_once();
+            tmpm = &_sir_state.fc_mutex;
+            tmpsec = &_sir_state.fc;
+        break;
+        case _SIRM_TEXTSTYLE:
+            _sir_initmutex_ts_once();
+            tmpm = &_sir_state.ts_mutex;
+            tmpsec = sir_default_styles;
+        break;
+        default:
+            tmpm = NULL;
+            tmpsec = NULL;
+    }
+
+    *m = tmpm;
+    if (section) *section = tmpsec;
+
+    return *m != NULL && (!section || *section != NULL);
+}
+
+bool _sir_cleanup() {
+
+    if (!_sir_sanity())
+        return false;
+
+    bool cleanup = true;
+    sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
+    assert(sfc);
+
+    if (sfc) {
+        bool destroyfc = _sir_fcache_destroy(sfc);
+        assert(destroyfc);
+        cleanup &= _sir_unlocksection(_SIRM_FILECACHE) && destroyfc;
+    }
+
+    sirinit* si = _sir_locksection(_SIRM_INIT);
+    assert(si);
+
+    if (si)
+        memset(si, 0, sizeof(sirinit));
+
+    cleanup &= si && _sir_unlocksection(_SIRM_INIT);
+
+    _sir_state.magic = 0;
+    return cleanup;
+}
+
+/* void _sir_initmutex_si_once() {
+    _sir_initmutex(&_sir_state.si_mutex);
+}
+
+void _sir_initmutex_fc_once() {
+    _sir_initmutex(&_sir_state.fc_mutex);
+}
+
+void _sir_initmutex_ts_once() {
+    _sir_initmutex(&_sir_state.ts_mutex);
+}
+
+#ifndef _WIN32
+void _sir_initmutex(sirmutex_t* mutex) {
+    bool init = _sirmutex_create(mutex);
+    assert(init);
+}
+#else
+void _sir_initmutex_si_once() {
+    _sir_initmutex(&_sir_state.si_mutex);
+}
+
+void _sir_initmutex_fc_once() {
+    _sir_initmutex(&_sir_state.fc_mutex);
+}
+
+void _sir_initmutex_ts_once() {
+    _sir_initmutex(&_sir_state.ts_mutex);
+}
+
+BOOL CALLBACK _sir_initmutex(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
+
+    bool init = _sirmutex_create((sirmutex_t*)param);
+    assert(init);
+    return init ?  TRUE : FALSE;
+}
+#endif */
 
 bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
 
@@ -35,9 +201,19 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
     if (!validlevel(level) || !validstr(format))
         return false;
 
+    sirinit* si = _sir_locksection(_SIRM_INIT);
+
+    if (!si)
+        return false;
+
+    sirinit tmpsi = {0};
+    memcpy(&tmpsi, si, sizeof(sirinit));
+    _sir_unlocksection(_SIRM_INIT);
+
+    sirbuf buf;
     siroutput output = {0};
 
-    output.style = _sirbuf_get(&sir_b, _SIRBUF_STYLE);
+    output.style = _sirbuf_get(&buf, _SIRBUF_STYLE);
     assert(output.style);
 
     sir_textstyle defstyle = _sir_getdefstyle(level);
@@ -46,7 +222,7 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
     bool fmtstyle = _sir_formatstyle(defstyle, output.style, SIR_MAXSTYLE);
     assert(fmtstyle);
 
-    output.timestamp = _sirbuf_get(&sir_b, _SIRBUF_TIME);
+    output.timestamp = _sirbuf_get(&buf, _SIRBUF_TIME);
     assert(output.timestamp);
 
     time_t now;
@@ -55,30 +231,30 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
     assert(gettime);
 
     if (gettime) {
-        const sirchar_t* timeformat = validstr(sir_s.timeFmt) ? sir_s.timeFmt : SIR_TIMEFORMAT;
+        const sirchar_t* timeformat = validstr(tmpsi.timeFmt) ? tmpsi.timeFmt : SIR_TIMEFORMAT;
         bool             fmt        = _sir_formattime(now, output.timestamp, timeformat);
         assert(fmt);
 
-        output.msec = _sirbuf_get(&sir_b, _SIRBUF_MSEC);
+        output.msec = _sirbuf_get(&buf, _SIRBUF_MSEC);
         assert(output.msec);
 
         snprintf(output.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec);
     }
 
-    output.level = _sirbuf_get(&sir_b, _SIRBUF_LEVEL);
+    output.level = _sirbuf_get(&buf, _SIRBUF_LEVEL);
     assert(output.level);
     snprintf(output.level, SIR_MAXLEVEL, "[%s]", _sir_levelstr(level));
 
-    if (validstr(sir_s.processName)) {
-        output.name = _sirbuf_get(&sir_b, _SIRBUF_NAME);
+    if (validstr(tmpsi.processName)) {
+        output.name = _sirbuf_get(&buf, _SIRBUF_NAME);
         assert(output.name);
-        strncpy(output.name, sir_s.processName, SIR_MAXNAME - 1);
+        strncpy(output.name, tmpsi.processName, SIR_MAXNAME - 1);
 #pragma message "TODO: PID/TID"
         //snprintf(output.name, SIR_MAXNAME, "%s (%d:%d)", sir_s.processName, _sir_getpid(), _sir_gettid());
     }
 
     /*! \todo add support for syslog's %m */
-    output.message = _sirbuf_get(&sir_b, _SIRBUF_MSG);
+    output.message = _sirbuf_get(&buf, _SIRBUF_MSG);
     assert(output.message);
     int msgfmt = vsnprintf(output.message, SIR_MAXMESSAGE, format, args);
     assert(msgfmt >= 0);
@@ -86,13 +262,13 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
     if (msgfmt < 0)
         _sir_selflog("%s: vsnprintf returned %d!", __func__, msgfmt);
 
-    output.output = _sirbuf_get(&sir_b, _SIRBUF_OUTPUT);
+    output.output = _sirbuf_get(&buf, _SIRBUF_OUTPUT);
     assert(output.output);
 
-    return _sir_dispatch(level, &output);
+    return _sir_dispatch(&tmpsi, level, &output);
 }
 
-bool _sir_dispatch(sir_level level, siroutput* output) {
+bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output) {
 
     bool r = true;
 
@@ -100,8 +276,8 @@ bool _sir_dispatch(sir_level level, siroutput* output) {
     assert(output);
 
     if (validlevel(level) && output) {
-        if (_sir_destwantslevel(sir_s.d_stderr.levels, level)) {
-            const sirchar_t* write = _sir_format(true, sir_s.d_stderr.opts, output);
+        if (_sir_destwantslevel(si->d_stderr.levels, level)) {
+            const sirchar_t* write = _sir_format(true, si->d_stderr.opts, output);
             assert(write);
 #ifndef _WIN32            
             r &= NULL != write && _sir_stderr_write(write);
@@ -111,8 +287,8 @@ bool _sir_dispatch(sir_level level, siroutput* output) {
 #endif
         }
 
-        if (_sir_destwantslevel(sir_s.d_stdout.levels, level)) {
-            const sirchar_t* write = _sir_format(true, sir_s.d_stdout.opts, output);
+        if (_sir_destwantslevel(si->d_stdout.levels, level)) {
+            const sirchar_t* write = _sir_format(true, si->d_stdout.opts, output);
             assert(write);
 #ifndef _WIN32            
             r &= NULL != write && _sir_stdout_write(write);
@@ -123,12 +299,18 @@ bool _sir_dispatch(sir_level level, siroutput* output) {
         }
 
 #ifndef SIR_NO_SYSLOG
-        if (_sir_destwantslevel(sir_s.d_syslog.levels, level)) {
+        if (_sir_destwantslevel(si->d_syslog.levels, level)) {
             syslog(_sir_syslog_maplevel(level), "%s", output->message);
         }
 #endif
+        sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
 
-        return r && _sir_fcache_dispatch(&sir_fc, level, output);
+        if (sfc) {
+            r &= _sir_fcache_dispatch(sfc, level, output);
+            r &= _sir_unlocksection(_SIRM_FILECACHE);
+        }
+
+        return r;
     }
 
     return false;
@@ -212,14 +394,6 @@ int _sir_syslog_maplevel(sir_level level) {
 }
 #endif
 
-void _sirbuf_reset(sirbuf* buf) {
-
-    assert(buf);
-
-    if (buf)
-        memset(buf, 0, sizeof(sirbuf));
-}
-
 /* in case there's a better way to implement this
  * hms, abstract it away.
  */
@@ -239,11 +413,6 @@ sirchar_t* _sirbuf_get(sirbuf* buf, size_t idx) {
     }
 
     return NULL;
-}
-
-bool _sir_options_sanity(const sirinit* si) {
-#pragma message "_sir_options_sanity"    
-    return true;
 }
 
 const sirchar_t* _sir_levelstr(sir_level level) {
@@ -338,7 +507,7 @@ pid_t _sir_getpid() {
 
 pid_t _sir_gettid() {
 #ifndef _WIN32
-    return pthread_self();    
+    return syscall(SYS_gettid);    
 #else
     return GetCurrentThreadId();
 #endif

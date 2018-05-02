@@ -54,7 +54,7 @@ static void* sirtest_thread(void* arg) {
 
     for (size_t n = 0; n < 100; n++) {
         for(size_t i = 0; i < 100; i++) {
-            sirdebug("thread %lu: I'm here to wreck shop! %s, %d", pthread_self(), "sups", 
+            sir_debug("thread %lu: I'm here to wreck shop! %s, %d", pthread_self(), "sups", 
                 (n*i) + i);
         }
 

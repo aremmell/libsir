@@ -9,7 +9,8 @@
             "stdlib.h": "c",
             "inttypes.h": "c",
             "cinttypes": "c",
-            "time.h": "c"
+            "time.h": "c",
+            "sirinternal.h": "c"
         }
     }
 }

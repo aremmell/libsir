@@ -33,11 +33,11 @@ bool sir_init(const sirinit* si);
  * Call to free all allocated memory and reset internal data structures
  * to their default state.
  *
- * \return none
+ * \return boolean success
  */
-void sir_cleanup();
+bool sir_cleanup();
 
-/*! \fn int sirdebug(const sirchar_t *format, ...)
+/*! \fn int sir_debug(const sirchar_t *format, ...)
  *
  * \brief Log a formatted debug-level message.
  *
@@ -51,9 +51,9 @@ void sir_cleanup();
  * \return boolean success indicating whether or not all destinations
  * meant to receive this level were successfully processed.
  */
-bool sirdebug(const sirchar_t* format, ...);
+bool sir_debug(const sirchar_t* format, ...);
 
-/*! \fn int sirinfo(const sirchar_t *format, ...)
+/*! \fn int sir_info(const sirchar_t *format, ...)
  *
  * \brief Log a formatted informational message.
  *
@@ -67,9 +67,9 @@ bool sirdebug(const sirchar_t* format, ...);
  * \return boolean success indicating whether or not all destinations
  * meant to receive this level were successfully processed.
  */
-bool sirinfo(const sirchar_t* format, ...);
+bool sir_info(const sirchar_t* format, ...);
 
-/*! \fn int sirnotice(const sirchar_t *format, ...)
+/*! \fn int sir_notice(const sirchar_t *format, ...)
  *
  * \brief Log a formatted notice message.
  *
@@ -83,9 +83,9 @@ bool sirinfo(const sirchar_t* format, ...);
  * \return boolean success indicating whether or not all destinations
  * meant to receive this level were successfully processed.
  */
-bool sirnotice(const sirchar_t* format, ...);
+bool sir_notice(const sirchar_t* format, ...);
 
-/*! \fn int sirwarn(const sirchar_t *format, ...)
+/*! \fn int sir_warn(const sirchar_t *format, ...)
  *
  * \brief Log a formatted warning message.
  *
@@ -99,9 +99,9 @@ bool sirnotice(const sirchar_t* format, ...);
  * \return boolean success indicating whether or not all destinations
  * meant to receive this level were successfully processed.
  */
-bool sirwarn(const sirchar_t* format, ...);
+bool sir_warn(const sirchar_t* format, ...);
 
-/*! \fn int sirerror(const sirchar_t *format, ...)
+/*! \fn int sir_error(const sirchar_t *format, ...)
  *
  * \brief Log a formatted error message.
  *
@@ -115,9 +115,9 @@ bool sirwarn(const sirchar_t* format, ...);
  * \return boolean success indicating whether or not all destinations
  * meant to receive this level were successfully processed.
  */
-bool sirerror(const sirchar_t* format, ...);
+bool sir_error(const sirchar_t* format, ...);
 
-/*! \fn int sircrit(const sirchar_t *format, ...)
+/*! \fn int sir_crit(const sirchar_t *format, ...)
  *
  * \brief Log a formatted critical message.
  *
@@ -131,9 +131,9 @@ bool sirerror(const sirchar_t* format, ...);
  * \return boolean success indicating whether or not all destinations
  * meant to receive this level were successfully processed.
  */
-bool sircrit(const sirchar_t* format, ...);
+bool sir_crit(const sirchar_t* format, ...);
 
-/*! \fn int siralert(const sirchar_t *format, ...)
+/*! \fn int sir_alert(const sirchar_t *format, ...)
  *
  * \brief Log a formatted alert message.
  *
@@ -147,9 +147,9 @@ bool sircrit(const sirchar_t* format, ...);
  * \return boolean success indicating whether or not all destinations
  * meant to receive this level were successfully processed.
  */
-bool siralert(const sirchar_t* format, ...);
+bool sir_alert(const sirchar_t* format, ...);
 
-/*! \fn int siremerg(const sirchar_t *format, ...)
+/*! \fn int sir_emerg(const sirchar_t *format, ...)
  *
  * \brief Log a formatted emergency message.
  *
@@ -163,7 +163,7 @@ bool siralert(const sirchar_t* format, ...);
  * \return boolean success indicating whether or not all destinations
  * meant to receive this level were successfully processed.
  */
-bool siremerg(const sirchar_t* format, ...);
+bool sir_emerg(const sirchar_t* format, ...);
 
 /*! \fn int sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts)
  *

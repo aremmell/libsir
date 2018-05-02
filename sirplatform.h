@@ -30,6 +30,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <stdatomic.h>
+#include <sys/syscall.h>
 
 #ifdef __linux__
 #include <linux/limits.h>
@@ -48,6 +49,7 @@
 
 typedef int sirerror_t;
 typedef pthread_mutex_t sirmutex_t;
+typedef pthread_once_t sironce_t;
 
 #else
 #define WIN32_LEAN_AND_MEAN
@@ -60,6 +62,8 @@ typedef pthread_mutex_t sirmutex_t;
 
 typedef DWORD sirerror_t;
 typedef HANDLE sirmutex_t;
+typedef INIT_ONCE sironce_t;
+
 #endif
 
 /*! A value that represents the success condition. */

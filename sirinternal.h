@@ -12,28 +12,34 @@
 
 /*! \cond PRIVATE */
 
-#define SIR_MAXERROR 256
-#define SIR_UNKERROR "<unknown>"
-
-extern sirinit  sir_s;
-extern sirfcache sir_fc;
-extern sirbuf   sir_b;
-volatile extern uint32_t sir_magic;
-
 bool _sir_sanity();
+bool _sir_options_sanity(const sirinit* si);
+
+bool _sir_init(const sirinit* si);
+void* _sir_locksection(sir_mutex_id mid);
+bool _sir_unlocksection(sir_mutex_id mid);
+bool _sir_mapmutexid(sir_mutex_id mid, sirmutex_t** m, void** section);
+bool _sir_cleanup();
+
+/* void _sir_initmutex_si_once();
+void _sir_initmutex_fc_once();
+void _sir_initmutex_ts_once();
+void _sir_initmutex(sirmutex_t* mutex);
+
+#ifdef _WIN32
+BOOL CALLBACK _sir_initmutex(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
+#endif */
+
 bool _sir_logv(sir_level level, const sirchar_t* format, va_list args);
 
-bool             _sir_dispatch(sir_level level, siroutput* output);
+bool             _sir_dispatch(sirinit* si, sir_level level, siroutput* output);
 const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output);
 
 #ifndef SIR_NO_SYSLOG
 int _sir_syslog_maplevel(sir_level level);
 #endif
 
-void       _sirbuf_reset(sirbuf* buf);
 sirchar_t* _sirbuf_get(sirbuf* buf, size_t idx);
-
-bool _sir_options_sanity(const sirinit* si);
 
 const sirchar_t* _sir_levelstr(sir_level level);
 bool             _sir_destwantslevel(sir_levels destLevels, sir_level level);

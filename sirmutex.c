@@ -29,7 +29,7 @@ bool _sirmutex_create(sirmutex_t* mutex) {
                 op = pthread_mutex_init(mutex, &attr);
                 _sir_handleerr(op);
 
-                return 0 != op;
+                return 0 == op;
             }
         }
     }
@@ -44,7 +44,7 @@ bool _sirmutex_trylock(sirmutex_t* mutex) {
     if (mutex) {
         int op = pthread_mutex_trylock(mutex);
         _sir_handleerr(op);
-        return 0 != op;
+        return 0 == op;
     }
 
     return false;
@@ -57,7 +57,7 @@ bool _sirmutex_lock(sirmutex_t* mutex) {
     if (mutex) {
         int op = pthread_mutex_lock(mutex);
         _sir_handleerr(op);
-        return 0 != op;
+        return 0 == op;
     }
 
     return false;
@@ -70,7 +70,7 @@ bool _sirmutex_unlock(sirmutex_t* mutex) {
     if (mutex) {
         int op = pthread_mutex_unlock(mutex);
         _sir_handleerr(op);
-        return 0 != op;
+        return 0 == op;
     }
 
     return false;    
@@ -82,7 +82,7 @@ bool _sirmutex_destroy(sirmutex_t* mutex) {
     if (mutex) {
         int op = pthread_mutex_destroy(mutex);
         _sir_handleerr(op);
-        return 0 != op;
+        return 0 == op;
     }
 
     return false;       
@@ -161,7 +161,7 @@ static bool _sirmutex_waitwin32(sirmutex_t mutex, DWORD msec) {
         switch(wait) {
             case WAIT_ABANDONED:
             case WAIT_FAILED:
-                _sir_selflog("%s: warning: WaitForSingleObject returned 0x%08lx. danger ahead\n",
+                _sir_selflog("%s: warning: WaitForSingleObject returned 0x%08lx; danger ahead\n",
                     __func__, wait);
                 return WAIT_FAILED != wait;
             break;

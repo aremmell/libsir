@@ -186,6 +186,9 @@ bool _sirfile_validate(sirfile* sf) {
 
 int _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels levels, sir_options opts) {
 
+    if (!_sir_sanity())
+        return false;
+        
     assert(sfc);
     assert(validstr(path));
     assert(validlevels(levels));
@@ -221,6 +224,9 @@ int _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels levels, si
 }
 
 bool _sir_fcache_rem(sirfcache* sfc, int id) {
+
+    if (!_sir_sanity())
+        return false;
 
     assert(sfc);
     assert(validid(id));
@@ -289,6 +295,7 @@ bool _sir_fcache_destroy(sirfcache* sfc) {
             sfc->count--;
         }
 
+        memset(sfc, 0, sizeof(sirfcache));
         return true;
     }
 
