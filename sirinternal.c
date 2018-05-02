@@ -32,6 +32,9 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
     assert(validlevel(level));
     assert(validstr(format));
 
+    if (!validlevel(level) || !validstr(format))
+        return false;
+
     siroutput output = {0};
 
     output.style = _sirbuf_get(&sir_b, _SIRBUF_STYLE);

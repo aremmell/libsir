@@ -184,43 +184,6 @@ bool _sirfile_validate(sirfile* sf) {
     return valid;
 }
 
-FILE* _sir_fopen(const sirchar_t* path) {
-    if (validstr(path)) {
-#ifdef __STDC_SECURE_LIB__
-        FILE* tmp = NULL;
-        errno_t open = fopen_s(&tmp, path, SIR_FOPENMODE);
-        _sir_handleerr(open);
-        return tmp;
-#else
-        return fopen(path, SIR_FOPENMODE);
-#endif
-    }
-
-    return NULL;
-}
-
-void _sir_fclose(FILE** f) {
-    if (f && *f) {
-        safefclose(*f);
-    }
-}
-
-void _sir_fflush(FILE* f) {
-
-    assert(f);
-
-    if (f) {
-        int flush = fflush(f);
-        assert(0 == flush);
-    }
-}
-
-bool _sir_fflush_all() {
-    int flush = fflush(NULL);
-    assert(0 == flush);
-    return 0 == flush;
-}
-
 int _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels levels, sir_options opts) {
 
     assert(sfc);
@@ -228,9 +191,15 @@ int _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels levels, si
     assert(validlevels(levels));
     assert(validopts(opts));
 
-    if (sfc && validlevels(levels) && validopts(opts) && validstr(path)) {
+    if (sfc && validstr(path) && validlevels(levels) && validopts(opts)) {
 
-        //sirfile* existing = _sir_fcache_find(sfc, int id)
+        sirfile* existing = _sir_fcache_find(sfc, (const void*)path, _sir_fcache_pred_path);
+
+        if (NULL != existing) {
+            _sir_selflog("%s: file with path '%s' already added.\n", __func__, path);
+            return SIR_INVALID;
+        }
+
         assert(sfc->count < SIR_MAXFILES);
 
         if (sfc->count < SIR_MAXFILES) {
@@ -280,6 +249,7 @@ bool _sir_fcache_rem(sirfcache* sfc, int id) {
 
     return false;
 }
+
 bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
     const sirchar_t* path = (const sirchar_t*)match;
 #ifndef _WIN32
@@ -362,6 +332,43 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output) {
     }
 
     return r;
+}
+
+FILE* _sir_fopen(const sirchar_t* path) {
+    if (validstr(path)) {
+#ifdef __STDC_SECURE_LIB__
+        FILE* tmp = NULL;
+        errno_t open = fopen_s(&tmp, path, SIR_FOPENMODE);
+        _sir_handleerr(open);
+        return tmp;
+#else
+        return fopen(path, SIR_FOPENMODE);
+#endif
+    }
+
+    return NULL;
+}
+
+void _sir_fclose(FILE** f) {
+    if (f && *f) {
+        safefclose(*f);
+    }
+}
+
+void _sir_fflush(FILE* f) {
+
+    assert(f);
+
+    if (f) {
+        int flush = fflush(f);
+        assert(0 == flush);
+    }
+}
+
+bool _sir_fflush_all() {
+    int flush = fflush(NULL);
+    assert(0 == flush);
+    return 0 == flush;
 }
 
 /*! \endcond */
