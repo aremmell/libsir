@@ -29,6 +29,33 @@
             "problemMatcher": [
                 "$gcc"
             ]
-        }
+        },
+        {
+            "label": "build tests app",
+            "identifier": "build-tests",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "tests"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated"
+            },
+            "linux": {},
+            "windows": {
+                "command": "mingw32-make",
+                "args": [
+                    "tests"
+                ],
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        }        
     ]
 }

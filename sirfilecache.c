@@ -50,7 +50,7 @@ sirfile* _sirfile_create(const sirchar_t* path, sir_levels levels, sir_options o
 
         if (f) {
             int fd = fileno(f);
-            validid(fd);
+            if (-1 == fd) _sir_handleerr(errno);
 
             if (validid(fd)) {
                 sf = (sirfile*)calloc(1, sizeof(sirfile));
@@ -102,7 +102,8 @@ bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
             int err = ferror(sf->f);
             int eof = feof(sf->f);
 
-            assert(0 == err && 0 == eof);
+            _sir_handleerr(err);
+            _sir_handleerr(eof);
 
             _sir_selflog("%s: wrote %lu/%lu bytes to %d; ferror: %d, feof: %d\n", __func__, write, writeLen,
                 sf->id, err, eof);
@@ -322,16 +323,17 @@ bool _sir_fcache_destroy(sirfcache* sfc) {
     return false;
 }
 
-bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output) {
+bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output, size_t* dispatched) {
 
     bool r = true;
 
     assert(sfc);
     assert(validlevel(level));
     assert(output);
+    assert(dispatched);
 
-    if (sfc && validlevel(level) && output) {
-        size_t written = 0;
+    if (sfc && validlevel(level) && output && dispatched) {
+        *dispatched = 0;
         for (size_t n = 0; n < sfc->count; n++) {
             assert(_sirfile_validate(sfc->files[n]));
 
@@ -346,13 +348,13 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output) {
 
             if (write && _sirfile_write(sfc->files[n], write)) {
                 r &= true;
-                written++;
+                (*dispatched)++;
             } else {
                 _sir_selflog("%s: write to %d failed! errno: %d\n", __func__, sfc->files[n]->id, errno);
             }
         }
 
-        if (written > 0) {
+        if (*dispatched > 0) {
             if (!_sir_fflush_all())
                 _sir_selflog("%s: fflush failed! errno: %d\n", __func__, errno);
         }
@@ -369,7 +371,9 @@ FILE* _sir_fopen(const sirchar_t* path) {
         _sir_handleerr(open);
         return tmp;
 #else
-        return fopen(path, SIR_FOPENMODE);
+        FILE *f = fopen(path, SIR_FOPENMODE);
+        if (!f) _sir_handleerr(errno);
+        return f;
 #endif
     }
 
@@ -388,13 +392,13 @@ void _sir_fflush(FILE* f) {
 
     if (f) {
         int flush = fflush(f);
-        assert(0 == flush);
+        if (0 != flush) _sir_handleerr(errno);
     }
 }
 
 bool _sir_fflush_all() {
     int flush = fflush(NULL);
-    assert(0 == flush);
+    if (0 != flush) _sir_handleerr(errno);
     return 0 == flush;
 }
 

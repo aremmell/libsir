@@ -48,7 +48,7 @@
 typedef int             sirerror_t;
 typedef pthread_mutex_t sirmutex_t;
 typedef pthread_once_t  sironce_t;
-typedef void (*sir_once_fn)();
+typedef void (*sir_once_fn)(void);
 
 #define SIR_ONCE_INIT PTHREAD_ONCE_INIT
 #else

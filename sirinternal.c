@@ -61,7 +61,7 @@ bool _sir_init(const sirinit* si) {
         _sir_magic = _SIR_MAGIC;
 
         _sir_unlocksection(_SIRM_INIT);
-        _sir_selflog("SIR is initialized\n");
+        _sir_selflog("%s: SIR is initialized\n", __func__);
         return true;
     }
 
@@ -288,6 +288,7 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
 bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output) {
 
     bool r = true;
+    size_t dispatched = 0;
 
     assert(validlevel(level));
     assert(output);
@@ -297,37 +298,46 @@ bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output) {
             const sirchar_t* write = _sir_format(true, si->d_stderr.opts, output);
             assert(write);
 #ifndef _WIN32
-            r &= NULL != write && _sir_stderr_write(write);
+            bool wrote = _sir_stderr_write(write);
+            r &= NULL != write && wrote;
 #else
             uint16_t* style = (uint16_t*)output->style;
-            r &= NULL != write && NULL != style && _sir_stderr_write(*style, write);
+            bool wrote = _sir_stderr_write(*style, write);
+            r &= NULL != write && NULL != style && wrote;
 #endif
+            if (wrote) dispatched++;
         }
 
         if (_sir_destwantslevel(si->d_stdout.levels, level)) {
             const sirchar_t* write = _sir_format(true, si->d_stdout.opts, output);
             assert(write);
 #ifndef _WIN32
-            r &= NULL != write && _sir_stdout_write(write);
+            bool wrote = _sir_stdout_write(write);
+            r &= NULL != write && wrote;
 #else
             uint16_t* style = (uint16_t*)output->style;
-            r &= NULL != write && NULL != style && _sir_stdout_write(*style, write);
+            bool wrote = _sir_stdout_write(*style, write);
+            r &= NULL != write && NULL != style && wrote;
 #endif
+            if (wrote) dispatched++;
         }
 
 #ifndef SIR_NO_SYSLOG
         if (_sir_destwantslevel(si->d_syslog.levels, level)) {
             syslog(_sir_syslog_maplevel(level), "%s", output->message);
+            dispatched++;
         }
 #endif
         sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
 
         if (sfc) {
-            r &= _sir_fcache_dispatch(sfc, level, output);
+            size_t fdispatched = 0;
+            r &= _sir_fcache_dispatch(sfc, level, output, &fdispatched);
             r &= _sir_unlocksection(_SIRM_FILECACHE);
+            dispatched += fdispatched;
         }
 
-        return r;
+        return r && (dispatched > 0);
     }
 
     return false;
@@ -367,7 +377,7 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) 
             first = false;
         }
 
-        if (!flagtest(opts, SIRO_NONAME)) {
+        if (!flagtest(opts, SIRO_NONAME) && validstr(output->name)) {
             if (!first)
                 strncat(output->output, " ", 1);
             strncat(output->output, output->name, SIR_MAXNAME);
