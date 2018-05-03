@@ -38,20 +38,21 @@ DEBUGTU      = $(TUS) main.c
 
 # console test rig
 _OBJ_TESTS   = tests.o $(_OBJ)
-OBJ_TESTS   = $(patsubst %.o, $(INTERDIR)/%.to, $(_OBJ_DEBUG))
+OBJ_TESTS   = $(patsubst %.o, $(INTERDIR)/%.to, $(_OBJ_TESTS))
 OUT_TESTS    = $(BUILDDIR)/sirtests
-CFLAGS_TESTS = $(CFLAGS) -O3 -Lsir
+#CFLAGS_TESTS = $(CFLAGS) -DNDEBUG
+CFLAGS_TESTS = $(CFLAGS) -g -DNDEBUG
 TESTSTU      = $(TUS) tests.c
 
 # shared library
 OBJ_SHARED    = $(patsubst %.o, $(INTERDIR)/%.lo, $(_OBJ))
 OUT_SHARED	  = $(LIBDIR)/libsir.so
-CFLAGS_SHARED = $(CFLAGS) -fPIC -O3
+CFLAGS_SHARED = $(CFLAGS) -DNDEBUG -fPIC -O3
 
 # static library
 OBJ_STATIC    = $(OBJ_SHARED)
 OUT_STATIC    = $(LIBDIR)/libsir.a
-CFLAGS_STATIC = $(CFLAGS) -O3
+CFLAGS_STATIC = $(CFLAGS) -DNDEBUG -O3
 
 # ##########
 # targets
