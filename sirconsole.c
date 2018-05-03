@@ -34,14 +34,33 @@ static bool _sir_write_std(const sirchar_t* message, FILE* stream) {
 
 #else
 
+static CRITICAL_SECTION stdout_cs;
+static sironce_t stdout_once = SIR_ONCE_INIT;
+
+static CRITICAL_SECTION stderr_cs;
+static sironce_t stderr_once = SIR_ONCE_INIT;
+
 static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message, HANDLE console);
+static BOOL CALLBACK _sir_initcs(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
 
 bool _sir_stderr_write(uint16_t style, const sirchar_t* message) {
-    return _sir_write_stdwin32(style, message, GetStdHandle(STD_ERROR_HANDLE));
+    BOOL initcs = InitOnceExecuteOnce(&stderr_once, _sir_initcs, &stderr_cs, NULL);
+    assert(FALSE != initcs);
+
+    EnterCriticalSection(&stderr_cs);
+    bool r = _sir_write_stdwin32(style, message, GetStdHandle(STD_ERROR_HANDLE));
+    LeaveCriticalSection(&stderr_cs);
+    return r;
 }
 
-bool _sir_stdout_write(uint16_t style, const sirchar_t* message) {   
-    return _sir_write_stdwin32(style, message, GetStdHandle(STD_OUTPUT_HANDLE));
+bool _sir_stdout_write(uint16_t style, const sirchar_t* message) {
+    BOOL initcs = InitOnceExecuteOnce(&stdout_once, _sir_initcs, &stdout_cs, NULL);
+    assert(FALSE != initcs);
+
+    EnterCriticalSection(&stdout_cs);    
+    bool r = _sir_write_stdwin32(style, message, GetStdHandle(STD_OUTPUT_HANDLE));
+    LeaveCriticalSection(&stdout_cs);
+    return r;
 }
 
 static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message, HANDLE console) {
@@ -87,6 +106,11 @@ static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message, HANDLE
     WriteConsole(console, "\n", 1, &written, NULL);
 
     return written == chars;    
+}
+
+static BOOL CALLBACK _sir_initcs(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
+    InitializeCriticalSection((LPCRITICAL_SECTION)param);
+    return TRUE;
 }
 
 #endif  /* !_WIN32 */
