@@ -18,6 +18,14 @@
 
 #define NUM_THREADS 2
 
+int main(int argc, char** argv) {
+    return 0;
+}
+
+///////////////////////////////////////
+// tests
+//////////////////////////////////////
+
 #ifndef _WIN32
 static void* sirtest_thread(void* arg);
 #else

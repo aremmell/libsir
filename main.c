@@ -1,5 +1,4 @@
 #include "sir.h"
-#include "tests.h"
 
 int main(int argc, char** argv) {
 
@@ -15,16 +14,6 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    int test = sirtest_mthread_race();
-
-    return 0;
-
-    sir_debug("debug message: %d", 123);
-    sir_info("info message: %d", 123);
-
-    /*     if (!sir_settextstyle(SIRL_NOTICE, SIRS_NONE))
-            fprintf(stderr, "Failed to set style for SIRL_NOTICE!\n"); */
-
     sir_options file1opts = SIRO_MSGONLY;
     int         id1       = sir_addfile("test.log", SIRL_ALL, file1opts);
 
@@ -39,19 +28,6 @@ int main(int argc, char** argv) {
     sir_crit("critical message: %d", 123);
     sir_alert("alert message: %d", 123);
     sir_emerg("emergency message: %d", 123);
-
-    for (size_t j = 0; j < 10; j++) {
-        for (size_t n = 0; n < 10; n++) {
-            sir_debug("debug message: %d", (n * j) + n);
-            sir_info("info message: %d", (n * j) + n);
-            sir_notice("notice message: %d", (n * j) + n);
-            sir_warn("warning message: %d", (n * j) + n);
-            sir_error("error message: %d", (n * j) + n);
-            sir_crit("critical message: %d", (n * j) + n);
-            sir_alert("alert message: %d", (n * j) + n);
-            sir_emerg("emergency message: %d", (n * j) + n);
-        }
-    }
 
     sir_cleanup();
 
