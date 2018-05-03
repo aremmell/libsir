@@ -260,15 +260,13 @@ bool _sir_fcache_rem(sirfcache* sfc, int id) {
             if (sfc->files[n]->id == id) {
                 _sirfile_destroy(sfc->files[n]);
 
-                for (size_t i = n; i < sfc->count; i++) {
+                for (size_t i = n; i < sfc->count - 1; i++) {
                     sfc->files[i] = sfc->files[i + 1];
-
-                    if (i < sfc->count - 1)
-                        sfc->files[i + 1] = NULL;
-
-                    assert(sfc->count > 0);
-                    sfc->count--;
+                    sfc->files[i + 1] = NULL;
                 }
+
+                assert(sfc->count > 0);
+                sfc->count--;
 
                 return true;
             }
