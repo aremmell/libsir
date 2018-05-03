@@ -85,14 +85,13 @@ ifeq ($(OS),Windows_NT)
 	$(shell if not exist "$(INTERDIR)\NUL" mkdir "$(INTERDIR)")
 	$(shell if not exist "$(LIBDIR)\NUL" mkdir "$(LIBDIR)")
 	$(shell if not exist "$(DOCSDIR)\NUL" mkdir "$(DOCSDIR)")
-	@echo directories prepared.	
 else
 	$(shell mkdir -p $(BUILDDIR) && \
 			mkdir -p $(INTERDIR) && \
 	        mkdir -p $(LIBDIR) && \
 			mkdir -p$(DOCSDIR))
-	@echo directories prepared.
 endif
+	@echo directories prepared.
 
 debug: $(OBJ_DEBUG)
 	$(CC) -o $(OUT_DEBUG) $^ $(CFLAGS_DEBUG) $(LIBS)
@@ -117,7 +116,16 @@ docs: static
 .PHONY: clean
 
 clean:
+ifeq ($(OS),Windows_NT)
+	@echo using del /F /Q...
+	$(shell del /F /Q "$(BUILDDIR)\*.*")
+	$(shell del /F /Q "$(INTERDIR)\*.*")
+	$(shell del /F /QQ "$(LIBDIR)\*.*")
+else
+	@echo using rm -f...
 	$(shell rm -f $(BUILDDIR)/*.* >/dev/null && \
 	        rm -f $(LIBDIR)/* >/dev/null && \
-			rm -f $(INTERDIR)/* >/dev/null)
+			rm -f $(INTERDIR)/* >/dev/null && \
+			rm -f $(DOCSDIR)/* >/dev/null)
+endif
 	@echo cleared directories.
