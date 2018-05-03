@@ -339,7 +339,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output, si
 
             if (!_sir_destwantslevel(sfc->files[n]->levels, level)) {
                 _sir_selflog("%s: levels for %d (%04lx) not set for (%04lx); skipping...\n", __func__,
-                    sfc->files[n]->id, sfc->files[n]->levels, level, written, sfc->count);
+                    sfc->files[n]->id, sfc->files[n]->levels, level);
                 continue;
             }
 
@@ -350,7 +350,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output, si
                 r &= true;
                 (*dispatched)++;
             } else {
-                _sir_selflog("%s: write to %d failed! errno: %d\n", __func__, sfc->files[n]->id, errno);
+                _sir_selflog("%s: write to %d failed!\n", __func__, sfc->files[n]->id);
             }
         }
 
