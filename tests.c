@@ -16,10 +16,16 @@
 #include <windows.h>
 #endif
 
+#ifndef _WIN32
 #define STRFMT(clr, s) clr s "\033[0m"
 #define RED(s) STRFMT("\033[1;91m", s)
 #define GREEN(s) STRFMT("\033[1;92m", s)
 #define WHITE(s) STRFMT("\033[1;97m", s)
+#else
+#define RED(s) s
+#define GREEN(s) s
+#define WHITE(s) s
+#endif
 
 #define INIT(var, l_stdout, o_stdout, l_stderr, o_stderr) \
     sirinit var         = {0};                            \
@@ -91,11 +97,13 @@ bool sirtest_addremovefiles() {
     INIT(si, SIRL_ALL, 0, 0, 0);
 
     size_t numfiles = SIR_MAXFILES + 1;
+    int ids[SIR_MAXFILES] = {SIR_INVALID};
 
     for (size_t n = 0; n < numfiles - 1; n++) {
         char path[SIR_MAXPATH] = {0};
         snprintf(path, SIR_MAXPATH, "test-%lu.log", n);
-        pass &= (SIR_INVALID != sir_addfile(path, SIRL_ALL, SIRO_MSGONLY));
+        ids[n] = sir_addfile(path, SIRL_ALL, SIRO_MSGONLY);
+        pass &= SIR_INVALID != ids[n];
     }
 
     pass &= sir_info("test test test");
@@ -105,13 +113,21 @@ bool sirtest_addremovefiles() {
 
     sir_info("test test test");
 
-    sir_cleanup();
+    for (size_t j = 0; j < numfiles - 1; j++) {
 
-    for (size_t n = 0; n < numfiles - 1; n++) {
+        pass &= sir_remfile(ids[j]);
+
         char path[SIR_MAXPATH] = {0};
-        snprintf(path, SIR_MAXPATH, "test-%lu.log", n);
-        remove(path);
+        snprintf(path, SIR_MAXPATH, "test-%lu.log", j);
+#ifndef _WIN32
+#else
+        DeleteFile(path);
+#endif
     }
+
+    pass &= sir_info("test test test");
+
+    sir_cleanup();
 
     return pass;
 }
@@ -281,7 +297,7 @@ static unsigned sirtest_thread(void* arg) {
     }
 
     for (size_t n = 0; n < 100; n++) {
-        for (size_t i = 0; i < 100; i++) {
+        for (size_t i = 0; i < 10; i++) {
             sir_debug("thread %lu: hello, how do you do? %d", threadid, (n * i) + i);
 
 #ifndef _WIN32
