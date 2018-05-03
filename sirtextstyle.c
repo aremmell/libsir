@@ -1,16 +1,19 @@
+/*!
+ * \file sirtextstyle.c
+ */
 #include "sirtextstyle.h"
-#include "sirinternal.h"
 #include "sirdefaults.h"
+#include "sirinternal.h"
 
-bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t *pfg, uint32_t* pbg) {
+bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32_t* pbg) {
 
     uint32_t attr = (style & _SIRS_ATTR_MASK);
-    uint32_t fg = (style & _SIRS_FG_MASK);
-    uint32_t bg = (style & _SIRS_BG_MASK);
+    uint32_t fg   = (style & _SIRS_FG_MASK);
+    uint32_t bg   = (style & _SIRS_BG_MASK);
 
     bool attrvalid = attr <= SIRS_BRIGHT;
-    bool fgvalid = fg <= SIRS_FG_DEFAULT;
-    bool bgvalid = bg <= SIRS_BG_DEFAULT;
+    bool fgvalid   = fg <= SIRS_FG_DEFAULT;
+    bool bgvalid   = bg <= SIRS_BG_DEFAULT;
 
     assert(attrvalid);
     assert(fgvalid);
@@ -18,8 +21,8 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t *pfg, uint32
 
     if (pattr && pfg && pbg) {
         *pattr = attrvalid ? attr : 0;
-        *pfg = fgvalid ? fg : 0;
-        *pbg = bgvalid ? bg : 0;
+        *pfg   = fgvalid ? fg : 0;
+        *pbg   = bgvalid ? bg : 0;
     }
 
     return attrvalid && fgvalid && bgvalid;
@@ -41,11 +44,11 @@ bool _sir_setdefstyle(sir_level level, sir_textstyle style) {
             assert(map);
 
             if (map) {
-                bool updated = false;                
+                bool updated = false;
                 for (size_t n = 0; n < sir_num_default_style; n++) {
                     if (map[n].level == level) {
                         map[n].style = style;
-                        updated = true;
+                        updated      = true;
                         break;
                     }
                 }
@@ -91,15 +94,15 @@ uint16_t _sir_getprivstyle(uint32_t cat) {
         }
     }
 
-    return _sir_getprivstyle(SIRS_NONE);    
+    return _sir_getprivstyle(SIRS_NONE);
 }
 
 bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size) {
-    
+
     assert(buf);
 
     if (buf) {
-        
+
         uint32_t attr;
         uint32_t fg;
         uint32_t bg;
@@ -107,10 +110,10 @@ bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size) {
         if (_sir_validstyle(style, &attr, &fg, &bg)) {
 
             uint16_t privattr = _sir_getprivstyle(attr);
-            uint16_t privfg = _sir_getprivstyle(fg);
-            uint16_t privbg = _sir_getprivstyle(bg);
+            uint16_t privfg   = _sir_getprivstyle(fg);
+            uint16_t privbg   = _sir_getprivstyle(bg);
 
- #ifndef _WIN32
+#ifndef _WIN32
             sirchar_t fgfmt[5] = {0};
             sirchar_t bgfmt[5] = {0};
 
@@ -129,8 +132,8 @@ bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size) {
             memcpy(buf, &final, sizeof(uint16_t));
             return true;
 #endif
-        }    
+        }
     }
 
-    return false;    
+    return false;
 }

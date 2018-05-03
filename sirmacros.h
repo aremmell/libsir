@@ -1,7 +1,5 @@
 /*!
  * \file sirmacros.h
- * \brief Internal macros for the SIR library.
- * \author Ryan Matthew Lederman <lederman@gmail.com>
  */
 #ifndef _SIR_MACROS_H_INCLUDED
 #define _SIR_MACROS_H_INCLUDED
@@ -12,8 +10,7 @@
 #define _CRT_PRINT_STR(d) #d
 #define _CRT_PRINT(d) _CRT_PRINT_STR(d)
 
-#define _COUNTOF(arr) \
-    (sizeof(arr) / sizeof(arr[0]))
+#define _COUNTOF(arr) (sizeof(arr) / sizeof(arr[0]))
 
 #define _SIR_L_START(format) \
     bool    r = false;       \
@@ -46,14 +43,16 @@ static inline bool flagtest(uint32_t flags, uint32_t test) {
     return (flags & test) == test;
 }
 
-static inline void safefree(void *p) {
-    if (!p) return;
+static inline void safefree(void* p) {
+    if (!p)
+        return;
     free(p);
     p = NULL;
 }
 
 static inline void safefclose(FILE* f) {
-    if (!f) return;
+    if (!f)
+        return;
     fclose(f);
     f = NULL;
 }

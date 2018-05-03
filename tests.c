@@ -4,8 +4,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <errno.h>
-
-#define _CRT_RAND_S
 #include <stdlib.h>
 
 #ifndef _WIN32
@@ -13,7 +11,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #else
-#define _WIN32_LEAN_AND_MEANq
+#define _WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <process.h>
 #endif
@@ -50,14 +48,13 @@ int sirtest_mthread_race() {
         }
     }
 
+    for (size_t j = 0; j < NUM_THREADS; j++) {
 #ifndef _WIN32
-    pthread_join(thrds[0], NULL);
-    pthread_join(thrds[1], NULL);
+    pthread_join(thrds[j], NULL);
 #else
-    WaitForSingleObject((HANDLE)thrds[0], INFINITE);
-    WaitForSingleObject((HANDLE)thrds[1], INFINITE);
+    WaitForSingleObject((HANDLE)thrds[j], INFINITE);
 #endif
-
+    }
     return 0;
 }
 
@@ -98,21 +95,20 @@ static unsigned sirtest_thread(void* arg) {
     for (size_t n = 0; n < 100; n++) {
         for(size_t i = 0; i < 100; i++) {
             sir_debug("thread %lu: hello, how do you do? %d", threadid, (n*i) + i);
-        }
 
 #ifndef _WIN32        
-        int r = rand_r(&seed) % 15;
+            int r = rand_r(&seed) % 15;
 #else
-        int r = rand() % 15;
+            int r = rand() % 15;
 #endif
-        
-        if (r % 2 == 0) {
-            sir_remfile(id1);
-            sir_options file1opts = SIRO_MSGONLY;
-            int         id1       = sir_addfile(mypath, SIRL_ALL, file1opts);                
-            sir_settextstyle(SIRL_DEBUG, SIRS_FG_RED | SIRS_BG_DEFAULT);
-        } else {
-            sir_settextstyle(SIRL_DEBUG, SIRS_FG_CYAN | SIRS_BG_YELLOW);
+            if (r % 2 == 0) {
+                sir_remfile(id1);
+                sir_options file1opts = SIRO_MSGONLY;
+                int         id1       = sir_addfile(mypath, SIRL_ALL, file1opts);                
+                sir_settextstyle(SIRL_DEBUG, SIRS_FG_RED | SIRS_BG_DEFAULT);
+            } else {
+                sir_settextstyle(SIRL_DEBUG, SIRS_FG_CYAN | SIRS_BG_YELLOW);
+            }            
         }
         
     }

@@ -1,7 +1,5 @@
 /*!
  * \file sirconfig.h
- * \brief Compile-time configuration for the SIR library.
- * \author Ryan Matthew Lederman <lederman@gmail.com>
  */
 #ifndef _SIR_CONFIG_H_INCLUDED
 #define _SIR_CONFIG_H_INCLUDED
@@ -89,8 +87,7 @@
 #define SIR_MAXNAME 32
 
 /*! The maximum size, in characters, of final formatted output. */
-#define SIR_MAXOUTPUT SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME \
-    + SIR_MAXLEVEL + SIR_MAXNAME + 1
+#define SIR_MAXOUTPUT SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME + SIR_MAXLEVEL + SIR_MAXNAME + 1
 
 /*! The string passed to fopen/fopen_s for log files. */
 #define SIR_FOPENMODE "a"

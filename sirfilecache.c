@@ -1,7 +1,5 @@
 /*!
  * \file sirfilecache.c
- * \brief Internal implementation of log file management for the SIR library.
- * \author Ryan Matthew Lederman <lederman@gmail.com>
  */
 #include "sirfilecache.h"
 #include "sirinternal.h"
@@ -35,7 +33,7 @@ bool _sir_remfile(int id) {
         }
     }
 
-    return false;    
+    return false;
 }
 
 sirfile* _sirfile_create(const sirchar_t* path, sir_levels levels, sir_options opts) {
@@ -86,7 +84,7 @@ bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
     assert(validstr(output));
 
     if (_sirfile_validate(sf) && validstr(output)) {
-        
+
         if (_sirfile_needsroll(sf)) {
             if (!_sirfile_roll(sf))
                 return false;
@@ -106,8 +104,8 @@ bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
 
             assert(0 == err && 0 == eof);
 
-            _sir_selflog("%s: wrote %lu/%lu bytes to %d; ferror: %d, feof: %d\n", __func__, write, writeLen, sf->id,
-                err, eof);
+            _sir_selflog("%s: wrote %lu/%lu bytes to %d; ferror: %d, feof: %d\n", __func__, write, writeLen,
+                sf->id, err, eof);
 
             /*! \todo
              * If an error occurs on write, consider removing file from targets,
@@ -160,9 +158,9 @@ bool _sirfile_needsroll(sirfile* sf) {
     assert(_sirfile_validate(sf));
 
     if (_sirfile_validate(sf)) {
-        struct stat st = {0};
-        int getstat = fstat(sf->id, &st);
- 
+        struct stat st      = {0};
+        int         getstat = fstat(sf->id, &st);
+
         if (0 != getstat) {
             _sir_handleerr(errno);
             return false;
@@ -214,7 +212,7 @@ bool _sirfile_validate(sirfile* sf) {
 }
 
 int _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels levels, sir_options opts) {
-        
+
     assert(sfc);
     assert(validstr(path));
     assert(validlevels(levels));
@@ -289,8 +287,7 @@ bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
 #endif
 }
 
-sirfile* _sir_fcache_find(sirfcache* sfc, const void* match, sir_fcache_pred pred)
-{
+sirfile* _sir_fcache_find(sirfcache* sfc, const void* match, sir_fcache_pred pred) {
     assert(sfc);
     assert(match);
     assert(pred);
@@ -367,7 +364,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output) {
 FILE* _sir_fopen(const sirchar_t* path) {
     if (validstr(path)) {
 #ifdef __STDC_SECURE_LIB__
-        FILE* tmp = NULL;
+        FILE*   tmp  = NULL;
         errno_t open = fopen_s(&tmp, path, SIR_FOPENMODE);
         _sir_handleerr(open);
         return tmp;

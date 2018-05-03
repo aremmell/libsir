@@ -1,7 +1,5 @@
 /*!
- * \file sirconsole.h
- * \brief Internal implementation of console color management in the SIR library.
- * \author Ryan Matthew Lederman <lederman@gmail.com>
+ * \file sirconsole.c
  */
 #include "sirconsole.h"
 #include "sirinternal.h"
@@ -35,10 +33,10 @@ static bool _sir_write_std(const sirchar_t* message, FILE* stream) {
 #else
 
 static CRITICAL_SECTION stdout_cs;
-static sironce_t stdout_once = SIR_ONCE_INIT;
+static sironce_t        stdout_once = SIR_ONCE_INIT;
 
 static CRITICAL_SECTION stderr_cs;
-static sironce_t stderr_once = SIR_ONCE_INIT;
+static sironce_t        stderr_once = SIR_ONCE_INIT;
 
 static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message, HANDLE console);
 static BOOL CALLBACK _sir_initcs(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
@@ -57,7 +55,7 @@ bool _sir_stdout_write(uint16_t style, const sirchar_t* message) {
     BOOL initcs = InitOnceExecuteOnce(&stdout_once, _sir_initcs, &stdout_cs, NULL);
     assert(FALSE != initcs);
 
-    EnterCriticalSection(&stdout_cs);    
+    EnterCriticalSection(&stdout_cs);
     bool r = _sir_write_stdwin32(style, message, GetStdHandle(STD_OUTPUT_HANDLE));
     LeaveCriticalSection(&stdout_cs);
     return r;
@@ -83,10 +81,10 @@ static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message, HANDLE
     if (!SetConsoleTextAttribute(console, style)) {
         _sir_handleerr(GetLastError());
         return false;
-    }        
+    }
 
-    size_t chars = strnlen(message, SIR_MAXOUTPUT) - 1;
-    DWORD written = 0;
+    size_t chars   = strnlen(message, SIR_MAXOUTPUT) - 1;
+    DWORD  written = 0;
 
     do {
         DWORD pass = 0;
@@ -105,7 +103,7 @@ static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message, HANDLE
     SetConsoleTextAttribute(console, csbfi.wAttributes);
     WriteConsole(console, "\n", 1, &written, NULL);
 
-    return written == chars;    
+    return written == chars;
 }
 
 static BOOL CALLBACK _sir_initcs(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
@@ -113,6 +111,6 @@ static BOOL CALLBACK _sir_initcs(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
     return TRUE;
 }
 
-#endif  /* !_WIN32 */
+#endif /* !_WIN32 */
 
 /* \endcond PRIVATE */

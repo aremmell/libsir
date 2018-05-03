@@ -1,3 +1,6 @@
+/*!
+ * \file sirdefaults.h
+ */
 #ifndef _SIR_DEFAULTS_H_INCLUDED
 #define _SIR_DEFAULTS_H_INCLUDED
 
@@ -14,6 +17,7 @@ static sir_style_map sir_default_styles[] = {
     {SIRL_EMERG, SIRS_BRIGHT | SIRS_FG_RED | SIRS_BG_WHITE}
 };
 
-static const size_t sir_num_default_style = _COUNTOF(sir_default_styles);
+static const size_t sir_num_default_style
+    = sizeof(sir_default_styles) / sizeof(sir_style_map);
 
 #endif /* !_SIR_DEFAULTS_H_INCLUDED */

@@ -1,7 +1,5 @@
 /*!
  * \file sirplatform.h
- * \brief Platform-specific configuration for the SIR library.
- * \author Ryan Matthew Lederman <lederman@gmail.com>
  */
 #ifndef _SIR_PLATFORM_H_INCLUDED
 #define _SIR_PLATFORM_H_INCLUDED
@@ -13,25 +11,24 @@
 #define _WIN32_WINNT 0x0600
 #endif
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <stdio.h>
 #include <assert.h>
 #include <errno.h>
 #include <stdarg.h>
+#include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
-#include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/types.h>
+#include <time.h>
 
 #ifndef _WIN32
-#include <unistd.h>
-#include <syslog.h>
 #include <pthread.h>
 #include <stdatomic.h>
 #include <sys/syscall.h>
+#include <syslog.h>
+#include <unistd.h>
 
 #ifdef __linux__
 #include <linux/limits.h>
@@ -48,28 +45,28 @@
 #undef SIR_MSEC_TIMER
 #endif
 
-typedef int sirerror_t;
+typedef int             sirerror_t;
 typedef pthread_mutex_t sirmutex_t;
-typedef pthread_once_t sironce_t;
+typedef pthread_once_t  sironce_t;
 typedef void (*sir_once_fn)();
 
 #define SIR_ONCE_INIT PTHREAD_ONCE_INIT
 #else
 #define WIN32_LEAN_AND_MEAN
 
-#include <windows.h>
 #include <io.h>
 #include <synchapi.h>
+#include <windows.h>
 
 #define SIR_MAXPATH MAX_PATH
 #define SIR_NO_SYSLOG
 #define SIR_MSEC_TIMER
 #define SIR_MSEC_WIN32
 
-typedef DWORD sirerror_t;
-typedef HANDLE sirmutex_t;
+typedef DWORD     sirerror_t;
+typedef HANDLE    sirmutex_t;
 typedef INIT_ONCE sironce_t;
-typedef BOOL (CALLBACK *sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
+typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 #define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
 #endif

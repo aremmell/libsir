@@ -1,3 +1,6 @@
+/*!
+ * \file sirtextstyle.h
+ */
 #ifndef _SIR_TEXTSTYLE_H_INCLUDED
 #define _SIR_TEXTSTYLE_H_INCLUDED
 

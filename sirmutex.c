@@ -1,11 +1,9 @@
 /*!
  * \file sirmutex.c
- * \brief Internal implementation of the cross-platform mutex used by the SIR library.
- * \author Ryan Matthew Lederman <lederman@gmail.com>
  */
 #include "sirmutex.h"
-#include "sirplatform.h"
 #include "sirinternal.h"
+#include "sirplatform.h"
 
 /*! \cond PRIVATE */
 
@@ -20,7 +18,7 @@ bool _sirmutex_create(sirmutex_t* mutex) {
 
         int op = pthread_mutexattr_init(&attr);
         _sir_handleerr(op);
-        
+
         if (0 == op) {
             op = pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_NORMAL);
             _sir_handleerr(op);
@@ -73,7 +71,7 @@ bool _sirmutex_unlock(sirmutex_t* mutex) {
         return 0 == op;
     }
 
-    return false;    
+    return false;
 }
 
 bool _sirmutex_destroy(sirmutex_t* mutex) {
@@ -85,7 +83,7 @@ bool _sirmutex_destroy(sirmutex_t* mutex) {
         return 0 == op;
     }
 
-    return false;       
+    return false;
 }
 
 #else /* Win32 mutex implementation */
@@ -126,7 +124,7 @@ bool _sirmutex_unlock(sirmutex_t* mutex) {
     if (mutex) {
         BOOL release = ReleaseMutex(*mutex);
 
-        if (!release) 
+        if (!release)
             _sir_handleerr(GetLastError());
 
         return FALSE != release;
@@ -142,7 +140,7 @@ bool _sirmutex_destroy(sirmutex_t* mutex) {
     if (mutex) {
         BOOL close = CloseHandle(*mutex);
 
-        if (!close) 
+        if (!close)
             _sir_handleerr(GetLastError());
 
         return FALSE != close;
@@ -158,16 +156,15 @@ static bool _sirmutex_waitwin32(sirmutex_t mutex, DWORD msec) {
     if (mutex) {
         DWORD wait = WaitForSingleObject(mutex, msec);
 
-        switch(wait) {
+        switch (wait) {
             case WAIT_ABANDONED:
             case WAIT_FAILED:
-                _sir_selflog("%s: warning: WaitForSingleObject returned 0x%08lx; danger ahead\n",
-                    __func__, wait);
+                _sir_selflog(
+                    "%s: warning: WaitForSingleObject returned 0x%08lx; danger ahead\n", __func__, wait);
                 return WAIT_FAILED != wait;
-            break;
+                break;
             case WAIT_TIMEOUT:
-            case WAIT_OBJECT_0:
-                return true;
+            case WAIT_OBJECT_0: return true;
         }
     }
 
