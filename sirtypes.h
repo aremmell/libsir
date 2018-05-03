@@ -242,7 +242,11 @@ typedef struct {
     uint16_t to;
 } sir_style_priv_map;
 
-typedef enum { _SIRM_INIT = 0, _SIRM_FILECACHE, _SIRM_TEXTSTYLE } sir_mutex_id;
+typedef enum {
+    _SIRM_INIT = 0,
+    _SIRM_FILECACHE,
+    _SIRM_TEXTSTYLE,
+} sir_mutex_id;
 
 /*! \endcond */
 
