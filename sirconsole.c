@@ -101,7 +101,8 @@ static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message, HANDLE
      * or you'll get background color artifacting before the next output.
      */
     SetConsoleTextAttribute(console, csbfi.wAttributes);
-    WriteConsole(console, "\n", 1, &written, NULL);
+    DWORD newline = 0;
+    WriteConsole(console, "\n", 1, &newline, NULL);
 
     return written == chars;
 }
