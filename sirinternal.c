@@ -521,7 +521,7 @@ pid_t _sir_getpid() {
 #ifndef _WIN32
     return getpid();
 #else
-    return GetProcessId(GetCurrentProcess());
+    return (pid_t)GetProcessId(GetCurrentProcess());
 #endif
 }
 
@@ -529,7 +529,7 @@ pid_t _sir_gettid() {
 #ifndef _WIN32
     return syscall(SYS_gettid);    
 #else
-    return GetCurrentThreadId();
+    return (pid_t)GetCurrentThreadId();
 #endif
 }
 

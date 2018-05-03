@@ -6,11 +6,12 @@
 #ifndef _SIR_PLATFORM_H_INCLUDED
 #define _SIR_PLATFORM_H_INCLUDED
 
+#ifndef _WIN32
 #define _POSIX_C_SOURCE 200809L
 #define _DEFAULT_SOURCE
-
-#define __STDC_WANT_LIB_EXT1__ 1
-#define __STDC_WANT_SECURE_LIB__ 1
+#else
+#define _WIN32_WINNT 0x0600
+#endif
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -26,8 +27,8 @@
 #include <sys/stat.h>
 
 #ifndef _WIN32
-#include <syslog.h>
 #include <unistd.h>
+#include <syslog.h>
 #include <pthread.h>
 #include <stdatomic.h>
 #include <sys/syscall.h>
@@ -53,11 +54,13 @@ typedef pthread_once_t sironce_t;
 typedef void (*sir_once_fn)();
 
 #define SIR_ONCE_INIT PTHREAD_ONCE_INIT
-
 #else
 #define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
+
+#include <windows.h>
 #include <io.h>
+#include <synchapi.h>
+
 #define SIR_MAXPATH MAX_PATH
 #define SIR_NO_SYSLOG
 #define SIR_MSEC_TIMER
@@ -69,7 +72,6 @@ typedef INIT_ONCE sironce_t;
 typedef BOOL (CALLBACK *sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 #define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
-
 #endif
 
 /*! A value that represents the success condition. */

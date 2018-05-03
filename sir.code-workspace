@@ -10,7 +10,8 @@
             "inttypes.h": "c",
             "cinttypes": "c",
             "time.h": "c",
-            "sirinternal.h": "c"
+            "sirinternal.h": "c",
+            "process.h": "c"
         }
     }
 }
