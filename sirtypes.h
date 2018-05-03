@@ -105,9 +105,9 @@ typedef enum {
     SIRS_BG_LYELLOW = 0xd000,
     SIRS_BG_LBLUE = 0xe000,
     SIRS_BG_LMAGENTA = 0xf000,
-    SIRS_BG_LCYAN = 0xf100,
-    SIRS_BG_DEFAULT = 0xf200,    
-    SIRS_INVALID = 0xf300
+    SIRS_BG_LCYAN = 0xf1000,
+    SIRS_BG_DEFAULT = 0xf2000,    
+    SIRS_INVALID = 0xf3000
 } sir_textstyle;
 
 /*! The underlying type to use for characters in output. */
@@ -179,7 +179,7 @@ typedef struct {
 
 #define _SIRS_ATTR_MASK 0xf
 #define _SIRS_FG_MASK 0xff0
-#define _SIRS_BG_MASK 0xff00
+#define _SIRS_BG_MASK 0xff000
 
 #define _SIR_MAGIC 0x60906090
 
@@ -230,12 +230,12 @@ typedef struct {
 
 typedef struct {
     sir_level level;
-    uint16_t style;
+    uint32_t style;
 } sir_style_map;
 
 typedef struct {
     uint32_t from;
-    uint16_t to;
+    uint32_t to;
 } sir_style_priv_map;
 
 typedef enum {

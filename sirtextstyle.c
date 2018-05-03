@@ -2,11 +2,11 @@
 #include "sirinternal.h"
 #include "sirdefaults.h"
 
-bool _sir_validstyle(sir_textstyle style, uint16_t* pattr, uint16_t *pfg, uint16_t* pbg) {
+bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t *pfg, uint32_t* pbg) {
 
-    uint16_t attr = (style & _SIRS_ATTR_MASK);
-    uint16_t fg = (style & _SIRS_FG_MASK);
-    uint16_t bg = (style & _SIRS_BG_MASK);
+    uint32_t attr = (style & _SIRS_ATTR_MASK);
+    uint32_t fg = (style & _SIRS_FG_MASK);
+    uint32_t bg = (style & _SIRS_BG_MASK);
 
     bool attrvalid = attr <= SIRS_BRIGHT;
     bool fgvalid = fg <= SIRS_FG_DEFAULT;
@@ -42,7 +42,7 @@ bool _sir_setdefstyle(sir_level level, sir_textstyle style) {
 
             if (map) {
                 bool updated = false;                
-                for (size_t n = 0; n < _COUNTOF(map); n++) {
+                for (size_t n = 0; n < sir_num_default_style; n++) {
                     if (map[n].level == level) {
                         map[n].style = style;
                         updated = true;
@@ -68,7 +68,7 @@ sir_textstyle _sir_getdefstyle(sir_level level) {
 
         if (map) {
             sir_textstyle found = SIRS_INVALID;
-            for (size_t n = 0; n < _COUNTOF(map); n++) {
+            for (size_t n = 0; n < sir_num_default_style; n++) {
                 if (map[n].level == level) {
                     found = map[n].style;
                     break;
@@ -83,7 +83,7 @@ sir_textstyle _sir_getdefstyle(sir_level level) {
     return SIRS_INVALID;
 }
 
-uint16_t _sir_getprivstyle(uint16_t cat) {
+uint16_t _sir_getprivstyle(uint32_t cat) {
 
     for (size_t n = 0; n < _COUNTOF(sir_priv_map); n++) {
         if (sir_priv_map[n].from == cat) {
@@ -100,9 +100,9 @@ bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size) {
 
     if (buf) {
         
-        uint16_t attr;;
-        uint16_t fg;
-        uint16_t bg;
+        uint32_t attr;
+        uint32_t fg;
+        uint32_t bg;
 
         if (_sir_validstyle(style, &attr, &fg, &bg)) {
 

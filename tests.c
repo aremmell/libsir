@@ -110,9 +110,9 @@ static unsigned sirtest_thread(void* arg) {
             sir_remfile(id1);
             sir_options file1opts = SIRO_MSGONLY;
             int         id1       = sir_addfile(mypath, SIRL_ALL, file1opts);                
-            //sir_settextstyle(SIRL_DEBUG, SIRS_FG_RED | SIRS_BG_DEFAULT);
+            sir_settextstyle(SIRL_DEBUG, SIRS_FG_RED | SIRS_BG_DEFAULT);
         } else {
-            //sir_settextstyle(SIRL_DEBUG, SIRS_FG_CYAN | SIRS_BG_YELLOW);
+            sir_settextstyle(SIRL_DEBUG, SIRS_FG_CYAN | SIRS_BG_YELLOW);
         }
         
     }

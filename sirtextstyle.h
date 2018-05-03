@@ -87,10 +87,10 @@ static const sir_style_priv_map sir_priv_map[] = {
 #endif
 };
 
-bool _sir_validstyle(sir_textstyle style, uint16_t* pattr, uint16_t *pfg, uint16_t* pbg);
+bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t *pfg, uint32_t* pbg);
 bool _sir_setdefstyle(sir_level level, sir_textstyle style);
 sir_textstyle _sir_getdefstyle(sir_level level);
-uint16_t _sir_getprivstyle(uint16_t cat);
+uint16_t _sir_getprivstyle(uint32_t cat);
 bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size);
 
 #endif /* !_SIR_TEXTSTYLE_H_INCLUDED */

@@ -14,4 +14,6 @@ static sir_style_map sir_default_styles[] = {
     {SIRL_EMERG, SIRS_BRIGHT | SIRS_FG_RED | SIRS_BG_WHITE}
 };
 
+static const size_t sir_num_default_style = _COUNTOF(sir_default_styles);
+
 #endif /* !_SIR_DEFAULTS_H_INCLUDED */
