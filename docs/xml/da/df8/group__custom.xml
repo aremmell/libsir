@@ -1,0 +1,340 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="da/df8/group__custom" kind="group">
+    <compoundname>custom</compoundname>
+    <title>Customization</title>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="da/df8/group__custom_1ga03740b429551401f16d8314ab1778c26" prot="public" static="yes" mutable="no">
+        <type><ref refid="df/d50/structsir__style__map" kindref="compound">sir_style_map</ref></type>
+        <definition>sir_style_map sir_default_styles[]</definition>
+        <argsstring>[]</argsstring>
+        <name>sir_default_styles</name>
+        <initializer>= {
+    {<ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b" kindref="member">SIRL_DEBUG</ref>, <ref refid="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafacc1f324a77d57ff8ac0895767c9480d4" kindref="member">SIRS_BRIGHT</ref> | <ref refid="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa0fbe677e96b8483b073584848bb5e4fc" kindref="member">SIRS_FG_BLACK</ref>},
+    {<ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d" kindref="member">SIRL_INFO</ref>, <ref refid="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafae6d57af48d2bca9848aa8cf926043e4e" kindref="member">SIRS_FG_WHITE</ref>},
+    {<ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a" kindref="member">SIRL_NOTICE</ref>, <ref refid="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafaefc4595e6d22f5a5d6ce7fa13c64444d" kindref="member">SIRS_FG_CYAN</ref>},
+    {<ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881" kindref="member">SIRL_WARN</ref>, <ref refid="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa89c9ddbb6a10b8c5fe204247eb457641" kindref="member">SIRS_FG_YELLOW</ref>},
+    {<ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76" kindref="member">SIRL_ERROR</ref>, <ref refid="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa1f11f323b6998adbd83b31d73bc538dc" kindref="member">SIRS_FG_RED</ref>},
+    {<ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435" kindref="member">SIRL_CRIT</ref>, <ref refid="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafacc1f324a77d57ff8ac0895767c9480d4" kindref="member">SIRS_BRIGHT</ref> | <ref refid="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa1f11f323b6998adbd83b31d73bc538dc" kindref="member">SIRS_FG_RED</ref>},
+    {<ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955" kindref="member">SIRL_ALERT</ref>, <ref refid="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafacc1f324a77d57ff8ac0895767c9480d4" kindref="member">SIRS_BRIGHT</ref> | <ref refid="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa89c9ddbb6a10b8c5fe204247eb457641" kindref="member">SIRS_FG_YELLOW</ref> | <ref refid="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa93166b30d32c8dbf52f93612aa0dcdd7" kindref="member">SIRS_BG_GREEN</ref>},
+    {<ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc" kindref="member">SIRL_EMERG</ref>, <ref refid="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafacc1f324a77d57ff8ac0895767c9480d4" kindref="member">SIRS_BRIGHT</ref> | <ref refid="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa1f11f323b6998adbd83b31d73bc538dc" kindref="member">SIRS_FG_RED</ref> | <ref refid="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa57f3210f2af19b6b3067a10ab5947a36" kindref="member">SIRS_BG_WHITE</ref>},
+}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Default mapping of <ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref> to <ref refid="d8/d64/group__public_1ga3bd5959a607e5280a8db90ada2d80caf" kindref="member">sir_textstyle</ref>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirdefaults.h" line="18" column="1" bodyfile="sirdefaults.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="da/df8/group__custom_1ga3a03254b6b6a3c309f79f14b238bfbec" prot="public" static="yes" mutable="no">
+        <type>const size_t</type>
+        <definition>const size_t sir_num_default_style</definition>
+        <argsstring></argsstring>
+        <name>sir_num_default_style</name>
+        <initializer>= sizeof(<ref refid="da/df8/group__custom_1ga03740b429551401f16d8314ab1778c26" kindref="member">sir_default_styles</ref>) / sizeof(<ref refid="df/d50/structsir__style__map" kindref="compound">sir_style_map</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The number of default text style mappings. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirdefaults.h" line="30" column="1" bodyfile="sirdefaults.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="da/df8/group__custom_1gab1531d6b0d9c880b793362322542794c" prot="public" static="no">
+        <name>SIR_TIMEFORMAT</name>
+        <initializer>&quot;%H:%M:%S&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The time stamp format string at the beginning of log messages. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="25" column="9" bodyfile="sirconfig.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1ga11214c8798ccdaab052c3bc9db2e3e78" prot="public" static="no">
+        <name>SIR_MSECFORMAT</name>
+        <initializer>&quot;.%03ld&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The format for the current millisecond in time stamps. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="28" column="9" bodyfile="sirconfig.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1ga90d4862e769fd5effefb1e1dedf520c8" prot="public" static="no">
+        <name>SIR_FHTIMEFORMAT</name>
+        <initializer>&quot;%H:%M:%S %a %d %b %y (%z)&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The time format string in file headers (see <ref refid="da/df8/group__custom_1ga7c652578740e372edeac33d14f6408fd" kindref="member">SIR_FHFORMAT</ref>). <simplesect kind="remark"><para>sample: <computeroutput>15:13:41 Sat 28 Apr 18 (-0600)</computeroutput> </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="34" column="9" bodyfile="sirconfig.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1ga7c652578740e372edeac33d14f6408fd" prot="public" static="no">
+        <name>SIR_FHFORMAT</name>
+        <initializer>&quot;\n\n----- %s (%s) -----\n\n&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The format string written to a log file when logging begins or the file is rolled. The <emphasis>second</emphasis> s format identifier is the current date/time (see <ref refid="da/df8/group__custom_1ga90d4862e769fd5effefb1e1dedf520c8" kindref="member">SIR_FHTIMEFORMAT</ref>). </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="41" column="9" bodyfile="sirconfig.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1gaeb4e44bc613c57c3c49e27b66e69e933" prot="public" static="no">
+        <name>SIR_FHBEGIN</name>
+        <initializer>&quot;session begin&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The string included in <ref refid="da/df8/group__custom_1ga7c652578740e372edeac33d14f6408fd" kindref="member">SIR_FHFORMAT</ref> when a logging session begins. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="46" column="9" bodyfile="sirconfig.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1gaca213e22f32a371da7ca82eb86a16c9a" prot="public" static="no">
+        <name>SIR_FHROLLED</name>
+        <initializer>&quot;file rolled due to size&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The string included in <ref refid="da/df8/group__custom_1ga7c652578740e372edeac33d14f6408fd" kindref="member">SIR_FHFORMAT</ref> when a file is rolled due to size. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="51" column="9" bodyfile="sirconfig.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1ga777d150774244d2707818f2c4a1b9538" prot="public" static="no">
+        <name>SIRL_S_EMERG</name>
+        <initializer>&quot;EMER&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The string representation of the <ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc" kindref="member">SIRL_EMERG</ref> level in output. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="54" column="9" bodyfile="sirconfig.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1ga4e02d1cb5e4a8d8535227657781d4a29" prot="public" static="no">
+        <name>SIRL_S_ALERT</name>
+        <initializer>&quot;ALRT&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The string representation of the <ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955" kindref="member">SIRL_ALERT</ref> level in output. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="57" column="9" bodyfile="sirconfig.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1ga362f77b1b5555a0ea57fdfb64ae09229" prot="public" static="no">
+        <name>SIRL_S_CRIT</name>
+        <initializer>&quot;CRIT&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The string representation of the <ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435" kindref="member">SIRL_CRIT</ref> level in output. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="60" column="9" bodyfile="sirconfig.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1ga4237f9dff053a17cf7a134dbbebc5210" prot="public" static="no">
+        <name>SIRL_S_ERROR</name>
+        <initializer>&quot;ERR&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The string representation of the <ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76" kindref="member">SIRL_ERROR</ref> level in output. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="63" column="9" bodyfile="sirconfig.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1ga7a2838316cfd52f1af743952e667d9f5" prot="public" static="no">
+        <name>SIRL_S_WARN</name>
+        <initializer>&quot;WARN&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The string representation of the <ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881" kindref="member">SIRL_WARN</ref> level in output. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="66" column="9" bodyfile="sirconfig.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1ga6195821fca239b40498e847d50b82623" prot="public" static="no">
+        <name>SIRL_S_NOTICE</name>
+        <initializer>&quot;NOTF&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The string representation of the <ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a" kindref="member">SIRL_NOTICE</ref> level in output. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="69" column="9" bodyfile="sirconfig.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1ga1f7c2763d5e7afb0f2b49d4f0636276d" prot="public" static="no">
+        <name>SIRL_S_INFO</name>
+        <initializer>&quot;INFO&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The string representation of the <ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d" kindref="member">SIRL_INFO</ref> level in output. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="72" column="9" bodyfile="sirconfig.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1ga04d05c434823f0e5a353a31bb47af16e" prot="public" static="no">
+        <name>SIRL_S_DEBUG</name>
+        <initializer>&quot;DBG&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The string representation of the <ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b" kindref="member">SIRL_DEBUG</ref> level in output. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="75" column="9" bodyfile="sirconfig.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1gaa1080a4bec531adb6d25c87ac4734399" prot="public" static="no">
+        <name>SIR_MAXFILES</name>
+        <initializer>16</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The maximum number of log files that may be registered. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="78" column="9" bodyfile="sirconfig.h" bodystart="78" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1ga5f006a2e9ce93ae8d693a2928af33bb2" prot="public" static="no">
+        <name>SIR_MAXMESSAGE</name>
+        <initializer>2048</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The maximum number of characters that may be included in one message, not including other parts of the output, like the timestamp and level. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="84" column="9" bodyfile="sirconfig.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1gac1e50274f913ef71f196f20b9dfbbba6" prot="public" static="no">
+        <name>SIR_MAXTIME</name>
+        <initializer>64</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The size, in characters, of the buffer used to hold time format strings. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="87" column="9" bodyfile="sirconfig.h" bodystart="87" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1gab048f63b09b424f84e19055dc0ec4a29" prot="public" static="no">
+        <name>SIR_MAXMSEC</name>
+        <initializer>5</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The size, in characters, of the buffer used to hold millisecond strings. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="90" column="9" bodyfile="sirconfig.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1gabac0b7b0c1ea5afc9d0708a4421b1a57" prot="public" static="no">
+        <name>SIR_MAXLEVEL</name>
+        <initializer>6</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The size, in characters, of the buffer used to hold level format strings. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="93" column="9" bodyfile="sirconfig.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1ga85ed3139018ee9e7545c74c0885dff55" prot="public" static="no">
+        <name>SIR_MAXNAME</name>
+        <initializer>32</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The size, in characters, of the buffer used to hold process/appname format strings. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="97" column="9" bodyfile="sirconfig.h" bodystart="97" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1gab3e26cb9ac224cb9a695ddf1ed099218" prot="public" static="no">
+        <name>SIR_MAXOUTPUT</name>
+        <initializer><ref refid="da/df8/group__custom_1ga5f006a2e9ce93ae8d693a2928af33bb2" kindref="member">SIR_MAXMESSAGE</ref> + (<ref refid="da/df8/group__custom_1ga5cdaa944bfe2228355cc4c34c3d315e8" kindref="member">SIR_MAXSTYLE</ref> * 2) \
+  + <ref refid="da/df8/group__custom_1gac1e50274f913ef71f196f20b9dfbbba6" kindref="member">SIR_MAXTIME</ref> + <ref refid="da/df8/group__custom_1gabac0b7b0c1ea5afc9d0708a4421b1a57" kindref="member">SIR_MAXLEVEL</ref> + <ref refid="da/df8/group__custom_1ga85ed3139018ee9e7545c74c0885dff55" kindref="member">SIR_MAXNAME</ref> + 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The maximum size, in characters, of final formatted output. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="100" column="9" bodyfile="sirconfig.h" bodystart="100" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1gaad514de31d1178e0a91dcd7434230965" prot="public" static="no">
+        <name>SIR_FOPENMODE</name>
+        <initializer>&quot;a&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The string passed to fopen/fopen_s for log files. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="105" column="9" bodyfile="sirconfig.h" bodystart="105" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1ga019fb62b107343bafedb0f5ad84f7d3a" prot="public" static="no">
+        <name>SIR_FROLLSIZE</name>
+        <initializer>1024L * 1024L * 5L</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The size, in bytes, at which a log file will be rolled. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="108" column="9" bodyfile="sirconfig.h" bodystart="108" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1ga5cdaa944bfe2228355cc4c34c3d315e8" prot="public" static="no">
+        <name>SIR_MAXSTYLE</name>
+        <initializer>16</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The size, in characters, of the buffer used to hold text styling data. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="112" column="9" bodyfile="sirconfig.h" bodystart="112" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1gaca5ce9bf2336ca3fc3fb71c74756dd57" prot="public" static="no">
+        <name>SIR_ENDSTYLE</name>
+        <initializer>&quot;\033[0m&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The string used to reset any styling applied to text in stdio output. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="114" column="9" bodyfile="sirconfig.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="da/df8/group__custom_1gaa8b393ed113098892caa3d2ecd14dea9" prot="public" static="no">
+        <name>SIR_MSECCLOCK</name>
+        <initializer>CLOCK_MONOTONIC</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The default clock used to obtain the current millisecond from <emphasis>clock_gettime</emphasis>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirconfig.h" line="116" column="9" bodyfile="sirconfig.h" bodystart="116" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Compile-time configuration that can be modified to alter the behavior of the library. </para>    </detaileddescription>
+  </compounddef>
+</doxygen>

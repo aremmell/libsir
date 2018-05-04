@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="d0/db8/default-example" kind="example">
+    <compoundname>default</compoundname>
+    <detaileddescription>
+<para>The time format string in file headers (see <ref refid="da/df8/group__custom_1ga7c652578740e372edeac33d14f6408fd" kindref="member">SIR_FHFORMAT</ref>). : <computeroutput>15:13:41 Sat 28 Apr 18 (-0600)</computeroutput> <programlisting></programlisting> </para>    </detaileddescription>
+  </compounddef>
+</doxygen>

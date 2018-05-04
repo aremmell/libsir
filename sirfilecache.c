@@ -6,7 +6,10 @@
 #include "sirinternal.h"
 #include "sirmutex.h"
 
-/** @cond private */
+/**
+ * @addtogroup intern
+ * @{
+ */
 
 int _sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts) {
 
@@ -401,4 +404,4 @@ bool _sir_fflush_all() {
     return 0 == flush;
 }
 
-/** @endcond private */
+/** @} */

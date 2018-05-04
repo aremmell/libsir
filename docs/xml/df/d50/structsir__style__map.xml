@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="df/d50/structsir__style__map" kind="struct" language="C++" prot="public">
+    <compoundname>sir_style_map</compoundname>
+    <includes refid="dc/dba/sirtypes_8h" local="no">sirtypes.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="df/d50/structsir__style__map_1a13f88b45f0cc1b99f3d11999766bb15f" prot="public" static="no" mutable="no">
+        <type><ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref></type>
+        <definition>sir_level sir_style_map::level</definition>
+        <argsstring></argsstring>
+        <name>level</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="234" column="1" bodyfile="sirtypes.h" bodystart="234" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="df/d50/structsir__style__map_1ab541a2f9197fbddaf60f9578ad4aa551" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t sir_style_map::style</definition>
+        <argsstring></argsstring>
+        <name>style</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="235" column="1" bodyfile="sirtypes.h" bodystart="235" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref> &lt;&gt; <ref refid="d8/d64/group__public_1ga3bd5959a607e5280a8db90ada2d80caf" kindref="member">sir_textstyle</ref> mapping. </para>    </detaileddescription>
+    <location file="sirtypes.h" line="233" column="1" bodyfile="sirtypes.h" bodystart="233" bodyend="236"/>
+    <listofallmembers>
+      <member refid="df/d50/structsir__style__map_1a13f88b45f0cc1b99f3d11999766bb15f" prot="public" virt="non-virtual"><scope>sir_style_map</scope><name>level</name></member>
+      <member refid="df/d50/structsir__style__map_1ab541a2f9197fbddaf60f9578ad4aa551" prot="public" virt="non-virtual"><scope>sir_style_map</scope><name>style</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

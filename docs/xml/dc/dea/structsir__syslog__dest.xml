@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="dc/dea/structsir__syslog__dest" kind="struct" language="C++" prot="public">
+    <compoundname>sir_syslog_dest</compoundname>
+    <includes refid="dc/dba/sirtypes_8h" local="no">sirtypes.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="dc/dea/structsir__syslog__dest_1a2fb4c11cdb645a46f008c34678260bbc" prot="public" static="no" mutable="no">
+        <type><ref refid="d8/d64/group__public_1ga7ee5f2908abd2df9e89bcab0b6608edd" kindref="member">sir_levels</ref></type>
+        <definition>sir_levels sir_syslog_dest::levels</definition>
+        <argsstring></argsstring>
+        <name>levels</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="133" column="1" bodyfile="sirtypes.h" bodystart="133" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="dc/dea/structsir__syslog__dest_1a3f4d98e4f67868b1295734f7ff8d0a5d" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool sir_syslog_dest::includePID</definition>
+        <argsstring></argsstring>
+        <name>includePID</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="134" column="1" bodyfile="sirtypes.h" bodystart="134" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Configuration for the <emphasis>syslog</emphasis> destination. </para>    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="sirtypes.h" line="132" column="1" bodyfile="sirtypes.h" bodystart="132" bodyend="135"/>
+    <listofallmembers>
+      <member refid="dc/dea/structsir__syslog__dest_1a3f4d98e4f67868b1295734f7ff8d0a5d" prot="public" virt="non-virtual"><scope>sir_syslog_dest</scope><name>includePID</name></member>
+      <member refid="dc/dea/structsir__syslog__dest_1a2fb4c11cdb645a46f008c34678260bbc" prot="public" virt="non-virtual"><scope>sir_syslog_dest</scope><name>levels</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

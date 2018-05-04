@@ -1,0 +1,928 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="d3/d95/sirfilecache_8c" kind="file" language="C++">
+    <compoundname>sirfilecache.c</compoundname>
+    <includes refid="dd/d0a/sirfilecache_8h" local="yes">sirfilecache.h</includes>
+    <includes refid="d7/dc6/sirinternal_8h" local="yes">sirinternal.h</includes>
+    <includes refid="d1/d20/sirmutex_8h" local="yes">sirmutex.h</includes>
+    <incdepgraph>
+      <node id="171">
+        <label>sys/stat.h</label>
+      </node>
+      <node id="166">
+        <label>stdbool.h</label>
+      </node>
+      <node id="165">
+        <label>stdarg.h</label>
+      </node>
+      <node id="175">
+        <label>stdatomic.h</label>
+      </node>
+      <node id="163">
+        <label>assert.h</label>
+      </node>
+      <node id="167">
+        <label>stdint.h</label>
+      </node>
+      <node id="169">
+        <label>stdlib.h</label>
+      </node>
+      <node id="164">
+        <label>errno.h</label>
+      </node>
+      <node id="181">
+        <label>sirmutex.h</label>
+        <link refid="d1/d20/sirmutex_8h"/>
+        <childnode refid="160" relation="include">
+        </childnode>
+      </node>
+      <node id="177">
+        <label>syslog.h</label>
+      </node>
+      <node id="162">
+        <label>sirplatform.h</label>
+        <link refid="db/ddc/sirplatform_8h"/>
+        <childnode refid="163" relation="include">
+        </childnode>
+        <childnode refid="164" relation="include">
+        </childnode>
+        <childnode refid="165" relation="include">
+        </childnode>
+        <childnode refid="166" relation="include">
+        </childnode>
+        <childnode refid="167" relation="include">
+        </childnode>
+        <childnode refid="168" relation="include">
+        </childnode>
+        <childnode refid="169" relation="include">
+        </childnode>
+        <childnode refid="170" relation="include">
+        </childnode>
+        <childnode refid="171" relation="include">
+        </childnode>
+        <childnode refid="172" relation="include">
+        </childnode>
+        <childnode refid="173" relation="include">
+        </childnode>
+        <childnode refid="174" relation="include">
+        </childnode>
+        <childnode refid="175" relation="include">
+        </childnode>
+        <childnode refid="176" relation="include">
+        </childnode>
+        <childnode refid="177" relation="include">
+        </childnode>
+        <childnode refid="178" relation="include">
+        </childnode>
+      </node>
+      <node id="174">
+        <label>pthread.h</label>
+      </node>
+      <node id="172">
+        <label>sys/types.h</label>
+      </node>
+      <node id="170">
+        <label>string.h</label>
+      </node>
+      <node id="180">
+        <label>sirmacros.h</label>
+        <link refid="d6/d75/sirmacros_8h"/>
+        <childnode refid="160" relation="include">
+        </childnode>
+      </node>
+      <node id="178">
+        <label>unistd.h</label>
+      </node>
+      <node id="173">
+        <label>time.h</label>
+      </node>
+      <node id="160">
+        <label>sirtypes.h</label>
+        <link refid="dc/dba/sirtypes_8h"/>
+        <childnode refid="161" relation="include">
+        </childnode>
+        <childnode refid="162" relation="include">
+        </childnode>
+      </node>
+      <node id="179">
+        <label>sirinternal.h</label>
+        <link refid="d7/dc6/sirinternal_8h"/>
+        <childnode refid="180" relation="include">
+        </childnode>
+        <childnode refid="160" relation="include">
+        </childnode>
+      </node>
+      <node id="158">
+        <label>sirfilecache.c</label>
+        <link refid="sirfilecache.c"/>
+        <childnode refid="159" relation="include">
+        </childnode>
+        <childnode refid="179" relation="include">
+        </childnode>
+        <childnode refid="181" relation="include">
+        </childnode>
+      </node>
+      <node id="159">
+        <label>sirfilecache.h</label>
+        <link refid="dd/d0a/sirfilecache_8h"/>
+        <childnode refid="160" relation="include">
+        </childnode>
+      </node>
+      <node id="176">
+        <label>sys/syscall.h</label>
+      </node>
+      <node id="161">
+        <label>sirconfig.h</label>
+        <link refid="d4/d0f/sirconfig_8h"/>
+      </node>
+      <node id="168">
+        <label>stdio.h</label>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="d0/dfe/group__intern_1gaf4ffe3a6a742ad2f8136d0af7bddcca5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int _sir_addfile</definition>
+        <argsstring>(const sirchar_t *path, sir_levels levels, sir_options opts)</argsstring>
+        <name>_sir_addfile</name>
+        <param>
+          <type>const <ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+          <declname>path</declname>
+        </param>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga7ee5f2908abd2df9e89bcab0b6608edd" kindref="member">sir_levels</ref></type>
+          <declname>levels</declname>
+        </param>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga858fff8dae5b79ae8849a8021a53c18c" kindref="member">sir_options</ref></type>
+          <declname>opts</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirfilecache.c" line="14" column="1" bodyfile="sirfilecache.c" bodystart="14" bodyend="27"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga2bac1686a9c44385882fbf0d1d2567df" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sir_remfile</definition>
+        <argsstring>(int id)</argsstring>
+        <name>_sir_remfile</name>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirfilecache.c" line="29" column="1" bodyfile="sirfilecache.c" bodystart="29" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1gae340cf842e324bb001d30f14ef2b11bc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref> *</type>
+        <definition>sirfile * _sirfile_create</definition>
+        <argsstring>(const sirchar_t *path, sir_levels levels, sir_options opts)</argsstring>
+        <name>_sirfile_create</name>
+        <param>
+          <type>const <ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+          <declname>path</declname>
+        </param>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga7ee5f2908abd2df9e89bcab0b6608edd" kindref="member">sir_levels</ref></type>
+          <declname>levels</declname>
+        </param>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga858fff8dae5b79ae8849a8021a53c18c" kindref="member">sir_options</ref></type>
+          <declname>opts</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirfilecache.c" line="43" column="1" bodyfile="sirfilecache.c" bodystart="43" bodyend="84"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1gafcc058772f36163fe63d70a272764496" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sirfile_write</definition>
+        <argsstring>(sirfile *sf, const sirchar_t *output)</argsstring>
+        <name>_sirfile_write</name>
+        <param>
+          <type><ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref> *</type>
+          <declname>sf</declname>
+        </param>
+        <param>
+          <type>const <ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+          <declname>output</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+<para><xrefsect id="dd/da0/todo_1_todo000001"><xreftitle>Todo</xreftitle><xrefdescription><para>If an error occurs on write, consider removing file from targets, or at least attempt to roll the file (out of space?) </para></xrefdescription></xrefsect></para>        </inbodydescription>
+        <location file="sirfilecache.c" line="86" column="1" bodyfile="sirfilecache.c" bodystart="86" bodyend="127"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga9e69a300716951996e95e993a38e71a8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sirfile_writeheader</definition>
+        <argsstring>(sirfile *sf, const sirchar_t *msg)</argsstring>
+        <name>_sirfile_writeheader</name>
+        <param>
+          <type><ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref> *</type>
+          <declname>sf</declname>
+        </param>
+        <param>
+          <type>const <ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+          <declname>msg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirfilecache.c" line="129" column="1" bodyfile="sirfilecache.c" bodystart="129" bodyend="159"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga4988bee82d15653ed12d9a41a7cd17f2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sirfile_needsroll</definition>
+        <argsstring>(sirfile *sf)</argsstring>
+        <name>_sirfile_needsroll</name>
+        <param>
+          <type><ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref> *</type>
+          <declname>sf</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirfilecache.c" line="161" column="1" bodyfile="sirfilecache.c" bodystart="161" bodyend="178"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga935056fde72b078e36a791420448c2e0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sirfile_roll</definition>
+        <argsstring>(sirfile *sf)</argsstring>
+        <name>_sirfile_roll</name>
+        <param>
+          <type><ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref> *</type>
+          <declname>sf</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirfilecache.c" line="180" column="1" bodyfile="sirfilecache.c" bodystart="180" bodyend="202"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1gacc03ef6e2434e294e3d054b20de58563" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void _sirfile_destroy</definition>
+        <argsstring>(sirfile *sf)</argsstring>
+        <name>_sirfile_destroy</name>
+        <param>
+          <type><ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref> *</type>
+          <declname>sf</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirfilecache.c" line="204" column="1" bodyfile="sirfilecache.c" bodystart="204" bodyend="211"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga969a4b09f9475988f84f4b1a36748f59" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sirfile_validate</definition>
+        <argsstring>(sirfile *sf)</argsstring>
+        <name>_sirfile_validate</name>
+        <param>
+          <type><ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref> *</type>
+          <declname>sf</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirfilecache.c" line="213" column="1" bodyfile="sirfilecache.c" bodystart="213" bodyend="217"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1gafea8975a770a9506cd2af3d167946779" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int _sir_fcache_add</definition>
+        <argsstring>(sirfcache *sfc, const sirchar_t *path, sir_levels levels, sir_options opts)</argsstring>
+        <name>_sir_fcache_add</name>
+        <param>
+          <type><ref refid="d0/dd3/structsirfcache" kindref="compound">sirfcache</ref> *</type>
+          <declname>sfc</declname>
+        </param>
+        <param>
+          <type>const <ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+          <declname>path</declname>
+        </param>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga7ee5f2908abd2df9e89bcab0b6608edd" kindref="member">sir_levels</ref></type>
+          <declname>levels</declname>
+        </param>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga858fff8dae5b79ae8849a8021a53c18c" kindref="member">sir_options</ref></type>
+          <declname>opts</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirfilecache.c" line="219" column="1" bodyfile="sirfilecache.c" bodystart="219" bodyend="253"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga4936e8027e69e0c16553a838fa3902f2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sir_fcache_rem</definition>
+        <argsstring>(sirfcache *sfc, int id)</argsstring>
+        <name>_sir_fcache_rem</name>
+        <param>
+          <type><ref refid="d0/dd3/structsirfcache" kindref="compound">sirfcache</ref> *</type>
+          <declname>sfc</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirfilecache.c" line="255" column="1" bodyfile="sirfilecache.c" bodystart="255" bodyend="281"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga0010940e32561ed8a9bf5b0e146368d4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sir_fcache_pred_path</definition>
+        <argsstring>(const void *match, sirfile *iter)</argsstring>
+        <name>_sir_fcache_pred_path</name>
+        <param>
+          <type>const void *</type>
+          <declname>match</declname>
+        </param>
+        <param>
+          <type><ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref> *</type>
+          <declname>iter</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirfilecache.c" line="283" column="1" bodyfile="sirfilecache.c" bodystart="283" bodyend="291"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga7a5818f61c3b660903c74bfdd2e06d5c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref> *</type>
+        <definition>sirfile * _sir_fcache_find</definition>
+        <argsstring>(sirfcache *sfc, const void *match, sir_fcache_pred pred)</argsstring>
+        <name>_sir_fcache_find</name>
+        <param>
+          <type><ref refid="d0/dd3/structsirfcache" kindref="compound">sirfcache</ref> *</type>
+          <declname>sfc</declname>
+        </param>
+        <param>
+          <type>const void *</type>
+          <declname>match</declname>
+        </param>
+        <param>
+          <type>sir_fcache_pred</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirfilecache.c" line="293" column="1" bodyfile="sirfilecache.c" bodystart="293" bodyend="306"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga572c752aa13984611cfb8735945a2088" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sir_fcache_destroy</definition>
+        <argsstring>(sirfcache *sfc)</argsstring>
+        <name>_sir_fcache_destroy</name>
+        <param>
+          <type><ref refid="d0/dd3/structsirfcache" kindref="compound">sirfcache</ref> *</type>
+          <declname>sfc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirfilecache.c" line="308" column="1" bodyfile="sirfilecache.c" bodystart="308" bodyend="326"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga69ddcd5623fa9aa06f94f02d301402c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sir_fcache_dispatch</definition>
+        <argsstring>(sirfcache *sfc, sir_level level, siroutput *output, size_t *dispatched)</argsstring>
+        <name>_sir_fcache_dispatch</name>
+        <param>
+          <type><ref refid="d0/dd3/structsirfcache" kindref="compound">sirfcache</ref> *</type>
+          <declname>sfc</declname>
+        </param>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref></type>
+          <declname>level</declname>
+        </param>
+        <param>
+          <type><ref refid="d7/dac/structsiroutput" kindref="compound">siroutput</ref> *</type>
+          <declname>output</declname>
+        </param>
+        <param>
+          <type>size_t *</type>
+          <declname>dispatched</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirfilecache.c" line="328" column="1" bodyfile="sirfilecache.c" bodystart="328" bodyend="366"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1gaa5807786f157c7587767fbc305d9f545" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>FILE *</type>
+        <definition>FILE * _sir_fopen</definition>
+        <argsstring>(const sirchar_t *path)</argsstring>
+        <name>_sir_fopen</name>
+        <param>
+          <type>const <ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirfilecache.c" line="368" column="1" bodyfile="sirfilecache.c" bodystart="368" bodyend="383"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1gae4ea10064b35da4b4e136b98079a5cd8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void _sir_fclose</definition>
+        <argsstring>(FILE **f)</argsstring>
+        <name>_sir_fclose</name>
+        <param>
+          <type>FILE **</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirfilecache.c" line="385" column="1" bodyfile="sirfilecache.c" bodystart="385" bodyend="389"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1gafaa99866e0108210292c8f8e265588dc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void _sir_fflush</definition>
+        <argsstring>(FILE *f)</argsstring>
+        <name>_sir_fflush</name>
+        <param>
+          <type>FILE *</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirfilecache.c" line="391" column="1" bodyfile="sirfilecache.c" bodystart="391" bodyend="399"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1gae77c21bad87f219f4c30ff33252485f1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sir_fflush_all</definition>
+        <argsstring>()</argsstring>
+        <name>_sir_fflush_all</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirfilecache.c" line="401" column="1" bodyfile="sirfilecache.c" bodystart="401" bodyend="405"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Log file management. </para>    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"></codeline>
+<codeline lineno="5"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="dd/d0a/sirfilecache_8h" kindref="compound">sirfilecache.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="d7/dc6/sirinternal_8h" kindref="compound">sirinternal.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="d1/d20/sirmutex_8h" kindref="compound">sirmutex.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>_sir_addfile(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/>path,<sp/><ref refid="d8/d64/group__public_1ga7ee5f2908abd2df9e89bcab0b6608edd" kindref="member">sir_levels</ref><sp/>levels,<sp/><ref refid="d8/d64/group__public_1ga858fff8dae5b79ae8849a8021a53c18c" kindref="member">sir_options</ref><sp/>opts)<sp/>{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="d0/dfe/group__intern_1gaf8226ccb30306806dea94394865646b2" kindref="member">_sir_sanity</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="d0/dd3/structsirfcache" kindref="compound">sirfcache</ref>*<sp/>sfc<sp/>=<sp/><ref refid="d0/dfe/group__intern_1ga10226d9d1a4003751096ac0913861e1c" kindref="member">_sir_locksection</ref>(<ref refid="d0/dfe/group__intern_1gga1b4579307692c802cc1d2b16e49c1371a36e0e177582f073ea203ea4cb0db6a47" kindref="member">_SIRM_FILECACHE</ref>);</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sfc)<sp/>{</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>r<sp/>=<sp/>_sir_fcache_add(sfc,<sp/>path,<sp/>levels,<sp/>opts);</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="d0/dfe/group__intern_1ga8238d10d7a78436abe55eefec827f23b" kindref="member">_sir_unlocksection</ref>(<ref refid="d0/dfe/group__intern_1gga1b4579307692c802cc1d2b16e49c1371a36e0e177582f073ea203ea4cb0db6a47" kindref="member">_SIRM_FILECACHE</ref>);</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>r;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga39001e0bb2b7e4d0f6a4c6278dbd63ce" kindref="member">SIR_INVALID</ref>;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>_sir_remfile(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="d0/dfe/group__intern_1gaf8226ccb30306806dea94394865646b2" kindref="member">_sir_sanity</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="d0/dd3/structsirfcache" kindref="compound">sirfcache</ref>*<sp/>sfc<sp/>=<sp/><ref refid="d0/dfe/group__intern_1ga10226d9d1a4003751096ac0913861e1c" kindref="member">_sir_locksection</ref>(<ref refid="d0/dfe/group__intern_1gga1b4579307692c802cc1d2b16e49c1371a36e0e177582f073ea203ea4cb0db6a47" kindref="member">_SIRM_FILECACHE</ref>);</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sfc)<sp/>{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>r<sp/>=<sp/>_sir_fcache_rem(sfc,<sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga8238d10d7a78436abe55eefec827f23b" kindref="member">_sir_unlocksection</ref>(<ref refid="d0/dfe/group__intern_1gga1b4579307692c802cc1d2b16e49c1371a36e0e177582f073ea203ea4cb0db6a47" kindref="member">_SIRM_FILECACHE</ref>)<sp/>&amp;&amp;<sp/>r;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref>*<sp/>_sirfile_create(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/>path,<sp/><ref refid="d8/d64/group__public_1ga7ee5f2908abd2df9e89bcab0b6608edd" kindref="member">sir_levels</ref><sp/>levels,<sp/><ref refid="d8/d64/group__public_1ga858fff8dae5b79ae8849a8021a53c18c" kindref="member">sir_options</ref><sp/>opts)<sp/>{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref>*<sp/>sf<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<ref refid="d0/dfe/group__intern_1ga7fa1e383e884232fe341e378dd89f50e" kindref="member">validstr</ref>(path));</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<ref refid="d0/dfe/group__intern_1ga199cfe021fc40e04a6ac447e4957e116" kindref="member">validlevels</ref>(levels));</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<ref refid="d0/dfe/group__intern_1ga019f91a4145ebb548d772833d39784dd" kindref="member">validopts</ref>(opts));</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="d0/dfe/group__intern_1ga7fa1e383e884232fe341e378dd89f50e" kindref="member">validstr</ref>(path)<sp/>&amp;&amp;<sp/><ref refid="d0/dfe/group__intern_1ga199cfe021fc40e04a6ac447e4957e116" kindref="member">validlevels</ref>(levels)<sp/>&amp;&amp;<sp/><ref refid="d0/dfe/group__intern_1ga019f91a4145ebb548d772833d39784dd" kindref="member">validopts</ref>(opts))<sp/>{</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>FILE*<sp/>f<sp/>=<sp/>_sir_fopen(path);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(f);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(f)<sp/>{</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>fd<sp/>=<sp/>fileno(f);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(-1<sp/>==<sp/>fd)<sp/>_sir_handleerr(errno);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="d0/dfe/group__intern_1ga0492a95c92911c513c56331d5b800a95" kindref="member">validid</ref>(fd))<sp/>{</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sf<sp/>=<sp/>(<ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref>*)calloc(1,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref>));</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(sf);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sf)<sp/>{</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>pathLen<sp/>=<sp/>strnlen(path,<sp/><ref refid="db/ddc/sirplatform_8h_1a1606d95455a68d16b9f64de112cd3c62" kindref="member">SIR_MAXPATH</ref>);</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sf-&gt;path<sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>(<ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*)calloc(pathLen<sp/>+<sp/>1,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>));</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(sf-&gt;path);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sf-&gt;path)<sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>strncpy(sf-&gt;path,<sp/>path,<sp/>pathLen);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sf-&gt;f<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>f;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sf-&gt;levels<sp/>=<sp/>levels;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sf-&gt;opts<sp/><sp/><sp/>=<sp/>opts;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sf-&gt;id<sp/><sp/><sp/><sp/><sp/>=<sp/>fd;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(f<sp/>&amp;&amp;<sp/>(!sf<sp/>||<sp/>!sf-&gt;path))</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_fclose(&amp;f);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>sf;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1gafcc058772f36163fe63d70a272764496" kindref="member">_sirfile_write</ref>(<ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref>*<sp/>sf,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/>output)<sp/>{</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<ref refid="d0/dfe/group__intern_1ga7fa1e383e884232fe341e378dd89f50e" kindref="member">validstr</ref>(output));</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_sirfile_validate(sf)<sp/>&amp;&amp;<sp/><ref refid="d0/dfe/group__intern_1ga7fa1e383e884232fe341e378dd89f50e" kindref="member">validstr</ref>(output))<sp/>{</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_sirfile_needsroll(sf))<sp/>{</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!_sirfile_roll(sf))</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!_sirfile_writeheader(sf,<sp/><ref refid="da/df8/group__custom_1gaca213e22f32a371da7ca82eb86a16c9a" kindref="member">SIR_FHROLLED</ref>))</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>writeLen<sp/>=<sp/>strnlen(output,<sp/><ref refid="da/df8/group__custom_1gab3e26cb9ac224cb9a695ddf1ed099218" kindref="member">SIR_MAXOUTPUT</ref>);</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>write<sp/><sp/><sp/><sp/>=<sp/>fwrite(output,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>),<sp/>writeLen,<sp/>sf-&gt;f);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(write<sp/>==<sp/>writeLen);</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(write<sp/>&lt;<sp/>writeLen)<sp/>{</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>err<sp/>=<sp/>ferror(sf-&gt;f);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>eof<sp/>=<sp/>feof(sf-&gt;f);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_handleerr(err);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_handleerr(eof);</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_selflog(</highlight><highlight class="stringliteral">&quot;%s:<sp/>wrote<sp/>%lu/%lu<sp/>bytes<sp/>to<sp/>%d;<sp/>ferror:<sp/>%d,<sp/>feof:<sp/>%d\n&quot;</highlight><highlight class="normal">,<sp/>__func__,<sp/>write,<sp/>writeLen,</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sf-&gt;id,<sp/>err,<sp/>eof);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>clearerr(sf-&gt;f);</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>write<sp/>==<sp/>writeLen;</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="127"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>_sirfile_writeheader(<ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref>*<sp/>sf,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/>msg)<sp/>{</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(_sirfile_validate(sf));</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_sirfile_validate(sf))<sp/>{</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>time_t<sp/>now;</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/>gettime<sp/>=<sp/><ref refid="d0/dfe/group__intern_1gae6a81ce863fba763916cc4e11de0fadc" kindref="member">_sir_getlocaltime</ref>(&amp;now,<sp/>NULL);</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(gettime);</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(gettime)<sp/>{</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref><sp/>time[<ref refid="da/df8/group__custom_1gac1e50274f913ef71f196f20b9dfbbba6" kindref="member">SIR_MAXTIME</ref>]<sp/>=<sp/>{0};</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>fmttime<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="d0/dfe/group__intern_1ga6d418f4a2a45a3273b8c6e09a03edd7c" kindref="member">_sir_formattime</ref>(now,<sp/>time,<sp/><ref refid="da/df8/group__custom_1ga90d4862e769fd5effefb1e1dedf520c8" kindref="member">SIR_FHTIMEFORMAT</ref>);</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(fmttime);</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(fmttime)<sp/>{</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref><sp/>header[<ref refid="da/df8/group__custom_1gab3e26cb9ac224cb9a695ddf1ed099218" kindref="member">SIR_MAXOUTPUT</ref>]<sp/>=<sp/>{0};</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>fmt<sp/>=<sp/>snprintf(header,<sp/><ref refid="da/df8/group__custom_1gab3e26cb9ac224cb9a695ddf1ed099218" kindref="member">SIR_MAXOUTPUT</ref>,<sp/><ref refid="da/df8/group__custom_1ga7c652578740e372edeac33d14f6408fd" kindref="member">SIR_FHFORMAT</ref>,<sp/>msg,<sp/>time);</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(fmt<sp/>&gt;=<sp/>0);</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(fmt<sp/>&lt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_selflog(</highlight><highlight class="stringliteral">&quot;%s:<sp/>snprintf<sp/>returned<sp/>%d!&quot;</highlight><highlight class="normal">,<sp/>__func__,<sp/>fmt);</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1gafcc058772f36163fe63d70a272764496" kindref="member">_sirfile_write</ref>(sf,<sp/>header);</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="159"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>_sirfile_needsroll(<ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref>*<sp/>sf)<sp/>{</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(_sirfile_validate(sf));</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_sirfile_validate(sf))<sp/>{</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">stat<sp/>st<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>{0};</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>getstat<sp/>=<sp/>fstat(sf-&gt;id,<sp/>&amp;st);</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(0<sp/>!=<sp/>getstat)<sp/>{</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_handleerr(errno);</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>st.st_size<sp/>&gt;=<sp/><ref refid="da/df8/group__custom_1ga019fb62b107343bafedb0f5ad84f7d3a" kindref="member">SIR_FROLLSIZE</ref>;</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="178"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>_sirfile_roll(<ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref>*<sp/>sf)<sp/>{</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(_sirfile_validate(sf));</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_sirfile_validate(sf))<sp/>{</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>_WIN32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>roll<sp/>=<sp/>ftruncate(sf-&gt;id,<sp/>0);</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>roll<sp/>=<sp/>_chsize(sf-&gt;id,<sp/>0);</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(0<sp/>==<sp/>roll);</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(0<sp/>!=<sp/>roll)<sp/>{</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_handleerr(errno);</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"></highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_selflog(</highlight><highlight class="stringliteral">&quot;%s:<sp/>rolled<sp/>&apos;%s&apos;\n&quot;</highlight><highlight class="normal">,<sp/>__func__,<sp/>sf-&gt;path);</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="202"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight></codeline>
+<codeline lineno="204"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>_sirfile_destroy(<ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref>*<sp/>sf)<sp/>{</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sf)<sp/>{</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_fflush(sf-&gt;f);</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_fclose(&amp;sf-&gt;f);</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="d0/dfe/group__intern_1ga785c194f63b1a7189532ba041d397582" kindref="member">safefree</ref>(sf-&gt;path);</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="d0/dfe/group__intern_1ga785c194f63b1a7189532ba041d397582" kindref="member">safefree</ref>(sf);</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="211"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"></highlight></codeline>
+<codeline lineno="213"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>_sirfile_validate(<ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref>*<sp/>sf)<sp/>{</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>valid<sp/>=<sp/>sf<sp/>&amp;&amp;<sp/><ref refid="d0/dfe/group__intern_1ga0492a95c92911c513c56331d5b800a95" kindref="member">validid</ref>(sf-&gt;id)<sp/>&amp;&amp;<sp/>sf-&gt;f<sp/>&amp;&amp;<sp/><ref refid="d0/dfe/group__intern_1ga7fa1e383e884232fe341e378dd89f50e" kindref="member">validstr</ref>(sf-&gt;path);</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(valid);</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>valid;</highlight></codeline>
+<codeline lineno="217"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>_sir_fcache_add(<ref refid="d0/dd3/structsirfcache" kindref="compound">sirfcache</ref>*<sp/>sfc,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/>path,<sp/><ref refid="d8/d64/group__public_1ga7ee5f2908abd2df9e89bcab0b6608edd" kindref="member">sir_levels</ref><sp/>levels,<sp/><ref refid="d8/d64/group__public_1ga858fff8dae5b79ae8849a8021a53c18c" kindref="member">sir_options</ref><sp/>opts)<sp/>{</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"></highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(sfc);</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<ref refid="d0/dfe/group__intern_1ga7fa1e383e884232fe341e378dd89f50e" kindref="member">validstr</ref>(path));</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<ref refid="d0/dfe/group__intern_1ga199cfe021fc40e04a6ac447e4957e116" kindref="member">validlevels</ref>(levels));</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<ref refid="d0/dfe/group__intern_1ga019f91a4145ebb548d772833d39784dd" kindref="member">validopts</ref>(opts));</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"></highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sfc<sp/>&amp;&amp;<sp/><ref refid="d0/dfe/group__intern_1ga7fa1e383e884232fe341e378dd89f50e" kindref="member">validstr</ref>(path)<sp/>&amp;&amp;<sp/><ref refid="d0/dfe/group__intern_1ga199cfe021fc40e04a6ac447e4957e116" kindref="member">validlevels</ref>(levels)<sp/>&amp;&amp;<sp/><ref refid="d0/dfe/group__intern_1ga019f91a4145ebb548d772833d39784dd" kindref="member">validopts</ref>(opts))<sp/>{</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"></highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref>*<sp/>existing<sp/>=<sp/>_sir_fcache_find(sfc,<sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*)path,<sp/>_sir_fcache_pred_path);</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(NULL<sp/>!=<sp/>existing)<sp/>{</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_selflog(</highlight><highlight class="stringliteral">&quot;%s:<sp/>file<sp/>with<sp/>path<sp/>&apos;%s&apos;<sp/>already<sp/>added.\n&quot;</highlight><highlight class="normal">,<sp/>__func__,<sp/>path);</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga39001e0bb2b7e4d0f6a4c6278dbd63ce" kindref="member">SIR_INVALID</ref>;</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"></highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(sfc-&gt;count<sp/>&lt;<sp/><ref refid="da/df8/group__custom_1gaa1080a4bec531adb6d25c87ac4734399" kindref="member">SIR_MAXFILES</ref>);</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"></highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sfc-&gt;count<sp/>&lt;<sp/><ref refid="da/df8/group__custom_1gaa1080a4bec531adb6d25c87ac4734399" kindref="member">SIR_MAXFILES</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref>*<sp/>sf<sp/>=<sp/>_sirfile_create(path,<sp/>levels,<sp/>opts);</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(_sirfile_validate(sf));</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"></highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_sirfile_validate(sf))<sp/>{</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sfc-&gt;files[sfc-&gt;count++]<sp/>=<sp/>sf;</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"></highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="d0/dfe/group__intern_1ga18c8cc97f925083ca8747b4ce820c081" kindref="member">flagtest</ref>(sf-&gt;opts,<sp/><ref refid="d8/d64/group__public_1gga9ed1c599dfd76231f4e0dadf46bff40ba59b2a0e9b2dfd78bcfa053dcb3f2dcce" kindref="member">SIRO_NOHDR</ref>))</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sirfile_writeheader(sf,<sp/><ref refid="da/df8/group__custom_1gaeb4e44bc613c57c3c49e27b66e69e933" kindref="member">SIR_FHBEGIN</ref>);</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"></highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>sf-&gt;id;</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"></highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga39001e0bb2b7e4d0f6a4c6278dbd63ce" kindref="member">SIR_INVALID</ref>;</highlight></codeline>
+<codeline lineno="253"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"></highlight></codeline>
+<codeline lineno="255"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>_sir_fcache_rem(<ref refid="d0/dd3/structsirfcache" kindref="compound">sirfcache</ref>*<sp/>sfc,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"></highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(sfc);</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<ref refid="d0/dfe/group__intern_1ga0492a95c92911c513c56331d5b800a95" kindref="member">validid</ref>(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"></highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sfc<sp/>&amp;&amp;<sp/><ref refid="d0/dfe/group__intern_1ga0492a95c92911c513c56331d5b800a95" kindref="member">validid</ref>(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">))<sp/>{</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>n<sp/>=<sp/>0;<sp/>n<sp/>&lt;<sp/>sfc-&gt;count;<sp/>n++)<sp/>{</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(_sirfile_validate(sfc-&gt;files[n]));</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"></highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sfc-&gt;files[n]-&gt;id<sp/>==<sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sirfile_destroy(sfc-&gt;files[n]);</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"></highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>n;<sp/>i<sp/>&lt;<sp/>sfc-&gt;count<sp/>-<sp/>1;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sfc-&gt;files[i]<sp/>=<sp/>sfc-&gt;files[i<sp/>+<sp/>1];</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sfc-&gt;files[i<sp/>+<sp/>1]<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"></highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(sfc-&gt;count<sp/>&gt;<sp/>0);</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sfc-&gt;count--;</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"></highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"></highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="281"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="282"><highlight class="normal"></highlight></codeline>
+<codeline lineno="283"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>_sir_fcache_pred_path(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>match,<sp/><ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref>*<sp/>iter)<sp/>{</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/>path<sp/>=<sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*)match;</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>_WIN32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0<sp/>==<sp/>strncmp(path,<sp/>iter-&gt;path,<sp/><ref refid="db/ddc/sirplatform_8h_1a1606d95455a68d16b9f64de112cd3c62" kindref="member">SIR_MAXPATH</ref>);</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>paths/file<sp/>names<sp/>are<sp/>not<sp/>case<sp/>sensitive<sp/>on<sp/>windows.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0<sp/>==<sp/>_strnicmp(path,<sp/>iter-&gt;path,<sp/><ref refid="db/ddc/sirplatform_8h_1a1606d95455a68d16b9f64de112cd3c62" kindref="member">SIR_MAXPATH</ref>);</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="291"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"></highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><ref refid="d8/dbe/structsirfile" kindref="compound">sirfile</ref>*<sp/>_sir_fcache_find(<ref refid="d0/dd3/structsirfcache" kindref="compound">sirfcache</ref>*<sp/>sfc,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>match,<sp/>sir_fcache_pred<sp/>pred)<sp/>{</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(sfc);</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(match);</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(pred);</highlight></codeline>
+<codeline lineno="297"><highlight class="normal"></highlight></codeline>
+<codeline lineno="298"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sfc<sp/>&amp;&amp;<sp/>match<sp/>&amp;&amp;<sp/>pred)<sp/>{</highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>n<sp/>=<sp/>0;<sp/>n<sp/>&lt;<sp/>sfc-&gt;count;<sp/>n++)<sp/>{</highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(pred(match,<sp/>sfc-&gt;files[n]))</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>sfc-&gt;files[n];</highlight></codeline>
+<codeline lineno="302"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="304"><highlight class="normal"></highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>NULL;</highlight></codeline>
+<codeline lineno="306"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="307"><highlight class="normal"></highlight></codeline>
+<codeline lineno="308"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>_sir_fcache_destroy(<ref refid="d0/dd3/structsirfcache" kindref="compound">sirfcache</ref>*<sp/>sfc)<sp/>{</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"></highlight></codeline>
+<codeline lineno="310"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(sfc);</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"></highlight></codeline>
+<codeline lineno="312"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sfc)<sp/>{</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>n<sp/>=<sp/>0;<sp/>n<sp/>&lt;<sp/>sfc-&gt;count;<sp/>n++)<sp/>{</highlight></codeline>
+<codeline lineno="314"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(_sirfile_validate(sfc-&gt;files[n]));</highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sirfile_destroy(sfc-&gt;files[n]);</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sfc-&gt;files[n]<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="317"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(sfc-&gt;count<sp/>&gt;<sp/>0);</highlight></codeline>
+<codeline lineno="318"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sfc-&gt;count--;</highlight></codeline>
+<codeline lineno="319"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="320"><highlight class="normal"></highlight></codeline>
+<codeline lineno="321"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>memset(sfc,<sp/>0,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="d0/dd3/structsirfcache" kindref="compound">sirfcache</ref>));</highlight></codeline>
+<codeline lineno="322"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="323"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="324"><highlight class="normal"></highlight></codeline>
+<codeline lineno="325"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="326"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="327"><highlight class="normal"></highlight></codeline>
+<codeline lineno="328"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>_sir_fcache_dispatch(<ref refid="d0/dd3/structsirfcache" kindref="compound">sirfcache</ref>*<sp/>sfc,<sp/><ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref><sp/>level,<sp/><ref refid="d7/dac/structsiroutput" kindref="compound">siroutput</ref>*<sp/>output,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">*<sp/>dispatched)<sp/>{</highlight></codeline>
+<codeline lineno="329"><highlight class="normal"></highlight></codeline>
+<codeline lineno="330"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>r<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="331"><highlight class="normal"></highlight></codeline>
+<codeline lineno="332"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(sfc);</highlight></codeline>
+<codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<ref refid="d0/dfe/group__intern_1ga18bdae29145506635d5b867f630614d2" kindref="member">validlevel</ref>(level));</highlight></codeline>
+<codeline lineno="334"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(output);</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(dispatched);</highlight></codeline>
+<codeline lineno="336"><highlight class="normal"></highlight></codeline>
+<codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sfc<sp/>&amp;&amp;<sp/><ref refid="d0/dfe/group__intern_1ga18bdae29145506635d5b867f630614d2" kindref="member">validlevel</ref>(level)<sp/>&amp;&amp;<sp/>output<sp/>&amp;&amp;<sp/>dispatched)<sp/>{</highlight></codeline>
+<codeline lineno="338"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*dispatched<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="339"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>n<sp/>=<sp/>0;<sp/>n<sp/>&lt;<sp/>sfc-&gt;count;<sp/>n++)<sp/>{</highlight></codeline>
+<codeline lineno="340"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(_sirfile_validate(sfc-&gt;files[n]));</highlight></codeline>
+<codeline lineno="341"><highlight class="normal"></highlight></codeline>
+<codeline lineno="342"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="d0/dfe/group__intern_1gab287b55d3e5ac06f8acc98b0e25acb58" kindref="member">_sir_destwantslevel</ref>(sfc-&gt;files[n]-&gt;levels,<sp/>level))<sp/>{</highlight></codeline>
+<codeline lineno="343"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_selflog(</highlight><highlight class="stringliteral">&quot;%s:<sp/>levels<sp/>for<sp/>%d<sp/>(%04lx)<sp/>not<sp/>set<sp/>for<sp/>(%04lx);<sp/>skipping...\n&quot;</highlight><highlight class="normal">,<sp/>__func__,</highlight></codeline>
+<codeline lineno="344"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sfc-&gt;files[n]-&gt;id,<sp/>sfc-&gt;files[n]-&gt;levels,<sp/>level);</highlight></codeline>
+<codeline lineno="345"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="346"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"></highlight></codeline>
+<codeline lineno="348"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/>write<sp/>=<sp/><ref refid="d0/dfe/group__intern_1ga7ad8d632acc140d1a6fe795b8de0fa70" kindref="member">_sir_format</ref>(</highlight><highlight class="keyword">false</highlight><highlight class="normal">,<sp/>sfc-&gt;files[n]-&gt;opts,<sp/>output);</highlight></codeline>
+<codeline lineno="349"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(write);</highlight></codeline>
+<codeline lineno="350"><highlight class="normal"></highlight></codeline>
+<codeline lineno="351"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(write<sp/>&amp;&amp;<sp/><ref refid="d0/dfe/group__intern_1gafcc058772f36163fe63d70a272764496" kindref="member">_sirfile_write</ref>(sfc-&gt;files[n],<sp/>write))<sp/>{</highlight></codeline>
+<codeline lineno="352"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>r<sp/>&amp;=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="353"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(*dispatched)++;</highlight></codeline>
+<codeline lineno="354"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="355"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_selflog(</highlight><highlight class="stringliteral">&quot;%s:<sp/>write<sp/>to<sp/>%d<sp/>failed!\n&quot;</highlight><highlight class="normal">,<sp/>__func__,<sp/>sfc-&gt;files[n]-&gt;id);</highlight></codeline>
+<codeline lineno="356"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="357"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="358"><highlight class="normal"></highlight></codeline>
+<codeline lineno="359"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(*dispatched<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="360"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!_sir_fflush_all())</highlight></codeline>
+<codeline lineno="361"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_selflog(</highlight><highlight class="stringliteral">&quot;%s:<sp/>fflush<sp/>failed!<sp/>errno:<sp/>%d\n&quot;</highlight><highlight class="normal">,<sp/>__func__,<sp/>errno);</highlight></codeline>
+<codeline lineno="362"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="363"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="364"><highlight class="normal"></highlight></codeline>
+<codeline lineno="365"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>r;</highlight></codeline>
+<codeline lineno="366"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="367"><highlight class="normal"></highlight></codeline>
+<codeline lineno="368"><highlight class="normal">FILE*<sp/>_sir_fopen(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/>path)<sp/>{</highlight></codeline>
+<codeline lineno="369"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="d0/dfe/group__intern_1ga7fa1e383e884232fe341e378dd89f50e" kindref="member">validstr</ref>(path))<sp/>{</highlight></codeline>
+<codeline lineno="370"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__STDC_SECURE_LIB__</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="371"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>FILE*<sp/><sp/><sp/>tmp<sp/><sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="372"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>errno_t<sp/>open<sp/>=<sp/>fopen_s(&amp;tmp,<sp/>path,<sp/><ref refid="da/df8/group__custom_1gaad514de31d1178e0a91dcd7434230965" kindref="member">SIR_FOPENMODE</ref>);</highlight></codeline>
+<codeline lineno="373"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_handleerr(open);</highlight></codeline>
+<codeline lineno="374"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>tmp;</highlight></codeline>
+<codeline lineno="375"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="376"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>FILE<sp/>*f<sp/>=<sp/>fopen(path,<sp/><ref refid="da/df8/group__custom_1gaad514de31d1178e0a91dcd7434230965" kindref="member">SIR_FOPENMODE</ref>);</highlight></codeline>
+<codeline lineno="377"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!f)<sp/>_sir_handleerr(errno);</highlight></codeline>
+<codeline lineno="378"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>f;</highlight></codeline>
+<codeline lineno="379"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="380"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="381"><highlight class="normal"></highlight></codeline>
+<codeline lineno="382"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>NULL;</highlight></codeline>
+<codeline lineno="383"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="384"><highlight class="normal"></highlight></codeline>
+<codeline lineno="385"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>_sir_fclose(FILE**<sp/>f)<sp/>{</highlight></codeline>
+<codeline lineno="386"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(f<sp/>&amp;&amp;<sp/>*f)<sp/>{</highlight></codeline>
+<codeline lineno="387"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="d0/dfe/group__intern_1ga6d4c29dee9ac91f7bf064562b5dab083" kindref="member">safefclose</ref>(*f);</highlight></codeline>
+<codeline lineno="388"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="389"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="390"><highlight class="normal"></highlight></codeline>
+<codeline lineno="391"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>_sir_fflush(FILE*<sp/>f)<sp/>{</highlight></codeline>
+<codeline lineno="392"><highlight class="normal"></highlight></codeline>
+<codeline lineno="393"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(f);</highlight></codeline>
+<codeline lineno="394"><highlight class="normal"></highlight></codeline>
+<codeline lineno="395"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(f)<sp/>{</highlight></codeline>
+<codeline lineno="396"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>flush<sp/>=<sp/>fflush(f);</highlight></codeline>
+<codeline lineno="397"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(0<sp/>!=<sp/>flush)<sp/>_sir_handleerr(errno);</highlight></codeline>
+<codeline lineno="398"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="399"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="400"><highlight class="normal"></highlight></codeline>
+<codeline lineno="401"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>_sir_fflush_all()<sp/>{</highlight></codeline>
+<codeline lineno="402"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>flush<sp/>=<sp/>fflush(NULL);</highlight></codeline>
+<codeline lineno="403"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(0<sp/>!=<sp/>flush)<sp/>_sir_handleerr(errno);</highlight></codeline>
+<codeline lineno="404"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0<sp/>==<sp/>flush;</highlight></codeline>
+<codeline lineno="405"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="406"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="sirfilecache.c"/>
+  </compounddef>
+</doxygen>

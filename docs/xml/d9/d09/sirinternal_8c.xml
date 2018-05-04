@@ -1,0 +1,1307 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="d9/d09/sirinternal_8c" kind="file" language="C++">
+    <compoundname>sirinternal.c</compoundname>
+    <includes refid="d7/dc6/sirinternal_8h" local="yes">sirinternal.h</includes>
+    <includes refid="d9/deb/sirconsole_8h" local="yes">sirconsole.h</includes>
+    <includes refid="d0/dd1/sirdefaults_8h" local="yes">sirdefaults.h</includes>
+    <includes refid="dd/d0a/sirfilecache_8h" local="yes">sirfilecache.h</includes>
+    <includes refid="d1/d20/sirmutex_8h" local="yes">sirmutex.h</includes>
+    <includes refid="dd/d55/sirtextstyle_8h" local="yes">sirtextstyle.h</includes>
+    <incdepgraph>
+      <node id="221">
+        <label>sys/stat.h</label>
+      </node>
+      <node id="216">
+        <label>stdbool.h</label>
+      </node>
+      <node id="215">
+        <label>stdarg.h</label>
+      </node>
+      <node id="225">
+        <label>stdatomic.h</label>
+      </node>
+      <node id="213">
+        <label>assert.h</label>
+      </node>
+      <node id="233">
+        <label>sirtextstyle.h</label>
+        <link refid="dd/d55/sirtextstyle_8h"/>
+        <childnode refid="210" relation="include">
+        </childnode>
+      </node>
+      <node id="217">
+        <label>stdint.h</label>
+      </node>
+      <node id="219">
+        <label>stdlib.h</label>
+      </node>
+      <node id="214">
+        <label>errno.h</label>
+      </node>
+      <node id="232">
+        <label>sirmutex.h</label>
+        <link refid="d1/d20/sirmutex_8h"/>
+        <childnode refid="210" relation="include">
+        </childnode>
+      </node>
+      <node id="227">
+        <label>syslog.h</label>
+      </node>
+      <node id="212">
+        <label>sirplatform.h</label>
+        <link refid="db/ddc/sirplatform_8h"/>
+        <childnode refid="213" relation="include">
+        </childnode>
+        <childnode refid="214" relation="include">
+        </childnode>
+        <childnode refid="215" relation="include">
+        </childnode>
+        <childnode refid="216" relation="include">
+        </childnode>
+        <childnode refid="217" relation="include">
+        </childnode>
+        <childnode refid="218" relation="include">
+        </childnode>
+        <childnode refid="219" relation="include">
+        </childnode>
+        <childnode refid="220" relation="include">
+        </childnode>
+        <childnode refid="221" relation="include">
+        </childnode>
+        <childnode refid="222" relation="include">
+        </childnode>
+        <childnode refid="223" relation="include">
+        </childnode>
+        <childnode refid="224" relation="include">
+        </childnode>
+        <childnode refid="225" relation="include">
+        </childnode>
+        <childnode refid="226" relation="include">
+        </childnode>
+        <childnode refid="227" relation="include">
+        </childnode>
+        <childnode refid="228" relation="include">
+        </childnode>
+      </node>
+      <node id="230">
+        <label>sirdefaults.h</label>
+        <link refid="d0/dd1/sirdefaults_8h"/>
+        <childnode refid="210" relation="include">
+        </childnode>
+      </node>
+      <node id="224">
+        <label>pthread.h</label>
+      </node>
+      <node id="222">
+        <label>sys/types.h</label>
+      </node>
+      <node id="220">
+        <label>string.h</label>
+      </node>
+      <node id="228">
+        <label>unistd.h</label>
+      </node>
+      <node id="209">
+        <label>sirmacros.h</label>
+        <link refid="d6/d75/sirmacros_8h"/>
+        <childnode refid="210" relation="include">
+        </childnode>
+      </node>
+      <node id="223">
+        <label>time.h</label>
+      </node>
+      <node id="210">
+        <label>sirtypes.h</label>
+        <link refid="dc/dba/sirtypes_8h"/>
+        <childnode refid="211" relation="include">
+        </childnode>
+        <childnode refid="212" relation="include">
+        </childnode>
+      </node>
+      <node id="229">
+        <label>sirconsole.h</label>
+        <link refid="d9/deb/sirconsole_8h"/>
+        <childnode refid="210" relation="include">
+        </childnode>
+      </node>
+      <node id="207">
+        <label>sirinternal.c</label>
+        <link refid="sirinternal.c"/>
+        <childnode refid="208" relation="include">
+        </childnode>
+        <childnode refid="229" relation="include">
+        </childnode>
+        <childnode refid="230" relation="include">
+        </childnode>
+        <childnode refid="231" relation="include">
+        </childnode>
+        <childnode refid="232" relation="include">
+        </childnode>
+        <childnode refid="233" relation="include">
+        </childnode>
+      </node>
+      <node id="208">
+        <label>sirinternal.h</label>
+        <link refid="d7/dc6/sirinternal_8h"/>
+        <childnode refid="209" relation="include">
+        </childnode>
+        <childnode refid="210" relation="include">
+        </childnode>
+      </node>
+      <node id="231">
+        <label>sirfilecache.h</label>
+        <link refid="dd/d0a/sirfilecache_8h"/>
+        <childnode refid="210" relation="include">
+        </childnode>
+      </node>
+      <node id="226">
+        <label>sys/syscall.h</label>
+      </node>
+      <node id="211">
+        <label>sirconfig.h</label>
+        <link refid="d4/d0f/sirconfig_8h"/>
+      </node>
+      <node id="218">
+        <label>stdio.h</label>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="d0/dfe/group__intern_1ga5f6c76e2fbea001c16466d6c4b4df222" prot="public" static="yes" mutable="no">
+        <type><ref refid="d2/ddf/structsirinit" kindref="compound">sirinit</ref></type>
+        <definition>sirinit _sir_si</definition>
+        <argsstring></argsstring>
+        <name>_sir_si</name>
+        <initializer>= {0}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="17" column="1" bodyfile="sirinternal.c" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="d0/dfe/group__intern_1ga4c50e78b43b9d625c8dc63427cdf2851" prot="public" static="yes" mutable="no">
+        <type><ref refid="d0/dd3/structsirfcache" kindref="compound">sirfcache</ref></type>
+        <definition>sirfcache _sir_fc</definition>
+        <argsstring></argsstring>
+        <name>_sir_fc</name>
+        <initializer>= {0}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="18" column="1" bodyfile="sirinternal.c" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="d0/dfe/group__intern_1gaa8533acbf8de2eecd4b69a3ee9b56c16" prot="public" static="yes" mutable="no">
+        <type><ref refid="db/ddc/sirplatform_8h_1a4b87629d5980e5381b8f76488a104f65" kindref="member">sirmutex_t</ref></type>
+        <definition>sirmutex_t si_mutex</definition>
+        <argsstring></argsstring>
+        <name>si_mutex</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="20" column="1" bodyfile="sirinternal.c" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="d0/dfe/group__intern_1ga1120bb265e938525708e0fdf906b05da" prot="public" static="yes" mutable="no">
+        <type><ref refid="db/ddc/sirplatform_8h_1a3e6f12e65e77dc62a8f3763f504335de" kindref="member">sironce_t</ref></type>
+        <definition>sironce_t si_once</definition>
+        <argsstring></argsstring>
+        <name>si_once</name>
+        <initializer>=  PTHREAD_ONCE_INIT</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="21" column="1" bodyfile="sirinternal.c" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="d0/dfe/group__intern_1ga42b1d1d604490e1bcc41891da31c00e9" prot="public" static="yes" mutable="no">
+        <type><ref refid="db/ddc/sirplatform_8h_1a4b87629d5980e5381b8f76488a104f65" kindref="member">sirmutex_t</ref></type>
+        <definition>sirmutex_t fc_mutex</definition>
+        <argsstring></argsstring>
+        <name>fc_mutex</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="23" column="1" bodyfile="sirinternal.c" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="d0/dfe/group__intern_1ga693292ad8301a0840006c4b056aea1c9" prot="public" static="yes" mutable="no">
+        <type><ref refid="db/ddc/sirplatform_8h_1a3e6f12e65e77dc62a8f3763f504335de" kindref="member">sironce_t</ref></type>
+        <definition>sironce_t fc_once</definition>
+        <argsstring></argsstring>
+        <name>fc_once</name>
+        <initializer>=  PTHREAD_ONCE_INIT</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="24" column="1" bodyfile="sirinternal.c" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="d0/dfe/group__intern_1gad946d587902e05b74c03b27117606360" prot="public" static="yes" mutable="no">
+        <type><ref refid="db/ddc/sirplatform_8h_1a4b87629d5980e5381b8f76488a104f65" kindref="member">sirmutex_t</ref></type>
+        <definition>sirmutex_t ts_mutex</definition>
+        <argsstring></argsstring>
+        <name>ts_mutex</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="26" column="1" bodyfile="sirinternal.c" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="d0/dfe/group__intern_1ga6cb6f5b46d99b55742969789db7946bb" prot="public" static="yes" mutable="no">
+        <type><ref refid="db/ddc/sirplatform_8h_1a3e6f12e65e77dc62a8f3763f504335de" kindref="member">sironce_t</ref></type>
+        <definition>sironce_t ts_once</definition>
+        <argsstring></argsstring>
+        <name>ts_once</name>
+        <initializer>=  PTHREAD_ONCE_INIT</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="27" column="1" bodyfile="sirinternal.c" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="d0/dfe/group__intern_1gaf12abfa6b207ba6d3c2e3fbafca2b53a" prot="public" static="yes" mutable="no">
+        <type>uint32_t</type>
+        <definition>volatile uint32_t _sir_magic</definition>
+        <argsstring></argsstring>
+        <name>_sir_magic</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="29" column="1" bodyfile="sirinternal.c" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="d0/dfe/group__intern_1gaf8226ccb30306806dea94394865646b2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sir_sanity</definition>
+        <argsstring>()</argsstring>
+        <name>_sir_sanity</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Evaluates whether or not the library has been initialized. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="31" column="1" bodyfile="sirinternal.c" bodystart="31" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga4933645a9db3dc00177ce5f285c9c53a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sir_options_sanity</definition>
+        <argsstring>(const sirinit *si)</argsstring>
+        <name>_sir_options_sanity</name>
+        <param>
+          <type>const <ref refid="d2/ddf/structsirinit" kindref="compound">sirinit</ref> *</type>
+          <declname>si</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Validates the configuration passed to <ref refid="d8/d64/group__public_1ga14924d3a8225bea378ad568a426be99a" kindref="member">sir_init</ref>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="39" column="1" bodyfile="sirinternal.c" bodystart="39" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1gadd9d5634aa73afb6d1c92f05c3f001c1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sir_init</definition>
+        <argsstring>(const sirinit *si)</argsstring>
+        <name>_sir_init</name>
+        <param>
+          <type>const <ref refid="d2/ddf/structsirinit" kindref="compound">sirinit</ref> *</type>
+          <declname>si</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes the library. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="44" column="1" bodyfile="sirinternal.c" bodystart="44" bodyend="73"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga10226d9d1a4003751096ac0913861e1c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void *</type>
+        <definition>void * _sir_locksection</definition>
+        <argsstring>(sir_mutex_id mid)</argsstring>
+        <name>_sir_locksection</name>
+        <param>
+          <type><ref refid="d0/dfe/group__intern_1ga1b4579307692c802cc1d2b16e49c1371" kindref="member">sir_mutex_id</ref></type>
+          <declname>mid</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Locks a protected section. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="75" column="1" bodyfile="sirinternal.c" bodystart="75" bodyend="88"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga8238d10d7a78436abe55eefec827f23b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sir_unlocksection</definition>
+        <argsstring>(sir_mutex_id mid)</argsstring>
+        <name>_sir_unlocksection</name>
+        <param>
+          <type><ref refid="d0/dfe/group__intern_1ga1b4579307692c802cc1d2b16e49c1371" kindref="member">sir_mutex_id</ref></type>
+          <declname>mid</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Unlocks a protected section. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="90" column="1" bodyfile="sirinternal.c" bodystart="90" bodyend="103"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga012235e4880fc5a62155772abab110f9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sir_mapmutexid</definition>
+        <argsstring>(sir_mutex_id mid, sirmutex_t **m, void **section)</argsstring>
+        <name>_sir_mapmutexid</name>
+        <param>
+          <type><ref refid="d0/dfe/group__intern_1ga1b4579307692c802cc1d2b16e49c1371" kindref="member">sir_mutex_id</ref></type>
+          <declname>mid</declname>
+        </param>
+        <param>
+          <type><ref refid="db/ddc/sirplatform_8h_1a4b87629d5980e5381b8f76488a104f65" kindref="member">sirmutex_t</ref> **</type>
+          <declname>m</declname>
+        </param>
+        <param>
+          <type>void **</type>
+          <declname>section</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Maps a <ref refid="d0/dfe/group__intern_1ga1b4579307692c802cc1d2b16e49c1371" kindref="member">sir_mutex_id</ref> to a <ref refid="db/ddc/sirplatform_8h_1a4b87629d5980e5381b8f76488a104f65" kindref="member">sirmutex_t</ref> and protected section. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="105" column="1" bodyfile="sirinternal.c" bodystart="105" bodyend="139"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga199347e0123544ba724e29d9aee7ba26" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sir_cleanup</definition>
+        <argsstring>()</argsstring>
+        <name>_sir_cleanup</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Frees allocated resources. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="141" column="1" bodyfile="sirinternal.c" bodystart="141" bodyend="169"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga53f008f8623768dc91a414264fc3317e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void _sir_initmutex_si_once</definition>
+        <argsstring>()</argsstring>
+        <name>_sir_initmutex_si_once</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes a specific mutex. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="172" column="1" bodyfile="sirinternal.c" bodystart="172" bodyend="174"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga6634c6acf3350cf2c92b25fa273375f2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void _sir_initmutex_fc_once</definition>
+        <argsstring>()</argsstring>
+        <name>_sir_initmutex_fc_once</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes a specific mutex. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="176" column="1" bodyfile="sirinternal.c" bodystart="176" bodyend="178"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1gae48076d3c6598e8146f5fe7c4fb58bd5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void _sir_initmutex_ts_once</definition>
+        <argsstring>()</argsstring>
+        <name>_sir_initmutex_ts_once</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes a specific mutex. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="180" column="1" bodyfile="sirinternal.c" bodystart="180" bodyend="182"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1gadc725d0786b67b52f6441a0844792a30" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void _sir_initmutex</definition>
+        <argsstring>(sirmutex_t *mutex)</argsstring>
+        <name>_sir_initmutex</name>
+        <param>
+          <type><ref refid="db/ddc/sirplatform_8h_1a4b87629d5980e5381b8f76488a104f65" kindref="member">sirmutex_t</ref> *</type>
+          <declname>mutex</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes a specific mutex. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="200" column="1" bodyfile="sirinternal.c" bodystart="200" bodyend="203"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga280f725099d27e5d78779eb00a3cc30f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void _sir_once</definition>
+        <argsstring>(sironce_t *once, sir_once_fn func)</argsstring>
+        <name>_sir_once</name>
+        <param>
+          <type><ref refid="db/ddc/sirplatform_8h_1a3e6f12e65e77dc62a8f3763f504335de" kindref="member">sironce_t</ref> *</type>
+          <declname>once</declname>
+        </param>
+        <param>
+          <type><ref refid="db/ddc/sirplatform_8h_1a15c96569a28643ba97e1609a37be5bb3" kindref="member">sir_once_fn</ref></type>
+          <declname>func</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Executes only one time. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="205" column="1" bodyfile="sirinternal.c" bodystart="205" bodyend="212"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga33f251281446388859da1dc3106132b5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sir_logv</definition>
+        <argsstring>(sir_level level, const sirchar_t *format, va_list args)</argsstring>
+        <name>_sir_logv</name>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref></type>
+          <declname>level</declname>
+        </param>
+        <param>
+          <type>const <ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>va_list</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Core output formatting. </para>        </detaileddescription>
+        <inbodydescription>
+<para><xrefsect id="dd/da0/todo_1_todo000002"><xreftitle>Todo</xreftitle><xrefdescription><para>add support for syslog&apos;s m </para></xrefdescription></xrefsect></para>        </inbodydescription>
+        <location file="sirinternal.c" line="214" column="1" bodyfile="sirinternal.c" bodystart="214" bodyend="289"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga41eea20e20e5f1fec92ec3abd8dbafa9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sir_dispatch</definition>
+        <argsstring>(sirinit *si, sir_level level, siroutput *output)</argsstring>
+        <name>_sir_dispatch</name>
+        <param>
+          <type><ref refid="d2/ddf/structsirinit" kindref="compound">sirinit</ref> *</type>
+          <declname>si</declname>
+        </param>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref></type>
+          <declname>level</declname>
+        </param>
+        <param>
+          <type><ref refid="d7/dac/structsiroutput" kindref="compound">siroutput</ref> *</type>
+          <declname>output</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Output dispatching. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="291" column="1" bodyfile="sirinternal.c" bodystart="291" bodyend="349"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga7ad8d632acc140d1a6fe795b8de0fa70" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+        <definition>const sirchar_t * _sir_format</definition>
+        <argsstring>(bool styling, sir_options opts, siroutput *output)</argsstring>
+        <name>_sir_format</name>
+        <param>
+          <type>bool</type>
+          <declname>styling</declname>
+        </param>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga858fff8dae5b79ae8849a8021a53c18c" kindref="member">sir_options</ref></type>
+          <declname>opts</declname>
+        </param>
+        <param>
+          <type><ref refid="d7/dac/structsiroutput" kindref="compound">siroutput</ref> *</type>
+          <declname>output</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Specific destination formatting. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="351" column="1" bodyfile="sirinternal.c" bodystart="351" bodyend="408"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga56e8380c236eecbef8eaa9da04c7dfc1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int _sir_syslog_maplevel</definition>
+        <argsstring>(sir_level level)</argsstring>
+        <name>_sir_syslog_maplevel</name>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref></type>
+          <declname>level</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Maps a <ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref> to a <emphasis>syslog</emphasis> level. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="411" column="1" bodyfile="sirinternal.c" bodystart="411" bodyend="426"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1gaf5dae816919a08d85afc71024ff58bcd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+        <definition>sirchar_t * _sirbuf_get</definition>
+        <argsstring>(sirbuf *buf, size_t idx)</argsstring>
+        <name>_sirbuf_get</name>
+        <param>
+          <type><ref refid="db/d38/structsirbuf" kindref="compound">sirbuf</ref> *</type>
+          <declname>buf</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>idx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieves a buffer from a <ref refid="db/d38/structsirbuf" kindref="compound">sirbuf</ref>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="432" column="1" bodyfile="sirinternal.c" bodystart="432" bodyend="448"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1gaa18a225c2c97e8a7218363bb27749a15" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+        <definition>const sirchar_t * _sir_levelstr</definition>
+        <argsstring>(sir_level level)</argsstring>
+        <name>_sir_levelstr</name>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref></type>
+          <declname>level</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Converts a <ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref> to its human-readable form. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="450" column="1" bodyfile="sirinternal.c" bodystart="450" bodyend="465"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1gab287b55d3e5ac06f8acc98b0e25acb58" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sir_destwantslevel</definition>
+        <argsstring>(sir_levels destLevels, sir_level level)</argsstring>
+        <name>_sir_destwantslevel</name>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga7ee5f2908abd2df9e89bcab0b6608edd" kindref="member">sir_levels</ref></type>
+          <declname>destLevels</declname>
+        </param>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref></type>
+          <declname>level</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determines if a particular destination is registered to receive output for a particular <ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="467" column="1" bodyfile="sirinternal.c" bodystart="467" bodyend="469"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga6d418f4a2a45a3273b8c6e09a03edd7c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sir_formattime</definition>
+        <argsstring>(time_t now, sirchar_t *buffer, const sirchar_t *format)</argsstring>
+        <name>_sir_formattime</name>
+        <param>
+          <type>time_t</type>
+          <declname>now</declname>
+        </param>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+          <declname>buffer</declname>
+        </param>
+        <param>
+          <type>const <ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+          <declname>format</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Formats the current time as a string. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="471" column="1" bodyfile="sirinternal.c" bodystart="471" bodyend="488"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1gae6a81ce863fba763916cc4e11de0fadc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool _sir_getlocaltime</definition>
+        <argsstring>(time_t *tbuf, long *nsecbuf)</argsstring>
+        <name>_sir_getlocaltime</name>
+        <param>
+          <type>time_t *</type>
+          <declname>tbuf</declname>
+        </param>
+        <param>
+          <type>long *</type>
+          <declname>nsecbuf</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieves the current local time w/ milliseconds. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="490" column="1" bodyfile="sirinternal.c" bodystart="490" bodyend="529"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga83ecbb14fa4068890de2544e43736336" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>pid_t</type>
+        <definition>pid_t _sir_getpid</definition>
+        <argsstring>()</argsstring>
+        <name>_sir_getpid</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the current process identifier. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="531" column="1" bodyfile="sirinternal.c" bodystart="531" bodyend="537"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga3e713fc26bdfeef8ced8ee89b88f8049" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>pid_t</type>
+        <definition>pid_t _sir_gettid</definition>
+        <argsstring>()</argsstring>
+        <name>_sir_gettid</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the current thread identifier. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirinternal.c" line="539" column="1" bodyfile="sirinternal.c" bodystart="539" bodyend="545"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Internal implementation. </para>    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"></codeline>
+<codeline lineno="5"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="d7/dc6/sirinternal_8h" kindref="compound">sirinternal.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="d9/deb/sirconsole_8h" kindref="compound">sirconsole.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="d0/dd1/sirdefaults_8h" kindref="compound">sirdefaults.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="dd/d0a/sirfilecache_8h" kindref="compound">sirfilecache.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="d1/d20/sirmutex_8h" kindref="compound">sirmutex.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="dd/d55/sirtextstyle_8h" kindref="compound">sirtextstyle.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="d2/ddf/structsirinit" kindref="compound">sirinit</ref><sp/><sp/><sp/>_sir_si<sp/>=<sp/>{0};</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="d0/dd3/structsirfcache" kindref="compound">sirfcache</ref><sp/>_sir_fc<sp/>=<sp/>{0};</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="db/ddc/sirplatform_8h_1a4b87629d5980e5381b8f76488a104f65" kindref="member">sirmutex_t</ref><sp/>si_mutex;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="db/ddc/sirplatform_8h_1a3e6f12e65e77dc62a8f3763f504335de" kindref="member">sironce_t</ref><sp/><sp/>si_once<sp/>=<sp/><ref refid="db/ddc/sirplatform_8h_1a7d4697ffc58df12ee881e41c5d0c0d4e" kindref="member">SIR_ONCE_INIT</ref>;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="db/ddc/sirplatform_8h_1a4b87629d5980e5381b8f76488a104f65" kindref="member">sirmutex_t</ref><sp/>fc_mutex;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="db/ddc/sirplatform_8h_1a3e6f12e65e77dc62a8f3763f504335de" kindref="member">sironce_t</ref><sp/><sp/>fc_once<sp/>=<sp/><ref refid="db/ddc/sirplatform_8h_1a7d4697ffc58df12ee881e41c5d0c0d4e" kindref="member">SIR_ONCE_INIT</ref>;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="db/ddc/sirplatform_8h_1a4b87629d5980e5381b8f76488a104f65" kindref="member">sirmutex_t</ref><sp/>ts_mutex;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="db/ddc/sirplatform_8h_1a3e6f12e65e77dc62a8f3763f504335de" kindref="member">sironce_t</ref><sp/><sp/>ts_once<sp/>=<sp/><ref refid="db/ddc/sirplatform_8h_1a7d4697ffc58df12ee881e41c5d0c0d4e" kindref="member">SIR_ONCE_INIT</ref>;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">volatile</highlight><highlight class="normal"><sp/>uint32_t<sp/>_sir_magic;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1gaf8226ccb30306806dea94394865646b2" kindref="member">_sir_sanity</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="d0/dfe/group__intern_1ga8dc2ecf93d4e4d8e36e31dbc3e580a4b" kindref="member">_SIR_MAGIC</ref><sp/>==<sp/>_sir_magic)</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>_sir_selflog(</highlight><highlight class="stringliteral">&quot;%s:<sp/>sanity<sp/>check<sp/>failed;<sp/>has<sp/>sir_init<sp/>been<sp/>called?\n&quot;</highlight><highlight class="normal">,<sp/>__func__);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga4933645a9db3dc00177ce5f285c9c53a" kindref="member">_sir_options_sanity</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d2/ddf/structsirinit" kindref="compound">sirinit</ref>*<sp/>si)<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>message<sp/>&quot;_sir_options_sanity&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1gadd9d5634aa73afb6d1c92f05c3f001c1" kindref="member">_sir_init</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d2/ddf/structsirinit" kindref="compound">sirinit</ref>*<sp/>si)<sp/>{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="d0/dfe/group__intern_1gaf8226ccb30306806dea94394865646b2" kindref="member">_sir_sanity</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_selflog(</highlight><highlight class="stringliteral">&quot;%s:<sp/>sir<sp/>appears<sp/>to<sp/>already<sp/>be<sp/>initialized!\n&quot;</highlight><highlight class="normal">,<sp/>__func__);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!si<sp/>||<sp/>!<ref refid="d0/dfe/group__intern_1ga4933645a9db3dc00177ce5f285c9c53a" kindref="member">_sir_options_sanity</ref>(si))</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="d2/ddf/structsirinit" kindref="compound">sirinit</ref>*<sp/>_si<sp/>=<sp/><ref refid="d0/dfe/group__intern_1ga10226d9d1a4003751096ac0913861e1c" kindref="member">_sir_locksection</ref>(<ref refid="d0/dfe/group__intern_1gga1b4579307692c802cc1d2b16e49c1371a2e0869dddfcc782e813b20d0b73db27c" kindref="member">_SIRM_INIT</ref>);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(_si);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(_si)<sp/>{</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>memcpy(_si,<sp/>si,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="d2/ddf/structsirinit" kindref="compound">sirinit</ref>));</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SIR_NO_SYSLOG</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>TODO:<sp/>if<sp/>not<sp/>using<sp/>process<sp/>name,<sp/>use<sp/>pid<sp/>for<sp/>syslog<sp/>identity?</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(0<sp/>!=<sp/>_si-&gt;<ref refid="d2/ddf/structsirinit_1a86b187f809d969f08dd2edef0e4cb248" kindref="member">d_syslog</ref>.levels)</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>openlog(<ref refid="d0/dfe/group__intern_1ga7fa1e383e884232fe341e378dd89f50e" kindref="member">validstr</ref>(_si-&gt;<ref refid="d2/ddf/structsirinit_1a20d83462a804b9eb5e664f3f470f780e" kindref="member">processName</ref>)<sp/>?<sp/>_si-&gt;<ref refid="d2/ddf/structsirinit_1a20d83462a804b9eb5e664f3f470f780e" kindref="member">processName</ref><sp/>:<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(_si-&gt;<ref refid="d2/ddf/structsirinit_1a86b187f809d969f08dd2edef0e4cb248" kindref="member">d_syslog</ref>.includePID<sp/>?<sp/>LOG_PID<sp/>:<sp/>0)<sp/>|<sp/>LOG_ODELAY,<sp/>LOG_USER);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_magic<sp/>=<sp/><ref refid="d0/dfe/group__intern_1ga8dc2ecf93d4e4d8e36e31dbc3e580a4b" kindref="member">_SIR_MAGIC</ref>;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="d0/dfe/group__intern_1ga8238d10d7a78436abe55eefec827f23b" kindref="member">_sir_unlocksection</ref>(<ref refid="d0/dfe/group__intern_1gga1b4579307692c802cc1d2b16e49c1371a2e0869dddfcc782e813b20d0b73db27c" kindref="member">_SIRM_INIT</ref>);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_selflog(</highlight><highlight class="stringliteral">&quot;%s:<sp/>SIR<sp/>is<sp/>initialized\n&quot;</highlight><highlight class="normal">,<sp/>__func__);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/><ref refid="d0/dfe/group__intern_1ga10226d9d1a4003751096ac0913861e1c" kindref="member">_sir_locksection</ref>(<ref refid="d0/dfe/group__intern_1ga1b4579307692c802cc1d2b16e49c1371" kindref="member">sir_mutex_id</ref><sp/>mid)<sp/>{</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="db/ddc/sirplatform_8h_1a4b87629d5980e5381b8f76488a104f65" kindref="member">sirmutex_t</ref>*<sp/>m<sp/><sp/><sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/><sp/><sp/><sp/><sp/><sp/><sp/>sec<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="d0/dfe/group__intern_1ga012235e4880fc5a62155772abab110f9" kindref="member">_sir_mapmutexid</ref>(mid,<sp/>&amp;m,<sp/>&amp;sec))<sp/>{</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>enter<sp/>=<sp/><ref refid="d0/dfe/group__intern_1ga1f350df79dd4baa18a77e115384fe04e" kindref="member">_sirmutex_lock</ref>(m);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(enter);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>enter<sp/>?<sp/>sec<sp/>:<sp/>NULL;</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>NULL;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga8238d10d7a78436abe55eefec827f23b" kindref="member">_sir_unlocksection</ref>(<ref refid="d0/dfe/group__intern_1ga1b4579307692c802cc1d2b16e49c1371" kindref="member">sir_mutex_id</ref><sp/>mid)<sp/>{</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="db/ddc/sirplatform_8h_1a4b87629d5980e5381b8f76488a104f65" kindref="member">sirmutex_t</ref>*<sp/>m<sp/><sp/><sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/><sp/><sp/><sp/><sp/><sp/><sp/>sec<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="d0/dfe/group__intern_1ga012235e4880fc5a62155772abab110f9" kindref="member">_sir_mapmutexid</ref>(mid,<sp/>&amp;m,<sp/>&amp;sec))<sp/>{</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>leave<sp/>=<sp/><ref refid="d0/dfe/group__intern_1gac71abdf9aec294011fe8492bd74d875d" kindref="member">_sirmutex_unlock</ref>(m);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(leave);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>leave;</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="103"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga012235e4880fc5a62155772abab110f9" kindref="member">_sir_mapmutexid</ref>(<ref refid="d0/dfe/group__intern_1ga1b4579307692c802cc1d2b16e49c1371" kindref="member">sir_mutex_id</ref><sp/>mid,<sp/><ref refid="db/ddc/sirplatform_8h_1a4b87629d5980e5381b8f76488a104f65" kindref="member">sirmutex_t</ref>**<sp/>m,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">**<sp/>section)<sp/>{</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(m);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!m)</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="db/ddc/sirplatform_8h_1a4b87629d5980e5381b8f76488a104f65" kindref="member">sirmutex_t</ref>*<sp/>tmpm;</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/><sp/><sp/><sp/><sp/><sp/><sp/>tmpsec;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(mid)<sp/>{</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1gga1b4579307692c802cc1d2b16e49c1371a2e0869dddfcc782e813b20d0b73db27c" kindref="member">_SIRM_INIT</ref>:</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="d0/dfe/group__intern_1ga280f725099d27e5d78779eb00a3cc30f" kindref="member">_sir_once</ref>(&amp;si_once,<sp/><ref refid="d0/dfe/group__intern_1ga53f008f8623768dc91a414264fc3317e" kindref="member">_sir_initmutex_si_once</ref>);</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tmpm<sp/><sp/><sp/>=<sp/>&amp;si_mutex;</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tmpsec<sp/>=<sp/>&amp;_sir_si;</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1gga1b4579307692c802cc1d2b16e49c1371a36e0e177582f073ea203ea4cb0db6a47" kindref="member">_SIRM_FILECACHE</ref>:</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="d0/dfe/group__intern_1ga280f725099d27e5d78779eb00a3cc30f" kindref="member">_sir_once</ref>(&amp;fc_once,<sp/><ref refid="d0/dfe/group__intern_1ga6634c6acf3350cf2c92b25fa273375f2" kindref="member">_sir_initmutex_fc_once</ref>);</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tmpm<sp/><sp/><sp/>=<sp/>&amp;fc_mutex;</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tmpsec<sp/>=<sp/>&amp;_sir_fc;</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1gga1b4579307692c802cc1d2b16e49c1371a974b68d27c9ee586a717a3ca3c66bb32" kindref="member">_SIRM_TEXTSTYLE</ref>:</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="d0/dfe/group__intern_1ga280f725099d27e5d78779eb00a3cc30f" kindref="member">_sir_once</ref>(&amp;ts_once,<sp/><ref refid="d0/dfe/group__intern_1gae48076d3c6598e8146f5fe7c4fb58bd5" kindref="member">_sir_initmutex_ts_once</ref>);</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tmpm<sp/><sp/><sp/>=<sp/>&amp;ts_mutex;</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tmpsec<sp/>=<sp/><ref refid="da/df8/group__custom_1ga03740b429551401f16d8314ab1778c26" kindref="member">sir_default_styles</ref>;</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:<sp/>tmpm<sp/>=<sp/>NULL;<sp/>tmpsec<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/>*m<sp/>=<sp/>tmpm;</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(section)</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*section<sp/>=<sp/>tmpsec;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*m<sp/>!=<sp/>NULL<sp/>&amp;&amp;<sp/>(!section<sp/>||<sp/>*section<sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="139"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga199347e0123544ba724e29d9aee7ba26" kindref="member">_sir_cleanup</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="d0/dfe/group__intern_1gaf8226ccb30306806dea94394865646b2" kindref="member">_sir_sanity</ref>())</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cleanup<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="d0/dd3/structsirfcache" kindref="compound">sirfcache</ref>*<sp/>sfc<sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="d0/dfe/group__intern_1ga10226d9d1a4003751096ac0913861e1c" kindref="member">_sir_locksection</ref>(<ref refid="d0/dfe/group__intern_1gga1b4579307692c802cc1d2b16e49c1371a36e0e177582f073ea203ea4cb0db6a47" kindref="member">_SIRM_FILECACHE</ref>);</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(sfc);</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/>cleanup<sp/>&amp;=<sp/>NULL<sp/>!=<sp/>sfc;</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sfc)<sp/>{</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>destroyfc<sp/>=<sp/>_sir_fcache_destroy(sfc);</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(destroyfc);</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cleanup<sp/>&amp;=<sp/><ref refid="d0/dfe/group__intern_1ga8238d10d7a78436abe55eefec827f23b" kindref="member">_sir_unlocksection</ref>(<ref refid="d0/dfe/group__intern_1gga1b4579307692c802cc1d2b16e49c1371a36e0e177582f073ea203ea4cb0db6a47" kindref="member">_SIRM_FILECACHE</ref>)<sp/>&amp;&amp;<sp/>destroyfc;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="d2/ddf/structsirinit" kindref="compound">sirinit</ref>*<sp/>si<sp/>=<sp/><ref refid="d0/dfe/group__intern_1ga10226d9d1a4003751096ac0913861e1c" kindref="member">_sir_locksection</ref>(<ref refid="d0/dfe/group__intern_1gga1b4579307692c802cc1d2b16e49c1371a2e0869dddfcc782e813b20d0b73db27c" kindref="member">_SIRM_INIT</ref>);</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(si);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/>cleanup<sp/>&amp;=<sp/>NULL<sp/>!=<sp/>si;</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(si)<sp/>{</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>memset(si,<sp/>0,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="d2/ddf/structsirinit" kindref="compound">sirinit</ref>));</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cleanup<sp/>&amp;=<sp/><ref refid="d0/dfe/group__intern_1ga8238d10d7a78436abe55eefec827f23b" kindref="member">_sir_unlocksection</ref>(<ref refid="d0/dfe/group__intern_1gga1b4579307692c802cc1d2b16e49c1371a2e0869dddfcc782e813b20d0b73db27c" kindref="member">_SIRM_INIT</ref>);</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>_sir_magic<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/>_sir_selflog(</highlight><highlight class="stringliteral">&quot;%s:<sp/>SIR<sp/>is<sp/>cleaned<sp/>up\n&quot;</highlight><highlight class="normal">,<sp/>__func__);</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>cleanup;</highlight></codeline>
+<codeline lineno="169"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>_WIN32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga53f008f8623768dc91a414264fc3317e" kindref="member">_sir_initmutex_si_once</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="d0/dfe/group__intern_1gadc725d0786b67b52f6441a0844792a30" kindref="member">_sir_initmutex</ref>(&amp;si_mutex);</highlight></codeline>
+<codeline lineno="174"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga6634c6acf3350cf2c92b25fa273375f2" kindref="member">_sir_initmutex_fc_once</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="d0/dfe/group__intern_1gadc725d0786b67b52f6441a0844792a30" kindref="member">_sir_initmutex</ref>(&amp;fc_mutex);</highlight></codeline>
+<codeline lineno="178"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1gae48076d3c6598e8146f5fe7c4fb58bd5" kindref="member">_sir_initmutex_ts_once</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="d0/dfe/group__intern_1gadc725d0786b67b52f6441a0844792a30" kindref="member">_sir_initmutex</ref>(&amp;ts_mutex);</highlight></codeline>
+<codeline lineno="182"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal">BOOL<sp/>CALLBACK<sp/><ref refid="d0/dfe/group__intern_1ga53f008f8623768dc91a414264fc3317e" kindref="member">_sir_initmutex_si_once</ref>(PINIT_ONCE<sp/>ponce,<sp/>PVOID<sp/>param,<sp/>PVOID*<sp/>ctx)<sp/>{</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="d0/dfe/group__intern_1gadc725d0786b67b52f6441a0844792a30" kindref="member">_sir_initmutex</ref>(&amp;si_mutex);</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>TRUE;</highlight></codeline>
+<codeline lineno="187"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal">BOOL<sp/>CALLBACK<sp/><ref refid="d0/dfe/group__intern_1ga6634c6acf3350cf2c92b25fa273375f2" kindref="member">_sir_initmutex_fc_once</ref>(PINIT_ONCE<sp/>ponce,<sp/>PVOID<sp/>param,<sp/>PVOID*<sp/>ctx)<sp/>{</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="d0/dfe/group__intern_1gadc725d0786b67b52f6441a0844792a30" kindref="member">_sir_initmutex</ref>(&amp;fc_mutex);</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>TRUE;</highlight></codeline>
+<codeline lineno="192"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal">BOOL<sp/>CALLBACK<sp/><ref refid="d0/dfe/group__intern_1gae48076d3c6598e8146f5fe7c4fb58bd5" kindref="member">_sir_initmutex_ts_once</ref>(PINIT_ONCE<sp/>ponce,<sp/>PVOID<sp/>param,<sp/>PVOID*<sp/>ctx)<sp/>{</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="d0/dfe/group__intern_1gadc725d0786b67b52f6441a0844792a30" kindref="member">_sir_initmutex</ref>(&amp;ts_mutex);</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>TRUE;</highlight></codeline>
+<codeline lineno="197"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1gadc725d0786b67b52f6441a0844792a30" kindref="member">_sir_initmutex</ref>(<ref refid="db/ddc/sirplatform_8h_1a4b87629d5980e5381b8f76488a104f65" kindref="member">sirmutex_t</ref>*<sp/>mutex)<sp/>{</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>init<sp/>=<sp/><ref refid="d0/dfe/group__intern_1gabb7fa2627bf9b269840231c50723c34e" kindref="member">_sirmutex_create</ref>(mutex);</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(init);</highlight></codeline>
+<codeline lineno="203"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"></highlight></codeline>
+<codeline lineno="205"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga280f725099d27e5d78779eb00a3cc30f" kindref="member">_sir_once</ref>(<ref refid="db/ddc/sirplatform_8h_1a3e6f12e65e77dc62a8f3763f504335de" kindref="member">sironce_t</ref>*<sp/>once,<sp/><ref refid="db/ddc/sirplatform_8h_1a15c96569a28643ba97e1609a37be5bb3" kindref="member">sir_once_fn</ref><sp/>func)<sp/>{</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>_WIN32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/>pthread_once(once,<sp/>func);</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/>BOOL<sp/>result<sp/>=<sp/>InitOnceExecuteOnce(once,<sp/>func,<sp/>NULL,<sp/>NULL);</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(FALSE<sp/>!=<sp/>result);</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="212"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"></highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga33f251281446388859da1dc3106132b5" kindref="member">_sir_logv</ref>(<ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref><sp/>level,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/>format,<sp/>va_list<sp/>args)<sp/>{</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"></highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="d0/dfe/group__intern_1gaf8226ccb30306806dea94394865646b2" kindref="member">_sir_sanity</ref>())</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<ref refid="d0/dfe/group__intern_1ga18bdae29145506635d5b867f630614d2" kindref="member">validlevel</ref>(level));</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<ref refid="d0/dfe/group__intern_1ga7fa1e383e884232fe341e378dd89f50e" kindref="member">validstr</ref>(format));</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"></highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="d0/dfe/group__intern_1ga18bdae29145506635d5b867f630614d2" kindref="member">validlevel</ref>(level)<sp/>||<sp/>!<ref refid="d0/dfe/group__intern_1ga7fa1e383e884232fe341e378dd89f50e" kindref="member">validstr</ref>(format))</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"></highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="d2/ddf/structsirinit" kindref="compound">sirinit</ref>*<sp/>si<sp/>=<sp/><ref refid="d0/dfe/group__intern_1ga10226d9d1a4003751096ac0913861e1c" kindref="member">_sir_locksection</ref>(<ref refid="d0/dfe/group__intern_1gga1b4579307692c802cc1d2b16e49c1371a2e0869dddfcc782e813b20d0b73db27c" kindref="member">_SIRM_INIT</ref>);</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"></highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!si)</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="d2/ddf/structsirinit" kindref="compound">sirinit</ref><sp/>tmpsi<sp/>=<sp/>{0};</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/>memcpy(&amp;tmpsi,<sp/>si,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="d2/ddf/structsirinit" kindref="compound">sirinit</ref>));</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="d0/dfe/group__intern_1ga8238d10d7a78436abe55eefec827f23b" kindref="member">_sir_unlocksection</ref>(<ref refid="d0/dfe/group__intern_1gga1b4579307692c802cc1d2b16e49c1371a2e0869dddfcc782e813b20d0b73db27c" kindref="member">_SIRM_INIT</ref>);</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"></highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="db/d38/structsirbuf" kindref="compound">sirbuf</ref><sp/><sp/><sp/><sp/>buf;</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="d7/dac/structsiroutput" kindref="compound">siroutput</ref><sp/>output<sp/>=<sp/>{0};</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"></highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/>output.style<sp/>=<sp/><ref refid="d0/dfe/group__intern_1gaf5dae816919a08d85afc71024ff58bcd" kindref="member">_sirbuf_get</ref>(&amp;buf,<sp/>_SIRBUF_STYLE);</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(output.style);</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"></highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="d8/d64/group__public_1ga3bd5959a607e5280a8db90ada2d80caf" kindref="member">sir_textstyle</ref><sp/>defstyle<sp/>=<sp/><ref refid="d0/dfe/group__intern_1gabe301361aa0a42c5b49c16e2c715a8ad" kindref="member">_sir_getdefstyle</ref>(level);</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<ref refid="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa42e4beda8d3aef8122f3b272c54632e2" kindref="member">SIRS_INVALID</ref><sp/>!=<sp/>defstyle);</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"></highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>fmtstyle<sp/>=<sp/><ref refid="d0/dfe/group__intern_1gaa0055b29ec2548c48496f0db52e3a3b2" kindref="member">_sir_formatstyle</ref>(defstyle,<sp/>output.style,<sp/><ref refid="da/df8/group__custom_1ga5cdaa944bfe2228355cc4c34c3d315e8" kindref="member">SIR_MAXSTYLE</ref>);</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(fmtstyle);</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"></highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/>output.timestamp<sp/>=<sp/><ref refid="d0/dfe/group__intern_1gaf5dae816919a08d85afc71024ff58bcd" kindref="member">_sirbuf_get</ref>(&amp;buf,<sp/>_SIRBUF_TIME);</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(output.timestamp);</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"></highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/>time_t<sp/>now;</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><sp/><sp/>nowmsec;</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/>gettime<sp/>=<sp/><ref refid="d0/dfe/group__intern_1gae6a81ce863fba763916cc4e11de0fadc" kindref="member">_sir_getlocaltime</ref>(&amp;now,<sp/>&amp;nowmsec);</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(gettime);</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"></highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(gettime)<sp/>{</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>fmt<sp/>=<sp/><ref refid="d0/dfe/group__intern_1ga6d418f4a2a45a3273b8c6e09a03edd7c" kindref="member">_sir_formattime</ref>(now,<sp/>output.timestamp,<sp/><ref refid="da/df8/group__custom_1gab1531d6b0d9c880b793362322542794c" kindref="member">SIR_TIMEFORMAT</ref>);</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(fmt);</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"></highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>output.msec<sp/>=<sp/><ref refid="d0/dfe/group__intern_1gaf5dae816919a08d85afc71024ff58bcd" kindref="member">_sirbuf_get</ref>(&amp;buf,<sp/>_SIRBUF_MSEC);</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(output.msec);</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"></highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>snprintf(output.msec,<sp/><ref refid="da/df8/group__custom_1gab048f63b09b424f84e19055dc0ec4a29" kindref="member">SIR_MAXMSEC</ref>,<sp/><ref refid="da/df8/group__custom_1ga11214c8798ccdaab052c3bc9db2e3e78" kindref="member">SIR_MSECFORMAT</ref>,<sp/>nowmsec);</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"></highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/>output.level<sp/>=<sp/><ref refid="d0/dfe/group__intern_1gaf5dae816919a08d85afc71024ff58bcd" kindref="member">_sirbuf_get</ref>(&amp;buf,<sp/>_SIRBUF_LEVEL);</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(output.level);</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/>snprintf(output.level,<sp/><ref refid="da/df8/group__custom_1gabac0b7b0c1ea5afc9d0708a4421b1a57" kindref="member">SIR_MAXLEVEL</ref>,<sp/></highlight><highlight class="stringliteral">&quot;[%s]&quot;</highlight><highlight class="normal">,<sp/><ref refid="d0/dfe/group__intern_1gaa18a225c2c97e8a7218363bb27749a15" kindref="member">_sir_levelstr</ref>(level));</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"></highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="d0/dfe/group__intern_1ga7fa1e383e884232fe341e378dd89f50e" kindref="member">validstr</ref>(tmpsi.<ref refid="d2/ddf/structsirinit_1a20d83462a804b9eb5e664f3f470f780e" kindref="member">processName</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>output.name<sp/>=<sp/><ref refid="d0/dfe/group__intern_1gaf5dae816919a08d85afc71024ff58bcd" kindref="member">_sirbuf_get</ref>(&amp;buf,<sp/>_SIRBUF_NAME);</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(output.name);</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>strncpy(output.name,<sp/>tmpsi.<ref refid="d2/ddf/structsirinit_1a20d83462a804b9eb5e664f3f470f780e" kindref="member">processName</ref>,<sp/><ref refid="da/df8/group__custom_1ga85ed3139018ee9e7545c74c0885dff55" kindref="member">SIR_MAXNAME</ref><sp/>-<sp/>1);</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>message<sp/>&quot;TODO:<sp/>PID/TID&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>snprintf(output.name,<sp/>SIR_MAXNAME,<sp/>&quot;%s<sp/>(%d:%d)&quot;,<sp/>sir_s.processName,<sp/>_sir_getpid(),<sp/>_sir_gettid());</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"></highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/>output.message<sp/>=<sp/><ref refid="d0/dfe/group__intern_1gaf5dae816919a08d85afc71024ff58bcd" kindref="member">_sirbuf_get</ref>(&amp;buf,<sp/>_SIRBUF_MSG);</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(output.message);</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>msgfmt<sp/>=<sp/>vsnprintf(output.message,<sp/><ref refid="da/df8/group__custom_1ga5f006a2e9ce93ae8d693a2928af33bb2" kindref="member">SIR_MAXMESSAGE</ref>,<sp/>format,<sp/>args);</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(msgfmt<sp/>&gt;=<sp/>0);</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"></highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(msgfmt<sp/>&lt;<sp/>0)</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_selflog(</highlight><highlight class="stringliteral">&quot;%s:<sp/>vsnprintf<sp/>returned<sp/>%d!&quot;</highlight><highlight class="normal">,<sp/>__func__,<sp/>msgfmt);</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"></highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/>output.output<sp/>=<sp/><ref refid="d0/dfe/group__intern_1gaf5dae816919a08d85afc71024ff58bcd" kindref="member">_sirbuf_get</ref>(&amp;buf,<sp/>_SIRBUF_OUTPUT);</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(output.output);</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"></highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga41eea20e20e5f1fec92ec3abd8dbafa9" kindref="member">_sir_dispatch</ref>(&amp;tmpsi,<sp/>level,<sp/>&amp;output);</highlight></codeline>
+<codeline lineno="289"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"></highlight></codeline>
+<codeline lineno="291"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga41eea20e20e5f1fec92ec3abd8dbafa9" kindref="member">_sir_dispatch</ref>(<ref refid="d2/ddf/structsirinit" kindref="compound">sirinit</ref>*<sp/>si,<sp/><ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref><sp/>level,<sp/><ref refid="d7/dac/structsiroutput" kindref="compound">siroutput</ref>*<sp/>output)<sp/>{</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"></highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/>r<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>dispatched<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"></highlight></codeline>
+<codeline lineno="296"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<ref refid="d0/dfe/group__intern_1ga18bdae29145506635d5b867f630614d2" kindref="member">validlevel</ref>(level));</highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(output);</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"></highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="d0/dfe/group__intern_1ga18bdae29145506635d5b867f630614d2" kindref="member">validlevel</ref>(level)<sp/>&amp;&amp;<sp/>output)<sp/>{</highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="d0/dfe/group__intern_1gab287b55d3e5ac06f8acc98b0e25acb58" kindref="member">_sir_destwantslevel</ref>(si-&gt;<ref refid="d2/ddf/structsirinit_1ac66a688f2db4be6a408b8c570ffd0811" kindref="member">d_stderr</ref>.levels,<sp/>level))<sp/>{</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/>write<sp/>=<sp/><ref refid="d0/dfe/group__intern_1ga7ad8d632acc140d1a6fe795b8de0fa70" kindref="member">_sir_format</ref>(</highlight><highlight class="keyword">true</highlight><highlight class="normal">,<sp/>si-&gt;<ref refid="d2/ddf/structsirinit_1ac66a688f2db4be6a408b8c570ffd0811" kindref="member">d_stderr</ref>.opts,<sp/>output);</highlight></codeline>
+<codeline lineno="302"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(write);</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>_WIN32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="304"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>wrote<sp/>=<sp/>_sir_stderr_write(write);</highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>r<sp/>&amp;=<sp/>NULL<sp/>!=<sp/>write<sp/>&amp;&amp;<sp/>wrote;</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="307"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint16_t*<sp/>style<sp/>=<sp/>(uint16_t*)output-&gt;style;</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>wrote<sp/>=<sp/>_sir_stderr_write(*style,<sp/>write);</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>r<sp/>&amp;=<sp/>NULL<sp/>!=<sp/>write<sp/>&amp;&amp;<sp/>NULL<sp/>!=<sp/>style<sp/>&amp;&amp;<sp/>wrote;</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(wrote)</highlight></codeline>
+<codeline lineno="312"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dispatched++;</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="314"><highlight class="normal"></highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="d0/dfe/group__intern_1gab287b55d3e5ac06f8acc98b0e25acb58" kindref="member">_sir_destwantslevel</ref>(si-&gt;<ref refid="d2/ddf/structsirinit_1abdce8407bc07b5c7bdb945bd3797dea5" kindref="member">d_stdout</ref>.levels,<sp/>level))<sp/>{</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/>write<sp/>=<sp/><ref refid="d0/dfe/group__intern_1ga7ad8d632acc140d1a6fe795b8de0fa70" kindref="member">_sir_format</ref>(</highlight><highlight class="keyword">true</highlight><highlight class="normal">,<sp/>si-&gt;<ref refid="d2/ddf/structsirinit_1abdce8407bc07b5c7bdb945bd3797dea5" kindref="member">d_stdout</ref>.opts,<sp/>output);</highlight></codeline>
+<codeline lineno="317"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(write);</highlight></codeline>
+<codeline lineno="318"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>_WIN32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="319"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>wrote<sp/>=<sp/>_sir_stdout_write(write);</highlight></codeline>
+<codeline lineno="320"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>r<sp/>&amp;=<sp/>NULL<sp/>!=<sp/>write<sp/>&amp;&amp;<sp/>wrote;</highlight></codeline>
+<codeline lineno="321"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="322"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint16_t*<sp/>style<sp/>=<sp/>(uint16_t*)output-&gt;style;</highlight></codeline>
+<codeline lineno="323"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>wrote<sp/>=<sp/>_sir_stdout_write(*style,<sp/>write);</highlight></codeline>
+<codeline lineno="324"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>r<sp/>&amp;=<sp/>NULL<sp/>!=<sp/>write<sp/>&amp;&amp;<sp/>NULL<sp/>!=<sp/>style<sp/>&amp;&amp;<sp/>wrote;</highlight></codeline>
+<codeline lineno="325"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="326"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(wrote)</highlight></codeline>
+<codeline lineno="327"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dispatched++;</highlight></codeline>
+<codeline lineno="328"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="329"><highlight class="normal"></highlight></codeline>
+<codeline lineno="330"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SIR_NO_SYSLOG</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="331"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="d0/dfe/group__intern_1gab287b55d3e5ac06f8acc98b0e25acb58" kindref="member">_sir_destwantslevel</ref>(si-&gt;<ref refid="d2/ddf/structsirinit_1a86b187f809d969f08dd2edef0e4cb248" kindref="member">d_syslog</ref>.levels,<sp/>level))<sp/>{</highlight></codeline>
+<codeline lineno="332"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>syslog(<ref refid="d0/dfe/group__intern_1ga56e8380c236eecbef8eaa9da04c7dfc1" kindref="member">_sir_syslog_maplevel</ref>(level),<sp/></highlight><highlight class="stringliteral">&quot;%s&quot;</highlight><highlight class="normal">,<sp/>output-&gt;message);</highlight></codeline>
+<codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dispatched++;</highlight></codeline>
+<codeline lineno="334"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="336"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="d0/dd3/structsirfcache" kindref="compound">sirfcache</ref>*<sp/>sfc<sp/>=<sp/><ref refid="d0/dfe/group__intern_1ga10226d9d1a4003751096ac0913861e1c" kindref="member">_sir_locksection</ref>(<ref refid="d0/dfe/group__intern_1gga1b4579307692c802cc1d2b16e49c1371a36e0e177582f073ea203ea4cb0db6a47" kindref="member">_SIRM_FILECACHE</ref>);</highlight></codeline>
+<codeline lineno="337"><highlight class="normal"></highlight></codeline>
+<codeline lineno="338"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sfc)<sp/>{</highlight></codeline>
+<codeline lineno="339"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>fdispatched<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="340"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>r<sp/>&amp;=<sp/>_sir_fcache_dispatch(sfc,<sp/>level,<sp/>output,<sp/>&amp;fdispatched);</highlight></codeline>
+<codeline lineno="341"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>r<sp/>&amp;=<sp/><ref refid="d0/dfe/group__intern_1ga8238d10d7a78436abe55eefec827f23b" kindref="member">_sir_unlocksection</ref>(<ref refid="d0/dfe/group__intern_1gga1b4579307692c802cc1d2b16e49c1371a36e0e177582f073ea203ea4cb0db6a47" kindref="member">_SIRM_FILECACHE</ref>);</highlight></codeline>
+<codeline lineno="342"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dispatched<sp/>+=<sp/>fdispatched;</highlight></codeline>
+<codeline lineno="343"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="344"><highlight class="normal"></highlight></codeline>
+<codeline lineno="345"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>r<sp/>&amp;&amp;<sp/>(dispatched<sp/>&gt;<sp/>0);</highlight></codeline>
+<codeline lineno="346"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"></highlight></codeline>
+<codeline lineno="348"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="349"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="350"><highlight class="normal"></highlight></codeline>
+<codeline lineno="351"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/><ref refid="d0/dfe/group__intern_1ga7ad8d632acc140d1a6fe795b8de0fa70" kindref="member">_sir_format</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>styling,<sp/><ref refid="d8/d64/group__public_1ga858fff8dae5b79ae8849a8021a53c18c" kindref="member">sir_options</ref><sp/>opts,<sp/><ref refid="d7/dac/structsiroutput" kindref="compound">siroutput</ref>*<sp/>output)<sp/>{</highlight></codeline>
+<codeline lineno="352"><highlight class="normal"></highlight></codeline>
+<codeline lineno="353"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<ref refid="d0/dfe/group__intern_1ga019f91a4145ebb548d772833d39784dd" kindref="member">validopts</ref>(opts));</highlight></codeline>
+<codeline lineno="354"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(output);</highlight></codeline>
+<codeline lineno="355"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(output-&gt;output);</highlight></codeline>
+<codeline lineno="356"><highlight class="normal"></highlight></codeline>
+<codeline lineno="357"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="d0/dfe/group__intern_1ga019f91a4145ebb548d772833d39784dd" kindref="member">validopts</ref>(opts)<sp/>&amp;&amp;<sp/>output<sp/>&amp;&amp;<sp/>output-&gt;output)<sp/>{</highlight></codeline>
+<codeline lineno="358"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>first<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="359"><highlight class="normal"></highlight></codeline>
+<codeline lineno="360"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="d0/dfe/group__intern_1gac65a25cfd40affc62cf0fda5ee4b3409" kindref="member">resetstr</ref>(output-&gt;output);</highlight></codeline>
+<codeline lineno="361"><highlight class="normal"></highlight></codeline>
+<codeline lineno="362"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(styling)<sp/>{</highlight></codeline>
+<codeline lineno="363"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>_WIN32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="364"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>strncat(output-&gt;output,<sp/>output-&gt;style,<sp/><ref refid="da/df8/group__custom_1ga5cdaa944bfe2228355cc4c34c3d315e8" kindref="member">SIR_MAXSTYLE</ref>);</highlight></codeline>
+<codeline lineno="365"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="366"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="367"><highlight class="normal"></highlight></codeline>
+<codeline lineno="368"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="d0/dfe/group__intern_1ga18c8cc97f925083ca8747b4ce820c081" kindref="member">flagtest</ref>(opts,<sp/><ref refid="d8/d64/group__public_1gga9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d" kindref="member">SIRO_NOTIME</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="369"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>strncat(output-&gt;output,<sp/>output-&gt;timestamp,<sp/><ref refid="da/df8/group__custom_1gac1e50274f913ef71f196f20b9dfbbba6" kindref="member">SIR_MAXTIME</ref>);</highlight></codeline>
+<codeline lineno="370"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>first<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="371"><highlight class="normal"></highlight></codeline>
+<codeline lineno="372"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>SIR_MSEC_TIMER</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="373"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="d0/dfe/group__intern_1ga18c8cc97f925083ca8747b4ce820c081" kindref="member">flagtest</ref>(opts,<sp/><ref refid="d8/d64/group__public_1gga9ed1c599dfd76231f4e0dadf46bff40bad78a6f66d21b01ace7574841495cacdd" kindref="member">SIRO_NOMSEC</ref>))</highlight></codeline>
+<codeline lineno="374"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>strncat(output-&gt;output,<sp/>output-&gt;msec,<sp/><ref refid="da/df8/group__custom_1gab048f63b09b424f84e19055dc0ec4a29" kindref="member">SIR_MAXMSEC</ref>);</highlight></codeline>
+<codeline lineno="375"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="376"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="377"><highlight class="normal"></highlight></codeline>
+<codeline lineno="378"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="d0/dfe/group__intern_1ga18c8cc97f925083ca8747b4ce820c081" kindref="member">flagtest</ref>(opts,<sp/><ref refid="d8/d64/group__public_1gga9ed1c599dfd76231f4e0dadf46bff40ba58882ac768eb1c0a0021d140f6b15deb" kindref="member">SIRO_NOLEVEL</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="379"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!first)</highlight></codeline>
+<codeline lineno="380"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>strncat(output-&gt;output,<sp/></highlight><highlight class="stringliteral">&quot;<sp/>&quot;</highlight><highlight class="normal">,<sp/>1);</highlight></codeline>
+<codeline lineno="381"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>strncat(output-&gt;output,<sp/>output-&gt;level,<sp/><ref refid="da/df8/group__custom_1gabac0b7b0c1ea5afc9d0708a4421b1a57" kindref="member">SIR_MAXLEVEL</ref>);</highlight></codeline>
+<codeline lineno="382"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>first<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="383"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="384"><highlight class="normal"></highlight></codeline>
+<codeline lineno="385"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="d0/dfe/group__intern_1ga18c8cc97f925083ca8747b4ce820c081" kindref="member">flagtest</ref>(opts,<sp/><ref refid="d8/d64/group__public_1gga9ed1c599dfd76231f4e0dadf46bff40ba59020fdfee0aaf393ed80ef7bab4bb4e" kindref="member">SIRO_NONAME</ref>)<sp/>&amp;&amp;<sp/><ref refid="d0/dfe/group__intern_1ga7fa1e383e884232fe341e378dd89f50e" kindref="member">validstr</ref>(output-&gt;name))<sp/>{</highlight></codeline>
+<codeline lineno="386"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!first)</highlight></codeline>
+<codeline lineno="387"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>strncat(output-&gt;output,<sp/></highlight><highlight class="stringliteral">&quot;<sp/>&quot;</highlight><highlight class="normal">,<sp/>1);</highlight></codeline>
+<codeline lineno="388"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>strncat(output-&gt;output,<sp/>output-&gt;name,<sp/><ref refid="da/df8/group__custom_1ga85ed3139018ee9e7545c74c0885dff55" kindref="member">SIR_MAXNAME</ref>);</highlight></codeline>
+<codeline lineno="389"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>first<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="390"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="391"><highlight class="normal"></highlight></codeline>
+<codeline lineno="392"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!first)</highlight></codeline>
+<codeline lineno="393"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>strncat(output-&gt;output,<sp/></highlight><highlight class="stringliteral">&quot;:<sp/>&quot;</highlight><highlight class="normal">,<sp/>2);</highlight></codeline>
+<codeline lineno="394"><highlight class="normal"></highlight></codeline>
+<codeline lineno="395"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>strncat(output-&gt;output,<sp/>output-&gt;message,<sp/><ref refid="da/df8/group__custom_1ga5f006a2e9ce93ae8d693a2928af33bb2" kindref="member">SIR_MAXMESSAGE</ref>);</highlight></codeline>
+<codeline lineno="396"><highlight class="normal"></highlight></codeline>
+<codeline lineno="397"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(styling)<sp/>{</highlight></codeline>
+<codeline lineno="398"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>_WIN32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="399"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>strncat(output-&gt;output,<sp/><ref refid="da/df8/group__custom_1gaca5ce9bf2336ca3fc3fb71c74756dd57" kindref="member">SIR_ENDSTYLE</ref>,<sp/><ref refid="da/df8/group__custom_1ga5cdaa944bfe2228355cc4c34c3d315e8" kindref="member">SIR_MAXSTYLE</ref>);</highlight></codeline>
+<codeline lineno="400"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="401"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="402"><highlight class="normal"></highlight></codeline>
+<codeline lineno="403"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>strncat(output-&gt;output,<sp/></highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">,<sp/>1);</highlight></codeline>
+<codeline lineno="404"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>output-&gt;output;</highlight></codeline>
+<codeline lineno="405"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="406"><highlight class="normal"></highlight></codeline>
+<codeline lineno="407"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>NULL;</highlight></codeline>
+<codeline lineno="408"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="409"><highlight class="normal"></highlight></codeline>
+<codeline lineno="410"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SIR_NO_SYSLOG</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="411"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga56e8380c236eecbef8eaa9da04c7dfc1" kindref="member">_sir_syslog_maplevel</ref>(<ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref><sp/>level)<sp/>{</highlight></codeline>
+<codeline lineno="412"><highlight class="normal"></highlight></codeline>
+<codeline lineno="413"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<ref refid="d0/dfe/group__intern_1ga18bdae29145506635d5b867f630614d2" kindref="member">validlevel</ref>(level));</highlight></codeline>
+<codeline lineno="414"><highlight class="normal"></highlight></codeline>
+<codeline lineno="415"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(level)<sp/>{</highlight></codeline>
+<codeline lineno="416"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc" kindref="member">SIRL_EMERG</ref>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>LOG_EMERG;</highlight></codeline>
+<codeline lineno="417"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955" kindref="member">SIRL_ALERT</ref>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>LOG_ALERT;</highlight></codeline>
+<codeline lineno="418"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435" kindref="member">SIRL_CRIT</ref>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>LOG_CRIT;</highlight></codeline>
+<codeline lineno="419"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76" kindref="member">SIRL_ERROR</ref>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>LOG_ERR;</highlight></codeline>
+<codeline lineno="420"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881" kindref="member">SIRL_WARN</ref>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>LOG_WARNING;</highlight></codeline>
+<codeline lineno="421"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a" kindref="member">SIRL_NOTICE</ref>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>LOG_NOTICE;</highlight></codeline>
+<codeline lineno="422"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d" kindref="member">SIRL_INFO</ref>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>LOG_INFO;</highlight></codeline>
+<codeline lineno="423"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b" kindref="member">SIRL_DEBUG</ref>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>LOG_DEBUG;</highlight></codeline>
+<codeline lineno="424"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:<sp/>assert(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>LOG_INFO;</highlight></codeline>
+<codeline lineno="425"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="426"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="427"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="428"><highlight class="normal"></highlight></codeline>
+<codeline lineno="429"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>in<sp/>case<sp/>there&apos;s<sp/>a<sp/>better<sp/>way<sp/>to<sp/>implement<sp/>this</highlight></codeline>
+<codeline lineno="430"><highlight class="comment"><sp/>*<sp/>hms,<sp/>abstract<sp/>it<sp/>away.</highlight></codeline>
+<codeline lineno="431"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="432"><highlight class="normal"><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/><ref refid="d0/dfe/group__intern_1gaf5dae816919a08d85afc71024ff58bcd" kindref="member">_sirbuf_get</ref>(<ref refid="db/d38/structsirbuf" kindref="compound">sirbuf</ref>*<sp/>buf,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>idx)<sp/>{</highlight></codeline>
+<codeline lineno="433"><highlight class="normal"></highlight></codeline>
+<codeline lineno="434"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(idx<sp/>&lt;=<sp/>_SIRBUF_MAX);</highlight></codeline>
+<codeline lineno="435"><highlight class="normal"></highlight></codeline>
+<codeline lineno="436"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(idx)<sp/>{</highlight></codeline>
+<codeline lineno="437"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>_SIRBUF_STYLE:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>buf-&gt;style;</highlight></codeline>
+<codeline lineno="438"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>_SIRBUF_TIME:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>buf-&gt;timestamp;</highlight></codeline>
+<codeline lineno="439"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>_SIRBUF_MSEC:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>buf-&gt;msec;</highlight></codeline>
+<codeline lineno="440"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>_SIRBUF_LEVEL:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>buf-&gt;level;</highlight></codeline>
+<codeline lineno="441"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>_SIRBUF_NAME:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>buf-&gt;name;</highlight></codeline>
+<codeline lineno="442"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>_SIRBUF_MSG:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>buf-&gt;message;</highlight></codeline>
+<codeline lineno="443"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>_SIRBUF_OUTPUT:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>buf-&gt;output;</highlight></codeline>
+<codeline lineno="444"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:<sp/>assert(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="445"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="446"><highlight class="normal"></highlight></codeline>
+<codeline lineno="447"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>NULL;</highlight></codeline>
+<codeline lineno="448"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="449"><highlight class="normal"></highlight></codeline>
+<codeline lineno="450"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/><ref refid="d0/dfe/group__intern_1gaa18a225c2c97e8a7218363bb27749a15" kindref="member">_sir_levelstr</ref>(<ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref><sp/>level)<sp/>{</highlight></codeline>
+<codeline lineno="451"><highlight class="normal"></highlight></codeline>
+<codeline lineno="452"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<ref refid="d0/dfe/group__intern_1ga18bdae29145506635d5b867f630614d2" kindref="member">validlevel</ref>(level));</highlight></codeline>
+<codeline lineno="453"><highlight class="normal"></highlight></codeline>
+<codeline lineno="454"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(level)<sp/>{</highlight></codeline>
+<codeline lineno="455"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d" kindref="member">SIRL_INFO</ref>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="da/df8/group__custom_1ga1f7c2763d5e7afb0f2b49d4f0636276d" kindref="member">SIRL_S_INFO</ref>;</highlight></codeline>
+<codeline lineno="456"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a" kindref="member">SIRL_NOTICE</ref>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="da/df8/group__custom_1ga6195821fca239b40498e847d50b82623" kindref="member">SIRL_S_NOTICE</ref>;</highlight></codeline>
+<codeline lineno="457"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881" kindref="member">SIRL_WARN</ref>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="da/df8/group__custom_1ga7a2838316cfd52f1af743952e667d9f5" kindref="member">SIRL_S_WARN</ref>;</highlight></codeline>
+<codeline lineno="458"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76" kindref="member">SIRL_ERROR</ref>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="da/df8/group__custom_1ga4237f9dff053a17cf7a134dbbebc5210" kindref="member">SIRL_S_ERROR</ref>;</highlight></codeline>
+<codeline lineno="459"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435" kindref="member">SIRL_CRIT</ref>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="da/df8/group__custom_1ga362f77b1b5555a0ea57fdfb64ae09229" kindref="member">SIRL_S_CRIT</ref>;</highlight></codeline>
+<codeline lineno="460"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955" kindref="member">SIRL_ALERT</ref>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="da/df8/group__custom_1ga4e02d1cb5e4a8d8535227657781d4a29" kindref="member">SIRL_S_ALERT</ref>;</highlight></codeline>
+<codeline lineno="461"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc" kindref="member">SIRL_EMERG</ref>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="da/df8/group__custom_1ga777d150774244d2707818f2c4a1b9538" kindref="member">SIRL_S_EMERG</ref>;</highlight></codeline>
+<codeline lineno="462"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b" kindref="member">SIRL_DEBUG</ref>:</highlight></codeline>
+<codeline lineno="463"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="da/df8/group__custom_1ga04d05c434823f0e5a353a31bb47af16e" kindref="member">SIRL_S_DEBUG</ref>;</highlight></codeline>
+<codeline lineno="464"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="465"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="466"><highlight class="normal"></highlight></codeline>
+<codeline lineno="467"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1gab287b55d3e5ac06f8acc98b0e25acb58" kindref="member">_sir_destwantslevel</ref>(<ref refid="d8/d64/group__public_1ga7ee5f2908abd2df9e89bcab0b6608edd" kindref="member">sir_levels</ref><sp/>destLevels,<sp/><ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref><sp/>level)<sp/>{</highlight></codeline>
+<codeline lineno="468"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga18c8cc97f925083ca8747b4ce820c081" kindref="member">flagtest</ref>(destLevels,<sp/>level);</highlight></codeline>
+<codeline lineno="469"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="470"><highlight class="normal"></highlight></codeline>
+<codeline lineno="471"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga6d418f4a2a45a3273b8c6e09a03edd7c" kindref="member">_sir_formattime</ref>(time_t<sp/>now,<sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/>buffer,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/>format)<sp/>{</highlight></codeline>
+<codeline lineno="472"><highlight class="normal"></highlight></codeline>
+<codeline lineno="473"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(now);</highlight></codeline>
+<codeline lineno="474"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(buffer);</highlight></codeline>
+<codeline lineno="475"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<ref refid="d0/dfe/group__intern_1ga7fa1e383e884232fe341e378dd89f50e" kindref="member">validstr</ref>(format));</highlight></codeline>
+<codeline lineno="476"><highlight class="normal"></highlight></codeline>
+<codeline lineno="477"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(0<sp/>!=<sp/>now<sp/>&amp;&amp;<sp/>buffer<sp/>&amp;&amp;<sp/><ref refid="d0/dfe/group__intern_1ga7fa1e383e884232fe341e378dd89f50e" kindref="member">validstr</ref>(format))<sp/>{</highlight></codeline>
+<codeline lineno="478"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>fmt<sp/>=<sp/>strftime(buffer,<sp/><ref refid="da/df8/group__custom_1gac1e50274f913ef71f196f20b9dfbbba6" kindref="member">SIR_MAXTIME</ref>,<sp/>format,<sp/>localtime(&amp;now));</highlight></codeline>
+<codeline lineno="479"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(0<sp/>!=<sp/>fmt);</highlight></codeline>
+<codeline lineno="480"><highlight class="normal"></highlight></codeline>
+<codeline lineno="481"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(0<sp/>==<sp/>fmt)</highlight></codeline>
+<codeline lineno="482"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_selflog(</highlight><highlight class="stringliteral">&quot;%s:<sp/>strftime<sp/>returned<sp/>0;<sp/>format<sp/>string:<sp/>&apos;%s&apos;&quot;</highlight><highlight class="normal">,<sp/>__func__,<sp/>format);</highlight></codeline>
+<codeline lineno="483"><highlight class="normal"></highlight></codeline>
+<codeline lineno="484"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0<sp/>!=<sp/>fmt;</highlight></codeline>
+<codeline lineno="485"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="486"><highlight class="normal"></highlight></codeline>
+<codeline lineno="487"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="488"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="489"><highlight class="normal"></highlight></codeline>
+<codeline lineno="490"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1gae6a81ce863fba763916cc4e11de0fadc" kindref="member">_sir_getlocaltime</ref>(time_t*<sp/>tbuf,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal">*<sp/>nsecbuf)<sp/>{</highlight></codeline>
+<codeline lineno="491"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(tbuf)<sp/>{</highlight></codeline>
+<codeline lineno="492"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>time(tbuf);</highlight></codeline>
+<codeline lineno="493"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>SIR_MSEC_POSIX</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="494"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">timespec<sp/>ts<sp/><sp/><sp/><sp/>=<sp/>{0};</highlight></codeline>
+<codeline lineno="495"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>clock<sp/>=<sp/>clock_gettime(<ref refid="da/df8/group__custom_1gaa8b393ed113098892caa3d2ecd14dea9" kindref="member">SIR_MSECCLOCK</ref>,<sp/>&amp;ts);</highlight></codeline>
+<codeline lineno="496"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(0<sp/>==<sp/>clock);</highlight></codeline>
+<codeline lineno="497"><highlight class="normal"></highlight></codeline>
+<codeline lineno="498"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(0<sp/>==<sp/>clock)<sp/>{</highlight></codeline>
+<codeline lineno="499"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nsecbuf)<sp/>{</highlight></codeline>
+<codeline lineno="500"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*nsecbuf<sp/>=<sp/>(ts.tv_nsec<sp/>/<sp/>1e6);</highlight></codeline>
+<codeline lineno="501"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(*nsecbuf<sp/>&lt;<sp/>1000);</highlight></codeline>
+<codeline lineno="502"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="503"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="504"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*nsecbuf<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="505"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_selflog(</highlight><highlight class="stringliteral">&quot;%s:<sp/>clock_gettime<sp/>failed;<sp/>errno:<sp/>%d\n&quot;</highlight><highlight class="normal">,<sp/>__func__,<sp/>errno);</highlight></codeline>
+<codeline lineno="506"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="507"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(SIR_MSEC_WIN32)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="508"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ULONGLONG<sp/>uepoch<sp/>=<sp/>116444736e9;</highlight></codeline>
+<codeline lineno="509"><highlight class="normal"></highlight></codeline>
+<codeline lineno="510"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>FILETIME<sp/>ftutc<sp/>=<sp/>{0};</highlight></codeline>
+<codeline lineno="511"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>GetSystemTimePreciseAsFileTime(&amp;ftutc);</highlight></codeline>
+<codeline lineno="512"><highlight class="normal"></highlight></codeline>
+<codeline lineno="513"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*tbuf<sp/>=<sp/>(((ULONGLONG)ftutc.dwHighDateTime<sp/>&lt;&lt;<sp/>32<sp/>|<sp/>ftutc.dwLowDateTime<sp/>&amp;<sp/>0x0000ffff)<sp/>-<sp/>uepoch)<sp/>/<sp/>1e7;</highlight></codeline>
+<codeline lineno="514"><highlight class="normal"></highlight></codeline>
+<codeline lineno="515"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nsecbuf)<sp/>{</highlight></codeline>
+<codeline lineno="516"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SYSTEMTIME<sp/>st<sp/>=<sp/>{0};</highlight></codeline>
+<codeline lineno="517"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>FileTimeToSystemTime(&amp;ftutc,<sp/>&amp;st);</highlight></codeline>
+<codeline lineno="518"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*nsecbuf<sp/>=<sp/>st.wMilliseconds;</highlight></codeline>
+<codeline lineno="519"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="520"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="521"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>time(tbuf);</highlight></codeline>
+<codeline lineno="522"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nsecbuf)</highlight></codeline>
+<codeline lineno="523"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*nsecbuf<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="524"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="525"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="526"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="527"><highlight class="normal"></highlight></codeline>
+<codeline lineno="528"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="529"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="530"><highlight class="normal"></highlight></codeline>
+<codeline lineno="531"><highlight class="normal">pid_t<sp/><ref refid="d0/dfe/group__intern_1ga83ecbb14fa4068890de2544e43736336" kindref="member">_sir_getpid</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="532"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>_WIN32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="533"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>getpid();</highlight></codeline>
+<codeline lineno="534"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="535"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(pid_t)GetProcessId(GetCurrentProcess());</highlight></codeline>
+<codeline lineno="536"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="537"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="538"><highlight class="normal"></highlight></codeline>
+<codeline lineno="539"><highlight class="normal">pid_t<sp/><ref refid="d0/dfe/group__intern_1ga3e713fc26bdfeef8ced8ee89b88f8049" kindref="member">_sir_gettid</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="540"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>_WIN32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="541"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>syscall(SYS_gettid);</highlight></codeline>
+<codeline lineno="542"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="543"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(pid_t)GetCurrentThreadId();</highlight></codeline>
+<codeline lineno="544"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="545"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="546"><highlight class="normal"></highlight></codeline>
+<codeline lineno="547"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>SIR_SELFLOG</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="548"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>_sir_handleerr_impl(<ref refid="db/ddc/sirplatform_8h_1ad7f51b7f05fa744437cf3634b1d02306" kindref="member">sirerror_t</ref><sp/>err,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/>func,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/>file,<sp/>uint32_t<sp/>line)<sp/>{</highlight></codeline>
+<codeline lineno="549"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="d8/d64/group__public_1ga660eff5aa33ee67e39dba84e85923643" kindref="member">SIR_NOERROR</ref><sp/>!=<sp/>err)<sp/>{</highlight></codeline>
+<codeline lineno="550"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>_WIN32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="551"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>errno<sp/>=<sp/><ref refid="d8/d64/group__public_1ga660eff5aa33ee67e39dba84e85923643" kindref="member">SIR_NOERROR</ref>;</highlight></codeline>
+<codeline lineno="552"><highlight class="normal"></highlight></codeline>
+<codeline lineno="553"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref><sp/>buf[<ref refid="d0/dfe/group__intern_1gad6fce840144259e992c33fb611f31262" kindref="member">SIR_MAXERROR</ref>]<sp/>=<sp/>{0};</highlight></codeline>
+<codeline lineno="554"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/>finderr<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>strerror_r(err,<sp/>buf,<sp/><ref refid="d0/dfe/group__intern_1gad6fce840144259e992c33fb611f31262" kindref="member">SIR_MAXERROR</ref>);</highlight></codeline>
+<codeline lineno="555"><highlight class="normal"></highlight></codeline>
+<codeline lineno="556"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_selflog(</highlight></codeline>
+<codeline lineno="557"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;%s:<sp/>at<sp/>%s:%d:<sp/>error:<sp/>(%d,<sp/>&apos;%s&apos;)\n&quot;</highlight><highlight class="normal">,<sp/>func,<sp/>file,<sp/>line,<sp/>err,<sp/>0<sp/>==<sp/>finderr<sp/>?<sp/>buf<sp/>:<sp/><ref refid="d0/dfe/group__intern_1gac09ffefb487470b26a7b5309b31ce847" kindref="member">SIR_UNKERROR</ref>);</highlight></codeline>
+<codeline lineno="558"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="559"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>DWORD<sp/>flags<sp/>=</highlight></codeline>
+<codeline lineno="560"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>FORMAT_MESSAGE_ALLOCATE_BUFFER<sp/>|<sp/>FORMAT_MESSAGE_FROM_SYSTEM<sp/>|<sp/>FORMAT_MESSAGE_IGNORE_INSERTS;</highlight></codeline>
+<codeline lineno="561"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TCHAR*<sp/>errbuf<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="562"><highlight class="normal"></highlight></codeline>
+<codeline lineno="563"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>DWORD<sp/>fmt<sp/>=<sp/>FormatMessage(flags,<sp/>NULL,<sp/>err,<sp/>0,<sp/>(LPTSTR)&amp;errbuf,<sp/><ref refid="d0/dfe/group__intern_1gad6fce840144259e992c33fb611f31262" kindref="member">SIR_MAXERROR</ref>,<sp/>NULL);</highlight></codeline>
+<codeline lineno="564"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(fmt<sp/>&gt;<sp/>0);</highlight></codeline>
+<codeline lineno="565"><highlight class="normal"></highlight></codeline>
+<codeline lineno="566"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(fmt<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/>errbuf)<sp/>{</highlight></codeline>
+<codeline lineno="567"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_selflog(</highlight><highlight class="stringliteral">&quot;%s:<sp/>at<sp/>%s:%d:<sp/>error:<sp/>(%d,<sp/>&apos;%s&apos;)\n&quot;</highlight><highlight class="normal">,<sp/>func,<sp/>file,<sp/>line,<sp/>err,<sp/>errbuf);</highlight></codeline>
+<codeline lineno="568"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>BOOL<sp/>heapfree<sp/>=<sp/>HeapFree(GetProcessHeap(),<sp/>0,<sp/>errbuf);</highlight></codeline>
+<codeline lineno="569"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(0<sp/>!=<sp/>heapfree);</highlight></codeline>
+<codeline lineno="570"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="571"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_sir_selflog(</highlight><highlight class="stringliteral">&quot;%s:<sp/>FormatMessage<sp/>failed;<sp/>err:<sp/>%lu\n&quot;</highlight><highlight class="normal">,<sp/>__func__,<sp/>GetLastError());</highlight></codeline>
+<codeline lineno="572"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="573"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="574"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="575"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<ref refid="d8/d64/group__public_1ga660eff5aa33ee67e39dba84e85923643" kindref="member">SIR_NOERROR</ref><sp/>==<sp/>err);</highlight></codeline>
+<codeline lineno="576"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="577"><highlight class="normal"></highlight></codeline>
+<codeline lineno="578"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>_sir_selflog(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/>format,<sp/>...)<sp/>{</highlight></codeline>
+<codeline lineno="579"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref><sp/>output[<ref refid="da/df8/group__custom_1ga5f006a2e9ce93ae8d693a2928af33bb2" kindref="member">SIR_MAXMESSAGE</ref>]<sp/>=<sp/>{0};</highlight></codeline>
+<codeline lineno="580"><highlight class="normal"><sp/><sp/><sp/><sp/>va_list<sp/><sp/><sp/>args;</highlight></codeline>
+<codeline lineno="581"><highlight class="normal"></highlight></codeline>
+<codeline lineno="582"><highlight class="normal"><sp/><sp/><sp/><sp/>va_start(args,<sp/>format);</highlight></codeline>
+<codeline lineno="583"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>print<sp/>=<sp/>vsnprintf(output,<sp/><ref refid="da/df8/group__custom_1ga5f006a2e9ce93ae8d693a2928af33bb2" kindref="member">SIR_MAXMESSAGE</ref>,<sp/>format,<sp/>args);</highlight></codeline>
+<codeline lineno="584"><highlight class="normal"><sp/><sp/><sp/><sp/>va_end(args);</highlight></codeline>
+<codeline lineno="585"><highlight class="normal"></highlight></codeline>
+<codeline lineno="586"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(print<sp/>&gt;<sp/>0);</highlight></codeline>
+<codeline lineno="587"><highlight class="normal"></highlight></codeline>
+<codeline lineno="588"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(print<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="589"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>put<sp/>=<sp/>fputs(output,<sp/>stderr);</highlight></codeline>
+<codeline lineno="590"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(put<sp/>!=<sp/>EOF);</highlight></codeline>
+<codeline lineno="591"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="592"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="593"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="594"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="sirinternal.c"/>
+  </compounddef>
+</doxygen>

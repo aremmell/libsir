@@ -1,10 +1,15 @@
 /**
  * @file sirtextstyle.c
- * @brief Text styling.
+ * @brief stdio text styling.
  */
 #include "sirtextstyle.h"
 #include "sirdefaults.h"
 #include "sirinternal.h"
+
+/**
+ * @addtogroup intern
+ * @{
+ */
 
 bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32_t* pbg) {
 
@@ -138,3 +143,5 @@ bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size) {
 
     return false;
 }
+
+/** @} */

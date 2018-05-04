@@ -38,11 +38,11 @@ CFLAGS_DEBUG = $(CFLAGS) -g -DDEBUG -DSIR_SELFLOG
 DEBUGTU      = $(TUS) main.c
 
 # console test rig
-_OBJ_TESTS   = tests.o $(_OBJ)
+_OBJ_TESTS   = tests.o
 OBJ_TESTS   = $(patsubst %.o, $(INTERDIR)/%.to, $(_OBJ_TESTS))
 OUT_TESTS    = $(BUILDDIR)/sirtests
-CFLAGS_TESTS = $(CFLAGS) -g -DNDEBUG
-TESTSTU      = $(TUS) $(TESTSDIR)/tests.c
+CFLAGS_TESTS = $(CFLAGS) -g -DNDEBUG -L$(LIBDIR) -lsir
+TESTSTU      = $(TESTSDIR)/tests.c
 
 # shared library
 OBJ_SHARED    = $(patsubst %.o, $(INTERDIR)/%.lo, $(_OBJ))
@@ -69,7 +69,7 @@ $(OBJ_SHARED): $(LIBDIR)
 $(INTERDIR)/%.do: %.c
 	$(CC) -c -o $@ $< $(CFLAGS_DEBUG)
 
-$(INTERDIR)/%.to: %.c
+$(INTERDIR)/%.to: $(TESTSDIR)/%.c
 	$(CC) -c -o $@ $< $(CFLAGS_TESTS)	
 
 $(INTERDIR)/%.lo: %.c
@@ -82,15 +82,13 @@ all: debug static shared tests
 # thanks to the windows folks
 prep:
 ifeq ($(OS),Windows_NT)
-	$(shell if not exist "$(BUILDDIR)\NUL" mkdir "$(BUILDDIR)")
-	$(shell if not exist "$(INTERDIR)\NUL" mkdir "$(INTERDIR)")
-	$(shell if not exist "$(LIBDIR)\NUL" mkdir "$(LIBDIR)")
-	$(shell if not exist "$(DOCSDIR)\NUL" mkdir "$(DOCSDIR)")
+	$(shell if not exist "$(BUILDDIR)\NUL" mkdir "$(BUILDDIR)" && \
+		    if not exist "$(INTERDIR)\NUL" mkdir "$(INTERDIR)" && \
+			if not exist "$(LIBDIR)\NUL" mkdir "$(LIBDIR)")
 else
 	$(shell mkdir -p $(BUILDDIR) && \
 			mkdir -p $(INTERDIR) && \
-	        mkdir -p $(LIBDIR) && \
-			mkdir -p$(DOCSDIR))
+	        mkdir -p $(LIBDIR))
 endif
 	@echo directories prepared.
 
@@ -106,8 +104,8 @@ static: shared
 	ar crf $(OUT_STATIC) $(OBJ_SHARED)
 	@echo built $(OUT_STATIC) successfully.
 
-tests: $(OBJ_TESTS)
-	$(CC) -o $(OUT_TESTS) $^ $(CFLAGS_TESTS) $(LIBS)
+tests: static
+	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS) $(CFLAGS_TESTS) $(LIBS)
 	echo built $(OUT_TESTS) successfully.
 
 docs: static
@@ -119,9 +117,9 @@ docs: static
 clean:
 ifeq ($(OS),Windows_NT)
 	@echo using del /F /Q...
-	$(shell del /F /Q "$(BUILDDIR)\*.*")
-	$(shell del /F /Q "$(INTERDIR)\*.*")
-	$(shell del /F /Q "$(LIBDIR)\*.*")
+	$(shell del /F /Q "$(BUILDDIR)\*.*" && \
+		    del /F /Q "$(INTERDIR)\*.*" && \
+			del /F /Q "$(LIBDIR)\*.*")
 else
 	@echo using rm -f...
 	$(shell rm -f $(BUILDDIR)/*.* >/dev/null && \

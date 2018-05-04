@@ -9,7 +9,10 @@
 #include "sirmutex.h"
 #include "sirtextstyle.h"
 
-/** @cond private */
+/**
+ * @addtogroup intern
+ * @{
+ */
 
 static sirinit   _sir_si = {0};
 static sirfcache _sir_fc = {0};
@@ -589,4 +592,4 @@ void _sir_selflog(const sirchar_t* format, ...) {
 }
 #endif
 
-/** @endcond private */
+/** @} */

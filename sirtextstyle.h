@@ -1,14 +1,18 @@
 /**
  * @file sirtextstyle.h
- * @brief Internal mapping of ::sir_textstyle to platform-specific values.
+ * @brief stdio text styling. 
  */
 #ifndef _SIR_TEXTSTYLE_H_INCLUDED
 #define _SIR_TEXTSTYLE_H_INCLUDED
 
 #include "sirtypes.h"
 
-/** @cond private */
+/**
+ * @addtogroup intern
+ * @{
+ */
 
+/** mapping of ::sir_textstyle <> platform values. */
 static const sir_style_priv_map sir_priv_map[] = {
 
 #ifndef _WIN32
@@ -92,12 +96,21 @@ static const sir_style_priv_map sir_priv_map[] = {
 #endif
 };
 
+/** Validates a ::sir_textstyle and splits it into its component parts. */
 bool          _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32_t* pbg);
+
+/** Sets the ::sir_textstyle for a ::sir_level (see ::sir_default_styles). */
 bool          _sir_setdefstyle(sir_level level, sir_textstyle style);
+
+/** Retrieves the ::sir_textstyle for a ::sir_level (see ::sir_default_styles). */
 sir_textstyle _sir_getdefstyle(sir_level level);
+
+/** Retrieves the platform value for a component part of a ::sir_textstyle. */
 uint16_t      _sir_getprivstyle(uint32_t cat);
+
+/** Combines component parts of a platform text style value into its final form. */
 bool          _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size);
 
-/** @endcond private */
+/** @} */
 
 #endif /* !_SIR_TEXTSTYLE_H_INCLUDED */

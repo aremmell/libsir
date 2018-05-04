@@ -128,7 +128,7 @@ INLINE_SIMPLE_STRUCTS  = NO
 # types are typedef'ed and only the typedef is referenced, never the tag name.
 # The default value is: NO.
 
-TYPEDEF_HIDES_STRUCT   = NO
+TYPEDEF_HIDES_STRUCT   = YES
 
 # The size of the symbol lookup cache can be set using LOOKUP_CACHE_SIZE. This
 # cache is used to resolve symbols given their name and scope. Since this can be
@@ -155,7 +155,7 @@ LOOKUP_CACHE_SIZE      = 0
 # normally produced when WARNINGS is set to YES.
 # The default value is: NO.
 
-EXTRACT_ALL            = YES
+EXTRACT_ALL            = NO
 
 # If the EXTRACT_PRIVATE tag is set to YES, all private members of a class will
 # be included in the documentation.
@@ -214,7 +214,7 @@ HIDE_UNDOC_MEMBERS     = YES
 # has no effect if EXTRACT_ALL is enabled.
 # The default value is: NO.
 
-HIDE_UNDOC_CLASSES     = NO
+HIDE_UNDOC_CLASSES     = YES
 
 # If the HIDE_FRIEND_COMPOUNDS tag is set to YES, doxygen will hide all friend
 # (class|struct|union) declarations. If set to NO, these declarations will be

@@ -6,7 +6,10 @@
 #include "sirinternal.h"
 #include "sirplatform.h"
 
-/** @cond private */
+/**
+ * @addtogroup intern
+ * @{
+ */
 
 #ifndef _WIN32 /* pthread mutex implementation */
 
@@ -174,4 +177,4 @@ static bool _sirmutex_waitwin32(sirmutex_t mutex, DWORD msec) {
 
 #endif /* !_WIN32 */
 
-/** @endcond private */
+/** @} */

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="todo" kind="page">
+    <compoundname>todo</compoundname>
+    <title>Todo List</title>
+    <detaileddescription>
+<para><variablelist>
+<varlistentry><term><anchor id="todo_1_todo000002"/>Global <ref refid="d0/dfe/group__intern_1ga33f251281446388859da1dc3106132b5" kindref="member">_sir_logv</ref>  (sir_level level, const sirchar_t *format, va_list args)</term></varlistentry>
+<listitem><para>add support for syslog&apos;s m  </para></listitem>
+<varlistentry><term><anchor id="todo_1_todo000001"/>Global <ref refid="d0/dfe/group__intern_1gafcc058772f36163fe63d70a272764496" kindref="member">_sirfile_write</ref>  (sirfile *sf, const sirchar_t *output)</term></varlistentry>
+<listitem><para>If an error occurs on write, consider removing file from targets, or at least attempt to roll the file (out of space?) </para></listitem>
+</variablelist>
+</para>    </detaileddescription>
+  </compounddef>
+</doxygen>

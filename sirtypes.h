@@ -1,6 +1,6 @@
 /**
  * @file sirtypes.h
- * @brief Structs, enums, etc.
+ * @brief Library types.
  */
 #ifndef _SIR_TYPES_H_INCLUDED
 #define _SIR_TYPES_H_INCLUDED
@@ -12,6 +12,12 @@
  * @addtogroup public
  * @{
  */
+
+/** The value used to represent an invalid file identifier. */
+static const int SIR_INVALID = -1;
+
+/** The value that represents the success condition. */
+static const sirerror_t SIR_NOERROR = 0;
 
 /** Defines the available levels \a (severity/priority) of logging output. */
 typedef enum {
@@ -135,12 +141,10 @@ typedef struct {
  *
  * Allocate an instance of this struct and pass it to ::sir_init
  * in order to begin using the library.
- *
- * Don't forget to call ::sir_cleanup when you're done.
  */
 typedef struct {
-    sir_stdio_dest d_stdout; /**< \a stdout configuration. */
-    sir_stdio_dest d_stderr; /**< \a stderr configuration. */
+    sir_stdio_dest d_stdout;  /**< \a stdout configuration. */
+    sir_stdio_dest d_stderr;  /**< \a stderr configuration. */
     sir_syslog_dest d_syslog; /**< \a syslog configuration. */
 
     /**
@@ -152,26 +156,31 @@ typedef struct {
 
 /** @} */
 
-/** @cond private */
+/**
+ * @addtogroup intern
+ * @{
+ */
 
+/** Text style attribute mask. */
 #define _SIRS_ATTR_MASK 0xf
+
+/** Text style foreground color mask. */
 #define _SIRS_FG_MASK 0xff0
+
+/** Text style background color mask. */
 #define _SIRS_BG_MASK 0xff000
 
+/** Magic number used to determine if the library has been initialized. */
 #define _SIR_MAGIC 0x60906090
 
-#define _SIRBUF_STYLE 0
-#define _SIRBUF_TIME 1
-#define _SIRBUF_MSEC 2
-#define _SIRBUF_LEVEL 3
-#define _SIRBUF_NAME 4
-#define _SIRBUF_MSG 5
-#define _SIRBUF_OUTPUT 6
-#define _SIRBUF_MAX 6
-
+/** The maximum size of an error message generated
+ * by the OS. */
 #define SIR_MAXERROR 256
+
+/** The error message used when an error is not resolved. */
 #define SIR_UNKERROR "<unknown>"
 
+/** Log file data. */
 typedef struct {
     sirchar_t*  path;
     sir_levels  levels;
@@ -180,11 +189,13 @@ typedef struct {
     int         id;
 } sirfile;
 
+/** Log file cache. */
 typedef struct {
     sirfile* files[SIR_MAXFILES];
     size_t   count;
 } sirfcache;
 
+/** Formatted output sent to destinations. */
 typedef struct {
     sirchar_t* style;
     sirchar_t* timestamp;
@@ -195,6 +206,19 @@ typedef struct {
     sirchar_t* output;
 } siroutput;
 
+/** Indexes into ::sirbuf buffers. */
+typedef enum {
+    _SIRBUF_STYLE = 0,
+    _SIRBUF_TIME,
+    _SIRBUF_MSEC,
+    _SIRBUF_LEVEL,
+    _SIRBUF_NAME,
+    _SIRBUF_MSG,
+    _SIRBUF_OUTPUT,
+    _SIRBUF_MAX
+} sirbuf_idx;
+
+/** Buffers for output formatting. */
 typedef struct {
     sirchar_t style[SIR_MAXSTYLE];
     sirchar_t timestamp[SIR_MAXTIME];
@@ -205,22 +229,25 @@ typedef struct {
     sirchar_t output[SIR_MAXOUTPUT];
 } sirbuf;
 
+/** ::sir_level <> ::sir_textstyle mapping. */
 typedef struct {
     sir_level level;
     uint32_t  style;
 } sir_style_map;
 
+/** Public (::sir_textstyle) <> platform text style mapping. */
 typedef struct {
-    uint32_t from;
-    uint16_t to;
+    uint32_t from; /**< The public text style flag(s). */
+    uint16_t to;   /**< The internal value. */
 } sir_style_priv_map;
 
+/** Mutex <> protected section mapping. */
 typedef enum {
-    _SIRM_INIT = 0,
-    _SIRM_FILECACHE,
-    _SIRM_TEXTSTYLE,
+    _SIRM_INIT = 0,  /**< The ::sirinit section. */
+    _SIRM_FILECACHE, /**< The ::sirfcache section. */
+    _SIRM_TEXTSTYLE, /**< The ::sir_style_map section. */
 } sir_mutex_id;
 
-/** @endcond private */
+/** @} */
 
 #endif /* !_SIR_TYPES_H_INCLUDED */

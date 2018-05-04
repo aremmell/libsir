@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="db/d38/structsirbuf" kind="struct" language="C++" prot="public">
+    <compoundname>sirbuf</compoundname>
+    <includes refid="dc/dba/sirtypes_8h" local="no">sirtypes.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="db/d38/structsirbuf_1ab2f11b3c748ec9ad5da0c17458714aab" prot="public" static="no" mutable="no">
+        <type><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref></type>
+        <definition>sirchar_t sirbuf::style[16]</definition>
+        <argsstring>[16]</argsstring>
+        <name>style</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="223" column="1" bodyfile="sirtypes.h" bodystart="223" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="db/d38/structsirbuf_1a15e5a745f7ec1445b380787d6c3d1f31" prot="public" static="no" mutable="no">
+        <type><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref></type>
+        <definition>sirchar_t sirbuf::timestamp[64]</definition>
+        <argsstring>[64]</argsstring>
+        <name>timestamp</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="224" column="1" bodyfile="sirtypes.h" bodystart="224" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="db/d38/structsirbuf_1a4ec9e9808bafd0374576fd9067e11f77" prot="public" static="no" mutable="no">
+        <type><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref></type>
+        <definition>sirchar_t sirbuf::msec[5]</definition>
+        <argsstring>[5]</argsstring>
+        <name>msec</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="225" column="1" bodyfile="sirtypes.h" bodystart="225" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="db/d38/structsirbuf_1af4ee4cc87c14559374f7d71ef9a97c43" prot="public" static="no" mutable="no">
+        <type><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref></type>
+        <definition>sirchar_t sirbuf::level[6]</definition>
+        <argsstring>[6]</argsstring>
+        <name>level</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="226" column="1" bodyfile="sirtypes.h" bodystart="226" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="db/d38/structsirbuf_1a0c8faa009e1e8c0011f4c3225a950b37" prot="public" static="no" mutable="no">
+        <type><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref></type>
+        <definition>sirchar_t sirbuf::name[32]</definition>
+        <argsstring>[32]</argsstring>
+        <name>name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="227" column="1" bodyfile="sirtypes.h" bodystart="227" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="db/d38/structsirbuf_1a54213c03e4235f707500f7ef67047515" prot="public" static="no" mutable="no">
+        <type><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref></type>
+        <definition>sirchar_t sirbuf::message[2048]</definition>
+        <argsstring>[2048]</argsstring>
+        <name>message</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="228" column="1" bodyfile="sirtypes.h" bodystart="228" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="db/d38/structsirbuf_1ad162d206661f494cbb62550c6a2adde1" prot="public" static="no" mutable="no">
+        <type><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref></type>
+        <definition>sirchar_t sirbuf::output[2048+(16 *2)+64+6+32+1]</definition>
+        <argsstring>[2048+(16 *2)+64+6+32+1]</argsstring>
+        <name>output</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="229" column="1" bodyfile="sirtypes.h" bodystart="229" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Buffers for output formatting. </para>    </detaileddescription>
+    <location file="sirtypes.h" line="222" column="1" bodyfile="sirtypes.h" bodystart="222" bodyend="230"/>
+    <listofallmembers>
+      <member refid="db/d38/structsirbuf_1af4ee4cc87c14559374f7d71ef9a97c43" prot="public" virt="non-virtual"><scope>sirbuf</scope><name>level</name></member>
+      <member refid="db/d38/structsirbuf_1a54213c03e4235f707500f7ef67047515" prot="public" virt="non-virtual"><scope>sirbuf</scope><name>message</name></member>
+      <member refid="db/d38/structsirbuf_1a4ec9e9808bafd0374576fd9067e11f77" prot="public" virt="non-virtual"><scope>sirbuf</scope><name>msec</name></member>
+      <member refid="db/d38/structsirbuf_1a0c8faa009e1e8c0011f4c3225a950b37" prot="public" virt="non-virtual"><scope>sirbuf</scope><name>name</name></member>
+      <member refid="db/d38/structsirbuf_1ad162d206661f494cbb62550c6a2adde1" prot="public" virt="non-virtual"><scope>sirbuf</scope><name>output</name></member>
+      <member refid="db/d38/structsirbuf_1ab2f11b3c748ec9ad5da0c17458714aab" prot="public" virt="non-virtual"><scope>sirbuf</scope><name>style</name></member>
+      <member refid="db/d38/structsirbuf_1a15e5a745f7ec1445b380787d6c3d1f31" prot="public" virt="non-virtual"><scope>sirbuf</scope><name>timestamp</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

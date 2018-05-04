@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="d8/dbe/structsirfile" kind="struct" language="C++" prot="public">
+    <compoundname>sirfile</compoundname>
+    <includes refid="dc/dba/sirtypes_8h" local="no">sirtypes.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="d8/dbe/structsirfile_1a9f4b5f85f13a12175ebcced6820f4257" prot="public" static="no" mutable="no">
+        <type><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+        <definition>sirchar_t* sirfile::path</definition>
+        <argsstring></argsstring>
+        <name>path</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="185" column="1" bodyfile="sirtypes.h" bodystart="185" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="d8/dbe/structsirfile_1a3485c3a00fd97bb826277b43380fff88" prot="public" static="no" mutable="no">
+        <type><ref refid="d8/d64/group__public_1ga7ee5f2908abd2df9e89bcab0b6608edd" kindref="member">sir_levels</ref></type>
+        <definition>sir_levels sirfile::levels</definition>
+        <argsstring></argsstring>
+        <name>levels</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="186" column="1" bodyfile="sirtypes.h" bodystart="186" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="d8/dbe/structsirfile_1ae85bd3a2061e76e02d98873317cfe88f" prot="public" static="no" mutable="no">
+        <type><ref refid="d8/d64/group__public_1ga858fff8dae5b79ae8849a8021a53c18c" kindref="member">sir_options</ref></type>
+        <definition>sir_options sirfile::opts</definition>
+        <argsstring></argsstring>
+        <name>opts</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="187" column="1" bodyfile="sirtypes.h" bodystart="187" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="d8/dbe/structsirfile_1a98757b6972e3954f92993f578d525b0e" prot="public" static="no" mutable="no">
+        <type>FILE *</type>
+        <definition>FILE* sirfile::f</definition>
+        <argsstring></argsstring>
+        <name>f</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="188" column="1" bodyfile="sirtypes.h" bodystart="188" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="d8/dbe/structsirfile_1a02de8a93e5a01889350f23471c9d9926" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int sirfile::id</definition>
+        <argsstring></argsstring>
+        <name>id</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="189" column="1" bodyfile="sirtypes.h" bodystart="189" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Log file data. </para>    </detaileddescription>
+    <location file="sirtypes.h" line="184" column="1" bodyfile="sirtypes.h" bodystart="184" bodyend="190"/>
+    <listofallmembers>
+      <member refid="d8/dbe/structsirfile_1a98757b6972e3954f92993f578d525b0e" prot="public" virt="non-virtual"><scope>sirfile</scope><name>f</name></member>
+      <member refid="d8/dbe/structsirfile_1a02de8a93e5a01889350f23471c9d9926" prot="public" virt="non-virtual"><scope>sirfile</scope><name>id</name></member>
+      <member refid="d8/dbe/structsirfile_1a3485c3a00fd97bb826277b43380fff88" prot="public" virt="non-virtual"><scope>sirfile</scope><name>levels</name></member>
+      <member refid="d8/dbe/structsirfile_1ae85bd3a2061e76e02d98873317cfe88f" prot="public" virt="non-virtual"><scope>sirfile</scope><name>opts</name></member>
+      <member refid="d8/dbe/structsirfile_1a9f4b5f85f13a12175ebcced6820f4257" prot="public" virt="non-virtual"><scope>sirfile</scope><name>path</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

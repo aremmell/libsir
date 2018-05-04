@@ -1,0 +1,1178 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="d8/d64/group__public" kind="group">
+    <compoundname>public</compoundname>
+    <title>Public Interface</title>
+    <innerclass refid="df/d0e/structsir__stdio__dest" prot="public">sir_stdio_dest</innerclass>
+    <innerclass refid="dc/dea/structsir__syslog__dest" prot="public">sir_syslog_dest</innerclass>
+    <innerclass refid="d2/ddf/structsirinit" prot="public">sirinit</innerclass>
+      <sectiondef kind="enum">
+      <memberdef kind="enum" id="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" prot="public" static="no">
+        <name>sir_level</name>
+        <enumvalue id="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc" prot="public">
+          <name>SIRL_EMERG</name>
+          <initializer>= 0x1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Nuclear war, Armageddon, etc. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955" prot="public">
+          <name>SIRL_ALERT</name>
+          <initializer>= 0x2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Action required ASAP. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435" prot="public">
+          <name>SIRL_CRIT</name>
+          <initializer>= 0x4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Critical errors. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76" prot="public">
+          <name>SIRL_ERROR</name>
+          <initializer>= 0x8</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Errors. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881" prot="public">
+          <name>SIRL_WARN</name>
+          <initializer>= 0x10</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Warnings that could likely be ignored. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a" prot="public">
+          <name>SIRL_NOTICE</name>
+          <initializer>= 0x20</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Normal but significant. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d" prot="public">
+          <name>SIRL_INFO</name>
+          <initializer>= 0x40</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Informational messages. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b" prot="public">
+          <name>SIRL_DEBUG</name>
+          <initializer>= 0x80</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Debugging/troubleshooting output. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444" prot="public">
+          <name>SIRL_ALL</name>
+          <initializer>= 0xff</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Includes all logging levels. </para>          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Defines the available levels <emphasis></emphasis>(severity/priority) of logging output. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="23" column="1" bodyfile="sirtypes.h" bodystart="23" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="enum" id="d8/d64/group__public_1ga9ed1c599dfd76231f4e0dadf46bff40b" prot="public" static="no">
+        <name>sir_option</name>
+        <enumvalue id="d8/d64/group__public_1gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02" prot="public">
+          <name>SIRO_DEFAULT</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Use the default for this type of destination. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d" prot="public">
+          <name>SIRO_NOTIME</name>
+          <initializer>= 0x100</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Do not include time stamps in output. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga9ed1c599dfd76231f4e0dadf46bff40ba58882ac768eb1c0a0021d140f6b15deb" prot="public">
+          <name>SIRO_NOLEVEL</name>
+          <initializer>= 0x200</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Do not include the human-readable logging level in output. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga9ed1c599dfd76231f4e0dadf46bff40ba59020fdfee0aaf393ed80ef7bab4bb4e" prot="public">
+          <name>SIRO_NONAME</name>
+          <initializer>= 0x400</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Do not include the process/app name in output. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga9ed1c599dfd76231f4e0dadf46bff40bad78a6f66d21b01ace7574841495cacdd" prot="public">
+          <name>SIRO_NOMSEC</name>
+          <initializer>= 0x800</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Don&apos;t include milliseconds in time stamps. If <emphasis>not</emphasis> set, time stamps in output to this destination will be appended with the current millisecond in addition to the hour, minute, and second. If <ref refid="d8/d64/group__public_1gga9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d" kindref="member">SIRO_NOTIME</ref> is set, this has no effect. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga9ed1c599dfd76231f4e0dadf46bff40ba59b2a0e9b2dfd78bcfa053dcb3f2dcce" prot="public">
+          <name>SIRO_NOHDR</name>
+          <initializer>= 0x1000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Don&apos;t write header messages when logging begins, or the file is rolled. Only applicable to log files. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0" prot="public">
+          <name>SIRO_MSGONLY</name>
+          <initializer>= 0xef00</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Includes all other options; effectively disables all output formatting except the original formatted message (does not include <ref refid="d8/d64/group__public_1gga9ed1c599dfd76231f4e0dadf46bff40ba59b2a0e9b2dfd78bcfa053dcb3f2dcce" kindref="member">SIRO_NOHDR</ref>; set that flag in addition to remove header messages). </para>          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Formatting options for a destination. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="42" column="1" bodyfile="sirtypes.h" bodystart="42" bodyend="67"/>
+      </memberdef>
+      <memberdef kind="enum" id="d8/d64/group__public_1ga3bd5959a607e5280a8db90ada2d80caf" prot="public" static="no">
+        <name>sir_textstyle</name>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafaeedcdbdc654f326e211a2d2f653b07f5" prot="public">
+          <name>SIRS_NONE</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Used internally; has no effect. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafacc1f324a77d57ff8ac0895767c9480d4" prot="public">
+          <name>SIRS_BRIGHT</name>
+          <initializer>= 0x1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>If set, the foreground color is &apos;intensified&apos;. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa0fbe677e96b8483b073584848bb5e4fc" prot="public">
+          <name>SIRS_FG_BLACK</name>
+          <initializer>= 0x10</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Black foreground. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa1f11f323b6998adbd83b31d73bc538dc" prot="public">
+          <name>SIRS_FG_RED</name>
+          <initializer>= 0x20</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Red foreground. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafae78e2dc1e4fed6ad5b12d089e80a07e8" prot="public">
+          <name>SIRS_FG_GREEN</name>
+          <initializer>= 0x30</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Green foreground. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa89c9ddbb6a10b8c5fe204247eb457641" prot="public">
+          <name>SIRS_FG_YELLOW</name>
+          <initializer>= 0x40</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Yellow foreground. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa2f75bdae21995a567531e37eec6e979d" prot="public">
+          <name>SIRS_FG_BLUE</name>
+          <initializer>= 0x50</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Blue foreground. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa78c026ced18436da03a138ac720d9739" prot="public">
+          <name>SIRS_FG_MAGENTA</name>
+          <initializer>= 0x60</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Magenta foreground. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafaefc4595e6d22f5a5d6ce7fa13c64444d" prot="public">
+          <name>SIRS_FG_CYAN</name>
+          <initializer>= 0x70</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Cyan foreground. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafae6d57af48d2bca9848aa8cf926043e4e" prot="public">
+          <name>SIRS_FG_WHITE</name>
+          <initializer>= 0x80</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>White foreground. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafae27d8d5a99b25c1fa6a6f8e88c728847" prot="public">
+          <name>SIRS_FG_LGRAY</name>
+          <initializer>= 0x90</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Light gray foreground. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa0a21b2c2577cffd925841a9bc549eb1a" prot="public">
+          <name>SIRS_FG_DGRAY</name>
+          <initializer>= 0xa0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Dark gray foreground. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafaa4b6a5f32e591cd5649c849555abcd32" prot="public">
+          <name>SIRS_FG_LRED</name>
+          <initializer>= 0xb0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Light red foreground. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa3ca695e05500c2577a8aed197c6f515a" prot="public">
+          <name>SIRS_FG_LGREEN</name>
+          <initializer>= 0xc0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Light green foreground. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa044cfd76b272031ac7103a6f4b655c68" prot="public">
+          <name>SIRS_FG_LYELLOW</name>
+          <initializer>= 0xd0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Light yellow foreground. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa9803c61fa699378b4d3d4da2e7a1fc43" prot="public">
+          <name>SIRS_FG_LBLUE</name>
+          <initializer>= 0xe0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Light blue foreground. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa41034337d4b4513f07641d97b2450c06" prot="public">
+          <name>SIRS_FG_LMAGENTA</name>
+          <initializer>= 0xf0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Light magenta foreground. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa869cfb06440efa65ee401ccccec054b5" prot="public">
+          <name>SIRS_FG_LCYAN</name>
+          <initializer>= 0xf10</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Light cyan foreground. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa94c0b7a28b98275970c70dc8cbf3ed86" prot="public">
+          <name>SIRS_FG_DEFAULT</name>
+          <initializer>= 0xf20</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Use the default foreground color. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafae6d8923837281767bb30b4cfb59bcd2c" prot="public">
+          <name>SIRS_BG_BLACK</name>
+          <initializer>= 0x1000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Black background. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafad0eec1607a2eefbabe5947bd595170a4" prot="public">
+          <name>SIRS_BG_RED</name>
+          <initializer>= 0x2000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Red background. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa93166b30d32c8dbf52f93612aa0dcdd7" prot="public">
+          <name>SIRS_BG_GREEN</name>
+          <initializer>= 0x3000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Green background. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafabe3a20064515e10ac72eaf6e8a665b55" prot="public">
+          <name>SIRS_BG_YELLOW</name>
+          <initializer>= 0x4000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Yellow background. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafabbee0baeb2477032387f884c6f938129" prot="public">
+          <name>SIRS_BG_BLUE</name>
+          <initializer>= 0x5000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Blue background. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa989b172db1f8a3a212ef5b8e23d636cf" prot="public">
+          <name>SIRS_BG_MAGENTA</name>
+          <initializer>= 0x6000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Magenta background. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa04083a920b7ed070f2bbb886e4691203" prot="public">
+          <name>SIRS_BG_CYAN</name>
+          <initializer>= 0x7000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Cyan background. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa57f3210f2af19b6b3067a10ab5947a36" prot="public">
+          <name>SIRS_BG_WHITE</name>
+          <initializer>= 0x8000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>White background. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa05859c52a6ff0bdfccf869e1330889a3" prot="public">
+          <name>SIRS_BG_LGRAY</name>
+          <initializer>= 0x9000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Light gray background. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa65b1ce8d8dcdf149a9ee515001ee7d69" prot="public">
+          <name>SIRS_BG_DGRAY</name>
+          <initializer>= 0xa000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Dark gray background. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa5dabc2332ba159af08c886c8d8cecd3e" prot="public">
+          <name>SIRS_BG_LRED</name>
+          <initializer>= 0xb000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Light red background. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa6dba92fe12cc2cf72ea2e77d9f083b25" prot="public">
+          <name>SIRS_BG_LGREEN</name>
+          <initializer>= 0xc000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Light green background. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafaa57ce340d05ec022dc4a5f89d2bea212" prot="public">
+          <name>SIRS_BG_LYELLOW</name>
+          <initializer>= 0xd000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Light yellow background. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafae30bf67c0667f08b92c10f6e14b1895e" prot="public">
+          <name>SIRS_BG_LBLUE</name>
+          <initializer>= 0xe000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Light blue background. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa2bac829fbcfffa04182547d4a0a00e7a" prot="public">
+          <name>SIRS_BG_LMAGENTA</name>
+          <initializer>= 0xf000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Light magenta background. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafaf3b311d7fd2af0678d7ddff6f7967866" prot="public">
+          <name>SIRS_BG_LCYAN</name>
+          <initializer>= 0xf1000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Light cyan background. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafab38f3ce262a13dd157fd1a2077fe27d6" prot="public">
+          <name>SIRS_BG_DEFAULT</name>
+          <initializer>= 0xf2000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Use the default background color. </para>          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="d8/d64/group__public_1gga3bd5959a607e5280a8db90ada2d80cafa42e4beda8d3aef8122f3b272c54632e2" prot="public">
+          <name>SIRS_INVALID</name>
+          <initializer>= 0xf3000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Represents the invalid text style. </para>          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Available styles <emphasis></emphasis>(colors, brightness) for console output. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="76" column="1" bodyfile="sirtypes.h" bodystart="76" bodyend="114"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="d8/d64/group__public_1ga7ee5f2908abd2df9e89bcab0b6608edd" prot="public" static="no">
+        <type>uint16_t</type>
+        <definition>typedef uint16_t sir_levels</definition>
+        <argsstring></argsstring>
+        <name>sir_levels</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Used to differentiate between a single <ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref> and one or more bitwise OR&apos;d together. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="39" column="1" bodyfile="sirtypes.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="d8/d64/group__public_1ga858fff8dae5b79ae8849a8021a53c18c" prot="public" static="no">
+        <type>uint16_t</type>
+        <definition>typedef uint16_t sir_options</definition>
+        <argsstring></argsstring>
+        <name>sir_options</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Used to differentiate between a single <ref refid="d8/d64/group__public_1ga9ed1c599dfd76231f4e0dadf46bff40b" kindref="member">sir_option</ref> and one or more bitwise OR&apos;d together. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="73" column="1" bodyfile="sirtypes.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" prot="public" static="no">
+        <type>char</type>
+        <definition>typedef char sirchar_t</definition>
+        <argsstring></argsstring>
+        <name>sirchar_t</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The underlying type used for characters in output. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="117" column="1" bodyfile="sirtypes.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="d8/d64/group__public_1ga39001e0bb2b7e4d0f6a4c6278dbd63ce" prot="public" static="yes" mutable="no">
+        <type>const int</type>
+        <definition>const int SIR_INVALID</definition>
+        <argsstring></argsstring>
+        <name>SIR_INVALID</name>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The value used to represent an invalid file identifier. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="17" column="1" bodyfile="sirtypes.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="d8/d64/group__public_1ga660eff5aa33ee67e39dba84e85923643" prot="public" static="yes" mutable="no">
+        <type>const <ref refid="db/ddc/sirplatform_8h_1ad7f51b7f05fa744437cf3634b1d02306" kindref="member">sirerror_t</ref></type>
+        <definition>const sirerror_t SIR_NOERROR</definition>
+        <argsstring></argsstring>
+        <name>SIR_NOERROR</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The value that represents the success condition. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirtypes.h" line="20" column="1" bodyfile="sirtypes.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="d8/d64/group__public_1ga14924d3a8225bea378ad568a426be99a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool sir_init</definition>
+        <argsstring>(const sirinit *si)</argsstring>
+        <name>sir_init</name>
+        <param>
+          <type>const <ref refid="d2/ddf/structsirinit" kindref="compound">sirinit</ref> *</type>
+          <declname>si</declname>
+        </param>
+        <briefdescription>
+<para>Initializes the library. </para>        </briefdescription>
+        <detaileddescription>
+<para>Any thread may initialize SIR, but any calls to other library functions will fail until this call has completed.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>si</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initialization options.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>boolean </para></simplesect>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>SIR is initialized and ready to use. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initialization failed. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sir.h" line="50" column="1" bodyfile="sir.c" bodystart="10" bodyend="12"/>
+      </memberdef>
+      <memberdef kind="function" id="d8/d64/group__public_1ga3c56bf2c5a65e66b7b08e1c4abadf07a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool sir_cleanup</definition>
+        <argsstring>()</argsstring>
+        <name>sir_cleanup</name>
+        <briefdescription>
+<para>Frees allocated resources and resets internal state. </para>        </briefdescription>
+        <detaileddescription>
+<para>It is not necessary to call this function from the same thread that called <ref refid="d8/d64/group__public_1ga14924d3a8225bea378ad568a426be99a" kindref="member">sir_init</ref>. Any calls made after this to functions other than to <ref refid="d8/d64/group__public_1ga14924d3a8225bea378ad568a426be99a" kindref="member">sir_init</ref> <emphasis></emphasis>(in order to re-initialize) will fail.</para><para><simplesect kind="note"><para>Mutexes allocated during initialization are <emphasis>not</emphasis> destroyed during cleanup; they are retained for potential further re-initialization.</para></simplesect>
+<simplesect kind="return"><para>boolean </para></simplesect>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>SIR is cleaned up. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An error occurred. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sir.h" line="66" column="1" bodyfile="sir.c" bodystart="14" bodyend="16"/>
+      </memberdef>
+      <memberdef kind="function" id="d8/d64/group__public_1ga3580e004c0c568c225a6d1a1bc5e9ea2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool sir_debug</definition>
+        <argsstring>(const sirchar_t *format,...)</argsstring>
+        <name>sir_debug</name>
+        <param>
+          <type>const <ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+<para>Log a formatted debug-level message. </para>        </briefdescription>
+        <detaileddescription>
+<para>This function maps internally to the logging level <ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b" kindref="member">SIRL_DEBUG</ref>.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A printf-style format string. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>...</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><emphasis></emphasis>(variadic) Additional arguments whose types correspond to the format specifier at the same index in <computeroutput>format</computeroutput>.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>boolean </para></simplesect>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>All destinations registered for this level were successfully processed. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>One or more destinations were not successfully processed. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sir.h" line="81" column="1" bodyfile="sir.c" bodystart="18" bodyend="23"/>
+      </memberdef>
+      <memberdef kind="function" id="d8/d64/group__public_1ga707b1de6ceee2e3091b7d4ecf0f8758e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool sir_info</definition>
+        <argsstring>(const sirchar_t *format,...)</argsstring>
+        <name>sir_info</name>
+        <param>
+          <type>const <ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+<para>Log a formatted informational message. </para>        </briefdescription>
+        <detaileddescription>
+<para>This function maps internally to the logging level <ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d" kindref="member">SIRL_INFO</ref>.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A printf-style format string. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>...</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><emphasis></emphasis>(variadic) Additional arguments whose types correspond to the format specifier at the same index in <computeroutput>format</computeroutput>.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>boolean </para></simplesect>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>All destinations registered for this level were successfully processed. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>One or more destinations were not successfully processed. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sir.h" line="96" column="1" bodyfile="sir.c" bodystart="25" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="d8/d64/group__public_1gab17d7622664c42afaafa66c53542dfeb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool sir_notice</definition>
+        <argsstring>(const sirchar_t *format,...)</argsstring>
+        <name>sir_notice</name>
+        <param>
+          <type>const <ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+<para>Log a formatted notice message. </para>        </briefdescription>
+        <detaileddescription>
+<para>This function maps internally to the logging level <ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a" kindref="member">SIRL_NOTICE</ref>.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A printf-style format string. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>...</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><emphasis></emphasis>(variadic) Additional arguments whose types correspond to the format specifier at the same index in <computeroutput>format</computeroutput>.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>boolean </para></simplesect>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>All destinations registered for this level were successfully processed. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>One or more destinations were not successfully processed. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sir.h" line="111" column="1" bodyfile="sir.c" bodystart="32" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="d8/d64/group__public_1ga3c4ca38dbb2a5e99e2d862dfdbd6f97a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool sir_warn</definition>
+        <argsstring>(const sirchar_t *format,...)</argsstring>
+        <name>sir_warn</name>
+        <param>
+          <type>const <ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+<para>Log a formatted warning message. </para>        </briefdescription>
+        <detaileddescription>
+<para>This function maps internally to the logging level <ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881" kindref="member">SIRL_WARN</ref>.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A printf-style format string. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>...</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><emphasis></emphasis>(variadic) Additional arguments whose types correspond to the format specifier at the same index in <computeroutput>format</computeroutput>.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>boolean </para></simplesect>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>All destinations registered for this level were successfully processed. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>One or more destinations were not successfully processed. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sir.h" line="126" column="1" bodyfile="sir.c" bodystart="39" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="d8/d64/group__public_1gace667f9ba844f541bc41c61c94ed93f3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool sir_error</definition>
+        <argsstring>(const sirchar_t *format,...)</argsstring>
+        <name>sir_error</name>
+        <param>
+          <type>const <ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+<para>Log a formatted error message. </para>        </briefdescription>
+        <detaileddescription>
+<para>This function maps internally to the logging level <ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76" kindref="member">SIRL_ERROR</ref>.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A printf-style format string. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>...</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><emphasis></emphasis>(variadic) Additional arguments whose types correspond to the format specifier at the same index in <computeroutput>format</computeroutput>.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>boolean </para></simplesect>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>All destinations registered for this level were successfully processed. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>One or more destinations were not successfully processed. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sir.h" line="141" column="1" bodyfile="sir.c" bodystart="46" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="d8/d64/group__public_1ga29cff3ca15309cca61066870674f54c3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool sir_crit</definition>
+        <argsstring>(const sirchar_t *format,...)</argsstring>
+        <name>sir_crit</name>
+        <param>
+          <type>const <ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+<para>Log a formatted critical error message. </para>        </briefdescription>
+        <detaileddescription>
+<para>This function maps internally to the logging level <ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435" kindref="member">SIRL_CRIT</ref>.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A printf-style format string. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>...</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><emphasis></emphasis>(variadic) Additional arguments whose types correspond to the format specifier at the same index in <computeroutput>format</computeroutput>.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>boolean </para></simplesect>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>All destinations registered for this level were successfully processed. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>One or more destinations were not successfully processed. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sir.h" line="156" column="1" bodyfile="sir.c" bodystart="53" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="d8/d64/group__public_1ga48e9fb49c28b31a09d48eb0e90468679" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool sir_alert</definition>
+        <argsstring>(const sirchar_t *format,...)</argsstring>
+        <name>sir_alert</name>
+        <param>
+          <type>const <ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+<para>Log a formatted alert message. </para>        </briefdescription>
+        <detaileddescription>
+<para>This function maps internally to the logging level <ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955" kindref="member">SIRL_ALERT</ref>.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A printf-style format string. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>...</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><emphasis></emphasis>(variadic) Additional arguments whose types correspond to the format specifier at the same index in <computeroutput>format</computeroutput>.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>boolean </para></simplesect>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>All destinations registered for this level were successfully processed. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>One or more destinations were not successfully processed. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sir.h" line="171" column="1" bodyfile="sir.c" bodystart="60" bodyend="65"/>
+      </memberdef>
+      <memberdef kind="function" id="d8/d64/group__public_1gabace08a061ddb85494e28bd3a518bb58" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool sir_emerg</definition>
+        <argsstring>(const sirchar_t *format,...)</argsstring>
+        <name>sir_emerg</name>
+        <param>
+          <type>const <ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+<para>Log a formatted emergency message. </para>        </briefdescription>
+        <detaileddescription>
+<para>This function maps internally to the logging level <ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc" kindref="member">SIRL_EMERG</ref>.</para><para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A printf-style format string. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>...</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><emphasis></emphasis>(variadic) Additional arguments whose types correspond to the format specifier at the same index in <computeroutput>format</computeroutput>.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>boolean </para></simplesect>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>All destinations registered for this level were successfully processed. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>One or more destinations were not successfully processed. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sir.h" line="186" column="1" bodyfile="sir.c" bodystart="67" bodyend="72"/>
+      </memberdef>
+      <memberdef kind="function" id="d8/d64/group__public_1ga18adb1b96d90816ed91a4259604f84f1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int sir_addfile</definition>
+        <argsstring>(const sirchar_t *path, sir_levels levels, sir_options opts)</argsstring>
+        <name>sir_addfile</name>
+        <param>
+          <type>const <ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+          <declname>path</declname>
+        </param>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga7ee5f2908abd2df9e89bcab0b6608edd" kindref="member">sir_levels</ref></type>
+          <declname>levels</declname>
+        </param>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga858fff8dae5b79ae8849a8021a53c18c" kindref="member">sir_options</ref></type>
+          <declname>opts</declname>
+        </param>
+        <briefdescription>
+<para>Add a log file to receive formatted output for one or more <ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref>. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The absolute or relative path to the file. If it does not exist, it will be created. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>levels</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>One or more <ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref> for which the file should be sent output. Use <ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444" kindref="member">SIRL_ALL</ref> to send all logging levels to the file. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>opts</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Zero or more <ref refid="d8/d64/group__public_1ga9ed1c599dfd76231f4e0dadf46bff40b" kindref="member">sir_option</ref> flags used to control output formatting.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>int </para></simplesect>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>Non-negative</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The file descriptor for the file that was successfully added. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername><ref refid="d8/d64/group__public_1ga39001e0bb2b7e4d0f6a4c6278dbd63ce" kindref="member">SIR_INVALID</ref></parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An error occurred while trying to add the file. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sir.h" line="201" column="1" bodyfile="sir.c" bodystart="74" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="d8/d64/group__public_1ga34a36373db97dc24db8e53ff3843ba04" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool sir_remfile</definition>
+        <argsstring>(int id)</argsstring>
+        <name>sir_remfile</name>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+<para>Remove a previously added log file. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The integer file descriptor returned from <ref refid="d8/d64/group__public_1ga18adb1b96d90816ed91a4259604f84f1" kindref="member">sir_addfile</ref>.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>boolean </para></simplesect>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The file was removed and will no longer receive output. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An error occurred while trying to remove the file. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sir.h" line="212" column="1" bodyfile="sir.c" bodystart="78" bodyend="80"/>
+      </memberdef>
+      <memberdef kind="function" id="d8/d64/group__public_1gaa628fae976081e7aaa302e5c5e43e06c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool sir_settextstyle</definition>
+        <argsstring>(sir_level level, sir_textstyle style)</argsstring>
+        <name>sir_settextstyle</name>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref></type>
+          <declname>level</declname>
+        </param>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga3bd5959a607e5280a8db90ada2d80caf" kindref="member">sir_textstyle</ref></type>
+          <declname>style</declname>
+        </param>
+        <briefdescription>
+<para>Sets the text style in <emphasis>stdio</emphasis> output for a <ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref> of output. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>level</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The level <emphasis></emphasis>(only one is permitted per call) for which the style will be set. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>style</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Foreground color, background color, and brightness control flags bitwise OR&apos;d to create the text style for <computeroutput>level</computeroutput>. See <ref refid="d8/d64/group__public_1ga3bd5959a607e5280a8db90ada2d80caf" kindref="member">sir_textstyle</ref>.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>boolean </para></simplesect>
+<parameterlist kind="retval"><parameteritem>
+<parameternamelist>
+<parametername>true</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The style is valid and was applied. </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>false</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An error occurred while trying to set the text style. </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sir.h" line="226" column="1" bodyfile="sir.c" bodystart="82" bodyend="84"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Functions and types that comprise the public interface to the library. </para>    </detaileddescription>
+  </compounddef>
+</doxygen>

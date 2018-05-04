@@ -46,11 +46,19 @@
 #undef SIR_MSEC_TIMER
 #endif
 
+/** The error code type. */
 typedef int             sirerror_t;
+
+/** The mutex type. */
 typedef pthread_mutex_t sirmutex_t;
+
+/** The one-time type. */
 typedef pthread_once_t  sironce_t;
+
+/** The one-time execution function type. */
 typedef void (*sir_once_fn)(void);
 
+/** The one-time initializer. */
 #define SIR_ONCE_INIT PTHREAD_ONCE_INIT
 #else
 #define WIN32_LEAN_AND_MEAN
@@ -64,19 +72,24 @@ typedef void (*sir_once_fn)(void);
 #define SIR_MSEC_TIMER
 #define SIR_MSEC_WIN32
 
+/** The error code type. */
 typedef DWORD     sirerror_t;
+
+/** The mutex type. */
 typedef HANDLE    sirmutex_t;
+
+/** The one-time type. */
 typedef INIT_ONCE sironce_t;
+
+/** The one-time execution function type. */
 typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
+/** The one-time initializer. */
 #define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
 #endif
 
-/** A value that represents the success condition. */
-#define SIR_NOERROR (sirerror_t)0
-
 /** A sensible (?) constraint for the limit of a file's path. Note that this value
- * is only used in the absence of PATH_MAX. */
+ * is only used in the absence of PATH_MAX (or MAX_PATH on windows). */
 #ifndef SIR_MAXPATH
 #define SIR_MAXPATH 65535
 #endif

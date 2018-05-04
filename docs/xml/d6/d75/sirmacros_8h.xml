@@ -1,0 +1,424 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="d6/d75/sirmacros_8h" kind="file" language="C++">
+    <compoundname>sirmacros.h</compoundname>
+    <includes refid="dc/dba/sirtypes_8h" local="yes">sirtypes.h</includes>
+    <includedby refid="d7/dc6/sirinternal_8h" local="yes">sirinternal.h</includedby>
+    <incdepgraph>
+      <node id="275">
+        <label>sys/stat.h</label>
+      </node>
+      <node id="270">
+        <label>stdbool.h</label>
+      </node>
+      <node id="269">
+        <label>stdarg.h</label>
+      </node>
+      <node id="279">
+        <label>stdatomic.h</label>
+      </node>
+      <node id="267">
+        <label>assert.h</label>
+      </node>
+      <node id="271">
+        <label>stdint.h</label>
+      </node>
+      <node id="273">
+        <label>stdlib.h</label>
+      </node>
+      <node id="268">
+        <label>errno.h</label>
+      </node>
+      <node id="281">
+        <label>syslog.h</label>
+      </node>
+      <node id="266">
+        <label>sirplatform.h</label>
+        <link refid="db/ddc/sirplatform_8h"/>
+        <childnode refid="267" relation="include">
+        </childnode>
+        <childnode refid="268" relation="include">
+        </childnode>
+        <childnode refid="269" relation="include">
+        </childnode>
+        <childnode refid="270" relation="include">
+        </childnode>
+        <childnode refid="271" relation="include">
+        </childnode>
+        <childnode refid="272" relation="include">
+        </childnode>
+        <childnode refid="273" relation="include">
+        </childnode>
+        <childnode refid="274" relation="include">
+        </childnode>
+        <childnode refid="275" relation="include">
+        </childnode>
+        <childnode refid="276" relation="include">
+        </childnode>
+        <childnode refid="277" relation="include">
+        </childnode>
+        <childnode refid="278" relation="include">
+        </childnode>
+        <childnode refid="279" relation="include">
+        </childnode>
+        <childnode refid="280" relation="include">
+        </childnode>
+        <childnode refid="281" relation="include">
+        </childnode>
+        <childnode refid="282" relation="include">
+        </childnode>
+      </node>
+      <node id="278">
+        <label>pthread.h</label>
+      </node>
+      <node id="276">
+        <label>sys/types.h</label>
+      </node>
+      <node id="274">
+        <label>string.h</label>
+      </node>
+      <node id="282">
+        <label>unistd.h</label>
+      </node>
+      <node id="263">
+        <label>sirmacros.h</label>
+        <link refid="sirmacros.h"/>
+        <childnode refid="264" relation="include">
+        </childnode>
+      </node>
+      <node id="277">
+        <label>time.h</label>
+      </node>
+      <node id="264">
+        <label>sirtypes.h</label>
+        <link refid="dc/dba/sirtypes_8h"/>
+        <childnode refid="265" relation="include">
+        </childnode>
+        <childnode refid="266" relation="include">
+        </childnode>
+      </node>
+      <node id="280">
+        <label>sys/syscall.h</label>
+      </node>
+      <node id="265">
+        <label>sirconfig.h</label>
+        <link refid="d4/d0f/sirconfig_8h"/>
+      </node>
+      <node id="272">
+        <label>stdio.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="290">
+        <label>sirtextstyle.c</label>
+        <link refid="d2/db4/sirtextstyle_8c"/>
+      </node>
+      <node id="289">
+        <label>sirmutex.c</label>
+        <link refid="d1/d84/sirmutex_8c"/>
+      </node>
+      <node id="285">
+        <label>sir.c</label>
+        <link refid="dc/d39/sir_8c"/>
+      </node>
+      <node id="283">
+        <label>sirmacros.h</label>
+        <link refid="sirmacros.h"/>
+        <childnode refid="284" relation="include">
+        </childnode>
+      </node>
+      <node id="286">
+        <label>sirconsole.c</label>
+        <link refid="dc/d27/sirconsole_8c"/>
+      </node>
+      <node id="288">
+        <label>sirinternal.c</label>
+        <link refid="d9/d09/sirinternal_8c"/>
+      </node>
+      <node id="284">
+        <label>sirinternal.h</label>
+        <link refid="d7/dc6/sirinternal_8h"/>
+        <childnode refid="285" relation="include">
+        </childnode>
+        <childnode refid="286" relation="include">
+        </childnode>
+        <childnode refid="287" relation="include">
+        </childnode>
+        <childnode refid="288" relation="include">
+        </childnode>
+        <childnode refid="289" relation="include">
+        </childnode>
+        <childnode refid="290" relation="include">
+        </childnode>
+      </node>
+      <node id="287">
+        <label>sirfilecache.c</label>
+        <link refid="d3/d95/sirfilecache_8c"/>
+      </node>
+    </invincdepgraph>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="d0/dfe/group__intern_1ga4682c9226f73bc24116a553b0835c89d" prot="public" static="no">
+        <name>_COUNTOF</name>
+        <param><defname>arr</defname></param>
+        <initializer>(sizeof(arr) / sizeof(arr[0]))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirmacros.h" line="15" column="9" bodyfile="sirmacros.h" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="d0/dfe/group__intern_1gac812e82ac0f3ee01b35808082281363c" prot="public" static="no">
+        <name>_SIR_L_START</name>
+        <param><defname>format</defname></param>
+        <initializer>bool    r = false;       \
+    va_list args;            \
+    va_start(args, format);</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirmacros.h" line="17" column="9" bodyfile="sirmacros.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="d0/dfe/group__intern_1ga7d5dda1395dc7eec751df1ec10095aef" prot="public" static="no">
+        <name>_SIR_L_END</name>
+        <param><defname>args</defname></param>
+        <initializer>va_end(args);</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirmacros.h" line="22" column="9" bodyfile="sirmacros.h" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga7fa1e383e884232fe341e378dd89f50e" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool validstr</definition>
+        <argsstring>(const sirchar_t *str)</argsstring>
+        <name>validstr</name>
+        <param>
+          <type>const <ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Validates a string pointer </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirmacros.h" line="25" column="1" bodyfile="sirmacros.h" bodystart="25" bodyend="27"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga0492a95c92911c513c56331d5b800a95" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool validid</definition>
+        <argsstring>(int id)</argsstring>
+        <name>validid</name>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Validates a log file identifier. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirmacros.h" line="30" column="1" bodyfile="sirmacros.h" bodystart="30" bodyend="32"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga199cfe021fc40e04a6ac447e4957e116" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool validlevels</definition>
+        <argsstring>(sir_levels levels)</argsstring>
+        <name>validlevels</name>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga7ee5f2908abd2df9e89bcab0b6608edd" kindref="member">sir_levels</ref></type>
+          <declname>levels</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Validates a set of <ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref> flags. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirmacros.h" line="35" column="1" bodyfile="sirmacros.h" bodystart="35" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga18bdae29145506635d5b867f630614d2" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool validlevel</definition>
+        <argsstring>(sir_level level)</argsstring>
+        <name>validlevel</name>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref></type>
+          <declname>level</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Validates a single <ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirmacros.h" line="40" column="1" bodyfile="sirmacros.h" bodystart="40" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga019f91a4145ebb548d772833d39784dd" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool validopts</definition>
+        <argsstring>(sir_options opts)</argsstring>
+        <name>validopts</name>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga858fff8dae5b79ae8849a8021a53c18c" kindref="member">sir_options</ref></type>
+          <declname>opts</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Validates a set of <ref refid="d8/d64/group__public_1ga9ed1c599dfd76231f4e0dadf46bff40b" kindref="member">sir_option</ref> flags. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirmacros.h" line="45" column="1" bodyfile="sirmacros.h" bodystart="45" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga18c8cc97f925083ca8747b4ce820c081" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool flagtest</definition>
+        <argsstring>(uint32_t flags, uint32_t test)</argsstring>
+        <name>flagtest</name>
+        <param>
+          <type>uint32_t</type>
+          <declname>flags</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>test</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks a bitfield for a specific set of bits. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirmacros.h" line="50" column="1" bodyfile="sirmacros.h" bodystart="50" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga785c194f63b1a7189532ba041d397582" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void safefree</definition>
+        <argsstring>(void *p)</argsstring>
+        <name>safefree</name>
+        <param>
+          <type>void *</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Wraps <emphasis>free</emphasis>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirmacros.h" line="55" column="1" bodyfile="sirmacros.h" bodystart="55" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1ga6d4c29dee9ac91f7bf064562b5dab083" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void safefclose</definition>
+        <argsstring>(FILE *f)</argsstring>
+        <name>safefclose</name>
+        <param>
+          <type>FILE *</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Wraps <emphasis>fclose</emphasis>. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirmacros.h" line="63" column="1" bodyfile="sirmacros.h" bodystart="63" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="function" id="d0/dfe/group__intern_1gac65a25cfd40affc62cf0fda5ee4b3409" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void resetstr</definition>
+        <argsstring>(sirchar_t *str)</argsstring>
+        <name>resetstr</name>
+        <param>
+          <type><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref> *</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Places a null terminator at the first index in a string buffer. </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sirmacros.h" line="71" column="1" bodyfile="sirmacros.h" bodystart="71" bodyend="73"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Internally used macros and inline functions. </para>    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"></codeline>
+<codeline lineno="5"><highlight class="preprocessor">#ifndef<sp/>_SIR_MACROS_H_INCLUDED</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>_SIR_MACROS_H_INCLUDED</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="dc/dba/sirtypes_8h" kindref="compound">sirtypes.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="preprocessor">#define<sp/>_COUNTOF(arr)<sp/>(sizeof(arr)<sp/>/<sp/>sizeof(arr[0]))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>_SIR_L_START(format)<sp/>\</highlight></codeline>
+<codeline lineno="18"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>bool<sp/><sp/><sp/><sp/>r<sp/>=<sp/>false;<sp/><sp/><sp/><sp/><sp/><sp/><sp/>\</highlight></codeline>
+<codeline lineno="19"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>va_list<sp/>args;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\</highlight></codeline>
+<codeline lineno="20"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>va_start(args,<sp/>format);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>_SIR_L_END(args)<sp/>va_end(args);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25" refid="d0/dfe/group__intern_1ga7fa1e383e884232fe341e378dd89f50e" refkind="member"><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga7fa1e383e884232fe341e378dd89f50e" kindref="member">validstr</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/>str)<sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>str<sp/>&amp;&amp;<sp/>*str;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="d0/dfe/group__intern_1ga0492a95c92911c513c56331d5b800a95" refkind="member"><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga0492a95c92911c513c56331d5b800a95" kindref="member">validid</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal"><sp/>&gt;=<sp/>0;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="d0/dfe/group__intern_1ga199cfe021fc40e04a6ac447e4957e116" refkind="member"><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga199cfe021fc40e04a6ac447e4957e116" kindref="member">validlevels</ref>(<ref refid="d8/d64/group__public_1ga7ee5f2908abd2df9e89bcab0b6608edd" kindref="member">sir_levels</ref><sp/>levels)<sp/>{</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(levels<sp/>&amp;<sp/><ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444" kindref="member">SIRL_ALL</ref>)<sp/>!=<sp/>0<sp/>&amp;&amp;<sp/>(levels<sp/>&amp;<sp/><ref refid="d8/d64/group__public_1gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0" kindref="member">SIRO_MSGONLY</ref>)<sp/>==<sp/>0;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="d0/dfe/group__intern_1ga18bdae29145506635d5b867f630614d2" refkind="member"><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga18bdae29145506635d5b867f630614d2" kindref="member">validlevel</ref>(<ref refid="d8/d64/group__public_1ga4a3303c67acd49bea38fd3565d458cb2" kindref="member">sir_level</ref><sp/>level)<sp/>{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0<sp/>!=<sp/>level<sp/>&amp;&amp;<sp/>!(level<sp/>&amp;<sp/>(level<sp/>-<sp/>1));</highlight></codeline>
+<codeline lineno="42"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="d0/dfe/group__intern_1ga019f91a4145ebb548d772833d39784dd" refkind="member"><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga019f91a4145ebb548d772833d39784dd" kindref="member">validopts</ref>(<ref refid="d8/d64/group__public_1ga858fff8dae5b79ae8849a8021a53c18c" kindref="member">sir_options</ref><sp/>opts)<sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(opts<sp/>&amp;<sp/><ref refid="d8/d64/group__public_1gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444" kindref="member">SIRL_ALL</ref>)<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>opts<sp/>&lt;=<sp/><ref refid="d8/d64/group__public_1gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0" kindref="member">SIRO_MSGONLY</ref>;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50" refid="d0/dfe/group__intern_1ga18c8cc97f925083ca8747b4ce820c081" refkind="member"><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga18c8cc97f925083ca8747b4ce820c081" kindref="member">flagtest</ref>(uint32_t<sp/>flags,<sp/>uint32_t<sp/>test)<sp/>{</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(flags<sp/>&amp;<sp/>test)<sp/>==<sp/>test;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55" refid="d0/dfe/group__intern_1ga785c194f63b1a7189532ba041d397582" refkind="member"><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga785c194f63b1a7189532ba041d397582" kindref="member">safefree</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>p)<sp/>{</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!p)</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>free(p);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>p<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63" refid="d0/dfe/group__intern_1ga6d4c29dee9ac91f7bf064562b5dab083" refkind="member"><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1ga6d4c29dee9ac91f7bf064562b5dab083" kindref="member">safefclose</ref>(FILE*<sp/>f)<sp/>{</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!f)</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>fclose(f);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>f<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71" refid="d0/dfe/group__intern_1gac65a25cfd40affc62cf0fda5ee4b3409" refkind="member"><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="d0/dfe/group__intern_1gac65a25cfd40affc62cf0fda5ee4b3409" kindref="member">resetstr</ref>(<ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>*<sp/>str)<sp/>{</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>str[0]<sp/>=<sp/>(<ref refid="d8/d64/group__public_1ga1d2f790e2dabc69c8a625f2ee5dc583a" kindref="member">sirchar_t</ref>)</highlight><highlight class="charliteral">&apos;\0&apos;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>!_SIR_MACROS_H_INCLUDED<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="sirmacros.h"/>
+  </compounddef>
+</doxygen>
