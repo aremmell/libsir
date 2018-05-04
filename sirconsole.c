@@ -1,11 +1,12 @@
-/*!
- * \file sirconsole.c
+/**
+ * @file sirconsole.c
+ * @brief stdio output.
  */
 #include "sirconsole.h"
 #include "sirinternal.h"
 #include "sirtextstyle.h"
 
-/* \cond PRIVATE */
+/** @cond private */
 
 #ifndef _WIN32
 
@@ -114,4 +115,4 @@ static BOOL CALLBACK _sir_initcs(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
 
 #endif /* !_WIN32 */
 
-/* \endcond PRIVATE */
+/** @endcond private */

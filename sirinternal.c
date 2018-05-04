@@ -1,5 +1,6 @@
-/*!
- * \file sirinternal.c
+/**
+ * @file sirinternal.c
+ * @brief Internal implementation.
  */
 #include "sirinternal.h"
 #include "sirconsole.h"
@@ -8,7 +9,7 @@
 #include "sirmutex.h"
 #include "sirtextstyle.h"
 
-/*! \cond PRIVATE */
+/** @cond private */
 
 static sirinit   _sir_si = {0};
 static sirfcache _sir_fc = {0};
@@ -248,8 +249,7 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
     assert(gettime);
 
     if (gettime) {
-        const sirchar_t* timeformat = validstr(tmpsi.timeFmt) ? tmpsi.timeFmt : SIR_TIMEFORMAT;
-        bool             fmt        = _sir_formattime(now, output.timestamp, timeformat);
+        bool fmt = _sir_formattime(now, output.timestamp, SIR_TIMEFORMAT);
         assert(fmt);
 
         output.msec = _sirbuf_get(&buf, _SIRBUF_MSEC);
@@ -270,7 +270,7 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
         // snprintf(output.name, SIR_MAXNAME, "%s (%d:%d)", sir_s.processName, _sir_getpid(), _sir_gettid());
     }
 
-    /*! \todo add support for syslog's %m */
+    /** \todo add support for syslog's %m */
     output.message = _sirbuf_get(&buf, _SIRBUF_MSG);
     assert(output.message);
     int msgfmt = vsnprintf(output.message, SIR_MAXMESSAGE, format, args);
@@ -287,7 +287,7 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
 
 bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output) {
 
-    bool r = true;
+    bool   r          = true;
     size_t dispatched = 0;
 
     assert(validlevel(level));
@@ -302,10 +302,11 @@ bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output) {
             r &= NULL != write && wrote;
 #else
             uint16_t* style = (uint16_t*)output->style;
-            bool wrote = _sir_stderr_write(*style, write);
+            bool      wrote = _sir_stderr_write(*style, write);
             r &= NULL != write && NULL != style && wrote;
 #endif
-            if (wrote) dispatched++;
+            if (wrote)
+                dispatched++;
         }
 
         if (_sir_destwantslevel(si->d_stdout.levels, level)) {
@@ -316,10 +317,11 @@ bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output) {
             r &= NULL != write && wrote;
 #else
             uint16_t* style = (uint16_t*)output->style;
-            bool wrote = _sir_stdout_write(*style, write);
+            bool      wrote = _sir_stdout_write(*style, write);
             r &= NULL != write && NULL != style && wrote;
 #endif
-            if (wrote) dispatched++;
+            if (wrote)
+                dispatched++;
         }
 
 #ifndef SIR_NO_SYSLOG
@@ -587,4 +589,4 @@ void _sir_selflog(const sirchar_t* format, ...) {
 }
 #endif
 
-/*! \endcond PRIVATE */
+/** @endcond private */

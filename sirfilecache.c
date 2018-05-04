@@ -1,11 +1,12 @@
-/*!
- * \file sirfilecache.c
+/**
+ * @file sirfilecache.c
+ * @brief Log file management.
  */
 #include "sirfilecache.h"
 #include "sirinternal.h"
 #include "sirmutex.h"
 
-/*! \cond PRIVATE */
+/** @cond private */
 
 int _sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts) {
 
@@ -108,7 +109,7 @@ bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
             _sir_selflog("%s: wrote %lu/%lu bytes to %d; ferror: %d, feof: %d\n", __func__, write, writeLen,
                 sf->id, err, eof);
 
-            /*! \todo
+            /** \todo
              * If an error occurs on write, consider removing file from targets,
              * or at least attempt to roll the file (out of space?)
              */
@@ -400,4 +401,4 @@ bool _sir_fflush_all() {
     return 0 == flush;
 }
 
-/*! \endcond */
+/** @endcond private */

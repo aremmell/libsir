@@ -10,6 +10,7 @@
 CC       = gcc
 BUILDDIR = build
 DOCSDIR = docs
+TESTSDIR = tests
 INTERDIR = $(BUILDDIR)/obj
 LIBDIR   = $(BUILDDIR)/lib
 
@@ -40,9 +41,8 @@ DEBUGTU      = $(TUS) main.c
 _OBJ_TESTS   = tests.o $(_OBJ)
 OBJ_TESTS   = $(patsubst %.o, $(INTERDIR)/%.to, $(_OBJ_TESTS))
 OUT_TESTS    = $(BUILDDIR)/sirtests
-#CFLAGS_TESTS = $(CFLAGS) -DNDEBUG
 CFLAGS_TESTS = $(CFLAGS) -g -DNDEBUG
-TESTSTU      = $(TUS) tests.c
+TESTSTU      = $(TUS) $(TESTSDIR)/tests.c
 
 # shared library
 OBJ_SHARED    = $(patsubst %.o, $(INTERDIR)/%.lo, $(_OBJ))
@@ -63,7 +63,7 @@ $(INTERDIR) : $(BUILDDIR)
 $(LIBDIR): $(BUILDDIR)
 
 $(OBJ_DEBUG): $(INTERDIR)
-$(OBJ_TESTS): $(INTERDIR)
+$(OBJ_TESTS): $(INTERDIR) $(TESTSDIR)
 $(OBJ_SHARED): $(LIBDIR)
 
 $(INTERDIR)/%.do: %.c
@@ -77,7 +77,7 @@ $(INTERDIR)/%.lo: %.c
 
 default: debug
 
-all: debug static shared tests docs
+all: debug static shared tests
 
 # thanks to the windows folks
 prep:
@@ -121,12 +121,11 @@ ifeq ($(OS),Windows_NT)
 	@echo using del /F /Q...
 	$(shell del /F /Q "$(BUILDDIR)\*.*")
 	$(shell del /F /Q "$(INTERDIR)\*.*")
-	$(shell del /F /QQ "$(LIBDIR)\*.*")
+	$(shell del /F /Q "$(LIBDIR)\*.*")
 else
 	@echo using rm -f...
 	$(shell rm -f $(BUILDDIR)/*.* >/dev/null && \
 	        rm -f $(LIBDIR)/* >/dev/null && \
-			rm -f $(INTERDIR)/* >/dev/null && \
-			rm -f $(DOCSDIR)/* >/dev/null)
+			rm -f $(INTERDIR)/* >/dev/null)
 endif
 	@echo cleared directories.

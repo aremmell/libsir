@@ -1,5 +1,6 @@
-/*!
- * \file sirtextstyle.c
+/**
+ * @file sirtextstyle.c
+ * @brief Text styling.
  */
 #include "sirtextstyle.h"
 #include "sirdefaults.h"

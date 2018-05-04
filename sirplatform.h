@@ -1,5 +1,6 @@
-/*!
- * \file sirplatform.h
+/**
+ * @file sirplatform.h
+ * @brief Configures the library based on the OS/platform.
  */
 #ifndef _SIR_PLATFORM_H_INCLUDED
 #define _SIR_PLATFORM_H_INCLUDED
@@ -71,10 +72,10 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
 #endif
 
-/*! A value that represents the success condition. */
+/** A value that represents the success condition. */
 #define SIR_NOERROR (sirerror_t)0
 
-/*! A sensible (?) constraint for the limit of a file's path. Note that this value
+/** A sensible (?) constraint for the limit of a file's path. Note that this value
  * is only used in the absence of PATH_MAX. */
 #ifndef SIR_MAXPATH
 #define SIR_MAXPATH 65535

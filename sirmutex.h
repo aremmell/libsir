@@ -1,10 +1,10 @@
-/*!
- * \file sirmutex.h
+/**
+ * @file sirmutex.h
+ * @brief Cross-platform mutex.
  */
 #ifndef _SIR_MUTEX_H_INCLUDED
 #define _SIR_MUTEX_H_INCLUDED
 
-#include "sirplatform.h"
 #include "sirtypes.h"
 
 bool _sirmutex_create(sirmutex_t* mutex);

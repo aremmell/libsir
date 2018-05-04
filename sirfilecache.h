@@ -1,13 +1,13 @@
-/*!
- * \file sirfilecache.h
+/**
+ * @file sirfilecache.h
+ * @brief Log file management.
  */
 #ifndef _SIR_FILECACHE_H_INCLUDED
 #define _SIR_FILECACHE_H_INCLUDED
 
-#include "sirplatform.h"
 #include "sirtypes.h"
 
-/*! \cond PRIVATE */
+/** @cond private */
 
 typedef bool (*sir_fcache_pred)(const void* match, sirfile* iter);
 
@@ -36,6 +36,6 @@ void  _sir_fclose(FILE** f);
 void  _sir_fflush(FILE* f);
 bool  _sir_fflush_all();
 
-/*! \endcond */
+/** @endcond private */
 
 #endif /* !_SIR_FILECACHE_H_INCLUDED */

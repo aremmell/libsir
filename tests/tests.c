@@ -1,10 +1,16 @@
+/**
+ * @file tests.c
+ * @brief Implementation of test rig app.
+ */
 #include "tests.h"
-#include "sir.h"
+#include "../sir.h"
 
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+/** @cond private */
 
 #ifndef _WIN32
 #define _POSIX_C_SOURCE 200809L
@@ -75,9 +81,6 @@ int main(int argc, char** argv) {
     return allpass ? 0 : 1;
 }
 
-///////////////////////////////////////
-// tests
-//////////////////////////////////////
 
 bool sirtest_exceedmaxsize() {
     bool pass = true;
@@ -322,3 +325,5 @@ static unsigned sirtest_thread(void* arg) {
     return 0;
 #endif
 }
+
+/** @endcond private */

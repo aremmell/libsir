@@ -1,14 +1,13 @@
-/*!
- * \file sirmacros.h
+/**
+ * @file sirmacros.h
+ * @brief Internally used macros and inline functions.
  */
 #ifndef _SIR_MACROS_H_INCLUDED
 #define _SIR_MACROS_H_INCLUDED
 
-#include "sirplatform.h"
 #include "sirtypes.h"
 
-#define _CRT_PRINT_STR(d) #d
-#define _CRT_PRINT(d) _CRT_PRINT_STR(d)
+/** @cond private */
 
 #define _COUNTOF(arr) (sizeof(arr) / sizeof(arr[0]))
 
@@ -60,5 +59,7 @@ static inline void safefclose(FILE* f) {
 static inline void resetstr(sirchar_t* str) {
     str[0] = (sirchar_t)'\0';
 }
+
+/** @endcond private */
 
 #endif /* !_SIR_MACROS_H_INCLUDED */

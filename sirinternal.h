@@ -1,14 +1,14 @@
-/*!
- * \file sirinternal.h
+/**
+ * @file sirinternal.h
+ * @brief Internal definitions.
  */
 #ifndef _SIR_INTERNAL_H_INCLUDED
 #define _SIR_INTERNAL_H_INCLUDED
 
 #include "sirmacros.h"
-#include "sirplatform.h"
 #include "sirtypes.h"
 
-/*! \cond PRIVATE */
+/** @cond PRIVATE */
 
 bool _sir_sanity();
 bool _sir_options_sanity(const sirinit* si);
@@ -62,6 +62,6 @@ void _sir_selflog(const sirchar_t* format, ...);
 #define _sir_handleerr(err) ((void)(0))
 #endif
 
-/*! \endcond */
+/** @endcond private */
 
 #endif /* !_SIR_INTERNAL_H_INCLUDED */

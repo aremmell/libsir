@@ -1,11 +1,12 @@
-/*!
- * \file sirmutex.c
+/**
+ * @file sirmutex.c
+ * @brief Cross-platform mutex.
  */
 #include "sirmutex.h"
 #include "sirinternal.h"
 #include "sirplatform.h"
 
-/*! \cond PRIVATE */
+/** @cond private */
 
 #ifndef _WIN32 /* pthread mutex implementation */
 
@@ -173,4 +174,4 @@ static bool _sirmutex_waitwin32(sirmutex_t mutex, DWORD msec) {
 
 #endif /* !_WIN32 */
 
-/*! \endcond */
+/** @endcond private */

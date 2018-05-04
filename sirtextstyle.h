@@ -1,11 +1,13 @@
-/*!
- * \file sirtextstyle.h
+/**
+ * @file sirtextstyle.h
+ * @brief Internal mapping of ::sir_textstyle to platform-specific values.
  */
 #ifndef _SIR_TEXTSTYLE_H_INCLUDED
 #define _SIR_TEXTSTYLE_H_INCLUDED
 
-#include "sirplatform.h"
 #include "sirtypes.h"
+
+/** @cond private */
 
 static const sir_style_priv_map sir_priv_map[] = {
 
@@ -95,5 +97,7 @@ bool          _sir_setdefstyle(sir_level level, sir_textstyle style);
 sir_textstyle _sir_getdefstyle(sir_level level);
 uint16_t      _sir_getprivstyle(uint32_t cat);
 bool          _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size);
+
+/** @endcond private */
 
 #endif /* !_SIR_TEXTSTYLE_H_INCLUDED */
