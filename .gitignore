@@ -17,6 +17,7 @@ build/
 
 # compiled documentation
 docs/html/
+docs/xml/
 
 # test artifacts
 *.log
