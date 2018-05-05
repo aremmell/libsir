@@ -560,7 +560,17 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
         FILETIME ftutc = {0};
         GetSystemTimePreciseAsFileTime(&ftutc);
 
-        *tbuf = (((ULONGLONG)ftutc.dwHighDateTime << 32 | ftutc.dwLowDateTime & 0x0000ffff) - uepoch) / 1e7;
+        ULARGE_INTEGER ftnow;
+        ftnow.HighPart = ftutc.dwHighDateTime;
+        ftnow.LowPart = ftutc.dwLowDateTime;
+        ftnow.QuadPart = (ftnow.QuadPart - uepoch) / 1e7;
+
+        *tbuf = (time_t)ftnow.QuadPart;
+         
+        struct tm* sups =  localtime(tbuf);
+        char timebuf[SIR_MAXTIME] = {0};
+        strftime(timebuf, SIR_MAXTIME, "%x %H:%M:%S", sups);
+        _sir_selflog("%s: '%s'\n", __func__, timebuf);
 
         if (nsecbuf) {
             SYSTEMTIME st = {0};
