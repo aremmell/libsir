@@ -42,30 +42,24 @@ static sironce_t        stdout_once = SIR_ONCE_INIT;
 static CRITICAL_SECTION stderr_cs;
 static sironce_t        stderr_once = SIR_ONCE_INIT;
 
-static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message, HANDLE console);
+static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message,
+    HANDLE console, CRITICAL_SECTION* cs);
 static BOOL CALLBACK _sir_initcs(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
 
 bool _sir_stderr_write(uint16_t style, const sirchar_t* message) {
     BOOL initcs = InitOnceExecuteOnce(&stderr_once, _sir_initcs, &stderr_cs, NULL);
     assert(FALSE != initcs);
-
-    EnterCriticalSection(&stderr_cs);
-    bool r = _sir_write_stdwin32(style, message, GetStdHandle(STD_ERROR_HANDLE));
-    LeaveCriticalSection(&stderr_cs);
-    return r;
+    return _sir_write_stdwin32(style, message, GetStdHandle(STD_ERROR_HANDLE), &stderr_cs);
 }
 
 bool _sir_stdout_write(uint16_t style, const sirchar_t* message) {
     BOOL initcs = InitOnceExecuteOnce(&stdout_once, _sir_initcs, &stdout_cs, NULL);
     assert(FALSE != initcs);
-
-    EnterCriticalSection(&stdout_cs);
-    bool r = _sir_write_stdwin32(style, message, GetStdHandle(STD_OUTPUT_HANDLE));
-    LeaveCriticalSection(&stdout_cs);
-    return r;
+    return _sir_write_stdwin32(style, message, GetStdHandle(STD_OUTPUT_HANDLE), &stdout_cs);
 }
 
-static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message, HANDLE console) {
+static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message,
+    HANDLE console, CRITICAL_SECTION* cs) {
 
     assert(validstr(message));
     assert(INVALID_HANDLE_VALUE != console);
@@ -77,6 +71,7 @@ static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message, HANDLE
 
     CONSOLE_SCREEN_BUFFER_INFO csbfi = {0};
 
+    EnterCriticalSection(cs);
     if (!GetConsoleScreenBufferInfo(console, &csbfi)) {
         _sir_handleerr(GetLastError());
         return false;
@@ -107,6 +102,7 @@ static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message, HANDLE
     SetConsoleTextAttribute(console, csbfi.wAttributes);
     DWORD newline = 0;
     WriteConsole(console, "\n", 1, &newline, NULL);
+    LeaveCriticalSection(cs);
 
     return written == chars;
 }
