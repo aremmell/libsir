@@ -123,6 +123,7 @@ bool sirtest_addremovefiles() {
         char path[SIR_MAXPATH] = {0};
         snprintf(path, SIR_MAXPATH, "test-%lu.log", j);
 #ifndef _WIN32
+        remove(path);
 #else
         DeleteFile(path);
 #endif
