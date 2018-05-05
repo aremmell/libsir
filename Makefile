@@ -63,8 +63,8 @@ $(INTERDIR) : $(BUILDDIR)
 $(LIBDIR): $(BUILDDIR)
 
 $(OBJ_DEBUG): $(INTERDIR)
-$(OBJ_TESTS): $(INTERDIR) $(TESTSDIR)
-$(OBJ_SHARED): $(LIBDIR)
+$(OBJ_SHARED): $(INTERDIR) $(LIBDIR)
+$(OBJ_TESTS): $(OBJ_SHARED)
 
 $(INTERDIR)/%.do: %.c
 	$(CC) -c -o $@ $< $(CFLAGS_DEBUG)
@@ -104,7 +104,7 @@ static: shared
 	ar crf $(OUT_STATIC) $(OBJ_SHARED)
 	@echo built $(OUT_STATIC) successfully.
 
-tests: static
+tests: static $(OBJ_TESTS)
 	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS) $(CFLAGS_TESTS) $(LIBS)
 	echo built $(OUT_TESTS) successfully.
 
