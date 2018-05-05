@@ -4,8 +4,9 @@
  */
 #include "sirfilecache.h"
 #include "sirinternal.h"
-#include "sirmutex.h"
 #include "sirdefaults.h"
+#include "sirmutex.h"
+
 
 /**
  * @addtogroup intern
@@ -189,13 +190,11 @@ bool _sirfile_writeheader(sirfile* sf, const sirchar_t* msg) {
                 sirchar_t header[SIR_MAXOUTPUT] = {0};
 
                 int fmt = snprintf(header, SIR_MAXOUTPUT, SIR_FHFORMAT, msg, timestamp);
-                assert(fmt >= 0);
 
-                if (fmt < 0) {
+                if (fmt < 0)
                     _sir_handleerr(errno);
-                } else {
-                    return _sirfile_write(sf, header);
-                }
+
+                return 0 == fmt && _sirfile_write(sf, header);
             }
         }
     }
@@ -253,7 +252,6 @@ bool _sirfile_roll(sirfile* sf, sirchar_t** newpath) {
 
                         if (*newpath) {
                             int fmtpath = snprintf(*newpath, SIR_MAXPATH, SIR_FNAMEFORMAT, name, timestamp, ext);                
-                            assert(fmtpath >= 0);
 
                             if (fmtpath < 0)
                                 _sir_handleerr(errno);
@@ -273,6 +271,7 @@ bool _sirfile_roll(sirfile* sf, sirchar_t** newpath) {
     return false;
 }
 
+/** @todo compress archived log files */
 bool _sirfile_archive(sirfile* sf, const sirchar_t* newpath) {
 
     assert(_sirfile_validate(sf));
