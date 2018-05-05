@@ -566,11 +566,6 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
         ftnow.QuadPart = (ftnow.QuadPart - uepoch) / 1e7;
 
         *tbuf = (time_t)ftnow.QuadPart;
-         
-        struct tm* sups =  localtime(tbuf);
-        char timebuf[SIR_MAXTIME] = {0};
-        strftime(timebuf, SIR_MAXTIME, "%x %H:%M:%S", sups);
-        _sir_selflog("%s: '%s'\n", __func__, timebuf);
 
         if (nsecbuf) {
             SYSTEMTIME st = {0};
