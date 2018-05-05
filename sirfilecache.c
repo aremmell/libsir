@@ -117,11 +117,7 @@ void _sirfile_close(sirfile* sf) {
             _sir_fclose(sf->f);
             sf->id = SIR_INVALID;
         }
-
-        return true;
     }
-
-    return false;
 }
 
 bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
