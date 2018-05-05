@@ -47,7 +47,7 @@ extern "C" {
  * @retval true SIR is initialized and ready to use.
  * @retval false Initialization failed.
  */
-bool sir_init(const sirinit* si);
+bool sir_init(sirinit* si);
 
 /**
  * @brief Frees allocated resources and resets internal state.

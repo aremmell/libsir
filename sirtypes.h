@@ -21,15 +21,16 @@ static const sirerror_t SIR_NOERROR = 0;
 
 /** Defines the available levels \a (severity/priority) of logging output. */
 typedef enum {
-    SIRL_EMERG  = 0x1,  /**< Nuclear war, Armageddon, etc. */
-    SIRL_ALERT  = 0x2,  /**< Action required ASAP. */
-    SIRL_CRIT   = 0x4,  /**< Critical errors. */
-    SIRL_ERROR  = 0x8,  /**< Errors. */
-    SIRL_WARN   = 0x10, /**< Warnings that could likely be ignored. */
-    SIRL_NOTICE = 0x20, /**< Normal but significant. */
-    SIRL_INFO   = 0x40, /**< Informational messages. */
-    SIRL_DEBUG  = 0x80, /**< Debugging/troubleshooting output. */
-    SIRL_ALL    = 0xff  /**< Includes all logging levels. */
+    SIRL_EMERG   = 0x1,  /**< Nuclear war, Armageddon, etc. */
+    SIRL_ALERT   = 0x2,  /**< Action required ASAP. */
+    SIRL_CRIT    = 0x4,  /**< Critical errors. */
+    SIRL_ERROR   = 0x8,  /**< Errors. */
+    SIRL_WARN    = 0x10, /**< Warnings that could likely be ignored. */
+    SIRL_NOTICE  = 0x20, /**< Normal but significant. */
+    SIRL_INFO    = 0x40, /**< Informational messages. */
+    SIRL_DEBUG   = 0x80, /**< Debugging/troubleshooting output. */
+    SIRL_ALL     = 0xff, /**< Includes all logging levels. */
+    SIRL_DEFAULT = 0x100 /**< Use the default levels for this type of destination. */
 } sir_level;
 
 /**
@@ -40,42 +41,62 @@ typedef uint16_t sir_levels;
 
 /** Formatting options for a destination. */
 typedef enum {
-    SIRO_DEFAULT = 0,     /**< Use the default for this type of destination. */
-    SIRO_NOTIME  = 0x100, /**< Do not include time stamps in output. */
-    SIRO_NOLEVEL = 0x200, /**< Do not include the human-readable logging level in output. */
-    SIRO_NONAME  = 0x400, /**< Do not include the process/app name in output. */
+
+    /** Don't include time stamps in output. */
+    SIRO_NOTIME = 0x200,
+
+    /** Don't include the human-readable logging level in output. */
+    SIRO_NOLEVEL = 0x400,
+
+    /** Don't include the process/app name in output. */
+    SIRO_NONAME = 0x800,
 
     /**
      * Don't include milliseconds in time stamps. If \a not set, time stamps
      * in output to this destination will be appended with the current millisecond
      * in addition to the hour, minute, and second. If ::SIRO_NOTIME is set, this has no effect.
      */
-    SIRO_NOMSEC = 0x800,
+    SIRO_NOMSEC = 0x1000,
+
+    /** Don't include the process ID in output. */
+    SIRO_NOPID = 0x2000,
+
+    /**
+     * Don't include the thread ID in output. If ::SIRO_NOPID is set,
+     * this is ignored, and no thread ID is ever included.
+     */
+    SIRO_NOTID = 0x4000,
 
     /**
      * Don't write header messages when logging begins, or the file is rolled.
      * Only applicable to log files.
      */
-    SIRO_NOHDR = 0x1000,
+    SIRO_NOHDR = 0x10000,
 
     /**
      * Includes all other options; effectively disables all output formatting except
      * the original formatted message (does not include ::SIRO_NOHDR; set that flag
      * in addition to remove header messages).
      */
-    SIRO_MSGONLY = 0xef00
+    SIRO_MSGONLY = 0xef000,
+
+    /** Use the default for this type of destination. See
+     * ::sirdefaults.h for specifics.
+     */
+    SIRO_DEFAULT = 0x100000,    
 } sir_option;
 
 /**
  * Used to differentiate between a single ::sir_option and one or more
  * bitwise OR'd together.
  */
-typedef uint16_t sir_options;
+typedef uint32_t sir_options;
 
 /** Available styles \a (colors, brightness) for console output. */
 typedef enum {
     SIRS_NONE        = 0,       /**< Used internally; has no effect. */
     SIRS_BRIGHT      = 0x1,     /**< If set, the foreground color is 'intensified'. */
+    SIRS_DIM         = 0x2,     /**< If set, the foreground color is 'dimmed'. */
     SIRS_FG_BLACK    = 0x10,    /**< Black foreground. */
     SIRS_FG_RED      = 0x20,    /**< Red foreground. */
     SIRS_FG_GREEN    = 0x30,    /**< Green foreground. */
@@ -121,17 +142,17 @@ typedef char sirchar_t;
  * @brief Configuration for \a stdio destinations \a (stdout and stderr).
  */
 typedef struct {
-    sir_levels levels;
+    sir_levels  levels;
     sir_options opts;
 } sir_stdio_dest;
 
-/** 
+/**
  * @struct sir_syslog_dest
  * @brief Configuration for the \a syslog destination.
  */
 typedef struct {
     sir_levels levels;
-    bool includePID;
+    bool       includePID;
 } sir_syslog_dest;
 
 /**
@@ -143,9 +164,12 @@ typedef struct {
  * in order to begin using the library.
  */
 typedef struct {
-    sir_stdio_dest d_stdout;  /**< \a stdout configuration. */
-    sir_stdio_dest d_stderr;  /**< \a stderr configuration. */
+    sir_stdio_dest d_stdout; /**< \a stdout configuration. */
+    sir_stdio_dest d_stderr; /**< \a stderr configuration. */
+
+#ifndef SIR_NO_SYSLOG
     sir_syslog_dest d_syslog; /**< \a syslog configuration. */
+#endif
 
     /**
      * If set, defines the name that will appear in formatted output.
@@ -202,6 +226,8 @@ typedef struct {
     sirchar_t* msec;
     sirchar_t* level;
     sirchar_t* name;
+    sirchar_t* pid;
+    sirchar_t* tid;
     sirchar_t* message;
     sirchar_t* output;
 } siroutput;
@@ -213,6 +239,8 @@ typedef enum {
     _SIRBUF_MSEC,
     _SIRBUF_LEVEL,
     _SIRBUF_NAME,
+    _SIRBUF_PID,
+    _SIRBUF_TID,
     _SIRBUF_MSG,
     _SIRBUF_OUTPUT,
     _SIRBUF_MAX
@@ -225,6 +253,8 @@ typedef struct {
     sirchar_t msec[SIR_MAXMSEC];
     sirchar_t level[SIR_MAXLEVEL];
     sirchar_t name[SIR_MAXNAME];
+    sirchar_t pid[SIR_MAXPID];
+    sirchar_t tid[SIR_MAXPID];
     sirchar_t message[SIR_MAXMESSAGE];
     sirchar_t output[SIR_MAXOUTPUT];
 } sirbuf;

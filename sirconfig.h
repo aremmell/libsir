@@ -27,6 +27,12 @@
 /** The format for the current millisecond in time stamps. */
 #define SIR_MSECFORMAT ".%03ld"
 
+/** The format for the human-readable logging level. */
+#define SIR_LEVELFORMAT "[%s]"
+
+/** The format for the current process/thread ID. */
+#define SIR_PIDFORMAT "%d"
+
 /**
  * The time format string in file headers (see ::SIR_FHFORMAT).
  * @remark sample: `15:13:41 Sat 28 Apr 18 (-0600)`
@@ -50,29 +56,29 @@
  */
 #define SIR_FHROLLED "file rolled due to size"
 
-/** The string representation of the ::SIRL_EMERG level in output. */
-#define SIRL_S_EMERG "EMER"
+/** The human-readable form of the ::SIRL_EMERG level. */
+#define SIRL_S_EMERG "emrg"
 
-/** The string representation of the ::SIRL_ALERT level in output. */
-#define SIRL_S_ALERT "ALRT"
+/** The human-readable form of the ::SIRL_ALERT level. */
+#define SIRL_S_ALERT "alrt"
 
-/** The string representation of the ::SIRL_CRIT level in output. */
-#define SIRL_S_CRIT "CRIT"
+/** The human-readable form of the ::SIRL_CRIT level. */
+#define SIRL_S_CRIT "crit"
 
-/** The string representation of the ::SIRL_ERROR level in output. */
-#define SIRL_S_ERROR "ERR"
+/** The human-readable form of the ::SIRL_ERROR level. */
+#define SIRL_S_ERROR "erro"
 
-/** The string representation of the ::SIRL_WARN level in output. */
-#define SIRL_S_WARN "WARN"
+/** The human-readable form of the ::SIRL_WARN level. */
+#define SIRL_S_WARN "warn"
 
-/** The string representation of the ::SIRL_NOTICE level in output. */
-#define SIRL_S_NOTICE "NOTF"
+/** The human-readable form of the ::SIRL_NOTICE level. */
+#define SIRL_S_NOTICE "noti"
 
-/** The string representation of the ::SIRL_INFO level in output. */
-#define SIRL_S_INFO "INFO"
+/** The human-readable form of the ::SIRL_INFO level. */
+#define SIRL_S_INFO "info"
 
-/** The string representation of the ::SIRL_DEBUG level in output. */
-#define SIRL_S_DEBUG "DBG"
+/** The human-readable form of the ::SIRL_DEBUG level. */
+#define SIRL_S_DEBUG "debg"
 
 /** The maximum number of log files that may be registered. */
 #define SIR_MAXFILES 16
@@ -90,16 +96,23 @@
 #define SIR_MAXMSEC 5
 
 /** The size, in characters, of the buffer used to hold level format strings. */
-#define SIR_MAXLEVEL 6
+#define SIR_MAXLEVEL 7
 
 /** The size, in characters, of the buffer used to hold process/appname
  * format strings. */
 #define SIR_MAXNAME 32
 
+/** The size, in characters, of the buffer used to hold process/thread IDs */
+#define SIR_MAXPID 11
+
+/** The maximum number of whitespace and misc. characters included in output. */
+#define SIR_MAXMISC 7
+
 /** The maximum size, in characters, of final formatted output. */
 #define SIR_MAXOUTPUT \
-    SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) \
-  + SIR_MAXTIME + SIR_MAXLEVEL + SIR_MAXNAME + 1
+    SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + \
+    SIR_MAXTIME + SIR_MAXLEVEL + SIR_MAXNAME + \
+    (SIR_MAXPID * 2) + SIR_MAXMISC + 1
 
 /** The string passed to fopen/fopen_s for log files. */
 #define SIR_FOPENMODE "a"

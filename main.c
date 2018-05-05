@@ -22,6 +22,8 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    sir_debug("debug message: %d", 123);
+    sir_info("info message: %d", 123);
     sir_notice("notice message: %d", 123);
     sir_warn("warning message: %d", 123);
     sir_error("error message: %d", 123);

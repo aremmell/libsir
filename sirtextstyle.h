@@ -18,6 +18,7 @@ static const sir_style_priv_map sir_priv_map[] = {
 #ifndef _WIN32
     {SIRS_NONE, 0},
     {SIRS_BRIGHT, 1},
+    {SIRS_DIM, 2},
     /* foreground */
     {SIRS_FG_BLACK, 30},
     {SIRS_FG_RED, 31},
@@ -57,7 +58,7 @@ static const sir_style_priv_map sir_priv_map[] = {
 #else
     {SIRS_NONE, 0},
     {SIRS_BRIGHT, FOREGROUND_INTENSITY},
-
+    {SIRS_DIM, 0},
     {SIRS_FG_BLACK, 0},
     {SIRS_FG_RED, FOREGROUND_RED},
     {SIRS_FG_GREEN, FOREGROUND_GREEN},

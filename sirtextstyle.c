@@ -17,7 +17,7 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
     uint32_t fg   = (style & _SIRS_FG_MASK);
     uint32_t bg   = (style & _SIRS_BG_MASK);
 
-    bool attrvalid = attr <= SIRS_BRIGHT;
+    bool attrvalid = attr <= SIRS_DIM;
     bool fgvalid   = fg <= SIRS_FG_DEFAULT;
     bool bgvalid   = bg <= SIRS_BG_DEFAULT;
 

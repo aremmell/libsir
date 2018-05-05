@@ -33,7 +33,7 @@ static inline bool validid(int id) {
 
 /** Validates a set of ::sir_level flags. */
 static inline bool validlevels(sir_levels levels) {
-    return (levels & SIRL_ALL) != 0 && (levels & SIRO_MSGONLY) == 0;
+    return levels <= SIRL_ALL;
 }
 
 /** Validates a single ::sir_level. */

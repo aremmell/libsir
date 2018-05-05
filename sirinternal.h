@@ -24,7 +24,7 @@ bool _sir_sanity();
 bool _sir_options_sanity(const sirinit* si);
 
 /** Initializes the library. */
-bool _sir_init(const sirinit* si);
+bool _sir_init(sirinit* si);
 
 /** Locks a protected section. */
 void* _sir_locksection(sir_mutex_id mid);

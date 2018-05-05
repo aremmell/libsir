@@ -7,7 +7,7 @@
 #include "sirfilecache.h"
 #include "sirtextstyle.h"
 
-bool sir_init(const sirinit* si) {
+bool sir_init(sirinit* si) {
     return _sir_init(si);
 }
 

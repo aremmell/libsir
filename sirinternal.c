@@ -41,13 +41,33 @@ bool _sir_options_sanity(const sirinit* si) {
     return true;
 }
 
-bool _sir_init(const sirinit* si) {
+bool _sir_init(sirinit* si) {
+
+    if (!si) return false;
+
     if (_sir_sanity()) {
         _sir_selflog("%s: sir appears to already be initialized!\n", __func__);
         return false;
     }
 
-    if (!si || !_sir_options_sanity(si))
+    if (flagtest(si->d_stdout.levels, SIRL_DEFAULT))
+        si->d_stdout.levels = sir_stdout_def_lvls;
+
+    if (flagtest(si->d_stdout.opts, SIRO_DEFAULT))
+        si->d_stdout.opts = sir_stdout_def_opts;
+
+    if (flagtest(si->d_stderr.levels, SIRL_DEFAULT))
+        si->d_stderr.levels = sir_stderr_def_lvls;
+
+    if (flagtest(si->d_stderr.opts, SIRO_DEFAULT))
+        si->d_stderr.opts = sir_stderr_def_opts;  
+
+#ifndef SIR_NO_SYSLOG
+    if (flagtest(si->d_syslog.levels, SIRL_DEFAULT))
+        si->d_syslog.levels = sir_syslog_def_lvls;
+#endif              
+
+    if (!_sir_options_sanity(si))
         return false;
 
     sirinit* _si = _sir_locksection(_SIRM_INIT);
@@ -57,13 +77,13 @@ bool _sir_init(const sirinit* si) {
         memcpy(_si, si, sizeof(sirinit));
 
 #ifndef SIR_NO_SYSLOG
-        // TODO: if not using process name, use pid for syslog identity?
         if (0 != _si->d_syslog.levels)
             openlog(validstr(_si->processName) ? _si->processName : "",
                 (_si->d_syslog.includePID ? LOG_PID : 0) | LOG_ODELAY, LOG_USER);
 #endif
-        _sir_magic = _SIR_MAGIC;
 
+        _sir_magic = _SIR_MAGIC;
+        
         _sir_unlocksection(_SIRM_INIT);
         _sir_selflog("%s: SIR is initialized\n", __func__);
         return true;
@@ -263,17 +283,28 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
 
     output.level = _sirbuf_get(&buf, _SIRBUF_LEVEL);
     assert(output.level);
-    snprintf(output.level, SIR_MAXLEVEL, "[%s]", _sir_levelstr(level));
+    snprintf(output.level, SIR_MAXLEVEL, SIR_LEVELFORMAT, _sir_levelstr(level));
 
     if (validstr(tmpsi.processName)) {
         output.name = _sirbuf_get(&buf, _SIRBUF_NAME);
         assert(output.name);
         strncpy(output.name, tmpsi.processName, SIR_MAXNAME - 1);
-#pragma message "TODO: PID/TID"
-        // snprintf(output.name, SIR_MAXNAME, "%s (%d:%d)", sir_s.processName, _sir_getpid(), _sir_gettid());
     }
 
-    /** \todo add support for syslog's %m */
+    output.pid = _sirbuf_get(&buf, _SIRBUF_PID);
+    assert(output.pid);
+
+    pid_t pid = _sir_getpid();
+    snprintf(output.pid, SIR_MAXPID, SIR_PIDFORMAT, pid);
+
+    pid_t tid = _sir_gettid();
+    output.tid = _sirbuf_get(&buf, _SIRBUF_TID);
+    assert(output.tid);
+
+    if (tid != pid)
+        snprintf(output.tid, SIR_MAXPID, SIR_PIDFORMAT, tid);
+
+    /** \todo add support for glibc's %m? */
     output.message = _sirbuf_get(&buf, _SIRBUF_MSG);
     assert(output.message);
     int msgfmt = vsnprintf(output.message, SIR_MAXMESSAGE, format, args);
@@ -382,11 +413,30 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) 
             first = false;
         }
 
+        bool name = false;
         if (!flagtest(opts, SIRO_NONAME) && validstr(output->name)) {
             if (!first)
                 strncat(output->output, " ", 1);
             strncat(output->output, output->name, SIR_MAXNAME);
             first = false;
+            name = true;
+        }
+
+        if (!flagtest(opts, SIRO_NOPID)) {
+            if (name)
+                strncat(output->output, "(", 1);
+            else if (!first)
+                strncat(output->output, " ", 1);
+                
+            strncat(output->output, output->pid, SIR_MAXPID);
+
+            if (!flagtest(opts, SIRO_NOTID) && validstr(output->tid)) {
+                strncat(output->output, "|", 1);
+                strncat(output->output, output->tid, SIR_MAXPID);
+            }
+            
+            if (name)
+                strncat(output->output, ")", 1);
         }
 
         if (!first)
@@ -426,9 +476,7 @@ int _sir_syslog_maplevel(sir_level level) {
 }
 #endif
 
-/* in case there's a better way to implement this
- * hms, abstract it away.
- */
+/* In case there's a better way to implement this, abstract it away. */
 sirchar_t* _sirbuf_get(sirbuf* buf, size_t idx) {
 
     assert(idx <= _SIRBUF_MAX);
@@ -439,6 +487,8 @@ sirchar_t* _sirbuf_get(sirbuf* buf, size_t idx) {
         case _SIRBUF_MSEC: return buf->msec;
         case _SIRBUF_LEVEL: return buf->level;
         case _SIRBUF_NAME: return buf->name;
+        case _SIRBUF_PID: return buf->pid;
+        case _SIRBUF_TID: return buf->tid;
         case _SIRBUF_MSG: return buf->message;
         case _SIRBUF_OUTPUT: return buf->output;
         default: assert(false);

@@ -5,6 +5,7 @@
 #include "sirfilecache.h"
 #include "sirinternal.h"
 #include "sirmutex.h"
+#include "sirdefaults.h"
 
 /**
  * @addtogroup intern
@@ -17,6 +18,9 @@ int _sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts) {
         sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
 
         if (sfc) {
+            if (flagtest(opts, SIRO_DEFAULT))
+                opts = sir_file_def_opts;
+
             int r = _sir_fcache_add(sfc, path, levels, opts);
             _sir_unlocksection(_SIRM_FILECACHE);
             return r;
