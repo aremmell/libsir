@@ -194,7 +194,7 @@ bool _sirfile_writeheader(sirfile* sf, const sirchar_t* msg) {
                 if (fmt < 0)
                     _sir_handleerr(errno);
 
-                return 0 == fmt && _sirfile_write(sf, header);
+                return fmt >=0 && _sirfile_write(sf, header);
             }
         }
     }
