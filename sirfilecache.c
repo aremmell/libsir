@@ -86,19 +86,39 @@ bool _sirfile_open(sirfile* sf) {
     assert(validstr(sf->path));
 
     if (sf && validstr(sf->path)) {
+
         FILE* f = _sir_fopen(sf->path);
         assert(f);
 
-        if (f) {
+        if (f) {            
             int fd = fileno(f);
             if (-1 == fd) _sir_handleerr(errno);
 
             if (validid(fd)) {
+                _sirfile_close(sf);
+                                
                 sf->f  = f;
                 sf->id = fd;     
                 return true;
             }
         }
+    }
+
+    return false;
+}
+
+void _sirfile_close(sirfile* sf) {
+
+    assert(sf);
+
+    if (sf) {
+        if (sf->f && validid(sf->id)) {
+            _sir_fflush(sf->f);
+            _sir_fclose(sf->f);
+            sf->id = SIR_INVALID;
+        }
+
+        return true;
     }
 
     return false;
@@ -251,8 +271,11 @@ bool _sirfile_archive(sirfile* sf, const sirchar_t* newpath) {
     assert(validstr(newpath));
 
     if (_sirfile_validate(sf) && validstr(newpath)) {
+#ifdef _WIN32
+        /* apparently need to close the old file first on windows. */
+        _sirfile_close(sf);
+#endif
         int move = rename(sf->path, newpath);
-        assert(0 == move);
 
         if (0 != move) {
             _sir_handleerr(errno);
@@ -310,8 +333,7 @@ bool _sirfile_splitpath(sirfile* sf, sirchar_t** name, sirchar_t** ext) {
 
 void _sirfile_destroy(sirfile* sf) {
     if (sf) {
-        _sir_fflush(sf->f);
-        _sir_fclose(&sf->f);
+        _sirfile_close(sf);
         safefree(sf->path);
         safefree(sf);
     }
@@ -490,10 +512,8 @@ FILE* _sir_fopen(const sirchar_t* path) {
     return NULL;
 }
 
-void _sir_fclose(FILE** f) {
-    if (f && *f) {
-        safefclose(*f);
-    }
+void _sir_fclose(FILE* f) {
+    safefclose(f);
 }
 
 void _sir_fflush(FILE* f) {
