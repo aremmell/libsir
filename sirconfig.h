@@ -82,7 +82,7 @@
  * 
  * @remark sample: `oldname-18-05-05-122049.log`
  */
-#define SIR_ROLLFORMAT "%s-%s%s"
+#define SIR_FNAMEFORMAT "%s-%s%s"
 
 /** The human-readable form of the ::SIRL_EMERG level. */
 #define SIRL_S_EMERG "emrg"
