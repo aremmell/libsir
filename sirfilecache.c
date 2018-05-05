@@ -128,11 +128,17 @@ bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
     if (_sirfile_validate(sf) && validstr(output)) {
 
         if (_sirfile_needsroll(sf)) {
-            if (!_sirfile_roll(sf))
-                return false;
+            bool rolled = false;
+            sirchar_t* newpath = NULL;
+            
+            if (_sirfile_roll(sf, &newpath)) {
+                sirchar_t header[SIR_MAXMESSAGE] = {0};
+                snprintf(header, SIR_MAXMESSAGE, SIR_FHROLLED, newpath);
+                rolled = _sirfile_writeheader(sf, header);
+            }
 
-            if (!_sirfile_writeheader(sf, SIR_FHROLLED))
-                return false;
+            safefree(newpath);
+            if (!rolled) return false;
         }
 
         size_t writeLen = strnlen(output, SIR_MAXOUTPUT);
@@ -216,11 +222,12 @@ bool _sirfile_needsroll(sirfile* sf) {
     return false;
 }
 
-bool _sirfile_roll(sirfile* sf) {
+bool _sirfile_roll(sirfile* sf, sirchar_t** newpath) {
 
     assert(_sirfile_validate(sf));
+    assert(newpath);
 
-    if (_sirfile_validate(sf)) {
+    if (_sirfile_validate(sf) && newpath) {
 
             bool r = false;
             sirchar_t* name = NULL;
@@ -237,23 +244,28 @@ bool _sirfile_roll(sirfile* sf) {
 
                 if (gettime) {                
                     sirchar_t timestamp[SIR_MAXTIME] = {0};
-                    bool fmttime = _sir_formattime(now, timestamp, SIR_ROLLTIMEFORMAT);
+                    bool fmttime = _sir_formattime(now, timestamp, SIR_FNAMETIMEFORMAT);
                     assert(fmttime);
                     
                     if (fmttime) {
-                        sirchar_t newpath[SIR_MAXPATH] = {0};
-                        int fmtpath = snprintf(newpath, SIR_MAXPATH, SIR_ROLLFORMAT, name, timestamp, ext);                
-                        assert(fmtpath >= 0);
+                        *newpath = (sirchar_t*)calloc(SIR_MAXPATH, sizeof(sirchar_t));
+                        assert(*newpath);
 
-                        if (fmtpath < 0) _sir_handleerr(errno);
-                        r = fmtpath >= 0 && _sirfile_archive(sf, newpath);
+                        if (*newpath) {
+                            int fmtpath = snprintf(*newpath, SIR_MAXPATH, SIR_FNAMEFORMAT, name, timestamp, ext);                
+                            assert(fmtpath >= 0);
+
+                            if (fmtpath < 0)
+                                _sir_handleerr(errno);
+
+                            r = fmtpath >= 0 && _sirfile_archive(sf, *newpath);
+                        }
                     }
                 }
 
                 safefree(name);
                 safefree(ext);
             }
-
 
         return r;
     }
