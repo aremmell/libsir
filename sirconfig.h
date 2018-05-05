@@ -56,6 +56,27 @@
  */
 #define SIR_FHROLLED "file rolled due to size"
 
+/**
+ * The time format string for rolled (archived) log files (see ::SIR_ROLLFORMAT).
+ * @remark sample: `18-05-05-122049`
+ */
+#define SIR_ROLLTIMEFORMAT "%y-%m-%d-%H%M%S"
+
+/**
+ * The format string for rolled (archived) log file names.
+ * 
+ * The \a first %s format specifier is the name part (the name up to the last '.') of the original
+ * file name.
+ * 
+ * The \a second %s is the time stamp as defined by SIR_ROLLTIMEFORMAT.
+ * 
+ * The \a third %s is the extension part (the name after and including the last '.')
+ * of the original file name if one is present.
+ * 
+ * @remark sample: `oldname-18-05-05-122049.log`
+ */
+#define SIR_ROLLFORMAT "%s-%s%s"
+
 /** The human-readable form of the ::SIRL_EMERG level. */
 #define SIRL_S_EMERG "emrg"
 

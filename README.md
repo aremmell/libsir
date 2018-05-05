@@ -1,4 +1,5 @@
 # Main Page                {#mainpage}
+[TOC]
 
 ## About
 
@@ -38,8 +39,6 @@ Error       | Errors.
 Critical    | Critical errors.
 Alert       | Action required ASAP.
 Emergency   | Nuclear war, Armageddon, etc.
-
-[TOC]
 
 ## Getting started
 

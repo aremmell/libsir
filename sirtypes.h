@@ -81,7 +81,7 @@ typedef enum {
     SIRO_MSGONLY = 0xef000,
 
     /** Use the default for this type of destination. See
-     * ::sirdefaults.h for specifics.
+     * sirdefaults.h for specifics.
      */
     SIRO_DEFAULT = 0x100000,    
 } sir_option;
