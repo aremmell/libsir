@@ -41,7 +41,7 @@ DEBUGTU      = $(TUS) main.c
 _OBJ_TESTS   = tests.o
 OBJ_TESTS   = $(patsubst %.o, $(INTERDIR)/%.to, $(_OBJ_TESTS))
 OUT_TESTS    = $(BUILDDIR)/sirtests
-CFLAGS_TESTS = $(CFLAGS) -g -DNDEBUG -L$(LIBDIR) -lsir
+CFLAGS_TESTS = $(CFLAGS) -g -DNDEBUG -L$(LIBDIR) -l:libsir.a
 TESTSTU      = $(TESTSDIR)/tests.c
 
 # shared library
@@ -119,11 +119,13 @@ ifeq ($(OS),Windows_NT)
 	@echo using del /F /Q...
 	$(shell del /F /Q "$(BUILDDIR)\*.*" && \
 		    del /F /Q "$(INTERDIR)\*.*" && \
-			del /F /Q "$(LIBDIR)\*.*")
+			del /F /Q "$(LIBDIR)\*.*" && \
+			del /F /Q "*.log")
 else
 	@echo using rm -f...
 	$(shell rm -f $(BUILDDIR)/*.* >/dev/null && \
 	        rm -f $(LIBDIR)/* >/dev/null && \
-			rm -f $(INTERDIR)/* >/dev/null)
+			rm -f $(INTERDIR)/* >/dev/null && \
+			rm -f *.log >/dev/null)
 endif
-	@echo cleared directories.
+	@echo cleaned successfully.
