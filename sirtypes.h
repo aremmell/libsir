@@ -78,7 +78,7 @@ typedef enum {
      * the original formatted message (does not include ::SIRO_NOHDR; set that flag
      * in addition to remove header messages).
      */
-    SIRO_MSGONLY = 0xef000,
+    SIRO_MSGONLY = 0xeffff,
 
     /** Use the default for this type of destination. See
      * sirdefaults.h for specifics.
