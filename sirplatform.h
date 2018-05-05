@@ -30,6 +30,7 @@
 #include <sys/syscall.h>
 #include <syslog.h>
 #include <unistd.h>
+#include <strings.h>
 
 #ifdef __linux__
 #include <linux/limits.h>
@@ -47,13 +48,13 @@
 #endif
 
 /** The error code type. */
-typedef int             sirerror_t;
+typedef int sirerror_t;
 
 /** The mutex type. */
 typedef pthread_mutex_t sirmutex_t;
 
 /** The one-time type. */
-typedef pthread_once_t  sironce_t;
+typedef pthread_once_t sironce_t;
 
 /** The one-time execution function type. */
 typedef void (*sir_once_fn)(void);
@@ -73,10 +74,10 @@ typedef void (*sir_once_fn)(void);
 #define SIR_MSEC_WIN32
 
 /** The error code type. */
-typedef DWORD     sirerror_t;
+typedef DWORD sirerror_t;
 
 /** The mutex type. */
-typedef HANDLE    sirmutex_t;
+typedef HANDLE sirmutex_t;
 
 /** The one-time type. */
 typedef INIT_ONCE sironce_t;

@@ -23,7 +23,7 @@
 
 /** Validates a string pointer */
 static inline bool validstr(const sirchar_t* str) {
-    return str && *str;
+    return str && (*str != (sirchar_t)'\0');
 }
 
 /** Validates a log file identifier. */
@@ -52,19 +52,27 @@ static inline bool flagtest(uint32_t flags, uint32_t test) {
 }
 
 /** Wraps \a free. */
-static inline void safefree(void* p) {
-    if (!p)
+static inline void _safefree(void** p) {
+    if (!p || (p && !*p))
         return;
-    free(p);
-    p = NULL;
+    free(*p);
+    *p = NULL;
+}
+
+/** Wraps \a free. */
+static inline void safefree(void* p) {
+    _safefree(&p);
 }
 
 /** Wraps \a fclose. */
-static inline void safefclose(FILE* f) {
-    if (!f)
+static inline void _safefclose(FILE** f) {
+    if (!f || (f && !*f))
         return;
-    fclose(f);
-    f = NULL;
+    fclose(*f);
+    *f = NULL;    
+}
+static inline void safefclose(FILE* f) {
+    _safefclose(&f);
 }
 
 /** Places a null terminator at the first index in a string buffer. */

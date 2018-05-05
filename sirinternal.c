@@ -272,8 +272,8 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
     assert(gettime);
 
     if (gettime) {
-        bool fmt = _sir_formattime(now, output.timestamp, SIR_TIMEFORMAT);
-        assert(fmt);
+        bool fmttime = _sir_formattime(now, output.timestamp, SIR_TIMEFORMAT);
+        assert(fmttime);
 
         output.msec = _sirbuf_get(&buf, _SIRBUF_MSEC);
         assert(output.msec);
@@ -525,13 +525,13 @@ bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format) {
     assert(validstr(format));
 
     if (0 != now && buffer && validstr(format)) {
-        size_t fmt = strftime(buffer, SIR_MAXTIME, format, localtime(&now));
-        assert(0 != fmt);
+        size_t fmttime = strftime(buffer, SIR_MAXTIME, format, localtime(&now));
+        assert(0 != fmttime);
 
-        if (0 == fmt)
+        if (0 == fmttime)
             _sir_selflog("%s: strftime returned 0; format string: '%s'", __func__, format);
 
-        return 0 != fmt;
+        return 0 != fmttime;
     }
 
     return false;
@@ -610,10 +610,10 @@ void _sir_handleerr_impl(sirerror_t err, const sirchar_t* func, const sirchar_t*
             FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS;
         TCHAR* errbuf = NULL;
 
-        DWORD fmt = FormatMessage(flags, NULL, err, 0, (LPTSTR)&errbuf, SIR_MAXERROR, NULL);
-        assert(fmt > 0);
+        DWORD fmttime = FormatMessage(flags, NULL, err, 0, (LPTSTR)&errbuf, SIR_MAXERROR, NULL);
+        assert(fmttime > 0);
 
-        if (fmt > 0 && errbuf) {
+        if (fmttime > 0 && errbuf) {
             _sir_selflog("%s: at %s:%d: error: (%d, '%s')\n", func, file, line, err, errbuf);
             BOOL heapfree = HeapFree(GetProcessHeap(), 0, errbuf);
             assert(0 != heapfree);

@@ -18,10 +18,13 @@ int  _sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts);
 bool _sir_remfile(int id);
 
 sirfile* _sirfile_create(const sirchar_t* path, sir_levels levels, sir_options opts);
+bool _sirfile_open(sirfile* sf);
 bool     _sir_write(sirfile* sf, const sirchar_t* output);
 bool     _sirfile_writeheader(sirfile* sf, const sirchar_t* msg);
 bool     _sirfile_needsroll(sirfile* sf);
 bool     _sirfile_roll(sirfile* sf);
+bool     _sirfile_archive(sirfile* sf, const sirchar_t* newpath);
+bool     _sirfile_splitpath(sirfile* sf, sirchar_t** name, sirchar_t** ext);
 void     _sirfile_destroy(sirfile* sf);
 bool     _sirfile_validate(sirfile* sf);
 
