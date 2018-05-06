@@ -11,11 +11,12 @@ CC       = gcc
 BUILDDIR = build
 DOCSDIR = docs
 TESTSDIR = tests
+EXAMPLEDIR = example
 INTERDIR = $(BUILDDIR)/obj
 LIBDIR   = $(BUILDDIR)/lib
 
 LIBS   = -pthread
-CFLAGS = -Wpedantic -std=c11 -I.
+CFLAGS = -Wpedantic -std=c11 -I. -L$(LIBDIR)
 
 ifeq ($(OS),Windows_NT)
 CFLAGS += -D_WIN32
@@ -30,18 +31,18 @@ DEPS    = sir.h sirmutex.h sirconfig.h sirinternal.h sirmacros.h \
 _OBJ = $(patsubst %.c, %.o, $(TUS))
 OBJ  = $(patsubst %, $(INTERDIR)/%, $(_OBJ))
 
-# console debug app
-_OBJ_DEBUG   = main.o $(_OBJ)
-OBJ_DEBUG    = $(patsubst %.o, $(INTERDIR)/%.do, $(_OBJ_DEBUG))
-OUT_DEBUG    = $(BUILDDIR)/sirdebug
-CFLAGS_DEBUG = $(CFLAGS) -g -DDEBUG -DSIR_SELFLOG
-DEBUGTU      = $(TUS) main.c
+# console example
+_OBJ_EXAMPLE   = example.o
+OBJ_EXAMPLE    = $(patsubst %.o, $(INTERDIR)/%.eo, $(_OBJ_EXAMPLE))
+OUT_EXAMPLE    = $(BUILDDIR)/sirexample
+CFLAGS_EXAMPLE = $(CFLAGS) -DNDEBUG -O3 -l:libsir.a
+EXAMPLETU      = $(TESTSDIR)/example.c
 
 # console test rig
 _OBJ_TESTS   = tests.o
 OBJ_TESTS   = $(patsubst %.o, $(INTERDIR)/%.to, $(_OBJ_TESTS))
 OUT_TESTS    = $(BUILDDIR)/sirtests
-CFLAGS_TESTS = $(CFLAGS) -g -DNDEBUG -L$(LIBDIR) -l:libsir.a
+CFLAGS_TESTS = $(CFLAGS) -g -DNDEBUG -l:libsir.a
 TESTSTU      = $(TESTSDIR)/tests.c
 
 # shared library
@@ -62,12 +63,12 @@ $(BUILDDIR): prep
 $(INTERDIR) : $(BUILDDIR)
 $(LIBDIR): $(BUILDDIR)
 
-$(OBJ_DEBUG): $(INTERDIR)
+$(OBJ_EXAMPLE): $(INTERDIR)
 $(OBJ_SHARED): $(INTERDIR) $(LIBDIR)
 $(OBJ_TESTS): $(OBJ_SHARED)
 
-$(INTERDIR)/%.do: %.c
-	$(CC) -c -o $@ $< $(CFLAGS_DEBUG)
+$(INTERDIR)/%.eo: $(EXAMPLEDIR)/%.c
+	$(CC) -c -o $@ $< $(CFLAGS_EXAMPLE)
 
 $(INTERDIR)/%.to: $(TESTSDIR)/%.c
 	$(CC) -c -o $@ $< $(CFLAGS_TESTS)	
@@ -75,9 +76,9 @@ $(INTERDIR)/%.to: $(TESTSDIR)/%.c
 $(INTERDIR)/%.lo: %.c
 	$(CC) -c -o $@ $< $(CFLAGS_SHARED)
 
-default: debug
+default: example
 
-all: debug static shared tests
+all: shared static example tests
 
 # thanks to the windows folks
 prep:
@@ -92,10 +93,6 @@ else
 endif
 	@echo directories prepared.
 
-debug: $(OBJ_DEBUG)
-	$(CC) -o $(OUT_DEBUG) $^ $(CFLAGS_DEBUG) $(LIBS)
-	@echo built $(OUT_DEBUG) successfully.
-
 shared: $(OBJ_SHARED)
 	$(CC) -shared -o $(OUT_SHARED) $^ $(CFLAGS_SHARED) $(LIBS)
 	@echo built $(OUT_SHARED) successfully.
@@ -103,6 +100,10 @@ shared: $(OBJ_SHARED)
 static: shared
 	ar crf $(OUT_STATIC) $(OBJ_SHARED)
 	@echo built $(OUT_STATIC) successfully.
+
+example: static $(OBJ_EXAMPLE)
+	$(CC) -o $(OUT_EXAMPLE) $(OBJ_EXAMPLE) $(CFLAGS_EXAMPLE) $(LIBS)
+	@echo built $(OUT_EXAMPLE) successfully.
 
 tests: static $(OBJ_TESTS)
 	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS) $(CFLAGS_TESTS) $(LIBS)

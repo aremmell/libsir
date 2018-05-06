@@ -4,13 +4,10 @@
  */
 #include "tests.h"
 #include "../sir.h"
-
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-/** @cond private */
 
 #ifndef _WIN32
 #define _POSIX_C_SOURCE 200809L
@@ -32,6 +29,17 @@
 #define GREEN(s) s
 #define WHITE(s) s
 #endif
+
+#pragma message "add test to archive/roll log files."
+/*    // Fill a log until it's rolled
+    const sirchar_t* line = "sups, gonna fill this log right up!";
+    size_t write = 0;
+    size_t linesize = strlen(line);
+
+    do {
+        sir_info("%s", line);
+        write += linesize;
+    } while (write < SIR_FROLLSIZE);*/
 
 #define INIT(var, l_stdout, o_stdout, l_stderr, o_stderr) \
     sirinit var         = {0};                            \
@@ -326,5 +334,3 @@ static unsigned sirtest_thread(void* arg) {
     return 0;
 #endif
 }
-
-/** @endcond private */
