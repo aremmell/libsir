@@ -1,7 +1,8 @@
-# Main Page                {#mainpage}
+# Main Page
+
 [TOC]
 
-## About
+## About {#about}
 
 ### What is SIR?
 SIR is a cross-platform, thread-safe C library that was created to alleviate the hassles associated with implementing useful, readable, and great-looking diagnostic output facilities.
