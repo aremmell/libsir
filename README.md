@@ -45,10 +45,26 @@ Alert       | Action required ASAP.
 Emergency   | Nuclear war, Armageddon, etc.
 
 ## Getting started
+Clone or download this repository to your machine, then choose how you'd like to integrate SIR into your C/C++/whatever project.
+
+### Supplied make recipies
+I have included make recipies for building as a static library, and as a shared library.
+
+- As a static library: `make static`
+  + The output will be located at build/lib/libsir.a.
+
+- As a shared library: `make shared`
+  + The output will be located at build/lib/libsir.so.
+
+### Including the source
+Simply modify your Makefile (or project file of whatever type) to include all of the source files in the root directory of this repository, and include sir.h.
+
+### Preprocessor options
+There are a few things one should be aware of when compiling SIR that control its behavior.
+
+- _SIR\_SELFLOG_: 
 
 ### Customization
-
-### Compilation
 
 ### Usage
 

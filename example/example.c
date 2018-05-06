@@ -10,7 +10,8 @@
  * This is a basic example of initializing, configuring destinations,
  * and outputting messages.
  * 
- * @note You can build this CLI app yourself using `make example`.
+ * @note You can build this CLI app yourself using `make example`. The binary
+ * is generated at build/sirexample.
  * 
  * When it is finished running, you can see the output in the console, and
  * example the contents of 'sir-example.log' in the current directory.
