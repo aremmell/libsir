@@ -304,7 +304,7 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
     if (tid != pid)
         snprintf(output.tid, SIR_MAXPID, SIR_PIDFORMAT, tid);
 
-    /** \todo add support for glibc's %m? */
+    /** @todo add support for glibc's %%m? */
     output.message = _sirbuf_get(&buf, _SIRBUF_MSG);
     assert(output.message);
     int msgfmt = vsnprintf(output.message, SIR_MAXMESSAGE, format, args);
