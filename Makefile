@@ -17,16 +17,18 @@ LIBDIR   = $(BUILDDIR)/lib
 
 LIBS   = -pthread
 CFLAGS = -Wpedantic -std=c11 -I. -L$(LIBDIR)
+DEBUGCFLAGS = $(CFLAGS) -g -DDEBUG -fPIC
+NDEBUGCFLAGS = $(CFLAGS) -DNDEBUG -fPIC -O3
 
 ifeq ($(OS),Windows_NT)
 CFLAGS += -D_WIN32
 endif
 
-TUS     = sir.c sirmutex.c sirinternal.c sirfilecache.c sirconsole.c \
-		  sirtextstyle.c
-DEPS    = sir.h sirmutex.h sirconfig.h sirinternal.h sirmacros.h \
-		  sirplatform.h sirfilecache.h sirtypes.h sirconsole.h \
-		  sirtextstyle.h
+TUS = sir.c sirmutex.c sirinternal.c sirfilecache.c sirconsole.c \
+	  sirtextstyle.c sirerrors.c
+DEPS = sir.h sirmutex.h sirconfig.h sirinternal.h sirhelpers.h \
+	   sirplatform.h sirfilecache.h sirtypes.h sirconsole.h \
+	   sirtextstyle.h sirerrors.h
 
 _OBJ = $(patsubst %.c, %.o, $(TUS))
 OBJ  = $(patsubst %, $(INTERDIR)/%, $(_OBJ))
@@ -35,25 +37,24 @@ OBJ  = $(patsubst %, $(INTERDIR)/%, $(_OBJ))
 _OBJ_EXAMPLE   = example.o
 OBJ_EXAMPLE    = $(patsubst %.o, $(INTERDIR)/%.eo, $(_OBJ_EXAMPLE))
 OUT_EXAMPLE    = $(BUILDDIR)/sirexample
-CFLAGS_EXAMPLE = $(CFLAGS) -DNDEBUG -O3 -l:libsir.a
+CFLAGS_EXAMPLE = $(DEBUGCFLAGS) -l:libsir.a
 EXAMPLETU      = $(TESTSDIR)/example.c
 
 # console test rig
 _OBJ_TESTS   = tests.o
 OBJ_TESTS   = $(patsubst %.o, $(INTERDIR)/%.to, $(_OBJ_TESTS))
 OUT_TESTS    = $(BUILDDIR)/sirtests
-CFLAGS_TESTS = $(CFLAGS) -g -DNDEBUG -l:libsir.a
+CFLAGS_TESTS = $(CFLAGS) -l:libsir.a
 TESTSTU      = $(TESTSDIR)/tests.c
 
 # shared library
 OBJ_SHARED    = $(patsubst %.o, $(INTERDIR)/%.lo, $(_OBJ))
 OUT_SHARED	  = $(LIBDIR)/libsir.so
-CFLAGS_SHARED = $(CFLAGS) -DNDEBUG -fPIC -O3
+CFLAGS_SHARED = $(DEBUGCFLAGS)
 
 # static library
 OBJ_STATIC    = $(OBJ_SHARED)
 OUT_STATIC    = $(LIBDIR)/libsir.a
-CFLAGS_STATIC = $(CFLAGS) -DNDEBUG -O3
 
 # ##########
 # targets
