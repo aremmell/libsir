@@ -1,5 +1,5 @@
 /**
- * @file sirmacros.h
+ * @file sirhelpers.h
  * @brief Internally used macros and inline functions.
  */
 #ifndef _SIR_MACROS_H_INCLUDED
@@ -14,12 +14,24 @@
 
 #define _COUNTOF(arr) (sizeof(arr) / sizeof(arr[0]))
 
+/**
+ * Creates an error code that (hopefully) doesn't conflict
+ * with any of those defined by the platform.
+ */
+#define makeerr(code) \
+    (((uint32_t)(code & 0x7fff) << 16) | 0x80000000)
+
 #define _SIR_L_START(format) \
     bool    r = false;       \
     va_list args;            \
     va_start(args, format);
 
 #define _SIR_L_END(args) va_end(args);
+
+static inline bool validerr(sirerrcode_t code) {
+    sirerrcode_t masked = code & 0x8fffffff;
+    return masked >= 0x80010000 && masked <= 0x8fff0000;
+}
 
 /** Validates a string pointer */
 static inline bool validstr(const sirchar_t* str) {

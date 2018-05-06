@@ -29,8 +29,7 @@ static bool _sir_write_std(const sirchar_t* message, FILE* stream) {
     assert(stream);
 
     int write = validstr(message) ? fputs(message, stream) : -1;
-    assert(write >= 0);
-
+    _sir_handleerr(write);
     return write >= 0;
 }
 

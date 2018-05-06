@@ -8,13 +8,14 @@
             "name": "(gdb) debug",
             "type": "cppdbg",
             "request": "launch",
-            "preLaunchTask": "build-debug",
-            "program": "${workspaceFolder}/build/sirdebug",
+            "preLaunchTask": "build-example",
+            "program": "${workspaceFolder}/build/sirexample",
             "args": [
             ],
             "stopAtEntry": true,
             "cwd": "${workspaceFolder}",
-            "environment": [],
+            "environment": [
+            ],
             "internalConsoleOptions": "openOnSessionStart",
             "externalConsole": true,
             "setupCommands": [

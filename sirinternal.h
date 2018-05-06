@@ -5,8 +5,9 @@
 #ifndef _SIR_INTERNAL_H_INCLUDED
 #define _SIR_INTERNAL_H_INCLUDED
 
-#include "sirmacros.h"
+#include "sirhelpers.h"
 #include "sirtypes.h"
+#include "sirerrors.h"
 
 /** 
  * @defgroup intern Internal

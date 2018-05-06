@@ -1,17 +1,15 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
+    "folders": [
+        {
+	        "path": "."
+	    }
+    ],
     "settings": {
         "files.associations": {
-            "stdlib.h": "c",
-            "inttypes.h": "c",
-            "cinttypes": "c",
-            "time.h": "c",
-            "sirinternal.h": "c",
-            "process.h": "c"
+	    "*.c": "c",
+	    "*.h": "c",
+	    "*.cc": "c++",
+	    "*.hh": "c++"
         }
     }
 }

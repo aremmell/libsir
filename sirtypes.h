@@ -5,19 +5,19 @@
 #ifndef _SIR_TYPES_H_INCLUDED
 #define _SIR_TYPES_H_INCLUDED
 
-#include "sirconfig.h"
 #include "sirplatform.h"
+#include "sirconfig.h"
 
 /**
  * @addtogroup public
  * @{
  */
 
+/** The error code type. */
+typedef uint32_t sirerrcode_t;
+
 /** The value used to represent an invalid file identifier. */
 static const int SIR_INVALID = -1;
-
-/** The value that represents the success condition. */
-static const sirerror_t SIR_NOERROR = 0;
 
 /** Defines the available levels \a (severity/priority) of logging output. */
 typedef enum {
@@ -28,7 +28,7 @@ typedef enum {
     SIRL_WARN    = 0x10, /**< Warnings that could likely be ignored. */
     SIRL_NOTICE  = 0x20, /**< Normal but significant. */
     SIRL_INFO    = 0x40, /**< Informational messages. */
-    SIRL_DEBUG   = 0x80, /**< Debugging/troubleshooting output. */
+    SIRL_DEBUG   = 0x80, /**< Debugging/diagnostic output. */
     SIRL_ALL     = 0xff, /**< Includes all logging levels. */
     SIRL_DEFAULT = 0x100 /**< Use the default levels for this type of destination. */
 } sir_level;
@@ -177,6 +177,12 @@ typedef struct {
      */
     sirchar_t processName[SIR_MAXNAME];
 } sirinit;
+
+/** Library error type. */
+typedef struct {
+    sirerrcode_t code;
+    const sirchar_t * const message;
+} sirerror;
 
 /** @} */
 

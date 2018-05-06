@@ -4,12 +4,12 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build debug test app",
-            "identifier": "build-debug",
+            "label": "build example",
+            "identifier": "build-example",
             "type": "shell",
             "command": "make",
             "args": [
-                "debug"
+                "example"
             ],
             "group": {
                 "kind": "build",
@@ -23,7 +23,7 @@
             "windows": {
                 "command": "mingw32-make",
                 "args": [
-                    "debug"
+                    "example"
                 ],
             },
             "problemMatcher": [

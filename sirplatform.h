@@ -6,10 +6,10 @@
 #define _SIR_PLATFORM_H_INCLUDED
 
 #ifndef _WIN32
-#define _POSIX_C_SOURCE 200809L
-#define _DEFAULT_SOURCE
+#   define _POSIX_C_SOURCE 200809L
+#   define _DEFAULT_SOURCE
 #else
-#define _WIN32_WINNT 0x0600
+#   define _WIN32_WINNT 0x0600
 #endif
 
 #include <assert.h>
@@ -33,22 +33,19 @@
 #include <strings.h>
 
 #ifdef __linux__
-#include <linux/limits.h>
+#   include <linux/limits.h>
 #endif
 
 #ifdef PATH_MAX
-#define SIR_MAXPATH PATH_MAX
+#   define SIR_MAXPATH PATH_MAX
 #endif
 
 #if _POSIX_TIMERS > 0
-#define SIR_MSEC_TIMER
-#define SIR_MSEC_POSIX
+#   define SIR_MSEC_TIMER
+#   define SIR_MSEC_POSIX
 #else
-#undef SIR_MSEC_TIMER
+#   undef SIR_MSEC_TIMER
 #endif
-
-/** The error code type. */
-typedef int sirerror_t;
 
 /** The mutex type. */
 typedef pthread_mutex_t sirmutex_t;
@@ -73,9 +70,6 @@ typedef void (*sir_once_fn)(void);
 #define SIR_MSEC_TIMER
 #define SIR_MSEC_WIN32
 
-/** The error code type. */
-typedef DWORD sirerror_t;
-
 /** The mutex type. */
 typedef HANDLE sirmutex_t;
 
@@ -89,10 +83,22 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
 #endif
 
+#ifndef thread_local
+#   if __STDC_VERSION__ >= 201112 && !defined(__STDC_NO_THREADS__)
+#       define thread_local _Thread_local
+#   elif defined(_WIN32)
+#       define thread_local __declspec(thread)
+#   elif defined(__GNUC__)
+#       define thread_local __thread
+#   else
+#       error "Unable to configure thread_local!"
+#   endif
+#endif
+
 /** A sensible (?) constraint for the limit of a file's path. Note that this value
  * is only used in the absence of PATH_MAX (or MAX_PATH on windows). */
 #ifndef SIR_MAXPATH
-#define SIR_MAXPATH 65535
+#   define SIR_MAXPATH 65535
 #endif
 
 #endif /* !_SIR_PLATFORM_H_INCLUDED */

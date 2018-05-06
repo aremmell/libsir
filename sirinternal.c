@@ -31,8 +31,7 @@ static volatile uint32_t _sir_magic;
 bool _sir_sanity() {
     if (_SIR_MAGIC == _sir_magic)
         return true;
-
-    _sir_selflog("%s: sanity check failed; has sir_init been called?\n", __func__);
+    _sir_seterror(SIR_E_NOTREADY);
     return false;
 }
 
@@ -43,10 +42,11 @@ bool _sir_options_sanity(const sirinit* si) {
 
 bool _sir_init(sirinit* si) {
 
-    if (!si) return false;
+    if (!si)
+        return false;
 
     if (_sir_sanity()) {
-        _sir_selflog("%s: sir appears to already be initialized!\n", __func__);
+        _sir_seterror(SIR_E_ALREADY);
         return false;
     }
 
@@ -60,12 +60,12 @@ bool _sir_init(sirinit* si) {
         si->d_stderr.levels = sir_stderr_def_lvls;
 
     if (flagtest(si->d_stderr.opts, SIRO_DEFAULT))
-        si->d_stderr.opts = sir_stderr_def_opts;  
+        si->d_stderr.opts = sir_stderr_def_opts;
 
 #ifndef SIR_NO_SYSLOG
     if (flagtest(si->d_syslog.levels, SIRL_DEFAULT))
         si->d_syslog.levels = sir_syslog_def_lvls;
-#endif              
+#endif
 
     if (!_sir_options_sanity(si))
         return false;
@@ -83,9 +83,7 @@ bool _sir_init(sirinit* si) {
 #endif
 
         _sir_magic = _SIR_MAGIC;
-        
         _sir_unlocksection(_SIRM_INIT);
-        _sir_selflog("%s: SIR is initialized\n", __func__);
         return true;
     }
 
@@ -100,7 +98,6 @@ void* _sir_locksection(sir_mutex_id mid) {
     if (_sir_mapmutexid(mid, &m, &sec)) {
         bool enter = _sirmutex_lock(m);
         assert(enter);
-
         return enter ? sec : NULL;
     }
 
@@ -115,7 +112,6 @@ bool _sir_unlocksection(sir_mutex_id mid) {
     if (_sir_mapmutexid(mid, &m, &sec)) {
         bool leave = _sirmutex_unlock(m);
         assert(leave);
-
         return leave;
     }
 
@@ -297,7 +293,7 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
     pid_t pid = _sir_getpid();
     snprintf(output.pid, SIR_MAXPID, SIR_PIDFORMAT, pid);
 
-    pid_t tid = _sir_gettid();
+    pid_t tid  = _sir_gettid();
     output.tid = _sirbuf_get(&buf, _SIRBUF_TID);
     assert(output.tid);
 
@@ -419,7 +415,7 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) 
                 strncat(output->output, " ", 1);
             strncat(output->output, output->name, SIR_MAXNAME);
             first = false;
-            name = true;
+            name  = true;
         }
 
         if (!flagtest(opts, SIRO_NOPID)) {
@@ -427,14 +423,14 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) 
                 strncat(output->output, "(", 1);
             else if (!first)
                 strncat(output->output, " ", 1);
-                
+
             strncat(output->output, output->pid, SIR_MAXPID);
 
             if (!flagtest(opts, SIRO_NOTID) && validstr(output->tid)) {
                 strncat(output->output, "|", 1);
                 strncat(output->output, output->tid, SIR_MAXPID);
             }
-            
+
             if (name)
                 strncat(output->output, ")", 1);
         }
@@ -562,7 +558,7 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
 
         ULARGE_INTEGER ftnow;
         ftnow.HighPart = ftutc.dwHighDateTime;
-        ftnow.LowPart = ftutc.dwLowDateTime;
+        ftnow.LowPart  = ftutc.dwLowDateTime;
         ftnow.QuadPart = (ftnow.QuadPart - uepoch) / 1e7;
 
         *tbuf = (time_t)ftnow.QuadPart;
@@ -601,9 +597,9 @@ pid_t _sir_gettid() {
 
 #ifdef SIR_SELFLOG
 void _sir_handleerr_impl(sirerror_t err, const sirchar_t* func, const sirchar_t* file, uint32_t line) {
-    if (SIR_NOERROR != err) {
+    if (SIR_E_NOERROR != err) {
 #ifndef _WIN32
-        errno = SIR_NOERROR;
+        errno = SIR_E_NOERROR;
 
         sirchar_t buf[SIR_MAXERROR] = {0};
         int       finderr           = strerror_r(err, buf, SIR_MAXERROR);
@@ -627,7 +623,7 @@ void _sir_handleerr_impl(sirerror_t err, const sirchar_t* func, const sirchar_t*
         }
 #endif
     }
-    assert(SIR_NOERROR == err);
+    assert(SIR_E_NOERROR == err);
 }
 
 void _sir_selflog(const sirchar_t* format, ...) {

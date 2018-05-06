@@ -493,10 +493,8 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output, si
             }
         }
 
-        if (*dispatched > 0) {
-            if (!_sir_fflush_all())
-                _sir_selflog("%s: fflush failed! errno: %d\n", __func__, errno);
-        }
+        if (*dispatched > 0)
+            _sir_fflush_all();
     }
 
     return r;
