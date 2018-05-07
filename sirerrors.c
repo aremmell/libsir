@@ -5,31 +5,34 @@
 
 #include "sirerrors.h"
 
-static thread_local sirerrcode_t sir_lasterror = SIR_E_NOERROR;
+static thread_local sirerror_t sir_lasterror = SIR_E_NOERROR;
 
-void _sir_seterror(const sirerrcode_t err) {
+void _sir_seterror(const sirerror_t err) {
 
-    assert(validerr(err));
+    assert(_sir_validerror(err));
 
-    if (validerr(err))
+    if (_sir_validerror(err)) {
         sir_lasterror = err;
+
+#pragma message "refactor internal error handling to go through sir_selflog"
+/*         if (SIR_E_NOERROR != sir_lasterror) {
+            sirchar_t message[SIR_MAXERROR] = {0};
+            _sir_geterror(message);
+            _sir_selflog("%s: library error: (0x%04hx, '%s')\n", __func__,
+                _sir_geterrcode(sir_lasterror), _sir_validstr(message) ? message : SIR_UNKERROR);
+        } */
+    }
 }
 
-sirerrcode_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
+sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
 
-    assert(message);
-
-    if (message) {
-        resetstr(message);
-
-        for (size_t n = 0; n < _COUNTOF(sir_errors); n++) {
-            if (sir_errors[n].code == sir_lasterror) {
-                strncpy(message, sir_errors[n].message, SIR_MAXERROR);
-                return sir_errors[n].code;
-            }
+    for (size_t n = 0; n < _sir_countof(sir_errors); n++) {
+        if (sir_errors[n].code == sir_lasterror) {
+            strncpy(message, sir_errors[n].message, SIR_MAXERROR);
+            return sir_errors[n].code;
         }
     }
 
     assert(false);
-    return SIR_E_NOERROR;
+    return SIR_E_UNKNOWN;
 }

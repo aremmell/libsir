@@ -1,23 +1,23 @@
-# ##################################################
+####################################################
 #                                                  #
-#	Makefile for the SIR library                   #
+#	       Makefile for the SIR library            #
+#				  Version 2.0.0                    #
 #                                                  #
-#	Copyright (C) 2003-2018. All Rights Reserved   # 
-#	Author: Ryan M. Lederman <lederman@gmail.com>  #
+#       https://github.com/ryanlederman/sir        #
 #                                                  #
-# ##################################################
+####################################################
 
-CC       = gcc
-BUILDDIR = build
-DOCSDIR = docs
-TESTSDIR = tests
+CC         = gcc
+BUILDDIR   = build
+DOCSDIR    = docs
+TESTSDIR   = tests
 EXAMPLEDIR = example
-INTERDIR = $(BUILDDIR)/obj
-LIBDIR   = $(BUILDDIR)/lib
+INTERDIR   = $(BUILDDIR)/obj
+LIBDIR     = $(BUILDDIR)/lib
 
-LIBS   = -pthread
-CFLAGS = -Wpedantic -std=c11 -I. -L$(LIBDIR)
-DEBUGCFLAGS = $(CFLAGS) -g -DDEBUG -fPIC
+LIBS         = -pthread
+CFLAGS       = -Wpedantic -std=c11 -I. -L$(LIBDIR)
+DEBUGCFLAGS  = $(CFLAGS) -g -DNDEBUG -fPIC -DSIR_SELFLOG
 NDEBUGCFLAGS = $(CFLAGS) -DNDEBUG -fPIC -O3
 
 ifeq ($(OS),Windows_NT)
@@ -44,7 +44,7 @@ EXAMPLETU      = $(TESTSDIR)/example.c
 _OBJ_TESTS   = tests.o
 OBJ_TESTS   = $(patsubst %.o, $(INTERDIR)/%.to, $(_OBJ_TESTS))
 OUT_TESTS    = $(BUILDDIR)/sirtests
-CFLAGS_TESTS = $(CFLAGS) -l:libsir.a
+CFLAGS_TESTS = $(DEBUGCFLAGS) -l:libsir.a
 TESTSTU      = $(TESTSDIR)/tests.c
 
 # shared library

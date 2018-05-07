@@ -15,6 +15,10 @@ bool sir_cleanup() {
     return _sir_cleanup();
 }
 
+uint16_t sir_geterror(sirchar_t message[SIR_MAXERROR]) {
+    return _sir_geterrcode(_sir_geterror(message));
+}
+
 bool sir_debug(const sirchar_t* format, ...) {
     _SIR_L_START(format);
     r = _sir_logv(SIRL_DEBUG, format, args);

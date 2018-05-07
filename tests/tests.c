@@ -89,7 +89,6 @@ int main(int argc, char** argv) {
     return allpass ? 0 : 1;
 }
 
-
 bool sirtest_exceedmaxsize() {
     bool pass = true;
     INIT(si, SIRL_ALL, 0, 0, 0);
@@ -100,7 +99,7 @@ bool sirtest_exceedmaxsize() {
     pass &= sir_info(toobig);
 
     sir_cleanup();
-    return pass;    
+    return printerror(pass);
 }
 
 bool sirtest_addremovefiles() {
@@ -140,8 +139,7 @@ bool sirtest_addremovefiles() {
     pass &= sir_info("test test test");
 
     sir_cleanup();
-
-    return pass;
+    return printerror(pass);
 }
 
 bool sirtest_failsetinvalidstyle() {
@@ -152,7 +150,7 @@ bool sirtest_failsetinvalidstyle() {
     pass &= !sir_settextstyle(SIRL_ALL, SIRS_FG_RED | SIRS_FG_DEFAULT);
 
     sir_cleanup();
-    return pass;    
+    return printerror(pass);
 }
 
 bool sirtest_failnooutputdest() {
@@ -162,7 +160,7 @@ bool sirtest_failnooutputdest() {
     pass &= !sir_info("this goes nowhere!");
 
     sir_cleanup();
-    return pass;
+    return printerror(pass);
 }
 
 bool sirtest_failinvalidfilename() {
@@ -172,7 +170,7 @@ bool sirtest_failinvalidfilename() {
     pass &= SIR_INVALID == sir_addfile("bad file!/name", SIRL_ALL, SIRO_MSGONLY);
 
     sir_cleanup();
-    return pass;
+    return printerror(pass);
 }
 
 bool sirtest_failfilebadpermission() {
@@ -182,7 +180,7 @@ bool sirtest_failfilebadpermission() {
     pass &= SIR_INVALID == sir_addfile("/noperms", SIRL_ALL, SIRO_MSGONLY);
 
     sir_cleanup();
-    return pass;
+    return printerror(pass);
 }
 
 bool sirtest_failnulls() {
@@ -193,11 +191,11 @@ bool sirtest_failnulls() {
     pass &= SIR_INVALID == sir_addfile(NULL, SIRL_ALL, SIRO_MSGONLY);
 
     sir_cleanup();
-    return pass;
+    return printerror(pass);
 }
 
 bool sirtest_failwithoutinit() {
-    return !sir_info("sir isn't initialized; this needs to fail");
+    return printerror(!sir_info("sir isn't initialized; this needs to fail"));
 }
 
 bool sirtest_failaftercleanup() {
@@ -206,7 +204,7 @@ bool sirtest_failaftercleanup() {
     sir_cleanup();
     pass &= !sir_info("already cleaned up; this needs to fail");
 
-    return pass;    
+    return printerror(pass);
 }
 
 bool sirtest_initcleanupinit() {
@@ -222,7 +220,7 @@ bool sirtest_initcleanupinit() {
     pass &= sir_info("init called again after cleanup; testing output...");
     sir_cleanup();
 
-    return pass;
+    return printerror(pass);
 }
 
 #ifndef _WIN32
@@ -287,8 +285,7 @@ static unsigned sirtest_thread(void* arg) {
     strncpy(mypath, (const char*)arg, SIR_MAXPATH);
     free(arg);
 
-    printf("Hi, I'm thread %lu, path: '%s' and I'm about to break your shit.\n", threadid, mypath);
-
+    printf("Hi, I'm thread %lu, path: '%s'\n", threadid, mypath);
     unsigned int seed = threadid * time(NULL);
 
 #ifdef _WIN32
@@ -333,4 +330,13 @@ static unsigned sirtest_thread(void* arg) {
 #else
     return 0;
 #endif
+}
+
+bool printerror(bool pass) {
+    if (!pass) {
+        sirchar_t message[SIR_MAXERROR] = {0};
+        uint16_t code = sir_geterror(message);
+        printf("\t"RED("SIR error: (%hu, '%s')")"\n", code, message);
+    }
+    return pass;
 }

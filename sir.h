@@ -65,6 +65,8 @@ bool sir_init(sirinit* si);
  */
 bool sir_cleanup();
 
+uint16_t sir_geterror(sirchar_t message[SIR_MAXERROR]);
+
 /**
  * @brief Log a formatted debug-level message.
  * 

@@ -14,7 +14,7 @@
  */
 
 /** The error code type. */
-typedef uint32_t sirerrcode_t;
+typedef uint32_t sirerror_t;
 
 /** The value used to represent an invalid file identifier. */
 static const int SIR_INVALID = -1;
@@ -180,7 +180,7 @@ typedef struct {
 
 /** Library error type. */
 typedef struct {
-    sirerrcode_t code;
+    sirerror_t code;
     const sirchar_t * const message;
 } sirerror;
 

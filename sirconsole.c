@@ -25,12 +25,15 @@ bool _sir_stdout_write(const sirchar_t* message) {
 
 static bool _sir_write_std(const sirchar_t* message, FILE* stream) {
 
-    assert(validstr(message));
-    assert(stream);
+    if (!_sir_validstr(message) || !_sir_validptr(stream))
+        return false;     
 
-    int write = validstr(message) ? fputs(message, stream) : -1;
-    _sir_handleerr(write);
-    return write >= 0;
+    if (EOF == fputs(message, stream)) {
+        _sir_handleerr(errno);
+        return false;
+    }
+
+    return true;
 }
 
 #else
@@ -60,13 +63,17 @@ bool _sir_stdout_write(uint16_t style, const sirchar_t* message) {
 static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message,
     HANDLE console, CRITICAL_SECTION* cs) {
 
-    assert(validstr(message));
-    assert(INVALID_HANDLE_VALUE != console);
+    if (!_sir_validstr(message))
+        return false;
 
+    assert(INVALID_HANDLE_VALUE != console);
     if (INVALID_HANDLE_VALUE == console) {
         _sir_handleerr(GetLastError());
         return false;
     }
+
+    if (!_sir_validptr(cs))
+        return false;
 
     CONSOLE_SCREEN_BUFFER_INFO csbfi = {0};
 

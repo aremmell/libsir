@@ -12,14 +12,23 @@
  * @{
  */
 
-#define _COUNTOF(arr) (sizeof(arr) / sizeof(arr[0]))
+#define _sir_countof(arr) (sizeof(arr) / sizeof(arr[0]))
 
 /**
  * Creates an error code that (hopefully) doesn't conflict
  * with any of those defined by the platform.
  */
-#define makeerr(code) \
+#define _sir_mkerror(code) \
     (((uint32_t)(code & 0x7fff) << 16) | 0x80000000)
+
+static inline bool _sir_validerror(sirerror_t err) {
+    sirerror_t masked = err & 0x8fffffff;
+    return masked >= 0x80010000 && masked <= 0x8fff0000;
+}
+
+static inline uint16_t _sir_geterrcode(sirerror_t err) {
+    return (err >> 16) & 0x7fff;
+}
 
 #define _SIR_L_START(format) \
     bool    r = false;       \
@@ -28,43 +37,16 @@
 
 #define _SIR_L_END(args) va_end(args);
 
-static inline bool validerr(sirerrcode_t code) {
-    sirerrcode_t masked = code & 0x8fffffff;
-    return masked >= 0x80010000 && masked <= 0x8fff0000;
-}
-
-/** Validates a string pointer */
-static inline bool validstr(const sirchar_t* str) {
-    return str && (*str != (sirchar_t)'\0');
-}
-
-/** Validates a log file identifier. */
-static inline bool validid(int id) {
-    return id >= 0;
-}
-
-/** Validates a set of ::sir_level flags. */
-static inline bool validlevels(sir_levels levels) {
-    return levels <= SIRL_ALL;
-}
-
-/** Validates a single ::sir_level. */
-static inline bool validlevel(sir_level level) {
-    return 0 != level && !(level & (level - 1));
-}
-
-/** Validates a set of ::sir_option flags. */
-static inline bool validopts(sir_options opts) {
-    return (opts & SIRL_ALL) == 0 && opts <= SIRO_MSGONLY;
-}
+/** Validates a pointer. */
+#define _sir_validptr(p) (NULL != p)
 
 /** Checks a bitfield for a specific set of bits. */
-static inline bool flagtest(uint32_t flags, uint32_t test) {
+static inline bool _sir_bittest(uint32_t flags, uint32_t test) {
     return (flags & test) == test;
 }
 
 /** Wraps \a free. */
-static inline void _safefree(void** p) {
+static inline void __sir_safefree(void** p) {
     if (!p || (p && !*p))
         return;
     free(*p);
@@ -72,23 +54,12 @@ static inline void _safefree(void** p) {
 }
 
 /** Wraps \a free. */
-static inline void safefree(void* p) {
-    _safefree(&p);
-}
-
-/** Wraps \a fclose. */
-static inline void _safefclose(FILE** f) {
-    if (!f || (f && !*f))
-        return;
-    fclose(*f);
-    *f = NULL;    
-}
-static inline void safefclose(FILE* f) {
-    _safefclose(&f);
+static inline void _sir_safefree(void* p) {
+    __sir_safefree(&p);
 }
 
 /** Places a null terminator at the first index in a string buffer. */
-static inline void resetstr(sirchar_t* str) {
+static inline void _sir_resetstr(sirchar_t* str) {
     str[0] = (sirchar_t)'\0';
 }
 

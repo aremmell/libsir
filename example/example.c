@@ -16,6 +16,9 @@
  * When it is finished running, you can see the output in the console, and
  * example the contents of 'sir-example.log' in the current directory.
  */
+
+int report_error();
+
 int main(int argc, char** argv) {
 
     /*
@@ -36,7 +39,7 @@ int main(int argc, char** argv) {
      * Configure options for stdout.
      * Don't show the time stamp or process ID.
      */
-    si.d_stdout.opts = SIRO_NOTIME | SIRO_NOPID;
+    si.d_stdout.opts = SIRL_DEBUG | SIRL_CRIT; //SIRO_NOTIME | SIRO_NOPID;
 
     /*
      * Configure levels for stderr.
@@ -61,8 +64,7 @@ int main(int argc, char** argv) {
 
     /* Initialize SIR. */
     if (!sir_init(&si)) {
-        fprintf(stderr, "Failed to initialize SIR!\n");
-        return 1;
+        return report_error();
     }
 
     /*
@@ -73,8 +75,7 @@ int main(int argc, char** argv) {
     int fileid1 = sir_addfile("sir-example.log", SIRL_ALL, SIRO_NONAME);
 
     if (SIR_INVALID == fileid1) {
-        fprintf(stderr, "Failed to add %s!\n", "sir-example.log");
-        return 1;
+        return report_error();
     }
 
     /* Now we're ready to start generating output. */
@@ -109,4 +110,11 @@ int main(int argc, char** argv) {
     sir_cleanup();
 
     return 0;
+}
+
+int report_error() {
+    sirchar_t message[SIR_MAXERROR] = {0};
+    uint16_t code = sir_geterror(message);
+    fprintf(stderr, "SIR error: (%hu, '%s')\n", code, message);
+    return 1;
 }

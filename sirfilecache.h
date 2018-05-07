@@ -36,10 +36,11 @@ bool     _sir_fcache_pred_path(const void* match, sirfile* iter);
 sirfile* _sir_fcache_find(sirfcache* sfc, const void* match, sir_fcache_pred pred);
 
 bool _sir_fcache_destroy(sirfcache* sfc);
-bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output, size_t* dispatched);
+bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output,
+    size_t* dispatched, size_t* wanted);
 
 FILE* _sir_fopen(const sirchar_t* path);
-void  _sir_fclose(FILE* f);
+void  _sir_fclose(FILE** f);
 void  _sir_fflush(FILE* f);
 bool  _sir_fflush_all();
 

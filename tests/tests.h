@@ -82,6 +82,6 @@ bool sirtest_initcleanupinit();
 
 /** @} */
 
-void printclr(int clr, const char* fmt, ...);
+bool printerror(bool pass);
 
 #endif /* !_SIR_TESTS_H_INCLUDED */

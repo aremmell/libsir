@@ -4,7 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-         {
+         /* {
             "name": "(gdb) debug",
             "type": "cppdbg",
             "request": "launch",
@@ -31,7 +31,7 @@
             "windows":{
                 "miDebuggerPath": "C:\\Program Files\\mingw64\\bin\\gdb.exe",
             }
-        }/* , 
+        }  , */
         {
             "name": "(gdb) tests",
             "type": "cppdbg",
@@ -58,6 +58,6 @@
             "windows":{
                 "miDebuggerPath": "C:\\Program Files\\mingw64\\bin\\gdb.exe",
             }
-        }         */
+        } 
     ]
 }
