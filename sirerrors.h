@@ -21,7 +21,19 @@
 #define SIR_E_STRING    _sir_mkerror(9)  /**< Invalid string argument */
 #define SIR_E_NODEST    _sir_mkerror(10) /**< No destinations registered for level */
 
-static const sirerror sir_errors[] = {
+#ifdef _WIN32
+static const struct {
+    uint32_t win32e;
+    int eno;
+} win32_errors[] = {
+    {, },
+};
+#endif
+
+static const struct {
+    sirerror_t e;
+    const sirchar_t* msg;
+} sir_errors[] = {
     {SIR_E_NOERROR, "The operation completed successfully"},
     {SIR_E_NOTREADY, "SIR has not been initialized"},
     {SIR_E_ALREADY, "SIR is already initialized"},

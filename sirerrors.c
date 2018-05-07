@@ -27,9 +27,9 @@ void _sir_seterror(const sirerror_t err) {
 sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
 
     for (size_t n = 0; n < _sir_countof(sir_errors); n++) {
-        if (sir_errors[n].code == sir_lasterror) {
-            strncpy(message, sir_errors[n].message, SIR_MAXERROR);
-            return sir_errors[n].code;
+        if (sir_errors[n].e == sir_lasterror) {
+            strncpy(message, sir_errors[n].msg, SIR_MAXERROR);
+            return sir_errors[n].e;
         }
     }
 
