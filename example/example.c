@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
      * Configure options for stdout.
      * Don't show the time stamp or process ID.
      */
-    si.d_stdout.opts = SIRL_DEBUG | SIRL_CRIT; //SIRO_NOTIME | SIRO_NOPID;
+    si.d_stdout.opts = SIRO_NOTIME | SIRO_NOPID;
 
     /*
      * Configure levels for stderr.
