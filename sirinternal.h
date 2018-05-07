@@ -98,10 +98,19 @@ pid_t _sir_getpid();
 pid_t _sir_gettid();
 
 /** Validates a string pointer */
-bool _sir_validstr(const sirchar_t* str);
+bool __sir_validstr(const sirchar_t* str, bool fail);
 
-/** Validates a string pointer */
-bool _sir_validstrnofail(const sirchar_t* str);
+/** Validates a string pointer and fails if it's invalid. */
+static inline
+bool _sir_validstr(const sirchar_t* str) {
+    return __sir_validstr(str, true);
+}
+
+/** Validates a string pointer but ignores if it's invalid. */
+static inline
+bool _sir_validstrnofail(const sirchar_t* str) {
+    return __sir_validstr(str, false);
+}
 
 /** Validates a log file identifier. */
 bool _sir_validfid(int id);
