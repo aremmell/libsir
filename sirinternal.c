@@ -58,6 +58,8 @@ bool _sir_options_sanity(const sirinit* si) {
 
 bool _sir_init(sirinit* si) {
 
+    _sir_seterror(SIR_E_NOERROR);
+
     if (!_sir_validptr(si))
         return false;
 
@@ -173,12 +175,11 @@ bool _sir_cleanup() {
     if (!_sir_sanity())
         return false;
 
-    bool       cleanup = true;
+    bool cleanup = true;
     sirfcache* sfc     = _sir_locksection(_SIRM_FILECACHE);
     assert(sfc);
-    cleanup &= NULL != sfc;
 
-    if (sfc) {
+    if (cleanup &= NULL != sfc) {
         bool destroyfc = _sir_fcache_destroy(sfc);
         assert(destroyfc);
         cleanup &= _sir_unlocksection(_SIRM_FILECACHE) && destroyfc;
@@ -186,13 +187,13 @@ bool _sir_cleanup() {
 
     sirinit* si = _sir_locksection(_SIRM_INIT);
     assert(si);
-    cleanup &= NULL != si;
-
-    if (si) {
+    
+    if (cleanup &= NULL != si) {
         memset(si, 0, sizeof(sirinit));
         cleanup &= _sir_unlocksection(_SIRM_INIT);
     }
 
+    _sir_seterror(SIR_E_NOERROR);
     _sir_magic = 0;
     _sir_selflog("%s: SIR is cleaned up\n", __func__);
     return cleanup;
@@ -242,6 +243,8 @@ void _sir_once(sironce_t* once, sir_once_fn func) {
 }
 
 bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
+
+    _sir_seterror(SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validlevel(level) || !_sir_validstr(format))
         return false;

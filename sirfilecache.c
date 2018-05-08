@@ -14,6 +14,8 @@
 
 sirfileid_t _sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts) {
 
+    _sir_seterror(SIR_E_NOERROR);
+
     if (_sir_sanity()) {
         sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
 
@@ -31,6 +33,8 @@ sirfileid_t _sir_addfile(const sirchar_t* path, sir_levels levels, sir_options o
 }
 
 bool _sir_remfile(sirfileid_t id) {
+
+    _sir_seterror(SIR_E_NOERROR);
 
     if (_sir_sanity() && _sir_validptr(id) && _sir_validfid(*id)) {
         sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);

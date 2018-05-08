@@ -41,6 +41,8 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
 
 bool _sir_setdefstyle(sir_level level, sir_textstyle style) {
 
+    _sir_seterror(SIR_E_NOERROR);
+
     if (_sir_sanity() && _sir_validlevel(level) && _sir_validstyle(style, NULL, NULL, NULL)) {
         sir_style_map* map = _sir_locksection(_SIRM_TEXTSTYLE);
         assert(map);
