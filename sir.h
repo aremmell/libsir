@@ -88,7 +88,7 @@ bool sir_cleanup();
  * @retval SIR_E_TEXTSTYLE   Text style is invalid
  * @retval SIR_E_STRING      Invalid string argument
  * @retval SIR_E_NODEST      No destinations registered for level
- * @retval SIR_E_PLATFORM    Platform error code %d: %s
+ * @retval SIR_E_PLATFORM    Platform error code %%d: %%s
  * @retval SIR_E_UNKNOWN     Error is not known
  * 
  * @ingroup errors
