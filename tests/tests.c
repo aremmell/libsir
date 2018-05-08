@@ -4,10 +4,16 @@
  */
 #include "tests.h"
 #include "../sir.h"
+#include "../sirfilecache.h"
+#include "../sirerrors.h"
+
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <dirent.h>
 
 #ifndef _WIN32
 #define _POSIX_C_SOURCE 200809L
@@ -24,22 +30,12 @@
 #define RED(s) STRFMT("\033[1;91m", s)
 #define GREEN(s) STRFMT("\033[1;92m", s)
 #define WHITE(s) STRFMT("\033[1;97m", s)
+#define BLUE(s) STRFMT("\033[1;34m", s)
 #else
 #define RED(s) s
 #define GREEN(s) s
 #define WHITE(s) s
 #endif
-
-#pragma message "add test to archive/roll log files."
-/*    // Fill a log until it's rolled
-    const sirchar_t* line = "sups, gonna fill this log right up!";
-    size_t write = 0;
-    size_t linesize = strlen(line);
-
-    do {
-        sir_info("%s", line);
-        write += linesize;
-    } while (write < SIR_FROLLSIZE);*/
 
 #define INIT(var, l_stdout, o_stdout, l_stderr, o_stderr) \
     sirinit var         = {0};                            \
@@ -84,10 +80,11 @@ int main(int argc, char** argv) {
         allpass &= thispass;
         passed += (thispass ? 1 : 0);
         printf(WHITE("\t'%s' finished; result: ") "%s\n", sir_tests[n].name,
-            thispass ? GREEN("OK") : RED("FAIL"));
+            thispass ? GREEN("PASS") : RED("FAIL"));
     }
 
-    printf(WHITE("done; %lu/%lu tests passed  - press enter to continue") "\n", passed, tests);
+    printf(WHITE("done; ")BLUE("%lu/%lu tests passed ")WHITE("- press enter to continue")"\n",
+        passed, tests);
 
     int unused = getc(stdin);
     return allpass ? 0 : 1;
@@ -236,7 +233,7 @@ bool sirtest_faildupefile() {
     pass &= SIR_INVALID == sir_addfile("foo.log", SIRL_ALL, SIRO_DEFAULT);
 
     sir_cleanup();
-    return pass;
+    return printerror(pass);
 }
 
 bool sirtest_failremovebadfile() {
@@ -247,17 +244,86 @@ bool sirtest_failremovebadfile() {
     pass &= !sir_remfile(399246422);
 
     sir_cleanup();
-    return pass;
+    return printerror(pass);
 }
 
 bool sirtest_rollandarchivefile() {
 
-    bool pass = true;
-    INIT(si, SIRL_ALL, 0, 0, 0);
+    /* roll size minus 1KB so we can write until it maxes. */
+    const long deltasize = 1024;
+    const long fillsize = SIR_FROLLSIZE - deltasize;
+    const sirchar_t * const logfilename = "rollandarchive.log";
+    const sirchar_t * const line = "hello, i am some data. nice to meet you.";
 
+    bool pass = true;
+    INIT(si, 0, 0, 0, 0);
+
+#pragma message "TODO: remove all log files with the pattern"
+    remove(logfilename);
+    FILE* f = fopen(logfilename, "w");
+
+    if (!f) {
+        fprintf(stderr, "fopen failed! error: %d\n", errno);
+        pass = false;
+    }
+
+    if (pass) {
+        int seek = fseek(f, fillsize, SEEK_SET);
+
+        if (0 != seek) {
+            fprintf(stderr, "fseek failed! error: %d\n", errno);
+            pass = false;
+        }
+
+        if (pass) {
+            int put = fputc('\0', f);
+            if (EOF == put) {
+                fprintf(stderr, "fputc failed! error: %d\n", errno);
+                pass = false;
+            }
+        }
+
+        fclose(f);
+        f = NULL;
+    }
+
+    int fileid = sir_addfile(logfilename, SIRL_DEBUG, SIRO_MSGONLY | SIRO_NOHDR);
+
+    if (pass &= SIR_INVALID != fileid) {
+        /* write an (approximately) known quantity until we should have rolled */
+        size_t written = 0;
+        size_t linesize = strlen(line);
+
+        do {
+            pass &= sir_debug("%s", line);
+            if (!pass) break;
+
+            written += linesize;
+
+        } while (written < deltasize + (linesize * 50));
+
+#pragma message "TODO: validate opendir and search for pattern"
+        DIR* d = opendir(".");
+        struct dirent* di = readdir(d);
+
+        if (di) {
+            printf("\t-- found logs --\n");
+            do {
+                //if (strstr(di->d_name, logfilename))
+                    printf("\t%s\n", di->d_name);
+                di = readdir(d);
+            } while (NULL != di);
+            printf("\t-- end dir --\n");
+        }
+
+        // TODO: ?
+        closedir(d);
+        d = NULL;
+   
+    }
 
     sir_cleanup();
-    return pass;
+    return printerror(pass);
 }
 
 bool sirtest_allerrorsresolve() {
@@ -267,7 +333,7 @@ bool sirtest_allerrorsresolve() {
 
 
     sir_cleanup();
-    return pass;
+    return printerror(pass);
 }
 
 /*
@@ -278,7 +344,7 @@ bool sirtest_XXX() {
 
 
     sir_cleanup();
-    return pass;
+    return printerror(pass);
 }
 */
 
@@ -357,6 +423,7 @@ static unsigned sirtest_thread(void* arg) {
 
     if (SIR_INVALID == id1) {
         printf(RED("Failed to add file %s!") "\n", mypath);
+        printerror(false);
 #ifndef _WIN32
         return NULL;
 #else
@@ -374,12 +441,18 @@ static unsigned sirtest_thread(void* arg) {
             int r = rand() % 15;
 #endif
             if (r % 2 == 0) {
-                sir_remfile(id1);
+                if (!sir_remfile(id1))
+                    printerror(false);
                 sir_options file1opts = SIRO_MSGONLY;
                 int         id1       = sir_addfile(mypath, SIRL_ALL, file1opts);
-                sir_settextstyle(SIRL_DEBUG, SIRS_FG_RED | SIRS_BG_DEFAULT);
+
+                if (SIR_INVALID == id1)
+                    printerror(false);
+                if (!sir_settextstyle(SIRL_DEBUG, SIRS_FG_RED | SIRS_BG_DEFAULT))
+                    printerror(false);
             } else {
-                sir_settextstyle(SIRL_DEBUG, SIRS_FG_CYAN | SIRS_BG_YELLOW);
+                if (!sir_settextstyle(SIRL_DEBUG, SIRS_FG_CYAN | SIRS_BG_YELLOW))
+                    printerror(false);
             }
         }
     }
