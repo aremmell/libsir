@@ -6,6 +6,7 @@
 
 #include "tests.h"
 #include "../sir.h"
+#include "../sirinternal.h"
 #include "../sirfilecache.h"
 #include "../sirerrors.h"
 
@@ -45,21 +46,19 @@
     var.d_stdout.levels = l_stdout;                       \
     var.d_stderr.opts   = o_stderr;                       \
     var.d_stderr.levels = l_stderr;                       \
-    if (!sir_init(&var)) {                                \
-        printf(RED("failed to initialize!") "\n");        \
-        return false;                                     \
-    }
+    bool var##_init = sir_init(&var);
 
 static const sir_test sir_tests[] = {
     {"multi-thread race", sirtest_mthread_race},
     {"exceed max buffer size", sirtest_exceedmaxsize},
-    {"add max files, remove randomly", sirtest_fillflushfilecache},
+    {"add max files, remove randomly", sirtest_filecachesanity},
     {"set invalid text style", sirtest_failsetinvalidstyle},    
     {"no output destination", sirtest_failnooutputdest},
     {"invalid file name", sirtest_failinvalidfilename},
     {"bad file permissions", sirtest_failfilebadpermission},
     {"null pointers", sirtest_failnulls},
     {"output without init", sirtest_failwithoutinit},
+    {"superfluous init", sirtest_failinittwice},
     {"output after cleanup", sirtest_failaftercleanup},    
     {"init, cleanup, init", sirtest_initcleanupinit},
     {"duplicate file name", sirtest_faildupefile},
@@ -93,8 +92,8 @@ int main(int argc, char** argv) {
 }
 
 bool sirtest_exceedmaxsize() {
-    bool pass = true;
     INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
 
     char toobig[SIR_MAXMESSAGE + 100] = {0};
     memset(toobig, 'a', SIR_MAXMESSAGE - 99);
@@ -105,9 +104,9 @@ bool sirtest_exceedmaxsize() {
     return printerror(pass);
 }
 
-bool sirtest_fillflushfilecache() {
-    bool pass = true;
+bool sirtest_filecachesanity() {
     INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
 
     size_t numfiles = SIR_MAXFILES + 1;
     sirfileid_t ids[SIR_MAXFILES] = {0};
@@ -170,79 +169,117 @@ bool sirtest_fillflushfilecache() {
 }
 
 bool sirtest_failsetinvalidstyle() {
-    bool pass = true;
-    INIT(si, 0, 0, 0, 0);
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
 
     pass &= !sir_settextstyle(SIRL_INFO, 0xfefe);
     pass &= !sir_settextstyle(SIRL_ALL, SIRS_FG_RED | SIRS_FG_DEFAULT);
+
+    if (pass)
+        printexpectederr();
 
     sir_cleanup();
     return printerror(pass);
 }
 
 bool sirtest_failnooutputdest() {
-    bool pass = true;
     INIT(si, 0, 0, 0, 0);
+    bool pass = si_init;
 
     pass &= !sir_info("this goes nowhere!");
+
+    if (pass)
+        printexpectederr();
 
     sir_cleanup();
     return printerror(pass);
 }
 
 bool sirtest_failinvalidfilename() {
-    bool pass = true;
     INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
 
     pass &= NULL == sir_addfile("bad file!/name", SIRL_ALL, SIRO_MSGONLY);
+
+    if (pass)
+        printexpectederr();    
 
     sir_cleanup();
     return printerror(pass);
 }
 
 bool sirtest_failfilebadpermission() {
-    bool pass = true;
     INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
 
     pass &= NULL == sir_addfile("/noperms", SIRL_ALL, SIRO_MSGONLY);
+
+    if (pass)
+        printexpectederr();    
 
     sir_cleanup();
     return printerror(pass);
 }
 
 bool sirtest_failnulls() {
-    bool pass = true;
     INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
 
     pass &= !sir_info(NULL);
     pass &= NULL == sir_addfile(NULL, SIRL_ALL, SIRO_MSGONLY);
+
+    if (pass)
+        printexpectederr();
 
     sir_cleanup();
     return printerror(pass);
 }
 
 bool sirtest_failwithoutinit() {
-    return printerror(!sir_info("sir isn't initialized; this needs to fail"));
+    bool pass = !sir_info("sir isn't initialized; this needs to fail");
+
+    if (pass)
+        printexpectederr();
+
+    return printerror(pass);        
+}
+
+bool sirtest_failinittwice() {
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+    INIT(si2, SIRL_ALL, 0, 0, 0);
+    pass &= !si2_init;
+
+    if (pass)
+        printexpectederr();
+
+    sir_cleanup();
+    return printerror(pass);      
 }
 
 bool sirtest_failaftercleanup() {
-    bool pass = true;
     INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
     sir_cleanup();
     pass &= !sir_info("already cleaned up; this needs to fail");
+
+    if (pass)
+        printexpectederr();
 
     return printerror(pass);
 }
 
 bool sirtest_initcleanupinit() {
-
-    bool pass = true;
     INIT(si1, SIRL_ALL, 0, 0, 0);
+    bool pass = si1_init;
 
     pass &= sir_info("init called once; testing output...");
     sir_cleanup();
 
     INIT(si2, SIRL_ALL, 0, 0, 0);
+    pass &= si2_init;
 
     pass &= sir_info("init called again after cleanup; testing output...");
     sir_cleanup();
@@ -251,9 +288,8 @@ bool sirtest_initcleanupinit() {
 }
 
 bool sirtest_faildupefile() {
-
-    bool pass = true;
     INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
 
     pass &= NULL != sir_addfile("foo.log", SIRL_ALL, SIRO_DEFAULT);
     pass &= NULL == sir_addfile("foo.log", SIRL_ALL, SIRO_DEFAULT);
@@ -263,9 +299,8 @@ bool sirtest_faildupefile() {
 }
 
 bool sirtest_failremovebadfile() {
-
-    bool pass = true;
     INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
 
     int invalidid = 9999999;
     pass &= !sir_remfile(&invalidid);
@@ -312,8 +347,8 @@ bool sirtest_rollandarchivefile() {
 
     fclose(f);
 
-    bool pass = true;
     INIT(si, 0, 0, 0, 0);
+    bool pass = si_init;
 
     sirfileid_t fileid = sir_addfile(logfilename, SIRL_DEBUG, SIRO_MSGONLY | SIRO_NOHDR);
 
@@ -357,8 +392,8 @@ bool sirtest_rollandarchivefile() {
 
 bool sirtest_allerrorsresolve() {
 
-    bool pass = true;
     INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
 
 
     sir_cleanup();
@@ -368,8 +403,8 @@ bool sirtest_allerrorsresolve() {
 /*
 bool sirtest_XXX() {
 
-    bool pass = true;
     INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
 
 
     sir_cleanup();
@@ -393,6 +428,7 @@ bool sirtest_mthread_race() {
 #endif
 
     INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
 
     for (size_t n = 0; n < NUM_THREADS; n++) {
         char* path = (char*)calloc(SIR_MAXPATH, sizeof(char));
@@ -407,30 +443,30 @@ bool sirtest_mthread_race() {
         if (0 == thrds[n]) {
 #endif
             printf(RED("failed to create thread; err: %d") "\n", errno);
-            sir_cleanup();
-            return false;
+            pass = false;
         }
     }
 
-    for (size_t j = 0; j < NUM_THREADS; j++) {
+    if (pass) {
+        for (size_t j = 0; j < NUM_THREADS; j++) {
 #ifndef _WIN32
-        pthread_join(thrds[j], NULL);
+            pthread_join(thrds[j], NULL);
 #else
-        WaitForSingleObject((HANDLE)thrds[j], INFINITE);
+            WaitForSingleObject((HANDLE)thrds[j], INFINITE);
 #endif
+        }
     }
 
     sir_cleanup();
-    return true;
+    return printerror(pass);
 }
 
 #ifndef _WIN32
 static void* sirtest_thread(void* arg) {
-    long threadid = syscall(SYS_gettid);
 #else
-static unsigned sirtest_thread(void* arg) {
-    long threadid = (long)GetCurrentThreadId();
+unsigned sirtest_thread(void* arg) {
 #endif
+    pid_t threadid = _sir_gettid();
 
     char mypath[SIR_MAXPATH] = {0};
     strncpy(mypath, (const char*)arg, SIR_MAXPATH);
@@ -440,16 +476,17 @@ static unsigned sirtest_thread(void* arg) {
     sirfileid_t id = sir_addfile(mypath, SIRL_ALL, SIRO_MSGONLY);
 
     if (NULL == id) {
-        printf(RED("Failed to add file %s!") "\n", mypath);
-        printerror(false);
+        fprintf(stderr, "\t"RED("Failed to add file %s!")"\n", mypath);
 #ifndef _WIN32
         return NULL;
 #else
         return 0;
 #endif
     }
-    printf("\tHi, I'm thread %lu, path: '%s'\n", threadid, mypath);
 
+    printf("hi, i'm thread #%d, log file: '%s'\n", threadid, mypath);
+
+#pragma message "TODO: refactor me"
     for (size_t n = 0; n < 100; n++) {
         for (size_t i = 0; i < 10; i++) {
             sir_debug("thread %lu: hello, how do you do? %d", threadid, (n * i) + i);
@@ -486,9 +523,15 @@ bool printerror(bool pass) {
     if (!pass) {
         sirchar_t message[SIR_MAXERROR] = {0};
         uint16_t code = sir_geterror(message);
-        printf("\t"RED("!! Unexpected (%hu, %s)")"\n",  code, message);
+        printf("\t"RED("!! Unexpected (%hu, %s)")"\n", code, message);
     }
     return pass;
+}
+
+void printexpectederr() {
+    sirchar_t message[SIR_MAXERROR] = {0};
+    uint16_t code = sir_geterror(message);    
+    printf("\t"GREEN("Expected (%hu, %s")"\n", code, message);
 }
 
 int getoserr() {

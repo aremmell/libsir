@@ -38,7 +38,7 @@ bool sirtest_exceedmaxsize();
 /**
  * @test Properly handle adding and removing log files.
  */
-bool sirtest_fillflushfilecache();
+bool sirtest_filecachesanity();
 
 /**
  * @test Properly handle invalid text style.
@@ -69,6 +69,11 @@ bool sirtest_failnulls();
  * @test Properly handle calls without initialization.
  */
 bool sirtest_failwithoutinit();
+
+/**
+ * @test Properly handle two initialization calls without corresponding cleanup.
+ */
+bool sirtest_failinittwice();
 
 /**
  * @test Properly handle calls after cleanup.
@@ -103,6 +108,7 @@ bool sirtest_allerrorsresolve();
 /** @} */
 
 bool printerror(bool pass);
+void printexpectederr();
 
 int getoserr();
 unsigned int getrand();
