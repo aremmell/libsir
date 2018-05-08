@@ -16,7 +16,6 @@
 #include <dirent.h>
 
 #ifndef _WIN32
-#define _POSIX_C_SOURCE 200809L
 #include <pthread.h>
 #include <unistd.h>
 #else
@@ -252,40 +251,44 @@ bool sirtest_rollandarchivefile() {
     /* roll size minus 1KB so we can write until it maxes. */
     const long deltasize = 1024;
     const long fillsize = SIR_FROLLSIZE - deltasize;
-    const sirchar_t * const logfilename = "rollandarchive.log";
+    const sirchar_t * const logfilename = "rollandarchive";
     const sirchar_t * const line = "hello, i am some data. nice to meet you.";
 
-    bool pass = true;
-    INIT(si, 0, 0, 0, 0);
+    unsigned delcount = 0;
+    if (!enumfiles(logfilename, deletefiles, &delcount)) {
+        fprintf(stderr, "failed to delete existing log files! error: %d\n", errno);
+        return false;
+    }
 
-#pragma message "TODO: remove all log files with the pattern"
-    remove(logfilename);
+    printf("\tfound and removed %u log file(s)\n", delcount);
+
     FILE* f = fopen(logfilename, "w");
 
     if (!f) {
         fprintf(stderr, "fopen failed! error: %d\n", errno);
-        pass = false;
+        return false;
     }
 
-    if (pass) {
-        int seek = fseek(f, fillsize, SEEK_SET);
+    int seek = fseek(f, fillsize, SEEK_SET);
 
-        if (0 != seek) {
-            fprintf(stderr, "fseek failed! error: %d\n", errno);
-            pass = false;
-        }
-
-        if (pass) {
-            int put = fputc('\0', f);
-            if (EOF == put) {
-                fprintf(stderr, "fputc failed! error: %d\n", errno);
-                pass = false;
-            }
-        }
-
+    if (0 != seek) {
+        fprintf(stderr, "fseek failed! error: %d\n", errno);
         fclose(f);
-        f = NULL;
+        return false;
     }
+
+    int put = fputc('\0', f);
+
+    if (EOF == put) {
+        fprintf(stderr, "fputc failed! error: %d\n", errno);
+        fclose(f);
+        return false;
+    }
+
+    fclose(f);
+
+    bool pass = true;
+    INIT(si, 0, 0, 0, 0);
 
     int fileid = sir_addfile(logfilename, SIRL_DEBUG, SIRO_MSGONLY | SIRO_NOHDR);
 
@@ -297,30 +300,28 @@ bool sirtest_rollandarchivefile() {
         do {
             pass &= sir_debug("%s", line);
             if (!pass) break;
-
+                
             written += linesize;
-
         } while (written < deltasize + (linesize * 50));
 
-#pragma message "TODO: validate opendir and search for pattern"
-        DIR* d = opendir(".");
-        struct dirent* di = readdir(d);
-
-        if (di) {
-            printf("\t-- found logs --\n");
-            do {
-                //if (strstr(di->d_name, logfilename))
-                    printf("\t%s\n", di->d_name);
-                di = readdir(d);
-            } while (NULL != di);
-            printf("\t-- end dir --\n");
+        /* Look for files matching the original name. */
+        unsigned foundlogs = 0;
+        if (!enumfiles(logfilename, countfiles, &foundlogs)) {
+            fprintf(stderr, "failed to count log files! error: %d\n", errno);
+            pass = false;
         }
-
-        // TODO: ?
-        closedir(d);
-        d = NULL;
-   
+        
+        /* If two are present, the test is a pass. */
+        pass &= foundlogs == 2;
     }
+
+    delcount = 0;
+    if (!enumfiles(logfilename, deletefiles, &delcount)) {
+        fprintf(stderr, "failed to delete log files! error: %d\n", errno);
+        return false;
+    }
+
+    printf("\tfound and removed %u log file(s)\n", delcount);
 
     sir_cleanup();
     return printerror(pass);
@@ -471,4 +472,41 @@ bool printerror(bool pass) {
         printf("\t"RED("!! Unexpected (%hu, %s)")"\n",  code, message);
     }
     return pass;
+}
+
+bool deletefiles(const char* search, const char* filename, unsigned* data) {
+    if (strstr(filename, search)) {
+        remove(filename);
+        (*data)++;
+    }
+    return true;
+}
+
+bool countfiles(const char* search, const char* filename, unsigned* data) {
+    if (strstr(filename, search)) {
+        (*data)++;
+    }
+
+    return true;
+}
+
+bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
+    
+    DIR* d = opendir(".");
+    if (!d) return false;
+
+    rewinddir(d);
+    struct dirent* di = readdir(d);
+    if (!di) return false;
+
+    while (NULL != di) {
+        if (!cb(search, di->d_name, data))
+            break;                 
+        di = readdir(d);
+    };
+
+    closedir(d);
+    d = NULL;
+
+    return true;
 }

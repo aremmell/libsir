@@ -104,4 +104,10 @@ bool sirtest_allerrorsresolve();
 
 bool printerror(bool pass);
 
+typedef bool (*fileenumproc)(const char* search, const char* filename, unsigned* data);
+
+bool deletefiles(const char* search, const char* filename, unsigned* data);
+bool countfiles(const char* search, const char* filename, unsigned* data);
+bool enumfiles(const char* search, fileenumproc cb, unsigned* data);
+
 #endif /* !_SIR_TESTS_H_INCLUDED */
