@@ -257,7 +257,7 @@ bool sirtest_rollandarchivefile() {
 
     unsigned delcount = 0;
     if (!enumfiles(logfilename, deletefiles, &delcount)) {
-        fprintf(stderr, "failed to delete existing log files! error: %d\n", errno);
+        fprintf(stderr, "failed to delete existing log files! error: %d\n", getoserr());
         return false;
     }
 
@@ -316,15 +316,17 @@ bool sirtest_rollandarchivefile() {
         pass &= foundlogs == 2;
     }
 
+    pass &= sir_remfile(fileid);
+
     delcount = 0;
-    if (!enumfiles(logfilename, deletefiles, &delcount)) {
-        fprintf(stderr, "failed to delete log files! error: %d\n", errno);
+    if (!enumfiles(logfilename, deletefiles, &delcount)) {   
+        fprintf(stderr, "failed to delete log files! error: %d\n", getoserr());
         return false;
     }
 
     printf("\tfound and removed %u log file(s)\n", delcount);
 
-    sir_cleanup();
+    sir_cleanup(); 
     return printerror(pass);
 }
 
@@ -475,9 +477,27 @@ bool printerror(bool pass) {
     return pass;
 }
 
+int getoserr() {
+#ifndef _WIN32
+        return errno;
+#else
+        return (int)GetLastError();
+#endif           
+}
+
+bool rmfile(const char* filename) {
+#ifndef _WIN32   
+        return 0 == remove(filename);
+#else
+        return FALSE != DeleteFile(filename);
+#endif    
+}
+
 bool deletefiles(const char* search, const char* filename, unsigned* data) {
     if (strstr(filename, search)) {
-        remove(filename);
+        if (!rmfile(filename)) {
+            fprintf(stderr, "failed to delete %s! error: %d\n", filename, getoserr());
+        }
         (*data)++;
     }
     return true;
@@ -493,6 +513,7 @@ bool countfiles(const char* search, const char* filename, unsigned* data) {
 
 bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
     
+#ifndef _WIN32    
     DIR* d = opendir(".");
     if (!d) return false;
 
@@ -508,6 +529,20 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
 
     closedir(d);
     d = NULL;
+#else
+    WIN32_FIND_DATA finddata = {0};
+    HANDLE foundfile = FindFirstFile("./*", &finddata);
+
+    if (INVALID_HANDLE_VALUE == foundfile)
+        return false;
+
+    do {
+        if (!cb(search, finddata.cFileName, data))
+            break;
+    } while (FindNextFile(foundfile, &finddata) > 0);
+
+    FindClose(foundfile);
+#endif
 
     return true;
 }
