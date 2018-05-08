@@ -18,5 +18,5 @@ Other platforms, such as `BSD` and `macOS` remain untested, and probably won't e
 3. **Deleting archived logs older than _n_ days.**
 4. **A project file for Visual Studio.**
 5. **A project file for Xcode.**
-6. **An accompanying C++11/14 wrapper (I may do this soon).**
+6. **An accompanying C++ wrapper (I may do this soon).**
 7. **Something I didn't think of yet.**
