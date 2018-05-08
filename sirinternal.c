@@ -31,7 +31,7 @@ static volatile uint32_t _sir_magic;
 bool _sir_sanity() {
     if (_SIR_MAGIC == _sir_magic)
         return true;
-    _sir_seterror(SIR_E_NOTREADY);
+    _sir_seterror(_SIR_E_NOTREADY);
     return false;
 }
 
@@ -58,13 +58,13 @@ bool _sir_options_sanity(const sirinit* si) {
 
 bool _sir_init(sirinit* si) {
 
-    _sir_seterror(SIR_E_NOERROR);
+    _sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_validptr(si))
         return false;
 
     if (_sir_magic == _SIR_MAGIC) {
-        _sir_seterror(SIR_E_ALREADY);
+        _sir_seterror(_SIR_E_ALREADY);
         return false;
     }
 
@@ -193,7 +193,7 @@ bool _sir_cleanup() {
         cleanup &= _sir_unlocksection(_SIRM_INIT);
     }
 
-    _sir_seterror(SIR_E_NOERROR);
+    _sir_seterror(_SIR_E_NOERROR);
     _sir_magic = 0;
     _sir_selflog("%s: SIR is cleaned up\n", __func__);
     return cleanup;
@@ -244,7 +244,7 @@ void _sir_once(sironce_t* once, sir_once_fn func) {
 
 bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
 
-    _sir_seterror(SIR_E_NOERROR);
+    _sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validlevel(level) || !_sir_validstr(format))
         return false;
@@ -384,7 +384,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output) {
         }
 
         if (0 == wanted) {
-            _sir_seterror(SIR_E_NODEST);
+            _sir_seterror(_SIR_E_NODEST);
             return false;
         }
 

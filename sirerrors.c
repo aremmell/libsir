@@ -7,7 +7,7 @@
 
 /** Per-thread error data */
 static thread_local sir_thread_err sir_te = {
-    SIR_E_NOERROR, 0, {0}, {SIR_UNKNOWN, SIR_UNKNOWN, 0}
+    _SIR_E_NOERROR, 0, {0}, {SIR_UNKNOWN, SIR_UNKNOWN, 0}
 };
 
 void __sir_seterror(sirerror_t err, const sirchar_t* func, const sirchar_t* file, uint32_t line) {
@@ -29,15 +29,15 @@ void __sir_setoserror(int code, const sirchar_t* message, const sirchar_t* func,
     if (_sir_validstrnofail(message))
         strncpy(sir_te.os_errmsg, message, SIR_MAXERROR);
         
-    __sir_seterror(SIR_E_PLATFORM, func, file, line);
+    __sir_seterror(_SIR_E_PLATFORM, func, file, line);
 }
 
 void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uint32_t line) {
-    if (SIR_E_NOERROR != code) {
+    if (_SIR_E_NOERROR != code) {
         sirchar_t message[SIR_MAXERROR] = {0};
 
 #ifndef _WIN32
-        errno       = SIR_E_NOERROR;
+        errno       = _SIR_E_NOERROR;
         int finderr = strerror_r(code, message, SIR_MAXERROR);
 #else
         errno_t finderr = strerror_s(message, SIR_MAXERROR, code);
@@ -52,7 +52,7 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
 #endif
         }
     }
-    assert(SIR_E_NOERROR == code);    
+    assert(_SIR_E_NOERROR == code);    
 }
 
 #ifdef _WIN32
@@ -87,7 +87,7 @@ sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
             sirchar_t* final = NULL;
             bool alloc = false;
 
-            if (SIR_E_PLATFORM == sir_errors[n].e) {
+            if (_SIR_E_PLATFORM == sir_errors[n].e) {
                 final = (sirchar_t*)calloc(SIR_MAXERROR, sizeof(sirchar_t));
 
                 if (_sir_validptr(final)) {
@@ -108,7 +108,7 @@ sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
     }
 
     assert(false && sir_te.lasterror);
-    return SIR_E_UNKNOWN;
+    return _SIR_E_UNKNOWN;
 }
 
 #ifdef SIR_SELFLOG

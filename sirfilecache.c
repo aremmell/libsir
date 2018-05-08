@@ -14,7 +14,7 @@
 
 sirfileid_t _sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts) {
 
-    _sir_seterror(SIR_E_NOERROR);
+    _sir_seterror(_SIR_E_NOERROR);
 
     if (_sir_sanity()) {
         sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
@@ -34,7 +34,7 @@ sirfileid_t _sir_addfile(const sirchar_t* path, sir_levels levels, sir_options o
 
 bool _sir_remfile(sirfileid_t id) {
 
-    _sir_seterror(SIR_E_NOERROR);
+    _sir_seterror(_SIR_E_NOERROR);
 
     if (_sir_sanity() && _sir_validptr(id) && _sir_validfid(*id)) {
         sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
@@ -316,14 +316,14 @@ sirfileid_t _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels le
     if (_sir_validptr(sfc) && _sir_validstr(path) && _sir_validlevels(levels) && _sir_validopts(opts)) {
 
         if (sfc->count >= SIR_MAXFILES) {
-            _sir_seterror(SIR_E_FCFULL);
+            _sir_seterror(_SIR_E_FCFULL);
             return NULL;
         }
 
         sirfile* existing = _sir_fcache_find(sfc, (const void*)path, _sir_fcache_pred_path);
 
         if (NULL != existing) {
-            _sir_seterror(SIR_E_DUPFILE);
+            _sir_seterror(_SIR_E_DUPFILE);
             _sir_selflog("%s: file with path '%s' already added.\n", __func__, path);
             return NULL;
         }
@@ -364,7 +364,7 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid_t id) {
             }
         }
 
-        _sir_seterror(SIR_E_NOFILE);
+        _sir_seterror(_SIR_E_NOFILE);
     }
 
     return false;
