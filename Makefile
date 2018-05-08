@@ -111,7 +111,7 @@ tests: static $(OBJ_TESTS)
 	echo built $(OUT_TESTS) successfully.
 
 docs: static
-	@doxygen $(DOCSDIR)/Doxyfile
+	@doxygen Doxyfile
 	@echo built documentation successfully.
 
 .PHONY: clean
