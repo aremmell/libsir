@@ -7,7 +7,6 @@
 #include "sirdefaults.h"
 #include "sirmutex.h"
 
-
 /**
  * @addtogroup intern
  * @{

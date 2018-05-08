@@ -13,11 +13,11 @@
  * @{
  */
 
-/** The error code type. */
-typedef uint32_t sirerror_t;
-
 /** The value used to represent an invalid file identifier. */
 static const int SIR_INVALID = -1;
+
+/** The error code type. */
+typedef uint32_t sirerror_t;
 
 /** Defines the available levels \a (severity/priority) of logging output. */
 typedef enum {
@@ -203,13 +203,6 @@ typedef struct {
 /** Magic number used to determine if the library has been initialized. */
 #define _SIR_MAGIC 0x60906090
 
-/** The maximum size of an error message generated
- * by the OS. */
-#define SIR_MAXERROR 256
-
-/** The error message used when an error is not resolved. */
-#define SIR_UNKERROR "<unknown>"
-
 /** Log file data. */
 typedef struct {
     sirchar_t*  path;
@@ -283,6 +276,18 @@ typedef enum {
     _SIRM_FILECACHE, /**< The ::sirfcache section. */
     _SIRM_TEXTSTYLE, /**< The ::sir_style_map section. */
 } sir_mutex_id;
+
+typedef struct {
+    sirerror_t lasterror;
+    int os_error;
+    sirchar_t os_errmsg[SIR_MAXERROR];
+
+    struct {
+        const sirchar_t* func;
+        const sirchar_t* file;
+        uint32_t line;
+    } loc;
+} sir_thread_err;
 
 /** @} */
 

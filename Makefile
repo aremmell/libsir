@@ -25,7 +25,7 @@ CFLAGS += -D_WIN32
 endif
 
 TUS = sir.c sirmutex.c sirinternal.c sirfilecache.c sirconsole.c \
-	  sirtextstyle.c sirerrors.c
+	  sirtextstyle.c sirerrors.c sirhelpers.c
 DEPS = sir.h sirmutex.h sirconfig.h sirinternal.h sirhelpers.h \
 	   sirplatform.h sirfilecache.h sirtypes.h sirconsole.h \
 	   sirtextstyle.h sirerrors.h

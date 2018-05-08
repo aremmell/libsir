@@ -68,7 +68,7 @@ static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message,
 
     assert(INVALID_HANDLE_VALUE != console);
     if (INVALID_HANDLE_VALUE == console) {
-        _sir_handleerr(GetLastError());
+        _sir_handlewin32err(GetLastError());
         return false;
     }
 
@@ -79,12 +79,12 @@ static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message,
 
     EnterCriticalSection(cs);
     if (!GetConsoleScreenBufferInfo(console, &csbfi)) {
-        _sir_handleerr(GetLastError());
+        _sir_handlewin32err(GetLastError());
         return false;
     }
 
     if (!SetConsoleTextAttribute(console, style)) {
-        _sir_handleerr(GetLastError());
+        _sir_handlewin32err(GetLastError());
         return false;
     }
 
@@ -95,7 +95,7 @@ static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message,
         DWORD pass = 0;
 
         if (!WriteConsole(console, message + written, chars - written, &pass, NULL)) {
-            _sir_handleerr(GetLastError());
+            _sir_handlewin32err(GetLastError());
             break;
         }
 

@@ -64,6 +64,10 @@ static const sir_test sir_tests[] = {
     {"output without init", sirtest_failwithoutinit},
     {"output after cleanup", sirtest_failaftercleanup},    
     {"init, cleanup, init", sirtest_initcleanupinit},
+    {"duplicate file name", sirtest_faildupefile},
+    {"remove nonexistent file", sirtest_failremovebadfile},
+    {"roll/archive large file", sirtest_rollandarchivefile},
+    {"validate error handling", sirtest_allerrorsresolve},
 };
 
 int main(int argc, char** argv) {
@@ -223,6 +227,61 @@ bool sirtest_initcleanupinit() {
     return printerror(pass);
 }
 
+bool sirtest_faildupefile() {
+
+    bool pass = true;
+    INIT(si, SIRL_ALL, 0, 0, 0);
+
+    pass &= SIR_INVALID != sir_addfile("foo.log", SIRL_ALL, SIRO_DEFAULT);
+    pass &= SIR_INVALID == sir_addfile("foo.log", SIRL_ALL, SIRO_DEFAULT);
+
+    sir_cleanup();
+    return pass;
+}
+
+bool sirtest_failremovebadfile() {
+
+    bool pass = true;
+    INIT(si, SIRL_ALL, 0, 0, 0);
+
+    pass &= !sir_remfile(399246422);
+
+    sir_cleanup();
+    return pass;
+}
+
+bool sirtest_rollandarchivefile() {
+
+    bool pass = true;
+    INIT(si, SIRL_ALL, 0, 0, 0);
+
+
+    sir_cleanup();
+    return pass;
+}
+
+bool sirtest_allerrorsresolve() {
+
+    bool pass = true;
+    INIT(si, SIRL_ALL, 0, 0, 0);
+
+
+    sir_cleanup();
+    return pass;
+}
+
+/*
+bool sirtest_XXX() {
+
+    bool pass = true;
+    INIT(si, SIRL_ALL, 0, 0, 0);
+
+
+    sir_cleanup();
+    return pass;
+}
+*/
+
 #ifndef _WIN32
 static void* sirtest_thread(void* arg);
 #else
@@ -336,7 +395,7 @@ bool printerror(bool pass) {
     if (!pass) {
         sirchar_t message[SIR_MAXERROR] = {0};
         uint16_t code = sir_geterror(message);
-        printf("\t"RED("SIR error: (%hu, '%s')")"\n", code, message);
+        printf("\t"RED("!! Unexpected (%hu, %s)")"\n",  code, message);
     }
     return pass;
 }

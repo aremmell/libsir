@@ -6,7 +6,6 @@
 #define _SIR_INTERNAL_H_INCLUDED
 
 #include "sirhelpers.h"
-#include "sirtypes.h"
 #include "sirerrors.h"
 
 /** 
@@ -96,46 +95,6 @@ pid_t _sir_getpid();
 
 /** Returns the current thread identifier. */
 pid_t _sir_gettid();
-
-/** Validates a string pointer */
-bool __sir_validstr(const sirchar_t* str, bool fail);
-
-/** Validates a string pointer and fails if it's invalid. */
-static inline
-bool _sir_validstr(const sirchar_t* str) {
-    return __sir_validstr(str, true);
-}
-
-/** Validates a string pointer but ignores if it's invalid. */
-static inline
-bool _sir_validstrnofail(const sirchar_t* str) {
-    return __sir_validstr(str, false);
-}
-
-/** Validates a log file identifier. */
-bool _sir_validfid(int id);
-
-/** Validates a set of ::sir_level flags. */
-bool _sir_validlevels(sir_levels levels);
-
-/** Validates a single ::sir_level. */
-bool _sir_validlevel(sir_level level);
-
-/** Validates a set of ::sir_option flags. */
-bool _sir_validopts(sir_options opts);
-
-#define _sir_handleerr(code) \
-    _sir_handleerr_impl((sirerror_t)code, __func__, __FILE__, __LINE__);
-
-/** Handle an OS error and send it to \a stderr. */
-void _sir_handleerr_impl(sirerror_t code, const sirchar_t* func, const sirchar_t* file, uint32_t line);
-
-#ifdef SIR_SELFLOG
-/** Log an internal message to \a stderr. */
-void _sir_selflog(const sirchar_t* format, ...);
-#else
-#define _sir_selflog(format, ...) ((void)(0))
-#endif
 
 /** @} */
 

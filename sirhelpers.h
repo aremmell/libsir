@@ -68,6 +68,33 @@ void _sir_safefree(void* p) {
     __sir_safefree(&p);
 }
 
+/** Validates a log file identifier. */
+bool _sir_validfid(int id);
+
+/** Validates a set of ::sir_level flags. */
+bool _sir_validlevels(sir_levels levels);
+
+/** Validates a single ::sir_level. */
+bool _sir_validlevel(sir_level level);
+
+/** Validates a set of ::sir_option flags. */
+bool _sir_validopts(sir_options opts);
+
+/** Validates a string pointer and optionally fails if it's invalid. */
+bool __sir_validstr(const sirchar_t* str, bool fail);
+
+/** Validates a string pointer and fails if it's invalid. */
+static inline
+bool _sir_validstr(const sirchar_t* str) {
+    return __sir_validstr(str, true);
+}
+
+/** Validates a string pointer but ignores if it's invalid. */
+static inline
+bool _sir_validstrnofail(const sirchar_t* str) {
+    return __sir_validstr(str, false);
+}
+
 /** Places a null terminator at the first index in a string buffer. */
 static inline
 void _sir_resetstr(sirchar_t* str) {

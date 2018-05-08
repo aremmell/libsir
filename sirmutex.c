@@ -91,7 +91,7 @@ bool _sirmutex_create(sirmutex_t* mutex) {
         sirmutex_t tmp = CreateMutex(NULL, FALSE, NULL);
 
         if (!tmp) {
-            _sir_handleerr(GetLastError());
+            _sir_handlewin32err(GetLastError());
             return false;
         }
 
@@ -116,7 +116,7 @@ bool _sirmutex_unlock(sirmutex_t* mutex) {
         BOOL release = ReleaseMutex(*mutex);
 
         if (!release)
-            _sir_handleerr(GetLastError());
+            _sir_handlewin32err(GetLastError());
 
         return FALSE != release;
     }
@@ -130,7 +130,7 @@ bool _sirmutex_destroy(sirmutex_t* mutex) {
         BOOL close = CloseHandle(*mutex);
 
         if (!close)
-            _sir_handleerr(GetLastError());
+            _sir_handlewin32err(GetLastError());
 
         return FALSE != close;
     }

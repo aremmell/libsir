@@ -3,8 +3,8 @@
  * @brief stdio text styling.
  */
 #include "sirtextstyle.h"
-#include "sirdefaults.h"
 #include "sirinternal.h"
+#include "sirdefaults.h"
 
 /**
  * @addtogroup intern

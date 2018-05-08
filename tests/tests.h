@@ -80,6 +80,26 @@ bool sirtest_failaftercleanup();
  */
 bool sirtest_initcleanupinit();
 
+/**
+ * @test Properly refuse to add a duplicate file.
+ */
+bool sirtest_faildupefile();
+
+/**
+ * @test Properly refuse to remove a file that isn't added.
+ */
+bool sirtest_failremovebadfile();
+
+/**
+ * @test Properly roll/archive a file when it hits max size.
+ */
+bool sirtest_rollandarchivefile();
+
+/**
+ * @test Properly return valid codes and messages for all possible errors.
+ */
+bool sirtest_allerrorsresolve();
+
 /** @} */
 
 bool printerror(bool pass);
