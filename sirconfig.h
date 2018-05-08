@@ -37,7 +37,7 @@
 #define SIR_FOPENMODE "a"
 
 /** The size, in bytes, at which a log file will be rolled. */
-#define SIR_FROLLSIZE 1024L * 1024L * 5L
+#define SIR_FROLLSIZE (1024L * 1024L * 5L)
 
 /**
  * The time format string in file headers (see ::SIR_FHFORMAT).
@@ -162,7 +162,7 @@
  * 
  * @remark sample: `Error in findneedle (haystack.c:384): 'Too much hay'`
  */
-#define SIR_ERRORFORMAT "Error in %s (%s:%lu): '%s'"
+#define SIR_ERRORFORMAT "Error in %s (%s:%u): '%s'"
 
 /** The string that represents any unknown. */
 #define SIR_UNKNOWN "<unknown>"
