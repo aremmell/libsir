@@ -24,7 +24,7 @@ bool _sir_validlevel(sir_level level) {
 }
 
 bool _sir_validopts(sir_options opts) {
-    bool valid = (opts & SIRL_ALL) == 0 && opts <= SIRO_MSGONLY;
+    bool valid = (opts & SIRL_ALL) == 0 && opts <= 0xfff00;
     if (!valid) {
         _sir_seterror(SIR_E_OPTIONS);
         assert(valid);
