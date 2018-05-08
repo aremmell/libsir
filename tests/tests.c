@@ -2,14 +2,16 @@
  * @file tests.c
  * @brief Implementation of test rig app.
  */
+#define _CRT_RAND_S
+
 #include "tests.h"
 #include "../sir.h"
 #include "../sirfilecache.h"
 #include "../sirerrors.h"
 
 #include <errno.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -133,9 +135,9 @@ bool sirtest_fillflushfilecache() {
     printf("\tcreating random file ID order...\n");
 
     do {
-        int rnd = getrand() % SIR_MAXFILES;
-//printf("rnd = %d\n", rnd);
+        unsigned int rnd = getrand() % SIR_MAXFILES;
         bool skip = false;
+
         for (size_t n = 0; n < SIR_MAXFILES; n++)
             if (removeorder[n] == rnd) {
                 skip = true;
@@ -145,14 +147,12 @@ bool sirtest_fillflushfilecache() {
         if (skip) continue;
         removeorder[processed++] = rnd;
 
-        if (processed == SIR_MAXFILES)
-            break;
+        if (processed == SIR_MAXFILES) break;
     } while(true);
 
     printf("\tremove order: {");
-    for (size_t n = 0; n < SIR_MAXFILES; n++) {
+    for (size_t n = 0; n < SIR_MAXFILES; n++)
         printf(" %d", removeorder[n]);
-    }
     printf(" }...\n");
 
     for (size_t n = 0; n < SIR_MAXFILES; n++) {
@@ -499,13 +499,17 @@ int getoserr() {
 #endif           
 }
 
-int getrand() {
+unsigned int getrand() {
     static unsigned int seed = 0;
 #ifndef _WIN32
-    return rand_r(&seed);
+    return (unsigned int)rand_r(&seed);
 #else
-    srand(time(NULL));
-    return rand();
+    if (0 == rand_s(&seed)) {
+        return seed;
+    } else {
+        srand(seed);
+        return (unsigned int)rand();
+    }
 #endif  
 }
 

@@ -105,7 +105,7 @@ bool sirtest_allerrorsresolve();
 bool printerror(bool pass);
 
 int getoserr();
-int getrand();
+unsigned int getrand();
 
 bool rmfile(const char* filename);
 bool deletefiles(const char* search, const char* filename, unsigned* data);
