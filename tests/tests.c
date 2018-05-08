@@ -13,9 +13,9 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <dirent.h>
 
 #ifndef _WIN32
+#include <dirent.h>
 #include <pthread.h>
 #include <unistd.h>
 #else
@@ -34,6 +34,7 @@
 #define RED(s) s
 #define GREEN(s) s
 #define WHITE(s) s
+#define BLUE(s) s
 #endif
 
 #define INIT(var, l_stdout, o_stdout, l_stderr, o_stderr) \

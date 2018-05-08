@@ -222,7 +222,8 @@ bool _sirfile_roll(sirfile* sf, sirchar_t** newpath) {
                         *newpath = (sirchar_t*)calloc(SIR_MAXPATH, sizeof(sirchar_t));
 
                         if (_sir_validptr(*newpath)) {
-                            int fmtpath = snprintf(*newpath, SIR_MAXPATH, SIR_FNAMEFORMAT, name, timestamp, ext);                
+                            int fmtpath = snprintf(*newpath, SIR_MAXPATH, SIR_FNAMEFORMAT,
+                                name, timestamp, _sir_validstrnofail(ext) ? ext : "");                
 
                             if (fmtpath < 0)
                                 _sir_handleerr(errno);
