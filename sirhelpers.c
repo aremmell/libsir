@@ -2,7 +2,12 @@
 #include "sirerrors.h"
 
 bool _sir_validfid(int id) {
-    return id >= 0;
+    bool valid = id >= 0;
+    if (!valid) {
+        _sir_seterror(SIR_E_NOFILE);
+        assert(valid);
+    }
+    return valid;
 }
 
 bool _sir_validlevels(sir_levels levels) {

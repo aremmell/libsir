@@ -38,7 +38,7 @@ bool sirtest_exceedmaxsize();
 /**
  * @test Properly handle adding and removing log files.
  */
-bool sirtest_addremovefiles();
+bool sirtest_fillflushfilecache();
 
 /**
  * @test Properly handle invalid text style.
@@ -105,6 +105,8 @@ bool sirtest_allerrorsresolve();
 bool printerror(bool pass);
 
 int getoserr();
+int getrand();
+
 bool rmfile(const char* filename);
 bool deletefiles(const char* search, const char* filename, unsigned* data);
 bool countfiles(const char* search, const char* filename, unsigned* data);

@@ -14,8 +14,8 @@
 
 typedef bool (*sir_fcache_pred)(const void* match, sirfile* iter);
 
-int  _sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts);
-bool _sir_remfile(int id);
+sirfileid_t _sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts);
+bool _sir_remfile(sirfileid_t id);
 
 sirfile* _sirfile_create(const sirchar_t* path, sir_levels levels, sir_options opts);
 bool     _sirfile_open(sirfile* sf);
@@ -29,8 +29,8 @@ bool     _sirfile_splitpath(sirfile* sf, sirchar_t** name, sirchar_t** ext);
 void     _sirfile_destroy(sirfile* sf);
 bool     _sirfile_validate(sirfile* sf);
 
-int  _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels levels, sir_options opts);
-bool _sir_fcache_rem(sirfcache* sfc, int id);
+sirfileid_t _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels levels, sir_options opts);
+bool _sir_fcache_rem(sirfcache* sfc, sirfileid_t id);
 
 bool     _sir_fcache_pred_path(const void* match, sirfile* iter);
 sirfile* _sir_fcache_find(sirfcache* sfc, const void* match, sir_fcache_pred pred);

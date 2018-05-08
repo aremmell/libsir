@@ -51,7 +51,7 @@
 static const sir_test sir_tests[] = {
     {"multi-thread race", sirtest_mthread_race},
     {"exceed max buffer size", sirtest_exceedmaxsize},
-    {"add and remove files", sirtest_addremovefiles},
+    {"add max files, remove randomly", sirtest_fillflushfilecache},
     {"set invalid text style", sirtest_failsetinvalidstyle},    
     {"no output destination", sirtest_failnooutputdest},
     {"invalid file name", sirtest_failinvalidfilename},
@@ -72,7 +72,7 @@ int main(int argc, char** argv) {
     size_t tests   = sizeof(sir_tests) / sizeof(sir_test);
     size_t passed  = 0;
 
-    printf(WHITE("running %lu sir library tests...\n"), tests);
+    printf(WHITE("running %lu libsir tests...\n"), tests);
 
     for (size_t n = 0; n < tests; n++) {
         printf(WHITE("\t'%s'...") "\n", sir_tests[n].name);
@@ -83,7 +83,7 @@ int main(int argc, char** argv) {
             thispass ? GREEN("PASS") : RED("FAIL"));
     }
 
-    printf(WHITE("done; ")BLUE("%lu/%lu tests passed ")WHITE("- press enter to continue")"\n",
+    printf(WHITE("done; ")BLUE("%lu/%lu libsir tests passed ")WHITE("- enter to exit")"\n",
         passed, tests);
 
     int unused = getc(stdin);
@@ -103,38 +103,64 @@ bool sirtest_exceedmaxsize() {
     return printerror(pass);
 }
 
-bool sirtest_addremovefiles() {
+bool sirtest_fillflushfilecache() {
     bool pass = true;
     INIT(si, SIRL_ALL, 0, 0, 0);
 
     size_t numfiles = SIR_MAXFILES + 1;
-    int ids[SIR_MAXFILES] = {SIR_INVALID};
+    sirfileid_t ids[SIR_MAXFILES] = {0};
 
     for (size_t n = 0; n < numfiles - 1; n++) {
         char path[SIR_MAXPATH] = {0};
         snprintf(path, SIR_MAXPATH, "test-%lu.log", n);
+        rmfile(path);
         ids[n] = sir_addfile(path, SIRL_ALL, SIRO_MSGONLY);
-        pass &= SIR_INVALID != ids[n];
+        pass &= NULL != ids[n];
     }
 
     pass &= sir_info("test test test");
 
     // this one should fail; max files already added
-    pass &= SIR_INVALID == sir_addfile("should-fail.log", SIRL_ALL, SIRO_MSGONLY);
+    pass &= NULL == sir_addfile("should-fail.log", SIRL_ALL, SIRO_MSGONLY);
 
     sir_info("test test test");
 
-    for (size_t j = 0; j < numfiles - 1; j++) {
+    // now remove previously added files in a different order
+    int removeorder[SIR_MAXFILES];
+    memset(removeorder, -1, sizeof(removeorder));
 
-        pass &= sir_remfile(ids[j]);
+    long processed = 0;
+    printf("\tcreating random file ID order...\n");
+
+    do {
+        int rnd = getrand() % SIR_MAXFILES;
+//printf("rnd = %d\n", rnd);
+        bool skip = false;
+        for (size_t n = 0; n < SIR_MAXFILES; n++)
+            if (removeorder[n] == rnd) {
+                skip = true;
+                break;
+            }
+
+        if (skip) continue;
+        removeorder[processed++] = rnd;
+
+        if (processed == SIR_MAXFILES)
+            break;
+    } while(true);
+
+    printf("\tremove order: {");
+    for (size_t n = 0; n < SIR_MAXFILES; n++) {
+        printf(" %d", removeorder[n]);
+    }
+    printf(" }...\n");
+
+    for (size_t n = 0; n < SIR_MAXFILES; n++) {
+        pass &= sir_remfile(ids[removeorder[n]]);
 
         char path[SIR_MAXPATH] = {0};
-        snprintf(path, SIR_MAXPATH, "test-%lu.log", j);
-#ifndef _WIN32
-        remove(path);
-#else
-        DeleteFile(path);
-#endif
+        snprintf(path, SIR_MAXPATH, "test-%lu.log", n);
+        rmfile(path);
     }
 
     pass &= sir_info("test test test");
@@ -168,7 +194,7 @@ bool sirtest_failinvalidfilename() {
     bool pass = true;
     INIT(si, SIRL_ALL, 0, 0, 0);
 
-    pass &= SIR_INVALID == sir_addfile("bad file!/name", SIRL_ALL, SIRO_MSGONLY);
+    pass &= NULL == sir_addfile("bad file!/name", SIRL_ALL, SIRO_MSGONLY);
 
     sir_cleanup();
     return printerror(pass);
@@ -178,7 +204,7 @@ bool sirtest_failfilebadpermission() {
     bool pass = true;
     INIT(si, SIRL_ALL, 0, 0, 0);
 
-    pass &= SIR_INVALID == sir_addfile("/noperms", SIRL_ALL, SIRO_MSGONLY);
+    pass &= NULL == sir_addfile("/noperms", SIRL_ALL, SIRO_MSGONLY);
 
     sir_cleanup();
     return printerror(pass);
@@ -189,7 +215,7 @@ bool sirtest_failnulls() {
     INIT(si, SIRL_ALL, 0, 0, 0);
 
     pass &= !sir_info(NULL);
-    pass &= SIR_INVALID == sir_addfile(NULL, SIRL_ALL, SIRO_MSGONLY);
+    pass &= NULL == sir_addfile(NULL, SIRL_ALL, SIRO_MSGONLY);
 
     sir_cleanup();
     return printerror(pass);
@@ -229,8 +255,8 @@ bool sirtest_faildupefile() {
     bool pass = true;
     INIT(si, SIRL_ALL, 0, 0, 0);
 
-    pass &= SIR_INVALID != sir_addfile("foo.log", SIRL_ALL, SIRO_DEFAULT);
-    pass &= SIR_INVALID == sir_addfile("foo.log", SIRL_ALL, SIRO_DEFAULT);
+    pass &= NULL != sir_addfile("foo.log", SIRL_ALL, SIRO_DEFAULT);
+    pass &= NULL == sir_addfile("foo.log", SIRL_ALL, SIRO_DEFAULT);
 
     sir_cleanup();
     return printerror(pass);
@@ -241,7 +267,8 @@ bool sirtest_failremovebadfile() {
     bool pass = true;
     INIT(si, SIRL_ALL, 0, 0, 0);
 
-    pass &= !sir_remfile(399246422);
+    int invalidid = 9999999;
+    pass &= !sir_remfile(&invalidid);
 
     sir_cleanup();
     return printerror(pass);
@@ -261,7 +288,8 @@ bool sirtest_rollandarchivefile() {
         return false;
     }
 
-    printf("\tfound and removed %u log file(s)\n", delcount);
+    if (delcount > 0)
+        printf("\tfound and removed %u log file(s)\n", delcount);
 
     FILE* f = fopen(logfilename, "w");
 
@@ -270,17 +298,13 @@ bool sirtest_rollandarchivefile() {
         return false;
     }
 
-    int seek = fseek(f, fillsize, SEEK_SET);
-
-    if (0 != seek) {
+    if (0 != fseek(f, fillsize, SEEK_SET)) {
         fprintf(stderr, "fseek failed! error: %d\n", errno);
         fclose(f);
         return false;
     }
 
-    int put = fputc('\0', f);
-
-    if (EOF == put) {
+    if (EOF == fputc('\0', f)) {
         fprintf(stderr, "fputc failed! error: %d\n", errno);
         fclose(f);
         return false;
@@ -291,9 +315,9 @@ bool sirtest_rollandarchivefile() {
     bool pass = true;
     INIT(si, 0, 0, 0, 0);
 
-    int fileid = sir_addfile(logfilename, SIRL_DEBUG, SIRO_MSGONLY | SIRO_NOHDR);
+    sirfileid_t fileid = sir_addfile(logfilename, SIRL_DEBUG, SIRO_MSGONLY | SIRO_NOHDR);
 
-    if (pass &= SIR_INVALID != fileid) {
+    if (pass &= NULL != fileid) {
         /* write an (approximately) known quantity until we should have rolled */
         size_t written = 0;
         size_t linesize = strlen(line);
@@ -324,7 +348,8 @@ bool sirtest_rollandarchivefile() {
         return false;
     }
 
-    printf("\tfound and removed %u log file(s)\n", delcount);
+    if (delcount > 0)
+        printf("\tfound and removed %u log file(s)\n", delcount);
 
     sir_cleanup(); 
     return printerror(pass);
@@ -393,9 +418,6 @@ bool sirtest_mthread_race() {
 #else
         WaitForSingleObject((HANDLE)thrds[j], INFINITE);
 #endif
-        char path[SIR_MAXPATH] = {0};
-        snprintf(path, SIR_MAXPATH, "%lu.log", j);
-        remove(path);
     }
 
     sir_cleanup();
@@ -414,18 +436,10 @@ static unsigned sirtest_thread(void* arg) {
     strncpy(mypath, (const char*)arg, SIR_MAXPATH);
     free(arg);
 
-    printf("Hi, I'm thread %lu, path: '%s'\n", threadid, mypath);
-    unsigned int seed = threadid * time(NULL);
+    rmfile(mypath);
+    sirfileid_t id = sir_addfile(mypath, SIRL_ALL, SIRO_MSGONLY);
 
-#ifdef _WIN32
-    srand(seed);
-#endif
-
-    remove(mypath);
-    sir_options file1opts = SIRO_MSGONLY;
-    int         id1       = sir_addfile(mypath, SIRL_ALL, file1opts);
-
-    if (SIR_INVALID == id1) {
+    if (NULL == id) {
         printf(RED("Failed to add file %s!") "\n", mypath);
         printerror(false);
 #ifndef _WIN32
@@ -434,23 +448,21 @@ static unsigned sirtest_thread(void* arg) {
         return 0;
 #endif
     }
+    printf("\tHi, I'm thread %lu, path: '%s'\n", threadid, mypath);
 
     for (size_t n = 0; n < 100; n++) {
         for (size_t i = 0; i < 10; i++) {
             sir_debug("thread %lu: hello, how do you do? %d", threadid, (n * i) + i);
 
-#ifndef _WIN32
-            int r = rand_r(&seed) % 15;
-#else
-            int r = rand() % 15;
-#endif
-            if (r % 2 == 0) {
-                if (!sir_remfile(id1))
-                    printerror(false);
-                sir_options file1opts = SIRO_MSGONLY;
-                int         id1       = sir_addfile(mypath, SIRL_ALL, file1opts);
+            int r = getrand(threadid) % 15;
 
-                if (SIR_INVALID == id1)
+            if (r % 2 == 0) {
+                if (!sir_remfile(id))
+                    printerror(false);
+
+                id  = sir_addfile(mypath, SIRL_ALL, SIRO_MSGONLY);
+
+                if (NULL == id)
                     printerror(false);
                 if (!sir_settextstyle(SIRL_DEBUG, SIRS_FG_RED | SIRS_BG_DEFAULT))
                     printerror(false);
@@ -460,6 +472,8 @@ static unsigned sirtest_thread(void* arg) {
             }
         }
     }
+
+    rmfile(mypath);
 
 #ifndef _WIN32
     return NULL;
@@ -479,35 +493,42 @@ bool printerror(bool pass) {
 
 int getoserr() {
 #ifndef _WIN32
-        return errno;
+    return errno;
 #else
-        return (int)GetLastError();
+    return (int)GetLastError();
 #endif           
+}
+
+int getrand() {
+    static unsigned int seed = 0;
+#ifndef _WIN32
+    return rand_r(&seed);
+#else
+    srand(time(NULL));
+    return rand();
+#endif  
 }
 
 bool rmfile(const char* filename) {
 #ifndef _WIN32   
-        return 0 == remove(filename);
+    return 0 == remove(filename);
 #else
-        return FALSE != DeleteFile(filename);
+    return FALSE != DeleteFile(filename);
 #endif    
 }
 
 bool deletefiles(const char* search, const char* filename, unsigned* data) {
     if (strstr(filename, search)) {
-        if (!rmfile(filename)) {
+        if (!rmfile(filename))
             fprintf(stderr, "failed to delete %s! error: %d\n", filename, getoserr());
-        }
         (*data)++;
     }
     return true;
 }
 
 bool countfiles(const char* search, const char* filename, unsigned* data) {
-    if (strstr(filename, search)) {
+    if (strstr(filename, search))
         (*data)++;
-    }
-
     return true;
 }
 
@@ -531,17 +552,18 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
     d = NULL;
 #else
     WIN32_FIND_DATA finddata = {0};
-    HANDLE foundfile = FindFirstFile("./*", &finddata);
+    HANDLE enumerator = FindFirstFile("./*", &finddata);
 
-    if (INVALID_HANDLE_VALUE == foundfile)
+    if (INVALID_HANDLE_VALUE == enumerator)
         return false;
 
     do {
         if (!cb(search, finddata.cFileName, data))
             break;
-    } while (FindNextFile(foundfile, &finddata) > 0);
+    } while (FindNextFile(enumerator, &finddata) > 0);
 
-    FindClose(foundfile);
+    FindClose(enumerator);
+    enumerator = NULL;
 #endif
 
     return true;

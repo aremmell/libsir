@@ -65,6 +65,7 @@ bool sir_init(sirinit* si);
  */
 bool sir_cleanup();
 
+#pragma message "TODO: Document me"
 uint16_t sir_geterror(sirchar_t message[SIR_MAXERROR]);
 
 /**
@@ -196,22 +197,26 @@ bool sir_emerg(const sirchar_t* format, ...);
  * ::SIRL_ALL to send all logging levels to the file.
  * @param opts Zero or more ::sir_option flags used to control output formatting.
  * 
- * @return int
- * @retval Non-negative The file descriptor for the file that was successfully added.
- * @retval ::SIR_INVALID An error occurred while trying to add the file.
+ * @attention The sirfileid_t type is a pointer to the internally mapped
+ * file descriptor for a file. If you modify the value at this address, the behavior
+ * is undefined, and bad things will happen.
+ * 
+ * @return sirfileid_t
+ * @retval The file descriptor for the file that was successfully added.
+ * @retval NULL An error occurred while trying to add the file.
  */
-int sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts);
+sirfileid_t sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts);
 
 /**
  * @brief Remove a previously added log file.
  * 
- * @param id The integer file descriptor returned from ::sir_addfile.
+ * @param id The file descriptor returned from ::sir_addfile.
  * 
  * @return boolean
  * @retval true The file was removed and will no longer receive output.
  * @retval false An error occurred while trying to remove the file.
  */
-bool sir_remfile(int id);
+bool sir_remfile(sirfileid_t id);
 
 /**
  * @brief Sets the text style in \a stdio output for a ::sir_level of output.

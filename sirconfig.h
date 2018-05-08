@@ -167,6 +167,9 @@
 /** The string that represents any unknown. */
 #define SIR_UNKNOWN "<unknown>"
 
+/** The value that represents an invalid file identifier. */
+#define SIR_INVALID (int)-1
+
 #ifndef _WIN32
 /** The size, in characters, of the buffer used to hold text styling data. */
 #define SIR_MAXSTYLE 16

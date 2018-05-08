@@ -13,8 +13,8 @@
  * @{
  */
 
-/** The value used to represent an invalid file identifier. */
-static const int SIR_INVALID = -1;
+/** The file identifier type. */
+typedef const int* sirfileid_t;
 
 /** The error code type. */
 typedef uint32_t sirerror_t;

@@ -75,11 +75,11 @@ bool sir_emerg(const sirchar_t* format, ...) {
     return r;
 }
 
-int sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts) {
+sirfileid_t sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts) {
     return _sir_addfile(path, levels, opts);
 }
 
-bool sir_remfile(int id) {
+bool sir_remfile(sirfileid_t id) {
     return _sir_remfile(id);
 }
 
