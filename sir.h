@@ -70,28 +70,28 @@ bool sir_cleanup();
  * the context of a library call.
  * 
  * @note Most C library and OS calls made by SIR are evaluated for failure.
- * If a failure of this type is encountered, this function returns ::_SIR_E_PLATFORM,
+ * If a failure of this type is encountered, this function returns ::SIR_E_PLATFORM,
  * and \p message will contain a string identifying the underlying error code and
  * the message as reported by the platform.
  * 
  * @param message A buffer to which the human-readable error message is copied.
  * 
  * @return uint16_t
- * @retval SIR_E_NOERROR     0  The operation completed successfully
- * @retval SIR_E_NOTREADY    1  SIR has not been initialized
- * @retval SIR_E_ALREADY     2  SIR is already initialized 
- * @retval SIR_E_DUPFILE     3  File already managed by SIR
- * @retval SIR_E_NOFILE      4  File not managed by SIR
- * @retval SIR_E_FCFULL      5  Maximum number of files already managed
- * @retval SIR_E_OPTIONS     6  Option flags are invalid
- * @retval SIR_E_LEVELS      7  Level flags are invalid
- * @retval SIR_E_TEXTSTYLE   8  Text style is invalid
- * @retval SIR_E_STRING      9  Invalid string argument
- * @retval SIR_E_NODEST     10  No destinations registered for level
- * @retval SIR_E_PLATFORM   11  Platform error code %d: %s
- * @retval SIR_E_UNKNOWN  4095  Error is not known
+ * @retval SIR_E_NOERROR     The operation completed successfully
+ * @retval SIR_E_NOTREADY    SIR has not been initialized
+ * @retval SIR_E_ALREADY     SIR is already initialized 
+ * @retval SIR_E_DUPFILE     File already managed by SIR
+ * @retval SIR_E_NOFILE      File not managed by SIR
+ * @retval SIR_E_FCFULL      Maximum number of files already managed
+ * @retval SIR_E_OPTIONS     Option flags are invalid
+ * @retval SIR_E_LEVELS      Level flags are invalid
+ * @retval SIR_E_TEXTSTYLE   Text style is invalid
+ * @retval SIR_E_STRING      Invalid string argument
+ * @retval SIR_E_NODEST      No destinations registered for level
+ * @retval SIR_E_PLATFORM    Platform error code %d: %s
+ * @retval SIR_E_UNKNOWN     Error is not known
  * 
- * @addtogroup errors
+ * @ingroup errors
  */
 uint16_t sir_geterror(sirchar_t message[SIR_MAXERROR]);
 

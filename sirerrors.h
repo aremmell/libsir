@@ -1,8 +1,6 @@
 /**
  * @file sirerrors.h
  * @brief Library error management.
- * 
-
  */
 #ifndef _SIR_ERRORS_H_INCLUDED
 #define _SIR_ERRORS_H_INCLUDED
@@ -19,19 +17,22 @@
  * @{
  */
 
-#define SIR_E_NOERROR    0  /**< The operation completed successfully */
-#define SIR_E_NOTREADY   1  /**< SIR has not been initialized */
-#define SIR_E_ALREADY    2  /**< SIR is already initialized */
-#define SIR_E_DUPFILE    3  /**< File already managed by SIR */
-#define SIR_E_NOFILE     4  /**< File not managed by SIR */
-#define SIR_E_FCFULL     5  /**< Maximum number of files already managed */
-#define SIR_E_OPTIONS    6  /**< Option flags are invalid */
-#define SIR_E_LEVELS     7  /**< Level flags are invalid */
-#define SIR_E_TEXTSTYLE  8  /**< Text style is invalid */
-#define SIR_E_STRING     9  /**< Invalid string argument */
-#define SIR_E_NODEST    10  /**< No destinations registered for level */
-#define SIR_E_PLATFORM  11  /**< Platform error code %d: %s */
-#define SIR_E_UNKNOWN 4095  /**< Error is not known */
+/** Error codes. */
+enum {
+    SIR_E_NOERROR   = 0,    /**< The operation completed successfully */
+    SIR_E_NOTREADY  = 1,    /**< SIR has not been initialized */
+    SIR_E_ALREADY   = 2,    /**< SIR is already initialized */
+    SIR_E_DUPFILE   = 3,    /**< File already managed by SIR */
+    SIR_E_NOFILE    = 4,    /**< File not managed by SIR */
+    SIR_E_FCFULL    = 5,    /**< Maximum number of files already managed */
+    SIR_E_OPTIONS   = 6,    /**< Option flags are invalid */
+    SIR_E_LEVELS    = 7,    /**< Level flags are invalid */
+    SIR_E_TEXTSTYLE = 8,    /**< Text style is invalid */
+    SIR_E_STRING    = 9,    /**< Invalid string argument */
+    SIR_E_NODEST    = 10,   /**< No destinations registered for level */
+    SIR_E_PLATFORM  = 11,   /**< Platform error code %d: %s */
+    SIR_E_UNKNOWN   = 4095, /**< Error is not known */    
+};
 
 /** @} */
 

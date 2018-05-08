@@ -152,13 +152,13 @@
 /**
  * The format string for error messages returned by ::_sir_geterror.
  * 
- * - The \first %s format specifier is the function name.
+ * - The \a first %s format specifier is the function name.
  * 
- * - The \second %s is the file name.
+ * - The \a second %s is the file name.
  * 
  * - The %lu is the line number in the file.
  * 
- * - The \third %s is the error message.
+ * - The \a third %s is the error message.
  * 
  * @remark sample: `Error in findneedle (haystack.c:384): 'Too much hay'`
  */

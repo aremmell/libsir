@@ -115,6 +115,6 @@ int main(int argc, char** argv) {
 int report_error() {
     sirchar_t message[SIR_MAXERROR] = {0};
     uint16_t code = sir_geterror(message);
-    fprintf(stderr, "SIR error: (%hu, '%s')\n", code, message);
+    fprintf(stderr, "SIR error: (%hu, %s)\n", code, message);
     return 1;
 }
