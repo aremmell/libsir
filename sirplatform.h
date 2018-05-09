@@ -32,11 +32,14 @@
 #ifndef _SIR_PLATFORM_H_INCLUDED
 #define _SIR_PLATFORM_H_INCLUDED
 
-#ifndef _WIN32
+#if defined(__APPLE__) && defined(__MACH__)
+#   define __MACOS__
+#   define _DARWIN_C_SOURCE
+#elif defined(_WIN32)
+#   define _WIN32_WINNT 0x0600
+#else
 #   define _POSIX_C_SOURCE 200809L
 #   define _DEFAULT_SOURCE
-#else
-#   define _WIN32_WINNT 0x0600
 #endif
 
 #include <assert.h>

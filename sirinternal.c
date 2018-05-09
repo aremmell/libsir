@@ -625,11 +625,17 @@ pid_t _sir_getpid() {
 }
 
 pid_t _sir_gettid() {
-#ifndef _WIN32
-    return syscall(SYS_gettid);
+    pid_t pid = 0;
+#ifdef __MACOS__
+    uint64_t tid;
+    pthread_threadid_np(NULL, &tid);
+    tid = (pid_t)tid;
+#elif defined(_WIN32)
+    tid = (pid_t)GetCurrentThreadId();
 #else
-    return (pid_t)GetCurrentThreadId();
+    tid = syscall(SYS_gettid);
 #endif
+    return tid;
 }
 
 /** @} */
