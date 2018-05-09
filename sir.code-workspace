@@ -3,13 +3,5 @@
         {
 	        "path": "."
 	    }
-    ],
-    "settings": {
-        "files.associations": {
-	    "*.c": "c",
-	    "*.h": "c",
-	    "*.cc": "c++",
-	    "*.hh": "c++"
-        }
-    }
+    ]
 }
