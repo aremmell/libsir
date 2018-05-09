@@ -31,4 +31,5 @@ I've successfully compiled and verified the test suite in these environments:
 ## Details
 
 ---
+
 Please see the [documentation](https://ryanlederman.github.io/sir) for further information about libsir.
