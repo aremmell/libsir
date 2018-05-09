@@ -60,7 +60,7 @@
 /** The string passed to fopen/fopen_s for log files. */
 #define SIR_FOPENMODE "a"
 
-/** The size, in bytes, at which a log file will be rolled. */
+/** The size, in bytes, at which a log file will be rolled/archived. */
 #define SIR_FROLLSIZE (1024L * 1024L * 5L)
 
 /**
@@ -71,7 +71,7 @@
 
 /**
  * The format string written to a log file when logging begins or the file
- * is rolled.
+ * is rolled/archived.
  * 
  * - The \a first %s format specifier is the message (e.g., ::SIR_FHBEGIN, ::SIR_FHROLLED)
  * 
@@ -85,7 +85,7 @@
 #define SIR_FHBEGIN "session begin @"
 
 /**
- * The string included in ::SIR_FHFORMAT when a file is rolled (archived)
+ * The string included in ::SIR_FHFORMAT when a file is rolled/archived
  * due to size.
  * 
  * The %s format specifier is the path of the archived file.
@@ -93,13 +93,13 @@
 #define SIR_FHROLLED "archived as %s due to size @"
 
 /**
- * The time format string for rolled (archived) log files (see ::SIR_FNAMEFORMAT).
+ * The time format string for rolled/archived log files (see ::SIR_FNAMEFORMAT).
  * @remark sample: `18-05-05-122049`
  */
 #define SIR_FNAMETIMEFORMAT "%y-%m-%d-%H%M%S"
 
 /**
- * The format string for rolled (archived) log file names.
+ * The format string for rolled/archived log file names.
  * 
  * - The \a first %s format specifier is the name part (the name up to the last '.') of the original
  * file name.
