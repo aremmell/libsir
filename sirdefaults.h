@@ -69,7 +69,7 @@ static const sir_options sir_file_def_opts
 
 /** Default mapping of ::sir_level to ::sir_textstyle. */
 static sir_style_map sir_default_styles[] = {
-    {SIRL_DEBUG, SIRS_FG_LGRAY},
+    {SIRL_DEBUG, SIRS_FG_DGRAY},
     {SIRL_INFO, SIRS_FG_WHITE},
     {SIRL_NOTICE, SIRS_FG_CYAN},
     {SIRL_WARN, SIRS_FG_YELLOW},
