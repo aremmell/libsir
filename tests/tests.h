@@ -1,6 +1,55 @@
 /**
  * @file tests.h
- * @brief Definitions for test rig app.
+ * @brief libsir test suite.
+ *
+ * This file and accompanying source code originated from <https://github.com/ryanlederman/sir>.
+ * If you obtained it elsewhere, all bets are off.
+ *
+ * @author Ryan M. Lederman <lederman@gmail.com>
+ * @copyright
+ *
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2018 Ryan M. Lederman
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * 
+ * ---------------------------------------------------------------------------------------------------------
+ * 
+ * @todo Hardening and Compatibility
+ * I have only compiled and tested libsir on the following:
+ * - Ubuntu 16.04 x64 (gcc)
+ * - Windows 10 x64  (MinGW)
+ * - macOS 10.13.4 x64 (clang)
+ * #### Other platforms, such as `BSD` and `macOS` remain untested, and probably won't even compile cleanly.
+ *
+ * @todo Nice to have
+ * 1. A plugin system or public interface for registering custom adapters, for things like:
+ *   - Posting high-priority messages to a REST API endpoint.
+ *   - Sending high-prirority messages via SMS or push notification.
+ * 2. Compressing archived logs with zlib or similar.
+ * 3. Deleting archived logs older than _n_ days.
+ * 4. A project file for Visual Studio.
+ * 5. A project file for Xcode.
+ * 6. An accompanying C++ wrapper.
+ * 7. Something I didn't think of yet.
+ * 
+ * ---------------------------------------------------------------------------------------------------------
  */
 #ifndef _SIR_TESTS_H_INCLUDED
 #define _SIR_TESTS_H_INCLUDED

@@ -1,6 +1,6 @@
 ####################################################
 #                                                  #
-#	           libsir make recipes                 #
+#              libsir make recipes                 #
 #                                                  #
 #       https://github.com/ryanlederman/sir        #
 #                                                  #

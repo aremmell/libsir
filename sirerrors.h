@@ -57,7 +57,7 @@ enum {
     SIR_E_TEXTSTYLE = 8,    /**< Text style is invalid */
     SIR_E_STRING    = 9,    /**< Invalid string argument */
     SIR_E_NODEST    = 10,   /**< No destinations registered for level */
-    SIR_E_PLATFORM  = 11,   /**< Platform error code %d: %s */
+    SIR_E_PLATFORM  = 11,   /**< Platform error code %%d: %%s */
     SIR_E_UNKNOWN   = 4095, /**< Error is not known */    
 };
 
