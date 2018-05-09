@@ -1,6 +1,6 @@
-# libsir
+# libsir documentation
 
-## not just any logging library.
+## libsir: not just any logging library.
 
 ## Synopsis
 
@@ -14,7 +14,7 @@ Each 'level' or 'priority' of output can be visually styled however you wish for
 
 ## Highlights
 
-Why should you use libsir instead of another logging library? I don't know, why should you? Just kidding:
+Why should you use libsir instead of another logging library? I don't know, why should you? _Just kidding_:
 
 - _No dependencies_ other than `pthreads`. On Windows, libsir uses the native sychronization API.
 - Accompanied by a robust _test suite_ to ensure dependable behavior, even if you make modifications to the source.
@@ -23,6 +23,7 @@ Why should you use libsir instead of another logging library? I don't know, why 
 - Full **[documentation](https://ryanlederman.github.io/sir)**, thanks to [Doxygen](http://www.stack.nl/~dimitri/doxygen/manual/index.html).
 
 ## Details
+
 ---
 
 ### Destinations
