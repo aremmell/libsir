@@ -73,9 +73,9 @@
  * The format string written to a log file when logging begins or the file
  * is rolled/archived.
  * 
- * - The \a first %s format specifier is the message (e.g., ::SIR_FHBEGIN, ::SIR_FHROLLED)
+ * - The \a first %%s format specifier is the message (e.g., ::SIR_FHBEGIN, ::SIR_FHROLLED)
  * 
- * - The \a second %s is the current date/time (see ::SIR_FHTIMEFORMAT).
+ * - The \a second %%s is the current date/time (see ::SIR_FHTIMEFORMAT).
  */
 #define SIR_FHFORMAT "\n\n----- %s %s -----\n\n"
 
@@ -88,7 +88,7 @@
  * The string included in ::SIR_FHFORMAT when a file is rolled/archived
  * due to size.
  * 
- * The %s format specifier is the path of the archived file.
+ * The %%s format specifier is the path of the archived file.
  */
 #define SIR_FHROLLED "archived as %s due to size @"
 
@@ -101,12 +101,12 @@
 /**
  * The format string for rolled/archived log file names.
  * 
- * - The \a first %s format specifier is the name part (the name up to the last '.') of the original
+ * - The \a first %%s format specifier is the name part (the name up to the last '.') of the original
  * file name.
  * 
- * - The \a second %s is the time stamp as defined by SIR_ROLLTIMEFORMAT.
+ * - The \a second %%s is the time stamp as defined by SIR_ROLLTIMEFORMAT.
  * 
- * - The \a third %s is the extension part (the name after and including the last '.')
+ * - The \a third %%s is the extension part (the name after and including the last '.')
  * of the original file name if one is present.
  * 
  * @remark sample: `oldname-18-05-05-122049.log`
@@ -176,13 +176,13 @@
 /**
  * The format string for error messages returned by ::_sir_geterror.
  * 
- * - The \a first %s format specifier is the function name.
+ * - The \a first %%s format specifier is the function name.
  * 
- * - The \a second %s is the file name.
+ * - The \a second %%s is the file name.
  * 
- * - The %lu is the line number in the file.
+ * - The %%lu is the line number in the file.
  * 
- * - The \a third %s is the error message.
+ * - The \a third %%s is the error message.
  * 
  * @remark sample: `Error in findneedle (haystack.c:384): 'Too much hay'`
  */
