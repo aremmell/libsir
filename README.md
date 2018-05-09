@@ -1,6 +1,4 @@
-# libsir documentation
-
-## libsir: not just any logging library.
+# Home
 
 ## Synopsis
 
