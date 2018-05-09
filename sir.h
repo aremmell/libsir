@@ -1,20 +1,34 @@
 /**
  * @file sir.h
+ * @brief Public interface.
  * 
- * @brief Definitions for the public interface.
+ * This file and accompanying source code originated from <https://github.com/ryanlederman/sir>.
+ * If you obtained it elsewhere, all bets are off.
  * 
- * If you are a simple user of the library, the contents of this file as well as
- * the following should be sufficient for basic custom configuration:
+ * @author Ryan M. Lederman <lederman@gmail.com>
+ * @version 2.0.0
+ * @copyright
  * 
- * - sirdefaults.h
- *   + Default text styling for each logging level and default formatting options for
- *   various types of destinations.
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2018 Ryan M. Lederman
  * 
- * - sirtypes.h
- *   + Enums, structs, and other types used by SIR.
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
  * 
- * - sirconfig.h
- *   + Macros that control formatting, limitations and more.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #ifndef _SIR_H_INCLUDED
 #define _SIR_H_INCLUDED
@@ -29,22 +43,24 @@ extern "C" {
 /** 
  * @defgroup public Public Interface
  * 
- * Functions and types that comprise the public interface to the library.
+ * Functions and types that comprise the public interface to libsir.
  * 
  * @addtogroup public 
  * @{
  */
 
 /**
- * @brief Initializes the library.
+ * @brief Initializes libsir.
  * 
- * Any thread may initialize SIR, but any calls to other library functions
+ * Any thread may initialize SIR, but any calls to other libsir functions
  * will fail until this call has completed.
+ * 
+ * @remark Call ::sir_cleanup when you're through.
  * 
  * @param si Initialization options.
  * 
  * @return boolean
- * @retval true SIR is initialized and ready to use.
+ * @retval true libsir is initialized and ready to use.
  * @retval false Initialization failed.
  */
 bool sir_init(sirinit* si);
@@ -52,24 +68,23 @@ bool sir_init(sirinit* si);
 /**
  * @brief Frees allocated resources and resets internal state.
  * 
- * It is not necessary to call this function from the same thread that
+ * @remark Call ::sir_init to initialize libsir.
+ *
+ * @remark It is not necessary to call this function from the same thread that
  * called ::sir_init. Any calls made after this to functions other than to
  * ::sir_init \a (in order to re-initialize) will fail.
  * 
- * @note Mutexes allocated during initialization are \a not destroyed during cleanup;
- * they are retained for potential further re-initialization.
- * 
  * @return boolean
- * @retval true SIR is cleaned up.
+ * @retval true libsir is cleaned up.
  * @retval false An error occurred.
  */
 bool sir_cleanup();
 
 /**
  * @brief Retrieves information about the last error that occurred within
- * the context of a library call.
+ * the context of libsir or lower.
  * 
- * @note Most C library and OS calls made by SIR are evaluated for failure.
+ * @remark Most C library and OS calls made by libsir are evaluated for failure.
  * If a failure of this type is encountered, this function returns ::SIR_E_PLATFORM,
  * and \p message will contain a string identifying the underlying error code and
  * the message as reported by the platform.
@@ -78,8 +93,8 @@ bool sir_cleanup();
  * 
  * @return uint16_t
  * @retval SIR_E_NOERROR     The operation completed successfully
- * @retval SIR_E_NOTREADY    SIR has not been initialized
- * @retval SIR_E_ALREADY     SIR is already initialized 
+ * @retval SIR_E_NOTREADY    libsir has not been initialized
+ * @retval SIR_E_ALREADY     libsir is already initialized 
  * @retval SIR_E_DUPFILE     File already managed by SIR
  * @retval SIR_E_NOFILE      File not managed by SIR
  * @retval SIR_E_FCFULL      Maximum number of files already managed
