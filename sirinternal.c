@@ -625,11 +625,12 @@ pid_t _sir_getpid() {
 }
 
 pid_t _sir_gettid() {
-    pid_t pid = 0;
+    pid_t tid = 0;
 #ifdef __MACOS__
-    uint64_t tid;
-    pthread_threadid_np(NULL, &tid);
-    tid = (pid_t)tid;
+    uint64_t tid64 = 0;
+    int gettid = pthread_threadid_np(NULL, &tid64);
+    if (0 != gettid) _sir_handleerr(gettid);
+    tid = (pid_t)tid64;
 #elif defined(_WIN32)
     tid = (pid_t)GetCurrentThreadId();
 #else

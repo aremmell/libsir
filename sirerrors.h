@@ -101,13 +101,13 @@ void __sir_seterror(sirerror_t err, const sirchar_t* func, const sirchar_t* file
 void __sir_setoserror(int, const sirchar_t*, const sirchar_t*, const sirchar_t*, uint32_t);
 #define _sir_setoserror(err, msg) __sir_setoserror(err, msg, __func__, __FILE__, __LINE__)
 
-/** Handle a POSIX error. */
+/** Handle a C library error. */
 void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uint32_t line);
 #define _sir_handleerr(code) __sir_handleerr(code, __func__, __FILE__, __LINE__)
 
 #ifdef _WIN32
 /**
- * Some Win32 API error codes overlap POSIX error codes, so they need to be handled separately.
+ * Some Win32 API error codes overlap C library error codes, so they need to be handled separately.
  * Mapping them sounds great, but in practice valuable information about what went wrong is totally
  * lost in translation.
  */
