@@ -11,19 +11,19 @@
 /** 
  * @defgroup intern Internal
  * 
- * Guts of the library.
+ * libsir's guts.
  * 
  * @addtogroup intern 
  * @{
  */
 
-/** Evaluates whether or not the library has been initialized. */
+/** Evaluates whether or not libsir has been initialized. */
 bool _sir_sanity();
 
 /** Validates the configuration passed to ::sir_init. */
 bool _sir_options_sanity(const sirinit* si);
 
-/** Initializes the library. */
+/** Initializes libsir. */
 bool _sir_init(sirinit* si);
 
 /** Locks a protected section. */

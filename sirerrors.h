@@ -20,10 +20,10 @@
 /** Error codes. */
 enum {
     SIR_E_NOERROR   = 0,    /**< The operation completed successfully */
-    SIR_E_NOTREADY  = 1,    /**< SIR has not been initialized */
-    SIR_E_ALREADY   = 2,    /**< SIR is already initialized */
-    SIR_E_DUPFILE   = 3,    /**< File already managed by SIR */
-    SIR_E_NOFILE    = 4,    /**< File not managed by SIR */
+    SIR_E_NOTREADY  = 1,    /**< libsir has not been initialized */
+    SIR_E_ALREADY   = 2,    /**< libsir is already initialized */
+    SIR_E_DUPFILE   = 3,    /**< File already managed by libsir */
+    SIR_E_NOFILE    = 4,    /**< File not managed by libsir */
     SIR_E_FCFULL    = 5,    /**< Maximum number of files already managed */
     SIR_E_OPTIONS   = 6,    /**< Option flags are invalid */
     SIR_E_LEVELS    = 7,    /**< Level flags are invalid */
@@ -55,8 +55,8 @@ static const struct {
     const sirchar_t* msg;
 } sir_errors[] = {
     { _SIR_E_NOERROR, "The operation completed successfully" },
-    { _SIR_E_NOTREADY, "SIR has not been initialized" },
-    { _SIR_E_ALREADY, "SIR is already initialized" },
+    { _SIR_E_NOTREADY, "libsir has not been initialized" },
+    { _SIR_E_ALREADY, "libsir is already initialized" },
     { _SIR_E_DUPFILE, "File already managed by SIR" },
     { _SIR_E_NOFILE, "File not managed by SIR" },
     { _SIR_E_FCFULL, "Maximum number of files already managed" },

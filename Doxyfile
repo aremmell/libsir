@@ -24,7 +24,7 @@ DOXYFILE_ENCODING      = UTF-8
 
 PROJECT_NAME           = "libsir"
 PROJECT_NUMBER         = 2.0.0
-PROJECT_BRIEF          = "The Standard Incident Reporter library"
+PROJECT_BRIEF          = "The Standard Incident Reporter logging library"
 PROJECT_LOGO           =
 OUTPUT_DIRECTORY       = docs
 CREATE_SUBDIRS         = YES

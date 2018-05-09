@@ -195,7 +195,7 @@ bool _sir_cleanup() {
 
     _sir_seterror(_SIR_E_NOERROR);
     _sir_magic = 0;
-    _sir_selflog("%s: SIR is cleaned up\n", __func__);
+    _sir_selflog("%s: libsir is cleaned up\n", __func__);
     return cleanup;
 }
 

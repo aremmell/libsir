@@ -3,20 +3,20 @@
  * 
  * @brief Compile-time configuration.
  * 
- * Edit the values in this file to modify the behavior of the library.
+ * Edit the values in this file to modify the behavior of libsir.
  * 
  * @attention Don't edit this file unless you know what you're doing and you have
  * read the corresponding code that utilizes these values!
- * 
- * @defgroup custom Customization
- * 
- * Compile-time configuration that can be modified to alter the behavior
- * of the library.
  */
 #ifndef _SIR_CONFIG_H_INCLUDED
 #define _SIR_CONFIG_H_INCLUDED
 
 /**
+ * @defgroup custom Customization
+ * 
+ * Compile-time configuration that can be modified to alter the behavior
+ * of libsir.
+ * 
  * @addtogroup custom
  * @{
  */

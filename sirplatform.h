@@ -1,6 +1,6 @@
 /**
  * @file sirplatform.h
- * @brief Configures the library based on the OS/platform.
+ * @brief Configures libsir based on the OS/platform.
  */
 #ifndef _SIR_PLATFORM_H_INCLUDED
 #define _SIR_PLATFORM_H_INCLUDED

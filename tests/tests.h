@@ -19,7 +19,7 @@ typedef struct {
 /**
  * @defgroup tests Tests
  * 
- * Integrity tests for the library.
+ * libsir integrity tests.
  * 
  * @addtogroup tests
  * @{

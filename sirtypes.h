@@ -158,10 +158,10 @@ typedef struct {
 /**
  * @struct sirinit
  *
- * @brief Initialization data for the library.
+ * @brief Initialization data for libsir.
  *
  * Allocate an instance of this struct and pass it to ::sir_init
- * in order to begin using the library.
+ * in order to begin using libsir.
  */
 typedef struct {
     sir_stdio_dest d_stdout; /**< \a stdout configuration. */
@@ -200,7 +200,7 @@ typedef struct {
 /** Text style background color mask. */
 #define _SIRS_BG_MASK 0xff000
 
-/** Magic number used to determine if the library has been initialized. */
+/** Magic number used to determine if libsir has been initialized. */
 #define _SIR_MAGIC 0x60906090
 
 /** Log file data. */

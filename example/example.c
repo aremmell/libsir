@@ -1,6 +1,6 @@
 /**
  * @file example.c
- * @brief A simple example of SIR usage.
+ * @brief A simple example of libsir usage.
  * @page examples Examples
  */
 #include "../sir.h"
@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
      * Instantiate the initialization structure.
      * 
      * Note: It is not necessary to retain this structure in memory;
-     * SIR makes a copy of it before returning from  sir_init.
+     * libsir makes a copy of it before returning from  sir_init.
      */
     sirinit si = {0};
 
@@ -72,9 +72,9 @@ int main(int argc, char** argv) {
      * Don't show the process name.
      * Send all severity levels there.
      */
-    int fileid1 = sir_addfile("sir-example.log", SIRL_ALL, SIRO_NONAME);
+    sirfileid_t fileid1 = sir_addfile("sir-example.log", SIRL_ALL, SIRO_NONAME);
 
-    if (SIR_INVALID == fileid1) {
+    if (NULL == fileid1) {
         return report_error();
     }
 
@@ -85,7 +85,7 @@ int main(int argc, char** argv) {
 
     /*
      * This will be sent to all destinations registered for SIRL_DEBUG.
-     * Notice that it is not necessary to add a newline at the end. SIR does
+     * Notice that it is not necessary to add a newline at the end. libsir does
      * this automatically.
      */ 
     sir_debug("debug-level message: {n=%d, somestr='%s', f=%.04f}",
@@ -115,6 +115,6 @@ int main(int argc, char** argv) {
 int report_error() {
     sirchar_t message[SIR_MAXERROR] = {0};
     uint16_t code = sir_geterror(message);
-    fprintf(stderr, "SIR error: (%hu, %s)\n", code, message);
+    fprintf(stderr, "libsir error: (%hu, %s)\n", code, message);
     return 1;
 }
