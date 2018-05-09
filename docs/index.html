@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>SIR: Main Page</title>
+<title>libsir: libsir documentation</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -31,10 +31,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">SIR
+   <div id="projectname">libsir
    &#160;<span id="projectnumber">2.0.0</span>
    </div>
-   <div id="projectbrief">Standard Incident Reporter</div>
+   <div id="projectbrief">The Standard Incident Reporter logging library</div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -91,30 +91,43 @@ $(document).ready(function(){initNavTree('index.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">Main Page </div>  </div>
+<div class="title">libsir documentation </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h2>What is SIR?</h2>
-<p>SIR is a cross-platform, thread-safe C library that was created to alleviate the hassles associated with implementing useful, readable, and great-looking output facilities.</p>
-<p>Using SIR, you can make a single call that, depending on configuration, simultaneously sends output to many destinations, <em>each with their own individual formatting options</em>.</p>
-<h3>Highlights</h3>
+<div class="textblock"><h2>libsir: not just any logging library.</h2>
+<h2>Synopsis</h2>
+<hr/>
+<p>libsir is a cross-platform, thread-safe C (C11) logging library that is designed to simplify and streamline the generation of human-readable information in software.</p>
+<p>Using libsir, you can make a single call that simultaneously sends information to multiple destinations, <em>each with their own individual preference for format and levels</em>. See Formatting below for more information.</p>
+<p>Each 'level' or 'priority' of output can be visually styled however you wish for <code>stdio</code> destinations. This allows for immediate visual confirmation that a message appeared in the terminal that you should pay attention to, while less pressing information is more subtle in appearance.</p>
+<h2>Highlights</h2>
+<p>Why should you use libsir instead of another logging library? I don't know, why should you? <em>Just kidding</em>:</p>
 <ul>
-<li>Includes support for text stying for <em>stdout/stderr</em> output, including foreground color, background color, and brightness/dim.</li>
-<li>Output to log files (and automatically archive when they get too big).</li>
-<li>Thread-safe (both <em>pthreads</em> and native Windows API)</li>
-<li>Lightweight&mdash;I designed SIR for an embedded application, so it's as easy on resources as possible.</li>
-<li>Can automatically map levels to <em>syslog</em> levels and send output there.</li>
-<li><em>stdout</em> and <em>stderr</em> are configured separately.</li>
+<li><em>No dependencies</em> other than <code>pthreads</code>. On Windows, libsir uses the native sychronization API.</li>
+<li>Accompanied by a robust <em>test suite</em> to ensure dependable behavior, even if you make modifications to the source.</li>
+<li>Won't fail silently&mdash;C library or platform level errors are captured and stored for posterity, on a per-thread basis. The <em>function, file, and line number from which it orginated</em> are also captured. Additionally, libsir defines its own set of error messages to aid in troubleshooting.</li>
+<li>Hardened&mdash;every function contains sanity checks for internal state as well as arguments passed in through the external interfaces. libsir's make recipes use &ndash;<em>Wpedantic</em>, too.</li>
+<li>Full <b><a href="https://ryanlederman.github.io/sir">documentation</a></b>, thanks to <a href="http://www.stack.nl/~dimitri/doxygen/manual/index.html">Doxygen</a>.</li>
 </ul>
-<h3>Formatting</h3>
-<p>The following are the available categories of data available in SIR's output. Some of them only apply to certain types of destinations:</p>
+<h2>Details</h2>
+<hr/>
+<h3>Destinations</h3>
+<p>Currently, the following destinations are supported:</p>
+<ul>
+<li><code>stdout</code> and <code>stderr</code></li>
+<li><code>syslog</code></li>
+<li><em>n</em> number of log files (<em>archived automatically</em>)</li>
+</ul>
+<h3>Decoration</h3>
+<p>libsir computes certain data that may be useful in output (<em>particularly for debugging postmortem</em>). Each destination may be configured to receive any, all, or none of these.</p>
+<p><em>Note: the appearance of this data may be customized for your application. See Customization for more information.</em></p>
 <table class="doxtable">
 <tr>
 <th>Data </th><th>Description </th><th align="center">stdio </th><th align="center">syslog<sup>†</sup> </th><th align="center">files  </th></tr>
 <tr>
-<td>Timestamp </td><td>The current time (hour, min, sec) </td><td align="center">x </td><td align="center"></td><td align="center">x </td></tr>
+<td>Timestamp </td><td>The current time (<em>hour, min, sec</em>) </td><td align="center">x </td><td align="center"></td><td align="center">x </td></tr>
 <tr>
-<td>Milliseconds </td><td>The current millisecond </td><td align="center">x </td><td align="center"></td><td align="center">x </td></tr>
+<td>Milliseconds </td><td>1/1000<sup>ths</sup> of the current second </td><td align="center">x </td><td align="center"></td><td align="center">x </td></tr>
 <tr>
 <td>Level </td><td>Human-readable level </td><td align="center">x </td><td align="center"></td><td align="center">x </td></tr>
 <tr>
@@ -124,9 +137,9 @@ $(document).ready(function(){initNavTree('index.html','');});
 <tr>
 <td>Thread ID </td><td>The current thread identifier </td><td align="center">x </td><td align="center"></td><td align="center">x </td></tr>
 </table>
-<p><sup>†</sup> <em>syslog already includes many of these categories of data on its own.</em></p>
+<p><sup>†</sup> _<code>syslog</code> already includes many of these categories of data on its own._</p>
 <h3>Levels</h3>
-<p>In addition to formatting options for each destination, each destination may opt in or out of any level of severity. These are designed to provide the most flexibility possible, and the use of each one is optional. Lowest severity to highest:</p>
+<p>In addition to decoration options, each destination may be registered to receive any, none, or all priority levels of output. The available levels may be overly granular, but it's better to have unused levels rather than need another one and not have it.</p>
 <table class="doxtable">
 <tr>
 <th>Level </th><th>Description  </th></tr>
@@ -134,6 +147,8 @@ $(document).ready(function(){initNavTree('index.html','');});
 <td>Debug </td><td>Debugging/diagnostic output. </td></tr>
 <tr>
 <td>Information </td><td>Informational messages. </td></tr>
+<tr>
+<td>Notice </td><td>Normal but significant. </td></tr>
 <tr>
 <td>Warning </td><td>Warnings that could likely be ignored. </td></tr>
 <tr>
@@ -143,37 +158,36 @@ $(document).ready(function(){initNavTree('index.html','');});
 <tr>
 <td>Alert </td><td>Action required ASAP. </td></tr>
 <tr>
-<td>Emergency </td><td>Nuclear war, Armageddon, etc. </td></tr>
+<td>Emergency </td><td>Nuclear war, Armageddon, the sky is falling. </td></tr>
 </table>
 <h2>Getting started</h2>
-<p>Clone or download this repository to your machine, then choose how you'd like to integrate SIR into your C/C++/whatever project.</p>
-<h3>Supplied make recipies</h3>
-<p>I have included make recipies for building as a static library, and as a shared library.</p>
+<p>Clone or download this repository to your machine, then choose how you'd like to integrate libsir into your project.</p>
+<h3>make recipies</h3>
+<p>The following recipies are already prepared for you:</p>
+<h4>For tinkering and testing</h4>
 <ul>
-<li>As a static library: <code>make static</code><ul>
-<li>The output will be located at build/lib/libsir.a.</li>
+<li>Test suite: <code>make tests</code> -&gt; <em>build/sirtests[.exe]</em></li>
+<li>Example app: <code>make example</code> -&gt; <em>build/sirexample[.exe]</em></li>
 </ul>
-</li>
-<li>As a shared library: <code>make shared</code><ul>
-<li>The output will be located at build/lib/libsir.so.</li>
+<h4>For production</h4>
+<ul>
+<li>Static library: <code>make static</code> -&gt; <em>build/lib/libsir.a</em></li>
+<li>Shared library: <code>make shared</code> -&gt; <em>build/lib/libsir.so</em></li>
 </ul>
-</li>
-</ul>
+<p><em>If you'd like to debug libsir, just use <code>DEBUGCFLAGS</code> instead of <code>NDEBUGCFLAGS</code> in [the makefile](Makefile).</em></p>
 <h3>Including the source</h3>
-<p>Simply modify your Makefile (or project file of whatever type) to include all of the source files in the root directory of this repository, and include <a class="el" href="d4/df5/sir_8h.html" title="Definitions for the public interface. ">sir.h</a>.</p>
+<p>Simply modify your Makefile (or project file of whatever type) to include all of the source files in the root directory of this repository, and include <a href="../sir.h">sir.h</a>.</p>
 <h3>Preprocessor options</h3>
-<p>There are a few things one should be aware of when compiling SIR that control its behavior.</p>
-<ul>
-<li><em>SIR_SELFLOG</em>:</li>
-</ul>
-<h3>Customization</h3>
-<h3>Usage</h3>
+<p>There are a few things one should be aware of when compiling libsir that control its behavior.</p>
+<h2>Customization</h2>
+<h2>Documentation</h2>
+<p>Just meander right on over to <a href="https://ryanlederman.github.io/sir">https://ryanlederman.github.io/sir</a>. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue May 8 2018 16:55:47 for SIR by
+    <li class="footer">Generated on Tue May 8 2018 19:52:53 for libsir by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

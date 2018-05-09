@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>SIR: sirconsole.h Source File</title>
+<title>libsir: sirconsole.h Source File</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -31,10 +31,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">SIR
+   <div id="projectname">libsir
    &#160;<span id="projectnumber">2.0.0</span>
    </div>
-   <div id="projectbrief">Standard Incident Reporter</div>
+   <div id="projectbrief">The Standard Incident Reporter logging library</div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -94,15 +94,15 @@ $(document).ready(function(){initNavTree('d9/deb/sirconsole_8h_source.html','../
 <div class="title">sirconsole.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="../../d9/deb/sirconsole_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#ifndef _SIR_CONSOLE_H_INCLUDED</span></div><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#define _SIR_CONSOLE_H_INCLUDED</span></div><div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../dc/dba/sirtypes_8h.html">sirtypes.h</a>&quot;</span></div><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#ifndef _WIN32</span></div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keywordtype">bool</span> _sir_stderr_write(<span class="keyword">const</span> <a class="code" href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a>* message);</div><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keywordtype">bool</span> _sir_stdout_write(<span class="keyword">const</span> <a class="code" href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a>* message);</div><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#else</span></div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keywordtype">bool</span> _sir_stderr_write(uint16_t style, <span class="keyword">const</span> <a class="code" href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a>* message);</div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">bool</span> _sir_stdout_write(uint16_t style, <span class="keyword">const</span> <a class="code" href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a>* message);</div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#endif</span></div><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* !_SIR_CONSOLE_H_INCLUDED */</span><span class="preprocessor"></span></div><div class="ttc" id="sirtypes_8h_html"><div class="ttname"><a href="../../dc/dba/sirtypes_8h.html">sirtypes.h</a></div><div class="ttdoc">Library types. </div></div>
-<div class="ttc" id="group__public_html_ga1d2f790e2dabc69c8a625f2ee5dc583a"><div class="ttname"><a href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a></div><div class="ttdeci">char sirchar_t</div><div class="ttdef"><b>Definition:</b> sirtypes.h:138</div></div>
+<a href="../../d9/deb/sirconsole_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#ifndef _SIR_CONSOLE_H_INCLUDED</span></div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#define _SIR_CONSOLE_H_INCLUDED</span></div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../dc/dba/sirtypes_8h.html">sirtypes.h</a>&quot;</span></div><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#ifndef _WIN32</span></div><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keywordtype">bool</span> _sir_stderr_write(<span class="keyword">const</span> <a class="code" href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a>* message);</div><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keywordtype">bool</span> _sir_stdout_write(<span class="keyword">const</span> <a class="code" href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a>* message);</div><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#else</span></div><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keywordtype">bool</span> _sir_stderr_write(uint16_t style, <span class="keyword">const</span> <a class="code" href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a>* message);</div><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keywordtype">bool</span> _sir_stdout_write(uint16_t style, <span class="keyword">const</span> <a class="code" href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a>* message);</div><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#endif</span></div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* !_SIR_CONSOLE_H_INCLUDED */</span><span class="preprocessor"></span></div><div class="ttc" id="sirtypes_8h_html"><div class="ttname"><a href="../../dc/dba/sirtypes_8h.html">sirtypes.h</a></div><div class="ttdoc">Public and internal types. </div></div>
+<div class="ttc" id="group__public_html_ga1d2f790e2dabc69c8a625f2ee5dc583a"><div class="ttname"><a href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a></div><div class="ttdeci">char sirchar_t</div><div class="ttdef"><b>Definition:</b> sirtypes.h:165</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d9/deb/sirconsole_8h.html">sirconsole.h</a></li>
-    <li class="footer">Generated on Tue May 8 2018 16:55:46 for SIR by
+    <li class="footer">Generated on Tue May 8 2018 19:52:53 for libsir by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

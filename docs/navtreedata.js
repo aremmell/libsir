@@ -1,10 +1,11 @@
 var NAVTREE =
 [
-  [ "SIR", "index.html", [
-    [ "Main Page", "index.html", null ],
-    [ "Unfinished business", "md_TODO.html", null ],
+  [ "libsir", "index.html", [
+    [ "libsir documentation", "index.html", null ],
+    [ "Etcetera", "md_TODO.html", null ],
     [ "Examples", "examples.html", null ],
     [ "Test List", "test.html", null ],
+    [ "Todo List", "todo.html", null ],
     [ "Modules", "modules.html", "modules" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
@@ -33,8 +34,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d6/d87/group__errors.html#gga06fc87d81c62e9abb8790b6e5713c55ba502a8e20f25ecee09eb75576238bb797",
-"da/df8/group__custom.html#ga7a0b53f25f5140db6a320d815097e268"
+"d6/d87/group__errors.html#gac8e6a8a10521cae2e75881df9cdfb636",
+"da/df8/group__custom.html#ga6195821fca239b40498e847d50b82623"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

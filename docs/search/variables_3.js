@@ -10,5 +10,5 @@ var searchData=
   ['sir_5fstdout_5fdef_5flvls',['sir_stdout_def_lvls',['../da/df8/group__custom.html#ga47b9f4b74ed2b3d81d34c0d0237b100f',1,'sirdefaults.h']]],
   ['sir_5fstdout_5fdef_5fopts',['sir_stdout_def_opts',['../da/df8/group__custom.html#ga570e5f904a2aacfaf3284276784d4ddb',1,'sirdefaults.h']]],
   ['sir_5fsyslog_5fdef_5flvls',['sir_syslog_def_lvls',['../da/df8/group__custom.html#ga7a0b53f25f5140db6a320d815097e268',1,'sirdefaults.h']]],
-  ['sir_5fte',['sir_te',['../d4/dde/sirerrors_8c.html#a9b90b7b0b86e5db5c56e00e180ad2209',1,'sirerrors.c']]]
+  ['sir_5fte',['sir_te',['../d6/d87/group__errors.html#ga9b90b7b0b86e5db5c56e00e180ad2209',1,'sirerrors.c']]]
 ];

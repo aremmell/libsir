@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>SIR: Public Interface</title>
+<title>libsir: Public Interface</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -31,10 +31,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">SIR
+   <div id="projectname">libsir
    &#160;<span id="projectnumber">2.0.0</span>
    </div>
-   <div id="projectbrief">Standard Incident Reporter</div>
+   <div id="projectbrief">The Standard Incident Reporter logging library</div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -109,7 +109,7 @@ Data Structures</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration for the <em>syslog</em> destination.  <a href="../../dc/dea/structsir__syslog__dest.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/ddf/structsirinit.html">sirinit</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization data for the library.  <a href="../../d2/ddf/structsirinit.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization data for libsir.  <a href="../../d2/ddf/structsirinit.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d13/structsirerror.html">sirerror</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -133,7 +133,7 @@ Enumerations</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:gaa4f5707f5e4ed9702cde75a8c80c4e4a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d64/group__public.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a">sir_init</a> (<a class="el" href="../../d2/ddf/structsirinit.html">sirinit</a> *si)</td></tr>
-<tr class="memdesc:gaa4f5707f5e4ed9702cde75a8c80c4e4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the library.  <a href="#gaa4f5707f5e4ed9702cde75a8c80c4e4a">More...</a><br /></td></tr>
+<tr class="memdesc:gaa4f5707f5e4ed9702cde75a8c80c4e4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes libsir.  <a href="#gaa4f5707f5e4ed9702cde75a8c80c4e4a">More...</a><br /></td></tr>
 <tr class="separator:gaa4f5707f5e4ed9702cde75a8c80c4e4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3c56bf2c5a65e66b7b08e1c4abadf07a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d64/group__public.html#ga3c56bf2c5a65e66b7b08e1c4abadf07a">sir_cleanup</a> ()</td></tr>
 <tr class="memdesc:ga3c56bf2c5a65e66b7b08e1c4abadf07a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees allocated resources and resets internal state.  <a href="#ga3c56bf2c5a65e66b7b08e1c4abadf07a">More...</a><br /></td></tr>
@@ -173,7 +173,7 @@ Functions</h2></td></tr>
 <tr class="separator:gaa628fae976081e7aaa302e5c5e43e06c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Functions and types that comprise the public interface to the library. </p>
+<p>Functions and types that comprise the public interface to libsir. </p>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a class="anchor" id="ga7ee5f2908abd2df9e89bcab0b6608edd"></a>
 <div class="memitem">
@@ -336,7 +336,7 @@ Functions</h2></td></tr>
 <p>Includes all other options; effectively disables all output formatting except the original formatted message (does not include <a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40ba59b2a0e9b2dfd78bcfa053dcb3f2dcce">SIRO_NOHDR</a>; set that flag in addition to remove header messages). </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02"></a>SIRO_DEFAULT&#160;</td><td class="fielddoc">
-<p>Use the default for this type of destination. See <a class="el" href="../../d0/dd1/sirdefaults_8h.html" title="Default options and text styles. ">sirdefaults.h</a> for specifics. </p>
+<p>Use the default for this type of destination. See <a class="el" href="../../d0/dd1/sirdefaults_8h.html" title="Compile-time default levels, options, and text styilng. ">sirdefaults.h</a> for specifics. </p>
 </td></tr>
 </table>
 
@@ -504,7 +504,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><code>#include &lt;<a class="el" href="../../d4/df5/sir_8h.html">sir.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="../../dc/d39/sir_8c.html">sir.c</a>&gt;</code></p>
 
 <p>Add a log file to receive formatted output for one or more <a class="el" href="../../d8/d64/group__public.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -524,7 +524,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a19">example.c</a>.</dd>
+</dl>
 </div>
 </div>
 <a class="anchor" id="ga48e9fb49c28b31a09d48eb0e90468679"></a>
@@ -551,7 +552,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><code>#include &lt;<a class="el" href="../../d4/df5/sir_8h.html">sir.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="../../dc/d39/sir_8c.html">sir.c</a>&gt;</code></p>
 
 <p>Log a formatted alert message. </p>
 <p>This function maps internally to the logging level <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955">SIRL_ALERT</a>.</p>
@@ -570,7 +571,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a28">example.c</a>.</dd>
+</dl>
 </div>
 </div>
 <a class="anchor" id="ga3c56bf2c5a65e66b7b08e1c4abadf07a"></a>
@@ -586,20 +588,22 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><code>#include &lt;<a class="el" href="../../d4/df5/sir_8h.html">sir.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="../../dc/d39/sir_8c.html">sir.c</a>&gt;</code></p>
 
 <p>Frees allocated resources and resets internal state. </p>
-<p>It is not necessary to call this function from the same thread that called <a class="el" href="../../d8/d64/group__public.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes the library. ">sir_init</a>. Any calls made after this to functions other than to <a class="el" href="../../d8/d64/group__public.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes the library. ">sir_init</a> <em></em>(in order to re-initialize) will fail.</p>
-<dl class="section note"><dt>Note</dt><dd>Mutexes allocated during initialization are <em>not</em> destroyed during cleanup; they are retained for potential further re-initialization.</dd></dl>
+<dl class="section remark"><dt>Remarks</dt><dd>Call <a class="el" href="../../d8/d64/group__public.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes libsir. ">sir_init</a> to initialize libsir.</dd>
+<dd>
+It is not necessary to call this function from the same thread that called <a class="el" href="../../d8/d64/group__public.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes libsir. ">sir_init</a>. Any calls made after this to functions other than to <a class="el" href="../../d8/d64/group__public.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes libsir. ">sir_init</a> <em></em>(in order to re-initialize) will fail.</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>boolean </dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
-    <tr><td class="paramname">true</td><td>SIR is cleaned up. </td></tr>
+    <tr><td class="paramname">true</td><td>libsir is cleaned up. </td></tr>
     <tr><td class="paramname">false</td><td>An error occurred. </td></tr>
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a30">example.c</a>.</dd>
+</dl>
 </div>
 </div>
 <a class="anchor" id="ga29cff3ca15309cca61066870674f54c3"></a>
@@ -626,7 +630,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><code>#include &lt;<a class="el" href="../../d4/df5/sir_8h.html">sir.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="../../dc/d39/sir_8c.html">sir.c</a>&gt;</code></p>
 
 <p>Log a formatted critical error message. </p>
 <p>This function maps internally to the logging level <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435">SIRL_CRIT</a>.</p>
@@ -645,7 +649,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a27">example.c</a>.</dd>
+</dl>
 </div>
 </div>
 <a class="anchor" id="ga3580e004c0c568c225a6d1a1bc5e9ea2"></a>
@@ -672,7 +677,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><code>#include &lt;<a class="el" href="../../d4/df5/sir_8h.html">sir.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="../../dc/d39/sir_8c.html">sir.c</a>&gt;</code></p>
 
 <p>Log a formatted debug-level message. </p>
 <p>This function maps internally to the logging level <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b">SIRL_DEBUG</a>.</p>
@@ -691,7 +696,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a22">example.c</a>.</dd>
+</dl>
 </div>
 </div>
 <a class="anchor" id="gabace08a061ddb85494e28bd3a518bb58"></a>
@@ -718,7 +724,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><code>#include &lt;<a class="el" href="../../d4/df5/sir_8h.html">sir.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="../../dc/d39/sir_8c.html">sir.c</a>&gt;</code></p>
 
 <p>Log a formatted emergency message. </p>
 <p>This function maps internally to the logging level <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc">SIRL_EMERG</a>.</p>
@@ -737,7 +743,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a29">example.c</a>.</dd>
+</dl>
 </div>
 </div>
 <a class="anchor" id="gace667f9ba844f541bc41c61c94ed93f3"></a>
@@ -764,7 +771,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><code>#include &lt;<a class="el" href="../../d4/df5/sir_8h.html">sir.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="../../dc/d39/sir_8c.html">sir.c</a>&gt;</code></p>
 
 <p>Log a formatted error message. </p>
 <p>This function maps internally to the logging level <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76">SIRL_ERROR</a>.</p>
@@ -783,7 +790,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a26">example.c</a>.</dd>
+</dl>
 </div>
 </div>
 <a class="anchor" id="ga707b1de6ceee2e3091b7d4ecf0f8758e"></a>
@@ -810,7 +818,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><code>#include &lt;<a class="el" href="../../d4/df5/sir_8h.html">sir.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="../../dc/d39/sir_8c.html">sir.c</a>&gt;</code></p>
 
 <p>Log a formatted informational message. </p>
 <p>This function maps internally to the logging level <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d">SIRL_INFO</a>.</p>
@@ -829,7 +837,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a23">example.c</a>.</dd>
+</dl>
 </div>
 </div>
 <a class="anchor" id="gaa4f5707f5e4ed9702cde75a8c80c4e4a"></a>
@@ -846,10 +855,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><code>#include &lt;<a class="el" href="../../d4/df5/sir_8h.html">sir.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="../../dc/d39/sir_8c.html">sir.c</a>&gt;</code></p>
 
-<p>Initializes the library. </p>
-<p>Any thread may initialize SIR, but any calls to other library functions will fail until this call has completed.</p>
+<p>Initializes libsir. </p>
+<p>Any thread may initialize SIR, but any calls to other libsir functions will fail until this call has completed.</p>
+<dl class="section remark"><dt>Remarks</dt><dd>Call <a class="el" href="../../d8/d64/group__public.html#ga3c56bf2c5a65e66b7b08e1c4abadf07a" title="Frees allocated resources and resets internal state. ">sir_cleanup</a> when you're through.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">si</td><td>Initialization options.</td></tr>
@@ -859,12 +869,13 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>boolean </dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
-    <tr><td class="paramname">true</td><td>SIR is initialized and ready to use. </td></tr>
+    <tr><td class="paramname">true</td><td>libsir is initialized and ready to use. </td></tr>
     <tr><td class="paramname">false</td><td>Initialization failed. </td></tr>
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a18">example.c</a>.</dd>
+</dl>
 </div>
 </div>
 <a class="anchor" id="gab17d7622664c42afaafa66c53542dfeb"></a>
@@ -891,7 +902,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><code>#include &lt;<a class="el" href="../../d4/df5/sir_8h.html">sir.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="../../dc/d39/sir_8c.html">sir.c</a>&gt;</code></p>
 
 <p>Log a formatted notice message. </p>
 <p>This function maps internally to the logging level <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a">SIRL_NOTICE</a>.</p>
@@ -910,7 +921,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a24">example.c</a>.</dd>
+</dl>
 </div>
 </div>
 <a class="anchor" id="ga4a774bf801d0356b90f29aa69688ef86"></a>
@@ -927,7 +939,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><code>#include &lt;<a class="el" href="../../d4/df5/sir_8h.html">sir.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="../../dc/d39/sir_8c.html">sir.c</a>&gt;</code></p>
 
 <p>Remove a previously added log file. </p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -971,7 +983,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><code>#include &lt;<a class="el" href="../../d4/df5/sir_8h.html">sir.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="../../dc/d39/sir_8c.html">sir.c</a>&gt;</code></p>
 
 <p>Sets the text style in <em>stdio</em> output for a <a class="el" href="../../d8/d64/group__public.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> of output. </p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1016,7 +1028,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><code>#include &lt;<a class="el" href="../../d4/df5/sir_8h.html">sir.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="../../dc/d39/sir_8c.html">sir.c</a>&gt;</code></p>
 
 <p>Log a formatted warning message. </p>
 <p>This function maps internally to the logging level <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881">SIRL_WARN</a>.</p>
@@ -1035,7 +1047,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a25">example.c</a>.</dd>
+</dl>
 </div>
 </div>
 </div><!-- contents -->
@@ -1043,7 +1056,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue May 8 2018 16:55:46 for SIR by
+    <li class="footer">Generated on Tue May 8 2018 19:52:53 for libsir by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

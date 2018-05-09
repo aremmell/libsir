@@ -13,6 +13,6 @@ var sirerrors_8h =
     [ "SIR_E_NODEST", "d6/d87/group__errors.html#gga06fc87d81c62e9abb8790b6e5713c55bad8d3e0a7ff09ea46a966d07ad08536af", null ],
     [ "SIR_E_PLATFORM", "d6/d87/group__errors.html#gga06fc87d81c62e9abb8790b6e5713c55ba0f293a6020f98a7e41b8afea0e402046", null ],
     [ "SIR_E_UNKNOWN", "d6/d87/group__errors.html#gga06fc87d81c62e9abb8790b6e5713c55ba8090c8bc79ae660da7e58b2d0a47d785", null ],
-    [ "__sir_handleerr", "d5/df0/sirerrors_8h.html#ab4e4e805367fc2c7b80a19f123316b3d", null ],
-    [ "_sir_geterror", "d5/df0/sirerrors_8h.html#ac8e6a8a10521cae2e75881df9cdfb636", null ]
+    [ "__sir_handleerr", "d6/d87/group__errors.html#gab4e4e805367fc2c7b80a19f123316b3d", null ],
+    [ "_sir_geterror", "d6/d87/group__errors.html#gac8e6a8a10521cae2e75881df9cdfb636", null ]
 ];

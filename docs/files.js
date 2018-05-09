@@ -12,6 +12,7 @@ var files =
     [ "sirerrors.h", "d5/df0/sirerrors_8h.html", "d5/df0/sirerrors_8h" ],
     [ "sirfilecache.c", "d3/d95/sirfilecache_8c.html", "d3/d95/sirfilecache_8c" ],
     [ "sirfilecache.h", "dd/d0a/sirfilecache_8h.html", "dd/d0a/sirfilecache_8h" ],
+    [ "sirhelpers.c", "d2/d51/sirhelpers_8c.html", "d2/d51/sirhelpers_8c" ],
     [ "sirhelpers.h", "da/d0a/sirhelpers_8h.html", "da/d0a/sirhelpers_8h" ],
     [ "sirinternal.c", "d9/d09/sirinternal_8c.html", "d9/d09/sirinternal_8c" ],
     [ "sirinternal.h", "d7/dc6/sirinternal_8h.html", "d7/dc6/sirinternal_8h" ],

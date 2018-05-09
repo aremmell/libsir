@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>SIR: Globals</title>
+<title>libsir: Globals</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -31,10 +31,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">SIR
+   <div id="projectname">libsir
    &#160;<span id="projectnumber">2.0.0</span>
    </div>
-   <div id="projectbrief">Standard Incident Reporter</div>
+   <div id="projectbrief">The Standard Incident Reporter logging library</div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -94,14 +94,14 @@ $(document).ready(function(){initNavTree('globals.html','');});
 
 <h3><a class="anchor" id="index__"></a>- _ -</h3><ul>
 <li>__sir_handleerr()
-: <a class="el" href="d4/dde/sirerrors_8c.html#ab4e4e805367fc2c7b80a19f123316b3d">sirerrors.c</a>
-, <a class="el" href="d5/df0/sirerrors_8h.html#ab4e4e805367fc2c7b80a19f123316b3d">sirerrors.h</a>
+: <a class="el" href="d6/d87/group__errors.html#gab4e4e805367fc2c7b80a19f123316b3d">sirerrors.c</a>
+, <a class="el" href="d6/d87/group__errors.html#gab4e4e805367fc2c7b80a19f123316b3d">sirerrors.h</a>
 </li>
 <li>__sir_safefree()
 : <a class="el" href="d0/dfe/group__intern.html#ga1ac1bb3c4f833dd42044a6cfd8f50e58">sirhelpers.h</a>
 </li>
 <li>__sir_validstr()
-: <a class="el" href="d0/dfe/group__intern.html#ga611a23fcb3b3d995aa44807c2f329df8">sirhelpers.h</a>
+: <a class="el" href="d0/dfe/group__intern.html#ga611a23fcb3b3d995aa44807c2f329df8">sirhelpers.c</a>
 </li>
 <li>_sir_bittest()
 : <a class="el" href="d0/dfe/group__intern.html#ga53f20bd7811bb5277f473e4b47aec2cf">sirhelpers.h</a>
@@ -134,8 +134,8 @@ $(document).ready(function(){initNavTree('globals.html','');});
 : <a class="el" href="d0/dfe/group__intern.html#ga8f4ab88b65313d0cf42cdb0363aa61e3">sirhelpers.h</a>
 </li>
 <li>_sir_geterror()
-: <a class="el" href="d5/df0/sirerrors_8h.html#ac8e6a8a10521cae2e75881df9cdfb636">sirerrors.h</a>
-, <a class="el" href="d4/dde/sirerrors_8c.html#ac8e6a8a10521cae2e75881df9cdfb636">sirerrors.c</a>
+: <a class="el" href="d6/d87/group__errors.html#gac8e6a8a10521cae2e75881df9cdfb636">sirerrors.h</a>
+, <a class="el" href="d6/d87/group__errors.html#gac8e6a8a10521cae2e75881df9cdfb636">sirerrors.c</a>
 </li>
 <li>_sir_getlocaltime()
 : <a class="el" href="d0/dfe/group__intern.html#gae6a81ce863fba763916cc4e11de0fadc">sirinternal.c</a>
@@ -216,16 +216,16 @@ $(document).ready(function(){initNavTree('globals.html','');});
 : <a class="el" href="d0/dfe/group__intern.html#ga85df9c3299ca00a1fbde0bca7b95a2f5">sirhelpers.h</a>
 </li>
 <li>_sir_validfid()
-: <a class="el" href="d0/dfe/group__intern.html#gad2bb1aa7a5735739d5db5dbdaca22f18">sirhelpers.h</a>
+: <a class="el" href="d0/dfe/group__intern.html#gad2bb1aa7a5735739d5db5dbdaca22f18">sirhelpers.c</a>
 </li>
 <li>_sir_validlevel()
-: <a class="el" href="d0/dfe/group__intern.html#ga70a34d97d57819b278ff8ac1b8f53f3a">sirhelpers.h</a>
+: <a class="el" href="d0/dfe/group__intern.html#ga70a34d97d57819b278ff8ac1b8f53f3a">sirhelpers.c</a>
 </li>
 <li>_sir_validlevels()
-: <a class="el" href="d0/dfe/group__intern.html#ga09fdf57a2d2841d4d6c5f00dfa82974b">sirhelpers.h</a>
+: <a class="el" href="d0/dfe/group__intern.html#ga09fdf57a2d2841d4d6c5f00dfa82974b">sirhelpers.c</a>
 </li>
 <li>_sir_validopts()
-: <a class="el" href="d0/dfe/group__intern.html#ga3ab7b0541bb7d04ca61168d0130e3848">sirhelpers.h</a>
+: <a class="el" href="d0/dfe/group__intern.html#ga3ab7b0541bb7d04ca61168d0130e3848">sirhelpers.c</a>
 </li>
 <li>_sir_validptr
 : <a class="el" href="d0/dfe/group__intern.html#ga8c427d43dc4611ee5449469f7dcbfce8">sirhelpers.h</a>
@@ -287,7 +287,7 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue May 8 2018 16:55:47 for SIR by
+    <li class="footer">Generated on Tue May 8 2018 19:52:53 for libsir by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

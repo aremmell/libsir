@@ -10,6 +10,7 @@ var searchData=
   ['sirerrors_2eh',['sirerrors.h',['../d5/df0/sirerrors_8h.html',1,'']]],
   ['sirfilecache_2ec',['sirfilecache.c',['../d3/d95/sirfilecache_8c.html',1,'']]],
   ['sirfilecache_2eh',['sirfilecache.h',['../dd/d0a/sirfilecache_8h.html',1,'']]],
+  ['sirhelpers_2ec',['sirhelpers.c',['../d2/d51/sirhelpers_8c.html',1,'']]],
   ['sirhelpers_2eh',['sirhelpers.h',['../da/d0a/sirhelpers_8h.html',1,'']]],
   ['sirinternal_2ec',['sirinternal.c',['../d9/d09/sirinternal_8c.html',1,'']]],
   ['sirinternal_2eh',['sirinternal.h',['../d7/dc6/sirinternal_8h.html',1,'']]],

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>libsir: sirfilecache.c File Reference</title>
+<title>libsir: sirhelpers.c File Reference</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -72,7 +72,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
   </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){initNavTree('d3/d95/sirfilecache_8c.html','../../');});
+$(document).ready(function(){initNavTree('d2/d51/sirhelpers_8c.html','../../');});
 </script>
 <div id="doc-content">
 <!-- window showing the filter options -->
@@ -93,22 +93,28 @@ $(document).ready(function(){initNavTree('d3/d95/sirfilecache_8c.html','../../')
   <div class="summary">
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">sirfilecache.c File Reference</div>  </div>
+<div class="title">sirhelpers.c File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Internal log file management.  
+<p>Internal macros and inline functions.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gafcc058772f36163fe63d70a272764496"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#gafcc058772f36163fe63d70a272764496">_sirfile_write</a> (<a class="el" href="../../d8/dbe/structsirfile.html">sirfile</a> *sf, const <a class="el" href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *output)</td></tr>
-<tr class="separator:gafcc058772f36163fe63d70a272764496"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0fb1f78aa9c924d1e9e155b000b07da0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#ga0fb1f78aa9c924d1e9e155b000b07da0">_sirfile_archive</a> (<a class="el" href="../../d8/dbe/structsirfile.html">sirfile</a> *sf, const <a class="el" href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *newpath)</td></tr>
-<tr class="separator:ga0fb1f78aa9c924d1e9e155b000b07da0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad2bb1aa7a5735739d5db5dbdaca22f18"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#gad2bb1aa7a5735739d5db5dbdaca22f18">_sir_validfid</a> (int id)</td></tr>
+<tr class="separator:gad2bb1aa7a5735739d5db5dbdaca22f18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga09fdf57a2d2841d4d6c5f00dfa82974b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#ga09fdf57a2d2841d4d6c5f00dfa82974b">_sir_validlevels</a> (<a class="el" href="../../d8/d64/group__public.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a> levels)</td></tr>
+<tr class="separator:ga09fdf57a2d2841d4d6c5f00dfa82974b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga70a34d97d57819b278ff8ac1b8f53f3a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#ga70a34d97d57819b278ff8ac1b8f53f3a">_sir_validlevel</a> (<a class="el" href="../../d8/d64/group__public.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level)</td></tr>
+<tr class="separator:ga70a34d97d57819b278ff8ac1b8f53f3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3ab7b0541bb7d04ca61168d0130e3848"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#ga3ab7b0541bb7d04ca61168d0130e3848">_sir_validopts</a> (<a class="el" href="../../d8/d64/group__public.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> opts)</td></tr>
+<tr class="separator:ga3ab7b0541bb7d04ca61168d0130e3848"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga611a23fcb3b3d995aa44807c2f329df8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#ga611a23fcb3b3d995aa44807c2f329df8">__sir_validstr</a> (const <a class="el" href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *str, bool fail)</td></tr>
+<tr class="separator:ga611a23fcb3b3d995aa44807c2f329df8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Internal log file management. </p>
+<div class="textblock"><p>Internal macros and inline functions. </p>
 <p>This file and accompanying source code originated from <a href="https://github.com/ryanlederman/sir">https://github.com/ryanlederman/sir</a>. If you obtained it elsewhere, all bets are off.</p>
 <dl class="section author"><dt>Author</dt><dd>Ryan M. Lederman <a href="#" onclick="location.href='mai'+'lto:'+'led'+'er'+'man'+'@g'+'mai'+'l.'+'com'; return false;">leder<span style="display: none;">.nosp@m.</span>man@<span style="display: none;">.nosp@m.</span>gmail<span style="display: none;">.nosp@m.</span>.com</a> </dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd></dd></dl>
@@ -122,7 +128,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="../../d3/d95/sirfilecache_8c.html">sirfilecache.c</a></li>
+    <li class="navelem"><a class="el" href="../../d2/d51/sirhelpers_8c.html">sirhelpers.c</a></li>
     <li class="footer">Generated on Tue May 8 2018 19:52:53 for libsir by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
