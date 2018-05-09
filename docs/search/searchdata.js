@@ -1,6 +1,6 @@
 var indexSectionsWithContent =
 {
-  0: "_cdefilpst",
+  0: "_cdefhipst",
   1: "s",
   2: "est",
   3: "_s",
@@ -10,7 +10,7 @@ var indexSectionsWithContent =
   7: "_s",
   8: "s",
   9: "ceipt",
-  10: "elt"
+  10: "eht"
 };
 
 var indexSectionNames =

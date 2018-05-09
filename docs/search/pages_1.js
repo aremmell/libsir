@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['libsir_20documentation',['libsir documentation',['../index.html',1,'']]]
+  ['home',['Home',['../index.html',1,'']]]
 ];

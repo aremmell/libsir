@@ -1,7 +1,7 @@
 var NAVTREE =
 [
   [ "libsir", "index.html", [
-    [ "libsir documentation", "index.html", null ],
+    [ "Home", "index.html", null ],
     [ "Etcetera", "md_TODO.html", null ],
     [ "Examples", "examples.html", null ],
     [ "Test List", "test.html", null ],
