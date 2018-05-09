@@ -39,7 +39,7 @@
 #   define _WIN32_WINNT 0x0600
 #else
 #   define _POSIX_C_SOURCE 200809L
-#   define _DEFAULT_SOURCE
+#   define _DEFAULT_SOURCE 1
 #endif
 
 #include <assert.h>
@@ -56,7 +56,6 @@
 
 #ifndef _WIN32
 #include <pthread.h>
-#include <stdatomic.h>
 #include <sys/syscall.h>
 #include <syslog.h>
 #include <unistd.h>
