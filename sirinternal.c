@@ -333,7 +333,7 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
         assert(output.name);
         strncpy(output.name, tmpsi.processName, SIR_MAXNAME - 1);
     } else {
-        _sir_resetstr(output.msec);
+        _sir_resetstr(output.name);
     }
 
     output.pid = _sirbuf_get(&buf, _SIRBUF_PID);
