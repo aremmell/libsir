@@ -285,7 +285,7 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
     memcpy(&tmpsi, si, sizeof(sirinit));
     _sir_unlocksection(_SIRM_INIT);
 
-    sirbuf    buf;
+    sirbuf buf;
     siroutput output = {0};
 
     output.style = _sirbuf_get(&buf, _SIRBUF_STYLE);
@@ -309,10 +309,19 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
         bool fmttime = _sir_formattime(now, output.timestamp, SIR_TIMEFORMAT);
         assert(fmttime);
 
+        if (!fmttime)
+            _sir_resetstr(output.timestamp);
+
         output.msec = _sirbuf_get(&buf, _SIRBUF_MSEC);
         assert(output.msec);
 
-        snprintf(output.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec);
+        int fmtmsec = snprintf(output.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec);
+        assert(fmtmsec >= 0);
+
+        if (fmtmsec < 0)
+            _sir_resetstr(output.msec);
+    } else {
+        _sir_resetstr(output.msec);
     }
 
     output.level = _sirbuf_get(&buf, _SIRBUF_LEVEL);
@@ -323,20 +332,33 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
         output.name = _sirbuf_get(&buf, _SIRBUF_NAME);
         assert(output.name);
         strncpy(output.name, tmpsi.processName, SIR_MAXNAME - 1);
+    } else {
+        _sir_resetstr(output.msec);
     }
 
     output.pid = _sirbuf_get(&buf, _SIRBUF_PID);
     assert(output.pid);
 
     pid_t pid = _sir_getpid();
-    snprintf(output.pid, SIR_MAXPID, SIR_PIDFORMAT, pid);
+    int pidfmt = snprintf(output.pid, SIR_MAXPID, SIR_PIDFORMAT, pid);
+    assert(pidfmt >= 0);
+
+    if (pidfmt < 0)
+        _sir_resetstr(output.pid);
 
     pid_t tid  = _sir_gettid();
     output.tid = _sirbuf_get(&buf, _SIRBUF_TID);
     assert(output.tid);
 
-    if (tid != pid)
-        snprintf(output.tid, SIR_MAXPID, SIR_PIDFORMAT, tid);
+    if (tid != pid) {
+       int tidfmt = snprintf(output.tid, SIR_MAXPID, SIR_PIDFORMAT, tid);
+       assert(tidfmt >= 0);
+
+       if (tidfmt < 0)
+        _sir_resetstr(output.tid);
+    } else {
+        _sir_resetstr(output.tid);
+    }
 
     /** @todo add support for glibc's %%m? */
     output.message = _sirbuf_get(&buf, _SIRBUF_MSG);
@@ -345,7 +367,7 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
     assert(msgfmt >= 0);
 
     if (msgfmt < 0)
-        _sir_selflog("%s: vsnprintf returned %d!", __func__, msgfmt);
+        _sir_resetstr(output.message);
 
     output.output = _sirbuf_get(&buf, _SIRBUF_OUTPUT);
     assert(output.output);
@@ -359,25 +381,10 @@ bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output) {
         bool   r          = true;
         size_t dispatched = 0;
         size_t wanted = 0;
-
-        if (_sir_destwantslevel(si->d_stderr.levels, level)) {
-            const sirchar_t* write = _sir_format(true, si->d_stderr.opts, output);
-            assert(write);
-#ifndef _WIN32
-            bool wrote = _sir_stderr_write(write);
-            r &= NULL != write && wrote;
-#else
-            uint16_t* style = (uint16_t*)output->style;
-            bool      wrote = _sir_stderr_write(*style, write);
-            r &= NULL != write && NULL != style && wrote;
-#endif
-            if (wrote)
-                dispatched++;
-            wanted++;
-        }
+        const sirchar_t* write = NULL;
 
         if (_sir_destwantslevel(si->d_stdout.levels, level)) {
-            const sirchar_t* write = _sir_format(true, si->d_stdout.opts, output);
+            write = _sir_format(true, si->d_stdout.opts, output);
             assert(write);
 #ifndef _WIN32
             bool wrote = _sir_stdout_write(write);
@@ -385,6 +392,24 @@ bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output) {
 #else
             uint16_t* style = (uint16_t*)output->style;
             bool      wrote = _sir_stdout_write(*style, write);
+            r &= NULL != write && NULL != style && wrote;
+#endif
+            if (wrote)
+                dispatched++;
+            wanted++;
+        }
+
+        if (_sir_destwantslevel(si->d_stderr.levels, level)) {
+            if (si->d_stderr.opts != si->d_stdout.opts) {
+                write = _sir_format(true, si->d_stderr.opts, output);
+                assert(write);
+            }
+#ifndef _WIN32
+            bool wrote = _sir_stderr_write(write);
+            r &= NULL != write && wrote;
+#else
+            uint16_t* style = (uint16_t*)output->style;
+            bool      wrote = _sir_stderr_write(*style, write);
             r &= NULL != write && NULL != style && wrote;
 #endif
             if (wrote)
@@ -428,11 +453,10 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) 
 
         _sir_resetstr(output->output);
 
-        if (styling) {
 #ifndef _WIN32
+        if (styling)
             strncat(output->output, output->style, SIR_MAXSTYLE);
-#endif
-        }
+#endif        
 
         if (!_sir_bittest(opts, SIRO_NOTIME)) {
             strncat(output->output, output->timestamp, SIR_MAXTIME);
@@ -482,11 +506,10 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) 
 
         strncat(output->output, output->message, SIR_MAXMESSAGE);
 
-        if (styling) {
 #ifndef _WIN32
+        if (styling)
             strncat(output->output, SIR_ENDSTYLE, SIR_MAXSTYLE);
 #endif
-        }
 
         strncat(output->output, "\n", 1);
         return output->output;
