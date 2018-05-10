@@ -1,6 +1,6 @@
 ####################################################
 #                                                  #
-#	           libsir make recipes                 #
+#              libsir make recipes                 #
 #                                                  #
 #       https://github.com/ryanlederman/sir        #
 #                                                  #
@@ -45,7 +45,7 @@ _OBJ_EXAMPLE    = example.o
 OBJ_EXAMPLE     = $(patsubst %.o, $(INTERDIR)/%.eo, $(_OBJ_EXAMPLE))
 OUT_EXAMPLE     = $(BUILDDIR)/sirexample
 CFLAGS_EXAMPLE  = $(DEBUGCFLAGS)
-LDFLAGS_EXAMPLE = $(LIBS) -L$(LIBDIR) -lsir
+LDFLAGS_EXAMPLE = $(LIBS) -L$(LIBDIR) -l:libsir.a
 EXAMPLETU       = $(TESTSDIR)/example.c
 
 # console test rig
@@ -125,9 +125,9 @@ ifeq ($(OS),Windows_NT)
 			del /F /Q "*.log")
 else
 	@echo using rm -f...
-	$(shell rm -f $(BUILDDIR)/*.* >/dev/null && \
-	        rm -f $(LIBDIR)/* >/dev/null && \
-			rm -f $(INTERDIR)/* >/dev/null && \
-			rm -f *.log >/dev/null)
+	$(shell rm -f $(BUILDDIR)/* >/dev/null 2>&1 && \
+	        rm -f $(LIBDIR)/* >/dev/null 2>&1 && \
+			rm -f $(INTERDIR)/* >/dev/null 2>&1 && \
+			rm -f *.log >/dev/null 2>&1)
 endif
 	@echo cleaned successfully.
