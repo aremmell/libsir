@@ -49,7 +49,7 @@ void __sir_seterror(sirerror_t err, const sirchar_t* func, const sirchar_t* file
         sir_te.loc.line = line;
     }
 
-    assert(false && err);    
+    assert(_SIR_E_NOERROR == err);    
 }
 
 void __sir_setoserror(int code, const sirchar_t* message, const sirchar_t* func,
