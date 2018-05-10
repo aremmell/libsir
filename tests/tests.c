@@ -331,6 +331,7 @@ bool sirtest_faildupefile() {
     pass &= NULL != sir_addfile("foo.log", SIRL_ALL, SIRO_DEFAULT);
     pass &= NULL == sir_addfile("foo.log", SIRL_ALL, SIRO_DEFAULT);
 
+    rmfile("foo.log");
     sir_cleanup();
     return printerror(pass);
 }
@@ -439,21 +440,61 @@ bool sirtest_allerrorsresolve() {
 }
 
 bool sirtest_perf() {
+    const sirchar_t* logfilename = "sirperf";
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    printf("\t1 million lines stdio...\n");
+    if (pass) {
+        float stdioelapsed = 0.0f;
+        float fileelapsed = 0.0f;
+        
+        printf("\t1mm lines stdio...\n");
 
-    sirtimer_t stdiotimer = {0};
-    startsirtimer(&stdiotimer);
+        sirtimer_t stdiotimer = {0};
+        startsirtimer(&stdiotimer);
 
-    for (size_t n = 0; n < 1e6; n++) {
-        sir_debug("lorem ipsum foo bar blah %u", n);
+        for (size_t n = 0; n < 1e6; n++) {
+            sir_debug("lorem ipsum foo bar blah");
+        }
+
+        stdioelapsed = sirtimerelapsed(&stdiotimer);
+
+        sir_cleanup();
+
+        INIT(si2, 0, 0, 0, 0);
+        pass &= si2_init;
+
+        sirfileid_t logid = sir_addfile(logfilename, SIRL_ALL, SIRO_MSGONLY);
+        pass &= NULL != logid;
+
+        if (pass) {
+            printf("\t1mm lines log file...\n");
+
+            sirtimer_t filetimer = {0};
+            startsirtimer(&filetimer);
+
+            for (size_t n = 0; n < 1e6; n++) {
+                sir_debug("lorem ipsum foo bar blah");
+            }
+
+            fileelapsed = sirtimerelapsed(&filetimer);
+
+            pass &= sir_remfile(logid);
+        }
+
+        if (pass) {
+            printf("\t"WHITE("1mm lines stdio: %.04fsec (%.02f lines/s)")"\n",
+                stdioelapsed / 1e3, 1e6 / (stdioelapsed / 1e3));
+            printf("\t"WHITE("1mm lines log file: %.04fsec (%.02f lines/s)")"\n",
+                fileelapsed / 1e3, 1e6 / (fileelapsed / 1e3));
+        }
     }
 
-    float elapsed = sirtimerelapsed(&stdiotimer);
+    unsigned deleted = 0;
+    enumfiles(logfilename, deletefiles, &deleted);
 
-    printf("\t1 million lines stdio: %.04fsec\n", elapsed / 1e3);
+    if (deleted > 0)
+        printf("\tdeleted %d log file(s)\n", deleted);    
 
     sir_cleanup();
     return printerror(pass);    
