@@ -328,9 +328,10 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
     assert(output.level);
     snprintf(output.level, SIR_MAXLEVEL, SIR_LEVELFORMAT, _sir_levelstr(level));
 
+    output.name = _sirbuf_get(&buf, _SIRBUF_NAME);
+    assert(output.name);
+    
     if (_sir_validstrnofail(tmpsi.processName)) {
-        output.name = _sirbuf_get(&buf, _SIRBUF_NAME);
-        assert(output.name);
         strncpy(output.name, tmpsi.processName, SIR_MAXNAME - 1);
     } else {
         _sir_resetstr(output.name);

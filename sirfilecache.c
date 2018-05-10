@@ -444,6 +444,9 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output,
         && _sir_validptr(dispatched) && _sir_validptr(wanted)) {
 
         bool r = true;
+        const sirchar_t* write = NULL;
+        sir_options lastopts = 0;
+
         *dispatched = 0;
         *wanted = 0;
 
@@ -457,8 +460,12 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output,
             }
 
             (*wanted)++;
-            const sirchar_t* write = _sir_format(false, sfc->files[n]->opts, output);
-            assert(write);
+
+            if (sfc->files[n]->opts != lastopts) {
+                write = _sir_format(false, sfc->files[n]->opts, output);
+                assert(write);
+                lastopts = sfc->files[n]->opts;
+            }
 
             if (write && _sirfile_write(sfc->files[n], write)) {
                 r &= true;
