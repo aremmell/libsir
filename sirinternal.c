@@ -382,10 +382,9 @@ bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output) {
         bool   r          = true;
         size_t dispatched = 0;
         size_t wanted = 0;
-        const sirchar_t* write = NULL;
 
         if (_sir_destwantslevel(si->d_stdout.levels, level)) {
-            write = _sir_format(true, si->d_stdout.opts, output);
+            const sirchar_t* write = write = _sir_format(true, si->d_stdout.opts, output);
             assert(write);
 #ifndef _WIN32
             bool wrote = _sir_stdout_write(write);
@@ -401,10 +400,8 @@ bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output) {
         }
 
         if (_sir_destwantslevel(si->d_stderr.levels, level)) {
-            if (si->d_stderr.opts != si->d_stdout.opts) {
-                write = _sir_format(true, si->d_stderr.opts, output);
-                assert(write);
-            }
+            const sirchar_t* write = write = _sir_format(true, si->d_stderr.opts, output);
+            assert(write);
 #ifndef _WIN32
             bool wrote = _sir_stderr_write(write);
             r &= NULL != write && wrote;
