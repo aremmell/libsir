@@ -15,9 +15,14 @@ INTERDIR   = $(BUILDDIR)/obj
 LIBDIR     = $(BUILDDIR)/lib
 
 LIBS         = -pthread
-CFLAGS       = -Wpedantic -std=c11 -I.
-DEBUGCFLAGS  = $(CFLAGS) -g -DNDEBUG -fPIC -DSIR_SELFLOG
-NDEBUGCFLAGS = $(CFLAGS) -DNDEBUG -fPIC -O3
+CFLAGS       = -Wpedantic -std=c11 -I. -DNDEBUG -fPIC -O3
+#CFLAGS  	  = -Wpedantic -std=c11 -I.-g -DNDEBUG -fPIC -DSIR_SELFLOG
+LDFLAGS      = $(LIBS) -L$(LIBDIR) -lsir_s #link with static library, not shared
+
+#UNAME_S := $(shell uname -s)
+#ifeq ($(UNAME_S),Darwin)
+#else
+#endif
 
 ifeq ($(OS),Windows_NT)
 CFLAGS += -D_WIN32
@@ -33,27 +38,22 @@ OBJ  = $(patsubst %, $(INTERDIR)/%, $(_OBJ))
 # shared library
 OBJ_SHARED     = $(patsubst %.o, $(INTERDIR)/%.lo, $(_OBJ))
 OUT_SHARED	   = $(LIBDIR)/libsir.so
-CFLAGS_SHARED  = $(NDEBUGCFLAGS)
 LDFLAGS_SHARED = $(LIBS)
 
 # static library
 OBJ_STATIC     = $(OBJ_SHARED)
-OUT_STATIC     = $(LIBDIR)/libsir.a
+OUT_STATIC     = $(LIBDIR)/libsir_s.a
 
 # console example
 _OBJ_EXAMPLE    = example.o
 OBJ_EXAMPLE     = $(patsubst %.o, $(INTERDIR)/%.eo, $(_OBJ_EXAMPLE))
 OUT_EXAMPLE     = $(BUILDDIR)/sirexample
-CFLAGS_EXAMPLE  = $(DEBUGCFLAGS)
-LDFLAGS_EXAMPLE = $(LIBS) -L$(LIBDIR) -l:libsir.a
 EXAMPLETU       = $(TESTSDIR)/example.c
 
 # console test rig
 _OBJ_TESTS    = tests.o
 OBJ_TESTS     = $(patsubst %.o, $(INTERDIR)/%.to, $(_OBJ_TESTS))
 OUT_TESTS     = $(BUILDDIR)/sirtests
-CFLAGS_TESTS  = $(NDEBUGCFLAGS)
-LDFLAGS_TESTS = $(LDFLAGS_EXAMPLE)
 TESTSTU       = $(TESTSDIR)/tests.c
 
 # ##########
@@ -69,19 +69,18 @@ $(OBJ_SHARED): $(INTERDIR) $(LIBDIR)
 $(OBJ_TESTS): $(OBJ_SHARED)
 
 $(INTERDIR)/%.eo: $(EXAMPLEDIR)/%.c
-	$(CC) -c -o $@ $< $(CFLAGS_EXAMPLE)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
 $(INTERDIR)/%.to: $(TESTSDIR)/%.c
-	$(CC) -c -o $@ $< $(CFLAGS_TESTS)	
+	$(CC) -c -o $@ $< $(CFLAGS)	
 
 $(INTERDIR)/%.lo: %.c
-	$(CC) -c -o $@ $< $(CFLAGS_SHARED)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
 default: example
 
 all: shared static example tests
 
-# thanks to the windows folks
 prep:
 ifeq ($(OS),Windows_NT)
 	$(shell if not exist "$(BUILDDIR)\NUL" mkdir "$(BUILDDIR)" && \
@@ -95,7 +94,7 @@ endif
 	@echo directories prepared.
 
 shared: $(OBJ_SHARED)
-	$(CC) -shared -o $(OUT_SHARED) $^ $(CFLAGS_SHARED) $(LDFLAGS_SHARED)
+	$(CC) -shared -o $(OUT_SHARED) $^ $(CFLAGS) $(LDFLAGS_SHARED)
 	@echo built $(OUT_SHARED) successfully.
 
 static: shared
@@ -103,11 +102,11 @@ static: shared
 	@echo built $(OUT_STATIC) successfully.
 
 example: static $(OBJ_EXAMPLE)
-	$(CC) -o $(OUT_EXAMPLE) $(OUT_STATIC) $(OBJ_EXAMPLE) $(CFLAGS_EXAMPLE) $(LDFLAGS_EXAMPLE)
+	$(CC) -o $(OUT_EXAMPLE) $(OUT_STATIC) $(OBJ_EXAMPLE) $(CFLAGS) $(LDFLAGS)
 	@echo built $(OUT_EXAMPLE) successfully.
 
 tests: static $(OBJ_TESTS)
-	$(CC) -o $(OUT_TESTS) $(OUT_STATIC) $(OBJ_TESTS) $(CFLAGS_TESTS) $(LDFLAGS_TESTS)
+	$(CC) -o $(OUT_TESTS) $(OUT_STATIC) $(OBJ_TESTS) $(CFLAGS) $(LDFLAGS)
 	echo built $(OUT_TESTS) successfully.
 
 docs: static
