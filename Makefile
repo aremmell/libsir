@@ -33,7 +33,7 @@ OBJ  = $(patsubst %, $(INTERDIR)/%, $(_OBJ))
 # shared library
 OBJ_SHARED     = $(patsubst %.o, $(INTERDIR)/%.lo, $(_OBJ))
 OUT_SHARED	   = $(LIBDIR)/libsir.so
-CFLAGS_SHARED  = $(DEBUGCFLAGS)
+CFLAGS_SHARED  = $(NDEBUGCFLAGS)
 LDFLAGS_SHARED = $(LIBS)
 
 # static library
@@ -52,7 +52,7 @@ EXAMPLETU       = $(TESTSDIR)/example.c
 _OBJ_TESTS    = tests.o
 OBJ_TESTS     = $(patsubst %.o, $(INTERDIR)/%.to, $(_OBJ_TESTS))
 OUT_TESTS     = $(BUILDDIR)/sirtests
-CFLAGS_TESTS  = $(DEBUGCFLAGS)
+CFLAGS_TESTS  = $(NDEBUGCFLAGS)
 LDFLAGS_TESTS = $(LDFLAGS_EXAMPLE)
 TESTSTU       = $(TESTSDIR)/tests.c
 
