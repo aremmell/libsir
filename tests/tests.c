@@ -92,6 +92,7 @@ static const sir_test sir_tests[] = {
     {"remove nonexistent file", sirtest_failremovebadfile},
     {"roll/archive large file", sirtest_rollandarchivefile},
     {"validate error handling", sirtest_allerrorsresolve},
+    {"performance benchmark", sirtest_perf}
 };
 
 int main(int argc, char** argv) {
@@ -99,8 +100,12 @@ int main(int argc, char** argv) {
     bool   allpass = true;
     size_t tests   = sizeof(sir_tests) / sizeof(sir_test);
     size_t passed  = 0;
+    sirtimer_t timer = {0};
 
     printf(WHITE("running %lu libsir tests...\n"), tests);
+
+    if (!startsirtimer(&timer))
+        printf(RED("failed to start timer; perf won't be measured correctly!")"\n");
 
     for (size_t n = 0; n < tests; n++) {
         printf(WHITE("\t'%s'...") "\n", sir_tests[n].name);
@@ -111,8 +116,10 @@ int main(int argc, char** argv) {
             thispass ? GREEN("PASS") : RED("FAIL"));
     }
 
-    printf(WHITE("done; ")BLUE("%lu/%lu libsir tests passed ")WHITE("- enter to exit")"\n",
-        passed, tests);
+    float elapsed = sirtimerelapsed(&timer);
+
+    printf(WHITE("done; ")BLUE("%lu/%lu libsir tests passed in %.04fsec")WHITE("- enter to exit")"\n",
+        passed, tests, elapsed / 1e3);
 
     int unused = getc(stdin);
     return allpass ? 0 : 1;
@@ -138,12 +145,15 @@ bool sirtest_filecachesanity() {
     size_t numfiles = SIR_MAXFILES + 1;
     sirfileid_t ids[SIR_MAXFILES] = {0};
 
+    sir_options even = SIRO_MSGONLY;
+    sir_options odd = 0;
+
     for (size_t n = 0; n < numfiles - 1; n++) {
         char path[SIR_MAXPATH] = {0};
         snprintf(path, SIR_MAXPATH, "test-%lu.log", n);
         rmfile(path);
-        ids[n] = sir_addfile(path, SIRL_ALL, SIRO_MSGONLY);
-        pass &= NULL != ids[n];
+        ids[n] = sir_addfile(path, SIRL_ALL, (n % 2) ? odd : even);
+        pass &= NULL != ids[n] && sir_info("test %u", n);
     }
 
     pass &= sir_info("test test test");
@@ -422,9 +432,31 @@ bool sirtest_allerrorsresolve() {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
+#pragma message "TODO: implement me"
 
     sir_cleanup();
     return printerror(pass);
+}
+
+bool sirtest_perf() {
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+    printf("\t1 million lines stdio...\n");
+
+    sirtimer_t stdiotimer = {0};
+    startsirtimer(&stdiotimer);
+
+    for (size_t n = 0; n < 1e6; n++) {
+        sir_debug("lorem ipsum foo bar blah %u", n);
+    }
+
+    float elapsed = sirtimerelapsed(&stdiotimer);
+
+    printf("\t1 million lines stdio: %.04fsec\n", elapsed / 1e3);
+
+    sir_cleanup();
+    return printerror(pass);    
 }
 
 /*
@@ -641,4 +673,31 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
 #endif
 
     return true;
+}
+
+bool startsirtimer(sirtimer_t* timer) {
+#ifndef _WIN32
+    int gettime = clock_gettime(CLOCK_MONOTONIC, &timer->ts);
+    return 0 == gettime;
+#else
+    BOOL gettime = GetSystemTimeAsPreciseFileTime(&timer->ft);
+    return 0 != gettime;
+#endif
+}
+
+float sirtimerelapsed(const sirtimer_t* timer) {
+#ifndef _WIN32
+    struct timespec now;
+    if (!clock_gettime(CLOCK_MONOTONIC, &now)) {
+        return (float)((now.tv_sec * 1e3) + (now.tv_nsec / 1e6) -
+            (timer->ts.tv_sec * 1e3) + (timer->ts.tv_nsec / 1e6));
+    }
+    return 0;
+#else
+    FILETIME now;
+    if (GetSystemTimeAsPreciseFileTime(&now)) {
+#pragma message "impl timer elapsed on win32"        
+    }
+    return 0;
+#endif
 }

@@ -54,7 +54,16 @@
 #ifndef _SIR_TESTS_H_INCLUDED
 #define _SIR_TESTS_H_INCLUDED
 
+#   ifndef _POSIX_C_SOURCE
+#       define _POSIX_C_SOURCE 200809L
+#   endif
+#   ifndef _DEFAULT_SOURCE
+#       define _DEFAULT_SOURCE 1
+#   endif
+
 #include <stdbool.h>
+#include <stdint.h>
+#include <time.h>
 
 /** Function signature for a single test. */
 typedef bool (*sir_test_fn)(void);
@@ -154,6 +163,11 @@ bool sirtest_rollandarchivefile();
  */
 bool sirtest_allerrorsresolve();
 
+/**
+ * @test Performance evaluation.
+ */
+bool sirtest_perf();
+
 /** @} */
 
 bool printerror(bool pass);
@@ -168,5 +182,16 @@ bool countfiles(const char* search, const char* filename, unsigned* data);
 
 typedef bool (*fileenumproc)(const char* search, const char* filename, unsigned* data);
 bool enumfiles(const char* search, fileenumproc cb, unsigned* data);
+
+typedef struct {
+#ifndef _WIN32
+    struct timespec ts;
+#else
+    FILETIME ft;
+#endif
+} sirtimer_t;
+
+bool startsirtimer(sirtimer_t* timer);
+float sirtimerelapsed(const sirtimer_t* timer); // msec
 
 #endif /* !_SIR_TESTS_H_INCLUDED */
