@@ -583,11 +583,11 @@ bool sirtest_perf(void) {
         }
 
         if (pass) {
-            printf("\t" WHITE("%lu lines printf: %.04fsec (%.02f lines/sec)") "\n",
+            printf("\t" WHITE("%lu lines printf:")" "GREEN("%.2fsec (%.1f lines/sec)") "\n",
                 perflines, printfelapsed / 1e3, perflines / (printfelapsed / 1e3));
-            printf("\t" WHITE("%lu lines libsir stdout: %.04fsec (%.02f lines/sec)") "\n",
+            printf("\t" WHITE("%lu lines libsir stdout:")" "GREEN("%.2fsec (%.1f lines/sec)") "\n",
                 perflines, stdioelapsed / 1e3, perflines / (stdioelapsed / 1e3));
-            printf("\t" WHITE("%lu lines log file: %.04fsec (%.02f lines/sec)") "\n",
+            printf("\t" WHITE("%lu lines log file:")" "GREEN("%.2fsec (%.1f lines/sec)")"\n",
                 perflines, fileelapsed / 1e3, perflines / (fileelapsed / 1e3));
         }
     }
@@ -691,7 +691,7 @@ unsigned sirtest_thread(void* arg) {
 #pragma message "TODO: refactor me"
     for (size_t n = 0; n < 100; n++) {
         for (size_t i = 0; i < 10; i++) {
-            sir_debug("\tthread %lu: hello, how do you do? %d", threadid, (n * i) + i);
+            sir_debug("thread %lu: hello, how do you do? %d", threadid, (n * i) + i);
 
             int r = getrand() % 15;
 
