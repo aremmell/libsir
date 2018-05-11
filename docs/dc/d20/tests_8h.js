@@ -2,7 +2,7 @@ var tests_8h =
 [
     [ "sir_test", "d7/dcf/structsir__test.html", null ],
     [ "sir_test_fn", "dc/d20/tests_8h.html#a0a7ef3993c57044252b01501cada39f3", null ],
-    [ "sirtest_allerrorsresolve", "d2/d7d/group__tests.html#ga5202b1888618045ae203261264e53d88", null ],
+    [ "sirtest_errorsanity", "d2/d7d/group__tests.html#ga1d9150c929ba0b79bf06592563ea81e1", null ],
     [ "sirtest_exceedmaxsize", "d2/d7d/group__tests.html#ga90b7633a39946d2c201758aafbce43fa", null ],
     [ "sirtest_failaftercleanup", "d2/d7d/group__tests.html#gabf5a4643e79df2f6b06956ffd6a465ab", null ],
     [ "sirtest_faildupefile", "d2/d7d/group__tests.html#ga33eca3443a7a02e5fdaf97f8cb2158a1", null ],
