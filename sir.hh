@@ -1,6 +1,6 @@
 /**
- * @file sir.h
- * @brief Public interface.
+ * @file sir.hh
+ * @brief libsir C++ wrapper.
  * 
  * This file and accompanying source code originated from <https://github.com/ryanlederman/sir>.
  * If you obtained it elsewhere, all bets are off.
