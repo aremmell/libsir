@@ -78,7 +78,7 @@
 static const sir_test sir_tests[] = {
     {"multi-thread race", sirtest_mthread_race},
     {"exceed max buffer size", sirtest_exceedmaxsize},
-    {"add max files, remove randomly", sirtest_filecachesanity},
+    {"file cache sanity", sirtest_filecachesanity},
     {"set invalid text style", sirtest_failsetinvalidstyle},    
     {"no output destination", sirtest_failnooutputdest},
     {"invalid file name", sirtest_failinvalidfilename},
@@ -92,7 +92,8 @@ static const sir_test sir_tests[] = {
     {"remove nonexistent file", sirtest_failremovebadfile},
     {"roll/archive large file", sirtest_rollandarchivefile},
     {"validate error handling", sirtest_allerrorsresolve},
-    {"performance benchmark", sirtest_perf}
+    {"text style sanity", sirtest_textstylesanity},
+  /*  {"performance benchmark", sirtest_perf} */
 };
 
 int main(int argc, char** argv) {
@@ -125,7 +126,7 @@ int main(int argc, char** argv) {
     return allpass ? 0 : 1;
 }
 
-bool sirtest_exceedmaxsize() {
+bool sirtest_exceedmaxsize(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
@@ -138,7 +139,7 @@ bool sirtest_exceedmaxsize() {
     return printerror(pass);
 }
 
-bool sirtest_filecachesanity() {
+bool sirtest_filecachesanity(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
@@ -205,7 +206,7 @@ bool sirtest_filecachesanity() {
     return printerror(pass);
 }
 
-bool sirtest_failsetinvalidstyle() {
+bool sirtest_failsetinvalidstyle(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
@@ -219,7 +220,7 @@ bool sirtest_failsetinvalidstyle() {
     return printerror(pass);
 }
 
-bool sirtest_failnooutputdest() {
+bool sirtest_failnooutputdest(void) {
     INIT(si, 0, 0, 0, 0);
     bool pass = si_init;
 
@@ -232,7 +233,7 @@ bool sirtest_failnooutputdest() {
     return printerror(pass);
 }
 
-bool sirtest_failinvalidfilename() {
+bool sirtest_failinvalidfilename(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
@@ -245,7 +246,7 @@ bool sirtest_failinvalidfilename() {
     return printerror(pass);
 }
 
-bool sirtest_failfilebadpermission() {
+bool sirtest_failfilebadpermission(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
@@ -258,7 +259,7 @@ bool sirtest_failfilebadpermission() {
     return printerror(pass);
 }
 
-bool sirtest_failnulls() {
+bool sirtest_failnulls(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
@@ -272,7 +273,7 @@ bool sirtest_failnulls() {
     return printerror(pass);
 }
 
-bool sirtest_failwithoutinit() {
+bool sirtest_failwithoutinit(void) {
     bool pass = !sir_info("sir isn't initialized; this needs to fail");
 
     if (pass)
@@ -281,7 +282,7 @@ bool sirtest_failwithoutinit() {
     return printerror(pass);        
 }
 
-bool sirtest_failinittwice() {
+bool sirtest_failinittwice(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
@@ -308,7 +309,7 @@ bool sirtest_failaftercleanup() {
     return printerror(pass);
 }
 
-bool sirtest_initcleanupinit() {
+bool sirtest_initcleanupinit(void) {
     INIT(si1, SIRL_ALL, 0, 0, 0);
     bool pass = si1_init;
 
@@ -318,13 +319,13 @@ bool sirtest_initcleanupinit() {
     INIT(si2, SIRL_ALL, 0, 0, 0);
     pass &= si2_init;
 
-    pass &= sir_info("init called again after cleanup; testing output...");
+    pass &= sir_info("init called again after re-init; testing output...");
     sir_cleanup();
 
     return printerror(pass);
 }
 
-bool sirtest_faildupefile() {
+bool sirtest_faildupefile(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
@@ -336,7 +337,7 @@ bool sirtest_faildupefile() {
     return printerror(pass);
 }
 
-bool sirtest_failremovebadfile() {
+bool sirtest_failremovebadfile(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
@@ -347,7 +348,7 @@ bool sirtest_failremovebadfile() {
     return printerror(pass);
 }
 
-bool sirtest_rollandarchivefile() {
+bool sirtest_rollandarchivefile(void) {
 
     /* roll size minus 1KB so we can write until it maxes. */
     const long deltasize = 1024;
@@ -428,7 +429,7 @@ bool sirtest_rollandarchivefile() {
     return printerror(pass);
 }
 
-bool sirtest_allerrorsresolve() {
+bool sirtest_allerrorsresolve(void) {
 
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
@@ -439,7 +440,67 @@ bool sirtest_allerrorsresolve() {
     return printerror(pass);
 }
 
-bool sirtest_perf() {
+
+bool sirtest_textstylesanity(void) {
+
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+    if (pass) {
+        pass &= sir_debug("default style");
+        pass &= sir_settextstyle(SIRL_DEBUG, SIRS_FG_YELLOW | SIRS_BG_DGRAY);
+        pass &= sir_debug("override style");
+
+        pass &= sir_info("default style");
+        pass &= sir_settextstyle(SIRL_INFO, SIRS_FG_GREEN | SIRS_BG_MAGENTA);
+        pass &= sir_info("override style");
+
+        pass &= sir_notice("default style");
+        pass &= sir_settextstyle(SIRL_NOTICE, SIRS_FG_BLACK | SIRS_BG_LYELLOW);
+        pass &= sir_notice("override style");
+
+        pass &= sir_warn("default style");
+        pass &= sir_settextstyle(SIRL_WARN, SIRS_FG_BLACK | SIRS_BG_WHITE);
+        pass &= sir_warn("override style");
+
+        pass &= sir_error("default style");
+        pass &= sir_settextstyle(SIRL_ERROR, SIRS_FG_WHITE | SIRS_BG_BLUE);
+        pass &= sir_error("override style");
+
+        pass &= sir_crit("default style");
+        pass &= sir_settextstyle(SIRL_CRIT, SIRS_FG_DGRAY | SIRS_BG_LGREEN);
+        pass &= sir_crit("override style");
+
+        pass &= sir_alert("default style");
+        pass &= sir_settextstyle(SIRL_ALERT, SIRS_BRIGHT | SIRS_FG_LBLUE);
+        pass &= sir_alert("override style");
+
+        pass &= sir_emerg("default style");
+        pass &= sir_settextstyle(SIRL_EMERG, SIRS_BRIGHT | SIRS_FG_DGRAY);
+        pass &= sir_emerg("override style");                                            
+    }
+
+    printf("\tcleanup to reset styles...\n");
+    sir_cleanup();
+
+    INIT(si2, SIRL_ALL, 0, 0, 0);
+    pass &= si2_init;
+
+    pass &= sir_debug("default style");
+    pass &= sir_info("default style");
+    pass &= sir_notice("default style");
+    pass &= sir_warn("default style");
+    pass &= sir_error("default style");
+    pass &= sir_crit("default style");
+    pass &= sir_alert("default style");
+    pass &= sir_emerg("default style");
+        
+    sir_cleanup();
+
+    return printerror(pass);
+}
+
+bool sirtest_perf(void) {
     const sirchar_t* logfilename = "sirperf";
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
@@ -501,7 +562,7 @@ bool sirtest_perf() {
 }
 
 /*
-bool sirtest_XXX() {
+bool sirtest_XXX(void) {
 
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
@@ -520,7 +581,7 @@ static unsigned sirtest_thread(void* arg);
 
 #define NUM_THREADS 2
 
-bool sirtest_mthread_race() {
+bool sirtest_mthread_race(void) {
 #ifndef _WIN32
     pthread_t thrds[NUM_THREADS];
 #else
@@ -628,13 +689,13 @@ bool printerror(bool pass) {
     return pass;
 }
 
-void printexpectederr() {
+void printexpectederr(void) {
     sirchar_t message[SIR_MAXERROR] = {0};
     uint16_t code = sir_geterror(message);    
     printf("\t"GREEN("Expected (%hu, %s")"\n", code, message);
 }
 
-int getoserr() {
+int getoserr(void) {
 #ifndef _WIN32
     return errno;
 #else
@@ -642,7 +703,7 @@ int getoserr() {
 #endif           
 }
 
-unsigned int getrand() {
+unsigned int getrand(void) {
     static unsigned int seed = 0;
 #ifndef _WIN32
     return (unsigned int)rand_r(&seed);

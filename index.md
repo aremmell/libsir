@@ -101,10 +101,10 @@ Example use   | `make example` | _build/sirexample[.exe]_
 
 Recipe         | Command        | Output file
 ------         | -------        | -----------
-Static library | `make static`  | _build/lib/libsir.a_
+Static library | `make static`  | _build/lib/libsir_s.a_
 Shared library | `make shared`  | _build/lib/libsir.so_
 
-_If you'd like to debug libsir, just use `DEBUGCFLAGS` instead of `NDEBUGCFLAGS` in [the makefile](../Makefile)._
+_If you'd like to debug libsir, just swap out the commented debug flags in [the makefile](../Makefile)._
 
 ### Including the source ###        {#src}
 

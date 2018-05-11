@@ -140,7 +140,7 @@ static const sir_style_priv_map sir_priv_map[] = {
 bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32_t* pbg);
 
 /**
- * Retrieves the override ::sir_textyle for a ::sir_level  if one is set.
+ * Retrieves the override ::sir_textstyle for a ::sir_level  if one is set.
  * Otherwise, returns the default text style for that level.
  */
 sir_textstyle _sir_gettextstyle(sir_level level);
@@ -151,7 +151,7 @@ sir_textstyle _sir_getdefstyle(const sir_style_map* map, sir_level level);
 /** Sets the ::sir_textstyle for a ::sir_level. */
 bool _sir_settextstyle(sir_level level, sir_textstyle style);
 
-/** Resets all override ::sir_textstyles. */
+/** Resets all override ::sir_textstyle. */
 bool _sir_resettextstyles(void);
 
 /** Retrieves the platform value for a component part of a ::sir_textstyle. */

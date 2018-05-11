@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['processname',['processName',['../d2/ddf/structsirinit.html#a20d83462a804b9eb5e664f3f470f780e',1,'sirinit']]],
-  ['public_20interface',['Public Interface',['../d8/d64/group__public.html',1,'']]]
+  ['level',['level',['../df/d50/structsir__style__map.html#abb52f70389b9f91f1c8d2abc3bb1afca',1,'sir_style_map']]]
 ];
