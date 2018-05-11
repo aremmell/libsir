@@ -1,22 +1,5 @@
 /**
  * @file tests.h
-<<<<<<< HEAD
- * @brief Definitions for test rig app.
- *
- * TODO:
- *
- * @todo ## Hardening and Portability
- * More platforms, no time. I have only compiled and tested libsir on the following
- * platforms using `gcc`:
- * - Ubuntu 16.04 x64
- * - Windows 10 x64 (_MinGW_)
- *
- * @todo ## Nice to Have
- * 1. A plugin system or public interface for registering custom adapters, for:
- *   - Posting high-priority messages to a REST API endpoint.
- *   - Sending high-prirority messages via SMS or push notification.
- *   - Other useful things.
-=======
  * @brief libsir test suite.
  *
  * This file and accompanying source code originated from <https://github.com/ryanlederman/sir>.
@@ -59,32 +42,74 @@
  * 1. A plugin system or public interface for registering custom adapters, for things like:
  *   - Posting high-priority messages to a REST API endpoint.
  *   - Sending high-prirority messages via SMS or push notification.
->>>>>>> temp
  * 2. Compressing archived logs with zlib or similar.
  * 3. Deleting archived logs older than _n_ days.
  * 4. A project file for Visual Studio.
  * 5. A project file for Xcode.
  * 6. An accompanying C++ wrapper.
  * 7. Something I didn't think of yet.
-<<<<<<< HEAD
-=======
  * 
  * ---------------------------------------------------------------------------------------------------------
->>>>>>> temp
  */
 #ifndef _SIR_TESTS_H_INCLUDED
 #define _SIR_TESTS_H_INCLUDED
 
-#   ifndef _POSIX_C_SOURCE
-#       define _POSIX_C_SOURCE 200809L
-#   endif
-#   ifndef _DEFAULT_SOURCE
-#       define _DEFAULT_SOURCE 1
-#   endif
+#ifndef _POSIX_C_SOURCE
+#   define _POSIX_C_SOURCE 200809L
+#endif
+#ifndef _DEFAULT_SOURCE
+#   define _DEFAULT_SOURCE 1
+#endif
 
+#define _CRT_RAND_S
+
+#include "tests.h"
+#include "../sir.h"
+#include "../sirerrors.h"
+#include "../sirfilecache.h"
+#include "../sirinternal.h"
+
+#include <errno.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <string.h>
 #include <time.h>
+
+#ifndef _WIN32
+#include <dirent.h>
+#include <pthread.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#else
+#   define _WIN32_WINNT 0x0600
+#include <process.h>
+#include <windows.h>
+#endif
+
+#ifndef _WIN32
+#   define STRFMT(clr, s) clr s "\033[0m"
+#   define RED(s) STRFMT("\033[1;91m", s)
+#   define GREEN(s) STRFMT("\033[1;92m", s)
+#   define WHITE(s) STRFMT("\033[1;97m", s)
+#   define BLUE(s) STRFMT("\033[1;34m", s)
+#else
+#   define RED(s) s
+#   define GREEN(s) s
+#   define WHITE(s) s
+#   define BLUE(s) s
+#endif
+
+#define INIT(var, l_stdout, o_stdout, l_stderr, o_stderr) \
+    sirinit var         = {0};                            \
+    var.d_stdout.opts   = o_stdout;                       \
+    var.d_stdout.levels = l_stdout;                       \
+    var.d_stderr.opts   = o_stderr;                       \
+    var.d_stderr.levels = l_stderr;                       \
+    bool var##_init     = sir_init(&var);
+
 
 /** Function signature for a single test. */
 typedef bool (*sir_test_fn)(void);

@@ -29,54 +29,11 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#define _CRT_RAND_S
-
 #include "tests.h"
-#include "../sir.h"
-#include "../sirerrors.h"
-#include "../sirfilecache.h"
-#include "../sirinternal.h"
-
-#include <errno.h>
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/stat.h>
-
-#ifndef _WIN32
-#include <dirent.h>
-#include <pthread.h>
-#include <unistd.h>
-#else
-#define _WIN32_LEAN_AND_MEAN
-#include <process.h>
-#include <windows.h>
-#endif
-
-#ifndef _WIN32
-#define STRFMT(clr, s) clr s "\033[0m"
-#define RED(s) STRFMT("\033[1;91m", s)
-#define GREEN(s) STRFMT("\033[1;92m", s)
-#define WHITE(s) STRFMT("\033[1;97m", s)
-#define BLUE(s) STRFMT("\033[1;34m", s)
-#else
-#define RED(s) s
-#define GREEN(s) s
-#define WHITE(s) s
-#define BLUE(s) s
-#endif
-
-#define INIT(var, l_stdout, o_stdout, l_stderr, o_stderr) \
-    sirinit var         = {0};                            \
-    var.d_stdout.opts   = o_stdout;                       \
-    var.d_stdout.levels = l_stdout;                       \
-    var.d_stderr.opts   = o_stderr;                       \
-    var.d_stderr.levels = l_stderr;                       \
-    bool var##_init     = sir_init(&var);
 
 static const sir_test sir_tests[] = {
     {"multi-thread race", sirtest_mthread_race},
+    {"performance benchmark", sirtest_perf},    
     {"exceed max buffer size", sirtest_exceedmaxsize},
     {"file cache sanity", sirtest_filecachesanity},
     {"set invalid text style", sirtest_failsetinvalidstyle},
@@ -93,7 +50,6 @@ static const sir_test sir_tests[] = {
     {"roll/archive large file", sirtest_rollandarchivefile},
     {"error handling sanity", sirtest_errorsanity},
     {"text style sanity", sirtest_textstylesanity},
-    {"performance benchmark", sirtest_perf},
 };
 
 int main(int argc, char** argv) {
@@ -528,7 +484,12 @@ bool sirtest_textstylesanity(void) {
 
 bool sirtest_perf(void) {
     const sirchar_t* logfilename = "sirperf";
+#ifndef _WIN32
     const size_t perflines = 1e5;
+#else
+    /* stdio is hilariously slow on windows; do less. */
+    const size_t perflines = 1e4;
+#endif
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
@@ -543,7 +504,11 @@ bool sirtest_perf(void) {
         startsirtimer(&printftimer);
 
         for (size_t n = 0; n < perflines; n++) {
+#ifndef _WIN32            
             printf("\033[97mlorem ipsum foo bar blah\033[0m\n");
+#else
+            printf("lorem ipsum foo bar blah\n");
+#endif
         }
 
         printfelapsed = sirtimerelapsed(&printftimer);
@@ -825,8 +790,8 @@ bool startsirtimer(sirtimer_t* timer) {
     int gettime = clock_gettime(CLOCK_MONOTONIC, &timer->ts);
     return 0 == gettime;
 #else
-    BOOL gettime = GetSystemTimeAsPreciseFileTime(&timer->ft);
-    return 0 != gettime;
+    GetSystemTimePreciseAsFileTime(&timer->ft);
+    return true;
 #endif
 }
 
@@ -840,9 +805,13 @@ float sirtimerelapsed(const sirtimer_t* timer) {
     return 0;
 #else
     FILETIME now;
-    if (GetSystemTimeAsPreciseFileTime(&now)) {
-#pragma message "impl timer elapsed on win32"
-    }
-    return 0;
+    GetSystemTimePreciseAsFileTime(&now);
+    ULARGE_INTEGER start;
+    start.LowPart = timer->ft.dwLowDateTime;
+    start.HighPart = timer->ft.dwHighDateTime;
+    ULARGE_INTEGER n100sec;
+    n100sec.LowPart = now.dwLowDateTime;
+    n100sec.HighPart = now.dwHighDateTime;
+    return (n100sec.QuadPart - start.QuadPart) / 1e4;
 #endif
 }
