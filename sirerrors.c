@@ -48,7 +48,6 @@ void __sir_seterror(sirerror_t err, const sirchar_t* func, const sirchar_t* file
         sir_te.loc.file = file;
         sir_te.loc.line = line;
     }
-
     assert(_SIR_E_NOERROR == err);    
 }
 
@@ -64,11 +63,11 @@ void __sir_setoserror(int code, const sirchar_t* message, const sirchar_t* func,
 }
 
 void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uint32_t line) {
-    if (_SIR_E_NOERROR != code) {
+    if (SIR_E_NOERROR != code) {
         sirchar_t message[SIR_MAXERROR] = {0};
 
 #ifndef _WIN32
-        errno       = _SIR_E_NOERROR;
+        errno       = SIR_E_NOERROR;
         int finderr = strerror_r(code, message, SIR_MAXERROR);
 #else
         errno_t finderr = strerror_s(message, SIR_MAXERROR, code);
@@ -83,7 +82,7 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
 #endif
         }
     }
-    assert(_SIR_E_NOERROR == code);    
+    assert(SIR_E_NOERROR == code);    
 }
 
 #ifdef _WIN32

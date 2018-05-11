@@ -53,7 +53,7 @@
 static inline
 bool _sir_validerror(sirerror_t err) {
     sirerror_t masked = err & 0x8fffffff;
-    return masked >= 0x80010000 && masked <= 0x8fff0000;
+    return masked >= 0x80000000 && masked <= 0x8fff0000;
 }
 
 /** Extracts just the code from an internal error. */

@@ -63,7 +63,7 @@ enum {
 
 /** @} */
 
-#define _SIR_E_NOERROR   SIR_E_NOERROR
+#define _SIR_E_NOERROR   _sir_mkerror(SIR_E_NOERROR)
 #define _SIR_E_UNKNOWN   _sir_mkerror(SIR_E_UNKNOWN)
 #define _SIR_E_NOTREADY  _sir_mkerror(SIR_E_NOTREADY)
 #define _SIR_E_ALREADY   _sir_mkerror(SIR_E_ALREADY)
