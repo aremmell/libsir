@@ -109,6 +109,9 @@ typedef HANDLE sirmutex_t;
 /** The one-time type. */
 typedef INIT_ONCE sironce_t;
 
+/** Process/thread ID. */
+typedef int pid_t;
+
 /** The one-time execution function type. */
 typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
