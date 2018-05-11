@@ -182,7 +182,7 @@ bool sirtest_rollandarchivefile(void);
 /**
  * @test Properly return valid codes and messages for all possible errors.
  */
-bool sirtest_allerrorsresolve(void);
+bool sirtest_errorsanity(void);
 
 /**
  * @test Properly style stdio output for each level, and handle style overrides.
