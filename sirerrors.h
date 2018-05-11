@@ -64,7 +64,6 @@ enum {
 /** @} */
 
 #define _SIR_E_NOERROR   _sir_mkerror(SIR_E_NOERROR)
-#define _SIR_E_UNKNOWN   _sir_mkerror(SIR_E_UNKNOWN)
 #define _SIR_E_NOTREADY  _sir_mkerror(SIR_E_NOTREADY)
 #define _SIR_E_ALREADY   _sir_mkerror(SIR_E_ALREADY)
 #define _SIR_E_DUPFILE   _sir_mkerror(SIR_E_DUPFILE)
@@ -76,6 +75,7 @@ enum {
 #define _SIR_E_STRING    _sir_mkerror(SIR_E_STRING)
 #define _SIR_E_NODEST    _sir_mkerror(SIR_E_NODEST)
 #define _SIR_E_PLATFORM  _sir_mkerror(SIR_E_PLATFORM)
+#define _SIR_E_UNKNOWN   _sir_mkerror(SIR_E_UNKNOWN)
 
 static const struct {
     sirerror_t       e;
@@ -93,6 +93,7 @@ static const struct {
     { _SIR_E_STRING, "Invalid string argument" },
     { _SIR_E_NODEST, "No destinations registered for level" },
     { _SIR_E_PLATFORM, "Platform error code %d: %s" },
+    { _SIR_E_UNKNOWN, "Error is not known"},
 };
 
 void __sir_seterror(sirerror_t err, const sirchar_t* func, const sirchar_t* file, uint32_t line);
