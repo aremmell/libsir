@@ -652,7 +652,7 @@ unsigned sirtest_thread(void* arg) {
         for (size_t i = 0; i < 10; i++) {
             sir_debug("thread %lu: hello, how do you do? %d", threadid, (n * i) + i);
 
-            int r = getrand(threadid) % 15;
+            int r = getrand() % 15;
 
             if (r % 2 == 0) {
                 if (!sir_remfile(id))
