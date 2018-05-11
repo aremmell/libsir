@@ -103,6 +103,7 @@ Recipe         | Command        | Output file
 ------         | -------        | -----------
 Static library | `make static`  | _build/lib/libsir_s.a_
 Shared library | `make shared`  | _build/lib/libsir.so_
+Install        | `make install` | /usr/local/lib/libsir.so, /usr/local/include/&lt;headers&gt;
 
 _If you'd like to debug libsir, just swap out the commented debug flags in [the makefile](../Makefile)._
 
