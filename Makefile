@@ -13,6 +13,8 @@ TESTSDIR   = tests
 EXAMPLEDIR = example
 INTERDIR   = $(BUILDDIR)/obj
 LIBDIR     = $(BUILDDIR)/lib
+INSTALLDIR = /usr/local/lib
+INSTALLINC = /usr/local/include
 
 LIBS         = -pthread
 CFLAGS       = -Wpedantic -std=c11 -I. -DNDEBUG -fPIC -O3
@@ -112,6 +114,16 @@ tests: static $(OBJ_TESTS)
 docs: static
 	@doxygen Doxyfile
 	@echo built documentation successfully.
+
+install: shared
+ifeq ($(OS),Windows_NT)
+	@echo no install support for windows.
+else
+	@echo copying $(OUT_SHARED) to $(INSTALLDIR) and headers to $(INSTALLINC)...
+	$(shell cp -f $(OUT_SHARED) "$(INSTALLDIR)/" && \
+	        cp -f *.h "$(INSTALLINC)/")
+	@echo installed libsir successfully.
+endif
 
 .PHONY: clean
 
