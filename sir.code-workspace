@@ -19,24 +19,137 @@
         "workbench.colorTheme": "Bimbo Theme",
         "editor.tokenColorCustomizations": {
             "[Bimbo Theme]": {
-                "functions": "#fdfdfd",
                 "textMateRules": [
                     {
                         "name": "Operator, Misc",
                         "scope": "keyword.operator, constant.other.color, punctuation, punctuation.definition.tag, punctuation.separator.inheritance.php, punctuation.definition.tag.html, punctuation.definition.tag.begin.html, punctuation.definition.tag.end.html, punctuation.section.embedded, keyword.other.template, keyword.other.substitution",
                         "settings": {
-                            "foreground": "#888888"
+                            "foreground": "#8B929C"
                         }
                     },
                     {
                         "name": "Function, Special Method, Block Level",
                         "scope": "entity.name.function, meta.function-call, variable.function, support.function, keyword.other.special-method, meta.block-level",
                         "settings": {
-                            "foreground": "#ebebeb"
+                            "foreground": "#E0E0E0"
                         }                        
+                    },
+                    {
+                        "name": "Number, Constant, Function Argument, Tag Attribute, Embedded",
+                        "scope": "constant.numeric, constant.language, support.constant, constant.character, variable.parameter, keyword.other.unit",
+                        "settings": {
+                            "foreground": "#E5DC58"
+                        }                        
+                    },
+                    {
+                        "name": "Comments",
+                        "scope": "comment, punctuation.definition.comment",
+                        "settings": {
+                            "foreground": "#7F7F7F",
+                            "fontStyle": "italic"
+                        }
+                    },
+                    {
+                        "name": "Language methods", /* this */
+                        "scope": "variable.language",
+                        "settings": {
+                            "fontStyle": "italic",
+                            "foreground": "#DC565D"
+                        }
+                    },
+                    {
+                        "name": "Variable",
+                        "scope": "variable",
+                        "settings": {
+                            "foreground": "#D4D4D4"
+                        }
+                    },
+                    {
+                        "name": "Keyword", /* include */
+                        "scope": "keyword",
+                        "settings": {
+                            "foreground": "#569cd6"
+                      }                        
+                    },
+                    {
+                        "name": "Storage Type", /* int, bool */
+                        "scope": "storage.type",
+                        "settings": {
+                            "foreground": "#678cb1"
+                        }                
+                    },
+                    {
+                        "name": "Storage Modifier", /* typename, explicit, const  */
+                        "scope": "storage.modifier",
+                        "settings": {
+                            "foreground": "#678cb1",
+                            "fontStyle": "italic"
+                        }                
+                    },                    
+                    {
+                        "name": "Other Variable, String Link",
+                        "scope": "support.other.variable, string.other.link",
+                        "settings": {
+                            "foreground": "#77f28c"
+                        }
+                    },
+                    { 
+                        "name": "String",
+                        "scope": "string",
+                        "settings": { /* "foo" */
+                            "foreground": "#7F7F7F"
+                        }
+                    },                    
+                    {
+                        "name": "Class", /* class */
+                        "scope": "entity.name.class, entity.name.type.class, support.class",
+                        "settings": {
+                            "foreground": "#aea7e1"
+                        }
+                    },
+                    {
+                        "name": "Type", /* user type */
+                        "scope": "support.type",
+                        "settings": {
+                            "foreground": "#abb4eb"
+                        }
+                    },                    
+                    {
+                        "name": "Attributes",
+                        "scope": "entity.other.attribute-name",
+                        "settings": {
+                            "foreground": "#fd0404"
+                        }
+                    },
+                    {
+                        "name": "Regular Expressions",
+                        "scope": "string.regexp",
+                        "settings": {
+                            "foreground": "#5FB3B3"
+                        }
+                    },
+                    {
+                        "name": "Escape Characters",
+                        "scope": "constant.character.escape",
+                        "settings": {
+                            "foreground": "#5FB3B3"
+                        }
+                    },
+                    {
+                        "name": "URL",
+                        "scope": "*url*, *link*, *uri*",
+                        "settings": {
+                            "fontStyle": "underline"
+                        }
                     }
                 ]
             },
-        }
+        },
+        "files.associations": {
+            "sir.hh": "cpp",
+        },
+        "C_Cpp.autoAddFileAssociations": false,
+        "C_Cpp.default.cppStandard": "c++14",
+        "C_Cpp.default.cStandard": "c11"
     }
 }

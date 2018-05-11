@@ -37,6 +37,7 @@
 #include "sirtypes.h"
 
 #ifdef __cplusplus
+#include "sir.hh"
 extern "C" {
 #endif /* !__cplusplus */
 

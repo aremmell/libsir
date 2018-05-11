@@ -7,10 +7,12 @@
 ####################################################
 
 CC         = gcc
+CXX		   = g++
 BUILDDIR   = build
 DOCSDIR    = docs
 TESTSDIR   = tests
 EXAMPLEDIR = example
+CXXDIR     = example++
 INTERDIR   = $(BUILDDIR)/obj
 LIBDIR     = $(BUILDDIR)/lib
 INSTALLDIR = /usr/local/lib
@@ -18,17 +20,16 @@ INSTALLINC = /usr/local/include
 
 LIBS         = -pthread
 CFLAGS       = -Wpedantic -std=c11 -I. -DNDEBUG -fPIC -O3
-#CFLAGS  	  = -Wpedantic -std=c11 -I.-g -DNDEBUG -fPIC -DSIR_SELFLOG
-LDFLAGS      = $(LIBS) -L$(LIBDIR) -lsir_s #link with static library, not shared
-
-#UNAME_S := $(shell uname -s)
-#ifeq ($(UNAME_S),Darwin)
-#else
-#endif
+#CFLAGS  	  = -Wpedantic -std=c11 -I. -g -DNDEBUG -fPIC -DSIR_SELFLOG
 
 ifeq ($(OS),Windows_NT)
 CFLAGS += -D_WIN32
 endif
+
+#CXXFLAGS     = -Wpedantic -std=c++11 -I. -DNDEBUG -fPIC -O3
+CXXFLAGS  	  = -Wpedantic -std=c++11 -I. -g -DNDEBUG -fPIC -DSIR_SELFLOG
+
+LDFLAGS      = $(LIBS) -L$(LIBDIR) -lsir_s #link with static library, not shared
 
 TUS = sir.c sirmutex.c sirinternal.c sirfilecache.c sirconsole.c sirtextstyle.c sirerrors.c sirhelpers.c
 DEPS = sir.h sirmutex.h sirconfig.h sirinternal.h sirhelpers.h sirplatform.h sirfilecache.h sirtypes.h \
@@ -52,6 +53,12 @@ OBJ_EXAMPLE     = $(patsubst %.o, $(INTERDIR)/%.eo, $(_OBJ_EXAMPLE))
 OUT_EXAMPLE     = $(BUILDDIR)/sirexample
 EXAMPLETU       = $(TESTSDIR)/example.c
 
+# c++ example
+_OBJ_CXXEXAMPLE  = example.o
+OBJ_CXXEXAMPLE   = $(patsubst %.o, $(INTERDIR)/%.o++, $(_OBJ_EXAMPLE))
+OUT_CXXEXAMPLE   = $(BUILDDIR)/sircppexample
+CXXEXAMPLETU     = $(CXXDIR)/example.cc
+
 # console test rig
 _OBJ_TESTS    = tests.o
 OBJ_TESTS     = $(patsubst %.o, $(INTERDIR)/%.to, $(_OBJ_TESTS))
@@ -67,11 +74,15 @@ $(INTERDIR) : $(BUILDDIR)
 $(LIBDIR): $(BUILDDIR)
 
 $(OBJ_EXAMPLE): $(INTERDIR)
+$(OBJ_CXXEXAMPLE): $(INTERDIR)
 $(OBJ_SHARED): $(INTERDIR) $(LIBDIR)
 $(OBJ_TESTS): $(OBJ_SHARED)
 
 $(INTERDIR)/%.eo: $(EXAMPLEDIR)/%.c
 	$(CC) -c -o $@ $< $(CFLAGS)
+
+$(INTERDIR)/%.o++: $(CXXDIR)/%.cc
+	$(CXX) -c -o $@ $< $(CXXFLAGS)
 
 $(INTERDIR)/%.to: $(TESTSDIR)/%.c
 	$(CC) -c -o $@ $< $(CFLAGS)	
@@ -81,7 +92,7 @@ $(INTERDIR)/%.lo: %.c
 
 default: example
 
-all: shared static example tests
+all: shared static example cppexample tests
 
 prep:
 ifeq ($(OS),Windows_NT)
@@ -106,6 +117,10 @@ static: shared
 example: static $(OBJ_EXAMPLE)
 	$(CC) -o $(OUT_EXAMPLE) $(OUT_STATIC) $(OBJ_EXAMPLE) $(CFLAGS) $(LDFLAGS)
 	@echo built $(OUT_EXAMPLE) successfully.
+
+cppexample: static $(OBJ_CXXEXAMPLE)
+	$(CXX) -o $(OUT_CXXEXAMPLE) $(OUT_STATIC) $(OBJ_CXXEXAMPLE) $(CXXFLAGS) $(LDFLAGS)
+	@echo build $(OUT_CXXEXAMPLE) successfully.
 
 tests: static $(OBJ_TESTS)
 	$(CC) -o $(OUT_TESTS) $(OUT_STATIC) $(OBJ_TESTS) $(CFLAGS) $(LDFLAGS)

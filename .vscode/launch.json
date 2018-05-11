@@ -31,7 +31,35 @@
             "windows":{
                 "miDebuggerPath": "C:\\Program Files\\mingw64\\bin\\gdb.exe",
             }
-        }  , */
+        }, */
+        {
+            "name": "(gdb) debug cpp example",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask": "build-cppexample",
+            "program": "${workspaceFolder}/build/sircppexample",
+            "args": [
+            ],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+            ],
+            "internalConsoleOptions": "openOnSessionStart",
+            "externalConsole": true,
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": false
+                }
+            ],
+            "MIMode": "gdb",
+            "linux":{
+            },
+            "windows":{
+                "miDebuggerPath": "C:\\Program Files\\mingw64\\bin\\gdb.exe",
+            }
+        },/*
         {
             "name": "(gdb) tests",
             "type": "cppdbg",
@@ -58,6 +86,6 @@
             "windows":{
                 "miDebuggerPath": "C:\\Program Files\\mingw64\\bin\\gdb.exe",
             }
-        } 
+        } */
     ]
 }

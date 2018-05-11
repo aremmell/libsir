@@ -31,6 +31,33 @@
             ]
         },
         {
+            "label": "build c++ example",
+            "identifier": "build-cppexample",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "cppexample"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated"
+            },
+            "linux": {},
+            "windows": {
+                "command": "mingw32-make",
+                "args": [
+                    "cppexample"
+                ],
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },        
+        {
             "label": "build tests app",
             "identifier": "build-tests",
             "type": "shell",
