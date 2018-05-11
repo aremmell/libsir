@@ -568,7 +568,7 @@ bool sirtest_perf(void) {
         pass &= NULL != logid;
 
         if (pass) {
-            printf("\%lu lines log file...\n", perflines);
+            printf("\t%lu lines log file...\n", perflines);
 
             sirtimer_t filetimer = {0};
             startsirtimer(&filetimer);
