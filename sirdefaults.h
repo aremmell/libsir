@@ -68,7 +68,7 @@ static const sir_options sir_file_def_opts
     = 0; /* (all output) */
 
 /** Default mapping of ::sir_level to ::sir_textstyle. */
-static sir_style_map sir_default_styles[] = {
+static const sir_style_map sir_default_styles[SIR_NUMLEVELS] = {
     {SIRL_DEBUG, SIRS_FG_DGRAY},
     {SIRL_INFO, SIRS_FG_WHITE},
     {SIRL_NOTICE, SIRS_FG_CYAN},
@@ -78,9 +78,6 @@ static sir_style_map sir_default_styles[] = {
     {SIRL_ALERT, SIRS_BRIGHT | SIRS_FG_BLACK | SIRS_BG_LYELLOW},
     {SIRL_EMERG, SIRS_BRIGHT | SIRS_FG_LYELLOW | SIRS_BG_RED},
 };
-
-/** The number of default text style mappings. */
-static const size_t sir_num_default_style = sizeof(sir_default_styles) / sizeof(sir_style_map);
 
 /** @} */
 

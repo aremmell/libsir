@@ -69,7 +69,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output,
 FILE* _sir_fopen(const sirchar_t* path);
 void  _sir_fclose(FILE** f);
 void  _sir_fflush(FILE* f);
-bool  _sir_fflush_all();
+bool  _sir_fflush_all(void);
 
 /** @} */
 

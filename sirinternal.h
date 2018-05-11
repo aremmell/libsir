@@ -45,7 +45,7 @@
  */
 
 /** Evaluates whether or not libsir has been initialized. */
-bool _sir_sanity();
+bool _sir_sanity(void);
 
 /** Validates the configuration passed to ::sir_init. */
 bool _sir_options_sanity(const sirinit* si);
@@ -63,15 +63,15 @@ bool _sir_unlocksection(sir_mutex_id mid);
 bool _sir_mapmutexid(sir_mutex_id mid, sirmutex_t** m, void** section);
 
 /** Frees allocated resources. */
-bool _sir_cleanup();
+bool _sir_cleanup(void);
 
 #ifndef _WIN32
 /** Initializes a specific mutex. */
-void _sir_initmutex_si_once();
+void _sir_initmutex_si_once(void);
 /** Initializes a specific mutex. */
-void _sir_initmutex_fc_once();
+void _sir_initmutex_fc_once(void);
 /** Initializes a specific mutex. */
-void _sir_initmutex_ts_once();
+void _sir_initmutex_ts_once(void);
 #else
 /** Initializes a specific mutex. */
 BOOL CALLBACK _sir_initmutex_si_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
@@ -118,10 +118,10 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf);
 bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format);
 
 /** Returns the current process identifier. */
-pid_t _sir_getpid();
+pid_t _sir_getpid(void);
 
 /** Returns the current thread identifier. */
-pid_t _sir_gettid();
+pid_t _sir_gettid(void);
 
 /** @} */
 

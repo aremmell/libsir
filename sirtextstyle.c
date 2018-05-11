@@ -66,7 +66,55 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
     return true;
 }
 
-bool _sir_setdefstyle(sir_level level, sir_textstyle style) {
+sir_textstyle _sir_gettextstyle(sir_level level) {
+
+    if (_sir_validlevel(level)) {
+        sir_style_map* map = _sir_locksection(_SIRM_TEXTSTYLE);
+        assert(map);
+
+        if (map) {
+            sir_textstyle found = SIRS_INVALID;
+            bool override = false;
+
+            for (size_t n = 0; n < SIR_NUMLEVELS; n++) {
+                if (map[n].level == level && map[n].style != SIRS_INVALID) {
+                    override = true;
+                    found = map[n].style;
+                    break;
+                }
+            }
+
+            if (!override)
+                found = _sir_getdefstyle(sir_default_styles, level);
+
+            _sir_unlocksection(_SIRM_TEXTSTYLE);
+            return found;
+        }
+    }
+
+    return SIRS_INVALID;
+}
+
+sir_textstyle _sir_getdefstyle(const sir_style_map* map, sir_level level) {
+
+    if (_sir_validlevel(level)) {
+        if (map) {
+            sir_textstyle found = SIRS_INVALID;
+            for (size_t n = 0; n < SIR_NUMLEVELS; n++) {
+                if (map[n].level == level) {
+                    found = map[n].style;
+                    break;
+                }
+            }
+
+            return found;
+        }
+    }
+
+    return SIRS_INVALID;
+}
+
+bool _sir_settextstyle(sir_level level, sir_textstyle style) {
 
     _sir_seterror(_SIR_E_NOERROR);
 
@@ -76,7 +124,7 @@ bool _sir_setdefstyle(sir_level level, sir_textstyle style) {
 
         if (map) {
             bool updated = false;
-            for (size_t n = 0; n < sir_num_default_style; n++) {
+            for (size_t n = 0; n < SIR_NUMLEVELS; n++) {
                 if (map[n].level == level) {
                     map[n].style = style;
                     updated      = true;
@@ -91,27 +139,19 @@ bool _sir_setdefstyle(sir_level level, sir_textstyle style) {
     return false;
 }
 
-sir_textstyle _sir_getdefstyle(sir_level level) {
+bool _sir_resettextstyles(void) {
+    sir_style_map* map = _sir_locksection(_SIRM_TEXTSTYLE);
+    assert(map);
 
-    if (_sir_validlevel(level)) {
-        sir_style_map* map = _sir_locksection(_SIRM_TEXTSTYLE);
-        assert(map);
+    if (map) {
+        for (size_t n = 0; n < SIR_NUMLEVELS; n++)
+            map[n].style = SIRS_INVALID;
 
-        if (map) {
-            sir_textstyle found = SIRS_INVALID;
-            for (size_t n = 0; n < sir_num_default_style; n++) {
-                if (map[n].level == level) {
-                    found = map[n].style;
-                    break;
-                }
-            }
+        _sir_unlocksection(_SIRM_TEXTSTYLE);
+        return true;
+    }    
 
-            if (_sir_unlocksection(_SIRM_TEXTSTYLE))
-                return found;
-        }
-    }
-
-    return SIRS_INVALID;
+    return false;
 }
 
 uint16_t _sir_getprivstyle(uint32_t cat) {

@@ -55,7 +55,7 @@ static sironce_t  ts_once = SIR_ONCE_INIT;
 
 static volatile uint32_t _sir_magic;
 
-bool _sir_sanity() {
+bool _sir_sanity(void) {
     if (_SIR_MAGIC == _sir_magic)
         return true;
     _sir_seterror(_SIR_E_NOTREADY);
@@ -185,7 +185,7 @@ bool _sir_mapmutexid(sir_mutex_id mid, sirmutex_t** m, void** section) {
         case _SIRM_TEXTSTYLE:
             _sir_once(&ts_once, _sir_initmutex_ts_once);
             tmpm   = &ts_mutex;
-            tmpsec = sir_default_styles;
+            tmpsec = sir_override_styles;
             break;
         default: tmpm = NULL; tmpsec = NULL;
     }
@@ -197,7 +197,7 @@ bool _sir_mapmutexid(sir_mutex_id mid, sirmutex_t** m, void** section) {
     return *m != NULL && (!section || *section != NULL);
 }
 
-bool _sir_cleanup() {
+bool _sir_cleanup(void) {
 
     if (!_sir_sanity())
         return false;
@@ -220,6 +220,7 @@ bool _sir_cleanup() {
         cleanup &= _sir_unlocksection(_SIRM_INIT);
     }
 
+    _sir_resettextstyles();
     _sir_seterror(_SIR_E_NOERROR);
     _sir_magic = 0;
     _sir_selflog("%s: libsir is cleaned up\n", __func__);
@@ -227,15 +228,15 @@ bool _sir_cleanup() {
 }
 
 #ifndef _WIN32
-void _sir_initmutex_si_once() {
+void _sir_initmutex_si_once(void) {
     _sir_initmutex(&si_mutex);
 }
 
-void _sir_initmutex_fc_once() {
+void _sir_initmutex_fc_once(void) {
     _sir_initmutex(&fc_mutex);
 }
 
-void _sir_initmutex_ts_once() {
+void _sir_initmutex_ts_once(void) {
     _sir_initmutex(&ts_mutex);
 }
 #else
@@ -291,11 +292,18 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
     output.style = _sirbuf_get(&buf, _SIRBUF_STYLE);
     assert(output.style);
 
-    sir_textstyle defstyle = _sir_getdefstyle(level);
-    assert(SIRS_INVALID != defstyle);
+    bool appliedstyle = false;
+    sir_textstyle style = _sir_gettextstyle(level);
+    assert(SIRS_INVALID != style);
 
-    bool fmtstyle = _sir_formatstyle(defstyle, output.style, SIR_MAXSTYLE);
-    assert(fmtstyle);
+    if (SIRS_INVALID != style) {
+        bool fmtstyle = _sir_formatstyle(style, output.style, SIR_MAXSTYLE);
+        assert(fmtstyle);
+        appliedstyle = fmtstyle;
+    }
+
+    if (!appliedstyle)
+        _sir_resetstr(output.style);
 
     output.timestamp = _sirbuf_get(&buf, _SIRBUF_TIME);
     assert(output.timestamp);
@@ -637,7 +645,7 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
     return false;
 }
 
-pid_t _sir_getpid() {
+pid_t _sir_getpid(void) {
 #ifndef _WIN32
     return getpid();
 #else
@@ -645,7 +653,7 @@ pid_t _sir_getpid() {
 #endif
 }
 
-pid_t _sir_gettid() {
+pid_t _sir_gettid(void) {
     pid_t tid = 0;
 #ifdef __MACOS__
     uint64_t tid64 = 0;

@@ -194,6 +194,11 @@
 /** The value that represents an invalid file identifier. */
 #define SIR_INVALID (int)-1
 
+/** Used for level <> text style mapping. Update if adding or removing
+ * levels or bad things will happen.
+ */
+#define SIR_NUMLEVELS 9
+
 #ifndef _WIN32
 /** The size, in characters, of the buffer used to hold text styling data. */
 #define SIR_MAXSTYLE 16

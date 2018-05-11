@@ -514,7 +514,7 @@ void _sir_fflush(FILE* f) {
     }
 }
 
-bool _sir_fflush_all() {
+bool _sir_fflush_all(void) {
     if (0 != fflush(NULL)) {
         _sir_handleerr(errno);
         return false;

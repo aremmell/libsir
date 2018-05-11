@@ -44,7 +44,7 @@
  * example the contents of 'sir-example.log' in the current directory.
  */
 
-int report_error();
+int report_error(void);
 
 int main(int argc, char** argv) {
 
@@ -139,7 +139,7 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-int report_error() {
+int report_error(void) {
     sirchar_t message[SIR_MAXERROR] = {0};
     uint16_t code = sir_geterror(message);
     fprintf(stderr, "libsir error: (%hu, %s)\n", code, message);

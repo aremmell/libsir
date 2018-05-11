@@ -39,6 +39,18 @@
  * @{
  */
 
+/** Overrides for level <> text style mappings (::sir_settextstyle). */
+static sir_style_map sir_override_styles[SIR_NUMLEVELS] = {
+    {SIRL_DEBUG, SIRS_INVALID},
+    {SIRL_INFO, SIRS_INVALID},
+    {SIRL_NOTICE, SIRS_INVALID},
+    {SIRL_WARN, SIRS_INVALID},
+    {SIRL_ERROR, SIRS_INVALID},
+    {SIRL_CRIT, SIRS_INVALID},
+    {SIRL_ALERT, SIRS_INVALID},
+    {SIRL_EMERG, SIRS_INVALID},
+};
+
 /** mapping of ::sir_textstyle <> platform values. */
 static const sir_style_priv_map sir_priv_map[] = {
 
@@ -125,19 +137,28 @@ static const sir_style_priv_map sir_priv_map[] = {
 };
 
 /** Validates a ::sir_textstyle and splits it into its component parts. */
-bool          _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32_t* pbg);
+bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32_t* pbg);
 
-/** Sets the ::sir_textstyle for a ::sir_level (see ::sir_default_styles). */
-bool          _sir_setdefstyle(sir_level level, sir_textstyle style);
+/**
+ * Retrieves the override ::sir_textyle for a ::sir_level  if one is set.
+ * Otherwise, returns the default text style for that level.
+ */
+sir_textstyle _sir_gettextstyle(sir_level level);
 
-/** Retrieves the ::sir_textstyle for a ::sir_level (see ::sir_default_styles). */
-sir_textstyle _sir_getdefstyle(sir_level level);
+/** Retrieves the default ::sir_textstyle for a ::sir_level. */
+sir_textstyle _sir_getdefstyle(const sir_style_map* map, sir_level level);
+
+/** Sets the ::sir_textstyle for a ::sir_level. */
+bool _sir_settextstyle(sir_level level, sir_textstyle style);
+
+/** Resets all override ::sir_textstyles. */
+bool _sir_resettextstyles(void);
 
 /** Retrieves the platform value for a component part of a ::sir_textstyle. */
-uint16_t      _sir_getprivstyle(uint32_t cat);
+uint16_t _sir_getprivstyle(uint32_t cat);
 
 /** Combines component parts of a platform text style value into its final form. */
-bool          _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size);
+bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size);
 
 /** @} */
 

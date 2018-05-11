@@ -287,8 +287,8 @@ typedef struct {
 
 /** ::sir_level <> ::sir_textstyle mapping. */
 typedef struct {
-    sir_level level;
-    uint32_t  style;
+    const sir_level level; /**< The level for which the style applies. */
+    uint32_t  style;       /**< The default value. */
 } sir_style_map;
 
 /** Public (::sir_textstyle) <> platform text style mapping. */

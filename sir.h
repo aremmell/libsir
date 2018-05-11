@@ -78,7 +78,7 @@ bool sir_init(sirinit* si);
  * @retval true libsir is cleaned up.
  * @retval false An error occurred.
  */
-bool sir_cleanup();
+bool sir_cleanup(void);
 
 /**
  * @brief Retrieves information about the last error that occurred within
@@ -273,6 +273,15 @@ bool sir_remfile(sirfileid_t id);
  * @retval false An error occurred while trying to set the text style.
  */
 bool sir_settextstyle(sir_level level, sir_textstyle style);
+
+/**
+ * @brief Resets all \a stdio text styles to their default values (::sir_default_styles).
+ * 
+ * @return boolean
+ * @retval true All text styles were reset to their defaults.
+ * @retval false An error occurred while trying to reset text styles.
+ */
+bool sir_resettextstyles(void);
 
 /** @} */
 

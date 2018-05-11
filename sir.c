@@ -44,7 +44,7 @@ bool sir_init(sirinit* si) {
     return _sir_init(si);
 }
 
-bool sir_cleanup() {
+bool sir_cleanup(void) {
     return _sir_cleanup();
 }
 
@@ -117,7 +117,11 @@ bool sir_remfile(sirfileid_t id) {
 }
 
 bool sir_settextstyle(sir_level level, sir_textstyle style) {
-    return _sir_setdefstyle(level, style);
+    return _sir_settextstyle(level, style);
+}
+
+bool sir_resettextstyles(void) {
+    return _sir_resettextstyles();
 }
 
 /** @} */
