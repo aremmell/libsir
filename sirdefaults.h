@@ -41,7 +41,7 @@
 
 /** Default levels for \a stdout. */
 static const sir_levels sir_stdout_def_lvls
-    = SIRL_ALL;
+    = SIRL_DEBUG | SIRL_INFO | SIRL_NOTICE | SIRL_WARN;
 
 /** Default options for \a stdout. */
 static const sir_options sir_stdout_def_opts
