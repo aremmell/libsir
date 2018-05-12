@@ -12,7 +12,7 @@ BUILDDIR   = build
 DOCSDIR    = docs
 TESTSDIR   = tests
 EXAMPLEDIR = example
-CXXDIR     = example++
+CXXDIR     = cppexample
 INTERDIR   = $(BUILDDIR)/obj
 LIBDIR     = $(BUILDDIR)/lib
 INSTALLDIR = /usr/local/lib
@@ -22,19 +22,24 @@ LIBS         = -pthread
 CFLAGS       = -Wpedantic -std=c11 -I. -DNDEBUG -fPIC -O3
 #CFLAGS  	  = -Wpedantic -std=c11 -I. -g -DNDEBUG -fPIC -DSIR_SELFLOG
 
+CXXFLAGS      = -Wpedantic -std=c++14 -I. -DNDEBUG -fPIC -O3
+#CXXFLAGS  	  = -Wpedantic -std=c++14 -I. -g -DNDEBUG -fPIC -DSIR_SELFLOG
+
+
 ifeq ($(OS),Windows_NT)
 CFLAGS += -D_WIN32
+CXXFLAGS += -D_WIN32
 endif
 
-#CXXFLAGS     = -Wpedantic -std=c++11 -I. -DNDEBUG -fPIC -O3
-CXXFLAGS  	  = -Wpedantic -std=c++11 -I. -g -DNDEBUG -fPIC -DSIR_SELFLOG
+# link with static library, not shared
+LDFLAGS      = $(LIBS) -L$(LIBDIR) -lsir_s
 
-LDFLAGS      = $(LIBS) -L$(LIBDIR) -lsir_s #link with static library, not shared
-
+# translation units and headers
 TUS = sir.c sirmutex.c sirinternal.c sirfilecache.c sirconsole.c sirtextstyle.c sirerrors.c sirhelpers.c
 DEPS = sir.h sirmutex.h sirconfig.h sirinternal.h sirhelpers.h sirplatform.h sirfilecache.h sirtypes.h \
 	   sirconsole.h sirtextstyle.h sirerrors.h
 
+# intermediate files
 _OBJ = $(patsubst %.c, %.o, $(TUS))
 OBJ  = $(patsubst %, $(INTERDIR)/%, $(_OBJ))
 
