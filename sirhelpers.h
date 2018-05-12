@@ -128,6 +128,12 @@ void _sir_resetstr(sirchar_t* str) {
     str[0] = (sirchar_t)'\0';
 }
 
+/**
+ * Squelches warnings about unused variables (and most compilers will
+ * optimize this out to NOOP).
+ */
+#define UNUSED(v) v = v;
+
 /** @} */
 
 #endif /* !_SIR_HELPERS_H_INCLUDED */
