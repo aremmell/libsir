@@ -38,7 +38,7 @@
                         "name": "Number, Constant, Function Argument, Tag Attribute, Embedded",
                         "scope": "constant.numeric, constant.language, support.constant, constant.character, variable.parameter, keyword.other.unit",
                         "settings": {
-                            "foreground": "#E5DC58"
+                            "foreground": "#AFE6B4"
                         }                        
                     },
                     {
@@ -145,11 +145,13 @@
                 ]
             },
         },
-        "files.associations": {
-            "sir.hh": "cpp",
+        "files.associations":{
+            "*.hh": "cpp",
+            "*.cc": "cpp"
         },
         "C_Cpp.autoAddFileAssociations": false,
         "C_Cpp.default.cppStandard": "c++14",
-        "C_Cpp.default.cStandard": "c11"
+        "C_Cpp.default.cStandard": "c11",
+        "C_Cpp.default.intelliSenseMode": "clang-x64"
     }
 }
