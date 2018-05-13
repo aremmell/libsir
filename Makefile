@@ -1,10 +1,16 @@
-####################################################
-#                                                  #
-#              libsir make recipes                 #
-#                                                  #
-#       https://github.com/ryanlederman/sir        #
-#                                                  #
-####################################################
+#####################################################
+#                                                   #
+#              libsir make recipes                  #
+#                                                   #
+#       https://github.com/ryanlederman/sir         #
+#                                                   #
+#                                                   #
+# Note:                                             #
+#  Set the environment variable 'SIR_DEBUG' to 1    #
+#  in order to cause the compiler flags to include  #
+#  debug flags.                                     #
+#                                                   #
+#####################################################
 
 CC         = gcc
 CXX		   = g++
@@ -19,12 +25,15 @@ INSTALLDIR = /usr/local/lib
 INSTALLINC = /usr/local/include
 
 LIBS         = -pthread
-CFLAGS       = -Wpedantic -std=c11 -I. -DNDEBUG -fPIC -O3
-#CFLAGS  	  = -Wpedantic -std=c11 -I. -g -DNDEBUG -fPIC -DSIR_SELFLOG
 
-CXXFLAGS      = -Wpedantic -std=c++14 -I. -DNDEBUG -fPIC -O3
-#CXXFLAGS  	  = -Wpedantic -std=c++14 -I. -g -DNDEBUG -fPIC -DSIR_SELFLOG
-
+ifeq ($(SIR_DEBUG),1)
+CFLAGS   = -Wpedantic -std=c11 -I. -g -DNDEBUG -fPIC -DSIR_SELFLOG
+CXXFLAGS = -Wpedantic -std=c++14 -I. -g -DNDEBUG -fPIC -DSIR_SELFLOG
+@echo warning: SIR_DEBUG=1, using -g.
+else
+CFLAGS   = -Wpedantic -std=c11 -I. -DNDEBUG -fPIC -O3
+CXXFLAGS = -Wpedantic -std=c++14 -I. -DNDEBUG -fPIC -O3
+endif
 
 ifeq ($(OS),Windows_NT)
 CFLAGS += -D_WIN32
@@ -32,7 +41,7 @@ CXXFLAGS += -D_WIN32
 endif
 
 # link with static library, not shared
-LDFLAGS      = $(LIBS) -L$(LIBDIR) -lsir_s
+LDFLAGS = $(LIBS) -L$(LIBDIR) -lsir_s
 
 # translation units and headers
 TUS = sir.c sirmutex.c sirinternal.c sirfilecache.c sirconsole.c sirtextstyle.c sirerrors.c sirhelpers.c
