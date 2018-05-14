@@ -33,7 +33,7 @@
 
 static const sir_test sir_tests[] = {
     {"multi-thread race", sirtest_mthread_race},
-    {"performance benchmark", sirtest_perf},    
+    {"performance benchmark", sirtest_perf},     
     {"exceed max buffer size", sirtest_exceedmaxsize},
     {"file cache sanity", sirtest_filecachesanity},
     {"set invalid text style", sirtest_failsetinvalidstyle},
@@ -50,6 +50,7 @@ static const sir_test sir_tests[] = {
     {"roll/archive large file", sirtest_rollandarchivefile},
     {"error handling sanity", sirtest_errorsanity},
     {"text style sanity", sirtest_textstylesanity},
+    {"update levels/options", sirtest_updatesanity}
 };
 
 int main(int argc, char** argv) {
@@ -566,6 +567,50 @@ bool sirtest_perf(void) {
 
     sir_cleanup();
     return printerror(pass);
+}
+
+bool sirtest_updatesanity(void) {
+
+    INIT_N(si, SIRL_DEFAULT, 0, SIRL_DEFAULT, 0, "update_sanity");
+    bool pass = si_init;
+
+    rmfile("update.log");
+    sirfileid_t id1 = sir_addfile("update.log", SIRL_DEFAULT, SIRO_DEFAULT);
+
+    pass &= NULL != id1;
+
+    if (pass) {
+        pass &= sir_debug("default config");
+        pass &= sir_info("default config");
+        pass &= sir_notice("default config");
+        pass &= sir_warn("default config");
+        pass &= sir_error("default config");
+        pass &= sir_crit("default config");
+        pass &= sir_alert("default config");
+        pass &= sir_emerg("default config");
+
+        pass &= sir_stdoutlevels(SIRL_DEBUG);
+        pass &= sir_stdoutopts(SIRO_NOTIME);
+        pass &= sir_stderrlevels(SIRL_ALL);
+        pass &= sir_stderropts(SIRO_NONAME);
+
+        pass &= sir_filelevels(id1, SIRL_DEBUG);
+        pass &= sir_fileopts(id1, SIRO_MSGONLY);
+
+        pass &= sir_debug("modified config");
+        pass &= sir_info("modified config");
+        pass &= sir_notice("modified config");
+        pass &= sir_warn("modified config");
+        pass &= sir_error("modified config");
+        pass &= sir_crit("modified config");
+        pass &= sir_alert("modified config");
+        pass &= sir_emerg("modified config");       
+        pass &= sir_remfile(id1); 
+    }
+ 
+    printerror(pass);
+    sir_cleanup();
+    return pass;
 }
 
 /*

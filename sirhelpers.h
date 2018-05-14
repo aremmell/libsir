@@ -122,17 +122,17 @@ bool _sir_validstrnofail(const sirchar_t* str) {
     return __sir_validstr(str, false);
 }
 
+static inline
+bool _sir_validupdatedata(sir_update_data* data) {
+    return NULL != data && (NULL == data->levels || _sir_validlevels(*data->levels) &&
+           NULL == data->opts || _sir_validopts(*data->opts));
+}
+
 /** Places a null terminator at the first index in a string buffer. */
 static inline
 void _sir_resetstr(sirchar_t* str) {
     str[0] = (sirchar_t)'\0';
 }
-
-/**
- * Squelches warnings about unused variables (and most compilers will
- * optimize this out to NOOP).
- */
-#define UNUSED(v) v = v;
 
 /** @} */
 

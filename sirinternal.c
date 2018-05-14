@@ -135,6 +135,44 @@ bool _sir_init(sirinit* si) {
     return false;
 }
 
+void _sir_stdoutlevels(sirinit* si, sir_update_data* data) {
+    si->d_stdout.levels = *data->levels;
+}
+
+void _sir_stdoutopts(sirinit* si, sir_update_data* data) {
+    si->d_stdout.opts = *data->opts;
+}
+
+void _sir_stderrlevels(sirinit* si, sir_update_data* data) {
+    si->d_stderr.levels = *data->levels;
+}
+
+void _sir_stderropts(sirinit* si, sir_update_data* data) {
+    si->d_stderr.opts = *data->opts;
+}
+
+#ifndef SIR_NO_SYSLOG
+void _sir_sysloglevels(sirinit* si, sir_update_data* data) {
+    si->d_syslog.levels = *data->levels;
+}
+#endif
+
+bool _sir_writeinit(sir_update_data* data, sirinit_update update) {
+
+    _sir_seterror(_SIR_E_NOERROR);
+
+    if (_sir_sanity() && _sir_validupdatedata(data) && _sir_validptr(update)) {
+        sirinit* si = _sir_locksection(_SIRM_INIT);
+        assert(si);
+        if (si) {
+            update(si, data);
+            return _sir_unlocksection(_SIRM_INIT);
+        }
+    }
+
+    return false;
+}
+
 void* _sir_locksection(sir_mutex_id mid) {
 
     sirmutex_t* m   = NULL;
@@ -221,7 +259,6 @@ bool _sir_cleanup(void) {
     }
 
     _sir_resettextstyles();
-    _sir_seterror(_SIR_E_NOERROR);
     _sir_magic = 0;
     _sir_selflog("%s: libsir is cleaned up\n", __func__);
     return cleanup;

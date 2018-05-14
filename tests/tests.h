@@ -102,14 +102,18 @@
 #   define BLUE(s) s
 #endif
 
-#define INIT(var, l_stdout, o_stdout, l_stderr, o_stderr) \
-    sirinit var         = {0};                            \
-    var.d_stdout.opts   = o_stdout;                       \
-    var.d_stdout.levels = l_stdout;                       \
-    var.d_stderr.opts   = o_stderr;                       \
-    var.d_stderr.levels = l_stderr;                       \
+#define INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, name) \
+    sirinit var         = {0};                          \
+    var.d_stdout.opts   = o_stdout;                     \
+    var.d_stdout.levels = l_stdout;                     \
+    var.d_stderr.opts   = o_stderr;                     \
+    var.d_stderr.levels = l_stderr;                     \
+    if (strlen(name) > 0)                               \
+        strncpy(var.processName, name, SIR_MAXNAME);    \
     bool var##_init     = sir_init(&var);
 
+#define INIT(var, l_stdout, o_stdout, l_stderr, o_stderr) \
+    INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, "")
 
 /** Function signature for a single test. */
 typedef bool (*sir_test_fn)(void);
@@ -218,6 +222,16 @@ bool sirtest_textstylesanity(void);
  * @test Performance evaluation.
  */
 bool sirtest_perf(void);
+
+/**
+ * @test Properly update levels/options at runtime.
+ */
+bool sirtest_updatesanity(void);
+
+/**
+ * @test .
+ *
+bool sirtest_xxxx(void); */
 
 /** @} */
 

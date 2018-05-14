@@ -44,6 +44,43 @@ bool sir_init(sirinit* si) {
     return _sir_init(si);
 }
 
+bool sir_stdoutlevels(sir_levels levels) {
+    sir_update_data data = { &levels, NULL };
+    return _sir_writeinit(&data, _sir_stdoutlevels);
+}
+
+bool sir_stdoutopts(sir_options opts) {
+    sir_update_data data = { NULL, &opts };
+    return _sir_writeinit(&data, _sir_stdoutopts);
+}
+
+bool sir_stderrlevels(sir_levels levels) {
+    sir_update_data data = { &levels, NULL };
+    return _sir_writeinit(&data, _sir_stderrlevels);
+}
+
+bool sir_stderropts(sir_options opts) {
+    sir_update_data data = { NULL, &opts };
+    return _sir_writeinit(&data, _sir_stderropts);
+}
+
+#ifndef SIR_NO_SYSLOG
+bool sir_sysloglevels(sir_levels levels) {
+    sir_update_data data = { &levels, NULL };
+    return _sir_writeinit(&data, _sir_sysloglevels);
+}
+#endif
+
+bool sir_filelevels(sirfileid_t id, sir_levels levels) {
+    sir_update_data data = { &levels, NULL };
+    return _sir_updatefile(id, &data);
+}
+
+bool sir_fileopts(sirfileid_t id, sir_options opts) {
+    sir_update_data data = { NULL, &opts };
+    return _sir_updatefile(id, &data);
+}
+
 bool sir_cleanup(void) {
     return _sir_cleanup();
 }

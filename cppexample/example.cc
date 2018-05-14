@@ -1,27 +1,31 @@
 #include "../sir.hh"
 #include <iostream>
+#include <thread>
 
 using namespace std;
+
+void thread_fn(std::string say, sir::logger& log) {
+    for (size_t n = 0; n < 1000; n++) {
+        sir::stringstream_t strm;
+        strm << say << ": " << n;
+        log.debug(strm);
+    }
+}
 
 int main(int argc, char** argv) {
 
     try {
-        sir::logger log(SIRL_ALL, -1, 0, SIRO_DEFAULT, 0, "sups");
+        sir::logger log("sups");
+  
+        std::thread t1(thread_fn, "number juan", std::ref(log));
+        std::thread t2(thread_fn, "number two", std::ref(log));
+        std::thread t3(thread_fn, "number tree", std::ref(log));
 
-        log.debug << "debug text" << endl;
+        t1.join();
+        t2.join();
+        t3.join();
 
-        if (log.debug.fail())
-            cerr << "debug failed! error: " << log.geterror() << endl;
-
-        log.info << "info text" << endl;  
-        log.notice << "notice text" << endl;  
-        log.warn << "warn text" << endl;  
-        log.error << "error text" << endl;  
-        log.crit << "crit text" << endl;  
-        log.alert << "alert text" << endl;  
-        log.emerg << "emerg text" << endl;  
-
-        log.info << "break you" << endl;
+        cout << "all threads completed running." << endl;
 
     } catch (sir::lib_exception& e) {
         cerr << e.what() << endl;

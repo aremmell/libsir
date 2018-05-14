@@ -37,7 +37,6 @@
 #include "sirtypes.h"
 
 #ifdef __cplusplus
-#include "sir.hh"
 extern "C" {
 #endif /* !__cplusplus */
 
@@ -65,6 +64,19 @@ extern "C" {
  * @retval false Initialization failed.
  */
 bool sir_init(sirinit* si);
+
+bool sir_stdoutlevels(sir_levels levels);
+bool sir_stdoutopts(sir_options opts);
+
+bool sir_stderrlevels(sir_levels levels);
+bool sir_stderropts(sir_options opts);
+
+#ifndef SIR_NO_SYSLOG
+bool sir_sysloglevels(sir_levels levels);
+#endif
+
+bool sir_filelevels(sirfileid_t id, sir_levels levels);
+bool sir_fileopts(sirfileid_t id, sir_options opts);
 
 /**
  * @brief Frees allocated resources and resets internal state.

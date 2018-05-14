@@ -45,6 +45,7 @@ sirfileid_t _sir_addfile(const sirchar_t* path, sir_levels levels, sir_options o
 
     if (_sir_sanity()) {
         sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
+        assert(sfc);
 
         if (sfc) {
             if (SIRL_DEFAULT == levels)
@@ -62,12 +63,31 @@ sirfileid_t _sir_addfile(const sirchar_t* path, sir_levels levels, sir_options o
     return NULL;
 }
 
+bool _sir_updatefile(sirfileid_t id, sir_update_data* data) {
+
+    _sir_seterror(_SIR_E_NOERROR);
+
+    if (_sir_sanity() && _sir_validptr(id) && _sir_validfid(*id) &&
+        _sir_validupdatedata(data)) {
+        sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
+        assert(sfc);
+
+        if (sfc) {
+            bool r = _sir_fcache_update(sfc, id, data);
+            return _sir_unlocksection(_SIRM_FILECACHE) && r;
+        }
+    }
+
+    return false;
+}
+
 bool _sir_remfile(sirfileid_t id) {
 
     _sir_seterror(_SIR_E_NOERROR);
 
     if (_sir_sanity() && _sir_validptr(id) && _sir_validfid(*id)) {
         sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
+        assert(sfc);
 
         if (sfc) {
             bool r = _sir_fcache_rem(sfc, id);
@@ -341,6 +361,15 @@ bool _sirfile_validate(sirfile* sf) {
            _sir_validptr(sf->f) && _sir_validstr(sf->path);
 }
 
+void  _sirfile_update(sirfile* sf, sir_update_data* data) {
+    if (_sirfile_validate(sf) && _sir_validupdatedata(data)) {
+        if (data->levels && _sir_validlevels(*data->levels))
+            sf->levels = *data->levels;
+        if (data->opts && _sir_validopts(*data->opts))
+            sf->opts = *data->opts;
+    }
+}
+
 sirfileid_t _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels levels, sir_options opts) {
 
     if (_sir_validptr(sfc) && _sir_validstr(path) && _sir_validlevels(levels) && _sir_validopts(opts)) {
@@ -371,6 +400,23 @@ sirfileid_t _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels le
     }
 
     return NULL;
+}
+
+bool _sir_fcache_update(sirfcache* sfc, sirfileid_t id, sir_update_data* data) {
+
+    if (_sir_validptr(sfc) && _sir_validptr(id) && _sir_validfid(*id) &&
+        _sir_validupdatedata(data)) {
+        sirfile* found = _sir_fcache_find(sfc, (const void*)id, _sir_fcache_pred_id);
+        if (!found) {
+            _sir_seterror(_SIR_E_NOFILE);
+            return false;
+        }
+
+        _sirfile_update(found, data);
+        return true;
+    }
+
+    return false;
 }
 
 bool _sir_fcache_rem(sirfcache* sfc, sirfileid_t id) {
@@ -408,6 +454,11 @@ bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
     /* paths/file names are not case sensitive on windows. */
     return 0 == _strnicmp(path, iter->path, SIR_MAXPATH);
 #endif
+}
+
+bool _sir_fcache_pred_id(const void* match, sirfile* iter) {
+    sirfileid_t id = (sirfileid_t)match;
+    return iter->id == *id;
 }
 
 sirfile* _sir_fcache_find(sirfcache* sfc, const void* match, sir_fcache_pred pred) {
@@ -464,7 +515,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output,
 
             (*wanted)++;
 
-            if (sfc->files[n]->opts != lastopts) {
+            if (!write || sfc->files[n]->opts != lastopts) {
                 write = _sir_format(false, sfc->files[n]->opts, output);
                 assert(write);
                 lastopts = sfc->files[n]->opts;

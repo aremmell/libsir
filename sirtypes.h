@@ -304,6 +304,7 @@ typedef enum {
     _SIRM_TEXTSTYLE, /**< The ::sir_style_map section. */
 } sir_mutex_id;
 
+/** Error type. */
 typedef struct {
     sirerror_t lasterror;
     int os_error;
@@ -315,6 +316,15 @@ typedef struct {
         uint32_t line;
     } loc;
 } sir_thread_err;
+
+/** 
+ * sed to encapsulate dynamic updating of
+ * config; add members here if necessary.
+ */
+typedef struct {
+    sir_levels* levels;
+    sir_options* opts;
+} sir_update_data;
 
 /** @} */
 
