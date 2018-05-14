@@ -17,7 +17,8 @@ int main(int argc, char** argv) {
     try {
         sir::logger log("sups");
   
-        std::thread t1(thread_fn, "number juan", std::ref(log));
+        log.debug(sir::serializable::format("sups bruv? %d\n", 12343));
+        /* std::thread t1(thread_fn, "number juan", std::ref(log));
         std::thread t2(thread_fn, "number two", std::ref(log));
         std::thread t3(thread_fn, "number tree", std::ref(log));
 
@@ -25,7 +26,7 @@ int main(int argc, char** argv) {
         t2.join();
         t3.join();
 
-        cout << "all threads completed running." << endl;
+        cout << "all threads completed running." << endl; */
 
     } catch (sir::lib_exception& e) {
         cerr << e.what() << endl;

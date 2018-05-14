@@ -10,7 +10,7 @@
         "editor.folding": false,
         "editor.matchBrackets": true,
         "editor.minimap.enabled": false,
-        "C_Cpp.clang_format_style": "{ BasedOnStyle: Google, Language: Cpp, IndentWidth: 4, AlignAfterOpenBracket: DontAlign, AlignConsecutiveAssignments: true, AlignConsecutiveDeclarations: true, AlignEscapedNewlines: Left, AllowAllParametersOfDeclarationOnNextLine: true, AllowShortCaseLabelsOnASingleLine: true, AlwaysBreakAfterReturnType: None, BinPackArguments: true, BinPackParameters: true, BreakBeforeBraces: Custom, BraceWrapping: { AfterEnum: true, AfterStruct: true, AfterControlStatement: false, AfterFunction: false, BeforeElse: false}, BreakBeforeBraces: Attach, IndentCaseLabels: true, KeepEmptyLinesAtTheStartOfBlocks: true, AllowShortIfStatementsOnASingleLine: false, SpaceBeforeAssignmentOperators: true, SpaceBeforeParens: ControlStatements, UseTab: Never, DerivePointerAlignment: false, PointerAlignment: Left, ColumnLimit: 110, AllowShortFunctionsOnASingleLine: Empty}",
+        "C_Cpp.clang_format_style": "{ BasedOnStyle: Google, Language: Cpp, Standard: Cpp11, IndentWidth: 4, AlignAfterOpenBracket: DontAlign, AlignConsecutiveAssignments: true, AlignConsecutiveDeclarations: true, AlignEscapedNewlines: Left, AllowAllParametersOfDeclarationOnNextLine: true, AllowShortCaseLabelsOnASingleLine: true, AlwaysBreakAfterReturnType: None, AlwaysBreakTemplateDeclarations: true, BinPackArguments: true, BinPackParameters: true, BreakBeforeBraces: Custom, BraceWrapping: { AfterEnum: true, AfterStruct: false, AfterClass: true, AfterControlStatement: false, AfterFunction: false, BeforeElse: false, AfterNamespace: false, BeforeCatch: false, SplitEmptyNamespace: true, SplitEmptyFunction: false}, BreakBeforeBinaryOperators: None, BreakBeforeBraces: Attach, BreakBeforeInheritanceComma: false, CompactNamespaces: false, ConstructorInitializerAllOnOneLineOrOnePerLine: false, ContinuationIndentWidth: 2, Cpp11BracedListStyle: true, IndentPPDirectives: AfterHash, IndentCaseLabels: true, IndentWrappedFunctionNames: true, NamespaceIndentation: All, SpaceAfterCStyleCast: false, SpaceAfterTemplateKeyword: false, SpaceBeforeAssignmentOperators: true, SpaceInEmptyParentheses: false, KeepEmptyLinesAtTheStartOfBlocks: false, AllowShortIfStatementsOnASingleLine: true, AllowShortLoopsOnASingleLine: true, ReflowComments: true, SpaceBeforeAssignmentOperators: true, SpaceBeforeParens: ControlStatements, UseTab: Never, DerivePointerAlignment: false, PointerAlignment: Left, ColumnLimit: 110, AllowShortFunctionsOnASingleLine: All, AllowShortBlocksOnASingleLine: true}",
         "C_Cpp.clang_format_fallbackStyle": "Google",
         "editor.autoClosingBrackets": false,
         "editor.tabCompletion": true,
@@ -32,14 +32,14 @@
                         "scope": "entity.name.function, meta.function-call, variable.function, support.function, keyword.other.special-method, meta.block-level",
                         "settings": {
                             "foreground": "#E0E0E0"
-                        }                        
+                        }
                     },
                     {
                         "name": "Number, Constant, Function Argument, Tag Attribute, Embedded",
                         "scope": "constant.numeric, constant.language, support.constant, constant.character, variable.parameter, keyword.other.unit",
                         "settings": {
                             "foreground": "#AFE6B4"
-                        }                        
+                        }
                     },
                     {
                         "name": "Comments",
@@ -69,14 +69,14 @@
                         "scope": "keyword",
                         "settings": {
                             "foreground": "#569cd6"
-                      }                        
+                      }
                     },
                     {
                         "name": "Storage Type", /* int, bool */
                         "scope": "storage.type",
                         "settings": {
                             "foreground": "#678cb1"
-                        }                
+                        }
                     },
                     {
                         "name": "Storage Modifier", /* typename, explicit, const  */
@@ -84,8 +84,8 @@
                         "settings": {
                             "foreground": "#678cb1",
                             "fontStyle": "italic"
-                        }                
-                    },                    
+                        }
+                    },
                     {
                         "name": "Other Variable, String Link",
                         "scope": "support.other.variable, string.other.link",
@@ -93,13 +93,13 @@
                             "foreground": "#77f28c"
                         }
                     },
-                    { 
+                    {
                         "name": "String",
                         "scope": "string",
                         "settings": { /* "foo" */
                             "foreground": "#7F7F7F"
                         }
-                    },                    
+                    },
                     {
                         "name": "Class", /* class */
                         "scope": "entity.name.class, entity.name.type.class, support.class",
@@ -113,7 +113,7 @@
                         "settings": {
                             "foreground": "#abb4eb"
                         }
-                    },                    
+                    },
                     {
                         "name": "Attributes",
                         "scope": "entity.other.attribute-name",
@@ -147,11 +147,18 @@
         },
         "files.associations":{
             "*.hh": "cpp",
-            "*.cc": "cpp"
+            "*.cc": "cpp",
+            "*.h": "c",
+            "*.c": "c"
         },
         "C_Cpp.autoAddFileAssociations": false,
         "C_Cpp.default.cppStandard": "c++14",
         "C_Cpp.default.cStandard": "c11",
-        "C_Cpp.default.intelliSenseMode": "clang-x64"
+        "C_Cpp.default.intelliSenseMode": "clang-x64",
+        "files.autoSaveDelay": 5000,
+        "files.defaultLanguage": "cpp",
+        "files.insertFinalNewline": true,
+        "files.trimFinalNewlines": true,
+        "files.trimTrailingWhitespace": true
     }
 }

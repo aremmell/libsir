@@ -33,22 +33,21 @@
 #ifndef _SIR_HH_INCLUDED
 #define _SIR_HH_INCLUDED
 
-#include "sir.h"
-#include "sirdefaults.h"
+#include <cstdio>
 #include <exception>
 #include <functional>
-#include <mutex>
 #include <memory>
+#include <mutex>
 #include <sstream>
 #include <string>
-#include <cstdio>
 #include <vector>
+#include "sir.h"
 
 /**
  * @defgroup cpp C++ wrapper
- * 
+ *
  * C++ interface to libsir.
- * 
+ *
  * @addtogroup cpp
  * @{
  */
@@ -61,17 +60,17 @@ namespace sir {
      * template over ::sirchar_t in case it may be defined
      * as a type other than char in the future (e.g., wchar_t).
      */
-    typedef std::basic_string<sirchar_t> string_t;
+    typedef std::basic_string<sirchar_t>       string_t;
     typedef std::basic_stringstream<sirchar_t> stringstream_t;
-    
+
     /** @class serializable */
     class serializable {
-    public:
+       public:
         virtual const string_t to_string() const = 0;
 
         static const string_t format(const string_t& format, ...) {
             if (format.empty()) return string_t();
-            
+
             va_list args, copy;
             va_start(args, format);
             va_copy(copy, args);
@@ -79,8 +78,8 @@ namespace sir {
             int needed = std::vsnprintf(NULL, 0, format.c_str(), copy);
             if (needed <= 0) return string_t();
 
-            std::size_t newsize = static_cast<std::size_t>(needed + 1);
-            std::vector<sirchar_t> vec(newsize, '\0');            
+            std::size_t            newsize = static_cast<std::size_t>(needed + 1);
+            std::vector<sirchar_t> vec(newsize, '\0');
 
             int formatted = std::vsnprintf(&vec[0], newsize, format.c_str(), args);
             if (formatted <= 0) return string_t();
@@ -97,24 +96,24 @@ namespace sir {
 
     ///////////////////////////////////////////////
     class error : public serializable {
-    public:
+       public:
         error() { _code = sir_geterror(_message); }
 
-        uint16_t code() const  { return _code; }
+        uint16_t       code() const { return _code; }
         const string_t message() const { return _message; }
 
         const string_t to_string() const final {
             return format("libsir error, code: %hu %s", _code, _message);
         }
 
-    protected:
-        uint16_t _code;
+       protected:
+        uint16_t  _code;
         sirchar_t _message[SIR_MAXERROR];
     }; /* !class error */
 
     ///////////////////////////////////////////////
     class lib_exception : public std::exception, public error {
-    public:
+       public:
         lib_exception() : error() { _what = to_string(); }
         lib_exception(const string_t& what) { _what = what; }
 
@@ -123,25 +122,26 @@ namespace sir {
             return _what.c_str();
         }
 
-    protected:
+       protected:
         string_t _what;
     }; /* !class lib_exception */
 
     ///////////////////////////////////////////////
     class adapter {
-    protected:
-        adapter() = default;
-        adapter(adapter&) = delete;
-        adapter(adapter&&) = delete;      
-    public:
-        virtual ~adapter() = default;        
+       protected:
+        adapter()          = default;
+        adapter(adapter&)  = delete;
+        adapter(adapter&&) = delete;
+
+       public:
+        virtual ~adapter() = default;
     }; /* !class adapter */
 
     ///////////////////////////////////////////////
     class default_adapter : public adapter {
-    public:
-        default_adapter() = default;
-        default_adapter(default_adapter&) = delete;
+       public:
+        default_adapter()                  = default;
+        default_adapter(default_adapter&)  = delete;
         default_adapter(default_adapter&&) = delete;
 
         bool debug(const stringstream_t& strm) const { return debug(strm.str()); }
@@ -166,50 +166,50 @@ namespace sir {
         bool alert(const string_t& message) const { return sir_alert(message.c_str()); }
 
         bool emerg(const stringstream_t& strm) const { return emerg(strm.str()); }
-        bool emerg(const string_t& message) const { return sir_emerg(message.c_str()); }                                                
+        bool emerg(const string_t& message) const { return sir_emerg(message.c_str()); }
 
     }; /* !class default_adapter */
 
     ///////////////////////////////////////////////
     class policy {
-    public:
+       public:
         enum dest { stdout = 1, stderr, syslog, file };
 
-        policy() = default;
+        policy()          = default;
         virtual ~policy() = default;
 
-        virtual sir_levels levels(dest d) const = 0;
+        virtual sir_levels  levels(dest d) const  = 0;
         virtual sir_options options(dest d) const = 0;
     }; /* !class policy */
 
     ///////////////////////////////////////////////
     class default_policy : public policy {
-    public:
+       public:
         sir_levels levels(dest d) const final {
-            switch(d) {
-                case stdout: return sir_stdout_def_lvls;
-                case stderr: return sir_stderr_def_lvls;
-                case syslog: return sir_syslog_def_lvls;
-                case file: return sir_file_def_lvls;
+            switch (d) {
+                case stdout: return SIRL_DEFAULT;
+                case stderr: return SIRL_DEFAULT;
+                case syslog: return SIRL_DEFAULT;
+                case file: return SIRL_DEFAULT;
                 default: throw lib_exception("invalid destination");
             }
         }
 
         sir_options options(dest d) const final {
-            switch(d) {
-                case stdout: return sir_stdout_def_opts;
-                case stderr: return sir_stderr_def_opts;
+            switch (d) {
+                case stdout: return SIRO_DEFAULT;
+                case stderr: return SIRO_DEFAULT;
                 case syslog: throw lib_exception("syslog options unavailable");
-                case file: return sir_file_def_opts;
+                case file: return SIRO_DEFAULT;
                 default: throw lib_exception("invalid destination");
-            }            
+            }
         }
     }; /* !class default_policy */
 
     ///////////////////////////////////////////////
     template<class TAdapter = default_adapter, class TPolicy = default_policy>
     class logger_impl : public TAdapter {
-    public:
+       public:
         explicit logger_impl(const string_t& name) : TAdapter() {
             static_assert(std::is_base_of<adapter, TAdapter>::value, "TAdapter not a sir::adapter");
             static_assert(std::is_base_of<policy, TPolicy>::value, "TPolicy not a sir::policy");
@@ -218,22 +218,47 @@ namespace sir {
             _si.d_stdout.levels = _policy.levels(policy::stdout);
             _si.d_stdout.opts   = _policy.options(policy::stdout);
             _si.d_stderr.levels = _policy.levels(policy::stderr);
-            _si.d_stderr.opts   = _policy.options(policy::stderr); 
+            _si.d_stderr.opts   = _policy.options(policy::stderr);
             _si.d_syslog.levels = _policy.levels(policy::syslog);
 
-            if (!name.empty())
-                strncpy(_si.processName, name.c_str(), SIR_MAXNAME);
+            if (!name.empty()) strncpy(_si.processName, name.c_str(), SIR_MAXNAME);
 
             if (!sir_init(&_si)) throw lib_exception();
         }
         virtual ~logger_impl() { sir_cleanup(); }
-               
-        /** Add a file using the policy. */
+
+        virtual bool set_stdout_levels(sir_levels levels) const {
+            if (!sir_stdoutlevels(levels)) throw lib_exception();
+        }
+
+        virtual bool set_stdout_options(sir_options options) const {
+            if (!sir_stdoutopts(options)) throw lib_exception();
+        }
+
+        virtual bool set_stderr_levels(sir_levels levels) const {
+            if (!sir_stderrlevels(levels)) throw lib_exception();
+        }
+
+        virtual bool set_stderr_options(sir_options options) const {
+            if (!sir_stderropts(options)) throw lib_exception();
+        }
+
+        virtual bool set_syslog_levels(sir_levels levels) const {
+            if (!sir_sysloglevels(levels)) throw lib_exception();
+        }
+
+        virtual bool set_file_levels(sirfileid_t id, sir_levels levels) const {
+            if (!sir_filelevels(id, levels)) throw lib_exception();
+        }
+
+        virtual bool set_file_options(sirfileid_t id, sir_options options) const {
+            if (!sir_fileopts(id, options)) throw lib_exception();
+        }
+
         virtual sirfileid_t addfile(const string_t& path) const {
             return addfile(path, _policy.levels(policy::file), _policy.options(policy::file));
         }
 
-        /** Add a file overriding the policy. */
         virtual sirfileid_t addfile(const string_t& path, sir_levels levels, sir_options options) const {
             sirfileid_t id = sir_addfile(path.c_str(), levels, options);
             if (nullptr == id) throw lib_exception();
@@ -244,26 +269,24 @@ namespace sir {
             if (!sir_remfile(id)) throw lib_exception();
         }
 
-        virtual void settextstyle(sir_level level, sir_textstyle style) {
-            if (!sir_set_textstyle(level, style))
-                throw lib_exception();
+        virtual void settextstyle(sir_level level, sir_textstyle style) const {
+            if (!sir_settextstyle(level, style)) throw lib_exception();
         }
 
         virtual void resettextstyles() const {
-            if (!sir_reset_textstyles())
-                throw lib_exception();
+            if (!sir_resettextstyles()) throw lib_exception();
         }
 
         virtual error geterror() const { return error(); }
 
-    protected:
+       protected:
         TPolicy _policy;
         sirinit _si;
     }; /* !class logger_impl */
 
     typedef logger_impl<default_adapter, default_policy> logger;
 
-}  /* !namespace sir */
+}  // namespace sir
 
 /** @} */
 
