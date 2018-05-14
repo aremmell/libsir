@@ -5,6 +5,8 @@ var searchData=
   ['sir_5fstyle_5fpriv_5fmap',['sir_style_priv_map',['../d7/dcf/structsir__style__priv__map.html',1,'']]],
   ['sir_5fsyslog_5fdest',['sir_syslog_dest',['../dc/dea/structsir__syslog__dest.html',1,'']]],
   ['sir_5ftest',['sir_test',['../d7/dcf/structsir__test.html',1,'']]],
+  ['sir_5fthread_5ferr',['sir_thread_err',['../dc/dac/structsir__thread__err.html',1,'']]],
+  ['sir_5fupdate_5fdata',['sir_update_data',['../d3/dcd/structsir__update__data.html',1,'']]],
   ['sirbuf',['sirbuf',['../db/d38/structsirbuf.html',1,'']]],
   ['sirerror',['sirerror',['../d6/d13/structsirerror.html',1,'']]],
   ['sirfcache',['sirfcache',['../d0/dd3/structsirfcache.html',1,'']]],

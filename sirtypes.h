@@ -48,6 +48,7 @@ typedef uint32_t sirerror_t;
 
 /** Defines the available levels \a (severity/priority) of logging output. */
 typedef enum {
+    SIRL_NONE    = 0x0,  /**< No output. */
     SIRL_EMERG   = 0x1,  /**< Nuclear war, Armageddon, etc. */
     SIRL_ALERT   = 0x2,  /**< Action required ASAP. */
     SIRL_CRIT    = 0x4,  /**< Critical errors. */
@@ -193,10 +194,7 @@ typedef struct {
 typedef struct {
     sir_stdio_dest d_stdout; /**< \a stdout configuration. */
     sir_stdio_dest d_stderr; /**< \a stderr configuration. */
-
-#ifndef SIR_NO_SYSLOG
-    sir_syslog_dest d_syslog; /**< \a syslog configuration. */
-#endif
+    sir_syslog_dest d_syslog; /**< \a syslog configuration (if available). */
 
     /**
      * If set, defines the name that will appear in formatted output.

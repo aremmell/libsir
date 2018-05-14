@@ -48,11 +48,8 @@ sirfileid_t _sir_addfile(const sirchar_t* path, sir_levels levels, sir_options o
         assert(sfc);
 
         if (sfc) {
-            if (SIRL_DEFAULT == levels)
-                levels = sir_file_def_lvls;
-                
-            if (SIRO_DEFAULT == opts)
-                opts = sir_file_def_opts;
+            _sir_defaultlevels(&levels, sir_file_def_lvls);
+            _sir_defaultopts(&opts, sir_file_def_opts);            
 
             sirfileid_t r = _sir_fcache_add(sfc, path, levels, opts);
             _sir_unlocksection(_SIRM_FILECACHE);

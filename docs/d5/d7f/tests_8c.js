@@ -1,5 +1,6 @@
 var tests_8c =
 [
+    [ "printerror", "d5/d7f/tests_8c.html#aa47155994f7324ced7aee82c49909f45", null ],
     [ "sirtest_errorsanity", "d2/d7d/group__tests.html#ga1d9150c929ba0b79bf06592563ea81e1", null ],
     [ "sirtest_exceedmaxsize", "d2/d7d/group__tests.html#ga90b7633a39946d2c201758aafbce43fa", null ],
     [ "sirtest_failaftercleanup", "d2/d7d/group__tests.html#gabf5a4643e79df2f6b06956ffd6a465ab", null ],
@@ -17,5 +18,6 @@ var tests_8c =
     [ "sirtest_mthread_race", "d2/d7d/group__tests.html#ga33e3ca313f107bfad6d01c00c9d47d8d", null ],
     [ "sirtest_perf", "d2/d7d/group__tests.html#ga607e96cb52e248a2277ab3ecc31b7195", null ],
     [ "sirtest_rollandarchivefile", "d2/d7d/group__tests.html#ga1b17632b25d61e85f6ff1fa08371959e", null ],
-    [ "sirtest_textstylesanity", "d2/d7d/group__tests.html#ga18ccd68f2c37d9798a06c403380c9308", null ]
+    [ "sirtest_textstylesanity", "d2/d7d/group__tests.html#ga18ccd68f2c37d9798a06c403380c9308", null ],
+    [ "sirtest_updatesanity", "d2/d7d/group__tests.html#gaf3428b620d3540baf058f6b7dd42c075", null ]
 ];

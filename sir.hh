@@ -219,9 +219,8 @@ namespace sir {
             _si.d_stdout.opts   = _policy.options(policy::stdout);
             _si.d_stderr.levels = _policy.levels(policy::stderr);
             _si.d_stderr.opts   = _policy.options(policy::stderr); 
-#ifndef SIR_NO_SYSLOG
             _si.d_syslog.levels = _policy.levels(policy::syslog);
-#endif
+
             if (!name.empty())
                 strncpy(_si.processName, name.c_str(), SIR_MAXNAME);
 

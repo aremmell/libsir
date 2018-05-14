@@ -104,6 +104,18 @@ bool _sir_validlevels(sir_levels levels);
 /** Validates a single ::sir_level. */
 bool _sir_validlevel(sir_level level);
 
+/** Applies default ::sir_level flags if applicable. */
+static inline
+void _sir_defaultlevels(sir_levels* levels, sir_levels def) {
+    if (levels && SIRL_DEFAULT == *levels) *levels = def;
+}
+
+/** Applies default ::sir_options flags if applicable. */
+static inline
+void _sir_defaultopts(sir_options* opts, sir_options def) {
+    if (opts && SIRO_DEFAULT == *opts) *opts = def;
+}
+
 /** Validates a set of ::sir_option flags. */
 bool _sir_validopts(sir_options opts);
 

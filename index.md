@@ -154,7 +154,7 @@ Destination      |  Levels     | Options
 `syslog`         | <code>SIRL_WARN  \| SIRL_CRIT \| SIRL_ALERT \| SIRL_EMERG</code> | `N/A (_syslog has its own decoration_)`
 `log files`      | `SIRL_ALL`  | 0 (_all output_)
 
-These define the default text styling to use for `stdio` (@ref sir_textstyle) on a per-level basis (_can be changed at runtime with_ @ref sir_settextstyle) and are also located in [sirdefaults.h](@ref sirdefaults.h):
+These define the default text styling to use for `stdio` (@ref sir_textstyle) on a per-level basis (_can be changed at runtime with_ @ref sir_set_textstyle) and are also located in [sirdefaults.h](@ref sirdefaults.h):
 
 Level         | Style                                           | Sample 
 -----         | :-----:                                         | ------

@@ -53,19 +53,25 @@ bool _sir_options_sanity(const sirinit* si);
 /** Initializes libsir. */
 bool _sir_init(sirinit* si);
 
-typedef void (*sirinit_update)(sirinit*, sir_update_data*);
-
+/** Updates levels for \a stdout. */
 void _sir_stdoutlevels(sirinit* si, sir_update_data* data);
+
+/** Updates options for \a stdout. */
 void _sir_stdoutopts(sirinit* si, sir_update_data* data);
 
+/** Updates levels for \a stderr. */
 void _sir_stderrlevels(sirinit* si, sir_update_data* data);
+
+/** Updates options for \a stderr. */
 void _sir_stderropts(sirinit* si, sir_update_data* data);
 
-#ifndef SIR_NO_SYSLOG
+/** Updates levels for \a syslog. */
 void _sir_sysloglevels(sirinit* si, sir_update_data* data);
-#endif
 
-/** Locks the init mutex, calls an updater function, then unlocks. */
+/** Updates levels/options in the global init structure. */
+typedef void (*sirinit_update)(sirinit*, sir_update_data*);
+
+/** Updates levels/options in the global init structure. */
 bool _sir_writeinit(sir_update_data* data, sirinit_update update);
 
 /** Locks a protected section. */

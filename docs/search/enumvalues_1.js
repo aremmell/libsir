@@ -21,6 +21,7 @@ var searchData=
   ['sirl_5femerg',['SIRL_EMERG',['../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc',1,'sirtypes.h']]],
   ['sirl_5ferror',['SIRL_ERROR',['../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76',1,'sirtypes.h']]],
   ['sirl_5finfo',['SIRL_INFO',['../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d',1,'sirtypes.h']]],
+  ['sirl_5fnone',['SIRL_NONE',['../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a7cc68341661fcb7a505aca67edb7a18e',1,'sirtypes.h']]],
   ['sirl_5fnotice',['SIRL_NOTICE',['../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a',1,'sirtypes.h']]],
   ['sirl_5fwarn',['SIRL_WARN',['../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881',1,'sirtypes.h']]],
   ['siro_5fdefault',['SIRO_DEFAULT',['../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02',1,'sirtypes.h']]],

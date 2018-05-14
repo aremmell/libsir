@@ -15,6 +15,7 @@ var group__public =
     [ "sirerror_t", "d8/d64/group__public.html#ga7c16d05c40f30affcc3ca881a96f2b0f", null ],
     [ "sirfileid_t", "d8/d64/group__public.html#gab8f5ba0bae678457f8bce30e961c9eb6", null ],
     [ "sir_level", "d8/d64/group__public.html#ga4a3303c67acd49bea38fd3565d458cb2", [
+      [ "SIRL_NONE", "d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a7cc68341661fcb7a505aca67edb7a18e", null ],
       [ "SIRL_EMERG", "d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc", null ],
       [ "SIRL_ALERT", "d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955", null ],
       [ "SIRL_CRIT", "d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435", null ],
@@ -84,11 +85,18 @@ var group__public =
     [ "sir_debug", "d8/d64/group__public.html#ga3580e004c0c568c225a6d1a1bc5e9ea2", null ],
     [ "sir_emerg", "d8/d64/group__public.html#gabace08a061ddb85494e28bd3a518bb58", null ],
     [ "sir_error", "d8/d64/group__public.html#gace667f9ba844f541bc41c61c94ed93f3", null ],
+    [ "sir_filelevels", "d8/d64/group__public.html#ga2e789c5d4a997d3ad7a528bf7a878936", null ],
+    [ "sir_fileopts", "d8/d64/group__public.html#gaab0821c7a1b10e18e9a68b3e8df6f613", null ],
     [ "sir_info", "d8/d64/group__public.html#ga707b1de6ceee2e3091b7d4ecf0f8758e", null ],
     [ "sir_init", "d8/d64/group__public.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a", null ],
     [ "sir_notice", "d8/d64/group__public.html#gab17d7622664c42afaafa66c53542dfeb", null ],
     [ "sir_remfile", "d8/d64/group__public.html#ga4a774bf801d0356b90f29aa69688ef86", null ],
     [ "sir_resettextstyles", "d8/d64/group__public.html#ga932eec2f9c73eecdd2b6b935452e5eed", null ],
     [ "sir_settextstyle", "d8/d64/group__public.html#gaa628fae976081e7aaa302e5c5e43e06c", null ],
+    [ "sir_stderrlevels", "d8/d64/group__public.html#ga421c13f6e269440cef0ac5c1ff3e65dd", null ],
+    [ "sir_stderropts", "d8/d64/group__public.html#ga0e78fb3ad87f02ef0f056a34200a4ab9", null ],
+    [ "sir_stdoutlevels", "d8/d64/group__public.html#ga6f17febe99cb0beb6f8119283cc62d42", null ],
+    [ "sir_stdoutopts", "d8/d64/group__public.html#gac117aaf4a045115e58ba4471f9a4747f", null ],
+    [ "sir_sysloglevels", "d8/d64/group__public.html#ga2b383287c821bb519868776a4d8bae83", null ],
     [ "sir_warn", "d8/d64/group__public.html#ga3c4ca38dbb2a5e99e2d862dfdbd6f97a", null ]
 ];

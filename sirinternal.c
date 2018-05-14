@@ -64,8 +64,7 @@ bool _sir_sanity(void) {
 
 bool _sir_options_sanity(const sirinit* si) {
 
-    if (!si)
-        return false;
+    if (!_sir_validptr(si)) return false;
 
     bool levelcheck = true;
     levelcheck &= _sir_validlevels(si->d_stdout.levels);
@@ -95,21 +94,14 @@ bool _sir_init(sirinit* si) {
         return false;
     }
 
-    if (SIRL_DEFAULT == si->d_stdout.levels)
-        si->d_stdout.levels = sir_stdout_def_lvls;
+    _sir_defaultlevels(&si->d_stdout.levels, sir_stdout_def_lvls);
+    _sir_defaultopts(&si->d_stdout.opts, sir_stdout_def_opts);
 
-    if (SIRO_DEFAULT == si->d_stdout.opts)
-        si->d_stdout.opts = sir_stdout_def_opts;
-
-    if (SIRL_DEFAULT == si->d_stderr.levels)
-        si->d_stderr.levels = sir_stderr_def_lvls;
-
-    if (SIRO_DEFAULT == si->d_stderr.opts)
-        si->d_stderr.opts = sir_stderr_def_opts;
+    _sir_defaultlevels(&si->d_stderr.levels, sir_stderr_def_lvls);
+    _sir_defaultopts(&si->d_stderr.opts, sir_stderr_def_opts);
 
 #ifndef SIR_NO_SYSLOG
-    if (SIRL_DEFAULT == si->d_syslog.levels)
-        si->d_syslog.levels = sir_syslog_def_lvls;
+    _sir_defaultlevels(&si->d_syslog.levels, sir_syslog_def_lvls);
 #endif
 
     if (!_sir_options_sanity(si))
@@ -151,11 +143,9 @@ void _sir_stderropts(sirinit* si, sir_update_data* data) {
     si->d_stderr.opts = *data->opts;
 }
 
-#ifndef SIR_NO_SYSLOG
 void _sir_sysloglevels(sirinit* si, sir_update_data* data) {
     si->d_syslog.levels = *data->levels;
 }
-#endif
 
 bool _sir_writeinit(sir_update_data* data, sirinit_update update) {
 

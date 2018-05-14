@@ -8,6 +8,8 @@ var sirhelpers_8h =
     [ "__sir_safefree", "d0/dfe/group__intern.html#ga1ac1bb3c4f833dd42044a6cfd8f50e58", null ],
     [ "__sir_validstr", "d0/dfe/group__intern.html#ga611a23fcb3b3d995aa44807c2f329df8", null ],
     [ "_sir_bittest", "d0/dfe/group__intern.html#ga53f20bd7811bb5277f473e4b47aec2cf", null ],
+    [ "_sir_defaultlevels", "d0/dfe/group__intern.html#gaf8fff083b2f2b80b7c93d34dfa76006f", null ],
+    [ "_sir_defaultopts", "d0/dfe/group__intern.html#ga3256b5b782091a39b36e64256e7b5650", null ],
     [ "_sir_geterrcode", "d0/dfe/group__intern.html#ga8f4ab88b65313d0cf42cdb0363aa61e3", null ],
     [ "_sir_resetstr", "d0/dfe/group__intern.html#gab89052df9773870821612c9b99586281", null ],
     [ "_sir_safefree", "d0/dfe/group__intern.html#gafd7b2c5b8940fe4c92a59da4ebecfc09", null ],

@@ -17,5 +17,6 @@ var group__tests =
     [ "sirtest_mthread_race", "d2/d7d/group__tests.html#ga33e3ca313f107bfad6d01c00c9d47d8d", null ],
     [ "sirtest_perf", "d2/d7d/group__tests.html#ga607e96cb52e248a2277ab3ecc31b7195", null ],
     [ "sirtest_rollandarchivefile", "d2/d7d/group__tests.html#ga1b17632b25d61e85f6ff1fa08371959e", null ],
-    [ "sirtest_textstylesanity", "d2/d7d/group__tests.html#ga18ccd68f2c37d9798a06c403380c9308", null ]
+    [ "sirtest_textstylesanity", "d2/d7d/group__tests.html#ga18ccd68f2c37d9798a06c403380c9308", null ],
+    [ "sirtest_updatesanity", "d2/d7d/group__tests.html#gaf3428b620d3540baf058f6b7dd42c075", null ]
 ];

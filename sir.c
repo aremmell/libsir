@@ -34,6 +34,7 @@
 #include "sirinternal.h"
 #include "sirfilecache.h"
 #include "sirtextstyle.h"
+#include "sirdefaults.h"
 
 /**
  * @addtogroup public 
@@ -45,38 +46,47 @@ bool sir_init(sirinit* si) {
 }
 
 bool sir_stdoutlevels(sir_levels levels) {
+    _sir_defaultlevels(&levels, sir_stdout_def_lvls);
     sir_update_data data = { &levels, NULL };
     return _sir_writeinit(&data, _sir_stdoutlevels);
 }
 
 bool sir_stdoutopts(sir_options opts) {
+    _sir_defaultopts(&opts, sir_stdout_def_opts);
     sir_update_data data = { NULL, &opts };
     return _sir_writeinit(&data, _sir_stdoutopts);
 }
 
 bool sir_stderrlevels(sir_levels levels) {
+    _sir_defaultlevels(&levels, sir_stderr_def_lvls);
     sir_update_data data = { &levels, NULL };
     return _sir_writeinit(&data, _sir_stderrlevels);
 }
 
 bool sir_stderropts(sir_options opts) {
+    _sir_defaultopts(&opts, sir_stderr_def_opts);
     sir_update_data data = { NULL, &opts };
     return _sir_writeinit(&data, _sir_stderropts);
 }
 
-#ifndef SIR_NO_SYSLOG
 bool sir_sysloglevels(sir_levels levels) {
+#ifndef SIR_NO_SYSLOG    
+    _sir_defaultlevels(&levels, sir_syslog_def_lvls);
     sir_update_data data = { &levels, NULL };
     return _sir_writeinit(&data, _sir_sysloglevels);
-}
+#else
+    return false;
 #endif
+}
 
 bool sir_filelevels(sirfileid_t id, sir_levels levels) {
+    _sir_defaultlevels(&levels, sir_file_def_lvls);
     sir_update_data data = { &levels, NULL };
     return _sir_updatefile(id, &data);
 }
 
 bool sir_fileopts(sirfileid_t id, sir_options opts) {
+    _sir_defaultopts(&opts, sir_file_def_opts);
     sir_update_data data = { NULL, &opts };
     return _sir_updatefile(id, &data);
 }

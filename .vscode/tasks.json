@@ -11,6 +11,8 @@
             "args": [
                 "example"
             ],
+            "options": {
+            },            
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -19,7 +21,8 @@
                 "reveal": "always",
                 "panel": "dedicated"
             },
-            "linux": {},
+            "linux": {
+            },
             "windows": {
                 "command": "mingw32-make",
                 "args": [
@@ -36,7 +39,8 @@
             "type": "shell",
             "command": "make",
             "args": [
-                "cppexample"
+                "cppexample",
+                "SIR_DEBUG=1"
             ],
             "group": {
                 "kind": "build",
@@ -55,7 +59,7 @@
             },
             "problemMatcher": [
                 "$gcc"
-            ]
+            ],
         },        
         {
             "label": "build tests app",
@@ -63,7 +67,8 @@
             "type": "shell",
             "command": "make",
             "args": [
-                "tests"
+                "tests",
+                "SIR_DEBUG=1"
             ],
             "group": {
                 "kind": "build",

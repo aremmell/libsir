@@ -4,6 +4,7 @@ var files =
     [ "tests", "dir_59425e443f801f1f2fd8bbe4959a3ccf.html", "dir_59425e443f801f1f2fd8bbe4959a3ccf" ],
     [ "sir.c", "dc/d39/sir_8c.html", "dc/d39/sir_8c" ],
     [ "sir.h", "d4/df5/sir_8h.html", "d4/df5/sir_8h" ],
+    [ "sir.hh", "d0/def/sir_8hh.html", "d0/def/sir_8hh" ],
     [ "sirconfig.h", "d4/d0f/sirconfig_8h.html", "d4/d0f/sirconfig_8h" ],
     [ "sirconsole.c", "dc/d27/sirconsole_8c.html", null ],
     [ "sirconsole.h", "d9/deb/sirconsole_8h.html", null ],

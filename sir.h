@@ -65,17 +65,162 @@ extern "C" {
  */
 bool sir_init(sirinit* si);
 
+/**
+ * @brief Sets levels sent to \a stdout.
+ * 
+ * Sets the ::sir_level registration mask for this destination.
+ *
+ * @see ::sir_stdoutopts
+ * @see ::sir_geterror
+ * @param levels ::sir_level flags.
+ * 
+ * Value          | Behavior
+ * -----          | --------
+ * `SIRL_NONE`    | No levels.
+ * `SIRL_ALL`     | All levels.
+ * `SIRL_DEFAULT` | Revert to the default (@ref sirdefaults.h).
+ * `SIRL_*`       | Register for each level set.
+ * 
+ * @return boolean
+ * @retval true Levels were updated successfully.
+ * @retval false An error occurred while trying to update levels.
+ */ 
 bool sir_stdoutlevels(sir_levels levels);
+
+/**
+ * @brief Sets formatting options for \a stdout.
+ * 
+ * Sets the ::sir_option mask that controls the content of messages
+ * sent to this destination.
+ * 
+ * @see ::sir_stdoutlevels
+ * @see ::sir_geterror
+ * @param opts ::sir_option flags.
+ * 
+ * Value          | Behavior
+ * -----          | --------
+ * `0`            | Include all available data.
+ * `SIRO_DEFAULT` | Revert to the default (@ref sirdefaults.h).
+ * `SIRO_*`       | Apply each option set.
+ * 
+ * @return boolean
+ * @retval true Options were updated successfully.
+ * @retval false An error occurred while trying to update options.
+ */ 
 bool sir_stdoutopts(sir_options opts);
 
+/**
+ * @brief Sets levels sent to \a stderr.
+ * 
+ * Sets the ::sir_level registration mask for this destination.
+ *
+ * @see ::sir_stderropts
+ * @see ::sir_geterror
+ * @param levels ::sir_level flags.
+ * 
+ * Value          | Behavior
+ * -----          | --------
+ * `SIRL_NONE`    | No levels.
+ * `SIRL_ALL`     | All levels.
+ * `SIRL_DEFAULT` | Revert to the default (@ref sirdefaults.h).
+ * `SIRL_*`       | Register for each level set.
+ * 
+ * @return boolean
+ * @retval true Levels were updated successfully.
+ * @retval false An error occurred while trying to update levels.
+ */ 
 bool sir_stderrlevels(sir_levels levels);
+
+/**
+ * @brief Sets formatting options for \a stderr.
+ * 
+ * Sets the ::sir_option mask that controls the content of messages
+ * sent to this destination.
+ * 
+ * @see ::sir_stderrlevels
+ * @see ::sir_geterror
+ * @param opts ::sir_option flags.
+ * 
+ * Value          | Behavior
+ * -----          | --------
+ * `0`            | Include all available data.
+ * `SIRO_DEFAULT` | Revert to the default (@ref sirdefaults.h).
+ * `SIRO_*`       | Apply each option set.
+ * 
+ * @return boolean
+ * @retval true Options were updated successfully.
+ * @retval false An error occurred while trying to update options.
+ */ 
 bool sir_stderropts(sir_options opts);
 
-#ifndef SIR_NO_SYSLOG
+/**
+ * @brief Sets levels sent to \a syslog (if available).
+ * 
+ * Sets the ::sir_level registration mask for this destination.
+ * 
+ * @attention If `SIR_NOSYSLOG` is defined upon compilation, returns
+ * `false` and has no effect.
+ *
+ * @see ::sir_geterror
+ * @param levels ::sir_level flags.
+ * 
+ * Value          | Behavior
+ * -----          | --------
+ * `SIRL_NONE`    | No levels.
+ * `SIRL_ALL`     | All levels.
+ * `SIRL_DEFAULT` | Revert to the default (@ref sirdefaults.h).
+ * `SIRL_*`       | Register for each level set.
+ * 
+ * @return boolean
+ * @retval true Levels were updated successfully.
+ * @retval false An error occurred while trying to update levels.
+ */ 
 bool sir_sysloglevels(sir_levels levels);
-#endif
 
+/**
+ * @brief Sets levels sent to a log file.
+ * 
+ * Sets the ::sir_level registration mask for this destination.
+ *
+ * @see ::sir_fileopts
+ * @see ::sir_geterror
+ * @param id The identifier returned from ::sir_addfile.
+ * @param levels ::sir_level flags.
+ * 
+ * Value          | Behavior
+ * -----          | --------
+ * `SIRL_NONE`    | No levels.
+ * `SIRL_ALL`     | All levels.
+ * `SIRL_DEFAULT` | Revert to the default (@ref sirdefaults.h).
+ * `SIRL_*`       | Register for each level set.
+ * 
+ * @return boolean
+ * @retval true Levels were updated successfully.
+ * @retval false An error occurred while trying to update levels.
+ */ 
 bool sir_filelevels(sirfileid_t id, sir_levels levels);
+
+/**
+ * @brief Sets formatting options for a log file.
+ * 
+ * Sets the ::sir_option mask that controls the content of messages
+ * sent to this destination.
+ * 
+ * @see ::sir_filelevels
+ * @see ::sir_geterror
+ * @param id The identifier returned from ::sir_addfile.
+ * @param opts ::sir_option flags.
+ * 
+ * Value          | Behavior
+ * -----          | --------
+ * `0`            | Include all available data.
+ * `SIRO_DEFAULT` | Revert to the default (@ref sirdefaults.h).
+ * `SIRO_*`       | Apply each option set.
+ * 
+ * @return boolean
+ * @retval true Options were updated successfully.
+ * @retval false An error occurred while trying to update options.
+ */ 
 bool sir_fileopts(sirfileid_t id, sir_options opts);
 
 /**

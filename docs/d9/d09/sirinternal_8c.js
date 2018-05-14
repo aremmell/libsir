@@ -20,7 +20,13 @@ var sirinternal_8c =
     [ "_sir_once", "d0/dfe/group__intern.html#ga280f725099d27e5d78779eb00a3cc30f", null ],
     [ "_sir_options_sanity", "d0/dfe/group__intern.html#ga4933645a9db3dc00177ce5f285c9c53a", null ],
     [ "_sir_sanity", "d0/dfe/group__intern.html#gaf532bdd6b18375a0f0af63a3c23c5098", null ],
+    [ "_sir_stderrlevels", "d0/dfe/group__intern.html#gabdbb0f0c872c2a3cf3570c77f7793f02", null ],
+    [ "_sir_stderropts", "d0/dfe/group__intern.html#gaefa0f3ba25e5663fa5ecf9e2109f8b4f", null ],
+    [ "_sir_stdoutlevels", "d0/dfe/group__intern.html#ga26048987dc7a61ceb03d8ce3c2f71572", null ],
+    [ "_sir_stdoutopts", "d0/dfe/group__intern.html#ga3acfb20709b886b91a73f8fa558db23c", null ],
     [ "_sir_syslog_maplevel", "d0/dfe/group__intern.html#ga56e8380c236eecbef8eaa9da04c7dfc1", null ],
+    [ "_sir_sysloglevels", "d0/dfe/group__intern.html#gab34daaf02d6c6c3609e3b2c0bbfa4978", null ],
     [ "_sir_unlocksection", "d0/dfe/group__intern.html#ga8238d10d7a78436abe55eefec827f23b", null ],
+    [ "_sir_writeinit", "d0/dfe/group__intern.html#gafdcdf1a44e00db7b07d95f35cff111e6", null ],
     [ "_sirbuf_get", "d0/dfe/group__intern.html#gaf5dae816919a08d85afc71024ff58bcd", null ]
 ];

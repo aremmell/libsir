@@ -10,6 +10,7 @@ var sirtypes_8h =
     [ "sirerror_t", "d8/d64/group__public.html#ga7c16d05c40f30affcc3ca881a96f2b0f", null ],
     [ "sirfileid_t", "d8/d64/group__public.html#gab8f5ba0bae678457f8bce30e961c9eb6", null ],
     [ "sir_level", "d8/d64/group__public.html#ga4a3303c67acd49bea38fd3565d458cb2", [
+      [ "SIRL_NONE", "d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a7cc68341661fcb7a505aca67edb7a18e", null ],
       [ "SIRL_EMERG", "d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc", null ],
       [ "SIRL_ALERT", "d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955", null ],
       [ "SIRL_CRIT", "d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435", null ],
