@@ -149,10 +149,10 @@ The following are the defaults used when `SIRL_DEFAULT` (@ref sir_level) or `SIR
 
 Destination      |  Levels     | Options
 -----------      | :-------:   | -------
-`stdout`         | `SIRL_ALL` | <code>SIRO_NOTIME \| SIRO_NOPID \| SIRO_NOTID</code>
+`stdout`         | <code>SIRL_DEBUG \| SIRL_INFO \| SIRL_NOTICE \| SIRL_WARN</code> | <code>SIRO_NOTIME \| SIRO_NOPID \| SIRO_NOTID</code>
 `stderr`         | <code>SIRL_ERROR \| SIRL_CRIT \| SIRL_EMERG</code> | <code>SIRO_NOTIME \| SIRO_NOPID \| SIRO_NOTID</code>
 `syslog`         | <code>SIRL_WARN  \| SIRL_CRIT \| SIRL_ALERT \| SIRL_EMERG</code> | `N/A (_syslog has its own decoration_)`
-`log files`      | `SIRL_ALL`  | 0 (_all output_)
+`log files`      | `SIRL_ALL`  | `0 (_all output_)`
 
 These define the default text styling to use for `stdio` (@ref sir_textstyle) on a per-level basis (_can be changed at runtime with_ @ref sir_set_textstyle) and are also located in [sirdefaults.h](@ref sirdefaults.h):
 
