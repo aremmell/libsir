@@ -150,7 +150,7 @@ ifeq ($(OS),Windows_NT)
 else
 	@echo copying $(OUT_SHARED) to $(INSTALLDIR) and headers to $(INSTALLINC)...
 	$(shell cp -f $(OUT_SHARED) "$(INSTALLDIR)/" && \
-	        cp -f *.h "$(INSTALLINC)/")
+	        cp -f *.h *.hh "$(INSTALLINC)/")
 	@echo installed libsir successfully.
 endif
 
