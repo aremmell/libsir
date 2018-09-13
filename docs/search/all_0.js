@@ -20,6 +20,7 @@ var searchData=
   ['_5fsir_5fgetpid',['_sir_getpid',['../d0/dfe/group__intern.html#gaec63cb12d82d469f485dbb8ce88b9fce',1,'sirinternal.c']]],
   ['_5fsir_5fgetprivstyle',['_sir_getprivstyle',['../d0/dfe/group__intern.html#gafa427b76089e49a81e90cf69dc8cf93c',1,'sirtextstyle.c']]],
   ['_5fsir_5fgettextstyle',['_sir_gettextstyle',['../d0/dfe/group__intern.html#ga96e3fd4916e25f311680f341f31219b2',1,'sirtextstyle.c']]],
+  ['_5fsir_5fgetthreadname',['_sir_getthreadname',['../d0/dfe/group__intern.html#gaa8e5d4f2e789c1f93e192d9fb4d895b8',1,'sirinternal.c']]],
   ['_5fsir_5fgettid',['_sir_gettid',['../d0/dfe/group__intern.html#gaf4b6d91cb5ef18479cdfd4b40cf23f72',1,'sirinternal.c']]],
   ['_5fsir_5finit',['_sir_init',['../d0/dfe/group__intern.html#gaeb47868caeb3ee52c11b96442c8d1098',1,'sirinternal.c']]],
   ['_5fsir_5finitmutex',['_sir_initmutex',['../d0/dfe/group__intern.html#gadc725d0786b67b52f6441a0844792a30',1,'sirinternal.c']]],

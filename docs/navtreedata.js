@@ -25,8 +25,8 @@ var NAVTREE =
         [ "Why", "index.html#why", null ]
       ] ]
     ] ],
-    [ "Test List", "test.html", null ],
-    [ "Todo List", "todo.html", null ],
+    [ "Test List", "d4/df6/test.html", null ],
+    [ "Todo List", "dd/da0/todo.html", null ],
     [ "Modules", "modules.html", "modules" ],
     [ "Namespace Members", "namespacemembers.html", [
       [ "All", "namespacemembers.html", null ],
@@ -60,8 +60,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d2/d7d/group__tests.html#ga9472cbb9a62d343fe0272444a7f87ce1",
-"d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a7cc68341661fcb7a505aca67edb7a18e"
+"d2/d7d/group__tests.html#ga90b7633a39946d2c201758aafbce43fa",
+"d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

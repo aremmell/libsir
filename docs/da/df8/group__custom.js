@@ -27,6 +27,7 @@ var group__custom =
     [ "SIR_MSECFORMAT", "da/df8/group__custom.html#ga11214c8798ccdaab052c3bc9db2e3e78", null ],
     [ "SIR_NUMLEVELS", "da/df8/group__custom.html#ga54ab03b03f20338146a5ab69fcd90177", null ],
     [ "SIR_PIDFORMAT", "da/df8/group__custom.html#ga88267c5f76d8f1f3f0b6a7903bfddc0b", null ],
+    [ "SIR_PIDSEPARATOR", "da/df8/group__custom.html#ga22d306c921d111c9722a11c9a9ad628e", null ],
     [ "SIR_TIMEFORMAT", "da/df8/group__custom.html#gab1531d6b0d9c880b793362322542794c", null ],
     [ "SIR_UNKNOWN", "da/df8/group__custom.html#gaf9776f0b7cf01f82f2580a29c9efb6d6", null ],
     [ "SIRL_S_ALERT", "da/df8/group__custom.html#ga4e02d1cb5e4a8d8535227657781d4a29", null ],

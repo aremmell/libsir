@@ -69,6 +69,7 @@ var searchData=
   ['sir_5foptions',['sir_options',['../d8/d64/group__public.html#gafb659914aac0129182d86f7d3414e85d',1,'sirtypes.h']]],
   ['sir_5foverride_5fstyles',['sir_override_styles',['../d0/dfe/group__intern.html#ga53ad3bc02bfc1e709c51f57be7cada23',1,'sirtextstyle.h']]],
   ['sir_5fpidformat',['SIR_PIDFORMAT',['../da/df8/group__custom.html#ga88267c5f76d8f1f3f0b6a7903bfddc0b',1,'sirconfig.h']]],
+  ['sir_5fpidseparator',['SIR_PIDSEPARATOR',['../da/df8/group__custom.html#ga22d306c921d111c9722a11c9a9ad628e',1,'sirconfig.h']]],
   ['sir_5fpriv_5fmap',['sir_priv_map',['../d0/dfe/group__intern.html#gae3e5b45bf488fbf366f61a1c903a74b1',1,'sirtextstyle.h']]],
   ['sir_5fremfile',['sir_remfile',['../d8/d64/group__public.html#ga4a774bf801d0356b90f29aa69688ef86',1,'sir.c']]],
   ['sir_5fresettextstyles',['sir_resettextstyles',['../d8/d64/group__public.html#ga932eec2f9c73eecdd2b6b935452e5eed',1,'sir.c']]],

@@ -7,6 +7,7 @@ var sirinternal_8c =
     [ "_sir_formattime", "d0/dfe/group__intern.html#ga6d418f4a2a45a3273b8c6e09a03edd7c", null ],
     [ "_sir_getlocaltime", "d0/dfe/group__intern.html#gae6a81ce863fba763916cc4e11de0fadc", null ],
     [ "_sir_getpid", "d0/dfe/group__intern.html#gaec63cb12d82d469f485dbb8ce88b9fce", null ],
+    [ "_sir_getthreadname", "d0/dfe/group__intern.html#gaa8e5d4f2e789c1f93e192d9fb4d895b8", null ],
     [ "_sir_gettid", "d0/dfe/group__intern.html#gaf4b6d91cb5ef18479cdfd4b40cf23f72", null ],
     [ "_sir_init", "d0/dfe/group__intern.html#gaeb47868caeb3ee52c11b96442c8d1098", null ],
     [ "_sir_initmutex", "d0/dfe/group__intern.html#gadc725d0786b67b52f6441a0844792a30", null ],

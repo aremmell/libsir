@@ -6,7 +6,7 @@
  * If you obtained it elsewhere, all bets are off.
  *
  * @author Ryan M. Lederman <lederman@gmail.com>
- * @version 2.0.0
+ * @version 2.1.0
  * @copyright
  *
  * The MIT License (MIT)
