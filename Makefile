@@ -12,8 +12,6 @@
 #                                                   #
 #####################################################
 
-CC         = gcc
-CXX		   = g++
 BUILDDIR   = build
 DOCSDIR    = docs
 TESTSDIR   = tests
@@ -21,10 +19,15 @@ EXAMPLEDIR = example
 CXXDIR     = cppexample
 INTERDIR   = $(BUILDDIR)/obj
 LIBDIR     = $(BUILDDIR)/lib
-INSTALLDIR = /usr/local/lib
-INSTALLINC = /usr/local/include
 
-LIBS         = -pthread
+ifeq ($(INSTALLDIR),)
+INSTALLDIR = /usr/local/lib
+endif
+ifeq ($(INSTALLINC),)
+INSTALLINC = /usr/local/include
+endif
+
+LIBS = -pthread
 
 ifeq ($(SIR_DEBUG),1)
 CFLAGS   = -Wpedantic -std=c11 -I. -g -DNDEBUG -fPIC -DSIR_SELFLOG
@@ -99,7 +102,7 @@ $(INTERDIR)/%.o++: $(CXXDIR)/%.cc
 	$(CXX) -c -o $@ $< $(CXXFLAGS)
 
 $(INTERDIR)/%.to: $(TESTSDIR)/%.c
-	$(CC) -c -o $@ $< $(CFLAGS)	
+	$(CC) -c -o $@ $< $(CFLAGS)
 
 $(INTERDIR)/%.lo: %.c
 	$(CC) -c -o $@ $< $(CFLAGS)

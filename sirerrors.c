@@ -32,7 +32,7 @@
 #include "sirerrors.h"
 
 /**
- * @addtogroup errors 
+ * @addtogroup errors
  * @{
  */
 
@@ -48,7 +48,7 @@ void __sir_seterror(sirerror_t err, const sirchar_t* func, const sirchar_t* file
         sir_te.loc.file = file;
         sir_te.loc.line = line;
     }
-    assert(_SIR_E_NOERROR == err);    
+    assert(_SIR_E_NOERROR == err);
 }
 
 void __sir_setoserror(int code, const sirchar_t* message, const sirchar_t* func,
@@ -58,7 +58,7 @@ void __sir_setoserror(int code, const sirchar_t* message, const sirchar_t* func,
 
     if (_sir_validstrnofail(message))
         strncpy(sir_te.os_errmsg, message, SIR_MAXERROR);
-        
+
     __sir_seterror(_SIR_E_PLATFORM, func, file, line);
 }
 
@@ -67,8 +67,17 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
         sirchar_t message[SIR_MAXERROR] = {0};
 
 #ifndef _WIN32
-        errno       = SIR_E_NOERROR;
+    errno = SIR_E_NOERROR;
+#   if _POSIX_C_SOURCE >= 200112L && !defined(_GNU_SOURCE)
+#       pragma message "using XSI-compliant strerror_r"
         int finderr = strerror_r(code, message, SIR_MAXERROR);
+#   else
+#       pragma message "using GNU-specific strerror_r"
+        int finderr = 0;
+        char* tmp = strerror_r(code, message, SIR_MAXERROR);
+        if (tmp != message)
+            strncpy(message, tmp, strnlen(tmp, SIR_MAXERROR - 1));
+#   endif
 #else
         errno_t finderr = strerror_s(message, SIR_MAXERROR, code);
 #endif
@@ -82,7 +91,7 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
 #endif
         }
     }
-    assert(SIR_E_NOERROR == code);    
+    assert(SIR_E_NOERROR == code);
 }
 
 #ifdef _WIN32
@@ -96,8 +105,8 @@ void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* fi
         if (0 == fmtmsg && _sir_validstrnofail(errbuf)) {
             __sir_setoserror((int)code, errbuf, func, file, line);
         } else {
-            _sir_selflog("%s: FormatMessage failed! error: %d\n", __func__, GetLastError());      
-            assert(false);             
+            _sir_selflog("%s: FormatMessage failed! error: %d\n", __func__, GetLastError());
+            assert(false);
         }
 
         if (errbuf) {
@@ -106,7 +115,7 @@ void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* fi
             errbuf = NULL;
         }
     }
-    assert(ERROR_SUCCESS == code);    
+    assert(ERROR_SUCCESS == code);
 }
 #endif
 

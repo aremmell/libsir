@@ -168,6 +168,19 @@ namespace sir {
         bool emerg(const stringstream_t& strm) const { return emerg(strm.str()); }
         bool emerg(const string_t& message) const { return sir_emerg(message.c_str()); }
 
+#ifdef BOOST_FORMAT_HPP
+        /** If `BOOST_FORMAT_HPP` is defined, the default adapter is extended with
+         * methods that take `const boost::format&`.
+         */
+        bool debug(const boost::format& message) const { default_adapter::debug(message.str()); }
+        bool info(const boost::format& message) const { default_adapter::info(message.str()); }
+        bool notice(const boost::format& message)  const { default_adapter::notice(message.str()); }
+        bool warn(const boost::format& message) const { default_adapter::warn(message.str()); }
+        bool error(const boost::format& message) const { default_adapter::error(message.str()); }
+        bool crit(const boost::format& message) const { default_adapter::crit(message.str()); }
+        bool alert(const boost::format& message) const { default_adapter::alert(message.str()); }
+        bool emerg(const boost::format& message) const { default_adapter::emerg(message.str()); }
+#endif /* !BOOST_FORMAT_HPP */
     }; /* !class default_adapter */
 
     ///////////////////////////////////////////////
@@ -227,31 +240,31 @@ namespace sir {
         }
         virtual ~logger_impl() { sir_cleanup(); }
 
-        virtual bool set_stdout_levels(sir_levels levels) const {
+        virtual void set_stdout_levels(sir_levels levels) const {
             if (!sir_stdoutlevels(levels)) throw lib_exception();
         }
 
-        virtual bool set_stdout_options(sir_options options) const {
+        virtual void set_stdout_options(sir_options options) const {
             if (!sir_stdoutopts(options)) throw lib_exception();
         }
 
-        virtual bool set_stderr_levels(sir_levels levels) const {
+        virtual void set_stderr_levels(sir_levels levels) const {
             if (!sir_stderrlevels(levels)) throw lib_exception();
         }
 
-        virtual bool set_stderr_options(sir_options options) const {
+        virtual void set_stderr_options(sir_options options) const {
             if (!sir_stderropts(options)) throw lib_exception();
         }
 
-        virtual bool set_syslog_levels(sir_levels levels) const {
+        virtual void set_syslog_levels(sir_levels levels) const {
             if (!sir_sysloglevels(levels)) throw lib_exception();
         }
 
-        virtual bool set_file_levels(sirfileid_t id, sir_levels levels) const {
+        virtual void set_file_levels(sirfileid_t id, sir_levels levels) const {
             if (!sir_filelevels(id, levels)) throw lib_exception();
         }
 
-        virtual bool set_file_options(sirfileid_t id, sir_options options) const {
+        virtual void set_file_options(sirfileid_t id, sir_options options) const {
             if (!sir_fileopts(id, options)) throw lib_exception();
         }
 

@@ -38,6 +38,9 @@
 #elif defined(_WIN32)
 #   define _WIN32_WINNT 0x0600
 #else
+#   if defined(__GNUC__) && !defined(_GNU_SOURCE)
+#       define _GNU_SOURCE
+#   endif
 #   ifndef _POSIX_C_SOURCE
 #       define _POSIX_C_SOURCE 200809L
 #   endif

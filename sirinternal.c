@@ -70,7 +70,7 @@ bool _sir_options_sanity(const sirinit* si) {
     levelcheck &= _sir_validlevels(si->d_stdout.levels);
     levelcheck &= _sir_validlevels(si->d_stderr.levels);
 
-#ifndef SIR_NO_SYSLOG    
+#ifndef SIR_NO_SYSLOG
     levelcheck &= _sir_validlevels(si->d_syslog.levels);
 #endif
 
@@ -242,7 +242,7 @@ bool _sir_cleanup(void) {
 
     sirinit* si = _sir_locksection(_SIRM_INIT);
     assert(si);
-    
+
     if (cleanup &= NULL != si) {
         memset(si, 0, sizeof(sirinit));
         cleanup &= _sir_unlocksection(_SIRM_INIT);
@@ -365,7 +365,7 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
 
     output.name = _sirbuf_get(&buf, _SIRBUF_NAME);
     assert(output.name);
-    
+
     if (_sir_validstrnofail(tmpsi.processName)) {
         strncpy(output.name, tmpsi.processName, SIR_MAXNAME - 1);
     } else {
@@ -387,11 +387,13 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
     assert(output.tid);
 
     if (tid != pid) {
-       int tidfmt = snprintf(output.tid, SIR_MAXPID, SIR_PIDFORMAT, tid);
-       assert(tidfmt >= 0);
+       if (!_sir_getthreadname(output.tid)) {
+           pidfmt = snprintf(output.tid, SIR_MAXPID, SIR_PIDFORMAT, tid);
+           assert(pidfmt >= 0);
 
-       if (tidfmt < 0)
-        _sir_resetstr(output.tid);
+           if (pidfmt < 0)
+            _sir_resetstr(output.tid);
+       }
     } else {
         _sir_resetstr(output.tid);
     }
@@ -489,7 +491,7 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) 
 #ifndef _WIN32
         if (styling)
             strncat(output->output, output->style, SIR_MAXSTYLE);
-#endif        
+#endif
 
         if (!_sir_bittest(opts, SIRO_NOTIME)) {
             strncat(output->output, output->timestamp, SIR_MAXTIME);
@@ -517,16 +519,21 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) 
             name  = true;
         }
 
-        if (!_sir_bittest(opts, SIRO_NOPID)) {
+        bool wantpid = !_sir_bittest(opts, SIRO_NOPID) && _sir_validstrnofail(output->pid);
+        bool wanttid = !_sir_bittest(opts, SIRO_NOTID) && _sir_validstrnofail(output->tid);
+
+        if (wantpid || wanttid) {
             if (name)
                 strncat(output->output, "(", 1);
             else if (!first)
                 strncat(output->output, " ", 1);
 
-            strncat(output->output, output->pid, SIR_MAXPID);
+            if (wantpid)
+                strncat(output->output, output->pid, SIR_MAXPID);
 
-            if (!_sir_bittest(opts, SIRO_NOTID) && _sir_validstrnofail(output->tid)) {
-                strncat(output->output, "|", 1);
+            if (wanttid) {
+                if (wantpid)
+                    strncat(output->output, SIR_PIDSEPARATOR, 1);
                 strncat(output->output, output->tid, SIR_MAXPID);
             }
 
@@ -693,6 +700,14 @@ pid_t _sir_gettid(void) {
     tid = syscall(SYS_gettid);
 #endif
     return tid;
+}
+
+bool _sir_getthreadname(char name[SIR_MAXPID]) {
+#ifdef _GNU_SOURCE
+    return 0 == pthread_getname_np(pthread_self(), name, SIR_MAXPID);
+#else
+    return false;
+#endif
 }
 
 /** @} */

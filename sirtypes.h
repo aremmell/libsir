@@ -89,10 +89,7 @@ typedef enum {
     /** Don't include the process ID in output. */
     SIRO_NOPID = 0x2000,
 
-    /**
-     * Don't include the thread ID in output. If ::SIRO_NOPID is set,
-     * this is ignored, and no thread ID is ever included.
-     */
+    /** Don't include the thread ID/name in output. */
     SIRO_NOTID = 0x4000,
 
     /**
@@ -111,7 +108,7 @@ typedef enum {
     /** Use the default for this type of destination. See
      * sirdefaults.h for specifics.
      */
-    SIRO_DEFAULT = 0x100000,    
+    SIRO_DEFAULT = 0x100000,
 } sir_option;
 
 /**
@@ -315,8 +312,8 @@ typedef struct {
     } loc;
 } sir_thread_err;
 
-/** 
- * sed to encapsulate dynamic updating of
+/**
+ * used to encapsulate dynamic updating of
  * config; add members here if necessary.
  */
 typedef struct {

@@ -33,7 +33,7 @@
 
 static const sir_test sir_tests[] = {
     {"multi-thread race", sirtest_mthread_race},
-    {"performance benchmark", sirtest_perf},     
+    /* {"performance benchmark", sirtest_perf}, */
     {"exceed max buffer size", sirtest_exceedmaxsize},
     {"file cache sanity", sirtest_filecachesanity},
     {"set invalid text style", sirtest_failsetinvalidstyle},
@@ -506,7 +506,7 @@ bool sirtest_perf(void) {
         startsirtimer(&printftimer);
 
         for (size_t n = 0; n < perflines; n++) {
-#ifndef _WIN32            
+#ifndef _WIN32
             printf("\033[97mlorem ipsum foo bar blah\033[0m\n");
 #else
             printf("lorem ipsum foo bar blah\n");
@@ -604,10 +604,10 @@ bool sirtest_updatesanity(void) {
         pass &= sir_error("modified config");
         pass &= sir_crit("modified config");
         pass &= sir_alert("modified config");
-        pass &= sir_emerg("modified config");       
-        pass &= sir_remfile(id1); 
+        pass &= sir_emerg("modified config");
+        pass &= sir_remfile(id1);
     }
- 
+
     printerror(pass);
     sir_cleanup();
     return pass;
@@ -640,7 +640,7 @@ bool sirtest_mthread_race(void) {
     uintptr_t thrds[NUM_THREADS];
 #endif
 
-    INIT(si, SIRL_ALL, 0, 0, 0);
+    INIT_N(si, SIRL_ALL, SIRO_NOPID, 0, 0, "multi-thread race");
     bool pass = si_init;
 
     for (size_t n = 0; n < NUM_THREADS; n++) {
@@ -658,6 +658,14 @@ bool sirtest_mthread_race(void) {
             printf(RED("\tfailed to create thread; err: %d") "\n", errno);
             pass = false;
         }
+
+#ifdef _GNU_SOURCE
+        char thrd_name[SIR_MAXPID];
+        snprintf(thrd_name, SIR_MAXPID, "# %lu", n);
+        create = pthread_setname_np(thrds[n], thrd_name);
+        if (0 != create)
+            printf(RED("\twarning: failed to set thread name; err: %d") "\n", errno);
+#endif
     }
 
     if (pass) {

@@ -34,13 +34,13 @@
 
 /**
  * @defgroup custom Customization
- * 
+ *
  * Compile-time configuration that can be modified to alter the behavior
  * of libsir.
  *
  * @attention Don't make changes to anything until you've studied how
  * these values are used elsewhere in the source code.
- * 
+ *
  * @addtogroup custom
  * @{
  */
@@ -54,8 +54,12 @@
 /** The format for the human-readable logging level. */
 #define SIR_LEVELFORMAT "[%s]"
 
-/** The format for the current process/thread ID. */
+/** The format for the current process/thread ID,
+ * if no name is available/desired. */
 #define SIR_PIDFORMAT "%d"
+
+/** The character to place between process and thread IDs. */
+#define SIR_PIDSEPARATOR "."
 
 /** The string passed to fopen/fopen_s for log files. */
 #define SIR_FOPENMODE "a"
@@ -72,9 +76,9 @@
 /**
  * The format string written to a log file when logging begins or the file
  * is rolled/archived.
- * 
+ *
  * - The \a first %%s format specifier is the message (e.g., ::SIR_FHBEGIN, ::SIR_FHROLLED)
- * 
+ *
  * - The \a second %%s is the current date/time (see ::SIR_FHTIMEFORMAT).
  */
 #define SIR_FHFORMAT "\n\n----- %s %s -----\n\n"
@@ -87,7 +91,7 @@
 /**
  * The string included in ::SIR_FHFORMAT when a file is rolled/archived
  * due to size.
- * 
+ *
  * The %%s format specifier is the path of the archived file.
  */
 #define SIR_FHROLLED "archived as %s due to size @"
@@ -100,15 +104,15 @@
 
 /**
  * The format string for rolled/archived log file names.
- * 
+ *
  * - The \a first %%s format specifier is the name part (the name up to the last '.') of the original
  * file name.
- * 
+ *
  * - The \a second %%s is the time stamp as defined by SIR_ROLLTIMEFORMAT.
- * 
+ *
  * - The \a third %%s is the extension part (the name after and including the last '.')
  * of the original file name if one is present.
- * 
+ *
  * @remark sample: `oldname-18-05-05-122049.log`
  */
 #define SIR_FNAMEFORMAT "%s-%s%s"
@@ -159,14 +163,14 @@
  * format strings. */
 #define SIR_MAXNAME 32
 
-/** The size, in characters, of the buffer used to hold process/thread IDs */
-#define SIR_MAXPID 11
+/** The size, in characters, of the buffer used to hold process/thread IDs/names. */
+#define SIR_MAXPID 16
 
 /** The maximum number of whitespace and misc. characters included in output. */
 #define SIR_MAXMISC 7
 
 /** The maximum size, in characters, of final formatted output. */
-#define SIR_MAXOUTPUT                                                                                   \
+#define SIR_MAXOUTPUT \
     SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME + SIR_MAXLEVEL + SIR_MAXNAME + (SIR_MAXPID * 2) + \
         SIR_MAXMISC + 1
 
@@ -175,15 +179,15 @@
 
 /**
  * The format string for error messages returned by ::_sir_geterror.
- * 
+ *
  * - The \a first %%s format specifier is the function name.
- * 
+ *
  * - The \a second %%s is the file name.
- * 
+ *
  * - The %%lu is the line number in the file.
- * 
+ *
  * - The \a third %%s is the error message.
- * 
+ *
  * @remark sample: `Error in findneedle (haystack.c:384): 'Too much hay'`
  */
 #define SIR_ERRORFORMAT "Error in %s (%s:%u): '%s'"

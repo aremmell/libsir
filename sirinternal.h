@@ -35,12 +35,12 @@
 #include "sirhelpers.h"
 #include "sirerrors.h"
 
-/** 
+/**
  * @defgroup intern Internal
- * 
+ *
  * libsir's guts.
- * 
- * @addtogroup intern 
+ *
+ * @addtogroup intern
  * @{
  */
 
@@ -143,6 +143,9 @@ pid_t _sir_getpid(void);
 
 /** Returns the current thread identifier. */
 pid_t _sir_gettid(void);
+
+/** Returns the current thread's name. */
+bool _sir_getthreadname(char name[SIR_MAXPID]);
 
 /** @} */
 

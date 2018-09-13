@@ -16,9 +16,9 @@
         "editor.tabCompletion": true,
         "debug.inlineValues": true,
         "debug.allowBreakpointsEverywhere": true,
-        "workbench.colorTheme": "Bimbo Theme",
+        "workbench.colorTheme": "Gatito Theme",
         "editor.tokenColorCustomizations": {
-            "[Bimbo Theme]": {
+            "[Gatito Theme]": {
                 "textMateRules": [
                     {
                         "name": "Operator, Misc",
