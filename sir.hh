@@ -223,10 +223,17 @@ namespace sir {
     template<class TAdapter = default_adapter, class TPolicy = default_policy>
     class logger_impl : public TAdapter {
        public:
-        explicit logger_impl(const string_t& name) : TAdapter() {
-            static_assert(std::is_base_of<adapter, TAdapter>::value, "TAdapter not a sir::adapter");
-            static_assert(std::is_base_of<policy, TPolicy>::value, "TPolicy not a sir::policy");
+        static_assert(std::is_base_of<adapter, TAdapter>::value, "TAdapter not a sir::adapter");
+        static_assert(std::is_base_of<policy, TPolicy>::value, "TPolicy not a sir::policy");
 
+        logger_impl(const string_t& name) : TAdapter() {
+            init(name);
+        }
+
+        logger_impl() : TAdapter() { }
+        virtual ~logger_impl() { sir_cleanup(); }
+
+        virtual void init(const string_t& name) {
             memset(&_si, 0, sizeof(sirinit));
             _si.d_stdout.levels = _policy.levels(policy::stdout);
             _si.d_stdout.opts   = _policy.options(policy::stdout);
@@ -238,7 +245,6 @@ namespace sir {
 
             if (!sir_init(&_si)) throw lib_exception();
         }
-        virtual ~logger_impl() { sir_cleanup(); }
 
         virtual void set_stdout_levels(sir_levels levels) const {
             if (!sir_stdoutlevels(levels)) throw lib_exception();
