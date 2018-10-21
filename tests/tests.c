@@ -76,10 +76,14 @@ int main(int argc, char** argv) {
 
     float elapsed = sirtimerelapsed(&timer);
 
-    printf(WHITE("done; ") BLUE("%lu/%lu libsir tests passed in %.04fsec") WHITE("- enter to exit") "\n",
+    printf(WHITE("done; ") BLUE("%lu/%lu libsir tests passed in %.04fsec") "\n",
         passed, tests, elapsed / 1e3);
 
-    int unused = getc(stdin);
+    if (argc > 1 && 0 == strncmp(argv[1], "-w", 2)) {
+        printf(WHITE("press any key to exit") "\n");
+        getc(stdin);
+    }
+
     return allpass ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 
