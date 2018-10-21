@@ -69,10 +69,8 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
 #ifndef _WIN32
     errno = SIR_E_NOERROR;
 #   if _POSIX_C_SOURCE >= 200112L && !defined(_GNU_SOURCE)
-#       pragma message "using XSI-compliant strerror_r"
         int finderr = strerror_r(code, message, SIR_MAXERROR);
 #   else
-#       pragma message "using GNU-specific strerror_r"
         int finderr = 0;
         char* tmp = strerror_r(code, message, SIR_MAXERROR);
         if (tmp != message)
