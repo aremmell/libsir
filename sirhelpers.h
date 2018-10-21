@@ -136,8 +136,8 @@ bool _sir_validstrnofail(const sirchar_t* str) {
 
 static inline
 bool _sir_validupdatedata(sir_update_data* data) {
-    return NULL != data && (NULL == data->levels || _sir_validlevels(*data->levels) &&
-           NULL == data->opts || _sir_validopts(*data->opts));
+    return NULL != data && ((NULL == data->levels || _sir_validlevels(*data->levels)) &&
+           (NULL == data->opts || _sir_validopts(*data->opts)));
 }
 
 /** Places a null terminator at the first index in a string buffer. */
