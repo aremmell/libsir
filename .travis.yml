@@ -2,7 +2,9 @@ language: c
 branches:
   only:
   - master
-script: make tests
+script:
+  - make tests
+  - build/sirtests
 compiler:
   - clang
   - gcc
