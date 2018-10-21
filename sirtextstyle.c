@@ -53,7 +53,7 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
         *pfg   = fgvalid ? fg : 0;
         *pbg   = bgvalid ? bg : 0;
     }
-    
+
     if (!attrvalid || !fgvalid || !bgvalid) {
         _sir_seterror(_SIR_E_TEXTSTYLE);
 
@@ -149,7 +149,7 @@ bool _sir_resettextstyles(void) {
 
         _sir_unlocksection(_SIRM_TEXTSTYLE);
         return true;
-    }    
+    }
 
     return false;
 }
@@ -184,13 +184,13 @@ bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size) {
             sirchar_t bgfmt[5] = {0};
 
             if (privfg != 0)
-                snprintf(fgfmt, 5, ";%03hu", privfg);
+                snprintf(fgfmt, 5, ";%03hhu", privfg);
 
             if (privbg != 0)
-                snprintf(bgfmt, 5, ";%03hu", privbg);
+                snprintf(bgfmt, 5, ";%03hhu", privbg);
 
             /* '\033[n;nnn;nnnm' */
-            snprintf(buf, size, "\033[%1hu%s%sm", privattr, fgfmt, bgfmt);
+            snprintf(buf, size, "\033[%.1hu%s%sm", privattr, fgfmt, bgfmt);
 
             return _sir_validstr(buf);
 #else
