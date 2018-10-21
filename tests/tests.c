@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
         passed, tests, elapsed / 1e3);
 
     int unused = getc(stdin);
-    return allpass ? 0 : 1;
+    return allpass ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 
 bool sirtest_exceedmaxsize(void) {
