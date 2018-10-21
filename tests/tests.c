@@ -32,8 +32,8 @@
 #include "tests.h"
 
 static const sir_test sir_tests[] = {
+    {"performance", sirtest_perf},
     {"multi-thread race", sirtest_mthread_race},
-    /* {"performance benchmark", sirtest_perf}, */
     {"exceed max buffer size", sirtest_exceedmaxsize},
     {"file cache sanity", sirtest_filecachesanity},
     {"set invalid text style", sirtest_failsetinvalidstyle},
@@ -50,22 +50,37 @@ static const sir_test sir_tests[] = {
     {"roll/archive large file", sirtest_rollandarchivefile},
     {"error handling sanity", sirtest_errorsanity},
     {"text style sanity", sirtest_textstylesanity},
-    {"update levels/options", sirtest_updatesanity}
+    {"update levels/options", sirtest_updatesanity},
 };
+
+static const char* arg_wait = "--wait"; /* wait for key press before exiting. */
+static const char* arg_perf = "--perf"; /* run performance test instead of standard tests. */
 
 int main(int argc, char** argv) {
 
+    bool wait = false;
+    bool perf = false;
+
+    for (size_t n = 1; n < argc; n++) {
+        if (0 == strncmp(argv[n], arg_wait, strlen(arg_wait)))
+            wait = true;
+        else if (0 == strncmp(argv[n], arg_perf, strlen(arg_perf)))
+            perf = true;
+    }
+
     bool       allpass = true;
-    size_t     tests   = sizeof(sir_tests) / sizeof(sir_test);
+    size_t     tests   = (perf ? 1 : sizeof(sir_tests) / sizeof(sir_test));
+    size_t     first   = (perf ? 0 : 1);
     size_t     passed  = 0;
+    size_t     n     = 0;
     sirtimer_t timer   = {0};
 
-    printf(WHITE("running %lu libsir tests...\n"), tests);
+    printf(WHITE("running %lu libsir test(s)...\n"), tests);
 
     if (!startsirtimer(&timer))
-        printf(RED("failed to start timer; perf won't be measured correctly!") "\n");
+        printf(RED("failed to start timer; elapsed time won't be measured correctly!") "\n");
 
-    for (size_t n = 0; n < tests; n++) {
+    for (n = first; n < tests; n++) {
         printf(WHITE("\t'%s'...") "\n", sir_tests[n].name);
         bool thispass = sir_tests[n].fn();
         allpass &= thispass;
@@ -76,10 +91,10 @@ int main(int argc, char** argv) {
 
     float elapsed = sirtimerelapsed(&timer);
 
-    printf(WHITE("done; ") BLUE("%lu/%lu libsir tests passed in %.04fsec") "\n",
-        passed, tests, elapsed / 1e3);
+    printf(WHITE("done; ") BLUE("%lu/%lu libsir test(s) passed in %.04fsec") "\n",
+        passed, tests - first, elapsed / 1e3);
 
-    if (argc > 1 && 0 == strncmp(argv[1], "-w", 2)) {
+    if (wait) {
         printf(WHITE("press any key to exit") "\n");
         getc(stdin);
     }
@@ -185,11 +200,22 @@ bool sirtest_failsetinvalidstyle(void) {
 bool sirtest_failnooutputdest(void) {
     INIT(si, 0, 0, 0, 0);
     bool pass = si_init;
+    const char* logfile = "levels.log";
 
     pass &= !sir_info("this goes nowhere!");
 
-    if (pass)
+    if (pass) {
         printexpectederr();
+
+        pass &= sir_stdoutlevels(SIRL_INFO);
+        pass &= sir_info("this goes to stdout");
+        pass &= sir_stdoutlevels(SIRL_NONE);
+
+        pass &= NULL != sir_addfile(logfile, SIRL_INFO, SIRO_DEFAULT);
+        pass &= sir_info("this goes to %s", logfile);
+
+        rmfile(logfile);
+    }
 
     sir_cleanup();
     return printerror(pass);
@@ -377,7 +403,8 @@ bool sirtest_rollandarchivefile(void) {
         pass &= foundlogs == 2;
     }
 
-    pass &= sir_remfile(fileid);
+    if (pass)
+        pass &= sir_remfile(fileid);
 
     delcount = 0;
     if (!enumfiles(logfilename, deletefiles, &delcount)) {
@@ -491,7 +518,7 @@ bool sirtest_textstylesanity(void) {
 bool sirtest_perf(void) {
     const sirchar_t* logfilename = "sirperf";
 #ifndef _WIN32
-    const size_t perflines = 1e5;
+    const size_t perflines = 1e6;
 #else
     /* stdio is hilariously slow on windows; do less. */
     const size_t perflines = 1e4;
@@ -577,9 +604,10 @@ bool sirtest_updatesanity(void) {
 
     INIT_N(si, SIRL_DEFAULT, 0, SIRL_DEFAULT, 0, "update_sanity");
     bool pass = si_init;
+    const char* logfile = "update.log";
 
-    rmfile("update.log");
-    sirfileid_t id1 = sir_addfile("update.log", SIRL_DEFAULT, SIRO_DEFAULT);
+    rmfile(logfile);
+    sirfileid_t id1 = sir_addfile(logfile, SIRL_DEFAULT, SIRO_DEFAULT);
 
     pass &= NULL != id1;
 
@@ -611,6 +639,8 @@ bool sirtest_updatesanity(void) {
         pass &= sir_emerg("modified config");
         pass &= sir_remfile(id1);
     }
+
+    rmfile(logfile);
 
     printerror(pass);
     sir_cleanup();
@@ -665,7 +695,7 @@ bool sirtest_mthread_race(void) {
 
 #ifdef _GNU_SOURCE
         char thrd_name[SIR_MAXPID];
-        snprintf(thrd_name, SIR_MAXPID, "# %lu", n);
+        snprintf(thrd_name, SIR_MAXPID, "%lu", n);
         create = pthread_setname_np(thrds[n], thrd_name);
         if (0 != create)
             printf(RED("\twarning: failed to set thread name; err: %d") "\n", errno);
@@ -791,6 +821,11 @@ bool rmfile(const char* filename) {
 
 bool deletefiles(const char* search, const char* filename, unsigned* data) {
     if (strstr(filename, search)) {
+
+        struct stat st;
+        if (0 == stat(filename, &st))
+            printf("\tdeleting %s (size: %u)...\n", filename, st.st_size);
+
         if (!rmfile(filename))
             fprintf(stderr, "\tfailed to delete %s! error: %d\n", filename, getoserr());
         (*data)++;
