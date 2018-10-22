@@ -72,7 +72,6 @@ int main(int argc, char** argv) {
     size_t     tests   = (perf ? 1 : sizeof(sir_tests) / sizeof(sir_test));
     size_t     first   = (perf ? 0 : 1);
     size_t     passed  = 0;
-    size_t     n     = 0;
     sirtimer_t timer   = {0};
 
     printf(WHITE("running %lu libsir test(s)...\n"), tests);
@@ -80,7 +79,7 @@ int main(int argc, char** argv) {
     if (!startsirtimer(&timer))
         printf(RED("failed to start timer; elapsed time won't be measured correctly!") "\n");
 
-    for (n = first; n < tests; n++) {
+    for (size_t n = first; n < tests; n++) {
         printf(WHITE("\t'%s'...") "\n", sir_tests[n].name);
         bool thispass = sir_tests[n].fn();
         allpass &= thispass;
@@ -824,7 +823,7 @@ bool deletefiles(const char* search, const char* filename, unsigned* data) {
 
         struct stat st;
         if (0 == stat(filename, &st))
-            printf("\tdeleting %s (size: %u)...\n", filename, st.st_size);
+            printf("\tdeleting %s (size: %lu)...\n", filename, st.st_size);
 
         if (!rmfile(filename))
             fprintf(stderr, "\tfailed to delete %s! error: %d\n", filename, getoserr());
