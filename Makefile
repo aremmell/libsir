@@ -85,8 +85,6 @@ $(LIBDIR): $(BUILDDIR)
 $(OBJ_EXAMPLE): $(INTERDIR)
 $(OBJ_SHARED): $(INTERDIR) $(LIBDIR)
 $(OBJ_TESTS): $(OBJ_SHARED)
-$(OUT_SHARED): $(OBJ_SHARED)
-$(OUT_STATIC): $(OBJ_SHARED)
 
 $(INTERDIR)/%.eo: $(EXAMPLEDIR)/%.c $(DEPS)
 	$(CC) -MMD -c -o $@ $< $(CFLAGS)
@@ -113,23 +111,23 @@ shared: $(OBJ_SHARED)
 	$(CC) -shared -o $(OUT_SHARED) $^ $(CFLAGS) $(LDFLAGS_SHARED)
 	@echo built $(OUT_SHARED) successfully.
 
-static: $(OUT_STATIC)
+static: shared
 	ar cr $(OUT_STATIC) $(OBJ_SHARED)
 	@echo built $(OUT_STATIC) successfully.
 
-example: $(OUT_STATIC) $(OBJ_EXAMPLE)
+example: static $(OBJ_EXAMPLE)
 	$(CC) -o $(OUT_EXAMPLE) $(OUT_STATIC) $(OBJ_EXAMPLE) $(CFLAGS) $(LDFLAGS)
 	@echo built $(OUT_EXAMPLE) successfully.
 
-tests: $(OUT_STATIC) $(OBJ_TESTS)
+tests: static $(OBJ_TESTS)
 	$(CC) -o $(OUT_TESTS) $(OUT_STATIC) $(OBJ_TESTS) $(CFLAGS) $(LDFLAGS)
 	echo built $(OUT_TESTS) successfully.
 
-docs: $(OUT_STATIC)
+docs: static
 	@doxygen Doxyfile
 	@echo built documentation successfully.
 
-install: $(OUT_SHARED)
+install: shared
 ifeq ($(OS),Windows_NT)
 	@echo no install support for windows.
 else

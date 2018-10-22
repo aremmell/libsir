@@ -3,7 +3,7 @@ branches:
   only:
   - master
 script:
-  - make tests
+  - make -j tests
   - build/sirtests
 compiler:
   - clang
