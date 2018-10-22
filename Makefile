@@ -16,40 +16,34 @@ BUILDDIR   = build
 DOCSDIR    = docs
 TESTSDIR   = tests
 EXAMPLEDIR = example
-CXXDIR     = cppexample
 INTERDIR   = $(BUILDDIR)/obj
 LIBDIR     = $(BUILDDIR)/lib
 
 ifeq ($(INSTALLDIR),)
-INSTALLDIR = /usr/local/lib
+	INSTALLDIR = /usr/local/lib
 endif
 ifeq ($(INSTALLINC),)
-INSTALLINC = /usr/local/include
+	INSTALLINC = /usr/local/include
 endif
 
 LIBS = -pthread
 
 ifeq ($(SIR_DEBUG),1)
-CFLAGS   = -Wpedantic -std=c11 -I. -g -DNDEBUG -fPIC -DSIR_SELFLOG
-CXXFLAGS = -Wpedantic -std=c++14 -I. -g -DNDEBUG -fPIC -DSIR_SELFLOG
-@echo warning: SIR_DEBUG=1, using -g.
+	CFLAGS   = -Wpedantic -std=c11 -I. -g -O0 -DNDEBUG -fPIC -DSIR_SELFLOG
+	@echo warning: SIR_DEBUG=1, using -g.
 else
-CFLAGS   = -Wpedantic -std=c11 -I. -DNDEBUG -fPIC -O3
-CXXFLAGS = -Wpedantic -std=c++14 -I. -DNDEBUG -fPIC -O3
+	CFLAGS   = -Wpedantic -std=c11 -I. -DNDEBUG -fPIC -O3
 endif
 
 ifeq ($(OS),Windows_NT)
-CFLAGS += -D_WIN32
-CXXFLAGS += -D_WIN32
+	CFLAGS += -D_WIN32
 endif
 
 # link with static library, not shared
 LDFLAGS = $(LIBS) -L$(LIBDIR) -lsir_s
 
-# translation units and headers
-TUS = sir.c sirmutex.c sirinternal.c sirfilecache.c sirconsole.c sirtextstyle.c sirerrors.c sirhelpers.c
-DEPS = sir.h sirmutex.h sirconfig.h sirinternal.h sirhelpers.h sirplatform.h sirfilecache.h sirtypes.h \
-	   sirconsole.h sirtextstyle.h sirerrors.h
+# translation units
+TUS := $(wildcard ./*.c)
 
 # intermediate files
 _OBJ = $(patsubst %.c, %.o, $(TUS))
@@ -70,12 +64,6 @@ OBJ_EXAMPLE     = $(patsubst %.o, $(INTERDIR)/%.eo, $(_OBJ_EXAMPLE))
 OUT_EXAMPLE     = $(BUILDDIR)/sirexample
 EXAMPLETU       = $(TESTSDIR)/example.c
 
-# c++ example
-_OBJ_CXXEXAMPLE  = example.o
-OBJ_CXXEXAMPLE   = $(patsubst %.o, $(INTERDIR)/%.o++, $(_OBJ_EXAMPLE))
-OUT_CXXEXAMPLE   = $(BUILDDIR)/sircppexample
-CXXEXAMPLETU     = $(CXXDIR)/example.cc
-
 # console test rig
 _OBJ_TESTS    = tests.o
 OBJ_TESTS     = $(patsubst %.o, $(INTERDIR)/%.to, $(_OBJ_TESTS))
@@ -86,30 +74,28 @@ TESTSTU       = $(TESTSDIR)/tests.c
 # targets
 # ##########
 
+all: shared static example tests
+
+-include $(INTERDIR)/*.d
+
 $(BUILDDIR): prep
 $(INTERDIR) : $(BUILDDIR)
 $(LIBDIR): $(BUILDDIR)
 
 $(OBJ_EXAMPLE): $(INTERDIR)
-$(OBJ_CXXEXAMPLE): $(INTERDIR)
 $(OBJ_SHARED): $(INTERDIR) $(LIBDIR)
 $(OBJ_TESTS): $(OBJ_SHARED)
+$(OUT_SHARED): $(OBJ_SHARED)
+$(OUT_STATIC): $(OBJ_SHARED)
 
-$(INTERDIR)/%.eo: $(EXAMPLEDIR)/%.c
-	$(CC) -c -o $@ $< $(CFLAGS)
+$(INTERDIR)/%.eo: $(EXAMPLEDIR)/%.c $(DEPS)
+	$(CC) -MMD -c -o $@ $< $(CFLAGS)
 
-$(INTERDIR)/%.o++: $(CXXDIR)/%.cc
-	$(CXX) -c -o $@ $< $(CXXFLAGS)
+$(INTERDIR)/%.to: $(TESTSDIR)/%.c $(DEPS)
+	$(CC) -MMD -c -o $@ $< $(CFLAGS)
 
-$(INTERDIR)/%.to: $(TESTSDIR)/%.c
-	$(CC) -c -o $@ $< $(CFLAGS)
-
-$(INTERDIR)/%.lo: %.c
-	$(CC) -c -o $@ $< $(CFLAGS)
-
-default: example
-
-all: shared static example cppexample tests
+$(INTERDIR)/%.lo: %.c $(DEPS)
+	$(CC) -MMD -c -o $@ $< $(CFLAGS)
 
 prep:
 ifeq ($(OS),Windows_NT)
@@ -127,27 +113,23 @@ shared: $(OBJ_SHARED)
 	$(CC) -shared -o $(OUT_SHARED) $^ $(CFLAGS) $(LDFLAGS_SHARED)
 	@echo built $(OUT_SHARED) successfully.
 
-static: shared
+static: $(OUT_STATIC)
 	ar cr $(OUT_STATIC) $(OBJ_SHARED)
 	@echo built $(OUT_STATIC) successfully.
 
-example: static $(OBJ_EXAMPLE)
+example: $(OUT_STATIC) $(OBJ_EXAMPLE)
 	$(CC) -o $(OUT_EXAMPLE) $(OUT_STATIC) $(OBJ_EXAMPLE) $(CFLAGS) $(LDFLAGS)
 	@echo built $(OUT_EXAMPLE) successfully.
 
-cppexample: static $(OBJ_CXXEXAMPLE)
-	$(CXX) -o $(OUT_CXXEXAMPLE) $(OUT_STATIC) $(OBJ_CXXEXAMPLE) $(CXXFLAGS) $(LDFLAGS)
-	@echo build $(OUT_CXXEXAMPLE) successfully.
-
-tests: static $(OBJ_TESTS)
+tests: $(OUT_STATIC) $(OBJ_TESTS)
 	$(CC) -o $(OUT_TESTS) $(OUT_STATIC) $(OBJ_TESTS) $(CFLAGS) $(LDFLAGS)
 	echo built $(OUT_TESTS) successfully.
 
-docs: static
+docs: $(OUT_STATIC)
 	@doxygen Doxyfile
 	@echo built documentation successfully.
 
-install: shared
+install: $(OUT_SHARED)
 ifeq ($(OS),Windows_NT)
 	@echo no install support for windows.
 else
@@ -161,13 +143,11 @@ endif
 
 clean:
 ifeq ($(OS),Windows_NT)
-	@echo using del /F /Q...
 	$(shell del /F /Q "$(BUILDDIR)\*.*" && \
 		    del /F /Q "$(INTERDIR)\*.*" && \
 			del /F /Q "$(LIBDIR)\*.*" && \
 			del /F /Q "*.log")
 else
-	@echo using rm -f...
 	$(shell rm -f $(BUILDDIR)/* >/dev/null 2>&1 && \
 	        rm -f $(LIBDIR)/* >/dev/null 2>&1 && \
 			rm -f $(INTERDIR)/* >/dev/null 2>&1 && \

@@ -128,10 +128,6 @@ sirchar_t* _sirbuf_get(sirbuf* buf, size_t idx);
 /** Converts a ::sir_level to its human-readable form. */
 const sirchar_t* _sir_levelstr(sir_level level);
 
-/** Determines if a particular destination is registered to receive output
- * for a particular ::sir_level. */
-bool _sir_destwantslevel(sir_levels destLevels, sir_level level);
-
 /** Retrieves the current local time w/ optional milliseconds. */
 bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf);
 

@@ -415,12 +415,12 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
 
 bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output) {
 
-    if (_sir_validlevel(level) && _sir_validptr(output)) {
+    if (_sir_validptr(output)) {
         bool   r          = true;
         size_t dispatched = 0;
         size_t wanted = 0;
 
-        if (_sir_destwantslevel(si->d_stdout.levels, level)) {
+        if (_sir_bittest(si->d_stdout.levels, level)) {
             const sirchar_t* write = write = _sir_format(true, si->d_stdout.opts, output);
             assert(write);
 #ifndef _WIN32
@@ -436,7 +436,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output) {
             wanted++;
         }
 
-        if (_sir_destwantslevel(si->d_stderr.levels, level)) {
+        if (_sir_bittest(si->d_stderr.levels, level)) {
             const sirchar_t* write = write = _sir_format(true, si->d_stderr.opts, output);
             assert(write);
 #ifndef _WIN32
@@ -453,7 +453,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output) {
         }
 
 #ifndef SIR_NO_SYSLOG
-        if (_sir_destwantslevel(si->d_syslog.levels, level)) {
+        if (_sir_bittest(si->d_syslog.levels, level)) {
             syslog(_sir_syslog_maplevel(level), "%s", output->message);
             dispatched++;
             wanted++;
@@ -613,10 +613,6 @@ const sirchar_t* _sir_levelstr(sir_level level) {
         case SIRL_DEBUG:
         default: return SIRL_S_DEBUG;
     }
-}
-
-bool _sir_destwantslevel(sir_levels destLevels, sir_level level) {
-    return _sir_bittest(destLevels, level);
 }
 
 bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format) {

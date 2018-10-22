@@ -504,7 +504,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output,
         for (size_t n = 0; n < sfc->count; n++) {
             assert(_sirfile_validate(sfc->files[n]));
 
-            if (!_sir_destwantslevel(sfc->files[n]->levels, level)) {
+            if (!_sir_bittest(sfc->files[n]->levels, level)) {
                 _sir_selflog("%s: levels for %d (%04lx) not set for (%04lx); skipping...\n", __func__,
                     sfc->files[n]->id, sfc->files[n]->levels, level);
                 continue;
