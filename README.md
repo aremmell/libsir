@@ -1,5 +1,6 @@
 # libsir
-[![Build Status](https://travis-ci.org/ryanlederman/sir.svg?branch=master)](https://travis-ci.org/ryanlederman/sir)
+
+[![Build Status](https://travis-ci.org/ryanlederman/libsir.svg?branch=master)](https://travis-ci.org/ryanlederman/libsir)
 
 ## Synopsis
 
