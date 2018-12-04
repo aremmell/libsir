@@ -27,7 +27,7 @@ I've successfully compiled and verified the test suite in these environments:
 | Compiler | Version       | OS               | Architecture
 | -------- | :-----------: | ---------------- | :------------
 | gcc      | 5.4.0         | Ubuntu 16.04     | x64
-| gcc      | 7.3.0 .       | Ubuntu 18.04     | armhf
+| gcc      | 7.3.0         | Ubuntu 18.04     | armhf
 | gcc      | 7.3.0 (MinGW) | Windows 10       | x64
 | clang    | 9.1.0         | macOS 10.13.4    | x64
 
