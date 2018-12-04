@@ -6,7 +6,7 @@
 
 libsir is a cross-platform, thread-safe C (C11) logging library that is designed to simplify and streamline the generation of human-readable information in software.
 
-Using libsir, you can make a single call that simultaneously sends information to multiple destinations, _each with their own individual preference for format and levels_. See the [documentation](https://ryanlederman.github.io/sir) for more information.
+Using libsir, you can make a single call that simultaneously sends information to multiple destinations, _each with their own individual preference for format and levels_. See the [documentation](https://ryanlederman.github.io/libsir) for more information.
 
 Each 'level' or 'priority' of output can be visually styled however you wish for `stdio` destinations. This allows for immediate visual confirmation that a message appeared in the terminal that you should pay attention to, while less pressing information is more subtle in appearance.
 
@@ -33,4 +33,4 @@ I've successfully compiled and verified the test suite in these environments:
 
 ## Details
 
-Please see the [documentation](https://ryanlederman.github.io/sir) for further information about libsir.
+Please see the [documentation](https://ryanlederman.github.io/libsir) for further information about libsir.
