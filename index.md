@@ -151,21 +151,21 @@ Destination      |  Levels     | Options
 -----------      | :-------:   | -------
 `stdout`         | <code>SIRL_DEBUG \| SIRL_INFO \| SIRL_NOTICE \| SIRL_WARN</code> | <code>SIRO_NOTIME \| SIRO_NOPID \| SIRO_NOTID</code>
 `stderr`         | <code>SIRL_ERROR \| SIRL_CRIT \| SIRL_EMERG</code> | <code>SIRO_NOTIME \| SIRO_NOPID \| SIRO_NOTID</code>
-`syslog`         | <code>SIRL_WARN  \| SIRL_CRIT \| SIRL_ALERT \| SIRL_EMERG</code> | `N/A (_syslog has its own decoration_)`
-`log files`      | `SIRL_ALL`  | `0 (_all output_)`
+`syslog`         | <code>SIRL_WARN  \| SIRL_CRIT \| SIRL_ALERT \| SIRL_EMERG</code> | `N/A (syslog has its own decoration)`
+`log files`      | `SIRL_ALL`  | `0 (all output)`
 
 These define the default text styling to use for `stdio` (@ref sir_textstyle) on a per-level basis (_can be changed at runtime with_ @ref sir_set_textstyle) and are also located in [sirdefaults.h](@ref sirdefaults.h):
 
 Level         | Style                                           | Sample 
 -----         | :-----:                                         | ------
-`SIRL_DEBUG`  | `SIRS_FG_DGRAY`                                 | ![debug](http://gbtw.us/pub/img/debug.png)
-`SIRL_INFO`   | `SIRS_FG_WHITE`                                 | ![info](http://gbtw.us/pub/img/info.png)
-`SIRL_NOTICE` | `SIRS_FG_CYAN`                                  | ![notice](http://gbtw.us/pub/img/notice.png)
-`SIRL_WARN`   | `SIRS_FG_YELLOW`                                | ![warning](http://gbtw.us/pub/img/warning.png)
-`SIRL_ERROR`  | `SIRS_FG_RED`                                   | ![error](http://gbtw.us/pub/img/error.png)
-`SIRL_CRIT`   | <code>SIRS_BRIGHT \| SIRS_FG_RED</code>         | ![critical](http://gbtw.us/pub/img/critical.png)
-`SIRL_ALERT`  | <code>SIRS_BRIGHT \| SIRS_FG_BLACK \| SIRS_BG_LYELLOW</code>  | ![alert](http://gbtw.us/pub/img/alert.png)
-`SIRL_EMERG`  | <code>SIRS_BRIGHT \| SIRS_FG_LYELLOW \| SIRS_BG_RED</code> | ![emergency](http://gbtw.us/pub/img/emergency.png)
+`SIRL_DEBUG`  | `SIRS_FG_DGRAY`                                 | ![debug](http://wyatt.computer/pub/libsir/debug.png)
+`SIRL_INFO`   | `SIRS_FG_WHITE`                                 | ![info](http://wyatt.computer/pub/libsir/info.png)
+`SIRL_NOTICE` | `SIRS_FG_CYAN`                                  | ![notice](http://wyatt.computer/pub/libsir/notice.png)
+`SIRL_WARN`   | `SIRS_FG_YELLOW`                                | ![warning](http://wyatt.computer/pub/libsir/warning.png)
+`SIRL_ERROR`  | `SIRS_FG_RED`                                   | ![error](http://wyatt.computer/pub/libsir/error.png)
+`SIRL_CRIT`   | <code>SIRS_BRIGHT \| SIRS_FG_RED</code>         | ![critical](http://wyatt.computer/pub/libsir/critical.png)
+`SIRL_ALERT`  | <code>SIRS_BRIGHT \| SIRS_FG_BLACK \| SIRS_BG_LYELLOW</code>  | ![alert](http://wyatt.computer/pub/libsir/alert.png)
+`SIRL_EMERG`  | <code>SIRS_BRIGHT \| SIRS_FG_LYELLOW \| SIRS_BG_RED</code> | ![emergency](http://wyatt.computer/pub/libsir/emergency.png)
 
 ### Preprocessor ###    {#preproc}
 
@@ -176,4 +176,4 @@ Level         | Style                                           | Sample
 
 ---
 
-libsir was originally written in 2003, and I rediscovered it recently. I looked at it and realized that it was woefully inadequate and decided to just compeltely rewrite it. This was in the context of R&D for a new embedded application for Sparkage Inc. We specialize in cloud-based mobile-first [loyalty and rewards software](https://getsparkage.com).
+libsir was originally written in 2003, and I rediscovered it recently. I looked at it and realized that it was woefully inadequate and decided to just compeltely rewrite it. This was in the context of R&D for a new embedded application for Sparkage Inc. We specialize in cloud-based mobile-first [loyalty and rewards software](https://getsparkage.com). 
