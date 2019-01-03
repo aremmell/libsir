@@ -1,7 +1,6 @@
 var sirinternal_8c =
 [
     [ "_sir_cleanup", "d0/dfe/group__intern.html#ga5d324314a3df2c5a36199a2cd8b75404", null ],
-    [ "_sir_destwantslevel", "d0/dfe/group__intern.html#gab287b55d3e5ac06f8acc98b0e25acb58", null ],
     [ "_sir_dispatch", "d0/dfe/group__intern.html#ga41eea20e20e5f1fec92ec3abd8dbafa9", null ],
     [ "_sir_format", "d0/dfe/group__intern.html#ga7ad8d632acc140d1a6fe795b8de0fa70", null ],
     [ "_sir_formattime", "d0/dfe/group__intern.html#ga6d418f4a2a45a3273b8c6e09a03edd7c", null ],
