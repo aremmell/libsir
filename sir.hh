@@ -172,14 +172,14 @@ namespace sir {
         /** If `BOOST_FORMAT_HPP` is defined, the default adapter is extended with
          * methods that take `const boost::format&`.
          */
-        bool debug(const boost::format& message) const { default_adapter::debug(message.str()); }
-        bool info(const boost::format& message) const { default_adapter::info(message.str()); }
-        bool notice(const boost::format& message)  const { default_adapter::notice(message.str()); }
-        bool warn(const boost::format& message) const { default_adapter::warn(message.str()); }
-        bool error(const boost::format& message) const { default_adapter::error(message.str()); }
-        bool crit(const boost::format& message) const { default_adapter::crit(message.str()); }
-        bool alert(const boost::format& message) const { default_adapter::alert(message.str()); }
-        bool emerg(const boost::format& message) const { default_adapter::emerg(message.str()); }
+        bool debug(const boost::format& message) const { return default_adapter::debug(message.str()); }
+        bool info(const boost::format& message) const { return default_adapter::info(message.str()); }
+        bool notice(const boost::format& message)  const { return default_adapter::notice(message.str()); }
+        bool warn(const boost::format& message) const { return default_adapter::warn(message.str()); }
+        bool error(const boost::format& message) const { return default_adapter::error(message.str()); }
+        bool crit(const boost::format& message) const { return default_adapter::crit(message.str()); }
+        bool alert(const boost::format& message) const { return default_adapter::alert(message.str()); }
+        bool emerg(const boost::format& message) const { return default_adapter::emerg(message.str()); }
 #endif /* !BOOST_FORMAT_HPP */
     }; /* !class default_adapter */
 
