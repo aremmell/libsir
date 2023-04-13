@@ -1,6 +1,7 @@
 # libsir
 
-[![Build Status](https://travis-ci.org/aremmell/libsir.svg?branch=master)](https://travis-ci.org/aremmell/libsir)
+## Operational status
+[![Build Status](https://app.travis-ci.com/aremmell/libsir.svg?branch=master)](https://app.travis-ci.com/aremmell/libsir)
 
 ## Synopsis
 
