@@ -1,6 +1,6 @@
 var annotated_dup =
 [
-    [ "sir_stdio_dest", "df/d0e/structsir__stdio__dest.html", "df/d0e/structsir__stdio__dest" ],
+    [ "sir_stdio_dest", "df/d0e/structsir__stdio__dest.html", null ],
     [ "sir_style_map", "df/d50/structsir__style__map.html", "df/d50/structsir__style__map" ],
     [ "sir_style_priv_map", "d7/dcf/structsir__style__priv__map.html", "d7/dcf/structsir__style__priv__map" ],
     [ "sir_syslog_dest", "dc/dea/structsir__syslog__dest.html", null ],

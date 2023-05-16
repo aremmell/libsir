@@ -1,55 +1,34 @@
 /*
-@ @licstart  The following is the entire license notice for the
-JavaScript code in this file.
+ @licstart  The following is the entire license notice for the JavaScript code in this file.
 
-Copyright (C) 1997-2017 by Dimitri van Heesch
+ The MIT License (MIT)
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
+ Copyright (C) 1997-2020 by Dimitri van Heesch
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+ Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ and associated documentation files (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
 
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ The above copyright notice and this permission notice shall be included in all copies or
+ substantial portions of the Software.
 
-@licend  The above is the entire license notice
-for the JavaScript code in this file
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+ @licend  The above is the entire license notice for the JavaScript code in this file
 */
 var NAVTREE =
 [
   [ "libsir", "index.html", [
-    [ "Home", "index.html", [
-      [ "libsir", "index.html#libsir", [
-        [ "Highlights", "index.html#highlights", null ],
-        [ "Supported platforms", "index.html#platforms", null ],
-        [ "Details", "index.html#details", [
-          [ "Destinations", "index.html#destinations", null ],
-          [ "Decoration", "index.html#decoration", null ],
-          [ "Levels", "index.html#levels", null ]
-        ] ],
-        [ "Getting started", "index.html#getstarted", [
-          [ "make recipies", "index.html#make", [
-            [ "For tinkering and testing", "index.html#testing", null ],
-            [ "For production", "index.html#prod", null ]
-          ] ],
-          [ "Including the source", "index.html#src", null ]
-        ] ],
-        [ "Customization", "index.html#customization", [
-          [ "Strings and Limits", "index.html#config", null ],
-          [ "Default options, levels, and text styles", "index.html#defaults", null ],
-          [ "Preprocessor", "index.html#preproc", null ]
-        ] ],
-        [ "Why", "index.html#why", null ]
-      ] ]
-    ] ],
-    [ "Test List", "d4/df6/test.html", null ],
+    [ "Home", "index.html", "index" ],
+    [ "Security Policy", "db/db3/md_SECURITY.html", null ],
     [ "Todo List", "dd/da0/todo.html", null ],
+    [ "Test List", "d4/df6/test.html", null ],
     [ "Modules", "modules.html", "modules" ],
     [ "Namespace Members", "namespacemembers.html", [
       [ "All", "namespacemembers.html", null ],
@@ -83,8 +62,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d2/d7d/group__tests.html#ga9472cbb9a62d343fe0272444a7f87ce1",
-"d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a"
+"da/df8/group__custom.html#ga47b9f4b74ed2b3d81d34c0d0237b100f"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
