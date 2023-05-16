@@ -2,7 +2,7 @@
   * @file sirconfig.h
   * @brief Compile-time constants.
   *
-  * This file and accompanying source code originated from <https://github.com/ryanlederman/sir>.
+  * This file and accompanying source code originated from <https://github.com/aremmell/libsir>.
   * If you obtained it elsewhere, all bets are off.
   *
   * @author Ryan M. Lederman <lederman@gmail.com>

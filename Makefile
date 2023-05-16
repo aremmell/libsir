@@ -2,7 +2,7 @@
 #                                                   #
 #              libsir make recipes                  #
 #                                                   #
-#       https://github.com/ryanlederman/sir         #
+#       https://github.com/aremmell/libsir          #
 #                                                   #
 #                                                   #
 # Note:                                             #
