@@ -3,9 +3,17 @@ language: c
 branches:
   only:
   - master
+os:
+  - linux
+  - osx
+dist: bionic
+osx_image: xcode14.2
 script:
   - make -j tests
   - build/sirtests
+arch:
+  - amd64
+  - arm64
 compiler:
   - clang
   - gcc
