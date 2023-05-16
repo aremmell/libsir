@@ -2,10 +2,7 @@
 
 ## Supported Versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.0     | :white_check_mark: |
-| < 1.0   | :x:                |
+Any version after the first release (1.0) is qualified for vulnerability reporting.
 
 ## Reporting a Vulnerability
 
