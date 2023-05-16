@@ -785,7 +785,7 @@ bool printerror(bool pass) {
 void printexpectederr(void) {
     sirchar_t message[SIR_MAXERROR] = {0};
     uint16_t  code                  = sir_geterror(message);
-    printf("\t" GREEN("Expected (%hu, %s") "\n", code, message);
+    printf("\t" GREEN("Expected (%hu, %s)") "\n", code, message);
 }
 
 int getoserr(void) {
