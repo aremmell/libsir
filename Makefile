@@ -62,13 +62,11 @@ OUT_STATIC     = $(LIBDIR)/libsir_s.a
 _OBJ_EXAMPLE    = example.o
 OBJ_EXAMPLE     = $(patsubst %.o, $(INTERDIR)/%.eo, $(_OBJ_EXAMPLE))
 OUT_EXAMPLE     = $(BUILDDIR)/sirexample
-EXAMPLETU       = $(TESTSDIR)/example.c
 
 # console test rig
 _OBJ_TESTS    = tests.o
 OBJ_TESTS     = $(patsubst %.o, $(INTERDIR)/%.to, $(_OBJ_TESTS))
 OUT_TESTS     = $(BUILDDIR)/sirtests
-TESTSTU       = $(TESTSDIR)/tests.c
 
 # ##########
 # targets
@@ -112,7 +110,7 @@ shared: $(OBJ_SHARED)
 	@echo built $(OUT_SHARED) successfully.
 
 static: shared
-	ar cr $(OUT_STATIC) $(OBJ_SHARED)
+	ar -cr $(OUT_STATIC) $(OBJ_SHARED)
 	@echo built $(OUT_STATIC) successfully.
 
 example: static $(OBJ_EXAMPLE)
@@ -121,7 +119,7 @@ example: static $(OBJ_EXAMPLE)
 
 tests: static $(OBJ_TESTS)
 	$(CC) -o $(OUT_TESTS) $(OUT_STATIC) $(OBJ_TESTS) $(CFLAGS) $(LDFLAGS)
-	echo built $(OUT_TESTS) successfully.
+	@echo built $(OUT_TESTS) successfully.
 
 docs: static
 	@doxygen Doxyfile
@@ -146,9 +144,9 @@ ifeq ($(OS),Windows_NT)
 			del /F /Q "$(LIBDIR)\*.*" && \
 			del /F /Q "*.log")
 else
-	$(shell rm -f $(BUILDDIR)/* >/dev/null 2>&1 && \
-	        rm -f $(LIBDIR)/* >/dev/null 2>&1 && \
-			rm -f $(INTERDIR)/* >/dev/null 2>&1 && \
+	$(shell rm -f $(BUILDDIR)/* >/dev/null 2>&1 ; \
+	        rm -f $(LIBDIR)/*   >/dev/null 2>&1 ; \
+			rm -f $(INTERDIR)/* >/dev/null 2>&1 ; \
 			rm -f *.log >/dev/null 2>&1)
 endif
 	@echo cleaned successfully.
