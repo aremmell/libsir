@@ -68,7 +68,7 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
 
 #ifndef _WIN32
     errno = SIR_E_NOERROR;
-#   if _POSIX_C_SOURCE >= 200112L && !defined(_GNU_SOURCE)
+#   if defined(__APPLE__) || (_POSIX_C_SOURCE >= 200112L && !defined(_GNU_SOURCE))
         int finderr = strerror_r(code, message, SIR_MAXERROR);
 #   else
         int finderr = 0;
