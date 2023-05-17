@@ -40,15 +40,15 @@ There is a VS Code workspace file included, in case you'd like to use that. In t
 
 ## Implementation details
 
-### Destinations
+### Output destinations
 
 - `stdout` / `stderr`
 - `syslog`
 - _n_ number of log files (_archived automatically a'la logrotate when they get too big_)
 
-### Decoration
+### Informational output
 
-libsir computes certain data that may be useful in output (_particularly for debugging postmortem_). Each destination may be configured to receive any, all, or none of these.
+libsir is able to output certain data that may contribute to better comprehension of the program state (_particularly for debugging postmortem_). Each destination may be configured to receive any, all, or none of these.
 
 > Note: the appearance of this data may be customized for your application. See [Customization](#customization) for more information.
 
@@ -77,33 +77,6 @@ Error       | Errors.
 Critical    | Critical errors.
 Alert       | Action required ASAP.
 Emergency   | Nuclear war, Armageddon, the sky is falling.
-
-## Installation
-
-Clone or download this repository to your machine, then choose how you'd like to integrate libsir into your project:
-
-### Make
-
-#### Tinkering/testing
-
-Recipe Type        | Command        | Output file
-------        | -------        | -----------
-Test suite    | `make tests`   | _build/sirtests[.exe]_
-Example app   | `make example` | _build/sirexample[.exe]_
-
-#### Production
-
-Recipe Type         | Command             | Output file
-------         | -------             | -----------
-Static library | `make static`       | _build/lib/libsir_s.a_
-Shared library | `make shared`       | _build/lib/libsir.so_ 
-Install[^2]    | `sudo make install` | /usr/local/lib/libsir.so, /usr/local/include/&lt;headers&gt;
-
-[^2]: Use `sudo make install` only if you have looked at the recipe and understand that it manually copies files, that’s it. Future releases of libsir will utilize the `install` tool when available.
-
-> If you'd like to debug libsir, just swap out the commented debug flags in [the makefile](./Makefile).
-
-Another option for implementing libsir would simply be to include all of the source files in the root directory of this repository and include [sir.h](./sir.h).
 
 ## Customization
 
@@ -143,9 +116,9 @@ The following are the defaults used when `SIRL_DEFAULT` or `SIRO_DEFAULT` are us
 
 Destination      |  Levels     | Options
 -----------      | :-------:   | -------
-stdout         | `SIRL_DEBUG | SIRL_INFO | SIRL_NOTICE | SIRL_WARN` | `SIRO_NOTIME | SIRO_NOPID | SIRO_NOTID`
-stderr         | `SIRL_ERROR | SIRL_CRIT | SIRL_EMERG` | `SIRO_NOTIME | SIRO_NOPID | SIRO_NOTID`
-syslog         | `SIRL_WARN  | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG` | `N/A (syslog has its own decoration)`
+stdout         | `SIRL_DEBUG \| SIRL_INFO \| SIRL_NOTICE \| SIRL_WARN` | `SIRO_NOTIME \| SIRO_NOPID \| SIRO_NOTID`
+stderr         | `SIRL_ERROR \| SIRL_CRIT \| SIRL_EMERG` | `SIRO_NOTIME \| SIRO_NOPID \| SIRO_NOTID`
+syslog         | `SIRL_WARN  \| SIRL_CRIT \| SIRL_ALERT \| SIRL_EMERG` | `N/A (syslog has its own styling)`
 log files      | `SIRL_ALL`  | `0 (all output)`
 
 #### Styles
@@ -164,6 +137,33 @@ Supported terminals will render text from libsir based on the "styles" used in l
  `SIRL_CRIT`   |           `SIRS_BRIGHT \| SIRS_FG_RED`            | ![critical](docs/critical.png)
  `SIRL_ALERT`  | `SIRS_BRIGHT \| SIRS_FG_BLACK \| SIRS_BG_LYELLOW` | ![alert](docs/alert.png)
  `SIRL_EMERG`  |  `SIRS_BRIGHT \| SIRS_FG_LYELLOW \| SIRS_BG_RED`  | ![emergency](docs/emergency.png)
+
+## Installation
+
+Clone or download this repository to your machine, then choose how you'd like to integrate libsir into your project:
+
+### Make
+
+#### Tinkering/testing
+
+Recipe Type        | Command        | Output file
+------        | -------        | -----------
+Test suite    | `make tests`   | _build/sirtests[.exe]_
+Example app   | `make example` | _build/sirexample[.exe]_
+
+#### Production
+
+Recipe Type         | Command             | Output file
+------         | -------             | -----------
+Static library | `make static`       | _build/lib/libsir_s.a_
+Shared library | `make shared`       | _build/lib/libsir.so_ 
+Install[^2]    | `sudo make install` | /usr/local/lib/libsir.so, /usr/local/include/&lt;headers&gt;
+
+[^2]: Use `sudo make install` only if you have looked at the recipe and understand that it manually copies files, that’s it. Future releases of libsir will utilize the `install` tool when available.
+
+> If you'd like to debug libsir, just swap out the commented debug flags in [the makefile](./Makefile).
+
+Another option for implementing libsir would simply be to include all of the source files in the root directory of this repository and include [sir.h](./sir.h).
 
 ### Preprocessor
 
