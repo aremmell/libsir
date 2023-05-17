@@ -34,6 +34,7 @@ Currently, libsir uses a hand-rolled Unix Makefile. Despite that, I (_and Travis
 | clang 14.0.0 | macOS 12.6 | x86_64 |
 | clang 14.0.3 | macOS 13.3.1 | x86_64 |
 | clang 14.0.3 | macOS 13.3.1 | arm64 |
+| clang 14.0.5 | FreeBSD 13.2 | amd64 |
 
 There is a VS Code workspace file included, in case you'd like to use that. In the future, I will likely use CMake or autotools to generate the compilation scripts.
 
