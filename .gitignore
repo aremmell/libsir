@@ -18,6 +18,7 @@ build/
 # compiled documentation
 docs/html/
 docs/xml/
+index.md
 
 # test artifacts
 *.log
