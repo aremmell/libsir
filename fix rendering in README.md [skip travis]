@@ -2,8 +2,6 @@
 
 [![Build Status](https://app.travis-ci.com/aremmell/libsir.svg?branch=master)](https://app.travis-ci.com/aremmell/libsir) ![GitHub](https://img.shields.io/github/license/aremmell/libsir?color=%2340b911)
 
-[TOC]
-
 ## Synopsis
 
 libsir is a cross-platform, thread-safe C (C11) logging library that is designed to simplify and streamline the generation of human-readable information in software.
@@ -98,7 +96,7 @@ Recipe Type         | Command             | Output file
 ------         | -------             | -----------
 Static library | `make static`       | _build/lib/libsir_s.a_
 Shared library | `make shared`       | _build/lib/libsir.so_ 
-Install[^2]        | `sudo make install` | /usr/local/lib/libsir.so, /usr/local/include/&lt;headers&gt;
+Install[^2]    | `sudo make install` | /usr/local/lib/libsir.so, /usr/local/include/&lt;headers&gt;
 
 [^2]: Use `sudo make install` only if you have looked at the recipe and understand that it manually copies files, that’s it. Future releases of libsir will utilize the `install` tool when available.
 
@@ -162,9 +160,9 @@ Supported terminals will render text from libsir based on the "styles" used in l
  `SIRL_NOTICE` |                 `SIRS_FG_CYAN`                    | ![notice](docs/notice.png)
  `SIRL_WARN`   |                `SIRS_FG_YELLOW`                   | ![warning](docs/warning.png)
  `SIRL_ERROR`  |                  `SIRS_FG_RED`                    | ![error](docs/error.png)
- `SIRL_CRIT`   |           `SIRS_BRIGHT | SIRS_FG_RED`             | ![critical](docs/critical.png)
- `SIRL_ALERT`  | `SIRS_BRIGHT | SIRS_FG_BLACK | SIRS_BG_LYELLOW`   | ![alert](docs/alert.png)
- `SIRL_EMERG`  |  `SIRS_BRIGHT | SIRS_FG_LYELLOW | SIRS_BG_RED`    | ![emergency](docs/emergency.png)
+ `SIRL_CRIT`   |           `SIRS_BRIGHT \| SIRS_FG_RED`            | ![critical](docs/critical.png)
+ `SIRL_ALERT`  | `SIRS_BRIGHT \| SIRS_FG_BLACK \| SIRS_BG_LYELLOW` | ![alert](docs/alert.png)
+ `SIRL_EMERG`  |  `SIRS_BRIGHT \| SIRS_FG_LYELLOW \| SIRS_BG_RED`  | ![emergency](docs/emergency.png)
 
 ### Preprocessor
 
