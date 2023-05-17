@@ -123,6 +123,11 @@ tests: static $(OBJ_TESTS)
 
 docs: static
 	@doxygen Doxyfile
+ifeq ($(OS),Windows_NT)
+	$(shell move /y index.md README.md)
+else
+	$(shell mv -f index.md README.md)
+endif
 	@echo built documentation successfully.
 
 install: shared
