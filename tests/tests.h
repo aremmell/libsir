@@ -51,12 +51,11 @@
 #   define _POSIX_C_SOURCE 200809L
 #endif
 #if !defined(_DEFAULT_SOURCE)
-#   define _DEFAULT_SOURCE 1
+#   define _DEFAULT_SOURCE
 #endif
 
 #define _CRT_RAND_S
 
-#include "tests.h"
 #include "../sir.h"
 #include "../sirerrors.h"
 #include "../sirfilecache.h"
