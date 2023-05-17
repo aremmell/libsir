@@ -58,6 +58,15 @@ static const char* arg_perf = "--perf"; /* run performance test instead of stand
 
 int main(int argc, char** argv) {
 
+#if !defined(_WIN32)
+    // Disallow execution by root/sudo; some of the tests
+    // rely on lack of permissions.
+    if (geteuid() == 0) {
+        fprintf(stderr, "Sorry, but you may not run this as root.\n");
+        return EXIT_FAILURE;
+    }
+#endif
+
     bool wait = false;
     bool perf = false;
 
@@ -236,8 +245,15 @@ bool sirtest_failinvalidfilename(void) {
 bool sirtest_failfilebadpermission(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
+    const char* path = NULL;
 
-    pass &= NULL == sir_addfile("/noperms", SIRL_ALL, SIRO_MSGONLY);
+#if !defined(_WIN32)
+    path = "/noperms";
+#else
+    path = "C:\\Windows\\System32\\noperms";
+#endif    
+
+    pass &= NULL == sir_addfile(path, SIRL_ALL, SIRO_MSGONLY);
 
     if (pass)
         printexpectederr();
@@ -822,7 +838,7 @@ bool deletefiles(const char* search, const char* filename, unsigned* data) {
 
         struct stat st;
         if (0 == stat(filename, &st))
-            printf("\tdeleting %s (size: %lld)...\n", filename, st.st_size);
+            printf("\tdeleting %s (size: %" PRId64 ")...\n", filename, st.st_size);
 
         if (!rmfile(filename))
             fprintf(stderr, "\tfailed to delete %s! error: %d\n", filename, getoserr());
