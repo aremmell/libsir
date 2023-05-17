@@ -30,13 +30,6 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * 
  * ---------------------------------------------------------------------------------------------------------
- * 
- * @todo Hardening and Compatibility
- * I have only compiled and tested libsir on the following:
- * - Ubuntu 16.04 x64 (gcc)
- * - Windows 10 x64  (MinGW)
- * - macOS 10.13.4 x64 (clang)
- * #### Other platforms, such as `BSD` and `macOS` remain untested, and probably won't even compile cleanly.
  *
  * @todo Nice to have
  * 1. A plugin system or public interface for registering custom adapters, for things like:
