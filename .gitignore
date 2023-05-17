@@ -21,3 +21,6 @@ docs/xml/
 
 # test artifacts
 *.log
+
+# annoying macOS files
+.DS_Store
