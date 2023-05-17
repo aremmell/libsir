@@ -203,7 +203,7 @@
  */
 #define SIR_NUMLEVELS 9
 
-#ifndef _WIN32
+#if !defined(_WIN32)
 /** The size, in characters, of the buffer used to hold text styling data. */
 #define SIR_MAXSTYLE 16
 /** The string used to reset any styling applied to text in stdio output. */
