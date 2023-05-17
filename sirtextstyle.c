@@ -184,13 +184,13 @@ bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size) {
             sirchar_t bgfmt[5] = {0};
 
             if (privfg != 0)
-                snprintf(fgfmt, 5, ";%03hhu", privfg);
+                snprintf(fgfmt, 5, ";%03hu", privfg);
 
             if (privbg != 0)
-                snprintf(bgfmt, 5, ";%03hhu", privbg);
+                snprintf(bgfmt, 5, ";%03hu", privbg);
 
             /* '\033[n;nnn;nnnm' */
-            snprintf(buf, size, "\033[%.1hu%s%sm", privattr, fgfmt, bgfmt);
+            snprintf(buf, size, "\033[%hu%s%sm", privattr, fgfmt, bgfmt);
 
             return _sir_validstr(buf);
 #else
