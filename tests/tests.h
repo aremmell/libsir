@@ -47,13 +47,6 @@
 #ifndef _SIR_TESTS_H_INCLUDED
 #define _SIR_TESTS_H_INCLUDED
 
-#if !defined(_POSIX_C_SOURCE)
-#   define _POSIX_C_SOURCE 200809L
-#endif
-#if !defined(_DEFAULT_SOURCE)
-#   define _DEFAULT_SOURCE
-#endif
-
 #define _CRT_RAND_S
 
 #include "../sir.h"
