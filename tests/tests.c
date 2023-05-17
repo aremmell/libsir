@@ -283,7 +283,7 @@ bool sirtest_failinittwice(void) {
     return printerror(pass);
 }
 
-bool sirtest_failaftercleanup() {
+bool sirtest_failaftercleanup(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
