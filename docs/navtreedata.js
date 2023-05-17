@@ -25,7 +25,6 @@
 var NAVTREE =
 [
   [ "libsir", "index.html", [
-    [ "Home", "index.html", "index" ],
     [ "Security Policy", "db/db3/md_SECURITY.html", null ],
     [ "Todo List", "dd/da0/todo.html", null ],
     [ "Test List", "d4/df6/test.html", null ],

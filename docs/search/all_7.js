@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['level_0',['level',['../df/d50/structsir__style__map.html#abb52f70389b9f91f1c8d2abc3bb1afca',1,'sir_style_map']]]
+  ['operator_3c_3c_0',['operator&lt;&lt;',['../d1/d73/namespacesir.html#abd4b32e82cccc973e6d9a8a30887e96d',1,'sir']]]
 ];

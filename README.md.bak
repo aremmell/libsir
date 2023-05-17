@@ -2,8 +2,6 @@
 
 [![Build Status](https://app.travis-ci.com/aremmell/libsir.svg?branch=master)](https://app.travis-ci.com/aremmell/libsir) ![GitHub](https://img.shields.io/github/license/aremmell/libsir?color=%2340b911)
 
-[TOC]
-
 ## Synopsis
 
 libsir is a cross-platform, thread-safe C (C11) logging library that is designed to simplify and streamline the generation of human-readable information in software.
@@ -43,7 +41,9 @@ There is a VS Code workspace file included, in case you'd like to use that. In t
 
 ### Destinations
 
-- `stdout` / `stderr`
+Currently, the following destinations are supported:
+
+- `stdout` and `stderr`
 - `syslog`
 - _n_ number of log files (_archived automatically a'la logrotate when they get too big_)
 
@@ -51,7 +51,7 @@ There is a VS Code workspace file included, in case you'd like to use that. In t
 
 libsir computes certain data that may be useful in output (_particularly for debugging postmortem_). Each destination may be configured to receive any, all, or none of these.
 
-> Note: the appearance of this data may be customized for your application. See [Customization](#customization) for more information.
+_Note: the appearance of this data may be customized for your application. See [Customization](@ref customization) for more information._
 
 Data             |  Description                               | stdio   | syslog[^1] | files
 ----             | ------------                               | :-----: | :------:           | :-----:
@@ -100,7 +100,7 @@ Static library | `make static`       | _build/lib/libsir_s.a_
 Shared library | `make shared`       | _build/lib/libsir.so_ 
 Install[^2]        | `sudo make install` | /usr/local/lib/libsir.so, /usr/local/include/&lt;headers&gt;
 
-[^2]: Use `sudo make install` only if you have looked at the recipe and understand that it manually copies files, that’s it. Future releases of libsir will utilize the `install` tool when available.
+[^2]: Use `sudo make install` only if you have looked at the recipe and understand that it manually copies files, that’s it. Future releases of libsir will utilize the  `install` tool when available.
 
 > If you'd like to debug libsir, just swap out the commented debug flags in [the makefile](./Makefile).
 
@@ -138,22 +138,16 @@ Entry             | Description                       | Default
 
 ### Default options, levels, and text styles
 
-#### Options
-
-The following are the defaults used when `SIRL_DEFAULT` or `SIRO_DEFAULT` are used. These are located in [sirdefaults.h](./sirdefaults.h):
+The following are the defaults used when `SIRL_DEFAULT` (@ref sir_level) or `SIRO_DEFAULT` (@ref sir_option) are used. These are located in [sirdefaults.h](./sirdefaults.h):
 
 Destination      |  Levels     | Options
 -----------      | :-------:   | -------
-stdout         | `SIRL_DEBUG | SIRL_INFO | SIRL_NOTICE | SIRL_WARN` | `SIRO_NOTIME | SIRO_NOPID | SIRO_NOTID`
-stderr         | `SIRL_ERROR | SIRL_CRIT | SIRL_EMERG` | `SIRO_NOTIME | SIRO_NOPID | SIRO_NOTID`
-syslog         | `SIRL_WARN  | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG` | `N/A (syslog has its own decoration)`
-log files      | `SIRL_ALL`  | `0 (all output)`
+**stdout**         | `SIRL_DEBUG | SIRL_INFO | SIRL_NOTICE | SIRL_WARN` | `SIRO_NOTIME | SIRO_NOPID | SIRO_NOTID`
+**stderr**         | `SIRL_ERROR | SIRL_CRIT | SIRL_EMERG` | `SIRO_NOTIME | SIRO_NOPID | SIRO_NOTID`
+**syslog**         | `SIRL_WARN  | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG` | `N/A (syslog has its own decoration)`
+**log files**      | `SIRL_ALL`  | `0 (all output)`
 
-#### Styles
-
-libsir "styling" is another way of saying ANSI escape color coding. Currently, libsir supports [4-bit (16-colors)](https://en.wikipedia.org/wiki/ANSI_escape_code#3-bit_and_4-bit). Future releases will support 8-bit and 24-bit colors.
-
-Supported terminals will render text from libsir based on the "styles" used in libsir. The following define the default text styling to use for `stdout` / `stderr` on a per-level basis (_can be changed at runtime with_ `sir_settextstyle` located in [sirdefaults.h](./sirdefaults.h)):
+These define the default text styling to use for `stdio` (@ref sir_textstyle) on a per-level basis (_can be changed at runtime with_ @ref sir_settextstyle) and are also located in [sirdefaults.h](@ref sirdefaults.h):
 
  Level         |                      Style                        | Sample
  ------------- | :-----------------------------------------------: | ------------------------------------------------------------
@@ -162,9 +156,9 @@ Supported terminals will render text from libsir based on the "styles" used in l
  `SIRL_NOTICE` |                 `SIRS_FG_CYAN`                    | ![notice](docs/notice.png)
  `SIRL_WARN`   |                `SIRS_FG_YELLOW`                   | ![warning](docs/warning.png)
  `SIRL_ERROR`  |                  `SIRS_FG_RED`                    | ![error](docs/error.png)
- `SIRL_CRIT`   |           `SIRS_BRIGHT | SIRS_FG_RED`             | ![critical](docs/critical.png)
- `SIRL_ALERT`  | `SIRS_BRIGHT | SIRS_FG_BLACK | SIRS_BG_LYELLOW`   | ![alert](docs/alert.png)
- `SIRL_EMERG`  |  `SIRS_BRIGHT | SIRS_FG_LYELLOW | SIRS_BG_RED`    | ![emergency](docs/emergency.png)
+ `SIRL_CRIT`   |           `SIRS_BRIGHT | SIRS_FG_RED`            | ![critical](docs/critical.png)
+ `SIRL_ALERT`  | `SIRS_BRIGHT | SIRS_FG_BLACK | SIRS_BG_LYELLOW` | ![alert](docs/alert.png)
+ `SIRL_EMERG`  |  `SIRS_BRIGHT | SIRS_FG_LYELLOW | SIRS_BG_RED`  | ![emergency](docs/emergency.png)
 
 ### Preprocessor
 
