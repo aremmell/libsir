@@ -740,7 +740,6 @@ unsigned sirtest_thread(void* arg) {
 
     printf("\thi, i'm thread #%d, log file: '%s'\n", threadid, mypath);
 
-#pragma message "TODO: refactor me"
     for (size_t n = 0; n < 100; n++) {
         for (size_t i = 0; i < 10; i++) {
             sir_debug("thread %lu: hello, how do you do? %d", threadid, (n * i) + i);
@@ -823,7 +822,7 @@ bool deletefiles(const char* search, const char* filename, unsigned* data) {
 
         struct stat st;
         if (0 == stat(filename, &st))
-            printf("\tdeleting %s (size: %lu)...\n", filename, st.st_size);
+            printf("\tdeleting %s (size: %lld)...\n", filename, st.st_size);
 
         if (!rmfile(filename))
             fprintf(stderr, "\tfailed to delete %s! error: %d\n", filename, getoserr());
