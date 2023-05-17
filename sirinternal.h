@@ -86,7 +86,7 @@ bool _sir_mapmutexid(sir_mutex_id mid, sirmutex_t** m, void** section);
 /** Frees allocated resources. */
 bool _sir_cleanup(void);
 
-#ifndef _WIN32
+#if !defined(_WIN32)
 /** Initializes a specific mutex. */
 void _sir_initmutex_si_once(void);
 /** Initializes a specific mutex. */
@@ -117,7 +117,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output);
 /** Specific destination formatting. */
 const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output);
 
-#ifndef SIR_NO_SYSLOG
+#if !defined(SIR_NO_SYSLOG)
 /** Maps a ::sir_level to a \a syslog level. */
 int _sir_syslog_maplevel(sir_level level);
 #endif

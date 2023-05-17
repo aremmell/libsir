@@ -66,15 +66,17 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
     if (SIR_E_NOERROR != code) {
         sirchar_t message[SIR_MAXERROR] = {0};
 
-#ifndef _WIN32
+#if !defined(_WIN32)
     errno = SIR_E_NOERROR;
-#   if defined(__APPLE__) || (_POSIX_C_SOURCE >= 200112L && !defined(_GNU_SOURCE))
+#   if defined(__MACOS__) || defined(__FreeBSD__) || (_POSIX_C_SOURCE >= 200112L && !defined(_GNU_SOURCE))
         int finderr = strerror_r(code, message, SIR_MAXERROR);
-#   else
+#   elif defined(_GNU_SOURCE)
         int finderr = 0;
         char* tmp = strerror_r(code, message, SIR_MAXERROR);
         if (tmp != message)
             strncpy(message, tmp, strnlen(tmp, SIR_MAXERROR - 1));
+#   else
+#   error "cannot determine which strerror_r to use; please contact the author"
 #   endif
 #else
         errno_t finderr = strerror_s(message, SIR_MAXERROR, code);
@@ -82,7 +84,7 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
         if (0 == finderr && _sir_validstrnofail(message)) {
             __sir_setoserror(code, message, func, file, line);
         } else {
-#ifndef _WIN32
+#if !defined(_WIN32)
             _sir_selflog("%s: strerror_r failed! error: %d\n", __func__, errno);
 #else
             _sir_selflog("%s: strerror_s failed! error: %d\n", __func__, finderr);
@@ -92,7 +94,7 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
     assert(SIR_E_NOERROR == code);
 }
 
-#ifdef _WIN32
+#if defined(_WIN32)
 void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* file, uint32_t line) {
     if (ERROR_SUCCESS != code) {
         sirchar_t* errbuf = NULL;
@@ -148,7 +150,7 @@ sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
     return _SIR_E_UNKNOWN;
 }
 
-#ifdef SIR_SELFLOG
+#if defined(SIR_SELFLOG)
 void _sir_selflog(const sirchar_t* format, ...) {
     sirchar_t output[SIR_MAXMESSAGE] = {0};
     va_list   args;

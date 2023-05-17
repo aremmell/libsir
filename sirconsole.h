@@ -39,7 +39,7 @@
  * @{
  */
 
-#ifndef _WIN32
+#if !defined(_WIN32)
 bool _sir_stderr_write(const sirchar_t* message);
 bool _sir_stdout_write(const sirchar_t* message);
 #else

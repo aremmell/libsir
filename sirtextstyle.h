@@ -54,7 +54,7 @@ static sir_style_map sir_override_styles[SIR_NUMLEVELS] = {
 /** mapping of ::sir_textstyle <> platform values. */
 static const sir_style_priv_map sir_priv_map[] = {
 
-#ifndef _WIN32
+#if !defined(_WIN32)
     {SIRS_NONE, 0},
     {SIRS_BRIGHT, 1},
     {SIRS_DIM, 2},

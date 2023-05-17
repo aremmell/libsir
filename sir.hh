@@ -168,7 +168,7 @@ namespace sir {
         bool emerg(const stringstream_t& strm) const { return emerg(strm.str()); }
         bool emerg(const string_t& message) const { return sir_emerg(message.c_str()); }
 
-#ifdef BOOST_FORMAT_HPP
+#if defined(BOOST_FORMAT_HPP)
         /** If `BOOST_FORMAT_HPP` is defined, the default adapter is extended with
          * methods that take `const boost::format&`.
          */

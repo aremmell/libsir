@@ -179,7 +179,7 @@ bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size) {
             uint16_t privfg   = _sir_getprivstyle(fg);
             uint16_t privbg   = _sir_getprivstyle(bg);
 
-#ifndef _WIN32
+#if !defined(_WIN32)
             sirchar_t fgfmt[5] = {0};
             sirchar_t bgfmt[5] = {0};
 

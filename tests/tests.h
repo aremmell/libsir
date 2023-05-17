@@ -47,10 +47,10 @@
 #ifndef _SIR_TESTS_H_INCLUDED
 #define _SIR_TESTS_H_INCLUDED
 
-#ifndef _POSIX_C_SOURCE
+#if !defined(_POSIX_C_SOURCE)
 #   define _POSIX_C_SOURCE 200809L
 #endif
-#ifndef _DEFAULT_SOURCE
+#if !defined(_DEFAULT_SOURCE)
 #   define _DEFAULT_SOURCE 1
 #endif
 
@@ -71,7 +71,7 @@
 #include <string.h>
 #include <time.h>
 
-#ifndef _WIN32
+#if !defined(_WIN32)
 #include <dirent.h>
 #include <pthread.h>
 #include <unistd.h>
@@ -82,7 +82,7 @@
 #include <windows.h>
 #endif
 
-#ifndef _WIN32
+#if !defined(_WIN32)
 #   define STRFMT(clr, s) clr s "\033[0m"
 #   define RED(s) STRFMT("\033[1;91m", s)
 #   define GREEN(s) STRFMT("\033[1;92m", s)
@@ -242,7 +242,7 @@ typedef bool (*fileenumproc)(const char* search, const char* filename, unsigned*
 bool enumfiles(const char* search, fileenumproc cb, unsigned* data);
 
 typedef struct {
-#ifndef _WIN32
+#if !defined(_WIN32)
     struct timespec ts;
 #else
     FILETIME ft;

@@ -516,7 +516,7 @@ bool sirtest_textstylesanity(void) {
 
 bool sirtest_perf(void) {
     const sirchar_t* logfilename = "sirperf";
-#ifndef _WIN32
+#if !defined(_WIN32)
     const size_t perflines = 1e6;
 #else
     /* stdio is hilariously slow on windows; do less. */
@@ -536,7 +536,7 @@ bool sirtest_perf(void) {
         startsirtimer(&printftimer);
 
         for (size_t n = 0; n < perflines; n++) {
-#ifndef _WIN32
+#if !defined(_WIN32)
             printf("\033[97mlorem ipsum foo bar blah\033[0m\n");
 #else
             printf("lorem ipsum foo bar blah\n");
@@ -658,7 +658,7 @@ bool sirtest_XXX(void) {
 }
 */
 
-#ifndef _WIN32
+#if !defined(_WIN32)
 static void* sirtest_thread(void* arg);
 #else
 static unsigned sirtest_thread(void* arg);
@@ -667,7 +667,7 @@ static unsigned sirtest_thread(void* arg);
 #define NUM_THREADS 2
 
 bool sirtest_mthread_race(void) {
-#ifndef _WIN32
+#if !defined(_WIN32)
     pthread_t thrds[NUM_THREADS];
 #else
     uintptr_t thrds[NUM_THREADS];
@@ -680,7 +680,7 @@ bool sirtest_mthread_race(void) {
         char* path = (char*)calloc(SIR_MAXPATH, sizeof(char));
         snprintf(path, SIR_MAXPATH, "%lu.log", n);
 
-#ifndef _WIN32
+#if !defined(_WIN32)
         int create = pthread_create(&thrds[n], NULL, sirtest_thread, (void*)path);
         if (0 != create) {
             errno = create;
@@ -692,7 +692,7 @@ bool sirtest_mthread_race(void) {
             pass = false;
         }
 
-#ifdef _GNU_SOURCE
+#if defined(_GNU_SOURCE)
         char thrd_name[SIR_MAXPID];
         snprintf(thrd_name, SIR_MAXPID, "%lu", n);
         create = pthread_setname_np(thrds[n], thrd_name);
@@ -703,7 +703,7 @@ bool sirtest_mthread_race(void) {
 
     if (pass) {
         for (size_t j = 0; j < NUM_THREADS; j++) {
-#ifndef _WIN32
+#if !defined(_WIN32)
             pthread_join(thrds[j], NULL);
 #else
             WaitForSingleObject((HANDLE)thrds[j], INFINITE);
@@ -715,7 +715,7 @@ bool sirtest_mthread_race(void) {
     return printerror(pass);
 }
 
-#ifndef _WIN32
+#if !defined(_WIN32)
 static void* sirtest_thread(void* arg) {
 #else
 unsigned sirtest_thread(void* arg) {
@@ -731,7 +731,7 @@ unsigned sirtest_thread(void* arg) {
 
     if (NULL == id) {
         fprintf(stderr, "\t" RED("Failed to add file %s!") "\n", mypath);
-#ifndef _WIN32
+#if !defined(_WIN32)
         return NULL;
 #else
         return 0;
@@ -765,7 +765,7 @@ unsigned sirtest_thread(void* arg) {
 
     rmfile(mypath);
 
-#ifndef _WIN32
+#if !defined(_WIN32)
     return NULL;
 #else
     return 0;
@@ -788,7 +788,7 @@ void printexpectederr(void) {
 }
 
 int getoserr(void) {
-#ifndef _WIN32
+#if !defined(_WIN32)
     return errno;
 #else
     return (int)GetLastError();
@@ -797,7 +797,7 @@ int getoserr(void) {
 
 unsigned int getrand(void) {
     static unsigned int seed = 0;
-#ifndef _WIN32
+#if !defined(_WIN32)
     return (unsigned int)rand_r(&seed);
 #else
     if (0 == rand_s(&seed)) {
@@ -810,7 +810,7 @@ unsigned int getrand(void) {
 }
 
 bool rmfile(const char* filename) {
-#ifndef _WIN32
+#if !defined(_WIN32)
     return 0 == remove(filename);
 #else
     return FALSE != DeleteFile(filename);
@@ -839,7 +839,7 @@ bool countfiles(const char* search, const char* filename, unsigned* data) {
 
 bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
 
-#ifndef _WIN32
+#if !defined(_WIN32)
     DIR* d = opendir(".");
     if (!d)
         return false;
@@ -877,7 +877,7 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
 }
 
 bool startsirtimer(sirtimer_t* timer) {
-#ifndef _WIN32
+#if !defined(_WIN32)
     int gettime = clock_gettime(CLOCK_MONOTONIC, &timer->ts);
     return 0 == gettime;
 #else
@@ -887,7 +887,7 @@ bool startsirtimer(sirtimer_t* timer) {
 }
 
 float sirtimerelapsed(const sirtimer_t* timer) {
-#ifndef _WIN32
+#if !defined(_WIN32)
     struct timespec now;
     if (!clock_gettime(CLOCK_MONOTONIC, &now)) {
         return (float)((now.tv_sec * 1e3) + (now.tv_nsec / 1e6) - (timer->ts.tv_sec * 1e3) +

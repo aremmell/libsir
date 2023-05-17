@@ -38,7 +38,7 @@
  * @{
  */
 
-#ifndef _WIN32 /* pthread mutex implementation */
+#if !defined(_WIN32) /* pthread mutex implementation */
 
 bool _sirmutex_create(sirmutex_t* mutex) {
 

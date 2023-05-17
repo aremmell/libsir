@@ -37,15 +37,17 @@
 #   define _DARWIN_C_SOURCE
 #elif defined(_WIN32)
 #   define _WIN32_WINNT 0x0600
+#elif defined(__FreeBSD__)
+#   define _DEFAULT_SOURCE
 #else
 #   if defined(__GNUC__) && !defined(_GNU_SOURCE)
 #       define _GNU_SOURCE
 #   endif
-#   ifndef _POSIX_C_SOURCE
+#   if !defined(_POSIX_C_SOURCE)
 #       define _POSIX_C_SOURCE 200809L
 #   endif
-#   ifndef _DEFAULT_SOURCE
-#       define _DEFAULT_SOURCE 1
+#   if !defined(_DEFAULT_SOURCE)
+#       define _DEFAULT_SOURCE
 #   endif
 #endif
 
@@ -61,18 +63,21 @@
 #include <sys/types.h>
 #include <time.h>
 
-#ifndef _WIN32
+#if !defined(_WIN32)
 #include <pthread.h>
+#if defined(__FreeBSD__)
+#include <pthread_np.h>
+#endif
 #include <sys/syscall.h>
 #include <syslog.h>
 #include <unistd.h>
 #include <strings.h>
 
-#ifdef __linux__
+#if defined(__linux__)
 #   include <linux/limits.h>
 #endif
 
-#ifdef PATH_MAX
+#if defined(PATH_MAX)
 #   define SIR_MAXPATH PATH_MAX
 #endif
 
@@ -122,7 +127,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
 #endif
 
-#ifndef thread_local
+#if !defined(thread_local)
 #   if __STDC_VERSION__ >= 201112 && !defined(__STDC_NO_THREADS__)
 #       define thread_local _Thread_local
 #   elif defined(_WIN32)
@@ -136,7 +141,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 /** A sensible (?) constraint for the limit of a file's path. Note that this value
  * is only used in the absence of PATH_MAX (or MAX_PATH on windows). */
-#ifndef SIR_MAXPATH
+#if !defined(SIR_MAXPATH)
 #   define SIR_MAXPATH 65535
 #endif
 

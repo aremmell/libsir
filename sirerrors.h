@@ -106,7 +106,7 @@ void __sir_setoserror(int, const sirchar_t*, const sirchar_t*, const sirchar_t*,
 void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uint32_t line);
 #define _sir_handleerr(code) __sir_handleerr(code, __func__, __FILE__, __LINE__)
 
-#ifdef _WIN32
+#if defined(_WIN32)
 /**
  * Some Win32 API error codes overlap C library error codes, so they need to be handled separately.
  * Mapping them sounds great, but in practice valuable information about what went wrong is totally
@@ -119,7 +119,7 @@ void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* fi
 /** Returns information about the last error that occurred. */
 sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]);
 
-#ifdef SIR_SELFLOG
+#if defined(SIR_SELFLOG)
 /** Log an internal message to \a stderr. */
 void _sir_selflog(const sirchar_t* format, ...);
 #else

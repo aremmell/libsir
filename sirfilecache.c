@@ -298,7 +298,7 @@ bool _sirfile_roll(sirfile* sf, sirchar_t** newpath) {
 bool _sirfile_archive(sirfile* sf, const sirchar_t* newpath) {
 
     if (_sirfile_validate(sf) && _sir_validstr(newpath)) {
-#ifdef _WIN32
+#if defined(_WIN32)
         /* apparently need to close the old file first on windows. */
         _sirfile_close(sf);
 #endif
@@ -445,7 +445,7 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid_t id) {
 
 bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
     const sirchar_t* path = (const sirchar_t*)match;
-#ifndef _WIN32
+#if !defined(_WIN32)
     return 0 == strncmp(path, iter->path, SIR_MAXPATH);
 #else
     /* paths/file names are not case sensitive on windows. */
@@ -537,7 +537,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output,
 
 FILE* _sir_fopen(const sirchar_t* path) {
     if (_sir_validstr(path)) {
-#ifdef __STDC_SECURE_LIB__
+#if defined(__STDC_SECURE_LIB__)
         FILE*   tmp  = NULL;
         errno_t open = fopen_s(&tmp, path, SIR_FOPENMODE);
         _sir_handleerr(open);

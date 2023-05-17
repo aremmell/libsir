@@ -70,7 +70,7 @@ bool _sir_options_sanity(const sirinit* si) {
     levelcheck &= _sir_validlevels(si->d_stdout.levels);
     levelcheck &= _sir_validlevels(si->d_stderr.levels);
 
-#ifndef SIR_NO_SYSLOG
+#if !defined(SIR_NO_SYSLOG)
     levelcheck &= _sir_validlevels(si->d_syslog.levels);
 #endif
 
@@ -100,7 +100,7 @@ bool _sir_init(sirinit* si) {
     _sir_defaultlevels(&si->d_stderr.levels, sir_stderr_def_lvls);
     _sir_defaultopts(&si->d_stderr.opts, sir_stderr_def_opts);
 
-#ifndef SIR_NO_SYSLOG
+#if !defined(SIR_NO_SYSLOG)
     _sir_defaultlevels(&si->d_syslog.levels, sir_syslog_def_lvls);
 #endif
 
@@ -113,7 +113,7 @@ bool _sir_init(sirinit* si) {
     if (_si) {
         memcpy(_si, si, sizeof(sirinit));
 
-#ifndef SIR_NO_SYSLOG
+#if !defined(SIR_NO_SYSLOG)
         if (0 != _si->d_syslog.levels)
             openlog(_sir_validstrnofail(_si->processName) ? _si->processName : "",
                 (_si->d_syslog.includePID ? LOG_PID : 0) | LOG_ODELAY, LOG_USER);
@@ -254,7 +254,7 @@ bool _sir_cleanup(void) {
     return cleanup;
 }
 
-#ifndef _WIN32
+#if !defined(_WIN32)
 void _sir_initmutex_si_once(void) {
     _sir_initmutex(&si_mutex);
 }
@@ -289,7 +289,7 @@ void _sir_initmutex(sirmutex_t* mutex) {
 }
 
 void _sir_once(sironce_t* once, sir_once_fn func) {
-#ifndef _WIN32
+#if !defined(_WIN32)
     pthread_once(once, func);
 #else
     BOOL result = InitOnceExecuteOnce(once, func, NULL, NULL);
@@ -423,7 +423,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output) {
         if (_sir_bittest(si->d_stdout.levels, level)) {
             const sirchar_t* write = write = _sir_format(true, si->d_stdout.opts, output);
             assert(write);
-#ifndef _WIN32
+#if !defined(_WIN32)
             bool wrote = _sir_stdout_write(write);
             r &= NULL != write && wrote;
 #else
@@ -439,7 +439,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output) {
         if (_sir_bittest(si->d_stderr.levels, level)) {
             const sirchar_t* write = write = _sir_format(true, si->d_stderr.opts, output);
             assert(write);
-#ifndef _WIN32
+#if !defined(_WIN32)
             bool wrote = _sir_stderr_write(write);
             r &= NULL != write && wrote;
 #else
@@ -452,7 +452,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output) {
             wanted++;
         }
 
-#ifndef SIR_NO_SYSLOG
+#if !defined(SIR_NO_SYSLOG)
         if (_sir_bittest(si->d_syslog.levels, level)) {
             syslog(_sir_syslog_maplevel(level), "%s", output->message);
             dispatched++;
@@ -488,7 +488,7 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) 
 
         _sir_resetstr(output->output);
 
-#ifndef _WIN32
+#if !defined(_WIN32)
         if (styling)
             strncat(output->output, output->style, SIR_MAXSTYLE);
 #endif
@@ -497,7 +497,7 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) 
             strncat(output->output, output->timestamp, SIR_MAXTIME);
             first = false;
 
-#ifdef SIR_MSEC_TIMER
+#if defined(SIR_MSEC_TIMER)
             if (!_sir_bittest(opts, SIRO_NOMSEC))
                 strncat(output->output, output->msec, SIR_MAXMSEC);
 #endif
@@ -546,7 +546,7 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) 
 
         strncat(output->output, output->message, SIR_MAXMESSAGE);
 
-#ifndef _WIN32
+#if !defined(_WIN32)
         if (styling)
             strncat(output->output, SIR_ENDSTYLE, SIR_MAXSTYLE);
 #endif
@@ -558,7 +558,7 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) 
     return NULL;
 }
 
-#ifndef SIR_NO_SYSLOG
+#if !defined(SIR_NO_SYSLOG)
 int _sir_syslog_maplevel(sir_level level) {
 
     assert(_sir_validlevel(level));
@@ -632,7 +632,7 @@ bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format) {
 bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
     if (tbuf) {
         time(tbuf);
-#ifdef SIR_MSEC_POSIX
+#if defined(SIR_MSEC_POSIX)
         struct timespec ts    = {0};
         int             clock = clock_gettime(SIR_MSECCLOCK, &ts);
         assert(0 == clock);
@@ -676,7 +676,7 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
 }
 
 pid_t _sir_getpid(void) {
-#ifndef _WIN32
+#if !defined(_WIN32)
     return getpid();
 #else
     return (pid_t)GetProcessId(GetCurrentProcess());
@@ -685,21 +685,25 @@ pid_t _sir_getpid(void) {
 
 pid_t _sir_gettid(void) {
     pid_t tid = 0;
-#ifdef __MACOS__
+#if defined(__MACOS__)
     uint64_t tid64 = 0;
     int gettid = pthread_threadid_np(NULL, &tid64);
     if (0 != gettid) _sir_handleerr(gettid);
     tid = (pid_t)tid64;
+#elif defined(__FreeBSD__)
+    tid = (pid_t)pthread_getthreadid_np();    
+#elif defined(_DEFAULT_SOURCE)
+    tid = syscall(SYS_gettid);
 #elif defined(_WIN32)
     tid = (pid_t)GetCurrentThreadId();
 #else
-    tid = syscall(SYS_gettid);
+#   error "cannot determine how to get thread id; please contact the author"
 #endif
     return tid;
 }
 
 bool _sir_getthreadname(char name[SIR_MAXPID]) {
-#ifdef _GNU_SOURCE
+#if defined(__FreeBSD__) || defined(_GNU_SOURCE)
     return 0 == pthread_getname_np(pthread_self(), name, SIR_MAXPID);
 #else
     return false;

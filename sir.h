@@ -36,7 +36,7 @@
 #include "sirplatform.h"
 #include "sirtypes.h"
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 extern "C" {
 #endif /* !__cplusplus */
 
@@ -443,7 +443,7 @@ bool sir_resettextstyles(void);
 
 /** @} */
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 }
 #endif /* !__cplusplus */
 
