@@ -100,7 +100,7 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
 #else
         _sir_selflog("%s: using strerror\n", __func__);
         char* tmp = strerror(code);
-        strncpy(message, tmp, strnlen(tmp, SIR_MAXERROR - 1))
+        strncpy(message, tmp, strnlen(tmp, SIR_MAXERROR - 1));
 #endif
         if (0 == finderr && _sir_validstrnofail(message)) {
             __sir_setoserror(code, message, func, file, line);
