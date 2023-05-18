@@ -21,6 +21,6 @@ jobs:
       osx_image: xcode14.2
       compiler: clang
 script:
-  - make -j tests
+  - SIR_DEBUG=1 make -j tests
   - build/sirtests
 
