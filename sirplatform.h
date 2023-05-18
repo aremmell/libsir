@@ -32,13 +32,16 @@
 #ifndef _SIR_PLATFORM_H_INCLUDED
 #define _SIR_PLATFORM_H_INCLUDED
 
+#if !defined(_WIN32)
+#   define __STDC_WANT_LIB_EXT1__ 1
 #if defined(__APPLE__) && defined(__MACH__)
 #   define __MACOS__
 #   define _DARWIN_C_SOURCE
-#elif defined(_WIN32)
-#   define _WIN32_WINNT 0x0600
-#elif defined(__FreeBSD__) && !defined(_DEFAULT_SOURCE)
-#   define _DEFAULT_SOURCE
+#elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__DragonFly__)
+#   define __BSD__
+#   if !defined(_DEFAULT_SOURCE)
+#       define _DEFAULT_SOURCE
+#   endif
 #else
 #   if defined(__GNUC__) && !defined(_GNU_SOURCE)
 #       define _GNU_SOURCE
@@ -49,6 +52,10 @@
 #   if !defined(_DEFAULT_SOURCE)
 #       define _DEFAULT_SOURCE
 #   endif
+#endif
+#else // _WIN32
+#   define __WANT_STDC_SECURE_LIB__ 1
+#   define _WIN32_WINNT 0x0600
 #endif
 
 #include <assert.h>
@@ -66,7 +73,7 @@
 
 #if !defined(_WIN32)
 #include <pthread.h>
-#if defined(__FreeBSD__)
+#if defined(__BSD__)
 #include <pthread_np.h>
 #endif
 #include <sys/syscall.h>
@@ -100,9 +107,8 @@ typedef void (*sir_once_fn)(void);
 
 /** The one-time initializer. */
 #define SIR_ONCE_INIT PTHREAD_ONCE_INIT
-#else
+#else // _WIN32
 #define WIN32_LEAN_AND_MEAN
-
 #include <io.h>
 #include <synchapi.h>
 #include <windows.h>
@@ -144,6 +150,12 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
  * is only used in the absence of PATH_MAX (or MAX_PATH on windows). */
 #if !defined(SIR_MAXPATH)
 #   define SIR_MAXPATH 65535
+#endif
+
+#if defined(_WIN32) && defined(__STDC_SECURE_LIB__)
+#   define __HAVE_STDC_SECURE_OR_EXT1__ 
+#elif defined(__STDC_LIB_EXT1__)
+#   define __HAVE_STDC_SECURE_OR_EXT1__
 #endif
 
 #endif /* !_SIR_PLATFORM_H_INCLUDED */

@@ -537,7 +537,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output,
 
 FILE* _sir_fopen(const sirchar_t* path) {
     if (_sir_validstr(path)) {
-#if defined(__STDC_SECURE_LIB__)
+#if defined(__HAVE_STDC_SECURE_OR_EXT1__)
         FILE*   tmp  = NULL;
         errno_t open = fopen_s(&tmp, path, SIR_FOPENMODE);
         _sir_handleerr(open);

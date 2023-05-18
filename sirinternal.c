@@ -690,7 +690,7 @@ pid_t _sir_gettid(void) {
     int gettid = pthread_threadid_np(NULL, &tid64);
     if (0 != gettid) _sir_handleerr(gettid);
     tid = (pid_t)tid64;
-#elif defined(__FreeBSD__)
+#elif defined(__BSD__)
     tid = (pid_t)pthread_getthreadid_np();    
 #elif defined(_DEFAULT_SOURCE)
     tid = syscall(SYS_gettid);
@@ -703,7 +703,7 @@ pid_t _sir_gettid(void) {
 }
 
 bool _sir_getthreadname(char name[SIR_MAXPID]) {
-#if defined(__FreeBSD__) || defined(_GNU_SOURCE)
+#if defined(__BSD__) || defined(_GNU_SOURCE)
     return 0 == pthread_getname_np(pthread_self(), name, SIR_MAXPID);
 #else
     return false;

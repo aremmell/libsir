@@ -31,6 +31,19 @@
  */
 #include "sirerrors.h"
 
+#if defined(__MACOS__) || defined(__BSD__) || ((_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600) && ! _GNU_SOURCE)
+#   define __HAVE_XSI_STRERROR_R__
+#   if defined(__GLIBC__)
+#       if (__GLIBC__ >= 2 && __GLIBC__MINOR__ < 13)
+#           define __HAVE_XSI_STRERROR_R_ERRNO__
+#       endif
+#   endif
+#elif defined(_GNU_SOURCE)
+#   define __HAVE_GNU_STRERROR_R__
+#elif defined(__HAVE_STDC_SECURE_OR_EXT1__)
+#   define __HAVE_STRERROR_S__
+#endif
+
 /**
  * @addtogroup errors
  * @{
@@ -65,28 +78,40 @@ void __sir_setoserror(int code, const sirchar_t* message, const sirchar_t* func,
 void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uint32_t line) {
     if (SIR_E_NOERROR != code) {
         sirchar_t message[SIR_MAXERROR] = {0};
-
-#if !defined(_WIN32)
-    errno = SIR_E_NOERROR;
-#   if defined(__MACOS__) || defined(__FreeBSD__) || (_POSIX_C_SOURCE >= 200112L && !defined(_GNU_SOURCE))
-        int finderr = strerror_r(code, message, SIR_MAXERROR);
-#   elif defined(_GNU_SOURCE)
         int finderr = 0;
+
+        errno = SIR_E_NOERROR;
+#if defined(__HAVE_XSI_STRERROR_R__)
+        _sir_selflog("%s: using XSI strerror_r\n", __func__);
+        finderr = strerror_r(code, message, SIR_MAXERROR);
+#   if defined(__HAVE_XSI_STRERROR_R_ERRNO__)
+        _sir_selflog("%s: using XSI strerror_r for glibc < 2.13\n", __func__);
+        if (finderr == -1)
+            finderr = errno;
+#   endif
+#elif defined(__HAVE_GNU_STRERROR_R__)
+        _sir_selflog("%s: using GNU strerror_r\n", __func__);
         char* tmp = strerror_r(code, message, SIR_MAXERROR);
         if (tmp != message)
             strncpy(message, tmp, strnlen(tmp, SIR_MAXERROR - 1));
-#   else
-#   error "cannot determine which strerror_r to use; please contact the author"
-#   endif
+#elif defined(__HAVE_STRERROR_S__)
+        _sir_selflog("%s: using strerror_s\n", __func__);
+        finderr = (int)strerror_s(message, SIR_MAXERROR, code);
 #else
-        errno_t finderr = strerror_s(message, SIR_MAXERROR, code);
+        _sir_selflog("%s: using strerror\n", __func__);
+        char* tmp = strerror(code);
+        strncpy(message, tmp, strnlen(tmp, SIR_MAXERROR - 1))
 #endif
         if (0 == finderr && _sir_validstrnofail(message)) {
             __sir_setoserror(code, message, func, file, line);
         } else {
-#if !defined(_WIN32)
-            _sir_selflog("%s: strerror_r failed! error: %d\n", __func__, errno);
-#else
+            /* Per my reading of the man pages, GNU strerror_r and normal strerror "can't fail";
+             * they simply return a string such as "Unknown nnn error" if unable to look up an
+             * error code.
+             */
+#if defined(__HAVE_XSI_STRERROR_R__)
+            _sir_selflog("%s: strerror_r failed! error: %d\n", __func__, finderr);
+#elif defined(__HAVE_STRERROR_S__)
             _sir_selflog("%s: strerror_s failed! error: %d\n", __func__, finderr);
 #endif
         }
