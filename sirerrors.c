@@ -31,7 +31,7 @@
  */
 #include "sirerrors.h"
 
-#if defined(__MACOS__) || defined(__BSD__) || ((_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600) && ! _GNU_SOURCE)
+#if defined(__MACOS__) || defined(__BSD__) || (_POSIX_C_SOURCE >= 200112L && ! _GNU_SOURCE)
 #   define __HAVE_XSI_STRERROR_R__
 #   if defined(__GLIBC__)
 #       if (__GLIBC__ >= 2 && __GLIBC__MINOR__ < 13)
