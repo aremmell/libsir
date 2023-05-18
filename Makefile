@@ -30,7 +30,6 @@ LIBS = -pthread
 
 ifeq ($(SIR_DEBUG),1)
 	CFLAGS   = -Wpedantic -std=c11 -I. -g -O0 -DNDEBUG -fPIC -DSIR_SELFLOG
-	@echo warning: SIR_DEBUG=1, using -g.
 else
 	CFLAGS   = -Wpedantic -std=c11 -I. -DNDEBUG -fPIC -O3
 endif
