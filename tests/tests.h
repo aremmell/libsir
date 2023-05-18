@@ -39,8 +39,7 @@
  * 3. Deleting archived logs older than _n_ days.
  * 4. A project file for Visual Studio.
  * 5. A project file for Xcode.
- * 6. An accompanying C++ wrapper.
- * 7. Something I didn't think of yet.
+ * 6. Something I didn't think of yet.
  * 
  * ---------------------------------------------------------------------------------------------------------
  */
@@ -54,20 +53,10 @@
 #include "../sirfilecache.h"
 #include "../sirinternal.h"
 
-#include <errno.h>
 #include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <string.h>
-#include <time.h>
 
 #if !defined(_WIN32)
 #include <dirent.h>
-#include <pthread.h>
-#include <unistd.h>
-#include <sys/stat.h>
 #else
 #   define _WIN32_WINNT 0x0600
 #include <process.h>
