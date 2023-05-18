@@ -708,7 +708,7 @@ bool sirtest_mthread_race(void) {
             pass = false;
         }
 
-#if defined(_GNU_SOURCE)
+#if defined(__BSD__) || defined(_GNU_SOURCE)
         char thrd_name[SIR_MAXPID];
         snprintf(thrd_name, SIR_MAXPID, "%lu", n);
         create = pthread_setname_np(thrds[n], thrd_name);
@@ -758,7 +758,7 @@ unsigned sirtest_thread(void* arg) {
 
     for (size_t n = 0; n < 100; n++) {
         for (size_t i = 0; i < 10; i++) {
-            sir_debug("thread %lu: hello, how do you do? %d", threadid, (n * i) + i);
+            sir_debug("this is random jibberish %d", threadid, (n * i) + i);
 
             int r = getrand() % 15;
 
