@@ -48,20 +48,22 @@
 
 #define _CRT_RAND_S
 
+#if defined(_WIN32)
+#   define WIN32_LEAN_AND_MEAN
+#   define WINVER       0x0A00
+#   define _WIN32_WINNT 0x0A00
+#   include <windows.h>
+#   include <process.h>
+#else
+#   include <dirent.h>
+#endif
+
 #include "../sir.h"
 #include "../sirerrors.h"
 #include "../sirfilecache.h"
 #include "../sirinternal.h"
 
 #include <fcntl.h>
-
-#if !defined(_WIN32)
-#include <dirent.h>
-#else
-#   define _WIN32_WINNT 0x0600
-#include <process.h>
-#include <windows.h>
-#endif
 
 #if !defined(_WIN32)
 #   define STRFMT(clr, s) clr s "\033[0m"
