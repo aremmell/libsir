@@ -58,7 +58,6 @@
 #endif
 #else // _WIN32
 #   define __WANT_STDC_SECURE_LIB__ 1 
-#   define _WIN32_WINNT 0x0600
 #endif
 
 #include <assert.h>
@@ -75,16 +74,14 @@
 #include <time.h>
 
 #if !defined(_WIN32)
-#include <pthread.h>
+#   include <pthread.h>
+#   include <unistd.h>
+#   include <sys/syscall.h>
+#   include <syslog.h>
+#   include <strings.h>
 #if defined(__BSD__)
-#include <pthread_np.h>
-#endif
-#include <sys/syscall.h>
-#include <syslog.h>
-#include <unistd.h>
-#include <strings.h>
-
-#if defined(__linux__)
+#   include <pthread_np.h>
+#elif defined(__linux__)
 #   include <linux/limits.h>
 #endif
 
@@ -110,8 +107,12 @@ typedef void (*sir_once_fn)(void);
 
 /** The one-time initializer. */
 #define SIR_ONCE_INIT PTHREAD_ONCE_INIT
+
 #else // _WIN32
+
 #define WIN32_LEAN_AND_MEAN
+#define WINVER       0x0A00 /* Windows 10 SDK */
+#define _WIN32_WINNT 0x0A00
 #include <io.h>
 #include <synchapi.h>
 #include <windows.h>
@@ -135,7 +136,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 /** The one-time initializer. */
 #define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
-#endif
+#endif // !_WIN32
 
 #if !defined(thread_local)
 #   if __STDC_VERSION__ >= 201112 && !defined(__STDC_NO_THREADS__)
