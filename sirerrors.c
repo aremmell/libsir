@@ -31,7 +31,7 @@
  */
 #include "sirerrors.h"
 
-#if defined(__MACOS__) || defined(__BSD__) || (_POSIX_C_SOURCE >= 200112L && !defined(_GNU_SOURCE))
+#if defined(__MACOS__) || defined(__BSD__) || (defined(_POSIX_C_SOURCE) && (_POSIX_C_SOURCE >= 200112L && !defined(_GNU_SOURCE)))
 #   define __HAVE_XSI_STRERROR_R__
 #   if defined(__GLIBC__)
 #       if (__GLIBC__ >= 2 && __GLIBC__MINOR__ < 13)
@@ -70,7 +70,7 @@ void __sir_setoserror(int code, const sirchar_t* message, const sirchar_t* func,
     _sir_resetstr(sir_te.os_errmsg);
 
     if (_sir_validstrnofail(message))
-        strncpy(sir_te.os_errmsg, message, SIR_MAXERROR);
+        _sir_strncpy(sir_te.os_errmsg, SIR_MAXERROR, message, SIR_MAXERROR);
 
     __sir_seterror(_SIR_E_PLATFORM, func, file, line);
 }
@@ -93,14 +93,14 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
         _sir_selflog("%s: using GNU strerror_r\n", __func__);
         char* tmp = strerror_r(code, message, SIR_MAXERROR);
         if (tmp != message)
-            strncpy(message, tmp, strnlen(tmp, SIR_MAXERROR - 1));
+            _sir_strncpy(message, SIR_MAXERROR, tmp, SIR_MAXERROR);
 #elif defined(__HAVE_STRERROR_S__)
         _sir_selflog("%s: using strerror_s\n", __func__);
         finderr = (int)strerror_s(message, SIR_MAXERROR, code);
 #else
         _sir_selflog("%s: using strerror\n", __func__);
         char* tmp = strerror(code);
-        strncpy(message, tmp, strnlen(tmp, SIR_MAXERROR - 1));
+        _sir_strncpy(message, SIR_MAXERROR, tmp, strnlen(tmp, SIR_MAXERROR));
 #endif
         if (0 == finderr && _sir_validstrnofail(message)) {
             __sir_setoserror(code, message, func, file, line);
@@ -157,13 +157,14 @@ sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
                 if (_sir_validptr(final)) {
                     alloc = true;
                     snprintf(final, SIR_MAXERROR, sir_errors[n].msg, sir_te.os_error,
-                        _sir_validstrnofail(sir_te.os_errmsg) ? sir_te.os_errmsg : SIR_UNKNOWN);
+                        (_sir_validstrnofail(sir_te.os_errmsg) ? sir_te.os_errmsg : SIR_UNKNOWN));
                 }
             } else {
                 final = (sirchar_t*)sir_errors[n].msg;
             }
 
-            int fmtmsg = snprintf(message, SIR_MAXERROR, SIR_ERRORFORMAT, sir_te.loc.func, sir_te.loc.file, sir_te.loc.line, final);
+            int fmtmsg = snprintf(message, SIR_MAXERROR, SIR_ERRORFORMAT, sir_te.loc.func,
+                sir_te.loc.file, sir_te.loc.line, final);
             assert(fmtmsg >= 0);
 
             if (alloc) _sir_safefree(final);

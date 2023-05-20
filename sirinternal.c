@@ -268,16 +268,25 @@ void _sir_initmutex_ts_once(void) {
 }
 #else
 BOOL CALLBACK _sir_initmutex_si_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
+    _SIR_UNUSED(ponce);
+    _SIR_UNUSED(param);
+    _SIR_UNUSED(ctx)
     _sir_initmutex(&si_mutex);
     return TRUE;
 }
 
 BOOL CALLBACK _sir_initmutex_fc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
+    _SIR_UNUSED(ponce);
+    _SIR_UNUSED(param);
+    _SIR_UNUSED(ctx)
     _sir_initmutex(&fc_mutex);
     return TRUE;
 }
 
 BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
+    _SIR_UNUSED(ponce);
+    _SIR_UNUSED(param);
+    _SIR_UNUSED(ctx)
     _sir_initmutex(&ts_mutex);
     return TRUE;
 }
@@ -367,7 +376,7 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
     assert(output.name);
 
     if (_sir_validstrnofail(tmpsi.processName)) {
-        strncpy(output.name, tmpsi.processName, SIR_MAXNAME - 1);
+        _sir_strncpy(output.name, SIR_MAXNAME, tmpsi.processName, SIR_MAXNAME);
     } else {
         _sir_resetstr(output.name);
     }
@@ -444,8 +453,12 @@ bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output) {
             r &= NULL != write && wrote;
 #else
             uint16_t* style = (uint16_t*)output->style;
-            bool      wrote = _sir_stderr_write(*style, write);
-            r &= NULL != write && NULL != style && wrote;
+            bool      wrote = NULL != style;
+
+            if (wrote)
+                wrote &= _sir_stderr_write(*style, write);
+
+            r &= NULL != write && wrote;
 #endif
             if (wrote)
                 dispatched++;

@@ -107,15 +107,17 @@ static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message,
     EnterCriticalSection(cs);
     if (!GetConsoleScreenBufferInfo(console, &csbfi)) {
         _sir_handlewin32err(GetLastError());
+        LeaveCriticalSection(cs);
         return false;
     }
 
     if (!SetConsoleTextAttribute(console, style)) {
         _sir_handlewin32err(GetLastError());
+        LeaveCriticalSection(cs);
         return false;
     }
 
-    size_t chars   = strnlen(message, SIR_MAXOUTPUT) - 1;
+    DWORD chars   = (DWORD)strnlen(message, SIR_MAXOUTPUT) - 1;
     DWORD  written = 0;
 
     do {
@@ -141,6 +143,8 @@ static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message,
 }
 
 static BOOL CALLBACK _sir_initcs(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
+    _SIR_UNUSED(ponce);
+    _SIR_UNUSED(ctx);
     InitializeCriticalSection((LPCRITICAL_SECTION)param);
     return TRUE;
 }
