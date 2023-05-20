@@ -74,6 +74,9 @@ uint16_t _sir_geterrcode(sirerror_t err) {
 /** Validates a pointer. */
 #define _sir_validptr(p) (NULL != p)
 
+/** Squelches warnings about unreferenced parameters. */
+#define _SIR_UNUSED(param) (void)param;
+
 /** Checks a bitfield for a specific set of bits. */
 static inline
 bool _sir_bittest(uint32_t flags, uint32_t test) {
@@ -132,6 +135,18 @@ bool _sir_validstr(const sirchar_t* str) {
 static inline
 bool _sir_validstrnofail(const sirchar_t* str) {
     return __sir_validstr(str, false);
+}
+
+/** 
+  * Wrapper for strncpy/strncpy_s. Determines which one to use
+  * based on preprocessor macros */
+int _sir_strncpy(char* restrict dest, size_t destsz, const char* restrict src, size_t count) {
+#if defined(__HAVE_STDC_SECURE_OR_EXT1__)
+    return strncpy_s(dest, destsz, src, count);
+#else
+    strncpy(dest, src, count);
+    return 0;
+#endif
 }
 
 static inline

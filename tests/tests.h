@@ -51,17 +51,16 @@
 #if defined(_WIN32)
 #   define WIN32_LEAN_AND_MEAN
 #   define WINVER       0x0A00
-#   define _WIN32_WINNT 0x0A00
-#   include <windows.h>
+#   include <Windows.h>
 #   include <process.h>
 #else
 #   include <dirent.h>
 #endif
 
-#include "../sir.h"
-#include "../sirerrors.h"
-#include "../sirfilecache.h"
-#include "../sirinternal.h"
+#include <sir.h>
+#include <sirerrors.h>
+#include <sirfilecache.h>
+#include <sirinternal.h>
 
 #include <fcntl.h>
 
@@ -85,7 +84,7 @@
     var.d_stderr.opts   = o_stderr;                     \
     var.d_stderr.levels = l_stderr;                     \
     if (strlen(name) > 0)                               \
-        strncpy(var.processName, name, SIR_MAXNAME);    \
+        _sir_strncpy(var.processName, SIR_MAXNAME, name, SIR_MAXNAME);    \
     bool var##_init     = sir_init(&var);
 
 #define INIT(var, l_stdout, o_stdout, l_stderr, o_stderr) \

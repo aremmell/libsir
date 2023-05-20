@@ -105,10 +105,10 @@ sirfile* _sirfile_create(const sirchar_t* path, sir_levels levels, sir_options o
 
         if (_sir_validptr(sf)) {
             size_t pathLen = strnlen(path, SIR_MAXPATH);
-            sf->path       = (sirchar_t*)calloc(pathLen + 1, sizeof(sirchar_t));
+            sf->path       = (sirchar_t*)calloc(pathLen, sizeof(sirchar_t));
 
             if (_sir_validptr(sf->path)) {
-                strncpy(sf->path, path, pathLen);
+                _sir_strncpy(sf->path, pathLen, path, pathLen);
                 
                 sf->levels = levels;
                 sf->opts = opts;
@@ -128,7 +128,7 @@ bool _sirfile_open(sirfile* sf) {
 
         FILE* f = _sir_fopen(sf->path);
 
-        if (f) {            
+        if (f) {
             int fd = fileno(f);
             if (-1 == fd)
                 _sir_handleerr(errno);
@@ -330,8 +330,8 @@ bool _sirfile_splitpath(sirfile* sf, sirchar_t** name, sirchar_t** ext) {
             assert(namesize < SIR_MAXPATH);
 
             if (namesize < SIR_MAXPATH) {
-                *name = (sirchar_t*)calloc(namesize + 1, sizeof(sirchar_t));
-                strncpy(*name, sf->path, namesize);
+                *name = (sirchar_t*)calloc(namesize, sizeof(sirchar_t));
+                _sir_strncpy(*name, namesize, sf->path, namesize);
             }
   
             *ext = strdup(lastfullstop);

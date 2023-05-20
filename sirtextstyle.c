@@ -194,6 +194,10 @@ bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size) {
 
             return _sir_validstr(buf);
 #else
+            assert(size < sizeof(uint16_t));
+            if (size < sizeof(uint16_t))
+                return false;
+
             uint16_t final = privattr | privfg | privbg;
             memcpy(buf, &final, sizeof(uint16_t));
             return true;

@@ -739,7 +739,7 @@ unsigned sirtest_thread(void* arg) {
     pid_t threadid = _sir_gettid();
 
     char mypath[SIR_MAXPATH] = {0};
-    strncpy(mypath, (const char*)arg, SIR_MAXPATH);
+    _sir_strncpy(mypath, SIR_MAXPATH, (const char*)arg, SIR_MAXPATH);
     free(arg);
 
     rmfile(mypath);
