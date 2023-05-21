@@ -105,10 +105,10 @@ sirfile* _sirfile_create(const sirchar_t* path, sir_levels levels, sir_options o
 
         if (_sir_validptr(sf)) {
             size_t pathLen = strnlen(path, SIR_MAXPATH);
-            sf->path       = (sirchar_t*)calloc(pathLen, sizeof(sirchar_t));
+            sf->path       = (sirchar_t*)calloc(pathLen + 1, sizeof(sirchar_t));
 
             if (_sir_validptr(sf->path)) {
-                _sir_strncpy(sf->path, pathLen, path, pathLen);
+                _sir_strncpy(sf->path, pathLen + 1, path, pathLen);
                 
                 sf->levels = levels;
                 sf->opts = opts;

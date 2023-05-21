@@ -136,6 +136,7 @@ void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* fi
 
         if (errbuf) {
             BOOL heapfree = HeapFree(GetProcessHeap(), 0, errbuf);
+            _SIR_UNUSED(heapfree);
             assert(0 != heapfree);
             errbuf = NULL;
         }

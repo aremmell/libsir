@@ -83,7 +83,7 @@ bool __sir_validstr(const sirchar_t* str, bool fail) {
 }
 
 int _sir_strncpy(sirchar_t* restrict dest, size_t destsz, const sirchar_t* restrict src, size_t count) {
-    if (_sir_validstr(dest) && _sir_validstr(src)) {
+    if (_sir_validptr(dest) && _sir_validstr(src)) {
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
         int ret = strncpy_s(dest, destsz, src, count);
         if (0 != ret) {
@@ -107,7 +107,7 @@ int _sir_strncpy(sirchar_t* restrict dest, size_t destsz, const sirchar_t* restr
   * based on preprocessor macros.
   */
 int _sir_strncat(sirchar_t* restrict dest, size_t destsz, const sirchar_t* restrict src, size_t count) {
-    if (_sir_validstr(dest) && _sir_validstr(src)) {
+    if (_sir_validptr(dest) && _sir_validstr(src)) {
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
         int ret = strncat_s(dest, destsz, src, count);
         if (0 != ret) {

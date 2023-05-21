@@ -398,8 +398,9 @@ bool sirtest_rollandarchivefile(void) {
     bool pass = si_init;
 
     sirfileid_t fileid = sir_addfile(logfilename, SIRL_DEBUG, SIRO_MSGONLY | SIRO_NOHDR);
+    pass &= NULL != fileid;
 
-    if (pass &= NULL != fileid) {
+    if (pass) {
         /* write an (approximately) known quantity until we should have rolled */
         size_t written  = 0;
         size_t linesize = strlen(line);
