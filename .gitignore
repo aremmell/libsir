@@ -30,3 +30,6 @@ index.md
 .vs/
 *.user
 
+# Visual Studio output files
+**/x64/**/*
+**/ARM64/**/*
