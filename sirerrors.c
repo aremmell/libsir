@@ -166,6 +166,8 @@ sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
 
             int fmtmsg = snprintf(message, SIR_MAXERROR, SIR_ERRORFORMAT, sir_te.loc.func,
                 sir_te.loc.file, sir_te.loc.line, final);
+            
+            _SIR_UNUSED(fmtmsg);
             assert(fmtmsg >= 0);
 
             if (alloc) _sir_safefree(final);
