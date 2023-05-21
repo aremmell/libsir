@@ -838,7 +838,7 @@ bool deletefiles(const char* search, const char* filename, unsigned* data) {
 
         struct stat st;
         if (0 == stat(filename, &st))
-            printf("\tdeleting %s (size: %" PRId64 ")...\n", filename, st.st_size);
+            printf("\tdeleting %s (size: %ld)...\n", filename, (long)st.st_size);
 
         if (!rmfile(filename))
             fprintf(stderr, "\tfailed to delete %s! error: %d\n", filename, getoserr());
