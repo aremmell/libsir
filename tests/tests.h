@@ -53,9 +53,7 @@
 
 #include <fcntl.h>
 
-#if defined(_WIN32)
-#   define _CRT_RAND_S
-#else
+#if !defined(_WIN32)
 #   include <dirent.h>
 #endif
 
