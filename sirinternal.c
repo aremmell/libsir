@@ -434,7 +434,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output) {
         size_t wanted = 0;
 
         if (_sir_bittest(si->d_stdout.levels, level)) {
-            const sirchar_t* write = write = _sir_format(true, si->d_stdout.opts, output);
+            const sirchar_t* write = _sir_format(true, si->d_stdout.opts, output);
             assert(write);
 #if !defined(_WIN32)
             bool wrote = _sir_stdout_write(write);
