@@ -48,9 +48,6 @@ int report_error(void);
 
 int main(int argc, char** argv) {
 
-    _SIR_UNUSED(argc);
-    _SIR_UNUSED(argv);
-
     /*
      * Instantiate the initialization structure.
      * 

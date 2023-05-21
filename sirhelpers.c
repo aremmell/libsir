@@ -82,4 +82,102 @@ bool __sir_validstr(const sirchar_t* str, bool fail) {
     return valid;
 }
 
+int _sir_strncpy(sirchar_t* restrict dest, size_t destsz, const sirchar_t* restrict src, size_t count) {
+    if (_sir_validstr(dest) && _sir_validstr(src)) {
+#if defined(__HAVE_STDC_SECURE_OR_EXT1__)
+        int ret = strncpy_s(dest, destsz, src, count);
+        if (0 != ret) {
+            _sir_handleerr(ret);
+            return -1;
+        }
+
+        return 0;
+#else
+        _SIR_UNUSED(destsz);
+        strncpy(dest, src, count);
+        return 0;
+#endif
+    }
+
+    return -1;
+}
+
+/**
+  * Wrapper for strncat/strncat_s. Determines which one to use
+  * based on preprocessor macros.
+  */
+int _sir_strncat(sirchar_t* restrict dest, size_t destsz, const sirchar_t* restrict src, size_t count) {
+    if (_sir_validstr(dest) && _sir_validstr(src)) {
+#if defined(__HAVE_STDC_SECURE_OR_EXT1__)
+        int ret = strncat_s(dest, destsz, src, count);
+        if (0 != ret) {
+            _sir_handleerr(ret);
+            return -1;
+        }
+
+        return 0;
+#else
+        _SIR_UNUSED(destsz);
+        strncat(dest, src, count);
+        return 0;
+#endif
+    }
+
+    return -1;
+}
+
+/**
+  * Wrapper for fopen/fopen_s. Determines which one to use
+  * based on preprocessor macros.
+  */
+int _sir_fopen(FILE* restrict* restrict streamptr, const sirchar_t* restrict filename, const sirchar_t* restrict mode) {
+    if (_sir_validptr(streamptr) && _sir_validstr(filename) && _sir_validstr(mode)) {
+#if defined(__HAVE_STDC_SECURE_OR_EXT1__)
+        int ret = fopen_s(streamptr, filename, mode);
+        if (0 != ret) {
+            _sir_handleerr(ret);
+            return -1;
+        }
+
+        return 0;
+#else
+         *streamptr = fopen(filename, mode);
+         if (!*streamptr) {
+             _sir_handleerr(errno);
+             return -1;
+         }
+
+         return 0;
+#endif
+    }
+
+    return -1;
+}
+
+struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf) {
+    if (_sir_validptr(timer) && _sir_validptr(buf)) {
+#if defined(__HAVE_STDC_SECURE_OR_EXT1__)
+#if     defined(_WIN32)
+        errno_t ret = localtime_s(buf, timer);
+        if (0 != ret) {
+            _sir_handleerr(ret);
+            return NULL;
+        }
+
+        return buf;
+#else
+        struct tm* ret = localtime_s(timer, buf);
+        if (!ret)
+            _sir_handleerr(errno);
+
+        return ret;
+#endif
+#else
+        _SIR_UNUSED(buf);
+        return localtime(timer);
+#endif
+    }
+
+    return NULL;
+}
 /** @} */

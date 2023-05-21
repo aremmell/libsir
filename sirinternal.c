@@ -504,30 +504,32 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) 
 #if !defined(_WIN32)
         if (styling)
             strncat(output->output, output->style, SIR_MAXSTYLE);
+#else
+        _SIR_UNUSED(styling);
 #endif
 
         if (!_sir_bittest(opts, SIRO_NOTIME)) {
-            strncat(output->output, output->timestamp, SIR_MAXTIME);
+            _sir_strncat(output->output, SIR_MAXOUTPUT, output->timestamp, SIR_MAXTIME);
             first = false;
 
 #if defined(SIR_MSEC_TIMER)
             if (!_sir_bittest(opts, SIRO_NOMSEC))
-                strncat(output->output, output->msec, SIR_MAXMSEC);
+                _sir_strncat(output->output, SIR_MAXOUTPUT, output->msec, SIR_MAXMSEC);
 #endif
         }
 
         if (!_sir_bittest(opts, SIRO_NOLEVEL)) {
             if (!first)
-                strncat(output->output, " ", 1);
-            strncat(output->output, output->level, SIR_MAXLEVEL);
+                _sir_strncat(output->output, SIR_MAXOUTPUT, " ", 1);
+            _sir_strncat(output->output, SIR_MAXOUTPUT, output->level, SIR_MAXLEVEL);
             first = false;
         }
 
         bool name = false;
         if (!_sir_bittest(opts, SIRO_NONAME) && _sir_validstrnofail(output->name)) {
             if (!first)
-                strncat(output->output, " ", 1);
-            strncat(output->output, output->name, SIR_MAXNAME);
+                _sir_strncat(output->output, SIR_MAXOUTPUT, " ", 1);
+            _sir_strncat(output->output, SIR_MAXOUTPUT, output->name, SIR_MAXNAME);
             first = false;
             name  = true;
         }
@@ -537,34 +539,34 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) 
 
         if (wantpid || wanttid) {
             if (name)
-                strncat(output->output, "(", 1);
+                _sir_strncat(output->output, SIR_MAXOUTPUT, "(", 1);
             else if (!first)
-                strncat(output->output, " ", 1);
+                _sir_strncat(output->output, SIR_MAXOUTPUT, " ", 1);
 
             if (wantpid)
-                strncat(output->output, output->pid, SIR_MAXPID);
+                _sir_strncat(output->output, SIR_MAXOUTPUT, output->pid, SIR_MAXPID);
 
             if (wanttid) {
                 if (wantpid)
-                    strncat(output->output, SIR_PIDSEPARATOR, 1);
-                strncat(output->output, output->tid, SIR_MAXPID);
+                    _sir_strncat(output->output, SIR_MAXOUTPUT, SIR_PIDSEPARATOR, 1);
+                _sir_strncat(output->output, SIR_MAXOUTPUT, output->tid, SIR_MAXPID);
             }
 
             if (name)
-                strncat(output->output, ")", 1);
+                _sir_strncat(output->output, SIR_MAXOUTPUT, ")", 1);
         }
 
         if (!first)
-            strncat(output->output, ": ", 2);
+            _sir_strncat(output->output, SIR_MAXOUTPUT, ": ", 2);
 
-        strncat(output->output, output->message, SIR_MAXMESSAGE);
+        _sir_strncat(output->output, SIR_MAXOUTPUT, output->message, SIR_MAXMESSAGE);
 
 #if !defined(_WIN32)
         if (styling)
-            strncat(output->output, SIR_ENDSTYLE, SIR_MAXSTYLE);
+            _sir_strncat(output->output, SIR_MAXOUTPUT, SIR_ENDSTYLE, SIR_MAXSTYLE);
 #endif
 
-        strncat(output->output, "\n", 1);
+        _sir_strncat(output->output, SIR_MAXOUTPUT, "\n", 1);
         return output->output;
     }
 
@@ -630,7 +632,8 @@ const sirchar_t* _sir_levelstr(sir_level level) {
 
 bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format) {
     if (0 != now && _sir_validptr(buffer) && _sir_validstr(format)) {
-        size_t fmttime = strftime(buffer, SIR_MAXTIME, format, localtime(&now));
+        struct tm timebuf = {0};
+        size_t fmttime = strftime(buffer, SIR_MAXTIME, format, _sir_localtime(&now, &timebuf));
         assert(0 != fmttime);
 
         if (0 == fmttime)
@@ -660,7 +663,7 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
             _sir_selflog("%s: clock_gettime failed; errno: %d\n", __func__, errno);
         }
 #elif defined(SIR_MSEC_WIN32)
-        static const ULONGLONG uepoch = 116444736e9;
+        static const ULONGLONG uepoch = (ULONGLONG)116444736e9;
 
         FILETIME ftutc = {0};
         GetSystemTimePreciseAsFileTime(&ftutc);
@@ -668,7 +671,7 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
         ULARGE_INTEGER ftnow;
         ftnow.HighPart = ftutc.dwHighDateTime;
         ftnow.LowPart  = ftutc.dwLowDateTime;
-        ftnow.QuadPart = (ftnow.QuadPart - uepoch) / 1e7;
+        ftnow.QuadPart = (ULONGLONG)((ftnow.QuadPart - uepoch) / 1e7);
 
         *tbuf = (time_t)ftnow.QuadPart;
 
@@ -719,6 +722,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
 #if defined(__BSD__) || defined(_GNU_SOURCE)
     return 0 == pthread_getname_np(pthread_self(), name, SIR_MAXPID);
 #else
+    _SIR_UNUSED(name);
     return false;
 #endif
 }

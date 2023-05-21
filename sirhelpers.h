@@ -137,22 +137,10 @@ bool _sir_validstrnofail(const sirchar_t* str) {
     return __sir_validstr(str, false);
 }
 
-/** 
-  * Wrapper for strncpy/strncpy_s. Determines which one to use
-  * based on preprocessor macros */
-int _sir_strncpy(char* restrict dest, size_t destsz, const char* restrict src, size_t count) {
-#if defined(__HAVE_STDC_SECURE_OR_EXT1__)
-    return strncpy_s(dest, destsz, src, count);
-#else
-    strncpy(dest, src, count);
-    return 0;
-#endif
-}
-
 static inline
 bool _sir_validupdatedata(sir_update_data* data) {
     return NULL != data && ((NULL == data->levels || _sir_validlevels(*data->levels)) &&
-           (NULL == data->opts || _sir_validopts(*data->opts)));
+        (NULL == data->opts || _sir_validopts(*data->opts)));
 }
 
 /** Places a null terminator at the first index in a string buffer. */
@@ -160,6 +148,30 @@ static inline
 void _sir_resetstr(sirchar_t* str) {
     str[0] = (sirchar_t)'\0';
 }
+
+/** 
+ * Wrapper for strncpy/strncpy_s. Determines which one to use
+ * based on preprocessor macros.
+ */
+int _sir_strncpy(sirchar_t* restrict dest, size_t destsz, const sirchar_t* restrict src, size_t count);
+
+/**
+  * Wrapper for strncat/strncat_s. Determines which one to use
+  * based on preprocessor macros.
+  */
+int _sir_strncat(sirchar_t* restrict dest, size_t destsz, const sirchar_t* restrict src, size_t count);
+
+/**
+  * Wrapper for fopen/fopen_s. Determines which one to use
+  * based on preprocessor macros.
+  */
+int _sir_fopen(FILE* restrict *restrict streamptr, const sirchar_t* restrict filename, const sirchar_t* restrict mode);
+
+/**
+  * Wrapper for localtime/localtime_s. Determines which one to use
+  * based on preprocessor macros.
+  */
+struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf);
 
 /** @} */
 
