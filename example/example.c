@@ -30,7 +30,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "../sir.h"
+#include <sir.h>
 
 /**
  * @example example.c
@@ -47,6 +47,9 @@
 int report_error(void);
 
 int main(int argc, char** argv) {
+
+    _SIR_UNUSED(argc);
+    _SIR_UNUSED(argv);
 
     /*
      * Instantiate the initialization structure.
