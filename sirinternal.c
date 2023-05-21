@@ -234,7 +234,8 @@ bool _sir_cleanup(void) {
     sirfcache* sfc     = _sir_locksection(_SIRM_FILECACHE);
     assert(sfc);
 
-    if (cleanup &= NULL != sfc) {
+    cleanup &= NULL != sfc;
+    if (cleanup) {
         bool destroyfc = _sir_fcache_destroy(sfc);
         assert(destroyfc);
         cleanup &= _sir_unlocksection(_SIRM_FILECACHE) && destroyfc;
@@ -243,7 +244,8 @@ bool _sir_cleanup(void) {
     sirinit* si = _sir_locksection(_SIRM_INIT);
     assert(si);
 
-    if (cleanup &= NULL != si) {
+    cleanup &= NULL != si;
+    if (cleanup) {
         memset(si, 0, sizeof(sirinit));
         cleanup &= _sir_unlocksection(_SIRM_INIT);
     }
@@ -294,6 +296,7 @@ BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) 
 
 void _sir_initmutex(sirmutex_t* mutex) {
     bool init = _sirmutex_create(mutex);
+    _SIR_UNUSED(init);
     assert(init);
 }
 
@@ -302,6 +305,7 @@ void _sir_once(sironce_t* once, sir_once_fn func) {
     pthread_once(once, func);
 #else
     BOOL result = InitOnceExecuteOnce(once, func, NULL, NULL);
+    _SIR_UNUSED(result);
     assert(FALSE != result);
 #endif
 }
