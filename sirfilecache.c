@@ -126,9 +126,10 @@ bool _sirfile_open(sirfile* sf) {
 
     if (_sir_validptr(sf) && _sir_validstr(sf->path)) {
 
-        FILE* f = _sir_fopen(sf->path);
+        FILE* f  = NULL;
+        int open = _sir_fopen(&f, sf->path, SIR_FOPENMODE);
 
-        if (f) {
+        if (0 == open && f) {
             int fd = fileno(f);
             if (-1 == fd)
                 _sir_handleerr(errno);
@@ -533,23 +534,6 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output,
     }
 
     return false;
-}
-
-FILE* _sir_fopen(const sirchar_t* path) {
-    if (_sir_validstr(path)) {
-#if defined(__HAVE_STDC_SECURE_OR_EXT1__)
-        FILE*   tmp  = NULL;
-        errno_t open = fopen_s(&tmp, path, SIR_FOPENMODE);
-        _sir_handleerr(open);
-        return tmp;
-#else
-        FILE *f = fopen(path, SIR_FOPENMODE);
-        if (!f) _sir_handleerr(errno);
-        return f;
-#endif
-    }
-
-    return NULL;
 }
 
 void _sir_fclose(FILE** f) {
