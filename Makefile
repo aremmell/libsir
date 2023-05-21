@@ -84,10 +84,10 @@ $(OBJ_SHARED): $(INTERDIR) $(LIBDIR)
 $(OBJ_TESTS): $(OBJ_SHARED)
 
 $(INTERDIR)/%.eo: $(EXAMPLEDIR)/%.c $(DEPS)
-	$(CC) -MMD -c -o $@ $< $(CFLAGS)
+	$(CC) -MMD -c -o $@ $< $(CFLAGS) -I..
 
 $(INTERDIR)/%.to: $(TESTSDIR)/%.c $(DEPS)
-	$(CC) -MMD -c -o $@ $< $(CFLAGS)
+	$(CC) -MMD -c -o $@ $< $(CFLAGS) -I..
 
 $(INTERDIR)/%.lo: %.c $(DEPS)
 	$(CC) -MMD -c -o $@ $< $(CFLAGS)
