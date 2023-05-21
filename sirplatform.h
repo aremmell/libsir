@@ -58,12 +58,14 @@
 #endif
 #else // _WIN32
 #   define __WANT_STDC_SECURE_LIB__ 1 
+#   define _CRT_RAND_S
 #	define WIN32_LEAN_AND_MEAN
 #	define WINVER       0x0A00 /** Windows 10 SDK */
 #	define _WIN32_WINNT 0x0A00
 #	include <windows.h>
 #	include <io.h>
 #	include <synchapi.h>
+#	include <process.h>
 #endif
 
 #include <assert.h>
