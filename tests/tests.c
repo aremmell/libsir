@@ -559,9 +559,9 @@ bool sirtest_perf(void) {
 
         for (size_t n = 0; n < perflines; n++) {
 #if !defined(_WIN32)
-            printf("\033[97mlorem ipsum foo bar blah\033[0m\n");
+            printf("\033[97mlorem ipsum foo bar blah: %s %d\033[0m\n", "baz", 1234);
 #else
-            printf("lorem ipsum foo bar blah\n");
+            printf("lorem ipsum foo bar blah %s %d\n", "baz", 1234);
 #endif
         }
 
@@ -573,7 +573,7 @@ bool sirtest_perf(void) {
         startsirtimer(&stdiotimer);
 
         for (size_t n = 0; n < perflines; n++) {
-            sir_debug("lorem ipsum foo bar blah");
+            sir_debug("lorem ipsum foo bar blah: %s %d", "baz", 1234);
         }
 
         stdioelapsed = sirtimerelapsed(&stdiotimer);
