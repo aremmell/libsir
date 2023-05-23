@@ -50,6 +50,38 @@
             "dependsOn": "Clean",            
             "windows":{
             }
-        }        
+        },
+        {
+            "label": "Test suite",
+            "type": "process",
+            "command": "make",
+            "args": [
+                "tests"
+            ],
+            "detail": "Compiles a test suite binary to ensure libsir is functioning properly.",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "dependsOn": "Static library",            
+            "windows":{
+            }
+        },
+        {
+            "label": "Example C application",
+            "type": "process",
+            "command": "make",
+            "args": [
+                "example"
+            ],
+            "detail": "Compiles a sample C application demonstrating basic usage of libsir.",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "dependsOn": "Static library",            
+            "windows":{
+            }
+        }         
     ]
 }
