@@ -4,90 +4,52 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build example",
-            "identifier": "build-example",
-            "type": "shell",
+            "label": "Clean",
+            "type": "process",
             "command": "make",
             "args": [
-                "example"
+                "clean"
             ],
-            "options": {
-            },            
+            "detail": "Delete all intermediate files and previously compiled binaries",
             "group": {
                 "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "reveal": "always",
-                "panel": "dedicated"
-            },
-            "linux": {
+                "isDefault": false
             },
             "windows": {
-                "command": "mingw32-make",
-                "args": [
-                    "example"
-                ],
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
+                
+            }
         },
         {
-            "label": "build c++ example",
-            "identifier": "build-cppexample",
-            "type": "shell",
+            "label": "Static library",
+            "type": "process",
             "command": "make",
             "args": [
-                "cppexample",
-                "SIR_DEBUG=1"
+                "static"
             ],
+            "detail": "Compiles libsir as a static library.",
             "group": {
                 "kind": "build",
-                "isDefault": true
+                "isDefault": false
             },
-            "presentation": {
-                "reveal": "always",
-                "panel": "dedicated"
-            },
-            "linux": {},
-            "windows": {
-                "command": "mingw32-make",
-                "args": [
-                    "cppexample"
-                ],
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-        },        
+            "dependsOn": "Clean",
+            "windows":{
+            }
+        },
         {
-            "label": "build tests app",
-            "identifier": "build-tests",
-            "type": "shell",
+            "label": "Shared library",
+            "type": "process",
             "command": "make",
             "args": [
-                "tests",
-                "SIR_DEBUG=1"
+                "shared"
             ],
+            "detail": "Compiles libsir as a shared library.",
             "group": {
                 "kind": "build",
-                "isDefault": true
+                "isDefault": false
             },
-            "presentation": {
-                "reveal": "always",
-                "panel": "dedicated"
-            },
-            "linux": {},
-            "windows": {
-                "command": "mingw32-make",
-                "args": [
-                    "tests"
-                ],
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
+            "dependsOn": "Clean",            
+            "windows":{
+            }
         }        
     ]
 }
