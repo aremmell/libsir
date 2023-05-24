@@ -906,7 +906,7 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
     } while (FindNextFile(enumerator, &finddata) > 0);
 
     FindClose(enumerator);
-    enumerator   = NULL;
+    enumerator = NULL;
 #endif
 
     return true;
