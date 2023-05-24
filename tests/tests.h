@@ -196,17 +196,17 @@ bool sirtest_perf(void);
  */
 bool sirtest_updatesanity(void);
 
+/** @} */
+
 /**
  * @test .
  *
 bool sirtest_xxxx(void); */
 
-/** @} */
-
 bool printerror(bool pass);
 void printexpectederr(void);
 
-int getoserr(void);
+int getoserr(bool clib);
 unsigned int getrand(void);
 
 bool rmfile(const char* filename);
