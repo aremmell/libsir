@@ -435,7 +435,7 @@ bool sirtest_rollandarchivefile(void) {
         pass &= foundlogs == 2;
     }
 
-    if (pass)
+    if (NULL != fileid)
         pass &= sir_remfile(fileid);
 
     delcount = 0;
