@@ -393,13 +393,13 @@ bool sirtest_rollandarchivefile(void) {
     }
 
     if (0 != fseek(f, fillsize, SEEK_SET)) {
-        fprintf(stderr, "\tfseek failed! error: %d\n", errno);
+        fprintf(stderr, "\tfseek failed! error: %d\n", getoserr(true));
         fclose(f);
         return false;
     }
 
     if (EOF == fputc('\0', f)) {
-        fprintf(stderr, "\tfputc failed! error: %d\n", errno);
+        fprintf(stderr, "\tfputc failed! error: %d\n", getoserr(true));
         fclose(f);
         return false;
     }
@@ -428,7 +428,7 @@ bool sirtest_rollandarchivefile(void) {
         /* Look for files matching the original name. */
         unsigned foundlogs = 0;
         if (!enumfiles(logfilename, countfiles, &foundlogs)) {
-            fprintf(stderr, "\tfailed to count log files! error: %d\n", errno);
+            fprintf(stderr, "\tfailed to count log files! error: %d\n", getoserr(false));
             pass = false;
         }
 
