@@ -35,3 +35,13 @@
 
     - [ ] [Console Virtual Terminal Sequences - Windows Console](https://learn.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences)
     - [ ] [SetConsoleMode function - Windows Console](https://learn.microsoft.com/en-us/windows/console/setconsolemode)
+    
+- [ ] If Windows can really do escape sequences, implement that, and 256, R,G,B coloring.
+
+    - [ ] Pull styling up into its own module for reusability in other projects
+
+- [ ] Manually test sirtests –wait
+
+    - [ ] Ubuntu
+    - [ ] Fedora
+    - [ ] FreeBSD
