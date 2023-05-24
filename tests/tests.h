@@ -221,7 +221,6 @@ void print_os_error(void);
 #   define handle_os_error(clib, fmt, ...) clib ? _sir_handleerr(errno) : _sir_handlewin32err(GetLastError()); \
         fprintf(stderr, STR("\t") fmt STR("\n"), __VA_ARGS__)
 #endif
-
 unsigned int getrand(void);
 
 bool rmfile(const char* filename);
