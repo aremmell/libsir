@@ -40,7 +40,7 @@
  */
 
 /** Overrides for level <> text style mappings (::sir_settextstyle).
- * 
+ *
  * @attention This array and ::sir_default_styles are tied
  * together; if one is modified, the other must be as well.
  * Entries must remain in numerical ascending order (by level);

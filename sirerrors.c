@@ -189,7 +189,7 @@ sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
 
         if (alloc)
             _sir_safefree(final);
-        
+
         return sir_errors[_mid].e;
     }
 

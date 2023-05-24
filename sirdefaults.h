@@ -68,7 +68,7 @@ static const sir_options sir_file_def_opts
     = SIRO_ALL;
 
 /** Default mapping of ::sir_level to ::sir_textstyle.
- * 
+ *
  * @attention This array and ::sir_override_styles are tied
  * together; if one is modified, the other must be as well.
  * Entries must remain in numerical ascending order (by level);
