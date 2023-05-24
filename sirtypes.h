@@ -61,6 +61,14 @@ typedef enum {
     SIRL_DEFAULT = 0x100 /**< Use the default levels for this type of destination. */
 } sir_level;
 
+/** The number of actual usable ::sir_level entries to be used
+ * for computing the size of arrays.
+ * 
+ * The enum minus SIRL_ALL, SIRL_DEFAULT, and SIRL_NONE, which are
+ * currently not used as keys for look-ups.
+ */
+#define SIR_NUMLEVELS 8
+
 /**
  * Used to differentiate between a single ::sir_level and one or more
  * bitwise OR'd together.
