@@ -5,7 +5,6 @@ Perf: Made huge improvement by using binary search when looking up styles, etc. 
 ```
 printf:  1000000 lines in 9.00sec (111091.3 lines/sec)
 ```
-
 > Surprisingly, snprintf was somewhat slower than strncat; even reusing components of the last message that haven’t changed did not affect the perf in any meaningful way. It looks like the bottleneck is `vsnprintf`, and I’m going to have to find a way to:
 > a.) predict its output and determine if it’s the same message I’m about to print or
 > b.) find something to replace it.
@@ -36,4 +35,3 @@ printf:  1000000 lines in 9.00sec (111091.3 lines/sec)
 - [ ] Add a note about SIR_ASSERT_ON_ERROR, and add it to the makefile.
 
 - [ ] Conditional logging (debug_if(), etc.)
-
