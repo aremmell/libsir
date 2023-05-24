@@ -62,7 +62,7 @@ int main(int argc, char** argv) {
     // Disallow execution by root/sudo; some of the tests
     // rely on lack of permissions.
     if (geteuid() == 0) {
-        fprintf(stderr, "Sorry, but you may not run this as root.\n");
+        fprintf(stderr, "Sorry, but this program may not be executed by root.\n");
         return EXIT_FAILURE;
     }
 #endif
@@ -81,6 +81,7 @@ int main(int argc, char** argv) {
     int        tests   = (perf ? 1 : sizeof(sir_tests) / sizeof(sir_test));
     int        first   = (perf ? 0 : 1);
     int        passed  = 0;
+    int        total   = tests - first;
     sirtimer_t timer   = {0};
 
     printf(WHITE("running %d libsir test(s)...\n"), tests);
@@ -98,13 +99,17 @@ int main(int argc, char** argv) {
     }
 
     float elapsed = sirtimerelapsed(&timer);
-
-    printf(WHITE("done; ") BLUE("%d/%d libsir test(s) passed in %.04fsec") "\n",
-        passed, tests - first, elapsed / 1e3);
+    
+    if (passed == total)
+        printf(WHITE("done; ") GREEN("all %d libsir test(s) passed in %.02fsec") "\n",
+            total, elapsed / 1e3);
+    else
+        printf(WHITE("done; ") RED("%d of %d libsir test(s) failed in %.02fsec") "\n",
+            total - passed, total, elapsed / 1e3);
 
     if (wait) {
         printf(WHITE("press any key to exit") "\n");
-        int get = getc(stdin);
+        int get = getchar(stdin);
         _SIR_UNUSED(get);
     }
 
@@ -668,18 +673,6 @@ bool sirtest_updatesanity(void) {
     return pass;
 }
 
-/*
-bool sirtest_XXX(void) {
-
-    INIT(si, SIRL_ALL, 0, 0, 0);
-    bool pass = si_init;
-
-
-    sir_cleanup();
-    return printerror(pass);
-}
-*/
-
 #if !defined(_WIN32)
 static void* sirtest_thread(void* arg);
 #else
@@ -793,6 +786,18 @@ unsigned sirtest_thread(void* arg) {
     return 0;
 #endif
 }
+
+/*
+bool sirtest_XXX(void) {
+
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+
+    sir_cleanup();
+    return printerror(pass);
+}
+*/
 
 bool printerror(bool pass) {
     if (!pass) {
