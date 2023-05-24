@@ -220,7 +220,7 @@ bool sirtest_failsetinvalidstyle(void) {
 bool sirtest_failnooutputdest(void) {
     INIT(si, 0, 0, 0, 0);
     bool pass = si_init;
-    const char* logfile = "levels.log";
+    static const char* logfile = "nodestination.log";
 
     pass &= !sir_info("this goes nowhere!");
 
@@ -257,12 +257,11 @@ bool sirtest_failinvalidfilename(void) {
 bool sirtest_failfilebadpermission(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
-    const char* path = NULL;
-
+    
 #if !defined(_WIN32)
-    path = "/noperms";
+    static const char* path = "/noperms";
 #else
-    path = "C:\\Windows\\System32\\noperms";
+    static const char* path = "C:\\Windows\\System32\\noperms";
 #endif    
 
     pass &= NULL == sir_addfile(path, SIRL_ALL, SIRO_MSGONLY);
