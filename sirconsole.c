@@ -38,7 +38,7 @@
  * @{
  */
 
-#if  !defined(_WIN32)
+#if !defined(_WIN32)
 
 static bool _sir_write_std(const sirchar_t* message, FILE* stream);
 
