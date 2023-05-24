@@ -341,8 +341,8 @@ bool _sirfile_splitpath(sirfile* sf, sirchar_t** name, sirchar_t** ext) {
             assert(namesize < SIR_MAXPATH);
 
             if (namesize < SIR_MAXPATH) {
-                *name = (sirchar_t*)calloc(namesize, sizeof(sirchar_t));
-                _sir_strncpy(*name, namesize, sf->path, namesize);
+                *name = (sirchar_t*)calloc(namesize + 1, sizeof(sirchar_t));
+                _sir_strncpy(*name, namesize + 1, sf->path, namesize);
             }
   
 /* disable bogus warning about using _strdup */
