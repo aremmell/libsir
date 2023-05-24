@@ -87,8 +87,7 @@ typedef enum {
     /** Don't include the process/app name in output. */
     SIRO_NONAME = 0x800,
 
-    /**
-     * Don't include milliseconds in time stamps. If \a not set, time stamps
+    /** Don't include milliseconds in time stamps. If \a not set, time stamps
      * in output to this destination will be appended with the current millisecond
      * in addition to the hour, minute, and second. If ::SIRO_NOTIME is set, this has no effect.
      */
@@ -100,14 +99,12 @@ typedef enum {
     /** Don't include the thread ID/name in output. */
     SIRO_NOTID = 0x4000,
 
-    /**
-     * Don't write header messages when logging begins, or the file is rolled.
+    /** Don't write header messages when logging begins, or the file is rolled.
      * Only applicable to log files.
      */
     SIRO_NOHDR = 0x10000,
 
-    /**
-     * Includes all other options; effectively disables all output formatting except
+    /** Includes all other options; effectively disables all output formatting except
      * the original formatted message (does not include ::SIRO_NOHDR; set that flag
      * in addition to remove header messages).
      */
