@@ -437,6 +437,7 @@ bool sirtest_rollandarchivefile(void) {
 
         /* Look for files matching the original name. */
         unsigned foundlogs = 0;
+
         if (!enumfiles(logbasename, countfiles, &foundlogs)) {
             handle_os_error(false, "failed to enumerate log files with base name: %s!", logbasename);
             print_os_error();
