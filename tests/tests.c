@@ -146,7 +146,7 @@ bool sirtest_filecachesanity(void) {
 
     for (size_t n = 0; n < numfiles - 1; n++) {
         char path[SIR_MAXPATH] = {0};
-        snprintf(path, SIR_MAXPATH, "test-%zu.log", n);
+        snprintf(path, SIR_MAXPATH, "./test-%zu.log", n);
         rmfile(path);
         ids[n] = sir_addfile(path, SIRL_ALL, (n % 2) ? odd : even);
         pass &= NULL != ids[n] && sir_info("test %u", n);
@@ -154,12 +154,12 @@ bool sirtest_filecachesanity(void) {
 
     pass &= sir_info("test test test");
 
-    // this one should fail; max files already added
-    pass &= NULL == sir_addfile("should-fail.log", SIRL_ALL, SIRO_MSGONLY);
+    /* this one should fail; max files already added. */
+    pass &= NULL == sir_addfile("./should-fail.log", SIRL_ALL, SIRO_MSGONLY);
 
     sir_info("test test test");
 
-    // now remove previously added files in a different order
+    /* now remove previously added files in a different order. */
     size_t removeorder[SIR_MAXFILES];
     memset(removeorder, -1, sizeof(removeorder));
 
@@ -193,7 +193,7 @@ bool sirtest_filecachesanity(void) {
         pass &= sir_remfile(ids[removeorder[n]]);
 
         char path[SIR_MAXPATH] = {0};
-        snprintf(path, SIR_MAXPATH, "test-%zu.log", n);
+        snprintf(path, SIR_MAXPATH, "./test-%zu.log", n);
         rmfile(path);
     }
 
@@ -220,7 +220,7 @@ bool sirtest_failsetinvalidstyle(void) {
 bool sirtest_failnooutputdest(void) {
     INIT(si, 0, 0, 0, 0);
     bool pass = si_init;
-    const char* logfile = "levels.log";
+    const char* logfile = "./levels.log";
 
     pass &= !sir_info("this goes nowhere!");
 
@@ -343,11 +343,12 @@ bool sirtest_initcleanupinit(void) {
 bool sirtest_faildupefile(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
+    const sirchar_t* filename = "./foo.log";
 
-    pass &= NULL != sir_addfile("foo.log", SIRL_ALL, SIRO_DEFAULT);
-    pass &= NULL == sir_addfile("foo.log", SIRL_ALL, SIRO_DEFAULT);
+    pass &= NULL != sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
+    pass &= NULL == sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
 
-    rmfile("foo.log");
+    rmfile(filename);
     sir_cleanup();
     return printerror(pass);
 }
@@ -368,12 +369,13 @@ bool sirtest_rollandarchivefile(void) {
     /* roll size minus 1KB so we can write until it maxes. */
     const long             deltasize   = 1024L;
     const long             fillsize    = SIR_FROLLSIZE - deltasize;
-    const sirchar_t*       logfilename = "rollandarchive";
+    const sirchar_t*       logfilename = "./rollandarchive.log";
     const sirchar_t*       line        = "hello, i am some data. nice to meet you.";
 
     unsigned delcount = 0;
     if (!enumfiles(logfilename, deletefiles, &delcount)) {
-        fprintf(stderr, "\tfailed to delete existing log files! error: %d\n", getoserr());
+        fprintf(stderr, "\tfailed to delete all existing log files! error: %d\n",
+            getoserr(false));
         return false;
     }
 
@@ -439,7 +441,7 @@ bool sirtest_rollandarchivefile(void) {
 
     delcount = 0;
     if (!enumfiles(logfilename, deletefiles, &delcount)) {
-        fprintf(stderr, "\tfailed to delete log files! error: %d\n", getoserr());
+        fprintf(stderr, "\tfailed to delete log files! error: %d\n", getoserr(false));
         return false;
     }
 
@@ -547,14 +549,14 @@ bool sirtest_textstylesanity(void) {
 }
 
 bool sirtest_perf(void) {
-    const sirchar_t* logfilename = "sirperf";
+    const sirchar_t* logfilename = "./libsir-perf.log";
 #if !defined(_WIN32)
     const size_t perflines = 1000000;
 #else
     /* stdio is hilariously slow on windows; do less. */
-    const size_t perflines = 10000;
+    const size_t perflines = 100000;
 #endif
-    INIT(si, SIRL_ALL, 0, 0, 0);
+    INIT(si, SIRL_ALL, SIRO_NOMSEC, 0, 0);
     bool pass = si_init;
 
     if (pass) {
@@ -562,29 +564,28 @@ bool sirtest_perf(void) {
         float stdioelapsed  = 0.0f;
         float fileelapsed   = 0.0f;
 
-        printf("\t%zu lines printf...\n", perflines);
+        printf("\t" BLUE("%zu lines printf...") "\n", perflines);
 
         sirtimer_t printftimer = {0};
         startsirtimer(&printftimer);
 
         for (size_t n = 0; n < perflines; n++) {
 #if !defined(_WIN32)
-            printf("\033[97mlorem ipsum foo bar blah: %s %d\033[0m\n", "baz", 1234);
+            printf("\033[97m%.2f: lorem ipsum foo bar %s: %zu\033[0m\n", sirtimerelapsed(&printftimer), "baz", 1234 + n);
 #else
-            printf("lorem ipsum foo bar blah %s %d\n", "baz", 1234);
+            printf("%.2f: lorem ipsum foo bar %s: %zu\n", sirtimerelapsed(&printftimer), "baz", 1234 + n);
 #endif
         }
 
         printfelapsed = sirtimerelapsed(&printftimer);
 
-        printf("\t%zu lines libsir stdout...\n", perflines);
+        printf("\t" BLUE("%zu lines libsir(stdout)...") "\n", perflines);
 
         sirtimer_t stdiotimer = {0};
         startsirtimer(&stdiotimer);
 
-        for (size_t n = 0; n < perflines; n++) {
-            sir_debug("lorem ipsum foo bar blah: %s %d", "baz", 1234);
-        }
+        for (size_t n = 0; n < perflines; n++)
+            sir_debug("lorem ipsum foo bar %s: %zu", "baz", 1234 + n);
 
         stdioelapsed = sirtimerelapsed(&stdiotimer);
 
@@ -593,18 +594,17 @@ bool sirtest_perf(void) {
         INIT(si2, 0, 0, 0, 0);
         pass &= si2_init;
 
-        sirfileid_t logid = sir_addfile(logfilename, SIRL_ALL, SIRO_MSGONLY);
+        sirfileid_t logid = sir_addfile(logfilename, SIRL_ALL, SIRO_NONAME | SIRO_NOPID);
         pass &= NULL != logid;
 
         if (pass) {
-            printf("\t%zu lines log file...\n", perflines);
+            printf("\t" BLUE("%zu lines libsir(log file)...") "\n", perflines);
 
             sirtimer_t filetimer = {0};
             startsirtimer(&filetimer);
 
-            for (size_t n = 0; n < perflines; n++) {
-                sir_debug("lorem ipsum foo bar blah");
-            }
+            for (size_t n = 0; n < perflines; n++)
+                sir_debug("lorem ipsum foo bar %s: %zu", "baz", 1234 + n);
 
             fileelapsed = sirtimerelapsed(&filetimer);
 
@@ -612,11 +612,11 @@ bool sirtest_perf(void) {
         }
 
         if (pass) {
-            printf("\t" WHITE("%zu lines printf:")" "GREEN("%.2fsec (%.1f lines/sec)") "\n",
+            printf("\t" WHITE("printf: ")" "GREEN("%zu lines in %.2fsec (%.1f lines/sec)") "\n",
                 perflines, printfelapsed / 1e3, perflines / (printfelapsed / 1e3));
-            printf("\t" WHITE("%zu lines libsir stdout:")" "GREEN("%.2fsec (%.1f lines/sec)") "\n",
+            printf("\t" WHITE("libsir(stdout): ")" "GREEN("%zu lines in %.2fsec (%.1f lines/sec)") "\n",
                 perflines, stdioelapsed / 1e3, perflines / (stdioelapsed / 1e3));
-            printf("\t" WHITE("%zu lines log file:")" "GREEN("%.2fsec (%.1f lines/sec)")"\n",
+            printf("\t" WHITE("libsir(log file): ")" "GREEN("%zu lines in %.2fsec (%.1f lines/sec)")"\n",
                 perflines, fileelapsed / 1e3, perflines / (fileelapsed / 1e3));
         }
     }
@@ -635,7 +635,7 @@ bool sirtest_updatesanity(void) {
 
     INIT_N(si, SIRL_DEFAULT, 0, SIRL_DEFAULT, 0, "update_sanity");
     bool pass = si_init;
-    const char* logfile = "update.log";
+    const char* logfile = "./update.log";
 
     rmfile(logfile);
     sirfileid_t id1 = sir_addfile(logfile, SIRL_DEFAULT, SIRO_DEFAULT);
@@ -698,7 +698,7 @@ bool sirtest_mthread_race(void) {
 
     for (size_t n = 0; n < NUM_THREADS; n++) {
         char* path = (char*)calloc(SIR_MAXPATH, sizeof(char));
-        snprintf(path, SIR_MAXPATH, "%zu.log", n);
+        snprintf(path, SIR_MAXPATH, "./%zu.log", n);
 
 #if !defined(_WIN32)
         int create = pthread_create(&thrds[n], NULL, sirtest_thread, (void*)path);
@@ -750,7 +750,7 @@ unsigned sirtest_thread(void* arg) {
     sirfileid_t id = sir_addfile(mypath, SIRL_ALL, SIRO_MSGONLY);
 
     if (NULL == id) {
-        fprintf(stderr, "\t" RED("Failed to add file %s!") "\n", mypath);
+        fprintf(stderr, "\t" RED("failed to add file %s!") "\n", mypath);
 #if !defined(_WIN32)
         return NULL;
 #else
@@ -819,11 +819,11 @@ void printexpectederr(void) {
     printf("\t" GREEN("Expected (%hu, %s)") "\n", code, message);
 }
 
-int getoserr(void) {
+int getoserr(bool clib) {
 #if !defined(_WIN32)
     return errno;
 #else
-    return (int)GetLastError();
+    return clib ? errno : (int)GetLastError();
 #endif
 }
 
@@ -842,22 +842,25 @@ unsigned int getrand(void) {
 }
 
 bool rmfile(const char* filename) {
+    bool removed = false;
 #if !defined(_WIN32)
-    return 0 == remove(filename);
+    removed = 0 == remove(filename);
 #else
-    return FALSE != DeleteFile(filename);
+    removed = FALSE != DeleteFile(filename);
 #endif
+
+    if (!removed)
+        fprintf(stderr, "\tfailed to delete %s! error: %d\n", filename, getoserr(false));
+
+    return removed;
 }
 
 bool deletefiles(const char* search, const char* filename, unsigned* data) {
     if (strstr(filename, search)) {
-
         struct stat st;
         if (0 == stat(filename, &st))
             printf("\tdeleting %s (size: %ld)...\n", filename, (long)st.st_size);
 
-        if (!rmfile(filename))
-            fprintf(stderr, "\tfailed to delete %s! error: %d\n", filename, getoserr());
         (*data)++;
     }
     return true;

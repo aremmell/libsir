@@ -37,9 +37,8 @@
  *   - Sending high-prirority messages via SMS or push notification.
  * 2. Compressing archived logs with zlib or similar.
  * 3. Deleting archived logs older than _n_ days.
- * 4. A project file for Visual Studio.
- * 5. A project file for Xcode.
- * 6. Something I didn't think of yet.
+ * 4. A project file for Xcode.
+ * 5. Something I didn't think of yet...
  * 
  * ---------------------------------------------------------------------------------------------------------
  */
@@ -82,6 +81,8 @@
 
 #define INIT(var, l_stdout, o_stdout, l_stderr, o_stderr) \
     INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, "")
+
+#define TEST_S(n) (n > 1 ? ("test" "s") : "test")
 
 /** Function signature for a single test. */
 typedef bool (*sir_test_fn)(void);
