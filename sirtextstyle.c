@@ -86,7 +86,7 @@ sir_textstyle _sir_gettextstyle(sir_level level) {
                 break;
             }
 
-             int comparison = map[_mid].level < level ? 1 : -1;
+            int comparison = map[_mid].level < level ? 1 : -1;
 
             _SIR_ITERATE_BIN_SEARCH(comparison);
             _SIR_END_BIN_SEARCH();
@@ -153,7 +153,7 @@ bool _sir_settextstyle(sir_level level, sir_textstyle style)
             }
 
             int comparison = map[_mid].level < level ? 1 : -1;
-            
+
             _SIR_ITERATE_BIN_SEARCH(comparison);
             _SIR_END_BIN_SEARCH();
 
@@ -212,7 +212,7 @@ uint16_t _sir_getprivstyle(uint32_t style) {
 
     if (sir_priv_map[_mid].from == style)
         return sir_priv_map[_mid].to;
-    
+
     int comparison = sir_priv_map[_mid].from < style ? 1 : -1;
 
     _SIR_ITERATE_BIN_SEARCH(comparison);
