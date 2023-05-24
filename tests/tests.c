@@ -146,7 +146,7 @@ bool sirtest_filecachesanity(void) {
 
     for (size_t n = 0; n < numfiles - 1; n++) {
         char path[SIR_MAXPATH] = {0};
-        snprintf(path, SIR_MAXPATH, "./test-%zu.log", n);
+        snprintf(path, SIR_MAXPATH, "test-%zu.log", n);
         rmfile(path);
         ids[n] = sir_addfile(path, SIRL_ALL, (n % 2) ? odd : even);
         pass &= NULL != ids[n] && sir_info("test %u", n);
@@ -194,7 +194,6 @@ bool sirtest_filecachesanity(void) {
 
         char path[SIR_MAXPATH] = {0};
         snprintf(path, SIR_MAXPATH, "test-%zu.log", removeorder[n]);
-
         rmfile(path);
     }
 
@@ -347,6 +346,7 @@ bool sirtest_initcleanupinit(void) {
 bool sirtest_faildupefile(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
+
     const sirchar_t* filename = "./foo.log";
     const sirchar_t* filename = "faildupefile.log";
     sirfileid_t fid = sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
@@ -374,7 +374,6 @@ bool sirtest_failremovebadfile(void) {
 bool sirtest_rollandarchivefile(void) {
 
     /* roll size minus 1KB so we can write until it maxes. */
-<<<<<<< HEAD
     static const long       deltasize   = 1024L;
     const long              fillsize    = SIR_FROLLSIZE - deltasize;
     static const sirchar_t* logbasename = "rollandarchive";
