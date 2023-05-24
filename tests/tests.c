@@ -146,7 +146,7 @@ bool sirtest_filecachesanity(void) {
 
     for (size_t n = 0; n < numfiles - 1; n++) {
         char path[SIR_MAXPATH] = {0};
-        snprintf(path, SIR_MAXPATH, "./test-%zu.log", n);
+        snprintf(path, SIR_MAXPATH, "test-%zu.log", n);
         rmfile(path);
         ids[n] = sir_addfile(path, SIRL_ALL, (n % 2) ? odd : even);
         pass &= NULL != ids[n] && sir_info("test %u", n);
@@ -194,6 +194,7 @@ bool sirtest_filecachesanity(void) {
 
         char path[SIR_MAXPATH] = {0};
         snprintf(path, SIR_MAXPATH, "test-%zu.log", removeorder[n]);
+
         rmfile(path);
     }
 
@@ -655,7 +656,6 @@ bool sirtest_updatesanity(void) {
 
     INIT_N(si, SIRL_DEFAULT, 0, SIRL_DEFAULT, 0, "update_sanity");
     bool pass = si_init;
-
     static const char* logfile = "update-sanity.log";
 
     rmfile(logfile);
