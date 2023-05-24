@@ -491,7 +491,7 @@ bool sirtest_errorsanity(void) {
 
     sirchar_t message[SIR_MAXERROR] = {0};
     for (size_t n = 0; n < (sizeof(errors) / sizeof(errors[0])); n++) {
-        _sir_seterror(_sir_mkerror(errors[n].code));
+        _sir_seterrordsir_mkerror(errors[n].code));
         memset(message, 0, SIR_MAXERROR);
         uint16_t err = err = sir_geterror(message);
         pass &= errors[n].code == err && *message != '\0';
