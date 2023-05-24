@@ -29,7 +29,3 @@ index.md
 # Visual Studio temporary files
 .vs/
 *.user
-
-# Visual Studio output files
-**/x64/**/*
-**/ARM64/**/*
