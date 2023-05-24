@@ -348,8 +348,6 @@ bool sirtest_faildupefile(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
     const sirchar_t* filename = "./foo.log";
-
-<<<<<<< HEAD
     const sirchar_t* filename = "faildupefile.log";
     sirfileid_t fid = sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
 
@@ -357,11 +355,6 @@ bool sirtest_faildupefile(void) {
     pass &= NULL == sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
     pass &= sir_remfile(fid);
 
-=======
-    pass &= NULL != sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
-    pass &= NULL == sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
-
->>>>>>> 187e446 (prefix log filenames with "./". when CWD != path of binary, logs go to)
     rmfile(filename);
     sir_cleanup();
     return print_result_and_return(pass);
@@ -395,17 +388,6 @@ bool sirtest_rollandarchivefile(void) {
     if (!enumfiles(logbasename, deletefiles, &delcount)) {
         handle_os_error(false, "failed to enumerate log files with base name: %s!", logbasename);
         print_os_error();
-=======
-    const long             deltasize   = 1024L;
-    const long             fillsize    = SIR_FROLLSIZE - deltasize;
-    const sirchar_t*       logfilename = "./rollandarchive.log";
-    const sirchar_t*       line        = "hello, i am some data. nice to meet you.";
-
-    unsigned delcount = 0;
-    if (!enumfiles(logfilename, deletefiles, &delcount)) {
-        fprintf(stderr, "\tfailed to delete all existing log files! error: %d\n",
-            getoserr(false));
->>>>>>> 187e446 (prefix log filenames with "./". when CWD != path of binary, logs go to)
         return false;
     }
 
@@ -471,14 +453,9 @@ bool sirtest_rollandarchivefile(void) {
         pass &= sir_remfile(fileid);
 
     delcount = 0;
-<<<<<<< HEAD
     if (!enumfiles(logbasename, deletefiles, &delcount)) {
         handle_os_error(false, "failed to enumerate log files with base name: %s!", logbasename);
         print_os_error();
-=======
-    if (!enumfiles(logfilename, deletefiles, &delcount)) {
-        fprintf(stderr, "\tfailed to delete log files! error: %d\n", getoserr(false));
->>>>>>> 187e446 (prefix log filenames with "./". when CWD != path of binary, logs go to)
         return false;
     }
 
@@ -586,14 +563,10 @@ bool sirtest_textstylesanity(void) {
 }
 
 bool sirtest_perf(void) {
-<<<<<<< HEAD
 
     const sirchar_t* logbasename = "libsir-perf";
     const sirchar_t* logext      = ".log";
 
-=======
-    const sirchar_t* logfilename = "./libsir-perf.log";
->>>>>>> 187e446 (prefix log filenames with "./". when CWD != path of binary, logs go to)
 #if !defined(_WIN32)
     const size_t perflines = 1000000;
 #else
@@ -638,12 +611,9 @@ bool sirtest_perf(void) {
         INIT(si2, 0, 0, 0, 0);
         pass &= si2_init;
 
-<<<<<<< HEAD
         sirchar_t logfilename[SIR_MAXPATH] = {0};
         snprintf(logfilename, SIR_MAXPATH, logbasename, logext);
 
-=======
->>>>>>> 187e446 (prefix log filenames with "./". when CWD != path of binary, logs go to)
         sirfileid_t logid = sir_addfile(logfilename, SIRL_ALL, SIRO_NONAME | SIRO_NOPID);
         pass &= NULL != logid;
 
@@ -685,11 +655,8 @@ bool sirtest_updatesanity(void) {
 
     INIT_N(si, SIRL_DEFAULT, 0, SIRL_DEFAULT, 0, "update_sanity");
     bool pass = si_init;
-<<<<<<< HEAD
+
     static const char* logfile = "update-sanity.log";
-=======
-    const char* logfile = "./update.log";
->>>>>>> 187e446 (prefix log filenames with "./". when CWD != path of binary, logs go to)
 
     rmfile(logfile);
     sirfileid_t id1 = sir_addfile(logfile, SIRL_DEFAULT, SIRO_DEFAULT);
@@ -751,11 +718,7 @@ bool sirtest_mthread_race(void) {
 
     for (size_t n = 0; n < NUM_THREADS; n++) {
         char* path = (char*)calloc(SIR_MAXPATH, sizeof(char));
-<<<<<<< HEAD
         snprintf(path, SIR_MAXPATH, "multi-thread-race-%zu.log", n);
-=======
-        snprintf(path, SIR_MAXPATH, "./%zu.log", n);
->>>>>>> 187e446 (prefix log filenames with "./". when CWD != path of binary, logs go to)
 
 #if !defined(_WIN32)
         int create = pthread_create(&thrds[n], NULL, sirtest_thread, (void*)path);
@@ -881,25 +844,10 @@ bool print_test_error(bool result, bool expected) {
     return result;
 }
 
-<<<<<<< HEAD
 void print_os_error(void) {
     sirchar_t message[SIR_MAXERROR] = { 0 };
     uint16_t  code = sir_geterror(message);
     fprintf(stderr, "\t" RED("OS error: (%hu, %s)") "\n", code, message);
-=======
-void printexpectederr(void) {
-    sirchar_t message[SIR_MAXERROR] = {0};
-    uint16_t  code                  = sir_geterror(message);
-    printf("\t" GREEN("Expected (%hu, %s)") "\n", code, message);
-}
-
-int getoserr(bool clib) {
-#if !defined(_WIN32)
-    return errno;
-#else
-    return clib ? errno : (int)GetLastError();
-#endif
->>>>>>> 187e446 (prefix log filenames with "./". when CWD != path of binary, logs go to)
 }
 
 unsigned int getrand(void) {
@@ -918,7 +866,6 @@ unsigned int getrand(void) {
 
 bool rmfile(const char* filename) {
     bool removed = false;
-<<<<<<< HEAD
 
     /* just return true if the file doesn't exist. */
     struct stat st;
@@ -931,39 +878,25 @@ bool rmfile(const char* filename) {
         return false;
     }
 
-=======
->>>>>>> 187e446 (prefix log filenames with "./". when CWD != path of binary, logs go to)
 #if !defined(_WIN32)
     removed = 0 == remove(filename);
 #else
     removed = FALSE != DeleteFile(filename);
 #endif
 
-<<<<<<< HEAD
     if (!removed) {
         handle_os_error(false, "failed to delete %s!", filename);
         print_os_error();
     } else {
         printf("\tsuccessfully deleted %s (%ld bytes)...\n", filename, (long)st.st_size);
     }
-=======
-    if (!removed)
-        fprintf(stderr, "\tfailed to delete %s! error: %d\n", filename, getoserr(false));
->>>>>>> 187e446 (prefix log filenames with "./". when CWD != path of binary, logs go to)
 
     return removed;
 }
 
 bool deletefiles(const char* search, const char* filename, unsigned* data) {
     if (strstr(filename, search)) {
-<<<<<<< HEAD
         rmfile(filename);
-=======
-        struct stat st;
-        if (0 == stat(filename, &st))
-            printf("\tdeleting %s (size: %ld)...\n", filename, (long)st.st_size);
-
->>>>>>> 187e446 (prefix log filenames with "./". when CWD != path of binary, logs go to)
         (*data)++;
     }
     return true;
