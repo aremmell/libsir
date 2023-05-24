@@ -260,7 +260,7 @@ bool sirtest_failinvalidfilename(void) {
 bool sirtest_failfilebadpermission(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
-    
+
 #if !defined(_WIN32)
     static const char* path = "/noperms";
 #else
