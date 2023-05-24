@@ -860,6 +860,8 @@ bool deletefiles(const char* search, const char* filename, unsigned* data) {
         if (0 == stat(filename, &st))
             printf("\tdeleting %s (size: %ld)...\n", filename, (long)st.st_size);
 
+        rmfile(filename);
+
         (*data)++;
     }
     return true;
