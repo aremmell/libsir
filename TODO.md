@@ -1,4 +1,4 @@
-# TODO
+# 	TODO
 
 Perf: Made huge improvement by using binary search when looking up styles, etc. (~30s -> 9sf)!
 
@@ -35,3 +35,4 @@ printf:  1000000 lines in 9.00sec (111091.3 lines/sec)
 - [ ] Add a note about SIR_ASSERT_ON_ERROR, and add it to the makefile.
 
 - [ ] Conditional logging (debug_if(), etc.)
+
