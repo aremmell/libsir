@@ -366,13 +366,17 @@ bool sirtest_failremovebadfile(void) {
 bool sirtest_rollandarchivefile(void) {
 
     /* roll size minus 1KB so we can write until it maxes. */
-    const long             deltasize   = 1024L;
-    const long             fillsize    = SIR_FROLLSIZE - deltasize;
-    const sirchar_t*       logfilename = "rollandarchive.log";
-    const sirchar_t*       line        = "hello, i am some data. nice to meet you.";
+    static const long       deltasize   = 1024L;
+    const long              fillsize    = SIR_FROLLSIZE - deltasize;
+    static const sirchar_t* logbasename = "rollandarchive";
+    static const sirchar_t* logext      = ".log";
+    static const sirchar_t* line        = "hello, i am some data. nice to meet you.";
+
+    sirchar_t logfilename[SIR_MAXPATH] = { 0 };
+    snprintf(logfilename, SIR_MAXPATH, "%s%s", logbasename, logext);
 
     unsigned delcount = 0;
-    if (!enumfiles(logfilename, deletefiles, &delcount)) {
+    if (!enumfiles(logbasename, deletefiles, &delcount)) {
         fprintf(stderr, "\tfailed to delete all existing log files! error: %d\n",
             getoserr(false));
         return false;
@@ -426,7 +430,7 @@ bool sirtest_rollandarchivefile(void) {
 
         /* Look for files matching the original name. */
         unsigned foundlogs = 0;
-        if (!enumfiles(logfilename, countfiles, &foundlogs)) {
+        if (!enumfiles(logbasename, countfiles, &foundlogs)) {
             fprintf(stderr, "\tfailed to count log files! error: %d\n", getoserr(false));
             pass = false;
         }
@@ -439,7 +443,7 @@ bool sirtest_rollandarchivefile(void) {
         pass &= sir_remfile(fileid);
 
     delcount = 0;
-    if (!enumfiles(logfilename, deletefiles, &delcount)) {
+    if (!enumfiles(logbasename, deletefiles, &delcount)) {
         fprintf(stderr, "\tfailed to delete log files! error: %d\n", getoserr(false));
         return false;
     }
