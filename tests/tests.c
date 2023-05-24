@@ -146,7 +146,7 @@ bool sirtest_filecachesanity(void) {
 
     for (size_t n = 0; n < numfiles - 1; n++) {
         char path[SIR_MAXPATH] = {0};
-        snprintf(path, SIR_MAXPATH, "./test-%zu.log", n);
+        snprintf(path, SIR_MAXPATH, "test-%zu.log", n);
         rmfile(path);
         ids[n] = sir_addfile(path, SIRL_ALL, (n % 2) ? odd : even);
         pass &= NULL != ids[n] && sir_info("test %u", n);
@@ -155,7 +155,7 @@ bool sirtest_filecachesanity(void) {
     pass &= sir_info("test test test");
 
     /* this one should fail; max files already added. */
-    pass &= NULL == sir_addfile("./should-fail.log", SIRL_ALL, SIRO_MSGONLY);
+    pass &= NULL == sir_addfile("should-fail.log", SIRL_ALL, SIRO_MSGONLY);
 
     sir_info("test test test");
 
@@ -193,7 +193,7 @@ bool sirtest_filecachesanity(void) {
         pass &= sir_remfile(ids[removeorder[n]]);
 
         char path[SIR_MAXPATH] = {0};
-        snprintf(path, SIR_MAXPATH, "./test-%zu.log", n);
+        snprintf(path, SIR_MAXPATH, "test-%zu.log", n);
         rmfile(path);
     }
 
@@ -220,7 +220,7 @@ bool sirtest_failsetinvalidstyle(void) {
 bool sirtest_failnooutputdest(void) {
     INIT(si, 0, 0, 0, 0);
     bool pass = si_init;
-    const char* logfile = "./levels.log";
+    const char* logfile = "levels.log";
 
     pass &= !sir_info("this goes nowhere!");
 
@@ -343,7 +343,7 @@ bool sirtest_initcleanupinit(void) {
 bool sirtest_faildupefile(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
-    const sirchar_t* filename = "./foo.log";
+    const sirchar_t* filename = "foo.log";
 
     pass &= NULL != sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
     pass &= NULL == sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
@@ -369,7 +369,7 @@ bool sirtest_rollandarchivefile(void) {
     /* roll size minus 1KB so we can write until it maxes. */
     const long             deltasize   = 1024L;
     const long             fillsize    = SIR_FROLLSIZE - deltasize;
-    const sirchar_t*       logfilename = "./rollandarchive.log";
+    const sirchar_t*       logfilename = "rollandarchive.log";
     const sirchar_t*       line        = "hello, i am some data. nice to meet you.";
 
     unsigned delcount = 0;
@@ -549,7 +549,7 @@ bool sirtest_textstylesanity(void) {
 }
 
 bool sirtest_perf(void) {
-    const sirchar_t* logfilename = "./libsir-perf.log";
+    const sirchar_t* logfilename = "libsir-perf.log";
 #if !defined(_WIN32)
     const size_t perflines = 1000000;
 #else
@@ -635,7 +635,7 @@ bool sirtest_updatesanity(void) {
 
     INIT_N(si, SIRL_DEFAULT, 0, SIRL_DEFAULT, 0, "update_sanity");
     bool pass = si_init;
-    const char* logfile = "./update.log";
+    static const char* logfile = "update-sanity.log";
 
     rmfile(logfile);
     sirfileid_t id1 = sir_addfile(logfile, SIRL_DEFAULT, SIRO_DEFAULT);
@@ -698,7 +698,7 @@ bool sirtest_mthread_race(void) {
 
     for (size_t n = 0; n < NUM_THREADS; n++) {
         char* path = (char*)calloc(SIR_MAXPATH, sizeof(char));
-        snprintf(path, SIR_MAXPATH, "./%zu.log", n);
+        snprintf(path, SIR_MAXPATH, "%zu.log", n);
 
 #if !defined(_WIN32)
         int create = pthread_create(&thrds[n], NULL, sirtest_thread, (void*)path);
