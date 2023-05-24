@@ -59,12 +59,18 @@ static const char* arg_perf = "--perf"; /* run performance test instead of stand
 int main(int argc, char** argv) {
 
 #if !defined(_WIN32)
-    // Disallow execution by root/sudo; some of the tests
-    // rely on lack of permissions.
+    /* Disallow execution by root / sudo; some of the tests rely on lack of permissions. */
     if (geteuid() == 0) {
         fprintf(stderr, "Sorry, but this program may not be executed by root.\n");
         return EXIT_FAILURE;
     }
+#else
+#if defined(_DEBUG)
+    /* Prevents assert() from calling abort() before the user is able to:
+     * a.) break into the code and debug (Retry button)
+     * b.) ignore the assert() and continue. */
+    _set_error_mode(_OUT_TO_MSGBOX);
+#endif
 #endif
 
     bool wait = false;
