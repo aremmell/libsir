@@ -146,7 +146,7 @@ bool sirtest_filecachesanity(void) {
 
     for (size_t n = 0; n < numfiles - 1; n++) {
         char path[SIR_MAXPATH] = {0};
-        snprintf(path, SIR_MAXPATH, "test-%zu.log", n);
+        snprintf(path, SIR_MAXPATH, "./test-%zu.log", n);
         rmfile(path);
         ids[n] = sir_addfile(path, SIRL_ALL, (n % 2) ? odd : even);
         pass &= NULL != ids[n] && sir_info("test %u", n);
@@ -217,6 +217,7 @@ bool sirtest_failsetinvalidstyle(void) {
 bool sirtest_failnooutputdest(void) {
     INIT(si, 0, 0, 0, 0);
     bool pass = si_init;
+
     static const char* logfilename = "nodestination.log";
 
     pass &= !sir_info("this goes nowhere!");
@@ -345,6 +346,7 @@ bool sirtest_initcleanupinit(void) {
 bool sirtest_faildupefile(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
+
     const sirchar_t* filename = "faildupefile.log";
     sirfileid_t fid = sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
 
@@ -449,6 +451,7 @@ bool sirtest_rollandarchivefile(void) {
         pass &= sir_remfile(fileid);
 
     delcount = 0;
+
     if (!enumfiles(logbasename, deletefiles, &delcount)) {
         handle_os_error(false, "failed to enumerate log files with base name: %s!", logbasename);
         print_os_error();
@@ -559,6 +562,7 @@ bool sirtest_textstylesanity(void) {
 }
 
 bool sirtest_perf(void) {
+
     const sirchar_t* logbasename = "libsir-perf";
     const sirchar_t* logext      = ".log";
 
@@ -650,6 +654,7 @@ bool sirtest_updatesanity(void) {
 
     INIT_N(si, SIRL_DEFAULT, 0, SIRL_DEFAULT, 0, "update_sanity");
     bool pass = si_init;
+
     static const char* logfile = "update-sanity.log";
 
     rmfile(logfile);
@@ -860,7 +865,6 @@ unsigned int getrand(void) {
 
 bool rmfile(const char* filename) {
     bool removed = false;
-
     /* just return true if the file doesn't exist. */
     struct stat st;
     if (0 != stat(filename, &st)) {
