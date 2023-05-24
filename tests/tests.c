@@ -84,13 +84,12 @@ int main(int argc, char** argv) {
     }
 
     bool       allpass = true;
-    int        tests   = (perf ? 1 : sizeof(sir_tests) / sizeof(sir_test));
+    int        tests   = (perf ? 1 : (sizeof(sir_tests) / sizeof(sir_test)) - 1);
     int        first   = (perf ? 0 : 1);
-    int        passed  = 0;
-    int        total   = tests - first;
-    sirtimer_t timer   = {0};
+    int        passed  = first;
+    sirtimer_t timer = {0};
 
-    printf(WHITE("running %d libsir test(s)...\n"), tests);
+    printf(WHITE("running %d libsir %s...\n"), tests, TEST_S(tests));
 
     if (!startsirtimer(&timer))
         printf(RED("failed to start timer; elapsed time won't be measured correctly!") "\n");
@@ -106,17 +105,17 @@ int main(int argc, char** argv) {
 
     float elapsed = sirtimerelapsed(&timer);
     
-    if (passed == total)
-        printf(WHITE("done; ") GREEN("all %d libsir test(s) passed in %.02fsec") "\n",
-            total, elapsed / 1e3);
+    if (allpass)
+        printf(WHITE("done; ") GREEN("%s%d libsir %s passed in %.02fsec") "\n",
+            tests > 1 ? "all " : "", tests, TEST_S(tests), elapsed / 1e3);
     else
-        printf(WHITE("done; ") RED("%d of %d libsir test(s) failed in %.02fsec") "\n",
-            total - passed, total, elapsed / 1e3);
+        printf(WHITE("done; ") RED("%d of %d libsir %s failed in %.02fsec") "\n",
+            tests - passed, tests, TEST_S(tests), elapsed / 1e3);
 
     if (wait) {
-        printf(WHITE("press any key to exit") "\n");
-        int get = getchar(stdin);
-        _SIR_UNUSED(get);
+        printf(WHITE("press Enter to exit...") "\n");
+        int ch = getchar();
+        _SIR_UNUSED(ch);
     }
 
     return allpass ? EXIT_SUCCESS : EXIT_FAILURE;
