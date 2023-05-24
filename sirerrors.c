@@ -147,21 +147,26 @@ void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* fi
 
 sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
     _sir_resetstr(message);
-    for (size_t n = 0; n < _sir_countof(sir_errors); n++) {
-        if (sir_errors[n].e == sir_te.lasterror) {
+
+    size_t low  = 0;
+    size_t high = _sir_countof(sir_errors) - 1;
+    size_t mid = (low + high) / 2;
+
+    do {
+        if (sir_errors[mid].e == sir_te.lasterror) {
             sirchar_t* final = NULL;
             bool alloc = false;
 
-            if (_SIR_E_PLATFORM == sir_errors[n].e) {
+            if (_SIR_E_PLATFORM == sir_errors[mid].e) {
                 final = (sirchar_t*)calloc(SIR_MAXERROR, sizeof(sirchar_t));
 
                 if (_sir_validptr(final)) {
                     alloc = true;
-                    snprintf(final, SIR_MAXERROR, sir_errors[n].msg, sir_te.os_error,
+                    snprintf(final, SIR_MAXERROR, sir_errors[mid].msg, sir_te.os_error,
                         (_sir_validstrnofail(sir_te.os_errmsg) ? sir_te.os_errmsg : SIR_UNKNOWN));
                 }
             } else {
-                final = (sirchar_t*)sir_errors[n].msg;
+                final = (sirchar_t*)sir_errors[mid].msg;
             }
 
             int fmtmsg = snprintf(message, SIR_MAXERROR, SIR_ERRORFORMAT, sir_te.loc.func,
@@ -171,9 +176,19 @@ sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
             assert(fmtmsg >= 0);
 
             if (alloc) _sir_safefree(final);
-            return sir_errors[n].e;
+            return sir_errors[mid].e;
         }
-    }
+
+        if (low == high)
+            break;
+
+        if (sir_te.lasterror > sir_errors[mid].e)
+            low = mid + 1;
+        else
+            high = mid - 1;
+
+        mid = (low + high) / 2;
+    } while (true);
 
     assert(false && sir_te.lasterror);
     return _SIR_E_UNKNOWN;

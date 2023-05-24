@@ -56,10 +56,7 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
 
     if (!attrvalid || !fgvalid || !bgvalid) {
         _sir_seterror(_SIR_E_TEXTSTYLE);
-
-        assert(attrvalid);
-        assert(fgvalid);
-        assert(bgvalid);
+        assert(attrvalid && fgvalid && bgvalid);
         return false;
     }
 
@@ -67,7 +64,6 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
 }
 
 sir_textstyle _sir_gettextstyle(sir_level level) {
-
     if (_sir_validlevel(level)) {
         sir_style_map* map = _sir_locksection(_SIRM_TEXTSTYLE);
         assert(map);
@@ -76,13 +72,27 @@ sir_textstyle _sir_gettextstyle(sir_level level) {
             sir_textstyle found = SIRS_INVALID;
             bool override = false;
 
-            for (size_t n = 0; n < SIR_NUMLEVELS; n++) {
-                if (map[n].level == level && map[n].style != SIRS_INVALID) {
+            size_t low  = 0;
+            size_t high = SIR_NUMLEVELS - 1;
+            size_t mid  = (low + high) / 2;
+
+            do {
+                if (map[mid].level == level && map[mid].style != SIRS_INVALID) {
                     override = true;
-                    found = map[n].style;
+                    found = map[mid].style;
                     break;
                 }
-            }
+
+                if (low == high)
+                    break;
+
+                if (level > map[mid].level)
+                    low = mid + 1;
+                else
+                    high = mid - 1;
+
+                mid = (low + high) / 2;
+            } while (true);
 
             if (!override)
                 found = _sir_getdefstyle(sir_default_styles, level);
@@ -96,16 +106,30 @@ sir_textstyle _sir_gettextstyle(sir_level level) {
 }
 
 sir_textstyle _sir_getdefstyle(const sir_style_map* map, sir_level level) {
-
     if (_sir_validlevel(level)) {
         if (map) {
             sir_textstyle found = SIRS_INVALID;
-            for (size_t n = 0; n < SIR_NUMLEVELS; n++) {
-                if (map[n].level == level) {
-                    found = map[n].style;
+
+            size_t low = 0;
+            size_t high = SIR_NUMLEVELS - 1;
+            size_t mid = (low + high) / 2;
+
+            do {
+                if (map[mid].level == level) {
+                    found = map[mid].style;
                     break;
                 }
-            }
+
+                if (low == high)
+                    break;
+
+                if (level > map[mid].level)
+                    low = mid + 1;
+                else
+                    high = mid - 1;
+
+                mid = (low + high) / 2;
+            } while (true);
 
             return found;
         }
@@ -114,8 +138,8 @@ sir_textstyle _sir_getdefstyle(const sir_style_map* map, sir_level level) {
     return SIRS_INVALID;
 }
 
-bool _sir_settextstyle(sir_level level, sir_textstyle style) {
-
+bool _sir_settextstyle(sir_level level, sir_textstyle style)
+{
     _sir_seterror(_SIR_E_NOERROR);
 
     if (_sir_sanity() && _sir_validlevel(level) && _sir_validstyle(style, NULL, NULL, NULL)) {
@@ -123,14 +147,28 @@ bool _sir_settextstyle(sir_level level, sir_textstyle style) {
         assert(map);
 
         if (map) {
+            size_t low = 0;
+            size_t high = SIR_NUMLEVELS - 1;
+            size_t mid = (low + high) / 2;
+
             bool updated = false;
-            for (size_t n = 0; n < SIR_NUMLEVELS; n++) {
-                if (map[n].level == level) {
-                    map[n].style = style;
-                    updated      = true;
+            do {
+                if (map[mid].level == level) {
+                    map[mid].style = style;
+                    updated = true;
                     break;
                 }
-            }
+
+                if (low == high)
+                    break;
+
+                if (level > map[mid].level)
+                    low = mid + 1;
+                else
+                    high = mid - 1;
+
+                mid = (low + high) / 2;
+            } while (true);
 
             return _sir_unlocksection(_SIRM_TEXTSTYLE) && updated;
         }
@@ -154,13 +192,49 @@ bool _sir_resettextstyles(void) {
     return false;
 }
 
-uint16_t _sir_getprivstyle(uint32_t cat) {
+uint16_t _sir_getprivstyle(uint32_t style) {
 
-    for (size_t n = 0; n < _sir_countof(sir_priv_map); n++) {
-        if (sir_priv_map[n].from == cat) {
-            return sir_priv_map[n].to;
-        }
+    static const size_t idx_attr_start = 0;
+    static const size_t idx_attr_end = 2;
+
+    static const size_t idx_fg_start = 3;
+    static const size_t idx_fg_end = 19;
+
+    static const size_t idx_bg_start = 20;
+    static const size_t idx_bg_end = _sir_countof(sir_priv_map) - 2;
+
+    size_t low = 0;
+    size_t high = 0;
+
+    if (style <= SIRS_DIM) {
+        low = idx_attr_start;
+        high = idx_attr_end;
+    } else if (style <= SIRS_FG_DEFAULT) {
+        low = idx_fg_start;
+        high = idx_fg_end;
+    } else {
+        low = idx_bg_start;
+        high = idx_bg_end;
     }
+
+    size_t mid = (low + high) / 2;
+
+    do
+    {
+        if (sir_priv_map[mid].from == style)
+            return sir_priv_map[mid].to;
+
+        if (low == high)
+            break;
+
+        if (style > sir_priv_map[mid].from)
+            low = mid + 1;
+        else
+            high = mid - 1;
+
+        mid = (low + high) / 2;
+
+    } while (true);
 
     return _sir_getprivstyle(SIRS_NONE);
 }
