@@ -66,6 +66,7 @@
 #	include <io.h>
 #	include <synchapi.h>
 #	include <process.h>
+#   include <conio.h>
 #endif
 
 #include <assert.h>
@@ -87,6 +88,7 @@
 #   include <sys/syscall.h>
 #   include <syslog.h>
 #   include <strings.h>
+#   include <termios.h>
 #if defined(__BSD__)
 #   include <pthread_np.h>
 #elif defined(__linux__)

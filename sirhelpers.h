@@ -173,6 +173,12 @@ int _sir_fopen(FILE* restrict *restrict streamptr, const sirchar_t* restrict fil
   */
 struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf);
 
+/**
+ * A portable "press any key to continue" implementation; On Windows, uses _getch().
+ * otherwise, uses tcgetattr()/tcsetattr() and getchar().
+ */
+int _sir_getchar(void);
+
 /** @} */
 
 #endif /* !_SIR_HELPERS_H_INCLUDED */
