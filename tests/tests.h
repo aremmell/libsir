@@ -49,14 +49,12 @@
 #include <sirerrors.h>
 #include <sirfilecache.h>
 #include <sirinternal.h>
+#include <sirhelpers.h>
 
 #include <fcntl.h>
 
 #if !defined(_WIN32)
 #   include <dirent.h>
-#   include <curses.h>
-#else
-#   include <conio.h>
 #endif
 
 #if !defined(_WIN32)

@@ -114,11 +114,7 @@ int main(int argc, char** argv) {
 
     if (wait) {
         printf(WHITE("press any key to exit...") "\n");
-#if !defined(_WIN32)
-        int ch = getch();
-#else
-        int ch = _getch();
-#endif
+        int ch = _sir_getchar();
         _SIR_UNUSED(ch);
     }
 

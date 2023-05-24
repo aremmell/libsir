@@ -180,4 +180,38 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
 
     return NULL;
 }
+
+int _sir_getchar(void) {
+#if defined(_WIN32)
+    return _getch();
+#else
+    struct termios cur = {0};
+    struct termios new = {0};
+
+    int get = tcgetattr(STDIN_FILENO, &cur);
+    if (0 != get) {
+        _sir_handleerr(errno);
+        return -1;
+    }
+
+    memcpy(&new, &cur, sizeof(struct termios));
+    new.c_lflag &= ~(ICANON | ECHO);
+    
+    int set = tcsetattr(STDIN_FILENO, TCSANOW, &new);
+    if (0 != set) {
+        _sir_handleerr(errno);
+        return -1;
+    }
+
+    int ch = getchar();
+
+    set = tcsetattr(STDIN_FILENO, TCSANOW, &cur);
+    if (0 != set) {
+        _sir_handleerr(errno);
+        return -1;
+    }
+
+    return ch;        
+#endif
+}
 /** @} */
