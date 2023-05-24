@@ -55,6 +55,9 @@
 
 #if !defined(_WIN32)
 #   include <dirent.h>
+#   include <curses.h>
+#else
+#   include <conio.h>
 #endif
 
 #if !defined(_WIN32)
