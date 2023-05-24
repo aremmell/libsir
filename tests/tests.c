@@ -113,8 +113,12 @@ int main(int argc, char** argv) {
             tests - passed, tests, TEST_S(tests), elapsed / 1e3);
 
     if (wait) {
-        printf(WHITE("press Enter to exit...") "\n");
-        int ch = getchar();
+        printf(WHITE("press any key to exit...") "\n");
+#if !defined(_WIN32)
+        int ch = getch();
+#else
+        int ch = _getch();
+#endif
         _SIR_UNUSED(ch);
     }
 
