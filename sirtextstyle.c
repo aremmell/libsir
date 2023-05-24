@@ -190,6 +190,7 @@ uint16_t _sir_getprivstyle(uint32_t style) {
     static const size_t idx_bg_start = 20;
     static const size_t idx_bg_end = _sir_countof(sir_priv_map) - 1;
 
+
     size_t low = 0;
     size_t high = 0;
 
