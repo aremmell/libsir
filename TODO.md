@@ -18,9 +18,7 @@ printf:  1000000 lines in 9.00sec (111091.3 lines/sec)
 - [ ] Implement “last message repeated n times”
 
 - [ ] Tests: add some more tests, including:
-
   - [x] Better level/option validation testing
-
   - [ ] Super long long file name/path
 
 - [ ] You gotta be jokin’ my ass:
@@ -38,3 +36,4 @@ printf:  1000000 lines in 9.00sec (111091.3 lines/sec)
 - [ ] Add a note about SIR_ASSERT_ON_ERROR, and add it to the makefile.
 
 - [ ] Conditional logging (debug_if(), etc.)
+
