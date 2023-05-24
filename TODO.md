@@ -14,11 +14,9 @@ printf:  1000000 lines in 9.00sec (111091.3 lines/sec)
          1.) Add to the documentation that this is the case, unless the file is prefixed with “./”–automatically prefix it;~~
          2.) Look for slashes in the path leading up to the filename–assume it is an absolute path;
          3.) <u>Use the `get_working_directory` function from in `tests/cwd.c` if “./” doesn’t work everywhere.</u>
-
 - [ ] Implement “last message repeated n times”
 
 - [ ] Tests: add some more tests, including:
-
   - [x] Better level/option validation testing
   - [ ] Super long long file name/path
 
