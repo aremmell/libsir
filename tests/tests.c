@@ -552,7 +552,9 @@ bool sirtest_textstylesanity(void) {
 }
 
 bool sirtest_perf(void) {
-    const sirchar_t* logfilename = "libsir-perf.log";
+    const sirchar_t* logbasename = "libsir-perf";
+    const sirchar_t* logext      = ".log";
+
 #if !defined(_WIN32)
     const size_t perflines = 1000000;
 #else
@@ -597,6 +599,9 @@ bool sirtest_perf(void) {
         INIT(si2, 0, 0, 0, 0);
         pass &= si2_init;
 
+        sirchar_t logfilename[SIR_MAXPATH] = {0};
+        snprintf(logfilename, SIR_MAXPATH, logbasename, logext);
+
         sirfileid_t logid = sir_addfile(logfilename, SIRL_ALL, SIRO_NONAME | SIRO_NOPID);
         pass &= NULL != logid;
 
@@ -625,7 +630,7 @@ bool sirtest_perf(void) {
     }
 
     unsigned deleted = 0;
-    enumfiles(logfilename, deletefiles, &deleted);
+    enumfiles(logbasename, deletefiles, &deleted);
 
     if (deleted > 0)
         printf("\tdeleted %d log file(s)\n", deleted);
