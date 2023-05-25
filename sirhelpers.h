@@ -104,6 +104,10 @@ uint16_t _sir_geterrcode(sirerror_t err) {
     } while(true); \
     _SIR_UNUSED(_matched);
 
+/** Validates a pointer-to-pointer, pointer,
+ * pointer to function, etc. but ignores whether it's invalid. */
+#define _sir_validaddr(addr) (NULL != addr)
+
 /** Checks a bitfield for a specific set of bits. */
 static inline
 bool _sir_bittest(uint32_t flags, uint32_t test) {
@@ -158,27 +162,26 @@ bool _sir_validstr(const sirchar_t* str) {
     return __sir_validstr(str, true);
 }
 
-/** Validates a string pointer but ignores if it's invalid. */
+/** Validates a string pointer but ignores whether it's invalid. */
 static inline
 bool _sir_validstrnofail(const sirchar_t* str) {
     return __sir_validstr(str, false);
 }
 
 /** Validates a pointer and optionally fails if it's invalid. */
-bool __sir_validptr(const void* p, bool fail);
+bool __sir_validptr(const void* restrict p, bool fail);
 
 /** Validates a pointer and fails if it's invalid. */
 static inline
-bool _sir_validptr(const void* p) {
+bool _sir_validptr(const void* restrict p) {
     return __sir_validptr(p, true);
 }
 
-/** Validates a pointer but ignores if it's invalid. */
+/** Validates a pointer but ignores whether it's invalid. */
 static inline
-bool _sir_validptrnofail(const void* p) {
+bool _sir_validptrnofail(const void* restrict p) {
     return __sir_validptr(p, false);
 }
-
 
 static inline
 bool _sir_validupdatedata(sir_update_data* data) {

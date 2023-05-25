@@ -102,7 +102,7 @@ bool __sir_validstr(const sirchar_t* str, bool fail) {
     return valid;
 }
 
-bool __sir_validptr(const void* p, bool fail) {
+bool __sir_validptr(const void* restrict p, bool fail) {
     bool valid = NULL != p;
     if (!valid && fail) {
         _sir_seterror(_SIR_E_NULLPTR);
@@ -161,7 +161,7 @@ int _sir_strncat(sirchar_t* restrict dest, size_t destsz, const sirchar_t* restr
   * based on preprocessor macros.
   */
 int _sir_fopen(FILE* restrict* restrict streamptr, const sirchar_t* restrict filename, const sirchar_t* restrict mode) {
-    if (_sir_validptr(streamptr) && _sir_validstr(filename) && _sir_validstr(mode)) {
+    if (_sir_validaddr(streamptr) && _sir_validstr(filename) && _sir_validstr(mode)) {
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
         int ret = fopen_s(streamptr, filename, mode);
         if (0 != ret) {
