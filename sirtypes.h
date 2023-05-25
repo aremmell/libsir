@@ -1,4 +1,4 @@
-©/**
+/**
  * @file sirtypes.h
  * @brief Public and internal types.
  *
