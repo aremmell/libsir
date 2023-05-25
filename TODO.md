@@ -27,7 +27,7 @@ printf:  1000000 lines in 9.00sec (111091.3 lines/sec)
   - [ ] If Windows can really do escape sequences, implement that, and 256, R,G,B coloring.
   - [ ] Pull styling up into its own module for reusability in other projects
 
-- [ ] Manually test sirtests –wait
+- [x] Manually test sirtests –wait
   - [x] Ubuntu
   - [x] Fedora
   - [x] FreeBSD
@@ -35,4 +35,3 @@ printf:  1000000 lines in 9.00sec (111091.3 lines/sec)
 - [ ] Add a note about SIR_ASSERT_ON_ERROR, and add it to the makefile.
 
 - [ ] Conditional logging (debug_if(), etc.)
-
