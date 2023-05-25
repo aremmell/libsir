@@ -102,6 +102,16 @@ bool __sir_validstr(const sirchar_t* str, bool fail) {
     return valid;
 }
 
+bool __sir_validptr(const void* p, bool fail) {
+    bool valid = NULL != p;
+    if (!valid && fail) {
+        _sir_seterror(_SIR_E_NULLPTR);
+        assert(valid);
+    }
+
+    return valid;
+}
+
 int _sir_strncpy(sirchar_t* restrict dest, size_t destsz, const sirchar_t* restrict src, size_t count) {
     if (_sir_validptr(dest) && _sir_validstr(src)) {
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)

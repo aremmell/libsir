@@ -71,9 +71,6 @@ uint16_t _sir_geterrcode(sirerror_t err) {
 /** Evil macro used for _sir_lv wrappers. */
 #define _SIR_L_END(args) va_end(args);
 
-/** Validates a pointer. */
-#define _sir_validptr(p) (NULL != p)
-
 /** Squelches warnings about unreferenced parameters. */
 #define _SIR_UNUSED(param) (void)param;
 
@@ -136,6 +133,22 @@ static inline
 bool _sir_validstrnofail(const sirchar_t* str) {
     return __sir_validstr(str, false);
 }
+
+/** Validates a pointer and optionally fails if it's invalid. */
+bool __sir_validptr(const void* p, bool fail);
+
+/** Validates a pointer and fails if it's invalid. */
+static inline
+bool _sir_validptr(const void* p) {
+    return __sir_validptr(p, true);
+}
+
+/** Validates a pointer but ignores if it's invalid. */
+static inline
+bool _sir_validptrnofail(const void* p) {
+    return __sir_validptr(p, false);
+}
+
 
 static inline
 bool _sir_validupdatedata(sir_update_data* data) {
