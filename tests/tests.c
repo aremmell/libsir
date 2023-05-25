@@ -970,10 +970,10 @@ float sirtimerelapsed(const sirtimer_t* timer) {
 #else
     FILETIME now;
     GetSystemTimePreciseAsFileTime(&now);
-    ULARGE_INTEGER start;
+    ULARGE_INTEGER start = {0};
     start.LowPart = timer->ft.dwLowDateTime;
     start.HighPart = timer->ft.dwHighDateTime;
-    ULARGE_INTEGER n100sec;
+    ULARGE_INTEGER n100sec = {0};
     n100sec.LowPart = now.dwLowDateTime;
     n100sec.HighPart = now.dwHighDateTime;
     return (float)((n100sec.QuadPart - start.QuadPart) / 1e4);
