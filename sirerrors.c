@@ -160,45 +160,43 @@ sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
 
     size_t low  = 0;
     size_t high = _sir_countof(sir_errors) - 1;
-    size_t mid = (low + high) / 2;
 
-    do {
-        if (sir_errors[mid].e == sir_te.lasterror) {
-            sirchar_t* final = NULL;
-            bool alloc = false;
+    _SIR_DECLARE_BIN_SEARCH(low, high);
+    _SIR_BEGIN_BIN_SEARCH();
 
-            if (_SIR_E_PLATFORM == sir_errors[mid].e) {
-                final = (sirchar_t*)calloc(SIR_MAXERROR, sizeof(sirchar_t));
+    if (sir_errors[_mid].e == sir_te.lasterror) {
+        sirchar_t* final = NULL;
+        bool alloc = false;
 
-                if (_sir_validptr(final)) {
-                    alloc = true;
-                    snprintf(final, SIR_MAXERROR, sir_errors[mid].msg, sir_te.os_error,
-                        (_sir_validstrnofail(sir_te.os_errmsg) ? sir_te.os_errmsg : SIR_UNKNOWN));
-                }
-            } else {
-                final = (sirchar_t*)sir_errors[mid].msg;
+        if (_SIR_E_PLATFORM == sir_errors[_mid].e) {
+            final = (sirchar_t*)calloc(SIR_MAXERROR, sizeof(sirchar_t));
+
+            if (_sir_validptr(final)) {
+                alloc = true;
+                snprintf(final, SIR_MAXERROR, sir_errors[_mid].msg, sir_te.os_error,
+                    (_sir_validstrnofail(sir_te.os_errmsg) ? sir_te.os_errmsg : SIR_UNKNOWN));
             }
-
-            int fmtmsg = snprintf(message, SIR_MAXERROR, SIR_ERRORFORMAT, sir_te.loc.func,
-                sir_te.loc.file, sir_te.loc.line, final);
-            
-            _SIR_UNUSED(fmtmsg);
-            assert(fmtmsg >= 0);
-
-            if (alloc) _sir_safefree(final);
-            return sir_errors[mid].e;
+        }
+        else {
+            final = (sirchar_t*)sir_errors[_mid].msg;
         }
 
-        if (low == high)
-            break;
+        int fmtmsg = snprintf(message, SIR_MAXERROR, SIR_ERRORFORMAT, sir_te.loc.func,
+            sir_te.loc.file, sir_te.loc.line, final);
 
-        if (sir_te.lasterror > sir_errors[mid].e)
-            low = mid + 1;
-        else
-            high = mid - 1;
+        _SIR_UNUSED(fmtmsg);
+        assert(fmtmsg >= 0);
 
-        mid = (low + high) / 2;
-    } while (true);
+        if (alloc)
+            _sir_safefree(final);
+        
+        return sir_errors[_mid].e;
+    }
+
+    int comparison = sir_errors[_mid].e < sir_te.lasterror ? 1 : -1;
+
+    _SIR_ITERATE_BIN_SEARCH(comparison);
+    _SIR_END_BIN_SEARCH();
 
     assert(false && sir_te.lasterror);
     return _SIR_E_UNKNOWN;

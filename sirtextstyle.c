@@ -74,27 +74,22 @@ sir_textstyle _sir_gettextstyle(sir_level level) {
 
             size_t low  = 0;
             size_t high = SIR_NUMLEVELS - 1;
-            size_t mid  = (low + high) / 2;
 
-            do {
-                if (map[mid].level == level) {
-                    if (map[mid].style != SIRS_INVALID) {
-                        override = true;
-                        found = map[mid].style;
-                    }
-                    break;
+            _SIR_DECLARE_BIN_SEARCH(low, high);
+            _SIR_BEGIN_BIN_SEARCH();
+
+            if (map[_mid].level == level) {
+                if (map[_mid].style != SIRS_INVALID) {
+                    override = true;
+                    found = map[_mid].style;
                 }
+                break;
+            }
 
-                if (low == high)
-                    break;
+             int comparison = map[_mid].level < level ? 1 : -1;
 
-                if (level > map[mid].level)
-                    low = mid + 1;
-                else
-                    high = mid - 1;
-
-                mid = (low + high) / 2;
-            } while (true);
+            _SIR_ITERATE_BIN_SEARCH(comparison);
+            _SIR_END_BIN_SEARCH();
 
             if (!override)
                 found = _sir_getdefstyle(sir_default_styles, level);
@@ -114,24 +109,19 @@ sir_textstyle _sir_getdefstyle(const sir_style_map* map, sir_level level) {
 
             size_t low = 0;
             size_t high = SIR_NUMLEVELS - 1;
-            size_t mid = (low + high) / 2;
 
-            do {
-                if (map[mid].level == level) {
-                    found = map[mid].style;
-                    break;
-                }
+            _SIR_DECLARE_BIN_SEARCH(low, high);
+            _SIR_BEGIN_BIN_SEARCH();
 
-                if (low == high)
-                    break;
+            if (map[_mid].level == level) {
+                found = map[_mid].style;
+                break;
+            }
 
-                if (level > map[mid].level)
-                    low = mid + 1;
-                else
-                    high = mid - 1;
+            int comparison = map[_mid].level < level ? 1 : -1;
 
-                mid = (low + high) / 2;
-            } while (true);
+            _SIR_ITERATE_BIN_SEARCH(comparison);
+            _SIR_END_BIN_SEARCH();
 
             return found;
         }
@@ -149,28 +139,23 @@ bool _sir_settextstyle(sir_level level, sir_textstyle style)
         assert(map);
 
         if (map) {
-            size_t low = 0;
-            size_t high = SIR_NUMLEVELS - 1;
-            size_t mid = (low + high) / 2;
-
+            size_t low   = 0;
+            size_t high  = SIR_NUMLEVELS - 1;
             bool updated = false;
-            do {
-                if (map[mid].level == level) {
-                    map[mid].style = style;
-                    updated = true;
-                    break;
-                }
 
-                if (low == high)
-                    break;
+            _SIR_DECLARE_BIN_SEARCH(low, high);
+            _SIR_BEGIN_BIN_SEARCH();
 
-                if (level > map[mid].level)
-                    low = mid + 1;
-                else
-                    high = mid - 1;
+            if (map[_mid].level == level) {
+                map[_mid].style = style;
+                updated = true;
+                break;
+            }
 
-                mid = (low + high) / 2;
-            } while (true);
+            int comparison = map[_mid].level < level ? 1 : -1;
+            
+            _SIR_ITERATE_BIN_SEARCH(comparison);
+            _SIR_END_BIN_SEARCH();
 
             return _sir_unlocksection(_SIRM_TEXTSTYLE) && updated;
         }
@@ -203,39 +188,35 @@ uint16_t _sir_getprivstyle(uint32_t style) {
     static const size_t idx_fg_end = 19;
 
     static const size_t idx_bg_start = 20;
-    static const size_t idx_bg_end = _sir_countof(sir_priv_map) - 2;
+    static const size_t idx_bg_end = _sir_countof(sir_priv_map) - 1;
 
     size_t low = 0;
     size_t high = 0;
 
     if (style <= SIRS_DIM) {
+        /* looking up an attribute */
         low = idx_attr_start;
         high = idx_attr_end;
-    } else if (style <= SIRS_FG_DEFAULT) {
+    } else if (style <= SIRS_FG_WHITE) {
+        /* looking up a foreground color */
         low = idx_fg_start;
         high = idx_fg_end;
     } else {
+        /* looking up a background color */
         low = idx_bg_start;
         high = idx_bg_end;
     }
 
-    size_t mid = (low + high) / 2;
+    _SIR_DECLARE_BIN_SEARCH(low, high);
+    _SIR_BEGIN_BIN_SEARCH();
 
-    do {
-        if (sir_priv_map[mid].from == style)
-            return sir_priv_map[mid].to;
+    if (sir_priv_map[_mid].from == style)
+        return sir_priv_map[_mid].to;
+    
+    int comparison = sir_priv_map[_mid].from < style ? 1 : -1;
 
-        if (low == high)
-            break;
-
-        if (style > sir_priv_map[mid].from)
-            low = mid + 1;
-        else
-            high = mid - 1;
-
-        mid = (low + high) / 2;
-
-    } while (true);
+    _SIR_ITERATE_BIN_SEARCH(comparison);
+    _SIR_END_BIN_SEARCH();
 
     return _sir_getprivstyle(SIRS_FG_DEFAULT);
 }
