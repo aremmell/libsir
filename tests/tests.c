@@ -346,9 +346,7 @@ bool sirtest_initcleanupinit(void) {
 bool sirtest_faildupefile(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
-    const sirchar_t* filename = "foo.log";
 
-    const sirchar_t* filename = "./foo.log";
     const sirchar_t* filename = "faildupefile.log";
     sirfileid_t fid = sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
 
@@ -494,7 +492,7 @@ bool sirtest_errorsanity(void) {
 
     sirchar_t message[SIR_MAXERROR] = {0};
     for (size_t n = 0; n < (sizeof(errors) / sizeof(errors[0])); n++) {
-        _sir_seterror(dsir_mkerror(errors[n].code));
+        _sir_seterror(_sir_mkerror(errors[n].code));
         memset(message, 0, SIR_MAXERROR);
         uint16_t err = err = sir_geterror(message);
         pass &= errors[n].code == err && *message != '\0';
