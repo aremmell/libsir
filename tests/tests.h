@@ -205,10 +205,23 @@ bool sirtest_updatesanity(void);
  *
 bool sirtest_xxxx(void); */
 
-bool printerror(bool pass);
-void printexpectederr(void);
+bool print_test_error(bool result, bool expected);
+#define print_expected_error() print_test_error(true, true)
+#define print_result_and_return(pass) print_test_error(pass, false)
 
-int getoserr(bool clib);
+void print_os_error(void);
+
+#define _STR(s) #s
+#define STR(s) _STR(s)
+
+#if !defined(_WIN32)
+#   define handle_os_error(clib, fmt, ...) (void)clib; _sir_handleerr(errno); \
+        fprintf(stderr, STR("\t") fmt STR("\n"), __VA_ARGS__)
+#else
+#   define handle_os_error(clib, fmt, ...) clib ? _sir_handleerr(errno) : _sir_handlewin32err(GetLastError()); \
+        fprintf(stderr, STR("\t") fmt STR("\n"), __VA_ARGS__)
+#endif
+
 unsigned int getrand(void);
 
 bool rmfile(const char* filename);
