@@ -1,4 +1,4 @@
-/**
+©/**
  * @file sirtypes.h
  * @brief Public and internal types.
  *
@@ -61,6 +61,14 @@ typedef enum {
     SIRL_DEFAULT = 0x100 /**< Use the default levels for this type of destination. */
 } sir_level;
 
+/** The number of actual usable ::sir_level entries to be used
+ * for computing the size of arrays.
+ * 
+ * The enum minus SIRL_ALL, SIRL_DEFAULT, and SIRL_NONE, which are
+ * currently not used as keys for look-ups.
+ */
+#define SIR_NUMLEVELS 8
+
 /**
  * Used to differentiate between a single ::sir_level and one or more
  * bitwise OR'd together.
@@ -69,46 +77,16 @@ typedef uint16_t sir_levels;
 
 /** Formatting options for a destination. */
 typedef enum {
-
-    /** Don't include time stamps in output. */
-    SIRO_NOTIME = 0x200,
-
-    /** Don't include the human-readable logging level in output. */
-    SIRO_NOLEVEL = 0x400,
-
-    /** Don't include the process/app name in output. */
-    SIRO_NONAME = 0x800,
-
-    /**
-     * Don't include milliseconds in time stamps. If \a not set, time stamps
-     * in output to this destination will be appended with the current millisecond
-     * in addition to the hour, minute, and second. If ::SIRO_NOTIME is set, this has no effect.
-     */
-    SIRO_NOMSEC = 0x1000,
-
-    /** Don't include the process ID in output. */
-    SIRO_NOPID = 0x2000,
-
-    /** Don't include the thread ID/name in output. */
-    SIRO_NOTID = 0x4000,
-
-    /**
-     * Don't write header messages when logging begins, or the file is rolled.
-     * Only applicable to log files.
-     */
-    SIRO_NOHDR = 0x10000,
-
-    /**
-     * Includes all other options; effectively disables all output formatting except
-     * the original formatted message (does not include ::SIRO_NOHDR; set that flag
-     * in addition to remove header messages).
-     */
-    SIRO_MSGONLY = 0xeff00,
-
-    /** Use the default for this type of destination. See
-     * sirdefaults.h for specifics.
-     */
-    SIRO_DEFAULT = 0x100000,
+    SIRO_ALL     = 0x0000,   /**< Effectively = ::SIRO_MSGONLY. */
+    SIRO_NOTIME  = 0x0200,   /**< Exclude time stamps (implies ::SIRO_NOMSEC). */
+    SIRO_NOLEVEL = 0x0400,   /**< Exclude human-readable logging level. */
+    SIRO_NONAME  = 0x0800,   /**< Exclude process/app name. */
+    SIRO_NOMSEC  = 0x1000,   /**< Exclude millisecond-resolution in time stamps. */
+    SIRO_NOPID   = 0x2000,   /**< Exclude process ID. */
+    SIRO_NOTID   = 0x4000,   /**< Exclude thread ID/name. */
+    SIRO_NOHDR   = 0x10000,  /**< Don't write header messages to log files. */
+    SIRO_MSGONLY = 0xeff00,  /**< Includes all other options except ::SIRO_NOHDR. */
+    SIRO_DEFAULT = 0x100000, /**< Use the default options for this type of destination. */
 } sir_option;
 
 /**
@@ -129,8 +107,8 @@ typedef enum {
     SIRS_FG_BLUE     = 0x50,    /**< Blue foreground. */
     SIRS_FG_MAGENTA  = 0x60,    /**< Magenta foreground. */
     SIRS_FG_CYAN     = 0x70,    /**< Cyan foreground. */
-    SIRS_FG_WHITE    = 0x80,    /**< White foreground. */
     SIRS_FG_LGRAY    = 0x90,    /**< Light gray foreground. */
+    SIRS_FG_DEFAULT  = 0x80,    /**< Use the default foreground color. */
     SIRS_FG_DGRAY    = 0xa0,    /**< Dark gray foreground. */
     SIRS_FG_LRED     = 0xb0,    /**< Light red foreground. */
     SIRS_FG_LGREEN   = 0xc0,    /**< Light green foreground. */
@@ -138,7 +116,7 @@ typedef enum {
     SIRS_FG_LBLUE    = 0xe0,    /**< Light blue foreground. */
     SIRS_FG_LMAGENTA = 0xf0,    /**< Light magenta foreground. */
     SIRS_FG_LCYAN    = 0xf10,   /**< Light cyan foreground. */
-    SIRS_FG_DEFAULT  = 0xf20,   /**< Use the default foreground color. */
+    SIRS_FG_WHITE    = 0xf20,   /**< White foreground. */
     SIRS_BG_BLACK    = 0x1000,  /**< Black background. */
     SIRS_BG_RED      = 0x2000,  /**< Red background. */
     SIRS_BG_GREEN    = 0x3000,  /**< Green background. */
@@ -146,7 +124,7 @@ typedef enum {
     SIRS_BG_BLUE     = 0x5000,  /**< Blue background. */
     SIRS_BG_MAGENTA  = 0x6000,  /**< Magenta background. */
     SIRS_BG_CYAN     = 0x7000,  /**< Cyan background. */
-    SIRS_BG_WHITE    = 0x8000,  /**< White background. */
+    SIRS_BG_DEFAULT  = 0x8000,  /**< Use the default background color. */
     SIRS_BG_LGRAY    = 0x9000,  /**< Light gray background. */
     SIRS_BG_DGRAY    = 0xa000,  /**< Dark gray background. */
     SIRS_BG_LRED     = 0xb000,  /**< Light red background. */
@@ -155,7 +133,7 @@ typedef enum {
     SIRS_BG_LBLUE    = 0xe000,  /**< Light blue background. */
     SIRS_BG_LMAGENTA = 0xf000,  /**< Light magenta background. */
     SIRS_BG_LCYAN    = 0xf1000, /**< Light cyan background. */
-    SIRS_BG_DEFAULT  = 0xf2000, /**< Use the default background color. */
+    SIRS_BG_WHITE    = 0xf2000, /**< White background. */
     SIRS_INVALID     = 0xf3000  /**< Represents the invalid text style. */
 } sir_textstyle;
 

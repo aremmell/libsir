@@ -75,6 +75,7 @@ bool sir_sysloglevels(sir_levels levels) {
     sir_update_data data = { &levels, NULL };
     return _sir_writeinit(&data, _sir_sysloglevels);
 #else
+    _SIR_UNUSED(levels);
     return false;
 #endif
 }

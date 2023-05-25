@@ -30,76 +30,66 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "../sir.h"
+#include <sir.h>
+#include <sirhelpers.h>
 
-/**
- * @example example.c
- * This is a basic example of initializing, configuring destinations,
- * and outputting messages.
+/*
+ * This is a basic example of initializing and setting up libsir for use.
  * 
- * @note You can build this CLI app yourself using `make example`. The binary
- * is generated at build/sirexample.
+ * NOTE: You can build this CLI app yourself using `make example` or the
+ * Visual Studio [Code] project files.
  * 
- * When it is finished running, you can see the output in the console, and
- * example the contents of 'sir-example.log' in the current directory.
+ * When the program is finished running, you can see the output in the console, and
+ * examine the contents of 'libsir-example.log' in the current directory.
  */
 
 int report_error(void);
 
 int main(int argc, char** argv) {
 
+    _SIR_UNUSED(argc);
+    _SIR_UNUSED(argv);
+
     /*
      * Instantiate the initialization structure.
      * 
-     * Note: It is not necessary to retain this structure in memory;
-     * libsir makes a copy of it before returning from ::sir_init.
+     * NOTE: It is not necessary to retain this structure in memory;
+     * libsir makes a copy of it before returning from sir_init.
      */
     sirinit si = {0};
 
-    /*
-     * Configure levels for stdout.
-     * Send debug, information, warning, and notice messages there.
-     */
+    /* Configure levels for stdout. Send debug, information, warning, and notice messages there. */
     si.d_stdout.levels = SIRL_DEBUG | SIRL_INFO | SIRL_WARN | SIRL_NOTICE;
 
-    /*
-     * Configure options for stdout.
-     * Don't show the time stamp or process ID.
-     */
+    /* Configure options for stdout. Don't show the time stamp or process ID. */
     si.d_stdout.opts = SIRO_NOTIME | SIRO_NOPID;
 
-    /*
-     * Configure levels for stderr.
-     * Send error and above there.
-     */
+    /* Configure levels for stderr. Send error and above there. */
     si.d_stderr.levels = SIRL_ERROR | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG;
 
-    /*
-     * Configure options for stderr.
-     * Don't show the time stamp or process ID.
-     */
-    si.d_stderr.opts = SIRO_NOTIME | SIRO_NOPID;
+    /* Configure options for stderr. Don't show the process ID. */
+    si.d_stderr.opts = SIRO_NOPID;
 
-    /*
-     * Configure options for syslog.
-     * Don't send any output there.
-     */
-    si.d_syslog.levels = 0;
+    /* Configure options for syslog. Don't send any output there. */
+    si.d_syslog.levels = SIRL_NONE;
 
     /* Configure a name to associate with our output. */
-    strcpy(si.processName, "example");
+    static const char* appname = "libsir-example";
 
-    /* Initialize SIR. */
+#if defined(__HAVE_STDC_SECURE_OR_EXT1__)
+    strncpy_s(si.processName, SIR_MAXNAME, appname, strnlen(appname, SIR_MAXNAME));
+#else
+    strncpy(si.processName, appname, strnlen(appname, SIR_MAXNAME));
+#endif
+
+    /* Initialize libsir. */
     if (!sir_init(&si)) {
         return report_error();
     }
 
-    /*
-     * Configure and add a log file.
-     * Don't show the process name.
-     * Send all severity levels there.
-     */
-    sirfileid_t fileid1 = sir_addfile("sir-example.log", SIRL_ALL, SIRO_NONAME);
+    /* Configure and add a log file; don't log the process name, and send all levels there. */
+    static const sirchar_t* log_file_name = "libsir-example.log";
+    sirfileid_t fileid1 = sir_addfile(log_file_name, SIRL_ALL, SIRO_NONAME);
 
     if (NULL == fileid1) {
         return report_error();
@@ -107,31 +97,30 @@ int main(int argc, char** argv) {
 
     /* Now we're ready to start generating output. */
     int n = 12345;
-    const char* somestr = "my string contents";
-    float f = 0.0009f;
+    const char* somestr = "some string that's useful";
+    float f = 0.09f;
 
     /*
      * This will be sent to all destinations registered for ::SIRL_DEBUG.
      * Notice that it is not necessary to add a newline at the end. libsir does
      * this automatically.
      */ 
-    sir_debug("debug-level message: {n=%d, somestr='%s', f=%.04f}",
-        n, somestr, f);
+    sir_debug("debug level: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
 
     /* Do the same for the rest of available severity levels. */
-    sir_info("info-level message: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
+    sir_info("info level: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
 
-    sir_notice("notice-level message: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
+    sir_notice("notice level: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
 
-    sir_warn("warning-level message: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
+    sir_warn("warning level: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
 
-    sir_error("error-level message: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
+    sir_error("error level: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
 
-    sir_crit("critical error-level message: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
+    sir_crit("critical error level: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
 
-    sir_alert("alert-level message: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);        
+    sir_alert("alert level: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);        
 
-    sir_emerg("emergency-level message: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
+    sir_emerg("emergency level: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
 
     /* Clean up. */
     sir_cleanup();

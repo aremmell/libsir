@@ -64,15 +64,49 @@ uint16_t _sir_geterrcode(sirerror_t err) {
 
 /** Evil macro used for _sir_lv wrappers. */
 #define _SIR_L_START(format) \
-    bool    r = false;       \
+    bool r = false;          \
     va_list args;            \
     va_start(args, format);
 
 /** Evil macro used for _sir_lv wrappers. */
 #define _SIR_L_END(args) va_end(args);
 
-/** Validates a pointer. */
-#define _sir_validptr(p) (NULL != p)
+/** Squelches warnings about unreferenced parameters. */
+#define _SIR_UNUSED(param) (void)param;
+
+/** Even more evil macros used for binary searching arrays. */
+#define _SIR_DECLARE_BIN_SEARCH(low, high) \
+    bool _matched = false; \
+    size_t _low   = low;   \
+    size_t _high  = high;  \
+    size_t _mid   = (_low + _high) / 2;
+
+#define _SIR_BEGIN_BIN_SEARCH() do { \
+
+#define _SIR_ITERATE_BIN_SEARCH(comparison) \
+    if (0 == comparison) { \
+        _matched = true; \
+        break; \
+    } \
+    \
+    if (_low == _high) \
+        break; \
+    \
+    if (0 > comparison) { \
+        _high = _mid - 1; \
+    } else { \
+        _low = _mid + 1; \
+    } \
+    \
+    _mid = (_low + _high) / 2; \
+
+#define _SIR_END_BIN_SEARCH() \
+    } while(true); \
+    _SIR_UNUSED(_matched);
+
+/** Validates a pointer-to-pointer, pointer,
+ * pointer to function, etc. but ignores whether it's invalid. */
+#define _sir_validaddr(addr) (NULL != addr)
 
 /** Checks a bitfield for a specific set of bits. */
 static inline
@@ -128,16 +162,31 @@ bool _sir_validstr(const sirchar_t* str) {
     return __sir_validstr(str, true);
 }
 
-/** Validates a string pointer but ignores if it's invalid. */
+/** Validates a string pointer but ignores whether it's invalid. */
 static inline
 bool _sir_validstrnofail(const sirchar_t* str) {
     return __sir_validstr(str, false);
 }
 
+/** Validates a pointer and optionally fails if it's invalid. */
+bool __sir_validptr(const void* restrict p, bool fail);
+
+/** Validates a pointer and fails if it's invalid. */
+static inline
+bool _sir_validptr(const void* restrict p) {
+    return __sir_validptr(p, true);
+}
+
+/** Validates a pointer but ignores whether it's invalid. */
+static inline
+bool _sir_validptrnofail(const void* restrict p) {
+    return __sir_validptr(p, false);
+}
+
 static inline
 bool _sir_validupdatedata(sir_update_data* data) {
     return NULL != data && ((NULL == data->levels || _sir_validlevels(*data->levels)) &&
-           (NULL == data->opts || _sir_validopts(*data->opts)));
+        (NULL == data->opts || _sir_validopts(*data->opts)));
 }
 
 /** Places a null terminator at the first index in a string buffer. */
@@ -145,6 +194,36 @@ static inline
 void _sir_resetstr(sirchar_t* str) {
     str[0] = (sirchar_t)'\0';
 }
+
+/** 
+ * Wrapper for strncpy/strncpy_s. Determines which one to use
+ * based on preprocessor macros.
+ */
+int _sir_strncpy(sirchar_t* restrict dest, size_t destsz, const sirchar_t* restrict src, size_t count);
+
+/**
+  * Wrapper for strncat/strncat_s. Determines which one to use
+  * based on preprocessor macros.
+  */
+int _sir_strncat(sirchar_t* restrict dest, size_t destsz, const sirchar_t* restrict src, size_t count);
+
+/**
+  * Wrapper for fopen/fopen_s. Determines which one to use
+  * based on preprocessor macros.
+  */
+int _sir_fopen(FILE* restrict *restrict streamptr, const sirchar_t* restrict filename, const sirchar_t* restrict mode);
+
+/**
+  * Wrapper for localtime/localtime_s. Determines which one to use
+  * based on preprocessor macros.
+  */
+struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf);
+
+/**
+ * A portable "press any key to continue" implementation; On Windows, uses _getch().
+ * otherwise, uses tcgetattr()/tcsetattr() and getchar().
+ */
+int _sir_getchar(void);
 
 /** @} */
 

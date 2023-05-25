@@ -65,18 +65,24 @@ static const sir_levels sir_file_def_lvls
 
 /** Default options for \a log \a files. */
 static const sir_options sir_file_def_opts
-    = 0; /* (all output) */
+    = SIRO_ALL;
 
-/** Default mapping of ::sir_level to ::sir_textstyle. */
-static const sir_style_map sir_default_styles[SIR_NUMLEVELS] = {
-    {SIRL_DEBUG, SIRS_FG_DGRAY},
-    {SIRL_INFO, SIRS_FG_WHITE},
-    {SIRL_NOTICE, SIRS_FG_CYAN},
-    {SIRL_WARN, SIRS_FG_YELLOW},
-    {SIRL_ERROR, SIRS_FG_RED},
-    {SIRL_CRIT, SIRS_BRIGHT | SIRS_FG_RED},
-    {SIRL_ALERT, SIRS_BRIGHT | SIRS_FG_BLACK | SIRS_BG_LYELLOW},
+/** Default mapping of ::sir_level to ::sir_textstyle.
+ *
+ * @attention This array and ::sir_override_styles are tied
+ * together; if one is modified, the other must be as well.
+ * Entries must remain in numerical ascending order (by level);
+ * binary search is used to look up entries based on those values.
+ */
+static const sir_style_map sir_default_styles[] = {
     {SIRL_EMERG, SIRS_BRIGHT | SIRS_FG_LYELLOW | SIRS_BG_RED},
+    {SIRL_ALERT, SIRS_BRIGHT | SIRS_FG_BLACK | SIRS_BG_LYELLOW},
+    {SIRL_CRIT, SIRS_BRIGHT | SIRS_FG_RED},
+    {SIRL_ERROR, SIRS_FG_RED},
+    {SIRL_WARN, SIRS_FG_YELLOW},
+    {SIRL_NOTICE, SIRS_FG_CYAN},
+    {SIRL_INFO, SIRS_FG_WHITE},
+    {SIRL_DEBUG, SIRS_FG_LGRAY},
 };
 
 /** @} */
