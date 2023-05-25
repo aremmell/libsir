@@ -65,7 +65,7 @@ static const sir_levels sir_file_def_lvls
 
 /** Default options for \a log \a files. */
 static const sir_options sir_file_def_opts
-    = 0; /* (all output) */
+    = SIRO_ALL;
 
 /** Default mapping of ::sir_level to ::sir_textstyle.
  * 
@@ -82,7 +82,7 @@ static const sir_style_map sir_default_styles[] = {
     {SIRL_WARN, SIRS_FG_YELLOW},
     {SIRL_NOTICE, SIRS_FG_CYAN},
     {SIRL_INFO, SIRS_FG_WHITE},
-    {SIRL_DEBUG, SIRS_FG_DGRAY},
+    {SIRL_DEBUG, SIRS_FG_LGRAY},
 };
 
 /** @} */

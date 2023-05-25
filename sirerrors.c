@@ -1,3 +1,4 @@
+
 /**
  * @file sirerrors.c
  * @brief Error management.
@@ -61,7 +62,10 @@ void __sir_seterror(sirerror_t err, const sirchar_t* func, const sirchar_t* file
         sir_te.loc.file = file;
         sir_te.loc.line = line;
     }
+
+#if defined(SIR_ASSERT_ON_ERROR)
     assert(_SIR_E_NOERROR == err);
+#endif
 }
 
 void __sir_setoserror(int code, const sirchar_t* message, const sirchar_t* func,
@@ -116,32 +120,38 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
 #endif
         }
     }
-    assert(SIR_E_NOERROR == code);
+
+#if defined(SIR_ASSERT_ON_ERROR)
+    assert(_SIR_E_NOERROR == code);
+#endif
 }
 
 #if defined(_WIN32)
 void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* file, uint32_t line) {
-    if (ERROR_SUCCESS != code) {
-        sirchar_t* errbuf = NULL;
-        DWORD      flags  = FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |
-                      FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_MAX_WIDTH_MASK;
-        DWORD fmtmsg = FormatMessageA(flags, NULL, code, 0, (LPSTR)&errbuf, SIR_MAXERROR, NULL);
+    sirchar_t* errbuf = NULL;
+    DWORD flags       = FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM     |
+                        FORMAT_MESSAGE_IGNORE_INSERTS  | FORMAT_MESSAGE_MAX_WIDTH_MASK;
 
-        if (0 == fmtmsg && _sir_validstrnofail(errbuf)) {
-            __sir_setoserror((int)code, errbuf, func, file, line);
-        } else {
-            _sir_selflog("%s: FormatMessage failed! error: %d\n", __func__, GetLastError());
-            assert(false);
-        }
+    DWORD fmtmsg = FormatMessageA(flags, NULL, code, 0, (LPSTR)&errbuf, SIR_MAXERROR, NULL);
 
-        if (errbuf) {
-            BOOL heapfree = HeapFree(GetProcessHeap(), 0, errbuf);
-            _SIR_UNUSED(heapfree);
-            assert(0 != heapfree);
-            errbuf = NULL;
-        }
+    if (0 < fmtmsg && _sir_validstrnofail(errbuf)) {
+        if (errbuf[fmtmsg - 1] == '\n')
+            errbuf[fmtmsg - 1] == '\0';
+        __sir_setoserror((int)code, errbuf, func, file, line);
+    } else {
+        _sir_selflog("%s: FormatMessage failed! error: %d\n", __func__, GetLastError());
+        assert(false);
     }
+
+    if (errbuf) {
+        HLOCAL local_free = LocalFree((HLOCAL)errbuf);
+        assert(NULL == local_free);
+        errbuf = NULL;
+    }
+
+#if defined(SIR_ASSERT_ON_ERROR)
     assert(ERROR_SUCCESS == code);
+#endif
 }
 #endif
 

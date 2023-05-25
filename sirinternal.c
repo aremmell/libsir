@@ -64,7 +64,8 @@ bool _sir_sanity(void) {
 
 bool _sir_options_sanity(const sirinit* si) {
 
-    if (!_sir_validptr(si)) return false;
+    if (!_sir_validptr(si))
+        return false;
 
     bool levelcheck = true;
     levelcheck &= _sir_validlevels(si->d_stdout.levels);

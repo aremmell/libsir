@@ -45,8 +45,8 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
     uint32_t bg   = (style & _SIRS_BG_MASK);
 
     bool attrvalid = attr <= SIRS_DIM;
-    bool fgvalid   = fg <= SIRS_FG_DEFAULT;
-    bool bgvalid   = bg <= SIRS_BG_DEFAULT;
+    bool fgvalid   = fg <= SIRS_FG_WHITE;
+    bool bgvalid   = bg <= SIRS_BG_WHITE;
 
     if (pattr && pfg && pbg) {
         *pattr = attrvalid ? attr : 0;
@@ -77,9 +77,11 @@ sir_textstyle _sir_gettextstyle(sir_level level) {
             size_t mid  = (low + high) / 2;
 
             do {
-                if (map[mid].level == level && map[mid].style != SIRS_INVALID) {
-                    override = true;
-                    found = map[mid].style;
+                if (map[mid].level == level) {
+                    if (map[mid].style != SIRS_INVALID) {
+                        override = true;
+                        found = map[mid].style;
+                    }
                     break;
                 }
 
@@ -219,8 +221,7 @@ uint16_t _sir_getprivstyle(uint32_t style) {
 
     size_t mid = (low + high) / 2;
 
-    do
-    {
+    do {
         if (sir_priv_map[mid].from == style)
             return sir_priv_map[mid].to;
 
@@ -236,7 +237,7 @@ uint16_t _sir_getprivstyle(uint32_t style) {
 
     } while (true);
 
-    return _sir_getprivstyle(SIRS_NONE);
+    return _sir_getprivstyle(SIRS_FG_DEFAULT);
 }
 
 bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size) {
