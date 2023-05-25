@@ -57,7 +57,7 @@
 #   endif
 #endif
 #else // _WIN32
-#   define __WANT_STDC_SECURE_LIB__ 1 
+#   define __WANT_STDC_SECURE_LIB__ 1
 #   define _CRT_RAND_S
 #	define WIN32_LEAN_AND_MEAN
 #	define WINVER       0x0A00 /** Windows 10 SDK */

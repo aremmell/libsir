@@ -475,24 +475,26 @@ bool sirtest_errorsanity(void) {
         uint16_t    code;
         const char* name;
     } errors[] = {
-        {SIR_E_NOERROR, "SIR_E_NOERROR"},     /* = 0 */
-        {SIR_E_NOTREADY, "SIR_E_NOTREADY"},   /* = 1 */
-        {SIR_E_ALREADY, "SIR_E_ALREADY"},     /* = 2 */
-        {SIR_E_DUPFILE, "SIR_E_DUPFILE"},     /* = 3 */
-        {SIR_E_NOFILE, "SIR_E_NOFILE"},       /* = 4 */
-        {SIR_E_FCFULL, "SIR_E_FCFULL"},       /* = 5 */
-        {SIR_E_OPTIONS, "SIR_E_OPTIONS"},     /* = 6 */
-        {SIR_E_LEVELS, "SIR_E_LEVELS"},       /* = 7 */
-        {SIR_E_TEXTSTYLE, "SIR_E_TEXTSTYLE"}, /* = 8 */
-        {SIR_E_STRING, "SIR_E_STRING"},       /* = 9 */
-        {SIR_E_NODEST, "SIR_E_NODEST"},       /* = 10 */
-        {SIR_E_PLATFORM, "SIR_E_PLATFORM"},   /* = 11 */
-        {SIR_E_UNKNOWN, "SIR_E_UNKNOWN"},     /* = 4095 */
+        {SIR_E_NOERROR,   "SIR_E_NOERROR"},   /**< The operation completed successfully (0) */
+        {SIR_E_NOTREADY,  "SIR_E_NOTREADY"},  /**< libsir has not been initialized (1) */
+        {SIR_E_ALREADY,   "SIR_E_ALREADY"},   /**< libsir is already initialized (2) */
+        {SIR_E_DUPFILE,   "SIR_E_DUPFILE"},   /**< File already managed by libsir (3) */
+        {SIR_E_NOFILE,    "SIR_E_NOFILE"},    /**< File not managed by libsir (4) */
+        {SIR_E_FCFULL,    "SIR_E_FCFULL"},    /**< Maximum number of files already managed (5) */
+        {SIR_E_OPTIONS,   "SIR_E_OPTIONS"},   /**< Option flags are invalid (6) */
+        {SIR_E_LEVELS,    "SIR_E_LEVELS"},    /**< Level flags are invalid (7) */
+        {SIR_E_TEXTSTYLE, "SIR_E_TEXTSTYLE"}, /**< Text style is invalid (8) */
+        {SIR_E_STRING,    "SIR_E_STRING"},    /**< Invalid string argument (9) */
+        {SIR_E_NULLPTR,   "SIR_E_NULLPTR"},   /**< NULL pointer argument (10) */
+        {SIR_E_INVALID,   "SIR_E_INVALID"},   /**< Invalid argument (11) */
+        {SIR_E_NODEST,    "SIR_E_NODEST"},    /**< No destinations registered for level (11) */
+        {SIR_E_PLATFORM,  "SIR_E_PLATFORM"},  /**< Platform error code %d: %s (12) */
+        {SIR_E_UNKNOWN,   "SIR_E_UNKNOWN"},   /**< Error is not known (4095) */
     };
 
     sirchar_t message[SIR_MAXERROR] = {0};
     for (size_t n = 0; n < (sizeof(errors) / sizeof(errors[0])); n++) {
-        _sir_seterrordsir_mkerror(errors[n].code));
+        _sir_seterror(dsir_mkerror(errors[n].code));
         memset(message, 0, SIR_MAXERROR);
         uint16_t err = err = sir_geterror(message);
         pass &= errors[n].code == err && *message != '\0';
