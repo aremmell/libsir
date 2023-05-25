@@ -64,7 +64,7 @@ uint16_t _sir_geterrcode(sirerror_t err) {
 
 /** Evil macro used for _sir_lv wrappers. */
 #define _SIR_L_START(format) \
-    bool    r = false;       \
+    bool r = false;          \
     va_list args;            \
     va_start(args, format);
 
@@ -73,6 +73,36 @@ uint16_t _sir_geterrcode(sirerror_t err) {
 
 /** Squelches warnings about unreferenced parameters. */
 #define _SIR_UNUSED(param) (void)param;
+
+/** Even more evil macros used for binary searching arrays. */
+#define _SIR_DECLARE_BIN_SEARCH(low, high) \
+    bool _matched = false; \
+    size_t _low   = low;   \
+    size_t _high  = high;  \
+    size_t _mid   = (_low + _high) / 2;
+
+#define _SIR_BEGIN_BIN_SEARCH() do { \
+
+#define _SIR_ITERATE_BIN_SEARCH(comparison) \
+    if (0 == comparison) { \
+        _matched = true; \
+        break; \
+    } \
+    \
+    if (_low == _high) \
+        break; \
+    \
+    if (0 > comparison) { \
+        _high = _mid - 1; \
+    } else { \
+        _low = _mid + 1; \
+    } \
+    \
+    _mid = (_low + _high) / 2; \
+
+#define _SIR_END_BIN_SEARCH() \
+    } while(true); \
+    _SIR_UNUSED(_matched);
 
 /** Checks a bitfield for a specific set of bits. */
 static inline
