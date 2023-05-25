@@ -56,8 +56,10 @@ enum {
     SIR_E_LEVELS    = 7,    /**< Level flags are invalid */
     SIR_E_TEXTSTYLE = 8,    /**< Text style is invalid */
     SIR_E_STRING    = 9,    /**< Invalid string argument */
-    SIR_E_NODEST    = 10,   /**< No destinations registered for level */
-    SIR_E_PLATFORM  = 11,   /**< Platform error code %%d: %%s */
+    SIR_E_NULLPTR   = 10,   /**< NULL pointer argument */
+    SIR_E_INVALID   = 11,   /**< Invalid argument */
+    SIR_E_NODEST    = 11,   /**< No destinations registered for level */
+    SIR_E_PLATFORM  = 12,   /**< Platform error code %%d: %%s */
     SIR_E_UNKNOWN   = 4095, /**< Error is not known */    
 };
 
@@ -73,6 +75,8 @@ enum {
 #define _SIR_E_LEVELS    _sir_mkerror(SIR_E_LEVELS)
 #define _SIR_E_TEXTSTYLE _sir_mkerror(SIR_E_TEXTSTYLE)
 #define _SIR_E_STRING    _sir_mkerror(SIR_E_STRING)
+#define _SIR_E_NULLPTR   _sir_mkerror(SIR_E_NULLPTR)
+#define _SIR_E_INVALID   _sir_mkerror(SIR_E_INVALID)
 #define _SIR_E_NODEST    _sir_mkerror(SIR_E_NODEST)
 #define _SIR_E_PLATFORM  _sir_mkerror(SIR_E_PLATFORM)
 #define _SIR_E_UNKNOWN   _sir_mkerror(SIR_E_UNKNOWN)
@@ -91,6 +95,8 @@ static const struct {
     { _SIR_E_LEVELS,    "Level flags are invalid" },
     { _SIR_E_TEXTSTYLE, "Text style is invalid" },
     { _SIR_E_STRING,    "Invalid string argument" },
+    { _SIR_E_NULLPTR,   "NULL pointer argument" },
+    { _SIR_E_INVALID,   "Invalid argument" },
     { _SIR_E_NODEST,    "No destinations registered for level" },
     { _SIR_E_PLATFORM,  "Platform error code %d: %s" },
     { _SIR_E_UNKNOWN,   "Error is not known" },
