@@ -6,8 +6,6 @@
     >   a.) predict its output and determine if it’s the same message I’m about to print or
     >   b.) find something to replace it.
     
-- [x] Use profiler. At least implement binary search for `_sir_getprivstyle` and anything else that does a for 0 .. size loop
-
 - [ ] When adding log files, they go into the working directory; not necessarily the directory of the executable:
          ~~1.) Add to the documentation that this is the case, unless the file is prefixed with “./”–automatically prefix it;~~
          2.) Look for slashes in the path leading up to the filename–assume it is an absolute path;
@@ -17,7 +15,9 @@
 
 - [ ] Tests: add some more tests, including:
 
-- [ ] Super long long file name/path
+     - [x] Better level/option validation testing
+
+     - [ ] Super long long file name/path
 
 - [ ] You gotta be jokin’ my ass:
 
@@ -30,3 +30,5 @@
   - [ ] Ubuntu
   - [ ] Fedora
   - [ ] FreeBSD
+
+- [ ] Add a note about SIR_ASSERT_ON_ERROR, and add it to the makefile.
