@@ -18,6 +18,7 @@ printf:  1000000 lines in 9.00sec (111091.3 lines/sec)
 - [ ] Implement “last message repeated n times”
 
 - [ ] Tests: add some more tests, including:
+
   - [x] Better level/option validation testing
   - [ ] Super long long file name/path
 
