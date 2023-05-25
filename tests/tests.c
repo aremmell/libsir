@@ -864,6 +864,7 @@ unsigned int getrand(void) {
 
 bool rmfile(const char* filename) {
     bool removed = false;
+
     /* just return true if the file doesn't exist. */
     struct stat st;
     if (0 != stat(filename, &st)) {
