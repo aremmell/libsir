@@ -81,25 +81,26 @@ static const struct {
     sirerror_t       e;
     const sirchar_t* msg;
 } sir_errors[] = {
-    { _SIR_E_NOERROR, "The operation completed successfully" },
-    { _SIR_E_NOTREADY, "libsir has not been initialized" },
-    { _SIR_E_ALREADY, "libsir is already initialized" },
-    { _SIR_E_DUPFILE, "File already managed by libsir" },
-    { _SIR_E_NOFILE, "File not managed by libsir" },
-    { _SIR_E_FCFULL, "Maximum number of files already managed" },
-    { _SIR_E_OPTIONS, "Option flags are invalid" },
-    { _SIR_E_LEVELS, "Level flags are invalid" },
+    { _SIR_E_NOERROR,   "The operation completed successfully" },
+    { _SIR_E_NOTREADY,  "libsir has not been initialized" },
+    { _SIR_E_ALREADY,   "libsir is already initialized" },
+    { _SIR_E_DUPFILE,   "File already managed by libsir" },
+    { _SIR_E_NOFILE,    "File not managed by libsir" },
+    { _SIR_E_FCFULL,    "Maximum number of files already managed" },
+    { _SIR_E_OPTIONS,   "Option flags are invalid" },
+    { _SIR_E_LEVELS,    "Level flags are invalid" },
     { _SIR_E_TEXTSTYLE, "Text style is invalid" },
-    { _SIR_E_STRING, "Invalid string argument" },
-    { _SIR_E_NODEST, "No destinations registered for level" },
-    { _SIR_E_PLATFORM, "Platform error code %d: %s" },
-    { _SIR_E_UNKNOWN, "Error is not known"},
+    { _SIR_E_STRING,    "Invalid string argument" },
+    { _SIR_E_NODEST,    "No destinations registered for level" },
+    { _SIR_E_PLATFORM,  "Platform error code %d: %s" },
+    { _SIR_E_UNKNOWN,   "Error is not known" },
 };
 
 void __sir_seterror(sirerror_t err, const sirchar_t* func, const sirchar_t* file, uint32_t line);
 #define _sir_seterror(err) __sir_seterror(err, __func__, __FILE__, __LINE__)
 
-void __sir_setoserror(int, const sirchar_t*, const sirchar_t*, const sirchar_t*, uint32_t);
+void __sir_setoserror(int code, const sirchar_t* msg, const sirchar_t* func,
+        const sirchar_t* file, uint32_t line);
 #define _sir_setoserror(err, msg) __sir_setoserror(err, msg, __func__, __FILE__, __LINE__)
 
 /** Handle a C library error. */

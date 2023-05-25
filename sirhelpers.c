@@ -47,16 +47,29 @@ bool _sir_validfid(int id) {
 }
 
 bool _sir_validlevels(sir_levels levels) {
-    bool valid = levels <= SIRL_ALL;
+    bool valid = (SIRL_ALL == levels || SIRL_NONE == levels || SIRL_DEFAULT == levels);
+    if (!valid)
+        valid = _sir_validlevel(levels);
+                
     if (!valid) {
         _sir_seterror(_SIR_E_LEVELS);
         assert(valid);
     }
+
     return valid;
 }
 
 bool _sir_validlevel(sir_level level) {
-    bool valid = 0 != level && !(level & (level - 1));
+    bool valid = SIRL_ALL == level || (SIRL_NONE != level && !(level & (level - 1)) &&
+		(_sir_bittest(level, SIRL_EMERG)  ||
+		 _sir_bittest(level, SIRL_ALERT)  ||
+		 _sir_bittest(level, SIRL_CRIT)   ||
+		 _sir_bittest(level, SIRL_ERROR)  ||
+		 _sir_bittest(level, SIRL_WARN)   ||
+		 _sir_bittest(level, SIRL_NOTICE) ||
+		 _sir_bittest(level, SIRL_INFO)   ||
+		 _sir_bittest(level, SIRL_DEBUG)));
+
     if (!valid) {
         _sir_seterror(_SIR_E_LEVELS);
         assert(valid);
@@ -65,7 +78,14 @@ bool _sir_validlevel(sir_level level) {
 }
 
 bool _sir_validopts(sir_options opts) {
-    bool valid = (opts & SIRL_ALL) == 0 && opts <= 0xfff00;
+    bool valid = (SIRO_ALL == opts || SIRO_NOHDR == opts || SIRO_DEFAULT == opts) ||
+        (_sir_bittest(opts, SIRO_NOTIME)  ||
+         _sir_bittest(opts, SIRO_NOLEVEL) ||
+         _sir_bittest(opts, SIRO_NONAME)  ||
+         _sir_bittest(opts, SIRO_NOMSEC)  ||
+         _sir_bittest(opts, SIRO_NOPID)   ||
+         _sir_bittest(opts, SIRO_NOTID));
+
     if (!valid) {
         _sir_seterror(_SIR_E_OPTIONS);
         assert(valid);
