@@ -31,8 +31,10 @@ printf:  1000000 lines in 9.00sec (111091.3 lines/sec)
   - [ ] Pull styling up into its own module for reusability in other projects
 
 - [ ] Manually test sirtests –wait
-  - [ ] Ubuntu
-  - [ ] Fedora
-  - [ ] FreeBSD
+  - [x] Ubuntu
+  - [x] Fedora
+  - [x] FreeBSD
 
 - [ ] Add a note about SIR_ASSERT_ON_ERROR, and add it to the makefile.
+
+- [ ] Conditional logging (debug_if(), etc.)
