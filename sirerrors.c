@@ -136,7 +136,7 @@ void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* fi
 
     if (0 < fmtmsg && _sir_validstrnofail(errbuf)) {
         if (errbuf[fmtmsg - 1] == '\n')
-            errbuf[fmtmsg - 1] == '\0';
+            errbuf[fmtmsg - 1] = '\0';
         __sir_setoserror((int)code, errbuf, func, file, line);
     } else {
         _sir_selflog("%s: FormatMessage failed! error: %d\n", __func__, GetLastError());
