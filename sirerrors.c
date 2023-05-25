@@ -1,3 +1,4 @@
+
 /**
  * @file sirerrors.c
  * @brief Error management.
@@ -31,7 +32,7 @@
  */
 #include "sirerrors.h"
 
-#if defined(__MACOS__) || defined(__BSD__) || (_POSIX_C_SOURCE >= 200112L && !defined(_GNU_SOURCE))
+#if defined(__MACOS__) || defined(__BSD__) || (defined(_POSIX_C_SOURCE) && (_POSIX_C_SOURCE >= 200112L && !defined(_GNU_SOURCE)))
 #   define __HAVE_XSI_STRERROR_R__
 #   if defined(__GLIBC__)
 #       if (__GLIBC__ >= 2 && __GLIBC__MINOR__ < 13)
@@ -61,7 +62,10 @@ void __sir_seterror(sirerror_t err, const sirchar_t* func, const sirchar_t* file
         sir_te.loc.file = file;
         sir_te.loc.line = line;
     }
+
+#if defined(SIR_ASSERT_ON_ERROR)
     assert(_SIR_E_NOERROR == err);
+#endif
 }
 
 void __sir_setoserror(int code, const sirchar_t* message, const sirchar_t* func,
@@ -70,7 +74,7 @@ void __sir_setoserror(int code, const sirchar_t* message, const sirchar_t* func,
     _sir_resetstr(sir_te.os_errmsg);
 
     if (_sir_validstrnofail(message))
-        strncpy(sir_te.os_errmsg, message, SIR_MAXERROR);
+        _sir_strncpy(sir_te.os_errmsg, SIR_MAXERROR, message, SIR_MAXERROR);
 
     __sir_seterror(_SIR_E_PLATFORM, func, file, line);
 }
@@ -93,14 +97,14 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
         _sir_selflog("%s: using GNU strerror_r\n", __func__);
         char* tmp = strerror_r(code, message, SIR_MAXERROR);
         if (tmp != message)
-            strncpy(message, tmp, strnlen(tmp, SIR_MAXERROR - 1));
+            _sir_strncpy(message, SIR_MAXERROR, tmp, SIR_MAXERROR);
 #elif defined(__HAVE_STRERROR_S__)
         _sir_selflog("%s: using strerror_s\n", __func__);
         finderr = (int)strerror_s(message, SIR_MAXERROR, code);
 #else
         _sir_selflog("%s: using strerror\n", __func__);
         char* tmp = strerror(code);
-        strncpy(message, tmp, strnlen(tmp, SIR_MAXERROR - 1));
+        _sir_strncpy(message, SIR_MAXERROR, tmp, strnlen(tmp, SIR_MAXERROR));
 #endif
         if (0 == finderr && _sir_validstrnofail(message)) {
             __sir_setoserror(code, message, func, file, line);
@@ -116,60 +120,83 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
 #endif
         }
     }
-    assert(SIR_E_NOERROR == code);
+
+#if defined(SIR_ASSERT_ON_ERROR)
+    assert(_SIR_E_NOERROR == code);
+#endif
 }
 
 #if defined(_WIN32)
 void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* file, uint32_t line) {
-    if (ERROR_SUCCESS != code) {
-        sirchar_t* errbuf = NULL;
-        DWORD      flags  = FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |
-                      FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_MAX_WIDTH_MASK;
-        DWORD fmtmsg = FormatMessageA(flags, NULL, code, 0, (LPSTR)&errbuf, SIR_MAXERROR, NULL);
+    sirchar_t* errbuf = NULL;
+    DWORD flags       = FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM     |
+                        FORMAT_MESSAGE_IGNORE_INSERTS  | FORMAT_MESSAGE_MAX_WIDTH_MASK;
 
-        if (0 == fmtmsg && _sir_validstrnofail(errbuf)) {
-            __sir_setoserror((int)code, errbuf, func, file, line);
-        } else {
-            _sir_selflog("%s: FormatMessage failed! error: %d\n", __func__, GetLastError());
-            assert(false);
-        }
+    DWORD fmtmsg = FormatMessageA(flags, NULL, code, 0, (LPSTR)&errbuf, SIR_MAXERROR, NULL);
 
-        if (errbuf) {
-            BOOL heapfree = HeapFree(GetProcessHeap(), 0, errbuf);
-            assert(0 != heapfree);
-            errbuf = NULL;
-        }
+    if (0 < fmtmsg && _sir_validstrnofail(errbuf)) {
+        if (errbuf[fmtmsg - 1] == '\n')
+            errbuf[fmtmsg - 1] = '\0';
+        __sir_setoserror((int)code, errbuf, func, file, line);
+    } else {
+        _sir_selflog("%s: FormatMessage failed! error: %d\n", __func__, GetLastError());
+        assert(false);
     }
+
+    if (errbuf) {
+        HLOCAL local_free = LocalFree((HLOCAL)errbuf);
+        assert(NULL == local_free);
+        errbuf = NULL;
+    }
+
+#if defined(SIR_ASSERT_ON_ERROR)
     assert(ERROR_SUCCESS == code);
+#endif
 }
 #endif
 
 sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
     _sir_resetstr(message);
-    for (size_t n = 0; n < _sir_countof(sir_errors); n++) {
-        if (sir_errors[n].e == sir_te.lasterror) {
-            sirchar_t* final = NULL;
-            bool alloc = false;
 
-            if (_SIR_E_PLATFORM == sir_errors[n].e) {
-                final = (sirchar_t*)calloc(SIR_MAXERROR, sizeof(sirchar_t));
+    size_t low  = 0;
+    size_t high = _sir_countof(sir_errors) - 1;
 
-                if (_sir_validptr(final)) {
-                    alloc = true;
-                    snprintf(final, SIR_MAXERROR, sir_errors[n].msg, sir_te.os_error,
-                        _sir_validstrnofail(sir_te.os_errmsg) ? sir_te.os_errmsg : SIR_UNKNOWN);
-                }
-            } else {
-                final = (sirchar_t*)sir_errors[n].msg;
+    _SIR_DECLARE_BIN_SEARCH(low, high);
+    _SIR_BEGIN_BIN_SEARCH();
+
+    if (sir_errors[_mid].e == sir_te.lasterror) {
+        sirchar_t* final = NULL;
+        bool alloc = false;
+
+        if (_SIR_E_PLATFORM == sir_errors[_mid].e) {
+            final = (sirchar_t*)calloc(SIR_MAXERROR, sizeof(sirchar_t));
+
+            if (_sir_validptr(final)) {
+                alloc = true;
+                snprintf(final, SIR_MAXERROR, sir_errors[_mid].msg, sir_te.os_error,
+                    (_sir_validstrnofail(sir_te.os_errmsg) ? sir_te.os_errmsg : SIR_UNKNOWN));
             }
-
-            int fmtmsg = snprintf(message, SIR_MAXERROR, SIR_ERRORFORMAT, sir_te.loc.func, sir_te.loc.file, sir_te.loc.line, final);
-            assert(fmtmsg >= 0);
-
-            if (alloc) _sir_safefree(final);
-            return sir_errors[n].e;
         }
+        else {
+            final = (sirchar_t*)sir_errors[_mid].msg;
+        }
+
+        int fmtmsg = snprintf(message, SIR_MAXERROR, SIR_ERRORFORMAT, sir_te.loc.func,
+            sir_te.loc.file, sir_te.loc.line, final);
+
+        _SIR_UNUSED(fmtmsg);
+        assert(fmtmsg >= 0);
+
+        if (alloc)
+            _sir_safefree(final);
+
+        return sir_errors[_mid].e;
     }
+
+    int comparison = sir_errors[_mid].e < sir_te.lasterror ? 1 : -1;
+
+    _SIR_ITERATE_BIN_SEARCH(comparison);
+    _SIR_END_BIN_SEARCH();
 
     assert(false && sir_te.lasterror);
     return _SIR_E_UNKNOWN;

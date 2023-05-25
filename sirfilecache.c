@@ -107,8 +107,8 @@ sirfile* _sirfile_create(const sirchar_t* path, sir_levels levels, sir_options o
             size_t pathLen = strnlen(path, SIR_MAXPATH);
             sf->path       = (sirchar_t*)calloc(pathLen + 1, sizeof(sirchar_t));
 
-            if (_sir_validptr(sf->path)) {
-                strncpy(sf->path, path, pathLen);
+            if (_sir_validptrnofail(sf->path)) {
+                _sir_strncpy(sf->path, pathLen + 1, path, pathLen);
                 
                 sf->levels = levels;
                 sf->opts = opts;
@@ -126,10 +126,21 @@ bool _sirfile_open(sirfile* sf) {
 
     if (_sir_validptr(sf) && _sir_validstr(sf->path)) {
 
-        FILE* f = _sir_fopen(sf->path);
+        FILE* f  = NULL;
+        int open = _sir_fopen(&f, sf->path, SIR_FOPENMODE);
 
-        if (f) {            
+        if (0 == open && f) {
+
+/* disable bogus warning about using _fileno */
+#if defined(_WIN32)
+#   pragma warning(push)
+#   pragma warning(disable : 4996)
+#endif
             int fd = fileno(f);
+
+#if defined(_WIN32)
+#   pragma warning(pop) 
+#endif
             if (-1 == fd)
                 _sir_handleerr(errno);
 
@@ -148,7 +159,7 @@ bool _sirfile_open(sirfile* sf) {
 
 void _sirfile_close(sirfile* sf) {
     if (_sir_validptr(sf)) {
-        if (_sir_validptr(sf->f) && _sir_validfid(sf->id)) {
+        if (_sir_validptrnofail(sf->f) && _sir_validfid(sf->id)) {
             _sir_fflush(sf->f);
             _sir_fclose(&sf->f);
             sf->id = SIR_INVALID;
@@ -318,8 +329,8 @@ bool _sirfile_archive(sirfile* sf, const sirchar_t* newpath) {
 
 bool _sirfile_splitpath(sirfile* sf, sirchar_t** name, sirchar_t** ext) {
 
-    if (name) *name = NULL;
-    if (ext) *ext = NULL;
+    if (NULL != name) *name = NULL;
+    if (NULL != ext) *ext = NULL;
 
     if (_sirfile_validate(sf) && _sir_validptr(name) && _sir_validptr(ext)) {
 
@@ -331,13 +342,23 @@ bool _sirfile_splitpath(sirfile* sf, sirchar_t** name, sirchar_t** ext) {
 
             if (namesize < SIR_MAXPATH) {
                 *name = (sirchar_t*)calloc(namesize + 1, sizeof(sirchar_t));
-                strncpy(*name, sf->path, namesize);
+                _sir_strncpy(*name, namesize + 1, sf->path, namesize);
             }
   
+/* disable bogus warning about using _strdup */
+#if defined(_WIN32)
+#   pragma warning(push)
+#   pragma warning(disable : 4996)
+#endif
+
             *ext = strdup(lastfullstop);
         } else {
             *name = strdup(sf->path);
         }
+
+#if defined(_WIN32)
+#   pragma warning(pop) 
+#endif
 
         return _sir_validstr(*name) && (!lastfullstop || _sir_validstr(*ext));
     }
@@ -460,7 +481,7 @@ bool _sir_fcache_pred_id(const void* match, sirfile* iter) {
 
 sirfile* _sir_fcache_find(sirfcache* sfc, const void* match, sir_fcache_pred pred) {
 
-    if (_sir_validptr(sfc) && _sir_validptr(match) && _sir_validptr(pred)) {
+    if (_sir_validptr(sfc) && _sir_validptr(match) && _sir_validaddr(pred)) {
         for (size_t n = 0; n < sfc->count; n++) {
             if (pred(match, sfc->files[n]))
                 return sfc->files[n];
@@ -533,23 +554,6 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output,
     }
 
     return false;
-}
-
-FILE* _sir_fopen(const sirchar_t* path) {
-    if (_sir_validstr(path)) {
-#if defined(__HAVE_STDC_SECURE_OR_EXT1__)
-        FILE*   tmp  = NULL;
-        errno_t open = fopen_s(&tmp, path, SIR_FOPENMODE);
-        _sir_handleerr(open);
-        return tmp;
-#else
-        FILE *f = fopen(path, SIR_FOPENMODE);
-        if (!f) _sir_handleerr(errno);
-        return f;
-#endif
-    }
-
-    return NULL;
 }
 
 void _sir_fclose(FILE** f) {

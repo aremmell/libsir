@@ -57,7 +57,16 @@
 #   endif
 #endif
 #else // _WIN32
-#   define __WANT_STDC_SECURE_LIB__ 1 
+#   define __WANT_STDC_SECURE_LIB__ 1
+#   define _CRT_RAND_S
+#	define WIN32_LEAN_AND_MEAN
+#	define WINVER       0x0A00 /** Windows 10 SDK */
+#	define _WIN32_WINNT 0x0A00
+#	include <windows.h>
+#	include <io.h>
+#	include <synchapi.h>
+#	include <process.h>
+#   include <conio.h>
 #endif
 
 #include <assert.h>
@@ -79,6 +88,7 @@
 #   include <sys/syscall.h>
 #   include <syslog.h>
 #   include <strings.h>
+#   include <termios.h>
 #if defined(__BSD__)
 #   include <pthread_np.h>
 #elif defined(__linux__)
@@ -109,13 +119,6 @@ typedef void (*sir_once_fn)(void);
 #define SIR_ONCE_INIT PTHREAD_ONCE_INIT
 
 #else // _WIN32
-
-#define WIN32_LEAN_AND_MEAN
-#define WINVER       0x0A00 /* Windows 10 SDK */
-#define _WIN32_WINNT 0x0A00
-#include <io.h>
-#include <synchapi.h>
-#include <windows.h>
 
 #define SIR_MAXPATH MAX_PATH
 #define SIR_NO_SYSLOG

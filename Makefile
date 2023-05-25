@@ -29,9 +29,9 @@ endif
 LIBS = -pthread
 
 ifeq ($(SIR_DEBUG),1)
-	CFLAGS   = -Wpedantic -std=c11 -I. -g -O0 -DNDEBUG -fPIC -DSIR_SELFLOG
+	CFLAGS = -Wpedantic -std=c11 -I. -g -O0 -DNDEBUG -fPIC -DSIR_SELFLOG
 else
-	CFLAGS   = -Wpedantic -std=c11 -I. -DNDEBUG -fPIC -O3
+	CFLAGS = -Wpedantic -std=c11 -I. -DNDEBUG -fPIC -O3
 endif
 
 ifeq ($(OS),Windows_NT)
@@ -84,10 +84,10 @@ $(OBJ_SHARED): $(INTERDIR) $(LIBDIR)
 $(OBJ_TESTS): $(OBJ_SHARED)
 
 $(INTERDIR)/%.eo: $(EXAMPLEDIR)/%.c $(DEPS)
-	$(CC) -MMD -c -o $@ $< $(CFLAGS)
+	$(CC) -MMD -c -o $@ $< $(CFLAGS) -I..
 
 $(INTERDIR)/%.to: $(TESTSDIR)/%.c $(DEPS)
-	$(CC) -MMD -c -o $@ $< $(CFLAGS)
+	$(CC) -MMD -c -o $@ $< $(CFLAGS) -I..
 
 $(INTERDIR)/%.lo: %.c $(DEPS)
 	$(CC) -MMD -c -o $@ $< $(CFLAGS)
@@ -113,11 +113,11 @@ static: shared
 	@echo built $(OUT_STATIC) successfully.
 
 example: static $(OBJ_EXAMPLE)
-	$(CC) -o $(OUT_EXAMPLE) $(OUT_STATIC) $(OBJ_EXAMPLE) $(CFLAGS) $(LDFLAGS)
+	$(CC) -o $(OUT_EXAMPLE) $(OUT_STATIC) $(OBJ_EXAMPLE) $(CFLAGS) -I.. $(LDFLAGS)
 	@echo built $(OUT_EXAMPLE) successfully.
 
 tests: static $(OBJ_TESTS)
-	$(CC) -o $(OUT_TESTS) $(OUT_STATIC) $(OBJ_TESTS) $(CFLAGS) $(LDFLAGS)
+	$(CC) -o $(OUT_TESTS) $(OUT_STATIC) $(OBJ_TESTS) $(CFLAGS) -I.. $(LDFLAGS)
 	@echo built $(OUT_TESTS) successfully.
 
 docs: static

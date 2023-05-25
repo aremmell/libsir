@@ -37,30 +37,24 @@
  *   - Sending high-prirority messages via SMS or push notification.
  * 2. Compressing archived logs with zlib or similar.
  * 3. Deleting archived logs older than _n_ days.
- * 4. A project file for Visual Studio.
- * 5. A project file for Xcode.
- * 6. Something I didn't think of yet.
+ * 4. A project file for Xcode.
+ * 5. Something I didn't think of yet...
  * 
  * ---------------------------------------------------------------------------------------------------------
  */
 #ifndef _SIR_TESTS_H_INCLUDED
 #define _SIR_TESTS_H_INCLUDED
 
-#define _CRT_RAND_S
-
-#include "../sir.h"
-#include "../sirerrors.h"
-#include "../sirfilecache.h"
-#include "../sirinternal.h"
+#include <sir.h>
+#include <sirerrors.h>
+#include <sirfilecache.h>
+#include <sirinternal.h>
+#include <sirhelpers.h>
 
 #include <fcntl.h>
 
 #if !defined(_WIN32)
-#include <dirent.h>
-#else
-#   define _WIN32_WINNT 0x0600
-#include <process.h>
-#include <windows.h>
+#   include <dirent.h>
 #endif
 
 #if !defined(_WIN32)
@@ -83,11 +77,13 @@
     var.d_stderr.opts   = o_stderr;                     \
     var.d_stderr.levels = l_stderr;                     \
     if (strlen(name) > 0)                               \
-        strncpy(var.processName, name, SIR_MAXNAME);    \
+        _sir_strncpy(var.processName, SIR_MAXNAME, name, SIR_MAXNAME);    \
     bool var##_init     = sir_init(&var);
 
 #define INIT(var, l_stdout, o_stdout, l_stderr, o_stderr) \
     INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, "")
+
+#define TEST_S(n) (n > 1 ? ("test" "s") : "test")
 
 /** Function signature for a single test. */
 typedef bool (*sir_test_fn)(void);
@@ -202,17 +198,29 @@ bool sirtest_perf(void);
  */
 bool sirtest_updatesanity(void);
 
+/** @} */
+
 /**
  * @test .
  *
 bool sirtest_xxxx(void); */
 
-/** @} */
+bool print_test_error(bool result, bool expected);
+#define print_expected_error() print_test_error(true, true)
+#define print_result_and_return(pass) print_test_error(pass, false)
 
-bool printerror(bool pass);
-void printexpectederr(void);
+void print_os_error(void);
 
-int getoserr(void);
+#define _STR(s) #s
+#define STR(s) _STR(s)
+
+#if !defined(_WIN32)
+#   define handle_os_error(clib, fmt, ...) (void)clib; _sir_handleerr(errno); \
+        fprintf(stderr, STR("\t") fmt STR("\n"), __VA_ARGS__)
+#else
+#   define handle_os_error(clib, fmt, ...) clib ? _sir_handleerr(errno) : _sir_handlewin32err(GetLastError()); \
+        fprintf(stderr, STR("\t") fmt STR("\n"), __VA_ARGS__)
+#endif
 unsigned int getrand(void);
 
 bool rmfile(const char* filename);

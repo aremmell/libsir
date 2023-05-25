@@ -38,7 +38,7 @@
  * @{
  */
 
-#if  !defined(_WIN32)
+#if !defined(_WIN32)
 
 static bool _sir_write_std(const sirchar_t* message, FILE* stream);
 
@@ -78,12 +78,18 @@ static BOOL CALLBACK _sir_initcs(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
 bool _sir_stderr_write(uint16_t style, const sirchar_t* message) {
     BOOL initcs = InitOnceExecuteOnce(&stderr_once, _sir_initcs, &stderr_cs, NULL);
     assert(FALSE != initcs);
+    if (TRUE != initcs)
+        return false;
+
     return _sir_write_stdwin32(style, message, GetStdHandle(STD_ERROR_HANDLE), &stderr_cs);
 }
 
 bool _sir_stdout_write(uint16_t style, const sirchar_t* message) {
     BOOL initcs = InitOnceExecuteOnce(&stdout_once, _sir_initcs, &stdout_cs, NULL);
     assert(FALSE != initcs);
+    if (TRUE != initcs)
+        return false;
+
     return _sir_write_stdwin32(style, message, GetStdHandle(STD_OUTPUT_HANDLE), &stdout_cs);
 }
 
@@ -107,15 +113,17 @@ static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message,
     EnterCriticalSection(cs);
     if (!GetConsoleScreenBufferInfo(console, &csbfi)) {
         _sir_handlewin32err(GetLastError());
+        LeaveCriticalSection(cs);
         return false;
     }
 
     if (!SetConsoleTextAttribute(console, style)) {
         _sir_handlewin32err(GetLastError());
+        LeaveCriticalSection(cs);
         return false;
     }
 
-    size_t chars   = strnlen(message, SIR_MAXOUTPUT) - 1;
+    DWORD chars   = (DWORD)strnlen(message, SIR_MAXOUTPUT) - 1;
     DWORD  written = 0;
 
     do {
@@ -141,6 +149,8 @@ static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message,
 }
 
 static BOOL CALLBACK _sir_initcs(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
+    _SIR_UNUSED(ponce);
+    _SIR_UNUSED(ctx);
     InitializeCriticalSection((LPCRITICAL_SECTION)param);
     return TRUE;
 }

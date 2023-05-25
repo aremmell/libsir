@@ -25,3 +25,7 @@ index.md
 
 # annoying macOS files
 .DS_Store
+
+# Visual Studio temporary files
+.vs/
+*.user

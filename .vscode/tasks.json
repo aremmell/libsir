@@ -3,91 +3,104 @@
     // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
+        /* begin Unix Makefile */
         {
-            "label": "build example",
-            "identifier": "build-example",
-            "type": "shell",
+            "label": "Clean",
+            "type": "process",
+            "command": "make",
+            "args": [
+                "clean"
+            ],
+            "detail": "Delete all intermediate files and previously compiled binaries",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "windows": {
+                
+            }
+        },
+        {
+            "label": "Static library",
+            "type": "process",
+            "command": "make",
+            "args": [
+                "static"
+            ],
+            "detail": "Compiles libsir as a static library.",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "dependsOn": "Clean",
+            "windows":{
+            }
+        },
+        {
+            "label": "Shared library",
+            "type": "process",
+            "command": "make",
+            "args": [
+                "shared"
+            ],
+            "detail": "Compiles libsir as a shared library.",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "dependsOn": "Clean",            
+            "windows":{
+            }
+        },
+        {
+            "label": "Test suite",
+            "type": "process",
+            "command": "make",
+            "args": [
+                "tests"
+            ],
+            "detail": "Compiles a test suite binary to ensure libsir is functioning properly.",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "dependsOn": "Static library",            
+            "windows":{
+            }
+        },
+        {
+            "label": "Example C application",
+            "type": "process",
             "command": "make",
             "args": [
                 "example"
             ],
-            "options": {
-            },            
+            "detail": "Compiles a sample C application demonstrating basic usage of libsir.",
             "group": {
                 "kind": "build",
-                "isDefault": true
+                "isDefault": false
             },
-            "presentation": {
-                "reveal": "always",
-                "panel": "dedicated"
-            },
-            "linux": {
-            },
-            "windows": {
-                "command": "mingw32-make",
-                "args": [
-                    "example"
-                ],
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
+            "dependsOn": "Static library",            
+            "windows":{
+            }
         },
+        /* end Unix Makefile */
+        
+        /* begin MSBuild */
         {
-            "label": "build c++ example",
-            "identifier": "build-cppexample",
-            "type": "shell",
-            "command": "make",
+            "label": "build",
+            "type": "process",
+            "command": "msbuild",
             "args": [
-                "cppexample",
-                "SIR_DEBUG=1"
+                "/property:GenerateFullPaths=true",
+                "/t:build",
+                "/consoleloggerparameters:NoSummary"
             ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
+            "group": "build",
             "presentation": {
-                "reveal": "always",
-                "panel": "dedicated"
+                "reveal": "always"
             },
-            "linux": {},
-            "windows": {
-                "command": "mingw32-make",
-                "args": [
-                    "cppexample"
-                ],
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-        },        
-        {
-            "label": "build tests app",
-            "identifier": "build-tests",
-            "type": "shell",
-            "command": "make",
-            "args": [
-                "tests",
-                "SIR_DEBUG=1"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "reveal": "always",
-                "panel": "dedicated"
-            },
-            "linux": {},
-            "windows": {
-                "command": "mingw32-make",
-                "args": [
-                    "tests"
-                ],
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
-        }        
+            "problemMatcher": "$msCompile"
+        }
     ]
 }
