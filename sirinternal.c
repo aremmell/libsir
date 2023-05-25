@@ -152,7 +152,7 @@ bool _sir_writeinit(sir_update_data* data, sirinit_update update) {
 
     _sir_seterror(_SIR_E_NOERROR);
 
-    if (_sir_sanity() && _sir_validupdatedata(data) && _sir_validptr(update)) {
+    if (_sir_sanity() && _sir_validupdatedata(data) && _sir_validaddr(update)) {
         sirinit* si = _sir_locksection(_SIRM_INIT);
         assert(si);
         if (si) {
