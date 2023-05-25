@@ -107,7 +107,7 @@ sirfile* _sirfile_create(const sirchar_t* path, sir_levels levels, sir_options o
             size_t pathLen = strnlen(path, SIR_MAXPATH);
             sf->path       = (sirchar_t*)calloc(pathLen + 1, sizeof(sirchar_t));
 
-            if (_sir_validptr(sf->path)) {
+            if (_sir_validptrnofail(sf->path)) {
                 _sir_strncpy(sf->path, pathLen + 1, path, pathLen);
                 
                 sf->levels = levels;
@@ -159,7 +159,7 @@ bool _sirfile_open(sirfile* sf) {
 
 void _sirfile_close(sirfile* sf) {
     if (_sir_validptr(sf)) {
-        if (_sir_validptr(sf->f) && _sir_validfid(sf->id)) {
+        if (_sir_validptrnofail(sf->f) && _sir_validfid(sf->id)) {
             _sir_fflush(sf->f);
             _sir_fclose(&sf->f);
             sf->id = SIR_INVALID;
@@ -329,8 +329,8 @@ bool _sirfile_archive(sirfile* sf, const sirchar_t* newpath) {
 
 bool _sirfile_splitpath(sirfile* sf, sirchar_t** name, sirchar_t** ext) {
 
-    if (name) *name = NULL;
-    if (ext) *ext = NULL;
+    if (NULL != name) *name = NULL;
+    if (NULL != ext) *ext = NULL;
 
     if (_sirfile_validate(sf) && _sir_validptr(name) && _sir_validptr(ext)) {
 
