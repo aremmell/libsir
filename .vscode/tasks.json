@@ -3,6 +3,7 @@
     // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
+        /* begin Unix Makefile */
         {
             "label": "Clean",
             "type": "process",
@@ -82,6 +83,24 @@
             "dependsOn": "Static library",            
             "windows":{
             }
-        }         
+        },
+        /* end Unix Makefile */
+        
+        /* begin MSBuild */
+        {
+            "label": "build",
+            "type": "process",
+            "command": "msbuild",
+            "args": [
+                "/property:GenerateFullPaths=true",
+                "/t:build",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$msCompile"
+        }
     ]
 }
