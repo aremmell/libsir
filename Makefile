@@ -29,9 +29,9 @@ endif
 LIBS = -pthread
 
 ifeq ($(SIR_DEBUG),1)
-	CFLAGS   = -Wpedantic -std=c11 -I. -g -O0 -DNDEBUG -fPIC -DSIR_SELFLOG
+	CFLAGS = -Wpedantic -std=c11 -I. -g -O0 -DNDEBUG -fPIC -DSIR_SELFLOG
 else
-	CFLAGS   = -Wpedantic -std=c11 -I. -DNDEBUG -fPIC -O3
+	CFLAGS = -Wpedantic -std=c11 -I. -DNDEBUG -fPIC -O3
 endif
 
 ifeq ($(OS),Windows_NT)
