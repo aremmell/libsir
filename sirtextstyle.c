@@ -86,7 +86,11 @@ sir_textstyle _sir_gettextstyle(sir_level level) {
                 break;
             }
 
+<<<<<<< HEAD
             int comparison = map[_mid].level < level ? 1 : -1;
+=======
+             int comparison = map[_mid].level < level ? 1 : -1;
+>>>>>>> 1c7ea68 (rolled up a fat macro hack for binary search, and it rules.)
 
             _SIR_ITERATE_BIN_SEARCH(comparison);
             _SIR_END_BIN_SEARCH();
@@ -153,7 +157,11 @@ bool _sir_settextstyle(sir_level level, sir_textstyle style)
             }
 
             int comparison = map[_mid].level < level ? 1 : -1;
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> 1c7ea68 (rolled up a fat macro hack for binary search, and it rules.)
             _SIR_ITERATE_BIN_SEARCH(comparison);
             _SIR_END_BIN_SEARCH();
 
@@ -212,9 +220,15 @@ uint16_t _sir_getprivstyle(uint32_t style) {
 
     if (sir_priv_map[_mid].from == style)
         return sir_priv_map[_mid].to;
+<<<<<<< HEAD
 
     int comparison = sir_priv_map[_mid].from < style ? 1 : -1;
 
+=======
+    
+    int comparison = sir_priv_map[_mid].from < style ? 1 : -1;
+
+>>>>>>> 1c7ea68 (rolled up a fat macro hack for binary search, and it rules.)
     _SIR_ITERATE_BIN_SEARCH(comparison);
     _SIR_END_BIN_SEARCH();
 
