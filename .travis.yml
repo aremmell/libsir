@@ -3,7 +3,6 @@ language: c
 branches:
   only:
   - master
-  - windows
 jobs:
   include:
     - os: linux
