@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file sirtextstyle.h
  * @brief stdio text styling.
  *
@@ -47,101 +47,144 @@
  * binary search is used to look up entries based on those values.
  */
 static sir_style_map sir_override_styles[SIR_NUMLEVELS] = {
-    {SIRL_EMERG, SIRS_INVALID},
-    {SIRL_ALERT, SIRS_INVALID},
-    {SIRL_CRIT, SIRS_INVALID},
-    {SIRL_ERROR, SIRS_INVALID},
-    {SIRL_WARN, SIRS_INVALID},
+    {SIRL_EMERG,  SIRS_INVALID},
+    {SIRL_ALERT,  SIRS_INVALID},
+    {SIRL_CRIT,   SIRS_INVALID},
+    {SIRL_ERROR,  SIRS_INVALID},
+    {SIRL_WARN,   SIRS_INVALID},
     {SIRL_NOTICE, SIRS_INVALID},
-    {SIRL_INFO, SIRS_INVALID},
-    {SIRL_DEBUG, SIRS_INVALID}
+    {SIRL_INFO,   SIRS_INVALID},
+    {SIRL_DEBUG,  SIRS_INVALID}
 };
 
 /** mapping of ::sir_textstyle <> platform values. */
 static const sir_style_priv_map sir_priv_map[] = {
 
 #if !defined(_WIN32)
-    {SIRS_NONE, 0},
-    {SIRS_BRIGHT, 1},
-    {SIRS_DIM, 2},
+    {SIRS_NONE,          0},
+    {SIRS_BRIGHT,        1},
+    {SIRS_DIM,           2},
 
-    {SIRS_FG_BLACK, 30},
-    {SIRS_FG_RED, 31},
-    {SIRS_FG_GREEN, 32},
-    {SIRS_FG_YELLOW, 33},
-    {SIRS_FG_BLUE, 34},
-    {SIRS_FG_MAGENTA, 35},
-    {SIRS_FG_CYAN, 36},
-    {SIRS_FG_LGRAY, 37},
-    {SIRS_FG_DEFAULT, 39},
-    {SIRS_FG_DGRAY, 90},
-    {SIRS_FG_LRED, 91},
-    {SIRS_FG_LGREEN, 92},
-    {SIRS_FG_LYELLOW, 93},
-    {SIRS_FG_LBLUE, 94},
-    {SIRS_FG_LMAGENTA, 95},
-    {SIRS_FG_LCYAN, 96},
-    {SIRS_FG_WHITE, 97},
+    {SIRS_FG_BLACK,     30},
+    {SIRS_FG_RED,       31},
+    {SIRS_FG_GREEN,     32},
+    {SIRS_FG_YELLOW,    33},
+    {SIRS_FG_BLUE,      34},
+    {SIRS_FG_MAGENTA,   35},
+    {SIRS_FG_CYAN,      36},
+    {SIRS_FG_LGRAY,     37},
+    {SIRS_FG_DEFAULT,   39},
+    {SIRS_FG_DGRAY,     90},
+    {SIRS_FG_LRED,      91},
+    {SIRS_FG_LGREEN,    92},
+    {SIRS_FG_LYELLOW,   93},
+    {SIRS_FG_LBLUE,     94},
+    {SIRS_FG_LMAGENTA,  95},
+    {SIRS_FG_LCYAN,     96},
+    {SIRS_FG_WHITE,     97},
 
-    {SIRS_BG_BLACK, 40},
-    {SIRS_BG_RED, 41},
-    {SIRS_BG_GREEN, 42},
-    {SIRS_BG_YELLOW, 43},
-    {SIRS_BG_BLUE, 44},
-    {SIRS_BG_MAGENTA, 45},
-    {SIRS_BG_CYAN, 46},
-    {SIRS_BG_LGRAY, 47},
-    {SIRS_BG_DEFAULT, 49},
-    {SIRS_BG_DGRAY, 100},
-    {SIRS_BG_LRED, 101},
-    {SIRS_BG_LGREEN, 102},
-    {SIRS_BG_LYELLOW, 103},
-    {SIRS_BG_LBLUE, 104},
+    {SIRS_BG_BLACK,     40},
+    {SIRS_BG_RED,       41},
+    {SIRS_BG_GREEN,     42},
+    {SIRS_BG_YELLOW,    43},
+    {SIRS_BG_BLUE,      44},
+    {SIRS_BG_MAGENTA,   45},
+    {SIRS_BG_CYAN,      46},
+    {SIRS_BG_LGRAY,     47},
+    {SIRS_BG_DEFAULT,   49},
+    {SIRS_BG_DGRAY,    100},
+    {SIRS_BG_LRED,     101},
+    {SIRS_BG_LGREEN,   102},
+    {SIRS_BG_LYELLOW,  103},
+    {SIRS_BG_LBLUE,    104},
     {SIRS_BG_LMAGENTA, 105},
-    {SIRS_BG_LCYAN, 106},
-    {SIRS_BG_WHITE, 107},
+    {SIRS_BG_LCYAN,    106},
+    {SIRS_BG_WHITE,    107},
 #else
-    {SIRS_NONE, 0},
-    {SIRS_BRIGHT, FOREGROUND_INTENSITY},
-    {SIRS_DIM, 0},
+    {SIRS_NONE,        0},
+    {SIRS_BRIGHT,      FOREGROUND_INTENSITY},
+    {SIRS_DIM,         0},
 
-    {SIRS_FG_BLACK, 0},
-    {SIRS_FG_RED, FOREGROUND_RED},
-    {SIRS_FG_GREEN, FOREGROUND_GREEN},
-    {SIRS_FG_YELLOW, FOREGROUND_RED | FOREGROUND_GREEN},
-    {SIRS_FG_BLUE, FOREGROUND_BLUE},
-    {SIRS_FG_MAGENTA, FOREGROUND_RED | FOREGROUND_BLUE},
-    {SIRS_FG_CYAN, FOREGROUND_GREEN | FOREGROUND_BLUE},
-    {SIRS_FG_LGRAY, FOREGROUND_INTENSITY},
-    {SIRS_FG_DEFAULT, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE},
-    {SIRS_FG_DGRAY, FOREGROUND_INTENSITY},
-    {SIRS_FG_LRED, FOREGROUND_RED | FOREGROUND_INTENSITY},
-    {SIRS_FG_LGREEN, FOREGROUND_GREEN | FOREGROUND_INTENSITY},
-    {SIRS_FG_LYELLOW, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY},
-    {SIRS_FG_LBLUE, FOREGROUND_BLUE | FOREGROUND_INTENSITY},
+    {SIRS_FG_BLACK,    0},
+    {SIRS_FG_RED,      FOREGROUND_RED},
+    {SIRS_FG_GREEN,    FOREGROUND_GREEN},
+    {SIRS_FG_YELLOW,   FOREGROUND_RED | FOREGROUND_GREEN},
+    {SIRS_FG_BLUE,     FOREGROUND_BLUE},
+    {SIRS_FG_MAGENTA,  FOREGROUND_RED | FOREGROUND_BLUE},
+    {SIRS_FG_CYAN,     FOREGROUND_GREEN | FOREGROUND_BLUE},
+    {SIRS_FG_LGRAY,    FOREGROUND_INTENSITY},
+    {SIRS_FG_DEFAULT,  FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE},
+    {SIRS_FG_DGRAY,    FOREGROUND_INTENSITY},
+    {SIRS_FG_LRED,     FOREGROUND_RED | FOREGROUND_INTENSITY},
+    {SIRS_FG_LGREEN,   FOREGROUND_GREEN | FOREGROUND_INTENSITY},
+    {SIRS_FG_LYELLOW,  FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY},
+    {SIRS_FG_LBLUE,    FOREGROUND_BLUE | FOREGROUND_INTENSITY},
     {SIRS_FG_LMAGENTA, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY},
-    {SIRS_FG_LCYAN, FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY},
-    {SIRS_FG_WHITE, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE},
+    {SIRS_FG_LCYAN,    FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY},
+    {SIRS_FG_WHITE,    FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE},
 
-    {SIRS_BG_BLACK, 0},
-    {SIRS_BG_RED, BACKGROUND_RED},
-    {SIRS_BG_GREEN, BACKGROUND_GREEN},
-    {SIRS_BG_YELLOW, BACKGROUND_RED | BACKGROUND_GREEN},
-    {SIRS_BG_BLUE, BACKGROUND_BLUE},
-    {SIRS_BG_MAGENTA, BACKGROUND_RED | BACKGROUND_BLUE},
-    {SIRS_BG_CYAN, BACKGROUND_GREEN | BACKGROUND_BLUE},
-    {SIRS_BG_LGRAY, BACKGROUND_INTENSITY},
-    {SIRS_BG_DEFAULT, 0},
-    {SIRS_BG_DGRAY, BACKGROUND_INTENSITY},
-    {SIRS_BG_LRED, BACKGROUND_RED | BACKGROUND_INTENSITY},
-    {SIRS_BG_LGREEN, BACKGROUND_GREEN | BACKGROUND_INTENSITY},
-    {SIRS_BG_LYELLOW, BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY},
-    {SIRS_BG_LBLUE, BACKGROUND_BLUE | BACKGROUND_INTENSITY},
+    {SIRS_BG_BLACK,    0},
+    {SIRS_BG_RED,      BACKGROUND_RED},
+    {SIRS_BG_GREEN,    BACKGROUND_GREEN},
+    {SIRS_BG_YELLOW,   BACKGROUND_RED | BACKGROUND_GREEN},
+    {SIRS_BG_BLUE,     BACKGROUND_BLUE},
+    {SIRS_BG_MAGENTA,  BACKGROUND_RED | BACKGROUND_BLUE},
+    {SIRS_BG_CYAN,     BACKGROUND_GREEN | BACKGROUND_BLUE},
+    {SIRS_BG_LGRAY,    BACKGROUND_INTENSITY},
+    {SIRS_BG_DEFAULT,  0},
+    {SIRS_BG_DGRAY,    BACKGROUND_INTENSITY},
+    {SIRS_BG_LRED,     BACKGROUND_RED | BACKGROUND_INTENSITY},
+    {SIRS_BG_LGREEN,   BACKGROUND_GREEN | BACKGROUND_INTENSITY},
+    {SIRS_BG_LYELLOW,  BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY},
+    {SIRS_BG_LBLUE,    BACKGROUND_BLUE | BACKGROUND_INTENSITY},
     {SIRS_BG_LMAGENTA, BACKGROUND_RED | BACKGROUND_BLUE | BACKGROUND_INTENSITY},
-    {SIRS_BG_LCYAN, BACKGROUND_GREEN | BACKGROUND_BLUE | BACKGROUND_INTENSITY},
-    {SIRS_BG_WHITE, BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE},
+    {SIRS_BG_LCYAN,    BACKGROUND_GREEN | BACKGROUND_BLUE | BACKGROUND_INTENSITY},
+    {SIRS_BG_WHITE,    BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE},
 #endif
 };
+
+/** Escape sequences:
+ * 
+ *  16 colors:      \033[<dim=0..2>;<fg=30..37, 90..97>;<bg=40..47, 100..107>m
+ *  256 colors:     \033[<fg=38|bg=48>;5;<0..255>m
+ *  24-bit RGB:     \033[<fg=38|bg=48>;2;<R=0..255>;<G=0..255>;<B=0..255>m
+ *  Clear all:      \033[0m
+ * 
+ *  Note: evidently, you can chain these sequences to set both fore and back simultaneously:
+ *    \033[38;5;128;48;5;206m
+ *     
+ *  - 30–37, 90–97 ("bright"):   Set foreground color (number = color ID)
+ *  - 38:                        Set foreground color (with pattern to follow: 256 or 24-bit RGB color)
+ *  - 39:                        Set default foreground color
+ *  - 40–47, 100–107 ("bright"): Set background color (number = color ID)
+ *  - 48:                        Set background color (with pattern to follow: 256 or 24-bit RGB color)
+ *  - 49:                        Set default background color
+ *    === to test =====================================================================================
+ *  - 4:                         Underline (off: 24)
+ *  - 5:                         Blinking (off: 25)
+ *  - 51:                        Framed (off: 54)
+ *  - 52:                        Encircled (off: 54)
+ *  - 53:                        Overlined (off: 55)
+ *  -  1:                        Bold (off: 21)
+ * 
+ * The 24-bit RGB spectrum is laid out as follows:
+ * 
+ * 0x00-0x07:  standard colors (same as the 4-bit colors)
+ * 0x08-0x0F:  high intensity colors
+ * 0x10-0xE7:  6 × 6 × 6 cube (216 colors): 16 + 36 × r + 6 × g + b (0 ≤ r, g, b ≤ 5)
+ * 0xE8-0xFF:  grayscale from black to white in 24 steps
+ */
+
+#define SIR_ESC_START "\033["
+#define SIR_ESC_END   "m"
+
+/** A couple fun characters that can be sent to stdio. */
+#define SIR_R_ARROW "\xe2\x86\x92"
+#define SIR_L_ARROW "\xe2\x86\x90"
+#define SIR_BULLET  "\xe2\x80\xa2"
+
+/** The maximum size of a color escape code sequence in bytes. */
+// TODO
 
 /** Validates a ::sir_textstyle and splits it into its component parts. */
 bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32_t* pbg);
