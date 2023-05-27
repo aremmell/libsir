@@ -33,6 +33,7 @@
 #define _SIR_CONSOLE_H_INCLUDED
 
 #include "sirtypes.h"
+#include "sirhelpers.h"
 
 /**
  * @addtogroup intern

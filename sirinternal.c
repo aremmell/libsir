@@ -308,7 +308,7 @@ void _sir_initmutex(sirmutex_t* mutex) {
 
 bool _sir_once(sironce_t* once, sir_once_fn func) {
 #if !defined(_WIN32)
-    pthread_once(once, func);
+    return 0 == pthread_once(once, func);
 #else
     return FALSE != InitOnceExecuteOnce(once, func, NULL, NULL);
 #endif
