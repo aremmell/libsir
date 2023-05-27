@@ -108,6 +108,11 @@ bool _sir_init(sirinit* si) {
     if (!_sir_options_sanity(si))
         return false;
 
+#if defined(_WIN32)
+    if (!_sir_initialize_stdio())
+        return false;
+#endif
+
     sirinit* _si = _sir_locksection(_SIRM_INIT);
     assert(_si);
 
@@ -301,13 +306,11 @@ void _sir_initmutex(sirmutex_t* mutex) {
     assert(init);
 }
 
-void _sir_once(sironce_t* once, sir_once_fn func) {
+bool _sir_once(sironce_t* once, sir_once_fn func) {
 #if !defined(_WIN32)
     pthread_once(once, func);
 #else
-    BOOL result = InitOnceExecuteOnce(once, func, NULL, NULL);
-    _SIR_UNUSED(result);
-    assert(FALSE != result);
+    return FALSE != InitOnceExecuteOnce(once, func, NULL, NULL);
 #endif
 }
 
@@ -329,10 +332,8 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
 
     sirbuf buf;
     siroutput output = {0};
-
-    output.style = _sirbuf_get(&buf, _SIRBUF_STYLE);
-    assert(output.style);
-
+    _sir_buf2output(&buf, &output);
+    
     bool appliedstyle = false;
     sir_textstyle style = _sir_gettextstyle(level);
     assert(SIRS_INVALID != style);
@@ -346,9 +347,6 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
     if (!appliedstyle)
         _sir_resetstr(output.style);
 
-    output.timestamp = _sirbuf_get(&buf, _SIRBUF_TIME);
-    assert(output.timestamp);
-
     time_t now;
     long   nowmsec;
     bool   gettime = _sir_getlocaltime(&now, &nowmsec);
@@ -361,8 +359,7 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
         if (!fmttime)
             _sir_resetstr(output.timestamp);
 
-        output.msec = _sirbuf_get(&buf, _SIRBUF_MSEC);
-        assert(output.msec);
+        output.msec = buf.msec;
 
         int fmtmsec = snprintf(output.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec);
         assert(fmtmsec >= 0);
@@ -373,21 +370,13 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
         _sir_resetstr(output.msec);
     }
 
-    output.level = _sirbuf_get(&buf, _SIRBUF_LEVEL);
-    assert(output.level);
     snprintf(output.level, SIR_MAXLEVEL, SIR_LEVELFORMAT, _sir_levelstr(level));
-
-    output.name = _sirbuf_get(&buf, _SIRBUF_NAME);
-    assert(output.name);
 
     if (_sir_validstrnofail(tmpsi.processName)) {
         _sir_strncpy(output.name, SIR_MAXNAME, tmpsi.processName, SIR_MAXNAME);
     } else {
         _sir_resetstr(output.name);
     }
-
-    output.pid = _sirbuf_get(&buf, _SIRBUF_PID);
-    assert(output.pid);
 
     pid_t pid = _sir_getpid();
     int pidfmt = snprintf(output.pid, SIR_MAXPID, SIR_PIDFORMAT, pid);
@@ -397,9 +386,6 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
         _sir_resetstr(output.pid);
 
     pid_t tid  = _sir_gettid();
-    output.tid = _sirbuf_get(&buf, _SIRBUF_TID);
-    assert(output.tid);
-
     if (tid != pid) {
        if (!_sir_getthreadname(output.tid)) {
            pidfmt = snprintf(output.tid, SIR_MAXPID, SIR_PIDFORMAT, tid);
@@ -413,90 +399,65 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
     }
 
     /** @todo add support for glibc's %%m? */
-    output.message = _sirbuf_get(&buf, _SIRBUF_MSG);
-    assert(output.message);
     int msgfmt = vsnprintf(output.message, SIR_MAXMESSAGE, format, args);
     assert(msgfmt >= 0);
 
     if (msgfmt < 0)
         _sir_resetstr(output.message);
 
-    output.output = _sirbuf_get(&buf, _SIRBUF_OUTPUT);
-    assert(output.output);
-
     return _sir_dispatch(&tmpsi, level, &output);
 }
 
 bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output) {
 
-    if (_sir_validptr(output)) {
-        bool   r          = true;
-        size_t dispatched = 0;
-        size_t wanted = 0;
+    bool retval       = true;
+    size_t dispatched = 0;
+    size_t wanted     = 0;
 
-        if (_sir_bittest(si->d_stdout.levels, level)) {
-            const sirchar_t* write = _sir_format(true, si->d_stdout.opts, output);
-            assert(write);
-#if !defined(_WIN32)
-            bool wrote = _sir_stdout_write(write);
-            r &= NULL != write && wrote;
-#else
-            uint16_t* style = (uint16_t*)output->style;
-            bool      wrote = _sir_stdout_write(*style, write);
-            r &= NULL != write && NULL != style && wrote;
-#endif
-            if (wrote)
-                dispatched++;
-            wanted++;
-        }
+    if (_sir_bittest(si->d_stdout.levels, level)) {
+        const sirchar_t* write = _sir_format(true, si->d_stdout.opts, output);
+        bool wrote = _sir_write_stdout(write, output->output_len);
+        retval &= wrote;
 
-        if (_sir_bittest(si->d_stderr.levels, level)) {
-            const sirchar_t* write = write = _sir_format(true, si->d_stderr.opts, output);
-            assert(write);
-#if !defined(_WIN32)
-            bool wrote = _sir_stderr_write(write);
-            r &= NULL != write && wrote;
-#else
-            uint16_t* style = (uint16_t*)output->style;
-            bool      wrote = NULL != style;
-
-            if (wrote)
-                wrote &= _sir_stderr_write(*style, write);
-
-            r &= NULL != write && wrote;
-#endif
-            if (wrote)
-                dispatched++;
-            wanted++;
-        }
-
-#if !defined(SIR_NO_SYSLOG)
-        if (_sir_bittest(si->d_syslog.levels, level)) {
-            syslog(_sir_syslog_maplevel(level), "%s", output->message);
+        if (wrote)
             dispatched++;
-            wanted++;
-        }
-#endif
-        sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
-
-        if (sfc) {
-            size_t fdispatched = 0;
-            size_t fwanted = 0;
-            r &= _sir_fcache_dispatch(sfc, level, output, &fdispatched, &fwanted);
-            r &= _sir_unlocksection(_SIRM_FILECACHE);
-            dispatched += fdispatched;
-            wanted += fwanted;
-        }
-
-        if (0 == wanted) {
-            _sir_seterror(_SIR_E_NODEST);
-            return false;
-        }
-
-        return r && (dispatched == wanted);
+        wanted++;
     }
 
-    return false;
+    if (_sir_bittest(si->d_stderr.levels, level)) {
+        const sirchar_t* write = _sir_format(true, si->d_stderr.opts, output);
+        bool wrote = _sir_write_stderr(write, output->output_len);
+        retval &= wrote;
+
+        if (wrote)
+            dispatched++;
+        wanted++;
+    }
+
+#if !defined(SIR_NO_SYSLOG)
+    if (_sir_bittest(si->d_syslog.levels, level)) {
+        syslog(_sir_syslog_maplevel(level), "%s", output->message);
+        dispatched++;
+        wanted++;
+    }
+#endif
+
+    sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
+    if (sfc) {
+        size_t fdispatched = 0;
+        size_t fwanted = 0;
+        retval &= _sir_fcache_dispatch(sfc, level, output, &fdispatched, &fwanted);
+        retval &= _sir_unlocksection(_SIRM_FILECACHE);
+        dispatched += fdispatched;
+        wanted += fwanted;
+    }
+
+    if (0 == wanted) {
+        _sir_seterror(_SIR_E_NODEST);
+        return false;
+    }
+
+    return retval && (dispatched == wanted);
 }
 
 const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) {
@@ -506,12 +467,8 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) 
 
         _sir_resetstr(output->output);
 
-#if !defined(_WIN32)
         if (styling)
-            strncat(output->output, output->style, SIR_MAXSTYLE);
-#else
-        _SIR_UNUSED(styling);
-#endif
+            _sir_strncat(output->output, SIR_MAXOUTPUT, output->style, SIR_MAXSTYLE);
 
         if (!_sir_bittest(opts, SIRO_NOTIME)) {
             _sir_strncat(output->output, SIR_MAXOUTPUT, output->timestamp, SIR_MAXTIME);
@@ -566,12 +523,13 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output) 
 
         _sir_strncat(output->output, SIR_MAXOUTPUT, output->message, SIR_MAXMESSAGE);
 
-#if !defined(_WIN32)
         if (styling)
             _sir_strncat(output->output, SIR_MAXOUTPUT, SIR_ENDSTYLE, SIR_MAXSTYLE);
-#endif
 
         _sir_strncat(output->output, SIR_MAXOUTPUT, "\n", 1);
+
+        output->output_len = strnlen(output->output, SIR_MAXOUTPUT);
+
         return output->output;
     }
 
@@ -597,25 +555,19 @@ int _sir_syslog_maplevel(sir_level level) {
 }
 #endif
 
-/* In case there's a better way to implement this, abstract it away. */
-sirchar_t* _sirbuf_get(sirbuf* buf, size_t idx) {
-
-    assert(idx <= _SIRBUF_MAX);
-
-    switch (idx) {
-        case _SIRBUF_STYLE: return buf->style;
-        case _SIRBUF_TIME: return buf->timestamp;
-        case _SIRBUF_MSEC: return buf->msec;
-        case _SIRBUF_LEVEL: return buf->level;
-        case _SIRBUF_NAME: return buf->name;
-        case _SIRBUF_PID: return buf->pid;
-        case _SIRBUF_TID: return buf->tid;
-        case _SIRBUF_MSG: return buf->message;
-        case _SIRBUF_OUTPUT: return buf->output;
-        default: assert(false);
+void _sir_buf2output(sirbuf* buf, siroutput* output) {
+    if (_sir_validptr(buf) && _sir_validptr(output)) {
+        output->style      = buf->style;
+        output->timestamp  = buf->timestamp;
+        output->msec       = buf->msec;
+        output->level      = buf->level;
+        output->name       = buf->name;
+        output->pid        = buf->pid;
+        output->tid        = buf->tid;
+        output->message    = buf->message;
+        output->output     = buf->output;
+        output->output_len = 0;
     }
-
-    return NULL;
 }
 
 const sirchar_t* _sir_levelstr(sir_level level) {

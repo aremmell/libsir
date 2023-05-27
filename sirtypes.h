@@ -229,21 +229,8 @@ typedef struct {
     sirchar_t* tid;
     sirchar_t* message;
     sirchar_t* output;
+    size_t output_len;
 } siroutput;
-
-/** Indexes into ::sirbuf buffers. */
-typedef enum {
-    _SIRBUF_STYLE = 0,
-    _SIRBUF_TIME,
-    _SIRBUF_MSEC,
-    _SIRBUF_LEVEL,
-    _SIRBUF_NAME,
-    _SIRBUF_PID,
-    _SIRBUF_TID,
-    _SIRBUF_MSG,
-    _SIRBUF_OUTPUT,
-    _SIRBUF_MAX
-} sirbuf_idx;
 
 /** Buffers for output formatting. */
 typedef struct {

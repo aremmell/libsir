@@ -235,29 +235,19 @@ bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size) {
             uint16_t privfg   = _sir_getprivstyle(fg);
             uint16_t privbg   = _sir_getprivstyle(bg);
 
-#if !defined(_WIN32)
-            sirchar_t fgfmt[5] = {0};
-            sirchar_t bgfmt[5] = {0};
+            sirchar_t fgfmt[7] = {0};
+            sirchar_t bgfmt[7] = {0};
 
             if (privfg != 0)
-                snprintf(fgfmt, 5, ";%03hu", privfg);
+                snprintf(fgfmt, 7, ";%hu", privfg);
 
             if (privbg != 0)
-                snprintf(bgfmt, 5, ";%03hu", privbg);
+                snprintf(bgfmt, 7, ";%hu", privbg);
 
-            /* '\033[n;nnn;nnnm' */
-            snprintf(buf, size, "\033[%hu%s%sm", privattr, fgfmt, bgfmt);
+            /* '\x1b[n;nnn;nnnm' */
+            snprintf(buf, size, "%s%hu%s%sm", SIR_BEGINSTYLE, privattr, fgfmt, bgfmt);
 
             return _sir_validstr(buf);
-#else
-            assert(size == sizeof(uint16_t));
-            if (size < sizeof(uint16_t))
-                return false;
-
-            uint16_t final = privattr | privfg | privbg;
-            memcpy(buf, &final, sizeof(uint16_t));
-            return true;
-#endif
         }
     }
 

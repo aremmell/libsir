@@ -40,20 +40,8 @@
 
 #if !defined(_WIN32)
 
-static bool _sir_write_std(const sirchar_t* message, FILE* stream);
-
-bool _sir_stderr_write(const sirchar_t* message) {
-    return _sir_write_std(message, stderr);
-}
-
-bool _sir_stdout_write(const sirchar_t* message) {
-    return _sir_write_std(message, stdout);
-}
-
-static bool _sir_write_std(const sirchar_t* message, FILE* stream) {
-
-    if (!_sir_validstr(message) || !_sir_validptr(stream))
-        return false;     
+bool _sir_write_stdio(FILE* stream, const sirchar_t* message, size_t len) {
+    _SIR_UNUSED(len);
 
     if (EOF == fputs(message, stream)) {
         _sir_handleerr(errno);
@@ -65,66 +53,24 @@ static bool _sir_write_std(const sirchar_t* message, FILE* stream) {
 
 #else
 
-static CRITICAL_SECTION stdout_cs;
-static sironce_t        stdout_once = SIR_ONCE_INIT;
+HANDLE __sir_stdout = INVALID_HANDLE_VALUE;
+HANDLE __sir_stderr = INVALID_HANDLE_VALUE;
 
-static CRITICAL_SECTION stderr_cs;
-static sironce_t        stderr_once = SIR_ONCE_INIT;
+static sironce_t config_once = SIR_ONCE_INIT;
 
-static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message,
-    HANDLE console, CRITICAL_SECTION* cs);
-static BOOL CALLBACK _sir_initcs(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
+static bool _sir_config_console(HANDLE console);
+static BOOL CALLBACK __sir_config_consoles_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
 
-bool _sir_stderr_write(uint16_t style, const sirchar_t* message) {
-    BOOL initcs = InitOnceExecuteOnce(&stderr_once, _sir_initcs, &stderr_cs, NULL);
-    assert(FALSE != initcs);
-    if (TRUE != initcs)
-        return false;
-
-    return _sir_write_stdwin32(style, message, GetStdHandle(STD_ERROR_HANDLE), &stderr_cs);
+bool _sir_initialize_stdio(void) {
+    bool configure = _sir_once(&config_once, __sir_config_consoles_once);
+    assert(configure);
+    return configure;
 }
 
-bool _sir_stdout_write(uint16_t style, const sirchar_t* message) {
-    BOOL initcs = InitOnceExecuteOnce(&stdout_once, _sir_initcs, &stdout_cs, NULL);
-    assert(FALSE != initcs);
-    if (TRUE != initcs)
-        return false;
+bool _sir_write_stdio(HANDLE console, const sirchar_t* message, size_t len) {
 
-    return _sir_write_stdwin32(style, message, GetStdHandle(STD_OUTPUT_HANDLE), &stdout_cs);
-}
-
-static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message,
-    HANDLE console, CRITICAL_SECTION* cs) {
-
-    if (!_sir_validstr(message))
-        return false;
-
-    assert(INVALID_HANDLE_VALUE != console);
-    if (INVALID_HANDLE_VALUE == console) {
-        _sir_handlewin32err(GetLastError());
-        return false;
-    }
-
-    if (!_sir_validptr(cs))
-        return false;
-
-    CONSOLE_SCREEN_BUFFER_INFO csbfi = {0};
-
-    EnterCriticalSection(cs);
-    if (!GetConsoleScreenBufferInfo(console, &csbfi)) {
-        _sir_handlewin32err(GetLastError());
-        LeaveCriticalSection(cs);
-        return false;
-    }
-
-    if (!SetConsoleTextAttribute(console, style)) {
-        _sir_handlewin32err(GetLastError());
-        LeaveCriticalSection(cs);
-        return false;
-    }
-
-    DWORD chars   = (DWORD)strnlen(message, SIR_MAXOUTPUT) - 1;
-    DWORD  written = 0;
+    DWORD chars   = (DWORD)len;
+    DWORD written = 0;
 
     do {
         DWORD pass = 0;
@@ -137,22 +83,39 @@ static bool _sir_write_stdwin32(uint16_t style, const sirchar_t* message,
         written += pass;
     } while (written < chars);
 
-    /* Have to set the attributes back before writing the newline
-     * or you'll get background color artifacting before the next output.
-     */
-    SetConsoleTextAttribute(console, csbfi.wAttributes);
-    DWORD newline = 0;
-    WriteConsole(console, "\n", 1, &newline, NULL);
-    LeaveCriticalSection(cs);
-
     return written == chars;
 }
 
-static BOOL CALLBACK _sir_initcs(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
+static bool _sir_config_console(HANDLE console) {
+    if (INVALID_HANDLE_VALUE == console || NULL == console) {
+        _sir_handlewin32err(GetLastError());
+        return false;
+    }
+
+    DWORD mode = 0;
+    if (!GetConsoleMode(console, &mode)) {
+        _sir_handlewin32err(GetLastError());
+        return false;
+    }
+
+    mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING | ENABLE_PROCESSED_OUTPUT;
+    if (!SetConsoleMode(console, mode)) {
+        _sir_handlewin32err(GetLastError());
+        return false;
+    }
+
+    return true;
+}
+
+static BOOL CALLBACK __sir_config_consoles_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
     _SIR_UNUSED(ponce);
+    _SIR_UNUSED(param);
     _SIR_UNUSED(ctx);
-    InitializeCriticalSection((LPCRITICAL_SECTION)param);
-    return TRUE;
+
+    __sir_stdout = GetStdHandle(STD_OUTPUT_HANDLE);
+    __sir_stderr = GetStdHandle(STD_ERROR_HANDLE);
+    
+    return (_sir_config_console(__sir_stdout) && _sir_config_console(__sir_stderr)) ? TRUE : FALSE;
 }
 
 #endif /* !_WIN32 */

@@ -40,11 +40,37 @@
  */
 
 #if !defined(_WIN32)
-bool _sir_stderr_write(const sirchar_t* message);
-bool _sir_stdout_write(const sirchar_t* message);
+
+bool _sir_write_stdio(FILE* stream, const sirchar_t* message, size_t len);
+
+static inline
+bool _sir_write_stdout(const sirchar_t* message) {
+    return _sir_write_stdio(stdout, message, 0);
+}
+
+static inline
+bool _sir_write_stderr(const sirchar_t* message) {
+    return _sir_write_stdio(stderr, message, 0);
+}
+
 #else
-bool _sir_stderr_write(uint16_t style, const sirchar_t* message);
-bool _sir_stdout_write(uint16_t style, const sirchar_t* message);
+
+extern HANDLE __sir_stdout;
+extern HANDLE __sir_stderr;
+
+bool _sir_initialize_stdio(void);
+bool _sir_write_stdio(HANDLE console, const sirchar_t* message,  size_t len);
+
+static inline
+bool _sir_write_stdout(const sirchar_t* message, size_t len) {
+    return _sir_write_stdio(__sir_stdout, message, len);
+}
+
+static inline
+bool _sir_write_stderr(const sirchar_t* message, size_t len) {
+    return _sir_write_stdio(__sir_stderr, message, len);
+}
+
 #endif
 
 /** @} */

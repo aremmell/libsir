@@ -183,6 +183,7 @@ bool _sir_validptrnofail(const void* restrict p) {
     return __sir_validptr(p, false);
 }
 
+/** Validates a sir_update_data structure. */
 static inline
 bool _sir_validupdatedata(sir_update_data* data) {
     return NULL != data && ((NULL == data->levels || _sir_validlevels(*data->levels)) &&

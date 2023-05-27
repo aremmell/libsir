@@ -106,7 +106,7 @@ BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
 void _sir_initmutex(sirmutex_t* mutex);
 
 /** Executes only one time. */
-void _sir_once(sironce_t* once, sir_once_fn func);
+bool _sir_once(sironce_t* once, sir_once_fn func);
 
 /** Core output formatting. */
 bool _sir_logv(sir_level level, const sirchar_t* format, va_list args);
@@ -122,8 +122,8 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output);
 int _sir_syslog_maplevel(sir_level level);
 #endif
 
-/** Retrieves a buffer from a ::sirbuf. */
-sirchar_t* _sirbuf_get(sirbuf* buf, size_t idx);
+/** Initializes a siroutput from a sirbuf */
+void _sir_buf2output(sirbuf* buf, siroutput* output);
 
 /** Converts a ::sir_level to its human-readable form. */
 const sirchar_t* _sir_levelstr(sir_level level);

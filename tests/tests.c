@@ -32,25 +32,25 @@
 #include "tests.h"
 
 static const sir_test sir_tests[] = {
-    {"performance", sirtest_perf},
-    {"multi-thread race", sirtest_mthread_race},
-    {"exceed max buffer size", sirtest_exceedmaxsize},
-    {"file cache sanity", sirtest_filecachesanity},
-    {"set invalid text style", sirtest_failsetinvalidstyle},
-    {"no output destination", sirtest_failnooutputdest},
-    {"invalid file name", sirtest_failinvalidfilename},
-    {"bad file permissions", sirtest_failfilebadpermission},
-    {"null pointers", sirtest_failnulls},
-    {"output without init", sirtest_failwithoutinit},
-    {"superfluous init", sirtest_failinittwice},
-    {"output after cleanup", sirtest_failaftercleanup},
-    {"re-initialize", sirtest_initcleanupinit},
-    {"duplicate file name", sirtest_faildupefile},
+    {"performance",             sirtest_perf},
+    {"multi-thread race",       sirtest_mthread_race},
+    {"exceed max buffer size",  sirtest_exceedmaxsize},
+    {"file cache sanity",       sirtest_filecachesanity},
+    {"set invalid text style",  sirtest_failsetinvalidstyle},
+    {"no output destination",   sirtest_failnooutputdest},
+    {"invalid file name",       sirtest_failinvalidfilename},
+    {"bad file permissions",    sirtest_failfilebadpermission},
+    {"null pointers",           sirtest_failnulls},
+    {"output without init",     sirtest_failwithoutinit},
+    {"superfluous init",        sirtest_failinittwice},
+    {"output after cleanup",    sirtest_failaftercleanup},
+    {"re-initialize",           sirtest_initcleanupinit},
+    {"duplicate file name",     sirtest_faildupefile},
     {"remove nonexistent file", sirtest_failremovebadfile},
     {"roll/archive large file", sirtest_rollandarchivefile},
-    {"error handling sanity", sirtest_errorsanity},
-    {"text style sanity", sirtest_textstylesanity},
-    {"update levels/options", sirtest_updatesanity},
+    {"error handling sanity",   sirtest_errorsanity},
+    {"text style sanity",       sirtest_textstylesanity},
+    {"update levels/options",   sirtest_updatesanity},
 };
 
 static const char* arg_wait = "--wait"; /* wait for key press before exiting. */
@@ -568,11 +568,11 @@ bool sirtest_perf(void) {
     const sirchar_t* logext      = ".log";
 
 #if !defined(_WIN32)
-    const size_t perflines = 1000000;
+    const size_t perflines       = 1000000;
 #else
-    /* stdio is hilariously slow on windows; do less. */
-    const size_t perflines = 100000;
+    const size_t perflines       = 100000;
 #endif
+
     INIT(si, SIRL_ALL, SIRO_NOMSEC, 0, 0);
     bool pass = si_init;
 
@@ -586,13 +586,8 @@ bool sirtest_perf(void) {
         sirtimer_t printftimer = {0};
         startsirtimer(&printftimer);
 
-        for (size_t n = 0; n < perflines; n++) {
-#if !defined(_WIN32)
-            printf("\033[97m%.2f: lorem ipsum foo bar %s: %zu\033[0m\n", sirtimerelapsed(&printftimer), "baz", 1234 + n);
-#else
-            printf("%.2f: lorem ipsum foo bar %s: %zu\n", sirtimerelapsed(&printftimer), "baz", 1234 + n);
-#endif
-        }
+        for (size_t n = 0; n < perflines; n++)
+            printf("\x1b[97m%.2f: lorem ipsum foo bar %s: %zu\x1b[0m\n", sirtimerelapsed(&printftimer), "baz", 1234 + n);
 
         printfelapsed = sirtimerelapsed(&printftimer);
 
@@ -602,7 +597,7 @@ bool sirtest_perf(void) {
         startsirtimer(&stdiotimer);
 
         for (size_t n = 0; n < perflines; n++)
-            sir_debug("lorem ipsum foo bar %s: %zu", "baz", 1234 + n);
+            sir_debug("%.2f: lorem ipsum foo bar %s: %zu", sirtimerelapsed(&stdiotimer), "baz", 1234 + n);
 
         stdioelapsed = sirtimerelapsed(&stdiotimer);
 

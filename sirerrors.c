@@ -145,13 +145,14 @@ void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* fi
 
     if (errbuf) {
         HLOCAL local_free = LocalFree((HLOCAL)errbuf);
+        _SIR_UNUSED(local_free);
         assert(NULL == local_free);
         errbuf = NULL;
     }
 
-#if defined(SIR_ASSERT_ON_ERROR)
+#   if defined(SIR_ASSERT_ON_ERROR)
     assert(ERROR_SUCCESS == code);
-#endif
+#   endif
 }
 #endif
 

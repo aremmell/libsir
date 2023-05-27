@@ -198,18 +198,17 @@
 /** The value that represents an invalid file identifier. */
 #define SIR_INVALID (int)-1
 
-#if !defined(_WIN32)
 /** The size, in characters, of the buffer used to hold text styling data. */
 #define SIR_MAXSTYLE 16
+
+/** The prefix string used to begin a styling sequence in stdio output. */
+#define SIR_BEGINSTYLE "\x1b["
+
 /** The string used to reset any styling applied to text in stdio output. */
-#define SIR_ENDSTYLE "\033[0m"
+#define SIR_ENDSTYLE SIR_BEGINSTYLE "0m"
+
 /** The default clock used to obtain the current millisecond from \a clock_gettime. */
 #define SIR_MSECCLOCK CLOCK_MONOTONIC
-#else
-#define SIR_MAXSTYLE sizeof(uint16_t)
-#undef SIR_ENDSTYLE
-#undef SIR_MSECCLOCK
-#endif
 
 /** @} */
 
