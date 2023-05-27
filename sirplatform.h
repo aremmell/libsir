@@ -97,6 +97,10 @@
 
 #if defined(PATH_MAX)
 #   define SIR_MAXPATH PATH_MAX
+#elif defined(MAXPATHLEN)
+#   define SIR_MAXPATH MAXPATHLEN
+#else
+#   define SIR_MAXPATH 1024
 #endif
 
 #if _POSIX_TIMERS > 0
@@ -151,12 +155,6 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #   else
 #       error "Unable to configure thread_local!"
 #   endif
-#endif
-
-/** A sensible (?) constraint for the limit of a file's path. Note that this value
- * is only used in the absence of PATH_MAX (or MAX_PATH on windows). */
-#if !defined(SIR_MAXPATH)
-#   define SIR_MAXPATH 65535
 #endif
 
 #if defined(_WIN32) && defined(__STDC_SECURE_LIB__)
