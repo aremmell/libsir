@@ -40,8 +40,7 @@
 
 #if !defined(_WIN32)
 
-bool _sir_write_stdio(FILE* stream, const sirchar_t* message, size_t len) {
-    _SIR_UNUSED(len);
+bool _sir_write_stdio(FILE* stream, const sirchar_t* message) {
 
     if (EOF == fputs(message, stream)) {
         _sir_handleerr(errno);

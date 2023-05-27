@@ -41,16 +41,18 @@
 
 #if !defined(_WIN32)
 
-bool _sir_write_stdio(FILE* stream, const sirchar_t* message, size_t len);
+bool _sir_write_stdio(FILE* stream, const sirchar_t* message);
 
 static inline
-bool _sir_write_stdout(const sirchar_t* message) {
-    return _sir_write_stdio(stdout, message, 0);
+bool _sir_write_stdout(const sirchar_t* message, size_t len) {
+    _SIR_UNUSED(len);
+    return _sir_write_stdio(stdout, message);
 }
 
 static inline
-bool _sir_write_stderr(const sirchar_t* message) {
-    return _sir_write_stdio(stderr, message, 0);
+bool _sir_write_stderr(const sirchar_t* message, size_t len) {
+    _SIR_UNUSED(len);    
+    return _sir_write_stdio(stderr, message);
 }
 
 #else
