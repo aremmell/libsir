@@ -99,8 +99,8 @@ typedef enum {
     SIRS_FG_BLUE     = 0x50,    /**< Blue foreground. */
     SIRS_FG_MAGENTA  = 0x60,    /**< Magenta foreground. */
     SIRS_FG_CYAN     = 0x70,    /**< Cyan foreground. */
-    SIRS_FG_LGRAY    = 0x90,    /**< Light gray foreground. */
     SIRS_FG_DEFAULT  = 0x80,    /**< Use the default foreground color. */
+    SIRS_FG_LGRAY    = 0x90,    /**< Light gray foreground. */
     SIRS_FG_DGRAY    = 0xa0,    /**< Dark gray foreground. */
     SIRS_FG_LRED     = 0xb0,    /**< Light red foreground. */
     SIRS_FG_LGREEN   = 0xc0,    /**< Light green foreground. */
@@ -191,6 +191,9 @@ typedef struct {
 
 /** Text style background color mask. */
 #define _SIRS_BG_MASK 0x000ff000
+
+/** True if foreground and background colors are the same. */
+#define _SIRS_SAME_COLOR(fg, bg) (((bg >> 4) & _SIRS_FG_MASK) == fg)
 
 /** Magic number used to determine if libsir has been initialized. */
 #define _SIR_MAGIC 0x60906090
