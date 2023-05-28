@@ -57,7 +57,6 @@
 #   include <dirent.h>
 #endif
 
-
 #define STRFMT(clr, s) clr s "\x1b[0m"
 #define RED(s) STRFMT("\x1b[1;91m", s)
 #define GREEN(s) STRFMT("\x1b[1;92m", s)
@@ -211,13 +210,14 @@ void print_os_error(void);
 
 #if !defined(_WIN32)
 #   define handle_os_error(clib, fmt, ...) (void)clib; _sir_handleerr(errno); \
-        fprintf(stderr,"\t" STR(fmt) "\n", __VA_ARGS__); \
+        fprintf(stderr,"\t" RED(fmt) ":\n", __VA_ARGS__); \
         print_os_error();
 #else
 #   define handle_os_error(clib, fmt, ...) clib ? _sir_handleerr(errno) : _sir_handlewin32err(GetLastError()); \
-        fprintf(stderr, "\t" STR(fmt) "\n", __VA_ARGS__); \
+        fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
         print_os_error();
 #endif
+
 unsigned int getrand(void);
 
 bool rmfile(const char* filename);
