@@ -46,7 +46,7 @@
  * ::sir_settextstyle sets (overrides) the style values in this array
  * at runtime; only the SIRL_* values are constant.
  * 
- * ::sir_default_style_map in \ref sirdefaults.h contains the constant,
+ * ::sir_default_style_map in @ref sirdefaults.h contains the constant,
  * default styles for each level.
  * 
  * @attention Entries *must* remain in numeric ascending order (by SIRL_*);
@@ -64,7 +64,7 @@ static sir_level_style_pair sir_override_style_map[] = {
 };
 
 /**
- * @brief Mapping of ::sir_level <-> string representation (\ref sirconfig.h)
+ * @brief Mapping of ::sir_level <-> string representation (@ref sirconfig.h)
  * 
  * ::_sir_levelstr obtains string representations from this array
  * for output formatting.

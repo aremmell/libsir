@@ -147,7 +147,7 @@ typedef struct {
  */
 typedef struct {
     sir_levels levels;
-    bool includePID;
+    bool include_pid;
 } sir_syslog_dest;
 
 /**
@@ -212,26 +212,6 @@ typedef struct {
 
 /** Formatted output sent to destinations. */
 typedef struct {
-    sirchar_t* style;
-    sirchar_t* timestamp;
-    sirchar_t* msec;
-    sirchar_t* level;
-    sirchar_t* name;
-    sirchar_t* pid;
-    sirchar_t* tid;
-    sirchar_t* message;
-    sirchar_t* output;
-    size_t output_len;
-
-    struct {
-        sir_level level;
-        pid_t pid;
-        pid_t tid;
-    } state;
-} siroutput;
-
-/** Buffers for output formatting. */
-typedef struct {
     sirchar_t style[SIR_MAXSTYLE];
     sirchar_t timestamp[SIR_MAXTIME];
     sirchar_t msec[SIR_MAXMSEC];
@@ -241,6 +221,12 @@ typedef struct {
     sirchar_t tid[SIR_MAXPID];
     sirchar_t message[SIR_MAXMESSAGE];
     sirchar_t output[SIR_MAXOUTPUT];
+    size_t output_len;
+    struct {
+        sir_level level;
+        pid_t pid;
+        pid_t tid;
+    } state;    
 } sirbuf;
 
 /** ::sir_level <-> default ::sir_textstyle mapping. */
@@ -249,7 +235,7 @@ typedef struct {
     uint32_t style;        /**< The default value. */
 } sir_level_style_pair;
 
-/** ::sir_level <-> string representation mapping (\ref sirconfig.h) */
+/** ::sir_level <-> string representation mapping (@ref sirconfig.h) */
 typedef struct {
     const sir_level level;
     const char* str;

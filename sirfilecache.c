@@ -511,10 +511,10 @@ bool _sir_fcache_destroy(sirfcache* sfc) {
     return false;
 }
 
-bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output,
+bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
     size_t* dispatched, size_t* wanted) {
 
-    if (_sir_validptr(sfc) && _sir_validlevel(level) && _sir_validptr(output)
+    if (_sir_validptr(sfc) && _sir_validlevel(level) && _sir_validptr(buf)
         && _sir_validptr(dispatched) && _sir_validptr(wanted)) {
 
         bool r = true;
@@ -536,7 +536,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output,
             (*wanted)++;
 
             if (!write || sfc->files[n]->opts != lastopts) {
-                write = _sir_format(false, sfc->files[n]->opts, output);
+                write = _sir_format(false, sfc->files[n]->opts, buf);
                 assert(write);
                 lastopts = sfc->files[n]->opts;
             }

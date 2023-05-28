@@ -68,7 +68,7 @@ bool _sir_fcache_pred_id(const void* match, sirfile* iter);
 sirfile* _sir_fcache_find(sirfcache* sfc, const void* match, sir_fcache_pred pred);
 
 bool _sir_fcache_destroy(sirfcache* sfc);
-bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, siroutput* output,
+bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
     size_t* dispatched, size_t* wanted);
 
 void _sir_fclose(FILE** f);

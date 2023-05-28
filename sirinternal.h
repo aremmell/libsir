@@ -88,6 +88,8 @@ bool _sir_mapmutexid(sir_mutex_id mid, sirmutex_t** m, void** section);
 bool _sir_cleanup(void);
 
 #if !defined(_WIN32)
+/** General initialization procedure. */
+void _sir_initialize_once(void);
 /** Initializes a specific mutex. */
 void _sir_initmutex_si_once(void);
 /** Initializes a specific mutex. */
@@ -95,6 +97,8 @@ void _sir_initmutex_fc_once(void);
 /** Initializes a specific mutex. */
 void _sir_initmutex_ts_once(void);
 #else
+/** General initialization procedure. */
+BOOL CALLBACK _sir_initialize_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
 /** Initializes a specific mutex. */
 BOOL CALLBACK _sir_initmutex_si_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
 /** Initializes a specific mutex. */
@@ -113,18 +117,15 @@ bool _sir_once(sironce_t* once, sir_once_fn func);
 bool _sir_logv(sir_level level, const sirchar_t* format, va_list args);
 
 /** Output dispatching. */
-bool _sir_dispatch(sirinit* si, sir_level level, siroutput* output);
+bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf);
 
 /** Specific destination formatting. */
-const sirchar_t* _sir_format(bool styling, sir_options opts, siroutput* output);
+const sirchar_t* _sir_format(bool styling, sir_options opts, sirbuf* buf);
 
 #if !defined(SIR_NO_SYSLOG)
 /** Maps a ::sir_level to a \a syslog level. */
 int _sir_syslog_maplevel(sir_level level);
 #endif
-
-/** Initializes a siroutput from a sirbuf */
-void _sir_buf2output(sirbuf* buf, siroutput* output);
 
 /** Converts a ::sir_level to its human-readable form. */
 const sirchar_t* _sir_levelstr(sir_level level);
