@@ -143,7 +143,7 @@ bool _sirfile_open(sirfile* sf) {
 #endif
             if (SIR_INVALID == fd)
                 _sir_handleerr(errno);
-#pragma warning("TODO: This is wrong. If we don't get a valid descriptor for the file, how will we write to it?")                
+#pragma message("TODO: This is wrong. If we don't get a valid descriptor for the file, how will we write to it?")                
 
             if (_sir_validfid(fd)) {
                 _sirfile_close(sf);
