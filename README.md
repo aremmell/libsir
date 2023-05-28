@@ -168,7 +168,7 @@ Another option for implementing libsir would simply be to include all of the sou
 ### Preprocessor
 
 - For my own development purposes, I included a preprocesor define that causes libsir to log certain events to `stderr` that may be useful in diagnosing problems if/when they arise: `-DSIR_SELFLOG`.
-- You should also be aware that `assert` is used in libsir. If you build _without_ `-DNDEBUG`, and an `assert` triggers, your program will halt (`assert` calls `abort` if the expression is `false`.
+- You should also be aware that `assert` is used in libsir. If you build _without_ `-DNDEBUG`, and an `assert` triggers, your program will halt (`assert` calls `abort` if the expression is `false`).
 
 ### Why libsir?
 
