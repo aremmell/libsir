@@ -345,7 +345,7 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
 
     _sir_unlocksection(_SIRM_INIT);
 
-    static thread_local sirbuf buf = {0};
+    sirbuf buf = {0};
     
     bool appliedstyle = false;
     sir_textstyle style = _sir_gettextstyle(level);
@@ -369,32 +369,22 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
             _sir_handleerr(errno);
     }
 
-    if (buf.state.level != level) {
-        if (0 > snprintf(buf.level, SIR_MAXLEVEL, SIR_LEVELFORMAT, _sir_levelstr(level)))
-            _sir_handleerr(errno);
-        buf.state.level = level;            
-    }
+    if (0 > snprintf(buf.level, SIR_MAXLEVEL, SIR_LEVELFORMAT, _sir_levelstr(level)))
+        _sir_handleerr(errno);
 
-    if (!_sir_validstrnofail(tmpsi.processName) && 0 != strncmp(buf.name, tmpsi.processName, SIR_MAXNAME))
+    if (_sir_validstrnofail(tmpsi.processName))
         _sir_strncpy(buf.name, SIR_MAXNAME, tmpsi.processName, SIR_MAXNAME);
 
-
     pid_t pid = _sir_getpid();
-    if (buf.state.pid != pid) {
-        if (0 > snprintf(buf.pid, SIR_MAXPID, SIR_PIDFORMAT, pid))
-            _sir_handleerr(errno);
-        buf.state.pid = pid;
-    }
+    if (0 > snprintf(buf.pid, SIR_MAXPID, SIR_PIDFORMAT, pid))
+        _sir_handleerr(errno);
 
     pid_t tid = _sir_gettid();
-    if (buf.state.tid != tid) {
-        if (tid != pid) {
-            if (!_sir_getthreadname(buf.tid)) {
-                if (0 > snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, tid))
-                    _sir_handleerr(errno);
-            }
+    if (tid != pid) {
+        if (!_sir_getthreadname(buf.tid)) {
+            if (0 > snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, tid))
+                _sir_handleerr(errno);
         }
-        buf.state.tid = tid;
     }
 
     if (0 > vsnprintf(buf.message, SIR_MAXMESSAGE, format, args))

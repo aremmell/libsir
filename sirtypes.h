@@ -222,11 +222,6 @@ typedef struct {
     sirchar_t message[SIR_MAXMESSAGE];
     sirchar_t output[SIR_MAXOUTPUT];
     size_t output_len;
-    struct {
-        sir_level level;
-        pid_t pid;
-        pid_t tid;
-    } state;    
 } sirbuf;
 
 /** ::sir_level <-> default ::sir_textstyle mapping. */

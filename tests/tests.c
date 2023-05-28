@@ -138,11 +138,11 @@ bool sirtest_filecachesanity(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    size_t      numfiles          = SIR_MAXFILES + 1;
+    size_t numfiles               = SIR_MAXFILES + 1;
     sirfileid_t ids[SIR_MAXFILES] = {0};
 
     sir_options even = SIRO_MSGONLY;
-    sir_options odd  = 0;
+    sir_options odd  = SIRO_ALL;
 
     for (size_t n = 0; n < numfiles - 1; n++) {
         sirchar_t path[SIR_MAXPATH] = {0};
@@ -209,6 +209,9 @@ bool sirtest_failsetinvalidstyle(void) {
 
     pass &= !sir_settextstyle(SIRL_INFO, 0xfefe);
     pass &= !sir_settextstyle(SIRL_ALL, SIRS_FG_RED | SIRS_FG_DEFAULT);
+    pass &= !sir_settextstyle(SIRL_DEBUG, SIRS_FG_WHITE + 1);
+    //pass &= !sir_settextstyle(SIRL_ALERT, SIRS_FG_BLACK | SIRS_BG_BLACK);
+#pragma message("The above should be a warning, at least. Probably should fail.")
 
     sir_cleanup();
     return print_test_error(pass, true);
@@ -564,16 +567,16 @@ bool sirtest_textstylesanity(void) {
 
 bool sirtest_perf(void) {
 
-    const sirchar_t* logbasename = "libsir-perf";
-    const sirchar_t* logext      = ".log";
+    static const sirchar_t* logbasename = "libsir-perf";
+    static const sirchar_t* logext      = ".log";
 
 #if !defined(_WIN32)
-    const size_t perflines       = 1000000;
+    static const size_t perflines       = 1000000;
 #else
-    const size_t perflines       = 100000;
+    static const size_t perflines       = 100000;
 #endif
 
-    INIT(si, SIRL_ALL, SIRO_NOMSEC, 0, 0);
+    INIT_N(si, SIRL_ALL, SIRO_NOMSEC, 0, 0, "perf");
     bool pass = si_init;
 
     if (pass) {
