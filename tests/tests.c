@@ -83,10 +83,10 @@ int main(int argc, char** argv) {
             perf = true;
     }
 
-    bool       allpass = true;
-    int        tests   = (perf ? 1 : (sizeof(sir_tests) / sizeof(sir_test)) - 1);
-    int        first   = (perf ? 0 : 1);
-    int        passed  = first;
+    bool allpass     = true;
+    int tests        = (perf ? 1 : (sizeof(sir_tests) / sizeof(sir_test)) - 1);
+    int first        = (perf ? 0 : 1);
+    int passed       = first;
     sirtimer_t timer = {0};
 
     printf(WHITE("running %d libsir %s...\n"), tests, TEST_S(tests));
@@ -390,7 +390,6 @@ bool sirtest_rollandarchivefile(void) {
     unsigned delcount = 0;
     if (!enumfiles(logbasename, deletefiles, &delcount)) {
         handle_os_error(false, "failed to enumerate log files with base name: %s!", logbasename);
-        print_os_error();
         return false;
     }
 
@@ -407,14 +406,12 @@ bool sirtest_rollandarchivefile(void) {
 
     if (0 != fseek(f, fillsize, SEEK_SET)) {
         handle_os_error(true, "fseek in file %s failed!", logfilename);
-        print_os_error();
         fclose(f);
         return false;
     }
 
     if (EOF == fputc('\0', f)) {
         handle_os_error(true, "fputc in file %s failed!", logfilename);
-        print_os_error();
         fclose(f);
         return false;
     }
@@ -444,7 +441,6 @@ bool sirtest_rollandarchivefile(void) {
         unsigned foundlogs = 0;
         if (!enumfiles(logbasename, countfiles, &foundlogs)) {
             handle_os_error(false, "failed to enumerate log files with base name: %s!", logbasename);
-            print_os_error();
             pass = false;
         }
 
@@ -458,7 +454,6 @@ bool sirtest_rollandarchivefile(void) {
     delcount = 0;
     if (!enumfiles(logbasename, deletefiles, &delcount)) {
         handle_os_error(false, "failed to enumerate log files with base name: %s!", logbasename);
-        print_os_error();
         return false;
     }
 
@@ -879,7 +874,6 @@ bool rmfile(const char* filename) {
             return true;
 
         handle_os_error(true, "failed to stat %s!", filename);
-        print_os_error();
         return false;
     }
 
@@ -891,7 +885,6 @@ bool rmfile(const char* filename) {
 
     if (!removed) {
         handle_os_error(false, "failed to delete %s!", filename);
-        print_os_error();
     } else {
         printf("\tsuccessfully deleted %s (%ld bytes)...\n", filename, (long)st.st_size);
     }
@@ -957,7 +950,6 @@ bool startsirtimer(sirtimer_t* timer) {
     int gettime = clock_gettime(CLOCK_MONOTONIC, &timer->ts);
     if (0 != gettime) {
         handle_os_error(true, "clock_gettime(%s) failed!", "CLOCK_MONOTONIC");
-        print_os_error();
     }
 
     return 0 == gettime;
@@ -975,7 +967,6 @@ float sirtimerelapsed(const sirtimer_t* timer) {
                        (timer->ts.tv_nsec / 1e6));
     } else {
         handle_os_error(true, "clock_gettime(%s) failed!", "CLOCK_MONOTONIC");
-        print_os_error();
     }
     return 0.0f;
 #else
