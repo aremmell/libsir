@@ -34,6 +34,10 @@ else
 	CFLAGS = -Wpedantic -std=c11 -I. -DNDEBUG -fPIC -O3
 endif
 
+ifeq ($(SIR_SELFLOG),1)
+	CFLAGS += -DSIR_SELFLOG
+endif
+
 ifeq ($(OS),Windows_NT)
 	CFLAGS += -D_WIN32
 endif
