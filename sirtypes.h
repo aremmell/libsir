@@ -193,7 +193,7 @@ typedef struct {
 #define _SIRS_BG_MASK 0x000ff000
 
 /** True if foreground and background colors are the same. */
-#define _SIRS_SAME_COLOR(fg, bg) (((bg >> 4) & _SIRS_FG_MASK) == fg)
+#define _SIRS_SAME_COLOR(fg, bg) (((bg >> 8) & _SIRS_FG_MASK) == fg)
 
 /** Magic number used to determine if libsir has been initialized. */
 #define _SIR_MAGIC 0x60906090
