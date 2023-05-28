@@ -726,11 +726,11 @@ bool sirtest_mthread_race(void) {
         int create = pthread_create(&thrds[n], NULL, sirtest_thread, (void*)path);
         if (0 != create) {
             errno = create;
-            handle_os_error(true, "pthread_create() for thread #%zu failed!\n", n + 1);
+            handle_os_error(true, "pthread_create() for thread #%zu failed!", n + 1);
 #else
         thrds[n] = _beginthreadex(NULL, 0, sirtest_thread, (void*)path, 0, NULL);
         if (0 == thrds[n]) {
-            handle_os_error(true, "_beginthreadex() for thread #%zu failed!\n", n + 1);
+            handle_os_error(true, "_beginthreadex() for thread #%zu failed!", n + 1);
 #endif
             free(path);
             pass = false;
@@ -739,14 +739,6 @@ bool sirtest_mthread_race(void) {
 
         last_created = n;
         any_created = true;
-
-#if defined(__BSD__) || defined(_GNU_SOURCE)
-        sirchar_t thrd_name[SIR_MAXPID];
-        snprintf(thrd_name, SIR_MAXPID, "%lu", n);
-        create = pthread_setname_np(thrds[n], thrd_name);
-        if (0 != create)
-            handle_os_error(true, "pthread_setname_np() for thread #%zu failed!\n", n + 1);
-#endif
     }
 
     if (any_created) {
@@ -758,13 +750,13 @@ bool sirtest_mthread_race(void) {
             if (0 != join) {
                 joined = false;
                 errno = join;
-                handle_os_error(true, "pthread_join() for thread #%zu (%p) failed!\n", j + 1, (void*)thrds[j]);
+                handle_os_error(true, "pthread_join() for thread #%zu (%p) failed!", j + 1, (void*)thrds[j]);
             }
 #else
             DWORD wait = WaitForSingleObject((HANDLE)thrds[j], INFINITE);
             if (WAIT_OBJECT_0 != wait) {
                 joined = false;
-                handle_os_error(false, "WaitForSingleObject() for thread #%zu (%p) failed!\n", j + 1, (HANDLE)thrds[j]);
+                handle_os_error(false, "WaitForSingleObject() for thread #%zu (%p) failed!", j + 1, (HANDLE)thrds[j]);
             }
 #endif
             if (joined)
