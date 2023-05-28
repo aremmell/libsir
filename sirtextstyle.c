@@ -59,7 +59,7 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
     if (_sir_validptrnofail(pbg))
         *pbg  = bgvalid ? back : 0;
 
-    if (attrvalid || fgvalid || bgvalid)
+    if (attrvalid && fgvalid && bgvalid)
         return true;
 
     _sir_seterror(_SIR_E_TEXTSTYLE);
