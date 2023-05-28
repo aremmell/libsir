@@ -66,6 +66,9 @@
     <ClInclude Include="..\sir.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="..\sirmaps.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\docs\alert.png">
