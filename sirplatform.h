@@ -74,7 +74,6 @@
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdatomic.h>
 #include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -83,6 +82,7 @@
 #include <sys/types.h>
 #include <time.h>
 
+
 #if !defined(_WIN32)
 #   include <pthread.h>
 #   include <unistd.h>
@@ -90,6 +90,7 @@
 #   include <syslog.h>
 #   include <strings.h>
 #   include <termios.h>
+#   include <stdatomic.h>
 #if defined(__BSD__)
 #   include <pthread_np.h>
 #elif defined(__linux__)

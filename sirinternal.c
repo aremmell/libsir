@@ -53,12 +53,23 @@ static sironce_t fc_once = SIR_ONCE_INIT;
 static sirmutex_t ts_mutex;
 static sironce_t ts_once = SIR_ONCE_INIT;
 
+#if !defined(_WIN32)
 static atomic_uint_fast32_t _sir_magic;
+#else
+static volatile uint32_t _sir_magic;
+#endif
+
 static sironce_t magic_once = SIR_ONCE_INIT;
 
 bool _sir_sanity(void) {
+#if !defined(_WIN32)
     if (_SIR_MAGIC == atomic_load(&_sir_magic))
         return true;
+#else
+    if (_SIR_MAGIC == _sir_magic)
+        return true;
+#endif
+    
     _sir_seterror(_SIR_E_NOTREADY);
     return false;
 }
@@ -92,7 +103,12 @@ bool _sir_init(sirinit* si) {
     if (!_sir_validptr(si))
         return false;
 
+#if !defined(_WIN32)
     if (_SIR_MAGIC == atomic_load(&_sir_magic)) {
+#else
+    if (_SIR_MAGIC == _sir_magic) {
+#endif
+    
         _sir_seterror(_SIR_E_ALREADY);
         return false;
     }
@@ -127,7 +143,12 @@ bool _sir_init(sirinit* si) {
                 (_si->d_syslog.include_pid ? LOG_PID : 0) | LOG_ODELAY, LOG_USER);
 #endif
 
+#if !defined(_WIN32)
         atomic_store(&_sir_magic, _SIR_MAGIC);
+#else
+        _sir_magic = _SIR_MAGIC;
+#endif
+        
         _sir_unlocksection(_SIRM_INIT);
         return true;
     }
@@ -259,7 +280,12 @@ bool _sir_cleanup(void) {
     }
 
     _sir_resettextstyles();
+
+#if !defined(_WIN32)
     atomic_store(&_sir_magic, 0);
+#else
+    _sir_magic = 0;
+#endif
     
     _sir_selflog("%s: libsir is cleaned up\n", __func__);
     return cleanup;
@@ -286,7 +312,8 @@ BOOL CALLBACK _sir_initialize_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
     _SIR_UNUSED(ponce);
     _SIR_UNUSED(param);
     _SIR_UNUSED(ctx)
-    atomic_init(&_sir_magic, 0);
+
+    //atomic_init(&_sir_magic, 0);
     return TRUE;
 }
 
