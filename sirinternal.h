@@ -33,6 +33,7 @@
 #define _SIR_INTERNAL_H_INCLUDED
 
 #include "sirhelpers.h"
+#include "sirmaps.h"
 #include "sirerrors.h"
 
 /**
@@ -54,25 +55,25 @@ bool _sir_options_sanity(const sirinit* si);
 bool _sir_init(sirinit* si);
 
 /** Updates levels for \a stdout. */
-void _sir_stdoutlevels(sirinit* si, sir_update_data* data);
+void _sir_stdoutlevels(sirinit* si, sir_update_config_data* data);
 
 /** Updates options for \a stdout. */
-void _sir_stdoutopts(sirinit* si, sir_update_data* data);
+void _sir_stdoutopts(sirinit* si, sir_update_config_data* data);
 
 /** Updates levels for \a stderr. */
-void _sir_stderrlevels(sirinit* si, sir_update_data* data);
+void _sir_stderrlevels(sirinit* si, sir_update_config_data* data);
 
 /** Updates options for \a stderr. */
-void _sir_stderropts(sirinit* si, sir_update_data* data);
+void _sir_stderropts(sirinit* si, sir_update_config_data* data);
 
 /** Updates levels for \a syslog. */
-void _sir_sysloglevels(sirinit* si, sir_update_data* data);
+void _sir_sysloglevels(sirinit* si, sir_update_config_data* data);
 
 /** Updates levels/options in the global init structure. */
-typedef void (*sirinit_update)(sirinit*, sir_update_data*);
+typedef void (*sirinit_update)(sirinit*, sir_update_config_data*);
 
 /** Updates levels/options in the global init structure. */
-bool _sir_writeinit(sir_update_data* data, sirinit_update update);
+bool _sir_writeinit(sir_update_config_data* data, sirinit_update update);
 
 /** Locks a protected section. */
 void* _sir_locksection(sir_mutex_id mid);

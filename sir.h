@@ -433,7 +433,7 @@ bool sir_remfile(sirfileid_t id);
 bool sir_settextstyle(sir_level level, sir_textstyle style);
 
 /**
- * @brief Resets all \a stdio text styles to their default values (::sir_default_styles).
+ * @brief Resets all \a stdio text styles to their default values.
  *
  * @return boolean
  * @retval true All text styles were reset to their defaults.

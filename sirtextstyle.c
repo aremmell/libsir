@@ -65,7 +65,7 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
 
 sir_textstyle _sir_gettextstyle(sir_level level) {
     if (_sir_validlevel(level)) {
-        sir_style_map* map = _sir_locksection(_SIRM_TEXTSTYLE);
+        sir_level_style_pair* map = _sir_locksection(_SIRM_TEXTSTYLE);
         assert(map);
 
         if (map) {
@@ -73,7 +73,7 @@ sir_textstyle _sir_gettextstyle(sir_level level) {
             bool override = false;
 
             size_t low  = 0;
-            size_t high = SIR_NUMLEVELS - 1;
+            size_t high = SIR_NUMLEVELS;
 
             _SIR_DECLARE_BIN_SEARCH(low, high);
             _SIR_BEGIN_BIN_SEARCH();
@@ -92,7 +92,7 @@ sir_textstyle _sir_gettextstyle(sir_level level) {
             _SIR_END_BIN_SEARCH();
 
             if (!override)
-                found = _sir_getdefstyle(sir_default_styles, level);
+                found = _sir_getdefstyle(level);
 
             _sir_unlocksection(_SIRM_TEXTSTYLE);
             return found;
@@ -102,45 +102,42 @@ sir_textstyle _sir_gettextstyle(sir_level level) {
     return SIRS_INVALID;
 }
 
-sir_textstyle _sir_getdefstyle(const sir_style_map* map, sir_level level) {
+sir_textstyle _sir_getdefstyle(sir_level level) {
     if (_sir_validlevel(level)) {
-        if (map) {
-            sir_textstyle found = SIRS_INVALID;
+        sir_textstyle found = SIRS_INVALID;
 
-            size_t low = 0;
-            size_t high = SIR_NUMLEVELS - 1;
+        size_t low = 0;
+        size_t high = _sir_countof(sir_default_style_map) - 1;
 
-            _SIR_DECLARE_BIN_SEARCH(low, high);
-            _SIR_BEGIN_BIN_SEARCH();
+        _SIR_DECLARE_BIN_SEARCH(low, high);
+        _SIR_BEGIN_BIN_SEARCH();
 
-            if (map[_mid].level == level) {
-                found = map[_mid].style;
-                break;
-            }
-
-            int comparison = map[_mid].level < level ? 1 : -1;
-
-            _SIR_ITERATE_BIN_SEARCH(comparison);
-            _SIR_END_BIN_SEARCH();
-
-            return found;
+        if (sir_default_style_map[_mid].level == level) {
+            found = sir_default_style_map[_mid].style;
+            break;
         }
+
+        int comparison = sir_default_style_map[_mid].level < level ? 1 : -1;
+
+        _SIR_ITERATE_BIN_SEARCH(comparison);
+        _SIR_END_BIN_SEARCH();
+
+        return found;
     }
 
     return SIRS_INVALID;
 }
 
-bool _sir_settextstyle(sir_level level, sir_textstyle style)
-{
+bool _sir_settextstyle(sir_level level, sir_textstyle style) {
     _sir_seterror(_SIR_E_NOERROR);
 
     if (_sir_sanity() && _sir_validlevel(level) && _sir_validstyle(style, NULL, NULL, NULL)) {
-        sir_style_map* map = _sir_locksection(_SIRM_TEXTSTYLE);
+        sir_level_style_pair* map = _sir_locksection(_SIRM_TEXTSTYLE);
         assert(map);
 
         if (map) {
             size_t low   = 0;
-            size_t high  = SIR_NUMLEVELS - 1;
+            size_t high  = SIR_NUMLEVELS;
             bool updated = false;
 
             _SIR_DECLARE_BIN_SEARCH(low, high);
@@ -165,7 +162,7 @@ bool _sir_settextstyle(sir_level level, sir_textstyle style)
 }
 
 bool _sir_resettextstyles(void) {
-    sir_style_map* map = _sir_locksection(_SIRM_TEXTSTYLE);
+    sir_level_style_pair* map = _sir_locksection(_SIRM_TEXTSTYLE);
     assert(map);
 
     if (map) {
@@ -188,7 +185,7 @@ uint16_t _sir_getprivstyle(uint32_t style) {
     static const size_t idx_fg_end = 19;
 
     static const size_t idx_bg_start = 20;
-    static const size_t idx_bg_end = _sir_countof(sir_priv_map) - 1;
+    static const size_t idx_bg_end = _sir_countof(sir_style_16color_map) - 1;
 
     size_t low = 0;
     size_t high = 0;
@@ -210,10 +207,10 @@ uint16_t _sir_getprivstyle(uint32_t style) {
     _SIR_DECLARE_BIN_SEARCH(low, high);
     _SIR_BEGIN_BIN_SEARCH();
 
-    if (sir_priv_map[_mid].from == style)
-        return sir_priv_map[_mid].to;
+    if (sir_style_16color_map[_mid].from == style)
+        return sir_style_16color_map[_mid].to;
 
-    int comparison = sir_priv_map[_mid].from < style ? 1 : -1;
+    int comparison = sir_style_16color_map[_mid].from < style ? 1 : -1;
 
     _SIR_ITERATE_BIN_SEARCH(comparison);
     _SIR_END_BIN_SEARCH();

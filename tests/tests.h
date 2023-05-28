@@ -57,18 +57,13 @@
 #   include <dirent.h>
 #endif
 
-#if !defined(_WIN32)
-#   define STRFMT(clr, s) clr s "\033[0m"
-#   define RED(s) STRFMT("\033[1;91m", s)
-#   define GREEN(s) STRFMT("\033[1;92m", s)
-#   define WHITE(s) STRFMT("\033[1;97m", s)
-#   define BLUE(s) STRFMT("\033[1;34m", s)
-#else
-#   define RED(s) s
-#   define GREEN(s) s
-#   define WHITE(s) s
-#   define BLUE(s) s
-#endif
+
+#define STRFMT(clr, s) clr s "\x1b[0m"
+#define RED(s) STRFMT("\x1b[1;91m", s)
+#define GREEN(s) STRFMT("\x1b[1;92m", s)
+#define WHITE(s) STRFMT("\x1b[1;97m", s)
+#define BLUE(s) STRFMT("\x1b[1;34m", s)
+#define CYAN(s) STRFMT("\x1b[1;36m", s)
 
 #define INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, name) \
     sirinit var         = {0};                          \

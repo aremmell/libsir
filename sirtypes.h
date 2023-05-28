@@ -61,17 +61,9 @@ typedef enum {
     SIRL_DEFAULT = 0x100 /**< Use the default levels for this type of destination. */
 } sir_level;
 
-/** The number of actual usable ::sir_level entries to be used
- * for computing the size of arrays.
- * 
- * The enum minus SIRL_ALL, SIRL_DEFAULT, and SIRL_NONE, which are
- * currently not used as keys for look-ups.
- */
-#define SIR_NUMLEVELS 8
-
 /**
  * Used to differentiate between a single ::sir_level and one or more
- * bitwise OR'd together.
+ * of them bitwise OR'd together.
  */
 typedef uint16_t sir_levels;
 
@@ -95,7 +87,7 @@ typedef enum {
  */
 typedef uint32_t sir_options;
 
-/** Available styles \a (colors, brightness) for console output. */
+/** Styles for 16-color console output. */
 typedef enum {
     SIRS_NONE        = 0,       /**< Used internally; has no effect. */
     SIRS_BRIGHT      = 0x1,     /**< If set, the foreground color is 'intensified'. */
@@ -142,7 +134,7 @@ typedef char sirchar_t;
 
 /**
  * @struct sir_stdio_dest
- * @brief Configuration for \a stdio destinations \a (stdout and stderr).
+ * @brief Configuration for stdio destinations (stdout and stderr).
  */
 typedef struct {
     sir_levels  levels;
@@ -151,11 +143,11 @@ typedef struct {
 
 /**
  * @struct sir_syslog_dest
- * @brief Configuration for the \a syslog destination.
+ * @brief Configuration for the syslog destination.
  */
 typedef struct {
     sir_levels levels;
-    bool       includePID;
+    bool includePID;
 } sir_syslog_dest;
 
 /**
@@ -167,14 +159,14 @@ typedef struct {
  * in order to begin using libsir.
  */
 typedef struct {
-    sir_stdio_dest d_stdout; /**< \a stdout configuration. */
-    sir_stdio_dest d_stderr; /**< \a stderr configuration. */
-    sir_syslog_dest d_syslog; /**< \a syslog configuration (if available). */
+    sir_stdio_dest d_stdout;  /**< stdout configuration. */
+    sir_stdio_dest d_stderr;  /**< stderr configuration. */
+#if !defined(SIR_NOSYSLOG)    
+    sir_syslog_dest d_syslog; /**< syslog configuration (if available). */
+#endif
 
-    /**
-     * If set, defines the name that will appear in formatted output.
-     * Set ::SIRO_NONAME for a destination to supppress it.
-     */
+    /** If set, defines the name that will appear in formatted output.
+     * Set ::SIRO_NONAME for a destination to supppress it. */
     sirchar_t processName[SIR_MAXNAME];
 } sirinit;
 
@@ -192,13 +184,13 @@ typedef struct {
  */
 
 /** Text style attribute mask. */
-#define _SIRS_ATTR_MASK 0xf
+#define _SIRS_ATTR_MASK 0x0000000f
 
 /** Text style foreground color mask. */
-#define _SIRS_FG_MASK 0xff0
+#define _SIRS_FG_MASK 0x00000ff0
 
 /** Text style background color mask. */
-#define _SIRS_BG_MASK 0xff000
+#define _SIRS_BG_MASK 0x000ff000
 
 /** Magic number used to determine if libsir has been initialized. */
 #define _SIR_MAGIC 0x60906090
@@ -208,14 +200,14 @@ typedef struct {
     sirchar_t*  path;
     sir_levels  levels;
     sir_options opts;
-    FILE*       f;
-    int         id;
+    FILE* f;
+    int id;
 } sirfile;
 
 /** Log file cache. */
 typedef struct {
     sirfile* files[SIR_MAXFILES];
-    size_t   count;
+    size_t count;
 } sirfcache;
 
 /** Formatted output sent to destinations. */
@@ -230,6 +222,12 @@ typedef struct {
     sirchar_t* message;
     sirchar_t* output;
     size_t output_len;
+
+    struct {
+        sir_level level;
+        pid_t pid;
+        pid_t tid;
+    } state;
 } siroutput;
 
 /** Buffers for output formatting. */
@@ -245,23 +243,29 @@ typedef struct {
     sirchar_t output[SIR_MAXOUTPUT];
 } sirbuf;
 
-/** ::sir_level <> ::sir_textstyle mapping. */
+/** ::sir_level <-> default ::sir_textstyle mapping. */
 typedef struct {
     const sir_level level; /**< The level for which the style applies. */
-    uint32_t  style;       /**< The default value. */
-} sir_style_map;
+    uint32_t style;        /**< The default value. */
+} sir_level_style_pair;
 
-/** Public (::sir_textstyle) <> platform text style mapping. */
+/** ::sir_level <-> string representation mapping (\ref sirconfig.h) */
 typedef struct {
-    uint32_t from; /**< The public text style flag(s). */
-    uint16_t to;   /**< The internal value. */
-} sir_style_priv_map;
+    const sir_level level;
+    const char* str;
+} sir_level_str_pair;
 
-/** Mutex <> protected section mapping. */
+/** Public (::sir_textstyle) <-> values used to generate styled terminal output. */
+typedef struct {
+    const uint32_t from; /**< The public text style flag(s). */
+    const uint16_t to;   /**< The internal value. */
+} sir_style_16color_pair;
+
+/** Mutex <-> protected section mapping. */
 typedef enum {
     _SIRM_INIT = 0,  /**< The ::sirinit section. */
     _SIRM_FILECACHE, /**< The ::sirfcache section. */
-    _SIRM_TEXTSTYLE, /**< The ::sir_style_map section. */
+    _SIRM_TEXTSTYLE, /**< The ::sir_level_style_pair section. */
 } sir_mutex_id;
 
 /** Error type. */
@@ -277,14 +281,11 @@ typedef struct {
     } loc;
 } sir_thread_err;
 
-/**
- * used to encapsulate dynamic updating of
- * config; add members here if necessary.
- */
+/** Encapsulates dynamic updating of current configuration. */
 typedef struct {
     sir_levels* levels;
     sir_options* opts;
-} sir_update_data;
+} sir_update_config_data;
 
 /** @} */
 

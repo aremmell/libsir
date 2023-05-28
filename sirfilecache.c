@@ -60,7 +60,7 @@ sirfileid_t _sir_addfile(const sirchar_t* path, sir_levels levels, sir_options o
     return NULL;
 }
 
-bool _sir_updatefile(sirfileid_t id, sir_update_data* data) {
+bool _sir_updatefile(sirfileid_t id, sir_update_config_data* data) {
 
     _sir_seterror(_SIR_E_NOERROR);
 
@@ -111,7 +111,7 @@ sirfile* _sirfile_create(const sirchar_t* path, sir_levels levels, sir_options o
                 _sir_strncpy(sf->path, pathLen + 1, path, pathLen);
                 
                 sf->levels = levels;
-                sf->opts = opts;
+                sf->opts   = opts;
 
                 if (!_sirfile_open(sf) || !_sirfile_validate(sf))
                     _sir_safefree(sf);
@@ -141,8 +141,9 @@ bool _sirfile_open(sirfile* sf) {
 #if defined(_WIN32)
 #   pragma warning(pop) 
 #endif
-            if (-1 == fd)
+            if (SIR_INVALID == fd)
                 _sir_handleerr(errno);
+#pragma warning("TODO: This is wrong. If we don't get a valid descriptor for the file, how will we write to it?")                
 
             if (_sir_validfid(fd)) {
                 _sirfile_close(sf);
@@ -170,7 +171,7 @@ void _sirfile_close(sirfile* sf) {
 bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
 
     if (_sirfile_validate(sf) && _sir_validstr(output)) {
-
+        
         if (_sirfile_needsroll(sf)) {
             bool rolled = false;
             sirchar_t* newpath = NULL;
@@ -182,7 +183,8 @@ bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
             }
 
             _sir_safefree(newpath);
-            if (!rolled) return false;
+            if (!rolled)
+                return false;
         }
 
         size_t writeLen = strnlen(output, SIR_MAXOUTPUT);
@@ -262,42 +264,42 @@ bool _sirfile_roll(sirfile* sf, sirchar_t** newpath) {
 
     if (_sirfile_validate(sf) && newpath) {
 
-            bool r = false;
-            sirchar_t* name = NULL;
-            sirchar_t* ext = NULL;
+        bool r = false;
+        sirchar_t* name = NULL;
+        sirchar_t* ext = NULL;
 
-            bool split = _sirfile_splitpath(sf, &name, &ext);
-            assert(split);
+        bool split = _sirfile_splitpath(sf, &name, &ext);
+        assert(split);
 
-            if (split) {
-                time_t now;
+        if (split) {
+            time_t now;
+            
+            bool gettime = _sir_getlocaltime(&now, NULL);
+            assert(gettime);
+
+            if (gettime) {                
+                sirchar_t timestamp[SIR_MAXTIME] = {0};
+                bool fmttime = _sir_formattime(now, timestamp, SIR_FNAMETIMEFORMAT);
+                assert(fmttime);
                 
-                bool gettime = _sir_getlocaltime(&now, NULL);
-                assert(gettime);
+                if (fmttime) {
+                    *newpath = (sirchar_t*)calloc(SIR_MAXPATH, sizeof(sirchar_t));
 
-                if (gettime) {                
-                    sirchar_t timestamp[SIR_MAXTIME] = {0};
-                    bool fmttime = _sir_formattime(now, timestamp, SIR_FNAMETIMEFORMAT);
-                    assert(fmttime);
-                    
-                    if (fmttime) {
-                        *newpath = (sirchar_t*)calloc(SIR_MAXPATH, sizeof(sirchar_t));
+                    if (_sir_validptr(*newpath)) {
+                        int fmtpath = snprintf(*newpath, SIR_MAXPATH, SIR_FNAMEFORMAT,
+                            name, timestamp, _sir_validstrnofail(ext) ? ext : "");                
 
-                        if (_sir_validptr(*newpath)) {
-                            int fmtpath = snprintf(*newpath, SIR_MAXPATH, SIR_FNAMEFORMAT,
-                                name, timestamp, _sir_validstrnofail(ext) ? ext : "");                
+                        if (fmtpath < 0)
+                            _sir_handleerr(errno);
 
-                            if (fmtpath < 0)
-                                _sir_handleerr(errno);
-
-                            r = fmtpath >= 0 && _sirfile_archive(sf, *newpath);
-                        }
+                        r = fmtpath >= 0 && _sirfile_archive(sf, *newpath);
                     }
                 }
-
-                _sir_safefree(name);
-                _sir_safefree(ext);
             }
+
+            _sir_safefree(name);
+            _sir_safefree(ext);
+        }
 
         return r;
     }
@@ -379,7 +381,7 @@ bool _sirfile_validate(sirfile* sf) {
            _sir_validptr(sf->f) && _sir_validstr(sf->path);
 }
 
-void  _sirfile_update(sirfile* sf, sir_update_data* data) {
+void  _sirfile_update(sirfile* sf, sir_update_config_data* data) {
     if (_sirfile_validate(sf) && _sir_validupdatedata(data)) {
         if (data->levels && _sir_validlevels(*data->levels))
             sf->levels = *data->levels;
@@ -420,7 +422,7 @@ sirfileid_t _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels le
     return NULL;
 }
 
-bool _sir_fcache_update(sirfcache* sfc, sirfileid_t id, sir_update_data* data) {
+bool _sir_fcache_update(sirfcache* sfc, sirfileid_t id, sir_update_config_data* data) {
 
     if (_sir_validptr(sfc) && _sir_validptr(id) && _sir_validfid(*id) &&
         _sir_validupdatedata(data)) {

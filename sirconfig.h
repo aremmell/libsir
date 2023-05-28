@@ -201,6 +201,12 @@
 /** The size, in characters, of the buffer used to hold text styling data. */
 #define SIR_MAXSTYLE 16
 
+/** 
+ * The number of actual levels; SIRL_NONE, SIRL_ALL, and SIRL_DEFAULT 
+ * are pseudo levels and end up being mapped (or not) to the other 8.
+ */
+#define SIR_NUMLEVELS 8 
+
 /** The prefix string used to begin a styling sequence in stdio output. */
 #define SIR_BEGINSTYLE "\x1b["
 

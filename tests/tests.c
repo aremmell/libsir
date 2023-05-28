@@ -125,7 +125,7 @@ bool sirtest_exceedmaxsize(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    char toobig[SIR_MAXMESSAGE + 100] = {0};
+    sirchar_t toobig[SIR_MAXMESSAGE + 100] = {0};
     memset(toobig, 'a', SIR_MAXMESSAGE - 99);
 
     pass &= sir_info(toobig);
@@ -145,7 +145,7 @@ bool sirtest_filecachesanity(void) {
     sir_options odd  = 0;
 
     for (size_t n = 0; n < numfiles - 1; n++) {
-        char path[SIR_MAXPATH] = {0};
+        sirchar_t path[SIR_MAXPATH] = {0};
         snprintf(path, SIR_MAXPATH, "test-%zu.log", n);
         rmfile(path);
         ids[n] = sir_addfile(path, SIRL_ALL, (n % 2) ? odd : even);
@@ -192,7 +192,7 @@ bool sirtest_filecachesanity(void) {
     for (size_t n = 0; n < SIR_MAXFILES; n++) {
         pass &= sir_remfile(ids[removeorder[n]]);
 
-        char path[SIR_MAXPATH] = {0};
+        sirchar_t path[SIR_MAXPATH] = {0};
         snprintf(path, SIR_MAXPATH, "test-%zu.log", removeorder[n]);
         rmfile(path);
     }
@@ -627,11 +627,11 @@ bool sirtest_perf(void) {
         }
 
         if (pass) {
-            printf("\t" WHITE("printf: ")" "GREEN("%zu lines in %.2fsec (%.1f lines/sec)") "\n",
+            printf("\t" WHITE("printf: ") CYAN("%zu lines in %.2fsec (%.1f lines/sec)") "\n",
                 perflines, printfelapsed / 1e3, perflines / (printfelapsed / 1e3));
-            printf("\t" WHITE("libsir(stdout): ")" "GREEN("%zu lines in %.2fsec (%.1f lines/sec)") "\n",
+            printf("\t" WHITE("libsir(stdout): ") CYAN("%zu lines in %.2fsec (%.1f lines/sec)") "\n",
                 perflines, stdioelapsed / 1e3, perflines / (stdioelapsed / 1e3));
-            printf("\t" WHITE("libsir(log file): ")" "GREEN("%zu lines in %.2fsec (%.1f lines/sec)")"\n",
+            printf("\t" WHITE("libsir(log file): ") CYAN("%zu lines in %.2fsec (%.1f lines/sec)") "\n",
                 perflines, fileelapsed / 1e3, perflines / (fileelapsed / 1e3));
         }
     }
@@ -699,17 +699,19 @@ static void* sirtest_thread(void* arg);
 static unsigned sirtest_thread(void* arg);
 #endif
 
-#define NUM_THREADS 2
+#define NUM_THREADS 4
 
 bool sirtest_mthread_race(void) {
 #if !defined(_WIN32)
-    pthread_t thrds[NUM_THREADS];
+    pthread_t thrds[NUM_THREADS] = {0};
 #else
-    uintptr_t thrds[NUM_THREADS] = { 0 };
+    uintptr_t thrds[NUM_THREADS] = {0};
 #endif
 
     INIT_N(si, SIRL_ALL, SIRO_NOPID, 0, 0, "multi-thread race");
-    bool pass = si_init;
+    bool pass           = si_init;
+    bool any_created    = false;
+    size_t last_created = 0;
 
     for (size_t n = 0; n < NUM_THREADS; n++) {
         char* path = (char*)calloc(SIR_MAXPATH, sizeof(char));
@@ -719,38 +721,49 @@ bool sirtest_mthread_race(void) {
         int create = pthread_create(&thrds[n], NULL, sirtest_thread, (void*)path);
         if (0 != create) {
             errno = create;
+            handle_os_error(true, "pthread_create() for thread #%zu failed!\n", n + 1);
 #else
         thrds[n] = _beginthreadex(NULL, 0, sirtest_thread, (void*)path, 0, NULL);
         if (0 == thrds[n]) {
+            handle_os_error(true, "_beginthreadex() for thread #%zu failed!\n", n + 1);
 #endif
-            printf(RED("\tfailed to create thread; err: %d") "\n", errno);
+            free(path);
             pass = false;
+            break;
         }
 
+        last_created = n;
+        any_created = true;
+
 #if defined(__BSD__) || defined(_GNU_SOURCE)
-        char thrd_name[SIR_MAXPID];
+        sirchar_t thrd_name[SIR_MAXPID];
         snprintf(thrd_name, SIR_MAXPID, "%lu", n);
         create = pthread_setname_np(thrds[n], thrd_name);
         if (0 != create)
-            printf(RED("\twarning: failed to set thread name; err: %d") "\n", errno);
+            handle_os_error(true, "pthread_setname_np() for thread #%zu failed!\n", n + 1)
 #endif
     }
 
-    if (pass) {
-        for (size_t j = 0; j < NUM_THREADS; j++) {
+    if (any_created) {
+        for (size_t j = 0; j < last_created + 1; j++) {
             bool joined = true;
-            printf("\twaiting for thread %zu/%d...\n", j + 1, NUM_THREADS);
+            printf("\twaiting for thread %zu/%zu...\n", j + 1, last_created + 1);
 #if !defined(_WIN32)
-            pthread_join(thrds[j], NULL);
+            int join = pthread_join(thrds[j], NULL);
+            if (0 != join) {
+                joined = false;
+                errno = join;
+                handle_os_error(true, "pthread_join() for thread #%zu (%p) failed!\n", j + 1, (void*)thrds[j]);
+            }
 #else
             DWORD wait = WaitForSingleObject((HANDLE)thrds[j], INFINITE);
             if (WAIT_OBJECT_0 != wait) {
                 joined = false;
-                handle_os_error(false, "failed to wait for thread %p!\n", (HANDLE)thrds[j]);
+                handle_os_error(false, "WaitForSingleObject() for thread #%zu (%p) failed!\n", j + 1, (HANDLE)thrds[j]);
             }
 #endif
             if (joined)
-                printf("\tthread %zu/%d joined.\n", j + 1, NUM_THREADS);
+                printf("\tthread %zu/%zu joined.\n", j + 1, last_created + 1);
         }
     }
 
@@ -765,7 +778,7 @@ unsigned sirtest_thread(void* arg) {
 #endif
     pid_t threadid = _sir_gettid();
 
-    char mypath[SIR_MAXPATH] = {0};
+    sirchar_t mypath[SIR_MAXPATH] = {0};
     _sir_strncpy(mypath, SIR_MAXPATH, (const char*)arg, SIR_MAXPATH);
     free(arg);
 

@@ -74,6 +74,7 @@
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdatomic.h>
 #include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>

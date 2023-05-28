@@ -76,7 +76,6 @@ uint16_t _sir_geterrcode(sirerror_t err) {
 
 /** Even more evil macros used for binary searching arrays. */
 #define _SIR_DECLARE_BIN_SEARCH(low, high) \
-    bool _matched = false; \
     size_t _low   = low;   \
     size_t _high  = high;  \
     size_t _mid   = (_low + _high) / 2;
@@ -85,7 +84,6 @@ uint16_t _sir_geterrcode(sirerror_t err) {
 
 #define _SIR_ITERATE_BIN_SEARCH(comparison) \
     if (0 == comparison) { \
-        _matched = true; \
         break; \
     } \
     \
@@ -98,11 +96,10 @@ uint16_t _sir_geterrcode(sirerror_t err) {
         _low = _mid + 1; \
     } \
     \
-    _mid = (_low + _high) / 2; \
+    _mid = (_low + _high) / 2;
 
 #define _SIR_END_BIN_SEARCH() \
-    } while(true); \
-    _SIR_UNUSED(_matched);
+    } while(true);
 
 /** Validates a pointer-to-pointer, pointer,
  * pointer to function, etc. but ignores whether it's invalid. */
@@ -183,9 +180,9 @@ bool _sir_validptrnofail(const void* restrict p) {
     return __sir_validptr(p, false);
 }
 
-/** Validates a sir_update_data structure. */
+/** Validates a sir_update_config_data structure. */
 static inline
-bool _sir_validupdatedata(sir_update_data* data) {
+bool _sir_validupdatedata(sir_update_config_data* data) {
     return NULL != data && ((NULL == data->levels || _sir_validlevels(*data->levels)) &&
         (NULL == data->opts || _sir_validopts(*data->opts)));
 }
