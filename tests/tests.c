@@ -740,7 +740,7 @@ bool sirtest_mthread_race(void) {
         snprintf(thrd_name, SIR_MAXPID, "%lu", n);
         create = pthread_setname_np(thrds[n], thrd_name);
         if (0 != create)
-            handle_os_error(true, "pthread_setname_np() for thread #%zu failed!\n", n + 1)
+            handle_os_error(true, "pthread_setname_np() for thread #%zu failed!\n", n + 1);
 #endif
     }
 
