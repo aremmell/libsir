@@ -46,7 +46,7 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
 
     bool attrvalid = attr <= SIRS_DIM;
     bool fgvalid   = fg <= SIRS_FG_WHITE;
-    bool bgvalid   = bg <= SIRS_BG_WHITE;
+    bool bgvalid   = bg <= SIRS_BG_WHITE && !_SIRS_SAME_COLOR(fg, bg);
 
     if (pattr && pfg && pbg) {
         *pattr = attrvalid ? attr : 0;
@@ -134,7 +134,7 @@ bool _sir_settextstyle(sir_level level, sir_textstyle style) {
     if (_sir_sanity() && _sir_validlevel(level) && _sir_validstyle(style, NULL, NULL, NULL)) {
         sir_level_style_pair* map = _sir_locksection(_SIRM_TEXTSTYLE);
         assert(map);
-
+#pragma message("TODO: _sir_validlevel(SIRL_ALL) should technically return false, because if it doesn't, this function will try to look up 0xff in the map, which doesn't exist and it will fail. Instead, we should specifically check for SIRL_ALL and then set a flag to mark every level in the map")
         if (map) {
             size_t low   = 0;
             size_t high  = SIR_NUMLEVELS - 1;
