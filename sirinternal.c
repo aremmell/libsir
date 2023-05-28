@@ -53,10 +53,10 @@ static sironce_t  fc_once = SIR_ONCE_INIT;
 static sirmutex_t ts_mutex;
 static sironce_t  ts_once = SIR_ONCE_INIT;
 
-static volatile uint32_t _sir_magic;
+static atomic_uint_fast32_t _sir_magic;
 
 bool _sir_sanity(void) {
-    if (_SIR_MAGIC == _sir_magic)
+    if (_SIR_MAGIC == atomic_load(&_sir_magic))
         return true;
     _sir_seterror(_SIR_E_NOTREADY);
     return false;
@@ -90,7 +90,7 @@ bool _sir_init(sirinit* si) {
     if (!_sir_validptr(si))
         return false;
 
-    if (_sir_magic == _SIR_MAGIC) {
+    if (_SIR_MAGIC == atomic_load(&_sir_magic)) {
         _sir_seterror(_SIR_E_ALREADY);
         return false;
     }
@@ -125,7 +125,7 @@ bool _sir_init(sirinit* si) {
                 (_si->d_syslog.includePID ? LOG_PID : 0) | LOG_ODELAY, LOG_USER);
 #endif
 
-        _sir_magic = _SIR_MAGIC;
+        atomic_store(&_sir_magic, _SIR_MAGIC);
         _sir_unlocksection(_SIRM_INIT);
         return true;
     }
@@ -272,7 +272,7 @@ bool _sir_cleanup(void) {
     }
 
     _sir_resettextstyles();
-    _sir_magic = 0;
+    atomic_store(&_sir_magic, 0);
     
     _sir_selflog("%s: libsir is cleaned up\n", __func__);
     return cleanup;
