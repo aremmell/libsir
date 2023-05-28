@@ -96,10 +96,9 @@ bool _sir_options_sanity(const sirinit* si) {
 
 bool _sir_init(sirinit* si) {
 
-    _sir_once(&magic_once, _sir_initialize_once);
-
     _sir_seterror(_SIR_E_NOERROR);
-
+    _sir_once(&magic_once, _sir_initialize_once);
+  
     if (!_sir_validptr(si))
         return false;
 
@@ -180,7 +179,7 @@ bool _sir_writeinit(sir_update_config_data* data, sirinit_update update) {
 
     _sir_seterror(_SIR_E_NOERROR);
 
-    if (_sir_sanity() && _sir_validupdatedata(data) && _sir_validaddr(update)) {
+    if (_sir_sanity() && _sir_validupdatedata(data) && _sir_notnull(update)) {
         sirinit* si = _sir_locksection(_SIRM_INIT);
         assert(si);
         if (si) {
@@ -571,7 +570,7 @@ int _sir_syslog_maplevel(sir_level level) {
 const sirchar_t* _sir_levelstr(sir_level level) {
         
     if (_sir_validlevel(level)) {
-        _SIR_DECLARE_BIN_SEARCH(0, _sir_countof(sir_level_str_map));
+        _SIR_DECLARE_BIN_SEARCH(0, _sir_countof(sir_level_str_map) - 1);
         _SIR_BEGIN_BIN_SEARCH();
 
         if (sir_level_str_map[_mid].level == level)

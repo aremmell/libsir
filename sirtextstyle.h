@@ -102,7 +102,7 @@ bool _sir_settextstyle(sir_level level, sir_textstyle style);
 /** Resets all per-level ::sir_textstyle to default. */
 bool _sir_resettextstyles(void);
 
-/** Retrieves the platform value for a component part of a ::sir_textstyle. */
+/** Retrieves the opaque numeric value for a component part of a ::sir_textstyle. */
 uint16_t _sir_getprivstyle(uint32_t style);
 
 /** Combines component parts of a platform text style value into its final form. */

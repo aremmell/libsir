@@ -169,6 +169,19 @@
 /** The maximum number of whitespace and misc. characters included in output. */
 #define SIR_MAXMISC 7
 
+/**
+ * The minimum size, in characters, of the buffer used to hold a sequence
+ * of styling data in 16-color mode.
+ */
+#define SIR_MAXSTYLE_16_COLOR 16
+
+/**
+ * For now, we will stick with just the one define for SIR_MAXOUTPUT,
+ * but as soon as 256-color and RGB color modes are implemented, we
+ * will need more than one of these.
+ */
+#define SIR_MAXSTYLE SIR_MAXSTYLE_16_COLOR
+
 /** The maximum size, in characters, of final formatted output. */
 #define SIR_MAXOUTPUT \
     SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME + SIR_MAXLEVEL + SIR_MAXNAME + (SIR_MAXPID * 2) + \
@@ -181,11 +194,8 @@
  * The format string for error messages returned by ::_sir_geterror.
  *
  * - The \a first %%s format specifier is the function name.
- *
  * - The \a second %%s is the file name.
- *
  * - The %%lu is the line number in the file.
- *
  * - The \a third %%s is the error message.
  *
  * @remark sample: `Error in findneedle (haystack.c:384): 'Too much hay'`
@@ -195,14 +205,8 @@
 /** The string that represents any unknown. */
 #define SIR_UNKNOWN "<unknown>"
 
-/** The value that represents an invalid file identifier. */
-#define SIR_INVALID (int)-1
-
-/** The size, in characters, of the buffer used to hold text styling data. */
-#define SIR_MAXSTYLE 16
-
 /** 
- * The number of actual levels; SIRL_NONE, SIRL_ALL, and SIRL_DEFAULT 
+ * The number of actual levels; ::SIRL_NONE, ::SIRL_ALL, and ::SIRL_DEFAULT 
  * are pseudo levels and end up being mapped (or not) to the other 8.
  */
 #define SIR_NUMLEVELS 8 

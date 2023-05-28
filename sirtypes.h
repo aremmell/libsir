@@ -48,17 +48,17 @@ typedef uint32_t sirerror_t;
 
 /** Defines the available levels \a (severity/priority) of logging output. */
 typedef enum {
-    SIRL_NONE    = 0x0,  /**< No output. */
-    SIRL_EMERG   = 0x1,  /**< Nuclear war, Armageddon, etc. */
-    SIRL_ALERT   = 0x2,  /**< Action required ASAP. */
-    SIRL_CRIT    = 0x4,  /**< Critical errors. */
-    SIRL_ERROR   = 0x8,  /**< Errors. */
-    SIRL_WARN    = 0x10, /**< Warnings that could likely be ignored. */
-    SIRL_NOTICE  = 0x20, /**< Normal but significant. */
-    SIRL_INFO    = 0x40, /**< Informational messages. */
-    SIRL_DEBUG   = 0x80, /**< Debugging/diagnostic output. */
-    SIRL_ALL     = 0xff, /**< Includes all logging levels. */
-    SIRL_DEFAULT = 0x100 /**< Use the default levels for this type of destination. */
+    SIRL_NONE    = 0x0000, /**< No output. */
+    SIRL_EMERG   = 0x0001, /**< Nuclear war, Armageddon, etc. */
+    SIRL_ALERT   = 0x0002, /**< Action required ASAP. */
+    SIRL_CRIT    = 0x0004, /**< Critical errors. */
+    SIRL_ERROR   = 0x0008, /**< Errors. */
+    SIRL_WARN    = 0x0010, /**< Warnings that could likely be ignored. */
+    SIRL_NOTICE  = 0x0020, /**< Normal but significant. */
+    SIRL_INFO    = 0x0040, /**< Informational messages. */
+    SIRL_DEBUG   = 0x0080, /**< Debugging/diagnostic output. */
+    SIRL_ALL     = 0x00ff, /**< Includes all logging levels. */
+    SIRL_DEFAULT = 0x0100  /**< Use the default levels for this type of destination. */
 } sir_level;
 
 /**
@@ -69,16 +69,16 @@ typedef uint16_t sir_levels;
 
 /** Formatting options for a destination. */
 typedef enum {
-    SIRO_ALL     = 0x0000,   /**< Effectively = ::SIRO_MSGONLY. */
-    SIRO_NOTIME  = 0x0200,   /**< Exclude time stamps (implies ::SIRO_NOMSEC). */
-    SIRO_NOLEVEL = 0x0400,   /**< Exclude human-readable logging level. */
-    SIRO_NONAME  = 0x0800,   /**< Exclude process/app name. */
-    SIRO_NOMSEC  = 0x1000,   /**< Exclude millisecond-resolution in time stamps. */
-    SIRO_NOPID   = 0x2000,   /**< Exclude process ID. */
-    SIRO_NOTID   = 0x4000,   /**< Exclude thread ID/name. */
-    SIRO_NOHDR   = 0x10000,  /**< Don't write header messages to log files. */
-    SIRO_MSGONLY = 0xeff00,  /**< Includes all other options except ::SIRO_NOHDR. */
-    SIRO_DEFAULT = 0x100000, /**< Use the default options for this type of destination. */
+    SIRO_ALL     = 0x00000000, /**< Effectively = ::SIRO_MSGONLY. */
+    SIRO_NOTIME  = 0x00000200, /**< Exclude time stamps (implies ::SIRO_NOMSEC). */
+    SIRO_NOLEVEL = 0x00000400, /**< Exclude human-readable logging level. */
+    SIRO_NONAME  = 0x00000800, /**< Exclude process/app name. */
+    SIRO_NOMSEC  = 0x00001000, /**< Exclude millisecond-resolution in time stamps. */
+    SIRO_NOPID   = 0x00002000, /**< Exclude process ID (does not imply ::SIRO_NOTID). */
+    SIRO_NOTID   = 0x00004000, /**< Exclude thread ID/name. */
+    SIRO_NOHDR   = 0x00010000, /**< Don't write header messages to log files. */
+    SIRO_MSGONLY = 0x000eff00, /**< Sets all other options except ::SIRO_NOHDR. */
+    SIRO_DEFAULT = 0x00100000  /**< Use the default options for this type of destination. */
 } sir_option;
 
 /**
@@ -89,44 +89,44 @@ typedef uint32_t sir_options;
 
 /** Styles for 16-color console output. */
 typedef enum {
-    SIRS_NONE        = 0,       /**< Used internally; has no effect. */
-    SIRS_BRIGHT      = 0x1,     /**< If set, the foreground color is 'intensified'. */
-    SIRS_DIM         = 0x2,     /**< If set, the foreground color is 'dimmed'. */
-    SIRS_FG_BLACK    = 0x10,    /**< Black foreground. */
-    SIRS_FG_RED      = 0x20,    /**< Red foreground. */
-    SIRS_FG_GREEN    = 0x30,    /**< Green foreground. */
-    SIRS_FG_YELLOW   = 0x40,    /**< Yellow foreground. */
-    SIRS_FG_BLUE     = 0x50,    /**< Blue foreground. */
-    SIRS_FG_MAGENTA  = 0x60,    /**< Magenta foreground. */
-    SIRS_FG_CYAN     = 0x70,    /**< Cyan foreground. */
-    SIRS_FG_DEFAULT  = 0x80,    /**< Use the default foreground color. */
-    SIRS_FG_LGRAY    = 0x90,    /**< Light gray foreground. */
-    SIRS_FG_DGRAY    = 0xa0,    /**< Dark gray foreground. */
-    SIRS_FG_LRED     = 0xb0,    /**< Light red foreground. */
-    SIRS_FG_LGREEN   = 0xc0,    /**< Light green foreground. */
-    SIRS_FG_LYELLOW  = 0xd0,    /**< Light yellow foreground. */
-    SIRS_FG_LBLUE    = 0xe0,    /**< Light blue foreground. */
-    SIRS_FG_LMAGENTA = 0xf0,    /**< Light magenta foreground. */
-    SIRS_FG_LCYAN    = 0xf10,   /**< Light cyan foreground. */
-    SIRS_FG_WHITE    = 0xf20,   /**< White foreground. */
-    SIRS_BG_BLACK    = 0x1000,  /**< Black background. */
-    SIRS_BG_RED      = 0x2000,  /**< Red background. */
-    SIRS_BG_GREEN    = 0x3000,  /**< Green background. */
-    SIRS_BG_YELLOW   = 0x4000,  /**< Yellow background. */
-    SIRS_BG_BLUE     = 0x5000,  /**< Blue background. */
-    SIRS_BG_MAGENTA  = 0x6000,  /**< Magenta background. */
-    SIRS_BG_CYAN     = 0x7000,  /**< Cyan background. */
-    SIRS_BG_DEFAULT  = 0x8000,  /**< Use the default background color. */
-    SIRS_BG_LGRAY    = 0x9000,  /**< Light gray background. */
-    SIRS_BG_DGRAY    = 0xa000,  /**< Dark gray background. */
-    SIRS_BG_LRED     = 0xb000,  /**< Light red background. */
-    SIRS_BG_LGREEN   = 0xc000,  /**< Light green background. */
-    SIRS_BG_LYELLOW  = 0xd000,  /**< Light yellow background. */
-    SIRS_BG_LBLUE    = 0xe000,  /**< Light blue background. */
-    SIRS_BG_LMAGENTA = 0xf000,  /**< Light magenta background. */
-    SIRS_BG_LCYAN    = 0xf1000, /**< Light cyan background. */
-    SIRS_BG_WHITE    = 0xf2000, /**< White background. */
-    SIRS_INVALID     = 0xf3000  /**< Represents the invalid text style. */
+    SIRS_NONE        = 0x00000000, /**< Used internally; has no effect. */
+    SIRS_BRIGHT      = 0x00000001, /**< If set, the foreground color is 'intensified'. */
+    SIRS_DIM         = 0x00000002, /**< If set, the foreground color is 'dimmed'. */
+    SIRS_FG_BLACK    = 0x00000010, /**< Black foreground. */
+    SIRS_FG_RED      = 0x00000020, /**< Red foreground. */
+    SIRS_FG_GREEN    = 0x00000030, /**< Green foreground. */
+    SIRS_FG_YELLOW   = 0x00000040, /**< Yellow foreground. */
+    SIRS_FG_BLUE     = 0x00000050, /**< Blue foreground. */
+    SIRS_FG_MAGENTA  = 0x00000060, /**< Magenta foreground. */
+    SIRS_FG_CYAN     = 0x00000070, /**< Cyan foreground. */
+    SIRS_FG_DEFAULT  = 0x00000080, /**< Use the default foreground color. */
+    SIRS_FG_LGRAY    = 0x00000090, /**< Light gray foreground. */
+    SIRS_FG_DGRAY    = 0x000000a0, /**< Dark gray foreground. */
+    SIRS_FG_LRED     = 0x000000b0, /**< Light red foreground. */
+    SIRS_FG_LGREEN   = 0x000000c0, /**< Light green foreground. */
+    SIRS_FG_LYELLOW  = 0x000000d0, /**< Light yellow foreground. */
+    SIRS_FG_LBLUE    = 0x000000e0, /**< Light blue foreground. */
+    SIRS_FG_LMAGENTA = 0x000000f0, /**< Light magenta foreground. */
+    SIRS_FG_LCYAN    = 0x00000f10, /**< Light cyan foreground. */
+    SIRS_FG_WHITE    = 0x00000f20, /**< White foreground. */
+    SIRS_BG_BLACK    = 0x00001000, /**< Black background. */
+    SIRS_BG_RED      = 0x00002000, /**< Red background. */
+    SIRS_BG_GREEN    = 0x00003000, /**< Green background. */
+    SIRS_BG_YELLOW   = 0x00004000, /**< Yellow background. */
+    SIRS_BG_BLUE     = 0x00005000, /**< Blue background. */
+    SIRS_BG_MAGENTA  = 0x00006000, /**< Magenta background. */
+    SIRS_BG_CYAN     = 0x00007000, /**< Cyan background. */
+    SIRS_BG_DEFAULT  = 0x00008000, /**< Use the default background color. */
+    SIRS_BG_LGRAY    = 0x00009000, /**< Light gray background. */
+    SIRS_BG_DGRAY    = 0x0000a000, /**< Dark gray background. */
+    SIRS_BG_LRED     = 0x0000b000, /**< Light red background. */
+    SIRS_BG_LGREEN   = 0x0000c000, /**< Light green background. */
+    SIRS_BG_LYELLOW  = 0x0000d000, /**< Light yellow background. */
+    SIRS_BG_LBLUE    = 0x0000e000, /**< Light blue background. */
+    SIRS_BG_LMAGENTA = 0x0000f000, /**< Light magenta background. */
+    SIRS_BG_LCYAN    = 0x000f1000, /**< Light cyan background. */
+    SIRS_BG_WHITE    = 0x000f2000, /**< White background. */
+    SIRS_INVALID     = 0x000f3000  /**< Represents the invalid text style. */
 } sir_textstyle;
 
 /** The underlying type used for characters in output. */

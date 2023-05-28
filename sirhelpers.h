@@ -90,10 +90,12 @@ uint16_t _sir_geterrcode(sirerror_t err) {
     if (_low == _high) \
         break; \
     \
-    if (0 > comparison) { \
+    if (0 > comparison && (_mid - 1) >= _low) { \
         _high = _mid - 1; \
-    } else { \
+    } else if ((_mid + 1) <= _high) { \
         _low = _mid + 1; \
+    } else { \
+        break; \
     } \
     \
     _mid = (_low + _high) / 2;
@@ -103,7 +105,7 @@ uint16_t _sir_geterrcode(sirerror_t err) {
 
 /** Validates a pointer-to-pointer, pointer,
  * pointer to function, etc. but ignores whether it's invalid. */
-#define _sir_validaddr(addr) (NULL != addr)
+#define _sir_notnull(addr) (NULL != addr)
 
 /** Checks a bitfield for a specific set of bits. */
 static inline
@@ -129,6 +131,9 @@ void _sir_safefree(void* p) {
 /** Validates a log file identifier. */
 bool _sir_validfid(int id);
 
+/** Validates a sir_update_config_data structure. */
+bool _sir_validupdatedata(sir_update_config_data* data);
+
 /** Validates a set of ::sir_level flags. */
 bool _sir_validlevels(sir_levels levels);
 
@@ -138,13 +143,15 @@ bool _sir_validlevel(sir_level level);
 /** Applies default ::sir_level flags if applicable. */
 static inline
 void _sir_defaultlevels(sir_levels* levels, sir_levels def) {
-    if (levels && SIRL_DEFAULT == *levels) *levels = def;
+    if (levels && SIRL_DEFAULT == *levels)
+        *levels = def;
 }
 
 /** Applies default ::sir_options flags if applicable. */
 static inline
 void _sir_defaultopts(sir_options* opts, sir_options def) {
-    if (opts && SIRO_DEFAULT == *opts) *opts = def;
+    if (opts && SIRO_DEFAULT == *opts)
+        *opts = def;
 }
 
 /** Validates a set of ::sir_option flags. */
@@ -178,13 +185,6 @@ bool _sir_validptr(const void* restrict p) {
 static inline
 bool _sir_validptrnofail(const void* restrict p) {
     return __sir_validptr(p, false);
-}
-
-/** Validates a sir_update_config_data structure. */
-static inline
-bool _sir_validupdatedata(sir_update_config_data* data) {
-    return NULL != data && ((NULL == data->levels || _sir_validlevels(*data->levels)) &&
-        (NULL == data->opts || _sir_validopts(*data->opts)));
 }
 
 /** Places a null terminator at the first index in a string buffer. */

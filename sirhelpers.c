@@ -41,63 +41,82 @@ bool _sir_validfid(int id) {
     bool valid = id >= 0;
     if (!valid) {
         _sir_seterror(_SIR_E_NOFILE);
-        assert(valid);
+        assert(!"invalid file descriptor");
     }
     return valid;
+}
+
+/** Validates a sir_update_config_data structure. */
+bool _sir_validupdatedata(sir_update_config_data* data) {
+    if (_sir_validptr(data)) {
+        /* Either/or: this structure is passed to functions that either
+         * update levels or options, not both. */
+        bool have_levels = _sir_validptrnofail(data->levels);
+        bool have_opts   = _sir_validptrnofail(data->opts);
+
+        if (have_levels || have_opts)
+            return have_levels ? _sir_validlevels(*data->levels) :
+                _sir_validopts(*data->opts);
+        
+        _sir_seterror(_SIR_E_INVALID);
+        assert(!"invalid update config data");
+    }
+
+    return false;
 }
 
 bool _sir_validlevels(sir_levels levels) {
-    bool valid = (SIRL_ALL == levels || SIRL_NONE == levels || SIRL_DEFAULT == levels);
-    if (!valid)
-        valid = _sir_validlevel(levels);
+    if ((SIRL_ALL == levels || SIRL_NONE == levels)  ||
+        (_sir_bittest(levels, SIRL_INFO)             ||
+         _sir_bittest(levels, SIRL_DEBUG)            ||
+         _sir_bittest(levels, SIRL_NOTICE)           ||
+         _sir_bittest(levels, SIRL_WARN)             ||
+         _sir_bittest(levels, SIRL_ERROR)            ||
+         _sir_bittest(levels, SIRL_CRIT)             ||
+         _sir_bittest(levels, SIRL_ALERT)            ||
+         _sir_bittest(levels, SIRL_EMERG)))
+         return true;
                 
-    if (!valid) {
-        _sir_seterror(_SIR_E_LEVELS);
-        assert(valid);
-    }
+    _sir_seterror(_SIR_E_LEVELS);
+    assert(!"invalid sir_levels");
 
-    return valid;
+    return false;
 }
 
 bool _sir_validlevel(sir_level level) {
-    bool valid = SIRL_ALL == level || (SIRL_NONE != level && !(level & (level - 1)) &&
-		(_sir_bittest(level, SIRL_EMERG)  ||
-		 _sir_bittest(level, SIRL_ALERT)  ||
-		 _sir_bittest(level, SIRL_CRIT)   ||
-		 _sir_bittest(level, SIRL_ERROR)  ||
-		 _sir_bittest(level, SIRL_WARN)   ||
-		 _sir_bittest(level, SIRL_NOTICE) ||
-		 _sir_bittest(level, SIRL_INFO)   ||
-		 _sir_bittest(level, SIRL_DEBUG)));
+    if (SIRL_INFO   == level || SIRL_DEBUG == level ||
+        SIRL_NOTICE == level || SIRL_WARN  == level ||
+        SIRL_ERROR  == level || SIRL_CRIT  == level ||
+        SIRL_ALERT  == level || SIRL_EMERG == level)
+        return true;
 
-    if (!valid) {
-        _sir_seterror(_SIR_E_LEVELS);
-        assert(valid);
-    }
-    return valid;
+    _sir_seterror(_SIR_E_LEVELS);
+    assert(!"invalid sir_level");
+
+    return false;
 }
 
 bool _sir_validopts(sir_options opts) {
-    bool valid = (SIRO_ALL == opts || SIRO_NOHDR == opts || SIRO_DEFAULT == opts) ||
-        (_sir_bittest(opts, SIRO_NOTIME)  ||
-         _sir_bittest(opts, SIRO_NOLEVEL) ||
-         _sir_bittest(opts, SIRO_NONAME)  ||
-         _sir_bittest(opts, SIRO_NOMSEC)  ||
-         _sir_bittest(opts, SIRO_NOPID)   ||
-         _sir_bittest(opts, SIRO_NOTID));
+    if ((SIRO_ALL == opts || SIRO_NOHDR == opts) ||
+        (_sir_bittest(opts, SIRO_NOTIME)         ||
+         _sir_bittest(opts, SIRO_NOLEVEL)        ||
+         _sir_bittest(opts, SIRO_NONAME)         ||
+         _sir_bittest(opts, SIRO_NOMSEC)         ||
+         _sir_bittest(opts, SIRO_NOPID)          ||
+         _sir_bittest(opts, SIRO_NOTID)))
+         return true;
 
-    if (!valid) {
-        _sir_seterror(_SIR_E_OPTIONS);
-        assert(valid);
-    }
-    return valid;
+    _sir_seterror(_SIR_E_OPTIONS);
+    assert(!"invalid sir_options");
+
+    return false;
 }
 
 bool __sir_validstr(const sirchar_t* str, bool fail) {
     bool valid = str && (*str != (sirchar_t)'\0');
     if (!valid && fail) {
         _sir_seterror(_SIR_E_STRING);
-        assert(valid);
+        assert(!"invalid string");
     }
     return valid;
 }
@@ -106,7 +125,7 @@ bool __sir_validptr(const void* restrict p, bool fail) {
     bool valid = NULL != p;
     if (!valid && fail) {
         _sir_seterror(_SIR_E_NULLPTR);
-        assert(valid);
+        assert(!"NULL pointer");
     }
 
     return valid;
@@ -161,7 +180,7 @@ int _sir_strncat(sirchar_t* restrict dest, size_t destsz, const sirchar_t* restr
   * based on preprocessor macros.
   */
 int _sir_fopen(FILE* restrict* restrict streamptr, const sirchar_t* restrict filename, const sirchar_t* restrict mode) {
-    if (_sir_validaddr(streamptr) && _sir_validstr(filename) && _sir_validstr(mode)) {
+    if (_sir_notnull(streamptr) && _sir_validstr(filename) && _sir_validstr(mode)) {
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
         int ret = fopen_s(streamptr, filename, mode);
         if (0 != ret) {

@@ -125,10 +125,9 @@ sirfile* _sirfile_create(const sirchar_t* path, sir_levels levels, sir_options o
 bool _sirfile_open(sirfile* sf) {
 
     if (_sir_validptr(sf) && _sir_validstr(sf->path)) {
-
+        
         FILE* f  = NULL;
         int open = _sir_fopen(&f, sf->path, SIR_FOPENMODE);
-
         if (0 == open && f) {
 
 /* disable bogus warning about using _fileno */
@@ -141,9 +140,6 @@ bool _sirfile_open(sirfile* sf) {
 #if defined(_WIN32)
 #   pragma warning(pop) 
 #endif
-            if (SIR_INVALID == fd)
-                _sir_handleerr(errno);
-#pragma message("TODO: This is wrong. If we don't get a valid descriptor for the file, how will we write to it?")                
 
             if (_sir_validfid(fd)) {
                 _sirfile_close(sf);
@@ -163,7 +159,7 @@ void _sirfile_close(sirfile* sf) {
         if (_sir_validptrnofail(sf->f) && _sir_validfid(sf->id)) {
             _sir_fflush(sf->f);
             _sir_fclose(&sf->f);
-            sf->id = SIR_INVALID;
+            sf->id = -1;
         }
     }
 }
@@ -408,7 +404,6 @@ sirfileid_t _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels le
         }
 
         sirfile* sf = _sirfile_create(path, levels, opts);
-
         if (_sirfile_validate(sf)) {
             sfc->files[sfc->count++] = sf;
 
@@ -483,7 +478,7 @@ bool _sir_fcache_pred_id(const void* match, sirfile* iter) {
 
 sirfile* _sir_fcache_find(sirfcache* sfc, const void* match, sir_fcache_pred pred) {
 
-    if (_sir_validptr(sfc) && _sir_validptr(match) && _sir_validaddr(pred)) {
+    if (_sir_validptr(sfc) && _sir_validptr(match) && _sir_notnull(pred)) {
         for (size_t n = 0; n < sfc->count; n++) {
             if (pred(match, sfc->files[n]))
                 return sfc->files[n];

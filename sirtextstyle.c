@@ -41,26 +41,31 @@
 bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32_t* pbg) {
 
     uint32_t attr = (style & _SIRS_ATTR_MASK);
-    uint32_t fg   = (style & _SIRS_FG_MASK);
-    uint32_t bg   = (style & _SIRS_BG_MASK);
+    uint32_t fore = (style & _SIRS_FG_MASK);
+    uint32_t back = (style & _SIRS_BG_MASK);
 
     bool attrvalid = attr <= SIRS_DIM;
-    bool fgvalid   = fg <= SIRS_FG_WHITE;
-    bool bgvalid   = bg <= SIRS_BG_WHITE && !_SIRS_SAME_COLOR(fg, bg);
+    bool fgvalid   = fore <= SIRS_FG_WHITE;
+    bool bgvalid   = back <= SIRS_BG_WHITE && !_SIRS_SAME_COLOR(fore, back);
+
 #pragma message("TODO: See if we can't rearrange the values and bitmasks for these values so things like 'SIRS_FG_RED | SIRS_FG_DEFAULT' can be invalidated (right now that == SIRS_FG_DGRAY")
-    if (pattr && pfg && pbg) {
+
+    if (_sir_validptrnofail(pattr))
         *pattr = attrvalid ? attr : 0;
-        *pfg   = fgvalid ? fg : 0;
-        *pbg   = bgvalid ? bg : 0;
-    }
 
-    if (!attrvalid || !fgvalid || !bgvalid) {
-        _sir_seterror(_SIR_E_TEXTSTYLE);
-        assert(attrvalid && fgvalid && bgvalid);
-        return false;
-    }
+    if (_sir_validptrnofail(pfg))
+        *pfg = fgvalid ? fore : 0;
 
-    return true;
+    if (_sir_validptrnofail(pbg))
+        *pbg  = bgvalid ? back : 0;
+
+    if (attrvalid || fgvalid || bgvalid)
+        return true;
+
+    _sir_seterror(_SIR_E_TEXTSTYLE);
+    assert("!invalid text style");
+
+    return false;
 }
 
 sir_textstyle _sir_gettextstyle(sir_level level) {
@@ -129,12 +134,13 @@ sir_textstyle _sir_getdefstyle(sir_level level) {
 }
 
 bool _sir_settextstyle(sir_level level, sir_textstyle style) {
+    
     _sir_seterror(_SIR_E_NOERROR);
 
     if (_sir_sanity() && _sir_validlevel(level) && _sir_validstyle(style, NULL, NULL, NULL)) {
         sir_level_style_pair* map = _sir_locksection(_SIRM_TEXTSTYLE);
         assert(map);
-#pragma message("TODO: _sir_validlevel(SIRL_ALL) should technically return false, because if it doesn't, this function will try to look up 0xff in the map, which doesn't exist and it will fail. Instead, we should specifically check for SIRL_ALL and then set a flag to mark every level in the map")
+
         if (map) {
             size_t low   = 0;
             size_t high  = SIR_NUMLEVELS - 1;
