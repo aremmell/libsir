@@ -253,13 +253,15 @@ bool sir_cleanup(void);
  * @retval SIR_E_NOERROR     The operation completed successfully
  * @retval SIR_E_NOTREADY    libsir has not been initialized
  * @retval SIR_E_ALREADY     libsir is already initialized
- * @retval SIR_E_DUPFILE     File already managed by SIR
- * @retval SIR_E_NOFILE      File not managed by SIR
+ * @retval SIR_E_DUPFILE     File already managed by libsir
+ * @retval SIR_E_NOFILE      File not managed by libsir
  * @retval SIR_E_FCFULL      Maximum number of files already managed
  * @retval SIR_E_OPTIONS     Option flags are invalid
  * @retval SIR_E_LEVELS      Level flags are invalid
  * @retval SIR_E_TEXTSTYLE   Text style is invalid
  * @retval SIR_E_STRING      Invalid string argument
+ * @retval SIR_E_NULLPTR     NULL pointer argument
+ * @retval SIR_E_INVALID     Invalid argument
  * @retval SIR_E_NODEST      No destinations registered for level
  * @retval SIR_E_PLATFORM    Platform error code %%d: %%s
  * @retval SIR_E_UNKNOWN     Error is not known
