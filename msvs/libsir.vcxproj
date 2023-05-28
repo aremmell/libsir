@@ -191,6 +191,7 @@
     <ClInclude Include="..\sirfilecache.h" />
     <ClInclude Include="..\sirhelpers.h" />
     <ClInclude Include="..\sirinternal.h" />
+    <ClInclude Include="..\sirmaps.h" />
     <ClInclude Include="..\sirmutex.h" />
     <ClInclude Include="..\sirplatform.h" />
     <ClInclude Include="..\sirtextstyle.h" />
