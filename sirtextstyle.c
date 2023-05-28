@@ -73,7 +73,7 @@ sir_textstyle _sir_gettextstyle(sir_level level) {
             bool override = false;
 
             size_t low  = 0;
-            size_t high = SIR_NUMLEVELS;
+            size_t high = SIR_NUMLEVELS - 1;
 
             _SIR_DECLARE_BIN_SEARCH(low, high);
             _SIR_BEGIN_BIN_SEARCH();
@@ -137,7 +137,7 @@ bool _sir_settextstyle(sir_level level, sir_textstyle style) {
 
         if (map) {
             size_t low   = 0;
-            size_t high  = SIR_NUMLEVELS;
+            size_t high  = SIR_NUMLEVELS - 1;
             bool updated = false;
 
             _SIR_DECLARE_BIN_SEARCH(low, high);
