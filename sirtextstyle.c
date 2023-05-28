@@ -47,7 +47,7 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
     bool attrvalid = attr <= SIRS_DIM;
     bool fgvalid   = fg <= SIRS_FG_WHITE;
     bool bgvalid   = bg <= SIRS_BG_WHITE && !_SIRS_SAME_COLOR(fg, bg);
-
+#pragma message("TODO: See if we can't rearrange the values and bitmasks for these values so things like 'SIRS_FG_RED | SIRS_FG_DEFAULT' can be invalidated (right now that == SIRS_FG_DGRAY")
     if (pattr && pfg && pbg) {
         *pattr = attrvalid ? attr : 0;
         *pfg   = fgvalid ? fg : 0;

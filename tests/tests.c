@@ -211,10 +211,8 @@ bool sirtest_failsetinvalidstyle(void) {
     pass &= sir_info("hello there, I set an invalid style.");
     pass &= !sir_settextstyle(SIRL_ALL, SIRS_FG_RED | SIRS_FG_DEFAULT);
     pass &= sir_info("oops, did it again...");
-    //pass &= !sir_settextstyle(SIRL_DEBUG, SIRS_FG_WHITE + 1);
-    //pass &= sir_info("and again.");
-    //pass &= !sir_settextstyle(SIRL_ALERT, SIRS_FG_BLACK | SIRS_BG_BLACK);
-#pragma message("Both of the above should fail")
+    pass &= !sir_settextstyle(SIRL_ALERT, SIRS_FG_BLACK | SIRS_BG_BLACK);
+    pass &= sir_info("and again.");
 
     sir_cleanup();
     return print_test_error(pass, true);
