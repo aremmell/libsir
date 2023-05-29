@@ -76,7 +76,7 @@ bool _sir_getcwd(char* restrict dir, size_t size) {
 #if !defined(_WIN32)
 # if defined(__linux__) && defined(_GNU_SOURCE)
     char* cur = get_current_dir_name();
-    strncpy(dir, cur, strnlen(cur, SYSTEST_MAXPATH));
+    strncpy(dir, cur, strnlen(cur, SIR_MAXPATH));
 # else
     if (NULL == getcwd(dir, size)) {
         _sir_handleerr(errno);
