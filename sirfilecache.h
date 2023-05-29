@@ -57,7 +57,7 @@ bool _sirfile_archive(sirfile* sf, const sirchar_t* newpath);
 bool _sirfile_splitpath(sirfile* sf, sirchar_t** name, sirchar_t** ext);
 void _sirfile_destroy(sirfile* sf);
 bool _sirfile_validate(sirfile* sf);
-void _sirfile_update(sirfile* sf, sir_update_config_data* data);
+bool _sirfile_update(sirfile* sf, sir_update_config_data* data);
 
 sirfileid_t _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels levels, sir_options opts);
 bool _sir_fcache_update(sirfcache* sfc, sirfileid_t id, sir_update_config_data* data);

@@ -377,13 +377,19 @@ bool _sirfile_validate(sirfile* sf) {
            _sir_validptr(sf->f) && _sir_validstr(sf->path);
 }
 
-void  _sirfile_update(sirfile* sf, sir_update_config_data* data) {
+bool _sirfile_update(sirfile* sf, sir_update_config_data* data) {
+    bool updated = false;
     if (_sirfile_validate(sf) && _sir_validupdatedata(data)) {
-        if (data->levels && _sir_validlevels(*data->levels))
+        if (data->levels && _sir_validlevels(*data->levels)) {
             sf->levels = *data->levels;
-        if (data->opts && _sir_validopts(*data->opts))
+            updated = true;
+        }
+        if (data->opts && _sir_validopts(*data->opts)) {
             sf->opts = *data->opts;
+            updated = true;
+        }
     }
+    return updated;
 }
 
 sirfileid_t _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels levels, sir_options opts) {
@@ -427,8 +433,7 @@ bool _sir_fcache_update(sirfcache* sfc, sirfileid_t id, sir_update_config_data* 
             return false;
         }
 
-        _sirfile_update(found, data);
-        return true;
+        return _sirfile_update(found, data);
     }
 
     return false;
