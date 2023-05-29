@@ -45,6 +45,9 @@
  * @{
  */
 
+/** The name of this library. */
+#define SIR_LIBNAME "libsir"
+
 /** The time stamp format string at the beginning of log messages. */
 #define SIR_TIMEFORMAT "%H:%M:%S"
 

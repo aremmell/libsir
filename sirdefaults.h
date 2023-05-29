@@ -49,7 +49,7 @@ static const sir_options sir_stdout_def_opts
 
 /** Default levels for \a stderr. */
 static const sir_levels sir_stderr_def_lvls
-    = SIRL_ERROR | SIRL_CRIT | SIRL_EMERG;
+    = SIRL_ERROR | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG;
 
 /** Default options for \a stderr. */
 static const sir_options sir_stderr_def_opts 
