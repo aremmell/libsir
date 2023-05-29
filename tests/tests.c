@@ -51,6 +51,9 @@ static const sir_test sir_tests[] = {
     {"error handling sanity",   sirtest_errorsanity},
     {"text style sanity",       sirtest_textstylesanity},
     {"update levels/options",   sirtest_updatesanity},
+   /*  {"syslog",                  sirtest_syslog}, */
+    {"os_log",                  sirtest_os_log},
+    /* {"portable filesystem api", sirtest_filesystem} */
 };
 
 static const char* arg_wait = "--wait"; /* wait for key press before exiting. */
@@ -84,7 +87,7 @@ int main(int argc, char** argv) {
     }
 
     bool allpass     = true;
-    int tests        = (perf ? 1 : (sizeof(sir_tests) / sizeof(sir_test)) - 1);
+    int tests        = (perf ? 1 : (sizeof(sir_tests) / sizeof(sir_test)));
     int first        = (perf ? 0 : 1);
     int passed       = first;
     sirtimer_t timer = {0};
@@ -652,45 +655,177 @@ bool sirtest_updatesanity(void) {
     bool pass = si_init;
 
     static const char* logfile = "update-sanity.log";
+    static const size_t max_variations = 10;
+    static const sir_options opts_array[max_variations] = {
+        SIRO_NOTIME | SIRO_NOLEVEL, SIRO_MSGONLY,
+        SIRO_NONAME | SIRO_NOTID, SIRO_NOPID | SIRO_NOTIME,
+        SIRO_NOTIME | SIRO_NOLEVEL | SIRO_NONAME,
+        SIRO_NOTIME, SIRO_NOMSEC, SIRO_NOPID, SIRO_NOTID,
+        SIRO_ALL
+    };
+
+    static const sir_levels levels_array[max_variations] = {
+        SIRL_NONE, SIRL_ALL, SIRL_EMERG, SIRL_ALERT,
+        SIRL_CRIT, SIRL_ERROR, SIRL_WARN, SIRL_NOTICE,
+        SIRL_INFO, SIRL_DEBUG
+    };
 
     rmfile(logfile);
     sirfileid_t id1 = sir_addfile(logfile, SIRL_DEFAULT, SIRO_DEFAULT);
-
     pass &= NULL != id1;
 
     if (pass) {
-        pass &= sir_debug("default config");
-        pass &= sir_info("default config");
-        pass &= sir_notice("default config");
-        pass &= sir_warn("default config");
-        pass &= sir_error("default config");
-        pass &= sir_crit("default config");
-        pass &= sir_alert("default config");
-        pass &= sir_emerg("default config");
+        for (int i = 0; i < 10; i++) {           
+            /* reset to defaults*/
+            pass &= sir_stdoutlevels(SIRL_DEFAULT);
+            pass &= sir_stderrlevels(SIRL_DEFAULT);
+            pass &= sir_stdoutopts(SIRO_DEFAULT);
+            pass &= sir_stderropts(SIRO_DEFAULT);
 
-        pass &= sir_stdoutlevels(SIRL_DEBUG);
-        pass &= sir_stdoutopts(SIRO_NOTIME);
-        pass &= sir_stderrlevels(SIRL_ALL);
-        pass &= sir_stderropts(SIRO_NONAME);
+            pass &= sir_debug("default config");
+            pass &= sir_info("default config");
+            pass &= sir_notice("default config");
+            pass &= sir_warn("default config");
+            pass &= sir_error("default config");
+            pass &= sir_crit("default config");
+            pass &= sir_alert("default config");
+            pass &= sir_emerg("default config");
 
-        pass &= sir_filelevels(id1, SIRL_DEBUG);
-        pass &= sir_fileopts(id1, SIRO_MSGONLY);
+            /* pick random options to set/unset */
+            unsigned int rnd = (getrand() % max_variations);
+            pass &= sir_stdoutlevels(levels_array[rnd]);
+            pass &= sir_stdoutopts(opts_array[rnd]);
+            printf("\t" WHITE("set random config #%u for stdout") "\n", rnd);
 
-        pass &= sir_debug("modified config");
-        pass &= sir_info("modified config");
-        pass &= sir_notice("modified config");
-        pass &= sir_warn("modified config");
-        pass &= sir_error("modified config");
-        pass &= sir_crit("modified config");
-        pass &= sir_alert("modified config");
-        pass &= sir_emerg("modified config");
-        pass &= sir_remfile(id1);
+            rnd = (getrand() % max_variations);
+            pass &= sir_stderrlevels(levels_array[rnd]);
+            pass &= sir_stderropts(opts_array[rnd]);
+            printf("\t" WHITE("set random config #%u for stderr") "\n", rnd);
+
+            rnd = (getrand() % max_variations);
+            pass &= sir_filelevels(id1, levels_array[rnd]);
+            pass &= sir_fileopts(id1, opts_array[rnd]);
+            printf("\t" WHITE("set random config #%u for %s") "\n", rnd, logfile);
+
+            pass &= sir_debug("modified config");
+            pass &= sir_info("modified config");
+            pass &= sir_notice("modified config");
+            pass &= sir_warn("modified config");
+            pass &= sir_error("modified config");
+            pass &= sir_crit("modified config");
+            pass &= sir_alert("modified config");
+            pass &= sir_emerg("modified config");
+        }
     }
+
+    /* restore to default config and run again */
+    sir_stdoutlevels(SIRL_DEFAULT);
+    sir_stderrlevels(SIRL_DEFAULT);
+    sir_stdoutopts(SIRO_DEFAULT);
+    sir_stderropts(SIRO_DEFAULT);
+
+    pass &= sir_debug("default config");
+    pass &= sir_info("default config");
+    pass &= sir_notice("default config");
+    pass &= sir_warn("default config");
+    pass &= sir_error("default config");
+    pass &= sir_crit("default config");
+    pass &= sir_alert("default config");
+    pass &= sir_emerg("default config");
+
+#pragma messsage("TODO: some of these log files should be examined as part of this process. Add a prompt here (w/ a cmdline flag) to examine the log or delete it.")
 
     rmfile(logfile);
     sir_cleanup();
 
     return print_result_and_return(pass);
+}
+
+bool sirtest_syslog(void) {
+#if !defined(SIR_SYSLOG_ENABLED)
+    printf("\t" CYAN("SIR_SYSLOG_ENABLED is not defined; skipping.") "\n");
+    return true;
+#else
+    INIT_SL(si, SIRL_ALL, SIRO_NOTID, 0, 0, "sirtests");
+    si.d_syslog.levels      = SIRL_DEFAULT;
+    si.d_syslog.include_pid = true;
+    si.d_syslog.opened_log  = false;
+    si_init = sir_init(&si);
+    bool pass = si_init;
+    /* log show --last 10m --color always | grep sirtest */
+
+    if (pass) {
+        for (int i = 0; i < 10; i++) {
+            pass &= sir_warn("(%d/%d): this warning message should be logged to stdout and syslog.", i + 1, 10);
+            pass &= sir_error("(%d/%d): this error message should be logged to stdout and syslog.", i + 1, 10);
+            pass &= sir_crit("(%d/%d): this critical message should be logged to stdout and syslog.", i + 1, 10);
+            pass &= sir_alert("(%d/%d): this alert message should be logged to stdout and syslog.", i + 1, 10);
+            pass &= sir_emerg("(%d/%d): this emergency message should be logged to stdout and syslog.", i + 1, 10);
+        }
+    }
+
+    sir_cleanup();
+    return print_result_and_return(pass);
+#endif
+}
+
+bool sirtest_os_log(void) {
+#if !defined(__APPLE__)
+    printf("\t" CYAN("not running on macOS; skipping.") "\n");
+    return true;
+#else    
+    INIT_SL(si, SIRL_ALL, SIRO_NOTID, 0, 0, "sirtests");
+    si.d_syslog.levels      = SIRL_DEFAULT;
+    si.d_syslog.include_pid = true;
+    si.d_syslog.opened_log  = false;
+    si_init = sir_init(&si);
+    bool pass = si_init;
+
+    if (pass) {
+        for (int i = 0; i < 10; i++) {
+            pass &= sir_warn("(%d/%d): this warning message should be logged to stdout and os_log.", i + 1, 10);
+            pass &= sir_error("(%d/%d): this error message should be logged to stdout and os_log.", i + 1, 10);
+            pass &= sir_crit("(%d/%d): this critical message should be logged to stdout and os_log.", i + 1, 10);
+            pass &= sir_alert("(%d/%d): this alert message should be logged to stdout and os_log.", i + 1, 10);
+            pass &= sir_emerg("(%d/%d): this emergency message should be logged to stdout and os_log.", i + 1, 10);
+        }
+
+        // TODO: os_activity_initiate_f
+
+    }
+
+    sir_cleanup();
+    return print_result_and_return(pass);
+#endif
+}
+
+bool sirtest_filesystem(void) {
+    /* INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init; */
+
+    printf("\t" YELLOW("not yet implemented; skipping.") "\n");
+    return true;
+
+    /* sir_cleanup();
+    return print_result_and_return(pass); */
+}
+
+/*
+bool sirtest_XXX(void) {
+
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+
+    sir_cleanup();
+    return print_result_and_return(pass);
+}
+*/
+
+/* ========================== end tests ========================== */
+
+static void os_log_activity1(void* ctx) {
+
 }
 
 #if !defined(_WIN32)
@@ -819,18 +954,6 @@ unsigned sirtest_thread(void* arg) {
     return 0;
 #endif
 }
-
-/*
-bool sirtest_XXX(void) {
-
-    INIT(si, SIRL_ALL, 0, 0, 0);
-    bool pass = si_init;
-
-
-    sir_cleanup();
-    return printerror(pass);
-}
-*/
 
 bool print_test_error(bool result, bool expected) {
     sirchar_t message[SIR_MAXERROR] = { 0 };

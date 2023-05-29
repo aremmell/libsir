@@ -63,16 +63,25 @@
 #define WHITE(s) STRFMT("\x1b[1;97m", s)
 #define BLUE(s) STRFMT("\x1b[1;34m", s)
 #define CYAN(s) STRFMT("\x1b[1;36m", s)
+#define YELLOW(s) STRFMT("\x1b[1;33m", s)
+
+#define INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, name, init) \
+    sirinit var         = {0};       \
+    var.d_stdout.opts   = o_stdout;  \
+    var.d_stdout.levels = l_stdout;  \
+    var.d_stderr.opts   = o_stderr;  \
+    var.d_stderr.levels = l_stderr;  \
+    if (strlen(name) > 0)            \
+        _sir_strncpy(var.processName, SIR_MAXNAME, name, SIR_MAXNAME); \
+    bool var##_init = false; \
+    if (init) \
+        var##_init = sir_init(&var);
 
 #define INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, name) \
-    sirinit var         = {0};                          \
-    var.d_stdout.opts   = o_stdout;                     \
-    var.d_stdout.levels = l_stdout;                     \
-    var.d_stderr.opts   = o_stderr;                     \
-    var.d_stderr.levels = l_stderr;                     \
-    if (strlen(name) > 0)                               \
-        _sir_strncpy(var.processName, SIR_MAXNAME, name, SIR_MAXNAME);    \
-    bool var##_init     = sir_init(&var);
+    INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, name, true)
+
+#define INIT_SL(var, l_stdout, o_stdout, l_stderr, o_stderr, name) \
+    INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, name, false)    
 
 #define INIT(var, l_stdout, o_stdout, l_stderr, o_stderr) \
     INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, "")
@@ -192,6 +201,23 @@ bool sirtest_perf(void);
  */
 bool sirtest_updatesanity(void);
 
+/**
+ * @test Properly open, configure, and send messages to syslog().
+ */
+bool sirtest_syslog(void);
+
+/**
+ * @test Properly open, configure, and send messages to os_log().
+ * 
+ * @note macOS only.
+ */
+bool sirtest_os_log(void);
+
+/**
+ * @test Ensure the proper functionality of portable filesystem implementation.
+ */
+bool sirtest_filesystem(void);
+
 /** @} */
 
 /**
@@ -202,7 +228,6 @@ bool sirtest_xxxx(void); */
 bool print_test_error(bool result, bool expected);
 #define print_expected_error() print_test_error(true, true)
 #define print_result_and_return(pass) print_test_error(pass, false)
-
 void print_os_error(void);
 
 #define _STR(s) #s
