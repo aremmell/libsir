@@ -119,10 +119,12 @@ Enumerations</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="../../d6/d87/group__errors.html#gga06fc87d81c62e9abb8790b6e5713c55ba3f34b13f811b5ddc9e4c216f5432fa1d">SIR_E_TEXTSTYLE</a> = 8
 , <a class="el" href="../../d6/d87/group__errors.html#gga06fc87d81c62e9abb8790b6e5713c55ba014d92769313bc513bd580461d8ebcd3">SIR_E_STRING</a> = 9
-, <a class="el" href="../../d6/d87/group__errors.html#gga06fc87d81c62e9abb8790b6e5713c55bad8d3e0a7ff09ea46a966d07ad08536af">SIR_E_NODEST</a> = 10
-, <a class="el" href="../../d6/d87/group__errors.html#gga06fc87d81c62e9abb8790b6e5713c55ba0f293a6020f98a7e41b8afea0e402046">SIR_E_PLATFORM</a> = 11
+, <a class="el" href="../../d6/d87/group__errors.html#gga06fc87d81c62e9abb8790b6e5713c55ba8e6f10a1b3f9eb256aaa4f9c1504b43d">SIR_E_NULLPTR</a> = 10
+, <a class="el" href="../../d6/d87/group__errors.html#gga06fc87d81c62e9abb8790b6e5713c55baba1600c4a3cb92f8f2cdf7be820606d3">SIR_E_INVALID</a> = 11
 , <br />
-&#160;&#160;<a class="el" href="../../d6/d87/group__errors.html#gga06fc87d81c62e9abb8790b6e5713c55ba8090c8bc79ae660da7e58b2d0a47d785">SIR_E_UNKNOWN</a> = 4095
+&#160;&#160;<a class="el" href="../../d6/d87/group__errors.html#gga06fc87d81c62e9abb8790b6e5713c55bad8d3e0a7ff09ea46a966d07ad08536af">SIR_E_NODEST</a> = 12
+, <a class="el" href="../../d6/d87/group__errors.html#gga06fc87d81c62e9abb8790b6e5713c55ba0f293a6020f98a7e41b8afea0e402046">SIR_E_PLATFORM</a> = 13
+, <a class="el" href="../../d6/d87/group__errors.html#gga06fc87d81c62e9abb8790b6e5713c55ba8090c8bc79ae660da7e58b2d0a47d785">SIR_E_UNKNOWN</a> = 4095
 <br />
  }</td></tr>
 <tr class="separator:ga06fc87d81c62e9abb8790b6e5713c55b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,6 +181,10 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="gga06fc87d81c62e9abb8790b6e5713c55ba3f34b13f811b5ddc9e4c216f5432fa1d" name="gga06fc87d81c62e9abb8790b6e5713c55ba3f34b13f811b5ddc9e4c216f5432fa1d"></a>SIR_E_TEXTSTYLE&#160;</td><td class="fielddoc"><p>Text style is invalid </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga06fc87d81c62e9abb8790b6e5713c55ba014d92769313bc513bd580461d8ebcd3" name="gga06fc87d81c62e9abb8790b6e5713c55ba014d92769313bc513bd580461d8ebcd3"></a>SIR_E_STRING&#160;</td><td class="fielddoc"><p>Invalid string argument </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga06fc87d81c62e9abb8790b6e5713c55ba8e6f10a1b3f9eb256aaa4f9c1504b43d" name="gga06fc87d81c62e9abb8790b6e5713c55ba8e6f10a1b3f9eb256aaa4f9c1504b43d"></a>SIR_E_NULLPTR&#160;</td><td class="fielddoc"><p>NULL pointer argument </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga06fc87d81c62e9abb8790b6e5713c55baba1600c4a3cb92f8f2cdf7be820606d3" name="gga06fc87d81c62e9abb8790b6e5713c55baba1600c4a3cb92f8f2cdf7be820606d3"></a>SIR_E_INVALID&#160;</td><td class="fielddoc"><p>Invalid argument </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga06fc87d81c62e9abb8790b6e5713c55bad8d3e0a7ff09ea46a966d07ad08536af" name="gga06fc87d81c62e9abb8790b6e5713c55bad8d3e0a7ff09ea46a966d07ad08536af"></a>SIR_E_NODEST&#160;</td><td class="fielddoc"><p>No destinations registered for level </p>
 </td></tr>
@@ -287,20 +293,20 @@ Variables</h2></td></tr>
     <tr><td class="paramname">SIR_E_NOERROR</td><td>The operation completed successfully </td></tr>
     <tr><td class="paramname">SIR_E_NOTREADY</td><td>libsir has not been initialized </td></tr>
     <tr><td class="paramname">SIR_E_ALREADY</td><td>libsir is already initialized </td></tr>
-    <tr><td class="paramname">SIR_E_DUPFILE</td><td>File already managed by SIR </td></tr>
-    <tr><td class="paramname">SIR_E_NOFILE</td><td>File not managed by SIR </td></tr>
+    <tr><td class="paramname">SIR_E_DUPFILE</td><td>File already managed by libsir </td></tr>
+    <tr><td class="paramname">SIR_E_NOFILE</td><td>File not managed by libsir </td></tr>
     <tr><td class="paramname">SIR_E_FCFULL</td><td>Maximum number of files already managed </td></tr>
     <tr><td class="paramname">SIR_E_OPTIONS</td><td>Option flags are invalid </td></tr>
     <tr><td class="paramname">SIR_E_LEVELS</td><td>Level flags are invalid </td></tr>
     <tr><td class="paramname">SIR_E_TEXTSTYLE</td><td>Text style is invalid </td></tr>
     <tr><td class="paramname">SIR_E_STRING</td><td>Invalid string argument </td></tr>
+    <tr><td class="paramname">SIR_E_NULLPTR</td><td>NULL pointer argument </td></tr>
+    <tr><td class="paramname">SIR_E_INVALID</td><td>Invalid argument </td></tr>
     <tr><td class="paramname">SIR_E_NODEST</td><td>No destinations registered for level </td></tr>
     <tr><td class="paramname">SIR_E_PLATFORM</td><td>Platform error code %d: %s </td></tr>
     <tr><td class="paramname">SIR_E_UNKNOWN</td><td>Error is not known </td></tr>
   </table>
   </dd>
-</dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a32">example.c</a>.</dd>
 </dl>
 
 </div>
@@ -340,7 +346,7 @@ Variables</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue May 16 2023 21:34:20 for libsir by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon May 29 2023 09:30:16 for libsir by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

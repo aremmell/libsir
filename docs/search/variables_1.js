@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['from_0',['from',['../d7/dcf/structsir__style__priv__map.html#a8a535a9c5bc30acf5189252ccb79f612',1,'sir_style_priv_map']]]
+  ['from_0',['from',['../d2/dbf/structsir__style__16color__pair.html#ac2b67be8c9cb247ffdfe5e0ed37e6b5c',1,'sir_style_16color_pair']]]
 ];

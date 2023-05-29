@@ -1,5 +1,6 @@
 var group__custom =
 [
+    [ "SIR_BEGINSTYLE", "da/df8/group__custom.html#ga5664f5d45541d1170acff510b54bc733", null ],
     [ "SIR_ENDSTYLE", "da/df8/group__custom.html#gaca5ce9bf2336ca3fc3fb71c74756dd57", null ],
     [ "SIR_ERRORFORMAT", "da/df8/group__custom.html#ga060398bb73afb43df07b1587bcec98ba", null ],
     [ "SIR_FHBEGIN", "da/df8/group__custom.html#gaeb4e44bc613c57c3c49e27b66e69e933", null ],
@@ -10,8 +11,8 @@ var group__custom =
     [ "SIR_FNAMETIMEFORMAT", "da/df8/group__custom.html#gaeb4949a438cb054dbd261eead7e9d6c9", null ],
     [ "SIR_FOPENMODE", "da/df8/group__custom.html#gaad514de31d1178e0a91dcd7434230965", null ],
     [ "SIR_FROLLSIZE", "da/df8/group__custom.html#ga019fb62b107343bafedb0f5ad84f7d3a", null ],
-    [ "SIR_INVALID", "da/df8/group__custom.html#gaf8577c1f2d41e1110bc22b89e2e48646", null ],
     [ "SIR_LEVELFORMAT", "da/df8/group__custom.html#ga6777d61d199949366eb9363cfcd8c82d", null ],
+    [ "SIR_LIBNAME", "da/df8/group__custom.html#ga5f9eed5a433da7fdcc38b5c705def626", null ],
     [ "SIR_MAXERROR", "da/df8/group__custom.html#gad6fce840144259e992c33fb611f31262", null ],
     [ "SIR_MAXFILES", "da/df8/group__custom.html#gaa1080a4bec531adb6d25c87ac4734399", null ],
     [ "SIR_MAXLEVEL", "da/df8/group__custom.html#gabac0b7b0c1ea5afc9d0708a4421b1a57", null ],
@@ -22,6 +23,7 @@ var group__custom =
     [ "SIR_MAXOUTPUT", "da/df8/group__custom.html#gab3e26cb9ac224cb9a695ddf1ed099218", null ],
     [ "SIR_MAXPID", "da/df8/group__custom.html#ga77d8a4249177fcf7703a811ca0154190", null ],
     [ "SIR_MAXSTYLE", "da/df8/group__custom.html#ga5cdaa944bfe2228355cc4c34c3d315e8", null ],
+    [ "SIR_MAXSTYLE_16_COLOR", "da/df8/group__custom.html#ga2fb5413dac03b2487edfeee377932402", null ],
     [ "SIR_MAXTIME", "da/df8/group__custom.html#gac1e50274f913ef71f196f20b9dfbbba6", null ],
     [ "SIR_MSECCLOCK", "da/df8/group__custom.html#gaa8b393ed113098892caa3d2ecd14dea9", null ],
     [ "SIR_MSECFORMAT", "da/df8/group__custom.html#ga11214c8798ccdaab052c3bc9db2e3e78", null ],
@@ -38,7 +40,7 @@ var group__custom =
     [ "SIRL_S_INFO", "da/df8/group__custom.html#ga1f7c2763d5e7afb0f2b49d4f0636276d", null ],
     [ "SIRL_S_NOTICE", "da/df8/group__custom.html#ga6195821fca239b40498e847d50b82623", null ],
     [ "SIRL_S_WARN", "da/df8/group__custom.html#ga7a2838316cfd52f1af743952e667d9f5", null ],
-    [ "sir_default_styles", "da/df8/group__custom.html#gaab713b2ff4a81272aad35de4b59a0af0", null ],
+    [ "sir_default_style_map", "da/df8/group__custom.html#ga33c3e4c7a91180cecacdff293873127a", null ],
     [ "sir_file_def_lvls", "da/df8/group__custom.html#ga1337de627cb0dd234f34b07b4d77a931", null ],
     [ "sir_file_def_opts", "da/df8/group__custom.html#ga7b82b6fc3f0701c4db31d05a0b7a17ba", null ],
     [ "sir_stderr_def_lvls", "da/df8/group__custom.html#ga0c89af75ec9acb60d1160fa6cabb82dc", null ],

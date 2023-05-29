@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['level_0',['level',['../df/d50/structsir__style__map.html#abb52f70389b9f91f1c8d2abc3bb1afca',1,'sir_style_map']]]
+  ['level_0',['level',['../d8/d1a/structsir__level__style__pair.html#a624e22ef9c7d6127c732e077ed91a0d9',1,'sir_level_style_pair']]]
 ];

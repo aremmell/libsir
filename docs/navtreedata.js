@@ -26,6 +26,7 @@ var NAVTREE =
 [
   [ "libsir", "index.html", [
     [ "Security Policy", "db/db3/md_SECURITY.html", null ],
+    [ "TODO", "d4/d4d/md_TODO.html", null ],
     [ "Todo List", "dd/da0/todo.html", null ],
     [ "Test List", "d4/df6/test.html", null ],
     [ "Modules", "modules.html", "modules" ],
@@ -53,15 +54,14 @@ var NAVTREE =
         [ "Enumerator", "globals_eval.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
-    ] ],
-    [ "Examples", "examples.html", "examples" ]
+    ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
 "annotated.html",
-"da/df8/group__custom.html#ga47b9f4b74ed2b3d81d34c0d0237b100f"
+"d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

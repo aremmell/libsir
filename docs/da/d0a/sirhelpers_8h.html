@@ -118,8 +118,12 @@ Macros</h2></td></tr>
 <tr class="separator:gac812e82ac0f3ee01b35808082281363c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7d5dda1395dc7eec751df1ec10095aef"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#ga7d5dda1395dc7eec751df1ec10095aef">_SIR_L_END</a>(args)&#160;&#160;&#160;va_end(args);</td></tr>
 <tr class="separator:ga7d5dda1395dc7eec751df1ec10095aef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8c427d43dc4611ee5449469f7dcbfce8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#ga8c427d43dc4611ee5449469f7dcbfce8">_sir_validptr</a>(p)&#160;&#160;&#160;(NULL != p)</td></tr>
-<tr class="separator:ga8c427d43dc4611ee5449469f7dcbfce8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaec5f4c31b60aca6a62b01e7188e91e08"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#gaec5f4c31b60aca6a62b01e7188e91e08">_SIR_UNUSED</a>(param)&#160;&#160;&#160;(void)param;</td></tr>
+<tr class="separator:gaec5f4c31b60aca6a62b01e7188e91e08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8fa793d8b19a813ef1e7792072bcb35b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#ga8fa793d8b19a813ef1e7792072bcb35b">_SIR_DECLARE_BIN_SEARCH</a>(low,  high)</td></tr>
+<tr class="separator:ga8fa793d8b19a813ef1e7792072bcb35b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1db61be8817fa34c0fb8a57f9dfaf2d3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#ga1db61be8817fa34c0fb8a57f9dfaf2d3">_sir_notnull</a>(addr)&#160;&#160;&#160;(NULL != addr)</td></tr>
+<tr class="separator:ga1db61be8817fa34c0fb8a57f9dfaf2d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -135,6 +139,8 @@ Functions</h2></td></tr>
 <tr class="separator:gafd7b2c5b8940fe4c92a59da4ebecfc09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad2bb1aa7a5735739d5db5dbdaca22f18"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#gad2bb1aa7a5735739d5db5dbdaca22f18">_sir_validfid</a> (int id)</td></tr>
 <tr class="separator:gad2bb1aa7a5735739d5db5dbdaca22f18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf1757b2bc1b99833b39d80297ef8fa12"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#gaf1757b2bc1b99833b39d80297ef8fa12">_sir_validupdatedata</a> (<a class="el" href="../../db/d39/structsir__update__config__data.html">sir_update_config_data</a> *data)</td></tr>
+<tr class="separator:gaf1757b2bc1b99833b39d80297ef8fa12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga09fdf57a2d2841d4d6c5f00dfa82974b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#ga09fdf57a2d2841d4d6c5f00dfa82974b">_sir_validlevels</a> (<a class="el" href="../../d8/d64/group__public.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a> levels)</td></tr>
 <tr class="separator:ga09fdf57a2d2841d4d6c5f00dfa82974b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga70a34d97d57819b278ff8ac1b8f53f3a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#ga70a34d97d57819b278ff8ac1b8f53f3a">_sir_validlevel</a> (<a class="el" href="../../d8/d64/group__public.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level)</td></tr>
@@ -151,8 +157,24 @@ Functions</h2></td></tr>
 <tr class="separator:ga81ba7c311823833ccaee4ecdff8fb460"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadafa37c7ad670f7c1a6b92a32933ad82"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#gadafa37c7ad670f7c1a6b92a32933ad82">_sir_validstrnofail</a> (const <a class="el" href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *str)</td></tr>
 <tr class="separator:gadafa37c7ad670f7c1a6b92a32933ad82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf500b33521d460a6b69350cee1559306"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#gaf500b33521d460a6b69350cee1559306">__sir_validptr</a> (const void *restrict p, bool fail)</td></tr>
+<tr class="separator:gaf500b33521d460a6b69350cee1559306"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabc81ba7f0c2375212d2daf8f5109775b"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#gabc81ba7f0c2375212d2daf8f5109775b">_sir_validptr</a> (const void *restrict p)</td></tr>
+<tr class="separator:gabc81ba7f0c2375212d2daf8f5109775b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2899ef20a2423a7dede1bd95ae4fa250"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#ga2899ef20a2423a7dede1bd95ae4fa250">_sir_validptrnofail</a> (const void *restrict p)</td></tr>
+<tr class="separator:ga2899ef20a2423a7dede1bd95ae4fa250"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab89052df9773870821612c9b99586281"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#gab89052df9773870821612c9b99586281">_sir_resetstr</a> (<a class="el" href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *str)</td></tr>
 <tr class="separator:gab89052df9773870821612c9b99586281"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga45a2711d677382329eef2dbcbf420aa2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#ga45a2711d677382329eef2dbcbf420aa2">_sir_strncpy</a> (<a class="el" href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *restrict dest, size_t destsz, const <a class="el" href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *restrict src, size_t count)</td></tr>
+<tr class="separator:ga45a2711d677382329eef2dbcbf420aa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa3bdb27108e6e20986e896c145baf9be"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#gaa3bdb27108e6e20986e896c145baf9be">_sir_strncat</a> (<a class="el" href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *restrict dest, size_t destsz, const <a class="el" href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *restrict src, size_t count)</td></tr>
+<tr class="separator:gaa3bdb27108e6e20986e896c145baf9be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae2f92b8de58c7391a62048997f654b56"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#gae2f92b8de58c7391a62048997f654b56">_sir_fopen</a> (FILE *restrict *restrict streamptr, const <a class="el" href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *restrict filename, const <a class="el" href="../../d8/d64/group__public.html#ga1d2f790e2dabc69c8a625f2ee5dc583a">sirchar_t</a> *restrict mode)</td></tr>
+<tr class="separator:gae2f92b8de58c7391a62048997f654b56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf5e3b63f99cb33987d34631d072da56e"><td class="memItemLeft" align="right" valign="top">struct tm *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#gaf5e3b63f99cb33987d34631d072da56e">_sir_localtime</a> (const time_t *restrict timer, struct tm *restrict buf)</td></tr>
+<tr class="separator:gaf5e3b63f99cb33987d34631d072da56e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab00490f3656c1c10d5c75b2b4da9fdd0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dfe/group__intern.html#gab00490f3656c1c10d5c75b2b4da9fdd0">_sir_getchar</a> (void)</td></tr>
+<tr class="separator:gab00490f3656c1c10d5c75b2b4da9fdd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Internal macros and inline functions. </p>
@@ -170,7 +192,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../da/d0a/sirhelpers_8h.html">sirhelpers.h</a></li>
-    <li class="footer">Generated on Tue May 16 2023 21:34:20 for libsir by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon May 29 2023 09:30:16 for libsir by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

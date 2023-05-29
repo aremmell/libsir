@@ -2,7 +2,7 @@ var tests_8h =
 [
     [ "sir_test", "d7/dcf/structsir__test.html", null ],
     [ "sir_test_fn", "dc/d20/tests_8h.html#a0a7ef3993c57044252b01501cada39f3", null ],
-    [ "printerror", "dc/d20/tests_8h.html#aa47155994f7324ced7aee82c49909f45", null ],
+    [ "print_test_error", "dc/d20/tests_8h.html#a0302d7265a4074f6dedcc65495123fe6", null ],
     [ "sirtest_errorsanity", "d2/d7d/group__tests.html#ga1d9150c929ba0b79bf06592563ea81e1", null ],
     [ "sirtest_exceedmaxsize", "d2/d7d/group__tests.html#ga90b7633a39946d2c201758aafbce43fa", null ],
     [ "sirtest_failaftercleanup", "d2/d7d/group__tests.html#gabf5a4643e79df2f6b06956ffd6a465ab", null ],
@@ -16,10 +16,13 @@ var tests_8h =
     [ "sirtest_failsetinvalidstyle", "d2/d7d/group__tests.html#gaf0b4eb59c772e4b6fa9a694252a1db2d", null ],
     [ "sirtest_failwithoutinit", "d2/d7d/group__tests.html#ga4f238c5ad2114b9a746e64b003165bd1", null ],
     [ "sirtest_filecachesanity", "d2/d7d/group__tests.html#ga47f8191761084c5b3673b0efac0197d0", null ],
+    [ "sirtest_filesystem", "d2/d7d/group__tests.html#gaa0b035b71e6a6e6df6b8a7bb95722e2a", null ],
     [ "sirtest_initcleanupinit", "d2/d7d/group__tests.html#ga9f7ccc25d41c5980dae048951ba60c8b", null ],
     [ "sirtest_mthread_race", "d2/d7d/group__tests.html#ga33e3ca313f107bfad6d01c00c9d47d8d", null ],
+    [ "sirtest_os_log", "d2/d7d/group__tests.html#ga54f0e8e0163d0aedf20616451f122017", null ],
     [ "sirtest_perf", "d2/d7d/group__tests.html#ga607e96cb52e248a2277ab3ecc31b7195", null ],
     [ "sirtest_rollandarchivefile", "d2/d7d/group__tests.html#ga1b17632b25d61e85f6ff1fa08371959e", null ],
+    [ "sirtest_syslog", "d2/d7d/group__tests.html#ga8db924f756e0ee2f04ff3e044a10f283", null ],
     [ "sirtest_textstylesanity", "d2/d7d/group__tests.html#ga18ccd68f2c37d9798a06c403380c9308", null ],
     [ "sirtest_updatesanity", "d2/d7d/group__tests.html#gaf3428b620d3540baf058f6b7dd42c075", null ]
 ];

@@ -1,6 +1,6 @@
 var sirdefaults_8h =
 [
-    [ "sir_default_styles", "da/df8/group__custom.html#gaab713b2ff4a81272aad35de4b59a0af0", null ],
+    [ "sir_default_style_map", "da/df8/group__custom.html#ga33c3e4c7a91180cecacdff293873127a", null ],
     [ "sir_file_def_lvls", "da/df8/group__custom.html#ga1337de627cb0dd234f34b07b4d77a931", null ],
     [ "sir_file_def_opts", "da/df8/group__custom.html#ga7b82b6fc3f0701c4db31d05a0b7a17ba", null ],
     [ "sir_stderr_def_lvls", "da/df8/group__custom.html#ga0c89af75ec9acb60d1160fa6cabb82dc", null ],

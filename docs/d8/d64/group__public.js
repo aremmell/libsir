@@ -28,6 +28,7 @@ var group__public =
       [ "SIRL_DEFAULT", "d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804", null ]
     ] ],
     [ "sir_option", "d8/d64/group__public.html#ga9ed1c599dfd76231f4e0dadf46bff40b", [
+      [ "SIRO_ALL", "d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40ba843ca9cff10528731dc9609e2fbfe34f", null ],
       [ "SIRO_NOTIME", "d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d", null ],
       [ "SIRO_NOLEVEL", "d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40ba58882ac768eb1c0a0021d140f6b15deb", null ],
       [ "SIRO_NONAME", "d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40ba59020fdfee0aaf393ed80ef7bab4bb4e", null ],
@@ -49,7 +50,7 @@ var group__public =
       [ "SIRS_FG_BLUE", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa2f75bdae21995a567531e37eec6e979d", null ],
       [ "SIRS_FG_MAGENTA", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa78c026ced18436da03a138ac720d9739", null ],
       [ "SIRS_FG_CYAN", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafaefc4595e6d22f5a5d6ce7fa13c64444d", null ],
-      [ "SIRS_FG_WHITE", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafae6d57af48d2bca9848aa8cf926043e4e", null ],
+      [ "SIRS_FG_DEFAULT", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa94c0b7a28b98275970c70dc8cbf3ed86", null ],
       [ "SIRS_FG_LGRAY", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafae27d8d5a99b25c1fa6a6f8e88c728847", null ],
       [ "SIRS_FG_DGRAY", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa0a21b2c2577cffd925841a9bc549eb1a", null ],
       [ "SIRS_FG_LRED", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafaa4b6a5f32e591cd5649c849555abcd32", null ],
@@ -58,7 +59,7 @@ var group__public =
       [ "SIRS_FG_LBLUE", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa9803c61fa699378b4d3d4da2e7a1fc43", null ],
       [ "SIRS_FG_LMAGENTA", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa41034337d4b4513f07641d97b2450c06", null ],
       [ "SIRS_FG_LCYAN", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa869cfb06440efa65ee401ccccec054b5", null ],
-      [ "SIRS_FG_DEFAULT", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa94c0b7a28b98275970c70dc8cbf3ed86", null ],
+      [ "SIRS_FG_WHITE", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafae6d57af48d2bca9848aa8cf926043e4e", null ],
       [ "SIRS_BG_BLACK", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafae6d8923837281767bb30b4cfb59bcd2c", null ],
       [ "SIRS_BG_RED", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafad0eec1607a2eefbabe5947bd595170a4", null ],
       [ "SIRS_BG_GREEN", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa93166b30d32c8dbf52f93612aa0dcdd7", null ],
@@ -66,7 +67,7 @@ var group__public =
       [ "SIRS_BG_BLUE", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafabbee0baeb2477032387f884c6f938129", null ],
       [ "SIRS_BG_MAGENTA", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa989b172db1f8a3a212ef5b8e23d636cf", null ],
       [ "SIRS_BG_CYAN", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa04083a920b7ed070f2bbb886e4691203", null ],
-      [ "SIRS_BG_WHITE", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa57f3210f2af19b6b3067a10ab5947a36", null ],
+      [ "SIRS_BG_DEFAULT", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafab38f3ce262a13dd157fd1a2077fe27d6", null ],
       [ "SIRS_BG_LGRAY", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa05859c52a6ff0bdfccf869e1330889a3", null ],
       [ "SIRS_BG_DGRAY", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa65b1ce8d8dcdf149a9ee515001ee7d69", null ],
       [ "SIRS_BG_LRED", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa5dabc2332ba159af08c886c8d8cecd3e", null ],
@@ -75,7 +76,7 @@ var group__public =
       [ "SIRS_BG_LBLUE", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafae30bf67c0667f08b92c10f6e14b1895e", null ],
       [ "SIRS_BG_LMAGENTA", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa2bac829fbcfffa04182547d4a0a00e7a", null ],
       [ "SIRS_BG_LCYAN", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafaf3b311d7fd2af0678d7ddff6f7967866", null ],
-      [ "SIRS_BG_DEFAULT", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafab38f3ce262a13dd157fd1a2077fe27d6", null ],
+      [ "SIRS_BG_WHITE", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa57f3210f2af19b6b3067a10ab5947a36", null ],
       [ "SIRS_INVALID", "d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa42e4beda8d3aef8122f3b272c54632e2", null ]
     ] ],
     [ "sir_addfile", "d8/d64/group__public.html#ga4db9ea5b34afaa585f6b9cda84f385e9", null ],

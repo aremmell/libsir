@@ -142,6 +142,12 @@ Functions</h2></td></tr>
 <tr class="separator:ga607e96cb52e248a2277ab3ecc31b7195"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf3428b620d3540baf058f6b7dd42c075"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d7d/group__tests.html#gaf3428b620d3540baf058f6b7dd42c075">sirtest_updatesanity</a> (void)</td></tr>
 <tr class="separator:gaf3428b620d3540baf058f6b7dd42c075"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8db924f756e0ee2f04ff3e044a10f283"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d7d/group__tests.html#ga8db924f756e0ee2f04ff3e044a10f283">sirtest_syslog</a> (void)</td></tr>
+<tr class="separator:ga8db924f756e0ee2f04ff3e044a10f283"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga54f0e8e0163d0aedf20616451f122017"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d7d/group__tests.html#ga54f0e8e0163d0aedf20616451f122017">sirtest_os_log</a> (void)</td></tr>
+<tr class="separator:ga54f0e8e0163d0aedf20616451f122017"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa0b035b71e6a6e6df6b8a7bb95722e2a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d7d/group__tests.html#gaa0b035b71e6a6e6df6b8a7bb95722e2a">sirtest_filesystem</a> (void)</td></tr>
+<tr class="separator:gaa0b035b71e6a6e6df6b8a7bb95722e2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>libsir integrity tests. </p>
@@ -164,6 +170,21 @@ Functions</h2></td></tr>
 
 <p><code>#include &lt;<a class="el" href="../../dc/d20/tests_8h.html">tests/tests.h</a>&gt;</code></p>
 <dl class="test"><dt><b><a class="el" href="../../d4/df6/test.html#_test000016">Test:</a></b></dt><dd>Properly return valid codes and messages for all possible errors. </dd></dl>
+<p>&lt; The operation completed successfully (0)</p>
+<p>&lt; libsir has not been initialized (1)</p>
+<p>&lt; libsir is already initialized (2)</p>
+<p>&lt; File already managed by libsir (3)</p>
+<p>&lt; File not managed by libsir (4)</p>
+<p>&lt; Maximum number of files already managed (5)</p>
+<p>&lt; Option flags are invalid (6)</p>
+<p>&lt; Level flags are invalid (7)</p>
+<p>&lt; Text style is invalid (8)</p>
+<p>&lt; Invalid string argument (9)</p>
+<p>&lt; NULL pointer argument (10)</p>
+<p>&lt; Invalid argument (11)</p>
+<p>&lt; No destinations registered for level (11)</p>
+<p>&lt; Platform error code d: s (12)</p>
+<p>&lt; Error is not known (4095)</p>
 
 </div>
 </div>
@@ -419,6 +440,27 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="gaa0b035b71e6a6e6df6b8a7bb95722e2a" name="gaa0b035b71e6a6e6df6b8a7bb95722e2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa0b035b71e6a6e6df6b8a7bb95722e2a">&#9670;&#160;</a></span>sirtest_filesystem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sirtest_filesystem </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>#include &lt;<a class="el" href="../../dc/d20/tests_8h.html">tests/tests.h</a>&gt;</code></p>
+<dl class="test"><dt><b><a class="el" href="../../d4/df6/test.html#_test000022">Test:</a></b></dt><dd>Ensure the proper functionality of portable filesystem implementation. </dd></dl>
+
+</div>
+</div>
 <a id="ga9f7ccc25d41c5980dae048951ba60c8b" name="ga9f7ccc25d41c5980dae048951ba60c8b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga9f7ccc25d41c5980dae048951ba60c8b">&#9670;&#160;</a></span>sirtest_initcleanupinit()</h2>
 
@@ -461,6 +503,28 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ga54f0e8e0163d0aedf20616451f122017" name="ga54f0e8e0163d0aedf20616451f122017"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga54f0e8e0163d0aedf20616451f122017">&#9670;&#160;</a></span>sirtest_os_log()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sirtest_os_log </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>#include &lt;<a class="el" href="../../dc/d20/tests_8h.html">tests/tests.h</a>&gt;</code></p>
+<dl class="test"><dt><b><a class="el" href="../../d4/df6/test.html#_test000021">Test:</a></b></dt><dd>Properly open, configure, and send messages to os_log().</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>macOS only. </dd></dl>
+
+</div>
+</div>
 <a id="ga607e96cb52e248a2277ab3ecc31b7195" name="ga607e96cb52e248a2277ab3ecc31b7195"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga607e96cb52e248a2277ab3ecc31b7195">&#9670;&#160;</a></span>sirtest_perf()</h2>
 
@@ -500,6 +564,27 @@ Functions</h2></td></tr>
 
 <p><code>#include &lt;<a class="el" href="../../dc/d20/tests_8h.html">tests/tests.h</a>&gt;</code></p>
 <dl class="test"><dt><b><a class="el" href="../../d4/df6/test.html#_test000015">Test:</a></b></dt><dd>Properly roll/archive a file when it hits max size. </dd></dl>
+
+</div>
+</div>
+<a id="ga8db924f756e0ee2f04ff3e044a10f283" name="ga8db924f756e0ee2f04ff3e044a10f283"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8db924f756e0ee2f04ff3e044a10f283">&#9670;&#160;</a></span>sirtest_syslog()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sirtest_syslog </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>#include &lt;<a class="el" href="../../dc/d20/tests_8h.html">tests/tests.h</a>&gt;</code></p>
+<dl class="test"><dt><b><a class="el" href="../../d4/df6/test.html#_test000020">Test:</a></b></dt><dd>Properly open, configure, and send messages to syslog(). </dd></dl>
 
 </div>
 </div>
@@ -550,7 +635,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue May 16 2023 21:34:20 for libsir by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon May 29 2023 09:30:16 for libsir by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

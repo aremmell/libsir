@@ -108,10 +108,10 @@ $(document).ready(function(){initNavTree('d8/d64/group__public.html','../../'); 
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d0e/structsir__stdio__dest.html">sir_stdio_dest</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration for <em>stdio</em> destinations <em></em>(stdout and stderr).  <a href="../../df/d0e/structsir__stdio__dest.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration for stdio destinations (stdout and stderr).  <a href="../../df/d0e/structsir__stdio__dest.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/dea/structsir__syslog__dest.html">sir_syslog_dest</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration for the <em>syslog</em> destination.  <a href="../../dc/dea/structsir__syslog__dest.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration for the syslog destination.  <a href="../../dc/dea/structsir__syslog__dest.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/ddf/structsirinit.html">sirinit</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization data for libsir.  <a href="../../d2/ddf/structsirinit.html#details">More...</a><br /></td></tr>
@@ -135,85 +135,86 @@ Typedefs</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:ga4a3303c67acd49bea38fd3565d458cb2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d64/group__public.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> { <br />
-&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a7cc68341661fcb7a505aca67edb7a18e">SIRL_NONE</a> = 0x0
-, <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc">SIRL_EMERG</a> = 0x1
-, <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955">SIRL_ALERT</a> = 0x2
-, <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435">SIRL_CRIT</a> = 0x4
+&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a7cc68341661fcb7a505aca67edb7a18e">SIRL_NONE</a> = 0x0000
+, <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc">SIRL_EMERG</a> = 0x0001
+, <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955">SIRL_ALERT</a> = 0x0002
+, <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435">SIRL_CRIT</a> = 0x0004
 , <br />
-&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76">SIRL_ERROR</a> = 0x8
-, <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881">SIRL_WARN</a> = 0x10
-, <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a">SIRL_NOTICE</a> = 0x20
-, <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d">SIRL_INFO</a> = 0x40
+&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76">SIRL_ERROR</a> = 0x0008
+, <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881">SIRL_WARN</a> = 0x0010
+, <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a">SIRL_NOTICE</a> = 0x0020
+, <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d">SIRL_INFO</a> = 0x0040
 , <br />
-&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b">SIRL_DEBUG</a> = 0x80
-, <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444">SIRL_ALL</a> = 0xff
-, <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804">SIRL_DEFAULT</a> = 0x100
+&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b">SIRL_DEBUG</a> = 0x0080
+, <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444">SIRL_ALL</a> = 0x00ff
+, <a class="el" href="../../d8/d64/group__public.html#gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804">SIRL_DEFAULT</a> = 0x0100
 <br />
  }</td></tr>
 <tr class="separator:ga4a3303c67acd49bea38fd3565d458cb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9ed1c599dfd76231f4e0dadf46bff40b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d64/group__public.html#ga9ed1c599dfd76231f4e0dadf46bff40b">sir_option</a> { <br />
-&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d">SIRO_NOTIME</a> = 0x200
-, <a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40ba58882ac768eb1c0a0021d140f6b15deb">SIRO_NOLEVEL</a> = 0x400
-, <a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40ba59020fdfee0aaf393ed80ef7bab4bb4e">SIRO_NONAME</a> = 0x800
-, <a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40bad78a6f66d21b01ace7574841495cacdd">SIRO_NOMSEC</a> = 0x1000
+&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40ba843ca9cff10528731dc9609e2fbfe34f">SIRO_ALL</a> = 0x00000000
+, <a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d">SIRO_NOTIME</a> = 0x00000200
+, <a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40ba58882ac768eb1c0a0021d140f6b15deb">SIRO_NOLEVEL</a> = 0x00000400
+, <a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40ba59020fdfee0aaf393ed80ef7bab4bb4e">SIRO_NONAME</a> = 0x00000800
 , <br />
-&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40babbdc2529081d58ebff50a8966db31fd2">SIRO_NOPID</a> = 0x2000
-, <a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40ba7079a31d6035c24aaa94d85c4a89c053">SIRO_NOTID</a> = 0x4000
-, <a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40ba59b2a0e9b2dfd78bcfa053dcb3f2dcce">SIRO_NOHDR</a> = 0x10000
-, <a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0">SIRO_MSGONLY</a> = 0xeff00
+&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40bad78a6f66d21b01ace7574841495cacdd">SIRO_NOMSEC</a> = 0x00001000
+, <a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40babbdc2529081d58ebff50a8966db31fd2">SIRO_NOPID</a> = 0x00002000
+, <a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40ba7079a31d6035c24aaa94d85c4a89c053">SIRO_NOTID</a> = 0x00004000
+, <a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40ba59b2a0e9b2dfd78bcfa053dcb3f2dcce">SIRO_NOHDR</a> = 0x00010000
 , <br />
-&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02">SIRO_DEFAULT</a> = 0x100000
+&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0">SIRO_MSGONLY</a> = 0x000eff00
+, <a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02">SIRO_DEFAULT</a> = 0x00100000
 <br />
  }</td></tr>
 <tr class="separator:ga9ed1c599dfd76231f4e0dadf46bff40b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3bd5959a607e5280a8db90ada2d80caf"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d64/group__public.html#ga3bd5959a607e5280a8db90ada2d80caf">sir_textstyle</a> { <br />
-&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafaeedcdbdc654f326e211a2d2f653b07f5">SIRS_NONE</a> = 0
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafacc1f324a77d57ff8ac0895767c9480d4">SIRS_BRIGHT</a> = 0x1
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa54175d114e639a05853b7f8f2291661a">SIRS_DIM</a> = 0x2
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa0fbe677e96b8483b073584848bb5e4fc">SIRS_FG_BLACK</a> = 0x10
+&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafaeedcdbdc654f326e211a2d2f653b07f5">SIRS_NONE</a> = 0x00000000
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafacc1f324a77d57ff8ac0895767c9480d4">SIRS_BRIGHT</a> = 0x00000001
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa54175d114e639a05853b7f8f2291661a">SIRS_DIM</a> = 0x00000002
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa0fbe677e96b8483b073584848bb5e4fc">SIRS_FG_BLACK</a> = 0x00000010
 , <br />
-&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa1f11f323b6998adbd83b31d73bc538dc">SIRS_FG_RED</a> = 0x20
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafae78e2dc1e4fed6ad5b12d089e80a07e8">SIRS_FG_GREEN</a> = 0x30
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa89c9ddbb6a10b8c5fe204247eb457641">SIRS_FG_YELLOW</a> = 0x40
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa2f75bdae21995a567531e37eec6e979d">SIRS_FG_BLUE</a> = 0x50
+&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa1f11f323b6998adbd83b31d73bc538dc">SIRS_FG_RED</a> = 0x00000020
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafae78e2dc1e4fed6ad5b12d089e80a07e8">SIRS_FG_GREEN</a> = 0x00000030
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa89c9ddbb6a10b8c5fe204247eb457641">SIRS_FG_YELLOW</a> = 0x00000040
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa2f75bdae21995a567531e37eec6e979d">SIRS_FG_BLUE</a> = 0x00000050
 , <br />
-&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa78c026ced18436da03a138ac720d9739">SIRS_FG_MAGENTA</a> = 0x60
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafaefc4595e6d22f5a5d6ce7fa13c64444d">SIRS_FG_CYAN</a> = 0x70
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafae6d57af48d2bca9848aa8cf926043e4e">SIRS_FG_WHITE</a> = 0x80
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafae27d8d5a99b25c1fa6a6f8e88c728847">SIRS_FG_LGRAY</a> = 0x90
+&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa78c026ced18436da03a138ac720d9739">SIRS_FG_MAGENTA</a> = 0x00000060
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafaefc4595e6d22f5a5d6ce7fa13c64444d">SIRS_FG_CYAN</a> = 0x00000070
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa94c0b7a28b98275970c70dc8cbf3ed86">SIRS_FG_DEFAULT</a> = 0x00000080
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafae27d8d5a99b25c1fa6a6f8e88c728847">SIRS_FG_LGRAY</a> = 0x00000090
 , <br />
-&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa0a21b2c2577cffd925841a9bc549eb1a">SIRS_FG_DGRAY</a> = 0xa0
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafaa4b6a5f32e591cd5649c849555abcd32">SIRS_FG_LRED</a> = 0xb0
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa3ca695e05500c2577a8aed197c6f515a">SIRS_FG_LGREEN</a> = 0xc0
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa044cfd76b272031ac7103a6f4b655c68">SIRS_FG_LYELLOW</a> = 0xd0
+&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa0a21b2c2577cffd925841a9bc549eb1a">SIRS_FG_DGRAY</a> = 0x000000a0
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafaa4b6a5f32e591cd5649c849555abcd32">SIRS_FG_LRED</a> = 0x000000b0
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa3ca695e05500c2577a8aed197c6f515a">SIRS_FG_LGREEN</a> = 0x000000c0
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa044cfd76b272031ac7103a6f4b655c68">SIRS_FG_LYELLOW</a> = 0x000000d0
 , <br />
-&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa9803c61fa699378b4d3d4da2e7a1fc43">SIRS_FG_LBLUE</a> = 0xe0
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa41034337d4b4513f07641d97b2450c06">SIRS_FG_LMAGENTA</a> = 0xf0
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa869cfb06440efa65ee401ccccec054b5">SIRS_FG_LCYAN</a> = 0xf10
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa94c0b7a28b98275970c70dc8cbf3ed86">SIRS_FG_DEFAULT</a> = 0xf20
+&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa9803c61fa699378b4d3d4da2e7a1fc43">SIRS_FG_LBLUE</a> = 0x000000e0
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa41034337d4b4513f07641d97b2450c06">SIRS_FG_LMAGENTA</a> = 0x000000f0
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa869cfb06440efa65ee401ccccec054b5">SIRS_FG_LCYAN</a> = 0x00000f10
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafae6d57af48d2bca9848aa8cf926043e4e">SIRS_FG_WHITE</a> = 0x00000f20
 , <br />
-&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafae6d8923837281767bb30b4cfb59bcd2c">SIRS_BG_BLACK</a> = 0x1000
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafad0eec1607a2eefbabe5947bd595170a4">SIRS_BG_RED</a> = 0x2000
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa93166b30d32c8dbf52f93612aa0dcdd7">SIRS_BG_GREEN</a> = 0x3000
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafabe3a20064515e10ac72eaf6e8a665b55">SIRS_BG_YELLOW</a> = 0x4000
+&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafae6d8923837281767bb30b4cfb59bcd2c">SIRS_BG_BLACK</a> = 0x00001000
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafad0eec1607a2eefbabe5947bd595170a4">SIRS_BG_RED</a> = 0x00002000
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa93166b30d32c8dbf52f93612aa0dcdd7">SIRS_BG_GREEN</a> = 0x00003000
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafabe3a20064515e10ac72eaf6e8a665b55">SIRS_BG_YELLOW</a> = 0x00004000
 , <br />
-&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafabbee0baeb2477032387f884c6f938129">SIRS_BG_BLUE</a> = 0x5000
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa989b172db1f8a3a212ef5b8e23d636cf">SIRS_BG_MAGENTA</a> = 0x6000
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa04083a920b7ed070f2bbb886e4691203">SIRS_BG_CYAN</a> = 0x7000
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa57f3210f2af19b6b3067a10ab5947a36">SIRS_BG_WHITE</a> = 0x8000
+&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafabbee0baeb2477032387f884c6f938129">SIRS_BG_BLUE</a> = 0x00005000
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa989b172db1f8a3a212ef5b8e23d636cf">SIRS_BG_MAGENTA</a> = 0x00006000
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa04083a920b7ed070f2bbb886e4691203">SIRS_BG_CYAN</a> = 0x00007000
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafab38f3ce262a13dd157fd1a2077fe27d6">SIRS_BG_DEFAULT</a> = 0x00008000
 , <br />
-&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa05859c52a6ff0bdfccf869e1330889a3">SIRS_BG_LGRAY</a> = 0x9000
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa65b1ce8d8dcdf149a9ee515001ee7d69">SIRS_BG_DGRAY</a> = 0xa000
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa5dabc2332ba159af08c886c8d8cecd3e">SIRS_BG_LRED</a> = 0xb000
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa6dba92fe12cc2cf72ea2e77d9f083b25">SIRS_BG_LGREEN</a> = 0xc000
+&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa05859c52a6ff0bdfccf869e1330889a3">SIRS_BG_LGRAY</a> = 0x00009000
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa65b1ce8d8dcdf149a9ee515001ee7d69">SIRS_BG_DGRAY</a> = 0x0000a000
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa5dabc2332ba159af08c886c8d8cecd3e">SIRS_BG_LRED</a> = 0x0000b000
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa6dba92fe12cc2cf72ea2e77d9f083b25">SIRS_BG_LGREEN</a> = 0x0000c000
 , <br />
-&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafaa57ce340d05ec022dc4a5f89d2bea212">SIRS_BG_LYELLOW</a> = 0xd000
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafae30bf67c0667f08b92c10f6e14b1895e">SIRS_BG_LBLUE</a> = 0xe000
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa2bac829fbcfffa04182547d4a0a00e7a">SIRS_BG_LMAGENTA</a> = 0xf000
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafaf3b311d7fd2af0678d7ddff6f7967866">SIRS_BG_LCYAN</a> = 0xf1000
+&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafaa57ce340d05ec022dc4a5f89d2bea212">SIRS_BG_LYELLOW</a> = 0x0000d000
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafae30bf67c0667f08b92c10f6e14b1895e">SIRS_BG_LBLUE</a> = 0x0000e000
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa2bac829fbcfffa04182547d4a0a00e7a">SIRS_BG_LMAGENTA</a> = 0x0000f000
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafaf3b311d7fd2af0678d7ddff6f7967866">SIRS_BG_LCYAN</a> = 0x000f1000
 , <br />
-&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafab38f3ce262a13dd157fd1a2077fe27d6">SIRS_BG_DEFAULT</a> = 0xf2000
-, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa42e4beda8d3aef8122f3b272c54632e2">SIRS_INVALID</a> = 0xf3000
+&#160;&#160;<a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa57f3210f2af19b6b3067a10ab5947a36">SIRS_BG_WHITE</a> = 0x000f2000
+, <a class="el" href="../../d8/d64/group__public.html#gga3bd5959a607e5280a8db90ada2d80cafa42e4beda8d3aef8122f3b272c54632e2">SIRS_INVALID</a> = 0x000f3000
 <br />
  }</td></tr>
 <tr class="separator:ga3bd5959a607e5280a8db90ada2d80caf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -281,7 +282,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:gaa628fae976081e7aaa302e5c5e43e06c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the text style in <em>stdio</em> output for a <a class="el" href="../../d8/d64/group__public.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> of output.  <br /></td></tr>
 <tr class="separator:gaa628fae976081e7aaa302e5c5e43e06c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga932eec2f9c73eecdd2b6b935452e5eed"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d64/group__public.html#ga932eec2f9c73eecdd2b6b935452e5eed">sir_resettextstyles</a> (void)</td></tr>
-<tr class="memdesc:ga932eec2f9c73eecdd2b6b935452e5eed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets all <em>stdio</em> text styles to their default values (<a class="el" href="../../da/df8/group__custom.html#gaab713b2ff4a81272aad35de4b59a0af0">sir_default_styles</a>).  <br /></td></tr>
+<tr class="memdesc:ga932eec2f9c73eecdd2b6b935452e5eed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets all <em>stdio</em> text styles to their default values.  <br /></td></tr>
 <tr class="separator:ga932eec2f9c73eecdd2b6b935452e5eed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -300,7 +301,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p><code>#include &lt;<a class="el" href="../../dc/dba/sirtypes_8h.html">sirtypes.h</a>&gt;</code></p>
-<p>Used to differentiate between a single <a class="el" href="../../d8/d64/group__public.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> and one or more bitwise OR'd together. </p>
+<p>Used to differentiate between a single <a class="el" href="../../d8/d64/group__public.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> and one or more of them bitwise OR'd together. </p>
 
 </div>
 </div>
@@ -429,23 +430,25 @@ Functions</h2></td></tr>
 <p><code>#include &lt;<a class="el" href="../../dc/dba/sirtypes_8h.html">sirtypes.h</a>&gt;</code></p>
 <p>Formatting options for a destination. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d" name="gga9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d"></a>SIRO_NOTIME&#160;</td><td class="fielddoc"><p>Don't include time stamps in output. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga9ed1c599dfd76231f4e0dadf46bff40ba843ca9cff10528731dc9609e2fbfe34f" name="gga9ed1c599dfd76231f4e0dadf46bff40ba843ca9cff10528731dc9609e2fbfe34f"></a>SIRO_ALL&#160;</td><td class="fielddoc"><p>Effectively = <a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0">SIRO_MSGONLY</a>. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga9ed1c599dfd76231f4e0dadf46bff40ba58882ac768eb1c0a0021d140f6b15deb" name="gga9ed1c599dfd76231f4e0dadf46bff40ba58882ac768eb1c0a0021d140f6b15deb"></a>SIRO_NOLEVEL&#160;</td><td class="fielddoc"><p>Don't include the human-readable logging level in output. </p>
+<tr><td class="fieldname"><a id="gga9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d" name="gga9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d"></a>SIRO_NOTIME&#160;</td><td class="fielddoc"><p>Exclude time stamps (implies <a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40bad78a6f66d21b01ace7574841495cacdd">SIRO_NOMSEC</a>). </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga9ed1c599dfd76231f4e0dadf46bff40ba59020fdfee0aaf393ed80ef7bab4bb4e" name="gga9ed1c599dfd76231f4e0dadf46bff40ba59020fdfee0aaf393ed80ef7bab4bb4e"></a>SIRO_NONAME&#160;</td><td class="fielddoc"><p>Don't include the process/app name in output. </p>
+<tr><td class="fieldname"><a id="gga9ed1c599dfd76231f4e0dadf46bff40ba58882ac768eb1c0a0021d140f6b15deb" name="gga9ed1c599dfd76231f4e0dadf46bff40ba58882ac768eb1c0a0021d140f6b15deb"></a>SIRO_NOLEVEL&#160;</td><td class="fielddoc"><p>Exclude human-readable logging level. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga9ed1c599dfd76231f4e0dadf46bff40bad78a6f66d21b01ace7574841495cacdd" name="gga9ed1c599dfd76231f4e0dadf46bff40bad78a6f66d21b01ace7574841495cacdd"></a>SIRO_NOMSEC&#160;</td><td class="fielddoc"><p>Don't include milliseconds in time stamps. If <em>not</em> set, time stamps in output to this destination will be appended with the current millisecond in addition to the hour, minute, and second. If <a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d">SIRO_NOTIME</a> is set, this has no effect. </p>
+<tr><td class="fieldname"><a id="gga9ed1c599dfd76231f4e0dadf46bff40ba59020fdfee0aaf393ed80ef7bab4bb4e" name="gga9ed1c599dfd76231f4e0dadf46bff40ba59020fdfee0aaf393ed80ef7bab4bb4e"></a>SIRO_NONAME&#160;</td><td class="fielddoc"><p>Exclude process/app name. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga9ed1c599dfd76231f4e0dadf46bff40babbdc2529081d58ebff50a8966db31fd2" name="gga9ed1c599dfd76231f4e0dadf46bff40babbdc2529081d58ebff50a8966db31fd2"></a>SIRO_NOPID&#160;</td><td class="fielddoc"><p>Don't include the process ID in output. </p>
+<tr><td class="fieldname"><a id="gga9ed1c599dfd76231f4e0dadf46bff40bad78a6f66d21b01ace7574841495cacdd" name="gga9ed1c599dfd76231f4e0dadf46bff40bad78a6f66d21b01ace7574841495cacdd"></a>SIRO_NOMSEC&#160;</td><td class="fielddoc"><p>Exclude millisecond-resolution in time stamps. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga9ed1c599dfd76231f4e0dadf46bff40ba7079a31d6035c24aaa94d85c4a89c053" name="gga9ed1c599dfd76231f4e0dadf46bff40ba7079a31d6035c24aaa94d85c4a89c053"></a>SIRO_NOTID&#160;</td><td class="fielddoc"><p>Don't include the thread ID/name in output. </p>
+<tr><td class="fieldname"><a id="gga9ed1c599dfd76231f4e0dadf46bff40babbdc2529081d58ebff50a8966db31fd2" name="gga9ed1c599dfd76231f4e0dadf46bff40babbdc2529081d58ebff50a8966db31fd2"></a>SIRO_NOPID&#160;</td><td class="fielddoc"><p>Exclude process ID (does not imply <a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40ba7079a31d6035c24aaa94d85c4a89c053">SIRO_NOTID</a>). </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga9ed1c599dfd76231f4e0dadf46bff40ba59b2a0e9b2dfd78bcfa053dcb3f2dcce" name="gga9ed1c599dfd76231f4e0dadf46bff40ba59b2a0e9b2dfd78bcfa053dcb3f2dcce"></a>SIRO_NOHDR&#160;</td><td class="fielddoc"><p>Don't write header messages when logging begins, or the file is rolled. Only applicable to log files. </p>
+<tr><td class="fieldname"><a id="gga9ed1c599dfd76231f4e0dadf46bff40ba7079a31d6035c24aaa94d85c4a89c053" name="gga9ed1c599dfd76231f4e0dadf46bff40ba7079a31d6035c24aaa94d85c4a89c053"></a>SIRO_NOTID&#160;</td><td class="fielddoc"><p>Exclude thread ID/name. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0" name="gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0"></a>SIRO_MSGONLY&#160;</td><td class="fielddoc"><p>Includes all other options; effectively disables all output formatting except the original formatted message (does not include <a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40ba59b2a0e9b2dfd78bcfa053dcb3f2dcce">SIRO_NOHDR</a>; set that flag in addition to remove header messages). </p>
+<tr><td class="fieldname"><a id="gga9ed1c599dfd76231f4e0dadf46bff40ba59b2a0e9b2dfd78bcfa053dcb3f2dcce" name="gga9ed1c599dfd76231f4e0dadf46bff40ba59b2a0e9b2dfd78bcfa053dcb3f2dcce"></a>SIRO_NOHDR&#160;</td><td class="fielddoc"><p>Don't write header messages to log files. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02" name="gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02"></a>SIRO_DEFAULT&#160;</td><td class="fielddoc"><p>Use the default for this type of destination. See <a class="el" href="../../d0/dd1/sirdefaults_8h.html" title="Compile-time default levels, options, and text styilng.">sirdefaults.h</a> for specifics. </p>
+<tr><td class="fieldname"><a id="gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0" name="gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0"></a>SIRO_MSGONLY&#160;</td><td class="fielddoc"><p>Sets all other options except <a class="el" href="../../d8/d64/group__public.html#gga9ed1c599dfd76231f4e0dadf46bff40ba59b2a0e9b2dfd78bcfa053dcb3f2dcce">SIRO_NOHDR</a>. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02" name="gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02"></a>SIRO_DEFAULT&#160;</td><td class="fielddoc"><p>Use the default options for this type of destination. </p>
 </td></tr>
 </table>
 
@@ -464,7 +467,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p><code>#include &lt;<a class="el" href="../../dc/dba/sirtypes_8h.html">sirtypes.h</a>&gt;</code></p>
-<p>Available styles <em></em>(colors, brightness) for console output. </p>
+<p>Styles for 16-color console output. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafaeedcdbdc654f326e211a2d2f653b07f5" name="gga3bd5959a607e5280a8db90ada2d80cafaeedcdbdc654f326e211a2d2f653b07f5"></a>SIRS_NONE&#160;</td><td class="fielddoc"><p>Used internally; has no effect. </p>
 </td></tr>
@@ -486,7 +489,7 @@ Functions</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafaefc4595e6d22f5a5d6ce7fa13c64444d" name="gga3bd5959a607e5280a8db90ada2d80cafaefc4595e6d22f5a5d6ce7fa13c64444d"></a>SIRS_FG_CYAN&#160;</td><td class="fielddoc"><p>Cyan foreground. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafae6d57af48d2bca9848aa8cf926043e4e" name="gga3bd5959a607e5280a8db90ada2d80cafae6d57af48d2bca9848aa8cf926043e4e"></a>SIRS_FG_WHITE&#160;</td><td class="fielddoc"><p>White foreground. </p>
+<tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafa94c0b7a28b98275970c70dc8cbf3ed86" name="gga3bd5959a607e5280a8db90ada2d80cafa94c0b7a28b98275970c70dc8cbf3ed86"></a>SIRS_FG_DEFAULT&#160;</td><td class="fielddoc"><p>Use the default foreground color. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafae27d8d5a99b25c1fa6a6f8e88c728847" name="gga3bd5959a607e5280a8db90ada2d80cafae27d8d5a99b25c1fa6a6f8e88c728847"></a>SIRS_FG_LGRAY&#160;</td><td class="fielddoc"><p>Light gray foreground. </p>
 </td></tr>
@@ -504,7 +507,7 @@ Functions</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafa869cfb06440efa65ee401ccccec054b5" name="gga3bd5959a607e5280a8db90ada2d80cafa869cfb06440efa65ee401ccccec054b5"></a>SIRS_FG_LCYAN&#160;</td><td class="fielddoc"><p>Light cyan foreground. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafa94c0b7a28b98275970c70dc8cbf3ed86" name="gga3bd5959a607e5280a8db90ada2d80cafa94c0b7a28b98275970c70dc8cbf3ed86"></a>SIRS_FG_DEFAULT&#160;</td><td class="fielddoc"><p>Use the default foreground color. </p>
+<tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafae6d57af48d2bca9848aa8cf926043e4e" name="gga3bd5959a607e5280a8db90ada2d80cafae6d57af48d2bca9848aa8cf926043e4e"></a>SIRS_FG_WHITE&#160;</td><td class="fielddoc"><p>White foreground. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafae6d8923837281767bb30b4cfb59bcd2c" name="gga3bd5959a607e5280a8db90ada2d80cafae6d8923837281767bb30b4cfb59bcd2c"></a>SIRS_BG_BLACK&#160;</td><td class="fielddoc"><p>Black background. </p>
 </td></tr>
@@ -520,7 +523,7 @@ Functions</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafa04083a920b7ed070f2bbb886e4691203" name="gga3bd5959a607e5280a8db90ada2d80cafa04083a920b7ed070f2bbb886e4691203"></a>SIRS_BG_CYAN&#160;</td><td class="fielddoc"><p>Cyan background. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafa57f3210f2af19b6b3067a10ab5947a36" name="gga3bd5959a607e5280a8db90ada2d80cafa57f3210f2af19b6b3067a10ab5947a36"></a>SIRS_BG_WHITE&#160;</td><td class="fielddoc"><p>White background. </p>
+<tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafab38f3ce262a13dd157fd1a2077fe27d6" name="gga3bd5959a607e5280a8db90ada2d80cafab38f3ce262a13dd157fd1a2077fe27d6"></a>SIRS_BG_DEFAULT&#160;</td><td class="fielddoc"><p>Use the default background color. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafa05859c52a6ff0bdfccf869e1330889a3" name="gga3bd5959a607e5280a8db90ada2d80cafa05859c52a6ff0bdfccf869e1330889a3"></a>SIRS_BG_LGRAY&#160;</td><td class="fielddoc"><p>Light gray background. </p>
 </td></tr>
@@ -538,7 +541,7 @@ Functions</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafaf3b311d7fd2af0678d7ddff6f7967866" name="gga3bd5959a607e5280a8db90ada2d80cafaf3b311d7fd2af0678d7ddff6f7967866"></a>SIRS_BG_LCYAN&#160;</td><td class="fielddoc"><p>Light cyan background. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafab38f3ce262a13dd157fd1a2077fe27d6" name="gga3bd5959a607e5280a8db90ada2d80cafab38f3ce262a13dd157fd1a2077fe27d6"></a>SIRS_BG_DEFAULT&#160;</td><td class="fielddoc"><p>Use the default background color. </p>
+<tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafa57f3210f2af19b6b3067a10ab5947a36" name="gga3bd5959a607e5280a8db90ada2d80cafa57f3210f2af19b6b3067a10ab5947a36"></a>SIRS_BG_WHITE&#160;</td><td class="fielddoc"><p>White background. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafa42e4beda8d3aef8122f3b272c54632e2" name="gga3bd5959a607e5280a8db90ada2d80cafa42e4beda8d3aef8122f3b272c54632e2"></a>SIRS_INVALID&#160;</td><td class="fielddoc"><p>Represents the invalid text style. </p>
 </td></tr>
@@ -599,8 +602,6 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a19">example.c</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -649,8 +650,6 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a28">example.c</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -683,8 +682,6 @@ It is not necessary to call this function from the same thread that called <a cl
     <tr><td class="paramname">false</td><td>An error occurred. </td></tr>
   </table>
   </dd>
-</dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a30">example.c</a>.</dd>
 </dl>
 
 </div>
@@ -734,8 +731,6 @@ It is not necessary to call this function from the same thread that called <a cl
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a27">example.c</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -783,8 +778,6 @@ It is not necessary to call this function from the same thread that called <a cl
     <tr><td class="paramname">false</td><td>One or more destinations were not successfully processed. </td></tr>
   </table>
   </dd>
-</dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a22">example.c</a>.</dd>
 </dl>
 
 </div>
@@ -834,8 +827,6 @@ It is not necessary to call this function from the same thread that called <a cl
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a29">example.c</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -883,8 +874,6 @@ It is not necessary to call this function from the same thread that called <a cl
     <tr><td class="paramname">false</td><td>One or more destinations were not successfully processed. </td></tr>
   </table>
   </dd>
-</dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a26">example.c</a>.</dd>
 </dl>
 
 </div>
@@ -1058,8 +1047,6 @@ It is not necessary to call this function from the same thread that called <a cl
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a23">example.c</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -1097,8 +1084,6 @@ It is not necessary to call this function from the same thread that called <a cl
     <tr><td class="paramname">false</td><td>Initialization failed. </td></tr>
   </table>
   </dd>
-</dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a18">example.c</a>.</dd>
 </dl>
 
 </div>
@@ -1147,8 +1132,6 @@ It is not necessary to call this function from the same thread that called <a cl
     <tr><td class="paramname">false</td><td>One or more destinations were not successfully processed. </td></tr>
   </table>
   </dd>
-</dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a24">example.c</a>.</dd>
 </dl>
 
 </div>
@@ -1207,7 +1190,7 @@ It is not necessary to call this function from the same thread that called <a cl
 
 <p><code>#include &lt;<a class="el" href="../../dc/d39/sir_8c.html">sir.c</a>&gt;</code></p>
 
-<p>Resets all <em>stdio</em> text styles to their default values (<a class="el" href="../../da/df8/group__custom.html#gaab713b2ff4a81272aad35de4b59a0af0">sir_default_styles</a>). </p>
+<p>Resets all <em>stdio</em> text styles to their default values. </p>
 <dl class="section return"><dt>Returns</dt><dd>boolean </dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
@@ -1566,8 +1549,6 @@ It is not necessary to call this function from the same thread that called <a cl
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../da/d75/example_8c-example.html#a25">example.c</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -1576,7 +1557,7 @@ It is not necessary to call this function from the same thread that called <a cl
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue May 16 2023 21:34:20 for libsir by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon May 29 2023 09:30:16 for libsir by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
