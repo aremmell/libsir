@@ -61,39 +61,32 @@ int main(int argc, char** argv) {
     /* Configure levels for stdout. Send debug, information, warning, and notice messages there. */
     si.d_stdout.levels = SIRL_DEBUG | SIRL_INFO | SIRL_WARN | SIRL_NOTICE;
 
-    /* Configure options for stdout. Don't show the time stamp or process ID. */
-    si.d_stdout.opts = SIRO_NOTIME | SIRO_NOPID;
+    /* Configure options for stdout. Don't show the time stamp, process ID, or thread ID. */
+    si.d_stdout.opts = SIRO_NOTIME | SIRO_NOPID | SIRO_NOTID;
 
     /* Configure levels for stderr. Send error and above there. */
     si.d_stderr.levels = SIRL_ERROR | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG;
 
-    /* Configure options for stderr. Don't show the process ID. */
-    si.d_stderr.opts = SIRO_NOPID;
+    /* Configure options for stderr. Don't show the process ID or thread ID. */
+    si.d_stderr.opts = SIRO_NOPID | SIRO_NOTID;
 
     /* Configure options for syslog. Don't send any output there. */
     si.d_syslog.levels = SIRL_NONE;
 
     /* Configure a name to associate with our output. */
-    static const char* appname = "libsir-example";
-
-#if defined(__HAVE_STDC_SECURE_OR_EXT1__)
-    strncpy_s(si.processName, SIR_MAXNAME, appname, strnlen(appname, SIR_MAXNAME));
-#else
-    strncpy(si.processName, appname, strnlen(appname, SIR_MAXNAME));
-#endif
+    static const char* appname = "myapp";
+    _sir_strncpy(si.processName, SIR_MAXNAME, appname, strnlen(appname, SIR_MAXNAME));
 
     /* Initialize libsir. */
-    if (!sir_init(&si)) {
+    if (!sir_init(&si))
         return report_error();
-    }
 
     /* Configure and add a log file; don't log the process name, and send all levels there. */
     static const sirchar_t* log_file_name = "libsir-example.log";
     sirfileid_t fileid1 = sir_addfile(log_file_name, SIRL_ALL, SIRO_NONAME);
-
-    if (NULL == fileid1) {
+    if (NULL == fileid1)
         return report_error();
-    }
+
 
     /* Now we're ready to start generating output. */
     int n = 12345;
@@ -105,22 +98,22 @@ int main(int argc, char** argv) {
      * Notice that it is not necessary to add a newline at the end. libsir does
      * this automatically.
      */ 
-    sir_debug("debug level: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
+    sir_debug("some debug data: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
 
     /* Do the same for the rest of available severity levels. */
-    sir_info("info level: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
+    sir_info("some information: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
 
-    sir_notice("notice level: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
+    sir_notice("consider yourself on notice: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
 
-    sir_warn("warning level: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
+    sir_warn("a stern warning {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
 
-    sir_error("error level: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
+    sir_error("uh-oh, an error has occurred {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
 
-    sir_crit("critical error level: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
+    sir_crit("we've reached critical mass {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
 
-    sir_alert("alert level: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);        
+    sir_alert("sound the alarm! {n=%d, somestr='%s', f=%.04f}", n, somestr, f);        
 
-    sir_emerg("emergency level: {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
+    sir_emerg("somebody call 911 {n=%d, somestr='%s', f=%.04f}", n, somestr, f);
 
     /* Clean up. */
     sir_cleanup();
