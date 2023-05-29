@@ -629,7 +629,7 @@ void _sir_syslog_open(const char* app_name, sir_syslog_dest* ctx) {
         _sir_selflog("%s: opened os_log ('%s', '%s')\n", __func__, identity, category);
     
 #else
-        int logopt = LOG_NDELAY | ctx->include_pid ? LOG_PID : 0);
+        int logopt = LOG_NDELAY | (ctx->include_pid ? LOG_PID : 0);
         int facility = LOG_USER;
 
         openlog(identity, logopt, facility);
