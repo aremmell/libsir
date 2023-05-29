@@ -1,0 +1,155 @@
+\doxysection{sirplatform.\+h}
+\hypertarget{sirplatform_8h_source}{}\label{sirplatform_8h_source}\mbox{\hyperlink{sirplatform_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00032}00032\ \textcolor{preprocessor}{\#ifndef\ \_SIR\_PLATFORM\_H\_INCLUDED}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00033}00033\ \textcolor{preprocessor}{\#define\ \_SIR\_PLATFORM\_H\_INCLUDED}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00035}00035\ \textcolor{preprocessor}{\#if\ !defined(\_WIN32)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00036}00036\ \textcolor{preprocessor}{\#\ define\ \_\_STDC\_WANT\_LIB\_EXT1\_\_\ 1}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00037}00037\ \textcolor{preprocessor}{\#\ if\ defined(\_\_APPLE\_\_)\ \&\&\ defined(\_\_MACH\_\_)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00038}00038\ \textcolor{preprocessor}{\#\ \ define\ \_\_MACOS\_\_}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00039}00039\ \textcolor{preprocessor}{\#\ \ define\ \_DARWIN\_C\_SOURCE}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00040}00040\ \textcolor{preprocessor}{\#\ elif\ defined(\_\_FreeBSD\_\_)\ ||\ defined(\_\_OpenBSD\_\_)\ ||\ defined(\_\_NetBSD\_\_)\ ||\ defined(\_\_DragonFly\_\_)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00041}00041\ \textcolor{preprocessor}{\#\ \ define\ \_\_BSD\_\_}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00042}00042\ \textcolor{preprocessor}{\#\ \ define\ \_BSD\_SOURCE}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00043}00043\ \textcolor{preprocessor}{\#\ \ if\ !defined(\_DEFAULT\_SOURCE)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00044}00044\ \textcolor{preprocessor}{\#\ \ \ define\ \_DEFAULT\_SOURCE}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00045}00045\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00046}00046\ \textcolor{preprocessor}{\#\ else}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00047}00047\ \textcolor{preprocessor}{\#\ \ if\ defined(\_\_linux\_\_)\ \&\&\ !defined(\_GNU\_SOURCE)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00048}00048\ \textcolor{preprocessor}{\#\ \ \ define\ \_GNU\_SOURCE}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00049}00049\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00050}00050\ \textcolor{preprocessor}{\#\ \ if\ !defined(\_POSIX\_C\_SOURCE)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00051}00051\ \textcolor{preprocessor}{\#\ \ \ define\ \_POSIX\_C\_SOURCE\ 200809L}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00052}00052\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00053}00053\ \textcolor{preprocessor}{\#\ \ if\ !defined(\_DEFAULT\_SOURCE)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00054}00054\ \textcolor{preprocessor}{\#\ \ \ define\ \_DEFAULT\_SOURCE}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00055}00055\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00056}00056\ \textcolor{preprocessor}{\#\ \ if\ !defined(\_XOPEN\_SOURCE)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00057}00057\ \textcolor{preprocessor}{\#\ \ \ define\ \_XOPEN\_SOURCE\ 700}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00058}00058\ \textcolor{preprocessor}{\#\ endif}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00059}00059\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00060}00060\ \textcolor{preprocessor}{\#else\ }\textcolor{comment}{//\ \_WIN32}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00061}00061\ \textcolor{preprocessor}{\#\ define\ \_\_WANT\_STDC\_SECURE\_LIB\_\_\ 1}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00062}00062\ \textcolor{preprocessor}{\#\ define\ \_CRT\_RAND\_S}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00063}00063\ \textcolor{preprocessor}{\#\ define\ WIN32\_LEAN\_AND\_MEAN}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00064}00064\ \textcolor{preprocessor}{\#\ define\ WINVER\ \ \ \ \ \ \ 0x0A00\ }}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00065}00065\ \textcolor{preprocessor}{\#\ define\ \_WIN32\_WINNT\ 0x0A00}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00066}00066\ \textcolor{preprocessor}{\#\ include\ <windows.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00067}00067\ \textcolor{preprocessor}{\#\ include\ <io.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00068}00068\ \textcolor{preprocessor}{\#\ include\ <synchapi.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00069}00069\ \textcolor{preprocessor}{\#\ include\ <process.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00070}00070\ \textcolor{preprocessor}{\#\ include\ <conio.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00071}00071\ \textcolor{preprocessor}{\#\ include\ <shlwapi.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00072}00072\ \textcolor{preprocessor}{\#\ include\ <pathcch.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00073}00073\ \textcolor{preprocessor}{\#\ include\ <direct.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00074}00074\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00075}00075\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00076}00076\ \textcolor{preprocessor}{\#include\ <assert.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00077}00077\ \textcolor{preprocessor}{\#include\ <errno.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00078}00078\ \textcolor{preprocessor}{\#include\ <stdarg.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00079}00079\ \textcolor{preprocessor}{\#include\ <stdbool.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00080}00080\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00081}00081\ \textcolor{preprocessor}{\#include\ <inttypes.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00082}00082\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00083}00083\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00084}00084\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00085}00085\ \textcolor{preprocessor}{\#include\ <libgen.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00086}00086\ \textcolor{preprocessor}{\#include\ <sys/stat.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00087}00087\ \textcolor{preprocessor}{\#include\ <sys/types.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00088}00088\ \textcolor{preprocessor}{\#include\ <time.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00089}00089\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00090}00090\ \textcolor{preprocessor}{\#if\ !defined(\_WIN32)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00091}00091\ \textcolor{preprocessor}{\#\ include\ <pthread.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00092}00092\ \textcolor{preprocessor}{\#\ include\ <unistd.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00093}00093\ \textcolor{preprocessor}{\#\ include\ <sys/syscall.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00094}00094\ \textcolor{preprocessor}{\#\ include\ <syslog.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00095}00095\ \textcolor{preprocessor}{\#\ include\ <strings.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00096}00096\ \textcolor{preprocessor}{\#\ include\ <termios.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00097}00097\ \textcolor{preprocessor}{\#\ include\ <limits.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00098}00098\ \textcolor{preprocessor}{\#\ include\ <fcntl.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00099}00099\ \textcolor{preprocessor}{\#\ include\ <stdatomic.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00100}00100\ \textcolor{preprocessor}{\#\ if\ defined(\_\_BSD\_\_)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00101}00101\ \textcolor{preprocessor}{\#\ \ include\ <pthread\_np.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00102}00102\ \textcolor{preprocessor}{\#\ \ include\ <sys/sysctl.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00103}00103\ \textcolor{preprocessor}{\#\ elif\ defined(\_\_linux\_\_)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00104}00104\ \textcolor{preprocessor}{\#\ \ include\ <linux/limits.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00105}00105\ \textcolor{preprocessor}{\#\ elif\ defined(\_\_APPLE\_\_)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00106}00106\ \textcolor{preprocessor}{\#\ \ include\ <mach-\/o/dyld.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00107}00107\ \textcolor{preprocessor}{\#\ \ include\ <os/log.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00108}00108\ \textcolor{preprocessor}{\#\ \ include\ <os/trace.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00109}00109\ \textcolor{preprocessor}{\#\ \ include\ <os/activity.h>}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00110}00110\ \textcolor{preprocessor}{\#\ endif}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00111}00111\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00112}00112\ \textcolor{preprocessor}{\#\ if\ defined(\_\_GLIBC\_\_)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00113}00113\ \textcolor{preprocessor}{\#\ \ if\ (\_\_GLIBC\_\_\ >=\ 2\ \&\&\ \_\_GLIBC\_MINOR\_\_\ >\ 19)\ \ ||\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00114}00114\ \textcolor{preprocessor}{\ \ \ \ \ \ ((\_\_GLIBC\_\_\ ==\ 2\ \&\&\ \_\_GLIBC\_MINOR\_\_\ <=\ 19)\ \&\&\ defined(\_BSD\_SOURCE))}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00115}00115\ \textcolor{preprocessor}{\#\ \ \ define\ \_\_HAVE\_UNISTD\_READLINK\_\_}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00116}00116\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00117}00117\ \textcolor{preprocessor}{\#\ endif}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00118}00118\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00119}00119\ \textcolor{preprocessor}{\#\ if\ defined(PATH\_MAX)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00120}00120\ \textcolor{preprocessor}{\#\ \ define\ SIR\_MAXPATH\ PATH\_MAX}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00121}00121\ \textcolor{preprocessor}{\#\ elif\ defined(MAXPATHLEN)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00122}00122\ \textcolor{preprocessor}{\#\ \ define\ SIR\_MAXPATH\ MAXPATHLEN}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00123}00123\ \textcolor{preprocessor}{\#\ else}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00124}00124\ \textcolor{preprocessor}{\#\ \ define\ SIR\_MAXPATH\ 1024}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00125}00125\ \textcolor{preprocessor}{\#\ endif}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00126}00126\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00127}00127\ \textcolor{preprocessor}{\#\ if\ \_POSIX\_TIMERS\ >\ 0}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00128}00128\ \textcolor{preprocessor}{\#\ \ define\ SIR\_MSEC\_TIMER}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00129}00129\ \textcolor{preprocessor}{\#\ \ define\ SIR\_MSEC\_POSIX}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00130}00130\ \textcolor{preprocessor}{\#\ else}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00131}00131\ \textcolor{preprocessor}{\#\ \ \ undef\ SIR\_MSEC\_TIMER}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00132}00132\ \textcolor{preprocessor}{\#\ endif}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00133}00133\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00134}00134\ \textcolor{preprocessor}{\#\ define\ SIR\_SYSLOG\_ENABLED}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00135}00135\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00137}\mbox{\hyperlink{sirplatform_8h_a4b87629d5980e5381b8f76488a104f65}{00137}}\ \ \textcolor{keyword}{typedef}\ pthread\_mutex\_t\ \mbox{\hyperlink{sirplatform_8h_a4b87629d5980e5381b8f76488a104f65}{sirmutex\_t}};}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00138}00138\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00140}\mbox{\hyperlink{sirplatform_8h_a3e6f12e65e77dc62a8f3763f504335de}{00140}}\ \ \textcolor{keyword}{typedef}\ pthread\_once\_t\ \mbox{\hyperlink{sirplatform_8h_a3e6f12e65e77dc62a8f3763f504335de}{sironce\_t}};}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00141}00141\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00143}\mbox{\hyperlink{sirplatform_8h_a15c96569a28643ba97e1609a37be5bb3}{00143}}\ \ \textcolor{keyword}{typedef}\ void\ (*\mbox{\hyperlink{sirplatform_8h_a15c96569a28643ba97e1609a37be5bb3}{sir\_once\_fn}})(void);}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00144}00144\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00146}\mbox{\hyperlink{sirplatform_8h_a7d4697ffc58df12ee881e41c5d0c0d4e}{00146}}\ \textcolor{preprocessor}{\#\ define\ SIR\_ONCE\_INIT\ PTHREAD\_ONCE\_INIT}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00147}00147\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00148}00148\ \textcolor{preprocessor}{\#else\ }\textcolor{comment}{//\ \_WIN32}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00149}00149\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00150}00150\ \textcolor{preprocessor}{\#\ define\ SIR\_MAXPATH\ MAX\_PATH}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00151}00151\ \textcolor{preprocessor}{\#\ undef\ SIR\_SYSLOG\_ENABLED}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00152}00152\ \textcolor{preprocessor}{\#\ define\ SIR\_MSEC\_TIMER}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00153}00153\ \textcolor{preprocessor}{\#\ define\ SIR\_MSEC\_WIN32}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00154}00154\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00156}00156\ \ \textcolor{keyword}{typedef}\ HANDLE\ \mbox{\hyperlink{sirplatform_8h_a4b87629d5980e5381b8f76488a104f65}{sirmutex\_t}};}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00157}00157\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00159}00159\ \ \textcolor{keyword}{typedef}\ INIT\_ONCE\ \mbox{\hyperlink{sirplatform_8h_a3e6f12e65e77dc62a8f3763f504335de}{sironce\_t}};}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00160}00160\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00162}00162\ \ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{int}\ pid\_t;}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00163}00163\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00165}00165\ \ \textcolor{keyword}{typedef}\ BOOL(CALLBACK*\ \mbox{\hyperlink{sirplatform_8h_a15c96569a28643ba97e1609a37be5bb3}{sir\_once\_fn}})(PINIT\_ONCE,\ PVOID,\ PVOID*);}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00166}00166\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00168}00168\ \textcolor{preprocessor}{\#\ define\ SIR\_ONCE\_INIT\ INIT\_ONCE\_STATIC\_INIT}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00169}00169\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ !\_WIN32}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00170}00170\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00171}00171\ \textcolor{preprocessor}{\#if\ !defined(thread\_local)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00172}00172\ \textcolor{preprocessor}{\#\ if\ \_\_STDC\_VERSION\_\_\ >=\ 201112\ \&\&\ !defined(\_\_STDC\_NO\_THREADS\_\_)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00173}00173\ \textcolor{preprocessor}{\#\ \ define\ thread\_local\ \_Thread\_local}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00174}00174\ \textcolor{preprocessor}{\#\ elif\ defined(\_WIN32)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00175}00175\ \textcolor{preprocessor}{\#\ \ define\ thread\_local\ \_\_declspec(thread)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00176}00176\ \textcolor{preprocessor}{\#\ elif\ defined(\_\_GNUC\_\_)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00177}00177\ \textcolor{preprocessor}{\#\ \ define\ thread\_local\ \_\_thread}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00178}00178\ \textcolor{preprocessor}{\#\ else}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00179}00179\ \textcolor{preprocessor}{\#\ \ error\ "{}unable\ to\ resolve\ thread\ local\ attribute;\ please\ contact\ the\ author."{}}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00180}00180\ \textcolor{preprocessor}{\#\ endif}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00181}00181\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00182}00182\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00183}00183\ \textcolor{preprocessor}{\#if\ defined(\_WIN32)\ \&\&\ defined(\_\_STDC\_SECURE\_LIB\_\_)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00184}00184\ \textcolor{preprocessor}{\#\ define\ \_\_HAVE\_STDC\_SECURE\_OR\_EXT1\_\_\ }}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00185}00185\ \textcolor{preprocessor}{\#elif\ defined(\_\_STDC\_LIB\_EXT1\_\_)}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00186}00186\ \textcolor{preprocessor}{\#\ define\ \_\_HAVE\_STDC\_SECURE\_OR\_EXT1\_\_}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00187}00187\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00188}00188\ }
+\DoxyCodeLine{\Hypertarget{sirplatform_8h_source_l00189}00189\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ !\_SIR\_PLATFORM\_H\_INCLUDED\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

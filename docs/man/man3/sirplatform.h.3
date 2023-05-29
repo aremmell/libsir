@@ -1,0 +1,107 @@
+.TH "sirplatform.h" 3 "Mon May 29 2023" "Version 2.1.1" "libsir" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+sirplatform.h \- Platform specific configuration\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <assert\&.h>\fP
+.br
+\fC#include <errno\&.h>\fP
+.br
+\fC#include <stdarg\&.h>\fP
+.br
+\fC#include <stdbool\&.h>\fP
+.br
+\fC#include <stdint\&.h>\fP
+.br
+\fC#include <inttypes\&.h>\fP
+.br
+\fC#include <stdio\&.h>\fP
+.br
+\fC#include <stdlib\&.h>\fP
+.br
+\fC#include <string\&.h>\fP
+.br
+\fC#include <libgen\&.h>\fP
+.br
+\fC#include <sys/stat\&.h>\fP
+.br
+\fC#include <sys/types\&.h>\fP
+.br
+\fC#include <time\&.h>\fP
+.br
+\fC#include <pthread\&.h>\fP
+.br
+\fC#include <unistd\&.h>\fP
+.br
+\fC#include <sys/syscall\&.h>\fP
+.br
+\fC#include <syslog\&.h>\fP
+.br
+\fC#include <strings\&.h>\fP
+.br
+\fC#include <termios\&.h>\fP
+.br
+\fC#include <limits\&.h>\fP
+.br
+\fC#include <fcntl\&.h>\fP
+.br
+\fC#include <stdatomic\&.h>\fP
+.br
+
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSIR_ONCE_INIT\fP   PTHREAD_ONCE_INIT"
+.br
+.RI "The one-time initializer\&. "
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef pthread_mutex_t \fBsirmutex_t\fP"
+.br
+.RI "The mutex type\&. "
+.ti -1c
+.RI "typedef pthread_once_t \fBsironce_t\fP"
+.br
+.RI "The one-time type\&. "
+.ti -1c
+.RI "typedef void(* \fBsir_once_fn\fP) (void)"
+.br
+.RI "The one-time execution function type\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Platform specific configuration\&. 
+
+This file and accompanying source code originated from https://github.com/aremmell/libsir\&. If you obtained it elsewhere, all bets are off\&.
+.PP
+\fBAuthor\fP
+.RS 4
+Ryan M\&. Lederman lederman@gmail.com 
+.RE
+.PP
+\fBCopyright\fP
+.RS 4
+.RE
+.PP
+The MIT License (MIT)
+.PP
+Copyright (c) 2018 Ryan M\&. Lederman
+.PP
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+.PP
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software\&.
+.PP
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\&. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE\&. 
+.PP
+Definition in file \fBsirplatform\&.h\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsir from the source code\&.

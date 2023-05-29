@@ -1,0 +1,48 @@
+\doxysection{sirfilecache.\+h}
+\hypertarget{sirfilecache_8h_source}{}\label{sirfilecache_8h_source}\mbox{\hyperlink{sirfilecache_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00032}00032\ \textcolor{preprocessor}{\#ifndef\ \_SIR\_FILECACHE\_H\_INCLUDED}}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00033}00033\ \textcolor{preprocessor}{\#define\ \_SIR\_FILECACHE\_H\_INCLUDED}}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00035}00035\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{sirtypes_8h}{sirtypes.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00042}00042\ \textcolor{keyword}{typedef}\ bool\ (*sir\_fcache\_pred)(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ match,\ \mbox{\hyperlink{group__intern_structsirfile}{sirfile}}*\ iter);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00043}00043\ \textcolor{keyword}{typedef}\ void\ (*sir\_fcache\_update)(\mbox{\hyperlink{group__intern_structsirfile}{sirfile}}*\ si,\ \mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\_update\_config\_data}}*\ data);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00044}00044\ }
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00045}00045\ \mbox{\hyperlink{group__public_gab8f5ba0bae678457f8bce30e961c9eb6}{sirfileid\_t}}\ \_sir\_addfile(\textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ path,\ \mbox{\hyperlink{group__public_ga7ee5f2908abd2df9e89bcab0b6608edd}{sir\_levels}}\ levels,\ \mbox{\hyperlink{group__public_gafb659914aac0129182d86f7d3414e85d}{sir\_options}}\ opts);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00046}00046\ \textcolor{keywordtype}{bool}\ \_sir\_updatefile(\mbox{\hyperlink{group__public_gab8f5ba0bae678457f8bce30e961c9eb6}{sirfileid\_t}}\ \textcolor{keywordtype}{id},\ \mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\_update\_config\_data}}*\ data);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00047}00047\ \textcolor{keywordtype}{bool}\ \_sir\_remfile(\mbox{\hyperlink{group__public_gab8f5ba0bae678457f8bce30e961c9eb6}{sirfileid\_t}}\ \textcolor{keywordtype}{id});}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00048}00048\ }
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00049}00049\ \mbox{\hyperlink{group__intern_structsirfile}{sirfile}}*\ \_sirfile\_create(\textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ path,\ \mbox{\hyperlink{group__public_ga7ee5f2908abd2df9e89bcab0b6608edd}{sir\_levels}}\ levels,\ \mbox{\hyperlink{group__public_gafb659914aac0129182d86f7d3414e85d}{sir\_options}}\ opts);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00050}00050\ \textcolor{keywordtype}{bool}\ \_sirfile\_open(\mbox{\hyperlink{group__intern_structsirfile}{sirfile}}*\ sf);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00051}00051\ \textcolor{keywordtype}{void}\ \_sirfile\_close(\mbox{\hyperlink{group__intern_structsirfile}{sirfile}}*\ sf);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00052}00052\ \textcolor{keywordtype}{bool}\ \_sir\_write(\mbox{\hyperlink{group__intern_structsirfile}{sirfile}}*\ sf,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ output);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00053}00053\ \textcolor{keywordtype}{bool}\ \_sirfile\_writeheader(\mbox{\hyperlink{group__intern_structsirfile}{sirfile}}*\ sf,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ msg);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00054}00054\ \textcolor{keywordtype}{bool}\ \_sirfile\_needsroll(\mbox{\hyperlink{group__intern_structsirfile}{sirfile}}*\ sf);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00055}00055\ \textcolor{keywordtype}{bool}\ \_sirfile\_roll(\mbox{\hyperlink{group__intern_structsirfile}{sirfile}}*\ sf,\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}**\ newpath);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00056}00056\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__intern_ga0fb1f78aa9c924d1e9e155b000b07da0}{\_sirfile\_archive}}(\mbox{\hyperlink{group__intern_structsirfile}{sirfile}}*\ sf,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ newpath);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00057}00057\ \textcolor{keywordtype}{bool}\ \_sirfile\_splitpath(\mbox{\hyperlink{group__intern_structsirfile}{sirfile}}*\ sf,\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}**\ name,\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}**\ ext);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00058}00058\ \textcolor{keywordtype}{void}\ \_sirfile\_destroy(\mbox{\hyperlink{group__intern_structsirfile}{sirfile}}*\ sf);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00059}00059\ \textcolor{keywordtype}{bool}\ \_sirfile\_validate(\mbox{\hyperlink{group__intern_structsirfile}{sirfile}}*\ sf);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00060}00060\ \textcolor{keywordtype}{bool}\ \_sirfile\_update(\mbox{\hyperlink{group__intern_structsirfile}{sirfile}}*\ sf,\ \mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\_update\_config\_data}}*\ data);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00062}00062\ \mbox{\hyperlink{group__public_gab8f5ba0bae678457f8bce30e961c9eb6}{sirfileid\_t}}\ \_sir\_fcache\_add(\mbox{\hyperlink{group__intern_structsirfcache}{sirfcache}}*\ sfc,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ path,\ \mbox{\hyperlink{group__public_ga7ee5f2908abd2df9e89bcab0b6608edd}{sir\_levels}}\ levels,\ \mbox{\hyperlink{group__public_gafb659914aac0129182d86f7d3414e85d}{sir\_options}}\ opts);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00063}00063\ \textcolor{keywordtype}{bool}\ \_sir\_fcache\_update(\mbox{\hyperlink{group__intern_structsirfcache}{sirfcache}}*\ sfc,\ \mbox{\hyperlink{group__public_gab8f5ba0bae678457f8bce30e961c9eb6}{sirfileid\_t}}\ \textcolor{keywordtype}{id},\ \mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\_update\_config\_data}}*\ data);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00064}00064\ \textcolor{keywordtype}{bool}\ \_sir\_fcache\_rem(\mbox{\hyperlink{group__intern_structsirfcache}{sirfcache}}*\ sfc,\ \mbox{\hyperlink{group__public_gab8f5ba0bae678457f8bce30e961c9eb6}{sirfileid\_t}}\ \textcolor{keywordtype}{id});}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00066}00066\ \textcolor{keywordtype}{bool}\ \_sir\_fcache\_pred\_path(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ match,\ \mbox{\hyperlink{group__intern_structsirfile}{sirfile}}*\ iter);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00067}00067\ \textcolor{keywordtype}{bool}\ \_sir\_fcache\_pred\_id(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ match,\ \mbox{\hyperlink{group__intern_structsirfile}{sirfile}}*\ iter);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00068}00068\ \mbox{\hyperlink{group__intern_structsirfile}{sirfile}}*\ \_sir\_fcache\_find(\mbox{\hyperlink{group__intern_structsirfcache}{sirfcache}}*\ sfc,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ match,\ sir\_fcache\_pred\ pred);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00069}00069\ }
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00070}00070\ \textcolor{keywordtype}{bool}\ \_sir\_fcache\_destroy(\mbox{\hyperlink{group__intern_structsirfcache}{sirfcache}}*\ sfc);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00071}00071\ \textcolor{keywordtype}{bool}\ \_sir\_fcache\_dispatch(\mbox{\hyperlink{group__intern_structsirfcache}{sirfcache}}*\ sfc,\ \mbox{\hyperlink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\_level}}\ level,\ \mbox{\hyperlink{group__intern_structsirbuf}{sirbuf}}*\ buf,}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00072}00072\ \ \ \ \ \textcolor{keywordtype}{size\_t}*\ dispatched,\ \textcolor{keywordtype}{size\_t}*\ wanted);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00074}00074\ \textcolor{keywordtype}{void}\ \_sir\_fclose(FILE**\ f);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00075}00075\ \textcolor{keywordtype}{void}\ \_sir\_fflush(FILE*\ f);}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00076}00076\ \textcolor{keywordtype}{bool}\ \_sir\_fflush\_all(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{sirfilecache_8h_source_l00080}00080\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ !\_SIR\_FILECACHE\_H\_INCLUDED\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

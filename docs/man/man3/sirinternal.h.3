@@ -1,0 +1,185 @@
+.TH "sirinternal.h" 3 "Mon May 29 2023" "Version 2.1.1" "libsir" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+sirinternal.h \- Internal implementation\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'sirhelpers\&.h'\fP
+.br
+\fC#include 'sirmaps\&.h'\fP
+.br
+\fC#include 'sirerrors\&.h'\fP
+.br
+
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef void(* \fBsirinit_update\fP) (\fBsirinit\fP *, \fBsir_update_config_data\fP *)"
+.br
+.RI "Updates levels/options in the global init structure\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "bool \fB_sir_sanity\fP (void)"
+.br
+.RI "Evaluates whether or not libsir has been initialized\&. "
+.ti -1c
+.RI "bool \fB_sir_options_sanity\fP (const \fBsirinit\fP *si)"
+.br
+.RI "Validates the configuration passed to \fBsir_init\fP\&. "
+.ti -1c
+.RI "bool \fB_sir_init\fP (\fBsirinit\fP *si)"
+.br
+.RI "Initializes libsir\&. "
+.ti -1c
+.RI "void \fB_sir_stdoutlevels\fP (\fBsirinit\fP *si, \fBsir_update_config_data\fP *data)"
+.br
+.RI "Updates levels for \fIstdout\fP\&. "
+.ti -1c
+.RI "void \fB_sir_stdoutopts\fP (\fBsirinit\fP *si, \fBsir_update_config_data\fP *data)"
+.br
+.RI "Updates options for \fIstdout\fP\&. "
+.ti -1c
+.RI "void \fB_sir_stderrlevels\fP (\fBsirinit\fP *si, \fBsir_update_config_data\fP *data)"
+.br
+.RI "Updates levels for \fIstderr\fP\&. "
+.ti -1c
+.RI "void \fB_sir_stderropts\fP (\fBsirinit\fP *si, \fBsir_update_config_data\fP *data)"
+.br
+.RI "Updates options for \fIstderr\fP\&. "
+.ti -1c
+.RI "void \fB_sir_sysloglevels\fP (\fBsirinit\fP *si, \fBsir_update_config_data\fP *data)"
+.br
+.RI "Updates levels for \fIsyslog\fP\&. "
+.ti -1c
+.RI "bool \fB_sir_writeinit\fP (\fBsir_update_config_data\fP *data, \fBsirinit_update\fP update)"
+.br
+.RI "Updates levels/options in the global init structure\&. "
+.ti -1c
+.RI "void * \fB_sir_locksection\fP (\fBsir_mutex_id\fP mid)"
+.br
+.RI "Locks a protected section\&. "
+.ti -1c
+.RI "bool \fB_sir_unlocksection\fP (\fBsir_mutex_id\fP mid)"
+.br
+.RI "Unlocks a protected section\&. "
+.ti -1c
+.RI "bool \fB_sir_mapmutexid\fP (\fBsir_mutex_id\fP mid, \fBsirmutex_t\fP **m, void **section)"
+.br
+.RI "Maps a \fBsir_mutex_id\fP to a \fBsirmutex_t\fP and protected section\&. "
+.ti -1c
+.RI "bool \fB_sir_cleanup\fP (void)"
+.br
+.RI "Frees allocated resources\&. "
+.ti -1c
+.RI "void \fB_sir_initialize_once\fP (void)"
+.br
+.RI "General initialization procedure\&. "
+.ti -1c
+.RI "void \fB_sir_initmutex_si_once\fP (void)"
+.br
+.RI "Initializes a specific mutex\&. "
+.ti -1c
+.RI "void \fB_sir_initmutex_fc_once\fP (void)"
+.br
+.RI "Initializes a specific mutex\&. "
+.ti -1c
+.RI "void \fB_sir_initmutex_ts_once\fP (void)"
+.br
+.RI "Initializes a specific mutex\&. "
+.ti -1c
+.RI "void \fB_sir_initmutex\fP (\fBsirmutex_t\fP *mutex)"
+.br
+.RI "Initializes a specific mutex\&. "
+.ti -1c
+.RI "bool \fB_sir_once\fP (\fBsironce_t\fP *once, \fBsir_once_fn\fP func)"
+.br
+.RI "Executes only one time\&. "
+.ti -1c
+.RI "bool \fB_sir_logv\fP (\fBsir_level\fP level, const \fBsirchar_t\fP *format, va_list args)"
+.br
+.RI "Core output formatting\&. "
+.ti -1c
+.RI "bool \fB_sir_dispatch\fP (\fBsirinit\fP *si, \fBsir_level\fP level, \fBsirbuf\fP *buf)"
+.br
+.RI "Output dispatching\&. "
+.ti -1c
+.RI "const \fBsirchar_t\fP * \fB_sir_format\fP (bool styling, \fBsir_options\fP opts, \fBsirbuf\fP *buf)"
+.br
+.RI "Specific destination formatting\&. "
+.ti -1c
+.RI "int \fB_sir_syslog_maplevel\fP (\fBsir_level\fP level)"
+.br
+.RI "Maps a \fBsir_level\fP to a \fIsyslog\fP level\&. "
+.ti -1c
+.RI "void \fB_sir_syslog_open\fP (const char *app_name, \fBsir_syslog_dest\fP *ctx)"
+.br
+.RI "Called upon initialization of the library; does any necesssary connecting/opening handles, etc\&. "
+.ti -1c
+.RI "bool \fB_sir_syslog_write\fP (\fBsir_level\fP level, const \fBsirbuf\fP *buf, \fBsir_syslog_dest\fP *ctx)"
+.br
+.RI "Abstraction for writing to platform-specific implementations of syslog-type facilities (e\&.g\&.,) \fCos_log\fP on macOS\&. "
+.ti -1c
+.RI "void \fB_sir_syslog_close\fP (\fBsir_syslog_dest\fP *ctx)"
+.br
+.RI "Called upon shutdown of the library; does any necessary cleaning up/closing handles, etc\&. "
+.ti -1c
+.RI "const \fBsirchar_t\fP * \fB_sir_levelstr\fP (\fBsir_level\fP level)"
+.br
+.RI "Converts a \fBsir_level\fP to its human-readable form\&. "
+.ti -1c
+.RI "bool \fB_sir_getlocaltime\fP (time_t *tbuf, long *nsecbuf)"
+.br
+.RI "Retrieves the current local time w/ optional milliseconds\&. "
+.ti -1c
+.RI "bool \fB_sir_formattime\fP (time_t now, \fBsirchar_t\fP *buffer, const \fBsirchar_t\fP *format)"
+.br
+.RI "Formats the current time as a string\&. "
+.ti -1c
+.RI "pid_t \fB_sir_getpid\fP (void)"
+.br
+.RI "Returns the current process identifier\&. "
+.ti -1c
+.RI "pid_t \fB_sir_gettid\fP (void)"
+.br
+.RI "Returns the current thread identifier\&. "
+.ti -1c
+.RI "bool \fB_sir_getthreadname\fP (char name[16])"
+.br
+.RI "Returns the current thread's name\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Internal implementation\&. 
+
+This file and accompanying source code originated from https://github.com/aremmell/libsir\&. If you obtained it elsewhere, all bets are off\&.
+.PP
+\fBAuthor\fP
+.RS 4
+Ryan M\&. Lederman lederman@gmail.com 
+.RE
+.PP
+\fBCopyright\fP
+.RS 4
+.RE
+.PP
+The MIT License (MIT)
+.PP
+Copyright (c) 2018 Ryan M\&. Lederman
+.PP
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+.PP
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software\&.
+.PP
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\&. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE\&. 
+.PP
+Definition in file \fBsirinternal\&.h\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsir from the source code\&.

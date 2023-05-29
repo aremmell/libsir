@@ -1,0 +1,91 @@
+\doxysection{sirconsole.\+c}
+\hypertarget{sirconsole_8c_source}{}\label{sirconsole_8c_source}\mbox{\hyperlink{sirconsole_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00032}00032\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{sirconsole_8h}{sirconsole.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00033}00033\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{sirinternal_8h}{sirinternal.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00034}00034\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{sirtextstyle_8h}{sirtextstyle.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00041}00041\ \textcolor{preprocessor}{\#if\ !defined(\_WIN32)}}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00043}00043\ \textcolor{keywordtype}{bool}\ \_sir\_write\_stdio(FILE*\ stream,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ message)\ \{}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00044}00044\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00045}00045\ \ \ \ \ \textcolor{keywordflow}{if}\ (EOF\ ==\ fputs(message,\ stream))\ \{}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00046}00046\ \ \ \ \ \ \ \ \ \_sir\_handleerr(errno);}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00047}00047\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00048}00048\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00050}00050\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00051}00051\ \}}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00053}00053\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00054}00054\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00055}00055\ HANDLE\ \_\_sir\_stdout\ =\ INVALID\_HANDLE\_VALUE;}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00056}00056\ HANDLE\ \_\_sir\_stderr\ =\ INVALID\_HANDLE\_VALUE;}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00058}00058\ \textcolor{keyword}{static}\ \mbox{\hyperlink{sirplatform_8h_a3e6f12e65e77dc62a8f3763f504335de}{sironce\_t}}\ config\_once\ =\ \mbox{\hyperlink{sirplatform_8h_a7d4697ffc58df12ee881e41c5d0c0d4e}{SIR\_ONCE\_INIT}};}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00060}00060\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \_sir\_config\_console(HANDLE\ console);}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00061}00061\ \textcolor{keyword}{static}\ BOOL\ CALLBACK\ \_\_sir\_config\_consoles\_once(PINIT\_ONCE\ ponce,\ PVOID\ param,\ PVOID*\ ctx);}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00062}00062\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00063}00063\ \textcolor{keywordtype}{bool}\ \_sir\_initialize\_stdio(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00064}00064\ \ \ \ \ \textcolor{keywordtype}{bool}\ configure\ =\ \mbox{\hyperlink{group__intern_ga9f8e605de5104c3251b141eb7f3cf5ff}{\_sir\_once}}(\&config\_once,\ \_\_sir\_config\_consoles\_once);}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00065}00065\ \ \ \ \ assert(configure);}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00066}00066\ \ \ \ \ \textcolor{keywordflow}{return}\ configure;}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00067}00067\ \}}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00068}00068\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00069}00069\ \textcolor{keywordtype}{bool}\ \_sir\_write\_stdio(HANDLE\ console,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ message,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00070}00070\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00071}00071\ \ \ \ \ DWORD\ chars\ \ \ =\ (DWORD)len;}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00072}00072\ \ \ \ \ DWORD\ written\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00074}00074\ \ \ \ \ \textcolor{keywordflow}{do}\ \{}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00075}00075\ \ \ \ \ \ \ \ \ DWORD\ pass\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00076}00076\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00077}00077\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!WriteConsole(console,\ message\ +\ written,\ chars\ -\/\ written,\ \&pass,\ NULL))\ \{}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00078}00078\ \ \ \ \ \ \ \ \ \ \ \ \ \_sir\_handlewin32err(GetLastError());}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00079}00079\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00080}00080\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00081}00081\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00082}00082\ \ \ \ \ \ \ \ \ written\ +=\ pass;}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00083}00083\ \ \ \ \ \}\ \textcolor{keywordflow}{while}\ (written\ <\ chars);}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00084}00084\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00085}00085\ \ \ \ \ \textcolor{keywordflow}{return}\ written\ ==\ chars;}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00086}00086\ \}}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00087}00087\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00088}00088\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \_sir\_config\_console(HANDLE\ console)\ \{}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00089}00089\ \ \ \ \ \textcolor{keywordflow}{if}\ (INVALID\_HANDLE\_VALUE\ ==\ console\ ||\ NULL\ ==\ console)\ \{}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00090}00090\ \ \ \ \ \ \ \ \ \_sir\_handlewin32err(GetLastError());}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00091}00091\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00092}00092\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00093}00093\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00094}00094\ \ \ \ \ DWORD\ mode\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00095}00095\ \ \ \ \ \textcolor{keywordflow}{if}\ (!GetConsoleMode(console,\ \&mode))\ \{}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00096}00096\ \ \ \ \ \ \ \ \ \_sir\_handlewin32err(GetLastError());}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00097}00097\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00098}00098\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00099}00099\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00100}00100\ \ \ \ \ mode\ |=\ ENABLE\_VIRTUAL\_TERMINAL\_PROCESSING\ |\ ENABLE\_PROCESSED\_OUTPUT;}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00101}00101\ \ \ \ \ \textcolor{keywordflow}{if}\ (!SetConsoleMode(console,\ mode))\ \{}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00102}00102\ \ \ \ \ \ \ \ \ \_sir\_handlewin32err(GetLastError());}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00103}00103\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00104}00104\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00105}00105\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00106}00106\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00107}00107\ \}}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00108}00108\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00109}00109\ \textcolor{keyword}{static}\ BOOL\ CALLBACK\ \_\_sir\_config\_consoles\_once(PINIT\_ONCE\ ponce,\ PVOID\ param,\ PVOID*\ ctx)\ \{}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00110}00110\ \ \ \ \ \mbox{\hyperlink{group__intern_gaec5f4c31b60aca6a62b01e7188e91e08}{\_SIR\_UNUSED}}(ponce);}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00111}00111\ \ \ \ \ \mbox{\hyperlink{group__intern_gaec5f4c31b60aca6a62b01e7188e91e08}{\_SIR\_UNUSED}}(param);}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00112}00112\ \ \ \ \ \mbox{\hyperlink{group__intern_gaec5f4c31b60aca6a62b01e7188e91e08}{\_SIR\_UNUSED}}(ctx);}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00113}00113\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00114}00114\ \ \ \ \ \_\_sir\_stdout\ =\ GetStdHandle(STD\_OUTPUT\_HANDLE);}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00115}00115\ \ \ \ \ \_\_sir\_stderr\ =\ GetStdHandle(STD\_ERROR\_HANDLE);}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00116}00116\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00117}00117\ \ \ \ \ \textcolor{keywordflow}{return}\ (\_sir\_config\_console(\_\_sir\_stdout)\ \&\&\ \_sir\_config\_console(\_\_sir\_stderr))\ ?\ TRUE\ :\ FALSE;}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00118}00118\ \}}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00119}00119\ }
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00120}00120\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ !\_WIN32\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{\Hypertarget{sirconsole_8c_source_l00121}00121\ }
+
+\end{DoxyCode}

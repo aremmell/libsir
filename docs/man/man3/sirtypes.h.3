@@ -1,0 +1,163 @@
+.TH "sirtypes.h" 3 "Mon May 29 2023" "Version 2.1.1" "libsir" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+sirtypes.h \- Public and internal types\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'sirplatform\&.h'\fP
+.br
+\fC#include 'sirconfig\&.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBsir_stdio_dest\fP"
+.br
+.RI "Configuration for stdio destinations (stdout and stderr)\&. "
+.ti -1c
+.RI "struct \fBsir_syslog_dest\fP"
+.br
+.RI "Configuration for the syslog destination\&. "
+.ti -1c
+.RI "struct \fBsirinit\fP"
+.br
+.RI "Initialization data for libsir\&. "
+.ti -1c
+.RI "struct \fBsirerror\fP"
+.br
+.RI "Library error type\&. "
+.ti -1c
+.RI "struct \fBsirfile\fP"
+.br
+.RI "Log file data\&. "
+.ti -1c
+.RI "struct \fBsirfcache\fP"
+.br
+.RI "Log file cache\&. "
+.ti -1c
+.RI "struct \fBsirbuf\fP"
+.br
+.RI "Formatted output sent to destinations\&. "
+.ti -1c
+.RI "struct \fBsir_level_style_pair\fP"
+.br
+.RI "\fBsir_level\fP <-> default \fBsir_textstyle\fP mapping\&. "
+.ti -1c
+.RI "struct \fBsir_level_str_pair\fP"
+.br
+.RI "\fBsir_level\fP <-> string representation mapping (\fBsirconfig\&.h\fP) "
+.ti -1c
+.RI "struct \fBsir_style_16color_pair\fP"
+.br
+.RI "Public (\fBsir_textstyle\fP) <-> values used to generate styled terminal output\&. "
+.ti -1c
+.RI "struct \fBsir_thread_err\fP"
+.br
+.RI "Error type\&. "
+.ti -1c
+.RI "struct \fBsir_update_config_data\fP"
+.br
+.RI "Encapsulates dynamic updating of current configuration\&. "
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fB_SIRS_ATTR_MASK\fP   0x0000000f"
+.br
+.RI "Text style attribute mask\&. "
+.ti -1c
+.RI "#define \fB_SIRS_FG_MASK\fP   0x00000ff0"
+.br
+.RI "Text style foreground color mask\&. "
+.ti -1c
+.RI "#define \fB_SIRS_BG_MASK\fP   0x000ff000"
+.br
+.RI "Text style background color mask\&. "
+.ti -1c
+.RI "#define \fB_SIRS_SAME_COLOR\fP(fg,  bg)   (((bg >> 8) & \fB_SIRS_FG_MASK\fP) == fg)"
+.br
+.RI "True if foreground and background colors are the same\&. "
+.ti -1c
+.RI "#define \fB_SIR_MAGIC\fP   0x60906090"
+.br
+.RI "Magic number used to determine if libsir has been initialized\&. "
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef const int * \fBsirfileid_t\fP"
+.br
+.RI "The file identifier type\&. "
+.ti -1c
+.RI "typedef uint32_t \fBsirerror_t\fP"
+.br
+.RI "The error code type\&. "
+.ti -1c
+.RI "typedef uint16_t \fBsir_levels\fP"
+.br
+.RI "Used to differentiate between a single \fBsir_level\fP and one or more of them bitwise OR'd together\&. "
+.ti -1c
+.RI "typedef uint32_t \fBsir_options\fP"
+.br
+.RI "Used to differentiate between a single \fBsir_option\fP and one or more bitwise OR'd together\&. "
+.ti -1c
+.RI "typedef char \fBsirchar_t\fP"
+.br
+.RI "The underlying type used for characters in output\&. "
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBsir_level\fP { \fBSIRL_NONE\fP = 0x0000, \fBSIRL_EMERG\fP = 0x0001, \fBSIRL_ALERT\fP = 0x0002, \fBSIRL_CRIT\fP = 0x0004, \fBSIRL_ERROR\fP = 0x0008, \fBSIRL_WARN\fP = 0x0010, \fBSIRL_NOTICE\fP = 0x0020, \fBSIRL_INFO\fP = 0x0040, \fBSIRL_DEBUG\fP = 0x0080, \fBSIRL_ALL\fP = 0x00ff, \fBSIRL_DEFAULT\fP = 0x0100 }"
+.br
+.RI "Defines the available levels \fI\fP(severity/priority) of logging output\&. "
+.ti -1c
+.RI "enum \fBsir_option\fP { \fBSIRO_ALL\fP = 0x00000000, \fBSIRO_NOTIME\fP = 0x00000200, \fBSIRO_NOLEVEL\fP = 0x00000400, \fBSIRO_NONAME\fP = 0x00000800, \fBSIRO_NOMSEC\fP = 0x00001000, \fBSIRO_NOPID\fP = 0x00002000, \fBSIRO_NOTID\fP = 0x00004000, \fBSIRO_NOHDR\fP = 0x00010000, \fBSIRO_MSGONLY\fP = 0x000eff00, \fBSIRO_DEFAULT\fP = 0x00100000 }"
+.br
+.RI "Formatting options for a destination\&. "
+.ti -1c
+.RI "enum \fBsir_textstyle\fP { \fBSIRS_NONE\fP = 0x00000000, \fBSIRS_BRIGHT\fP = 0x00000001, \fBSIRS_DIM\fP = 0x00000002, \fBSIRS_FG_BLACK\fP = 0x00000010, \fBSIRS_FG_RED\fP = 0x00000020, \fBSIRS_FG_GREEN\fP = 0x00000030, \fBSIRS_FG_YELLOW\fP = 0x00000040, \fBSIRS_FG_BLUE\fP = 0x00000050, \fBSIRS_FG_MAGENTA\fP = 0x00000060, \fBSIRS_FG_CYAN\fP = 0x00000070, \fBSIRS_FG_DEFAULT\fP = 0x00000080, \fBSIRS_FG_LGRAY\fP = 0x00000090, \fBSIRS_FG_DGRAY\fP = 0x000000a0, \fBSIRS_FG_LRED\fP = 0x000000b0, \fBSIRS_FG_LGREEN\fP = 0x000000c0, \fBSIRS_FG_LYELLOW\fP = 0x000000d0, \fBSIRS_FG_LBLUE\fP = 0x000000e0, \fBSIRS_FG_LMAGENTA\fP = 0x000000f0, \fBSIRS_FG_LCYAN\fP = 0x00000f10, \fBSIRS_FG_WHITE\fP = 0x00000f20, \fBSIRS_BG_BLACK\fP = 0x00001000, \fBSIRS_BG_RED\fP = 0x00002000, \fBSIRS_BG_GREEN\fP = 0x00003000, \fBSIRS_BG_YELLOW\fP = 0x00004000, \fBSIRS_BG_BLUE\fP = 0x00005000, \fBSIRS_BG_MAGENTA\fP = 0x00006000, \fBSIRS_BG_CYAN\fP = 0x00007000, \fBSIRS_BG_DEFAULT\fP = 0x00008000, \fBSIRS_BG_LGRAY\fP = 0x00009000, \fBSIRS_BG_DGRAY\fP = 0x0000a000, \fBSIRS_BG_LRED\fP = 0x0000b000, \fBSIRS_BG_LGREEN\fP = 0x0000c000, \fBSIRS_BG_LYELLOW\fP = 0x0000d000, \fBSIRS_BG_LBLUE\fP = 0x0000e000, \fBSIRS_BG_LMAGENTA\fP = 0x0000f000, \fBSIRS_BG_LCYAN\fP = 0x000f1000, \fBSIRS_BG_WHITE\fP = 0x000f2000, \fBSIRS_INVALID\fP = 0x000f3000 }"
+.br
+.RI "Styles for 16-color console output\&. "
+.ti -1c
+.RI "enum \fBsir_mutex_id\fP { \fB_SIRM_INIT\fP = 0, \fB_SIRM_FILECACHE\fP, \fB_SIRM_TEXTSTYLE\fP }"
+.br
+.RI "Mutex <-> protected section mapping\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Public and internal types\&. 
+
+This file and accompanying source code originated from https://github.com/aremmell/libsir\&. If you obtained it elsewhere, all bets are off\&.
+.PP
+\fBAuthor\fP
+.RS 4
+Ryan M\&. Lederman lederman@gmail.com 
+.RE
+.PP
+\fBCopyright\fP
+.RS 4
+.RE
+.PP
+The MIT License (MIT)
+.PP
+Copyright (c) 2018 Ryan M\&. Lederman
+.PP
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+.PP
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software\&.
+.PP
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\&. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE\&. 
+.PP
+Definition in file \fBsirtypes\&.h\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsir from the source code\&.

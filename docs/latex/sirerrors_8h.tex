@@ -1,0 +1,65 @@
+\doxysection{sirerrors.\+h File Reference}
+\hypertarget{sirerrors_8h}{}\label{sirerrors_8h}\index{sirerrors.h@{sirerrors.h}}
+
+
+Error management.  
+
+
+{\ttfamily \#include \"{}sirhelpers.\+h\"{}}\newline
+{\ttfamily \#include \"{}sirtypes.\+h\"{}}\newline
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \{ \newline
+\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55bae9cf0dd9b54a0e456a565c6a8bf107f7}{SIR\+\_\+\+E\+\_\+\+NOERROR}} = 0
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba87dc9e5593942f7413b84a17c64a01eb}{SIR\+\_\+\+E\+\_\+\+NOTREADY}} = 1
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba96e01762a7feb2dbbd6f3c4504ba3470}{SIR\+\_\+\+E\+\_\+\+ALREADY}} = 2
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba72dc62bc5b5c1687a3bb221f04323119}{SIR\+\_\+\+E\+\_\+\+DUPFILE}} = 3
+, \newline
+\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55bab36a8affcc9e8f80b94b9c7264bfd492}{SIR\+\_\+\+E\+\_\+\+NOFILE}} = 4
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55bab48caca75bfe042380f8ccb9be8249a9}{SIR\+\_\+\+E\+\_\+\+FCFULL}} = 5
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba502a8e20f25ecee09eb75576238bb797}{SIR\+\_\+\+E\+\_\+\+OPTIONS}} = 6
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba909ed133cf8d178dd98b24b51fe844bf}{SIR\+\_\+\+E\+\_\+\+LEVELS}} = 7
+, \newline
+\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba3f34b13f811b5ddc9e4c216f5432fa1d}{SIR\+\_\+\+E\+\_\+\+TEXTSTYLE}} = 8
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba014d92769313bc513bd580461d8ebcd3}{SIR\+\_\+\+E\+\_\+\+STRING}} = 9
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba8e6f10a1b3f9eb256aaa4f9c1504b43d}{SIR\+\_\+\+E\+\_\+\+NULLPTR}} = 10
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55baba1600c4a3cb92f8f2cdf7be820606d3}{SIR\+\_\+\+E\+\_\+\+INVALID}} = 11
+, \newline
+\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55bad8d3e0a7ff09ea46a966d07ad08536af}{SIR\+\_\+\+E\+\_\+\+NODEST}} = 12
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba0f293a6020f98a7e41b8afea0e402046}{SIR\+\_\+\+E\+\_\+\+PLATFORM}} = 13
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba8090c8bc79ae660da7e58b2d0a47d785}{SIR\+\_\+\+E\+\_\+\+UNKNOWN}} = 4095
+ \}
+\begin{DoxyCompactList}\small\item\em Error codes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries \+\_\+\+\_\+sir\+\_\+handleerr} (int code, const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}func, const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}file, uint32\+\_\+t line)
+\begin{DoxyCompactList}\small\item\em Handle a C library error. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{group__public_ga7c16d05c40f30affcc3ca881a96f2b0f}{sirerror\+\_\+t}} {\bfseries \+\_\+sir\+\_\+geterror} (\mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} message\mbox{[}256\mbox{]})
+\begin{DoxyCompactList}\small\item\em Returns information about the last error that occurred. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Error management. 
+
+This file and accompanying source code originated from \href{https://github.com/aremmell/libsir}{\texttt{ https\+://github.\+com/aremmell/libsir}}. If you obtained it elsewhere, all bets are off.
+
+\begin{DoxyAuthor}{Author}
+Ryan M. Lederman \href{mailto:lederman@gmail.com}{\texttt{ lederman@gmail.\+com}} 
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+
+\end{DoxyCopyright}
+The MIT License (MIT)
+
+Copyright (c) 2018 Ryan M. Lederman
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"{}\+Software\"{}), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions\+:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED \"{}\+AS IS\"{}, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+
+Definition in file \mbox{\hyperlink{sirerrors_8h_source}{sirerrors.\+h}}.
+

@@ -1,0 +1,176 @@
+\doxysection{sirtypes.\+h File Reference}
+\hypertarget{sirtypes_8h}{}\label{sirtypes_8h}\index{sirtypes.h@{sirtypes.h}}
+
+
+Public and internal types.  
+
+
+{\ttfamily \#include \"{}sirplatform.\+h\"{}}\newline
+{\ttfamily \#include \"{}sirconfig.\+h\"{}}\newline
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{group__public_structsir__stdio__dest}{sir\+\_\+stdio\+\_\+dest}}
+\begin{DoxyCompactList}\small\item\em Configuration for stdio destinations (stdout and stderr).  \mbox{\hyperlink{group__public_structsir__stdio__dest}{More...}}\end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{group__public_structsir__syslog__dest}{sir\+\_\+syslog\+\_\+dest}}
+\begin{DoxyCompactList}\small\item\em Configuration for the syslog destination.  \mbox{\hyperlink{group__public_structsir__syslog__dest}{More...}}\end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{group__public_structsirinit}{sirinit}}
+\begin{DoxyCompactList}\small\item\em Initialization data for libsir.  \mbox{\hyperlink{group__public_structsirinit}{More...}}\end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{group__public_structsirerror}{sirerror}}
+\begin{DoxyCompactList}\small\item\em Library error type.  \mbox{\hyperlink{group__public_structsirerror}{More...}}\end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{group__intern_structsirfile}{sirfile}}
+\begin{DoxyCompactList}\small\item\em Log file data.  \mbox{\hyperlink{group__intern_structsirfile}{More...}}\end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{group__intern_structsirfcache}{sirfcache}}
+\begin{DoxyCompactList}\small\item\em Log file cache.  \mbox{\hyperlink{group__intern_structsirfcache}{More...}}\end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{group__intern_structsirbuf}{sirbuf}}
+\begin{DoxyCompactList}\small\item\em Formatted output sent to destinations.  \mbox{\hyperlink{group__intern_structsirbuf}{More...}}\end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{group__intern_structsir__level__style__pair}{sir\+\_\+level\+\_\+style\+\_\+pair}}
+\begin{DoxyCompactList}\small\item\em \doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} \texorpdfstring{$<$}{<}-\/\texorpdfstring{$>$}{>} default \doxylink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle} mapping.  \mbox{\hyperlink{group__intern_structsir__level__style__pair}{More...}}\end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{group__intern_structsir__level__str__pair}{sir\+\_\+level\+\_\+str\+\_\+pair}}
+\begin{DoxyCompactList}\small\item\em \doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} \texorpdfstring{$<$}{<}-\/\texorpdfstring{$>$}{>} string representation mapping (\doxylink{sirconfig_8h}{sirconfig.\+h})  \mbox{\hyperlink{group__intern_structsir__level__str__pair}{More...}}\end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{group__intern_structsir__style__16color__pair}{sir\+\_\+style\+\_\+16color\+\_\+pair}}
+\begin{DoxyCompactList}\small\item\em Public (\doxylink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle}) \texorpdfstring{$<$}{<}-\/\texorpdfstring{$>$}{>} values used to generate styled terminal output.  \mbox{\hyperlink{group__intern_structsir__style__16color__pair}{More...}}\end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{group__intern_structsir__thread__err}{sir\+\_\+thread\+\_\+err}}
+\begin{DoxyCompactList}\small\item\em Error type.  \mbox{\hyperlink{group__intern_structsir__thread__err}{More...}}\end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\+\_\+update\+\_\+config\+\_\+data}}
+\begin{DoxyCompactList}\small\item\em Encapsulates dynamic updating of current configuration.  \mbox{\hyperlink{group__intern_structsir__update__config__data}{More...}}\end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define {\bfseries \+\_\+\+SIRS\+\_\+\+ATTR\+\_\+\+MASK}~0x0000000f
+\begin{DoxyCompactList}\small\item\em Text style attribute mask. \end{DoxyCompactList}\item 
+\#define {\bfseries \+\_\+\+SIRS\+\_\+\+FG\+\_\+\+MASK}~0x00000ff0
+\begin{DoxyCompactList}\small\item\em Text style foreground color mask. \end{DoxyCompactList}\item 
+\#define {\bfseries \+\_\+\+SIRS\+\_\+\+BG\+\_\+\+MASK}~0x000ff000
+\begin{DoxyCompactList}\small\item\em Text style background color mask. \end{DoxyCompactList}\item 
+\#define {\bfseries \+\_\+\+SIRS\+\_\+\+SAME\+\_\+\+COLOR}(fg,  bg)~(((bg $>$$>$ 8) \& \mbox{\hyperlink{group__intern_ga7660f6397f9c6b7f628cf2e354222544}{\+\_\+\+SIRS\+\_\+\+FG\+\_\+\+MASK}}) == fg)
+\begin{DoxyCompactList}\small\item\em True if foreground and background colors are the same. \end{DoxyCompactList}\item 
+\#define {\bfseries \+\_\+\+SIR\+\_\+\+MAGIC}~0x60906090
+\begin{DoxyCompactList}\small\item\em Magic number used to determine if libsir has been initialized. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef const int \texorpdfstring{$\ast$}{*} {\bfseries sirfileid\+\_\+t}
+\begin{DoxyCompactList}\small\item\em The file identifier type. \end{DoxyCompactList}\item 
+typedef uint32\+\_\+t {\bfseries sirerror\+\_\+t}
+\begin{DoxyCompactList}\small\item\em The error code type. \end{DoxyCompactList}\item 
+typedef uint16\+\_\+t {\bfseries sir\+\_\+levels}
+\begin{DoxyCompactList}\small\item\em Used to differentiate between a single \doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} and one or more of them bitwise OR\textquotesingle{}d together. \end{DoxyCompactList}\item 
+typedef uint32\+\_\+t {\bfseries sir\+\_\+options}
+\begin{DoxyCompactList}\small\item\em Used to differentiate between a single \doxylink{group__public_ga9ed1c599dfd76231f4e0dadf46bff40b}{sir\+\_\+option} and one or more bitwise OR\textquotesingle{}d together. \end{DoxyCompactList}\item 
+typedef char {\bfseries sirchar\+\_\+t}
+\begin{DoxyCompactList}\small\item\em The underlying type used for characters in output. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}} \{ \newline
+\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a7cc68341661fcb7a505aca67edb7a18e}{SIRL\+\_\+\+NONE}} = 0x0000
+, \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc}{SIRL\+\_\+\+EMERG}} = 0x0001
+, \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955}{SIRL\+\_\+\+ALERT}} = 0x0002
+, \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435}{SIRL\+\_\+\+CRIT}} = 0x0004
+, \newline
+\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76}{SIRL\+\_\+\+ERROR}} = 0x0008
+, \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881}{SIRL\+\_\+\+WARN}} = 0x0010
+, \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a}{SIRL\+\_\+\+NOTICE}} = 0x0020
+, \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d}{SIRL\+\_\+\+INFO}} = 0x0040
+, \newline
+\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b}{SIRL\+\_\+\+DEBUG}} = 0x0080
+, \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\+\_\+\+ALL}} = 0x00ff
+, \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804}{SIRL\+\_\+\+DEFAULT}} = 0x0100
+ \}
+\begin{DoxyCompactList}\small\item\em Defines the available levels {\itshape }(severity/priority) of logging output. \end{DoxyCompactList}\item 
+enum \mbox{\hyperlink{group__public_ga9ed1c599dfd76231f4e0dadf46bff40b}{sir\+\_\+option}} \{ \newline
+\mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba843ca9cff10528731dc9609e2fbfe34f}{SIRO\+\_\+\+ALL}} = 0x00000000
+, \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d}{SIRO\+\_\+\+NOTIME}} = 0x00000200
+, \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba58882ac768eb1c0a0021d140f6b15deb}{SIRO\+\_\+\+NOLEVEL}} = 0x00000400
+, \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba59020fdfee0aaf393ed80ef7bab4bb4e}{SIRO\+\_\+\+NONAME}} = 0x00000800
+, \newline
+\mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40bad78a6f66d21b01ace7574841495cacdd}{SIRO\+\_\+\+NOMSEC}} = 0x00001000
+, \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40babbdc2529081d58ebff50a8966db31fd2}{SIRO\+\_\+\+NOPID}} = 0x00002000
+, \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba7079a31d6035c24aaa94d85c4a89c053}{SIRO\+\_\+\+NOTID}} = 0x00004000
+, \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba59b2a0e9b2dfd78bcfa053dcb3f2dcce}{SIRO\+\_\+\+NOHDR}} = 0x00010000
+, \newline
+\mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0}{SIRO\+\_\+\+MSGONLY}} = 0x000eff00
+, \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02}{SIRO\+\_\+\+DEFAULT}} = 0x00100000
+ \}
+\begin{DoxyCompactList}\small\item\em Formatting options for a destination. \end{DoxyCompactList}\item 
+enum \mbox{\hyperlink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle}} \{ \newline
+\mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafaeedcdbdc654f326e211a2d2f653b07f5}{SIRS\+\_\+\+NONE}} = 0x00000000
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafacc1f324a77d57ff8ac0895767c9480d4}{SIRS\+\_\+\+BRIGHT}} = 0x00000001
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa54175d114e639a05853b7f8f2291661a}{SIRS\+\_\+\+DIM}} = 0x00000002
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa0fbe677e96b8483b073584848bb5e4fc}{SIRS\+\_\+\+FG\+\_\+\+BLACK}} = 0x00000010
+, \newline
+\mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa1f11f323b6998adbd83b31d73bc538dc}{SIRS\+\_\+\+FG\+\_\+\+RED}} = 0x00000020
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafae78e2dc1e4fed6ad5b12d089e80a07e8}{SIRS\+\_\+\+FG\+\_\+\+GREEN}} = 0x00000030
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa89c9ddbb6a10b8c5fe204247eb457641}{SIRS\+\_\+\+FG\+\_\+\+YELLOW}} = 0x00000040
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa2f75bdae21995a567531e37eec6e979d}{SIRS\+\_\+\+FG\+\_\+\+BLUE}} = 0x00000050
+, \newline
+\mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa78c026ced18436da03a138ac720d9739}{SIRS\+\_\+\+FG\+\_\+\+MAGENTA}} = 0x00000060
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafaefc4595e6d22f5a5d6ce7fa13c64444d}{SIRS\+\_\+\+FG\+\_\+\+CYAN}} = 0x00000070
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa94c0b7a28b98275970c70dc8cbf3ed86}{SIRS\+\_\+\+FG\+\_\+\+DEFAULT}} = 0x00000080
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafae27d8d5a99b25c1fa6a6f8e88c728847}{SIRS\+\_\+\+FG\+\_\+\+LGRAY}} = 0x00000090
+, \newline
+\mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa0a21b2c2577cffd925841a9bc549eb1a}{SIRS\+\_\+\+FG\+\_\+\+DGRAY}} = 0x000000a0
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafaa4b6a5f32e591cd5649c849555abcd32}{SIRS\+\_\+\+FG\+\_\+\+LRED}} = 0x000000b0
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa3ca695e05500c2577a8aed197c6f515a}{SIRS\+\_\+\+FG\+\_\+\+LGREEN}} = 0x000000c0
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa044cfd76b272031ac7103a6f4b655c68}{SIRS\+\_\+\+FG\+\_\+\+LYELLOW}} = 0x000000d0
+, \newline
+\mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa9803c61fa699378b4d3d4da2e7a1fc43}{SIRS\+\_\+\+FG\+\_\+\+LBLUE}} = 0x000000e0
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa41034337d4b4513f07641d97b2450c06}{SIRS\+\_\+\+FG\+\_\+\+LMAGENTA}} = 0x000000f0
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa869cfb06440efa65ee401ccccec054b5}{SIRS\+\_\+\+FG\+\_\+\+LCYAN}} = 0x00000f10
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafae6d57af48d2bca9848aa8cf926043e4e}{SIRS\+\_\+\+FG\+\_\+\+WHITE}} = 0x00000f20
+, \newline
+\mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafae6d8923837281767bb30b4cfb59bcd2c}{SIRS\+\_\+\+BG\+\_\+\+BLACK}} = 0x00001000
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafad0eec1607a2eefbabe5947bd595170a4}{SIRS\+\_\+\+BG\+\_\+\+RED}} = 0x00002000
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa93166b30d32c8dbf52f93612aa0dcdd7}{SIRS\+\_\+\+BG\+\_\+\+GREEN}} = 0x00003000
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafabe3a20064515e10ac72eaf6e8a665b55}{SIRS\+\_\+\+BG\+\_\+\+YELLOW}} = 0x00004000
+, \newline
+\mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafabbee0baeb2477032387f884c6f938129}{SIRS\+\_\+\+BG\+\_\+\+BLUE}} = 0x00005000
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa989b172db1f8a3a212ef5b8e23d636cf}{SIRS\+\_\+\+BG\+\_\+\+MAGENTA}} = 0x00006000
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa04083a920b7ed070f2bbb886e4691203}{SIRS\+\_\+\+BG\+\_\+\+CYAN}} = 0x00007000
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafab38f3ce262a13dd157fd1a2077fe27d6}{SIRS\+\_\+\+BG\+\_\+\+DEFAULT}} = 0x00008000
+, \newline
+\mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa05859c52a6ff0bdfccf869e1330889a3}{SIRS\+\_\+\+BG\+\_\+\+LGRAY}} = 0x00009000
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa65b1ce8d8dcdf149a9ee515001ee7d69}{SIRS\+\_\+\+BG\+\_\+\+DGRAY}} = 0x0000a000
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa5dabc2332ba159af08c886c8d8cecd3e}{SIRS\+\_\+\+BG\+\_\+\+LRED}} = 0x0000b000
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa6dba92fe12cc2cf72ea2e77d9f083b25}{SIRS\+\_\+\+BG\+\_\+\+LGREEN}} = 0x0000c000
+, \newline
+\mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafaa57ce340d05ec022dc4a5f89d2bea212}{SIRS\+\_\+\+BG\+\_\+\+LYELLOW}} = 0x0000d000
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafae30bf67c0667f08b92c10f6e14b1895e}{SIRS\+\_\+\+BG\+\_\+\+LBLUE}} = 0x0000e000
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa2bac829fbcfffa04182547d4a0a00e7a}{SIRS\+\_\+\+BG\+\_\+\+LMAGENTA}} = 0x0000f000
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafaf3b311d7fd2af0678d7ddff6f7967866}{SIRS\+\_\+\+BG\+\_\+\+LCYAN}} = 0x000f1000
+, \newline
+\mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa57f3210f2af19b6b3067a10ab5947a36}{SIRS\+\_\+\+BG\+\_\+\+WHITE}} = 0x000f2000
+, \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa42e4beda8d3aef8122f3b272c54632e2}{SIRS\+\_\+\+INVALID}} = 0x000f3000
+ \}
+\begin{DoxyCompactList}\small\item\em Styles for 16-\/color console output. \end{DoxyCompactList}\item 
+enum \mbox{\hyperlink{group__intern_ga1b4579307692c802cc1d2b16e49c1371}{sir\+\_\+mutex\+\_\+id}} \{ \mbox{\hyperlink{group__intern_gga1b4579307692c802cc1d2b16e49c1371a2e0869dddfcc782e813b20d0b73db27c}{\+\_\+\+SIRM\+\_\+\+INIT}} = 0
+, \mbox{\hyperlink{group__intern_gga1b4579307692c802cc1d2b16e49c1371a36e0e177582f073ea203ea4cb0db6a47}{\+\_\+\+SIRM\+\_\+\+FILECACHE}}
+, \mbox{\hyperlink{group__intern_gga1b4579307692c802cc1d2b16e49c1371a974b68d27c9ee586a717a3ca3c66bb32}{\+\_\+\+SIRM\+\_\+\+TEXTSTYLE}}
+ \}
+\begin{DoxyCompactList}\small\item\em Mutex \texorpdfstring{$<$}{<}-\/\texorpdfstring{$>$}{>} protected section mapping. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Public and internal types. 
+
+This file and accompanying source code originated from \href{https://github.com/aremmell/libsir}{\texttt{ https\+://github.\+com/aremmell/libsir}}. If you obtained it elsewhere, all bets are off.
+
+\begin{DoxyAuthor}{Author}
+Ryan M. Lederman \href{mailto:lederman@gmail.com}{\texttt{ lederman@gmail.\+com}} 
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+
+\end{DoxyCopyright}
+The MIT License (MIT)
+
+Copyright (c) 2018 Ryan M. Lederman
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"{}\+Software\"{}), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions\+:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED \"{}\+AS IS\"{}, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+
+Definition in file \mbox{\hyperlink{sirtypes_8h_source}{sirtypes.\+h}}.
+

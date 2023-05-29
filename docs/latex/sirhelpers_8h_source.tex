@@ -1,0 +1,146 @@
+\doxysection{sirhelpers.\+h}
+\hypertarget{sirhelpers_8h_source}{}\label{sirhelpers_8h_source}\mbox{\hyperlink{sirhelpers_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00032}00032\ \textcolor{preprocessor}{\#ifndef\ \_SIR\_HELPERS\_H\_INCLUDED}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00033}00033\ \textcolor{preprocessor}{\#define\ \_SIR\_HELPERS\_H\_INCLUDED}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00035}00035\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{sirtypes_8h}{sirtypes.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00043}\mbox{\hyperlink{group__intern_ga8621b47594131810d5abea6109a32e1d}{00043}}\ \textcolor{preprocessor}{\#define\ \_sir\_countof(arr)\ (sizeof(arr)\ /\ sizeof(arr[0]))}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00044}00044\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00049}\mbox{\hyperlink{group__intern_ga96032779b027480acf885eab4a5e6da4}{00049}}\ \textcolor{preprocessor}{\#define\ \_sir\_mkerror(code)\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00050}00050\ \textcolor{preprocessor}{\ \ \ \ (((uint32\_t)(code\ \&\ 0x7fff)\ <<\ 16)\ |\ 0x80000000)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00053}00053\ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00054}\mbox{\hyperlink{group__intern_ga85df9c3299ca00a1fbde0bca7b95a2f5}{00054}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__intern_ga85df9c3299ca00a1fbde0bca7b95a2f5}{\_sir\_validerror}}(\mbox{\hyperlink{group__public_ga7c16d05c40f30affcc3ca881a96f2b0f}{sirerror\_t}}\ err)\ \{}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00055}00055\ \ \ \ \ \mbox{\hyperlink{group__public_ga7c16d05c40f30affcc3ca881a96f2b0f}{sirerror\_t}}\ masked\ =\ err\ \&\ 0x8fffffff;}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00056}00056\ \ \ \ \ \textcolor{keywordflow}{return}\ masked\ >=\ 0x80000000\ \&\&\ masked\ <=\ 0x8fff0000;}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00057}00057\ \}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00060}00060\ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00061}\mbox{\hyperlink{group__intern_ga8f4ab88b65313d0cf42cdb0363aa61e3}{00061}}\ uint16\_t\ \mbox{\hyperlink{group__intern_ga8f4ab88b65313d0cf42cdb0363aa61e3}{\_sir\_geterrcode}}(\mbox{\hyperlink{group__public_ga7c16d05c40f30affcc3ca881a96f2b0f}{sirerror\_t}}\ err)\ \{}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00062}00062\ \ \ \ \ \textcolor{keywordflow}{return}\ (err\ >>\ 16)\ \&\ 0x7fff;}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00063}00063\ \}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00064}00064\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00066}\mbox{\hyperlink{group__intern_gac812e82ac0f3ee01b35808082281363c}{00066}}\ \textcolor{preprocessor}{\#define\ \_SIR\_L\_START(format)\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00067}00067\ \textcolor{preprocessor}{\ \ \ \ bool\ r\ =\ false;\ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00068}00068\ \textcolor{preprocessor}{\ \ \ \ va\_list\ args;\ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00069}00069\ \textcolor{preprocessor}{\ \ \ \ va\_start(args,\ format);}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00070}00070\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00072}\mbox{\hyperlink{group__intern_ga7d5dda1395dc7eec751df1ec10095aef}{00072}}\ \textcolor{preprocessor}{\#define\ \_SIR\_L\_END(args)\ va\_end(args);}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00075}\mbox{\hyperlink{group__intern_gaec5f4c31b60aca6a62b01e7188e91e08}{00075}}\ \textcolor{preprocessor}{\#define\ \_SIR\_UNUSED(param)\ (void)param;}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00076}00076\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00078}\mbox{\hyperlink{group__intern_ga8fa793d8b19a813ef1e7792072bcb35b}{00078}}\ \textcolor{preprocessor}{\#define\ \_SIR\_DECLARE\_BIN\_SEARCH(low,\ high)\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00079}00079\ \textcolor{preprocessor}{\ \ \ \ size\_t\ \_low\ \ \ =\ low;\ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00080}00080\ \textcolor{preprocessor}{\ \ \ \ size\_t\ \_high\ \ =\ high;\ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00081}00081\ \textcolor{preprocessor}{\ \ \ \ size\_t\ \_mid\ \ \ =\ (\_low\ +\ \_high)\ /\ 2;}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00082}00082\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00083}00083\ \textcolor{preprocessor}{\#define\ \_SIR\_BEGIN\_BIN\_SEARCH()\ do\ \{\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00084}00084\ \textcolor{preprocessor}{}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00085}00085\ \textcolor{preprocessor}{\#define\ \_SIR\_ITERATE\_BIN\_SEARCH(comparison)\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00086}00086\ \textcolor{preprocessor}{\ \ \ \ if\ (0\ ==\ comparison)\ \{\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00087}00087\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ break;\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00088}00088\ \textcolor{preprocessor}{\ \ \ \ \}\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00089}00089\ \textcolor{preprocessor}{\ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00090}00090\ \textcolor{preprocessor}{\ \ \ \ if\ (\_low\ ==\ \_high)\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00091}00091\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ break;\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00092}00092\ \textcolor{preprocessor}{\ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00093}00093\ \textcolor{preprocessor}{\ \ \ \ if\ (0\ >\ comparison\ \&\&\ (\_mid\ -\/\ 1)\ >=\ \_low)\ \{\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00094}00094\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \_high\ =\ \_mid\ -\/\ 1;\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00095}00095\ \textcolor{preprocessor}{\ \ \ \ \}\ else\ if\ ((\_mid\ +\ 1)\ <=\ \_high)\ \{\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00096}00096\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \_low\ =\ \_mid\ +\ 1;\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00097}00097\ \textcolor{preprocessor}{\ \ \ \ \}\ else\ \{\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00098}00098\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ break;\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00099}00099\ \textcolor{preprocessor}{\ \ \ \ \}\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00100}00100\ \textcolor{preprocessor}{\ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00101}00101\ \textcolor{preprocessor}{\ \ \ \ \_mid\ =\ (\_low\ +\ \_high)\ /\ 2;}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00102}00102\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00103}00103\ \textcolor{preprocessor}{\#define\ \_SIR\_END\_BIN\_SEARCH()\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00104}00104\ \textcolor{preprocessor}{\ \ \ \ \}\ while(true);}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00105}00105\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00108}\mbox{\hyperlink{group__intern_ga1db61be8817fa34c0fb8a57f9dfaf2d3}{00108}}\ \textcolor{preprocessor}{\#define\ \_sir\_notnull(addr)\ (NULL\ !=\ addr)}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00109}00109\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00111}00111\ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00112}\mbox{\hyperlink{group__intern_ga53f20bd7811bb5277f473e4b47aec2cf}{00112}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__intern_ga53f20bd7811bb5277f473e4b47aec2cf}{\_sir\_bittest}}(uint32\_t\ flags,\ uint32\_t\ test)\ \{}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00113}00113\ \ \ \ \ \textcolor{keywordflow}{return}\ (flags\ \&\ test)\ ==\ test;}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00114}00114\ \}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00117}00117\ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00118}\mbox{\hyperlink{group__intern_ga1ac1bb3c4f833dd42044a6cfd8f50e58}{00118}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__intern_ga1ac1bb3c4f833dd42044a6cfd8f50e58}{\_\_sir\_safefree}}(\textcolor{keywordtype}{void}**\ p)\ \{}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00119}00119\ \ \ \ \ \textcolor{keywordflow}{if}\ (!p\ ||\ (p\ \&\&\ !*p))}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00120}00120\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00121}00121\ \ \ \ \ free(*p);}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00122}00122\ \ \ \ \ *p\ =\ NULL;}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00123}00123\ \}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00124}00124\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00126}00126\ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00127}\mbox{\hyperlink{group__intern_gafd7b2c5b8940fe4c92a59da4ebecfc09}{00127}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__intern_gafd7b2c5b8940fe4c92a59da4ebecfc09}{\_sir\_safefree}}(\textcolor{keywordtype}{void}*\ p)\ \{}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00128}00128\ \ \ \ \ \mbox{\hyperlink{group__intern_ga1ac1bb3c4f833dd42044a6cfd8f50e58}{\_\_sir\_safefree}}(\&p);}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00129}00129\ \}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00130}00130\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00132}00132\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__intern_gad2bb1aa7a5735739d5db5dbdaca22f18}{\_sir\_validfid}}(\textcolor{keywordtype}{int}\ \textcolor{keywordtype}{id});}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00133}00133\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00135}00135\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__intern_gaf1757b2bc1b99833b39d80297ef8fa12}{\_sir\_validupdatedata}}(\mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\_update\_config\_data}}*\ data);}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00136}00136\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00138}00138\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__intern_ga09fdf57a2d2841d4d6c5f00dfa82974b}{\_sir\_validlevels}}(\mbox{\hyperlink{group__public_ga7ee5f2908abd2df9e89bcab0b6608edd}{sir\_levels}}\ levels);}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00139}00139\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00141}00141\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__intern_ga70a34d97d57819b278ff8ac1b8f53f3a}{\_sir\_validlevel}}(\mbox{\hyperlink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\_level}}\ level);}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00142}00142\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00144}00144\ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00145}\mbox{\hyperlink{group__intern_gaf8fff083b2f2b80b7c93d34dfa76006f}{00145}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__intern_gaf8fff083b2f2b80b7c93d34dfa76006f}{\_sir\_defaultlevels}}(\mbox{\hyperlink{group__public_ga7ee5f2908abd2df9e89bcab0b6608edd}{sir\_levels}}*\ levels,\ \mbox{\hyperlink{group__public_ga7ee5f2908abd2df9e89bcab0b6608edd}{sir\_levels}}\ def)\ \{}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00146}00146\ \ \ \ \ \textcolor{keywordflow}{if}\ (levels\ \&\&\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804}{SIRL\_DEFAULT}}\ ==\ *levels)}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00147}00147\ \ \ \ \ \ \ \ \ *levels\ =\ def;}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00148}00148\ \}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00149}00149\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00151}00151\ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00152}\mbox{\hyperlink{group__intern_ga3256b5b782091a39b36e64256e7b5650}{00152}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__intern_ga3256b5b782091a39b36e64256e7b5650}{\_sir\_defaultopts}}(\mbox{\hyperlink{group__public_gafb659914aac0129182d86f7d3414e85d}{sir\_options}}*\ opts,\ \mbox{\hyperlink{group__public_gafb659914aac0129182d86f7d3414e85d}{sir\_options}}\ def)\ \{}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00153}00153\ \ \ \ \ \textcolor{keywordflow}{if}\ (opts\ \&\&\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02}{SIRO\_DEFAULT}}\ ==\ *opts)}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00154}00154\ \ \ \ \ \ \ \ \ *opts\ =\ def;}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00155}00155\ \}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00156}00156\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00158}00158\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__intern_ga3ab7b0541bb7d04ca61168d0130e3848}{\_sir\_validopts}}(\mbox{\hyperlink{group__public_gafb659914aac0129182d86f7d3414e85d}{sir\_options}}\ opts);}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00159}00159\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00161}00161\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__intern_ga611a23fcb3b3d995aa44807c2f329df8}{\_\_sir\_validstr}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ str,\ \textcolor{keywordtype}{bool}\ fail);}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00162}00162\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00164}00164\ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00165}\mbox{\hyperlink{group__intern_ga81ba7c311823833ccaee4ecdff8fb460}{00165}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__intern_ga81ba7c311823833ccaee4ecdff8fb460}{\_sir\_validstr}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ str)\ \{}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00166}00166\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{group__intern_ga611a23fcb3b3d995aa44807c2f329df8}{\_\_sir\_validstr}}(str,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00167}00167\ \}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00168}00168\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00170}00170\ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00171}\mbox{\hyperlink{group__intern_gadafa37c7ad670f7c1a6b92a32933ad82}{00171}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__intern_gadafa37c7ad670f7c1a6b92a32933ad82}{\_sir\_validstrnofail}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ str)\ \{}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00172}00172\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{group__intern_ga611a23fcb3b3d995aa44807c2f329df8}{\_\_sir\_validstr}}(str,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00173}00173\ \}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00174}00174\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00176}00176\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__intern_gaf500b33521d460a6b69350cee1559306}{\_\_sir\_validptr}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ restrict\ p,\ \textcolor{keywordtype}{bool}\ fail);}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00177}00177\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00179}00179\ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00180}\mbox{\hyperlink{group__intern_gabc81ba7f0c2375212d2daf8f5109775b}{00180}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__intern_gabc81ba7f0c2375212d2daf8f5109775b}{\_sir\_validptr}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ restrict\ p)\ \{}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00181}00181\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{group__intern_gaf500b33521d460a6b69350cee1559306}{\_\_sir\_validptr}}(p,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00182}00182\ \}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00183}00183\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00185}00185\ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00186}\mbox{\hyperlink{group__intern_ga2899ef20a2423a7dede1bd95ae4fa250}{00186}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__intern_ga2899ef20a2423a7dede1bd95ae4fa250}{\_sir\_validptrnofail}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ restrict\ p)\ \{}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00187}00187\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{group__intern_gaf500b33521d460a6b69350cee1559306}{\_\_sir\_validptr}}(p,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00188}00188\ \}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00189}00189\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00191}00191\ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00192}\mbox{\hyperlink{group__intern_gab89052df9773870821612c9b99586281}{00192}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{group__intern_gab89052df9773870821612c9b99586281}{\_sir\_resetstr}}(\mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ str)\ \{}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00193}00193\ \ \ \ \ str[0]\ =\ (\mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}})\textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00194}00194\ \}}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00195}00195\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00200}00200\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{group__intern_ga45a2711d677382329eef2dbcbf420aa2}{\_sir\_strncpy}}(\mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ restrict\ dest,\ \textcolor{keywordtype}{size\_t}\ destsz,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ restrict\ src,\ \textcolor{keywordtype}{size\_t}\ count);}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00201}00201\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00206}00206\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{group__intern_gaa3bdb27108e6e20986e896c145baf9be}{\_sir\_strncat}}(\mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ restrict\ dest,\ \textcolor{keywordtype}{size\_t}\ destsz,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ restrict\ src,\ \textcolor{keywordtype}{size\_t}\ count);}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00207}00207\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00212}00212\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{group__intern_gae2f92b8de58c7391a62048997f654b56}{\_sir\_fopen}}(FILE*\ restrict\ *restrict\ streamptr,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ restrict\ filename,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ restrict\ mode);}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00213}00213\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00218}00218\ \textcolor{keyword}{struct\ }tm*\ \mbox{\hyperlink{group__intern_gaf5e3b63f99cb33987d34631d072da56e}{\_sir\_localtime}}(\textcolor{keyword}{const}\ time\_t*\ restrict\ timer,\ \textcolor{keyword}{struct}\ tm*\ restrict\ buf);}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00219}00219\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00224}00224\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{group__intern_gab00490f3656c1c10d5c75b2b4da9fdd0}{\_sir\_getchar}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00225}00225\ }
+\DoxyCodeLine{\Hypertarget{sirhelpers_8h_source_l00228}00228\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ !\_SIR\_HELPERS\_H\_INCLUDED\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

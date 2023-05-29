@@ -1,0 +1,72 @@
+\doxysection{sirplatform.\+h File Reference}
+\hypertarget{sirplatform_8h}{}\label{sirplatform_8h}\index{sirplatform.h@{sirplatform.h}}
+
+
+Platform specific configuration.  
+
+
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$stdarg.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$inttypes.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$libgen.\+h$>$}\newline
+{\ttfamily \#include $<$sys/stat.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$pthread.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$sys/syscall.\+h$>$}\newline
+{\ttfamily \#include $<$syslog.\+h$>$}\newline
+{\ttfamily \#include $<$strings.\+h$>$}\newline
+{\ttfamily \#include $<$termios.\+h$>$}\newline
+{\ttfamily \#include $<$limits.\+h$>$}\newline
+{\ttfamily \#include $<$fcntl.\+h$>$}\newline
+{\ttfamily \#include $<$stdatomic.\+h$>$}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{sirplatform_8h_a7d4697ffc58df12ee881e41c5d0c0d4e}\label{sirplatform_8h_a7d4697ffc58df12ee881e41c5d0c0d4e} 
+\#define {\bfseries SIR\+\_\+\+ONCE\+\_\+\+INIT}~PTHREAD\+\_\+\+ONCE\+\_\+\+INIT
+\begin{DoxyCompactList}\small\item\em The one-\/time initializer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{sirplatform_8h_a4b87629d5980e5381b8f76488a104f65}\label{sirplatform_8h_a4b87629d5980e5381b8f76488a104f65} 
+typedef pthread\+\_\+mutex\+\_\+t {\bfseries sirmutex\+\_\+t}
+\begin{DoxyCompactList}\small\item\em The mutex type. \end{DoxyCompactList}\item 
+\Hypertarget{sirplatform_8h_a3e6f12e65e77dc62a8f3763f504335de}\label{sirplatform_8h_a3e6f12e65e77dc62a8f3763f504335de} 
+typedef pthread\+\_\+once\+\_\+t {\bfseries sironce\+\_\+t}
+\begin{DoxyCompactList}\small\item\em The one-\/time type. \end{DoxyCompactList}\item 
+\Hypertarget{sirplatform_8h_a15c96569a28643ba97e1609a37be5bb3}\label{sirplatform_8h_a15c96569a28643ba97e1609a37be5bb3} 
+typedef void(\texorpdfstring{$\ast$}{*} {\bfseries sir\+\_\+once\+\_\+fn}) (void)
+\begin{DoxyCompactList}\small\item\em The one-\/time execution function type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Platform specific configuration. 
+
+This file and accompanying source code originated from \href{https://github.com/aremmell/libsir}{\texttt{ https\+://github.\+com/aremmell/libsir}}. If you obtained it elsewhere, all bets are off.
+
+\begin{DoxyAuthor}{Author}
+Ryan M. Lederman \href{mailto:lederman@gmail.com}{\texttt{ lederman@gmail.\+com}} 
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+
+\end{DoxyCopyright}
+The MIT License (MIT)
+
+Copyright (c) 2018 Ryan M. Lederman
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"{}\+Software\"{}), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions\+:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED \"{}\+AS IS\"{}, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+
+Definition in file \mbox{\hyperlink{sirplatform_8h_source}{sirplatform.\+h}}.
+

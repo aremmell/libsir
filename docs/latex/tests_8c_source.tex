@@ -1,0 +1,1082 @@
+\doxysection{tests.\+c}
+\hypertarget{tests_8c_source}{}\label{tests_8c_source}\index{tests/tests.c@{tests/tests.c}}
+\mbox{\hyperlink{tests_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00032}00032\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{tests_8h}{tests.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00033}00033\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00034}00034\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{tests_8h_structsir__test}{sir\_test}}\ sir\_tests[]\ =\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00035}00035\ \ \ \ \ \{\textcolor{stringliteral}{"{}performance"{}},\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__tests_ga607e96cb52e248a2277ab3ecc31b7195}{sirtest\_perf}}\},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00036}00036\ \ \ \ \ \{\textcolor{stringliteral}{"{}multi-\/thread\ race"{}},\ \ \ \ \ \ \ \mbox{\hyperlink{group__tests_ga33e3ca313f107bfad6d01c00c9d47d8d}{sirtest\_mthread\_race}}\},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00037}00037\ \ \ \ \ \{\textcolor{stringliteral}{"{}exceed\ max\ buffer\ size"{}},\ \ \mbox{\hyperlink{group__tests_ga90b7633a39946d2c201758aafbce43fa}{sirtest\_exceedmaxsize}}\},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00038}00038\ \ \ \ \ \{\textcolor{stringliteral}{"{}file\ cache\ sanity"{}},\ \ \ \ \ \ \ \mbox{\hyperlink{group__tests_ga47f8191761084c5b3673b0efac0197d0}{sirtest\_filecachesanity}}\},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00039}00039\ \ \ \ \ \{\textcolor{stringliteral}{"{}set\ invalid\ text\ style"{}},\ \ \mbox{\hyperlink{group__tests_gaf0b4eb59c772e4b6fa9a694252a1db2d}{sirtest\_failsetinvalidstyle}}\},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00040}00040\ \ \ \ \ \{\textcolor{stringliteral}{"{}no\ output\ destination"{}},\ \ \ \mbox{\hyperlink{group__tests_ga9472cbb9a62d343fe0272444a7f87ce1}{sirtest\_failnooutputdest}}\},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00041}00041\ \ \ \ \ \{\textcolor{stringliteral}{"{}invalid\ file\ name"{}},\ \ \ \ \ \ \ \mbox{\hyperlink{group__tests_ga8d74e7810b41d505863eddced156f448}{sirtest\_failinvalidfilename}}\},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00042}00042\ \ \ \ \ \{\textcolor{stringliteral}{"{}bad\ file\ permissions"{}},\ \ \ \ \mbox{\hyperlink{group__tests_ga8f5266c274182a3dae54c48d8d8abba1}{sirtest\_failfilebadpermission}}\},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00043}00043\ \ \ \ \ \{\textcolor{stringliteral}{"{}null\ pointers"{}},\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__tests_gade87411ddfc55756dd519d7e9b8f33a7}{sirtest\_failnulls}}\},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00044}00044\ \ \ \ \ \{\textcolor{stringliteral}{"{}output\ without\ init"{}},\ \ \ \ \ \mbox{\hyperlink{group__tests_ga4f238c5ad2114b9a746e64b003165bd1}{sirtest\_failwithoutinit}}\},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00045}00045\ \ \ \ \ \{\textcolor{stringliteral}{"{}superfluous\ init"{}},\ \ \ \ \ \ \ \ \mbox{\hyperlink{group__tests_gaf38b29b3f35da81c5315f110745f360d}{sirtest\_failinittwice}}\},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00046}00046\ \ \ \ \ \{\textcolor{stringliteral}{"{}output\ after\ cleanup"{}},\ \ \ \ \mbox{\hyperlink{group__tests_gabf5a4643e79df2f6b06956ffd6a465ab}{sirtest\_failaftercleanup}}\},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00047}00047\ \ \ \ \ \{\textcolor{stringliteral}{"{}re-\/initialize"{}},\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__tests_ga9f7ccc25d41c5980dae048951ba60c8b}{sirtest\_initcleanupinit}}\},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00048}00048\ \ \ \ \ \{\textcolor{stringliteral}{"{}duplicate\ file\ name"{}},\ \ \ \ \ \mbox{\hyperlink{group__tests_ga33eca3443a7a02e5fdaf97f8cb2158a1}{sirtest\_faildupefile}}\},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00049}00049\ \ \ \ \ \{\textcolor{stringliteral}{"{}remove\ nonexistent\ file"{}},\ \mbox{\hyperlink{group__tests_ga73504bc15f794cbf70dff785136672bb}{sirtest\_failremovebadfile}}\},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00050}00050\ \ \ \ \ \{\textcolor{stringliteral}{"{}roll/archive\ large\ file"{}},\ \mbox{\hyperlink{group__tests_ga1b17632b25d61e85f6ff1fa08371959e}{sirtest\_rollandarchivefile}}\},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00051}00051\ \ \ \ \ \{\textcolor{stringliteral}{"{}error\ handling\ sanity"{}},\ \ \ \mbox{\hyperlink{group__tests_ga1d9150c929ba0b79bf06592563ea81e1}{sirtest\_errorsanity}}\},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00052}00052\ \ \ \ \ \{\textcolor{stringliteral}{"{}text\ style\ sanity"{}},\ \ \ \ \ \ \ \mbox{\hyperlink{group__tests_ga18ccd68f2c37d9798a06c403380c9308}{sirtest\_textstylesanity}}\},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00053}00053\ \ \ \ \ \{\textcolor{stringliteral}{"{}update\ levels/options"{}},\ \ \ \mbox{\hyperlink{group__tests_gaf3428b620d3540baf058f6b7dd42c075}{sirtest\_updatesanity}}\},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00054}00054\ \ \ \ \textcolor{comment}{/*\ \ \{"{}syslog"{},\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sirtest\_syslog\},\ */}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00055}00055\ \ \ \ \ \{\textcolor{stringliteral}{"{}os\_log"{}},\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__tests_ga54f0e8e0163d0aedf20616451f122017}{sirtest\_os\_log}}\},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00056}00056\ \ \ \ \ \textcolor{comment}{/*\ \{"{}portable\ filesystem\ api"{},\ sirtest\_filesystem\}\ */}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00057}00057\ \};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00059}00059\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ arg\_wait\ =\ \textcolor{stringliteral}{"{}-\/-\/wait"{}};\ \textcolor{comment}{/*\ wait\ for\ key\ press\ before\ exiting.\ */}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00060}00060\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ arg\_perf\ =\ \textcolor{stringliteral}{"{}-\/-\/perf"{}};\ \textcolor{comment}{/*\ run\ performance\ test\ instead\ of\ standard\ tests.\ */}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00062}00062\ \textcolor{keywordtype}{int}\ main(\textcolor{keywordtype}{int}\ argc,\ \textcolor{keywordtype}{char}**\ argv)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00063}00063\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00064}00064\ \textcolor{preprocessor}{\#if\ !defined(\_WIN32)}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00065}00065\ \ \ \ \ \textcolor{comment}{/*\ Disallow\ execution\ by\ root\ /\ sudo;\ some\ of\ the\ tests\ rely\ on\ lack\ of\ permissions.\ */}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00066}00066\ \ \ \ \ \textcolor{keywordflow}{if}\ (geteuid()\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00067}00067\ \ \ \ \ \ \ \ \ fprintf(stderr,\ \textcolor{stringliteral}{"{}Sorry,\ but\ this\ program\ may\ not\ be\ executed\ by\ root.\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00068}00068\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ EXIT\_FAILURE;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00069}00069\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00070}00070\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00071}00071\ \textcolor{preprocessor}{\#if\ defined(\_DEBUG)}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00072}00072\ \ \ \ \ \textcolor{comment}{/*\ Prevents\ assert()\ from\ calling\ abort()\ before\ the\ user\ is\ able\ to:}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00073}00073\ \textcolor{comment}{\ \ \ \ \ *\ a.)\ break\ into\ the\ code\ and\ debug\ (Retry\ button)}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00074}00074\ \textcolor{comment}{\ \ \ \ \ *\ b.)\ ignore\ the\ assert()\ and\ continue.\ */}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00075}00075\ \ \ \ \ \_set\_error\_mode(\_OUT\_TO\_MSGBOX);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00076}00076\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00077}00077\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00078}00078\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00079}00079\ \ \ \ \ \textcolor{keywordtype}{bool}\ wait\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00080}00080\ \ \ \ \ \textcolor{keywordtype}{bool}\ perf\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00081}00081\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00082}00082\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ n\ =\ 1;\ n\ <\ argc;\ n++)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00083}00083\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (0\ ==\ strncmp(argv[n],\ arg\_wait,\ strlen(arg\_wait)))}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ wait\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00085}00085\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (0\ ==\ strncmp(argv[n],\ arg\_perf,\ strlen(arg\_perf)))}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \ \ \ perf\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00087}00087\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00088}00088\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00089}00089\ \ \ \ \ \textcolor{keywordtype}{bool}\ allpass\ \ \ \ \ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00090}00090\ \ \ \ \ \textcolor{keywordtype}{int}\ tests\ \ \ \ \ \ \ \ =\ (perf\ ?\ 1\ :\ (\textcolor{keyword}{sizeof}(sir\_tests)\ /\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{tests_8h_structsir__test}{sir\_test}})));}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00091}00091\ \ \ \ \ \textcolor{keywordtype}{int}\ first\ \ \ \ \ \ \ \ =\ (perf\ ?\ 0\ :\ 1);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00092}00092\ \ \ \ \ \textcolor{keywordtype}{int}\ passed\ \ \ \ \ \ \ =\ first;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00093}00093\ \ \ \ \ sirtimer\_t\ timer\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00095}00095\ \ \ \ \ printf(WHITE(\textcolor{stringliteral}{"{}running\ \%d\ libsir\ \%s...\(\backslash\)n"{}}),\ tests,\ TEST\_S(tests));}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00096}00096\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00097}00097\ \ \ \ \ \textcolor{keywordflow}{if}\ (!startsirtimer(\&timer))}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00098}00098\ \ \ \ \ \ \ \ \ printf(RED(\textcolor{stringliteral}{"{}failed\ to\ start\ timer;\ elapsed\ time\ won't\ be\ measured\ correctly!"{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00099}00099\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00100}00100\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ n\ =\ first;\ n\ <\ tests;\ n++)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00101}00101\ \ \ \ \ \ \ \ \ printf(WHITE(\textcolor{stringliteral}{"{}\(\backslash\)t'\%s'..."{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}},\ sir\_tests[n].name);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00102}00102\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ thispass\ =\ sir\_tests[n].fn();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00103}00103\ \ \ \ \ \ \ \ \ allpass\ \&=\ thispass;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00104}00104\ \ \ \ \ \ \ \ \ passed\ +=\ (thispass\ ?\ 1\ :\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00105}00105\ \ \ \ \ \ \ \ \ printf(WHITE(\textcolor{stringliteral}{"{}\(\backslash\)t'\%s'\ finished;\ result:\ "{}})\ \textcolor{stringliteral}{"{}\%s\(\backslash\)n"{}},\ sir\_tests[n].name,}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00106}00106\ \ \ \ \ \ \ \ \ \ \ \ \ thispass\ ?\ GREEN(\textcolor{stringliteral}{"{}PASS"{}})\ :\ RED(\textcolor{stringliteral}{"{}FAIL"{}}));}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00107}00107\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00108}00108\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00109}00109\ \ \ \ \ \textcolor{keywordtype}{float}\ elapsed\ =\ sirtimerelapsed(\&timer);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00110}00110\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00111}00111\ \ \ \ \ \textcolor{keywordflow}{if}\ (allpass)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00112}00112\ \ \ \ \ \ \ \ \ printf(WHITE(\textcolor{stringliteral}{"{}done;\ "{}})\ GREEN(\textcolor{stringliteral}{"{}\%s\%d\ libsir\ \%s\ passed\ in\ \%.02fsec"{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00113}00113\ \ \ \ \ \ \ \ \ \ \ \ \ tests\ >\ 1\ ?\ \textcolor{stringliteral}{"{}all\ "{}}\ :\ \textcolor{stringliteral}{"{}"{}},\ tests,\ TEST\_S(tests),\ elapsed\ /\ 1e3);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00114}00114\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00115}00115\ \ \ \ \ \ \ \ \ printf(WHITE(\textcolor{stringliteral}{"{}done;\ "{}})\ RED(\textcolor{stringliteral}{"{}\%d\ of\ \%d\ libsir\ \%s\ failed\ in\ \%.02fsec"{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00116}00116\ \ \ \ \ \ \ \ \ \ \ \ \ tests\ -\/\ passed,\ tests,\ TEST\_S(tests),\ elapsed\ /\ 1e3);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00117}00117\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00118}00118\ \ \ \ \ \textcolor{keywordflow}{if}\ (wait)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00119}00119\ \ \ \ \ \ \ \ \ printf(WHITE(\textcolor{stringliteral}{"{}press\ any\ key\ to\ exit..."{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00120}00120\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ ch\ =\ \mbox{\hyperlink{group__intern_gab00490f3656c1c10d5c75b2b4da9fdd0}{\_sir\_getchar}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00121}00121\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__intern_gaec5f4c31b60aca6a62b01e7188e91e08}{\_SIR\_UNUSED}}(ch);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00122}00122\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00123}00123\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00124}00124\ \ \ \ \ \textcolor{keywordflow}{return}\ allpass\ ?\ EXIT\_SUCCESS\ :\ EXIT\_FAILURE;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00125}00125\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00126}00126\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00127}\mbox{\hyperlink{group__tests_ga90b7633a39946d2c201758aafbce43fa}{00127}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_ga90b7633a39946d2c201758aafbce43fa}{sirtest\_exceedmaxsize}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00128}00128\ \ \ \ \ INIT(si,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ 0,\ 0,\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00129}00129\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ =\ si\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00130}00130\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00131}00131\ \ \ \ \ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}\ toobig[\mbox{\hyperlink{group__custom_ga5f006a2e9ce93ae8d693a2928af33bb2}{SIR\_MAXMESSAGE}}\ +\ 100]\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00132}00132\ \ \ \ \ memset(toobig,\ \textcolor{charliteral}{'a'},\ \mbox{\hyperlink{group__custom_ga5f006a2e9ce93ae8d693a2928af33bb2}{SIR\_MAXMESSAGE}}\ -\/\ 99);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00133}00133\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00134}00134\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(toobig);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00135}00135\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00136}00136\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00137}00137\ \ \ \ \ \textcolor{keywordflow}{return}\ print\_result\_and\_return(pass);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00138}00138\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00139}00139\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00140}\mbox{\hyperlink{group__tests_ga47f8191761084c5b3673b0efac0197d0}{00140}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_ga47f8191761084c5b3673b0efac0197d0}{sirtest\_filecachesanity}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00141}00141\ \ \ \ \ INIT(si,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ 0,\ 0,\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00142}00142\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ =\ si\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00143}00143\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00144}00144\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ numfiles\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ \mbox{\hyperlink{group__custom_gaa1080a4bec531adb6d25c87ac4734399}{SIR\_MAXFILES}}\ +\ 1;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00145}00145\ \ \ \ \ \mbox{\hyperlink{group__public_gab8f5ba0bae678457f8bce30e961c9eb6}{sirfileid\_t}}\ ids[\mbox{\hyperlink{group__custom_gaa1080a4bec531adb6d25c87ac4734399}{SIR\_MAXFILES}}]\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00146}00146\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00147}00147\ \ \ \ \ \mbox{\hyperlink{group__public_gafb659914aac0129182d86f7d3414e85d}{sir\_options}}\ even\ =\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0}{SIRO\_MSGONLY}};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00148}00148\ \ \ \ \ \mbox{\hyperlink{group__public_gafb659914aac0129182d86f7d3414e85d}{sir\_options}}\ odd\ \ =\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba843ca9cff10528731dc9609e2fbfe34f}{SIRO\_ALL}};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00149}00149\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00150}00150\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ n\ =\ 0;\ n\ <\ numfiles\ -\/\ 1;\ n++)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00151}00151\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}\ path[SIR\_MAXPATH]\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00152}00152\ \ \ \ \ \ \ \ \ snprintf(path,\ SIR\_MAXPATH,\ \textcolor{stringliteral}{"{}test-\/\%zu.log"{}},\ n);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00153}00153\ \ \ \ \ \ \ \ \ rmfile(path);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00154}00154\ \ \ \ \ \ \ \ \ ids[n]\ =\ \mbox{\hyperlink{group__public_ga4db9ea5b34afaa585f6b9cda84f385e9}{sir\_addfile}}(path,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ (n\ \%\ 2)\ ?\ odd\ :\ even);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00155}00155\ \ \ \ \ \ \ \ \ pass\ \&=\ NULL\ !=\ ids[n]\ \&\&\ \mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(\textcolor{stringliteral}{"{}test\ \%u"{}},\ n);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00156}00156\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00157}00157\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00158}00158\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(\textcolor{stringliteral}{"{}test\ test\ test"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00159}00159\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00160}00160\ \ \ \ \ \textcolor{comment}{/*\ this\ one\ should\ fail;\ max\ files\ already\ added.\ */}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00161}00161\ \ \ \ \ pass\ \&=\ NULL\ ==\ \mbox{\hyperlink{group__public_ga4db9ea5b34afaa585f6b9cda84f385e9}{sir\_addfile}}(\textcolor{stringliteral}{"{}should-\/fail.log"{}},\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0}{SIRO\_MSGONLY}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00162}00162\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00163}00163\ \ \ \ \ \mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(\textcolor{stringliteral}{"{}test\ test\ test"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00164}00164\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00165}00165\ \ \ \ \ \textcolor{comment}{/*\ now\ remove\ previously\ added\ files\ in\ a\ different\ order.\ */}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00166}00166\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ removeorder[\mbox{\hyperlink{group__custom_gaa1080a4bec531adb6d25c87ac4734399}{SIR\_MAXFILES}}];}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00167}00167\ \ \ \ \ memset(removeorder,\ -\/1,\ \textcolor{keyword}{sizeof}(removeorder));}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00168}00168\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00169}00169\ \ \ \ \ \textcolor{keywordtype}{long}\ processed\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00170}00170\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)tcreating\ random\ file\ ID\ order...\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00171}00171\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00172}00172\ \ \ \ \ \textcolor{keywordflow}{do}\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00173}00173\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ rnd\ =\ (size\_t)(getrand()\ \%\ \mbox{\hyperlink{group__custom_gaa1080a4bec531adb6d25c87ac4734399}{SIR\_MAXFILES}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00174}00174\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ skip\ \ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00175}00175\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00176}00176\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ n\ =\ 0;\ n\ <\ \mbox{\hyperlink{group__custom_gaa1080a4bec531adb6d25c87ac4734399}{SIR\_MAXFILES}};\ n++)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00177}00177\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (removeorder[n]\ ==\ rnd)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00178}00178\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ skip\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00179}00179\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00180}00180\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00181}00181\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00182}00182\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (skip)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00183}00183\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00184}00184\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00185}00185\ \ \ \ \ \ \ \ \ removeorder[processed++]\ =\ rnd;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00186}00186\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00187}00187\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (processed\ ==\ \mbox{\hyperlink{group__custom_gaa1080a4bec531adb6d25c87ac4734399}{SIR\_MAXFILES}})}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00188}00188\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00189}00189\ \ \ \ \ \}\ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00190}00190\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00191}00191\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)tremove\ order:\ \{"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00192}00192\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ n\ =\ 0;\ n\ <\ \mbox{\hyperlink{group__custom_gaa1080a4bec531adb6d25c87ac4734399}{SIR\_MAXFILES}};\ n++)\ printf(\textcolor{stringliteral}{"{}\ \%zu\%s"{}},\ removeorder[n],\ (n\ <\ \mbox{\hyperlink{group__custom_gaa1080a4bec531adb6d25c87ac4734399}{SIR\_MAXFILES}}\ -\/\ 1)\ ?\ \textcolor{stringliteral}{"{},"{}}\ :\ \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00193}00193\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \}...\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00194}00194\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00195}00195\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ n\ =\ 0;\ n\ <\ \mbox{\hyperlink{group__custom_gaa1080a4bec531adb6d25c87ac4734399}{SIR\_MAXFILES}};\ n++)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00196}00196\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga4a774bf801d0356b90f29aa69688ef86}{sir\_remfile}}(ids[removeorder[n]]);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00197}00197\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00198}00198\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}\ path[SIR\_MAXPATH]\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00199}00199\ \ \ \ \ \ \ \ \ snprintf(path,\ SIR\_MAXPATH,\ \textcolor{stringliteral}{"{}test-\/\%zu.log"{}},\ removeorder[n]);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00200}00200\ \ \ \ \ \ \ \ \ rmfile(path);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00201}00201\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00202}00202\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00203}00203\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(\textcolor{stringliteral}{"{}test\ test\ test"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00204}00204\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00205}00205\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00206}00206\ \ \ \ \ \textcolor{keywordflow}{return}\ print\_result\_and\_return(pass);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00207}00207\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00208}00208\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00209}\mbox{\hyperlink{group__tests_gaf0b4eb59c772e4b6fa9a694252a1db2d}{00209}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_gaf0b4eb59c772e4b6fa9a694252a1db2d}{sirtest\_failsetinvalidstyle}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00210}00210\ \ \ \ \ INIT(si,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ 0,\ 0,\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00211}00211\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ =\ si\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00212}00212\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00213}00213\ \ \ \ \ \textcolor{comment}{//pass\ \&=\ !sir\_settextstyle(SIRL\_INFO,\ 0xbbbb/*\ 0xfefe\ */);}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00214}00214\ \ \ \ \ \textcolor{comment}{//pass\ \&=\ sir\_info("{}hello\ there,\ I\ set\ an\ invalid\ style."{});}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00215}00215\ \ \ \ \ \textcolor{comment}{//pass\ \&=\ !sir\_settextstyle(SIRL\_ALL,\ SIRS\_FG\_RED\ |\ SIRS\_FG\_DEFAULT);}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00216}00216\ \ \ \ \ \textcolor{comment}{//pass\ \&=\ sir\_info("{}oops,\ did\ it\ again..."{});}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00217}00217\ \textcolor{comment}{//\#pragma\ message("{}TODO:\ uncomment\ the\ above\ when\ the\ TODO\ at\ sirtextstyle.c:50\ is\ resolved"{})}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00218}00218\ \ \ \ \ pass\ \&=\ !\mbox{\hyperlink{group__public_gaa628fae976081e7aaa302e5c5e43e06c}{sir\_settextstyle}}(\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955}{SIRL\_ALERT}},\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa0fbe677e96b8483b073584848bb5e4fc}{SIRS\_FG\_BLACK}}\ |\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafae6d8923837281767bb30b4cfb59bcd2c}{SIRS\_BG\_BLACK}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00219}00219\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(\textcolor{stringliteral}{"{}and\ again."{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00220}00220\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00221}00221\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00222}00222\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{tests_8c_a0302d7265a4074f6dedcc65495123fe6}{print\_test\_error}}(pass,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00223}00223\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00224}00224\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00225}\mbox{\hyperlink{group__tests_ga9472cbb9a62d343fe0272444a7f87ce1}{00225}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_ga9472cbb9a62d343fe0272444a7f87ce1}{sirtest\_failnooutputdest}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00226}00226\ \ \ \ \ INIT(si,\ 0,\ 0,\ 0,\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00227}00227\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ =\ si\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00228}00228\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00229}00229\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ logfilename\ =\ \textcolor{stringliteral}{"{}nodestination.log"{}};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00230}00230\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00231}00231\ \ \ \ \ pass\ \&=\ !\mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(\textcolor{stringliteral}{"{}this\ goes\ nowhere!"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00232}00232\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00233}00233\ \ \ \ \ \textcolor{keywordflow}{if}\ (pass)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00234}00234\ \ \ \ \ \ \ \ \ print\_expected\_error();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00235}00235\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00236}00236\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga6f17febe99cb0beb6f8119283cc62d42}{sir\_stdoutlevels}}(\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d}{SIRL\_INFO}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00237}00237\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(\textcolor{stringliteral}{"{}this\ goes\ to\ stdout"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00238}00238\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga6f17febe99cb0beb6f8119283cc62d42}{sir\_stdoutlevels}}(\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a7cc68341661fcb7a505aca67edb7a18e}{SIRL\_NONE}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00239}00239\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00240}00240\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__public_gab8f5ba0bae678457f8bce30e961c9eb6}{sirfileid\_t}}\ fid\ =\ \mbox{\hyperlink{group__public_ga4db9ea5b34afaa585f6b9cda84f385e9}{sir\_addfile}}(logfilename,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d}{SIRL\_INFO}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02}{SIRO\_DEFAULT}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00241}00241\ \ \ \ \ \ \ \ \ pass\ \&=\ NULL\ !=\ fid;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00242}00242\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(\textcolor{stringliteral}{"{}this\ goes\ to\ \%s"{}},\ logfilename);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00243}00243\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga2e789c5d4a997d3ad7a528bf7a878936}{sir\_filelevels}}(fid,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a7cc68341661fcb7a505aca67edb7a18e}{SIRL\_NONE}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00244}00244\ \ \ \ \ \ \ \ \ pass\ \&=\ !\mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(\textcolor{stringliteral}{"{}this\ goes\ nowhere!"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00245}00245\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00246}00246\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (NULL\ !=\ fid)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00247}00247\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga4a774bf801d0356b90f29aa69688ef86}{sir\_remfile}}(fid);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00248}00248\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00249}00249\ \ \ \ \ \ \ \ \ rmfile(logfilename);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00250}00250\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00251}00251\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00252}00252\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00253}00253\ \ \ \ \ \textcolor{keywordflow}{return}\ print\_result\_and\_return(pass);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00254}00254\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00255}00255\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00256}\mbox{\hyperlink{group__tests_ga8d74e7810b41d505863eddced156f448}{00256}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_ga8d74e7810b41d505863eddced156f448}{sirtest\_failinvalidfilename}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00257}00257\ \ \ \ \ INIT(si,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ 0,\ 0,\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00258}00258\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ =\ si\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00259}00259\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00260}00260\ \ \ \ \ pass\ \&=\ NULL\ ==\ \mbox{\hyperlink{group__public_ga4db9ea5b34afaa585f6b9cda84f385e9}{sir\_addfile}}(\textcolor{stringliteral}{"{}bad\ file!/name"{}},\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0}{SIRO\_MSGONLY}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00261}00261\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00262}00262\ \ \ \ \ \textcolor{keywordflow}{if}\ (pass)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00263}00263\ \ \ \ \ \ \ \ \ print\_expected\_error();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00264}00264\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00265}00265\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00266}00266\ \ \ \ \ \textcolor{keywordflow}{return}\ print\_result\_and\_return(pass);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00267}00267\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00268}00268\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00269}\mbox{\hyperlink{group__tests_ga8f5266c274182a3dae54c48d8d8abba1}{00269}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_ga8f5266c274182a3dae54c48d8d8abba1}{sirtest\_failfilebadpermission}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00270}00270\ \ \ \ \ INIT(si,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ 0,\ 0,\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00271}00271\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ =\ si\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00272}00272\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00273}00273\ \textcolor{preprocessor}{\#if\ !defined(\_WIN32)}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00274}00274\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ path\ =\ \textcolor{stringliteral}{"{}/noperms"{}};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00275}00275\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00276}00276\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ path\ =\ \textcolor{stringliteral}{"{}C:\(\backslash\)\(\backslash\)Windows\(\backslash\)\(\backslash\)System32\(\backslash\)\(\backslash\)noperms"{}};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00277}00277\ \textcolor{preprocessor}{\#endif\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00278}00278\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00279}00279\ \ \ \ \ pass\ \&=\ NULL\ ==\ \mbox{\hyperlink{group__public_ga4db9ea5b34afaa585f6b9cda84f385e9}{sir\_addfile}}(path,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0}{SIRO\_MSGONLY}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00280}00280\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00281}00281\ \ \ \ \ \textcolor{keywordflow}{if}\ (pass)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00282}00282\ \ \ \ \ \ \ \ \ print\_expected\_error();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00283}00283\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00284}00284\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00285}00285\ \ \ \ \ \textcolor{keywordflow}{return}\ print\_result\_and\_return(pass);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00286}00286\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00287}00287\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00288}\mbox{\hyperlink{group__tests_gade87411ddfc55756dd519d7e9b8f33a7}{00288}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_gade87411ddfc55756dd519d7e9b8f33a7}{sirtest\_failnulls}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00289}00289\ \ \ \ \ INIT(si,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ 0,\ 0,\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00290}00290\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ =\ si\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00291}00291\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00292}00292\ \ \ \ \ pass\ \&=\ !\mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(NULL);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00293}00293\ \ \ \ \ pass\ \&=\ NULL\ ==\ \mbox{\hyperlink{group__public_ga4db9ea5b34afaa585f6b9cda84f385e9}{sir\_addfile}}(NULL,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0}{SIRO\_MSGONLY}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00294}00294\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00295}00295\ \ \ \ \ \textcolor{keywordflow}{if}\ (pass)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00296}00296\ \ \ \ \ \ \ \ \ print\_expected\_error();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00297}00297\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00298}00298\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00299}00299\ \ \ \ \ \textcolor{keywordflow}{return}\ print\_result\_and\_return(pass);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00300}00300\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00301}00301\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00302}\mbox{\hyperlink{group__tests_ga4f238c5ad2114b9a746e64b003165bd1}{00302}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_ga4f238c5ad2114b9a746e64b003165bd1}{sirtest\_failwithoutinit}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00303}00303\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ =\ !\mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(\textcolor{stringliteral}{"{}sir\ isn't\ initialized;\ this\ needs\ to\ fail"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00304}00304\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00305}00305\ \ \ \ \ \textcolor{keywordflow}{if}\ (pass)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00306}00306\ \ \ \ \ \ \ \ \ print\_expected\_error();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00307}00307\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00308}00308\ \ \ \ \ \textcolor{keywordflow}{return}\ print\_result\_and\_return(pass);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00309}00309\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00310}00310\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00311}\mbox{\hyperlink{group__tests_gaf38b29b3f35da81c5315f110745f360d}{00311}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_gaf38b29b3f35da81c5315f110745f360d}{sirtest\_failinittwice}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00312}00312\ \ \ \ \ INIT(si,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ 0,\ 0,\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00313}00313\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ =\ si\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00314}00314\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00315}00315\ \ \ \ \ INIT(si2,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ 0,\ 0,\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00316}00316\ \ \ \ \ pass\ \&=\ !si2\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00317}00317\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00318}00318\ \ \ \ \ \textcolor{keywordflow}{if}\ (pass)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00319}00319\ \ \ \ \ \ \ \ \ print\_expected\_error();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00320}00320\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00321}00321\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00322}00322\ \ \ \ \ \textcolor{keywordflow}{return}\ print\_result\_and\_return(pass);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00323}00323\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00324}00324\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00325}\mbox{\hyperlink{group__tests_gabf5a4643e79df2f6b06956ffd6a465ab}{00325}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_gabf5a4643e79df2f6b06956ffd6a465ab}{sirtest\_failaftercleanup}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00326}00326\ \ \ \ \ INIT(si,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ 0,\ 0,\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00327}00327\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ =\ si\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00328}00328\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00329}00329\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00330}00330\ \ \ \ \ pass\ \&=\ !\mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(\textcolor{stringliteral}{"{}already\ cleaned\ up;\ this\ needs\ to\ fail"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00331}00331\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00332}00332\ \ \ \ \ \textcolor{keywordflow}{if}\ (pass)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00333}00333\ \ \ \ \ \ \ \ \ print\_expected\_error();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00334}00334\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00335}00335\ \ \ \ \ \textcolor{keywordflow}{return}\ print\_result\_and\_return(pass);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00336}00336\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00337}00337\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00338}\mbox{\hyperlink{group__tests_ga9f7ccc25d41c5980dae048951ba60c8b}{00338}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_ga9f7ccc25d41c5980dae048951ba60c8b}{sirtest\_initcleanupinit}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00339}00339\ \ \ \ \ INIT(si1,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ 0,\ 0,\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00340}00340\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ =\ si1\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00341}00341\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00342}00342\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(\textcolor{stringliteral}{"{}init\ called\ once;\ testing\ output..."{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00343}00343\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00344}00344\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00345}00345\ \ \ \ \ INIT(si2,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ 0,\ 0,\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00346}00346\ \ \ \ \ pass\ \&=\ si2\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00347}00347\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00348}00348\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(\textcolor{stringliteral}{"{}init\ called\ again\ after\ re-\/init;\ testing\ output..."{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00349}00349\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00350}00350\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00351}00351\ \ \ \ \ \textcolor{keywordflow}{return}\ print\_result\_and\_return(pass);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00352}00352\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00353}00353\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00354}\mbox{\hyperlink{group__tests_ga33eca3443a7a02e5fdaf97f8cb2158a1}{00354}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_ga33eca3443a7a02e5fdaf97f8cb2158a1}{sirtest\_faildupefile}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00355}00355\ \ \ \ \ INIT(si,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ 0,\ 0,\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00356}00356\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ =\ si\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00357}00357\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00358}00358\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ filename\ =\ \textcolor{stringliteral}{"{}faildupefile.log"{}};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00359}00359\ \ \ \ \ \mbox{\hyperlink{group__public_gab8f5ba0bae678457f8bce30e961c9eb6}{sirfileid\_t}}\ fid\ =\ \mbox{\hyperlink{group__public_ga4db9ea5b34afaa585f6b9cda84f385e9}{sir\_addfile}}(filename,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02}{SIRO\_DEFAULT}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00360}00360\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00361}00361\ \ \ \ \ pass\ \&=\ NULL\ !=\ fid;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00362}00362\ \ \ \ \ pass\ \&=\ NULL\ ==\ \mbox{\hyperlink{group__public_ga4db9ea5b34afaa585f6b9cda84f385e9}{sir\_addfile}}(filename,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02}{SIRO\_DEFAULT}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00363}00363\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga4a774bf801d0356b90f29aa69688ef86}{sir\_remfile}}(fid);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00364}00364\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00365}00365\ \ \ \ \ rmfile(filename);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00366}00366\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00367}00367\ \ \ \ \ \textcolor{keywordflow}{return}\ print\_result\_and\_return(pass);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00368}00368\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00369}00369\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00370}\mbox{\hyperlink{group__tests_ga73504bc15f794cbf70dff785136672bb}{00370}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_ga73504bc15f794cbf70dff785136672bb}{sirtest\_failremovebadfile}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00371}00371\ \ \ \ \ INIT(si,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ 0,\ 0,\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00372}00372\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ =\ si\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00373}00373\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00374}00374\ \ \ \ \ \textcolor{keywordtype}{int}\ invalidid\ =\ 9999999;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00375}00375\ \ \ \ \ pass\ \&=\ !\mbox{\hyperlink{group__public_ga4a774bf801d0356b90f29aa69688ef86}{sir\_remfile}}(\&invalidid);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00376}00376\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00377}00377\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00378}00378\ \ \ \ \ \textcolor{keywordflow}{return}\ print\_result\_and\_return(pass);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00379}00379\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00380}00380\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00381}\mbox{\hyperlink{group__tests_ga1b17632b25d61e85f6ff1fa08371959e}{00381}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_ga1b17632b25d61e85f6ff1fa08371959e}{sirtest\_rollandarchivefile}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00382}00382\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00383}00383\ \ \ \ \ \textcolor{comment}{/*\ roll\ size\ minus\ 1KB\ so\ we\ can\ write\ until\ it\ maxes.\ */}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00384}00384\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{long}\ \ \ \ \ \ \ deltasize\ \ \ =\ 1024L;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00385}00385\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{long}\ \ \ \ \ \ \ \ \ \ \ \ \ \ fillsize\ \ \ \ =\ \mbox{\hyperlink{group__custom_ga019fb62b107343bafedb0f5ad84f7d3a}{SIR\_FROLLSIZE}}\ -\/\ deltasize;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00386}00386\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ logbasename\ =\ \textcolor{stringliteral}{"{}rollandarchive"{}};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00387}00387\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ logext\ \ \ \ \ \ =\ \textcolor{stringliteral}{"{}.log"{}};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00388}00388\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ line\ \ \ \ \ \ \ \ =\ \textcolor{stringliteral}{"{}hello,\ i\ am\ some\ data.\ nice\ to\ meet\ you."{}};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00389}00389\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00390}00390\ \ \ \ \ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}\ logfilename[SIR\_MAXPATH]\ =\ \{\ 0\ \};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00391}00391\ \ \ \ \ snprintf(logfilename,\ SIR\_MAXPATH,\ \textcolor{stringliteral}{"{}\%s\%s"{}},\ logbasename,\ logext);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00392}00392\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00393}00393\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ delcount\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00394}00394\ \ \ \ \ \textcolor{keywordflow}{if}\ (!enumfiles(logbasename,\ deletefiles,\ \&delcount))\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00395}00395\ \ \ \ \ \ \ \ \ handle\_os\_error(\textcolor{keyword}{false},\ \textcolor{stringliteral}{"{}failed\ to\ enumerate\ log\ files\ with\ base\ name:\ \%s!"{}},\ logbasename);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00396}00396\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00397}00397\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00398}00398\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00399}00399\ \ \ \ \ \textcolor{keywordflow}{if}\ (delcount\ >\ 0)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00400}00400\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)tfound\ and\ removed\ \%u\ log\ file(s)\(\backslash\)n"{}},\ delcount);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00401}00401\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00402}00402\ \ \ \ \ FILE*\ f\ \ =\ NULL;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00403}00403\ \ \ \ \ \mbox{\hyperlink{group__intern_gae2f92b8de58c7391a62048997f654b56}{\_sir\_fopen}}(\&f,\ logfilename,\ \textcolor{stringliteral}{"{}w"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00404}00404\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00405}00405\ \ \ \ \ \textcolor{keywordflow}{if}\ (!f)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00406}00406\ \ \ \ \ \ \ \ \ print\_os\_error();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00407}00407\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00408}00408\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00409}00409\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00410}00410\ \ \ \ \ \textcolor{keywordflow}{if}\ (0\ !=\ fseek(f,\ fillsize,\ SEEK\_SET))\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00411}00411\ \ \ \ \ \ \ \ \ handle\_os\_error(\textcolor{keyword}{true},\ \textcolor{stringliteral}{"{}fseek\ in\ file\ \%s\ failed!"{}},\ logfilename);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00412}00412\ \ \ \ \ \ \ \ \ fclose(f);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00413}00413\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00414}00414\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00415}00415\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00416}00416\ \ \ \ \ \textcolor{keywordflow}{if}\ (EOF\ ==\ fputc(\textcolor{charliteral}{'\(\backslash\)0'},\ f))\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00417}00417\ \ \ \ \ \ \ \ \ handle\_os\_error(\textcolor{keyword}{true},\ \textcolor{stringliteral}{"{}fputc\ in\ file\ \%s\ failed!"{}},\ logfilename);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00418}00418\ \ \ \ \ \ \ \ \ fclose(f);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00419}00419\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00420}00420\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00421}00421\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00422}00422\ \ \ \ \ fclose(f);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00423}00423\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00424}00424\ \ \ \ \ INIT(si,\ 0,\ 0,\ 0,\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00425}00425\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ =\ si\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00426}00426\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00427}00427\ \ \ \ \ \mbox{\hyperlink{group__public_gab8f5ba0bae678457f8bce30e961c9eb6}{sirfileid\_t}}\ fileid\ =\ \mbox{\hyperlink{group__public_ga4db9ea5b34afaa585f6b9cda84f385e9}{sir\_addfile}}(logfilename,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b}{SIRL\_DEBUG}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0}{SIRO\_MSGONLY}}\ |\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba59b2a0e9b2dfd78bcfa053dcb3f2dcce}{SIRO\_NOHDR}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00428}00428\ \ \ \ \ pass\ \&=\ NULL\ !=\ fileid;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00429}00429\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00430}00430\ \ \ \ \ \textcolor{keywordflow}{if}\ (pass)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00431}00431\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ write\ an\ (approximately)\ known\ quantity\ until\ we\ should\ have\ rolled\ */}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00432}00432\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ written\ \ =\ 0;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00433}00433\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ linesize\ =\ strlen(line);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00434}00434\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00435}00435\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{do}\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00436}00436\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga3580e004c0c568c225a6d1a1bc5e9ea2}{sir\_debug}}(\textcolor{stringliteral}{"{}\%s"{}},\ line);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00437}00437\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!pass)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00438}00438\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00439}00439\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00440}00440\ \ \ \ \ \ \ \ \ \ \ \ \ written\ +=\ linesize;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00441}00441\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{while}\ (written\ <\ deltasize\ +\ (linesize\ *\ 50));}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00442}00442\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00443}00443\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ Look\ for\ files\ matching\ the\ original\ name.\ */}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00444}00444\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ foundlogs\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00445}00445\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!enumfiles(logbasename,\ countfiles,\ \&foundlogs))\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00446}00446\ \ \ \ \ \ \ \ \ \ \ \ \ handle\_os\_error(\textcolor{keyword}{false},\ \textcolor{stringliteral}{"{}failed\ to\ enumerate\ log\ files\ with\ base\ name:\ \%s!"{}},\ logbasename);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00447}00447\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00448}00448\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00449}00449\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00450}00450\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ If\ two\ are\ present,\ the\ test\ is\ a\ pass.\ */}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00451}00451\ \ \ \ \ \ \ \ \ pass\ \&=\ foundlogs\ ==\ 2;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00452}00452\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00453}00453\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00454}00454\ \ \ \ \ \textcolor{keywordflow}{if}\ (NULL\ !=\ fileid)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00455}00455\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga4a774bf801d0356b90f29aa69688ef86}{sir\_remfile}}(fileid);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00456}00456\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00457}00457\ \ \ \ \ delcount\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00458}00458\ \ \ \ \ \textcolor{keywordflow}{if}\ (!enumfiles(logbasename,\ deletefiles,\ \&delcount))\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00459}00459\ \ \ \ \ \ \ \ \ handle\_os\_error(\textcolor{keyword}{false},\ \textcolor{stringliteral}{"{}failed\ to\ enumerate\ log\ files\ with\ base\ name:\ \%s!"{}},\ logbasename);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00460}00460\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00461}00461\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00462}00462\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00463}00463\ \ \ \ \ \textcolor{keywordflow}{if}\ (delcount\ >\ 0)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00464}00464\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)tfound\ and\ removed\ \%u\ log\ file(s)\(\backslash\)n"{}},\ delcount);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00465}00465\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00466}00466\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00467}00467\ \ \ \ \ \textcolor{keywordflow}{return}\ print\_result\_and\_return(pass);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00468}00468\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00469}00469\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00470}\mbox{\hyperlink{group__tests_ga1d9150c929ba0b79bf06592563ea81e1}{00470}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_ga1d9150c929ba0b79bf06592563ea81e1}{sirtest\_errorsanity}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00471}00471\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00472}00472\ \ \ \ \ INIT(si,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ 0,\ 0,\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00473}00473\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ =\ si\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00474}00474\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00475}00475\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00476}00476\ \ \ \ \ \ \ \ \ uint16\_t\ \ \ \ code;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00477}00477\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ name;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00478}00478\ \ \ \ \ \}\ errors[]\ =\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00479}00479\ \ \ \ \ \ \ \ \ \{\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55bae9cf0dd9b54a0e456a565c6a8bf107f7}{SIR\_E\_NOERROR}},\ \ \ \textcolor{stringliteral}{"{}SIR\_E\_NOERROR"{}}\},\ \ \ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00480}00480\ \ \ \ \ \ \ \ \ \{\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba87dc9e5593942f7413b84a17c64a01eb}{SIR\_E\_NOTREADY}},\ \ \textcolor{stringliteral}{"{}SIR\_E\_NOTREADY"{}}\},\ \ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00481}00481\ \ \ \ \ \ \ \ \ \{\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba96e01762a7feb2dbbd6f3c4504ba3470}{SIR\_E\_ALREADY}},\ \ \ \textcolor{stringliteral}{"{}SIR\_E\_ALREADY"{}}\},\ \ \ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00482}00482\ \ \ \ \ \ \ \ \ \{\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba72dc62bc5b5c1687a3bb221f04323119}{SIR\_E\_DUPFILE}},\ \ \ \textcolor{stringliteral}{"{}SIR\_E\_DUPFILE"{}}\},\ \ \ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00483}00483\ \ \ \ \ \ \ \ \ \{\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55bab36a8affcc9e8f80b94b9c7264bfd492}{SIR\_E\_NOFILE}},\ \ \ \ \textcolor{stringliteral}{"{}SIR\_E\_NOFILE"{}}\},\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00484}00484\ \ \ \ \ \ \ \ \ \{\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55bab48caca75bfe042380f8ccb9be8249a9}{SIR\_E\_FCFULL}},\ \ \ \ \textcolor{stringliteral}{"{}SIR\_E\_FCFULL"{}}\},\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00485}00485\ \ \ \ \ \ \ \ \ \{\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba502a8e20f25ecee09eb75576238bb797}{SIR\_E\_OPTIONS}},\ \ \ \textcolor{stringliteral}{"{}SIR\_E\_OPTIONS"{}}\},\ \ \ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00486}00486\ \ \ \ \ \ \ \ \ \{\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba909ed133cf8d178dd98b24b51fe844bf}{SIR\_E\_LEVELS}},\ \ \ \ \textcolor{stringliteral}{"{}SIR\_E\_LEVELS"{}}\},\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00487}00487\ \ \ \ \ \ \ \ \ \{\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba3f34b13f811b5ddc9e4c216f5432fa1d}{SIR\_E\_TEXTSTYLE}},\ \textcolor{stringliteral}{"{}SIR\_E\_TEXTSTYLE"{}}\},\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00488}00488\ \ \ \ \ \ \ \ \ \{\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba014d92769313bc513bd580461d8ebcd3}{SIR\_E\_STRING}},\ \ \ \ \textcolor{stringliteral}{"{}SIR\_E\_STRING"{}}\},\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00489}00489\ \ \ \ \ \ \ \ \ \{\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba8e6f10a1b3f9eb256aaa4f9c1504b43d}{SIR\_E\_NULLPTR}},\ \ \ \textcolor{stringliteral}{"{}SIR\_E\_NULLPTR"{}}\},\ \ \ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00490}00490\ \ \ \ \ \ \ \ \ \{\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55baba1600c4a3cb92f8f2cdf7be820606d3}{SIR\_E\_INVALID}},\ \ \ \textcolor{stringliteral}{"{}SIR\_E\_INVALID"{}}\},\ \ \ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00491}00491\ \ \ \ \ \ \ \ \ \{\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55bad8d3e0a7ff09ea46a966d07ad08536af}{SIR\_E\_NODEST}},\ \ \ \ \textcolor{stringliteral}{"{}SIR\_E\_NODEST"{}}\},\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00492}00492\ \ \ \ \ \ \ \ \ \{\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba0f293a6020f98a7e41b8afea0e402046}{SIR\_E\_PLATFORM}},\ \ \textcolor{stringliteral}{"{}SIR\_E\_PLATFORM"{}}\},\ \ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00493}00493\ \ \ \ \ \ \ \ \ \{\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba8090c8bc79ae660da7e58b2d0a47d785}{SIR\_E\_UNKNOWN}},\ \ \ \textcolor{stringliteral}{"{}SIR\_E\_UNKNOWN"{}}\},\ \ \ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00494}00494\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00495}00495\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00496}00496\ \ \ \ \ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}\ message[\mbox{\hyperlink{group__custom_gad6fce840144259e992c33fb611f31262}{SIR\_MAXERROR}}]\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00497}00497\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ n\ =\ 0;\ n\ <\ (\textcolor{keyword}{sizeof}(errors)\ /\ \textcolor{keyword}{sizeof}(errors[0]));\ n++)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00498}00498\ \ \ \ \ \ \ \ \ \_sir\_seterror(\mbox{\hyperlink{group__intern_ga96032779b027480acf885eab4a5e6da4}{\_sir\_mkerror}}(errors[n].code));}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00499}00499\ \ \ \ \ \ \ \ \ memset(message,\ 0,\ \mbox{\hyperlink{group__custom_gad6fce840144259e992c33fb611f31262}{SIR\_MAXERROR}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00500}00500\ \ \ \ \ \ \ \ \ uint16\_t\ err\ =\ err\ =\ \mbox{\hyperlink{group__errors_ga98d098b444b4e8096aad21df81105e74}{sir\_geterror}}(message);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00501}00501\ \ \ \ \ \ \ \ \ pass\ \&=\ errors[n].code\ ==\ err\ \&\&\ *message\ !=\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00502}00502\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)t\%s\ =\ \%s\(\backslash\)n"{}},\ errors[n].name,\ message);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00503}00503\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00504}00504\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00505}00505\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00506}00506\ \ \ \ \ \textcolor{keywordflow}{return}\ print\_result\_and\_return(pass);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00507}00507\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00508}00508\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00509}\mbox{\hyperlink{group__tests_ga18ccd68f2c37d9798a06c403380c9308}{00509}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_ga18ccd68f2c37d9798a06c403380c9308}{sirtest\_textstylesanity}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00510}00510\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00511}00511\ \ \ \ \ INIT(si,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ 0,\ 0,\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00512}00512\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ =\ si\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00513}00513\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00514}00514\ \ \ \ \ \textcolor{keywordflow}{if}\ (pass)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00515}00515\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga3580e004c0c568c225a6d1a1bc5e9ea2}{sir\_debug}}(\textcolor{stringliteral}{"{}default\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00516}00516\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gaa628fae976081e7aaa302e5c5e43e06c}{sir\_settextstyle}}(\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b}{SIRL\_DEBUG}},\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa89c9ddbb6a10b8c5fe204247eb457641}{SIRS\_FG\_YELLOW}}\ |\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa65b1ce8d8dcdf149a9ee515001ee7d69}{SIRS\_BG\_DGRAY}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00517}00517\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga3580e004c0c568c225a6d1a1bc5e9ea2}{sir\_debug}}(\textcolor{stringliteral}{"{}override\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00518}00518\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00519}00519\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(\textcolor{stringliteral}{"{}default\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00520}00520\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gaa628fae976081e7aaa302e5c5e43e06c}{sir\_settextstyle}}(\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d}{SIRL\_INFO}},\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafae78e2dc1e4fed6ad5b12d089e80a07e8}{SIRS\_FG\_GREEN}}\ |\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa989b172db1f8a3a212ef5b8e23d636cf}{SIRS\_BG\_MAGENTA}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00521}00521\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(\textcolor{stringliteral}{"{}override\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00522}00522\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00523}00523\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gab17d7622664c42afaafa66c53542dfeb}{sir\_notice}}(\textcolor{stringliteral}{"{}default\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00524}00524\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gaa628fae976081e7aaa302e5c5e43e06c}{sir\_settextstyle}}(\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a}{SIRL\_NOTICE}},\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa0fbe677e96b8483b073584848bb5e4fc}{SIRS\_FG\_BLACK}}\ |\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafaa57ce340d05ec022dc4a5f89d2bea212}{SIRS\_BG\_LYELLOW}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00525}00525\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gab17d7622664c42afaafa66c53542dfeb}{sir\_notice}}(\textcolor{stringliteral}{"{}override\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00526}00526\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00527}00527\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga3c4ca38dbb2a5e99e2d862dfdbd6f97a}{sir\_warn}}(\textcolor{stringliteral}{"{}default\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00528}00528\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gaa628fae976081e7aaa302e5c5e43e06c}{sir\_settextstyle}}(\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881}{SIRL\_WARN}},\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa0fbe677e96b8483b073584848bb5e4fc}{SIRS\_FG\_BLACK}}\ |\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa57f3210f2af19b6b3067a10ab5947a36}{SIRS\_BG\_WHITE}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00529}00529\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga3c4ca38dbb2a5e99e2d862dfdbd6f97a}{sir\_warn}}(\textcolor{stringliteral}{"{}override\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00530}00530\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00531}00531\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gace667f9ba844f541bc41c61c94ed93f3}{sir\_error}}(\textcolor{stringliteral}{"{}default\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00532}00532\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gaa628fae976081e7aaa302e5c5e43e06c}{sir\_settextstyle}}(\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76}{SIRL\_ERROR}},\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafae6d57af48d2bca9848aa8cf926043e4e}{SIRS\_FG\_WHITE}}\ |\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafabbee0baeb2477032387f884c6f938129}{SIRS\_BG\_BLUE}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00533}00533\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gace667f9ba844f541bc41c61c94ed93f3}{sir\_error}}(\textcolor{stringliteral}{"{}override\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00534}00534\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00535}00535\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga29cff3ca15309cca61066870674f54c3}{sir\_crit}}(\textcolor{stringliteral}{"{}default\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00536}00536\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gaa628fae976081e7aaa302e5c5e43e06c}{sir\_settextstyle}}(\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435}{SIRL\_CRIT}},\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa0a21b2c2577cffd925841a9bc549eb1a}{SIRS\_FG\_DGRAY}}\ |\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa6dba92fe12cc2cf72ea2e77d9f083b25}{SIRS\_BG\_LGREEN}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00537}00537\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga29cff3ca15309cca61066870674f54c3}{sir\_crit}}(\textcolor{stringliteral}{"{}override\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00538}00538\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00539}00539\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga48e9fb49c28b31a09d48eb0e90468679}{sir\_alert}}(\textcolor{stringliteral}{"{}default\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00540}00540\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gaa628fae976081e7aaa302e5c5e43e06c}{sir\_settextstyle}}(\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955}{SIRL\_ALERT}},\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafacc1f324a77d57ff8ac0895767c9480d4}{SIRS\_BRIGHT}}\ |\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa9803c61fa699378b4d3d4da2e7a1fc43}{SIRS\_FG\_LBLUE}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00541}00541\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga48e9fb49c28b31a09d48eb0e90468679}{sir\_alert}}(\textcolor{stringliteral}{"{}override\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00542}00542\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00543}00543\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gabace08a061ddb85494e28bd3a518bb58}{sir\_emerg}}(\textcolor{stringliteral}{"{}default\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00544}00544\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gaa628fae976081e7aaa302e5c5e43e06c}{sir\_settextstyle}}(\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc}{SIRL\_EMERG}},\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafacc1f324a77d57ff8ac0895767c9480d4}{SIRS\_BRIGHT}}\ |\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa0a21b2c2577cffd925841a9bc549eb1a}{SIRS\_FG\_DGRAY}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00545}00545\ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gabace08a061ddb85494e28bd3a518bb58}{sir\_emerg}}(\textcolor{stringliteral}{"{}override\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00546}00546\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00547}00547\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00548}00548\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)tcleanup\ to\ reset\ styles...\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00549}00549\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00550}00550\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00551}00551\ \ \ \ \ INIT(si2,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ 0,\ 0,\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00552}00552\ \ \ \ \ pass\ \&=\ si2\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00553}00553\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00554}00554\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga3580e004c0c568c225a6d1a1bc5e9ea2}{sir\_debug}}(\textcolor{stringliteral}{"{}default\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00555}00555\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(\textcolor{stringliteral}{"{}default\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00556}00556\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gab17d7622664c42afaafa66c53542dfeb}{sir\_notice}}(\textcolor{stringliteral}{"{}default\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00557}00557\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga3c4ca38dbb2a5e99e2d862dfdbd6f97a}{sir\_warn}}(\textcolor{stringliteral}{"{}default\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00558}00558\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gace667f9ba844f541bc41c61c94ed93f3}{sir\_error}}(\textcolor{stringliteral}{"{}default\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00559}00559\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga29cff3ca15309cca61066870674f54c3}{sir\_crit}}(\textcolor{stringliteral}{"{}default\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00560}00560\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga48e9fb49c28b31a09d48eb0e90468679}{sir\_alert}}(\textcolor{stringliteral}{"{}default\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00561}00561\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gabace08a061ddb85494e28bd3a518bb58}{sir\_emerg}}(\textcolor{stringliteral}{"{}default\ style"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00562}00562\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00563}00563\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00564}00564\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00565}00565\ \ \ \ \ \textcolor{keywordflow}{return}\ print\_result\_and\_return(pass);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00566}00566\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00567}00567\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00568}\mbox{\hyperlink{group__tests_ga607e96cb52e248a2277ab3ecc31b7195}{00568}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_ga607e96cb52e248a2277ab3ecc31b7195}{sirtest\_perf}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00569}00569\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00570}00570\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ logbasename\ =\ \textcolor{stringliteral}{"{}libsir-\/perf"{}};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00571}00571\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}*\ logext\ \ \ \ \ \ =\ \textcolor{stringliteral}{"{}.log"{}};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00572}00572\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00573}00573\ \textcolor{preprocessor}{\#if\ !defined(\_WIN32)}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00574}00574\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ perflines\ \ \ \ \ \ \ =\ 1000000;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00575}00575\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00576}00576\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ perflines\ \ \ \ \ \ \ =\ 100000;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00577}00577\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00578}00578\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00579}00579\ \ \ \ \ INIT\_N(si,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40bad78a6f66d21b01ace7574841495cacdd}{SIRO\_NOMSEC}},\ 0,\ 0,\ \textcolor{stringliteral}{"{}perf"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00580}00580\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ =\ si\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00581}00581\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00582}00582\ \ \ \ \ \textcolor{keywordflow}{if}\ (pass)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00583}00583\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ printfelapsed\ =\ 0.0f;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00584}00584\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ stdioelapsed\ \ =\ 0.0f;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00585}00585\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ fileelapsed\ \ \ =\ 0.0f;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00586}00586\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00587}00587\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)t"{}}\ BLUE(\textcolor{stringliteral}{"{}\%zu\ lines\ printf..."{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}},\ perflines);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00588}00588\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00589}00589\ \ \ \ \ \ \ \ \ sirtimer\_t\ printftimer\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00590}00590\ \ \ \ \ \ \ \ \ startsirtimer(\&printftimer);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00591}00591\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00592}00592\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ n\ =\ 0;\ n\ <\ perflines;\ n++)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00593}00593\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)x1b[97m\%.2f:\ lorem\ ipsum\ foo\ bar\ \%s:\ \%zu\(\backslash\)x1b[0m\(\backslash\)n"{}},\ sirtimerelapsed(\&printftimer),\ \textcolor{stringliteral}{"{}baz"{}},\ 1234\ +\ n);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00594}00594\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00595}00595\ \ \ \ \ \ \ \ \ printfelapsed\ =\ sirtimerelapsed(\&printftimer);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00596}00596\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00597}00597\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)t"{}}\ BLUE(\textcolor{stringliteral}{"{}\%zu\ lines\ libsir(stdout)..."{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}},\ perflines);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00598}00598\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00599}00599\ \ \ \ \ \ \ \ \ sirtimer\_t\ stdiotimer\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00600}00600\ \ \ \ \ \ \ \ \ startsirtimer(\&stdiotimer);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00601}00601\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00602}00602\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ n\ =\ 0;\ n\ <\ perflines;\ n++)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00603}00603\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__public_ga3580e004c0c568c225a6d1a1bc5e9ea2}{sir\_debug}}(\textcolor{stringliteral}{"{}\%.2f:\ lorem\ ipsum\ foo\ bar\ \%s:\ \%zu"{}},\ sirtimerelapsed(\&stdiotimer),\ \textcolor{stringliteral}{"{}baz"{}},\ 1234\ +\ n);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00604}00604\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00605}00605\ \ \ \ \ \ \ \ \ stdioelapsed\ =\ sirtimerelapsed(\&stdiotimer);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00606}00606\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00607}00607\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00608}00608\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00609}00609\ \ \ \ \ \ \ \ \ INIT(si2,\ 0,\ 0,\ 0,\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00610}00610\ \ \ \ \ \ \ \ \ pass\ \&=\ si2\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00611}00611\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00612}00612\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}\ logfilename[SIR\_MAXPATH]\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00613}00613\ \ \ \ \ \ \ \ \ snprintf(logfilename,\ SIR\_MAXPATH,\ logbasename,\ logext);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00614}00614\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00615}00615\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__public_gab8f5ba0bae678457f8bce30e961c9eb6}{sirfileid\_t}}\ logid\ =\ \mbox{\hyperlink{group__public_ga4db9ea5b34afaa585f6b9cda84f385e9}{sir\_addfile}}(logfilename,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba59020fdfee0aaf393ed80ef7bab4bb4e}{SIRO\_NONAME}}\ |\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40babbdc2529081d58ebff50a8966db31fd2}{SIRO\_NOPID}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00616}00616\ \ \ \ \ \ \ \ \ pass\ \&=\ NULL\ !=\ logid;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00617}00617\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00618}00618\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pass)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00619}00619\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)t"{}}\ BLUE(\textcolor{stringliteral}{"{}\%zu\ lines\ libsir(log\ file)..."{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}},\ perflines);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00620}00620\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00621}00621\ \ \ \ \ \ \ \ \ \ \ \ \ sirtimer\_t\ filetimer\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00622}00622\ \ \ \ \ \ \ \ \ \ \ \ \ startsirtimer(\&filetimer);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00623}00623\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00624}00624\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ n\ =\ 0;\ n\ <\ perflines;\ n++)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00625}00625\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__public_ga3580e004c0c568c225a6d1a1bc5e9ea2}{sir\_debug}}(\textcolor{stringliteral}{"{}lorem\ ipsum\ foo\ bar\ \%s:\ \%zu"{}},\ \textcolor{stringliteral}{"{}baz"{}},\ 1234\ +\ n);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00626}00626\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00627}00627\ \ \ \ \ \ \ \ \ \ \ \ \ fileelapsed\ =\ sirtimerelapsed(\&filetimer);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00628}00628\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00629}00629\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga4a774bf801d0356b90f29aa69688ef86}{sir\_remfile}}(logid);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00630}00630\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00631}00631\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00632}00632\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pass)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00633}00633\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)t"{}}\ WHITE(\textcolor{stringliteral}{"{}printf:\ "{}})\ CYAN(\textcolor{stringliteral}{"{}\%zu\ lines\ in\ \%.2fsec\ (\%.1f\ lines/sec)"{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00634}00634\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ perflines,\ printfelapsed\ /\ 1e3,\ perflines\ /\ (printfelapsed\ /\ 1e3));}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00635}00635\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)t"{}}\ WHITE(\textcolor{stringliteral}{"{}libsir(stdout):\ "{}})\ CYAN(\textcolor{stringliteral}{"{}\%zu\ lines\ in\ \%.2fsec\ (\%.1f\ lines/sec)"{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00636}00636\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ perflines,\ stdioelapsed\ /\ 1e3,\ perflines\ /\ (stdioelapsed\ /\ 1e3));}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00637}00637\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)t"{}}\ WHITE(\textcolor{stringliteral}{"{}libsir(log\ file):\ "{}})\ CYAN(\textcolor{stringliteral}{"{}\%zu\ lines\ in\ \%.2fsec\ (\%.1f\ lines/sec)"{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00638}00638\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ perflines,\ fileelapsed\ /\ 1e3,\ perflines\ /\ (fileelapsed\ /\ 1e3));}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00639}00639\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00640}00640\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00641}00641\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00642}00642\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ deleted\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00643}00643\ \ \ \ \ enumfiles(logbasename,\ deletefiles,\ \&deleted);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00644}00644\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00645}00645\ \ \ \ \ \textcolor{keywordflow}{if}\ (deleted\ >\ 0)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00646}00646\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)tdeleted\ \%d\ log\ file(s)\(\backslash\)n"{}},\ deleted);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00647}00647\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00648}00648\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00649}00649\ \ \ \ \ \textcolor{keywordflow}{return}\ print\_result\_and\_return(pass);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00650}00650\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00651}00651\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00652}\mbox{\hyperlink{group__tests_gaf3428b620d3540baf058f6b7dd42c075}{00652}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_gaf3428b620d3540baf058f6b7dd42c075}{sirtest\_updatesanity}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00653}00653\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00654}00654\ \ \ \ \ INIT\_N(si,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804}{SIRL\_DEFAULT}},\ 0,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804}{SIRL\_DEFAULT}},\ 0,\ \textcolor{stringliteral}{"{}update\_sanity"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00655}00655\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ =\ si\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00656}00656\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00657}00657\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ logfile\ =\ \textcolor{stringliteral}{"{}update-\/sanity.log"{}};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00658}00658\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ max\_variations\ =\ 10;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00659}00659\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_gafb659914aac0129182d86f7d3414e85d}{sir\_options}}\ opts\_array[max\_variations]\ =\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00660}00660\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d}{SIRO\_NOTIME}}\ |\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba58882ac768eb1c0a0021d140f6b15deb}{SIRO\_NOLEVEL}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0}{SIRO\_MSGONLY}},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00661}00661\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba59020fdfee0aaf393ed80ef7bab4bb4e}{SIRO\_NONAME}}\ |\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba7079a31d6035c24aaa94d85c4a89c053}{SIRO\_NOTID}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40babbdc2529081d58ebff50a8966db31fd2}{SIRO\_NOPID}}\ |\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d}{SIRO\_NOTIME}},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00662}00662\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d}{SIRO\_NOTIME}}\ |\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba58882ac768eb1c0a0021d140f6b15deb}{SIRO\_NOLEVEL}}\ |\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba59020fdfee0aaf393ed80ef7bab4bb4e}{SIRO\_NONAME}},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00663}00663\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d}{SIRO\_NOTIME}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40bad78a6f66d21b01ace7574841495cacdd}{SIRO\_NOMSEC}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40babbdc2529081d58ebff50a8966db31fd2}{SIRO\_NOPID}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba7079a31d6035c24aaa94d85c4a89c053}{SIRO\_NOTID}},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00664}00664\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba843ca9cff10528731dc9609e2fbfe34f}{SIRO\_ALL}}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00665}00665\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00666}00666\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00667}00667\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{group__public_ga7ee5f2908abd2df9e89bcab0b6608edd}{sir\_levels}}\ levels\_array[max\_variations]\ =\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00668}00668\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a7cc68341661fcb7a505aca67edb7a18e}{SIRL\_NONE}},\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc}{SIRL\_EMERG}},\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955}{SIRL\_ALERT}},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00669}00669\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435}{SIRL\_CRIT}},\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76}{SIRL\_ERROR}},\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881}{SIRL\_WARN}},\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a}{SIRL\_NOTICE}},}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00670}00670\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d}{SIRL\_INFO}},\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b}{SIRL\_DEBUG}}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00671}00671\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00672}00672\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00673}00673\ \ \ \ \ rmfile(logfile);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00674}00674\ \ \ \ \ \mbox{\hyperlink{group__public_gab8f5ba0bae678457f8bce30e961c9eb6}{sirfileid\_t}}\ id1\ =\ \mbox{\hyperlink{group__public_ga4db9ea5b34afaa585f6b9cda84f385e9}{sir\_addfile}}(logfile,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804}{SIRL\_DEFAULT}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02}{SIRO\_DEFAULT}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00675}00675\ \ \ \ \ pass\ \&=\ NULL\ !=\ id1;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00676}00676\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00677}00677\ \ \ \ \ \textcolor{keywordflow}{if}\ (pass)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00678}00678\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 10;\ i++)\ \{\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00679}00679\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ reset\ to\ defaults*/}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00680}00680\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga6f17febe99cb0beb6f8119283cc62d42}{sir\_stdoutlevels}}(\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804}{SIRL\_DEFAULT}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00681}00681\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga421c13f6e269440cef0ac5c1ff3e65dd}{sir\_stderrlevels}}(\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804}{SIRL\_DEFAULT}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00682}00682\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gac117aaf4a045115e58ba4471f9a4747f}{sir\_stdoutopts}}(\mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02}{SIRO\_DEFAULT}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00683}00683\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga0e78fb3ad87f02ef0f056a34200a4ab9}{sir\_stderropts}}(\mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02}{SIRO\_DEFAULT}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00684}00684\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00685}00685\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga3580e004c0c568c225a6d1a1bc5e9ea2}{sir\_debug}}(\textcolor{stringliteral}{"{}default\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00686}00686\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(\textcolor{stringliteral}{"{}default\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00687}00687\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gab17d7622664c42afaafa66c53542dfeb}{sir\_notice}}(\textcolor{stringliteral}{"{}default\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00688}00688\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga3c4ca38dbb2a5e99e2d862dfdbd6f97a}{sir\_warn}}(\textcolor{stringliteral}{"{}default\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00689}00689\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gace667f9ba844f541bc41c61c94ed93f3}{sir\_error}}(\textcolor{stringliteral}{"{}default\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00690}00690\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga29cff3ca15309cca61066870674f54c3}{sir\_crit}}(\textcolor{stringliteral}{"{}default\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00691}00691\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga48e9fb49c28b31a09d48eb0e90468679}{sir\_alert}}(\textcolor{stringliteral}{"{}default\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00692}00692\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gabace08a061ddb85494e28bd3a518bb58}{sir\_emerg}}(\textcolor{stringliteral}{"{}default\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00693}00693\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00694}00694\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ pick\ random\ options\ to\ set/unset\ */}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00695}00695\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ rnd\ =\ (getrand()\ \%\ max\_variations);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00696}00696\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga6f17febe99cb0beb6f8119283cc62d42}{sir\_stdoutlevels}}(levels\_array[rnd]);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00697}00697\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gac117aaf4a045115e58ba4471f9a4747f}{sir\_stdoutopts}}(opts\_array[rnd]);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00698}00698\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)t"{}}\ WHITE(\textcolor{stringliteral}{"{}set\ random\ config\ \#\%u\ for\ stdout"{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}},\ rnd);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00699}00699\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00700}00700\ \ \ \ \ \ \ \ \ \ \ \ \ rnd\ =\ (getrand()\ \%\ max\_variations);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00701}00701\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga421c13f6e269440cef0ac5c1ff3e65dd}{sir\_stderrlevels}}(levels\_array[rnd]);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00702}00702\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga0e78fb3ad87f02ef0f056a34200a4ab9}{sir\_stderropts}}(opts\_array[rnd]);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00703}00703\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)t"{}}\ WHITE(\textcolor{stringliteral}{"{}set\ random\ config\ \#\%u\ for\ stderr"{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}},\ rnd);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00704}00704\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00705}00705\ \ \ \ \ \ \ \ \ \ \ \ \ rnd\ =\ (getrand()\ \%\ max\_variations);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00706}00706\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga2e789c5d4a997d3ad7a528bf7a878936}{sir\_filelevels}}(id1,\ levels\_array[rnd]);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00707}00707\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gaab0821c7a1b10e18e9a68b3e8df6f613}{sir\_fileopts}}(id1,\ opts\_array[rnd]);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00708}00708\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)t"{}}\ WHITE(\textcolor{stringliteral}{"{}set\ random\ config\ \#\%u\ for\ \%s"{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}},\ rnd,\ logfile);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00709}00709\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00710}00710\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga3580e004c0c568c225a6d1a1bc5e9ea2}{sir\_debug}}(\textcolor{stringliteral}{"{}modified\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00711}00711\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(\textcolor{stringliteral}{"{}modified\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00712}00712\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gab17d7622664c42afaafa66c53542dfeb}{sir\_notice}}(\textcolor{stringliteral}{"{}modified\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00713}00713\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga3c4ca38dbb2a5e99e2d862dfdbd6f97a}{sir\_warn}}(\textcolor{stringliteral}{"{}modified\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00714}00714\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gace667f9ba844f541bc41c61c94ed93f3}{sir\_error}}(\textcolor{stringliteral}{"{}modified\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00715}00715\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga29cff3ca15309cca61066870674f54c3}{sir\_crit}}(\textcolor{stringliteral}{"{}modified\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00716}00716\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga48e9fb49c28b31a09d48eb0e90468679}{sir\_alert}}(\textcolor{stringliteral}{"{}modified\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00717}00717\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gabace08a061ddb85494e28bd3a518bb58}{sir\_emerg}}(\textcolor{stringliteral}{"{}modified\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00718}00718\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00719}00719\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00720}00720\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00721}00721\ \ \ \ \ \textcolor{comment}{/*\ restore\ to\ default\ config\ and\ run\ again\ */}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00722}00722\ \ \ \ \ \mbox{\hyperlink{group__public_ga6f17febe99cb0beb6f8119283cc62d42}{sir\_stdoutlevels}}(\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804}{SIRL\_DEFAULT}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00723}00723\ \ \ \ \ \mbox{\hyperlink{group__public_ga421c13f6e269440cef0ac5c1ff3e65dd}{sir\_stderrlevels}}(\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804}{SIRL\_DEFAULT}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00724}00724\ \ \ \ \ \mbox{\hyperlink{group__public_gac117aaf4a045115e58ba4471f9a4747f}{sir\_stdoutopts}}(\mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02}{SIRO\_DEFAULT}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00725}00725\ \ \ \ \ \mbox{\hyperlink{group__public_ga0e78fb3ad87f02ef0f056a34200a4ab9}{sir\_stderropts}}(\mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02}{SIRO\_DEFAULT}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00726}00726\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00727}00727\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga3580e004c0c568c225a6d1a1bc5e9ea2}{sir\_debug}}(\textcolor{stringliteral}{"{}default\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00728}00728\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga707b1de6ceee2e3091b7d4ecf0f8758e}{sir\_info}}(\textcolor{stringliteral}{"{}default\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00729}00729\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gab17d7622664c42afaafa66c53542dfeb}{sir\_notice}}(\textcolor{stringliteral}{"{}default\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00730}00730\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga3c4ca38dbb2a5e99e2d862dfdbd6f97a}{sir\_warn}}(\textcolor{stringliteral}{"{}default\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00731}00731\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gace667f9ba844f541bc41c61c94ed93f3}{sir\_error}}(\textcolor{stringliteral}{"{}default\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00732}00732\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga29cff3ca15309cca61066870674f54c3}{sir\_crit}}(\textcolor{stringliteral}{"{}default\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00733}00733\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga48e9fb49c28b31a09d48eb0e90468679}{sir\_alert}}(\textcolor{stringliteral}{"{}default\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00734}00734\ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gabace08a061ddb85494e28bd3a518bb58}{sir\_emerg}}(\textcolor{stringliteral}{"{}default\ config"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00735}00735\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00736}00736\ \textcolor{preprocessor}{\#pragma\ messsage("{}TODO:\ some\ of\ these\ log\ files\ should\ be\ examined\ as\ part\ of\ this\ process.\ Add\ a\ prompt\ here\ (w/\ a\ cmdline\ flag)\ to\ examine\ the\ log\ or\ delete\ it."{}})}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00737}00737\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00738}00738\ \ \ \ \ rmfile(logfile);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00739}00739\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00740}00740\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00741}00741\ \ \ \ \ \textcolor{keywordflow}{return}\ print\_result\_and\_return(pass);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00742}00742\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00743}00743\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00744}\mbox{\hyperlink{group__tests_ga8db924f756e0ee2f04ff3e044a10f283}{00744}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_ga8db924f756e0ee2f04ff3e044a10f283}{sirtest\_syslog}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00745}00745\ \textcolor{preprocessor}{\#if\ !defined(SIR\_SYSLOG\_ENABLED)}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00746}00746\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)t"{}}\ CYAN(\textcolor{stringliteral}{"{}SIR\_SYSLOG\_ENABLED\ is\ not\ defined;\ skipping."{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00747}00747\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00748}00748\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00749}00749\ \ \ \ \ INIT\_SL(si,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba7079a31d6035c24aaa94d85c4a89c053}{SIRO\_NOTID}},\ 0,\ 0,\ \textcolor{stringliteral}{"{}sirtests"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00750}00750\ \ \ \ \ si.d\_syslog.levels\ \ \ \ \ \ =\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804}{SIRL\_DEFAULT}};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00751}00751\ \ \ \ \ si.d\_syslog.include\_pid\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00752}00752\ \ \ \ \ si.d\_syslog.opened\_log\ \ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00753}00753\ \ \ \ \ si\_init\ =\ \mbox{\hyperlink{group__public_gaa4f5707f5e4ed9702cde75a8c80c4e4a}{sir\_init}}(\&si);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00754}00754\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ =\ si\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00755}00755\ \ \ \ \ \textcolor{comment}{/*\ log\ show\ -\/-\/last\ 10m\ -\/-\/color\ always\ |\ grep\ sirtest\ */}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00756}00756\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00757}00757\ \ \ \ \ \textcolor{keywordflow}{if}\ (pass)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00758}00758\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 10;\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00759}00759\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga3c4ca38dbb2a5e99e2d862dfdbd6f97a}{sir\_warn}}(\textcolor{stringliteral}{"{}(\%d/\%d):\ this\ warning\ message\ should\ be\ logged\ to\ stdout\ and\ syslog."{}},\ i\ +\ 1,\ 10);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00760}00760\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gace667f9ba844f541bc41c61c94ed93f3}{sir\_error}}(\textcolor{stringliteral}{"{}(\%d/\%d):\ this\ error\ message\ should\ be\ logged\ to\ stdout\ and\ syslog."{}},\ i\ +\ 1,\ 10);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00761}00761\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga29cff3ca15309cca61066870674f54c3}{sir\_crit}}(\textcolor{stringliteral}{"{}(\%d/\%d):\ this\ critical\ message\ should\ be\ logged\ to\ stdout\ and\ syslog."{}},\ i\ +\ 1,\ 10);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00762}00762\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga48e9fb49c28b31a09d48eb0e90468679}{sir\_alert}}(\textcolor{stringliteral}{"{}(\%d/\%d):\ this\ alert\ message\ should\ be\ logged\ to\ stdout\ and\ syslog."{}},\ i\ +\ 1,\ 10);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00763}00763\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gabace08a061ddb85494e28bd3a518bb58}{sir\_emerg}}(\textcolor{stringliteral}{"{}(\%d/\%d):\ this\ emergency\ message\ should\ be\ logged\ to\ stdout\ and\ syslog."{}},\ i\ +\ 1,\ 10);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00764}00764\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00765}00765\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00766}00766\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00767}00767\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00768}00768\ \ \ \ \ \textcolor{keywordflow}{return}\ print\_result\_and\_return(pass);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00769}00769\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00770}00770\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00771}00771\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00772}\mbox{\hyperlink{group__tests_ga54f0e8e0163d0aedf20616451f122017}{00772}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_ga54f0e8e0163d0aedf20616451f122017}{sirtest\_os\_log}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00773}00773\ \textcolor{preprocessor}{\#if\ !defined(\_\_APPLE\_\_)}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00774}00774\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)t"{}}\ CYAN(\textcolor{stringliteral}{"{}not\ running\ on\ macOS;\ skipping."{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00775}00775\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00776}00776\ \textcolor{preprocessor}{\#else\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00777}00777\ \ \ \ \ INIT\_SL(si,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40ba7079a31d6035c24aaa94d85c4a89c053}{SIRO\_NOTID}},\ 0,\ 0,\ \textcolor{stringliteral}{"{}sirtests"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00778}00778\ \ \ \ \ si.d\_syslog.levels\ \ \ \ \ \ =\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804}{SIRL\_DEFAULT}};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00779}00779\ \ \ \ \ si.d\_syslog.include\_pid\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00780}00780\ \ \ \ \ si.d\_syslog.opened\_log\ \ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00781}00781\ \ \ \ \ si\_init\ =\ \mbox{\hyperlink{group__public_gaa4f5707f5e4ed9702cde75a8c80c4e4a}{sir\_init}}(\&si);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00782}00782\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ =\ si\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00783}00783\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00784}00784\ \ \ \ \ \textcolor{keywordflow}{if}\ (pass)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00785}00785\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 10;\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00786}00786\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga3c4ca38dbb2a5e99e2d862dfdbd6f97a}{sir\_warn}}(\textcolor{stringliteral}{"{}(\%d/\%d):\ this\ warning\ message\ should\ be\ logged\ to\ stdout\ and\ os\_log."{}},\ i\ +\ 1,\ 10);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00787}00787\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gace667f9ba844f541bc41c61c94ed93f3}{sir\_error}}(\textcolor{stringliteral}{"{}(\%d/\%d):\ this\ error\ message\ should\ be\ logged\ to\ stdout\ and\ os\_log."{}},\ i\ +\ 1,\ 10);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00788}00788\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga29cff3ca15309cca61066870674f54c3}{sir\_crit}}(\textcolor{stringliteral}{"{}(\%d/\%d):\ this\ critical\ message\ should\ be\ logged\ to\ stdout\ and\ os\_log."{}},\ i\ +\ 1,\ 10);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00789}00789\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_ga48e9fb49c28b31a09d48eb0e90468679}{sir\_alert}}(\textcolor{stringliteral}{"{}(\%d/\%d):\ this\ alert\ message\ should\ be\ logged\ to\ stdout\ and\ os\_log."{}},\ i\ +\ 1,\ 10);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00790}00790\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ \&=\ \mbox{\hyperlink{group__public_gabace08a061ddb85494e28bd3a518bb58}{sir\_emerg}}(\textcolor{stringliteral}{"{}(\%d/\%d):\ this\ emergency\ message\ should\ be\ logged\ to\ stdout\ and\ os\_log."{}},\ i\ +\ 1,\ 10);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00791}00791\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00792}00792\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00793}00793\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ TODO:\ os\_activity\_initiate\_f}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00794}00794\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00795}00795\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00796}00796\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00797}00797\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00798}00798\ \ \ \ \ \textcolor{keywordflow}{return}\ print\_result\_and\_return(pass);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00799}00799\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00800}00800\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00801}00801\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00802}\mbox{\hyperlink{group__tests_gaa0b035b71e6a6e6df6b8a7bb95722e2a}{00802}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_gaa0b035b71e6a6e6df6b8a7bb95722e2a}{sirtest\_filesystem}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00803}00803\ \ \ \ \ \textcolor{comment}{/*\ INIT(si,\ SIRL\_ALL,\ 0,\ 0,\ 0);}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00804}00804\ \textcolor{comment}{\ \ \ \ bool\ pass\ =\ si\_init;\ */}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00805}00805\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00806}00806\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)t"{}}\ YELLOW(\textcolor{stringliteral}{"{}not\ yet\ implemented;\ skipping."{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00807}00807\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00808}00808\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00809}00809\ \ \ \ \ \textcolor{comment}{/*\ sir\_cleanup();}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00810}00810\ \textcolor{comment}{\ \ \ \ return\ print\_result\_and\_return(pass);\ */}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00811}00811\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00812}00812\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00813}00813\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00814}00814\ \textcolor{comment}{bool\ sirtest\_XXX(void)\ \{}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00815}00815\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00816}00816\ \textcolor{comment}{\ \ \ \ INIT(si,\ SIRL\_ALL,\ 0,\ 0,\ 0);}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00817}00817\ \textcolor{comment}{\ \ \ \ bool\ pass\ =\ si\_init;}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00818}00818\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00819}00819\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00820}00820\ \textcolor{comment}{\ \ \ \ sir\_cleanup();}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00821}00821\ \textcolor{comment}{\ \ \ \ return\ print\_result\_and\_return(pass);}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00822}00822\ \textcolor{comment}{\}}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00823}00823\ \textcolor{comment}{*/}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00824}00824\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00825}00825\ \textcolor{comment}{/*\ ==========================\ end\ tests\ ==========================\ */}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00826}00826\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00827}00827\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ os\_log\_activity1(\textcolor{keywordtype}{void}*\ ctx)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00828}00828\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00829}00829\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00830}00830\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00831}00831\ \textcolor{preprocessor}{\#if\ !defined(\_WIN32)}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00832}00832\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}*\ sirtest\_thread(\textcolor{keywordtype}{void}*\ arg);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00833}00833\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00834}00834\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ sirtest\_thread(\textcolor{keywordtype}{void}*\ arg);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00835}00835\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00836}00836\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00837}00837\ \textcolor{preprocessor}{\#define\ NUM\_THREADS\ 4}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00838}00838\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00839}\mbox{\hyperlink{group__tests_ga33e3ca313f107bfad6d01c00c9d47d8d}{00839}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{group__tests_ga33e3ca313f107bfad6d01c00c9d47d8d}{sirtest\_mthread\_race}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00840}00840\ \textcolor{preprocessor}{\#if\ !defined(\_WIN32)}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00841}00841\ \ \ \ \ pthread\_t\ thrds[NUM\_THREADS]\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00842}00842\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00843}00843\ \ \ \ \ uintptr\_t\ thrds[NUM\_THREADS]\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00844}00844\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00845}00845\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00846}00846\ \ \ \ \ INIT\_N(si,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40babbdc2529081d58ebff50a8966db31fd2}{SIRO\_NOPID}},\ 0,\ 0,\ \textcolor{stringliteral}{"{}multi-\/thread\ race"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00847}00847\ \ \ \ \ \textcolor{keywordtype}{bool}\ pass\ \ \ \ \ \ \ \ \ \ \ =\ si\_init;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00848}00848\ \ \ \ \ \textcolor{keywordtype}{bool}\ any\_created\ \ \ \ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00849}00849\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ last\_created\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00850}00850\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00851}00851\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ n\ =\ 0;\ n\ <\ NUM\_THREADS;\ n++)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00852}00852\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}*\ path\ =\ (\textcolor{keywordtype}{char}*)calloc(SIR\_MAXPATH,\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char}));}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00853}00853\ \ \ \ \ \ \ \ \ snprintf(path,\ SIR\_MAXPATH,\ \textcolor{stringliteral}{"{}multi-\/thread-\/race-\/\%zu.log"{}},\ n);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00854}00854\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00855}00855\ \textcolor{preprocessor}{\#if\ !defined(\_WIN32)}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00856}00856\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ create\ =\ pthread\_create(\&thrds[n],\ NULL,\ sirtest\_thread,\ (\textcolor{keywordtype}{void}*)path);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00857}00857\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (0\ !=\ create)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00858}00858\ \ \ \ \ \ \ \ \ \ \ \ \ errno\ =\ create;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00859}00859\ \ \ \ \ \ \ \ \ \ \ \ \ handle\_os\_error(\textcolor{keyword}{true},\ \textcolor{stringliteral}{"{}pthread\_create()\ for\ thread\ \#\%zu\ failed!"{}},\ n\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00860}00860\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00861}00861\ \ \ \ \ \ \ \ \ thrds[n]\ =\ \_beginthreadex(NULL,\ 0,\ sirtest\_thread,\ (\textcolor{keywordtype}{void}*)path,\ 0,\ NULL);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00862}00862\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (0\ ==\ thrds[n])\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00863}00863\ \ \ \ \ \ \ \ \ \ \ \ \ handle\_os\_error(\textcolor{keyword}{true},\ \textcolor{stringliteral}{"{}\_beginthreadex()\ for\ thread\ \#\%zu\ failed!"{}},\ n\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00864}00864\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00865}00865\ \ \ \ \ \ \ \ \ \ \ \ \ free(path);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00866}00866\ \ \ \ \ \ \ \ \ \ \ \ \ pass\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00867}00867\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00868}00868\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00869}00869\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00870}00870\ \ \ \ \ \ \ \ \ last\_created\ =\ n;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00871}00871\ \ \ \ \ \ \ \ \ any\_created\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00872}00872\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00873}00873\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00874}00874\ \ \ \ \ \textcolor{keywordflow}{if}\ (any\_created)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00875}00875\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ last\_created\ +\ 1;\ j++)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00876}00876\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ joined\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00877}00877\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)twaiting\ for\ thread\ \%zu/\%zu...\(\backslash\)n"{}},\ j\ +\ 1,\ last\_created\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00878}00878\ \textcolor{preprocessor}{\#if\ !defined(\_WIN32)}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00879}00879\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ join\ =\ pthread\_join(thrds[j],\ NULL);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00880}00880\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (0\ !=\ join)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00881}00881\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ joined\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00882}00882\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ errno\ =\ join;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00883}00883\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ handle\_os\_error(\textcolor{keyword}{true},\ \textcolor{stringliteral}{"{}pthread\_join()\ for\ thread\ \#\%zu\ (\%p)\ failed!"{}},\ j\ +\ 1,\ (\textcolor{keywordtype}{void}*)thrds[j]);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00884}00884\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00885}00885\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00886}00886\ \ \ \ \ \ \ \ \ \ \ \ \ DWORD\ wait\ =\ WaitForSingleObject((HANDLE)thrds[j],\ INFINITE);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00887}00887\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (WAIT\_OBJECT\_0\ !=\ wait)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00888}00888\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ joined\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00889}00889\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ handle\_os\_error(\textcolor{keyword}{false},\ \textcolor{stringliteral}{"{}WaitForSingleObject()\ for\ thread\ \#\%zu\ (\%p)\ failed!"{}},\ j\ +\ 1,\ (HANDLE)thrds[j]);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00890}00890\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00891}00891\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00892}00892\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (joined)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00893}00893\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)tthread\ \%zu/\%zu\ joined.\(\backslash\)n"{}},\ j\ +\ 1,\ last\_created\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00894}00894\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00895}00895\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00896}00896\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00897}00897\ \ \ \ \ \mbox{\hyperlink{group__public_ga9bf3e92cefac01de4e3c6c359a58706f}{sir\_cleanup}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00898}00898\ \ \ \ \ \textcolor{keywordflow}{return}\ print\_result\_and\_return(pass);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00899}00899\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00900}00900\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00901}00901\ \textcolor{preprocessor}{\#if\ !defined(\_WIN32)}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00902}00902\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}*\ sirtest\_thread(\textcolor{keywordtype}{void}*\ arg)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00903}00903\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00904}00904\ \textcolor{keywordtype}{unsigned}\ sirtest\_thread(\textcolor{keywordtype}{void}*\ arg)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00905}00905\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00906}00906\ \ \ \ \ pid\_t\ threadid\ =\ \mbox{\hyperlink{group__intern_gaf4b6d91cb5ef18479cdfd4b40cf23f72}{\_sir\_gettid}}();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00907}00907\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00908}00908\ \ \ \ \ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}\ mypath[SIR\_MAXPATH]\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00909}00909\ \ \ \ \ \mbox{\hyperlink{group__intern_ga45a2711d677382329eef2dbcbf420aa2}{\_sir\_strncpy}}(mypath,\ SIR\_MAXPATH,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*)arg,\ SIR\_MAXPATH);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00910}00910\ \ \ \ \ free(arg);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00911}00911\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00912}00912\ \ \ \ \ rmfile(mypath);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00913}00913\ \ \ \ \ \mbox{\hyperlink{group__public_gab8f5ba0bae678457f8bce30e961c9eb6}{sirfileid\_t}}\ \textcolor{keywordtype}{id}\ =\ \mbox{\hyperlink{group__public_ga4db9ea5b34afaa585f6b9cda84f385e9}{sir\_addfile}}(mypath,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0}{SIRO\_MSGONLY}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00914}00914\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00915}00915\ \ \ \ \ \textcolor{keywordflow}{if}\ (NULL\ ==\ \textcolor{keywordtype}{id})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00916}00916\ \ \ \ \ \ \ \ \ fprintf(stderr,\ \textcolor{stringliteral}{"{}\(\backslash\)t"{}}\ RED(\textcolor{stringliteral}{"{}failed\ to\ add\ file\ \%s!"{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}},\ mypath);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00917}00917\ \textcolor{preprocessor}{\#if\ !defined(\_WIN32)}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00918}00918\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ NULL;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00919}00919\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00920}00920\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00921}00921\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00922}00922\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00923}00923\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00924}00924\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)thi,\ i'm\ thread\ \#\%d,\ log\ file:\ '\%s'\(\backslash\)n"{}},\ threadid,\ mypath);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00925}00925\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00926}00926\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ n\ =\ 0;\ n\ <\ 100;\ n++)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00927}00927\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 10;\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00928}00928\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__public_ga3580e004c0c568c225a6d1a1bc5e9ea2}{sir\_debug}}(\textcolor{stringliteral}{"{}this\ is\ random\ gibberish\ \%zu"{}},\ (n\ *\ i)\ +\ i\ +\ n);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00929}00929\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00930}00930\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ r\ =\ getrand()\ \%\ 15;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00931}00931\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (r\ \%\ 2\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00932}00932\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__public_ga4a774bf801d0356b90f29aa69688ef86}{sir\_remfile}}(\textcolor{keywordtype}{id}))}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00933}00933\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{tests_8c_a0302d7265a4074f6dedcc65495123fe6}{print\_test\_error}}(\textcolor{keyword}{false},\ \textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00934}00934\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00935}00935\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{id}\ =\ \mbox{\hyperlink{group__public_ga4db9ea5b34afaa585f6b9cda84f385e9}{sir\_addfile}}(mypath,\ \mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\_ALL}},\ \mbox{\hyperlink{group__public_gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0}{SIRO\_MSGONLY}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00936}00936\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00937}00937\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (NULL\ ==\ \textcolor{keywordtype}{id})}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00938}00938\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{tests_8c_a0302d7265a4074f6dedcc65495123fe6}{print\_test\_error}}(\textcolor{keyword}{false},\ \textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00939}00939\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__public_gaa628fae976081e7aaa302e5c5e43e06c}{sir\_settextstyle}}(\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b}{SIRL\_DEBUG}},\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa1f11f323b6998adbd83b31d73bc538dc}{SIRS\_FG\_RED}}\ |\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafab38f3ce262a13dd157fd1a2077fe27d6}{SIRS\_BG\_DEFAULT}}))}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00940}00940\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{tests_8c_a0302d7265a4074f6dedcc65495123fe6}{print\_test\_error}}(\textcolor{keyword}{false},\ \textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00941}00941\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00942}00942\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{group__public_gaa628fae976081e7aaa302e5c5e43e06c}{sir\_settextstyle}}(\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b}{SIRL\_DEBUG}},\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafaefc4595e6d22f5a5d6ce7fa13c64444d}{SIRS\_FG\_CYAN}}\ |\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafabe3a20064515e10ac72eaf6e8a665b55}{SIRS\_BG\_YELLOW}}))}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00943}00943\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{tests_8c_a0302d7265a4074f6dedcc65495123fe6}{print\_test\_error}}(\textcolor{keyword}{false},\ \textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00944}00944\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00945}00945\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00946}00946\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00947}00947\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00948}00948\ \ \ \ \ \mbox{\hyperlink{group__public_ga4a774bf801d0356b90f29aa69688ef86}{sir\_remfile}}(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00949}00949\ \ \ \ \ rmfile(mypath);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00950}00950\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00951}00951\ \textcolor{preprocessor}{\#if\ !defined(\_WIN32)}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00952}00952\ \ \ \ \ \textcolor{keywordflow}{return}\ NULL;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00953}00953\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00954}00954\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00955}00955\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00956}00956\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00957}00957\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00958}\mbox{\hyperlink{tests_8c_a0302d7265a4074f6dedcc65495123fe6}{00958}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{tests_8c_a0302d7265a4074f6dedcc65495123fe6}{print\_test\_error}}(\textcolor{keywordtype}{bool}\ result,\ \textcolor{keywordtype}{bool}\ expected)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00959}00959\ \ \ \ \ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}\ message[\mbox{\hyperlink{group__custom_gad6fce840144259e992c33fb611f31262}{SIR\_MAXERROR}}]\ =\ \{\ 0\ \};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00960}00960\ \ \ \ \ uint16\_t\ code\ =\ \mbox{\hyperlink{group__errors_ga98d098b444b4e8096aad21df81105e74}{sir\_geterror}}(message);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00961}00961\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00962}00962\ \ \ \ \ \textcolor{keywordflow}{if}\ (!expected\ \&\&\ !result)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00963}00963\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)t"{}}\ RED(\textcolor{stringliteral}{"{}!!\ Unexpected\ (\%hu,\ \%s)"{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}},\ code,\ message);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00964}00964\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (expected)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00965}00965\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)t"{}}\ GREEN(\textcolor{stringliteral}{"{}Expected\ (\%hu,\ \%s)"{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}},\ code,\ message);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00966}00966\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00967}00967\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00968}00968\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00969}00969\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00970}00970\ \textcolor{keywordtype}{void}\ print\_os\_error(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00971}00971\ \ \ \ \ \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\_t}}\ message[\mbox{\hyperlink{group__custom_gad6fce840144259e992c33fb611f31262}{SIR\_MAXERROR}}]\ =\ \{\ 0\ \};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00972}00972\ \ \ \ \ uint16\_t\ \ code\ =\ \mbox{\hyperlink{group__errors_ga98d098b444b4e8096aad21df81105e74}{sir\_geterror}}(message);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00973}00973\ \ \ \ \ fprintf(stderr,\ \textcolor{stringliteral}{"{}\(\backslash\)t"{}}\ RED(\textcolor{stringliteral}{"{}OS\ error:\ (\%hu,\ \%s)"{}})\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}},\ code,\ message);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00974}00974\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00975}00975\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00976}00976\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ getrand(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00977}00977\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ seed\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00978}00978\ \textcolor{preprocessor}{\#if\ !defined(\_WIN32)}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00979}00979\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int})rand\_r(\&seed);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00980}00980\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00981}00981\ \ \ \ \ \textcolor{keywordflow}{if}\ (0\ ==\ rand\_s(\&seed))\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00982}00982\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ seed;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00983}00983\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00984}00984\ \ \ \ \ \ \ \ \ srand(seed);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00985}00985\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int})rand();}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00986}00986\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00987}00987\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00988}00988\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00989}00989\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00990}00990\ \textcolor{keywordtype}{bool}\ rmfile(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ filename)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00991}00991\ \ \ \ \ \textcolor{keywordtype}{bool}\ removed\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00992}00992\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00993}00993\ \ \ \ \ \textcolor{comment}{/*\ just\ return\ true\ if\ the\ file\ doesn't\ exist.\ */}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00994}00994\ \ \ \ \ \textcolor{keyword}{struct\ }stat\ st;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00995}00995\ \ \ \ \ \textcolor{keywordflow}{if}\ (0\ !=\ stat(filename,\ \&st))\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00996}00996\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ENOENT\ ==\ errno)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00997}00997\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00998}00998\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l00999}00999\ \ \ \ \ \ \ \ \ handle\_os\_error(\textcolor{keyword}{true},\ \textcolor{stringliteral}{"{}failed\ to\ stat\ \%s!"{}},\ filename);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01000}01000\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01001}01001\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01002}01002\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01003}01003\ \textcolor{preprocessor}{\#if\ !defined(\_WIN32)}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01004}01004\ \ \ \ \ removed\ =\ 0\ ==\ remove(filename);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01005}01005\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01006}01006\ \ \ \ \ removed\ =\ FALSE\ !=\ DeleteFile(filename);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01007}01007\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01008}01008\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01009}01009\ \ \ \ \ \textcolor{keywordflow}{if}\ (!removed)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01010}01010\ \ \ \ \ \ \ \ \ handle\_os\_error(\textcolor{keyword}{false},\ \textcolor{stringliteral}{"{}failed\ to\ delete\ \%s!"{}},\ filename);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01011}01011\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01012}01012\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\(\backslash\)tsuccessfully\ deleted\ \%s\ (\%ld\ bytes)...\(\backslash\)n"{}},\ filename,\ (\textcolor{keywordtype}{long})st.st\_size);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01013}01013\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01014}01014\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01015}01015\ \ \ \ \ \textcolor{keywordflow}{return}\ removed;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01016}01016\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01017}01017\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01018}01018\ \textcolor{keywordtype}{bool}\ deletefiles(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ search,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ filename,\ \textcolor{keywordtype}{unsigned}*\ data)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01019}01019\ \ \ \ \ \textcolor{keywordflow}{if}\ (strstr(filename,\ search))\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01020}01020\ \ \ \ \ \ \ \ \ rmfile(filename);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01021}01021\ \ \ \ \ \ \ \ \ (*data)++;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01022}01022\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01023}01023\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01024}01024\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01025}01025\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01026}01026\ \textcolor{keywordtype}{bool}\ countfiles(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ search,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ filename,\ \textcolor{keywordtype}{unsigned}*\ data)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01027}01027\ \ \ \ \ \textcolor{keywordflow}{if}\ (strstr(filename,\ search))}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01028}01028\ \ \ \ \ \ \ \ \ (*data)++;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01029}01029\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01030}01030\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01031}01031\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01032}01032\ \textcolor{keywordtype}{bool}\ enumfiles(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ search,\ fileenumproc\ cb,\ \textcolor{keywordtype}{unsigned}*\ data)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01033}01033\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01034}01034\ \textcolor{preprocessor}{\#if\ !defined(\_WIN32)}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01035}01035\ \ \ \ \ DIR*\ d\ =\ opendir(\textcolor{stringliteral}{"{}."{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01036}01036\ \ \ \ \ \textcolor{keywordflow}{if}\ (!d)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01037}01037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01038}01038\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01039}01039\ \ \ \ \ rewinddir(d);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01040}01040\ \ \ \ \ \textcolor{keyword}{struct\ }dirent*\ di\ =\ readdir(d);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01041}01041\ \ \ \ \ \textcolor{keywordflow}{if}\ (!di)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01042}01042\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01043}01043\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01044}01044\ \ \ \ \ \textcolor{keywordflow}{while}\ (NULL\ !=\ di)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01045}01045\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!cb(search,\ di-\/>d\_name,\ data))}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01046}01046\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01047}01047\ \ \ \ \ \ \ \ \ di\ =\ readdir(d);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01048}01048\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01049}01049\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01050}01050\ \ \ \ \ closedir(d);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01051}01051\ \ \ \ \ d\ =\ NULL;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01052}01052\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01053}01053\ \ \ \ \ WIN32\_FIND\_DATA\ finddata\ \ \ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01054}01054\ \ \ \ \ HANDLE\ \ \ \ \ \ \ \ \ \ enumerator\ =\ FindFirstFile(\textcolor{stringliteral}{"{}./*"{}},\ \&finddata);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01055}01055\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01056}01056\ \ \ \ \ \textcolor{keywordflow}{if}\ (INVALID\_HANDLE\_VALUE\ ==\ enumerator)}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01057}01057\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01058}01058\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01059}01059\ \ \ \ \ \textcolor{keywordflow}{do}\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01060}01060\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!cb(search,\ finddata.cFileName,\ data))}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01061}01061\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01062}01062\ \ \ \ \ \}\ \textcolor{keywordflow}{while}\ (FindNextFile(enumerator,\ \&finddata)\ >\ 0);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01063}01063\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01064}01064\ \ \ \ \ FindClose(enumerator);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01065}01065\ \ \ \ \ enumerator\ =\ NULL;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01066}01066\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01067}01067\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01068}01068\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01069}01069\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01070}01070\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01071}01071\ \textcolor{keywordtype}{bool}\ startsirtimer(sirtimer\_t*\ timer)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01072}01072\ \textcolor{preprocessor}{\#if\ !defined(\_WIN32)}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01073}01073\ \ \ \ \ \textcolor{keywordtype}{int}\ gettime\ =\ clock\_gettime(CLOCK\_MONOTONIC,\ \&timer-\/>ts);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01074}01074\ \ \ \ \ \textcolor{keywordflow}{if}\ (0\ !=\ gettime)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01075}01075\ \ \ \ \ \ \ \ \ handle\_os\_error(\textcolor{keyword}{true},\ \textcolor{stringliteral}{"{}clock\_gettime(\%s)\ failed!"{}},\ \textcolor{stringliteral}{"{}CLOCK\_MONOTONIC"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01076}01076\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01077}01077\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01078}01078\ \ \ \ \ \textcolor{keywordflow}{return}\ 0\ ==\ gettime;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01079}01079\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01080}01080\ \ \ \ \ GetSystemTimePreciseAsFileTime(\&timer-\/>ft);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01081}01081\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01082}01082\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01083}01083\ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01084}01084\ }
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01085}01085\ \textcolor{keywordtype}{float}\ sirtimerelapsed(\textcolor{keyword}{const}\ sirtimer\_t*\ timer)\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01086}01086\ \textcolor{preprocessor}{\#if\ !defined(\_WIN32)}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01087}01087\ \ \ \ \ \textcolor{keyword}{struct\ }timespec\ now;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01088}01088\ \ \ \ \ \textcolor{keywordflow}{if}\ (0\ ==\ clock\_gettime(CLOCK\_MONOTONIC,\ \&now))\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01089}01089\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{float})((now.tv\_sec\ *\ 1e3)\ +\ (now.tv\_nsec\ /\ 1e6)\ -\/\ (timer-\/>ts.tv\_sec\ *\ 1e3)\ +}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01090}01090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (timer-\/>ts.tv\_nsec\ /\ 1e6));}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01091}01091\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01092}01092\ \ \ \ \ \ \ \ \ handle\_os\_error(\textcolor{keyword}{true},\ \textcolor{stringliteral}{"{}clock\_gettime(\%s)\ failed!"{}},\ \textcolor{stringliteral}{"{}CLOCK\_MONOTONIC"{}});}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01093}01093\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01094}01094\ \ \ \ \ \textcolor{keywordflow}{return}\ 0.0f;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01095}01095\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01096}01096\ \ \ \ \ FILETIME\ now;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01097}01097\ \ \ \ \ GetSystemTimePreciseAsFileTime(\&now);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01098}01098\ \ \ \ \ ULARGE\_INTEGER\ start\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01099}01099\ \ \ \ \ start.LowPart\ =\ timer-\/>ft.dwLowDateTime;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01100}01100\ \ \ \ \ start.HighPart\ =\ timer-\/>ft.dwHighDateTime;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01101}01101\ \ \ \ \ ULARGE\_INTEGER\ n100sec\ =\ \{0\};}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01102}01102\ \ \ \ \ n100sec.LowPart\ =\ now.dwLowDateTime;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01103}01103\ \ \ \ \ n100sec.HighPart\ =\ now.dwHighDateTime;}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01104}01104\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{float})((n100sec.QuadPart\ -\/\ start.QuadPart)\ /\ 1e4);}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01105}01105\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{tests_8c_source_l01106}01106\ \}}
+
+\end{DoxyCode}

@@ -1,0 +1,77 @@
+.TH "sirdefaults.h" 3 "Mon May 29 2023" "Version 2.1.1" "libsir" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+sirdefaults.h \- Compile-time default levels, options, and text styilng\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'sirtypes\&.h'\fP
+.br
+
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "static const \fBsir_levels\fP \fBsir_stdout_def_lvls\fP = \fBSIRL_DEBUG\fP | \fBSIRL_INFO\fP | \fBSIRL_NOTICE\fP | \fBSIRL_WARN\fP"
+.br
+.RI "Default levels for \fIstdout\fP\&. "
+.ti -1c
+.RI "static const \fBsir_options\fP \fBsir_stdout_def_opts\fP = \fBSIRO_NOTIME\fP | \fBSIRO_NOPID\fP | \fBSIRO_NOTID\fP"
+.br
+.RI "Default options for \fIstdout\fP\&. "
+.ti -1c
+.RI "static const \fBsir_levels\fP \fBsir_stderr_def_lvls\fP = \fBSIRL_ERROR\fP | \fBSIRL_CRIT\fP | \fBSIRL_ALERT\fP | \fBSIRL_EMERG\fP"
+.br
+.RI "Default levels for \fIstderr\fP\&. "
+.ti -1c
+.RI "static const \fBsir_options\fP \fBsir_stderr_def_opts\fP = \fBSIRO_NOTIME\fP | \fBSIRO_NOPID\fP | \fBSIRO_NOTID\fP"
+.br
+.RI "Default options for \fIstderr\fP\&. "
+.ti -1c
+.RI "static const \fBsir_levels\fP \fBsir_syslog_def_lvls\fP = \fBSIRL_WARN\fP | \fBSIRL_CRIT\fP | \fBSIRL_ALERT\fP | \fBSIRL_EMERG\fP"
+.br
+.RI "Default levels for \fIsyslog\fP (if enabled)\&. "
+.ti -1c
+.RI "static const \fBsir_levels\fP \fBsir_file_def_lvls\fP = \fBSIRL_ALL\fP"
+.br
+.RI "Default levels for \fIlog\fP \fIfiles\fP\&. "
+.ti -1c
+.RI "static const \fBsir_options\fP \fBsir_file_def_opts\fP = \fBSIRO_ALL\fP"
+.br
+.RI "Default options for \fIlog\fP \fIfiles\fP\&. "
+.ti -1c
+.RI "static const \fBsir_level_style_pair\fP \fBsir_default_style_map\fP []"
+.br
+.RI "Default mapping of \fBsir_level\fP to \fBsir_textstyle\fP\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Compile-time default levels, options, and text styilng\&. 
+
+This file and accompanying source code originated from https://github.com/aremmell/libsir\&. If you obtained it elsewhere, all bets are off\&.
+.PP
+\fBAuthor\fP
+.RS 4
+Ryan M\&. Lederman lederman@gmail.com 
+.RE
+.PP
+\fBCopyright\fP
+.RS 4
+.RE
+.PP
+The MIT License (MIT)
+.PP
+Copyright (c) 2018 Ryan M\&. Lederman
+.PP
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+.PP
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software\&.
+.PP
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\&. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE\&. 
+.PP
+Definition in file \fBsirdefaults\&.h\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsir from the source code\&.

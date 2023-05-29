@@ -1,0 +1,191 @@
+\doxysection{Error handling}
+\hypertarget{group__errors}{}\label{group__errors}\index{Error handling@{Error handling}}
+
+
+Functions, types, and codes used for error handling.  
+
+
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \{ \newline
+\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55bae9cf0dd9b54a0e456a565c6a8bf107f7}{SIR\+\_\+\+E\+\_\+\+NOERROR}} = 0
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba87dc9e5593942f7413b84a17c64a01eb}{SIR\+\_\+\+E\+\_\+\+NOTREADY}} = 1
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba96e01762a7feb2dbbd6f3c4504ba3470}{SIR\+\_\+\+E\+\_\+\+ALREADY}} = 2
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba72dc62bc5b5c1687a3bb221f04323119}{SIR\+\_\+\+E\+\_\+\+DUPFILE}} = 3
+, \newline
+\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55bab36a8affcc9e8f80b94b9c7264bfd492}{SIR\+\_\+\+E\+\_\+\+NOFILE}} = 4
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55bab48caca75bfe042380f8ccb9be8249a9}{SIR\+\_\+\+E\+\_\+\+FCFULL}} = 5
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba502a8e20f25ecee09eb75576238bb797}{SIR\+\_\+\+E\+\_\+\+OPTIONS}} = 6
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba909ed133cf8d178dd98b24b51fe844bf}{SIR\+\_\+\+E\+\_\+\+LEVELS}} = 7
+, \newline
+\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba3f34b13f811b5ddc9e4c216f5432fa1d}{SIR\+\_\+\+E\+\_\+\+TEXTSTYLE}} = 8
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba014d92769313bc513bd580461d8ebcd3}{SIR\+\_\+\+E\+\_\+\+STRING}} = 9
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba8e6f10a1b3f9eb256aaa4f9c1504b43d}{SIR\+\_\+\+E\+\_\+\+NULLPTR}} = 10
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55baba1600c4a3cb92f8f2cdf7be820606d3}{SIR\+\_\+\+E\+\_\+\+INVALID}} = 11
+, \newline
+\mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55bad8d3e0a7ff09ea46a966d07ad08536af}{SIR\+\_\+\+E\+\_\+\+NODEST}} = 12
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba0f293a6020f98a7e41b8afea0e402046}{SIR\+\_\+\+E\+\_\+\+PLATFORM}} = 13
+, \mbox{\hyperlink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba8090c8bc79ae660da7e58b2d0a47d785}{SIR\+\_\+\+E\+\_\+\+UNKNOWN}} = 4095
+ \}
+\begin{DoxyCompactList}\small\item\em Error codes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{group__errors_gab4e4e805367fc2c7b80a19f123316b3d}\label{group__errors_gab4e4e805367fc2c7b80a19f123316b3d} 
+void {\bfseries \+\_\+\+\_\+sir\+\_\+handleerr} (int code, const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}func, const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}file, uint32\+\_\+t line)
+\begin{DoxyCompactList}\small\item\em Handle a C library error. \end{DoxyCompactList}\item 
+\Hypertarget{group__errors_gac8e6a8a10521cae2e75881df9cdfb636}\label{group__errors_gac8e6a8a10521cae2e75881df9cdfb636} 
+\mbox{\hyperlink{group__public_ga7c16d05c40f30affcc3ca881a96f2b0f}{sirerror\+\_\+t}} {\bfseries \+\_\+sir\+\_\+geterror} (\mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} message\mbox{[}256\mbox{]})
+\begin{DoxyCompactList}\small\item\em Returns information about the last error that occurred. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{group__errors_ga98d098b444b4e8096aad21df81105e74}{sir\+\_\+geterror}} (\mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} message\mbox{[}256\mbox{]})
+\begin{DoxyCompactList}\small\item\em Retrieves information about the last error that occurred within the context of libsir or lower. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{group__errors_ga9b90b7b0b86e5db5c56e00e180ad2209}\label{group__errors_ga9b90b7b0b86e5db5c56e00e180ad2209} 
+static thread\+\_\+local \mbox{\hyperlink{group__intern_structsir__thread__err}{sir\+\_\+thread\+\_\+err}} {\bfseries sir\+\_\+te}
+\begin{DoxyCompactList}\small\item\em Per-\/thread error data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Functions, types, and codes used for error handling. 
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{group__errors_ga06fc87d81c62e9abb8790b6e5713c55b}\label{group__errors_ga06fc87d81c62e9abb8790b6e5713c55b} 
+\doxysubsubsection{\texorpdfstring{anonymous enum}{anonymous enum}}
+{\footnotesize\ttfamily anonymous enum}
+
+
+
+Error codes. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SIR\_E\_NOERROR@{SIR\_E\_NOERROR}!Error handling@{Error handling}}\index{Error handling@{Error handling}!SIR\_E\_NOERROR@{SIR\_E\_NOERROR}}}\Hypertarget{group__errors_gga06fc87d81c62e9abb8790b6e5713c55bae9cf0dd9b54a0e456a565c6a8bf107f7}\label{group__errors_gga06fc87d81c62e9abb8790b6e5713c55bae9cf0dd9b54a0e456a565c6a8bf107f7} 
+SIR\+\_\+\+E\+\_\+\+NOERROR&The operation completed successfully. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SIR\_E\_NOTREADY@{SIR\_E\_NOTREADY}!Error handling@{Error handling}}\index{Error handling@{Error handling}!SIR\_E\_NOTREADY@{SIR\_E\_NOTREADY}}}\Hypertarget{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba87dc9e5593942f7413b84a17c64a01eb}\label{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba87dc9e5593942f7413b84a17c64a01eb} 
+SIR\+\_\+\+E\+\_\+\+NOTREADY&libsir has not been initialized \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SIR\_E\_ALREADY@{SIR\_E\_ALREADY}!Error handling@{Error handling}}\index{Error handling@{Error handling}!SIR\_E\_ALREADY@{SIR\_E\_ALREADY}}}\Hypertarget{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba96e01762a7feb2dbbd6f3c4504ba3470}\label{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba96e01762a7feb2dbbd6f3c4504ba3470} 
+SIR\+\_\+\+E\+\_\+\+ALREADY&libsir is already initialized \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SIR\_E\_DUPFILE@{SIR\_E\_DUPFILE}!Error handling@{Error handling}}\index{Error handling@{Error handling}!SIR\_E\_DUPFILE@{SIR\_E\_DUPFILE}}}\Hypertarget{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba72dc62bc5b5c1687a3bb221f04323119}\label{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba72dc62bc5b5c1687a3bb221f04323119} 
+SIR\+\_\+\+E\+\_\+\+DUPFILE&File already managed by libsir. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SIR\_E\_NOFILE@{SIR\_E\_NOFILE}!Error handling@{Error handling}}\index{Error handling@{Error handling}!SIR\_E\_NOFILE@{SIR\_E\_NOFILE}}}\Hypertarget{group__errors_gga06fc87d81c62e9abb8790b6e5713c55bab36a8affcc9e8f80b94b9c7264bfd492}\label{group__errors_gga06fc87d81c62e9abb8790b6e5713c55bab36a8affcc9e8f80b94b9c7264bfd492} 
+SIR\+\_\+\+E\+\_\+\+NOFILE&File not managed by libsir. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SIR\_E\_FCFULL@{SIR\_E\_FCFULL}!Error handling@{Error handling}}\index{Error handling@{Error handling}!SIR\_E\_FCFULL@{SIR\_E\_FCFULL}}}\Hypertarget{group__errors_gga06fc87d81c62e9abb8790b6e5713c55bab48caca75bfe042380f8ccb9be8249a9}\label{group__errors_gga06fc87d81c62e9abb8790b6e5713c55bab48caca75bfe042380f8ccb9be8249a9} 
+SIR\+\_\+\+E\+\_\+\+FCFULL&Maximum number of files already managed. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SIR\_E\_OPTIONS@{SIR\_E\_OPTIONS}!Error handling@{Error handling}}\index{Error handling@{Error handling}!SIR\_E\_OPTIONS@{SIR\_E\_OPTIONS}}}\Hypertarget{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba502a8e20f25ecee09eb75576238bb797}\label{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba502a8e20f25ecee09eb75576238bb797} 
+SIR\+\_\+\+E\+\_\+\+OPTIONS&Option flags are invalid. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SIR\_E\_LEVELS@{SIR\_E\_LEVELS}!Error handling@{Error handling}}\index{Error handling@{Error handling}!SIR\_E\_LEVELS@{SIR\_E\_LEVELS}}}\Hypertarget{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba909ed133cf8d178dd98b24b51fe844bf}\label{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba909ed133cf8d178dd98b24b51fe844bf} 
+SIR\+\_\+\+E\+\_\+\+LEVELS&Level flags are invalid. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SIR\_E\_TEXTSTYLE@{SIR\_E\_TEXTSTYLE}!Error handling@{Error handling}}\index{Error handling@{Error handling}!SIR\_E\_TEXTSTYLE@{SIR\_E\_TEXTSTYLE}}}\Hypertarget{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba3f34b13f811b5ddc9e4c216f5432fa1d}\label{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba3f34b13f811b5ddc9e4c216f5432fa1d} 
+SIR\+\_\+\+E\+\_\+\+TEXTSTYLE&Text style is invalid. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SIR\_E\_STRING@{SIR\_E\_STRING}!Error handling@{Error handling}}\index{Error handling@{Error handling}!SIR\_E\_STRING@{SIR\_E\_STRING}}}\Hypertarget{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba014d92769313bc513bd580461d8ebcd3}\label{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba014d92769313bc513bd580461d8ebcd3} 
+SIR\+\_\+\+E\+\_\+\+STRING&Invalid string argument. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SIR\_E\_NULLPTR@{SIR\_E\_NULLPTR}!Error handling@{Error handling}}\index{Error handling@{Error handling}!SIR\_E\_NULLPTR@{SIR\_E\_NULLPTR}}}\Hypertarget{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba8e6f10a1b3f9eb256aaa4f9c1504b43d}\label{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba8e6f10a1b3f9eb256aaa4f9c1504b43d} 
+SIR\+\_\+\+E\+\_\+\+NULLPTR&NULL pointer argument. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SIR\_E\_INVALID@{SIR\_E\_INVALID}!Error handling@{Error handling}}\index{Error handling@{Error handling}!SIR\_E\_INVALID@{SIR\_E\_INVALID}}}\Hypertarget{group__errors_gga06fc87d81c62e9abb8790b6e5713c55baba1600c4a3cb92f8f2cdf7be820606d3}\label{group__errors_gga06fc87d81c62e9abb8790b6e5713c55baba1600c4a3cb92f8f2cdf7be820606d3} 
+SIR\+\_\+\+E\+\_\+\+INVALID&Invalid argument. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SIR\_E\_NODEST@{SIR\_E\_NODEST}!Error handling@{Error handling}}\index{Error handling@{Error handling}!SIR\_E\_NODEST@{SIR\_E\_NODEST}}}\Hypertarget{group__errors_gga06fc87d81c62e9abb8790b6e5713c55bad8d3e0a7ff09ea46a966d07ad08536af}\label{group__errors_gga06fc87d81c62e9abb8790b6e5713c55bad8d3e0a7ff09ea46a966d07ad08536af} 
+SIR\+\_\+\+E\+\_\+\+NODEST&No destinations registered for level. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SIR\_E\_PLATFORM@{SIR\_E\_PLATFORM}!Error handling@{Error handling}}\index{Error handling@{Error handling}!SIR\_E\_PLATFORM@{SIR\_E\_PLATFORM}}}\Hypertarget{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba0f293a6020f98a7e41b8afea0e402046}\label{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba0f293a6020f98a7e41b8afea0e402046} 
+SIR\+\_\+\+E\+\_\+\+PLATFORM&Platform error code \%d\+: \%s. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SIR\_E\_UNKNOWN@{SIR\_E\_UNKNOWN}!Error handling@{Error handling}}\index{Error handling@{Error handling}!SIR\_E\_UNKNOWN@{SIR\_E\_UNKNOWN}}}\Hypertarget{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba8090c8bc79ae660da7e58b2d0a47d785}\label{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba8090c8bc79ae660da7e58b2d0a47d785} 
+SIR\+\_\+\+E\+\_\+\+UNKNOWN&Error is not known. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line \mbox{\hyperlink{sirerrors_8h_source_l00048}{48}} of file \mbox{\hyperlink{sirerrors_8h_source}{sirerrors.\+h}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{group__errors_ga98d098b444b4e8096aad21df81105e74}\label{group__errors_ga98d098b444b4e8096aad21df81105e74} 
+\index{Error handling@{Error handling}!sir\_geterror@{sir\_geterror}}
+\index{sir\_geterror@{sir\_geterror}!Error handling@{Error handling}}
+\doxysubsubsection{\texorpdfstring{sir\_geterror()}{sir\_geterror()}}
+{\footnotesize\ttfamily uint16\+\_\+t sir\+\_\+geterror (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}}}]{message\mbox{[}256\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Retrieves information about the last error that occurred within the context of libsir or lower. 
+
+\begin{DoxyRemark}{Remarks}
+Most C library and OS calls made by libsir are evaluated for failure. If a failure of this type is encountered, this function returns \doxylink{group__errors_gga06fc87d81c62e9abb8790b6e5713c55ba0f293a6020f98a7e41b8afea0e402046}{SIR\+\_\+\+E\+\_\+\+PLATFORM}, and {\ttfamily message} will contain a string identifying the underlying error code and the message as reported by the platform.
+\end{DoxyRemark}
+
+\begin{DoxyParams}{Parameters}
+{\em message} & A buffer to which the human-\/readable error message is copied.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uint16\+\_\+t 
+\end{DoxyReturn}
+
+\begin{DoxyRetVals}{Return values}
+{\em SIR\+\_\+\+E\+\_\+\+NOERROR} & The operation completed successfully \\
+\hline
+{\em SIR\+\_\+\+E\+\_\+\+NOTREADY} & libsir has not been initialized \\
+\hline
+{\em SIR\+\_\+\+E\+\_\+\+ALREADY} & libsir is already initialized \\
+\hline
+{\em SIR\+\_\+\+E\+\_\+\+DUPFILE} & File already managed by libsir \\
+\hline
+{\em SIR\+\_\+\+E\+\_\+\+NOFILE} & File not managed by libsir \\
+\hline
+{\em SIR\+\_\+\+E\+\_\+\+FCFULL} & Maximum number of files already managed \\
+\hline
+{\em SIR\+\_\+\+E\+\_\+\+OPTIONS} & Option flags are invalid \\
+\hline
+{\em SIR\+\_\+\+E\+\_\+\+LEVELS} & Level flags are invalid \\
+\hline
+{\em SIR\+\_\+\+E\+\_\+\+TEXTSTYLE} & Text style is invalid \\
+\hline
+{\em SIR\+\_\+\+E\+\_\+\+STRING} & Invalid string argument \\
+\hline
+{\em SIR\+\_\+\+E\+\_\+\+NULLPTR} & NULL pointer argument \\
+\hline
+{\em SIR\+\_\+\+E\+\_\+\+INVALID} & Invalid argument \\
+\hline
+{\em SIR\+\_\+\+E\+\_\+\+NODEST} & No destinations registered for level \\
+\hline
+{\em SIR\+\_\+\+E\+\_\+\+PLATFORM} & Platform error code \%d\+: \%s \\
+\hline
+{\em SIR\+\_\+\+E\+\_\+\+UNKNOWN} & Error is not known \\
+\hline
+\end{DoxyRetVals}
+
+
+Definition at line \mbox{\hyperlink{sir_8c_source_l00099}{99}} of file \mbox{\hyperlink{sir_8c_source}{sir.\+c}}.
+

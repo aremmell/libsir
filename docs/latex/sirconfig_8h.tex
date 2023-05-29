@@ -1,0 +1,115 @@
+\doxysection{sirconfig.\+h File Reference}
+\hypertarget{sirconfig_8h}{}\label{sirconfig_8h}\index{sirconfig.h@{sirconfig.h}}
+
+
+Compile-\/time constants.  
+
+
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define {\bfseries SIR\+\_\+\+LIBNAME}~\"{}libsir\"{}
+\begin{DoxyCompactList}\small\item\em The name of this library. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+TIMEFORMAT}~\"{}\%H\+:\%M\+:\%S\"{}
+\begin{DoxyCompactList}\small\item\em The time stamp format string at the beginning of log messages. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+MSECFORMAT}~\"{}.\%03ld\"{}
+\begin{DoxyCompactList}\small\item\em The format for the current millisecond in time stamps. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+LEVELFORMAT}~\"{}\mbox{[}\%s\mbox{]}\"{}
+\begin{DoxyCompactList}\small\item\em The format for the human-\/readable logging level. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+PIDFORMAT}~\"{}\%d\"{}
+\begin{DoxyCompactList}\small\item\em The format for the current process/thread ID, if no name is available/desired. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+PIDSEPARATOR}~\"{}.\"{}
+\begin{DoxyCompactList}\small\item\em The character to place between process and thread IDs. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+FOPENMODE}~\"{}a\"{}
+\begin{DoxyCompactList}\small\item\em The string passed to fopen/fopen\+\_\+s for log files. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+FROLLSIZE}~(1024L \texorpdfstring{$\ast$}{*} 1024L \texorpdfstring{$\ast$}{*} 5L)
+\begin{DoxyCompactList}\small\item\em The size, in bytes, at which a log file will be rolled/archived. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__custom_ga90d4862e769fd5effefb1e1dedf520c8}{SIR\+\_\+\+FHTIMEFORMAT}}~\"{}\%H\+:\%M\+:\%S \%a \%d \%b \%y (\%z)\"{}
+\begin{DoxyCompactList}\small\item\em The time format string in file headers (see \doxylink{group__custom_ga7c652578740e372edeac33d14f6408fd}{SIR\+\_\+\+FHFORMAT}). \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__custom_ga7c652578740e372edeac33d14f6408fd}{SIR\+\_\+\+FHFORMAT}}~\"{}\textbackslash{}n\textbackslash{}n-\/-\/-\/-\/-\/ \%s \%s -\/-\/-\/-\/-\/\textbackslash{}n\textbackslash{}n\"{}
+\begin{DoxyCompactList}\small\item\em The format string written to a log file when logging begins or the file is rolled/archived. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+FHBEGIN}~\"{}session begin @\"{}
+\begin{DoxyCompactList}\small\item\em The string included in \doxylink{group__custom_ga7c652578740e372edeac33d14f6408fd}{SIR\+\_\+\+FHFORMAT} when a logging session begins. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__custom_gaca213e22f32a371da7ca82eb86a16c9a}{SIR\+\_\+\+FHROLLED}}~\"{}archived as \%s due to size @\"{}
+\begin{DoxyCompactList}\small\item\em The string included in \doxylink{group__custom_ga7c652578740e372edeac33d14f6408fd}{SIR\+\_\+\+FHFORMAT} when a file is rolled/archived due to size. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__custom_gaeb4949a438cb054dbd261eead7e9d6c9}{SIR\+\_\+\+FNAMETIMEFORMAT}}~\"{}\%y-\/\%m-\/\%d-\/\%H\%M\%S\"{}
+\begin{DoxyCompactList}\small\item\em The time format string for rolled/archived log files (see \doxylink{group__custom_ga30cae1b7b493f9be429ff683b9d77677}{SIR\+\_\+\+FNAMEFORMAT}). \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__custom_ga30cae1b7b493f9be429ff683b9d77677}{SIR\+\_\+\+FNAMEFORMAT}}~\"{}\%s-\/\%s\%s\"{}
+\begin{DoxyCompactList}\small\item\em The format string for rolled/archived log file names. \end{DoxyCompactList}\item 
+\#define {\bfseries SIRL\+\_\+\+S\+\_\+\+EMERG}~\"{}emrg\"{}
+\begin{DoxyCompactList}\small\item\em The human-\/readable form of the \doxylink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc}{SIRL\+\_\+\+EMERG} level. \end{DoxyCompactList}\item 
+\#define {\bfseries SIRL\+\_\+\+S\+\_\+\+ALERT}~\"{}alrt\"{}
+\begin{DoxyCompactList}\small\item\em The human-\/readable form of the \doxylink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955}{SIRL\+\_\+\+ALERT} level. \end{DoxyCompactList}\item 
+\#define {\bfseries SIRL\+\_\+\+S\+\_\+\+CRIT}~\"{}crit\"{}
+\begin{DoxyCompactList}\small\item\em The human-\/readable form of the \doxylink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435}{SIRL\+\_\+\+CRIT} level. \end{DoxyCompactList}\item 
+\#define {\bfseries SIRL\+\_\+\+S\+\_\+\+ERROR}~\"{}erro\"{}
+\begin{DoxyCompactList}\small\item\em The human-\/readable form of the \doxylink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76}{SIRL\+\_\+\+ERROR} level. \end{DoxyCompactList}\item 
+\#define {\bfseries SIRL\+\_\+\+S\+\_\+\+WARN}~\"{}warn\"{}
+\begin{DoxyCompactList}\small\item\em The human-\/readable form of the \doxylink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881}{SIRL\+\_\+\+WARN} level. \end{DoxyCompactList}\item 
+\#define {\bfseries SIRL\+\_\+\+S\+\_\+\+NOTICE}~\"{}noti\"{}
+\begin{DoxyCompactList}\small\item\em The human-\/readable form of the \doxylink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a}{SIRL\+\_\+\+NOTICE} level. \end{DoxyCompactList}\item 
+\#define {\bfseries SIRL\+\_\+\+S\+\_\+\+INFO}~\"{}info\"{}
+\begin{DoxyCompactList}\small\item\em The human-\/readable form of the \doxylink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d}{SIRL\+\_\+\+INFO} level. \end{DoxyCompactList}\item 
+\#define {\bfseries SIRL\+\_\+\+S\+\_\+\+DEBUG}~\"{}debg\"{}
+\begin{DoxyCompactList}\small\item\em The human-\/readable form of the \doxylink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b}{SIRL\+\_\+\+DEBUG} level. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+MAXFILES}~16
+\begin{DoxyCompactList}\small\item\em The maximum number of log files that may be registered. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+MAXMESSAGE}~2048
+\begin{DoxyCompactList}\small\item\em The maximum number of characters that may be included in one message, not including other parts of the output, like the timestamp and level. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+MAXTIME}~64
+\begin{DoxyCompactList}\small\item\em The size, in characters, of the buffer used to hold time format strings. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+MAXMSEC}~5
+\begin{DoxyCompactList}\small\item\em The size, in characters, of the buffer used to hold millisecond strings. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+MAXLEVEL}~7
+\begin{DoxyCompactList}\small\item\em The size, in characters, of the buffer used to hold level format strings. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+MAXNAME}~32
+\begin{DoxyCompactList}\small\item\em The size, in characters, of the buffer used to hold process/appname format strings. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+MAXPID}~16
+\begin{DoxyCompactList}\small\item\em The size, in characters, of the buffer used to hold process/thread IDs/names. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__custom_gac42033f35206a8adbf1a4377c8e0d290}{SIR\+\_\+\+MAXMISC}}~7
+\begin{DoxyCompactList}\small\item\em The maximum number of whitespace and misc. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+MAXSTYLE\+\_\+16\+\_\+\+COLOR}~16
+\begin{DoxyCompactList}\small\item\em The minimum size, in characters, of the buffer used to hold a sequence of styling data in 16-\/color mode. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+MAXSTYLE}~\mbox{\hyperlink{group__custom_ga2fb5413dac03b2487edfeee377932402}{SIR\+\_\+\+MAXSTYLE\+\_\+16\+\_\+\+COLOR}}
+\begin{DoxyCompactList}\small\item\em For now, we will stick with just the one define for SIR\+\_\+\+MAXOUTPUT, but as soon as 256-\/color and RGB color modes are implemented, we will need more than one of these. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+MAXOUTPUT}
+\begin{DoxyCompactList}\small\item\em The maximum size, in characters, of final formatted output. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+MAXERROR}~256
+\begin{DoxyCompactList}\small\item\em The maximum size, in characters, of an error message. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__custom_ga060398bb73afb43df07b1587bcec98ba}{SIR\+\_\+\+ERRORFORMAT}}~\"{}Error in \%s (\%s\+:\%u)\+: \textquotesingle{}\%s\textquotesingle{}\"{}
+\begin{DoxyCompactList}\small\item\em The format string for error messages returned by \doxylink{group__errors_gac8e6a8a10521cae2e75881df9cdfb636}{\+\_\+sir\+\_\+geterror}. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+UNKNOWN}~\"{}$<$unknown$>$\"{}
+\begin{DoxyCompactList}\small\item\em The string that represents any unknown. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+NUMLEVELS}~8
+\begin{DoxyCompactList}\small\item\em The number of actual levels; \doxylink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a7cc68341661fcb7a505aca67edb7a18e}{SIRL\+\_\+\+NONE}, \doxylink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444}{SIRL\+\_\+\+ALL}, and \doxylink{group__public_gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804}{SIRL\+\_\+\+DEFAULT} are pseudo levels and end up being mapped (or not) to the other 8. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+BEGINSTYLE}~\"{}\textbackslash{}x1b\mbox{[}\"{}
+\begin{DoxyCompactList}\small\item\em The prefix string used to begin a styling sequence in stdio output. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+ENDSTYLE}~\mbox{\hyperlink{group__custom_ga5664f5d45541d1170acff510b54bc733}{SIR\+\_\+\+BEGINSTYLE}} \"{}0m\"{}
+\begin{DoxyCompactList}\small\item\em The string used to reset any styling applied to text in stdio output. \end{DoxyCompactList}\item 
+\#define {\bfseries SIR\+\_\+\+MSECCLOCK}~CLOCK\+\_\+\+MONOTONIC
+\begin{DoxyCompactList}\small\item\em The default clock used to obtain the current millisecond from {\itshape clock\+\_\+gettime}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Compile-\/time constants. 
+
+This file and accompanying source code originated from \href{https://github.com/aremmell/libsir}{\texttt{ https\+://github.\+com/aremmell/libsir}}. If you obtained it elsewhere, all bets are off.
+
+\begin{DoxyAuthor}{Author}
+Ryan M. Lederman \href{mailto:lederman@gmail.com}{\texttt{ lederman@gmail.\+com}} 
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+
+\end{DoxyCopyright}
+The MIT License (MIT)
+
+Copyright (c) 2018 Ryan M. Lederman
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"{}\+Software\"{}), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions\+:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED \"{}\+AS IS\"{}, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+
+Definition in file \mbox{\hyperlink{sirconfig_8h_source}{sirconfig.\+h}}.
+

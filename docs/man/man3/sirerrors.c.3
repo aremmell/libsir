@@ -1,0 +1,61 @@
+.TH "sirerrors.c" 3 "Mon May 29 2023" "Version 2.1.1" "libsir" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+sirerrors.c \- Error management\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'sirerrors\&.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fB__sir_handleerr\fP (int code, const \fBsirchar_t\fP *func, const \fBsirchar_t\fP *file, uint32_t line)"
+.br
+.RI "Handle a C library error\&. "
+.ti -1c
+.RI "\fBsirerror_t\fP \fB_sir_geterror\fP (\fBsirchar_t\fP message[256])"
+.br
+.RI "Returns information about the last error that occurred\&. "
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "static thread_local \fBsir_thread_err\fP \fBsir_te\fP"
+.br
+.RI "Per-thread error data\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Error management\&. 
+
+This file and accompanying source code originated from https://github.com/aremmell/libsir\&. If you obtained it elsewhere, all bets are off\&.
+.PP
+\fBAuthor\fP
+.RS 4
+Ryan M\&. Lederman lederman@gmail.com 
+.RE
+.PP
+\fBCopyright\fP
+.RS 4
+.RE
+.PP
+The MIT License (MIT)
+.PP
+Copyright (c) 2018 Ryan M\&. Lederman
+.PP
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+.PP
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software\&.
+.PP
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\&. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE\&. 
+.PP
+Definition in file \fBsirerrors\&.c\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsir from the source code\&.

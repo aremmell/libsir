@@ -1,0 +1,107 @@
+\doxysection{sirinternal.\+h File Reference}
+\hypertarget{sirinternal_8h}{}\label{sirinternal_8h}\index{sirinternal.h@{sirinternal.h}}
+
+
+Internal implementation.  
+
+
+{\ttfamily \#include \"{}sirhelpers.\+h\"{}}\newline
+{\ttfamily \#include \"{}sirmaps.\+h\"{}}\newline
+{\ttfamily \#include \"{}sirerrors.\+h\"{}}\newline
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef void(\texorpdfstring{$\ast$}{*} {\bfseries sirinit\+\_\+update}) (\mbox{\hyperlink{group__public_structsirinit}{sirinit}} \texorpdfstring{$\ast$}{*}, \mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\+\_\+update\+\_\+config\+\_\+data}} \texorpdfstring{$\ast$}{*})
+\begin{DoxyCompactList}\small\item\em Updates levels/options in the global init structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bfseries \+\_\+sir\+\_\+sanity} (void)
+\begin{DoxyCompactList}\small\item\em Evaluates whether or not libsir has been initialized. \end{DoxyCompactList}\item 
+bool {\bfseries \+\_\+sir\+\_\+options\+\_\+sanity} (const \mbox{\hyperlink{group__public_structsirinit}{sirinit}} \texorpdfstring{$\ast$}{*}si)
+\begin{DoxyCompactList}\small\item\em Validates the configuration passed to \doxylink{group__public_gaa4f5707f5e4ed9702cde75a8c80c4e4a}{sir\+\_\+init}. \end{DoxyCompactList}\item 
+bool {\bfseries \+\_\+sir\+\_\+init} (\mbox{\hyperlink{group__public_structsirinit}{sirinit}} \texorpdfstring{$\ast$}{*}si)
+\begin{DoxyCompactList}\small\item\em Initializes libsir. \end{DoxyCompactList}\item 
+void {\bfseries \+\_\+sir\+\_\+stdoutlevels} (\mbox{\hyperlink{group__public_structsirinit}{sirinit}} \texorpdfstring{$\ast$}{*}si, \mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\+\_\+update\+\_\+config\+\_\+data}} \texorpdfstring{$\ast$}{*}data)
+\begin{DoxyCompactList}\small\item\em Updates levels for {\itshape stdout}. \end{DoxyCompactList}\item 
+void {\bfseries \+\_\+sir\+\_\+stdoutopts} (\mbox{\hyperlink{group__public_structsirinit}{sirinit}} \texorpdfstring{$\ast$}{*}si, \mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\+\_\+update\+\_\+config\+\_\+data}} \texorpdfstring{$\ast$}{*}data)
+\begin{DoxyCompactList}\small\item\em Updates options for {\itshape stdout}. \end{DoxyCompactList}\item 
+void {\bfseries \+\_\+sir\+\_\+stderrlevels} (\mbox{\hyperlink{group__public_structsirinit}{sirinit}} \texorpdfstring{$\ast$}{*}si, \mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\+\_\+update\+\_\+config\+\_\+data}} \texorpdfstring{$\ast$}{*}data)
+\begin{DoxyCompactList}\small\item\em Updates levels for {\itshape stderr}. \end{DoxyCompactList}\item 
+void {\bfseries \+\_\+sir\+\_\+stderropts} (\mbox{\hyperlink{group__public_structsirinit}{sirinit}} \texorpdfstring{$\ast$}{*}si, \mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\+\_\+update\+\_\+config\+\_\+data}} \texorpdfstring{$\ast$}{*}data)
+\begin{DoxyCompactList}\small\item\em Updates options for {\itshape stderr}. \end{DoxyCompactList}\item 
+void {\bfseries \+\_\+sir\+\_\+sysloglevels} (\mbox{\hyperlink{group__public_structsirinit}{sirinit}} \texorpdfstring{$\ast$}{*}si, \mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\+\_\+update\+\_\+config\+\_\+data}} \texorpdfstring{$\ast$}{*}data)
+\begin{DoxyCompactList}\small\item\em Updates levels for {\itshape syslog}. \end{DoxyCompactList}\item 
+bool {\bfseries \+\_\+sir\+\_\+writeinit} (\mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\+\_\+update\+\_\+config\+\_\+data}} \texorpdfstring{$\ast$}{*}data, \mbox{\hyperlink{group__intern_ga8fc307cc2605ec0f37bd979461a32f4a}{sirinit\+\_\+update}} update)
+\begin{DoxyCompactList}\small\item\em Updates levels/options in the global init structure. \end{DoxyCompactList}\item 
+void \texorpdfstring{$\ast$}{*} {\bfseries \+\_\+sir\+\_\+locksection} (\mbox{\hyperlink{group__intern_ga1b4579307692c802cc1d2b16e49c1371}{sir\+\_\+mutex\+\_\+id}} mid)
+\begin{DoxyCompactList}\small\item\em Locks a protected section. \end{DoxyCompactList}\item 
+bool {\bfseries \+\_\+sir\+\_\+unlocksection} (\mbox{\hyperlink{group__intern_ga1b4579307692c802cc1d2b16e49c1371}{sir\+\_\+mutex\+\_\+id}} mid)
+\begin{DoxyCompactList}\small\item\em Unlocks a protected section. \end{DoxyCompactList}\item 
+bool {\bfseries \+\_\+sir\+\_\+mapmutexid} (\mbox{\hyperlink{group__intern_ga1b4579307692c802cc1d2b16e49c1371}{sir\+\_\+mutex\+\_\+id}} mid, \mbox{\hyperlink{sirplatform_8h_a4b87629d5980e5381b8f76488a104f65}{sirmutex\+\_\+t}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}m, void \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}section)
+\begin{DoxyCompactList}\small\item\em Maps a \doxylink{group__intern_ga1b4579307692c802cc1d2b16e49c1371}{sir\+\_\+mutex\+\_\+id} to a \doxylink{sirplatform_8h_a4b87629d5980e5381b8f76488a104f65}{sirmutex\+\_\+t} and protected section. \end{DoxyCompactList}\item 
+bool {\bfseries \+\_\+sir\+\_\+cleanup} (void)
+\begin{DoxyCompactList}\small\item\em Frees allocated resources. \end{DoxyCompactList}\item 
+void {\bfseries \+\_\+sir\+\_\+initialize\+\_\+once} (void)
+\begin{DoxyCompactList}\small\item\em General initialization procedure. \end{DoxyCompactList}\item 
+void {\bfseries \+\_\+sir\+\_\+initmutex\+\_\+si\+\_\+once} (void)
+\begin{DoxyCompactList}\small\item\em Initializes a specific mutex. \end{DoxyCompactList}\item 
+void {\bfseries \+\_\+sir\+\_\+initmutex\+\_\+fc\+\_\+once} (void)
+\begin{DoxyCompactList}\small\item\em Initializes a specific mutex. \end{DoxyCompactList}\item 
+void {\bfseries \+\_\+sir\+\_\+initmutex\+\_\+ts\+\_\+once} (void)
+\begin{DoxyCompactList}\small\item\em Initializes a specific mutex. \end{DoxyCompactList}\item 
+void {\bfseries \+\_\+sir\+\_\+initmutex} (\mbox{\hyperlink{sirplatform_8h_a4b87629d5980e5381b8f76488a104f65}{sirmutex\+\_\+t}} \texorpdfstring{$\ast$}{*}mutex)
+\begin{DoxyCompactList}\small\item\em Initializes a specific mutex. \end{DoxyCompactList}\item 
+bool {\bfseries \+\_\+sir\+\_\+once} (\mbox{\hyperlink{sirplatform_8h_a3e6f12e65e77dc62a8f3763f504335de}{sironce\+\_\+t}} \texorpdfstring{$\ast$}{*}once, \mbox{\hyperlink{sirplatform_8h_a15c96569a28643ba97e1609a37be5bb3}{sir\+\_\+once\+\_\+fn}} func)
+\begin{DoxyCompactList}\small\item\em Executes only one time. \end{DoxyCompactList}\item 
+bool {\bfseries \+\_\+sir\+\_\+logv} (\mbox{\hyperlink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}} level, const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}format, va\+\_\+list args)
+\begin{DoxyCompactList}\small\item\em Core output formatting. \end{DoxyCompactList}\item 
+bool {\bfseries \+\_\+sir\+\_\+dispatch} (\mbox{\hyperlink{group__public_structsirinit}{sirinit}} \texorpdfstring{$\ast$}{*}si, \mbox{\hyperlink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}} level, \mbox{\hyperlink{group__intern_structsirbuf}{sirbuf}} \texorpdfstring{$\ast$}{*}buf)
+\begin{DoxyCompactList}\small\item\em Output dispatching. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*} {\bfseries \+\_\+sir\+\_\+format} (bool styling, \mbox{\hyperlink{group__public_gafb659914aac0129182d86f7d3414e85d}{sir\+\_\+options}} opts, \mbox{\hyperlink{group__intern_structsirbuf}{sirbuf}} \texorpdfstring{$\ast$}{*}buf)
+\begin{DoxyCompactList}\small\item\em Specific destination formatting. \end{DoxyCompactList}\item 
+int {\bfseries \+\_\+sir\+\_\+syslog\+\_\+maplevel} (\mbox{\hyperlink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}} level)
+\begin{DoxyCompactList}\small\item\em Maps a \doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} to a {\itshape syslog} level. \end{DoxyCompactList}\item 
+void {\bfseries \+\_\+sir\+\_\+syslog\+\_\+open} (const char \texorpdfstring{$\ast$}{*}app\+\_\+name, \mbox{\hyperlink{group__public_structsir__syslog__dest}{sir\+\_\+syslog\+\_\+dest}} \texorpdfstring{$\ast$}{*}ctx)
+\begin{DoxyCompactList}\small\item\em Called upon initialization of the library; does any necesssary connecting/opening handles, etc. \end{DoxyCompactList}\item 
+bool {\bfseries \+\_\+sir\+\_\+syslog\+\_\+write} (\mbox{\hyperlink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}} level, const \mbox{\hyperlink{group__intern_structsirbuf}{sirbuf}} \texorpdfstring{$\ast$}{*}buf, \mbox{\hyperlink{group__public_structsir__syslog__dest}{sir\+\_\+syslog\+\_\+dest}} \texorpdfstring{$\ast$}{*}ctx)
+\begin{DoxyCompactList}\small\item\em Abstraction for writing to platform-\/specific implementations of syslog-\/type facilities (e.\+g.,) {\ttfamily os\+\_\+log} on mac\+OS. \end{DoxyCompactList}\item 
+void {\bfseries \+\_\+sir\+\_\+syslog\+\_\+close} (\mbox{\hyperlink{group__public_structsir__syslog__dest}{sir\+\_\+syslog\+\_\+dest}} \texorpdfstring{$\ast$}{*}ctx)
+\begin{DoxyCompactList}\small\item\em Called upon shutdown of the library; does any necessary cleaning up/closing handles, etc. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*} {\bfseries \+\_\+sir\+\_\+levelstr} (\mbox{\hyperlink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}} level)
+\begin{DoxyCompactList}\small\item\em Converts a \doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} to its human-\/readable form. \end{DoxyCompactList}\item 
+bool {\bfseries \+\_\+sir\+\_\+getlocaltime} (time\+\_\+t \texorpdfstring{$\ast$}{*}tbuf, long \texorpdfstring{$\ast$}{*}nsecbuf)
+\begin{DoxyCompactList}\small\item\em Retrieves the current local time w/ optional milliseconds. \end{DoxyCompactList}\item 
+bool {\bfseries \+\_\+sir\+\_\+formattime} (time\+\_\+t now, \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}buffer, const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}format)
+\begin{DoxyCompactList}\small\item\em Formats the current time as a string. \end{DoxyCompactList}\item 
+pid\+\_\+t {\bfseries \+\_\+sir\+\_\+getpid} (void)
+\begin{DoxyCompactList}\small\item\em Returns the current process identifier. \end{DoxyCompactList}\item 
+pid\+\_\+t {\bfseries \+\_\+sir\+\_\+gettid} (void)
+\begin{DoxyCompactList}\small\item\em Returns the current thread identifier. \end{DoxyCompactList}\item 
+bool {\bfseries \+\_\+sir\+\_\+getthreadname} (char name\mbox{[}16\mbox{]})
+\begin{DoxyCompactList}\small\item\em Returns the current thread\textquotesingle{}s name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Internal implementation. 
+
+This file and accompanying source code originated from \href{https://github.com/aremmell/libsir}{\texttt{ https\+://github.\+com/aremmell/libsir}}. If you obtained it elsewhere, all bets are off.
+
+\begin{DoxyAuthor}{Author}
+Ryan M. Lederman \href{mailto:lederman@gmail.com}{\texttt{ lederman@gmail.\+com}} 
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+
+\end{DoxyCopyright}
+The MIT License (MIT)
+
+Copyright (c) 2018 Ryan M. Lederman
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"{}\+Software\"{}), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions\+:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED \"{}\+AS IS\"{}, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+
+Definition in file \mbox{\hyperlink{sirinternal_8h_source}{sirinternal.\+h}}.
+

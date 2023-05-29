@@ -1,0 +1,253 @@
+\chapter{libsir}
+\hypertarget{index}{}\label{index}\index{libsir@{libsir}}
+\label{index_md__r_e_a_d_m_e}%
+\Hypertarget{index_md__r_e_a_d_m_e}%
+ \href{https://app.travis-ci.com/aremmell/libsir}{\texttt{ }} 
+
+\doxysection*{Synopsis}
+
+libsir is a cross-\/platform, thread-\/safe logging library written in C that is designed to simplify and streamline the generation and distribution of human-\/readable information in software.
+
+Using libsir, you can make a single call that simultaneously sends information to multiple destinations, {\itshape each with their own individual preference for format and levels}.
+
+Each \textquotesingle{}level\textquotesingle{} or \textquotesingle{}priority\textquotesingle{} of output can be visually styled however you wish for {\ttfamily stdio} destinations. This allows for immediate visual confirmation that a message appeared in the terminal that you should pay attention to, while less pressing information is more subtle in appearance.
+
+\doxysection*{Notables}
+
+
+\begin{DoxyItemize}
+\item No dependencies (other than {\ttfamily libc} and {\ttfamily pthreads}). On Windows, libsir uses the native sychronization API.
+\item Accompanied by a robust test suite to ensure dependable behavior, even if you make modifications to the source.
+\item Won\textquotesingle{}t fail silently--- C library or platform level errors are captured and stored for posterity, on a per-\/thread basis. The {\itshape function, file, and line number from which it orginated} are also captured. Additionally, libsir defines its own set of error messages to aid in troubleshooting.
+\item Hardened--- every function contains sanity checks for internal state as well as arguments passed in through the external interfaces. libsir\textquotesingle{}s make recipes use -- {\itshape Wpedantic}, too.
+\item \href{https://aremmell.github.io/libsir}{\texttt{ Full documentation}}, thanks to Doxygen.
+\end{DoxyItemize}
+
+\doxysection*{Cross-\/platform compatibility}
+
+Currently, libsir uses a hand-\/rolled Unix Makefile. Despite that, I ({\itshape and Travis CI}) have successfully compiled and verified the test suite in these environments\+:
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Toolset   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ OS   }&\cellcolor{\tableheadbgcolor}\textbf{ Architecture    }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Toolset   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ OS   }&\cellcolor{\tableheadbgcolor}\textbf{ Architecture    }\\\cline{1-3}
+\endhead
+gcc 5.\+4.\+0   &Ubuntu 16.\+04   &amd64    \\\cline{1-3}
+gcc 7.\+3.\+0   &Ubuntu 18.\+04   &armhf    \\\cline{1-3}
+clang 7.\+0.\+0   &Ubuntu 18.\+04   &amd64    \\\cline{1-3}
+clang 6.\+0.\+0   &Ubuntu 18.\+04   &arm64    \\\cline{1-3}
+gcc 7.\+5.\+0   &Ubuntu 18.\+04   &arm64    \\\cline{1-3}
+gcc 7.\+3.\+0 (Min\+GW)   &Windows 10   &x86\+\_\+64    \\\cline{1-3}
+clang 9.\+1.\+0   &mac\+OS 10.\+13.\+4   &x86\+\_\+64    \\\cline{1-3}
+clang 14.\+0.\+0   &mac\+OS 12.\+6   &x86\+\_\+64    \\\cline{1-3}
+clang 14.\+0.\+3   &mac\+OS 13.\+3.\+1   &x86\+\_\+64    \\\cline{1-3}
+clang 14.\+0.\+3   &mac\+OS 13.\+3.\+1   &arm64    \\\cline{1-3}
+clang 14.\+0.\+5   &Free\+BSD 13.\+2   &amd64   \\\cline{1-3}
+\end{longtabu}
+
+
+There is a VS Code workspace file included, in case you\textquotesingle{}d like to use that. In the future, I will likely use CMake or autotools to generate the compilation scripts.
+
+\doxysection*{Implementation details}
+
+\doxysubsection*{Output destinations}
+
+
+\begin{DoxyItemize}
+\item {\ttfamily stdout} / {\ttfamily stderr}
+\item {\ttfamily syslog}
+\item {\itshape n} number of log files ({\itshape archived automatically a\textquotesingle{}la logrotate when they get too big})
+\end{DoxyItemize}
+
+\doxysubsection*{Informational output}
+
+libsir is able to output certain data that may contribute to better comprehension of the program state ({\itshape particularly for debugging postmortem}). Each destination may be configured to receive any, all, or none of these.
+
+\begin{quote}
+Note\+: the format of this data may be customized for your application. See Customization for more information. \end{quote}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{5}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Data   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ stdio   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ syslog\mbox{[}\texorpdfstring{$^\wedge$}{\string^}1\mbox{]}   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ files    }\\\cline{1-5}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Data   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ stdio   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ syslog\mbox{[}\texorpdfstring{$^\wedge$}{\string^}1\mbox{]}   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ files    }\\\cline{1-5}
+\endhead
+\PBS\centering Timestamp   &\PBS\centering The current time ({\itshape hour, min, sec})   &\PBS\centering ✓   &\PBS\centering &\PBS\centering ✓    \\\cline{1-5}
+\PBS\centering Milliseconds   &\PBS\centering 1/1000\texorpdfstring{$^\wedge$}{\string^}ths\texorpdfstring{$^\wedge$}{\string^} of the current second   &\PBS\centering ✓   &\PBS\centering &\PBS\centering ✓    \\\cline{1-5}
+\PBS\centering Level   &\PBS\centering Human-\/readable level \+\_\+(e.\+g. \textquotesingle{}warn\textquotesingle{})\+\_\+   &\PBS\centering ✓   &\PBS\centering &\PBS\centering ✓    \\\cline{1-5}
+\PBS\centering Name   &\PBS\centering Name of the process   &\PBS\centering ✓   &\PBS\centering ✓   &\PBS\centering ✓    \\\cline{1-5}
+\PBS\centering Process ID   &\PBS\centering The current process identifier   &\PBS\centering ✓   &\PBS\centering ✓   &\PBS\centering ✓    \\\cline{1-5}
+\PBS\centering Thread ID   &\PBS\centering The current thread identifier   &\PBS\centering ✓   &\PBS\centering &\PBS\centering ✓   \\\cline{1-5}
+\end{longtabu}
+
+
+\mbox{[}\texorpdfstring{$^\wedge$}{\string^}1\mbox{]}\+: {\ttfamily syslog} already include these categories of data on its own, so libsir purposely omits them.\+\_\+
+
+\doxysubsection*{Logging levels}
+
+In addition to decoration options, each destination may be registered to receive any, none, or all priority levels of output. The available levels may be overly granular, but it\textquotesingle{}s better to have unused levels rather than need another one and not have it.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Level   }&\cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Level   }&\cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+\PBS\centering Debug   &Debugging/diagnostic output.    \\\cline{1-2}
+\PBS\centering Information   &Informational messages.    \\\cline{1-2}
+\PBS\centering Notice   &Normal but significant.    \\\cline{1-2}
+\PBS\centering Warning   &Warnings that could likely be ignored.    \\\cline{1-2}
+\PBS\centering Error   &Errors.    \\\cline{1-2}
+\PBS\centering Critical   &Critical errors.    \\\cline{1-2}
+\PBS\centering Alert   &Action required ASAP.    \\\cline{1-2}
+\PBS\centering Emergency   &Nuclear war, Armageddon, the sky is falling.   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysection*{Customization}
+
+\doxysubsection*{Formatting and Limits}
+
+The following can be modified to alter behavior, and are located in \href{./sirconfig.h}{\texttt{ sirconfig.\+h}}. This is not an exhaustive list, and you should read the header for more information\+:
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Entry   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Default    }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Entry   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Default    }\\\cline{1-3}
+\endhead
+\PBS\centering {\ttfamily SIR\+\_\+\+TIMEFORMAT}   &The time stamp format string at the beginning of log messages.   &\PBS\centering {\ttfamily \"{}\%\+H\+:\%\+M\+:\%\+S\"{}}    \\\cline{1-3}
+\PBS\centering {\ttfamily SIR\+\_\+\+MSECFORMAT}   &The format for the current millisecond in time stamps.   &\PBS\centering {\ttfamily \"{}.\%03ld\"{}}    \\\cline{1-3}
+\PBS\centering {\ttfamily SIR\+\_\+\+LEVELFORMAT}   &The format for the human-\/readable logging level.   &\PBS\centering {\ttfamily \"{}\mbox{[}\%s\mbox{]}\"{}}    \\\cline{1-3}
+\PBS\centering {\ttfamily SIR\+\_\+\+PIDFORMAT}   &The format for the current process/thread ID.   &\PBS\centering {\ttfamily \"{}\%d\"{}}    \\\cline{1-3}
+\PBS\centering {\ttfamily SIR\+\_\+\+FOPENMODE}   &The string passed to fopen/fopen\+\_\+s for log files.   &\PBS\centering {\ttfamily \"{}a\"{}}    \\\cline{1-3}
+\PBS\centering {\ttfamily SIR\+\_\+\+FROLLSIZE}   &The size, in bytes, at which a log file will be rolled/archived.   &\PBS\centering {\ttfamily (1024L \texorpdfstring{$\ast$}{*} 1024L \texorpdfstring{$\ast$}{*} 5L)}    \\\cline{1-3}
+\PBS\centering {\ttfamily SIR\+\_\+\+FHTIMEFORMAT}   &The time format string in file headers.   &\PBS\centering {\ttfamily \"{}\%\+H\+:\%\+M\+:\%\+S \%a \%d \%b \%y (\%z)\"{}}    \\\cline{1-3}
+\PBS\centering {\ttfamily SIR\+\_\+\+FHFORMAT}   &The format string written to a log file when logging begins or the file is rolled/archived.   &\PBS\centering {\ttfamily \"{}\textbackslash{}n\textbackslash{}n-\/-\/-\/-\/-\/ \%s \%s -\/-\/-\/-\/-\/\textbackslash{}n\textbackslash{}n\"{}}    \\\cline{1-3}
+\PBS\centering {\ttfamily SIR\+\_\+\+FHBEGIN}   &The string included in {\ttfamily SIR\+\_\+\+FHFORMAT} when a file is rolled/archived due to size.   &\PBS\centering {\ttfamily \"{}session begin @\"{}}    \\\cline{1-3}
+\PBS\centering {\ttfamily SIR\+\_\+\+FHROLLED}   &The string included in {\ttfamily SIR\+\_\+\+FHFORMAT} when a file is rolled/archived due to size.   &\PBS\centering {\ttfamily \"{}archived as \%s due to size @\"{}}    \\\cline{1-3}
+\PBS\centering {\ttfamily SIR\+\_\+\+FNAMEFORMAT}   &The format string for rolled/archived log file names.   &\PBS\centering {\ttfamily \"{}\%s-\/\%s\%s\"{}}    \\\cline{1-3}
+\PBS\centering {\ttfamily SIRL\+\_\+\+S\+\_\+\+EMERG}   &The human-\/readable form of the {\ttfamily SIRL\+\_\+\+EMERG} level.   &\PBS\centering {\ttfamily \"{}emrg\"{}}    \\\cline{1-3}
+\PBS\centering {\ttfamily SIRL\+\_\+\+S\+\_\+\+ALERT}   &The human-\/readable form of the {\ttfamily SIRL\+\_\+\+ALERT} level.   &\PBS\centering {\ttfamily \"{}alrt\"{}}    \\\cline{1-3}
+\PBS\centering {\ttfamily SIRL\+\_\+\+S\+\_\+\+CRIT}   &The human-\/readable form of the {\ttfamily SIRL\+\_\+\+CRIT} level.   &\PBS\centering {\ttfamily \"{}crit\"{}}    \\\cline{1-3}
+\PBS\centering {\ttfamily SIRL\+\_\+\+S\+\_\+\+ERROR}   &The human-\/readable form of the {\ttfamily SIRL\+\_\+\+ERROR} level.   &\PBS\centering {\ttfamily \"{}erro\"{}}    \\\cline{1-3}
+\PBS\centering {\ttfamily SIRL\+\_\+\+S\+\_\+\+WARN}   &The human-\/readable form of the {\ttfamily SIRL\+\_\+\+WARN} level.   &\PBS\centering {\ttfamily \"{}warn\"{}}    \\\cline{1-3}
+\PBS\centering {\ttfamily SIRL\+\_\+\+S\+\_\+\+NOTICE}   &The human-\/readable form of the {\ttfamily SIRL\+\_\+\+NOTICE} level.   &\PBS\centering {\ttfamily \"{}noti\"{}}    \\\cline{1-3}
+\PBS\centering {\ttfamily SIRL\+\_\+\+S\+\_\+\+INFO}   &The human-\/readable form of the {\ttfamily SIRL\+\_\+\+INFO} level.   &\PBS\centering {\ttfamily \"{}info\"{}}    \\\cline{1-3}
+\PBS\centering {\ttfamily SIRL\+\_\+\+S\+\_\+\+DEBUG}   &The human-\/readable form of the {\ttfamily SIRL\+\_\+\+DEBUG} level.   &\PBS\centering {\ttfamily \"{}debg\"{}}    \\\cline{1-3}
+\PBS\centering {\ttfamily SIR\+\_\+\+MAXFILES}   &The maximum number of log files that may be registered.   &\PBS\centering {\ttfamily 16}    \\\cline{1-3}
+\PBS\centering {\ttfamily SIR\+\_\+\+MAXMESSAGE}   &The maximum allowed characters in a message, not including additional information.   &\PBS\centering {\ttfamily 2048}   \\\cline{1-3}
+\end{longtabu}
+
+
+\doxysubsection*{Default options, levels, and text styles}
+
+\doxysubsubsection*{Options}
+
+The following are the defaults used when {\ttfamily SIRL\+\_\+\+DEFAULT} or {\ttfamily SIRO\+\_\+\+DEFAULT} are used. These are located in \href{./sirdefaults.h}{\texttt{ sirdefaults.\+h}}\+:
+
+Destination \texorpdfstring{$\vert$}{|} Levels \texorpdfstring{$\vert$}{|} Options -\/-\/-\/-\/-\/-\/-\/-\/--- \texorpdfstring{$\vert$}{|} \+:-\/-\/-\/-\/---\+: \texorpdfstring{$\vert$}{|} -\/-\/-\/-\/--- stdout \texorpdfstring{$\vert$}{|} {\ttfamily SIRL\+\_\+\+DEBUG \texorpdfstring{$\vert$}{|} SIRL\+\_\+\+INFO \texorpdfstring{$\vert$}{|} SIRL\+\_\+\+NOTICE \texorpdfstring{$\vert$}{|} SIRL\+\_\+\+WARN} \texorpdfstring{$\vert$}{|} {\ttfamily SIRO\+\_\+\+NOTIME \texorpdfstring{$\vert$}{|} SIRO\+\_\+\+NOPID \texorpdfstring{$\vert$}{|} SIRO\+\_\+\+NOTID} stderr \texorpdfstring{$\vert$}{|} {\ttfamily SIRL\+\_\+\+ERROR \texorpdfstring{$\vert$}{|} SIRL\+\_\+\+CRIT \texorpdfstring{$\vert$}{|} SIRL\+\_\+\+EMERG} \texorpdfstring{$\vert$}{|} {\ttfamily SIRO\+\_\+\+NOTIME \texorpdfstring{$\vert$}{|} SIRO\+\_\+\+NOPID \texorpdfstring{$\vert$}{|} SIRO\+\_\+\+NOTID} syslog \texorpdfstring{$\vert$}{|} {\ttfamily SIRL\+\_\+\+WARN \texorpdfstring{$\vert$}{|} SIRL\+\_\+\+CRIT \texorpdfstring{$\vert$}{|} SIRL\+\_\+\+ALERT \texorpdfstring{$\vert$}{|} SIRL\+\_\+\+EMERG} \texorpdfstring{$\vert$}{|} {\ttfamily N/A (syslog has its own)} log files \texorpdfstring{$\vert$}{|} {\ttfamily SIRL\+\_\+\+ALL} \texorpdfstring{$\vert$}{|} {\ttfamily 0 (all output)} ~\newline
+
+
+\doxysubsubsection*{Styles}
+
+libsir \"{}styling\"{} is another way of saying ANSI escape color coding. Currently, libsir supports \href{https://en.wikipedia.org/wiki/ANSI_escape_code\#3-bit_and_4-bit}{\texttt{ 4-\/bit (16-\/colors)}}. Future releases will support 8-\/bit and 24-\/bit colors.
+
+Supported terminals will render text from libsir based on the \"{}styles\"{} used in libsir. The following define the default text styling to use for {\ttfamily stdout} / {\ttfamily stderr} on a per-\/level basis ({\itshape can be changed at runtime with} {\ttfamily sir\+\_\+settextstyle} located in \href{./sirdefaults.h}{\texttt{ sirdefaults.\+h}})\+:
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Level   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Style   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Sample    }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Level   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Style   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Sample    }\\\cline{1-3}
+\endhead
+\PBS\centering {\ttfamily SIRL\+\_\+\+DEBUG}   &\PBS\centering {\ttfamily SIRS\+\_\+\+FG\+\_\+\+DGRAY}   &\PBS\centering     \\\cline{1-3}
+\PBS\centering {\ttfamily SIRL\+\_\+\+INFO}   &\PBS\centering {\ttfamily SIRS\+\_\+\+FG\+\_\+\+WHITE}   &\PBS\centering     \\\cline{1-3}
+\PBS\centering {\ttfamily SIRL\+\_\+\+NOTICE}   &\PBS\centering {\ttfamily SIRS\+\_\+\+FG\+\_\+\+CYAN}   &\PBS\centering     \\\cline{1-3}
+\PBS\centering {\ttfamily SIRL\+\_\+\+WARN}   &\PBS\centering {\ttfamily SIRS\+\_\+\+FG\+\_\+\+YELLOW}   &\PBS\centering     \\\cline{1-3}
+\PBS\centering {\ttfamily SIRL\+\_\+\+ERROR}   &\PBS\centering {\ttfamily SIRS\+\_\+\+FG\+\_\+\+RED}   &\PBS\centering    \\\cline{1-3}
+\end{longtabu}
+{\ttfamily SIRL\+\_\+\+CRIT} \texorpdfstring{$\vert$}{|} {\ttfamily SIRS\+\_\+\+BRIGHT \texorpdfstring{$\vert$}{|} SIRS\+\_\+\+FG\+\_\+\+RED} \texorpdfstring{$\vert$}{|}  {\ttfamily SIRL\+\_\+\+ALERT} \texorpdfstring{$\vert$}{|} {\ttfamily SIRS\+\_\+\+BRIGHT \texorpdfstring{$\vert$}{|} SIRS\+\_\+\+FG\+\_\+\+BLACK \texorpdfstring{$\vert$}{|} SIRS\+\_\+\+BG\+\_\+\+LYELLOW} \texorpdfstring{$\vert$}{|}  {\ttfamily SIRL\+\_\+\+EMERG} \texorpdfstring{$\vert$}{|} {\ttfamily SIRS\+\_\+\+BRIGHT \texorpdfstring{$\vert$}{|} SIRS\+\_\+\+FG\+\_\+\+LYELLOW \texorpdfstring{$\vert$}{|} SIRS\+\_\+\+BG\+\_\+\+RED} \texorpdfstring{$\vert$}{|} 
+
+\doxysection*{Installation}
+
+Clone or download this repository to your machine, then choose how you\textquotesingle{}d like to integrate libsir into your project\+:
+
+\doxysubsection*{Make}
+
+\doxysubsubsection*{Tinkering/testing}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Recipe Type   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Command   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Output file    }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Recipe Type   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Command   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Output file    }\\\cline{1-3}
+\endhead
+\PBS\centering Test suite   &\PBS\centering {\ttfamily make tests}   &\PBS\centering {\itshape build/sirtests\mbox{[}.exe\mbox{]}}    \\\cline{1-3}
+\PBS\centering Example app   &\PBS\centering {\ttfamily make example}   &\PBS\centering {\itshape build/sirexample\mbox{[}.exe\mbox{]}}   \\\cline{1-3}
+\end{longtabu}
+
+
+\doxysubsubsection*{Production}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Recipe Type   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Command   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Output file    }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Recipe Type   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Command   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Output file    }\\\cline{1-3}
+\endhead
+\PBS\centering Static library   &\PBS\centering {\ttfamily make static}   &\PBS\centering {\itshape build/lib/libsir\+\_\+s.\+a}    \\\cline{1-3}
+\PBS\centering Shared library   &\PBS\centering {\ttfamily make shared}   &\PBS\centering {\itshape build/lib/libsir.\+so}    \\\cline{1-3}
+\PBS\centering Install\mbox{[}\texorpdfstring{$^\wedge$}{\string^}2\mbox{]}   &\PBS\centering {\ttfamily sudo make install}   &\PBS\centering /usr/local/lib/libsir.so, /usr/local/include/\texorpdfstring{$<$}{<} headers\texorpdfstring{$>$}{>}   \\\cline{1-3}
+\end{longtabu}
+
+
+\mbox{[}\texorpdfstring{$^\wedge$}{\string^}2\mbox{]}\+: Use {\ttfamily sudo make install} only if you have looked at the recipe and understand that it manually copies files, that’s it. Future releases of libsir will utilize the {\ttfamily install} tool when available.
+
+\begin{quote}
+If you\textquotesingle{}d like to debug libsir, just swap out the commented debug flags in \href{./Makefile}{\texttt{ the makefile}}. \end{quote}
+Another option for implementing libsir would simply be to include all of the source files in the root directory of this repository and include \href{./sir.h}{\texttt{ sir.\+h}}.
+
+\doxysubsection*{Preprocessor}
+
+
+\begin{DoxyItemize}
+\item For my own development purposes, I included a preprocesor define that causes libsir to log certain events to {\ttfamily stderr} that may be useful in diagnosing problems if/when they arise\+: {\ttfamily -\/DSIR\+\_\+\+SELFLOG}.
+\item You should also be aware that {\ttfamily assert} is used in libsir. If you build {\itshape without} {\ttfamily -\/DNDEBUG}, and an {\ttfamily assert} triggers, your program will halt ({\ttfamily assert} calls {\ttfamily abort} if the expression is {\ttfamily false}).
+\end{DoxyItemize}
+
+\doxysubsection*{Why libsir?}
+
+libsir was originally written in 2003 for my own personal use, and I rediscovered it recently. I looked at it, and realized that it was woefully inadequate and decided to compeltely rewrite it. I also decided to make it publically available, because I think it\textquotesingle{}s a pretty good library, and I hope that it will be useful to others.
+
+\doxysubsection*{Further reading}
+
+If you are genuinely interested in utilizing libsir, I strongly encourage you to read the \href{https://aremmell.github.io/libsir}{\texttt{ full online documentation}} to get a better understanding of the library\textquotesingle{}s capabilities and interfaces. 

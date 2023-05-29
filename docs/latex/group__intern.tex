@@ -1,0 +1,726 @@
+\doxysection{Internal}
+\hypertarget{group__intern}{}\label{group__intern}\index{Internal@{Internal}}
+
+
+libsir\textquotesingle{}s guts.  
+
+
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{group__intern_structsirfile}{sirfile}}
+\begin{DoxyCompactList}\small\item\em Log file data.  \mbox{\hyperlink{group__intern_structsirfile}{More...}}\end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{group__intern_structsirfcache}{sirfcache}}
+\begin{DoxyCompactList}\small\item\em Log file cache.  \mbox{\hyperlink{group__intern_structsirfcache}{More...}}\end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{group__intern_structsirbuf}{sirbuf}}
+\begin{DoxyCompactList}\small\item\em Formatted output sent to destinations.  \mbox{\hyperlink{group__intern_structsirbuf}{More...}}\end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{group__intern_structsir__level__style__pair}{sir\+\_\+level\+\_\+style\+\_\+pair}}
+\begin{DoxyCompactList}\small\item\em \doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} \texorpdfstring{$<$}{<}-\/\texorpdfstring{$>$}{>} default \doxylink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle} mapping.  \mbox{\hyperlink{group__intern_structsir__level__style__pair}{More...}}\end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{group__intern_structsir__level__str__pair}{sir\+\_\+level\+\_\+str\+\_\+pair}}
+\begin{DoxyCompactList}\small\item\em \doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} \texorpdfstring{$<$}{<}-\/\texorpdfstring{$>$}{>} string representation mapping (\doxylink{sirconfig_8h}{sirconfig.\+h})  \mbox{\hyperlink{group__intern_structsir__level__str__pair}{More...}}\end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{group__intern_structsir__style__16color__pair}{sir\+\_\+style\+\_\+16color\+\_\+pair}}
+\begin{DoxyCompactList}\small\item\em Public (\doxylink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle}) \texorpdfstring{$<$}{<}-\/\texorpdfstring{$>$}{>} values used to generate styled terminal output.  \mbox{\hyperlink{group__intern_structsir__style__16color__pair}{More...}}\end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{group__intern_structsir__thread__err}{sir\+\_\+thread\+\_\+err}}
+\begin{DoxyCompactList}\small\item\em Error type.  \mbox{\hyperlink{group__intern_structsir__thread__err}{More...}}\end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\+\_\+update\+\_\+config\+\_\+data}}
+\begin{DoxyCompactList}\small\item\em Encapsulates dynamic updating of current configuration.  \mbox{\hyperlink{group__intern_structsir__update__config__data}{More...}}\end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{group__intern_ga8621b47594131810d5abea6109a32e1d}\label{group__intern_ga8621b47594131810d5abea6109a32e1d} 
+\#define {\bfseries \+\_\+sir\+\_\+countof}(arr)~(sizeof(arr) / sizeof(arr\mbox{[}0\mbox{]}))
+\begin{DoxyCompactList}\small\item\em Computes the size of an array. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga96032779b027480acf885eab4a5e6da4}\label{group__intern_ga96032779b027480acf885eab4a5e6da4} 
+\#define {\bfseries \+\_\+sir\+\_\+mkerror}(code)~    (((uint32\+\_\+t)(code \& 0x7fff) $<$$<$ 16) \texorpdfstring{$\vert$}{|} 0x80000000)
+\begin{DoxyCompactList}\small\item\em Creates an error code that (hopefully) doesn\textquotesingle{}t conflict with any of those defined by the platform. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gac812e82ac0f3ee01b35808082281363c}\label{group__intern_gac812e82ac0f3ee01b35808082281363c} 
+\#define {\bfseries \+\_\+\+SIR\+\_\+\+L\+\_\+\+START}(format)
+\begin{DoxyCompactList}\small\item\em Evil macro used for \+\_\+sir\+\_\+lv wrappers. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga7d5dda1395dc7eec751df1ec10095aef}\label{group__intern_ga7d5dda1395dc7eec751df1ec10095aef} 
+\#define {\bfseries \+\_\+\+SIR\+\_\+\+L\+\_\+\+END}(args)~va\+\_\+end(args);
+\begin{DoxyCompactList}\small\item\em Evil macro used for \+\_\+sir\+\_\+lv wrappers. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gaec5f4c31b60aca6a62b01e7188e91e08}\label{group__intern_gaec5f4c31b60aca6a62b01e7188e91e08} 
+\#define {\bfseries \+\_\+\+SIR\+\_\+\+UNUSED}(param)~(void)param;
+\begin{DoxyCompactList}\small\item\em Squelches warnings about unreferenced parameters. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga8fa793d8b19a813ef1e7792072bcb35b}\label{group__intern_ga8fa793d8b19a813ef1e7792072bcb35b} 
+\#define {\bfseries \+\_\+\+SIR\+\_\+\+DECLARE\+\_\+\+BIN\+\_\+\+SEARCH}(low,  high)
+\begin{DoxyCompactList}\small\item\em Even more evil macros used for binary searching arrays. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__intern_ga1db61be8817fa34c0fb8a57f9dfaf2d3}{\+\_\+sir\+\_\+notnull}}(addr)~(NULL != addr)
+\begin{DoxyCompactList}\small\item\em Validates a pointer-\/to-\/pointer, pointer, pointer to function, etc. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group__intern_ga4dcd7ef46f8eb972c7afdaa9b64d57ab}{SIR\+\_\+\+ESC\+\_\+\+START}}~\"{}\textbackslash{}x1b\mbox{[}\"{}
+\begin{DoxyCompactList}\small\item\em Escape sequences\+: \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gafe296ab1f6b488fd5e23ebd50c780b80}\label{group__intern_gafe296ab1f6b488fd5e23ebd50c780b80} 
+\#define {\bfseries SIR\+\_\+\+R\+\_\+\+ARROW}~\"{}\textbackslash{}xe2\textbackslash{}x86\textbackslash{}x92\"{}
+\begin{DoxyCompactList}\small\item\em A couple fun characters that can be sent to stdio. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga09e61ce10bc0571beda516472b5e9197}\label{group__intern_ga09e61ce10bc0571beda516472b5e9197} 
+\#define {\bfseries \+\_\+\+SIRS\+\_\+\+ATTR\+\_\+\+MASK}~0x0000000f
+\begin{DoxyCompactList}\small\item\em Text style attribute mask. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga7660f6397f9c6b7f628cf2e354222544}\label{group__intern_ga7660f6397f9c6b7f628cf2e354222544} 
+\#define {\bfseries \+\_\+\+SIRS\+\_\+\+FG\+\_\+\+MASK}~0x00000ff0
+\begin{DoxyCompactList}\small\item\em Text style foreground color mask. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga55cbc62deb411939d4acfb6b64957f86}\label{group__intern_ga55cbc62deb411939d4acfb6b64957f86} 
+\#define {\bfseries \+\_\+\+SIRS\+\_\+\+BG\+\_\+\+MASK}~0x000ff000
+\begin{DoxyCompactList}\small\item\em Text style background color mask. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga1b630d81b788dc4ea9431f24bc37c8f2}\label{group__intern_ga1b630d81b788dc4ea9431f24bc37c8f2} 
+\#define {\bfseries \+\_\+\+SIRS\+\_\+\+SAME\+\_\+\+COLOR}(fg,  bg)~(((bg $>$$>$ 8) \& \mbox{\hyperlink{group__intern_ga7660f6397f9c6b7f628cf2e354222544}{\+\_\+\+SIRS\+\_\+\+FG\+\_\+\+MASK}}) == fg)
+\begin{DoxyCompactList}\small\item\em True if foreground and background colors are the same. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga8dc2ecf93d4e4d8e36e31dbc3e580a4b}\label{group__intern_ga8dc2ecf93d4e4d8e36e31dbc3e580a4b} 
+\#define {\bfseries \+\_\+\+SIR\+\_\+\+MAGIC}~0x60906090
+\begin{DoxyCompactList}\small\item\em Magic number used to determine if libsir has been initialized. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{group__intern_ga8fc307cc2605ec0f37bd979461a32f4a}\label{group__intern_ga8fc307cc2605ec0f37bd979461a32f4a} 
+typedef void(\texorpdfstring{$\ast$}{*} {\bfseries sirinit\+\_\+update}) (\mbox{\hyperlink{group__public_structsirinit}{sirinit}} \texorpdfstring{$\ast$}{*}, \mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\+\_\+update\+\_\+config\+\_\+data}} \texorpdfstring{$\ast$}{*})
+\begin{DoxyCompactList}\small\item\em Updates levels/options in the global init structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{group__intern_ga1b4579307692c802cc1d2b16e49c1371}{sir\+\_\+mutex\+\_\+id}} \{ \mbox{\hyperlink{group__intern_gga1b4579307692c802cc1d2b16e49c1371a2e0869dddfcc782e813b20d0b73db27c}{\+\_\+\+SIRM\+\_\+\+INIT}} = 0
+, \mbox{\hyperlink{group__intern_gga1b4579307692c802cc1d2b16e49c1371a36e0e177582f073ea203ea4cb0db6a47}{\+\_\+\+SIRM\+\_\+\+FILECACHE}}
+, \mbox{\hyperlink{group__intern_gga1b4579307692c802cc1d2b16e49c1371a974b68d27c9ee586a717a3ca3c66bb32}{\+\_\+\+SIRM\+\_\+\+TEXTSTYLE}}
+ \}
+\begin{DoxyCompactList}\small\item\em Mutex \texorpdfstring{$<$}{<}-\/\texorpdfstring{$>$}{>} protected section mapping. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{group__intern_ga0fb1f78aa9c924d1e9e155b000b07da0}{\+\_\+sirfile\+\_\+archive}} (\mbox{\hyperlink{group__intern_structsirfile}{sirfile}} \texorpdfstring{$\ast$}{*}sf, const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}newpath)
+\item 
+bool \mbox{\hyperlink{group__intern_gab68731339e2623a3445b52111a0ad7ba}{\+\_\+sir\+\_\+fileexists}} (const char \texorpdfstring{$\ast$}{*}restrict path)
+\begin{DoxyCompactList}\small\item\em Determines if a file or directory exists in the filesystem. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__intern_ga37e7b023734be0c24acfeec566135d94}{\+\_\+sir\+\_\+getcwd}} (char \texorpdfstring{$\ast$}{*}restrict buffer, size\+\_\+t size)
+\begin{DoxyCompactList}\small\item\em Obtains the current working directory for the calling process. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gad2bb1aa7a5735739d5db5dbdaca22f18}\label{group__intern_gad2bb1aa7a5735739d5db5dbdaca22f18} 
+bool {\bfseries \+\_\+sir\+\_\+validfid} (int id)
+\begin{DoxyCompactList}\small\item\em Validates a log file identifier. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gaf1757b2bc1b99833b39d80297ef8fa12}\label{group__intern_gaf1757b2bc1b99833b39d80297ef8fa12} 
+bool {\bfseries \+\_\+sir\+\_\+validupdatedata} (\mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\+\_\+update\+\_\+config\+\_\+data}} \texorpdfstring{$\ast$}{*}data)
+\begin{DoxyCompactList}\small\item\em Validates a \doxylink{group__intern_structsir__update__config__data}{sir\+\_\+update\+\_\+config\+\_\+data} structure. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga09fdf57a2d2841d4d6c5f00dfa82974b}\label{group__intern_ga09fdf57a2d2841d4d6c5f00dfa82974b} 
+bool {\bfseries \+\_\+sir\+\_\+validlevels} (\mbox{\hyperlink{group__public_ga7ee5f2908abd2df9e89bcab0b6608edd}{sir\+\_\+levels}} levels)
+\begin{DoxyCompactList}\small\item\em Validates a set of \doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} flags. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga70a34d97d57819b278ff8ac1b8f53f3a}\label{group__intern_ga70a34d97d57819b278ff8ac1b8f53f3a} 
+bool {\bfseries \+\_\+sir\+\_\+validlevel} (\mbox{\hyperlink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}} level)
+\begin{DoxyCompactList}\small\item\em Validates a single \doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga3ab7b0541bb7d04ca61168d0130e3848}\label{group__intern_ga3ab7b0541bb7d04ca61168d0130e3848} 
+bool {\bfseries \+\_\+sir\+\_\+validopts} (\mbox{\hyperlink{group__public_gafb659914aac0129182d86f7d3414e85d}{sir\+\_\+options}} opts)
+\begin{DoxyCompactList}\small\item\em Validates a set of \doxylink{group__public_ga9ed1c599dfd76231f4e0dadf46bff40b}{sir\+\_\+option} flags. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga611a23fcb3b3d995aa44807c2f329df8}\label{group__intern_ga611a23fcb3b3d995aa44807c2f329df8} 
+bool {\bfseries \+\_\+\+\_\+sir\+\_\+validstr} (const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}str, bool fail)
+\begin{DoxyCompactList}\small\item\em Validates a string pointer and optionally fails if it\textquotesingle{}s invalid. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gaf500b33521d460a6b69350cee1559306}\label{group__intern_gaf500b33521d460a6b69350cee1559306} 
+bool {\bfseries \+\_\+\+\_\+sir\+\_\+validptr} (const void \texorpdfstring{$\ast$}{*}restrict p, bool fail)
+\begin{DoxyCompactList}\small\item\em Validates a pointer and optionally fails if it\textquotesingle{}s invalid. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__intern_ga45a2711d677382329eef2dbcbf420aa2}{\+\_\+sir\+\_\+strncpy}} (\mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}restrict dest, size\+\_\+t destsz, const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}restrict src, size\+\_\+t count)
+\begin{DoxyCompactList}\small\item\em Wrapper for strncpy/strncpy\+\_\+s. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__intern_gaa3bdb27108e6e20986e896c145baf9be}{\+\_\+sir\+\_\+strncat}} (\mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}restrict dest, size\+\_\+t destsz, const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}restrict src, size\+\_\+t count)
+\begin{DoxyCompactList}\small\item\em Wrapper for strncat/strncat\+\_\+s. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__intern_gae2f92b8de58c7391a62048997f654b56}{\+\_\+sir\+\_\+fopen}} (FILE \texorpdfstring{$\ast$}{*}restrict \texorpdfstring{$\ast$}{*}restrict streamptr, const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}restrict filename, const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}restrict mode)
+\begin{DoxyCompactList}\small\item\em Wrapper for fopen/fopen\+\_\+s. \end{DoxyCompactList}\item 
+struct tm \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{group__intern_gaf5e3b63f99cb33987d34631d072da56e}{\+\_\+sir\+\_\+localtime}} (const time\+\_\+t \texorpdfstring{$\ast$}{*}restrict timer, struct tm \texorpdfstring{$\ast$}{*}restrict buf)
+\begin{DoxyCompactList}\small\item\em Wrapper for localtime/localtime\+\_\+s. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__intern_gab00490f3656c1c10d5c75b2b4da9fdd0}{\+\_\+sir\+\_\+getchar}} (void)
+\begin{DoxyCompactList}\small\item\em A portable \"{}press any key to continue\"{} implementation; On Windows, uses \+\_\+getch(). \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga85df9c3299ca00a1fbde0bca7b95a2f5}\label{group__intern_ga85df9c3299ca00a1fbde0bca7b95a2f5} 
+static bool {\bfseries \+\_\+sir\+\_\+validerror} (\mbox{\hyperlink{group__public_ga7c16d05c40f30affcc3ca881a96f2b0f}{sirerror\+\_\+t}} err)
+\begin{DoxyCompactList}\small\item\em Validates an internal error. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga8f4ab88b65313d0cf42cdb0363aa61e3}\label{group__intern_ga8f4ab88b65313d0cf42cdb0363aa61e3} 
+static uint16\+\_\+t {\bfseries \+\_\+sir\+\_\+geterrcode} (\mbox{\hyperlink{group__public_ga7c16d05c40f30affcc3ca881a96f2b0f}{sirerror\+\_\+t}} err)
+\begin{DoxyCompactList}\small\item\em Extracts just the code from an internal error. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga53f20bd7811bb5277f473e4b47aec2cf}\label{group__intern_ga53f20bd7811bb5277f473e4b47aec2cf} 
+static bool {\bfseries \+\_\+sir\+\_\+bittest} (uint32\+\_\+t flags, uint32\+\_\+t test)
+\begin{DoxyCompactList}\small\item\em Checks a bitfield for a specific set of bits. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga1ac1bb3c4f833dd42044a6cfd8f50e58}\label{group__intern_ga1ac1bb3c4f833dd42044a6cfd8f50e58} 
+static void {\bfseries \+\_\+\+\_\+sir\+\_\+safefree} (void \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}p)
+\begin{DoxyCompactList}\small\item\em Wraps {\itshape free}. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gafd7b2c5b8940fe4c92a59da4ebecfc09}\label{group__intern_gafd7b2c5b8940fe4c92a59da4ebecfc09} 
+static void {\bfseries \+\_\+sir\+\_\+safefree} (void \texorpdfstring{$\ast$}{*}p)
+\begin{DoxyCompactList}\small\item\em Wraps {\itshape free}. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gaf8fff083b2f2b80b7c93d34dfa76006f}\label{group__intern_gaf8fff083b2f2b80b7c93d34dfa76006f} 
+static void {\bfseries \+\_\+sir\+\_\+defaultlevels} (\mbox{\hyperlink{group__public_ga7ee5f2908abd2df9e89bcab0b6608edd}{sir\+\_\+levels}} \texorpdfstring{$\ast$}{*}levels, \mbox{\hyperlink{group__public_ga7ee5f2908abd2df9e89bcab0b6608edd}{sir\+\_\+levels}} def)
+\begin{DoxyCompactList}\small\item\em Applies default \doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} flags if applicable. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga3256b5b782091a39b36e64256e7b5650}\label{group__intern_ga3256b5b782091a39b36e64256e7b5650} 
+static void {\bfseries \+\_\+sir\+\_\+defaultopts} (\mbox{\hyperlink{group__public_gafb659914aac0129182d86f7d3414e85d}{sir\+\_\+options}} \texorpdfstring{$\ast$}{*}opts, \mbox{\hyperlink{group__public_gafb659914aac0129182d86f7d3414e85d}{sir\+\_\+options}} def)
+\begin{DoxyCompactList}\small\item\em Applies default \doxylink{group__public_gafb659914aac0129182d86f7d3414e85d}{sir\+\_\+options} flags if applicable. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga81ba7c311823833ccaee4ecdff8fb460}\label{group__intern_ga81ba7c311823833ccaee4ecdff8fb460} 
+static bool {\bfseries \+\_\+sir\+\_\+validstr} (const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}str)
+\begin{DoxyCompactList}\small\item\em Validates a string pointer and fails if it\textquotesingle{}s invalid. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gadafa37c7ad670f7c1a6b92a32933ad82}\label{group__intern_gadafa37c7ad670f7c1a6b92a32933ad82} 
+static bool {\bfseries \+\_\+sir\+\_\+validstrnofail} (const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}str)
+\begin{DoxyCompactList}\small\item\em Validates a string pointer but ignores whether it\textquotesingle{}s invalid. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gabc81ba7f0c2375212d2daf8f5109775b}\label{group__intern_gabc81ba7f0c2375212d2daf8f5109775b} 
+static bool {\bfseries \+\_\+sir\+\_\+validptr} (const void \texorpdfstring{$\ast$}{*}restrict p)
+\begin{DoxyCompactList}\small\item\em Validates a pointer and fails if it\textquotesingle{}s invalid. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga2899ef20a2423a7dede1bd95ae4fa250}\label{group__intern_ga2899ef20a2423a7dede1bd95ae4fa250} 
+static bool {\bfseries \+\_\+sir\+\_\+validptrnofail} (const void \texorpdfstring{$\ast$}{*}restrict p)
+\begin{DoxyCompactList}\small\item\em Validates a pointer but ignores whether it\textquotesingle{}s invalid. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gab89052df9773870821612c9b99586281}\label{group__intern_gab89052df9773870821612c9b99586281} 
+static void {\bfseries \+\_\+sir\+\_\+resetstr} (\mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}str)
+\begin{DoxyCompactList}\small\item\em Places a null terminator at the first index in a string buffer. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gaf532bdd6b18375a0f0af63a3c23c5098}\label{group__intern_gaf532bdd6b18375a0f0af63a3c23c5098} 
+bool {\bfseries \+\_\+sir\+\_\+sanity} (void)
+\begin{DoxyCompactList}\small\item\em Evaluates whether or not libsir has been initialized. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga4933645a9db3dc00177ce5f285c9c53a}\label{group__intern_ga4933645a9db3dc00177ce5f285c9c53a} 
+bool {\bfseries \+\_\+sir\+\_\+options\+\_\+sanity} (const \mbox{\hyperlink{group__public_structsirinit}{sirinit}} \texorpdfstring{$\ast$}{*}si)
+\begin{DoxyCompactList}\small\item\em Validates the configuration passed to \doxylink{group__public_gaa4f5707f5e4ed9702cde75a8c80c4e4a}{sir\+\_\+init}. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gaeb47868caeb3ee52c11b96442c8d1098}\label{group__intern_gaeb47868caeb3ee52c11b96442c8d1098} 
+bool {\bfseries \+\_\+sir\+\_\+init} (\mbox{\hyperlink{group__public_structsirinit}{sirinit}} \texorpdfstring{$\ast$}{*}si)
+\begin{DoxyCompactList}\small\item\em Initializes libsir. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga1d4b2d0b2e60b4c2140f4aac039a4fd6}\label{group__intern_ga1d4b2d0b2e60b4c2140f4aac039a4fd6} 
+void {\bfseries \+\_\+sir\+\_\+stdoutlevels} (\mbox{\hyperlink{group__public_structsirinit}{sirinit}} \texorpdfstring{$\ast$}{*}si, \mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\+\_\+update\+\_\+config\+\_\+data}} \texorpdfstring{$\ast$}{*}data)
+\begin{DoxyCompactList}\small\item\em Updates levels for {\itshape stdout}. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga5868ec79244548d67c001e848866266d}\label{group__intern_ga5868ec79244548d67c001e848866266d} 
+void {\bfseries \+\_\+sir\+\_\+stdoutopts} (\mbox{\hyperlink{group__public_structsirinit}{sirinit}} \texorpdfstring{$\ast$}{*}si, \mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\+\_\+update\+\_\+config\+\_\+data}} \texorpdfstring{$\ast$}{*}data)
+\begin{DoxyCompactList}\small\item\em Updates options for {\itshape stdout}. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gab2bef4e27cb4d4dacfeab3de76df573d}\label{group__intern_gab2bef4e27cb4d4dacfeab3de76df573d} 
+void {\bfseries \+\_\+sir\+\_\+stderrlevels} (\mbox{\hyperlink{group__public_structsirinit}{sirinit}} \texorpdfstring{$\ast$}{*}si, \mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\+\_\+update\+\_\+config\+\_\+data}} \texorpdfstring{$\ast$}{*}data)
+\begin{DoxyCompactList}\small\item\em Updates levels for {\itshape stderr}. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga991838ebf9e8df74905b6f1dbd5bed94}\label{group__intern_ga991838ebf9e8df74905b6f1dbd5bed94} 
+void {\bfseries \+\_\+sir\+\_\+stderropts} (\mbox{\hyperlink{group__public_structsirinit}{sirinit}} \texorpdfstring{$\ast$}{*}si, \mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\+\_\+update\+\_\+config\+\_\+data}} \texorpdfstring{$\ast$}{*}data)
+\begin{DoxyCompactList}\small\item\em Updates options for {\itshape stderr}. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga7526d66ed4073f2ed7bd2b637201abf0}\label{group__intern_ga7526d66ed4073f2ed7bd2b637201abf0} 
+void {\bfseries \+\_\+sir\+\_\+sysloglevels} (\mbox{\hyperlink{group__public_structsirinit}{sirinit}} \texorpdfstring{$\ast$}{*}si, \mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\+\_\+update\+\_\+config\+\_\+data}} \texorpdfstring{$\ast$}{*}data)
+\begin{DoxyCompactList}\small\item\em Updates levels for {\itshape syslog}. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gaa5c26ad8f5792d1328446f091f843aaa}\label{group__intern_gaa5c26ad8f5792d1328446f091f843aaa} 
+bool {\bfseries \+\_\+sir\+\_\+writeinit} (\mbox{\hyperlink{group__intern_structsir__update__config__data}{sir\+\_\+update\+\_\+config\+\_\+data}} \texorpdfstring{$\ast$}{*}data, \mbox{\hyperlink{group__intern_ga8fc307cc2605ec0f37bd979461a32f4a}{sirinit\+\_\+update}} update)
+\begin{DoxyCompactList}\small\item\em Updates levels/options in the global init structure. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga10226d9d1a4003751096ac0913861e1c}\label{group__intern_ga10226d9d1a4003751096ac0913861e1c} 
+void \texorpdfstring{$\ast$}{*} {\bfseries \+\_\+sir\+\_\+locksection} (\mbox{\hyperlink{group__intern_ga1b4579307692c802cc1d2b16e49c1371}{sir\+\_\+mutex\+\_\+id}} mid)
+\begin{DoxyCompactList}\small\item\em Locks a protected section. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga8238d10d7a78436abe55eefec827f23b}\label{group__intern_ga8238d10d7a78436abe55eefec827f23b} 
+bool {\bfseries \+\_\+sir\+\_\+unlocksection} (\mbox{\hyperlink{group__intern_ga1b4579307692c802cc1d2b16e49c1371}{sir\+\_\+mutex\+\_\+id}} mid)
+\begin{DoxyCompactList}\small\item\em Unlocks a protected section. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga012235e4880fc5a62155772abab110f9}\label{group__intern_ga012235e4880fc5a62155772abab110f9} 
+bool {\bfseries \+\_\+sir\+\_\+mapmutexid} (\mbox{\hyperlink{group__intern_ga1b4579307692c802cc1d2b16e49c1371}{sir\+\_\+mutex\+\_\+id}} mid, \mbox{\hyperlink{sirplatform_8h_a4b87629d5980e5381b8f76488a104f65}{sirmutex\+\_\+t}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}m, void \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}section)
+\begin{DoxyCompactList}\small\item\em Maps a \doxylink{group__intern_ga1b4579307692c802cc1d2b16e49c1371}{sir\+\_\+mutex\+\_\+id} to a \doxylink{sirplatform_8h_a4b87629d5980e5381b8f76488a104f65}{sirmutex\+\_\+t} and protected section. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga5d324314a3df2c5a36199a2cd8b75404}\label{group__intern_ga5d324314a3df2c5a36199a2cd8b75404} 
+bool {\bfseries \+\_\+sir\+\_\+cleanup} (void)
+\begin{DoxyCompactList}\small\item\em Frees allocated resources. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga9cdbab7d49e0a3d1f811a04bef3371fd}\label{group__intern_ga9cdbab7d49e0a3d1f811a04bef3371fd} 
+void {\bfseries \+\_\+sir\+\_\+initialize\+\_\+once} (void)
+\begin{DoxyCompactList}\small\item\em General initialization procedure. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gad21398c249e2467f60138ac3d334482e}\label{group__intern_gad21398c249e2467f60138ac3d334482e} 
+void {\bfseries \+\_\+sir\+\_\+initmutex\+\_\+si\+\_\+once} (void)
+\begin{DoxyCompactList}\small\item\em Initializes a specific mutex. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gae971df1f0eb43e55aefd3aa7640c6418}\label{group__intern_gae971df1f0eb43e55aefd3aa7640c6418} 
+void {\bfseries \+\_\+sir\+\_\+initmutex\+\_\+fc\+\_\+once} (void)
+\begin{DoxyCompactList}\small\item\em Initializes a specific mutex. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga6392370ff56986fb4bb56ea9726c29a7}\label{group__intern_ga6392370ff56986fb4bb56ea9726c29a7} 
+void {\bfseries \+\_\+sir\+\_\+initmutex\+\_\+ts\+\_\+once} (void)
+\begin{DoxyCompactList}\small\item\em Initializes a specific mutex. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gadc725d0786b67b52f6441a0844792a30}\label{group__intern_gadc725d0786b67b52f6441a0844792a30} 
+void {\bfseries \+\_\+sir\+\_\+initmutex} (\mbox{\hyperlink{sirplatform_8h_a4b87629d5980e5381b8f76488a104f65}{sirmutex\+\_\+t}} \texorpdfstring{$\ast$}{*}mutex)
+\begin{DoxyCompactList}\small\item\em Initializes a specific mutex. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga9f8e605de5104c3251b141eb7f3cf5ff}\label{group__intern_ga9f8e605de5104c3251b141eb7f3cf5ff} 
+bool {\bfseries \+\_\+sir\+\_\+once} (\mbox{\hyperlink{sirplatform_8h_a3e6f12e65e77dc62a8f3763f504335de}{sironce\+\_\+t}} \texorpdfstring{$\ast$}{*}once, \mbox{\hyperlink{sirplatform_8h_a15c96569a28643ba97e1609a37be5bb3}{sir\+\_\+once\+\_\+fn}} func)
+\begin{DoxyCompactList}\small\item\em Executes only one time. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga33f251281446388859da1dc3106132b5}\label{group__intern_ga33f251281446388859da1dc3106132b5} 
+bool {\bfseries \+\_\+sir\+\_\+logv} (\mbox{\hyperlink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}} level, const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}format, va\+\_\+list args)
+\begin{DoxyCompactList}\small\item\em Core output formatting. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gad8ffbde00feeffa202ff81ad840fe305}\label{group__intern_gad8ffbde00feeffa202ff81ad840fe305} 
+bool {\bfseries \+\_\+sir\+\_\+dispatch} (\mbox{\hyperlink{group__public_structsirinit}{sirinit}} \texorpdfstring{$\ast$}{*}si, \mbox{\hyperlink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}} level, \mbox{\hyperlink{group__intern_structsirbuf}{sirbuf}} \texorpdfstring{$\ast$}{*}buf)
+\begin{DoxyCompactList}\small\item\em Output dispatching. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gacf4df3219fefddfaf1cebf93c19832b3}\label{group__intern_gacf4df3219fefddfaf1cebf93c19832b3} 
+const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*} {\bfseries \+\_\+sir\+\_\+format} (bool styling, \mbox{\hyperlink{group__public_gafb659914aac0129182d86f7d3414e85d}{sir\+\_\+options}} opts, \mbox{\hyperlink{group__intern_structsirbuf}{sirbuf}} \texorpdfstring{$\ast$}{*}buf)
+\begin{DoxyCompactList}\small\item\em Specific destination formatting. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga56e8380c236eecbef8eaa9da04c7dfc1}\label{group__intern_ga56e8380c236eecbef8eaa9da04c7dfc1} 
+int {\bfseries \+\_\+sir\+\_\+syslog\+\_\+maplevel} (\mbox{\hyperlink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}} level)
+\begin{DoxyCompactList}\small\item\em Maps a \doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} to a {\itshape syslog} level. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga125c2bdecc7d474b163785f54b075750}\label{group__intern_ga125c2bdecc7d474b163785f54b075750} 
+void {\bfseries \+\_\+sir\+\_\+syslog\+\_\+open} (const char \texorpdfstring{$\ast$}{*}app\+\_\+name, \mbox{\hyperlink{group__public_structsir__syslog__dest}{sir\+\_\+syslog\+\_\+dest}} \texorpdfstring{$\ast$}{*}ctx)
+\begin{DoxyCompactList}\small\item\em Called upon initialization of the library; does any necesssary connecting/opening handles, etc. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga1ca038112b04ba64fede810997e25b1f}\label{group__intern_ga1ca038112b04ba64fede810997e25b1f} 
+bool {\bfseries \+\_\+sir\+\_\+syslog\+\_\+write} (\mbox{\hyperlink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}} level, const \mbox{\hyperlink{group__intern_structsirbuf}{sirbuf}} \texorpdfstring{$\ast$}{*}buf, \mbox{\hyperlink{group__public_structsir__syslog__dest}{sir\+\_\+syslog\+\_\+dest}} \texorpdfstring{$\ast$}{*}ctx)
+\begin{DoxyCompactList}\small\item\em Abstraction for writing to platform-\/specific implementations of syslog-\/type facilities (e.\+g.,) {\ttfamily os\+\_\+log} on mac\+OS. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga6168aebb5537b63a82df7f717cb17dd7}\label{group__intern_ga6168aebb5537b63a82df7f717cb17dd7} 
+void {\bfseries \+\_\+sir\+\_\+syslog\+\_\+close} (\mbox{\hyperlink{group__public_structsir__syslog__dest}{sir\+\_\+syslog\+\_\+dest}} \texorpdfstring{$\ast$}{*}ctx)
+\begin{DoxyCompactList}\small\item\em Called upon shutdown of the library; does any necessary cleaning up/closing handles, etc. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gaa18a225c2c97e8a7218363bb27749a15}\label{group__intern_gaa18a225c2c97e8a7218363bb27749a15} 
+const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*} {\bfseries \+\_\+sir\+\_\+levelstr} (\mbox{\hyperlink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}} level)
+\begin{DoxyCompactList}\small\item\em Converts a \doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} to its human-\/readable form. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga6d418f4a2a45a3273b8c6e09a03edd7c}\label{group__intern_ga6d418f4a2a45a3273b8c6e09a03edd7c} 
+bool {\bfseries \+\_\+sir\+\_\+formattime} (time\+\_\+t now, \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}buffer, const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}format)
+\begin{DoxyCompactList}\small\item\em Formats the current time as a string. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gae6a81ce863fba763916cc4e11de0fadc}\label{group__intern_gae6a81ce863fba763916cc4e11de0fadc} 
+bool {\bfseries \+\_\+sir\+\_\+getlocaltime} (time\+\_\+t \texorpdfstring{$\ast$}{*}tbuf, long \texorpdfstring{$\ast$}{*}nsecbuf)
+\begin{DoxyCompactList}\small\item\em Retrieves the current local time w/ optional milliseconds. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gaec63cb12d82d469f485dbb8ce88b9fce}\label{group__intern_gaec63cb12d82d469f485dbb8ce88b9fce} 
+pid\+\_\+t {\bfseries \+\_\+sir\+\_\+getpid} (void)
+\begin{DoxyCompactList}\small\item\em Returns the current process identifier. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gaf4b6d91cb5ef18479cdfd4b40cf23f72}\label{group__intern_gaf4b6d91cb5ef18479cdfd4b40cf23f72} 
+pid\+\_\+t {\bfseries \+\_\+sir\+\_\+gettid} (void)
+\begin{DoxyCompactList}\small\item\em Returns the current thread identifier. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gaa8e5d4f2e789c1f93e192d9fb4d895b8}\label{group__intern_gaa8e5d4f2e789c1f93e192d9fb4d895b8} 
+bool {\bfseries \+\_\+sir\+\_\+getthreadname} (char name\mbox{[}16\mbox{]})
+\begin{DoxyCompactList}\small\item\em Returns the current thread\textquotesingle{}s name. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gabb7fa2627bf9b269840231c50723c34e}\label{group__intern_gabb7fa2627bf9b269840231c50723c34e} 
+bool {\bfseries \+\_\+sirmutex\+\_\+create} (\mbox{\hyperlink{sirplatform_8h_a4b87629d5980e5381b8f76488a104f65}{sirmutex\+\_\+t}} \texorpdfstring{$\ast$}{*}mutex)
+\begin{DoxyCompactList}\small\item\em Creates/initializes a new mutex. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga218de99ef58f518efdb6204876a10a29}\label{group__intern_ga218de99ef58f518efdb6204876a10a29} 
+bool {\bfseries \+\_\+sirmutex\+\_\+trylock} (\mbox{\hyperlink{sirplatform_8h_a4b87629d5980e5381b8f76488a104f65}{sirmutex\+\_\+t}} \texorpdfstring{$\ast$}{*}mutex)
+\begin{DoxyCompactList}\small\item\em Determines if a mutex is locked without waiting. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga1f350df79dd4baa18a77e115384fe04e}\label{group__intern_ga1f350df79dd4baa18a77e115384fe04e} 
+bool {\bfseries \+\_\+sirmutex\+\_\+lock} (\mbox{\hyperlink{sirplatform_8h_a4b87629d5980e5381b8f76488a104f65}{sirmutex\+\_\+t}} \texorpdfstring{$\ast$}{*}mutex)
+\begin{DoxyCompactList}\small\item\em Attempts to lock a mutex and waits indefinitely. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gac71abdf9aec294011fe8492bd74d875d}\label{group__intern_gac71abdf9aec294011fe8492bd74d875d} 
+bool {\bfseries \+\_\+sirmutex\+\_\+unlock} (\mbox{\hyperlink{sirplatform_8h_a4b87629d5980e5381b8f76488a104f65}{sirmutex\+\_\+t}} \texorpdfstring{$\ast$}{*}mutex)
+\begin{DoxyCompactList}\small\item\em Unlocks a previously locked mutex. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga5ac9f33affaf105f0476bf022f7b42ef}\label{group__intern_ga5ac9f33affaf105f0476bf022f7b42ef} 
+bool {\bfseries \+\_\+sirmutex\+\_\+destroy} (\mbox{\hyperlink{sirplatform_8h_a4b87629d5980e5381b8f76488a104f65}{sirmutex\+\_\+t}} \texorpdfstring{$\ast$}{*}mutex)
+\begin{DoxyCompactList}\small\item\em Destroys a mutex. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__intern_ga21cad27fd41591efb76e93c50b1428ca}{\+\_\+sir\+\_\+validstyle}} (\mbox{\hyperlink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle}} style, uint32\+\_\+t \texorpdfstring{$\ast$}{*}pattr, uint32\+\_\+t \texorpdfstring{$\ast$}{*}pfg, uint32\+\_\+t \texorpdfstring{$\ast$}{*}pbg)
+\begin{DoxyCompactList}\small\item\em The maximum size of a color escape code sequence in bytes. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle}} \mbox{\hyperlink{group__intern_ga96e3fd4916e25f311680f341f31219b2}{\+\_\+sir\+\_\+gettextstyle}} (\mbox{\hyperlink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}} level)
+\begin{DoxyCompactList}\small\item\em Retrieves the override \doxylink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle} for a \doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} if one is set. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gabe301361aa0a42c5b49c16e2c715a8ad}\label{group__intern_gabe301361aa0a42c5b49c16e2c715a8ad} 
+\mbox{\hyperlink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle}} {\bfseries \+\_\+sir\+\_\+getdefstyle} (\mbox{\hyperlink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}} level)
+\begin{DoxyCompactList}\small\item\em Retrieves the default \doxylink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle} for a \doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga672fc0c8a5a475dad1202cf68a3a1f8d}\label{group__intern_ga672fc0c8a5a475dad1202cf68a3a1f8d} 
+bool {\bfseries \+\_\+sir\+\_\+settextstyle} (\mbox{\hyperlink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}} level, \mbox{\hyperlink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle}} style)
+\begin{DoxyCompactList}\small\item\em Sets the \doxylink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle} for a \doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga02bc0f7909f3fbe410dcda1fd96149b2}\label{group__intern_ga02bc0f7909f3fbe410dcda1fd96149b2} 
+bool {\bfseries \+\_\+sir\+\_\+resettextstyles} (void)
+\begin{DoxyCompactList}\small\item\em Resets all per-\/level \doxylink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle} to default. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_ga42458a7c5bb5e220e376dace7c173ace}\label{group__intern_ga42458a7c5bb5e220e376dace7c173ace} 
+uint16\+\_\+t {\bfseries \+\_\+sir\+\_\+getprivstyle} (uint32\+\_\+t style)
+\begin{DoxyCompactList}\small\item\em Retrieves the opaque numeric value for a component part of a \doxylink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle}. \end{DoxyCompactList}\item 
+\Hypertarget{group__intern_gaa0055b29ec2548c48496f0db52e3a3b2}\label{group__intern_gaa0055b29ec2548c48496f0db52e3a3b2} 
+bool {\bfseries \+\_\+sir\+\_\+formatstyle} (\mbox{\hyperlink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle}} style, \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}buf, size\+\_\+t size)
+\begin{DoxyCompactList}\small\item\em Combines component parts of a platform text style value into its final form. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{group__intern_structsir__level__style__pair}{sir\+\_\+level\+\_\+style\+\_\+pair}} \mbox{\hyperlink{group__intern_ga280fb5a15277541e1e33921eacabb769}{sir\+\_\+override\+\_\+style\+\_\+map}} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em Overrides for \doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} \texorpdfstring{$<$}{<}-\/\texorpdfstring{$>$}{>} \doxylink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle} mappings. \end{DoxyCompactList}\item 
+static const \mbox{\hyperlink{group__intern_structsir__level__str__pair}{sir\+\_\+level\+\_\+str\+\_\+pair}} \mbox{\hyperlink{group__intern_gaf1b1de2292df95b8841ea3c1c3e2c765}{sir\+\_\+level\+\_\+str\+\_\+map}} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em Mapping of \doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} \texorpdfstring{$<$}{<}-\/\texorpdfstring{$>$}{>} string representation (\doxylink{sirconfig_8h}{sirconfig.\+h}) \end{DoxyCompactList}\item 
+static const \mbox{\hyperlink{group__intern_structsir__style__16color__pair}{sir\+\_\+style\+\_\+16color\+\_\+pair}} \mbox{\hyperlink{group__intern_gab1caa11fe35560835e8f43573d67544b}{sir\+\_\+style\+\_\+16color\+\_\+map}} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em Mapping of \doxylink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle} \texorpdfstring{$<$}{<}-\/\texorpdfstring{$>$}{>} values used to generate styled terminal output for 4-\/bit (16 color) mode. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+libsir\textquotesingle{}s guts. 
+
+
+
+\doxysubsection{Data Structure Documentation}
+\index{sirfile@{sirfile}}\label{structsirfile}
+\Hypertarget{group__intern_structsirfile}
+\doxysubsubsection{struct sirfile}
+Log file data. 
+
+Definition at line \mbox{\hyperlink{sirtypes_8h_source_l00205}{205}} of file \mbox{\hyperlink{sirtypes_8h_source}{sirtypes.\+h}}.
+
+\index{sirfcache@{sirfcache}}\label{structsirfcache}
+\Hypertarget{group__intern_structsirfcache}
+\doxysubsubsection{struct sirfcache}
+Log file cache. 
+
+Definition at line \mbox{\hyperlink{sirtypes_8h_source_l00214}{214}} of file \mbox{\hyperlink{sirtypes_8h_source}{sirtypes.\+h}}.
+
+\index{sirbuf@{sirbuf}}\label{structsirbuf}
+\Hypertarget{group__intern_structsirbuf}
+\doxysubsubsection{struct sirbuf}
+Formatted output sent to destinations. 
+
+Definition at line \mbox{\hyperlink{sirtypes_8h_source_l00220}{220}} of file \mbox{\hyperlink{sirtypes_8h_source}{sirtypes.\+h}}.
+
+\index{sir\_level\_style\_pair@{sir\_level\_style\_pair}}\label{structsir__level__style__pair}
+\Hypertarget{group__intern_structsir__level__style__pair}
+\doxysubsubsection{struct sir\+\_\+level\+\_\+style\+\_\+pair}
+\doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} \texorpdfstring{$<$}{<}-\/\texorpdfstring{$>$}{>} default \doxylink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle} mapping. 
+
+Definition at line \mbox{\hyperlink{sirtypes_8h_source_l00234}{234}} of file \mbox{\hyperlink{sirtypes_8h_source}{sirtypes.\+h}}.
+
+\begin{DoxyFields}{Data Fields}
+\mbox{\Hypertarget{group__intern_a624e22ef9c7d6127c732e077ed91a0d9}\label{group__intern_a624e22ef9c7d6127c732e077ed91a0d9}} 
+const \mbox{\hyperlink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\_level}}&
+level&
+The level for which the style applies. \\
+\hline
+
+\mbox{\Hypertarget{group__intern_acbff4d7d398b0db52f843309be6b9e26}\label{group__intern_acbff4d7d398b0db52f843309be6b9e26}} 
+uint32\_t&
+style&
+The default value. \\
+\hline
+
+\end{DoxyFields}
+\index{sir\_level\_str\_pair@{sir\_level\_str\_pair}}\label{structsir__level__str__pair}
+\Hypertarget{group__intern_structsir__level__str__pair}
+\doxysubsubsection{struct sir\+\_\+level\+\_\+str\+\_\+pair}
+\doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} \texorpdfstring{$<$}{<}-\/\texorpdfstring{$>$}{>} string representation mapping (\doxylink{sirconfig_8h}{sirconfig.\+h}) 
+
+Definition at line \mbox{\hyperlink{sirtypes_8h_source_l00240}{240}} of file \mbox{\hyperlink{sirtypes_8h_source}{sirtypes.\+h}}.
+
+\index{sir\_style\_16color\_pair@{sir\_style\_16color\_pair}}\label{structsir__style__16color__pair}
+\Hypertarget{group__intern_structsir__style__16color__pair}
+\doxysubsubsection{struct sir\+\_\+style\+\_\+16color\+\_\+pair}
+Public (\doxylink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle}) \texorpdfstring{$<$}{<}-\/\texorpdfstring{$>$}{>} values used to generate styled terminal output. 
+
+Definition at line \mbox{\hyperlink{sirtypes_8h_source_l00246}{246}} of file \mbox{\hyperlink{sirtypes_8h_source}{sirtypes.\+h}}.
+
+\begin{DoxyFields}{Data Fields}
+\mbox{\Hypertarget{group__intern_ac2b67be8c9cb247ffdfe5e0ed37e6b5c}\label{group__intern_ac2b67be8c9cb247ffdfe5e0ed37e6b5c}} 
+const uint32\_t&
+from&
+The public text style flag(s). \\
+\hline
+
+\mbox{\Hypertarget{group__intern_a65482f5ea5aa6bc43c827766a1fea780}\label{group__intern_a65482f5ea5aa6bc43c827766a1fea780}} 
+const uint16\_t&
+to&
+The internal value. \\
+\hline
+
+\end{DoxyFields}
+\index{sir\_thread\_err@{sir\_thread\_err}}\label{structsir__thread__err}
+\Hypertarget{group__intern_structsir__thread__err}
+\doxysubsubsection{struct sir\+\_\+thread\+\_\+err}
+Error type. 
+
+Definition at line \mbox{\hyperlink{sirtypes_8h_source_l00259}{259}} of file \mbox{\hyperlink{sirtypes_8h_source}{sirtypes.\+h}}.
+
+\index{sir\_update\_config\_data@{sir\_update\_config\_data}}\label{structsir__update__config__data}
+\Hypertarget{group__intern_structsir__update__config__data}
+\doxysubsubsection{struct sir\+\_\+update\+\_\+config\+\_\+data}
+Encapsulates dynamic updating of current configuration. 
+
+Definition at line \mbox{\hyperlink{sirtypes_8h_source_l00272}{272}} of file \mbox{\hyperlink{sirtypes_8h_source}{sirtypes.\+h}}.
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{group__intern_ga1db61be8817fa34c0fb8a57f9dfaf2d3}\label{group__intern_ga1db61be8817fa34c0fb8a57f9dfaf2d3} 
+\index{Internal@{Internal}!\_sir\_notnull@{\_sir\_notnull}}
+\index{\_sir\_notnull@{\_sir\_notnull}!Internal@{Internal}}
+\doxysubsubsection{\texorpdfstring{\_sir\_notnull}{\_sir\_notnull}}
+{\footnotesize\ttfamily \#define \+\_\+sir\+\_\+notnull(\begin{DoxyParamCaption}\item[{}]{addr }\end{DoxyParamCaption})~(NULL != addr)}
+
+
+
+Validates a pointer-\/to-\/pointer, pointer, pointer to function, etc. 
+
+but ignores whether it\textquotesingle{}s invalid. 
+
+Definition at line \mbox{\hyperlink{sirhelpers_8h_source_l00108}{108}} of file \mbox{\hyperlink{sirhelpers_8h_source}{sirhelpers.\+h}}.
+
+\Hypertarget{group__intern_ga4dcd7ef46f8eb972c7afdaa9b64d57ab}\label{group__intern_ga4dcd7ef46f8eb972c7afdaa9b64d57ab} 
+\index{Internal@{Internal}!SIR\_ESC\_START@{SIR\_ESC\_START}}
+\index{SIR\_ESC\_START@{SIR\_ESC\_START}!Internal@{Internal}}
+\doxysubsubsection{\texorpdfstring{SIR\_ESC\_START}{SIR\_ESC\_START}}
+{\footnotesize\ttfamily \#define SIR\+\_\+\+ESC\+\_\+\+START~\"{}\textbackslash{}x1b\mbox{[}\"{}}
+
+
+
+Escape sequences\+: 
+
+16 colors\+: \textbackslash{}033\mbox{[}\texorpdfstring{$<$}{<}dim=0..2\texorpdfstring{$>$}{>};\texorpdfstring{$<$}{<}fg=30..37, 90..97\texorpdfstring{$>$}{>};\texorpdfstring{$<$}{<}bg=40..47, 100..107\texorpdfstring{$>$}{>}m 256 colors\+: \textbackslash{}033\mbox{[}\texorpdfstring{$<$}{<}fg=38\texorpdfstring{$\vert$}{|}bg=48\texorpdfstring{$>$}{>};5;\texorpdfstring{$<$}{<}0..255\texorpdfstring{$>$}{>}m 24-\/bit RGB\+: \textbackslash{}033\mbox{[}\texorpdfstring{$<$}{<}fg=38\texorpdfstring{$\vert$}{|}bg=48\texorpdfstring{$>$}{>};2;\texorpdfstring{$<$}{<}R=0..255\texorpdfstring{$>$}{>};\texorpdfstring{$<$}{<}G=0..255\texorpdfstring{$>$}{>};\texorpdfstring{$<$}{<}B=0..255\texorpdfstring{$>$}{>}m Clear all\+: \textbackslash{}033\mbox{[}0m
+
+Note\+: evidently, you can chain these sequences to set both fore and back simultaneously\+: \textbackslash{}033\mbox{[}38;5;128;48;5;206m
+
+
+\begin{DoxyItemize}
+\item 30–37, 90–97 (\"{}bright\"{})\+: Set foreground color (number = color ID)
+\item 38\+: Set foreground color (with pattern to follow\+: 256 or 24-\/bit RGB color)
+\item 39\+: Set default foreground color
+\item 40–47, 100–107 (\"{}bright\"{})\+: Set background color (number = color ID)
+\item 48\+: Set background color (with pattern to follow\+: 256 or 24-\/bit RGB color)
+\item 49\+: Set default background color === to test =====================================================================================
+\item 4\+: Underline (off\+: 24)
+\item 5\+: Blinking (off\+: 25)
+\item 51\+: Framed (off\+: 54)
+\item 52\+: Encircled (off\+: 54)
+\item 53\+: Overlined (off\+: 55)
+\item 1\+: Bold (off\+: 21)
+\end{DoxyItemize}
+
+The 24-\/bit RGB spectrum is laid out as follows\+:
+
+0x00-\/0x07\+: standard colors (same as the 4-\/bit colors) 0x08-\/0x0F\+: high intensity colors 0x10-\/0x\+E7\+: 6 × 6 × 6 cube (216 colors)\+: 16 + 36 × r + 6 × g + b (0 ≤ r, g, b ≤ 5) 0x\+E8-\/0x\+FF\+: grayscale from black to white in 24 steps 
+
+Definition at line \mbox{\hyperlink{sirtextstyle_8h_source_l00075}{75}} of file \mbox{\hyperlink{sirtextstyle_8h_source}{sirtextstyle.\+h}}.
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{group__intern_ga1b4579307692c802cc1d2b16e49c1371}\label{group__intern_ga1b4579307692c802cc1d2b16e49c1371} 
+\index{Internal@{Internal}!sir\_mutex\_id@{sir\_mutex\_id}}
+\index{sir\_mutex\_id@{sir\_mutex\_id}!Internal@{Internal}}
+\doxysubsubsection{\texorpdfstring{sir\_mutex\_id}{sir\_mutex\_id}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{group__intern_ga1b4579307692c802cc1d2b16e49c1371}{sir\+\_\+mutex\+\_\+id}}}
+
+
+
+Mutex \texorpdfstring{$<$}{<}-\/\texorpdfstring{$>$}{>} protected section mapping. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_SIRM\_INIT@{\_SIRM\_INIT}!Internal@{Internal}}\index{Internal@{Internal}!\_SIRM\_INIT@{\_SIRM\_INIT}}}\Hypertarget{group__intern_gga1b4579307692c802cc1d2b16e49c1371a2e0869dddfcc782e813b20d0b73db27c}\label{group__intern_gga1b4579307692c802cc1d2b16e49c1371a2e0869dddfcc782e813b20d0b73db27c} 
+\+\_\+\+SIRM\+\_\+\+INIT&The \doxylink{group__public_structsirinit}{sirinit} section. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_SIRM\_FILECACHE@{\_SIRM\_FILECACHE}!Internal@{Internal}}\index{Internal@{Internal}!\_SIRM\_FILECACHE@{\_SIRM\_FILECACHE}}}\Hypertarget{group__intern_gga1b4579307692c802cc1d2b16e49c1371a36e0e177582f073ea203ea4cb0db6a47}\label{group__intern_gga1b4579307692c802cc1d2b16e49c1371a36e0e177582f073ea203ea4cb0db6a47} 
+\+\_\+\+SIRM\+\_\+\+FILECACHE&The \doxylink{group__intern_structsirfcache}{sirfcache} section. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_SIRM\_TEXTSTYLE@{\_SIRM\_TEXTSTYLE}!Internal@{Internal}}\index{Internal@{Internal}!\_SIRM\_TEXTSTYLE@{\_SIRM\_TEXTSTYLE}}}\Hypertarget{group__intern_gga1b4579307692c802cc1d2b16e49c1371a974b68d27c9ee586a717a3ca3c66bb32}\label{group__intern_gga1b4579307692c802cc1d2b16e49c1371a974b68d27c9ee586a717a3ca3c66bb32} 
+\+\_\+\+SIRM\+\_\+\+TEXTSTYLE&The \doxylink{group__intern_structsir__level__style__pair}{sir\+\_\+level\+\_\+style\+\_\+pair} section. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line \mbox{\hyperlink{sirtypes_8h_source_l00252}{252}} of file \mbox{\hyperlink{sirtypes_8h_source}{sirtypes.\+h}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{group__intern_gab68731339e2623a3445b52111a0ad7ba}\label{group__intern_gab68731339e2623a3445b52111a0ad7ba} 
+\index{Internal@{Internal}!\_sir\_fileexists@{\_sir\_fileexists}}
+\index{\_sir\_fileexists@{\_sir\_fileexists}!Internal@{Internal}}
+\doxysubsubsection{\texorpdfstring{\_sir\_fileexists()}{\_sir\_fileexists()}}
+{\footnotesize\ttfamily bool \+\_\+sir\+\_\+fileexists (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}restrict}]{path }\end{DoxyParamCaption})}
+
+
+
+Determines if a file or directory exists in the filesystem. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & null-\/terminated string containing the path to test.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true TODO 
+
+false TODO 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{sirfilesystem_8c_source_l00044}{44}} of file \mbox{\hyperlink{sirfilesystem_8c_source}{sirfilesystem.\+c}}.
+
+\Hypertarget{group__intern_gae2f92b8de58c7391a62048997f654b56}\label{group__intern_gae2f92b8de58c7391a62048997f654b56} 
+\index{Internal@{Internal}!\_sir\_fopen@{\_sir\_fopen}}
+\index{\_sir\_fopen@{\_sir\_fopen}!Internal@{Internal}}
+\doxysubsubsection{\texorpdfstring{\_sir\_fopen()}{\_sir\_fopen()}}
+{\footnotesize\ttfamily int \+\_\+sir\+\_\+fopen (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}restrict \texorpdfstring{$\ast$}{*}restrict}]{streamptr,  }\item[{const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}restrict}]{filename,  }\item[{const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}restrict}]{mode }\end{DoxyParamCaption})}
+
+
+
+Wrapper for fopen/fopen\+\_\+s. 
+
+Determines which one to use based on preprocessor macros. 
+
+Definition at line \mbox{\hyperlink{sirhelpers_8c_source_l00182}{182}} of file \mbox{\hyperlink{sirhelpers_8c_source}{sirhelpers.\+c}}.
+
+\Hypertarget{group__intern_gab00490f3656c1c10d5c75b2b4da9fdd0}\label{group__intern_gab00490f3656c1c10d5c75b2b4da9fdd0} 
+\index{Internal@{Internal}!\_sir\_getchar@{\_sir\_getchar}}
+\index{\_sir\_getchar@{\_sir\_getchar}!Internal@{Internal}}
+\doxysubsubsection{\texorpdfstring{\_sir\_getchar()}{\_sir\_getchar()}}
+{\footnotesize\ttfamily int \+\_\+sir\+\_\+getchar (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+A portable \"{}press any key to continue\"{} implementation; On Windows, uses \+\_\+getch(). 
+
+otherwise, uses tcgetattr()/tcsetattr() and getchar(). 
+
+Definition at line \mbox{\hyperlink{sirhelpers_8c_source_l00233}{233}} of file \mbox{\hyperlink{sirhelpers_8c_source}{sirhelpers.\+c}}.
+
+\Hypertarget{group__intern_ga37e7b023734be0c24acfeec566135d94}\label{group__intern_ga37e7b023734be0c24acfeec566135d94} 
+\index{Internal@{Internal}!\_sir\_getcwd@{\_sir\_getcwd}}
+\index{\_sir\_getcwd@{\_sir\_getcwd}!Internal@{Internal}}
+\doxysubsubsection{\texorpdfstring{\_sir\_getcwd()}{\_sir\_getcwd()}}
+{\footnotesize\ttfamily bool \+\_\+sir\+\_\+getcwd (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}restrict}]{buffer,  }\item[{size\+\_\+t}]{size }\end{DoxyParamCaption})}
+
+
+
+Obtains the current working directory for the calling process. 
+
+\begin{DoxyNote}{Note}
+The working directory is not necessarily the same as the directory that the binary resides in. Use \+\_\+sir\+\_\+getappdir to obtain that path.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em buffer} & Pointer to a string of characters not less than SIR\+\_\+\+MAXPATH in length. \\
+\hline
+{\em size} & TODO \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true TODO 
+
+false TODO 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{sirfilesystem_8c_source_l00065}{65}} of file \mbox{\hyperlink{sirfilesystem_8c_source}{sirfilesystem.\+c}}.
+
+\Hypertarget{group__intern_ga96e3fd4916e25f311680f341f31219b2}\label{group__intern_ga96e3fd4916e25f311680f341f31219b2} 
+\index{Internal@{Internal}!\_sir\_gettextstyle@{\_sir\_gettextstyle}}
+\index{\_sir\_gettextstyle@{\_sir\_gettextstyle}!Internal@{Internal}}
+\doxysubsubsection{\texorpdfstring{\_sir\_gettextstyle()}{\_sir\_gettextstyle()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle}} \+\_\+sir\+\_\+gettextstyle (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level}}}]{level }\end{DoxyParamCaption})}
+
+
+
+Retrieves the override \doxylink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle} for a \doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} if one is set. 
+
+Otherwise, returns the default text style for that level. 
+
+Definition at line \mbox{\hyperlink{sirtextstyle_8c_source_l00071}{71}} of file \mbox{\hyperlink{sirtextstyle_8c_source}{sirtextstyle.\+c}}.
+
+\Hypertarget{group__intern_gaf5e3b63f99cb33987d34631d072da56e}\label{group__intern_gaf5e3b63f99cb33987d34631d072da56e} 
+\index{Internal@{Internal}!\_sir\_localtime@{\_sir\_localtime}}
+\index{\_sir\_localtime@{\_sir\_localtime}!Internal@{Internal}}
+\doxysubsubsection{\texorpdfstring{\_sir\_localtime()}{\_sir\_localtime()}}
+{\footnotesize\ttfamily struct tm \texorpdfstring{$\ast$}{*} \+\_\+sir\+\_\+localtime (\begin{DoxyParamCaption}\item[{const time\+\_\+t \texorpdfstring{$\ast$}{*}restrict}]{timer,  }\item[{struct tm \texorpdfstring{$\ast$}{*}restrict}]{buf }\end{DoxyParamCaption})}
+
+
+
+Wrapper for localtime/localtime\+\_\+s. 
+
+Determines which one to use based on preprocessor macros. 
+
+Definition at line \mbox{\hyperlink{sirhelpers_8c_source_l00206}{206}} of file \mbox{\hyperlink{sirhelpers_8c_source}{sirhelpers.\+c}}.
+
+\Hypertarget{group__intern_gaa3bdb27108e6e20986e896c145baf9be}\label{group__intern_gaa3bdb27108e6e20986e896c145baf9be} 
+\index{Internal@{Internal}!\_sir\_strncat@{\_sir\_strncat}}
+\index{\_sir\_strncat@{\_sir\_strncat}!Internal@{Internal}}
+\doxysubsubsection{\texorpdfstring{\_sir\_strncat()}{\_sir\_strncat()}}
+{\footnotesize\ttfamily int \+\_\+sir\+\_\+strncat (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}restrict}]{dest,  }\item[{size\+\_\+t}]{destsz,  }\item[{const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}restrict}]{src,  }\item[{size\+\_\+t}]{count }\end{DoxyParamCaption})}
+
+
+
+Wrapper for strncat/strncat\+\_\+s. 
+
+Determines which one to use based on preprocessor macros. 
+
+Definition at line \mbox{\hyperlink{sirhelpers_8c_source_l00158}{158}} of file \mbox{\hyperlink{sirhelpers_8c_source}{sirhelpers.\+c}}.
+
+\Hypertarget{group__intern_ga45a2711d677382329eef2dbcbf420aa2}\label{group__intern_ga45a2711d677382329eef2dbcbf420aa2} 
+\index{Internal@{Internal}!\_sir\_strncpy@{\_sir\_strncpy}}
+\index{\_sir\_strncpy@{\_sir\_strncpy}!Internal@{Internal}}
+\doxysubsubsection{\texorpdfstring{\_sir\_strncpy()}{\_sir\_strncpy()}}
+{\footnotesize\ttfamily int \+\_\+sir\+\_\+strncpy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}restrict}]{dest,  }\item[{size\+\_\+t}]{destsz,  }\item[{const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}restrict}]{src,  }\item[{size\+\_\+t}]{count }\end{DoxyParamCaption})}
+
+
+
+Wrapper for strncpy/strncpy\+\_\+s. 
+
+Determines which one to use based on preprocessor macros. 
+
+Definition at line \mbox{\hyperlink{sirhelpers_8c_source_l00134}{134}} of file \mbox{\hyperlink{sirhelpers_8c_source}{sirhelpers.\+c}}.
+
+\Hypertarget{group__intern_ga21cad27fd41591efb76e93c50b1428ca}\label{group__intern_ga21cad27fd41591efb76e93c50b1428ca} 
+\index{Internal@{Internal}!\_sir\_validstyle@{\_sir\_validstyle}}
+\index{\_sir\_validstyle@{\_sir\_validstyle}!Internal@{Internal}}
+\doxysubsubsection{\texorpdfstring{\_sir\_validstyle()}{\_sir\_validstyle()}}
+{\footnotesize\ttfamily bool \+\_\+sir\+\_\+validstyle (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle}}}]{style,  }\item[{uint32\+\_\+t \texorpdfstring{$\ast$}{*}}]{pattr,  }\item[{uint32\+\_\+t \texorpdfstring{$\ast$}{*}}]{pfg,  }\item[{uint32\+\_\+t \texorpdfstring{$\ast$}{*}}]{pbg }\end{DoxyParamCaption})}
+
+
+
+The maximum size of a color escape code sequence in bytes. 
+
+Validates a \doxylink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle} and splits it into its component parts. 
+
+Definition at line \mbox{\hyperlink{sirtextstyle_8c_source_l00041}{41}} of file \mbox{\hyperlink{sirtextstyle_8c_source}{sirtextstyle.\+c}}.
+
+\Hypertarget{group__intern_ga0fb1f78aa9c924d1e9e155b000b07da0}\label{group__intern_ga0fb1f78aa9c924d1e9e155b000b07da0} 
+\index{Internal@{Internal}!\_sirfile\_archive@{\_sirfile\_archive}}
+\index{\_sirfile\_archive@{\_sirfile\_archive}!Internal@{Internal}}
+\doxysubsubsection{\texorpdfstring{\_sirfile\_archive()}{\_sirfile\_archive()}}
+{\footnotesize\ttfamily bool \+\_\+sirfile\+\_\+archive (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{group__intern_structsirfile}{sirfile}} \texorpdfstring{$\ast$}{*}}]{sf,  }\item[{const \mbox{\hyperlink{group__public_ga1d2f790e2dabc69c8a625f2ee5dc583a}{sirchar\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{newpath }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{sirfilecache_8c_source_l00307}{307}} of file \mbox{\hyperlink{sirfilecache_8c_source}{sirfilecache.\+c}}.
+
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{group__intern_gaf1b1de2292df95b8841ea3c1c3e2c765}\label{group__intern_gaf1b1de2292df95b8841ea3c1c3e2c765} 
+\index{Internal@{Internal}!sir\_level\_str\_map@{sir\_level\_str\_map}}
+\index{sir\_level\_str\_map@{sir\_level\_str\_map}!Internal@{Internal}}
+\doxysubsubsection{\texorpdfstring{sir\_level\_str\_map}{sir\_level\_str\_map}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{group__intern_structsir__level__str__pair}{sir\+\_\+level\+\_\+str\+\_\+pair}} sir\+\_\+level\+\_\+str\+\_\+map\mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ \{\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc}{SIRL\_EMERG}},\ \ \ \textcolor{stringliteral}{"{}emrg"{}}\ \},}
+\DoxyCodeLine{\ \ \ \ \{\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955}{SIRL\_ALERT}},\ \ \ \textcolor{stringliteral}{"{}alrt"{}}\ \},}
+\DoxyCodeLine{\ \ \ \ \{\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435}{SIRL\_CRIT}},\ \ \ \ \textcolor{stringliteral}{"{}crit"{}}\ \},}
+\DoxyCodeLine{\ \ \ \ \{\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76}{SIRL\_ERROR}},\ \ \ \textcolor{stringliteral}{"{}erro"{}}\ \},}
+\DoxyCodeLine{\ \ \ \ \{\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881}{SIRL\_WARN}},\ \ \ \ \textcolor{stringliteral}{"{}warn"{}}\ \},}
+\DoxyCodeLine{\ \ \ \ \{\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a}{SIRL\_NOTICE}},\ \ \textcolor{stringliteral}{"{}noti"{}}\ \},}
+\DoxyCodeLine{\ \ \ \ \{\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d}{SIRL\_INFO}},\ \ \ \ \textcolor{stringliteral}{"{}info"{}}\ \},}
+\DoxyCodeLine{\ \ \ \ \{\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b}{SIRL\_DEBUG}},\ \ \ \textcolor{stringliteral}{"{}debg"{}}\ \}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Mapping of \doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} \texorpdfstring{$<$}{<}-\/\texorpdfstring{$>$}{>} string representation (\doxylink{sirconfig_8h}{sirconfig.\+h}) 
+
+\doxylink{group__intern_gaa18a225c2c97e8a7218363bb27749a15}{\+\_\+sir\+\_\+levelstr} obtains string representations from this array for output formatting.
+
+\begin{DoxyAttention}{Attention}
+Entries {\itshape must} remain in numeric ascending order (by SIRL\+\_\+\texorpdfstring{$\ast$}{*}); binary search is used to look up entries based on those values. 
+\end{DoxyAttention}
+
+
+Definition at line \mbox{\hyperlink{sirmaps_8h_source_l00075}{75}} of file \mbox{\hyperlink{sirmaps_8h_source}{sirmaps.\+h}}.
+
+\Hypertarget{group__intern_ga280fb5a15277541e1e33921eacabb769}\label{group__intern_ga280fb5a15277541e1e33921eacabb769} 
+\index{Internal@{Internal}!sir\_override\_style\_map@{sir\_override\_style\_map}}
+\index{sir\_override\_style\_map@{sir\_override\_style\_map}!Internal@{Internal}}
+\doxysubsubsection{\texorpdfstring{sir\_override\_style\_map}{sir\_override\_style\_map}}
+{\footnotesize\ttfamily \mbox{\hyperlink{group__intern_structsir__level__style__pair}{sir\+\_\+level\+\_\+style\+\_\+pair}} sir\+\_\+override\+\_\+style\+\_\+map\mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ \{\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc}{SIRL\_EMERG}},\ \ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa42e4beda8d3aef8122f3b272c54632e2}{SIRS\_INVALID}}\},}
+\DoxyCodeLine{\ \ \ \ \{\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955}{SIRL\_ALERT}},\ \ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa42e4beda8d3aef8122f3b272c54632e2}{SIRS\_INVALID}}\},}
+\DoxyCodeLine{\ \ \ \ \{\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435}{SIRL\_CRIT}},\ \ \ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa42e4beda8d3aef8122f3b272c54632e2}{SIRS\_INVALID}}\},}
+\DoxyCodeLine{\ \ \ \ \{\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76}{SIRL\_ERROR}},\ \ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa42e4beda8d3aef8122f3b272c54632e2}{SIRS\_INVALID}}\},}
+\DoxyCodeLine{\ \ \ \ \{\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881}{SIRL\_WARN}},\ \ \ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa42e4beda8d3aef8122f3b272c54632e2}{SIRS\_INVALID}}\},}
+\DoxyCodeLine{\ \ \ \ \{\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a}{SIRL\_NOTICE}},\ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa42e4beda8d3aef8122f3b272c54632e2}{SIRS\_INVALID}}\},}
+\DoxyCodeLine{\ \ \ \ \{\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d}{SIRL\_INFO}},\ \ \ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa42e4beda8d3aef8122f3b272c54632e2}{SIRS\_INVALID}}\},}
+\DoxyCodeLine{\ \ \ \ \{\mbox{\hyperlink{group__public_gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b}{SIRL\_DEBUG}},\ \ \mbox{\hyperlink{group__public_gga3bd5959a607e5280a8db90ada2d80cafa42e4beda8d3aef8122f3b272c54632e2}{SIRS\_INVALID}}\}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Overrides for \doxylink{group__public_ga4a3303c67acd49bea38fd3565d458cb2}{sir\+\_\+level} \texorpdfstring{$<$}{<}-\/\texorpdfstring{$>$}{>} \doxylink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle} mappings. 
+
+\doxylink{group__public_gaa628fae976081e7aaa302e5c5e43e06c}{sir\+\_\+settextstyle} sets (overrides) the style values in this array at runtime; only the SIRL\+\_\+\texorpdfstring{$\ast$}{*} values are constant.
+
+\doxylink{group__custom_ga33c3e4c7a91180cecacdff293873127a}{sir\+\_\+default\+\_\+style\+\_\+map} in \doxylink{sirdefaults_8h}{sirdefaults.\+h} contains the constant, default styles for each level.
+
+\begin{DoxyAttention}{Attention}
+Entries {\itshape must} remain in numeric ascending order (by SIRL\+\_\+\texorpdfstring{$\ast$}{*}); binary search is used to look up entries based on those values. 
+\end{DoxyAttention}
+
+
+Definition at line \mbox{\hyperlink{sirmaps_8h_source_l00055}{55}} of file \mbox{\hyperlink{sirmaps_8h_source}{sirmaps.\+h}}.
+
+\Hypertarget{group__intern_gab1caa11fe35560835e8f43573d67544b}\label{group__intern_gab1caa11fe35560835e8f43573d67544b} 
+\index{Internal@{Internal}!sir\_style\_16color\_map@{sir\_style\_16color\_map}}
+\index{sir\_style\_16color\_map@{sir\_style\_16color\_map}!Internal@{Internal}}
+\doxysubsubsection{\texorpdfstring{sir\_style\_16color\_map}{sir\_style\_16color\_map}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{group__intern_structsir__style__16color__pair}{sir\+\_\+style\+\_\+16color\+\_\+pair}} sir\+\_\+style\+\_\+16color\+\_\+map\mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Mapping of \doxylink{group__public_ga3bd5959a607e5280a8db90ada2d80caf}{sir\+\_\+textstyle} \texorpdfstring{$<$}{<}-\/\texorpdfstring{$>$}{>} values used to generate styled terminal output for 4-\/bit (16 color) mode. 
+
+\begin{DoxyAttention}{Attention}
+Entries {\itshape must} remain in numeric ascending order (by SIRS\+\_\+\texorpdfstring{$\ast$}{*}); binary search is used to look up entries based on those values. 
+\end{DoxyAttention}
+
+
+Definition at line \mbox{\hyperlink{sirmaps_8h_source_l00094}{94}} of file \mbox{\hyperlink{sirmaps_8h_source}{sirmaps.\+h}}.
+

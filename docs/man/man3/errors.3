@@ -1,0 +1,165 @@
+.TH "errors" 3 "Mon May 29 2023" "Version 2.1.1" "libsir" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+errors \- Error handling
+.PP
+ \- Functions, types, and codes used for error handling\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum { \fBSIR_E_NOERROR\fP = 0, \fBSIR_E_NOTREADY\fP = 1, \fBSIR_E_ALREADY\fP = 2, \fBSIR_E_DUPFILE\fP = 3, \fBSIR_E_NOFILE\fP = 4, \fBSIR_E_FCFULL\fP = 5, \fBSIR_E_OPTIONS\fP = 6, \fBSIR_E_LEVELS\fP = 7, \fBSIR_E_TEXTSTYLE\fP = 8, \fBSIR_E_STRING\fP = 9, \fBSIR_E_NULLPTR\fP = 10, \fBSIR_E_INVALID\fP = 11, \fBSIR_E_NODEST\fP = 12, \fBSIR_E_PLATFORM\fP = 13, \fBSIR_E_UNKNOWN\fP = 4095 }"
+.br
+.RI "Error codes\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fB__sir_handleerr\fP (int code, const \fBsirchar_t\fP *func, const \fBsirchar_t\fP *file, uint32_t line)"
+.br
+.RI "Handle a C library error\&. "
+.ti -1c
+.RI "\fBsirerror_t\fP \fB_sir_geterror\fP (\fBsirchar_t\fP message[256])"
+.br
+.RI "Returns information about the last error that occurred\&. "
+.ti -1c
+.RI "uint16_t \fBsir_geterror\fP (\fBsirchar_t\fP message[256])"
+.br
+.RI "Retrieves information about the last error that occurred within the context of libsir or lower\&. "
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "static thread_local \fBsir_thread_err\fP \fBsir_te\fP"
+.br
+.RI "Per-thread error data\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Functions, types, and codes used for error handling\&. 
+
+
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "anonymous enum"
+
+.PP
+Error codes\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fISIR_E_NOERROR \fP\fP
+The operation completed successfully\&. 
+.TP
+\fB\fISIR_E_NOTREADY \fP\fP
+libsir has not been initialized 
+.TP
+\fB\fISIR_E_ALREADY \fP\fP
+libsir is already initialized 
+.TP
+\fB\fISIR_E_DUPFILE \fP\fP
+File already managed by libsir\&. 
+.TP
+\fB\fISIR_E_NOFILE \fP\fP
+File not managed by libsir\&. 
+.TP
+\fB\fISIR_E_FCFULL \fP\fP
+Maximum number of files already managed\&. 
+.TP
+\fB\fISIR_E_OPTIONS \fP\fP
+Option flags are invalid\&. 
+.TP
+\fB\fISIR_E_LEVELS \fP\fP
+Level flags are invalid\&. 
+.TP
+\fB\fISIR_E_TEXTSTYLE \fP\fP
+Text style is invalid\&. 
+.TP
+\fB\fISIR_E_STRING \fP\fP
+Invalid string argument\&. 
+.TP
+\fB\fISIR_E_NULLPTR \fP\fP
+NULL pointer argument\&. 
+.TP
+\fB\fISIR_E_INVALID \fP\fP
+Invalid argument\&. 
+.TP
+\fB\fISIR_E_NODEST \fP\fP
+No destinations registered for level\&. 
+.TP
+\fB\fISIR_E_PLATFORM \fP\fP
+Platform error code %d: %s\&. 
+.TP
+\fB\fISIR_E_UNKNOWN \fP\fP
+Error is not known\&. 
+.PP
+Definition at line \fB48\fP of file \fBsirerrors\&.h\fP\&.
+.SH "Function Documentation"
+.PP 
+.SS "uint16_t sir_geterror (\fBsirchar_t\fP message[256])"
+
+.PP
+Retrieves information about the last error that occurred within the context of libsir or lower\&. 
+.PP
+\fBRemarks\fP
+.RS 4
+Most C library and OS calls made by libsir are evaluated for failure\&. If a failure of this type is encountered, this function returns \fBSIR_E_PLATFORM\fP, and \fCmessage\fP will contain a string identifying the underlying error code and the message as reported by the platform\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fImessage\fP A buffer to which the human-readable error message is copied\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+uint16_t 
+.RE
+.PP
+\fBReturn values\fP
+.RS 4
+\fISIR_E_NOERROR\fP The operation completed successfully 
+.br
+\fISIR_E_NOTREADY\fP libsir has not been initialized 
+.br
+\fISIR_E_ALREADY\fP libsir is already initialized 
+.br
+\fISIR_E_DUPFILE\fP File already managed by libsir 
+.br
+\fISIR_E_NOFILE\fP File not managed by libsir 
+.br
+\fISIR_E_FCFULL\fP Maximum number of files already managed 
+.br
+\fISIR_E_OPTIONS\fP Option flags are invalid 
+.br
+\fISIR_E_LEVELS\fP Level flags are invalid 
+.br
+\fISIR_E_TEXTSTYLE\fP Text style is invalid 
+.br
+\fISIR_E_STRING\fP Invalid string argument 
+.br
+\fISIR_E_NULLPTR\fP NULL pointer argument 
+.br
+\fISIR_E_INVALID\fP Invalid argument 
+.br
+\fISIR_E_NODEST\fP No destinations registered for level 
+.br
+\fISIR_E_PLATFORM\fP Platform error code %d: %s 
+.br
+\fISIR_E_UNKNOWN\fP Error is not known 
+.RE
+.PP
+
+.PP
+Definition at line \fB99\fP of file \fBsir\&.c\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsir from the source code\&.

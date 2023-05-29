@@ -1,0 +1,173 @@
+.TH "sirhelpers.h" 3 "Mon May 29 2023" "Version 2.1.1" "libsir" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+sirhelpers.h \- Internal macros and inline functions\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'sirtypes\&.h'\fP
+.br
+
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fB_sir_countof\fP(arr)   (sizeof(arr) / sizeof(arr[0]))"
+.br
+.RI "Computes the size of an array\&. "
+.ti -1c
+.RI "#define \fB_sir_mkerror\fP(code)       (((uint32_t)(code & 0x7fff) << 16) | 0x80000000)"
+.br
+.RI "Creates an error code that (hopefully) doesn't conflict with any of those defined by the platform\&. "
+.ti -1c
+.RI "#define \fB_SIR_L_START\fP(format)"
+.br
+.RI "Evil macro used for _sir_lv wrappers\&. "
+.ti -1c
+.RI "#define \fB_SIR_L_END\fP(args)   va_end(args);"
+.br
+.RI "Evil macro used for _sir_lv wrappers\&. "
+.ti -1c
+.RI "#define \fB_SIR_UNUSED\fP(param)   (void)param;"
+.br
+.RI "Squelches warnings about unreferenced parameters\&. "
+.ti -1c
+.RI "#define \fB_SIR_DECLARE_BIN_SEARCH\fP(low,  high)"
+.br
+.RI "Even more evil macros used for binary searching arrays\&. "
+.ti -1c
+.RI "#define \fB_sir_notnull\fP(addr)   (NULL != addr)"
+.br
+.RI "Validates a pointer-to-pointer, pointer, pointer to function, etc\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "static bool \fB_sir_validerror\fP (\fBsirerror_t\fP err)"
+.br
+.RI "Validates an internal error\&. "
+.ti -1c
+.RI "static uint16_t \fB_sir_geterrcode\fP (\fBsirerror_t\fP err)"
+.br
+.RI "Extracts just the code from an internal error\&. "
+.ti -1c
+.RI "static bool \fB_sir_bittest\fP (uint32_t flags, uint32_t test)"
+.br
+.RI "Checks a bitfield for a specific set of bits\&. "
+.ti -1c
+.RI "static void \fB__sir_safefree\fP (void **p)"
+.br
+.RI "Wraps \fIfree\fP\&. "
+.ti -1c
+.RI "static void \fB_sir_safefree\fP (void *p)"
+.br
+.RI "Wraps \fIfree\fP\&. "
+.ti -1c
+.RI "bool \fB_sir_validfid\fP (int id)"
+.br
+.RI "Validates a log file identifier\&. "
+.ti -1c
+.RI "bool \fB_sir_validupdatedata\fP (\fBsir_update_config_data\fP *data)"
+.br
+.RI "Validates a \fBsir_update_config_data\fP structure\&. "
+.ti -1c
+.RI "bool \fB_sir_validlevels\fP (\fBsir_levels\fP levels)"
+.br
+.RI "Validates a set of \fBsir_level\fP flags\&. "
+.ti -1c
+.RI "bool \fB_sir_validlevel\fP (\fBsir_level\fP level)"
+.br
+.RI "Validates a single \fBsir_level\fP\&. "
+.ti -1c
+.RI "static void \fB_sir_defaultlevels\fP (\fBsir_levels\fP *levels, \fBsir_levels\fP def)"
+.br
+.RI "Applies default \fBsir_level\fP flags if applicable\&. "
+.ti -1c
+.RI "static void \fB_sir_defaultopts\fP (\fBsir_options\fP *opts, \fBsir_options\fP def)"
+.br
+.RI "Applies default \fBsir_options\fP flags if applicable\&. "
+.ti -1c
+.RI "bool \fB_sir_validopts\fP (\fBsir_options\fP opts)"
+.br
+.RI "Validates a set of \fBsir_option\fP flags\&. "
+.ti -1c
+.RI "bool \fB__sir_validstr\fP (const \fBsirchar_t\fP *str, bool fail)"
+.br
+.RI "Validates a string pointer and optionally fails if it's invalid\&. "
+.ti -1c
+.RI "static bool \fB_sir_validstr\fP (const \fBsirchar_t\fP *str)"
+.br
+.RI "Validates a string pointer and fails if it's invalid\&. "
+.ti -1c
+.RI "static bool \fB_sir_validstrnofail\fP (const \fBsirchar_t\fP *str)"
+.br
+.RI "Validates a string pointer but ignores whether it's invalid\&. "
+.ti -1c
+.RI "bool \fB__sir_validptr\fP (const void *restrict p, bool fail)"
+.br
+.RI "Validates a pointer and optionally fails if it's invalid\&. "
+.ti -1c
+.RI "static bool \fB_sir_validptr\fP (const void *restrict p)"
+.br
+.RI "Validates a pointer and fails if it's invalid\&. "
+.ti -1c
+.RI "static bool \fB_sir_validptrnofail\fP (const void *restrict p)"
+.br
+.RI "Validates a pointer but ignores whether it's invalid\&. "
+.ti -1c
+.RI "static void \fB_sir_resetstr\fP (\fBsirchar_t\fP *str)"
+.br
+.RI "Places a null terminator at the first index in a string buffer\&. "
+.ti -1c
+.RI "int \fB_sir_strncpy\fP (\fBsirchar_t\fP *restrict dest, size_t destsz, const \fBsirchar_t\fP *restrict src, size_t count)"
+.br
+.RI "Wrapper for strncpy/strncpy_s\&. "
+.ti -1c
+.RI "int \fB_sir_strncat\fP (\fBsirchar_t\fP *restrict dest, size_t destsz, const \fBsirchar_t\fP *restrict src, size_t count)"
+.br
+.RI "Wrapper for strncat/strncat_s\&. "
+.ti -1c
+.RI "int \fB_sir_fopen\fP (FILE *restrict *restrict streamptr, const \fBsirchar_t\fP *restrict filename, const \fBsirchar_t\fP *restrict mode)"
+.br
+.RI "Wrapper for fopen/fopen_s\&. "
+.ti -1c
+.RI "struct tm * \fB_sir_localtime\fP (const time_t *restrict timer, struct tm *restrict buf)"
+.br
+.RI "Wrapper for localtime/localtime_s\&. "
+.ti -1c
+.RI "int \fB_sir_getchar\fP (void)"
+.br
+.RI "A portable 'press any key to continue' implementation; On Windows, uses _getch()\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Internal macros and inline functions\&. 
+
+This file and accompanying source code originated from https://github.com/aremmell/libsir\&. If you obtained it elsewhere, all bets are off\&.
+.PP
+\fBAuthor\fP
+.RS 4
+Ryan M\&. Lederman lederman@gmail.com 
+.RE
+.PP
+\fBCopyright\fP
+.RS 4
+.RE
+.PP
+The MIT License (MIT)
+.PP
+Copyright (c) 2018 Ryan M\&. Lederman
+.PP
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+.PP
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software\&.
+.PP
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\&. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE\&. 
+.PP
+Definition in file \fBsirhelpers\&.h\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libsir from the source code\&.
