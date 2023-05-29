@@ -68,7 +68,8 @@ bool _sirmutex_trylock(sirmutex_t* mutex) {
 
     if (_sir_validptr(mutex)) {
         int op = pthread_mutex_trylock(mutex);
-        _sir_handleerr(op);
+        if (0 != op)
+            _sir_handleerr(op);
         return 0 == op;
     }
 
@@ -79,7 +80,8 @@ bool _sirmutex_lock(sirmutex_t* mutex) {
 
     if (_sir_validptr(mutex)) {
         int op = pthread_mutex_lock(mutex);
-        _sir_handleerr(op);
+        if (0 != op)
+            _sir_handleerr(op);
         return 0 == op;
     }
 
@@ -90,7 +92,8 @@ bool _sirmutex_unlock(sirmutex_t* mutex) {
 
     if (_sir_validptr(mutex)) {
         int op = pthread_mutex_unlock(mutex);
-        _sir_handleerr(op);
+        if (0 != op)
+            _sir_handleerr(op);
         return 0 == op;
     }
 
@@ -101,7 +104,8 @@ bool _sirmutex_destroy(sirmutex_t* mutex) {
 
     if (_sir_validptr(mutex)) {
         int op = pthread_mutex_destroy(mutex);
-        _sir_handleerr(op);
+        if (0 != op)
+            _sir_handleerr(op);
         return 0 == op;
     }
 

@@ -70,7 +70,7 @@ bool sir_stderropts(sir_options opts) {
 }
 
 bool sir_sysloglevels(sir_levels levels) {
-#if !defined(SIR_NO_SYSLOG)
+#if defined(SIR_SYSLOG_ENABLED)
     _sir_defaultlevels(&levels, sir_syslog_def_lvls);
     sir_update_config_data data = { &levels, NULL };
     return _sir_writeinit(&data, _sir_sysloglevels);

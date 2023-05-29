@@ -34,6 +34,7 @@
 #include "sirdefaults.h"
 #include "sirfilecache.h"
 #include "sirtextstyle.h"
+#include "sirfilesystem.h"
 #include "sirmutex.h"
 
 /**
@@ -82,7 +83,7 @@ bool _sir_options_sanity(const sirinit* si) {
     levelcheck &= _sir_validlevels(si->d_stdout.levels);
     levelcheck &= _sir_validlevels(si->d_stderr.levels);
 
-#if !defined(SIR_NO_SYSLOG)
+#if defined(SIR_SYSLOG_ENABLED)
     levelcheck &= _sir_validlevels(si->d_syslog.levels);
 #endif
 
@@ -90,8 +91,7 @@ bool _sir_options_sanity(const sirinit* si) {
     optscheck &= _sir_validopts(si->d_stdout.opts);
     optscheck &= _sir_validopts(si->d_stderr.opts);
 
-    char* nullterm = strrchr(si->processName, '\0');
-    return levelcheck && optscheck && _sir_validptr(nullterm);
+    return levelcheck && optscheck;
 }
 
 bool _sir_init(sirinit* si) {
@@ -107,7 +107,6 @@ bool _sir_init(sirinit* si) {
 #else
     if (_SIR_MAGIC == _sir_magic) {
 #endif
-    
         _sir_seterror(_SIR_E_ALREADY);
         return false;
     }
@@ -118,7 +117,7 @@ bool _sir_init(sirinit* si) {
     _sir_defaultlevels(&si->d_stderr.levels, sir_stderr_def_lvls);
     _sir_defaultopts(&si->d_stderr.opts, sir_stderr_def_opts);
 
-#if !defined(SIR_NO_SYSLOG)
+#if defined(SIR_SYSLOG_ENABLED)
     _sir_defaultlevels(&si->d_syslog.levels, sir_syslog_def_lvls);
 #endif
 
@@ -133,46 +132,79 @@ bool _sir_init(sirinit* si) {
     sirinit* _si = _sir_locksection(_SIRM_INIT);
     assert(_si);
 
-    if (_si) {
+    if (_sir_validptr(_si)) {
         memcpy(_si, si, sizeof(sirinit));
-
-#if !defined(SIR_NO_SYSLOG)
-        if (0 != _si->d_syslog.levels)
-            openlog(_sir_validstrnofail(_si->processName) ? _si->processName : "",
-                (_si->d_syslog.include_pid ? LOG_PID : 0) | LOG_ODELAY, LOG_USER);
-#endif
 
 #if !defined(_WIN32)
         atomic_store(&_sir_magic, _SIR_MAGIC);
 #else
         _sir_magic = _SIR_MAGIC;
 #endif
+
+        /* forcibly null-terminate the process name. */
+        _si->processName[SIR_MAXNAME - 1] = '\0';
+
+        /* initialize syslog/os_log */
+        _sir_syslog_open(_si->processName, &_si->d_syslog);
         
-        _sir_unlocksection(_SIRM_INIT);
+        bool unlock = _sir_unlocksection(_SIRM_INIT);
+        assert(unlock);
         return true;
     }
 
     return false;
 }
 
+static void _sir_updatelevels(const char* name, sir_levels* old, sir_levels* new) {
+    if (!_sir_notnull(old) || !_sir_notnull(new)) {
+        _sir_seterror(_SIR_E_NULLPTR);
+        assert(old && new);
+        return;
+    }
+
+    if (*old != *new) {
+        _sir_selflog("%s: updating %s levels from %04x to %04x\n", __func__, name, *old, *new);
+        *old = *new;
+        return;
+    }
+
+    _sir_selflog("%s: superfluous update of %s levels: %04x\n", __func__, name, *old);    
+}
+
+static void _sir_updateopts(const char* name, sir_options* old, sir_options* new) {
+    if (!_sir_notnull(old) || !_sir_notnull(new)) {
+        _sir_seterror(_SIR_E_NULLPTR);
+        assert(old && new);
+        return;
+    }
+
+    if (*old != *new) {
+        _sir_selflog("%s: updating %s options from %08x to %08x\n", __func__, name, *old, *new);
+        *old = *new;
+        return;
+    }
+
+    _sir_selflog("%s: superfluous update of %s options: %08x\n", __func__, name, *old);       
+}
+
 void _sir_stdoutlevels(sirinit* si, sir_update_config_data* data) {
-    si->d_stdout.levels = *data->levels;
+    _sir_updatelevels("stdout", &si->d_stdout.levels, data->levels);
 }
 
 void _sir_stdoutopts(sirinit* si, sir_update_config_data* data) {
-    si->d_stdout.opts = *data->opts;
+    _sir_updateopts("stdout", &si->d_stdout.opts, data->opts);
 }
 
 void _sir_stderrlevels(sirinit* si, sir_update_config_data* data) {
-    si->d_stderr.levels = *data->levels;
+    _sir_updatelevels("stderr", &si->d_stderr.levels, data->levels);
 }
 
 void _sir_stderropts(sirinit* si, sir_update_config_data* data) {
-    si->d_stderr.opts = *data->opts;
+    _sir_updateopts("stderr", &si->d_stderr.opts, data->opts);
 }
 
 void _sir_sysloglevels(sirinit* si, sir_update_config_data* data) {
-    si->d_syslog.levels = *data->levels;
+    _sir_updatelevels("syslog", &si->d_syslog.levels, data->levels);
 }
 
 bool _sir_writeinit(sir_update_config_data* data, sirinit_update update) {
@@ -262,8 +294,7 @@ bool _sir_cleanup(void) {
     sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
     assert(sfc);
 
-    cleanup &= NULL != sfc;
-    if (cleanup) {
+    if (_sir_notnull(sfc)) {
         bool destroyfc = _sir_fcache_destroy(sfc);
         assert(destroyfc);
         cleanup &= _sir_unlocksection(_SIRM_FILECACHE) && destroyfc;
@@ -271,22 +302,24 @@ bool _sir_cleanup(void) {
 
     sirinit* si = _sir_locksection(_SIRM_INIT);
     assert(si);
+    cleanup &= _sir_notnull(si);
 
-    cleanup &= NULL != si;
-    if (cleanup) {
-        memset(si, 0, sizeof(sirinit));
-        cleanup &= _sir_unlocksection(_SIRM_INIT);
-    }
-
-    _sir_resettextstyles();
+    if (_sir_notnull(si)) {
+        _sir_syslog_close(&si->d_syslog);
+        _sir_resettextstyles();
 
 #if !defined(_WIN32)
     atomic_store(&_sir_magic, 0);
 #else
     _sir_magic = 0;
 #endif
-    
-    _sir_selflog("%s: libsir is cleaned up\n", __func__);
+        memset(si, 0, sizeof(sirinit));
+        cleanup &= _sir_unlocksection(_SIRM_INIT);
+    }
+
+    _sir_selflog("%s: libsir unloaded cleanly: %s\n", __func__, (cleanup ? "yes" : "NO!"));
+
+    assert(cleanup);
     return cleanup;
 }
 
@@ -447,13 +480,11 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
         wanted++;
     }
 
-#if !defined(SIR_NO_SYSLOG)
     if (_sir_bittest(si->d_syslog.levels, level)) {
-        syslog(_sir_syslog_maplevel(level), "%s", buf->message);
-        dispatched++;
+        if (_sir_syslog_write(level, buf, &si->d_syslog))
+            dispatched++;
         wanted++;
     }
-#endif
 
     sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
     if (sfc) {
@@ -467,6 +498,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
 
     if (0 == wanted) {
         _sir_seterror(_SIR_E_NODEST);
+        _sir_selflog("%s: no destinations registered to for level %04x\n", __func__, level);
         return false;
     }
 
@@ -549,23 +581,136 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
     return NULL;
 }
 
-#if !defined(SIR_NO_SYSLOG)
+#if defined(SIR_SYSLOG_ENABLED)
+
 int _sir_syslog_maplevel(sir_level level) {
+
+}
+
+#if defined(__APPLE__)
+# define SIR_USING_SYSLOG false
+#else
+# define SIR_USING_SYSLOG true
+#endif
+
+void _sir_syslog_open(const char* app_name, sir_syslog_dest* ctx) {
+    if (!ctx->opened_log) {
+        char identity[SIR_MAXPATH] = {0};
+
+        if (_sir_validstrnofail(app_name)) {
+            /* using app name from config. */
+            if (SIR_USING_SYSLOG) {
+                _sir_strncpy(identity, SIR_MAXPATH, app_name, strnlen(app_name, SIR_MAXNAME));
+            } else {
+                snprintf(identity, SIR_MAXPATH, "com.%s.%s", app_name, SIR_LIBNAME);
+            }
+        } else {
+            /* no name in config; using name of binary */
+            char appfilename[SIR_MAXPATH] = {0};
+            if (_sir_getappfilename(appfilename, SIR_MAXPATH)) {
+                if (SIR_USING_SYSLOG) {
+                    _sir_strncpy(identity, SIR_MAXPATH, appfilename, strnlen(appfilename, SIR_MAXPATH));
+                } else {
+                    snprintf(identity, SIR_MAXPATH, "com.%s.%s", appfilename, SIR_LIBNAME); 
+                }
+            } else {
+                /* everything failed; using 'libsir' */
+                _sir_strncpy(identity, SIR_MAXPATH, SIR_LIBNAME, strnlen(SIR_LIBNAME, SIR_MAXPATH));
+            }
+        }
+
+#if defined(__APPLE__)
+
+# pragma message("TODO: add these fields to sirinit. user might want to use something other than the process name for ident")
+        const char* category = "minutiae";
+
+        ctx->logger = os_log_create(identity, category);
+        ctx->opened_log = true;
+        _sir_selflog("%s: opened os_log ('%s', '%s')\n", __func__, identity, category);
+    
+#else
+        int logopt = LOG_NDELAY | ctx->include_pid ? LOG_PID : 0);
+        int facility = LOG_USER;
+
+        openlog(identity, logopt, facility);
+        ctx->opened_log = true;
+        _sir_selflog("%s: opened syslog(%s, %x, %x)\n", __func__, identity, logopt, facility);
+#endif
+    } else {
+        _sir_selflog("%s: already opened log; ignoring\n", __func__);
+    }
+}
+
+bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx) {
+#if defined(__APPLE__)
+    /*
+        Value type      Custom specifier         Example output
+        BOOL            %{BOOL}d                 YES
+        bool            %{bool}d                 true
+        darwin.errno    %{darwin.errno}d         [32: Broken pipe]
+        darwin.mode     %{darwin.mode}d          drwxr-xr-x
+        darwin.signal   %{darwin.signal}d        [sigsegv: Segmentation Fault]
+        time_t          %{time_t}d               2016-01-12 19:41:37
+        timeval         %{timeval}.*P            2016-01-12 19:41:37.774236
+        timespec        %{timespec}.*P           2016-01-12 19:41:37.2382382823
+        bytes           %{bytes}d                4.72 kB
+        iec-bytes       %{iec-bytes}d            4.61 KiB
+        bitrate         %{bitrate}d              123 kbps
+        iec-bitrate     %{iec-bitrate}d          118 Kibps
+        uuid_t          %{uuid_t}.16P            10742E39-0657-41F8-AB99-878C5EC2DCAA
+        sockaddr        %{network:sockaddr}.*P   fe80::f:86ff:fee9:5c16
+        in_addr         %{network:in_addr}d      127.0.0.1
+        in6_addr        %{network:in6_addr}.16P  fe80::f:86ff:fee9:5c16
+    */ 
+
+   /* need to figure out what to return from this function, considering syslog()
+    * nor the os_log_* functions return a value. 
+    *
+    */
+   os_log(ctx->logger, "%s", buf->message);
+#else
+    int syslog_level = LOG_DEBUG;
     switch (level) {
-        case SIRL_EMERG:  return LOG_EMERG;
-        case SIRL_ALERT:  return LOG_ALERT;
-        case SIRL_CRIT:   return LOG_CRIT;
-        case SIRL_ERROR:  return LOG_ERR;
-        case SIRL_WARN:   return LOG_WARNING;
-        case SIRL_NOTICE: return LOG_NOTICE;
-        case SIRL_INFO:   return LOG_INFO;
-        case SIRL_DEBUG:  return LOG_DEBUG;
-        default:
+        case SIRL_INFO:  syslog_level = LOG_INFO;    break;
+        case SIRL_DEBUG: syslog_level = LOG_DEBUG;   break;
+        case SIRL_WARN:  syslog_level = LOG_WARNING; break;
+        case SIRL_ERROR: syslog_level = LOG_ERR;     break;
+        case SIRL_CRIT:  syslog_level = LOG_CRIT;    break;
+        case SIRL_ALERT: syslog_level = LOG_ALERT;   break;
+        case SIRL_EMERG: syslog_level = LOG_EMERG;   break;
+        default: /* this should never happen. */
             assert(!"invalid sir_level");
             return LOG_DEBUG;
     }
-}
+
+    syslog(syslog_level, "%s", buf->message);
 #endif
+    return true;
+}
+
+void _sir_syslog_close(sir_syslog_dest* ctx) {
+    if (ctx->opened_log) {
+#if defined(__APPLE__)
+    /* evidently, you don't need to close the handle returned from os_log_create(), and
+     * if you make that call again, you'll get the same cached value. so let's keep the
+     * value we've got in the global context. */
+    ctx->opened_log = false;
+    _sir_selflog("%s: log closure not required\n", __func__);
+#else
+    closelog();
+    ctx->opened_log = false;
+    _sir_selflog("%s: closed syslog\n", __func__);
+#endif
+    } else {
+        _sir_selflog("%s: log not open; ignoring\n", __func__);
+    }
+}
+#else // SIR_SYSLOG_ENABLED
+int _sir_syslog_maplevel(sir_level level) { return LOG_DEBUG; }
+void _sir_syslog_open(const char* app_name, sir_syslog_dest* ctx) {}
+bool _sir_syslog_write(sir_level level, const sirbuf* buf) { return true; }
+void _sir_syslog_close(sir_syslog_dest* ctx) {}
+#endif // !SIR_SYSLOG_ENABLED
 
 const sirchar_t* _sir_levelstr(sir_level level) {
         

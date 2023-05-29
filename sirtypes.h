@@ -148,6 +148,11 @@ typedef struct {
 typedef struct {
     sir_levels levels;
     bool include_pid;
+    bool opened_log;
+
+#if defined(__APPLE__)
+    os_log_t logger;
+#endif
 } sir_syslog_dest;
 
 /**
@@ -161,9 +166,7 @@ typedef struct {
 typedef struct {
     sir_stdio_dest d_stdout;  /**< stdout configuration. */
     sir_stdio_dest d_stderr;  /**< stderr configuration. */
-#if !defined(SIR_NOSYSLOG)    
     sir_syslog_dest d_syslog; /**< syslog configuration (if available). */
-#endif
 
     /** If set, defines the name that will appear in formatted output.
      * Set ::SIRO_NONAME for a destination to supppress it. */

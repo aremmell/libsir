@@ -122,10 +122,25 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf);
 /** Specific destination formatting. */
 const sirchar_t* _sir_format(bool styling, sir_options opts, sirbuf* buf);
 
-#if !defined(SIR_NO_SYSLOG)
 /** Maps a ::sir_level to a \a syslog level. */
 int _sir_syslog_maplevel(sir_level level);
-#endif
+
+/** Called upon initialization of the library; does any necesssary
+ * connecting/opening handles, etc.
+ */
+void _sir_syslog_open(const char* app_name, sir_syslog_dest* ctx);
+
+/**
+ * Abstraction for writing to platform-specific implementations of
+ * syslog-type facilities (e.g.,) `os_log` on macOS.
+*/
+bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx);
+
+/**
+ * Called upon shutdown of the library; does any necessary
+ * cleaning up/closing handles, etc.
+ */
+void _sir_syslog_close(sir_syslog_dest* ctx);
 
 /** Converts a ::sir_level to its human-readable form. */
 const sirchar_t* _sir_levelstr(sir_level level);

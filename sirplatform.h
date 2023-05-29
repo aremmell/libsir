@@ -33,40 +33,44 @@
 #define _SIR_PLATFORM_H_INCLUDED
 
 #if !defined(_WIN32)
-#   define __STDC_WANT_LIB_EXT1__ 1
-#if defined(__APPLE__) && defined(__MACH__)
-#   define __MACOS__
-#   define _DARWIN_C_SOURCE
-#elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__DragonFly__)
-#   define __BSD__
-#   if !defined(_DEFAULT_SOURCE)
-#       define _DEFAULT_SOURCE
-#   endif
-#else
-#   if defined(__linux__) && !defined(_GNU_SOURCE)
-#       define _GNU_SOURCE
-#   endif
-#   if !defined(_POSIX_C_SOURCE)
-#       define _POSIX_C_SOURCE 200809L
-#   endif
-#   if !defined(_DEFAULT_SOURCE)
-#       define _DEFAULT_SOURCE
-#   endif
-#   if !defined(_XOPEN_SOURCE)
-#       define _XOPEN_SOURCE 700
-#   endif
+# define __STDC_WANT_LIB_EXT1__ 1
+# if defined(__APPLE__) && defined(__MACH__)
+#  define __MACOS__
+#  define _DARWIN_C_SOURCE
+# elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__DragonFly__)
+#  define __BSD__
+#  define _BSD_SOURCE
+#  if !defined(_DEFAULT_SOURCE)
+#   define _DEFAULT_SOURCE
+#  endif
+# else
+#  if defined(__linux__) && !defined(_GNU_SOURCE)
+#   define _GNU_SOURCE
+#  endif
+#  if !defined(_POSIX_C_SOURCE)
+#   define _POSIX_C_SOURCE 200809L
+#  endif
+#  if !defined(_DEFAULT_SOURCE)
+#   define _DEFAULT_SOURCE
+#  endif
+#  if !defined(_XOPEN_SOURCE)
+#   define _XOPEN_SOURCE 700
+# endif
 #endif
 #else // _WIN32
-#   define __WANT_STDC_SECURE_LIB__ 1
-#   define _CRT_RAND_S
-#	define WIN32_LEAN_AND_MEAN
-#	define WINVER       0x0A00 /** Windows 10 SDK */
-#	define _WIN32_WINNT 0x0A00
-#	include <windows.h>
-#	include <io.h>
-#	include <synchapi.h>
-#	include <process.h>
-#   include <conio.h>
+# define __WANT_STDC_SECURE_LIB__ 1
+# define _CRT_RAND_S
+# define WIN32_LEAN_AND_MEAN
+# define WINVER       0x0A00 /** Windows 10 SDK */
+# define _WIN32_WINNT 0x0A00
+# include <windows.h>
+# include <io.h>
+# include <synchapi.h>
+# include <process.h>
+# include <conio.h>
+# include <shlwapi.h>
+# include <pathcch.h>
+# include <direct.h>
 #endif
 
 #include <assert.h>
@@ -78,91 +82,108 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <libgen.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <time.h>
 
-
 #if !defined(_WIN32)
-#   include <pthread.h>
-#   include <unistd.h>
-#   include <sys/syscall.h>
-#   include <syslog.h>
-#   include <strings.h>
-#   include <termios.h>
-#   include <stdatomic.h>
-#if defined(__BSD__)
-#   include <pthread_np.h>
-#elif defined(__linux__)
-#   include <linux/limits.h>
-#endif
+# include <pthread.h>
+# include <unistd.h>
+# include <sys/syscall.h>
+# include <syslog.h>
+# include <strings.h>
+# include <termios.h>
+# include <limits.h>
+# include <fcntl.h>
+# include <stdatomic.h>
+# if defined(__BSD__)
+#  include <pthread_np.h>
+#  include <sys/sysctl.h>
+# elif defined(__linux__)
+#  include <linux/limits.h>
+# elif defined(__APPLE__)
+#  include <mach-o/dyld.h>
+#  include <os/log.h>
+#  include <os/trace.h>
+#  include <os/activity.h>
+# endif
 
-#if defined(PATH_MAX)
-#   define SIR_MAXPATH PATH_MAX
-#elif defined(MAXPATHLEN)
-#   define SIR_MAXPATH MAXPATHLEN
-#else
-#   define SIR_MAXPATH 1024
-#endif
+# if defined(__GLIBC__)
+#  if (__GLIBC__ >= 2 && __GLIBC_MINOR__ > 19)  || \
+      ((__GLIBC__ == 2 && __GLIBC_MINOR__ <= 19) && defined(_BSD_SOURCE))
+#   define __HAVE_UNISTD_READLINK__
+#  endif
+# endif
 
-#if _POSIX_TIMERS > 0
-#   define SIR_MSEC_TIMER
-#   define SIR_MSEC_POSIX
-#else
+# if defined(PATH_MAX)
+#  define SIR_MAXPATH PATH_MAX
+# elif defined(MAXPATHLEN)
+#  define SIR_MAXPATH MAXPATHLEN
+# else
+#  define SIR_MAXPATH 1024
+# endif
+
+# if _POSIX_TIMERS > 0
+#  define SIR_MSEC_TIMER
+#  define SIR_MSEC_POSIX
+# else
 #   undef SIR_MSEC_TIMER
-#endif
+# endif
 
-/** The mutex type. */
-typedef pthread_mutex_t sirmutex_t;
+# define SIR_SYSLOG_ENABLED
 
-/** The one-time type. */
-typedef pthread_once_t sironce_t;
+ /** The mutex type. */
+ typedef pthread_mutex_t sirmutex_t;
 
-/** The one-time execution function type. */
-typedef void (*sir_once_fn)(void);
+ /** The one-time type. */
+ typedef pthread_once_t sironce_t;
 
-/** The one-time initializer. */
-#define SIR_ONCE_INIT PTHREAD_ONCE_INIT
+ /** The one-time execution function type. */
+ typedef void (*sir_once_fn)(void);
+
+  /** The one-time initializer. */
+# define SIR_ONCE_INIT PTHREAD_ONCE_INIT
 
 #else // _WIN32
 
-#define SIR_MAXPATH MAX_PATH
-#define SIR_NO_SYSLOG
-#define SIR_MSEC_TIMER
-#define SIR_MSEC_WIN32
+# define SIR_MAXPATH MAX_PATH
+# undef SIR_SYSLOG_ENABLED
+# define SIR_MSEC_TIMER
+# define SIR_MSEC_WIN32
 
-/** The mutex type. */
-typedef HANDLE sirmutex_t;
+ /** The mutex type. */
+ typedef HANDLE sirmutex_t;
 
-/** The one-time type. */
-typedef INIT_ONCE sironce_t;
+ /** The one-time type. */
+ typedef INIT_ONCE sironce_t;
 
-/** Process/thread ID. */
-typedef int pid_t;
+ /** Process/thread ID. */
+ typedef int pid_t;
 
-/** The one-time execution function type. */
-typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
+ /** The one-time execution function type. */
+ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
-/** The one-time initializer. */
-#define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
+  /** The one-time initializer. */
+# define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
 #endif // !_WIN32
 
 #if !defined(thread_local)
-#   if __STDC_VERSION__ >= 201112 && !defined(__STDC_NO_THREADS__)
-#       define thread_local _Thread_local
-#   elif defined(_WIN32)
-#       define thread_local __declspec(thread)
-#   elif defined(__GNUC__)
-#       define thread_local __thread
-#   else
-#       error "Unable to configure thread_local!"
-#   endif
+# if __STDC_VERSION__ >= 201112 && !defined(__STDC_NO_THREADS__)
+#  define thread_local _Thread_local
+# elif defined(_WIN32)
+#  define thread_local __declspec(thread)
+# elif defined(__GNUC__)
+#  define thread_local __thread
+# else
+#  error "unable to resolve thread local attribute; please contact the author."
+# endif
 #endif
 
 #if defined(_WIN32) && defined(__STDC_SECURE_LIB__)
-#   define __HAVE_STDC_SECURE_OR_EXT1__ 
+# define __HAVE_STDC_SECURE_OR_EXT1__ 
 #elif defined(__STDC_LIB_EXT1__)
-#   define __HAVE_STDC_SECURE_OR_EXT1__
+# define __HAVE_STDC_SECURE_OR_EXT1__
 #endif
 
 #endif /* !_SIR_PLATFORM_H_INCLUDED */

@@ -50,33 +50,33 @@ There is a VS Code workspace file included, in case you'd like to use that. In t
 
 libsir is able to output certain data that may contribute to better comprehension of the program state (_particularly for debugging postmortem_). Each destination may be configured to receive any, all, or none of these.
 
-> Note: the appearance of this data may be customized for your application. See [Customization](#customization) for more information.
+> Note: the format of this data may be customized for your application. See [Customization](#customization) for more information.
 
-Data             |  Description                               | stdio   | syslog[^1] | files
-----             | ------------                               | :-----: | :------:           | :-----:
-Timestamp        | The current time (_hour, min, sec_)        | x       |                    | x
-Milliseconds     | 1/1000<sup>ths</sup> of the current second | x       |                    | x
-Level            | Human-readable level                       | x       |                    | x
-Name             | The name of the process                    | x       | x                  | x
-Process ID       | The current process identifier             | x       | x                  | x
-Thread ID        | The current thread identifier              | x       |                    | x
+| Data             |  Description                          | stdio   | syslog[^1] | files   |
+| ---------------- | ------------------------------------- | :-----: | :------:   | :-----: |
+| Timestamp        | The current time (_hour, min, sec_)   | ✓       |            | ✓       |
+| Milliseconds     | 1/1000^ths^ of the current second     | ✓       |            | ✓       |
+| Level            | Human-readable level _(e.g. 'warn')_  | ✓       |            | ✓       |
+| Name             | Name of the process                   | ✓       | ✓          | ✓       |
+| Process ID       | The current process identifier        | ✓       | ✓          | ✓       |
+| Thread ID        | The current thread identifier         | ✓       |            | ✓       |
 
-[^1]:  `syslog` _already includes many of these categories of data on its own._
+[^1]: `syslog` already include these categories of data on its own, so libsir purposely omits them._
 
 ### Logging levels
 
 In addition to decoration options, each destination may be registered to receive any, none, or all priority levels of output. The available levels may be overly granular, but it's better to have unused levels rather than need another one and not have it.
 
-Level       | Description
------       | -----------
-Debug       | Debugging/diagnostic output.
-Information | Informational messages.
-Notice      | Normal but significant.
-Warning     | Warnings that could likely be ignored.
-Error       | Errors.
-Critical    | Critical errors.
-Alert       | Action required ASAP.
-Emergency   | Nuclear war, Armageddon, the sky is falling.
+| Level       | Description                                  |
+| ----------- |  ------------------------------------------: |
+| Debug       | Debugging/diagnostic output.                 |
+| Information | Informational messages.                      |
+| Notice      | Normal but significant.                      |
+| Warning     | Warnings that could likely be ignored.       |
+| Error       | Errors.                                      |
+| Critical    | Critical errors.                             |
+| Alert       | Action required ASAP.                        |
+| Emergency   | Nuclear war, Armageddon, the sky is falling. |
 
 ## Customization
 
@@ -84,29 +84,29 @@ Emergency   | Nuclear war, Armageddon, the sky is falling.
 
 The following can be modified to alter behavior, and are located in [sirconfig.h](./sirconfig.h). This is not an exhaustive list, and you should read the header for more information:
 
-Entry             | Description                       | Default
------             | -----------                       | :------:
-`SIR_TIMEFORMAT`  | The time stamp format string at the beginning of log messages. | `"%H:%M:%S"`
-`SIR_MSECFORMAT`  | The format for the current millisecond in time stamps. | `".%03ld"`
-`SIR_LEVELFORMAT` | The format for the human-readable logging level. | `"[%s]"`
-`SIR_PIDFORMAT`   | The format for the current process/thread ID. | `"%d"`
-`SIR_FOPENMODE`   | The string passed to fopen/fopen_s for log files. | `"a"`
-`SIR_FROLLSIZE` | The size, in bytes, at which a log file will be rolled/archived. | `(1024L * 1024L * 5L)`
-`SIR_FHTIMEFORMAT` | The time format string in file headers. | `"%H:%M:%S %a %d %b %y (%z)"`
-`SIR_FHFORMAT` | The format string written to a log file when logging begins or the file is rolled/archived. | `"\n\n----- %s %s -----\n\n"`
-`SIR_FHBEGIN` | The string included in `SIR_FHFORMAT` when a file is rolled/archived due to size. | `"session begin @"`
-`SIR_FHROLLED` | The string included in `SIR_FHFORMAT` when a file is rolled/archived due to size. | `"archived as %s due to size @"`
-`SIR_FNAMEFORMAT` | The format string for rolled/archived log file names. | `"%s-%s%s"`
-`SIRL_S_EMERG` | The human-readable form of the `SIRL_EMERG` level. | `"emrg"`
-`SIRL_S_ALERT` | The human-readable form of the `SIRL_ALERT` level. | `"alrt"`
-`SIRL_S_CRIT` | The human-readable form of the `SIRL_CRIT` level. | `"crit"`
-`SIRL_S_ERROR` | The human-readable form of the `SIRL_ERROR` level. | `"erro"`
-`SIRL_S_WARN` | The human-readable form of the `SIRL_WARN` level. | `"warn"`
-`SIRL_S_NOTICE` | The human-readable form of the `SIRL_NOTICE` level. | `"noti"`
-`SIRL_S_INFO` | The human-readable form of the `SIRL_INFO` level. | `"info"`
-`SIRL_S_DEBUG` | The human-readable form of the `SIRL_DEBUG` level. | `"debg"`
-`SIR_MAXFILES` | The maximum number of log files that may be registered.  | `16`
-`SIR_MAXMESSAGE` | The maximum number of characters that may be included in one message, not including other parts of the output, like the timestamp and level. | `2048`
+| Entry              | Description                       | Default                                                                                 |
+| -----              | -----------                       | :------:
+| `SIR_TIMEFORMAT`   | The time stamp format string at the beginning of log messages.                                | `"%H:%M:%S"`                               |
+| `SIR_MSECFORMAT`   | The format for the current millisecond in time stamps.                                         | `".%03ld"`                               |
+| `SIR_LEVELFORMAT`  | The format for the human-readable logging level.                                             | `"[%s]"`                               |
+| `SIR_PIDFORMAT`    | The format for the current process/thread ID.                                                | `"%d"`                               |
+| `SIR_FOPENMODE`    | The string passed to fopen/fopen_s for log files.                                            | `"a"`                               |
+| `SIR_FROLLSIZE`    | The size, in bytes, at which a log file will be rolled/archived.                            | `(1024L * 1024L * 5L)`                               |
+| `SIR_FHTIMEFORMAT` | The time format string in file headers.                                                     | `"%H:%M:%S %a %d %b %y (%z)"`                               |
+| `SIR_FHFORMAT`     | The format string written to a log file when logging begins or the file is rolled/archived. | `"\n\n----- %s %s -----\n\n"`                               |
+| `SIR_FHBEGIN`      | The string included in `SIR_FHFORMAT` when a file is rolled/archived due to size. | `"session begin @"`                               |
+| `SIR_FHROLLED`     | The string included in `SIR_FHFORMAT` when a file is rolled/archived due to size. | `"archived as %s due to size @"`    |
+| `SIR_FNAMEFORMAT`  | The format string for rolled/archived log file names.                             | `"%s-%s%s"`                               |
+| `SIRL_S_EMERG`     | The human-readable form of the `SIRL_EMERG` level.                                 | `"emrg"`                               |
+| `SIRL_S_ALERT`     | The human-readable form of the `SIRL_ALERT` level.                               | `"alrt"`                               |
+| `SIRL_S_CRIT`      | The human-readable form of the `SIRL_CRIT` level.                                | `"crit"`                               |
+| `SIRL_S_ERROR`     | The human-readable form of the `SIRL_ERROR` level.                               | `"erro"`                               |
+| `SIRL_S_WARN`      | The human-readable form of the `SIRL_WARN` level.                                | `"warn"`                               |
+| `SIRL_S_NOTICE`    | The human-readable form of the `SIRL_NOTICE` level.                              | `"noti"`                               |
+| `SIRL_S_INFO`      | The human-readable form of the `SIRL_INFO` level.                                | `"info"`                               |
+| `SIRL_S_DEBUG`     | The human-readable form of the `SIRL_DEBUG` level.                               | `"debg"`                               |
+| `SIR_MAXFILES`     | The maximum number of log files that may be registered.                          | `16`                               |
+| `SIR_MAXMESSAGE`   | The maximum number of characters that may be included in a message, not including other parts of the output, like the timestamp and level. | `2048`|
 
 ### Default options, levels, and text styles
 
@@ -156,7 +156,7 @@ Example app   | `make example` | _build/sirexample[.exe]_
 Recipe Type         | Command             | Output file
 ------         | -------             | -----------
 Static library | `make static`       | _build/lib/libsir_s.a_
-Shared library | `make shared`       | _build/lib/libsir.so_ 
+Shared library | `make shared`       | _build/lib/libsir.so_
 Install[^2]    | `sudo make install` | /usr/local/lib/libsir.so, /usr/local/include/&lt;headers&gt;
 
 [^2]: Use `sudo make install` only if you have looked at the recipe and understand that it manually copies files, that’s it. Future releases of libsir will utilize the `install` tool when available.
