@@ -14,7 +14,7 @@ INSTALLLIB = /usr/local/lib
 INSTALLINC = /usr/local/include
 
 ifeq ($(SIR_DEBUG),1)
-	CFLAGS = -Wpedantic -std=c11 -I. -DNDEBUG -fPIC -g -O0 -DSIR_SELFLOG
+	CFLAGS = -Wpedantic -std=c11 -I. -DDEBUG -fPIC -g -O0 -DSIR_SELFLOG
 else
 	CFLAGS = -Wpedantic -std=c11 -I. -DNDEBUG -fPIC -O3
 endif
