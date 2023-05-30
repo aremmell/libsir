@@ -14,7 +14,7 @@ INSTALLLIB = /usr/local/lib
 INSTALLINC = /usr/local/include
 
 ifeq ($(SIR_DEBUG),1)
-	CFLAGS = -Wpedantic -std=c11 -I. -DDEBUG -fPIC -g -O0 -DSIR_SELFLOG
+	CFLAGS = -Wpedantic -std=c11 -I. -DNDEBUG -fPIC -g -O0 -DSIR_SELFLOG
 else
 	CFLAGS = -Wpedantic -std=c11 -I. -DNDEBUG -fPIC -O3
 endif
@@ -28,7 +28,7 @@ LIBS = -lpthread
 
 # for test rig and example:
 # link with static library, not shared
-LDFLAGS = $(LIBS) -L$(LIBDIR) -lsir
+LDFLAGS = $(LIBS) -L$(LIBDIR) -lsir_s
 
 # translation units
 TUS := $(wildcard *.c)
@@ -44,7 +44,7 @@ LDFLAGS_SHARED = $(LIBS)
 
 # static library
 OBJ_STATIC     = $(OBJ_SHARED)
-OUT_STATIC     = $(LIBDIR)/libsir.a
+OUT_STATIC     = $(LIBDIR)/libsir_s.a
 
 # console example
 OBJ_EXAMPLE	   = $(INTDIR)/$(EXAMPLE)/$(EXAMPLE).o
