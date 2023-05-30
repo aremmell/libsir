@@ -23,6 +23,6 @@ jobs:
       compiler: clang
 script:
   - make clean tests example
-  - build/sirtests
-  - build/sirexample
+  - build/bin/sirtests
+  - build/bin/sirexample
 
