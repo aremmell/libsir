@@ -45,53 +45,6 @@ bool sir_init(sirinit* si) {
     return _sir_init(si);
 }
 
-bool sir_stdoutlevels(sir_levels levels) {
-    _sir_defaultlevels(&levels, sir_stdout_def_lvls);
-    sir_update_config_data data = { &levels, NULL };
-    return _sir_writeinit(&data, _sir_stdoutlevels);
-}
-
-bool sir_stdoutopts(sir_options opts) {
-    _sir_defaultopts(&opts, sir_stdout_def_opts);
-    sir_update_config_data data = { NULL, &opts };
-    return _sir_writeinit(&data, _sir_stdoutopts);
-}
-
-bool sir_stderrlevels(sir_levels levels) {
-    _sir_defaultlevels(&levels, sir_stderr_def_lvls);
-    sir_update_config_data data = { &levels, NULL };
-    return _sir_writeinit(&data, _sir_stderrlevels);
-}
-
-bool sir_stderropts(sir_options opts) {
-    _sir_defaultopts(&opts, sir_stderr_def_opts);
-    sir_update_config_data data = { NULL, &opts };
-    return _sir_writeinit(&data, _sir_stderropts);
-}
-
-bool sir_sysloglevels(sir_levels levels) {
-#if defined(SIR_SYSLOG_ENABLED)
-    _sir_defaultlevels(&levels, sir_syslog_def_lvls);
-    sir_update_config_data data = { &levels, NULL };
-    return _sir_writeinit(&data, _sir_sysloglevels);
-#else
-    _SIR_UNUSED(levels);
-    return false;
-#endif
-}
-
-bool sir_filelevels(sirfileid_t id, sir_levels levels) {
-    _sir_defaultlevels(&levels, sir_file_def_lvls);
-    sir_update_config_data data = { &levels, NULL };
-    return _sir_updatefile(id, &data);
-}
-
-bool sir_fileopts(sirfileid_t id, sir_options opts) {
-    _sir_defaultopts(&opts, sir_file_def_opts);
-    sir_update_config_data data = { NULL, &opts };
-    return _sir_updatefile(id, &data);
-}
-
 bool sir_cleanup(void) {
     return _sir_cleanup();
 }
@@ -170,6 +123,73 @@ bool sir_settextstyle(sir_level level, sir_textstyle style) {
 
 bool sir_resettextstyles(void) {
     return _sir_resettextstyles();
+}
+
+bool sir_stdoutlevels(sir_levels levels) {
+    _sir_defaultlevels(&levels, sir_stdout_def_lvls);
+    sir_update_config_data data = { SIRU_LEVELS, &levels, NULL, NULL, NULL };
+    return _sir_writeinit(&data, _sir_stdoutlevels);
+}
+
+bool sir_stdoutopts(sir_options opts) {
+    _sir_defaultopts(&opts, sir_stdout_def_opts);
+    sir_update_config_data data = { SIRU_OPTIONS, NULL, &opts, NULL, NULL };
+    return _sir_writeinit(&data, _sir_stdoutopts);
+}
+
+bool sir_stderrlevels(sir_levels levels) {
+    _sir_defaultlevels(&levels, sir_stderr_def_lvls);
+    sir_update_config_data data = { SIRU_LEVELS, &levels, NULL, NULL, NULL };
+    return _sir_writeinit(&data, _sir_stderrlevels);
+}
+
+bool sir_stderropts(sir_options opts) {
+    _sir_defaultopts(&opts, sir_stderr_def_opts);
+    sir_update_config_data data = { SIRU_OPTIONS, NULL, &opts, NULL, NULL };
+    return _sir_writeinit(&data, _sir_stderropts);
+}
+
+bool sir_sysloglevels(sir_levels levels) {
+#if !defined(SIR_NO_SYSTEM_LOGGERS)
+    _sir_defaultlevels(&levels, sir_syslog_def_lvls);
+    sir_update_config_data data = { SIRU_LEVELS, &levels, NULL, NULL, NULL };
+    return _sir_writeinit(&data, _sir_sysloglevels);
+#else
+    _SIR_UNUSED(levels);
+    return false;
+#endif
+}
+
+bool sir_syslogid(const char* identity) {
+#if !defined(SIR_NO_SYSTEM_LOGGERS)
+    sir_update_config_data data = { SIRU_SYSLOG_ID, NULL, NULL, identity, NULL };
+    return _sir_writeinit(&data, _sir_syslogid);
+#else
+    _SIR_UNUSED(identity);
+    return false;
+#endif
+}
+
+bool sir_syslogcat(const char* category) {
+#if !defined(SIR_NO_SYSTEM_LOGGERS)
+    sir_update_config_data data = { SIRU_SYSLOG_CAT, NULL, NULL, NULL, category };
+    return _sir_writeinit(&data, _sir_syslogcat);
+#else
+    _SIR_UNUSED(identity);
+    return false;
+#endif
+}
+
+bool sir_filelevels(sirfileid_t id, sir_levels levels) {
+    _sir_defaultlevels(&levels, sir_file_def_lvls);
+    sir_update_config_data data = { SIRU_LEVELS, &levels, NULL, NULL, NULL };
+    return _sir_updatefile(id, &data);
+}
+
+bool sir_fileopts(sirfileid_t id, sir_options opts) {
+    _sir_defaultopts(&opts, sir_file_def_opts);
+    sir_update_config_data data = { SIRU_OPTIONS, NULL, &opts, NULL, NULL };
+    return _sir_updatefile(id, &data);
 }
 
 /** @} */

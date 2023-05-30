@@ -66,13 +66,19 @@ void _sir_stderrlevels(sirinit* si, sir_update_config_data* data);
 /** Updates options for \a stderr. */
 void _sir_stderropts(sirinit* si, sir_update_config_data* data);
 
-/** Updates levels for \a syslog. */
+/** Updates levels for \a syslog (or \a os_log on \a macOS). */
 void _sir_sysloglevels(sirinit* si, sir_update_config_data* data);
 
-/** Updates levels/options in the global init structure. */
+/** Updates the identity for \a syslog (or \a os_log on \a macOS). */
+void _sir_syslogid(sirinit* si, sir_update_config_data* data);
+
+/** Updates the category for \a syslog (or \a os_log on \a macOS). */
+void _sir_syslogcat(sirinit* si, sir_update_config_data* data);
+
+/** Updates values in the global init structure. */
 typedef void (*sirinit_update)(sirinit*, sir_update_config_data*);
 
-/** Updates levels/options in the global init structure. */
+/** Updates values in the global init structure. */
 bool _sir_writeinit(sir_update_config_data* data, sirinit_update update);
 
 /** Locks a protected section. */
@@ -107,9 +113,6 @@ BOOL CALLBACK _sir_initmutex_fc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
 BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
 #endif
 
-/** Initializes a specific mutex. */
-void _sir_initmutex(sirmutex_t* mutex);
-
 /** Executes only one time. */
 bool _sir_once(sironce_t* once, sir_once_fn func);
 
@@ -122,25 +125,23 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf);
 /** Specific destination formatting. */
 const sirchar_t* _sir_format(bool styling, sir_options opts, sirbuf* buf);
 
-/** Maps a ::sir_level to a \a syslog level. */
-int _sir_syslog_maplevel(sir_level level);
-
-/** Called upon initialization of the library; does any necesssary
- * connecting/opening handles, etc.
+/**
+ * Called upon initialization of the library. Performs any necesssary
+ * preparation: connecting/opening handles, etc.
  */
-void _sir_syslog_open(const char* app_name, sir_syslog_dest* ctx);
+bool _sir_syslog_open(const char* name, sir_syslog_dest* ctx);
 
 /**
  * Abstraction for writing to platform-specific implementations of
- * syslog-type facilities (e.g.,) `os_log` on macOS.
-*/
+ * system logger facilities (e.g. \a syslog or \a os_log on \a macOS).
+ */
 bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx);
 
 /**
- * Called upon shutdown of the library; does any necessary
- * cleaning up/closing handles, etc.
+ * Called upon shutdown of the library. Performs any necessary
+ * cleanup: disconnecting/closing handles, etc.
  */
-void _sir_syslog_close(sir_syslog_dest* ctx);
+bool _sir_syslog_close(sir_syslog_dest* ctx);
 
 /** Converts a ::sir_level to its human-readable form. */
 const sirchar_t* _sir_levelstr(sir_level level);
@@ -157,7 +158,7 @@ pid_t _sir_getpid(void);
 /** Returns the current thread identifier. */
 pid_t _sir_gettid(void);
 
-/** Returns the current thread's name. */
+/** Retrieves the current thread's name. */
 bool _sir_getthreadname(char name[SIR_MAXPID]);
 
 /** @} */

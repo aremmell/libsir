@@ -45,8 +45,11 @@
  * @{
  */
 
-/** The name of this library. */
-#define SIR_LIBNAME "libsir"
+/** Fallback system loggger identity. */
+#define SIR_SYSLOG_ID "libsir"
+
+/** Fallback system logger category. */
+#define SIR_SYSLOG_CAT "general"
 
 /** The time stamp format string at the beginning of log messages. */
 #define SIR_TIMEFORMAT "%H:%M:%S"
@@ -80,7 +83,7 @@
  * The format string written to a log file when logging begins or the file
  * is rolled/archived.
  *
- * - The \a first %%s format specifier is the message (e.g., ::SIR_FHBEGIN, ::SIR_FHROLLED)
+ * - The \a first %%s format specifier is the message (e.g. ::SIR_FHBEGIN, ::SIR_FHROLLED)
  *
  * - The \a second %%s is the current date/time (see ::SIR_FHTIMEFORMAT).
  */
@@ -148,8 +151,8 @@
 #define SIR_MAXFILES 16
 
 /**
- * The maximum number of characters that may be included in one message,
- * not including other parts of the output, like the timestamp and level.
+ * The maximum number of characters allowable in one message. This
+ * does not include accompanying formatted output (@see SIR_MAXOUTPUT).
  */
 #define SIR_MAXMESSAGE 2048
 
@@ -162,9 +165,23 @@
 /** The size, in characters, of the buffer used to hold level format strings. */
 #define SIR_MAXLEVEL 7
 
-/** The size, in characters, of the buffer used to hold process/appname
- * format strings. */
+/**
+ * The size, in characters, of the buffer used to hold process/appname
+ * format strings.
+ */
 #define SIR_MAXNAME 32
+
+/**
+ * The size, in characters, of the buffer used to hold system logger identity
+ * strings. 
+ */
+#define SIR_MAX_SYSLOG_ID 128
+
+/**
+ * The size, in characters, of the buffer used to hold system logger category
+ * strings.
+ */
+#define SIR_MAX_SYSLOG_CAT 64
 
 /** The size, in characters, of the buffer used to hold process/thread IDs/names. */
 #define SIR_MAXPID 16

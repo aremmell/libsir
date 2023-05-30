@@ -2,8 +2,12 @@
 
 - [ ] BUG: SIRO_ALL is not effectively SIRO_MSGONLY; it’s the opposite. It should be called SIRO_NONE
 - [ ] BUG: if NO_TIME and NO_NAME are set, but TID and PID are present, there’s no space between the message
-- [ ] _SIR_E_NODEST is not really an error. it just means nobody wanted that level at that particular time.
 - [ ] Implement “last message repeated n times”
+- [ ] *sir_syslogcat* to update the category
+- [ ] *sir_syslogid* to update the identity
+    - [ ] Document
+    - [ ] Add tests
+- [ ] Document sirfilesystem.h
 - [ ] Tests:
   - [ ] Better level/option validation testing
   - [ ] Filesystem
@@ -23,19 +27,20 @@
 - [ ] New preprocessor defines–add to Makefile and docs
   - [ ] SIR_ASSERT_ON_ERROR
 
+  - [ ] SIR_NO_SYSTEM_LOGGERS
+
   - [ ] On platforms != windows (that have syslog):
     - [ ] Disable syslog at initialization time:
 
     - [ ] Disable os_log and syslog at initialization time: **SIR_NO_SYSTEM_LOGGERS**
 
   - [ ] Conditional logging (debug_if(), etc.)
-
 - [ ] Add to index.md (and rebuild Docs):
   - [ ] Check for unresolved :: and @ref and \a and \p etc, and normalize the usage.
-  - [ ] That there’s a VS2022 solution and projects now
+  - [x] That there’s a VS2022 solution and projects now
   - [ ] That there’s a C++ header w/ boost::format adapter (or delete it and start over)
   - [ ] That there’s `syslog` and `os_log` support now
 - [ ] Try again to figure out why in 2023 there’s no `stdatomic.h`support in VS2022… maybe clang will compile it?
 - [ ] Go through sir.hh and write Doxygen comments before rebuilding docs (or delete it and start over)
-  - [ ] Search for “SIR” and replace with “libsir”
-  - [ ] Same for “SIR_NOSYSLOG”
+  - [x] Search for “SIR” and replace with “libsir”
+  - [x] Same for “SIR_NO_SYSTEM_LOGGERS”

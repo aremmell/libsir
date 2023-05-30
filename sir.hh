@@ -58,7 +58,7 @@ namespace sir {
     /**
      * Technically, we could just use std::string, but
      * template over ::sirchar_t in case it may be defined
-     * as a type other than char in the future (e.g., wchar_t).
+     * as a type other than char in the future (e.g. wchar_t).
      */
     typedef std::basic_string<sirchar_t>       string_t;
     typedef std::basic_stringstream<sirchar_t> stringstream_t;

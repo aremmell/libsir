@@ -58,6 +58,7 @@
 # endif
 #endif
 #else // _WIN32
+# define SIR_NO_SYSTEM_LOGGERS
 # define __WANT_STDC_SECURE_LIB__ 1
 # define _CRT_RAND_S
 # define WIN32_LEAN_AND_MEAN
@@ -87,16 +88,30 @@
 #include <sys/types.h>
 #include <time.h>
 
+#if !defined(SIR_NO_SYSTEM_LOGGERS)
+# if defined(__APPLE__)
+#  define SIR_OS_LOG_ENABLED
+# else
+#  undef SIR_OS_LOG_ENABLED
+#  define SIR_SYSLOG_ENABLED
+# endif
+#else
+# undef SIR_OS_LOG_ENABLED
+# undef SIR_SYSLOG_ENABLED
+#endif
+
 #if !defined(_WIN32)
 # include <pthread.h>
 # include <unistd.h>
 # include <sys/syscall.h>
-# include <syslog.h>
 # include <strings.h>
 # include <termios.h>
 # include <limits.h>
 # include <fcntl.h>
 # include <stdatomic.h>
+# if defined(SIR_SYSLOG_ENABLED)
+# include <syslog.h>
+# endif
 # if defined(__BSD__)
 #  include <pthread_np.h>
 #  include <sys/sysctl.h>
@@ -104,9 +119,11 @@
 #  include <linux/limits.h>
 # elif defined(__APPLE__)
 #  include <mach-o/dyld.h>
-#  include <os/log.h>
-#  include <os/trace.h>
-#  include <os/activity.h>
+#  if defined(SIR_OS_LOG_ENABLED)
+#   include <os/log.h>
+#   include <os/trace.h>
+#   include <os/activity.h>
+#  endif
 # endif
 
 # if defined(__GLIBC__)
@@ -131,16 +148,14 @@
 #   undef SIR_MSEC_TIMER
 # endif
 
-# define SIR_SYSLOG_ENABLED
+/** The mutex type. */
+typedef pthread_mutex_t sirmutex_t;
 
- /** The mutex type. */
- typedef pthread_mutex_t sirmutex_t;
+/** The one-time type. */
+typedef pthread_once_t sironce_t;
 
- /** The one-time type. */
- typedef pthread_once_t sironce_t;
-
- /** The one-time execution function type. */
- typedef void (*sir_once_fn)(void);
+/** The one-time execution function type. */
+typedef void (*sir_once_fn)(void);
 
   /** The one-time initializer. */
 # define SIR_ONCE_INIT PTHREAD_ONCE_INIT
@@ -148,21 +163,20 @@
 #else // _WIN32
 
 # define SIR_MAXPATH MAX_PATH
-# undef SIR_SYSLOG_ENABLED
 # define SIR_MSEC_TIMER
 # define SIR_MSEC_WIN32
 
- /** The mutex type. */
- typedef HANDLE sirmutex_t;
+/** The mutex type. */
+typedef HANDLE sirmutex_t;
 
- /** The one-time type. */
- typedef INIT_ONCE sironce_t;
+/** The one-time type. */
+typedef INIT_ONCE sironce_t;
 
- /** Process/thread ID. */
- typedef int pid_t;
+/** Process/thread ID. */
+typedef int pid_t;
 
- /** The one-time execution function type. */
- typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
+/** The one-time execution function type. */
+typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
   /** The one-time initializer. */
 # define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT

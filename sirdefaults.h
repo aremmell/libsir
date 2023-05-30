@@ -55,7 +55,7 @@ static const sir_levels sir_stderr_def_lvls
 static const sir_options sir_stderr_def_opts 
     = SIRO_NOTIME | SIRO_NOPID | SIRO_NOTID;
 
-/** Default levels for \a syslog (if enabled). */
+/** Default levels for \a syslog (or \a os_log on \a macOS). */
 static const sir_levels sir_syslog_def_lvls
     = SIRL_ERROR | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG;
 

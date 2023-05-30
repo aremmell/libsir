@@ -48,21 +48,34 @@ bool _sir_validfid(int id) {
 
 /** Validates a sir_update_config_data structure. */
 bool _sir_validupdatedata(sir_update_config_data* data) {
-    if (_sir_validptr(data)) {
-        /* Either/or: this structure is passed to functions that either
-         * update levels or options, not both. */
-        bool have_levels = _sir_validptrnofail(data->levels);
-        bool have_opts   = _sir_validptrnofail(data->opts);
 
-        if (have_levels || have_opts)
-            return have_levels ? _sir_validlevels(*data->levels) :
-                _sir_validopts(*data->opts);
-        
-        _sir_seterror(_SIR_E_INVALID);
-        assert(!"invalid update config data");
+    if (!_sir_validptr(data))
+        return false;
+
+    if (data->fields == 0)
+        return false;
+
+    bool valid = true;
+    if (_sir_bittest(data->fields, SIRU_LEVELS)) {
+        valid &= (_sir_validptrnofail(data->levels) &&
+            _sir_validlevels(*data->levels));
     }
 
-    return false;
+    if (_sir_bittest(data->fields, SIRU_OPTIONS)) {
+        valid &= (_sir_validptrnofail(data->opts) &&
+            _sir_validopts(*data->opts));
+    }
+    
+    if (_sir_bittest(data->fields, SIRU_SYSLOG_ID))
+        valid &= _sir_validstrnofail(data->sl_identity);
+
+    if (_sir_bittest(data->fields, SIRU_SYSLOG_CAT))
+        valid &= _sir_validstrnofail(data->sl_category);                
+    
+    if (!valid)
+        _sir_seterror(_SIR_E_INVALID);
+
+    return valid;
 }
 
 bool _sir_validlevels(sir_levels levels) {

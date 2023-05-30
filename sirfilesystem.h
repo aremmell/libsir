@@ -39,32 +39,31 @@
  * @{
  */
 
-/**
- * @brief Determines if a file or directory exists in the filesystem.
- * 
- * @param path null-terminated string containing the path to test.
- * 
- * @return true TODO
- * @return false TODO
- */
+/** Determines if a file or directory exists in the filesystem. */
 bool _sir_fileexists(const char* restrict path);
 
-/**
- * @brief Obtains the current working directory for the calling process.
- * 
- * @note The working directory is not necessarily the same as the directory
- *       that the binary resides in. Use @ref _sir_getappdir to obtain that path.
- * 
- * @param buffer Pointer to a string of characters not less than @ref SIR_MAXPATH in length.
- * @param size TODO
- * @return true TODO
- * @return false TODO
- */
+/** Retrieves the current working directory for the calling process. */
 bool _sir_getcwd(char* restrict buffer, size_t size);
-#pragma messsage("TODO: Doxygen the rest of these")
+
+/** Retrieves the absolute path of the binary executable file for the calling process. */
 bool _sir_getappfilename(char* restrict buffer, size_t size);
+
+/**
+ * Retrieves the absolute path of the directory containing the
+ * binary file for the calling process.
+ */
 bool _sir_getappdir(char* restrict buffer, size_t size);
+
+/**
+ * Returns only last component of a path.
+ * May return ".", "/", or \p path if no determination can be made.
+ */
 char* _sir_getbasename(char* restrict path);
+
+/**
+ * Returns all but the last component of a path.
+ * May return "." "/", or \p path if no determination can be made.
+*/
 char* _sir_getdirname(char* restrict path); 
 
 /** @} */

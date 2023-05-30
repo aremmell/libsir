@@ -163,12 +163,8 @@ Another option for implementing libsir would simply be to include all of the sou
 ### Preprocessor
 
 * For my own development purposes, I included a preprocesor define that causes libsir to log certain events to `stderr` that may be useful in diagnosing problems if/when they arise: `-DSIR_SELFLOG`.
-* You should also be aware that `assert` is used in libsir. If you build _without_ `-DNDEBUG`, and an `assert` triggers, your program will halt (`assert` calls `abort` if the expression is `false`).
-
-### Why libsir?
-
-libsir was originally written in 2003 for my own personal use, and I rediscovered it recently. I looked at it, and realized that it was woefully inadequate and decided to compeltely rewrite it. I also decided to make it publically available, because I think it's a pretty good library, and I hope that it will be useful to others.
+* You should also be aware that `assert` is used in libsir. If you build _without_ `-DNDEBUG`, and an `assert` triggers, your program will halt (`assert` calls `abort` if the expression is false).
 
 ### Further reading
 
-If you are genuinely interested in utilizing libsir, I strongly encourage you to read the [full online documentation](https://aremmell.github.io/libsir) to get a better understanding of the library's capabilities and interfaces.
+If you are genuinely interested in utilizing libsir, you are encouraged to read the [full online documentation](https://aremmell.github.io/libsir) to get a better understanding of the library's capabilities and interfaces.

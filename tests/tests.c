@@ -51,9 +51,9 @@ static const sir_test sir_tests[] = {
     {"error handling sanity",   sirtest_errorsanity},
     {"text style sanity",       sirtest_textstylesanity},
     {"update levels/options",   sirtest_updatesanity},
-   /*  {"syslog",                  sirtest_syslog}, */
+    {"syslog",                  sirtest_syslog},
     {"os_log",                  sirtest_os_log},
-    /* {"portable filesystem api", sirtest_filesystem} */
+    {"portable filesystem api", sirtest_filesystem}
 };
 
 static const char* arg_wait = "--wait"; /* wait for key press before exiting. */
@@ -770,10 +770,10 @@ bool sirtest_syslog(void) {
 }
 
 bool sirtest_os_log(void) {
-#if !defined(__APPLE__)
-    printf("\t" CYAN("not running on macOS; skipping.") "\n");
+#if !defined(SIR_OS_LOG_ENABLED)
+    printf("\t" CYAN("SIR_OS_LOG_ENABLED is not defined; skipping.") "\n");
     return true;
-#else    
+#else
     INIT_SL(si, SIRL_ALL, SIRO_NOTID, 0, 0, "sirtests");
     si.d_syslog.levels      = SIRL_DEFAULT;
     si.d_syslog.include_pid = true;
@@ -791,7 +791,9 @@ bool sirtest_os_log(void) {
         }
 
         // TODO: os_activity_initiate_f
+        /* static void os_log_activity1(void* ctx) {
 
+        } */
     }
 
     sir_cleanup();
@@ -824,9 +826,6 @@ bool sirtest_XXX(void) {
 
 /* ========================== end tests ========================== */
 
-static void os_log_activity1(void* ctx) {
-
-}
 
 #if !defined(_WIN32)
 static void* sirtest_thread(void* arg);

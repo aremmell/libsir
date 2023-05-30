@@ -46,16 +46,18 @@ bool _sirmutex_create(sirmutex_t* mutex) {
         pthread_mutexattr_t attr;
 
         int op = pthread_mutexattr_init(&attr);
-        _sir_handleerr(op);
+        if (0 != op)
+            _sir_handleerr(op);
 
         if (0 == op) {
             op = pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_NORMAL);
-            _sir_handleerr(op);
+            if (0 != op)
+                _sir_handleerr(op);
 
             if (0 == op) {
                 op = pthread_mutex_init(mutex, &attr);
-                _sir_handleerr(op);
-
+                if (0 != op)
+                    _sir_handleerr(op);
                 return 0 == op;
             }
         }

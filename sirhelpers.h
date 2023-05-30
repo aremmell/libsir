@@ -103,8 +103,13 @@ uint16_t _sir_geterrcode(sirerror_t err) {
 #define _SIR_END_BIN_SEARCH() \
     } while(true);
 
-/** Validates a pointer-to-pointer, pointer,
- * pointer to function, etc. but ignores whether it's invalid. */
+/**
+ * Validates a pointer-to-pointer, pointer,
+ * pointer to function, etc. but ignores whether it's invalid.
+ * 
+ * This is necessary due to the fact that ::_sir_validptr will
+ * not accept these types as input.
+ */
 #define _sir_notnull(addr) (NULL != addr)
 
 /** Checks a bitfield for a specific set of bits. */
@@ -197,19 +202,22 @@ void _sir_resetstr(sirchar_t* str) {
  * Wrapper for strncpy/strncpy_s. Determines which one to use
  * based on preprocessor macros.
  */
-int _sir_strncpy(sirchar_t* restrict dest, size_t destsz, const sirchar_t* restrict src, size_t count);
+int _sir_strncpy(sirchar_t* restrict dest, size_t destsz,
+    const sirchar_t* restrict src, size_t count);
 
 /**
   * Wrapper for strncat/strncat_s. Determines which one to use
   * based on preprocessor macros.
   */
-int _sir_strncat(sirchar_t* restrict dest, size_t destsz, const sirchar_t* restrict src, size_t count);
+int _sir_strncat(sirchar_t* restrict dest, size_t destsz,
+    const sirchar_t* restrict src, size_t count);
 
 /**
   * Wrapper for fopen/fopen_s. Determines which one to use
   * based on preprocessor macros.
   */
-int _sir_fopen(FILE* restrict *restrict streamptr, const sirchar_t* restrict filename, const sirchar_t* restrict mode);
+int _sir_fopen(FILE* restrict *restrict streamptr,
+    const sirchar_t* restrict filename, const sirchar_t* restrict mode);
 
 /**
   * Wrapper for localtime/localtime_s. Determines which one to use

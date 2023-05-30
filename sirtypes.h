@@ -43,9 +43,6 @@
 /** The file identifier type. */
 typedef const int* sirfileid_t;
 
-/** The error code type. */
-typedef uint32_t sirerror_t;
-
 /** Defines the available levels \a (severity/priority) of logging output. */
 typedef enum {
     SIRL_NONE    = 0x0000, /**< No output. */
@@ -129,55 +126,94 @@ typedef enum {
     SIRS_INVALID     = 0x000f3000  /**< Represents the invalid text style. */
 } sir_textstyle;
 
+/** Dynamic configuration update options. */
+typedef enum {
+    SIRU_LEVELS     = 0x01,
+    SIRU_OPTIONS    = 0x02,
+    SIRU_SYSLOG_ID  = 0x04,
+    SIRU_SYSLOG_CAT = 0x08
+} sir_config_data_field;
+
 /** The underlying type used for characters in output. */
 typedef char sirchar_t;
 
 /**
  * @struct sir_stdio_dest
  * @brief Configuration for stdio destinations (stdout and stderr).
+ * 
+ * @see ::sir_level
+ * @see ::sir_option
  */
 typedef struct {
-    sir_levels  levels;
-    sir_options opts;
+    sir_levels levels; /** Bitmask defining output levels to register for. */
+    sir_options opts;  /** Bitmask defining the formatting of output. */
 } sir_stdio_dest;
 
 /**
  * @struct sir_syslog_dest
- * @brief Configuration for the syslog destination.
+ * @brief Configuration for a system logger destination.
+ * 
+ * @see ::sir_syslog_type
+ * @see ::sir_level
  */
 typedef struct {
-    sir_levels levels;
-    bool include_pid;
-    bool opened_log;
+    sir_levels levels; /** Bitmask defining output levels to register for. */
 
-#if defined(__APPLE__)
-    os_log_t logger;
+    bool include_pid;  /** Include the processID in messages (\a syslog only). */
+    bool opened_log;   /** System logger is currently open. */
+
+    /** 
+     * The identity string to pass to the system loggger.
+     * 
+     * If not set, and the processName in the ::sirinit struct
+     * is set, that will be used.
+     * 
+     * Failing that, an attempt will be made to use the file name
+     * of the calling process.
+     * 
+     * If that is unsuccessful as well, the string ::SIR_SYSLOG_ID
+     * will be used.
+     * 
+     * @note Can be modified at any time with ::sir_syslogid.
+    */
+    char identity[SIR_MAX_SYSLOG_ID];
+
+    /**
+     * Some system loggers (e.g. \a os_log on \a macOS) require a
+     * category string to group and filter log messages.
+     * 
+     * If not set, the string ::SIR_SYSLOG_CAT will be used.
+     * 
+     * @note Can be modified at any time with ::sir_syslogcat.
+     */
+    char category[SIR_MAX_SYSLOG_CAT];
+
+#if defined(SIR_OS_LOG_ENABLED)
+    os_log_t logger;   /** macOS-only system logger handle. */
 #endif
 } sir_syslog_dest;
 
 /**
  * @struct sirinit
- *
  * @brief Initialization data for libsir.
+ * 
+ * @see ::sir_stdio_dest
+ * @see ::sir_syslog_dest
  *
  * Allocate an instance of this struct and pass it to ::sir_init
  * in order to begin using libsir.
  */
 typedef struct {
-    sir_stdio_dest d_stdout;  /**< stdout configuration. */
-    sir_stdio_dest d_stderr;  /**< stderr configuration. */
-    sir_syslog_dest d_syslog; /**< syslog configuration (if available). */
+    sir_stdio_dest d_stdout;  /**< \a stdout configuration. */
+    sir_stdio_dest d_stderr;  /**< \a stderr configuration. */
+    sir_syslog_dest d_syslog; /**< System logger configuration (if any). */
 
-    /** If set, defines the name that will appear in formatted output.
-     * Set ::SIRO_NONAME for a destination to supppress it. */
+    /**
+     * If set, defines the name that will appear in formatted output.
+     * Set ::SIRO_NONAME in a destination's options flags to supppress it.
+     */
     sirchar_t processName[SIR_MAXNAME];
 } sirinit;
-
-/** Library error type. */
-typedef struct {
-    sirerror_t code;
-    const sirchar_t * const message;
-} sirerror;
 
 /** @} */
 
@@ -185,6 +221,15 @@ typedef struct {
  * @addtogroup intern
  * @{
  */
+
+/** Internally-used error code type. */
+typedef uint32_t sirerror_t;
+
+/** Internally-used error type. */
+typedef struct {
+    sirerror_t code;
+    const sirchar_t * const message;
+} sirerror;
 
 /** Text style attribute mask. */
 #define _SIRS_ATTR_MASK 0x0000000f
@@ -270,8 +315,11 @@ typedef struct {
 
 /** Encapsulates dynamic updating of current configuration. */
 typedef struct {
+    uint32_t fields;
     sir_levels* levels;
     sir_options* opts;
+    const char* sl_identity;
+    const char* sl_category;
 } sir_update_config_data;
 
 /** @} */
