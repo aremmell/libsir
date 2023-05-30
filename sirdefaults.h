@@ -81,7 +81,7 @@ static const sir_level_style_pair sir_default_style_map[] = {
     {SIRL_WARN,   SIRS_FG_YELLOW},
     {SIRL_NOTICE, SIRS_FG_CYAN},
     {SIRL_INFO,   SIRS_FG_WHITE},
-    {SIRL_DEBUG,  SIRS_FG_LGRAY}
+    {SIRL_DEBUG,  SIRS_FG_DGRAY}
 };
 
 /** @} */
