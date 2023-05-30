@@ -52,8 +52,8 @@ extern "C" {
 /**
  * @brief Initializes libsir.
  *
- * Any thread may initialize SIR, but any calls to other libsir functions
- * will fail until this call has completed.
+ * Any thread may initialize libsir, but any calls to other functions
+ * exported by the library will fail until this call has completed.
  *
  * @remark Call ::sir_cleanup when you're through.
  *
