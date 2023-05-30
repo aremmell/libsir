@@ -528,8 +528,8 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
             assert(_sirfile_validate(sfc->files[n]));
 
             if (!_sir_bittest(sfc->files[n]->levels, level)) {
-                _sir_selflog("%s: levels for file %d (%04lx) don't include (%04lx); skipping...\n", __func__,
-                    sfc->files[n]->id, sfc->files[n]->levels, level);
+                _sir_selflog("%s: level %04x not set in level mask (%04x) for file %d; skipping\n",
+                    __func__, level, sfc->files[n]->levels, sfc->files[n]->id);
                 continue;
             }
 
