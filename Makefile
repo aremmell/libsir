@@ -1,32 +1,17 @@
-#####################################################
-#                                                   #
-#              libsir make recipes                  #
-#                                                   #
-#       https://github.com/aremmell/libsir          #
-#                                                   #
-#                                                   #
-# Note:                                             #
-#  Set the environment variable 'SIR_DEBUG' to 1    #
-#  in order to cause the compiler flags to include  #
-#  debug flags.                                     #
-#                                                   #
-#####################################################
+#
+# libsir
+# https://github.com/aremmell/libsir
+#
 
 BUILDDIR   = build
 DOCSDIR    = docs
-TESTSDIR   = tests
-EXAMPLEDIR = example
-INTERDIR   = $(BUILDDIR)/obj
+TESTS      = tests
+EXAMPLE    = example
+INTDIR     = $(BUILDDIR)/obj
 LIBDIR     = $(BUILDDIR)/lib
-
-ifeq ($(INSTALLLIB),)
-	INSTALLLIB = /usr/local/lib
-endif
-ifeq ($(INSTALLINC),)
-	INSTALLINC = /usr/local/include
-endif
-
-LIBS = -pthread
+BINDIR	   = $(BUILDDIR)/bin
+INSTALLLIB = /usr/local/lib
+INSTALLINC = /usr/local/include
 
 ifeq ($(SIR_DEBUG),1)
 	CFLAGS = -Wpedantic -std=c11 -I. -DDEBUG -fPIC -g -O0 -DSIR_SELFLOG
@@ -38,75 +23,69 @@ ifeq ($(SIR_SELFLOG),1)
 	CFLAGS += -DSIR_SELFLOG
 endif
 
-ifeq ($(OS),Windows_NT)
-	CFLAGS += -D_WIN32
-endif
+# dependencies
+LIBS = -lpthread
 
+# for test rig and example:
 # link with static library, not shared
-LDFLAGS = $(LIBS) -L$(LIBDIR) -lsir_s
+LDFLAGS = $(LIBS) -L$(LIBDIR) -lsir
 
 # translation units
-TUS := $(wildcard ./*.c)
+TUS := $(wildcard *.c)
 
 # intermediate files
 _OBJ = $(patsubst %.c, %.o, $(TUS))
-OBJ  = $(patsubst %, $(INTERDIR)/%, $(_OBJ))
+OBJ  = $(patsubst %, $(INTDIR)/%, $(_OBJ))
 
 # shared library
-OBJ_SHARED     = $(patsubst %.o, $(INTERDIR)/%.lo, $(_OBJ))
+OBJ_SHARED     = $(patsubst %.o, $(INTDIR)/%.o, $(_OBJ))
 OUT_SHARED	   = $(LIBDIR)/libsir.so
 LDFLAGS_SHARED = $(LIBS)
 
 # static library
 OBJ_STATIC     = $(OBJ_SHARED)
-OUT_STATIC     = $(LIBDIR)/libsir_s.a
+OUT_STATIC     = $(LIBDIR)/libsir.a
 
 # console example
-_OBJ_EXAMPLE    = example.o
-OBJ_EXAMPLE     = $(patsubst %.o, $(INTERDIR)/%.eo, $(_OBJ_EXAMPLE))
-OUT_EXAMPLE     = $(BUILDDIR)/sirexample
+OBJ_EXAMPLE	   = $(INTDIR)/$(EXAMPLE)/$(EXAMPLE).o
+OUT_EXAMPLE    = $(BINDIR)/sirexample
 
 # console test rig
-_OBJ_TESTS    = tests.o
-OBJ_TESTS     = $(patsubst %.o, $(INTERDIR)/%.to, $(_OBJ_TESTS))
-OUT_TESTS     = $(BUILDDIR)/sirtests
+OBJ_TESTS      = $(INTDIR)/$(TESTS)/$(TESTS).o
+OUT_TESTS      = $(BINDIR)/sirtests
 
 # ##########
 # targets
 # ##########
 
-all: shared static example tests
+all: prep shared static example tests
 
--include $(INTERDIR)/*.d
+-include $(INTDIR)/*.d
 
-$(BUILDDIR): prep
-$(INTERDIR) : $(BUILDDIR)
-$(LIBDIR): $(BUILDDIR)
+$(BUILDDIR)   : prep
+$(INTDIR)     : $(BUILDDIR)
+$(LIBDIR)     : $(BUILDDIR)
+$(BINDIR)     : $(BUILDDIR)
+$(OBJ_SHARED) : $(INTDIR)
+$(OBJ_TESTS)  : $(OBJ_SHARED)
+$(OBJ_EXAMPLE): $(OBJ_SHARED)
 
-$(OBJ_EXAMPLE): $(INTERDIR)
-$(OBJ_SHARED): $(INTERDIR) $(LIBDIR)
-$(OBJ_TESTS): $(OBJ_SHARED)
-
-$(INTERDIR)/%.eo: $(EXAMPLEDIR)/%.c $(DEPS)
+$(OBJ_EXAMPLE): $(EXAMPLE)/$(EXAMPLE).c $(DEPS)
 	$(CC) -MMD -c -o $@ $< $(CFLAGS) -I..
 
-$(INTERDIR)/%.to: $(TESTSDIR)/%.c $(DEPS)
+$(OBJ_TESTS): $(TESTS)/$(TESTS).c $(DEPS)
 	$(CC) -MMD -c -o $@ $< $(CFLAGS) -I..
 
-$(INTERDIR)/%.lo: %.c $(DEPS)
+$(INTDIR)/%.o: %.c $(DEPS)
 	$(CC) -MMD -c -o $@ $< $(CFLAGS)
 
 prep:
-ifeq ($(OS),Windows_NT)
-	$(shell if not exist "$(BUILDDIR)\NUL" mkdir "$(BUILDDIR)" && \
-		    if not exist "$(INTERDIR)\NUL" mkdir "$(INTERDIR)" && \
-			if not exist "$(LIBDIR)\NUL" mkdir "$(LIBDIR)")
-else
 	$(shell mkdir -p $(BUILDDIR) && \
-			mkdir -p $(INTERDIR) && \
-	        mkdir -p $(LIBDIR))
-endif
-	@echo directories prepared.
+			mkdir -p $(INTDIR)/$(EXAMPLE) && \
+			mkdir -p $(INTDIR)/$(TESTS) && \
+			mkdir -p $(LIBDIR) && \
+	        mkdir -p $(BINDIR))
+	@echo directories prepared successfully.
 
 shared: $(OBJ_SHARED)
 	$(CC) -shared -o $(OUT_SHARED) $^ $(CFLAGS) $(LDFLAGS_SHARED)
@@ -126,35 +105,17 @@ tests: static $(OBJ_TESTS)
 
 docs: static
 	@doxygen Doxyfile
-ifeq ($(OS),Windows_NT)
-	$(shell move /y index.md README.md)
-else
-	$(shell mv -f index.md README.md)
-endif
 	@echo built documentation successfully.
 
 install: shared
-ifeq ($(OS),Windows_NT)
-	@echo no install support for windows.
-else
 	@echo copying $(OUT_SHARED) to $(INSTALLLIB) and headers to $(INSTALLINC)...
 	$(shell cp -f $(OUT_SHARED) "$(INSTALLLIB)/" && \
-	        cp -f *.h *.hh "$(INSTALLINC)/")
+	        cp -f sir.h *.hh "$(INSTALLINC)/")
 	@echo installed libsir successfully.
-endif
 
 .PHONY: clean
 
 clean:
-ifeq ($(OS),Windows_NT)
-	$(shell del /F /Q "$(BUILDDIR)\*.*" && \
-		    del /F /Q "$(INTERDIR)\*.*" && \
-			del /F /Q "$(LIBDIR)\*.*" && \
-			del /F /Q "*.log")
-else
-	$(shell rm -f $(BUILDDIR)/* >/dev/null 2>&1 ; \
-	        rm -f $(LIBDIR)/*   >/dev/null 2>&1 ; \
-			rm -f $(INTERDIR)/* >/dev/null 2>&1 ; \
+	$(shell rm -rf "$(BUILDDIR)/" >/dev/null 2>&1 ; \
 			rm -f *.log >/dev/null 2>&1)
-endif
-	@echo cleaned successfully.
+	@echo build directory and log files cleaned successfully.
