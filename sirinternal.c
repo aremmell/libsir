@@ -618,9 +618,9 @@ bool _sir_syslog_open(const char *name, sir_syslog_dest *ctx) {
         return false;
     }
 
+const char *identity = "foo";
 #if defined(SIR_OS_LOG_ENABLED)
 #pragma message("TODO: finish implementation of init, take category/identity from sirinit")
-const char *identity = "foo";
    const char *category = "minutiae";
 
     ctx->logger = os_log_create(identity, category);
@@ -698,7 +698,7 @@ bool _sir_syslog_close(sir_syslog_dest *ctx) {
     ctx->opened_log = false;
     _sir_selflog("%s: system log closure not required\n", __func__);
     return true;
-#elif (SIR_SYSLOG_ENABLED)
+#elif defined(SIR_SYSLOG_ENABLED)
     closelog();
     ctx->opened_log = false;
     _sir_selflog("%s: closed system log\n", __func__);
