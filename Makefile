@@ -19,8 +19,8 @@ EXAMPLEDIR = example
 INTERDIR   = $(BUILDDIR)/obj
 LIBDIR     = $(BUILDDIR)/lib
 
-ifeq ($(INSTALLDIR),)
-	INSTALLDIR = /usr/local/lib
+ifeq ($(INSTALLLIB),)
+	INSTALLLIB = /usr/local/lib
 endif
 ifeq ($(INSTALLINC),)
 	INSTALLINC = /usr/local/include
@@ -137,8 +137,8 @@ install: shared
 ifeq ($(OS),Windows_NT)
 	@echo no install support for windows.
 else
-	@echo copying $(OUT_SHARED) to $(INSTALLDIR) and headers to $(INSTALLINC)...
-	$(shell cp -f $(OUT_SHARED) "$(INSTALLDIR)/" && \
+	@echo copying $(OUT_SHARED) to $(INSTALLLIB) and headers to $(INSTALLINC)...
+	$(shell cp -f $(OUT_SHARED) "$(INSTALLLIB)/" && \
 	        cp -f *.h *.hh "$(INSTALLINC)/")
 	@echo installed libsir successfully.
 endif
