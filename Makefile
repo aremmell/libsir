@@ -24,7 +24,7 @@ ifeq ($(SIR_SELFLOG),1)
 endif
 
 # dependencies
-LIBS = -lpthread
+LIBS = -pthread
 
 # for test rig and example:
 # link with static library, not shared
