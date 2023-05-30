@@ -5,7 +5,7 @@
             "name": "(lldb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/sirtests",
+            "program": "${workspaceFolder}/build/bin/sirtests",
             "args": [
                 "--wait"
             ],
