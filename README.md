@@ -16,27 +16,21 @@ Each 'level' or 'priority' of output can be visually styled however you wish for
 * Accompanied by a robust test suite  to ensure dependable behavior, even if you make modifications to the source.
 * Won't fail silently&mdash; C library or platform level errors are captured and stored for posterity, on a per-thread basis. The _function, file, and line number from which it orginated_ are also captured. Additionally, libsir defines its own set of error messages to aid in troubleshooting.
 * Hardened&mdash; every function contains sanity checks for internal state as well as arguments passed in through the external interfaces. libsir's make recipes use &ndash; _Wpedantic_, too.
-* [Full documentation](https://aremmell.github.io/libsir), thanks to Doxygen.
+* [Full documentation](https://aremmell.github.io/libsir).
 
 ## Cross-platform compatibility
 
-Currently, libsir uses a hand-rolled Unix Makefile. Despite that, I (_and Travis CI_) have successfully compiled and verified the test suite in these environments:
+At this time, the test suite has been compiled and tested on (at minimum) these configurations:
 
-| Toolset | OS               | Architecture|
-| -------- | ---------------- | :------------|
-| gcc 5.4.0 | Ubuntu 16.04     | amd64 |
-| gcc 7.3.0 | Ubuntu 18.04     | armhf|
-| clang 7.0.0 | Ubuntu 18.04 | amd64 |
-| clang 6.0.0 | Ubuntu 18.04 | arm64 |
-| gcc 7.5.0 | Ubuntu 18.04 | arm64 |
-| gcc 7.3.0 (MinGW) | Windows 10       | x86_64 |
-| clang 9.1.0 | macOS 10.13.4    | x86_64 |
-| clang 14.0.0 | macOS 12.6 | x86_64 |
-| clang 14.0.3 | macOS 13.3.1 | x86_64 |
-| clang 14.0.3 | macOS 13.3.1 | arm64 |
-| clang 14.0.5 | FreeBSD 13.2 | amd64 |
+----
 
-There is a VS Code workspace file included, in case you'd like to use that. In the future, I will likely use CMake or autotools to generate the compilation scripts.
+| Toolset                   |                  OS                  | Architecture |
+| :------------------------ | :----------------------------------: | -----------: |
+| gcc 5.4, 7.0, 7.3 7.5     |             Ubuntu, Mint             |   x64, amd64 |
+| clang 6.0, 7.0, 9.1, 14.0 | macOS, Ubuntu, Mint, FreeBSD, Fedora |   x64, amd64 |
+| MSVC 17.6                 |               Windows                |   x64, arm64 |
+
+----
 
 ## Implementation details
 
@@ -68,7 +62,7 @@ libsir is able to output certain data that may contribute to better comprehensio
 In addition to decoration options, each destination may be registered to receive any, none, or all priority levels of output. The available levels may be overly granular, but it's better to have unused levels rather than need another one and not have it.
 
 |    Level    | Description                                  |
-| :---------: | :------------------------------------------- |
+| :---------- | :------------------------------------------- |
 |    Debug    | Debugging/diagnostic output.                 |
 | Information | Informational messages.                      |
 |   Notice    | Normal but significant.                      |
@@ -114,12 +108,12 @@ The following can be modified to alter behavior, and are located in [sirconfig.h
 
 The following are the defaults used when `SIRL_DEFAULT` or `SIRO_DEFAULT` are used. These are located in [sirdefaults.h](./sirdefaults.h):
 
-Destination      |  Levels     | Options
------------      | :-------:   | -------
-stdout         | `SIRL_DEBUG | SIRL_INFO | SIRL_NOTICE | SIRL_WARN` | `SIRO_NOTIME | SIRO_NOPID | SIRO_NOTID`
-stderr         |  `SIRL_ERROR | SIRL_CRIT | SIRL_EMERG` | `SIRO_NOTIME | SIRO_NOPID | SIRO_NOTID`
-syslog         |  `SIRL_WARN  | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG` | `N/A (syslog has its own)`
-log files      |  `SIRL_ALL` |  `0 (all output)`  
+| Destination |  Levels                                               | Options
+| :---------: | :---------------------------------------------------: | :----------------------------------------------: |
+| stdout      | `SIRL_DEBUG | SIRL_INFO | SIRL_NOßTICE | SIRL_WARN`    | `SIRO_NOTIME | SIRO_NOPID | SIRO_NOTID`          |
+| stderr      | `SIRL_ERROR | SIRL_CRIT | SIRL_ALERT  | SIRL_EMERG`   | `SIRO_NOTIME SIRO_NOPID | SIRO_NOTID`            |
+| syslog      | `SIRL_ERROR | SIRL_CRIT | SIRL_ALERT  | SIRL_EMERG`   | `N/A (syslog has its own)`                       |
+| log files   | `SIRL_ALL`                                            | `0 (all output)`                                 |
 
 #### Styles
 
@@ -127,16 +121,17 @@ libsir "styling" is another way of saying ANSI escape color coding. Currently, l
 
 Supported terminals will render text from libsir based on the "styles" used in libsir. The following define the default text styling to use for `stdout` / `stderr` on a per-level basis (_can be changed at runtime with_ `sir_settextstyle` located in [sirdefaults.h](./sirdefaults.h)):
 
- Level         |                      Style                        | Sample
- :-----------: | :-----------------------------------------------: | :---------------------------------------------:
- `SIRL_DEBUG`  |                 `SIRS_FG_DGRAY`                   | ![debug](docs/debug.png)
- `SIRL_INFO`   |                 `SIRS_FG_WHITE`                   | ![info](docs/info.png)
- `SIRL_NOTICE` |                 `SIRS_FG_CYAN`                    | ![notice](docs/notice.png)
- `SIRL_WARN`   |                `SIRS_FG_YELLOW`                   | ![warning](docs/warning.png)
- `SIRL_ERROR`  |                  `SIRS_FG_RED`                    | ![error](docs/error.png)
- `SIRL_CRIT`   |           `SIRS_BRIGHT | SIRS_FG_RED`            | ![critical](docs/critical.png)
- `SIRL_ALERT`  | `SIRS_BRIGHT | SIRS_FG_BLACK | SIRS_BG_LYELLOW` | ![alert](docs/alert.png)
- `SIRL_EMERG`  |  `SIRS_BRIGHT | SIRS_FG_LYELLOW | SIRS_BG_RED`  | ![emergency](docs/emergency.png)
+ | Level         |                      Style                        | Sample
+ | :-----------: | :-----------------------------------------------: | :--------------------------------------------:|
+ | `SIRL_DEBUG`  |                 `SIRS_FG_DGRAY`                   | ![debug](docs/debug.png)                      |
+ | `SIRL_INFO`   |                 `SIRS_FG_WHITE`                   | ![info](docs/info.png)                        |
+ | `SIRL_NOTICE` |                 `SIRS_FG_CYAN`                    | ![notice](docs/notice.png)                    |
+ | `SIRL_WARN`   |                `SIRS_FG_YELLOW`                   | ![warning](docs/warning.png)                  |
+ | `SIRL_ERROR`  |                  `SIRS_FG_RED`                    | ![error](docs/error.png)                      |
+ | `SIRL_CRIT`   |           `SIRS_BRIGHT | SIRS_FG_RED`             | ![critical](docs/critical.png)                |
+ | `SIRL_ALERT`  | `SIRS_BRIGHT | SIRS_FG_BLACK | SIRS_BG_LYELLOW`   | ![alert](docs/alert.png)                      |
+ | `SIRL_EMERG`  |  `SIRS_BRIGHT | SIRS_FG_LYELLOW | SIRS_BG_RED`    | ![emergency](docs/emergency.png)              |
+
 
 ## Installation
 
