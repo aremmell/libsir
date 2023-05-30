@@ -675,7 +675,10 @@ bool sirtest_updatesanity(void) {
     pass &= NULL != id1;
 
     if (pass) {
-        for (int i = 0; i < 10; i++) {           
+        for (int i = 0; i < 10; i++) {     
+            if (!pass)
+                break;
+
             /* reset to defaults*/
             pass &= sir_stdoutlevels(SIRL_DEFAULT);
             pass &= sir_stderrlevels(SIRL_DEFAULT);
@@ -707,31 +710,33 @@ bool sirtest_updatesanity(void) {
             pass &= sir_fileopts(id1, opts_array[rnd]);
             printf("\t" WHITE("set random config #%u for %s") "\n", rnd, logfile);
 
-            pass &= sir_debug("modified config");
-            pass &= sir_info("modified config");
-            pass &= sir_notice("modified config");
-            pass &= sir_warn("modified config");
-            pass &= sir_error("modified config");
-            pass &= sir_crit("modified config");
-            pass &= sir_alert("modified config");
-            pass &= sir_emerg("modified config");
+            pass &= filter_error(sir_debug("modified config"), SIR_E_NODEST);
+            pass &= filter_error(sir_info("modified config"), SIR_E_NODEST);;
+            pass &= filter_error(sir_notice("modified config"), SIR_E_NODEST);;
+            pass &= filter_error(sir_warn("modified config"), SIR_E_NODEST);;
+            pass &= filter_error(sir_error("modified config"), SIR_E_NODEST);;
+            pass &= filter_error(sir_crit("modified config"), SIR_E_NODEST);;
+            pass &= filter_error(sir_alert("modified config"), SIR_E_NODEST);;
+            pass &= filter_error(sir_emerg("modified config"), SIR_E_NODEST);;
         }
     }
 
-    /* restore to default config and run again */
-    sir_stdoutlevels(SIRL_DEFAULT);
-    sir_stderrlevels(SIRL_DEFAULT);
-    sir_stdoutopts(SIRO_DEFAULT);
-    sir_stderropts(SIRO_DEFAULT);
+    if (pass) {
+        /* restore to default config and run again */
+        sir_stdoutlevels(SIRL_DEFAULT);
+        sir_stderrlevels(SIRL_DEFAULT);
+        sir_stdoutopts(SIRO_DEFAULT);
+        sir_stderropts(SIRO_DEFAULT);
 
-    pass &= sir_debug("default config");
-    pass &= sir_info("default config");
-    pass &= sir_notice("default config");
-    pass &= sir_warn("default config");
-    pass &= sir_error("default config");
-    pass &= sir_crit("default config");
-    pass &= sir_alert("default config");
-    pass &= sir_emerg("default config");
+        pass &= sir_debug("default config");
+        pass &= sir_info("default config");
+        pass &= sir_notice("default config");
+        pass &= sir_warn("default config");
+        pass &= sir_error("default config");
+        pass &= sir_crit("default config");
+        pass &= sir_alert("default config");
+        pass &= sir_emerg("default config");
+    }
 
 #pragma messsage("TODO: some of these log files should be examined as part of this process. Add a prompt here (w/ a cmdline flag) to examine the log or delete it.")
 
@@ -970,6 +975,16 @@ void print_os_error(void) {
     sirchar_t message[SIR_MAXERROR] = { 0 };
     uint16_t  code = sir_geterror(message);
     fprintf(stderr, "\t" RED("OS error: (%hu, %s)") "\n", code, message);
+}
+
+bool filter_error(bool pass, uint16_t err) {
+    if (!pass) {
+        sirchar_t message[SIR_MAXERROR] = { 0 };
+        uint16_t  code = sir_geterror(message);
+        if (code != err)
+            return false;        
+    }
+    return true;
 }
 
 unsigned int getrand(void) {
