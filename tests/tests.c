@@ -655,8 +655,7 @@ bool sirtest_updatesanity(void) {
     bool pass = si_init;
 
     static const char* logfile = "update-sanity.log";
-    static const size_t max_variations = 10;
-    static const sir_options opts_array[max_variations] = {
+    static const sir_options opts_array[] = {
         SIRO_NOTIME | SIRO_NOLEVEL, SIRO_MSGONLY,
         SIRO_NONAME | SIRO_NOTID, SIRO_NOPID | SIRO_NOTIME,
         SIRO_NOTIME | SIRO_NOLEVEL | SIRO_NONAME,
@@ -664,7 +663,7 @@ bool sirtest_updatesanity(void) {
         SIRO_ALL
     };
 
-    static const sir_levels levels_array[max_variations] = {
+    static const sir_levels levels_array[] = {
         SIRL_NONE, SIRL_ALL, SIRL_EMERG, SIRL_ALERT,
         SIRL_CRIT, SIRL_ERROR, SIRL_WARN, SIRL_NOTICE,
         SIRL_INFO, SIRL_DEBUG
@@ -674,52 +673,54 @@ bool sirtest_updatesanity(void) {
     sirfileid_t id1 = sir_addfile(logfile, SIRL_DEFAULT, SIRO_DEFAULT);
     pass &= NULL != id1;
 
-    if (pass) {
-        for (int i = 0; i < 10; i++) {     
-            if (!pass)
-                break;
+    static const size_t variations = 10;
 
-            /* reset to defaults*/
-            pass &= sir_stdoutlevels(SIRL_DEFAULT);
-            pass &= sir_stderrlevels(SIRL_DEFAULT);
-            pass &= sir_stdoutopts(SIRO_DEFAULT);
-            pass &= sir_stderropts(SIRO_DEFAULT);
+    for (int i = 0; i < 10; i++) {
 
-            pass &= sir_debug("default config");
-            pass &= sir_info("default config");
-            pass &= sir_notice("default config");
-            pass &= sir_warn("default config");
-            pass &= sir_error("default config");
-            pass &= sir_crit("default config");
-            pass &= sir_alert("default config");
-            pass &= sir_emerg("default config");
+        if (!pass)
+            break;
 
-            /* pick random options to set/unset */
-            unsigned int rnd = (getrand() % max_variations);
-            pass &= sir_stdoutlevels(levels_array[rnd]);
-            pass &= sir_stdoutopts(opts_array[rnd]);
-            printf("\t" WHITE("set random config #%u for stdout") "\n", rnd);
+        /* reset to defaults*/
+        pass &= sir_stdoutlevels(SIRL_DEFAULT);
+        pass &= sir_stderrlevels(SIRL_DEFAULT);
+        pass &= sir_stdoutopts(SIRO_DEFAULT);
+        pass &= sir_stderropts(SIRO_DEFAULT);
 
-            rnd = (getrand() % max_variations);
-            pass &= sir_stderrlevels(levels_array[rnd]);
-            pass &= sir_stderropts(opts_array[rnd]);
-            printf("\t" WHITE("set random config #%u for stderr") "\n", rnd);
+        pass &= sir_debug("default config");
+        pass &= sir_info("default config");
+        pass &= sir_notice("default config");
+        pass &= sir_warn("default config");
+        pass &= sir_error("default config");
+        pass &= sir_crit("default config");
+        pass &= sir_alert("default config");
+        pass &= sir_emerg("default config");
 
-            rnd = (getrand() % max_variations);
-            pass &= sir_filelevels(id1, levels_array[rnd]);
-            pass &= sir_fileopts(id1, opts_array[rnd]);
-            printf("\t" WHITE("set random config #%u for %s") "\n", rnd, logfile);
+        /* pick random options to set/unset */
+        unsigned int rnd = (getrand() % variations);
+        pass &= sir_stdoutlevels(levels_array[rnd]);
+        pass &= sir_stdoutopts(opts_array[rnd]);
+        printf("\t" WHITE("set random config #%u for stdout") "\n", rnd);
 
-            pass &= filter_error(sir_debug("modified config"), SIR_E_NODEST);
-            pass &= filter_error(sir_info("modified config"), SIR_E_NODEST);;
-            pass &= filter_error(sir_notice("modified config"), SIR_E_NODEST);;
-            pass &= filter_error(sir_warn("modified config"), SIR_E_NODEST);;
-            pass &= filter_error(sir_error("modified config"), SIR_E_NODEST);;
-            pass &= filter_error(sir_crit("modified config"), SIR_E_NODEST);;
-            pass &= filter_error(sir_alert("modified config"), SIR_E_NODEST);;
-            pass &= filter_error(sir_emerg("modified config"), SIR_E_NODEST);;
-        }
+        rnd = (getrand() % variations);
+        pass &= sir_stderrlevels(levels_array[rnd]);
+        pass &= sir_stderropts(opts_array[rnd]);
+        printf("\t" WHITE("set random config #%u for stderr") "\n", rnd);
+
+        rnd = (getrand() % variations);
+        pass &= sir_filelevels(id1, levels_array[rnd]);
+        pass &= sir_fileopts(id1, opts_array[rnd]);
+        printf("\t" WHITE("set random config #%u for %s") "\n", rnd, logfile);
+
+        pass &= filter_error(sir_debug("modified config"), SIR_E_NODEST);
+        pass &= filter_error(sir_info("modified config"), SIR_E_NODEST);;
+        pass &= filter_error(sir_notice("modified config"), SIR_E_NODEST);;
+        pass &= filter_error(sir_warn("modified config"), SIR_E_NODEST);;
+        pass &= filter_error(sir_error("modified config"), SIR_E_NODEST);;
+        pass &= filter_error(sir_crit("modified config"), SIR_E_NODEST);;
+        pass &= filter_error(sir_alert("modified config"), SIR_E_NODEST);;
+        pass &= filter_error(sir_emerg("modified config"), SIR_E_NODEST);;
     }
+
 
     if (pass) {
         /* restore to default config and run again */
