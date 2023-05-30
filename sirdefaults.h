@@ -57,7 +57,7 @@ static const sir_options sir_stderr_def_opts
 
 /** Default levels for \a syslog (if enabled). */
 static const sir_levels sir_syslog_def_lvls
-    = SIRL_WARN | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG;
+    = SIRL_ERROR | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG;
 
 /** Default levels for \a log \a files. */
 static const sir_levels sir_file_def_lvls
