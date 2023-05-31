@@ -738,8 +738,6 @@ bool sirtest_updatesanity(void) {
         pass &= sir_emerg("default config");
     }
 
-#pragma messsage("TODO: some of these log files should be examined as part of this process. Add a prompt here (w/ a cmdline flag) to examine the log or delete it.")
-
     rmfile(logfile);
     sir_cleanup();
 
