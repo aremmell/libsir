@@ -179,8 +179,7 @@ static bool _sirmutex_waitwin32(sirmutex_t mutex, DWORD msec) {
         switch (wait) {
             case WAIT_ABANDONED:
             case WAIT_FAILED:
-                _sir_selflog(
-                    "%s: warning: WaitForSingleObject returned 0x%08lx; danger ahead\n", __func__, wait);
+                _sir_selflog("warning: WaitForSingleObject returned %08x; danger ahead", wait);
                 return WAIT_FAILED != wait;
                 break;
             case WAIT_TIMEOUT:

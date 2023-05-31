@@ -127,8 +127,9 @@ void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* fi
 sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]);
 
 #if defined(SIR_SELFLOG)
-/** Log an internal message to \a stderr. */
-void _sir_selflog(const sirchar_t* format, ...);
+/** Log an internal debug message to stderr. */
+void __sir_selflog(const char* func, const char* file, uint32_t line, const char* format, ...);
+#define _sir_selflog(format, ...) __sir_selflog(__func__, __FILE__, __LINE__, format, ##__VA_ARGS__)
 #else
 #define _sir_selflog(format, ...) ((void)(0))
 #endif

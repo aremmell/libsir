@@ -231,9 +231,6 @@ bool print_test_error(bool result, bool expected);
 void print_os_error(void);
 bool filter_error(bool pass, uint16_t err);
 
-#define _STR(s) #s
-#define STR(s) _STR(s)
-
 #if !defined(_WIN32)
 #   define handle_os_error(clib, fmt, ...) (void)clib; _sir_handleerr(errno); \
         fprintf(stderr,"\t" RED(fmt) ":\n", __VA_ARGS__); \

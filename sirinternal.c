@@ -175,7 +175,7 @@ bool _sir_cleanup(void) {
         cleanup &= _sir_unlocksection(_SIRM_INIT);
     }
 
-    _sir_selflog("%s: cleanup: %s\n", __func__, (cleanup ? "successful" : "with issues"));
+    _sir_selflog("cleanup: %s", (cleanup ? "successful" : "with issues"));
 
     assert(cleanup);
     return cleanup;
@@ -215,20 +215,20 @@ bool _sir_options_sanity(const sirinit* si) {
 
 static bool _sir_updatelevels(const char* name, sir_levels* old, sir_levels* new) {
     if (*old != *new) {
-        _sir_selflog("%s: updating %s levels from %04x to %04x\n", __func__, name, *old, *new);
+        _sir_selflog("updating %s levels from %04x to %04x", name, *old, *new);
         *old = *new;
     } else {
-        _sir_selflog("%s: skipped superfluous update of %s levels: %04x\n", __func__, name, *old);
+        _sir_selflog("skipped superfluous update of %s levels: %04x", name, *old);
     }
     return true;
 }
 
 static bool _sir_updateopts(const char* name, sir_options* old, sir_options* new) {
     if (*old != *new) {
-        _sir_selflog("%s: updating %s options from %08x to %08x\n", __func__, name, *old, *new);
+        _sir_selflog("updating %s options from %08x to %08x", name, *old, *new);
         *old = *new;
     } else {
-        _sir_selflog("%s: skipped superfluous update of %s options: %08x\n", __func__, name, *old);
+        _sir_selflog("skipped superfluous update of %s options: %08x", name, *old);
     }
     return true;
 }
@@ -257,16 +257,14 @@ bool _sir_syslogid(sirinit* si, sir_update_config_data* data) {
 #pragma message("TODO: see if it's already the same, and return false if so.")    
     int update = _sir_strncpy(si->d_syslog.identity, SIR_MAX_SYSLOG_ID,
         data->sl_identity, strnlen(data->sl_identity, SIR_MAX_SYSLOG_ID));
-    _sir_selflog("%s: updated %s identity: '%s'\n", __func__,
-        SIR_DESTNAME_SYSLOG, data->sl_identity);
+    _sir_selflog("updated %s identity: '%s'", SIR_DESTNAME_SYSLOG, data->sl_identity);
     return _sir_syslog_updated(si, data);
 }
 
 bool _sir_syslogcat(sirinit* si, sir_update_config_data* data) {
     int update = _sir_strncpy(si->d_syslog.category, SIR_MAX_SYSLOG_CAT,
         data->sl_category, strnlen(data->sl_category, SIR_MAX_SYSLOG_CAT));
-    _sir_selflog("%s: updated %s category: '%s'\n", __func__,
-        SIR_DESTNAME_SYSLOG, data->sl_category);
+    _sir_selflog("updated %s category: '%s'", SIR_DESTNAME_SYSLOG, data->sl_category);
     return _sir_syslog_updated(si, data);
 }
 
@@ -530,7 +528,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
 
     if (0 == wanted) {
         _sir_seterror(_SIR_E_NODEST);
-        _sir_selflog("%s: no destinations registered for level %04x\n", __func__, level);
+        _sir_selflog("no destinations registered for level %04x", level);
         return false;
     }
 
@@ -621,48 +619,47 @@ bool _sir_syslog_init(const char *name, sir_syslog_dest *ctx) {
 
     // Begin resolve identity.
     if (!_sir_validstrnofail(ctx->identity)) {
-        _sir_selflog("%s: ctx->identity is no good; trying name\n", __func__);
+        _sir_selflog("ctx->identity is no good; trying name");
         if (_sir_validstrnofail(name)) {
-            _sir_selflog("%s: using name\n", __func__);
+            _sir_selflog("using name");
             // name can be used.
             _sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, name,
                 strnlen(name, SIR_MAX_SYSLOG_ID));
         } else {
             // try using the process nam
-            _sir_selflog("%s: name is no good; trying filename\n", __func__);
+            _sir_selflog("name is no good; trying filename");
             char appfilename[SIR_MAXPATH] = {0};
             if (_sir_getappfilename(appfilename, SIR_MAXPATH)) {
-                _sir_selflog("%s: filename is good\n", __func__);
+            _sir_selflog("filename is good");
 #pragma message("TODO: verify file name returned; make sure it's not an entire path, because it could be.")
                 _sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, appfilename,
                     strnlen(appfilename, SIR_MAX_SYSLOG_ID));
             } else {
                 // retrieving the process name failed. use fallback.
-                _sir_selflog("%s: filename no good; using fallback\n", __func__);
+                _sir_selflog("filename no good; using fallback");
                 _sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, SIR_FALLBACK_SYSLOG_ID, 
                     strnlen(SIR_FALLBACK_SYSLOG_ID, SIR_MAX_SYSLOG_ID));
             }            
         }
     } else {
-        _sir_selflog("%s: ctx->id is set\n", __func__);
+        _sir_selflog("ctx->id is set");
     }
 
     // category
     if (!_sir_validstrnofail(ctx->category)) {
-        _sir_selflog("%s: cat not set; using fallback\n", __func__);
+        _sir_selflog("cat not set; using fallback");
         _sir_strncpy(ctx->category, SIR_MAX_SYSLOG_CAT, SIR_FALLBACK_SYSLOG_CAT,
             strnlen(SIR_FALLBACK_SYSLOG_CAT, SIR_MAX_SYSLOG_CAT));
     } else {
-        _sir_selflog("%s: ctx->cat is set\n", __func__);
+        _sir_selflog("ctx->cat is set");
     }
 
     bool init = _sir_validstrnofail(ctx->identity) && _sir_validstrnofail(ctx->category);
     if (init) {
         ctx->_state.mask |= SIRSL_IS_INIT;
-        _sir_selflog("%s: resolved strings (id: '%s', cat: '%s')\n", __func__,
-            ctx->identity, ctx->category);
+        _sir_selflog("resolved strings (id: '%s', cat: '%s')", ctx->identity, ctx->category);
     } else {
-        _sir_selflog("%s: failed to resolve id|cat; cannot log messages!\n", __func__);
+        _sir_selflog("failed to resolve id|cat; cannot log messages!");
     }
 
     return init ? _sir_syslog_open(name, ctx) : false;
@@ -671,19 +668,19 @@ bool _sir_syslog_init(const char *name, sir_syslog_dest *ctx) {
 bool _sir_syslog_open(const char *name, sir_syslog_dest *ctx) {
     if (!_sir_bittest(ctx->_state.mask, SIRSL_IS_INIT)) {
         _sir_seterror(_SIR_E_INVALID);
-        _sir_selflog("%s: not initialized; ignoring\n", __func__);
+        _sir_selflog("not initialized; ignoring");
         return false;
     }
 #pragma message("TODO: here, check the mask for modified and re-init if necessary")        
     if (_sir_bittest(ctx->_state.mask, SIRSL_IS_OPEN)) {
-        _sir_selflog("%s: already opened log; ignoring\n", __func__);
+        _sir_selflog("already opened log; ignoring");
         return false;
     }
 
 #if defined(SIR_OS_LOG_ENABLED)
     ctx->_state.logger = (void*)os_log_create(ctx->identity, ctx->category);
     ctx->_state.mask |= SIRSL_IS_OPEN;
-    _sir_selflog("%s: opened os_log ('%s', '%s')\n", __func__, ctx->identity, ctx->category);
+    _sir_selflog("opened os_log ('%s', '%s')", ctx->identity, ctx->category);
     return true;
 #elif defined(SIR_SYSLOG_ENABLED)
     int logopt = LOG_NDELAY | (_sir_bittest(ctx->opts, SIRO_NOPID) ? 0 : LOG_PID);
@@ -691,7 +688,7 @@ bool _sir_syslog_open(const char *name, sir_syslog_dest *ctx) {
 
     openlog(identity, logopt, facility);
     ctx->_state.mask |= SIRSL_IS_OPEN;
-    _sir_selflog("%s: opened syslog(%s, %x, %x)\n", __func__, ctx->identity, logopt, facility);
+    _sir_selflog("opened syslog('%s', %x, %x)", ctx->identity, logopt, facility);
     return true;
 #endif
 }
@@ -699,13 +696,13 @@ bool _sir_syslog_open(const char *name, sir_syslog_dest *ctx) {
 bool _sir_syslog_write(sir_level level, const sirbuf *buf, sir_syslog_dest *ctx) {
     if (!_sir_bittest(ctx->_state.mask, SIRSL_IS_INIT)) {
         _sir_seterror(_SIR_E_INVALID);
-        _sir_selflog("%s: not initialized; ignoring\n", __func__);
+        _sir_selflog("not initialized; ignoring");
         return false;
     }
 
     if (!_sir_bittest(ctx->_state.mask, SIRSL_IS_OPEN)) {
         _sir_seterror(_SIR_E_INVALID);
-        _sir_selflog("%s: log not open; ignoring\n", __func__);
+        _sir_selflog("log not open; ignoring");
         return false;
     }
 
@@ -757,7 +754,7 @@ bool _sir_syslog_close(sir_syslog_dest *ctx) {
         return false;
 
     if (!_sir_bittest(ctx->_state.mask, SIRSL_IS_OPEN)) {
-        _sir_selflog("%s: system log not open; ignoring\n", __func__);
+        _sir_selflog("log not open; ignoring");
         return false;
     }
 
@@ -766,12 +763,12 @@ bool _sir_syslog_close(sir_syslog_dest *ctx) {
      * if you make that call again, you'll get the same cached value. so let's keep the
      * value we've got in the global context. */
     ctx->_state.mask &= ~SIRSL_IS_OPEN;
-    _sir_selflog("%s: system log closure not required\n", __func__);
+    _sir_selflog("log closure not required");
     return true;
 #elif defined(SIR_SYSLOG_ENABLED)
     closelog();
     ctx->_state.mask &= ~SIRSL_IS_OPEN;
-    _sir_selflog("%s: closed system log\n", __func__);
+    _sir_selflog("closed log");
     return true;
 #endif
 }
@@ -794,7 +791,7 @@ void _sir_syslog_reset(sir_syslog_dest* ctx) {
     if (_sir_validptr(ctx)) {
         ctx->_state.mask = 0;
         ctx->_state.logger = NULL;
-        _sir_selflog("%s: reset state\n", __func__);
+        _sir_selflog("reset state");
     }
 }
 
@@ -861,7 +858,7 @@ bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format) {
         assert(0 != fmttime);
 
         if (0 == fmttime)
-            _sir_selflog("%s: strftime returned 0; format string: '%s'", __func__, format);
+            _sir_selflog("strftime returned 0; format string: '%s'", format);
 
         return 0 != fmttime;
     }
@@ -884,7 +881,7 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
             }
         } else {
             *nsecbuf = 0;
-            _sir_selflog("%s: clock_gettime failed; errno: %d\n", __func__, errno);
+            _sir_selflog("clock_gettime failed; errno: %d", errno);
         }
 #elif defined(SIR_MSEC_WIN32)
         static const ULONGLONG uepoch = (ULONGLONG)116444736e9;

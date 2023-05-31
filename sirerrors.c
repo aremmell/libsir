@@ -86,23 +86,23 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
 
         errno = SIR_E_NOERROR;
 #if defined(__HAVE_XSI_STRERROR_R__)
-        _sir_selflog("%s: using XSI strerror_r\n", __func__);
+        _sir_selflog("using XSI strerror_r");
         finderr = strerror_r(code, message, SIR_MAXERROR);
 #   if defined(__HAVE_XSI_STRERROR_R_ERRNO__)
-        _sir_selflog("%s: using XSI strerror_r for glibc < 2.13\n", __func__);
+        _sir_selflog("using XSI strerror_r for glibc < 2.13");
         if (finderr == -1)
             finderr = errno;
 #   endif
 #elif defined(__HAVE_GNU_STRERROR_R__)
-        _sir_selflog("%s: using GNU strerror_r\n", __func__);
+        _sir_selflog("using GNU strerror_r");
         char* tmp = strerror_r(code, message, SIR_MAXERROR);
         if (tmp != message)
             _sir_strncpy(message, SIR_MAXERROR, tmp, SIR_MAXERROR);
 #elif defined(__HAVE_STRERROR_S__)
-        _sir_selflog("%s: using strerror_s\n", __func__);
+        _sir_selflog("using strerror_s");
         finderr = (int)strerror_s(message, SIR_MAXERROR, code);
 #else
-        _sir_selflog("%s: using strerror\n", __func__);
+        _sir_selflog("using strerror");
         char* tmp = strerror(code);
         _sir_strncpy(message, SIR_MAXERROR, tmp, strnlen(tmp, SIR_MAXERROR));
 #endif
@@ -114,9 +114,9 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
              * error code.
              */
 #if defined(__HAVE_XSI_STRERROR_R__)
-            _sir_selflog("%s: strerror_r failed! error: %d\n", __func__, finderr);
+            _sir_selflog("strerror_r failed! error: %d", finderr);
 #elif defined(__HAVE_STRERROR_S__)
-            _sir_selflog("%s: strerror_s failed! error: %d\n", __func__, finderr);
+            _sir_selflog("strerror_s failed! error: %d", finderr);
 #endif
         }
     }
@@ -139,7 +139,7 @@ void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* fi
             errbuf[fmtmsg - 1] = '\0';
         __sir_setoserror((int)code, errbuf, func, file, line);
     } else {
-        _sir_selflog("%s: FormatMessage failed! error: %d\n", __func__, GetLastError());
+        _sir_selflog("FormatMessage failed! error: %d", GetLastError());
         assert(false);
     }
 
@@ -204,20 +204,72 @@ sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
 }
 
 #if defined(SIR_SELFLOG)
-void _sir_selflog(const sirchar_t* format, ...) {
-    sirchar_t output[SIR_MAXMESSAGE] = {0};
-    va_list   args;
+void __sir_selflog(const char* func, const char* file, uint32_t line, const char* format, ...) {
+    static const char* warning_prefix = "\x1b[0;33m";
+    static const char* error_prefix   = "\x1b[0;31m";
+    static const char* tail           = "\x1b[0m";    
+    static const char* arr[] = {
+        /* err */
+        " error ",
+        "failure",
+        "failed",
+        "unsuccessful"
+        /* warn */        
+        "warn",
+        "ignoring",
+        "skipped",
+        "skipping",
+        "unable",
+        "couldn't",
+        "can't",
+        "cannot",
+    }; // err <= 3
 
+    bool need_tail = false;
+    bool success = true;
+    char prefix[256];
+    snprintf(prefix, 256, "%s (%s:%" PRIu32 "): ", func, file, line);
+        
+    va_list args;
+    va_list args2;
     va_start(args, format);
-    int print = vsnprintf(output, SIR_MAXMESSAGE, format, args);
+    va_copy(args2, args);
+
+    int needed = vsnprintf(NULL, 0, format, args);
     va_end(args);
+    success &= needed > 0;
 
-    assert(print > 0);
+    if (needed > 0) {
+        char buf[needed + 1];
+        vsnprintf(buf, sizeof(buf), format, args2);
+        va_end(args2);
+        
+        for (int n = 0; n < _sir_countof(arr); n++) {
+            if (NULL != strcasestr(&buf[0], arr[n])) {
+                int put = fputs(n <= 3 ? error_prefix : warning_prefix, stderr);
+                success &= put != EOF;
+                if (put != EOF) 
+                    need_tail = true;
+                break;
+            }
+        }
 
-    if (print > 0) {
-        int put = fputs(output, stderr);
-        assert(put != EOF);
+        int put = fputs(prefix, stderr);
+        success &= put != EOF;
+
+        put = fputs(buf, stderr);
+        success &= put != EOF;
+
+        if (need_tail) {
+            put = fputs(tail, stderr);
+            success &= put != EOF;
+        }
+
+        put = fputs("\n", stderr);
+        success &= put != EOF;
     }
+
+    assert(success);
 }
 #endif
 

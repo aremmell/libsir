@@ -195,8 +195,8 @@ bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
             _sir_handleerr(err);
             _sir_handleerr(eof);
 
-            _sir_selflog("%s: wrote %lu/%lu bytes to %d; ferror: %d, feof: %d\n", __func__, write, writeLen,
-                sf->id, err, eof);
+            _sir_selflog("wrote %lu/%lu bytes to %d; ferror: %d, feof: %d",
+                write, writeLen, sf->id, err, eof);
 
             /** @todo
              * If an error occurs on write, consider removing file from targets,
@@ -317,7 +317,7 @@ bool _sirfile_archive(sirfile* sf, const sirchar_t* newpath) {
         }
 
         if (_sirfile_open(sf)) {
-            _sir_selflog("%s: archived '%s' -> '%s'\n", __func__, sf->path, newpath);
+            _sir_selflog("archived '%s' -> '%s'", sf->path, newpath);
             return true;
         }
     }
@@ -405,7 +405,7 @@ sirfileid_t _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels le
 
         if (NULL != existing) {
             _sir_seterror(_SIR_E_DUPFILE);
-            _sir_selflog("%s: file with path '%s' already added.\n", __func__, path);
+            _sir_selflog("file with path '%s' already added.", path);
             return NULL;
         }
 
@@ -528,8 +528,8 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
             assert(_sirfile_validate(sfc->files[n]));
 
             if (!_sir_bittest(sfc->files[n]->levels, level)) {
-                _sir_selflog("%s: level %04x not set in level mask (%04x) for file %d; skipping\n",
-                    __func__, level, sfc->files[n]->levels, sfc->files[n]->id);
+                _sir_selflog("level %04x not set in level mask (%04x) for file %d; skipping",
+                    level, sfc->files[n]->levels, sfc->files[n]->id);
                 continue;
             }
 
@@ -545,7 +545,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
                 r &= true;
                 (*dispatched)++;
             } else {
-                _sir_selflog("%s: write to %d failed!\n", __func__, sfc->files[n]->id);
+                _sir_selflog("write to %d failed!", sfc->files[n]->id);
             }
         }
 
