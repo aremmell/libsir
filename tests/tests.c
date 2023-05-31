@@ -711,14 +711,14 @@ bool sirtest_updatesanity(void) {
         pass &= sir_fileopts(id1, opts_array[rnd]);
         printf("\t" WHITE("set random config #%u for %s") "\n", rnd, logfile);
 
-        pass &= filter_error(sir_debug("modified config"), SIR_E_NODEST);
-        pass &= filter_error(sir_info("modified config"), SIR_E_NODEST);;
-        pass &= filter_error(sir_notice("modified config"), SIR_E_NODEST);;
-        pass &= filter_error(sir_warn("modified config"), SIR_E_NODEST);;
-        pass &= filter_error(sir_error("modified config"), SIR_E_NODEST);;
-        pass &= filter_error(sir_crit("modified config"), SIR_E_NODEST);;
-        pass &= filter_error(sir_alert("modified config"), SIR_E_NODEST);;
-        pass &= filter_error(sir_emerg("modified config"), SIR_E_NODEST);;
+        pass &= filter_error(sir_debug("modified config #%u", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_info("modified config #%u", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_notice("modified config #%u", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_warn("modified config #%u", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_error("modified config #%u", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_crit("modified config #%u", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_alert("modified config #%u", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_emerg("modified config #%u", rnd), SIR_E_NODEST);
     }
 
     if (pass) {
@@ -988,7 +988,11 @@ bool filter_error(bool pass, uint16_t err) {
 unsigned int getrand(void) {
     static unsigned int seed = 0;
 #if !defined(_WIN32)
+# if defined(__APPLE__)
+    return (unsigned int)arc4random();
+# else
     return (unsigned int)rand_r(&seed);
+# endif
 #else
     if (0 == rand_s(&seed)) {
         return seed;
