@@ -686,7 +686,7 @@ bool _sir_syslog_open(const char *name, sir_syslog_dest *ctx) {
     int logopt = LOG_NDELAY | (_sir_bittest(ctx->opts, SIRO_NOPID) ? 0 : LOG_PID);
     int facility = LOG_USER;
 
-    openlog(identity, logopt, facility);
+    openlog(ctx->identity, logopt, facility);
     ctx->_state.mask |= SIRSL_IS_OPEN;
     _sir_selflog("opened syslog('%s', %x, %x)", ctx->identity, logopt, facility);
     return true;
