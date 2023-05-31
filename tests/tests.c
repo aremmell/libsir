@@ -214,7 +214,7 @@ bool sirtest_failsetinvalidstyle(void) {
     //pass &= sir_info("hello there, I set an invalid style.");
     //pass &= !sir_settextstyle(SIRL_ALL, SIRS_FG_RED | SIRS_FG_DEFAULT);
     //pass &= sir_info("oops, did it again...");
-//#pragma message("TODO: uncomment the above when the TODO at sirtextstyle.c:50 is resolved")
+#pragma message("TODO: uncomment the above when the TODO at sirtextstyle.c:50 is resolved")
     pass &= !sir_settextstyle(SIRL_ALERT, SIRS_FG_BLACK | SIRS_BG_BLACK);
     pass &= sir_info("and again.");
 
@@ -750,9 +750,7 @@ bool sirtest_syslog(void) {
     return true;
 #else
     INIT_SL(si, SIRL_ALL, SIRO_NOTID, 0, 0, "sirtests");
-    si.d_syslog.levels      = SIRL_DEFAULT;
-    si.d_syslog.include_pid = true;
-    si.d_syslog.opened_log  = false;
+    si.d_syslog.levels = SIRL_DEFAULT;
     si_init = sir_init(&si);
     bool pass = si_init;
     /* log show --last 10m --color always | grep sirtest */
@@ -778,9 +776,7 @@ bool sirtest_os_log(void) {
     return true;
 #else
     INIT_SL(si, SIRL_ALL, SIRO_NOTID, 0, 0, "sirtests");
-    si.d_syslog.levels      = SIRL_DEFAULT;
-    si.d_syslog.include_pid = true;
-    si.d_syslog.opened_log  = false;
+    si.d_syslog.levels = SIRL_DEFAULT;
     si_init = sir_init(&si);
     bool pass = si_init;
 
