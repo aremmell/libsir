@@ -40,10 +40,10 @@
  * @{
  */
 
-/** The file identifier type. */
+/** Log file identifier type. */
 typedef const int* sirfileid_t;
 
-/** Defines the available levels \a (severity/priority) of logging output. */
+/** Defines the available levels (severity/priority) of logging output. */
 typedef enum {
     SIRL_NONE    = 0x0000, /**< No output. */
     SIRL_EMERG   = 0x0001, /**< Nuclear war, Armageddon, etc. */
@@ -54,14 +54,11 @@ typedef enum {
     SIRL_NOTICE  = 0x0020, /**< Normal but significant. */
     SIRL_INFO    = 0x0040, /**< Informational messages. */
     SIRL_DEBUG   = 0x0080, /**< Debugging/diagnostic output. */
-    SIRL_ALL     = 0x00ff, /**< Includes all logging levels. */
-    SIRL_DEFAULT = 0x0100  /**< Use the default levels for this type of destination. */
+    SIRL_ALL     = 0x00ff, /**< Include all logging levels. */
+    SIRL_DEFAULT = 0x0100  /**< Default levels for this type of destination. */
 } sir_level;
 
-/**
- * Used to differentiate between a single ::sir_level and one or more
- * of them bitwise OR'd together.
- */
+/** ::sir_level bitmask type. */
 typedef uint16_t sir_levels;
 
 /** Formatting options for a destination. */
@@ -71,20 +68,17 @@ typedef enum {
     SIRO_NOLEVEL = 0x00000400, /**< Exclude human-readable logging level. */
     SIRO_NONAME  = 0x00000800, /**< Exclude process/app name. */
     SIRO_NOMSEC  = 0x00001000, /**< Exclude millisecond-resolution in time stamps. */
-    SIRO_NOPID   = 0x00002000, /**< Exclude process ID (does not imply ::SIRO_NOTID). */
+    SIRO_NOPID   = 0x00002000, /**< Exclude process ID. */
     SIRO_NOTID   = 0x00004000, /**< Exclude thread ID/name. */
     SIRO_NOHDR   = 0x00010000, /**< Don't write header messages to log files. */
     SIRO_MSGONLY = 0x000eff00, /**< Sets all other options except ::SIRO_NOHDR. */
-    SIRO_DEFAULT = 0x00100000  /**< Use the default options for this type of destination. */
+    SIRO_DEFAULT = 0x00100000  /**< Default options for this type of destination. */
 } sir_option;
 
-/**
- * Used to differentiate between a single ::sir_option and one or more
- * bitwise OR'd together.
- */
+/** ::sir_option bitmask type. */
 typedef uint32_t sir_options;
 
-/** Styles for 16-color console output. */
+/** Styles for 16-color stdio output. */
 typedef enum {
     SIRS_NONE        = 0x00000000, /**< Used internally; has no effect. */
     SIRS_BRIGHT      = 0x00000001, /**< If set, the foreground color is 'intensified'. */
@@ -126,14 +120,6 @@ typedef enum {
     SIRS_INVALID     = 0x000f3000  /**< Represents the invalid text style. */
 } sir_textstyle;
 
-/** Dynamic configuration update options. */
-typedef enum {
-    SIRU_LEVELS     = 0x01,
-    SIRU_OPTIONS    = 0x02,
-    SIRU_SYSLOG_ID  = 0x04,
-    SIRU_SYSLOG_CAT = 0x08
-} sir_config_data_field;
-
 /** The underlying type used for characters in output. */
 typedef char sirchar_t;
 
@@ -143,74 +129,104 @@ typedef char sirchar_t;
  * 
  * @see ::sir_level
  * @see ::sir_option
+ * @see ::sir_syslog_dest
  */
 typedef struct {
-    sir_levels levels; /** Bitmask defining output levels to register for. */
-    sir_options opts;  /** Bitmask defining the formatting of output. */
+    /** ::sir_level bitmask defining output levels to register for. */
+    sir_levels levels;
+
+    /** ::sir_option bitmask defining the formatting of output. */
+    sir_options opts;
 } sir_stdio_dest;
 
 /**
  * @struct sir_syslog_dest
  * @brief Configuration for a system logger destination.
- * 
- * @see ::sir_syslog_type
+ *  
  * @see ::sir_level
+ * @see ::sir_option
+ * @see ::sir_stdio_dest
  */
 typedef struct {
-    sir_levels levels; /** Bitmask defining output levels to register for. */
+    /** ::sir_level bitmask defining output levels to register for. */
+    sir_levels levels;
 
-    bool include_pid;  /** Include the processID in messages (\a syslog only). */
-    bool opened_log;   /** System logger is currently open. */
+    /**
+     * ::sir_option bitmask defining the formatting of output. 
+     * 
+     * @remark Unlike the stdio and log file destinations, not all options are
+     * supported. This is due to the fact that system logging facilities typically
+     * already include the information represented by ::sir_option on their own.
+     * 
+     * Furthermore, the supported options vary based on the system logging
+     * factility in use.
+     * 
+     * @note If your system supports syslog, and libsir is compiled with the intent
+     * to use it (::SIR_SYSLOG_ENABLED is defined), then at least ::SIRO_NOPID is
+     * supported.
+    */
+    sir_options opts;
+
+    /** Reserved for internal use; do not modify. */
+    struct {
+        /** State bitmask. */        
+        uint32_t mask;
+        
+        /** System logger handle/identifier. */
+        void* logger;
+    } _state;
 
     /** 
      * The identity string to pass to the system loggger.
      * 
      * If not set, and the processName in the ::sirinit struct
-     * is set, that will be used.
+     * is set, that will be used instead.
      * 
      * Failing that, an attempt will be made to use the file name
-     * of the calling process.
-     * 
-     * If that is unsuccessful as well, the string ::SIR_SYSLOG_ID
-     * will be used.
+     * of the calling process. If that is unsuccessful as well,
+     * the string ::SIR_FALLBACK_SYSLOG_ID will be used.
      * 
      * @note Can be modified at any time with ::sir_syslogid.
     */
     char identity[SIR_MAX_SYSLOG_ID];
 
     /**
-     * Some system loggers (e.g. \a os_log on \a macOS) require a
+     * Some system loggers (e.g. os_log on macOS) require a
      * category string to group and filter log messages.
      * 
-     * If not set, the string ::SIR_SYSLOG_CAT will be used.
+     * If not set, the string ::SIR_FALLBACK_SYSLOG_CAT will be used instead.
      * 
      * @note Can be modified at any time with ::sir_syslogcat.
      */
     char category[SIR_MAX_SYSLOG_CAT];
-
-#if defined(SIR_OS_LOG_ENABLED)
-    os_log_t logger;   /** macOS-only system logger handle. */
-#endif
 } sir_syslog_dest;
 
 /**
  * @struct sirinit
- * @brief Initialization data for libsir.
- * 
+ * @brief libsir initialization and configuration data.
+ *
+ * @note Pass a pointer to an instance of this structure to ::sir_init
+ * to begin using libsir.
+ *  
  * @see ::sir_stdio_dest
  * @see ::sir_syslog_dest
- *
- * Allocate an instance of this struct and pass it to ::sir_init
- * in order to begin using libsir.
  */
 typedef struct {
-    sir_stdio_dest d_stdout;  /**< \a stdout configuration. */
-    sir_stdio_dest d_stderr;  /**< \a stderr configuration. */
-    sir_syslog_dest d_syslog; /**< System logger configuration (if any). */
+    /** stdout configuration. */
+    sir_stdio_dest d_stdout;
+
+    /** stderr configuration. */
+    sir_stdio_dest d_stderr; 
+
+    /** System logger configuration. */ 
+    sir_syslog_dest d_syslog;
 
     /**
-     * If set, defines the name that will appear in formatted output.
-     * Set ::SIRO_NONAME in a destination's options flags to supppress it.
+     * If set, defines the name that will appear in messages sent to stdio and
+     * log file destinations.
+     * 
+     * Set ::SIRO_NONAME in a destination's options bitmask to exclude it from
+     * log messages.
      */
     sirchar_t processName[SIR_MAXNAME];
 } sirinit;
@@ -287,10 +303,10 @@ typedef struct {
     const char* str;
 } sir_level_str_pair;
 
-/** Public (::sir_textstyle) <-> values used to generate styled terminal output. */
+/** Public (::sir_textstyle) <-> values used to generate styled stdio output. */
 typedef struct {
     const uint32_t from; /**< The public text style flag(s). */
-    const uint16_t to;   /**< The internal value. */
+    const uint16_t to;   /**< The internal value(s). */
 } sir_style_16color_pair;
 
 /** Mutex <-> protected section mapping. */
@@ -313,6 +329,14 @@ typedef struct {
     } loc;
 } sir_thread_err;
 
+/** Bitmask defining which values are to be updated in the global config. */
+typedef enum {
+    SIRU_LEVELS     = 0x00000001,
+    SIRU_OPTIONS    = 0x00000002,
+    SIRU_SYSLOG_ID  = 0x00000004,
+    SIRU_SYSLOG_CAT = 0x00000008
+} sir_config_data_field;
+
 /** Encapsulates dynamic updating of current configuration. */
 typedef struct {
     uint32_t fields;
@@ -321,6 +345,15 @@ typedef struct {
     const char* sl_identity;
     const char* sl_category;
 } sir_update_config_data;
+
+/** Bitmask defining the state of a system logger facility. */
+typedef enum {
+    SIRSL_IS_OPEN  = 0x00000001,
+    SIRSL_UPDATED  = 0x0000000e,
+    SIRSL_CATEGORY = 0x00000004,
+    SIRSL_IDENTITY = 0x00000008,
+    SIRSL_IS_INIT  = 0x00000010
+} sir_syslog_state;
 
 /** @} */
 

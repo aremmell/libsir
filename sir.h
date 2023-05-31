@@ -50,18 +50,26 @@ extern "C" {
  */
 
 /**
- * @brief Initializes libsir.
+ * @brief Initializes and configures libsir.
+ * 
+ * Validates the \p si input structure and prepares the internal state for
+ * dispatching log messages to all the requested destinations.
+ * 
+ * Until successful completion, all other calls made into libsir will fail.
+ * 
+ * @note The configuration data supplied can be modified after initialization
+ * without reloading the library.
+ * 
+ * @note libsir makes a copy of \p si, so its lifetime is not a concern.
  *
- * Any thread may initialize libsir, but any calls to other functions
- * exported by the library will fail until this call has completed.
+ * @remark Ensure that every call to this function is matched by a call
+ * to ::sir_cleanup to release allocated resources.
+ * 
+ * @param si Pointer to a ::sirinit structure.
  *
- * @remark Call ::sir_cleanup when you're through.
- *
- * @param si Initialization options.
- *
- * @return boolean
- * @retval true libsir is initialized and ready to use.
- * @retval false Initialization failed.
+ * @returns If \p si is validated successfully and initialization is
+ * completed, returns \a true. Returns \a false otherwise. Call ::sir_geterror
+ * to obtain information about the error that occurred.
  */
 bool sir_init(sirinit* si);
 
@@ -70,14 +78,9 @@ bool sir_init(sirinit* si);
  *
  * @remark Call ::sir_init to initialize libsir.
  *
- * @remark It is not necessary to call this function from the
- * same thread that called ::sir_init. Any calls made after this
- * to library functions other than to ::sir_init
- * (in order to re-initialize) will fail.
- *
- * @return boolean
- * @retval true libsir is cleaned up.
- * @retval false An error occurred.
+ * @returns If libsir is cleaned up and uninitialized successfully, returns
+ * \a true. Returns \a false otherwise. Call ::sir_geterror
+ * to obtain information about the error that occurred.
  */
 bool sir_cleanup(void);
 
@@ -118,9 +121,10 @@ uint16_t sir_geterror(sirchar_t message[SIR_MAXERROR]);
 /**
  * @brief Log a formatted debug-level message.
  *
- * Maps to the logging level ::SIRL_DEBUG (@see ::sir_level).
+ * Maps to the logging level ::SIRL_DEBUG.
  * 
  * @param format A \a printf style format string.
+ * 
  * @param ... Additional arguments whose types correspond to the
  * \a printf style format specifier at the same index in \p format.
  *
@@ -137,105 +141,140 @@ bool sir_debug(const sirchar_t* format, ...);
 /**
  * @brief Log a formatted informational message.
  *
- * Maps to the logging level ::SIRL_INFO (@see ::sir_level).
+ * Maps to the logging level ::SIRL_INFO.
  *
- * @param format A printf-style format string.
- * @param ... \a (variadic) Additional arguments whose types correspond to the format
- * specifier at the same index in \p format.
+ * @param format A \a printf style format string.
+ * 
+ * @param ... Additional arguments whose types correspond to the
+ * \a printf style format specifier at the same index in \p format.
  *
  * @return boolean
- * @retval true All destinations registered for this level were successfully processed.
- * @retval false One or more destinations were not successfully processed.
+ * @retval true At least one destination registered for this level,
+ * and the message was successfully dispatched to all registered
+ * destinations.
+ * @retval false No destinations registered for this level, or an
+ * error occurred. Use ::sir_geterror to obtain information about
+ * why the call failed.
  */
 bool sir_info(const sirchar_t* format, ...);
 
 /**
  * @brief Log a formatted notice message.
  *
- * Maps to the logging level ::SIRL_NOTICE (@see ::sir_level).
+ * Maps to the logging level ::SIRL_NOTICE.
  *
- * @param format A printf-style format string.
- * @param ... \a (variadic) Additional arguments whose types correspond to the format
- * specifier at the same index in \p format.
+ * @param format A \a printf style format string.
+ * 
+ * @param ... Additional arguments whose types correspond to the
+ * \a printf style format specifier at the same index in \p format.
  *
  * @return boolean
- * @retval true All destinations registered for this level were successfully processed.
- * @retval false One or more destinations were not successfully processed.
+ * @retval true At least one destination registered for this level,
+ * and the message was successfully dispatched to all registered
+ * destinations.
+ * @retval false No destinations registered for this level, or an
+ * error occurred. Use ::sir_geterror to obtain information about
+ * why the call failed.
  */
 bool sir_notice(const sirchar_t* format, ...);
 
 /**
  * @brief Log a formatted warning message.
  *
- * Maps to the logging level ::SIRL_WARN (@see ::sir_level).
+ * Maps to the logging level ::SIRL_WARN.
  *
- * @param format A printf-style format string.
- * @param ... \a (variadic) Additional arguments whose types correspond to the format
- * specifier at the same index in \p format.
+ * @param format A \a printf style format string.
+ * 
+ * @param ... Additional arguments whose types correspond to the
+ * \a printf style format specifier at the same index in \p format.
  *
  * @return boolean
- * @retval true All destinations registered for this level were successfully processed.
- * @retval false One or more destinations were not successfully processed.
+ * @retval true At least one destination registered for this level,
+ * and the message was successfully dispatched to all registered
+ * destinations.
+ * @retval false No destinations registered for this level, or an
+ * error occurred. Use ::sir_geterror to obtain information about
+ * why the call failed.
  */
 bool sir_warn(const sirchar_t* format, ...);
 
 /**
  * @brief Log a formatted error message.
  *
- * Maps to the logging level ::SIRL_ERROR (@see ::sir_level).
+ * Maps to the logging level ::SIRL_ERROR.
  *
- * @param format A printf-style format string.
- * @param ... \a (variadic) Additional arguments whose types correspond to the format
- * specifier at the same index in \p format.
+ * @param format A \a printf style format string.
+ * 
+ * @param ... Additional arguments whose types correspond to the
+ * \a printf style format specifier at the same index in \p format.
  *
  * @return boolean
- * @retval true All destinations registered for this level were successfully processed.
- * @retval false One or more destinations were not successfully processed.
+ * @retval true At least one destination registered for this level,
+ * and the message was successfully dispatched to all registered
+ * destinations.
+ * @retval false No destinations registered for this level, or an
+ * error occurred. Use ::sir_geterror to obtain information about
+ * why the call failed.
  */
 bool sir_error(const sirchar_t* format, ...);
 
 /**
  * @brief Log a formatted critical error message.
  *
- * Maps to the logging level ::SIRL_CRIT (@see ::sir_level).
+ * Maps to the logging level ::SIRL_CRIT.
  *
- * @param format A printf-style format string.
- * @param ... \a (variadic) Additional arguments whose types correspond to the format
- * specifier at the same index in \p format.
+ * @param format A \a printf style format string.
+ * 
+ * @param ... Additional arguments whose types correspond to the
+ * \a printf style format specifier at the same index in \p format.
  *
  * @return boolean
- * @retval true All destinations registered for this level were successfully processed.
- * @retval false One or more destinations were not successfully processed.
+ * @retval true At least one destination registered for this level,
+ * and the message was successfully dispatched to all registered
+ * destinations.
+ * @retval false No destinations registered for this level, or an
+ * error occurred. Use ::sir_geterror to obtain information about
+ * why the call failed.
  */
 bool sir_crit(const sirchar_t* format, ...);
 
 /**
  * @brief Log a formatted alert message.
  *
- * Maps to the logging level ::SIRL_ALERT (@see ::sir_level).
+ * Maps to the logging level ::SIRL_ALERT.
  *
- * @param format A printf-style format string.
- * @param ... \a (variadic) Additional arguments whose types correspond to the format
- * specifier at the same index in \p format.
+ * @param format A \a printf style format string.
+ * 
+ * @param ... Additional arguments whose types correspond to the
+ * \a printf style format specifier at the same index in \p format.
  *
  * @return boolean
- * @retval true All destinations registered for this level were successfully processed.
- * @retval false One or more destinations were not successfully processed.
+ * @retval true At least one destination registered for this level,
+ * and the message was successfully dispatched to all registered
+ * destinations.
+ * @retval false No destinations registered for this level, or an
+ * error occurred. Use ::sir_geterror to obtain information about
+ * why the call failed.
  */
 bool sir_alert(const sirchar_t* format, ...);
 
 /**
  * @brief Log a formatted emergency message.
  *
- * Maps to the logging level ::SIRL_EMERG (@see ::sir_level).
+ * Maps to the logging level ::SIRL_EMERG.
  *
- * @param format A printf-style format string.
- * @param ... \a (variadic) Additional arguments whose types correspond to the format
- * specifier at the same index in \p format.
+ * @param format A \a printf style format string.
+ * 
+ * @param ... Additional arguments whose types correspond to the
+ * \a printf style format specifier at the same index in \p format.
  *
  * @return boolean
- * @retval true All destinations registered for this level were successfully processed.
- * @retval false One or more destinations were not successfully processed.
+ * @retval true At least one destination registered for this level,
+ * and the message was successfully dispatched to all registered
+ * destinations.
+ * @retval false No destinations registered for this level, or an
+ * error occurred. Use ::sir_geterror to obtain information about
+ * why the call failed.
  */
 bool sir_emerg(const sirchar_t* format, ...);
 

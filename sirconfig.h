@@ -45,12 +45,6 @@
  * @{
  */
 
-/** Fallback system loggger identity. */
-#define SIR_SYSLOG_ID "libsir"
-
-/** Fallback system logger category. */
-#define SIR_SYSLOG_CAT "general"
-
 /** The time stamp format string at the beginning of log messages. */
 #define SIR_TIMEFORMAT "%H:%M:%S"
 
@@ -213,10 +207,10 @@
 /**
  * The format string for error messages returned by ::_sir_geterror.
  *
- * - The \a first %%s format specifier is the function name.
- * - The \a second %%s is the file name.
+ * - The first %%s format specifier is the function name.
+ * - The second %%s is the file name.
  * - The %%lu is the line number in the file.
- * - The \a third %%s is the error message.
+ * - The third %%s is the error message.
  *
  * @remark sample: `Error in findneedle (haystack.c:384): 'Too much hay'`
  */
@@ -224,6 +218,21 @@
 
 /** The string that represents any unknown. */
 #define SIR_UNKNOWN "<unknown>"
+
+/** stderr destination string. */
+#define SIR_DESTNAME_STDERR "stderr"
+
+/** stdout destination string. */
+#define SIR_DESTNAME_STDOUT "stdout"
+
+/** System logger destination string. */
+#define SIR_DESTNAME_SYSLOG "syslog"
+
+/** Fallback system loggger identity. */
+#define SIR_FALLBACK_SYSLOG_ID "libsir"
+
+/** Fallback system logger category. */
+#define SIR_FALLBACK_SYSLOG_CAT "general"
 
 /** 
  * The number of actual levels; ::SIRL_NONE, ::SIRL_ALL, and ::SIRL_DEFAULT 
@@ -237,7 +246,7 @@
 /** The string used to reset any styling applied to text in stdio output. */
 #define SIR_ENDSTYLE SIR_BEGINSTYLE "0m"
 
-/** The default clock used to obtain the current millisecond from \a clock_gettime. */
+/** The default clock used to obtain the current millisecond from clock_gettime. */
 #define SIR_MSECCLOCK CLOCK_MONOTONIC
 
 /** @} */

@@ -45,40 +45,43 @@
  * @{
  */
 
+/** Initializes libsir. */
+bool _sir_init(sirinit* si);
+
+/** Un-initializes libsir. */
+bool _sir_cleanup(void);
+
 /** Evaluates whether or not libsir has been initialized. */
 bool _sir_sanity(void);
 
 /** Validates the configuration passed to ::sir_init. */
 bool _sir_options_sanity(const sirinit* si);
 
-/** Initializes libsir. */
-bool _sir_init(sirinit* si);
+/** Updates levels for stdout. */
+bool _sir_stdoutlevels(sirinit* si, sir_update_config_data* data);
 
-/** Updates levels for \a stdout. */
-void _sir_stdoutlevels(sirinit* si, sir_update_config_data* data);
+/** Updates options for stdout. */
+bool _sir_stdoutopts(sirinit* si, sir_update_config_data* data);
 
-/** Updates options for \a stdout. */
-void _sir_stdoutopts(sirinit* si, sir_update_config_data* data);
+/** Updates levels for stderr. */
+bool _sir_stderrlevels(sirinit* si, sir_update_config_data* data);
 
-/** Updates levels for \a stderr. */
-void _sir_stderrlevels(sirinit* si, sir_update_config_data* data);
+/** Updates options for stderr. */
+bool _sir_stderropts(sirinit* si, sir_update_config_data* data);
 
-/** Updates options for \a stderr. */
-void _sir_stderropts(sirinit* si, sir_update_config_data* data);
+/** Updates levels for the system logger. */
+bool _sir_sysloglevels(sirinit* si, sir_update_config_data* data);
 
-/** Updates levels for \a syslog (or \a os_log on \a macOS). */
-void _sir_sysloglevels(sirinit* si, sir_update_config_data* data);
+/** Updates the identity for the system logger.*/
+bool _sir_syslogid(sirinit* si, sir_update_config_data* data);
 
-/** Updates the identity for \a syslog (or \a os_log on \a macOS). */
-void _sir_syslogid(sirinit* si, sir_update_config_data* data);
+/** Updates the category for the system logger. */
+bool _sir_syslogcat(sirinit* si, sir_update_config_data* data);
 
-/** Updates the category for \a syslog (or \a os_log on \a macOS). */
-void _sir_syslogcat(sirinit* si, sir_update_config_data* data);
+/** Callback for updating values in the global config. */
+typedef bool (*sirinit_update)(sirinit*, sir_update_config_data*);
 
-/** Updates values in the global init structure. */
-typedef void (*sirinit_update)(sirinit*, sir_update_config_data*);
-
-/** Updates values in the global init structure. */
+/** Updates values in the global config. */
 bool _sir_writeinit(sir_update_config_data* data, sirinit_update update);
 
 /** Locks a protected section. */
@@ -89,9 +92,6 @@ bool _sir_unlocksection(sir_mutex_id mid);
 
 /** Maps a ::sir_mutex_id to a ::sirmutex_t and protected section. */
 bool _sir_mapmutexid(sir_mutex_id mid, sirmutex_t** m, void** section);
-
-/** Frees allocated resources. */
-bool _sir_cleanup(void);
 
 #if !defined(_WIN32)
 /** General initialization procedure. */
@@ -125,23 +125,48 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf);
 /** Specific destination formatting. */
 const sirchar_t* _sir_format(bool styling, sir_options opts, sirbuf* buf);
 
+/** Initializes a ::sir_syslog_dest. */
+bool _sir_syslog_init(const char *name, sir_syslog_dest *ctx);
+
 /**
- * Called upon initialization of the library. Performs any necesssary
- * preparation: connecting/opening handles, etc.
+ * Abstraction for setup of platform-specific implementations of system
+ * logger facilities.
+ *
+ * Called upon initialization of the library (and if the configuration is modified).
+ * Performs any necesssary preparation: connecting/opening handles, etc.
  */
 bool _sir_syslog_open(const char* name, sir_syslog_dest* ctx);
 
 /**
  * Abstraction for writing to platform-specific implementations of
- * system logger facilities (e.g. \a syslog or \a os_log on \a macOS).
+ * system logger facilities.
  */
 bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx);
 
 /**
- * Called upon shutdown of the library. Performs any necessary
- * cleanup: disconnecting/closing handles, etc.
+ * Abstraction for cleanup/closure of platform-specific implementations of
+ * system logger facilities.
+ * 
+ * Called upon shutdown of the library (and if the configuration is modified).
+ * Performs any necessary operations: disconnecting/closing handles, etc.
  */
 bool _sir_syslog_close(sir_syslog_dest* ctx);
+
+/**
+ * Called after updates to the global config that may require reconfiguration
+ * of the system logger.
+ */
+bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data);
+
+/**
+ * Retrieves the identity to use for the system logger.
+ */
+void _sir_syslog_fmt_id(const char* name, sir_syslog_dest* ctx);
+
+/**
+ * Resets the internal state.
+ */
+void _sir_syslog_reset(sir_syslog_dest* ctx);
 
 /** Converts a ::sir_level to its human-readable form. */
 const sirchar_t* _sir_levelstr(sir_level level);
