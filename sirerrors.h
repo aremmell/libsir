@@ -129,9 +129,12 @@ sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]);
 #if defined(SIR_SELFLOG)
 /** Log an internal debug message to stderr. */
 void __sir_selflog(const char* func, const char* file, uint32_t line, const char* format, ...);
-#define _sir_selflog(format, ...) __sir_selflog(__func__, __FILE__, __LINE__, format, ##__VA_ARGS__)
+#define _sir_selflog(format, ...) __sir_selflog(__func__, __FILE__, __LINE__, format, __VA_OPT__(,) __VA_ARGS__)
 #else
-#define _sir_selflog(format, ...) ((void)(0))
+static inline void __fakefunc(const char* format, ...) {
+    _SIR_UNUSED(format);
+}
+#define _sir_selflog(...) __fakefunc(__VA_ARGS__)
 #endif
 
 #endif /* !_SIR_ERRORS_H_INCLUDED */
