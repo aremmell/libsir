@@ -19,6 +19,10 @@ else
 	CFLAGS = -Wpedantic -std=c11 -I. -DNDEBUG -fPIC -O3
 endif
 
+ifeq ($(SIR_NO_SYSTEM_LOGGERS),1)
+	CFLAGS += -DSIR_NO_SYSTEM_LOGGERS
+endif
+
 ifeq ($(SIR_SELFLOG),1)
 	CFLAGS += -DSIR_SELFLOG
 endif
