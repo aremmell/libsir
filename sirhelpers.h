@@ -112,10 +112,30 @@ uint16_t _sir_geterrcode(sirerror_t err) {
  */
 #define _sir_notnull(addr) (NULL != addr)
 
-/** Checks a bitfield for a specific set of bits. */
+/** Checks a bitmask for a specific set of bits. */
 static inline
 bool _sir_bittest(uint32_t flags, uint32_t test) {
     return (flags & test) == test;
+}
+
+/** Sets a specific set of bits high in a bitmask. */
+static inline
+bool _sir_bitsethigh(uint32_t* flags, uint32_t set) {
+    if (!_sir_validptr(flags))
+        return false;
+
+    *flags |= set;
+    return true;
+}
+
+/** Sets a specific set of bits low in a bitmask. */
+static inline
+bool _sir_bitsetlow(uint32_t* flags, uint32_t set) {
+    if (!_sir_validptr(flags))
+        return false;
+
+    *flags &= ~set;
+    return true;
 }
 
 /** Wraps \a free. */
