@@ -721,7 +721,6 @@ bool sirtest_updatesanity(void) {
         pass &= filter_error(sir_emerg("modified config"), SIR_E_NODEST);;
     }
 
-
     if (pass) {
         /* restore to default config and run again */
         sir_stdoutlevels(SIRL_DEFAULT);
