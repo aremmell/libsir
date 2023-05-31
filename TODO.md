@@ -1,15 +1,21 @@
 # TODO
 
+- [ ] Bump version 2.1.2
 - [ ] BUG: SIRO_ALL is not effectively SIRO_MSGONLY; it’s the opposite. It should be called SIRO_NONE
 - [ ] BUG: if NO_TIME and NO_NAME are set, but TID and PID are present, there’s no space between the message
+- [ ] Finish comment in sir_syslog_dest once it’s been resolved which option(s) can be utilized for os_log/syslog.
+- [ ] Refactor _sir_syslog_init: it’s a clusterF. Should probably just reject initialization if levels are set but ident/cat are not.
 - [ ] Implement “last message repeated n times”
+- [ ] Rework getrand in tests.c;
 - [ ] *sir_syslogcat* to update the category
 - [ ] *sir_syslogid* to update the identity
-    - [ ] Document
-    - [ ] Add tests
+  - [ ] Document
+  - [ ] Add tests
+- [ ] Add a `--leave-logs` option to sirtests to leave the logs it generates behind so they can be examined for correctness.
 - [ ] Document sirfilesystem.h
 - [ ] Tests:
   - [ ] Better level/option validation testing
+  - [ ] init w/ bad / uninitialized config
   - [ ] Filesystem
     - [ ] Path as long as can fit in the PATH_MAX/MAX_PATH
     - [ ] Invalid paths of all kinds:
