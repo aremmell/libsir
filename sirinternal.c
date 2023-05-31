@@ -332,16 +332,18 @@ void _sir_initialize_once(void) {
 }
 
 void _sir_initmutex_si_once(void) {
-    _sirmutex_create(&si_mutex);
+    bool unused = _sirmutex_create(&si_mutex);
+    _SIR_UNUSED(unused);
 }
 
 void _sir_initmutex_fc_once(void) {
-    _sirmutex_create(&fc_mutex);
+    bool unused = _sirmutex_create(&fc_mutex);
+    _SIR_UNUSED(unused);
 }
 
 void _sir_initmutex_ts_once(void) {
-    _sirmutex_create(&ts_mutex);
-#pragma message("TODO: figure out what you're supposed to do to handle an error in a phtread_once routine")    
+    bool unused = _sirmutex_create(&ts_mutex);
+    _SIR_UNUSED(unused);
 }
 #else
 BOOL CALLBACK _sir_initialize_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
