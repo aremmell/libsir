@@ -488,8 +488,8 @@ bool sirtest_errorsanity(void) {
         {SIR_E_STRING,    "SIR_E_STRING"},    /**< Invalid string argument (9) */
         {SIR_E_NULLPTR,   "SIR_E_NULLPTR"},   /**< NULL pointer argument (10) */
         {SIR_E_INVALID,   "SIR_E_INVALID"},   /**< Invalid argument (11) */
-        {SIR_E_NODEST,    "SIR_E_NODEST"},    /**< No destinations registered for level (11) */
-        {SIR_E_PLATFORM,  "SIR_E_PLATFORM"},  /**< Platform error code %d: %s (12) */
+        {SIR_E_NODEST,    "SIR_E_NODEST"},    /**< No destinations registered for level (12) */
+        {SIR_E_PLATFORM,  "SIR_E_PLATFORM"},  /**< Platform error code %d: %s (13) */
         {SIR_E_UNKNOWN,   "SIR_E_UNKNOWN"},   /**< Error is not known (4095) */
     };
 
@@ -777,6 +777,8 @@ bool sirtest_os_log(void) {
 #else
     INIT_SL(si, SIRL_ALL, SIRO_NOTID, 0, 0, "sirtests");
     si.d_syslog.levels = SIRL_DEFAULT;
+    _sir_strncpy(si.d_syslog.identity, SIR_MAX_SYSLOG_CAT, "com.aremell.libsir.tests", SIR_MAX_SYSLOG_ID);
+    _sir_strncpy(si.d_syslog.category, SIR_MAX_SYSLOG_CAT, "tests", SIR_MAX_SYSLOG_CAT);
     si_init = sir_init(&si);
     bool pass = si_init;
 
