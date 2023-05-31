@@ -175,7 +175,7 @@ bool sir_syslogcat(const char* category) {
     sir_update_config_data data = { SIRU_SYSLOG_CAT, NULL, NULL, NULL, category };
     return _sir_writeinit(&data, _sir_syslogcat);
 #else
-    _SIR_UNUSED(identity);
+    _SIR_UNUSED(category);
     return false;
 #endif
 }
