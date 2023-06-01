@@ -68,7 +68,7 @@ extern "C" {
  * @param si Pointer to a ::sirinit structure.
  *
  * @returns If \p si is validated successfully and initialization is
- * completed, returns \a true. Returns \a false otherwise. Call ::sir_geterror
+ * completed, returns true. Returns false otherwise. Call ::sir_geterror
  * to obtain information about the error that occurred.
  */
 bool sir_init(sirinit* si);
@@ -79,7 +79,7 @@ bool sir_init(sirinit* si);
  * @remark Call ::sir_init to initialize libsir.
  *
  * @returns If libsir is cleaned up and uninitialized successfully, returns
- * \a true. Returns \a false otherwise. Call ::sir_geterror
+ * true. Returns false otherwise. Call ::sir_geterror
  * to obtain information about the error that occurred.
  */
 bool sir_cleanup(void);
@@ -123,10 +123,10 @@ uint16_t sir_geterror(sirchar_t message[SIR_MAXERROR]);
  *
  * Maps to the logging level ::SIRL_DEBUG.
  * 
- * @param format A \a printf style format string.
+ * @param format A printf style format string.
  * 
  * @param ... Additional arguments whose types correspond to the
- * \a printf style format specifier at the same index in \p format.
+ * printf style format specifier at the same index in \p format.
  *
  * @return boolean
  * @retval true At least one destination registered for this level,
@@ -143,10 +143,10 @@ bool sir_debug(const sirchar_t* format, ...);
  *
  * Maps to the logging level ::SIRL_INFO.
  *
- * @param format A \a printf style format string.
+ * @param format A printf style format string.
  * 
  * @param ... Additional arguments whose types correspond to the
- * \a printf style format specifier at the same index in \p format.
+ * printf style format specifier at the same index in \p format.
  *
  * @return boolean
  * @retval true At least one destination registered for this level,
@@ -163,10 +163,10 @@ bool sir_info(const sirchar_t* format, ...);
  *
  * Maps to the logging level ::SIRL_NOTICE.
  *
- * @param format A \a printf style format string.
+ * @param format A printf style format string.
  * 
  * @param ... Additional arguments whose types correspond to the
- * \a printf style format specifier at the same index in \p format.
+ * printf style format specifier at the same index in \p format.
  *
  * @return boolean
  * @retval true At least one destination registered for this level,
@@ -183,10 +183,10 @@ bool sir_notice(const sirchar_t* format, ...);
  *
  * Maps to the logging level ::SIRL_WARN.
  *
- * @param format A \a printf style format string.
+ * @param format A printf style format string.
  * 
  * @param ... Additional arguments whose types correspond to the
- * \a printf style format specifier at the same index in \p format.
+ * printf style format specifier at the same index in \p format.
  *
  * @return boolean
  * @retval true At least one destination registered for this level,
@@ -203,10 +203,10 @@ bool sir_warn(const sirchar_t* format, ...);
  *
  * Maps to the logging level ::SIRL_ERROR.
  *
- * @param format A \a printf style format string.
+ * @param format A printf style format string.
  * 
  * @param ... Additional arguments whose types correspond to the
- * \a printf style format specifier at the same index in \p format.
+ * printf style format specifier at the same index in \p format.
  *
  * @return boolean
  * @retval true At least one destination registered for this level,
@@ -223,10 +223,10 @@ bool sir_error(const sirchar_t* format, ...);
  *
  * Maps to the logging level ::SIRL_CRIT.
  *
- * @param format A \a printf style format string.
+ * @param format A printf style format string.
  * 
  * @param ... Additional arguments whose types correspond to the
- * \a printf style format specifier at the same index in \p format.
+ * printf style format specifier at the same index in \p format.
  *
  * @return boolean
  * @retval true At least one destination registered for this level,
@@ -243,10 +243,10 @@ bool sir_crit(const sirchar_t* format, ...);
  *
  * Maps to the logging level ::SIRL_ALERT.
  *
- * @param format A \a printf style format string.
+ * @param format A printf style format string.
  * 
  * @param ... Additional arguments whose types correspond to the
- * \a printf style format specifier at the same index in \p format.
+ * printf style format specifier at the same index in \p format.
  *
  * @return boolean
  * @retval true At least one destination registered for this level,
@@ -263,10 +263,10 @@ bool sir_alert(const sirchar_t* format, ...);
  *
  * Maps to the logging level ::SIRL_EMERG.
  *
- * @param format A \a printf style format string.
+ * @param format A printf style format string.
  * 
  * @param ... Additional arguments whose types correspond to the
- * \a printf style format specifier at the same index in \p format.
+ * printf style format specifier at the same index in \p format.
  *
  * @return boolean
  * @retval true At least one destination registered for this level,
@@ -309,9 +309,9 @@ sirfileid_t sir_addfile(const sirchar_t* path, sir_levels levels, sir_options op
 bool sir_remfile(sirfileid_t id);
 
 /**
- * @brief Sets the text style in \a stdio output for a ::sir_level of output.
+ * @brief Sets the text style in stdio output for a ::sir_level of output.
  *
- * @param level The level \a (only one is permitted per call) for which the style
+ * @param level The level (only one is permitted per call) for which the style
  * will be set.
  * @param style Foreground color, background color, and brightness control flags
  * bitwise OR'd to create the text style for \p level. See ::sir_textstyle.
@@ -323,7 +323,7 @@ bool sir_remfile(sirfileid_t id);
 bool sir_settextstyle(sir_level level, sir_textstyle style);
 
 /**
- * @brief Resets all \a stdio text styles to their default values.
+ * @brief Resets all stdio text styles to their default values.
  *
  * @return boolean
  * @retval true All text styles were reset to their defaults.
@@ -332,7 +332,7 @@ bool sir_settextstyle(sir_level level, sir_textstyle style);
 bool sir_resettextstyles(void);
 
 /**
- * @brief Sets levels sent to \a stdout.
+ * @brief Sets levels sent to stdout.
  *
  * Sets the ::sir_level registration mask for this destination.
  *
@@ -354,7 +354,7 @@ bool sir_resettextstyles(void);
 bool sir_stdoutlevels(sir_levels levels);
 
 /**
- * @brief Sets formatting options for \a stdout.
+ * @brief Sets formatting options for stdout.
  *
  * Sets the ::sir_option mask that controls the content of messages
  * sent to this destination.
@@ -376,7 +376,7 @@ bool sir_stdoutlevels(sir_levels levels);
 bool sir_stdoutopts(sir_options opts);
 
 /**
- * @brief Sets levels sent to \a stderr.
+ * @brief Sets levels sent to stderr.
  *
  * Sets the ::sir_level registration mask for this destination.
  *
@@ -398,7 +398,7 @@ bool sir_stdoutopts(sir_options opts);
 bool sir_stderrlevels(sir_levels levels);
 
 /**
- * @brief Sets formatting options for \a stderr.
+ * @brief Sets formatting options for stderr.
  *
  * Sets the ::sir_option mask that controls the content of messages
  * sent to this destination.
