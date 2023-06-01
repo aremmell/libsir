@@ -122,11 +122,6 @@ bool sirtest_exceedmaxsize(void);
 bool sirtest_filecachesanity(void);
 
 /**
- * @test Properly handle invalid text style.
- */
-bool sirtest_failsetinvalidstyle(void);
-
-/**
  * @test Properly handle the lack of any output destinations.
  */
 bool sirtest_failnooutputdest(void);

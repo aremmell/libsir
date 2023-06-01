@@ -33,27 +33,26 @@
 
 static const sir_test sir_tests[] = {
     {"performance",             sirtest_perf},
-    {"multi-thread race",       sirtest_mthread_race},
-    {"exceed max buffer size",  sirtest_exceedmaxsize},
-    {"file cache sanity",       sirtest_filecachesanity},
-    {"set invalid text style",  sirtest_failsetinvalidstyle},
-    {"no output destination",   sirtest_failnooutputdest},
-    {"invalid file name",       sirtest_failinvalidfilename},
-    {"bad file permissions",    sirtest_failfilebadpermission},
-    {"null pointers",           sirtest_failnulls},
-    {"output without init",     sirtest_failwithoutinit},
-    {"superfluous init",        sirtest_failinittwice},
-    {"output after cleanup",    sirtest_failaftercleanup},
+    {"thread-race",             sirtest_mthread_race},
+    {"exceed-max-buffer-size",  sirtest_exceedmaxsize},
+    {"file-cache-sanity",       sirtest_filecachesanity},
+    {"no-output-destination",   sirtest_failnooutputdest},
+    {"invalid-file-name",       sirtest_failinvalidfilename},
+    {"bad-file-permissions",    sirtest_failfilebadpermission},
+    {"null-pointers",           sirtest_failnulls},
+    {"output-without init",     sirtest_failwithoutinit},
+    {"superfluous-init",        sirtest_failinittwice},
+    {"output-after-cleanup",    sirtest_failaftercleanup},
     {"re-initialize",           sirtest_initcleanupinit},
-    {"duplicate file name",     sirtest_faildupefile},
-    {"remove nonexistent file", sirtest_failremovebadfile},
-    {"roll/archive large file", sirtest_rollandarchivefile},
-    {"error handling sanity",   sirtest_errorsanity},
-    {"text style sanity",       sirtest_textstylesanity},
-    {"update levels/options",   sirtest_updatesanity},
+    {"duplicate-file-name",     sirtest_faildupefile},
+    {"remove-nonexistent-file", sirtest_failremovebadfile},
+    {"archive-large-file",      sirtest_rollandarchivefile},
+    {"error-handling-sanity",   sirtest_errorsanity},
+    {"text-style-sanity",       sirtest_textstylesanity},
+    {"runtime-update-sanity",   sirtest_updatesanity},
     {"syslog",                  sirtest_syslog},
     {"os_log",                  sirtest_os_log},
-    {"portable filesystem api", sirtest_filesystem}
+    {"portable-filesystem-api", sirtest_filesystem}
 };
 
 static const char* arg_wait = "--wait"; /* wait for key press before exiting. */
@@ -204,22 +203,6 @@ bool sirtest_filecachesanity(void) {
 
     sir_cleanup();
     return print_result_and_return(pass);
-}
-
-bool sirtest_failsetinvalidstyle(void) {
-    INIT(si, SIRL_ALL, 0, 0, 0);
-    bool pass = si_init;
-
-    //pass &= !sir_settextstyle(SIRL_INFO, 0xbbbb/* 0xfefe */);
-    //pass &= sir_info("hello there, I set an invalid style.");
-    //pass &= !sir_settextstyle(SIRL_ALL, SIRS_FG_RED | SIRS_FG_DEFAULT);
-    //pass &= sir_info("oops, did it again...");
-#pragma message("TODO: uncomment the above when the TODO at sirtextstyle.c:50 is resolved")
-    pass &= !sir_settextstyle(SIRL_ALERT, SIRS_FG_BLACK | SIRS_BG_BLACK);
-    pass &= sir_info("and again.");
-
-    sir_cleanup();
-    return print_test_error(pass, true);
 }
 
 bool sirtest_failnooutputdest(void) {
@@ -510,6 +493,17 @@ bool sirtest_textstylesanity(void) {
 
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
+
+    // This is from the now-deleted test sirtest_failsetinvalidstyle.
+    // it doesn't belong in a test separate from this one.
+
+    //pass &= !sir_settextstyle(SIRL_INFO, 0xbbbb/* 0xfefe */);
+    //pass &= sir_info("hello there, I set an invalid style.");
+    //pass &= !sir_settextstyle(SIRL_ALL, SIRS_FG_RED | SIRS_FG_DEFAULT);
+    //pass &= sir_info("oops, did it again...");
+#pragma message("TODO: uncomment the above when the TODO at sirtextstyle.c:50 is resolved")
+    pass &= !sir_settextstyle(SIRL_ALERT, SIRS_FG_BLACK | SIRS_BG_BLACK);
+    pass &= sir_info("and again.");
 
     if (pass) {
         pass &= sir_debug("default style");
