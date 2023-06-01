@@ -106,8 +106,9 @@ int main(void) {
     sir_debug("Config file successfully parsed; connecting to database...");
     
     /* pretend to connect to a database */
-    sir_debug("Database connection established. Binding a TCP socket to interface '%s'"
-              " (IPv4: %s) on port %u and listening for connections.", "eth0",
+    sir_debug("Database connection established.");
+    sir_debug("Binding a TCP socket to interface '%s'"
+              " (IPv4: %s) on port %u and listening for connections...", "eth0",
               "120.22.140.8", 5500);
 
     /* 
@@ -128,9 +129,11 @@ int main(void) {
     sir_error("Failed to synchronize with node pool.846.myfooserver.io! Error:"
               " %s", "connection reset by peer. Retry in 30sec");
 
-    /* Let's decide we better enable syslog. Things seem to be going poorly. */
-
-    /* Set up an identity, some options, and register for error and higher. */
+    /* 
+     * Let's decide we better enable syslog. Things seem to be going poorly.
+     *
+     * Set up an identity, some options, and register for error and higher.
+     */
     if (!sir_syslogid("MyFooServer")) {
         report_error();
     }
@@ -152,10 +155,10 @@ int main(void) {
 
     sir_alert("Database repair attempt unsuccessful! Error: %s", "<unknown>");        
 
-    sir_emerg("Unable to process client requests for %s!", "4m52s");
+    sir_emerg("Unable to process client requests for %s! Restarting...", "4m52s");
 
-    sir_info("Begin server shutdown.");
-    sir_info("Exiting with code %d", 1);
+    sir_debug("Begin server shutdown.");
+    sir_debug("Exiting with code %d.", 1);
 
     /* 
      * Now, you can examine the terminal output, libsir-example.log, and
