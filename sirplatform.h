@@ -119,6 +119,10 @@
 #  include <linux/limits.h>
 # elif defined(__APPLE__)
 #  include <mach-o/dyld.h>
+#  include <sys/_types/_timespec.h>
+#  include <mach/mach.h>
+#  include <mach/clock.h>
+#  include <mach/mach_time.h>
 #  if defined(SIR_OS_LOG_ENABLED)
 #   include <os/log.h>
 #   include <os/trace.h>
@@ -139,14 +143,17 @@
 #  define SIR_MAXPATH MAXPATHLEN
 # else
 #  define SIR_MAXPATH 1024
-# endif
+#endif
 
-# if _POSIX_TIMERS > 0
-#  define SIR_MSEC_TIMER
-#  define SIR_MSEC_POSIX
-# else
-#   undef SIR_MSEC_TIMER
-# endif
+#if defined(__APPLE__)
+# define SIR_MSEC_TIMER
+# define SIR_MSEC_MACH
+#elif _POSIX_TIMERS > 0
+# define SIR_MSEC_TIMER
+# define SIR_MSEC_POSIX
+#else
+# undef SIR_MSEC_TIMER
+#endif
 
 /** The mutex type. */
 typedef pthread_mutex_t sirmutex_t;

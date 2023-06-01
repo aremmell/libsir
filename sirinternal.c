@@ -87,6 +87,7 @@ bool _sir_init(sirinit* si) {
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     _sir_defaultlevels(&si->d_syslog.levels, sir_syslog_def_lvls);
+    _sir_defaultopts(&si->d_syslog.opts, sir_syslog_def_opts);
 #endif
 
     if (!_sir_options_sanity(si))
@@ -495,8 +496,8 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
     }
 
     time_t now;
-    long nowmsec;
-    bool gettime = _sir_getlocaltime(&now, &nowmsec);
+    long nowmsec = 0;
+    bool gettime = _sir_clock_gettime(&now, &nowmsec);
     assert(gettime);
 
     if (gettime) {
@@ -945,22 +946,44 @@ bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format) {
     return false;
 }
 
-bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
+bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
     if (tbuf) {
-        time(tbuf);
+        time_t ret = time(tbuf);
+        if ((time_t)-1 == ret) {
+            _sir_handleerr(errno);
+            return false;
+        }
 #if defined(SIR_MSEC_POSIX)
         struct timespec ts = {0};
         int clock          = clock_gettime(SIR_MSECCLOCK, &ts);
         assert(0 == clock);
 
         if (0 == clock) {
-            if (nsecbuf) {
-                *nsecbuf = (ts.tv_nsec / 1e6);
-                assert(*nsecbuf < 1000);
-            }
+            if (msecbuf)
+                *msecbuf = (ts.tv_nsec / 1e6);
+            assert(*msecbuf < 1000);
         } else {
-            *nsecbuf = 0;
+            if (*msecbuf)
+                *msecbuf = 0;
             _sir_selflog("clock_gettime failed; errno: %d", errno);
+        }
+#elif defined(SIR_MSEC_MACH)
+        kern_return_t retval = KERN_SUCCESS;
+        clock_serv_t clock;
+        mach_timespec_t mts = {0};
+
+        host_get_clock_service(mach_host_self(), SIR_MSECCLOCK, &clock);
+        retval = clock_get_time(clock, &mts);
+        mach_port_deallocate(mach_task_self(), clock);
+
+        if (KERN_SUCCESS == retval) {
+            if (msecbuf)
+                *msecbuf = (mts.tv_nsec / 1e6);
+            assert(*msecbuf < 1000);
+        } else {
+            if (msecbuf)
+                *msecbuf = 0;
+            _sir_selflog("clock_get_time failed; error: %d", retval);
         }
 #elif defined(SIR_MSEC_WIN32)
         static const ULONGLONG uepoch = (ULONGLONG)116444736e9;
@@ -975,15 +998,15 @@ bool _sir_getlocaltime(time_t* tbuf, long* nsecbuf) {
 
         *tbuf = (time_t)ftnow.QuadPart;
 
-        if (nsecbuf) {
+        if (msecbuf) {
             SYSTEMTIME st = {0};
             FileTimeToSystemTime(&ftutc, &st);
-            *nsecbuf = st.wMilliseconds;
+            *msecbuf = st.wMilliseconds;
         }
 #else
         time(tbuf);
-        if (nsecbuf)
-            *nsecbuf = 0;
+        if (msecbuf)
+            *msecbuf = 0;
 #endif
         return true;
     }

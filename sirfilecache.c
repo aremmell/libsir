@@ -192,11 +192,9 @@ bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
             int err = ferror(sf->f);
             int eof = feof(sf->f);
 
-            _sir_handleerr(err);
-            _sir_handleerr(eof);
-
-            _sir_selflog("wrote %lu/%lu bytes to %d; ferror: %d, feof: %d",
-                write, writeLen, sf->id, err, eof);
+            _sir_selflog("error: incomoplete write of %lu/%lu bytes to file %d!"
+                         " ferror: %d, feof: %d, path: '%s'", write, writeLen,
+                         sf->id, err, eof, sf->path);
 
             /** @todo
              * If an error occurs on write, consider removing file from targets,
@@ -216,23 +214,20 @@ bool _sirfile_writeheader(sirfile* sf, const sirchar_t* msg) {
 
     if (_sirfile_validate(sf) && _sir_validstr(msg)) {
         time_t now;
-        bool   gettime = _sir_getlocaltime(&now, NULL);
-        assert(gettime);
+        time(&now);
 
-        if (gettime) {
-            sirchar_t timestamp[SIR_MAXTIME] = {0};
-            bool      fmttime           = _sir_formattime(now, timestamp, SIR_FHTIMEFORMAT);
-            assert(fmttime);
+        sirchar_t timestamp[SIR_MAXTIME] = {0};
+        bool fmttime = _sir_formattime(now, timestamp, SIR_FHTIMEFORMAT);
+        assert(fmttime);
 
-            if (fmttime) {
-                sirchar_t header[SIR_MAXOUTPUT] = {0};
-                int fmt = snprintf(header, SIR_MAXOUTPUT, SIR_FHFORMAT, msg, timestamp);
+        if (fmttime) {
+            sirchar_t header[SIR_MAXOUTPUT] = {0};
+            int fmt = snprintf(header, SIR_MAXOUTPUT, SIR_FHFORMAT, msg, timestamp);
 
-                if (fmt < 0)
-                    _sir_handleerr(errno);
+            if (fmt < 0)
+                _sir_handleerr(errno);
 
-                return fmt >=0 && _sirfile_write(sf, header);
-            }
+            return fmt >=0 && _sirfile_write(sf, header);
         }
     }
 
@@ -240,10 +235,10 @@ bool _sirfile_writeheader(sirfile* sf, const sirchar_t* msg) {
 }
 
 bool _sirfile_needsroll(sirfile* sf) {
-
+    
     if (_sirfile_validate(sf)) {
-        struct stat st      = {0};
-        int         getstat = fstat(sf->id, &st);
+        struct stat st = {0};
+        int getstat    = fstat(sf->id, &st);
 
         if (0 != getstat) {
             _sir_handleerr(errno);
@@ -269,33 +264,30 @@ bool _sirfile_roll(sirfile* sf, sirchar_t** newpath) {
 
         if (split) {
             time_t now;
+            time(&now);
+
+            sirchar_t timestamp[SIR_MAXTIME] = {0};
+            bool fmttime = _sir_formattime(now, timestamp, SIR_FNAMETIMEFORMAT);
+            assert(fmttime);
             
-            bool gettime = _sir_getlocaltime(&now, NULL);
-            assert(gettime);
+            if (fmttime) {
+                *newpath = (sirchar_t*)calloc(SIR_MAXPATH, sizeof(sirchar_t));
 
-            if (gettime) {                
-                sirchar_t timestamp[SIR_MAXTIME] = {0};
-                bool fmttime = _sir_formattime(now, timestamp, SIR_FNAMETIMEFORMAT);
-                assert(fmttime);
-                
-                if (fmttime) {
-                    *newpath = (sirchar_t*)calloc(SIR_MAXPATH, sizeof(sirchar_t));
+                if (_sir_validptr(*newpath)) {
+                    int fmtpath = snprintf(*newpath, SIR_MAXPATH, SIR_FNAMEFORMAT,
+                        name, timestamp, _sir_validstrnofail(ext) ? ext : "");                
 
-                    if (_sir_validptr(*newpath)) {
-                        int fmtpath = snprintf(*newpath, SIR_MAXPATH, SIR_FNAMEFORMAT,
-                            name, timestamp, _sir_validstrnofail(ext) ? ext : "");                
+                    if (fmtpath < 0)
+                        _sir_handleerr(errno);
 
-                        if (fmtpath < 0)
-                            _sir_handleerr(errno);
-
-                        r = fmtpath >= 0 && _sirfile_archive(sf, *newpath);
-                    }
+                    r = fmtpath >= 0 && _sirfile_archive(sf, *newpath);
                 }
             }
-
-            _sir_safefree(name);
-            _sir_safefree(ext);
         }
+
+        _sir_safefree(name);
+        _sir_safefree(ext);
+
 
         return r;
     }
@@ -545,7 +537,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
                 r &= true;
                 (*dispatched)++;
             } else {
-                _sir_selflog("write to %d failed!", sfc->files[n]->id);
+                _sir_selflog("write to file %d failed! path: '%s'", sfc->files[n]->id, sfc->files[n]->path);
             }
         }
 

@@ -246,8 +246,13 @@
 /** The string used to reset any styling applied to text in stdio output. */
 #define SIR_ENDSTYLE SIR_BEGINSTYLE "0m"
 
-/** The default clock used to obtain the current millisecond from clock_gettime. */
-#define SIR_MSECCLOCK CLOCK_MONOTONIC
+#if !defined(__APPLE__)
+  /** The default clock used to obtain the current millisecond from clock_gettime. */
+# define SIR_MSECCLOCK CLOCK_MONOTONIC
+#else
+  /** The clock used to obtain the current millisecond from clock_get_time. */
+# define SIR_MSECCLOCK SYSTEM_CLOCK
+#endif
 
 /** @} */
 

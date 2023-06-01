@@ -61,17 +61,20 @@ int main(void) {
      */
     si.d_stdout.levels = SIRL_DEBUG | SIRL_INFO | SIRL_WARN | SIRL_NOTICE;
 
-    /* Configure options for stdout. Show all available formatting. */
-    si.d_stdout.opts = SIRO_NOTIME | SIRO_NOPID;
+    /* Configure options for stdout. Don't show the timestamp or thread ID.. */
+    si.d_stdout.opts = SIRO_NOTIME | SIRO_NOTID;
 
     /* Configure levels for stderr. Send error and above there. */
     si.d_stderr.levels = SIRL_ERROR | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG;
 
-    /* Configure options for stderr: don't show the time stamp or process ID. */
-    si.d_stderr.opts = SIRO_NOTIME | SIRO_NOPID;
+    /* Configure options for stderr: don't show the time stamp or thread ID. */
+    si.d_stderr.opts = SIRO_NOTIME | SIRO_NOTID;
 
-    /* Configure options for the system logger: don't send any output there. */
+    /* Configure levels for the system logger: don't send any output there. */
     si.d_syslog.levels = SIRL_NONE;
+
+    /* Configure options for the system logger: use the default value. */
+    si.d_syslog.opts   = SIRO_DEFAULT;
 
     /* Configure a name to associate with our output. */
     static const char* appname = "MyFooServer";
