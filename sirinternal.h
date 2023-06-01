@@ -72,6 +72,9 @@ bool _sir_stderropts(sirinit* si, sir_update_config_data* data);
 /** Updates levels for the system logger. */
 bool _sir_sysloglevels(sirinit* si, sir_update_config_data* data);
 
+/** Updates options for the system logger.. */
+bool _sir_syslogopts(sirinit* si, sir_update_config_data* data);
+
 /** Updates the identity for the system logger.*/
 bool _sir_syslogid(sirinit* si, sir_update_config_data* data);
 
@@ -135,13 +138,19 @@ bool _sir_syslog_init(const char *name, sir_syslog_dest *ctx);
  * Called upon initialization of the library (and if the configuration is modified).
  * Performs any necesssary preparation: connecting/opening handles, etc.
  */
-bool _sir_syslog_open(const char* name, sir_syslog_dest* ctx);
+bool _sir_syslog_open(sir_syslog_dest* ctx);
 
 /**
  * Abstraction for writing to platform-specific implementations of
  * system logger facilities.
  */
 bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx);
+
+/**
+ * Called after updates to the global config that may require reconfiguration
+ * of the system logger.
+ */
+bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data);
 
 /**
  * Abstraction for cleanup/closure of platform-specific implementations of
@@ -151,17 +160,6 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx)
  * Performs any necessary operations: disconnecting/closing handles, etc.
  */
 bool _sir_syslog_close(sir_syslog_dest* ctx);
-
-/**
- * Called after updates to the global config that may require reconfiguration
- * of the system logger.
- */
-bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data);
-
-/**
- * Retrieves the identity to use for the system logger.
- */
-void _sir_syslog_fmt_id(const char* name, sir_syslog_dest* ctx);
 
 /**
  * Resets the internal state.

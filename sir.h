@@ -420,7 +420,7 @@ bool sir_stderrlevels(sir_levels levels);
 bool sir_stderropts(sir_options opts);
 
 /**
- * @brief Sets levels sent to \a syslog (or \a os_log on \a macOS).
+ * @brief Sets levels sent to the system logger (if available).
  *
  * Sets the ::sir_level registration mask for this destination.
  *
@@ -442,7 +442,8 @@ bool sir_stderropts(sir_options opts);
  * @retval false An error occurred while trying to update levels.
  */
 bool sir_sysloglevels(sir_levels levels);
-
+bool sir_syslogopts(sir_options opts);
+#pragma message("don't forget to document these")
 bool sir_syslogid(const char* identity);
 bool sir_syslogcat(const char* category);
 

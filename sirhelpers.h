@@ -120,8 +120,8 @@ bool _sir_bittest(uint32_t flags, uint32_t test) {
 
 /** Sets a specific set of bits high in a bitmask. */
 static inline
-bool _sir_bitsethigh(uint32_t* flags, uint32_t set) {
-    if (!_sir_validptr(flags))
+bool _sir_setbitshigh(uint32_t* flags, uint32_t set) {
+    if (!flags)
         return false;
 
     *flags |= set;
@@ -130,15 +130,15 @@ bool _sir_bitsethigh(uint32_t* flags, uint32_t set) {
 
 /** Sets a specific set of bits low in a bitmask. */
 static inline
-bool _sir_bitsetlow(uint32_t* flags, uint32_t set) {
-    if (!_sir_validptr(flags))
+bool _sir_setbitslow(uint32_t* flags, uint32_t set) {
+    if (!flags)
         return false;
 
     *flags &= ~set;
     return true;
 }
 
-/** Wraps \a free. */
+/** Wraps free. */
 static inline
 void __sir_safefree(void** p) {
     if (!p || (p && !*p))
@@ -147,7 +147,7 @@ void __sir_safefree(void** p) {
     *p = NULL;
 }
 
-/** Wraps \a free. */
+/** Wraps free. */
 static inline
 void _sir_safefree(void* p) {
     __sir_safefree(&p);

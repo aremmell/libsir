@@ -39,31 +39,36 @@
  * @{
  */
 
-/** Default levels for \a stdout. */
+/** Default levels for stdout. */
 static const sir_levels sir_stdout_def_lvls
     = SIRL_DEBUG | SIRL_INFO | SIRL_NOTICE | SIRL_WARN;
 
-/** Default options for \a stdout. */
+/** Default options for stdout. */
 static const sir_options sir_stdout_def_opts
     = SIRO_NOTIME | SIRO_NOPID | SIRO_NOTID;
 
-/** Default levels for \a stderr. */
+/** Default levels for stderr. */
 static const sir_levels sir_stderr_def_lvls
     = SIRL_ERROR | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG;
 
-/** Default options for \a stderr. */
+/** Default options for stderr. */
 static const sir_options sir_stderr_def_opts 
     = SIRO_NOTIME | SIRO_NOPID | SIRO_NOTID;
 
-/** Default levels for \a syslog (or \a os_log on \a macOS). */
+/** Default levels for the system logger. */
 static const sir_levels sir_syslog_def_lvls
-    = SIRL_ERROR | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG;
+    = SIRL_NOTICE | SIRL_WARN | SIRL_ERROR | SIRL_CRIT
+    | SIRL_ALERT | SIRL_EMERG;
 
-/** Default levels for \a log \a files. */
+/** Default options for the system logger. */
+static const sir_options sir_syslog_def_opts
+    = SIRO_ALL;
+
+/** Default levels for log files. */
 static const sir_levels sir_file_def_lvls
     = SIRL_ALL;
 
-/** Default options for \a log \a files. */
+/** Default options for log files. */
 static const sir_options sir_file_def_opts
     = SIRO_ALL;
 

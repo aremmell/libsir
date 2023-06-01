@@ -349,10 +349,12 @@ typedef struct {
 /** Bitmask defining the state of a system logger facility. */
 typedef enum {
     SIRSL_IS_OPEN  = 0x00000001,
-    SIRSL_UPDATED  = 0x0000000e,
-    SIRSL_CATEGORY = 0x00000004,
-    SIRSL_IDENTITY = 0x00000008,
-    SIRSL_IS_INIT  = 0x00000010
+    SIRSL_LEVELS   = 0x00000002,
+    SIRSL_OPTIONS  = 0x00000004,
+    SIRSL_CATEGORY = 0x00000008,
+    SIRSL_IDENTITY = 0x00000010,
+    SIRSL_UPDATED  = 0x00000020,    
+    SIRSL_IS_INIT  = 0x00000040
 } sir_syslog_state;
 
 /** @} */

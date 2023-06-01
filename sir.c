@@ -160,6 +160,17 @@ bool sir_sysloglevels(sir_levels levels) {
 #endif
 }
 
+bool sir_syslogopts(sir_options opts) {
+#if !defined(SIR_NO_SYSTEM_LOGGERS)    
+    _sir_defaultopts(&opts, sir_syslog_def_opts);
+    sir_update_config_data data = { SIRU_OPTIONS, NULL, &opts, NULL, NULL };
+    return _sir_writeinit(&data, _sir_syslogopts);  
+#else
+    _SIR_UNUSED(identity);
+    return false;
+#endif      
+}
+
 bool sir_syslogid(const char* identity) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     sir_update_config_data data = { SIRU_SYSLOG_ID, NULL, NULL, identity, NULL };
