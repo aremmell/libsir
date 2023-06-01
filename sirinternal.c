@@ -626,7 +626,7 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
 
         if (wantpid || wanttid) {
             if (name)
-                _sir_strncat(buf->output, SIR_MAXOUTPUT, "(", 1);
+                _sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_PIDPREFIX, 1);
             else if (!first)
                 _sir_strncat(buf->output, SIR_MAXOUTPUT, " ", 1);
 
@@ -640,7 +640,10 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
             }
 
             if (name)
-                _sir_strncat(buf->output, SIR_MAXOUTPUT, ")", 1);
+                _sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_PIDPOSTFIX, 1);
+                
+            if (first)
+                first = false;
         }
 
         if (!first)

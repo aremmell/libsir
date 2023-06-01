@@ -54,6 +54,14 @@
 /** The format for the human-readable logging level. */
 #define SIR_LEVELFORMAT "[%s]"
 
+/** The character to place before process and thread IDs.
+ * @note Only applies if ::SIRO_NONAME is set. */
+#define SIR_PIDPREFIX "("
+
+/** The character to place directly after process and thread IDs.
+ * @note Only applies if ::SIRO_NONAME is set. */
+#define SIR_PIDPOSTFIX ")"
+
 /** The format for the current process/thread ID,
  * if no name is available/desired. */
 #define SIR_PIDFORMAT "%d"
@@ -77,9 +85,9 @@
  * The format string written to a log file when logging begins or the file
  * is rolled/archived.
  *
- * - The \a first %%s format specifier is the message (e.g. ::SIR_FHBEGIN, ::SIR_FHROLLED)
+ * - The first %%s format specifier is the message (e.g. ::SIR_FHBEGIN, ::SIR_FHROLLED)
  *
- * - The \a second %%s is the current date/time (see ::SIR_FHTIMEFORMAT).
+ * - The second %%s is the current date/time (see ::SIR_FHTIMEFORMAT).
  */
 #define SIR_FHFORMAT "\n\n----- %s %s -----\n\n"
 
@@ -105,12 +113,12 @@
 /**
  * The format string for rolled/archived log file names.
  *
- * - The \a first %%s format specifier is the name part (the name up to the last '.') of the original
+ * - The first %%s format specifier is the name part (the name up to the last '.') of the original
  * file name.
  *
- * - The \a second %%s is the time stamp as defined by SIR_ROLLTIMEFORMAT.
+ * - The second %%s is the time stamp as defined by SIR_ROLLTIMEFORMAT.
  *
- * - The \a third %%s is the extension part (the name after and including the last '.')
+ * - The third %%s is the extension part (the name after and including the last '.')
  * of the original file name if one is present.
  *
  * @remark sample: `oldname-18-05-05-122049.log`
