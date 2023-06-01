@@ -117,20 +117,20 @@ libsir "styling" is just another way of saying ANSI escape color coding. Current
 
 Supported terminals will render text from libsir based on the "styles" used in libsir. The following define the default text styling to use for `stdout` / `stderr` on a per-level basis. These can be changed at runtime with `sir_settextstyle` ([sirdefaults.h](./sirdefaults.h)):
 
- | Level         |                      Style                        | Sample
- | :-----------: | :-----------------------------------------------: | :--------------------------------------------:|
- | `SIRL_DEBUG`  |                 `SIRS_FG_DGRAY`                   | ![debug](docs/debug.png)                      |
- | `SIRL_INFO`   |                 `SIRS_FG_WHITE`                   | ![info](docs/info.png)                        |
- | `SIRL_NOTICE` |                 `SIRS_FG_CYAN`                    | ![notice](docs/notice.png)                    |
- | `SIRL_WARN`   |                `SIRS_FG_YELLOW`                   | ![warning](docs/warning.png)                  |
- | `SIRL_ERROR`  |                  `SIRS_FG_RED`                    | ![error](docs/error.png)                      |
- | `SIRL_CRIT`   |           `SIRS_BRIGHT \| SIRS_FG_RED`            | ![critical](docs/critical.png)                |
- | `SIRL_ALERT`  | `SIRS_BRIGHT \| SIRS_FG_BLACK \| SIRS_BG_LYELLOW` | ![alert](docs/alert.png)                      |
- | `SIRL_EMERG`  |  `SIRS_BRIGHT \| SIRS_FG_LYELLOW \| SIRS_BG_RED`  | ![emergency](docs/emergency.png)              |
+ | Level         |                      Style                                         |
+ | :-----------: | :----------------------------------------------------------------: |
+ | `SIRL_DEBUG`  |                 `SIRS_FG_DGRAY`                                    |
+ | `SIRL_INFO`   |                 `SIRS_FG_WHITE`                                    |
+ | `SIRL_NOTICE` |                 `SIRS_FG_CYAN`                                     |
+ | `SIRL_WARN`   |                `SIRS_FG_YELLOW`                                    |
+ | `SIRL_ERROR`  |                  `SIRS_FG_RED`                                     |
+ | `SIRL_CRIT`   |           `SIRS_BRIGHT | SIRS_FG_RED`                              |
+ | `SIRL_ALERT`  | `SIRS_BRIGHT | SIRS_FG_BLACK | SIRS_BG_LYELLOW`                    |
+ | `SIRL_EMERG`  |  `SIRS_BRIGHT | SIRS_FG_LYELLOW | SIRS_BG_RED`                     |
 
 ## Getting started
 
-Clone or download this repository to your machine, then choose how you'd like to integrate libsir into your project:
+Clone or download the resitory to your machine, then choose how you'd like to integrate libsir into your project:
 
 ### Visual Studio Code
 
