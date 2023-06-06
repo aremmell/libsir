@@ -1,20 +1,24 @@
 # TODO
 
-- [ ] Bump version 2.1.2
+- [ ] Bump version 2.2.0
 - [ ] BUG: SIRO_ALL is not effectively SIRO_MSGONLY; it’s the opposite. It should be called SIRO_NONE
-- [ ] BUG: if NO_TIME and NO_NAME are set, but TID and PID are present, there’s no space between the message
+- [x] BUG: if NO_TIME, NO_NAME, no level are set, but TID and PID are present, there’s no space between the message
 - [ ] Finish comment in sir_syslog_dest once it’s been resolved which option(s) can be utilized for os_log/syslog.
 - [ ] Refactor _sir_syslog_init: it’s a clusterF. Should probably just reject initialization if levels are set but ident/cat are not.
 - [ ] Implement “last message repeated n times”
 - [ ] Rework getrand in tests.c;
-- [ ] *sir_syslogcat* to update the category
-- [ ] *sir_syslogid* to update the identity
+- [x] Try CLOCK_MONOTONIC_RAW on Linux
+- [x] *sir_syslogcat* to update the category
+- [x] *sir_syslogid* to update the identity
+- [x] sir_sysloglevels
+- [ ] sir_syslogopts
   - [ ] Document
   - [ ] Add tests
+- [ ] What we really need is a single call to update one or more properties;  separating them is creating clutter, redundancy, and unnecessary performance losses (by reconfiguring on each call)
 - [ ] Add a `--leave-logs` option to sirtests to leave the logs it generates behind so they can be examined for correctness.
 - [ ] Document sirfilesystem.h
 - [ ] Tests:
-  - [ ] Better level/option validation testing
+  - [x] Better level/option validation testing
   - [ ] init w/ bad / uninitialized config
   - [ ] Filesystem
     - [ ] Path as long as can fit in the PATH_MAX/MAX_PATH
@@ -44,7 +48,7 @@
 - [ ] Add to index.md (and rebuild Docs):
   - [ ] Check for unresolved :: and @ref and \a and \p etc, and normalize the usage.
   - [x] That there’s a VS2022 solution and projects now
-  - [ ] That there’s a C++ header w/ boost::format adapter (or delete it and start over)
+  - [x] That there’s a C++ header w/ boost::format adapter (or delete it and start over)
   - [ ] That there’s `syslog` and `os_log` support now
 - [ ] Try again to figure out why in 2023 there’s no `stdatomic.h`support in VS2022… maybe clang will compile it?
 - [ ] Go through sir.hh and write Doxygen comments before rebuilding docs (or delete it and start over)
