@@ -667,7 +667,7 @@ bool sirtest_updatesanity(void) {
     sirfileid_t id1 = sir_addfile(logfile, SIRL_DEFAULT, SIRO_DEFAULT);
     pass &= NULL != id1;
 
-    static const size_t variations = 10;
+    static const uint32_t variations = 10;
 
     for (int i = 0; i < 10; i++) {
 
@@ -988,9 +988,9 @@ uint32_t getrand(uint32_t upper_bound) {
     uint32_t ctx = 0;
     if (0 != rand_s(&ctx)) {
         srand(getseed());
-        ctx = (uint32_t)(rand() % upper_bound);
+        ctx = (uint32_t)rand();
     }
-    return ctx;
+    return ctx % upper_bound;
 #endif
 }
 

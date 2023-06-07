@@ -166,7 +166,7 @@ bool sir_syslogopts(sir_options opts) {
     sir_update_config_data data = { SIRU_OPTIONS, NULL, &opts, NULL, NULL };
     return _sir_writeinit(&data, _sir_syslogopts);  
 #else
-    _SIR_UNUSED(identity);
+    _SIR_UNUSED(opts);
     return false;
 #endif      
 }

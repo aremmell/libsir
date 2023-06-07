@@ -128,7 +128,7 @@ bool _sir_init(sirinit* si) {
 
         bool unlock = _sir_unlocksection(_SIRM_INIT);
         assert(unlock);
-        return true;
+        return unlock;
     }
 
     return false;
@@ -432,21 +432,21 @@ BOOL CALLBACK _sir_initmutex_si_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) 
     _SIR_UNUSED(ponce);
     _SIR_UNUSED(param);
     _SIR_UNUSED(ctx)
-    return _sir_initmutex(&si_mutex) ? TRUE : FALSE;
+    return _sirmutex_create(&si_mutex) ? TRUE : FALSE;
 }
 
 BOOL CALLBACK _sir_initmutex_fc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
     _SIR_UNUSED(ponce);
     _SIR_UNUSED(param);
     _SIR_UNUSED(ctx)
-    return _sir_initmutex(&fc_mutex) ? TRUE : FALSE
+    return _sirmutex_create(&fc_mutex) ? TRUE : FALSE;
 }
 
 BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
     _SIR_UNUSED(ponce);
     _SIR_UNUSED(param);
     _SIR_UNUSED(ctx)
-    return _sir_initmutex(&ts_mutex) ? TRUE : FALSE
+    return _sirmutex_create(&ts_mutex) ? TRUE : FALSE;
 }
 #endif
 
@@ -504,7 +504,7 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
         bool fmttime = _sir_formattime(now, buf.timestamp, SIR_TIMEFORMAT);
         _SIR_UNUSED(fmttime);
 
-        if (0 > snprintf(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, (nownsec / 1e6)))
+        if (0 > snprintf(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, (long)(nownsec / 1e6)))
             _sir_handleerr(errno);
     }
 
@@ -885,8 +885,7 @@ bool _sir_syslog_init(const char *name, sir_syslog_dest *ctx) {
     return false;    
 }
 
-bool _sir_syslog_open(const char *name, sir_syslog_dest *ctx) {
-    _SIR_UNUSED(name);
+bool _sir_syslog_open(sir_syslog_dest *ctx) {
     _SIR_UNUSED(ctx);
     return false;
 }
@@ -898,14 +897,14 @@ bool _sir_syslog_write(sir_level level, const sirbuf *buf, sir_syslog_dest *ctx)
     return false;
 }
 
-bool _sir_syslog_close(sir_syslog_dest *ctx) {
-    _SIR_UNUSED(ctx);
-    return false;
-}
-
 bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data) {
     _SIR_UNUSED(si);
     _SIR_UNUSED(data);
+    return false;
+}
+
+bool _sir_syslog_close(sir_syslog_dest* ctx) {
+    _SIR_UNUSED(ctx);
     return false;
 }
 
@@ -969,7 +968,7 @@ bool _sir_clock_gettime(time_t* tbuf, long* nsecbuf) {
         } else {
             if (nsecbuf)
                 *nsecbuf = 0;
-            _sir_selflog("clock_gettime failed; errno: %d", errno);
+            _sir_handleerr(errno);
         }
 #elif defined(SIR_MSEC_MACH)
         kern_return_t retval = KERN_SUCCESS;
@@ -986,7 +985,7 @@ bool _sir_clock_gettime(time_t* tbuf, long* nsecbuf) {
         } else {
             if (nsecbuf)
                 *nsecbuf = 0;
-            _sir_selflog("clock_get_time failed; error: %d", retval);
+            _sir_handleerr(retval);
         }
 #elif defined(SIR_MSEC_WIN32)
         static const ULONGLONG uepoch = (ULONGLONG)116444736e9;
@@ -994,19 +993,23 @@ bool _sir_clock_gettime(time_t* tbuf, long* nsecbuf) {
         FILETIME ftutc = {0};
         GetSystemTimePreciseAsFileTime(&ftutc);
 
-        ULARGE_INTEGER ftnow;
+        ULARGE_INTEGER ftnow = {0};
         ftnow.HighPart = ftutc.dwHighDateTime;
         ftnow.LowPart  = ftutc.dwLowDateTime;
         ftnow.QuadPart = (ULONGLONG)((ftnow.QuadPart - uepoch) / 1e7);
 
         *tbuf = (time_t)ftnow.QuadPart;
 
-        if (nsecbuf) {
-            ULARGE_INTEGER ftnsec;
-            ftnsec.HighPart = ftutc.dwHighDateTime;
-            ftnsec.LowPart  = ftutc.dwLowDateTime;
-            *nsecbuf = (long)(ftnsec.QuadPart / (ULONGLONG)100); 
+        SYSTEMTIME st = {0};
+        if (FileTimeToSystemTime(&ftutc, &st)) {
+            if (nsecbuf)
+                *nsecbuf = st.wMilliseconds;
+        } else {
+            if (nsecbuf)
+                *nsecbuf = 0;
+            _sir_handlewin32err(GetLastError());
         }
+
 #else
         time(tbuf);
         if (nsecbuf)

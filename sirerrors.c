@@ -32,6 +32,10 @@
  */
 #include "sirerrors.h"
 
+#if defined(_WIN32)
+# pragma comment(lib, "Shlwapi.lib")
+#endif
+
 #if defined(__MACOS__) || defined(__BSD__) || (defined(_POSIX_C_SOURCE) && (_POSIX_C_SOURCE >= 200112L && !defined(_GNU_SOURCE)))
 #   define __HAVE_XSI_STRERROR_R__
 #   if defined(__GLIBC__)
@@ -241,33 +245,43 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, const char
     success &= needed > 0;
 
     if (needed > 0) {
-        char buf[needed + 1];
-        vsnprintf(buf, sizeof(buf), format, args2);
-        va_end(args2);
-        
-        for (int n = 0; n < _sir_countof(arr); n++) {
-            if (NULL != strcasestr(&buf[0], arr[n])) {
-                int put = fputs(n <= 3 ? error_prefix : warning_prefix, stderr);
-                success &= put != EOF;
-                if (put != EOF) 
-                    need_tail = true;
-                break;
+        char *buf = (char*)malloc(needed + 1);
+        success &= NULL != buf;
+
+        if (buf) {
+            vsnprintf(buf, needed + 1, format, args2);
+            va_end(args2);
+
+            for (int n = 0; n < _sir_countof(arr); n++) {
+#if !defined(_WIN32)
+                if (NULL != strcasestr(buf, arr[n])) {
+#else // _WIN32
+                if (NULL != StrStrIA(buf, arr[n])) {
+#endif
+                    int put = fputs(n <= 3 ? error_prefix : warning_prefix, stderr);
+                    success &= put != EOF;
+                    if (put != EOF)
+                        need_tail = true;
+                    break;
+                }
             }
-        }
 
-        int put = fputs(prefix, stderr);
-        success &= put != EOF;
-
-        put = fputs(buf, stderr);
-        success &= put != EOF;
-
-        if (need_tail) {
-            put = fputs(tail, stderr);
+            int put = fputs(prefix, stderr);
             success &= put != EOF;
-        }
 
-        put = fputs("\n", stderr);
-        success &= put != EOF;
+            put = fputs(buf, stderr);
+            success &= put != EOF;
+
+            if (need_tail) {
+                put = fputs(tail, stderr);
+                success &= put != EOF;
+            }
+
+            put = fputs("\n", stderr);
+            success &= put != EOF;
+
+            _sir_safefree(buf);
+        }
     }
 
     assert(success);
