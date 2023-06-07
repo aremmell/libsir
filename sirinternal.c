@@ -113,18 +113,15 @@ bool _sir_init(sirinit* si) {
         /* forcibly null-terminate the process name. */
         _si->processName[SIR_MAXNAME - 1] = '\0';
 
+#if !defined(SIR_NO_SYSTEM_LOGGERS)
         /* initialize system logger. */
         _sir_syslog_reset(&si->d_syslog);
 
         if (_si->d_syslog.levels != SIRL_NONE) {
-            bool opened = _sir_syslog_init(_si->processName, &_si->d_syslog);
-#if !defined(SIR_NO_SYSTEM_LOGGERS)            
-            if (!opened)
+            if (!_sir_syslog_init(_si->processName, &_si->d_syslog))
                 _sir_selflog("failed to initialize system logger!");
-#else
-            _SIR_UNUSED(opened);
-#endif           
         }
+#endif
 
         bool unlock = _sir_unlocksection(_SIRM_INIT);
         assert(unlock);
@@ -154,18 +151,14 @@ bool _sir_cleanup(void) {
     cleanup &= _sir_notnull(si);
 
     if (_sir_notnull(si)) {        
-        bool closed = _sir_syslog_close(&si->d_syslog);
-#if !defined(SIR_NO_SYSTEM_LOGGERS)
-#pragma message("TODO: what now? Can't return false because of this. I guess just selflog a warning")
-        if (!closed) {
-            // ...
+#if !defined(SIR_NO_SYSTEM_LOGGERS)        
+        if (!_sir_syslog_close(&si->d_syslog)) {
+            cleanup = false;
+            _sir_selflog("failed to close system logger!");
         }
 
         _sir_syslog_reset(&si->d_syslog);
-#else
-        _SIR_UNUSED(closed);
 #endif
-
         _sir_resettextstyles();
 
 #if !defined(_WIN32)
