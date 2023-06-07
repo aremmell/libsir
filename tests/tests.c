@@ -91,7 +91,7 @@ int main(int argc, char** argv) {
     int passed       = first;
     sirtimer_t timer = {0};
 
-    printf(WHITE("running %d libsir %s...\n"), tests, TEST_S(tests));
+    printf(WHITE("running %d libsir %s...") "\n", tests, TEST_S(tests));
 
     if (!startsirtimer(&timer))
         printf(RED("failed to start timer; elapsed time won't be measured correctly!") "\n");
@@ -169,7 +169,7 @@ bool sirtest_filecachesanity(void) {
     printf("\tcreating random file ID order...\n");
 
     do {
-        size_t rnd = (size_t)(getrand() % SIR_MAXFILES);
+        size_t rnd = (size_t)getrand(SIR_MAXFILES);
         bool skip  = false;
 
         for (size_t n = 0; n < SIR_MAXFILES; n++)
@@ -690,29 +690,29 @@ bool sirtest_updatesanity(void) {
         pass &= sir_emerg("default config");
 
         /* pick random options to set/unset */
-        unsigned int rnd = (getrand() % variations);
+        uint32_t rnd = getrand(variations);
         pass &= sir_stdoutlevels(levels_array[rnd]);
         pass &= sir_stdoutopts(opts_array[rnd]);
-        printf("\t" WHITE("set random config #%u for stdout") "\n", rnd);
+        printf("\t" WHITE("set random config #%" PRIu32 " for stdout") "\n", rnd);
 
-        rnd = (getrand() % variations);
+        rnd = getrand(variations);
         pass &= sir_stderrlevels(levels_array[rnd]);
         pass &= sir_stderropts(opts_array[rnd]);
-        printf("\t" WHITE("set random config #%u for stderr") "\n", rnd);
+        printf("\t" WHITE("set random config #%" PRIu32 " for stderr") "\n", rnd);
 
-        rnd = (getrand() % variations);
+        rnd = getrand(variations);
         pass &= sir_filelevels(id1, levels_array[rnd]);
         pass &= sir_fileopts(id1, opts_array[rnd]);
-        printf("\t" WHITE("set random config #%u for %s") "\n", rnd, logfile);
+        printf("\t" WHITE("set random config #%" PRIu32 " for %s") "\n", rnd, logfile);
 
-        pass &= filter_error(sir_debug("modified config #%u", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_info("modified config #%u", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_notice("modified config #%u", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_warn("modified config #%u", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_error("modified config #%u", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_crit("modified config #%u", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_alert("modified config #%u", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_emerg("modified config #%u", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_debug("modified config #%" PRIu32 "", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_info("modified config #%" PRIu32 "", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_notice("modified config #%" PRIu32 "", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_warn("modified config #%" PRIu32 "", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_error("modified config #%" PRIu32 "", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_crit("modified config #%" PRIu32 "", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_alert("modified config #%" PRIu32 "", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_emerg("modified config #%" PRIu32 "", rnd), SIR_E_NODEST);
     }
 
     if (pass) {
@@ -921,8 +921,7 @@ unsigned sirtest_thread(void* arg) {
         for (size_t i = 0; i < 10; i++) {
             sir_debug("this is random gibberish %zu", (n * i) + i + n);
 
-            int r = getrand() % 15;
-            if (r % 2 == 0) {
+            if (getrand(15) % 2 == 0) {
                 if (!sir_remfile(id))
                     print_test_error(false, false);
 
@@ -977,22 +976,35 @@ bool filter_error(bool pass, uint16_t err) {
     return true;
 }
 
-unsigned int getrand(void) {
-    static unsigned int seed = 0;
+uint32_t getrand(uint32_t upper_bound) {
 #if !defined(_WIN32)
-# if defined(__APPLE__)
-    return (unsigned int)arc4random();
+# if defined(__APPLE__) || defined(__BSD__)
+    return arc4random_uniform(upper_bound);
 # else
-    return (unsigned int)rand_r(&seed);
+    srandom(getseed());
+    return (uint32_t)(random() % upper_bound);
 # endif
-#else
-    if (0 == rand_s(&seed)) {
-        return seed;
-    } else {
-        srand(seed);
-        return (unsigned int)rand();
+#else // _WIN32
+    uint32_t ctx = 0;
+    if (0 != rand_s(&ctx)) {
+        srand(getseed());
+        ctx = (uint32_t)(rand() % upper_bound);
     }
+    return ctx;
 #endif
+}
+
+uint32_t getseed(void) {
+    uint32_t retval = (uint32_t)(_sir_getpid() + _sir_gettid());
+    time_t now;
+    long nsec = 0;
+
+    if (_sir_clock_gettime(&now, &nsec))
+        retval |= (uint32_t)(now * nsec);
+    else
+        retval |= now;
+
+    return retval;
 }
 
 bool rmfile(const char* filename) {
@@ -1058,8 +1070,8 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
     closedir(d);
     d = NULL;
 #else
-    WIN32_FIND_DATA finddata   = {0};
-    HANDLE          enumerator = FindFirstFile("./*", &finddata);
+    WIN32_FIND_DATA finddata = {0};
+    HANDLE enumerator        = FindFirstFile("./*", &finddata);
 
     if (INVALID_HANDLE_VALUE == enumerator)
         return false;

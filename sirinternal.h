@@ -169,8 +169,8 @@ void _sir_syslog_reset(sir_syslog_dest* ctx);
 /** Converts a ::sir_level to its human-readable form. */
 const sirchar_t* _sir_levelstr(sir_level level);
 
-/** Retrieves the current time w/ optional milliseconds. */
-bool _sir_clock_gettime(time_t* tbuf, long* msecbuf);
+/** Retrieves the current time w/ optional nanoseconds. */
+bool _sir_clock_gettime(time_t* tbuf, long* nsecbuf);
 
 /** Formats the current time as a string. */
 bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format);
