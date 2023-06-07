@@ -51,6 +51,6 @@
   - [x] That there’s a C++ header w/ boost::format adapter (or delete it and start over)
   - [ ] That there’s `syslog` and `os_log` support now
 - [ ] Try again to figure out why in 2023 there’s no `stdatomic.h`support in VS2022… maybe clang will compile it?
-- [ ] Go through sir.hh and write Doxygen comments before rebuilding docs (or delete it and start over)
+- [x] Go through sir.hh and write Doxygen comments before rebuilding docs (or delete it and start over)
   - [x] Search for “SIR” and replace with “libsir”
   - [x] Same for “SIR_NO_SYSTEM_LOGGERS”

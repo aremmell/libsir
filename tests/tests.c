@@ -732,6 +732,7 @@ bool sirtest_updatesanity(void) {
         pass &= sir_emerg("default config");
     }
 
+    pass &= sir_remfile(id1);
     rmfile(logfile);
     sir_cleanup();
 
