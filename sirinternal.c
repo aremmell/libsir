@@ -496,15 +496,15 @@ bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
     }
 
     time_t now;
-    long nownsec = 0;
-    bool gettime = _sir_clock_gettime(&now, &nownsec);
+    long nowmsec = 0;
+    bool gettime = _sir_clock_gettime(&now, &nowmsec);
     assert(gettime);
 
     if (gettime) {
         bool fmttime = _sir_formattime(now, buf.timestamp, SIR_TIMEFORMAT);
         _SIR_UNUSED(fmttime);
 
-        if (0 > snprintf(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, (long)(nownsec / 1e6)))
+        if (0 > snprintf(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec))
             _sir_handleerr(errno);
     }
 
@@ -948,12 +948,12 @@ bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format) {
     return false;
 }
 
-bool _sir_clock_gettime(time_t* tbuf, long* nsecbuf) {
+bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
     if (tbuf) {
         time_t ret = time(tbuf);
         if ((time_t)-1 == ret) {
-            if (nsecbuf)
-                *nsecbuf = 0;
+            if (msecbuf)
+                *msecbuf = 0;
             _sir_handleerr(errno);
             return false;
         }
@@ -963,11 +963,11 @@ bool _sir_clock_gettime(time_t* tbuf, long* nsecbuf) {
         assert(0 == clock);
 
         if (0 == clock) {
-            if (nsecbuf)
-                *nsecbuf = ts.tv_nsec;
+            if (msecbuf)
+                *msecbuf = (ts.tv_nsec / 1e6);
         } else {
-            if (nsecbuf)
-                *nsecbuf = 0;
+            if (msecbuf)
+                *msecbuf = 0;
             _sir_handleerr(errno);
         }
 #elif defined(SIR_MSEC_MACH)
@@ -980,11 +980,11 @@ bool _sir_clock_gettime(time_t* tbuf, long* nsecbuf) {
         mach_port_deallocate(mach_task_self(), clock);
 
         if (KERN_SUCCESS == retval) {
-            if (nsecbuf)
-                *nsecbuf = mts.tv_nsec;
+            if (msecbuf)
+                *msecbuf = (mts.tv_nsec / 1e6);
         } else {
-            if (nsecbuf)
-                *nsecbuf = 0;
+            if (msecbuf)
+                *msecbuf = 0;
             _sir_handleerr(retval);
         }
 #elif defined(SIR_MSEC_WIN32)
@@ -1002,18 +1002,18 @@ bool _sir_clock_gettime(time_t* tbuf, long* nsecbuf) {
 
         SYSTEMTIME st = {0};
         if (FileTimeToSystemTime(&ftutc, &st)) {
-            if (nsecbuf)
-                *nsecbuf = st.wMilliseconds;
+            if (msecbuf)
+                *msecbuf = st.wMilliseconds;
         } else {
-            if (nsecbuf)
-                *nsecbuf = 0;
+            if (msecbuf)
+                *msecbuf = 0;
             _sir_handlewin32err(GetLastError());
         }
 
 #else
         time(tbuf);
-        if (nsecbuf)
-            *nsecbuf = 0;
+        if (msecbuf)
+            *msecbuf = 0;
 #endif
         return true;
     }
