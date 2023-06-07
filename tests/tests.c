@@ -996,13 +996,8 @@ uint32_t getrand(uint32_t upper_bound) {
 
 uint32_t getseed(void) {
     uint32_t retval = (uint32_t)(_sir_getpid() + _sir_gettid());
-    time_t now;
-    long nsec = 0;
 
-    if (_sir_clock_gettime(&now, &nsec))
-        retval |= (uint32_t)(now * nsec);
-    else
-        retval |= now;
+    // TODO: something else.
 
     return retval;
 }
