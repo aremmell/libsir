@@ -237,7 +237,6 @@ bool filter_error(bool pass, uint16_t err);
 #endif
 
 uint32_t getrand(uint32_t upper_bound);
-uint32_t getseed(void);
 
 bool rmfile(const char* filename);
 bool deletefiles(const char* search, const char* filename, unsigned* data);

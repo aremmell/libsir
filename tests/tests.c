@@ -982,25 +982,14 @@ uint32_t getrand(uint32_t upper_bound) {
 # if defined(__APPLE__) || defined(__BSD__)
     return arc4random_uniform(upper_bound);
 # else
-    srandom(getseed());
     return (uint32_t)(random() % upper_bound);
 # endif
 #else // _WIN32
     uint32_t ctx = 0;
-    if (0 != rand_s(&ctx)) {
-        srand(getseed());
+    if (0 != rand_s(&ctx))
         ctx = (uint32_t)rand();
-    }
     return ctx % upper_bound;
 #endif
-}
-
-uint32_t getseed(void) {
-    uint32_t retval = (uint32_t)(_sir_getpid() + _sir_gettid());
-
-    // TODO: something else.
-
-    return retval;
 }
 
 bool rmfile(const char* filename) {
