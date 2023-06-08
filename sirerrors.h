@@ -116,7 +116,7 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
 #if defined(_WIN32)
 /**
  * Some Win32 API error codes overlap C library error codes, so they need to be handled separately.
- * Mapping them sounds great, but in practice valuable information about what went wrong is totally
+ * Mapping them sounds great, but in practice, valuable information about what went wrong is totally
  * lost in translation.
  */
 void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* file, uint32_t line);
