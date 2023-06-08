@@ -107,7 +107,7 @@
 # include <termios.h>
 # include <limits.h>
 # include <fcntl.h>
-#include <libgen.h>
+# include <libgen.h>
 # include <stdatomic.h>
 # if defined(SIR_SYSLOG_ENABLED)
 # include <syslog.h>
