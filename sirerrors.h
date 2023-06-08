@@ -33,7 +33,7 @@
 #define _SIR_ERRORS_H_INCLUDED
 
 #include "sirhelpers.h"
-#include "sirtypes.h"
+#include "sirfilesystem.h"
 
 /** 
  * @defgroup errors Error handling
@@ -102,16 +102,21 @@ static const struct {
     { _SIR_E_UNKNOWN,   "Error is not known" },
 };
 
-void __sir_seterror(sirerror_t err, const sirchar_t* func, const sirchar_t* file, uint32_t line);
-#define _sir_seterror(err) __sir_seterror(err, __func__, __FILE__, __LINE__)
+void __sir_seterror(sirerror_t err, const sirchar_t* func,
+    const sirchar_t* file, uint32_t line);
+#define _sir_seterror(err) \
+    __sir_seterror(err, __func__, _sir_getbasename(__FILE__), __LINE__)
 
 void __sir_setoserror(int code, const sirchar_t* msg, const sirchar_t* func,
-        const sirchar_t* file, uint32_t line);
-#define _sir_setoserror(err, msg) __sir_setoserror(err, msg, __func__, __FILE__, __LINE__)
+    const sirchar_t* file, uint32_t line);
+#define _sir_setoserror(err, msg) \
+    __sir_setoserror(err, msg, __func__, _sir_getbasename(__FILE__), __LINE__)
 
 /** Handle a C library error. */
-void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uint32_t line);
-#define _sir_handleerr(code) __sir_handleerr(code, __func__, __FILE__, __LINE__)
+void __sir_handleerr(int code, const sirchar_t* func,
+    const sirchar_t* file, uint32_t line);
+#define _sir_handleerr(code) \
+    _sir_handleerr(code, __func__, _sir_getbasename(__FILE__), __LINE__)
 
 #if defined(_WIN32)
 /**
@@ -119,8 +124,10 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
  * Mapping them sounds great, but in practice, valuable information about what went wrong is totally
  * lost in translation.
  */
-void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* file, uint32_t line);
-#define _sir_handlewin32err(code) __sir_handlewin32err(code, __func__, __FILE__, __LINE__)
+void __sir_handlewin32err(DWORD code, const sirchar_t* func,
+    const sirchar_t* file, uint32_t line);
+#define _sir_handlewin32err(code) \
+    __sir_handlewin32err(code, __func__, _sir_getbasename(__FILE__), __LINE__)
 #endif
 
 /** Returns information about the last error that occurred. */
@@ -128,8 +135,10 @@ sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]);
 
 #if defined(SIR_SELFLOG)
 /** Log an internal debug message to stderr. */
-void __sir_selflog(const char* func, const char* file, uint32_t line, const char* format, ...);
-#define _sir_selflog(...) __sir_selflog(__func__, __FILE__, __LINE__,  __VA_ARGS__)
+void __sir_selflog(const char* func, const char* file, uint32_t line,
+    const char* format, ...);
+#define _sir_selflog(...) \
+    __sir_selflog(__func__, _sir_getbasename(__FILE__), __LINE__,  __VA_ARGS__)
 #else
 static inline void __fakefunc(const char* format, ...) {
     _SIR_UNUSED(format);
