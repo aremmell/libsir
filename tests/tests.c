@@ -86,9 +86,9 @@ int main(int argc, char** argv) {
     }
 
     bool allpass     = true;
-    int tests        = (perf ? 1 : (sizeof(sir_tests) / sizeof(sir_test)));
-    int first        = (perf ? 0 : 1);
-    int passed       = first;
+    int first        = (perf ? 0 : 1);    
+    int tests        = (perf ? 1 : _sir_countof(sir_tests) - first);
+    int passed       = 0;    
     sirtimer_t timer = {0};
 
     printf(WHITE("running %d libsir %s...") "\n", tests, TEST_S(tests));
@@ -96,7 +96,7 @@ int main(int argc, char** argv) {
     if (!startsirtimer(&timer))
         printf(RED("failed to start timer; elapsed time won't be measured correctly!") "\n");
 
-    for (int n = first; n < tests; n++) {
+    for (int n = first; n < tests + first; n++) {
         printf(WHITE("\t'%s'...") "\n", sir_tests[n].name);
         bool thispass = sir_tests[n].fn();
         allpass &= thispass;
@@ -776,21 +776,21 @@ bool sirtest_os_log(void) {
     _sir_strncpy(si.d_syslog.category, SIR_MAX_SYSLOG_CAT, "tests", SIR_MAX_SYSLOG_CAT);
     si_init = sir_init(&si);
     bool pass = si_init;
+    static const int iterations = 3;
 
-    if (pass) {
-        for (int i = 0; i < 10; i++) {
-            pass &= sir_warn("(%d/%d): this warning message should be logged to stdout and os_log.", i + 1, 10);
-            pass &= sir_error("(%d/%d): this error message should be logged to stdout and os_log.", i + 1, 10);
-            pass &= sir_crit("(%d/%d): this critical message should be logged to stdout and os_log.", i + 1, 10);
-            pass &= sir_alert("(%d/%d): this alert message should be logged to stdout and os_log.", i + 1, 10);
-            pass &= sir_emerg("(%d/%d): this emergency message should be logged to stdout and os_log.", i + 1, 10);
-        }
+    for (int i = 0; i < iterations; i++) {
+        pass &= sir_warn("(%d/%d): this warning message should be logged to stdout and os_log.", i + 1, iterations);
+        pass &= sir_error("(%d/%d): this error message should be logged to stdout and os_log.", i + 1, iterations);
+        pass &= sir_crit("(%d/%d): this critical message should be logged to stdout and os_log.", i + 1, iterations);
+        pass &= sir_alert("(%d/%d): this alert message should be logged to stdout and os_log.", i + 1, iterations);
+        pass &= sir_emerg("(%d/%d): this emergency message should be logged to stdout and os_log.", i + 1, iterations);
+    }
 
         // TODO: os_activity_initiate_f
         /* static void os_log_activity1(void* ctx) {
 
         } */
-    }
+
 
     sir_cleanup();
     return print_result_and_return(pass);
