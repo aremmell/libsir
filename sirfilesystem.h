@@ -43,7 +43,7 @@
 
 /** Special flag to indicate to the caller that the file in question
  * does not exist (_sir_pathgetstat). */
-#define SIR_STAT_NONEXISTENT 0xffffff02U
+#define SIR_STAT_NONEXISTENT ((off_t)0xffffff02)
 
 bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st);
 bool _sir_pathexists(const char* restrict path, bool* restrict exists);

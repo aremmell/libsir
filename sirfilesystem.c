@@ -50,7 +50,12 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st) {
     int stat_ret = -1;
 
     if (relative) {
-        int fd = open(".", O_SEARCH | O_DIRECTORY);
+#if defined(__APPLE__)
+        int open_flags = O_SEARCH | O_DIRECTORY;
+#else
+        int open_flags = O_PATH | O_DIRECTORY;
+#endif
+        int fd = open(".", open_flags);
         if (-1 == fd) {
             _sir_handleerr(errno);
             return false;
@@ -63,7 +68,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st) {
 
     if (-1 == stat_ret) {
         if (ENOENT == errno) {
-            st->st_flags = SIR_STAT_NONEXISTENT;
+            st->st_size = SIR_STAT_NONEXISTENT;
             return true;
         } else {
             _sir_handleerr(errno);
@@ -91,7 +96,7 @@ bool _sir_pathexists(const char* restrict path, bool* restrict exists) {
     if (!stat_ret)
         return false;
 
-    *exists = (st.st_flags != SIR_STAT_NONEXISTENT);
+    *exists = (st.st_size != SIR_STAT_NONEXISTENT);
     return true;
 }
 
