@@ -67,8 +67,9 @@ void __sir_seterror(sirerror_t err, const sirchar_t* func, const sirchar_t* file
         sir_te.loc.line = line;
     }
 
-#if defined(SIR_ASSERT_ON_ERROR)
-    assert(_SIR_E_NOERROR == err);
+#if defined(SIR_SELFLOG)
+    if (_SIR_E_NOERROR != err)
+        __sir_selflog(func, file, line, "%" PRIu32 "", err);
 #endif
 }
 
@@ -87,16 +88,16 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
     if (SIR_E_NOERROR != code) {
         sirchar_t message[SIR_MAXERROR] = {0};
         int finderr = 0;
-
         errno = SIR_E_NOERROR;
+
 #if defined(__HAVE_XSI_STRERROR_R__)
         _sir_selflog("using XSI strerror_r");
         finderr = strerror_r(code, message, SIR_MAXERROR);
-#   if defined(__HAVE_XSI_STRERROR_R_ERRNO__)
+# if defined(__HAVE_XSI_STRERROR_R_ERRNO__)
         _sir_selflog("using XSI strerror_r for glibc < 2.13");
         if (finderr == -1)
             finderr = errno;
-#   endif
+# endif
 #elif defined(__HAVE_GNU_STRERROR_R__)
         _sir_selflog("using GNU strerror_r");
         char* tmp = strerror_r(code, message, SIR_MAXERROR);
@@ -124,10 +125,6 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
 #endif
         }
     }
-
-#if defined(SIR_ASSERT_ON_ERROR)
-    assert(_SIR_E_NOERROR == code);
-#endif
 }
 
 #if defined(_WIN32)
@@ -153,10 +150,6 @@ void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* fi
         assert(NULL == local_free);
         errbuf = NULL;
     }
-
-#   if defined(SIR_ASSERT_ON_ERROR)
-    assert(ERROR_SUCCESS == code);
-#   endif
 }
 #endif
 
@@ -181,8 +174,7 @@ sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
                 snprintf(final, SIR_MAXERROR, sir_errors[_mid].msg, sir_te.os_error,
                     (_sir_validstrnofail(sir_te.os_errmsg) ? sir_te.os_errmsg : SIR_UNKNOWN));
             }
-        }
-        else {
+        } else {
             final = (sirchar_t*)sir_errors[_mid].msg;
         }
 
@@ -233,6 +225,7 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, const char
     bool need_tail = false;
     bool success = true;
     char prefix[256];
+
     snprintf(prefix, 256, "%s (%s:%" PRIu32 "): ", func, file, line);
         
     va_list args;
