@@ -807,7 +807,7 @@ bool sirtest_filesystem(void) {
     printf("\t_sir_getcwd: '%s'\n", PRN_STR(cwd));
 
     /* path to this binary file. */
-    char* filename = NULL;//_sir_getappfilename();
+    char* filename = _sir_getappfilename();
     pass &= NULL != filename;
     printf("\t_sir_getappfilename: '%s'\n", PRN_STR(filename));
 
@@ -826,7 +826,7 @@ bool sirtest_filesystem(void) {
         size_t n      = 0;
 
         while (n < len) {
-            if (filename[offset] != _basename[n]) {
+            if (filename[offset++] != _basename[n++]) {
                 pass = false;
                 break;
             }
