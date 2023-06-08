@@ -84,6 +84,11 @@ char* _sir_getcwd(void) {
 }
 
 char* _sir_getappfilename(void) {
+
+    /* For platforms that let you know your buffer isn't large enough,
+     * but not by how much, default to growing the buffer by this many chars. */
+    static const size_t grow_by = 32;
+
     char* buffer = (char*)calloc(SIR_MAXPATH, sizeof(char));
     if (NULL == buffer) {
         _sir_handleerr(errno);
@@ -95,70 +100,9 @@ char* _sir_getappfilename(void) {
     bool grow     = false;
 
     do {
-#if !defined(_WIN32)
-# if defined(__linux__)
-#  if defined(__HAVE_UNISTD_READLINK__)
-        ssize_t read = readlink("/proc/self/exe", buffer, size);
-_sir_selflog("readlink() returned: %ld (size = %zu)", read, size);
-        if (-1 != read && read < (ssize_t)size) {
-            resolved = true;
-            break;
-        } else {
-            /* readlink, like Windows' impl, doesn't have a concept
-             * of letting you know how much larger your buffer needs
-             * to be; it just truncates the string and returns how
-             * many chars it wrote there. */
-            _sir_handleerr(errno);
-            resolved = false;
-            break;
-        }
-#  else
-#   error "unable to resolve readlink(); see man readlink and its feature test macro requirements."
-#  endif
-# elif defined(__FreeBSD__)
-        int mib[4] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
-        int ret = sysctl(mib, 4, buffer, &size, NULL, 0);
-        if (0 == ret) {
-            resolved = true;
-            break;
-        } else {
-            _sir_handleerr(errno);
-            resolved = false;
-            break;
-        }
-# elif defined(__APPLE__)
-        int ret = _NSGetExecutablePath(buffer, (uint32_t*)&size);
-        if (0 == ret) {
-            resolved = true;
-            break;
-        } else if (-1 == ret) {
-            grow = true;
-            continue;
-        } else  {
-            _sir_handleerr(errno);
-            resolved = false;
-            break;
-        }
-# else
-#  error "no implementation for your platform; please contact the author."
-# endif
-#else // _WIN32
-        DWORD ret = GetModuleFileNameA(NULL, buffer, (DWORD)size);
-_sir_selflog("GetModuleFileNameA() returned: %lu (size = %zu)", ret, size);        
-        if (0 != ret && ret < (DWORD)size) {
-            resolved = true;
-            break;
-        } else if (0 == ret || ERROR_INSUFFICIENT_BUFFER == GetLastError()) {
-            /* Windows has no concept of letting you know how much larger
-             * your buffer needed to be; it just truncates the string and
-             * returns size. */
-            _sir_handlewin32err(ERROR_INSUFFICIENT_BUFFER);
-            resolved = false;
-            break;
-        }
-#endif
+
         if (grow) {
-_sir_selflog("reallocating %zu bytes for buffer and trying again...", size);            
+            _sir_selflog("reallocating %zu bytes for buffer and trying again...", size);
             _sir_safefree(buffer);
             buffer = (char*)realloc(NULL, size);
             if (NULL == buffer) {
@@ -171,21 +115,111 @@ _sir_selflog("reallocating %zu bytes for buffer and trying again...", size);
             grow = false;
         }
 
-    } while(true);
+#if !defined(_WIN32)
+# if defined(__linux__)
+#  if defined(__HAVE_UNISTD_READLINK__)
+        ssize_t read = readlink("/proc/self/exe", buffer, size);
+        _sir_selflog("readlink() returned: %ld (size = %zu)", read, size);
+        if (-1 != read && read < (ssize_t)size) {
+            resolved = true;
+            break;
+        } else {
+            if (-1 == read) {
+                _sir_handleerr(errno);
+                resolved = false;
+                break;
+            }
+            else if (read >= (ssize_t)size) {
+                /* readlink, like Windows' impl, doesn't have a concept
+                * of letting you know how much larger your buffer needs
+                * to be; it just truncates the string and returns how
+                * many chars it wrote there. */
+                size += grow_by;
+                grow = true;
+                continue;
+            }
+        }
+#  else
+#   error "unable to resolve readlink(); see man readlink and its feature test macro requirements."
+#  endif
+# elif defined(__FreeBSD__)
+        int mib[4] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
+        int ret = sysctl(mib, 4, buffer, &size, NULL, 0);
+        _sir_selflog("sysctl() returned: %d (size = %zu)", ret, size);
+        if (0 == ret) {
+            resolved = true;
+            break;
+        } else {
+            _sir_handleerr(errno);
+            resolved = false;
+            break;
+        }
+# elif defined(__APPLE__)
+        size_t old_size = size;
+        int ret = _NSGetExecutablePath(buffer, (uint32_t*)&size);
+        _sir_selflog("_NSGetExecutablePath() returned: %d (size = %zu)", ret, old_size);
+        if (0 == ret) {
+            resolved = true;
+            break;
+        } else if (-1 == ret) {
+            grow = true;
+            continue;
+        } else {
+            _sir_handleerr(errno);
+            resolved = false;
+            break;
+        }
+# else
+#  error "no implementation for your platform; please contact the author."
+# endif
+#else // _WIN32
+        DWORD ret = GetModuleFileNameA(NULL, buffer, (DWORD)size);
+        _sir_selflog("GetModuleFileNameA() returned: %lu (size = %zu)", ret, size);
+        if (0 != ret && ret < (DWORD)size) {
+            resolved = true;
+            break;
+        } else {
+            if (0 == ret) {
+                _sir_handlewin32err(GetLastError());
+                resolved = false;
+                break;
+            } else if (ret == (DWORD)size || ERROR_INSUFFICIENT_BUFFER == GetLastError()) {
+                /* Windows has no concept of letting you know how much larger
+                * your buffer needed to be; it just truncates the string and
+                * returns size. So, we'll guess. */
+                size += grow_by;
+                grow = true;
+                continue;
+            }
+        }
+#endif
 
-    if (!resolved)
+    } while (true);
+
+    if (!resolved) {
         _sir_safefree(buffer);
+        _sir_selflog("failed to resolve filename!");
+    }
+    else {
+        _sir_selflog("successfully resolved: '%s'", buffer);
+    }
 
-_sir_selflog("successfully resolved: '%s'", buffer);
     return buffer;
 }
 
 char* _sir_getappdir(void) {
     char* filename = _sir_getappfilename();
-    if (NULL == filename)
+    if (!_sir_validstr(filename))
         return NULL;
 
-    return _sir_getdirname(filename);
+    char* dirname = strdup(filename);
+    if (!_sir_validstr(dirname)) {
+        _sir_safefree(filename);
+        return NULL;
+    }
+
+    _sir_safefree(filename);
+    return _sir_getdirname(dirname);
 }
 
 char* _sir_getbasename(char* restrict path) {
