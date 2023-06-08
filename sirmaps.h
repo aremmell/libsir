@@ -36,11 +36,6 @@
 #include "sirhelpers.h"
 
 /**
- * @addtogroup intern
- * @{
- */
-
-/**
  * @brief Overrides for ::sir_level <-> ::sir_textstyle mappings.
  *
  * ::sir_settextstyle sets (overrides) the style values in this array
@@ -133,7 +128,5 @@ static const sir_style_16color_pair sir_style_16color_map[] = {
     {SIRS_BG_LCYAN,    106},
     {SIRS_BG_WHITE,    107}
 };
-
-/** @} */
 
 #endif // !_SIR_MAPS_H_INCLUDED

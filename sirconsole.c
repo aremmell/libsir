@@ -31,12 +31,6 @@
  */
 #include "sirconsole.h"
 #include "sirinternal.h"
-#include "sirtextstyle.h"
-
-/**
- * @addtogroup intern
- * @{
- */
 
 #if !defined(_WIN32)
 
@@ -118,5 +112,3 @@ static BOOL CALLBACK __sir_config_consoles_once(PINIT_ONCE ponce, PVOID param, P
 }
 
 #endif /* !_WIN32 */
-
-/** @} */

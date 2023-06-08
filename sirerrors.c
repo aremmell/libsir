@@ -49,11 +49,6 @@
 #   define __HAVE_STRERROR_S__
 #endif
 
-/**
- * @addtogroup errors
- * @{
- */
-
 /** Per-thread error data */
 static thread_local sir_thread_err sir_te = {
     _SIR_E_NOERROR, 0, {0}, {SIR_UNKNOWN, SIR_UNKNOWN, 0}
@@ -147,6 +142,11 @@ void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* fi
 }
 #endif
 
+/**
+ * @addtogroup errors
+ * @{
+ */
+#pragma message("TODO: document")
 sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
     _sir_resetstr(message);
 
@@ -192,6 +192,8 @@ sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
     assert(false && sir_te.lasterror);
     return _SIR_E_UNKNOWN;
 }
+
+/** @} */
 
 #if defined(SIR_SELFLOG)
 void __sir_selflog(const char* func, const char* file, uint32_t line, const char* format, ...) {
@@ -278,5 +280,3 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, const char
     assert(success);
 }
 #endif
-
-/** @} */

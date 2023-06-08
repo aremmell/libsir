@@ -34,11 +34,6 @@
 
 #include "sirtypes.h"
 
-/**
- * @addtogroup intern
- * @{
- */
-
 /** Computes the size of an array. */
 #define _sir_countof(arr) (sizeof(arr) / sizeof(arr[0]))
 
@@ -153,6 +148,9 @@ void _sir_safefree(void* p) {
     __sir_safefree(&p);
 }
 
+/** Wraps close. */
+void _sir_safeclose(int* restrict fd);
+
 /** Validates a log file identifier. */
 bool _sir_validfid(int id);
 
@@ -250,7 +248,5 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
  * otherwise, uses tcgetattr()/tcsetattr() and getchar().
  */
 int _sir_getchar(void);
-
-/** @} */
 
 #endif /* !_SIR_HELPERS_H_INCLUDED */

@@ -34,11 +34,6 @@
 
 #include "sirtypes.h"
 
-/**
- * @addtogroup intern
- * @{
- */
-
 typedef bool (*sir_fcache_pred)(const void* match, sirfile* iter);
 typedef void (*sir_fcache_update)(sirfile* si, sir_update_config_data* data);
 
@@ -74,7 +69,5 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
 void _sir_fclose(FILE** f);
 void _sir_fflush(FILE* f);
 bool _sir_fflush_all(void);
-
-/** @} */
 
 #endif /* !_SIR_FILECACHE_H_INCLUDED */

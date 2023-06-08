@@ -36,15 +36,6 @@
 #include "sirmaps.h"
 #include "sirerrors.h"
 
-/**
- * @defgroup intern Internal
- *
- * libsir's guts.
- *
- * @addtogroup intern
- * @{
- */
-
 /** Initializes libsir. */
 bool _sir_init(sirinit* si);
 
@@ -183,7 +174,5 @@ pid_t _sir_gettid(void);
 
 /** Retrieves the current thread's name. */
 bool _sir_getthreadname(char name[SIR_MAXPID]);
-
-/** @} */
 
 #endif /* !_SIR_INTERNAL_H_INCLUDED */

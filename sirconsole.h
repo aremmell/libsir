@@ -35,11 +35,6 @@
 #include "sirtypes.h"
 #include "sirhelpers.h"
 
-/**
- * @addtogroup intern
- * @{
- */
-
 #if !defined(_WIN32)
 
 bool _sir_write_stdio(FILE* stream, const sirchar_t* message);
@@ -56,7 +51,7 @@ bool _sir_write_stderr(const sirchar_t* message, size_t len) {
     return _sir_write_stdio(stderr, message);
 }
 
-#else
+#else // _WIN32
 
 extern HANDLE __sir_stdout;
 extern HANDLE __sir_stderr;
@@ -75,7 +70,5 @@ bool _sir_write_stderr(const sirchar_t* message, size_t len) {
 }
 
 #endif
-
-/** @} */
 
 #endif /* !_SIR_CONSOLE_H_INCLUDED */

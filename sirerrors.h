@@ -101,7 +101,6 @@ static const struct {
     { _SIR_E_UNKNOWN,   "Error is not known" },
 };
 
-
 void __sir_seterror(sirerror_t err, const sirchar_t* func, const sirchar_t* file, uint32_t line);
 #define _sir_seterror(err) __sir_seterror(err, __func__, __file__, __LINE__)
 

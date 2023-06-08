@@ -33,11 +33,6 @@
 #include "sirinternal.h"
 #include "sirdefaults.h"
 
-/**
- * @addtogroup intern
- * @{
- */
-
 bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32_t* pbg) {
 
     uint32_t attr = (style & _SIRS_ATTR_MASK);
@@ -256,5 +251,3 @@ bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size) {
 
     return false;
 }
-
-/** @} */

@@ -34,11 +34,6 @@
 
 #include "sirtypes.h"
 
-/**
- * @addtogroup intern
- * @{
- */
-
 /** Escape sequences:
  * 
  *  16 colors:      \033[<dim=0..2>;<fg=30..37, 90..97>;<bg=40..47, 100..107>m
@@ -107,7 +102,5 @@ uint16_t _sir_getprivstyle(uint32_t style);
 
 /** Combines component parts of a platform text style value into its final form. */
 bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size);
-
-/** @} */
 
 #endif /* !_SIR_TEXTSTYLE_H_INCLUDED */

@@ -32,10 +32,15 @@
 #include "sirhelpers.h"
 #include "sirerrors.h"
 
-/**
- * @addtogroup intern
- * @{
- */
+void _sir_safeclose(int* restrict fd) {
+    if (!fd || (fd && 0 > *fd))
+        return;
+
+    if (-1 == close(*fd))
+        _sir_handleerr(errno);
+
+    *fd = -1;    
+}
 
 bool _sir_validfid(int id) {
     bool valid = id >= 0;
@@ -279,4 +284,3 @@ int _sir_getchar(void) {
     return ch;        
 #endif
 }
-/** @} */

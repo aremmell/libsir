@@ -34,11 +34,6 @@
 #include "sirdefaults.h"
 #include "sirmutex.h"
 
-/**
- * @addtogroup intern
- * @{
- */
-
 sirfileid_t _sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts) {
 
     _sir_seterror(_SIR_E_NOERROR);
@@ -549,5 +544,3 @@ bool _sir_fflush_all(void) {
     }
     return true;
 }
-
-/** @} */

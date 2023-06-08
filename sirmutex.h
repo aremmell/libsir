@@ -34,11 +34,6 @@
 
 #include "sirtypes.h"
 
-/**
- * @addtogroup intern
- * @{
- */
-
 /** Creates/initializes a new mutex. */
 bool _sirmutex_create(sirmutex_t* mutex);
 
@@ -53,7 +48,5 @@ bool _sirmutex_unlock(sirmutex_t* mutex);
 
 /** Destroys a mutex. */
 bool _sirmutex_destroy(sirmutex_t* mutex);
-
-/** @} */
 
 #endif /* !_SIR_MUTEX_H_INCLUDED */

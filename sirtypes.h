@@ -233,11 +233,6 @@ typedef struct {
 
 /** @} */
 
-/**
- * @addtogroup intern
- * @{
- */
-
 /** Internally-used error code type. */
 typedef uint32_t sirerror_t;
 
@@ -356,7 +351,5 @@ typedef enum {
     SIRSL_UPDATED  = 0x00000020,    
     SIRSL_IS_INIT  = 0x00000040
 } sir_syslog_state;
-
-/** @} */
 
 #endif /* !_SIR_TYPES_H_INCLUDED */

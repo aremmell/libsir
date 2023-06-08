@@ -37,11 +37,6 @@
 #include "sirfilesystem.h"
 #include "sirmutex.h"
 
-/**
- * @addtogroup intern
- * @{
- */
-
 static sirinit _sir_si   = {0};
 static sirfcache _sir_fc = {0};
 
@@ -1051,5 +1046,3 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     return false;
 #endif
 }
-
-/** @} */
