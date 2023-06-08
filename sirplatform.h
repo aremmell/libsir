@@ -223,5 +223,5 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #elif defined(__GNUC__)
 # define __file__ __FILE_NAME__
 #else
-# define __file__ __FILE__
+# define __file__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 #endif
