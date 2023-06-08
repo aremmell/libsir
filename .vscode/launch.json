@@ -7,14 +7,13 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/bin/sirtests",
             "args": [
-                "--wait"
             ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [
 
             ],
-            "externalConsole": true,
+            "externalConsole": false,
             "MIMode": "lldb"
         },
         {
@@ -23,14 +22,13 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/bin/sirexample",
             "args": [
-                "--wait"
             ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [
 
             ],
-            "externalConsole": true,
+            "externalConsole": false,
             "MIMode": "lldb"
         }        
     ]
