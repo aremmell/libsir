@@ -40,13 +40,10 @@
 # elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__DragonFly__)
 #  define __BSD__
 #  define _BSD_SOURCE
-#  if !defined(_DEFAULT_SOURCE)
-#   define _DEFAULT_SOURCE
-#  endif
-# else
-#  if defined(__linux__) && !defined(_GNU_SOURCE)
+#  define _BSD_VISIBLE
+# elif defined(__linux__) && !defined(_GNU_SOURCE)
 #   define _GNU_SOURCE
-#  endif
+# endif
 #  if !defined(_POSIX_C_SOURCE)
 #   define _POSIX_C_SOURCE 200809L
 #  endif
@@ -55,8 +52,7 @@
 #  endif
 #  if !defined(_XOPEN_SOURCE)
 #   define _XOPEN_SOURCE 700
-# endif
-#endif
+#  endif
 #else // _WIN32
 # define SIR_NO_SYSTEM_LOGGERS
 # define __WANT_STDC_SECURE_LIB__ 1
