@@ -14,7 +14,14 @@ INSTALLLIB = /usr/local/lib
 INSTALLINC = /usr/local/include
 
 # base CFLAGS
-CFLAGS = -Wpedantic -std=c11 -I. -fPIC
+CFLAGS = -Wpedantic -I. -fPIC
+
+# compiler-specific CFLAGS
+ifeq ($(CC),gcc)
+	CFLAGS += -std=gnu11
+else
+	CFLAGS += -std=c11
+endif
 
 # debug/non-debug CFLAGS
 ifeq ($(SIR_DEBUG),1)
