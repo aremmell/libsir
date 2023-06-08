@@ -208,14 +208,20 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #endif
 
 #if !defined(__APPLE__)
-  /** The default clock used to obtain the current millisecond from clock_gettime. */
 # if defined(__linux__) && _POSIX_C_SOURCE >= 199309L
 #  define SIR_MSECCLOCK CLOCK_MONOTONIC_RAW
 # else
 #  define SIR_MSECCLOCK CLOCK_MONOTONIC
 # endif
-#else
-  /** The clock used to obtain the current millisecond from clock_get_time. */
+#else // __APPLE__
 # define SIR_MSECCLOCK SYSTEM_CLOCK
 #endif
 #endif /* !_SIR_PLATFORM_H_INCLUDED */
+
+#if defined(__clang__)
+# define __file__ __FILE_NAME__
+#elif defined(__GNUC__)
+# define __file__ __FILE_NAME__
+#else
+# define __file__ __FILE__
+#endif

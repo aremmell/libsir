@@ -183,17 +183,17 @@ void _sir_defaultopts(sir_options* opts, sir_options def) {
 bool _sir_validopts(sir_options opts);
 
 /** Validates a string pointer and optionally fails if it's invalid. */
-bool __sir_validstr(const sirchar_t* str, bool fail);
+bool __sir_validstr(const sirchar_t* restrict str, bool fail);
 
 /** Validates a string pointer and fails if it's invalid. */
 static inline
-bool _sir_validstr(const sirchar_t* str) {
+bool _sir_validstr(const sirchar_t* restrict str) {
     return __sir_validstr(str, true);
 }
 
 /** Validates a string pointer but ignores whether it's invalid. */
 static inline
-bool _sir_validstrnofail(const sirchar_t* str) {
+bool _sir_validstrnofail(const sirchar_t* restrict str) {
     return __sir_validstr(str, false);
 }
 

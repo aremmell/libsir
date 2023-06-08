@@ -125,7 +125,7 @@ bool _sir_validopts(sir_options opts) {
     return false;
 }
 
-bool __sir_validstr(const sirchar_t* str, bool fail) {
+bool __sir_validstr(const sirchar_t* restrict str, bool fail) {
     bool valid = str && (*str != (sirchar_t)'\0');
     if (!valid && fail) {
         _sir_seterror(_SIR_E_STRING);
