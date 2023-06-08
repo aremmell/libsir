@@ -194,8 +194,7 @@ char* _sir_getappfilename(void) {
     if (!resolved) {
         _sir_safefree(buffer);
         _sir_selflog("failed to resolve filename!");
-    }
-    else {
+    } else {
         _sir_selflog("successfully resolved: '%s'", buffer);
     }
 
@@ -224,11 +223,6 @@ char* _sir_getbasename(char* restrict path) {
 #if !defined(_WIN32)
     return basename(path);
 #else
-    // this isn't going to work; basename() and dirname() will strip
-    // path components off the end, too. need to verify whether this
-    // function only returns a file name part if it contains a full stop,
-    // or perhaps it queries the path to see if it's a file or directory.
-    // https://www.man7.org/linux/man-pages/man3/basename.3.html
     return PathFindFileNameA(path);
 #endif
 }
@@ -237,19 +231,11 @@ char* _sir_getdirname(char* restrict path) {
     if (!_sir_validstr(path))
         return ".";
 
-#pragma message("TODO: come back and revisit dirname_r")
 #if !defined(_WIN32)
-/*# if defined(__APPLE__)
-    //char dir[SIR_MAXPATH] = {0};
-    char* retval = dirname_r(path, NULL);
-    return retval;
-# else*/
     return dirname(path);
-//# endif
 #else
-    // TODO: same problem as above.
-    if (!PathRemoveFileSpecA((LPSTR)path))
-        _sir_handlewin32err(GetLastError());
+    BOOL unused = PathRemoveFileSpecA((LPSTR)path);
+    _SIR_UNUSED(unused);
     return path;
 #endif
 }
