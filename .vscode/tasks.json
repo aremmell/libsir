@@ -3,7 +3,6 @@
     // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
-        /* begin Unix Makefile */
         {
             "label": "Clean",
             "type": "process",
@@ -16,9 +15,7 @@
                 "kind": "build",
                 "isDefault": false
             },
-            "windows": {
-                
-            }
+            "windows": {}
         },
         {
             "label": "Static library",
@@ -33,8 +30,23 @@
                 "isDefault": false
             },
             "dependsOn": "Clean",
-            "windows":{
-            }
+            "windows": {}
+        },
+        {
+            "label": "Static library (debug)",
+            "type": "process",
+            "command": "make",
+            "args": [
+                "SIR_DEBUG=1",
+                "static"
+            ],
+            "detail": "Compiles libsir as a static library with debug symbols.",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "dependsOn": "Clean",
+            "windows": {}
         },
         {
             "label": "Shared library",
@@ -48,9 +60,8 @@
                 "kind": "build",
                 "isDefault": false
             },
-            "dependsOn": "Clean",            
-            "windows":{
-            }
+            "dependsOn": "Clean",
+            "windows": {}
         },
         {
             "label": "Test suite",
@@ -64,9 +75,24 @@
                 "kind": "build",
                 "isDefault": true
             },
-            "dependsOn": "Static library",            
-            "windows":{
-            }
+            "dependsOn": "Static library",
+            "windows": {}
+        },
+        {
+            "label": "Test suite (debug)",
+            "type": "process",
+            "command": "make",
+            "args": [
+                "SIR_DEBUG=1",
+                "tests"
+            ],
+            "detail": "Compiles a test suite binary with debug symbols to ensure libsir is functioning properly.",
+            "group": {
+                "kind": "build"
+            },
+            "dependsOn": "Static library (debug)",
+            "windows": {},
+            "problemMatcher": []
         },
         {
             "label": "Example C application",
@@ -80,27 +106,8 @@
                 "kind": "build",
                 "isDefault": false
             },
-            "dependsOn": "Static library",            
-            "windows":{
-            }
-        },
-        /* end Unix Makefile */
-        
-        /* begin MSBuild */
-        {
-            "label": "build",
-            "type": "process",
-            "command": "msbuild",
-            "args": [
-                "/property:GenerateFullPaths=true",
-                "/t:build",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "group": "build",
-            "presentation": {
-                "reveal": "always"
-            },
-            "problemMatcher": "$msCompile"
+            "dependsOn": "Static library",
+            "windows": {}
         }
     ]
 }
