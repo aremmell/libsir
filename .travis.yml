@@ -4,6 +4,9 @@ branches:
   only:
   - master
   - syslog
+dist: bionic
+osx_image: xcode14.2
+env: MAKE=make  
 jobs:
   include:
     - os: linux
@@ -18,11 +21,14 @@ jobs:
     - os: linux
       arch: arm64
       compiler: clang
-    - os: osx
-      osx_image: xcode14.2
+    - os: freebsd
+      arch: amd64
+      compiler: gcc
+      env: MAKE=gmake
+    - os: osx      
       compiler: clang
 script:
-  - make clean tests example
+  - $MAKE clean tests example
   - build/bin/sirtests
   - build/bin/sirexample
-
+install: skip
