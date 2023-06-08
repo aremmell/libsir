@@ -129,18 +129,7 @@ bool _sirfile_open(sirfile* sf) {
         FILE* f  = NULL;
         int open = _sir_fopen(&f, sf->path, SIR_FOPENMODE);
         if (0 == open && f) {
-
-/* disable bogus warning about using _fileno */
-#if defined(_WIN32)
-#   pragma warning(push)
-#   pragma warning(disable : 4996)
-#endif
             int fd = fileno(f);
-
-#if defined(_WIN32)
-#   pragma warning(pop) 
-#endif
-
             if (_sir_validfid(fd)) {
                 _sirfile_close(sf);
                                 
@@ -335,20 +324,10 @@ bool _sirfile_splitpath(sirfile* sf, sirchar_t** name, sirchar_t** ext) {
                 _sir_strncpy(*name, namesize + 1, sf->path, namesize);
             }
   
-/* disable bogus warning about using _strdup */
-#if defined(_WIN32)
-#   pragma warning(push)
-#   pragma warning(disable : 4996)
-#endif
-
             *ext = strdup(lastfullstop);
         } else {
             *name = strdup(sf->path);
         }
-
-#if defined(_WIN32)
-#   pragma warning(pop) 
-#endif
 
         return _sir_validstr(*name) && (!lastfullstop || _sir_validstr(*ext));
     }
