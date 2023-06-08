@@ -7,13 +7,13 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/bin/sirtests",
             "args": [
+                "${input:wait}",
+                "${input:perf}"
             ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
-            "environment": [
-
-            ],
-            "externalConsole": false,
+            "environment": [],
+            "externalConsole": true,
             "MIMode": "lldb"
         },
         {
@@ -25,11 +25,31 @@
             ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
-            "environment": [
-
-            ],
-            "externalConsole": false,
+            "environment": [],
+            "externalConsole": true,
             "MIMode": "lldb"
+        }        
+    ],
+    "inputs": [
+        {
+            "id": "wait",
+            "type": "pickString",
+            "description": "Wait for input once finished?",
+            "options": [
+                "--no--wait",
+                "--wait",
+            ],
+            "default": "--no-wait"
+        },
+        {
+            "id": "perf",
+            "type": "pickString",
+            "description": "Run perf instead of normal test suite?",
+            "options": [
+                "--no--perf",
+                "--perf",
+            ],
+            "default": "--no--perf"
         }        
     ]
 }

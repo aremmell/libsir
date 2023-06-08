@@ -15,7 +15,14 @@
                 "kind": "build",
                 "isDefault": false
             },
-            "windows": {}
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            }
         },
         {
             "label": "Static library",
@@ -30,23 +37,71 @@
                 "isDefault": false
             },
             "dependsOn": "Clean",
-            "windows": {}
+            "linux": {
+                "problemMatcher": [
+                      "$gcc"
+                ]
+            },
+            "osx": {
+                "problemMatcher": [
+                    {
+                        "owner": "c_cpp",
+                        "fileLocation": ["relative", "${workspaceRoot}"],
+                        "pattern": {
+                            "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
+                            "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
+                        }                    
+                    }
+                ]
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
         },
         {
-            "label": "Static library (debug)",
+            "label": "DBG: Static library",
             "type": "process",
             "command": "make",
             "args": [
+                "SIR_SELFLOG=1",                
                 "SIR_DEBUG=1",
                 "static"
             ],
             "detail": "Compiles libsir as a static library with debug symbols.",
             "group": {
-                "kind": "build",
-                "isDefault": false
+                "kind": "build"
             },
             "dependsOn": "Clean",
-            "windows": {}
+            "linux": {
+                "problemMatcher": [
+                      "$gcc"
+                ]
+            },
+            "osx": {
+                "problemMatcher": [
+                    {
+                        "owner": "c_cpp",
+                        "fileLocation": ["relative", "${workspaceRoot}"],
+                        "pattern": {
+                            "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
+                            "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
+                        }                    
+                    }
+                ]
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
         },
         {
             "label": "Shared library",
@@ -57,11 +112,34 @@
             ],
             "detail": "Compiles libsir as a shared library.",
             "group": {
-                "kind": "build",
-                "isDefault": false
+                "kind": "build"
             },
             "dependsOn": "Clean",
-            "windows": {}
+            "linux": {
+                "problemMatcher": [
+                      "$gcc"
+                ]
+            },
+            "osx": {
+                "problemMatcher": [
+                    {
+                        "owner": "c_cpp",
+                        "fileLocation": ["relative", "${workspaceRoot}"],
+                        "pattern": {
+                            "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
+                            "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
+                        }                    
+                    }
+                ]
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
         },
         {
             "label": "Test suite",
@@ -76,13 +154,38 @@
                 "isDefault": true
             },
             "dependsOn": "Static library",
-            "windows": {}
+            "linux": {
+                "problemMatcher": [
+                      "$gcc"
+                ]
+            },
+            "osx": {
+                "problemMatcher": [
+                    {
+                        "owner": "c_cpp",
+                        "fileLocation": ["relative", "${workspaceRoot}"],
+                        "pattern": {
+                            "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
+                            "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
+                        }                    
+                    }
+                ]
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
         },
         {
-            "label": "Test suite (debug)",
+            "label": "DBG: Test suite",
             "type": "process",
             "command": "make",
             "args": [
+                "SIR_SELFLOG=1",
                 "SIR_DEBUG=1",
                 "tests"
             ],
@@ -90,9 +193,32 @@
             "group": {
                 "kind": "build"
             },
-            "dependsOn": "Static library (debug)",
-            "windows": {},
-            "problemMatcher": []
+            "dependsOn": "DBG: Static library",
+            "linux": {
+               "problemMatcher": [
+                    "$gcc"
+               ]
+            },
+            "osx": {
+                "problemMatcher": [
+                    {
+                        "owner": "c_cpp",
+                        "fileLocation": ["relative", "${workspaceRoot}"],
+                        "pattern": {
+                            "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
+                            "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
+                        }                    
+                    }
+                ]
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
         },
         {
             "label": "Example C application",
@@ -103,11 +229,34 @@
             ],
             "detail": "Compiles a sample C application demonstrating basic usage of libsir.",
             "group": {
-                "kind": "build",
-                "isDefault": false
+                "kind": "build"
             },
             "dependsOn": "Static library",
-            "windows": {}
+            "linux": {
+                "problemMatcher": [
+                      "$gcc"
+                ]
+            },
+            "osx": {
+                "problemMatcher": [
+                    {
+                        "owner": "c_cpp",
+                        "fileLocation": ["relative", "${workspaceRoot}"],
+                        "pattern": {
+                            "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
+                            "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
+                        }                    
+                    }
+                ]
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
         }
     ]
 }
