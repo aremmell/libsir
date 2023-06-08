@@ -969,7 +969,10 @@ bool sirtest_filesystem(void) {
 #else // _WIN32
         {"\\Windows",       true},
         {"\\Program Files", true},
-#endif          
+#endif
+        {"LICENSE",         true},
+        {"msvs/libsir.sln", true},
+        {"../",             true},
     };
 
     for (size_t n = 0; n < _sir_countof(real_or_not); n++) {
