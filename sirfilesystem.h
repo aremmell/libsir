@@ -39,12 +39,16 @@
  * @{
  */
 
+/** Defines how many characters to grow a buffer by which was deemed too small
+ * by a system call (with no information regarding the necessary size). */
+#define SIR_PATH_BUFFER_GROW_BY 32
+
 /**
  * Determines if a file or directory exists in the filesystem.
  * Returns false if an error occurs or an argument is invalid. Places the result
  * in \p exists.
 */
-bool _sir_fileexists(const char* restrict path, bool* restrict exists);
+bool _sir_pathexists(const char* restrict path, bool* restrict exists);
 
 /**
  * Returns the current working directory for the calling process. If an error

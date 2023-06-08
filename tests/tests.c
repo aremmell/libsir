@@ -851,23 +851,122 @@ bool sirtest_filesystem(void) {
         pass &= 0 == strncmp(filename, _dirname, strnlen(_dirname, SIR_MAXPATH));
     }
 
-    // let's see what tests we can devise:
-    // √ 1. getappdir() should match exactly the first n
-    //    chars of getappfilename.
-    // √ 2. ditto for getrdirname(appfilename)
-    // √ 3. getappfilename should match exactly getbasename(appfilename)
-    // 4. feed bullshit into getbasename and getdirname
-    // 5. feed bullshit into fileexists
-    // 6. purposely make buffer too small in getappfilename to test
-    //    retry mechanism.
-    // 7. on windows, examine dirname of:
-    //    a. C:\foo\bar
-    //    b. C:\foo\bar\
-    //    b. C:\
+    /* this next section doesn't really yield any useful boolean pass/fail
+     * information, but could be helpful to review manually. */
+    char* dubious_dirnames[] = {
+#if !defined(_WIN32)
+        "/foo",
+        "/foo/",
+        "/foo/bar",
+        "/foo/bar/bad:filename",
+        "/"
+#else // _WIN32
+        "C:\\foo",
+        "C:\\foo\\",
+        "C:\\foo\\bar",
+        "C:\\foo\\bar\\bad:>filename",
+        "C:\\",
+        "//network-share/myfolder"
+#endif        
+    };
 
-    // TODO:
-    // 1. check known existing and non-existing files.
-    // 2. check relative paths of all kinds
+    for (size_t n = 0; n < _sir_countof(dubious_dirnames); n++)
+        printf("\t_sir_getdirname(" WHITE("'%s'") ") = " WHITE("'%s'") " (after: '%s')\n",
+            dubious_dirnames[n], _sir_getdirname(dubious_dirnames[n]), dubious_dirnames[n]);
+
+    char* dubious_filenames[] = {
+#if !defined(_WIN32)
+        "foo/bar/file-or-directory",
+        "/foo/bar/file-or-directory",
+        "/foo/bar/illegal:filename",
+        "/"
+#else // _WIN32
+        "foo\\bar\\file.with.many.full.stops",
+        "C:\\foo\\bar\\poorly-renamed.txt.pdf",
+        "C:\\foo\\bar\\illegal>filename.txt",
+        "C:\\",
+        "\\Program Files\\foo.bar"
+#endif              
+    };
+
+    for (size_t n = 0; n < _sir_countof(dubious_filenames); n++)
+        printf("\t_sir_getbasename(" WHITE("'%s'") ") = " WHITE("'%s'") " (after: '%s')\n",
+            dubious_filenames[n], _sir_getbasename(dubious_filenames[n]), dubious_filenames[n]);
+
+    /* absolute/relative paths. */
+    static const struct { const char* const path; bool abs; } abs_or_rel_paths[] = {
+        {"this/is/relative",          false},
+        {"relative",                  false},
+        {"./relative",                false},
+        {"../../relative",            false},
+#if !defined(_WIN32)
+        {"/usr/local/bin",            true},
+        {"/",                         true},
+        {"/home/foo/.config",         true},
+        {"~/.config",                 true}
+#else // _WIN32
+        {"D:\\absolute",              true},
+        {"C:\\Program Files\\FooBar", true},
+        {"C:\\",                      true},
+        {"\\absolute",                true},
+#endif          
+    };
+
+    for (size_t n = 0; n < _sir_countof(abs_or_rel_paths); n++) {
+        bool relative = false;
+        bool ret = _sir_ispathrelative(abs_or_rel_paths[n].path, &relative);
+
+        pass &= ret;
+        if (!ret) {
+            bool unused = print_test_error(false, false);
+            _SIR_UNUSED(unused);
+            continue;
+        }
+
+        if (relative == abs_or_rel_paths[n].abs) {
+            pass = false;
+            printf("\t" RED("_sir_ispathrelative('%s') = %s") "\n",
+                abs_or_rel_paths[n].path, relative ? "true" : "false");
+        } else {
+            printf("\t" GREEN("_sir_ispathrelative('%s') = %s") "\n",
+                abs_or_rel_paths[n].path, relative ? "true" : "false");            
+        }
+    }
+
+    /* file existence. */
+    static const struct { const char* const path; bool exists; } real_or_not[] = {
+        {"../foobarbaz",    false},
+        {"foobarbaz",       false},        
+#if !defined(_WIN32)
+        {"/",               true},
+        {"/usr/bin",        true},
+        {"/dev",            true},
+#else // _WIN32
+        {"\\",              true},
+        {"\\Program Files", true},
+#endif          
+    };
+
+    for (size_t n = 0; n < _sir_countof(real_or_not); n++) {
+        bool exists = false;
+        bool ret    = _sir_pathexists(real_or_not[n].path, &exists);
+
+        pass &= ret;
+        if (!ret) {
+            bool unused = print_test_error(false, false);
+            _SIR_UNUSED(unused);
+            continue;            
+        }
+
+        if (exists != real_or_not[n].exists) {
+            pass = false;
+            printf("\t" RED("_sir_pathexists('%s') = %s") "\n",
+                real_or_not[n].path, exists ? "true" : "false");            
+        } else {
+            printf("\t" GREEN("_sir_pathexists('%s') = %s") "\n",
+                real_or_not[n].path, exists ? "true" : "false");               
+        }
+    }
 
     _sir_safefree(cwd);
     _sir_safefree(filename);
@@ -1023,11 +1122,12 @@ bool print_test_error(bool result, bool expected) {
     sirchar_t message[SIR_MAXERROR] = { 0 };
     uint16_t code = sir_geterror(message);
 
-    if (!expected && !result) {
+    if (!expected && !result && SIR_E_NOERROR != code) {
         printf("\t" RED("!! Unexpected (%hu, %s)") "\n", code, message);
     } else if (expected) {
         printf("\t" GREEN("Expected (%hu, %s)") "\n", code, message);
     }
+
     return result;
 }
 
