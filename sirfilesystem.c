@@ -61,13 +61,7 @@ bool _sir_pathexists(const char* restrict path, bool* restrict exists) {
         return true;
     }
 #else    
-    if (!PathFileExistsA(path)) {
-        _sir_handlewin32err(GetLastError());
-        return false;
-    } else {
-        *exists = true;
-        return true;
-    }
+   *exists = (TRUE == PathFileExistsA(path));
 #endif
 }
 

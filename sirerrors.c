@@ -31,7 +31,6 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "sirerrors.h"
-#include "sirinternal.h"
 
 #if defined(_WIN32)
 # pragma comment(lib, "Shlwapi.lib")
@@ -67,11 +66,6 @@ void __sir_seterror(sirerror_t err, const sirchar_t* func, const sirchar_t* file
         sir_te.loc.file = file;
         sir_te.loc.line = line;
     }
-
-#if defined(SIR_SELFLOG)
-    if (_SIR_E_NOERROR != err)
-        __sir_selflog(func, file, line, "set error for thread %d: %" PRIu16 "", _sir_gettid(), _sir_geterrcode(err));
-#endif
 }
 
 void __sir_setoserror(int code, const sirchar_t* message, const sirchar_t* func,
@@ -131,13 +125,12 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
 #if defined(_WIN32)
 void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* file, uint32_t line) {
     sirchar_t* errbuf = NULL;
-    DWORD flags       = FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM     |
+    DWORD flags       = FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |
                         FORMAT_MESSAGE_IGNORE_INSERTS  | FORMAT_MESSAGE_MAX_WIDTH_MASK;
 
     DWORD fmtmsg = FormatMessageA(flags, NULL, code, 0, (LPSTR)&errbuf, SIR_MAXERROR, NULL);
-
     if (0 < fmtmsg && _sir_validstrnofail(errbuf)) {
-        if (errbuf[fmtmsg - 1] == '\n')
+        if (errbuf[fmtmsg - 1] == '\n' || errbuf[fmtmsg - 1] == ' ')
             errbuf[fmtmsg - 1] = '\0';
         __sir_setoserror((int)code, errbuf, func, file, line);
     } else {
@@ -202,8 +195,9 @@ sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
 
 #if defined(SIR_SELFLOG)
 void __sir_selflog(const char* func, const char* file, uint32_t line, const char* format, ...) {
-    static const char* warning_prefix = "\x1b[0;33m";
     static const char* error_prefix   = "\x1b[0;31m";
+    static const char* warning_prefix = "\x1b[0;33m";
+    static const char* success_prefix = "\x1b[0;92m";
     static const char* tail           = "\x1b[0m";    
     static const char* arr[] = {
         /* err */
@@ -214,6 +208,7 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, const char
         /* warn */
         "bug",    
         "warn",
+        "ignored",
         "ignoring",
         "skipped",
         "skipping",
@@ -221,7 +216,11 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, const char
         "couldn't",
         "can't",
         "cannot",
-    }; // err <= 3
+        /* success */
+        "succeed",
+        "success",
+        " ok "
+    }; // err <= 3, warn > 3 && <= 13, success > 13
 
     bool need_tail = false;
     bool success = true;
@@ -252,7 +251,8 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, const char
 #else // _WIN32
                 if (NULL != StrStrIA(buf, arr[n])) {
 #endif
-                    int put = fputs(n <= 3 ? error_prefix : warning_prefix, stderr);
+                    int put = fputs(n <= 3 ? error_prefix : 
+                        (n <= 13 ? warning_prefix : success_prefix), stderr);
                     success &= put != EOF;
                     if (put != EOF)
                         need_tail = true;

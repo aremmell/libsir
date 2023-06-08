@@ -942,7 +942,7 @@ bool sirtest_filesystem(void) {
         {"/usr/bin",        true},
         {"/dev",            true},
 #else // _WIN32
-        {"\\",              true},
+        {"\\Windows",       true},
         {"\\Program Files", true},
 #endif          
     };
