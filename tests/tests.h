@@ -34,7 +34,6 @@
  * @todo Nice to have
  * 1. A plugin system or public interface for registering custom adapters, for things like:
  *   - Posting high-priority messages to a REST API endpoint.
- *   - Sending high-prirority messages via SMS or push notification.
  * 2. Compressing archived logs with zlib or similar.
  * 3. Deleting archived logs older than _n_ days.
  * 4. A project file for Xcode.
@@ -49,6 +48,7 @@
 #include <sirerrors.h>
 #include <sirfilecache.h>
 #include <sirinternal.h>
+#include <sirfilesystem.h>
 #include <sirhelpers.h>
 
 #include <fcntl.h>
@@ -88,14 +88,8 @@
 
 #define TEST_S(n) (n > 1 ? ("test" "s") : "test")
 
-/** Function signature for a single test. */
-typedef bool (*sir_test_fn)(void);
+#define PRN_STR(str) (str ? str : RED("NULL"))
 
-/** Map a test to a human-readable description. */
-typedef struct {
-    const char* name;
-    sir_test_fn fn;
-} sir_test;
 
 /**
  * @defgroup tests Tests
@@ -220,9 +214,14 @@ bool sirtest_filesystem(void);
  *
 bool sirtest_xxxx(void); */
 
+/*
+ * Error macros and functions
+ */
+
 bool print_test_error(bool result, bool expected);
 #define print_expected_error() print_test_error(true, true)
 #define print_result_and_return(pass) print_test_error(pass, false)
+
 void print_os_error(void);
 bool filter_error(bool pass, uint16_t err);
 
@@ -236,14 +235,18 @@ bool filter_error(bool pass, uint16_t err);
         print_os_error();
 #endif
 
-uint32_t getrand(uint32_t upper_bound);
+/*
+ * Utility functions and types
+ */
 
-bool rmfile(const char* filename);
-bool deletefiles(const char* search, const char* filename, unsigned* data);
-bool countfiles(const char* search, const char* filename, unsigned* data);
+/** Function signature for a single test. */
+typedef bool (*sir_test_fn)(void);
 
-typedef bool (*fileenumproc)(const char* search, const char* filename, unsigned* data);
-bool enumfiles(const char* search, fileenumproc cb, unsigned* data);
+/** Map a test to a human-readable description. */
+typedef struct {
+    const char* name;
+    sir_test_fn fn;
+} sir_test;
 
 typedef struct {
 #if !defined(_WIN32)
@@ -252,6 +255,15 @@ typedef struct {
     FILETIME ft;
 #endif
 } sirtimer_t;
+
+uint32_t getrand(uint32_t upper_bound);
+
+bool rmfile(const char* filename);
+bool deletefiles(const char* search, const char* filename, unsigned* data);
+bool countfiles(const char* search, const char* filename, unsigned* data);
+
+typedef bool (*fileenumproc)(const char* search, const char* filename, unsigned* data);
+bool enumfiles(const char* search, fileenumproc cb, unsigned* data);
 
 bool startsirtimer(sirtimer_t* timer);
 float sirtimerelapsed(const sirtimer_t* timer); // msec

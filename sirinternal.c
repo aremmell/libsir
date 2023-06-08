@@ -672,13 +672,14 @@ bool _sir_syslog_init(const char *name, sir_syslog_dest *ctx) {
             _sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, name,
                 strnlen(name, SIR_MAX_SYSLOG_ID));
         } else {
-            // try using the process nam
+            /// try using the process nam
             _sir_selflog("name is no good; trying filename");
-            char appfilename[SIR_MAXPATH] = {0};
-            if (_sir_getappfilename(appfilename, SIR_MAXPATH)) {
-                _sir_selflog("filename is good: %s", appfilename);
+#pragma message("TODO: refactor for new filesystem api")  
+     
+            if (false) {
+                /*_sir_selflog("filename is good: %s", appfilename);
                 _sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, appfilename,
-                    strnlen(appfilename, SIR_MAX_SYSLOG_ID));
+                    strnlen(appfilename, SIR_MAX_SYSLOG_ID));*/
             } else {
                 // retrieving the process name failed. use fallback.
                 _sir_selflog("filename no good; using fallback");
@@ -689,7 +690,7 @@ bool _sir_syslog_init(const char *name, sir_syslog_dest *ctx) {
     } else {
         _sir_selflog("already have identity");
     }
-
+     
     // category
     if (!_sir_validstrnofail(ctx->category)) {
         _sir_selflog("category not set; using fallback");
@@ -844,7 +845,7 @@ bool _sir_syslog_close(sir_syslog_dest *ctx) {
 
     if (!_sir_bittest(ctx->_state.mask, SIRSL_IS_OPEN)) {
         _sir_selflog("log not open; ignoring");
-        return false;
+        return true;
     }
 
 #if defined(SIR_OS_LOG_ENABLED)

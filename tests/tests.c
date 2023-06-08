@@ -52,7 +52,7 @@ static const sir_test sir_tests[] = {
     {"runtime-update-sanity",   sirtest_updatesanity},
     {"syslog",                  sirtest_syslog},
     {"os_log",                  sirtest_os_log},
-    {"portable-filesystem-api", sirtest_filesystem}
+    {"filesystem",              sirtest_filesystem}
 };
 
 static const char* arg_wait = "--wait"; /* wait for key press before exiting. */
@@ -798,14 +798,84 @@ bool sirtest_os_log(void) {
 }
 
 bool sirtest_filesystem(void) {
-    /* INIT(si, SIRL_ALL, 0, 0, 0);
-    bool pass = si_init; */
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
 
-    printf("\t" YELLOW("not yet implemented; skipping.") "\n");
-    return true;
+    /* current working directory. */
+    char* cwd = _sir_getcwd();
+    pass &= NULL != cwd;
+    printf("\t_sir_getcwd: '%s'\n", PRN_STR(cwd));
 
-    /* sir_cleanup();
-    return print_result_and_return(pass); */
+    /* path to this binary file. */
+    char* filename = NULL;//_sir_getappfilename();
+    pass &= NULL != filename;
+    printf("\t_sir_getappfilename: '%s'\n", PRN_STR(filename));
+
+    /* _sir_get[base|dir]name() can potentially modify filename,
+     * so make a copy for each call. */
+    char* filename2 = filename ? strdup(filename) : NULL;
+
+    /* filename, stripped of directory component(s). */
+    char* _basename = _sir_getbasename(filename2);
+    printf("\t_sir_getbasename: '%s'\n", PRN_STR(_basename));
+
+    /* the last strlen(_basename) chars of filename should match. */
+    if (filename) {
+        size_t len    = strlen(_basename);
+        size_t offset = strlen(filename) - len;
+        size_t n      = 0;
+
+        while (n < len) {
+            if (filename[offset] != _basename[n]) {
+                pass = false;
+                break;
+            }
+        };
+    }
+
+    /* directory this binary file resides in. */
+    char* appdir = _sir_getappdir();
+    pass &= NULL != appdir;
+    printf("\t_sir_getappdir: '%s'\n", PRN_STR(appdir));
+
+    /* _sir_get[base|dir]name can potentially modify filename,
+     * so make a copy for each call. */
+    char* filename3 = filename ? strdup(filename) : NULL;
+
+    /* should yield the same result as _sir_getappdir(). */
+    char* _dirname = _sir_getdirname(filename3);
+    printf("\t_sir_getdirname: '%s'\n", PRN_STR(_dirname));
+
+    if (filename && appdir) {
+        pass &= 0 == strncmp(filename, appdir, strnlen(appdir, SIR_MAXPATH));
+        pass &= 0 == strncmp(filename, _dirname, strnlen(_dirname, SIR_MAXPATH));
+    }
+
+    // let's see what tests we can devise:
+    // √ 1. getappdir() should match exactly the first n
+    //    chars of getappfilename.
+    // √ 2. ditto for getrdirname(appfilename)
+    // √ 3. getappfilename should match exactly getbasename(appfilename)
+    // 4. feed bullshit into getbasename and getdirname
+    // 5. feed bullshit into fileexists
+    // 6. purposely make buffer too small in getappfilename to test
+    //    retry mechanism.
+    // 7. on windows, examine dirname of:
+    //    a. C:\foo\bar
+    //    b. C:\foo\bar\
+    //    b. C:\
+
+    // TODO:
+    // 1. check known existing and non-existing files.
+    // 2. check relative paths of all kinds
+
+    _sir_safefree(cwd);
+    _sir_safefree(filename);
+    _sir_safefree(filename2);
+    _sir_safefree(filename3);
+
+    sir_cleanup();
+    return print_result_and_return(pass);
 }
 
 /*

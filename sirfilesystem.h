@@ -1,6 +1,6 @@
 /**
  * @file sirfilesystem.h
- * @brief ◊
+ * @brief Internal filesystem-related functionality.
  *
  * This file and accompanying source code originated from <https://github.com/aremmell/libsir>.
  * If you obtained it elsewhere, all bets are off.
@@ -39,20 +39,31 @@
  * @{
  */
 
-/** Determines if a file or directory exists in the filesystem. */
-bool _sir_fileexists(const char* restrict path);
-
-/** Retrieves the current working directory for the calling process. */
-bool _sir_getcwd(char* restrict buffer, size_t size);
-
-/** Retrieves the absolute path of the binary executable file for the calling process. */
-bool _sir_getappfilename(char* restrict buffer, size_t size);
+/**
+ * Determines if a file or directory exists in the filesystem.
+ * Returns false if an error occurs or an argument is invalid. Places the result
+ * in \p exists.
+*/
+bool _sir_fileexists(const char* restrict path, bool* restrict exists);
 
 /**
- * Retrieves the absolute path of the directory containing the
- * binary file for the calling process.
+ * Returns the current working directory for the calling process. If an error
+ * occurs, returns NULL. Pointers returned must be deallocated with free().
  */
-bool _sir_getappdir(char* restrict buffer, size_t size);
+char* _sir_getcwd(void);
+
+/**
+ * Returns the absolute path of the binary executable file for the calling
+ * process. If an error occurs, returns NULL. Pointers returned must be
+ * deallocated with free().
+ */
+char* _sir_getappfilename(void);
+
+/**
+ * Returns the absolute path of the directory containing the binary file
+ * of the calling process (not necessarily the current working directory).
+ */
+char* _sir_getappdir(void);
 
 /**
  * Returns only last component of a path.
@@ -64,7 +75,14 @@ char* _sir_getbasename(char* restrict path);
  * Returns all but the last component of a path.
  * May return "." "/", or \p path if no determination can be made.
 */
-char* _sir_getdirname(char* restrict path); 
+char* _sir_getdirname(char* restrict path);
+
+/**
+ * Determines if a given path is relative (or absolute).
+ * Returns false if an error occurs or an argument is invalid. Places the result
+ * in \p relative.
+ */
+bool _sir_ispathrelative(const char* restrict path, bool* restrict relative);
 
 /** @} */
 

@@ -41,121 +41,151 @@
  * @{
  */
 
-bool _sir_fileexists(const char* restrict path) {
-
-    if (!_sir_validstr(path))
+bool _sir_fileexists(const char* restrict path, bool* restrict exists) {
+    if (!_sir_validstr(path) || !_sir_validptr(exists))
         return false;
-
-#pragma message("TODO: add handling of relative filenames (to the directory the binary resides in, not the cwd")       
 
 #if !defined(_WIN32)
     struct stat st = {0};
     if (0 != stat(path, &st)) {
-        if (ENOENT != errno)
-#pragma message("TODO: use getappdir and fstatat() here")        
+        if (ENOENT != errno) {
+            *exists = false;
             _sir_handleerr(errno);
-        return false;
+            return false;
+        }
     }
-    return true;
+    *exists = true;
 #else    
-    return = (TRUE == PathFileExistsA(path));
+    *exists = (TRUE == PathFileExistsA(path));
 #endif
+
+    return true;
 }
 
-bool _sir_getcwd(char* restrict dir, size_t size) {
-    if (!_sir_validptr(dir))
-        return false;
-
-    if (size < SIR_MAXPATH) {
-        _sir_seterror(_SIR_E_INVALID);
-        return false;
-    }
-
-    bool retval = true;
-
+char* _sir_getcwd(void) {
 #if !defined(_WIN32)
 # if defined(__linux__) && defined(_GNU_SOURCE)
     char* cur = get_current_dir_name();
-    strncpy(dir, cur, strnlen(cur, SIR_MAXPATH));
-# else
-    if (NULL == getcwd(dir, size)) {
+    if (NULL == cur)
         _sir_handleerr(errno);
-        retval = false;
-    }
+    return cur;
+# else
+    char* cur = getcwd(NULL, SIR_MAXPATH);
+    if (NULL == cur)
+        _sir_handleerr(errno);
+    return cur;
 # endif
 #else // _WIN32
-    if (NULL == _getcwd(dir, (int)size)) {
+    char* cur = _getcwd(NULL, SIR_MAXPATH);
+    if (NULL == cur)
         _sir_handleerr(errno);
-        retval = false;
-    }
+    return cur;
 #endif
-    return retval;
 }
 
-bool _sir_getappfilename(char* restrict buffer, size_t size) {
-
-    if (!_sir_validptr(buffer))
-        return false;
-
-    if (size < SIR_MAXPATH) {
-        _sir_seterror(_SIR_E_INVALID);
-        return false;
+char* _sir_getappfilename(void) {
+    char* buffer = (char*)calloc(SIR_MAXPATH, sizeof(char));
+    if (NULL == buffer) {
+        _sir_handleerr(errno);
+        return NULL;
     }
 
-#pragma message("TODO: we're going to have to change these to return int, in cases like readlink needs more buffer space, we can't just return false.")
+    bool resolved = false;
+    size_t size   = SIR_MAXPATH;
+    bool grow     = false;
 
-    bool retval = true;
-
+    do {
 #if !defined(_WIN32)
 # if defined(__linux__)
 #  if defined(__HAVE_UNISTD_READLINK__)
-    ssize_t read = readlink("/proc/self/exe", buffer, size);
-    if (-1 == read || read > (ssize_t)size) {
-        bool too_small = read > (ssize_t)size;
-        // TODO: if too_small == true: buffer is too small; change size to a pointer so we can store
-        // the necesssary size there.        
-        _sir_handleerr(errno);
-        retval = false;
-    }
+        ssize_t read = readlink("/proc/self/exe", buffer, size);
+_sir_selflog("readlink() returned: %ld (size = %zu)", read, size);
+        if (-1 != read && read < (ssize_t)size) {
+            resolved = true;
+            break;
+        } else {
+            /* readlink, like Windows' impl, doesn't have a concept
+             * of letting you know how much larger your buffer needs
+             * to be; it just truncates the string and returns how
+             * many chars it wrote there. */
+            _sir_handleerr(errno);
+            resolved = false;
+            break;
+        }
 #  else
 #   error "unable to resolve readlink(); see man readlink and its feature test macro requirements."
 #  endif
 # elif defined(__FreeBSD__)
-    int mib[4] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
-    if (0 != sysctl(mib, 4, buffer, &size, NULL, 0)) {
-        _sir_handleerr(errno);
-        retval = false;
-    }
+        int mib[4] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
+        int ret = sysctl(mib, 4, buffer, &size, NULL, 0);
+        if (0 == ret) {
+            resolved = true;
+            break;
+        } else {
+            _sir_handleerr(errno);
+            resolved = false;
+            break;
+        }
 # elif defined(__APPLE__)
-    uint32_t size32 = (uint32_t)size;
-    if (0 != _NSGetExecutablePath(buffer, &size32)) {
-        // TODO: buffer is too small; need size32 bytes
-        _sir_handleerr(errno);
-        retval = false;
-    }
+        int ret = _NSGetExecutablePath(buffer, (uint32_t*)&size);
+        if (0 == ret) {
+            resolved = true;
+            break;
+        } else if (-1 == ret) {
+            grow = true;
+            continue;
+        } else  {
+            _sir_handleerr(errno);
+            resolved = false;
+            break;
+        }
 # else
 #  error "no implementation for your platform; please contact the author."
 # endif
 #else // _WIN32
-    DWORD ret = GetModuleFileNameA(NULL, buffer, (DWORD)size);
-    DWORD le  = GetLastError();
-    if (0 == ret || ERROR_INSUFFICIENT_BUFFER == le) {
-        bool too_small = ERROR_INSUFFICIENT_BUFFER == le;
-        // TODO: if too_small == true: buffer is too small; ret contains the chars stored in buffer.
-        _sir_handlewin32err(GetLastError());
-        retval = false;
-    }
+        DWORD ret = GetModuleFileNameA(NULL, buffer, (DWORD)size);
+_sir_selflog("GetModuleFileNameA() returned: %lu (size = %zu)", ret, size);        
+        if (0 != ret && ret < (DWORD)size) {
+            resolved = true;
+            break;
+        } else if (0 == ret || ERROR_INSUFFICIENT_BUFFER == GetLastError()) {
+            /* Windows has no concept of letting you know how much larger
+             * your buffer needed to be; it just truncates the string and
+             * returns size. */
+            _sir_handlewin32err(ERROR_INSUFFICIENT_BUFFER);
+            resolved = false;
+            break;
+        }
 #endif
-    return retval;
+        if (grow) {
+_sir_selflog("reallocating %zu bytes for buffer and trying again...", size);            
+            _sir_safefree(buffer);
+            buffer = (char*)realloc(NULL, size);
+            if (NULL == buffer) {
+                _sir_handleerr(errno);
+                resolved = false;
+                break;
+            }
+
+            memset(buffer, 0, size);
+            grow = false;
+        }
+
+    } while(true);
+
+    if (!resolved)
+        _sir_safefree(buffer);
+
+_sir_selflog("successfully resolved: '%s'", buffer);
+    return buffer;
 }
 
-bool _sir_getappdir(char* restrict buffer, size_t size) {
-    char tmp[SIR_MAXPATH] = {0};
-    if (_sir_getappfilename(tmp, SIR_MAXPATH)) {
-        strncpy(buffer, _sir_getdirname(tmp), strnlen(tmp, size));
-        return true;
-    }
-    return false;
+char* _sir_getappdir(void) {
+    char* filename = _sir_getappfilename();
+    if (NULL == filename)
+        return NULL;
+
+    return _sir_getdirname(filename);
 }
 
 char* _sir_getbasename(char* restrict path) {
@@ -165,7 +195,6 @@ char* _sir_getbasename(char* restrict path) {
 #if !defined(_WIN32)
     return basename(path);
 #else
-# pragma message("TODO: need to verify the behavior of these functions on windows as compared to *nix")
     // this isn't going to work; basename() and dirname() will strip
     // path components off the end, too. need to verify whether this
     // function only returns a file name part if it contains a full stop,
@@ -179,14 +208,34 @@ char* _sir_getdirname(char* restrict path) {
     if (!_sir_validstr(path))
         return ".";
 
+#pragma message("TODO: come back and revisit dirname_r")
 #if !defined(_WIN32)
+/*# if defined(__APPLE__)
+    //char dir[SIR_MAXPATH] = {0};
+    char* retval = dirname_r(path, NULL);
+    return retval;
+# else*/
     return dirname(path);
+//# endif
 #else
     // TODO: same problem as above.
     if (!PathRemoveFileSpecA((LPSTR)path))
         _sir_handlewin32err(GetLastError());
     return path;
 #endif
+}
+
+bool _sir_ispathrelative(const char* restrict path, bool* restrict relative) {
+    if (!_sir_validstr(path) || _sir_validptr(relative))
+        return false;
+
+#if !defined(_WIN32)
+    *relative = path[0] != '/';
+#else
+    *relative = TRUE == PathIsRelativeA(path);
+#endif
+
+    return true;
 }
 
 /** @} */
