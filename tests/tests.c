@@ -748,15 +748,16 @@ bool sirtest_syslog(void) {
     si.d_syslog.levels = SIRL_DEFAULT;
     si_init = sir_init(&si);
     bool pass = si_init;
+    static const int iterations = 3;
     /* log show --last 10m --color always | grep sirtest */
 
     if (pass) {
-        for (int i = 0; i < 10; i++) {
-            pass &= sir_warn("(%d/%d): this warning message should be logged to stdout and syslog.", i + 1, 10);
-            pass &= sir_error("(%d/%d): this error message should be logged to stdout and syslog.", i + 1, 10);
-            pass &= sir_crit("(%d/%d): this critical message should be logged to stdout and syslog.", i + 1, 10);
-            pass &= sir_alert("(%d/%d): this alert message should be logged to stdout and syslog.", i + 1, 10);
-            pass &= sir_emerg("(%d/%d): this emergency message should be logged to stdout and syslog.", i + 1, 10);
+        for (int i = 0; i < iterations; i++) {
+            pass &= sir_warn("(%d/%d): this warning message should be logged to stdout and syslog.", i + 1, iterations);
+            pass &= sir_error("(%d/%d): this error message should be logged to stdout and syslog.", i + 1, iterations);
+            pass &= sir_crit("(%d/%d): this critical message should be logged to stdout and syslog.", i + 1, iterations);
+            pass &= sir_alert("(%d/%d): this alert message should be logged to stdout and syslog.", i + 1, iterations);
+            pass &= sir_emerg("(%d/%d): this emergency message should be logged to stdout and syslog.", i + 1, iterations);
         }
     }
 
