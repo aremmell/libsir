@@ -1019,7 +1019,7 @@ pid_t _sir_getpid(void) {
 #if !defined(_WIN32)
     return getpid();
 #else
-    return (pid_t)GetProcessId(GetCurrentProcess());
+    return (pid_t)GetCurrentProcessId();
 #endif
 }
 
