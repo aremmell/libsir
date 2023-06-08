@@ -29,9 +29,9 @@ ifeq ($(SIR_SELFLOG),1)
 endif
 
 ifeq ($(SIR_ASSERT_ENABLED),1)
-	CFLAGS = -DDEBUG
+	CFLAGS += -DDEBUG
 else
-	CFLAGS = -DNDEBUG
+	CFLAGS += -DNDEBUG
 endif
 
 # on Windows, automatically defined by the preprocessor.
