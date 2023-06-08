@@ -31,6 +31,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "sirerrors.h"
+#include "sirinternal.h"
 
 #if defined(_WIN32)
 # pragma comment(lib, "Shlwapi.lib")
@@ -69,7 +70,7 @@ void __sir_seterror(sirerror_t err, const sirchar_t* func, const sirchar_t* file
 
 #if defined(SIR_SELFLOG)
     if (_SIR_E_NOERROR != err)
-        __sir_selflog(func, file, line, "%" PRIu32 "", err);
+        __sir_selflog(func, file, line, "set error for thread %d: %" PRIu16 "", _sir_gettid(), _sir_geterrcode(err));
 #endif
 }
 
