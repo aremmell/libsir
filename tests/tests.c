@@ -806,51 +806,65 @@ bool sirtest_filesystem(void) {
     pass &= NULL != cwd;
     printf("\t_sir_getcwd: '%s'\n", PRN_STR(cwd));
 
-    /* path to this binary file. */
-    char* filename = _sir_getappfilename();
-    pass &= NULL != filename;
-    printf("\t_sir_getappfilename: '%s'\n", PRN_STR(filename));
+    if (NULL != cwd) {
+        /* path to this binary file. */
+        char* filename = _sir_getappfilename();
+        pass &= NULL != filename;
+        printf("\t_sir_getappfilename: '%s'\n", PRN_STR(filename));
 
-    /* _sir_get[base|dir]name() can potentially modify filename,
-     * so make a copy for each call. */
-    char* filename2 = filename ? strdup(filename) : NULL;
+        if (NULL != filename) {
+            /* _sir_get[base|dir]name() can potentially modify filename,
+            * so make a copy for each call. */
+            char* filename2 = filename ? strdup(filename) : NULL;
+            pass &= NULL != filename2;
 
-    /* filename, stripped of directory component(s). */
-    char* _basename = _sir_getbasename(filename2);
-    printf("\t_sir_getbasename: '%s'\n", PRN_STR(_basename));
+            if (NULL != filename2) {
+                /* filename, stripped of directory component(s). */
+                char* _basename = _sir_getbasename(filename2);
+                printf("\t_sir_getbasename: '%s'\n", PRN_STR(_basename));
 
-    /* the last strlen(_basename) chars of filename should match. */
-    if (filename) {
-        size_t len    = strlen(_basename);
-        size_t offset = strlen(filename) - len;
-        size_t n      = 0;
+                /* the last strlen(_basename) chars of filename should match. */
+                size_t len    = strlen(_basename);
+                size_t offset = strlen(filename) - len;
+                size_t n      = 0;
 
-        while (n < len) {
-            if (filename[offset++] != _basename[n++]) {
-                pass = false;
-                break;
+                while (n < len) {
+                    if (filename[offset++] != _basename[n++]) {
+                        pass = false;
+                        break;
+                    }
+                };
             }
-        };
+
+            /* directory this binary file resides in. */
+            char* appdir = _sir_getappdir();
+            pass &= NULL != appdir;
+            printf("\t_sir_getappdir: '%s'\n", PRN_STR(appdir));
+
+            /* _sir_get[base|dir]name can potentially modify filename,
+            * so make a copy for each call. */
+            char* filename3 = filename ? strdup(filename) : NULL;
+            pass &= NULL != filename3;
+
+            if (NULL != appdir && NULL != filename3) {
+                /* should yield the same result as _sir_getappdir(). */
+                char* _dirname = _sir_getdirname(filename3);
+                printf("\t_sir_getdirname: '%s'\n", PRN_STR(_dirname));
+
+                if (NULL != appdir) {
+                    pass &= 0 == strncmp(filename, appdir, strnlen(appdir, SIR_MAXPATH));
+                    pass &= 0 == strncmp(filename, _dirname, strnlen(_dirname, SIR_MAXPATH));
+                }
+            }
+
+            _sir_safefree(filename);
+            _sir_safefree(filename2);
+            _sir_safefree(filename3);
+        }
+
+        _sir_safefree(cwd);
     }
-
-    /* directory this binary file resides in. */
-    char* appdir = _sir_getappdir();
-    pass &= NULL != appdir;
-    printf("\t_sir_getappdir: '%s'\n", PRN_STR(appdir));
-
-    /* _sir_get[base|dir]name can potentially modify filename,
-     * so make a copy for each call. */
-    char* filename3 = filename ? strdup(filename) : NULL;
-
-    /* should yield the same result as _sir_getappdir(). */
-    char* _dirname = _sir_getdirname(filename3);
-    printf("\t_sir_getdirname: '%s'\n", PRN_STR(_dirname));
-
-    if (filename && appdir) {
-        pass &= 0 == strncmp(filename, appdir, strnlen(appdir, SIR_MAXPATH));
-        pass &= 0 == strncmp(filename, _dirname, strnlen(_dirname, SIR_MAXPATH));
-    }
-
+    
     /* this next section doesn't really yield any useful boolean pass/fail
      * information, but could be helpful to review manually. */
     char* dubious_dirnames[] = {
@@ -870,9 +884,14 @@ bool sirtest_filesystem(void) {
 #endif        
     };
 
-    for (size_t n = 0; n < _sir_countof(dubious_dirnames); n++)
-        printf("\t_sir_getdirname(" WHITE("'%s'") ") = " WHITE("'%s'") " (after: '%s')\n",
-            dubious_dirnames[n], _sir_getdirname(dubious_dirnames[n]), dubious_dirnames[n]);
+    for (size_t n = 0; n < _sir_countof(dubious_dirnames); n++) {
+        char *tmp = strdup(dubious_dirnames[n]);
+        if (NULL != tmp) {
+            printf("\t_sir_getdirname(" WHITE("'%s'") ") = " WHITE("'%s'") " (after: '%s')\n",
+                tmp, _sir_getdirname(tmp), tmp);
+            _sir_safefree(tmp);            
+        }
+    }
 
     char* dubious_filenames[] = {
 #if !defined(_WIN32)
@@ -889,9 +908,14 @@ bool sirtest_filesystem(void) {
 #endif              
     };
 
-    for (size_t n = 0; n < _sir_countof(dubious_filenames); n++)
-        printf("\t_sir_getbasename(" WHITE("'%s'") ") = " WHITE("'%s'") " (after: '%s')\n",
-            dubious_filenames[n], _sir_getbasename(dubious_filenames[n]), dubious_filenames[n]);
+    for (size_t n = 0; n < _sir_countof(dubious_filenames); n++) {
+        char *tmp = strdup(dubious_filenames[n]);
+        if (NULL != tmp) {
+            printf("\t_sir_getbasename(" WHITE("'%s'") ") = " WHITE("'%s'") " (after: '%s')\n",
+                tmp, _sir_getbasename(tmp), tmp);
+            _sir_safefree(tmp);            
+        }            
+    }
 
     /* absolute/relative paths. */
     static const struct { const char* const path; bool abs; } abs_or_rel_paths[] = {
@@ -967,11 +991,6 @@ bool sirtest_filesystem(void) {
                 real_or_not[n].path, exists ? "true" : "false");               
         }
     }
-
-    _sir_safefree(cwd);
-    _sir_safefree(filename);
-    _sir_safefree(filename2);
-    _sir_safefree(filename3);
 
     sir_cleanup();
     return print_result_and_return(pass);
