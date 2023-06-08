@@ -97,6 +97,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OmitFramePointers>false</OmitFramePointers>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <UseFullPaths>false</UseFullPaths>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -115,6 +117,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OmitFramePointers>false</OmitFramePointers>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <UseFullPaths>false</UseFullPaths>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -137,6 +141,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <UseFullPaths>false</UseFullPaths>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -164,6 +169,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <UseFullPaths>false</UseFullPaths>
+      <OmitFramePointers />
     </ClCompile>
     <Link>
       <GenerateDebugInformation>false</GenerateDebugInformation>

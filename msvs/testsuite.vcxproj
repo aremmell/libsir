@@ -95,6 +95,8 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>$(SolutionDir)\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <UseFullPaths>false</UseFullPaths>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">
@@ -107,6 +109,8 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>$(SolutionDir)\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <UseFullPaths>false</UseFullPaths>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'">
@@ -120,8 +124,11 @@
       <LanguageStandard_C>stdc11</LanguageStandard_C>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
       <AdditionalIncludeDirectories>$(SolutionDir)\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-	  <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <OmitFramePointers />
+      <UseFullPaths>false</UseFullPaths>
     </ClCompile>
     <Link>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
@@ -142,6 +149,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <UseFullPaths>false</UseFullPaths>
     </ClCompile>
     <Link>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
