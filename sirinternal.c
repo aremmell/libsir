@@ -1041,8 +1041,11 @@ pid_t _sir_gettid(void) {
 bool _sir_getthreadname(char name[SIR_MAXPID]) {
 #if defined(__BSD__) || (defined(__linux__) && defined(_GNU_SOURCE))
     int ret = pthread_getname_np(pthread_self(), name, SIR_MAXPID);
-    if (0 != ret)
+    if (0 != ret) {
         _sir_handleerr(ret);
+        return false;
+    }
+    return true;
 #else
     _SIR_UNUSED(name);
     return false;

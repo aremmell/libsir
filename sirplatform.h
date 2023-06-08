@@ -39,20 +39,14 @@
 #  define _DARWIN_C_SOURCE
 # elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__DragonFly__)
 #  define __BSD__
-#  define _BSD_SOURCE
-#  define _BSD_VISIBLE
-# elif defined(__linux__) && !defined(_GNU_SOURCE)
-#   define _GNU_SOURCE
+#  define _BSD_SOURCE 1
+# elif defined(__linux__)
+#  define _GNU_SOURCE
+# else
+#  define _POSIX_C_SOURCE 200809L
+#  define _DEFAULT_SOURCE
+#  define _XOPEN_SOURCE 700
 # endif
-#  if !defined(_POSIX_C_SOURCE)
-#   define _POSIX_C_SOURCE 200809L
-#  endif
-#  if !defined(_DEFAULT_SOURCE)
-#   define _DEFAULT_SOURCE
-#  endif
-#  if !defined(_XOPEN_SOURCE)
-#   define _XOPEN_SOURCE 700
-#  endif
 #else // _WIN32
 # define SIR_NO_SYSTEM_LOGGERS
 # define __WANT_STDC_SECURE_LIB__ 1
