@@ -13,18 +13,30 @@ BINDIR	   = $(BUILDDIR)/bin
 INSTALLLIB = /usr/local/lib
 INSTALLINC = /usr/local/include
 
+# base CFLAGS
+CFLAGS = -Wpedantic -std=c11 -I. -fPIC
+
+# debug/non-debug CFLAGS
 ifeq ($(SIR_DEBUG),1)
-	CFLAGS = -Wpedantic -std=c11 -I. -DDEBUG -fPIC -g -O0 -DSIR_SELFLOG
+	CFLAGS += -g -O0
 else
-	CFLAGS = -Wpedantic -std=c11 -I. -DNDEBUG -fPIC -O3
+	CFLAGS += -O3
 endif
 
-ifeq ($(SIR_NO_SYSTEM_LOGGERS),1)
-	CFLAGS += -DSIR_NO_SYSTEM_LOGGERS
-endif
-
+# enable internal diagnostic logging
 ifeq ($(SIR_SELFLOG),1)
 	CFLAGS += -DSIR_SELFLOG
+endif
+
+ifeq ($(SIR_ASSERT_ENABLED),1)
+	CFLAGS = -DDEBUG
+else
+	CFLAGS = -DNDEBUG
+endif
+
+# on Windows, automatically defined by the preprocessor.
+ifeq ($(SIR_NO_SYSTEM_LOGGERS),1)
+	CFLAGS += -DSIR_NO_SYSTEM_LOGGERS
 endif
 
 # dependencies
