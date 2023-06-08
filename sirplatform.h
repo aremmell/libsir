@@ -167,6 +167,9 @@ typedef void (*sir_once_fn)(void);
   /** The one-time initializer. */
 # define SIR_ONCE_INIT PTHREAD_ONCE_INIT
 
+/** Path component separator. */
+# define SIR_PATH_SEP '/'
+
 #else // _WIN32
 
 # define SIR_MAXPATH MAX_PATH
@@ -187,6 +190,10 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
   /** The one-time initializer. */
 # define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
+
+/** Path component separator. */
+# define SIR_PATH_SEP '\\'
+
 #endif // !_WIN32
 
 #if !defined(thread_local)
@@ -223,5 +230,5 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #elif defined(__GNUC__)
 # define __file__ __FILE_NAME__
 #else
-# define __file__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
+# define __file__ (strrchr(__FILE__, SIR_PATH_SEP) ? strrchr(__FILE__, SIR_PATH_SEP) + 1 : __FILE__)
 #endif
