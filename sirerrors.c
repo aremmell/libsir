@@ -200,14 +200,12 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, const char
     static const char* success_prefix = "\x1b[0;92m";
     static const char* tail           = "\x1b[0m";    
     static const char* arr[] = {
-        /* err */
-        " error ",
+        " error ", /* err */
         "failure",
         "failed",
-        "unsuccessful"
-        /* warn */
-        "bug",    
-        "warn",
+        "unsuccessful",
+        "bug", 
+        "warn", /* warn */
         "ignored",
         "ignoring",
         "skipped",
@@ -216,11 +214,10 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, const char
         "couldn't",
         "can't",
         "cannot",
-        /* success */
-        "succeed",
+        "succeed", /* success */
         "success",
         " ok "
-    }; // err <= 3, warn > 3 && <= 13, success > 13
+    }; // err <= 4, warn > 4 && <= 13 success > 13
 
     bool need_tail = false;
     bool success = true;
@@ -251,7 +248,7 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, const char
 #else // _WIN32
                 if (NULL != StrStrIA(buf, arr[n])) {
 #endif
-                    int put = fputs(n <= 3 ? error_prefix : 
+                    int put = fputs(n <= 4 ? error_prefix : 
                         (n <= 13 ? warning_prefix : success_prefix), stderr);
                     success &= put != EOF;
                     if (put != EOF)
