@@ -225,9 +225,9 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #endif
 #endif /* !_SIR_PLATFORM_H_INCLUDED */
 
-#if defined(__clang__)
+#if defined(__clang__) && defined(__FILE_NAME__)
 # define __file__ __FILE_NAME__
-#elif defined(__GNUC__)
+#elif defined(__GNUC__) && defined(__FILE_NAME__)
 # define __file__ __FILE_NAME__
 #else
 # define __file__ (strrchr(__FILE__, SIR_PATH_SEP) ? strrchr(__FILE__, SIR_PATH_SEP) + 1 : __FILE__)
