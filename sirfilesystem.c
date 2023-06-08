@@ -51,9 +51,11 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st) {
 
     if (relative) {
 #if defined(__APPLE__)
-        int open_flags = O_SEARCH | O_DIRECTORY;
-#else
+        int open_flags = O_SEARCH;
+#elif defined(__linux__)
         int open_flags = O_PATH | O_DIRECTORY;
+#elif defined(__BSD__)
+        int open_flags = O_EXEC | O_DIRECTORY;
 #endif
         int fd = open(".", open_flags);
         if (-1 == fd) {
