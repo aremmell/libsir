@@ -52,13 +52,13 @@ static const sir_levels sir_stderr_def_lvls
     = SIRL_ERROR | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG;
 
 /** Default options for stderr. */
-static const sir_options sir_stderr_def_opts 
+static const sir_options sir_stderr_def_opts
     = SIRO_NOTIME | SIRO_NOPID | SIRO_NOTID;
 
 /** Default levels for the system logger. */
 static const sir_levels sir_syslog_def_lvls
-    = SIRL_NOTICE | SIRL_WARN | SIRL_ERROR | SIRL_CRIT
-    | SIRL_ALERT | SIRL_EMERG;
+    = SIRL_NOTICE | SIRL_WARN | SIRL_ERROR | SIRL_CRIT |
+      SIRL_ALERT | SIRL_EMERG;
 
 /** Default options for the system logger. */
 static const sir_options sir_syslog_def_opts
