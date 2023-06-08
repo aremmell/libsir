@@ -36,33 +36,63 @@
 # pragma comment(lib, "Shlwapi.lib")
 #endif
 
-/**
- * @addtogroup intern
- * @{
- */
+bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st) {
+    if (!_sir_validstr(path) || !_sir_validptr(st))
+        return false;
+
+    memset(st, 0, sizeof(struct stat));
+
+    bool relative = false;
+    if (!_sir_ispathrelative(path, &relative))
+        return false;
+
+#if !defined(_WIN32)
+    int stat_ret = -1;
+
+    if (relative) {
+        int fd = open(".", O_SEARCH | O_DIRECTORY);
+        if (-1 == fd) {
+            _sir_handleerr(errno);
+            return false;
+        }
+        stat_ret = fstatat(fd, path, st, AT_SYMLINK_NOFOLLOW);
+        _sir_safeclose(&fd);
+    } else {
+        stat_ret = stat(path, st);
+    }
+
+    if (-1 == stat_ret) {
+        if (ENOENT == errno) {
+            st->st_flags = SIR_STAT_NONEXISTENT;
+            return true;
+        } else {
+            _sir_handleerr(errno);
+            return false;
+        }
+    }
+
+    return true;
+#pragma message("TODO: See if the above will work on Windows too")    
+#else    
+#error "NOTIMPL"
+/*   *exists = (TRUE == PathFileExistsA(path));
+   return true;*/
+#endif    
+}
 
 bool _sir_pathexists(const char* restrict path, bool* restrict exists) {
     if (!_sir_validstr(path) || !_sir_validptr(exists))
         return false;
 
-#if !defined(_WIN32)
+    *exists = false;
+
     struct stat st = {0};
-    if (0 != stat(path, &st)) {
-        if (ENOENT == errno) {
-            *exists = false;
-            return true;
-        }
-        _sir_selflog("stat('%s') = %s", path, strerror(errno));
+    bool stat_ret  = _sir_pathgetstat(path, &st);
+    if (!stat_ret)
         return false;
-    } else {
-        *exists = true;
-        _sir_selflog("'%s' exists, and is %ld bytes in size.", path,
-            (long)st.st_size);
-        return true;
-    }
-#else    
-   *exists = (TRUE == PathFileExistsA(path));
-#endif
+
+    *exists = (st.st_flags != SIR_STAT_NONEXISTENT);
+    return true;
 }
 
 char* _sir_getcwd(void) {
@@ -87,7 +117,6 @@ char* _sir_getcwd(void) {
 }
 
 char* _sir_getappfilename(void) {
-
     char* buffer = (char*)calloc(SIR_MAXPATH, sizeof(char));
     if (NULL == buffer) {
         _sir_handleerr(errno);
@@ -256,4 +285,45 @@ bool _sir_ispathrelative(const char* restrict path, bool* restrict relative) {
 #endif    
 }
 
-/** @} */
+/*char* _sir_stattostring(const struct stat* restrict st) {
+    if (!_sir_validptr(st))
+        return false;
+
+    char* buffer = (char*)calloc(SIR_STAT_BUFFER_SIZE, sizeof(char));
+    if (!buffer) {
+        _sir_handleerr(errno);
+        return NULL;
+    }
+
+    char* type = "";
+    switch (st->st_mode & S_IFMT) {
+        case S_IFIFO:  type = "named pipe (fifo)"; break;
+        case S_IFCHR:  type = "character special"; break;
+        case S_IFDIR:  type = "directory"; break;
+        case S_IFBLK:  type = "block special"; break;
+        case S_IFREG:  type = "regular"; break;
+        case S_IFLNK:  type = "symlink"; break;
+        case S_IFSOCK: type = "socket"; break;
+        default: type = SIR_UNKNOWN; break;
+    }
+
+    char mode[17] = {0};
+    snprintf(mode, sizeof(mode), "%c%c%c%c%c%c%c%c%c (%03o)",
+        (_sir_bittest(st->st_mode, S_IRUSR) ? 'r' : '-'),
+        (_sir_bittest(st->st_mode, S_IWUSR) ? 'w' : '-'),
+        (_sir_bittest(st->st_mode, S_IXUSR) ? 'x' : '-'),
+        (_sir_bittest(st->st_mode, S_IRGRP) ? 'r' : '-'),
+        (_sir_bittest(st->st_mode, S_IWGRP) ? 'w' : '-'),
+        (_sir_bittest(st->st_mode, S_IXGRP) ? 'x' : '-'),
+        (_sir_bittest(st->st_mode, S_IROTH) ? 'r' : '-'),
+        (_sir_bittest(st->st_mode, S_IWOTH) ? 'w' : '-'),
+        (_sir_bittest(st->st_mode, S_IXOTH) ? 'x' : '-'),
+        (st->st_mode & ((S_IRUSR | S_IWUSR | S_IXUSR) |
+                        (S_IRGRP | S_IWGRP | S_IXGRP) |
+                        (S_IROTH | S_IWOTH | S_IXOTH))));
+
+    snprintf(buffer, SIR_STAT_BUFFER_SIZE, "{ type: %s, size: %ld, uid: %u, "
+        "gid: %u, mode: %s }", type, (long)st->st_size, st->st_uid, st->st_gid, mode);
+
+    return buffer;
+}*/

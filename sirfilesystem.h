@@ -34,60 +34,32 @@
 
 #include "sirplatform.h"
 
-/**
- * @addtogroup intern
- * @{
- */
-
 /** Defines how many characters to grow a buffer by which was deemed too small
  * by a system call (with no information regarding the necessary size). */
 #define SIR_PATH_BUFFER_GROW_BY 32
 
-/**
- * Determines if a file or directory exists in the filesystem.
- * Returns false if an error occurs or an argument is invalid. Places the result
- * in \p exists.
-*/
+/** Buffer size, in characters, for struct stat -> string. */
+#define SIR_STAT_BUFFER_SIZE 128
+
+/** Special flag to indicate to the caller that the file in question
+ * does not exist (_sir_pathgetstat). */
+#define SIR_STAT_NONEXISTENT 0xffffff02U
+
+bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st);
 bool _sir_pathexists(const char* restrict path, bool* restrict exists);
 
-/**
- * Returns the current working directory for the calling process. If an error
- * occurs, returns NULL. Pointers returned must be deallocated with free().
- */
 char* _sir_getcwd(void);
 
-/**
- * Returns the absolute path of the binary executable file for the calling
- * process. If an error occurs, returns NULL. Pointers returned must be
- * deallocated with free().
- */
 char* _sir_getappfilename(void);
 
-/**
- * Returns the absolute path of the directory containing the binary file
- * of the calling process (not necessarily the current working directory).
- */
 char* _sir_getappdir(void);
 
-/**
- * Returns only last component of a path.
- * May return ".", "/", or \p path if no determination can be made.
- */
 char* _sir_getbasename(char* restrict path);
 
-/**
- * Returns all but the last component of a path.
- * May return "." "/", or \p path if no determination can be made.
-*/
 char* _sir_getdirname(char* restrict path);
 
-/**
- * Determines if a given path is relative (or absolute).
- * Returns false if an error occurs or an argument is invalid. Places the result
- * in \p relative.
- */
 bool _sir_ispathrelative(const char* restrict path, bool* restrict relative);
 
-/** @} */
+/* char* _sir_stattostring(const struct stat* restrict st); */
 
 #endif // !_SIR_FILESYSTEM_H_INCLUDED
