@@ -202,11 +202,11 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, const char
     static const char* success_prefix = "\x1b[0;92m";
     static const char* tail           = "\x1b[0m";    
     static const char* arr[] = {
-        " error ", /* err */
+        " error", /* err */
         "failure",
         "failed",
         "unsuccessful",
-        "bug", 
+        " bug", 
         "warn", /* warn */
         "ignored",
         "ignoring",
