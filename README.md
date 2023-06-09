@@ -2,13 +2,13 @@
 
 [![Build Status](https://app.travis-ci.com/aremmell/libsir.svg?branch=master)](https://app.travis-ci.com/aremmell/libsir) ![GitHub](https://img.shields.io/github/license/aremmell/libsir?color=%2340b911)
 
-## Synopsis
+## Overview
 
-libsir is a cross-platform, thread-safe logging library written in C that is designed to simplify and streamline the generation and distribution of human-readable information in software.
+libsir is a cross-platform, thread-safe, fully customizable library designed to simplify and streamline the generation and distribution of human-consumable information in software.
 
-Using libsir, you can make a single call that simultaneously sends information to multiple destinations, _each with their own individual preference for format and levels_.
+With libsir, a single call simultaneously broadcasts formatted information to multiple destinations of your choosing. Each destination may have its own formatting, styling, and verbosity options:
 
-Each 'level' or 'priority' of output can be visually styled however you wish for `stdio` destinations. This allows for immediate visual confirmation that a message appeared in the terminal that you should pay attention to, while less pressing information is more subtle in appearance.
+![libsir-alpha](./docs/res/libsir-alpha.gif)
 
 ## Notables
 
@@ -33,8 +33,8 @@ At this time, the test suite has been compiled and tested on (at minimum) these 
 ### Output destinations
 
 - `stdout` / `stderr`
-- `syslog`
-- _n_ number of log files (_archived automatically a'la logrotate when they get too big_)
+- `syslog` / `os_log` (on macOS)
+- _n_ log files (_archived automatically a'la logrotate when they get too big_)
 
 ### Informational output
 
@@ -57,16 +57,16 @@ libsir is able to output certain data that may contribute to better comprehensio
 
 In addition to decoration options, each destination may be registered to receive any, none, or all priority levels of output. The available levels may be overly granular, but it's better to have unused levels rather than need another one and not have it.
 
-|    Level    | Description                                  |
-| :---------: | :------------------------------------------- |
-|    Debug    | Debugging/diagnostic output.                 |
-| Information | Informational messages.                      |
-|   Notice    | Normal but significant.                      |
-|   Warning   | Warnings that could likely be ignored.       |
-|    Error    | Errors.                                      |
-|  Critical   | Critical errors.                             |
-|    Alert    | Action required ASAP.                        |
-|  Emergency  | Nuclear war, Armageddon, the sky is falling. |
+| Level       | Description                                                  |
+| :---------- | :----------------------------------------------------------- |
+| Debug       | Detailed, overly-verbose diagnostic output.                  |
+| Information | Informative messages.                                        |
+| Notice      | Like informational messages, but with greater significance.  |
+| Warning     | Warnings that may indicate more severe problems in the future. |
+| Error       | Something ocurred that shouldn’t have, or vice-versa; could be recoverable. |
+| Critical    | Events that likely are going to require human intervention.  |
+| Alert       | Action required ASAP.                                        |
+| Emergency   | Nuclear war. Armageddon. The sky is falling.                 |
 
 ## Customization
 
@@ -104,11 +104,11 @@ The following can be modified to alter behavior, and are located in [sirconfig.h
 
 The following are the defaults for each type of destination supported ([sirdefaults.h](./sirdefaults.h)):
 
-| Destination |  Levels                                               | Options
+| Destination |  Levels                                               | Options|
 | :---------: | :---------------------------------------------------: | :------------------------: |
-| stdout      | `SIRL_DEBUG \| SIRL_INFO \| SIRL_NOTICE \| SIRL_WARN` | `SIRO_NOTIME \| SIRO_NOPID \| SIRO_NOTID` |
-| stderr      | `SIRL_ERROR \| SIRL_CRIT \| SIRL_ALERT  \| SIRL_EMERG` | `SIRO_NOTIME \| SIRO_NOPID \| SIRO_NOTID`       |
-| syslog      | `SIRL_ERROR \| SIRL_CRIT \| SIRL_ALERT  \| SIRL_EMERG` | `N/A`                      |
+| stdout      | `SIRL_DEBUG | SIRL_INFO | SIRL_NOTICE | SIRL_WARN` | `SIRO_NOTIME | SIRO_NOPID | SIRO_NOTID` |
+| stderr      | `SIRL_ERROR | SIRL_CRIT | SIRL_ALERT  | SIRL_EMERG` | `SIRO_NOTIME | SIRO_NOPID | SIRO_NOTID`       |
+| syslog      | `SIRL_ERROR | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG` | `N/A`                      |
 | log files   | `SIRL_ALL`                                            | `full formatting`                                 |
 
 #### Styles
@@ -130,15 +130,19 @@ Supported terminals will render text from libsir based on the "styles" used in l
 
 ## Getting started
 
-Clone or download the resitory to your machine, then choose how you'd like to integrate libsir into your project:
+Clone the repository, then choose how you'd like to integrate libsir into your project. The following build toolkits are supported:
 
-### Visual Studio Code
+### VS Code
 
-There is already a code-workspace in the repository (and  my primary means of compiling and debugging the library across platforms). As of right now, the build and launch tasks are not fully functional for every platform, but that's easy enough to figure out, right?.
+
+
+> TODO: write something about what’s left to be done
 
 ### Visual Studio 2022
 
-A veru recent addition is an sln and some vcxproj files in the `msvc` directory. They are connfirmed to work correctly on Windows 11 (x64 &amp; arm64) with Visual Studio 17.6.
+A  Visual Studio 2022 solution (and accompanying projects) can be found in the [msvc](./msvc) directory. Currently, there are configurations for amd64 and arm64.
+
+> TODO: add msbuild tasks to VS Code workspace
 
 ### Unix Makefile
 
