@@ -32,7 +32,7 @@
 #include "sirconsole.h"
 #include "sirinternal.h"
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
 
 bool _sir_write_stdio(FILE* stream, const sirchar_t* message) {
 
@@ -44,7 +44,7 @@ bool _sir_write_stdio(FILE* stream, const sirchar_t* message) {
     return true;
 }
 
-#else
+#else // __WIN__
 
 HANDLE __sir_stdout = INVALID_HANDLE_VALUE;
 HANDLE __sir_stderr = INVALID_HANDLE_VALUE;
@@ -111,4 +111,4 @@ static BOOL CALLBACK __sir_config_consoles_once(PINIT_ONCE ponce, PVOID param, P
     return (_sir_config_console(__sir_stdout) && _sir_config_console(__sir_stderr)) ? TRUE : FALSE;
 }
 
-#endif /* !_WIN32 */
+#endif /* !__WIN__ */

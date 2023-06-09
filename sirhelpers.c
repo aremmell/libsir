@@ -224,7 +224,7 @@ int _sir_fopen(FILE* restrict* restrict streamptr, const sirchar_t* restrict fil
 struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf) {
     if (_sir_validptr(timer) && _sir_validptr(buf)) {
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
-# if defined(_WIN32)
+# if defined(__WIN__)
         errno_t ret = localtime_s(buf, timer);
         if (0 != ret) {
             _sir_handleerr(ret);
@@ -232,7 +232,7 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
         }
 
         return buf;
-# else
+# else // __WIN__
         struct tm* ret = localtime_s(timer, buf);
         if (!ret)
             _sir_handleerr(errno);
@@ -252,9 +252,9 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
 }
 
 int _sir_getchar(void) {
-#if defined(_WIN32)
+#if defined(__WIN__)
     return _getch();
-#else
+#else // !__WIN__
     struct termios cur = {0};
     struct termios new = {0};
 

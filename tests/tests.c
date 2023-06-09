@@ -60,13 +60,13 @@ static const char* arg_perf = "--perf"; /* run performance test instead of stand
 
 int main(int argc, char** argv) {
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
     /* Disallow execution by root / sudo; some of the tests rely on lack of permissions. */
     if (geteuid() == 0) {
         fprintf(stderr, "Sorry, but this program may not be executed by root.\n");
         return EXIT_FAILURE;
     }
-#else
+#else // __WIN__
 #if defined(_DEBUG)
     /* Prevents assert() from calling abort() before the user is able to:
      * a.) break into the code and debug (Retry button)
@@ -253,9 +253,9 @@ bool sirtest_failfilebadpermission(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
     static const char* path = "/noperms";
-#else
+#else // __WIN__
     static const char* path = "C:\\Windows\\System32\\noperms";
 #endif    
 
@@ -564,9 +564,9 @@ bool sirtest_perf(void) {
     static const sirchar_t* logbasename = "libsir-perf";
     static const sirchar_t* logext      = ".log";
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
     static const size_t perflines       = 1000000;
-#else
+#else // __WIN__
     static const size_t perflines       = 100000;
 #endif
 
@@ -869,13 +869,13 @@ bool sirtest_filesystem(void) {
     /* this next section doesn't really yield any useful boolean pass/fail
      * information, but could be helpful to review manually. */
     char* dubious_dirnames[] = {
-#if !defined(_WIN32)
+#if !defined(__WIN__)
         "/foo",
         "/foo/",
         "/foo/bar",
         "/foo/bar/bad:filename",
         "/"
-#else // _WIN32
+#else // __WIN__
         "C:\\foo",
         "C:\\foo\\",
         "C:\\foo\\bar",
@@ -895,12 +895,12 @@ bool sirtest_filesystem(void) {
     }
 
     char* dubious_filenames[] = {
-#if !defined(_WIN32)
+#if !defined(__WIN__)
         "foo/bar/file-or-directory",
         "/foo/bar/file-or-directory",
         "/foo/bar/illegal:filename",
         "/"
-#else // _WIN32
+#else // __WIN__
         "foo\\bar\\file.with.many.full.stops",
         "C:\\foo\\bar\\poorly-renamed.txt.pdf",
         "C:\\foo\\bar\\illegal>filename.txt",
@@ -924,12 +924,12 @@ bool sirtest_filesystem(void) {
         {"relative",                  false},
         {"./relative",                false},
         {"../../relative",            false},
-#if !defined(_WIN32)
+#if !defined(__WIN__)
         {"/usr/local/bin",            true},
         {"/",                         true},
         {"/home/foo/.config",         true},
         {"~/.config",                 true}
-#else // _WIN32
+#else // __WIN__
         {"D:\\absolute",              true},
         {"C:\\Program Files\\FooBar", true},
         {"C:\\",                      true},
@@ -962,11 +962,11 @@ bool sirtest_filesystem(void) {
     static const struct { const char* const path; bool exists; } real_or_not[] = {
         {"../foobarbaz",    false},
         {"foobarbaz",       false},        
-#if !defined(_WIN32)
+#if !defined(__WIN__)
         {"/",               true},
         {"/usr/bin",        true},
         {"/dev",            true},
-#else // _WIN32
+#else // __WIN__
         {"\\Windows",       true},
         {"\\Program Files", true},
 #endif
@@ -1015,18 +1015,18 @@ bool sirtest_XXX(void) {
 /* ========================== end tests ========================== */
 
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
 static void* sirtest_thread(void* arg);
-#else
+#else // __WIN__
 static unsigned sirtest_thread(void* arg);
 #endif
 
 #define NUM_THREADS 4
 
 bool sirtest_mthread_race(void) {
-#if !defined(_WIN32)
+#if !defined(__WIN__)
     pthread_t thrds[NUM_THREADS] = {0};
-#else
+#else // __WIN__
     uintptr_t thrds[NUM_THREADS] = {0};
 #endif
 
@@ -1039,12 +1039,12 @@ bool sirtest_mthread_race(void) {
         char* path = (char*)calloc(SIR_MAXPATH, sizeof(char));
         snprintf(path, SIR_MAXPATH, "multi-thread-race-%zu.log", n);
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
         int create = pthread_create(&thrds[n], NULL, sirtest_thread, (void*)path);
         if (0 != create) {
             errno = create;
             handle_os_error(true, "pthread_create() for thread #%zu failed!", n + 1);
-#else
+#else // __WIN__
         thrds[n] = _beginthreadex(NULL, 0, sirtest_thread, (void*)path, 0, NULL);
         if (0 == thrds[n]) {
             handle_os_error(true, "_beginthreadex() for thread #%zu failed!", n + 1);
@@ -1062,14 +1062,14 @@ bool sirtest_mthread_race(void) {
         for (size_t j = 0; j < last_created + 1; j++) {
             bool joined = true;
             printf("\twaiting for thread %zu/%zu...\n", j + 1, last_created + 1);
-#if !defined(_WIN32)
+#if !defined(__WIN__)
             int join = pthread_join(thrds[j], NULL);
             if (0 != join) {
                 joined = false;
                 errno = join;
                 handle_os_error(true, "pthread_join() for thread #%zu (%p) failed!", j + 1, (void*)thrds[j]);
             }
-#else
+#else // __WIN__
             DWORD wait = WaitForSingleObject((HANDLE)thrds[j], INFINITE);
             if (WAIT_OBJECT_0 != wait) {
                 joined = false;
@@ -1085,9 +1085,9 @@ bool sirtest_mthread_race(void) {
     return print_result_and_return(pass);
 }
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
 static void* sirtest_thread(void* arg) {
-#else
+#else // __WIN__
 unsigned sirtest_thread(void* arg) {
 #endif
     pid_t threadid = _sir_gettid();
@@ -1102,9 +1102,9 @@ unsigned sirtest_thread(void* arg) {
     if (NULL == id) {
         bool unused = print_test_error(false, false);
         _SIR_UNUSED(unused);
-#if !defined(_WIN32)
+#if !defined(__WIN__)
         return NULL;
-#else
+#else // __WIN__
         return 0;
 #endif
     }
@@ -1135,9 +1135,9 @@ unsigned sirtest_thread(void* arg) {
     sir_remfile(id);
     rmfile(mypath);
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
     return NULL;
-#else
+#else // __WIN__
     return 0;
 #endif
 }
@@ -1172,13 +1172,13 @@ bool filter_error(bool pass, uint16_t err) {
 }
 
 uint32_t getrand(uint32_t upper_bound) {
-#if !defined(_WIN32)
+#if !defined(__WIN__)
 # if defined(__MACOS__) || defined(__BSD__)
     return arc4random_uniform(upper_bound);
 # else
     return (uint32_t)(random() % upper_bound);
 # endif
-#else // _WIN32
+#else // __WIN__
     uint32_t ctx = 0;
     if (0 != rand_s(&ctx))
         ctx = (uint32_t)rand();
@@ -1199,9 +1199,9 @@ bool rmfile(const char* filename) {
         return false;
     }
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
     removed = 0 == remove(filename);
-#else
+#else // __WIN__
     removed = FALSE != DeleteFile(filename);
 #endif
 
@@ -1230,7 +1230,7 @@ bool countfiles(const char* search, const char* filename, unsigned* data) {
 
 bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
     DIR* d = opendir(".");
     if (!d)
         return false;
@@ -1248,7 +1248,7 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
 
     closedir(d);
     d = NULL;
-#else
+#else // __WIN__
     WIN32_FIND_DATA finddata = {0};
     HANDLE enumerator        = FindFirstFile("./*", &finddata);
 
@@ -1268,21 +1268,21 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
 }
 
 bool startsirtimer(sirtimer_t* timer) {
-#if !defined(_WIN32)
+#if !defined(__WIN__)
     int gettime = clock_gettime(CLOCK_MONOTONIC, &timer->ts);
     if (0 != gettime) {
         handle_os_error(true, "clock_gettime(%s) failed!", "CLOCK_MONOTONIC");
     }
 
     return 0 == gettime;
-#else
+#else // __WIN__
     GetSystemTimePreciseAsFileTime(&timer->ft);
     return true;
 #endif
 }
 
 float sirtimerelapsed(const sirtimer_t* timer) {
-#if !defined(_WIN32)
+#if !defined(__WIN__)
     struct timespec now;
     if (0 == clock_gettime(CLOCK_MONOTONIC, &now)) {
         return (float)((now.tv_sec * 1e3) + (now.tv_nsec / 1e6) - (timer->ts.tv_sec * 1e3) +
@@ -1291,7 +1291,7 @@ float sirtimerelapsed(const sirtimer_t* timer) {
         handle_os_error(true, "clock_gettime(%s) failed!", "CLOCK_MONOTONIC");
     }
     return 0.0f;
-#else
+#else // __WIN__
     FILETIME now;
     GetSystemTimePreciseAsFileTime(&now);
     ULARGE_INTEGER start = {0};

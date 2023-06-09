@@ -69,6 +69,7 @@
 # define WIN32_LEAN_AND_MEAN
 # define WINVER       0x0A00 /** Windows 10 SDK */
 # define _WIN32_WINNT 0x0A00
+# define __WIN__
 # include <windows.h>
 # include <io.h>
 # include <synchapi.h>
@@ -104,7 +105,7 @@
 # undef SIR_SYSLOG_ENABLED
 #endif
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
 # include <pthread.h>
 # include <unistd.h>
 # include <sys/syscall.h>
@@ -175,7 +176,7 @@ typedef void (*sir_once_fn)(void);
 /** Path component separator. */
 # define SIR_PATH_SEP '/'
 
-#else // _WIN32
+#else // __WIN__
 
 # define SIR_MAXPATH MAX_PATH
 # define SIR_MSEC_TIMER
@@ -199,12 +200,12 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 /** Path component separator. */
 # define SIR_PATH_SEP '\\'
 
-#endif // !_WIN32
+#endif // !__WIN__
 
 #if !defined(thread_local)
 # if __STDC_VERSION__ >= 201112 && !defined(__STDC_NO_THREADS__)
 #  define thread_local _Thread_local
-# elif defined(_WIN32)
+# elif defined(__WIN__)
 #  define thread_local __declspec(thread)
 # elif defined(__GNUC__)
 #  define thread_local __thread
@@ -213,7 +214,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 # endif
 #endif
 
-#if defined(_WIN32) && defined(__STDC_SECURE_LIB__)
+#if defined(__WIN__) && defined(__STDC_SECURE_LIB__)
 # define __HAVE_STDC_SECURE_OR_EXT1__ 
 #elif defined(__STDC_LIB_EXT1__)
 # define __HAVE_STDC_SECURE_OR_EXT1__

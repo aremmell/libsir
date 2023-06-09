@@ -112,7 +112,7 @@ void __sir_setoserror(int code, const sirchar_t* msg, const sirchar_t* func,
 void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uint32_t line);
 #define _sir_handleerr(code) __sir_handleerr(code, __func__, __file__, __LINE__)
 
-#if defined(_WIN32)
+#if defined(__WIN__)
 /**
  * Some Win32 API error codes overlap C library error codes, so they need to be handled separately.
  * Mapping them sounds great, but in practice, valuable information about what went wrong is totally

@@ -35,7 +35,7 @@
 #include "sirtypes.h"
 #include "sirhelpers.h"
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
 
 bool _sir_write_stdio(FILE* stream, const sirchar_t* message);
 
@@ -51,7 +51,7 @@ bool _sir_write_stderr(const sirchar_t* message, size_t len) {
     return _sir_write_stdio(stderr, message);
 }
 
-#else // _WIN32
+#else // __WIN__
 
 extern HANDLE __sir_stdout;
 extern HANDLE __sir_stderr;

@@ -32,7 +32,7 @@
  */
 #include "sirerrors.h"
 
-#if defined(_WIN32)
+#if defined(__WIN__)
 # pragma comment(lib, "Shlwapi.lib")
 #endif
 
@@ -117,7 +117,7 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
     }
 }
 
-#if defined(_WIN32)
+#if defined(__WIN__)
 void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* file, uint32_t line) {
     sirchar_t* errbuf = NULL;
     DWORD flags       = FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |
@@ -245,9 +245,9 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, const char
             va_end(args2);
 
             for (int n = 0; n < _sir_countof(arr); n++) {
-#if !defined(_WIN32)
+#if !defined(__WIN__)
                 if (NULL != strcasestr(buf, arr[n])) {
-#else // _WIN32
+#else // __WIN__
                 if (NULL != StrStrIA(buf, arr[n])) {
 #endif
                     int put = fputs(n <= 4 ? error_prefix : 

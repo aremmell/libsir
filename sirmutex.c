@@ -33,7 +33,7 @@
 #include "sirinternal.h"
 #include "sirplatform.h"
 
-#if !defined(_WIN32) /* pthread mutex implementation */
+#if !defined(__WIN__) /* pthread mutex implementation */
 
 bool _sirmutex_create(sirmutex_t* mutex) {
 
@@ -109,7 +109,7 @@ bool _sirmutex_destroy(sirmutex_t* mutex) {
     return false;
 }
 
-#else // _WIN32
+#else // __WIN__
 
 static bool _sirmutex_waitwin32(sirmutex_t mutex, DWORD msec);
 
@@ -185,4 +185,4 @@ static bool _sirmutex_waitwin32(sirmutex_t mutex, DWORD msec) {
     return false;
 }
 
-#endif /* !_WIN32 */
+#endif /* !__WIN__ */

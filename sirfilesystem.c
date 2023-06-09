@@ -32,7 +32,7 @@
 #include "sirfilesystem.h"
 #include "sirinternal.h"
 
-#if defined(_WIN32)
+#if defined(__WIN__)
 # pragma comment(lib, "Shlwapi.lib")
 #endif
 
@@ -46,7 +46,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st) {
     if (!_sir_ispathrelative(path, &relative))
         return false;
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
     int stat_ret = -1;
 
     if (relative) {
@@ -80,7 +80,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st) {
 
     return true;
 #pragma message("TODO: See if the above will work on Windows too")    
-#else    
+#else //__WIN__
 #error "NOTIMPL"
 /*   *exists = (TRUE == PathFileExistsA(path));
    return true;*/
@@ -103,7 +103,7 @@ bool _sir_pathexists(const char* restrict path, bool* restrict exists) {
 }
 
 char* _sir_getcwd(void) {
-#if !defined(_WIN32)
+#if !defined(__WIN__)
 # if defined(__linux__) && defined(_GNU_SOURCE)
     char* cur = get_current_dir_name();
     if (NULL == cur)
@@ -115,7 +115,7 @@ char* _sir_getcwd(void) {
         _sir_handleerr(errno);
     return cur;
 # endif
-#else // _WIN32
+#else // __WIN__
     char* cur = _getcwd(NULL, 0);
     if (NULL == cur)
         _sir_handleerr(errno);
@@ -149,7 +149,7 @@ char* _sir_getappfilename(void) {
             grow = false;
         }
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
 # if defined(__linux__)
 #  if defined(__HAVE_UNISTD_READLINK__)
         ssize_t read = readlink("/proc/self/exe", buffer, size);
@@ -203,7 +203,7 @@ char* _sir_getappfilename(void) {
 # else
 #  error "no implementation for your platform; please contact the author."
 # endif
-#else // _WIN32
+#else // __WIN__
         DWORD ret = GetModuleFileNameA(NULL, buffer, (DWORD)size);
         _sir_selflog("GetModuleFileNameA() returned: %lu (size = %zu)", ret, size);
         if (0 != ret && ret < (DWORD)size) {
@@ -256,9 +256,9 @@ char* _sir_getbasename(char* restrict path) {
     if (!_sir_validstr(path))
         return ".";
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
     return basename(path);
-#else
+#else // __WIN__
     return PathFindFileNameA(path);
 #endif
 }
@@ -267,9 +267,9 @@ char* _sir_getdirname(char* restrict path) {
     if (!_sir_validstr(path))
         return ".";
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
     return dirname(path);
-#else
+#else // __WIN__
     BOOL unused = PathRemoveFileSpecA((LPSTR)path);
     _SIR_UNUSED(unused);
     return path;
@@ -280,13 +280,13 @@ bool _sir_ispathrelative(const char* restrict path, bool* restrict relative) {
     if (!_sir_validstr(path) || !_sir_validptr(relative))
         return false;
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
     if (path[0] == '/' || (path[0] == '~' && path[1] == '/'))
         *relative = false;
     else
         *relative = true;
     return true;
-#else
+#else // __WIN__
     *relative = (TRUE == PathIsRelativeA(path));
     return true;
 #endif    

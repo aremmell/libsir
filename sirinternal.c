@@ -49,9 +49,9 @@ static sironce_t fc_once = SIR_ONCE_INIT;
 static sirmutex_t ts_mutex;
 static sironce_t ts_once = SIR_ONCE_INIT;
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
 static atomic_uint_fast32_t _sir_magic;
-#else
+#else // __WIN__
 static volatile uint32_t _sir_magic;
 #endif
 
@@ -65,9 +65,9 @@ bool _sir_init(sirinit* si) {
     if (!_sir_validptr(si))
         return false;
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
     if (_SIR_MAGIC == atomic_load(&_sir_magic)) {
-#else
+#else // __WIN__
     if (_SIR_MAGIC == _sir_magic) {
 #endif
         _sir_seterror(_SIR_E_ALREADY);
@@ -88,7 +88,7 @@ bool _sir_init(sirinit* si) {
     if (!_sir_options_sanity(si))
         return false;
 
-#if defined(_WIN32)
+#if defined(__WIN__)
     if (!_sir_initialize_stdio())
         return false;
 #endif
@@ -99,9 +99,9 @@ bool _sir_init(sirinit* si) {
     if (_sir_validptr(_si)) {
         memcpy(_si, si, sizeof(sirinit));
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
         atomic_store(&_sir_magic, _SIR_MAGIC);
-#else
+#else // __WIN__
         _sir_magic = _SIR_MAGIC;
 #endif
 
@@ -156,9 +156,9 @@ bool _sir_cleanup(void) {
 #endif
         _sir_resettextstyles();
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
     atomic_store(&_sir_magic, 0);
-#else
+#else // __WIN__
     _sir_magic = 0;
 #endif
         memset(si, 0, sizeof(sirinit));
@@ -172,10 +172,10 @@ bool _sir_cleanup(void) {
 }
 
 bool _sir_sanity(void) {
-#if !defined(_WIN32)
+#if !defined(__WIN__)
     if (_SIR_MAGIC == atomic_load(&_sir_magic))
         return true;
-#else
+#else // __WIN__
     if (_SIR_MAGIC == _sir_magic)
         return true;
 #endif
@@ -388,7 +388,7 @@ bool _sir_mapmutexid(sir_mutex_id mid, sirmutex_t** m, void** section) {
     return *m != NULL && (!section || *section != NULL);
 }
 
-#if !defined(_WIN32)
+#if !defined(__WIN__)
 void _sir_initialize_once(void) {
     atomic_init(&_sir_magic, 0);
 }
@@ -407,7 +407,7 @@ void _sir_initmutex_ts_once(void) {
     bool unused = _sirmutex_create(&ts_mutex);
     _SIR_UNUSED(unused);
 }
-#else
+#else // __WIN__
 BOOL CALLBACK _sir_initialize_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
     _SIR_UNUSED(ponce);
     _SIR_UNUSED(param);
@@ -439,14 +439,14 @@ BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) 
 #endif
 
 bool _sir_once(sironce_t *once, sir_once_fn func) {
-#if !defined(_WIN32)
+#if !defined(__WIN__)
     int ret = pthread_once(once, func);
     if (0 != ret) {
         _sir_handleerr(ret);
         return false;
     }
     return true;
-#else
+#else // __WIN__
     BOOL ret = InitOnceExecuteOnce(once, func, NULL, NULL);
     if (!ret) {
         _sir_handlewin32err(GetLastError());
@@ -976,7 +976,7 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
                 *msecbuf = 0;
             _sir_handleerr(retval);
         }
-#elif defined(SIR_MSEC_WIN32)
+#elif defined(SIR_MSEC__WIN__)
         static const ULONGLONG uepoch = (ULONGLONG)116444736e9;
 
         FILETIME ftutc = {0};
@@ -1011,9 +1011,9 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
 }
 
 pid_t _sir_getpid(void) {
-#if !defined(_WIN32)
+#if !defined(__WIN__)
     return getpid();
-#else
+#else // __WIN__
     return (pid_t)GetCurrentProcessId();
 #endif
 }
@@ -1030,7 +1030,7 @@ pid_t _sir_gettid(void) {
     tid = (pid_t)pthread_getthreadid_np();
 #elif defined(_DEFAULT_SOURCE)
     tid = syscall(SYS_gettid);
-#elif defined(_WIN32)
+#elif defined(__WIN__)
     tid = (pid_t)GetCurrentThreadId();
 #else
 # error "cannot determine how to get thread id; please contact the author"
