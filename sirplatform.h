@@ -37,16 +37,31 @@
 # if defined(__APPLE__) && defined(__MACH__)
 #  define __MACOS__
 #  define _DARWIN_C_SOURCE
-# elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__DragonFly__)
+# elif defined(__FreeBSD__)
 #  define __BSD__
-#  define _BSD_SOURCE 1
-# elif defined(__linux__)
-#  define _GNU_SOURCE
+#  define _BSD_SOURCE
+#  if !defined(_DEFAULT_SOURCE)
+#   define _DEFAULT_SOURCE
+#  endif
+#  if __FreeBSD_version >= 1202500
+#   define __FreeBSD_PTHREAD_NP_12_2__
+#  elif __FreeBSD_version >= 1103500
+#   define __FreeBSD_PTHREAD_NP_11_3__
+#  endif
 # else
-#  define _POSIX_C_SOURCE 200809L
-#  define _DEFAULT_SOURCE
-#  define _XOPEN_SOURCE 700
+#  if defined(__linux__) && !defined(_GNU_SOURCE)
+#   define _GNU_SOURCE
+#  endif
+#  if !defined(_POSIX_C_SOURCE)
+#   define _POSIX_C_SOURCE 200809L
+#  endif
+#  if !defined(_DEFAULT_SOURCE)
+#   define _DEFAULT_SOURCE
+#  endif
+#  if !defined(_XOPEN_SOURCE)
+#   define _XOPEN_SOURCE 700
 # endif
+#endif
 #else // _WIN32
 # define SIR_NO_SYSTEM_LOGGERS
 # define __WANT_STDC_SECURE_LIB__ 1

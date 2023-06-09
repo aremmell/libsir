@@ -1039,12 +1039,15 @@ pid_t _sir_gettid(void) {
 }
 
 bool _sir_getthreadname(char name[SIR_MAXPID]) {
-#if defined(__BSD__) || (defined(__linux__) && defined(_GNU_SOURCE))
+#if (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || defined(_GNU_SOURCE)
     int ret = pthread_getname_np(pthread_self(), name, SIR_MAXPID);
     if (0 != ret) {
         _sir_handleerr(ret);
         return false;
     }
+    return true;
+#elif defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
+    pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
     return true;
 #else
     _SIR_UNUSED(name);
