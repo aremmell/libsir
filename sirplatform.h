@@ -76,7 +76,6 @@
 # include <process.h>
 # include <conio.h>
 # include <shlwapi.h>
-# include <pathcch.h>
 # include <direct.h>
 #endif
 
