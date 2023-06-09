@@ -36,20 +36,41 @@
 # pragma comment(lib, "Shlwapi.lib")
 #endif
 
-bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st) {
+bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, uint16_t rel_to) {
     if (!_sir_validstr(path) || !_sir_validptr(st))
         return false;
 
     memset(st, 0, sizeof(struct stat));
 
+    int stat_ret = -1;
     bool relative = false;
     if (!_sir_ispathrelative(path, &relative))
         return false;
+    
+    if (relative) {
+        char* base_path = NULL;
+        char* bp_desc   = NULL;
 
-    int stat_ret = -1;
+        if (SIR_PATH_REL_TO_APP == rel_to) {
+            base_path = _sir_getappdir();
+            bp_desc   = "app dir";
+        } else if (SIR_PATH_REL_TO_CWD == rel_to) {
+            base_path = _sir_getcwd();
+            bp_desc   = "cwd";
+        } else {
+            _sir_seterror(_SIR_E_INVALID);
+            return false;
+        }
+
+        if (!base_path) {
+            _sir_handleerr(errno);
+            return false;
+        }
+
+        _sir_selflog("using %s '%s' as base for rel path: '%s'...\n",
+                    bp_desc, base_path, path);
 
 #if !defined(__WIN__)
-    if (relative) {
 #if defined(__MACOS__)
         int open_flags = O_SEARCH;
 #elif defined(__linux__)
@@ -57,28 +78,31 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st) {
 #elif defined(__BSD__)
         int open_flags = O_EXEC | O_DIRECTORY;
 #endif
-        int fd = open(".", open_flags);
+        int fd = open(base_path, open_flags);
         if (-1 == fd) {
             _sir_handleerr(errno);
             return false;
         }
         stat_ret = fstatat(fd, path, st, AT_SYMLINK_NOFOLLOW);
         _sir_safeclose(&fd);
+        _sir_safefree(base_path);
     } else {
         stat_ret = stat(path, st);
     }
-
-#else //__WIN__
-    struct _stat _st = {0};
-    if (relative) {
-        char abs_path[SIR_MAXPATH] = {0};
-        if (NULL == _fullpath(abs_path, path, SIR_MAXPATH)) {
-            _sir_handleerr(errno);
-            return false;
+#else // __WIN__
+        char rel_path[SIR_MAXPATH] = {0};
+        if (!PathRelativePathToA(rel_path, base_path, FILE_ATTRIBUTE_DIRECTORY,
+            path, FILE_ATTRIBUTE_NORMAL)) {
+            _sir_selflog("failed to resolve rel path from base; falling back"
+                " to input rel path '%s'\n", path);
+            stat_ret = stat(path, st);
+        } else {
+            _sir_selflog("resolved rel path from base: '%s'\n", rel_path);
+            stat_ret = stat(rel_path, st);
         }
-        stat_ret = _stat(abs_path, &_st);
+        _sir_safefree(base_path);
     } else {
-        stat_ret = _stat(path, &_st);
+        stat_ret = stat(path, st);
     }
 #endif
 
@@ -95,14 +119,14 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st) {
     return true;
 }
 
-bool _sir_pathexists(const char* restrict path, bool* restrict exists) {
+bool _sir_pathexists(const char* restrict path, bool* restrict exists, uint16_t rel_to) {
     if (!_sir_validstr(path) || !_sir_validptr(exists))
         return false;
 
     *exists = false;
 
     struct stat st = {0};
-    bool stat_ret  = _sir_pathgetstat(path, &st);
+    bool stat_ret  = _sir_pathgetstat(path, &st, rel_to);
     if (!stat_ret)
         return false;
 
@@ -250,14 +274,15 @@ char* _sir_getappdir(void) {
     if (!_sir_validstr(filename))
         return NULL;
 
-    char* dirname = strdup(filename);
+    char* retval = _sir_getdirname(filename);
+    char* dirname = strdup(retval);
     if (!_sir_validstr(dirname)) {
         _sir_safefree(filename);
         return NULL;
     }
 
     _sir_safefree(filename);
-    return _sir_getdirname(dirname);
+    return dirname;
 }
 
 char* _sir_getbasename(char* restrict path) {

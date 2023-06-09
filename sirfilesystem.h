@@ -45,8 +45,13 @@
  * does not exist (_sir_pathgetstat). */
 #define SIR_STAT_NONEXISTENT ((off_t)0xffffff02)
 
-bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st);
-bool _sir_pathexists(const char* restrict path, bool* restrict exists);
+/** Flags used to specify which directory to use as the base reference for
+ * testing relative paths. */
+#define SIR_PATH_REL_TO_CWD (uint16_t)(0x0001)
+#define SIR_PATH_REL_TO_APP (uint16_t)(0x0002)
+
+bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, uint16_t rel_to);
+bool _sir_pathexists(const char* restrict path, bool* restrict exists, uint16_t rel_to);
 
 char* _sir_getcwd(void);
 
