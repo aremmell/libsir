@@ -1,16 +1,10 @@
-/**
- * @file tests.h
- * @brief libsir test suite.
+/*
+ * tests.h
  *
- * This file and accompanying source code originated from <https://github.com/aremmell/libsir>.
- * If you obtained it elsewhere, all bets are off.
- *
- * @author Ryan M. Lederman <lederman@gmail.com>
- * @copyright
- *
- * The MIT License (MIT)
- *
- * Copyright (c) 2018 Ryan M. Lederman
+ * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Copyright: Copyright (c) 2018-2023
+ * Version:   2.2.0
+ * License:   The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -28,18 +22,6 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- * 
- * ---------------------------------------------------------------------------------------------------------
- *
- * @todo Nice to have
- * 1. A plugin system or public interface for registering custom adapters, for things like:
- *   - Posting high-priority messages to a REST API endpoint.
- * 2. Compressing archived logs with zlib or similar.
- * 3. Deleting archived logs older than _n_ days.
- * 4. A project file for Xcode.
- * 5. Something I didn't think of yet...
- * 
- * ---------------------------------------------------------------------------------------------------------
  */
 #ifndef _SIR_TESTS_H_INCLUDED
 #define _SIR_TESTS_H_INCLUDED
@@ -50,8 +32,6 @@
 #include <sirinternal.h>
 #include <sirfilesystem.h>
 #include <sirhelpers.h>
-
-#include <fcntl.h>
 
 #if !defined(__WIN__)
 #   include <dirent.h>

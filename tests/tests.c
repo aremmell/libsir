@@ -1,16 +1,10 @@
-/**
- * @file tests.c
- * @brief libsir test suite
+/*
+ * tests.c
  *
- * This file and accompanying source code originated from <https://github.com/aremmell/libsir>.
- * If you obtained it elsewhere, all bets are off.
- *
- * @author Ryan M. Lederman <lederman@gmail.com>
- * @copyright
- *
- * The MIT License (MIT)
- *
- * Copyright (c) 2018 Ryan M. Lederman
+ * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Copyright: Copyright (c) 2018-2023
+ * Version:   2.2.0
+ * License:   The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -362,7 +356,6 @@ bool sirtest_failremovebadfile(void) {
 }
 
 bool sirtest_rollandarchivefile(void) {
-
     /* roll size minus 1KB so we can write until it maxes. */
     static const long       deltasize   = 1024L;
     const long              fillsize    = SIR_FROLLSIZE - deltasize;
