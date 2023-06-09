@@ -42,24 +42,17 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, uint1
 
     memset(st, 0, sizeof(struct stat));
 
-    int stat_ret = -1;
+    int stat_ret  = -1;
     bool relative = false;
     if (!_sir_ispathrelative(path, &relative))
         return false;
     
     if (relative) {
         char* base_path = NULL;
-        char* bp_desc   = NULL;
-
-        if (SIR_PATH_REL_TO_APP == rel_to) {
-            base_path = _sir_getappdir();
-            bp_desc   = "app dir";
-        } else if (SIR_PATH_REL_TO_CWD == rel_to) {
-            base_path = _sir_getcwd();
-            bp_desc   = "cwd";
-        } else {
-            _sir_seterror(_SIR_E_INVALID);
-            return false;
+        switch(rel_to) {
+            case SIR_PATH_REL_TO_APP: base_path = _sir_getappdir(); break;
+            case SIR_PATH_REL_TO_CWD: base_path = _sir_getcwd(); break;
+            default: _sir_seterror(_SIR_E_INVALID); return false;
         }
 
         if (!base_path) {
@@ -67,22 +60,21 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, uint1
             return false;
         }
 
-        _sir_selflog("using %s '%s' as base for rel path: '%s'...\n",
-                    bp_desc, base_path, path);
-
 #if !defined(__WIN__)
-#if defined(__MACOS__)
+# if defined(__MACOS__)
         int open_flags = O_SEARCH;
-#elif defined(__linux__)
+# elif defined(__linux__)
         int open_flags = O_PATH | O_DIRECTORY;
-#elif defined(__BSD__)
+# elif defined(__BSD__)
         int open_flags = O_EXEC | O_DIRECTORY;
-#endif
+# endif
+
         int fd = open(base_path, open_flags);
         if (-1 == fd) {
             _sir_handleerr(errno);
             return false;
         }
+
         stat_ret = fstatat(fd, path, st, AT_SYMLINK_NOFOLLOW);
         _sir_safeclose(&fd);
         _sir_safefree(base_path);
@@ -90,22 +82,19 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, uint1
         stat_ret = stat(path, st);
     }
 #else // __WIN__
-        char rel_path[SIR_MAXPATH] = {0};
-        if (!PathRelativePathToA(rel_path, base_path, FILE_ATTRIBUTE_DIRECTORY,
-            path, FILE_ATTRIBUTE_NORMAL)) {
-            _sir_selflog("failed to resolve rel path from base; falling back"
-                " to input rel path '%s'\n", path);
-            stat_ret = stat(path, st);
+        char abs_path[SIR_MAXPATH] = {0};
+        if (NULL == PathCombineA(abs_path, base_path, path)) {
+            _sir_handlewin32err(GetLastError());
+            _sir_selflog("PathCombineA() failed!");
         } else {
-            _sir_selflog("resolved rel path from base: '%s'\n", rel_path);
-            stat_ret = stat(rel_path, st);
+            abs_path[SIR_MAXPATH - 1] = '\0';
+            stat_ret = stat(abs_path, st);
         }
         _sir_safefree(base_path);
     } else {
         stat_ret = stat(path, st);
     }
 #endif
-
     if (-1 == stat_ret) {
         if (ENOENT == errno) {
             st->st_size = SIR_STAT_NONEXISTENT;
@@ -325,7 +314,7 @@ bool _sir_ispathrelative(const char* restrict path, bool* restrict relative) {
 #endif    
 }
 
-/*char* _sir_stattostring(const struct stat* restrict st) {
+char* _sir_stattostring(const struct stat* restrict st) {
     if (!_sir_validptr(st))
         return false;
 
@@ -335,35 +324,48 @@ bool _sir_ispathrelative(const char* restrict path, bool* restrict relative) {
         return NULL;
     }
 
+#if defined(__WIN__)
+# define S_IFIFO _S_IFIFO
+# define S_IRUSR 0x0100
+# define S_IWUSR 0x0080
+# define S_IXUSR 0x0040
+# define S_IRGRP 0x0010
+# define S_IWGRP 0x0400
+# define S_IXGRP 0x0004
+# define S_IROTH 0x0020
+# define S_IWOTH 0x0800
+# define S_IXOTH 0x0008
+#endif
+
+
     char* type = "";
     switch (st->st_mode & S_IFMT) {
-        case S_IFIFO:  type = "named pipe (fifo)"; break;
-        case S_IFCHR:  type = "character special"; break;
-        case S_IFDIR:  type = "directory"; break;
-        case S_IFBLK:  type = "block special"; break;
-        case S_IFREG:  type = "regular"; break;
-        case S_IFLNK:  type = "symlink"; break;
-        case S_IFSOCK: type = "socket"; break;
+        case S_IFIFO: type = "named pipe (fifo)"; break;
+        case S_IFCHR: type = "character special"; break;
+        case S_IFDIR: type = "directory"; break;
+        case S_IFREG: type = "regular"; break;
         default: type = SIR_UNKNOWN; break;
     }
 
-    char mode[17] = {0};
-    snprintf(mode, sizeof(mode), "%c%c%c%c%c%c%c%c%c (%03o)",
-        (_sir_bittest(st->st_mode, S_IRUSR) ? 'r' : '-'),
-        (_sir_bittest(st->st_mode, S_IWUSR) ? 'w' : '-'),
-        (_sir_bittest(st->st_mode, S_IXUSR) ? 'x' : '-'),
-        (_sir_bittest(st->st_mode, S_IRGRP) ? 'r' : '-'),
-        (_sir_bittest(st->st_mode, S_IWGRP) ? 'w' : '-'),
-        (_sir_bittest(st->st_mode, S_IXGRP) ? 'x' : '-'),
-        (_sir_bittest(st->st_mode, S_IROTH) ? 'r' : '-'),
-        (_sir_bittest(st->st_mode, S_IWOTH) ? 'w' : '-'),
-        (_sir_bittest(st->st_mode, S_IXOTH) ? 'x' : '-'),
-        (st->st_mode & ((S_IRUSR | S_IWUSR | S_IXUSR) |
-                        (S_IRGRP | S_IWGRP | S_IXGRP) |
-                        (S_IROTH | S_IWOTH | S_IXOTH))));
 
-    snprintf(buffer, SIR_STAT_BUFFER_SIZE, "{ type: %s, size: %ld, uid: %u, "
-        "gid: %u, mode: %s }", type, (long)st->st_size, st->st_uid, st->st_gid, mode);
+    char mode[32] = { 0 };
+    snprintf(mode, sizeof(mode), "%c%c%c%c%c%c%c%c%c%c (%03o)",
+        (_sir_bittest(st->st_mode & 0xF000, S_IFDIR) ? 'd' : '-'),
+        (_sir_bittest(st->st_mode & 0x0FFF, S_IRUSR) ? 'r' : '-'),
+        (_sir_bittest(st->st_mode & 0x0FFF, S_IWUSR) ? 'w' : '-'),
+        (_sir_bittest(st->st_mode & 0x0FFF, S_IXUSR) ? 'x' : '-'),
+        (_sir_bittest(st->st_mode & 0x0FFF, S_IRGRP) ? 'r' : '-'),
+        (_sir_bittest(st->st_mode & 0x0FFF, S_IWGRP) ? 'w' : '-'),
+        (_sir_bittest(st->st_mode & 0x0FFF, S_IXGRP) ? 'x' : '-'),
+        (_sir_bittest(st->st_mode & 0x0FFF, S_IROTH) ? 'r' : '-'),
+        (_sir_bittest(st->st_mode & 0x0FFF, S_IWOTH) ? 'w' : '-'),
+        (_sir_bittest(st->st_mode & 0x0FFF, S_IXOTH) ? 'x' : '-'),
+        ((st->st_mode & 0x0FFF) & ((S_IRUSR | S_IWUSR | S_IXUSR) |
+            (S_IRGRP | S_IWGRP | S_IXGRP) |
+            (S_IROTH | S_IWOTH | S_IXOTH))));
+
+    snprintf(buffer, SIR_STAT_BUFFER_SIZE, "{ type: %s, size: %ld, "
+        "mode: %s }", type, (long)st->st_size, mode);
 
     return buffer;
-}*/
+}
