@@ -50,7 +50,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st) {
     int stat_ret = -1;
 
     if (relative) {
-#if defined(__APPLE__)
+#if defined(__MACOS__)
         int open_flags = O_SEARCH;
 #elif defined(__linux__)
         int open_flags = O_PATH | O_DIRECTORY;
@@ -175,7 +175,7 @@ char* _sir_getappfilename(void) {
 #  else
 #   error "unable to resolve readlink(); see man readlink and its feature test macro requirements."
 #  endif
-# elif defined(__FreeBSD__)
+# elif defined(__BSD__)
         int mib[4] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
         int ret = sysctl(mib, 4, buffer, &size, NULL, 0);
         _sir_selflog("sysctl() returned: %d (size = %zu)", ret, size);
@@ -187,7 +187,7 @@ char* _sir_getappfilename(void) {
             resolved = false;
             break;
         }
-# elif defined(__APPLE__)
+# elif defined(__MACOS__)
         int ret = _NSGetExecutablePath(buffer, (uint32_t*)&size);
         if (0 == ret) {
             resolved = true;

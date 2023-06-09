@@ -93,7 +93,7 @@
 #include <time.h>
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
-# if defined(__APPLE__)
+# if defined(__MACOS__)
 #  define SIR_OS_LOG_ENABLED
 # else
 #  undef SIR_OS_LOG_ENABLED
@@ -122,7 +122,7 @@
 #  include <sys/sysctl.h>
 # elif defined(__linux__)
 #  include <linux/limits.h>
-# elif defined(__APPLE__)
+# elif defined(__MACOS__)
 #  include <mach-o/dyld.h>
 #  include <sys/_types/_timespec.h>
 #  include <mach/mach.h>
@@ -150,7 +150,7 @@
 #  define SIR_MAXPATH 1024
 #endif
 
-#if defined(__APPLE__)
+#if defined(__MACOS__)
 # define SIR_MSEC_TIMER
 # define SIR_MSEC_MACH
 #elif _POSIX_TIMERS > 0
@@ -219,13 +219,13 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 # define __HAVE_STDC_SECURE_OR_EXT1__
 #endif
 
-#if !defined(__APPLE__)
+#if !defined(__MACOS__)
 # if defined(__linux__) && _POSIX_C_SOURCE >= 199309L
 #  define SIR_MSECCLOCK CLOCK_MONOTONIC_RAW
 # else
 #  define SIR_MSECCLOCK CLOCK_MONOTONIC
 # endif
-#else // __APPLE__
+#else // __MACOS__
 # define SIR_MSECCLOCK SYSTEM_CLOCK
 #endif
 #endif /* !_SIR_PLATFORM_H_INCLUDED */

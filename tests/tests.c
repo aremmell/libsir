@@ -1173,7 +1173,7 @@ bool filter_error(bool pass, uint16_t err) {
 
 uint32_t getrand(uint32_t upper_bound) {
 #if !defined(_WIN32)
-# if defined(__APPLE__) || defined(__BSD__)
+# if defined(__MACOS__) || defined(__BSD__)
     return arc4random_uniform(upper_bound);
 # else
     return (uint32_t)(random() % upper_bound);
