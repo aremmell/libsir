@@ -117,6 +117,7 @@ example: static $(OBJ_EXAMPLE)
 
 tests: static $(OBJ_TESTS)
 	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS) $(CFLAGS) -I.. $(LDFLAGS)
+	$(shell touch $(BINDIR)/file.exists)
 	@echo built $(OUT_TESTS) successfully.
 
 docs: static
