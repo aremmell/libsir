@@ -852,12 +852,11 @@ bool sirtest_filesystem(void) {
                 char* _dirname = _sir_getdirname(filename3);
                 printf("\t_sir_getdirname: '%s'\n", PRN_STR(_dirname));
 
-                if (NULL != appdir) {
-                    pass &= 0 == strncmp(filename, appdir, strnlen(appdir, SIR_MAXPATH));
-                    pass &= 0 == strncmp(filename, _dirname, strnlen(_dirname, SIR_MAXPATH));
-                }
+                pass &= 0 == strncmp(filename, appdir, strnlen(appdir, SIR_MAXPATH));
+                pass &= 0 == strncmp(filename, _dirname, strnlen(_dirname, SIR_MAXPATH));
             }
 
+            _sir_safefree(appdir);
             _sir_safefree(filename);
             _sir_safefree(filename2);
             _sir_safefree(filename3);
@@ -960,24 +959,26 @@ bool sirtest_filesystem(void) {
 
     /* file existence. */
     static const struct { const char* const path; bool exists; } real_or_not[] = {
-        {"../foobarbaz",    false},
-        {"foobarbaz",       false},        
+        {"../foobarbaz",          false},
+        {"foobarbaz",             false},        
 #if !defined(__WIN__)
-        {"/",               true},
-        {"/usr/bin",        true},
-        {"/dev",            true},
+        {"/",                     true},
+        {"/usr/bin",              true},
+        {"/dev",                  true},
 #else // __WIN__
-        {"\\Windows",       true},
-        {"\\Program Files", true},
+        {"\\Windows",             true},
+        {"\\Program Files",       true},
 #endif
-        {"LICENSE",         true},
-        {"msvs/libsir.sln", true},
-        {"../",             true},
+        {"../../LICENSE",         true},
+        {"../../msvs/libsir.sln", true},
+        {"../",                   true},
+        {"file.exists",           true}
     };
 
     for (size_t n = 0; n < _sir_countof(real_or_not); n++) {
         bool exists = false;
-        bool ret    = _sir_pathexists(real_or_not[n].path, &exists);
+        bool ret    = _sir_pathexists(real_or_not[n].path, &exists,
+                        SIR_PATH_REL_TO_APP);
 
         pass &= ret;
         if (!ret) {
