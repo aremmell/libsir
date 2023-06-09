@@ -46,9 +46,9 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st) {
     if (!_sir_ispathrelative(path, &relative))
         return false;
 
-#if !defined(__WIN__)
     int stat_ret = -1;
 
+#if !defined(__WIN__)
     if (relative) {
 #if defined(__MACOS__)
         int open_flags = O_SEARCH;
@@ -68,6 +68,20 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st) {
         stat_ret = stat(path, st);
     }
 
+#else //__WIN__
+    struct _stat _st = {0};
+    if (relative) {
+        char abs_path[SIR_MAXPATH] = {0};
+        if (NULL == _fullpath(abs_path, path, SIR_MAXPATH)) {
+            _sir_handleerr(errno);
+            return false;
+        }
+        stat_ret = _stat(abs_path, &_st);
+    } else {
+        stat_ret = _stat(path, &_st);
+    }
+#endif
+
     if (-1 == stat_ret) {
         if (ENOENT == errno) {
             st->st_size = SIR_STAT_NONEXISTENT;
@@ -79,12 +93,6 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st) {
     }
 
     return true;
-#pragma message("TODO: See if the above will work on Windows too")    
-#else //__WIN__
-#error "NOTIMPL"
-/*   *exists = (TRUE == PathFileExistsA(path));
-   return true;*/
-#endif    
 }
 
 bool _sir_pathexists(const char* restrict path, bool* restrict exists) {
