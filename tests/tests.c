@@ -1100,7 +1100,8 @@ unsigned sirtest_thread(void* arg) {
     sirfileid_t id = sir_addfile(mypath, SIRL_ALL, SIRO_MSGONLY);
 
     if (NULL == id) {
-        fprintf(stderr, "\t" RED("failed to add file %s!") "\n", mypath);
+        bool unused = print_test_error(false, false);
+        _SIR_UNUSED(unused);
 #if !defined(_WIN32)
         return NULL;
 #else
