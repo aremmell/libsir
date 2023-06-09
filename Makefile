@@ -127,7 +127,7 @@ docs: static
 install: shared
 	@echo copying $(OUT_SHARED) to $(INSTALLLIB) and headers to $(INSTALLINC)...
 	$(shell cp -f $(OUT_SHARED) "$(INSTALLLIB)/" && \
-	        cp -f sir.h *.hh "$(INSTALLINC)/")
+	        cp -f sir.h "$(INSTALLINC)/")
 	@echo installed libsir successfully.
 
 .PHONY: clean
