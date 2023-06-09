@@ -1,17 +1,14 @@
 /**
  * @file sir.c
- * @brief Public interface.
+ * @brief Public interface to libsir
  *
- * This file and accompanying source code originated from <https://github.com/aremmell/libsir>.
- * If you obtained it elsewhere, all bets are off.
- *
- * @author Ryan M. Lederman <lederman@gmail.com>
- * @version 2.2.0
- * @copyright
- *
- * The MIT License (MIT)
- *
- * Copyright (c) 2018 Ryan M. Lederman
+ * The functions and types defined here comprise the entire set intended for
+ * use by an implementor of the library-unless modification is desired.
+ * 
+ * @author    Ryan M. Lederman \<lederman@gmail.com\>
+ * @date      2018-2023
+ * @version   @doxyconfig PROJECT_NUMBER
+ * @copyright The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in

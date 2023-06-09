@@ -2,15 +2,10 @@
  * @file sirdefaults.h
  * @brief Compile-time default levels, options, and text styilng.
  *
- * This file and accompanying source code originated from <https://github.com/aremmell/libsir>.
- * If you obtained it elsewhere, all bets are off.
- *
- * @author Ryan M. Lederman <lederman@gmail.com>
- * @copyright
- *
- * The MIT License (MIT)
- *
- * Copyright (c) 2018 Ryan M. Lederman
+ * @author    Ryan M. Lederman \<lederman@gmail.com\>
+ * @date      2018-2023
+ * @version   @doxyconfig PROJECT_NUMBER
+ * @copyright The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -35,7 +30,7 @@
 #include "sirtypes.h"
 
 /**
- * @addtogroup custom
+ * @addtogroup config
  * @{
  */
 

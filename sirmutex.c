@@ -1,16 +1,10 @@
-/**
- * @file sirmutex.c
- * @brief pthread and Win32 mutex.
+/*
+ * sirmutex.c
  *
- * This file and accompanying source code originated from <https://github.com/aremmell/libsir>.
- * If you obtained it elsewhere, all bets are off.
- *
- * @author Ryan M. Lederman <lederman@gmail.com>
- * @copyright
- *
- * The MIT License (MIT)
- *
- * Copyright (c) 2018 Ryan M. Lederman
+ * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Copyright: Copyright (c) 2018-2023
+ * Version:   2.2.0
+ * License:   The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -185,4 +179,4 @@ static bool _sirmutex_waitwin32(sirmutex_t mutex, DWORD msec) {
     return false;
 }
 
-#endif /* !__WIN__ */
+#endif // !__WIN__

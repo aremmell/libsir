@@ -1,16 +1,10 @@
-/**
- * @file sirconsole.h
- * @brief Internal stdio management.
+/*
+ * sirconsole.h
  *
- * This file and accompanying source code originated from <https://github.com/aremmell/libsir>.
- * If you obtained it elsewhere, all bets are off.
- *
- * @author Ryan M. Lederman <lederman@gmail.com>
- * @copyright
- *
- * The MIT License (MIT)
- *
- * Copyright (c) 2018 Ryan M. Lederman
+ * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Copyright: Copyright (c) 2018-2023
+ * Version:   2.2.0
+ * License:   The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -69,6 +63,6 @@ bool _sir_write_stderr(const sirchar_t* message, size_t len) {
     return _sir_write_stdio(__sir_stderr, message, len);
 }
 
-#endif
+#endif // !__WIN__
 
 #endif /* !_SIR_CONSOLE_H_INCLUDED */
