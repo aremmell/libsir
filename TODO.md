@@ -1,6 +1,8 @@
 # TODO
 
 - [ ] Bump version 2.2.0
+- [ ] Implement `clang-format` (see [here](https://github.com/nullromo/doxygen-example/blob/main/.clang-format))
+- [ ] Normalize `/* !_DEF */` / `// !_DEF`
 - [ ] Finish comment in sir_syslog_dest once it’s been resolved which option(s) can be utilized for os_log/syslog.
 - [ ] Refactor _sir_syslog_init: it’s a clusterF. Should probably just reject initialization if levels are set but ident/cat are not.
 - [ ] Implement “last message repeated n times”
@@ -9,13 +11,18 @@
 - [ ] sir_syslogopts
   - [ ] Document
   - [ ] Add tests
-- [ ] What we really need is a single call to update one or more properties;  separating them is creating clutter, redundancy, and unnecessary performance losses (by reconfiguring on each call)
-- [ ] Add a `--leave-logs` option to sirtests to leave the logs it generates behind so they can be examined for correctness.
+- [ ] *A single call to update one or more properties;  separating them is creating clutter, redundancy, and unnecessary performance losses (by reconfiguring on each call)*
+- [ ] *Add a `--leave-logs` option to sirtests to leave the logs it generates behind so they can be examined for correctness.*
 - [ ] Document sirfilesystem.h
 - [ ] Tests:
   - [x] Better level/option validation testing
   - [ ] init w/ bad / uninitialized config
   - [ ] Filesystem
+    - [ ] Test too-small buffer on every platform (getappfilename)
+      - [ ] macOS
+      - [ ] Windows
+      - [ ] Linux
+      - [ ] FreeBSD
     - [ ] Path as long as can fit in the PATH_MAX/MAX_PATH
     - [ ] Invalid paths of all kinds:
       - [x] Malformed
@@ -23,9 +30,8 @@
       - [x] Invalid characters
       - [ ] Test file existence of files in directories we don’t have permission to examine and differentiate that from actually not existing
       - [x] “C:\” and “/”
-      - [ ] Mix-and-match slashes on windows
+      - [x] Mix-and-match slashes on windows
       - [ ] Symlinks
-  - [ ] filesystem implementation
 - [ ] Go through sirfilecache and replace any code possible with the new filesystem calls
   - [ ] Implement 256-color and RGB.
   - [ ] Pull styling up into its own module for reusability in other projects
