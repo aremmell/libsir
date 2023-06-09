@@ -63,7 +63,7 @@ bool _sir_stderropts(sirinit* si, sir_update_config_data* data);
 /** Updates levels for the system logger. */
 bool _sir_sysloglevels(sirinit* si, sir_update_config_data* data);
 
-/** Updates options for the system logger.. */
+/** Updates options for the system logger. */
 bool _sir_syslogopts(sirinit* si, sir_update_config_data* data);
 
 /** Updates the identity for the system logger.*/
