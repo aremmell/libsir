@@ -30,6 +30,12 @@
 #include "sirmaps.h"
 #include "sirerrors.h"
 
+/**
+ * Initializes a ::sirinit structure suitable to pass to ::sir_init
+ * without modification.
+ */
+bool _sir_makeinit(sirinit* si);
+
 /** Initializes libsir. */
 bool _sir_init(sirinit* si);
 

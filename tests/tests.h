@@ -172,6 +172,8 @@ bool sirtest_updatesanity(void);
 
 /**
  * @test Properly open, configure, and send messages to syslog().
+ * 
+ * @note Disabled on Windows and macOS.
  */
 bool sirtest_syslog(void);
 

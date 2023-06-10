@@ -38,6 +38,10 @@
  * @{
  */
 
+bool sir_makeinit(sirinit* si) {
+    return _sir_makeinit(si);
+}
+
 bool sir_init(sirinit* si) {
     return _sir_init(si);
 }

@@ -51,6 +51,10 @@ static volatile uint32_t _sir_magic;
 
 static sironce_t magic_once = SIR_ONCE_INIT;
 
+bool _sir_makeinit(sirinit* si) {
+    return false;
+}
+
 bool _sir_init(sirinit* si) {
 
     _sir_seterror(_SIR_E_NOERROR);

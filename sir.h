@@ -46,6 +46,7 @@ extern "C" {
  * @{
  */
 
+bool sir_makeinit(sirinit* si);
 bool sir_init(sirinit* si);
 bool sir_cleanup(void);
 
@@ -76,7 +77,6 @@ bool sir_sysloglevels(sir_levels levels);
 bool sir_syslogopts(sir_options opts);
 bool sir_syslogid(const char* identity);
 bool sir_syslogcat(const char* category);
-
 
 bool sir_filelevels(sirfileid_t id, sir_levels levels);
 bool sir_fileopts(sirfileid_t id, sir_options opts);

@@ -29,6 +29,11 @@
 #include "sirplatform.h"
 #include "sirconfig.h"
 
+/**
+ * @addtogroup public
+ * @{
+ */
+
 /** Log file identifier type. */
 typedef const int* sirfileid_t;
 
@@ -130,14 +135,14 @@ typedef struct {
 
 /**
  * @struct sir_syslog_dest
- * @brief Configuration for a system logger destination.
+ * @brief Configuration for the system logger destination.
  *  
  * @see ::sir_level
  * @see ::sir_option
  * @see ::sir_stdio_dest
  */
 typedef struct {
-    /** ::sir_level bitmask defining output levels to register for. */
+    /** ::sir_level bitmask defining levels to register for. */
     sir_levels levels;
 
     /**
@@ -166,7 +171,7 @@ typedef struct {
     } _state;
 
     /** 
-     * The identity string to pass to the system loggger.
+     * The identity string to pass to the system logger.
      * 
      * If not set, and the processName in the ::sirinit struct
      * is set, that will be used instead.
@@ -175,17 +180,19 @@ typedef struct {
      * of the calling process. If that is unsuccessful as well,
      * the string ::SIR_FALLBACK_SYSLOG_ID will be used.
      * 
-     * @note Can be modified at any time with ::sir_syslogid.
+     * @note Can be modified at runtime by calling ::sir_syslogid.
     */
     char identity[SIR_MAX_SYSLOG_ID];
 
     /**
-     * Some system loggers (e.g. os_log on macOS) require a
+     * The category string to pass to the system logger.
+     * 
+     * Some system loggers (e.g. `os_log` on macOS) require a
      * category string to group and filter log messages.
      * 
      * If not set, the string ::SIR_FALLBACK_SYSLOG_CAT will be used instead.
      * 
-     * @note Can be modified at any time with ::sir_syslogcat.
+     * @note Can be modified at runtime by calling ::sir_syslogcat.
      */
     char category[SIR_MAX_SYSLOG_CAT];
 } sir_syslog_dest;
@@ -219,6 +226,8 @@ typedef struct {
      */
     sirchar_t processName[SIR_MAXNAME];
 } sirinit;
+
+/** @} */
 
 /** Internally-used error code type. */
 typedef uint32_t sirerror_t;

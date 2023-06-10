@@ -35,7 +35,7 @@
  * @defgroup config Configuration
  *
  * Definitions affecting appearance and content of log messages, default values,
- * and various thresholds.
+ * and various thresholds. May be modified to suit a particular use case.
  * 
  * @remark All format strings containing specifiers such as `%%d` are `printf`-style.
  * The man page or documentation for `printf` can be used as a guide.
