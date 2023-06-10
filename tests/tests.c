@@ -465,7 +465,8 @@ bool sirtest_errorsanity(void) {
         {SIR_E_NULLPTR,   "SIR_E_NULLPTR"},   /**< NULL pointer argument (10) */
         {SIR_E_INVALID,   "SIR_E_INVALID"},   /**< Invalid argument (11) */
         {SIR_E_NODEST,    "SIR_E_NODEST"},    /**< No destinations registered for level (12) */
-        {SIR_E_PLATFORM,  "SIR_E_PLATFORM"},  /**< Platform error code %d: %s (13) */
+        {SIR_E_UNAVAIL,   "SIR_E_UNAVAIL"},   /**< Feature is disabled or unavailable (13) */
+        {SIR_E_PLATFORM,  "SIR_E_PLATFORM"},  /**< Platform error code %d: %s (14) */
         {SIR_E_UNKNOWN,   "SIR_E_UNKNOWN"},   /**< Error is not known (4095) */
     };
 

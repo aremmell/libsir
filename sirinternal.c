@@ -564,7 +564,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
 
     if (0 == wanted) {
         _sir_seterror(_SIR_E_NODEST);
-        _sir_selflog("no destinations registered for level %04x", level);
+        _sir_selflog("error: no destinations registered for level %04x", level);
         return false;
     }
 
