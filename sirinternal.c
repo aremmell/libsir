@@ -43,16 +43,32 @@ static sironce_t fc_once = SIR_ONCE_INIT;
 static sirmutex_t ts_mutex;
 static sironce_t ts_once = SIR_ONCE_INIT;
 
+static sironce_t magic_once = SIR_ONCE_INIT;
+
 #if !defined(__WIN__)
 static atomic_uint_fast32_t _sir_magic;
 #else // __WIN__
 static volatile uint32_t _sir_magic;
 #endif
 
-static sironce_t magic_once = SIR_ONCE_INIT;
-
 bool _sir_makeinit(sirinit* si) {
-    return false;
+    if (!_sir_validptr(si))
+        return false;
+
+    memset(si, 0, sizeof(sirinit));
+
+    si->d_stdout.opts   = SIRO_DEFAULT;
+    si->d_stdout.levels = SIRL_DEFAULT;
+
+    si->d_stderr.opts   = SIRO_DEFAULT;
+    si->d_stderr.levels = SIRL_DEFAULT;
+
+#if !defined(SIR_NO_SYSTEM_LOGGERS)
+    si->d_syslog.opts   = SIRO_DEFAULT;
+    si->d_syslog.levels = SIRL_DEFAULT;
+#endif    
+
+    return true;
 }
 
 bool _sir_init(sirinit* si) {
