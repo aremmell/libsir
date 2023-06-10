@@ -153,6 +153,9 @@ bool sirtest_filecachesanity(void) {
     /* this one should fail; max files already added. */
     pass &= NULL == sir_addfile("should-fail.log", SIRL_ALL, SIRO_MSGONLY);
 
+    if (pass)
+        print_expected_error();
+
     sir_info("test test test");
 
     /* now remove previously added files in a different order. */
@@ -553,6 +556,24 @@ bool sirtest_textstylesanity(void) {
     return print_result_and_return(pass);
 }
 
+bool sirtest_failinvalidopts(void) {
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+
+    sir_cleanup();
+    return print_result_and_return(pass);
+}
+
+bool sirtest_failinvalidlevels(void) {
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+
+    sir_cleanup();
+    return print_result_and_return(pass);    
+}
+
 bool sirtest_perf(void) {
 
     static const sirchar_t* logbasename = "libsir-perf";
@@ -733,62 +754,74 @@ bool sirtest_updatesanity(void) {
     return print_result_and_return(pass);
 }
 
-bool sirtest_syslog(void) {
-#if !defined(SIR_SYSLOG_ENABLED)
-    printf("\t" CYAN("SIR_SYSLOG_ENABLED is not defined; skipping.") "\n");
-    return true;
-#else
-    INIT_SL(si, SIRL_ALL, SIRO_NOTID, 0, 0, "sirtests");
-    si.d_syslog.levels = SIRL_DEFAULT;
-    si_init = sir_init(&si);
-    bool pass = si_init;
-    static const int iterations = 3;
-    /* log show --last 10m --color always | grep sirtest */
+static
+bool generic_syslog_test(const char* sl_name, const char* identity, const char* category) {
+    bool pass = true;
+    static const int runs = 3;
 
-    if (pass) {
-        for (int i = 0; i < iterations; i++) {
-            pass &= sir_warn("(%d/%d): this warning message should be logged to stdout and syslog.", i + 1, iterations);
-            pass &= sir_error("(%d/%d): this error message should be logged to stdout and syslog.", i + 1, iterations);
-            pass &= sir_crit("(%d/%d): this critical message should be logged to stdout and syslog.", i + 1, iterations);
-            pass &= sir_alert("(%d/%d): this alert message should be logged to stdout and syslog.", i + 1, iterations);
-            pass &= sir_emerg("(%d/%d): this emergency message should be logged to stdout and syslog.", i + 1, iterations);
-        }
+    /* repeat initializing, opening, logging, closing, cleaning up n times. */
+    sirtimer_t timer;
+    pass &= startsirtimer(&timer);
+
+    printf("\trunning %d passes of random configs (system logger: '%s', "
+           "identity: '%s', category: '%s')...\n", runs, sl_name, identity, category);
+
+    for (int i = 0; i < runs; i++) {
+        /* randomly skip setting process name, identity/category to thoroughly
+           test fallback routines */
+        bool set_procname = getrand_bool((uint32_t)sirtimerelapsed(&timer));
+        bool set_identity = getrand_bool((uint32_t)sirtimerelapsed(&timer));
+        bool set_category = getrand_bool((uint32_t)sirtimerelapsed(&timer));
+
+        printf("\tset_procname: %d, set_identity: %d, set_category: %d\n",
+            set_procname, set_identity, set_category);
+
+        INIT_SL(si, SIRL_ALL, SIRO_NOTID, 0, 0, (set_procname ? "sir_sltest" : ""));
+        si.d_syslog.opts   = SIRO_DEFAULT;
+        si.d_syslog.levels = SIRL_DEFAULT;
+        
+        if (set_identity)
+            _sir_strncpy(si.d_syslog.identity, SIR_MAX_SYSLOG_CAT, identity, SIR_MAX_SYSLOG_ID);
+
+        if (set_category)    
+            _sir_strncpy(si.d_syslog.category, SIR_MAX_SYSLOG_CAT, category, SIR_MAX_SYSLOG_CAT);
+        
+        si_init = sir_init(&si);
+        pass &= si_init;
+        
+        pass &= sir_notice("%d/%d: this notice message sent to stdout and %s.", i + 1, runs, sl_name);
+        pass &= sir_warn("%d/%d: this warning message sent to stdout and %s.", i + 1, runs, sl_name);
+        pass &= sir_error("%d/%d: this error message to stdout and %s.", i + 1, runs, sl_name);
+        pass &= sir_crit("%d/%d: this critical message sent to stdout and %s.", i + 1, runs, sl_name);
+        pass &= sir_alert("%d/%d: this alert message sent to stdout and %s.", i + 1, runs, sl_name);
+        pass &= sir_emerg("%d/%d: this emergency message sent to stdout and %s.", i + 1, runs, sl_name);
+   
+        sir_cleanup();
+
+        if (!pass)
+            break;
     }
 
-    sir_cleanup();
     return print_result_and_return(pass);
+}
+
+bool sirtest_syslog(void) {
+#if !defined(SIR_SYSLOG_ENABLED)
+    printf("\t" GRAY("SIR_SYSLOG_ENABLED is not defined; skipping.") "\n");
+    return true;
+#else
+    return generic_syslog_test("syslog", "sirtests", "tests");
 #endif
 }
 
 bool sirtest_os_log(void) {
 #if !defined(SIR_OS_LOG_ENABLED)
-    printf("\t" CYAN("SIR_OS_LOG_ENABLED is not defined; skipping.") "\n");
+    printf("\t" GRAY("SIR_OS_LOG_ENABLED is not defined; skipping.") "\n");
     return true;
 #else
-    INIT_SL(si, SIRL_ALL, SIRO_NOTID, 0, 0, "sirtests");
-    si.d_syslog.levels = SIRL_DEFAULT;
-    _sir_strncpy(si.d_syslog.identity, SIR_MAX_SYSLOG_CAT, "com.aremell.libsir.tests", SIR_MAX_SYSLOG_ID);
-    _sir_strncpy(si.d_syslog.category, SIR_MAX_SYSLOG_CAT, "tests", SIR_MAX_SYSLOG_CAT);
-    si_init = sir_init(&si);
-    bool pass = si_init;
-    static const int iterations = 3;
-
-    for (int i = 0; i < iterations; i++) {
-        pass &= sir_warn("(%d/%d): this warning message should be logged to stdout and os_log.", i + 1, iterations);
-        pass &= sir_error("(%d/%d): this error message should be logged to stdout and os_log.", i + 1, iterations);
-        pass &= sir_crit("(%d/%d): this critical message should be logged to stdout and os_log.", i + 1, iterations);
-        pass &= sir_alert("(%d/%d): this alert message should be logged to stdout and os_log.", i + 1, iterations);
-        pass &= sir_emerg("(%d/%d): this emergency message should be logged to stdout and os_log.", i + 1, iterations);
-    }
-
-        // TODO: os_activity_initiate_f
-        /* static void os_log_activity1(void* ctx) {
-
-        } */
-
-
-    sir_cleanup();
-    return print_result_and_return(pass);
+    return generic_syslog_test("os_log", "com.aremell.libsir.tests", "tests");
+#pragma message("TODO: os_activity_initiate_f")
+        /* static void os_log_activity1(void* ctx) {} */
 #endif
 }
 
@@ -1025,26 +1058,34 @@ bool sirtest_mthread_race(void) {
     uintptr_t thrds[NUM_THREADS] = {0};
 #endif
 
-    INIT_N(si, SIRL_ALL, SIRO_NOPID, 0, 0, "multi-thread race");
+    INIT_N(si, SIRL_ALL, SIRO_NOPID, 0, 0, "multi-thread-race");
     bool pass           = si_init;
     bool any_created    = false;
     size_t last_created = 0;
-
+    
+    thread_args* heap_args = (thread_args*)calloc(NUM_THREADS, sizeof(thread_args));
+    pass &= NULL != heap_args;
+    if (!heap_args)
+        handle_os_error(true, "calloc(%zu) bytes failed!",
+            NUM_THREADS * sizeof(thread_args));
+    
     for (size_t n = 0; n < NUM_THREADS; n++) {
-        char* path = (char*)calloc(SIR_MAXPATH, sizeof(char));
-        snprintf(path, SIR_MAXPATH, "multi-thread-race-%zu.log", n);
+        if (!pass)
+            break;
+
+        heap_args[n].pass = true;
+        snprintf(heap_args[n].log_file, SIR_MAXPATH, "multi-thread-race-%zu.log", n);
 
 #if !defined(__WIN__)
-        int create = pthread_create(&thrds[n], NULL, sirtest_thread, (void*)path);
+        int create = pthread_create(&thrds[n], NULL, sirtest_thread, (void*)&heap_args[n]);
         if (0 != create) {
             errno = create;
             handle_os_error(true, "pthread_create() for thread #%zu failed!", n + 1);
 #else // __WIN__
-        thrds[n] = _beginthreadex(NULL, 0, sirtest_thread, (void*)path, 0, NULL);
+        thrds[n] = _beginthreadex(NULL, 0, sirtest_thread, (void*)&heap_args[n], 0, NULL);
         if (0 == thrds[n]) {
             handle_os_error(true, "_beginthreadex() for thread #%zu failed!", n + 1);
 #endif
-            free(path);
             pass = false;
             break;
         }
@@ -1071,10 +1112,20 @@ bool sirtest_mthread_race(void) {
                 handle_os_error(false, "WaitForSingleObject() for thread #%zu (%p) failed!", j + 1, (HANDLE)thrds[j]);
             }
 #endif
-            if (joined)
-                printf("\tthread %zu/%zu joined.\n", j + 1, last_created + 1);
+            pass &= joined;
+            if (joined) {
+                printf("\tthread %zu/%zu joined\n", j + 1, last_created + 1);
+
+                pass &= heap_args[j].pass;
+                if (heap_args[j].pass)
+                    printf("\t" GREEN("thread #%zu returned pass = true") "\n", j + 1);
+                else
+                    printf("\t" RED("thread #%zu returned pass = false!") "\n", j + 1);
+            }
         }
     }
+
+    _sir_safefree(heap_args);
 
     sir_cleanup();
     return print_result_and_return(pass);
@@ -1086,13 +1137,10 @@ static void* sirtest_thread(void* arg) {
 unsigned sirtest_thread(void* arg) {
 #endif
     pid_t threadid = _sir_gettid();
-
-    sirchar_t mypath[SIR_MAXPATH] = {0};
-    _sir_strncpy(mypath, SIR_MAXPATH, (const char*)arg, SIR_MAXPATH);
-    free(arg);
-
-    rmfile(mypath);
-    sirfileid_t id = sir_addfile(mypath, SIRL_ALL, SIRO_MSGONLY);
+    thread_args* my_args = (thread_args*)arg;
+    
+    rmfile(my_args->log_file);
+    sirfileid_t id = sir_addfile(my_args->log_file, SIRL_ALL, SIRO_MSGONLY);
 
     if (NULL == id) {
         bool unused = print_test_error(false, false);
@@ -1104,31 +1152,54 @@ unsigned sirtest_thread(void* arg) {
 #endif
     }
 
-    printf("\thi, i'm thread #%d, log file: '%s'\n", threadid, mypath);
+    printf("\thi, i'm thread id %d, logging to: '%s'...\n", threadid, my_args->log_file);
 
-    for (size_t n = 0; n < 100; n++) {
-        for (size_t i = 0; i < 10; i++) {
-            sir_debug("this is random gibberish %zu", (n * i) + i + n);
+    for (size_t n = 0; n < 1000; n++) {
+        /* choose a random level, and colors. */
+        sir_textstyle style;
 
-            if (getrand(15) % 2 == 0) {
-                if (!sir_remfile(id))
-                    print_test_error(false, false);
-
-                id = sir_addfile(mypath, SIRL_ALL, SIRO_MSGONLY);
-
-                if (NULL == id)
-                    print_test_error(false, false);
-                if (!sir_settextstyle(SIRL_DEBUG, SIRS_FG_RED | SIRS_BG_DEFAULT))
-                    print_test_error(false, false);
-            } else {
-                if (!sir_settextstyle(SIRL_DEBUG, SIRS_FG_CYAN | SIRS_BG_YELLOW))
-                    print_test_error(false, false);
-            }
+        if (n % 2 == 0) {
+            style = SIRS_FG_CYAN | SIRS_BG_BLACK;
+            sir_debug("this is log message #%zu", n);
+        } else {
+            style = SIRS_FG_BLACK | SIRS_BG_CYAN;
+            sir_alert("this is log message #%zu", n);
         }
+
+        /* sometimes remove and re-add the log file, and set some options/styles.
+           other times, just set different options/styles. */
+        if (getrand_bool((uint32_t)(n + threadid))) {
+            if (!sir_remfile(id))
+                my_args->pass = print_test_error(false, false);
+
+            id = sir_addfile(my_args->log_file, SIRL_ALL, SIRO_MSGONLY);
+            if (NULL == id)
+                my_args->pass = print_test_error(false, false);
+
+            if (!sir_settextstyle(SIRL_DEBUG, style))
+                my_args->pass = print_test_error(false, false);
+
+            if (!sir_stdoutopts(SIRO_NOPID))
+                my_args->pass = print_test_error(false, false);
+        } else {
+            if (!sir_settextstyle(SIRL_DEBUG, style))
+                my_args->pass = print_test_error(false, false);
+            
+            if (!sir_fileopts(id, SIRO_NOPID))
+                my_args->pass = print_test_error(false, false);
+
+            if (!sir_stdoutopts(SIRO_NOTIME | SIRO_NOLEVEL))
+                my_args->pass = print_test_error(false, false);
+        }
+
+        if (!my_args->pass)
+            break;
     }
 
-    sir_remfile(id);
-    rmfile(mypath);
+    if (!sir_remfile(id))
+        my_args->pass = print_test_error(false, false);
+    
+    rmfile(my_args->log_file);
 
 #if !defined(__WIN__)
     return NULL;

@@ -37,13 +37,14 @@
 #   include <dirent.h>
 #endif
 
-#define STRFMT(clr, s) clr s "\x1b[0m"
-#define RED(s) STRFMT("\x1b[1;91m", s)
-#define GREEN(s) STRFMT("\x1b[1;92m", s)
-#define WHITE(s) STRFMT("\x1b[1;97m", s)
-#define BLUE(s) STRFMT("\x1b[1;34m", s)
-#define CYAN(s) STRFMT("\x1b[1;36m", s)
-#define YELLOW(s) STRFMT("\x1b[1;33m", s)
+#define STRFMT(clr, s) "\x1b[" clr "m" s "\x1b[0m"
+#define RED(s) STRFMT("1;91", s)
+#define GREEN(s) STRFMT("1;92", s)
+#define WHITE(s) STRFMT("1;97", s)
+#define BLUE(s) STRFMT("1;34", s)
+#define CYAN(s) STRFMT("1;36", s)
+#define YELLOW(s) STRFMT("1;33", s)
+#define GRAY(s) STRFMT("1;90", s)
 
 #define INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, name, init) \
     sirinit var         = {0};       \
@@ -67,14 +68,13 @@
     INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, "")
 
 #define TEST_S(n) (n > 1 ? ("test" "s") : "test")
-
 #define PRN_STR(str) (str ? str : RED("NULL"))
 
 
 /**
  * @defgroup tests Tests
  * 
- * libsir integrity tests.
+ * libsir integrity tests
  * 
  * @addtogroup tests
  * @{
@@ -161,6 +161,16 @@ bool sirtest_errorsanity(void);
 bool sirtest_textstylesanity(void);
 
 /**
+ * @test Properly reject invalid option bitmasks.
+ */
+bool sirtest_failinvalidopts(void);
+
+/**
+ * @test Properly reject invalid level bitmasks.
+ */
+bool sirtest_failinvalidlevels(void);
+
+/**
  * @test Performance evaluation.
  */
 bool sirtest_perf(void);
@@ -218,18 +228,22 @@ bool filter_error(bool pass, uint16_t err);
 #endif
 
 /*
- * Utility functions and types
+ * Utility functions, macros, and types 
  */
 
 /** Function signature for a single test. */
 typedef bool (*sir_test_fn)(void);
 
-/** Map a test to a human-readable description. */
+/**
+ * Map a test to a human-readable description. This type constructs the list of
+ * tests to be executed.
+ */
 typedef struct {
     const char* name;
     sir_test_fn fn;
 } sir_test;
 
+/** A simple timer type. */
 typedef struct {
 #if !defined(__WIN__)
     struct timespec ts;
@@ -238,7 +252,20 @@ typedef struct {
 #endif
 } sirtimer_t;
 
+/** Arguments passed to worker threads. */
+typedef struct {
+    char log_file[SIR_MAXPATH];
+    bool pass;
+} thread_args;
+
+/** Returns a random number from the system's best PRNG, modulus upper_bound */
 uint32_t getrand(uint32_t upper_bound);
+
+/** Calls getrand() and returns true if even, false if odd. */
+static inline
+bool getrand_bool(uint32_t upper_bound) {
+    return getrand(upper_bound) % 2 == 0;
+}
 
 bool rmfile(const char* filename);
 bool deletefiles(const char* search, const char* filename, unsigned* data);
