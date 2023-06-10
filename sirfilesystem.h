@@ -50,6 +50,7 @@ bool _sir_pathexists(const char* restrict path, bool* restrict exists, uint16_t 
 char* _sir_getcwd(void);
 
 char* _sir_getappfilename(void);
+char* _sir_getappbasename(void);
 
 char* _sir_getappdir(void);
 

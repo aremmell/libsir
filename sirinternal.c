@@ -221,7 +221,7 @@ bool _sir_options_sanity(const sirinit* si) {
     return levelcheck && optscheck;
 }
 
-static 
+static
 bool _sir_updatelevels(const char* name, sir_levels* old, sir_levels* new) {
     if (*old != *new) {
         _sir_selflog("updating %s levels from %04x to %04x", name, *old, *new);
@@ -232,7 +232,7 @@ bool _sir_updatelevels(const char* name, sir_levels* old, sir_levels* new) {
     return true;
 }
 
-static 
+static
 bool _sir_updateopts(const char* name, sir_options* old, sir_options* new) {
     if (*old != *new) {
         _sir_selflog("updating %s options from %08x to %08x", name, *old, *new);
@@ -681,20 +681,20 @@ bool _sir_syslog_init(const char *name, sir_syslog_dest *ctx) {
             _sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, name,
                 strnlen(name, SIR_MAX_SYSLOG_ID));
         } else {
-            /// try using the process nam
+            // try using the process name
             _sir_selflog("name is no good; trying filename");
-#pragma message("TODO: refactor for new filesystem api")  
-     
-            if (false) {
-                /*_sir_selflog("filename is good: %s", appfilename);
-                _sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, appfilename,
-                    strnlen(appfilename, SIR_MAX_SYSLOG_ID));*/
+            char* appbasename = _sir_getappbasename();
+            if (_sir_validstrnofail(appbasename)) {
+                _sir_selflog("filename is good: %s", appbasename);
+                _sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, appbasename,
+                    strnlen(appbasename, SIR_MAX_SYSLOG_ID));
             } else {
                 // retrieving the process name failed. use fallback.
                 _sir_selflog("filename no good; using fallback");
                 _sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, SIR_FALLBACK_SYSLOG_ID, 
                     strnlen(SIR_FALLBACK_SYSLOG_ID, SIR_MAX_SYSLOG_ID));
-            }            
+            }
+            _sir_safefree(appbasename);
         }
     } else {
         _sir_selflog("already have identity");

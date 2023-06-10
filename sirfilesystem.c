@@ -248,8 +248,20 @@ char* _sir_getappfilename(void) {
     } else {
         _sir_selflog("successfully resolved: '%s'", buffer);
     }
-
+#pragma message("TODO: remove all the selflog calls from this after testing on all platforms w/ too-small buffer")
     return buffer;
+}
+
+char* _sir_getappbasename(void) {
+    char* filename = _sir_getappfilename();
+    if (!_sir_validstr(filename))
+        return NULL;
+#pragma message("TODO: screw basename/dirname(); hand-roll them OR enable CRT debugging and see if they're leaking heap memory")
+    char* retval = _sir_getbasename(filename);
+    char* bname  = strdup(retval);
+
+    _sir_safefree(filename);
+    return bname;
 }
 
 char* _sir_getappdir(void) {
@@ -259,10 +271,6 @@ char* _sir_getappdir(void) {
 
     char* retval = _sir_getdirname(filename);
     char* dirname = strdup(retval);
-    if (!_sir_validstr(dirname)) {
-        _sir_safefree(filename);
-        return NULL;
-    }
 
     _sir_safefree(filename);
     return dirname;
