@@ -90,6 +90,73 @@
 			"Header template with ifdef include guards. Must already have a",
 			" filename, since the guards are generated from the name."
 		]			    
+	},
+	"Doxygen comment block": {
+		"scope": "c,cpp",
+		"prefix": "doxyblock",
+		"body": [
+			"/******************************************************************************",
+			" * ${1:Block Title}",
+			"/******************************************************************************/"
+		],
+		"description": [
+			"A Doxygen comment block to separate sections of code.",
+		]			    
+	},
+	"Doxygen member group": {
+		"scope": "c,cpp",
+		"prefix": "doxymembergroup",
+		"body": [
+			"/**",
+			" * @name ${1:Group name}",
+			" * ${2:Group description}",
+			" */",
+			"/** @{ */",
+			"",
+			"// place group members here",
+			"",
+			"/** @} */",
+			"",
+		],
+		"description": [
+			"A doxygen comment block which creates a member group",
+		]			    
+	},
+	"Doxygen addtogroup": {
+		"scope": "c,cpp",
+		"prefix": "doxyaddtogroup",
+		"body": [
+			"/**",
+			" * @addtogroup ${1:Group label}",
+			" * @{",
+			" */",
+			"",
+			"// place group content here",
+			"",
+			"/** @} */",
+			"",
+		],
+		"description": [
+			"A doxygen 'addtogroup' comment block",
+		]			    
+	},
+	"Doxygen defgroup": {
+		"scope": "c,cpp",
+		"prefix": "doxydefgroup",
+		"body": [
+			"/**",
+			" * @defgroup1 ${1:Group label} ${2:Group description}",
+			" * @{",
+			" */",
+			"",
+			"// place group content here",
+			"",
+			"/** @} */",
+			"",
+		],
+		"description": [
+			"A doxygen 'defgroup' comment block",
+		]			    
 	}
 
 	/*
