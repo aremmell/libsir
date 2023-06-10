@@ -1,16 +1,13 @@
 /**
  * @file example.c
- * @brief Sample usage of libsir.
+ * 
+ * A simple demonstration of initialization, configuration, and basic usage of
+ * libsir.
  *
- * This file and accompanying source code originated from <https://github.com/aremmell/libsir>.
- * If you obtained it elsewhere, all bets are off.
- *
- * @author Ryan M. Lederman <lederman@gmail.com>
- * @copyright
- *
- * The MIT License (MIT)
- *
- * Copyright (c) 2018 Ryan M. Lederman
+ * @author    Ryan M. Lederman \<lederman@gmail.com\>
+ * @date      2018-2023
+ * @version   @doxyconfig PROJECT_NUMBER
+ * @copyright The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -32,17 +29,20 @@
 #include <sir.h>
 #include <sirhelpers.h>
 
-
 int report_error(void);
 
 /**
  * @brief This is a basic example of initializing and configuring libsir for use.
  * 
- * @note You can build this CLI app yourself using `make example` or the
+ * @note You can build this command-line app yourself using `make example` or the
  * Visual Studio [Code] project files.
  * 
  * When the program is finished running, you can see the output in the console,
- * and examine the contents of 'libsir-example.log' in the current directory.
+ * and examine the contents of 'libsir-example.log' in the current working
+ * directory.
+ * 
+ * @returns EXIT_SUCCESS if execution completes successfully, or EXIT_FAILURE
+ * if an error occurs.
  */
 int main(void) {
 
@@ -88,10 +88,9 @@ int main(void) {
      * Configure and add a log file; don't log the process name,
      * and send all levels there.
      */
-    static const sirchar_t* log_file_name = "libsir-example.log";
-    sirfileid_t fileid1 = sir_addfile(log_file_name, SIRL_ALL, SIRO_NONAME);
-    if (NULL == fileid1)
-        return report_error();
+    sirfileid_t fileid = sir_addfile("libsir-example.log", SIRL_ALL, SIRO_NONAME);
+    if (NULL == fileid)
+        report_error();
 
     /*
      * Ready to start logging. The messages passed to sir_debug() will be sent
@@ -130,35 +129,45 @@ int main(void) {
               " %s", "connection reset by peer. Retry in 30sec");
 
     /* 
-     * Let's decide we better enable syslog. Things seem to be going poorly.
-     *
+     * Let's decide we better set up logging to the system logger; things seem
+     * to be going poorly.
+     * 
      * Set up an identity, some options, and register for error and higher.
+     * 
+     * NOTE: If this platform does not have a supported system logger, or the
+     * SIR_NO_SYSTEM_LOGGERS preprcessor define was set when libsir was
+     * compiled, these calls will fail and have no effect.
      */
-    if (!sir_syslogid("MyFooServer")) {
+
+#if !defined(SIR_NO_SYSTEM_LOGGERS)    
+    if (!sir_syslogid(appname))
         report_error();
-    }
 
-    if (!sir_syslogopts(SIRO_NOPID)) {
+    if (!sir_syslogopts(SIRO_NOPID))
         report_error();
-    }
 
-    if (!sir_sysloglevels(SIRL_ERROR | SIRL_CRIT | SIRL_EMERG)) {
+    if (!sir_sysloglevels(SIRL_ERROR | SIRL_CRIT | SIRL_EMERG))
         report_error();
-    }
+#endif
 
-    /* Ok, syslog should be configured now. Continue executing. */
-
+    /*
+     * Okay, syslog should be configured now. Continue executing.
+     */
     sir_crit("Database query failure! Ignoring incoming client requests while"
              " the database is analyzed and repaired...");
 
-    /* Things just keep getting worse for this poor sysadmin. */
-
+    /*
+     * Things just keep getting worse for this poor sysadmin.
+     */
     sir_alert("Database repair attempt unsuccessful! Error: %s", "<unknown>");        
-
     sir_emerg("Unable to process client requests for %s! Restarting...", "4m52s");
-
+    
     sir_debug("Begin server shutdown.");
     sir_debug("Exiting with code %d.", 1);
+
+    /* Deregistger (and close) the log file. */
+    if (fileid && !sir_remfile(fileid))
+        report_error();
 
     /* 
      * Now, you can examine the terminal output, libsir-example.log, and
@@ -166,16 +175,19 @@ int main(void) {
      * 
      * The last thing we have to do is uninitialize libsir by calling sir_cleanup().
      */
-
-    /* Clean up. */
     sir_cleanup();
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
+/**
+ * Prints the last libsir error to stderr.
+ * 
+ * @return EXIT_FAILURE
+ */
 int report_error(void) {
     sirchar_t message[SIR_MAXERROR] = {0};
     uint16_t code = sir_geterror(message);
     fprintf(stderr, "libsir error: (%hu, %s)\n", code, message);
-    return 1;
+    return EXIT_FAILURE;
 }
