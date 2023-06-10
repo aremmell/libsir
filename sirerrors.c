@@ -183,83 +183,42 @@ sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
 
 #if defined(SIR_SELFLOG)
 void __sir_selflog(const char* func, const char* file, uint32_t line, const char* format, ...) {
-    static const char* error_prefix   = "\x1b[0;31m";
-    static const char* warning_prefix = "\x1b[0;33m";
-    static const char* success_prefix = "\x1b[0;92m";
-    static const char* tail           = "\x1b[0m";    
-    static const char* arr[] = {
-        " error", /* err */
-        "failure",
-        "failed",
-        "unsuccessful",
-        " bug", 
-        "warn", /* warn */
-        "ignored",
-        "ignoring",
-        "skipped",
-        "skipping",
-        "unable",
-        "couldn't",
-        "can't",
-        "cannot",
-        "succeed", /* success */
-        "success",
-        " ok "
-    }; // err <= 4, warn > 4 && <= 13 success > 13
+    bool success     = true;
+    char prefix[256] = {0};
 
-    bool need_tail = false;
-    bool success = true;
-    char prefix[256];
-
-    snprintf(prefix, 256, "%s (%s:%" PRIu32 "): ", func, file, line);
+    int wrote = snprintf(prefix, 256, "%s (%s:%" PRIu32 "): ", func, file, line);
+    success &= wrote > 0;
         
-    va_list args;
-    va_list args2;
-    va_start(args, format);
-    va_copy(args2, args);
+    if (wrote > 0) {
+        va_list args;
+        va_list args2;
+        va_start(args, format);
+        va_copy(args2, args);
 
-    int needed = vsnprintf(NULL, 0, format, args);
-    va_end(args);
-    success &= needed > 0;
+        wrote = vsnprintf(NULL, 0, format, args);
+        va_end(args);
+        success &= wrote > 0;
 
-    if (needed > 0) {
-        char *buf = (char*)malloc(needed + 1);
-        success &= NULL != buf;
+        if (wrote > 0) {
+            char *buf = (char*)malloc(wrote + 1);
+            success &= NULL != buf;
 
-        if (buf) {
-            vsnprintf(buf, needed + 1, format, args2);
-            va_end(args2);
+            if (buf) {
+                wrote = vsnprintf(buf, wrote + 1, format, args2);
+                va_end(args2);
+                success &= wrote > 0;
 
-            for (int n = 0; n < _sir_countof(arr); n++) {
-#if !defined(__WIN__)
-                if (NULL != strcasestr(buf, arr[n])) {
-#else // __WIN__
-                if (NULL != StrStrIA(buf, arr[n])) {
-#endif
-                    int put = fputs(n <= 4 ? error_prefix : 
-                        (n <= 13 ? warning_prefix : success_prefix), stderr);
-                    success &= put != EOF;
-                    if (put != EOF)
-                        need_tail = true;
-                    break;
-                }
-            }
-
-            int put = fputs(prefix, stderr);
-            success &= put != EOF;
-
-            put = fputs(buf, stderr);
-            success &= put != EOF;
-
-            if (need_tail) {
-                put = fputs(tail, stderr);
+                int put = fputs(prefix, stderr);
                 success &= put != EOF;
+
+                put = fputs(buf, stderr);
+                success &= put != EOF;
+
+                put = fputs("\n", stderr);
+                success &= put != EOF;
+
+                _sir_safefree(buf);
             }
-
-            put = fputs("\n", stderr);
-            success &= put != EOF;
-
-            _sir_safefree(buf);
         }
     }
 

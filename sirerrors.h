@@ -92,7 +92,6 @@ void __sir_seterror(sirerror_t err, const sirchar_t* func, const sirchar_t* file
 
 void __sir_setoserror(int code, const sirchar_t* msg, const sirchar_t* func,
         const sirchar_t* file, uint32_t line);
-#define _sir_setoserror(err, msg) __sir_setoserror(err, msg, __func__, __file__, __LINE__)
 
 /** Handle a C library error. */
 void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uint32_t line);
@@ -117,10 +116,10 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, const char
 #define _sir_selflog(...) __sir_selflog(__func__, __file__, __LINE__, __VA_ARGS__)
 #else
 static inline
-void __fakefunc(const char* format, ...) {
+void __sir_fakefunc(const char* format, ...) {
     _SIR_UNUSED(format);
 }
-#define _sir_selflog(...) __fakefunc(__VA_ARGS__)
+#define _sir_selflog(...) __sir_fakefunc(__VA_ARGS__)
 #endif
 
 #endif /* !_SIR_ERRORS_H_INCLUDED */
