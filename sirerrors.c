@@ -135,11 +135,6 @@ void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* fi
 }
 #endif
 
-/**
- * @addtogroup errors
- * @{
- */
-#pragma message("TODO: document")
 sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
     _sir_resetstr(message);
 
@@ -185,8 +180,6 @@ sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
     assert(false && sir_te.lasterror);
     return _SIR_E_UNKNOWN;
 }
-
-/** @} */
 
 #if defined(SIR_SELFLOG)
 void __sir_selflog(const char* func, const char* file, uint32_t line, const char* format, ...) {

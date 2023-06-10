@@ -2,7 +2,7 @@
  * @file sirconfig.h
  * @brief Compile-time configuration
  *
- * The values herein may be modified for fine-grained control over the
+ * The definitions herein may be modified for fine-grained control over the
  * appearance and content of log messages, default values, and various
  * thresholds (e.g. file and buffer sizes).
  *
@@ -34,123 +34,202 @@
 /**
  * @defgroup config Configuration
  *
+ * Definitions affecting appearance and content of log messages, default values,
+ * and various thresholds.
+ * 
+ * @remark All format strings containing specifiers such as `%%d` are `printf`-style.
+ * The man page or documentation for `printf` can be used as a guide.
+ *
  * @attention Don't make changes until you've examined how these values are
- * utilized elsewhere in the source code.
+ * utilized elsewhere in the source code! You _will_ break something.
  *
  * @addtogroup config
  * @{
  */
 
-/** The time stamp format string at the beginning of log messages. */
+/**
+ * The time stamp format string at the start of log messages–not including
+ * milliseconds (as::SIR_MSECFORMAT), which is added separately.
+ * 
+ * @remark Only applies if ::SIRO_NOTIME is not set.
+ * 
+ * **Example**
+ *   ~~~
+ *   23:30:26
+ *   ~~~
+ */
 #define SIR_TIMEFORMAT "%H:%M:%S"
 
-/** The format for the current millisecond in time stamps. */
+
+/**
+ * The format for milliseconds (1000ths of a second) in time stamps.
+ * 
+ * @remark Only applies if ::SIRO_NOTIME *or* ::SIRO_NOMSEC are not set.
+ * @remark ::SIRO_NOTIME implies ::SIRO_NOMSEC.
+ * 
+ * **Example**
+ *   ~~~
+ *   .034
+ *   ~~~
+ */
 #define SIR_MSECFORMAT ".%03ld"
 
-/** The format for the human-readable logging level. */
+/**
+ * The format for the human-readable logging level.
+ *
+ * @remark Only applies if ::SIRO_NOLEVEL is not set.
+ * 
+ * **Example**
+ *   ~~~
+ *   [info]
+ *   ~~~
+ */
 #define SIR_LEVELFORMAT "[%s]"
 
-/** The character to place before process and thread IDs.
- * @note Only applies if ::SIRO_NONAME is set. */
+/**
+ * The string placed directly before process and thread IDs.
+ * 
+ * @remark Only applies if ::SIRO_NONAME is set.
+ */
 #define SIR_PIDPREFIX "("
 
-/** The character to place directly after process and thread IDs.
- * @note Only applies if ::SIRO_NONAME is set. */
+/**
+ * The character placed directly after process and thread IDs.
+ * 
+ * @remark Only applies if ::SIRO_NONAME is set.
+ */
 #define SIR_PIDPOSTFIX ")"
 
-/** The format for the current process/thread ID,
- * if no name is available/desired. */
+/**
+ * The format for the current process/thread ID.
+ * 
+ * @remark Only applies if ::SIRO_NOPID or ::SIRO_NOTID are not set.
+ */
 #define SIR_PIDFORMAT "%d"
 
-/** The character to place between process and thread IDs. */
+/**
+ * The string to place between process and thread IDs.
+ * 
+ * @remark Only applies if both ::SIRO_NOPID and ::SIRO_NOTID are not set.
+ * 
+ * **Example**
+ *   ~~~
+ *   3435.1189
+ *   ~~~
+ */
 #define SIR_PIDSEPARATOR "."
 
 /** The string passed to fopen/fopen_s for log files. */
 #define SIR_FOPENMODE "a"
 
-/** The size, in bytes, at which a log file will be rolled/archived. */
-#define SIR_FROLLSIZE (1024L * 1024L * 5L)
+/**
+ * The size, in bytes, at which a log file will be rolled/archived.
+ * @remark Default = 5 MiB.
+*/
+#define SIR_FROLLSIZE (1024 * 1024 * 5)
 
 /**
- * The time format string in file headers (see ::SIR_FHFORMAT).
- * @remark sample: `15:13:41 Sat 28 Apr 18 (-0600)`
+ * The time format string used in file headers (see ::SIR_FHFORMAT).
+ * 
+ * @remark Only applies if ::SIRO_NOHDR is not set.
+ *
+ * **Example**
+ *   ~~~
+ *   15:13:41 Fri 9 Jun 23 (-0600)
+ *   ~~~ 
  */
 #define SIR_FHTIMEFORMAT "%H:%M:%S %a %d %b %y (%z)"
 
 /**
  * The format string written to a log file when logging begins or the file
  * is rolled/archived.
+ * 
+ * @remark Only applies if ::SIRO_NOHDR is not set.
  *
- * - The first %%s format specifier is the message (e.g. ::SIR_FHBEGIN, ::SIR_FHROLLED)
+ * - The first `%%s` format specifier is the message:
+ *   - ::SIR_FHBEGIN
+ *   - ::SIR_FHROLLED
  *
- * - The second %%s is the current date/time (see ::SIR_FHTIMEFORMAT).
+ * - The second `%%s` is the current date/time in the format specified by
+ *   ::SIR_FHTIMEFORMAT.
  */
 #define SIR_FHFORMAT "\n\n----- %s %s -----\n\n"
 
 /**
  * The string included in ::SIR_FHFORMAT when a logging session begins.
+ * 
+ * @remark Only applies if ::SIRO_NOHDR is not set.
  */
 #define SIR_FHBEGIN "session begin @"
 
 /**
- * The string included in ::SIR_FHFORMAT when a file is rolled/archived
- * due to size.
+ * The string included in ::SIR_FHFORMAT when a file is rolled/archived due to
+ * becoming larger than ::SIR_FROLLSIZE bytes in size.
  *
- * The %%s format specifier is the path of the archived file.
+ * @remark Only applies if ::SIRO_NOHDR is not set.
+ * 
+ * The `%%s` format specifier is the path of the archived file.
  */
 #define SIR_FHROLLED "archived as %s due to size @"
 
 /**
  * The time format string for rolled/archived log files (see ::SIR_FNAMEFORMAT).
- * @remark sample: `18-05-05-122049`
+ *
+ * **Example**
+ *   ~~~
+ *   23-06-09-122049
+ *   ~~~ 
  */
 #define SIR_FNAMETIMEFORMAT "%y-%m-%d-%H%M%S"
 
 /**
  * The format string for rolled/archived log file names.
  *
- * - The first %%s format specifier is the name part (the name up to the last '.') of the original
- * file name.
+ * - The first %%s format specifier is the original file name, up to but not
+ *   including the last full stop (.), if any exist.
+ * 
+ * - The second %%s is the time stamp as defined by ::SIR_FNAMETIMEFORMAT.
  *
- * - The second %%s is the time stamp as defined by SIR_ROLLTIMEFORMAT.
+ * - The third %%s is the original file name including, and beyond the last
+ *   full stop, if one was found.
  *
- * - The third %%s is the extension part (the name after and including the last '.')
- * of the original file name if one is present.
- *
- * @remark sample: `oldname-18-05-05-122049.log`
+ * **Example**
+ *   ~~~
+ *   `oldname.log`  ->  `oldname-23-06-09-122049.log`
+ *   ~~~ 
  */
 #define SIR_FNAMEFORMAT "%s-%s%s"
 
 /** The human-readable form of the ::SIRL_EMERG level. */
-#define SIRL_S_EMERG "emrg"
+#define SIRL_S_EMERG  "emrg"
 
 /** The human-readable form of the ::SIRL_ALERT level. */
-#define SIRL_S_ALERT "alrt"
+#define SIRL_S_ALERT  "alrt"
 
 /** The human-readable form of the ::SIRL_CRIT level. */
-#define SIRL_S_CRIT "crit"
+#define SIRL_S_CRIT   "crit"
 
 /** The human-readable form of the ::SIRL_ERROR level. */
-#define SIRL_S_ERROR "erro"
+#define SIRL_S_ERROR  "erro"
 
 /** The human-readable form of the ::SIRL_WARN level. */
-#define SIRL_S_WARN "warn"
+#define SIRL_S_WARN   "warn"
 
 /** The human-readable form of the ::SIRL_NOTICE level. */
 #define SIRL_S_NOTICE "noti"
 
 /** The human-readable form of the ::SIRL_INFO level. */
-#define SIRL_S_INFO "info"
+#define SIRL_S_INFO   "info"
 
 /** The human-readable form of the ::SIRL_DEBUG level. */
-#define SIRL_S_DEBUG "debg"
+#define SIRL_S_DEBUG  "debg"
 
-/** The maximum number of log files that may be registered. */
+/** The maximum number of log files that may be registered at one time. */
 #define SIR_MAXFILES 16
 
 /**
- * The maximum number of characters allowable in one message. This
- * does not include accompanying formatted output (@see SIR_MAXOUTPUT).
+ * The maximum number of characters allowable in one log message. This
+ * does not include accompanying formatted output (see ::SIR_MAXOUTPUT).
  */
 #define SIR_MAXMESSAGE 2048
 
@@ -171,7 +250,7 @@
 
 /**
  * The size, in characters, of the buffer used to hold system logger identity
- * strings. 
+ * strings.
  */
 #define SIR_MAX_SYSLOG_ID 128
 
@@ -188,35 +267,32 @@
 #define SIR_MAXMISC 7
 
 /**
- * The minimum size, in characters, of the buffer used to hold a sequence
- * of styling data in 16-color mode.
+ * The size, in characters, of the buffer used to hold a sequence of styling
+ * data in 16-color mode.
  */
 #define SIR_MAXSTYLE_16_COLOR 16
-
-/**
- * For now, we will stick with just the one define for SIR_MAXOUTPUT,
- * but as soon as 256-color and RGB color modes are implemented, we
- * will need more than one of these.
- */
 #define SIR_MAXSTYLE SIR_MAXSTYLE_16_COLOR
 
 /** The maximum size, in characters, of final formatted output. */
 #define SIR_MAXOUTPUT \
-    SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME + SIR_MAXLEVEL + SIR_MAXNAME + (SIR_MAXPID * 2) + \
-        SIR_MAXMISC + 1
+    SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME + SIR_MAXLEVEL + \
+    SIR_MAXNAME + (SIR_MAXPID * 2) + SIR_MAXMISC + 1
 
 /** The maximum size, in characters, of an error message. */
 #define SIR_MAXERROR 256
 
 /**
- * The format string for error messages returned by ::_sir_geterror.
+ * The format string for error messages returned by ::sir_geterror.
  *
- * - The first %%s format specifier is the function name.
- * - The second %%s is the file name.
- * - The %%lu is the line number in the file.
- * - The third %%s is the error message.
- *
- * @remark sample: `Error in findneedle (haystack.c:384): 'Too much hay'`
+ * - The first `%%s` format specifier is the function name.
+ * - The second `%%s` is the file name.
+ * - The `%%lu` is the line number in the file.
+ * - The third `%%s` is the error message.
+ * 
+ * **Example**
+ *   ~~~
+ *   Error in findneedle (haystack.c:384): 'Too much hay'
+ *   ~~~ 
  */
 #define SIR_ERRORFORMAT "Error in %s (%s:%u): '%s'"
 
@@ -224,25 +300,25 @@
 #define SIR_UNKNOWN "<unknown>"
 
 /** stderr destination string. */
-#define SIR_DESTNAME_STDERR "stderr"
+#define SIR_DESTNAME_STDERR     "stderr"
 
 /** stdout destination string. */
-#define SIR_DESTNAME_STDOUT "stdout"
+#define SIR_DESTNAME_STDOUT     "stdout"
 
 /** System logger destination string. */
-#define SIR_DESTNAME_SYSLOG "syslog"
+#define SIR_DESTNAME_SYSLOG     "syslog"
 
-/** Fallback system loggger identity. */
-#define SIR_FALLBACK_SYSLOG_ID "libsir"
+/** Fallback system logger identity. */
+#define SIR_FALLBACK_SYSLOG_ID  "libsir"
 
 /** Fallback system logger category. */
 #define SIR_FALLBACK_SYSLOG_CAT "general"
 
-/** 
- * The number of actual levels; ::SIRL_NONE, ::SIRL_ALL, and ::SIRL_DEFAULT 
+/**
+ * The number of actual levels; ::SIRL_NONE, ::SIRL_ALL, and ::SIRL_DEFAULT
  * are pseudo levels and end up being mapped (or not) to the other 8.
  */
-#define SIR_NUMLEVELS 8 
+#define SIR_NUMLEVELS 8
 
 /** The prefix string used to begin a styling sequence in stdio output. */
 #define SIR_BEGINSTYLE "\x1b["

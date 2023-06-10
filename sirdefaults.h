@@ -1,6 +1,6 @@
 /**
  * @file sirdefaults.h
- * @brief Compile-time default levels, options, and text styilng.
+ * @brief Default levels, options, and text styilng.
  *
  * @author    Ryan M. Lederman \<lederman@gmail.com\>
  * @date      2018-2023
