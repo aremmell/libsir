@@ -118,6 +118,18 @@ bool sir_remfile(sirfileid_t id) {
     return _sir_remfile(id);
 }
 
+bool sir_filelevels(sirfileid_t id, sir_levels levels) {
+    _sir_defaultlevels(&levels, sir_file_def_lvls);
+    sir_update_config_data data = { SIRU_LEVELS, &levels, NULL, NULL, NULL };
+    return _sir_updatefile(id, &data);
+}
+
+bool sir_fileopts(sirfileid_t id, sir_options opts) {
+    _sir_defaultopts(&opts, sir_file_def_opts);
+    sir_update_config_data data = { SIRU_OPTIONS, NULL, &opts, NULL, NULL };
+    return _sir_updatefile(id, &data);
+}
+
 bool sir_settextstyle(sir_level level, sir_textstyle style) {
     return _sir_settextstyle(level, style);
 }
@@ -194,18 +206,6 @@ bool sir_syslogcat(const char* category) {
     _sir_seterror(_SIR_E_UNAVAIL);
     return false;
 #endif
-}
-
-bool sir_filelevels(sirfileid_t id, sir_levels levels) {
-    _sir_defaultlevels(&levels, sir_file_def_lvls);
-    sir_update_config_data data = { SIRU_LEVELS, &levels, NULL, NULL, NULL };
-    return _sir_updatefile(id, &data);
-}
-
-bool sir_fileopts(sirfileid_t id, sir_options opts) {
-    _sir_defaultopts(&opts, sir_file_def_opts);
-    sir_update_config_data data = { SIRU_OPTIONS, NULL, &opts, NULL, NULL };
-    return _sir_updatefile(id, &data);
 }
 
 /** @} */

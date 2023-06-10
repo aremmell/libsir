@@ -57,7 +57,7 @@ typedef uint16_t sir_levels;
 
 /** Formatting options for a destination. */
 typedef enum {
-    SIRO_ALL     = 0x00000000, /**< Effectively = ::SIRO_MSGONLY. */
+    SIRO_ALL     = 0x00000000, /**< Include all formatting and functionality. */
     SIRO_NOTIME  = 0x00000200, /**< Exclude time stamps (implies ::SIRO_NOMSEC). */
     SIRO_NOLEVEL = 0x00000400, /**< Exclude human-readable logging level. */
     SIRO_NONAME  = 0x00000800, /**< Exclude process/app name. */
@@ -65,7 +65,7 @@ typedef enum {
     SIRO_NOPID   = 0x00002000, /**< Exclude process ID. */
     SIRO_NOTID   = 0x00004000, /**< Exclude thread ID/name. */
     SIRO_NOHDR   = 0x00010000, /**< Don't write header messages to log files. */
-    SIRO_MSGONLY = 0x000eff00, /**< Sets all other options except ::SIRO_NOHDR. */
+    SIRO_MSGONLY = 0x00007e00, /**< Sets all other options except ::SIRO_NOHDR. */
     SIRO_DEFAULT = 0x00100000  /**< Default options for this type of destination. */
 } sir_option;
 
@@ -325,7 +325,8 @@ typedef enum {
     SIRU_LEVELS     = 0x00000001,
     SIRU_OPTIONS    = 0x00000002,
     SIRU_SYSLOG_ID  = 0x00000004,
-    SIRU_SYSLOG_CAT = 0x00000008
+    SIRU_SYSLOG_CAT = 0x00000008,
+    SIRU_ALL        = 0x0000000f
 } sir_config_data_field;
 
 /** Encapsulates dynamic updating of current configuration. */

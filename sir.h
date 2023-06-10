@@ -64,6 +64,9 @@ bool sir_emerg(const sirchar_t* format, ...);
 sirfileid_t sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts);
 bool sir_remfile(sirfileid_t id);
 
+bool sir_filelevels(sirfileid_t id, sir_levels levels);
+bool sir_fileopts(sirfileid_t id, sir_options opts);
+
 bool sir_settextstyle(sir_level level, sir_textstyle style);
 bool sir_resettextstyles(void);
 
@@ -77,9 +80,6 @@ bool sir_sysloglevels(sir_levels levels);
 bool sir_syslogopts(sir_options opts);
 bool sir_syslogid(const char* identity);
 bool sir_syslogcat(const char* category);
-
-bool sir_filelevels(sirfileid_t id, sir_levels levels);
-bool sir_fileopts(sirfileid_t id, sir_options opts);
 
 /** @} */
 

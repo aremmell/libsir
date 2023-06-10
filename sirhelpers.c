@@ -47,32 +47,31 @@ bool _sir_validfid(int id) {
 
 /** Validates a sir_update_config_data structure. */
 bool _sir_validupdatedata(sir_update_config_data* data) {
-
     if (!_sir_validptr(data))
         return false;
 
-    if (data->fields == 0)
-        return false;
-
     bool valid = true;
-    if (_sir_bittest(data->fields, SIRU_LEVELS)) {
+    if ((data->fields & SIRU_ALL) == 0 || (data->fields & ~SIRU_ALL) != 0)
+        valid = false;
+
+    if (valid && _sir_bittest(data->fields, SIRU_LEVELS))
         valid &= (_sir_validptrnofail(data->levels) &&
             _sir_validlevels(*data->levels));
-    }
 
-    if (_sir_bittest(data->fields, SIRU_OPTIONS)) {
+    if (valid && _sir_bittest(data->fields, SIRU_OPTIONS))
         valid &= (_sir_validptrnofail(data->opts) &&
             _sir_validopts(*data->opts));
-    }
     
-    if (_sir_bittest(data->fields, SIRU_SYSLOG_ID))
+    if (valid && _sir_bittest(data->fields, SIRU_SYSLOG_ID))
         valid &= _sir_validstrnofail(data->sl_identity);
 
-    if (_sir_bittest(data->fields, SIRU_SYSLOG_CAT))
+    if (valid && _sir_bittest(data->fields, SIRU_SYSLOG_CAT))
         valid &= _sir_validstrnofail(data->sl_category);                
     
-    if (!valid)
+    if (!valid) {
         _sir_seterror(_SIR_E_INVALID);
+        assert("!invalid sir_update_config_data");
+    }
 
     return valid;
 }
@@ -86,7 +85,8 @@ bool _sir_validlevels(sir_levels levels) {
          _sir_bittest(levels, SIRL_ERROR)            ||
          _sir_bittest(levels, SIRL_CRIT)             ||
          _sir_bittest(levels, SIRL_ALERT)            ||
-         _sir_bittest(levels, SIRL_EMERG)))
+         _sir_bittest(levels, SIRL_EMERG)            &&
+         ((levels & ~SIRL_ALL) == 0)))
          return true;
                 
     _sir_seterror(_SIR_E_LEVELS);
@@ -109,13 +109,15 @@ bool _sir_validlevel(sir_level level) {
 }
 
 bool _sir_validopts(sir_options opts) {
-    if ((SIRO_ALL == opts || SIRO_NOHDR == opts) ||
-        (_sir_bittest(opts, SIRO_NOTIME)         ||
-         _sir_bittest(opts, SIRO_NOLEVEL)        ||
-         _sir_bittest(opts, SIRO_NONAME)         ||
-         _sir_bittest(opts, SIRO_NOMSEC)         ||
-         _sir_bittest(opts, SIRO_NOPID)          ||
-         _sir_bittest(opts, SIRO_NOTID)))
+    if ((SIRO_ALL == opts || SIRO_MSGONLY == opts) ||
+        (_sir_bittest(opts, SIRO_NOTIME)           ||
+         _sir_bittest(opts, SIRO_NOLEVEL)          ||
+         _sir_bittest(opts, SIRO_NONAME)           ||
+         _sir_bittest(opts, SIRO_NOMSEC)           ||
+         _sir_bittest(opts, SIRO_NOPID)            ||
+         _sir_bittest(opts, SIRO_NOTID)            ||
+         _sir_bittest(opts, SIRO_NOHDR)            &&
+         ((opts & ~(SIRO_MSGONLY | SIRO_NOHDR)) == 0)))
          return true;
 
     _sir_seterror(_SIR_E_OPTIONS);

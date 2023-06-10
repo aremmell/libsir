@@ -59,8 +59,9 @@ bool _sir_updatefile(sirfileid_t id, sir_update_config_data* data) {
         assert(sfc);
 
         if (sfc) {
-            bool r = _sir_fcache_update(sfc, id, data);
-            return _sir_unlocksection(_SIRM_FILECACHE) && r;
+            bool updated = _sir_fcache_update(sfc, id, data);
+            _sir_selflog("file update %s", updated ? "succeeded" : "failed");
+            return _sir_unlocksection(_SIRM_FILECACHE) && updated;
         }
     }
 
@@ -338,18 +339,34 @@ bool _sirfile_validate(sirfile* sf) {
 }
 
 bool _sirfile_update(sirfile* sf, sir_update_config_data* data) {
-    bool updated = false;
-    if (_sirfile_validate(sf) && _sir_validupdatedata(data)) {
-        if (data->levels && _sir_validlevels(*data->levels)) {
+    if (!_sirfile_validate(sf))
+        return false;
+
+    if (_sir_bittest(data->fields, SIRU_LEVELS)) {
+        if (sf->levels != *data->levels) {
+            _sir_selflog("updating file %d levels from %04x to %04x", sf->id,
+                sf->levels, *data->levels);
             sf->levels = *data->levels;
-            updated = true;
+        } else {
+            _sir_selflog("skipped superfluous update of file %d levels: %04x", sf->id, sf->levels);
         }
-        if (data->opts && _sir_validopts(*data->opts)) {
-            sf->opts = *data->opts;
-            updated = true;
-        }
+
+        return true;
     }
-    return updated;
+
+    if (_sir_bittest(data->fields, SIRU_OPTIONS)) {
+        if (sf->opts != *data->opts) {
+            _sir_selflog("updating file %d options from %08x to %08x", sf->id,
+                sf->opts, *data->opts);
+            sf->opts = *data->opts;
+        } else {
+            _sir_selflog("skipped superfluous update of file %d options: %08x", sf->id, sf->opts);
+        }
+
+        return true;
+    }
+
+    return false;
 }
 
 sirfileid_t _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels levels, sir_options opts) {
@@ -365,7 +382,7 @@ sirfileid_t _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels le
 
         if (NULL != existing) {
             _sir_seterror(_SIR_E_DUPFILE);
-            _sir_selflog("file with path '%s' already added.", path);
+            _sir_selflog("error: already managing file with path '%s'", path);
             return NULL;
         }
 
@@ -385,8 +402,8 @@ sirfileid_t _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels le
 
 bool _sir_fcache_update(sirfcache* sfc, sirfileid_t id, sir_update_config_data* data) {
 
-    if (_sir_validptr(sfc) && _sir_validptr(id) && _sir_validfid(*id) &&
-        _sir_validupdatedata(data)) {
+    if (_sir_validptr(sfc) && _sir_validptr(id) &&
+        _sir_validfid(*id) && _sir_validupdatedata(data)) {
         sirfile* found = _sir_fcache_find(sfc, (const void*)id, _sir_fcache_pred_id);
         if (!found) {
             _sir_seterror(_SIR_E_NOFILE);
