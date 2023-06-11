@@ -25,35 +25,33 @@
  */
 #include "tests.h"
 
-static const sir_test sir_tests[] = {
-    {"performance",             sirtest_perf},
-    {"thread-race",             sirtest_mthread_race},
-    {"exceed-max-buffer-size",  sirtest_exceedmaxsize},
-    {"file-cache-sanity",       sirtest_filecachesanity},
-    {"no-output-destination",   sirtest_failnooutputdest},
-    {"invalid-file-name",       sirtest_failinvalidfilename},
-    {"bad-file-permissions",    sirtest_failfilebadpermission},
-    {"null-pointers",           sirtest_failnulls},
-    {"output-without init",     sirtest_failwithoutinit},
-    {"superfluous-init",        sirtest_failinittwice},
-    {"output-after-cleanup",    sirtest_failaftercleanup},
-    {"re-initialize",           sirtest_initcleanupinit},
-    {"duplicate-file-name",     sirtest_faildupefile},
-    {"remove-nonexistent-file", sirtest_failremovebadfile},
-    {"archive-large-file",      sirtest_rollandarchivefile},
-    {"error-handling-sanity",   sirtest_errorsanity},
-    {"text-style-sanity",       sirtest_textstylesanity},
-    {"runtime-update-sanity",   sirtest_updatesanity},
-    {"syslog",                  sirtest_syslog},
-    {"os_log",                  sirtest_os_log},
-    {"filesystem",              sirtest_filesystem}
+static sir_test sir_tests[] = {
+    {"performance",             sirtest_perf, false},
+    {"thread-race",             sirtest_mthread_race, false},
+    {"exceed-max-buffer-size",  sirtest_exceedmaxsize, false},
+    {"file-cache-sanity",       sirtest_filecachesanity, false},
+    {"no-output-destination",   sirtest_failnooutputdest, false},
+    {"invalid-file-name",       sirtest_failinvalidfilename, false},
+    {"bad-file-permissions",    sirtest_failfilebadpermission, false},
+    {"null-pointers",           sirtest_failnulls, false},
+    {"output-without-init",     sirtest_failwithoutinit, false},
+    {"superfluous-init",        sirtest_failinittwice, false},
+    {"output-after-cleanup",    sirtest_failaftercleanup, false},
+    {"re-initialize",           sirtest_initcleanupinit, false},
+    {"duplicate-file-name",     sirtest_faildupefile, false},
+    {"remove-nonexistent-file", sirtest_failremovebadfile, false},
+    {"archive-large-file",      sirtest_rollandarchivefile, false},
+    {"error-handling-sanity",   sirtest_errorsanity, false},
+    {"text-style-sanity",       sirtest_textstylesanity, false},
+    {"runtime-update-sanity",   sirtest_updatesanity, false},
+    {"syslog",                  sirtest_syslog, false},
+    {"os_log",                  sirtest_os_log, false},
+    {"filesystem",              sirtest_filesystem, false}
 };
 
-static const char* arg_wait = "--wait"; /* wait for key press before exiting. */
-static const char* arg_perf = "--perf"; /* run performance test instead of standard tests. */
+
 
 int main(int argc, char** argv) {
-
 #if !defined(__WIN__)
     /* Disallow execution by root / sudo; some of the tests rely on lack of permissions. */
     if (geteuid() == 0) {
@@ -69,19 +67,59 @@ int main(int argc, char** argv) {
 #endif
 #endif
 
-    bool wait = false;
-    bool perf = false;
+    bool wait     = false;
+    bool only     = false;
+    int to_run    = 0;
+    int num_tests = _sir_countof(sir_tests);
 
     for (int n = 1; n < argc; n++) {
-        if (0 == strncmp(argv[n], arg_wait, strlen(arg_wait)))
+        if (_sir_strsame(argv[n], _cl_arg_list[0].flag, strlen(_cl_arg_list[0].flag)))
+            only = mark_test_to_run("performance");
+            if (only)
+                to_run = 1;
+        else if (_sir_strsame(argv[n], _cl_arg_list[1].flag, strlen(_cl_arg_list[1].flag)))
             wait = true;
-        else if (0 == strncmp(argv[n], arg_perf, strlen(arg_perf)))
-            perf = true;
+        else if (_sir_strsame(argv[n], _cl_arg_list[3].flag, strlen(_cl_arg_list[3].flag))) {
+            print_test_list();
+            return EXIT_SUCCESS;
+        } else if (_sir_strsame(argv[n], _cl_arg_list[4].flag, strlen(_cl_arg_list[4].flag))) {
+            print_usage_info();
+            return EXIT_SUCCESS;
+        } else if (_sir_strsame(argv[n], _cl_arg_list[2].flag, strlen(_cl_arg_list[2].flag))) {
+            n++;
+            while (n < argc) {
+                if (_sir_validstrnofail(argv[n])) {
+                    _sir_selflog("argv[%d] = '%s'", n, argv[n]);
+                    // these add'l args could also be flags, so we will just ignore those.
+                    if (*argv[n] == '-') {
+                        fprintf(stderr, RED("invalid argument '%s' at %d; exiting.") "\n", argv[n], n);
+                        print_usage_info();
+                        return EXIT_FAILURE;
+                    }
+
+                    _sir_selflog("looking in test array...");
+                    if (mark_test_to_run(argv[n])) {
+                         _sir_selflog("located; marked to run.");
+                        to_run++;
+                    }
+                    n++;
+                }
+            };
+            
+            _sir_selflog("end of argv; marked %d tests to run.", to_run);
+
+            if (to_run == 0) {
+                fprintf(stderr, RED("no arguments to --only were resolved to test names; exiting.") "\n");
+                print_usage_info();
+                return EXIT_FAILURE;
+            }
+
+            only = true;
+        }
     }
 
     bool allpass     = true;
-    int first        = (perf ? 0 : 1);    
-    int tests        = (perf ? 1 : _sir_countof(sir_tests) - first);
+    int tests        = (only ? to_run : _sir_countof(sir_tests));
     int passed       = 0;    
     sirtimer_t timer = {0};
 
@@ -90,13 +128,17 @@ int main(int argc, char** argv) {
     if (!startsirtimer(&timer))
         printf(RED("failed to start timer; elapsed time won't be measured correctly!") "\n");
 
-    for (int n = first; n < tests + first; n++) {
-        printf(WHITE("\t'%s'...") "\n", sir_tests[n].name);
-        bool thispass = sir_tests[n].fn();
-        allpass &= thispass;
-        passed += (thispass ? 1 : 0);
-        printf(WHITE("\t'%s' finished; result: ") "%s\n", sir_tests[n].name,
-            thispass ? GREEN("PASS") : RED("FAIL"));
+    for (int n = 0; n < _sir_countof(sir_tests); n++) {
+        if (only && !sir_tests[n].run) {
+            _sir_selflog("skip '%s'; not marked to run", sir_tests[n].name);
+        } else {
+            printf(WHITE("\t'%s'...") "\n", sir_tests[n].name);
+            bool thispass = sir_tests[n].fn();
+            allpass &= thispass;
+            passed += (thispass ? 1 : 0);
+            printf(WHITE("\t'%s' finished; result: ") "%s\n", sir_tests[n].name,
+                thispass ? GREEN("PASS") : RED("FAIL"));
+        }
     }
 
     float elapsed = sirtimerelapsed(&timer);
@@ -1368,4 +1410,53 @@ float sirtimerelapsed(const sirtimer_t* timer) {
     n100sec.HighPart = now.dwHighDateTime;
     return (float)((n100sec.QuadPart - start.QuadPart) / 1e4);
 #endif
+}
+
+bool mark_test_to_run(const char* name) {
+    bool found = false;
+    for (int t = 0; t < _sir_countof(sir_tests); t++) {
+        if (_sir_strsame(name, sir_tests[t].name, strlen(sir_tests[t].name))) {
+            found = sir_tests[t].run = true;
+            break;
+        }
+    }    
+    return found;
+}
+
+void print_usage_info(void) {
+    fprintf(stderr, "\n" WHITE("Usage:") "\n\n");
+    
+    for (int i = 0; i < _sir_countof(_cl_arg_list); i++) {
+        fprintf(stderr, "\t%s%s%s%s%s\n",
+            _cl_arg_list[i].flag,
+            strlen(_cl_arg_list[i].usage) == 0 ? "" : "\t",
+            _cl_arg_list[i].usage,
+            strlen(_cl_arg_list[i].usage) == 0 ? "\t" : " ",
+             _cl_arg_list[i].desc);
+    }
+}
+
+void print_test_list(void) {
+    int longest = 0;
+    for (int i = 0; i < _sir_countof(sir_tests); i++) {
+        int len = strlen(sir_tests[i].name);
+        if (len > longest)
+            longest = len;
+    }
+
+    printf("\n" WHITE("Available tests:") "\n\n");
+
+    for (int i = 0; i < _sir_countof(sir_tests); i++) {
+        printf("\t%s\t", sir_tests[i].name);
+
+        int len = strlen(sir_tests[i].name);
+        if (len < longest)
+            for (int n = len; n < longest; n++)
+                printf(" ");
+
+        if ((i % 2) != 0 || i == _sir_countof(sir_tests) - 1)
+            printf("\n");
+    }
+
+    printf("\n");
 }
