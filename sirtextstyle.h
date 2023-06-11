@@ -45,12 +45,14 @@
  *  - 48:                        Set background color (with pattern to follow: 256 or 24-bit RGB color)
  *  - 49:                        Set default background color
  *    === to test =====================================================================================
- *  - 4:                         Underline (off: 24)
- *  - 5:                         Blinking (off: 25)
- *  - 51:                        Framed (off: 54)
- *  - 52:                        Encircled (off: 54)
- *  - 53:                        Overlined (off: 55)
- *  -  1:                        Bold (off: 21)
+ *  - 3:                         Emphasis (off: 23?) √
+ *  - 4:                         Underline (off: 24) √
+ *  - 5:                         Blinking (off: 25) √ (have to enable in settings)
+ *  - 9:                         Strikethrough (off: 29?) √
+ *  - 51:                        Framed (off: 54)    x
+ *  - 52:                        Encircled (off: 54) x
+ *  - 53:                        Overlined (off: 55) x
+ *  -  1:                        Bold (off: 21) √
  * 
  * The 24-bit RGB spectrum is laid out as follows:
  * 

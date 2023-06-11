@@ -45,6 +45,9 @@
 #define CYAN(s) STRFMT("1;36", s)
 #define YELLOW(s) STRFMT("1;33", s)
 #define GRAY(s) STRFMT("1;90", s)
+#define ULINE(s) STRFMT("4", s)
+#define EMPH(s) STRFMT("3", s)
+#define BOLD(s) STRFMT("1", s)
 
 #define INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, name, init) \
     sirinit var         = {0};       \
@@ -241,6 +244,7 @@ typedef bool (*sir_test_fn)(void);
 typedef struct {
     const char* name;
     sir_test_fn fn;
+    bool run;
 } sir_test;
 
 /** A simple timer type. */
@@ -276,5 +280,22 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data);
 
 bool startsirtimer(sirtimer_t* timer);
 float sirtimerelapsed(const sirtimer_t* timer); // msec
+
+static const struct cl_arg {
+    const char* flag;
+    const char* usage;
+    const char* desc;
+    } _cl_arg_list[] = {
+        {"--perf", "", "Only run the performance measurement test."},
+        {"--wait", "", "Wait for a keypress after running test(s) before exiting."},
+        {"--only", "" ULINE("name") " [, name, ...]", "Only run the test(s) specified."},
+        {"--list", "", "Prints a list of available test names for use with " BOLD("--only") "."},
+        {"--help", "", "Shows this message."}
+    }; 
+
+bool mark_test_to_run(const char* name);
+
+void print_usage_info(void);
+void print_test_list(void);
 
 #endif /* !_SIR_TESTS_H_INCLUDED */

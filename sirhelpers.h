@@ -210,6 +210,15 @@ void _sir_resetstr(sirchar_t* str) {
     str[0] = (sirchar_t)'\0';
 }
 
+/**
+ * Wrapper for strncmp. Just easier to read and use if you only wish to
+ * test for equality. Not case-sensitive.
+ */
+static inline
+bool _sir_strsame(const char* lhs, const char* rhs, size_t count) {
+    return 0 == strncmp(lhs, rhs, count);
+}
+
 /** 
  * Wrapper for strncpy/strncpy_s. Determines which one to use
  * based on preprocessor macros.
