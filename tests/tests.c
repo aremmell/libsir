@@ -119,18 +119,20 @@ int main(int argc, char** argv) {
     }
 
     bool allpass     = true;
-    int tests        = (only ? to_run : _sir_countof(sir_tests));
+    int first        = (only ? 0 : 1);
+    int tests        = _sir_countof(sir_tests) - first;
+    int tgt_tests = (only ? to_run : tests);
     int passed       = 0;    
     sirtimer_t timer = {0};
 
-    printf(WHITE("running %d libsir %s...") "\n", tests, TEST_S(tests));
+    printf(WHITE("running %d libsir %s...") "\n", tgt_tests, TEST_S(tgt_tests));
 
     if (!startsirtimer(&timer))
         printf(RED("failed to start timer; elapsed time won't be measured correctly!") "\n");
 
-    for (int n = 0; n < _sir_countof(sir_tests); n++) {
+    for (int n = first; n < _sir_countof(sir_tests) - first; n++) {
         if (only && !sir_tests[n].run) {
-            _sir_selflog("skip '%s'; not marked to run", sir_tests[n].name);
+            _sir_selflog("skipping '%s'; not marked to run", sir_tests[n].name);
         } else {
             printf(WHITE("\t'%s'...") "\n", sir_tests[n].name);
             bool thispass = sir_tests[n].fn();
@@ -145,10 +147,10 @@ int main(int argc, char** argv) {
     
     if (allpass)
         printf(WHITE("done; ") GREEN("%s%d libsir %s passed in %.02fsec") "\n",
-            tests > 1 ? "all " : "", tests, TEST_S(tests), elapsed / 1e3);
+            tgt_tests > 1 ? "all " : "", tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
     else
         printf(WHITE("done; ") RED("%d of %d libsir %s failed in %.02fsec") "\n",
-            tests - passed, tests, TEST_S(tests), elapsed / 1e3);
+            tgt_tests - passed, tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
 
     if (wait) {
         printf(WHITE("press any key to exit...") "\n");
