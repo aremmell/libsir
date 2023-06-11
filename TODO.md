@@ -1,21 +1,23 @@
 # TODO
 
 - [ ] Bump version 2.2.0
-- [x] Use dot tool GraphViz
-- [ ] impl `sir_makeinit`
+- [ ] Add hostname to format options
+- [ ] More functions that have lineage directly to sir.c need:
+  - [ ]  to be guarded with `_sir_sanity()`
+  - [ ] clear last error on entry
+
+- [ ] move timer functionality from tests into libsir itself
+- [ ] `getopt?`
 - [ ] Calculate `SIR_MAXSTYLE` for 256-color and RGB modes, then ditch the old 16-color size.
-- [ ] Does sir_cleanup cause sir_remfile to be invoked on all open files?
-- [ ] Add an error that means ‘system loggger support is disabled’
 - [ ] Conditional logging (debug_if(), etc.)
 - [ ] Implement `clang-format` (see [here](https://github.com/nullromo/doxygen-example/blob/main/.clang-format))
 - [ ] Normalize `/* !_DEF */` / `// !_DEF`
 - [ ] Finish comment in sir_syslog_dest once it’s been resolved which option(s) can be utilized for os_log/syslog.
 - [ ] Refactor _sir_syslog_init: it’s a clusterF. Should probably just reject initialization if levels are set but ident/cat are not.
   - [ ] Rename sirinit::processName
-
 - [ ] Implement “last message repeated n times”
 - [ ] Move documentation from `sir.h` to `sir.c`
-  - [ ] Remove all internal documentation / stash it away better
+  - [x] Remove all internal documentation / stash it away better
   - [ ] Include sir_geterror in docs somehow without including errors.h
 - [ ] sir_syslogopts
   - [ ] Document
@@ -42,7 +44,6 @@
       - [x] “C:\” and “/”
       - [x] Mix-and-match slashes on windows
       - [ ] Symlinks
-
 - [ ] Go through sirfilecache and replace any code possible with the new filesystem calls
   - [ ] Implement 256-color and RGB.
   - [ ] Pull styling up into its own module for reusability in other projects?
