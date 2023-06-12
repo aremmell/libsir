@@ -70,7 +70,6 @@ int main(int argc, char** argv) {
     bool wait     = false;
     bool only     = false;
     int to_run    = 0;
-    int num_tests = _sir_countof(sir_tests);
 
     for (int n = 1; n < argc; n++) {
         if (_sir_strsame(argv[n], _cl_arg_list[0].flag, strlen(_cl_arg_list[0].flag)))
@@ -1441,9 +1440,9 @@ void print_usage_info(void) {
 }
 
 void print_test_list(void) {
-    int longest = 0;
+    size_t longest = 0;
     for (int i = 0; i < _sir_countof(sir_tests); i++) {
-        int len = strlen(sir_tests[i].name);
+        size_t len = strlen(sir_tests[i].name);
         if (len > longest)
             longest = len;
     }
@@ -1453,9 +1452,9 @@ void print_test_list(void) {
     for (int i = 0; i < _sir_countof(sir_tests); i++) {
         printf("\t%s\t", sir_tests[i].name);
 
-        int len = strlen(sir_tests[i].name);
+        size_t len = strlen(sir_tests[i].name);
         if (len < longest)
-            for (int n = len; n < longest; n++)
+            for (size_t n = len; n < longest; n++)
                 printf(" ");
 
         if ((i % 2) != 0 || i == _sir_countof(sir_tests) - 1)
