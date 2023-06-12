@@ -24,19 +24,38 @@ jobs:
       arch: arm64
       compiler: clang
     - os: freebsd
-      arch: amd64
-      compiler: gcc
-      env: MAKE=gmake
-    - os: freebsd
+      addons:
+        pkg:
+          - llvm90
       arch: amd64
       compiler: clang
-      env: MAKE=gmake
+      env:
+        - MAKE=gmake
+        - CC=/usr/local/bin/clang90
+        - CXX=/usr/local/bin/clang++90
+    - os: freebsd
+      addons:
+        pkg:
+          - gcc10    
+      arch: amd64
+      compiler: gcc
+      env:
+        - MAKE=gmake
+        - CC=gcc10
+        - CXX=g++10
     - os: osx
       osx_image: xcode14.2
       arch: amd64
-      compiler: clang  
+      compiler: clang
+    - os: osx
+      osx_image: xcode14.2
+      compiler: gcc
+      env:
+        - MATRIX_EVAL="brew install gcc@11 && CC=gcc-11 && CXX=g++-11"      
 script:
   - $MAKE clean tests example
   - build/bin/sirtests
   - build/bin/sirexample
+before_install:
+  - eval "${MATRIX_EVAL}"  
 install: skip
