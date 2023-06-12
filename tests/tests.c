@@ -121,7 +121,7 @@ int main(int argc, char** argv) {
     bool allpass     = true;
     int first        = (only ? 0 : 1);
     int tests        = _sir_countof(sir_tests) - first;
-    int tgt_tests = (only ? to_run : tests);
+    int tgt_tests    = (only ? to_run : tests);
     int passed       = 0;
     sirtimer_t timer = {0};
 
