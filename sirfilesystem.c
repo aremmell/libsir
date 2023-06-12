@@ -30,7 +30,7 @@
 # pragma comment(lib, "Shlwapi.lib")
 #endif
 
-bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, uint16_t rel_to) {
+bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_rel_to rel_to) {
     if (!_sir_validstr(path) || !_sir_validptr(st))
         return false;
 
@@ -102,7 +102,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, uint1
     return true;
 }
 
-bool _sir_pathexists(const char* restrict path, bool* restrict exists, uint16_t rel_to) {
+bool _sir_pathexists(const char* restrict path, bool* restrict exists, sir_rel_to rel_to) {
     if (!_sir_validstr(path) || !_sir_validptr(exists))
         return false;
 
@@ -338,7 +338,6 @@ char* _sir_stattostring(const struct stat* restrict st) {
 # define S_IWOTH 0x0800
 # define S_IXOTH 0x0008
 #endif
-
 
     char* type = "";
     switch (st->st_mode & S_IFMT) {
