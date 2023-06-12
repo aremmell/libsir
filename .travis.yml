@@ -26,7 +26,7 @@ jobs:
     - os: freebsd
       addons:
         pkg:
-          - llvm-16
+          - llvm16
       arch: amd64
       compiler: clang
       env:
