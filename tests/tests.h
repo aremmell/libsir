@@ -32,22 +32,11 @@
 #include <sirinternal.h>
 #include <sirfilesystem.h>
 #include <sirhelpers.h>
+#include <sirtextstyle.h>
 
 #if !defined(__WIN__)
 #   include <dirent.h>
 #endif
-
-#define STRFMT(clr, s) "\x1b[" clr "m" s "\x1b[0m"
-#define RED(s) STRFMT("1;91", s)
-#define GREEN(s) STRFMT("1;92", s)
-#define WHITE(s) STRFMT("1;97", s)
-#define BLUE(s) STRFMT("1;34", s)
-#define CYAN(s) STRFMT("1;36", s)
-#define YELLOW(s) STRFMT("1;33", s)
-#define GRAY(s) STRFMT("1;90", s)
-#define ULINE(s) STRFMT("4", s)
-#define EMPH(s) STRFMT("3", s)
-#define BOLD(s) STRFMT("1", s)
 
 #define INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, name, init) \
     sirinit var         = {0};       \
@@ -72,7 +61,6 @@
 
 #define TEST_S(n) (n > 1 ? ("test" "s") : "test")
 #define PRN_STR(str) (str ? str : RED("NULL"))
-
 
 /**
  * @defgroup tests Tests
@@ -166,12 +154,12 @@ bool sirtest_textstylesanity(void);
 /**
  * @test Properly reject invalid option bitmasks.
  */
-bool sirtest_failinvalidopts(void);
+bool sirtest_optionssanity(void);
 
 /**
  * @test Properly reject invalid level bitmasks.
  */
-bool sirtest_failinvalidlevels(void);
+bool sirtest_levelssanity(void);
 
 /**
  * @test Performance evaluation.
@@ -245,6 +233,7 @@ typedef struct {
     const char* name;
     sir_test_fn fn;
     bool run;
+    bool pass;
 } sir_test;
 
 /** A simple timer type. */

@@ -26,30 +26,30 @@
 #include "tests.h"
 
 static sir_test sir_tests[] = {
-    {"performance",             sirtest_perf, false},
-    {"thread-race",             sirtest_mthread_race, false},
-    {"exceed-max-buffer-size",  sirtest_exceedmaxsize, false},
-    {"file-cache-sanity",       sirtest_filecachesanity, false},
-    {"no-output-destination",   sirtest_failnooutputdest, false},
-    {"invalid-file-name",       sirtest_failinvalidfilename, false},
-    {"bad-file-permissions",    sirtest_failfilebadpermission, false},
-    {"null-pointers",           sirtest_failnulls, false},
-    {"output-without-init",     sirtest_failwithoutinit, false},
-    {"superfluous-init",        sirtest_failinittwice, false},
-    {"output-after-cleanup",    sirtest_failaftercleanup, false},
-    {"re-initialize",           sirtest_initcleanupinit, false},
-    {"duplicate-file-name",     sirtest_faildupefile, false},
-    {"remove-nonexistent-file", sirtest_failremovebadfile, false},
-    {"archive-large-file",      sirtest_rollandarchivefile, false},
-    {"error-handling-sanity",   sirtest_errorsanity, false},
-    {"text-style-sanity",       sirtest_textstylesanity, false},
-    {"runtime-update-sanity",   sirtest_updatesanity, false},
-    {"syslog",                  sirtest_syslog, false},
-    {"os_log",                  sirtest_os_log, false},
-    {"filesystem",              sirtest_filesystem, false}
+    {"performance",             sirtest_perf, false, true},
+    {"thread-race",             sirtest_mthread_race, false, true},
+    {"exceed-max-buffer-size",  sirtest_exceedmaxsize, false, true},
+    {"file-cache-sanity",       sirtest_filecachesanity, false, true},
+    {"no-output-destination",   sirtest_failnooutputdest, false, true},
+    {"invalid-file-name",       sirtest_failinvalidfilename, false, true},
+    {"bad-file-permissions",    sirtest_failfilebadpermission, false, true},
+    {"null-pointers",           sirtest_failnulls, false, true},
+    {"output-without-init",     sirtest_failwithoutinit, false, true},
+    {"superfluous-init",        sirtest_failinittwice, false, true},
+    {"output-after-cleanup",    sirtest_failaftercleanup, false, true},
+    {"re-initialize",           sirtest_initcleanupinit, false, true},
+    {"duplicate-file-name",     sirtest_faildupefile, false, true},
+    {"remove-nonexistent-file", sirtest_failremovebadfile, false, true},
+    {"archive-large-file",      sirtest_rollandarchivefile, false, true},
+    {"error-handling-sanity",   sirtest_errorsanity, false, true},
+    {"text-style-sanity",       sirtest_textstylesanity, false, true},
+    {"options-sanity",          sirtest_optionssanity, false, true},
+    {"levels-sanity",           sirtest_levelssanity, false, true},
+    {"runtime-update-sanity",   sirtest_updatesanity, false, true},
+    {"syslog",                  sirtest_syslog, false, true},
+    {"os_log",                  sirtest_os_log, false, true},
+    {"filesystem",              sirtest_filesystem, false, true}
 };
-
-
 
 int main(int argc, char** argv) {
 #if !defined(__WIN__)
@@ -86,39 +86,24 @@ int main(int argc, char** argv) {
             print_usage_info();
             return EXIT_SUCCESS;
         } else if (_sir_strsame(argv[n], _cl_arg_list[2].flag, strlen(_cl_arg_list[2].flag))) {
-            n++;
-            while (n < argc) {
+            while (++n < argc) {
                 if (_sir_validstrnofail(argv[n])) {
-                    _sir_selflog("argv[%d] = '%s'", n, argv[n]);
-                    // these add'l args could also be flags, so we will just ignore those.
-                    if (*argv[n] == '-') {
-                        fprintf(stderr, RED("invalid argument '%s' at %d; exiting.") "\n", argv[n], n);
+                    if (*argv[n] == '-' || !mark_test_to_run(argv[n])) {
+                        fprintf(stderr, RED("invalid argument: '%s'") "\n", argv[n]);
                         print_usage_info();
                         return EXIT_FAILURE;
                     }
-
-                    _sir_selflog("looking in test array...");
-                    if (mark_test_to_run(argv[n])) {
-                         _sir_selflog("located; marked to run.");
-                        to_run++;
-                    }
-                    n++;
+                    to_run++;
                 }
             };
-            
-            _sir_selflog("end of argv; marked %d tests to run.", to_run);
-
-            if (to_run == 0) {
-                fprintf(stderr, RED("no arguments to --only were resolved to test names; exiting.") "\n");
-                print_usage_info();
-                return EXIT_FAILURE;
-            }
-
             only = true;
+        } else {
+            fprintf(stderr, "unknown argument: '%s'", argv[n]);
+            print_usage_info();
+            return EXIT_FAILURE;
         }
     }
 
-    bool allpass     = true;
     int first        = (only ? 0 : 1);
     int tests        = _sir_countof(sir_tests) - first;
     int tgt_tests    = (only ? to_run : tests);
@@ -126,31 +111,40 @@ int main(int argc, char** argv) {
     sirtimer_t timer = {0};
 
     printf(WHITE("running %d libsir %s...") "\n", tgt_tests, TEST_S(tgt_tests));
+    startsirtimer(&timer);
 
-    if (!startsirtimer(&timer))
-        printf(RED("failed to start timer; elapsed time won't be measured correctly!") "\n");
-
-    for (int n = first; n < _sir_countof(sir_tests) - first; n++) {
+    for (int n = first; n < _sir_countof(sir_tests); n++) {
         if (only && !sir_tests[n].run) {
             _sir_selflog("skipping '%s'; not marked to run", sir_tests[n].name);
-        } else {
-            printf(WHITE("\t'%s'...") "\n", sir_tests[n].name);
-            bool thispass = sir_tests[n].fn();
-            allpass &= thispass;
-            passed += (thispass ? 1 : 0);
-            printf(WHITE("\t'%s' finished; result: ") "%s\n", sir_tests[n].name,
-                thispass ? GREEN("PASS") : RED("FAIL"));
+            continue;
         }
+
+        printf(WHITE("\t'%s'...") "\n", sir_tests[n].name);
+        
+        sir_tests[n].pass = sir_tests[n].fn();
+        if (sir_tests[n].pass)
+            passed++;
+
+        printf(WHITE("\t'%s' finished; result: ") "%s\n", sir_tests[n].name,
+            sir_tests[n].pass ? GREEN("PASS") : RED("FAIL"));
     }
 
     float elapsed = sirtimerelapsed(&timer);
     
-    if (allpass)
+    if (passed == tgt_tests) {
         printf(WHITE("done; ") GREEN("%s%d libsir %s passed in %.02fsec") "\n",
             tgt_tests > 1 ? "all " : "", tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
-    else
+    } else {
         printf(WHITE("done; ") RED("%d of %d libsir %s failed in %.02fsec") "\n",
             tgt_tests - passed, tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
+
+        printf("\n" REDB("Failed %s:") "\n\n", TEST_S(tgt_tests - passed));
+
+        for (int t = 0; t < _sir_countof(sir_tests); t++)
+            if (!sir_tests[t].pass)
+                printf(RED("\t- %s\n"), sir_tests[t].name);
+        printf("\n");
+    }
 
     if (wait) {
         printf(WHITE("press any key to exit...") "\n");
@@ -158,7 +152,7 @@ int main(int argc, char** argv) {
         _SIR_UNUSED(ch);
     }
 
-    return allpass ? EXIT_SUCCESS : EXIT_FAILURE;
+    return passed == tgt_tests ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 
 bool sirtest_exceedmaxsize(void) {
@@ -600,19 +594,21 @@ bool sirtest_textstylesanity(void) {
     return print_result_and_return(pass);
 }
 
-bool sirtest_failinvalidopts(void) {
+bool sirtest_optionssanity(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
+    printf("\t" YELLOW("Not implemented\n"));
 
     sir_cleanup();
     return print_result_and_return(pass);
 }
 
-bool sirtest_failinvalidlevels(void) {
+bool sirtest_levelssanity(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
+    printf("\t" YELLOW("Not implemented\n"));
 
     sir_cleanup();
     return print_result_and_return(pass);    
@@ -851,7 +847,7 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
 
 bool sirtest_syslog(void) {
 #if !defined(SIR_SYSLOG_ENABLED)
-    printf("\t" GRAY("SIR_SYSLOG_ENABLED is not defined; skipping.") "\n");
+    printf("\t" DGRAY("SIR_SYSLOG_ENABLED is not defined; skipping.") "\n");
     return true;
 #else
     return generic_syslog_test("syslog", "sirtests", "tests");
@@ -860,7 +856,7 @@ bool sirtest_syslog(void) {
 
 bool sirtest_os_log(void) {
 #if !defined(SIR_OS_LOG_ENABLED)
-    printf("\t" GRAY("SIR_OS_LOG_ENABLED is not defined; skipping.") "\n");
+    printf("\t" DGRAY("SIR_OS_LOG_ENABLED is not defined; skipping.") "\n");
     return true;
 #else
     return generic_syslog_test("os_log", "com.aremell.libsir.tests", "tests");
@@ -1421,7 +1417,11 @@ bool mark_test_to_run(const char* name) {
             found = sir_tests[t].run = true;
             break;
         }
-    }    
+    }
+
+    if (!found)
+        _sir_selflog("warning: unable to locate '%s' in test array", name);
+
     return found;
 }
 
@@ -1434,8 +1434,10 @@ void print_usage_info(void) {
             strlen(_cl_arg_list[i].usage) == 0 ? "" : "\t",
             _cl_arg_list[i].usage,
             strlen(_cl_arg_list[i].usage) == 0 ? "\t" : " ",
-             _cl_arg_list[i].desc);
+            _cl_arg_list[i].desc);
     }
+
+    fprintf(stderr, "\n");
 }
 
 void print_test_list(void) {
