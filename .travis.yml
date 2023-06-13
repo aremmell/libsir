@@ -51,11 +51,11 @@ jobs:
       osx_image: xcode14.2
       compiler: gcc
       env:
-        - MATRIX_EVAL="brew uninstall gcc && brew install gcc@12 && CC=gcc-12 && CXX=g++-12"      
+        - MAKE=make
+        - CC=gcc-12
+        - CXX=g++-12
 script:
   - $MAKE clean tests example
   - build/bin/sirtests
   - build/bin/sirexample
-before_install:
-  - eval "${MATRIX_EVAL}"  
 install: skip
