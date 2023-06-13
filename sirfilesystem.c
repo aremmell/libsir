@@ -191,17 +191,20 @@ char* _sir_getappfilename(void) {
 #   error "unable to resolve readlink(); see man readlink and its feature test macro requirements."
 #  endif
 # elif defined(__BSD__)
-        int mib[4] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
-        int ret = sysctl(mib, 4, buffer, &size, NULL, 0);
-        _sir_selflog("sysctl() returned: %d (size = %zu)", ret, size);
-        if (0 == ret) {
-            resolved = true;
-            break;
-        } else {
-            _sir_handleerr(errno);
-            resolved = false;
-            break;
+    int mib[4] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
+    int ret = sysctl(mib, 4, buffer, &size, NULL, 0);
+    if (0 == ret) {
+        resolved = true;
+        break;
+    } else {
+        if (ENOMEM == errno && 0 == sysctl(mib, 4, NULL, &size, NULL, 0)) {
+            grow = true;
+            continue;
         }
+        _sir_handleerr(errno);
+        resolved = false;
+        break;
+    }
 # elif defined(__MACOS__)
         int ret = _NSGetExecutablePath(buffer, (uint32_t*)&size);
         if (0 == ret) {
