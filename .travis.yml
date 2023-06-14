@@ -49,6 +49,7 @@ jobs:
       compiler: clang
     - os: osx
       osx_image: xcode14.2
+      arch: amd64
       compiler: gcc
       env:
         - MAKE=make
