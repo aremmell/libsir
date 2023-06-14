@@ -151,9 +151,7 @@ char* _sir_getappfilename(void) {
 
     do {
         if (grow) {
-            _sir_selflog("reallocating %zu bytes for buffer and trying again...", size);
             _sir_safefree(buffer);
-
             buffer = (char*)calloc(size, sizeof(char));
             if (NULL == buffer) {
                 _sir_handleerr(errno);
@@ -167,9 +165,8 @@ char* _sir_getappfilename(void) {
 #if !defined(__WIN__)
 # if defined(__linux__)
 #  if defined(__HAVE_UNISTD_READLINK__)
-        ssize_t read = readlink("/proc/self/exe", buffer, size);
-        _sir_selflog("readlink() returned: %ld (size = %zu)", read, size);
-        if (-1 != read && read < (ssize_t)size) {
+        ssize_t read = readlink("/proc/self/exe", buffer, size - 1);
+        if (-1 != read && read < (ssize_t)size - 1) {
             resolved = true;
             break;
         } else {
@@ -177,11 +174,9 @@ char* _sir_getappfilename(void) {
                 _sir_handleerr(errno);
                 resolved = false;
                 break;
-            } else if (read >= (ssize_t)size) {
-                /* readlink, like Windows' impl, doesn't have a concept
-                * of letting you know how much larger your buffer needs
-                * to be; it just truncates the string and returns how
-                * many chars it wrote there. */
+            } else if (read == (ssize_t)size - 1) {
+                /* It is possible that truncation occurred. Grow the
+                   buffer and try again. */
                 size += SIR_PATH_BUFFER_GROW_BY;
                 grow = true;
                 continue;
@@ -191,20 +186,20 @@ char* _sir_getappfilename(void) {
 #   error "unable to resolve readlink(); see man readlink and its feature test macro requirements."
 #  endif
 # elif defined(__BSD__)
-    int mib[4] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
-    int ret = sysctl(mib, 4, buffer, &size, NULL, 0);
-    if (0 == ret) {
-        resolved = true;
-        break;
-    } else {
-        if (ENOMEM == errno && 0 == sysctl(mib, 4, NULL, &size, NULL, 0)) {
-            grow = true;
-            continue;
+        int mib[4] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
+        int ret = sysctl(mib, 4, buffer, &size, NULL, 0);
+        if (0 == ret) {
+            resolved = true;
+            break;
+        } else {
+            if (ENOMEM == errno && 0 == sysctl(mib, 4, NULL, &size, NULL, 0)) {
+                grow = true;
+                continue;
+            }
+            _sir_handleerr(errno);
+            resolved = false;
+            break;
         }
-        _sir_handleerr(errno);
-        resolved = false;
-        break;
-    }
 # elif defined(__MACOS__)
         int ret = _NSGetExecutablePath(buffer, (uint32_t*)&size);
         if (0 == ret) {
@@ -223,7 +218,6 @@ char* _sir_getappfilename(void) {
 # endif
 #else // __WIN__
         DWORD ret = GetModuleFileNameA(NULL, buffer, (DWORD)size);
-        _sir_selflog("GetModuleFileNameA() returned: %lu (size = %zu)", ret, size);
         if (0 != ret && ret < (DWORD)size) {
             resolved = true;
             break;
@@ -248,10 +242,8 @@ char* _sir_getappfilename(void) {
     if (!resolved) {
         _sir_safefree(buffer);
         _sir_selflog("failed to resolve filename!");
-    } else {
-        _sir_selflog("successfully resolved: '%s'", buffer);
     }
-#pragma message("TODO: remove all the selflog calls from this after testing on all platforms w/ too-small buffer")
+
     return buffer;
 }
 
@@ -344,13 +336,15 @@ char* _sir_stattostring(const struct stat* restrict st) {
 
     char* type = "";
     switch (st->st_mode & S_IFMT) {
-        case S_IFIFO: type = "named pipe (fifo)"; break;
-        case S_IFCHR: type = "character special"; break;
-        case S_IFDIR: type = "directory"; break;
-        case S_IFREG: type = "regular"; break;
-        default: type = SIR_UNKNOWN; break;
+        case S_IFBLK:  type = "block device"; break;
+        case S_IFCHR:  type = "character special"; break;        
+        case S_IFDIR:  type = "directory"; break;        
+        case S_IFIFO:  type = "pipe (fifo)"; break;
+        case S_IFLNK:  type = "symlink"; break;
+        case S_IFREG:  type = "regular"; break;
+        case S_IFSOCK: type = "socket"; break;
+        default:       type = SIR_UNKNOWN; break;
     }
-
 
     char mode[32] = { 0 };
     snprintf(mode, sizeof(mode), "%c%c%c%c%c%c%c%c%c%c (%03o)",
