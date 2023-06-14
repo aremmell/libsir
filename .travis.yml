@@ -47,14 +47,6 @@ jobs:
       osx_image: xcode14.2
       arch: amd64
       compiler: clang
-    - os: osx
-      osx_image: xcode14.2
-      arch: amd64
-      compiler: gcc
-      env:
-        - MAKE=make
-        - CC=gcc-12
-        - CXX=g++-12
 script:
   - $MAKE clean tests example
   - build/bin/sirtests
