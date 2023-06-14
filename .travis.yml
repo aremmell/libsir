@@ -59,4 +59,3 @@ script:
   - $MAKE clean tests example
   - build/bin/sirtests
   - build/bin/sirexample
-install: skip
