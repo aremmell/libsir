@@ -387,7 +387,7 @@ bool _sir_mapmutexid(sir_mutex_id mid, sirmutex_t** m, void** section) {
         case _SIRM_TEXTSTYLE:
             _sir_once(&ts_once, _sir_initmutex_ts_once);
             tmpm   = &ts_mutex;
-            tmpsec = sir_override_style_map;
+            tmpsec = &sir_override_style_map[0];
             break;
         default:
             assert("!invalid mutex id");
