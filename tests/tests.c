@@ -72,19 +72,19 @@ int main(int argc, char** argv) {
     int to_run    = 0;
 
     for (int n = 1; n < argc; n++) {
-        if (_sir_strsame(argv[n], _cl_arg_list[0].flag, strlen(_cl_arg_list[0].flag)))
+        if (_sir_strsame(argv[n], _cl_arg_list[0].flag, strlen(_cl_arg_list[0].flag))) {
             only = mark_test_to_run("performance");
             if (only)
                 to_run = 1;
-        else if (_sir_strsame(argv[n], _cl_arg_list[1].flag, strlen(_cl_arg_list[1].flag)))
+        } else if (_sir_strsame(argv[n], _cl_arg_list[1].flag, strlen(argv[n]))) {
             wait = true;
-        else if (_sir_strsame(argv[n], _cl_arg_list[3].flag, strlen(_cl_arg_list[3].flag))) {
+        } else if (_sir_strsame(argv[n], _cl_arg_list[3].flag, strlen(argv[n]))) {
             print_test_list();
             return EXIT_SUCCESS;
-        } else if (_sir_strsame(argv[n], _cl_arg_list[4].flag, strlen(_cl_arg_list[4].flag))) {
+        } else if (_sir_strsame(argv[n], _cl_arg_list[4].flag, strlen(argv[n]))) {
             print_usage_info();
             return EXIT_SUCCESS;
-        } else if (_sir_strsame(argv[n], _cl_arg_list[2].flag, strlen(_cl_arg_list[2].flag))) {
+        } else if (_sir_strsame(argv[n], _cl_arg_list[2].flag, strlen(argv[n]))) {
             while (++n < argc) {
                 if (_sir_validstrnofail(argv[n])) {
                     if (*argv[n] == '-' || !mark_test_to_run(argv[n])) {

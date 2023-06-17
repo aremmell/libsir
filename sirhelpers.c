@@ -77,15 +77,15 @@ bool _sir_validupdatedata(sir_update_config_data* data) {
 }
 
 bool _sir_validlevels(sir_levels levels) {
-    if ((SIRL_ALL == levels || SIRL_NONE == levels)  ||
-        (_sir_bittest(levels, SIRL_INFO)             ||
-         _sir_bittest(levels, SIRL_DEBUG)            ||
-         _sir_bittest(levels, SIRL_NOTICE)           ||
-         _sir_bittest(levels, SIRL_WARN)             ||
-         _sir_bittest(levels, SIRL_ERROR)            ||
-         _sir_bittest(levels, SIRL_CRIT)             ||
-         _sir_bittest(levels, SIRL_ALERT)            ||
-         _sir_bittest(levels, SIRL_EMERG)            &&
+    if ((SIRL_ALL == levels || SIRL_NONE == levels) ||
+        ((_sir_bittest(levels, SIRL_INFO)           ||
+         _sir_bittest(levels, SIRL_DEBUG)           ||
+         _sir_bittest(levels, SIRL_NOTICE)          ||
+         _sir_bittest(levels, SIRL_WARN)            ||
+         _sir_bittest(levels, SIRL_ERROR)           ||
+         _sir_bittest(levels, SIRL_CRIT)            ||
+         _sir_bittest(levels, SIRL_ALERT)           ||
+         _sir_bittest(levels, SIRL_EMERG))          &&
          ((levels & ~SIRL_ALL) == 0)))
          return true;
                 
@@ -110,13 +110,13 @@ bool _sir_validlevel(sir_level level) {
 
 bool _sir_validopts(sir_options opts) {
     if ((SIRO_ALL == opts || SIRO_MSGONLY == opts) ||
-        (_sir_bittest(opts, SIRO_NOTIME)           ||
+        ((_sir_bittest(opts, SIRO_NOTIME)          ||
          _sir_bittest(opts, SIRO_NOLEVEL)          ||
          _sir_bittest(opts, SIRO_NONAME)           ||
          _sir_bittest(opts, SIRO_NOMSEC)           ||
          _sir_bittest(opts, SIRO_NOPID)            ||
          _sir_bittest(opts, SIRO_NOTID)            ||
-         _sir_bittest(opts, SIRO_NOHDR)            &&
+         _sir_bittest(opts, SIRO_NOHDR))           &&
          ((opts & ~(SIRO_MSGONLY | SIRO_NOHDR)) == 0)))
          return true;
 

@@ -497,6 +497,9 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
         assert(appliedstyle);
     }
 
+    if (!appliedstyle)
+        return false;
+
     time_t now;
     long nowmsec = 0;
     bool gettime = _sir_clock_gettime(&now, &nowmsec);

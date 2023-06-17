@@ -223,5 +223,6 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, const char
     }
 
     assert(success);
+    _SIR_UNUSED(success);
 }
 #endif
