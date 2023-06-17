@@ -213,7 +213,7 @@ uint16_t _sir_getprivstyle(uint32_t style) {
     return _sir_getprivstyle(SIRS_FG_DEFAULT);
 }
 
-bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size) {
+bool _sir_formatstyle(sir_textstyle style, char* buf, size_t size) {
 
     if (_sir_validptr(buf)) {
 
@@ -227,8 +227,8 @@ bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size) {
             uint16_t privfg   = _sir_getprivstyle(fg);
             uint16_t privbg   = _sir_getprivstyle(bg);
 
-            sirchar_t fgfmt[7] = {0};
-            sirchar_t bgfmt[7] = {0};
+            char fgfmt[7] = {0};
+            char bgfmt[7] = {0};
 
             if (privfg != 0)
                 snprintf(fgfmt, 7, ";%hu", privfg);

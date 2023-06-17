@@ -470,7 +470,7 @@ bool _sir_once(sironce_t *once, sir_once_fn func) {
 #endif
 }
 
-bool _sir_logv(sir_level level, const sirchar_t* format, va_list args) {
+bool _sir_logv(sir_level level, const char* format, va_list args) {
 
     _sir_seterror(_SIR_E_NOERROR);
 
@@ -541,7 +541,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
     size_t wanted     = 0;
 
     if (_sir_bittest(si->d_stdout.levels, level)) {
-        const sirchar_t* write = _sir_format(true, si->d_stdout.opts, buf);
+        const char* write = _sir_format(true, si->d_stdout.opts, buf);
         bool wrote = _sir_validstrnofail(write) &&
             _sir_write_stdout(write, buf->output_len);
         retval &= wrote;
@@ -552,7 +552,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
     }
 
     if (_sir_bittest(si->d_stderr.levels, level)) {
-        const sirchar_t* write = _sir_format(true, si->d_stderr.opts, buf);
+        const char* write = _sir_format(true, si->d_stderr.opts, buf);
         bool wrote = _sir_validstrnofail(write) &&
             _sir_write_stderr(write, buf->output_len);
         retval &= wrote;
@@ -587,7 +587,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
     return retval && (dispatched == wanted);
 }
 
-const sirchar_t* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
+const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
 
     if (_sir_validopts(opts) && _sir_validptr(buf) && _sir_validptr(buf->output)) {
         bool first = true;
@@ -917,7 +917,7 @@ void _sir_syslog_reset(sir_syslog_dest* ctx) {
 
 #endif // !SIR_NO_SYSTEM_LOGGERS
 
-const sirchar_t* _sir_levelstr(sir_level level) {
+const char* _sir_levelstr(sir_level level) {
         
     if (_sir_validlevel(level)) {
         _SIR_DECLARE_BIN_SEARCH(0, _sir_countof(sir_level_str_map) - 1);
@@ -935,7 +935,7 @@ const sirchar_t* _sir_levelstr(sir_level level) {
     return SIR_UNKNOWN;
 }
 
-bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format) {
+bool _sir_formattime(time_t now, char* buffer, const char* format) {
 
     if (0 != now && _sir_validptr(buffer) && _sir_validstr(format)) {
         struct tm timebuf = {0};

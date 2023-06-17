@@ -31,16 +31,16 @@
 
 #if !defined(__WIN__)
 
-bool _sir_write_stdio(FILE* stream, const sirchar_t* message);
+bool _sir_write_stdio(FILE* stream, const char* message);
 
 static inline
-bool _sir_write_stdout(const sirchar_t* message, size_t len) {
+bool _sir_write_stdout(const char* message, size_t len) {
     _SIR_UNUSED(len);
     return _sir_write_stdio(stdout, message);
 }
 
 static inline
-bool _sir_write_stderr(const sirchar_t* message, size_t len) {
+bool _sir_write_stderr(const char* message, size_t len) {
     _SIR_UNUSED(len);    
     return _sir_write_stdio(stderr, message);
 }
@@ -51,15 +51,15 @@ extern HANDLE __sir_stdout;
 extern HANDLE __sir_stderr;
 
 bool _sir_initialize_stdio(void);
-bool _sir_write_stdio(HANDLE console, const sirchar_t* message,  size_t len);
+bool _sir_write_stdio(HANDLE console, const char* message,  size_t len);
 
 static inline
-bool _sir_write_stdout(const sirchar_t* message, size_t len) {
+bool _sir_write_stdout(const char* message, size_t len) {
     return _sir_write_stdio(__sir_stdout, message, len);
 }
 
 static inline
-bool _sir_write_stderr(const sirchar_t* message, size_t len) {
+bool _sir_write_stderr(const char* message, size_t len) {
     return _sir_write_stdio(__sir_stderr, message, len);
 }
 

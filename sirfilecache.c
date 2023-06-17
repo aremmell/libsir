@@ -28,7 +28,7 @@
 #include "sirdefaults.h"
 #include "sirmutex.h"
 
-sirfileid_t _sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts) {
+sirfileid_t _sir_addfile(const char* path, sir_levels levels, sir_options opts) {
 
     _sir_seterror(_SIR_E_NOERROR);
 
@@ -85,7 +85,7 @@ bool _sir_remfile(sirfileid_t id) {
     return false;
 }
 
-sirfile* _sirfile_create(const sirchar_t* path, sir_levels levels, sir_options opts) {
+sirfile* _sirfile_create(const char* path, sir_levels levels, sir_options opts) {
 
     sirfile* sf = NULL;
 
@@ -95,7 +95,7 @@ sirfile* _sirfile_create(const sirchar_t* path, sir_levels levels, sir_options o
 
         if (_sir_validptr(sf)) {
             size_t pathLen = strnlen(path, SIR_MAXPATH);
-            sf->path       = (sirchar_t*)calloc(pathLen + 1, sizeof(sirchar_t));
+            sf->path       = (char*)calloc(pathLen + 1, sizeof(char));
 
             if (_sir_validptrnofail(sf->path)) {
                 _sir_strncpy(sf->path, pathLen + 1, path, pathLen);
@@ -143,16 +143,16 @@ void _sirfile_close(sirfile* sf) {
     }
 }
 
-bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
+bool _sirfile_write(sirfile* sf, const char* output) {
 
     if (_sirfile_validate(sf) && _sir_validstr(output)) {
         
         if (_sirfile_needsroll(sf)) {
             bool rolled = false;
-            sirchar_t* newpath = NULL;
+            char* newpath = NULL;
             
             if (_sirfile_roll(sf, &newpath)) {
-                sirchar_t header[SIR_MAXMESSAGE] = {0};
+                char header[SIR_MAXMESSAGE] = {0};
                 snprintf(header, SIR_MAXMESSAGE, SIR_FHROLLED, newpath);
                 rolled = _sirfile_writeheader(sf, header);
             }
@@ -163,7 +163,7 @@ bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
         }
 
         size_t writeLen = strnlen(output, SIR_MAXOUTPUT);
-        size_t write    = fwrite(output, sizeof(sirchar_t), writeLen, sf->f);
+        size_t write    = fwrite(output, sizeof(char), writeLen, sf->f);
 
         assert(write == writeLen);
 
@@ -189,18 +189,18 @@ bool _sirfile_write(sirfile* sf, const sirchar_t* output) {
     return false;
 }
 
-bool _sirfile_writeheader(sirfile* sf, const sirchar_t* msg) {
+bool _sirfile_writeheader(sirfile* sf, const char* msg) {
 
     if (_sirfile_validate(sf) && _sir_validstr(msg)) {
         time_t now;
         time(&now);
 
-        sirchar_t timestamp[SIR_MAXTIME] = {0};
+        char timestamp[SIR_MAXTIME] = {0};
         bool fmttime = _sir_formattime(now, timestamp, SIR_FHTIMEFORMAT);
         assert(fmttime);
 
         if (fmttime) {
-            sirchar_t header[SIR_MAXOUTPUT] = {0};
+            char header[SIR_MAXOUTPUT] = {0};
             int fmt = snprintf(header, SIR_MAXOUTPUT, SIR_FHFORMAT, msg, timestamp);
 
             if (fmt < 0)
@@ -230,13 +230,13 @@ bool _sirfile_needsroll(sirfile* sf) {
     return false;
 }
 
-bool _sirfile_roll(sirfile* sf, sirchar_t** newpath) {
+bool _sirfile_roll(sirfile* sf, char** newpath) {
 
     if (_sirfile_validate(sf) && newpath) {
 
         bool r = false;
-        sirchar_t* name = NULL;
-        sirchar_t* ext = NULL;
+        char* name = NULL;
+        char* ext = NULL;
 
         bool split = _sirfile_splitpath(sf, &name, &ext);
         assert(split);
@@ -245,12 +245,12 @@ bool _sirfile_roll(sirfile* sf, sirchar_t** newpath) {
             time_t now;
             time(&now);
 
-            sirchar_t timestamp[SIR_MAXTIME] = {0};
+            char timestamp[SIR_MAXTIME] = {0};
             bool fmttime = _sir_formattime(now, timestamp, SIR_FNAMETIMEFORMAT);
             assert(fmttime);
             
             if (fmttime) {
-                *newpath = (sirchar_t*)calloc(SIR_MAXPATH, sizeof(sirchar_t));
+                *newpath = (char*)calloc(SIR_MAXPATH, sizeof(char));
 
                 if (_sir_validptr(*newpath)) {
                     int fmtpath = snprintf(*newpath, SIR_MAXPATH, SIR_FNAMEFORMAT,
@@ -275,7 +275,7 @@ bool _sirfile_roll(sirfile* sf, sirchar_t** newpath) {
 }
 
 /** @todo compress archived log files */
-bool _sirfile_archive(sirfile* sf, const sirchar_t* newpath) {
+bool _sirfile_archive(sirfile* sf, const char* newpath) {
 
     if (_sirfile_validate(sf) && _sir_validstr(newpath)) {
 #if defined(__WIN__)
@@ -296,21 +296,21 @@ bool _sirfile_archive(sirfile* sf, const sirchar_t* newpath) {
     return false;
 }
 
-bool _sirfile_splitpath(sirfile* sf, sirchar_t** name, sirchar_t** ext) {
+bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
 
     if (NULL != name) *name = NULL;
     if (NULL != ext) *ext = NULL;
 
     if (_sirfile_validate(sf) && _sir_validptr(name) && _sir_validptr(ext)) {
 
-        sirchar_t* lastfullstop = strrchr(sf->path, '.');
+        char* lastfullstop = strrchr(sf->path, '.');
 
         if (lastfullstop) {
             uintptr_t namesize = lastfullstop - sf->path;
             assert(namesize < SIR_MAXPATH);
 
             if (namesize < SIR_MAXPATH) {
-                *name = (sirchar_t*)calloc(namesize + 1, sizeof(sirchar_t));
+                *name = (char*)calloc(namesize + 1, sizeof(char));
                 _sir_strncpy(*name, namesize + 1, sf->path, namesize);
             }
   
@@ -369,7 +369,7 @@ bool _sirfile_update(sirfile* sf, sir_update_config_data* data) {
     return false;
 }
 
-sirfileid_t _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels levels, sir_options opts) {
+sirfileid_t _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels, sir_options opts) {
 
     if (_sir_validptr(sfc) && _sir_validstr(path) && _sir_validlevels(levels) && _sir_validopts(opts)) {
 
@@ -444,7 +444,7 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid_t id) {
 }
 
 bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
-    const sirchar_t* path = (const sirchar_t*)match;
+    const char* path = (const char*)match;
 #if !defined(__WIN__)
     return 0 == strncmp(path, iter->path, SIR_MAXPATH);
 #else // __WIN__
@@ -495,7 +495,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
         && _sir_validptr(dispatched) && _sir_validptr(wanted)) {
 
         bool r = true;
-        const sirchar_t* write = NULL;
+        const char* write = NULL;
         sir_options lastopts = 0;
 
         *dispatched = 0;

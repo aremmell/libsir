@@ -186,7 +186,7 @@ int main(void) {
  * @return EXIT_FAILURE
  */
 int report_error(void) {
-    sirchar_t message[SIR_MAXERROR] = {0};
+    char message[SIR_MAXERROR] = {0};
     uint16_t code = sir_geterror(message);
     fprintf(stderr, "libsir error: (%hu, %s)\n", code, message);
     return EXIT_FAILURE;

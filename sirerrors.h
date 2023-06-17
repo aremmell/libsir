@@ -67,7 +67,7 @@ enum {
 
 static const struct {
     sirerror_t       e;
-    const sirchar_t* msg;
+    const char* msg;
 } sir_errors[] = {
     { _SIR_E_NOERROR,   "The operation completed successfully" },
     { _SIR_E_NOTREADY,  "libsir has not been initialized" },
@@ -87,14 +87,14 @@ static const struct {
     { _SIR_E_UNKNOWN,   "Error is not known" },
 };
 
-void __sir_seterror(sirerror_t err, const sirchar_t* func, const sirchar_t* file, uint32_t line);
+void __sir_seterror(sirerror_t err, const char* func, const char* file, uint32_t line);
 #define _sir_seterror(err) __sir_seterror(err, __func__, __file__, __LINE__)
 
-void __sir_setoserror(int code, const sirchar_t* msg, const sirchar_t* func,
-        const sirchar_t* file, uint32_t line);
+void __sir_setoserror(int code, const char* msg, const char* func,
+        const char* file, uint32_t line);
 
 /** Handle a C library error. */
-void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uint32_t line);
+void __sir_handleerr(int code, const char* func, const char* file, uint32_t line);
 #define _sir_handleerr(code) __sir_handleerr(code, __func__, __file__, __LINE__)
 
 #if defined(__WIN__)
@@ -103,12 +103,12 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
  * Mapping them sounds great, but in practice, valuable information about what went wrong is totally
  * lost in translation.
  */
-void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* file, uint32_t line);
+void __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32_t line);
 #define _sir_handlewin32err(code) __sir_handlewin32err(code, __func__, __file__, __LINE__)
 #endif
 
 /** Returns information about the last error that occurred. */
-sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]);
+sirerror_t _sir_geterror(char message[SIR_MAXERROR]);
 
 #if defined(SIR_SELFLOG)
 /** Log an internal debug message to stderr. */

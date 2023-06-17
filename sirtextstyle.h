@@ -165,6 +165,6 @@ bool _sir_resettextstyles(void);
 uint16_t _sir_getprivstyle(uint32_t style);
 
 /** Combines component parts of a platform text style value into its final form. */
-bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size);
+bool _sir_formatstyle(sir_textstyle style, char* buf, size_t size);
 
 #endif /* !_SIR_TEXTSTYLE_H_INCLUDED */

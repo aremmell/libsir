@@ -126,8 +126,8 @@ bool _sir_validopts(sir_options opts) {
     return false;
 }
 
-bool __sir_validstr(const sirchar_t* restrict str, bool fail) {
-    bool valid = str && (*str != (sirchar_t)'\0');
+bool __sir_validstr(const char* restrict str, bool fail) {
+    bool valid = str && (*str != (char)'\0');
     if (!valid && fail) {
         _sir_seterror(_SIR_E_STRING);
         assert(!"invalid string");
@@ -145,7 +145,7 @@ bool __sir_validptr(const void* restrict p, bool fail) {
     return valid;
 }
 
-int _sir_strncpy(sirchar_t* restrict dest, size_t destsz, const sirchar_t* restrict src, size_t count) {
+int _sir_strncpy(char* restrict dest, size_t destsz, const char* restrict src, size_t count) {
     if (_sir_validptr(dest) && _sir_validstr(src)) {
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
         int ret = strncpy_s(dest, destsz, src, count);
@@ -169,7 +169,7 @@ int _sir_strncpy(sirchar_t* restrict dest, size_t destsz, const sirchar_t* restr
   * Wrapper for strncat/strncat_s. Determines which one to use
   * based on preprocessor macros.
   */
-int _sir_strncat(sirchar_t* restrict dest, size_t destsz, const sirchar_t* restrict src, size_t count) {
+int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src, size_t count) {
     if (_sir_validptr(dest) && _sir_validstr(src)) {
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
         int ret = strncat_s(dest, destsz, src, count);
@@ -193,7 +193,7 @@ int _sir_strncat(sirchar_t* restrict dest, size_t destsz, const sirchar_t* restr
   * Wrapper for fopen/fopen_s. Determines which one to use
   * based on preprocessor macros.
   */
-int _sir_fopen(FILE* restrict* restrict streamptr, const sirchar_t* restrict filename, const sirchar_t* restrict mode) {
+int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename, const char* restrict mode) {
     if (_sir_notnull(streamptr) && _sir_validstr(filename) && _sir_validstr(mode)) {
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
         int ret = fopen_s(streamptr, filename, mode);

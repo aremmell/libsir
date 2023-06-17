@@ -158,7 +158,7 @@ bool sirtest_exceedmaxsize(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    sirchar_t toobig[SIR_MAXMESSAGE + 100] = {0};
+    char toobig[SIR_MAXMESSAGE + 100] = {0};
     memset(toobig, 'a', SIR_MAXMESSAGE - 99);
 
     pass &= sir_info(toobig);
@@ -178,7 +178,7 @@ bool sirtest_filecachesanity(void) {
     sir_options odd  = SIRO_ALL;
 
     for (size_t n = 0; n < numfiles - 1; n++) {
-        sirchar_t path[SIR_MAXPATH] = {0};
+        char path[SIR_MAXPATH] = {0};
         snprintf(path, SIR_MAXPATH, "test-%zu.log", n);
         rmfile(path);
         ids[n] = sir_addfile(path, SIRL_ALL, (n % 2) ? odd : even);
@@ -228,7 +228,7 @@ bool sirtest_filecachesanity(void) {
     for (size_t n = 0; n < SIR_MAXFILES; n++) {
         pass &= sir_remfile(ids[removeorder[n]]);
 
-        sirchar_t path[SIR_MAXPATH] = {0};
+        char path[SIR_MAXPATH] = {0};
         snprintf(path, SIR_MAXPATH, "test-%zu.log", removeorder[n]);
         rmfile(path);
     }
@@ -372,7 +372,7 @@ bool sirtest_faildupefile(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    const sirchar_t* filename = "faildupefile.log";
+    const char* filename = "faildupefile.log";
     sirfileid_t fid = sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
 
     pass &= NULL != fid;
@@ -399,11 +399,11 @@ bool sirtest_rollandarchivefile(void) {
     /* roll size minus 1KB so we can write until it maxes. */
     static const long       deltasize   = 1024L;
     const long              fillsize    = SIR_FROLLSIZE - deltasize;
-    static const sirchar_t* logbasename = "rollandarchive";
-    static const sirchar_t* logext      = ".log";
-    static const sirchar_t* line        = "hello, i am some data. nice to meet you.";
+    static const char* logbasename = "rollandarchive";
+    static const char* logext      = ".log";
+    static const char* line        = "hello, i am some data. nice to meet you.";
 
-    sirchar_t logfilename[SIR_MAXPATH] = {0};
+    char logfilename[SIR_MAXPATH] = {0};
     snprintf(logfilename, SIR_MAXPATH, "%s%s", logbasename, logext);
 
     unsigned delcount = 0;
@@ -510,7 +510,7 @@ bool sirtest_errorsanity(void) {
         {SIR_E_UNKNOWN,   "SIR_E_UNKNOWN"},   /**< Error is not known (4095) */
     };
 
-    sirchar_t message[SIR_MAXERROR] = {0};
+    char message[SIR_MAXERROR] = {0};
     for (size_t n = 0; n < (sizeof(errors) / sizeof(errors[0])); n++) {
         _sir_seterror(_sir_mkerror(errors[n].code));
         memset(message, 0, SIR_MAXERROR);
@@ -615,8 +615,8 @@ bool sirtest_levelssanity(void) {
 
 bool sirtest_perf(void) {
 
-    static const sirchar_t* logbasename = "libsir-perf";
-    static const sirchar_t* logext      = ".log";
+    static const char* logbasename = "libsir-perf";
+    static const char* logext      = ".log";
 
 #if !defined(__WIN__)
     static const size_t perflines       = 1000000;
@@ -657,7 +657,7 @@ bool sirtest_perf(void) {
         INIT(si2, 0, 0, 0, 0);
         pass &= si2_init;
 
-        sirchar_t logfilename[SIR_MAXPATH] = {0};
+        char logfilename[SIR_MAXPATH] = {0};
         snprintf(logfilename, SIR_MAXPATH, logbasename, logext);
 
         sirfileid_t logid = sir_addfile(logfilename, SIRL_ALL, SIRO_NONAME | SIRO_NOPID);
@@ -1248,7 +1248,7 @@ unsigned sirtest_thread(void* arg) {
 }
 
 bool print_test_error(bool result, bool expected) {
-    sirchar_t message[SIR_MAXERROR] = {0};
+    char message[SIR_MAXERROR] = {0};
     uint16_t code = sir_geterror(message);
 
     if (!expected && !result && SIR_E_NOERROR != code) {
@@ -1261,14 +1261,14 @@ bool print_test_error(bool result, bool expected) {
 }
 
 void print_os_error(void) {
-    sirchar_t message[SIR_MAXERROR] = {0};
+    char message[SIR_MAXERROR] = {0};
     uint16_t  code = sir_geterror(message);
     fprintf(stderr, "\t" RED("OS error: (%hu, %s)") "\n", code, message);
 }
 
 bool filter_error(bool pass, uint16_t err) {
     if (!pass) {
-        sirchar_t message[SIR_MAXERROR] = {0};
+        char message[SIR_MAXERROR] = {0};
         uint16_t  code = sir_geterror(message);
         if (code != err)
             return false;        

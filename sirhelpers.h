@@ -175,17 +175,17 @@ void _sir_defaultopts(sir_options* opts, sir_options def) {
 bool _sir_validopts(sir_options opts);
 
 /** Validates a string pointer and optionally fails if it's invalid. */
-bool __sir_validstr(const sirchar_t* restrict str, bool fail);
+bool __sir_validstr(const char* restrict str, bool fail);
 
 /** Validates a string pointer and fails if it's invalid. */
 static inline
-bool _sir_validstr(const sirchar_t* restrict str) {
+bool _sir_validstr(const char* restrict str) {
     return __sir_validstr(str, true);
 }
 
 /** Validates a string pointer but ignores whether it's invalid. */
 static inline
-bool _sir_validstrnofail(const sirchar_t* restrict str) {
+bool _sir_validstrnofail(const char* restrict str) {
     return __sir_validstr(str, false);
 }
 
@@ -206,8 +206,8 @@ bool _sir_validptrnofail(const void* restrict p) {
 
 /** Places a null terminator at the first index in a string buffer. */
 static inline
-void _sir_resetstr(sirchar_t* str) {
-    str[0] = (sirchar_t)'\0';
+void _sir_resetstr(char* str) {
+    str[0] = (char)'\0';
 }
 
 /**
@@ -223,22 +223,22 @@ bool _sir_strsame(const char* lhs, const char* rhs, size_t count) {
  * Wrapper for strncpy/strncpy_s. Determines which one to use
  * based on preprocessor macros.
  */
-int _sir_strncpy(sirchar_t* restrict dest, size_t destsz,
-    const sirchar_t* restrict src, size_t count);
+int _sir_strncpy(char* restrict dest, size_t destsz,
+    const char* restrict src, size_t count);
 
 /**
   * Wrapper for strncat/strncat_s. Determines which one to use
   * based on preprocessor macros.
   */
-int _sir_strncat(sirchar_t* restrict dest, size_t destsz,
-    const sirchar_t* restrict src, size_t count);
+int _sir_strncat(char* restrict dest, size_t destsz,
+    const char* restrict src, size_t count);
 
 /**
   * Wrapper for fopen/fopen_s. Determines which one to use
   * based on preprocessor macros.
   */
 int _sir_fopen(FILE* restrict *restrict streamptr,
-    const sirchar_t* restrict filename, const sirchar_t* restrict mode);
+    const char* restrict filename, const char* restrict mode);
 
 /**
   * Wrapper for localtime/localtime_s. Determines which one to use

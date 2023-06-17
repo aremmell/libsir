@@ -114,9 +114,6 @@ typedef enum {
     SIRS_INVALID     = 0x000f3000  /**< Represents the invalid text style. */
 } sir_textstyle;
 
-/** The underlying type used for characters in output. */
-typedef char sirchar_t;
-
 /**
  * @struct sir_stdio_dest
  * @brief Configuration for stdio destinations (stdout and stderr).
@@ -224,7 +221,7 @@ typedef struct {
      * Set ::SIRO_NONAME in a destination's options bitmask to exclude it from
      * log messages.
      */
-    sirchar_t processName[SIR_MAXNAME];
+    char processName[SIR_MAXNAME];
 } sirinit;
 
 /** @} */
@@ -235,7 +232,7 @@ typedef uint32_t sirerror_t;
 /** Internally-used error type. */
 typedef struct {
     sirerror_t code;
-    const sirchar_t * const message;
+    const char * const message;
 } sirerror;
 
 /** Text style attribute mask. */
@@ -255,7 +252,7 @@ typedef struct {
 
 /** Log file data. */
 typedef struct {
-    sirchar_t*  path;
+    char*  path;
     sir_levels  levels;
     sir_options opts;
     FILE* f;
@@ -270,15 +267,15 @@ typedef struct {
 
 /** Formatted output sent to destinations. */
 typedef struct {
-    sirchar_t style[SIR_MAXSTYLE];
-    sirchar_t timestamp[SIR_MAXTIME];
-    sirchar_t msec[SIR_MAXMSEC];
-    sirchar_t level[SIR_MAXLEVEL];
-    sirchar_t name[SIR_MAXNAME];
-    sirchar_t pid[SIR_MAXPID];
-    sirchar_t tid[SIR_MAXPID];
-    sirchar_t message[SIR_MAXMESSAGE];
-    sirchar_t output[SIR_MAXOUTPUT];
+    char style[SIR_MAXSTYLE];
+    char timestamp[SIR_MAXTIME];
+    char msec[SIR_MAXMSEC];
+    char level[SIR_MAXLEVEL];
+    char name[SIR_MAXNAME];
+    char pid[SIR_MAXPID];
+    char tid[SIR_MAXPID];
+    char message[SIR_MAXMESSAGE];
+    char output[SIR_MAXOUTPUT];
     size_t output_len;
 } sirbuf;
 
@@ -311,11 +308,11 @@ typedef enum {
 typedef struct {
     sirerror_t lasterror;
     int os_error;
-    sirchar_t os_errmsg[SIR_MAXERROR];
+    char os_errmsg[SIR_MAXERROR];
 
     struct {
-        const sirchar_t* func;
-        const sirchar_t* file;
+        const char* func;
+        const char* file;
         uint32_t line;
     } loc;
 } sir_thread_err;

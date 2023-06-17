@@ -28,7 +28,7 @@
 
 #if !defined(__WIN__)
 
-bool _sir_write_stdio(FILE* stream, const sirchar_t* message) {
+bool _sir_write_stdio(FILE* stream, const char* message) {
 
     if (EOF == fputs(message, stream)) {
         _sir_handleerr(errno);
@@ -54,7 +54,7 @@ bool _sir_initialize_stdio(void) {
     return configure;
 }
 
-bool _sir_write_stdio(HANDLE console, const sirchar_t* message, size_t len) {
+bool _sir_write_stdio(HANDLE console, const char* message, size_t len) {
 
     DWORD chars   = (DWORD)len;
     DWORD written = 0;

@@ -111,13 +111,13 @@ BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
 bool _sir_once(sironce_t* once, sir_once_fn func);
 
 /** Core output formatting. */
-bool _sir_logv(sir_level level, const sirchar_t* format, va_list args);
+bool _sir_logv(sir_level level, const char* format, va_list args);
 
 /** Output dispatching. */
 bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf);
 
 /** Specific destination formatting. */
-const sirchar_t* _sir_format(bool styling, sir_options opts, sirbuf* buf);
+const char* _sir_format(bool styling, sir_options opts, sirbuf* buf);
 
 /** Initializes a ::sir_syslog_dest. */
 bool _sir_syslog_init(const char *name, sir_syslog_dest *ctx);
@@ -158,13 +158,13 @@ bool _sir_syslog_close(sir_syslog_dest* ctx);
 void _sir_syslog_reset(sir_syslog_dest* ctx);
 
 /** Converts a ::sir_level to its human-readable form. */
-const sirchar_t* _sir_levelstr(sir_level level);
+const char* _sir_levelstr(sir_level level);
 
 /** Retrieves the current time w/ optional milliseconds. */
 bool _sir_clock_gettime(time_t* tbuf, long* msecbuf);
 
 /** Formats the current time as a string. */
-bool _sir_formattime(time_t now, sirchar_t* buffer, const sirchar_t* format);
+bool _sir_formattime(time_t now, char* buffer, const char* format);
 
 /** Returns the current process identifier. */
 pid_t _sir_getpid(void);

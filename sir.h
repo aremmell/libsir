@@ -50,18 +50,18 @@ bool sir_makeinit(sirinit* si);
 bool sir_init(sirinit* si);
 bool sir_cleanup(void);
 
-uint16_t sir_geterror(sirchar_t message[SIR_MAXERROR]);
+uint16_t sir_geterror(char message[SIR_MAXERROR]);
 
-bool sir_debug(const sirchar_t* format, ...);
-bool sir_info(const sirchar_t* format, ...);
-bool sir_notice(const sirchar_t* format, ...);
-bool sir_warn(const sirchar_t* format, ...);
-bool sir_error(const sirchar_t* format, ...);
-bool sir_crit(const sirchar_t* format, ...);
-bool sir_alert(const sirchar_t* format, ...);
-bool sir_emerg(const sirchar_t* format, ...);
+bool sir_debug(const char* format, ...);
+bool sir_info(const char* format, ...);
+bool sir_notice(const char* format, ...);
+bool sir_warn(const char* format, ...);
+bool sir_error(const char* format, ...);
+bool sir_crit(const char* format, ...);
+bool sir_alert(const char* format, ...);
+bool sir_emerg(const char* format, ...);
 
-sirfileid_t sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts);
+sirfileid_t sir_addfile(const char* path, sir_levels levels, sir_options opts);
 bool sir_remfile(sirfileid_t id);
 
 bool sir_filelevels(sirfileid_t id, sir_levels levels);

@@ -47,7 +47,7 @@ static thread_local sir_thread_err sir_te = {
     _SIR_E_NOERROR, 0, {0}, {SIR_UNKNOWN, SIR_UNKNOWN, 0}
 };
 
-void __sir_seterror(sirerror_t err, const sirchar_t* func, const sirchar_t* file, uint32_t line) {
+void __sir_seterror(sirerror_t err, const char* func, const char* file, uint32_t line) {
     if (_sir_validerror(err)) {
         sir_te.lasterror = err;
         sir_te.loc.func = func;
@@ -56,8 +56,8 @@ void __sir_seterror(sirerror_t err, const sirchar_t* func, const sirchar_t* file
     }
 }
 
-void __sir_setoserror(int code, const sirchar_t* message, const sirchar_t* func,
-                      const sirchar_t* file, uint32_t line) {
+void __sir_setoserror(int code, const char* message, const char* func,
+                      const char* file, uint32_t line) {
     sir_te.os_error = code;
     _sir_resetstr(sir_te.os_errmsg);
 
@@ -67,9 +67,9 @@ void __sir_setoserror(int code, const sirchar_t* message, const sirchar_t* func,
     __sir_seterror(_SIR_E_PLATFORM, func, file, line);
 }
 
-void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uint32_t line) {
+void __sir_handleerr(int code, const char* func, const char* file, uint32_t line) {
     if (SIR_E_NOERROR != code) {
-        sirchar_t message[SIR_MAXERROR] = {0};
+        char message[SIR_MAXERROR] = {0};
         int finderr = 0;
         errno = SIR_E_NOERROR;
 
@@ -111,8 +111,8 @@ void __sir_handleerr(int code, const sirchar_t* func, const sirchar_t* file, uin
 }
 
 #if defined(__WIN__)
-void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* file, uint32_t line) {
-    sirchar_t* errbuf = NULL;
+void __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32_t line) {
+    char* errbuf = NULL;
     DWORD flags       = FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |
                         FORMAT_MESSAGE_IGNORE_INSERTS  | FORMAT_MESSAGE_MAX_WIDTH_MASK;
 
@@ -135,7 +135,7 @@ void __sir_handlewin32err(DWORD code, const sirchar_t* func, const sirchar_t* fi
 }
 #endif
 
-sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
+sirerror_t _sir_geterror(char message[SIR_MAXERROR]) {
     _sir_resetstr(message);
 
     size_t low  = 0;
@@ -145,11 +145,11 @@ sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
     _SIR_BEGIN_BIN_SEARCH();
 
     if (sir_errors[_mid].e == sir_te.lasterror) {
-        sirchar_t* final = NULL;
+        char* final = NULL;
         bool alloc = false;
 
         if (_SIR_E_PLATFORM == sir_errors[_mid].e) {
-            final = (sirchar_t*)calloc(SIR_MAXERROR, sizeof(sirchar_t));
+            final = (char*)calloc(SIR_MAXERROR, sizeof(char));
 
             if (_sir_validptr(final)) {
                 alloc = true;
@@ -157,7 +157,7 @@ sirerror_t _sir_geterror(sirchar_t message[SIR_MAXERROR]) {
                     (_sir_validstrnofail(sir_te.os_errmsg) ? sir_te.os_errmsg : SIR_UNKNOWN));
             }
         } else {
-            final = (sirchar_t*)sir_errors[_mid].msg;
+            final = (char*)sir_errors[_mid].msg;
         }
 
         int fmtmsg = snprintf(message, SIR_MAXERROR, SIR_ERRORFORMAT, sir_te.loc.func,
