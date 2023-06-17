@@ -66,7 +66,7 @@ enum {
 #define _SIR_E_UNKNOWN   _sir_mkerror(SIR_E_UNKNOWN)
 
 static const struct {
-    sirerror_t       e;
+    uint32_t e;
     const char* msg;
 } sir_errors[] = {
     { _SIR_E_NOERROR,   "The operation completed successfully" },
@@ -87,7 +87,7 @@ static const struct {
     { _SIR_E_UNKNOWN,   "Error is not known" },
 };
 
-void __sir_seterror(sirerror_t err, const char* func, const char* file, uint32_t line);
+void __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t line);
 #define _sir_seterror(err) __sir_seterror(err, __func__, __file__, __LINE__)
 
 void __sir_setoserror(int code, const char* msg, const char* func,
@@ -108,7 +108,7 @@ void __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32
 #endif
 
 /** Returns information about the last error that occurred. */
-sirerror_t _sir_geterror(char message[SIR_MAXERROR]);
+uint32_t _sir_geterror(char message[SIR_MAXERROR]);
 
 #if defined(SIR_SELFLOG)
 /** Log an internal debug message to stderr. */

@@ -40,14 +40,14 @@
 
 /** Validates an internal error. */
 static inline
-bool _sir_validerror(sirerror_t err) {
-    sirerror_t masked = err & 0x8fffffff;
+bool _sir_validerror(uint32_t err) {
+    uint32_t masked = err & 0x8fffffff;
     return masked >= 0x80000000 && masked <= 0x8fff0000;
 }
 
 /** Extracts just the code from an internal error. */
 static inline
-uint16_t _sir_geterrcode(sirerror_t err) {
+uint16_t _sir_geterrcode(uint32_t err) {
     return (err >> 16) & 0x7fff;
 }
 

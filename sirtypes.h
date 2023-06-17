@@ -226,12 +226,9 @@ typedef struct {
 
 /** @} */
 
-/** Internally-used error code type. */
-typedef uint32_t sirerror_t;
-
 /** Internally-used error type. */
 typedef struct {
-    sirerror_t code;
+    uint32_t code;
     const char * const message;
 } sirerror;
 
@@ -306,7 +303,7 @@ typedef enum {
 
 /** Error type. */
 typedef struct {
-    sirerror_t lasterror;
+    uint32_t lasterror;
     int os_error;
     char os_errmsg[SIR_MAXERROR];
 

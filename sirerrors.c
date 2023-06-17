@@ -47,7 +47,7 @@ static thread_local sir_thread_err sir_te = {
     _SIR_E_NOERROR, 0, {0}, {SIR_UNKNOWN, SIR_UNKNOWN, 0}
 };
 
-void __sir_seterror(sirerror_t err, const char* func, const char* file, uint32_t line) {
+void __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t line) {
     if (_sir_validerror(err)) {
         sir_te.lasterror = err;
         sir_te.loc.func = func;
@@ -135,7 +135,7 @@ void __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32
 }
 #endif
 
-sirerror_t _sir_geterror(char message[SIR_MAXERROR]) {
+uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
     _sir_resetstr(message);
 
     size_t low  = 0;
