@@ -209,13 +209,13 @@ void print_os_error(void);
 bool filter_error(bool pass, uint16_t err);
 
 #if !defined(__WIN__)
-#   define handle_os_error(clib, fmt, ...) (void)clib; _sir_handleerr(errno); \
-        fprintf(stderr,"\t" RED(fmt) ":\n", __VA_ARGS__); \
-        print_os_error();
+# define handle_os_error(clib, fmt, ...) (void)clib; _sir_handleerr(errno); \
+         fprintf(stderr,"\t" RED(fmt) ":\n", __VA_ARGS__); \
+         print_os_error();
 #else // __WIN__
-#   define handle_os_error(clib, fmt, ...) clib ? _sir_handleerr(errno) : _sir_handlewin32err(GetLastError()); \
-        fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
-        print_os_error();
+# define handle_os_error(clib, fmt, ...) clib ? _sir_handleerr(errno) : _sir_handlewin32err(GetLastError()); \
+         fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
+         print_os_error();
 #endif
 
 /*

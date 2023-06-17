@@ -67,9 +67,9 @@ int main(int argc, char** argv) {
 #endif
 #endif
 
-    bool wait     = false;
-    bool only     = false;
-    int to_run    = 0;
+    bool wait  = false;
+    bool only  = false;
+    int to_run = 0;
 
     for (int n = 1; n < argc; n++) {
         if (_sir_strsame(argv[n], _cl_arg_list[0].flag, strlen(_cl_arg_list[0].flag))) {
@@ -1067,21 +1067,6 @@ bool sirtest_filesystem(void) {
     return print_result_and_return(pass);
 }
 
-/*
-bool sirtest_XXX(void) {
-
-    INIT(si, SIRL_ALL, 0, 0, 0);
-    bool pass = si_init;
-
-
-    sir_cleanup();
-    return print_result_and_return(pass);
-}
-*/
-
-/* ========================== end tests ========================== */
-
-
 #if !defined(__WIN__)
 static void* sirtest_thread(void* arg);
 #else // __WIN__
@@ -1104,10 +1089,11 @@ bool sirtest_mthread_race(void) {
     
     thread_args* heap_args = (thread_args*)calloc(NUM_THREADS, sizeof(thread_args));
     pass &= NULL != heap_args;
-    if (!heap_args)
-        handle_os_error(true, "calloc(%zu) bytes failed!",
-            NUM_THREADS * sizeof(thread_args));
-    
+    if (!heap_args) {
+        handle_os_error(true, "calloc(%zu) bytes failed!", NUM_THREADS * sizeof(thread_args));
+        return false;
+    }
+
     for (size_t n = 0; n < NUM_THREADS; n++) {
         if (!pass)
             break;
@@ -1246,6 +1232,20 @@ unsigned sirtest_thread(void* arg) {
     return 0;
 #endif
 }
+
+/*
+bool sirtest_XXX(void) {
+
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+
+    sir_cleanup();
+    return print_result_and_return(pass);
+}
+*/
+
+/* ========================== end tests ========================== */
 
 bool print_test_error(bool result, bool expected) {
     char message[SIR_MAXERROR] = {0};
