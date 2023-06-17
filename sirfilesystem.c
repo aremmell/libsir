@@ -66,6 +66,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         int fd = open(base_path, open_flags);
         if (-1 == fd) {
             _sir_handleerr(errno);
+            _sir_safefree(base_path);
             return false;
         }
 
@@ -76,15 +77,11 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         stat_ret = stat(path, st);
     }
 #else // __WIN__
-        char abs_path[SIR_MAXPATH] = {0};
-        if (NULL == PathCombineA(abs_path, base_path, path)) {
-            _sir_handlewin32err(GetLastError());
-            _sir_selflog("PathCombineA() failed!");
-        } else {
-            abs_path[SIR_MAXPATH - 1] = '\0';
-            stat_ret = stat(abs_path, st);
-        }
-        _sir_safefree(base_path);
+        char abs_path[SYSTEST_MAXPATH] = {0};
+        snprintf(abs_path, SYSTEST_MAXPATH, "%s\\%s", base_path, path);
+
+        stat_ret = stat(abs_path, st);
+        systest_safefree(base_path);
     } else {
         stat_ret = stat(path, st);
     }
