@@ -100,10 +100,10 @@
       <PreprocessorDefinitions>_DEBUG;SIR_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <PreBuildEvent>
-      <Command>bash -c 'touch ${ProjectDir}../build/bin/file.exists'</Command>
+      <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists</Command>
     </PreBuildEvent>
     <PreBuildEvent>
-      <Message>Create file for use w/ filesystem tests</Message>
+      <Message>Create file for use with filesystem tests</Message>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">
@@ -119,6 +119,10 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <UseFullPaths>false</UseFullPaths>
     </ClCompile>
+    <PreBuildEvent>
+      <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists</Command>
+      <Message>Create file for use with filesystem tests</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'">
     <ClCompile>
@@ -142,6 +146,10 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <PreBuildEvent>
+      <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists</Command>
+      <Message>Create file for use with filesystem tests</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -164,6 +172,10 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
+    <PreBuildEvent>
+      <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists</Command>
+      <Message>Create file for use with filesystem tests</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\tests\tests.c">
