@@ -28,6 +28,16 @@
 
 #if !defined(_WIN32)
 # define __STDC_WANT_LIB_EXT1__ 1
+# if defined(__clang__)
+# define _FORTIFY_SOURCE 2
+# elif defined(__GNUC__)
+#  if (__GNUC__ >= 4 && __GNUC_MINOR__ >= 0)
+#   if defined(__GLIBC__) && (__GLIBC__ >= 2 && __GLIBC_MINOR__ >= 34)
+#    pragma message("Have GCC _FORFITY_SOURCE")
+#    define _FORTIFY_SOURCE 2
+#   endif
+#  endif
+# endif
 # if defined(__APPLE__) && defined(__MACH__)
 #  define __MACOS__
 #  define _DARWIN_C_SOURCE
@@ -98,6 +108,13 @@
 # undef SIR_SYSLOG_ENABLED
 #endif
 
+# if defined(__GLIBC__)
+#  if (__GLIBC__ >= 2 && __GLIBC_MINOR__ > 19)  || \
+      ((__GLIBC__ == 2 && __GLIBC_MINOR__ <= 19) && defined(_BSD_SOURCE))
+#   define __HAVE_UNISTD_READLINK__
+#  endif
+# endif
+
 #if !defined(__WIN__)
 # include <pthread.h>
 # include <unistd.h>
@@ -129,18 +146,11 @@
 #  endif
 # endif
 
-# if defined(__GLIBC__)
-#  if (__GLIBC__ >= 2 && __GLIBC_MINOR__ > 19)  || \
-      ((__GLIBC__ == 2 && __GLIBC_MINOR__ <= 19) && defined(_BSD_SOURCE))
-#   define __HAVE_UNISTD_READLINK__
-#  endif
-# endif
-
-# if defined(PATH_MAX)
-#  define SIR_MAXPATH PATH_MAX
-# elif defined(MAXPATHLEN)
+#if defined(PATH_MAX)
+# define SIR_MAXPATH PATH_MAX
+#elif defined(MAXPATHLEN)
 #  define SIR_MAXPATH MAXPATHLEN
-# else
+#else
 #  define SIR_MAXPATH 1024
 #endif
 
