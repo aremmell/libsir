@@ -237,7 +237,7 @@ bool _sir_formatstyle(sir_textstyle style, sirchar_t* buf, size_t size) {
                 snprintf(bgfmt, 7, ";%hu", privbg);
 
             /* '\x1b[n;nnn;nnnm' */
-            snprintf(buf, size, "%s%hu%s%sm", SIR_BEGINSTYLE, privattr, fgfmt, bgfmt);
+            snprintf(buf, size, "%s%hu%s%sm", SIR_ESC_START, privattr, fgfmt, bgfmt);
 
             return _sir_validstr(buf);
         }

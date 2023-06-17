@@ -654,7 +654,7 @@ const sirchar_t* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
         _sir_strncat(buf->output, SIR_MAXOUTPUT, buf->message, SIR_MAXMESSAGE);
 
         if (styling)
-            _sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_ENDSTYLE, SIR_MAXSTYLE);
+            _sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_ESC_END, SIR_MAXSTYLE);
 
         _sir_strncat(buf->output, SIR_MAXOUTPUT, "\n", 1);
 

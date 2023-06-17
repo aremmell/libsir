@@ -320,12 +320,6 @@
  */
 #define SIR_NUMLEVELS 8
 
-/** The prefix string used to begin a styling sequence in stdio output. */
-#define SIR_BEGINSTYLE "\x1b["
-
-/** The string used to reset any styling applied to text in stdio output. */
-#define SIR_ENDSTYLE SIR_BEGINSTYLE "0m"
-
 /** @} */
 
 #endif /* !_SIR_CONFIG_H_INCLUDED */

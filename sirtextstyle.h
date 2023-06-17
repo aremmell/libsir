@@ -62,7 +62,6 @@
  * 0xE8-0xFF:  grayscale from black to white in 24 steps
  */
 
-// TODO: reminder that these are partially already defined in sirconfig.h
 #define SIR_ESC_START "\x1b["
 #define SIR_ESC_END   "m"
 #define SIR_ESC_RESET SIR_ESC_START "0" SIR_ESC_END
