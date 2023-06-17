@@ -104,12 +104,12 @@ int main(int argc, char** argv) {
     }
 
     int first        = (only ? 0 : 1);
-    int tests        = _sir_countof(sir_tests) - first;
-    int tgt_tests    = (only ? to_run : tests);
+    int tgt_tests    = (only ? to_run : _sir_countof(sir_tests) - first);
     int passed       = 0;
+    int ran          = 0;
     sirtimer_t timer = {0};
 
-    printf(WHITE("running %d libsir %s...") "\n", tgt_tests, TEST_S(tgt_tests));
+    printf(WHITEB("\nrunning %d libsir %s...") "\n", tgt_tests, TEST_S(tgt_tests));
     startsirtimer(&timer);
 
     for (int n = first; n < _sir_countof(sir_tests); n++) {
@@ -118,35 +118,37 @@ int main(int argc, char** argv) {
             continue;
         }
 
-        printf(WHITE("\t'%s'...") "\n", sir_tests[n].name);
+        printf(WHITEB("\n\t(%d/%d) '%s'...") "\n\n", ran, tgt_tests, sir_tests[n].name);
         
         sir_tests[n].pass = sir_tests[n].fn();
         if (sir_tests[n].pass)
             passed++;
 
-        printf(WHITE("\t'%s' finished; result: ") "%s\n", sir_tests[n].name,
-            sir_tests[n].pass ? GREEN("PASS") : RED("FAIL"));
+        ran++;
+
+        printf(WHITEB("\t(%d/%d) '%s' finished: ") "%s\n", ran, tgt_tests,
+            sir_tests[n].name, PRN_PASS(sir_tests[n].pass));
     }
 
     float elapsed = sirtimerelapsed(&timer);
     
     if (passed == tgt_tests) {
-        printf(WHITE("done; ") GREEN("%s%d libsir %s passed in %.02fsec") "\n",
+        printf("\n" WHITEB("done: ") GREENB("%s%d libsir %s passed in %.03fsec!")"\n\n",
             tgt_tests > 1 ? "all " : "", tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
     } else {
-        printf(WHITE("done; ") RED("%d of %d libsir %s failed in %.02fsec") "\n",
+        printf("\n" WHITEB("done: ") REDB("%d of %d libsir %s failed in %.03fsec")"\n\n",
             tgt_tests - passed, tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
 
-        printf("\n" REDB("Failed %s:") "\n\n", TEST_S(tgt_tests - passed));
+        printf(REDB("Failed %s:") "\n\n", TEST_S(tgt_tests - passed));
 
         for (int t = 0; t < _sir_countof(sir_tests); t++)
             if (!sir_tests[t].pass)
-                printf(RED("\t- %s\n"), sir_tests[t].name);
+                printf(RED(INDENT_ITEM "%s\n"), sir_tests[t].name);
         printf("\n");
     }
 
     if (wait) {
-        printf(WHITE("press any key to exit...") "\n");
+        printf(WHITEB("press any key to exit...") "\n");
         int ch = _sir_getchar();
         _SIR_UNUSED(ch);
     }
@@ -597,7 +599,101 @@ bool sirtest_optionssanity(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    printf("\t" YELLOW("Not implemented\n"));
+    static const size_t iterations = 10;
+    static const size_t num_options = 7;
+
+    /* these should all be valid. */
+    printf("\t" WHITEB("--- individual valid options ---") "\n");
+    pass &= _sir_validopts(SIRO_ALL);
+    printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_ALL);
+    pass &= _sir_validopts(SIRO_NOTIME);
+    printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_NOTIME);
+    pass &= _sir_validopts(SIRO_NOLEVEL);
+    printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_NOLEVEL);
+    pass &= _sir_validopts(SIRO_NONAME);
+    printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_NONAME);
+    pass &= _sir_validopts(SIRO_NOPID);
+    printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_NOPID);
+    pass &= _sir_validopts(SIRO_NOTID);
+    printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_NOTID);
+    pass &= _sir_validopts(SIRO_NOHDR);
+    printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_NOHDR);
+    pass &= _sir_validopts(SIRO_MSGONLY);
+    printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_MSGONLY);
+    PRINT_PASS(pass, "\t--- individual valid options: %s ---\n\n", PRN_PASS(pass));
+
+    /* any combination these bitwise OR'd together
+       to form a bitmask should also be valid. */
+    static const sir_option option_arr[num_options] = {
+        SIRO_NOTIME,
+        SIRO_NOLEVEL,
+        SIRO_NONAME,
+        SIRO_NOPID,
+        SIRO_NOTID,
+        SIRO_NOHDR,
+        SIRO_MSGONLY
+    };
+
+    printf("\t" WHITEB("--- random bitmask of valid options ---") "\n");
+    uint32_t last_count = num_options;
+    for (size_t n = 0; n < iterations; n++) {
+        sir_options opts    = 0;
+        uint32_t rand_count = 0;
+        size_t last_idx = 0;
+
+        do {
+            rand_count = getrand(num_options);
+        } while (rand_count == last_count || rand_count <= 1);
+
+        last_count = rand_count;
+
+        for (size_t i = 0; i < rand_count; i++) {
+            size_t rand_idx = 0;
+            size_t tries    = 0;
+
+            do {
+                if (++tries > num_options - 2)
+                    break;
+                rand_idx = (size_t)getrand(num_options);
+ 
+            } while (rand_idx == last_idx || _sir_bittest(opts, option_arr[rand_idx]));
+
+            last_idx = rand_idx;
+            opts |= option_arr[rand_idx];
+        }
+
+        pass &= _sir_validopts(opts);
+        printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %" PRIu32 ", options: %08X") "\n",
+            n + 1, iterations, rand_count, opts);        
+    }
+    PRINT_PASS(pass, "\t--- random bitmask of valid options: %s ---\n\n", PRN_PASS(pass));
+
+    printf("\t" WHITEB("--- invalid values ---") "\n");
+
+    /* the lowest byte is not valid. */
+    sir_options invalid = 0x000000ff;                                          
+    pass &= !_sir_validopts(invalid);
+    printf(INDENT_ITEM WHITE("lowest byte: %08X") "\n", invalid);
+    
+    /* gaps inbetween valid options. */
+    invalid = 0x0001ff00 & ~(SIRO_NOTIME | SIRO_NOLEVEL | SIRO_NONAME |
+                             SIRO_NOMSEC | SIRO_NOPID | SIRO_NOTID  |
+                             SIRO_NOHDR);
+    pass &= !_sir_validopts(invalid);
+    printf(INDENT_ITEM WHITE("gaps in 0x001ff00: %08X") "\n", invalid);    
+
+    /* greater than SIRO_MSGONLY and less than SIRO_NOHDR. */
+    for (sir_option o = 0x00007f00; o < SIRO_NOHDR; o += 0x1000) {
+        pass &= !_sir_validopts(o);
+        printf(INDENT_ITEM WHITE("SIRO_MSGONLY >< SIRO_NOHDR: %08X") "\n", o);
+    }
+
+    /* greater than SIRO_NOHDR. */
+    invalid = (0xFFFF0000 &~ SIRO_NOHDR);
+    pass &= !_sir_validopts(invalid);
+    printf(INDENT_ITEM WHITE("greater than SIRO_NOHDR: %08X") "\n", invalid);
+
+    PRINT_PASS(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 
     sir_cleanup();
     return print_result_and_return(pass);
@@ -607,7 +703,86 @@ bool sirtest_levelssanity(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    printf("\t" YELLOW("Not implemented\n"));
+    static const size_t iterations = 10;
+
+    /* these should all be valid. */
+    printf("\t" WHITEB("--- individual valid levels ---") "\n");
+    pass &= _sir_validlevel(SIRL_INFO) && _sir_validlevels(SIRL_INFO);
+    printf(INDENT_ITEM WHITE("valid level: %04X") "\n", SIRL_INFO);    
+    pass &= _sir_validlevel(SIRL_DEBUG) && _sir_validlevels(SIRL_DEBUG);
+    printf(INDENT_ITEM WHITE("valid level: %04X") "\n", SIRL_DEBUG);
+    pass &= _sir_validlevel(SIRL_NOTICE) && _sir_validlevels(SIRL_NOTICE);
+    printf(INDENT_ITEM WHITE("valid level: %04X") "\n", SIRL_NOTICE);
+    pass &= _sir_validlevel(SIRL_WARN) && _sir_validlevels(SIRL_WARN);
+    printf(INDENT_ITEM WHITE("valid level: %04X") "\n", SIRL_WARN);            
+    pass &= _sir_validlevel(SIRL_ERROR) && _sir_validlevels(SIRL_ERROR);
+    printf(INDENT_ITEM WHITE("valid level: %04X") "\n", SIRL_ERROR);
+    pass &= _sir_validlevel(SIRL_CRIT) && _sir_validlevels(SIRL_CRIT);
+    printf(INDENT_ITEM WHITE("valid level: %04X") "\n", SIRL_CRIT);
+    pass &= _sir_validlevel(SIRL_ALERT) && _sir_validlevels(SIRL_ALERT);
+    printf(INDENT_ITEM WHITE("valid level: %04X") "\n", SIRL_ALERT);
+    pass &= _sir_validlevel(SIRL_EMERG) && _sir_validlevels(SIRL_EMERG);
+    printf(INDENT_ITEM WHITE("valid level: %04X") "\n", SIRL_EMERG);    
+    pass &= _sir_validlevels(SIRL_ALL);
+    printf(INDENT_ITEM WHITE("valid levels: %04X") "\n", SIRL_ALL);  
+    pass &= _sir_validlevels(SIRL_NONE);
+    printf(INDENT_ITEM WHITE("valid levels: %04X") "\n", SIRL_NONE);  
+    PRINT_PASS(pass, "\t--- individual valid levels: %s ---\n\n", PRN_PASS(pass));
+
+    /* any combination these bitwise OR'd together
+       to form a bitmask should also be valid. */
+    static const sir_levels levels_arr[SIR_NUMLEVELS] = {
+       SIRL_EMERG,
+       SIRL_ALERT,
+       SIRL_CRIT,
+       SIRL_ERROR,
+       SIRL_WARN,
+       SIRL_NOTICE,
+       SIRL_INFO,
+       SIRL_DEBUG
+    };
+
+    printf("\t" WHITEB("--- random bitmask of valid levels ---") "\n");
+    uint32_t last_count = SIR_NUMLEVELS;
+    for (size_t n = 0; n < iterations; n++) {
+        sir_levels levels   = 0;
+        uint32_t rand_count = 0;
+        size_t last_idx = 0;
+
+        do {
+            rand_count = getrand(SIR_NUMLEVELS);
+        } while (rand_count == last_count || rand_count <= 1);
+
+        last_count = rand_count;
+
+        for (size_t i = 0; i < rand_count; i++) {
+            size_t rand_idx = 0;
+            size_t tries    = 0;
+            
+            do {
+                if (++tries > SIR_NUMLEVELS - 2)
+                    break;
+                rand_idx = (size_t)getrand(SIR_NUMLEVELS);
+            } while (rand_idx == last_idx || _sir_bittest(levels, levels_arr[rand_idx]));
+
+            last_idx = rand_idx;
+            levels |= levels_arr[rand_idx];
+        }
+
+        pass &= _sir_validlevels(levels);
+        printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %" PRIu32 ", levels: %04X") "\n",
+            n + 1, iterations, rand_count, levels);        
+    }
+    PRINT_PASS(pass, "\t--- random bitmask of valid levels: %s ---\n\n", PRN_PASS(pass));             
+
+    printf("\t" WHITEB("--- invalid values ---") "\n");
+
+    /* greater than SIRL_ALL. */
+    sir_levels invalid = (0xffff & ~SIRL_ALL);
+    pass &= !_sir_validlevels(invalid);
+    printf(INDENT_ITEM WHITE("greater than SIRL_ALL: %04X") "\n", invalid);
+
+    PRINT_PASS(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 
     sir_cleanup();
     return print_result_and_return(pass);    

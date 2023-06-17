@@ -61,6 +61,8 @@
 
 #define TEST_S(n) (n > 1 ? ("test" "s") : "test")
 #define PRN_STR(str) (str ? str : RED("NULL"))
+#define PRN_PASS(pass) (pass ? GREENB("PASS") : REDB("FAIL"))
+#define INDENT_ITEM "\t  " SIR_BULLET " "
 
 /**
  * @defgroup tests Tests
@@ -259,6 +261,13 @@ static inline
 bool getrand_bool(uint32_t upper_bound) {
     return getrand(upper_bound) % 2 == 0;
 }
+
+/** prints a message in green if pass is true, or red otherwise. */
+#define PRINT_PASS(pass, msg, ...) \
+    if (pass) \
+        printf(GREEN(msg), __VA_ARGS__); \
+    else \
+        printf(RED(msg), __VA_ARGS__);
 
 bool rmfile(const char* filename);
 bool deletefiles(const char* search, const char* filename, unsigned* data);
