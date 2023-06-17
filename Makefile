@@ -14,7 +14,7 @@ INSTALLLIB = /usr/local/lib
 INSTALLINC = /usr/local/include
 
 # base CFLAGS
-CFLAGS = -Wpedantic -std=c11 -I. -fPIC
+CFLAGS = -Wall -std=c11 -I. -fPIC -D_FORTIFY_SOURCE=2
 
 # debug/non-debug CFLAGS
 ifeq ($(SIR_DEBUG),1)
