@@ -403,7 +403,7 @@ bool sirtest_rollandarchivefile(void) {
     static const sirchar_t* logext      = ".log";
     static const sirchar_t* line        = "hello, i am some data. nice to meet you.";
 
-    sirchar_t logfilename[SIR_MAXPATH] = { 0 };
+    sirchar_t logfilename[SIR_MAXPATH] = {0};
     snprintf(logfilename, SIR_MAXPATH, "%s%s", logbasename, logext);
 
     unsigned delcount = 0;
@@ -1248,7 +1248,7 @@ unsigned sirtest_thread(void* arg) {
 }
 
 bool print_test_error(bool result, bool expected) {
-    sirchar_t message[SIR_MAXERROR] = { 0 };
+    sirchar_t message[SIR_MAXERROR] = {0};
     uint16_t code = sir_geterror(message);
 
     if (!expected && !result && SIR_E_NOERROR != code) {
@@ -1261,14 +1261,14 @@ bool print_test_error(bool result, bool expected) {
 }
 
 void print_os_error(void) {
-    sirchar_t message[SIR_MAXERROR] = { 0 };
+    sirchar_t message[SIR_MAXERROR] = {0};
     uint16_t  code = sir_geterror(message);
     fprintf(stderr, "\t" RED("OS error: (%hu, %s)") "\n", code, message);
 }
 
 bool filter_error(bool pass, uint16_t err) {
     if (!pass) {
-        sirchar_t message[SIR_MAXERROR] = { 0 };
+        sirchar_t message[SIR_MAXERROR] = {0};
         uint16_t  code = sir_geterror(message);
         if (code != err)
             return false;        

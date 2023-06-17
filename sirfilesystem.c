@@ -343,7 +343,7 @@ char* _sir_stattostring(const struct stat* restrict st) {
         default:       type = SIR_UNKNOWN; break;
     }
 
-    char mode[32] = { 0 };
+    char mode[32] = {0};
     snprintf(mode, sizeof(mode), "%c%c%c%c%c%c%c%c%c%c (%03o)",
         (_sir_bittest(st->st_mode & 0xF000, S_IFDIR) ? 'd' : '-'),
         (_sir_bittest(st->st_mode & 0x0FFF, S_IRUSR) ? 'r' : '-'),
