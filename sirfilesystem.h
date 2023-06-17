@@ -29,11 +29,8 @@
 #include "sirplatform.h"
 
 /** Defines how many characters to grow a buffer by which was deemed too small
- * by a system call (with no information regarding the necessary size). */
+ * by a system call (w/o information regarding the necessary size). */
 #define SIR_PATH_BUFFER_GROW_BY 32
-
-/** Buffer size, in characters, for struct stat -> string. */
-#define SIR_STAT_BUFFER_SIZE 128
 
 /** Special flag to indicate to the caller that the file in question
  * does not exist (_sir_pathgetstat). */
@@ -53,15 +50,11 @@ char* _sir_getcwd(void);
 
 char* _sir_getappfilename(void);
 char* _sir_getappbasename(void);
-
 char* _sir_getappdir(void);
 
 char* _sir_getbasename(char* restrict path);
-
 char* _sir_getdirname(char* restrict path);
 
 bool _sir_ispathrelative(const char* restrict path, bool* restrict relative);
-
-char* _sir_stattostring(const struct stat* restrict st);
 
 #endif // !_SIR_FILESYSTEM_H_INCLUDED
