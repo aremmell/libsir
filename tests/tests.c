@@ -224,7 +224,8 @@ bool sirtest_filecachesanity(void) {
     } while (true);
 
     printf("\tremove order: {");
-    for (size_t n = 0; n < SIR_MAXFILES; n++) printf(" %zu%s", removeorder[n], (n < SIR_MAXFILES - 1) ? "," : "");
+    for (size_t n = 0; n < SIR_MAXFILES; n++)
+        printf(" %zu%s", removeorder[n], (n < SIR_MAXFILES - 1) ? "," : "");
     printf(" }...\n");
 
     for (size_t n = 0; n < SIR_MAXFILES; n++) {
@@ -600,7 +601,6 @@ bool sirtest_optionssanity(void) {
     bool pass = si_init;
 
     static const size_t iterations = 10;
-    static const size_t num_options = 7;
 
     /* these should all be valid. */
     printf("\t" WHITEB("--- individual valid options ---") "\n");
@@ -624,25 +624,25 @@ bool sirtest_optionssanity(void) {
 
     /* any combination these bitwise OR'd together
        to form a bitmask should also be valid. */
-    static const sir_option option_arr[num_options] = {
+    static const sir_option option_arr[SIR_NUMOPTIONS] = {
         SIRO_NOTIME,
         SIRO_NOLEVEL,
         SIRO_NONAME,
+        SIRO_NOMSEC,
         SIRO_NOPID,
         SIRO_NOTID,
-        SIRO_NOHDR,
-        SIRO_MSGONLY
+        SIRO_NOHDR
     };
 
     printf("\t" WHITEB("--- random bitmask of valid options ---") "\n");
-    uint32_t last_count = num_options;
+    uint32_t last_count = SIR_NUMOPTIONS;
     for (size_t n = 0; n < iterations; n++) {
         sir_options opts    = 0;
         uint32_t rand_count = 0;
         size_t last_idx = 0;
 
         do {
-            rand_count = getrand(num_options);
+            rand_count = getrand(SIR_NUMOPTIONS);
         } while (rand_count == last_count || rand_count <= 1);
 
         last_count = rand_count;
@@ -652,9 +652,9 @@ bool sirtest_optionssanity(void) {
             size_t tries    = 0;
 
             do {
-                if (++tries > num_options - 2)
+                if (++tries > SIR_NUMOPTIONS - 2)
                     break;
-                rand_idx = (size_t)getrand(num_options);
+                rand_idx = (size_t)getrand(SIR_NUMOPTIONS);
  
             } while (rand_idx == last_idx || _sir_bittest(opts, option_arr[rand_idx]));
 
