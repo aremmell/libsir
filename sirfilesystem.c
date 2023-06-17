@@ -248,7 +248,7 @@ char* _sir_getappbasename(void) {
     char* filename = _sir_getappfilename();
     if (!_sir_validstr(filename))
         return NULL;
-#pragma message("TODO: screw basename/dirname(); hand-roll them OR enable CRT debugging and see if they're leaking heap memory")
+
     char* retval = _sir_getbasename(filename);
     char* bname  = strdup(retval);
 
