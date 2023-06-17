@@ -320,6 +320,13 @@
  */
 #define SIR_NUMLEVELS 8
 
+/**
+ * The number of entries in the 4-bit (16-color) map (::sir_style_16color_map)
+ * 3 foreground attributes + 17 foreground colors + 17 background colors (default)
+ * counts as a color.
+ */
+#define SIR_NUM16_COLOR_MAPPINGS 37
+
 /** @} */
 
 #endif /* !_SIR_CONFIG_H_INCLUDED */
