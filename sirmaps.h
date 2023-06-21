@@ -27,7 +27,6 @@
 #define _SIR_MAPS_H_INCLUDED
 
 #include "sirtypes.h"
-#include "sirhelpers.h"
 
 extern sir_level_style_pair sir_override_style_map[SIR_NUMLEVELS];
 extern const sir_level_str_pair sir_level_str_map[SIR_NUMLEVELS];
