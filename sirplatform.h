@@ -168,9 +168,6 @@ typedef void (*sir_once_fn)(void);
   /** The one-time initializer. */
 # define SIR_ONCE_INIT PTHREAD_ONCE_INIT
 
-/** Path component separator. */
-# define SIR_PATH_SEP '/'
-
 #else // __WIN__
 
 # define SIR_MAXPATH MAX_PATH
@@ -192,9 +189,6 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
   /** The one-time initializer. */
 # define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
-
-/** Path component separator. */
-# define SIR_PATH_SEP '\\'
 
 #endif // !__WIN__
 
@@ -226,12 +220,12 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 # define SIR_MSECCLOCK SYSTEM_CLOCK
 #endif
 
-#if defined(__clang__) && defined(__FILE_NAME__)
+#if (defined(__clang__) || defined(__GNUC__)) && defined(__FILE_NAME__)
 # define __file__ __FILE_NAME__
-#elif defined(__GNUC__) && defined(__FILE_NAME__)
-# define __file__ __FILE_NAME__
+#elif defined(__BASE_FILE__)
+# define __file__ __BASE_FILE__
 #else
-# define __file__ (strrchr(__FILE__, SIR_PATH_SEP) ? strrchr(__FILE__, SIR_PATH_SEP) + 1 : __FILE__)
+# define __file__ __FILE__
 #endif
 
 #endif /* !_SIR_PLATFORM_H_INCLUDED */
