@@ -975,7 +975,7 @@ bool sirtest_updatesanity(void) {
 static
 bool generic_syslog_test(const char* sl_name, const char* identity, const char* category) {
     bool pass = true;
-    static const int runs = 3;
+    static const int runs = 5;
 
     /* repeat initializing, opening, logging, closing, cleaning up n times. */
     sirtimer_t timer;
@@ -986,15 +986,16 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
 
     for (int i = 0; i < runs; i++) {
         /* randomly skip setting process name, identity/category to thoroughly
-           test fallback routines */
+           test fallback routines; randomly update the config mid-run. */
         bool set_procname = getrand_bool((uint32_t)sirtimerelapsed(&timer));
         bool set_identity = getrand_bool((uint32_t)sirtimerelapsed(&timer));
         bool set_category = getrand_bool((uint32_t)sirtimerelapsed(&timer));
+        bool do_update    = getrand_bool((uint32_t)sirtimerelapsed(&timer));
 
-        printf("\tset_procname: %d, set_identity: %d, set_category: %d\n",
-            set_procname, set_identity, set_category);
+        printf("\tset_procname: %d, set_identity: %d, set_category: %d, do_update: %d\n",
+            set_procname, set_identity, set_category, do_update);
 
-        INIT_SL(si, SIRL_ALL, SIRO_NOTID, 0, 0, (set_procname ? "sir_sltest" : ""));
+        INIT_SL(si, SIRL_ALL, SIRO_NOHOST | SIRO_NOTID, 0, 0, (set_procname ? "sir_sltest" : ""));
         si.d_syslog.opts   = SIRO_DEFAULT;
         si.d_syslog.levels = SIRL_DEFAULT;
         
@@ -1006,10 +1007,20 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
         
         si_init = sir_init(&si);
         pass &= si_init;
-        
+
+        if (do_update)
+            pass &= sir_sysloglevels(SIRL_ALL);
+            
+        pass &= sir_debug("%d/%d: this debug message sent to stdout and %s.", i + 1, runs, sl_name);
+        pass &= sir_info("%d/%d: this info message sent to stdout and %s.", i + 1, runs, sl_name);
+
         pass &= sir_notice("%d/%d: this notice message sent to stdout and %s.", i + 1, runs, sl_name);
         pass &= sir_warn("%d/%d: this warning message sent to stdout and %s.", i + 1, runs, sl_name);
         pass &= sir_error("%d/%d: this error message to stdout and %s.", i + 1, runs, sl_name);
+
+        if (do_update)
+            pass &= sir_syslogopts(SIRO_MSGONLY &~ (SIRO_NOLEVEL | SIRO_NOPID));
+
         pass &= sir_crit("%d/%d: this critical message sent to stdout and %s.", i + 1, runs, sl_name);
         pass &= sir_alert("%d/%d: this alert message sent to stdout and %s.", i + 1, runs, sl_name);
         pass &= sir_emerg("%d/%d: this emergency message sent to stdout and %s.", i + 1, runs, sl_name);
