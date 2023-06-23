@@ -70,7 +70,7 @@ bool _sir_makeinit(sirinit* si) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     si->d_syslog.opts   = SIRO_DEFAULT;
     si->d_syslog.levels = SIRL_DEFAULT;
-#endif    
+#endif
 
     return true;
 }
@@ -491,7 +491,7 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     _sir_unlocksection(_SIRM_INIT);
 
     sirbuf buf = {0};
-    
+
     bool appliedstyle = false;
     sir_textstyle style = _sir_gettextstyle(level);
     assert(SIRS_INVALID != style);
@@ -522,6 +522,7 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
         assert(gethost && _validstrnofail(buf.hostname));
         _SIR_UNUSED(gethost);
     }
+
     if (0 > snprintf(buf.level, SIR_MAXLEVEL, SIR_LEVELFORMAT, _sir_levelstr(level)))
         _sir_handleerr(errno);
 
@@ -601,7 +602,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
 
 const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
 
-    if (_sir_validopts(opts) && _sir_validptr(buf) && _sir_validptr(buf->output)) {
+    if (_sir_validptr(buf)) {
         bool first = true;
 
         _sir_resetstr(buf->output);
@@ -956,7 +957,7 @@ const char* _sir_levelstr(sir_level level) {
 
 bool _sir_formattime(time_t now, char* buffer, const char* format) {
 
-    if (0 != now && _sir_validptr(buffer) && _sir_validstr(format)) {
+    if (0 != now) {
         struct tm timebuf = {0};
         size_t fmttime = strftime(buffer, SIR_MAXTIME, format, _sir_localtime(&now, &timebuf));
         assert(0 != fmttime);

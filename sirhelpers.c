@@ -128,7 +128,7 @@ bool _sir_validopts(sir_options opts) {
 }
 
 bool __sir_validstr(const char* restrict str, bool fail) {
-    bool valid = str && (*str != (char)'\0');
+    bool valid = str && (*str != '\0');
     if (!valid && fail) {
         _sir_seterror(_SIR_E_STRING);
         assert(!"invalid string");
