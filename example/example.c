@@ -77,7 +77,7 @@ int main(void) {
 
     /* Configure a name to associate with our output. */
     static const char* appname = "MyFooServer";
-    _sir_strncpy(si.processName, SIR_MAXNAME, appname, strnlen(appname, SIR_MAXNAME));
+    _sir_strncpy(si.name, SIR_MAXNAME, appname, strnlen(appname, SIR_MAXNAME));
 
     /* Initialize libsir. */
     if (!sir_init(&si))

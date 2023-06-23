@@ -28,6 +28,7 @@
 
 #include "sirplatform.h"
 #include "sirconfig.h"
+#include "siransimacros.h"
 
 /**
  * @addtogroup public
@@ -171,7 +172,7 @@ typedef struct {
     /** 
      * The identity string to pass to the system logger.
      * 
-     * If not set, and the processName in the ::sirinit struct
+     * If not set, and the name in the ::sirinit struct
      * is set, that will be used instead.
      * 
      * Failing that, an attempt will be made to use the file name
@@ -222,7 +223,7 @@ typedef struct {
      * Set ::SIRO_NONAME in a destination's options bitmask to exclude it from
      * log messages.
      */
-    char processName[SIR_MAXNAME];
+    char name[SIR_MAXNAME];
 } sirinit;
 
 /** @} */
@@ -230,7 +231,7 @@ typedef struct {
 /** Internally-used error type. */
 typedef struct {
     uint32_t code;
-    const char * const message;
+    const char* const message;
 } sirerror;
 
 /** Text style attribute mask. */
@@ -270,7 +271,7 @@ typedef struct {
     char msec[SIR_MAXMSEC];
     char hostname[SIR_MAXHOST];
     char level[SIR_MAXLEVEL];
-    char name[SIR_MAXNAME];
+    const char* name;
     char pid[SIR_MAXPID];
     char tid[SIR_MAXPID];
     char message[SIR_MAXMESSAGE];
@@ -278,29 +279,24 @@ typedef struct {
     size_t output_len;
 } sirbuf;
 
-/** ::sir_level <-> default ::sir_textstyle mapping. */
+/** ::sir_level <-> ::sir_textstyle mapping. */
 typedef struct {
-    const sir_level level; /**< The level for which the style applies. */
-    uint32_t style;        /**< The default value. */
-} sir_level_style_pair;
-
-/** ::sir_level <-> string representation mapping (@ref sirconfig.h) */
-typedef struct {
-    const sir_level level;
-    const char* str;
-} sir_level_str_pair;
+    const sir_level level;  /**< The level for which the style applies. */
+    sir_textstyle style;    /**< The ::sir_textstyle representation. */
+    char str[SIR_MAXSTYLE]; /**< The formatted string representation. */
+} sir_level_style_tuple;
 
 /** Public (::sir_textstyle) <-> values used to generate styled stdio output. */
 typedef struct {
-    const uint32_t from; /**< The public text style flag(s). */
-    const uint16_t to;   /**< The internal value(s). */
+    const sir_textstyle from; /**< The public text style flag(s). */
+    const uint16_t to;        /**< The internal value(s). */
 } sir_style_16color_pair;
 
 /** Mutex <-> protected section mapping. */
 typedef enum {
     _SIRM_INIT = 0,  /**< The ::sirinit section. */
     _SIRM_FILECACHE, /**< The ::sirfcache section. */
-    _SIRM_TEXTSTYLE, /**< The ::sir_level_style_pair section. */
+    _SIRM_TEXTSTYLE, /**< The ::sir_level_style_tuple section. */
 } sir_mutex_id;
 
 /** Error type. */

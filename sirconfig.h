@@ -89,14 +89,14 @@
 /**
  * The string placed directly before process and thread IDs.
  * 
- * @remark Only applies if ::SIRO_NONAME is set.
+ * @remark Only applies if ::SIRO_NONAME is not set.
  */
 #define SIR_PIDPREFIX "("
 
 /**
  * The character placed directly after process and thread IDs.
  * 
- * @remark Only applies if ::SIRO_NONAME is set.
+ * @remark Only applies if ::SIRO_NONAME is not set.
  */
 #define SIR_PIDPOSTFIX ")"
 

@@ -24,49 +24,23 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "sirmaps.h"
+#include "sirdefaults.h"
 
 /**
- * @brief Overrides for ::sir_level <-> ::sir_textstyle mappings.
+ * @brief Mapping of ::sir_level <-> ::sir_textstyle & ANSI escape codes..
  *
- * ::sir_settextstyle sets (overrides) the style values in this array
- * at runtime; only the SIRL_* values are constant.
- *
- * ::sir_default_style_map in ::sirdefaults.h contains the constant,
- * default styles for each level.
- *
- * @attention Entries *must* remain in numeric ascending order (by SIRL_*);
- * binary search is used to look up entries based on those values.
+ * ::sir_settextstyle and ::sir_resettextstyles modify the style
+ * values in this array at runtime; only the SIRL_* values are constant.
  */
-sir_level_style_pair sir_override_style_map[SIR_NUMLEVELS] = {
-    {SIRL_EMERG,  SIRS_INVALID},
-    {SIRL_ALERT,  SIRS_INVALID},
-    {SIRL_CRIT,   SIRS_INVALID},
-    {SIRL_ERROR,  SIRS_INVALID},
-    {SIRL_WARN,   SIRS_INVALID},
-    {SIRL_NOTICE, SIRS_INVALID},
-    {SIRL_INFO,   SIRS_INVALID},
-    {SIRL_DEBUG,  SIRS_INVALID}
-};
-
-/**
- * @brief Mapping of ::sir_level <-> string representation (::sirconfig.h)
- * 
- * ::_sir_levelstr obtains string representations from this array
- * for output formatting.
- * 
- * @attention Entries *must* remain in numeric ascending order (by SIRL_*);
- * binary search is used to look up entries based on those values.
- */
-#pragma message("TODO: Get rid of this and just use a switch")
-const sir_level_str_pair sir_level_str_map[SIR_NUMLEVELS] = {
-    {SIRL_EMERG,  SIRL_S_EMERG},
-    {SIRL_ALERT,  SIRL_S_ALERT},
-    {SIRL_CRIT,   SIRL_S_CRIT},
-    {SIRL_ERROR,  SIRL_S_ERROR},
-    {SIRL_WARN,   SIRL_S_WARN},
-    {SIRL_NOTICE, SIRL_S_NOTICE},
-    {SIRL_INFO,   SIRL_S_INFO},
-    {SIRL_DEBUG,  SIRL_S_DEBUG}
+sir_level_style_tuple sir_level_to_style_map[SIR_NUMLEVELS] = {
+    {SIRL_EMERG,  SIRS_INVALID, {0}},
+    {SIRL_ALERT,  SIRS_INVALID, {0}},
+    {SIRL_CRIT,   SIRS_INVALID, {0}},
+    {SIRL_ERROR,  SIRS_INVALID, {0}},
+    {SIRL_WARN,   SIRS_INVALID, {0}},
+    {SIRL_NOTICE, SIRS_INVALID, {0}},
+    {SIRL_INFO,   SIRS_INVALID, {0}},
+    {SIRL_DEBUG,  SIRS_INVALID, {0}}
 };
 
 /** 

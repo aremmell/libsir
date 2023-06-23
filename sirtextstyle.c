@@ -27,99 +27,35 @@
 #include "sirinternal.h"
 #include "sirdefaults.h"
 
-bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32_t* pbg) {
+const char* _sir_gettextstyle(sir_level level) {
+    if (!_sir_validlevel(level))
+        return false;
+        
+    sir_level_style_tuple* map = _sir_locksection(_SIRM_TEXTSTYLE);
+    assert(map);
 
-    uint32_t attr = (style & _SIRS_ATTR_MASK);
-    uint32_t fore = (style & _SIRS_FG_MASK);
-    uint32_t back = (style & _SIRS_BG_MASK);
+    if (map) {
+        const char* found = NULL;
 
-    bool attrvalid = attr <= SIRS_DIM;
-    bool fgvalid   = fore <= SIRS_FG_WHITE;
-    bool bgvalid   = back <= SIRS_BG_WHITE && !_SIRS_SAME_COLOR(fore, back);
-
-#pragma message("TODO: See if we can't rearrange the values and bitmasks for these values so things like 'SIRS_FG_RED | SIRS_FG_DEFAULT' can be invalidated (right now that == SIRS_FG_DGRAY")
-
-    if (_sir_validptrnofail(pattr))
-        *pattr = attrvalid ? attr : 0;
-
-    if (_sir_validptrnofail(pfg))
-        *pfg = fgvalid ? fore : 0;
-
-    if (_sir_validptrnofail(pbg))
-        *pbg  = bgvalid ? back : 0;
-
-    if (attrvalid && fgvalid && bgvalid)
-        return true;
-
-    _sir_seterror(_SIR_E_TEXTSTYLE);
-    assert("!invalid text style");
-
-    return false;
-}
-
-sir_textstyle _sir_gettextstyle(sir_level level) {
-    if (_sir_validlevel(level)) {
-        sir_level_style_pair* map = _sir_locksection(_SIRM_TEXTSTYLE);
-        assert(map);
-
-        if (map) {
-            sir_textstyle found = SIRS_INVALID;
-            bool override = false;
-
-            size_t low  = 0;
-            size_t high = SIR_NUMLEVELS - 1;
-
-            _SIR_DECLARE_BIN_SEARCH(low, high);
-            _SIR_BEGIN_BIN_SEARCH();
-
-            if (map[_mid].level == level) {
-                if (map[_mid].style != SIRS_INVALID) {
-                    override = true;
-                    found = map[_mid].style;
-                }
-                break;
-            }
-
-            int comparison = map[_mid].level < level ? 1 : -1;
-
-            _SIR_ITERATE_BIN_SEARCH(comparison);
-            _SIR_END_BIN_SEARCH();
-
-            if (!override)
-                found = _sir_getdefstyle(level);
-
-            _sir_unlocksection(_SIRM_TEXTSTYLE);
-            return found;
-        }
-    }
-
-    return SIRS_INVALID;
-}
-
-sir_textstyle _sir_getdefstyle(sir_level level) {
-    if (_sir_validlevel(level)) {
-        sir_textstyle found = SIRS_INVALID;
-
-        size_t low = 0;
-        size_t high = _sir_countof(sir_default_style_map) - 1;
+        size_t low  = 0;
+        size_t high = SIR_NUMLEVELS - 1;
 
         _SIR_DECLARE_BIN_SEARCH(low, high);
         _SIR_BEGIN_BIN_SEARCH();
 
-        if (sir_default_style_map[_mid].level == level) {
-            found = sir_default_style_map[_mid].style;
+        if (map[_mid].level == level) {
+            found = map[_mid].str;
             break;
         }
 
-        int comparison = sir_default_style_map[_mid].level < level ? 1 : -1;
-
-        _SIR_ITERATE_BIN_SEARCH(comparison);
+        _SIR_ITERATE_BIN_SEARCH((map[_mid].level < level ? 1 : -1));
         _SIR_END_BIN_SEARCH();
 
+        _sir_unlocksection(_SIRM_TEXTSTYLE);
         return found;
     }
 
-    return SIRS_INVALID;
+    return NULL;
 }
 
 bool _sir_settextstyle(sir_level level, sir_textstyle style) {
@@ -127,7 +63,7 @@ bool _sir_settextstyle(sir_level level, sir_textstyle style) {
     _sir_seterror(_SIR_E_NOERROR);
 
     if (_sir_sanity() && _sir_validlevel(level) && _sir_validstyle(style, NULL, NULL, NULL)) {
-        sir_level_style_pair* map = _sir_locksection(_SIRM_TEXTSTYLE);
+        sir_level_style_tuple* map = _sir_locksection(_SIRM_TEXTSTYLE);
         assert(map);
 
         if (map) {
@@ -140,13 +76,11 @@ bool _sir_settextstyle(sir_level level, sir_textstyle style) {
 
             if (map[_mid].level == level) {
                 map[_mid].style = style;
-                updated = true;
+                updated = _sir_formatstyle(style, map[_mid].str, SIR_MAXSTYLE);
                 break;
             }
 
-            int comparison = map[_mid].level < level ? 1 : -1;
-
-            _SIR_ITERATE_BIN_SEARCH(comparison);
+            _SIR_ITERATE_BIN_SEARCH((map[_mid].level < level ? 1 : -1));
             _SIR_END_BIN_SEARCH();
 
             return _sir_unlocksection(_SIRM_TEXTSTYLE) && updated;
@@ -156,16 +90,36 @@ bool _sir_settextstyle(sir_level level, sir_textstyle style) {
     return false;
 }
 
+sir_textstyle _sir_getdefstyle(sir_level level) {
+
+    switch (level) {    
+        case SIRL_EMERG:  return sir_lvl_emerg_def_style;
+        case SIRL_ALERT:  return sir_lvl_alert_def_style;
+        case SIRL_CRIT:   return sir_lvl_crit_def_style;
+        case SIRL_ERROR:  return sir_lvl_error_def_style;
+        case SIRL_WARN:   return sir_lvl_warn_def_style;
+        case SIRL_NOTICE: return sir_lvl_notice_def_style;
+        case SIRL_INFO:   return sir_lvl_info_def_style;
+        case SIRL_DEBUG:  return sir_lvl_debug_def_style;
+        default: /* this should never happen. */
+            assert(!"invalid sir_level");
+            return SIRS_INVALID;
+    }
+}
+
 bool _sir_resettextstyles(void) {
-    sir_level_style_pair* map = _sir_locksection(_SIRM_TEXTSTYLE);
+    sir_level_style_tuple* map = _sir_locksection(_SIRM_TEXTSTYLE);
     assert(map);
 
     if (map) {
-        for (size_t n = 0; n < SIR_NUMLEVELS; n++)
-            map[n].style = SIRS_INVALID;
+        bool all_ok = true;
 
-        _sir_unlocksection(_SIRM_TEXTSTYLE);
-        return true;
+        for (size_t n = 0; n < SIR_NUMLEVELS; n++) {
+            map[n].style = _sir_getdefstyle(map[n].level);
+            all_ok &= _sir_formatstyle(map[n].style, map[n].str, SIR_MAXSTYLE);
+        }
+
+        return _sir_unlocksection(_SIRM_TEXTSTYLE) && all_ok;
     }
 
     return false;
@@ -205,9 +159,7 @@ uint16_t _sir_getprivstyle(uint32_t style) {
     if (sir_style_16color_map[_mid].from == style)
         return sir_style_16color_map[_mid].to;
 
-    int comparison = sir_style_16color_map[_mid].from < style ? 1 : -1;
-
-    _SIR_ITERATE_BIN_SEARCH(comparison);
+    _SIR_ITERATE_BIN_SEARCH((sir_style_16color_map[_mid].from < style ? 1 : -1));
     _SIR_END_BIN_SEARCH();
 
     return _sir_getprivstyle(SIRS_FG_DEFAULT);
@@ -237,11 +189,41 @@ bool _sir_formatstyle(sir_textstyle style, char* buf, size_t size) {
                 snprintf(bgfmt, 7, ";%hu", privbg);
 
             /* '\x1b[n;nnn;nnnm' */
-            snprintf(buf, size, "%s%hu%s%sm", SIR_ESC_START, privattr, fgfmt, bgfmt);
+            snprintf(buf, size, "%s%hu%s%sm", SIR_ESC, privattr, fgfmt, bgfmt);
 
             return _sir_validstr(buf);
         }
     }
+
+    return false;
+}
+
+bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32_t* pbg) {
+
+    uint32_t attr = (style & _SIRS_ATTR_MASK);
+    uint32_t fore = (style & _SIRS_FG_MASK);
+    uint32_t back = (style & _SIRS_BG_MASK);
+
+    bool attrvalid = attr <= SIRS_DIM;
+    bool fgvalid   = fore <= SIRS_FG_WHITE;
+    bool bgvalid   = back <= SIRS_BG_WHITE && !_SIRS_SAME_COLOR(fore, back);
+
+#pragma message("TODO: See if we can't rearrange the values and bitmasks for these values so things like 'SIRS_FG_RED | SIRS_FG_DEFAULT' can be invalidated (right now that == SIRS_FG_DGRAY")
+
+    if (_sir_validptrnofail(pattr))
+        *pattr = attrvalid ? attr : 0;
+
+    if (_sir_validptrnofail(pfg))
+        *pfg = fgvalid ? fore : 0;
+
+    if (_sir_validptrnofail(pbg))
+        *pbg  = bgvalid ? back : 0;
+
+    if (attrvalid && fgvalid && bgvalid)
+        return true;
+
+    _sir_seterror(_SIR_E_TEXTSTYLE);
+    assert("!invalid text style");
 
     return false;
 }

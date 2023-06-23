@@ -796,9 +796,9 @@ bool sirtest_perf(void) {
     static const char* logext      = ".log";
 
 #if !defined(__WIN__)
-    static const size_t perflines       = 1000000;
+    static const size_t perflines = 1000000;
 #else // __WIN__
-    static const size_t perflines       = 100000;
+    static const size_t perflines = 100000;
 #endif
 
     INIT_N(si, SIRL_ALL, SIRO_NOMSEC, 0, 0, "perf");
@@ -1048,7 +1048,7 @@ bool sirtest_os_log(void) {
     printf("\t" DGRAY("SIR_OS_LOG_ENABLED is not defined; skipping.") "\n");
     return true;
 #else
-    return generic_syslog_test("os_log", "com.aremell.libsir.tests", "tests");
+    return generic_syslog_test("os_log", "com.aremmell.libsir.tests", "tests");
 #pragma message("TODO: os_activity_initiate_f")
         /* static void os_log_activity1(void* ctx) {} */
 #endif

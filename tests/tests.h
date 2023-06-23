@@ -38,14 +38,14 @@
 #   include <dirent.h>
 #endif
 
-#define INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, name, init) \
+#define INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, p_name, init) \
     sirinit var         = {0};       \
-    var.d_stdout.opts   = o_stdout;  \
+    var.d_stdout.opts   = (o_stdout) > 0 ? o_stdout : SIRO_DEFAULT;  \
     var.d_stdout.levels = l_stdout;  \
-    var.d_stderr.opts   = o_stderr;  \
+    var.d_stderr.opts   = (o_stderr) > 0 ? o_stderr : SIRO_DEFAULT;  \
     var.d_stderr.levels = l_stderr;  \
-    if (strlen(name) > 0)            \
-        _sir_strncpy(var.processName, SIR_MAXNAME, name, SIR_MAXNAME); \
+    if (_sir_validstrnofail(p_name))   \
+        _sir_strncpy(var.name, SIR_MAXNAME, p_name, SIR_MAXNAME); \
     bool var##_init = false; \
     if (init) \
         var##_init = sir_init(&var);

@@ -27,6 +27,11 @@
 #define _SIR_PLATFORM_H_INCLUDED
 
 #if !defined(_WIN32)
+# if defined(__STDC_NO_ATOMICS__)
+#  undef __HAVE_ATOMIC_H__
+# else
+#  define __HAVE_ATOMIC_H__
+# endif
 # define __STDC_WANT_LIB_EXT1__ 1
 # if defined(__APPLE__) && defined(__MACH__)
 #  define __MACOS__
@@ -58,6 +63,7 @@
 #endif
 #else // _WIN32
 # define SIR_NO_SYSTEM_LOGGERS
+# undef __HAVE_ATOMIC_H__
 # define __WANT_STDC_SECURE_LIB__ 1
 # define _CRT_RAND_S
 # define WIN32_LEAN_AND_MEAN

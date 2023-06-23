@@ -49,9 +49,9 @@ static sironce_t ts_once = SIR_ONCE_INIT;
 
 static sironce_t magic_once = SIR_ONCE_INIT;
 
-#if !defined(__WIN__)
+#if defined(__HAVE_ATOMIC_H__)
 static atomic_uint_fast32_t _sir_magic;
-#else // __WIN__
+#else
 static volatile uint32_t _sir_magic;
 #endif
 
@@ -83,9 +83,9 @@ bool _sir_init(sirinit* si) {
     if (!_sir_validptr(si))
         return false;
 
-#if !defined(__WIN__)
+#if defined(__HAVE_ATOMIC_H__)
     if (_SIR_MAGIC == atomic_load(&_sir_magic)) {
-#else // __WIN__
+#else
     if (_SIR_MAGIC == _sir_magic) {
 #endif
         _sir_seterror(_SIR_E_ALREADY);
@@ -106,32 +106,35 @@ bool _sir_init(sirinit* si) {
     if (!_sir_options_sanity(si))
         return false;
 
-#if defined(__WIN__)
-    if (!_sir_initialize_stdio())
-        return false;
-#endif
-
     sirinit* _si = _sir_locksection(_SIRM_INIT);
     assert(_si);
 
     if (_sir_validptr(_si)) {
         memcpy(_si, si, sizeof(sirinit));
 
-#if !defined(__WIN__)
+#if defined(__HAVE_ATOMIC_H__)
         atomic_store(&_sir_magic, _SIR_MAGIC);
-#else // __WIN__
+#else
         _sir_magic = _SIR_MAGIC;
 #endif
 
+#if defined(__WIN__)
+        if (!_sir_initialize_stdio())
+            return false;
+#endif
+
+        if (!_sir_resettextstyles())
+            return false;        
+
         /* forcibly null-terminate the process name. */
-        _si->processName[SIR_MAXNAME - 1] = '\0';
+        _si->name[SIR_MAXNAME - 1] = '\0';
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
         /* initialize system logger. */
         _sir_syslog_reset(&si->d_syslog);
 
         if (_si->d_syslog.levels != SIRL_NONE) {
-            if (!_sir_syslog_init(_si->processName, &_si->d_syslog))
+            if (!_sir_syslog_init(_si->name, &_si->d_syslog))
                 _sir_selflog("failed to initialize system logger!");
         }
 #endif
@@ -172,11 +175,12 @@ bool _sir_cleanup(void) {
 
         _sir_syslog_reset(&si->d_syslog);
 #endif
-        _sir_resettextstyles();
+        
+        cleanup &= _sir_resettextstyles();
 
-#if !defined(__WIN__)
+#if defined(__HAVE_ATOMIC_H__)
     atomic_store(&_sir_magic, 0);
-#else // __WIN__
+#else
     _sir_magic = 0;
 #endif
         memset(si, 0, sizeof(sirinit));
@@ -190,10 +194,10 @@ bool _sir_cleanup(void) {
 }
 
 bool _sir_sanity(void) {
-#if !defined(__WIN__)
+#if defined(__HAVE_ATOMIC_H__)
     if (_SIR_MAGIC == atomic_load(&_sir_magic))
         return true;
-#else // __WIN__
+#else
     if (_SIR_MAGIC == _sir_magic)
         return true;
 #endif
@@ -391,7 +395,7 @@ bool _sir_mapmutexid(sir_mutex_id mid, sirmutex_t** m, void** section) {
         case _SIRM_TEXTSTYLE:
             _sir_once(&ts_once, _sir_initmutex_ts_once);
             tmpm   = &ts_mutex;
-            tmpsec = &sir_override_style_map[0];
+            tmpsec = &sir_level_to_style_map[0];
             break;
         default:
             assert("!invalid mutex id");
@@ -476,58 +480,53 @@ bool _sir_once(sironce_t *once, sir_once_fn func) {
 
 bool _sir_logv(sir_level level, const char* format, va_list args) {
 
-    _sir_seterror(_SIR_E_NOERROR);
-
     if (!_sir_sanity() || !_sir_validlevel(level) || !_sir_validstr(format))
         return false;
+
+    _sir_seterror(_SIR_E_NOERROR);
 
     sirinit* si = _sir_locksection(_SIRM_INIT);
     if (!si)
         return false;
 
-    sirinit tmpsi = {0};
+    sirinit tmpsi;
     memcpy(&tmpsi, si, sizeof(sirinit));
-
     _sir_unlocksection(_SIRM_INIT);
 
     sirbuf buf = {0};
+    buf.name = tmpsi.name;
 
     bool appliedstyle = false;
-    sir_textstyle style = _sir_gettextstyle(level);
-    assert(SIRS_INVALID != style);
+    const char* style_str = _sir_gettextstyle(level);
 
-    if (SIRS_INVALID != style) {
-        appliedstyle = _sir_formatstyle(style, buf.style, SIR_MAXSTYLE);
-        assert(appliedstyle);
-    }
+    assert(NULL != style_str);
+    if (NULL != style_str)
+        appliedstyle = 0 == _sir_strncpy(buf.style, SIR_MAXSTYLE, style_str,
+            SIR_MAXSTYLE);
 
     if (!appliedstyle)
         return false;
 
-    time_t now;
+    time_t now   = -1;
     long nowmsec = 0;
     bool gettime = _sir_clock_gettime(&now, &nowmsec);
     assert(gettime);
 
     if (gettime) {
         bool fmttime = _sir_formattime(now, buf.timestamp, SIR_TIMEFORMAT);
+        assert(fmttime);
         _SIR_UNUSED(fmttime);
 
         if (0 > snprintf(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec))
             _sir_handleerr(errno);
     }
 
-    if (!_sir_validstrnofail(buf.hostname)) {
-        bool gethost = _sir_gethostname(buf.hostname);
-        assert(gethost && _validstrnofail(buf.hostname));
-        _SIR_UNUSED(gethost);
-    }
+    bool gethost = _sir_gethostname(buf.hostname);
+    assert(gethost);
+    _SIR_UNUSED(gethost);
 
     if (0 > snprintf(buf.level, SIR_MAXLEVEL, SIR_LEVELFORMAT, _sir_levelstr(level)))
         _sir_handleerr(errno);
-
-    if (_sir_validstrnofail(tmpsi.processName))
-        _sir_strncpy(buf.name, SIR_MAXNAME, tmpsi.processName, SIR_MAXNAME);
 
     pid_t pid = _sir_getpid();
     if (0 > snprintf(buf.pid, SIR_MAXPID, SIR_PIDFORMAT, pid))
@@ -674,7 +673,7 @@ const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
         _sir_strncat(buf->output, SIR_MAXOUTPUT, buf->message, SIR_MAXMESSAGE);
 
         if (styling)
-            _sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_ESC_RESET, SIR_MAXSTYLE);
+            _sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_ESC_RST, SIR_MAXSTYLE);
 
         _sir_strncat(buf->output, SIR_MAXOUTPUT, "\n", 1);
 
@@ -856,7 +855,7 @@ bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data) {
         bool init = true;
         if (must_init) {
             _sir_selflog("reinitializing...");
-            init = _sir_syslog_init(si->processName, &si->d_syslog);
+            init = _sir_syslog_init(si->name, &si->d_syslog);
             _sir_selflog("reinitialization %s", init ? "succeeded" : "failed");
         } else {
             _sir_selflog("no reinitialization necessary");
@@ -939,21 +938,21 @@ void _sir_syslog_reset(sir_syslog_dest* ctx) {
 #endif // !SIR_NO_SYSTEM_LOGGERS
 
 const char* _sir_levelstr(sir_level level) {
-        
-    if (_sir_validlevel(level)) {
-        _SIR_DECLARE_BIN_SEARCH(0, _sir_countof(sir_level_str_map) - 1);
-        _SIR_BEGIN_BIN_SEARCH();
 
-        if (sir_level_str_map[_mid].level == level)
-            return sir_level_str_map[_mid].str;
-
-        int comparison = sir_level_str_map[_mid].level < level ? 1 : -1;
-
-        _SIR_ITERATE_BIN_SEARCH(comparison);
-        _SIR_END_BIN_SEARCH();
-    }
-
-    return SIR_UNKNOWN;
+    /* In order most likely to be used. */
+    switch (level) {    
+        case SIRL_INFO:   return SIRL_S_INFO;
+        case SIRL_DEBUG:  return SIRL_S_DEBUG;
+        case SIRL_NOTICE: return SIRL_S_NOTICE;
+        case SIRL_WARN:   return SIRL_S_WARN;
+        case SIRL_ERROR:  return SIRL_S_ERROR;
+        case SIRL_CRIT:   return SIRL_S_CRIT;
+        case SIRL_ALERT:  return SIRL_S_ALERT;        
+        case SIRL_EMERG:  return SIRL_S_EMERG;
+        default: /* this should never happen. */
+            assert(!"invalid sir_level");
+            return SIR_UNKNOWN;
+    }    
 }
 
 bool _sir_formattime(time_t now, char* buffer, const char* format) {
