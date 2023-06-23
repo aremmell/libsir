@@ -31,6 +31,10 @@
 #include "sirfilesystem.h"
 #include "sirmutex.h"
 
+#if defined(__WIN__)
+# pragma comment(lib, "ws2_32.lib")
+#endif
+
 static sirinit _sir_si   = {0};
 static sirfcache _sir_fc = {0};
 
@@ -513,6 +517,11 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
             _sir_handleerr(errno);
     }
 
+    if (!_sir_validstrnofail(buf.hostname)) {
+        bool gethost = _sir_gethostname(buf.hostname);
+        assert(gethost && _validstrnofail(buf.hostname));
+        _SIR_UNUSED(gethost);
+    }
     if (0 > snprintf(buf.level, SIR_MAXLEVEL, SIR_LEVELFORMAT, _sir_levelstr(level)))
         _sir_handleerr(errno);
 
@@ -608,6 +617,13 @@ const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
             if (!_sir_bittest(opts, SIRO_NOMSEC))
                 _sir_strncat(buf->output, SIR_MAXOUTPUT, buf->msec, SIR_MAXMSEC);
 #endif
+        }
+
+        if (!_sir_bittest(opts, SIRO_NOHOST) && _sir_validstrnofail(buf->hostname)) {
+            if (!first)
+                _sir_strncat(buf->output, SIR_MAXOUTPUT, " ", 1);
+            _sir_strncat(buf->output, SIR_MAXOUTPUT, buf->hostname, SIR_MAXHOST);
+            first = false;
         }
 
         if (!_sir_bittest(opts, SIRO_NOLEVEL)) {
@@ -1070,4 +1086,30 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     _SIR_UNUSED(name);
     return false;
 #endif
+}
+
+bool _sir_gethostname(char name[SIR_MAXHOST]) {
+#if !defined(__WIN__)
+    if (-1 == gethostname(name, SIR_MAXHOST - 1)) {
+        _sir_handleerr(errno);
+        return false;
+    }
+    return true;
+#else
+    WSADATA wsad = {0};
+    int ret = WSAStartup(MAKEWORD(2, 2), &wsad);
+    if (0 != ret) {
+        _sir_handlewin32err(ret);
+        return false;
+    }
+
+    if (SOCKET_ERROR == gethostname(name, SIR_MAXHOST)) {
+        _sir_handlewin32err(WSAGetLastError())
+        WSACleanup();
+        return false;
+    }
+
+    WSACleanup();
+    return true;
+#endif // !__WIN__
 }

@@ -53,27 +53,26 @@ int main(void) {
      * NOTE: It is not necessary to retain this structure in memory;
      * libsir makes a copy of it before returning from ::sir_init.
      */
-    sirinit si = {0};
+    sirinit si;
+    if (!sir_makeinit(&si))
+        return report_error();
 
-    /*
-     * Configure levels for stdout. Send debug, information, warning,
-     * and notice messages there.
-     */
+    /* Levels for stdout: send debug, information, warning, and notice there. */
     si.d_stdout.levels = SIRL_DEBUG | SIRL_INFO | SIRL_WARN | SIRL_NOTICE;
 
-    /* Configure options for stdout. Don't show the timestamp or thread ID.. */
-    si.d_stdout.opts = SIRO_NOTIME | SIRO_NOTID;
+    /* Options for stdout: don't show the timestamp, hostname, or thread ID. */
+    si.d_stdout.opts = SIRO_NOTIME | SIRO_NOHOST | SIRO_NOTID;
 
-    /* Configure levels for stderr. Send error and above there. */
+    /* Levels for stderr: send error and above there. */
     si.d_stderr.levels = SIRL_ERROR | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG;
 
-    /* Configure options for stderr: don't show the time stamp or thread ID. */
-    si.d_stderr.opts = SIRO_NOTIME | SIRO_NOTID;
+    /* Options for stderr: don't show the timestamp, hostname, or thread ID. */
+    si.d_stderr.opts = SIRO_NOTIME | SIRO_NOHOST | SIRO_NOTID;
 
-    /* Configure levels for the system logger: don't send any output there. */
+    /* Levels for the system logger: don't send any output there. */
     si.d_syslog.levels = SIRL_NONE;
 
-    /* Configure options for the system logger: use the default value. */
+    /* Options for the system logger: use the default value. */
     si.d_syslog.opts   = SIRO_DEFAULT;
 
     /* Configure a name to associate with our output. */
@@ -85,10 +84,10 @@ int main(void) {
         return report_error();
 
     /*
-     * Configure and add a log file; don't log the process name,
+     * Configure and add a log file; don't log the process name or hostname,
      * and send all levels there.
      */
-    sirfileid_t fileid = sir_addfile("libsir-example.log", SIRL_ALL, SIRO_NONAME);
+    sirfileid_t fileid = sir_addfile("libsir-example.log", SIRL_ALL, SIRO_NONAME | SIRO_NOHOST);
     if (NULL == fileid)
         report_error();
 

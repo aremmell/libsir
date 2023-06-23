@@ -98,6 +98,8 @@
 # undef SIR_SYSLOG_ENABLED
 #endif
 
+#define SIR_MAXHOST 256
+
 # if defined(__GLIBC__)
 #  if (__GLIBC__ >= 2 && __GLIBC_MINOR__ > 19)  || \
       ((__GLIBC__ == 2 && __GLIBC_MINOR__ <= 19) && defined(_BSD_SOURCE))
@@ -172,6 +174,7 @@ typedef void (*sir_once_fn)(void);
 #else // __WIN__
 
 # define SIR_MAXPATH MAX_PATH
+
 # define SIR_MSEC_TIMER
 # define SIR_MSEC_WIN32
 

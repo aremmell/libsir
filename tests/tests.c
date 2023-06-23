@@ -608,6 +608,8 @@ bool sirtest_optionssanity(void) {
     printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_ALL);
     pass &= _sir_validopts(SIRO_NOTIME);
     printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_NOTIME);
+    pass &= _sir_validopts(SIRO_NOHOST);
+    printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_NOHOST);    
     pass &= _sir_validopts(SIRO_NOLEVEL);
     printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_NOLEVEL);
     pass &= _sir_validopts(SIRO_NONAME);
@@ -626,6 +628,7 @@ bool sirtest_optionssanity(void) {
        to form a bitmask should also be valid. */
     static const sir_option option_arr[SIR_NUMOPTIONS] = {
         SIRO_NOTIME,
+        SIRO_NOHOST,
         SIRO_NOLEVEL,
         SIRO_NONAME,
         SIRO_NOMSEC,
@@ -663,7 +666,7 @@ bool sirtest_optionssanity(void) {
         }
 
         pass &= _sir_validopts(opts);
-        printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %" PRIu32 ", options: %08X") "\n",
+        printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %" PRIu32 ", options: %08X)") "\n",
             n + 1, iterations, rand_count, opts);        
     }
     PRINT_PASS(pass, "\t--- random bitmask of valid options: %s ---\n\n", PRN_PASS(pass));
@@ -676,14 +679,13 @@ bool sirtest_optionssanity(void) {
     printf(INDENT_ITEM WHITE("lowest byte: %08X") "\n", invalid);
     
     /* gaps inbetween valid options. */
-    invalid = 0x0001ff00 & ~(SIRO_NOTIME | SIRO_NOLEVEL | SIRO_NONAME |
-                             SIRO_NOMSEC | SIRO_NOPID | SIRO_NOTID  |
-                             SIRO_NOHDR);
+    invalid = 0x0001ff00 & ~(SIRO_NOTIME | SIRO_NOHOST | SIRO_NOLEVEL | SIRO_NONAME |
+                             SIRO_NOMSEC | SIRO_NOPID | SIRO_NOTID  | SIRO_NOHDR);
     pass &= !_sir_validopts(invalid);
     printf(INDENT_ITEM WHITE("gaps in 0x001ff00: %08X") "\n", invalid);    
 
     /* greater than SIRO_MSGONLY and less than SIRO_NOHDR. */
-    for (sir_option o = 0x00007f00; o < SIRO_NOHDR; o += 0x1000) {
+    for (sir_option o = 0x00008f00; o < SIRO_NOHDR; o += 0x1000) {
         pass &= !_sir_validopts(o);
         printf(INDENT_ITEM WHITE("SIRO_MSGONLY >< SIRO_NOHDR: %08X") "\n", o);
     }
@@ -770,7 +772,7 @@ bool sirtest_levelssanity(void) {
         }
 
         pass &= _sir_validlevels(levels);
-        printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %" PRIu32 ", levels: %04X") "\n",
+        printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %" PRIu32 ", levels: %04X)") "\n",
             n + 1, iterations, rand_count, levels);        
     }
     PRINT_PASS(pass, "\t--- random bitmask of valid levels: %s ---\n\n", PRN_PASS(pass));             
@@ -877,16 +879,20 @@ bool sirtest_updatesanity(void) {
     INIT_N(si, SIRL_DEFAULT, 0, SIRL_DEFAULT, 0, "update_sanity");
     bool pass = si_init;
 
+#define UPDATE_SANITY_ARRSIZE 10
+
     static const char* logfile = "update-sanity.log";
-    static const sir_options opts_array[] = {
-        SIRO_NOTIME | SIRO_NOLEVEL, SIRO_MSGONLY,
-        SIRO_NONAME | SIRO_NOTID, SIRO_NOPID | SIRO_NOTIME,
+    static const sir_options opts_array[UPDATE_SANITY_ARRSIZE] = {
+        SIRO_NOHOST | SIRO_NOTIME | SIRO_NOLEVEL,
+        SIRO_MSGONLY, SIRO_NONAME | SIRO_NOTID,
+        SIRO_NOPID | SIRO_NOTIME,
         SIRO_NOTIME | SIRO_NOLEVEL | SIRO_NONAME,
-        SIRO_NOTIME, SIRO_NOMSEC, SIRO_NOPID, SIRO_NOTID,
-        SIRO_ALL
+        SIRO_NOTIME, SIRO_NOMSEC | SIRO_NOHOST,
+        SIRO_NOPID | SIRO_NOTID,
+        SIRO_NOHOST | SIRO_NOTID, SIRO_ALL
     };
 
-    static const sir_levels levels_array[] = {
+    static const sir_levels levels_array[UPDATE_SANITY_ARRSIZE] = {
         SIRL_NONE, SIRL_ALL, SIRL_EMERG, SIRL_ALERT,
         SIRL_CRIT, SIRL_ERROR, SIRL_WARN, SIRL_NOTICE,
         SIRL_INFO, SIRL_DEBUG
@@ -895,8 +901,6 @@ bool sirtest_updatesanity(void) {
     rmfile(logfile);
     sirfileid_t id1 = sir_addfile(logfile, SIRL_DEFAULT, SIRO_DEFAULT);
     pass &= NULL != id1;
-
-    static const uint32_t variations = 10;
 
     for (int i = 0; i < 10; i++) {
 
@@ -919,17 +923,17 @@ bool sirtest_updatesanity(void) {
         pass &= sir_emerg("default config");
 
         /* pick random options to set/unset */
-        uint32_t rnd = getrand(variations);
+        uint32_t rnd = getrand(UPDATE_SANITY_ARRSIZE);
         pass &= sir_stdoutlevels(levels_array[rnd]);
         pass &= sir_stdoutopts(opts_array[rnd]);
         printf("\t" WHITE("set random config #%" PRIu32 " for stdout") "\n", rnd);
 
-        rnd = getrand(variations);
+        rnd = getrand(UPDATE_SANITY_ARRSIZE);
         pass &= sir_stderrlevels(levels_array[rnd]);
         pass &= sir_stderropts(opts_array[rnd]);
         printf("\t" WHITE("set random config #%" PRIu32 " for stderr") "\n", rnd);
 
-        rnd = getrand(variations);
+        rnd = getrand(UPDATE_SANITY_ARRSIZE);
         pass &= sir_filelevels(id1, levels_array[rnd]);
         pass &= sir_fileopts(id1, opts_array[rnd]);
         printf("\t" WHITE("set random config #%" PRIu32 " for %s") "\n", rnd, logfile);

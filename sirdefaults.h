@@ -65,7 +65,7 @@ static const sir_levels sir_stdout_def_lvls
  * @note Can be modified at runtime by calling ::sir_stdoutopts. 
  */
 static const sir_options sir_stdout_def_opts
-    = SIRO_NOTIME | SIRO_NOPID | SIRO_NOTID;
+    = SIRO_NOTIME | SIRO_NOHOST | SIRO_NOPID | SIRO_NOTID;
 
 /**
  * Default levels for stderr.
@@ -87,7 +87,7 @@ static const sir_levels sir_stderr_def_lvls
  * @note Can be modified at runtime by calling ::sir_stderropts. 
  */
 static const sir_options sir_stderr_def_opts
-    = SIRO_NOTIME | SIRO_NOPID | SIRO_NOTID;
+    = SIRO_NOTIME | SIRO_NOHOST | SIRO_NOPID | SIRO_NOTID;
 
 /**
  * Default levels for the system logger.
@@ -135,11 +135,9 @@ static const sir_levels sir_file_def_lvls
  * is passed to ::sir_addfile.
  * 
  * @note Can be modified at runtime by calling ::sir_fileopts.
- * 
- * @note ::SIRO_ALL enables all output formatting (and log header messages).
  */
 static const sir_options sir_file_def_opts
-    = SIRO_ALL;
+    = SIRO_ALL | SIRO_NOHOST;
 
 /** 
  * Default mapping of ::sir_level to ::sir_textstyle.

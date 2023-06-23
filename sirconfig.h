@@ -322,9 +322,9 @@
 
 /**
  * The number of actual distinct options; ::SIRO_NONE, ::SIRO_ALL, ::SIRO_DEFAULT,
- * and ::SIRO_MSGONL are pseudo options that end up being mapped (or not) to the others.
+ * and ::SIRO_MSGONLY are pseudo options that end up being mapped (or not) to the others.
  */
-#define SIR_NUMOPTIONS 7
+#define SIR_NUMOPTIONS 8
 
 /**
  * The number of entries in the 4-bit (16-color) map (::sir_style_16color_map)

@@ -111,6 +111,7 @@ bool _sir_validlevel(sir_level level) {
 bool _sir_validopts(sir_options opts) {
     if ((SIRO_ALL == opts || SIRO_MSGONLY == opts) ||
         ((_sir_bittest(opts, SIRO_NOTIME)          ||
+         _sir_bittest(opts, SIRO_NOHOST)           ||
          _sir_bittest(opts, SIRO_NOLEVEL)          ||
          _sir_bittest(opts, SIRO_NONAME)           ||
          _sir_bittest(opts, SIRO_NOMSEC)           ||
