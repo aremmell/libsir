@@ -48,6 +48,7 @@
  *  - 3:                         Emphasis (off: 23?) √
  *  - 4:                         Underline (off: 24) √
  *  - 5:                         Blinking (off: 25) √ (have to enable in settings)
+ *  - 7:                         Inverse (off: 27) √
  *  - 9:                         Strikethrough (off: 29?) √
  *  - 51:                        Framed (off: 54)    x
  *  - 52:                        Encircled (off: 54) x

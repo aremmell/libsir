@@ -804,13 +804,14 @@ bool _sir_syslog_write(sir_level level, const sirbuf *buf, sir_syslog_dest *ctx)
 #elif defined(SIR_SYSLOG_ENABLED)
     int syslog_level = LOG_DEBUG;
     switch (level) {
-        case SIRL_INFO:  syslog_level = LOG_INFO;    break;
-        case SIRL_DEBUG: syslog_level = LOG_DEBUG;   break;
-        case SIRL_WARN:  syslog_level = LOG_WARNING; break;
-        case SIRL_ERROR: syslog_level = LOG_ERR;     break;
-        case SIRL_CRIT:  syslog_level = LOG_CRIT;    break;
-        case SIRL_ALERT: syslog_level = LOG_ALERT;   break;
-        case SIRL_EMERG: syslog_level = LOG_EMERG;   break;
+        case SIRL_INFO:   syslog_level = LOG_INFO;    break;
+        case SIRL_DEBUG:  syslog_level = LOG_DEBUG;   break;
+        case SIRL_NOTICE: syslog_level = LOG_NOTICE;  break;
+        case SIRL_WARN:   syslog_level = LOG_WARNING; break;
+        case SIRL_ERROR:  syslog_level = LOG_ERR;     break;
+        case SIRL_CRIT:   syslog_level = LOG_CRIT;    break;
+        case SIRL_ALERT:  syslog_level = LOG_ALERT;   break;
+        case SIRL_EMERG:  syslog_level = LOG_EMERG;   break;
         default: /* this should never happen. */
             assert(!"invalid sir_level");
             return LOG_DEBUG;
