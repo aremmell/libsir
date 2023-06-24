@@ -103,7 +103,7 @@ bool _sirmutex_destroy(sirmutex_t* mutex) {
     return false;
 }
 
-#else // __WIN__
+#else /* __WIN__ */
 
 static bool _sirmutex_waitwin32(sirmutex_t mutex, DWORD msec);
 

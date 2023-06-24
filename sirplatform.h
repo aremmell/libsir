@@ -61,7 +61,7 @@
 #   define _XOPEN_SOURCE 700
 # endif
 #endif
-#else // _WIN32
+#else /* _WIN32 */
 # define SIR_NO_SYSTEM_LOGGERS
 # undef __HAVE_ATOMIC_H__
 # define __WANT_STDC_SECURE_LIB__ 1
@@ -179,7 +179,7 @@ typedef void (*sir_once_fn)(void);
   /** The one-time initializer. */
 # define SIR_ONCE_INIT PTHREAD_ONCE_INIT
 
-#else // __WIN__
+#else /* __WIN__ */
 
 # define SIR_MAXPATH MAX_PATH
 
@@ -227,7 +227,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 # else
 #  define SIR_MSECCLOCK CLOCK_MONOTONIC
 # endif
-#else // __MACOS__
+#else /* __MACOS__ */
 # define SIR_MSECCLOCK SYSTEM_CLOCK
 #endif
 

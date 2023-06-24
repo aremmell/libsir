@@ -430,7 +430,7 @@ void _sir_initmutex_ts_once(void) {
     bool unused = _sirmutex_create(&ts_mutex);
     _SIR_UNUSED(unused);
 }
-#else // __WIN__
+#else /* __WIN__ */
 BOOL CALLBACK _sir_initialize_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
     _SIR_UNUSED(ponce);
     _SIR_UNUSED(param);
@@ -469,7 +469,7 @@ bool _sir_once(sironce_t *once, sir_once_fn func) {
         return false;
     }
     return true;
-#else // __WIN__
+#else /* __WIN__ */
     BOOL ret = InitOnceExecuteOnce(once, func, NULL, NULL);
     if (!ret) {
         _sir_handlewin32err(GetLastError());
@@ -813,10 +813,21 @@ bool _sir_syslog_write(sir_level level, const sirbuf *buf, sir_syslog_dest *ctx)
         uuid_t          %{uuid_t}.16P            10742E39-0657-41F8-AB99-878C5EC2DCAA
         sockaddr        %{network:sockaddr}.*P   fe80::f:86ff:fee9:5c16
         in_addr         %{network:in_addr}d      127.0.0.1
-        in6_addr        %{network:in6_addr}.16P  fe80::f:86ff:fee9:5c16
+        in6_addr        %{network:in6_addr}.16P  fe80::f:86ff:fee9:5c16   
     */
-#pragma message("TODO: umm, missing calls to explicit versions of os_log")
-    os_log((os_log_t)ctx->_state.logger, "%s", buf->message);
+   if (SIRL_DEBUG == level) {
+        os_log_debug((os_log_t)ctx->_state.logger, "%s", buf->message);
+   } else if (SIRL_INFO == level) {
+        os_log_info((os_log_t)ctx->_state.logger, "%s", buf->message);
+   } else if (SIRL_ERROR == level || SIRL_ALERT == level) {
+        os_log_error((os_log_t)ctx->_state.logger, "%s", buf->message);
+   } else if (SIRL_CRIT == level || SIRL_EMERG == level) {
+        os_log_fault((os_log_t)ctx->_state.logger, "%s", buf->message);
+   } else {
+##pragma message("TODO: I think we should consider including at least the level string in these messages.")    
+        os_log((os_log_t)ctx->_state.logger, "%s", buf->message);
+   }
+    
     return true;
 #elif defined(SIR_SYSLOG_ENABLED)
     int syslog_level = LOG_DEBUG;
@@ -919,7 +930,7 @@ void _sir_syslog_reset(sir_syslog_dest* ctx) {
     }
 }
 
-#else // SIR_NO_SYSTEM_LOGGERS
+#else /* SIR_NO_SYSTEM_LOGGERS */
 bool _sir_syslog_init(const char *name, sir_syslog_dest *ctx) {
     _SIR_UNUSED(name);
     _SIR_UNUSED(ctx);
@@ -1065,7 +1076,7 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
 pid_t _sir_getpid(void) {
 #if !defined(__WIN__)
     return getpid();
-#else // __WIN__
+#else /* __WIN__ */
     return (pid_t)GetCurrentProcessId();
 #endif
 }

@@ -76,7 +76,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
     } else {
         stat_ret = stat(path, st);
     }
-#else // __WIN__
+#else /* __WIN__ */
         char abs_path[SYSTEST_MAXPATH] = {0};
         snprintf(abs_path, SYSTEST_MAXPATH, "%s\\%s", base_path, path);
 
@@ -127,7 +127,7 @@ char* _sir_getcwd(void) {
         _sir_handleerr(errno);
     return cur;
 # endif
-#else // __WIN__
+#else /* __WIN__ */
     char* cur = _getcwd(NULL, 0);
     if (NULL == cur)
         _sir_handleerr(errno);
@@ -213,7 +213,7 @@ char* _sir_getappfilename(void) {
 # else
 #  error "no implementation for your platform; please contact the author."
 # endif
-#else // __WIN__
+#else /* __WIN__ */
         DWORD ret = GetModuleFileNameA(NULL, buffer, (DWORD)size);
         if (0 != ret && ret < (DWORD)size) {
             resolved = true;
@@ -274,7 +274,7 @@ char* _sir_getbasename(char* restrict path) {
 
 #if !defined(__WIN__)
     return basename(path);
-#else // __WIN__
+#else /* __WIN__ */
     return PathFindFileNameA(path);
 #endif
 }
@@ -285,7 +285,7 @@ char* _sir_getdirname(char* restrict path) {
 
 #if !defined(__WIN__)
     return dirname(path);
-#else // __WIN__
+#else /* __WIN__ */
     BOOL unused = PathRemoveFileSpecA((LPSTR)path);
     _SIR_UNUSED(unused);
     return path;
@@ -302,7 +302,7 @@ bool _sir_ispathrelative(const char* restrict path, bool* restrict relative) {
     else
         *relative = true;
     return true;
-#else // __WIN__
+#else /* __WIN__ */
     *relative = (TRUE == PathIsRelativeA(path));
     return true;
 #endif    

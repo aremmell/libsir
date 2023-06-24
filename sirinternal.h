@@ -96,7 +96,7 @@ void _sir_initmutex_si_once(void);
 void _sir_initmutex_fc_once(void);
 /** Initializes a specific mutex. */
 void _sir_initmutex_ts_once(void);
-#else // __WIN__
+#else /* __WIN__ */
 /** General initialization procedure. */
 BOOL CALLBACK _sir_initialize_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
 /** Initializes a specific mutex. */

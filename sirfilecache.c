@@ -448,7 +448,7 @@ bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
     const char* path = (const char*)match;
 #if !defined(__WIN__)
     return 0 == strncmp(path, iter->path, SIR_MAXPATH);
-#else // __WIN__
+#else /* __WIN__ */
     /* paths/file names are not case sensitive on windows. */
     return 0 == _strnicmp(path, iter->path, SIR_MAXPATH);
 #endif

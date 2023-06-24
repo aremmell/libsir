@@ -59,7 +59,7 @@ int main(int argc, char** argv) {
         fprintf(stderr, "Sorry, but this program may not be executed by root.\n");
         return EXIT_FAILURE;
     }
-#else // __WIN__
+#else /* __WIN__ */
 #if defined(_DEBUG)
     /* Prevents assert() from calling abort() before the user is able to:
      * a.) break into the code and debug (Retry button)
@@ -110,7 +110,7 @@ int main(int argc, char** argv) {
     int ran          = 0;
     sirtimer_t timer = {0};
 
-    printf(WHITEB("\nrunning %d libsir %s...") "\n", tgt_tests, TEST_S(tgt_tests));
+    printf(WHITEB("\nrunning %d " ULINE("libsir") " %s...") "\n", tgt_tests, TEST_S(tgt_tests));
     startsirtimer(&timer);
 
     for (int n = first; n < _sir_countof(sir_tests); n++) {
@@ -134,10 +134,10 @@ int main(int argc, char** argv) {
     float elapsed = sirtimerelapsed(&timer);
     
     if (passed == tgt_tests) {
-        printf("\n" WHITEB("done: ") GREENB("%s%d libsir %s passed in %.03fsec!")"\n\n",
+        printf("\n" WHITEB("done: ") GREENB("%s%d " ULINE("libsir") " %s passed in %.03fsec!")"\n\n",
             tgt_tests > 1 ? "all " : "", tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
     } else {
-        printf("\n" WHITEB("done: ") REDB("%d of %d libsir %s failed in %.03fsec")"\n\n",
+        printf("\n" WHITEB("done: ") REDB("%d of %d " ULINE("libsir") " %s failed in %.03fsec")"\n\n",
             tgt_tests - passed, tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
 
         printf(REDB("Failed %s:") "\n\n", TEST_S(tgt_tests - passed));
@@ -149,7 +149,7 @@ int main(int argc, char** argv) {
     }
 
     if (wait) {
-        printf(WHITEB("press any key to exit...") "\n");
+        printf(WHITEB(EMPH("press any key to exit...")) "\n");
         int ch = _sir_getchar();
         _SIR_UNUSED(ch);
     }
@@ -293,7 +293,7 @@ bool sirtest_failfilebadpermission(void) {
 
 #if !defined(__WIN__)
     static const char* path = "/noperms";
-#else // __WIN__
+#else /* __WIN__ */
     static const char* path = "C:\\Windows\\System32\\noperms";
 #endif    
 
@@ -807,7 +807,7 @@ bool sirtest_perf(void) {
 
 #if !defined(__WIN__)
     static const size_t perflines = 1000000;
-#else // __WIN__
+#else /* __WIN__ */
     static const size_t perflines = 100000;
 #endif
 
@@ -1140,7 +1140,7 @@ bool sirtest_filesystem(void) {
         "/foo/bar",
         "/foo/bar/bad:filename",
         "/"
-#else // __WIN__
+#else /* __WIN__ */
         "C:\\foo",
         "C:\\foo\\",
         "C:\\foo\\bar",
@@ -1165,7 +1165,7 @@ bool sirtest_filesystem(void) {
         "/foo/bar/file-or-directory",
         "/foo/bar/illegal:filename",
         "/"
-#else // __WIN__
+#else /* __WIN__ */
         "foo\\bar\\file.with.many.full.stops",
         "C:\\foo\\bar\\poorly-renamed.txt.pdf",
         "C:\\foo\\bar\\illegal>filename.txt",
@@ -1194,7 +1194,7 @@ bool sirtest_filesystem(void) {
         {"/",                         true},
         {"/home/foo/.config",         true},
         {"~/.config",                 true}
-#else // __WIN__
+#else /* __WIN__ */
         {"D:\\absolute",              true},
         {"C:\\Program Files\\FooBar", true},
         {"C:\\",                      true},
@@ -1231,7 +1231,7 @@ bool sirtest_filesystem(void) {
         {"/",                     true},
         {"/usr/bin",              true},
         {"/dev",                  true},
-#else // __WIN__
+#else /* __WIN__ */
         {"\\Windows",             true},
         {"\\Program Files",       true},
 #endif
@@ -1269,7 +1269,7 @@ bool sirtest_filesystem(void) {
 
 #if !defined(__WIN__)
 static void* sirtest_thread(void* arg);
-#else // __WIN__
+#else /* __WIN__ */
 static unsigned sirtest_thread(void* arg);
 #endif
 
@@ -1278,7 +1278,7 @@ static unsigned sirtest_thread(void* arg);
 bool sirtest_mthread_race(void) {
 #if !defined(__WIN__)
     pthread_t thrds[NUM_THREADS] = {0};
-#else // __WIN__
+#else /* __WIN__ */
     uintptr_t thrds[NUM_THREADS] = {0};
 #endif
 
@@ -1306,7 +1306,7 @@ bool sirtest_mthread_race(void) {
         if (0 != create) {
             errno = create;
             handle_os_error(true, "pthread_create() for thread #%zu failed!", n + 1);
-#else // __WIN__
+#else /* __WIN__ */
         thrds[n] = _beginthreadex(NULL, 0, sirtest_thread, (void*)&heap_args[n], 0, NULL);
         if (0 == thrds[n]) {
             handle_os_error(true, "_beginthreadex() for thread #%zu failed!", n + 1);
@@ -1330,7 +1330,7 @@ bool sirtest_mthread_race(void) {
                 errno = join;
                 handle_os_error(true, "pthread_join() for thread #%zu (%p) failed!", j + 1, (void*)thrds[j]);
             }
-#else // __WIN__
+#else /* __WIN__ */
             DWORD wait = WaitForSingleObject((HANDLE)thrds[j], INFINITE);
             if (WAIT_OBJECT_0 != wait) {
                 joined = false;
@@ -1358,7 +1358,7 @@ bool sirtest_mthread_race(void) {
 
 #if !defined(__WIN__)
 static void* sirtest_thread(void* arg) {
-#else // __WIN__
+#else /* __WIN__ */
 unsigned sirtest_thread(void* arg) {
 #endif
     pid_t threadid = _sir_gettid();
@@ -1372,7 +1372,7 @@ unsigned sirtest_thread(void* arg) {
         _SIR_UNUSED(unused);
 #if !defined(__WIN__)
         return NULL;
-#else // __WIN__
+#else /* __WIN__ */
         return 0;
 #endif
     }
@@ -1428,7 +1428,7 @@ unsigned sirtest_thread(void* arg) {
 
 #if !defined(__WIN__)
     return NULL;
-#else // __WIN__
+#else /* __WIN__ */
     return 0;
 #endif
 }
@@ -1483,7 +1483,7 @@ uint32_t getrand(uint32_t upper_bound) {
 # else
     return (uint32_t)(random() % upper_bound);
 # endif
-#else // __WIN__
+#else /* __WIN__ */
     uint32_t ctx = 0;
     if (0 != rand_s(&ctx))
         ctx = (uint32_t)rand();
@@ -1506,7 +1506,7 @@ bool rmfile(const char* filename) {
 
 #if !defined(__WIN__)
     removed = 0 == remove(filename);
-#else // __WIN__
+#else /* __WIN__ */
     removed = FALSE != DeleteFile(filename);
 #endif
 
@@ -1553,7 +1553,7 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
 
     closedir(d);
     d = NULL;
-#else // __WIN__
+#else /* __WIN__ */
     WIN32_FIND_DATA finddata = {0};
     HANDLE enumerator        = FindFirstFile("./*", &finddata);
 
@@ -1580,7 +1580,7 @@ bool startsirtimer(sirtimer_t* timer) {
     }
 
     return 0 == gettime;
-#else // __WIN__
+#else /* __WIN__ */
     GetSystemTimePreciseAsFileTime(&timer->ft);
     return true;
 #endif
@@ -1596,7 +1596,7 @@ float sirtimerelapsed(const sirtimer_t* timer) {
         handle_os_error(true, "clock_gettime(%s) failed!", "CLOCK_MONOTONIC");
     }
     return 0.0f;
-#else // __WIN__
+#else /* __WIN__ */
     FILETIME now;
     GetSystemTimePreciseAsFileTime(&now);
     ULARGE_INTEGER start = {0};

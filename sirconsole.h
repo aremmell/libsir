@@ -45,7 +45,7 @@ bool _sir_write_stderr(const char* message, size_t len) {
     return _sir_write_stdio(stderr, message);
 }
 
-#else // __WIN__
+#else /* __WIN__ */
 
 extern HANDLE __sir_stdout;
 extern HANDLE __sir_stderr;
