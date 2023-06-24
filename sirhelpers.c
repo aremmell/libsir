@@ -37,11 +37,19 @@ void _sir_safeclose(int* restrict fd) {
 }
 
 bool _sir_validfid(int id) {
-    bool valid = id >= 0;
-    if (!valid) {
-        _sir_seterror(_SIR_E_NOFILE);
+#if !defined(__WIN__)
+    /** stdin, stdout, stderr take up 0, 1, 2 */
+    struct rlimit rl;
+    int rlimit = getrlimit(RLIMIT_NOFILE, &rl);
+    if (0 != rlimit)
+        _sir_handleerr(errno);
+    bool valid = id > 2 && (0 == rlimit ? id < rl.rlim_max : true);
+#else /* __WIN__ */
+    intptr_t h = = _get_osfhandle(id); /* strange: Windows does it entirely differently. */
+    valid = INVALID_HANDLE_VALUE != (HANDLE)h;
+#endif
+    if (!valid)
         assert(!"invalid file descriptor");
-    }
     return valid;
 }
 

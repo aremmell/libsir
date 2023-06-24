@@ -95,6 +95,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <limits.h>
 #include <time.h>
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
@@ -122,6 +123,8 @@
 # include <pthread.h>
 # include <unistd.h>
 # include <sys/syscall.h>
+# include <sys/resource.h>
+# include <sys/time.h>
 # include <strings.h>
 # include <termios.h>
 # include <limits.h>
