@@ -48,6 +48,6 @@ jobs:
       arch: amd64
       compiler: clang
 script:
-  - $MAKE clean tests example
+  - SIR_SELFLOG=1 $MAKE clean tests example
   - build/bin/sirtests
   - build/bin/sirexample

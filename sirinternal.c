@@ -92,6 +92,12 @@ bool _sir_init(sirinit* si) {
         return false;
     }
 
+    _sir_selflog("stdout levels: %04x", &si->d_stdout.levels);
+    _sir_selflog("stderr levels: %04x", &si->d_stderr.levels);
+
+    _sir_selflog("stdout opts: %08x", &si->d_stdout.opts);
+    _sir_selflog("stderr opts: %08x", &si->d_stderr.opts);    
+
     _sir_defaultlevels(&si->d_stdout.levels, sir_stdout_def_lvls);
     _sir_defaultopts(&si->d_stdout.opts, sir_stdout_def_opts);
 
@@ -99,6 +105,8 @@ bool _sir_init(sirinit* si) {
     _sir_defaultopts(&si->d_stderr.opts, sir_stderr_def_opts);
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
+    _sir_selflog("syslog levels: %04x", &si->d_syslog.levels);
+    _sir_selflog("syslog opts: %08x", &si->d_syslog.opts);
     _sir_defaultlevels(&si->d_syslog.levels, sir_syslog_def_lvls);
     _sir_defaultopts(&si->d_syslog.opts, sir_syslog_def_opts);
 #endif

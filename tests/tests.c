@@ -134,10 +134,10 @@ int main(int argc, char** argv) {
     float elapsed = sirtimerelapsed(&timer);
     
     if (passed == tgt_tests) {
-        printf("\n" WHITEB("done: ") GREENB("%s%d " ULINE("libsir") " %s passed in %.03fsec!")"\n\n",
+        printf("\n" WHITEB("done: ") GREENB("%s%d " ULINE("libsir") " %s passed in %.03fsec!") "\n\n",
             tgt_tests > 1 ? "all " : "", tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
     } else {
-        printf("\n" WHITEB("done: ") REDB("%d of %d " ULINE("libsir") " %s failed in %.03fsec")"\n\n",
+        printf("\n" WHITEB("done: ") REDB("%d of %d " ULINE("libsir") " %s failed in %.03fsec") "\n\n",
             tgt_tests - passed, tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
 
         printf(REDB("Failed %s:") "\n\n", TEST_S(tgt_tests - passed));
