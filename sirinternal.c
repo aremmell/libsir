@@ -796,25 +796,6 @@ bool _sir_syslog_write(sir_level level, const sirbuf *buf, sir_syslog_dest *ctx)
     }
 
 #if defined(SIR_OS_LOG_ENABLED)
-    /*
-        Value type      Custom specifier         Example output
-        BOOL            %{BOOL}d                 YES
-        bool            %{bool}d                 true
-        darwin.errno    %{darwin.errno}d         [32: Broken pipe]
-        darwin.mode     %{darwin.mode}d          drwxr-xr-x
-        darwin.signal   %{darwin.signal}d        [sigsegv: Segmentation Fault]
-        time_t          %{time_t}d               2016-01-12 19:41:37
-        timeval         %{timeval}.*P            2016-01-12 19:41:37.774236
-        timespec        %{timespec}.*P           2016-01-12 19:41:37.2382382823
-        bytes           %{bytes}d                4.72 kB
-        iec-bytes       %{iec-bytes}d            4.61 KiB
-        bitrate         %{bitrate}d              123 kbps
-        iec-bitrate     %{iec-bitrate}d          118 Kibps
-        uuid_t          %{uuid_t}.16P            10742E39-0657-41F8-AB99-878C5EC2DCAA
-        sockaddr        %{network:sockaddr}.*P   fe80::f:86ff:fee9:5c16
-        in_addr         %{network:in_addr}d      127.0.0.1
-        in6_addr        %{network:in6_addr}.16P  fe80::f:86ff:fee9:5c16   
-    */
    if (SIRL_DEBUG == level) {
         os_log_debug((os_log_t)ctx->_state.logger, "%s", buf->message);
    } else if (SIRL_INFO == level) {
@@ -824,7 +805,7 @@ bool _sir_syslog_write(sir_level level, const sirbuf *buf, sir_syslog_dest *ctx)
    } else if (SIRL_CRIT == level || SIRL_EMERG == level) {
         os_log_fault((os_log_t)ctx->_state.logger, "%s", buf->message);
    } else {
-##pragma message("TODO: I think we should consider including at least the level string in these messages.")    
+#pragma message("TODO: Include level string here? Need to research more.")    
         os_log((os_log_t)ctx->_state.logger, "%s", buf->message);
    }
     
