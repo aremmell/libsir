@@ -124,6 +124,11 @@ bool sirtest_failinittwice(void);
 bool sirtest_failaftercleanup(void);
 
 /**
+ * @test Properly handle initialization with junk memory.
+*/
+bool sirtest_failinvalidinitdata(void);
+
+/**
  * @test Properly handle initialization, cleanup, re-initialization.
  */
 bool sirtest_initcleanupinit(void);

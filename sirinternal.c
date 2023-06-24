@@ -337,7 +337,8 @@ bool _sir_writeinit(sir_update_config_data* data, sirinit_update update) {
 
         if (_sir_validptr(si)) {
             bool updated = update(si, data);
-            _sir_selflog("update routine %s", updated ? "succeeded" : "failed");
+            if (!updated)
+                _sir_selflog("error: update routine failed!");
             return _sir_unlocksection(_SIRM_INIT) && updated;
         }
     }

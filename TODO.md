@@ -28,14 +28,14 @@ Bold = “Priority”
   - [x] Remove all internal documentation / stash it away better
 - [ ] sir_syslogopts
   - [ ] Document
-  - [ ] Add tests
+  - [x] Add tests
 - [ ] ~~*A single call to update one or more properties;  separating them is creating clutter, redundancy, and unnecessary performance losses (by reconfiguring on each call)*~~
 - [ ] *Add a `--leave-logs` option to sirtests to leave the logs it generates behind so they can be examined for correctness.*
 - [ ] Document sirfilesystem.h
 - [ ] Tests:
   - [x] Roll a log file w/ no extension
   - [x] Better level/option validation testing
-  - [ ] init w/ bad / uninitialized config
+  - [x] init w/ bad / uninitialized config
     - [ ] Path as long as can fit in the PATH_MAX/MAX_PATH
     - [ ] Invalid paths of all kinds:
       - [x] Malformed

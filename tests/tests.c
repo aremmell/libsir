@@ -37,6 +37,7 @@ static sir_test sir_tests[] = {
     {"output-without-init",     sirtest_failwithoutinit, false, true},
     {"superfluous-init",        sirtest_failinittwice, false, true},
     {"output-after-cleanup",    sirtest_failaftercleanup, false, true},
+    {"bad-init-struct",        sirtest_failinvalidinitdata, false, true},
     {"re-initialize",           sirtest_initcleanupinit, false, true},
     {"duplicate-file-name",     sirtest_faildupefile, false, true},
     {"remove-nonexistent-file", sirtest_failremovebadfile, false, true},
@@ -351,6 +352,15 @@ bool sirtest_failaftercleanup(void) {
 
     if (pass)
         print_expected_error();
+
+    return print_result_and_return(pass);
+}
+
+bool sirtest_failinvalidinitdata(void) {
+    sirinit si;
+    bool pass = !sir_init(&si);
+    if (!pass)
+        sir_cleanup();
 
     return print_result_and_return(pass);
 }

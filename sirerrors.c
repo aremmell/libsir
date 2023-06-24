@@ -121,8 +121,8 @@ void __sir_handleerr(int code, const char* func, const char* file, uint32_t line
 #if defined(__WIN__)
 void __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32_t line) {
     char* errbuf = NULL;
-    DWORD flags       = FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |
-                        FORMAT_MESSAGE_IGNORE_INSERTS  | FORMAT_MESSAGE_MAX_WIDTH_MASK;
+    DWORD flags  = FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |
+                   FORMAT_MESSAGE_IGNORE_INSERTS  | FORMAT_MESSAGE_MAX_WIDTH_MASK;
 
     DWORD fmtmsg = FormatMessageA(flags, NULL, code, 0, (LPSTR)&errbuf, SIR_MAXERROR, NULL);
     if (0 < fmtmsg && _sir_validstrnofail(errbuf)) {
@@ -189,53 +189,45 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
 
 #if defined(SIR_SELFLOG)
 void __sir_selflog(const char* func, const char* file, uint32_t line, const char* format, ...) {
-    bool success     = true;
-    char prefix[256] = {0};
+    bool success = true;
+    char prefix[256];
 
-    int wrote = snprintf(prefix, 256, "%s (%s:%" PRIu32 "): ", func, file, line);
-    success &= wrote > 0;
-        
-    if (wrote > 0) {
-        va_list args;
-        va_list args2;
+    int write1 = snprintf(prefix, 256, "%s (%s:%" PRIu32 "): ", func, file, line);
+    success &= write1 > 0;
+
+    if (write1 > 0) {
+        va_list args, args2;
         va_start(args, format);
         va_copy(args2, args);
 
-        wrote = vsnprintf(NULL, 0, format, args);
+        int write2 = vsnprintf(NULL, 0, format, args);
         va_end(args);
-        success &= wrote > 0;
+        success &= write2 > 0;
 
-        if (wrote > 0) {
-            char *buf = (char*)malloc(wrote + 1);
+        if (write2 > 0) {
+            char *buf = (char *)malloc(write2 + 1);
             success &= NULL != buf;
 
             if (buf) {
-                wrote = vsnprintf(buf, wrote + 1, format, args2);
+                write2 = vsnprintf(buf, write2 + 1, format, args2);
                 va_end(args2);
-                success &= wrote > 0;
+                success &= write2 > 0;
 
-                bool wrote_color = false;
-                if (success) {
+                bool write_color = false;
+                if (write2 > 0) {
 #if !defined(__WIN__)
                     if (NULL != strcasestr(buf, "error") ||
                         NULL != strcasestr(buf, "assert")) {
 #else
                     if (NULL != StrStrIA(buf, "error") ||
                         NULL != StrStrIA(buf, "assert")) {
-#endif               
-                    //int put = fputs();
-                    //success &= put != EOF;
+#endif
+                        write_color = true;
                     }
+
+                    write2 = fprintf(stderr, (write_color ? LRED("%s%s") "\n" : "%s%s\n"), prefix, buf);
+                    success &= write2 > 0;
                 }
-
-                int put = fputs(prefix, stderr);
-                success &= put != EOF;
-
-                put = fputs(buf, stderr);
-                success &= put != EOF;
-
-                put = fputs("\n", stderr);
-                success &= put != EOF;
 
                 _sir_safefree(buf);
             }

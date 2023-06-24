@@ -60,7 +60,8 @@ bool _sir_updatefile(sirfileid_t id, sir_update_config_data* data) {
 
         if (sfc) {
             bool updated = _sir_fcache_update(sfc, id, data);
-            _sir_selflog("file update %s", updated ? "succeeded" : "failed");
+            if (!updated)
+                _sir_selflog("error: file update failed!");
             return _sir_unlocksection(_SIRM_FILECACHE) && updated;
         }
     }
