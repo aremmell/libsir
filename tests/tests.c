@@ -127,7 +127,7 @@ int main(int argc, char** argv) {
 
         ran++;
 
-        printf(WHITEB("\t(%d/%d) '%s' finished: ") "%s\n", ran, tgt_tests,
+        printf(WHITEB("\n\t(%d/%d) '%s' finished: ") "%s\n", ran, tgt_tests,
             sir_tests[n].name, PRN_PASS(sir_tests[n].pass));
     }
 
@@ -358,9 +358,14 @@ bool sirtest_failaftercleanup(void) {
 
 bool sirtest_failinvalidinitdata(void) {
     sirinit si;
+    
+    printf("\tcalling sir_inti with uninitialized data...\n");
     bool pass = !sir_init(&si);
+    
     if (!pass)
         sir_cleanup();
+    else
+        print_expected_error();
 
     return print_result_and_return(pass);
 }
