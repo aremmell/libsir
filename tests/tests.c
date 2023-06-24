@@ -801,7 +801,7 @@ bool sirtest_perf(void) {
     static const size_t perflines = 100000;
 #endif
 
-    INIT_N(si, SIRL_ALL, SIRO_NOMSEC, 0, 0, "perf");
+    INIT_N(si, SIRL_ALL, SIRO_NOMSEC | SIRO_NOHOST, 0, 0, "perf");
     bool pass = si_init;
 
     if (pass) {

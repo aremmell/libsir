@@ -54,6 +54,14 @@ void __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t l
         sir_te.loc.file = file;
         sir_te.loc.line = line;
     }
+#if defined(DEBUG) && defined(SIR_SELFLOG)
+    if (_SIR_E_NOERROR != err) {
+        char errmsg[SIR_MAXERROR] = {0};
+        uint32_t code = _sir_geterror(errmsg);
+        _SIR_UNUSED(code);
+        __sir_selflog(func, file, line, "%s", errmsg);
+    }
+#endif
 }
 
 void __sir_setoserror(int code, const char* message, const char* func,
@@ -205,6 +213,20 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, const char
                 wrote = vsnprintf(buf, wrote + 1, format, args2);
                 va_end(args2);
                 success &= wrote > 0;
+
+                bool wrote_color = false;
+                if (success) {
+#if !defined(__WIN__)
+                    if (NULL != strcasestr(buf, "error") ||
+                        NULL != strcasestr(buf, "assert")) {
+#else
+                    if (NULL != StrStrIA(buf, "error") ||
+                        NULL != StrStrIA(buf, "assert")) {
+#endif               
+                    //int put = fputs();
+                    //success &= put != EOF;
+                    }
+                }
 
                 int put = fputs(prefix, stderr);
                 success &= put != EOF;

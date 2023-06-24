@@ -18,9 +18,9 @@ CFLAGS = -Wall -std=c11 -I. -fPIC -D_FORTIFY_SOURCE=2
 
 # debug/non-debug CFLAGS
 ifeq ($(SIR_DEBUG),1)
-	CFLAGS += -g -O0
+	CFLAGS += -g -O0 -DDEBUG
 else
-	CFLAGS += -O3
+	CFLAGS += -O3 -DNDEBUG
 endif
 
 # enable internal diagnostic logging
@@ -29,9 +29,7 @@ ifeq ($(SIR_SELFLOG),1)
 endif
 
 ifeq ($(SIR_ASSERT_ENABLED),1)
-	CFLAGS += -DDEBUG
-else
-	CFLAGS += -DNDEBUG
+	CFLAGS += -DSIR_ASSERT_ENABLED
 endif
 
 # on Windows, automatically defined by the preprocessor.

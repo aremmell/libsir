@@ -79,7 +79,12 @@
 # include <direct.h>
 #endif
 
-#include <assert.h>
+#if defined(SIR_ASSERT_ENABLED)
+# include <assert.h>
+#else
+# define assert(...) if (!(__VA_ARGS__)) { _sir_selflog(REDB("!!! would be asserting: "  #__VA_ARGS__ "")); }
+#endif
+
 #include <errno.h>
 #include <stdarg.h>
 #include <stdbool.h>

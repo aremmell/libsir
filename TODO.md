@@ -4,18 +4,25 @@ Strikethrough = “Nice to have.”
 Bold = “Priority”
 
 - [ ] Bump version 2.2.0
-- [ ] **Add hostname to format options**
+- [x] **Add hostname to format options**
+
+  - [ ] macOS: /Library/Preferences/SystemConfiguration/preferences.plist | Root->System->System->HostName : https://developer.apple.com/library/archive/documentation/Darwin/Conceptual/FSEvents_ProgGuide/UsingtheFSEventsFramework/UsingtheFSEventsFramework.html , https://developer.apple.com/documentation/foundation/nsprocessinfo , https://developer.apple.com/documentation/systemconfiguration/1437828-scdynamicstorecreate
+  - [ ] Lunix: /etc/hostname
+  - [ ] Windows: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName
 - [ ] **More functions that have lineage directly to sir.c need:**
   - [ ]  to be guarded with `_sir_sanity()`
   - [ ] clear last error on entry
 - [ ] ~~move timer functionality from tests into libsir itself~~
+- [ ] Fix passing bad path to filecache; it should error with bad path, not later on a null pointer
+
+  - [ ] Why does safe_free not set pointer to null in debug mode?
 - [ ] Calculate `SIR_MAXSTYLE` for 256-color and RGB modes, then ditch the old 16-color size.
 - [ ] Conditional logging (debug_if(), etc.)
 - [ ] Implement `clang-format` (see [here](https://github.com/nullromo/doxygen-example/blob/main/.clang-format))
 - [ ] Normalize `/* !_DEF */` / `// !_DEF`
 - [ ] Finish comment in sir_syslog_dest once it’s been resolved which option(s) can be utilized for os_log/syslog.
 - [ ] Refactor _sir_syslog_init: it’s a clusterF. Should probably just reject initialization if levels are set but ident/cat are not.
-  - [ ] Rename sirinit::processName
+  - [x] Rename sirinit::processName
 - [ ] **Implement “last message repeated n times”**
 - [ ] Move documentation from `sir.h` to `sir.c`
   - [x] Remove all internal documentation / stash it away better
