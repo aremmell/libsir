@@ -829,7 +829,7 @@ bool _sir_syslog_write(sir_level level, const sirbuf *buf, sir_syslog_dest *ctx)
     
     return true;
 #elif defined(SIR_SYSLOG_ENABLED)
-    int syslog_level = LOG_DEBUG;
+    int syslog_level;
     switch (level) {
         case SIRL_INFO:   syslog_level = LOG_INFO;    break;
         case SIRL_DEBUG:  syslog_level = LOG_DEBUG;   break;
