@@ -92,12 +92,6 @@ bool _sir_init(sirinit* si) {
         return false;
     }
 
-    _sir_selflog("stdout levels: %04" PRIx16 "", &si->d_stdout.levels);
-    _sir_selflog("stderr levels: %04" PRIx16 "", &si->d_stderr.levels);
-
-    _sir_selflog("stdout opts: %08" PRIx32 "", &si->d_stdout.opts);
-    _sir_selflog("stderr opts: %04" PRIx32 "", &si->d_stderr.opts);    
-
     _sir_defaultlevels(&si->d_stdout.levels, sir_stdout_def_lvls);
     _sir_defaultopts(&si->d_stdout.opts, sir_stdout_def_opts);
 
@@ -105,8 +99,6 @@ bool _sir_init(sirinit* si) {
     _sir_defaultopts(&si->d_stderr.opts, sir_stderr_def_opts);
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
-    _sir_selflog("syslog levels: %04" PRIx16 "", &si->d_syslog.levels);
-    _sir_selflog("syslog opts: %08" PRIx32 "", &si->d_syslog.opts);
     _sir_defaultlevels(&si->d_syslog.levels, sir_syslog_def_lvls);
     _sir_defaultopts(&si->d_syslog.opts, sir_syslog_def_opts);
 #endif
@@ -218,30 +210,20 @@ bool _sir_options_sanity(const sirinit* si) {
     if (!_sir_validptr(si))
         return false;
 
-    _sir_selflog("checking std[out|err] levels...");
     bool levelcheck = true;
     levelcheck &= _sir_validlevels(si->d_stdout.levels);
     levelcheck &= _sir_validlevels(si->d_stderr.levels);
 
-    _sir_selflog("std[out|err] levels: %d", levelcheck);
-
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
-_sir_selflog("checking syslog levels...");
-    levelcheck &= _sir_validlevels(si->d_syslog.levels);
     _sir_selflog("syslog levels: %d", levelcheck);
 #endif
 
-    _sir_selflog("checking std[out|err] options...");
     bool optscheck = true;
     optscheck &= _sir_validopts(si->d_stdout.opts);
     optscheck &= _sir_validopts(si->d_stderr.opts);
 
-    _sir_selflog("std[out|err] options: %d", optscheck);
-
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
-    _sir_selflog("checking syslog options...");
     optscheck &= _sir_validopts(si->d_syslog.opts);
-    _sir_selflog("syslog options: %d", optscheck);
 #endif
 
     return levelcheck && optscheck;
@@ -250,10 +232,10 @@ _sir_selflog("checking syslog levels...");
 static
 bool _sir_updatelevels(const char* name, sir_levels* old, sir_levels* new) {
     if (*old != *new) {
-        _sir_selflog("updating %s levels from %04x to %04x", name, *old, *new);
+        _sir_selflog("updating %s levels from %04" PRIx16 " to %04" PRIx16, name, *old, *new);
         *old = *new;
     } else {
-        _sir_selflog("skipped superfluous update of %s levels: %04x", name, *old);
+        _sir_selflog("skipped superfluous update of %s levels: %04" PRIx16, name, *old);
     }
     return true;
 }
@@ -261,10 +243,10 @@ bool _sir_updatelevels(const char* name, sir_levels* old, sir_levels* new) {
 static
 bool _sir_updateopts(const char* name, sir_options* old, sir_options* new) {
     if (*old != *new) {
-        _sir_selflog("updating %s options from %08x to %08x", name, *old, *new);
+        _sir_selflog("updating %s options from %08" PRIx32 " to %08" PRIx32, name, *old, *new);
         *old = *new;
     } else {
-        _sir_selflog("skipped superfluous update of %s options: %08x", name, *old);
+        _sir_selflog("skipped superfluous update of %s options: %08" PRIx32, name, *old);
     }
     return true;
 }
@@ -515,16 +497,15 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     sirbuf buf = {0};
     buf.name = tmpsi.name;
 
-    bool appliedstyle = false;
+    bool fmt = false;
     const char* style_str = _sir_gettextstyle(level);
 
     assert(NULL != style_str);
     if (NULL != style_str)
-        appliedstyle = 0 == _sir_strncpy(buf.style, SIR_MAXSTYLE, style_str,
-            SIR_MAXSTYLE);
+        fmt = (0 == _sir_strncpy(buf.style, SIR_MAXSTYLE, style_str,
+            SIR_MAXSTYLE));
 
-    if (!appliedstyle)
-        return false;
+    assert(fmt);
 
     time_t now   = -1;
     long nowmsec = 0;
@@ -532,9 +513,9 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     assert(gettime);
 
     if (gettime) {
-        bool fmttime = _sir_formattime(now, buf.timestamp, SIR_TIMEFORMAT);
-        assert(fmttime);
-        _SIR_UNUSED(fmttime);
+        fmt = _sir_formattime(now, buf.timestamp, SIR_TIMEFORMAT);
+        assert(fmt);
+        _SIR_UNUSED(fmt);
 
         if (0 > snprintf(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec))
             _sir_handleerr(errno);
@@ -628,7 +609,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
 
     if (0 == wanted) {
         _sir_seterror(_SIR_E_NODEST);
-        _sir_selflog("error: no destinations registered for level %04x", level);
+        _sir_selflog("error: no destinations registered for level %04" PRIx16, level);
         return false;
     }
 
@@ -782,7 +763,7 @@ bool _sir_syslog_open(sir_syslog_dest *ctx) {
         return true;
     }
 
-    _sir_selflog("opening log (levels: %04x, options: %08x)",
+    _sir_selflog("opening log (levels: %04" PRIx16 ", options: %08" PRIx32 ")",
         ctx->levels, ctx->opts);
 
 #if defined(SIR_OS_LOG_ENABLED)
@@ -862,7 +843,7 @@ bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data) {
         bool is_open  = _sir_bittest(si->d_syslog._state.mask, SIRSL_IS_OPEN);
 
         _sir_selflog("config update: (levels: %u, options: %u, category: %u,"
-                     " identity: %u, is_init: %u, is_open: %u )",
+                     " identity: %u, is_init: %u, is_open: %u)",
                      levels, options, category, identity, is_init, is_open);
 
         bool must_init = false;
@@ -910,7 +891,7 @@ bool _sir_syslog_close(sir_syslog_dest *ctx) {
      * if you make that call again, you'll get the same cached value. so let's keep the
      * value we've got in the global context. */
     _sir_setbitslow(&ctx->_state.mask, SIRSL_IS_OPEN);
-    _sir_selflog("log closure not required");
+    _sir_selflog("log closure not necessary");
     return true;
 #elif defined(SIR_SYSLOG_ENABLED)
     closelog();
@@ -925,7 +906,7 @@ void _sir_syslog_reset(sir_syslog_dest* ctx) {
         uint32_t old = ctx->_state.mask;
         ctx->_state.mask = 0;
         ctx->_state.logger = NULL;
-        _sir_selflog("state reset; mask was %08x", old);
+        _sir_selflog("state reset; mask was %08" PRIx32, old);
     }
 }
 
@@ -985,18 +966,19 @@ const char* _sir_levelstr(sir_level level) {
 
 bool _sir_formattime(time_t now, char* buffer, const char* format) {
 
-    if (0 != now) {
-        struct tm timebuf = {0};
-        size_t fmttime = strftime(buffer, SIR_MAXTIME, format, _sir_localtime(&now, &timebuf));
-        assert(0 != fmttime);
-
-        if (0 == fmttime)
-            _sir_selflog("strftime returned 0; format string: '%s'", format);
-
-        return 0 != fmttime;
+    if (0 == now || -1 == now) {
+        _sir_seterror(_SIR_E_INVALID);
+        return false;
     }
 
-    return false;
+    struct tm timebuf = {0};
+    size_t fmttime = strftime(buffer, SIR_MAXTIME, format, _sir_localtime(&now, &timebuf));
+
+    assert(0 != fmttime);
+    if (0 == fmttime)
+        _sir_selflog("error: strftime failed; format string: '%s'", format);
+
+    return 0 != fmttime;
 }
 
 bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {

@@ -169,9 +169,9 @@ bool _sir_formatstyle(sir_textstyle style, char* buf, size_t size) {
 
     if (_sir_validptr(buf)) {
 
-        uint32_t attr;
-        uint32_t fg;
-        uint32_t bg;
+        uint32_t attr = 0;
+        uint32_t fg = 0;
+        uint32_t bg = 0;
 
         if (_sir_validstyle(style, &attr, &fg, &bg)) {
 

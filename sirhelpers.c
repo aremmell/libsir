@@ -97,8 +97,8 @@ bool _sir_validlevels(sir_levels levels) {
          ((levels & ~SIRL_ALL) == 0)))
          return true;
                 
+    _sir_selflog("invalid levels: %04" PRIx16, levels);
     _sir_seterror(_SIR_E_LEVELS);
-    assert(!"invalid sir_levels");
 
     return false;
 }
@@ -110,9 +110,8 @@ bool _sir_validlevel(sir_level level) {
         SIRL_ALERT  == level || SIRL_EMERG == level)
         return true;
 
+    _sir_selflog("invalid level: %04" PRIx16, level);
     _sir_seterror(_SIR_E_LEVELS);
-    assert(!"invalid sir_level");
-
     return false;
 }
 
@@ -129,8 +128,8 @@ bool _sir_validopts(sir_options opts) {
          ((opts & ~(SIRO_MSGONLY | SIRO_NOHDR)) == 0)))
          return true;
 
+    _sir_selflog("invalid options: %08" PRIx32, opts);
     _sir_seterror(_SIR_E_OPTIONS);
-    assert(!"invalid sir_options");
 
     return false;
 }
