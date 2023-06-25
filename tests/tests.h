@@ -59,9 +59,9 @@
 #define INIT(var, l_stdout, o_stdout, l_stderr, o_stderr) \
     INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, "")
 
-#define TEST_S(n) (n > 1 ? ("test" "s") : "test")
-#define PRN_STR(str) (str ? str : RED("NULL"))
-#define PRN_PASS(pass) (pass ? GREENB("PASS") : REDB("FAIL"))
+#define TEST_S(n) ( (n) > 1 ? ("test" "s") : "test" )
+#define PRN_STR(str) ( (str) ? (str) : RED("NULL") )
+#define PRN_PASS(pass) ( (pass) ? GREENB("PASS") : REDB("FAIL") )
 #define INDENT_ITEM "\t  " SIR_BULLET " "
 
 /**
