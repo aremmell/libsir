@@ -113,7 +113,7 @@ int main(int argc, char** argv) {
     printf(WHITEB("\nrunning %d " ULINE("libsir") " %s...") "\n", tgt_tests, TEST_S(tgt_tests));
     startsirtimer(&timer);
 
-    for (int n = first; n < _sir_countof(sir_tests); n++) {
+    for (size_t n = first; n < _sir_countof(sir_tests); n++) {
         if (only && !sir_tests[n].run) {
             _sir_selflog("skipping '%s'; not marked to run", sir_tests[n].name);
             continue;
@@ -142,7 +142,7 @@ int main(int argc, char** argv) {
 
         printf(REDB("Failed %s:") "\n\n", TEST_S(tgt_tests - passed));
 
-        for (int t = 0; t < _sir_countof(sir_tests); t++)
+        for (size_t t = 0; t < _sir_countof(sir_tests); t++)
             if (!sir_tests[t].pass)
                 printf(RED(INDENT_ITEM "%s\n"), sir_tests[t].name);
         printf("\n");
@@ -853,7 +853,7 @@ bool sirtest_perf(void) {
         pass &= si2_init;
 
         char logfilename[SIR_MAXPATH] = {0};
-        snprintf(logfilename, SIR_MAXPATH, logbasename, logext);
+        snprintf(logfilename, SIR_MAXPATH, "%s%s", logbasename, logext);
 
         sirfileid_t logid = sir_addfile(logfilename, SIRL_ALL, SIRO_NONAME | SIRO_NOPID);
         pass &= NULL != logid;
@@ -1619,7 +1619,7 @@ float sirtimerelapsed(const sirtimer_t* timer) {
 
 bool mark_test_to_run(const char* name) {
     bool found = false;
-    for (int t = 0; t < _sir_countof(sir_tests); t++) {
+    for (size_t t = 0; t < _sir_countof(sir_tests); t++) {
         if (_sir_strsame(name, sir_tests[t].name, strlen(sir_tests[t].name))) {
             found = sir_tests[t].run = true;
             break;
@@ -1635,7 +1635,7 @@ bool mark_test_to_run(const char* name) {
 void print_usage_info(void) {
     fprintf(stderr, "\n" WHITE("Usage:") "\n\n");
     
-    for (int i = 0; i < _sir_countof(_cl_arg_list); i++) {
+    for (size_t i = 0; i < _sir_countof(_cl_arg_list); i++) {
         fprintf(stderr, "\t%s%s%s%s%s\n",
             _cl_arg_list[i].flag,
             strlen(_cl_arg_list[i].usage) == 0 ? "" : "\t",
@@ -1649,7 +1649,7 @@ void print_usage_info(void) {
 
 void print_test_list(void) {
     size_t longest = 0;
-    for (int i = 0; i < _sir_countof(sir_tests); i++) {
+    for (size_t i = 0; i < _sir_countof(sir_tests); i++) {
         size_t len = strlen(sir_tests[i].name);
         if (len > longest)
             longest = len;
@@ -1657,7 +1657,7 @@ void print_test_list(void) {
 
     printf("\n" WHITE("Available tests:") "\n\n");
 
-    for (int i = 0; i < _sir_countof(sir_tests); i++) {
+    for (size_t i = 0; i < _sir_countof(sir_tests); i++) {
         printf("\t%s\t", sir_tests[i].name);
 
         size_t len = strlen(sir_tests[i].name);

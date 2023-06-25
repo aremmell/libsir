@@ -43,7 +43,7 @@ bool _sir_validfid(int id) {
     int rlimit = getrlimit(RLIMIT_NOFILE, &rl);
     if (0 != rlimit)
         _sir_handleerr(errno);
-    bool valid = id > 2 && (0 == rlimit ? id < rl.rlim_max : true);
+    bool valid = id > 2 && (0 == rlimit ? id < (int)rl.rlim_max : true);
 #else /* __WIN__ */
     intptr_t h = = _get_osfhandle(id); /* strange: Windows does it entirely differently. */
     valid = INVALID_HANDLE_VALUE != (HANDLE)h;
