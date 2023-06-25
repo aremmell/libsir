@@ -155,8 +155,8 @@ bool _sirfile_write(sirfile* sf, const char* output) {
             char* newpath = NULL;
             
             if (_sirfile_roll(sf, &newpath)) {
-                char header[SIR_MAXMESSAGE] = {0};
-                snprintf(header, SIR_MAXMESSAGE, SIR_FHROLLED, newpath);
+                char header[SIR_MAXFHEADER] = {0};
+                snprintf(header, SIR_MAXFHEADER, SIR_FHROLLED, newpath);
                 rolled = _sirfile_writeheader(sf, header);
             }
 
@@ -165,7 +165,7 @@ bool _sirfile_write(sirfile* sf, const char* output) {
                 return false;
         }
 
-        size_t writeLen = strnlen(output, SIR_MAXOUTPUT);
+        size_t writeLen = strnlen(output, SIR_MAXFHEADER);
         size_t write    = fwrite(output, sizeof(char), writeLen, sf->f);
 
         assert(write == writeLen);
@@ -174,14 +174,15 @@ bool _sirfile_write(sirfile* sf, const char* output) {
             int err = ferror(sf->f);
             int eof = feof(sf->f);
 
-            _sir_selflog("error: incomoplete write of %lu/%lu bytes to file %d!"
+            _sir_selflog("error: incomplete write of %zu/%zu bytes to file %d!"
                          " ferror: %d, feof: %d, path: '%s'", write, writeLen,
                          sf->id, err, eof, sf->path);
 
-            /** @todo
+            /**
              * If an error occurs on write, consider removing file from targets,
              * or at least attempt to roll the file (out of space?)
              */
+#pragma message("TODO: Handle write failure according to error code")            
 
             clearerr(sf->f);
         }
@@ -195,7 +196,7 @@ bool _sirfile_write(sirfile* sf, const char* output) {
 bool _sirfile_writeheader(sirfile* sf, const char* msg) {
 
     if (_sirfile_validate(sf) && _sir_validstr(msg)) {
-        time_t now;
+        time_t now = -1;
         time(&now);
 
         char timestamp[SIR_MAXTIME] = {0};
@@ -203,8 +204,8 @@ bool _sirfile_writeheader(sirfile* sf, const char* msg) {
         assert(fmttime);
 
         if (fmttime) {
-            char header[SIR_MAXOUTPUT] = {0};
-            int fmt = snprintf(header, SIR_MAXOUTPUT, SIR_FHFORMAT, msg, timestamp);
+            char header[SIR_MAXFHEADER] = {0};
+            int fmt = snprintf(header, SIR_MAXFHEADER, SIR_FHFORMAT, msg, timestamp);
 
             if (fmt < 0)
                 _sir_handleerr(errno);
@@ -347,11 +348,11 @@ bool _sirfile_update(sirfile* sf, sir_update_config_data* data) {
 
     if (_sir_bittest(data->fields, SIRU_LEVELS)) {
         if (sf->levels != *data->levels) {
-            _sir_selflog("updating file %d levels from %04x to %04x", sf->id,
+            _sir_selflog("updating file %d levels from %04" PRIx16 " to %04" PRIx16, sf->id,
                 sf->levels, *data->levels);
             sf->levels = *data->levels;
         } else {
-            _sir_selflog("skipped superfluous update of file %d levels: %04x", sf->id, sf->levels);
+            _sir_selflog("skipped superfluous update of file %d levels: %04" PRIx16, sf->id, sf->levels);
         }
 
         return true;
@@ -359,11 +360,11 @@ bool _sirfile_update(sirfile* sf, sir_update_config_data* data) {
 
     if (_sir_bittest(data->fields, SIRU_OPTIONS)) {
         if (sf->opts != *data->opts) {
-            _sir_selflog("updating file %d options from %08x to %08x", sf->id,
+            _sir_selflog("updating file %d options from %08" PRIx32 " to %08" PRIx32, sf->id,
                 sf->opts, *data->opts);
             sf->opts = *data->opts;
         } else {
-            _sir_selflog("skipped superfluous update of file %d options: %08x", sf->id, sf->opts);
+            _sir_selflog("skipped superfluous update of file %d options: %08" PRIx32, sf->id, sf->opts);
         }
 
         return true;
@@ -509,7 +510,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
             assert(_sirfile_validate(sfc->files[n]));
 
             if (!_sir_bittest(sfc->files[n]->levels, level)) {
-                _sir_selflog("level %04x not set in level mask (%04x) for file %d; skipping",
+                _sir_selflog("level %04 " PRIx16 " not set in level mask (%04" PRIx16 ") for file %d; skipping",
                     level, sfc->files[n]->levels, sfc->files[n]->id);
                 continue;
             }

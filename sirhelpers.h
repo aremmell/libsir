@@ -130,7 +130,7 @@ bool _sir_setbitslow(uint32_t* flags, uint32_t set) {
 /** Wraps free. */
 static inline
 void __sir_safefree(void** p) {
-    if (!p || (p && !*p))
+    if (!p || !*p)
         return;
     free(*p);
     *p = NULL;

@@ -37,7 +37,7 @@ static sir_test sir_tests[] = {
     {"output-without-init",     sirtest_failwithoutinit, false, true},
     {"superfluous-init",        sirtest_failinittwice, false, true},
     {"output-after-cleanup",    sirtest_failaftercleanup, false, true},
-    {"bad-init-struct",        sirtest_failinvalidinitdata, false, true},
+    {"bad-init-struct",         sirtest_failinvalidinitdata, false, true},
     {"re-initialize",           sirtest_initcleanupinit, false, true},
     {"duplicate-file-name",     sirtest_faildupefile, false, true},
     {"remove-nonexistent-file", sirtest_failremovebadfile, false, true},
@@ -358,8 +358,11 @@ bool sirtest_failaftercleanup(void) {
 
 bool sirtest_failinvalidinitdata(void) {
     sirinit si;
+
+    /* fill with bad data. */
+    memset(&si, 0xbadf00d, sizeof(sirinit));
     
-    printf("\tcalling sir_inti with uninitialized data...\n");
+    printf("\tcalling sir_init with invalid data...\n");
     bool pass = !sir_init(&si);
     
     if (!pass)
@@ -529,11 +532,11 @@ bool sirtest_errorsanity(void) {
     };
 
     char message[SIR_MAXERROR] = {0};
-    for (size_t n = 0; n < (sizeof(errors) / sizeof(errors[0])); n++) {
+    for (size_t n = 0; n < _sir_countof(errors); n++) {
         _sir_seterror(_sir_mkerror(errors[n].code));
         memset(message, 0, SIR_MAXERROR);
         uint16_t err;
-	err = sir_geterror(message);
+        err = sir_geterror(message);
         pass &= errors[n].code == err && *message != '\0';
         printf("\t%s = %s\n", errors[n].name, message);
     }
@@ -621,23 +624,23 @@ bool sirtest_optionssanity(void) {
     /* these should all be valid. */
     printf("\t" WHITEB("--- individual valid options ---") "\n");
     pass &= _sir_validopts(SIRO_ALL);
-    printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_ALL);
+    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_ALL);
     pass &= _sir_validopts(SIRO_NOTIME);
-    printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_NOTIME);
+    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOTIME);
     pass &= _sir_validopts(SIRO_NOHOST);
-    printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_NOHOST);    
+    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOHOST);    
     pass &= _sir_validopts(SIRO_NOLEVEL);
-    printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_NOLEVEL);
+    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOLEVEL);
     pass &= _sir_validopts(SIRO_NONAME);
-    printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_NONAME);
+    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NONAME);
     pass &= _sir_validopts(SIRO_NOPID);
-    printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_NOPID);
+    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOPID);
     pass &= _sir_validopts(SIRO_NOTID);
-    printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_NOTID);
+    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOTID);
     pass &= _sir_validopts(SIRO_NOHDR);
-    printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_NOHDR);
+    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOHDR);
     pass &= _sir_validopts(SIRO_MSGONLY);
-    printf(INDENT_ITEM WHITE("valid option: %08X") "\n", SIRO_MSGONLY);
+    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_MSGONLY);
     PRINT_PASS(pass, "\t--- individual valid options: %s ---\n\n", PRN_PASS(pass));
 
     /* any combination these bitwise OR'd together
@@ -682,8 +685,8 @@ bool sirtest_optionssanity(void) {
         }
 
         pass &= _sir_validopts(opts);
-        printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %" PRIu32 ", options: %08X)") "\n",
-            n + 1, iterations, rand_count, opts);        
+        printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %" PRIu32
+            ", options: %08" PRIx32 ")") "\n", n + 1, iterations, rand_count, opts);        
     }
     PRINT_PASS(pass, "\t--- random bitmask of valid options: %s ---\n\n", PRN_PASS(pass));
 
@@ -692,24 +695,24 @@ bool sirtest_optionssanity(void) {
     /* the lowest byte is not valid. */
     sir_options invalid = 0x000000ff;                                          
     pass &= !_sir_validopts(invalid);
-    printf(INDENT_ITEM WHITE("lowest byte: %08X") "\n", invalid);
+    printf(INDENT_ITEM WHITE("lowest byte: %08" PRIx32) "\n", invalid);
     
     /* gaps inbetween valid options. */
     invalid = 0x0001ff00 & ~(SIRO_NOTIME | SIRO_NOHOST | SIRO_NOLEVEL | SIRO_NONAME |
                              SIRO_NOMSEC | SIRO_NOPID | SIRO_NOTID  | SIRO_NOHDR);
     pass &= !_sir_validopts(invalid);
-    printf(INDENT_ITEM WHITE("gaps in 0x001ff00: %08X") "\n", invalid);    
+    printf(INDENT_ITEM WHITE("gaps in 0x001ff00: %08" PRIx32) "\n", invalid);    
 
     /* greater than SIRO_MSGONLY and less than SIRO_NOHDR. */
     for (sir_option o = 0x00008f00; o < SIRO_NOHDR; o += 0x1000) {
         pass &= !_sir_validopts(o);
-        printf(INDENT_ITEM WHITE("SIRO_MSGONLY >< SIRO_NOHDR: %08X") "\n", o);
+        printf(INDENT_ITEM WHITE("SIRO_MSGONLY >< SIRO_NOHDR: %08" PRIx32) "\n", o);
     }
 
     /* greater than SIRO_NOHDR. */
     invalid = (0xFFFF0000 &~ SIRO_NOHDR);
     pass &= !_sir_validopts(invalid);
-    printf(INDENT_ITEM WHITE("greater than SIRO_NOHDR: %08X") "\n", invalid);
+    printf(INDENT_ITEM WHITE("greater than SIRO_NOHDR: %08" PRIx32) "\n", invalid);
 
     PRINT_PASS(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 
@@ -726,25 +729,25 @@ bool sirtest_levelssanity(void) {
     /* these should all be valid. */
     printf("\t" WHITEB("--- individual valid levels ---") "\n");
     pass &= _sir_validlevel(SIRL_INFO) && _sir_validlevels(SIRL_INFO);
-    printf(INDENT_ITEM WHITE("valid level: %04X") "\n", SIRL_INFO);    
+    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_INFO);    
     pass &= _sir_validlevel(SIRL_DEBUG) && _sir_validlevels(SIRL_DEBUG);
-    printf(INDENT_ITEM WHITE("valid level: %04X") "\n", SIRL_DEBUG);
+    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_DEBUG);
     pass &= _sir_validlevel(SIRL_NOTICE) && _sir_validlevels(SIRL_NOTICE);
-    printf(INDENT_ITEM WHITE("valid level: %04X") "\n", SIRL_NOTICE);
+    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_NOTICE);
     pass &= _sir_validlevel(SIRL_WARN) && _sir_validlevels(SIRL_WARN);
-    printf(INDENT_ITEM WHITE("valid level: %04X") "\n", SIRL_WARN);            
+    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_WARN);            
     pass &= _sir_validlevel(SIRL_ERROR) && _sir_validlevels(SIRL_ERROR);
-    printf(INDENT_ITEM WHITE("valid level: %04X") "\n", SIRL_ERROR);
+    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_ERROR);
     pass &= _sir_validlevel(SIRL_CRIT) && _sir_validlevels(SIRL_CRIT);
-    printf(INDENT_ITEM WHITE("valid level: %04X") "\n", SIRL_CRIT);
+    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_CRIT);
     pass &= _sir_validlevel(SIRL_ALERT) && _sir_validlevels(SIRL_ALERT);
-    printf(INDENT_ITEM WHITE("valid level: %04X") "\n", SIRL_ALERT);
+    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_ALERT);
     pass &= _sir_validlevel(SIRL_EMERG) && _sir_validlevels(SIRL_EMERG);
-    printf(INDENT_ITEM WHITE("valid level: %04X") "\n", SIRL_EMERG);    
+    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_EMERG);    
     pass &= _sir_validlevels(SIRL_ALL);
-    printf(INDENT_ITEM WHITE("valid levels: %04X") "\n", SIRL_ALL);  
+    printf(INDENT_ITEM WHITE("valid levels: %04" PRIx16) "\n", SIRL_ALL);  
     pass &= _sir_validlevels(SIRL_NONE);
-    printf(INDENT_ITEM WHITE("valid levels: %04X") "\n", SIRL_NONE);  
+    printf(INDENT_ITEM WHITE("valid levels: %04" PRIx16) "\n", SIRL_NONE);  
     PRINT_PASS(pass, "\t--- individual valid levels: %s ---\n\n", PRN_PASS(pass));
 
     /* any combination these bitwise OR'd together
@@ -788,7 +791,7 @@ bool sirtest_levelssanity(void) {
         }
 
         pass &= _sir_validlevels(levels);
-        printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %" PRIu32 ", levels: %04X)") "\n",
+        printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %" PRIu32 ", levels: %04" PRIx16) "\n",
             n + 1, iterations, rand_count, levels);        
     }
     PRINT_PASS(pass, "\t--- random bitmask of valid levels: %s ---\n\n", PRN_PASS(pass));             
@@ -798,7 +801,7 @@ bool sirtest_levelssanity(void) {
     /* greater than SIRL_ALL. */
     sir_levels invalid = (0xffff & ~SIRL_ALL);
     pass &= !_sir_validlevels(invalid);
-    printf(INDENT_ITEM WHITE("greater than SIRL_ALL: %04X") "\n", invalid);
+    printf(INDENT_ITEM WHITE("greater than SIRL_ALL: %04" PRIx16) "\n", invalid);
 
     PRINT_PASS(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 
@@ -1032,7 +1035,7 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
 
         pass &= sir_notice("%d/%d: this notice message sent to stdout and %s.", i + 1, runs, sl_name);
         pass &= sir_warn("%d/%d: this warning message sent to stdout and %s.", i + 1, runs, sl_name);
-        pass &= sir_error("%d/%d: this error message to stdout and %s.", i + 1, runs, sl_name);
+        pass &= sir_error("%d/%d: this error message sent to stdout and %s.", i + 1, runs, sl_name);
 
         if (do_update)
             pass &= sir_syslogopts(SIRO_MSGONLY &~ (SIRO_NOLEVEL | SIRO_NOPID));
@@ -1468,14 +1471,14 @@ bool print_test_error(bool result, bool expected) {
 
 void print_os_error(void) {
     char message[SIR_MAXERROR] = {0};
-    uint16_t  code = sir_geterror(message);
+    uint16_t code = sir_geterror(message);
     fprintf(stderr, "\t" RED("OS error: (%hu, %s)") "\n", code, message);
 }
 
 bool filter_error(bool pass, uint16_t err) {
     if (!pass) {
         char message[SIR_MAXERROR] = {0};
-        uint16_t  code = sir_geterror(message);
+        uint16_t code = sir_geterror(message);
         if (code != err)
             return false;        
     }
