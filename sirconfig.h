@@ -227,6 +227,9 @@
 /** The maximum number of log files that may be registered at one time. */
 #define SIR_MAXFILES 16
 
+/** The size, in characters, of the buffer used to hold file header format strings. */
+#define SIR_MAXFHEADER 128
+
 /**
  * The maximum number of characters allowable in one log message. This
  * does not include accompanying formatted output (see ::SIR_MAXOUTPUT).
