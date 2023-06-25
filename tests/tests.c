@@ -362,7 +362,7 @@ bool sirtest_failinvalidinitdata(void) {
 
     /* fill with bad data. */
     memset(&si, 0xbadf00d, sizeof(sirinit));
-    
+
     printf("\tcalling sir_init with invalid data...\n");
 
     bool pass = !sir_init(&si);
@@ -703,7 +703,7 @@ bool sirtest_optionssanity(void) {
                              SIRO_NOMSEC | SIRO_NOPID | SIRO_NOTID  | SIRO_NOHDR);
     pass &= !_sir_validopts(invalid);
 
-    printf(INDENT_ITEM WHITE("gaps in 0x001ff00: %08" PRIx32) "\n", invalid);    
+    printf(INDENT_ITEM WHITE("gaps in 0x001ff00: %08" PRIx32) "\n", invalid);
 
     /* greater than SIRO_MSGONLY and less than SIRO_NOHDR. */
     for (sir_option o = 0x00008f00; o < SIRO_NOHDR; o += 0x1000) {
@@ -731,13 +731,13 @@ bool sirtest_levelssanity(void) {
     /* these should all be valid. */
     printf("\t" WHITEB("--- individual valid levels ---") "\n");
     pass &= _sir_validlevel(SIRL_INFO) && _sir_validlevels(SIRL_INFO);
-    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_INFO);    
+    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_INFO);
     pass &= _sir_validlevel(SIRL_DEBUG) && _sir_validlevels(SIRL_DEBUG);
     printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_DEBUG);
     pass &= _sir_validlevel(SIRL_NOTICE) && _sir_validlevels(SIRL_NOTICE);
     printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_NOTICE);
     pass &= _sir_validlevel(SIRL_WARN) && _sir_validlevels(SIRL_WARN);
-    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_WARN);            
+    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_WARN);
     pass &= _sir_validlevel(SIRL_ERROR) && _sir_validlevels(SIRL_ERROR);
     printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_ERROR);
     pass &= _sir_validlevel(SIRL_CRIT) && _sir_validlevels(SIRL_CRIT);
@@ -745,11 +745,11 @@ bool sirtest_levelssanity(void) {
     pass &= _sir_validlevel(SIRL_ALERT) && _sir_validlevels(SIRL_ALERT);
     printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_ALERT);
     pass &= _sir_validlevel(SIRL_EMERG) && _sir_validlevels(SIRL_EMERG);
-    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_EMERG);    
+    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_EMERG);
     pass &= _sir_validlevels(SIRL_ALL);
-    printf(INDENT_ITEM WHITE("valid levels: %04" PRIx16) "\n", SIRL_ALL);  
+    printf(INDENT_ITEM WHITE("valid levels: %04" PRIx16) "\n", SIRL_ALL);
     pass &= _sir_validlevels(SIRL_NONE);
-    printf(INDENT_ITEM WHITE("valid levels: %04" PRIx16) "\n", SIRL_NONE);  
+    printf(INDENT_ITEM WHITE("valid levels: %04" PRIx16) "\n", SIRL_NONE);
     PRINT_PASS(pass, "\t--- individual valid levels: %s ---\n\n", PRN_PASS(pass));
 
     /* any combination these bitwise OR'd together
