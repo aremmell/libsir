@@ -1034,7 +1034,7 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
 
         pass &= sir_notice("%d/%d: this notice message sent to stdout and %s.", i + 1, runs, sl_name);
         pass &= sir_warn("%d/%d: this warning message sent to stdout and %s.", i + 1, runs, sl_name);
-        pass &= sir_error("%d/%d: this error message to stdout and %s.", i + 1, runs, sl_name);
+        pass &= sir_error("%d/%d: this error message sent to stdout and %s.", i + 1, runs, sl_name);
 
         if (do_update)
             pass &= sir_syslogopts(SIRO_MSGONLY &~ (SIRO_NOLEVEL | SIRO_NOPID));

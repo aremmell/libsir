@@ -891,7 +891,7 @@ bool _sir_syslog_close(sir_syslog_dest *ctx) {
      * if you make that call again, you'll get the same cached value. so let's keep the
      * value we've got in the global context. */
     _sir_setbitslow(&ctx->_state.mask, SIRSL_IS_OPEN);
-    _sir_selflog("log closure not required");
+    _sir_selflog("log closure not necessary");
     return true;
 #elif defined(SIR_SYSLOG_ENABLED)
     closelog();
