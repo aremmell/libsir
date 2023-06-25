@@ -37,7 +37,7 @@ static sir_test sir_tests[] = {
     {"output-without-init",     sirtest_failwithoutinit, false, true},
     {"superfluous-init",        sirtest_failinittwice, false, true},
     {"output-after-cleanup",    sirtest_failaftercleanup, false, true},
-    {"bad-init-struct",        sirtest_failinvalidinitdata, false, true},
+    {"bad-init-struct",         sirtest_failinvalidinitdata, false, true},
     {"re-initialize",           sirtest_initcleanupinit, false, true},
     {"duplicate-file-name",     sirtest_faildupefile, false, true},
     {"remove-nonexistent-file", sirtest_failremovebadfile, false, true},
@@ -1470,14 +1470,14 @@ bool print_test_error(bool result, bool expected) {
 
 void print_os_error(void) {
     char message[SIR_MAXERROR] = {0};
-    uint16_t  code = sir_geterror(message);
+    uint16_t code = sir_geterror(message);
     fprintf(stderr, "\t" RED("OS error: (%hu, %s)") "\n", code, message);
 }
 
 bool filter_error(bool pass, uint16_t err) {
     if (!pass) {
         char message[SIR_MAXERROR] = {0};
-        uint16_t  code = sir_geterror(message);
+        uint16_t code = sir_geterror(message);
         if (code != err)
             return false;        
     }
