@@ -417,9 +417,9 @@ bool sirtest_failremovebadfile(void) {
 }
 
 bool sirtest_rollandarchivefile(void) {
-    /* roll size minus 1KB so we can write until it maxes. */
-    static const long       deltasize   = 1024L;
-    const long              fillsize    = SIR_FROLLSIZE - deltasize;
+    /* roll size minus 1KiB so we can write until it maxes. */
+    static const long deltasize    = 1024L;
+    const long fillsize            = SIR_FROLLSIZE - deltasize;
     static const char* logbasename = "rollandarchive";
     static const char* logext      = ".log";
     static const char* line        = "hello, i am some data. nice to meet you.";
@@ -477,14 +477,14 @@ bool sirtest_rollandarchivefile(void) {
             written += linesize;
         } while (written < deltasize + (linesize * 50));
 
-        /* Look for files matching the original name. */
+        /* look for files matching the original name. */
         unsigned foundlogs = 0;
         if (!enumfiles(logbasename, countfiles, &foundlogs)) {
             handle_os_error(false, "failed to enumerate log files with base name: %s!", logbasename);
             pass = false;
         }
 
-        /* If two are present, the test is a pass. */
+        /* if two are present, the test is a pass. */
         pass &= foundlogs == 2;
     }
 
@@ -623,23 +623,23 @@ bool sirtest_optionssanity(void) {
     /* these should all be valid. */
     printf("\t" WHITEB("--- individual valid options ---") "\n");
     pass &= _sir_validopts(SIRO_ALL);
-    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_ALL);
+    printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_ALL);
     pass &= _sir_validopts(SIRO_NOTIME);
-    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOTIME);
+    printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_NOTIME);
     pass &= _sir_validopts(SIRO_NOHOST);
-    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOHOST);    
+    printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_NOHOST);    
     pass &= _sir_validopts(SIRO_NOLEVEL);
-    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOLEVEL);
+    printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_NOLEVEL);
     pass &= _sir_validopts(SIRO_NONAME);
-    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NONAME);
+    printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_NONAME);
     pass &= _sir_validopts(SIRO_NOPID);
-    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOPID);
+    printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_NOPID);
     pass &= _sir_validopts(SIRO_NOTID);
-    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOTID);
+    printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_NOTID);
     pass &= _sir_validopts(SIRO_NOHDR);
-    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOHDR);
+    printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_NOHDR);
     pass &= _sir_validopts(SIRO_MSGONLY);
-    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_MSGONLY);
+    printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_MSGONLY);
     PRINT_PASS(pass, "\t--- individual valid options: %s ---\n\n", PRN_PASS(pass));
 
     /* any combination these bitwise OR'd together
@@ -728,25 +728,25 @@ bool sirtest_levelssanity(void) {
     /* these should all be valid. */
     printf("\t" WHITEB("--- individual valid levels ---") "\n");
     pass &= _sir_validlevel(SIRL_INFO) && _sir_validlevels(SIRL_INFO);
-    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_INFO);    
+    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_INFO);    
     pass &= _sir_validlevel(SIRL_DEBUG) && _sir_validlevels(SIRL_DEBUG);
-    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_DEBUG);
+    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_DEBUG);
     pass &= _sir_validlevel(SIRL_NOTICE) && _sir_validlevels(SIRL_NOTICE);
-    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_NOTICE);
+    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_NOTICE);
     pass &= _sir_validlevel(SIRL_WARN) && _sir_validlevels(SIRL_WARN);
-    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_WARN);            
+    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_WARN);            
     pass &= _sir_validlevel(SIRL_ERROR) && _sir_validlevels(SIRL_ERROR);
-    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_ERROR);
+    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_ERROR);
     pass &= _sir_validlevel(SIRL_CRIT) && _sir_validlevels(SIRL_CRIT);
-    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_CRIT);
+    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_CRIT);
     pass &= _sir_validlevel(SIRL_ALERT) && _sir_validlevels(SIRL_ALERT);
-    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_ALERT);
+    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_ALERT);
     pass &= _sir_validlevel(SIRL_EMERG) && _sir_validlevels(SIRL_EMERG);
-    printf(INDENT_ITEM WHITE("valid level: %04" PRIx16) "\n", SIRL_EMERG);    
+    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_EMERG);    
     pass &= _sir_validlevels(SIRL_ALL);
-    printf(INDENT_ITEM WHITE("valid levels: %04" PRIx16) "\n", SIRL_ALL);  
+    printf(INDENT_ITEM WHITE("valid levels: %04x") "\n", SIRL_ALL);  
     pass &= _sir_validlevels(SIRL_NONE);
-    printf(INDENT_ITEM WHITE("valid levels: %04" PRIx16) "\n", SIRL_NONE);  
+    printf(INDENT_ITEM WHITE("valid levels: %04x") "\n", SIRL_NONE);  
     PRINT_PASS(pass, "\t--- individual valid levels: %s ---\n\n", PRN_PASS(pass));
 
     /* any combination these bitwise OR'd together
@@ -1521,7 +1521,7 @@ bool rmfile(const char* filename) {
     if (!removed) {
         handle_os_error(false, "failed to delete %s!", filename);
     } else {
-        printf("\tsuccessfully deleted %s (%ld bytes)...\n", filename, (long)st.st_size);
+        printf("\tdeleted %s (%ld bytes)...\n", filename, (long)st.st_size);
     }
 
     return removed;

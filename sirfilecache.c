@@ -24,6 +24,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "sirfilecache.h"
+#include "sirfilesystem.h"
 #include "sirinternal.h"
 #include "sirdefaults.h"
 #include "sirmutex.h"
@@ -159,8 +160,9 @@ bool _sirfile_write(sirfile* sf, const char* output) {
             }
 
             _sir_safefree(newpath);
-            if (!rolled)
-                return false;
+            if (!rolled) /* write anyway; don't want to lose data. */
+                _sir_selflog("error: failed to roll file %d (path: '%s')!",
+                    sf->id, sf->path);
         }
 
         size_t writeLen = strnlen(output, SIR_MAXFHEADER);
@@ -172,9 +174,9 @@ bool _sirfile_write(sirfile* sf, const char* output) {
             int err = ferror(sf->f);
             int eof = feof(sf->f);
 
-            _sir_selflog("error: incomplete write of %zu/%zu bytes to file %d!"
+            _sir_selflog("error: incomplete write of %zu/%zu bytes to file %d (path: '%s')!"
                          " ferror: %d, feof: %d, path: '%s'", write, writeLen,
-                         sf->id, err, eof, sf->path);
+                         sf->id, sf->path, err, eof, sf->path);
 
             /**
              * If an error occurs on write, consider removing file from targets,
@@ -244,24 +246,73 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
         assert(split);
 
         if (split) {
-            time_t now;
-            time(&now);
-
-            char timestamp[SIR_MAXTIME] = {0};
-            bool fmttime = _sir_formattime(now, timestamp, SIR_FNAMETIMEFORMAT);
-            assert(fmttime);
+            time_t now = -1;
             
-            if (fmttime) {
-                *newpath = (char*)calloc(SIR_MAXPATH, sizeof(char));
+            time(&now);
+            assert(-1 != now);
 
-                if (_sir_validptr(*newpath)) {
-                    int fmtpath = snprintf(*newpath, SIR_MAXPATH, SIR_FNAMEFORMAT,
-                        name, timestamp, _sir_validstrnofail(ext) ? ext : "");                
+            if (-1 != now) {
+                char timestamp[SIR_MAXTIME] = {0};
+                bool fmttime = _sir_formattime(now, timestamp, SIR_FNAMETIMEFORMAT);
+                assert(fmttime);
+                
+                if (fmttime) {
+                    *newpath = (char*)calloc(SIR_MAXPATH, sizeof(char));
 
-                    if (fmtpath < 0)
-                        _sir_handleerr(errno);
+                    if (_sir_validptr(*newpath)) {
+                        char seqbuf[7] = {0};
+                        bool exists = false;
+                        bool resolved = false;
+                        uint16_t sequence = 0;
 
-                    r = fmtpath >= 0 && _sirfile_archive(sf, *newpath);
+                        do {
+                            int print = snprintf(*newpath, SIR_MAXPATH, SIR_FNAMEFORMAT "%s",
+                                name, timestamp, _sir_validstrnofail(ext) ? ext : "",
+                                sequence > 0 ? seqbuf : "");
+
+                            if (print < 0) {
+                                _sir_handleerr(errno);
+                                break;
+                            }
+
+                            /* if less than one second has elasped since the last roll
+                            * operation, then we'll overwrite the last rolled log file,
+                            * and that = data loss. make sure the target path does not
+                            * already exist. */
+                            if (!_sir_pathexists(*newpath, &exists, SIR_PATH_REL_TO_CWD)) {
+                                /* failed to determine if the file already exists; it is better
+                                 * to continue logging to the same file than to possibly overwrite
+                                 * another (if it failed this time, it will again, so there's no
+                                 * way to definitively choose a good new path). */
+                                break;
+                            } else if (exists) {
+                                /* the file already exists; concatentate a number to the end of
+                                 * the file name until one that does not exist is found. */
+                                _sir_selflog("path: '%s' already exists; incrementing sequence", *newpath);
+                                sequence++;
+                            } else {
+                                _sir_selflog("found good path: '%s'", *newpath);
+                                resolved = true;
+                                break;
+                            }
+
+                            if (sequence > 0) {
+                                print = snprintf(seqbuf, 7, "-%hu", sequence);
+                                
+                                if (print < 0) {
+                                    _sir_handleerr(errno);
+                                    break;
+                                }
+                            }
+
+                        } while (sequence <= 999);
+
+                        if (!resolved)
+                            _sir_selflog("error: unable to determine suitable roll path for '%s';"
+                                         " not rolling!", sf->path);
+
+                        r = resolved && _sirfile_archive(sf, *newpath);
+                    }
                 }
             }
         }
@@ -269,14 +320,12 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
         _sir_safefree(name);
         _sir_safefree(ext);
 
-
         return r;
     }
 
     return false;
 }
 
-/** @todo compress archived log files */
 bool _sirfile_archive(sirfile* sf, const char* newpath) {
 
     if (_sirfile_validate(sf) && _sir_validstr(newpath)) {
@@ -290,7 +339,7 @@ bool _sirfile_archive(sirfile* sf, const char* newpath) {
         }
 
         if (_sirfile_open(sf)) {
-            _sir_selflog("archived '%s' -> '%s'", sf->path, newpath);
+            _sir_selflog("archived '%s' " SIR_R_ARROW " '%s'", sf->path, newpath);
             return true;
         }
     }
