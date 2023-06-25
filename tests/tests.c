@@ -358,8 +358,11 @@ bool sirtest_failaftercleanup(void) {
 
 bool sirtest_failinvalidinitdata(void) {
     sirinit si;
+
+    /* fill with bad data. */
+    memset(&si, 0xbadf00d, sizeof(sirinit));
     
-    printf("\tcalling sir_inti with uninitialized data...\n");
+    printf("\tcalling sir_init with invalid data...\n");
     bool pass = !sir_init(&si);
     
     if (!pass)
