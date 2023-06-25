@@ -104,8 +104,10 @@ sirfile* _sirfile_create(const char* path, sir_levels levels, sir_options opts) 
                 sf->levels = levels;
                 sf->opts   = opts;
 
-                if (!_sirfile_open(sf) || !_sirfile_validate(sf))
+                if (!_sirfile_open(sf) || !_sirfile_validate(sf)) {
                     _sir_safefree(sf);
+		    return NULL;
+		}
             }
         }
     }
@@ -396,6 +398,7 @@ sirfileid_t _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
 
             return &sf->id;
         }
+    _sir_safefree(sf);
     }
 
     return NULL;
