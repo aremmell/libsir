@@ -36,7 +36,7 @@
  * with any of those defined by the platform.
  */
 #define _sir_mkerror(code) \
-    (((uint32_t)(code & 0x7fff) << 16) | 0x80000000)
+    ( ( (uint32_t)( (code) & 0x7fff ) << 16 ) | 0x80000000 )
 
 /** Validates an internal error. */
 static inline
@@ -99,7 +99,7 @@ uint16_t _sir_geterrcode(uint32_t err) {
  * This is necessary due to the fact that ::_sir_validptr will
  * not accept these types as input.
  */
-#define _sir_notnull(addr) (NULL != addr)
+#define _sir_notnull(addr) ( NULL != (addr) )
 
 /** Checks a bitmask for a specific set of bits. */
 static inline
