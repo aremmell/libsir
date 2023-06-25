@@ -220,7 +220,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #endif
 
 #if defined(__WIN__) && defined(__STDC_SECURE_LIB__)
-# define __HAVE_STDC_SECURE_OR_EXT1__ 
+# define __HAVE_STDC_SECURE_OR_EXT1__
 #elif defined(__STDC_LIB_EXT1__)
 # define __HAVE_STDC_SECURE_OR_EXT1__
 #endif

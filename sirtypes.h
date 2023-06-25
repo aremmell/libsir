@@ -119,7 +119,7 @@ typedef enum {
 /**
  * @struct sir_stdio_dest
  * @brief Configuration for stdio destinations (stdout and stderr).
- * 
+ *
  * @see ::sir_level
  * @see ::sir_option
  * @see ::sir_syslog_dest
@@ -135,7 +135,7 @@ typedef struct {
 /**
  * @struct sir_syslog_dest
  * @brief Configuration for the system logger destination.
- *  
+ *
  * @see ::sir_level
  * @see ::sir_option
  * @see ::sir_stdio_dest
@@ -145,15 +145,15 @@ typedef struct {
     sir_levels levels;
 
     /**
-     * ::sir_option bitmask defining the formatting of output. 
-     * 
+     * ::sir_option bitmask defining the formatting of output.
+     *
      * @remark Unlike the stdio and log file destinations, not all options are
      * supported. This is due to the fact that system logging facilities typically
      * already include the information represented by ::sir_option on their own.
-     * 
+     *
      * Furthermore, the supported options vary based on the system logging
      * factility in use.
-     * 
+     *
      * @note If your system supports syslog, and libsir is compiled with the intent
      * to use it (::SIR_SYSLOG_ENABLED is defined), then at least ::SIRO_NOPID is
      * supported.
@@ -162,35 +162,35 @@ typedef struct {
 
     /** Reserved for internal use; do not modify. */
     struct {
-        /** State bitmask. */        
+        /** State bitmask. */
         uint32_t mask;
-        
+
         /** System logger handle/identifier. */
         void* logger;
     } _state;
 
-    /** 
+    /**
      * The identity string to pass to the system logger.
-     * 
+     *
      * If not set, and the name in the ::sirinit struct
      * is set, that will be used instead.
-     * 
+     *
      * Failing that, an attempt will be made to use the file name
      * of the calling process. If that is unsuccessful as well,
      * the string ::SIR_FALLBACK_SYSLOG_ID will be used.
-     * 
+     *
      * @note Can be modified at runtime by calling ::sir_syslogid.
     */
     char identity[SIR_MAX_SYSLOG_ID];
 
     /**
      * The category string to pass to the system logger.
-     * 
+     *
      * Some system loggers (e.g. `os_log` on macOS) require a
      * category string to group and filter log messages.
-     * 
+     *
      * If not set, the string ::SIR_FALLBACK_SYSLOG_CAT will be used instead.
-     * 
+     *
      * @note Can be modified at runtime by calling ::sir_syslogcat.
      */
     char category[SIR_MAX_SYSLOG_CAT];
@@ -202,7 +202,7 @@ typedef struct {
  *
  * @note Pass a pointer to an instance of this structure to ::sir_init
  * to begin using libsir.
- *  
+ *
  * @see ::sir_stdio_dest
  * @see ::sir_syslog_dest
  */
@@ -211,15 +211,15 @@ typedef struct {
     sir_stdio_dest d_stdout;
 
     /** stderr configuration. */
-    sir_stdio_dest d_stderr; 
+    sir_stdio_dest d_stderr;
 
-    /** System logger configuration. */ 
+    /** System logger configuration. */
     sir_syslog_dest d_syslog;
 
     /**
      * If set, defines the name that will appear in messages sent to stdio and
      * log file destinations.
-     * 
+     *
      * Set ::SIRO_NONAME in a destination's options bitmask to exclude it from
      * log messages.
      */
@@ -244,7 +244,7 @@ typedef struct {
 #define _SIRS_BG_MASK 0x000ff000
 
 /** True if foreground and background colors are the same. */
-#define _SIRS_SAME_COLOR(fg, bg) (((bg >> 8) & _SIRS_FG_MASK) == fg)
+#define _SIRS_SAME_COLOR(fg, bg) ( ( ( (bg) >> 8 ) & _SIRS_FG_MASK ) == (fg) )
 
 /** Magic number used to determine if libsir has been initialized. */
 #define _SIR_MAGIC 0x60906090
@@ -337,7 +337,7 @@ typedef enum {
     SIRSL_OPTIONS  = 0x00000004,
     SIRSL_CATEGORY = 0x00000008,
     SIRSL_IDENTITY = 0x00000010,
-    SIRSL_UPDATED  = 0x00000020,    
+    SIRSL_UPDATED  = 0x00000020,
     SIRSL_IS_INIT  = 0x00000040
 } sir_syslog_state;
 

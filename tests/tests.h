@@ -54,21 +54,21 @@
     INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, name, true)
 
 #define INIT_SL(var, l_stdout, o_stdout, l_stderr, o_stderr, name) \
-    INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, name, false)    
+    INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, name, false)
 
 #define INIT(var, l_stdout, o_stdout, l_stderr, o_stderr) \
     INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, "")
 
-#define TEST_S(n) (n > 1 ? ("test" "s") : "test")
-#define PRN_STR(str) (str ? str : RED("NULL"))
-#define PRN_PASS(pass) (pass ? GREENB("PASS") : REDB("FAIL"))
+#define TEST_S(n) ( (n) > 1 ? ("test" "s") : "test" )
+#define PRN_STR(str) ( (str) ? (str) : RED("NULL") )
+#define PRN_PASS(pass) ( (pass) ? GREENB("PASS") : REDB("FAIL") )
 #define INDENT_ITEM "\t  " SIR_BULLET " "
 
 /**
  * @defgroup tests Tests
- * 
+ *
  * libsir integrity tests
- * 
+ *
  * @addtogroup tests
  * @{
  */
@@ -180,14 +180,14 @@ bool sirtest_updatesanity(void);
 
 /**
  * @test Properly open, configure, and send messages to syslog().
- * 
+ *
  * @note Disabled on Windows and macOS.
  */
 bool sirtest_syslog(void);
 
 /**
  * @test Properly open, configure, and send messages to os_log().
- * 
+ *
  * @note macOS only.
  */
 bool sirtest_os_log(void);
@@ -226,7 +226,7 @@ bool filter_error(bool pass, uint16_t err);
 #endif
 
 /*
- * Utility functions, macros, and types 
+ * Utility functions, macros, and types
  */
 
 /** Function signature for a single test. */
@@ -294,7 +294,7 @@ static const struct cl_arg {
         {"--only", "" ULINE("name") " [, name, ...]", "Only run the test(s) specified."},
         {"--list", "", "Prints a list of available test names for use with " BOLD("--only") "."},
         {"--help", "", "Shows this message."}
-    }; 
+    };
 
 bool mark_test_to_run(const char* name);
 
