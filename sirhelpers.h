@@ -95,7 +95,7 @@ uint16_t _sir_geterrcode(uint32_t err) {
 /**
  * Validates a pointer-to-pointer, pointer,
  * pointer to function, etc. but ignores whether it's invalid.
- * 
+ *
  * This is necessary due to the fact that ::_sir_validptr will
  * not accept these types as input.
  */
@@ -219,7 +219,7 @@ bool _sir_strsame(const char* lhs, const char* rhs, size_t count) {
     return 0 == strncmp(lhs, rhs, count);
 }
 
-/** 
+/**
  * Wrapper for strncpy/strncpy_s. Determines which one to use
  * based on preprocessor macros.
  */
