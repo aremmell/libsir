@@ -96,7 +96,7 @@ bool _sir_init(sirinit* si) {
     _sir_selflog("stderr levels: %04" PRIx16 "", si->d_stderr.levels);
 
     _sir_selflog("stdout opts: %08" PRIx32 "", si->d_stdout.opts);
-    _sir_selflog("stderr opts: %04" PRIx32 "", si->d_stderr.opts);    
+    _sir_selflog("stderr opts: %08" PRIx32 "", si->d_stderr.opts);    
 
     _sir_defaultlevels(&si->d_stdout.levels, sir_stdout_def_lvls);
     _sir_defaultopts(&si->d_stdout.opts, sir_stdout_def_opts);
@@ -218,30 +218,21 @@ bool _sir_options_sanity(const sirinit* si) {
     if (!_sir_validptr(si))
         return false;
 
-    _sir_selflog("checking std[out|err] levels...");
     bool levelcheck = true;
     levelcheck &= _sir_validlevels(si->d_stdout.levels);
     levelcheck &= _sir_validlevels(si->d_stderr.levels);
 
-    _sir_selflog("std[out|err] levels: %d", levelcheck);
-
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
 _sir_selflog("checking syslog levels...");
-    levelcheck &= _sir_validlevels(si->d_syslog.levels);
     _sir_selflog("syslog levels: %d", levelcheck);
 #endif
 
-    _sir_selflog("checking std[out|err] options...");
     bool optscheck = true;
     optscheck &= _sir_validopts(si->d_stdout.opts);
     optscheck &= _sir_validopts(si->d_stderr.opts);
 
-    _sir_selflog("std[out|err] options: %d", optscheck);
-
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
-    _sir_selflog("checking syslog options...");
     optscheck &= _sir_validopts(si->d_syslog.opts);
-    _sir_selflog("syslog options: %d", optscheck);
 #endif
 
     return levelcheck && optscheck;
@@ -515,16 +506,15 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     sirbuf buf = {0};
     buf.name = tmpsi.name;
 
-    bool appliedstyle = false;
+    bool fmt = false;
     const char* style_str = _sir_gettextstyle(level);
 
     assert(NULL != style_str);
     if (NULL != style_str)
-        appliedstyle = 0 == _sir_strncpy(buf.style, SIR_MAXSTYLE, style_str,
-            SIR_MAXSTYLE);
+        fmt = (0 == _sir_strncpy(buf.style, SIR_MAXSTYLE, style_str,
+            SIR_MAXSTYLE));
 
-    if (!appliedstyle)
-        return false;
+    assert(fmt);
 
     time_t now   = -1;
     long nowmsec = 0;
@@ -532,9 +522,9 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     assert(gettime);
 
     if (gettime) {
-        bool fmttime = _sir_formattime(now, buf.timestamp, SIR_TIMEFORMAT);
-        assert(fmttime);
-        _SIR_UNUSED(fmttime);
+        fmt = _sir_formattime(now, buf.timestamp, SIR_TIMEFORMAT);
+        assert(fmt);
+        _SIR_UNUSED(fmt);
 
         if (0 > snprintf(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec))
             _sir_handleerr(errno);
@@ -985,18 +975,19 @@ const char* _sir_levelstr(sir_level level) {
 
 bool _sir_formattime(time_t now, char* buffer, const char* format) {
 
-    if (0 != now) {
-        struct tm timebuf = {0};
-        size_t fmttime = strftime(buffer, SIR_MAXTIME, format, _sir_localtime(&now, &timebuf));
-        assert(0 != fmttime);
-
-        if (0 == fmttime)
-            _sir_selflog("strftime returned 0; format string: '%s'", format);
-
-        return 0 != fmttime;
+    if (0 == now || -1 == now) {
+        _sir_seterror(_SIR_E_INVALID);
+        return false;
     }
 
-    return false;
+    struct tm timebuf = {0};
+    size_t fmttime = strftime(buffer, SIR_MAXTIME, format, _sir_localtime(&now, &timebuf));
+
+    assert(0 != fmttime);
+    if (0 == fmttime)
+        _sir_selflog("error: strftime failed; format string: '%s'", format);
+
+    return 0 != fmttime;
 }
 
 bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
