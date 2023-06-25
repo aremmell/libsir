@@ -54,7 +54,7 @@ bool _sir_updatefile(sirfileid_t id, sir_update_config_data* data) {
 
     _sir_seterror(_SIR_E_NOERROR);
 
-    if (_sir_sanity() && _sir_validptr(id) && _sir_validfid(*id) &&
+    if (_sir_sanity() && _sir_validptr(id) && _sir_validfd(*id) &&
         _sir_validupdatedata(data)) {
         sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
         assert(sfc);
@@ -74,7 +74,7 @@ bool _sir_remfile(sirfileid_t id) {
 
     _sir_seterror(_SIR_E_NOERROR);
 
-    if (_sir_sanity() && _sir_validptr(id) && _sir_validfid(*id)) {
+    if (_sir_sanity() && _sir_validptr(id) && _sir_validfd(*id)) {
         sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
         assert(sfc);
 
@@ -122,7 +122,7 @@ bool _sirfile_open(sirfile* sf) {
         int open = _sir_fopen(&f, sf->path, SIR_FOPENMODE);
         if (0 == open && f) {
             int fd = fileno(f);
-            if (_sir_validfid(fd)) {
+            if (_sir_validfd(fd)) {
                 _sirfile_close(sf);
                                 
                 sf->f  = f;
@@ -137,7 +137,7 @@ bool _sirfile_open(sirfile* sf) {
 
 void _sirfile_close(sirfile* sf) {
     if (_sir_validptr(sf)) {
-        if (_sir_validptrnofail(sf->f) && _sir_validfid(sf->id)) {
+        if (_sir_validptrnofail(sf->f) && _sir_validfd(sf->id)) {
             _sir_fflush(sf->f);
             _sir_fclose(&sf->f);
             sf->id = -1;
@@ -385,7 +385,7 @@ void _sirfile_destroy(sirfile* sf) {
 }
 
 bool _sirfile_validate(sirfile* sf) {
-    return _sir_validptr(sf)    && _sir_validfid(sf->id) &&
+    return _sir_validptr(sf)    && _sir_validfd(sf->id) &&
            _sir_validptr(sf->f) && _sir_validstr(sf->path);
 }
 
@@ -454,7 +454,7 @@ sirfileid_t _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
 bool _sir_fcache_update(sirfcache* sfc, sirfileid_t id, sir_update_config_data* data) {
 
     if (_sir_validptr(sfc) && _sir_validptr(id) &&
-        _sir_validfid(*id) && _sir_validupdatedata(data)) {
+        _sir_validfd(*id) && _sir_validupdatedata(data)) {
         sirfile* found = _sir_fcache_find(sfc, (const void*)id, _sir_fcache_pred_id);
         if (!found) {
             _sir_seterror(_SIR_E_NOFILE);
@@ -469,7 +469,7 @@ bool _sir_fcache_update(sirfcache* sfc, sirfileid_t id, sir_update_config_data* 
 
 bool _sir_fcache_rem(sirfcache* sfc, sirfileid_t id) {
 
-    if (_sir_validptr(sfc) && _sir_validptr(id) && _sir_validfid(*id)) {
+    if (_sir_validptr(sfc) && _sir_validptr(id) && _sir_validfd(*id)) {
         for (size_t n = 0; n < sfc->count; n++) {
             assert(_sirfile_validate(sfc->files[n]));
 

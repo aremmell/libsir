@@ -145,8 +145,8 @@ void _sir_safefree(void* p) {
 /** Wraps close. */
 void _sir_safeclose(int* restrict fd);
 
-/** Validates a log file identifier. */
-bool _sir_validfid(int id);
+/** Validates a log file descriptor. */
+bool _sir_validfd(int fd);
 
 /** Validates a sir_update_config_data structure. */
 bool _sir_validupdatedata(sir_update_config_data* data);
