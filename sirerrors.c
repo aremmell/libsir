@@ -64,13 +64,13 @@ void __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t l
 #endif
 }
 
-void __sir_setoserror(int code, const char* message, const char* func,
+void __sir_setoserror(int code, const char* msg, const char* func,
                       const char* file, uint32_t line) {
     sir_te.os_error = code;
     _sir_resetstr(sir_te.os_errmsg);
 
-    if (_sir_validstrnofail(message))
-        _sir_strncpy(sir_te.os_errmsg, SIR_MAXERROR, message, SIR_MAXERROR);
+    if (_sir_validstrnofail(msg))
+        _sir_strncpy(sir_te.os_errmsg, SIR_MAXERROR, msg, SIR_MAXERROR);
 
     __sir_seterror(_SIR_E_PLATFORM, func, file, line);
 }
