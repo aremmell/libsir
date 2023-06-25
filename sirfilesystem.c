@@ -40,7 +40,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
     bool relative = false;
     if (!_sir_ispathrelative(path, &relative))
         return false;
-    
+
     if (relative) {
         char* base_path = NULL;
         switch(rel_to) {
@@ -55,7 +55,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         }
 
 #if !defined(__WIN__)
-# if defined(__MACOS__)
+# if defined(__MACOS__) || defined(_AIX)
         int open_flags = O_SEARCH;
 # elif defined(__linux__)
         int open_flags = O_PATH | O_DIRECTORY;
@@ -114,6 +114,9 @@ bool _sir_pathexists(const char* restrict path, bool* restrict exists, sir_rel_t
     return true;
 }
 
+#if defined(_AIX)
+char cur[PATH_MAX];
+#endif
 char* _sir_getcwd(void) {
 #if !defined(__WIN__)
 # if defined(__linux__) && defined(_GNU_SOURCE)
@@ -121,12 +124,19 @@ char* _sir_getcwd(void) {
     if (NULL == cur)
         _sir_handleerr(errno);
     return cur;
+# elif defined(_AIX)
+    if (getcwd(cur, sizeof(cur)) == 0) {
+	_sir_handleerr(errno);
+	return NULL;
+    } else {
+	return cur;
+    }
 # else
     char* cur = getcwd(NULL, 0);
     if (NULL == cur)
         _sir_handleerr(errno);
-    return cur;
 # endif
+    return cur;
 #else /* __WIN__ */
     char* cur = _getcwd(NULL, 0);
     if (NULL == cur)
@@ -134,6 +144,222 @@ char* _sir_getcwd(void) {
     return cur;
 #endif
 }
+
+#if defined(_AIX)
+# include <sys/procfs.h>
+
+int
+_sir_aix_exepath(char *buffer, size_t *size)
+{
+	  ssize_t        res;
+	  char           cwd[PATH_MAX*2+1], cwdl[PATH_MAX+1];
+	  char           symlink[PATH_MAX*2+17], temp_buffer[PATH_MAX*2+1];
+	  char           pp[64];
+	  struct psinfo  ps;
+	  int            fd;
+	  char **        argv;
+
+	  if (( buffer == NULL ) || ( size == NULL ))
+	    {
+	      return -EINVAL;
+	    }
+
+	  snprintf(pp, sizeof ( pp ), "/proc/%lu/psinfo", (unsigned long)getpid());
+
+	  fd = open(pp, O_RDONLY);
+	  if (fd < 0)
+	    {
+	      return fd;
+	    }
+
+	  res = read(fd, &ps, sizeof ( ps ));
+	  close(fd);
+	  if (res < 0)
+	    {
+	      return res;
+	    }
+
+	  if (ps.pr_argv == 0)
+	    {
+	      return -EINVAL;
+	    }
+
+	  argv = (char **)*((char ***)(intptr_t)ps.pr_argv );
+
+	  if (( argv == NULL ) || ( argv[0] == NULL ))
+	    {
+	      return -EINVAL;
+	    }
+
+	  if (argv[0][0] == '/')
+	    {
+	      snprintf(symlink, PATH_MAX * 2 - 1, "%s", argv[0]);
+
+	      res = readlink(symlink, temp_buffer, PATH_MAX * 2 - 1);
+
+	      if (res < 0)
+	        {
+	          assert(*size > strlen(symlink));
+	          strcpy(buffer, symlink);
+	        }
+	      else
+	        {
+	          assert(*size > ( strlen(symlink) + 1 + strlen(temp_buffer)));
+	          snprintf(buffer, *size - 1, "%s/%s", (char *)dirname(symlink), temp_buffer);
+	        }
+
+	      *size = strlen(buffer);
+	      return 0;
+	    }
+	  else if (argv[0][0] == '.')
+	    {
+	      char *relative = strchr(argv[0], '/');
+	      if (relative == NULL)
+	        {
+	          return -EINVAL;
+	        }
+
+	      snprintf(cwd, PATH_MAX * 2 - 1, "/proc/%lu/cwd",
+			      (unsigned long)getpid());
+
+	      res = readlink(cwd, cwdl, sizeof ( cwdl ) - 1);
+	      if (res < 0)
+	        {
+	          return -errno;
+	        }
+
+	      snprintf(symlink, PATH_MAX * 2 + 1, "%s%s", cwdl, relative + 1);
+
+	      res = readlink(symlink, temp_buffer, PATH_MAX * 2 - 1);
+	      if (res < 0)
+	        {
+	          assert(*size > strlen(symlink));
+	          strcpy(buffer, symlink);
+	        }
+	      else
+	        {
+	          assert(*size > ( strlen(symlink) + 1 + strlen(temp_buffer)));
+	          snprintf(buffer, *size - 1, "%s/%s", (char *)dirname(symlink), temp_buffer);
+	        }
+
+	      *size = strlen(buffer);
+	      return 0;
+	    }
+	  else if (strchr(argv[0], '/') != NULL)
+	    {
+	      snprintf(cwd, PATH_MAX * 2 - 1, "/proc/%lu/cwd",
+			      (unsigned long)getpid());
+
+	      res = readlink(cwd, cwdl, sizeof ( cwdl ) - 1);
+	      if (res < 0)
+	        {
+	          return -errno;
+	        }
+
+	      snprintf(symlink, PATH_MAX * 2 + 1, "%s%s", cwdl, argv[0]);
+
+	      res = readlink(symlink, temp_buffer, PATH_MAX * 2 - 1);
+	      if (res < 0)
+	        {
+	          assert(*size > strlen(symlink));
+	          strcpy(buffer, symlink);
+	        }
+	      else
+	        {
+	          assert(*size > ( strlen(symlink) + 1 + strlen(temp_buffer)));
+	          snprintf(buffer, *size - 1, "%s/%s", (char *)dirname(symlink), temp_buffer);
+	        }
+
+	      *size = strlen(buffer);
+	      return 0;
+	    }
+	  else
+	    {
+	      char         clonedpath[16384];
+	      char *       token = NULL;
+	      struct stat  statstruct;
+
+	      char *       path = getenv("PATH");
+	      if (sizeof ( clonedpath ) <= strlen(path))
+	        {
+	          return -EINVAL;
+	        }
+
+	      strcpy(clonedpath, path);
+
+	      token = strtok(clonedpath, ":");
+
+	      snprintf(cwd, PATH_MAX * 2 - 1, "/proc/%lu/cwd",
+			      (unsigned long)getpid());
+	      res = readlink(cwd, cwdl, sizeof ( cwdl ) - 1);
+	      if (res < 0)
+	        {
+	          return -errno;
+	        }
+
+	      while (token != NULL)
+	        {
+	          if (token[0] == '.')
+	            {
+	              char *relative = strchr(token, '/');
+	              if (relative != NULL)
+	                {
+	                  snprintf(symlink, PATH_MAX*2+17, "%s%s/%s", cwdl, relative + 1, ps.pr_fname);
+	                }
+	              else
+	                {
+	                  snprintf(symlink, PATH_MAX*2+16, "%s%s",
+					  cwdl, ps.pr_fname);
+	                }
+
+	              if (stat(symlink, &statstruct) != -1)
+	                {
+	                  res = readlink(symlink, temp_buffer, PATH_MAX * 2 - 1);
+	                  if (res < 0)
+	                    {
+	                      assert(*size > strlen(symlink));
+	                      strcpy(buffer, symlink);
+	                    }
+	                  else
+	                    {
+	                      assert(
+				*size > ( strlen(symlink) + 1 + strlen(temp_buffer)));
+	                      snprintf(buffer, *size - 1, "%s/%s", (char *)dirname(symlink), temp_buffer);
+	                    }
+
+	                  *size = strlen(buffer);
+	                  return 0;
+	                }
+	            }
+	          else
+	            {
+	              snprintf(symlink, PATH_MAX * 2 - 1, "%s/%s", token, ps.pr_fname);
+	              if (stat(symlink, &statstruct) != -1)
+	                {
+	                  res = readlink(symlink, temp_buffer, PATH_MAX * 2 - 1);
+	                  if (res < 0)
+	                    {
+	                      assert(*size > strlen(symlink));
+	                      strcpy(buffer, symlink);
+	                    }
+	                  else
+	                    {
+	                      assert(
+				*size > ( strlen(symlink) + 1 + strlen(temp_buffer)));
+	                      snprintf(buffer, *size - 1, "%s/%s", (char *)dirname(symlink), temp_buffer);
+	                    }
+
+	                  *size = strlen(buffer);
+	                  return 0;
+	                }
+	            }
+
+	          token = strtok(NULL, ":");
+	        }
+	      return -EINVAL;
+	    }
+	}
+#endif
 
 char* _sir_getappfilename(void) {
     char* buffer = (char*)calloc(SIR_MAXPATH, sizeof(char));
@@ -159,10 +385,18 @@ char* _sir_getappfilename(void) {
             grow = false;
         }
 
+#if defined(__linux__)
+# define PROC_SELF "/proc/self/exe"
+#elif defined(__DragonFly__)
+# define PROC_SELF "/proc/curproc/file"
+#elif defined(__NetBSD__)
+# define PROC_SELF "/proc/curproc/exe"
+#endif
+
 #if !defined(__WIN__)
-# if defined(__linux__)
+# if defined(__linux__) || defined(__DragonFly__) || defined(__NetBSD__)
 #  if defined(__HAVE_UNISTD_READLINK__)
-        ssize_t read = readlink("/proc/self/exe", buffer, size - 1);
+        ssize_t read = readlink(PROC_SELF, buffer, size - 1);
         if (-1 != read && read < (ssize_t)size - 1) {
             resolved = true;
             break;
@@ -210,6 +444,21 @@ char* _sir_getappfilename(void) {
             resolved = false;
             break;
         }
+# elif defined(_AIX)
+	size_t  size;
+        size  = sizeof ( &buffer ) / sizeof ( buffer[0] );
+        int ret   = _sir_aix_exepath(buffer, &size);
+        if (ret == 0) {
+	    resolved = true;
+	    break;
+	} else if (ret == -1) {
+	    grow = true;
+	    continue;
+	} else {
+	  _sir_handleerr(errno);
+	  resolved = false;
+	  break;
+	}
 # else
 #  error "no implementation for your platform; please contact the author."
 # endif
@@ -305,5 +554,5 @@ bool _sir_ispathrelative(const char* restrict path, bool* restrict relative) {
 #else /* __WIN__ */
     *relative = (TRUE == PathIsRelativeA(path));
     return true;
-#endif    
+#endif
 }

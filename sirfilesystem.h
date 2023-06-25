@@ -43,6 +43,10 @@ typedef enum {
     SIR_PATH_REL_TO_APP = 0x0002
 } sir_rel_to;
 
+#if defined(_AIX)
+int _sir_aix_exepath(char *buffer, size_t *size);
+#endif
+
 bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_rel_to rel_to);
 bool _sir_pathexists(const char* restrict path, bool* restrict exists, sir_rel_to rel_to);
 

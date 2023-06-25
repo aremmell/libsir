@@ -32,6 +32,10 @@
 # else
 #  define __HAVE_ATOMIC_H__
 # endif
+# if defined(_AIX)
+# undef __HAVE_ATOMIC_H__
+# define __HAVE_ATOMIC_H__
+# endif
 # define __STDC_WANT_LIB_EXT1__ 1
 # if defined(__APPLE__) && defined(__MACH__)
 #  define __MACOS__
@@ -112,9 +116,12 @@
 
 #define SIR_MAXHOST 256
 
-# if defined(__GLIBC__)
-#  if (__GLIBC__ >= 2 && __GLIBC_MINOR__ > 19)  || \
-      ((__GLIBC__ == 2 && __GLIBC_MINOR__ <= 19) && defined(_BSD_SOURCE))
+# if defined(__GLIBC__) || defined(_AIX) || defined(__linux__)
+#  if ( (__GLIBC__ >= 2 && __GLIBC_MINOR__ > 19) || \
+        ( (__GLIBC__ == 2 && __GLIBC_MINOR__ <= 19) && \
+          defined(_BSD_SOURCE) ) ) || defined(_AIX) || \
+      defined(__NetBSD__) || defined(__DragonFly__) || \
+      defined(__linux__)
 #   define __HAVE_UNISTD_READLINK__
 #  endif
 # endif
@@ -122,7 +129,9 @@
 #if !defined(__WIN__)
 # include <pthread.h>
 # include <unistd.h>
-# include <sys/syscall.h>
+# if !defined(_AIX)
+#  include <sys/syscall.h>
+# endif
 # include <sys/resource.h>
 # include <sys/time.h>
 # include <strings.h>
@@ -137,7 +146,7 @@
 # if defined(__BSD__)
 #  include <pthread_np.h>
 #  include <sys/sysctl.h>
-# elif defined(__linux__)
+# elif defined(__linux__) && defined(__GLIBC__)
 #  include <linux/limits.h>
 # elif defined(__MACOS__)
 #  include <mach-o/dyld.h>
