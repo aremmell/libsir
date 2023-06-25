@@ -843,7 +843,7 @@ bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data) {
         bool is_open  = _sir_bittest(si->d_syslog._state.mask, SIRSL_IS_OPEN);
 
         _sir_selflog("config update: (levels: %u, options: %u, category: %u,"
-                     " identity: %u, is_init: %u, is_open: %u )",
+                     " identity: %u, is_init: %u, is_open: %u)",
                      levels, options, category, identity, is_init, is_open);
 
         bool must_init = false;
