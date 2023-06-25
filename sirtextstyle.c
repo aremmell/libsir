@@ -28,8 +28,11 @@
 #include "sirdefaults.h"
 
 const char* _sir_gettextstyle(sir_level level) {
+
+    _sir_seterror(_SIR_E_NOERROR);
+
     if (!_sir_validlevel(level))
-        return false;
+        return NULL;
         
     sir_level_style_tuple* map = _sir_locksection(_SIRM_TEXTSTYLE);
     assert(map);
