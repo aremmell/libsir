@@ -243,7 +243,7 @@ bool _sir_updatelevels(const char* name, sir_levels* old, sir_levels* new) {
 static
 bool _sir_updateopts(const char* name, sir_options* old, sir_options* new) {
     if (*old != *new) {
-        _sir_selflog("updating %s levels from %08" PRIx32 " to %08" PRIx32, name, *old, *new);
+        _sir_selflog("updating %s options from %08" PRIx32 " to %08" PRIx32, name, *old, *new);
         *old = *new;
     } else {
         _sir_selflog("skipped superfluous update of %s options: %08" PRIx32, name, *old);
