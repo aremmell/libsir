@@ -1090,7 +1090,7 @@ bool sirtest_filesystem(void) {
         if (NULL != filename) {
             /* _sir_get[base|dir]name() can potentially modify filename,
             * so make a copy for each call. */
-            char* filename2 = filename ? strdup(filename) : NULL;
+            char* filename2 = strdup(filename);
             pass &= NULL != filename2;
 
             if (NULL != filename2) {
@@ -1118,7 +1118,7 @@ bool sirtest_filesystem(void) {
 
             /* _sir_get[base|dir]name can potentially modify filename,
             * so make a copy for each call. */
-            char* filename3 = filename ? strdup(filename) : NULL;
+            char* filename3 = strdup(filename);
             pass &= NULL != filename3;
 
             if (NULL != appdir && NULL != filename3) {
