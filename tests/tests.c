@@ -105,7 +105,7 @@ int main(int argc, char** argv) {
     }
 
     int first        = (only ? 0 : 1);
-    int tgt_tests    = (only ? to_run : _sir_countof(sir_tests) - first);
+    int tgt_tests    = (only ? (unsigned)to_run : _sir_countof(sir_tests) - first);
     int passed       = 0;
     int ran          = 0;
     sirtimer_t timer = {0};

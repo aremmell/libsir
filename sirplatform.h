@@ -24,34 +24,34 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #ifndef _SIR_PLATFORM_H_INCLUDED
-#define _SIR_PLATFORM_H_INCLUDED
+# define _SIR_PLATFORM_H_INCLUDED
 
-#if !defined(_WIN32)
-# if defined(__STDC_NO_ATOMICS__)
-#  undef __HAVE_ATOMIC_H__
-# else
-#  define __HAVE_ATOMIC_H__
-# endif
-# if defined(_AIX)
-# undef __HAVE_ATOMIC_H__
-# define __HAVE_ATOMIC_H__
-# endif
-# define __STDC_WANT_LIB_EXT1__ 1
-# if defined(__APPLE__) && defined(__MACH__)
-#  define __MACOS__
-#  define _DARWIN_C_SOURCE
-# elif defined(__FreeBSD__)
-#  define __BSD__
-#  define _BSD_SOURCE
-#  if !defined(_DEFAULT_SOURCE)
-#   define _DEFAULT_SOURCE
+# if !defined(_WIN32)
+#  if defined(__STDC_NO_ATOMICS__)
+#   undef __HAVE_ATOMIC_H__
+#  else
+#   define __HAVE_ATOMIC_H__
 #  endif
-#  if __FreeBSD_version >= 1202500
-#   define __FreeBSD_PTHREAD_NP_12_2__
-#  elif __FreeBSD_version >= 1103500
-#   define __FreeBSD_PTHREAD_NP_11_3__
+#  if defined(_AIX)
+#   undef __HAVE_ATOMIC_H__
+#   define __HAVE_ATOMIC_H__
 #  endif
-# else
+#  define __STDC_WANT_LIB_EXT1__ 1
+#  if defined(__APPLE__) && defined(__MACH__)
+#   define __MACOS__
+#   define _DARWIN_C_SOURCE
+#  elif defined(__FreeBSD__)
+#   define __BSD__
+#   define _BSD_SOURCE
+#   if !defined(_DEFAULT_SOURCE)
+#    define _DEFAULT_SOURCE
+#   endif
+#   if __FreeBSD_version >= 1202500
+#    define __FreeBSD_PTHREAD_NP_12_2__
+#   elif __FreeBSD_version >= 1103500
+#    define __FreeBSD_PTHREAD_NP_11_3__
+#   endif
+#  endif
 #  if defined(__linux__) && !defined(_GNU_SOURCE)
 #   define _GNU_SOURCE
 #  endif
@@ -64,60 +64,58 @@
 #  if !defined(_XOPEN_SOURCE)
 #   define _XOPEN_SOURCE 700
 #  endif
+# else /* _WIN32 */
+#  define SIR_NO_SYSTEM_LOGGERS
+#  undef __HAVE_ATOMIC_H__
+#  define __WANT_STDC_SECURE_LIB__ 1
+#  define _CRT_RAND_S
+#  define WIN32_LEAN_AND_MEAN
+#  define WINVER 0x0A00 /** Windows 10 SDK */
+#  define _WIN32_WINNT 0x0A00
+#  define __WIN__
+#  include <windows.h>
+#  include <io.h>
+#  include <synchapi.h>
+#  include <process.h>
+#  include <conio.h>
+#  include <shlwapi.h>
+#  include <direct.h>
 # endif
-#else /* _WIN32 */
-# define SIR_NO_SYSTEM_LOGGERS
-# undef __HAVE_ATOMIC_H__
-# define __WANT_STDC_SECURE_LIB__ 1
-# define _CRT_RAND_S
-# define WIN32_LEAN_AND_MEAN
-# define WINVER 0x0A00 /** Windows 10 SDK */
-# define _WIN32_WINNT 0x0A00
-# define __WIN__
-# include <windows.h>
-# include <io.h>
-# include <synchapi.h>
-# include <process.h>
-# include <conio.h>
-# include <shlwapi.h>
-# include <direct.h>
-#endif
-
-#if defined(SIR_ASSERT_ENABLED)
-# include <assert.h>
-#else
-# define assert(...) \
+# if defined(SIR_ASSERT_ENABLED)
+#  include <assert.h>
+# else
+#  define assert(...) \
      if (!(__VA_ARGS__)) { \
          _sir_selflog(LRED("!!! would be asserting: " #__VA_ARGS__ "")); \
      }
-#endif
+# endif
 
-#include <errno.h>
-#include <stdarg.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <inttypes.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <limits.h>
-#include <time.h>
+# include <errno.h>
+# include <stdarg.h>
+# include <stdbool.h>
+# include <stdint.h>
+# include <inttypes.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <sys/stat.h>
+# include <sys/types.h>
+# include <limits.h>
+# include <time.h>
 
-#if !defined(SIR_NO_SYSTEM_LOGGERS)
-# if defined(__MACOS__)
-#  define SIR_OS_LOG_ENABLED
+# if !defined(SIR_NO_SYSTEM_LOGGERS)
+#  if defined(__MACOS__)
+#   define SIR_OS_LOG_ENABLED
+#  else
+#   undef SIR_OS_LOG_ENABLED
+#   define SIR_SYSLOG_ENABLED
+#  endif
 # else
 #  undef SIR_OS_LOG_ENABLED
-#  define SIR_SYSLOG_ENABLED
+#  undef SIR_SYSLOG_ENABLED
 # endif
-#else
-# undef SIR_OS_LOG_ENABLED
-# undef SIR_SYSLOG_ENABLED
-#endif
 
-#define SIR_MAXHOST 256
+# define SIR_MAXHOST 256
 
 # if defined(__GLIBC__) || defined(_AIX) || defined(__linux__)
 #  if ( (__GLIBC__ >= 2 && __GLIBC_MINOR__ > 19) || \
@@ -128,60 +126,59 @@
 #   define __HAVE_UNISTD_READLINK__
 #  endif
 # endif
-#endif
 
-#if !defined(__WIN__)
-# include <pthread.h>
-# include <unistd.h>
-# if !defined(_AIX)
-#  include <sys/syscall.h>
-# endif
-# include <sys/resource.h>
-# include <sys/time.h>
-# include <strings.h>
-# include <termios.h>
-# include <limits.h>
-# include <fcntl.h>
-# include <libgen.h>
-# include <stdatomic.h>
-# if defined(SIR_SYSLOG_ENABLED)
-#  include <syslog.h>
-# endif
-# if defined(__BSD__)
-#  include <pthread_np.h>
-#  include <sys/sysctl.h>
-# elif defined(__linux__) && defined(__GLIBC__)
-#  include <linux/limits.h>
-# elif defined(__MACOS__)
-#  include <mach-o/dyld.h>
-#  include <sys/_types/_timespec.h>
-#  include <mach/mach.h>
-#  include <mach/clock.h>
-#  include <mach/mach_time.h>
-#  if defined(SIR_OS_LOG_ENABLED)
-#   include <os/log.h>
-#   include <os/trace.h>
-#   include <os/activity.h>
+# if !defined(__WIN__)
+#  include <pthread.h>
+#  include <unistd.h>
+#  if !defined(_AIX)
+#   include <sys/syscall.h>
 #  endif
-# endif
+#  include <sys/resource.h>
+#  include <sys/time.h>
+#  include <strings.h>
+#  include <termios.h>
+#  include <limits.h>
+#  include <fcntl.h>
+#  include <libgen.h>
+#  include <stdatomic.h>
+#  if defined(SIR_SYSLOG_ENABLED)
+#   include <syslog.h>
+#  endif
+#  if defined(__BSD__)
+#   include <pthread_np.h>
+#   include <sys/sysctl.h>
+#  elif defined(__linux__) && defined(__GLIBC__)
+#   include <linux/limits.h>
+#  elif defined(__MACOS__)
+#   include <mach-o/dyld.h>
+#   include <sys/_types/_timespec.h>
+#   include <mach/mach.h>
+#   include <mach/clock.h>
+#   include <mach/mach_time.h>
+#   if defined(SIR_OS_LOG_ENABLED)
+#    include <os/log.h>
+#    include <os/trace.h>
+#    include <os/activity.h>
+#   endif
+#  endif
 
-# if defined(PATH_MAX)
-#  define SIR_MAXPATH PATH_MAX
-# elif defined(MAXPATHLEN)
-#  define SIR_MAXPATH MAXPATHLEN
-# else
-#  define SIR_MAXPATH 1024
-# endif
+#  if defined(PATH_MAX)
+#   define SIR_MAXPATH PATH_MAX
+#  elif defined(MAXPATHLEN)
+#   define SIR_MAXPATH MAXPATHLEN
+#  else
+#   define SIR_MAXPATH 1024
+#  endif
 
-# if defined(__MACOS__)
-#  define SIR_MSEC_TIMER
-#  define SIR_MSEC_MACH
-# elif _POSIX_TIMERS > 0
-#  define SIR_MSEC_TIMER
-#  define SIR_MSEC_POSIX
-# else
-#  undef SIR_MSEC_TIMER
-# endif
+#  if defined(__MACOS__)
+#   define SIR_MSEC_TIMER
+#   define SIR_MSEC_MACH
+#  elif _POSIX_TIMERS > 0
+#   define SIR_MSEC_TIMER
+#   define SIR_MSEC_POSIX
+#  else
+#   undef SIR_MSEC_TIMER
+#  endif
 
 /** The mutex type. */
 typedef pthread_mutex_t sirmutex_t;
@@ -193,14 +190,14 @@ typedef pthread_once_t sironce_t;
 typedef void (*sir_once_fn)(void);
 
 /** The one-time initializer. */
-# define SIR_ONCE_INIT PTHREAD_ONCE_INIT
+#  define SIR_ONCE_INIT PTHREAD_ONCE_INIT
 
-#else /* __WIN__ */
+# else /* __WIN__ */
 
-# define SIR_MAXPATH MAX_PATH
+#  define SIR_MAXPATH MAX_PATH
 
-# define SIR_MSEC_TIMER
-# define SIR_MSEC_WIN32
+#  define SIR_MSEC_TIMER
+#  define SIR_MSEC_WIN32
 
 /** The mutex type. */
 typedef HANDLE sirmutex_t;
@@ -215,44 +212,44 @@ typedef int pid_t;
 typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 /** The one-time initializer. */
-# define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
+#  define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
 
-#endif // !__WIN__
+# endif // !__WIN__
 
-#if !defined(thread_local)
-# if __STDC_VERSION__ >= 201112 && !defined(__STDC_NO_THREADS__)
-#  define thread_local _Thread_local
-# elif defined(__WIN__)
-#  define thread_local __declspec(thread)
-# elif defined(__GNUC__)
-#  define thread_local __thread
-# else
-#  error "unable to resolve thread local attribute; please contact the author."
+# if !defined(thread_local)
+#  if __STDC_VERSION__ >= 201112 && !defined(__STDC_NO_THREADS__)
+#   define thread_local _Thread_local
+#  elif defined(__WIN__)
+#   define thread_local __declspec(thread)
+#  elif defined(__GNUC__)
+#   define thread_local __thread
+#  else
+#   error "unable to resolve thread local attribute; please contact the author."
+#  endif
 # endif
-#endif
 
-#if defined(__WIN__) && defined(__STDC_SECURE_LIB__)
-# define __HAVE_STDC_SECURE_OR_EXT1__
-#elif defined(__STDC_LIB_EXT1__)
-# define __HAVE_STDC_SECURE_OR_EXT1__
-#endif
-
-#if !defined(__MACOS__)
-# if defined(__linux__) && _POSIX_C_SOURCE >= 199309L
-#  define SIR_MSECCLOCK CLOCK_MONOTONIC_RAW
-# else
-#  define SIR_MSECCLOCK CLOCK_MONOTONIC
+# if defined(__WIN__) && defined(__STDC_SECURE_LIB__)
+#  define __HAVE_STDC_SECURE_OR_EXT1__
+# elif defined(__STDC_LIB_EXT1__)
+#  define __HAVE_STDC_SECURE_OR_EXT1__
 # endif
-#else /* __MACOS__ */
-# define SIR_MSECCLOCK SYSTEM_CLOCK
-#endif
 
-#if (defined(__clang__) || defined(__GNUC__)) && defined(__FILE_NAME__)
-# define __file__ __FILE_NAME__
-#elif defined(__BASE_FILE__)
-# define __file__ __BASE_FILE__
-#else
-# define __file__ __FILE__
-#endif
+# if !defined(__MACOS__)
+#  if defined(__linux__) && _POSIX_C_SOURCE >= 199309L
+#   define SIR_MSECCLOCK CLOCK_MONOTONIC_RAW
+#  else
+#   define SIR_MSECCLOCK CLOCK_MONOTONIC
+#  endif
+# else /* __MACOS__ */
+#  define SIR_MSECCLOCK SYSTEM_CLOCK
+# endif
+
+# if (defined(__clang__) || defined(__GNUC__)) && defined(__FILE_NAME__)
+#  define __file__ __FILE_NAME__
+# elif defined(__BASE_FILE__)
+#  define __file__ __BASE_FILE__
+# else
+#  define __file__ __FILE__
+# endif
 
 #endif /* !_SIR_PLATFORM_H_INCLUDED */
