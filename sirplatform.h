@@ -43,6 +43,7 @@
 #  elif defined(__FreeBSD__)
 #   define __BSD__
 #   define _BSD_SOURCE
+#   define __BSD_VISIBLE 1
 #   if !defined(_DEFAULT_SOURCE)
 #    define _DEFAULT_SOURCE
 #   endif
@@ -101,10 +102,6 @@
 # include <sys/types.h>
 # include <limits.h>
 # include <time.h>
-
-# if defined(__FreeBSD__) && !defined(__BSD_VISIBLE)
-#  define __BSD_VISIBLE 1
-# endif /* defined(__FreeBSD__) && !defined(__BSD_VISIBLE) */
 # include <string.h>
 
 # if !defined(SIR_NO_SYSTEM_LOGGERS)
