@@ -103,7 +103,7 @@ void __sir_handleerr(int code, const char* func, const char* file, uint32_t line
         char* tmp = strerror(code);
         _sir_strncpy(message, SIR_MAXERROR, tmp, strnlen(tmp, SIR_MAXERROR));
 #endif
-	/* cppcheck-suppress knownConditionTrueFalse */
+        /* cppcheck-suppress knownConditionTrueFalse */
         if (0 == finderr && _sir_validstrnofail(message)) {
             __sir_setoserror(code, message, func, file, line);
         } else {
