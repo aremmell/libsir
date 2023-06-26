@@ -46,7 +46,7 @@ bool _sir_cleanup(void);
 bool _sir_sanity(void);
 
 /** Validates the configuration passed to ::sir_init. */
-bool _sir_options_sanity(const sirinit* si);
+bool _sir_init_sanity(const sirinit* si);
 
 /** Updates levels for stdout. */
 bool _sir_stdoutlevels(sirinit* si, sir_update_config_data* data);
@@ -152,13 +152,14 @@ bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data);
  */
 bool _sir_syslog_close(sir_syslog_dest* ctx);
 
-/**
- * Resets the internal state.
- */
+/** Resets the internal state. */
 void _sir_syslog_reset(sir_syslog_dest* ctx);
 
-/** Converts a ::sir_level to its human-readable form. */
-const char* _sir_levelstr(sir_level level);
+/** Returns the formatted, human-readable form of a ::sir_level. */
+const char* _sir_formattedlevelstr(sir_level level);
+
+/** Pre-loads the human-readable forms for each ::sir_level. */
+bool _sir_initformattedlevelstrs(void);
 
 /** Retrieves the current time w/ optional milliseconds. */
 bool _sir_clock_gettime(time_t* tbuf, long* msecbuf);

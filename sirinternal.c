@@ -105,14 +105,14 @@ bool _sir_init(sirinit* si) {
     _sir_defaultopts(&si->d_syslog.opts, sir_syslog_def_opts);
 #endif
 
-    if (!_sir_options_sanity(si))
+    if (!_sir_init_sanity(si))
         return false;
 
     sirconfig* _cfg = _sir_locksection(_SIRM_CONFIG);
     assert(_cfg);
 
     if (_sir_validptr(_cfg)) {
-        memset(_cfg, 0, sizeof(sirconfig));
+        memset(&_cfg->state, 0, sizeof(_cfg->state));
         memcpy(&_cfg->si, si, sizeof(sirinit));
 
 #if defined(__HAVE_ATOMIC_H__)
@@ -127,6 +127,9 @@ bool _sir_init(sirinit* si) {
 #endif
 
         if (!_sir_resettextstyles())
+            return false;
+
+        if (!_sir_initformattedlevelstrs())
             return false;
 
         /* forcibly null-terminate the process name. */
@@ -215,7 +218,7 @@ bool _sir_sanity(void) {
     return false;
 }
 
-bool _sir_options_sanity(const sirinit* si) {
+bool _sir_init_sanity(const sirinit* si) {
     if (!_sir_validptr(si))
         return false;
 
@@ -499,6 +502,9 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     memcpy(&tmpcfg, _cfg, sizeof(sirconfig));
     _sir_unlocksection(_SIRM_CONFIG);
 
+    /* from time to time, update the host name in the config, just in case. */
+#pragma message("TODO: update hostname")
+
     sirbuf buf = {0};
     buf.hostname = tmpcfg.state.hostname;
     buf.name = tmpcfg.si.name;
@@ -526,9 +532,8 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
             _sir_handleerr(errno);
     }
 
-    if (0 > snprintf(buf.level, SIR_MAXLEVEL, SIR_LEVELFORMAT, _sir_levelstr(level)))
-        _sir_handleerr(errno);
-
+    buf.level = _sir_formattedlevelstr(level);
+    
     if (0 > snprintf(buf.pid, SIR_MAXPID, SIR_PIDFORMAT, tmpcfg.state.pid))
         _sir_handleerr(errno);
 
@@ -789,8 +794,9 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx)
     }
 
     return true;
+
 # elif defined(SIR_SYSLOG_ENABLED)
-    int syslog_level = LOG_DEBUG;
+    int syslog_level;
     switch (level) {
         case SIRL_INFO:   syslog_level = LOG_INFO;    break;
         case SIRL_DEBUG:  syslog_level = LOG_DEBUG;   break;
@@ -926,21 +932,36 @@ void _sir_syslog_reset(sir_syslog_dest* ctx) {
 
 #endif // !SIR_NO_SYSTEM_LOGGERS
 
-const char* _sir_levelstr(sir_level level) {
-    /* In order most likely to be used. */
-    switch (level) {    
-        case SIRL_INFO:   return SIRL_S_INFO;
-        case SIRL_DEBUG:  return SIRL_S_DEBUG;
-        case SIRL_NOTICE: return SIRL_S_NOTICE;
-        case SIRL_WARN:   return SIRL_S_WARN;
-        case SIRL_ERROR:  return SIRL_S_ERROR;
-        case SIRL_CRIT:   return SIRL_S_CRIT;
-        case SIRL_ALERT:  return SIRL_S_ALERT;        
-        case SIRL_EMERG:  return SIRL_S_EMERG;
-        default: /* this should never happen. */
-            assert(!"invalid sir_level");
-            return SIR_UNKNOWN;
-    }    
+const char* _sir_formattedlevelstr(sir_level level) {
+    size_t low  = 0;
+    size_t high = _sir_countof(sir_level_to_str_map) - 1;
+
+    _SIR_DECLARE_BIN_SEARCH(low, high)
+    _SIR_BEGIN_BIN_SEARCH()
+
+    if (sir_level_to_str_map[_mid].level == level)
+        return sir_level_to_str_map[_mid].fmt;
+
+    _SIR_ITERATE_BIN_SEARCH((sir_level_to_str_map[_mid].level < level ? 1 : -1))
+    _SIR_END_BIN_SEARCH()
+
+    assert(false);
+    return SIR_UNKNOWN;
+}
+
+bool _sir_initformattedlevelstrs(void) {
+    size_t loaded = 0;
+    for (size_t n = 0; n < _sir_countof(sir_level_to_str_map); n++) {
+        if (0 > snprintf(sir_level_to_str_map[n].fmt, SIR_MAXLEVEL,
+                    SIR_LEVELFORMAT, sir_level_to_str_map[n].str))
+            _sir_handleerr(errno);
+        else
+            loaded++;
+    }
+
+    _sir_selflog("loaded %zu formatted level strings", loaded);
+    assert(SIR_NUMLEVELS == loaded);
+    return SIR_NUMLEVELS == loaded;
 }
 
 bool _sir_formattime(time_t now, char* buffer, const char* format) {

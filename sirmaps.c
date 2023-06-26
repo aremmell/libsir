@@ -44,6 +44,23 @@ sir_level_style_tuple sir_level_to_style_map[SIR_NUMLEVELS] = {
 };
 
 /**
+ * @brief Mapping of ::sir_level <-> human-readable string forms.
+ * 
+ * ::_sir_formattedlevelstr retrieves values from this array, and
+ * ::_sir_initformattedlevelstrs sets the values upon library initialization.
+ */
+sir_level_str_tuple sir_level_to_str_map[SIR_NUMLEVELS] = {
+    {SIRL_EMERG,  SIRL_S_EMERG,  {0}},
+    {SIRL_ALERT,  SIRL_S_ALERT,  {0}},
+    {SIRL_CRIT,   SIRL_S_CRIT,   {0}},
+    {SIRL_ERROR,  SIRL_S_ERROR,  {0}},
+    {SIRL_WARN,   SIRL_S_WARN,   {0}},
+    {SIRL_NOTICE, SIRL_S_NOTICE, {0}},
+    {SIRL_INFO,   SIRL_S_INFO,   {0}},
+    {SIRL_DEBUG,  SIRL_S_DEBUG,  {0}}
+};
+
+/**
  * @brief Mapping of ::sir_textstyle <-> values used to generate
  * styled terminal output for 4-bit (16-color) mode.
  *

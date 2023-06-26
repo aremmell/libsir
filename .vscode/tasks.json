@@ -68,6 +68,7 @@
             "type": "process",
             "command": "make",
             "args": [
+                "SIR_ASSERT_ENABLED=1",
                 "SIR_SELFLOG=1",                
                 "SIR_DEBUG=1",
                 "static"
@@ -185,6 +186,7 @@
             "type": "process",
             "command": "make",
             "args": [
+                "SIR_ASSERT_ENABLED=1",
                 "SIR_SELFLOG=1",
                 "SIR_DEBUG=1",
                 "tests"

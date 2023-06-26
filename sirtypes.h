@@ -279,7 +279,7 @@ typedef struct {
     char timestamp[SIR_MAXTIME];
     char msec[SIR_MAXMSEC];
     const char* hostname;
-    char level[SIR_MAXLEVEL];
+    const char* level;
     const char* name;
     char pid[SIR_MAXPID];
     char tid[SIR_MAXPID];
@@ -294,6 +294,13 @@ typedef struct {
     sir_textstyle style;    /**< The ::sir_textstyle representation. */
     char str[SIR_MAXSTYLE]; /**< The formatted string representation. */
 } sir_level_style_tuple;
+
+/** ::sir_level <-> human-readable string form. */
+typedef struct {
+    const sir_level level;  /**< The level for which the string applies. */
+    const char* str;        /**< The non-formatted string representation. */
+    char fmt[SIR_MAXLEVEL]; /**< The formatted string representation. */
+} sir_level_str_tuple;
 
 /** Public (::sir_textstyle) <-> values used to generate styled stdio output. */
 typedef struct {
