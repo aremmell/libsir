@@ -526,32 +526,10 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
             _sir_handleerr(errno);
     }
 
-#pragma message("TODO: Optimizations in the comment below")
-    // Some of these fields are unlikely to change, or can be calculated
-    // more efficiently:
-    // - hostname -- strncmp (every n seconds)
-    // - PID -- strncmp (every n seconds) -- can it even change?
-    // - level -- strncmp +  this needs to come from static memory; there
-    //   is no need to look up and copy it each time (also change
-    //   buf.level to a const char*; doesn't need to be a buffer)
-    // - maybe TID as well. could be thread_local and not even come from
-    //   buf.
-    //
-    // maybe for hostname, do it once every 5 seconds or so, after an strncmp
-    //
-    // also:
-    // - pre-calculate per-level style strings and map them. this will be much
-    //   faster than formatting on each log message (re-format on change only).
-
-    bool gethost = _sir_gethostname(buf.hostname);
-    assert(gethost);
-    _SIR_UNUSED(gethost);
-
     if (0 > snprintf(buf.level, SIR_MAXLEVEL, SIR_LEVELFORMAT, _sir_levelstr(level)))
         _sir_handleerr(errno);
 
-    pid_t pid = _sir_getpid();
-    if (0 > snprintf(buf.pid, SIR_MAXPID, SIR_PIDFORMAT, pid))
+    if (0 > snprintf(buf.pid, SIR_MAXPID, SIR_PIDFORMAT, tmpcfg.state.pid))
         _sir_handleerr(errno);
 
     pid_t tid = _sir_gettid();

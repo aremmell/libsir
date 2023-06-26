@@ -27,7 +27,7 @@
 #include "sirdefaults.h"
 
 /**
- * @brief Mapping of ::sir_level <-> ::sir_textstyle & ANSI escape codes..
+ * @brief Mapping of ::sir_level <-> ::sir_textstyle & ANSI escape codes.
  *
  * ::sir_settextstyle and ::sir_resettextstyles modify the style
  * values in this array at runtime; only the SIRL_* values are constant.
