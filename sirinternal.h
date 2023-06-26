@@ -157,8 +157,11 @@ bool _sir_syslog_close(sir_syslog_dest* ctx);
  */
 void _sir_syslog_reset(sir_syslog_dest* ctx);
 
-/** Converts a ::sir_level to its human-readable form. */
-const char* _sir_levelstr(sir_level level);
+/** Returns the formatted, human-readable form of a ::sir_level. */
+const char* _sir_formattedlevelstr(sir_level level);
+
+/** Pre-loads the human-readable forms for each ::sir_level. */
+bool _sir_initformattedlevelstrs(void);
 
 /** Retrieves the current time w/ optional milliseconds. */
 bool _sir_clock_gettime(time_t* tbuf, long* msecbuf);
