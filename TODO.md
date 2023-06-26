@@ -28,10 +28,6 @@ Bold = “Priority”
 
 - [ ] Conditional logging (debug_if(), etc.)
 
-- [ ] Implement `clang-format` (see [here](https://github.com/nullromo/doxygen-example/blob/main/.clang-format))
-
-- [x] Normalize `/* !_DEF */` / `// !_DEF`
-
 - [ ] Finish comment in sir_syslog_dest once it’s been resolved which option(s) can be utilized for os_log/syslog.
 
 - [ ] Refactor _sir_syslog_init: it’s a clusterF. Should probably just reject initialization if levels are set but ident/cat are not.
