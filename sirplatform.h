@@ -41,6 +41,7 @@
 #   define __MACOS__
 #   define _DARWIN_C_SOURCE
 #  elif defined(__FreeBSD__)
+#   define __PTHREAD_NP__
 #   define __BSD__
 #   define _BSD_SOURCE
 #   define __BSD_VISIBLE 1
@@ -52,6 +53,11 @@
 #   elif __FreeBSD_version >= 1103500
 #    define __FreeBSD_PTHREAD_NP_11_3__
 #   endif
+#  elif defined(__NetBSD__)
+#   if !defined(_NETBSD_SOURCE)
+#    define _NETBSD_SOURCE 1
+#   endif
+#   define __BSD__
 #  endif
 #  if defined(__linux__) && !defined(_GNU_SOURCE)
 #   define _GNU_SOURCE
@@ -118,7 +124,8 @@
 
 # define SIR_MAXHOST 256
 
-# if defined(__GLIBC__) || defined(_AIX) || defined(__linux__)
+# if defined(__GLIBC__) || defined(_AIX) || \
+      defined(__linux__) || defined(__NetBSD__)
 #  if ( (__GLIBC__ >= 2 && __GLIBC_MINOR__ > 19) || \
         ( (__GLIBC__ == 2 && __GLIBC_MINOR__ <= 19) && \
           defined(_BSD_SOURCE) ) ) || defined(_AIX) || \
@@ -146,7 +153,9 @@
 #   include <syslog.h>
 #  endif
 #  if defined(__BSD__)
-#   include <pthread_np.h>
+#   if defined(__PTHREAD_NP__)
+#    include <pthread_np.h>
+#   endif
 #   include <sys/sysctl.h>
 #  elif defined(__linux__) && defined(__GLIBC__)
 #   include <linux/limits.h>
