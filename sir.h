@@ -4,7 +4,7 @@
  *
  * The functions and types defined here comprise the entire set intended for
  * use by an implementor of the library-unless modification is desired.
- * 
+ *
  * @author    Ryan M. Lederman \<lederman@gmail.com\>
  * @date      2018-2023
  * @version   2.2.0

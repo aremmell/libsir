@@ -59,15 +59,15 @@
 #  endif
 #  if !defined(_XOPEN_SOURCE)
 #   define _XOPEN_SOURCE 700
+#  endif
 # endif
-#endif
 #else /* _WIN32 */
 # define SIR_NO_SYSTEM_LOGGERS
 # undef __HAVE_ATOMIC_H__
 # define __WANT_STDC_SECURE_LIB__ 1
 # define _CRT_RAND_S
 # define WIN32_LEAN_AND_MEAN
-# define WINVER       0x0A00 /** Windows 10 SDK */
+# define WINVER 0x0A00 /** Windows 10 SDK */
 # define _WIN32_WINNT 0x0A00
 # define __WIN__
 # include <windows.h>
@@ -82,7 +82,10 @@
 #if defined(SIR_ASSERT_ENABLED)
 # include <assert.h>
 #else
-# define assert(...) if (!(__VA_ARGS__)) { _sir_selflog(REDB("!!! would be asserting: "  #__VA_ARGS__ "")); }
+# define assert(...) \
+     if (!(__VA_ARGS__)) { \
+         _sir_selflog(LRED("!!! would be asserting: " #__VA_ARGS__ "")); \
+     }
 #endif
 
 #include <errno.h>
@@ -112,12 +115,12 @@
 
 #define SIR_MAXHOST 256
 
-# if defined(__GLIBC__)
-#  if (__GLIBC__ >= 2 && __GLIBC_MINOR__ > 19)  || \
-      ((__GLIBC__ == 2 && __GLIBC_MINOR__ <= 19) && defined(_BSD_SOURCE))
-#   define __HAVE_UNISTD_READLINK__
-#  endif
+#if defined(__GLIBC__)
+# if (__GLIBC__ >= 2 && __GLIBC_MINOR__ > 19) || \
+     ((__GLIBC__ == 2 && __GLIBC_MINOR__ <= 19) && defined(_BSD_SOURCE))
+#  define __HAVE_UNISTD_READLINK__
 # endif
+#endif
 
 #if !defined(__WIN__)
 # include <pthread.h>
@@ -132,7 +135,7 @@
 # include <libgen.h>
 # include <stdatomic.h>
 # if defined(SIR_SYSLOG_ENABLED)
-# include <syslog.h>
+#  include <syslog.h>
 # endif
 # if defined(__BSD__)
 #  include <pthread_np.h>
@@ -152,23 +155,23 @@
 #  endif
 # endif
 
-#if defined(PATH_MAX)
-# define SIR_MAXPATH PATH_MAX
-#elif defined(MAXPATHLEN)
+# if defined(PATH_MAX)
+#  define SIR_MAXPATH PATH_MAX
+# elif defined(MAXPATHLEN)
 #  define SIR_MAXPATH MAXPATHLEN
-#else
+# else
 #  define SIR_MAXPATH 1024
-#endif
+# endif
 
-#if defined(__MACOS__)
-# define SIR_MSEC_TIMER
-# define SIR_MSEC_MACH
-#elif _POSIX_TIMERS > 0
-# define SIR_MSEC_TIMER
-# define SIR_MSEC_POSIX
-#else
-# undef SIR_MSEC_TIMER
-#endif
+# if defined(__MACOS__)
+#  define SIR_MSEC_TIMER
+#  define SIR_MSEC_MACH
+# elif _POSIX_TIMERS > 0
+#  define SIR_MSEC_TIMER
+#  define SIR_MSEC_POSIX
+# else
+#  undef SIR_MSEC_TIMER
+# endif
 
 /** The mutex type. */
 typedef pthread_mutex_t sirmutex_t;
@@ -179,7 +182,7 @@ typedef pthread_once_t sironce_t;
 /** The one-time execution function type. */
 typedef void (*sir_once_fn)(void);
 
-  /** The one-time initializer. */
+/** The one-time initializer. */
 # define SIR_ONCE_INIT PTHREAD_ONCE_INIT
 
 #else /* __WIN__ */
@@ -201,7 +204,7 @@ typedef int pid_t;
 /** The one-time execution function type. */
 typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
-  /** The one-time initializer. */
+/** The one-time initializer. */
 # define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
 
 #endif // !__WIN__
@@ -219,7 +222,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #endif
 
 #if defined(__WIN__) && defined(__STDC_SECURE_LIB__)
-# define __HAVE_STDC_SECURE_OR_EXT1__ 
+# define __HAVE_STDC_SECURE_OR_EXT1__
 #elif defined(__STDC_LIB_EXT1__)
 # define __HAVE_STDC_SECURE_OR_EXT1__
 #endif

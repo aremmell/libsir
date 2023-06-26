@@ -45,7 +45,7 @@ enum {
     SIR_E_NODEST    = 12,   /**< No destinations registered for level */
     SIR_E_UNAVAIL   = 13,   /**< Feature is disabled or unavailable */
     SIR_E_PLATFORM  = 14,   /**< Platform error code %%d: %%s */
-    SIR_E_UNKNOWN   = 4095, /**< Error is not known */    
+    SIR_E_UNKNOWN   = 4095, /**< Error is not known */
 };
 
 #define _SIR_E_NOERROR   _sir_mkerror(SIR_E_NOERROR)
@@ -91,7 +91,7 @@ void __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t l
 #define _sir_seterror(err) __sir_seterror(err, __func__, __file__, __LINE__)
 
 void __sir_setoserror(int code, const char* msg, const char* func,
-        const char* file, uint32_t line);
+    const char* file, uint32_t line);
 
 /** Handle a C library error. */
 void __sir_handleerr(int code, const char* func, const char* file, uint32_t line);
@@ -104,7 +104,7 @@ void __sir_handleerr(int code, const char* func, const char* file, uint32_t line
  * lost in translation.
  */
 void __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32_t line);
-#define _sir_handlewin32err(code) __sir_handlewin32err(code, __func__, __file__, __LINE__)
+# define _sir_handlewin32err(code) __sir_handlewin32err(code, __func__, __file__, __LINE__)
 #endif
 
 /** Returns information about the last error that occurred. */
@@ -113,13 +113,13 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]);
 #if defined(SIR_SELFLOG)
 /** Log an internal debug message to stderr. */
 void __sir_selflog(const char* func, const char* file, uint32_t line, const char* format, ...);
-#define _sir_selflog(...) __sir_selflog(__func__, __file__, __LINE__, __VA_ARGS__)
+# define _sir_selflog(...) __sir_selflog(__func__, __file__, __LINE__, __VA_ARGS__)
 #else
 static inline
 void __sir_fakefunc(const char* format, ...) {
     _SIR_UNUSED(format);
 }
-#define _sir_selflog(...) __sir_fakefunc(__VA_ARGS__)
+# define _sir_selflog(...) __sir_fakefunc(__VA_ARGS__)
 #endif
 
 #endif /* !_SIR_ERRORS_H_INCLUDED */
