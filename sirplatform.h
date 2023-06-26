@@ -97,11 +97,15 @@
 # include <inttypes.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <string.h>
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <limits.h>
 # include <time.h>
+
+# if defined(__FreeBSD__) && !defined(__BSD_VISIBLE)
+#  define __BSD_VISIBLE 1
+# endif /* defined(__FreeBSD__) && !defined(__BSD_VISIBLE) */
+# include <string.h>
 
 # if !defined(SIR_NO_SYSTEM_LOGGERS)
 #  if defined(__MACOS__)
