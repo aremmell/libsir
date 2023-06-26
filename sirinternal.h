@@ -120,7 +120,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf);
 const char* _sir_format(bool styling, sir_options opts, sirbuf* buf);
 
 /** Initializes a ::sir_syslog_dest. */
-bool _sir_syslog_init(const char *name, sir_syslog_dest *ctx);
+bool _sir_syslog_init(const char* name, sir_syslog_dest* ctx);
 
 /**
  * Abstraction for setup of platform-specific implementations of system
@@ -146,7 +146,7 @@ bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data);
 /**
  * Abstraction for cleanup/closure of platform-specific implementations of
  * system logger facilities.
- * 
+ *
  * Called upon shutdown of the library (and if the configuration is modified).
  * Performs any necessary operations: disconnecting/closing handles, etc.
  */

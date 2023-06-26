@@ -39,7 +39,7 @@
 #elif defined(_GNU_SOURCE) && ( defined(__GLIBC__) && defined(__linux__) )
 #   define __HAVE_GNU_STRERROR_R__
 #elif defined(__HAVE_STDC_SECURE_OR_EXT1__)
-#   define __HAVE_STRERROR_S__
+# define __HAVE_STRERROR_S__
 #endif
 
 /** Per-thread error data */
@@ -50,22 +50,22 @@ static thread_local sir_thread_err sir_te = {
 void __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t line) {
     if (_sir_validerror(err)) {
         sir_te.lasterror = err;
-        sir_te.loc.func = func;
-        sir_te.loc.file = file;
-        sir_te.loc.line = line;
+        sir_te.loc.func  = func;
+        sir_te.loc.file  = file;
+        sir_te.loc.line  = line;
     }
 #if defined(DEBUG) && defined(SIR_SELFLOG)
     if (_SIR_E_NOERROR != err) {
         char errmsg[SIR_MAXERROR] = {0};
-        uint32_t code = _sir_geterror(errmsg);
+        uint32_t code             = _sir_geterror(errmsg);
         _SIR_UNUSED(code);
         __sir_selflog(func, file, line, "%s", errmsg);
     }
 #endif
 }
 
-void __sir_setoserror(int code, const char* msg, const char* func,
-                      const char* file, uint32_t line) {
+void __sir_setoserror(int code, const char* msg, const char* func, const char* file,
+    uint32_t line) {
     sir_te.os_error = code;
     _sir_resetstr(sir_te.os_errmsg);
 
@@ -78,8 +78,8 @@ void __sir_setoserror(int code, const char* msg, const char* func,
 void __sir_handleerr(int code, const char* func, const char* file, uint32_t line) {
     if (SIR_E_NOERROR != code) {
         char message[SIR_MAXERROR] = {0};
-        int finderr = 0;
-        errno = SIR_E_NOERROR;
+        int finderr                = 0;
+        errno                      = SIR_E_NOERROR;
 
 #if defined(__HAVE_XSI_STRERROR_R__)
         _sir_selflog("using XSI strerror_r");
@@ -154,7 +154,7 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
 
     if (sir_errors[_mid].e == sir_te.lasterror) {
         char* final = NULL;
-        bool alloc = false;
+        bool alloc  = false;
 
         if (_SIR_E_PLATFORM == sir_errors[_mid].e) {
             final = (char*)calloc(SIR_MAXERROR, sizeof(char));
@@ -205,7 +205,7 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, const char
         success &= write2 > 0;
 
         if (write2 > 0) {
-            char *buf = (char *)malloc(write2 + 1);
+            char* buf = (char*)malloc(write2 + 1);
             success &= NULL != buf;
 
             if (buf) {
@@ -225,7 +225,8 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, const char
                         write_color = true;
                     }
 
-                    write2 = fprintf(stderr, (write_color ? LRED("%s%s") "\n" : "%s%s\n"), prefix, buf);
+                    write2 = fprintf(stderr, (write_color ? LRED("%s%s") "\n" : "%s%s\n"),
+                        prefix, buf);
                     success &= write2 > 0;
                 }
 

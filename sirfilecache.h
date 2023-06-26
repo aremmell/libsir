@@ -48,7 +48,8 @@ void _sirfile_destroy(sirfile* sf);
 bool _sirfile_validate(sirfile* sf);
 bool _sirfile_update(sirfile* sf, sir_update_config_data* data);
 
-sirfileid_t _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels, sir_options opts);
+sirfileid_t _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
+    sir_options opts);
 bool _sir_fcache_update(sirfcache* sfc, sirfileid_t id, sir_update_config_data* data);
 bool _sir_fcache_rem(sirfcache* sfc, sirfileid_t id);
 

@@ -14,7 +14,7 @@ INSTALLLIB = /usr/local/lib
 INSTALLINC = /usr/local/include
 
 # base CFLAGS
-CFLAGS = -Wall -std=gnu11 -I. -fPIC -D_FORTIFY_SOURCE=2
+CFLAGS = -Wall -Wextra -Wpedantic -std=gnu11 -I. -fPIC -D_FORTIFY_SOURCE=2
 
 # debug/non-debug CFLAGS
 ifeq ($(SIR_DEBUG),1)

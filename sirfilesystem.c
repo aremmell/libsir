@@ -43,7 +43,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
 
     if (relative) {
         char* base_path = NULL;
-        switch(rel_to) {
+        switch (rel_to) {
             case SIR_PATH_REL_TO_APP: base_path = _sir_getappdir(); break;
             case SIR_PATH_REL_TO_CWD: base_path = _sir_getcwd(); break;
             default: _sir_seterror(_SIR_E_INVALID); return false;
