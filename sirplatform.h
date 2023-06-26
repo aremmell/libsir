@@ -40,7 +40,7 @@
 #  if defined(__APPLE__) && defined(__MACH__)
 #   define __MACOS__
 #   define _DARWIN_C_SOURCE
-#  elif defined(__FreeBSD__)
+#  elif defined(__FreeBSD__) || defined(__DragonFly__)
 #   define __PTHREAD_NP__
 #   define __BSD__
 #   define _BSD_SOURCE
@@ -124,8 +124,8 @@
 
 # define SIR_MAXHOST 256
 
-# if defined(__GLIBC__) || defined(_AIX) || \
-      defined(__linux__) || defined(__NetBSD__)
+# if defined(__GLIBC__) || defined(_AIX) || defined(__linux__) || \
+      defined(__NetBSD__) || defined(__DragonFly__)
 #  if ( (__GLIBC__ >= 2 && __GLIBC_MINOR__ > 19) || \
         ( (__GLIBC__ == 2 && __GLIBC_MINOR__ <= 19) && \
           defined(_BSD_SOURCE) ) ) || defined(_AIX) || \

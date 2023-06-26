@@ -61,7 +61,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         int open_flags = O_PATH | O_DIRECTORY;
 # elif defined(__FreeBSD__)
         int open_flags = O_EXEC | O_DIRECTORY;
-# elif defined(__NetBSD__)
+# elif defined(__NetBSD__) || defined(__DragonFly__)
         int open_flags = O_DIRECTORY;
 # endif
 
