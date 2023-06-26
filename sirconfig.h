@@ -36,7 +36,7 @@
  *
  * Definitions affecting appearance and content of log messages, default values,
  * and various thresholds. May be modified to suit a particular use case.
- * 
+ *
  * @remark All format strings containing specifiers such as `%%d` are `printf`-style.
  * The man page or documentation for `printf` can be used as a guide.
  *
@@ -50,9 +50,9 @@
 /**
  * The time stamp format string at the start of log messages–not including
  * milliseconds (as::SIR_MSECFORMAT), which is added separately.
- * 
+ *
  * @remark Only applies if ::SIRO_NOTIME is not set.
- * 
+ *
  * **Example**
  *   ~~~
  *   23:30:26
@@ -63,10 +63,10 @@
 
 /**
  * The format for milliseconds (1000ths of a second) in time stamps.
- * 
+ *
  * @remark Only applies if ::SIRO_NOTIME *or* ::SIRO_NOMSEC are not set.
  * @remark ::SIRO_NOTIME implies ::SIRO_NOMSEC.
- * 
+ *
  * **Example**
  *   ~~~
  *   .034
@@ -78,7 +78,7 @@
  * The format for the human-readable logging level.
  *
  * @remark Only applies if ::SIRO_NOLEVEL is not set.
- * 
+ *
  * **Example**
  *   ~~~
  *   [info]
@@ -88,30 +88,30 @@
 
 /**
  * The string placed directly before process and thread IDs.
- * 
+ *
  * @remark Only applies if ::SIRO_NONAME is not set.
  */
 #define SIR_PIDPREFIX "("
 
 /**
  * The character placed directly after process and thread IDs.
- * 
+ *
  * @remark Only applies if ::SIRO_NONAME is not set.
  */
 #define SIR_PIDPOSTFIX ")"
 
 /**
  * The format for the current process/thread ID.
- * 
+ *
  * @remark Only applies if ::SIRO_NOPID or ::SIRO_NOTID are not set.
  */
 #define SIR_PIDFORMAT "%d"
 
 /**
  * The string to place between process and thread IDs.
- * 
+ *
  * @remark Only applies if both ::SIRO_NOPID and ::SIRO_NOTID are not set.
- * 
+ *
  * **Example**
  *   ~~~
  *   3435.1189
@@ -125,25 +125,25 @@
 /**
  * The size, in bytes, at which a log file will be rolled/archived.
  * @remark Default = 5 MiB.
-*/
+ */
 #define SIR_FROLLSIZE (1024 * 1024 * 5)
 
 /**
  * The time format string used in file headers (see ::SIR_FHFORMAT).
- * 
+ *
  * @remark Only applies if ::SIRO_NOHDR is not set.
  *
  * **Example**
  *   ~~~
  *   15:13:41 Fri 9 Jun 23 (-0600)
- *   ~~~ 
+ *   ~~~
  */
 #define SIR_FHTIMEFORMAT "%H:%M:%S %a %d %b %y (%z)"
 
 /**
  * The format string written to a log file when logging begins or the file
  * is rolled/archived.
- * 
+ *
  * @remark Only applies if ::SIRO_NOHDR is not set.
  *
  * - The first `%%s` format specifier is the message:
@@ -157,7 +157,7 @@
 
 /**
  * The string included in ::SIR_FHFORMAT when a logging session begins.
- * 
+ *
  * @remark Only applies if ::SIRO_NOHDR is not set.
  */
 #define SIR_FHBEGIN "session begin @"
@@ -167,7 +167,7 @@
  * becoming larger than ::SIR_FROLLSIZE bytes in size.
  *
  * @remark Only applies if ::SIRO_NOHDR is not set.
- * 
+ *
  * The `%%s` format specifier is the path of the archived file.
  */
 #define SIR_FHROLLED "archived as %s due to size @"
@@ -178,7 +178,7 @@
  * **Example**
  *   ~~~
  *   23-06-09-122049
- *   ~~~ 
+ *   ~~~
  */
 #define SIR_FNAMETIMEFORMAT "%y-%m-%d-%H%M%S"
 
@@ -187,7 +187,7 @@
  *
  * - The first %%s format specifier is the original file name, up to but not
  *   including the last full stop (.), if any exist.
- * 
+ *
  * - The second %%s is the time stamp as defined by ::SIR_FNAMETIMEFORMAT.
  *
  * - The third %%s is the original file name including, and beyond the last
@@ -196,7 +196,7 @@
  * **Example**
  *   ~~~
  *   `oldname.log`  ->  `oldname-23-06-09-122049.log`
- *   ~~~ 
+ *   ~~~
  */
 #define SIR_FNAMEFORMAT "%s-%s%s"
 
@@ -278,8 +278,8 @@
 
 /** The maximum size, in characters, of final formatted output. */
 #define SIR_MAXOUTPUT \
-    SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME + SIR_MAXLEVEL + \
-    SIR_MAXNAME + (SIR_MAXPID * 2) + SIR_MAXMISC + 1
+    (SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME + SIR_MAXLEVEL + \
+        SIR_MAXNAME + (SIR_MAXPID   * 2) + SIR_MAXMISC + 1)
 
 /** The maximum size, in characters, of an error message. */
 #define SIR_MAXERROR 256
@@ -291,11 +291,11 @@
  * - The second `%%s` is the file name.
  * - The `%%lu` is the line number in the file.
  * - The third `%%s` is the error message.
- * 
+ *
  * **Example**
  *   ~~~
  *   Error in findneedle (haystack.c:384): 'Too much hay'
- *   ~~~ 
+ *   ~~~
  */
 #define SIR_ERRORFORMAT "Error in %s (%s:%u): '%s'"
 

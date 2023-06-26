@@ -5,9 +5,12 @@ Bold = “Priority”
 
 - [ ] Bump version 2.2.0
 
-- [x] **Add hostname to format options**
+- [x] **Add hostname to format options** (partially implemented; it’s no bueno to get the host name on every log call, so for now I will be stashing it on init, and perhaps doing a check to see if it needs an update every 30s or so), or there are these methods to know dynamically that it’s changed:
 
-  - [ ] macOS: /Library/Preferences/SystemConfiguration/preferences.plist | Root->System->System->HostName : https://developer.apple.com/library/archive/documentation/Darwin/Conceptual/FSEvents_ProgGuide/UsingtheFSEventsFramework/UsingtheFSEventsFramework.html , https://developer.apple.com/documentation/foundation/nsprocessinfo , https://developer.apple.com/documentation/systemconfiguration/1437828-scdynamicstorecreate
+  - [ ] macOS
+    - [ ] /Library/Preferences/SystemConfiguration/preferences.plist | Root->System->System->HostName : https://developer.apple.com/library/archive/documentation/Darwin/Conceptual/FSEvents_ProgGuide/UsingtheFSEventsFramework/UsingtheFSEventsFramework.html 
+    - [ ] https://developer.apple.com/documentation/foundation/nsprocessinfo
+    - [ ] https://developer.apple.com/documentation/systemconfiguration/1437828-scdynamicstorecreate
   - [ ] Lunix: /etc/hostname
   - [ ] Windows: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName
   
@@ -17,7 +20,7 @@ Bold = “Priority”
   
 - [ ] ~~move timer functionality from tests into libsir itself~~
 
-- [ ] Fix passing bad path to filecache; it should error with bad path, not later on a null pointer
+- [x] Fix passing bad path to filecache; it should error with bad path, not later on a null pointer
 
   - [ ] Why does safe_free not set pointer to null in debug mode?
   
@@ -32,7 +35,6 @@ Bold = “Priority”
 - [ ] Finish comment in sir_syslog_dest once it’s been resolved which option(s) can be utilized for os_log/syslog.
 
 - [ ] Refactor _sir_syslog_init: it’s a clusterF. Should probably just reject initialization if levels are set but ident/cat are not.
-  - [x] Rename sirinit::processName
   
 - [ ] **Implement “last message repeated n times”**
 
@@ -50,17 +52,9 @@ Bold = “Priority”
 - [ ] Document sirfilesystem.h
 
 - [ ] Tests:
-  - [x] Roll a log file w/ no extension
-  - [x] Better level/option validation testing
-  - [x] init w/ bad / uninitialized config
-    - [ ] Path as long as can fit in the PATH_MAX/MAX_PATH
-    - [ ] Invalid paths of all kinds:
-      - [x] Malformed
-      - [x] Invalid characters
-      - [ ] Test file existence of files in directories we don’t have permission to examine and differentiate that from actually not existing
-      - [x] “C:\” and “/”
-      - [x] Mix-and-match slashes on windows
-      - [ ] Symlinks
+  - [ ] Invalid paths of all kinds:
+    - [ ] Test file existence of files in directories we don’t have permission to examine and differentiate that from actually not existing
+    - [ ] Symlinks
   
 - [ ] Go through sirfilecache and replace any code possible with the new filesystem calls
   - [ ] Implement 256-color and RGB.

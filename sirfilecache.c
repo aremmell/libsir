@@ -24,12 +24,12 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "sirfilecache.h"
+#include "sirfilesystem.h"
 #include "sirinternal.h"
 #include "sirdefaults.h"
 #include "sirmutex.h"
 
 sirfileid_t _sir_addfile(const char* path, sir_levels levels, sir_options opts) {
-
     _sir_seterror(_SIR_E_NOERROR);
 
     if (_sir_sanity()) {
@@ -38,7 +38,7 @@ sirfileid_t _sir_addfile(const char* path, sir_levels levels, sir_options opts) 
 
         if (sfc) {
             _sir_defaultlevels(&levels, sir_file_def_lvls);
-            _sir_defaultopts(&opts, sir_file_def_opts);            
+            _sir_defaultopts(&opts, sir_file_def_opts);
 
             sirfileid_t r = _sir_fcache_add(sfc, path, levels, opts);
             _sir_unlocksection(_SIRM_FILECACHE);
@@ -50,10 +50,9 @@ sirfileid_t _sir_addfile(const char* path, sir_levels levels, sir_options opts) 
 }
 
 bool _sir_updatefile(sirfileid_t id, sir_update_config_data* data) {
-
     _sir_seterror(_SIR_E_NOERROR);
 
-    if (_sir_sanity() && _sir_validptr(id) && _sir_validfid(*id) &&
+    if (_sir_sanity() && _sir_validptr(id) && _sir_validfd(*id) &&
         _sir_validupdatedata(data)) {
         sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
         assert(sfc);
@@ -70,10 +69,9 @@ bool _sir_updatefile(sirfileid_t id, sir_update_config_data* data) {
 }
 
 bool _sir_remfile(sirfileid_t id) {
-
     _sir_seterror(_SIR_E_NOERROR);
 
-    if (_sir_sanity() && _sir_validptr(id) && _sir_validfid(*id)) {
+    if (_sir_sanity() && _sir_validptr(id) && _sir_validfd(*id)) {
         sirfcache* sfc = _sir_locksection(_SIRM_FILECACHE);
         assert(sfc);
 
@@ -87,11 +85,9 @@ bool _sir_remfile(sirfileid_t id) {
 }
 
 sirfile* _sirfile_create(const char* path, sir_levels levels, sir_options opts) {
-
     sirfile* sf = NULL;
 
     if (_sir_validstr(path) && _sir_validlevels(levels) && _sir_validopts(opts)) {
-
         sf = (sirfile*)calloc(1, sizeof(sirfile));
 
         if (_sir_validptr(sf)) {
@@ -100,7 +96,7 @@ sirfile* _sirfile_create(const char* path, sir_levels levels, sir_options opts) 
 
             if (_sir_validptrnofail(sf->path)) {
                 _sir_strncpy(sf->path, pathLen + 1, path, pathLen);
-                
+
                 sf->levels = levels;
                 sf->opts   = opts;
 
@@ -116,18 +112,16 @@ sirfile* _sirfile_create(const char* path, sir_levels levels, sir_options opts) 
 }
 
 bool _sirfile_open(sirfile* sf) {
-
     if (_sir_validptr(sf) && _sir_validstr(sf->path)) {
-        
         FILE* f  = NULL;
         int open = _sir_fopen(&f, sf->path, SIR_FOPENMODE);
         if (0 == open && f) {
             int fd = fileno(f);
-            if (_sir_validfid(fd)) {
+            if (_sir_validfd(fd)) {
                 _sirfile_close(sf);
-                                
+
                 sf->f  = f;
-                sf->id = fd;     
+                sf->id = fd;
                 return true;
             }
         }
@@ -138,7 +132,7 @@ bool _sirfile_open(sirfile* sf) {
 
 void _sirfile_close(sirfile* sf) {
     if (_sir_validptr(sf)) {
-        if (_sir_validptrnofail(sf->f) && _sir_validfid(sf->id)) {
+        if (_sir_validptrnofail(sf->f) && _sir_validfd(sf->id)) {
             _sir_fflush(sf->f);
             _sir_fclose(&sf->f);
             sf->id = -1;
@@ -147,13 +141,11 @@ void _sirfile_close(sirfile* sf) {
 }
 
 bool _sirfile_write(sirfile* sf, const char* output) {
-
     if (_sirfile_validate(sf) && _sir_validstr(output)) {
-        
         if (_sirfile_needsroll(sf)) {
-            bool rolled = false;
+            bool rolled   = false;
             char* newpath = NULL;
-            
+
             if (_sirfile_roll(sf, &newpath)) {
                 char header[SIR_MAXFHEADER] = {0};
                 snprintf(header, SIR_MAXFHEADER, SIR_FHROLLED, newpath);
@@ -161,8 +153,9 @@ bool _sirfile_write(sirfile* sf, const char* output) {
             }
 
             _sir_safefree(newpath);
-            if (!rolled)
-                return false;
+            if (!rolled) /* write anyway; don't want to lose data. */
+                _sir_selflog("error: failed to roll file %d (path: '%s')!",
+                    sf->id, sf->path);
         }
 
         size_t writeLen = strnlen(output, SIR_MAXFHEADER);
@@ -174,15 +167,15 @@ bool _sirfile_write(sirfile* sf, const char* output) {
             int err = ferror(sf->f);
             int eof = feof(sf->f);
 
-            _sir_selflog("error: incomplete write of %zu/%zu bytes to file %d!"
+            _sir_selflog("error: incomplete write of %zu/%zu bytes to file %d (path: '%s')!"
                          " ferror: %d, feof: %d, path: '%s'", write, writeLen,
-                         sf->id, err, eof, sf->path);
+                         sf->id, sf->path, err, eof, sf->path);
 
             /**
              * If an error occurs on write, consider removing file from targets,
              * or at least attempt to roll the file (out of space?)
              */
-#pragma message("TODO: Handle write failure according to error code")            
+#pragma message("TODO: Handle write failure according to error code")
 
             clearerr(sf->f);
         }
@@ -194,7 +187,6 @@ bool _sirfile_write(sirfile* sf, const char* output) {
 }
 
 bool _sirfile_writeheader(sirfile* sf, const char* msg) {
-
     if (_sirfile_validate(sf) && _sir_validstr(msg)) {
         time_t now = -1;
         time(&now);
@@ -210,7 +202,7 @@ bool _sirfile_writeheader(sirfile* sf, const char* msg) {
             if (fmt < 0)
                 _sir_handleerr(errno);
 
-            return fmt >=0 && _sirfile_write(sf, header);
+            return fmt >= 0 && _sirfile_write(sf, header);
         }
     }
 
@@ -218,7 +210,6 @@ bool _sirfile_writeheader(sirfile* sf, const char* msg) {
 }
 
 bool _sirfile_needsroll(sirfile* sf) {
-    
     if (_sirfile_validate(sf)) {
         struct stat st = {0};
         int getstat    = fstat(sf->id, &st);
@@ -235,35 +226,84 @@ bool _sirfile_needsroll(sirfile* sf) {
 }
 
 bool _sirfile_roll(sirfile* sf, char** newpath) {
-
     if (_sirfile_validate(sf) && newpath) {
 
         bool r = false;
         char* name = NULL;
-        char* ext = NULL;
+        char* ext  = NULL;
 
         bool split = _sirfile_splitpath(sf, &name, &ext);
         assert(split);
 
         if (split) {
-            time_t now;
+            time_t now = -1;
+
             time(&now);
+            assert(-1 != now);
 
-            char timestamp[SIR_MAXTIME] = {0};
-            bool fmttime = _sir_formattime(now, timestamp, SIR_FNAMETIMEFORMAT);
-            assert(fmttime);
-            
-            if (fmttime) {
-                *newpath = (char*)calloc(SIR_MAXPATH, sizeof(char));
+            if (-1 != now) {
+                char timestamp[SIR_MAXTIME] = {0};
+                bool fmttime = _sir_formattime(now, timestamp, SIR_FNAMETIMEFORMAT);
+                assert(fmttime);
 
-                if (_sir_validptr(*newpath)) {
-                    int fmtpath = snprintf(*newpath, SIR_MAXPATH, SIR_FNAMEFORMAT,
-                        name, timestamp, _sir_validstrnofail(ext) ? ext : "");                
+                if (fmttime) {
+                    *newpath = (char*)calloc(SIR_MAXPATH, sizeof(char));
 
-                    if (fmtpath < 0)
-                        _sir_handleerr(errno);
+                    if (_sir_validptr(*newpath)) {
+                        char seqbuf[7] = {0};
+                        bool exists = false;
+                        bool resolved = false;
+                        uint16_t sequence = 0;
 
-                    r = fmtpath >= 0 && _sirfile_archive(sf, *newpath);
+                        do {
+                            int print = snprintf(*newpath, SIR_MAXPATH, SIR_FNAMEFORMAT "%s", name,
+                                timestamp, _sir_validstrnofail(ext) ? ext : "",
+                                sequence > 0 ? seqbuf : "");
+
+                            if (print < 0) {
+                                _sir_handleerr(errno);
+                                break;
+                            }
+
+                            /* if less than one second has elasped since the last roll
+                             * operation, then we'll overwrite the last rolled log file,
+                             * and that = data loss. make sure the target path does not
+                             * already exist. */
+                            if (!_sir_pathexists(*newpath, &exists, SIR_PATH_REL_TO_CWD)) {
+                                /* failed to determine if the file already exists; it is better
+                                 * to continue logging to the same file than to possibly overwrite
+                                 * another (if it failed this time, it will again, so there's no
+                                 * way to definitively choose a good new path). */
+                                break;
+                            } else if (exists) {
+                                /* the file already exists; concatentate a number to the end of
+                                 * the file name until one that does not exist is found. */
+                                _sir_selflog("path: '%s' already exists; incrementing sequence",
+                                    *newpath);
+                                sequence++;
+                            } else {
+                                _sir_selflog("found good path: '%s'", *newpath);
+                                resolved = true;
+                                break;
+                            }
+
+                            if (sequence > 0) {
+                                print = snprintf(seqbuf, 7, "-%hu", sequence);
+
+                                if (print < 0) {
+                                    _sir_handleerr(errno);
+                                    break;
+                                }
+                            }
+
+                        } while (sequence <= 999);
+
+                        if (!resolved)
+                            _sir_selflog("error: unable to determine suitable roll path for '%s';"
+                                         " not rolling!", sf->path);
+
+                        r = resolved && _sirfile_archive(sf, *newpath);
+                    }
                 }
             }
         }
@@ -271,16 +311,13 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
         _sir_safefree(name);
         _sir_safefree(ext);
 
-
         return r;
     }
 
     return false;
 }
 
-/** @todo compress archived log files */
 bool _sirfile_archive(sirfile* sf, const char* newpath) {
-
     if (_sirfile_validate(sf) && _sir_validstr(newpath)) {
 #if defined(__WIN__)
         /* apparently need to close the old file first on windows. */
@@ -292,7 +329,7 @@ bool _sirfile_archive(sirfile* sf, const char* newpath) {
         }
 
         if (_sirfile_open(sf)) {
-            _sir_selflog("archived '%s' -> '%s'", sf->path, newpath);
+            _sir_selflog("archived '%s' " SIR_R_ARROW " '%s'", sf->path, newpath);
             return true;
         }
     }
@@ -301,12 +338,12 @@ bool _sirfile_archive(sirfile* sf, const char* newpath) {
 }
 
 bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
-
-    if (NULL != name) *name = NULL;
-    if (NULL != ext) *ext = NULL;
+    if (NULL != name)
+        *name = NULL;
+    if (NULL != ext)
+        *ext = NULL;
 
     if (_sirfile_validate(sf) && _sir_validptr(name) && _sir_validptr(ext)) {
-
         char* lastfullstop = strrchr(sf->path, '.');
 
         if (lastfullstop) {
@@ -317,7 +354,7 @@ bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
                 *name = (char*)calloc(namesize + 1, sizeof(char));
                 _sir_strncpy(*name, namesize + 1, sf->path, namesize);
             }
-  
+
             *ext = strdup(lastfullstop);
         } else {
             *name = strdup(sf->path);
@@ -338,7 +375,7 @@ void _sirfile_destroy(sirfile* sf) {
 }
 
 bool _sirfile_validate(sirfile* sf) {
-    return _sir_validptr(sf)    && _sir_validfid(sf->id) &&
+    return _sir_validptr(sf)    && _sir_validfd(sf->id) &&
            _sir_validptr(sf->f) && _sir_validstr(sf->path);
 }
 
@@ -352,7 +389,8 @@ bool _sirfile_update(sirfile* sf, sir_update_config_data* data) {
                 sf->levels, *data->levels);
             sf->levels = *data->levels;
         } else {
-            _sir_selflog("skipped superfluous update of file %d levels: %04" PRIx16, sf->id, sf->levels);
+            _sir_selflog("skipped superfluous update of file %d levels: %04" PRIx16, sf->id,
+                sf->levels);
         }
 
         return true;
@@ -364,7 +402,8 @@ bool _sirfile_update(sirfile* sf, sir_update_config_data* data) {
                 sf->opts, *data->opts);
             sf->opts = *data->opts;
         } else {
-            _sir_selflog("skipped superfluous update of file %d options: %08" PRIx32, sf->id, sf->opts);
+            _sir_selflog("skipped superfluous update of file %d options: %08" PRIx32, sf->id,
+                sf->opts);
         }
 
         return true;
@@ -373,10 +412,10 @@ bool _sirfile_update(sirfile* sf, sir_update_config_data* data) {
     return false;
 }
 
-sirfileid_t _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels, sir_options opts) {
-
-    if (_sir_validptr(sfc) && _sir_validstr(path) && _sir_validlevels(levels) && _sir_validopts(opts)) {
-
+sirfileid_t _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
+    sir_options opts) {
+    if (_sir_validptr(sfc) && _sir_validstr(path) && _sir_validlevels(levels) &&
+        _sir_validopts(opts)) {
         if (sfc->count >= SIR_MAXFILES) {
             _sir_seterror(_SIR_E_FCFULL);
             return NULL;
@@ -406,9 +445,8 @@ sirfileid_t _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
 }
 
 bool _sir_fcache_update(sirfcache* sfc, sirfileid_t id, sir_update_config_data* data) {
-
-    if (_sir_validptr(sfc) && _sir_validptr(id) &&
-        _sir_validfid(*id) && _sir_validupdatedata(data)) {
+    if (_sir_validptr(sfc) && _sir_validptr(id) && _sir_validfd(*id) &&
+        _sir_validupdatedata(data)) {
         sirfile* found = _sir_fcache_find(sfc, (const void*)id, _sir_fcache_pred_id);
         if (!found) {
             _sir_seterror(_SIR_E_NOFILE);
@@ -422,8 +460,7 @@ bool _sir_fcache_update(sirfcache* sfc, sirfileid_t id, sir_update_config_data* 
 }
 
 bool _sir_fcache_rem(sirfcache* sfc, sirfileid_t id) {
-
-    if (_sir_validptr(sfc) && _sir_validptr(id) && _sir_validfid(*id)) {
+    if (_sir_validptr(sfc) && _sir_validptr(id) && _sir_validfd(*id)) {
         for (size_t n = 0; n < sfc->count; n++) {
             assert(_sirfile_validate(sfc->files[n]));
 
@@ -464,7 +501,6 @@ bool _sir_fcache_pred_id(const void* match, sirfile* iter) {
 }
 
 sirfile* _sir_fcache_find(sirfcache* sfc, const void* match, sir_fcache_pred pred) {
-
     if (_sir_validptr(sfc) && _sir_validptr(match) && _sir_notnull(pred)) {
         for (size_t n = 0; n < sfc->count; n++) {
             if (pred(match, sfc->files[n]))
@@ -476,7 +512,6 @@ sirfile* _sir_fcache_find(sirfcache* sfc, const void* match, sir_fcache_pred pre
 }
 
 bool _sir_fcache_destroy(sirfcache* sfc) {
-
     if (_sir_validptr(sfc)) {
         for (size_t n = 0; n < sfc->count; n++) {
             assert(_sirfile_validate(sfc->files[n]));
@@ -495,7 +530,6 @@ bool _sir_fcache_destroy(sirfcache* sfc) {
 
 bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
     size_t* dispatched, size_t* wanted) {
-
     if (_sir_validptr(sfc) && _sir_validlevel(level) && _sir_validptr(buf)
         && _sir_validptr(dispatched) && _sir_validptr(wanted)) {
 
@@ -510,7 +544,8 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
             assert(_sirfile_validate(sfc->files[n]));
 
             if (!_sir_bittest(sfc->files[n]->levels, level)) {
-                _sir_selflog("level %04 " PRIx16 " not set in level mask (%04" PRIx16 ") for file %d; skipping",
+                _sir_selflog("level %04 " PRIx16 " not set in level mask (%04"
+                             PRIx16 ") for file %d; skipping",
                     level, sfc->files[n]->levels, sfc->files[n]->id);
                 continue;
             }
@@ -527,7 +562,8 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
                 r &= true;
                 (*dispatched)++;
             } else {
-                _sir_selflog("write to file %d failed! path: '%s'", sfc->files[n]->id, sfc->files[n]->path);
+                _sir_selflog("write to file %d failed! path: '%s'", sfc->files[n]->id,
+                    sfc->files[n]->path);
             }
         }
 
@@ -542,14 +578,16 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
 
 void _sir_fclose(FILE** f) {
     if (_sir_validptr(f) && _sir_validptr(*f)) {
-        if (0 != fclose(*f)) _sir_handleerr(errno);
+        if (0 != fclose(*f))
+            _sir_handleerr(errno);
         *f = NULL;
-    }    
+    }
 }
 
 void _sir_fflush(FILE* f) {
     if (_sir_validptr(f)) {
-        if (0 != fflush(f)) _sir_handleerr(errno);
+        if (0 != fflush(f))
+            _sir_handleerr(errno);
     }
 }
 

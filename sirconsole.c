@@ -29,7 +29,6 @@
 #if !defined(__WIN__)
 
 bool _sir_write_stdio(FILE* stream, const char* message) {
-
     if (EOF == fputs(message, stream)) {
         _sir_handleerr(errno);
         return false;
@@ -55,7 +54,6 @@ bool _sir_initialize_stdio(void) {
 }
 
 bool _sir_write_stdio(HANDLE console, const char* message, size_t len) {
-
     DWORD chars   = (DWORD)len;
     DWORD written = 0;
 
@@ -101,7 +99,7 @@ static BOOL CALLBACK __sir_config_consoles_once(PINIT_ONCE ponce, PVOID param, P
 
     __sir_stdout = GetStdHandle(STD_OUTPUT_HANDLE);
     __sir_stderr = GetStdHandle(STD_ERROR_HANDLE);
-    
+
     return (_sir_config_console(__sir_stdout) && _sir_config_console(__sir_stderr)) ? TRUE : FALSE;
 }
 

@@ -120,13 +120,13 @@ bool sir_remfile(sirfileid_t id) {
 
 bool sir_filelevels(sirfileid_t id, sir_levels levels) {
     _sir_defaultlevels(&levels, sir_file_def_lvls);
-    sir_update_config_data data = { SIRU_LEVELS, &levels, NULL, NULL, NULL };
+    sir_update_config_data data = {SIRU_LEVELS, &levels, NULL, NULL, NULL};
     return _sir_updatefile(id, &data);
 }
 
 bool sir_fileopts(sirfileid_t id, sir_options opts) {
     _sir_defaultopts(&opts, sir_file_def_opts);
-    sir_update_config_data data = { SIRU_OPTIONS, NULL, &opts, NULL, NULL };
+    sir_update_config_data data = {SIRU_OPTIONS, NULL, &opts, NULL, NULL};
     return _sir_updatefile(id, &data);
 }
 
@@ -140,32 +140,32 @@ bool sir_resettextstyles(void) {
 
 bool sir_stdoutlevels(sir_levels levels) {
     _sir_defaultlevels(&levels, sir_stdout_def_lvls);
-    sir_update_config_data data = { SIRU_LEVELS, &levels, NULL, NULL, NULL };
+    sir_update_config_data data = {SIRU_LEVELS, &levels, NULL, NULL, NULL};
     return _sir_writeinit(&data, _sir_stdoutlevels);
 }
 
 bool sir_stdoutopts(sir_options opts) {
     _sir_defaultopts(&opts, sir_stdout_def_opts);
-    sir_update_config_data data = { SIRU_OPTIONS, NULL, &opts, NULL, NULL };
+    sir_update_config_data data = {SIRU_OPTIONS, NULL, &opts, NULL, NULL};
     return _sir_writeinit(&data, _sir_stdoutopts);
 }
 
 bool sir_stderrlevels(sir_levels levels) {
     _sir_defaultlevels(&levels, sir_stderr_def_lvls);
-    sir_update_config_data data = { SIRU_LEVELS, &levels, NULL, NULL, NULL };
+    sir_update_config_data data = {SIRU_LEVELS, &levels, NULL, NULL, NULL};
     return _sir_writeinit(&data, _sir_stderrlevels);
 }
 
 bool sir_stderropts(sir_options opts) {
     _sir_defaultopts(&opts, sir_stderr_def_opts);
-    sir_update_config_data data = { SIRU_OPTIONS, NULL, &opts, NULL, NULL };
+    sir_update_config_data data = {SIRU_OPTIONS, NULL, &opts, NULL, NULL};
     return _sir_writeinit(&data, _sir_stderropts);
 }
 
 bool sir_sysloglevels(sir_levels levels) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     _sir_defaultlevels(&levels, sir_syslog_def_lvls);
-    sir_update_config_data data = { SIRU_LEVELS, &levels, NULL, NULL, NULL };
+    sir_update_config_data data = {SIRU_LEVELS, &levels, NULL, NULL, NULL};
     return _sir_writeinit(&data, _sir_sysloglevels);
 #else
     _SIR_UNUSED(levels);
@@ -175,20 +175,20 @@ bool sir_sysloglevels(sir_levels levels) {
 }
 
 bool sir_syslogopts(sir_options opts) {
-#if !defined(SIR_NO_SYSTEM_LOGGERS)    
+#if !defined(SIR_NO_SYSTEM_LOGGERS)
     _sir_defaultopts(&opts, sir_syslog_def_opts);
-    sir_update_config_data data = { SIRU_OPTIONS, NULL, &opts, NULL, NULL };
-    return _sir_writeinit(&data, _sir_syslogopts);  
+    sir_update_config_data data = {SIRU_OPTIONS, NULL, &opts, NULL, NULL};
+    return _sir_writeinit(&data, _sir_syslogopts);
 #else
     _SIR_UNUSED(opts);
     _sir_seterror(_SIR_E_UNAVAIL);
     return false;
-#endif      
+#endif
 }
 
 bool sir_syslogid(const char* identity) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
-    sir_update_config_data data = { SIRU_SYSLOG_ID, NULL, NULL, identity, NULL };
+    sir_update_config_data data = {SIRU_SYSLOG_ID, NULL, NULL, identity, NULL};
     return _sir_writeinit(&data, _sir_syslogid);
 #else
     _SIR_UNUSED(identity);
@@ -199,7 +199,7 @@ bool sir_syslogid(const char* identity) {
 
 bool sir_syslogcat(const char* category) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
-    sir_update_config_data data = { SIRU_SYSLOG_CAT, NULL, NULL, NULL, category };
+    sir_update_config_data data = {SIRU_SYSLOG_CAT, NULL, NULL, NULL, category};
     return _sir_writeinit(&data, _sir_syslogcat);
 #else
     _SIR_UNUSED(category);

@@ -50,7 +50,6 @@ uint16_t _sir_getprivstyle(uint32_t style);
 bool _sir_formatstyle(sir_textstyle style, char* buf, size_t size);
 
 /** Validates a ::sir_textstyle and splits it into its component parts. */
-bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg,
-    uint32_t* pbg);
+bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32_t* pbg);
 
 #endif /* !_SIR_TEXTSTYLE_H_INCLUDED */

@@ -35,8 +35,7 @@
  * Creates an error code that (hopefully) doesn't conflict
  * with any of those defined by the platform.
  */
-#define _sir_mkerror(code) \
-    (((uint32_t)(code & 0x7fff) << 16) | 0x80000000)
+#define _sir_mkerror(code) (((uint32_t)((code)&0x7fff) << 16) | 0x80000000)
 
 /** Validates an internal error. */
 static inline
@@ -53,8 +52,8 @@ uint16_t _sir_geterrcode(uint32_t err) {
 
 /** Evil macro used for _sir_lv wrappers. */
 #define _SIR_L_START(format) \
-    bool r = false;          \
-    va_list args;            \
+    bool r = false; \
+    va_list args; \
     va_start(args, format);
 
 /** Evil macro used for _sir_lv wrappers. */
@@ -65,12 +64,11 @@ uint16_t _sir_geterrcode(uint32_t err) {
 
 /** Even more evil macros used for binary searching arrays. */
 #define _SIR_DECLARE_BIN_SEARCH(low, high) \
-    size_t _low   = low;   \
-    size_t _high  = high;  \
-    size_t _mid   = (_low + _high) / 2;
+    size_t _low  = low; \
+    size_t _high = high; \
+    size_t _mid  = (_low + _high) / 2;
 
-#define _SIR_BEGIN_BIN_SEARCH() do { \
-
+#define _SIR_BEGIN_BIN_SEARCH() do {
 #define _SIR_ITERATE_BIN_SEARCH(comparison) \
     if (0 == comparison) { \
         break; \
@@ -90,16 +88,16 @@ uint16_t _sir_geterrcode(uint32_t err) {
     _mid = (_low + _high) / 2;
 
 #define _SIR_END_BIN_SEARCH() \
-    } while(true);
+    } while (true);
 
 /**
  * Validates a pointer-to-pointer, pointer,
  * pointer to function, etc. but ignores whether it's invalid.
- * 
+ *
  * This is necessary due to the fact that ::_sir_validptr will
  * not accept these types as input.
  */
-#define _sir_notnull(addr) (NULL != addr)
+#define _sir_notnull(addr) (NULL != (addr))
 
 /** Checks a bitmask for a specific set of bits. */
 static inline
@@ -145,8 +143,8 @@ void _sir_safefree(void* p) {
 /** Wraps close. */
 void _sir_safeclose(int* restrict fd);
 
-/** Validates a log file identifier. */
-bool _sir_validfid(int id);
+/** Validates a log file descriptor. */
+bool _sir_validfd(int fd);
 
 /** Validates a sir_update_config_data structure. */
 bool _sir_validupdatedata(sir_update_config_data* data);
@@ -219,7 +217,7 @@ bool _sir_strsame(const char* lhs, const char* rhs, size_t count) {
     return 0 == strncmp(lhs, rhs, count);
 }
 
-/** 
+/**
  * Wrapper for strncpy/strncpy_s. Determines which one to use
  * based on preprocessor macros.
  */
@@ -227,23 +225,23 @@ int _sir_strncpy(char* restrict dest, size_t destsz,
     const char* restrict src, size_t count);
 
 /**
-  * Wrapper for strncat/strncat_s. Determines which one to use
-  * based on preprocessor macros.
-  */
+ * Wrapper for strncat/strncat_s. Determines which one to use
+ * based on preprocessor macros.
+ */
 int _sir_strncat(char* restrict dest, size_t destsz,
     const char* restrict src, size_t count);
 
 /**
-  * Wrapper for fopen/fopen_s. Determines which one to use
-  * based on preprocessor macros.
-  */
-int _sir_fopen(FILE* restrict *restrict streamptr,
-    const char* restrict filename, const char* restrict mode);
+ * Wrapper for fopen/fopen_s. Determines which one to use
+ * based on preprocessor macros.
+ */
+int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename,
+    const char* restrict mode);
 
 /**
-  * Wrapper for localtime/localtime_s. Determines which one to use
-  * based on preprocessor macros.
-  */
+ * Wrapper for localtime/localtime_s. Determines which one to use
+ * based on preprocessor macros.
+ */
 struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf);
 
 /**
