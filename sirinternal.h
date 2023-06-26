@@ -46,7 +46,7 @@ bool _sir_cleanup(void);
 bool _sir_sanity(void);
 
 /** Validates the configuration passed to ::sir_init. */
-bool _sir_options_sanity(const sirinit* si);
+bool _sir_init_sanity(const sirinit* si);
 
 /** Updates levels for stdout. */
 bool _sir_stdoutlevels(sirinit* si, sir_update_config_data* data);
@@ -152,9 +152,7 @@ bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data);
  */
 bool _sir_syslog_close(sir_syslog_dest* ctx);
 
-/**
- * Resets the internal state.
- */
+/** Resets the internal state. */
 void _sir_syslog_reset(sir_syslog_dest* ctx);
 
 /** Returns the formatted, human-readable form of a ::sir_level. */

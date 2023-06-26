@@ -105,14 +105,14 @@ bool _sir_init(sirinit* si) {
     _sir_defaultopts(&si->d_syslog.opts, sir_syslog_def_opts);
 #endif
 
-    if (!_sir_options_sanity(si))
+    if (!_sir_init_sanity(si))
         return false;
 
     sirconfig* _cfg = _sir_locksection(_SIRM_CONFIG);
     assert(_cfg);
 
     if (_sir_validptr(_cfg)) {
-        memset(_cfg, 0, sizeof(sirconfig));
+        memset(&_cfg->state, 0, sizeof(_cfg->state));
         memcpy(&_cfg->si, si, sizeof(sirinit));
 
 #if defined(__HAVE_ATOMIC_H__)
@@ -218,7 +218,7 @@ bool _sir_sanity(void) {
     return false;
 }
 
-bool _sir_options_sanity(const sirinit* si) {
+bool _sir_init_sanity(const sirinit* si) {
     if (!_sir_validptr(si))
         return false;
 
@@ -501,6 +501,9 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     sirconfig tmpcfg;
     memcpy(&tmpcfg, _cfg, sizeof(sirconfig));
     _sir_unlocksection(_SIRM_CONFIG);
+
+    /* from time to time, update the host name in the config, just in case. */
+#pragma message("TODO: update hostname")
 
     sirbuf buf = {0};
     buf.hostname = tmpcfg.state.hostname;

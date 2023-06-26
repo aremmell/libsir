@@ -400,6 +400,10 @@ bool sirtest_faildupefile(void) {
 
     pass &= NULL != fid;
     pass &= NULL == sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
+
+    if (pass)
+        print_expected_error();
+
     pass &= sir_remfile(fid);
 
     rmfile(filename);
@@ -413,6 +417,9 @@ bool sirtest_failremovebadfile(void) {
 
     int invalidid = 9999999;
     pass &= !sir_remfile(&invalidid);
+
+    if (pass)
+        print_expected_error();
 
     sir_cleanup();
     return print_result_and_return(pass);
