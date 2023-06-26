@@ -60,12 +60,12 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 #else /* __WIN__ */
-#if defined(_DEBUG)
+# if defined(_DEBUG)
     /* Prevents assert() from calling abort() before the user is able to:
      * a.) break into the code and debug (Retry button)
      * b.) ignore the assert() and continue. */
     _set_error_mode(_OUT_TO_MSGBOX);
-#endif
+# endif
 #endif
 
     bool wait  = false;
@@ -120,24 +120,26 @@ int main(int argc, char** argv) {
         }
 
         printf(WHITEB("\n\t(%d/%d) '%s'...") "\n\n", ran, tgt_tests, sir_tests[n].name);
-        
+
         sir_tests[n].pass = sir_tests[n].fn();
         if (sir_tests[n].pass)
             passed++;
 
         ran++;
 
-        printf(WHITEB("\n\t(%d/%d) '%s' finished: ") "%s\n", ran, tgt_tests,
-            sir_tests[n].name, PRN_PASS(sir_tests[n].pass));
+        printf(WHITEB("\n\t(%d/%d) '%s' finished: ") "%s\n", ran, tgt_tests, sir_tests[n].name,
+            PRN_PASS(sir_tests[n].pass));
     }
 
     float elapsed = sirtimerelapsed(&timer);
-    
+
     if (passed == tgt_tests) {
-        printf("\n" WHITEB("done: ") GREENB("%s%d " ULINE("libsir") " %s passed in %.03fsec!") "\n\n",
+        printf("\n" WHITEB("done: ")
+                   GREENB("%s%d " ULINE("libsir") " %s passed in %.03fsec!") "\n\n",
             tgt_tests > 1 ? "all " : "", tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
     } else {
-        printf("\n" WHITEB("done: ") REDB("%d of %d " ULINE("libsir") " %s failed in %.03fsec") "\n\n",
+        printf("\n" WHITEB("done: ")
+                   REDB("%d of %d " ULINE("libsir") " %s failed in %.03fsec") "\n\n",
             tgt_tests - passed, tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
 
         printf(REDB("Failed %s:") "\n\n", TEST_S(tgt_tests - passed));
@@ -295,7 +297,7 @@ bool sirtest_failfilebadpermission(void) {
     static const char* path = "/noperms";
 #else /* __WIN__ */
     static const char* path = "C:\\Windows\\System32\\noperms";
-#endif    
+#endif
 
     pass &= NULL == sir_addfile(path, SIRL_ALL, SIRO_MSGONLY);
 
@@ -361,10 +363,10 @@ bool sirtest_failinvalidinitdata(void) {
 
     /* fill with bad data. */
     memset(&si, 0xbadf00d, sizeof(sirinit));
-    
+
     printf("\tcalling sir_init with invalid data...\n");
     bool pass = !sir_init(&si);
-    
+
     if (!pass)
         sir_cleanup();
     else
@@ -394,7 +396,7 @@ bool sirtest_faildupefile(void) {
     bool pass = si_init;
 
     const char* filename = "faildupefile.log";
-    sirfileid_t fid = sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
+    sirfileid_t fid      = sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
 
     pass &= NULL != fid;
     pass &= NULL == sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
@@ -436,7 +438,7 @@ bool sirtest_rollandarchivefile(void) {
     if (delcount > 0)
         printf("\tfound and removed %u log file(s)\n", delcount);
 
-    FILE* f  = NULL;
+    FILE* f = NULL;
     _sir_fopen(&f, logfilename, "w");
 
     if (!f) {
@@ -480,7 +482,8 @@ bool sirtest_rollandarchivefile(void) {
         /* look for files matching the original name. */
         unsigned foundlogs = 0;
         if (!enumfiles(logbasename, countfiles, &foundlogs)) {
-            handle_os_error(false, "failed to enumerate log files with base name: %s!", logbasename);
+            handle_os_error(false, "failed to enumerate log files with base name: %s!",
+                logbasename);
             pass = false;
         }
 
@@ -505,12 +508,11 @@ bool sirtest_rollandarchivefile(void) {
 }
 
 bool sirtest_errorsanity(void) {
-
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     struct {
-        uint16_t    code;
+        uint16_t code;
         const char* name;
     } errors[] = {
         {SIR_E_NOERROR,   "SIR_E_NOERROR"},   /**< The operation completed successfully (0) */
@@ -545,17 +547,16 @@ bool sirtest_errorsanity(void) {
 }
 
 bool sirtest_textstylesanity(void) {
-
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     // This is from the now-deleted test sirtest_failsetinvalidstyle.
     // it doesn't belong in a test separate from this one.
 
-    //pass &= !sir_settextstyle(SIRL_INFO, 0xbbbb/* 0xfefe */);
-    //pass &= sir_info("hello there, I set an invalid style.");
-    //pass &= !sir_settextstyle(SIRL_ALL, SIRS_FG_RED | SIRS_FG_DEFAULT);
-    //pass &= sir_info("oops, did it again...");
+    // pass &= !sir_settextstyle(SIRL_INFO, 0xbbbb/* 0xfefe */);
+    // pass &= sir_info("hello there, I set an invalid style.");
+    // pass &= !sir_settextstyle(SIRL_ALL, SIRS_FG_RED | SIRS_FG_DEFAULT);
+    // pass &= sir_info("oops, did it again...");
 #pragma message("TODO: uncomment the above when the TODO at sirtextstyle.c:50 is resolved")
     pass &= !sir_settextstyle(SIRL_ALERT, SIRS_FG_BLACK | SIRS_BG_BLACK);
     pass &= sir_info("and again.");
@@ -627,7 +628,7 @@ bool sirtest_optionssanity(void) {
     pass &= _sir_validopts(SIRO_NOTIME);
     printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_NOTIME);
     pass &= _sir_validopts(SIRO_NOHOST);
-    printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_NOHOST);    
+    printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_NOHOST);
     pass &= _sir_validopts(SIRO_NOLEVEL);
     printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_NOLEVEL);
     pass &= _sir_validopts(SIRO_NONAME);
@@ -660,7 +661,7 @@ bool sirtest_optionssanity(void) {
     for (size_t n = 0; n < iterations; n++) {
         sir_options opts    = 0;
         uint32_t rand_count = 0;
-        size_t last_idx = 0;
+        size_t last_idx     = 0;
 
         do {
             rand_count = getrand(SIR_NUMOPTIONS);
@@ -676,7 +677,7 @@ bool sirtest_optionssanity(void) {
                 if (++tries > SIR_NUMOPTIONS - 2)
                     break;
                 rand_idx = (size_t)getrand(SIR_NUMOPTIONS);
- 
+
             } while (rand_idx == last_idx || _sir_bittest(opts, option_arr[rand_idx]));
 
             last_idx = rand_idx;
@@ -685,22 +686,22 @@ bool sirtest_optionssanity(void) {
 
         pass &= _sir_validopts(opts);
         printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %" PRIu32
-            ", options: %08" PRIx32 ")") "\n", n + 1, iterations, rand_count, opts);        
+            ", options: %08" PRIx32 ")") "\n", n + 1, iterations, rand_count, opts);
     }
     PRINT_PASS(pass, "\t--- random bitmask of valid options: %s ---\n\n", PRN_PASS(pass));
 
     printf("\t" WHITEB("--- invalid values ---") "\n");
 
     /* the lowest byte is not valid. */
-    sir_options invalid = 0x000000ff;                                          
+    sir_options invalid = 0x000000ff;
     pass &= !_sir_validopts(invalid);
     printf(INDENT_ITEM WHITE("lowest byte: %08" PRIx32) "\n", invalid);
-    
+
     /* gaps inbetween valid options. */
     invalid = 0x0001ff00 & ~(SIRO_NOTIME | SIRO_NOHOST | SIRO_NOLEVEL | SIRO_NONAME |
                              SIRO_NOMSEC | SIRO_NOPID | SIRO_NOTID  | SIRO_NOHDR);
     pass &= !_sir_validopts(invalid);
-    printf(INDENT_ITEM WHITE("gaps in 0x001ff00: %08" PRIx32) "\n", invalid);    
+    printf(INDENT_ITEM WHITE("gaps in 0x001ff00: %08" PRIx32) "\n", invalid);
 
     /* greater than SIRO_MSGONLY and less than SIRO_NOHDR. */
     for (sir_option o = 0x00008f00; o < SIRO_NOHDR; o += 0x1000) {
@@ -709,7 +710,7 @@ bool sirtest_optionssanity(void) {
     }
 
     /* greater than SIRO_NOHDR. */
-    invalid = (0xFFFF0000 &~ SIRO_NOHDR);
+    invalid = (0xFFFF0000 & ~SIRO_NOHDR);
     pass &= !_sir_validopts(invalid);
     printf(INDENT_ITEM WHITE("greater than SIRO_NOHDR: %08" PRIx32) "\n", invalid);
 
@@ -728,13 +729,13 @@ bool sirtest_levelssanity(void) {
     /* these should all be valid. */
     printf("\t" WHITEB("--- individual valid levels ---") "\n");
     pass &= _sir_validlevel(SIRL_INFO) && _sir_validlevels(SIRL_INFO);
-    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_INFO);    
+    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_INFO);
     pass &= _sir_validlevel(SIRL_DEBUG) && _sir_validlevels(SIRL_DEBUG);
     printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_DEBUG);
     pass &= _sir_validlevel(SIRL_NOTICE) && _sir_validlevels(SIRL_NOTICE);
     printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_NOTICE);
     pass &= _sir_validlevel(SIRL_WARN) && _sir_validlevels(SIRL_WARN);
-    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_WARN);            
+    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_WARN);
     pass &= _sir_validlevel(SIRL_ERROR) && _sir_validlevels(SIRL_ERROR);
     printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_ERROR);
     pass &= _sir_validlevel(SIRL_CRIT) && _sir_validlevels(SIRL_CRIT);
@@ -742,11 +743,11 @@ bool sirtest_levelssanity(void) {
     pass &= _sir_validlevel(SIRL_ALERT) && _sir_validlevels(SIRL_ALERT);
     printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_ALERT);
     pass &= _sir_validlevel(SIRL_EMERG) && _sir_validlevels(SIRL_EMERG);
-    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_EMERG);    
+    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_EMERG);
     pass &= _sir_validlevels(SIRL_ALL);
-    printf(INDENT_ITEM WHITE("valid levels: %04x") "\n", SIRL_ALL);  
+    printf(INDENT_ITEM WHITE("valid levels: %04x") "\n", SIRL_ALL);
     pass &= _sir_validlevels(SIRL_NONE);
-    printf(INDENT_ITEM WHITE("valid levels: %04x") "\n", SIRL_NONE);  
+    printf(INDENT_ITEM WHITE("valid levels: %04x") "\n", SIRL_NONE);
     PRINT_PASS(pass, "\t--- individual valid levels: %s ---\n\n", PRN_PASS(pass));
 
     /* any combination these bitwise OR'd together
@@ -767,7 +768,7 @@ bool sirtest_levelssanity(void) {
     for (size_t n = 0; n < iterations; n++) {
         sir_levels levels   = 0;
         uint32_t rand_count = 0;
-        size_t last_idx = 0;
+        size_t last_idx     = 0;
 
         do {
             rand_count = getrand(SIR_NUMLEVELS);
@@ -778,7 +779,7 @@ bool sirtest_levelssanity(void) {
         for (size_t i = 0; i < rand_count; i++) {
             size_t rand_idx = 0;
             size_t tries    = 0;
-            
+
             do {
                 if (++tries > SIR_NUMLEVELS - 2)
                     break;
@@ -790,10 +791,10 @@ bool sirtest_levelssanity(void) {
         }
 
         pass &= _sir_validlevels(levels);
-        printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %" PRIu32 ", levels: %04" PRIx16) "\n",
-            n + 1, iterations, rand_count, levels);        
+        printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %" PRIu32 ", levels:"
+                                 " %04" PRIx16) "\n", n + 1, iterations, rand_count, levels);        
     }
-    PRINT_PASS(pass, "\t--- random bitmask of valid levels: %s ---\n\n", PRN_PASS(pass));             
+    PRINT_PASS(pass, "\t--- random bitmask of valid levels: %s ---\n\n", PRN_PASS(pass));
 
     printf("\t" WHITEB("--- invalid values ---") "\n");
 
@@ -805,11 +806,10 @@ bool sirtest_levelssanity(void) {
     PRINT_PASS(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 
     sir_cleanup();
-    return print_result_and_return(pass);    
+    return print_result_and_return(pass);
 }
 
 bool sirtest_perf(void) {
-
     static const char* logbasename = "libsir-perf";
     static const char* logext      = ".log";
 
@@ -833,7 +833,8 @@ bool sirtest_perf(void) {
         startsirtimer(&printftimer);
 
         for (size_t n = 0; n < perflines; n++)
-            printf("\x1b[97m%.2f: lorem ipsum foo bar %s: %zu\x1b[0m\n", sirtimerelapsed(&printftimer), "baz", 1234 + n);
+            printf("\x1b[97m%.2f: lorem ipsum foo bar %s: %zu\x1b[0m\n",
+                sirtimerelapsed(&printftimer), "baz", 1234 + n);
 
         printfelapsed = sirtimerelapsed(&printftimer);
 
@@ -843,7 +844,8 @@ bool sirtest_perf(void) {
         startsirtimer(&stdiotimer);
 
         for (size_t n = 0; n < perflines; n++)
-            sir_debug("%.2f: lorem ipsum foo bar %s: %zu", sirtimerelapsed(&stdiotimer), "baz", 1234 + n);
+            sir_debug("%.2f: lorem ipsum foo bar %s: %zu", sirtimerelapsed(&stdiotimer), "baz",
+                1234 + n);
 
         stdioelapsed = sirtimerelapsed(&stdiotimer);
 
@@ -875,9 +877,11 @@ bool sirtest_perf(void) {
         if (pass) {
             printf("\t" WHITE("printf: ") CYAN("%zu lines in %.2fsec (%.1f lines/sec)") "\n",
                 perflines, printfelapsed / 1e3, perflines / (printfelapsed / 1e3));
-            printf("\t" WHITE("libsir(stdout): ") CYAN("%zu lines in %.2fsec (%.1f lines/sec)") "\n",
+            printf("\t" WHITE("libsir(stdout): ")
+                   CYAN("%zu lines in %.2fsec (%.1f lines/sec)") "\n",
                 perflines, stdioelapsed / 1e3, perflines / (stdioelapsed / 1e3));
-            printf("\t" WHITE("libsir(log file): ") CYAN("%zu lines in %.2fsec (%.1f lines/sec)") "\n",
+            printf("\t" WHITE("libsir(log file): ")
+                   CYAN("%zu lines in %.2fsec (%.1f lines/sec)") "\n",
                 perflines, fileelapsed / 1e3, perflines / (fileelapsed / 1e3));
         }
     }
@@ -893,7 +897,6 @@ bool sirtest_perf(void) {
 }
 
 bool sirtest_updatesanity(void) {
-
     INIT_N(si, SIRL_DEFAULT, 0, SIRL_DEFAULT, 0, "update_sanity");
     bool pass = si_init;
 
@@ -921,7 +924,6 @@ bool sirtest_updatesanity(void) {
     pass &= NULL != id1;
 
     for (int i = 0; i < 10; i++) {
-
         if (!pass)
             break;
 
@@ -990,9 +992,8 @@ bool sirtest_updatesanity(void) {
     return print_result_and_return(pass);
 }
 
-static
-bool generic_syslog_test(const char* sl_name, const char* identity, const char* category) {
-    bool pass = true;
+static bool generic_syslog_test(const char* sl_name, const char* identity, const char* category) {
+    bool pass             = true;
     static const int runs = 5;
 
     /* repeat initializing, opening, logging, closing, cleaning up n times. */
@@ -1000,7 +1001,8 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
     pass &= startsirtimer(&timer);
 
     printf("\trunning %d passes of random configs (system logger: '%s', "
-           "identity: '%s', category: '%s')...\n", runs, sl_name, identity, category);
+           "identity: '%s', category: '%s')...\n",
+        runs, sl_name, identity, category);
 
     for (int i = 0; i < runs; i++) {
         /* randomly skip setting process name, identity/category to thoroughly
@@ -1016,19 +1018,19 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
         INIT_SL(si, SIRL_ALL, SIRO_NOHOST | SIRO_NOTID, 0, 0, (set_procname ? "sir_sltest" : ""));
         si.d_syslog.opts   = SIRO_DEFAULT;
         si.d_syslog.levels = SIRL_DEFAULT;
-        
+
         if (set_identity)
             _sir_strncpy(si.d_syslog.identity, SIR_MAX_SYSLOG_CAT, identity, SIR_MAX_SYSLOG_ID);
 
-        if (set_category)    
+        if (set_category)
             _sir_strncpy(si.d_syslog.category, SIR_MAX_SYSLOG_CAT, category, SIR_MAX_SYSLOG_CAT);
-        
+
         si_init = sir_init(&si);
         pass &= si_init;
 
         if (do_update)
             pass &= sir_sysloglevels(SIRL_ALL);
-            
+
         pass &= sir_debug("%d/%d: this debug message sent to stdout and %s.", i + 1, runs, sl_name);
         pass &= sir_info("%d/%d: this info message sent to stdout and %s.", i + 1, runs, sl_name);
 
@@ -1037,12 +1039,12 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
         pass &= sir_error("%d/%d: this error message sent to stdout and %s.", i + 1, runs, sl_name);
 
         if (do_update)
-            pass &= sir_syslogopts(SIRO_MSGONLY &~ (SIRO_NOLEVEL | SIRO_NOPID));
+            pass &= sir_syslogopts(SIRO_MSGONLY & ~(SIRO_NOLEVEL | SIRO_NOPID));
 
         pass &= sir_crit("%d/%d: this critical message sent to stdout and %s.", i + 1, runs, sl_name);
         pass &= sir_alert("%d/%d: this alert message sent to stdout and %s.", i + 1, runs, sl_name);
         pass &= sir_emerg("%d/%d: this emergency message sent to stdout and %s.", i + 1, runs, sl_name);
-   
+
         sir_cleanup();
 
         if (!pass)
@@ -1067,8 +1069,8 @@ bool sirtest_os_log(void) {
     return true;
 #else
     return generic_syslog_test("os_log", "com.aremmell.libsir.tests", "tests");
-#pragma message("TODO: os_activity_initiate_f")
-        /* static void os_log_activity1(void* ctx) {} */
+# pragma message("TODO: os_activity_initiate_f")
+    /* static void os_log_activity1(void* ctx) {} */
 #endif
 }
 
@@ -1089,7 +1091,7 @@ bool sirtest_filesystem(void) {
 
         if (NULL != filename) {
             /* _sir_get[base|dir]name() can potentially modify filename,
-            * so make a copy for each call. */
+             * so make a copy for each call. */
             char* filename2 = strdup(filename);
             pass &= NULL != filename2;
 
@@ -1117,7 +1119,7 @@ bool sirtest_filesystem(void) {
             printf("\t_sir_getappdir: '%s'\n", PRN_STR(appdir));
 
             /* _sir_get[base|dir]name can potentially modify filename,
-            * so make a copy for each call. */
+             * so make a copy for each call. */
             char* filename3 = strdup(filename);
             pass &= NULL != filename3;
 
@@ -1138,7 +1140,7 @@ bool sirtest_filesystem(void) {
 
         _sir_safefree(cwd);
     }
-    
+
     /* this next section doesn't really yield any useful boolean pass/fail
      * information, but could be helpful to review manually. */
     char* dubious_dirnames[] = {
@@ -1155,15 +1157,15 @@ bool sirtest_filesystem(void) {
         "C:\\foo\\bar\\bad:>filename",
         "C:\\",
         "//network-share/myfolder"
-#endif        
+#endif
     };
 
     for (size_t n = 0; n < _sir_countof(dubious_dirnames); n++) {
-        char *tmp = strdup(dubious_dirnames[n]);
+        char* tmp = strdup(dubious_dirnames[n]);
         if (NULL != tmp) {
             printf("\t_sir_getdirname(" WHITE("'%s'") ") = " WHITE("'%s'") " (after: '%s')\n",
                 tmp, _sir_getdirname(tmp), tmp);
-            _sir_safefree(tmp);            
+            _sir_safefree(tmp);
         }
     }
 
@@ -1179,40 +1181,43 @@ bool sirtest_filesystem(void) {
         "C:\\foo\\bar\\illegal>filename.txt",
         "C:\\",
         "\\Program Files\\foo.bar"
-#endif              
+#endif
     };
 
     for (size_t n = 0; n < _sir_countof(dubious_filenames); n++) {
-        char *tmp = strdup(dubious_filenames[n]);
+        char* tmp = strdup(dubious_filenames[n]);
         if (NULL != tmp) {
             printf("\t_sir_getbasename(" WHITE("'%s'") ") = " WHITE("'%s'") " (after: '%s')\n",
                 tmp, _sir_getbasename(tmp), tmp);
-            _sir_safefree(tmp);            
-        }            
+            _sir_safefree(tmp);
+        }
     }
 
     /* absolute/relative paths. */
-    static const struct { const char* const path; bool abs; } abs_or_rel_paths[] = {
-        {"this/is/relative",          false},
-        {"relative",                  false},
-        {"./relative",                false},
-        {"../../relative",            false},
+    static const struct {
+        const char* const path;
+        bool abs;
+    } abs_or_rel_paths[] = {
+        {"this/is/relative", false},
+        {"relative", false},
+        {"./relative", false},
+        {"../../relative", false},
 #if !defined(__WIN__)
-        {"/usr/local/bin",            true},
-        {"/",                         true},
-        {"/home/foo/.config",         true},
-        {"~/.config",                 true}
+        {"/usr/local/bin", true},
+        {"/", true},
+        {"/home/foo/.config", true},
+        {"~/.config", true}
 #else /* __WIN__ */
-        {"D:\\absolute",              true},
+        {"D:\\absolute", true},
         {"C:\\Program Files\\FooBar", true},
-        {"C:\\",                      true},
-        {"\\absolute",                true},
-#endif          
+        {"C:\\", true},
+        {"\\absolute", true},
+#endif
     };
 
     for (size_t n = 0; n < _sir_countof(abs_or_rel_paths); n++) {
         bool relative = false;
-        bool ret = _sir_ispathrelative(abs_or_rel_paths[n].path, &relative);
+        bool ret      = _sir_ispathrelative(abs_or_rel_paths[n].path, &relative);
 
         pass &= ret;
         if (!ret) {
@@ -1223,51 +1228,53 @@ bool sirtest_filesystem(void) {
 
         if (relative == abs_or_rel_paths[n].abs) {
             pass = false;
-            printf("\t" RED("_sir_ispathrelative('%s') = %s") "\n",
-                abs_or_rel_paths[n].path, relative ? "true" : "false");
+            printf("\t" RED("_sir_ispathrelative('%s') = %s") "\n", abs_or_rel_paths[n].path,
+                relative ? "true" : "false");
         } else {
-            printf("\t" GREEN("_sir_ispathrelative('%s') = %s") "\n",
-                abs_or_rel_paths[n].path, relative ? "true" : "false");            
+            printf("\t" GREEN("_sir_ispathrelative('%s') = %s") "\n", abs_or_rel_paths[n].path,
+                relative ? "true" : "false");
         }
     }
 
     /* file existence. */
-    static const struct { const char* const path; bool exists; } real_or_not[] = {
-        {"../foobarbaz",          false},
-        {"foobarbaz",             false},        
+    static const struct {
+        const char* const path;
+        bool exists;
+    } real_or_not[] = {
+        {"../foobarbaz", false},
+        {"foobarbaz", false},
 #if !defined(__WIN__)
-        {"/",                     true},
-        {"/usr/bin",              true},
-        {"/dev",                  true},
+        {"/", true},
+        {"/usr/bin", true},
+        {"/dev", true},
 #else /* __WIN__ */
-        {"\\Windows",             true},
-        {"\\Program Files",       true},
+        {"\\Windows", true},
+        {"\\Program Files", true},
 #endif
-        {"../../LICENSE",         true},
+        {"../../LICENSE", true},
         {"../../msvs/libsir.sln", true},
-        {"../",                   true},
-        {"file.exists",           true}
+        {"../", true},
+        {"file.exists", true}
     };
 
     for (size_t n = 0; n < _sir_countof(real_or_not); n++) {
         bool exists = false;
-        bool ret    = _sir_pathexists(real_or_not[n].path, &exists,
-                        SIR_PATH_REL_TO_APP);
+        bool ret    = _sir_pathexists(real_or_not[n].path, &exists, SIR_PATH_REL_TO_APP);
 
         pass &= ret;
         if (!ret) {
             bool unused = print_test_error(false, false);
             _SIR_UNUSED(unused);
-            continue;            
+            continue;
         }
 
         if (exists != real_or_not[n].exists) {
             pass = false;
-            printf("\t" RED("_sir_pathexists('%s') = %s") "\n",
-                real_or_not[n].path, exists ? "true" : "false");            
+            printf("\t" RED("_sir_pathexists('%s') = %s") "\n", real_or_not[n].path,
+                exists ? "true" : "false");
         } else {
-            printf("\t" GREEN("_sir_pathexists('%s') = %s") "\n",
-                real_or_not[n].path, exists ? "true" : "false");               
+            printf("\t" GREEN("_sir_pathexists('%s') = %s") "\n", real_or_not[n].path,
+                exists ? "true" : "false");
         }
     }
 
@@ -1294,7 +1301,7 @@ bool sirtest_mthread_race(void) {
     bool pass           = si_init;
     bool any_created    = false;
     size_t last_created = 0;
-    
+
     thread_args* heap_args = (thread_args*)calloc(NUM_THREADS, sizeof(thread_args));
     pass &= NULL != heap_args;
     if (!heap_args) {
@@ -1324,7 +1331,7 @@ bool sirtest_mthread_race(void) {
         }
 
         last_created = n;
-        any_created = true;
+        any_created  = true;
     }
 
     if (any_created) {
@@ -1335,14 +1342,16 @@ bool sirtest_mthread_race(void) {
             int join = pthread_join(thrds[j], NULL);
             if (0 != join) {
                 joined = false;
-                errno = join;
-                handle_os_error(true, "pthread_join() for thread #%zu (%p) failed!", j + 1, (void*)thrds[j]);
+                errno  = join;
+                handle_os_error(true, "pthread_join() for thread #%zu (%p) failed!", j + 1,
+                    (void*)thrds[j]);
             }
 #else /* __WIN__ */
             DWORD wait = WaitForSingleObject((HANDLE)thrds[j], INFINITE);
             if (WAIT_OBJECT_0 != wait) {
                 joined = false;
-                handle_os_error(false, "WaitForSingleObject() for thread #%zu (%p) failed!", j + 1, (HANDLE)thrds[j]);
+                handle_os_error(false, "WaitForSingleObject() for thread #%zu (%p) failed!", j + 1,
+                    (HANDLE)thrds[j]);
             }
 #endif
             pass &= joined;
@@ -1369,9 +1378,9 @@ static void* sirtest_thread(void* arg) {
 #else /* __WIN__ */
 unsigned sirtest_thread(void* arg) {
 #endif
-    pid_t threadid = _sir_gettid();
+    pid_t threadid       = _sir_gettid();
     thread_args* my_args = (thread_args*)arg;
-    
+
     rmfile(my_args->log_file);
     sirfileid_t id = sir_addfile(my_args->log_file, SIRL_ALL, SIRO_MSGONLY);
 
@@ -1417,7 +1426,7 @@ unsigned sirtest_thread(void* arg) {
         } else {
             if (!sir_settextstyle(SIRL_DEBUG, style))
                 my_args->pass = print_test_error(false, false);
-            
+
             if (!sir_fileopts(id, SIRO_NOPID))
                 my_args->pass = print_test_error(false, false);
 
@@ -1431,7 +1440,7 @@ unsigned sirtest_thread(void* arg) {
 
     if (!sir_remfile(id))
         my_args->pass = print_test_error(false, false);
-    
+
     rmfile(my_args->log_file);
 
 #if !defined(__WIN__)
@@ -1457,29 +1466,28 @@ bool sirtest_XXX(void) {
 
 bool print_test_error(bool result, bool expected) {
     char message[SIR_MAXERROR] = {0};
-    uint16_t code = sir_geterror(message);
+    uint16_t code              = sir_geterror(message);
 
-    if (!expected && !result && SIR_E_NOERROR != code) {
+    if (!expected && !result && SIR_E_NOERROR != code)
         printf("\t" RED("!! Unexpected (%hu, %s)") "\n", code, message);
-    } else if (expected) {
+    else if (expected)
         printf("\t" GREEN("Expected (%hu, %s)") "\n", code, message);
-    }
 
     return result;
 }
 
 void print_os_error(void) {
     char message[SIR_MAXERROR] = {0};
-    uint16_t code = sir_geterror(message);
+    uint16_t code              = sir_geterror(message);
     fprintf(stderr, "\t" RED("OS error: (%hu, %s)") "\n", code, message);
 }
 
 bool filter_error(bool pass, uint16_t err) {
     if (!pass) {
         char message[SIR_MAXERROR] = {0};
-        uint16_t code = sir_geterror(message);
+        uint16_t code              = sir_geterror(message);
         if (code != err)
-            return false;        
+            return false;
     }
     return true;
 }
@@ -1513,16 +1521,15 @@ bool rmfile(const char* filename) {
     }
 
 #if !defined(__WIN__)
-    removed = 0 == remove(filename);
+    removed = (0 == remove(filename));
 #else /* __WIN__ */
     removed = FALSE != DeleteFile(filename);
 #endif
 
-    if (!removed) {
+    if (!removed)
         handle_os_error(false, "failed to delete %s!", filename);
-    } else {
+    else
         printf("\tdeleted %s (%ld bytes)...\n", filename, (long)st.st_size);
-    }
 
     return removed;
 }
@@ -1542,7 +1549,6 @@ bool countfiles(const char* search, const char* filename, unsigned* data) {
 }
 
 bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
-
 #if !defined(__WIN__)
     DIR* d = opendir(".");
     if (!d)
@@ -1583,9 +1589,8 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
 bool startsirtimer(sirtimer_t* timer) {
 #if !defined(__WIN__)
     int gettime = clock_gettime(CLOCK_MONOTONIC, &timer->ts);
-    if (0 != gettime) {
+    if (0 != gettime)
         handle_os_error(true, "clock_gettime(%s) failed!", "CLOCK_MONOTONIC");
-    }
 
     return 0 == gettime;
 #else /* __WIN__ */
@@ -1599,7 +1604,7 @@ float sirtimerelapsed(const sirtimer_t* timer) {
     struct timespec now;
     if (0 == clock_gettime(CLOCK_MONOTONIC, &now)) {
         return (float)((now.tv_sec * 1e3) + (now.tv_nsec / 1e6) - (timer->ts.tv_sec * 1e3) +
-                       (timer->ts.tv_nsec / 1e6));
+            (timer->ts.tv_nsec / 1e6));
     } else {
         handle_os_error(true, "clock_gettime(%s) failed!", "CLOCK_MONOTONIC");
     }
@@ -1607,12 +1612,12 @@ float sirtimerelapsed(const sirtimer_t* timer) {
 #else /* __WIN__ */
     FILETIME now;
     GetSystemTimePreciseAsFileTime(&now);
-    ULARGE_INTEGER start = {0};
-    start.LowPart = timer->ft.dwLowDateTime;
-    start.HighPart = timer->ft.dwHighDateTime;
+    ULARGE_INTEGER start   = {0};
+    start.LowPart          = timer->ft.dwLowDateTime;
+    start.HighPart         = timer->ft.dwHighDateTime;
     ULARGE_INTEGER n100sec = {0};
-    n100sec.LowPart = now.dwLowDateTime;
-    n100sec.HighPart = now.dwHighDateTime;
+    n100sec.LowPart        = now.dwLowDateTime;
+    n100sec.HighPart       = now.dwHighDateTime;
     return (float)((n100sec.QuadPart - start.QuadPart) / 1e4);
 #endif
 }
@@ -1634,14 +1639,11 @@ bool mark_test_to_run(const char* name) {
 
 void print_usage_info(void) {
     fprintf(stderr, "\n" WHITE("Usage:") "\n\n");
-    
+
     for (size_t i = 0; i < _sir_countof(_cl_arg_list); i++) {
-        fprintf(stderr, "\t%s%s%s%s%s\n",
-            _cl_arg_list[i].flag,
-            strlen(_cl_arg_list[i].usage) == 0 ? "" : "\t",
-            _cl_arg_list[i].usage,
-            strlen(_cl_arg_list[i].usage) == 0 ? "\t" : " ",
-            _cl_arg_list[i].desc);
+        fprintf(stderr, "\t%s%s%s%s%s\n", _cl_arg_list[i].flag,
+            strlen(_cl_arg_list[i].usage) == 0 ? "" : "\t", _cl_arg_list[i].usage,
+            strlen(_cl_arg_list[i].usage) == 0 ? "\t" : " ", _cl_arg_list[i].desc);
     }
 
     fprintf(stderr, "\n");

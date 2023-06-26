@@ -35,16 +35,16 @@
 #include <sirtextstyle.h>
 
 #if !defined(__WIN__)
-#   include <dirent.h>
+# include <dirent.h>
 #endif
 
 #define INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, p_name, init) \
-    sirinit var         = {0};       \
-    var.d_stdout.opts   = (o_stdout) > 0 ? o_stdout : SIRO_DEFAULT;  \
-    var.d_stdout.levels = l_stdout;  \
-    var.d_stderr.opts   = (o_stderr) > 0 ? o_stderr : SIRO_DEFAULT;  \
-    var.d_stderr.levels = l_stderr;  \
-    if (_sir_validstrnofail(p_name))   \
+    sirinit var         = {0}; \
+    var.d_stdout.opts   = (o_stdout) > 0 ? o_stdout : SIRO_DEFAULT; \
+    var.d_stdout.levels = l_stdout; \
+    var.d_stderr.opts   = (o_stderr) > 0 ? o_stderr : SIRO_DEFAULT; \
+    var.d_stderr.levels = l_stderr; \
+    if (_sir_validstrnofail(p_name)) \
         _sir_strncpy(var.name, SIR_MAXNAME, p_name, SIR_MAXNAME); \
     bool var##_init = false; \
     if (init) \
@@ -59,9 +59,9 @@
 #define INIT(var, l_stdout, o_stdout, l_stderr, o_stderr) \
     INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, "")
 
-#define TEST_S(n) ( (n) > 1 ? ("test" "s") : "test" )
-#define PRN_STR(str) ( (str) ? (str) : RED("NULL") )
-#define PRN_PASS(pass) ( (pass) ? GREENB("PASS") : REDB("FAIL") )
+#define TEST_S(n) ((n) > 1 ? ("test" "s") : "test")
+#define PRN_STR(str) ((str) ? (str) : RED("NULL"))
+#define PRN_PASS(pass) ((pass) ? GREENB("PASS") : REDB("FAIL"))
 #define INDENT_ITEM "\t  " SIR_BULLET " "
 
 /**
@@ -125,7 +125,7 @@ bool sirtest_failaftercleanup(void);
 
 /**
  * @test Properly handle initialization with junk memory.
-*/
+ */
 bool sirtest_failinvalidinitdata(void);
 
 /**
@@ -216,13 +216,16 @@ void print_os_error(void);
 bool filter_error(bool pass, uint16_t err);
 
 #if !defined(__WIN__)
-# define handle_os_error(clib, fmt, ...) (void)clib; _sir_handleerr(errno); \
-         fprintf(stderr,"\t" RED(fmt) ":\n", __VA_ARGS__); \
-         print_os_error();
+# define handle_os_error(clib, fmt, ...) \
+     (void)clib; \
+     _sir_handleerr(errno); \
+     fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
+     print_os_error();
 #else /* __WIN__ */
-# define handle_os_error(clib, fmt, ...) clib ? _sir_handleerr(errno) : _sir_handlewin32err(GetLastError()); \
-         fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
-         print_os_error();
+# define handle_os_error(clib, fmt, ...) \
+     clib ? _sir_handleerr(errno) : _sir_handlewin32err(GetLastError()); \
+     fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
+     print_os_error();
 #endif
 
 /*
