@@ -27,7 +27,7 @@
 #include "sirerrors.h"
 
 void _sir_safeclose(int* restrict fd) {
-    if (!fd || 0>*fd)
+    if (!fd || 0 > *fd)
         return;
 
     if (-1 == close(*fd))
