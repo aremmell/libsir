@@ -228,6 +228,15 @@ typedef struct {
 
 /** @} */
 
+/** Internally-used global config container. */
+typedef struct {
+    sirinit si;
+    struct {
+        char hostname[SIR_MAXHOST];
+        pid_t pid;
+    } state;
+} sirconfig;
+
 /** Internally-used error type. */
 typedef struct {
     uint32_t code;
@@ -269,7 +278,7 @@ typedef struct {
     char style[SIR_MAXSTYLE];
     char timestamp[SIR_MAXTIME];
     char msec[SIR_MAXMSEC];
-    char hostname[SIR_MAXHOST];
+    const char* hostname;
     char level[SIR_MAXLEVEL];
     const char* name;
     char pid[SIR_MAXPID];
@@ -294,9 +303,9 @@ typedef struct {
 
 /** Mutex <-> protected section mapping. */
 typedef enum {
-    _SIRM_INIT = 0,  /**< The ::sirinit section. */
-    _SIRM_FILECACHE, /**< The ::sirfcache section. */
-    _SIRM_TEXTSTYLE, /**< The ::sir_level_style_tuple section. */
+    _SIRM_CONFIG = 0, /**< The ::sirconfig section. */
+    _SIRM_FILECACHE,  /**< The ::sirfcache section. */
+    _SIRM_TEXTSTYLE,  /**< The ::sir_level_style_tuple section. */
 } sir_mutex_id;
 
 /** Error type. */

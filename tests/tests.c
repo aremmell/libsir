@@ -1526,10 +1526,11 @@ bool rmfile(const char* filename) {
     removed = FALSE != DeleteFile(filename);
 #endif
 
-    if (!removed)
+    if (!removed) {
         handle_os_error(false, "failed to delete %s!", filename);
-    else
+    } else {
         printf("\tdeleted %s (%ld bytes)...\n", filename, (long)st.st_size);
+    }
 
     return removed;
 }
@@ -1589,8 +1590,9 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
 bool startsirtimer(sirtimer_t* timer) {
 #if !defined(__WIN__)
     int gettime = clock_gettime(CLOCK_MONOTONIC, &timer->ts);
-    if (0 != gettime)
+    if (0 != gettime) {
         handle_os_error(true, "clock_gettime(%s) failed!", "CLOCK_MONOTONIC");
+    }
 
     return 0 == gettime;
 #else /* __WIN__ */

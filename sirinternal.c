@@ -35,8 +35,8 @@
 # pragma comment(lib, "ws2_32.lib")
 #endif
 
-static sirinit _sir_si   = {0};
-static sirfcache _sir_fc = {0};
+static sirconfig _sir_cfg = {0};
+static sirfcache _sir_fc  = {0};
 
 static sirmutex_t si_mutex;
 static sironce_t si_once = SIR_ONCE_INIT;
@@ -70,6 +70,9 @@ bool _sir_makeinit(sirinit* si) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     si->d_syslog.opts   = SIRO_DEFAULT;
     si->d_syslog.levels = SIRL_DEFAULT;
+#else
+    si->d_syslog.opts   = SIRO_MSGONLY;
+    si->d_syslog.levels = SIRL_NONE;
 #endif
 
     return true;
@@ -105,11 +108,12 @@ bool _sir_init(sirinit* si) {
     if (!_sir_options_sanity(si))
         return false;
 
-    sirinit* _si = _sir_locksection(_SIRM_INIT);
-    assert(_si);
+    sirconfig* _cfg = _sir_locksection(_SIRM_CONFIG);
+    assert(_cfg);
 
-    if (_sir_validptr(_si)) {
-        memcpy(_si, si, sizeof(sirinit));
+    if (_sir_validptr(_cfg)) {
+        memset(_cfg, 0, sizeof(sirconfig));
+        memcpy(&_cfg->si, si, sizeof(sirinit));
 
 #if defined(__HAVE_ATOMIC_H__)
         atomic_store(&_sir_magic, _SIR_MAGIC);
@@ -126,19 +130,25 @@ bool _sir_init(sirinit* si) {
             return false;
 
         /* forcibly null-terminate the process name. */
-        _si->name[SIR_MAXNAME - 1] = '\0';
+        _cfg->si.name[SIR_MAXNAME - 1] = '\0';
+
+        /* Store host name and PID. */
+        if (!_sir_gethostname(_cfg->state.hostname))
+            _sir_selflog("error: failed to get host name!");
+
+        _cfg->state.pid = _sir_getpid();
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
         /* initialize system logger. */
-        _sir_syslog_reset(&si->d_syslog);
+        _sir_syslog_reset(&_cfg->si.d_syslog);
 
-        if (_si->d_syslog.levels != SIRL_NONE) {
-            if (!_sir_syslog_init(_si->name, &_si->d_syslog))
+        if (_cfg->si.d_syslog.levels != SIRL_NONE) {
+            if (!_sir_syslog_init(_cfg->si.name, &_cfg->si.d_syslog))
                 _sir_selflog("failed to initialize system logger!");
         }
 #endif
 
-        bool unlock = _sir_unlocksection(_SIRM_INIT);
+        bool unlock = _sir_unlocksection(_SIRM_CONFIG);
         assert(unlock);
         return unlock;
     }
@@ -160,18 +170,18 @@ bool _sir_cleanup(void) {
         cleanup &= _sir_unlocksection(_SIRM_FILECACHE) && destroyfc;
     }
 
-    sirinit* si = _sir_locksection(_SIRM_INIT);
-    assert(si);
-    cleanup &= _sir_notnull(si);
+    sirconfig* _cfg = _sir_locksection(_SIRM_CONFIG);
+    assert(_cfg);
+    cleanup &= _sir_validptr(_cfg);
 
-    if (_sir_notnull(si)) {
+    if (_sir_validptr(_cfg)) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
-        if (!_sir_syslog_close(&si->d_syslog)) {
+        if (!_sir_syslog_close(&_cfg->si.d_syslog)) {
             cleanup = false;
             _sir_selflog("failed to close system logger!");
         }
 
-        _sir_syslog_reset(&si->d_syslog);
+        _sir_syslog_reset(&_cfg->si.d_syslog);
 #endif
 
         cleanup &= _sir_resettextstyles();
@@ -181,8 +191,9 @@ bool _sir_cleanup(void) {
 #else
         _sir_magic = 0;
 #endif
-        memset(si, 0, sizeof(sirinit));
-        cleanup &= _sir_unlocksection(_SIRM_INIT);
+
+        memset(_cfg, 0, sizeof(sirconfig));
+        cleanup &= _sir_unlocksection(_SIRM_CONFIG);
     }
 
     _sir_selflog("cleanup: %s", (cleanup ? "successful" : "with issues"));
@@ -329,14 +340,14 @@ bool _sir_writeinit(sir_update_config_data* data, sirinit_update update) {
     _sir_seterror(_SIR_E_NOERROR);
 
     if (_sir_sanity() && _sir_validupdatedata(data) && _sir_notnull(update)) {
-        sirinit* si = _sir_locksection(_SIRM_INIT);
-        assert(si);
+        sirconfig* _cfg= _sir_locksection(_SIRM_CONFIG);
+        assert(_cfg);
 
-        if (_sir_validptr(si)) {
-            bool updated = update(si, data);
+        if (_sir_validptr(_cfg)) {
+            bool updated = update(&_cfg->si, data);
             if (!updated)
                 _sir_selflog("error: update routine failed!");
-            return _sir_unlocksection(_SIRM_INIT) && updated;
+            return _sir_unlocksection(_SIRM_CONFIG) && updated;
         }
     }
 
@@ -377,10 +388,10 @@ bool _sir_mapmutexid(sir_mutex_id mid, sirmutex_t** m, void** section) {
     void* tmpsec;
 
     switch (mid) {
-        case _SIRM_INIT:
+        case _SIRM_CONFIG:
             _sir_once(&si_once, _sir_initmutex_si_once);
             tmpm   = &si_mutex;
-            tmpsec = &_sir_si;
+            tmpsec = &_sir_cfg;
             break;
         case _SIRM_FILECACHE:
             _sir_once(&fc_once, _sir_initmutex_fc_once);
@@ -480,16 +491,17 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
 
     _sir_seterror(_SIR_E_NOERROR);
 
-    sirinit* si = _sir_locksection(_SIRM_INIT);
-    if (!si)
+    sirconfig* _cfg = _sir_locksection(_SIRM_CONFIG);
+    if (!_cfg)
         return false;
 
-    sirinit tmpsi;
-    memcpy(&tmpsi, si, sizeof(sirinit));
-    _sir_unlocksection(_SIRM_INIT);
+    sirconfig tmpcfg;
+    memcpy(&tmpcfg, _cfg, sizeof(sirconfig));
+    _sir_unlocksection(_SIRM_CONFIG);
 
     sirbuf buf = {0};
-    buf.name = tmpsi.name;
+    buf.hostname = tmpcfg.state.hostname;
+    buf.name = tmpcfg.si.name;
 
     bool fmt = false;
     const char* style_str = _sir_gettextstyle(level);
@@ -543,7 +555,7 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
         _sir_handleerr(errno);
 
     pid_t tid = _sir_gettid();
-    if (tid != pid) {
+    if (tid != tmpcfg.state.pid) {
         if (!_sir_getthreadname(buf.tid)) {
             if (0 > snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, tid))
                 _sir_handleerr(errno);
@@ -553,7 +565,7 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     if (0 > vsnprintf(buf.message, SIR_MAXMESSAGE, format, args))
         _sir_handleerr(errno);
 
-    return _sir_dispatch(&tmpsi, level, &buf);
+    return _sir_dispatch(&tmpcfg.si, level, &buf);
 }
 
 bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
