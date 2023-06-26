@@ -30,7 +30,6 @@
 #if !defined(__WIN__) /* pthread mutex implementation */
 
 bool _sirmutex_create(sirmutex_t* mutex) {
-
     if (_sir_validptr(mutex)) {
         pthread_mutexattr_t attr;
 
@@ -56,7 +55,6 @@ bool _sirmutex_create(sirmutex_t* mutex) {
 }
 
 bool _sirmutex_trylock(sirmutex_t* mutex) {
-
     if (_sir_validptr(mutex)) {
         int op = pthread_mutex_trylock(mutex);
         if (0 != op)
@@ -68,7 +66,6 @@ bool _sirmutex_trylock(sirmutex_t* mutex) {
 }
 
 bool _sirmutex_lock(sirmutex_t* mutex) {
-
     if (_sir_validptr(mutex)) {
         int op = pthread_mutex_lock(mutex);
         if (0 != op)
@@ -80,7 +77,6 @@ bool _sirmutex_lock(sirmutex_t* mutex) {
 }
 
 bool _sirmutex_unlock(sirmutex_t* mutex) {
-
     if (_sir_validptr(mutex)) {
         int op = pthread_mutex_unlock(mutex);
         if (0 != op)
@@ -92,7 +88,6 @@ bool _sirmutex_unlock(sirmutex_t* mutex) {
 }
 
 bool _sirmutex_destroy(sirmutex_t* mutex) {
-
     if (_sir_validptr(mutex)) {
         int op = pthread_mutex_destroy(mutex);
         if (0 != op)
@@ -108,7 +103,6 @@ bool _sirmutex_destroy(sirmutex_t* mutex) {
 static bool _sirmutex_waitwin32(sirmutex_t mutex, DWORD msec);
 
 bool _sirmutex_create(sirmutex_t* mutex) {
-
     if (_sir_validptr(mutex)) {
         sirmutex_t tmp = CreateMutex(NULL, FALSE, NULL);
 
@@ -133,7 +127,6 @@ bool _sirmutex_lock(sirmutex_t* mutex) {
 }
 
 bool _sirmutex_unlock(sirmutex_t* mutex) {
-
     if (_sir_validptr(mutex)) {
         BOOL release = ReleaseMutex(*mutex);
 
@@ -147,7 +140,6 @@ bool _sirmutex_unlock(sirmutex_t* mutex) {
 }
 
 bool _sirmutex_destroy(sirmutex_t* mutex) {
-
     if (_sir_validptr(mutex)) {
         BOOL close = CloseHandle(*mutex);
 
@@ -161,7 +153,6 @@ bool _sirmutex_destroy(sirmutex_t* mutex) {
 }
 
 static bool _sirmutex_waitwin32(sirmutex_t mutex, DWORD msec) {
-
     if (_sir_validptr(mutex)) {
         DWORD wait = WaitForSingleObject(mutex, msec);
 

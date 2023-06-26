@@ -125,7 +125,7 @@
 /**
  * The size, in bytes, at which a log file will be rolled/archived.
  * @remark Default = 5 MiB.
-*/
+ */
 #define SIR_FROLLSIZE (1024 * 1024 * 5)
 
 /**
@@ -278,8 +278,8 @@
 
 /** The maximum size, in characters, of final formatted output. */
 #define SIR_MAXOUTPUT \
-    ( SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME + SIR_MAXLEVEL + \
-         SIR_MAXNAME + (SIR_MAXPID   * 2) + SIR_MAXMISC + 1 )
+    (SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME + SIR_MAXLEVEL + \
+        SIR_MAXNAME + (SIR_MAXPID   * 2) + SIR_MAXMISC + 1)
 
 /** The maximum size, in characters, of an error message. */
 #define SIR_MAXERROR 256

@@ -157,7 +157,7 @@ typedef struct {
      * @note If your system supports syslog, and libsir is compiled with the intent
      * to use it (::SIR_SYSLOG_ENABLED is defined), then at least ::SIRO_NOPID is
      * supported.
-    */
+     */
     sir_options opts;
 
     /** Reserved for internal use; do not modify. */
@@ -180,7 +180,7 @@ typedef struct {
      * the string ::SIR_FALLBACK_SYSLOG_ID will be used.
      *
      * @note Can be modified at runtime by calling ::sir_syslogid.
-    */
+     */
     char identity[SIR_MAX_SYSLOG_ID];
 
     /**
@@ -244,15 +244,15 @@ typedef struct {
 #define _SIRS_BG_MASK 0x000ff000
 
 /** True if foreground and background colors are the same. */
-#define _SIRS_SAME_COLOR(fg, bg) ( ( ( (bg) >> 8 ) & _SIRS_FG_MASK ) == (fg) )
+#define _SIRS_SAME_COLOR(fg, bg) ((((bg) >> 8) & _SIRS_FG_MASK) == (fg))
 
 /** Magic number used to determine if libsir has been initialized. */
 #define _SIR_MAGIC 0x60906090
 
 /** Log file data. */
 typedef struct {
-    char*  path;
-    sir_levels  levels;
+    char* path;
+    sir_levels levels;
     sir_options opts;
     FILE* f;
     int id;

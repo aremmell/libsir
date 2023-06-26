@@ -43,10 +43,10 @@ sir_level_style_tuple sir_level_to_style_map[SIR_NUMLEVELS] = {
     {SIRL_DEBUG,  SIRS_INVALID, {0}}
 };
 
-/** 
+/**
  * @brief Mapping of ::sir_textstyle <-> values used to generate
  * styled terminal output for 4-bit (16-color) mode.
- * 
+ *
  * @attention Entries *must* remain in numeric ascending order
  * (by SIRS_*); binary search is used to look up entries based
  * on those values.

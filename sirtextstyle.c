@@ -28,12 +28,11 @@
 #include "sirdefaults.h"
 
 const char* _sir_gettextstyle(sir_level level) {
-
     _sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_validlevel(level))
         return NULL;
-        
+
     sir_level_style_tuple* map = _sir_locksection(_SIRM_TEXTSTYLE);
     assert(map);
 
@@ -62,7 +61,6 @@ const char* _sir_gettextstyle(sir_level level) {
 }
 
 bool _sir_settextstyle(sir_level level, sir_textstyle style) {
-    
     _sir_seterror(_SIR_E_NOERROR);
 
     if (_sir_sanity() && _sir_validlevel(level) && _sir_validstyle(style, NULL, NULL, NULL)) {
@@ -79,7 +77,7 @@ bool _sir_settextstyle(sir_level level, sir_textstyle style) {
 
             if (map[_mid].level == level) {
                 map[_mid].style = style;
-                updated = _sir_formatstyle(style, map[_mid].str, SIR_MAXSTYLE);
+                updated         = _sir_formatstyle(style, map[_mid].str, SIR_MAXSTYLE);
                 break;
             }
 
@@ -129,30 +127,29 @@ bool _sir_resettextstyles(void) {
 }
 
 uint16_t _sir_getprivstyle(uint32_t style) {
-
     static const size_t idx_attr_start = 0;
-    static const size_t idx_attr_end = 2;
+    static const size_t idx_attr_end   = 2;
 
     static const size_t idx_fg_start = 3;
-    static const size_t idx_fg_end = 19;
+    static const size_t idx_fg_end   = 19;
 
     static const size_t idx_bg_start = 20;
-    static const size_t idx_bg_end = _sir_countof(sir_style_16color_map) - 1;
+    static const size_t idx_bg_end   = _sir_countof(sir_style_16color_map) - 1;
 
-    size_t low = 0;
+    size_t low  = 0;
     size_t high = 0;
 
     if (style <= SIRS_DIM) {
         /* looking up an attribute */
-        low = idx_attr_start;
+        low  = idx_attr_start;
         high = idx_attr_end;
     } else if (style <= SIRS_FG_WHITE) {
         /* looking up a foreground color */
-        low = idx_fg_start;
+        low  = idx_fg_start;
         high = idx_fg_end;
     } else {
         /* looking up a background color */
-        low = idx_bg_start;
+        low  = idx_bg_start;
         high = idx_bg_end;
     }
 
@@ -169,15 +166,12 @@ uint16_t _sir_getprivstyle(uint32_t style) {
 }
 
 bool _sir_formatstyle(sir_textstyle style, char* buf, size_t size) {
-
     if (_sir_validptr(buf)) {
-
         uint32_t attr = 0;
-        uint32_t fg = 0;
-        uint32_t bg = 0;
+        uint32_t fg   = 0;
+        uint32_t bg   = 0;
 
         if (_sir_validstyle(style, &attr, &fg, &bg)) {
-
             uint16_t privattr = _sir_getprivstyle(attr);
             uint16_t privfg   = _sir_getprivstyle(fg);
             uint16_t privbg   = _sir_getprivstyle(bg);
@@ -202,7 +196,6 @@ bool _sir_formatstyle(sir_textstyle style, char* buf, size_t size) {
 }
 
 bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32_t* pbg) {
-
     uint32_t attr = (style & _SIRS_ATTR_MASK);
     uint32_t fore = (style & _SIRS_FG_MASK);
     uint32_t back = (style & _SIRS_BG_MASK);
@@ -211,7 +204,8 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
     bool fgvalid   = fore <= SIRS_FG_WHITE;
     bool bgvalid   = back <= SIRS_BG_WHITE && !_SIRS_SAME_COLOR(fore, back);
 
-#pragma message("TODO: See if we can't rearrange the values and bitmasks for these values so things like 'SIRS_FG_RED | SIRS_FG_DEFAULT' can be invalidated (right now that == SIRS_FG_DGRAY")
+#pragma message( \
+        "TODO: See if we can't rearrange the values and bitmasks for these values so things like 'SIRS_FG_RED | SIRS_FG_DEFAULT' can be invalidated (right now that == SIRS_FG_DGRAY")
 
     if (_sir_validptrnofail(pattr))
         *pattr = attrvalid ? attr : 0;
@@ -220,7 +214,7 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
         *pfg = fgvalid ? fore : 0;
 
     if (_sir_validptrnofail(pbg))
-        *pbg  = bgvalid ? back : 0;
+        *pbg = bgvalid ? back : 0;
 
     if (attrvalid && fgvalid && bgvalid)
         return true;

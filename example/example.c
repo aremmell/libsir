@@ -1,6 +1,6 @@
 /**
  * @file example.c
- * 
+ *
  * A simple demonstration of initialization, configuration, and basic usage of
  * libsir.
  *
@@ -33,23 +33,22 @@ int report_error(void);
 
 /**
  * @brief This is a basic example of initializing and configuring libsir for use.
- * 
+ *
  * @note You can build this command-line app yourself using `make example` or the
  * Visual Studio [Code] project files.
- * 
+ *
  * When the program is finished running, you can see the output in the console,
  * and examine the contents of 'libsir-example.log' in the current working
  * directory.
- * 
+ *
  * @returns EXIT_SUCCESS if execution completes successfully, or EXIT_FAILURE
  * if an error occurs.
  */
 int main(void) {
-
     /**
      * Instantiate the libsir initialization struct and customize the
      * configuration.
-     * 
+     *
      * NOTE: It is not necessary to retain this structure in memory;
      * libsir makes a copy of it before returning from ::sir_init.
      */
@@ -73,7 +72,7 @@ int main(void) {
     si.d_syslog.levels = SIRL_NONE;
 
     /* Options for the system logger: use the default value. */
-    si.d_syslog.opts   = SIRO_DEFAULT;
+    si.d_syslog.opts = SIRO_DEFAULT;
 
     /* Configure a name to associate with our output. */
     static const char* appname = "MyFooServer";
@@ -95,21 +94,21 @@ int main(void) {
      * Ready to start logging. The messages passed to sir_debug() will be sent
      * to all destinations registered for the ::SIRL_DEBUG level. In our example,
      * that is stdout and 'libsir-example.log'.
-     */ 
+     */
 
     /* Notice that it is not necessary to include a newline */
     sir_debug("Reading config file %s...", "/usr/local/myapp/myapp.conf");
 
     /* Pretend to read a config file */
     sir_debug("Config file successfully parsed; connecting to database...");
-    
+
     /* pretend to connect to a database */
     sir_debug("Database connection established.");
     sir_debug("Binding a TCP socket to interface '%s'"
-              " (IPv4: %s) on port %u and listening for connections...", "eth0",
-              "120.22.140.8", 5500);
+              " (IPv4: %s) on port %u and listening for connections...",
+              "eth0", "120.22.140.8", 5500);
 
-    /* 
+    /*
      * Log a message for each of the remaining severity levels. Only up to
      * 'notice' will the messages be emitted from stdout; the rest will come from
      * stderr.
@@ -127,18 +126,18 @@ int main(void) {
     sir_error("Failed to synchronize with node pool.846.myfooserver.io! Error:"
               " %s", "connection reset by peer. Retry in 30sec");
 
-    /* 
+    /*
      * Let's decide we better set up logging to the system logger; things seem
      * to be going poorly.
-     * 
+     *
      * Set up an identity, some options, and register for error and higher.
-     * 
+     *
      * NOTE: If this platform does not have a supported system logger, or the
      * SIR_NO_SYSTEM_LOGGERS preprcessor define was set when libsir was
      * compiled, these calls will fail and have no effect.
      */
 
-#if !defined(SIR_NO_SYSTEM_LOGGERS)    
+#if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!sir_syslogid(appname))
         report_error();
 
@@ -158,9 +157,9 @@ int main(void) {
     /*
      * Things just keep getting worse for this poor sysadmin.
      */
-    sir_alert("Database repair attempt unsuccessful! Error: %s", "<unknown>");        
+    sir_alert("Database repair attempt unsuccessful! Error: %s", "<unknown>");
     sir_emerg("Unable to process client requests for %s! Restarting...", "4m52s");
-    
+
     sir_debug("Begin server shutdown.");
     sir_debug("Exiting with code %d.", 1);
 
@@ -168,10 +167,10 @@ int main(void) {
     if (fileid && !sir_remfile(fileid))
         report_error();
 
-    /* 
+    /*
      * Now, you can examine the terminal output, libsir-example.log, and
      * syslog to ensure that the library operated as expected.
-     * 
+     *
      * The last thing we have to do is uninitialize libsir by calling sir_cleanup().
      */
     sir_cleanup();
@@ -181,12 +180,12 @@ int main(void) {
 
 /**
  * Prints the last libsir error to stderr.
- * 
+ *
  * @return EXIT_FAILURE
  */
 int report_error(void) {
     char message[SIR_MAXERROR] = {0};
-    uint16_t code = sir_geterror(message);
+    uint16_t code              = sir_geterror(message);
     fprintf(stderr, "libsir error: (%hu, %s)\n", code, message);
     return EXIT_FAILURE;
 }

@@ -40,10 +40,10 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
     bool relative = false;
     if (!_sir_ispathrelative(path, &relative))
         return false;
-    
+
     if (relative) {
         char* base_path = NULL;
-        switch(rel_to) {
+        switch (rel_to) {
             case SIR_PATH_REL_TO_APP: base_path = _sir_getappdir(); break;
             case SIR_PATH_REL_TO_CWD: base_path = _sir_getcwd(); break;
             default: _sir_seterror(_SIR_E_INVALID); return false;
@@ -305,5 +305,5 @@ bool _sir_ispathrelative(const char* restrict path, bool* restrict relative) {
 #else /* __WIN__ */
     *relative = (TRUE == PathIsRelativeA(path));
     return true;
-#endif    
+#endif
 }

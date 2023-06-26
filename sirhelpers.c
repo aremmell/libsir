@@ -33,7 +33,7 @@ void _sir_safeclose(int* restrict fd) {
     if (-1 == close(*fd))
         _sir_handleerr(errno);
 
-    *fd = -1;    
+    *fd = -1;
 }
 
 bool _sir_validfd(int fd) {
@@ -69,13 +69,13 @@ bool _sir_validupdatedata(sir_update_config_data* data) {
     if (valid && _sir_bittest(data->fields, SIRU_OPTIONS))
         valid &= (_sir_validptrnofail(data->opts) &&
             _sir_validopts(*data->opts));
-    
+
     if (valid && _sir_bittest(data->fields, SIRU_SYSLOG_ID))
         valid &= _sir_validstrnofail(data->sl_identity);
 
     if (valid && _sir_bittest(data->fields, SIRU_SYSLOG_CAT))
-        valid &= _sir_validstrnofail(data->sl_category);                
-    
+        valid &= _sir_validstrnofail(data->sl_category);
+
     if (!valid) {
         _sir_seterror(_SIR_E_INVALID);
         assert("!invalid sir_update_config_data");
@@ -174,9 +174,9 @@ int _sir_strncpy(char* restrict dest, size_t destsz, const char* restrict src, s
 }
 
 /**
-  * Wrapper for strncat/strncat_s. Determines which one to use
-  * based on preprocessor macros.
-  */
+ * Wrapper for strncat/strncat_s. Determines which one to use
+ * based on preprocessor macros.
+ */
 int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src, size_t count) {
     if (_sir_validptr(dest) && _sir_validstr(src)) {
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
@@ -198,10 +198,11 @@ int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src, s
 }
 
 /**
-  * Wrapper for fopen/fopen_s. Determines which one to use
-  * based on preprocessor macros.
-  */
-int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename, const char* restrict mode) {
+ * Wrapper for fopen/fopen_s. Determines which one to use
+ * based on preprocessor macros.
+ */
+int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename,
+    const char* restrict mode) {
     if (_sir_notnull(streamptr) && _sir_validstr(filename) && _sir_validstr(mode)) {
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
         int ret = fopen_s(streamptr, filename, mode);
@@ -212,13 +213,13 @@ int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename
 
         return 0;
 #else
-         *streamptr = fopen(filename, mode);
-         if (!*streamptr) {
-             _sir_handleerr(errno);
-             return -1;
-         }
+        *streamptr = fopen(filename, mode);
+        if (!*streamptr) {
+            _sir_handleerr(errno);
+            return -1;
+        }
 
-         return 0;
+        return 0;
 #endif
     }
 
@@ -270,7 +271,7 @@ int _sir_getchar(void) {
 
     memcpy(&new, &cur, sizeof(struct termios));
     new.c_lflag &= ~(ICANON | ECHO);
-    
+
     int set = tcsetattr(STDIN_FILENO, TCSANOW, &new);
     if (0 != set) {
         _sir_handleerr(errno);
@@ -285,6 +286,6 @@ int _sir_getchar(void) {
         return -1;
     }
 
-    return ch;        
+    return ch;
 #endif
 }
