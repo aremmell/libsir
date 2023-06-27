@@ -183,6 +183,17 @@
 #define SIR_FNAMETIMEFORMAT "%y-%m-%d-%H%M%S"
 
 /**
+ * The sequence number format string for rolled/archived log files (see
+ * ::SIR_FNAMEFORMAT).
+ * 
+ * **Example**
+ *   ~~~
+ *   -1
+ *   ~~~ 
+ */
+#define SIR_FNAMESEQFORMAT "-%hu"
+
+/**
  * The format string for rolled/archived log file names.
  *
  * - The first %%s format specifier is the original file name, up to but not
@@ -190,15 +201,19 @@
  *
  * - The second %%s is the time stamp as defined by ::SIR_FNAMETIMEFORMAT.
  *
- * - The third %%s is the original file name including, and beyond the last
+ * - The third %%s is a sequence number, which may be used in the event that
+ *   a log file with the same name already exists (i.e., 2 or more files are
+ *   rolled/archived within a second). Its format is defined by ::SIR_FNAMESEQFORMAT.
+ * 
+ * - The fourth %%s is the original file name including, and beyond the last
  *   full stop, if one was found.
  *
  * **Example**
  *   ~~~
- *   `oldname.log`  ->  `oldname-23-06-09-122049.log`
+ *   `oldname.log`  ->  `oldname-23-06-09-122049-1.log`
  *   ~~~
  */
-#define SIR_FNAMEFORMAT "%s-%s%s"
+#define SIR_FNAMEFORMAT "%s-%s%s%s"
 
 /** The human-readable form of the ::SIRL_EMERG level. */
 #define SIRL_S_EMERG  "emrg"

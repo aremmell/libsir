@@ -254,9 +254,9 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                         uint16_t sequence = 0;
 
                         do {
-                            int print = snprintf(*newpath, SIR_MAXPATH, SIR_FNAMEFORMAT "%s", name,
-                                timestamp, _sir_validstrnofail(ext) ? ext : "",
-                                sequence > 0 ? seqbuf : "");
+                            int print = snprintf(*newpath, SIR_MAXPATH, SIR_FNAMEFORMAT, name,
+                                timestamp, (sequence > 0 ? seqbuf : ""),
+                                _sir_validstrnofail(ext) ? ext : "");
 
                             if (print < 0) {
                                 _sir_handleerr(errno);
@@ -274,8 +274,8 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                                  * way to definitively choose a good new path). */
                                 break;
                             } else if (exists) {
-                                /* the file already exists; concatentate a number to the end of
-                                 * the file name until one that does not exist is found. */
+                                /* the file already exists; add a number to the file name
+                                 * until one that does not exist is found. */
                                 _sir_selflog("path: '%s' already exists; incrementing sequence",
                                     *newpath);
                                 sequence++;
@@ -286,7 +286,7 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                             }
 
                             if (sequence > 0) {
-                                print = snprintf(seqbuf, 7, "-%hu", sequence);
+                                print = snprintf(seqbuf, 7, SIR_FNAMESEQFORMAT, sequence);
 
                                 if (print < 0) {
                                     _sir_handleerr(errno);
