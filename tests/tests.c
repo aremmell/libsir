@@ -864,7 +864,7 @@ bool sirtest_perf(void) {
         char logfilename[SIR_MAXPATH] = {0};
         snprintf(logfilename, SIR_MAXPATH, "%s%s", logbasename, logext);
 
-        sirfileid_t logid = sir_addfile(logfilename, SIRL_ALL, SIRO_NONAME | SIRO_NOPID);
+        sirfileid_t logid = sir_addfile(logfilename, SIRL_ALL, SIRO_NOMSEC | SIRO_NONAME);
         pass &= NULL != logid;
 
         if (pass) {
@@ -882,14 +882,15 @@ bool sirtest_perf(void) {
         }
 
         if (pass) {
-            printf("\t" WHITE("printf: ") CYAN("%zu lines in %.2fsec (%.1f lines/sec)") "\n",
+            printf("\t" WHITE("printf: ") CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
                 perflines, printfelapsed / 1e3, perflines / (printfelapsed / 1e3));
             printf("\t" WHITE("libsir(stdout): ")
-                   CYAN("%zu lines in %.2fsec (%.1f lines/sec)") "\n",
+                   CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
                 perflines, stdioelapsed / 1e3, perflines / (stdioelapsed / 1e3));
             printf("\t" WHITE("libsir(log file): ")
-                   CYAN("%zu lines in %.2fsec (%.1f lines/sec)") "\n",
+                   CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
                 perflines, fileelapsed / 1e3, perflines / (fileelapsed / 1e3));
+            printf("\t" WHITE("timer resolution: ") CYAN("~%ldnsec") "\n", sirtimergetres());
         }
     }
 
@@ -1596,9 +1597,9 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
 
 bool startsirtimer(sirtimer_t* timer) {
 #if !defined(__WIN__)
-    int gettime = clock_gettime(CLOCK_MONOTONIC, &timer->ts);
+    int gettime = clock_gettime(SIRTEST_CLOCK, &timer->ts);
     if (0 != gettime) {
-        handle_os_error(true, "clock_gettime(%s) failed!", "CLOCK_MONOTONIC");
+        handle_os_error(true, "clock_gettime(%d) failed!", SIRTEST_CLOCK);
     }
 
     return 0 == gettime;
@@ -1611,11 +1612,11 @@ bool startsirtimer(sirtimer_t* timer) {
 float sirtimerelapsed(const sirtimer_t* timer) {
 #if !defined(__WIN__)
     struct timespec now;
-    if (0 == clock_gettime(CLOCK_MONOTONIC, &now)) {
+    if (0 == clock_gettime(SIRTEST_CLOCK, &now)) {
         return (float)((now.tv_sec * 1e3) + (now.tv_nsec / 1e6) - (timer->ts.tv_sec * 1e3) +
             (timer->ts.tv_nsec / 1e6));
     } else {
-        handle_os_error(true, "clock_gettime(%s) failed!", "CLOCK_MONOTONIC");
+        handle_os_error(true, "clock_gettime(%d) failed!", SIRTEST_CLOCK);
     }
     return 0.0f;
 #else /* __WIN__ */
@@ -1629,6 +1630,21 @@ float sirtimerelapsed(const sirtimer_t* timer) {
     n100sec.HighPart       = now.dwHighDateTime;
     return (float)((n100sec.QuadPart - start.QuadPart) / 1e4);
 #endif
+}
+
+long sirtimergetres(void) {
+    long retval = 0;
+#if !defined(__WIN__)
+    struct timespec res;
+    if (0 == clock_getres(SIRTEST_CLOCK, &res)) {
+        retval = res.tv_nsec;
+    } else {
+        handle_os_error(true, "clock_getres(%d) failed!", SIRTEST_CLOCK);
+    }
+#else /* __WIN__ */
+    retval = 100;
+#endif
+    return retval;
 }
 
 bool mark_test_to_run(const char* name) {

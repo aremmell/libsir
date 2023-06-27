@@ -36,6 +36,11 @@
 
 #if !defined(__WIN__)
 # include <dirent.h>
+# if defined(CLOCK_MONOTONIC_RAW)
+#  define SIRTEST_CLOCK CLOCK_MONOTONIC_RAW
+# else
+#  define SIRTEST_CLOCK CLOCK_MONOTONIC
+# endif
 #endif
 
 #define INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, p_name, init) \
@@ -286,6 +291,7 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data);
 
 bool startsirtimer(sirtimer_t* timer);
 float sirtimerelapsed(const sirtimer_t* timer); // msec
+long sirtimergetres(void); // nsec
 
 static const struct cl_arg {
     const char* flag;
