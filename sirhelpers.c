@@ -39,11 +39,7 @@ void _sir_safeclose(int* restrict fd) {
 bool _sir_validfd(int fd) {
 #if !defined(__WIN__)
     /** stdin, stdout, stderr use up 0, 1, 2 */
-    struct rlimit rl = {0};
-    int get = getrlimit(RLIMIT_NOFILE, &rl); 
-    if (0 != get)
-        _sir_handleerr(errno);
-    bool valid = fd > 2 && (0 == get ? ((unsigned)fd < rl.rlim_max) : true);
+    bool valid = fd > 2 && (fcntl(fd, F_GETFL) != -1 || errno != EBADF);
 #else /* __WIN__ */
     intptr_t h = _get_osfhandle(fd);
     bool valid = INVALID_HANDLE_VALUE != (HANDLE)h;
@@ -96,7 +92,7 @@ bool _sir_validlevels(sir_levels levels) {
          _sir_bittest(levels, SIRL_EMERG))          &&
          ((levels & ~SIRL_ALL) == 0)))
          return true;
-                
+
     _sir_selflog("invalid levels: %04" PRIx16, levels);
     _sir_seterror(_SIR_E_LEVELS);
 

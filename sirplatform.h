@@ -127,7 +127,6 @@
 # include <pthread.h>
 # include <unistd.h>
 # include <sys/syscall.h>
-# include <sys/resource.h>
 # include <sys/time.h>
 # include <strings.h>
 # include <termios.h>
