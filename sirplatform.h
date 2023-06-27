@@ -229,12 +229,12 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 #if !defined(__MACOS__)
 # if defined(__linux__) && _POSIX_C_SOURCE >= 199309L
-#  define SIR_MSECCLOCK CLOCK_MONOTONIC_RAW
+#  define SIR_MSECCLOCK CLOCK_REALTIME
 # else
-#  define SIR_MSECCLOCK CLOCK_MONOTONIC
+#  define SIR_MSECCLOCK CLOCK_REALTIME
 # endif
 #else /* __MACOS__ */
-# define SIR_MSECCLOCK SYSTEM_CLOCK
+# define SIR_MSECCLOCK REALTIME_CLOCK
 #endif
 
 #if (defined(__clang__) || defined(__GNUC__)) && defined(__FILE_NAME__)
