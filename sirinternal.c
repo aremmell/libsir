@@ -533,7 +533,7 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     }
 
     buf.level = _sir_formattedlevelstr(level);
-    
+
     if (0 > snprintf(buf.pid, SIR_MAXPID, SIR_PIDFORMAT, tmpcfg.state.pid))
         _sir_handleerr(errno);
 
