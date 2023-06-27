@@ -190,12 +190,14 @@
     <ClCompile Include="..\sirfilesystem.c" />
     <ClCompile Include="..\sirhelpers.c" />
     <ClCompile Include="..\sirinternal.c" />
+    <ClCompile Include="..\sirmaps.c" />
     <ClCompile Include="..\sirmutex.c" />
     <ClCompile Include="..\sirtextstyle.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\sir.h" />
     <ClInclude Include="..\sir.hh" />
+    <ClInclude Include="..\siransimacros.h" />
     <ClInclude Include="..\sirconfig.h" />
     <ClInclude Include="..\sirconsole.h" />
     <ClInclude Include="..\sirdefaults.h" />

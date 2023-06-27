@@ -74,6 +74,7 @@
 # include <io.h>
 # include <synchapi.h>
 # include <process.h>
+# include <winsock2.h>
 # include <conio.h>
 # include <shlwapi.h>
 # include <direct.h>

@@ -184,7 +184,7 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
     _SIR_ITERATE_BIN_SEARCH((sir_errors[_mid].e < sir_te.lasterror ? 1 : -1));
     _SIR_END_BIN_SEARCH();
 
-    assert(false && sir_te.lasterror);
+    assert(false);
     return _SIR_E_UNKNOWN;
 }
 
