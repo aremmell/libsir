@@ -41,7 +41,9 @@ bool _sir_validfd(int fd) {
     /** stdin, stdout, stderr use up 0, 1, 2 */
     bool valid = fd > 2 && (fcntl(fd, F_GETFL) != -1 || errno != EBADF);
 #else /* __WIN__ */
+    invalparamfn old = _set_thread_local_invalid_parameter_handler(_sir_invalidparameter);
     intptr_t h = _get_osfhandle(fd);
+    _set_thread_local_invalid_parameter_handler(old);
     bool valid = INVALID_HANDLE_VALUE != (HANDLE)h;
 #endif
     if (!valid)

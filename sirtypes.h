@@ -243,6 +243,11 @@ typedef struct {
     const char* const message;
 } sirerror;
 
+#if defined(__WIN__)
+typedef void (*invalparamfn)(const wchar_t*, const wchar_t*, const wchar_t*,
+    unsigned int, uintptr_t);
+#endif
+
 /** Text style attribute mask. */
 #define _SIRS_ATTR_MASK 0x0000000f
 
