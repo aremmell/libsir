@@ -99,6 +99,16 @@
      }
 # endif
 
+# if defined(__illumos__)
+#  if !defined(_ATFILE_SOURCE)
+#   define _ATFILE_SOURCE 1
+#  endif
+#  if !defined(__EXTENSIONS__)
+#   define __EXTENSIONS__
+#  endif
+#  include <sys/fcntl.h>
+# endif
+
 # include <errno.h>
 # include <stdarg.h>
 # include <stdbool.h>
