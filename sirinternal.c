@@ -1075,7 +1075,7 @@ pid_t _sir_gettid(void) {
 # else
     tid = (pid_t)pthread_getthreadid_np();
 # endif
-#elif defined(_AIX)
+#elif defined(_AIX) || defined(__SOLARIS__)
     tid = (pid_t)pthread_self();
 #elif defined(_DEFAULT_SOURCE)
     tid = syscall(SYS_gettid);

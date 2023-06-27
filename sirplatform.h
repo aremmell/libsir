@@ -58,6 +58,8 @@
 #    define _NETBSD_SOURCE 1
 #   endif
 #   define __BSD__
+#  elif ( defined(__sun) || defined(__sun__) ) && ( defined(__SVR4) || defined(__svr4__) )
+#   define __SOLARIS__
 #  endif
 #  if defined(__linux__) && !defined(_GNU_SOURCE)
 #   define _GNU_SOURCE
@@ -125,12 +127,12 @@
 # define SIR_MAXHOST 256
 
 # if defined(__GLIBC__) || defined(_AIX) || defined(__linux__) || \
-      defined(__NetBSD__) || defined(__DragonFly__)
+      defined(__NetBSD__) || defined(__DragonFly__) || defined(__SOLARIS__)
 #  if ( (__GLIBC__ >= 2 && __GLIBC_MINOR__ > 19) || \
         ( (__GLIBC__ == 2 && __GLIBC_MINOR__ <= 19) && \
           defined(_BSD_SOURCE) ) ) || defined(_AIX) || \
       defined(__NetBSD__) || defined(__DragonFly__) || \
-      defined(__linux__)
+      defined(__linux__) || defined(__SOLARIS__)
 #   define __HAVE_UNISTD_READLINK__
 #  endif
 # endif
