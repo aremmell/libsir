@@ -799,7 +799,7 @@ bool sirtest_levelssanity(void) {
 
         pass &= _sir_validlevels(levels);
         printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %" PRIu32 ", levels:"
-                                 " %04" PRIx16) "\n", n + 1, iterations, rand_count, levels);        
+                                 " %04" PRIx16) "\n", n + 1, iterations, rand_count, levels);
     }
     PRINT_PASS(pass, "\t--- random bitmask of valid levels: %s ---\n\n", PRN_PASS(pass));
 
