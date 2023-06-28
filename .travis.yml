@@ -60,9 +60,10 @@ jobs:
     - os: windows
       -install:
           - choco install visualstudio2022buildtools --passive --norestart
+          - winget install --disable-interactivity --accept-package-agreements --id Microsoft.VisualStudio.2022.Community --override "--quiet --passive --norestart --accept-package-agreements --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64"
       script:
         - /c/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe msvs/libsir.sln -t:Rebuild -p:Configuration=Release -p:Platform=x64
-        - powershell build/bin/sirtests.exe
+        - powershell build/bin/sirtests.exee
         - powershell build/bin/sirexample.exe
 script:
   - SIR_SELFLOG=1 $MAKE clean tests example
