@@ -31,8 +31,9 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/bin/sirtests",
             "args": [
-                /* "${input:wait}",
-                "${input:perf}" */
+                /*"--only",
+                "",
+                ""*/
             ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
@@ -52,7 +53,7 @@
             "environment": [],
             "externalConsole": true,
             "MIMode": "lldb"
-        }        
+        }
     ],
     "inputs": [
         {
@@ -74,6 +75,6 @@
                 "--perf",
             ],
             "default": "--no--perf"
-        }        
+        }
     ]
 }
