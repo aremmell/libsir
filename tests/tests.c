@@ -70,7 +70,7 @@ int main(int argc, char** argv) {
 
     bool wait  = false;
     bool only  = false;
-    int to_run = 0;
+    size_t to_run = 0;
 
     for (int n = 1; n < argc; n++) {
         if (_sir_strsame(argv[n], _cl_arg_list[0].flag, strlen(_cl_arg_list[0].flag))) {
@@ -104,13 +104,13 @@ int main(int argc, char** argv) {
         }
     }
 
-    int first        = (only ? 0 : 1);
-    int tgt_tests    = (only ? to_run : _sir_countof(sir_tests) - first);
-    int passed       = 0;
-    int ran          = 0;
+    size_t first     = (only ? 0 : 1);
+    size_t tgt_tests = (only ? to_run : _sir_countof(sir_tests) - first);
+    size_t passed    = 0;
+    size_t ran       = 0;
     sirtimer_t timer = {0};
 
-    printf(WHITEB("\nrunning %d " ULINE("libsir") " %s...") "\n", tgt_tests, TEST_S(tgt_tests));
+    printf(WHITEB("\nrunning %zu " ULINE("libsir") " %s...") "\n", tgt_tests, TEST_S(tgt_tests));
     startsirtimer(&timer);
 
     for (size_t n = first; n < _sir_countof(sir_tests); n++) {
@@ -119,7 +119,7 @@ int main(int argc, char** argv) {
             continue;
         }
 
-        printf(WHITEB("\n\t(%d/%d) '%s'...") "\n\n", ran, tgt_tests, sir_tests[n].name);
+        printf(WHITEB("\n\t(%zu/%zu) '%s'...") "\n\n", ran, tgt_tests, sir_tests[n].name);
 
         sir_tests[n].pass = sir_tests[n].fn();
         if (sir_tests[n].pass)
@@ -127,7 +127,7 @@ int main(int argc, char** argv) {
 
         ran++;
 
-        printf(WHITEB("\n\t(%d/%d) '%s' finished: ") "%s\n", ran, tgt_tests, sir_tests[n].name,
+        printf(WHITEB("\n\t(%zu/%zu) '%s' finished: ") "%s\n", ran, tgt_tests, sir_tests[n].name,
             PRN_PASS(sir_tests[n].pass));
     }
 
@@ -135,11 +135,11 @@ int main(int argc, char** argv) {
 
     if (passed == tgt_tests) {
         printf("\n" WHITEB("done: ")
-                   GREENB("%s%d " ULINE("libsir") " %s passed in %.03fsec!") "\n\n",
+                   GREENB("%s%zu " ULINE("libsir") " %s passed in %.03fsec!") "\n\n",
             tgt_tests > 1 ? "all " : "", tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
     } else {
         printf("\n" WHITEB("done: ")
-                   REDB("%d of %d " ULINE("libsir") " %s failed in %.03fsec") "\n\n",
+                   REDB("%zu of %zu " ULINE("libsir") " %s failed in %.03fsec") "\n\n",
             tgt_tests - passed, tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
 
         printf(REDB("Failed %s:") "\n\n", TEST_S(tgt_tests - passed));

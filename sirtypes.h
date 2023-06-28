@@ -34,7 +34,7 @@
  * @addtogroup public
  * @{
  *
- * @defgroup publictypes Public Types
+ * @defgroup publictypes Types
  * @{
  */
 

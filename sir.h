@@ -44,6 +44,9 @@ extern "C" {
  *
  * @addtogroup public
  * @{
+ *
+ * @defgroup publicfuncs Functions
+ * @{
  */
 
 /**
@@ -79,7 +82,7 @@ bool sir_makeinit(sirinit* si);
  * @return true if initialization was successful, false otherwise. Call ::sir_geterror
  * to obtain information about any error that may have occurred if false.
  */
-bool sir_init(const sirinit* si);
+bool sir_init(sirinit* si);
 
 /**
  * @brief Tears down and cleans up libsir after use.
@@ -138,7 +141,10 @@ bool sir_syslogopts(sir_options opts);
 bool sir_syslogid(const char* identity);
 bool sir_syslogcat(const char* category);
 
-/** @} */
+/**
+ * @}
+ * @}
+ */
 
 #if defined(__cplusplus)
 }
