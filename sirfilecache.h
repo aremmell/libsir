@@ -63,6 +63,5 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
 
 void _sir_fclose(FILE** f);
 void _sir_fflush(FILE* f);
-bool _sir_fflush_all(void);
 
 #endif /* !_SIR_FILECACHE_H_INCLUDED */

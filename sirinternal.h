@@ -82,7 +82,7 @@ bool _sir_writeinit(sir_update_config_data* data, sirinit_update update);
 void* _sir_locksection(sir_mutex_id mid);
 
 /** Unlocks a protected section. */
-bool _sir_unlocksection(sir_mutex_id mid);
+void _sir_unlocksection(sir_mutex_id mid);
 
 /** Maps a ::sir_mutex_id to a ::sirmutex_t and protected section. */
 bool _sir_mapmutexid(sir_mutex_id mid, sirmutex_t** m, void** section);

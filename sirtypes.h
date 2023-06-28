@@ -314,9 +314,9 @@ typedef struct {
 
 /** Mutex <-> protected section mapping. */
 typedef enum {
-    _SIRM_CONFIG = 0, /**< The ::sirconfig section. */
-    _SIRM_FILECACHE,  /**< The ::sirfcache section. */
-    _SIRM_TEXTSTYLE,  /**< The ::sir_level_style_tuple section. */
+    SIRMI_CONFIG = 0, /**< The ::sirconfig section. */
+    SIRMI_FILECACHE,  /**< The ::sirfcache section. */
+    SIRMI_TEXTSTYLE,  /**< The ::sir_level_style_tuple section. */
 } sir_mutex_id;
 
 /** Error type. */

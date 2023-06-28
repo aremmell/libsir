@@ -28,11 +28,9 @@
 #include "sirdefaults.h"
 
 const char* _sir_gettextstyle(sir_level level) {
-    sir_level_style_tuple* map = _sir_locksection(_SIRM_TEXTSTYLE);
-    assert(map);
-
+    sir_level_style_tuple* map = _sir_locksection(SIRMI_TEXTSTYLE);
     if (!map) {
-        _sir_seterror(_SIR_E_NULLPTR);
+        _sir_seterror(_SIR_E_INTERNAL);
         return false;
     }
 
@@ -51,41 +49,43 @@ const char* _sir_gettextstyle(sir_level level) {
     _SIR_ITERATE_BIN_SEARCH((map[_mid].level < level ? 1 : -1));
     _SIR_END_BIN_SEARCH();
 
-    _sir_unlocksection(_SIRM_TEXTSTYLE);
+    _sir_unlocksection(SIRMI_TEXTSTYLE);
     return found;
 }
 
 bool _sir_settextstyle(sir_level level, sir_textstyle style) {
     _sir_seterror(_SIR_E_NOERROR);
 
-    if (_sir_sanity() && _sir_validlevel(level) && _sir_validstyle(style, NULL, NULL, NULL)) {
-        sir_level_style_tuple* map = _sir_locksection(_SIRM_TEXTSTYLE);
-        assert(map);
+    if (!_sir_sanity() || !_sir_validlevel(level) || !_sir_validstyle(style, NULL, NULL, NULL))
+        return false;
 
-        if (!map) {
-            _sir_seterror(_SIR_E_NULLPTR);
-            return false;
-        }
-
-        bool updated              = false;
-        static const size_t low   = 0;
-        static const size_t high  = SIR_NUMLEVELS - 1;
-
-        _SIR_DECLARE_BIN_SEARCH(low, high);
-        _SIR_BEGIN_BIN_SEARCH();
-
-        if (map[_mid].level == level) {
-            map[_mid].style = style;
-            updated         = _sir_formatstyle(style, map[_mid].str, SIR_MAXSTYLE);
-            break;
-        }
-
-        _SIR_ITERATE_BIN_SEARCH((map[_mid].level < level ? 1 : -1));
-        _SIR_END_BIN_SEARCH();
-
-        assert(updated);
-        return _sir_unlocksection(_SIRM_TEXTSTYLE) && updated;
+    sir_level_style_tuple* map = _sir_locksection(SIRMI_TEXTSTYLE);
+    if (!map) {
+        _sir_seterror(_SIR_E_INTERNAL);
+        return false;
     }
+
+    bool updated              = false;
+    static const size_t low   = 0;
+    static const size_t high  = SIR_NUMLEVELS - 1;
+
+    _SIR_DECLARE_BIN_SEARCH(low, high);
+    _SIR_BEGIN_BIN_SEARCH();
+
+    if (map[_mid].level == level) {
+        map[_mid].style = style;
+        updated         = _sir_formatstyle(style, map[_mid].str, SIR_MAXSTYLE);
+        break;
+    }
+
+    _SIR_ITERATE_BIN_SEARCH((map[_mid].level < level ? 1 : -1));
+    _SIR_END_BIN_SEARCH();
+
+    _sir_unlocksection(SIRMI_TEXTSTYLE);
+
+    assert(updated);
+    return updated;
+
 
     return false;
 }
@@ -107,23 +107,20 @@ sir_textstyle _sir_getdefstyle(sir_level level) {
 }
 
 bool _sir_resettextstyles(void) {
-    sir_level_style_tuple* map = _sir_locksection(_SIRM_TEXTSTYLE);
-    assert(map);
-
+    sir_level_style_tuple* map = _sir_locksection(SIRMI_TEXTSTYLE);
     if (!map) {
-#pragma message("TODO: all _sir_locksection should exit with error, internal error? mutex lock error?")
-        _sir_seterror(_SIR_E_NULLPTR);
+        _sir_seterror(_SIR_E_INTERNAL);
         return false;
     }
 
     bool all_ok = true;
-
     for (size_t n = 0; n < SIR_NUMLEVELS; n++) {
         map[n].style = _sir_getdefstyle(map[n].level);
         all_ok &= _sir_formatstyle(map[n].style, map[n].str, SIR_MAXSTYLE);
     }
 
-    return _sir_unlocksection(_SIRM_TEXTSTYLE) && all_ok;
+    _sir_unlocksection(SIRMI_TEXTSTYLE);
+    return all_ok;
 }
 
 uint16_t _sir_getprivstyle(sir_textstyle style) {
