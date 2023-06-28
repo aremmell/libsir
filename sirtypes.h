@@ -302,10 +302,9 @@ typedef struct {
 
 /** ::sir_level <-> human-readable string form. */
 typedef struct {
-    const sir_level level;  /**< The level for which the string applies. */
-    const char* str;        /**< The non-formatted string representation. */
-    char fmt[SIR_MAXLEVEL]; /**< The formatted string representation. */
-} sir_level_str_tuple;
+    const sir_level level; /**< The level for which the string applies. */
+    const char* fmt;       /**< The formatted string representation. */
+} sir_level_str_pair;
 
 /** Public (::sir_textstyle) <-> values used to generate styled stdio output. */
 typedef struct {

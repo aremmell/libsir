@@ -75,16 +75,18 @@
 #define SIR_MSECFORMAT ".%03ld"
 
 /**
- * The format for the human-readable logging level.
+ * The string placed directly before the human-readable logging level.
  *
  * @remark Only applies if ::SIRO_NOLEVEL is not set.
- *
- * **Example**
- *   ~~~
- *   [info]
- *   ~~~
  */
-#define SIR_LEVELFORMAT "[%s]"
+#define SIR_LEVELPREFIX "["
+
+/**
+ * The string placed directly after the human-readable logging level.
+ *
+ * @remark Only applies if ::SIRO_NOLEVEL is not set.
+ */
+#define SIR_LEVELSUFFIX "]"
 
 /**
  * The string placed directly before process and thread IDs.

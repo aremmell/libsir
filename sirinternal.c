@@ -948,21 +948,6 @@ const char* _sir_formattedlevelstr(sir_level level) {
     return SIR_UNKNOWN;
 }
 
-bool _sir_initformattedlevelstrs(void) {
-    size_t loaded = 0;
-    for (size_t n = 0; n < _sir_countof(sir_level_to_str_map); n++) {
-        if (0 > snprintf(sir_level_to_str_map[n].fmt, SIR_MAXLEVEL,
-                    SIR_LEVELFORMAT, sir_level_to_str_map[n].str))
-            _sir_handleerr(errno);
-        else
-            loaded++;
-    }
-
-    _sir_selflog("loaded %zu formatted level strings", loaded);
-    assert(SIR_NUMLEVELS == loaded);
-    return SIR_NUMLEVELS == loaded;
-}
-
 bool _sir_formattime(time_t now, char* buffer, const char* format) {
     if (0 == now || -1 == now) {
         _sir_seterror(_SIR_E_INVALID);
