@@ -227,7 +227,7 @@ bool _sir_init_sanity(const sirinit* si) {
     levelcheck &= _sir_validlevels(si->d_stderr.levels);
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
-    _sir_selflog("syslog levels: %d", levelcheck);
+    levelcheck &= _sir_validlevels(si->d_syslog.levels);
 #endif
 
     bool optscheck = true;
