@@ -33,16 +33,11 @@
 #include "sirtextstyle.h"
 #include "sirdefaults.h"
 
-/**
- * @addtogroup public
- * @{
- */
-
 bool sir_makeinit(sirinit* si) {
     return _sir_makeinit(si);
 }
 
-bool sir_init(sirinit* si) {
+bool sir_init(const sirinit* si) {
     return _sir_init(si);
 }
 
@@ -207,5 +202,3 @@ bool sir_syslogcat(const char* category) {
     return false;
 #endif
 }
-
-/** @} */

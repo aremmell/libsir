@@ -1,4 +1,5 @@
 /* The standard CSS for doxygen 1.9.7*/
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Righteous&family=Source+Code+Pro:ital@0;1&display=swap');
 
 body {
     background-color: black;
@@ -7,8 +8,8 @@ body {
 
 body, table, div, p, dl {
 	font-weight: 400;
-	font-size: 14px;
-	font-family: Roboto,sans-serif;
+	font-size: 15px;
+	font-family: 'Montserrat', sans-serif;
 	line-height: 22px;
 }
 
@@ -17,7 +18,7 @@ body, table, div, p, dl {
 .title {
 	font-weight: 400;
 	font-size: 14px;
-	font-family: Roboto,sans-serif;
+	font-family: 'Montserrat', sans-serif;
 	line-height: 28px;
 	font-size: 150%;
 	font-weight: bold;
@@ -298,7 +299,7 @@ pre.fragment {
         word-wrap: break-word;
         font-size:  9pt;
         line-height: 125%;
-        font-family: 'JetBrains Mono',Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace,fixed;
+		font-family: 'Source Code Pro', monospace,fixed;
         font-size: 105%;
 }
 
@@ -311,9 +312,9 @@ div.fragment {
 }
 
 div.line {
-	font-family: 'JetBrains Mono',Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace,fixed;
-        font-size: 13px;
-	min-height: 13px;
+	font-family: 'Source Code Pro', monospace,fixed;
+    font-size: 14px;
+	min-height: 14px;
 	line-height: 1.2;
 	text-wrap: unrestricted;
 	white-space: -moz-pre-wrap; /* Moz */
@@ -419,7 +420,7 @@ img.light-mode-visible {
 }
 
 img.formulaDsp {
-	
+
 }
 
 img.formulaInl, img.inline {
@@ -488,19 +489,19 @@ span.xmlcdata {
 	color: #C9D1D9;
 }
 
-span.vhdldigit { 
+span.vhdldigit {
 	color: #FF00FF;
 }
 
-span.vhdlchar { 
+span.vhdlchar {
 	color: #000000;
 }
 
-span.vhdlkeyword { 
+span.vhdlkeyword {
 	color: #700070;
 }
 
-span.vhdllogic { 
+span.vhdllogic {
 	color: #FF0000;
 }
 
@@ -679,7 +680,7 @@ table.memberdecls {
 }
 
 .overload {
-        font-family: 'JetBrains Mono',Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace,fixed;
+	font-family: 'Source Code Pro', monospace,fixed;
 	font-size: 65%;
 }
 
@@ -724,7 +725,7 @@ dl.reflist dd {
 }
 
 .paramname {
-	color: #D28757;
+	color: #cc8229;
 	white-space: nowrap;
 }
 .paramname em {
@@ -750,8 +751,8 @@ dl.reflist dd {
 }
 
 .params .paramdir, .tparams .paramdir {
-        font-family: 'JetBrains Mono',Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace,fixed;
-        vertical-align: top;
+	font-family: 'Source Code Pro', monospace,fixed;
+    vertical-align: top;
 }
 
 table.mlabels {
@@ -877,7 +878,7 @@ div.directory {
 }
 
 .icon {
-    font-family: Arial,Helvetica;
+    font-family: 'Montserrat', sans-serif;
     line-height: normal;
     font-weight: bold;
     font-size: 12px;
@@ -1068,7 +1069,7 @@ table.fieldtable {
 	text-decoration: none;
 	outline: none;
 	color: #B6C4DF;
-	font-family: 'Lucida Grande',Geneva,Helvetica,Arial,sans-serif;
+	font-family: 'Righteous', cursive;
 	text-shadow: 0px 1px 1px black;
 	text-decoration: none;
 }
@@ -1216,7 +1217,7 @@ dl.section dd {
 
 #projectrow
 {
-	height: 56px;
+	height: 60px;
 }
 
 #projectlogo
@@ -1225,12 +1226,12 @@ dl.section dd {
 	vertical-align: bottom;
 	border-collapse: separate;
 }
- 
+
 #projectlogo img
-{ 
+{
 	border: 0px none;
 }
- 
+
 #projectalign
 {
         vertical-align: middle;
@@ -1239,16 +1240,16 @@ dl.section dd {
 
 #projectname
 {
-	font-size: 200%;
-	font-family: Tahoma,Arial,sans-serif;
+	font-size: 2.5em;
+	font-family: 'Righteous', cursive;
 	margin: 0px;
 	padding: 2px 0px;
 }
 
 #projectbrief
 {
-	font-size: 90%;
-        font-family: Tahoma,Arial,sans-serif;
+	font-size: 1.3em;
+    font-family: 'Righteous', cursive;
 	margin: 0px;
 	padding: 0px;
 }
@@ -1256,28 +1257,29 @@ dl.section dd {
 #projectnumber
 {
 	font-size: 50%;
-	font-family: 50% Tahoma,Arial,sans-serif;
+	font-family: 'Righteous', cursive;
 	margin: 0px;
 	padding: 0px;
 }
 
 #titlearea
 {
-	padding: 0px;
+	padding: 7px;
 	margin: 0px;
 	width: 100%;
+	height: 60px;
 	border-bottom: 1px solid #354C79;
-	background-color: #090D16;
+	background-color: #181136;
 }
 
 .image
 {
-        text-align: center;
+    text-align: center;
 }
 
 .dotgraph
 {
-        text-align: center;
+    text-align: center;
 }
 
 .mscgraph
@@ -1451,7 +1453,7 @@ tr.heading h2 {
         margin: 0px;
         padding: 0px;
         font-size: 12px;
-       	font-family: Roboto,sans-serif;
+		font-family: 'Montserrat', sans-serif;
 	line-height: 16px;
 }
 

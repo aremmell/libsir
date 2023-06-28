@@ -33,6 +33,9 @@
 /**
  * @addtogroup public
  * @{
+ *
+ * @defgroup publictypes Public Types
+ * @{
  */
 
 /** Log file identifier type. */
@@ -226,27 +229,15 @@ typedef struct {
     char name[SIR_MAXNAME];
 } sirinit;
 
-/** @} */
+/**
+ * @}
+ * @}
+ * */
 
-/** Internally-used global config container. */
-typedef struct {
-    sirinit si;
-    struct {
-        char hostname[SIR_MAXHOST];
-        pid_t pid;
-    } state;
-} sirconfig;
-
-/** Internally-used error type. */
-typedef struct {
-    uint32_t code;
-    const char* const message;
-} sirerror;
-
-#if defined(__WIN__)
-typedef void (*invalparamfn)(const wchar_t*, const wchar_t*, const wchar_t*,
-    unsigned int, uintptr_t);
-#endif
+/**
+ * @internal
+ * @{
+ */
 
 /** Text style attribute mask. */
 #define _SIRS_ATTR_MASK 0x0000000f
@@ -262,6 +253,26 @@ typedef void (*invalparamfn)(const wchar_t*, const wchar_t*, const wchar_t*,
 
 /** Magic number used to determine if libsir has been initialized. */
 #define _SIR_MAGIC 0x60906090
+
+#if defined(__WIN__)
+typedef void (*invalparamfn)(const wchar_t*, const wchar_t*, const wchar_t*,
+    unsigned int, uintptr_t);
+#endif
+
+/** Internally-used global config container. */
+typedef struct {
+    sirinit si;
+    struct {
+        char hostname[SIR_MAXHOST];
+        pid_t pid;
+    } state;
+} sirconfig;
+
+/** Internally-used error type. */
+typedef struct {
+    uint32_t code;
+    const char* const message;
+} sirerror;
 
 /** Log file data. */
 typedef struct {
@@ -360,5 +371,7 @@ typedef enum {
     SIRSL_UPDATED  = 0x00000020,
     SIRSL_IS_INIT  = 0x00000040
 } sir_syslog_state;
+
+/** @} */
 
 #endif /* !_SIR_TYPES_H_INCLUDED */
