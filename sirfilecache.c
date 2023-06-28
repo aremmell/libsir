@@ -116,7 +116,6 @@ sirfile* _sirfile_create(const char* path, sir_levels levels, sir_options opts) 
         return NULL;
     }
 
-
     return sf;
 }
 
@@ -145,7 +144,6 @@ void _sirfile_close(sirfile* sf) {
     if (!_sir_validptrnofail(sf) || !_sir_validptrnofail(sf->f))
         return;
 
-    _sir_fflush(sf->f);
     _sir_fclose(&sf->f);
 }
 
@@ -156,6 +154,11 @@ bool _sirfile_write(sirfile* sf, const char* output) {
     if (_sirfile_needsroll(sf)) {
         bool rolled   = false;
         char* newpath = NULL;
+
+        _sir_selflog("file %d (path: '%s') reached ~%ld bytes in size; rolling...",
+            sf->id, sf->path, SIR_FROLLSIZE);
+
+        _sir_fflush(sf->f);
 
         if (_sirfile_roll(sf, &newpath)) {
             char header[SIR_MAXFHEADER] = {0};
@@ -218,7 +221,7 @@ bool _sirfile_needsroll(sirfile* sf) {
         return false;
     }
 
-    return st.st_size >= SIR_FROLLSIZE;
+    return (st.st_size + BUFSIZ) >= SIR_FROLLSIZE;
 }
 
 bool _sirfile_roll(sirfile* sf, char** newpath) {
@@ -296,7 +299,7 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                     } while (sequence <= 999);
 
                     if (!resolved)
-                        _sir_selflog("error: unable to determine suitable roll path for '%s';"
+                        _sir_selflog("error: unable to determine suitable path for '%s';"
                                         " not rolling!", sf->path);
 
                     retval = resolved && _sirfile_archive(sf, *newpath);
@@ -537,8 +540,8 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
 
         if (!_sir_bittest(sfc->files[n]->levels, level)) {
             _sir_selflog("level %04 " PRIx16 " not set in level mask (%04"
-                            PRIx16 ") for file %d; skipping",
-                level, sfc->files[n]->levels, sfc->files[n]->id);
+                            PRIx16 ") for file %d (path: '%s'); skipping",
+                level, sfc->files[n]->levels, sfc->files[n]->id, sfc->files[n]->path);
             continue;
         }
 
@@ -554,7 +557,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
             retval &= true;
             (*dispatched)++;
         } else {
-            _sir_selflog("write to file %d failed! path: '%s'", sfc->files[n]->id,
+            _sir_selflog("error: write to file %d (path: '%s') failed!", sfc->files[n]->id,
                 sfc->files[n]->path);
         }
     }
@@ -566,7 +569,6 @@ void _sir_fclose(FILE** f) {
     if (!_sir_validptr(f) || !_sir_validptr(*f))
         return;
 
-    _sir_fflush(*f);
     if (0 != fclose(*f))
         _sir_handleerr(errno);
     *f = NULL;
