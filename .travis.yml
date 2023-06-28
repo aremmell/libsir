@@ -58,8 +58,10 @@ jobs:
     - os: linux-ppc64le
       compiler: gcc
     - os: windows
+      -install:
+          - choco install visualstudio2022buildtools --passive --norestart
       script:
-        - /c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio/2017/BuildTools/MSBuild/15.0/Bin/amd64/MSBuild.exe msvs/libsir.sln -t:Rebuild -p:Configuration=Release -p:Platform=x64
+        - /c/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe msvs/libsir.sln -t:Rebuild -p:Configuration=Release -p:Platform=x64
         - powershell build/bin/sirtests.exe
         - powershell build/bin/sirexample.exe
 script:
