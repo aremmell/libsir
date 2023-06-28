@@ -929,12 +929,11 @@ bool _sir_syslog_close(sir_syslog_dest* ctx) {
 void _sir_syslog_reset(sir_syslog_dest* ctx) {
     _SIR_UNUSED(ctx);
 }
-
 #endif // !SIR_NO_SYSTEM_LOGGERS
 
 const char* _sir_formattedlevelstr(sir_level level) {
-    size_t low  = 0;
-    size_t high = _sir_countof(sir_level_to_str_map) - 1;
+    static const size_t low  = 0;
+    static const size_t high = SIR_NUMLEVELS - 1;
 
     _SIR_DECLARE_BIN_SEARCH(low, high)
     _SIR_BEGIN_BIN_SEARCH()

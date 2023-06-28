@@ -41,7 +41,7 @@ sir_textstyle _sir_getdefstyle(sir_level level);
 bool _sir_resettextstyles(void);
 
 /** Retrieves the opaque numeric value for a component part of a ::sir_textstyle. */
-uint16_t _sir_getprivstyle(uint32_t style);
+uint16_t _sir_getprivstyle(sir_textstyle style);
 
 /** Combines component parts of a platform text style value into its final form. */
 bool _sir_formatstyle(sir_textstyle style, char* buf, size_t size);

@@ -882,15 +882,15 @@ bool sirtest_perf(void) {
         }
 
         if (pass) {
-            printf("\t" WHITE("printf: ") CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
+            printf("\t" WHITEB("printf: ") CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
                 perflines, printfelapsed / 1e3, perflines / (printfelapsed / 1e3));
-            printf("\t" WHITE("libsir(stdout): ")
+            printf("\t" WHITEB("libsir(stdout): ")
                    CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
                 perflines, stdioelapsed / 1e3, perflines / (stdioelapsed / 1e3));
-            printf("\t" WHITE("libsir(log file): ")
+            printf("\t" WHITEB("libsir(log file): ")
                    CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
                 perflines, fileelapsed / 1e3, perflines / (fileelapsed / 1e3));
-            printf("\t" WHITE("timer resolution: ") CYAN("~%ldnsec") "\n", sirtimergetres());
+            printf("\t" WHITEB("timer resolution: ") CYAN("~%ldnsec") "\n", sirtimergetres());
         }
     }
 
@@ -898,7 +898,7 @@ bool sirtest_perf(void) {
     enumfiles(logbasename, deletefiles, &deleted);
 
     if (deleted > 0)
-        printf("\tdeleted %d log file(s)\n", deleted);
+        printf("\t" DGRAY("deleted %d log file(s)") "\n", deleted);
 
     sir_cleanup();
     return print_result_and_return(pass);
@@ -1537,7 +1537,7 @@ bool rmfile(const char* filename) {
     if (!removed) {
         handle_os_error(false, "failed to delete %s!", filename);
     } else {
-        printf("\tdeleted %s (%ld bytes)...\n", filename, (long)st.st_size);
+        printf("\t" DGRAY("deleted %s (%ld bytes)...") "\n", filename, (long)st.st_size);
     }
 
     return removed;

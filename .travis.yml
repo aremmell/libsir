@@ -4,7 +4,7 @@ branches:
   only:
   - master
   - syslog
-env: MAKE=make  
+env: MAKE=make
 jobs:
   include:
     - os: linux
@@ -36,7 +36,7 @@ jobs:
     - os: freebsd
       addons:
         pkg:
-          - gcc12    
+          - gcc12
       arch: amd64
       compiler: gcc
       env:
@@ -47,6 +47,10 @@ jobs:
       osx_image: xcode14.2
       arch: amd64
       compiler: clang
+    - os: linux-ppc64le
+      compiler: gcc
+    - os: windows
+      script: powershell msbuild ./msvs/libsir.sln -t:Rebuild -p:Configuration=Release -p:Platform=x64
 script:
   - SIR_SELFLOG=1 $MAKE clean tests example
   - build/bin/sirtests
