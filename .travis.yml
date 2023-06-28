@@ -23,6 +23,14 @@ jobs:
       dist: jammy
       arch: arm64
       compiler: clang
+    - os: linux
+      dist: bionic
+      arch: arm64
+      compiler: gcc
+    - os: linux
+      dist: bionic
+      arch: amd64
+      compiler: gcc
     - os: freebsd
       addons:
         pkg:
@@ -50,7 +58,10 @@ jobs:
     - os: linux-ppc64le
       compiler: gcc
     - os: windows
-      script: powershell msbuild ./msvs/libsir.sln -t:Rebuild -p:Configuration=Release -p:Platform=x64
+      script:
+        - powershell C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin\amd64\MSBuild.exe ./msvs/libsir.sln -t:Rebuild -p:Configuration=Release -p:Platform=x64
+        - powershell ./build/bin/sirtests
+        - powershell ./build/bin/sirexample
 script:
   - SIR_SELFLOG=1 $MAKE clean tests example
   - build/bin/sirtests
