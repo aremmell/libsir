@@ -539,8 +539,8 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
         assert(_sirfile_validate(sfc->files[n]));
 
         if (!_sir_bittest(sfc->files[n]->levels, level)) {
-            _sir_selflog("level %04 " PRIx16 " not set in level mask (%04"
-                         "" PRIx16 ") for file %d (path: '%s'); skipping",
+            _sir_selflog("level %04" PRIx16 " not set in level mask (%04" PRIx16
+                         ") for file %d (path: '%s'); skipping",
                 level, sfc->files[n]->levels, sfc->files[n]->id, sfc->files[n]->path);
             continue;
         }
