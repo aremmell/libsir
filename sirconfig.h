@@ -283,7 +283,7 @@
 /** The size, in characters, of the buffer used to hold process/thread IDs/names. */
 #define SIR_MAXPID 16
 
-/** The maximum number of whitespace and misc. characters included in output. */
+/** The maximum number of whitespace and miscellaneous characters included in output. */
 #define SIR_MAXMISC 7
 
 /**
