@@ -98,7 +98,7 @@
  *
  * @remark Only applies if ::SIRO_NONAME is not set.
  */
-#define SIR_PIDPOSTFIX ")"
+#define SIR_PIDSUFFIX ")"
 
 /**
  * The format for the current process/thread ID.
@@ -185,11 +185,11 @@
 /**
  * The sequence number format string for rolled/archived log files (see
  * ::SIR_FNAMEFORMAT).
- * 
+ *
  * **Example**
  *   ~~~
  *   -1
- *   ~~~ 
+ *   ~~~
  */
 #define SIR_FNAMESEQFORMAT "-%hu"
 
@@ -204,7 +204,7 @@
  * - The third %%s is a sequence number, which may be used in the event that
  *   a log file with the same name already exists (i.e., 2 or more files are
  *   rolled/archived within a second). Its format is defined by ::SIR_FNAMESEQFORMAT.
- * 
+ *
  * - The fourth %%s is the original file name including, and beyond the last
  *   full stop, if one was found.
  *

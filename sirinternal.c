@@ -664,7 +664,7 @@ const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
             }
 
             if (name)
-                _sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_PIDPOSTFIX, 1);
+                _sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_PIDSUFFIX, 1);
 
             if (first)
                 first = false;
