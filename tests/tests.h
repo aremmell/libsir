@@ -205,7 +205,7 @@ bool sirtest_filesystem(void);
 /** @} */
 
 /**
- * @test
+ * @ test
  *
 bool sirtest_xxxx(void); */
 
