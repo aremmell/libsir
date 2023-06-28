@@ -29,24 +29,24 @@ static sir_test sir_tests[] = {
     {"performance",             sirtest_perf, false, true},
     {"thread-race",             sirtest_mthread_race, false, true},
     {"exceed-max-buffer-size",  sirtest_exceedmaxsize, false, true},
-    {"file-cache-sanity",       sirtest_filecachesanity, false, true},
     {"no-output-destination",   sirtest_failnooutputdest, false, true},
-    {"invalid-file-name",       sirtest_failinvalidfilename, false, true},
-    {"bad-file-permissions",    sirtest_failfilebadpermission, false, true},
     {"null-pointers",           sirtest_failnulls, false, true},
-    {"output-without-init",     sirtest_failwithoutinit, false, true},
-    {"superfluous-init",        sirtest_failinittwice, false, true},
-    {"output-after-cleanup",    sirtest_failaftercleanup, false, true},
-    {"bad-init-struct",         sirtest_failinvalidinitdata, false, true},
-    {"re-initialize",           sirtest_initcleanupinit, false, true},
-    {"duplicate-file-name",     sirtest_faildupefile, false, true},
-    {"remove-nonexistent-file", sirtest_failremovebadfile, false, true},
-    {"archive-large-file",      sirtest_rollandarchivefile, false, true},
-    {"error-handling-sanity",   sirtest_errorsanity, false, true},
-    {"text-style-sanity",       sirtest_textstylesanity, false, true},
-    {"options-sanity",          sirtest_optionssanity, false, true},
-    {"levels-sanity",           sirtest_levelssanity, false, true},
-    {"runtime-update-sanity",   sirtest_updatesanity, false, true},
+    {"file-cache-sanity",       sirtest_filecachesanity, false, true},
+    {"file-invalid-name",       sirtest_failinvalidfilename, false, true},
+    {"file-bad-permissions",    sirtest_failfilebadpermission, false, true},
+    {"file-duplicate-name",     sirtest_faildupefile, false, true},
+    {"file-remove-nonexistent", sirtest_failremovebadfile, false, true},
+    {"file-archive-large",      sirtest_rollandarchivefile, false, true},
+    {"init-output-before",      sirtest_failwithoutinit, false, true},
+    {"init-superfluous",        sirtest_failinittwice, false, true},
+    {"init-bad-data",           sirtest_failinvalidinitdata, false, true},
+    {"init-cleanup-init",       sirtest_initcleanupinit, false, true},
+    {"cleanup-output-after",    sirtest_failaftercleanup, false, true},
+    {"sanity-errors",           sirtest_errorsanity, false, true},
+    {"sanity-text-styles",      sirtest_textstylesanity, false, true},
+    {"sanity-options",          sirtest_optionssanity, false, true},
+    {"sanity-levels",           sirtest_levelssanity, false, true},
+    {"sanity-update-config",    sirtest_updatesanity, false, true},
     {"syslog",                  sirtest_syslog, false, true},
     {"os_log",                  sirtest_os_log, false, true},
     {"filesystem",              sirtest_filesystem, false, true}
@@ -172,6 +172,51 @@ bool sirtest_exceedmaxsize(void) {
     return print_result_and_return(pass);
 }
 
+bool sirtest_failnooutputdest(void) {
+    INIT(si, 0, 0, 0, 0);
+    bool pass = si_init;
+
+    static const char* logfilename = "nodestination.log";
+
+    pass &= !sir_info("this goes nowhere!");
+
+    if (pass) {
+        print_expected_error();
+
+        pass &= sir_stdoutlevels(SIRL_INFO);
+        pass &= sir_info("this goes to stdout");
+        pass &= sir_stdoutlevels(SIRL_NONE);
+
+        sirfileid_t fid = sir_addfile(logfilename, SIRL_INFO, SIRO_DEFAULT);
+        pass &= NULL != fid;
+        pass &= sir_info("this goes to %s", logfilename);
+        pass &= sir_filelevels(fid, SIRL_NONE);
+        pass &= !sir_info("this goes nowhere!");
+
+        if (NULL != fid)
+            pass &= sir_remfile(fid);
+
+        rmfile(logfilename);
+    }
+
+    sir_cleanup();
+    return print_result_and_return(pass);
+}
+
+bool sirtest_failnulls(void) {
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+    pass &= !sir_info(NULL);
+    pass &= NULL == sir_addfile(NULL, SIRL_ALL, SIRO_MSGONLY);
+
+    if (pass)
+        print_expected_error();
+
+    sir_cleanup();
+    return print_result_and_return(pass);
+}
+
 bool sirtest_filecachesanity(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
@@ -245,37 +290,6 @@ bool sirtest_filecachesanity(void) {
     return print_result_and_return(pass);
 }
 
-bool sirtest_failnooutputdest(void) {
-    INIT(si, 0, 0, 0, 0);
-    bool pass = si_init;
-
-    static const char* logfilename = "nodestination.log";
-
-    pass &= !sir_info("this goes nowhere!");
-
-    if (pass) {
-        print_expected_error();
-
-        pass &= sir_stdoutlevels(SIRL_INFO);
-        pass &= sir_info("this goes to stdout");
-        pass &= sir_stdoutlevels(SIRL_NONE);
-
-        sirfileid_t fid = sir_addfile(logfilename, SIRL_INFO, SIRO_DEFAULT);
-        pass &= NULL != fid;
-        pass &= sir_info("this goes to %s", logfilename);
-        pass &= sir_filelevels(fid, SIRL_NONE);
-        pass &= !sir_info("this goes nowhere!");
-
-        if (NULL != fid)
-            pass &= sir_remfile(fid);
-
-        rmfile(logfilename);
-    }
-
-    sir_cleanup();
-    return print_result_and_return(pass);
-}
-
 bool sirtest_failinvalidfilename(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
@@ -305,89 +319,6 @@ bool sirtest_failfilebadpermission(void) {
         print_expected_error();
 
     sir_cleanup();
-    return print_result_and_return(pass);
-}
-
-bool sirtest_failnulls(void) {
-    INIT(si, SIRL_ALL, 0, 0, 0);
-    bool pass = si_init;
-
-    pass &= !sir_info(NULL);
-    pass &= NULL == sir_addfile(NULL, SIRL_ALL, SIRO_MSGONLY);
-
-    if (pass)
-        print_expected_error();
-
-    sir_cleanup();
-    return print_result_and_return(pass);
-}
-
-bool sirtest_failwithoutinit(void) {
-    bool pass = !sir_info("sir isn't initialized; this needs to fail");
-
-    if (pass)
-        print_expected_error();
-
-    return print_result_and_return(pass);
-}
-
-bool sirtest_failinittwice(void) {
-    INIT(si, SIRL_ALL, 0, 0, 0);
-    bool pass = si_init;
-
-    INIT(si2, SIRL_ALL, 0, 0, 0);
-    pass &= !si2_init;
-
-    if (pass)
-        print_expected_error();
-
-    sir_cleanup();
-    return print_result_and_return(pass);
-}
-
-bool sirtest_failaftercleanup(void) {
-    INIT(si, SIRL_ALL, 0, 0, 0);
-    bool pass = si_init;
-
-    sir_cleanup();
-    pass &= !sir_info("already cleaned up; this needs to fail");
-
-    if (pass)
-        print_expected_error();
-
-    return print_result_and_return(pass);
-}
-
-bool sirtest_failinvalidinitdata(void) {
-    sirinit si;
-
-    /* fill with bad data. */
-    memset(&si, 0xbadf00d, sizeof(sirinit));
-
-    printf("\tcalling sir_init with invalid data...\n");
-    bool pass = !sir_init(&si);
-
-    if (!pass)
-        sir_cleanup();
-    else
-        print_expected_error();
-
-    return print_result_and_return(pass);
-}
-
-bool sirtest_initcleanupinit(void) {
-    INIT(si1, SIRL_ALL, 0, 0, 0);
-    bool pass = si1_init;
-
-    pass &= sir_info("init called once; testing output...");
-    sir_cleanup();
-
-    INIT(si2, SIRL_ALL, 0, 0, 0);
-    pass &= si2_init;
-
-    pass &= sir_info("init called again after re-init; testing output...");
-    sir_cleanup();
-
     return print_result_and_return(pass);
 }
 
@@ -511,6 +442,75 @@ bool sirtest_rollandarchivefile(void) {
         printf("\tfound and removed %u log file(s)\n", delcount);
 
     sir_cleanup();
+    return print_result_and_return(pass);
+}
+
+bool sirtest_failwithoutinit(void) {
+    bool pass = !sir_info("sir isn't initialized; this needs to fail");
+
+    if (pass)
+        print_expected_error();
+
+    return print_result_and_return(pass);
+}
+
+bool sirtest_failinittwice(void) {
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+    INIT(si2, SIRL_ALL, 0, 0, 0);
+    pass &= !si2_init;
+
+    if (pass)
+        print_expected_error();
+
+    sir_cleanup();
+    return print_result_and_return(pass);
+}
+
+bool sirtest_failinvalidinitdata(void) {
+    sirinit si;
+
+    /* fill with bad data. */
+    memset(&si, 0xbadf00d, sizeof(sirinit));
+
+    printf("\tcalling sir_init with invalid data...\n");
+    bool pass = !sir_init(&si);
+
+    if (!pass)
+        sir_cleanup();
+    else
+        print_expected_error();
+
+    return print_result_and_return(pass);
+}
+
+bool sirtest_initcleanupinit(void) {
+    INIT(si1, SIRL_ALL, 0, 0, 0);
+    bool pass = si1_init;
+
+    pass &= sir_info("init called once; testing output...");
+    sir_cleanup();
+
+    INIT(si2, SIRL_ALL, 0, 0, 0);
+    pass &= si2_init;
+
+    pass &= sir_info("init called again after re-init; testing output...");
+    sir_cleanup();
+
+    return print_result_and_return(pass);
+}
+
+bool sirtest_failaftercleanup(void) {
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+    sir_cleanup();
+    pass &= !sir_info("already cleaned up; this needs to fail");
+
+    if (pass)
+        print_expected_error();
+
     return print_result_and_return(pass);
 }
 
@@ -1172,8 +1172,8 @@ bool sirtest_filesystem(void) {
     for (size_t n = 0; n < _sir_countof(dubious_dirnames); n++) {
         char* tmp = strdup(dubious_dirnames[n]);
         if (NULL != tmp) {
-            printf("\t_sir_getdirname(" WHITE("'%s'") ") = " WHITE("'%s'") " (after: '%s')\n",
-                tmp, _sir_getdirname(tmp), tmp);
+            printf("\t_sir_getdirname(" WHITE("'%s'") ") = " WHITE("'%s'") "\n",
+                tmp, _sir_getdirname(tmp));
             _sir_safefree(tmp);
         }
     }
@@ -1196,8 +1196,8 @@ bool sirtest_filesystem(void) {
     for (size_t n = 0; n < _sir_countof(dubious_filenames); n++) {
         char* tmp = strdup(dubious_filenames[n]);
         if (NULL != tmp) {
-            printf("\t_sir_getbasename(" WHITE("'%s'") ") = " WHITE("'%s'") " (after: '%s')\n",
-                tmp, _sir_getbasename(tmp), tmp);
+            printf("\t_sir_getbasename(" WHITE("'%s'") ") = " WHITE("'%s'") "\n",
+                tmp, _sir_getbasename(tmp));
             _sir_safefree(tmp);
         }
     }

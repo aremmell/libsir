@@ -89,14 +89,19 @@ bool sirtest_mthread_race(void);
 bool sirtest_exceedmaxsize(void);
 
 /**
- * @test Properly handle adding and removing log files.
- */
-bool sirtest_filecachesanity(void);
-
-/**
  * @test Properly handle the lack of any output destinations.
  */
 bool sirtest_failnooutputdest(void);
+
+/**
+ * @test Properly handle null/empty input.
+ */
+bool sirtest_failnulls(void);
+
+/**
+ * @test Properly handle adding and removing log files.
+ */
+bool sirtest_filecachesanity(void);
 
 /**
  * @test Properly handle invalid log file name.
@@ -107,36 +112,6 @@ bool sirtest_failinvalidfilename(void);
  * @test Properly handle log file without appropriate permissions.
  */
 bool sirtest_failfilebadpermission(void);
-
-/**
- * @test Properly handle null/empty input.
- */
-bool sirtest_failnulls(void);
-
-/**
- * @test Properly handle calls without initialization.
- */
-bool sirtest_failwithoutinit(void);
-
-/**
- * @test Properly handle two initialization calls without corresponding cleanup.
- */
-bool sirtest_failinittwice(void);
-
-/**
- * @test Properly handle calls after cleanup.
- */
-bool sirtest_failaftercleanup(void);
-
-/**
- * @test Properly handle initialization with junk memory.
- */
-bool sirtest_failinvalidinitdata(void);
-
-/**
- * @test Properly handle initialization, cleanup, re-initialization.
- */
-bool sirtest_initcleanupinit(void);
 
 /**
  * @test Properly refuse to add a duplicate file.
@@ -152,6 +127,31 @@ bool sirtest_failremovebadfile(void);
  * @test Properly roll/archive a file when it hits max size.
  */
 bool sirtest_rollandarchivefile(void);
+
+/**
+ * @test Properly handle calls without initialization.
+ */
+bool sirtest_failwithoutinit(void);
+
+/**
+ * @test Properly handle two initialization calls without corresponding cleanup.
+ */
+bool sirtest_failinittwice(void);
+
+/**
+ * @test Properly handle initialization with junk memory.
+ */
+bool sirtest_failinvalidinitdata(void);
+
+/**
+ * @test Properly handle initialization, cleanup, re-initialization.
+ */
+bool sirtest_initcleanupinit(void);
+
+/**
+ * @test Properly handle calls after cleanup.
+ */
+bool sirtest_failaftercleanup(void);
 
 /**
  * @test Properly return valid codes and messages for all possible errors.
