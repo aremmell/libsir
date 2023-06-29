@@ -120,7 +120,6 @@
 # include <stdlib.h>
 # include <sys/stat.h>
 # include <sys/types.h>
-# include <limits.h>
 # include <time.h>
 # include <string.h>
 
@@ -152,7 +151,9 @@
 # if !defined(__WIN__)
 #  include <pthread.h>
 #  include <unistd.h>
-#  include <sys/syscall.h>
+#  if !defined(_AIX)
+#   include <sys/syscall.h>
+#  endif
 #  include <sys/resource.h>
 #  include <sys/time.h>
 #  include <strings.h>
@@ -165,10 +166,14 @@
 #   include <syslog.h>
 #  endif
 #  if defined(__BSD__)
-#   include <pthread_np.h>
+#   if !defined(__NetBSD__)
+#    include <pthread_np.h>
+#  endif
 #   include <sys/sysctl.h>
 #  elif defined(__linux__)
-#   include <linux/limits.h>
+#   if defined(__GLIBC__)
+#    include <linux/limits.h>
+#   endif
 #  elif defined(__MACOS__)
 #   include <mach-o/dyld.h>
 #   include <sys/_types/_timespec.h>
