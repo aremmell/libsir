@@ -85,9 +85,6 @@ bool _sir_settextstyle(sir_level level, sir_textstyle style) {
 
     assert(updated);
     return updated;
-
-
-    return false;
 }
 
 sir_textstyle _sir_getdefstyle(sir_level level) {
