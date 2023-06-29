@@ -59,6 +59,7 @@ jobs:
       compiler: gcc
     - os: windows
       -install:
+          - choco install winget-cli
           - choco install visualstudio2022buildtools --passive --norestart
           - powershell winget install --disable-interactivity --accept-package-agreements --id Microsoft.VisualStudio.2022.Community --override "--quiet --passive --norestart --accept-package-agreements --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64"
       script:
