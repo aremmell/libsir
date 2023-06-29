@@ -1,4 +1,4 @@
-﻿/*
+/*
  * sirtextstyle.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
@@ -28,9 +28,6 @@
 
 #include "sirtypes.h"
 
-/** The maximum size of a color escape code sequence in bytes. */
-// TODO
-
 /**  Returns the final string form of the current ::sir_textstyle for a ::sir_level. */
 const char* _sir_gettextstyle(sir_level level);
 
@@ -44,7 +41,7 @@ sir_textstyle _sir_getdefstyle(sir_level level);
 bool _sir_resettextstyles(void);
 
 /** Retrieves the opaque numeric value for a component part of a ::sir_textstyle. */
-uint16_t _sir_getprivstyle(uint32_t style);
+uint16_t _sir_getprivstyle(sir_textstyle style);
 
 /** Combines component parts of a platform text style value into its final form. */
 bool _sir_formatstyle(sir_textstyle style, char* buf, size_t size);

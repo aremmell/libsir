@@ -29,6 +29,7 @@
 #include "sirtypes.h"
 
 extern sir_level_style_tuple sir_level_to_style_map[SIR_NUMLEVELS];
+extern sir_level_str_pair sir_level_to_str_map[SIR_NUMLEVELS];
 extern const sir_style_16color_pair sir_style_16color_map[SIR_NUM16_COLOR_MAPPINGS];
 
 #endif // !_SIR_MAPS_H_INCLUDED

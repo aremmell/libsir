@@ -163,7 +163,7 @@ int main(void) {
     sir_debug("Begin server shutdown.");
     sir_debug("Exiting with code %d.", 1);
 
-    /* Deregistger (and close) the log file. */
+    /* Deregister (and close) the log file. */
     if (fileid && !sir_remfile(fileid))
         report_error();
 

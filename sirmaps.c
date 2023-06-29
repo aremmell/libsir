@@ -27,7 +27,7 @@
 #include "sirdefaults.h"
 
 /**
- * @brief Mapping of ::sir_level <-> ::sir_textstyle & ANSI escape codes..
+ * @brief Mapping of ::sir_level <-> ::sir_textstyle & ANSI escape codes.
  *
  * ::sir_settextstyle and ::sir_resettextstyles modify the style
  * values in this array at runtime; only the SIRL_* values are constant.
@@ -41,6 +41,22 @@ sir_level_style_tuple sir_level_to_style_map[SIR_NUMLEVELS] = {
     {SIRL_NOTICE, SIRS_INVALID, {0}},
     {SIRL_INFO,   SIRS_INVALID, {0}},
     {SIRL_DEBUG,  SIRS_INVALID, {0}}
+};
+
+/**
+ * @brief Mapping of ::sir_level <-> human-readable string forms.
+ *
+ * ::_sir_formattedlevelstr retrieves values from this array.
+ */
+sir_level_str_pair sir_level_to_str_map[SIR_NUMLEVELS] = {
+    {SIRL_EMERG,  SIR_LEVELPREFIX SIRL_S_EMERG  SIR_LEVELSUFFIX},
+    {SIRL_ALERT,  SIR_LEVELPREFIX SIRL_S_ALERT  SIR_LEVELSUFFIX},
+    {SIRL_CRIT,   SIR_LEVELPREFIX SIRL_S_CRIT   SIR_LEVELSUFFIX},
+    {SIRL_ERROR,  SIR_LEVELPREFIX SIRL_S_ERROR  SIR_LEVELSUFFIX},
+    {SIRL_WARN,   SIR_LEVELPREFIX SIRL_S_WARN   SIR_LEVELSUFFIX},
+    {SIRL_NOTICE, SIR_LEVELPREFIX SIRL_S_NOTICE SIR_LEVELSUFFIX},
+    {SIRL_INFO,   SIR_LEVELPREFIX SIRL_S_INFO   SIR_LEVELSUFFIX},
+    {SIRL_DEBUG,  SIR_LEVELPREFIX SIRL_S_DEBUG  SIR_LEVELSUFFIX}
 };
 
 /**

@@ -77,11 +77,11 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         stat_ret = stat(path, st);
     }
 #else /* __WIN__ */
-        char abs_path[SYSTEST_MAXPATH] = {0};
-        snprintf(abs_path, SYSTEST_MAXPATH, "%s\\%s", base_path, path);
+        char abs_path[SIR_MAXPATH] = {0};
+        snprintf(abs_path, SIR_MAXPATH, "%s\\%s", base_path, path);
 
         stat_ret = stat(abs_path, st);
-        systest_safefree(base_path);
+        _sir_safefree(base_path);
     } else {
         stat_ret = stat(path, st);
     }

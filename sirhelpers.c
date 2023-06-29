@@ -27,7 +27,7 @@
 #include "sirerrors.h"
 
 void _sir_safeclose(int* restrict fd) {
-    if (!fd || (fd && 0 > *fd))
+    if (!fd || 0 > *fd)
         return;
 
     if (-1 == close(*fd))
@@ -37,13 +37,16 @@ void _sir_safeclose(int* restrict fd) {
 }
 
 bool _sir_validfd(int fd) {
-#if !defined(__WIN__)
     /** stdin, stdout, stderr use up 0, 1, 2 */
-    struct rlimit rl = {0};
-    int get = getrlimit(RLIMIT_NOFILE, &rl); 
-    if (0 != get)
+    if (fd <= 2) {
+        _sir_handleerr(EBADF);
+        return false;
+    }
+#if !defined(__WIN__)
+    int ret = fcntl(fd, F_GETFL);
+    bool valid = -1 != ret || EBADF != errno;
+    if (-1 == ret)
         _sir_handleerr(errno);
-    bool valid = fd > 2 && (0 == get ? ((rlim_t)fd < rl.rlim_max) : true);
 #else /* __WIN__ */
     intptr_t h = _get_osfhandle(fd);
     bool valid = INVALID_HANDLE_VALUE != (HANDLE)h;
@@ -51,6 +54,16 @@ bool _sir_validfd(int fd) {
     if (!valid)
         assert(!"invalid file descriptor");
     return valid;
+#if defined(__WIN__)
+    invalparamfn old = _set_thread_local_invalid_parameter_handler(_sir_invalidparameter);
+    intptr_t h = _get_osfhandle(fd);
+    _set_thread_local_invalid_parameter_handler(old);
+    if (INVALID_HANDLE_VALUE == (HANDLE)h) {
+        _sir_seterror(EBADF);
+        return false;
+    }
+    return true;
+#endif
 }
 
 /** Validates a sir_update_config_data structure. */
@@ -96,7 +109,7 @@ bool _sir_validlevels(sir_levels levels) {
          _sir_bittest(levels, SIRL_EMERG))          &&
          ((levels & ~SIRL_ALL) == 0)))
          return true;
-                
+
     _sir_selflog("invalid levels: %04" PRIx16, levels);
     _sir_seterror(_SIR_E_LEVELS);
 

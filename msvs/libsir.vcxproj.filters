@@ -28,6 +28,9 @@
     <ClCompile Include="..\sirfilesystem.c">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\sirmaps.c">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\sirtypes.h">
@@ -73,6 +76,9 @@
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="..\sirfilesystem.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\siransimacros.h">
       <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>
