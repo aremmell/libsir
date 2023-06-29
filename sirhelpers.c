@@ -208,7 +208,7 @@ int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src, s
  * Wrapper for fopen/fopen_s. Determines which one to use
  * based on preprocessor macros.
  */
-int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename,
+intptr_t _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename,
     const char* restrict mode) {
     if (_sir_notnull(streamptr) && _sir_validstr(filename) && _sir_validstr(mode)) {
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)

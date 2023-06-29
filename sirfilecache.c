@@ -124,7 +124,7 @@ bool _sirfile_open(sirfile* sf) {
         return false;
 
     FILE* f  = NULL;
-    int open = _sir_fopen(&f, sf->path, SIR_FOPENMODE);
+    intptr_t open = _sir_fopen(&f, sf->path, SIR_FOPENMODE);
     if (0 != open || !f)
         return false;
 

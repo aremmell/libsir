@@ -235,7 +235,7 @@ int _sir_strncat(char* restrict dest, size_t destsz,
  * Wrapper for fopen/fopen_s. Determines which one to use
  * based on preprocessor macros.
  */
-int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename,
+intptr_t _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename,
     const char* restrict mode);
 
 /**
