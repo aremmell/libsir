@@ -108,9 +108,9 @@ The following are the defaults used when `SIRL_DEFAULT` or `SIRO_DEFAULT` are us
 
 | Destination |  Levels                                               | Options|
 | :---------: | :---------------------------------------------------: | :----------------------------------------------: |
-| stdout      | `SIRL_DEBUG | SIRL_INFO | SIRL_NOTICE | SIRL_WARN`    | `SIRO_NOTIME | SIRO_NOHOST | SIRO_NOPID | SIRO_NOTID` |
-| stderr      | `SIRL_ERROR | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG`   | `SIRO_NOTIME | SIRO_NOHOST | SIRO_NOPID | SIRO_NOTID` |
-| system logger | `SIRL_NOTICE | SIRL_WARN | SIRL_ERROR | SIRL_CRIT | SIRL_ALERT  | SIRL_EMERG` | `SIRO_MSGONLY` |
+| stdout      | `SIRL_DEBUG \| SIRL_INFO \| SIRL_NOTICE \| SIRL_WARN` | `SIRO_NOTIME \| SIRO_NOHOST \| SIRO_NOPID \| SIRO_NOTID` |
+| stderr      | `SIRL_ERROR \| SIRL_CRIT \| SIRL_ALERT \| SIRL_EMERG` | `SIRO_NOTIME \| SIRO_NOHOST \| SIRO_NOPID \| SIRO_NOTID` |
+| system logger | `SIRL_NOTICE \| SIRL_WARN \| SIRL_ERROR \| SIRL_CRIT \| SIRL_ALERT  \| SIRL_EMERG` | `SIRO_MSGONLY` |
 | log files   | `SIRL_ALL`                                            | `SIRO_ALL`            |
 
 #### Styles
@@ -126,15 +126,15 @@ Supported terminals will render text from libsir based on the "styles" used in l
 | `SIRL_NOTICE` |                 `SIRS_FG_CYAN`                    |
 | `SIRL_WARN`   |                `SIRS_FG_YELLOW`                   |
 | `SIRL_ERROR`  |                  `SIRS_FG_RED`                    |
-| `SIRL_CRIT`   |           `SIRS_BRIGHT | SIRS_FG_RED`             |
-| `SIRL_ALERT`  | `SIRS_BRIGHT | SIRS_FG_BLACK | SIRS_BG_LYELLOW`   |
-| `SIRL_EMERG`  | `SIRS_BRIGHT | SIRS_FG_LYELLOW | SIRS_BG_RED` |
+| `SIRL_CRIT`   |           `SIRS_BRIGHT \| SIRS_FG_RED`            |
+| `SIRL_ALERT`  | `SIRS_BRIGHT \| SIRS_FG_BLACK \| SIRS_BG_LYELLOW` |
+| `SIRL_EMERG`  | `SIRS_BRIGHT \| SIRS_FG_LYELLOW \| SIRS_BG_RED`   |
 
  Some sample terminal output from libsir demonstrating these defaults:
 
 ![sample terminal output](./docs/res/sample-terminal.gif)
 
-##Getting started
+## Getting started
 
 Clone or download this repository to your machine, then choose how you'd like to integrate libsir into your project:
 
