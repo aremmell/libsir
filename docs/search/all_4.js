@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['from_0',['from',['../d7/dcf/structsir__style__priv__map.html#a8a535a9c5bc30acf5189252ccb79f612',1,'sir_style_priv_map']]]
+  ['emph_0',['EMPH',['../siransimacros_8h.html#a83167d57009cd2bb4a9116de97039bf3',1,'siransimacros.h']]],
+  ['example_2ec_1',['example.c',['../example_8c.html',1,'']]]
 ];

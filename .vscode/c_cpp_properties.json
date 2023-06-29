@@ -3,28 +3,32 @@
         {
             "name": "Mac",
             "includePath": [
-                "${workspaceFolder}/",
-                "${workspaceFolder}/**"
+                "${workspaceFolder}",
+                "${workspaceFolder}/**",
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include",
+                "/usr/local/include"
             ],
-            "defines": [],
+            "defines": [
+                
+            ],
             "macFrameworkPath": [
                 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
             ],
             "compilerPath": "/usr/bin/clang",
-            "cStandard": "c17",
+            "cStandard": "c11",
             "cppStandard": "c++17",
             "intelliSenseMode": "macos-clang-x64"
         },
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/",
+                "${workspaceFolder}",
                 "${workspaceFolder}/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c11",
-            "cppStandard": "gnu++17",
+            "cppStandard": "c++17",
             "intelliSenseMode": "linux-gcc-x64"
         }
     ],

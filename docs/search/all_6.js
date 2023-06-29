@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['level_0',['level',['../df/d50/structsir__style__map.html#abb52f70389b9f91f1c8d2abc3bb1afca',1,'sir_style_map']]]
+  ['identity_0',['identity',['../group__publictypes.html#acbc738f8c0f9dc404ac85e13cb43c7c5',1,'sir_syslog_dest']]],
+  ['invert_1',['INVERT',['../siransimacros_8h.html#ac8f15eef1cd5bf5f8b127fe10c96aa62',1,'siransimacros.h']]]
 ];

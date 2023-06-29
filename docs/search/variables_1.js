@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['from_0',['from',['../d7/dcf/structsir__style__priv__map.html#a8a535a9c5bc30acf5189252ccb79f612',1,'sir_style_priv_map']]]
+  ['category_0',['category',['../group__publictypes.html#ace79b2f2bd4d08d0c6e4151dafb3266b',1,'sir_syslog_dest']]]
 ];

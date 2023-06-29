@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.9.7-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
@@ -5,6 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.7"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <title>libsir: Globals</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -16,12 +19,8 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-  $(document).ready(function() { init_search(); });
-/* @license-end */
-</script>
-<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="stylesheet.css" rel="stylesheet" type="text/css" />
+<link href="rml-navtree.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -30,22 +29,10 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">libsir<span id="projectnumber">&#160;2.1.1</span>
+   <div id="projectname">libsir<span id="projectnumber">&#160;2.2.0</span>
    </div>
-   <div id="projectbrief">The Standard Incident Reporter logging library</div>
+   <div id="projectbrief">Standard Incident Reporter</div>
   </td>
-    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
-        <span class="left">
-          <span id="MSearchSelect"                onmouseover="return searchBox.OnSearchSelectShow()"                onmouseout="return searchBox.OnSearchSelectHide()">&#160;</span>
-          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
-               onfocus="searchBox.OnSearchFieldFocus(true)" 
-               onblur="searchBox.OnSearchFieldFocus(false)" 
-               onkeyup="searchBox.OnSearchFieldChange(event)"/>
-          </span><span class="right">
-            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.svg" alt=""/></a>
-          </span>
-        </div>
-</td>
  </tr>
  </tbody>
 </table>
@@ -57,6 +44,17 @@
 var searchBox = new SearchBox("searchBox", "search/",'.html');
 /* @license-end */
 </script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
 </div><!-- top -->
 <div id="side-nav" class="ui-resizable side-nav-resizable">
   <div id="nav-tree">
@@ -98,86 +96,124 @@ $(document).ready(function(){initNavTree('globals.html',''); initResizable(); })
 <div class="contents">
 <div class="textblock">Here is a list of all documented functions, variables, defines, enums, and typedefs with links to the documentation:</div>
 
-<h3><a id="index__5F" name="index__5F"></a>- _ -</h3><ul>
-<li>__sir_handleerr()&#160;:&#160;<a class="el" href="d6/d87/group__errors.html#gab4e4e805367fc2c7b80a19f123316b3d">sirerrors.c</a>, <a class="el" href="d6/d87/group__errors.html#gab4e4e805367fc2c7b80a19f123316b3d">sirerrors.h</a></li>
-<li>__sir_safefree()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga1ac1bb3c4f833dd42044a6cfd8f50e58">sirhelpers.h</a></li>
-<li>__sir_validstr()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga611a23fcb3b3d995aa44807c2f329df8">sirhelpers.c</a></li>
-<li>_sir_bittest()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga53f20bd7811bb5277f473e4b47aec2cf">sirhelpers.h</a></li>
-<li>_sir_cleanup()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga5d324314a3df2c5a36199a2cd8b75404">sirinternal.c</a></li>
-<li>_sir_countof&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga8621b47594131810d5abea6109a32e1d">sirhelpers.h</a></li>
-<li>_sir_defaultlevels()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gaf8fff083b2f2b80b7c93d34dfa76006f">sirhelpers.h</a></li>
-<li>_sir_defaultopts()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga3256b5b782091a39b36e64256e7b5650">sirhelpers.h</a></li>
-<li>_sir_dispatch()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga41eea20e20e5f1fec92ec3abd8dbafa9">sirinternal.c</a></li>
-<li>_sir_format()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga7ad8d632acc140d1a6fe795b8de0fa70">sirinternal.c</a></li>
-<li>_sir_formatstyle()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gaa0055b29ec2548c48496f0db52e3a3b2">sirtextstyle.c</a></li>
-<li>_sir_formattime()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga6d418f4a2a45a3273b8c6e09a03edd7c">sirinternal.c</a></li>
-<li>_sir_getdefstyle()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga82a768d268663e4aa47c6c66edf61f53">sirtextstyle.c</a></li>
-<li>_sir_geterrcode()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga8f4ab88b65313d0cf42cdb0363aa61e3">sirhelpers.h</a></li>
-<li>_sir_geterror()&#160;:&#160;<a class="el" href="d6/d87/group__errors.html#gac8e6a8a10521cae2e75881df9cdfb636">sirerrors.c</a>, <a class="el" href="d6/d87/group__errors.html#gac8e6a8a10521cae2e75881df9cdfb636">sirerrors.h</a></li>
-<li>_sir_getlocaltime()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gae6a81ce863fba763916cc4e11de0fadc">sirinternal.c</a></li>
-<li>_sir_getpid()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gaec63cb12d82d469f485dbb8ce88b9fce">sirinternal.c</a></li>
-<li>_sir_getprivstyle()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gafa427b76089e49a81e90cf69dc8cf93c">sirtextstyle.c</a></li>
-<li>_sir_gettextstyle()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga96e3fd4916e25f311680f341f31219b2">sirtextstyle.c</a></li>
-<li>_sir_getthreadname()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gaa8e5d4f2e789c1f93e192d9fb4d895b8">sirinternal.c</a></li>
-<li>_sir_gettid()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gaf4b6d91cb5ef18479cdfd4b40cf23f72">sirinternal.c</a></li>
-<li>_sir_init()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gaeb47868caeb3ee52c11b96442c8d1098">sirinternal.c</a></li>
-<li>_sir_initmutex()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gadc725d0786b67b52f6441a0844792a30">sirinternal.c</a></li>
-<li>_sir_initmutex_fc_once()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gae971df1f0eb43e55aefd3aa7640c6418">sirinternal.c</a></li>
-<li>_sir_initmutex_si_once()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gad21398c249e2467f60138ac3d334482e">sirinternal.c</a></li>
-<li>_sir_initmutex_ts_once()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga6392370ff56986fb4bb56ea9726c29a7">sirinternal.c</a></li>
-<li>_SIR_L_END&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga7d5dda1395dc7eec751df1ec10095aef">sirhelpers.h</a></li>
-<li>_SIR_L_START&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gac812e82ac0f3ee01b35808082281363c">sirhelpers.h</a></li>
-<li>_sir_levelstr()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gaa18a225c2c97e8a7218363bb27749a15">sirinternal.c</a></li>
-<li>_sir_locksection()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga10226d9d1a4003751096ac0913861e1c">sirinternal.c</a></li>
-<li>_sir_logv()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga33f251281446388859da1dc3106132b5">sirinternal.c</a></li>
-<li>_SIR_MAGIC&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga8dc2ecf93d4e4d8e36e31dbc3e580a4b">sirtypes.h</a></li>
-<li>_sir_mapmutexid()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga012235e4880fc5a62155772abab110f9">sirinternal.c</a></li>
-<li>_sir_mkerror&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga96032779b027480acf885eab4a5e6da4">sirhelpers.h</a></li>
-<li>_sir_once()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga280f725099d27e5d78779eb00a3cc30f">sirinternal.c</a></li>
-<li>_sir_options_sanity()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga4933645a9db3dc00177ce5f285c9c53a">sirinternal.c</a></li>
-<li>_sir_resetstr()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gab89052df9773870821612c9b99586281">sirhelpers.h</a></li>
-<li>_sir_resettextstyles()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga02bc0f7909f3fbe410dcda1fd96149b2">sirtextstyle.c</a></li>
-<li>_sir_safefree()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gafd7b2c5b8940fe4c92a59da4ebecfc09">sirhelpers.h</a></li>
-<li>_sir_sanity()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gaf532bdd6b18375a0f0af63a3c23c5098">sirinternal.c</a></li>
-<li>_sir_settextstyle()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga672fc0c8a5a475dad1202cf68a3a1f8d">sirtextstyle.c</a></li>
-<li>_sir_stderrlevels()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gabdbb0f0c872c2a3cf3570c77f7793f02">sirinternal.c</a></li>
-<li>_sir_stderropts()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gaefa0f3ba25e5663fa5ecf9e2109f8b4f">sirinternal.c</a></li>
-<li>_sir_stdoutlevels()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga26048987dc7a61ceb03d8ce3c2f71572">sirinternal.c</a></li>
-<li>_sir_stdoutopts()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga3acfb20709b886b91a73f8fa558db23c">sirinternal.c</a></li>
-<li>_sir_syslog_maplevel()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga56e8380c236eecbef8eaa9da04c7dfc1">sirinternal.c</a></li>
-<li>_sir_sysloglevels()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gab34daaf02d6c6c3609e3b2c0bbfa4978">sirinternal.c</a></li>
-<li>_sir_unlocksection()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga8238d10d7a78436abe55eefec827f23b">sirinternal.c</a></li>
-<li>_sir_validerror()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga85df9c3299ca00a1fbde0bca7b95a2f5">sirhelpers.h</a></li>
-<li>_sir_validfid()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gad2bb1aa7a5735739d5db5dbdaca22f18">sirhelpers.c</a></li>
-<li>_sir_validlevel()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga70a34d97d57819b278ff8ac1b8f53f3a">sirhelpers.c</a></li>
-<li>_sir_validlevels()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga09fdf57a2d2841d4d6c5f00dfa82974b">sirhelpers.c</a></li>
-<li>_sir_validopts()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga3ab7b0541bb7d04ca61168d0130e3848">sirhelpers.c</a></li>
-<li>_sir_validptr&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga8c427d43dc4611ee5449469f7dcbfce8">sirhelpers.h</a></li>
-<li>_sir_validstr()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga81ba7c311823833ccaee4ecdff8fb460">sirhelpers.h</a></li>
-<li>_sir_validstrnofail()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gadafa37c7ad670f7c1a6b92a32933ad82">sirhelpers.h</a></li>
-<li>_sir_validstyle()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga21cad27fd41591efb76e93c50b1428ca">sirtextstyle.c</a></li>
-<li>_sir_writeinit()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gafdcdf1a44e00db7b07d95f35cff111e6">sirinternal.c</a></li>
-<li>_sirbuf_get()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gaf5dae816919a08d85afc71024ff58bcd">sirinternal.c</a></li>
-<li>_sirfile_archive()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga0fb1f78aa9c924d1e9e155b000b07da0">sirfilecache.c</a></li>
-<li>_sirfile_write()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gafcc058772f36163fe63d70a272764496">sirfilecache.c</a></li>
-<li>_SIRM_FILECACHE&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gga1b4579307692c802cc1d2b16e49c1371a36e0e177582f073ea203ea4cb0db6a47">sirtypes.h</a></li>
-<li>_SIRM_INIT&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gga1b4579307692c802cc1d2b16e49c1371a2e0869dddfcc782e813b20d0b73db27c">sirtypes.h</a></li>
-<li>_SIRM_TEXTSTYLE&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gga1b4579307692c802cc1d2b16e49c1371a974b68d27c9ee586a717a3ca3c66bb32">sirtypes.h</a></li>
-<li>_sirmutex_create()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gabb7fa2627bf9b269840231c50723c34e">sirmutex.c</a></li>
-<li>_sirmutex_destroy()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga5ac9f33affaf105f0476bf022f7b42ef">sirmutex.c</a></li>
-<li>_sirmutex_lock()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga1f350df79dd4baa18a77e115384fe04e">sirmutex.c</a></li>
-<li>_sirmutex_trylock()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga218de99ef58f518efdb6204876a10a29">sirmutex.c</a></li>
-<li>_sirmutex_unlock()&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#gac71abdf9aec294011fe8492bd74d875d">sirmutex.c</a></li>
-<li>_SIRS_ATTR_MASK&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga09e61ce10bc0571beda516472b5e9197">sirtypes.h</a></li>
-<li>_SIRS_BG_MASK&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga55cbc62deb411939d4acfb6b64957f86">sirtypes.h</a></li>
-<li>_SIRS_FG_MASK&#160;:&#160;<a class="el" href="d0/dfe/group__intern.html#ga7660f6397f9c6b7f628cf2e354222544">sirtypes.h</a></li>
+<h3><a id="index_b" name="index_b"></a>- b -</h3><ul>
+<li>BOLD&#160;:&#160;<a class="el" href="siransimacros_8h.html#a64dae5ea663596bf818ce1a65188b599">siransimacros.h</a></li>
+</ul>
+
+
+<h3><a id="index_c" name="index_c"></a>- c -</h3><ul>
+<li>COLOR&#160;:&#160;<a class="el" href="siransimacros_8h.html#a1ebf33726fd433028ef8313fcc97fe02">siransimacros.h</a></li>
+</ul>
+
+
+<h3><a id="index_e" name="index_e"></a>- e -</h3><ul>
+<li>EMPH&#160;:&#160;<a class="el" href="siransimacros_8h.html#a83167d57009cd2bb4a9116de97039bf3">siransimacros.h</a></li>
+</ul>
+
+
+<h3><a id="index_i" name="index_i"></a>- i -</h3><ul>
+<li>INVERT&#160;:&#160;<a class="el" href="siransimacros_8h.html#ac8f15eef1cd5bf5f8b127fe10c96aa62">siransimacros.h</a></li>
+</ul>
+
+
+<h3><a id="index_m" name="index_m"></a>- m -</h3><ul>
+<li>main()&#160;:&#160;<a class="el" href="example_8c.html#a840291bc02cba5474a4cb46a9b9566fe">example.c</a></li>
+</ul>
+
+
+<h3><a id="index_r" name="index_r"></a>- r -</h3><ul>
+<li>report_error()&#160;:&#160;<a class="el" href="example_8c.html#a929f3d3b8335f1827cf00af79a26ade7">example.c</a></li>
+</ul>
+
+
+<h3><a id="index_s" name="index_s"></a>- s -</h3><ul>
+<li>sir_cleanup()&#160;:&#160;<a class="el" href="group__publicfuncs.html#ga9bf3e92cefac01de4e3c6c359a58706f">sir.c</a>, <a class="el" href="group__publicfuncs.html#ga9bf3e92cefac01de4e3c6c359a58706f">sir.h</a></li>
+<li>SIR_DESTNAME_STDERR&#160;:&#160;<a class="el" href="group__config.html#ga926d6358221d41053fc26e9c7b3ab00d">sirconfig.h</a></li>
+<li>SIR_DESTNAME_STDOUT&#160;:&#160;<a class="el" href="group__config.html#gae39d0ceab6c56fb66a8f036302ac90a2">sirconfig.h</a></li>
+<li>SIR_DESTNAME_SYSLOG&#160;:&#160;<a class="el" href="group__config.html#gae5e1886a3fa12d37256da4b20347b9b0">sirconfig.h</a></li>
+<li>SIR_ERRORFORMAT&#160;:&#160;<a class="el" href="group__config.html#ga060398bb73afb43df07b1587bcec98ba">sirconfig.h</a></li>
+<li>SIR_ESC&#160;:&#160;<a class="el" href="siransimacros_8h.html#a0cb084124e9ecca12ea15d5ffd37284a">siransimacros.h</a></li>
+<li>SIR_ESC_M&#160;:&#160;<a class="el" href="siransimacros_8h.html#a7cc54c9116a34d86975364e0c52a1987">siransimacros.h</a></li>
+<li>SIR_ESC_RST&#160;:&#160;<a class="el" href="siransimacros_8h.html#a214056aecbf2d48867807967db489a5d">siransimacros.h</a></li>
+<li>SIR_FALLBACK_SYSLOG_CAT&#160;:&#160;<a class="el" href="group__config.html#ga9b99ae577cedc922bded630216627070">sirconfig.h</a></li>
+<li>SIR_FALLBACK_SYSLOG_ID&#160;:&#160;<a class="el" href="group__config.html#ga08083686de6372fdeb9b52e73a6d6808">sirconfig.h</a></li>
+<li>SIR_FHBEGIN&#160;:&#160;<a class="el" href="group__config.html#gaeb4e44bc613c57c3c49e27b66e69e933">sirconfig.h</a></li>
+<li>SIR_FHFORMAT&#160;:&#160;<a class="el" href="group__config.html#ga7c652578740e372edeac33d14f6408fd">sirconfig.h</a></li>
+<li>SIR_FHROLLED&#160;:&#160;<a class="el" href="group__config.html#gaca213e22f32a371da7ca82eb86a16c9a">sirconfig.h</a></li>
+<li>SIR_FHTIMEFORMAT&#160;:&#160;<a class="el" href="group__config.html#ga90d4862e769fd5effefb1e1dedf520c8">sirconfig.h</a></li>
+<li>sir_file_def_lvls&#160;:&#160;<a class="el" href="group__default.html#ga1337de627cb0dd234f34b07b4d77a931">sirdefaults.h</a></li>
+<li>sir_file_def_opts&#160;:&#160;<a class="el" href="group__default.html#ga7b82b6fc3f0701c4db31d05a0b7a17ba">sirdefaults.h</a></li>
+<li>SIR_FNAMEFORMAT&#160;:&#160;<a class="el" href="group__config.html#ga30cae1b7b493f9be429ff683b9d77677">sirconfig.h</a></li>
+<li>SIR_FNAMESEQFORMAT&#160;:&#160;<a class="el" href="group__config.html#ga0dbd6db580edf1d367220202e3dff944">sirconfig.h</a></li>
+<li>SIR_FNAMETIMEFORMAT&#160;:&#160;<a class="el" href="group__config.html#gaeb4949a438cb054dbd261eead7e9d6c9">sirconfig.h</a></li>
+<li>SIR_FOPENMODE&#160;:&#160;<a class="el" href="group__config.html#gaad514de31d1178e0a91dcd7434230965">sirconfig.h</a></li>
+<li>SIR_FROLLSIZE&#160;:&#160;<a class="el" href="group__config.html#ga019fb62b107343bafedb0f5ad84f7d3a">sirconfig.h</a></li>
+<li>sir_geterror()&#160;:&#160;<a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300">sir.c</a>, <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300">sir.h</a></li>
+<li>sir_init()&#160;:&#160;<a class="el" href="group__publicfuncs.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a">sir.c</a>, <a class="el" href="group__publicfuncs.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a">sir.h</a></li>
+<li>SIR_LEVELPREFIX&#160;:&#160;<a class="el" href="group__config.html#ga359b781cc4fde8dd09e30b95328b3ab0">sirconfig.h</a></li>
+<li>SIR_LEVELSUFFIX&#160;:&#160;<a class="el" href="group__config.html#ga430a53000e87723599d6994d0ae2bb68">sirconfig.h</a></li>
+<li>sir_lvl_alert_def_style&#160;:&#160;<a class="el" href="group__default.html#gafdb5a00e97fee751fe4018bf7c754bc7">sirdefaults.h</a></li>
+<li>sir_lvl_crit_def_style&#160;:&#160;<a class="el" href="group__default.html#ga9eb15ab392a9376c2d1b0ac5b3d9d40c">sirdefaults.h</a></li>
+<li>sir_lvl_debug_def_style&#160;:&#160;<a class="el" href="group__default.html#ga421e032fc253010c055403f1dc1688c2">sirdefaults.h</a></li>
+<li>sir_lvl_emerg_def_style&#160;:&#160;<a class="el" href="group__default.html#gab6726fccfc830dfe0bc5e0640e8d253e">sirdefaults.h</a></li>
+<li>sir_lvl_error_def_style&#160;:&#160;<a class="el" href="group__default.html#ga49e4babaece2219023aae3f747f60e3a">sirdefaults.h</a></li>
+<li>sir_lvl_info_def_style&#160;:&#160;<a class="el" href="group__default.html#ga8aca18483225a6b4940155f979b83fe5">sirdefaults.h</a></li>
+<li>sir_lvl_notice_def_style&#160;:&#160;<a class="el" href="group__default.html#gaf52b39bf2ea92d31b9d52949eae5cace">sirdefaults.h</a></li>
+<li>sir_lvl_warn_def_style&#160;:&#160;<a class="el" href="group__default.html#gaef2e615ebaeeb41f46322754a2f56c98">sirdefaults.h</a></li>
+<li>sir_makeinit()&#160;:&#160;<a class="el" href="group__publicfuncs.html#gac21fb86ac7e7710400bf8b642887ad96">sir.c</a>, <a class="el" href="group__publicfuncs.html#gac21fb86ac7e7710400bf8b642887ad96">sir.h</a></li>
+<li>SIR_MAX_SYSLOG_CAT&#160;:&#160;<a class="el" href="group__config.html#gacf0d0fad6a98c920cced53dbe9b54d26">sirconfig.h</a></li>
+<li>SIR_MAX_SYSLOG_ID&#160;:&#160;<a class="el" href="group__config.html#ga24a907a8ba87d4355d11dca2476383b2">sirconfig.h</a></li>
+<li>SIR_MAXERROR&#160;:&#160;<a class="el" href="group__config.html#gad6fce840144259e992c33fb611f31262">sirconfig.h</a></li>
+<li>SIR_MAXFHEADER&#160;:&#160;<a class="el" href="group__config.html#gad0d5f453c3eb6a7a0e9d507b122bfac4">sirconfig.h</a></li>
+<li>SIR_MAXFILES&#160;:&#160;<a class="el" href="group__config.html#gaa1080a4bec531adb6d25c87ac4734399">sirconfig.h</a></li>
+<li>SIR_MAXLEVEL&#160;:&#160;<a class="el" href="group__config.html#gabac0b7b0c1ea5afc9d0708a4421b1a57">sirconfig.h</a></li>
+<li>SIR_MAXMESSAGE&#160;:&#160;<a class="el" href="group__config.html#ga5f006a2e9ce93ae8d693a2928af33bb2">sirconfig.h</a></li>
+<li>SIR_MAXMISC&#160;:&#160;<a class="el" href="group__config.html#gac42033f35206a8adbf1a4377c8e0d290">sirconfig.h</a></li>
+<li>SIR_MAXMSEC&#160;:&#160;<a class="el" href="group__config.html#gab048f63b09b424f84e19055dc0ec4a29">sirconfig.h</a></li>
+<li>SIR_MAXNAME&#160;:&#160;<a class="el" href="group__config.html#ga85ed3139018ee9e7545c74c0885dff55">sirconfig.h</a></li>
+<li>SIR_MAXOUTPUT&#160;:&#160;<a class="el" href="group__config.html#gab3e26cb9ac224cb9a695ddf1ed099218">sirconfig.h</a></li>
+<li>SIR_MAXPID&#160;:&#160;<a class="el" href="group__config.html#ga77d8a4249177fcf7703a811ca0154190">sirconfig.h</a></li>
+<li>SIR_MAXSTYLE_16_COLOR&#160;:&#160;<a class="el" href="group__config.html#ga2fb5413dac03b2487edfeee377932402">sirconfig.h</a></li>
+<li>SIR_MAXTIME&#160;:&#160;<a class="el" href="group__config.html#gac1e50274f913ef71f196f20b9dfbbba6">sirconfig.h</a></li>
+<li>SIR_MSECFORMAT&#160;:&#160;<a class="el" href="group__config.html#ga11214c8798ccdaab052c3bc9db2e3e78">sirconfig.h</a></li>
+<li>SIR_NUM16_COLOR_MAPPINGS&#160;:&#160;<a class="el" href="group__config.html#gad4797e353beace140ae7ac35e0e6ea11">sirconfig.h</a></li>
+<li>SIR_NUMLEVELS&#160;:&#160;<a class="el" href="group__config.html#ga54ab03b03f20338146a5ab69fcd90177">sirconfig.h</a></li>
+<li>SIR_NUMOPTIONS&#160;:&#160;<a class="el" href="group__config.html#ga3d40d22ca5d641892fc7b3cb8d0bb283">sirconfig.h</a></li>
+<li>SIR_PIDFORMAT&#160;:&#160;<a class="el" href="group__config.html#ga88267c5f76d8f1f3f0b6a7903bfddc0b">sirconfig.h</a></li>
+<li>SIR_PIDPREFIX&#160;:&#160;<a class="el" href="group__config.html#ga783092ff31da5f9acc116c9f4657f671">sirconfig.h</a></li>
+<li>SIR_PIDSEPARATOR&#160;:&#160;<a class="el" href="group__config.html#ga22d306c921d111c9722a11c9a9ad628e">sirconfig.h</a></li>
+<li>SIR_PIDSUFFIX&#160;:&#160;<a class="el" href="group__config.html#gabd5132131479030a120c289812e38363">sirconfig.h</a></li>
+<li>SIR_R_ARROW&#160;:&#160;<a class="el" href="siransimacros_8h.html#afe296ab1f6b488fd5e23ebd50c780b80">siransimacros.h</a></li>
+<li>sir_stderr_def_lvls&#160;:&#160;<a class="el" href="group__default.html#ga0c89af75ec9acb60d1160fa6cabb82dc">sirdefaults.h</a></li>
+<li>sir_stderr_def_opts&#160;:&#160;<a class="el" href="group__default.html#ga6175606145e324da9dfb3011c2a02b74">sirdefaults.h</a></li>
+<li>sir_stdout_def_lvls&#160;:&#160;<a class="el" href="group__default.html#ga47b9f4b74ed2b3d81d34c0d0237b100f">sirdefaults.h</a></li>
+<li>sir_stdout_def_opts&#160;:&#160;<a class="el" href="group__default.html#ga570e5f904a2aacfaf3284276784d4ddb">sirdefaults.h</a></li>
+<li>sir_syslog_def_lvls&#160;:&#160;<a class="el" href="group__default.html#ga7a0b53f25f5140db6a320d815097e268">sirdefaults.h</a></li>
+<li>sir_syslog_def_opts&#160;:&#160;<a class="el" href="group__default.html#ga726779e2fb7b46239dd535e6b9eed092">sirdefaults.h</a></li>
+<li>SIR_TIMEFORMAT&#160;:&#160;<a class="el" href="group__config.html#gab1531d6b0d9c880b793362322542794c">sirconfig.h</a></li>
+<li>SIR_UNKNOWN&#160;:&#160;<a class="el" href="group__config.html#gaf9776f0b7cf01f82f2580a29c9efb6d6">sirconfig.h</a></li>
+<li>SIRL_S_ALERT&#160;:&#160;<a class="el" href="group__config.html#ga4e02d1cb5e4a8d8535227657781d4a29">sirconfig.h</a></li>
+<li>SIRL_S_CRIT&#160;:&#160;<a class="el" href="group__config.html#ga362f77b1b5555a0ea57fdfb64ae09229">sirconfig.h</a></li>
+<li>SIRL_S_DEBUG&#160;:&#160;<a class="el" href="group__config.html#ga04d05c434823f0e5a353a31bb47af16e">sirconfig.h</a></li>
+<li>SIRL_S_EMERG&#160;:&#160;<a class="el" href="group__config.html#ga777d150774244d2707818f2c4a1b9538">sirconfig.h</a></li>
+<li>SIRL_S_ERROR&#160;:&#160;<a class="el" href="group__config.html#ga4237f9dff053a17cf7a134dbbebc5210">sirconfig.h</a></li>
+<li>SIRL_S_INFO&#160;:&#160;<a class="el" href="group__config.html#ga1f7c2763d5e7afb0f2b49d4f0636276d">sirconfig.h</a></li>
+<li>SIRL_S_NOTICE&#160;:&#160;<a class="el" href="group__config.html#ga6195821fca239b40498e847d50b82623">sirconfig.h</a></li>
+<li>SIRL_S_WARN&#160;:&#160;<a class="el" href="group__config.html#ga7a2838316cfd52f1af743952e667d9f5">sirconfig.h</a></li>
+<li>STRIKE&#160;:&#160;<a class="el" href="siransimacros_8h.html#a1319b1d6256ace654ff3bad6275ead00">siransimacros.h</a></li>
+</ul>
+
+
+<h3><a id="index_u" name="index_u"></a>- u -</h3><ul>
+<li>ULINE&#160;:&#160;<a class="el" href="siransimacros_8h.html#a756017edcdb5930bcc347fba90bd0d5c">siransimacros.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
+<!-- HTML footer for doxygen 1.9.7-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue May 16 2023 21:34:20 for libsir by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

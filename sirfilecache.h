@@ -1,16 +1,10 @@
-/**
- * @file sirfilecache.h
- * @brief Internal log file management.
+/*
+ * sirfilecache.h
  *
- * This file and accompanying source code originated from <https://github.com/aremmell/libsir>.
- * If you obtained it elsewhere, all bets are off.
- *
- * @author Ryan M. Lederman <lederman@gmail.com>
- * @copyright
- *
- * The MIT License (MIT)
- *
- * Copyright (c) 2018 Ryan M. Lederman
+ * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Copyright: Copyright (c) 2018-2023
+ * Version:   2.2.0
+ * License:   The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -34,32 +28,28 @@
 
 #include "sirtypes.h"
 
-/**
- * @addtogroup intern
- * @{
- */
-
 typedef bool (*sir_fcache_pred)(const void* match, sirfile* iter);
 typedef void (*sir_fcache_update)(sirfile* si, sir_update_config_data* data);
 
-sirfileid_t _sir_addfile(const sirchar_t* path, sir_levels levels, sir_options opts);
+sirfileid_t _sir_addfile(const char* path, sir_levels levels, sir_options opts);
 bool _sir_updatefile(sirfileid_t id, sir_update_config_data* data);
 bool _sir_remfile(sirfileid_t id);
 
-sirfile* _sirfile_create(const sirchar_t* path, sir_levels levels, sir_options opts);
+sirfile* _sirfile_create(const char* path, sir_levels levels, sir_options opts);
 bool _sirfile_open(sirfile* sf);
 void _sirfile_close(sirfile* sf);
-bool _sir_write(sirfile* sf, const sirchar_t* output);
-bool _sirfile_writeheader(sirfile* sf, const sirchar_t* msg);
+bool _sir_write(sirfile* sf, const char* output);
+bool _sirfile_writeheader(sirfile* sf, const char* msg);
 bool _sirfile_needsroll(sirfile* sf);
-bool _sirfile_roll(sirfile* sf, sirchar_t** newpath);
-bool _sirfile_archive(sirfile* sf, const sirchar_t* newpath);
-bool _sirfile_splitpath(sirfile* sf, sirchar_t** name, sirchar_t** ext);
+bool _sirfile_roll(sirfile* sf, char** newpath);
+bool _sirfile_archive(sirfile* sf, const char* newpath);
+bool _sirfile_splitpath(sirfile* sf, char** name, char** ext);
 void _sirfile_destroy(sirfile* sf);
 bool _sirfile_validate(sirfile* sf);
-void _sirfile_update(sirfile* sf, sir_update_config_data* data);
+bool _sirfile_update(sirfile* sf, sir_update_config_data* data);
 
-sirfileid_t _sir_fcache_add(sirfcache* sfc, const sirchar_t* path, sir_levels levels, sir_options opts);
+sirfileid_t _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
+    sir_options opts);
 bool _sir_fcache_update(sirfcache* sfc, sirfileid_t id, sir_update_config_data* data);
 bool _sir_fcache_rem(sirfcache* sfc, sirfileid_t id);
 
@@ -73,8 +63,5 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
 
 void _sir_fclose(FILE** f);
 void _sir_fflush(FILE* f);
-bool _sir_fflush_all(void);
-
-/** @} */
 
 #endif /* !_SIR_FILECACHE_H_INCLUDED */

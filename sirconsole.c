@@ -1,16 +1,10 @@
-/**
- * @file sirconsole.c
- * @brief Internal stdio management.
+/*
+ * sirconsole.c
  *
- * This file and accompanying source code originated from <https://github.com/aremmell/libsir>.
- * If you obtained it elsewhere, all bets are off.
- *
- * @author Ryan M. Lederman <lederman@gmail.com>
- * @copyright
- *
- * The MIT License (MIT)
- *
- * Copyright (c) 2018 Ryan M. Lederman
+ * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Copyright: Copyright (c) 2018-2023
+ * Version:   2.2.0
+ * License:   The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -31,17 +25,10 @@
  */
 #include "sirconsole.h"
 #include "sirinternal.h"
-#include "sirtextstyle.h"
 
-/**
- * @addtogroup intern
- * @{
- */
+#if !defined(__WIN__)
 
-#if !defined(_WIN32)
-
-bool _sir_write_stdio(FILE* stream, const sirchar_t* message) {
-
+bool _sir_write_stdio(FILE* stream, const char* message) {
     if (EOF == fputs(message, stream)) {
         _sir_handleerr(errno);
         return false;
@@ -50,7 +37,7 @@ bool _sir_write_stdio(FILE* stream, const sirchar_t* message) {
     return true;
 }
 
-#else
+#else /* __WIN__ */
 
 HANDLE __sir_stdout = INVALID_HANDLE_VALUE;
 HANDLE __sir_stderr = INVALID_HANDLE_VALUE;
@@ -66,8 +53,7 @@ bool _sir_initialize_stdio(void) {
     return configure;
 }
 
-bool _sir_write_stdio(HANDLE console, const sirchar_t* message, size_t len) {
-
+bool _sir_write_stdio(HANDLE console, const char* message, size_t len) {
     DWORD chars   = (DWORD)len;
     DWORD written = 0;
 
@@ -113,10 +99,8 @@ static BOOL CALLBACK __sir_config_consoles_once(PINIT_ONCE ponce, PVOID param, P
 
     __sir_stdout = GetStdHandle(STD_OUTPUT_HANDLE);
     __sir_stderr = GetStdHandle(STD_ERROR_HANDLE);
-    
+
     return (_sir_config_console(__sir_stdout) && _sir_config_console(__sir_stderr)) ? TRUE : FALSE;
 }
 
-#endif /* !_WIN32 */
-
-/** @} */
+#endif /* !__WIN__ */

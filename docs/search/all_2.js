@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['d_5fstderr_0',['d_stderr',['../d2/ddf/structsirinit.html#ac66a688f2db4be6a408b8c570ffd0811',1,'sirinit']]],
-  ['d_5fstdout_1',['d_stdout',['../d2/ddf/structsirinit.html#abdce8407bc07b5c7bdb945bd3797dea5',1,'sirinit']]],
-  ['d_5fsyslog_2',['d_syslog',['../d2/ddf/structsirinit.html#a86b187f809d969f08dd2edef0e4cb248',1,'sirinit']]]
+  ['category_0',['category',['../group__publictypes.html#ace79b2f2bd4d08d0c6e4151dafb3266b',1,'sir_syslog_dest']]],
+  ['color_1',['COLOR',['../siransimacros_8h.html#a1ebf33726fd433028ef8313fcc97fe02',1,'siransimacros.h']]],
+  ['configuration_2',['Configuration',['../group__config.html',1,'']]]
 ];

@@ -1,0 +1,175 @@
+{
+	/* https://code.visualstudio.com/docs/editor/userdefinedsnippets */
+	"File header comment block": {
+		"scope": "c,cpp",
+		"prefix": "hdr",
+		"body": [
+			"/*",
+			" * $TM_FILENAME",
+			" *",
+			" * Author:    Ryan M. Lederman <lederman@gmail.com>",
+			" * Copyright: Copyright (c) 2018-$CURRENT_YEAR",
+			" * Version:   ${3:2.2.0}",
+			" * License:   The MIT License (MIT)",
+			" *",
+			" * Permission is hereby granted, free of charge, to any person obtaining a copy of",
+			" * this software and associated documentation files (the \"Software\"), to deal in",
+			" * the Software without restriction, including without limitation the rights to",
+			" * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of",
+			" * the Software, and to permit persons to whom the Software is furnished to do so,",
+			" * subject to the following conditions:",
+			" *",
+			" * The above copyright notice and this permission notice shall be included in all",
+			" * copies or substantial portions of the Software.",
+			" *",
+			" * THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR",
+			" * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS",
+			" * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR",
+			" * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER",
+			" * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN",
+			" * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+			" */",
+		],
+		"description": [
+			"Inserts a file header comment block for files that are *NOT*",
+			" intended to be parsed as a '@file' by Doxygen."
+		]			    
+	},
+	/* https://www.doxygen.nl/manual/commands.html#cmdfile */
+	"File header comment block (Doxygen)": {
+		"scope": "c,cpp",
+		"prefix": "doxyhdr",
+		"body": [
+			"/**",
+			" * @file $TM_FILENAME",
+			" * @brief ${1:Brief description of this file}",
+			" *",
+			" * ${2:Detailed description of this file}",
+			" *",
+			" * @author    Ryan M. Lederman \\<lederman@gmail.com\\>",
+			" * @date      2018-$CURRENT_YEAR",
+			" * @version   ${3:2.2.0}",
+			" * @copyright The MIT License (MIT)",
+			" *",
+			" * Permission is hereby granted, free of charge, to any person obtaining a copy of",
+			" * this software and associated documentation files (the \"Software\"), to deal in",
+			" * the Software without restriction, including without limitation the rights to",
+			" * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of",
+			" * the Software, and to permit persons to whom the Software is furnished to do so,",
+			" * subject to the following conditions:",
+			" *",
+			" * The above copyright notice and this permission notice shall be included in all",
+			" * copies or substantial portions of the Software.",
+			" *",
+			" * THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR",
+			" * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS",
+			" * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR",
+			" * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER",
+			" * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN",
+			" * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+			" */",
+		],
+		"description": [
+			"Inserts a file header comment block for files that are intended to be parsed as a ",
+			"'@file' by Doxygen."
+		]			    
+	},
+	"Header file template": {
+		"scope": "c,cpp",
+		"isFileTemplate": true,
+		"prefix": "newhdr",
+		"body": [
+			"#ifndef _SIR_${TM_FILENAME_BASE/sir(.*)/${1:/upcase}/}_H_INCLUDED",
+			"#define _SIR_${TM_FILENAME_BASE/sir(.*)/${1:/upcase}/}_H_INCLUDED",
+			"",
+			"",
+			"#endif /* !_SIR_${TM_FILENAME_BASE/sir(.*)/${1:/upcase}/}_H_INCLUDED */",
+			""
+		],
+		"description": [
+			"Header template with ifdef include guards. Must already have a",
+			" filename, since the guards are generated from the name."
+		]			    
+	},
+	"Doxygen comment block": {
+		"scope": "c,cpp",
+		"prefix": "doxyblock",
+		"body": [
+			"/******************************************************************************",
+			" * ${1:Block Title}",
+			"/******************************************************************************/"
+		],
+		"description": [
+			"A Doxygen comment block to separate sections of code.",
+		]			    
+	},
+	"Doxygen member group": {
+		"scope": "c,cpp",
+		"prefix": "doxymembergroup",
+		"body": [
+			"/**",
+			" * @name ${1:Group name}",
+			" * ${2:Group description}",
+			" */",
+			"/** @{ */",
+			"",
+			"// place group members here",
+			"",
+			"/** @} */",
+			"",
+		],
+		"description": [
+			"A doxygen comment block which creates a member group",
+		]			    
+	},
+	"Doxygen addtogroup": {
+		"scope": "c,cpp",
+		"prefix": "doxyaddtogroup",
+		"body": [
+			"/**",
+			" * @addtogroup ${1:Group label}",
+			" * @{",
+			" */",
+			"",
+			"// place group content here",
+			"",
+			"/** @} */",
+			"",
+		],
+		"description": [
+			"A doxygen 'addtogroup' comment block",
+		]			    
+	},
+	"Doxygen defgroup": {
+		"scope": "c,cpp",
+		"prefix": "doxydefgroup",
+		"body": [
+			"/**",
+			" * @defgroup1 ${1:Group label} ${2:Group description}",
+			" * @{",
+			" */",
+			"",
+			"// place group content here",
+			"",
+			"/** @} */",
+			"",
+		],
+		"description": [
+			"A doxygen 'defgroup' comment block",
+		]			    
+	}
+
+	/*
+	"name": {
+		"scope": "c,cpp",
+		"isFileTemplate": false,
+		"prefix": "",
+		"body": [
+			"",
+		],
+		"description": [
+			"",
+		]			    
+	}
+	*/
+}

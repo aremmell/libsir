@@ -3,7 +3,6 @@
     // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
-        /* begin Unix Makefile */
         {
             "label": "Clean",
             "type": "process",
@@ -16,8 +15,13 @@
                 "kind": "build",
                 "isDefault": false
             },
-            "windows": {
-                
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
             }
         },
         {
@@ -33,7 +37,71 @@
                 "isDefault": false
             },
             "dependsOn": "Clean",
-            "windows":{
+            "linux": {
+                "problemMatcher": [
+                      "$gcc"
+                ]
+            },
+            "osx": {
+                "problemMatcher": [
+                    {
+                        "owner": "c_cpp",
+                        "fileLocation": ["relative", "${workspaceRoot}"],
+                        "pattern": {
+                            "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
+                            "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
+                        }                    
+                    }
+                ]
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        {
+            "label": "DBG: Static library",
+            "type": "process",
+            "command": "make",
+            "args": [
+                "SIR_ASSERT_ENABLED=1",
+                "SIR_SELFLOG=1",                
+                "SIR_DEBUG=1",
+                "static"
+            ],
+            "detail": "Compiles libsir as a static library with debug symbols.",
+            "group": {
+                "kind": "build"
+            },
+            "dependsOn": "Clean",
+            "linux": {
+                "problemMatcher": [
+                      "$gcc"
+                ]
+            },
+            "osx": {
+                "problemMatcher": [
+                    {
+                        "owner": "c_cpp",
+                        "fileLocation": ["relative", "${workspaceRoot}"],
+                        "pattern": {
+                            "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
+                            "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
+                        }                    
+                    }
+                ]
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
             }
         },
         {
@@ -45,11 +113,33 @@
             ],
             "detail": "Compiles libsir as a shared library.",
             "group": {
-                "kind": "build",
-                "isDefault": false
+                "kind": "build"
             },
-            "dependsOn": "Clean",            
-            "windows":{
+            "dependsOn": "Clean",
+            "linux": {
+                "problemMatcher": [
+                      "$gcc"
+                ]
+            },
+            "osx": {
+                "problemMatcher": [
+                    {
+                        "owner": "c_cpp",
+                        "fileLocation": ["relative", "${workspaceRoot}"],
+                        "pattern": {
+                            "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
+                            "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
+                        }                    
+                    }
+                ]
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
             }
         },
         {
@@ -64,8 +154,72 @@
                 "kind": "build",
                 "isDefault": true
             },
-            "dependsOn": "Static library",            
-            "windows":{
+            "dependsOn": "Static library",
+            "linux": {
+                "problemMatcher": [
+                      "$gcc"
+                ]
+            },
+            "osx": {
+                "problemMatcher": [
+                    {
+                        "owner": "c_cpp",
+                        "fileLocation": ["relative", "${workspaceRoot}"],
+                        "pattern": {
+                            "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
+                            "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
+                        }                    
+                    }
+                ]
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        {
+            "label": "DBG: Test suite",
+            "type": "process",
+            "command": "make",
+            "args": [
+                "SIR_ASSERT_ENABLED=1",
+                "SIR_SELFLOG=1",
+                "SIR_DEBUG=1",
+                "tests"
+            ],
+            "detail": "Compiles a test suite binary with debug symbols to ensure libsir is functioning properly.",
+            "group": {
+                "kind": "build"
+            },
+            "dependsOn": "DBG: Static library",
+            "linux": {
+               "problemMatcher": [
+                    "$gcc"
+               ]
+            },
+            "osx": {
+                "problemMatcher": [
+                    {
+                        "owner": "c_cpp",
+                        "fileLocation": ["relative", "${workspaceRoot}"],
+                        "pattern": {
+                            "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
+                            "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
+                        }                    
+                    }
+                ]
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
             }
         },
         {
@@ -77,30 +231,34 @@
             ],
             "detail": "Compiles a sample C application demonstrating basic usage of libsir.",
             "group": {
-                "kind": "build",
-                "isDefault": false
+                "kind": "build"
             },
-            "dependsOn": "Static library",            
-            "windows":{
-            }
-        },
-        /* end Unix Makefile */
-        
-        /* begin MSBuild */
-        {
-            "label": "build",
-            "type": "process",
-            "command": "msbuild",
-            "args": [
-                "/property:GenerateFullPaths=true",
-                "/t:build",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "group": "build",
+            "dependsOn": "Static library",
+            "linux": {
+                "problemMatcher": [
+                      "$gcc"
+                ]
+            },
+            "osx": {
+                "problemMatcher": [
+                    {
+                        "owner": "c_cpp",
+                        "fileLocation": ["relative", "${workspaceRoot}"],
+                        "pattern": {
+                            "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
+                            "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
+                        }                    
+                    }
+                ]
+            },
             "presentation": {
-                "reveal": "always"
-            },
-            "problemMatcher": "$msCompile"
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
         }
     ]
 }

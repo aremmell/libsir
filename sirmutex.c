@@ -1,16 +1,10 @@
-/**
- * @file sirmutex.c
- * @brief pthread and Win32 mutex.
+/*
+ * sirmutex.c
  *
- * This file and accompanying source code originated from <https://github.com/aremmell/libsir>.
- * If you obtained it elsewhere, all bets are off.
- *
- * @author Ryan M. Lederman <lederman@gmail.com>
- * @copyright
- *
- * The MIT License (MIT)
- *
- * Copyright (c) 2018 Ryan M. Lederman
+ * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Copyright: Copyright (c) 2018-2023
+ * Version:   2.2.0
+ * License:   The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -33,29 +27,25 @@
 #include "sirinternal.h"
 #include "sirplatform.h"
 
-/**
- * @addtogroup intern
- * @{
- */
-
-#if !defined(_WIN32) /* pthread mutex implementation */
+#if !defined(__WIN__) /* pthread mutex implementation */
 
 bool _sirmutex_create(sirmutex_t* mutex) {
-
     if (_sir_validptr(mutex)) {
         pthread_mutexattr_t attr;
 
         int op = pthread_mutexattr_init(&attr);
-        _sir_handleerr(op);
+        if (0 != op)
+            _sir_handleerr(op);
 
         if (0 == op) {
             op = pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_NORMAL);
-            _sir_handleerr(op);
+            if (0 != op)
+                _sir_handleerr(op);
 
             if (0 == op) {
                 op = pthread_mutex_init(mutex, &attr);
-                _sir_handleerr(op);
-
+                if (0 != op)
+                    _sir_handleerr(op);
                 return 0 == op;
             }
         }
@@ -65,10 +55,10 @@ bool _sirmutex_create(sirmutex_t* mutex) {
 }
 
 bool _sirmutex_trylock(sirmutex_t* mutex) {
-
     if (_sir_validptr(mutex)) {
         int op = pthread_mutex_trylock(mutex);
-        _sir_handleerr(op);
+        if (0 != op)
+            _sir_handleerr(op);
         return 0 == op;
     }
 
@@ -76,10 +66,10 @@ bool _sirmutex_trylock(sirmutex_t* mutex) {
 }
 
 bool _sirmutex_lock(sirmutex_t* mutex) {
-
     if (_sir_validptr(mutex)) {
         int op = pthread_mutex_lock(mutex);
-        _sir_handleerr(op);
+        if (0 != op)
+            _sir_handleerr(op);
         return 0 == op;
     }
 
@@ -87,10 +77,10 @@ bool _sirmutex_lock(sirmutex_t* mutex) {
 }
 
 bool _sirmutex_unlock(sirmutex_t* mutex) {
-
     if (_sir_validptr(mutex)) {
         int op = pthread_mutex_unlock(mutex);
-        _sir_handleerr(op);
+        if (0 != op)
+            _sir_handleerr(op);
         return 0 == op;
     }
 
@@ -98,22 +88,21 @@ bool _sirmutex_unlock(sirmutex_t* mutex) {
 }
 
 bool _sirmutex_destroy(sirmutex_t* mutex) {
-
     if (_sir_validptr(mutex)) {
         int op = pthread_mutex_destroy(mutex);
-        _sir_handleerr(op);
+        if (0 != op)
+            _sir_handleerr(op);
         return 0 == op;
     }
 
     return false;
 }
 
-#else /* Win32 mutex implementation */
+#else /* __WIN__ */
 
 static bool _sirmutex_waitwin32(sirmutex_t mutex, DWORD msec);
 
 bool _sirmutex_create(sirmutex_t* mutex) {
-
     if (_sir_validptr(mutex)) {
         sirmutex_t tmp = CreateMutex(NULL, FALSE, NULL);
 
@@ -138,7 +127,6 @@ bool _sirmutex_lock(sirmutex_t* mutex) {
 }
 
 bool _sirmutex_unlock(sirmutex_t* mutex) {
-
     if (_sir_validptr(mutex)) {
         BOOL release = ReleaseMutex(*mutex);
 
@@ -152,7 +140,6 @@ bool _sirmutex_unlock(sirmutex_t* mutex) {
 }
 
 bool _sirmutex_destroy(sirmutex_t* mutex) {
-
     if (_sir_validptr(mutex)) {
         BOOL close = CloseHandle(*mutex);
 
@@ -166,15 +153,13 @@ bool _sirmutex_destroy(sirmutex_t* mutex) {
 }
 
 static bool _sirmutex_waitwin32(sirmutex_t mutex, DWORD msec) {
-
     if (_sir_validptr(mutex)) {
         DWORD wait = WaitForSingleObject(mutex, msec);
 
         switch (wait) {
             case WAIT_ABANDONED:
             case WAIT_FAILED:
-                _sir_selflog(
-                    "%s: warning: WaitForSingleObject returned 0x%08lx; danger ahead\n", __func__, wait);
+                _sir_selflog("warning: WaitForSingleObject returned %08x; danger ahead", wait);
                 return WAIT_FAILED != wait;
                 break;
             case WAIT_TIMEOUT:
@@ -185,6 +170,4 @@ static bool _sirmutex_waitwin32(sirmutex_t mutex, DWORD msec) {
     return false;
 }
 
-#endif /* !_WIN32 */
-
-/** @} */
+#endif // !__WIN__
