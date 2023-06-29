@@ -53,7 +53,10 @@ static sir_test sir_tests[] = {
 };
 
 int main(int argc, char** argv) {
-#if !defined(__WIN__)
+#if defined(__HAIKU__)
+    (void)disable_debugger(1);
+#endif
+#if !defined(__WIN__) && !defined(__HAIKU__)
     /* Disallow execution by root / sudo; some of the tests rely on lack of permissions. */
     if (geteuid() == 0) {
         fprintf(stderr, "Sorry, but this program may not be executed by root.\n");

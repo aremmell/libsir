@@ -123,9 +123,16 @@
 # include <time.h>
 # include <string.h>
 
+# if defined(__HAIKU__)
+#  include <OS.h>
+# endif
+
 # if !defined(SIR_NO_SYSTEM_LOGGERS)
 #  if defined(__MACOS__)
 #   define SIR_OS_LOG_ENABLED
+#  elif defined(__HAIKU__)
+#   undef SIR_OS_LOG_ENABLED
+#   undef SIR_SYSLOG_ENABLED
 #  else
 #   undef SIR_OS_LOG_ENABLED
 #   define SIR_SYSLOG_ENABLED

@@ -61,7 +61,8 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         int open_flags = O_PATH | O_DIRECTORY;
 # elif defined(__FreeBSD__)
         int open_flags = O_EXEC | O_DIRECTORY;
-# elif defined(__NetBSD__) || defined(__DragonFly__) || defined(__SOLARIS__)
+# elif defined(__NetBSD__) || defined(__DragonFly__) || \
+       defined(__HAIKU__) || defined(__SOLARIS__)
         int open_flags = O_DIRECTORY;
 # endif
 
@@ -467,6 +468,8 @@ char* _sir_getappfilename(void) {
           resolved = false;
           break;
         }
+# elif defined(__HAIKU__)
+#  warning "no implementation for your platform; please contact the author."
 # else
 #  error "no implementation for your platform; please contact the author."
 # endif
