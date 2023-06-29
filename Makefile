@@ -38,11 +38,11 @@ ifeq ($(SIR_NO_SYSTEM_LOGGERS),1)
 endif
 
 # dependencies
-LIBS = -pthread
+LIBS += -pthread
 
 # for test rig and example:
 # link with static library, not shared
-LDFLAGS = $(LIBS) -L$(LIBDIR) -lsir_s
+LDFLAGS += -L$(LIBDIR) -lsir_s $(LIBS)
 
 # translation units
 TUS := $(wildcard *.c)
@@ -53,7 +53,7 @@ OBJ  = $(patsubst %, $(INTDIR)/%, $(_OBJ))
 
 # shared library
 OBJ_SHARED     = $(patsubst %.o, $(INTDIR)/%.o, $(_OBJ))
-OUT_SHARED	   = $(LIBDIR)/libsir.so
+OUT_SHARED     = $(LIBDIR)/libsir.so
 LDFLAGS_SHARED = $(LIBS)
 
 # static library

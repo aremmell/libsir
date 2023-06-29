@@ -137,9 +137,10 @@
 
 # define SIR_MAXHOST 256
 
-# if defined(__GLIBC__) || defined(_AIX) || defined(__linux__) || \
-      defined(__NetBSD__) || defined(__DragonFly__) || defined(__SOLARIS__)
-#  if ( (__GLIBC__ >= 2 && __GLIBC_MINOR__ > 19) || \
+# if defined(__GLIBC__) || defined(_AIX)       || \
+     defined(__linux__) || defined(__NetBSD__) || \
+     defined(__DragonFly__) || defined(__SOLARIS__)
+#  if ( (__GLIBC__ >= 2 && __GLIBC_MINOR__ > 19)    || \
         ( (__GLIBC__ == 2 && __GLIBC_MINOR__ <= 19) && \
           defined(_BSD_SOURCE) ) ) || defined(_AIX) || \
       defined(__NetBSD__) || defined(__DragonFly__) || \
@@ -151,7 +152,7 @@
 # if !defined(__WIN__)
 #  include <pthread.h>
 #  include <unistd.h>
-#  if !defined(_AIX)
+#  if !defined(_AIX) && !defined(__HAIKU__)
 #   include <sys/syscall.h>
 #  endif
 #  include <sys/resource.h>
@@ -166,9 +167,9 @@
 #   include <syslog.h>
 #  endif
 #  if defined(__BSD__)
-#   if !defined(__NetBSD__)
+#   if defined(__PTHREAD_NP__)
 #    include <pthread_np.h>
-#  endif
+#   endif
 #   include <sys/sysctl.h>
 #  elif defined(__linux__)
 #   if defined(__GLIBC__)
@@ -188,60 +189,25 @@
 #  endif
 # endif
 
+# if defined(PATH_MAX)
+#  define SIR_MAXPATH PATH_MAX
+# elif defined(MAXPATHLEN)
+#  define SIR_MAXPATH MAXPATHLEN
+# else
+#  define SIR_MAXPATH 1024
+# endif
+
+# if defined(__MACOS__)
+#  define SIR_MSEC_TIMER
+#  define SIR_MSEC_MACH
+# elif _POSIX_TIMERS > 0
+#  define SIR_MSEC_TIMER
+#  define SIR_MSEC_POSIX
+# else
+#  undef SIR_MSEC_TIMER
+# endif
+
 # if !defined(__WIN__)
-#  include <pthread.h>
-#  include <unistd.h>
-#  if !defined(_AIX)
-#   include <sys/syscall.h>
-#  endif
-#  include <sys/resource.h>
-#  include <sys/time.h>
-#  include <strings.h>
-#  include <termios.h>
-#  include <limits.h>
-#  include <fcntl.h>
-#  include <libgen.h>
-#  include <stdatomic.h>
-#  if defined(SIR_SYSLOG_ENABLED)
-#   include <syslog.h>
-#  endif
-#  if defined(__BSD__)
-#   if defined(__PTHREAD_NP__)
-#    include <pthread_np.h>
-#   endif
-#   include <sys/sysctl.h>
-#  elif defined(__linux__) && defined(__GLIBC__)
-#   include <linux/limits.h>
-#  elif defined(__MACOS__)
-#   include <mach-o/dyld.h>
-#   include <sys/_types/_timespec.h>
-#   include <mach/mach.h>
-#   include <mach/clock.h>
-#   include <mach/mach_time.h>
-#   if defined(SIR_OS_LOG_ENABLED)
-#    include <os/log.h>
-#    include <os/trace.h>
-#    include <os/activity.h>
-#   endif
-#  endif
-
-#  if defined(PATH_MAX)
-#   define SIR_MAXPATH PATH_MAX
-#  elif defined(MAXPATHLEN)
-#   define SIR_MAXPATH MAXPATHLEN
-#  else
-#   define SIR_MAXPATH 1024
-#  endif
-
-#  if defined(__MACOS__)
-#   define SIR_MSEC_TIMER
-#   define SIR_MSEC_MACH
-#  elif _POSIX_TIMERS > 0
-#   define SIR_MSEC_TIMER
-#   define SIR_MSEC_POSIX
-#  else
-#   undef SIR_MSEC_TIMER
-#  endif
 
 /** The mutex type. */
 typedef pthread_mutex_t sirmutex_t;
@@ -257,6 +223,7 @@ typedef void (*sir_once_fn)(void);
 
 # else /* __WIN__ */
 
+#  undef SIR_MAXPATH
 #  define SIR_MAXPATH MAX_PATH
 
 #  define SIR_MSEC_TIMER
@@ -269,7 +236,9 @@ typedef HANDLE sirmutex_t;
 typedef INIT_ONCE sironce_t;
 
 /** Process/thread ID. */
+#  if !defined(__MINGW32__) && !defined(__MINGW64__)
 typedef int pid_t;
+#  endif
 
 /** The one-time execution function type. */
 typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);

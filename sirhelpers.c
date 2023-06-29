@@ -49,6 +49,7 @@ bool _sir_validfd(int fd) {
         _sir_handleerr(errno);
     return valid;
 #else /* __WIN__ */
+# if !defined(__MINGW32__) && !defined(__MONGW64__)
     invalparamfn old = _set_thread_local_invalid_parameter_handler(_sir_invalidparameter);
     intptr_t h = _get_osfhandle(fd);
     _set_thread_local_invalid_parameter_handler(old);
@@ -56,6 +57,7 @@ bool _sir_validfd(int fd) {
         _sir_seterror(EBADF);
         return false;
     }
+# endif
     return true;
 #endif
 }
