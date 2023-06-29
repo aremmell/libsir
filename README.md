@@ -8,7 +8,7 @@ libsir is a cross-platform, thread-safe, fully customizable library designed to 
 
 With libsir, a single call simultaneously broadcasts formatted information to multiple destinations of your choosing. Each destination may have its own formatting, styling, and verbosity options:
 
-![libsir-alpha](./docs/res/libsir-alpha.gif)
+![libsir visual graph](./docs/res/libsir-alpha.gif)
 
 ## Notables
 
@@ -133,8 +133,6 @@ Supported terminals will render text from libsir based on the "styles" used in l
 Clone the repository, then choose how you'd like to integrate libsir into your project. The following build toolkits are supported:
 
 ### VS Code
-
-
 
 > TODO: write something about what’s left to be done
 
