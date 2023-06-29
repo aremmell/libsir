@@ -47,14 +47,8 @@ bool _sir_validfd(int fd) {
     bool valid = -1 != ret || EBADF != errno;
     if (-1 == ret)
         _sir_handleerr(errno);
-#else /* __WIN__ */
-    intptr_t h = _get_osfhandle(fd);
-    bool valid = INVALID_HANDLE_VALUE != (HANDLE)h;
-#endif
-    if (!valid)
-        assert(!"invalid file descriptor");
     return valid;
-#if defined(__WIN__)
+#else /* __WIN__ */
     invalparamfn old = _set_thread_local_invalid_parameter_handler(_sir_invalidparameter);
     intptr_t h = _get_osfhandle(fd);
     _set_thread_local_invalid_parameter_handler(old);
