@@ -44,8 +44,9 @@ enum {
     SIR_E_INVALID   = 11,   /**< Invalid argument */
     SIR_E_NODEST    = 12,   /**< No destinations registered for level */
     SIR_E_UNAVAIL   = 13,   /**< Feature is disabled or unavailable */
-    SIR_E_PLATFORM  = 14,   /**< Platform error code %%d: %%s */
-    SIR_E_UNKNOWN   = 4095, /**< Error is not known */
+    SIR_E_INTERNAL  = 14,   /**< An internal error has occurred */
+    SIR_E_PLATFORM  = 15,   /**< Platform error code %%d: %%s */
+    SIR_E_UNKNOWN   = 4095, /**< Unknown error */
 };
 
 #define _SIR_E_NOERROR   _sir_mkerror(SIR_E_NOERROR)
@@ -62,6 +63,7 @@ enum {
 #define _SIR_E_INVALID   _sir_mkerror(SIR_E_INVALID)
 #define _SIR_E_NODEST    _sir_mkerror(SIR_E_NODEST)
 #define _SIR_E_UNAVAIL   _sir_mkerror(SIR_E_UNAVAIL)
+#define _SIR_E_INTERNAL  _sir_mkerror(SIR_E_INTERNAL)
 #define _SIR_E_PLATFORM  _sir_mkerror(SIR_E_PLATFORM)
 #define _SIR_E_UNKNOWN   _sir_mkerror(SIR_E_UNKNOWN)
 
@@ -69,22 +71,23 @@ static const struct {
     uint32_t e;
     const char* msg;
 } sir_errors[] = {
-    { _SIR_E_NOERROR,   "The operation completed successfully" },
-    { _SIR_E_NOTREADY,  "libsir has not been initialized" },
-    { _SIR_E_ALREADY,   "libsir is already initialized" },
-    { _SIR_E_DUPFILE,   "File already managed by libsir" },
-    { _SIR_E_NOFILE,    "File not managed by libsir" },
-    { _SIR_E_FCFULL,    "Maximum number of files already managed" },
-    { _SIR_E_OPTIONS,   "Option flags are invalid" },
-    { _SIR_E_LEVELS,    "Level flags are invalid" },
-    { _SIR_E_TEXTSTYLE, "Text style is invalid" },
-    { _SIR_E_STRING,    "Invalid string argument" },
-    { _SIR_E_NULLPTR,   "NULL pointer argument" },
-    { _SIR_E_INVALID,   "Invalid argument" },
-    { _SIR_E_NODEST,    "No destinations registered for level" },
-    { _SIR_E_UNAVAIL,   "Feature is disabled or unavailable" },
-    { _SIR_E_PLATFORM,  "Platform error code %d: %s" },
-    { _SIR_E_UNKNOWN,   "Error is not known" },
+    {_SIR_E_NOERROR,   "The operation completed successfully"},
+    {_SIR_E_NOTREADY,  "libsir has not been initialized"},
+    {_SIR_E_ALREADY,   "libsir is already initialized"},
+    {_SIR_E_DUPFILE,   "File already managed by libsir"},
+    {_SIR_E_NOFILE,    "File not managed by libsir"},
+    {_SIR_E_FCFULL,    "Maximum number of files already managed"},
+    {_SIR_E_OPTIONS,   "Option flags are invalid"},
+    {_SIR_E_LEVELS,    "Level flags are invalid"},
+    {_SIR_E_TEXTSTYLE, "Text style is invalid"},
+    {_SIR_E_STRING,    "Invalid string argument"},
+    {_SIR_E_NULLPTR,   "NULL pointer argument"},
+    {_SIR_E_INVALID,   "Invalid argument"},
+    {_SIR_E_NODEST,    "No destinations registered for level"},
+    {_SIR_E_UNAVAIL,   "Feature is disabled or unavailable"},
+    {_SIR_E_INTERNAL,  "An internal error has occurred"},
+    {_SIR_E_PLATFORM,  "Platform error code %d: %s"},
+    {_SIR_E_UNKNOWN,   "Unknown error"},
 };
 
 void __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t line);
@@ -98,6 +101,9 @@ void __sir_handleerr(int code, const char* func, const char* file, uint32_t line
 #define _sir_handleerr(code) __sir_handleerr(code, __func__, __file__, __LINE__)
 
 #if defined(__WIN__)
+void _sir_invalidparameter(const wchar_t* expr, const wchar_t* func, const wchar_t* file,
+    unsigned int line, uintptr_t reserved);
+
 /**
  * Some Win32 API error codes overlap C library error codes, so they need to be handled separately.
  * Mapping them sounds great, but in practice, valuable information about what went wrong is totally

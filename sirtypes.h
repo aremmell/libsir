@@ -33,6 +33,9 @@
 /**
  * @addtogroup public
  * @{
+ *
+ * @defgroup publictypes Types
+ * @{
  */
 
 /** Log file identifier type. */
@@ -226,22 +229,15 @@ typedef struct {
     char name[SIR_MAXNAME];
 } sirinit;
 
-/** @} */
+/**
+ * @}
+ * @}
+ * */
 
-/** Internally-used global config container. */
-typedef struct {
-    sirinit si;
-    struct {
-        char hostname[SIR_MAXHOST];
-        pid_t pid;
-    } state;
-} sirconfig;
-
-/** Internally-used error type. */
-typedef struct {
-    uint32_t code;
-    const char* const message;
-} sirerror;
+/**
+ * @internal
+ * @{
+ */
 
 /** Text style attribute mask. */
 #define _SIRS_ATTR_MASK 0x0000000f
@@ -257,6 +253,26 @@ typedef struct {
 
 /** Magic number used to determine if libsir has been initialized. */
 #define _SIR_MAGIC 0x60906090
+
+#if defined(__WIN__)
+typedef void (*invalparamfn)(const wchar_t*, const wchar_t*, const wchar_t*,
+    unsigned int, uintptr_t);
+#endif
+
+/** Internally-used global config container. */
+typedef struct {
+    sirinit si;
+    struct {
+        char hostname[SIR_MAXHOST];
+        pid_t pid;
+    } state;
+} sirconfig;
+
+/** Internally-used error type. */
+typedef struct {
+    uint32_t code;
+    const char* const message;
+} sirerror;
 
 /** Log file data. */
 typedef struct {
@@ -297,10 +313,9 @@ typedef struct {
 
 /** ::sir_level <-> human-readable string form. */
 typedef struct {
-    const sir_level level;  /**< The level for which the string applies. */
-    const char* str;        /**< The non-formatted string representation. */
-    char fmt[SIR_MAXLEVEL]; /**< The formatted string representation. */
-} sir_level_str_tuple;
+    const sir_level level; /**< The level for which the string applies. */
+    const char* fmt;       /**< The formatted string representation. */
+} sir_level_str_pair;
 
 /** Public (::sir_textstyle) <-> values used to generate styled stdio output. */
 typedef struct {
@@ -310,9 +325,9 @@ typedef struct {
 
 /** Mutex <-> protected section mapping. */
 typedef enum {
-    _SIRM_CONFIG = 0, /**< The ::sirconfig section. */
-    _SIRM_FILECACHE,  /**< The ::sirfcache section. */
-    _SIRM_TEXTSTYLE,  /**< The ::sir_level_style_tuple section. */
+    SIRMI_CONFIG = 0, /**< The ::sirconfig section. */
+    SIRMI_FILECACHE,  /**< The ::sirfcache section. */
+    SIRMI_TEXTSTYLE,  /**< The ::sir_level_style_tuple section. */
 } sir_mutex_id;
 
 /** Error type. */
@@ -356,5 +371,7 @@ typedef enum {
     SIRSL_UPDATED  = 0x00000020,
     SIRSL_IS_INIT  = 0x00000040
 } sir_syslog_state;
+
+/** @} */
 
 #endif /* !_SIR_TYPES_H_INCLUDED */

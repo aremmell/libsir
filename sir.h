@@ -44,12 +44,72 @@ extern "C" {
  *
  * @addtogroup public
  * @{
+ *
+ * @defgroup publicfuncs Functions
+ * @{
  */
 
+/**
+ * @brief Fills out a ::sirinit structure with default values.
+ *
+ * Creates an initialization configuration for libsir essentially using all of
+ * the default values (i.e., levels, options, text styling).
+ *
+ * @note Does not fill in string fields, such as ::sirinit.name.
+ *
+ * @param si Pointer to a ::sirinit structure to receive default values.
+ * @return true if si is not NULL, false otherwise.
+ */
 bool sir_makeinit(sirinit* si);
+
+/**
+ * @brief Initializes libsir for use.
+ *
+ * Must be called before making any other calls into libsir (with the exception
+ * of ::sir_makeinit).
+ *
+ * For every call to ::sir_init, there must be a corresponding call to
+ * ::sir_cleanup. May be called from any thread, and it is not necessary to call
+ * ::sir_cleanup from the same thread.
+ *
+ * @see ::sir_makeinit
+ * @see ::sir_cleanup
+ *
+ * @param si Pointer to a ::sirinit structure containing the desired settings
+ * and configuration. libsir makes a copy of this structure, so its lifetime
+ * is not a concern.
+ *
+ * @return true if initialization was successful, false otherwise. Call ::sir_geterror
+ * to obtain information about any error that may have occurred if false.
+ */
 bool sir_init(sirinit* si);
+
+/**
+ * @brief Tears down and cleans up libsir after use.
+ *
+ * Deallocates resources such as memory buffers, file descriptors, etc. and
+ * resets the internal state. No calls into libsir will succeed after calling
+ * ::sir_cleanup (with the exception of ::sir_makeinit and ::sir_init).
+ *
+ * May be called from any thread. If you wish to utilize libsir again during the
+ * same process' lifetime, simply call ::sir_init again.
+ *
+ * @return true if cleanup was successful, false otherwise. Call ::sir_geterror
+ * to obtain information about any error that may have occurred if false.
+ */
 bool sir_cleanup(void);
 
+/**
+ * @brief Retrieves information about the last error that occurred.
+ *
+ * libsir maintains errors on a per-thread basis, so it's important that the
+ * same thread that encountered a failed library call be the one to get the
+ * error information.
+ *
+ * @param message A buffer of ::SIR_MAXERROR chars to receive an error message.
+ * @return uint16_t The error code. Possible error codes can be found in
+ * ::sirerrors.h.
+ */
 uint16_t sir_geterror(char message[SIR_MAXERROR]);
 
 bool sir_debug(const char* format, ...);
@@ -81,7 +141,10 @@ bool sir_syslogopts(sir_options opts);
 bool sir_syslogid(const char* identity);
 bool sir_syslogcat(const char* category);
 
-/** @} */
+/**
+ * @}
+ * @}
+ */
 
 #if defined(__cplusplus)
 }

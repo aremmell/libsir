@@ -86,10 +86,12 @@
 #  include <io.h>
 #  include <synchapi.h>
 #  include <process.h>
+#  include <winsock2.h>
 #  include <conio.h>
 #  include <shlwapi.h>
 #  include <direct.h>
 # endif
+
 # if defined(SIR_ASSERT_ENABLED)
 #  include <assert.h>
 # else
@@ -144,6 +146,40 @@
       defined(__NetBSD__) || defined(__DragonFly__) || \
       defined(__linux__) || defined(__SOLARIS__)
 #   define __HAVE_UNISTD_READLINK__
+#  endif
+# endif
+
+# if !defined(__WIN__)
+#  include <pthread.h>
+#  include <unistd.h>
+#  include <sys/syscall.h>
+#  include <sys/resource.h>
+#  include <sys/time.h>
+#  include <strings.h>
+#  include <termios.h>
+#  include <limits.h>
+#  include <fcntl.h>
+#  include <libgen.h>
+#  include <stdatomic.h>
+#  if defined(SIR_SYSLOG_ENABLED)
+#   include <syslog.h>
+#  endif
+#  if defined(__BSD__)
+#   include <pthread_np.h>
+#   include <sys/sysctl.h>
+#  elif defined(__linux__)
+#   include <linux/limits.h>
+#  elif defined(__MACOS__)
+#   include <mach-o/dyld.h>
+#   include <sys/_types/_timespec.h>
+#   include <mach/mach.h>
+#   include <mach/clock.h>
+#   include <mach/mach_time.h>
+#   if defined(SIR_OS_LOG_ENABLED)
+#    include <os/log.h>
+#    include <os/trace.h>
+#    include <os/activity.h>
+#   endif
 #  endif
 # endif
 
@@ -258,12 +294,12 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 # if !defined(__MACOS__)
 #  if defined(__linux__) && _POSIX_C_SOURCE >= 199309L
-#   define SIR_MSECCLOCK CLOCK_MONOTONIC_RAW
+#   define SIR_MSECCLOCK CLOCK_REALTIME
 #  else
-#   define SIR_MSECCLOCK CLOCK_MONOTONIC
+#   define SIR_MSECCLOCK CLOCK_REALTIME
 #  endif
 # else /* __MACOS__ */
-#  define SIR_MSECCLOCK SYSTEM_CLOCK
+#  define SIR_MSECCLOCK REALTIME_CLOCK
 # endif
 
 # if (defined(__clang__) || defined(__GNUC__)) && defined(__FILE_NAME__)
