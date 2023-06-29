@@ -33,6 +33,7 @@
 #include <sirfilesystem.h>
 #include <sirhelpers.h>
 #include <sirtextstyle.h>
+#include <siransimacros.h>
 
 #if !defined(__WIN__)
 # include <dirent.h>
