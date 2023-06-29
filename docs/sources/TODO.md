@@ -21,7 +21,7 @@ Bold = “Priority”
 - [ ] Add ‘policy’ flags to sirinit
 
   - [ ] Remove on write error? how many?
-  
+
 - [ ] ~~move timer functionality from tests into libsir itself~~
 
 - [ ] Test adding existing file
@@ -40,7 +40,15 @@ Bold = “Priority”
 
 - [ ] *Add a `--leave-logs` option to sirtests to leave the logs it generates behind so they can be examined for correctness.*
 
-- [ ] Document sirfilesystem.h
+- [ ] Document
+
+  - [ ] The remainder of sir.h
+
+  - [ ] sirfilesystem.h
+
+  - [ ] Put at least part of sirerrors.h in public, or a separate group
+
+  - [ ] Put at least a brief in every file, or the file listing looks weird.
 
 - [ ] Tests:
   - [ ] Invalid paths of all kinds:
@@ -61,10 +69,10 @@ Bold = “Priority”
 
 - [ ] Move this to README.md, or create another .md and put it there:
 
-  1. **A plugin system or public interface for registering custom adapters**, for things like:
+  1 **A plugin system or public interface for registering custom adapters**, for things like:
   - Posting high-priority messages to a REST API endpoint.
-  2. **Compressing archived logs with zlib or similar.**
-      1. Can we just use `logrotate`?
-      2. Can we rely on installed archivers like tar?
-  3. **Deleting archived logs older than n days.**
-  4. A project file for Xcode.
+  2 **Compressing archived logs with zlib or similar.**
+    - Can we just use `logrotate`?
+    - Can we rely on installed archivers like tar?
+  3 **Deleting archived logs older than n days.**
+  4 A project file for Xcode.
