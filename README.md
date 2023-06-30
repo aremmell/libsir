@@ -26,7 +26,7 @@ At this time, the test suite has been compiled and tested on (at minimum) these 
 
 | Toolset   | Versions            | Operating system                     | Architecture |
 | :-------- | :-----------------: | :----------------------------------: | -----------: |
-| gcc       | 5.4-7.5             |    Ubuntu, Mint, Fedora, FreeBSD     |   x64, arm64, ppc64le |
+| gcc       | 5.4-7.5             |    Ubuntu, Mint, Fedora, FreeBSD     |   x64, armhf, arm64, ppc64le |
 | clang     | 6.0-14.0            | macOS, Ubuntu, Mint, FreeBSD, Fedora |   x64, arm64 |
 | MSVC (cl) | 17.6                |               Windows                |   x64, arm64 |
 
