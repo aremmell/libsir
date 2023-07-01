@@ -35,7 +35,7 @@ At this time, the test suite has been compiled and tested on (at minimum) these 
 ### Output destinations
 
 - `stdout` / `stderr`
-- A system logger facility, such as `syslog` or macOS’ `os_log`.
+- A system logger facility (currently `syslog`, or on macOS, `os_log`).
 - _n_ number of log files.
 
 ### Informational output
