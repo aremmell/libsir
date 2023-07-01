@@ -140,13 +140,13 @@ void __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32
         __sir_setoserror((int)code, errbuf, func, file, line);
     } else {
         _sir_selflog("FormatMessage failed! error: %d", GetLastError());
-        assert(false);
+        SIR_ASSERT(false);
     }
 
     if (errbuf) {
         HLOCAL local_free = LocalFree((HLOCAL)errbuf);
         _SIR_UNUSED(local_free);
-        assert(NULL == local_free);
+        SIR_ASSERT(NULL == local_free);
         errbuf = NULL;
     }
 }
@@ -181,7 +181,7 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
             sir_te.loc.file, sir_te.loc.line, final);
 
         _SIR_UNUSED(fmtmsg);
-        assert(fmtmsg >= 0);
+        SIR_ASSERT(fmtmsg >= 0);
 
         if (alloc)
             _sir_safefree(final);
@@ -192,7 +192,7 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
     _SIR_ITERATE_BIN_SEARCH((sir_errors[_mid].e < sir_te.lasterror ? 1 : -1));
     _SIR_END_BIN_SEARCH();
 
-    assert(false);
+    SIR_ASSERT(false);
     return _SIR_E_UNKNOWN;
 }
 
@@ -244,7 +244,7 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, const char
         }
     }
 
-    assert(success);
+    SIR_ASSERT(success);
     _SIR_UNUSED(success);
 }
 #endif

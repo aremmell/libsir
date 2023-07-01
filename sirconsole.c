@@ -49,7 +49,7 @@ static BOOL CALLBACK __sir_config_consoles_once(PINIT_ONCE ponce, PVOID param, P
 
 bool _sir_initialize_stdio(void) {
     bool configure = _sir_once(&config_once, __sir_config_consoles_once);
-    assert(configure);
+    SIR_ASSERT(configure);
     return configure;
 }
 

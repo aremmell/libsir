@@ -175,7 +175,7 @@ bool _sirfile_write(sirfile* sf, const char* output) {
     size_t writeLen = strnlen(output, SIR_MAXFHEADER);
     size_t write    = fwrite(output, sizeof(char), writeLen, sf->f);
 
-    assert(write == writeLen);
+    SIR_ASSERT(write == writeLen);
 
     if (write < writeLen) {
         _sir_handleerr(errno);
@@ -233,18 +233,18 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
     char* ext  = NULL;
 
     bool split = _sirfile_splitpath(sf, &name, &ext);
-    assert(split);
+    SIR_ASSERT(split);
 
     if (split) {
         time_t now = -1;
 
         time(&now);
-        assert(-1 != now);
+        SIR_ASSERT(-1 != now);
 
         if (-1 != now) {
             char timestamp[SIR_MAXTIME] = {0};
             bool fmttime = _sir_formattime(now, timestamp, SIR_FNAMETIMEFORMAT);
-            assert(fmttime);
+            SIR_ASSERT(fmttime);
 
             if (fmttime) {
                 *newpath = (char*)calloc(SIR_MAXPATH, sizeof(char));
@@ -349,7 +349,7 @@ bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
     char* lastfullstop = strrchr(sf->path, '.');
     if (lastfullstop) {
         uintptr_t namesize = lastfullstop - sf->path;
-        assert(namesize < SIR_MAXPATH);
+        SIR_ASSERT(namesize < SIR_MAXPATH);
 
         if (namesize < SIR_MAXPATH) {
             *name = (char*)calloc(namesize + 1, sizeof(char));
@@ -461,7 +461,7 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
         return false;
 
     for (size_t n = 0; n < sfc->count; n++) {
-        assert(_sirfile_validate(sfc->files[n]));
+        SIR_ASSERT(_sirfile_validate(sfc->files[n]));
 
         if (sfc->files[n]->id == *id) {
             _sirfile_destroy(sfc->files[n]);
@@ -512,7 +512,7 @@ bool _sir_fcache_destroy(sirfcache* sfc) {
         return false;
 
     for (size_t n = 0; n < sfc->count; n++) {
-        assert(_sirfile_validate(sfc->files[n]));
+        SIR_ASSERT(_sirfile_validate(sfc->files[n]));
         _sirfile_destroy(sfc->files[n]);
         sfc->files[n] = NULL;
         sfc->count--;
@@ -536,7 +536,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
     *wanted = 0;
 
     for (size_t n = 0; n < sfc->count; n++) {
-        assert(_sirfile_validate(sfc->files[n]));
+        SIR_ASSERT(_sirfile_validate(sfc->files[n]));
 
         if (!_sir_bittest(sfc->files[n]->levels, level)) {
             _sir_selflog("level %04" PRIx16 " not set in level mask (%04" PRIx16
@@ -549,7 +549,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
 
         if (!write || sfc->files[n]->opts != lastopts) {
             write = _sir_format(false, sfc->files[n]->opts, buf);
-            assert(write);
+            SIR_ASSERT(write);
             lastopts = sfc->files[n]->opts;
         }
 

@@ -170,7 +170,7 @@ bool _sir_cleanup(void) {
 
     bool cleanup   = true;
     bool destroyfc = _sir_fcache_destroy(sfc);
-    assert(destroyfc);
+    SIR_ASSERT(destroyfc);
 
     _sir_unlocksection(SIRMI_FILECACHE);
     cleanup &= destroyfc;
@@ -206,7 +206,7 @@ bool _sir_cleanup(void) {
 
     _sir_selflog("cleanup: %s", (cleanup ? "successful" : "with errors"));
 
-    assert(cleanup);
+    SIR_ASSERT(cleanup);
     return cleanup;
 }
 
@@ -369,7 +369,7 @@ void* _sir_locksection(sir_mutex_id mid) {
     void* sec     = NULL;
 
     bool enter = _sir_mapmutexid(mid, &m, &sec) && _sirmutex_lock(m);
-    assert(enter);
+    SIR_ASSERT(enter);
 
     if (!enter)
         _sir_selflog("error: failed to lock mutex!");
@@ -382,7 +382,7 @@ void _sir_unlocksection(sir_mutex_id mid) {
     void* sec     = NULL;
 
     bool leave = _sir_mapmutexid(mid, &m, &sec) && _sirmutex_unlock(m);
-    assert(leave);
+    SIR_ASSERT(leave);
 
     if (!leave)
         _sir_selflog("error: failed to unlock mutex!");
@@ -409,14 +409,13 @@ bool _sir_mapmutexid(sir_mutex_id mid, sirmutex_t** m, void** section) {
             tmpsec = &sir_level_to_style_map[0];
             break;
         default: /* this should never happen. */
-            assert("!invalid mutex id");
-            _sir_selflog("error: invalid mutex id %d!", mid);
+            SIR_ASSERT("!invalid mutex id");
             tmpm   = NULL;
             tmpsec = NULL;
             break;
     }
 
-    assert(m);
+    SIR_ASSERT(m);
     *m = tmpm;
 
     if (section)
@@ -537,20 +536,20 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     bool fmt = false;
     const char* style_str = _sir_gettextstyle(level);
 
-    assert(NULL != style_str);
+    SIR_ASSERT(NULL != style_str);
     if (NULL != style_str)
         fmt = (0 == _sir_strncpy(buf.style, SIR_MAXSTYLE, style_str, SIR_MAXSTYLE));
 
-    assert(fmt);
+    SIR_ASSERT(fmt);
 
     time_t now   = -1;
     long nowmsec = 0;
     bool gettime = _sir_clock_gettime(&now, &nowmsec);
-    assert(gettime);
+    SIR_ASSERT(gettime);
 
     if (gettime) {
         fmt = _sir_formattime(now, buf.timestamp, SIR_TIMEFORMAT);
-        assert(fmt);
+        SIR_ASSERT(fmt);
         _SIR_UNUSED(fmt);
 
         if (0 > snprintf(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec))
@@ -833,7 +832,7 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx)
         case SIRL_ALERT:  syslog_level = LOG_ALERT;   break;
         case SIRL_EMERG:  syslog_level = LOG_EMERG;   break;
         default: /* this should never happen. */
-            assert(!"invalid sir_level");
+            SIR_ASSERT(!"invalid sir_level");
             syslog_level = LOG_DEBUG;
     }
 
@@ -970,7 +969,7 @@ const char* _sir_formattedlevelstr(sir_level level) {
     _SIR_ITERATE_BIN_SEARCH((sir_level_to_str_map[_mid].level < level ? 1 : -1))
     _SIR_END_BIN_SEARCH()
 
-    assert(false);
+    SIR_ASSERT(false);
     return SIR_UNKNOWN;
 }
 
@@ -983,7 +982,7 @@ bool _sir_formattime(time_t now, char* buffer, const char* format) {
     struct tm timebuf = {0};
     size_t fmttime = strftime(buffer, SIR_MAXTIME, format, _sir_localtime(&now, &timebuf));
 
-    assert(0 != fmttime);
+    SIR_ASSERT(0 != fmttime);
     if (0 == fmttime)
         _sir_selflog("error: strftime failed; format string: '%s'", format);
 
@@ -1002,7 +1001,7 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
 #if defined(SIR_MSEC_POSIX)
         struct timespec ts = {0};
         int clock          = clock_gettime(SIR_MSECCLOCK, &ts);
-        assert(0 == clock);
+        SIR_ASSERT(0 == clock);
 
         if (0 == clock) {
             if (msecbuf)

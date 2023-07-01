@@ -60,7 +60,7 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 #else /* __WIN__ */
-# if defined(_DEBUG)
+# if defined(_DEBUG) && defined(SIR_ASSERT_ENABLED)
     /* Prevents assert() from calling abort() before the user is able to:
      * a.) break into the code and debug (Retry button)
      * b.) ignore the assert() and continue. */

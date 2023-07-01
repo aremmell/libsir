@@ -83,7 +83,7 @@ bool _sir_settextstyle(sir_level level, sir_textstyle style) {
 
     _sir_unlocksection(SIRMI_TEXTSTYLE);
 
-    assert(updated);
+    SIR_ASSERT(updated);
     return updated;
 
 
@@ -101,7 +101,7 @@ sir_textstyle _sir_getdefstyle(sir_level level) {
         case SIRL_INFO:   return sir_lvl_info_def_style;
         case SIRL_DEBUG:  return sir_lvl_debug_def_style;
         default: /* this should never happen. */
-            assert(!"invalid sir_level");
+            SIR_ASSERT(!"invalid sir_level");
             return SIRS_INVALID;
     }
 }
@@ -158,7 +158,7 @@ uint16_t _sir_getprivstyle(sir_textstyle style) {
         }
     }
 
-    assert("!invalid text style");
+    SIR_ASSERT("!invalid text style");
     return SIRS_INVALID;
 }
 
@@ -277,7 +277,7 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
         return true;
 
     _sir_seterror(_SIR_E_TEXTSTYLE);
-    assert("!invalid text style");
+    SIR_ASSERT("!invalid text style");
 
     return false;
 }

@@ -85,7 +85,7 @@ bool _sir_validupdatedata(sir_update_config_data* data) {
 
     if (!valid) {
         _sir_seterror(_SIR_E_INVALID);
-        assert("!invalid sir_update_config_data");
+        SIR_ASSERT("!invalid sir_update_config_data");
     }
 
     return valid;
@@ -145,7 +145,7 @@ bool __sir_validstr(const char* restrict str, bool fail) {
     bool valid = str && (*str != '\0');
     if (!valid && fail) {
         _sir_seterror(_SIR_E_STRING);
-        assert(!"invalid string");
+        SIR_ASSERT(!"invalid string");
     }
     return valid;
 }
@@ -154,7 +154,7 @@ bool __sir_validptr(const void* restrict p, bool fail) {
     bool valid = NULL != p;
     if (!valid && fail) {
         _sir_seterror(_SIR_E_NULLPTR);
-        assert(!"NULL pointer");
+        SIR_ASSERT(!"NULL pointer");
     }
 
     return valid;
