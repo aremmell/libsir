@@ -29,7 +29,7 @@
 #include "sirdefaults.h"
 #include "sirmutex.h"
 
-sirfileid_t _sir_addfile(const char* path, sir_levels levels, sir_options opts) {
+sirfileid _sir_addfile(const char* path, sir_levels levels, sir_options opts) {
     _sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity())
@@ -44,13 +44,13 @@ sirfileid_t _sir_addfile(const char* path, sir_levels levels, sir_options opts) 
     _sir_defaultlevels(&levels, sir_file_def_lvls);
     _sir_defaultopts(&opts, sir_file_def_opts);
 
-    sirfileid_t retval = _sir_fcache_add(sfc, path, levels, opts);
+    sirfileid retval = _sir_fcache_add(sfc, path, levels, opts);
     _sir_unlocksection(SIRMI_FILECACHE);
 
     return retval;
 }
 
-bool _sir_updatefile(sirfileid_t id, sir_update_config_data* data) {
+bool _sir_updatefile(sirfileid id, sir_update_config_data* data) {
     _sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validptr(id) || !_sir_validfd(*id) ||
@@ -69,7 +69,7 @@ bool _sir_updatefile(sirfileid_t id, sir_update_config_data* data) {
     return retval;
 }
 
-bool _sir_remfile(sirfileid_t id) {
+bool _sir_remfile(sirfileid id) {
     _sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validptr(id) || !_sir_validfd(*id))
@@ -411,7 +411,7 @@ bool _sirfile_update(sirfile* sf, sir_update_config_data* data) {
     return false;
 }
 
-sirfileid_t _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
+sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
     sir_options opts) {
     if (!_sir_validptr(sfc) || !_sir_validstr(path) || !_sir_validlevels(levels) ||
         !_sir_validopts(opts))
@@ -442,7 +442,7 @@ sirfileid_t _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
     return NULL;
 }
 
-bool _sir_fcache_update(sirfcache* sfc, sirfileid_t id, sir_update_config_data* data) {
+bool _sir_fcache_update(sirfcache* sfc, sirfileid id, sir_update_config_data* data) {
     if (!_sir_validptr(sfc) || !_sir_validptr(id) || !_sir_validfd(*id) ||
         !_sir_validupdatedata(data))
         return false;
@@ -456,7 +456,7 @@ bool _sir_fcache_update(sirfcache* sfc, sirfileid_t id, sir_update_config_data* 
     return _sirfile_update(found, data);
 }
 
-bool _sir_fcache_rem(sirfcache* sfc, sirfileid_t id) {
+bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
     if (!_sir_validptr(sfc) || !_sir_validptr(id) || !_sir_validfd(*id))
         return false;
 
@@ -491,7 +491,7 @@ bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
 }
 
 bool _sir_fcache_pred_id(const void* match, sirfile* iter) {
-    sirfileid_t id = (sirfileid_t)match;
+    sirfileid id = (sirfileid)match;
     return iter->id == *id;
 }
 

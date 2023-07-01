@@ -121,11 +121,11 @@ bool sir_crit(const char* format, ...);
 bool sir_alert(const char* format, ...);
 bool sir_emerg(const char* format, ...);
 
-sirfileid_t sir_addfile(const char* path, sir_levels levels, sir_options opts);
-bool sir_remfile(sirfileid_t id);
+sirfileid sir_addfile(const char* path, sir_levels levels, sir_options opts);
+bool sir_remfile(sirfileid id);
 
-bool sir_filelevels(sirfileid_t id, sir_levels levels);
-bool sir_fileopts(sirfileid_t id, sir_options opts);
+bool sir_filelevels(sirfileid id, sir_levels levels);
+bool sir_fileopts(sirfileid id, sir_options opts);
 
 bool sir_settextstyle(sir_level level, sir_textstyle style);
 bool sir_resettextstyles(void);

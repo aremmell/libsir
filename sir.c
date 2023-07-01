@@ -105,21 +105,21 @@ bool sir_emerg(const char* format, ...) {
     return r;
 }
 
-sirfileid_t sir_addfile(const char* path, sir_levels levels, sir_options opts) {
+sirfileid sir_addfile(const char* path, sir_levels levels, sir_options opts) {
     return _sir_addfile(path, levels, opts);
 }
 
-bool sir_remfile(sirfileid_t id) {
+bool sir_remfile(sirfileid id) {
     return _sir_remfile(id);
 }
 
-bool sir_filelevels(sirfileid_t id, sir_levels levels) {
+bool sir_filelevels(sirfileid id, sir_levels levels) {
     _sir_defaultlevels(&levels, sir_file_def_lvls);
     sir_update_config_data data = {SIRU_LEVELS, &levels, NULL, NULL, NULL};
     return _sir_updatefile(id, &data);
 }
 
-bool sir_fileopts(sirfileid_t id, sir_options opts) {
+bool sir_fileopts(sirfileid id, sir_options opts) {
     _sir_defaultopts(&opts, sir_file_def_opts);
     sir_update_config_data data = {SIRU_OPTIONS, NULL, &opts, NULL, NULL};
     return _sir_updatefile(id, &data);

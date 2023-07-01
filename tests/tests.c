@@ -187,7 +187,7 @@ bool sirtest_failnooutputdest(void) {
         pass &= sir_info("this goes to stdout");
         pass &= sir_stdoutlevels(SIRL_NONE);
 
-        sirfileid_t fid = sir_addfile(logfilename, SIRL_INFO, SIRO_DEFAULT);
+        sirfileid fid = sir_addfile(logfilename, SIRL_INFO, SIRO_DEFAULT);
         pass &= NULL != fid;
         pass &= sir_info("this goes to %s", logfilename);
         pass &= sir_filelevels(fid, SIRL_NONE);
@@ -222,7 +222,7 @@ bool sirtest_filecachesanity(void) {
     bool pass = si_init;
 
     size_t numfiles               = SIR_MAXFILES + 1;
-    sirfileid_t ids[SIR_MAXFILES] = {0};
+    sirfileid ids[SIR_MAXFILES] = {0};
 
     sir_options even = SIRO_MSGONLY;
     sir_options odd  = SIRO_ALL;
@@ -327,7 +327,7 @@ bool sirtest_faildupefile(void) {
     bool pass = si_init;
 
     const char* filename = "faildupefile.log";
-    sirfileid_t fid      = sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
+    sirfileid fid      = sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
 
     pass &= NULL != fid;
     pass &= NULL == sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
@@ -401,7 +401,7 @@ bool sirtest_rollandarchivefile(void) {
     INIT(si, 0, 0, 0, 0);
     bool pass = si_init;
 
-    sirfileid_t fileid = sir_addfile(logfilename, SIRL_DEBUG, SIRO_MSGONLY | SIRO_NOHDR);
+    sirfileid fileid = sir_addfile(logfilename, SIRL_DEBUG, SIRO_MSGONLY | SIRO_NOHDR);
     pass &= NULL != fileid;
 
     if (pass) {
@@ -933,7 +933,7 @@ bool sirtest_perf(void) {
         char logfilename[SIR_MAXPATH] = {0};
         snprintf(logfilename, SIR_MAXPATH, "%s%s", logbasename, logext);
 
-        sirfileid_t logid = sir_addfile(logfilename, SIRL_ALL, SIRO_NOMSEC | SIRO_NONAME);
+        sirfileid logid = sir_addfile(logfilename, SIRL_ALL, SIRO_NOMSEC | SIRO_NONAME);
         pass &= NULL != logid;
 
         if (pass) {
@@ -997,7 +997,7 @@ bool sirtest_updatesanity(void) {
     };
 
     rmfile(logfile);
-    sirfileid_t id1 = sir_addfile(logfile, SIRL_DEFAULT, SIRO_DEFAULT);
+    sirfileid id1 = sir_addfile(logfile, SIRL_DEFAULT, SIRO_DEFAULT);
     pass &= NULL != id1;
 
     for (int i = 0; i < 10; i++) {
@@ -1473,7 +1473,7 @@ unsigned sirtest_thread(void* arg) {
     thread_args* my_args = (thread_args*)arg;
 
     rmfile(my_args->log_file);
-    sirfileid_t id = sir_addfile(my_args->log_file, SIRL_ALL, SIRO_MSGONLY);
+    sirfileid id = sir_addfile(my_args->log_file, SIRL_ALL, SIRO_MSGONLY);
 
     if (NULL == id) {
         bool unused = print_test_error(false, false);

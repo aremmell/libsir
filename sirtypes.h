@@ -39,7 +39,7 @@
  */
 
 /** Log file identifier type. */
-typedef const int* sirfileid_t;
+typedef const int* sirfileid;
 
 /** Defines the available levels (severity/priority) of logging output. */
 typedef enum {
