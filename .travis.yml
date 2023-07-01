@@ -31,16 +31,10 @@ jobs:
       dist: bionic
       arch: amd64
       compiler: gcc
-    - os: freebsd
-      addons:
-        pkg:
-          - llvm16
-      arch: amd64
+    - os: linux
+      dist: xenial
+      arch: arm64
       compiler: clang
-      env:
-        - MAKE=gmake
-        - CC=/usr/local/bin/clang16
-        - CXX=/usr/local/bin/clang++16
     - os: freebsd
       addons:
         pkg:
