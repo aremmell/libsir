@@ -1123,7 +1123,7 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
         pass &= sir_emerg("%d/%d: this emergency message sent to stdout and %s.", i + 1, runs, sl_name);
 
 #if defined(SIR_OS_LOG_ENABLED)
-        if (0 == strncmp(sl_name, "os_log", 6)) {
+        if (i == runs -1 && 0 == strncmp(sl_name, "os_log", 6)) {
             printf("\ttesting os_log activity feature...\n");
 
             /* also test activity grouping in Console. there's only one way to validate
