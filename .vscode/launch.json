@@ -32,7 +32,6 @@
             "program": "${workspaceFolder}/build/bin/sirtests",
             "args": [
                 /*"--only",
-                "",
                 ""*/
             ],
             "stopAtEntry": false,
