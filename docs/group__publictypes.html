@@ -119,10 +119,10 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:gab8f5ba0bae678457f8bce30e961c9eb6"><td class="memItemLeft" align="right" valign="top"><a id="gab8f5ba0bae678457f8bce30e961c9eb6" name="gab8f5ba0bae678457f8bce30e961c9eb6"></a>
-typedef const int *&#160;</td><td class="memItemRight" valign="bottom"><b>sirfileid_t</b></td></tr>
-<tr class="memdesc:gab8f5ba0bae678457f8bce30e961c9eb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log file identifier type. <br /></td></tr>
-<tr class="separator:gab8f5ba0bae678457f8bce30e961c9eb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8516ef5d4009ae3070a86e49f75c4442"><td class="memItemLeft" align="right" valign="top"><a id="ga8516ef5d4009ae3070a86e49f75c4442" name="ga8516ef5d4009ae3070a86e49f75c4442"></a>
+typedef const int *&#160;</td><td class="memItemRight" valign="bottom"><b>sirfileid</b></td></tr>
+<tr class="memdesc:ga8516ef5d4009ae3070a86e49f75c4442"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log file identifier type. <br /></td></tr>
+<tr class="separator:ga8516ef5d4009ae3070a86e49f75c4442"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7ee5f2908abd2df9e89bcab0b6608edd"><td class="memItemLeft" align="right" valign="top"><a id="ga7ee5f2908abd2df9e89bcab0b6608edd" name="ga7ee5f2908abd2df9e89bcab0b6608edd"></a>
 typedef uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>sir_levels</b></td></tr>
 <tr class="memdesc:ga7ee5f2908abd2df9e89bcab0b6608edd"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> bitmask type. <br /></td></tr>
@@ -134,6 +134,44 @@ typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>sir_optio
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
+<tr class="memitem:ga861df9be69c6bcd01d29b77bd28ff7d3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publictypes.html#ga861df9be69c6bcd01d29b77bd28ff7d3">sir_errorcode</a> { <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3ae9cf0dd9b54a0e456a565c6a8bf107f7">SIR_E_NOERROR</a> = 0
+, <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a87dc9e5593942f7413b84a17c64a01eb">SIR_E_NOTREADY</a> = 1
+, <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a96e01762a7feb2dbbd6f3c4504ba3470">SIR_E_ALREADY</a> = 2
+, <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a72dc62bc5b5c1687a3bb221f04323119">SIR_E_DUPFILE</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3ab36a8affcc9e8f80b94b9c7264bfd492">SIR_E_NOFILE</a> = 4
+, <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3ab48caca75bfe042380f8ccb9be8249a9">SIR_E_FCFULL</a> = 5
+, <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a502a8e20f25ecee09eb75576238bb797">SIR_E_OPTIONS</a> = 6
+, <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a909ed133cf8d178dd98b24b51fe844bf">SIR_E_LEVELS</a> = 7
+, <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a3f34b13f811b5ddc9e4c216f5432fa1d">SIR_E_TEXTSTYLE</a> = 8
+, <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a014d92769313bc513bd580461d8ebcd3">SIR_E_STRING</a> = 9
+, <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a8e6f10a1b3f9eb256aaa4f9c1504b43d">SIR_E_NULLPTR</a> = 10
+, <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3aba1600c4a3cb92f8f2cdf7be820606d3">SIR_E_INVALID</a> = 11
+, <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3ad8d3e0a7ff09ea46a966d07ad08536af">SIR_E_NODEST</a> = 12
+, <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a3b567998a2ca4da43348b5edb38dd865">SIR_E_UNAVAIL</a> = 13
+, <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a1cc3cc0a607357ce4e6e8931c5b26190">SIR_E_INTERNAL</a> = 14
+, <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a0f293a6020f98a7e41b8afea0e402046">SIR_E_PLATFORM</a> = 15
+, <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a8090c8bc79ae660da7e58b2d0a47d785">SIR_E_UNKNOWN</a> = 4095
+<br />
+ }</td></tr>
+<tr class="memdesc:ga861df9be69c6bcd01d29b77bd28ff7d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Error codes.  <a href="group__publictypes.html#ga861df9be69c6bcd01d29b77bd28ff7d3">More...</a><br /></td></tr>
+<tr class="separator:ga861df9be69c6bcd01d29b77bd28ff7d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4a3303c67acd49bea38fd3565d458cb2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> { <br />
 &#160;&#160;<a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a7cc68341661fcb7a505aca67edb7a18e">SIRL_NONE</a> = 0x0000
 , <br />
@@ -189,79 +227,79 @@ Enumerations</h2></td></tr>
 <tr class="memitem:ga3bd5959a607e5280a8db90ada2d80caf"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf">sir_textstyle</a> { <br />
 &#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafaeedcdbdc654f326e211a2d2f653b07f5">SIRS_NONE</a> = 0x00000000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafacc1f324a77d57ff8ac0895767c9480d4">SIRS_BRIGHT</a> = 0x00000001
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafacc1f324a77d57ff8ac0895767c9480d4">SIRS_BRIGHT</a> = 0x00000000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa54175d114e639a05853b7f8f2291661a">SIRS_DIM</a> = 0x00000002
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa54175d114e639a05853b7f8f2291661a">SIRS_DIM</a> = 0x00000000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa0fbe677e96b8483b073584848bb5e4fc">SIRS_FG_BLACK</a> = 0x00000010
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa0fbe677e96b8483b073584848bb5e4fc">SIRS_FG_BLACK</a> = 0x000089a0
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa1f11f323b6998adbd83b31d73bc538dc">SIRS_FG_RED</a> = 0x00000020
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa1f11f323b6998adbd83b31d73bc538dc">SIRS_FG_RED</a> = 0x000059b0
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafae78e2dc1e4fed6ad5b12d089e80a07e8">SIRS_FG_GREEN</a> = 0x00000030
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafae78e2dc1e4fed6ad5b12d089e80a07e8">SIRS_FG_GREEN</a> = 0x00006670
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa89c9ddbb6a10b8c5fe204247eb457641">SIRS_FG_YELLOW</a> = 0x00000040
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa89c9ddbb6a10b8c5fe204247eb457641">SIRS_FG_YELLOW</a> = 0x00001310
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa2f75bdae21995a567531e37eec6e979d">SIRS_FG_BLUE</a> = 0x00000050
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa2f75bdae21995a567531e37eec6e979d">SIRS_FG_BLUE</a> = 0x00004970
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa78c026ced18436da03a138ac720d9739">SIRS_FG_MAGENTA</a> = 0x00000060
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa78c026ced18436da03a138ac720d9739">SIRS_FG_MAGENTA</a> = 0x00003430
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafaefc4595e6d22f5a5d6ce7fa13c64444d">SIRS_FG_CYAN</a> = 0x00000070
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafaefc4595e6d22f5a5d6ce7fa13c64444d">SIRS_FG_CYAN</a> = 0x00006090
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa94c0b7a28b98275970c70dc8cbf3ed86">SIRS_FG_DEFAULT</a> = 0x00000080
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafae27d8d5a99b25c1fa6a6f8e88c728847">SIRS_FG_LGRAY</a> = 0x00006f00
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafae27d8d5a99b25c1fa6a6f8e88c728847">SIRS_FG_LGRAY</a> = 0x00000090
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa94c0b7a28b98275970c70dc8cbf3ed86">SIRS_FG_DEFAULT</a> = 0x00007210
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa0a21b2c2577cffd925841a9bc549eb1a">SIRS_FG_DGRAY</a> = 0x000000a0
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa0a21b2c2577cffd925841a9bc549eb1a">SIRS_FG_DGRAY</a> = 0x00007880
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafaa4b6a5f32e591cd5649c849555abcd32">SIRS_FG_LRED</a> = 0x000000b0
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafaa4b6a5f32e591cd5649c849555abcd32">SIRS_FG_LRED</a> = 0x00008220
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa3ca695e05500c2577a8aed197c6f515a">SIRS_FG_LGREEN</a> = 0x000000c0
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa3ca695e05500c2577a8aed197c6f515a">SIRS_FG_LGREEN</a> = 0x00009300
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa044cfd76b272031ac7103a6f4b655c68">SIRS_FG_LYELLOW</a> = 0x000000d0
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa044cfd76b272031ac7103a6f4b655c68">SIRS_FG_LYELLOW</a> = 0x00003160
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa9803c61fa699378b4d3d4da2e7a1fc43">SIRS_FG_LBLUE</a> = 0x000000e0
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa9803c61fa699378b4d3d4da2e7a1fc43">SIRS_FG_LBLUE</a> = 0x00007100
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa41034337d4b4513f07641d97b2450c06">SIRS_FG_LMAGENTA</a> = 0x000000f0
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa41034337d4b4513f07641d97b2450c06">SIRS_FG_LMAGENTA</a> = 0x00005220
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa869cfb06440efa65ee401ccccec054b5">SIRS_FG_LCYAN</a> = 0x00000f10
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa869cfb06440efa65ee401ccccec054b5">SIRS_FG_LCYAN</a> = 0x00005540
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafae6d57af48d2bca9848aa8cf926043e4e">SIRS_FG_WHITE</a> = 0x00000f20
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafae6d57af48d2bca9848aa8cf926043e4e">SIRS_FG_WHITE</a> = 0x00001480
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafae6d8923837281767bb30b4cfb59bcd2c">SIRS_BG_BLACK</a> = 0x00001000
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafae6d8923837281767bb30b4cfb59bcd2c">SIRS_BG_BLACK</a> = 0x089a0000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafad0eec1607a2eefbabe5947bd595170a4">SIRS_BG_RED</a> = 0x00002000
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafad0eec1607a2eefbabe5947bd595170a4">SIRS_BG_RED</a> = 0x059b0000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa93166b30d32c8dbf52f93612aa0dcdd7">SIRS_BG_GREEN</a> = 0x00003000
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa93166b30d32c8dbf52f93612aa0dcdd7">SIRS_BG_GREEN</a> = 0x06670000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafabe3a20064515e10ac72eaf6e8a665b55">SIRS_BG_YELLOW</a> = 0x00004000
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafabe3a20064515e10ac72eaf6e8a665b55">SIRS_BG_YELLOW</a> = 0x01310000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafabbee0baeb2477032387f884c6f938129">SIRS_BG_BLUE</a> = 0x00005000
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafabbee0baeb2477032387f884c6f938129">SIRS_BG_BLUE</a> = 0x04970000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa989b172db1f8a3a212ef5b8e23d636cf">SIRS_BG_MAGENTA</a> = 0x00006000
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa989b172db1f8a3a212ef5b8e23d636cf">SIRS_BG_MAGENTA</a> = 0x03430000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa04083a920b7ed070f2bbb886e4691203">SIRS_BG_CYAN</a> = 0x00007000
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa04083a920b7ed070f2bbb886e4691203">SIRS_BG_CYAN</a> = 0x06090000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafab38f3ce262a13dd157fd1a2077fe27d6">SIRS_BG_DEFAULT</a> = 0x00008000
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa05859c52a6ff0bdfccf869e1330889a3">SIRS_BG_LGRAY</a> = 0x06f00000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa05859c52a6ff0bdfccf869e1330889a3">SIRS_BG_LGRAY</a> = 0x00009000
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafab38f3ce262a13dd157fd1a2077fe27d6">SIRS_BG_DEFAULT</a> = 0x07210000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa65b1ce8d8dcdf149a9ee515001ee7d69">SIRS_BG_DGRAY</a> = 0x0000a000
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa65b1ce8d8dcdf149a9ee515001ee7d69">SIRS_BG_DGRAY</a> = 0x07880000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa5dabc2332ba159af08c886c8d8cecd3e">SIRS_BG_LRED</a> = 0x0000b000
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa5dabc2332ba159af08c886c8d8cecd3e">SIRS_BG_LRED</a> = 0x08220000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa6dba92fe12cc2cf72ea2e77d9f083b25">SIRS_BG_LGREEN</a> = 0x0000c000
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa6dba92fe12cc2cf72ea2e77d9f083b25">SIRS_BG_LGREEN</a> = 0x09300000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafaa57ce340d05ec022dc4a5f89d2bea212">SIRS_BG_LYELLOW</a> = 0x0000d000
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafaa57ce340d05ec022dc4a5f89d2bea212">SIRS_BG_LYELLOW</a> = 0x03160000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafae30bf67c0667f08b92c10f6e14b1895e">SIRS_BG_LBLUE</a> = 0x0000e000
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafae30bf67c0667f08b92c10f6e14b1895e">SIRS_BG_LBLUE</a> = 0x07100000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa2bac829fbcfffa04182547d4a0a00e7a">SIRS_BG_LMAGENTA</a> = 0x0000f000
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa2bac829fbcfffa04182547d4a0a00e7a">SIRS_BG_LMAGENTA</a> = 0x05220000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafaf3b311d7fd2af0678d7ddff6f7967866">SIRS_BG_LCYAN</a> = 0x000f1000
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafaf3b311d7fd2af0678d7ddff6f7967866">SIRS_BG_LCYAN</a> = 0x05540000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa57f3210f2af19b6b3067a10ab5947a36">SIRS_BG_WHITE</a> = 0x000f2000
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa57f3210f2af19b6b3067a10ab5947a36">SIRS_BG_WHITE</a> = 0x01480000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa42e4beda8d3aef8122f3b272c54632e2">SIRS_INVALID</a> = 0x000f3000
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa42e4beda8d3aef8122f3b272c54632e2">SIRS_INVALID</a> = 0x0000ffff
 <br />
  }</td></tr>
 <tr class="memdesc:ga3bd5959a607e5280a8db90ada2d80caf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Styles for 16-color stdio output.  <a href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf">More...</a><br /></td></tr>
@@ -324,7 +362,7 @@ opts</td>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="adb7f555cb381826a0aedfdbb58e96bd1" name="adb7f555cb381826a0aedfdbb58e96bd1"></a>struct <a class="el" href="group__publictypes.html#structsir__syslog__dest_8__state">sir_syslog_dest._state</a></td>
+<a id="a7120a461e55e114a173cddb56565e814" name="a7120a461e55e114a173cddb56565e814"></a>struct <a class="el" href="group__publictypes.html#structsir__syslog__dest_8__state">sir_syslog_dest._state</a></td>
 <td class="fieldname">
 _state</td>
 <td class="fielddoc">
@@ -444,6 +482,58 @@ State bitmask. </td></tr>
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="ga861df9be69c6bcd01d29b77bd28ff7d3" name="ga861df9be69c6bcd01d29b77bd28ff7d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga861df9be69c6bcd01d29b77bd28ff7d3">&#9670;&#160;</a></span>sir_errorcode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__publictypes.html#ga861df9be69c6bcd01d29b77bd28ff7d3">sir_errorcode</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Error codes. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3ae9cf0dd9b54a0e456a565c6a8bf107f7" name="gga861df9be69c6bcd01d29b77bd28ff7d3ae9cf0dd9b54a0e456a565c6a8bf107f7"></a>SIR_E_NOERROR&#160;</td><td class="fielddoc"><p>The operation completed successfully. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a87dc9e5593942f7413b84a17c64a01eb" name="gga861df9be69c6bcd01d29b77bd28ff7d3a87dc9e5593942f7413b84a17c64a01eb"></a>SIR_E_NOTREADY&#160;</td><td class="fielddoc"><p>libsir has not been initialized </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a96e01762a7feb2dbbd6f3c4504ba3470" name="gga861df9be69c6bcd01d29b77bd28ff7d3a96e01762a7feb2dbbd6f3c4504ba3470"></a>SIR_E_ALREADY&#160;</td><td class="fielddoc"><p>libsir is already initialized </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a72dc62bc5b5c1687a3bb221f04323119" name="gga861df9be69c6bcd01d29b77bd28ff7d3a72dc62bc5b5c1687a3bb221f04323119"></a>SIR_E_DUPFILE&#160;</td><td class="fielddoc"><p>File already managed by libsir. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3ab36a8affcc9e8f80b94b9c7264bfd492" name="gga861df9be69c6bcd01d29b77bd28ff7d3ab36a8affcc9e8f80b94b9c7264bfd492"></a>SIR_E_NOFILE&#160;</td><td class="fielddoc"><p>File not managed by libsir. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3ab48caca75bfe042380f8ccb9be8249a9" name="gga861df9be69c6bcd01d29b77bd28ff7d3ab48caca75bfe042380f8ccb9be8249a9"></a>SIR_E_FCFULL&#160;</td><td class="fielddoc"><p>Maximum number of files already managed. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a502a8e20f25ecee09eb75576238bb797" name="gga861df9be69c6bcd01d29b77bd28ff7d3a502a8e20f25ecee09eb75576238bb797"></a>SIR_E_OPTIONS&#160;</td><td class="fielddoc"><p>Option flags are invalid. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a909ed133cf8d178dd98b24b51fe844bf" name="gga861df9be69c6bcd01d29b77bd28ff7d3a909ed133cf8d178dd98b24b51fe844bf"></a>SIR_E_LEVELS&#160;</td><td class="fielddoc"><p>Level flags are invalid. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a3f34b13f811b5ddc9e4c216f5432fa1d" name="gga861df9be69c6bcd01d29b77bd28ff7d3a3f34b13f811b5ddc9e4c216f5432fa1d"></a>SIR_E_TEXTSTYLE&#160;</td><td class="fielddoc"><p>Text style is invalid. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a014d92769313bc513bd580461d8ebcd3" name="gga861df9be69c6bcd01d29b77bd28ff7d3a014d92769313bc513bd580461d8ebcd3"></a>SIR_E_STRING&#160;</td><td class="fielddoc"><p>Invalid string argument. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a8e6f10a1b3f9eb256aaa4f9c1504b43d" name="gga861df9be69c6bcd01d29b77bd28ff7d3a8e6f10a1b3f9eb256aaa4f9c1504b43d"></a>SIR_E_NULLPTR&#160;</td><td class="fielddoc"><p>NULL pointer argument. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3aba1600c4a3cb92f8f2cdf7be820606d3" name="gga861df9be69c6bcd01d29b77bd28ff7d3aba1600c4a3cb92f8f2cdf7be820606d3"></a>SIR_E_INVALID&#160;</td><td class="fielddoc"><p>Invalid argument. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3ad8d3e0a7ff09ea46a966d07ad08536af" name="gga861df9be69c6bcd01d29b77bd28ff7d3ad8d3e0a7ff09ea46a966d07ad08536af"></a>SIR_E_NODEST&#160;</td><td class="fielddoc"><p>No destinations registered for level. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a3b567998a2ca4da43348b5edb38dd865" name="gga861df9be69c6bcd01d29b77bd28ff7d3a3b567998a2ca4da43348b5edb38dd865"></a>SIR_E_UNAVAIL&#160;</td><td class="fielddoc"><p>Feature is disabled or unavailable. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a1cc3cc0a607357ce4e6e8931c5b26190" name="gga861df9be69c6bcd01d29b77bd28ff7d3a1cc3cc0a607357ce4e6e8931c5b26190"></a>SIR_E_INTERNAL&#160;</td><td class="fielddoc"><p>An internal error has occurred. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a0f293a6020f98a7e41b8afea0e402046" name="gga861df9be69c6bcd01d29b77bd28ff7d3a0f293a6020f98a7e41b8afea0e402046"></a>SIR_E_PLATFORM&#160;</td><td class="fielddoc"><p>Platform error code %d: %s. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a8090c8bc79ae660da7e58b2d0a47d785" name="gga861df9be69c6bcd01d29b77bd28ff7d3a8090c8bc79ae660da7e58b2d0a47d785"></a>SIR_E_UNKNOWN&#160;</td><td class="fielddoc"><p>Unknown error. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="ga4a3303c67acd49bea38fd3565d458cb2" name="ga4a3303c67acd49bea38fd3565d458cb2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga4a3303c67acd49bea38fd3565d458cb2">&#9670;&#160;</a></span>sir_level</h2>
 
@@ -558,9 +648,9 @@ State bitmask. </td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafaefc4595e6d22f5a5d6ce7fa13c64444d" name="gga3bd5959a607e5280a8db90ada2d80cafaefc4595e6d22f5a5d6ce7fa13c64444d"></a>SIRS_FG_CYAN&#160;</td><td class="fielddoc"><p>Cyan foreground. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafa94c0b7a28b98275970c70dc8cbf3ed86" name="gga3bd5959a607e5280a8db90ada2d80cafa94c0b7a28b98275970c70dc8cbf3ed86"></a>SIRS_FG_DEFAULT&#160;</td><td class="fielddoc"><p>Use the default foreground color. </p>
-</td></tr>
 <tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafae27d8d5a99b25c1fa6a6f8e88c728847" name="gga3bd5959a607e5280a8db90ada2d80cafae27d8d5a99b25c1fa6a6f8e88c728847"></a>SIRS_FG_LGRAY&#160;</td><td class="fielddoc"><p>Light gray foreground. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafa94c0b7a28b98275970c70dc8cbf3ed86" name="gga3bd5959a607e5280a8db90ada2d80cafa94c0b7a28b98275970c70dc8cbf3ed86"></a>SIRS_FG_DEFAULT&#160;</td><td class="fielddoc"><p>Use the default foreground color. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafa0a21b2c2577cffd925841a9bc549eb1a" name="gga3bd5959a607e5280a8db90ada2d80cafa0a21b2c2577cffd925841a9bc549eb1a"></a>SIRS_FG_DGRAY&#160;</td><td class="fielddoc"><p>Dark gray foreground. </p>
 </td></tr>
@@ -592,9 +682,9 @@ State bitmask. </td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafa04083a920b7ed070f2bbb886e4691203" name="gga3bd5959a607e5280a8db90ada2d80cafa04083a920b7ed070f2bbb886e4691203"></a>SIRS_BG_CYAN&#160;</td><td class="fielddoc"><p>Cyan background. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafab38f3ce262a13dd157fd1a2077fe27d6" name="gga3bd5959a607e5280a8db90ada2d80cafab38f3ce262a13dd157fd1a2077fe27d6"></a>SIRS_BG_DEFAULT&#160;</td><td class="fielddoc"><p>Use the default background color. </p>
-</td></tr>
 <tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafa05859c52a6ff0bdfccf869e1330889a3" name="gga3bd5959a607e5280a8db90ada2d80cafa05859c52a6ff0bdfccf869e1330889a3"></a>SIRS_BG_LGRAY&#160;</td><td class="fielddoc"><p>Light gray background. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafab38f3ce262a13dd157fd1a2077fe27d6" name="gga3bd5959a607e5280a8db90ada2d80cafab38f3ce262a13dd157fd1a2077fe27d6"></a>SIRS_BG_DEFAULT&#160;</td><td class="fielddoc"><p>Use the default background color. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafa65b1ce8d8dcdf149a9ee515001ee7d69" name="gga3bd5959a607e5280a8db90ada2d80cafa65b1ce8d8dcdf149a9ee515001ee7d69"></a>SIRS_BG_DGRAY&#160;</td><td class="fielddoc"><p>Dark gray background. </p>
 </td></tr>
