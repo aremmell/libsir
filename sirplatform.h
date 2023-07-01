@@ -210,16 +210,14 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 #endif // !__WIN__
 
-#if !defined(thread_local)
-# if __STDC_VERSION__ >= 201112 && !defined(__STDC_NO_THREADS__)
-#  define thread_local _Thread_local
-# elif defined(__WIN__)
-#  define thread_local __declspec(thread)
-# elif defined(__GNUC__)
-#  define thread_local __thread
-# else
-#  error "unable to resolve thread local attribute; please contact the author."
-# endif
+#if __STDC_VERSION__ >= 201112 && !defined(__STDC_NO_THREADS__)
+# define _sir_thread_local _Thread_local
+#elif defined(__WIN__)
+# define _sir_thread_local __declspec(thread)
+#elif defined(__GNUC__)
+# define _sir_thread_local __thread
+#else
+# error "unable to resolve thread local attribute; please contact the author."
 #endif
 
 #if defined(__WIN__) && defined(__STDC_SECURE_LIB__)

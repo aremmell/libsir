@@ -44,7 +44,7 @@
 #endif
 
 /** Per-thread error data */
-static thread_local sir_thread_err sir_te = {
+static _sir_thread_local sir_thread_err sir_te = {
     _SIR_E_NOERROR, 0, {0}, {SIR_UNKNOWN, SIR_UNKNOWN, 0}
 };
 
