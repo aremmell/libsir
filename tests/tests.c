@@ -108,7 +108,7 @@ int main(int argc, char** argv) {
     size_t tgt_tests = (only ? to_run : _sir_countof(sir_tests) - first);
     size_t passed    = 0;
     size_t ran       = 0;
-    sirtimer_t timer = {0};
+    sir_timer timer  = {0};
 
     printf(WHITEB("\nrunning %zu " ULINE("libsir") " %s...") "\n", tgt_tests, TEST_S(tgt_tests));
     startsirtimer(&timer);
@@ -905,7 +905,7 @@ bool sirtest_perf(void) {
 
         printf("\t" BLUE("%zu lines printf...") "\n", perflines);
 
-        sirtimer_t printftimer = {0};
+        sir_timer printftimer = {0};
         startsirtimer(&printftimer);
 
         for (size_t n = 0; n < perflines; n++)
@@ -916,7 +916,7 @@ bool sirtest_perf(void) {
 
         printf("\t" BLUE("%zu lines libsir(stdout)...") "\n", perflines);
 
-        sirtimer_t stdiotimer = {0};
+        sir_timer stdiotimer = {0};
         startsirtimer(&stdiotimer);
 
         for (size_t n = 0; n < perflines; n++)
@@ -939,7 +939,7 @@ bool sirtest_perf(void) {
         if (pass) {
             printf("\t" BLUE("%zu lines libsir(log file)...") "\n", perflines);
 
-            sirtimer_t filetimer = {0};
+            sir_timer filetimer = {0};
             startsirtimer(&filetimer);
 
             for (size_t n = 0; n < perflines; n++)
@@ -1074,7 +1074,7 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
     static const int runs = 5;
 
     /* repeat initializing, opening, logging, closing, cleaning up n times. */
-    sirtimer_t timer;
+    sir_timer timer = {0};
     pass &= startsirtimer(&timer);
 
     printf("\trunning %d passes of random configs (system logger: '%s', "
@@ -1678,7 +1678,7 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
     return true;
 }
 
-bool startsirtimer(sirtimer_t* timer) {
+bool startsirtimer(sir_timer* timer) {
 #if !defined(__WIN__)
     int gettime = clock_gettime(SIRTEST_CLOCK, &timer->ts);
     if (0 != gettime) {
@@ -1692,7 +1692,7 @@ bool startsirtimer(sirtimer_t* timer) {
 #endif
 }
 
-float sirtimerelapsed(const sirtimer_t* timer) {
+float sirtimerelapsed(const sir_timer* timer) {
 #if !defined(__WIN__)
     struct timespec now;
     if (0 == clock_gettime(SIRTEST_CLOCK, &now)) {

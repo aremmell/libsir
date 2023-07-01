@@ -175,10 +175,10 @@
 # endif
 
 /** The mutex type. */
-typedef pthread_mutex_t sirmutex_t;
+typedef pthread_mutex_t sir_mutex;
 
 /** The one-time type. */
-typedef pthread_once_t sironce_t;
+typedef pthread_once_t sir_once;
 
 /** The one-time execution function type. */
 typedef void (*sir_once_fn)(void);
@@ -194,10 +194,10 @@ typedef void (*sir_once_fn)(void);
 # define SIR_MSEC_WIN32
 
 /** The mutex type. */
-typedef HANDLE sirmutex_t;
+typedef HANDLE sir_mutex;
 
 /** The one-time type. */
-typedef INIT_ONCE sironce_t;
+typedef INIT_ONCE sir_once;
 
 /** Process/thread ID. */
 typedef int pid_t;

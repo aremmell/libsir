@@ -258,7 +258,7 @@ typedef struct {
 #else /* __WIN__ */
     FILETIME ft;
 #endif
-} sirtimer_t;
+} sir_timer;
 
 /** Arguments passed to worker threads. */
 typedef struct {
@@ -289,8 +289,8 @@ bool countfiles(const char* search, const char* filename, unsigned* data);
 typedef bool (*fileenumproc)(const char* search, const char* filename, unsigned* data);
 bool enumfiles(const char* search, fileenumproc cb, unsigned* data);
 
-bool startsirtimer(sirtimer_t* timer);
-float sirtimerelapsed(const sirtimer_t* timer); // msec
+bool startsirtimer(sir_timer* timer);
+float sirtimerelapsed(const sir_timer* timer); // msec
 long sirtimergetres(void); // nsec
 
 #if defined(SIR_OS_LOG_ENABLED)

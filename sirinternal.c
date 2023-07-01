@@ -38,16 +38,16 @@
 static sirconfig _sir_cfg = {0};
 static sirfcache _sir_fc  = {0};
 
-static sirmutex_t cfg_mutex;
-static sironce_t cfg_once = SIR_ONCE_INIT;
+static sir_mutex cfg_mutex;
+static sir_once cfg_once = SIR_ONCE_INIT;
 
-static sirmutex_t fc_mutex;
-static sironce_t fc_once = SIR_ONCE_INIT;
+static sir_mutex fc_mutex;
+static sir_once fc_once = SIR_ONCE_INIT;
 
-static sirmutex_t ts_mutex;
-static sironce_t ts_once = SIR_ONCE_INIT;
+static sir_mutex ts_mutex;
+static sir_once ts_once = SIR_ONCE_INIT;
 
-static sironce_t magic_once = SIR_ONCE_INIT;
+static sir_once magic_once = SIR_ONCE_INIT;
 
 #if defined(__HAVE_ATOMIC_H__)
 static atomic_uint_fast32_t _sir_magic;
@@ -365,7 +365,7 @@ bool _sir_writeinit(sir_update_config_data* data, sirinit_update update) {
 }
 
 void* _sir_locksection(sir_mutex_id mid) {
-    sirmutex_t* m = NULL;
+    sir_mutex* m  = NULL;
     void* sec     = NULL;
 
     bool enter = _sir_mapmutexid(mid, &m, &sec) && _sirmutex_lock(m);
@@ -378,7 +378,7 @@ void* _sir_locksection(sir_mutex_id mid) {
 }
 
 void _sir_unlocksection(sir_mutex_id mid) {
-    sirmutex_t* m = NULL;
+    sir_mutex* m  = NULL;
     void* sec     = NULL;
 
     bool leave = _sir_mapmutexid(mid, &m, &sec) && _sirmutex_unlock(m);
@@ -388,8 +388,8 @@ void _sir_unlocksection(sir_mutex_id mid) {
         _sir_selflog("error: failed to unlock mutex!");
 }
 
-bool _sir_mapmutexid(sir_mutex_id mid, sirmutex_t** m, void** section) {
-    sirmutex_t* tmpm;
+bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
+    sir_mutex* tmpm;
     void* tmpsec;
 
     switch (mid) {
@@ -492,7 +492,7 @@ BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) 
 }
 #endif
 
-bool _sir_once(sironce_t* once, sir_once_fn func) {
+bool _sir_once(sir_once* once, sir_once_fn func) {
 #if !defined(__WIN__)
     int ret = pthread_once(once, func);
     if (0 != ret) {

@@ -42,7 +42,7 @@ bool _sir_write_stdio(FILE* stream, const char* message) {
 HANDLE __sir_stdout = INVALID_HANDLE_VALUE;
 HANDLE __sir_stderr = INVALID_HANDLE_VALUE;
 
-static sironce_t config_once = SIR_ONCE_INIT;
+static sir_once config_once = SIR_ONCE_INIT;
 
 static bool _sir_config_console(HANDLE console);
 static BOOL CALLBACK __sir_config_consoles_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
