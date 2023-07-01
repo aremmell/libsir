@@ -80,43 +80,45 @@ typedef uint32_t sir_options;
 /** Styles for 16-color stdio output. */
 typedef enum {
     SIRS_NONE        = 0x00000000, /**< Used internally; has no effect. */
-    SIRS_BRIGHT      = 0x00000001, /**< If set, the foreground color is 'intensified'. */
-    SIRS_DIM         = 0x00000002, /**< If set, the foreground color is 'dimmed'. */
-    SIRS_FG_BLACK    = 0x00000010, /**< Black foreground. */
-    SIRS_FG_RED      = 0x00000020, /**< Red foreground. */
-    SIRS_FG_GREEN    = 0x00000030, /**< Green foreground. */
-    SIRS_FG_YELLOW   = 0x00000040, /**< Yellow foreground. */
-    SIRS_FG_BLUE     = 0x00000050, /**< Blue foreground. */
-    SIRS_FG_MAGENTA  = 0x00000060, /**< Magenta foreground. */
-    SIRS_FG_CYAN     = 0x00000070, /**< Cyan foreground. */
-    SIRS_FG_DEFAULT  = 0x00000080, /**< Use the default foreground color. */
-    SIRS_FG_LGRAY    = 0x00000090, /**< Light gray foreground. */
-    SIRS_FG_DGRAY    = 0x000000a0, /**< Dark gray foreground. */
-    SIRS_FG_LRED     = 0x000000b0, /**< Light red foreground. */
-    SIRS_FG_LGREEN   = 0x000000c0, /**< Light green foreground. */
-    SIRS_FG_LYELLOW  = 0x000000d0, /**< Light yellow foreground. */
-    SIRS_FG_LBLUE    = 0x000000e0, /**< Light blue foreground. */
-    SIRS_FG_LMAGENTA = 0x000000f0, /**< Light magenta foreground. */
-    SIRS_FG_LCYAN    = 0x00000f10, /**< Light cyan foreground. */
-    SIRS_FG_WHITE    = 0x00000f20, /**< White foreground. */
-    SIRS_BG_BLACK    = 0x00001000, /**< Black background. */
-    SIRS_BG_RED      = 0x00002000, /**< Red background. */
-    SIRS_BG_GREEN    = 0x00003000, /**< Green background. */
-    SIRS_BG_YELLOW   = 0x00004000, /**< Yellow background. */
-    SIRS_BG_BLUE     = 0x00005000, /**< Blue background. */
-    SIRS_BG_MAGENTA  = 0x00006000, /**< Magenta background. */
-    SIRS_BG_CYAN     = 0x00007000, /**< Cyan background. */
-    SIRS_BG_DEFAULT  = 0x00008000, /**< Use the default background color. */
-    SIRS_BG_LGRAY    = 0x00009000, /**< Light gray background. */
-    SIRS_BG_DGRAY    = 0x0000a000, /**< Dark gray background. */
-    SIRS_BG_LRED     = 0x0000b000, /**< Light red background. */
-    SIRS_BG_LGREEN   = 0x0000c000, /**< Light green background. */
-    SIRS_BG_LYELLOW  = 0x0000d000, /**< Light yellow background. */
-    SIRS_BG_LBLUE    = 0x0000e000, /**< Light blue background. */
-    SIRS_BG_LMAGENTA = 0x0000f000, /**< Light magenta background. */
-    SIRS_BG_LCYAN    = 0x000f1000, /**< Light cyan background. */
-    SIRS_BG_WHITE    = 0x000f2000, /**< White background. */
-    SIRS_INVALID     = 0x000f3000  /**< Represents the invalid text style. */
+    SIRS_BRIGHT      = 0x00000000, /**< If set, the foreground color is 'intensified'. */
+    SIRS_DIM         = 0x00000000, /**< If set, the foreground color is 'dimmed'. */
+    ////////////////// 0x0000fff0
+    SIRS_FG_BLACK    = 0x000089a0, /**< Black foreground. */
+    SIRS_FG_RED      = 0x000059b0, /**< Red foreground. */
+    SIRS_FG_GREEN    = 0x00006670, /**< Green foreground. */
+    SIRS_FG_YELLOW   = 0x00001310, /**< Yellow foreground. */
+    SIRS_FG_BLUE     = 0x00004970, /**< Blue foreground. */
+    SIRS_FG_MAGENTA  = 0x00003430, /**< Magenta foreground. */
+    SIRS_FG_CYAN     = 0x00006090, /**< Cyan foreground. */
+    SIRS_FG_LGRAY    = 0x00006f00, /**< Light gray foreground. */
+    SIRS_FG_DEFAULT  = 0x00007210, /**< Use the default foreground color. */
+    SIRS_FG_DGRAY    = 0x00007880, /**< Dark gray foreground. */
+    SIRS_FG_LRED     = 0x00008220, /**< Light red foreground. */
+    SIRS_FG_LGREEN   = 0x00009300, /**< Light green foreground. */
+    SIRS_FG_LYELLOW  = 0x00003160, /**< Light yellow foreground. */
+    SIRS_FG_LBLUE    = 0x00007100, /**< Light blue foreground. */
+    SIRS_FG_LMAGENTA = 0x00005220, /**< Light magenta foreground. */
+    SIRS_FG_LCYAN    = 0x00005540, /**< Light cyan foreground. */
+    SIRS_FG_WHITE    = 0x00001480, /**< White foreground. */
+    ////////////////// 0x0fff0000
+    SIRS_BG_BLACK    = 0x089a0000, /**< Black background. */
+    SIRS_BG_RED      = 0x059b0000, /**< Red background. */
+    SIRS_BG_GREEN    = 0x06670000, /**< Green background. */
+    SIRS_BG_YELLOW   = 0x01310000, /**< Yellow background. */
+    SIRS_BG_BLUE     = 0x04970000, /**< Blue background. */
+    SIRS_BG_MAGENTA  = 0x03430000, /**< Magenta background. */
+    SIRS_BG_CYAN     = 0x06090000, /**< Cyan background. */
+    SIRS_BG_LGRAY    = 0x06f00000, /**< Light gray background. */
+    SIRS_BG_DEFAULT  = 0x07210000, /**< Use the default background color. */
+    SIRS_BG_DGRAY    = 0x07880000, /**< Dark gray background. */
+    SIRS_BG_LRED     = 0x08220000, /**< Light red background. */
+    SIRS_BG_LGREEN   = 0x09300000, /**< Light green background. */
+    SIRS_BG_LYELLOW  = 0x03160000, /**< Light yellow background. */
+    SIRS_BG_LBLUE    = 0x07100000, /**< Light blue background. */
+    SIRS_BG_LMAGENTA = 0x05220000, /**< Light magenta background. */
+    SIRS_BG_LCYAN    = 0x05540000, /**< Light cyan background. */
+    SIRS_BG_WHITE    = 0x01480000, /**< White background. */
+    SIRS_INVALID     = 0x0000ffff  /**< Represents the invalid text style. */
 } sir_textstyle;
 
 /**
@@ -243,13 +245,13 @@ typedef struct {
 #define _SIRS_ATTR_MASK 0x0000000f
 
 /** Text style foreground color mask. */
-#define _SIRS_FG_MASK 0x00000ff0
+#define _SIRS_FG_MASK 0x0000fff0
 
 /** Text style background color mask. */
-#define _SIRS_BG_MASK 0x000ff000
+#define _SIRS_BG_MASK 0x0fff0000
 
 /** True if foreground and background colors are the same. */
-#define _SIRS_SAME_COLOR(fg, bg) ((((bg) >> 8) & _SIRS_FG_MASK) == (fg))
+#define _SIRS_SAME_COLOR(fg, bg) ((((bg) >> 12) & _SIRS_FG_MASK) == (fg))
 
 /** Magic number used to determine if libsir has been initialized. */
 #define _SIR_MAGIC 0x60906090

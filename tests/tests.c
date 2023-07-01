@@ -558,16 +558,25 @@ bool sirtest_textstylesanity(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    // This is from the now-deleted test sirtest_failsetinvalidstyle.
-    // it doesn't belong in a test separate from this one.
+    pass &= !sir_settextstyle(SIRL_INFO, 0xbbbb);
+    pass &= sir_info("I have set an invalid text style.");
+    pass &= !sir_settextstyle(SIRL_DEBUG, SIRS_FG_RED | SIRS_FG_DEFAULT);
+    pass &= sir_info("oops, did it again...");
 
-    // pass &= !sir_settextstyle(SIRL_INFO, 0xbbbb/* 0xfefe */);
-    // pass &= sir_info("hello there, I set an invalid style.");
-    // pass &= !sir_settextstyle(SIRL_ALL, SIRS_FG_RED | SIRS_FG_DEFAULT);
-    // pass &= sir_info("oops, did it again...");
-#pragma message("TODO: uncomment the above when the TODO at sirtextstyle.c:50 is resolved")
     pass &= !sir_settextstyle(SIRL_ALERT, SIRS_FG_BLACK | SIRS_BG_BLACK);
     pass &= sir_info("and again.");
+
+    pass &= sir_settextstyle(SIRL_INFO, SIRS_FG_DEFAULT | SIRS_BG_DEFAULT);
+    pass &= sir_info("system default fg and bg");
+
+    pass &= sir_settextstyle(SIRL_INFO, SIRS_BG_DEFAULT);
+    pass &= sir_info("system default bg & no fg specified");
+
+    pass &= sir_settextstyle(SIRL_INFO, SIRS_FG_DEFAULT);
+    pass &= sir_info("system default fg & no bg specified");
+
+    printf("\treset styles...\n");
+    pass &= sir_resettextstyles();
 
     if (pass) {
         pass &= sir_debug("default style");
@@ -603,11 +612,8 @@ bool sirtest_textstylesanity(void) {
         pass &= sir_emerg("override style");
     }
 
-    printf("\tcleanup to reset styles...\n");
-    sir_cleanup();
-
-    INIT(si2, SIRL_ALL, 0, 0, 0);
-    pass &= si2_init;
+    printf("\treset styles...\n");
+    pass &= sir_resettextstyles();
 
     pass &= sir_debug("default style");
     pass &= sir_info("default style");
@@ -617,6 +623,68 @@ bool sirtest_textstylesanity(void) {
     pass &= sir_crit("default style");
     pass &= sir_alert("default style");
     pass &= sir_emerg("default style");
+
+    /* ensure that foreground color constants match background color when
+     * shifted and masked. allows prevention of unreadable text. */
+    printf("\tensuring fg and bg colors align when masked and shifted...\n");
+    pass &= _SIRS_SAME_COLOR(SIRS_FG_BLACK,    SIRS_BG_BLACK);
+    pass &= _SIRS_SAME_COLOR(SIRS_FG_RED,      SIRS_BG_RED);
+    pass &= _SIRS_SAME_COLOR(SIRS_FG_GREEN,    SIRS_BG_GREEN);
+    pass &= _SIRS_SAME_COLOR(SIRS_FG_YELLOW,   SIRS_BG_YELLOW);
+    pass &= _SIRS_SAME_COLOR(SIRS_FG_BLUE,     SIRS_BG_BLUE);
+    pass &= _SIRS_SAME_COLOR(SIRS_FG_MAGENTA,  SIRS_BG_MAGENTA);
+    pass &= _SIRS_SAME_COLOR(SIRS_FG_CYAN,     SIRS_BG_CYAN);
+    pass &= _SIRS_SAME_COLOR(SIRS_FG_LGRAY,    SIRS_BG_LGRAY);
+    pass &= _SIRS_SAME_COLOR(SIRS_FG_DGRAY,    SIRS_BG_DGRAY);
+    pass &= _SIRS_SAME_COLOR(SIRS_FG_LRED,     SIRS_BG_LRED);
+    pass &= _SIRS_SAME_COLOR(SIRS_FG_LGREEN,   SIRS_BG_LGREEN);
+    pass &= _SIRS_SAME_COLOR(SIRS_FG_LYELLOW,  SIRS_BG_LYELLOW);
+    pass &= _SIRS_SAME_COLOR(SIRS_FG_LBLUE,    SIRS_BG_LBLUE);
+    pass &= _SIRS_SAME_COLOR(SIRS_FG_LMAGENTA, SIRS_BG_LMAGENTA);
+    pass &= _SIRS_SAME_COLOR(SIRS_FG_LCYAN,    SIRS_BG_LCYAN);
+    pass &= _SIRS_SAME_COLOR(SIRS_FG_WHITE,    SIRS_BG_WHITE);
+
+    if (pass)
+        printf("\t" GREEN("all fg and bg colors align") "\n");
+
+    /* for every foreground color, OR it with each of the others.
+     * same thing for background colors. none of these should be valid. */
+    printf("\ttesting all combinations of (2) fg colors to create collisions...\n");
+    for (size_t n = 3; n < 20; n++) {
+        uint32_t style = sir_style_16color_map[n].from;
+        for (size_t i = 3; i < 20; i++) {
+            if (n == i)
+                continue;
+
+            uint32_t attr, fg, bg;
+            if (_sir_validstyle(style | sir_style_16color_map[i].from, &attr, &fg, &bg)) {
+                pass = false;
+                printf("\t" RED("fg %08" PRIx32 " | %08" PRIx32 " (%08" PRIx32
+                       ") is valid!") "\n", style, sir_style_16color_map[i].from,
+                       style | sir_style_16color_map[i].from);
+            }
+        }
+    }
+
+    printf("\ttesting all combinations of (2) bg colors to create collisions...\n");
+    for (size_t n = 20; n < SIR_NUM16_COLOR_MAPPINGS; n++) {
+        uint32_t style = sir_style_16color_map[n].from;
+        for (size_t i = 20; i < SIR_NUM16_COLOR_MAPPINGS; i++) {
+            if (n == i)
+                continue;
+
+            uint32_t attr, fg, bg;
+            if (_sir_validstyle(style | sir_style_16color_map[i].from, &attr, &fg, &bg)) {
+                pass = false;
+                printf("\t" RED("bg %08" PRIx32 " | %08" PRIx32 " (%08" PRIx32
+                       ") is valid!") "\n", style, sir_style_16color_map[i].from,
+                       style | sir_style_16color_map[i].from);
+            }
+        }
+    }
+
+    if (pass)
+        printf("\t" GREEN("NO collisions in fg or bg colors") "\n");
 
     sir_cleanup();
 
@@ -1054,6 +1122,21 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
         pass &= sir_alert("%d/%d: this alert message sent to stdout and %s.", i + 1, runs, sl_name);
         pass &= sir_emerg("%d/%d: this emergency message sent to stdout and %s.", i + 1, runs, sl_name);
 
+#if defined(SIR_OS_LOG_ENABLED)
+        if (0 == strncmp(sl_name, "os_log", 6)) {
+            printf("\ttesting os_log activity feature...\n");
+
+            /* also test activity grouping in Console. there's only one way to validate
+             * this and that's by manually viewing the log. */
+             os_activity_t parent = os_activity_create("flying to the moon",
+                OS_ACTIVITY_NONE, OS_ACTIVITY_FLAG_DETACHED);
+
+            /* execution now passes to os_log_parent_activity(), where some logging
+            * will occur, then a sub-activity will be created, and more logging. */
+            os_activity_apply_f(parent, (void*)parent, os_log_parent_activity);
+        }
+#endif
+
         sir_cleanup();
 
         if (!pass)
@@ -1078,16 +1161,6 @@ bool sirtest_os_log(void) {
     return true;
 #else
     bool pass = generic_syslog_test("os_log", "com.aremmell.libsir.tests", "tests");
-
-    /* also test activity grouping in Console. there's only one way to validate
-     * this and that's by manually viewing the log. */
-    os_activity_t parent = os_activity_create("flying to the moon",
-        OS_ACTIVITY_NONE, OS_ACTIVITY_FLAG_DETACHED);
-
-    /* execution now passes to os_log_parent_activity(), where some logging
-     * will occur, then a sub-activity will be created, and more logging. */
-    os_activity_apply_f(parent, (void*)parent, os_log_parent_activity);
-
     return print_result_and_return(pass);
 #endif
 }
