@@ -38,8 +38,8 @@
 static sirconfig _sir_cfg = {0};
 static sirfcache _sir_fc  = {0};
 
-static sirmutex_t si_mutex;
-static sironce_t si_once = SIR_ONCE_INIT;
+static sirmutex_t cfg_mutex;
+static sironce_t cfg_once = SIR_ONCE_INIT;
 
 static sirmutex_t fc_mutex;
 static sironce_t fc_once = SIR_ONCE_INIT;
@@ -108,22 +108,32 @@ bool _sir_init(sirinit* si) {
     if (!_sir_init_sanity(si))
         return false;
 
+#if defined(__WIN__)
+    if (!_sir_initialize_stdio()) {
+        _sir_selflog("error: failed to initialize stdio!");
+        return false;
+    }
+#endif
+
+    if (!_sir_resettextstyles()) {
+        _sir_selflog("error: failed to reset text styles!");
+        return false;
+    }
+
     sirconfig* _cfg = _sir_locksection(SIRMI_CONFIG);
     if (!_sir_validptr(_cfg)) {
         _sir_seterror(_SIR_E_INTERNAL);
         return false;
     }
 
-    memset(&_cfg->state, 0, sizeof(_cfg->state));
-    memcpy(&_cfg->si, si, sizeof(sirinit));
-
-#if defined(__WIN__)
-    if (!_sir_initialize_stdio())
-        return false;
+#if defined(__HAVE_ATOMIC_H__)
+    atomic_store(&_sir_magic, _SIR_MAGIC);
+#else
+    _sir_magic = _SIR_MAGIC;
 #endif
 
-    if (!_sir_resettextstyles())
-        return false;
+    memset(&_cfg->state, 0, sizeof(_cfg->state));
+    memcpy(&_cfg->si, si, sizeof(sirinit));
 
     /* forcibly null-terminate the process name. */
     _cfg->si.name[SIR_MAXNAME - 1] = '\0';
@@ -142,12 +152,6 @@ bool _sir_init(sirinit* si) {
         if (!_sir_syslog_init(_cfg->si.name, &_cfg->si.d_syslog))
             _sir_selflog("failed to initialize system logger!");
     }
-#endif
-
-#if defined(__HAVE_ATOMIC_H__)
-    atomic_store(&_sir_magic, _SIR_MAGIC);
-#else
-    _sir_magic = _SIR_MAGIC;
 #endif
 
     _sir_unlocksection(SIRMI_CONFIG);
@@ -357,7 +361,6 @@ bool _sir_writeinit(sir_update_config_data* data, sirinit_update update) {
         _sir_selflog("error: update routine failed!");
 
     _sir_unlocksection(SIRMI_CONFIG);
-
     return updated;
 }
 
@@ -391,8 +394,8 @@ bool _sir_mapmutexid(sir_mutex_id mid, sirmutex_t** m, void** section) {
 
     switch (mid) {
         case SIRMI_CONFIG:
-            _sir_once(&si_once, _sir_initmutex_si_once);
-            tmpm   = &si_mutex;
+            _sir_once(&cfg_once, _sir_initmutex_cfg_once);
+            tmpm   = &cfg_mutex;
             tmpsec = &_sir_cfg;
             break;
         case SIRMI_FILECACHE:
@@ -427,8 +430,8 @@ void _sir_initialize_once(void) {
     atomic_init(&_sir_magic, 0);
 }
 
-void _sir_initmutex_si_once(void) {
-    if (!_sirmutex_create(&si_mutex))
+void _sir_initmutex_cfg_once(void) {
+    if (!_sirmutex_create(&cfg_mutex))
         _sir_selflog("error: failed to create mutex!");
 }
 
@@ -450,12 +453,12 @@ BOOL CALLBACK _sir_initialize_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
     return TRUE;
 }
 
-BOOL CALLBACK _sir_initmutex_si_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
+BOOL CALLBACK _sir_initmutex_cfg_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
     _SIR_UNUSED(ponce);
     _SIR_UNUSED(param);
     _SIR_UNUSED(ctx)
 
-    if (!_sirmutex_create(&si_mutex)) {
+    if (!_sirmutex_create(&cfg_mutex)) {
         _sir_selflog("error: failed to create mutex!");
         return FALSE;
     }

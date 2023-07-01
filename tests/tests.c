@@ -1077,9 +1077,18 @@ bool sirtest_os_log(void) {
     printf("\t" DGRAY("SIR_OS_LOG_ENABLED is not defined; skipping.") "\n");
     return true;
 #else
-    return generic_syslog_test("os_log", "com.aremmell.libsir.tests", "tests");
-# pragma message("TODO: os_activity_initiate_f")
-    /* static void os_log_activity1(void* ctx) {} */
+    bool pass = generic_syslog_test("os_log", "com.aremmell.libsir.tests", "tests");
+
+    /* also test activity grouping in Console. there's only one way to validate
+     * this and that's by manually viewing the log. */
+    os_activity_t parent = os_activity_create("flying to the moon",
+        OS_ACTIVITY_NONE, OS_ACTIVITY_FLAG_DETACHED);
+
+    /* execution now passes to os_log_parent_activity(), where some logging
+     * will occur, then a sub-activity will be created, and more logging. */
+    os_activity_apply_f(parent, (void*)parent, os_log_parent_activity);
+
+    return print_result_and_return(pass);
 #endif
 }
 
@@ -1699,3 +1708,35 @@ void print_test_list(void) {
 
     printf("\n");
 }
+
+#if defined(SIR_OS_LOG_ENABLED)
+void os_log_parent_activity(void* ctx) {
+    sir_debug("confirming with ground control that we are a go...");
+    sir_info("all systems go; initiating launch sequence");
+    sir_warn("getting some excessive vibration here");
+    sir_info("safely reached escape velocity. catch you on the flip side");
+    sir_info("(3 days later) we have landed on the lunar surface");
+    sir_notice("beginning rock counting...");
+
+    os_activity_t parent = (os_activity_t)ctx;
+    os_activity_t child = os_activity_create("counting moon rocks", parent,
+        OS_ACTIVITY_FLAG_DEFAULT);
+
+    float rock_count = 0.0f;
+    os_activity_apply_f(child, (void*)&rock_count, os_log_child_activity);
+    sir_info("astronauts safely back on board. official count: ~%.02f moon rocks",
+        rock_count);
+}
+
+void os_log_child_activity(void* ctx) {
+    sir_info("there are a lot of rocks here; we're going to be here a while");
+
+    for (size_t n = 0; n < 10; n++) {
+        sir_info("counting rocks in sector %zu...", n);
+    }
+
+    float* rock_count = (float*)ctx;
+    *rock_count = 1e12;
+    sir_info("all sectors counted; heading back to the lunar lander");
+}
+#endif

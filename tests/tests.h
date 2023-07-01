@@ -293,6 +293,11 @@ bool startsirtimer(sirtimer_t* timer);
 float sirtimerelapsed(const sirtimer_t* timer); // msec
 long sirtimergetres(void); // nsec
 
+#if defined(SIR_OS_LOG_ENABLED)
+void os_log_parent_activity(void* ctx);
+void os_log_child_activity(void* ctx);
+#endif
+
 static const struct cl_arg {
     const char* flag;
     const char* usage;
