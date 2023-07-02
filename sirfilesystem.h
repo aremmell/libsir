@@ -47,6 +47,10 @@ typedef enum {
 int _sir_aix_exepath(char *buffer, size_t *size);
 #endif
 
+#if defined(__HAIKU__)
+int _sir_haiku_exepath(char* buffer, size_t* size);
+#endif
+
 bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_rel_to rel_to);
 bool _sir_pathexists(const char* restrict path, bool* restrict exists, sir_rel_to rel_to);
 

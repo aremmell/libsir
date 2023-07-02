@@ -1257,7 +1257,9 @@ bool sirtest_filesystem(void) {
         {"foobarbaz", false},
 #if !defined(__WIN__)
         {"/", true},
+# if !defined(__HAIKU__)
         {"/usr/bin", true},
+# endif
         {"/dev", true},
 #else /* __WIN__ */
         {"\\Windows", true},

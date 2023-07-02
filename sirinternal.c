@@ -790,6 +790,9 @@ bool _sir_syslog_open(sir_syslog_dest* ctx) {
 }
 
 bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx) {
+    (void)level;
+    (void)buf;
+
     if (!_sir_bittest(ctx->_state.mask, SIRSL_IS_INIT)) {
         _sir_seterror(_SIR_E_INVALID);
         _sir_selflog("not initialized; ignoring");
@@ -837,6 +840,7 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx)
     syslog(syslog_level, "%s", buf->message);
     return true;
 # endif
+    return false;
 }
 
 bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data) {
@@ -908,6 +912,7 @@ bool _sir_syslog_close(sir_syslog_dest* ctx) {
     _sir_selflog("closed log");
     return true;
 # endif
+    return false;
 }
 
 void _sir_syslog_reset(sir_syslog_dest* ctx) {

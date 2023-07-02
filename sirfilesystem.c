@@ -148,6 +148,28 @@ char* _sir_getcwd(void) {
 #endif
 }
 
+#if defined(__HAIKU__)
+# include <OS.h>
+# include <storage/FindDirectory.h>
+# include <limits.h>
+
+int _sir_haiku_exepath(char* buffer, size_t* size) {
+  char abspath[B_PATH_NAME_LENGTH];
+  status_t status;
+
+  if (buffer == NULL || size == NULL || *size == 0)
+      return -EINVAL;
+
+  status = find_path(B_APP_IMAGE_SYMBOL, B_FIND_PATH_IMAGE_PATH,
+                     NULL, abspath, sizeof(abspath));
+  if (status != B_OK) return -EINVAL;
+
+  strncpy(buffer, abspath, PATH_MAX);
+
+  return 0;
+}
+#endif
+
 #if defined(_AIX)
 # include <sys/procfs.h>
 
@@ -469,7 +491,20 @@ char* _sir_getappfilename(void) {
           break;
         }
 # elif defined(__HAIKU__)
-#  warning "no implementation for your platform; please contact the author."
+        size_t  size;
+        size  = sizeof ( &buffer ) / sizeof ( buffer[0] );
+        int ret   = _sir_haiku_exepath(buffer, &size);
+        if (ret == 0) {
+            resolved = true;
+            break;
+        } else if (ret == -1) {
+            grow = true;
+            continue;
+        } else {
+          _sir_handleerr(errno);
+          resolved = false;
+          break;
+        }
 # else
 #  error "no implementation for your platform; please contact the author."
 # endif
