@@ -1139,8 +1139,8 @@ div.ingroups a
 
 div.header
 {
-        background-image: url('nav_hd.png');
-        background-repeat:repeat-x;
+	background-image: url('nav_hd.png');
+	background-repeat:repeat-x;
 	background-color: #070B11;
 	margin:  0px;
 	border-bottom: 1px solid #141C2E;
@@ -1272,12 +1272,16 @@ dl.section dd {
 
 #titlearea
 {
-	padding: 7px;
+	padding: 0px !important;
 	margin: 0px;
-	width: 100%;
 	height: 63px;
 	border-bottom: 1px solid #354C79;
 	background-color: #110c26;
+}
+
+#titlearea table {
+    padding-top: 1px;
+    padding-bottom: 2px;
 }
 
 .image
@@ -1615,11 +1619,11 @@ table.markdownTable {
 	border-collapse:collapse;
 	margin-top: 4px;
 	margin-bottom: 4px;
-	margin-left: auto;
+	/*margin-left: auto;
 	margin-right: auto;
 	padding-left: 20px;
 	max-width: 80%;
-	width: 80%;
+	width: 80%;*/
 }
 
 table.markdownTable td, table.markdownTable th {
