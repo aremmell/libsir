@@ -1069,6 +1069,7 @@ bool sirtest_updatesanity(void) {
     return print_result_and_return(pass);
 }
 
+#if defined(SIR_SYSLOG_ENABLED) || defined(SIR_OS_LOG_ENABLED)
 static bool generic_syslog_test(const char* sl_name, const char* identity, const char* category) {
     bool pass             = true;
     static const int runs = 5;
@@ -1145,6 +1146,7 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
 
     return print_result_and_return(pass);
 }
+#endif
 
 bool sirtest_syslog(void) {
 #if !defined(SIR_SYSLOG_ENABLED)

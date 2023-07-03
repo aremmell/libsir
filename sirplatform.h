@@ -84,10 +84,14 @@
 # include <assert.h>
 #define SIR_ASSERT(...) assert(__VA_ARGS__)
 #else
+# if defined(SIR_SELFLOG)
 # define SIR_ASSERT(...) \
      if (!(__VA_ARGS__)) { \
          _sir_selflog(LRED("!!! would be asserting: " #__VA_ARGS__ "")); \
      }
+#else
+# define SIR_ASSERT(...)
+#endif
 #endif
 
 #include <errno.h>
@@ -134,7 +138,9 @@
 # include <limits.h>
 # include <fcntl.h>
 # include <libgen.h>
+# if defined(__HAVE_ATOMIC_H__) && !defined(__cplusplus)
 # include <stdatomic.h>
+# endif
 # if defined(SIR_SYSLOG_ENABLED)
 #  include <syslog.h>
 # endif
