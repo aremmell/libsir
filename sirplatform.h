@@ -66,7 +66,7 @@
 # endif
 #else /* _WIN32 */
 # if defined(_MSC_VER) && _MSC_VER < 1800
-#  error "sorry, but the minimum supported MSVC toolset version is 1800.
+#  error "sorry, but the minimum supported MSVC toolset version is 1800."
 # endif
 # define SIR_NO_SYSTEM_LOGGERS
 # undef __HAVE_ATOMIC_H__

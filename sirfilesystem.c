@@ -47,8 +47,10 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
 #if !defined(__WIN__)
 # if defined(__MACOS__)
         int open_flags = O_SEARCH;
-# elif defined(__linux__) || defined(__BSD__)
+# elif defined(__linux__)
         int open_flags = O_PATH | O_DIRECTORY;
+# elif defined(__BSD__)
+        int open_flags = O_EXEC | O_DIRECTORY;
 # endif
 
         int fd = open(base_path, open_flags);
