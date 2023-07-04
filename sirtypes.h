@@ -79,10 +79,11 @@ typedef uint32_t sir_options;
 
 /** Styles for 16-color stdio output. */
 typedef enum {
+    /* attributes. */
     SIRS_NONE        = 0x00000000, /**< Used internally; has no effect. */
-    SIRS_BRIGHT      = 0x00000000, /**< If set, the foreground color is 'intensified'. */
-    SIRS_DIM         = 0x00000000, /**< If set, the foreground color is 'dimmed'. */
-    ////////////////// 0x0000fff0
+    SIRS_BOLD        = 0x00000001, /**< If set, the foreground color is 'bold'. */
+    SIRS_DIM         = 0x00000002, /**< If set, the foreground color is 'dimmed'. */
+    /* foreground colors. */
     SIRS_FG_BLACK    = 0x000089a0, /**< Black foreground. */
     SIRS_FG_RED      = 0x000059b0, /**< Red foreground. */
     SIRS_FG_GREEN    = 0x00006670, /**< Green foreground. */
@@ -100,7 +101,7 @@ typedef enum {
     SIRS_FG_LMAGENTA = 0x00005220, /**< Light magenta foreground. */
     SIRS_FG_LCYAN    = 0x00005540, /**< Light cyan foreground. */
     SIRS_FG_WHITE    = 0x00001480, /**< White foreground. */
-    ////////////////// 0x0fff0000
+    /* background colors. */
     SIRS_BG_BLACK    = 0x089a0000, /**< Black background. */
     SIRS_BG_RED      = 0x059b0000, /**< Red background. */
     SIRS_BG_GREEN    = 0x06670000, /**< Green background. */

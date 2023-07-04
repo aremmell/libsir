@@ -62,17 +62,13 @@ sir_level_str_pair sir_level_to_str_map[SIR_NUMLEVELS] = {
 /**
  * @brief Mapping of ::sir_textstyle <-> values used to generate
  * styled terminal output for 4-bit (16-color) mode.
- *
- * @attention Entries *must* remain in numeric ascending order
- * (by SIRS_*); binary search is used to look up entries based
- * on those values.
  */
 const sir_style_16color_pair sir_style_16color_map[SIR_NUM16_COLOR_MAPPINGS] = {
-    /* intensity */
+    /* attributes. */
     {SIRS_NONE,          0},
-    {SIRS_BRIGHT,        1},
+    {SIRS_BOLD,          1},
     {SIRS_DIM,           2},
-    /* foreground color */
+    /* foreground colors. */
     {SIRS_FG_BLACK,     30},
     {SIRS_FG_RED,       31},
     {SIRS_FG_GREEN,     32},
@@ -90,7 +86,7 @@ const sir_style_16color_pair sir_style_16color_map[SIR_NUM16_COLOR_MAPPINGS] = {
     {SIRS_FG_LMAGENTA,  95},
     {SIRS_FG_LCYAN,     96},
     {SIRS_FG_WHITE,     97},
-    /* background color */
+    /* background colors. */
     {SIRS_BG_BLACK,     40},
     {SIRS_BG_RED,       41},
     {SIRS_BG_GREEN,     42},

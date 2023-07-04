@@ -608,11 +608,11 @@ bool sirtest_textstylesanity(void) {
     pass &= sir_crit("override style");
 
     pass &= sir_alert("default style");
-    pass &= sir_settextstyle(SIRL_ALERT, SIRS_BRIGHT | SIRS_FG_LBLUE);
+    pass &= sir_settextstyle(SIRL_ALERT, SIRS_BOLD | SIRS_FG_LBLUE);
     pass &= sir_alert("override style");
 
     pass &= sir_emerg("default style");
-    pass &= sir_settextstyle(SIRL_EMERG, SIRS_BRIGHT | SIRS_FG_DGRAY);
+    pass &= sir_settextstyle(SIRL_EMERG, SIRS_BOLD | SIRS_FG_DGRAY);
     pass &= sir_emerg("override style");
     PRINT_PASS(pass, "\t--- override defaults: %s ---\n\n", PRN_PASS(pass));
 
