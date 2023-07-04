@@ -8,7 +8,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<title>libsir: Tests</title>
+<title>libsir: The Standard Incident Reporter Library</title>
+<!-- OpenGraph -->
+<meta property="og:title" content="libsir: The Standard Incident Reporter Library">
+<meta property="og:description" content="A lightweight, cross-platform C library for information distribution">
+<meta property="og:url" content="https://libsir.rml.dev">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://libsir.rml.dev/res/libsir-og.png">
+<meta name="twitter:card" content="summary_large_image"></meta>
+<meta name="twitter:title" content="libsir: The Standard Incident Reporter Library"></meta>
+<meta name="twitter:description" content="A lightweight, cross-platform C library for information distribution"></meta>
+<meta name="twitter:image" content="https://libsir.rml.dev/res/libsir-og.png"></meta>
+<!-- /OpenGraph -->
+<!-- favicon -->
+<link rel="icon" href="res/libsir-icon.png">
+<link rel="icon" href="res/libsir-icon.svg" type="image/svg+xml">
+<link rel="manifest" href="res/icons.webmanifest">
+<!-- /favicon -->
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -157,14 +173,14 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>libsir integrity tests </p>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga1d9150c929ba0b79bf06592563ea81e1" name="ga1d9150c929ba0b79bf06592563ea81e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1d9150c929ba0b79bf06592563ea81e1">&#9670;&#160;</a></span>sirtest_errorsanity()</h2>
+<a id="ga33e3ca313f107bfad6d01c00c9d47d8d" name="ga33e3ca313f107bfad6d01c00c9d47d8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga33e3ca313f107bfad6d01c00c9d47d8d">&#9670;&#160;</a></span>sirtest_mthread_race()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool sirtest_errorsanity </td>
+          <td class="memname">bool sirtest_mthread_race </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -172,7 +188,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000016">Test:</a></b></dt><dd>Properly return valid codes and messages for all possible errors. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
 
 </div>
 </div>
@@ -191,121 +207,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000002">Test:</a></b></dt><dd>Properly handle messages that exceed internal buffer sizes. </dd></dl>
-
-</div>
-</div>
-<a id="gabf5a4643e79df2f6b06956ffd6a465ab" name="gabf5a4643e79df2f6b06956ffd6a465ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gabf5a4643e79df2f6b06956ffd6a465ab">&#9670;&#160;</a></span>sirtest_failaftercleanup()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sirtest_failaftercleanup </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000015">Test:</a></b></dt><dd>Properly handle calls after cleanup. </dd></dl>
-
-</div>
-</div>
-<a id="ga33eca3443a7a02e5fdaf97f8cb2158a1" name="ga33eca3443a7a02e5fdaf97f8cb2158a1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga33eca3443a7a02e5fdaf97f8cb2158a1">&#9670;&#160;</a></span>sirtest_faildupefile()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sirtest_faildupefile </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000008">Test:</a></b></dt><dd>Properly refuse to add a duplicate file. </dd></dl>
-
-</div>
-</div>
-<a id="ga8f5266c274182a3dae54c48d8d8abba1" name="ga8f5266c274182a3dae54c48d8d8abba1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8f5266c274182a3dae54c48d8d8abba1">&#9670;&#160;</a></span>sirtest_failfilebadpermission()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sirtest_failfilebadpermission </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000007">Test:</a></b></dt><dd>Properly handle log file without appropriate permissions. </dd></dl>
-
-</div>
-</div>
-<a id="gaf38b29b3f35da81c5315f110745f360d" name="gaf38b29b3f35da81c5315f110745f360d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf38b29b3f35da81c5315f110745f360d">&#9670;&#160;</a></span>sirtest_failinittwice()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sirtest_failinittwice </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000012">Test:</a></b></dt><dd>Properly handle two initialization calls without corresponding cleanup. </dd></dl>
-
-</div>
-</div>
-<a id="ga8d74e7810b41d505863eddced156f448" name="ga8d74e7810b41d505863eddced156f448"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8d74e7810b41d505863eddced156f448">&#9670;&#160;</a></span>sirtest_failinvalidfilename()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sirtest_failinvalidfilename </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000006">Test:</a></b></dt><dd>Properly handle invalid log file name. </dd></dl>
-
-</div>
-</div>
-<a id="ga2b65799988fe973a542371b8131b4e7f" name="ga2b65799988fe973a542371b8131b4e7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga2b65799988fe973a542371b8131b4e7f">&#9670;&#160;</a></span>sirtest_failinvalidinitdata()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sirtest_failinvalidinitdata </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000013">Test:</a></b></dt><dd>Properly handle initialization with junk memory. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
 
 </div>
 </div>
@@ -324,7 +226,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000003">Test:</a></b></dt><dd>Properly handle the lack of any output destinations. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
 
 </div>
 </div>
@@ -343,45 +245,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000004">Test:</a></b></dt><dd>Properly handle null/empty input. </dd></dl>
-
-</div>
-</div>
-<a id="ga73504bc15f794cbf70dff785136672bb" name="ga73504bc15f794cbf70dff785136672bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga73504bc15f794cbf70dff785136672bb">&#9670;&#160;</a></span>sirtest_failremovebadfile()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sirtest_failremovebadfile </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000009">Test:</a></b></dt><dd>Properly refuse to remove a file that isn't added. </dd></dl>
-
-</div>
-</div>
-<a id="ga4f238c5ad2114b9a746e64b003165bd1" name="ga4f238c5ad2114b9a746e64b003165bd1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4f238c5ad2114b9a746e64b003165bd1">&#9670;&#160;</a></span>sirtest_failwithoutinit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sirtest_failwithoutinit </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000011">Test:</a></b></dt><dd>Properly handle calls without initialization. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
 
 </div>
 </div>
@@ -400,18 +264,18 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000005">Test:</a></b></dt><dd>Properly handle adding and removing log files. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
 
 </div>
 </div>
-<a id="gaa0b035b71e6a6e6df6b8a7bb95722e2a" name="gaa0b035b71e6a6e6df6b8a7bb95722e2a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa0b035b71e6a6e6df6b8a7bb95722e2a">&#9670;&#160;</a></span>sirtest_filesystem()</h2>
+<a id="ga8d74e7810b41d505863eddced156f448" name="ga8d74e7810b41d505863eddced156f448"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8d74e7810b41d505863eddced156f448">&#9670;&#160;</a></span>sirtest_failinvalidfilename()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool sirtest_filesystem </td>
+          <td class="memname">bool sirtest_failinvalidfilename </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -419,18 +283,18 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000024">Test:</a></b></dt><dd>Ensure the proper functionality of portable filesystem implementation. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
 
 </div>
 </div>
-<a id="ga9f7ccc25d41c5980dae048951ba60c8b" name="ga9f7ccc25d41c5980dae048951ba60c8b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9f7ccc25d41c5980dae048951ba60c8b">&#9670;&#160;</a></span>sirtest_initcleanupinit()</h2>
+<a id="ga8f5266c274182a3dae54c48d8d8abba1" name="ga8f5266c274182a3dae54c48d8d8abba1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8f5266c274182a3dae54c48d8d8abba1">&#9670;&#160;</a></span>sirtest_failfilebadpermission()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool sirtest_initcleanupinit </td>
+          <td class="memname">bool sirtest_failfilebadpermission </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -438,18 +302,18 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000014">Test:</a></b></dt><dd>Properly handle initialization, cleanup, re-initialization. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
 
 </div>
 </div>
-<a id="ga3e19675d370d9b538ba320c49ecc7b05" name="ga3e19675d370d9b538ba320c49ecc7b05"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3e19675d370d9b538ba320c49ecc7b05">&#9670;&#160;</a></span>sirtest_levelssanity()</h2>
+<a id="ga33eca3443a7a02e5fdaf97f8cb2158a1" name="ga33eca3443a7a02e5fdaf97f8cb2158a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga33eca3443a7a02e5fdaf97f8cb2158a1">&#9670;&#160;</a></span>sirtest_faildupefile()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool sirtest_levelssanity </td>
+          <td class="memname">bool sirtest_faildupefile </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -457,18 +321,18 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000019">Test:</a></b></dt><dd>Properly reject invalid level bitmasks. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
 
 </div>
 </div>
-<a id="ga33e3ca313f107bfad6d01c00c9d47d8d" name="ga33e3ca313f107bfad6d01c00c9d47d8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga33e3ca313f107bfad6d01c00c9d47d8d">&#9670;&#160;</a></span>sirtest_mthread_race()</h2>
+<a id="ga73504bc15f794cbf70dff785136672bb" name="ga73504bc15f794cbf70dff785136672bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga73504bc15f794cbf70dff785136672bb">&#9670;&#160;</a></span>sirtest_failremovebadfile()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool sirtest_mthread_race </td>
+          <td class="memname">bool sirtest_failremovebadfile </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -476,65 +340,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000001">Test:</a></b></dt><dd>Properly handle multiple threads competing for locked sections. </dd></dl>
-
-</div>
-</div>
-<a id="gac9f9aabf53c8cfadba8b0f76927e6bae" name="gac9f9aabf53c8cfadba8b0f76927e6bae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac9f9aabf53c8cfadba8b0f76927e6bae">&#9670;&#160;</a></span>sirtest_optionssanity()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sirtest_optionssanity </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000018">Test:</a></b></dt><dd>Properly reject invalid option bitmasks. </dd></dl>
-
-</div>
-</div>
-<a id="ga54f0e8e0163d0aedf20616451f122017" name="ga54f0e8e0163d0aedf20616451f122017"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga54f0e8e0163d0aedf20616451f122017">&#9670;&#160;</a></span>sirtest_os_log()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sirtest_os_log </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000023">Test:</a></b></dt><dd>Properly open, configure, and send messages to os_log().</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>macOS only. </dd></dl>
-
-</div>
-</div>
-<a id="ga607e96cb52e248a2277ab3ecc31b7195" name="ga607e96cb52e248a2277ab3ecc31b7195"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga607e96cb52e248a2277ab3ecc31b7195">&#9670;&#160;</a></span>sirtest_perf()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sirtest_perf </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000020">Test:</a></b></dt><dd>Performance evaluation. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
 
 </div>
 </div>
@@ -553,18 +359,18 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000010">Test:</a></b></dt><dd>Properly roll/archive a file when it hits max size. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
 
 </div>
 </div>
-<a id="ga8db924f756e0ee2f04ff3e044a10f283" name="ga8db924f756e0ee2f04ff3e044a10f283"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8db924f756e0ee2f04ff3e044a10f283">&#9670;&#160;</a></span>sirtest_syslog()</h2>
+<a id="ga4f238c5ad2114b9a746e64b003165bd1" name="ga4f238c5ad2114b9a746e64b003165bd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4f238c5ad2114b9a746e64b003165bd1">&#9670;&#160;</a></span>sirtest_failwithoutinit()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool sirtest_syslog </td>
+          <td class="memname">bool sirtest_failwithoutinit </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -572,8 +378,102 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000022">Test:</a></b></dt><dd>Properly open, configure, and send messages to syslog().</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Disabled on Windows and macOS. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="gaf38b29b3f35da81c5315f110745f360d" name="gaf38b29b3f35da81c5315f110745f360d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf38b29b3f35da81c5315f110745f360d">&#9670;&#160;</a></span>sirtest_failinittwice()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sirtest_failinittwice </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="ga2b65799988fe973a542371b8131b4e7f" name="ga2b65799988fe973a542371b8131b4e7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2b65799988fe973a542371b8131b4e7f">&#9670;&#160;</a></span>sirtest_failinvalidinitdata()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sirtest_failinvalidinitdata </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="ga9f7ccc25d41c5980dae048951ba60c8b" name="ga9f7ccc25d41c5980dae048951ba60c8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9f7ccc25d41c5980dae048951ba60c8b">&#9670;&#160;</a></span>sirtest_initcleanupinit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sirtest_initcleanupinit </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="gabf5a4643e79df2f6b06956ffd6a465ab" name="gabf5a4643e79df2f6b06956ffd6a465ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabf5a4643e79df2f6b06956ffd6a465ab">&#9670;&#160;</a></span>sirtest_failaftercleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sirtest_failaftercleanup </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="ga1d9150c929ba0b79bf06592563ea81e1" name="ga1d9150c929ba0b79bf06592563ea81e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1d9150c929ba0b79bf06592563ea81e1">&#9670;&#160;</a></span>sirtest_errorsanity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sirtest_errorsanity </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
 
 </div>
 </div>
@@ -592,7 +492,64 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000017">Test:</a></b></dt><dd>Properly style stdio output for each level, and handle style overrides. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="gac9f9aabf53c8cfadba8b0f76927e6bae" name="gac9f9aabf53c8cfadba8b0f76927e6bae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac9f9aabf53c8cfadba8b0f76927e6bae">&#9670;&#160;</a></span>sirtest_optionssanity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sirtest_optionssanity </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="ga3e19675d370d9b538ba320c49ecc7b05" name="ga3e19675d370d9b538ba320c49ecc7b05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3e19675d370d9b538ba320c49ecc7b05">&#9670;&#160;</a></span>sirtest_levelssanity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sirtest_levelssanity </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="ga607e96cb52e248a2277ab3ecc31b7195" name="ga607e96cb52e248a2277ab3ecc31b7195"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga607e96cb52e248a2277ab3ecc31b7195">&#9670;&#160;</a></span>sirtest_perf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sirtest_perf </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
 
 </div>
 </div>
@@ -611,7 +568,66 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="test.html#_test000021">Test:</a></b></dt><dd>Properly update levels/options at runtime. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="ga8db924f756e0ee2f04ff3e044a10f283" name="ga8db924f756e0ee2f04ff3e044a10f283"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8db924f756e0ee2f04ff3e044a10f283">&#9670;&#160;</a></span>sirtest_syslog()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sirtest_syslog </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section note"><dt>Note</dt><dd>Disabled on Windows and macOS. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="ga54f0e8e0163d0aedf20616451f122017" name="ga54f0e8e0163d0aedf20616451f122017"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga54f0e8e0163d0aedf20616451f122017">&#9670;&#160;</a></span>sirtest_os_log()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sirtest_os_log </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section note"><dt>Note</dt><dd>macOS only. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="gaa0b035b71e6a6e6df6b8a7bb95722e2a" name="gaa0b035b71e6a6e6df6b8a7bb95722e2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa0b035b71e6a6e6df6b8a7bb95722e2a">&#9670;&#160;</a></span>sirtest_filesystem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sirtest_filesystem </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
 
 </div>
 </div>

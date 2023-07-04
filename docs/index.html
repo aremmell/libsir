@@ -8,7 +8,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<title>libsir: libsir</title>
+<title>libsir: The Standard Incident Reporter Library</title>
+<!-- OpenGraph -->
+<meta property="og:title" content="libsir: The Standard Incident Reporter Library">
+<meta property="og:description" content="A lightweight, cross-platform C library for information distribution">
+<meta property="og:url" content="https://libsir.rml.dev">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://libsir.rml.dev/res/libsir-og.png">
+<meta name="twitter:card" content="summary_large_image"></meta>
+<meta name="twitter:title" content="libsir: The Standard Incident Reporter Library"></meta>
+<meta name="twitter:description" content="A lightweight, cross-platform C library for information distribution"></meta>
+<meta name="twitter:image" content="https://libsir.rml.dev/res/libsir-og.png"></meta>
+<!-- /OpenGraph -->
+<!-- favicon -->
+<link rel="icon" href="res/libsir-icon.png">
+<link rel="icon" href="res/libsir-icon.svg" type="image/svg+xml">
+<link rel="manifest" href="res/icons.webmanifest">
+<!-- /favicon -->
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -98,9 +114,10 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md__r_e_a_d_m_e"></a> <a href="https://app.travis-ci.com/aremmell/libsir"><img src="https://app.travis-ci.com/aremmell/libsir.svg?branch=master" alt="Build Status" style="pointer-events: none;" class="inline"/></a> <img src="https://img.shields.io/github/license/aremmell/libsir?color=%2340b911" alt="GitHub" class="inline"/></p>
-<h1>Overview</h1>
-<p>libsir is a cross-platform, thread-safe, fully customizable library designed to simplify and streamline the generation and distribution of human-consumable information in software.</p>
-<p>With libsir, a single call simultaneously broadcasts formatted information to multiple destinations of your choosing. Each destination may have its own formatting, styling, and verbosity options:</p>
+<h1>Synopsis</h1>
+<p>libsir is a cross-platform, thread-safe logging library written in C that is designed to simplify and streamline the generation and distribution of human-readable information in software.</p>
+<p>Using libsir, you can make a single call that simultaneously sends information to multiple destinations, <em>each with their own individual preference for format and levels</em>.</p>
+<p>Each 'level' or 'priority' of output can be visually styled however you wish for <code>stdio</code> destinations. This allows for immediate visual confirmation that a message appeared in the terminal that you should pay attention to, while less pressing information is more subtle in appearance.</p>
 <div class="image">
 <img src="libsir-alpha.gif" alt=""/>
 <div class="caption">
@@ -110,8 +127,9 @@ libsir visual graph</div></div>
 <li>No dependencies (other than <code>libc</code> and <code>pthreads</code>). On Windows, libsir uses the native sychronization API.</li>
 <li>Accompanied by a robust test suite to ensure dependable behavior, even if you make modifications to the source.</li>
 <li>Won't fail silently&mdash; C library or platform level errors are captured and stored for posterity, on a per-thread basis. The <em>function, file, and line number from which it orginated</em> are also captured. Additionally, libsir defines its own set of error messages to aid in troubleshooting.</li>
-<li>Hardened&mdash; every function contains sanity checks for internal state as well as arguments passed in through the external interfaces. libsir's make recipes use &ndash; <em>Wpedantic</em>, too.</li>
-<li><a href="https://aremmell.github.io/libsir">Full documentation</a></li>
+<li>Hardened&mdash;every function contains sanity checks for internal state as well as arguments passed in through the external interfaces. libsir's make recipes use __&ndash;Wall &ndash;-Wextra &ndash;<em>Wpedantic</em>, too.</li>
+<li><a href="https://libsir.rml.dev">Full documentation</a>, thanks to Doxygen.</li>
+<li>Lightweight&mdash;the shared library comes in at around 76KB, and the static library around 70KB.</li>
 </ul>
 <h1>Cross-platform compatibility</h1>
 <p>At this time, the test suite has been compiled and tested on (at minimum) these configurations:</p>
@@ -119,9 +137,9 @@ libsir visual graph</div></div>
 <tr class="markdownTableHead">
 <th class="markdownTableHeadLeft">Toolset   </th><th class="markdownTableHeadCenter">Versions   </th><th class="markdownTableHeadCenter">Operating system   </th><th class="markdownTableHeadRight">Architecture    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft">gcc   </td><td class="markdownTableBodyCenter">5.4, 7.0, 7.3 7.5   </td><td class="markdownTableBodyCenter">Ubuntu, Mint   </td><td class="markdownTableBodyRight">x64, arm64    </td></tr>
+<td class="markdownTableBodyLeft">gcc   </td><td class="markdownTableBodyCenter">5.4-7.5   </td><td class="markdownTableBodyCenter">Ubuntu, Mint, Fedora, FreeBSD   </td><td class="markdownTableBodyRight">x64, armhf, arm64, ppc64le    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyLeft">clang   </td><td class="markdownTableBodyCenter">6.0, 7.0, 9.1, 14.0   </td><td class="markdownTableBodyCenter">macOS, Ubuntu, Mint, FreeBSD, Fedora   </td><td class="markdownTableBodyRight">x64, arm64    </td></tr>
+<td class="markdownTableBodyLeft">clang   </td><td class="markdownTableBodyCenter">6.0-14.0   </td><td class="markdownTableBodyCenter">macOS, Ubuntu, Mint, FreeBSD, Fedora   </td><td class="markdownTableBodyRight">x64, arm64    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyLeft">MSVC (cl)   </td><td class="markdownTableBodyCenter">17.6   </td><td class="markdownTableBodyCenter">Windows   </td><td class="markdownTableBodyRight">x64, arm64   </td></tr>
 </table>
@@ -129,52 +147,54 @@ libsir visual graph</div></div>
 <h2>Output destinations</h2>
 <ul>
 <li><code>stdout</code> / <code>stderr</code></li>
-<li><code>syslog</code> / <code>os_log</code> (on macOS)</li>
-<li><em>n</em> log files (<em>archived automatically a'la logrotate when they get too big</em>)</li>
+<li>A system logger facility (currently <code>syslog</code>, or on macOS, <code>os_log</code>).</li>
+<li><em>n</em> number of log files.</li>
 </ul>
 <h2>Informational output</h2>
-<p>libsir is able to output certain data that may contribute to better comprehension of the program state _(particularly for debugging postmortem)_. Each destination may be configured to include any, all, or none of these. The following is a list of all available options; the defaults for each destination are defined in Options</p>
+<p>libsir is able to output certain data that may contribute to better comprehension of the program state (<em>particularly for debugging postmortem</em>). Each destination may be configured to receive any, all, or none of these.</p>
 <blockquote class="doxtable">
 <p>&zwj;Note: the format of this data may be customized for your application. See Customization for more information. </p>
 </blockquote>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadCenter">Data   </th><th class="markdownTableHeadCenter">Description   </th><th class="markdownTableHeadCenter">stdio   </th><th class="markdownTableHeadCenter">syslog[^1]   </th><th class="markdownTableHeadCenter">files    </th></tr>
+<th class="markdownTableHeadCenter">Data   </th><th class="markdownTableHeadCenter">Description   </th><th class="markdownTableHeadCenter">stdio   </th><th class="markdownTableHeadCenter">system logger[^1]   </th><th class="markdownTableHeadCenter">files    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyCenter">Timestamp   </td><td class="markdownTableBodyCenter">The current time (<em>hour, min, sec</em>)   </td><td class="markdownTableBodyCenter">✓   </td><td class="markdownTableBodyCenter"></td><td class="markdownTableBodyCenter">✓    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyCenter">Milliseconds   </td><td class="markdownTableBodyCenter">1/1000^ths^ of the current second   </td><td class="markdownTableBodyCenter">✓   </td><td class="markdownTableBodyCenter"></td><td class="markdownTableBodyCenter">✓    </td></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter">Hostname   </td><td class="markdownTableBodyCenter">The local machine’s network hostname   </td><td class="markdownTableBodyCenter">✓   </td><td class="markdownTableBodyCenter"></td><td class="markdownTableBodyCenter">✓    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyCenter">Level   </td><td class="markdownTableBodyCenter">Human-readable level _(e.g. 'warn')_   </td><td class="markdownTableBodyCenter">✓   </td><td class="markdownTableBodyCenter"></td><td class="markdownTableBodyCenter">✓    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter">Name   </td><td class="markdownTableBodyCenter">Name of the process   </td><td class="markdownTableBodyCenter">✓   </td><td class="markdownTableBodyCenter">✓   </td><td class="markdownTableBodyCenter">✓    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter">Process ID   </td><td class="markdownTableBodyCenter">The current process identifier   </td><td class="markdownTableBodyCenter">✓   </td><td class="markdownTableBodyCenter">✓   </td><td class="markdownTableBodyCenter">✓    </td></tr>
+<td class="markdownTableBodyCenter">Name   </td><td class="markdownTableBodyCenter">Name of the process   </td><td class="markdownTableBodyCenter">✓   </td><td class="markdownTableBodyCenter">✓   </td><td class="markdownTableBodyCenter">✓    </td></tr>
 <tr class="markdownTableRowEven">
+<td class="markdownTableBodyCenter">Process ID   </td><td class="markdownTableBodyCenter">The current process identifier   </td><td class="markdownTableBodyCenter">✓   </td><td class="markdownTableBodyCenter">✓   </td><td class="markdownTableBodyCenter">✓    </td></tr>
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyCenter">Thread ID   </td><td class="markdownTableBodyCenter">The current thread identifier   </td><td class="markdownTableBodyCenter">✓   </td><td class="markdownTableBodyCenter"></td><td class="markdownTableBodyCenter">✓   </td></tr>
 </table>
-<p>[^1]: <code>syslog</code> already include these categories of data on its own, so libsir purposely omits them.</p>
+<p>[^1]: System loggers usually include these categories of data on their own, so libsir purposely omits them, but these options can be set at any time._</p>
 <h2>Logging levels</h2>
 <p>In addition to decoration options, each destination may be registered to receive any, none, or all priority levels of output. The available levels may be overly granular, but it's better to have unused levels rather than need another one and not have it.</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadLeft">Level   </th><th class="markdownTableHeadLeft">Description    </th></tr>
+<th class="markdownTableHeadCenter">Level   </th><th class="markdownTableHeadLeft">Description    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft">Debug   </td><td class="markdownTableBodyLeft">Detailed, overly-verbose diagnostic output.    </td></tr>
+<td class="markdownTableBodyCenter">Debug   </td><td class="markdownTableBodyLeft">Debugging/diagnostic output.    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyLeft">Information   </td><td class="markdownTableBodyLeft">Informative messages.    </td></tr>
+<td class="markdownTableBodyCenter">Information   </td><td class="markdownTableBodyLeft">Informational messages.    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft">Notice   </td><td class="markdownTableBodyLeft">Like informational messages, but with greater significance.    </td></tr>
+<td class="markdownTableBodyCenter">Notice   </td><td class="markdownTableBodyLeft">Normal but significant.    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyLeft">Warning   </td><td class="markdownTableBodyLeft">Warnings that may indicate more severe problems in the future.    </td></tr>
+<td class="markdownTableBodyCenter">Warning   </td><td class="markdownTableBodyLeft">Warnings that could likely be ignored.    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft">Error   </td><td class="markdownTableBodyLeft">Something ocurred that shouldn’t have, or vice-versa; could be recoverable.    </td></tr>
+<td class="markdownTableBodyCenter">Error   </td><td class="markdownTableBodyLeft">Errors.    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyLeft">Critical   </td><td class="markdownTableBodyLeft">Events that likely are going to require human intervention.    </td></tr>
+<td class="markdownTableBodyCenter">Critical   </td><td class="markdownTableBodyLeft">Critical errors.    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft">Alert   </td><td class="markdownTableBodyLeft">Action required ASAP.    </td></tr>
+<td class="markdownTableBodyCenter">Alert   </td><td class="markdownTableBodyLeft">Action required ASAP.    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyLeft">Emergency   </td><td class="markdownTableBodyLeft">Nuclear war. Armageddon. The sky is falling.   </td></tr>
+<td class="markdownTableBodyCenter">Emergency   </td><td class="markdownTableBodyLeft">Nuclear war, Armageddon, the sky is falling.   </td></tr>
 </table>
 <h1>Customization</h1>
 <h2>Formatting and Limits</h2>
@@ -187,51 +207,60 @@ libsir visual graph</div></div>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyCenter"><code>SIR_MSECFORMAT</code>   </td><td class="markdownTableBodyNone">The format for the current millisecond in time stamps.   </td><td class="markdownTableBodyCenter"><code>".%03ld"</code>    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter"><code>SIR_LEVELFORMAT</code>   </td><td class="markdownTableBodyNone">The format for the human-readable logging level.   </td><td class="markdownTableBodyCenter"><code>"[%s]"</code>    </td></tr>
-<tr class="markdownTableRowEven">
 <td class="markdownTableBodyCenter"><code>SIR_PIDFORMAT</code>   </td><td class="markdownTableBodyNone">The format for the current process/thread ID.   </td><td class="markdownTableBodyCenter"><code>"%d"</code>    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyCenter"><code>SIR_FOPENMODE</code>   </td><td class="markdownTableBodyNone">The string passed to fopen/fopen_s for log files.   </td><td class="markdownTableBodyCenter"><code>"a"</code>    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyCenter"><code>SIR_FROLLSIZE</code>   </td><td class="markdownTableBodyNone">The size, in bytes, at which a log file will be rolled/archived.   </td><td class="markdownTableBodyCenter"><code>(1024L * 1024L * 5L)</code>    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyCenter"><code>SIR_FHTIMEFORMAT</code>   </td><td class="markdownTableBodyNone">The time format string in file headers.   </td><td class="markdownTableBodyCenter"><code>"%H:%M:%S %a %d %b %y (%z)"</code>    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyCenter"><code>SIR_FHFORMAT</code>   </td><td class="markdownTableBodyNone">The format string written to a log file when logging begins or the file is rolled/archived.   </td><td class="markdownTableBodyCenter"><code>"\n\n----- %s %s -----\n\n"</code>    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyCenter"><code>SIR_FHBEGIN</code>   </td><td class="markdownTableBodyNone">The string included in <code>SIR_FHFORMAT</code> when a file is rolled/archived due to size.   </td><td class="markdownTableBodyCenter"><code>"session begin @"</code>    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyCenter"><code>SIR_FHROLLED</code>   </td><td class="markdownTableBodyNone">The string included in <code>SIR_FHFORMAT</code> when a file is rolled/archived due to size.   </td><td class="markdownTableBodyCenter"><code>"archived as %s due to size @"</code>    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter"><code>SIR_FNAMEFORMAT</code>   </td><td class="markdownTableBodyNone">The format string for rolled/archived log file names.   </td><td class="markdownTableBodyCenter"><code>"%s-%s%s"</code>    </td></tr>
 <tr class="markdownTableRowEven">
+<td class="markdownTableBodyCenter"><code>SIR_FNAMEFORMAT</code>   </td><td class="markdownTableBodyNone">The format string for rolled/archived log file names.   </td><td class="markdownTableBodyCenter"><code>"%s-%s%s%s"</code>    </td></tr>
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyCenter"><code>SIRL_S_EMERG</code>   </td><td class="markdownTableBodyNone">The human-readable form of the <code>SIRL_EMERG</code> level.   </td><td class="markdownTableBodyCenter"><code>"emrg"</code>    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyCenter"><code>SIRL_S_ALERT</code>   </td><td class="markdownTableBodyNone">The human-readable form of the <code>SIRL_ALERT</code> level.   </td><td class="markdownTableBodyCenter"><code>"alrt"</code>    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyCenter"><code>SIRL_S_CRIT</code>   </td><td class="markdownTableBodyNone">The human-readable form of the <code>SIRL_CRIT</code> level.   </td><td class="markdownTableBodyCenter"><code>"crit"</code>    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyCenter"><code>SIRL_S_ERROR</code>   </td><td class="markdownTableBodyNone">The human-readable form of the <code>SIRL_ERROR</code> level.   </td><td class="markdownTableBodyCenter"><code>"erro"</code>    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyCenter"><code>SIRL_S_WARN</code>   </td><td class="markdownTableBodyNone">The human-readable form of the <code>SIRL_WARN</code> level.   </td><td class="markdownTableBodyCenter"><code>"warn"</code>    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyCenter"><code>SIRL_S_NOTICE</code>   </td><td class="markdownTableBodyNone">The human-readable form of the <code>SIRL_NOTICE</code> level.   </td><td class="markdownTableBodyCenter"><code>"noti"</code>    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyCenter"><code>SIRL_S_INFO</code>   </td><td class="markdownTableBodyNone">The human-readable form of the <code>SIRL_INFO</code> level.   </td><td class="markdownTableBodyCenter"><code>"info"</code>    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter"><code>SIRL_S_DEBUG</code>   </td><td class="markdownTableBodyNone">The human-readable form of the <code>SIRL_DEBUG</code> level.   </td><td class="markdownTableBodyCenter"><code>"debg"</code>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter"><code>SIR_MAXFILES</code>   </td><td class="markdownTableBodyNone">The maximum number of log files that may be registered.   </td><td class="markdownTableBodyCenter"><code>16</code>    </td></tr>
+<td class="markdownTableBodyCenter"><code>SIRL_S_DEBUG</code>   </td><td class="markdownTableBodyNone">The human-readable form of the <code>SIRL_DEBUG</code> level.   </td><td class="markdownTableBodyCenter"><code>"debg"</code>    </td></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter"><code>SIR_MAXFILES</code>   </td><td class="markdownTableBodyNone">The maximum number of log files that may be registered.   </td><td class="markdownTableBodyCenter"><code>16</code>    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyCenter"><code>SIR_MAXMESSAGE</code>   </td><td class="markdownTableBodyNone">The maximum allowed characters in a message, not including additional information.   </td><td class="markdownTableBodyCenter"><code>2048</code>   </td></tr>
 </table>
 <h2>Default options, levels, and text styles</h2>
 <h3>Options</h3>
-<p>The following are the defaults for each type of destination supported (<a href="./sirdefaults.h">sirdefaults.h</a>):</p>
-<p>| Destination | Levels | Options| | :------&mdash;: | :------------------------------------------------&mdash;: | :---------------------&mdash;: | | stdout | <code>SIRL_DEBUG | SIRL_INFO | SIRL_NOTICE | SIRL_WARN</code> | <code>SIRO_NOTIME | SIRO_NOPID | SIRO_NOTID</code> | | stderr | <code>SIRL_ERROR | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG</code> | <code>SIRO_NOTIME | SIRO_NOPID | SIRO_NOTID</code> | | syslog | <code>SIRL_ERROR | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG</code> | <code>N/A</code> | | log files | <code>SIRL_ALL</code> | <code>full formatting</code> |</p>
+<p>The following are the defaults used when <code>SIRL_DEFAULT</code> or <code>SIRO_DEFAULT</code> are used. These are located in <a href="./sirdefaults.h">sirdefaults.h</a>:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadCenter">Destination   </th><th class="markdownTableHeadCenter">Levels   </th><th class="markdownTableHeadCenter">Options    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter">stdout   </td><td class="markdownTableBodyCenter"><code>SIRL_DEBUG \| SIRL_INFO \| SIRL_NOTICE \| SIRL_WARN</code>   </td><td class="markdownTableBodyCenter"><code>SIRO_NOTIME \| SIRO_NOHOST \| SIRO_NOPID \| SIRO_NOTID</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyCenter">stderr   </td><td class="markdownTableBodyCenter"><code>SIRL_ERROR \| SIRL_CRIT \| SIRL_ALERT \| SIRL_EMERG</code>   </td><td class="markdownTableBodyCenter"><code>SIRO_NOTIME \| SIRO_NOHOST \| SIRO_NOPID \| SIRO_NOTID</code>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter">system logger   </td><td class="markdownTableBodyCenter"><code>SIRL_NOTICE \| SIRL_WARN \| SIRL_ERROR \| SIRL_CRIT \| SIRL_ALERT \| SIRL_EMERG</code>   </td><td class="markdownTableBodyCenter"><code>SIRO_MSGONLY</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyCenter">log files   </td><td class="markdownTableBodyCenter"><code>SIRL_ALL</code>   </td><td class="markdownTableBodyCenter"><code>SIRO_ALL</code>   </td></tr>
+</table>
 <h3>Styles</h3>
 <p>libsir "styling" is just another way of saying ANSI escape color coding. Currently, libsir supports <a href="https://en.wikipedia.org/wiki/ANSI_escape_code#3-bit_and_4-bit">4-bit (16-colors)</a>. Support for 8-bit and 24-bit colors is underway as I write this.</p>
-<p>Supported terminals will render text from libsir based on the "styles" used in libsir. The following define the default text styling to use for <code>stdout</code> / <code>stderr</code> on a per-level basis. These can be changed at runtime with <code>sir_settextstyle</code> (<a href="./sirdefaults.h">sirdefaults.h</a>):</p>
+<p>Supported terminals will render text from libsir based on the "styles" used in libsir. The following define the default text styling to use for <code>stdout</code> / <code>stderr</code> on a per-level basis (<em>can be changed at runtime with</em> <code>sir_settextstyle</code> located in <a href="./sirdefaults.h">sirdefaults.h</a>):</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadCenter">Level   </th><th class="markdownTableHeadCenter">Style    </th></tr>
@@ -244,43 +273,50 @@ libsir visual graph</div></div>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyCenter"><code>SIRL_WARN</code>   </td><td class="markdownTableBodyCenter"><code>SIRS_FG_YELLOW</code>    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter"><code>SIRL_ERROR</code>   </td><td class="markdownTableBodyCenter"><code>SIRS_FG_RED</code>   </td></tr>
+<td class="markdownTableBodyCenter"><code>SIRL_ERROR</code>   </td><td class="markdownTableBodyCenter"><code>SIRS_FG_RED</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyCenter"><code>SIRL_CRIT</code>   </td><td class="markdownTableBodyCenter"><code>SIRS_BRIGHT \| SIRS_FG_RED</code>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter"><code>SIRL_ALERT</code>   </td><td class="markdownTableBodyCenter"><code>SIRS_BRIGHT \| SIRS_FG_BLACK \| SIRS_BG_LYELLOW</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyCenter"><code>SIRL_EMERG</code>   </td><td class="markdownTableBodyCenter"><code>SIRS_BRIGHT \| SIRS_FG_LYELLOW \| SIRS_BG_RED</code>   </td></tr>
 </table>
-<p>| <code>SIRL_CRIT</code> | <code>SIRS_BRIGHT | SIRS_FG_RED</code> | | <code>SIRL_ALERT</code> | <code>SIRS_BRIGHT | SIRS_FG_BLACK | SIRS_BG_LYELLOW</code> | | <code>SIRL_EMERG</code> | <code>SIRS_BRIGHT | SIRS_FG_LYELLOW | SIRS_BG_RED</code> |</p>
-<h1>Getting started</h1>
-<p>Clone the repository, then choose how you'd like to integrate libsir into your project. The following build toolkits are supported:</p>
-<h2>VS Code</h2>
-<blockquote class="doxtable">
-<p>&zwj;TODO: write something about what’s left to be done </p>
-</blockquote>
+<p>Some sample terminal output from libsir demonstrating these defaults:</p>
+<div class="image">
+<img src="sample-terminal.gif" alt=""/>
+<div class="caption">
+sample terminal output</div></div>
+    <h1>Getting started</h1>
+<p>Clone or download this repository to your machine, then choose how you'd like to integrate libsir into your project:</p>
+<h2>Visual Studio Code</h2>
+<p>There is already a code-workspace in the repository (and my primary means of compiling and debugging the library across platforms). As of right now, the build and launch tasks are not fully functional for every platform, but that's easy enough to figure out, right?.</p>
 <h2>Visual Studio 2022</h2>
-<p>A Visual Studio 2022 solution (and accompanying projects) can be found in the <a href="./msvc">msvc</a> directory. Currently, there are configurations for amd64 and arm64.</p>
-<blockquote class="doxtable">
-<p>&zwj;TODO: add msbuild tasks to VS Code workspace </p>
-</blockquote>
+<p>A very recent addition is an sln and some vcxproj files in the <a href="./msvc">msvc</a> directory. They are connfirmed to work correctly on Windows 11 (x64 &amp; arm64) with Visual Studio 17.6.</p>
 <h2>Unix Makefile</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadCenter">Recipe Type   </th><th class="markdownTableHeadCenter">Command   </th><th class="markdownTableHeadCenter">Output file(s)    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter">Test suite   </td><td class="markdownTableBodyCenter"><code>make tests</code>   </td><td class="markdownTableBodyCenter"><em>build/bin/sirtests[.exe]</em>    </td></tr>
+<td class="markdownTableBodyCenter">Test suite   </td><td class="markdownTableBodyCenter"><code>make tests</code>   </td><td class="markdownTableBodyCenter"><em>build/sirtests[.exe]</em>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter">Example app   </td><td class="markdownTableBodyCenter"><code>make example</code>   </td><td class="markdownTableBodyCenter"><em>build/bin/sirexample[.exe]</em>    </td></tr>
+<td class="markdownTableBodyCenter">Example app   </td><td class="markdownTableBodyCenter"><code>make example</code>   </td><td class="markdownTableBodyCenter"><em>build/sirexample[.exe]</em>    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyCenter">Static library   </td><td class="markdownTableBodyCenter"><code>make static</code>   </td><td class="markdownTableBodyCenter"><em>build/lib/libsir_s.a</em>    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyCenter">Shared library   </td><td class="markdownTableBodyCenter"><code>make shared</code>   </td><td class="markdownTableBodyCenter"><em>build/lib/libsir.so</em>    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter">Install[^2]   </td><td class="markdownTableBodyCenter"><code>sudo make install</code>   </td><td class="markdownTableBodyCenter"><code>$(INSTALLLIB)</code>/libsir.so &amp; <code>$(INSTALLINC)</code>/sir.h   </td></tr>
+<td class="markdownTableBodyCenter">Install[^2]   </td><td class="markdownTableBodyCenter"><code>sudo make install</code>   </td><td class="markdownTableBodyCenter">_<code>$(INSTALLLIB)</code>/libsir.so &amp; <code>$(INSTALLINC)</code>/sir.h_   </td></tr>
 </table>
 <p>[^2]: This recipe isn't really ready for production use. Use it at your own risk&mdash;currently it manually copies files; that’s it. <code>$(INSTALLLIB)</code> and <code>$(INSTALLINC)</code> are <code>/usr/local/lib</code> and <code>/usr/local/include</code>, respectively. It's on my TODO list to utilize the <code>install</code> tool _(or just ditch the Makefile and use CMake)_.</p>
 <h2>Preprocessor definitions</h2>
 <ul>
 <li>If you'd like to build a <u>debug version</u> of libsir, simply: <code>SIR_DEBUG=1 make all</code>.</li>
-<li>A preprocesor define <code>SIR_SELFLOG</code> exists that causes libsir to log internal events to <code>stderr</code>, which may be useful in diagnosing problems if/when they arise. It is automatically defined when <code>SIR_DEBUG=1</code>.</li>
+<li>A preprocesor define <code>SIR_SELFLOG</code> exists which causes libsir to log internal events to <code>stderr</code>, which may be useful in diagnosing problems if/when they arise. It is automatically defined by <a href="./Makfile">the Makefile</a> when <code>SIR_DEBUG=1</code>.</li>
+<li>Turning on <code>assert</code> (it’s disabled by default): <code>SIR_ASSERT_ENABLED</code></li>
+<li>Disabling system logger capabilities: <code>SIR_NO_SYSTEM_LOGGERS</code></li>
 </ul>
 <h2>Further reading</h2>
-<p>If you are genuinely interested in utilizing libsir, you are encouraged to read the <a href="https://aremmell.github.io/libsir">full online documentation</a> to get a better understanding of the library's capabilities and interfaces. </p>
+<p>If you are genuinely interested in utilizing libsir, you are encouraged to read the <a href="https://libsir.rml.dev">full online documentation</a> to get a better understanding of the library's capabilities and interfaces. <em>NOTE: the documentation is half-finished at this time because I just completed a major round of refactoring and optimizations. I expect it will be done very soon.</em> </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->

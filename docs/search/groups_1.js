@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['defaults_0',['Defaults',['../group__default.html',1,'']]]
+  ['functions_0',['Functions',['../group__publicfuncs.html',1,'']]]
 ];

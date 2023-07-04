@@ -86,7 +86,7 @@ int main(void) {
      * Configure and add a log file; don't log the process name or hostname,
      * and send all levels there.
      */
-    sirfileid_t fileid = sir_addfile("libsir-example.log", SIRL_ALL, SIRO_NONAME | SIRO_NOHOST);
+    sirfileid fileid = sir_addfile("libsir-example.log", SIRL_ALL, SIRO_NONAME | SIRO_NOHOST);
     if (NULL == fileid)
         report_error();
 

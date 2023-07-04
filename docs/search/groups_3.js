@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['public_20interface_0',['Public Interface',['../group__public.html',1,'']]]
+  ['tests_0',['Tests',['../group__tests.html',1,'']]],
+  ['types_1',['Types',['../group__publictypes.html',1,'']]]
 ];

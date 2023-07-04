@@ -80,125 +80,147 @@
 
 /**
  * @test Properly handle multiple threads competing for locked sections.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_mthread_race(void);
 
 /**
  * @test Properly handle messages that exceed internal buffer sizes.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_exceedmaxsize(void);
 
 /**
  * @test Properly handle the lack of any output destinations.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_failnooutputdest(void);
 
 /**
  * @test Properly handle null/empty input.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_failnulls(void);
 
 /**
  * @test Properly handle adding and removing log files.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_filecachesanity(void);
 
 /**
  * @test Properly handle invalid log file name.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_failinvalidfilename(void);
 
 /**
  * @test Properly handle log file without appropriate permissions.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_failfilebadpermission(void);
 
 /**
  * @test Properly refuse to add a duplicate file.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_faildupefile(void);
 
 /**
  * @test Properly refuse to remove a file that isn't added.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_failremovebadfile(void);
 
 /**
  * @test Properly roll/archive a file when it hits max size.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_rollandarchivefile(void);
 
 /**
  * @test Properly handle calls without initialization.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_failwithoutinit(void);
 
 /**
  * @test Properly handle two initialization calls without corresponding cleanup.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_failinittwice(void);
 
 /**
  * @test Properly handle initialization with junk memory.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_failinvalidinitdata(void);
 
 /**
  * @test Properly handle initialization, cleanup, re-initialization.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_initcleanupinit(void);
 
 /**
  * @test Properly handle calls after cleanup.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_failaftercleanup(void);
 
 /**
  * @test Properly return valid codes and messages for all possible errors.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_errorsanity(void);
 
 /**
  * @test Properly style stdio output for each level, and handle style overrides.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_textstylesanity(void);
 
 /**
  * @test Properly reject invalid option bitmasks.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_optionssanity(void);
 
 /**
  * @test Properly reject invalid level bitmasks.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_levelssanity(void);
 
 /**
  * @test Performance evaluation.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_perf(void);
 
 /**
  * @test Properly update levels/options at runtime.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_updatesanity(void);
 
 /**
  * @test Properly open, configure, and send messages to syslog().
- *
  * @note Disabled on Windows and macOS.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_syslog(void);
 
 /**
  * @test Properly open, configure, and send messages to os_log().
- *
  * @note macOS only.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_os_log(void);
 
 /**
  * @test Ensure the proper functionality of portable filesystem implementation.
+ * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_filesystem(void);
 
@@ -258,7 +280,7 @@ typedef struct {
 #else /* __WIN__ */
     FILETIME ft;
 #endif
-} sirtimer_t;
+} sir_timer;
 
 /** Arguments passed to worker threads. */
 typedef struct {
@@ -289,9 +311,14 @@ bool countfiles(const char* search, const char* filename, unsigned* data);
 typedef bool (*fileenumproc)(const char* search, const char* filename, unsigned* data);
 bool enumfiles(const char* search, fileenumproc cb, unsigned* data);
 
-bool startsirtimer(sirtimer_t* timer);
-float sirtimerelapsed(const sirtimer_t* timer); // msec
+bool startsirtimer(sir_timer* timer);
+float sirtimerelapsed(const sir_timer* timer); // msec
 long sirtimergetres(void); // nsec
+
+#if defined(SIR_OS_LOG_ENABLED)
+void os_log_parent_activity(void* ctx);
+void os_log_child_activity(void* ctx);
+#endif
 
 static const struct cl_arg {
     const char* flag;

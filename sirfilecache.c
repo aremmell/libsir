@@ -29,7 +29,7 @@
 #include "sirdefaults.h"
 #include "sirmutex.h"
 
-sirfileid_t _sir_addfile(const char* path, sir_levels levels, sir_options opts) {
+sirfileid _sir_addfile(const char* path, sir_levels levels, sir_options opts) {
     _sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity())
@@ -44,13 +44,13 @@ sirfileid_t _sir_addfile(const char* path, sir_levels levels, sir_options opts) 
     _sir_defaultlevels(&levels, sir_file_def_lvls);
     _sir_defaultopts(&opts, sir_file_def_opts);
 
-    sirfileid_t retval = _sir_fcache_add(sfc, path, levels, opts);
+    sirfileid retval = _sir_fcache_add(sfc, path, levels, opts);
     _sir_unlocksection(SIRMI_FILECACHE);
 
     return retval;
 }
 
-bool _sir_updatefile(sirfileid_t id, sir_update_config_data* data) {
+bool _sir_updatefile(sirfileid id, sir_update_config_data* data) {
     _sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validptr(id) || !_sir_validfd(*id) ||
@@ -69,7 +69,7 @@ bool _sir_updatefile(sirfileid_t id, sir_update_config_data* data) {
     return retval;
 }
 
-bool _sir_remfile(sirfileid_t id) {
+bool _sir_remfile(sirfileid id) {
     _sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validptr(id) || !_sir_validfd(*id))
@@ -175,7 +175,7 @@ bool _sirfile_write(sirfile* sf, const char* output) {
     size_t writeLen = strnlen(output, SIR_MAXFHEADER);
     size_t write    = fwrite(output, sizeof(char), writeLen, sf->f);
 
-    assert(write == writeLen);
+    SIR_ASSERT(write == writeLen);
 
     if (write < writeLen) {
         _sir_handleerr(errno);
@@ -233,18 +233,18 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
     char* ext  = NULL;
 
     bool split = _sirfile_splitpath(sf, &name, &ext);
-    assert(split);
+    SIR_ASSERT(split);
 
     if (split) {
         time_t now = -1;
 
         time(&now);
-        assert(-1 != now);
+        SIR_ASSERT(-1 != now);
 
         if (-1 != now) {
             char timestamp[SIR_MAXTIME] = {0};
             bool fmttime = _sir_formattime(now, timestamp, SIR_FNAMETIMEFORMAT);
-            assert(fmttime);
+            SIR_ASSERT(fmttime);
 
             if (fmttime) {
                 *newpath = (char*)calloc(SIR_MAXPATH, sizeof(char));
@@ -349,7 +349,7 @@ bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
     char* lastfullstop = strrchr(sf->path, '.');
     if (lastfullstop) {
         uintptr_t namesize = lastfullstop - sf->path;
-        assert(namesize < SIR_MAXPATH);
+        SIR_ASSERT(namesize < SIR_MAXPATH);
 
         if (namesize < SIR_MAXPATH) {
             *name = (char*)calloc(namesize + 1, sizeof(char));
@@ -411,7 +411,7 @@ bool _sirfile_update(sirfile* sf, sir_update_config_data* data) {
     return false;
 }
 
-sirfileid_t _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
+sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
     sir_options opts) {
     if (!_sir_validptr(sfc) || !_sir_validstr(path) || !_sir_validlevels(levels) ||
         !_sir_validopts(opts))
@@ -442,7 +442,7 @@ sirfileid_t _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
     return NULL;
 }
 
-bool _sir_fcache_update(sirfcache* sfc, sirfileid_t id, sir_update_config_data* data) {
+bool _sir_fcache_update(sirfcache* sfc, sirfileid id, sir_update_config_data* data) {
     if (!_sir_validptr(sfc) || !_sir_validptr(id) || !_sir_validfd(*id) ||
         !_sir_validupdatedata(data))
         return false;
@@ -456,12 +456,12 @@ bool _sir_fcache_update(sirfcache* sfc, sirfileid_t id, sir_update_config_data* 
     return _sirfile_update(found, data);
 }
 
-bool _sir_fcache_rem(sirfcache* sfc, sirfileid_t id) {
+bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
     if (!_sir_validptr(sfc) || !_sir_validptr(id) || !_sir_validfd(*id))
         return false;
 
     for (size_t n = 0; n < sfc->count; n++) {
-        assert(_sirfile_validate(sfc->files[n]));
+        SIR_ASSERT(_sirfile_validate(sfc->files[n]));
 
         if (sfc->files[n]->id == *id) {
             _sirfile_destroy(sfc->files[n]);
@@ -491,7 +491,7 @@ bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
 }
 
 bool _sir_fcache_pred_id(const void* match, sirfile* iter) {
-    sirfileid_t id = (sirfileid_t)match;
+    sirfileid id = (sirfileid)match;
     return iter->id == *id;
 }
 
@@ -512,7 +512,7 @@ bool _sir_fcache_destroy(sirfcache* sfc) {
         return false;
 
     for (size_t n = 0; n < sfc->count; n++) {
-        assert(_sirfile_validate(sfc->files[n]));
+        SIR_ASSERT(_sirfile_validate(sfc->files[n]));
         _sirfile_destroy(sfc->files[n]);
         sfc->files[n] = NULL;
         sfc->count--;
@@ -536,7 +536,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
     *wanted = 0;
 
     for (size_t n = 0; n < sfc->count; n++) {
-        assert(_sirfile_validate(sfc->files[n]));
+        SIR_ASSERT(_sirfile_validate(sfc->files[n]));
 
         if (!_sir_bittest(sfc->files[n]->levels, level)) {
             _sir_selflog("level %04" PRIx16 " not set in level mask (%04" PRIx16
@@ -549,7 +549,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
 
         if (!write || sfc->files[n]->opts != lastopts) {
             write = _sir_format(false, sfc->files[n]->opts, buf);
-            assert(write);
+            SIR_ASSERT(write);
             lastopts = sfc->files[n]->opts;
         }
 

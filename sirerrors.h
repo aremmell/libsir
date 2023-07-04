@@ -28,8 +28,13 @@
 
 #include "sirhelpers.h"
 
+/**
+ * @addtogroup publictypes Types
+ * @{
+ */
+
 /** Error codes. */
-enum {
+enum sir_errorcode {
     SIR_E_NOERROR   = 0,    /**< The operation completed successfully */
     SIR_E_NOTREADY  = 1,    /**< libsir has not been initialized */
     SIR_E_ALREADY   = 2,    /**< libsir is already initialized */
@@ -48,6 +53,8 @@ enum {
     SIR_E_PLATFORM  = 15,   /**< Platform error code %%d: %%s */
     SIR_E_UNKNOWN   = 4095, /**< Unknown error */
 };
+
+/** @} */
 
 #define _SIR_E_NOERROR   _sir_mkerror(SIR_E_NOERROR)
 #define _SIR_E_NOTREADY  _sir_mkerror(SIR_E_NOTREADY)

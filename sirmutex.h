@@ -29,18 +29,18 @@
 #include "sirtypes.h"
 
 /** Creates/initializes a new mutex. */
-bool _sirmutex_create(sirmutex_t* mutex);
+bool _sirmutex_create(sir_mutex* mutex);
 
 /** Determines if a mutex is locked without waiting. */
-bool _sirmutex_trylock(sirmutex_t* mutex);
+bool _sir_mutexrylock(sir_mutex* mutex);
 
 /** Attempts to lock a mutex and waits indefinitely. */
-bool _sirmutex_lock(sirmutex_t* mutex);
+bool _sirmutex_lock(sir_mutex* mutex);
 
 /** Unlocks a previously locked mutex. */
-bool _sirmutex_unlock(sirmutex_t* mutex);
+bool _sirmutex_unlock(sir_mutex* mutex);
 
 /** Destroys a mutex. */
-bool _sirmutex_destroy(sirmutex_t* mutex);
+bool _sirmutex_destroy(sir_mutex* mutex);
 
 #endif /* !_SIR_MUTEX_H_INCLUDED */

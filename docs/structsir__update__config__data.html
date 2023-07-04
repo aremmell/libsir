@@ -8,7 +8,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<title>libsir: sir_update_config_data Struct Reference</title>
+<title>libsir: The Standard Incident Reporter Library</title>
+<!-- OpenGraph -->
+<meta property="og:title" content="libsir: The Standard Incident Reporter Library">
+<meta property="og:description" content="A lightweight, cross-platform C library for information distribution">
+<meta property="og:url" content="https://libsir.rml.dev">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://libsir.rml.dev/res/libsir-og.png">
+<meta name="twitter:card" content="summary_large_image"></meta>
+<meta name="twitter:title" content="libsir: The Standard Incident Reporter Library"></meta>
+<meta name="twitter:description" content="A lightweight, cross-platform C library for information distribution"></meta>
+<meta name="twitter:image" content="https://libsir.rml.dev/res/libsir-og.png"></meta>
+<!-- /OpenGraph -->
+<!-- favicon -->
+<link rel="icon" href="res/libsir-icon.png">
+<link rel="icon" href="res/libsir-icon.svg" type="image/svg+xml">
+<link rel="manifest" href="res/icons.webmanifest">
+<!-- /favicon -->
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -94,6 +110,8 @@ $(document).ready(function(){initNavTree('structsir__update__config__data.html',
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle"><div class="title">sir_update_config_data Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -102,9 +120,114 @@ $(document).ready(function(){initNavTree('structsir__update__config__data.html',
  <a href="structsir__update__config__data.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="sirtypes_8h_source.html">sirtypes.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Data Fields</h2></td></tr>
+<tr class="memitem:ad61568937fcd6a019bd5e58d4103aa35"><td class="memItemLeft" align="right" valign="top"><a id="ad61568937fcd6a019bd5e58d4103aa35" name="ad61568937fcd6a019bd5e58d4103aa35"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>fields</b></td></tr>
+<tr class="memdesc:ad61568937fcd6a019bd5e58d4103aa35"><td class="mdescLeft">&#160;</td><td class="mdescRight">sir_config_data_field bitmask. <br /></td></tr>
+<tr class="separator:ad61568937fcd6a019bd5e58d4103aa35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76c8c666c84b831bf2cc77f92c5fa16b"><td class="memItemLeft" align="right" valign="top"><a id="a76c8c666c84b831bf2cc77f92c5fa16b" name="a76c8c666c84b831bf2cc77f92c5fa16b"></a>
+<a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>levels</b></td></tr>
+<tr class="memdesc:a76c8c666c84b831bf2cc77f92c5fa16b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Level registrations. <br /></td></tr>
+<tr class="separator:a76c8c666c84b831bf2cc77f92c5fa16b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8736ae94a5aaea53a2e4c8f06f7a870a"><td class="memItemLeft" align="right" valign="top"><a id="a8736ae94a5aaea53a2e4c8f06f7a870a" name="a8736ae94a5aaea53a2e4c8f06f7a870a"></a>
+<a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>opts</b></td></tr>
+<tr class="memdesc:a8736ae94a5aaea53a2e4c8f06f7a870a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Formatting options. <br /></td></tr>
+<tr class="separator:a8736ae94a5aaea53a2e4c8f06f7a870a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58f88542d9e282860be66fcbba694223"><td class="memItemLeft" align="right" valign="top"><a id="a58f88542d9e282860be66fcbba694223" name="a58f88542d9e282860be66fcbba694223"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>sl_identity</b></td></tr>
+<tr class="memdesc:a58f88542d9e282860be66fcbba694223"><td class="mdescLeft">&#160;</td><td class="mdescRight">System logger identity. <br /></td></tr>
+<tr class="separator:a58f88542d9e282860be66fcbba694223"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4509b5698aa330492a9d1508e3f9480"><td class="memItemLeft" align="right" valign="top"><a id="ac4509b5698aa330492a9d1508e3f9480" name="ac4509b5698aa330492a9d1508e3f9480"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>sl_category</b></td></tr>
+<tr class="memdesc:ac4509b5698aa330492a9d1508e3f9480"><td class="mdescLeft">&#160;</td><td class="mdescRight">System logger category. <br /></td></tr>
+<tr class="separator:ac4509b5698aa330492a9d1508e3f9480"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Encapsulates dynamic updating of current configuration. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="ad61568937fcd6a019bd5e58d4103aa35" name="ad61568937fcd6a019bd5e58d4103aa35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad61568937fcd6a019bd5e58d4103aa35">&#9670;&#160;</a></span>fields</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t sir_update_config_data::fields</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>sir_config_data_field bitmask. </p>
+
+</div>
+</div>
+<a id="a76c8c666c84b831bf2cc77f92c5fa16b" name="a76c8c666c84b831bf2cc77f92c5fa16b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76c8c666c84b831bf2cc77f92c5fa16b">&#9670;&#160;</a></span>levels</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a>* sir_update_config_data::levels</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Level registrations. </p>
+
+</div>
+</div>
+<a id="a8736ae94a5aaea53a2e4c8f06f7a870a" name="a8736ae94a5aaea53a2e4c8f06f7a870a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8736ae94a5aaea53a2e4c8f06f7a870a">&#9670;&#160;</a></span>opts</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a>* sir_update_config_data::opts</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Formatting options. </p>
+
+</div>
+</div>
+<a id="a58f88542d9e282860be66fcbba694223" name="a58f88542d9e282860be66fcbba694223"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58f88542d9e282860be66fcbba694223">&#9670;&#160;</a></span>sl_identity</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* sir_update_config_data::sl_identity</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>System logger identity. </p>
+
+</div>
+</div>
+<a id="ac4509b5698aa330492a9d1508e3f9480" name="ac4509b5698aa330492a9d1508e3f9480"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4509b5698aa330492a9d1508e3f9480">&#9670;&#160;</a></span>sl_category</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* sir_update_config_data::sl_category</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>System logger category. </p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="sirtypes_8h_source.html">sirtypes.h</a></li>
 </ul>
 </div><!-- contents -->

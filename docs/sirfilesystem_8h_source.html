@@ -8,7 +8,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<title>libsir: sirfilesystem.h Source File</title>
+<title>libsir: The Standard Incident Reporter Library</title>
+<!-- OpenGraph -->
+<meta property="og:title" content="libsir: The Standard Incident Reporter Library">
+<meta property="og:description" content="A lightweight, cross-platform C library for information distribution">
+<meta property="og:url" content="https://libsir.rml.dev">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://libsir.rml.dev/res/libsir-og.png">
+<meta name="twitter:card" content="summary_large_image"></meta>
+<meta name="twitter:title" content="libsir: The Standard Incident Reporter Library"></meta>
+<meta name="twitter:description" content="A lightweight, cross-platform C library for information distribution"></meta>
+<meta name="twitter:image" content="https://libsir.rml.dev/res/libsir-og.png"></meta>
+<!-- /OpenGraph -->
+<!-- favicon -->
+<link rel="icon" href="res/libsir-icon.png">
+<link rel="icon" href="res/libsir-icon.svg" type="image/svg+xml">
+<link rel="manifest" href="res/icons.webmanifest">
+<!-- /favicon -->
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -127,30 +143,38 @@ $(document).ready(function(){initNavTree('sirfilesystem_8h_source.html',''); ini
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#include &quot;sirplatform.h&quot;</span></div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#define SIR_PATH_BUFFER_GROW_BY 32</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#if defined(__cplusplus)</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#define SIR_STAT_NONEXISTENT ((off_t)0xffffff02)</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#define SIR_PATH_BUFFER_GROW_BY 32</span></div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    SIR_PATH_REL_TO_CWD = 0x0001,</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    SIR_PATH_REL_TO_APP = 0x0002</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>} sir_rel_to;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keywordtype">bool</span> _sir_pathgetstat(<span class="keyword">const</span> <span class="keywordtype">char</span>* restrict path, <span class="keyword">struct</span> stat* restrict st, sir_rel_to rel_to);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keywordtype">bool</span> _sir_pathexists(<span class="keyword">const</span> <span class="keywordtype">char</span>* restrict path, <span class="keywordtype">bool</span>* restrict exists, sir_rel_to rel_to);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keywordtype">char</span>* _sir_getcwd(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="keywordtype">char</span>* _sir_getappfilename(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keywordtype">char</span>* _sir_getappbasename(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="keywordtype">char</span>* _sir_getappdir(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#define SIR_STAT_NONEXISTENT ((off_t)0xffffff02)</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    SIR_PATH_REL_TO_CWD = 0x0001,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    SIR_PATH_REL_TO_APP = 0x0002</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>} sir_rel_to;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="keywordtype">bool</span> _sir_pathgetstat(<span class="keyword">const</span> <span class="keywordtype">char</span>* restrict path, <span class="keyword">struct</span> stat* restrict st, sir_rel_to rel_to);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="keywordtype">bool</span> _sir_pathexists(<span class="keyword">const</span> <span class="keywordtype">char</span>* restrict path, <span class="keywordtype">bool</span>* restrict exists, sir_rel_to rel_to);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="keywordtype">char</span>* _sir_getcwd(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keywordtype">char</span>* _sir_getbasename(<span class="keywordtype">char</span>* restrict path);</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="keywordtype">char</span>* _sir_getdirname(<span class="keywordtype">char</span>* restrict path);</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keywordtype">bool</span> _sir_ispathrelative(<span class="keyword">const</span> <span class="keywordtype">char</span>* restrict path, <span class="keywordtype">bool</span>* restrict relative);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#endif </span><span class="comment">// !_SIR_FILESYSTEM_H_INCLUDED</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keywordtype">char</span>* _sir_getappfilename(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="keywordtype">char</span>* _sir_getappbasename(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keywordtype">char</span>* _sir_getappdir(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="keywordtype">char</span>* _sir_getbasename(<span class="keywordtype">char</span>* restrict path);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="keywordtype">char</span>* _sir_getdirname(<span class="keywordtype">char</span>* restrict path);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="keywordtype">bool</span> _sir_ispathrelative(<span class="keyword">const</span> <span class="keywordtype">char</span>* restrict path, <span class="keywordtype">bool</span>* restrict relative);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="preprocessor">#if defined(__cplusplus)</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#endif </span><span class="comment">// !_SIR_FILESYSTEM_H_INCLUDED</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.7-->

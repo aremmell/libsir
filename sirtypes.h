@@ -39,7 +39,7 @@
  */
 
 /** Log file identifier type. */
-typedef const int* sirfileid_t;
+typedef const int* sirfileid;
 
 /** Defines the available levels (severity/priority) of logging output. */
 typedef enum {
@@ -79,52 +79,53 @@ typedef uint32_t sir_options;
 
 /** Styles for 16-color stdio output. */
 typedef enum {
+    /* attributes. */
     SIRS_NONE        = 0x00000000, /**< Used internally; has no effect. */
-    SIRS_BRIGHT      = 0x00000001, /**< If set, the foreground color is 'intensified'. */
+    SIRS_BOLD        = 0x00000001, /**< If set, the foreground color is 'bold'. */
     SIRS_DIM         = 0x00000002, /**< If set, the foreground color is 'dimmed'. */
-    SIRS_FG_BLACK    = 0x00000010, /**< Black foreground. */
-    SIRS_FG_RED      = 0x00000020, /**< Red foreground. */
-    SIRS_FG_GREEN    = 0x00000030, /**< Green foreground. */
-    SIRS_FG_YELLOW   = 0x00000040, /**< Yellow foreground. */
-    SIRS_FG_BLUE     = 0x00000050, /**< Blue foreground. */
-    SIRS_FG_MAGENTA  = 0x00000060, /**< Magenta foreground. */
-    SIRS_FG_CYAN     = 0x00000070, /**< Cyan foreground. */
-    SIRS_FG_DEFAULT  = 0x00000080, /**< Use the default foreground color. */
-    SIRS_FG_LGRAY    = 0x00000090, /**< Light gray foreground. */
-    SIRS_FG_DGRAY    = 0x000000a0, /**< Dark gray foreground. */
-    SIRS_FG_LRED     = 0x000000b0, /**< Light red foreground. */
-    SIRS_FG_LGREEN   = 0x000000c0, /**< Light green foreground. */
-    SIRS_FG_LYELLOW  = 0x000000d0, /**< Light yellow foreground. */
-    SIRS_FG_LBLUE    = 0x000000e0, /**< Light blue foreground. */
-    SIRS_FG_LMAGENTA = 0x000000f0, /**< Light magenta foreground. */
-    SIRS_FG_LCYAN    = 0x00000f10, /**< Light cyan foreground. */
-    SIRS_FG_WHITE    = 0x00000f20, /**< White foreground. */
-    SIRS_BG_BLACK    = 0x00001000, /**< Black background. */
-    SIRS_BG_RED      = 0x00002000, /**< Red background. */
-    SIRS_BG_GREEN    = 0x00003000, /**< Green background. */
-    SIRS_BG_YELLOW   = 0x00004000, /**< Yellow background. */
-    SIRS_BG_BLUE     = 0x00005000, /**< Blue background. */
-    SIRS_BG_MAGENTA  = 0x00006000, /**< Magenta background. */
-    SIRS_BG_CYAN     = 0x00007000, /**< Cyan background. */
-    SIRS_BG_DEFAULT  = 0x00008000, /**< Use the default background color. */
-    SIRS_BG_LGRAY    = 0x00009000, /**< Light gray background. */
-    SIRS_BG_DGRAY    = 0x0000a000, /**< Dark gray background. */
-    SIRS_BG_LRED     = 0x0000b000, /**< Light red background. */
-    SIRS_BG_LGREEN   = 0x0000c000, /**< Light green background. */
-    SIRS_BG_LYELLOW  = 0x0000d000, /**< Light yellow background. */
-    SIRS_BG_LBLUE    = 0x0000e000, /**< Light blue background. */
-    SIRS_BG_LMAGENTA = 0x0000f000, /**< Light magenta background. */
-    SIRS_BG_LCYAN    = 0x000f1000, /**< Light cyan background. */
-    SIRS_BG_WHITE    = 0x000f2000, /**< White background. */
-    SIRS_INVALID     = 0x000f3000  /**< Represents the invalid text style. */
+    /* foreground colors. */
+    SIRS_FG_BLACK    = 0x000089a0, /**< Black foreground. */
+    SIRS_FG_RED      = 0x000059b0, /**< Red foreground. */
+    SIRS_FG_GREEN    = 0x00006670, /**< Green foreground. */
+    SIRS_FG_YELLOW   = 0x00001310, /**< Yellow foreground. */
+    SIRS_FG_BLUE     = 0x00004970, /**< Blue foreground. */
+    SIRS_FG_MAGENTA  = 0x00003430, /**< Magenta foreground. */
+    SIRS_FG_CYAN     = 0x00006090, /**< Cyan foreground. */
+    SIRS_FG_LGRAY    = 0x00006f00, /**< Light gray foreground. */
+    SIRS_FG_DEFAULT  = 0x00007210, /**< Use the default foreground color. */
+    SIRS_FG_DGRAY    = 0x00007880, /**< Dark gray foreground. */
+    SIRS_FG_LRED     = 0x00008220, /**< Light red foreground. */
+    SIRS_FG_LGREEN   = 0x00009300, /**< Light green foreground. */
+    SIRS_FG_LYELLOW  = 0x00003160, /**< Light yellow foreground. */
+    SIRS_FG_LBLUE    = 0x00007100, /**< Light blue foreground. */
+    SIRS_FG_LMAGENTA = 0x00005220, /**< Light magenta foreground. */
+    SIRS_FG_LCYAN    = 0x00005540, /**< Light cyan foreground. */
+    SIRS_FG_WHITE    = 0x00001480, /**< White foreground. */
+    /* background colors. */
+    SIRS_BG_BLACK    = 0x089a0000, /**< Black background. */
+    SIRS_BG_RED      = 0x059b0000, /**< Red background. */
+    SIRS_BG_GREEN    = 0x06670000, /**< Green background. */
+    SIRS_BG_YELLOW   = 0x01310000, /**< Yellow background. */
+    SIRS_BG_BLUE     = 0x04970000, /**< Blue background. */
+    SIRS_BG_MAGENTA  = 0x03430000, /**< Magenta background. */
+    SIRS_BG_CYAN     = 0x06090000, /**< Cyan background. */
+    SIRS_BG_LGRAY    = 0x06f00000, /**< Light gray background. */
+    SIRS_BG_DEFAULT  = 0x07210000, /**< Use the default background color. */
+    SIRS_BG_DGRAY    = 0x07880000, /**< Dark gray background. */
+    SIRS_BG_LRED     = 0x08220000, /**< Light red background. */
+    SIRS_BG_LGREEN   = 0x09300000, /**< Light green background. */
+    SIRS_BG_LYELLOW  = 0x03160000, /**< Light yellow background. */
+    SIRS_BG_LBLUE    = 0x07100000, /**< Light blue background. */
+    SIRS_BG_LMAGENTA = 0x05220000, /**< Light magenta background. */
+    SIRS_BG_LCYAN    = 0x05540000, /**< Light cyan background. */
+    SIRS_BG_WHITE    = 0x01480000, /**< White background. */
+    SIRS_INVALID     = 0x0000ffff  /**< Represents the invalid text style. */
 } sir_textstyle;
 
 /**
  * @struct sir_stdio_dest
  * @brief Configuration for stdio destinations (stdout and stderr).
  *
- * @see ::sir_level
- * @see ::sir_option
  * @see ::sir_syslog_dest
  */
 typedef struct {
@@ -139,13 +140,10 @@ typedef struct {
  * @struct sir_syslog_dest
  * @brief Configuration for the system logger destination.
  *
- * @see ::sir_level
- * @see ::sir_option
  * @see ::sir_stdio_dest
  */
 typedef struct {
-    /** ::sir_level bitmask defining levels to register for. */
-    sir_levels levels;
+    sir_levels levels; /**< ::sir_level bitmask defining levels to register for. */
 
     /**
      * ::sir_option bitmask defining the formatting of output.
@@ -165,36 +163,19 @@ typedef struct {
 
     /** Reserved for internal use; do not modify. */
     struct {
-        /** State bitmask. */
-        uint32_t mask;
-
-        /** System logger handle/identifier. */
-        void* logger;
+        uint32_t mask; /**< State bitmask. */
+        void* logger;  /**< System logger handle/identifier. */
     } _state;
 
     /**
      * The identity string to pass to the system logger.
-     *
-     * If not set, and the name in the ::sirinit struct
-     * is set, that will be used instead.
-     *
-     * Failing that, an attempt will be made to use the file name
-     * of the calling process. If that is unsuccessful as well,
-     * the string ::SIR_FALLBACK_SYSLOG_ID will be used.
-     *
-     * @note Can be modified at runtime by calling ::sir_syslogid.
+     * @see ::sir_syslogid
      */
     char identity[SIR_MAX_SYSLOG_ID];
 
     /**
      * The category string to pass to the system logger.
-     *
-     * Some system loggers (e.g. `os_log` on macOS) require a
-     * category string to group and filter log messages.
-     *
-     * If not set, the string ::SIR_FALLBACK_SYSLOG_CAT will be used instead.
-     *
-     * @note Can be modified at runtime by calling ::sir_syslogcat.
+     * @see ::sir_syslogcat
      */
     char category[SIR_MAX_SYSLOG_CAT];
 } sir_syslog_dest;
@@ -206,18 +187,14 @@ typedef struct {
  * @note Pass a pointer to an instance of this structure to ::sir_init
  * to begin using libsir.
  *
+ * @see ::sir_makeinit
  * @see ::sir_stdio_dest
  * @see ::sir_syslog_dest
  */
 typedef struct {
-    /** stdout configuration. */
-    sir_stdio_dest d_stdout;
-
-    /** stderr configuration. */
-    sir_stdio_dest d_stderr;
-
-    /** System logger configuration. */
-    sir_syslog_dest d_syslog;
+    sir_stdio_dest d_stdout;  /**< stdout configuration. */
+    sir_stdio_dest d_stderr;  /**< stderr configuration. */
+    sir_syslog_dest d_syslog; /**< System logger configuration. */
 
     /**
      * If set, defines the name that will appear in messages sent to stdio and
@@ -232,24 +209,19 @@ typedef struct {
 /**
  * @}
  * @}
- * */
-
-/**
- * @internal
- * @{
  */
 
 /** Text style attribute mask. */
 #define _SIRS_ATTR_MASK 0x0000000f
 
 /** Text style foreground color mask. */
-#define _SIRS_FG_MASK 0x00000ff0
+#define _SIRS_FG_MASK 0x0000fff0
 
 /** Text style background color mask. */
-#define _SIRS_BG_MASK 0x000ff000
+#define _SIRS_BG_MASK 0x0fff0000
 
 /** True if foreground and background colors are the same. */
-#define _SIRS_SAME_COLOR(fg, bg) ((((bg) >> 8) & _SIRS_FG_MASK) == (fg))
+#define _SIRS_SAME_COLOR(fg, bg) ((((bg) >> 12) & _SIRS_FG_MASK) == (fg))
 
 /** Magic number used to determine if libsir has been initialized. */
 #define _SIR_MAGIC 0x60906090
@@ -264,6 +236,8 @@ typedef struct {
     sirinit si;
     struct {
         char hostname[SIR_MAXHOST];
+        time_t last_hname_chk;
+        char pidbuf[SIR_MAXPID];
         pid_t pid;
     } state;
 } sirconfig;
@@ -297,7 +271,7 @@ typedef struct {
     const char* hostname;
     const char* level;
     const char* name;
-    char pid[SIR_MAXPID];
+    const char* pid;
     char tid[SIR_MAXPID];
     char message[SIR_MAXMESSAGE];
     char output[SIR_MAXOUTPUT];
@@ -345,33 +319,31 @@ typedef struct {
 
 /** Bitmask defining which values are to be updated in the global config. */
 typedef enum {
-    SIRU_LEVELS     = 0x00000001,
-    SIRU_OPTIONS    = 0x00000002,
-    SIRU_SYSLOG_ID  = 0x00000004,
-    SIRU_SYSLOG_CAT = 0x00000008,
-    SIRU_ALL        = 0x0000000f
+    SIRU_LEVELS     = 0x00000001, /**< Update level registrations. */
+    SIRU_OPTIONS    = 0x00000002, /**< Update formatting options. */
+    SIRU_SYSLOG_ID  = 0x00000004, /**< Update system logger identity. */
+    SIRU_SYSLOG_CAT = 0x00000008, /**< Update system logger category. */
+    SIRU_ALL        = 0x0000000f  /**< Update all available fields. */
 } sir_config_data_field;
 
 /** Encapsulates dynamic updating of current configuration. */
 typedef struct {
-    uint32_t fields;
-    sir_levels* levels;
-    sir_options* opts;
-    const char* sl_identity;
-    const char* sl_category;
+    uint32_t fields;         /**< ::sir_config_data_field bitmask. */
+    sir_levels* levels;      /**< Level registrations. */
+    sir_options* opts;       /**< Formatting options. */
+    const char* sl_identity; /**< System logger identity. */
+    const char* sl_category; /**< System logger category. */
 } sir_update_config_data;
 
 /** Bitmask defining the state of a system logger facility. */
 typedef enum {
-    SIRSL_IS_OPEN  = 0x00000001,
-    SIRSL_LEVELS   = 0x00000002,
-    SIRSL_OPTIONS  = 0x00000004,
-    SIRSL_CATEGORY = 0x00000008,
-    SIRSL_IDENTITY = 0x00000010,
-    SIRSL_UPDATED  = 0x00000020,
-    SIRSL_IS_INIT  = 0x00000040
+    SIRSL_IS_OPEN  = 0x00000001, /**< Log is open. */
+    SIRSL_LEVELS   = 0x00000002, /**< Level registrations. */
+    SIRSL_OPTIONS  = 0x00000004, /**< Formatting options. */
+    SIRSL_CATEGORY = 0x00000008, /**< Category. */
+    SIRSL_IDENTITY = 0x00000010, /**< Identity. */
+    SIRSL_UPDATED  = 0x00000020, /**< Config has been updated. */
+    SIRSL_IS_INIT  = 0x00000040  /**< Subsystem is initialized. */
 } sir_syslog_state;
-
-/** @} */
 
 #endif /* !_SIR_TYPES_H_INCLUDED */

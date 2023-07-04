@@ -32,22 +32,6 @@
 #define _SIR_CONFIG_H_INCLUDED
 
 /**
- * @defgroup config Configuration
- *
- * Definitions affecting appearance and content of log messages, default values,
- * and various thresholds. May be modified to suit a particular use case.
- *
- * @remark All format strings containing specifiers such as `%%d` are `printf`-style.
- * The man page or documentation for `printf` can be used as a guide.
- *
- * @attention Don't make changes until you've examined how these values are
- * utilized elsewhere in the source code! You _will_ break something.
- *
- * @addtogroup config
- * @{
- */
-
-/**
  * The time stamp format string at the start of log messages–not including
  * milliseconds (as::SIR_MSECFORMAT), which is added separately.
  *
@@ -341,18 +325,30 @@
 #define SIR_NUMLEVELS 8
 
 /**
- * The number of actual distinct options; ::SIRO_NONE, ::SIRO_ALL, ::SIRO_DEFAULT,
- * and ::SIRO_MSGONLY are pseudo options that end up being mapped (or not) to the others.
+ * The number of actual options; ::SIRO_ALL, ::SIRO_DEFAULT, and ::SIRO_MSGONLY
+ * are pseudo options that end up being mapped (or not) to the others.
  */
 #define SIR_NUMOPTIONS 8
 
 /**
- * The number of entries in the 4-bit (16-color) map (::sir_style_16color_map)
- * 3 foreground attributes + 17 foreground colors + 17 background colors (default)
- * counts as a color.
+ * The number of entries in the 4-bit (16-color) map: 3 attributes + 17
+ * foreground colors + 17 background colors (default counts as a color).
  */
 #define SIR_NUM16_COLOR_MAPPINGS 37
 
-/** @} */
+/**
+ * The number of seconds to let elapse before checking if the hostname needs
+ * refreshing. The default is an eager 1 minute. Better safe than wrong?
+ */
+#define SIR_HNAME_CHK_INTERVAL 60
+
+#if defined(SIR_OS_LOG_ENABLED)
+/**
+ * The special format specifier to send to os_log. By default, the log will only
+ * show "<private>" in place of the original message. By using "%{public}s", the
+ * message contents will be visible in the log.
+ */
+# define SIR_OS_LOG_FORMAT "%{public}s"
+#endif
 
 #endif /* !_SIR_CONFIG_H_INCLUDED */

@@ -16,6 +16,8 @@ var searchData=
   ['sir_5fstdout_5fdef_5fopts_13',['sir_stdout_def_opts',['../group__default.html#ga570e5f904a2aacfaf3284276784d4ddb',1,'sirdefaults.h']]],
   ['sir_5fsyslog_5fdef_5flvls_14',['sir_syslog_def_lvls',['../group__default.html#ga7a0b53f25f5140db6a320d815097e268',1,'sirdefaults.h']]],
   ['sir_5fsyslog_5fdef_5fopts_15',['sir_syslog_def_opts',['../group__default.html#ga726779e2fb7b46239dd535e6b9eed092',1,'sirdefaults.h']]],
-  ['str_16',['str',['../structsir__level__style__tuple.html#a5f67704e0d74d266d0a5d2d3c9459816',1,'sir_level_style_tuple']]],
-  ['style_17',['style',['../structsir__level__style__tuple.html#a8fed0d03eeb0003783ccec5e26665a53',1,'sir_level_style_tuple']]]
+  ['sl_5fcategory_16',['sl_category',['../structsir__update__config__data.html#ac4509b5698aa330492a9d1508e3f9480',1,'sir_update_config_data']]],
+  ['sl_5fidentity_17',['sl_identity',['../structsir__update__config__data.html#a58f88542d9e282860be66fcbba694223',1,'sir_update_config_data']]],
+  ['str_18',['str',['../structsir__level__style__tuple.html#a5f67704e0d74d266d0a5d2d3c9459816',1,'sir_level_style_tuple']]],
+  ['style_19',['style',['../structsir__level__style__tuple.html#a8fed0d03eeb0003783ccec5e26665a53',1,'sir_level_style_tuple']]]
 ];

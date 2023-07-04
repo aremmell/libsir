@@ -21,6 +21,9 @@ Bold = “Priority”
 - [ ] Add ‘policy’ flags to sirinit
 
   - [ ] Remove on write error? how many?
+  - [ ] Roll size that defaults to SIR_FROLLSIZE but can be modified.
+
+- [ ] Add emphasis, underline, etc. to SIRS_ 
 
 - [ ] ~~move timer functionality from tests into libsir itself~~
 

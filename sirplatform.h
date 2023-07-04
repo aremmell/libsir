@@ -32,6 +32,9 @@
 # else
 #  define __HAVE_ATOMIC_H__
 # endif
+# if defined(__STDC_WANT_LIB_EXT1__)
+#  undef __STDC_WANT_LIB_EXT1__
+# endif
 # define __STDC_WANT_LIB_EXT1__ 1
 # if defined(__APPLE__) && defined(__MACH__)
 #  define __MACOS__
@@ -82,11 +85,16 @@
 
 #if defined(SIR_ASSERT_ENABLED)
 # include <assert.h>
+#define SIR_ASSERT(...) assert(__VA_ARGS__)
 #else
-# define assert(...) \
+# if defined(SIR_SELFLOG)
+# define SIR_ASSERT(...) \
      if (!(__VA_ARGS__)) { \
          _sir_selflog(LRED("!!! would be asserting: " #__VA_ARGS__ "")); \
      }
+#else
+# define SIR_ASSERT(...)
+#endif
 #endif
 
 #include <errno.h>
@@ -133,7 +141,9 @@
 # include <limits.h>
 # include <fcntl.h>
 # include <libgen.h>
+# if defined(__HAVE_ATOMIC_H__) && !defined(__cplusplus)
 # include <stdatomic.h>
+# endif
 # if defined(SIR_SYSLOG_ENABLED)
 #  include <syslog.h>
 # endif
@@ -174,10 +184,10 @@
 # endif
 
 /** The mutex type. */
-typedef pthread_mutex_t sirmutex_t;
+typedef pthread_mutex_t sir_mutex;
 
 /** The one-time type. */
-typedef pthread_once_t sironce_t;
+typedef pthread_once_t sir_once;
 
 /** The one-time execution function type. */
 typedef void (*sir_once_fn)(void);
@@ -193,10 +203,10 @@ typedef void (*sir_once_fn)(void);
 # define SIR_MSEC_WIN32
 
 /** The mutex type. */
-typedef HANDLE sirmutex_t;
+typedef HANDLE sir_mutex;
 
 /** The one-time type. */
-typedef INIT_ONCE sironce_t;
+typedef INIT_ONCE sir_once;
 
 /** Process/thread ID. */
 typedef int pid_t;
@@ -209,16 +219,14 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 #endif // !__WIN__
 
-#if !defined(thread_local)
-# if __STDC_VERSION__ >= 201112 && !defined(__STDC_NO_THREADS__)
-#  define thread_local _Thread_local
-# elif defined(__WIN__)
-#  define thread_local __declspec(thread)
-# elif defined(__GNUC__)
-#  define thread_local __thread
-# else
-#  error "unable to resolve thread local attribute; please contact the author."
-# endif
+#if __STDC_VERSION__ >= 201112 && !defined(__STDC_NO_THREADS__)
+# define _sir_thread_local _Thread_local
+#elif defined(__WIN__)
+# define _sir_thread_local __declspec(thread)
+#elif defined(__GNUC__)
+# define _sir_thread_local __thread
+#else
+# error "unable to resolve thread local attribute; please contact the author."
 #endif
 
 #if defined(__WIN__) && defined(__STDC_SECURE_LIB__)

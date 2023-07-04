@@ -83,7 +83,7 @@ bool _sir_settextstyle(sir_level level, sir_textstyle style) {
 
     _sir_unlocksection(SIRMI_TEXTSTYLE);
 
-    assert(updated);
+    SIR_ASSERT(updated);
     return updated;
 
 
@@ -101,7 +101,7 @@ sir_textstyle _sir_getdefstyle(sir_level level) {
         case SIRL_INFO:   return sir_lvl_info_def_style;
         case SIRL_DEBUG:  return sir_lvl_debug_def_style;
         default: /* this should never happen. */
-            assert(!"invalid sir_level");
+            SIR_ASSERT(!"invalid sir_level");
             return SIRS_INVALID;
     }
 }
@@ -131,35 +131,35 @@ uint16_t _sir_getprivstyle(sir_textstyle style) {
     static const size_t idx_fg_end   = 19;
 
     static const size_t idx_bg_start = 20;
-    static const size_t idx_bg_end   = _sir_countof(sir_style_16color_map) - 1;
+    static const size_t idx_bg_end   = SIR_NUM16_COLOR_MAPPINGS - 1;
 
     size_t low  = 0;
     size_t high = 0;
 
-    if (style <= SIRS_DIM) {
+    if ((style & _SIRS_ATTR_MASK) != 0) {
         /* looking up an attribute */
         low  = idx_attr_start;
         high = idx_attr_end;
-    } else if (style <= SIRS_FG_WHITE) {
+    } else if ((style & _SIRS_FG_MASK) != 0) {
         /* looking up a foreground color */
         low  = idx_fg_start;
         high = idx_fg_end;
-    } else {
+    } else if ((style & _SIRS_BG_MASK) != 0) {
         /* looking up a background color */
         low  = idx_bg_start;
         high = idx_bg_end;
     }
 
-    _SIR_DECLARE_BIN_SEARCH(low, high);
-    _SIR_BEGIN_BIN_SEARCH();
+    /* skip if not assigned due to invalid input. */
+    if (high > low) {
+        for (size_t n = low; n <= high; n++) {
+        if (sir_style_16color_map[n].from == style)
+            return sir_style_16color_map[n].to;
+        }
+    }
 
-    if (sir_style_16color_map[_mid].from == style)
-        return sir_style_16color_map[_mid].to;
-
-    _SIR_ITERATE_BIN_SEARCH((sir_style_16color_map[_mid].from < style ? 1 : -1));
-    _SIR_END_BIN_SEARCH();
-
-    return _sir_getprivstyle(SIRS_FG_DEFAULT);
+    SIR_ASSERT("!invalid text style");
+    return SIRS_INVALID;
 }
 
 bool _sir_formatstyle(sir_textstyle style, char* buf, size_t size) {
@@ -169,17 +169,17 @@ bool _sir_formatstyle(sir_textstyle style, char* buf, size_t size) {
         uint32_t bg   = 0;
 
         if (_sir_validstyle(style, &attr, &fg, &bg)) {
-            uint16_t privattr = _sir_getprivstyle(attr);
-            uint16_t privfg   = _sir_getprivstyle(fg);
-            uint16_t privbg   = _sir_getprivstyle(bg);
+            uint16_t privattr = 0 != attr ? _sir_getprivstyle(attr) : 0;
+            uint16_t privfg   = 0 != fg   ? _sir_getprivstyle(fg)   : 0;
+            uint16_t privbg   = 0 != bg   ? _sir_getprivstyle(bg)   : 0;
 
             char fgfmt[7] = {0};
             char bgfmt[7] = {0};
 
-            if (privfg != 0)
+            if (0 != privfg && SIRS_INVALID != privfg)
                 snprintf(fgfmt, 7, ";%hu", privfg);
 
-            if (privbg != 0)
+            if (0 != privbg && SIRS_INVALID != privbg)
                 snprintf(bgfmt, 7, ";%hu", privbg);
 
             /* '\x1b[n;nnn;nnnm' */
@@ -198,11 +198,71 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
     uint32_t back = (style & _SIRS_BG_MASK);
 
     bool attrvalid = attr <= SIRS_DIM;
-    bool fgvalid   = fore <= SIRS_FG_WHITE;
-    bool bgvalid   = back <= SIRS_BG_WHITE && !_SIRS_SAME_COLOR(fore, back);
+    bool fgvalid   = false;
+    bool bgvalid   = false;
+    bool fgbgsame  = (fore != SIRS_FG_DEFAULT && back != SIRS_BG_DEFAULT) &&
+                      _SIRS_SAME_COLOR(fore, back);
 
-#pragma message( \
-        "TODO: See if we can't rearrange the values and bitmasks for these values so things like 'SIRS_FG_RED | SIRS_FG_DEFAULT' can be invalidated (right now that == SIRS_FG_DGRAY")
+    if (fgbgsame)
+        _sir_selflog("error: fg color %08" PRIx32 " and bg color %08" PRIx32
+                     " are identical; text would be invisible",
+                     fore, back);
+
+    if (!fgbgsame) {
+        switch (fore) {
+            case 0:
+            case SIRS_FG_BLACK:
+            case SIRS_FG_RED:
+            case SIRS_FG_GREEN:
+            case SIRS_FG_YELLOW:
+            case SIRS_FG_BLUE:
+            case SIRS_FG_MAGENTA:
+            case SIRS_FG_CYAN:
+            case SIRS_FG_LGRAY:
+            case SIRS_FG_DEFAULT:
+            case SIRS_FG_DGRAY:
+            case SIRS_FG_LRED:
+            case SIRS_FG_LGREEN:
+            case SIRS_FG_LYELLOW:
+            case SIRS_FG_LBLUE:
+            case SIRS_FG_LMAGENTA:
+            case SIRS_FG_LCYAN:
+            case SIRS_FG_WHITE:
+                fgvalid = true;
+            break;
+            default:
+                _sir_selflog("error: %08" PRIx32 " is not a valid fg color!", fore);
+            break;
+        }
+    }
+
+    if (!fgbgsame) {
+        switch (back) {
+            case 0:
+            case SIRS_BG_BLACK:
+            case SIRS_BG_RED:
+            case SIRS_BG_GREEN:
+            case SIRS_BG_YELLOW:
+            case SIRS_BG_BLUE:
+            case SIRS_BG_MAGENTA:
+            case SIRS_BG_CYAN:
+            case SIRS_BG_LGRAY:
+            case SIRS_BG_DEFAULT:
+            case SIRS_BG_DGRAY:
+            case SIRS_BG_LRED:
+            case SIRS_BG_LGREEN:
+            case SIRS_BG_LYELLOW:
+            case SIRS_BG_LBLUE:
+            case SIRS_BG_LMAGENTA:
+            case SIRS_BG_LCYAN:
+            case SIRS_BG_WHITE:
+                bgvalid = true;
+            break;
+            default:
+                _sir_selflog("error: %08" PRIx32 " is not a valid bg color!", back);
+            break;
+        }
+    }
 
     if (_sir_validptrnofail(pattr))
         *pattr = attrvalid ? attr : 0;
@@ -217,7 +277,7 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
         return true;
 
     _sir_seterror(_SIR_E_TEXTSTYLE);
-    assert("!invalid text style");
+    SIR_ASSERT("!invalid text style");
 
     return false;
 }
