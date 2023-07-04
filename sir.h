@@ -132,9 +132,9 @@ uint16_t sir_geterror(char message[SIR_MAXERROR]);
  *                 the message to dispatch.
  * @param   ...    Arguments whose type and position align with the format
  *                 specifiers in `format`.
- * @returns bool   `true` if the message was dispatched succcessfully to at least
- *                 one destination, `false` otherwise. Call ::sir_geterror to
- *                 obtain information about any error that may have occurred.
+ * @returns bool   `true` if the message was dispatched succcessfully to all
+ *                 registered destinations, `false` otherwise. Call ::sir_geterror
+ *                 to obtain information about any error that may have occurred.
  */
 bool sir_debug(const char* format, ...);
 
@@ -157,9 +157,9 @@ bool sir_debug(const char* format, ...);
  *                 the message to dispatch.
  * @param   ...    Arguments whose type and position align with the format
  *                 specifiers in `format`.
- * @returns bool   `true` if the message was dispatched succcessfully to at least
- *                 one destination, `false` otherwise. Call ::sir_geterror to
- *                 obtain information about any error that may have occurred.
+ * @returns bool   `true` if the message was dispatched succcessfully to all
+ *                 registered destinations, `false` otherwise. Call ::sir_geterror
+ *                 to obtain information about any error that may have occurred.
  */
 bool sir_info(const char* format, ...);
 
@@ -182,9 +182,9 @@ bool sir_info(const char* format, ...);
  *                 the message to dispatch.
  * @param   ...    Arguments whose type and position align with the format
  *                 specifiers in `format`.
- * @returns bool   `true` if the message was dispatched succcessfully to at least
- *                 one destination, `false` otherwise. Call ::sir_geterror to
- *                 obtain information about any error that may have occurred.
+ * @returns bool   `true` if the message was dispatched succcessfully to all
+ *                 registered destinations, `false` otherwise. Call ::sir_geterror
+ *                 to obtain information about any error that may have occurred.
  */
 bool sir_notice(const char* format, ...);
 
@@ -207,9 +207,9 @@ bool sir_notice(const char* format, ...);
  *                 the message to dispatch.
  * @param   ...    Arguments whose type and position align with the format
  *                 specifiers in `format`.
- * @returns bool   `true` if the message was dispatched succcessfully to at least
- *                 one destination, `false` otherwise. Call ::sir_geterror to
- *                 obtain information about any error that may have occurred.
+ * @returns bool   `true` if the message was dispatched succcessfully to all
+ *                 registered destinations, `false` otherwise. Call ::sir_geterror
+ *                 to obtain information about any error that may have occurred.
  */
 bool sir_warn(const char* format, ...);
 
@@ -232,9 +232,9 @@ bool sir_warn(const char* format, ...);
  *                 the message to dispatch.
  * @param   ...    Arguments whose type and position align with the format
  *                 specifiers in `format`.
- * @returns bool   `true` if the message was dispatched succcessfully to at least
- *                 one destination, `false` otherwise. Call ::sir_geterror to
- *                 obtain information about any error that may have occurred.
+ * @returns bool   `true` if the message was dispatched succcessfully to all
+ *                 registered destinations, `false` otherwise. Call ::sir_geterror
+ *                 to obtain information about any error that may have occurred.
  */
 bool sir_error(const char* format, ...);
 
@@ -257,9 +257,9 @@ bool sir_error(const char* format, ...);
  *                 the message to dispatch.
  * @param   ...    Arguments whose type and position align with the format
  *                 specifiers in `format`.
- * @returns bool   `true` if the message was dispatched succcessfully to at least
- *                 one destination, `false` otherwise. Call ::sir_geterror to
- *                 obtain information about any error that may have occurred.
+ * @returns bool   `true` if the message was dispatched succcessfully to all
+ *                 registered destinations, `false` otherwise. Call ::sir_geterror
+ *                 to obtain information about any error that may have occurred.
  */
 bool sir_crit(const char* format, ...);
 
@@ -282,9 +282,9 @@ bool sir_crit(const char* format, ...);
  *                 the message to dispatch.
  * @param   ...    Arguments whose type and position align with the format
  *                 specifiers in `format`.
- * @returns bool   `true` if the message was dispatched succcessfully to at least
- *                 one destination, `false` otherwise. Call ::sir_geterror to
- *                 obtain information about any error that may have occurred.
+ * @returns bool   `true` if the message was dispatched succcessfully to all
+ *                 registered destinations, `false` otherwise. Call ::sir_geterror
+ *                 to obtain information about any error that may have occurred.
  */
 bool sir_alert(const char* format, ...);
 
@@ -307,9 +307,9 @@ bool sir_alert(const char* format, ...);
  *                 the message to dispatch.
  * @param   ...    Arguments whose type and position align with the format
  *                 specifiers in `format`.
- * @returns bool   `true` if the message was dispatched succcessfully to at least
- *                 one destination, `false` otherwise. Call ::sir_geterror to
- *                 obtain information about any error that may have occurred.
+ * @returns bool   `true` if the message was dispatched succcessfully to all
+ *                 registered destinations, `false` otherwise. Call ::sir_geterror
+ *                 to obtain information about any error that may have occurred.
  */
 bool sir_emerg(const char* format, ...);
 

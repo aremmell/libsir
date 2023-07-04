@@ -26,4 +26,23 @@ Available preprocessor macros:
 | `SIR_ASSERT_ENABLED (0)` | `0` | `N/A` | `assert` will never be called. If `SIR_SELFLOG` is enabled, where asserts normally would take place, a `_sir_selflog` call is made, producing output to stderr such as '`somefunc (file.c:123): !!! would be asserting (NULL != ptr)`'. |
 | ^ | `1` | `-DSIR_ASSERT_ENABLED` | `assert` will be used. Note that assert has no effect if `NDEBUG` is defined, so in order for this to be useful, you will also need `SIR_DEBUG=1` (_or manually add `-DNDEBUG` in the Makefile_). |
 | `SIR_NO_SYSTEM_LOGGERS (0)` | `0` | `N/A` | If the current platform has a system logger facility (_currently all platforms do by default except Windows_), you can utilize it as a destination in libsir. |
-| ^ | `1`     | `-DSIR_NO_SYSTEM_LOGGERS | Even if the current platform has a system logger facility, the functionality will be disabled (_and most of it compiled out_). |
+| ^ | `1`     | `-DSIR_NO_SYSTEM_LOGGERS` | Even if the current platform has a system logger facility, the functionality will be disabled (_and most of it compiled out_). |
+
+@note These must be set differently if you're utilizing the Visual Studio solution (_or just not using make_). The instructions for those build environments are not included here.
+
+sirconfig.h
+-----------
+
+All of the fine-grained compile-time constants, such as (but not limited to):
+
+1. Date/time format strings
+2. Default values
+3. Miscellaneous format strings
+4. Buffer sizes
+5. Thresholds
+
+can be found in [sirconfig.h](sirconfig.h), and may be modified to fit your specific needs.
+
+@remark All format strings containing specifiers such as `%%d` are `printf`-style. The man page or documentation for `printf` can be used as a guide.
+
+@attention Don't make changes until you've examined how these values are utilized elsewhere in the source code! You _will_ break something.

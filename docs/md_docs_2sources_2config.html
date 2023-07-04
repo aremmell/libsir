@@ -137,8 +137,21 @@ $(document).ready(function(){initNavTree('md_docs_2sources_2config.html',''); in
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyCenter" rowspan="2"><code>SIR_NO_SYSTEM_LOGGERS (0)</code>   </td><td class="markdownTableBodyCenter"><code>0</code>   </td><td class="markdownTableBodyCenter"><code>N/A</code>   </td><td class="markdownTableBodyLeft">If the current platform has a system logger facility (<em>currently all platforms do by default except Windows</em>), you can utilize it as a destination in libsir.    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter"><code>1</code>   </td><td class="markdownTableBodyCenter">`-DSIR_NO_SYSTEM_LOGGERS   </td><td class="markdownTableBodyLeft">Even if the current platform has a system logger facility, the functionality will be disabled (<em>and most of it compiled out</em>).   </td></tr>
+<td class="markdownTableBodyCenter"><code>1</code>   </td><td class="markdownTableBodyCenter"><code>-DSIR_NO_SYSTEM_LOGGERS</code>   </td><td class="markdownTableBodyLeft">Even if the current platform has a system logger facility, the functionality will be disabled (<em>and most of it compiled out</em>).   </td></tr>
 </table>
+<dl class="section note"><dt>Note</dt><dd>These must be set differently if you're utilizing the Visual Studio solution (<em>or just not using make</em>). The instructions for those build environments are not included here.</dd></dl>
+<h1><a class="el" href="sirconfig_8h.html" title="Compile-time configuration.">sirconfig.h</a> </h1>
+<p>All of the fine-grained compile-time constants, such as (but not limited to):</p>
+<ol type="1">
+<li>Date/time format strings</li>
+<li>Default values</li>
+<li>Miscellaneous format strings</li>
+<li>Buffer sizes</li>
+<li>Thresholds</li>
+</ol>
+<p>can be found in <a href="sirconfig.h">sirconfig.h</a>, and may be modified to fit your specific needs.</p>
+<dl class="section remark"><dt>Remarks</dt><dd>All format strings containing specifiers such as <code>%d</code> are <code>printf</code>-style. The man page or documentation for <code>printf</code> can be used as a guide.</dd></dl>
+<dl class="section attention"><dt>Attention</dt><dd>Don't make changes until you've examined how these values are utilized elsewhere in the source code! You <em>will</em> break something. </dd></dl>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
