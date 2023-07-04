@@ -1,5 +1,8 @@
 # libsir
 
+<!-- SPDX-License-Identifier: MIT -->
+<!-- Copyright (c) 2018-current Ryan M. Lederman <lederman@gmail.com> -->
+
 [![Build Status](https://app.travis-ci.com/aremmell/libsir.svg?branch=master)](https://app.travis-ci.com/aremmell/libsir) ![GitHub](https://img.shields.io/github/license/aremmell/libsir?color=%2340b911)
 
 ## Synopsis
@@ -14,9 +17,9 @@ Each 'level' or 'priority' of output can be visually styled however you wish for
 
 ## Notables
 
-- No dependencies (other than `libc` and `pthreads`). On Windows, libsir uses the native sychronization API.
+- No dependencies (other than `libc` and `pthreads`). On Windows, libsir uses the native synchronization API.
 - Accompanied by a robust test suite to ensure dependable behavior, even if you make modifications to the source.
-- Won't fail silently&mdash; C library or platform level errors are captured and stored for posterity, on a per-thread basis. The _function, file, and line number from which it orginated_ are also captured. Additionally, libsir defines its own set of error messages to aid in troubleshooting.
+- Won't fail silently&mdash; C library or platform level errors are captured and stored for posterity, on a per-thread basis. The _function, file, and line number from which it originated_ are also captured. Additionally, libsir defines its own set of error messages to aid in troubleshooting.
 - Hardened&mdash;every function contains sanity checks for internal state as well as arguments passed in through the external interfaces. libsir's make recipes use _&ndash;Wall &ndash;-Wextra &ndash;Wpedantic_, too.
 - [Full documentation](https://libsir.rml.dev), thanks to Doxygen.
 - Lightweight&mdash;the shared library comes in at around 76KB, and the static library around 70KB.
@@ -25,11 +28,11 @@ Each 'level' or 'priority' of output can be visually styled however you wish for
 
 At this time, the test suite has been compiled and tested on (at minimum) these configurations:
 
-| Toolset   | Versions            | Operating system                     | Architecture |
-| :-------- | :-----------------: | :----------------------------------: | -----------: |
+| Toolset   | Versions            | Operating system                     | Architecture                 |
+| :-------- | :-----------------: | :----------------------------------: | ---------------------------: |
 | gcc       | 5.4-7.5             |    Ubuntu, Mint, Fedora, FreeBSD     |   x64, armhf, arm64, ppc64le |
-| clang     | 6.0-14.0            | macOS, Ubuntu, Mint, FreeBSD, Fedora |   x64, arm64 |
-| MSVC (cl) | 17.6                |               Windows                |   x64, arm64 |
+| clang     | 6.0-14.0            | macOS, Ubuntu, Mint, FreeBSD, Fedora |   x64, arm64                 |
+| MSVC (cl) | 17.6                |               Windows                |   x64, arm64                 |
 
 ## A sample
 
@@ -47,7 +50,7 @@ There is already a code-workspace in the repository (and  my primary means of co
 
 ### Visual Studio 2022
 
-A very recent addition is an sln and some vcxproj files in the [msvc](./msvc) directory. They are connfirmed to work correctly on Windows 11 (x64 &amp; arm64) with Visual Studio 17.6.
+A very recent addition is an sln and some vcxproj files in the [msvc](./msvc) directory. They are confirmed to work correctly on Windows 11 (x64 &amp; arm64) with Visual Studio 17.6.
 
 ### Unix Makefile
 

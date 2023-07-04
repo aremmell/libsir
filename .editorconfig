@@ -1,4 +1,6 @@
 # EditorConfig: https://editorconfig.org/
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 root = true
 
 [*.{c,h,sh}]

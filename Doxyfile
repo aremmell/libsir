@@ -1,5 +1,8 @@
 # Doxyfile 1.9.7
 
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2018-current Ryan M. Lederman <lederman@gmail.com>
+
 # This file describes the settings to be used by the documentation system
 # doxygen (www.doxygen.org) for a project.
 #
