@@ -246,8 +246,10 @@ char* _sir_getappfilename(void) {
 
 char* _sir_getappbasename(void) {
     char* filename = _sir_getappfilename();
-    if (!_sir_validstr(filename))
+    if (!_sir_validstr(filename)) {
+        _sir_safefree(filename);
         return NULL;
+    }
 
     char* retval = _sir_getbasename(filename);
     char* bname  = strdup(retval);
@@ -258,8 +260,10 @@ char* _sir_getappbasename(void) {
 
 char* _sir_getappdir(void) {
     char* filename = _sir_getappfilename();
-    if (!_sir_validstr(filename))
+    if (!_sir_validstr(filename)) {
+        _sir_safefree(filename);
         return NULL;
+    }
 
     char* retval = _sir_getdirname(filename);
     char* dirname = strdup(retval);
