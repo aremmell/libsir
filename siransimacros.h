@@ -106,7 +106,7 @@
 #define EMPH(s) SIR_ESC_SEQ("3", s) SIR_ESC_SEQE("23")
 
 /** Bold. */
-#define BOLD(s) SIR_ESC_SEQ("1", s) SIR_ESC_SEQE("21")
+#define BOLD(s) SIR_ESC_SEQ("1", s) SIR_ESC_SEQE("22")
 
 #define BLACK(s)     COLOR(0, 30, 49, s)
 #define BLACKB(s)    COLOR(1, 30, 49, s)
