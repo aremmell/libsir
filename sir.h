@@ -137,12 +137,180 @@ uint16_t sir_geterror(char message[SIR_MAXERROR]);
  *                 obtain information about any error that may have occurred.
  */
 bool sir_debug(const char* format, ...);
+
+/**
+ * @brief Dispatches a ::SIRL_INFO level message.
+ *
+ * The message will be delivered to all destinations registered to receive
+ * information-level messages, each with their own formatting and styling options.
+ *
+ * @remark To change options or level registrations for `stdout`/`stderr`, call
+ * ::sir_stdoutopts/::sir_stdoutlevels and ::sir_stderropts/::sir_stderrlevels,
+ * respectively. To change the text styling on a per-level basis, call
+ * ::sir_settextstyle.
+ *
+ * @see ::sir_level
+ * @see ::sir_option
+ * @see ::default
+ *
+ * @param   format A printf-style format string, representing the template for
+ *                 the message to dispatch.
+ * @param   ...    Arguments whose type and position align with the format
+ *                 specifiers in `format`.
+ * @returns bool   `true` if the message was dispatched succcessfully to at least
+ *                 one destination, `false` otherwise. Call ::sir_geterror to
+ *                 obtain information about any error that may have occurred.
+ */
 bool sir_info(const char* format, ...);
+
+/**
+ * @brief Dispatches a ::SIRL_NOTICE level message.
+ *
+ * The message will be delivered to all destinations registered to receive
+ * notice-level messages, each with their own formatting and styling options.
+ *
+ * @remark To change options or level registrations for `stdout`/`stderr`, call
+ * ::sir_stdoutopts/::sir_stdoutlevels and ::sir_stderropts/::sir_stderrlevels,
+ * respectively. To change the text styling on a per-level basis, call
+ * ::sir_settextstyle.
+ *
+ * @see ::sir_level
+ * @see ::sir_option
+ * @see ::default
+ *
+ * @param   format A printf-style format string, representing the template for
+ *                 the message to dispatch.
+ * @param   ...    Arguments whose type and position align with the format
+ *                 specifiers in `format`.
+ * @returns bool   `true` if the message was dispatched succcessfully to at least
+ *                 one destination, `false` otherwise. Call ::sir_geterror to
+ *                 obtain information about any error that may have occurred.
+ */
 bool sir_notice(const char* format, ...);
+
+/**
+ * @brief Dispatches a ::SIRL_WARN level message.
+ *
+ * The message will be delivered to all destinations registered to receive
+ * warning-level messages, each with their own formatting and styling options.
+ *
+ * @remark To change options or level registrations for `stdout`/`stderr`, call
+ * ::sir_stdoutopts/::sir_stdoutlevels and ::sir_stderropts/::sir_stderrlevels,
+ * respectively. To change the text styling on a per-level basis, call
+ * ::sir_settextstyle.
+ *
+ * @see ::sir_level
+ * @see ::sir_option
+ * @see ::default
+ *
+ * @param   format A printf-style format string, representing the template for
+ *                 the message to dispatch.
+ * @param   ...    Arguments whose type and position align with the format
+ *                 specifiers in `format`.
+ * @returns bool   `true` if the message was dispatched succcessfully to at least
+ *                 one destination, `false` otherwise. Call ::sir_geterror to
+ *                 obtain information about any error that may have occurred.
+ */
 bool sir_warn(const char* format, ...);
+
+/**
+ * @brief Dispatches a ::SIRL_ERROR level message.
+ *
+ * The message will be delivered to all destinations registered to receive
+ * error-level messages, each with their own formatting and styling options.
+ *
+ * @remark To change options or level registrations for `stdout`/`stderr`, call
+ * ::sir_stdoutopts/::sir_stdoutlevels and ::sir_stderropts/::sir_stderrlevels,
+ * respectively. To change the text styling on a per-level basis, call
+ * ::sir_settextstyle.
+ *
+ * @see ::sir_level
+ * @see ::sir_option
+ * @see ::default
+ *
+ * @param   format A printf-style format string, representing the template for
+ *                 the message to dispatch.
+ * @param   ...    Arguments whose type and position align with the format
+ *                 specifiers in `format`.
+ * @returns bool   `true` if the message was dispatched succcessfully to at least
+ *                 one destination, `false` otherwise. Call ::sir_geterror to
+ *                 obtain information about any error that may have occurred.
+ */
 bool sir_error(const char* format, ...);
+
+/**
+ * @brief Dispatches a ::SIRL_CRIT level message.
+ *
+ * The message will be delivered to all destinations registered to receive
+ * crtical-level messages, each with their own formatting and styling options.
+ *
+ * @remark To change options or level registrations for `stdout`/`stderr`, call
+ * ::sir_stdoutopts/::sir_stdoutlevels and ::sir_stderropts/::sir_stderrlevels,
+ * respectively. To change the text styling on a per-level basis, call
+ * ::sir_settextstyle.
+ *
+ * @see ::sir_level
+ * @see ::sir_option
+ * @see ::default
+ *
+ * @param   format A printf-style format string, representing the template for
+ *                 the message to dispatch.
+ * @param   ...    Arguments whose type and position align with the format
+ *                 specifiers in `format`.
+ * @returns bool   `true` if the message was dispatched succcessfully to at least
+ *                 one destination, `false` otherwise. Call ::sir_geterror to
+ *                 obtain information about any error that may have occurred.
+ */
 bool sir_crit(const char* format, ...);
+
+/**
+ * @brief Dispatches a ::SIRL_ALERT level message.
+ *
+ * The message will be delivered to all destinations registered to receive
+ * alert-level messages, each with their own formatting and styling options.
+ *
+ * @remark To change options or level registrations for `stdout`/`stderr`, call
+ * ::sir_stdoutopts/::sir_stdoutlevels and ::sir_stderropts/::sir_stderrlevels,
+ * respectively. To change the text styling on a per-level basis, call
+ * ::sir_settextstyle.
+ *
+ * @see ::sir_level
+ * @see ::sir_option
+ * @see ::default
+ *
+ * @param   format A printf-style format string, representing the template for
+ *                 the message to dispatch.
+ * @param   ...    Arguments whose type and position align with the format
+ *                 specifiers in `format`.
+ * @returns bool   `true` if the message was dispatched succcessfully to at least
+ *                 one destination, `false` otherwise. Call ::sir_geterror to
+ *                 obtain information about any error that may have occurred.
+ */
 bool sir_alert(const char* format, ...);
+
+/**
+ * @brief Dispatches a ::SIRL_EMERG level message.
+ *
+ * The message will be delivered to all destinations registered to receive
+ * emergency-level messages, each with their own formatting and styling options.
+ *
+ * @remark To change options or level registrations for `stdout`/`stderr`, call
+ * ::sir_stdoutopts/::sir_stdoutlevels and ::sir_stderropts/::sir_stderrlevels,
+ * respectively. To change the text styling on a per-level basis, call
+ * ::sir_settextstyle.
+ *
+ * @see ::sir_level
+ * @see ::sir_option
+ * @see ::default
+ *
+ * @param   format A printf-style format string, representing the template for
+ *                 the message to dispatch.
+ * @param   ...    Arguments whose type and position align with the format
+ *                 specifiers in `format`.
+ * @returns bool   `true` if the message was dispatched succcessfully to at least
+ *                 one destination, `false` otherwise. Call ::sir_geterror to
+ *                 obtain information about any error that may have occurred.
+ */
 bool sir_emerg(const char* format, ...);
 
 /**
