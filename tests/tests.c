@@ -700,23 +700,23 @@ bool sirtest_optionssanity(void) {
     /* these should all be valid. */
     printf("\t" WHITEB("--- individual valid options ---") "\n");
     pass &= _sir_validopts(SIRO_ALL);
-    printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_ALL);
+    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_ALL);
     pass &= _sir_validopts(SIRO_NOTIME);
-    printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_NOTIME);
+    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOTIME);
     pass &= _sir_validopts(SIRO_NOHOST);
-    printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_NOHOST);
+    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOHOST);
     pass &= _sir_validopts(SIRO_NOLEVEL);
-    printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_NOLEVEL);
+    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOLEVEL);
     pass &= _sir_validopts(SIRO_NONAME);
-    printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_NONAME);
+    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NONAME);
     pass &= _sir_validopts(SIRO_NOPID);
-    printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_NOPID);
+    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOPID);
     pass &= _sir_validopts(SIRO_NOTID);
-    printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_NOTID);
+    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOTID);
     pass &= _sir_validopts(SIRO_NOHDR);
-    printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_NOHDR);
+    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOHDR);
     pass &= _sir_validopts(SIRO_MSGONLY);
-    printf(INDENT_ITEM WHITE("valid option: %08x") "\n", SIRO_MSGONLY);
+    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_MSGONLY);
     PRINT_PASS(pass, "\t--- individual valid options: %s ---\n\n", PRN_PASS(pass));
 
     /* any combination these bitwise OR'd together
@@ -909,7 +909,7 @@ bool sirtest_perf(void) {
         startsirtimer(&printftimer);
 
         for (size_t n = 0; n < perflines; n++)
-            printf("\x1b[97m%.2f: lorem ipsum foo bar %s: %zu\x1b[0m\n",
+            printf(WHITE("%.2f: lorem ipsum foo bar %s: %zu") "\n",
                 sirtimerelapsed(&printftimer), "baz", 1234 + n);
 
         printfelapsed = sirtimerelapsed(&printftimer);
@@ -1562,9 +1562,9 @@ bool print_test_error(bool result, bool expected) {
     uint16_t code              = sir_geterror(message);
 
     if (!expected && !result && SIR_E_NOERROR != code)
-        printf("\t" RED("!! Unexpected (%hu, %s)") "\n", code, message);
+        printf("\t" RED("!! Unexpected (%" PRIu16 ", %s)") "\n", code, message);
     else if (expected)
-        printf("\t" GREEN("Expected (%hu, %s)") "\n", code, message);
+        printf("\t" GREEN("Expected (%" PRIu16 ", %s)") "\n", code, message);
 
     return result;
 }
@@ -1572,7 +1572,7 @@ bool print_test_error(bool result, bool expected) {
 void print_os_error(void) {
     char message[SIR_MAXERROR] = {0};
     uint16_t code              = sir_geterror(message);
-    fprintf(stderr, "\t" RED("OS error: (%hu, %s)") "\n", code, message);
+    fprintf(stderr, "\t" RED("OS error: (%" PRIu16 ", %s)") "\n", code, message);
 }
 
 bool filter_error(bool pass, uint16_t err) {
@@ -1622,7 +1622,8 @@ bool rmfile(const char* filename) {
     if (!removed) {
         handle_os_error(false, "failed to delete %s!", filename);
     } else {
-        printf("\t" DGRAY("deleted %s (%ld bytes)...") "\n", filename, (long)st.st_size);
+        printf("\t" DGRAY("deleted %s (%ld bytes)...") "\n", filename,
+            (long)st.st_size);
     }
 
     return removed;

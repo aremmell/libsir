@@ -177,13 +177,13 @@ bool _sir_formatstyle(sir_textstyle style, char* buf, size_t size) {
             char bgfmt[7] = {0};
 
             if (0 != privfg && SIRS_INVALID != privfg)
-                snprintf(fgfmt, 7, ";%hu", privfg);
+                snprintf(fgfmt, 7, ";%" PRIu16, privfg);
 
             if (0 != privbg && SIRS_INVALID != privbg)
-                snprintf(bgfmt, 7, ";%hu", privbg);
+                snprintf(bgfmt, 7, ";%" PRIu16, privbg);
 
             /* '\x1b[n;nnn;nnnm' */
-            snprintf(buf, size, "%s%hu%s%sm", SIR_ESC, privattr, fgfmt, bgfmt);
+            snprintf(buf, size, "%s%" PRIu16 "%s%sm", SIR_ESC, privattr, fgfmt, bgfmt);
 
             return _sir_validstr(buf);
         }
