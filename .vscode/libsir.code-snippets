@@ -12,6 +12,8 @@
 			" * Version:   ${3:2.2.0}",
 			" * License:   The MIT License (MIT)",
 			" *",
+			" * SPDX-License-Identifier: MIT",
+			" *",
 			" * Permission is hereby granted, free of charge, to any person obtaining a copy of",
 			" * this software and associated documentation files (the \"Software\"), to deal in",
 			" * the Software without restriction, including without limitation the rights to",
@@ -33,7 +35,7 @@
 		"description": [
 			"Inserts a file header comment block for files that are *NOT*",
 			" intended to be parsed as a '@file' by Doxygen."
-		]			    
+		]
 	},
 	/* https://www.doxygen.nl/manual/commands.html#cmdfile */
 	"File header comment block (Doxygen)": {
@@ -72,7 +74,7 @@
 		"description": [
 			"Inserts a file header comment block for files that are intended to be parsed as a ",
 			"'@file' by Doxygen."
-		]			    
+		]
 	},
 	"Header file template": {
 		"scope": "c,cpp",
@@ -89,7 +91,7 @@
 		"description": [
 			"Header template with ifdef include guards. Must already have a",
 			" filename, since the guards are generated from the name."
-		]			    
+		]
 	},
 	"Doxygen comment block": {
 		"scope": "c,cpp",
@@ -101,7 +103,7 @@
 		],
 		"description": [
 			"A Doxygen comment block to separate sections of code.",
-		]			    
+		]
 	},
 	"Doxygen member group": {
 		"scope": "c,cpp",
@@ -120,7 +122,7 @@
 		],
 		"description": [
 			"A doxygen comment block which creates a member group",
-		]			    
+		]
 	},
 	"Doxygen addtogroup": {
 		"scope": "c,cpp",
@@ -138,7 +140,7 @@
 		],
 		"description": [
 			"A doxygen 'addtogroup' comment block",
-		]			    
+		]
 	},
 	"Doxygen defgroup": {
 		"scope": "c,cpp",
@@ -156,7 +158,7 @@
 		],
 		"description": [
 			"A doxygen 'defgroup' comment block",
-		]			    
+		]
 	}
 
 	/*
@@ -169,7 +171,7 @@
 		],
 		"description": [
 			"",
-		]			    
+		]
 	}
 	*/
 }

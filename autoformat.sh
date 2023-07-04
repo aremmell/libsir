@@ -1,6 +1,11 @@
 #!/usr/bin/env sh
 
 ########################################################################
+
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
+
+########################################################################
 # Sanity checks
 
 # Check for csh as sh
