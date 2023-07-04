@@ -1345,7 +1345,7 @@ bool sirtest_filesystem(void) {
         {"\\Windows", true},
         {"\\Program Files", true},
 #endif
-        {"../../LICENSE", true},
+        {"../../LICENSES/MIT.txt", true},
         {"../../msvs/libsir.sln", true},
         {"../", true},
         {"file.exists", true}

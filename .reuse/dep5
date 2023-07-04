@@ -1,0 +1,44 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: libsir
+Upstream-Contact: Ryan M. Lederman <lederman@gmail.com>
+Source: https://github.com/aremmell/libsir
+
+# Documentation
+Files: docs/*
+Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
+License: MIT
+
+# GitHub templates
+Files: .github/ISSUE_TEMPLATE/*.md
+Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
+License: MIT
+
+# Example code files
+Files: example/*
+Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
+License: MIT
+
+# Visual Studio Code files
+Files: .vscode/*
+Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
+License: MIT
+
+# Microsoft Visual Studio files
+Files: msvs/*
+Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
+License: MIT
+
+# Workspace files
+Files: sir.code-workspace
+Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
+License: MIT
+
+# All other C source files
+Files: *.c
+Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
+License: MIT
+
+# All other C header files
+Files: *.h
+Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
+License: MIT
