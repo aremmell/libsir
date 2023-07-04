@@ -24,9 +24,9 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #ifndef _SIR_MUTEX_H_INCLUDED
-#define _SIR_MUTEX_H_INCLUDED
+# define _SIR_MUTEX_H_INCLUDED
 
-#include "sirtypes.h"
+# include "sirtypes.h"
 
 /** Creates/initializes a new mutex. */
 bool _sirmutex_create(sir_mutex* mutex);

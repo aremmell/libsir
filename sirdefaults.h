@@ -28,9 +28,9 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #ifndef _SIR_DEFAULTS_H_INCLUDED
-#define _SIR_DEFAULTS_H_INCLUDED
+# define _SIR_DEFAULTS_H_INCLUDED
 
-#include "sirtypes.h"
+# include "sirtypes.h"
 
 /**
  * @defgroup default Defaults

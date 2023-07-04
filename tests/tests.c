@@ -1123,7 +1123,7 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
         pass &= sir_alert("%d/%d: this alert message sent to stdout and %s.", i + 1, runs, sl_name);
         pass &= sir_emerg("%d/%d: this emergency message sent to stdout and %s.", i + 1, runs, sl_name);
 
-#if defined(SIR_OS_LOG_ENABLED)
+# if defined(SIR_OS_LOG_ENABLED)
         if (i == runs -1 && 0 == strncmp(sl_name, "os_log", 6)) {
             printf("\ttesting os_log activity feature...\n");
 
@@ -1136,7 +1136,7 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
             * will occur, then a sub-activity will be created, and more logging. */
             os_activity_apply_f(parent, (void*)parent, os_log_parent_activity);
         }
-#endif
+# endif
 
         sir_cleanup();
 

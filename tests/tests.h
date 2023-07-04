@@ -24,27 +24,27 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #ifndef _SIR_TESTS_H_INCLUDED
-#define _SIR_TESTS_H_INCLUDED
+# define _SIR_TESTS_H_INCLUDED
 
-#include <sir.h>
-#include <sirerrors.h>
-#include <sirfilecache.h>
-#include <sirinternal.h>
-#include <sirfilesystem.h>
-#include <sirhelpers.h>
-#include <sirtextstyle.h>
-#include <siransimacros.h>
+# include <sir.h>
+# include <sirerrors.h>
+# include <sirfilecache.h>
+# include <sirinternal.h>
+# include <sirfilesystem.h>
+# include <sirhelpers.h>
+# include <sirtextstyle.h>
+# include <siransimacros.h>
 
-#if !defined(__WIN__)
-# include <dirent.h>
-# if defined(CLOCK_MONOTONIC_RAW)
-#  define SIRTEST_CLOCK CLOCK_MONOTONIC_RAW
-# else
-#  define SIRTEST_CLOCK CLOCK_MONOTONIC
+# if !defined(__WIN__)
+#  include <dirent.h>
+#  if defined(CLOCK_MONOTONIC_RAW)
+#   define SIRTEST_CLOCK CLOCK_MONOTONIC_RAW
+#  else
+#   define SIRTEST_CLOCK CLOCK_MONOTONIC
+#  endif
 # endif
-#endif
 
-#define INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, p_name, init) \
+# define INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, p_name, init) \
     sirinit var         = {0}; \
     var.d_stdout.opts   = (o_stdout) > 0 ? o_stdout : SIRO_DEFAULT; \
     var.d_stdout.levels = l_stdout; \
@@ -56,19 +56,19 @@
     if (init) \
         var##_init = sir_init(&var);
 
-#define INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, name) \
+# define INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, name) \
     INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, name, true)
 
-#define INIT_SL(var, l_stdout, o_stdout, l_stderr, o_stderr, name) \
+# define INIT_SL(var, l_stdout, o_stdout, l_stderr, o_stderr, name) \
     INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, name, false)
 
-#define INIT(var, l_stdout, o_stdout, l_stderr, o_stderr) \
+# define INIT(var, l_stdout, o_stdout, l_stderr, o_stderr) \
     INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, "")
 
-#define TEST_S(n) ((n) > 1 ? ("test" "s") : "test")
-#define PRN_STR(str) ((str) ? (str) : RED("NULL"))
-#define PRN_PASS(pass) ((pass) ? GREENB("PASS") : REDB("FAIL"))
-#define INDENT_ITEM "\t  " SIR_BULLET " "
+# define TEST_S(n) ((n) > 1 ? ("test" "s") : "test")
+# define PRN_STR(str) ((str) ? (str) : RED("NULL"))
+# define PRN_PASS(pass) ((pass) ? GREENB("PASS") : REDB("FAIL"))
+# define INDENT_ITEM "\t  " SIR_BULLET " "
 
 /**
  * @defgroup tests Tests
@@ -237,24 +237,24 @@ bool sirtest_xxxx(void); */
  */
 
 bool print_test_error(bool result, bool expected);
-#define print_expected_error() print_test_error(true, true)
-#define print_result_and_return(pass) print_test_error(pass, false)
+# define print_expected_error() print_test_error(true, true)
+# define print_result_and_return(pass) print_test_error(pass, false)
 
 void print_os_error(void);
 bool filter_error(bool pass, uint16_t err);
 
-#if !defined(__WIN__)
-# define handle_os_error(clib, fmt, ...) \
+# if !defined(__WIN__)
+#  define handle_os_error(clib, fmt, ...) \
      (void)clib; \
      _sir_handleerr(errno); \
      fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
      print_os_error();
-#else /* __WIN__ */
-# define handle_os_error(clib, fmt, ...) \
+# else /* __WIN__ */
+#  define handle_os_error(clib, fmt, ...) \
      clib ? _sir_handleerr(errno) : _sir_handlewin32err(GetLastError()); \
      fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
      print_os_error();
-#endif
+# endif
 
 /*
  * Utility functions, macros, and types
@@ -276,11 +276,11 @@ typedef struct {
 
 /** A simple timer type. */
 typedef struct {
-#if !defined(__WIN__)
+# if !defined(__WIN__)
     struct timespec ts;
-#else /* __WIN__ */
+# else /* __WIN__ */
     FILETIME ft;
-#endif
+# endif
 } sir_timer;
 
 /** Arguments passed to worker threads. */
@@ -299,7 +299,7 @@ bool getrand_bool(uint32_t upper_bound) {
 }
 
 /** prints a message in green if pass is true, or red otherwise. */
-#define PRINT_PASS(pass, msg, ...) \
+# define PRINT_PASS(pass, msg, ...) \
     if (pass) \
         printf(GREEN(msg), __VA_ARGS__); \
     else \
@@ -316,10 +316,10 @@ bool startsirtimer(sir_timer* timer);
 float sirtimerelapsed(const sir_timer* timer); // msec
 long sirtimergetres(void); // nsec
 
-#if defined(SIR_OS_LOG_ENABLED)
+# if defined(SIR_OS_LOG_ENABLED)
 void os_log_parent_activity(void* ctx);
 void os_log_child_activity(void* ctx);
-#endif
+# endif
 
 static const struct cl_arg {
     const char* flag;

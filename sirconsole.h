@@ -24,12 +24,12 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #ifndef _SIR_CONSOLE_H_INCLUDED
-#define _SIR_CONSOLE_H_INCLUDED
+# define _SIR_CONSOLE_H_INCLUDED
 
-#include "sirtypes.h"
-#include "sirhelpers.h"
+# include "sirtypes.h"
+# include "sirhelpers.h"
 
-#if !defined(__WIN__)
+# if !defined(__WIN__)
 bool _sir_write_stdio(FILE* stream, const char* message);
 
 static inline
@@ -43,7 +43,7 @@ bool _sir_write_stderr(const char* message, size_t len) {
     _SIR_UNUSED(len);
     return _sir_write_stdio(stderr, message);
 }
-#else /* __WIN__ */
+# else /* __WIN__ */
 extern HANDLE __sir_stdout;
 extern HANDLE __sir_stderr;
 
@@ -59,6 +59,6 @@ static inline
 bool _sir_write_stderr(const char* message, size_t len) {
     return _sir_write_stdio(__sir_stderr, message, len);
 }
-#endif // !__WIN__
+# endif // !__WIN__
 
 #endif /* !_SIR_CONSOLE_H_INCLUDED */

@@ -24,9 +24,9 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #ifndef _SIR_MAPS_H_INCLUDED
-#define _SIR_MAPS_H_INCLUDED
+# define _SIR_MAPS_H_INCLUDED
 
-#include "sirtypes.h"
+# include "sirtypes.h"
 
 extern sir_level_style_tuple sir_level_to_style_map[SIR_NUMLEVELS];
 extern sir_level_str_pair sir_level_to_str_map[SIR_NUMLEVELS];

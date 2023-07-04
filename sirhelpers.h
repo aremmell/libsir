@@ -24,18 +24,18 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #ifndef _SIR_HELPERS_H_INCLUDED
-#define _SIR_HELPERS_H_INCLUDED
+# define _SIR_HELPERS_H_INCLUDED
 
-#include "sirtypes.h"
+# include "sirtypes.h"
 
 /** Computes the size of an array. */
-#define _sir_countof(arr) (sizeof(arr) / sizeof(arr[0]))
+# define _sir_countof(arr) (sizeof(arr) / sizeof(arr[0]))
 
 /**
  * Creates an error code that (hopefully) doesn't conflict
  * with any of those defined by the platform.
  */
-#define _sir_mkerror(code) (((uint32_t)((code)&0x7fff) << 16) | 0x80000000)
+# define _sir_mkerror(code) (((uint32_t)((code)&0x7fff) << 16) | 0x80000000)
 
 /** Validates an internal error. */
 static inline
@@ -51,25 +51,25 @@ uint16_t _sir_geterrcode(uint32_t err) {
 }
 
 /** Evil macro used for _sir_lv wrappers. */
-#define _SIR_L_START(format) \
+# define _SIR_L_START(format) \
     bool r = false; \
     va_list args; \
     va_start(args, format);
 
 /** Evil macro used for _sir_lv wrappers. */
-#define _SIR_L_END(args) va_end(args);
+# define _SIR_L_END(args) va_end(args);
 
 /** Squelches warnings about unreferenced parameters. */
-#define _SIR_UNUSED(param) (void)param;
+# define _SIR_UNUSED(param) (void)param;
 
 /** Even more evil macros used for binary searching arrays. */
-#define _SIR_DECLARE_BIN_SEARCH(low, high) \
+# define _SIR_DECLARE_BIN_SEARCH(low, high) \
     size_t _low  = low; \
     size_t _high = high; \
     size_t _mid  = (_low + _high) / 2;
 
-#define _SIR_BEGIN_BIN_SEARCH() do {
-#define _SIR_ITERATE_BIN_SEARCH(comparison) \
+# define _SIR_BEGIN_BIN_SEARCH() do {
+# define _SIR_ITERATE_BIN_SEARCH(comparison) \
     if (0 == comparison) { \
         break; \
     } \
@@ -87,7 +87,7 @@ uint16_t _sir_geterrcode(uint32_t err) {
     \
     _mid = (_low + _high) / 2;
 
-#define _SIR_END_BIN_SEARCH() \
+# define _SIR_END_BIN_SEARCH() \
     } while (true);
 
 /**
@@ -97,7 +97,7 @@ uint16_t _sir_geterrcode(uint32_t err) {
  * This is necessary due to the fact that ::_sir_validptr will
  * not accept these types as input.
  */
-#define _sir_notnull(addr) (NULL != (addr))
+# define _sir_notnull(addr) (NULL != (addr))
 
 /** Checks a bitmask for a specific set of bits. */
 static inline
