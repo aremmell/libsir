@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['configuration_0',['Configuration',['../group__config.html',1,'']]]
+  ['defaults_0',['Defaults',['../group__default.html',1,'']]]
 ];

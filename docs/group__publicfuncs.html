@@ -127,7 +127,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga9bf3e92cefac01de4e3c6c359a58706f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga9bf3e92cefac01de4e3c6c359a58706f">sir_cleanup</a> (void)</td></tr>
 <tr class="memdesc:ga9bf3e92cefac01de4e3c6c359a58706f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tears down and cleans up libsir after use.  <br /></td></tr>
 <tr class="separator:ga9bf3e92cefac01de4e3c6c359a58706f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac0c399c73c25d1128befc6b75cbae300"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300">sir_geterror</a> (char message[<a class="el" href="group__config.html#gad6fce840144259e992c33fb611f31262">SIR_MAXERROR</a>])</td></tr>
+<tr class="memitem:gac0c399c73c25d1128befc6b75cbae300"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300">sir_geterror</a> (char message[<a class="el" href="sirconfig_8h.html#ad6fce840144259e992c33fb611f31262">SIR_MAXERROR</a>])</td></tr>
 <tr class="memdesc:gac0c399c73c25d1128befc6b75cbae300"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves information about the last error that occurred.  <br /></td></tr>
 <tr class="separator:gac0c399c73c25d1128befc6b75cbae300"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf78ed631ce03b57764ba91c63bacf410"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gaf78ed631ce03b57764ba91c63bacf410">sir_debug</a> (const char *format,...)</td></tr>
@@ -145,239 +145,65 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf14164a64eca824a2bae72ef4e9689cd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gaf14164a64eca824a2bae72ef4e9689cd">sir_fileopts</a> (<a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442">sirfileid</a> id, <a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> opts)</td></tr>
 <tr class="memdesc:gaf14164a64eca824a2bae72ef4e9689cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set new formatting options for a log file already managed by libsir.  <br /></td></tr>
 <tr class="separator:gaf14164a64eca824a2bae72ef4e9689cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa628fae976081e7aaa302e5c5e43e06c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gaa628fae976081e7aaa302e5c5e43e06c">sir_settextstyle</a> (<a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level, <a class="el" href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf">sir_textstyle</a> style)</td></tr>
+<tr class="memdesc:gaa628fae976081e7aaa302e5c5e43e06c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.  <br /></td></tr>
+<tr class="separator:gaa628fae976081e7aaa302e5c5e43e06c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga932eec2f9c73eecdd2b6b935452e5eed"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga932eec2f9c73eecdd2b6b935452e5eed">sir_resettextstyles</a> (void)</td></tr>
+<tr class="memdesc:ga932eec2f9c73eecdd2b6b935452e5eed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset text styling for stdio (stdout/stderr) destinations to their default values.  <br /></td></tr>
+<tr class="separator:ga932eec2f9c73eecdd2b6b935452e5eed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6f17febe99cb0beb6f8119283cc62d42"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42">sir_stdoutlevels</a> (<a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a> levels)</td></tr>
+<tr class="memdesc:ga6f17febe99cb0beb6f8119283cc62d42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set new level registrations for <code>stdout</code>.  <br /></td></tr>
+<tr class="separator:ga6f17febe99cb0beb6f8119283cc62d42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac117aaf4a045115e58ba4471f9a4747f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f">sir_stdoutopts</a> (<a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> opts)</td></tr>
+<tr class="memdesc:gac117aaf4a045115e58ba4471f9a4747f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set new formatting options for <code>stdout</code>.  <br /></td></tr>
+<tr class="separator:gac117aaf4a045115e58ba4471f9a4747f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga421c13f6e269440cef0ac5c1ff3e65dd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga421c13f6e269440cef0ac5c1ff3e65dd">sir_stderrlevels</a> (<a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a> levels)</td></tr>
+<tr class="memdesc:ga421c13f6e269440cef0ac5c1ff3e65dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set new level registrations for <code>stderr</code>.  <br /></td></tr>
+<tr class="separator:ga421c13f6e269440cef0ac5c1ff3e65dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0e78fb3ad87f02ef0f056a34200a4ab9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga0e78fb3ad87f02ef0f056a34200a4ab9">sir_stderropts</a> (<a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> opts)</td></tr>
+<tr class="memdesc:ga0e78fb3ad87f02ef0f056a34200a4ab9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set new formatting options for <code>stderr</code>.  <br /></td></tr>
+<tr class="separator:ga0e78fb3ad87f02ef0f056a34200a4ab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2b383287c821bb519868776a4d8bae83"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga2b383287c821bb519868776a4d8bae83">sir_sysloglevels</a> (<a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a> levels)</td></tr>
+<tr class="memdesc:ga2b383287c821bb519868776a4d8bae83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set new level registrations for the system logger destination.  <br /></td></tr>
+<tr class="separator:ga2b383287c821bb519868776a4d8bae83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5b32a04501257df43bbe56169ab383c2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga5b32a04501257df43bbe56169ab383c2">sir_syslogopts</a> (<a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> opts)</td></tr>
+<tr class="memdesc:ga5b32a04501257df43bbe56169ab383c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set new formatting options for the system logger destination.  <br /></td></tr>
+<tr class="separator:ga5b32a04501257df43bbe56169ab383c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabc5831ef9b59c181b6ad7944c2ef1d5f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gabc5831ef9b59c181b6ad7944c2ef1d5f">sir_syslogid</a> (const char *identity)</td></tr>
+<tr class="memdesc:gabc5831ef9b59c181b6ad7944c2ef1d5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set new system logger identity.  <br /></td></tr>
+<tr class="separator:gabc5831ef9b59c181b6ad7944c2ef1d5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac48e99ced63f02c6999f50aca7c56efd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gac48e99ced63f02c6999f50aca7c56efd">sir_syslogcat</a> (const char *category)</td></tr>
+<tr class="memdesc:gac48e99ced63f02c6999f50aca7c56efd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set new system logger category.  <br /></td></tr>
+<tr class="separator:gac48e99ced63f02c6999f50aca7c56efd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="gaa04f4ca1fc06e1d99ca4f0fd6422b573" name="gaa04f4ca1fc06e1d99ca4f0fd6422b573"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa04f4ca1fc06e1d99ca4f0fd6422b573">&#9670;&#160;</a></span>sir_addfile()</h2>
+<a id="gac21fb86ac7e7710400bf8b642887ad96" name="gac21fb86ac7e7710400bf8b642887ad96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac21fb86ac7e7710400bf8b642887ad96">&#9670;&#160;</a></span>sir_makeinit()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442">sirfileid</a> sir_addfile </td>
+          <td class="memname">bool sir_makeinit </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>path</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#structsirinit">sirinit</a> *&#160;</td>
+          <td class="paramname"><em>si</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a>&#160;</td>
-          <td class="paramname"><em>levels</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a>&#160;</td>
-          <td class="paramname"><em>opts</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Adds a log file and registeres it to receive log output. </p>
-<p>The file at <code>path</code> will be created if it does not exist; otherwise it be appended to.</p>
-<p>The levels for which the file will receive output are specified in the <code>levels</code> bitmask. If you wish to use the default levels, pass <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804" title="Default levels for this type of destination.">SIRL_DEFAULT</a>.</p>
-<p>The formatting options for the log output sent to the file are specified in the <code>opts</code> bitmask. If you wish to use the default options, pass <a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02" title="Default options for this type of destination.">SIRO_DEFAULT</a>. By default, log files receive all available information.</p>
-<dl class="section remark"><dt>Remarks</dt><dd>Take note of the <a class="el" href="group__config.html#ga019fb62b107343bafedb0f5ad84f7d3a" title="The size, in bytes, at which a log file will be rolled/archived.">SIR_FROLLSIZE</a> compile-time constant. When any log file reaches that size in bytes, it will be archived to a date-stamped file in the same directory, and logging will resume at the path of the original file.</dd>
-<dd>
-If <code>path</code> is a relative path, it shall be treated as relative to the <em>current working directory</em>. This is not necessarily the same path that your process' binary file resides in.</dd>
-<dd>
-The return value from this function is only valid for the lifetime of the process. If a crash or restart occurs, you will no longer be able to refer to the file by that identifier, and will have to add the file again (libsir does not persist its list of log files).</dd>
-<dd>
-To change the file's level registrations or options after adding it, call <a class="el" href="group__publicfuncs.html#ga5a776d3d55e9f993eb0fad82788e1160" title="Set new level registrations for a log file already managed by libsir.">sir_filelevels</a> and <a class="el" href="group__publicfuncs.html#gaf14164a64eca824a2bae72ef4e9689cd" title="Set new formatting options for a log file already managed by libsir.">sir_fileopts</a>, respectively.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#gaba84f2fef8ac18a28483ee02c1c57240" title="Removes a file previously added to libsir.">sir_remfile</a></dd></dl>
+<p>Fills out a <a class="el" href="group__publictypes.html#structsirinit" title="libsir initialization and configuration data.">sirinit</a> structure with default values. </p>
+<p>Creates an initialization configuration for libsir essentially using all of the default values (i.e., levels, options, text styling).</p>
+<dl class="section note"><dt>Note</dt><dd>Does not fill in string fields, such as <a class="el" href="group__publictypes.html#ac003c97d6b63150341f2f29166a533e3" title="If set, defines the name that will appear in messages sent to stdio and log file destinations.">sirinit.name</a>.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">path</td><td>Either a relative or absolute path to a file name which shall become a log file managed by libsir. </td></tr>
-    <tr><td class="paramname">levels</td><td>Levels of output to register the file for. </td></tr>
-    <tr><td class="paramname">opts</td><td>Formatting options for the output sent to the file. </td></tr>
+    <tr><td class="paramname">si</td><td>Pointer to a <a class="el" href="group__publictypes.html#structsirinit" title="libsir initialization and configuration data.">sirinit</a> structure to receive default values. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>sirfileid If successful, a unique identifier that can later be used to modify level registrations, options, or remove the file from libsir. Upon failure, returns <code>NULL</code>. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
-
-</div>
-</div>
-<a id="ga9bf3e92cefac01de4e3c6c359a58706f" name="ga9bf3e92cefac01de4e3c6c359a58706f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9bf3e92cefac01de4e3c6c359a58706f">&#9670;&#160;</a></span>sir_cleanup()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sir_cleanup </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Tears down and cleans up libsir after use. </p>
-<p>Deallocates resources such as memory buffers, file descriptors, etc. and resets the internal state. No calls into libsir will succeed after calling <a class="el" href="group__publicfuncs.html#ga9bf3e92cefac01de4e3c6c359a58706f" title="Tears down and cleans up libsir after use.">sir_cleanup</a> (with the exception of <a class="el" href="group__publicfuncs.html#gac21fb86ac7e7710400bf8b642887ad96" title="Fills out a sirinit structure with default values.">sir_makeinit</a> and <a class="el" href="group__publicfuncs.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes libsir for use.">sir_init</a>).</p>
-<p>May be called from any thread. If you wish to utilize libsir again during the same process' lifetime, simply call <a class="el" href="group__publicfuncs.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes libsir for use.">sir_init</a> again.</p>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if cleanup was successful, <code>false otherwise</code>. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
-
-</div>
-</div>
-<a id="gaf78ed631ce03b57764ba91c63bacf410" name="gaf78ed631ce03b57764ba91c63bacf410"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf78ed631ce03b57764ba91c63bacf410">&#9670;&#160;</a></span>sir_debug()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sir_debug </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>format</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Dispatches a <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b" title="Debugging/diagnostic output.">SIRL_DEBUG</a> level message. </p>
-<p>The message will be delivered to all destinations registered to receive debug level messages, each with their own formatting and styling options.</p>
-<p>If no destinations are registered for this level, the return value will be false, and the error returned from <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> will be <a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3ad8d3e0a7ff09ea46a966d07ad08536af" title="No destinations registered for level.">SIR_E_NODEST</a>.</p>
-<p>This is not a fatal error–it simply means your message was not dispatched to any destination.</p>
-<dl class="section remark"><dt>Remarks</dt><dd>For stdio (stdout/stderr) destinations, you may find the default formatting options and text styling for each in ::Defaults.</dd>
-<dd>
-To change options or level registrations for stdout/stderr, call sir_stdoutopts/sir_stdoutlevels and sir_stderropts/sir_stderrlevels, respectively. To change the text styling on a per-level basis, call sir_settextstyle.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> </dd>
-<dd>
-<a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a></dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">format</td><td>A printf-style format string, representing the template for the message to dispatch. </td></tr>
-    <tr><td class="paramname">...</td><td>Arguments whose type and position align with the format specifiers in</td></tr>
-    <tr><td class="paramname">format</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the message was dispatched succcessfully to at least one destination, <code>false</code> otherwise. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
-
-</div>
-</div>
-<a id="ga5a776d3d55e9f993eb0fad82788e1160" name="ga5a776d3d55e9f993eb0fad82788e1160"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga5a776d3d55e9f993eb0fad82788e1160">&#9670;&#160;</a></span>sir_filelevels()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sir_filelevels </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442">sirfileid</a>&#160;</td>
-          <td class="paramname"><em>id</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a>&#160;</td>
-          <td class="paramname"><em>levels</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set new level registrations for a log file already managed by libsir. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#gaf14164a64eca824a2bae72ef4e9689cd" title="Set new formatting options for a log file already managed by libsir.">sir_fileopts</a></dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">id</td><td>The <a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442" title="Log file identifier type.">sirfileid</a> obtained when the file was added to libsir. </td></tr>
-    <tr><td class="paramname">levels</td><td>New bitmask of <a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> to register for. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the file is known to libsir and was succcessfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
-
-</div>
-</div>
-<a id="gaf14164a64eca824a2bae72ef4e9689cd" name="gaf14164a64eca824a2bae72ef4e9689cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf14164a64eca824a2bae72ef4e9689cd">&#9670;&#160;</a></span>sir_fileopts()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sir_fileopts </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442">sirfileid</a>&#160;</td>
-          <td class="paramname"><em>id</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a>&#160;</td>
-          <td class="paramname"><em>opts</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set new formatting options for a log file already managed by libsir. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#ga5a776d3d55e9f993eb0fad82788e1160" title="Set new level registrations for a log file already managed by libsir.">sir_filelevels</a></dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">id</td><td>The <a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442" title="Log file identifier type.">sirfileid</a> obtained when the file was added to libsir. </td></tr>
-    <tr><td class="paramname">opts</td><td>New bitmask of <a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> for the file. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the file is known to libsir and was succcessfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
-
-</div>
-</div>
-<a id="gac0c399c73c25d1128befc6b75cbae300" name="gac0c399c73c25d1128befc6b75cbae300"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac0c399c73c25d1128befc6b75cbae300">&#9670;&#160;</a></span>sir_geterror()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint16_t sir_geterror </td>
-          <td>(</td>
-          <td class="paramtype">char&#160;</td>
-          <td class="paramname"><em>message</em>[SIR_MAXERROR]</td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Retrieves information about the last error that occurred. </p>
-<p>libsir maintains errors on a per-thread basis, so it's important that the same thread that encountered a failed library call be the one to get the error information.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">message</td><td>A buffer of <a class="el" href="group__config.html#gad6fce840144259e992c33fb611f31262" title="The maximum size, in characters, of an error message.">SIR_MAXERROR</a> chars to receive an error message. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>uint16_t The error code. Possible error codes are listed in <a class="el" href="group__publictypes.html#ga861df9be69c6bcd01d29b77bd28ff7d3" title="Error codes.">sir_errorcode</a>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if <code>si</code> is not <code>NULL</code>, <code>false</code> otherwise. </dd></dl>
 
 </div>
 </div>
@@ -413,32 +239,155 @@ To change options or level registrations for stdout/stderr, call sir_stdoutopts/
 
 </div>
 </div>
-<a id="gac21fb86ac7e7710400bf8b642887ad96" name="gac21fb86ac7e7710400bf8b642887ad96"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac21fb86ac7e7710400bf8b642887ad96">&#9670;&#160;</a></span>sir_makeinit()</h2>
+<a id="ga9bf3e92cefac01de4e3c6c359a58706f" name="ga9bf3e92cefac01de4e3c6c359a58706f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9bf3e92cefac01de4e3c6c359a58706f">&#9670;&#160;</a></span>sir_cleanup()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool sir_makeinit </td>
+          <td class="memname">bool sir_cleanup </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__publictypes.html#structsirinit">sirinit</a> *&#160;</td>
-          <td class="paramname"><em>si</em></td><td>)</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Fills out a <a class="el" href="group__publictypes.html#structsirinit" title="libsir initialization and configuration data.">sirinit</a> structure with default values. </p>
-<p>Creates an initialization configuration for libsir essentially using all of the default values (i.e., levels, options, text styling).</p>
-<dl class="section note"><dt>Note</dt><dd>Does not fill in string fields, such as <a class="el" href="group__publictypes.html#ac003c97d6b63150341f2f29166a533e3" title="If set, defines the name that will appear in messages sent to stdio and log file destinations.">sirinit.name</a>.</dd></dl>
+<p>Tears down and cleans up libsir after use. </p>
+<p>Deallocates resources such as memory buffers, file descriptors, etc. and resets the internal state. No calls into libsir will succeed after calling <a class="el" href="group__publicfuncs.html#ga9bf3e92cefac01de4e3c6c359a58706f" title="Tears down and cleans up libsir after use.">sir_cleanup</a> (with the exception of <a class="el" href="group__publicfuncs.html#gac21fb86ac7e7710400bf8b642887ad96" title="Fills out a sirinit structure with default values.">sir_makeinit</a>, <a class="el" href="group__publicfuncs.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes libsir for use.">sir_init</a>, and <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a>).</p>
+<p>May be called from any thread. If you wish to utilize libsir again during the same process' lifetime, simply call <a class="el" href="group__publicfuncs.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes libsir for use.">sir_init</a> again.</p>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if cleanup was successful, <code>false otherwise</code>. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+
+</div>
+</div>
+<a id="gac0c399c73c25d1128befc6b75cbae300" name="gac0c399c73c25d1128befc6b75cbae300"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac0c399c73c25d1128befc6b75cbae300">&#9670;&#160;</a></span>sir_geterror()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t sir_geterror </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>message</em>[SIR_MAXERROR]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieves information about the last error that occurred. </p>
+<p>libsir maintains errors on a per-thread basis, so it's important that the same thread that encountered a failed library call be the one to get the error information.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">si</td><td>Pointer to a <a class="el" href="group__publictypes.html#structsirinit" title="libsir initialization and configuration data.">sirinit</a> structure to receive default values. </td></tr>
+    <tr><td class="paramname">message</td><td>A buffer of <a class="el" href="sirconfig_8h.html#ad6fce840144259e992c33fb611f31262" title="The maximum size, in characters, of an error message.">SIR_MAXERROR</a> chars to receive an error message. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if <code>si</code> is not <code>NULL</code>, <code>false</code> otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>uint16_t The error code. Possible error codes are listed in <a class="el" href="group__publictypes.html#ga861df9be69c6bcd01d29b77bd28ff7d3" title="Error codes.">sir_errorcode</a>. </dd></dl>
+
+</div>
+</div>
+<a id="gaf78ed631ce03b57764ba91c63bacf410" name="gaf78ed631ce03b57764ba91c63bacf410"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf78ed631ce03b57764ba91c63bacf410">&#9670;&#160;</a></span>sir_debug()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sir_debug </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>format</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Dispatches a <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b" title="Debugging/diagnostic output.">SIRL_DEBUG</a> level message. </p>
+<p>The message will be delivered to all destinations registered to receive debug-level messages, each with their own formatting and styling options.</p>
+<dl class="section remark"><dt>Remarks</dt><dd>To change options or level registrations for <code>stdout</code>/<code>stderr</code>, call <a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a>/<a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a> and <a class="el" href="group__publicfuncs.html#ga0e78fb3ad87f02ef0f056a34200a4ab9" title="Set new formatting options for stderr.">sir_stderropts</a>/<a class="el" href="group__publicfuncs.html#ga421c13f6e269440cef0ac5c1ff3e65dd" title="Set new level registrations for stderr.">sir_stderrlevels</a>, respectively. To change the text styling on a per-level basis, call <a class="el" href="group__publicfuncs.html#gaa628fae976081e7aaa302e5c5e43e06c" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> </dd>
+<dd>
+<a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> </dd>
+<dd>
+<a class="el" href="group__default.html" title="Default sir_option bitmasks, sir_level registrations, and sir_textstyle bitmasks.">Defaults</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">format</td><td>A printf-style format string, representing the template for the message to dispatch. </td></tr>
+    <tr><td class="paramname">...</td><td>Arguments whose type and position align with the format specifiers in <code>format</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the message was dispatched succcessfully to at least one destination, <code>false</code> otherwise. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+
+</div>
+</div>
+<a id="gaa04f4ca1fc06e1d99ca4f0fd6422b573" name="gaa04f4ca1fc06e1d99ca4f0fd6422b573"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa04f4ca1fc06e1d99ca4f0fd6422b573">&#9670;&#160;</a></span>sir_addfile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442">sirfileid</a> sir_addfile </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a>&#160;</td>
+          <td class="paramname"><em>levels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a>&#160;</td>
+          <td class="paramname"><em>opts</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds a log file and registeres it to receive log output. </p>
+<p>The file at <code>path</code> will be created if it does not exist, otherwise it be appended to.</p>
+<p>The levels for which the file will receive output are specified in the <code>levels</code> bitmask. If you wish to use the default levels, pass <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804" title="Default levels for this type of destination.">SIRL_DEFAULT</a>.</p>
+<p>The formatting options for the log output sent to the file are specified in the <code>opts</code> bitmask. If you wish to use the default options, pass <a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02" title="Default options for this type of destination.">SIRO_DEFAULT</a>. By default, log files receive all available information.</p>
+<dl class="section remark"><dt>Remarks</dt><dd>Take note of the <a class="el" href="sirconfig_8h.html#a019fb62b107343bafedb0f5ad84f7d3a" title="The size, in bytes, at which a log file will be rolled/archived.">SIR_FROLLSIZE</a> compile-time constant. When any log file reaches that size in bytes, it will be archived to a date-stamped file in the same directory, and logging will resume at the path of the original file.</dd>
+<dd>
+If <code>path</code> is a relative path, it shall be treated as relative to the <em>current working directory</em>. This is not necessarily the same path that your process' binary file resides in.</dd>
+<dd>
+The return value from this function is only valid for the lifetime of the process. If a crash or restart occurs, you will no longer be able to refer to the file by that identifier, and will have to add the file again (libsir does not persist its list of log files).</dd>
+<dd>
+To change the file's level registrations or options after adding it, call <a class="el" href="group__publicfuncs.html#ga5a776d3d55e9f993eb0fad82788e1160" title="Set new level registrations for a log file already managed by libsir.">sir_filelevels</a> and <a class="el" href="group__publicfuncs.html#gaf14164a64eca824a2bae72ef4e9689cd" title="Set new formatting options for a log file already managed by libsir.">sir_fileopts</a>, respectively.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#gaba84f2fef8ac18a28483ee02c1c57240" title="Removes a file previously added to libsir.">sir_remfile</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>Either a relative or absolute path to a file name which shall become a log file managed by libsir. </td></tr>
+    <tr><td class="paramname">levels</td><td>Levels of output to register the file for. </td></tr>
+    <tr><td class="paramname">opts</td><td>Formatting options for the output sent to the file. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>sirfileid If successful, a unique identifier that can later be used to modify level registrations, options, or remove the file from libsir. Upon failure, returns <code>NULL</code>. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -471,6 +420,443 @@ To change options or level registrations for stdout/stderr, call sir_stdoutopts/
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the file is known to libsir, and was successfully removed, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+
+</div>
+</div>
+<a id="ga5a776d3d55e9f993eb0fad82788e1160" name="ga5a776d3d55e9f993eb0fad82788e1160"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5a776d3d55e9f993eb0fad82788e1160">&#9670;&#160;</a></span>sir_filelevels()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sir_filelevels </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442">sirfileid</a>&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a>&#160;</td>
+          <td class="paramname"><em>levels</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set new level registrations for a log file already managed by libsir. </p>
+<p>By default, log files are registered for the following levels:</p>
+<ul>
+<li>all levels (SIRL_ALL)</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#gaf14164a64eca824a2bae72ef4e9689cd" title="Set new formatting options for a log file already managed by libsir.">sir_fileopts</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>The <a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442" title="Log file identifier type.">sirfileid</a> obtained when the file was added to libsir. </td></tr>
+    <tr><td class="paramname">levels</td><td>New bitmask of <a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> to register for. If you wish to use the default levels, pass <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804" title="Default levels for this type of destination.">SIRL_DEFAULT</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the file is known to libsir and was succcessfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+
+</div>
+</div>
+<a id="gaf14164a64eca824a2bae72ef4e9689cd" name="gaf14164a64eca824a2bae72ef4e9689cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf14164a64eca824a2bae72ef4e9689cd">&#9670;&#160;</a></span>sir_fileopts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sir_fileopts </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442">sirfileid</a>&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a>&#160;</td>
+          <td class="paramname"><em>opts</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set new formatting options for a log file already managed by libsir. </p>
+<p>By default, log files have the following formatting options:</p>
+<ul>
+<li><a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba843ca9cff10528731dc9609e2fbfe34f" title="Include all formatting and functionality.">SIRO_ALL</a></li>
+<li><a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40bafe062f8fda5add3cb0e8fc3948aa6f9f" title="Exclude local hostname.">SIRO_NOHOST</a></li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#ga5a776d3d55e9f993eb0fad82788e1160" title="Set new level registrations for a log file already managed by libsir.">sir_filelevels</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>The <a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442" title="Log file identifier type.">sirfileid</a> obtained when the file was added to libsir. </td></tr>
+    <tr><td class="paramname">opts</td><td>New bitmask of <a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> for the file. If you wish to use the default options, pass <a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02" title="Default options for this type of destination.">SIRO_DEFAULT</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the file is known to libsir and was succcessfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+
+</div>
+</div>
+<a id="gaa628fae976081e7aaa302e5c5e43e06c" name="gaa628fae976081e7aaa302e5c5e43e06c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa628fae976081e7aaa302e5c5e43e06c">&#9670;&#160;</a></span>sir_settextstyle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sir_settextstyle </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a>&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf">sir_textstyle</a>&#160;</td>
+          <td class="paramname"><em>style</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set new text styling for stdio (stdout/stderr) destinations on a per-level basis. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#ga932eec2f9c73eecdd2b6b935452e5eed" title="Reset text styling for stdio (stdout/stderr) destinations to their default values.">sir_resettextstyles</a> </dd>
+<dd>
+<a class="el" href="group__default.html" title="Default sir_option bitmasks, sir_level registrations, and sir_textstyle bitmasks.">Defaults</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">level</td><td>The <a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> for which to set the text styling. </td></tr>
+    <tr><td class="paramname">style</td><td>New bitmask of <a class="el" href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf" title="Styles for 16-color stdio output.">sir_textstyle</a> for the level. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if succcessfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+
+</div>
+</div>
+<a id="ga932eec2f9c73eecdd2b6b935452e5eed" name="ga932eec2f9c73eecdd2b6b935452e5eed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga932eec2f9c73eecdd2b6b935452e5eed">&#9670;&#160;</a></span>sir_resettextstyles()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sir_resettextstyles </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reset text styling for stdio (stdout/stderr) destinations to their default values. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#gaa628fae976081e7aaa302e5c5e43e06c" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a> </dd>
+<dd>
+<a class="el" href="group__default.html" title="Default sir_option bitmasks, sir_level registrations, and sir_textstyle bitmasks.">Defaults</a></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> if succcessfully reset, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+
+</div>
+</div>
+<a id="ga6f17febe99cb0beb6f8119283cc62d42" name="ga6f17febe99cb0beb6f8119283cc62d42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6f17febe99cb0beb6f8119283cc62d42">&#9670;&#160;</a></span>sir_stdoutlevels()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sir_stdoutlevels </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a>&#160;</td>
+          <td class="paramname"><em>levels</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set new level registrations for <code>stdout</code>. </p>
+<p>By default, <code>stdout</code> is registered for the following levels:</p>
+<ul>
+<li>debug (SIRL_DEBUG)</li>
+<li>info (SIRL_INFO)</li>
+<li>notice (SIRL_NOTICE)</li>
+<li>warning (SIRL_WARN)</li>
+</ul>
+<p>To modify formatting options for <code>stdout</code>, use <a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">levels</td><td>New bitmask of <a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> to register for. If you wish to use the default levels, pass <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804" title="Default levels for this type of destination.">SIRL_DEFAULT</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if succcessfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+
+</div>
+</div>
+<a id="gac117aaf4a045115e58ba4471f9a4747f" name="gac117aaf4a045115e58ba4471f9a4747f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac117aaf4a045115e58ba4471f9a4747f">&#9670;&#160;</a></span>sir_stdoutopts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sir_stdoutopts </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a>&#160;</td>
+          <td class="paramname"><em>opts</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set new formatting options for <code>stdout</code>. </p>
+<p>By default, <code>stdout</code> has the following formatting options:</p>
+<ul>
+<li><a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d" title="Exclude time stamps (implies SIRO_NOMSEC).">SIRO_NOTIME</a></li>
+<li><a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40bafe062f8fda5add3cb0e8fc3948aa6f9f" title="Exclude local hostname.">SIRO_NOHOST</a></li>
+<li><a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40babbdc2529081d58ebff50a8966db31fd2" title="Exclude process ID.">SIRO_NOPID</a></li>
+<li><a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba7079a31d6035c24aaa94d85c4a89c053" title="Exclude thread ID/name.">SIRO_NOTID</a></li>
+</ul>
+<p>To modify level registrations for <code>stdout</code>, use <a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">opts</td><td>New bitmask of <a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> for <code>stdout</code>. If you wish to use the default values, pass <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804" title="Default levels for this type of destination.">SIRL_DEFAULT</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if succcessfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+
+</div>
+</div>
+<a id="ga421c13f6e269440cef0ac5c1ff3e65dd" name="ga421c13f6e269440cef0ac5c1ff3e65dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga421c13f6e269440cef0ac5c1ff3e65dd">&#9670;&#160;</a></span>sir_stderrlevels()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sir_stderrlevels </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a>&#160;</td>
+          <td class="paramname"><em>levels</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set new level registrations for <code>stderr</code>. </p>
+<p>By default, <code>stderr</code> is registered for the following levels:</p>
+<ul>
+<li>error (SIRL_ERROR)</li>
+<li>critical (SIRL_CRIT)</li>
+<li>alert (SIRL_ALERT)</li>
+<li>emergency (SIRL_EMERG)</li>
+</ul>
+<p>To modify formatting options for <code>stderr</code>, use <a class="el" href="group__publicfuncs.html#ga0e78fb3ad87f02ef0f056a34200a4ab9" title="Set new formatting options for stderr.">sir_stderropts</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#ga0e78fb3ad87f02ef0f056a34200a4ab9" title="Set new formatting options for stderr.">sir_stderropts</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">levels</td><td>New bitmask of <a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> to register for. If you wish to use the default levels, pass <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804" title="Default levels for this type of destination.">SIRL_DEFAULT</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if succcessfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+
+</div>
+</div>
+<a id="ga0e78fb3ad87f02ef0f056a34200a4ab9" name="ga0e78fb3ad87f02ef0f056a34200a4ab9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0e78fb3ad87f02ef0f056a34200a4ab9">&#9670;&#160;</a></span>sir_stderropts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sir_stderropts </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a>&#160;</td>
+          <td class="paramname"><em>opts</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set new formatting options for <code>stderr</code>. </p>
+<p>By default, <code>stderr</code> has the following formatting options:</p>
+<ul>
+<li><a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d" title="Exclude time stamps (implies SIRO_NOMSEC).">SIRO_NOTIME</a></li>
+<li><a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40bafe062f8fda5add3cb0e8fc3948aa6f9f" title="Exclude local hostname.">SIRO_NOHOST</a></li>
+<li><a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40babbdc2529081d58ebff50a8966db31fd2" title="Exclude process ID.">SIRO_NOPID</a></li>
+<li><a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba7079a31d6035c24aaa94d85c4a89c053" title="Exclude thread ID/name.">SIRO_NOTID</a></li>
+</ul>
+<p>To modify level registrations for <code>stderr</code>, use <a class="el" href="group__publicfuncs.html#ga421c13f6e269440cef0ac5c1ff3e65dd" title="Set new level registrations for stderr.">sir_stderrlevels</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#ga421c13f6e269440cef0ac5c1ff3e65dd" title="Set new level registrations for stderr.">sir_stderrlevels</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">opts</td><td>New bitmask of <a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> for <code>stderr</code>. If you wish to use the default values, pass <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804" title="Default levels for this type of destination.">SIRL_DEFAULT</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if succcessfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+
+</div>
+</div>
+<a id="ga2b383287c821bb519868776a4d8bae83" name="ga2b383287c821bb519868776a4d8bae83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2b383287c821bb519868776a4d8bae83">&#9670;&#160;</a></span>sir_sysloglevels()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sir_sysloglevels </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a>&#160;</td>
+          <td class="paramname"><em>levels</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set new level registrations for the system logger destination. </p>
+<p>By default, the system logger is registered for the following levels:</p>
+<ul>
+<li>notice (SIRL_NOTICE)</li>
+<li>warning (SIRL_WARNING)</li>
+<li>error (SIRL_ERROR)</li>
+<li>critical (SIRL_CRIT)</li>
+<li>emergency (SIRL_EMERG)</li>
+</ul>
+<p>To modify formatting options for the system logger, use <a class="el" href="group__publicfuncs.html#ga5b32a04501257df43bbe56169ab383c2" title="Set new formatting options for the system logger destination.">sir_syslogopts</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#ga5b32a04501257df43bbe56169ab383c2" title="Set new formatting options for the system logger destination.">sir_syslogopts</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">levels</td><td>New bitmask of <a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> to register for. If you wish to use the default levels, pass <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804" title="Default levels for this type of destination.">SIRL_DEFAULT</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if succcessfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+
+</div>
+</div>
+<a id="ga5b32a04501257df43bbe56169ab383c2" name="ga5b32a04501257df43bbe56169ab383c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5b32a04501257df43bbe56169ab383c2">&#9670;&#160;</a></span>sir_syslogopts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sir_syslogopts </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a>&#160;</td>
+          <td class="paramname"><em>opts</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set new formatting options for the system logger destination. </p>
+<p>By default, the system logger has the following formatting options:</p>
+<ul>
+<li><a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0" title="Sets all other options except SIRO_NOHDR.">SIRO_MSGONLY</a></li>
+</ul>
+<p>To modify level registrations for the system logger, use <a class="el" href="group__publicfuncs.html#ga2b383287c821bb519868776a4d8bae83" title="Set new level registrations for the system logger destination.">sir_sysloglevels</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#ga2b383287c821bb519868776a4d8bae83" title="Set new level registrations for the system logger destination.">sir_sysloglevels</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">opts</td><td>New bitmask of <a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> for the system logger. If you wish to use the default values, pass <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804" title="Default levels for this type of destination.">SIRL_DEFAULT</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if succcessfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+
+</div>
+</div>
+<a id="gabc5831ef9b59c181b6ad7944c2ef1d5f" name="gabc5831ef9b59c181b6ad7944c2ef1d5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabc5831ef9b59c181b6ad7944c2ef1d5f">&#9670;&#160;</a></span>sir_syslogid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sir_syslogid </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>identity</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set new system logger identity. </p>
+<p>In the context of the system logger (i.e., <code>syslog</code>/<code>os_log</code>/etc.), identity refers to the <code>name</code> that appears in the log for the current process.</p>
+<p>Upon library initialization, the system logger identity is resolved as follows:</p>
+<ol type="1">
+<li>If the <a class="el" href="group__publictypes.html#acbc738f8c0f9dc404ac85e13cb43c7c5">sirinit.d_syslog.identity</a> string is set, it will be used.</li>
+<li>If the <a class="el" href="group__publictypes.html#ac003c97d6b63150341f2f29166a533e3" title="If set, defines the name that will appear in messages sent to stdio and log file destinations.">sirinit.name</a> string is set, it will be used.</li>
+<li>If the name of the current process is available, it will be used.</li>
+<li>If none of these are available, the string <a class="el" href="sirconfig_8h.html#a08083686de6372fdeb9b52e73a6d6808" title="Fallback system logger identity.">SIR_FALLBACK_SYSLOG_ID</a> will be used.</li>
+</ol>
+<dl class="section remark"><dt>Remarks</dt><dd>If <code>SIR_NO_SYSTEM_LOGGERS</code> is defined when compiling libsir, this function will immediately return false, and set the last error to <a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a3b567998a2ca4da43348b5edb38dd865" title="Feature is disabled or unavailable.">SIR_E_UNAVAIL</a>.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">identity</td><td>The string to use as the system logger identity. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if succcessfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+
+</div>
+</div>
+<a id="gac48e99ced63f02c6999f50aca7c56efd" name="gac48e99ced63f02c6999f50aca7c56efd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac48e99ced63f02c6999f50aca7c56efd">&#9670;&#160;</a></span>sir_syslogcat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sir_syslogcat </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>category</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set new system logger category. </p>
+<p>Some system logger facilities (e.g. <code>os_log</code>, the system logger on macOS), ask for a category string when logging messages–to more easily group messages together (which, as a byproduct, enhances searching).</p>
+<p>If you are not utilizing a system logger that requires a category string, you do not need to call this function (or set <a class="el" href="group__publictypes.html#ace79b2f2bd4d08d0c6e4151dafb3266b">sirinit.d_syslog.category</a>).</p>
+<p>Upon library initialization, the system logger category is resolved as follows:</p>
+<ol type="1">
+<li>If the <a class="el" href="group__publictypes.html#ace79b2f2bd4d08d0c6e4151dafb3266b">sirinit.d_syslog.category</a> string is set, it will be used.</li>
+<li>The string <a class="el" href="sirconfig_8h.html#a9b99ae577cedc922bded630216627070" title="Fallback system logger category.">SIR_FALLBACK_SYSLOG_CAT</a> will be used.</li>
+</ol>
+<dl class="section remark"><dt>Remarks</dt><dd>If <code>SIR_NO_SYSTEM_LOGGERS</code> is defined when compiling libsir, this function will immediately return false, and set the last error to <a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a3b567998a2ca4da43348b5edb38dd865" title="Feature is disabled or unavailable.">SIR_E_UNAVAIL</a>.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">category</td><td>The string to use as the system logger category. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if succcessfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>

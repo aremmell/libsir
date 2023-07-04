@@ -179,7 +179,7 @@ $(document).ready(function(){initNavTree('sirinternal_8h_source.html',''); initR
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="keywordtype">void</span> _sir_unlocksection(sir_mutex_id mid);</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="keywordtype">bool</span> _sir_mapmutexid(sir_mutex_id mid, sirmutex_t** m, <span class="keywordtype">void</span>** section);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="keywordtype">bool</span> _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, <span class="keywordtype">void</span>** section);</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="preprocessor">#if !defined(__WIN__)</span></div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="keywordtype">void</span> _sir_initialize_once(<span class="keywordtype">void</span>);</div>
@@ -193,7 +193,7 @@ $(document).ready(function(){initNavTree('sirinternal_8h_source.html',''); initR
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="keywordtype">bool</span> _sir_once(sironce_t* once, sir_once_fn func);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="keywordtype">bool</span> _sir_once(sir_once* once, sir_once_fn func);</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="keywordtype">bool</span> _sir_logv(<a class="code hl_enumeration" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level, <span class="keyword">const</span> <span class="keywordtype">char</span>* format, va_list args);</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
@@ -223,18 +223,18 @@ $(document).ready(function(){initNavTree('sirinternal_8h_source.html',''); initR
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>pid_t _sir_gettid(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="keywordtype">bool</span> _sir_getthreadname(<span class="keywordtype">char</span> name[<a class="code hl_define" href="group__config.html#ga77d8a4249177fcf7703a811ca0154190">SIR_MAXPID</a>]);</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="keywordtype">bool</span> _sir_getthreadname(<span class="keywordtype">char</span> name[<a class="code hl_define" href="sirconfig_8h.html#a77d8a4249177fcf7703a811ca0154190">SIR_MAXPID</a>]);</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="keywordtype">bool</span> _sir_gethostname(<span class="keywordtype">char</span> name[SIR_MAXHOST]);</div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_INTERNAL_H_INCLUDED */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="agroup__config_html_ga77d8a4249177fcf7703a811ca0154190"><div class="ttname"><a href="group__config.html#ga77d8a4249177fcf7703a811ca0154190">SIR_MAXPID</a></div><div class="ttdeci">#define SIR_MAXPID</div><div class="ttdoc">The size, in characters, of the buffer used to hold process/thread IDs/names.</div><div class="ttdef"><b>Definition</b> sirconfig.h:284</div></div>
 <div class="ttc" id="agroup__publictypes_html_ga4a3303c67acd49bea38fd3565d458cb2"><div class="ttname"><a href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a></div><div class="ttdeci">sir_level</div><div class="ttdoc">Defines the available levels (severity/priority) of logging output.</div><div class="ttdef"><b>Definition</b> sirtypes.h:45</div></div>
 <div class="ttc" id="agroup__publictypes_html_gafb659914aac0129182d86f7d3414e85d"><div class="ttname"><a href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a></div><div class="ttdeci">uint32_t sir_options</div><div class="ttdoc">sir_option bitmask type.</div><div class="ttdef"><b>Definition</b> sirtypes.h:78</div></div>
-<div class="ttc" id="agroup__publictypes_html_structsir__syslog__dest"><div class="ttname"><a href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a></div><div class="ttdoc">Configuration for the system logger destination.</div><div class="ttdef"><b>Definition</b> sirtypes.h:148</div></div>
-<div class="ttc" id="agroup__publictypes_html_structsirinit"><div class="ttname"><a href="group__publictypes.html#structsirinit">sirinit</a></div><div class="ttdoc">libsir initialization and configuration data.</div><div class="ttdef"><b>Definition</b> sirtypes.h:214</div></div>
-<div class="ttc" id="astructsir__update__config__data_html"><div class="ttname"><a href="structsir__update__config__data.html">sir_update_config_data</a></div><div class="ttdoc">Encapsulates dynamic updating of current configuration.</div><div class="ttdef"><b>Definition</b> sirtypes.h:358</div></div>
-<div class="ttc" id="astructsirbuf_html"><div class="ttname"><a href="structsirbuf.html">sirbuf</a></div><div class="ttdoc">Formatted output container.</div><div class="ttdef"><b>Definition</b> sirtypes.h:295</div></div>
+<div class="ttc" id="agroup__publictypes_html_structsir__syslog__dest"><div class="ttname"><a href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a></div><div class="ttdoc">Configuration for the system logger destination.</div><div class="ttdef"><b>Definition</b> sirtypes.h:145</div></div>
+<div class="ttc" id="agroup__publictypes_html_structsirinit"><div class="ttname"><a href="group__publictypes.html#structsirinit">sirinit</a></div><div class="ttdoc">libsir initialization and configuration data.</div><div class="ttdef"><b>Definition</b> sirtypes.h:194</div></div>
+<div class="ttc" id="asirconfig_8h_html_a77d8a4249177fcf7703a811ca0154190"><div class="ttname"><a href="sirconfig_8h.html#a77d8a4249177fcf7703a811ca0154190">SIR_MAXPID</a></div><div class="ttdeci">#define SIR_MAXPID</div><div class="ttdoc">The size, in characters, of the buffer used to hold process/thread IDs/names.</div><div class="ttdef"><b>Definition</b> sirconfig.h:268</div></div>
+<div class="ttc" id="astructsir__update__config__data_html"><div class="ttname"><a href="structsir__update__config__data.html">sir_update_config_data</a></div><div class="ttdoc">Encapsulates dynamic updating of current configuration.</div><div class="ttdef"><b>Definition</b> sirtypes.h:328</div></div>
+<div class="ttc" id="astructsirbuf_html"><div class="ttname"><a href="structsirbuf.html">sirbuf</a></div><div class="ttdoc">Formatted output container.</div><div class="ttdef"><b>Definition</b> sirtypes.h:265</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.7-->

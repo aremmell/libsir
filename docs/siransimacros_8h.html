@@ -174,6 +174,46 @@ Macros</h2></td></tr>
 <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
 <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a0cb084124e9ecca12ea15d5ffd37284a" name="a0cb084124e9ecca12ea15d5ffd37284a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cb084124e9ecca12ea15d5ffd37284a">&#9670;&#160;</a></span>SIR_ESC</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_ESC&#160;&#160;&#160;&quot;\x1b[&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Escape sequences: </p>
+<p>16 colors: \033[&lt;dim=0..2&gt;;&lt;fg=30..37, 90..97&gt;;&lt;bg=40..47, 100..107&gt;m 256 colors: \033[&lt;fg=38|bg=48&gt;;5;&lt;0..255&gt;m 24-bit RGB: \033[&lt;fg=38|bg=48&gt;;2;&lt;R=0..255&gt;;&lt;G=0..255&gt;;&lt;B=0..255&gt;m Clear all: \033[0m</p>
+<p>Note: evidently, you can chain these sequences to set both fore and back simultaneously: \033[38;5;128;48;5;206m</p>
+<ul>
+<li>30–37, 90–97 ("bright"): Set foreground color (number = color ID)</li>
+<li>38: Set foreground color (with pattern to follow: 256 or 24-bit RGB color)</li>
+<li>39: Set default foreground color</li>
+<li>40–47, 100–107 ("bright"): Set background color (number = color ID)</li>
+<li>48: Set background color (with pattern to follow: 256 or 24-bit RGB color)</li>
+<li>49: Set default background color <h1>=== to test </h1>
+</li>
+</ul>
+<ul>
+<li>3: Emphasis (off: 23?) √</li>
+<li>4: Underline (off: 24) √</li>
+<li>5: Blinking (off: 25) √ (have to enable in settings)</li>
+<li>7: Inverse (off: 27) √</li>
+<li>9: Strikethrough (off: 29?) √</li>
+<li>51: Framed (off: 54) x</li>
+<li>52: Encircled (off: 54) x</li>
+<li>53: Overlined (off: 55) x</li>
+<li>1: Bold (off: 21) √</li>
+</ul>
+<p>The 24-bit RGB spectrum is laid out as follows:</p>
+<p>0x00-0x07: standard colors (same as the 4-bit colors) 0x08-0x0F: high intensity colors 0x10-0xE7: 6 × 6 × 6 cube (216 colors): 16 + 36 × r + 6 × g + b (0 ≤ r, g, b ≤ 5) 0xE8-0xFF: grayscale from black to white in 24 steps Begins an ANSI escape sequence. </p>
+
+</div>
+</div>
 <a id="a1ebf33726fd433028ef8313fcc97fe02" name="a1ebf33726fd433028ef8313fcc97fe02"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1ebf33726fd433028ef8313fcc97fe02">&#9670;&#160;</a></span>COLOR</h2>
 
@@ -214,46 +254,6 @@ Macros</h2></td></tr>
 
 <p>Creates a sequence of colored characters 's' with foreground color 'fg', background color 'bg', and attributes 'attr' (0=normal, 1=bold, 2=dim). </p>
 <p>Ends by resetting to the default fg/bg color, and normal attr. </p>
-
-</div>
-</div>
-<a id="a0cb084124e9ecca12ea15d5ffd37284a" name="a0cb084124e9ecca12ea15d5ffd37284a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0cb084124e9ecca12ea15d5ffd37284a">&#9670;&#160;</a></span>SIR_ESC</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SIR_ESC&#160;&#160;&#160;&quot;\x1b[&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Escape sequences: </p>
-<p>16 colors: \033[&lt;dim=0..2&gt;;&lt;fg=30..37, 90..97&gt;;&lt;bg=40..47, 100..107&gt;m 256 colors: \033[&lt;fg=38|bg=48&gt;;5;&lt;0..255&gt;m 24-bit RGB: \033[&lt;fg=38|bg=48&gt;;2;&lt;R=0..255&gt;;&lt;G=0..255&gt;;&lt;B=0..255&gt;m Clear all: \033[0m</p>
-<p>Note: evidently, you can chain these sequences to set both fore and back simultaneously: \033[38;5;128;48;5;206m</p>
-<ul>
-<li>30–37, 90–97 ("bright"): Set foreground color (number = color ID)</li>
-<li>38: Set foreground color (with pattern to follow: 256 or 24-bit RGB color)</li>
-<li>39: Set default foreground color</li>
-<li>40–47, 100–107 ("bright"): Set background color (number = color ID)</li>
-<li>48: Set background color (with pattern to follow: 256 or 24-bit RGB color)</li>
-<li>49: Set default background color <h1>=== to test </h1>
-</li>
-</ul>
-<ul>
-<li>3: Emphasis (off: 23?) √</li>
-<li>4: Underline (off: 24) √</li>
-<li>5: Blinking (off: 25) √ (have to enable in settings)</li>
-<li>7: Inverse (off: 27) √</li>
-<li>9: Strikethrough (off: 29?) √</li>
-<li>51: Framed (off: 54) x</li>
-<li>52: Encircled (off: 54) x</li>
-<li>53: Overlined (off: 55) x</li>
-<li>1: Bold (off: 21) √</li>
-</ul>
-<p>The 24-bit RGB spectrum is laid out as follows:</p>
-<p>0x00-0x07: standard colors (same as the 4-bit colors) 0x08-0x0F: high intensity colors 0x10-0xE7: 6 × 6 × 6 cube (216 colors): 16 + 36 × r + 6 × g + b (0 ≤ r, g, b ≤ 5) 0xE8-0xFF: grayscale from black to white in 24 steps Begins an ANSI escape sequence. </p>
 
 </div>
 </div>

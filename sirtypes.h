@@ -126,8 +126,6 @@ typedef enum {
  * @struct sir_stdio_dest
  * @brief Configuration for stdio destinations (stdout and stderr).
  *
- * @see ::sir_level
- * @see ::sir_option
  * @see ::sir_syslog_dest
  */
 typedef struct {
@@ -142,13 +140,10 @@ typedef struct {
  * @struct sir_syslog_dest
  * @brief Configuration for the system logger destination.
  *
- * @see ::sir_level
- * @see ::sir_option
  * @see ::sir_stdio_dest
  */
 typedef struct {
-    /** ::sir_level bitmask defining levels to register for. */
-    sir_levels levels;
+    sir_levels levels; /**< ::sir_level bitmask defining levels to register for. */
 
     /**
      * ::sir_option bitmask defining the formatting of output.
@@ -168,36 +163,19 @@ typedef struct {
 
     /** Reserved for internal use; do not modify. */
     struct {
-        /** State bitmask. */
-        uint32_t mask;
-
-        /** System logger handle/identifier. */
-        void* logger;
+        uint32_t mask; /**< State bitmask. */
+        void* logger;  /**< System logger handle/identifier. */
     } _state;
 
     /**
      * The identity string to pass to the system logger.
-     *
-     * If not set, and the name in the ::sirinit struct
-     * is set, that will be used instead.
-     *
-     * Failing that, an attempt will be made to use the file name
-     * of the calling process. If that is unsuccessful as well,
-     * the string ::SIR_FALLBACK_SYSLOG_ID will be used.
-     *
-     * @note Can be modified at runtime by calling ::sir_syslogid.
+     * @see ::sir_syslogid
      */
     char identity[SIR_MAX_SYSLOG_ID];
 
     /**
      * The category string to pass to the system logger.
-     *
-     * Some system loggers (e.g. `os_log` on macOS) require a
-     * category string to group and filter log messages.
-     *
-     * If not set, the string ::SIR_FALLBACK_SYSLOG_CAT will be used instead.
-     *
-     * @note Can be modified at runtime by calling ::sir_syslogcat.
+     * @see ::sir_syslogcat
      */
     char category[SIR_MAX_SYSLOG_CAT];
 } sir_syslog_dest;
@@ -209,18 +187,14 @@ typedef struct {
  * @note Pass a pointer to an instance of this structure to ::sir_init
  * to begin using libsir.
  *
+ * @see ::sir_makeinit
  * @see ::sir_stdio_dest
  * @see ::sir_syslog_dest
  */
 typedef struct {
-    /** stdout configuration. */
-    sir_stdio_dest d_stdout;
-
-    /** stderr configuration. */
-    sir_stdio_dest d_stderr;
-
-    /** System logger configuration. */
-    sir_syslog_dest d_syslog;
+    sir_stdio_dest d_stdout;  /**< stdout configuration. */
+    sir_stdio_dest d_stderr;  /**< stderr configuration. */
+    sir_syslog_dest d_syslog; /**< System logger configuration. */
 
     /**
      * If set, defines the name that will appear in messages sent to stdio and
@@ -235,11 +209,6 @@ typedef struct {
 /**
  * @}
  * @}
- * */
-
-/**
- * @internal
- * @{
  */
 
 /** Text style attribute mask. */
@@ -348,33 +317,31 @@ typedef struct {
 
 /** Bitmask defining which values are to be updated in the global config. */
 typedef enum {
-    SIRU_LEVELS     = 0x00000001,
-    SIRU_OPTIONS    = 0x00000002,
-    SIRU_SYSLOG_ID  = 0x00000004,
-    SIRU_SYSLOG_CAT = 0x00000008,
-    SIRU_ALL        = 0x0000000f
+    SIRU_LEVELS     = 0x00000001, /**< Update level registrations. */
+    SIRU_OPTIONS    = 0x00000002, /**< Update formatting options. */
+    SIRU_SYSLOG_ID  = 0x00000004, /**< Update system logger identity. */
+    SIRU_SYSLOG_CAT = 0x00000008, /**< Update system logger category. */
+    SIRU_ALL        = 0x0000000f  /**< Update all available fields. */
 } sir_config_data_field;
 
 /** Encapsulates dynamic updating of current configuration. */
 typedef struct {
-    uint32_t fields;
-    sir_levels* levels;
-    sir_options* opts;
-    const char* sl_identity;
-    const char* sl_category;
+    uint32_t fields;         /**< ::sir_config_data_field bitmask. */
+    sir_levels* levels;      /**< Level registrations. */
+    sir_options* opts;       /**< Formatting options. */
+    const char* sl_identity; /**< System logger identity. */
+    const char* sl_category; /**< System logger category. */
 } sir_update_config_data;
 
 /** Bitmask defining the state of a system logger facility. */
 typedef enum {
-    SIRSL_IS_OPEN  = 0x00000001,
-    SIRSL_LEVELS   = 0x00000002,
-    SIRSL_OPTIONS  = 0x00000004,
-    SIRSL_CATEGORY = 0x00000008,
-    SIRSL_IDENTITY = 0x00000010,
-    SIRSL_UPDATED  = 0x00000020,
-    SIRSL_IS_INIT  = 0x00000040
+    SIRSL_IS_OPEN  = 0x00000001, /**< Log is open. */
+    SIRSL_LEVELS   = 0x00000002, /**< Level registrations. */
+    SIRSL_OPTIONS  = 0x00000004, /**< Formatting options. */
+    SIRSL_CATEGORY = 0x00000008, /**< Category. */
+    SIRSL_IDENTITY = 0x00000010, /**< Identity. */
+    SIRSL_UPDATED  = 0x00000020, /**< Config has been updated. */
+    SIRSL_IS_INIT  = 0x00000040  /**< Subsystem is initialized. */
 } sir_syslog_state;
-
-/** @} */
 
 #endif /* !_SIR_TYPES_H_INCLUDED */

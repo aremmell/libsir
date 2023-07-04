@@ -243,9 +243,9 @@ Enumerations</h2></td></tr>
 <tr class="memitem:ga3bd5959a607e5280a8db90ada2d80caf"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf">sir_textstyle</a> { <br />
 &#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafaeedcdbdc654f326e211a2d2f653b07f5">SIRS_NONE</a> = 0x00000000
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafacc1f324a77d57ff8ac0895767c9480d4">SIRS_BRIGHT</a> = 0x00000000
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa0f7f4142f934212c7a8cbe5fb890ef65">SIRS_BOLD</a> = 0x00000001
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa54175d114e639a05853b7f8f2291661a">SIRS_DIM</a> = 0x00000000
+&#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa54175d114e639a05853b7f8f2291661a">SIRS_DIM</a> = 0x00000002
 , <br />
 &#160;&#160;<a class="el" href="group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa0fbe677e96b8483b073584848bb5e4fc">SIRS_FG_BLACK</a> = 0x000089a0
 , <br />
@@ -335,11 +335,7 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <div class="textblock"><p>Configuration for stdio destinations (stdout and stderr). </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> </dd>
-<dd>
-<a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> </dd>
-<dd>
-<a class="el" href="group__publictypes.html#structsir__syslog__dest" title="Configuration for the system logger destination.">sir_syslog_dest</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publictypes.html#structsir__syslog__dest" title="Configuration for the system logger destination.">sir_syslog_dest</a> </dd></dl>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -370,37 +366,9 @@ opts</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock"><p>Configuration for the system logger destination. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> </dd>
-<dd>
-<a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> </dd>
-<dd>
-<a class="el" href="group__publictypes.html#structsir__stdio__dest" title="Configuration for stdio destinations (stdout and stderr).">sir_stdio_dest</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publictypes.html#structsir__stdio__dest" title="Configuration for stdio destinations (stdout and stderr).">sir_stdio_dest</a> </dd></dl>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
-<tr><td class="fieldtype">
-<a id="a7120a461e55e114a173cddb56565e814" name="a7120a461e55e114a173cddb56565e814"></a>struct <a class="el" href="group__publictypes.html#structsir__syslog__dest_8__state">sir_syslog_dest._state</a></td>
-<td class="fieldname">
-_state</td>
-<td class="fielddoc">
-Reserved for internal use; do not modify. </td></tr>
-<tr><td class="fieldtype">
-<a id="ace79b2f2bd4d08d0c6e4151dafb3266b" name="ace79b2f2bd4d08d0c6e4151dafb3266b"></a>char</td>
-<td class="fieldname">
-category[<a class="el" href="group__config.html#gacf0d0fad6a98c920cced53dbe9b54d26">SIR_MAX_SYSLOG_CAT</a>]</td>
-<td class="fielddoc">
-The category string to pass to the system logger. <p>Some system loggers (e.g. <code>os_log</code> on macOS) require a category string to group and filter log messages.</p>
-<p>If not set, the string <a class="el" href="group__config.html#ga9b99ae577cedc922bded630216627070" title="Fallback system logger category.">SIR_FALLBACK_SYSLOG_CAT</a> will be used instead.</p>
-<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling sir_syslogcat. </dd></dl>
-</td></tr>
-<tr><td class="fieldtype">
-<a id="acbc738f8c0f9dc404ac85e13cb43c7c5" name="acbc738f8c0f9dc404ac85e13cb43c7c5"></a>char</td>
-<td class="fieldname">
-identity[<a class="el" href="group__config.html#ga24a907a8ba87d4355d11dca2476383b2">SIR_MAX_SYSLOG_ID</a>]</td>
-<td class="fielddoc">
-The identity string to pass to the system logger. <p>If not set, and the name in the <a class="el" href="group__publictypes.html#structsirinit" title="libsir initialization and configuration data.">sirinit</a> struct is set, that will be used instead.</p>
-<p>Failing that, an attempt will be made to use the file name of the calling process. If that is unsuccessful as well, the string <a class="el" href="group__config.html#ga08083686de6372fdeb9b52e73a6d6808" title="Fallback system logger identity.">SIR_FALLBACK_SYSLOG_ID</a> will be used.</p>
-<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling sir_syslogid. </dd></dl>
-</td></tr>
 <tr><td class="fieldtype">
 <a id="a2fb4c11cdb645a46f008c34678260bbc" name="a2fb4c11cdb645a46f008c34678260bbc"></a><a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a></td>
 <td class="fieldname">
@@ -415,6 +383,26 @@ opts</td>
 <a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> bitmask defining the formatting of output. <dl class="section remark"><dt>Remarks</dt><dd>Unlike the stdio and log file destinations, not all options are supported. This is due to the fact that system logging facilities typically already include the information represented by <a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> on their own.</dd></dl>
 <p>Furthermore, the supported options vary based on the system logging factility in use.</p>
 <dl class="section note"><dt>Note</dt><dd>If your system supports syslog, and libsir is compiled with the intent to use it (SIR_SYSLOG_ENABLED is defined), then at least <a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40babbdc2529081d58ebff50a8966db31fd2" title="Exclude process ID.">SIRO_NOPID</a> is supported. </dd></dl>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a7120a461e55e114a173cddb56565e814" name="a7120a461e55e114a173cddb56565e814"></a>struct <a class="el" href="group__publictypes.html#structsir__syslog__dest_8__state">sir_syslog_dest._state</a></td>
+<td class="fieldname">
+_state</td>
+<td class="fielddoc">
+Reserved for internal use; do not modify. </td></tr>
+<tr><td class="fieldtype">
+<a id="acbc738f8c0f9dc404ac85e13cb43c7c5" name="acbc738f8c0f9dc404ac85e13cb43c7c5"></a>char</td>
+<td class="fieldname">
+identity[<a class="el" href="sirconfig_8h.html#a24a907a8ba87d4355d11dca2476383b2">SIR_MAX_SYSLOG_ID</a>]</td>
+<td class="fielddoc">
+The identity string to pass to the system logger. <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#gabc5831ef9b59c181b6ad7944c2ef1d5f" title="Set new system logger identity.">sir_syslogid</a> </dd></dl>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="ace79b2f2bd4d08d0c6e4151dafb3266b" name="ace79b2f2bd4d08d0c6e4151dafb3266b"></a>char</td>
+<td class="fieldname">
+category[<a class="el" href="sirconfig_8h.html#acf0d0fad6a98c920cced53dbe9b54d26">SIR_MAX_SYSLOG_CAT</a>]</td>
+<td class="fielddoc">
+The category string to pass to the system logger. <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#gac48e99ced63f02c6999f50aca7c56efd" title="Set new system logger category.">sir_syslogcat</a> </dd></dl>
 </td></tr>
 </table>
 
@@ -433,23 +421,25 @@ opts</td>
 </div><div class="memdoc">
 <div class="textblock"><p>libsir initialization and configuration data. </p>
 <dl class="section note"><dt>Note</dt><dd>Pass a pointer to an instance of this structure to <a class="el" href="group__publicfuncs.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes libsir for use.">sir_init</a> to begin using libsir.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publictypes.html#structsir__stdio__dest" title="Configuration for stdio destinations (stdout and stderr).">sir_stdio_dest</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#gac21fb86ac7e7710400bf8b642887ad96" title="Fills out a sirinit structure with default values.">sir_makeinit</a> </dd>
+<dd>
+<a class="el" href="group__publictypes.html#structsir__stdio__dest" title="Configuration for stdio destinations (stdout and stderr).">sir_stdio_dest</a> </dd>
 <dd>
 <a class="el" href="group__publictypes.html#structsir__syslog__dest" title="Configuration for the system logger destination.">sir_syslog_dest</a> </dd></dl>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
-<tr><td class="fieldtype">
-<a id="ac66a688f2db4be6a408b8c570ffd0811" name="ac66a688f2db4be6a408b8c570ffd0811"></a><a class="el" href="group__publictypes.html#structsir__stdio__dest">sir_stdio_dest</a></td>
-<td class="fieldname">
-d_stderr</td>
-<td class="fielddoc">
-stderr configuration. </td></tr>
 <tr><td class="fieldtype">
 <a id="abdce8407bc07b5c7bdb945bd3797dea5" name="abdce8407bc07b5c7bdb945bd3797dea5"></a><a class="el" href="group__publictypes.html#structsir__stdio__dest">sir_stdio_dest</a></td>
 <td class="fieldname">
 d_stdout</td>
 <td class="fielddoc">
 stdout configuration. </td></tr>
+<tr><td class="fieldtype">
+<a id="ac66a688f2db4be6a408b8c570ffd0811" name="ac66a688f2db4be6a408b8c570ffd0811"></a><a class="el" href="group__publictypes.html#structsir__stdio__dest">sir_stdio_dest</a></td>
+<td class="fieldname">
+d_stderr</td>
+<td class="fielddoc">
+stderr configuration. </td></tr>
 <tr><td class="fieldtype">
 <a id="a86b187f809d969f08dd2edef0e4cb248" name="a86b187f809d969f08dd2edef0e4cb248"></a><a class="el" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a></td>
 <td class="fieldname">
@@ -459,7 +449,7 @@ System logger configuration. </td></tr>
 <tr><td class="fieldtype">
 <a id="ac003c97d6b63150341f2f29166a533e3" name="ac003c97d6b63150341f2f29166a533e3"></a>char</td>
 <td class="fieldname">
-name[<a class="el" href="group__config.html#ga85ed3139018ee9e7545c74c0885dff55">SIR_MAXNAME</a>]</td>
+name[<a class="el" href="sirconfig_8h.html#a85ed3139018ee9e7545c74c0885dff55">SIR_MAXNAME</a>]</td>
 <td class="fielddoc">
 If set, defines the name that will appear in messages sent to stdio and log file destinations. <p>Set <a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba59020fdfee0aaf393ed80ef7bab4bb4e" title="Exclude process/app name.">SIRO_NONAME</a> in a destination's options bitmask to exclude it from log messages. </p>
 </td></tr>
@@ -482,17 +472,17 @@ If set, defines the name that will appear in messages sent to stdio and log file
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="a6db435f352d7ea4a67807a3feb447bf7" name="a6db435f352d7ea4a67807a3feb447bf7"></a>void *</td>
-<td class="fieldname">
-logger</td>
-<td class="fielddoc">
-System logger handle/identifier. </td></tr>
-<tr><td class="fieldtype">
 <a id="af2ce11ebf110993621bedd8e747d7b1b" name="af2ce11ebf110993621bedd8e747d7b1b"></a>uint32_t</td>
 <td class="fieldname">
 mask</td>
 <td class="fielddoc">
 State bitmask. </td></tr>
+<tr><td class="fieldtype">
+<a id="a6db435f352d7ea4a67807a3feb447bf7" name="a6db435f352d7ea4a67807a3feb447bf7"></a>void *</td>
+<td class="fieldname">
+logger</td>
+<td class="fielddoc">
+System logger handle/identifier. </td></tr>
 </table>
 
 </div>
@@ -646,7 +636,7 @@ State bitmask. </td></tr>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafaeedcdbdc654f326e211a2d2f653b07f5" name="gga3bd5959a607e5280a8db90ada2d80cafaeedcdbdc654f326e211a2d2f653b07f5"></a>SIRS_NONE&#160;</td><td class="fielddoc"><p>Used internally; has no effect. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafacc1f324a77d57ff8ac0895767c9480d4" name="gga3bd5959a607e5280a8db90ada2d80cafacc1f324a77d57ff8ac0895767c9480d4"></a>SIRS_BRIGHT&#160;</td><td class="fielddoc"><p>If set, the foreground color is 'intensified'. </p>
+<tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafa0f7f4142f934212c7a8cbe5fb890ef65" name="gga3bd5959a607e5280a8db90ada2d80cafa0f7f4142f934212c7a8cbe5fb890ef65"></a>SIRS_BOLD&#160;</td><td class="fielddoc"><p>If set, the foreground color is 'bold'. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga3bd5959a607e5280a8db90ada2d80cafa54175d114e639a05853b7f8f2291661a" name="gga3bd5959a607e5280a8db90ada2d80cafa54175d114e639a05853b7f8f2291661a"></a>SIRS_DIM&#160;</td><td class="fielddoc"><p>If set, the foreground color is 'dimmed'. </p>
 </td></tr>

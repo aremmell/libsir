@@ -5,25 +5,25 @@ var group__publictypes =
       [ "opts", "group__publictypes.html#a7e1370c46de95363162d1c7879fca723", null ]
     ] ],
     [ "sir_syslog_dest", "group__publictypes.html#structsir__syslog__dest", [
-      [ "_state", "group__publictypes.html#a7120a461e55e114a173cddb56565e814", null ],
-      [ "category", "group__publictypes.html#ace79b2f2bd4d08d0c6e4151dafb3266b", null ],
-      [ "identity", "group__publictypes.html#acbc738f8c0f9dc404ac85e13cb43c7c5", null ],
       [ "levels", "group__publictypes.html#a2fb4c11cdb645a46f008c34678260bbc", null ],
-      [ "opts", "group__publictypes.html#ad8f026edd9c8667d897eb24016f2e81f", null ]
+      [ "opts", "group__publictypes.html#ad8f026edd9c8667d897eb24016f2e81f", null ],
+      [ "_state", "group__publictypes.html#a7120a461e55e114a173cddb56565e814", null ],
+      [ "identity", "group__publictypes.html#acbc738f8c0f9dc404ac85e13cb43c7c5", null ],
+      [ "category", "group__publictypes.html#ace79b2f2bd4d08d0c6e4151dafb3266b", null ]
     ] ],
     [ "sirinit", "group__publictypes.html#structsirinit", [
-      [ "d_stderr", "group__publictypes.html#ac66a688f2db4be6a408b8c570ffd0811", null ],
       [ "d_stdout", "group__publictypes.html#abdce8407bc07b5c7bdb945bd3797dea5", null ],
+      [ "d_stderr", "group__publictypes.html#ac66a688f2db4be6a408b8c570ffd0811", null ],
       [ "d_syslog", "group__publictypes.html#a86b187f809d969f08dd2edef0e4cb248", null ],
       [ "name", "group__publictypes.html#ac003c97d6b63150341f2f29166a533e3", null ]
     ] ],
     [ "sir_syslog_dest._state", "group__publictypes.html#structsir__syslog__dest_8__state", [
-      [ "logger", "group__publictypes.html#a6db435f352d7ea4a67807a3feb447bf7", null ],
-      [ "mask", "group__publictypes.html#af2ce11ebf110993621bedd8e747d7b1b", null ]
+      [ "mask", "group__publictypes.html#af2ce11ebf110993621bedd8e747d7b1b", null ],
+      [ "logger", "group__publictypes.html#a6db435f352d7ea4a67807a3feb447bf7", null ]
     ] ],
+    [ "sirfileid", "group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442", null ],
     [ "sir_levels", "group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd", null ],
     [ "sir_options", "group__publictypes.html#gafb659914aac0129182d86f7d3414e85d", null ],
-    [ "sirfileid", "group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442", null ],
     [ "sir_errorcode", "group__publictypes.html#ga861df9be69c6bcd01d29b77bd28ff7d3", [
       [ "SIR_E_NOERROR", "group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3ae9cf0dd9b54a0e456a565c6a8bf107f7", null ],
       [ "SIR_E_NOTREADY", "group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a87dc9e5593942f7413b84a17c64a01eb", null ],
@@ -71,7 +71,7 @@ var group__publictypes =
     ] ],
     [ "sir_textstyle", "group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf", [
       [ "SIRS_NONE", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafaeedcdbdc654f326e211a2d2f653b07f5", null ],
-      [ "SIRS_BRIGHT", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafacc1f324a77d57ff8ac0895767c9480d4", null ],
+      [ "SIRS_BOLD", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa0f7f4142f934212c7a8cbe5fb890ef65", null ],
       [ "SIRS_DIM", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa54175d114e639a05853b7f8f2291661a", null ],
       [ "SIRS_FG_BLACK", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa0fbe677e96b8483b073584848bb5e4fc", null ],
       [ "SIRS_FG_RED", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa1f11f323b6998adbd83b31d73bc538dc", null ],

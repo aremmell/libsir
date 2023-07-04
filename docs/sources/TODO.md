@@ -14,10 +14,6 @@ Bold = “Priority”
   - [ ] Lunix: /etc/hostname
   - [ ] Windows: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName
 
-- [ ] Figure out restrict keyword when using C++. Ditto for thread_local.
-
-  - [ ] extern “C”
-
 - [ ] **More functions that have lineage directly to sir.c need:**
   - [ ]  to be guarded with `_sir_sanity()`
   - [ ] clear last error on entry
@@ -26,6 +22,8 @@ Bold = “Priority”
 
   - [ ] Remove on write error? how many?
   - [ ] Roll size that defaults to SIR_FROLLSIZE but can be modified.
+
+- [ ] Add emphasis, underline, etc. to SIRS_ 
 
 - [ ] ~~move timer functionality from tests into libsir itself~~
 

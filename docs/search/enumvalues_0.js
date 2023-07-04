@@ -56,7 +56,7 @@ var searchData=
   ['sirs_5fbg_5fred_53',['SIRS_BG_RED',['../group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafad0eec1607a2eefbabe5947bd595170a4',1,'sirtypes.h']]],
   ['sirs_5fbg_5fwhite_54',['SIRS_BG_WHITE',['../group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa57f3210f2af19b6b3067a10ab5947a36',1,'sirtypes.h']]],
   ['sirs_5fbg_5fyellow_55',['SIRS_BG_YELLOW',['../group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafabe3a20064515e10ac72eaf6e8a665b55',1,'sirtypes.h']]],
-  ['sirs_5fbright_56',['SIRS_BRIGHT',['../group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafacc1f324a77d57ff8ac0895767c9480d4',1,'sirtypes.h']]],
+  ['sirs_5fbold_56',['SIRS_BOLD',['../group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa0f7f4142f934212c7a8cbe5fb890ef65',1,'sirtypes.h']]],
   ['sirs_5fdim_57',['SIRS_DIM',['../group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa54175d114e639a05853b7f8f2291661a',1,'sirtypes.h']]],
   ['sirs_5ffg_5fblack_58',['SIRS_FG_BLACK',['../group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa0fbe677e96b8483b073584848bb5e4fc',1,'sirtypes.h']]],
   ['sirs_5ffg_5fblue_59',['SIRS_FG_BLUE',['../group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa2f75bdae21995a567531e37eec6e979d',1,'sirtypes.h']]],
