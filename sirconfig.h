@@ -336,4 +336,19 @@
  */
 #define SIR_NUM16_COLOR_MAPPINGS 37
 
+/**
+ * The number of seconds to let elapse before checking if the hostname needs
+ * refreshing. The default is an eager 1 minute. Better safe than wrong?
+ */
+#define SIR_HNAME_CHK_INTERVAL 60
+
+#if defined(SIR_OS_LOG_ENABLED)
+/**
+ * The special format specifier to send to os_log. By default, the log will only
+ * show "<private>" in place of the original message. By using "%{public}s", the
+ * message contents will be visible in the log.
+ */
+# define SIR_OS_LOG_FORMAT "%{public}s"
+#endif
+
 #endif /* !_SIR_CONFIG_H_INCLUDED */

@@ -920,8 +920,8 @@ bool sirtest_perf(void) {
         startsirtimer(&stdiotimer);
 
         for (size_t n = 0; n < perflines; n++)
-            sir_debug("%.2f: lorem ipsum foo bar %s: %zu", sirtimerelapsed(&stdiotimer), "baz",
-                1234 + n);
+            sir_debug("%.2f: lorem ipsum foo bar %s: %zu",
+                sirtimerelapsed(&stdiotimer), "baz", 1234 + n);
 
         stdioelapsed = sirtimerelapsed(&stdiotimer);
 

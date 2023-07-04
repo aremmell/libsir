@@ -236,6 +236,8 @@ typedef struct {
     sirinit si;
     struct {
         char hostname[SIR_MAXHOST];
+        time_t last_hname_chk;
+        char pidbuf[SIR_MAXPID];
         pid_t pid;
     } state;
 } sirconfig;
@@ -269,7 +271,7 @@ typedef struct {
     const char* hostname;
     const char* level;
     const char* name;
-    char pid[SIR_MAXPID];
+    const char* pid;
     char tid[SIR_MAXPID];
     char message[SIR_MAXMESSAGE];
     char output[SIR_MAXOUTPUT];

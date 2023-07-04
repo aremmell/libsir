@@ -139,10 +139,17 @@ bool _sir_init(sirinit* si) {
     _cfg->si.name[SIR_MAXNAME - 1] = '\0';
 
     /* Store host name and PID. */
-    if (!_sir_gethostname(_cfg->state.hostname))
-        _sir_selflog("error: failed to get host name!");
+    if (!_sir_gethostname(_cfg->state.hostname)) {
+        _sir_selflog("error: failed to get hostname!");
+    } else {
+        time_t now;
+        _cfg->state.last_hname_chk = -1 != time(&now) ? now : 1;
+    }
 
     _cfg->state.pid = _sir_getpid();
+
+    if (0 > snprintf(_cfg->state.pidbuf, SIR_MAXPID, SIR_PIDFORMAT, _cfg->state.pid))
+        _sir_handleerr(errno);
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     /* initialize system logger. */
@@ -522,16 +529,27 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
         return false;
     }
 
+    /* from time to time, update the host name in the config, just in case. */
+    time_t now = -1;
+    if (-1 != time(&now) &&
+        (now - _cfg->state.last_hname_chk) > SIR_HNAME_CHK_INTERVAL) {
+        _sir_selflog("updating hostname...");
+        if (!_sir_gethostname(_cfg->state.hostname)) {
+            _sir_selflog("error: failed to get hostname!");
+        } else {
+            _cfg->state.last_hname_chk = now;
+            _sir_selflog("hostname: '%s'", _cfg->state.hostname);
+        }
+    }
+
     sirconfig tmpcfg;
     memcpy(&tmpcfg, _cfg, sizeof(sirconfig));
     _sir_unlocksection(SIRMI_CONFIG);
 
-    /* from time to time, update the host name in the config, just in case. */
-#pragma message("TODO: update hostname")
-
-    sirbuf buf = {0};
+    sirbuf buf;
     buf.hostname = tmpcfg.state.hostname;
-    buf.name = tmpcfg.si.name;
+    buf.name     = tmpcfg.si.name;
+    buf.pid      = tmpcfg.state.pidbuf;
 
     bool fmt = false;
     const char* style_str = _sir_gettextstyle(level);
@@ -542,7 +560,7 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
 
     SIR_ASSERT(fmt);
 
-    time_t now   = -1;
+    now          = -1;
     long nowmsec = 0;
     bool gettime = _sir_clock_gettime(&now, &nowmsec);
     SIR_ASSERT(gettime);
@@ -557,9 +575,6 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     }
 
     buf.level = _sir_formattedlevelstr(level);
-
-    if (0 > snprintf(buf.pid, SIR_MAXPID, SIR_PIDFORMAT, tmpcfg.state.pid))
-        _sir_handleerr(errno);
 
     pid_t tid = _sir_gettid();
     if (tid != tmpcfg.state.pid) {
@@ -806,16 +821,13 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx)
 
 # if defined(SIR_OS_LOG_ENABLED)
     if (SIRL_DEBUG == level) {
-        os_log_debug((os_log_t)ctx->_state.logger, "%s", buf->message);
-    } else if (SIRL_INFO == level) {
-        os_log_info((os_log_t)ctx->_state.logger, "%s", buf->message);
-    } else if (SIRL_ERROR == level || SIRL_ALERT == level) {
-        os_log_error((os_log_t)ctx->_state.logger, "%s", buf->message);
-    } else if (SIRL_CRIT == level || SIRL_EMERG == level) {
-        os_log_fault((os_log_t)ctx->_state.logger, "%s", buf->message);
-    } else {
-#  pragma message("TODO: Include level string here? Need to research more.")
-        os_log((os_log_t)ctx->_state.logger, "%s", buf->message);
+        os_log_debug((os_log_t)ctx->_state.logger, SIR_OS_LOG_FORMAT, buf->message);
+    } else if (SIRL_INFO == level || SIRL_NOTICE == level) {
+        os_log_info((os_log_t)ctx->_state.logger, SIR_OS_LOG_FORMAT, buf->message);
+    } else if (SIRL_WARN == level || SIRL_ERROR == level) {
+        os_log_error((os_log_t)ctx->_state.logger, SIR_OS_LOG_FORMAT, buf->message);
+    } else if (SIRL_ALERT == level || SIRL_CRIT == level || SIRL_EMERG == level) {
+        os_log_fault((os_log_t)ctx->_state.logger, SIR_OS_LOG_FORMAT, buf->message);
     }
 
     return true;
