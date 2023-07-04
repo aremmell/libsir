@@ -108,6 +108,9 @@ void __sir_handleerr(int code, const char* func, const char* file, uint32_t line
 #define _sir_handleerr(code) __sir_handleerr(code, __func__, __file__, __LINE__)
 
 #if defined(__WIN__)
+void _sir_invalidparameter(const wchar_t* expr, const wchar_t* func, const wchar_t* file,
+    unsigned int line, uintptr_t reserved);
+
 /**
  * Some Win32 API error codes overlap C library error codes, so they need to be handled separately.
  * Mapping them sounds great, but in practice, valuable information about what went wrong is totally
