@@ -32,6 +32,9 @@
 # else
 #  define __HAVE_ATOMIC_H__
 # endif
+# if defined(__STDC_WANT_LIB_EXT1__)
+#  undef __STDC_WANT_LIB_EXT1__
+# endif
 # define __STDC_WANT_LIB_EXT1__ 1
 # if defined(__APPLE__) && defined(__MACH__)
 #  define __MACOS__
@@ -228,7 +231,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 #if defined(__WIN__) && defined(__STDC_SECURE_LIB__)
 # define __HAVE_STDC_SECURE_OR_EXT1__
-#elif defined(__STDC_LIB_EXT1__) || (defined(__BSD__) && defined(__EXT1_VISIBLE))
+#elif defined(__STDC_LIB_EXT1__)
 # define __HAVE_STDC_SECURE_OR_EXT1__
 #endif
 
