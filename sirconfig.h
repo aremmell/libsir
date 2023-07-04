@@ -342,12 +342,12 @@
  */
 #define SIR_HNAME_CHK_INTERVAL 60
 
-#if defined(SIR_OS_LOG_ENABLED)
 /**
  * The special format specifier to send to os_log. By default, the log will only
  * show "<private>" in place of the original message. By using "%{public}s", the
  * message contents will be visible in the log.
  */
+#if defined(SIR_OS_LOG_ENABLED)
 # define SIR_OS_LOG_FORMAT "%{public}s"
 #endif
 

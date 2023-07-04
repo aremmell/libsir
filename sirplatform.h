@@ -85,16 +85,16 @@
 
 #if defined(SIR_ASSERT_ENABLED)
 # include <assert.h>
-#define SIR_ASSERT(...) assert(__VA_ARGS__)
+# define SIR_ASSERT(...) assert(__VA_ARGS__)
 #else
 # if defined(SIR_SELFLOG)
-# define SIR_ASSERT(...) \
-     if (!(__VA_ARGS__)) { \
-         _sir_selflog(LRED("!!! would be asserting: " #__VA_ARGS__ "")); \
-     }
-#else
-# define SIR_ASSERT(...)
-#endif
+#  define SIR_ASSERT(...) \
+      if (!(__VA_ARGS__)) { \
+          _sir_selflog(LRED("!!! would be asserting: " #__VA_ARGS__ "")); \
+      }
+# else
+#  define SIR_ASSERT(...)
+# endif
 #endif
 
 #include <errno.h>
