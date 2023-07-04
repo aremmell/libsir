@@ -24,9 +24,9 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #ifndef _SIR_ERRORS_H_INCLUDED
-#define _SIR_ERRORS_H_INCLUDED
+# define _SIR_ERRORS_H_INCLUDED
 
-#include "sirhelpers.h"
+# include "sirhelpers.h"
 
 /**
  * @addtogroup publictypes Types
@@ -56,23 +56,23 @@ enum sir_errorcode {
 
 /** @} */
 
-#define _SIR_E_NOERROR   _sir_mkerror(SIR_E_NOERROR)
-#define _SIR_E_NOTREADY  _sir_mkerror(SIR_E_NOTREADY)
-#define _SIR_E_ALREADY   _sir_mkerror(SIR_E_ALREADY)
-#define _SIR_E_DUPFILE   _sir_mkerror(SIR_E_DUPFILE)
-#define _SIR_E_NOFILE    _sir_mkerror(SIR_E_NOFILE)
-#define _SIR_E_FCFULL    _sir_mkerror(SIR_E_FCFULL)
-#define _SIR_E_OPTIONS   _sir_mkerror(SIR_E_OPTIONS)
-#define _SIR_E_LEVELS    _sir_mkerror(SIR_E_LEVELS)
-#define _SIR_E_TEXTSTYLE _sir_mkerror(SIR_E_TEXTSTYLE)
-#define _SIR_E_STRING    _sir_mkerror(SIR_E_STRING)
-#define _SIR_E_NULLPTR   _sir_mkerror(SIR_E_NULLPTR)
-#define _SIR_E_INVALID   _sir_mkerror(SIR_E_INVALID)
-#define _SIR_E_NODEST    _sir_mkerror(SIR_E_NODEST)
-#define _SIR_E_UNAVAIL   _sir_mkerror(SIR_E_UNAVAIL)
-#define _SIR_E_INTERNAL  _sir_mkerror(SIR_E_INTERNAL)
-#define _SIR_E_PLATFORM  _sir_mkerror(SIR_E_PLATFORM)
-#define _SIR_E_UNKNOWN   _sir_mkerror(SIR_E_UNKNOWN)
+# define _SIR_E_NOERROR   _sir_mkerror(SIR_E_NOERROR)
+# define _SIR_E_NOTREADY  _sir_mkerror(SIR_E_NOTREADY)
+# define _SIR_E_ALREADY   _sir_mkerror(SIR_E_ALREADY)
+# define _SIR_E_DUPFILE   _sir_mkerror(SIR_E_DUPFILE)
+# define _SIR_E_NOFILE    _sir_mkerror(SIR_E_NOFILE)
+# define _SIR_E_FCFULL    _sir_mkerror(SIR_E_FCFULL)
+# define _SIR_E_OPTIONS   _sir_mkerror(SIR_E_OPTIONS)
+# define _SIR_E_LEVELS    _sir_mkerror(SIR_E_LEVELS)
+# define _SIR_E_TEXTSTYLE _sir_mkerror(SIR_E_TEXTSTYLE)
+# define _SIR_E_STRING    _sir_mkerror(SIR_E_STRING)
+# define _SIR_E_NULLPTR   _sir_mkerror(SIR_E_NULLPTR)
+# define _SIR_E_INVALID   _sir_mkerror(SIR_E_INVALID)
+# define _SIR_E_NODEST    _sir_mkerror(SIR_E_NODEST)
+# define _SIR_E_UNAVAIL   _sir_mkerror(SIR_E_UNAVAIL)
+# define _SIR_E_INTERNAL  _sir_mkerror(SIR_E_INTERNAL)
+# define _SIR_E_PLATFORM  _sir_mkerror(SIR_E_PLATFORM)
+# define _SIR_E_UNKNOWN   _sir_mkerror(SIR_E_UNKNOWN)
 
 static const struct {
     uint32_t e;
@@ -98,16 +98,16 @@ static const struct {
 };
 
 void __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t line);
-#define _sir_seterror(err) __sir_seterror(err, __func__, __file__, __LINE__)
+# define _sir_seterror(err) __sir_seterror(err, __func__, __file__, __LINE__)
 
 void __sir_setoserror(int code, const char* msg, const char* func,
     const char* file, uint32_t line);
 
 /** Handle a C library error. */
 void __sir_handleerr(int code, const char* func, const char* file, uint32_t line);
-#define _sir_handleerr(code) __sir_handleerr(code, __func__, __file__, __LINE__)
+# define _sir_handleerr(code) __sir_handleerr(code, __func__, __file__, __LINE__)
 
-#if defined(__WIN__)
+# if defined(__WIN__)
 void _sir_invalidparameter(const wchar_t* expr, const wchar_t* func, const wchar_t* file,
     unsigned int line, uintptr_t reserved);
 
@@ -117,22 +117,22 @@ void _sir_invalidparameter(const wchar_t* expr, const wchar_t* func, const wchar
  * lost in translation.
  */
 void __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32_t line);
-# define _sir_handlewin32err(code) __sir_handlewin32err(code, __func__, __file__, __LINE__)
-#endif
+#  define _sir_handlewin32err(code) __sir_handlewin32err(code, __func__, __file__, __LINE__)
+# endif
 
 /** Returns information about the last error that occurred. */
 uint32_t _sir_geterror(char message[SIR_MAXERROR]);
 
-#if defined(SIR_SELFLOG)
+# if defined(SIR_SELFLOG)
 /** Log an internal debug message to stderr. */
 void __sir_selflog(const char* func, const char* file, uint32_t line, const char* format, ...);
-# define _sir_selflog(...) __sir_selflog(__func__, __file__, __LINE__, __VA_ARGS__)
-#else
+#  define _sir_selflog(...) __sir_selflog(__func__, __file__, __LINE__, __VA_ARGS__)
+# else
 static inline
 void __sir_fakefunc(const char* format, ...) {
     _SIR_UNUSED(format);
 }
-# define _sir_selflog(...) __sir_fakefunc(__VA_ARGS__)
-#endif
+#  define _sir_selflog(...) __sir_fakefunc(__VA_ARGS__)
+# endif
 
 #endif /* !_SIR_ERRORS_H_INCLUDED */

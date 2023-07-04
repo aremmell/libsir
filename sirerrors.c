@@ -224,13 +224,13 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, const char
 
                 bool write_color = false;
                 if (write2 > 0) {
-#if !defined(__WIN__)
+# if !defined(__WIN__)
                     if (NULL != strcasestr(buf, "error") ||
                         NULL != strcasestr(buf, "assert")) {
-#else
+# else
                     if (NULL != StrStrIA(buf, "error") ||
                         NULL != StrStrIA(buf, "assert")) {
-#endif
+# endif
                         write_color = true;
                     }
 

@@ -24,9 +24,9 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #ifndef _SIR_FILECACHE_H_INCLUDED
-#define _SIR_FILECACHE_H_INCLUDED
+# define _SIR_FILECACHE_H_INCLUDED
 
-#include "sirtypes.h"
+# include "sirtypes.h"
 
 typedef bool (*sir_fcache_pred)(const void* match, sirfile* iter);
 typedef void (*sir_fcache_update)(sirfile* si, sir_update_config_data* data);
