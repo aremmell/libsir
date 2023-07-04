@@ -121,13 +121,6 @@ void __sir_handleerr(int code, const char* func, const char* file, uint32_t line
 }
 
 #if defined(__WIN__)
-void _sir_invalidparameter(const wchar_t* expr, const wchar_t* func, const wchar_t* file,
-    unsigned int line, uintptr_t reserved) {
-    _sir_selflog("invalid parameter handler: expression: '%S' in %S (%S:%u)",
-        expr, func, file, line);
-    _SIR_UNUSED(reserved);
-}
-
 void __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32_t line) {
     char* errbuf = NULL;
     DWORD flags  = FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |

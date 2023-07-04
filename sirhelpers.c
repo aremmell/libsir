@@ -38,26 +38,20 @@ void _sir_safeclose(int* restrict fd) {
 
 bool _sir_validfd(int fd) {
     /** stdin, stdout, stderr use up 0, 1, 2 */
-    if (fd <= 2) {
+    if (2 >= fd) {
         _sir_handleerr(EBADF);
         return false;
     }
 #if !defined(__WIN__)
     int ret = fcntl(fd, F_GETFL);
+#else /* __WIN__ */
+    struct _stat st;
+    int ret = _fstat(fd, &st);
+#endif
     bool valid = -1 != ret || EBADF != errno;
     if (-1 == ret)
         _sir_handleerr(errno);
     return valid;
-#else /* __WIN__ */
-    invalparamfn old = _set_thread_local_invalid_parameter_handler(_sir_invalidparameter);
-    intptr_t h = _get_osfhandle(fd);
-    _set_thread_local_invalid_parameter_handler(old);
-    if (INVALID_HANDLE_VALUE == (HANDLE)h) {
-        _sir_seterror(EBADF);
-        return false;
-    }
-    return true;
-#endif
 }
 
 /** Validates a sir_update_config_data structure. */

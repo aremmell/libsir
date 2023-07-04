@@ -1371,6 +1371,40 @@ bool sirtest_filesystem(void) {
         }
     }
 
+    /* checking file descriptors. */
+    static const int bad_fds[] = {
+        0,
+        1,
+        2,
+        1234
+    };
+
+    for (size_t n = 0; n < _sir_countof(bad_fds); n++) {
+        if (_sir_validfd(bad_fds[n])) {
+            pass = false;
+            printf("\t" RED("_sir_validfd(%d) = true") "\n", bad_fds[n]);
+        } else {
+            printf("\t" GREEN("_sir_validfd(%d) = false") "\n", bad_fds[n]);
+        }
+    }
+
+    FILE* f = NULL;
+    int ret = _sir_fopen(&f, "build/bin/file.exists", "r");
+    if (-1 == ret) {
+        pass = false;
+        handle_os_error(true, "fopen(%s) failed!", "build/bin/file.exists");
+    } else {
+        int fd = fileno(f);
+        if (!_sir_validfd(fd)) {
+            pass = false;
+            printf("\t" RED("_sir_validfd(%d) = false") "\n", fd);
+        } else {
+            printf("\t" GREEN("_sir_validfd(%d) = true") "\n", fd);
+        }
+
+        _sir_safeclose(&fd);
+    }
+
     sir_cleanup();
     return print_result_and_return(pass);
 }
