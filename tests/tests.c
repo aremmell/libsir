@@ -1549,7 +1549,6 @@ bool sirtest_XXX(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-
     sir_cleanup();
     return print_result_and_return(pass);
 }
