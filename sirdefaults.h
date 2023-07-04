@@ -104,7 +104,7 @@ static const sir_options sir_stderr_def_opts
  */
 static const sir_levels sir_syslog_def_lvls
     = SIRL_NOTICE | SIRL_WARN | SIRL_ERROR | SIRL_CRIT |
-      SIRL_ALERT | SIRL_EMERG;
+       SIRL_ALERT | SIRL_EMERG;
 
 /**
  * Default options for the system logger.
