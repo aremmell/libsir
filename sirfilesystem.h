@@ -49,6 +49,8 @@ typedef enum {
 
 bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_rel_to rel_to);
 bool _sir_pathexists(const char* restrict path, bool* restrict exists, sir_rel_to rel_to);
+bool _sir_openfile(FILE* restrict* restrict f, const char* restrict path,
+    const char* restrict mode, sir_rel_to rel_to);
 
 char* _sir_getcwd(void);
 
@@ -60,6 +62,8 @@ char* _sir_getbasename(char* restrict path);
 char* _sir_getdirname(char* restrict path);
 
 bool _sir_ispathrelative(const char* restrict path, bool* restrict relative);
+bool _sir_getrelbasepath(const char* restrict path, bool* restrict relative,
+    const char* restrict* restrict base_path, sir_rel_to rel_to);
 
 #if defined(__cplusplus)
 }

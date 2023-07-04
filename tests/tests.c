@@ -1389,10 +1389,10 @@ bool sirtest_filesystem(void) {
     }
 
     FILE* f = NULL;
-    int ret = _sir_fopen(&f, "build/bin/file.exists", "r");
-    if (-1 == ret) {
+    bool ret = _sir_openfile(&f, "file.exists", "r", SIR_PATH_REL_TO_APP);
+    if (!ret) {
         pass = false;
-        handle_os_error(true, "fopen(%s) failed!", "build/bin/file.exists");
+        handle_os_error(true, "fopen(%s) failed!", "file.exists");
     } else {
         int fd = fileno(f);
         if (!_sir_validfd(fd)) {

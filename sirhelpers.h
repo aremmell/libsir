@@ -35,7 +35,7 @@
  * Creates an error code that (hopefully) doesn't conflict
  * with any of those defined by the platform.
  */
-#define _sir_mkerror(code) (((uint32_t)((code)&0x7fff) << 16) | 0x80000000)
+#define _sir_mkerror(code) (((uint32_t)((code) & 0x7fff) << 16) | 0x80000000)
 
 /** Validates an internal error. */
 static inline
@@ -90,14 +90,11 @@ uint16_t _sir_geterrcode(uint32_t err) {
 #define _SIR_END_BIN_SEARCH() \
     } while (true);
 
-/**
- * Validates a pointer-to-pointer, pointer,
- * pointer to function, etc. but ignores whether it's invalid.
- *
- * This is necessary due to the fact that ::_sir_validptr will
- * not accept these types as input.
- */
-#define _sir_notnull(addr) (NULL != (addr))
+/** Validates a pointer and fails if it's invalid. */
+#define _sir_validptr(p) __sir_validptr((const void* restrict)p, true)
+
+/** Validates a pointer-to-pointer and fails if it's invalid. */
+#define _sir_validptrptr(pp) __sir_validptrptr((const void* restrict*)pp, true)
 
 /** Checks a bitmask for a specific set of bits. */
 static inline
@@ -127,21 +124,24 @@ bool _sir_setbitslow(uint32_t* flags, uint32_t set) {
 
 /** Wraps free. */
 static inline
-void __sir_safefree(void** p) {
+void __sir_safefree(const void* restrict* restrict p) {
     if (!p || !*p)
         return;
-    free(*p);
+    free((void*)*p);
     *p = NULL;
 }
 
 /** Wraps free. */
 static inline
-void _sir_safefree(void* p) {
+void _sir_safefree(const void* restrict p) {
     __sir_safefree(&p);
 }
 
 /** Wraps close. */
 void _sir_safeclose(int* restrict fd);
+
+/** Wraps fclose. */
+void _sir_safefclose(FILE* restrict* restrict f);
 
 /** Validates a log file descriptor. */
 bool _sir_validfd(int fd);
@@ -190,17 +190,14 @@ bool _sir_validstrnofail(const char* restrict str) {
 /** Validates a pointer and optionally fails if it's invalid. */
 bool __sir_validptr(const void* restrict p, bool fail);
 
-/** Validates a pointer and fails if it's invalid. */
-static inline
-bool _sir_validptr(const void* restrict p) {
-    return __sir_validptr(p, true);
-}
-
 /** Validates a pointer but ignores whether it's invalid. */
 static inline
 bool _sir_validptrnofail(const void* restrict p) {
     return __sir_validptr(p, false);
 }
+
+/** Validates a pointer-to-pointer and optionally fails if it's invalid. */
+bool __sir_validptrptr(const void* restrict* pp, bool fail);
 
 /** Places a null terminator at the first index in a string buffer. */
 static inline

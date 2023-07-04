@@ -144,7 +144,7 @@ void _sirfile_close(sirfile* sf) {
     if (!_sir_validptrnofail(sf) || !_sir_validptrnofail(sf->f))
         return;
 
-    _sir_fclose(&sf->f);
+    _sir_safefclose(&sf->f);
 }
 
 bool _sirfile_write(sirfile* sf, const char* output) {
@@ -225,7 +225,7 @@ bool _sirfile_needsroll(sirfile* sf) {
 }
 
 bool _sirfile_roll(sirfile* sf, char** newpath) {
-    if (!_sirfile_validate(sf) || !_sir_notnull(newpath))
+    if (!_sirfile_validate(sf) || !_sir_validptrptr(newpath))
         return false;
 
     bool retval = false;
@@ -496,7 +496,7 @@ bool _sir_fcache_pred_id(const void* match, sirfile* iter) {
 }
 
 sirfile* _sir_fcache_find(sirfcache* sfc, const void* match, sir_fcache_pred pred) {
-    if (!_sir_validptr(sfc) || !_sir_validptr(match) || !_sir_notnull(pred))
+    if (!_sir_validptr(sfc) || !_sir_validptr(match) || !_sir_validptr(pred))
         return NULL;
 
     for (size_t n = 0; n < sfc->count; n++) {
@@ -563,15 +563,6 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
     }
 
     return retval && (*dispatched == *wanted);
-}
-
-void _sir_fclose(FILE** f) {
-    if (!_sir_validptr(f) || !_sir_validptr(*f))
-        return;
-
-    if (0 != fclose(*f))
-        _sir_handleerr(errno);
-    *f = NULL;
 }
 
 void _sir_fflush(FILE* f) {

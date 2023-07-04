@@ -36,6 +36,16 @@ void _sir_safeclose(int* restrict fd) {
     *fd = -1;
 }
 
+void _sir_safefclose(FILE* restrict* restrict f) {
+    if (!f || !*f)
+        return;
+
+    if (0 != fclose(*f))
+        _sir_handleerr(errno);
+
+    *f = NULL;
+}
+
 bool _sir_validfd(int fd) {
     /** stdin, stdout, stderr use up 0, 1, 2 */
     if (2 >= fd) {
@@ -150,7 +160,15 @@ bool __sir_validptr(const void* restrict p, bool fail) {
         _sir_seterror(_SIR_E_NULLPTR);
         SIR_ASSERT(!"NULL pointer");
     }
+    return valid;
+}
 
+bool __sir_validptrptr(const void* restrict* pp, bool fail) {
+    bool valid = NULL != pp;
+    if (!valid && fail) {
+        _sir_seterror(_SIR_E_NULLPTR);
+        SIR_ASSERT("!NULL pointer");
+    }
     return valid;
 }
 
@@ -204,7 +222,7 @@ int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src, s
  */
 int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename,
     const char* restrict mode) {
-    if (_sir_notnull(streamptr) && _sir_validstr(filename) && _sir_validstr(mode)) {
+    if (_sir_validptrptr((void**)streamptr) && _sir_validstr(filename) && _sir_validstr(mode)) {
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
         int ret = fopen_s(streamptr, filename, mode);
         if (0 != ret) {

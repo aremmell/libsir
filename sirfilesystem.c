@@ -36,31 +36,19 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
 
     memset(st, 0, sizeof(struct stat));
 
-    int stat_ret  = -1;
-    bool relative = false;
-    if (!_sir_ispathrelative(path, &relative))
+    int stat_ret          = -1;
+    bool relative         = false;
+    const char* base_path = NULL;
+
+    if (!_sir_getrelbasepath(path, &relative, &base_path, rel_to))
         return false;
 
     if (relative) {
-        char* base_path = NULL;
-        switch (rel_to) {
-            case SIR_PATH_REL_TO_APP: base_path = _sir_getappdir(); break;
-            case SIR_PATH_REL_TO_CWD: base_path = _sir_getcwd(); break;
-            default: _sir_seterror(_SIR_E_INVALID); return false;
-        }
-
-        if (!base_path) {
-            _sir_handleerr(errno);
-            return false;
-        }
-
 #if !defined(__WIN__)
 # if defined(__MACOS__)
         int open_flags = O_SEARCH;
-# elif defined(__linux__)
+# elif defined(__linux__) || defined(__BSD__)
         int open_flags = O_PATH | O_DIRECTORY;
-# elif defined(__BSD__)
-        int open_flags = O_EXEC | O_DIRECTORY;
 # endif
 
         int fd = open(base_path, open_flags);
@@ -99,7 +87,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
     return true;
 }
 
-bool _sir_pathexists(const char* restrict path, bool* restrict exists, sir_rel_to rel_to) {
+bool _sir_pathexists(const char* path, bool* exists, sir_rel_to rel_to) {
     if (!_sir_validstr(path) || !_sir_validptr(exists))
         return false;
 
@@ -112,6 +100,29 @@ bool _sir_pathexists(const char* restrict path, bool* restrict exists, sir_rel_t
 
     *exists = (st.st_size != SIR_STAT_NONEXISTENT);
     return true;
+}
+
+bool _sir_openfile(FILE* restrict* restrict f, const char* restrict path,
+    const char* restrict mode, sir_rel_to rel_to) {
+    if (!_sir_validptrptr(f) || !_sir_validstr(path) || !_sir_validstr(mode))
+        return false;
+
+    bool relative         = false;
+    const char* base_path = NULL;
+
+    if (!_sir_getrelbasepath(path, &relative, &base_path, rel_to))
+        return false;
+
+    if (relative) {
+        char abs_path[SIR_MAXPATH] = {0};
+        snprintf(abs_path, SIR_MAXPATH, "%s/%s", base_path, path);
+
+        int ret = _sir_fopen(f, abs_path, mode);
+        _sir_safefree(base_path);
+        return 0 == ret;
+    }
+
+    return 0 == _sir_fopen(f, path, mode);
 }
 
 char* _sir_getcwd(void) {
@@ -310,4 +321,26 @@ bool _sir_ispathrelative(const char* restrict path, bool* restrict relative) {
     *relative = (TRUE == PathIsRelativeA(path));
     return true;
 #endif
+}
+
+bool _sir_getrelbasepath(const char* restrict path, bool* restrict relative,
+    const char* restrict* restrict base_path, sir_rel_to rel_to) {
+    if (!_sir_validstr(path) || !_sir_validptr(relative) || !_sir_validptrptr(base_path))
+        return false;
+
+    if (!_sir_ispathrelative(path, relative))
+        return false;
+
+    if (*relative) {
+        switch (rel_to) {
+            case SIR_PATH_REL_TO_APP: *base_path = _sir_getappdir(); break;
+            case SIR_PATH_REL_TO_CWD: *base_path = _sir_getcwd(); break;
+            default: _sir_seterror(_SIR_E_INVALID); return false;
+        }
+
+        if (!*base_path)
+            return false;
+    }
+
+    return true;
 }
