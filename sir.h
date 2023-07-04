@@ -35,7 +35,7 @@
 
 #if defined(__cplusplus)
 extern "C" {
-#endif /* !__cplusplus */
+#endif
 
 /**
  * @defgroup public Public Interface
@@ -261,6 +261,6 @@ bool sir_syslogcat(const char* category);
 
 #if defined(__cplusplus)
 }
-#endif /* !__cplusplus */
+#endif
 
 #endif /* !_SIR_H_INCLUDED */

@@ -28,6 +28,10 @@
 
 #include "sirplatform.h"
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 /** Defines how many characters to grow a buffer by which was deemed too small
  * by a system call (w/o information regarding the necessary size). */
 #define SIR_PATH_BUFFER_GROW_BY 32
@@ -56,5 +60,9 @@ char* _sir_getbasename(char* restrict path);
 char* _sir_getdirname(char* restrict path);
 
 bool _sir_ispathrelative(const char* restrict path, bool* restrict relative);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif // !_SIR_FILESYSTEM_H_INCLUDED
