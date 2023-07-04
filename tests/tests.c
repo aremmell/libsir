@@ -119,7 +119,7 @@ int main(int argc, char** argv) {
             continue;
         }
 
-        printf(WHITEB("\n\t(%zu/%zu) '%s'...") "\n\n", ran, tgt_tests, sir_tests[n].name);
+        printf(WHITEB("\n(%zu/%zu) '%s'...") "\n\n", ran + 1, tgt_tests, sir_tests[n].name);
 
         sir_tests[n].pass = sir_tests[n].fn();
         if (sir_tests[n].pass)
@@ -127,7 +127,7 @@ int main(int argc, char** argv) {
 
         ran++;
 
-        printf(WHITEB("\n\t(%zu/%zu) '%s' finished: ") "%s\n", ran, tgt_tests, sir_tests[n].name,
+        printf(WHITEB("\n(%zu/%zu) '%s' finished: ") "%s\n", ran, tgt_tests, sir_tests[n].name,
             PRN_PASS(sir_tests[n].pass));
     }
 
@@ -558,14 +558,18 @@ bool sirtest_textstylesanity(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
+    printf("\t" WHITEB("--- explicitly invalid ---") "\n");
     pass &= !sir_settextstyle(SIRL_INFO, 0xbbbb);
     pass &= sir_info("I have set an invalid text style.");
+
     pass &= !sir_settextstyle(SIRL_DEBUG, SIRS_FG_RED | SIRS_FG_DEFAULT);
     pass &= sir_info("oops, did it again...");
 
     pass &= !sir_settextstyle(SIRL_ALERT, SIRS_FG_BLACK | SIRS_BG_BLACK);
     pass &= sir_info("and again.");
+    PRINT_PASS(pass, "\t--- explicitly invalid: %s ---\n\n", PRN_PASS(pass));
 
+    printf("\t" WHITEB("--- unusual but valid ---") "\n");
     pass &= sir_settextstyle(SIRL_INFO, SIRS_FG_DEFAULT | SIRS_BG_DEFAULT);
     pass &= sir_info("system default fg and bg");
 
@@ -574,45 +578,45 @@ bool sirtest_textstylesanity(void) {
 
     pass &= sir_settextstyle(SIRL_INFO, SIRS_FG_DEFAULT);
     pass &= sir_info("system default fg & no bg specified");
+    PRINT_PASS(pass, "\t--- unusual but valid: %s ---\n\n", PRN_PASS(pass));
 
-    printf("\treset styles...\n");
+    printf("\t" WHITEB("--- override defaults ---") "\n");
     pass &= sir_resettextstyles();
 
-    if (pass) {
-        pass &= sir_debug("default style");
-        pass &= sir_settextstyle(SIRL_DEBUG, SIRS_FG_YELLOW | SIRS_BG_DGRAY);
-        pass &= sir_debug("override style");
+    pass &= sir_debug("default style");
+    pass &= sir_settextstyle(SIRL_DEBUG, SIRS_FG_YELLOW | SIRS_BG_DGRAY);
+    pass &= sir_debug("override style");
 
-        pass &= sir_info("default style");
-        pass &= sir_settextstyle(SIRL_INFO, SIRS_FG_GREEN | SIRS_BG_MAGENTA);
-        pass &= sir_info("override style");
+    pass &= sir_info("default style");
+    pass &= sir_settextstyle(SIRL_INFO, SIRS_FG_GREEN | SIRS_BG_MAGENTA);
+    pass &= sir_info("override style");
 
-        pass &= sir_notice("default style");
-        pass &= sir_settextstyle(SIRL_NOTICE, SIRS_FG_BLACK | SIRS_BG_LYELLOW);
-        pass &= sir_notice("override style");
+    pass &= sir_notice("default style");
+    pass &= sir_settextstyle(SIRL_NOTICE, SIRS_FG_BLACK | SIRS_BG_LYELLOW);
+    pass &= sir_notice("override style");
 
-        pass &= sir_warn("default style");
-        pass &= sir_settextstyle(SIRL_WARN, SIRS_FG_BLACK | SIRS_BG_WHITE);
-        pass &= sir_warn("override style");
+    pass &= sir_warn("default style");
+    pass &= sir_settextstyle(SIRL_WARN, SIRS_FG_BLACK | SIRS_BG_WHITE);
+    pass &= sir_warn("override style");
 
-        pass &= sir_error("default style");
-        pass &= sir_settextstyle(SIRL_ERROR, SIRS_FG_WHITE | SIRS_BG_BLUE);
-        pass &= sir_error("override style");
+    pass &= sir_error("default style");
+    pass &= sir_settextstyle(SIRL_ERROR, SIRS_FG_WHITE | SIRS_BG_BLUE);
+    pass &= sir_error("override style");
 
-        pass &= sir_crit("default style");
-        pass &= sir_settextstyle(SIRL_CRIT, SIRS_FG_DGRAY | SIRS_BG_LGREEN);
-        pass &= sir_crit("override style");
+    pass &= sir_crit("default style");
+    pass &= sir_settextstyle(SIRL_CRIT, SIRS_FG_DGRAY | SIRS_BG_LGREEN);
+    pass &= sir_crit("override style");
 
-        pass &= sir_alert("default style");
-        pass &= sir_settextstyle(SIRL_ALERT, SIRS_BRIGHT | SIRS_FG_LBLUE);
-        pass &= sir_alert("override style");
+    pass &= sir_alert("default style");
+    pass &= sir_settextstyle(SIRL_ALERT, SIRS_BRIGHT | SIRS_FG_LBLUE);
+    pass &= sir_alert("override style");
 
-        pass &= sir_emerg("default style");
-        pass &= sir_settextstyle(SIRL_EMERG, SIRS_BRIGHT | SIRS_FG_DGRAY);
-        pass &= sir_emerg("override style");
-    }
+    pass &= sir_emerg("default style");
+    pass &= sir_settextstyle(SIRL_EMERG, SIRS_BRIGHT | SIRS_FG_DGRAY);
+    pass &= sir_emerg("override style");
+    PRINT_PASS(pass, "\t--- override defaults: %s ---\n\n", PRN_PASS(pass));
 
-    printf("\treset styles...\n");
+    printf("\t" WHITEB("--- reset to defaults ---") "\n");
     pass &= sir_resettextstyles();
 
     pass &= sir_debug("default style");
@@ -623,10 +627,11 @@ bool sirtest_textstylesanity(void) {
     pass &= sir_crit("default style");
     pass &= sir_alert("default style");
     pass &= sir_emerg("default style");
+    PRINT_PASS(pass, "\t--- reset to defaults: %s ---\n\n", PRN_PASS(pass));
 
     /* ensure that foreground color constants match background color when
      * shifted and masked. allows prevention of unreadable text. */
-    printf("\tensuring fg and bg colors align when masked and shifted...\n");
+    printf("\t" WHITEB("--- fg and bg colors align ---") "\n");
     pass &= _SIRS_SAME_COLOR(SIRS_FG_BLACK,    SIRS_BG_BLACK);
     pass &= _SIRS_SAME_COLOR(SIRS_FG_RED,      SIRS_BG_RED);
     pass &= _SIRS_SAME_COLOR(SIRS_FG_GREEN,    SIRS_BG_GREEN);
@@ -643,13 +648,11 @@ bool sirtest_textstylesanity(void) {
     pass &= _SIRS_SAME_COLOR(SIRS_FG_LMAGENTA, SIRS_BG_LMAGENTA);
     pass &= _SIRS_SAME_COLOR(SIRS_FG_LCYAN,    SIRS_BG_LCYAN);
     pass &= _SIRS_SAME_COLOR(SIRS_FG_WHITE,    SIRS_BG_WHITE);
-
-    if (pass)
-        printf("\t" GREEN("all fg and bg colors align") "\n");
+    PRINT_PASS(pass, "\t--- fg and bg colors align: %s ---\n\n", PRN_PASS(pass));
 
     /* for every foreground color, OR it with each of the others.
      * same thing for background colors. none of these should be valid. */
-    printf("\ttesting all combinations of (2) fg colors to create collisions...\n");
+    printf("\t" WHITEB("--- collisions in fg or bg colors ---") "\n");
     for (size_t n = 3; n < 20; n++) {
         uint32_t style = sir_style_16color_map[n].from;
         for (size_t i = 3; i < 20; i++) {
@@ -659,14 +662,13 @@ bool sirtest_textstylesanity(void) {
             uint32_t attr, fg, bg;
             if (_sir_validstyle(style | sir_style_16color_map[i].from, &attr, &fg, &bg)) {
                 pass = false;
-                printf("\t" RED("fg %08" PRIx32 " | %08" PRIx32 " (%08" PRIx32
+                printf(INDENT_ITEM RED("fg %08" PRIx32 " | %08" PRIx32 " (%08" PRIx32
                        ") is valid!") "\n", style, sir_style_16color_map[i].from,
                        style | sir_style_16color_map[i].from);
             }
         }
     }
 
-    printf("\ttesting all combinations of (2) bg colors to create collisions...\n");
     for (size_t n = 20; n < SIR_NUM16_COLOR_MAPPINGS; n++) {
         uint32_t style = sir_style_16color_map[n].from;
         for (size_t i = 20; i < SIR_NUM16_COLOR_MAPPINGS; i++) {
@@ -676,15 +678,13 @@ bool sirtest_textstylesanity(void) {
             uint32_t attr, fg, bg;
             if (_sir_validstyle(style | sir_style_16color_map[i].from, &attr, &fg, &bg)) {
                 pass = false;
-                printf("\t" RED("bg %08" PRIx32 " | %08" PRIx32 " (%08" PRIx32
+                printf(INDENT_ITEM RED("bg %08" PRIx32 " | %08" PRIx32 " (%08" PRIx32
                        ") is valid!") "\n", style, sir_style_16color_map[i].from,
                        style | sir_style_16color_map[i].from);
             }
         }
     }
-
-    if (pass)
-        printf("\t" GREEN("NO collisions in fg or bg colors") "\n");
+    PRINT_PASS(pass, "\t--- collisions in fg or bg colors: %s ---\n\n", PRN_PASS(pass));
 
     sir_cleanup();
 
