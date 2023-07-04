@@ -33,7 +33,7 @@
     (defined(_POSIX_C_SOURCE) && (_POSIX_C_SOURCE >= 200112L && !defined(_GNU_SOURCE)))
 # define __HAVE_XSI_STRERROR_R__
 # if defined(__GLIBC__)
-#  if (__GLIBC__ >= 2 && __GLIBC__MINOR__ < 13)
+#  if (__GLIBC__ >= 2 && __GLIBC_MINOR__ < 13)
 #   define __HAVE_XSI_STRERROR_R_ERRNO__
 #  endif
 # endif
