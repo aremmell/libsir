@@ -24,11 +24,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #ifndef _SIR_TYPES_H_INCLUDED
-#define _SIR_TYPES_H_INCLUDED
+# define _SIR_TYPES_H_INCLUDED
 
-#include "sirplatform.h"
-#include "sirconfig.h"
-#include "siransimacros.h"
+# include "sirplatform.h"
+# include "sirconfig.h"
+# include "siransimacros.h"
 
 /**
  * @addtogroup public
@@ -212,24 +212,24 @@ typedef struct {
  */
 
 /** Text style attribute mask. */
-#define _SIRS_ATTR_MASK 0x0000000f
+# define _SIRS_ATTR_MASK 0x0000000f
 
 /** Text style foreground color mask. */
-#define _SIRS_FG_MASK 0x0000fff0
+# define _SIRS_FG_MASK 0x0000fff0
 
 /** Text style background color mask. */
-#define _SIRS_BG_MASK 0x0fff0000
+# define _SIRS_BG_MASK 0x0fff0000
 
 /** True if foreground and background colors are the same. */
-#define _SIRS_SAME_COLOR(fg, bg) ((((bg) >> 12) & _SIRS_FG_MASK) == (fg))
+# define _SIRS_SAME_COLOR(fg, bg) ((((bg) >> 12) & _SIRS_FG_MASK) == (fg))
 
 /** Magic number used to determine if libsir has been initialized. */
-#define _SIR_MAGIC 0x60906090
+# define _SIR_MAGIC 0x60906090
 
-#if defined(__WIN__)
+# if defined(__WIN__)
 typedef void (*invalparamfn)(const wchar_t*, const wchar_t*, const wchar_t*,
     unsigned int, uintptr_t);
-#endif
+# endif
 
 /** Internally-used global config container. */
 typedef struct {

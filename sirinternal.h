@@ -24,11 +24,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #ifndef _SIR_INTERNAL_H_INCLUDED
-#define _SIR_INTERNAL_H_INCLUDED
+# define _SIR_INTERNAL_H_INCLUDED
 
-#include "sirhelpers.h"
-#include "sirmaps.h"
-#include "sirerrors.h"
+# include "sirhelpers.h"
+# include "sirmaps.h"
+# include "sirerrors.h"
 
 /**
  * Initializes a ::sirinit structure suitable to pass to ::sir_init
@@ -87,7 +87,7 @@ void _sir_unlocksection(sir_mutex_id mid);
 /** Maps a ::sir_mutex_id to a ::sir_mutex and protected section. */
 bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section);
 
-#if !defined(__WIN__)
+# if !defined(__WIN__)
 /** General initialization procedure. */
 void _sir_initialize_once(void);
 /** Initializes a specific mutex. */
@@ -96,7 +96,7 @@ void _sir_initmutex_cfg_once(void);
 void _sir_initmutex_fc_once(void);
 /** Initializes a specific mutex. */
 void _sir_initmutex_ts_once(void);
-#else /* __WIN__ */
+# else /* __WIN__ */
 /** General initialization procedure. */
 BOOL CALLBACK _sir_initialize_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
 /** Initializes a specific mutex. */
@@ -105,7 +105,7 @@ BOOL CALLBACK _sir_initmutex_cfg_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx)
 BOOL CALLBACK _sir_initmutex_fc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
 /** Initializes a specific mutex. */
 BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
-#endif
+# endif
 
 /** Executes only one time. */
 bool _sir_once(sir_once* once, sir_once_fn func);

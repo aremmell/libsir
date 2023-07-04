@@ -24,9 +24,9 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #ifndef _SIR_TEXTSTYLE_H_INCLUDED
-#define _SIR_TEXTSTYLE_H_INCLUDED
+# define _SIR_TEXTSTYLE_H_INCLUDED
 
-#include "sirtypes.h"
+# include "sirtypes.h"
 
 /**  Returns the final string form of the current ::sir_textstyle for a ::sir_level. */
 const char* _sir_gettextstyle(sir_level level);

@@ -28,9 +28,9 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #ifndef _SIR_DEFAULTS_H_INCLUDED
-#define _SIR_DEFAULTS_H_INCLUDED
+# define _SIR_DEFAULTS_H_INCLUDED
 
-#include "sirtypes.h"
+# include "sirtypes.h"
 
 /**
  * @defgroup default Defaults
@@ -104,7 +104,7 @@ static const sir_options sir_stderr_def_opts
  */
 static const sir_levels sir_syslog_def_lvls
     = SIRL_NOTICE | SIRL_WARN | SIRL_ERROR | SIRL_CRIT |
-      SIRL_ALERT | SIRL_EMERG;
+       SIRL_ALERT | SIRL_EMERG;
 
 /**
  * Default options for the system logger.

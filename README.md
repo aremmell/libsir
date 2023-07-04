@@ -32,6 +32,7 @@ At this time, the test suite has been compiled and tested on (at minimum) these 
 | MSVC (cl) | 17.6                |               Windows                |   x64, arm64 |
 
 ## A sample
+
 Some sample terminal output from libsir demonstrating the default configuration:
 
 ![sample terminal output](./docs/res/sample-terminal.gif)

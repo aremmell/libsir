@@ -28,14 +28,14 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #ifndef _SIR_H_INCLUDED
-#define _SIR_H_INCLUDED
+# define _SIR_H_INCLUDED
 
-#include "sirplatform.h"
-#include "sirtypes.h"
+# include "sirplatform.h"
+# include "sirtypes.h"
 
-#if defined(__cplusplus)
+# if defined(__cplusplus)
 extern "C" {
-#endif
+# endif
 
 /**
  * @defgroup public Public Interface
@@ -628,8 +628,8 @@ bool sir_syslogcat(const char* category);
  * @}
  */
 
-#if defined(__cplusplus)
+# if defined(__cplusplus)
 }
-#endif
+# endif
 
 #endif /* !_SIR_H_INCLUDED */

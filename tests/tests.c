@@ -26,30 +26,30 @@
 #include "tests.h"
 
 static sir_test sir_tests[] = {
-    {"performance",             sirtest_perf, false, true},
-    {"thread-race",             sirtest_mthread_race, false, true},
-    {"exceed-max-buffer-size",  sirtest_exceedmaxsize, false, true},
-    {"no-output-destination",   sirtest_failnooutputdest, false, true},
-    {"null-pointers",           sirtest_failnulls, false, true},
-    {"file-cache-sanity",       sirtest_filecachesanity, false, true},
-    {"file-invalid-name",       sirtest_failinvalidfilename, false, true},
+    {"performance",             sirtest_perf,                  false, true},
+    {"thread-race",             sirtest_mthread_race,          false, true},
+    {"exceed-max-buffer-size",  sirtest_exceedmaxsize,         false, true},
+    {"no-output-destination",   sirtest_failnooutputdest,      false, true},
+    {"null-pointers",           sirtest_failnulls,             false, true},
+    {"file-cache-sanity",       sirtest_filecachesanity,       false, true},
+    {"file-invalid-name",       sirtest_failinvalidfilename,   false, true},
     {"file-bad-permissions",    sirtest_failfilebadpermission, false, true},
-    {"file-duplicate-name",     sirtest_faildupefile, false, true},
-    {"file-remove-nonexistent", sirtest_failremovebadfile, false, true},
-    {"file-archive-large",      sirtest_rollandarchivefile, false, true},
-    {"init-output-before",      sirtest_failwithoutinit, false, true},
-    {"init-superfluous",        sirtest_failinittwice, false, true},
-    {"init-bad-data",           sirtest_failinvalidinitdata, false, true},
-    {"init-cleanup-init",       sirtest_initcleanupinit, false, true},
-    {"cleanup-output-after",    sirtest_failaftercleanup, false, true},
-    {"sanity-errors",           sirtest_errorsanity, false, true},
-    {"sanity-text-styles",      sirtest_textstylesanity, false, true},
-    {"sanity-options",          sirtest_optionssanity, false, true},
-    {"sanity-levels",           sirtest_levelssanity, false, true},
-    {"sanity-update-config",    sirtest_updatesanity, false, true},
-    {"syslog",                  sirtest_syslog, false, true},
-    {"os_log",                  sirtest_os_log, false, true},
-    {"filesystem",              sirtest_filesystem, false, true}
+    {"file-duplicate-name",     sirtest_faildupefile,          false, true},
+    {"file-remove-nonexistent", sirtest_failremovebadfile,     false, true},
+    {"file-archive-large",      sirtest_rollandarchivefile,    false, true},
+    {"init-output-before",      sirtest_failwithoutinit,       false, true},
+    {"init-superfluous",        sirtest_failinittwice,         false, true},
+    {"init-bad-data",           sirtest_failinvalidinitdata,   false, true},
+    {"init-cleanup-init",       sirtest_initcleanupinit,       false, true},
+    {"cleanup-output-after",    sirtest_failaftercleanup,      false, true},
+    {"sanity-errors",           sirtest_errorsanity,           false, true},
+    {"sanity-text-styles",      sirtest_textstylesanity,       false, true},
+    {"sanity-options",          sirtest_optionssanity,         false, true},
+    {"sanity-levels",           sirtest_levelssanity,          false, true},
+    {"sanity-update-config",    sirtest_updatesanity,          false, true},
+    {"syslog",                  sirtest_syslog,                false, true},
+    {"os_log",                  sirtest_os_log,                false, true},
+    {"filesystem",              sirtest_filesystem,            false, true}
 };
 
 int main(int argc, char** argv) {
@@ -1123,7 +1123,7 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
         pass &= sir_alert("%d/%d: this alert message sent to stdout and %s.", i + 1, runs, sl_name);
         pass &= sir_emerg("%d/%d: this emergency message sent to stdout and %s.", i + 1, runs, sl_name);
 
-#if defined(SIR_OS_LOG_ENABLED)
+# if defined(SIR_OS_LOG_ENABLED)
         if (i == runs -1 && 0 == strncmp(sl_name, "os_log", 6)) {
             printf("\ttesting os_log activity feature...\n");
 
@@ -1136,7 +1136,7 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
             * will occur, then a sub-activity will be created, and more logging. */
             os_activity_apply_f(parent, (void*)parent, os_log_parent_activity);
         }
-#endif
+# endif
 
         sir_cleanup();
 
@@ -1548,7 +1548,6 @@ bool sirtest_XXX(void) {
 
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
-
 
     sir_cleanup();
     return print_result_and_return(pass);
