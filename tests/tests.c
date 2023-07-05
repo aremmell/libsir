@@ -164,7 +164,8 @@ bool sirtest_exceedmaxsize(void) {
     bool pass = si_init;
 
     char toobig[SIR_MAXMESSAGE + 100] = {0};
-    memset(toobig, 'a', SIR_MAXMESSAGE - 99);
+    memset(toobig, 'a', SIR_MAXMESSAGE + 100);
+    toobig[SIR_MAXMESSAGE + 99] = '\0';
 
     pass &= sir_info(toobig);
 
