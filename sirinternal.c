@@ -558,7 +558,7 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     SIR_ASSERT(NULL != style_str);
     if (NULL != style_str)
         fmt = (0 == _sir_strncpy(buf.style, SIR_MAXSTYLE, style_str, SIR_MAXSTYLE));
-
+    _SIR_UNUSED(fmt);
     SIR_ASSERT(fmt);
 
     now          = -1;
@@ -1106,7 +1106,7 @@ pid_t _sir_gettid(void) {
 bool _sir_getthreadname(char name[SIR_MAXPID]) {
 #if (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
      (defined(__GLIBC__) && defined(_GNU_SOURCE)) || \
-      defined(USE_PTHREAD_GETNAME_NP)
+      defined(USE_PTHREAD_GETNAME_NP) || defined(__MACOS__)
     int ret = pthread_getname_np(pthread_self(), name, SIR_MAXPID);
     if (0 != ret) {
         _sir_handleerr(ret);
