@@ -74,9 +74,12 @@
 #     undef USE_PTHREAD_GETNAME_NP
 #    endif
 #   endif
-#   if (defined(__sun) || defined(__sun__)) && (defined(__SVR4) || defined(__svr4__))
+#   if defined(__illumos__) || ((defined(__sun) || defined(__sun__)) && (defined(__SVR4) || defined(__svr4__)))
 #    define __SOLARIS__
 #    define USE_PTHREAD_GETNAME_NP
+#    if !defined(_ATFILE_SOURCE)
+#     define _ATFILE_SOURCE 1
+#    endif
 #    if !defined(__EXTENSIONS__)
 #     define __EXTENSIONS__
 #    endif
@@ -153,6 +156,9 @@
 
 # if !defined(__WIN__)
 #  include <pthread.h>
+# if defined(__illumos__)
+#  include <sys/fcntl.h>
+# endif
 #  include <fcntl.h>
 #  include <unistd.h>
 #  include <sys/syscall.h>
