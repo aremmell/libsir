@@ -129,7 +129,7 @@ bool _sir_openfile(FILE* restrict* restrict f, const char* restrict path,
 
 char* _sir_getcwd(void) {
 #if !defined(__WIN__)
-# if defined(__linux__) && defined(_GNU_SOURCE)
+# if defined(__linux__) && (defined(__GLIBC__) && defined(_GNU_SOURCE))
     char* cur = get_current_dir_name();
     if (NULL == cur)
         _sir_handleerr(errno);
@@ -174,7 +174,6 @@ char* _sir_getappfilename(void) {
 
 #if !defined(__WIN__)
 # if defined(__linux__)
-#  if defined(__HAVE_UNISTD_READLINK__)
         ssize_t read = readlink("/proc/self/exe", buffer, size - 1);
         if (-1 != read && read < (ssize_t)size - 1) {
             resolved = true;
@@ -192,8 +191,6 @@ char* _sir_getappfilename(void) {
                 continue;
             }
         }
-#  else
-#   error "unable to resolve readlink(); see man readlink and its feature test macro requirements."
 #  endif
 # elif defined(__BSD__)
         int mib[4] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
