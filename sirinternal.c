@@ -354,7 +354,7 @@ bool _sir_syslogcat(sirinit* si, sir_update_config_data* data) {
 bool _sir_writeinit(sir_update_config_data* data, sirinit_update update) {
     _sir_seterror(_SIR_E_NOERROR);
 
-    if (!_sir_sanity() || !_sir_validupdatedata(data) || !_sir_validptr(update))
+    if (!_sir_sanity() || !_sir_validupdatedata(data) || !_sir_notnull(update))
         return false;
 
     sirconfig* _cfg= _sir_locksection(SIRMI_CONFIG);
@@ -831,6 +831,7 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx)
     }
 
     return true;
+
 # elif defined(SIR_SYSLOG_ENABLED)
     int syslog_level;
     switch (level) {
@@ -1115,6 +1116,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
     return true;
 #else
+# pragma message("unable to determine how to get a thread name")
     _SIR_UNUSED(name);
     return false;
 #endif
