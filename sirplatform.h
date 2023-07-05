@@ -51,6 +51,7 @@
 #   define __MACOS__
 #   define _DARWIN_C_SOURCE
 #  elif defined(__FreeBSD__)
+#   include <sys/param.h>
 #   define __BSD__
 #   define _BSD_SOURCE
 #   if !defined(_DEFAULT_SOURCE)
