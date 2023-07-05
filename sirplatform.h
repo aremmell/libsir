@@ -43,11 +43,6 @@
 #    endif
 #   endif
 #  endif
-#  if defined(__DragonFly__) // Clang on DragonFly is missing stdatomic.h
-#   if defined(__clang__) && defined(__clang_version__)
-#    undef __HAVE_ATOMIC_H__
-#   endif
-#  endif
 #  if defined(__STDC_WANT_LIB_EXT1__)
 #   undef __STDC_WANT_LIB_EXT1__
 #  endif
@@ -55,14 +50,7 @@
 #  if defined(__APPLE__) && defined(__MACH__)
 #   define __MACOS__
 #   define _DARWIN_C_SOURCE
-#  elif defined(__NetBSD__)
-#   if !defined(_NETBSD_SOURCE)
-#    define _NETBSD_SOURCE 1
-#   endif
-#   define __BSD__
-#   define USE_PTHREAD_GETNAME_NP
-#  elif defined(__FreeBSD__) || defined(__DragonFly__)
-#   include <sys/param.h>
+#  elif defined(__FreeBSD__)
 #   define __BSD__
 #   define _BSD_SOURCE
 #   if !defined(_DEFAULT_SOURCE)
@@ -72,11 +60,6 @@
 #    define __FreeBSD_PTHREAD_NP_12_2__
 #   elif __FreeBSD_version >= 1103500
 #    define __FreeBSD_PTHREAD_NP_11_3__
-#   elif __DragonFly_version >= 400907
-#    define __DragonFly_getthreadid__
-#   endif
-#   if defined(__DragonFly__)
-#    define USE_PTHREAD_GETNAME_NP
 #   endif
 #  else
 #   if defined(__linux__)
@@ -88,16 +71,6 @@
 #   if defined(__ANDROID__) && defined(__ANDROID_API__)
 #    if __ANDROID_API__ < 26
 #     undef USE_PTHREAD_GETNAME_NP
-#    endif
-#   endif
-#   if defined(__illumos__) || ((defined(__sun) || defined(__sun__)) && (defined(__SVR4) || defined(__svr4__)))
-#    define __SOLARIS__
-#    define USE_PTHREAD_GETNAME_NP
-#    if !defined(_ATFILE_SOURCE)
-#     define _ATFILE_SOURCE 1
-#    endif
-#    if !defined(__EXTENSIONS__)
-#     define __EXTENSIONS__
 #    endif
 #   endif
 #   if !defined(_POSIX_C_SOURCE)
@@ -172,9 +145,6 @@
 
 # if !defined(__WIN__)
 #  include <pthread.h>
-#  if defined(__illumos__)
-#   include <sys/fcntl.h>
-#  endif
 #  include <fcntl.h>
 #  include <unistd.h>
 #  include <sys/syscall.h>
@@ -190,9 +160,7 @@
 #   include <syslog.h>
 #  endif
 #  if defined(__BSD__)
-#   if !defined(__NetBSD__)
-#    include <pthread_np.h>
-#   endif
+#   include <pthread_np.h>
 #   include <sys/sysctl.h>
 #  elif defined(__linux__)
 #   if defined(__GLIBC__)
