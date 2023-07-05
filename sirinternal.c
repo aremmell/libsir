@@ -1116,7 +1116,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
     return true;
 #else
-# pragma message("cannot determine how to get a thread name; using null fallback")
+# pragma message("unable to determine how to get a thread name")
     _SIR_UNUSED(name);
     return false;
 #endif

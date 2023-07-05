@@ -32,6 +32,17 @@
 #  else
 #   define __HAVE_ATOMIC_H__
 #  endif
+#  if defined(__GNUC__)
+#   if __GNUC__ <= 4
+#    if defined(__GNUC_MINOR__)
+#     if __GNUC_MINOR__ <= 8
+#      if !defined(__clang_version__)
+#       undef __HAVE_ATOMIC_H__
+#      endif
+#     endif
+#    endif
+#   endif
+#  endif
 #  if defined(__STDC_WANT_LIB_EXT1__)
 #   undef __STDC_WANT_LIB_EXT1__
 #  endif
@@ -51,8 +62,16 @@
 #    define __FreeBSD_PTHREAD_NP_11_3__
 #   endif
 #  else
-#   if defined(__linux__) && !defined(_GNU_SOURCE)
-#    define _GNU_SOURCE
+#   if defined(__linux__)
+#    if !defined(_GNU_SOURCE)
+#     define _GNU_SOURCE
+#    endif
+#    define USE_PTHREAD_GETNAME_NP
+#   endif
+#   if defined(__ANDROID__) && defined(__ANDROID_API__)
+#    if __ANDROID_API__ < 26
+#     undef USE_PTHREAD_GETNAME_NP
+#    endif
 #   endif
 #   if !defined(_POSIX_C_SOURCE)
 #    define _POSIX_C_SOURCE 200809L
@@ -126,13 +145,13 @@
 
 # if !defined(__WIN__)
 #  include <pthread.h>
+#  include <fcntl.h>
 #  include <unistd.h>
 #  include <sys/syscall.h>
 #  include <sys/time.h>
 #  include <strings.h>
 #  include <termios.h>
 #  include <limits.h>
-#  include <fcntl.h>
 #  include <libgen.h>
 #  if defined(__HAVE_ATOMIC_H__) && !defined(__cplusplus)
 #   include <stdatomic.h>
@@ -144,7 +163,9 @@
 #   include <pthread_np.h>
 #   include <sys/sysctl.h>
 #  elif defined(__linux__)
-#   include <linux/limits.h>
+#   if defined(__GLIBC__)
+#    include <linux/limits.h>
+#   endif
 #  elif defined(__MACOS__)
 #   include <mach-o/dyld.h>
 #   include <sys/_types/_timespec.h>

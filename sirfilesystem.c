@@ -178,7 +178,6 @@ char* _sir_getappfilename(void) {
                 continue;
             }
         }
-#  endif
 # elif defined(__BSD__)
         int mib[4] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
         int ret = sysctl(mib, 4, buffer, &size, NULL, 0);
