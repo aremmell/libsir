@@ -14,13 +14,13 @@ INSTALLLIB = /usr/local/lib
 INSTALLINC = /usr/local/include
 
 # base CFLAGS
-CFLAGS = -Wall -Wextra -Wpedantic -std=c11 -I. -fPIC -D_FORTIFY_SOURCE=2
+CFLAGS = -Wall -Wextra -Wpedantic -std=c11 -I. -fPIC
 
 # debug/non-debug CFLAGS
 ifeq ($(SIR_DEBUG),1)
-	CFLAGS += -g -O0 -DDEBUG
+	CFLAGS += -g -O0 -DDEBUG -U_FORTIFY_SOURCE
 else
-	CFLAGS += -O3 -DNDEBUG
+	CFLAGS += -O3 -DNDEBUG -D_FORTIFY_SOURCE=2
 endif
 
 # enable internal diagnostic logging
@@ -42,7 +42,7 @@ LIBS = -pthread
 
 # for test rig and example:
 # link with static library, not shared
-LDFLAGS = $(LIBS) -L$(LIBDIR) -lsir_s
+LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s
 
 # translation units
 TUS := $(wildcard *.c)
