@@ -124,13 +124,6 @@
 
 # define SIR_MAXHOST 256
 
-# if defined(__GLIBC__)
-#  if (__GLIBC__ >= 2 && __GLIBC_MINOR__ > 19) || \
-     ((__GLIBC__ == 2 && __GLIBC_MINOR__ <= 19) && defined(_BSD_SOURCE))
-#   define __HAVE_UNISTD_READLINK__
-#  endif
-# endif
-
 # if !defined(__WIN__)
 #  include <pthread.h>
 #  include <unistd.h>
