@@ -50,6 +50,11 @@
 #  if defined(__APPLE__) && defined(__MACH__)
 #   define __MACOS__
 #   define _DARWIN_C_SOURCE
+#  elif defined(__NetBSD__)
+#   if !defined(_NETBSD_SOURCE)
+#    define _NETBSD_SOURCE 1
+#   endif
+#   define __BSD__
 #  elif defined(__FreeBSD__)
 #   include <sys/param.h>
 #   define __BSD__
@@ -174,7 +179,9 @@
 #   include <syslog.h>
 #  endif
 #  if defined(__BSD__)
-#   include <pthread_np.h>
+#   if !defined(__NetBSD__)
+#    include <pthread_np.h>
+#   endif
 #   include <sys/sysctl.h>
 #  elif defined(__linux__)
 #   if defined(__GLIBC__)
