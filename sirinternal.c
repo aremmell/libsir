@@ -433,7 +433,9 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
 
 #if !defined(__WIN__)
 void _sir_initialize_once(void) {
+# if defined(__HAVE_ATOMIC_H__)
     atomic_init(&_sir_magic, 0);
+# endif
 }
 
 void _sir_initmutex_cfg_once(void) {
@@ -455,7 +457,6 @@ BOOL CALLBACK _sir_initialize_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
     _SIR_UNUSED(ponce);
     _SIR_UNUSED(param);
     _SIR_UNUSED(ctx)
-    // atomic_init(&_sir_magic, 0);
     return TRUE;
 }
 
@@ -557,7 +558,7 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     SIR_ASSERT(NULL != style_str);
     if (NULL != style_str)
         fmt = (0 == _sir_strncpy(buf.style, SIR_MAXSTYLE, style_str, SIR_MAXSTYLE));
-
+    _SIR_UNUSED(fmt);
     SIR_ASSERT(fmt);
 
     now          = -1;
@@ -1103,7 +1104,9 @@ pid_t _sir_gettid(void) {
 }
 
 bool _sir_getthreadname(char name[SIR_MAXPID]) {
-#if (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || defined(_GNU_SOURCE)
+#if (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
+     (defined(__GLIBC__) && defined(_GNU_SOURCE)) || \
+      defined(USE_PTHREAD_GETNAME_NP) || defined(__MACOS__)
     int ret = pthread_getname_np(pthread_self(), name, SIR_MAXPID);
     if (0 != ret) {
         _sir_handleerr(ret);
@@ -1114,6 +1117,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
     return true;
 #else
+# pragma message("unable to determine how to get a thread name")
     _SIR_UNUSED(name);
     return false;
 #endif

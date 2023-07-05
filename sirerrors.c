@@ -37,7 +37,7 @@
 #   define __HAVE_XSI_STRERROR_R_ERRNO__
 #  endif
 # endif
-#elif defined(_GNU_SOURCE)
+#elif defined(_GNU_SOURCE) && defined(__GLIBC__)
 # define __HAVE_GNU_STRERROR_R__
 #elif defined(__HAVE_STDC_SECURE_OR_EXT1__)
 # define __HAVE_STRERROR_S__
