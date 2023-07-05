@@ -74,6 +74,13 @@
 #     undef USE_PTHREAD_GETNAME_NP
 #    endif
 #   endif
+#   if (defined(__sun) || defined(__sun__)) && (defined(__SVR4) || defined(__svr4__))
+#    define __SOLARIS__
+#    define USE_PTHREAD_GETNAME_NP
+#    if !defined(__EXTENSIONS__)
+#     define __EXTENSIONS__
+#    endif
+#   endif
 #   if !defined(_POSIX_C_SOURCE)
 #    define _POSIX_C_SOURCE 200809L
 #   endif

@@ -51,6 +51,8 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         int open_flags = O_PATH | O_DIRECTORY;
 # elif defined(__BSD__)
         int open_flags = O_EXEC | O_DIRECTORY;
+# elif defined(__SOLARIS__)
+        int open_flags = O_DIRECTORY;
 # endif
 
         int fd = open(base_path, open_flags);
@@ -172,9 +174,15 @@ char* _sir_getappfilename(void) {
             grow = false;
         }
 
+#if defined(__linux__)
+# define PROC_SELF "/proc/self/exe"
+#elif defined(__SOLARIS__)
+# define PROC_SELF "/proc/self/path/a.out"
+#endif
+
 #if !defined(__WIN__)
-# if defined(__linux__)
-        ssize_t read = readlink("/proc/self/exe", buffer, size - 1);
+# if defined(__linux__) || defined(__SOLARIS__)
+        ssize_t read = readlink(PROC_SELF, buffer, size - 1);
         if (-1 != read && read < (ssize_t)size - 1) {
             resolved = true;
             break;
