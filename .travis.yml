@@ -35,6 +35,24 @@ jobs:
       dist: xenial
       arch: arm64
       compiler: clang
+    - os: linux
+      dist: bionic
+      arch: s390x
+      compiler: gcc
+    - os: linux
+      dist: bionic
+      arch: s390x
+      compiler: clang
+    - os: linux
+      arch: arm64-graviton2
+      virt: lxd
+      group: edge
+      compiler: gcc
+    - os: linux
+      arch: arm64-graviton2
+      virt: lxd
+      group: edge
+      compiler: clang
     - os: freebsd
       addons:
         pkg:
@@ -50,6 +68,7 @@ jobs:
       arch: amd64
       compiler: clang
     - os: linux-ppc64le
+      dist: trusty
       compiler: gcc
 script:
   - SIR_SELFLOG=1 $MAKE clean tests example
