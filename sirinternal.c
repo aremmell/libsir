@@ -433,7 +433,9 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
 
 #if !defined(__WIN__)
 void _sir_initialize_once(void) {
+# if defined(__HAVE_ATOMIC_H__)
     atomic_init(&_sir_magic, 0);
+# endif
 }
 
 void _sir_initmutex_cfg_once(void) {
@@ -455,7 +457,6 @@ BOOL CALLBACK _sir_initialize_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
     _SIR_UNUSED(ponce);
     _SIR_UNUSED(param);
     _SIR_UNUSED(ctx)
-    // atomic_init(&_sir_magic, 0);
     return TRUE;
 }
 
