@@ -1091,10 +1091,10 @@ pid_t _sir_gettid(void) {
     if (0 != gettid)
         _sir_handleerr(gettid);
     tid = (pid_t)tid64;
-#elif defined(__SOLARIS__)
-    tid = (pid_t)pthread_self();
-#elif defined(__BSD__)
+#elif defined(__BSD__) && !defined(__NetBSD__)
     tid = (pid_t)pthread_getthreadid_np();
+#elif defined(__SOLARIS__) || defined(__NetBSD__)
+    tid = (pid_t)pthread_self();
 #elif defined(_DEFAULT_SOURCE)
     tid = syscall(SYS_gettid);
 #elif defined(__WIN__)

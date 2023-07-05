@@ -59,9 +59,9 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         int open_flags = O_SEARCH;
 # elif defined(__linux__)
         int open_flags = O_PATH | O_DIRECTORY;
-# elif defined(__BSD__)
+# elif defined(__FreeBSD__)
         int open_flags = O_EXEC | O_DIRECTORY;
-# elif defined(__SOLARIS__)
+# elif defined(__SOLARIS__) || defined(__NetBSD__)
         int open_flags = O_DIRECTORY;
 # endif
 
@@ -163,12 +163,14 @@ char* _sir_getappfilename(void) {
 
 #if defined(__linux__)
 # define PROC_SELF "/proc/self/exe"
+#elif defined(__NetBSD__)
+# define PROC_SELF "/proc/curproc/exe"
 #elif defined(__SOLARIS__)
 # define PROC_SELF "/proc/self/path/a.out"
 #endif
 
 #if !defined(__WIN__)
-# if defined(__linux__) || defined(__SOLARIS__)
+# if defined(__linux__) || defined(__NetBSD__) || defined(__SOLARIS__)
         ssize_t read = readlink(PROC_SELF, buffer, size - 1);
         if (-1 != read && read < (ssize_t)size - 1) {
             resolved = true;
