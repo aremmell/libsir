@@ -1103,7 +1103,9 @@ pid_t _sir_gettid(void) {
 }
 
 bool _sir_getthreadname(char name[SIR_MAXPID]) {
-#if (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || defined(_GNU_SOURCE)
+#if (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
+     (defined(__GLIBC__) && defined(_GNU_SOURCE)) || \
+      defined(USE_PTHREAD_GETNAME_NP)
     int ret = pthread_getname_np(pthread_self(), name, SIR_MAXPID);
     if (0 != ret) {
         _sir_handleerr(ret);
@@ -1114,6 +1116,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
     return true;
 #else
+# pragma message("cannot determine how to get a thread name; using null fallback")
     _SIR_UNUSED(name);
     return false;
 #endif
