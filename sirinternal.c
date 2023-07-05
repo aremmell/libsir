@@ -558,7 +558,7 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     SIR_ASSERT(NULL != style_str);
     if (NULL != style_str)
         fmt = (0 == _sir_strncpy(buf.style, SIR_MAXSTYLE, style_str, SIR_MAXSTYLE));
-
+    (void)fmt;
     SIR_ASSERT(fmt);
 
     now          = -1;
