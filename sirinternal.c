@@ -1101,7 +1101,7 @@ pid_t _sir_gettid(void) {
     tid = (pid_t)tid64;
 #elif (defined(__BSD__) && !defined(__NetBSD__)) || defined(__DragonFly_getthreadid__)
     tid = (pid_t)pthread_getthreadid_np();
-#elif defined(__SOLARIS__) || defined(__NetBSD__) || defined(__DragonFly__)
+#elif defined(__SOLARIS__) || defined(__NetBSD__) || defined(__DragonFly__) || defined(__CYGWIN__)
     tid = (pid_t)pthread_self();
 #elif defined(_DEFAULT_SOURCE)
     tid = syscall(SYS_gettid);

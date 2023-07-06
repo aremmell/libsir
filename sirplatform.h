@@ -177,7 +177,9 @@
 #  endif
 #  include <fcntl.h>
 #  include <unistd.h>
-#  include <sys/syscall.h>
+#  if !defined(__CYGWIN__)
+#   include <sys/syscall.h>
+#  endif
 #  include <sys/time.h>
 #  include <strings.h>
 #  include <termios.h>
