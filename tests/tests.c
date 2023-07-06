@@ -1226,13 +1226,13 @@ bool sirtest_filesystem(void) {
                 pass &= 0 == strncmp(filename, _dirname, strnlen(_dirname, SIR_MAXPATH));
             }
 
-            _sir_safefree(appdir);
-            _sir_safefree(filename);
-            _sir_safefree(filename2);
-            _sir_safefree(filename3);
+            _sir_safefree(&appdir);
+            _sir_safefree(&filename);
+            _sir_safefree(&filename2);
+            _sir_safefree(&filename3);
         }
 
-        _sir_safefree(cwd);
+        _sir_safefree(&cwd);
     }
 
     /* this next section doesn't really yield any useful boolean pass/fail
@@ -1259,7 +1259,7 @@ bool sirtest_filesystem(void) {
         if (NULL != tmp) {
             printf("\t_sir_getdirname(" WHITE("'%s'") ") = " WHITE("'%s'") "\n",
                 tmp, _sir_getdirname(tmp));
-            _sir_safefree(tmp);
+            _sir_safefree(&tmp);
         }
     }
 
@@ -1283,7 +1283,7 @@ bool sirtest_filesystem(void) {
         if (NULL != tmp) {
             printf("\t_sir_getbasename(" WHITE("'%s'") ") = " WHITE("'%s'") "\n",
                 tmp, _sir_getbasename(tmp));
-            _sir_safefree(tmp);
+            _sir_safefree(&tmp);
         }
     }
 
@@ -1495,7 +1495,7 @@ bool sirtest_mthread_race(void) {
         }
     }
 
-    _sir_safefree(heap_args);
+    _sir_safefree(&heap_args);
 
     sir_cleanup();
     return print_result_and_return(pass);

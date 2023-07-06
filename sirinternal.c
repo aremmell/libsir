@@ -756,7 +756,7 @@ bool _sir_syslog_init(const char* name, sir_syslog_dest* ctx) {
                 _sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, SIR_FALLBACK_SYSLOG_ID,
                     strnlen(SIR_FALLBACK_SYSLOG_ID, SIR_MAX_SYSLOG_ID));
             }
-            _sir_safefree(appbasename);
+            _sir_safefree(&appbasename);
         }
     } else {
         _sir_selflog("already have identity");

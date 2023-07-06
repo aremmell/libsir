@@ -56,13 +56,13 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         int fd = open(base_path, open_flags);
         if (-1 == fd) {
             _sir_handleerr(errno);
-            _sir_safefree(base_path);
+            _sir_safefree(&base_path);
             return false;
         }
 
         stat_ret = fstatat(fd, path, st, AT_SYMLINK_NOFOLLOW);
         _sir_safeclose(&fd);
-        _sir_safefree(base_path);
+        _sir_safefree(&base_path);
     } else {
         stat_ret = stat(path, st);
     }
@@ -71,7 +71,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         snprintf(abs_path, SIR_MAXPATH, "%s\\%s", base_path, path);
 
         stat_ret = stat(abs_path, st);
-        _sir_safefree(base_path);
+        _sir_safefree(&base_path);
     } else {
         stat_ret = stat(path, st);
     }
@@ -120,7 +120,7 @@ bool _sir_openfile(FILE* restrict* restrict f, const char* restrict path,
         snprintf(abs_path, SIR_MAXPATH, "%s/%s", base_path, path);
 
         int ret = _sir_fopen(f, abs_path, mode);
-        _sir_safefree(base_path);
+        _sir_safefree(&base_path);
         return 0 == ret;
     }
 
@@ -161,7 +161,7 @@ char* _sir_getappfilename(void) {
 
     do {
         if (grow) {
-            _sir_safefree(buffer);
+            _sir_safefree(&buffer);
             buffer = (char*)calloc(size, sizeof(char));
             if (NULL == buffer) {
                 _sir_handleerr(errno);
@@ -246,7 +246,7 @@ char* _sir_getappfilename(void) {
     } while (true);
 
     if (!resolved) {
-        _sir_safefree(buffer);
+        _sir_safefree(&buffer);
         _sir_selflog("failed to resolve filename!");
         return NULL;
     }
@@ -257,28 +257,28 @@ char* _sir_getappfilename(void) {
 char* _sir_getappbasename(void) {
     char* filename = _sir_getappfilename();
     if (_sir_validptr(filename) && !_sir_validstr(filename)) {
-        _sir_safefree(filename);
+        _sir_safefree(&filename);
         return NULL;
     }
 
     char* retval = _sir_getbasename(filename);
     char* bname  = strdup(retval);
 
-    _sir_safefree(filename);
+    _sir_safefree(&filename);
     return bname;
 }
 
 char* _sir_getappdir(void) {
     char* filename = _sir_getappfilename();
     if (_sir_validptr(filename) && !_sir_validstr(filename)) {
-        _sir_safefree(filename);
+        _sir_safefree(&filename);
         return NULL;
     }
 
     char* retval = _sir_getdirname(filename);
     char* dirname = strdup(retval);
 
-    _sir_safefree(filename);
+    _sir_safefree(&filename);
     return dirname;
 }
 

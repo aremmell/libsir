@@ -184,7 +184,7 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
         SIR_ASSERT(fmtmsg >= 0);
 
         if (alloc)
-            _sir_safefree(final);
+            _sir_safefree(&final);
 
         return sir_errors[_mid].e;
     }
@@ -239,7 +239,7 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, const char
                     success &= write2 > 0;
                 }
 
-                _sir_safefree(buf);
+                _sir_safefree(&buf);
             }
         }
     }

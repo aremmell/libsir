@@ -26,6 +26,14 @@
 #include "sirhelpers.h"
 #include "sirerrors.h"
 
+void __sir_safefree(void** pp) {
+    if (!pp || !*pp)
+        return;
+
+    free(*pp);
+    *pp = NULL;
+}
+
 void _sir_safeclose(int* restrict fd) {
     if (!fd || 0 > *fd)
         return;

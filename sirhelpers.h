@@ -122,21 +122,11 @@ bool _sir_setbitslow(uint32_t* flags, uint32_t set) {
     return true;
 }
 
-/** Wraps free. */
-static inline
-void __sir_safefree(const void* restrict* restrict p) {
-    if (!p || !*p)
-        return;
+/** Calls free and then sets pointer to NULL after freeing. */
+void __sir_safefree(void** pp);
 
-    free((void*)*p);
-    *p = NULL;
-}
-
-/** Wraps free. */
-static inline
-void _sir_safefree(const void* restrict p) {
-    __sir_safefree(&p);
-}
+/** Wraps __sir_safefree with a cast to void**. */
+#define _sir_safefree(pp) __sir_safefree((void**)pp)
 
 /** Wraps close. */
 void _sir_safeclose(int* restrict fd);

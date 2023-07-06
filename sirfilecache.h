@@ -44,7 +44,7 @@ bool _sirfile_needsroll(sirfile* sf);
 bool _sirfile_roll(sirfile* sf, char** newpath);
 bool _sirfile_archive(sirfile* sf, const char* newpath);
 bool _sirfile_splitpath(sirfile* sf, char** name, char** ext);
-void _sirfile_destroy(sirfile* sf);
+void _sirfile_destroy(sirfile** sf);
 bool _sirfile_validate(sirfile* sf);
 bool _sirfile_update(sirfile* sf, sir_update_config_data* data);
 

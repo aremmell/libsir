@@ -101,7 +101,7 @@ sirfile* _sirfile_create(const char* path, sir_levels levels, sir_options opts) 
     sf->path       = (char*)calloc(pathLen + 1, sizeof(char));
     if (!sf->path) {
         _sir_handleerr(errno);
-        _sir_safefree(sf);
+        _sir_safefree(&sf);
         return NULL;
     }
 
@@ -111,7 +111,7 @@ sirfile* _sirfile_create(const char* path, sir_levels levels, sir_options opts) 
     sf->opts   = opts;
 
     if (!_sirfile_open(sf) || !_sirfile_validate(sf)) {
-        _sirfile_destroy(sf);
+        _sirfile_destroy(&sf);
         return NULL;
     }
 
@@ -165,7 +165,7 @@ bool _sirfile_write(sirfile* sf, const char* output) {
             rolled = _sirfile_writeheader(sf, header);
         }
 
-        _sir_safefree(newpath);
+        _sir_safefree(&newpath);
         if (!rolled) /* write anyway; don't want to lose data. */
             _sir_selflog("error: failed to roll file %d (path: '%s')!",
                 sf->id, sf->path);
@@ -307,8 +307,8 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
         }
     }
 
-    _sir_safefree(name);
-    _sir_safefree(ext);
+    _sir_safefree(&name);
+    _sir_safefree(&ext);
 
     return retval;
 
@@ -363,12 +363,12 @@ bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
     return _sir_validstr(*name) && (!lastfullstop || _sir_validstr(*ext));
 }
 
-void _sirfile_destroy(sirfile* sf) {
-    if (!sf)
+void _sirfile_destroy(sirfile** sf) {
+    if (!sf || !*sf)
         return;
 
-    _sirfile_close(sf);
-    _sir_safefree(sf->path);
+    _sirfile_close(*sf);
+    _sir_safefree(&(*sf)->path);
     _sir_safefree(sf);
 }
 
@@ -438,6 +438,7 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
         return &sf->id;
     }
 
+    _sir_safefree(&sf);
     return NULL;
 }
 
@@ -463,7 +464,7 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
         SIR_ASSERT(_sirfile_validate(sfc->files[n]));
 
         if (sfc->files[n]->id == *id) {
-            _sirfile_destroy(sfc->files[n]);
+            _sirfile_destroy(&sfc->files[n]);
 
             for (size_t i = n; i < sfc->count - 1; i++) {
                 sfc->files[i] = sfc->files[i + 1];
@@ -512,7 +513,7 @@ bool _sir_fcache_destroy(sirfcache* sfc) {
 
     for (size_t n = 0; n < sfc->count; n++) {
         SIR_ASSERT(_sirfile_validate(sfc->files[n]));
-        _sirfile_destroy(sfc->files[n]);
+        _sirfile_destroy(&sfc->files[n]);
         sfc->files[n] = NULL;
         sfc->count--;
     }
