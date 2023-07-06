@@ -35,43 +35,6 @@
 #ifndef _SIR_ANSI_MACROS_H_INCLUDED
 # define _SIR_ANSI_MACROS_H_INCLUDED
 
-/** Escape sequences:
- *
- *  16 colors:      \033[<dim=0..2>;<fg=30..37, 90..97>;<bg=40..47, 100..107>m
- *  256 colors:     \033[<fg=38|bg=48>;5;<0..255>m
- *  24-bit RGB:     \033[<fg=38|bg=48>;2;<R=0..255>;<G=0..255>;<B=0..255>m
- *  Clear all:      \033[0m
- *
- *  Note: evidently, you can chain these sequences to set both fore and back simultaneously:
- *    \033[38;5;128;48;5;206m
- *
- *  - 30–37, 90–97 ("bright"):   Set foreground color (number = color ID)
- *  - 38:                        Set foreground color (with pattern to follow: 256 or 24-bit RGB
- * color)
- *  - 39:                        Set default foreground color
- *  - 40–47, 100–107 ("bright"): Set background color (number = color ID)
- *  - 48:                        Set background color (with pattern to follow: 256 or 24-bit RGB
- * color)
- *  - 49:                        Set default background color
- *    === to test
- * =====================================================================================
- *  - 3:                         Emphasis (off: 23?) √
- *  - 4:                         Underline (off: 24) √
- *  - 5:                         Blinking (off: 25) √ (have to enable in settings)
- *  - 7:                         Inverse (off: 27) √
- *  - 9:                         Strikethrough (off: 29?) √
- *  - 51:                        Framed (off: 54)    x
- *  - 52:                        Encircled (off: 54) x
- *  - 53:                        Overlined (off: 55) x
- *  -  1:                        Bold (off: 21) √
- *
- * The 24-bit RGB spectrum is laid out as follows:
- *
- * 0x00-0x07:  standard colors (same as the 4-bit colors)
- * 0x08-0x0F:  high intensity colors
- * 0x10-0xE7:  6 × 6 × 6 cube (216 colors): 16 + 36 × r + 6 × g + b (0 ≤ r, g, b ≤ 5)
- * 0xE8-0xFF:  grayscale from black to white in 24 steps
- */
 
 # define SIR_ESC "\x1b[" /**< Begins an ANSI escape sequence. */
 # define SIR_ESC_M "m"   /**< Marks the end of a sequence. */
