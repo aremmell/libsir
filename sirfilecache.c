@@ -27,7 +27,6 @@
 #include "sirfilesystem.h"
 #include "sirinternal.h"
 #include "sirdefaults.h"
-#include "sirmutex.h"
 
 sirfileid _sir_addfile(const char* path, sir_levels levels, sir_options opts) {
     _sir_seterror(_SIR_E_NOERROR);
