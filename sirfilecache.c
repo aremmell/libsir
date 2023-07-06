@@ -436,8 +436,8 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
 
         return &sf->id;
     }
-
     _sir_safefree(&sf);
+
     return NULL;
 }
 

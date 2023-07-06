@@ -45,15 +45,15 @@
 # endif
 
 # define INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, p_name, init) \
-    sirinit var         = {0}; \
-    var.d_stdout.opts   = (o_stdout) > 0 ? o_stdout : SIRO_DEFAULT; \
-    var.d_stdout.levels = l_stdout; \
-    var.d_stderr.opts   = (o_stderr) > 0 ? o_stderr : SIRO_DEFAULT; \
-    var.d_stderr.levels = l_stderr; \
-    if (_sir_validstrnofail(p_name)) \
-        _sir_strncpy(var.name, SIR_MAXNAME, p_name, SIR_MAXNAME); \
-    bool var##_init = false; \
-    if (init) \
+    sirinit var         = {0};                                                \
+    var.d_stdout.opts   = (o_stdout) > 0 ? o_stdout : SIRO_DEFAULT;           \
+    var.d_stdout.levels = l_stdout;                                           \
+    var.d_stderr.opts   = (o_stderr) > 0 ? o_stderr : SIRO_DEFAULT;           \
+    var.d_stderr.levels = l_stderr;                                           \
+    if (_sir_validstrnofail(p_name))                                          \
+        _sir_strncpy(var.name, SIR_MAXNAME, p_name, SIR_MAXNAME);             \
+    bool var##_init = false;                                                  \
+    if (init)                                                                 \
         var##_init = sir_init(&var);
 
 # define INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, name) \
@@ -244,15 +244,15 @@ void print_os_error(void);
 bool filter_error(bool pass, uint16_t err);
 
 # if !defined(__WIN__)
-#  define handle_os_error(clib, fmt, ...) \
-     (void)clib; \
-     _sir_handleerr(errno); \
+#  define handle_os_error(clib, fmt, ...)               \
+     (void)clib;                                        \
+     _sir_handleerr(errno);                             \
      fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
      print_os_error();
 # else /* __WIN__ */
-#  define handle_os_error(clib, fmt, ...) \
+#  define handle_os_error(clib, fmt, ...)                                \
      clib ? _sir_handleerr(errno) : _sir_handlewin32err(GetLastError()); \
-     fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
+     fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__);                  \
      print_os_error();
 # endif
 
@@ -299,10 +299,10 @@ bool getrand_bool(uint32_t upper_bound) {
 }
 
 /** prints a message in green if pass is true, or red otherwise. */
-# define PRINT_PASS(pass, msg, ...) \
-    if (pass) \
+# define PRINT_PASS(pass, msg, ...)      \
+    if (pass)                            \
         printf(GREEN(msg), __VA_ARGS__); \
-    else \
+    else                                 \
         printf(RED(msg), __VA_ARGS__);
 
 bool rmfile(const char* filename);
@@ -328,7 +328,7 @@ static const struct cl_arg {
     } _cl_arg_list[] = {
         {"--perf", "", "Only run the performance measurement test."},
         {"--wait", "", "Wait for a keypress after running test(s) before exiting."},
-        {"--only", "" ULINE("name") " [, name, ...]", "Only run the test(s) specified."},
+        {"--only", ""  ULINE("name") " [, name, ...]", "Only run the test(s) specified."},
         {"--list", "", "Prints a list of available test names for use with " BOLD("--only") "."},
         {"--help", "", "Shows this message."}
     };

@@ -35,7 +35,7 @@
  * Creates an error code that (hopefully) doesn't conflict
  * with any of those defined by the platform.
  */
-# define _sir_mkerror(code) (((uint32_t)((code) & 0x7fff) << 16) | 0x80000000)
+# define _sir_mkerror(code) (((uint32_t)((code)&0x7fff) << 16) | 0x80000000)
 
 /** Validates an internal error. */
 static inline
@@ -52,8 +52,8 @@ uint16_t _sir_geterrcode(uint32_t err) {
 
 /** Evil macro used for _sir_lv wrappers. */
 # define _SIR_L_START(format) \
-    bool r = false; \
-    va_list args = {0}; \
+    bool r = false;           \
+    va_list args = {0};       \
     va_start(args, format);
 
 /** Evil macro used for _sir_lv wrappers. */
@@ -64,31 +64,45 @@ uint16_t _sir_geterrcode(uint32_t err) {
 
 /** Even more evil macros used for binary searching arrays. */
 # define _SIR_DECLARE_BIN_SEARCH(low, high) \
-    size_t _low  = low; \
-    size_t _high = high; \
+    size_t _low  = low;                     \
+    size_t _high = high;                    \
     size_t _mid  = (_low + _high) / 2;
 
 # define _SIR_BEGIN_BIN_SEARCH() do {
-# define _SIR_ITERATE_BIN_SEARCH(comparison) \
-    if (0 == comparison) { \
-        break; \
-    } \
-    \
-    if (_low == _high) \
-        break; \
-    \
+# define _SIR_ITERATE_BIN_SEARCH(comparison)    \
+    if (0 == comparison) {                      \
+        break;                                  \
+    }                                           \
+                                                \
+    if (_low == _high)                          \
+        break;                                  \
+                                                \
     if (0 > comparison && (_mid - 1) >= _low) { \
-        _high = _mid - 1; \
-    } else if ((_mid + 1) <= _high) { \
-        _low = _mid + 1; \
-    } else { \
-        break; \
-    } \
-    \
+        _high = _mid - 1;                       \
+    } else if ((_mid + 1) <= _high) {           \
+        _low = _mid + 1;                        \
+    } else {                                    \
+        break;                                  \
+    }                                           \
+                                                \
     _mid = (_low + _high) / 2;
-
 # define _SIR_END_BIN_SEARCH() \
     } while (true);
+
+/** Validates a pointer and fails if it's invalid. */
+# define _sir_validptr(p) __sir_validptr((const void* restrict)p, true)
+
+/** Validates a pointer-to-pointer and fails if it's invalid. */
+# define _sir_validptrptr(pp) __sir_validptrptr((const void* restrict*)pp, true)
+
+/**
+ * Validates a pointer-to-pointer, pointer,
+ * pointer to function, etc. but ignores whether it's invalid.
+ *
+ * This is necessary due to the fact that ::_sir_validptr will
+ * not accept these types as input.
+ */
+# define _sir_notnull(addr) (NULL != (addr))
 
 /** Checks a bitmask for a specific set of bits. */
 static inline
@@ -120,7 +134,7 @@ bool _sir_setbitslow(uint32_t* flags, uint32_t set) {
 void __sir_safefree(void** pp);
 
 /** Wraps __sir_safefree with a cast to void**. */
-#define _sir_safefree(pp) __sir_safefree((void**)pp)
+# define _sir_safefree(pp) __sir_safefree((void**)pp)
 
 /** Wraps close. */
 void _sir_safeclose(int* restrict fd);
@@ -181,13 +195,11 @@ bool _sir_validptrnofail(const void* restrict p) {
     return __sir_validptr(p, false);
 }
 
+/** Validates a pointer-to-pointer and optionally fails if it's invalid. */
 bool __sir_validptrptr(const void* restrict* pp, bool fail);
 
 /** Validates a pointer and fails if it's invalid. */
 #define _sir_validptr(p) __sir_validptr((const void* restrict)p, true)
-
-/** Validates a pointer-to-pointer and fails if it's invalid. */
-#define _sir_validptrptr(pp) __sir_validptrptr((const void* restrict*)pp, true)
 
 /** Validates a pointer-to-function and fails if it's invalid. */
 #define _sir_validfnptr(fnp) __sir_validptrptr((const void* restrict*)&fnp, true)
@@ -195,7 +207,7 @@ bool __sir_validptrptr(const void* restrict* pp, bool fail);
 /** Places a null terminator at the first index in a string buffer. */
 static inline
 void _sir_resetstr(char* str) {
-    str[0] = '\0';
+    str[0] = (char)'\0';
 }
 
 /**

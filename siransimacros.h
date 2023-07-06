@@ -47,13 +47,13 @@
 
 /** A few fun characters. */
 # if !defined(__WIN__)
-#  define SIR_R_ARROW "\xe2\x86\x92"
-#  define SIR_L_ARROW "\xe2\x86\x90"
-#  define SIR_BULLET  "\xe2\x80\xa2"
+# define SIR_R_ARROW "\xe2\x86\x92"
+# define SIR_L_ARROW "\xe2\x86\x90"
+# define SIR_BULLET  "\xe2\x80\xa2"
 # else /* __WIN__ */
-#  define SIR_R_ARROW "->"
-#  define SIR_L_ARROW "<-"
-#  define SIR_BULLET  "-"
+# define SIR_R_ARROW "->"
+# define SIR_L_ARROW "<-"
+# define SIR_BULLET  "-"
 # endif
 
 /**

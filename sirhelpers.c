@@ -263,7 +263,7 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
     if (_sir_validptr(timer) && _sir_validptr(buf)) {
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
 # if defined(__WIN__)
-        errno_t ret = localtime_s(buf, timer);
+        errno_t ret = (errno_t)localtime_s(buf, timer);
         if (0 != ret) {
             _sir_handleerr(ret);
             return NULL;
