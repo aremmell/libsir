@@ -221,7 +221,7 @@ bool _sirfile_needsroll(sirfile* sf) {
         return false;
     }
 
-    return (st.st_size + BUFSIZ) >= SIR_FROLLSIZE;
+    return st.st_size + BUFSIZ >= SIR_FROLLSIZE || SIR_FROLLSIZE - (st.st_size + BUFSIZ) <= BUFSIZ;
 }
 
 bool _sirfile_roll(sirfile* sf, char** newpath) {
