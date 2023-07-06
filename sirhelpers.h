@@ -127,6 +127,7 @@ static inline
 void __sir_safefree(const void* restrict* restrict p) {
     if (!p || !*p)
         return;
+
     free((void*)*p);
     *p = NULL;
 }

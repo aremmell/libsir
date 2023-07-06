@@ -111,8 +111,7 @@ sirfile* _sirfile_create(const char* path, sir_levels levels, sir_options opts) 
     sf->opts   = opts;
 
     if (!_sirfile_open(sf) || !_sirfile_validate(sf)) {
-        _sir_safefree(sf->path);
-        _sir_safefree(sf);
+        _sirfile_destroy(sf);
         return NULL;
     }
 
