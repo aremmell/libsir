@@ -53,7 +53,10 @@ static sir_test sir_tests[] = {
 };
 
 int main(int argc, char** argv) {
-#if !defined(__WIN__)
+#if defined(__HAIKU__) && defined(NDEBUG)
+    disable_debugger(1);
+#endif
+#if !defined(__WIN__) && !defined(__HAIKU__)
     /* Disallow execution by root / sudo; some of the tests rely on lack of permissions. */
     if (geteuid() == 0) {
         fprintf(stderr, "Sorry, but this program may not be executed by root.\n");
@@ -1339,7 +1342,11 @@ bool sirtest_filesystem(void) {
         {"foobarbaz", false},
 #if !defined(__WIN__)
         {"/", true},
+# if !defined(__HAIKU__)
         {"/usr/bin", true},
+# else
+        {"/bin", true},
+# endif
         {"/dev", true},
 #else /* __WIN__ */
         {"\\Windows", true},

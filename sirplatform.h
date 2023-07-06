@@ -79,6 +79,20 @@
 #    define USE_PTHREAD_GETNAME_NP
 #   endif
 #  else
+#   if defined(__HAIKU__)
+#    if !defined(__USE_GNU)
+#     define __USE_GNU
+#    endif
+#    if !defined(_GNU_SOURCE)
+#     define _GNU_SOURCE
+#    endif
+#    include <OS.h>
+#    include <FindDirectory.h>
+#    if defined(__clang__) && !defined(_GNU_PTHREAD_H_) // Workaround a Clang on Haiku bug
+extern int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
+#    endif
+#    define USE_PTHREAD_GETNAME_NP
+#   endif
 #   if defined(__linux__)
 #    if !defined(_GNU_SOURCE)
 #     define _GNU_SOURCE
@@ -177,7 +191,7 @@
 #  endif
 #  include <fcntl.h>
 #  include <unistd.h>
-#  if !defined(__CYGWIN__)
+#  if !defined(__CYGWIN__) && !defined(__HAIKU__)
 #   include <sys/syscall.h>
 #  endif
 #  include <sys/time.h>

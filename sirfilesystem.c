@@ -51,7 +51,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         int open_flags = O_PATH | O_DIRECTORY;
 # elif defined(__FreeBSD__) || defined(__CYGWIN__)
         int open_flags = O_EXEC | O_DIRECTORY;
-# elif defined(__SOLARIS__) || defined(__NetBSD__) || defined(__DragonFly__)
+# elif defined(__SOLARIS__) || defined(__NetBSD__) || defined(__DragonFly__) || defined(__HAIKU__)
         int open_flags = O_DIRECTORY;
 # endif
 
@@ -214,6 +214,19 @@ char* _sir_getappfilename(void) {
                 grow = true;
                 continue;
             }
+            _sir_handleerr(errno);
+            resolved = false;
+            break;
+        }
+# elif defined(__HAIKU__)
+        status_t ret = find_path(B_APP_IMAGE_SYMBOL, B_FIND_PATH_IMAGE_PATH, NULL, buffer, PATH_MAX);
+        if (B_OK == ret) {
+            resolved = true;
+            break;
+        } else if (B_BUFFER_OVERFLOW == ret) {
+            grow = true;
+            continue;
+        } else {
             _sir_handleerr(errno);
             resolved = false;
             break;

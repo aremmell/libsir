@@ -1103,6 +1103,8 @@ pid_t _sir_gettid(void) {
     tid = (pid_t)pthread_getthreadid_np();
 #elif defined(__SOLARIS__) || defined(__NetBSD__) || defined(__DragonFly__) || defined(__CYGWIN__)
     tid = (pid_t)pthread_self();
+#elif defined(__HAIKU__)
+    tid = get_pthread_thread_id(pthread_self());
 #elif defined(_DEFAULT_SOURCE)
     tid = syscall(SYS_gettid);
 #elif defined(__WIN__)
@@ -1122,6 +1124,10 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
         _sir_handleerr(ret);
         return false;
     }
+# if defined(__HAIKU__)
+    if ((strcmp(name, "pthread_func")) || (name[0] == '\0'))
+     snprintf(name, SIR_MAXPID, "%ld", (long)get_pthread_thread_id(pthread_self()));
+# endif
     return true;
 #elif defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
