@@ -248,6 +248,7 @@ char* _sir_getappfilename(void) {
     if (!resolved) {
         _sir_safefree(buffer);
         _sir_selflog("failed to resolve filename!");
+        return NULL;
     }
 
     return buffer;
@@ -255,7 +256,7 @@ char* _sir_getappfilename(void) {
 
 char* _sir_getappbasename(void) {
     char* filename = _sir_getappfilename();
-    if (!_sir_validstr(filename)) {
+    if (_sir_validptr(filename) && !_sir_validstr(filename)) {
         _sir_safefree(filename);
         return NULL;
     }
@@ -269,7 +270,7 @@ char* _sir_getappbasename(void) {
 
 char* _sir_getappdir(void) {
     char* filename = _sir_getappfilename();
-    if (!_sir_validstr(filename)) {
+    if (_sir_validptr(filename) && !_sir_validstr(filename)) {
         _sir_safefree(filename);
         return NULL;
     }
