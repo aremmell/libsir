@@ -171,9 +171,9 @@
 
 # if !defined(__WIN__)
 #  include <pthread.h>
-# if defined(__illumos__)
-#  include <sys/fcntl.h>
-# endif
+#  if defined(__illumos__)
+#   include <sys/fcntl.h>
+#  endif
 #  include <fcntl.h>
 #  include <unistd.h>
 #  include <sys/syscall.h>
