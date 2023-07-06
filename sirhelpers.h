@@ -95,15 +95,6 @@ uint16_t _sir_geterrcode(uint32_t err) {
 /** Validates a pointer-to-pointer and fails if it's invalid. */
 # define _sir_validptrptr(pp) __sir_validptrptr((const void* restrict*)pp, true)
 
-/**
- * Validates a pointer-to-pointer, pointer,
- * pointer to function, etc. but ignores whether it's invalid.
- *
- * This is necessary due to the fact that ::_sir_validptr will
- * not accept these types as input.
- */
-# define _sir_notnull(addr) (NULL != (addr))
-
 /** Checks a bitmask for a specific set of bits. */
 static inline
 bool _sir_bittest(uint32_t flags, uint32_t test) {
@@ -207,7 +198,7 @@ bool __sir_validptrptr(const void* restrict* pp, bool fail);
 /** Places a null terminator at the first index in a string buffer. */
 static inline
 void _sir_resetstr(char* str) {
-    str[0] = (char)'\0';
+    str[0] = '\0';
 }
 
 /**
