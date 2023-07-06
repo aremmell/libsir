@@ -16,5 +16,6 @@ var NAVTREEINDEX1 =
 "sirplatform_8h_source.html":[3,0,15],
 "sirtextstyle_8h_source.html":[3,0,16],
 "sirtypes_8h_source.html":[3,0,17],
-"tests_8h_source.html":[3,0,1,0]
+"tests_8h_source.html":[3,0,1,0],
+"testsuite.html":[1]
 };

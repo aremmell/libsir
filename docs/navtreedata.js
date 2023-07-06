@@ -25,8 +25,8 @@
 var NAVTREE =
 [
   [ "libsir", "index.html", [
-    [ "Configuration", "md_docs_2sources_2config.html", null ],
-    [ "Test suite", "md_docs_2sources_2sirtests.html", null ],
+    [ "Configuration", "config.html", null ],
+    [ "Test suite", "testsuite.html", null ],
     [ "Modules", "modules.html", "modules" ],
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],
@@ -42,7 +42,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"dir_59425e443f801f1f2fd8bbe4959a3ccf.html",
+"config.html",
 "sirconfig_8h.html#aeb4e44bc613c57c3c49e27b66e69e933"
 ];
 
