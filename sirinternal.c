@@ -547,10 +547,19 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     memcpy(&tmpcfg, _cfg, sizeof(sirconfig));
     _sir_unlocksection(SIRMI_CONFIG);
 
-    sirbuf buf;
-    buf.hostname = tmpcfg.state.hostname;
-    buf.name     = tmpcfg.si.name;
-    buf.pid      = tmpcfg.state.pidbuf;
+    sirbuf buf = {
+        {0},
+        {0},
+        {0},
+        tmpcfg.state.hostname,
+        tmpcfg.state.pidbuf,
+        NULL,
+        tmpcfg.si.name,
+        {0},
+        {0},
+        {0},
+         0
+    };
 
     bool fmt = false;
     const char* style_str = _sir_gettextstyle(level);

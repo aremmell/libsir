@@ -269,9 +269,9 @@ typedef struct {
     char timestamp[SIR_MAXTIME];
     char msec[SIR_MAXMSEC];
     const char* hostname;
+    const char* pid;
     const char* level;
     const char* name;
-    const char* pid;
     char tid[SIR_MAXPID];
     char message[SIR_MAXMESSAGE];
     char output[SIR_MAXOUTPUT];
