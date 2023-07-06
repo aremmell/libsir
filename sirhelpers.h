@@ -52,8 +52,8 @@ uint16_t _sir_geterrcode(uint32_t err) {
 
 /** Evil macro used for _sir_lv wrappers. */
 # define _SIR_L_START(format) \
-    bool r = false;           \
-    va_list args = {0};       \
+    bool r = false; \
+    va_list args = {0}; \
     va_start(args, format);
 
 /** Evil macro used for _sir_lv wrappers. */
@@ -64,27 +64,27 @@ uint16_t _sir_geterrcode(uint32_t err) {
 
 /** Even more evil macros used for binary searching arrays. */
 # define _SIR_DECLARE_BIN_SEARCH(low, high) \
-    size_t _low  = low;                     \
-    size_t _high = high;                    \
+    size_t _low  = low; \
+    size_t _high = high; \
     size_t _mid  = (_low + _high) / 2;
 
 # define _SIR_BEGIN_BIN_SEARCH() do {
-# define _SIR_ITERATE_BIN_SEARCH(comparison)    \
-    if (0 == comparison) {                      \
-        break;                                  \
-    }                                           \
-                                                \
-    if (_low == _high)                          \
-        break;                                  \
-                                                \
+# define _SIR_ITERATE_BIN_SEARCH(comparison) \
+    if (0 == comparison) { \
+        break; \
+    } \
+    \
+    if (_low == _high) \
+        break; \
+    \
     if (0 > comparison && (_mid - 1) >= _low) { \
-        _high = _mid - 1;                       \
-    } else if ((_mid + 1) <= _high) {           \
-        _low = _mid + 1;                        \
-    } else {                                    \
-        break;                                  \
-    }                                           \
-                                                \
+        _high = _mid - 1; \
+    } else if ((_mid + 1) <= _high) { \
+        _low = _mid + 1; \
+    } else { \
+        break; \
+    } \
+    \
     _mid = (_low + _high) / 2;
 # define _SIR_END_BIN_SEARCH() \
     } while (true);
