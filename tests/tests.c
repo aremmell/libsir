@@ -1402,9 +1402,9 @@ bool sirtest_filesystem(void) {
         } else {
             printf("\t" GREEN("_sir_validfd(%d) = true") "\n", fd);
         }
-
-        _sir_safeclose(&fd);
     }
+
+    _sir_safefclose(&f);
 
     sir_cleanup();
     return print_result_and_return(pass);
