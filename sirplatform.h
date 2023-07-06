@@ -60,6 +60,7 @@
 #    define _NETBSD_SOURCE 1
 #   endif
 #   define __BSD__
+#   define USE_PTHREAD_GETNAME_NP
 #  elif defined(__FreeBSD__) || defined(__DragonFly__)
 #   include <sys/param.h>
 #   define __BSD__
