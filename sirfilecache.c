@@ -495,7 +495,7 @@ bool _sir_fcache_pred_id(const void* match, sirfile* iter) {
 }
 
 sirfile* _sir_fcache_find(sirfcache* sfc, const void* match, sir_fcache_pred pred) {
-    if (!_sir_validptr(sfc) || !_sir_validptr(match) || !_sir_validptr(pred))
+    if (!_sir_validptr(sfc) || !_sir_validptr(match) || !_sir_validfnptr(pred))
         return NULL;
 
     for (size_t n = 0; n < sfc->count; n++) {

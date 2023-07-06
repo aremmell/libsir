@@ -189,6 +189,9 @@ bool __sir_validptrptr(const void* restrict* pp, bool fail);
 /** Validates a pointer-to-pointer and fails if it's invalid. */
 #define _sir_validptrptr(pp) __sir_validptrptr((const void* restrict*)pp, true)
 
+/** Validates a pointer-to-function and fails if it's invalid. */
+#define _sir_validfnptr(fnp) __sir_validptrptr((const void* restrict*)&fnp, true)
+
 /** Places a null terminator at the first index in a string buffer. */
 static inline
 void _sir_resetstr(char* str) {

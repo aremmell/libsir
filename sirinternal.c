@@ -354,7 +354,7 @@ bool _sir_syslogcat(sirinit* si, sir_update_config_data* data) {
 bool _sir_writeinit(sir_update_config_data* data, sirinit_update update) {
     _sir_seterror(_SIR_E_NOERROR);
 
-    if (!_sir_sanity() || !_sir_validupdatedata(data) || !_sir_validptr(update))
+    if (!_sir_sanity() || !_sir_validupdatedata(data) || !_sir_validfnptr(update))
         return false;
 
     sirconfig* _cfg= _sir_locksection(SIRMI_CONFIG);
