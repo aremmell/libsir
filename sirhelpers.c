@@ -63,11 +63,11 @@ bool _sir_validfd(int fd) {
 # if !defined(SIR_MSVCRT_MINGW)
     _set_thread_local_invalid_parameter_handler(old);
 # endif
+#endif
     bool valid = -1 != ret || EBADF != errno;
     if (-1 == ret)
         _sir_handleerr(errno);
     return valid;
-#endif
 }
 
 /** Validates a sir_update_config_data structure. */
