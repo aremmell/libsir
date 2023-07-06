@@ -328,7 +328,7 @@ static const struct cl_arg {
     } _cl_arg_list[] = {
         {"--perf", "", "Only run the performance measurement test."},
         {"--wait", "", "Wait for a keypress after running test(s) before exiting."},
-        {"--only", ""  ULINE("name") " [, name, ...]", "Only run the test(s) specified."},
+        {"--only", "" ULINE("name") " [, name, ...]", "Only run the test(s) specified."},
         {"--list", "", "Prints a list of available test names for use with " BOLD("--only") "."},
         {"--help", "", "Shows this message."}
     };
