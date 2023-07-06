@@ -199,10 +199,10 @@ bool _sir_validptrnofail(const void* restrict p) {
 bool __sir_validptrptr(const void* restrict* pp, bool fail);
 
 /** Validates a pointer and fails if it's invalid. */
-#define _sir_validptr(p) __sir_validptr((const void* restrict)p, true)
+# define _sir_validptr(p) __sir_validptr((const void* restrict)p, true)
 
 /** Validates a pointer-to-function and fails if it's invalid. */
-#define _sir_validfnptr(fnp) __sir_validptrptr((const void* restrict*)&fnp, true)
+# define _sir_validfnptr(fnp) __sir_validptrptr((const void* restrict*)&fnp, true)
 
 /** Places a null terminator at the first index in a string buffer. */
 static inline
