@@ -26,6 +26,14 @@ jobs:
       arch: arm64
       compiler: clang
     - os: linux
+      dist: xenial
+      arch: arm64
+      compiler: gcc
+    - os: linux
+      dist: xenial
+      arch: arm64
+      compiler: clang
+    - os: linux
       dist: bionic
       arch: arm64
       compiler: gcc
@@ -39,28 +47,28 @@ jobs:
           - llvm16
       arch: amd64
       compiler: clang
-    - os: linux
-      dist: bionic
-      arch: s390x
-      compiler: gcc
-    - os: linux
-      dist: bionic
-      arch: s390x
-      compiler: clang
-    - os: linux
-      arch: arm64-graviton2
-      virt: lxd
-      group: edge
-      compiler: gcc
-    - os: linux
-      arch: arm64-graviton2
-      virt: lxd
-      group: edge
-      compiler: clang
       env:
         - MAKE=gmake
         - CC=/usr/local/bin/clang16
         - CXX=/usr/local/bin/clang++16
+    - os: linux
+      dist: bionic
+      arch: s390x
+      compiler: gcc
+    - os: linux
+      dist: bionic
+      arch: s390x
+      compiler: clang
+    - os: linux
+      arch: arm64-graviton2
+      virt: lxd
+      group: edge
+      compiler: gcc
+    - os: linux
+      arch: arm64-graviton2
+      virt: lxd
+      group: edge
+      compiler: clang
     - os: freebsd
       addons:
         pkg:
@@ -79,6 +87,6 @@ jobs:
       dist: trusty
       compiler: gcc
 script:
-  - SIR_SELFLOG=1 $MAKE clean tests example
+  - env SIR_SELFLOG=1 ${MAKE:?} clean tests example
   - build/bin/sirtests
   - build/bin/sirexample
