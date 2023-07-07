@@ -104,6 +104,11 @@ sir_textstyle _sir_getdefstyle(sir_level level) {
 }
 
 bool _sir_resettextstyles(void) {
+    _sir_seterror(_SIR_E_NOERROR);
+
+    if (!_sir_sanity())
+        return false;
+
     sir_level_style_tuple* map = _sir_locksection(SIRMI_TEXTSTYLE);
     if (!map) {
         _sir_seterror(_SIR_E_INTERNAL);
