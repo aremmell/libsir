@@ -3,7 +3,8 @@
 <!-- SPDX-License-Identifier: MIT -->
 <!-- Copyright (c) 2018-current Ryan M. Lederman <lederman@gmail.com> -->
 
-[![Build Status](https://app.travis-ci.com/aremmell/libsir.svg?branch=master)](https://app.travis-ci.com/aremmell/libsir) [![REUSE status](https://api.reuse.software/badge/github.com/aremmell/libsir)](https://api.reuse.software/info/github.com/aremmell/libsir) ![GitHub](https://img.shields.io/github/license/aremmell/libsir?color=%2340b911)
+[![Build Status](https://app.travis-ci.com/aremmell/libsir.svg?branch=master)](https://app.travis-ci.com/aremmell/libsir) ![REUSE Compliance](https://img.shields.io/reuse/compliance/github.com%2Faremmell%2Flibsir?label=REUSE3&color=2340b911)
+ ![GitHub](https://img.shields.io/github/license/aremmell/libsir?color=%2340b911)
 
 ## Synopsis
 
