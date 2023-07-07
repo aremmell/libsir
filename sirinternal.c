@@ -115,11 +115,6 @@ bool _sir_init(sirinit* si) {
     }
 #endif
 
-    if (!_sir_resettextstyles()) {
-        _sir_selflog("error: failed to reset text styles!");
-        return false;
-    }
-
     sirconfig* _cfg = _sir_locksection(SIRMI_CONFIG);
     if (!_sir_validptr(_cfg)) {
         _sir_seterror(_SIR_E_INTERNAL);
@@ -131,6 +126,9 @@ bool _sir_init(sirinit* si) {
 #else
     _sir_magic = _SIR_MAGIC;
 #endif
+
+    if (!_sir_resettextstyles())
+        _sir_selflog("error: failed to reset text styles!");
 
     memset(&_cfg->state, 0, sizeof(_cfg->state));
     memcpy(&_cfg->si, si, sizeof(sirinit));
