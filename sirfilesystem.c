@@ -185,7 +185,8 @@ char* _sir_getappfilename(void) {
 #endif
 
 #if !defined(__WIN__)
-# if defined(__linux__) || defined(__NetBSD__) || defined(__SOLARIS__) || defined(__DragonFly__) || defined(__CYGWIN__)
+# if defined(__linux__) || defined(__NetBSD__) || defined(__SOLARIS__) || \
+     defined(__DragonFly__) || defined(__CYGWIN__)
         ssize_t read = readlink(PROC_SELF, buffer, size - 1);
         if (-1 != read && read < (ssize_t)size - 1) {
             resolved = true;

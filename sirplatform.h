@@ -43,7 +43,7 @@
 #    endif
 #   endif
 #  endif
-#  if defined(__DragonFly__) // Clang on DragonFly is missing stdatomic.h
+#  if defined(__DragonFly__)
 #   if defined(__clang__) && defined(__clang_version__)
 #    undef __HAVE_ATOMIC_H__
 #   endif
@@ -52,22 +52,26 @@
 #   undef __STDC_WANT_LIB_EXT1__
 #  endif
 #  define __STDC_WANT_LIB_EXT1__ 1
+#  if defined(__STDC_WANT_LIB_EXT2__)
+#   undef __STDC_WANT_LIB_EXT2__
+#  endif
+#  define __STDC_WANT_LIB_EXT2__ 1
 #  if defined(__APPLE__) && defined(__MACH__)
 #   define __MACOS__
 #   define _DARWIN_C_SOURCE
 #  elif defined(__NetBSD__)
+#   define __BSD__
 #   if !defined(_NETBSD_SOURCE)
 #    define _NETBSD_SOURCE 1
 #   endif
-#   define __BSD__
 #   define USE_PTHREAD_GETNAME_NP
 #  elif defined(__FreeBSD__) || defined(__DragonFly__)
-#   include <sys/param.h>
 #   define __BSD__
 #   define _BSD_SOURCE
 #   if !defined(_DEFAULT_SOURCE)
 #    define _DEFAULT_SOURCE
 #   endif
+#   include <sys/param.h>
 #   if __FreeBSD_version >= 1202500
 #    define __FreeBSD_PTHREAD_NP_12_2__
 #   elif __FreeBSD_version >= 1103500
@@ -86,10 +90,9 @@
 #    if !defined(_GNU_SOURCE)
 #     define _GNU_SOURCE
 #    endif
-#    include <OS.h>
-#    include <FindDirectory.h>
-#    if defined(__clang__) && !defined(_GNU_PTHREAD_H_) // Workaround a Clang on Haiku bug
-extern int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
+#    if defined(__clang__) && !defined(_GNU_PTHREAD_H_)
+extern /* Workaround a Clang on Haiku bug. */
+int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #    endif
 #    define USE_PTHREAD_GETNAME_NP
 #   endif
@@ -104,7 +107,8 @@ extern int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #     undef USE_PTHREAD_GETNAME_NP
 #    endif
 #   endif
-#   if defined(__illumos__) || ((defined(__sun) || defined(__sun__)) && (defined(__SVR4) || defined(__svr4__)))
+#   if defined(__illumos__) || ((defined(__sun) || defined(__sun__)) && \
+              (defined(__SVR4) || defined(__svr4__)))
 #    define __SOLARIS__
 #    define USE_PTHREAD_GETNAME_NP
 #    if !defined(_ATFILE_SOURCE)
@@ -125,14 +129,14 @@ extern int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #   endif
 #  endif
 # else /* _WIN32 */
+#  define __WIN__
 #  define SIR_NO_SYSTEM_LOGGERS
 #  undef __HAVE_ATOMIC_H__
 #  define __WANT_STDC_SECURE_LIB__ 1
-#  define _CRT_RAND_S
 #  define WIN32_LEAN_AND_MEAN
-#  define WINVER 0x0A00 /** Windows 10 SDK */
+#  define WINVER       0x0A00 /** Windows 10 SDK */
 #  define _WIN32_WINNT 0x0A00
-#  define __WIN__
+#  define _CRT_RAND_S
 #  include <windows.h>
 #  include <io.h>
 #  include <synchapi.h>
@@ -214,6 +218,9 @@ extern int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #   if defined(__GLIBC__)
 #    include <linux/limits.h>
 #   endif
+#  elif defined(__HAIKU__)
+#   include <OS.h>
+#   include <FindDirectory.h>
 #  elif defined(__MACOS__)
 #   include <mach-o/dyld.h>
 #   include <sys/_types/_timespec.h>
@@ -295,6 +302,8 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #  define __HAVE_STDC_SECURE_OR_EXT1__
 # elif defined(__STDC_LIB_EXT1__)
 #  define __HAVE_STDC_SECURE_OR_EXT1__
+# elif defined(__STDC_ALLOC_LIB__)
+#  define __HAVE_STDC_EXT2__
 # endif
 
 # if !defined(__MACOS__)

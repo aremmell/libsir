@@ -211,14 +211,14 @@ bool _sir_strsame(const char* lhs, const char* rhs, size_t count) {
 }
 
 /**
- * Wrapper for strncpy/strncpy_s. Determines which one to use
+ * Wrapper for str[n,l]cpy/strncpy_s. Determines which one to use
  * based on preprocessor macros.
  */
 int _sir_strncpy(char* restrict dest, size_t destsz,
     const char* restrict src, size_t count);
 
 /**
- * Wrapper for strncat/strncat_s. Determines which one to use
+ * Wrapper for str[n,l]cat/strncat_s. Determines which one to use
  * based on preprocessor macros.
  */
 int _sir_strncat(char* restrict dest, size_t destsz,
