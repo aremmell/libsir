@@ -90,7 +90,11 @@
  *
  * @remark Only applies if ::SIRO_NOPID or ::SIRO_NOTID are not set.
  */
-# define SIR_PIDFORMAT "%d"
+# if defined(__MINGW64__)
+#  define SIR_PIDFORMAT "%lld"
+# else
+#  define SIR_PIDFORMAT "%d"
+# endif
 
 /**
  * The string to place between process and thread IDs.

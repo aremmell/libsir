@@ -88,7 +88,7 @@
 #     define __USE_GNU
 #    endif
 #    if !defined(_GNU_SOURCE)
-#     define _GNU_SOURCE
+#     define _GNU_SOURCE 1
 #    endif
 #    if defined(__clang__) && !defined(_GNU_PTHREAD_H_)
 extern /* Workaround a Clang on Haiku bug. */
@@ -98,9 +98,16 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #   endif
 #   if defined(__linux__)
 #    if !defined(_GNU_SOURCE)
-#     define _GNU_SOURCE
+#     define _GNU_SOURCE 1
 #    endif
 #    define USE_PTHREAD_GETNAME_NP
+#   endif
+#   if defined(__CYGWIN__)
+#    if !defined(_GNU_SOURCE)
+#     define _GNU_SOURCE 1
+#    endif
+#    define USE_PTHREAD_GETNAME_NP
+#    include <sys/features.h>
 #   endif
 #   if defined(__ANDROID__) && defined(__ANDROID_API__)
 #    if __ANDROID_API__ < 26
@@ -137,6 +144,12 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  define WINVER       0x0A00 /** Windows 10 SDK */
 #  define _WIN32_WINNT 0x0A00
 #  define _CRT_RAND_S
+#  if defined(__MINGW32__) || defined(__MINGW64__)
+#   if !defined(__USE_MINGW_ANSI_STDIO)
+#    define __USE_MINGW_ANSI_STDIO 1
+#   endif
+#   define USE_PTHREAD_GETNAME_NP
+#  endif
 #  include <windows.h>
 #  include <io.h>
 #  include <synchapi.h>
@@ -145,6 +158,16 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  include <conio.h>
 #  include <shlwapi.h>
 #  include <direct.h>
+#  if defined(__MINGW32__) || defined(__MINGW64__)
+#   define __USE_MINGW_ANSI_STDIO 1
+typedef  /* Workaround a MinGW bug */
+void (__cdecl* _invalid_parameter_handler)(
+ wchar_t const*, wchar_t const*, wchar_t const*,
+ unsigned int, uintptr_t);
+_invalid_parameter_handler
+_set_thread_local_invalid_parameter_handler(
+ _invalid_parameter_handler pNew);
+#  endif
 # endif
 
 # if defined(SIR_ASSERT_ENABLED)
@@ -193,7 +216,14 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  if defined(__illumos__)
 #   include <sys/fcntl.h>
 #  endif
-#  include <fcntl.h>
+#  if defined(__linux__) && defined(__USE_GNU) && \
+             (defined(__SUNPRO_C) || defined(__SUNPRO_CC))
+#   undef __USE_GNU
+#   include <fcntl.h>
+#   define __USE_GNU
+#  else
+#   include <fcntl.h>
+#  endif
 #  include <unistd.h>
 #  if !defined(__CYGWIN__) && !defined(__HAIKU__)
 #   include <sys/syscall.h>
@@ -266,6 +296,10 @@ typedef void (*sir_once_fn)(void);
 
 # else /* __WIN__ */
 
+#  if defined(__MINGW32__) || defined(__MINGW64__)
+#   include <pthread.h>
+#  endif
+
 #  define SIR_MAXPATH MAX_PATH
 
 #  define SIR_MSEC_TIMER
@@ -278,7 +312,9 @@ typedef HANDLE sir_mutex;
 typedef INIT_ONCE sir_once;
 
 /** Process/thread ID. */
+#  if !defined(__MINGW64__) && !defined(__MINGW32__)
 typedef int pid_t;
+#  endif
 
 /** The one-time execution function type. */
 typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
@@ -288,7 +324,8 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 # endif // !__WIN__
 
-# if __STDC_VERSION__ >= 201112 && !defined(__STDC_NO_THREADS__)
+# if (__STDC_VERSION__ >= 201112 && !defined(__STDC_NO_THREADS__)) || \
+     (defined(__SUNPRO_C) || defined(__SUNPRO_CC))
 #  define _sir_thread_local _Thread_local
 # elif defined(__WIN__)
 #  define _sir_thread_local __declspec(thread)
