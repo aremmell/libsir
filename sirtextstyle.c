@@ -31,7 +31,7 @@ const char* _sir_gettextstyle(sir_level level) {
     sir_level_style_tuple* map = _sir_locksection(SIRMI_TEXTSTYLE);
     if (!map) {
         _sir_seterror(_SIR_E_INTERNAL);
-        return false;
+        return NULL;
     }
 
     const char* found        = SIR_UNKNOWN;
