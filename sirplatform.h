@@ -71,6 +71,7 @@
 #   if !defined(_DEFAULT_SOURCE)
 #    define _DEFAULT_SOURCE
 #   endif
+#   include <sys/param.h>
 #   if __FreeBSD_version >= 1202500
 #    define __FreeBSD_PTHREAD_NP_12_2__
 #   elif __FreeBSD_version >= 1103500
@@ -209,9 +210,6 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #   include <syslog.h>
 #  endif
 #  if defined(__BSD__)
-#   if defined(__FreeBSD__) || defined(__DragonFly__)
-#    include <sys/param.h>
-#   endif
 #   if !defined(__NetBSD__)
 #    include <pthread_np.h>
 #   endif
