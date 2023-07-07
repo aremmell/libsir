@@ -32,6 +32,22 @@
 #  else
 #   define __HAVE_ATOMIC_H__
 #  endif
+#  if defined(__GNUC__)
+#   if __GNUC__ <= 4
+#    if defined(__GNUC_MINOR__)
+#     if __GNUC_MINOR__ <= 8
+#      if !defined(__clang_version__)
+#       undef __HAVE_ATOMIC_H__
+#      endif
+#     endif
+#    endif
+#   endif
+#  endif
+#  if defined(__DragonFly__) // Clang on DragonFly is missing stdatomic.h
+#   if defined(__clang__) && defined(__clang_version__)
+#    undef __HAVE_ATOMIC_H__
+#   endif
+#  endif
 #  if defined(__STDC_WANT_LIB_EXT1__)
 #   undef __STDC_WANT_LIB_EXT1__
 #  endif
@@ -39,7 +55,14 @@
 #  if defined(__APPLE__) && defined(__MACH__)
 #   define __MACOS__
 #   define _DARWIN_C_SOURCE
-#  elif defined(__FreeBSD__)
+#  elif defined(__NetBSD__)
+#   if !defined(_NETBSD_SOURCE)
+#    define _NETBSD_SOURCE 1
+#   endif
+#   define __BSD__
+#   define USE_PTHREAD_GETNAME_NP
+#  elif defined(__FreeBSD__) || defined(__DragonFly__)
+#   include <sys/param.h>
 #   define __BSD__
 #   define _BSD_SOURCE
 #   if !defined(_DEFAULT_SOURCE)
@@ -49,10 +72,47 @@
 #    define __FreeBSD_PTHREAD_NP_12_2__
 #   elif __FreeBSD_version >= 1103500
 #    define __FreeBSD_PTHREAD_NP_11_3__
+#   elif __DragonFly_version >= 400907
+#    define __DragonFly_getthreadid__
+#   endif
+#   if defined(__DragonFly__)
+#    define USE_PTHREAD_GETNAME_NP
 #   endif
 #  else
-#   if defined(__linux__) && !defined(_GNU_SOURCE)
-#    define _GNU_SOURCE
+#   if defined(__HAIKU__)
+#    if !defined(__USE_GNU)
+#     define __USE_GNU
+#    endif
+#    if !defined(_GNU_SOURCE)
+#     define _GNU_SOURCE
+#    endif
+#    include <OS.h>
+#    include <FindDirectory.h>
+#    if defined(__clang__) && !defined(_GNU_PTHREAD_H_) // Workaround a Clang on Haiku bug
+extern int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
+#    endif
+#    define USE_PTHREAD_GETNAME_NP
+#   endif
+#   if defined(__linux__)
+#    if !defined(_GNU_SOURCE)
+#     define _GNU_SOURCE
+#    endif
+#    define USE_PTHREAD_GETNAME_NP
+#   endif
+#   if defined(__ANDROID__) && defined(__ANDROID_API__)
+#    if __ANDROID_API__ < 26
+#     undef USE_PTHREAD_GETNAME_NP
+#    endif
+#   endif
+#   if defined(__illumos__) || ((defined(__sun) || defined(__sun__)) && (defined(__SVR4) || defined(__svr4__)))
+#    define __SOLARIS__
+#    define USE_PTHREAD_GETNAME_NP
+#    if !defined(_ATFILE_SOURCE)
+#     define _ATFILE_SOURCE 1
+#    endif
+#    if !defined(__EXTENSIONS__)
+#     define __EXTENSIONS__
+#    endif
 #   endif
 #   if !defined(_POSIX_C_SOURCE)
 #    define _POSIX_C_SOURCE 200809L
@@ -124,22 +184,20 @@
 
 # define SIR_MAXHOST 256
 
-# if defined(__GLIBC__)
-#  if (__GLIBC__ >= 2 && __GLIBC_MINOR__ > 19) || \
-     ((__GLIBC__ == 2 && __GLIBC_MINOR__ <= 19) && defined(_BSD_SOURCE))
-#   define __HAVE_UNISTD_READLINK__
-#  endif
-# endif
-
 # if !defined(__WIN__)
 #  include <pthread.h>
+#  if defined(__illumos__)
+#   include <sys/fcntl.h>
+#  endif
+#  include <fcntl.h>
 #  include <unistd.h>
-#  include <sys/syscall.h>
+#  if !defined(__CYGWIN__) && !defined(__HAIKU__)
+#   include <sys/syscall.h>
+#  endif
 #  include <sys/time.h>
 #  include <strings.h>
 #  include <termios.h>
 #  include <limits.h>
-#  include <fcntl.h>
 #  include <libgen.h>
 #  if defined(__HAVE_ATOMIC_H__) && !defined(__cplusplus)
 #   include <stdatomic.h>
@@ -148,10 +206,14 @@
 #   include <syslog.h>
 #  endif
 #  if defined(__BSD__)
-#   include <pthread_np.h>
+#   if !defined(__NetBSD__)
+#    include <pthread_np.h>
+#   endif
 #   include <sys/sysctl.h>
 #  elif defined(__linux__)
-#   include <linux/limits.h>
+#   if defined(__GLIBC__)
+#    include <linux/limits.h>
+#   endif
 #  elif defined(__MACOS__)
 #   include <mach-o/dyld.h>
 #   include <sys/_types/_timespec.h>

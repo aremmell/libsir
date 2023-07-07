@@ -44,7 +44,6 @@
  */
 # define SIR_TIMEFORMAT "%H:%M:%S"
 
-
 /**
  * The format for milliseconds (1000ths of a second) in time stamps.
  *

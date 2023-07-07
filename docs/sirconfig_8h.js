@@ -48,5 +48,6 @@ var sirconfig_8h =
     [ "SIR_FALLBACK_SYSLOG_CAT", "sirconfig_8h.html#a9b99ae577cedc922bded630216627070", null ],
     [ "SIR_NUMLEVELS", "sirconfig_8h.html#a54ab03b03f20338146a5ab69fcd90177", null ],
     [ "SIR_NUMOPTIONS", "sirconfig_8h.html#a3d40d22ca5d641892fc7b3cb8d0bb283", null ],
-    [ "SIR_NUM16_COLOR_MAPPINGS", "sirconfig_8h.html#ad4797e353beace140ae7ac35e0e6ea11", null ]
+    [ "SIR_NUM16_COLOR_MAPPINGS", "sirconfig_8h.html#ad4797e353beace140ae7ac35e0e6ea11", null ],
+    [ "SIR_HNAME_CHK_INTERVAL", "sirconfig_8h.html#a46e195050794e32a234cda5f1af57a2a", null ]
 ];

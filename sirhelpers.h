@@ -86,9 +86,14 @@ uint16_t _sir_geterrcode(uint32_t err) {
     } \
     \
     _mid = (_low + _high) / 2;
-
 # define _SIR_END_BIN_SEARCH() \
     } while (true);
+
+/** Validates a pointer and fails if it's invalid. */
+# define _sir_validptr(p) __sir_validptr((const void* restrict)p, true)
+
+/** Validates a pointer-to-pointer and fails if it's invalid. */
+# define _sir_validptrptr(pp) __sir_validptrptr((const void* restrict*)pp, true)
 
 /** Checks a bitmask for a specific set of bits. */
 static inline
@@ -120,7 +125,7 @@ bool _sir_setbitslow(uint32_t* flags, uint32_t set) {
 void __sir_safefree(void** pp);
 
 /** Wraps __sir_safefree with a cast to void**. */
-#define _sir_safefree(pp) __sir_safefree((void**)pp)
+# define _sir_safefree(pp) __sir_safefree((void**)pp)
 
 /** Wraps close. */
 void _sir_safeclose(int* restrict fd);
@@ -181,16 +186,14 @@ bool _sir_validptrnofail(const void* restrict p) {
     return __sir_validptr(p, false);
 }
 
+/** Validates a pointer-to-pointer and optionally fails if it's invalid. */
 bool __sir_validptrptr(const void* restrict* pp, bool fail);
 
 /** Validates a pointer and fails if it's invalid. */
-#define _sir_validptr(p) __sir_validptr((const void* restrict)p, true)
-
-/** Validates a pointer-to-pointer and fails if it's invalid. */
-#define _sir_validptrptr(pp) __sir_validptrptr((const void* restrict*)pp, true)
+# define _sir_validptr(p) __sir_validptr((const void* restrict)p, true)
 
 /** Validates a pointer-to-function and fails if it's invalid. */
-#define _sir_validfnptr(fnp) __sir_validptrptr((const void* restrict*)&fnp, true)
+# define _sir_validfnptr(fnp) __sir_validptrptr((const void* restrict*)&fnp, true)
 
 /** Places a null terminator at the first index in a string buffer. */
 static inline

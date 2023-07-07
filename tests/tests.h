@@ -244,15 +244,15 @@ void print_os_error(void);
 bool filter_error(bool pass, uint16_t err);
 
 # if !defined(__WIN__)
-#  define handle_os_error(clib, fmt, ...) \
-     (void)clib; \
-     _sir_handleerr(errno); \
+#  define handle_os_error(clib, fmt, ...)               \
+     (void)clib;                                        \
+     _sir_handleerr(errno);                             \
      fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
      print_os_error();
 # else /* __WIN__ */
-#  define handle_os_error(clib, fmt, ...) \
+#  define handle_os_error(clib, fmt, ...)                                \
      clib ? _sir_handleerr(errno) : _sir_handlewin32err(GetLastError()); \
-     fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
+     fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__);                  \
      print_os_error();
 # endif
 
@@ -299,10 +299,10 @@ bool getrand_bool(uint32_t upper_bound) {
 }
 
 /** prints a message in green if pass is true, or red otherwise. */
-# define PRINT_PASS(pass, msg, ...) \
-    if (pass) \
+# define PRINT_PASS(pass, msg, ...)      \
+    if (pass)                            \
         printf(GREEN(msg), __VA_ARGS__); \
-    else \
+    else                                 \
         printf(RED(msg), __VA_ARGS__);
 
 bool rmfile(const char* filename);

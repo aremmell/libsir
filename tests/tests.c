@@ -53,7 +53,10 @@ static sir_test sir_tests[] = {
 };
 
 int main(int argc, char** argv) {
-#if !defined(__WIN__)
+#if defined(__HAIKU__) && defined(NDEBUG)
+    disable_debugger(1);
+#endif
+#if !defined(__WIN__) && !defined(__HAIKU__)
     /* Disallow execution by root / sudo; some of the tests rely on lack of permissions. */
     if (geteuid() == 0) {
         fprintf(stderr, "Sorry, but this program may not be executed by root.\n");
@@ -311,7 +314,11 @@ bool sirtest_failfilebadpermission(void) {
 #if !defined(__WIN__)
     static const char* path = "/noperms";
 #else /* __WIN__ */
+# if defined(__CYGWIN__)
+    static const char* path = "/cygdrive/c/Windows/System32/noperms";
+# else
     static const char* path = "C:\\Windows\\System32\\noperms";
+# endif
 #endif
 
     pass &= NULL == sir_addfile(path, SIRL_ALL, SIRO_MSGONLY);
@@ -1339,7 +1346,11 @@ bool sirtest_filesystem(void) {
         {"foobarbaz", false},
 #if !defined(__WIN__)
         {"/", true},
+# if !defined(__HAIKU__)
         {"/usr/bin", true},
+# else
+        {"/bin", true},
+# endif
         {"/dev", true},
 #else /* __WIN__ */
         {"\\Windows", true},
@@ -1583,7 +1594,6 @@ bool sirtest_XXX(void) {
 
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
-
 
     sir_cleanup();
     return print_result_and_return(pass);

@@ -32,33 +32,21 @@ test -f "./${0##*/}" > /dev/null 2>&1 || {
 
 run_cppi()
 {
-  test "no_cppi" != "1" > /dev/null 2>&1 && {
-      printf '%s' "Formatting with cppi ... "
-      ( # shellcheck disable=SC2038
-        find . -name "*.[ch]" | xargs -I{} "${SHELL:-sh}" -c \
-            'set -e; cppi "{}" > "{}.cppi" && mv -f "{}.cppi" "{}"'
-      ) && printf '%s' "complete."
-  }; printf '%s\n' ""
+  printf '%s' "Formatting with cppi ... "
+  ( # shellcheck disable=SC2038
+    find . -name "*.[ch]" | xargs -I{} "${SHELL:-sh}" -c \
+        'set -e; cppi "{}" > "{}.cppi" && mv -f "{}.cppi" "{}"'
+  ) && printf '%s\n' "complete."
 }
-
-########################################################################
-# Enable tool(s)
-
-# shellcheck disable=SC2043
-for n in cppi; do
-  command -v "${n:?}" > /dev/null 2>&1 || {
-      printf '%s\n' "${n:?} not found!"
-      eval set  "_no_${n:?}"=1; }
-  test "_no_${n:-}" -eq "1" > /dev/null 2>&1 || {
-      command -v "run_${n:?}" > /dev/null 2>&1 &&
-          export _tools="${n:?} ${_tools:-}"; }
-done
 
 ########################################################################
 # Run tool(s)
 
-for func in ${_tools:-}; do
-  command -v "run_${func:?}" > /dev/null 2>&1 && ("run_${func:?}")
-done
+command -v cppi > /dev/null 2>&1 ||
+  {
+    printf '%s\n' "Error: Could not locate cppi."
+    exit 1
+  }
+run_cppi
 
 ########################################################################

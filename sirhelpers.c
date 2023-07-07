@@ -60,18 +60,18 @@ bool _sir_validfd(int fd) {
         _sir_handleerr(EBADF);
         return false;
     }
-# if !defined(__WIN__)
+#if !defined(__WIN__)
     int ret = fcntl(fd, F_GETFL);
-# else /* __WIN__ */
-#  if !defined(SIR_MSVCRT_MINGW)
+#else /* __WIN__ */
+# if !defined(SIR_MSVCRT_MINGW)
     invalparamfn old = _set_thread_local_invalid_parameter_handler(_sir_invalidparameter);
-#  endif
+# endif
     struct _stat st;
     int ret = _fstat(fd, &st);
-#  if !defined(SIR_MSVCRT_MINGW)
+# if !defined(SIR_MSVCRT_MINGW)
     _set_thread_local_invalid_parameter_handler(old);
-#  endif
 # endif
+#endif
     bool valid = -1 != ret || EBADF != errno;
     if (-1 == ret)
         _sir_handleerr(errno);
@@ -263,7 +263,7 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
     if (_sir_validptr(timer) && _sir_validptr(buf)) {
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
 # if defined(__WIN__)
-        errno_t ret = localtime_s(buf, timer);
+        errno_t ret = (errno_t)localtime_s(buf, timer);
         if (0 != ret) {
             _sir_handleerr(ret);
             return NULL;
