@@ -314,7 +314,11 @@ bool sirtest_failfilebadpermission(void) {
 #if !defined(__WIN__)
     static const char* path = "/noperms";
 #else /* __WIN__ */
+# if defined(__CYGWIN__)
+    static const char* path = "/cygdrive/c/Windows/System32/noperms";
+# else
     static const char* path = "C:\\Windows\\System32\\noperms";
+# endif
 #endif
 
     pass &= NULL == sir_addfile(path, SIRL_ALL, SIRO_MSGONLY);
