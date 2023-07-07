@@ -1125,7 +1125,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
         return false;
     }
 # if defined(__HAIKU__)
-    if ((strcmp(name, "pthread_func")) || (name[0] == '\0'))
+    if ((strncmp(name, "pthread_func", SIR_MAXPID)) || _sir_validstrnofail(name))
      snprintf(name, SIR_MAXPID, "%ld", (long)get_pthread_thread_id(pthread_self()));
 # endif
     return true;

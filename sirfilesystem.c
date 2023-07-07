@@ -219,7 +219,7 @@ char* _sir_getappfilename(void) {
             break;
         }
 # elif defined(__HAIKU__)
-        status_t ret = find_path(B_APP_IMAGE_SYMBOL, B_FIND_PATH_IMAGE_PATH, NULL, buffer, PATH_MAX);
+        status_t ret = find_path(B_APP_IMAGE_SYMBOL, B_FIND_PATH_IMAGE_PATH, NULL, buffer, SIR_MAXPATH);
         if (B_OK == ret) {
             resolved = true;
             break;
