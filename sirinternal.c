@@ -422,7 +422,6 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
             break;
     }
 
-    SIR_ASSERT(m);
     *m = tmpm;
 
     if (section)
