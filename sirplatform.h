@@ -160,6 +160,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  include <direct.h>
 #  if defined(__MINGW32__) || defined(__MINGW64__)
 #   define __USE_MINGW_ANSI_STDIO 1
+#   include <pthread.h>
 typedef  /* Workaround a MinGW bug */
 void (__cdecl* _invalid_parameter_handler)(
  wchar_t const*, wchar_t const*, wchar_t const*,
@@ -295,10 +296,6 @@ typedef void (*sir_once_fn)(void);
 #  define SIR_ONCE_INIT PTHREAD_ONCE_INIT
 
 # else /* __WIN__ */
-
-#  if defined(__MINGW32__) || defined(__MINGW64__)
-#   include <pthread.h>
-#  endif
 
 #  define SIR_MAXPATH MAX_PATH
 
