@@ -146,7 +146,11 @@ bool _sir_init(sirinit* si) {
 
     _cfg->state.pid = _sir_getpid();
 
-    if (0 > snprintf(_cfg->state.pidbuf, SIR_MAXPID, SIR_PIDFORMAT, _cfg->state.pid))
+    if (0 > snprintf(_cfg->state.pidbuf, SIR_MAXPID, SIR_PIDFORMAT,
+#if defined(__MINGW64__)
+                     (int)
+#endif
+                     _cfg->state.pid))
         _sir_handleerr(errno);
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
@@ -586,7 +590,11 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     pid_t tid = _sir_gettid();
     if (tid != tmpcfg.state.pid) {
         if (!_sir_getthreadname(buf.tid)) {
-            if (0 > snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, tid))
+            if (0 > snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT,
+#if defined(__MINGW64__)
+                             (int)
+#endif
+                             tid))
                 _sir_handleerr(errno);
         }
     }
