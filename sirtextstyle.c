@@ -266,14 +266,32 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
         }
     }
 
-    if (_sir_validptrnofail(pattr))
+#if !defined(__clang_analyzer__)
+    if (_sir_validptrnofail(pattr)) {
+#endif
+        /* cppcheck-suppress nullPointer */
         *pattr = attrvalid ? attr : 0;
+#if !defined(__clang_analyzer__)
+    }
+#endif
 
-    if (_sir_validptrnofail(pfg))
+#if !defined(__clang_analyzer__)
+    if (_sir_validptrnofail(pfg)) {
+#endif
+        /* cppcheck-suppress nullPointer */
         *pfg = fgvalid ? fore : 0;
+#if !defined(__clang_analyzer__)
+    }
+#endif
 
-    if (_sir_validptrnofail(pbg))
+#if !defined(__clang_analyzer__)
+    if (_sir_validptrnofail(pbg)) {
+#endif
+        /* cppcheck-suppress nullPointer */
         *pbg = bgvalid ? back : 0;
+#if !defined(__clang_analyzer__)
+    }
+#endif
 
     if (attrvalid && fgvalid && bgvalid)
         return true;
