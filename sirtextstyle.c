@@ -266,13 +266,19 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
         }
     }
 
+#if !defined(__clang_analyzer__)
     if (_sir_validptrnofail(pattr))
+#endif
         *pattr = attrvalid ? attr : 0;
 
+#if !defined(__clang_analyzer__)
     if (_sir_validptrnofail(pfg))
+#endif
         *pfg = fgvalid ? fore : 0;
 
+#if !defined(__clang_analyzer__)
     if (_sir_validptrnofail(pbg))
+#endif
         *pbg = bgvalid ? back : 0;
 
     if (attrvalid && fgvalid && bgvalid)
