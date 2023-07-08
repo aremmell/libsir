@@ -115,11 +115,6 @@ bool _sir_init(sirinit* si) {
     }
 #endif
 
-    if (!_sir_resettextstyles()) {
-        _sir_selflog("error: failed to reset text styles!");
-        return false;
-    }
-
     sirconfig* _cfg = _sir_locksection(SIRMI_CONFIG);
     if (!_sir_validptr(_cfg)) {
         _sir_seterror(_SIR_E_INTERNAL);
@@ -131,6 +126,9 @@ bool _sir_init(sirinit* si) {
 #else
     _sir_magic = _SIR_MAGIC;
 #endif
+
+    if (!_sir_resettextstyles())
+        _sir_selflog("error: failed to reset text styles!");
 
     memset(&_cfg->state, 0, sizeof(_cfg->state));
     memcpy(&_cfg->si, si, sizeof(sirinit));
@@ -148,7 +146,8 @@ bool _sir_init(sirinit* si) {
 
     _cfg->state.pid = _sir_getpid();
 
-    if (0 > snprintf(_cfg->state.pidbuf, SIR_MAXPID, SIR_PIDFORMAT, _cfg->state.pid))
+    if (0 > snprintf(_cfg->state.pidbuf, SIR_MAXPID, SIR_PIDFORMAT,
+                     PID_CAST _cfg->state.pid))
         _sir_handleerr(errno);
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
@@ -422,7 +421,6 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
             break;
     }
 
-    SIR_ASSERT(m);
     *m = tmpm;
 
     if (section)
@@ -589,7 +587,7 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     pid_t tid = _sir_gettid();
     if (tid != tmpcfg.state.pid) {
         if (!_sir_getthreadname(buf.tid)) {
-            if (0 > snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, tid))
+            if (0 > snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, PID_CAST tid))
                 _sir_handleerr(errno);
         }
     }

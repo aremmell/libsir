@@ -194,7 +194,12 @@ int _sir_strncpy(char* restrict dest, size_t destsz, const char* restrict src, s
             _sir_handleerr(ret);
             return -1;
         }
-
+        return 0;
+#elif defined(__MACOS__) || defined(__BSD__) || defined(__SOLARIS__)
+        _SIR_UNUSED(count);
+        size_t cpy = strlcpy(dest, src, destsz);
+        SIR_ASSERT(cpy < destsz);
+        _SIR_UNUSED(cpy);
         return 0;
 #else
         _SIR_UNUSED(destsz);
@@ -206,10 +211,6 @@ int _sir_strncpy(char* restrict dest, size_t destsz, const char* restrict src, s
     return -1;
 }
 
-/**
- * Wrapper for strncat/strncat_s. Determines which one to use
- * based on preprocessor macros.
- */
 int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src, size_t count) {
     if (_sir_validptr(dest) && _sir_validstr(src)) {
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
@@ -218,7 +219,12 @@ int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src, s
             _sir_handleerr(ret);
             return -1;
         }
-
+        return 0;
+#elif defined(__MACOS__) || defined(__BSD__) || defined(__SOLARIS__)
+        _SIR_UNUSED(count);
+        size_t cat = strlcat(dest, src, destsz);
+        SIR_ASSERT(cat < destsz);
+        _SIR_UNUSED(cat);
         return 0;
 #else
         _SIR_UNUSED(destsz);
@@ -230,20 +236,15 @@ int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src, s
     return -1;
 }
 
-/**
- * Wrapper for fopen/fopen_s. Determines which one to use
- * based on preprocessor macros.
- */
 int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename,
     const char* restrict mode) {
-    if (_sir_validptrptr((void**)streamptr) && _sir_validstr(filename) && _sir_validstr(mode)) {
+    if (_sir_validptrptr(streamptr) && _sir_validstr(filename) && _sir_validstr(mode)) {
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
         int ret = fopen_s(streamptr, filename, mode);
         if (0 != ret) {
             _sir_handleerr(ret);
             return -1;
         }
-
         return 0;
 #else
         *streamptr = fopen(filename, mode);
@@ -251,7 +252,6 @@ int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename
             _sir_handleerr(errno);
             return -1;
         }
-
         return 0;
 #endif
     }

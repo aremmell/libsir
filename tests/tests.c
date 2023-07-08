@@ -76,19 +76,24 @@ int main(int argc, char** argv) {
     size_t to_run = 0;
 
     for (int n = 1; n < argc; n++) {
-        if (_sir_strsame(argv[n], _cl_arg_list[0].flag, strlen(_cl_arg_list[0].flag))) {
+        if (_sir_strsame(argv[n], _cl_arg_list[0].flag,
+            strnlen(_cl_arg_list[0].flag, SIR_MAXCLIFLAG))) {
             only = mark_test_to_run("performance");
             if (only)
                 to_run = 1;
-        } else if (_sir_strsame(argv[n], _cl_arg_list[1].flag, strlen(argv[n]))) {
+        } else if (_sir_strsame(argv[n], _cl_arg_list[1].flag,
+            strnlen(argv[n], SIR_MAXCLIFLAG))) {
             wait = true;
-        } else if (_sir_strsame(argv[n], _cl_arg_list[3].flag, strlen(argv[n]))) {
+        } else if (_sir_strsame(argv[n], _cl_arg_list[3].flag,
+            strnlen(argv[n], SIR_MAXCLIFLAG))) {
             print_test_list();
             return EXIT_SUCCESS;
-        } else if (_sir_strsame(argv[n], _cl_arg_list[4].flag, strlen(argv[n]))) {
+        } else if (_sir_strsame(argv[n], _cl_arg_list[4].flag,
+            strnlen(argv[n], SIR_MAXCLIFLAG))) {
             print_usage_info();
             return EXIT_SUCCESS;
-        } else if (_sir_strsame(argv[n], _cl_arg_list[2].flag, strlen(argv[n]))) {
+        } else if (_sir_strsame(argv[n], _cl_arg_list[2].flag,
+            strnlen(argv[n], SIR_MAXCLIFLAG))) {
             while (++n < argc) {
                 if (_sir_validstrnofail(argv[n])) {
                     if (*argv[n] == '-' || !mark_test_to_run(argv[n])) {
@@ -415,7 +420,7 @@ bool sirtest_rollandarchivefile(void) {
     if (pass) {
         /* write an (approximately) known quantity until we should have rolled */
         size_t written  = 0;
-        size_t linesize = strlen(line);
+        size_t linesize = strnlen(line, SIR_MAXMESSAGE);
 
         do {
             pass &= sir_debug("%s", line);
@@ -1202,8 +1207,8 @@ bool sirtest_filesystem(void) {
                 printf("\t_sir_getbasename: '%s'\n", PRN_STR(_basename));
 
                 /* the last strlen(_basename) chars of filename should match. */
-                size_t len    = strlen(_basename);
-                size_t offset = strlen(filename) - len;
+                size_t len    = strnlen(_basename, SIR_MAXPATH);
+                size_t offset = strnlen(filename, SIR_MAXPATH) - len;
                 size_t n      = 0;
 
                 while (n < len) {
@@ -1533,7 +1538,8 @@ unsigned sirtest_thread(void* arg) {
 #endif
     }
 
-    printf("\thi, i'm thread id %d, logging to: '%s'...\n", threadid, my_args->log_file);
+    printf("\thi, i'm thread id %d, logging to: '%s'...\n",
+            PID_CAST threadid, my_args->log_file);
 
     for (size_t n = 0; n < 1000; n++) {
         /* choose a random level, and colors. */
@@ -1781,7 +1787,8 @@ long sirtimergetres(void) {
 bool mark_test_to_run(const char* name) {
     bool found = false;
     for (size_t t = 0; t < _sir_countof(sir_tests); t++) {
-        if (_sir_strsame(name, sir_tests[t].name, strlen(sir_tests[t].name))) {
+        if (_sir_strsame(name, sir_tests[t].name,
+            strnlen(sir_tests[t].name, SIR_MAXTESTNAME))) {
             found = sir_tests[t].run = true;
             break;
         }
@@ -1798,8 +1805,10 @@ void print_usage_info(void) {
 
     for (size_t i = 0; i < _sir_countof(_cl_arg_list); i++) {
         fprintf(stderr, "\t%s%s%s%s%s\n", _cl_arg_list[i].flag,
-            strlen(_cl_arg_list[i].usage) == 0 ? "" : "\t", _cl_arg_list[i].usage,
-            strlen(_cl_arg_list[i].usage) == 0 ? "\t" : " ", _cl_arg_list[i].desc);
+            strnlen(_cl_arg_list[i].usage, SIR_MAXUSAGE) == 0
+                ? "" : "\t", _cl_arg_list[i].usage,
+            strnlen(_cl_arg_list[i].usage, SIR_MAXUSAGE) == 0
+                ? "\t" : " ", _cl_arg_list[i].desc);
     }
 
     fprintf(stderr, "\n");
@@ -1808,7 +1817,7 @@ void print_usage_info(void) {
 void print_test_list(void) {
     size_t longest = 0;
     for (size_t i = 0; i < _sir_countof(sir_tests); i++) {
-        size_t len = strlen(sir_tests[i].name);
+        size_t len = strnlen(sir_tests[i].name, SIR_MAXTESTNAME);
         if (len > longest)
             longest = len;
     }
@@ -1818,7 +1827,7 @@ void print_test_list(void) {
     for (size_t i = 0; i < _sir_countof(sir_tests); i++) {
         printf("\t%s\t", sir_tests[i].name);
 
-        size_t len = strlen(sir_tests[i].name);
+        size_t len = strnlen(sir_tests[i].name, SIR_MAXTESTNAME);
         if (len < longest)
             for (size_t n = len; n < longest; n++)
                 printf(" ");

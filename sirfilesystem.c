@@ -48,11 +48,18 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
 # if defined(__MACOS__)
         int open_flags = O_SEARCH;
 # elif defined(__linux__)
+#  if !defined(__SUNPRO_C) && !defined(__SUNPRO_CC)
         int open_flags = O_PATH | O_DIRECTORY;
+#  else
+        int open_flags = O_DIRECTORY;
+#  endif
 # elif defined(__FreeBSD__) || defined(__CYGWIN__)
         int open_flags = O_EXEC | O_DIRECTORY;
-# elif defined(__SOLARIS__) || defined(__NetBSD__) || defined(__DragonFly__) || defined(__HAIKU__)
+# elif defined(__SOLARIS__) || defined(__DragonFly__) || \
+       defined(__NetBSD__) || defined(__HAIKU__)
         int open_flags = O_DIRECTORY;
+# else
+#  error "unknown for your platform; please contact the author."
 # endif
 
         int fd = open(base_path, open_flags);
@@ -185,7 +192,8 @@ char* _sir_getappfilename(void) {
 #endif
 
 #if !defined(__WIN__)
-# if defined(__linux__) || defined(__NetBSD__) || defined(__SOLARIS__) || defined(__DragonFly__) || defined(__CYGWIN__)
+# if defined(__linux__) || defined(__NetBSD__) || defined(__SOLARIS__) || \
+     defined(__DragonFly__) || defined(__CYGWIN__)
         ssize_t read = readlink(PROC_SELF, buffer, size - 1);
         if (-1 != read && read < (ssize_t)size - 1) {
             resolved = true;

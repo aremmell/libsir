@@ -19,11 +19,42 @@ INSTALLINC = /usr/local/include
 # base CFLAGS
 CFLAGS += -Wall -Wextra -Wpedantic -std=c11 -I. -fPIC
 
+# MinGW compiler-specific flags
+ifneq "$(findstring mingw,$(CC))" ""
+	MINGW ?= 1
+endif
+ifeq ($(MINGW),1)
+  ifneq "$(findstring gcc,$(CC))" ""
+	CFLAGS += -Wno-unknown-pragmas
+  endif
+	MINGW_LIBS=-lshlwapi -lws2_32
+endif
+
+# Oracle compiler-specific flags
+ifneq "$(findstring suncc,$(CC))" ""
+	SUNPRO ?= 1
+endif
+ifeq ($(SUNPRO),1)
+	CFLAGS        += -fcommon
+	FORTIFY_FLAGS ?= -U_FORTIFY_SOURCE
+	MMDOPT        ?= -xMMD
+	PTHOPT        ?= -mt=yes
+else
+	FORTIFY_FLAGS ?= -D_FORTIFY_SOURCE=2
+	MMDOPT        ?= -MMD
+	PTHOPT        ?= -pthread
+endif
+
+# MinGW MSVCRT workaround
+ifeq ($(SIR_MSVCRT_MINGW),1)
+	CFLAGS += -DSIR_MSVCRT_MINGW
+endif
+
 # debug/non-debug CFLAGS
 ifeq ($(SIR_DEBUG),1)
 	CFLAGS += -g -O0 -DDEBUG -U_FORTIFY_SOURCE
 else
-	CFLAGS += -O3 -DNDEBUG -D_FORTIFY_SOURCE=2
+	CFLAGS += -O3 -DNDEBUG $(FORTIFY_FLAGS)
 endif
 
 # enable internal diagnostic logging
@@ -41,11 +72,11 @@ ifeq ($(SIR_NO_SYSTEM_LOGGERS),1)
 endif
 
 # dependencies
-LIBS = -pthread
+LIBS = $(PTHOPT)
 
 # for test rig and example:
 # link with static library, not shared
-LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s
+LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s $(MINGW_LIBS)
 
 # translation units
 TUS := $(wildcard *.c)
@@ -57,7 +88,7 @@ OBJ  = $(patsubst %, $(INTDIR)/%, $(_OBJ))
 # shared library
 OBJ_SHARED     = $(patsubst %.o, $(INTDIR)/%.o, $(_OBJ))
 OUT_SHARED	   = $(LIBDIR)/libsir.so
-LDFLAGS_SHARED = $(LIBS)
+LDFLAGS_SHARED = $(LIBS) $(MINGW_LIBS)
 
 # static library
 OBJ_STATIC     = $(OBJ_SHARED)
@@ -88,13 +119,13 @@ $(OBJ_TESTS)  : $(OBJ_SHARED)
 $(OBJ_EXAMPLE): $(OBJ_SHARED)
 
 $(OBJ_EXAMPLE): $(EXAMPLE)/$(EXAMPLE).c $(DEPS)
-	$(CC) -MMD -c -o $@ $< $(CFLAGS) -I..
+	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -I..
 
 $(OBJ_TESTS): $(TESTS)/$(TESTS).c $(DEPS)
-	$(CC) -MMD -c -o $@ $< $(CFLAGS) -I..
+	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -I..
 
 $(INTDIR)/%.o: %.c $(DEPS)
-	$(CC) -MMD -c -o $@ $< $(CFLAGS)
+	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS)
 
 prep:
 	$(shell mkdir -p $(BUILDDIR) && \

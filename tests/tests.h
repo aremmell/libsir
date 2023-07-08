@@ -70,6 +70,10 @@
 # define PRN_PASS(pass) ((pass) ? GREENB("PASS") : REDB("FAIL"))
 # define INDENT_ITEM "\t  " SIR_BULLET " "
 
+# define SIR_MAXTESTNAME 32
+# define SIR_MAXCLIFLAG  32
+# define SIR_MAXUSAGE    256
+
 /**
  * @defgroup tests Tests
  *
