@@ -164,6 +164,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 # include <errno.h>
 # include <stdarg.h>
 # include <stdbool.h>
+# include <stddef.h>
 # include <stdint.h>
 # include <inttypes.h>
 # include <stdio.h>
@@ -173,6 +174,11 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 # include <sys/types.h>
 # include <limits.h>
 # include <time.h>
+
+# if !defined(__MACOS__) && !defined(__BSD__) && !defined(__SOLARIS__)
+#  include <sirstrlcpy.h>  /* Provides strlcpy() */
+#  include <sirstrlcat.h>  /* Provides strlcat() */
+# endif
 
 # if !defined(SIR_NO_SYSTEM_LOGGERS)
 #  if defined(__MACOS__)
