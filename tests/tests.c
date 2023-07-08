@@ -1538,8 +1538,11 @@ unsigned sirtest_thread(void* arg) {
 #endif
     }
 
-    printf("\thi, i'm thread id %lld, logging to: '%s'...\n",
-            (long long)threadid, my_args->log_file);
+    printf("\thi, i'm thread id %d, logging to: '%s'...\n",
+#if defined(__MINGW64__)
+            (int)
+#endif
+            threadid, my_args->log_file);
 
     for (size_t n = 0; n < 1000; n++) {
         /* choose a random level, and colors. */
