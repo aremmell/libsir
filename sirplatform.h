@@ -171,6 +171,12 @@ _set_thread_local_invalid_parameter_handler(
 #  endif
 # endif
 
+# if defined(__MINGW64__)
+#  define PID_CAST (int)
+# else
+#  define PID_CAST
+# endif
+
 # if defined(SIR_ASSERT_ENABLED)
 #  include <assert.h>
 #  define SIR_ASSERT(...) assert(__VA_ARGS__)
