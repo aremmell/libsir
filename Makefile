@@ -92,14 +92,14 @@ OBJ  = $(patsubst %, $(INTDIR)/%, $(_OBJ))
 
 # shared library
 OBJ_SHARED     = $(patsubst %.o, $(INTDIR)/%.o, $(_OBJ))
-OUT_SHARED_NM  = libsir.so
-OUT_SHARED     = $(LIBDIR)/$(OUT_SHARED_NM)
+OUT_SHARED_FN  = libsir.so
+OUT_SHARED     = $(LIBDIR)/$(OUT_SHARED_FN)
 LDFLAGS_SHARED = $(LIBS) $(MINGW_LIBS)
 
 # static library
 OBJ_STATIC     = $(OBJ_SHARED)
-OUT_STATIC_NM  = libsir_s.a
-OUT_STATIC     = $(LIBDIR)/$(OUT_STATIC_NM)
+OUT_STATIC_FN  = libsir_s.a
+OUT_STATIC     = $(LIBDIR)/$(OUT_STATIC_FN)
 
 # console example
 OBJ_EXAMPLE    = $(INTDIR)/$(EXAMPLE)/$(EXAMPLE).o
@@ -174,7 +174,7 @@ install: $(INSTALLSH)
 	$(INSTALLSH) -C -m 755 "$(OUT_SHARED)" "$(INSTALLLIB)"
 	-($(LDCONFIG) || true) > /dev/null 2>&1
 	$(INSTALLSH) -C -m 644 "$(OUT_STATIC)" "$(INSTALLLIB)"
-	-($(RANLIB) "$(INSTALLLIB)/$(OUT_STATIC_NM)" || true) > /dev/null 2>&1
+	-($(RANLIB) "$(INSTALLLIB)/$(OUT_STATIC_FN)" || true) > /dev/null 2>&1
 	$(INSTALLSH) -C -m 644 "sir.h" "$(INSTALLINC)"
 	-@echo installed libsir successfully.
 
