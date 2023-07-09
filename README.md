@@ -32,7 +32,7 @@ Using libsir, you can make a single call that simultaneously sends information t
 
 Each 'level' or 'priority' of output can be visually styled however you wish for `stdio` destinations. This allows for immediate visual confirmation that a message appeared in the terminal that you should pay attention to, while less pressing information is more subtle in appearance.
 
-![libsir visual graph](./docs/res/libsir-alpha.gif)
+![libsir visual graph](./docs/res/libsir-alpha.png)
 
 ## Notables
 
@@ -68,7 +68,7 @@ At this time, the libsir supports (*compiles and passes the tests*) on at least 
 
 Some sample terminal output from libsir demonstrating the default configuration:
 
-![sample terminal output](./docs/res/sample-terminal.gif)
+![sample terminal output](./docs/res/sample-terminal.png)
 
 ## Getting started
 
