@@ -76,7 +76,7 @@ Clone or download this repository to your machine, then choose how you'd like to
 
 ### Visual Studio Code
 
-There is code‑workspace in the repository. As of right now, the build and launch tasks are not fully functional for every platform, but that's easy enough to figure out, right?.
+There is code‑workspace in the repository. As of right now, the build and launch tasks are not fully functional for every platform, but that's easy enough to figure out, right?
 
 ### Visual Studio 2022
 
