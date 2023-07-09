@@ -25,7 +25,7 @@ libsir &mdash; a cross-platform, thread-safe logging library
 
 ## Synopsis
 
-libsir is a cross-platform, thread-safe logging library written in C (ISO/IEC 9899:2011 C11) that is designed to simplify and streamline the generation and distribution of human-readable information in software.
+libsir is a cross-platform, thread-safe logging library written in C (*ISO/IEC 9899:2011 C11*) that is designed to simplify and streamline the generation and distribution of human-readable information in software.
 
 Using libsir, you can make a single call that simultaneously sends information to multiple destinations, _each with their own individual preference for format and levels_.
 
