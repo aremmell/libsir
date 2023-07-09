@@ -113,10 +113,24 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
   <div class="headertitle"><div class="title">libsir </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md_README"></a></p>
-<p><a href="https://app.travis-ci.com/aremmell/libsir"><img src="https://app.travis-ci.com/aremmell/libsir.svg?branch=master" alt="Build Status" style="pointer-events: none;" class="inline"/></a> <a href="https://api.reuse.software/info/github.com/aremmell/libsir"><img src="https://api.reuse.software/badge/github.com/aremmell/libsir" alt="REUSE status" class="inline"/></a> <img src="https://img.shields.io/github/license/aremmell/libsir?color=%2340b911" alt="GitHub" class="inline"/></p>
+<div class="textblock"><p><a class="anchor" id="md_README"></a> libsir&mdash;a cross-platform, thread-safe logging library</p>
+<p><a href="https://app.travis-ci.com/aremmell/libsir"><img src="https://app.travis-ci.com/aremmell/libsir.svg?branch=master" alt="Build Status" style="pointer-events: none;" class="inline"/></a>&#160;<img src="https://img.shields.io/reuse/compliance/github.com%2Faremmell%2Flibsir?label=REUSE3&amp;color=2340b911" alt="REUSE Compliance" class="inline"/>&#160;<img src="https://img.shields.io/github/license/aremmell/libsir?color=%2340b911" alt="GitHub" class="inline"/></p>
+<h1>Overview</h1>
+<ul>
+<li>Synopsis</li>
+<li>Notables</li>
+<li>Cross-platform compatibility</li>
+<li>A sample</li>
+<li>Getting started<ul>
+<li>Visual Studio Code</li>
+<li>Visual Studio 2022</li>
+<li>Unix Makefile</li>
+<li>Further reading</li>
+</ul>
+</li>
+</ul>
 <h1>Synopsis</h1>
-<p>libsir is a cross-platform, thread-safe logging library written in C that is designed to simplify and streamline the generation and distribution of human-readable information in software.</p>
+<p>libsir is a cross-platform, thread-safe logging library written in C (<em>ISO/IEC 9899:2011 C11</em>) that is designed to simplify and streamline the generation and distribution of human-readable information in software.</p>
 <p>Using libsir, you can make a single call that simultaneously sends information to multiple destinations, <em>each with their own individual preference for format and levels</em>.</p>
 <p>Each 'level' or 'priority' of output can be visually styled however you wish for <code>stdio</code> destinations. This allows for immediate visual confirmation that a message appeared in the terminal that you should pay attention to, while less pressing information is more subtle in appearance.</p>
 <div class="image">
@@ -127,23 +141,41 @@ libsir visual graph</div></div>
 <ul>
 <li>No dependencies (other than <code>libc</code> and <code>pthreads</code>). On Windows, libsir uses the native synchronization API.</li>
 <li>Accompanied by a robust test suite to ensure dependable behavior, even if you make modifications to the source.</li>
-<li>Won't fail silently&mdash; C library or platform level errors are captured and stored for posterity, on a per-thread basis. The <em>function, file, and line number from which it originated</em> are also captured. Additionally, libsir defines its own set of error messages to aid in troubleshooting.</li>
+<li>Won't fail silently&mdash;C library or platform level errors are captured and stored for posterity, on a per-thread basis. The <em>function, file, and line number from which it originated</em> are also captured. Additionally, libsir defines its own set of error messages to aid in troubleshooting.</li>
 <li>Hardened&mdash;every function contains sanity checks for internal state as well as arguments passed in through the external interfaces. libsir's make recipes use <em>&ndash;Wall &ndash;Wextra &ndash;Wpedantic</em>, too.</li>
 <li><a href="https://libsir.rml.dev">Full documentation</a>, thanks to Doxygen.</li>
-<li>Lightweight&mdash;the shared library comes in at around 76KB, and the static library around 70KB.</li>
+<li>Lightweight&mdash;the shared library comes in at around 76&#160;KiB, and the static library around 70&#160;KiB.</li>
 </ul>
 <h1>Cross-platform compatibility</h1>
-<p>At this time, the test suite has been compiled and tested on (at minimum) these configurations:</p>
+<p>At this time, libsir is supported (<em>that is, it compiles and passes the test suite</em>) on at least the following operating system and toolchain combinations:</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadLeft">Toolset   </th><th class="markdownTableHeadCenter">Versions   </th><th class="markdownTableHeadCenter">Operating system   </th><th class="markdownTableHeadRight">Architecture    </th></tr>
+<th class="markdownTableHeadRight">System   </th><th class="markdownTableHeadLeft">Toolchain    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft">gcc   </td><td class="markdownTableBodyCenter">5.4-7.5   </td><td class="markdownTableBodyCenter">Ubuntu, Mint, Fedora, FreeBSD   </td><td class="markdownTableBodyRight">x64, armhf, arm64, ppc64le    </td></tr>
+<td class="markdownTableBodyRight"><b>Linux</b>&#160;2.6.32<br  />
+(glibc&#160;2.18, musl&#160;1.2.3, uClibc‑ng&#160;1.0.43, Bionic&#160;19)   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(4.8.4&#160;‑&#160;13.1.1),&#160; <b>Clang</b>&#160;(3.8&#160;‑&#160;16.0.6),&#160; <b>Oracle&#160;Studio&#160;C/C++</b>&#160;(12.6),&#160; <b>IBM&#160;Advance&#160;Toolchain</b>&#160;(14&#160;‑&#160;16),&#160; <b>IBM&#160;Open&#160;XL C/C++</b>&#160;(17.1.1),&#160; <b>NVIDIA&#160;HPC&#160;SDK&#160;C/C++</b>&#160;(23.5),&#160; <b>Arm&#160;HPC&#160;C/C++</b>&#160;(22.1),&#160; <b>AMD&#160;Optimizing&#160;C/C++</b>&#160;(4.0.0),&#160; <b>Intel&#160;oneAPI&#160;DPC++/C++</b>&#160;(2023.1),&#160; <b>Intel&#160;C++&#160;Compiler&#160;Classic</b>&#160;(2021.9),&#160; <b>Android&#160;NDK</b>&#160;(r25c)    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyLeft">clang   </td><td class="markdownTableBodyCenter">6.0-14.0   </td><td class="markdownTableBodyCenter">macOS, Ubuntu, Mint, FreeBSD, Fedora   </td><td class="markdownTableBodyRight">x64, arm64    </td></tr>
+<td class="markdownTableBodyRight"><b>macOS</b>&#160;10.15   </td><td class="markdownTableBodyLeft"><b>Xcode</b>&#160;(12.4&#160;‑&#160;15),&#160; <b>GCC</b>&#160;(10.4&#160;‑&#160;13.1),&#160; <b>Clang</b>&#160;(12.0.1&#160;‑&#160;16.0.6),&#160; <b>Intel&#160;C++&#160;Compiler&#160;Classic</b>&#160;(2021.9)    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft">MSVC (cl)   </td><td class="markdownTableBodyCenter">17.6   </td><td class="markdownTableBodyCenter">Windows   </td><td class="markdownTableBodyRight">x64, arm64   </td></tr>
+<td class="markdownTableBodyRight"><b>Windows</b>&#160;10   </td><td class="markdownTableBodyLeft"><b>Microsoft&#160;Visual&#160;C/C++</b>&#160;(17.6),&#160; <b>GCC‑MinGW</b>&#160;(12.2.1&#160;‑&#160;13.1.1),&#160; <b>LLVM‑MinGW</b>&#160;(15.0&#160;‑&#160;16.0.6)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyRight"><b>Cygwin</b>&#160;3.4   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(11.2&#160;‑&#160;11.4)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyRight"><b>FreeBSD</b>&#160;11.3   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(11.4&#160;‑&#160;12.2),&#160; <b>Clang</b>&#160;(10.0.0&#160;‑&#160;14.0.5)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyRight"><b>NetBSD</b>&#160;9.2   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(7.5&#160;‑&#160;13.1),&#160; <b>Clang</b>&#160;(15.0.7)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyRight"><b>DragonFly</b>&#160;<b>BSD</b>&#160;6.4   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(8.3&#160;‑&#160;13),&#160; <b>Clang</b>&#160;(10.0.1&#160;‑&#160;14.0.6)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyRight"><b>Haiku</b>&#160;R1b4   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(11.2),&#160; <b>Clang</b>&#160;(12.0.1)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyRight"><b>Solaris</b>&#160;11.4   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(10.3&#160;‑&#160;11.2),&#160; <b>Clang</b>&#160;(6&#160;‑&#160;11),&#160; <b>Oracle&#160;Studio&#160;C/C++</b>&#160;(12.6)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyRight"><b>illumos</b>   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(7.5&#160;‑&#160;11.3),&#160; <b>Clang</b>&#160;(15.0.7)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyRight"><em>Coming soon</em>   </td><td class="markdownTableBodyLeft"><em>Support planned for</em> <b>AIX</b> <em>and</em> <b>OpenBSD</b>   </td></tr>
 </table>
+<p>libsir is known to work on most common (and many uncommon) architectures. It has actually been built and tested on <b>Intel</b> (x86_64, i686), <b>ARM</b> (ARMv6, ARMv7HF, ARMv8‑A), <b>POWER</b> (PowerPC, PPC64, PPC64le), <b>MIPS</b> (MIPS64, MIPS32, 74Kc), <b>z/Architecture</b> (S390X), <b>SuperH</b> (SH‑4A), <b>RISC‑V</b> (RV64), <b>OpenRISC</b> (OR1200), and <b>m68k</b> (68020+). If it doesn't work on your machine, it's probably a bug.</p>
 <h1>A sample</h1>
 <p>Some sample terminal output from libsir demonstrating the default configuration:</p>
 <div class="image">
@@ -153,9 +185,9 @@ sample terminal output</div></div>
     <h1>Getting started</h1>
 <p>Clone or download this repository to your machine, then choose how you'd like to integrate libsir into your project:</p>
 <h2>Visual Studio Code</h2>
-<p>There is already a code-workspace in the repository (and my primary means of compiling and debugging the library across platforms). As of right now, the build and launch tasks are not fully functional for every platform, but that's easy enough to figure out, right?.</p>
+<p>There is code‑workspace in the repository. As of right now, the build and launch tasks are not fully functional for every platform, but that's easy enough to figure out, right?</p>
 <h2>Visual Studio 2022</h2>
-<p>A very recent addition is an sln and some vcxproj files in the <a href="./msvc">msvc</a> directory. They are confirmed to work correctly on Windows 11 (x64 &amp; arm64) with Visual Studio 17.6.</p>
+<p>A very recent addition is an sln and some vcxproj files in the <a href="./msvc">msvc</a> directory. They are confirmed to work correctly on Windows 11 (x64 &amp; Arm64) with Visual Studio 17.6.</p>
 <h2>Unix Makefile</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -169,9 +201,8 @@ sample terminal output</div></div>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyCenter">Shared library   </td><td class="markdownTableBodyCenter"><code>make shared</code>   </td><td class="markdownTableBodyCenter"><em>build/lib/libsir.so</em>    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter">Install[^1]   </td><td class="markdownTableBodyCenter"><code>sudo make install</code>   </td><td class="markdownTableBodyCenter">_<code>$(INSTALLLIB)</code>/libsir.so &amp; <code>$(INSTALLINC)</code>/sir.h_   </td></tr>
+<td class="markdownTableBodyCenter">Install   </td><td class="markdownTableBodyCenter"><code>sudo make install</code>   </td><td class="markdownTableBodyCenter">_<code>$(INSTALLLIB)</code>/libsir.so &amp; <code>$(INSTALLINC)</code>/sir.h_   </td></tr>
 </table>
-<p>[^1]: This recipe isn't really ready for production use. Use it at your own risk&mdash;currently it manually copies files; that’s it. <code>$(INSTALLLIB)</code> and <code>$(INSTALLINC)</code> are <code>/usr/local/lib</code> and <code>/usr/local/include</code>, respectively. It's on my TODO list to utilize the <code>install</code> tool _(or just ditch the Makefile and use CMake)_.</p>
 <h2>Further reading</h2>
 <p>If you are genuinely interested in utilizing libsir, you are encouraged to read the <a href="https://libsir.rml.dev">full online documentation</a> to get a better understanding of the library's capabilities and interfaces. </p>
 </div></div><!-- PageDoc -->
