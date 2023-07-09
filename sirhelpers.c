@@ -195,15 +195,11 @@ int _sir_strncpy(char* restrict dest, size_t destsz, const char* restrict src, s
             return -1;
         }
         return 0;
-#elif defined(__MACOS__) || defined(__BSD__) || defined(__SOLARIS__)
+#else
         _SIR_UNUSED(count);
         size_t cpy = strlcpy(dest, src, destsz);
         SIR_ASSERT(cpy < destsz);
         _SIR_UNUSED(cpy);
-        return 0;
-#else
-        _SIR_UNUSED(destsz);
-        strncpy(dest, src, count);
         return 0;
 #endif
     }
@@ -220,15 +216,11 @@ int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src, s
             return -1;
         }
         return 0;
-#elif defined(__MACOS__) || defined(__BSD__) || defined(__SOLARIS__)
+#else
         _SIR_UNUSED(count);
         size_t cat = strlcat(dest, src, destsz);
         SIR_ASSERT(cat < destsz);
         _SIR_UNUSED(cat);
-        return 0;
-#else
-        _SIR_UNUSED(destsz);
-        strncat(dest, src, count);
         return 0;
 #endif
     }
