@@ -35,7 +35,6 @@
 #ifndef _SIR_ANSI_MACROS_H_INCLUDED
 # define _SIR_ANSI_MACROS_H_INCLUDED
 
-
 # define SIR_ESC "\x1b[" /**< Begins an ANSI escape sequence. */
 # define SIR_ESC_M "m"   /**< Marks the end of a sequence. */
 
