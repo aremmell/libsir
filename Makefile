@@ -6,7 +6,7 @@
 # SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 #
 
-BUILDDIR    = build
+BUILDDIR    = ./build
 DOCSDIR     = docs
 TESTS       = tests
 EXAMPLE     = example
@@ -181,8 +181,8 @@ install: $(INSTALLSH)
 
 .PHONY: clean distclean
 clean distclean:
-	$(shell rm -rf "$(BUILDDIR)/" >/dev/null 2>&1 ; \
-			rm -f *.log >/dev/null 2>&1)
+	$(shell rm -rf "$(BUILDDIR)/" > /dev/null 2>&1 ; \
+			rm -f ./*.log > /dev/null 2>&1)
 	-@echo build directory and log files cleaned successfully.
 
 .PHONY: printvars printenv
