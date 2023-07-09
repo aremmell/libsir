@@ -49,7 +49,7 @@ At this time, the libsir supports (*compiles and passes the tests*) on at least 
 
 | System | Toolchain |
 | ------:|:--------- |
-| **Linux**&nbsp;2.6.32+<br>(glibc&nbsp;2.18+, musl&nbsp;1.2.3+, uClibc‑ng&nbsp;1.0.43+, Bionic&nbsp;19+) | **GCC** (4.8.4 - 13.1.1),&nbsp; **Clang** (6 - 16.0.6),&nbsp; **Oracle Studio C/C++** (12.6),&nbsp; **IBM Advance Toolchain** (14 - 16),&nbsp; **IBM Open XL C/C++** (17.1.1),&nbsp; **NVIDIA HPC SDK C/C++** (23.5),&nbsp; **Arm HPC C/C++** (22.1),&nbsp; **AMD Optimizing C/C++** (4.0.0),&nbsp; **Intel oneAPI DPC++/C++** (2023.1),&nbsp; **Intel C++ Compiler Classic** (2021.9),&nbsp; **Android NDK** (r25c) |
+| **Linux**&nbsp;2.6.32+<br>(glibc&nbsp;2.18+, musl&nbsp;1.2.3+, uClibc‑ng&nbsp;1.0.43+, Bionic&nbsp;19+) | **GCC** (4.8.4 - 13.1.1),&nbsp; **Clang** (3.8 - 16.0.6),&nbsp; **Oracle Studio C/C++** (12.6),&nbsp; **IBM Advance Toolchain** (14 - 16),&nbsp; **IBM Open XL C/C++** (17.1.1),&nbsp; **NVIDIA HPC SDK C/C++** (23.5),&nbsp; **Arm HPC C/C++** (22.1),&nbsp; **AMD Optimizing C/C++** (4.0.0),&nbsp; **Intel oneAPI DPC++/C++** (2023.1),&nbsp; **Intel C++ Compiler Classic** (2021.9),&nbsp; **Android NDK** (r25c) |
 | **macOS**&nbsp;10.15+ | **Xcode** (12.4 - 15),&nbsp; **GCC** (10.4 - 13.1),&nbsp; **Clang** (12.0.1 - 16.0.6),&nbsp; **Intel C++ Compiler Classic** (2021.9) |
 | **Windows**&nbsp;10+ | **Microsoft Visual C/C++** (17.6),&nbsp; **GCC-MinGW** (12.2.1 - 13.1.1),&nbsp; **LLVM-MinGW** (15.0 - 16.0.6) |
 | **Cygwin**&nbsp;3.4+ | **GCC** (11.2 - 11.4) |
