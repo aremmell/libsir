@@ -29,10 +29,6 @@
 # include "sirplatform.h"
 # include "sirconfig.h"
 # include "siransimacros.h"
-# if defined (SIR_USE_HASH)
-#  include "validus.h"
-# endif
-
 
 /**
  * @addtogroup public
@@ -243,16 +239,14 @@ typedef struct {
         time_t last_hname_chk;
         char pidbuf[SIR_MAXPID];
         pid_t pid;
+
+        /** Spam squelch state data. */
         struct {
-#if defined(SIR_USE_HASH)
-            //validus_state hash;
+            bool squelch;
             uint64_t hash;
-#else
-            char str[SIR_MAXMESSAGE];
-#endif
-            char char0;
-            char char1;
+            char prefix[2];
             size_t counter;
+            size_t threshold;
         } last;
     } state;
 } sirconfig;
