@@ -6,6 +6,8 @@
 [![Build Status](https://app.travis-ci.com/aremmell/libsir.svg?branch=master)](https://app.travis-ci.com/aremmell/libsir) ![REUSE Compliance](https://img.shields.io/reuse/compliance/github.com%2Faremmell%2Flibsir?label=REUSE3&color=2340b911)
  ![GitHub](https://img.shields.io/github/license/aremmell/libsir?color=%2340b911)
 
+## Overview
+
 <!-- toc -->
 
 - [Synopsis](#synopsis)
