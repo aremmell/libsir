@@ -165,7 +165,7 @@ docs: static
 
 .PHONY: install
 install: $(INSTALLSH)
-	+@test -x $(INSTALLSH) || \
+	@test -x $(INSTALLSH) || \
 		{ printf 'Error: %s not executable.\n' "$(INSTALLSH)"; exit 1; }
 	+@test -f "$(OUT_STATIC)" || $(MAKE) static
 	+@test -f "$(OUT_SHARED)" || $(MAKE) shared
