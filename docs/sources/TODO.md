@@ -16,7 +16,7 @@ Bold = “Priority”
 
   - [ ] Remove on write error? how many?
   - [ ] Roll size that defaults to SIR_FROLLSIZE but can be modified.
-- [ ] Add emphasis, underline, etc. to SIRS_ 
+- [ ] Add emphasis, underline, etc. to SIRS_
 - [ ] Test adding existing file
 - [ ] Conditional logging (debug_if(), etc.)
 - [ ] Finish comment in sir_syslog_dest once it’s been resolved which option(s) can be utilized for os_log/syslog.
