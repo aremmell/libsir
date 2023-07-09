@@ -25,6 +25,8 @@
 # if defined(SIR_IMPL_STRLCPY)
 #  undef strlcat
 
+/* OpenBSD strlcat() */
+
 /*
  * Appends src to string dst of size dsize (unlike strncat, dsize is the
  * full size of dst, not space left).  At most dsize-1 characters
@@ -36,41 +38,40 @@
 static inline size_t
 _sir_strlcat(char *dst, const char *src, size_t dsize)
 {
-  const char * odst  =   dst;
-  const char * osrc  =   src;
-  size_t          n  = dsize;
+  const char * odst  = dst;
+  const char * osrc  = src;
+  size_t       n     = dsize;
   size_t       dlen;
 
   /* Find the end of dst and adjust bytes left but don't go past end. */
 
   while (n-- != 0 && *dst != '\0')
-    { dst++; }
+    dst++;
 
   dlen  =   dst - odst;
   n     = dsize - dlen;
 
   if (n-- == 0)
-    { return dlen + strlen(src); }
+    return dlen + strlen(src);
 
-  while (*src != '\0')
-    {
-      if (n != 0)
-        {
-          *dst++ = *src;
-          n--;
-        }
-
-      src++;
+  while (*src != '\0') {
+    if (n != 0) {
+      *dst++ = *src;
+      n--;
     }
+    src++;
+  }
   *dst = '\0';
 
-  return dlen + ( src - osrc ); /* count does not include NUL */
+  return dlen + (src - osrc); /* count does not include NUL */
 }
 #  define strlcat _sir_strlcat
 # endif // SIR_IMPL_STRLCAT
 
 # if defined(SIR_IMPL_STRLCPY)
 #  undef strlcpy
+
+/* OpenBSD strlcpy */
 
 /*
  * Copy string src to buffer dst of size dsize.  At most dsize-1
@@ -81,29 +82,25 @@ _sir_strlcat(char *dst, const char *src, size_t dsize)
 static inline size_t
 _sir_strlcpy(char *dst, const char *src, size_t dsize)
 {
-  const char * osrc   =   src;
+  const char * osrc   = src;
   size_t       nleft  = dsize;
 
   /* Copy as many bytes as will fit. */
-  if (nleft != 0)
-    {
-      while (--nleft != 0)
-        {
-          if (( *dst++ = *src++ ) == '\0')
-            { break; }
-        }
+  if (nleft != 0) {
+    while (--nleft != 0) {
+      if ((*dst++ = *src++) == '\0')
+        break;
     }
+  }
 
   /* Not enough room in dst, add NUL and traverse rest of src. */
-  if (nleft == 0)
-    {
-      if (dsize != 0)
-        { *dst = '\0'; }        /* NUL-terminate dst */
-      while (*src++)
-        { ; }
-    }
+  if (nleft == 0) {
+    if (dsize != 0)
+      *dst = '\0'; /* NUL-terminate dst */
+    while (*src++);
+  }
 
-  return src - osrc - 1;        /* count does not include NUL */
+  return src - osrc - 1; /* count does not include NUL */
 }
 #  define strlcpy _sir_strlcpy
 # endif // SIR_IMPL_STRLCPY
