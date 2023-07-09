@@ -20,10 +20,10 @@ Each 'level' or 'priority' of output can be visually styled however you wish for
 
 - No dependencies (other than `libc` and `pthreads`). On Windows, libsir uses the native synchronization API.
 - Accompanied by a robust test suite to ensure dependable behavior, even if you make modifications to the source.
-- Won't fail silently&mdash; C library or platform level errors are captured and stored for posterity, on a per-thread basis. The _function, file, and line number from which it originated_ are also captured. Additionally, libsir defines its own set of error messages to aid in troubleshooting.
-- Hardened&mdash;every function contains sanity checks for internal state as well as arguments passed in through the external interfaces. libsir's make recipes use _&ndash;Wall &ndash;Wextra &ndash;Wpedantic_, too.
+- Won't fail silently &mdash; C library or platform level errors are captured and stored for posterity, on a per-thread basis. The _function, file, and line number from which it originated_ are also captured. Additionally, libsir defines its own set of error messages to aid in troubleshooting.
+- Hardened &mdash; every function contains sanity checks for internal state as well as arguments passed in through the external interfaces. libsir's make recipes use _&ndash;Wall &ndash;Wextra &ndash;Wpedantic_, too.
 - [Full documentation](https://libsir.rml.dev), thanks to Doxygen.
-- Lightweight&mdash;the shared library comes in at around 76KB, and the static library around 70KB.
+- Lightweight &mdash; the shared library comes in at around 76KiB, and the static library around 70KiB.
 
 ## Cross-platform compatibility
 
@@ -61,9 +61,7 @@ A very recent addition is an sln and some vcxproj files in the [msvc](./msvc) di
 | Example app    | `make example`      |                  _build/sirexample[.exe]_                     |
 | Static library |    `make static`    |                   _build/lib/libsir_s.a_                      |
 | Shared library |    `make shared`    |                    _build/lib/libsir.so_                      |
-|  Install[^1]   | `sudo make install` |    _`$(INSTALLLIB)`/libsir.so  &amp; `$(INSTALLINC)`/sir.h_   |
-
-[^1]: This recipe isn't really ready for production use. Use it at your own risk&mdash;currently it manually copies files; that’s it. `$(INSTALLLIB)` and `$(INSTALLINC)` are `/usr/local/lib` and `/usr/local/include`, respectively. It's on my TODO list to utilize the `install` tool _(or just ditch the Makefile and use CMake)_.
+|    Install     | `sudo make install` |    _`$(INSTALLLIB)`/libsir.so  &amp; `$(INSTALLINC)`/sir.h_   |
 
 ### Further reading
 
