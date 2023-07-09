@@ -141,29 +141,29 @@ prep:
 			mkdir -p $(INTDIR)/$(TESTS) && \
 			mkdir -p $(LIBDIR) && \
 	        mkdir -p $(BINDIR))
-	@echo directories prepared successfully.
+	-@echo directories prepared successfully.
 
 shared: $(OBJ_SHARED)
 	$(CC) -shared -o $(OUT_SHARED) $^ $(CFLAGS) $(LDFLAGS_SHARED)
-	@echo built $(OUT_SHARED) successfully.
+	-@echo built $(OUT_SHARED) successfully.
 
 static: shared
 	ar -cr $(OUT_STATIC) $(OBJ_SHARED)
 	-($(RANLIB) "$(OUT_STATIC)" || true) > /dev/null 2>&1
-	@echo built $(OUT_STATIC) successfully.
+	-@echo built $(OUT_STATIC) successfully.
 
 example: static $(OBJ_EXAMPLE)
 	$(CC) -o $(OUT_EXAMPLE) $(OBJ_EXAMPLE) $(CFLAGS) -I.. $(LDFLAGS)
-	@echo built $(OUT_EXAMPLE) successfully.
+	-@echo built $(OUT_EXAMPLE) successfully.
 
 tests: static $(OBJ_TESTS)
 	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS) $(CFLAGS) -I.. $(LDFLAGS)
 	$(shell touch $(BINDIR)/file.exists)
-	@echo built $(OUT_TESTS) successfully.
+	-@echo built $(OUT_TESTS) successfully.
 
 docs: static
 	@doxygen Doxyfile
-	@echo built documentation successfully.
+	-@echo built documentation successfully.
 
 .PHONY: install
 install: $(INSTALLSH)
