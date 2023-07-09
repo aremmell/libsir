@@ -435,7 +435,7 @@ bool sirtest_rollandarchivefile(void) {
         size_t linesize = strnlen(line, SIR_MAXMESSAGE);
 
         do {
-            pass &= sir_debug("%s", line);
+            pass &= sir_debug("%zu %s", written, line);
             if (!pass)
                 break;
 
@@ -644,14 +644,14 @@ bool sirtest_textstylesanity(void) {
     printf("\t" WHITEB("--- reset to defaults ---") "\n");
     pass &= sir_resettextstyles();
 
-    pass &= sir_debug("default style");
-    pass &= sir_info("default style");
-    pass &= sir_notice("default style");
-    pass &= sir_warn("default style");
-    pass &= sir_error("default style");
-    pass &= sir_crit("default style");
-    pass &= sir_alert("default style");
-    pass &= sir_emerg("default style");
+    pass &= sir_debug("default style (debug)");
+    pass &= sir_info("default style (info)");
+    pass &= sir_notice("default style (notice)");
+    pass &= sir_warn("default style (warning)");
+    pass &= sir_error("default style (error)");
+    pass &= sir_crit("default style (crit)");
+    pass &= sir_alert("default style (alert)");
+    pass &= sir_emerg("default style (emergency)");
     PRINT_PASS(pass, "\t--- reset to defaults: %s ---\n\n", PRN_PASS(pass));
 
     /* ensure that foreground color constants match background color when
@@ -1035,14 +1035,14 @@ bool sirtest_updatesanity(void) {
         pass &= sir_stdoutopts(SIRO_DEFAULT);
         pass &= sir_stderropts(SIRO_DEFAULT);
 
-        pass &= sir_debug("default config");
-        pass &= sir_info("default config");
-        pass &= sir_notice("default config");
-        pass &= sir_warn("default config");
-        pass &= sir_error("default config");
-        pass &= sir_crit("default config");
-        pass &= sir_alert("default config");
-        pass &= sir_emerg("default config");
+        pass &= sir_debug("default config (debug)");
+        pass &= sir_info("default config (info)");
+        pass &= sir_notice("default config (notice)");
+        pass &= sir_warn("default config (warning)");
+        pass &= sir_error("default config (error)");
+        pass &= sir_crit("default config (critical)");
+        pass &= sir_alert("default config (alert)");
+        pass &= sir_emerg("default config (emergency)");
 
         /* pick random options to set/unset */
         uint32_t rnd = getrand(UPDATE_SANITY_ARRSIZE);
@@ -1060,14 +1060,14 @@ bool sirtest_updatesanity(void) {
         pass &= sir_fileopts(id1, opts_array[rnd]);
         printf("\t" WHITE("set random config #%" PRIu32 " for %s") "\n", rnd, logfile);
 
-        pass &= filter_error(sir_debug("modified config #%" PRIu32 "", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_info("modified config #%" PRIu32 "", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_notice("modified config #%" PRIu32 "", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_warn("modified config #%" PRIu32 "", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_error("modified config #%" PRIu32 "", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_crit("modified config #%" PRIu32 "", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_alert("modified config #%" PRIu32 "", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_emerg("modified config #%" PRIu32 "", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_debug("modified config #% (debug)" PRIu32 "", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_info("modified config #% (info)" PRIu32 "", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_notice("modified config #% (notice)" PRIu32 "", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_warn("modified config #% (warning)" PRIu32 "", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_error("modified config #% (error)" PRIu32 "", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_crit("modified config #% (critical)" PRIu32 "", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_alert("modified config #% (alert)" PRIu32 "", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_emerg("modified config #% (emergency)" PRIu32 "", rnd), SIR_E_NODEST);
     }
 
     if (pass) {
@@ -1077,14 +1077,14 @@ bool sirtest_updatesanity(void) {
         sir_stdoutopts(SIRO_DEFAULT);
         sir_stderropts(SIRO_DEFAULT);
 
-        pass &= sir_debug("default config");
-        pass &= sir_info("default config");
-        pass &= sir_notice("default config");
-        pass &= sir_warn("default config");
-        pass &= sir_error("default config");
-        pass &= sir_crit("default config");
-        pass &= sir_alert("default config");
-        pass &= sir_emerg("default config");
+        pass &= sir_debug("default config (debug)");
+        pass &= sir_info("default config (info)");
+        pass &= sir_notice("default config (notice)");
+        pass &= sir_warn("default config (warning)");
+        pass &= sir_error("default config (error)");
+        pass &= sir_crit("default config (critical)");
+        pass &= sir_alert("default config (alert)");
+        pass &= sir_emerg("default config (emergency)");
     }
 
     pass &= sir_remfile(id1);
@@ -1469,7 +1469,7 @@ bool sirtest_squelchspam(void) {
 
     for (size_t n = 0; n < sequence[1]; n++) {
         bool ret = sir_debug("a repeating message");
-        
+
         if (n >= SIR_SQUELCH_THRESHOLD - 1)
             pass &= !ret;
         else
