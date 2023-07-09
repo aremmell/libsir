@@ -6,15 +6,19 @@
 # SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 #
 
-BUILDDIR   = build
-DOCSDIR    = docs
-TESTS      = tests
-EXAMPLE    = example
-INTDIR     = $(BUILDDIR)/obj
-LIBDIR     = $(BUILDDIR)/lib
-BINDIR	   = $(BUILDDIR)/bin
-INSTALLLIB = /usr/local/lib
-INSTALLINC = /usr/local/include
+BUILDDIR    = build
+DOCSDIR     = docs
+TESTS       = tests
+EXAMPLE     = example
+INTDIR      = $(BUILDDIR)/obj
+LIBDIR      = $(BUILDDIR)/lib
+BINDIR      = $(BUILDDIR)/bin
+PREFIX     ?= $(DESTDIR)/usr/local
+INSTALLLIB  = $(PREFIX)/lib
+INSTALLINC  = $(PREFIX)/include
+INSTALLSH   = build-aux/install-sh
+RANLIB     ?= ranlib
+LDCONFIG   ?= ldconfig
 
 # base CFLAGS
 CFLAGS += -Wall -Wextra -Wpedantic -std=c11 -I. -fPIC
@@ -87,15 +91,17 @@ OBJ  = $(patsubst %, $(INTDIR)/%, $(_OBJ))
 
 # shared library
 OBJ_SHARED     = $(patsubst %.o, $(INTDIR)/%.o, $(_OBJ))
-OUT_SHARED	   = $(LIBDIR)/libsir.so
+OUT_SHARED_NM  = libsir.so
+OUT_SHARED     = $(LIBDIR)/$(OUT_SHARED_NM)
 LDFLAGS_SHARED = $(LIBS) $(MINGW_LIBS)
 
 # static library
 OBJ_STATIC     = $(OBJ_SHARED)
-OUT_STATIC     = $(LIBDIR)/libsir_s.a
+OUT_STATIC_NM  = libsir_s.a
+OUT_STATIC     = $(LIBDIR)/$(OUT_STATIC_NM)
 
 # console example
-OBJ_EXAMPLE	   = $(INTDIR)/$(EXAMPLE)/$(EXAMPLE).o
+OBJ_EXAMPLE    = $(INTDIR)/$(EXAMPLE)/$(EXAMPLE).o
 OUT_EXAMPLE    = $(BINDIR)/sirexample
 
 # console test rig
@@ -141,6 +147,7 @@ shared: $(OBJ_SHARED)
 
 static: shared
 	ar -cr $(OUT_STATIC) $(OBJ_SHARED)
+	-($(RANLIB) "$(OUT_STATIC)" || true) > /dev/null 2>&1
 	@echo built $(OUT_STATIC) successfully.
 
 example: static $(OBJ_EXAMPLE)
@@ -156,15 +163,22 @@ docs: static
 	@doxygen Doxyfile
 	@echo built documentation successfully.
 
-install: shared
-	@echo copying $(OUT_SHARED) to $(INSTALLLIB) and headers to $(INSTALLINC)...
-	$(shell cp -f $(OUT_SHARED) "$(INSTALLLIB)/" && \
-	        cp -f sir.h "$(INSTALLINC)/")
-	@echo installed libsir successfully.
+.PHONY: install
+install: $(INSTALLSH)
+	+@test -x $(INSTALLSH) || \
+		{ printf 'Error: %s not executable.\n' "$(INSTALLSH)"; exit 1; }
+	+@test -f "$(OUT_STATIC)" || $(MAKE) static
+	+@test -f "$(OUT_SHARED)" || $(MAKE) shared
+	-@echo installing libraries to $(INSTALLLIB) and headers to $(INSTALLINC)...
+	$(INSTALLSH) -C -m 755 "$(OUT_SHARED)" "$(INSTALLLIB)"
+	-($(LDCONFIG) || true) > /dev/null 2>&1
+	$(INSTALLSH) -C -m 644 "$(OUT_STATIC)" "$(INSTALLLIB)"
+	-($(RANLIB) "$(INSTALLLIB)/$(OUT_STATIC_NM)" || true) > /dev/null 2>&1
+	$(INSTALLSH) -C -m 644 "sir.h" "$(INSTALLINC)"
+	-@echo installed libsir successfully.
 
-.PHONY: clean
-
-clean:
+.PHONY: clean distclean
+clean distclean:
 	$(shell rm -rf "$(BUILDDIR)/" >/dev/null 2>&1 ; \
 			rm -f *.log >/dev/null 2>&1)
-	@echo build directory and log files cleaned successfully.
+	-@echo build directory and log files cleaned successfully.
