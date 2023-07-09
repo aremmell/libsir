@@ -19,6 +19,8 @@ INSTALLINC  = $(PREFIX)/include
 INSTALLSH   = build-aux/install-sh
 RANLIB     ?= ranlib
 LDCONFIG   ?= ldconfig
+XSHELL      = $(shell env PATH="$$(command -p env getconf PATH)" command -v sh)
+SHELL      := $(XSHELL)
 
 # base CFLAGS
 CFLAGS += -Wall -Wextra -Wpedantic -std=c11 -I. -fPIC
@@ -182,3 +184,15 @@ clean distclean:
 	$(shell rm -rf "$(BUILDDIR)/" >/dev/null 2>&1 ; \
 			rm -f *.log >/dev/null 2>&1)
 	-@echo build directory and log files cleaned successfully.
+
+.PHONY: printvars printenv
+printvars printenv:
+	-@$(foreach V,$(sort $(.VARIABLES)), \
+		$(if $(filter-out environment% default automatic,$(origin $V)), \
+		$(if $(strip $($V)),$(info $V: [$($V)]),)))
+	-@true > /dev/null 2>&1
+
+.PHONY: print-%
+print-%:
+	-@$(info $*: [$($*)] ($(flavor $*). set by $(origin $*)))@true
+	-@true > /dev/null 2>&1
