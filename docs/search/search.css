@@ -57,7 +57,6 @@ dark-mode-toggle {
     padding: 0;
 }
 
-
 #MSearchField {
     display: inline-block;
     vertical-align: middle;
@@ -109,8 +108,6 @@ dark-mode-toggle {
     color: #C5C5C5;
 }
 
-
-
 /*---------------- Search filter selection */
 
 #MSearchSelectWindow {
@@ -139,7 +136,7 @@ dark-mode-toggle {
 
 span.SelectionMark {
     margin-right: 4px;
-    font-family: monospace,fixed;
+    font-family: 'JetBrains Mono',Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace,fixed;
     outline-style: none;
     text-decoration: none;
 }
@@ -190,9 +187,8 @@ iframe#MSearchResults {
 
 /* ----------------------------------- */
 
-
 #SRIndex {
-    clear:both; 
+    clear:both;
 }
 
 .SREntry {
@@ -211,7 +207,7 @@ div.SRPage {
 }
 
 .SRChildren {
-    padding-left: 3ex; padding-bottom: .5em 
+    padding-left: 3ex; padding-bottom: .5em
 }
 
 .SRPage .SRChildren {
