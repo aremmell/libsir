@@ -108,6 +108,12 @@ bool sirtest_failnooutputdest(void);
 bool sirtest_failnulls(void);
 
 /**
+ * @test Ensure an empty message is properly handled.
+ * @returns bool `true` if the test passed, `false` otherwise.
+ */
+bool sirtest_failemptymessage(void);
+
+/**
  * @test Properly handle adding and removing log files.
  * @returns bool `true` if the test passed, `false` otherwise.
  */

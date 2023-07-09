@@ -597,6 +597,9 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
         SIR_ASSERT(false);
     }
 
+    if (!_sir_validstr(buf.message))
+        return false;
+
     bool match             = false;
     bool exit_early        = false;
     bool update_last_props = true;

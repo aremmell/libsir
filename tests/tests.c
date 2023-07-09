@@ -31,6 +31,7 @@ static sir_test sir_tests[] = {
     {"exceed-max-buffer-size",  sirtest_exceedmaxsize, false, true},
     {"no-output-destination",   sirtest_failnooutputdest, false, true},
     {"null-pointers",           sirtest_failnulls, false, true},
+    {"empty-message",           sirtest_failemptymessage, false, true},
     {"file-cache-sanity",       sirtest_filecachesanity, false, true},
     {"file-invalid-name",       sirtest_failinvalidfilename, false, true},
     {"file-bad-permissions",    sirtest_failfilebadpermission, false, true},
@@ -222,6 +223,16 @@ bool sirtest_failnulls(void) {
 
     if (pass)
         print_expected_error();
+
+    sir_cleanup();
+    return print_result_and_return(pass);
+}
+
+bool sirtest_failemptymessage(void) {
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+    pass &= !sir_debug("%s", "");
 
     sir_cleanup();
     return print_result_and_return(pass);
