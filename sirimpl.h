@@ -18,7 +18,6 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-
 #ifndef _SIR_IMPL_H_INCLUDED
 # define _SIR_IMPL_H_INCLUDED
 
@@ -66,7 +65,7 @@ _sir_strlcat(char *dst, const char *src, size_t dsize)
   return dlen + (src - osrc); /* count does not include NUL */
 }
 #  define strlcat _sir_strlcat
-# endif // SIR_IMPL_STRLCAT
+# endif /* SIR_IMPL_STRLCAT */
 
 # if defined(SIR_IMPL_STRLCPY)
 #  undef strlcpy
@@ -103,6 +102,6 @@ _sir_strlcpy(char *dst, const char *src, size_t dsize)
   return src - osrc - 1; /* count does not include NUL */
 }
 #  define strlcpy _sir_strlcpy
-# endif // SIR_IMPL_STRLCPY
+# endif /* SIR_IMPL_STRLCPY */
 
-#endif // !_SIR_IMPL_H_INCLUDED
+#endif /* !_SIR_IMPL_H_INCLUDED */
