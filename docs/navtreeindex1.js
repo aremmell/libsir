@@ -1,5 +1,7 @@
 var NAVTREEINDEX1 =
 {
+"sirconfig_8h.html#ae5e1886a3fa12d37256da4b20347b9b0":[3,0,5,43],
+"sirconfig_8h.html#aeb4949a438cb054dbd261eead7e9d6c9":[3,0,5,14],
 "sirconfig_8h.html#aeb4e44bc613c57c3c49e27b66e69e933":[3,0,5,12],
 "sirconfig_8h.html#af9776f0b7cf01f82f2580a29c9efb6d6":[3,0,5,40],
 "sirconfig_8h_source.html":[3,0,5],
@@ -17,6 +19,5 @@ var NAVTREEINDEX1 =
 "sirplatform_8h_source.html":[3,0,16],
 "sirtextstyle_8h_source.html":[3,0,17],
 "sirtypes_8h_source.html":[3,0,18],
-"tests_8h_source.html":[3,0,1,0],
-"testsuite.html":[1]
+"tests_8h_source.html":[3,0,1,0]
 };
