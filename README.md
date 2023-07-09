@@ -37,7 +37,7 @@ Each 'level' or 'priority' of output can be visually styled however you wish for
 
 - No dependencies (other than `libc` and `pthreads`). On Windows, libsir uses the native synchronization API.
 - Accompanied by a robust test suite to ensure dependable behavior, even if you make modifications to the source.
-- Won't fail silently&mdash;C library or platform level errors are captured and stored for posterity, on a per-thread basis. The *function, file, and line number from which it originated*_* are also captured. Additionally, libsir defines its own set of error messages to aid in troubleshooting.
+- Won't fail silently&mdash;C library or platform level errors are captured and stored for posterity, on a per-thread basis. The *function, file, and line number from which it originated* are also captured. Additionally, libsir defines its own set of error messages to aid in troubleshooting.
 - Hardened&mdash;every function contains sanity checks for internal state as well as arguments passed in through the external interfaces. libsir's make recipes use *&ndash;Wall &ndash;Wextra &ndash;Wpedantic*, too.
 - [Full documentation](https://libsir.rml.dev), thanks to Doxygen.
 - Lightweight&mdash;the shared library comes in at around 76&nbsp;KiB, and the static library around 70&nbsp;KiB.
