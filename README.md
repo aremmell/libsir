@@ -44,7 +44,7 @@ Each 'level' or 'priority' of output can be visually styled however you wish for
 
 ## Cross-platform compatibility
 
-At this time, libsir supports (*compiles and passes the test suite*) at least the following operating system and toolchain combinations:
+At this time, libsir is supported (*that is, it compiles and passes the test suite*) on at least the following operating system and toolchain combinations:
 
 | System | Toolchain |
 | ------:|:--------- |
