@@ -199,7 +199,6 @@ _set_thread_local_invalid_parameter_handler(
 # include <errno.h>
 # include <stdarg.h>
 # include <stdbool.h>
-# include <stddef.h>
 # include <stdint.h>
 # include <inttypes.h>
 # include <stdio.h>
