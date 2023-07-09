@@ -44,7 +44,7 @@ Each 'level' or 'priority' of output can be visually styled however you wish for
 
 ## Cross-platform compatibility
 
-At this time, libsir supports (*compiles and passes the tests*) on at least the following operating system and toolchain combinations:
+At this time, libsir supports (*compiles and passes the test suite*) at least the following operating system and toolchain combinations:
 
 | System | Toolchain |
 | ------:|:--------- |
@@ -80,7 +80,7 @@ There is already a code-workspace in the repository (and my primary means of com
 
 ### Visual Studio 2022
 
-A very recent addition is an sln and some vcxproj files in the [msvc](./msvc) directory. They are confirmed to work correctly on Windows 11 (x64 &amp; arm64) with Visual Studio 17.6.
+A very recent addition is an sln and some vcxproj files in the [msvc](./msvc) directory. They are confirmed to work correctly on Windows 11 (x64 &amp; ARM64) with Visual Studio 17.6.
 
 ### Unix Makefile
 
