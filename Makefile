@@ -19,7 +19,7 @@ INSTALLINC  = $(PREFIX)/include
 INSTALLSH   = build-aux/install-sh
 RANLIB     ?= ranlib
 LDCONFIG   ?= ldconfig
-XSHELL      = $(shell env PATH="$$(command -p env getconf PATH)" command -v sh)
+XSHELL      = $(shell env PATH="$$(command -p getconf PATH)" command -v sh)
 SHELL      := $(XSHELL)
 
 # base CFLAGS
