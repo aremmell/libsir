@@ -229,11 +229,17 @@ bool sirtest_os_log(void);
  */
 bool sirtest_filesystem(void);
 
+/**
+ * @test Ensure an empty message is properly handled.
+ * @returns bool `true` if the test passed, `false` otherwise.
+ */
+bool sirtest_failemptymessage(void);
+
 /** @} */
 
 /**
  * @ test
- *
+ * @returns bool `true` if the test passed, `false` otherwise.
 bool sirtest_xxxx(void); */
 
 /*

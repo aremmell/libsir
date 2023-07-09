@@ -595,6 +595,9 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     if (0 > vsnprintf(buf.message, SIR_MAXMESSAGE, format, args))
         _sir_handleerr(errno);
 
+    if (!_sir_validstr(buf.message))
+        return false;
+
     return _sir_dispatch(&tmpcfg.si, level, &buf);
 }
 
