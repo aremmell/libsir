@@ -76,11 +76,11 @@ Clone or download this repository to your machine, then choose how you'd like to
 
 ### Visual Studio Code
 
-There is already a code‑workspace in the repository (and my primary means of compiling and debugging the library across platforms). As of right now, the build and launch tasks are not fully functional for every platform, but that's easy enough to figure out, right?.
+There is code‑workspace in the repository. As of right now, the build and launch tasks are not fully functional for every platform, but that's easy enough to figure out, right?.
 
 ### Visual Studio 2022
 
-A very recent addition is an sln and some vcxproj files in the [msvc](./msvc) directory. They are confirmed to work correctly on Windows 11 (x64 &amp; ARM64) with Visual Studio 17.6.
+A very recent addition is an sln and some vcxproj files in the [msvc](./msvc) directory. They are confirmed to work correctly on Windows 11 (x64 &amp; Arm64) with Visual Studio 17.6.
 
 ### Unix Makefile
 
