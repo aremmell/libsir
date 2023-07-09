@@ -178,7 +178,6 @@ bool _sirfile_write(sirfile* sf, const char* output) {
     if (write < writeLen) {
         _sir_handleerr(errno);
         clearerr(sf->f);
-#pragma message("TODO: keep an error counter on each file. if errors continue to pile up, remove from cache")
     }
 
     return write == writeLen;
