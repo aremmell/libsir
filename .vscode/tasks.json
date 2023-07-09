@@ -50,7 +50,7 @@
                         "pattern": {
                             "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
                             "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
-                        }                    
+                        }
                     }
                 ]
             },
@@ -68,8 +68,7 @@
             "type": "process",
             "command": "make",
             "args": [
-                "SIR_ASSERT_ENABLED=1",
-                "SIR_SELFLOG=1",                
+                "SIR_SELFLOG=1",
                 "SIR_DEBUG=1",
                 "static"
             ],
@@ -91,7 +90,7 @@
                         "pattern": {
                             "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
                             "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
-                        }                    
+                        }
                     }
                 ]
             },
@@ -129,7 +128,7 @@
                         "pattern": {
                             "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
                             "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
-                        }                    
+                        }
                     }
                 ]
             },
@@ -168,7 +167,7 @@
                         "pattern": {
                             "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
                             "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
-                        }                    
+                        }
                     }
                 ]
             },
@@ -186,7 +185,6 @@
             "type": "process",
             "command": "make",
             "args": [
-                "SIR_ASSERT_ENABLED=1",
                 "SIR_SELFLOG=1",
                 "SIR_DEBUG=1",
                 "tests"
@@ -209,7 +207,7 @@
                         "pattern": {
                             "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
                             "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
-                        }                    
+                        }
                     }
                 ]
             },
@@ -247,7 +245,7 @@
                         "pattern": {
                             "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
                             "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
-                        }                    
+                        }
                     }
                 ]
             },
