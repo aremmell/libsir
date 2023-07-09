@@ -516,6 +516,21 @@ bool _sir_once(sir_once* once, sir_once_fn func) {
 #endif
 }
 
+#define FNV_OFFSET 14695981039346656037UL
+#define FNV_PRIME  1099511628211UL
+
+inline static
+uint64_t fnvhash(const char* str)
+{
+  uint64_t hash = FNV_OFFSET;
+  for (const char* c = str; *c; c++)
+    {
+      hash ^= (uint64_t)(unsigned char)(*c);
+      hash *= FNV_PRIME;
+    }
+  return hash;
+}
+
 bool _sir_logv(sir_level level, const char* format, va_list args) {
     if (!_sir_sanity() || !_sir_validlevel(level) || !_sir_validstr(format))
         return false;
@@ -592,8 +607,66 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
         }
     }
 
-    if (0 > vsnprintf(buf.message, SIR_MAXMESSAGE, format, args))
+    if (0 > vsnprintf(buf.message, SIR_MAXMESSAGE, format, args)) {
         _sir_handleerr(errno);
+    } else {
+        #define THRESHOLD 5
+        bool match = false;
+        bool no_update = false;
+#if defined(SIR_USE_HASH)
+        //validus_state hash;
+        uint64_t hash = 0;
+#endif
+        if (tmpcfg.state.last.char0 == buf.message[0] &&
+            tmpcfg.state.last.char1 == buf.message[1]) {
+#if defined(SIR_USE_HASH)
+            /*validus_init(&hash);
+            validus_append(&hash, buf.message, SIR_MAXMESSAGE);
+            validus_finalize(&hash);*/
+            hash = fnvhash(buf.message);
+
+            //match = validus_compare(&tmpcfg.state.last.hash, &hash);
+            match = hash == tmpcfg.state.last.hash;
+#else
+            match = 0 == strncmp(tmpcfg.state.last.str, buf.message, SIR_MAXMESSAGE);
+#endif
+        }
+
+        if (match) {
+            tmpcfg.state.last.counter++;
+            _sir_selflog("message '%s' matches last; incrementing counter to %zu",
+                buf.message, tmpcfg.state.last.counter);
+
+            if (tmpcfg.state.last.counter >= THRESHOLD) {
+                no_update = true;
+                if (0 > snprintf(buf.message, SIR_MAXMESSAGE, "last message repeated %d times",
+                    THRESHOLD))
+                    _sir_handleerr(errno);
+            }
+        } else {
+            tmpcfg.state.last.counter = 0;
+            _sir_selflog("message '%s' does not match last; setting counter to 0",
+                buf.message);
+        }
+
+        if (!no_update) {
+            sirconfig* _cfg = _sir_locksection(SIRMI_CONFIG);
+
+            _cfg->state.last.char0 = buf.message[0];
+            _cfg->state.last.char1 = buf.message[1];
+            _cfg->state.last.counter = tmpcfg.state.last.counter;
+
+#if defined(SIR_USE_HASH)
+                ///memcpy(&_cfg->state.last.hash, &hash, sizeof(validus_state));
+                _cfg->state.last.hash = hash;
+#else
+                _sir_strncpy(_cfg->state.last.str, SIR_MAXMESSAGE, buf.message,
+                    SIR_MAXMESSAGE);
+#endif
+
+            _sir_unlocksection(SIRMI_CONFIG);
+        }
+    }
 
     return _sir_dispatch(&tmpcfg.si, level, &buf);
 }

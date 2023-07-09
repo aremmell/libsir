@@ -49,7 +49,8 @@ static sir_test sir_tests[] = {
     {"sanity-update-config",    sirtest_updatesanity, false, true},
     {"syslog",                  sirtest_syslog, false, true},
     {"os_log",                  sirtest_os_log, false, true},
-    {"filesystem",              sirtest_filesystem, false, true}
+    {"filesystem",              sirtest_filesystem, false, true},
+    {"squelch-spam",            sirtest_squelchspam, false, true}
 };
 
 int main(int argc, char** argv) {
@@ -119,7 +120,7 @@ int main(int argc, char** argv) {
     sir_timer timer  = {0};
 
     printf(WHITEB("\nrunning %zu " ULINE("libsir") " %s...") "\n", tgt_tests, TEST_S(tgt_tests));
-    startsirtimer(&timer);
+    sirtimerstart(&timer);
 
     for (size_t n = first; n < _sir_countof(sir_tests); n++) {
         if (only && !sir_tests[n].run) {
@@ -919,7 +920,7 @@ bool sirtest_perf(void) {
         printf("\t" BLUE("%zu lines printf...") "\n", perflines);
 
         sir_timer printftimer = {0};
-        startsirtimer(&printftimer);
+        sirtimerstart(&printftimer);
 
         for (size_t n = 0; n < perflines; n++)
             printf(WHITE("%.2f: lorem ipsum foo bar %s: %zu") "\n",
@@ -930,7 +931,7 @@ bool sirtest_perf(void) {
         printf("\t" BLUE("%zu lines libsir(stdout)...") "\n", perflines);
 
         sir_timer stdiotimer = {0};
-        startsirtimer(&stdiotimer);
+        sirtimerstart(&stdiotimer);
 
         for (size_t n = 0; n < perflines; n++)
             sir_debug("%.2f: lorem ipsum foo bar %s: %zu",
@@ -953,7 +954,7 @@ bool sirtest_perf(void) {
             printf("\t" BLUE("%zu lines libsir(log file)...") "\n", perflines);
 
             sir_timer filetimer = {0};
-            startsirtimer(&filetimer);
+            sirtimerstart(&filetimer);
 
             for (size_t n = 0; n < perflines; n++)
                 sir_debug("lorem ipsum foo bar %s: %zu", "baz", 1234 + n);
@@ -1089,7 +1090,7 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
 
     /* repeat initializing, opening, logging, closing, cleaning up n times. */
     sir_timer timer = {0};
-    pass &= startsirtimer(&timer);
+    pass &= sirtimerstart(&timer);
 
     printf("\trunning %d passes of random configs (system logger: '%s', "
            "identity: '%s', category: '%s')...\n",
@@ -1426,6 +1427,75 @@ bool sirtest_filesystem(void) {
     return print_result_and_return(pass);
 }
 
+bool sirtest_squelchspam(void) {
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+    static const size_t sequence[3] = {
+        100000, /* non-repeating messages. */
+        100,   /* repeating messages. */
+        100000  /* alternating repeating and non-repeating messages. */
+    };
+
+    static const size_t alternate = 50;
+
+#if defined(SIR_USE_HASH)
+    static const char* method = "hash";
+#else
+    static const char* method = "strncmp";
+#endif
+
+    sir_timer timer;
+    sirtimerstart(&timer);
+
+    printf("\t" BLUE("%zu non-repeating messages...") "\n", sequence[0]);
+
+    size_t ascii_idx = 33;
+    for (size_t n = 0; n < sequence[0]; n++, ascii_idx++) {
+        sir_debug("%c%c a non-repeating message", (char)ascii_idx,
+            (char)ascii_idx + 1);
+
+        if (ascii_idx == 125)
+            ascii_idx = 33;
+    }
+
+    printf("\t" BLUE("%zu repeating messages...") "\n", sequence[1]);
+
+    for (size_t n = 0; n < sequence[1]; n++)
+        sir_debug("a repeating message");
+
+    printf("\t" BLUE("%zu alternating repeating and non-repeating messages...")
+           "\n", sequence[2]);
+
+    bool repeating = false;
+    size_t counter = 0;
+    for (size_t n = 0, ascii_idx = 33; n < sequence[2]; n++, counter++, ascii_idx++) {
+        if (!repeating) {
+            sir_debug("%c%c a non-repeating message", (char)ascii_idx,
+                (char)ascii_idx + 1);
+        } else {
+            sir_debug("a repeating message");
+        }
+
+        if (counter == alternate) {
+            repeating = !repeating;
+            counter = 0;
+        }
+
+        if (ascii_idx == 125)
+            ascii_idx = 33;
+    }
+
+    float elapsed = sirtimerelapsed(&timer);
+    size_t total_lines = sequence[0] + sequence[1] + sequence[2];
+
+    printf("\t" WHITEB("%s: ") CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
+        method, total_lines, elapsed / 1e3, total_lines / (elapsed / 1e3));
+
+    sir_cleanup();
+    return print_result_and_return(pass);
+}
+
 #if !defined(__WIN__)
 static void* sirtest_thread(void* arg);
 #else /* __WIN__ */
@@ -1597,7 +1667,6 @@ unsigned sirtest_thread(void* arg) {
 
 /*
 bool sirtest_XXX(void) {
-
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
@@ -1732,7 +1801,7 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
     return true;
 }
 
-bool startsirtimer(sir_timer* timer) {
+bool sirtimerstart(sir_timer* timer) {
 #if !defined(__WIN__)
     int gettime = clock_gettime(SIRTEST_CLOCK, &timer->ts);
     if (0 != gettime) {

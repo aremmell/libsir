@@ -27,6 +27,7 @@
 #define _VALIDUS_H_INCLUDED
 
 #include <stdint.h>
+#include <stdbool.h>
 
 ///////////////////////////// preprocessor /////////////////////////////////////
 #if defined(__linux__)  || defined(__GNU__)    || defined(__CYGWIN__) || \
@@ -145,6 +146,15 @@ void validus_append(validus_state* state, const void* data, validus_word len);
  * @param state Pointer to the validus_state object to finalize.
  */
 void validus_finalize(validus_state* state);
+
+/**
+ * @brief Compares two validus_state objects for equality.
+ *
+ * @param   one  Pointer to a validus_state to compare for equality.
+ * @param   two  Pointer to a validus_state to compare for equality.
+ * @returns bool `true` if both states are identical, `false` otherwise.
+ */
+bool validus_compare(const validus_state *one, const validus_state *two);
 
 /**
  * @brief Processes a 192-octet block of data, accumulating the results

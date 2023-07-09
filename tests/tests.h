@@ -229,11 +229,17 @@ bool sirtest_os_log(void);
  */
 bool sirtest_filesystem(void);
 
+/**
+ * @ test
+ * @returns bool `true` if the test passed, `false` otherwise.
+ */
+bool sirtest_squelchspam(void);
+
 /** @} */
 
 /**
  * @ test
- *
+ * @returns bool `true` if the test passed, `false` otherwise.
 bool sirtest_xxxx(void); */
 
 /*
@@ -316,7 +322,7 @@ bool countfiles(const char* search, const char* filename, unsigned* data);
 typedef bool (*fileenumproc)(const char* search, const char* filename, unsigned* data);
 bool enumfiles(const char* search, fileenumproc cb, unsigned* data);
 
-bool startsirtimer(sir_timer* timer);
+bool sirtimerstart(sir_timer* timer);
 float sirtimerelapsed(const sir_timer* timer); // msec
 long sirtimergetres(void); // nsec
 

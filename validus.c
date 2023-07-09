@@ -101,6 +101,16 @@ void validus_finalize(validus_state* state)
     _validus_process(state, (validus_word*)finish);
 }
 
+bool validus_compare(const validus_state* one, const validus_state* two)
+{
+    if (!one || !two)
+        return false;
+
+    return (one->f0 == two->f0 && one->f1 == two->f1 &&
+            one->f2 == two->f2 && one->f3 == two->f3 &&
+            one->f4 == two->f4 && one->f5 == two->f5);
+}
+
 void _validus_process(validus_state* state, const validus_word* blk32)
 {
     if (!state || !blk32)
