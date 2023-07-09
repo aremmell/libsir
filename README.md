@@ -48,16 +48,16 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 
 | System | Toolchain |
 | ------:|:--------- |
-| **Linux**&nbsp;2.6.32+<br>(glibc&nbsp;2.18+, musl&nbsp;1.2.3+, uClibc‑ng&nbsp;1.0.43+, Bionic&nbsp;19+) | **GCC** (4.8.4 - 13.1.1),&nbsp; **Clang** (3.8 - 16.0.6),&nbsp; **Oracle Studio C/C++** (12.6),&nbsp; **IBM Advance Toolchain** (14 - 16),&nbsp; **IBM Open XL C/C++** (17.1.1),&nbsp; **NVIDIA HPC SDK C/C++** (23.5),&nbsp; **Arm HPC C/C++** (22.1),&nbsp; **AMD Optimizing C/C++** (4.0.0),&nbsp; **Intel oneAPI DPC++/C++** (2023.1),&nbsp; **Intel C++ Compiler Classic** (2021.9),&nbsp; **Android NDK** (r25c) |
-| **macOS**&nbsp;10.15+ | **Xcode** (12.4 - 15),&nbsp; **GCC** (10.4 - 13.1),&nbsp; **Clang** (12.0.1 - 16.0.6),&nbsp; **Intel C++ Compiler Classic** (2021.9) |
-| **Windows**&nbsp;10+ | **Microsoft Visual C/C++** (17.6),&nbsp; **GCC-MinGW** (12.2.1 - 13.1.1),&nbsp; **LLVM-MinGW** (15.0 - 16.0.6) |
-| **Cygwin**&nbsp;3.4+ | **GCC** (11.2 - 11.4) |
-| **FreeBSD**&nbsp;11.4+ | **GCC** (11.4 - 12.2),&nbsp; **Clang** (10.0.0 - 14.0.5) |
-| **NetBSD**&nbsp;9.2+ | **GCC** (7.5 - 13.1),&nbsp; **Clang** (15.0.7) |
-| **DragonFly**&nbsp;**BSD**&nbsp;6.4+ | **GCC** (8.3 - 13),&nbsp; **Clang** (10.0.1 - 14.0.6) |
-| **Haiku**&nbsp;R1b4 | **GCC** (11.2),&nbsp; **Clang** (12.0.1) |
-| **Solaris**&nbsp;11.4 | **GCC** (10.3 - 11.2),&nbsp; **Clang** (6 - 11),&nbsp; **Oracle Studio C/C++** (12.6) |
-| **illumos** | **GCC** (7.5 - 11.3),&nbsp; **Clang** (15.0.7) |
+| **Linux**&nbsp;2.6.32+<br>(glibc&nbsp;2.18+, musl&nbsp;1.2.3+, uClibc‑ng&nbsp;1.0.43+, Bionic&nbsp;19+) | **GCC**&nbsp;(4.8.4&nbsp;‑&nbsp;13.1.1),&nbsp; **Clang**&nbsp;(3.8&nbsp;‑&nbsp;16.0.6),&nbsp; **Oracle&nbsp;Studio&nbsp;C/C++**&nbsp;(12.6),&nbsp; **IBM&nbsp;Advance&nbsp;Toolchain**&nbsp;(14&nbsp;‑&nbsp;16),&nbsp; **IBM&nbsp;Open&nbsp;XL C/C++**&nbsp;(17.1.1),&nbsp; **NVIDIA&nbsp;HPC&nbsp;SDK&nbsp;C/C++**&nbsp;(23.5),&nbsp; **Arm&nbsp;HPC&nbsp;C/C++**&nbsp;(22.1),&nbsp; **AMD&nbsp;Optimizing&nbsp;C/C++**&nbsp;(4.0.0),&nbsp; **Intel&nbsp;oneAPI&nbsp;DPC++/C++**&nbsp;(2023.1),&nbsp; **Intel&nbsp;C++&nbsp;Compiler&nbsp;Classic**&nbsp;(2021.9),&nbsp; **Android&nbsp;NDK**&nbsp;(r25c) |
+| **macOS**&nbsp;10.15+ | **Xcode**&nbsp;(12.4&nbsp;‑&nbsp;15),&nbsp; **GCC**&nbsp;(10.4&nbsp;‑&nbsp;13.1),&nbsp; **Clang**&nbsp;(12.0.1&nbsp;‑&nbsp;16.0.6),&nbsp; **Intel&nbsp;C++&nbsp;Compiler&nbsp;Classic**&nbsp;(2021.9) |
+| **Windows**&nbsp;10+ | **Microsoft&nbsp;Visual&nbsp;C/C++**&nbsp;(17.6),&nbsp; **GCC‑MinGW**&nbsp;(12.2.1&nbsp;‑&nbsp;13.1.1),&nbsp; **LLVM-MinGW**&nbsp;(15.0&nbsp;‑&nbsp;16.0.6) |
+| **Cygwin**&nbsp;3.4+ | **GCC**&nbsp;(11.2&nbsp;‑&nbsp;11.4) |
+| **FreeBSD**&nbsp;11.4+ | **GCC**&nbsp;(11.4&nbsp;‑&nbsp;12.2),&nbsp; **Clang**&nbsp;(10.0.0&nbsp;‑&nbsp;14.0.5) |
+| **NetBSD**&nbsp;9.2+ | **GCC**&nbsp;(7.5&nbsp;‑&nbsp;13.1),&nbsp; **Clang**&nbsp;(15.0.7) |
+| **DragonFly**&nbsp;**BSD**&nbsp;6.4+ | **GCC**&nbsp;(8.3&nbsp;‑&nbsp;13),&nbsp; **Clang**&nbsp;(10.0.1&nbsp;‑&nbsp;14.0.6) |
+| **Haiku**&nbsp;R1b4 | **GCC**&nbsp;(11.2),&nbsp; **Clang**&nbsp;(12.0.1) |
+| **Solaris**&nbsp;11.4 | **GCC**&nbsp;(10.3&nbsp;‑&nbsp;11.2),&nbsp; **Clang**&nbsp;(6&nbsp;‑&nbsp;11),&nbsp; **Oracle&nbsp;Studio&nbsp;C/C++**&nbsp;(12.6) |
+| **illumos** | **GCC**&nbsp;(7.5&nbsp;‑&nbsp;11.3),&nbsp; **Clang**&nbsp;(15.0.7) |
 | *Coming soon* | *Support planned for* **AIX** *and* **OpenBSD** |
 
 * libsir is known to work on most common (and many uncommon) architectures.
