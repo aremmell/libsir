@@ -12,6 +12,7 @@ var files_dup =
     [ "sirfilecache.h", "sirfilecache_8h_source.html", null ],
     [ "sirfilesystem.h", "sirfilesystem_8h_source.html", null ],
     [ "sirhelpers.h", "sirhelpers_8h_source.html", null ],
+    [ "sirimpl.h", "sirimpl_8h_source.html", null ],
     [ "sirinternal.h", "sirinternal_8h_source.html", null ],
     [ "sirmaps.h", "sirmaps_8h_source.html", null ],
     [ "sirmutex.h", "sirmutex_8h_source.html", null ],
