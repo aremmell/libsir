@@ -1,9 +1,8 @@
 /* SPDX-License-Identifier: ISC and MIT */
 
 /*
- * Header-only strlcpy implementation
- *
- * Derived from: $OpenBSD: strlcpy.c,v 1.16 2019/01/25 00:19:25 millert Exp $
+ * strlcat from: $OpenBSD: strlcat.c,v 1.19 2019/01/25 00:19:25 millert Exp $
+ * strlcpy from: $OpenBSD: strlcpy.c,v 1.16 2019/01/25 00:19:25 millert Exp $
  *
  * Copyright (c) 1998, 2015 Todd C. Miller <millert@openbsd.org>
  *
@@ -20,7 +19,58 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#undef strlcpy
+#ifndef _SIR_IMPL_H_INCLUDED
+# define _SIR_IMPL_H_INCLUDED
+
+# if defined(SIR_IMPL_STRLCPY)
+#  undef strlcat
+
+/*
+ * Appends src to string dst of size dsize (unlike strncat, dsize is the
+ * full size of dst, not space left).  At most dsize-1 characters
+ * will be copied.  Always NUL terminates (unless dsize <= strlen(dst)).
+ * Returns strlen(src) + MIN(dsize, strlen(initial dst)).
+ * If retval >= dsize, truncation occurred.
+ */
+
+static inline size_t
+_sir_strlcat(char *dst, const char *src, size_t dsize)
+{
+  const char * odst  =   dst;
+  const char * osrc  =   src;
+  size_t          n  = dsize;
+  size_t       dlen;
+
+  /* Find the end of dst and adjust bytes left but don't go past end. */
+
+  while (n-- != 0 && *dst != '\0')
+    { dst++; }
+
+  dlen  =   dst - odst;
+  n     = dsize - dlen;
+
+  if (n-- == 0)
+    { return dlen + strlen(src); }
+
+  while (*src != '\0')
+    {
+      if (n != 0)
+        {
+          *dst++ = *src;
+          n--;
+        }
+
+      src++;
+    }
+  *dst = '\0';
+
+  return dlen + ( src - osrc ); /* count does not include NUL */
+}
+#  define strlcat _sir_strlcat
+# endif // SIR_IMPL_STRLCAT
+
+# if defined(SIR_IMPL_STRLCPY)
+#  undef strlcpy
 
 /*
  * Copy string src to buffer dst of size dsize.  At most dsize-1
@@ -55,5 +105,7 @@ _sir_strlcpy(char *dst, const char *src, size_t dsize)
 
   return src - osrc - 1;        /* count does not include NUL */
 }
+#  define strlcpy _sir_strlcpy
+# endif // SIR_IMPL_STRLCPY
 
-#define strlcpy _sir_strlcpy
+#endif // !_SIR_IMPL_H_INCLUDED

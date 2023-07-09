@@ -171,6 +171,11 @@ _set_thread_local_invalid_parameter_handler(
 #  endif
 # endif
 
+# if !defined(__MACOS__) && !defined(__BSD__) && !defined(__SOLARIS__)
+#  define SIR_IMPL_STRLCPY 1
+#  define SIR_IMPL_STRLCAT 1
+# endif
+
 # if defined(__MINGW64__)
 #  define PID_CAST (int)
 # else
@@ -204,11 +209,6 @@ _set_thread_local_invalid_parameter_handler(
 # include <sys/types.h>
 # include <limits.h>
 # include <time.h>
-
-# if !defined(__MACOS__) && !defined(__BSD__) && !defined(__SOLARIS__)
-#  include <sirstrlcpy.h>  /* Provides strlcpy() */
-#  include <sirstrlcat.h>  /* Provides strlcat() */
-# endif
 
 # if !defined(SIR_NO_SYSTEM_LOGGERS)
 #  if defined(__MACOS__)
@@ -276,6 +276,7 @@ _set_thread_local_invalid_parameter_handler(
 #    include <os/activity.h>
 #   endif
 #  endif
+#  include "sirimpl.h"
 
 #  if defined(PATH_MAX)
 #   define SIR_MAXPATH PATH_MAX
