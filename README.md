@@ -3,6 +3,20 @@
 <!-- SPDX-License-Identifier: MIT -->
 <!-- Copyright (c) 2018-current Ryan M. Lederman <lederman@gmail.com> -->
 
+<!-- toc -->
+
+- [Synopsis](#synopsis)
+- [Notables](#notables)
+- [Cross-platform compatibility](#cross-platform-compatibility)
+- [A sample](#a-sample)
+- [Getting started](#getting-started)
+  * [Visual Studio Code](#visual-studio-code)
+  * [Visual Studio 2022](#visual-studio-2022)
+  * [Unix Makefile](#unix-makefile)
+  * [Further reading](#further-reading)
+
+<!-- tocstop -->
+
 [![Build Status](https://app.travis-ci.com/aremmell/libsir.svg?branch=master)](https://app.travis-ci.com/aremmell/libsir) ![REUSE Compliance](https://img.shields.io/reuse/compliance/github.com%2Faremmell%2Flibsir?label=REUSE3&color=2340b911)
  ![GitHub](https://img.shields.io/github/license/aremmell/libsir?color=%2340b911)
 
@@ -23,7 +37,7 @@ Each 'level' or 'priority' of output can be visually styled however you wish for
 - Won't fail silently &mdash; C library or platform level errors are captured and stored for posterity, on a per-thread basis. The _function, file, and line number from which it originated_ are also captured. Additionally, libsir defines its own set of error messages to aid in troubleshooting.
 - Hardened &mdash; every function contains sanity checks for internal state as well as arguments passed in through the external interfaces. libsir's make recipes use _&ndash;Wall &ndash;Wextra &ndash;Wpedantic_, too.
 - [Full documentation](https://libsir.rml.dev), thanks to Doxygen.
-- Lightweight &mdash; the shared library comes in at around 76KB, and the static library around 70KB.
+- Lightweight &mdash; the shared library comes in at around 76&nbsp;KiB, and the static library around 70&nbsp;KiB.
 
 ## Cross-platform compatibility
 
