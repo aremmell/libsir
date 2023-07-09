@@ -6,15 +6,20 @@
 # SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 #
 
-BUILDDIR   = build
-DOCSDIR    = docs
-TESTS      = tests
-EXAMPLE    = example
-INTDIR     = $(BUILDDIR)/obj
-LIBDIR     = $(BUILDDIR)/lib
-BINDIR	   = $(BUILDDIR)/bin
-INSTALLLIB = /usr/local/lib
-INSTALLINC = /usr/local/include
+BUILDDIR    = ./build
+DOCSDIR     = docs
+TESTS       = tests
+EXAMPLE     = example
+INTDIR      = $(BUILDDIR)/obj
+LIBDIR      = $(BUILDDIR)/lib
+BINDIR      = $(BUILDDIR)/bin
+PREFIX     ?= $(DESTDIR)/usr/local
+INSTALLLIB  = $(PREFIX)/lib
+INSTALLINC  = $(PREFIX)/include
+INSTALLSH   = build-aux/install-sh
+RANLIB     ?= ranlib
+LDCONFIG   ?= ldconfig
+SHELL      := $(shell env sh -c 'PATH="$$(command -p getconf PATH)" command -v sh')
 
 # base CFLAGS
 CFLAGS += -Wall -Wextra -Wpedantic -std=c11 -I. -fPIC
@@ -87,15 +92,17 @@ OBJ  = $(patsubst %, $(INTDIR)/%, $(_OBJ))
 
 # shared library
 OBJ_SHARED     = $(patsubst %.o, $(INTDIR)/%.o, $(_OBJ))
-OUT_SHARED	   = $(LIBDIR)/libsir.so
+OUT_SHARED_FN  = libsir.so
+OUT_SHARED     = $(LIBDIR)/$(OUT_SHARED_FN)
 LDFLAGS_SHARED = $(LIBS) $(MINGW_LIBS)
 
 # static library
 OBJ_STATIC     = $(OBJ_SHARED)
-OUT_STATIC     = $(LIBDIR)/libsir_s.a
+OUT_STATIC_FN  = libsir_s.a
+OUT_STATIC     = $(LIBDIR)/$(OUT_STATIC_FN)
 
 # console example
-OBJ_EXAMPLE	   = $(INTDIR)/$(EXAMPLE)/$(EXAMPLE).o
+OBJ_EXAMPLE    = $(INTDIR)/$(EXAMPLE)/$(EXAMPLE).o
 OUT_EXAMPLE    = $(BINDIR)/sirexample
 
 # console test rig
@@ -133,38 +140,58 @@ prep:
 			mkdir -p $(INTDIR)/$(TESTS) && \
 			mkdir -p $(LIBDIR) && \
 	        mkdir -p $(BINDIR))
-	@echo directories prepared successfully.
+	-@echo directories prepared successfully.
 
 shared: $(OBJ_SHARED)
 	$(CC) -shared -o $(OUT_SHARED) $^ $(CFLAGS) $(LDFLAGS_SHARED)
-	@echo built $(OUT_SHARED) successfully.
+	-@echo built $(OUT_SHARED) successfully.
 
 static: shared
 	ar -cr $(OUT_STATIC) $(OBJ_SHARED)
-	@echo built $(OUT_STATIC) successfully.
+	-($(RANLIB) "$(OUT_STATIC)" || true) > /dev/null 2>&1
+	-@echo built $(OUT_STATIC) successfully.
 
 example: static $(OBJ_EXAMPLE)
 	$(CC) -o $(OUT_EXAMPLE) $(OBJ_EXAMPLE) $(CFLAGS) -I.. $(LDFLAGS)
-	@echo built $(OUT_EXAMPLE) successfully.
+	-@echo built $(OUT_EXAMPLE) successfully.
 
 tests: static $(OBJ_TESTS)
 	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS) $(CFLAGS) -I.. $(LDFLAGS)
 	$(shell touch $(BINDIR)/file.exists)
-	@echo built $(OUT_TESTS) successfully.
+	-@echo built $(OUT_TESTS) successfully.
 
 docs: static
 	@doxygen Doxyfile
-	@echo built documentation successfully.
+	-@echo built documentation successfully.
 
-install: shared
-	@echo copying $(OUT_SHARED) to $(INSTALLLIB) and headers to $(INSTALLINC)...
-	$(shell cp -f $(OUT_SHARED) "$(INSTALLLIB)/" && \
-	        cp -f sir.h "$(INSTALLINC)/")
-	@echo installed libsir successfully.
+.PHONY: install
+install: $(INSTALLSH)
+	@test -x $(INSTALLSH) || \
+		{ printf 'Error: %s not executable.\n' "$(INSTALLSH)"; exit 1; }
+	+@test -f "$(OUT_STATIC)" || $(MAKE) static
+	+@test -f "$(OUT_SHARED)" || $(MAKE) shared
+	-@echo installing libraries to $(INSTALLLIB) and headers to $(INSTALLINC)...
+	$(INSTALLSH) -C -m 755 "$(OUT_SHARED)" "$(INSTALLLIB)"
+	-($(LDCONFIG) || true) > /dev/null 2>&1
+	$(INSTALLSH) -C -m 644 "$(OUT_STATIC)" "$(INSTALLLIB)"
+	-($(RANLIB) "$(INSTALLLIB)/$(OUT_STATIC_FN)" || true) > /dev/null 2>&1
+	$(INSTALLSH) -C -m 644 "sir.h" "$(INSTALLINC)"
+	-@echo installed libsir successfully.
 
-.PHONY: clean
+.PHONY: clean distclean
+clean distclean:
+	$(shell rm -rf "$(BUILDDIR)/" > /dev/null 2>&1 ; \
+			rm -f ./*.log > /dev/null 2>&1)
+	-@echo build directory and log files cleaned successfully.
 
-clean:
-	$(shell rm -rf "$(BUILDDIR)/" >/dev/null 2>&1 ; \
-			rm -f *.log >/dev/null 2>&1)
-	@echo build directory and log files cleaned successfully.
+.PHONY: printvars printenv
+printvars printenv:
+	-@$(foreach V,$(sort $(.VARIABLES)), \
+		$(if $(filter-out environment% default automatic,$(origin $V)), \
+		$(if $(strip $($V)),$(info $V: [$($V)]),)))
+	-@true > /dev/null 2>&1
+
+.PHONY: print-%
+print-%:
+	-@$(info $*: [$($*)] ($(flavor $*). set by $(origin $*)))@true
+	-@true > /dev/null 2>&1

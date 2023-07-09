@@ -90,9 +90,7 @@ A very recent addition is an sln and some vcxproj files in the [msvc](./msvc) di
 | Example app    | `make example`      |                  _build/sirexample[.exe]_                     |
 | Static library |    `make static`    |                   _build/lib/libsir_s.a_                      |
 | Shared library |    `make shared`    |                    _build/lib/libsir.so_                      |
-|  Install[^1]   | `sudo make install` |    _`$(INSTALLLIB)`/libsir.so  &amp; `$(INSTALLINC)`/sir.h_   |
-
-[^1]: This recipe isn't really ready for production use. Use it at your own risk&mdash;currently it manually copies files; that’s it. `$(INSTALLLIB)` and `$(INSTALLINC)` are `/usr/local/lib` and `/usr/local/include`, respectively. It's on the TODO list to utilize the `install` tool _(or just ditch the Makefile and use CMake)_.
+|    Install     | `sudo make install` |    _`$(INSTALLLIB)`/libsir.so  &amp; `$(INSTALLINC)`/sir.h_   |
 
 ### Further reading
 
