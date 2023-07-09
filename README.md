@@ -27,13 +27,23 @@ Each 'level' or 'priority' of output can be visually styled however you wish for
 
 ## Cross-platform compatibility
 
-At this time, the test suite has been compiled and tested on (at minimum) these configurations:
+At this time, the libsir supports (*i.e.* compiles and passes the tests) on at least the following configurations:
 
-| Toolset   | Versions            | Operating system                     | Architecture                 |
-| :-------- | :-----------------: | :----------------------------------: | ---------------------------: |
-| gcc       | 5.4-7.5             |    Ubuntu, Mint, Fedora, FreeBSD     |   x64, armhf, arm64, ppc64le |
-| clang     | 6.0-14.0            | macOS, Ubuntu, Mint, FreeBSD, Fedora |   x64, arm64                 |
-| MSVC (cl) | 17.6                |               Windows                |   x64, arm64                 |
+| System | Toolchain |
+| ------:|:--------- |
+| **Linux**&nbsp;2.6.32+<br>(glibc&nbsp;2.18+, musl&nbsp;1.2.3+, uClibc‑ng&nbsp;1.0.43+, Bionic&nbsp;19+) | **GCC** (4.8.4 - 13.1.1),&nbsp; **Clang** (6 - 16.0.6),&nbsp; **Oracle Studio C/C++** (12.6),&nbsp; **IBM Advance Toolchain** (14 - 16),&nbsp; **IBM Open XL C/C++** (17.1.1),&nbsp; **NVIDIA HPC SDK C/C++** (23.5),&nbsp; **Arm HPC C/C++** (22.1),&nbsp; **AMD Optimizing C/C++** (4.0.0),&nbsp; **Intel oneAPI DPC++/C++** (2023.1),&nbsp; **Intel C++ Compiler Classic** (2021.9),&nbsp; **Android NDK** (r25c) |
+| **macOS**&nbsp;10.15+ | **Xcode** (12.4 - 15),&nbsp; **GCC** (10.4 - 13.1),&nbsp; **Clang** (12.0.1 - 16.0.6),&nbsp; **Intel C++ Compiler Classic** (2021.9) |
+| **Windows**&nbsp;10+ | **Microsoft Visual C/C++** (17.6),&nbsp; **GCC-MinGW** (12.2.1 - 13.1.1),&nbsp; **LLVM-MinGW** (15.0 - 16.0.6) |
+| **Cygwin**&nbsp;3.4+ | **GCC** (11.2 - 11.4) |
+| **FreeBSD**&nbsp;11.4+ | **GCC** (11.4 - 12.2),&nbsp; **Clang** (10.0.0 - 14.0.5) |
+| **NetBSD**&nbsp;9.2+ | **GCC** (7.5 - 13.1),&nbsp; **Clang** (15.0.7) |
+| **DragonFly**&nbsp;**BSD**&nbsp;6.4+ | **GCC** (8.3 - 13),&nbsp; **Clang** (10.0.1 - 14.0.6) |
+| **Haiku**&nbsp;R1b4 | **GCC** (11.2),&nbsp; **Clang** (12.0.1) |
+| **Solaris**&nbsp;11.4 | **GCC** (10.3 - 11.2),&nbsp; **Clang** (6 - 11),&nbsp; **Oracle Studio C/C++** (12.6) |
+| **illumos** | **GCC** (7.5 - 11.3),&nbsp; **Clang** (15.0.7) |
+| *Coming soon* | *Support planned for* **AIX** *and* **OpenBSD** |
+
+libsir has been been verified to work on multiple architectures, including Intel (*x86\_64*, *i686*), ARM (*ARMv6*, *ARMv7HF*, *ARMv8-A*), POWER (*PowerPC*, *PPC64*, *PPC64le*), MIPS (*MIPS64*, *MIPS32*, *74Kc*), z/Architecture (*S390X*), SuperH (*SH‑4A*), RISC‑V (*RV64*), OR1K (*OR1200*), and m68k (*68020+*).  If it doesn't work on your machine, it's probably a bug.
 
 ## A sample
 
