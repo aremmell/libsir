@@ -62,7 +62,7 @@ At this time, the libsir supports (*compiles and passes the tests*) on at least 
 | *Coming soon* | *Support planned for* **AIX** *and* **OpenBSD** |
 
 * libsir is known to work on most common (and many uncommon) architectures.
-  * It has actually been built and tested on **Intel** (x86\_64, i686), **ARM** (ARMv6, ARMv7HF, ARMv8-A), **POWER** (PowerPC, PPC64, PPC64le), **MIPS** (MIPS64, MIPS32, 74Kc), **z/Architecture** (S390X), **SuperH** (SH‑4A), **RISC‑V** (RV64), **OpenRISC** (OR1200), and **m68k** (68020+).
+* It has actually been built and tested on **Intel** (x86\_64, i686), **ARM** (ARMv6, ARMv7HF, ARMv8-A), **POWER** (PowerPC, PPC64, PPC64le), **MIPS** (MIPS64, MIPS32, 74Kc), **z/Architecture** (S390X), **SuperH** (SH‑4A), **RISC‑V** (RV64), **OpenRISC** (OR1200), and **m68k** (68020+).
 * If it doesn't work on your machine, it's probably a bug.
 
 ## A sample
