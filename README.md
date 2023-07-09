@@ -1,6 +1,6 @@
 # libsir
 
-libsir is a cross-platform, thread-safe logging library
+libsir &mdash; a cross-platform, thread-safe logging library
 
 <!-- SPDX-License-Identifier: MIT -->
 <!-- Copyright (c) 2018-current Ryan M. Lederman <lederman@gmail.com> -->
