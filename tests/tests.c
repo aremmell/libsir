@@ -1060,14 +1060,14 @@ bool sirtest_updatesanity(void) {
         pass &= sir_fileopts(id1, opts_array[rnd]);
         printf("\t" WHITE("set random config #%" PRIu32 " for %s") "\n", rnd, logfile);
 
-        pass &= filter_error(sir_debug("modified config #% (debug)" PRIu32 "", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_info("modified config #% (info)" PRIu32 "", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_notice("modified config #% (notice)" PRIu32 "", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_warn("modified config #% (warning)" PRIu32 "", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_error("modified config #% (error)" PRIu32 "", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_crit("modified config #% (critical)" PRIu32 "", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_alert("modified config #% (alert)" PRIu32 "", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_emerg("modified config #% (emergency)" PRIu32 "", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_debug("modified config #%" PRIu32 " (debug)", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_info("modified config #%" PRIu32 " (info)", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_notice("modified config #%" PRIu32 " (notice)", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_warn("modified config #%" PRIu32 " (warning)", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_error("modified config #%" PRIu32 " (error)", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_crit("modified config #%" PRIu32 " (critical)", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_alert("modified config #%" PRIu32 " (alert)", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_emerg("modified config #%" PRIu32 " (emergency)", rnd), SIR_E_NODEST);
     }
 
     if (pass) {
