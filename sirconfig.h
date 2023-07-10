@@ -355,19 +355,19 @@
  * squelch further identical messages, and instead log the message
  * ::SIR_SQUELCH_MSG_FORMAT.
  */
-#define SIR_SQUELCH_THRESHOLD 5
+# define SIR_SQUELCH_THRESHOLD 5
 
 /**
  * If duplicate messages continue to be logged after the threshold is met, the
  * threshold will be multiplied by this number, resulting in longer intervals
  * between ::SIR_SQUELCH_MSG_FORMAT messages.
  */
-#define SIR_SQUELCH_BACKOFF_FACTOR 2
+# define SIR_SQUELCH_BACKOFF_FACTOR 2
 
 /**
  * The message to be logged when ::SIR_SQUELCH_THRESHOLD (or a multiple thereof)
  * consecutive duplicate messages are logged.
  */
-#define SIR_SQUELCH_MSG_FORMAT "previous message repeated %zu times"
+# define SIR_SQUELCH_MSG_FORMAT "previous message repeated %zu times"
 
 #endif /* !_SIR_CONFIG_H_INCLUDED */
