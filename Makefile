@@ -67,6 +67,10 @@ ifeq ($(SIR_SELFLOG),1)
 	CFLAGS += -DSIR_SELFLOG
 endif
 
+ifeq ($(SIR_USE_HASH),1)
+	CFLAGS += -DSIR_USE_HASH
+endif
+
 ifeq ($(SIR_ASSERT_ENABLED),1)
 	CFLAGS += -DSIR_ASSERT_ENABLED
 endif

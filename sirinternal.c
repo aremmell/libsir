@@ -541,18 +541,18 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
         }
     }
 
-    sirconfig tmpcfg;
-    memcpy(&tmpcfg, _cfg, sizeof(sirconfig));
+    sirconfig cfg;
+    memcpy(&cfg, _cfg, sizeof(sirconfig));
     _sir_unlocksection(SIRMI_CONFIG);
 
     sirbuf buf = {
         {0},
         {0},
         {0},
-        tmpcfg.state.hostname,
-        tmpcfg.state.pidbuf,
+        cfg.state.hostname,
+        cfg.state.pidbuf,
         NULL,
-        tmpcfg.si.name,
+        cfg.si.name,
         {0},
         {0},
         {0},
@@ -585,20 +585,86 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     buf.level = _sir_formattedlevelstr(level);
 
     pid_t tid = _sir_gettid();
-    if (tid != tmpcfg.state.pid) {
+    if (tid != cfg.state.pid) {
         if (!_sir_getthreadname(buf.tid)) {
             if (0 > snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, PID_CAST tid))
                 _sir_handleerr(errno);
         }
     }
 
-    if (0 > vsnprintf(buf.message, SIR_MAXMESSAGE, format, args))
+    if (0 > vsnprintf(buf.message, SIR_MAXMESSAGE, format, args)) {
         _sir_handleerr(errno);
+        SIR_ASSERT(false);
+    }
 
     if (!_sir_validstr(buf.message))
         return false;
 
-    return _sir_dispatch(&tmpcfg.si, level, &buf);
+    bool match             = false;
+    bool exit_early        = false;
+    bool update_last_props = true;
+    uint64_t hash          = 0;
+
+    if (cfg.state.last.prefix[0] == buf.message[0]  &&
+        cfg.state.last.prefix[1] == buf.message[1]) {
+        hash  = FNV_1a(buf.message);
+        match = cfg.state.last.hash == hash;
+    }
+
+    if (match) {
+        cfg.state.last.counter++;
+
+        _sir_selflog("message '%s' matches last; incremented counter to %zu",
+            buf.message, cfg.state.last.counter);
+
+        if (cfg.state.last.counter >= cfg.state.last.threshold - 2) {
+            size_t old_threshold = cfg.state.last.threshold;
+
+            update_last_props         = false;
+            cfg.state.last.threshold *= SIR_SQUELCH_BACKOFF_FACTOR;
+            cfg.state.last.squelch    = true;
+
+            _sir_selflog("hit squelch threshold of %zu; setting new threshold"
+                         " to %zu (factor: %d)", old_threshold,
+                cfg.state.last.threshold, SIR_SQUELCH_BACKOFF_FACTOR);
+
+            if (0 > snprintf(buf.message, SIR_MAXMESSAGE, SIR_SQUELCH_MSG_FORMAT,
+                old_threshold))
+                _sir_handleerr(errno);
+        } else if (cfg.state.last.squelch) {
+            exit_early = true;
+        }
+    } else {
+        cfg.state.last.squelch   = false;
+        cfg.state.last.counter   = 0;
+        cfg.state.last.threshold = SIR_SQUELCH_THRESHOLD;
+        _sir_selflog("message '%s' does not match last; resetting", buf.message);
+    }
+
+    _cfg = _sir_locksection(SIRMI_CONFIG);
+    if (!_cfg) {
+        _sir_seterror(_SIR_E_INTERNAL);
+        return false;
+    }
+
+    _cfg->state.last.squelch = cfg.state.last.squelch;
+
+    if (update_last_props) {
+        _cfg->state.last.hash = hash;
+        _cfg->state.last.prefix[0] = buf.message[0];
+        _cfg->state.last.prefix[1] = buf.message[1];
+    }
+
+    _cfg->state.last.counter = cfg.state.last.counter;
+    _cfg->state.last.threshold = cfg.state.last.threshold;
+
+    _sir_unlocksection(SIRMI_CONFIG);
+
+    if (exit_early)
+        return false;
+
+    bool dispatched = _sir_dispatch(&cfg.si, level, &buf);
+    return update_last_props ? dispatched : false;
 }
 
 bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {

@@ -239,6 +239,15 @@ typedef struct {
         time_t last_hname_chk;
         char pidbuf[SIR_MAXPID];
         pid_t pid;
+
+        /** Spam squelch state data. */
+        struct {
+            bool squelch;
+            uint64_t hash;
+            char prefix[2];
+            size_t counter;
+            size_t threshold;
+        } last;
     } state;
 } sirconfig;
 

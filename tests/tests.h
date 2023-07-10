@@ -108,6 +108,12 @@ bool sirtest_failnooutputdest(void);
 bool sirtest_failnulls(void);
 
 /**
+ * @test Ensure an empty message is properly handled.
+ * @returns bool `true` if the test passed, `false` otherwise.
+ */
+bool sirtest_failemptymessage(void);
+
+/**
  * @test Properly handle adding and removing log files.
  * @returns bool `true` if the test passed, `false` otherwise.
  */
@@ -230,10 +236,11 @@ bool sirtest_os_log(void);
 bool sirtest_filesystem(void);
 
 /**
- * @test Ensure an empty message is properly handled.
+ * @test Ensure that spam messages are squelched, normal messages are not,
+ * and proper return values result from calls into libsir.
  * @returns bool `true` if the test passed, `false` otherwise.
  */
-bool sirtest_failemptymessage(void);
+bool sirtest_squelchspam(void);
 
 /** @} */
 
@@ -322,7 +329,7 @@ bool countfiles(const char* search, const char* filename, unsigned* data);
 typedef bool (*fileenumproc)(const char* search, const char* filename, unsigned* data);
 bool enumfiles(const char* search, fileenumproc cb, unsigned* data);
 
-bool startsirtimer(sir_timer* timer);
+bool sirtimerstart(sir_timer* timer);
 float sirtimerelapsed(const sir_timer* timer); // msec
 long sirtimergetres(void); // nsec
 
