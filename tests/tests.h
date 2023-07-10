@@ -236,7 +236,8 @@ bool sirtest_os_log(void);
 bool sirtest_filesystem(void);
 
 /**
- * @ test
+ * @test Ensure that spam messages are squelched, normal messages are not,
+ * and proper return values result from calls into libsir.
  * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_squelchspam(void);
