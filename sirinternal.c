@@ -1193,12 +1193,12 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     }
 # if defined(__HAIKU__)
     if ((strncmp(name, "pthread_func", SIR_MAXPID)) || _sir_validstrnofail(name))
-     snprintf(name, SIR_MAXPID, "%ld", (long)get_pthread_thread_id(pthread_self()));
+        snprintf(name, SIR_MAXPID, "%ld", (long)get_pthread_thread_id(pthread_self()));
 # endif
-    return true;
+    return _sir_validstrnofail(name);
 #elif defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
-    return true;
+    return _sir_validstrnofail(name);
 #else
 # pragma message("unable to determine how to get a thread name")
     _SIR_UNUSED(name);
