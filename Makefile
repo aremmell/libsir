@@ -13,10 +13,10 @@ EXAMPLE     = example
 INTDIR      = $(BUILDDIR)/obj
 LIBDIR      = $(BUILDDIR)/lib
 BINDIR      = $(BUILDDIR)/bin
-PREFIX     ?= $(DESTDIR)/usr/local
-INSTALLLIB  = $(PREFIX)/lib
-INSTALLINC  = $(PREFIX)/include
-INSTALLSH   = build-aux/install-sh
+PREFIX     ?= /usr/local
+INSTALLLIB  = $(DESTDIR)$(PREFIX)/lib
+INSTALLINC  = $(DESTDIR)$(PREFIX)/include
+INSTALLSH   = ./build-aux/install-sh
 RANLIB     ?= ranlib
 LDCONFIG   ?= ldconfig
 SHELL      := $(shell env sh -c 'PATH="$$(command -p getconf PATH)" command -v sh')
