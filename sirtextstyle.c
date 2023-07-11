@@ -127,12 +127,12 @@ bool _sir_resettextstyles(void) {
 
 uint16_t _sir_getprivstyle(sir_textstyle style) {
     static const size_t idx_attr_start = 0;
-    static const size_t idx_attr_end   = 2;
+    static const size_t idx_attr_end   = 4;
 
-    static const size_t idx_fg_start = 3;
-    static const size_t idx_fg_end   = 19;
+    static const size_t idx_fg_start = 5;
+    static const size_t idx_fg_end   = 21;
 
-    static const size_t idx_bg_start = 20;
+    static const size_t idx_bg_start = 22;
     static const size_t idx_bg_end   = SIR_NUM16_COLOR_MAPPINGS - 1;
 
     size_t low  = 0;

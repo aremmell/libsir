@@ -68,6 +68,8 @@ const sir_style_16color_pair sir_style_16color_map[SIR_NUM16_COLOR_MAPPINGS] = {
     {SIRS_NONE,          0},
     {SIRS_BOLD,          1},
     {SIRS_DIM,           2},
+    {SIRS_EMPH,          3},
+    {SIRS_ULINE,         4},
     /* foreground colors. */
     {SIRS_FG_BLACK,     30},
     {SIRS_FG_RED,       31},

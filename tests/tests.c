@@ -625,15 +625,15 @@ bool sirtest_textstylesanity(void) {
     pass &= sir_warn("override style");
 
     pass &= sir_error("default style");
-    pass &= sir_settextstyle(SIRL_ERROR, SIRS_FG_WHITE | SIRS_BG_BLUE);
+    pass &= sir_settextstyle(SIRL_ERROR, SIRS_DIM | SIRS_FG_WHITE | SIRS_BG_BLUE);
     pass &= sir_error("override style");
 
     pass &= sir_crit("default style");
-    pass &= sir_settextstyle(SIRL_CRIT, SIRS_FG_DGRAY | SIRS_BG_LGREEN);
+    pass &= sir_settextstyle(SIRL_CRIT, SIRS_EMPH | SIRS_FG_DGRAY | SIRS_BG_LGREEN);
     pass &= sir_crit("override style");
 
     pass &= sir_alert("default style");
-    pass &= sir_settextstyle(SIRL_ALERT, SIRS_BOLD | SIRS_FG_LBLUE);
+    pass &= sir_settextstyle(SIRL_ALERT, SIRS_ULINE | SIRS_FG_LBLUE);
     pass &= sir_alert("override style");
 
     pass &= sir_emerg("default style");
@@ -678,9 +678,9 @@ bool sirtest_textstylesanity(void) {
     /* for every foreground color, OR it with each of the others.
      * same thing for background colors. none of these should be valid. */
     printf("\t" WHITEB("--- collisions in fg or bg colors ---") "\n");
-    for (size_t n = 3; n < 20; n++) {
+    for (size_t n = 5; n < 22; n++) {
         uint32_t style = sir_style_16color_map[n].from;
-        for (size_t i = 3; i < 20; i++) {
+        for (size_t i = 5; i < 22; i++) {
             if (n == i)
                 continue;
 
@@ -694,9 +694,9 @@ bool sirtest_textstylesanity(void) {
         }
     }
 
-    for (size_t n = 20; n < SIR_NUM16_COLOR_MAPPINGS; n++) {
+    for (size_t n = 22; n < SIR_NUM16_COLOR_MAPPINGS; n++) {
         uint32_t style = sir_style_16color_map[n].from;
-        for (size_t i = 20; i < SIR_NUM16_COLOR_MAPPINGS; i++) {
+        for (size_t i = 22; i < SIR_NUM16_COLOR_MAPPINGS; i++) {
             if (n == i)
                 continue;
 

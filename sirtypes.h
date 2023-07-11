@@ -81,8 +81,10 @@ typedef uint32_t sir_options;
 typedef enum {
     /* attributes. */
     SIRS_NONE        = 0x00000000, /**< Used internally; has no effect. */
-    SIRS_BOLD        = 0x00000001, /**< If set, the foreground color is 'bold'. */
-    SIRS_DIM         = 0x00000002, /**< If set, the foreground color is 'dimmed'. */
+    SIRS_BOLD        = 0x00000001, /**< Foreground color 'bold'. */
+    SIRS_ULINE       = 0x00000002, /**< Text underlined. */
+    SIRS_EMPH        = 0x00000004, /**< Text italicized/emphasized. */
+    SIRS_DIM         = 0x00000008, /**< Foreground color 'dimmed'. */
     /* foreground colors. */
     SIRS_FG_BLACK    = 0x000089a0, /**< Black foreground. */
     SIRS_FG_RED      = 0x000059b0, /**< Red foreground. */
