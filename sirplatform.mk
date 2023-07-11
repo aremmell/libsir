@@ -8,7 +8,7 @@
 
 # MinGW-w64 and standard Unix
 ifneq "$(findstring mingw,$(CC))" ""
-	MINGW?=1
+  MINGW?=1
 endif
 ifeq ($(MINGW),1)
   ifneq "$(findstring gcc,$(CC))" ""
