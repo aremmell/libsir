@@ -425,7 +425,8 @@ bool sir_fileopts(sirfileid id, sir_options opts);
  *                ::sir_geterror to obtain information about any error that may
  *                have occurred.
  */
-bool sir_settextstyle(sir_level level, const sir_textstyle* style);
+bool sir_settextstyle(sir_level level, sir_textattr attr, sir_textcolor fg,
+    sir_textcolor bg);
 
 /**
  * @brief Reset text styling for stdio (stdout/stderr) destinations to their
@@ -438,6 +439,8 @@ bool sir_settextstyle(sir_level level, const sir_textstyle* style);
  *          to obtain information about any error that may have occurred.
  */
 bool sir_resettextstyles(void);
+
+bool sir_setcolormode(sir_colormode mode);
 
 /**
  * @brief Set new level registrations for `stdout`.

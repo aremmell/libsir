@@ -95,7 +95,7 @@ typedef enum {
     SIRTA_ULINE   = 4, /**< Underlined text. */
 } sir_textattr;
 
-typedef enum {
+enum {
     /* 4-bit (16-color). */
     SIRTC_BLACK    = 0,  /**< Black. */
     SIRTC_RED      = 1,  /**< Red. */
@@ -371,9 +371,9 @@ typedef uint32_t sir_textcolor;
  * follows: 0x00rrggbb.
  */
 typedef struct {
-    sir_textattr attrs; /**< Text attributes. */
-    sir_textcolor fg;   /**< Foreground color. */
-    sir_textcolor bg;   /**< Background color. */
+    sir_textattr attr; /**< Text attributes. */
+    sir_textcolor fg;  /**< Foreground color. */
+    sir_textcolor bg;  /**< Background color. */
 } sir_textstyle;
 
 /**
@@ -449,9 +449,6 @@ typedef struct {
     sir_stdio_dest d_stdout;  /**< stdout configuration. */
     sir_stdio_dest d_stderr;  /**< stderr configuration. */
     sir_syslog_dest d_syslog; /**< System logger configuration. */
-
-    /** The color mode to use for stdio. Defaults to 4-bit (16-color) mode. */
-    sir_colormode color_mode;
 
     /**
      * If set, defines the name that will appear in messages sent to stdio and

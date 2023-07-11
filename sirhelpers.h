@@ -174,13 +174,13 @@ bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color);
 /** Converts a SIRTC_* value to a 16-color mode ANSI foreground color. */
 static inline
 sir_textcolor _sir_mkansifgcolor(sir_textcolor sirtc) {
-    return sirtc < 8 ? sirtc + 30 : sirtc + 82;
+    return SIRTC_DEFAULT == sirtc ? 39 : sirtc < 8 ? sirtc + 30 : sirtc + 82;
 }
 
 /** Converts a SIRTC_* value to a 16-color mode ANSI background color. */
 static inline
 sir_textcolor _sir_mkansibgcolor(sir_textcolor sirtc) {
-    return sirtc < 8 ? sirtc + 40 : sirtc + 92;
+    return SIRTC_DEFAULT == sirtc ? 49 : sirtc < 8 ? sirtc + 40 : sirtc + 92;
 }
 
 /** Extracts the red component out of an RGB color mode ::sir_textcolor. */

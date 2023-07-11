@@ -6,7 +6,10 @@
     ],
     "settings": {
         "files.associations": {
-            "typeinfo": "c"
+            "typeinfo": "c",
+            "sirtypes.h": "c",
+            "sirconfig.h": "c",
+            "sirplatform.h": "c"
         }
     }
 }

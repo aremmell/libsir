@@ -75,8 +75,6 @@ bool _sir_makeinit(sirinit* si) {
     si->d_syslog.levels = SIRL_NONE;
 #endif
 
-    si->color_mode = SIRCM_16;
-
     return true;
 }
 
@@ -128,6 +126,8 @@ bool _sir_init(sirinit* si) {
 #else
     _sir_magic = _SIR_MAGIC;
 #endif
+
+    _sir_setcolormode(SIRCM_16);
 
     if (!_sir_resettextstyles())
         _sir_selflog("error: failed to reset text styles!");

@@ -32,10 +32,10 @@
 const char* _sir_gettextstyle(sir_level level);
 
 /** Sets the ::sir_textstyle for a ::sir_level. */
-bool _sir_settextstyle(sir_level level, const sir_textstyle* style);
+bool _sir_settextstyle(sir_level level, sir_textstyle* style);
 
 /** Retrieves the default ::sir_textstyle for a ::sir_level. */
-const sir_textstyle const* _sir_getdefstyle(sir_level level);
+const sir_textstyle* _sir_getdefstyle(sir_level level);
 
 /** Resets all per-level ::sir_textstyle to defaults. */
 bool _sir_resettextstyles(void);
@@ -46,6 +46,9 @@ bool _sir_formatstyle(sir_colormode mode, const sir_textstyle* style,
 
 /** Validates a ::sir_textstyle based on color mode. */
 bool _sir_validtextstyle(sir_colormode mode, const sir_textstyle* style);
+
+/** Sets the current color mode. */
+bool _sir_setcolormode(sir_colormode mode);
 
 /** Returns the current color mode. */
 sir_colormode _sir_getcolormode(void);

@@ -27,6 +27,12 @@
 #include "sirinternal.h"
 #include "sirdefaults.h"
 
+#if defined(__HAVE_ATOMIC_H__)
+    static _Atomic sir_colormode color_mode;
+#else
+    static volatile sir_colormode color_mode;
+#endif
+
 const char* _sir_gettextstyle(sir_level level) {
     sir_level_style_tuple* map = _sir_locksection(SIRMI_TEXTSTYLE);
     if (!map) {
@@ -53,7 +59,7 @@ const char* _sir_gettextstyle(sir_level level) {
     return found;
 }
 
-bool _sir_settextstyle(sir_level level, const sir_textstyle* style) {
+bool _sir_settextstyle(sir_level level, sir_textstyle* style) {
     _sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validlevel(level))
@@ -91,7 +97,7 @@ bool _sir_settextstyle(sir_level level, const sir_textstyle* style) {
     return updated;
 }
 
-const sir_textstyle const* _sir_getdefstyle(sir_level level) {
+const sir_textstyle* _sir_getdefstyle(sir_level level) {
     switch (level) {
         case SIRL_EMERG:  return &sir_lvl_emerg_def_style;
         case SIRL_ALERT:  return &sir_lvl_alert_def_style;
@@ -145,28 +151,37 @@ bool _sir_formatstyle(sir_colormode mode, const sir_textstyle* style,
         case SIRCM_16:
             /* \x1b[attr;fg;bgm */
             return 0 < snprintf(buf, SIR_MAXSTYLE, "%s%d;%d;%dm", SIR_ESC,
-                style->attrs, style->fg, style->bg);
+                style->attr, _sir_mkansifgcolor(style->fg), _sir_mkansibgcolor(style->bg));
         break;
         case SIRCM_256:
             /* \x1b[attr;38;5;fg;48;5;bgm */
+            return 0 < snprintf(buf, SIR_MAXSTYLE, "%s%d;38;5;%d;48;5;%d",
+                SIR_ESC, style->attr, style->fg, style->bg);
         break;
         case SIRCM_RGB:
             /* \x1b[attr;38;2;rrr;ggg;bbb;48;2;rrr;ggg;bbbm */
         break;
+        case SIRCM_INVALID:
+        default:
+            return false;
     }
 
     return formatted;
 }
 
 bool _sir_validtextstyle(sir_colormode mode, const sir_textstyle* style) {
-    if (!_validptr(style) || !_sir_validcolormode(mode))
+    if (!_sir_validptr(style) || !_sir_validcolormode(mode))
         return false;
 
-    bool valid = false;
-    if (!_sir_validtextattr(style->attrs) || !_sir_validtextcolor(mode, style))
+    sir_textcolor fg = SIRCM_16 == mode ? _sir_mkansifgcolor(style->fg) : style->fg;
+    sir_textcolor bg = SIRCM_16 == mode ? _sir_mkansibgcolor(style->bg) : style->bg;
+
+    if (!_sir_validtextattr(style->attr) || !_sir_validtextcolor(mode, fg) ||
+        !_sir_validtextcolor(mode, bg))
         return false;
 
-    if (style->fg == style->bg) {
+    if (SIRTC_DEFAULT != style->fg && SIRTC_DEFAULT != style->bg &&
+        style->fg == style->bg) {
         _sir_selflog("error: fg color %08" PRIx32 " and bg color %08" PRIx32
                      " are identical; text would be invisible", style->fg,
                      style->bg);
@@ -179,14 +194,24 @@ bool _sir_validtextstyle(sir_colormode mode, const sir_textstyle* style) {
     return true;
 }
 
-sir_colormode _sir_getcolormode(void) {
-    sirconfig* _cfg = _sir_locksection(SIRMI_CONFIG);
-    if (!_cfg) {
-        _sir_seterror(_SIR_E_INTERNAL);
-        return SIRCM_INVALID;
-    }
+bool _sir_setcolormode(sir_colormode mode) {
+#pragma message("TODO: find a home for color mode, or make it a compile-time constant")
+    if (!_sir_validcolormode(mode))
+        return false;
 
-    sir_colormode mode = _cfg->si.color_mode;
-    _sir_unlocksection(SIRMI_CONFIG);
-    return mode;
+#if defined(__HAVE_ATOMIC_H__)
+    atomic_store(&color_mode, mode);
+#else
+    color_mode = mode;
+#endif
+
+    return true;
+}
+
+sir_colormode _sir_getcolormode(void) {
+#if defined(__HAVE_ATOMIC_H__)
+    return atomic_load(&color_mode);
+#else
+    return color_mode;
+#endif
 }
