@@ -1,5 +1,5 @@
 #
-# libsir
+# libsir -- Makefile
 # https://github.com/aremmell/libsir
 #
 # SPDX-License-Identifier: MIT
@@ -21,63 +21,34 @@ RANLIB     ?= ranlib
 LDCONFIG   ?= ldconfig
 SHELL      := $(shell env sh -c 'PATH="$$(command -p getconf PATH)" command -v sh')
 
+# platform specifics
+include sirplatform.mk
+
 # base CFLAGS
-CFLAGS += -Wall -Wextra -Wpedantic -std=c11 -I. -fPIC
-
-# MinGW compiler-specific flags
-ifneq "$(findstring mingw,$(CC))" ""
-	MINGW ?= 1
-endif
-ifeq ($(MINGW),1)
-  ifneq "$(findstring gcc,$(CC))" ""
-	CFLAGS += -Wno-unknown-pragmas
-  endif
-	MINGW_LIBS=-lshlwapi -lws2_32
-endif
-
-# Oracle compiler-specific flags
-ifneq "$(findstring suncc,$(CC))" ""
-	SUNPRO ?= 1
-endif
-ifeq ($(SUNPRO),1)
-	CFLAGS        += -fcommon
-	FORTIFY_FLAGS ?= -U_FORTIFY_SOURCE
-	MMDOPT        ?= -xMMD
-	PTHOPT        ?= -mt=yes
-else
-	FORTIFY_FLAGS ?= -D_FORTIFY_SOURCE=2
-	MMDOPT        ?= -MMD
-	PTHOPT        ?= -pthread
-endif
-
-# MinGW MSVCRT workaround
-ifeq ($(SIR_MSVCRT_MINGW),1)
-	CFLAGS += -DSIR_MSVCRT_MINGW
+ifndef NO_DEFAULT_CFLAGS
+  CFLAGS += -Wall -Wextra -Wpedantic -std=c11 -I. -fPIC
 endif
 
 # debug/non-debug CFLAGS
 ifeq ($(SIR_DEBUG),1)
-	CFLAGS += -g -O0 -DDEBUG -U_FORTIFY_SOURCE
+  CFLAGS += -g -O0 -DDEBUG -U_FORTIFY_SOURCE
 else
-	CFLAGS += -O3 -DNDEBUG $(FORTIFY_FLAGS)
+  CFLAGS += -O3 -DNDEBUG $(FORTIFY_FLAGS)
 endif
 
-# enable internal diagnostic logging
+# enable internal diagnostic logging?
 ifeq ($(SIR_SELFLOG),1)
-	CFLAGS += -DSIR_SELFLOG
+  CFLAGS += -DSIR_SELFLOG
 endif
 
-ifeq ($(SIR_USE_HASH),1)
-	CFLAGS += -DSIR_USE_HASH
-endif
-
+# enable assertions?
 ifeq ($(SIR_ASSERT_ENABLED),1)
-	CFLAGS += -DSIR_ASSERT_ENABLED
+  CFLAGS += -DSIR_ASSERT_ENABLED
 endif
 
-# on Windows, automatically defined by the preprocessor.
+# disable system loggers?
 ifeq ($(SIR_NO_SYSTEM_LOGGERS),1)
-	CFLAGS += -DSIR_NO_SYSTEM_LOGGERS
+  CFLAGS += -DSIR_NO_SYSTEM_LOGGERS
 endif
 
 # dependencies
@@ -85,7 +56,7 @@ LIBS = $(PTHOPT)
 
 # for test rig and example:
 # link with static library, not shared
-LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s $(MINGW_LIBS)
+LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s $(PLATFORM_LIBS)
 
 # translation units
 TUS := $(wildcard *.c)
@@ -96,22 +67,22 @@ OBJ  = $(patsubst %, $(INTDIR)/%, $(_OBJ))
 
 # shared library
 OBJ_SHARED     = $(patsubst %.o, $(INTDIR)/%.o, $(_OBJ))
-OUT_SHARED_FN  = libsir.so
+OUT_SHARED_FN  = libsir$(PLATFORM_DLL_EXT)
 OUT_SHARED     = $(LIBDIR)/$(OUT_SHARED_FN)
-LDFLAGS_SHARED = $(LIBS) $(MINGW_LIBS)
+LDFLAGS_SHARED = $(LIBS) $(PLATFORM_LIBS)
 
 # static library
 OBJ_STATIC     = $(OBJ_SHARED)
-OUT_STATIC_FN  = libsir_s.a
+OUT_STATIC_FN  = libsir_s$(PLATFORM_LIB_EXT)
 OUT_STATIC     = $(LIBDIR)/$(OUT_STATIC_FN)
 
 # console example
 OBJ_EXAMPLE    = $(INTDIR)/$(EXAMPLE)/$(EXAMPLE).o
-OUT_EXAMPLE    = $(BINDIR)/sirexample
+OUT_EXAMPLE    = $(BINDIR)/sirexample$(PLATFORM_EXE_EXT)
 
 # console test rig
 OBJ_TESTS      = $(INTDIR)/$(TESTS)/$(TESTS).o
-OUT_TESTS      = $(BINDIR)/sirtests
+OUT_TESTS      = $(BINDIR)/sirtests$(PLATFORM_EXE_EXT)
 
 # ##########
 # targets
@@ -187,8 +158,9 @@ install: $(INSTALLSH)
 
 .PHONY: clean distclean
 clean distclean:
-	$(shell rm -rf "$(BUILDDIR)/" > /dev/null 2>&1 ; \
-			rm -f ./*.log > /dev/null 2>&1)
+	@rm -rf $(BUILDDIR) > /dev/null 2>&1
+	@rm -rf ./*.log > /dev/null 2>&1
+	@rm -rf ./*.d > /dev/null 2>&1
 	-@echo build directory and log files cleaned successfully.
 
 .PHONY: printvars printenv
