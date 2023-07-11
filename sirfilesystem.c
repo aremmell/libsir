@@ -176,8 +176,7 @@ char* _sir_getappfilename(void) {
         return NULL;
     }
 
-    size_t size = (st.st_size > 0) ? st.st_size + 1 : SIR_MAXPATH;
-    _sir_selflog("lstat(%s) = st.st_size = %ld", PROC_SELF, (long)st.st_size);
+    size_t size = (st.st_size > 0) ? st.st_size + 2 : SIR_MAXPATH;
 #else
     size_t size = SIR_MAXPATH;
 #endif
@@ -186,7 +185,6 @@ char* _sir_getappfilename(void) {
     bool resolved = false;
 
     do {
-        _sir_selflog("allocating %zu bytes for filename", size);
         _sir_safefree(&buffer);
         buffer = (char*)calloc(size, sizeof(char));
         if (NULL == buffer) {
@@ -198,7 +196,6 @@ char* _sir_getappfilename(void) {
 #if !defined(__WIN__)
 # if defined(__READLINK_OS__)
         ssize_t read = readlink(PROC_SELF, buffer, size - 1);
-        _sir_selflog("readlink(%s) returned %ld, passed in size %zu", PROC_SELF, read, size - 1);
         if (-1 != read && read < (ssize_t)size - 1) {
             resolved = true;
             break;
