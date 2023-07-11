@@ -181,26 +181,16 @@ char* _sir_getappfilename(void) {
     size_t size = SIR_MAXPATH;
 #endif
 
-    char* buffer = (char*)calloc(size, sizeof(char));
-    if (NULL == buffer) {
-        _sir_handleerr(errno);
-        return NULL;
-    }
-
+    char* buffer  = NULL;
     bool resolved = false;
-    bool grow     = false;
 
     do {
-        if (grow) {
-            _sir_safefree(&buffer);
-            buffer = (char*)calloc(size, sizeof(char));
-            if (NULL == buffer) {
-                _sir_handleerr(errno);
-                resolved = false;
-                break;
-            }
-
-            grow = false;
+        _sir_safefree(&buffer);
+        buffer = (char*)calloc(size, sizeof(char));
+        if (NULL == buffer) {
+            _sir_handleerr(errno);
+            resolved = false;
+            break;
         }
 
 #if !defined(__WIN__)
@@ -229,10 +219,9 @@ char* _sir_getappfilename(void) {
             resolved = true;
             break;
         } else {
-            if (ENOMEM == errno && 0 == sysctl(mib, 4, NULL, &size, NULL, 0)) {
-                grow = true;
-                continue;
-            }
+            if (ENOMEM == errno && 0 == sysctl(mib, 4, NULL, &size, NULL, 0))
+                continue; /* grow buffer. */
+
             _sir_handleerr(errno);
             resolved = false;
             break;
@@ -243,7 +232,7 @@ char* _sir_getappfilename(void) {
             resolved = true;
             break;
         } else if (B_BUFFER_OVERFLOW == ret) {
-            grow = true;
+            /* grow buffer. */
             continue;
         } else {
             _sir_handleerr(errno);
@@ -256,7 +245,7 @@ char* _sir_getappfilename(void) {
             resolved = true;
             break;
         } else if (-1 == ret) {
-            grow = true;
+            /* grow buffer. */
             continue;
         } else {
             _sir_handleerr(errno);
@@ -281,7 +270,6 @@ char* _sir_getappfilename(void) {
                 * your buffer needed to be; it just truncates the string and
                 * returns size. So, we'll guess. */
                 size += SIR_PATH_BUFFER_GROW_BY;
-                grow = true;
                 continue;
             }
         }
@@ -291,7 +279,7 @@ char* _sir_getappfilename(void) {
 
     if (!resolved) {
         _sir_safefree(&buffer);
-        _sir_selflog("failed to resolve filename!");
+        _sir_selflog("error: failed to resolve filename!");
         return NULL;
     }
 
