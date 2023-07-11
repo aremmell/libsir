@@ -48,6 +48,18 @@
 #    undef __HAVE_ATOMIC_H__
 #   endif
 #  endif
+#  if !defined(__open_xl__) && defined(__ibmxl__) && defined(__ibmxl_release__)
+#   if __ibmxl__ <= 16
+#    if __ibmxl_release__ <= 1
+#     undef __HAVE_ATOMIC_H__
+#    endif
+#   endif
+#  endif
+#  if !defined(__open_xl__) && defined(__xlC_ver__)
+#   if __xlC_ver__ <= 0x0000000e
+#    undef __HAVE_ATOMIC_H__
+#   endif
+#  endif
 #  if defined(__STDC_WANT_LIB_EXT1__)
 #   undef __STDC_WANT_LIB_EXT1__
 #  endif
@@ -237,7 +249,7 @@ _set_thread_local_invalid_parameter_handler(
 #   include <fcntl.h>
 #  endif
 #  include <unistd.h>
-#  if !defined(__CYGWIN__) && !defined(__HAIKU__)
+#  if !defined(__CYGWIN__) && !defined(__HAIKU__) && !defined(_AIX)
 #   include <sys/syscall.h>
 #  endif
 #  include <sys/time.h>
