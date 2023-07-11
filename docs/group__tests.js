@@ -1,6 +1,6 @@
 var group__tests =
 [
-    [ "sirtest_mthread_race", "group__tests.html#ga33e3ca313f107bfad6d01c00c9d47d8d", null ],
+    [ "sirtest_threadrace", "group__tests.html#gacfda68c218d184e7a6998d9f2837481f", null ],
     [ "sirtest_exceedmaxsize", "group__tests.html#ga90b7633a39946d2c201758aafbce43fa", null ],
     [ "sirtest_failnooutputdest", "group__tests.html#ga9472cbb9a62d343fe0272444a7f87ce1", null ],
     [ "sirtest_failnulls", "group__tests.html#gade87411ddfc55756dd519d7e9b8f33a7", null ],
