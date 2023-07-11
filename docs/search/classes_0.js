@@ -12,8 +12,9 @@ var searchData=
   ['sir_5fupdate_5fconfig_5fdata_9',['sir_update_config_data',['../structsir__update__config__data.html',1,'']]],
   ['sirbuf_10',['sirbuf',['../structsirbuf.html',1,'']]],
   ['sirconfig_11',['sirconfig',['../structsirconfig.html',1,'']]],
-  ['sirerror_12',['sirerror',['../structsirerror.html',1,'']]],
-  ['sirfcache_13',['sirfcache',['../structsirfcache.html',1,'']]],
-  ['sirfile_14',['sirfile',['../structsirfile.html',1,'']]],
-  ['sirinit_15',['sirinit',['../group__publictypes.html#structsirinit',1,'']]]
+  ['sirconfig_2estate_2elast_12',['sirconfig.state.last',['../structsirconfig_8state_8last.html',1,'']]],
+  ['sirerror_13',['sirerror',['../structsirerror.html',1,'']]],
+  ['sirfcache_14',['sirfcache',['../structsirfcache.html',1,'']]],
+  ['sirfile_15',['sirfile',['../structsirfile.html',1,'']]],
+  ['sirinit_16',['sirinit',['../group__publictypes.html#structsirinit',1,'']]]
 ];

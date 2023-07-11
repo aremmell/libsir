@@ -7,7 +7,7 @@ libsir&mdash;a cross-platform, thread-safe logging library
 
 [![Build Status](https://app.travis-ci.com/aremmell/libsir.svg?branch=master)](https://app.travis-ci.com/aremmell/libsir)&nbsp;![REUSE Compliance](https://img.shields.io/reuse/compliance/github.com%2Faremmell%2Flibsir?label=REUSE3&color=2340b911)&nbsp;![GitHub](https://img.shields.io/github/license/aremmell/libsir?color=%2340b911)
 
-## Overview
+## <a id="overview" /> Overview
 
 <!-- toc -->
 
@@ -23,7 +23,7 @@ libsir&mdash;a cross-platform, thread-safe logging library
 
 <!-- tocstop -->
 
-## Synopsis
+## <a id="synopsis" /> Synopsis
 
 libsir is a cross-platform, thread-safe logging library written in C (*ISO/IEC 9899:2011 C11*) that is designed to simplify and streamline the generation and distribution of human-readable information in software.
 
@@ -33,7 +33,7 @@ Each 'level' or 'priority' of output can be visually styled however you wish for
 
 ![libsir visual graph](./docs/res/libsir-alpha.png)
 
-## Notables
+## <a id="notables" /> Notables
 
 - No dependencies (other than `libc` and `pthreads`). On Windows, libsir uses the native synchronization API.
 - Accompanied by a robust test suite to ensure dependable behavior, even if you make modifications to the source.
@@ -42,13 +42,13 @@ Each 'level' or 'priority' of output can be visually styled however you wish for
 - [Full documentation](https://libsir.rml.dev), thanks to Doxygen.
 - Lightweight&mdash;the shared library comes in at around 76&nbsp;KiB, and the static library around 70&nbsp;KiB.
 
-## Cross-platform compatibility
+## <a id="cross-platform-compatibility" /> Cross-platform compatibility
 
 At this time, libsir is supported (*that is, it compiles and passes the test suite*) on at least the following operating system and toolchain combinations:
 
 | System | Toolchain |
 | ------:|:--------- |
-| **Linux**&nbsp;≳2.6.32<br>(glibc&nbsp;2.18, musl&nbsp;≳1.2.3, uClibc‑ng&nbsp;1.0.43, Bionic&nbsp;19) | **GCC**&nbsp;(4.8.4&nbsp;‑&nbsp;13.1.1),&nbsp; **Clang**&nbsp;(3.8&nbsp;‑&nbsp;16.0.6),&nbsp; **Oracle&nbsp;Studio&nbsp;C/C++**&nbsp;(≳12.6),&nbsp; **IBM&nbsp;Advance&nbsp;Toolchain**&nbsp;(14&nbsp;‑&nbsp;16),&nbsp; **IBM&nbsp;Open&nbsp;XL C/C++**&nbsp;(17.1.1),&nbsp; **NVIDIA&nbsp;HPC&nbsp;SDK&nbsp;C/C++**&nbsp;(23.5),&nbsp; **Arm&nbsp;HPC&nbsp;C/C++**&nbsp;(22.1),&nbsp; **AMD&nbsp;Optimizing&nbsp;C/C++**&nbsp;(4.0.0),&nbsp; **Intel&nbsp;oneAPI&nbsp;DPC++/C++**&nbsp;(2023.1),&nbsp; **Intel&nbsp;C++&nbsp;Compiler&nbsp;Classic**&nbsp;(2021.9),&nbsp; **Android&nbsp;NDK**&nbsp;(r25c) |
+| **Linux**&nbsp;≳2.6.32<br>(glibc&nbsp;2.18, musl&nbsp;≳1.2.3, uClibc‑ng&nbsp;1.0.43, Bionic&nbsp;19) | **GCC**&nbsp;(4.8.4&nbsp;‑&nbsp;13.1.1),&nbsp; **Clang**&nbsp;(3.8&nbsp;‑&nbsp;16.0.6),&nbsp; **Oracle&nbsp;Studio&nbsp;C/C++**&nbsp;(≳12.6),&nbsp; **IBM&nbsp;Advance&nbsp;Toolchain**&nbsp;(14&nbsp;‑&nbsp;16),&nbsp; **IBM&nbsp;Open&nbsp;XL&nbsp;C/C++**&nbsp;(17.1.1),&nbsp; **NVIDIA&nbsp;HPC&nbsp;SDK&nbsp;C/C++**&nbsp;(23.5),&nbsp; **Arm&nbsp;HPC&nbsp;C/C++**&nbsp;(22.1),&nbsp; **AMD&nbsp;Optimizing&nbsp;C/C++**&nbsp;(4.0.0),&nbsp; **Intel&nbsp;oneAPI&nbsp;DPC++/C++**&nbsp;(2023.1),&nbsp; **Intel&nbsp;C++&nbsp;Compiler&nbsp;Classic**&nbsp;(2021.9),&nbsp; **Android&nbsp;NDK**&nbsp;(r25c) |
 | **macOS**&nbsp;≳10.15 | **Xcode**&nbsp;(12.4&nbsp;‑&nbsp;15),&nbsp; **GCC**&nbsp;(10.4&nbsp;‑&nbsp;13.1),&nbsp; **Clang**&nbsp;(12.0.1&nbsp;‑&nbsp;16.0.6),&nbsp; **Intel&nbsp;C++&nbsp;Compiler&nbsp;Classic**&nbsp;(2021.9) |
 | **Windows**&nbsp;≳10, 11 | **Microsoft&nbsp;Visual&nbsp;C/C++**&nbsp;(17.6),&nbsp; **GCC‑MinGW**&nbsp;(12.2.1&nbsp;‑&nbsp;13.1.1),&nbsp; **LLVM‑MinGW**&nbsp;(15.0&nbsp;‑&nbsp;16.0.6) |
 | **Cygwin**&nbsp;3.4 | **GCC**&nbsp;(11.2&nbsp;‑&nbsp;11.4) |
@@ -64,7 +64,7 @@ libsir is known to work on most common (and many uncommon) architectures.
 It has actually been built and tested on **Intel** (x86\_64, i686), **ARM** (ARMv6, ARMv7HF, ARMv8‑A), **POWER** (PowerPC, PPC64, PPC64le), **MIPS** (MIPS64, MIPS32, 74Kc), **z/Architecture** (S390X), **SuperH** (SH‑4A), **RISC‑V** (RV64), **OpenRISC** (OR1200), and **m68k** (68020+).
 If it doesn't work on your machine, it's probably a bug.
 
-## An example
+## <a id="an-example" /> An example
 
 Some sample terminal output from libsir demonstrating the default configuration:
 
@@ -72,19 +72,19 @@ Some sample terminal output from libsir demonstrating the default configuration:
 
 This output is from the `example` application, whose source code can be located in the [example](https://github.com/aremmell/libsir/tree/master/example) directory. If you're curious about a basic implementation of libsir in a practical context, that's a good place to start.
 
-## Building from source
+## <a id="building-from-source" /> Building from source
 
 There are several options if you would like to build libsir from source:
 
-### Visual Studio Code
+### <a id="visual-studio-code" /> Visual Studio Code
 
 There is a `code‑workspace` in the repository. As of right now, the build and launch tasks are not fully functional for every platform, but everything else should be good to go.
 
-### Visual Studio 2022
+### <a id="visual-studio-2022" /> Visual Studio 2022
 
 A very recent addition is an `sln` and some `vcxproj` files in the [msvc](https://github.com/aremmell/libsir/tree/master/msvs) directory. They are confirmed to work correctly on Windows 11 (x64 &amp; Arm64) with Visual Studio 17.6.
 
-### Unix Makefile
+### <a id="unix-makefile" /> Unix Makefile
 
 | Recipe Type    |    Command          |       Output file(s)                                          |
 | :------------: | :-----------------: | :-----------------------------------------------------------: |
@@ -94,7 +94,7 @@ A very recent addition is an `sln` and some `vcxproj` files in the [msvc](https:
 | Shared library |    `make shared`    |                    *build/lib/libsir.so*                      |
 |    Install     | `sudo make install` |    *`$(INSTALLLIB)`/libsir.so  &amp; `$(INSTALLINC)`/sir.h*   |
 
-## Dig in
+## <a id="dig-in" /> Dig in
 
 If you are genuinely interested in utilizing libsir, you are encouraged to read the [full online documentation](https://libsir.rml.dev) to get a better understanding of the library's capabilities and interfaces.
 

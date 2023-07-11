@@ -49,5 +49,8 @@ var sirconfig_8h =
     [ "SIR_NUMLEVELS", "sirconfig_8h.html#a54ab03b03f20338146a5ab69fcd90177", null ],
     [ "SIR_NUMOPTIONS", "sirconfig_8h.html#a3d40d22ca5d641892fc7b3cb8d0bb283", null ],
     [ "SIR_NUM16_COLOR_MAPPINGS", "sirconfig_8h.html#ad4797e353beace140ae7ac35e0e6ea11", null ],
-    [ "SIR_HNAME_CHK_INTERVAL", "sirconfig_8h.html#a46e195050794e32a234cda5f1af57a2a", null ]
+    [ "SIR_HNAME_CHK_INTERVAL", "sirconfig_8h.html#a46e195050794e32a234cda5f1af57a2a", null ],
+    [ "SIR_SQUELCH_THRESHOLD", "sirconfig_8h.html#a3e733628ed19a474bdfc6fa3fcc45790", null ],
+    [ "SIR_SQUELCH_BACKOFF_FACTOR", "sirconfig_8h.html#ab84ea2d42dc216fad92bde1811dc4632", null ],
+    [ "SIR_SQUELCH_MSG_FORMAT", "sirconfig_8h.html#a3b6b481d57fc3e954accee882d143a9a", null ]
 ];
