@@ -32,3 +32,6 @@ index.md
 # Visual Studio temporary files
 .vs/
 *.user
+
+# Automatic dependencies
+*.d
