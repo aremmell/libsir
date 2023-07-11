@@ -651,6 +651,33 @@ bool sirtest_textstylesanity(void) {
     pass &= sir_emerg("default style (emergency)");
     PRINT_PASS(pass, "\t--- reset to defaults: %s ---\n\n", PRN_PASS(pass));
 
+    printf("\t" WHITEB("--- change mode: 256-color ---") "\n");
+    pass &= sir_setcolormode(SIRCM_256);
+
+    for (sir_textcolor fg = 0, bg = 255; fg < 256; fg++, bg--) {
+        if (fg == bg)
+            continue;
+        pass &= sir_settextstyle(SIRL_DEBUG, SIRTA_NORMAL, fg, bg);
+        pass &= sir_debug("this is 256-color mode (fg: %" PRIu32 ", bg: %" PRIu32 ")",
+            fg, bg);
+    }
+
+    PRINT_PASS(pass, "\t--- change mode: 256-color: %s ---\n\n", PRN_PASS(pass));
+
+    printf("\t" WHITEB("--- change mode: RGB-color ---") "\n");
+    pass &= sir_setcolormode(SIRCM_RGB);
+
+    for (size_t n = 0; n < 256; n++) {
+        sir_textcolor fg = _sir_makergb(getrand(255), getrand(255), getrand(255));
+        sir_textcolor bg = _sir_makergb(getrand(255), getrand(255), getrand(255));
+        pass &= sir_settextstyle(SIRL_DEBUG, SIRTA_NORMAL, fg, bg);
+        pass &= sir_debug("this is RGB-color mode (fg: %" PRIu32 ", %" PRIu32 ", %" PRIu32
+            ", bg: %" PRIu32 ", %" PRIu32 ", %" PRIu32 ")", _sir_getredfromcolor(fg),
+            _sir_getgreenfromcolor(fg), _sir_getbluefromcolor(fg), _sir_getredfromcolor(bg),
+            _sir_getgreenfromcolor(bg), _sir_getbluefromcolor(bg));
+    }
+    PRINT_PASS(pass, "\t--- change mode: RGB-color: %s ---\n\n", PRN_PASS(pass));
+
     sir_cleanup();
 
     return print_result_and_return(pass);

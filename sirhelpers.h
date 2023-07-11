@@ -173,14 +173,26 @@ bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color);
 
 /** Converts a SIRTC_* value to a 16-color mode ANSI foreground color. */
 static inline
-sir_textcolor _sir_mkansifgcolor(sir_textcolor sirtc) {
-    return SIRTC_DEFAULT == sirtc ? 39 : sirtc < 8 ? sirtc + 30 : sirtc + 82;
+sir_textcolor _sir_mkansifgcolor(sir_textcolor fg) {
+    return SIRTC_DEFAULT == fg ? 39 : fg < 8 ? fg + 30 : fg + 82;
 }
 
 /** Converts a SIRTC_* value to a 16-color mode ANSI background color. */
 static inline
-sir_textcolor _sir_mkansibgcolor(sir_textcolor sirtc) {
-    return SIRTC_DEFAULT == sirtc ? 49 : sirtc < 8 ? sirtc + 40 : sirtc + 92;
+sir_textcolor _sir_mkansibgcolor(sir_textcolor bg) {
+    return SIRTC_DEFAULT == bg ? 49 : bg < 8 ? bg + 40 : bg + 92;
+}
+
+/** Returns the appropriate ANSI command for the specified foreground color. */
+static inline
+int _sir_getansifgcmd(sir_textcolor fg) {
+    return SIRTC_DEFAULT == fg ? 39 : 38;
+}
+
+/** Returns the appropriate ANSI command for the specified background color. */
+static inline
+int _sir_getansibgcmd(sir_textcolor bg) {
+    return SIRTC_DEFAULT == bg ? 49 : 48;
 }
 
 /** Extracts the red component out of an RGB color mode ::sir_textcolor. */
@@ -200,6 +212,16 @@ sir_textcolor _sir_mkansibgcolor(sir_textcolor sirtc) {
 
 /** Sets the blue component in an RGB color mode ::sir_textcolor. */
 # define _sir_setblueincolor(color, blue) (color |= (blue & 0x000000ff))
+
+/** Sets the red, blue, and green components in an RGB color mode ::sir_textcolor. */
+static inline
+sir_textcolor _sir_makergb(sir_textcolor r, sir_textcolor g, sir_textcolor b) {
+    sir_textcolor retval = 0;
+    _sir_setredincolor(retval, r);
+    _sir_setgreenincolor(retval, g);
+    _sir_setblueincolor(retval, b);
+    return retval;
+}
 
 /** Validates a string pointer and optionally fails if it's invalid. */
 bool __sir_validstr(const char* restrict str, bool fail);

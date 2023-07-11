@@ -153,14 +153,21 @@ bool _sir_formatstyle(sir_colormode mode, const sir_textstyle* style,
             return 0 < snprintf(buf, SIR_MAXSTYLE, "%s%d;%d;%dm", SIR_ESC,
                 style->attr, _sir_mkansifgcolor(style->fg), _sir_mkansibgcolor(style->bg));
         break;
-        case SIRCM_256:
+        case SIRCM_256: {
             /* \x1b[attr;38;5;fg;48;5;bgm */
-            return 0 < snprintf(buf, SIR_MAXSTYLE, "%s%d;38;5;%d;48;5;%d",
-                SIR_ESC, style->attr, style->fg, style->bg);
-        break;
-        case SIRCM_RGB:
+            return 0 < snprintf(buf, SIR_MAXSTYLE, "%s%d;%d;5;%d;%d;5;%dm",
+                SIR_ESC, style->attr, _sir_getansifgcmd(style->fg), style->fg,
+                _sir_getansibgcmd(style->bg), style->bg);
+        }
+        case SIRCM_RGB: {
             /* \x1b[attr;38;2;rrr;ggg;bbb;48;2;rrr;ggg;bbbm */
-        break;
+            return 0 < snprintf(buf, SIR_MAXSTYLE, "%s%d;%d;2;%d;%d;%d;%d;2;%d;%d;%dm",
+                SIR_ESC, style->attr, _sir_getansifgcmd(style->fg),
+                _sir_getredfromcolor(style->fg), _sir_getgreenfromcolor(style->fg),
+                _sir_getbluefromcolor(style->fg), _sir_getansibgcmd(style->bg),
+                _sir_getredfromcolor(style->bg), _sir_getgreenfromcolor(style->bg),
+                _sir_getbluefromcolor(style->bg));
+        }
         case SIRCM_INVALID:
         default:
             return false;
