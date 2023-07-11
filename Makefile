@@ -134,7 +134,7 @@ $(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS)
 	@mkdir -p $(@D)
 	@mkdir -p $(BINDIR)
 	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS) $(CFLAGS) -I.. $(LDFLAGS)
-	$(shell touch $(BINDIR)/file.exists)
+	@touch $(BINDIR)/file.exists > /dev/null
 	-@echo built $(OUT_TESTS) successfully.
 
 .PHONY: docs
