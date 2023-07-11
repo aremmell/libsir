@@ -177,6 +177,7 @@ char* _sir_getappfilename(void) {
     }
 
     size_t size = (st.st_size > 0) ? st.st_size + 1 : SIR_MAXPATH;
+    _sir_selflog("lstat(%s) = st.st_size = %ld", PROC_SELF, (long)st.st_size);
 #else
     size_t size = SIR_MAXPATH;
 #endif
@@ -185,6 +186,7 @@ char* _sir_getappfilename(void) {
     bool resolved = false;
 
     do {
+        _sir_selflog("allocating %zu bytes for filename", size);
         _sir_safefree(&buffer);
         buffer = (char*)calloc(size, sizeof(char));
         if (NULL == buffer) {
