@@ -1,0 +1,615 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		94499D6E2A5CFCC600542739 /* sirfilecache.h in Headers */ = {isa = PBXBuildFile; fileRef = 94499D5E2A5CFCC600542739 /* sirfilecache.h */; };
+		94499D6F2A5CFCC600542739 /* sirconsole.h in Headers */ = {isa = PBXBuildFile; fileRef = 94499D5F2A5CFCC600542739 /* sirconsole.h */; };
+		94499D702A5CFCC600542739 /* sir.h in Headers */ = {isa = PBXBuildFile; fileRef = 94499D602A5CFCC600542739 /* sir.h */; };
+		94499D712A5CFCC600542739 /* sirplatform.h in Headers */ = {isa = PBXBuildFile; fileRef = 94499D612A5CFCC600542739 /* sirplatform.h */; };
+		94499D722A5CFCC600542739 /* siransimacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 94499D622A5CFCC600542739 /* siransimacros.h */; };
+		94499D732A5CFCC600542739 /* sirdefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 94499D632A5CFCC600542739 /* sirdefaults.h */; };
+		94499D742A5CFCC600542739 /* sirtypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 94499D642A5CFCC600542739 /* sirtypes.h */; };
+		94499D752A5CFCC600542739 /* sirconfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 94499D652A5CFCC600542739 /* sirconfig.h */; };
+		94499D762A5CFCC600542739 /* sirmaps.h in Headers */ = {isa = PBXBuildFile; fileRef = 94499D662A5CFCC600542739 /* sirmaps.h */; };
+		94499D772A5CFCC600542739 /* sirmutex.h in Headers */ = {isa = PBXBuildFile; fileRef = 94499D672A5CFCC600542739 /* sirmutex.h */; };
+		94499D782A5CFCC600542739 /* sirtextstyle.h in Headers */ = {isa = PBXBuildFile; fileRef = 94499D682A5CFCC600542739 /* sirtextstyle.h */; };
+		94499D792A5CFCC600542739 /* sirinternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 94499D692A5CFCC600542739 /* sirinternal.h */; };
+		94499D7A2A5CFCC600542739 /* sirhelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 94499D6A2A5CFCC600542739 /* sirhelpers.h */; };
+		94499D7B2A5CFCC600542739 /* sirerrors.h in Headers */ = {isa = PBXBuildFile; fileRef = 94499D6B2A5CFCC600542739 /* sirerrors.h */; };
+		94499D7C2A5CFCC600542739 /* sirfilesystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 94499D6C2A5CFCC600542739 /* sirfilesystem.h */; };
+		94499D7D2A5CFCC600542739 /* sirimpl.h in Headers */ = {isa = PBXBuildFile; fileRef = 94499D6D2A5CFCC600542739 /* sirimpl.h */; };
+		94499D882A5CFCE600542739 /* sirerrors.c in Sources */ = {isa = PBXBuildFile; fileRef = 94499D7E2A5CFCE600542739 /* sirerrors.c */; };
+		94499D892A5CFCE600542739 /* sirfilesystem.c in Sources */ = {isa = PBXBuildFile; fileRef = 94499D7F2A5CFCE600542739 /* sirfilesystem.c */; };
+		94499D8A2A5CFCE600542739 /* sirinternal.c in Sources */ = {isa = PBXBuildFile; fileRef = 94499D802A5CFCE600542739 /* sirinternal.c */; };
+		94499D8B2A5CFCE600542739 /* sirmaps.c in Sources */ = {isa = PBXBuildFile; fileRef = 94499D812A5CFCE600542739 /* sirmaps.c */; };
+		94499D8C2A5CFCE600542739 /* sirfilecache.c in Sources */ = {isa = PBXBuildFile; fileRef = 94499D822A5CFCE600542739 /* sirfilecache.c */; };
+		94499D8D2A5CFCE600542739 /* sirtextstyle.c in Sources */ = {isa = PBXBuildFile; fileRef = 94499D832A5CFCE600542739 /* sirtextstyle.c */; };
+		94499D8E2A5CFCE600542739 /* sirmutex.c in Sources */ = {isa = PBXBuildFile; fileRef = 94499D842A5CFCE600542739 /* sirmutex.c */; };
+		94499D8F2A5CFCE600542739 /* sirhelpers.c in Sources */ = {isa = PBXBuildFile; fileRef = 94499D852A5CFCE600542739 /* sirhelpers.c */; };
+		94499D902A5CFCE600542739 /* sirconsole.c in Sources */ = {isa = PBXBuildFile; fileRef = 94499D862A5CFCE600542739 /* sirconsole.c */; };
+		94499D912A5CFCE600542739 /* sir.c in Sources */ = {isa = PBXBuildFile; fileRef = 94499D872A5CFCE600542739 /* sir.c */; };
+		94499DC02A5D015200542739 /* libsir_s.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94F943832A5CFBF900283819 /* libsir_s.a */; };
+		94499DD22A5D03B100542739 /* tests.c in Sources */ = {isa = PBXBuildFile; fileRef = 94499DD12A5D03B100542739 /* tests.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		94499DC12A5D015200542739 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 94F9437B2A5CFBF900283819 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 94F943822A5CFBF900283819;
+			remoteInfo = "static library";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		94499DB62A5D012F00542739 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		94499D5E2A5CFCC600542739 /* sirfilecache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sirfilecache.h; path = ../sirfilecache.h; sourceTree = "<group>"; };
+		94499D5F2A5CFCC600542739 /* sirconsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sirconsole.h; path = ../sirconsole.h; sourceTree = "<group>"; };
+		94499D602A5CFCC600542739 /* sir.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sir.h; path = ../sir.h; sourceTree = "<group>"; };
+		94499D612A5CFCC600542739 /* sirplatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sirplatform.h; path = ../sirplatform.h; sourceTree = "<group>"; };
+		94499D622A5CFCC600542739 /* siransimacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = siransimacros.h; path = ../siransimacros.h; sourceTree = "<group>"; };
+		94499D632A5CFCC600542739 /* sirdefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sirdefaults.h; path = ../sirdefaults.h; sourceTree = "<group>"; };
+		94499D642A5CFCC600542739 /* sirtypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sirtypes.h; path = ../sirtypes.h; sourceTree = "<group>"; };
+		94499D652A5CFCC600542739 /* sirconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sirconfig.h; path = ../sirconfig.h; sourceTree = "<group>"; };
+		94499D662A5CFCC600542739 /* sirmaps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sirmaps.h; path = ../sirmaps.h; sourceTree = "<group>"; };
+		94499D672A5CFCC600542739 /* sirmutex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sirmutex.h; path = ../sirmutex.h; sourceTree = "<group>"; };
+		94499D682A5CFCC600542739 /* sirtextstyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sirtextstyle.h; path = ../sirtextstyle.h; sourceTree = "<group>"; };
+		94499D692A5CFCC600542739 /* sirinternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sirinternal.h; path = ../sirinternal.h; sourceTree = "<group>"; };
+		94499D6A2A5CFCC600542739 /* sirhelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sirhelpers.h; path = ../sirhelpers.h; sourceTree = "<group>"; };
+		94499D6B2A5CFCC600542739 /* sirerrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sirerrors.h; path = ../sirerrors.h; sourceTree = "<group>"; };
+		94499D6C2A5CFCC600542739 /* sirfilesystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sirfilesystem.h; path = ../sirfilesystem.h; sourceTree = "<group>"; };
+		94499D6D2A5CFCC600542739 /* sirimpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sirimpl.h; path = ../sirimpl.h; sourceTree = "<group>"; };
+		94499D7E2A5CFCE600542739 /* sirerrors.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sirerrors.c; path = ../sirerrors.c; sourceTree = "<group>"; };
+		94499D7F2A5CFCE600542739 /* sirfilesystem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sirfilesystem.c; path = ../sirfilesystem.c; sourceTree = "<group>"; };
+		94499D802A5CFCE600542739 /* sirinternal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sirinternal.c; path = ../sirinternal.c; sourceTree = "<group>"; };
+		94499D812A5CFCE600542739 /* sirmaps.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sirmaps.c; path = ../sirmaps.c; sourceTree = "<group>"; };
+		94499D822A5CFCE600542739 /* sirfilecache.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sirfilecache.c; path = ../sirfilecache.c; sourceTree = "<group>"; };
+		94499D832A5CFCE600542739 /* sirtextstyle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sirtextstyle.c; path = ../sirtextstyle.c; sourceTree = "<group>"; };
+		94499D842A5CFCE600542739 /* sirmutex.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sirmutex.c; path = ../sirmutex.c; sourceTree = "<group>"; };
+		94499D852A5CFCE600542739 /* sirhelpers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sirhelpers.c; path = ../sirhelpers.c; sourceTree = "<group>"; };
+		94499D862A5CFCE600542739 /* sirconsole.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sirconsole.c; path = ../sirconsole.c; sourceTree = "<group>"; };
+		94499D872A5CFCE600542739 /* sir.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sir.c; path = ../sir.c; sourceTree = "<group>"; };
+		94499DB82A5D012F00542739 /* sirtests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sirtests; sourceTree = BUILT_PRODUCTS_DIR; };
+		94499DC72A5D01C400542739 /* libsir.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libsir.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		94499DD02A5D039E00542739 /* tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tests.h; path = ../../tests/tests.h; sourceTree = "<group>"; };
+		94499DD12A5D03B100542739 /* tests.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tests.c; path = ../../tests/tests.c; sourceTree = "<group>"; };
+		94F943832A5CFBF900283819 /* libsir_s.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsir_s.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		94499DB52A5D012F00542739 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				94499DC02A5D015200542739 /* libsir_s.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		94499DC52A5D01C400542739 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		94F943812A5CFBF900283819 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		94499DB92A5D012F00542739 /* sirtests */ = {
+			isa = PBXGroup;
+			children = (
+				94499DCF2A5D031700542739 /* include */,
+				94499DCE2A5D02FC00542739 /* src */,
+			);
+			path = sirtests;
+			sourceTree = "<group>";
+		};
+		94499DCE2A5D02FC00542739 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				94499DD12A5D03B100542739 /* tests.c */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		94499DCF2A5D031700542739 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				94499DD02A5D039E00542739 /* tests.h */,
+			);
+			name = include;
+			sourceTree = "<group>";
+		};
+		94F9437A2A5CFBF900283819 = {
+			isa = PBXGroup;
+			children = (
+				94F9438C2A5CFC2200283819 /* include */,
+				94F9438B2A5CFC1900283819 /* src */,
+				94499DB92A5D012F00542739 /* sirtests */,
+				94F943842A5CFBF900283819 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		94F943842A5CFBF900283819 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				94F943832A5CFBF900283819 /* libsir_s.a */,
+				94499DB82A5D012F00542739 /* sirtests */,
+				94499DC72A5D01C400542739 /* libsir.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		94F9438B2A5CFC1900283819 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				94499D872A5CFCE600542739 /* sir.c */,
+				94499D862A5CFCE600542739 /* sirconsole.c */,
+				94499D7E2A5CFCE600542739 /* sirerrors.c */,
+				94499D822A5CFCE600542739 /* sirfilecache.c */,
+				94499D7F2A5CFCE600542739 /* sirfilesystem.c */,
+				94499D852A5CFCE600542739 /* sirhelpers.c */,
+				94499D802A5CFCE600542739 /* sirinternal.c */,
+				94499D812A5CFCE600542739 /* sirmaps.c */,
+				94499D842A5CFCE600542739 /* sirmutex.c */,
+				94499D832A5CFCE600542739 /* sirtextstyle.c */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		94F9438C2A5CFC2200283819 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				94499D602A5CFCC600542739 /* sir.h */,
+				94499D622A5CFCC600542739 /* siransimacros.h */,
+				94499D652A5CFCC600542739 /* sirconfig.h */,
+				94499D5F2A5CFCC600542739 /* sirconsole.h */,
+				94499D632A5CFCC600542739 /* sirdefaults.h */,
+				94499D6B2A5CFCC600542739 /* sirerrors.h */,
+				94499D5E2A5CFCC600542739 /* sirfilecache.h */,
+				94499D6C2A5CFCC600542739 /* sirfilesystem.h */,
+				94499D6A2A5CFCC600542739 /* sirhelpers.h */,
+				94499D6D2A5CFCC600542739 /* sirimpl.h */,
+				94499D692A5CFCC600542739 /* sirinternal.h */,
+				94499D662A5CFCC600542739 /* sirmaps.h */,
+				94499D672A5CFCC600542739 /* sirmutex.h */,
+				94499D612A5CFCC600542739 /* sirplatform.h */,
+				94499D682A5CFCC600542739 /* sirtextstyle.h */,
+				94499D642A5CFCC600542739 /* sirtypes.h */,
+			);
+			name = include;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		94499DC32A5D01C400542739 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		94F9437F2A5CFBF900283819 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				94499D702A5CFCC600542739 /* sir.h in Headers */,
+				94499D762A5CFCC600542739 /* sirmaps.h in Headers */,
+				94499D742A5CFCC600542739 /* sirtypes.h in Headers */,
+				94499D772A5CFCC600542739 /* sirmutex.h in Headers */,
+				94499D6E2A5CFCC600542739 /* sirfilecache.h in Headers */,
+				94499D7A2A5CFCC600542739 /* sirhelpers.h in Headers */,
+				94499D7C2A5CFCC600542739 /* sirfilesystem.h in Headers */,
+				94499D7B2A5CFCC600542739 /* sirerrors.h in Headers */,
+				94499D722A5CFCC600542739 /* siransimacros.h in Headers */,
+				94499D712A5CFCC600542739 /* sirplatform.h in Headers */,
+				94499D782A5CFCC600542739 /* sirtextstyle.h in Headers */,
+				94499D752A5CFCC600542739 /* sirconfig.h in Headers */,
+				94499D6F2A5CFCC600542739 /* sirconsole.h in Headers */,
+				94499D792A5CFCC600542739 /* sirinternal.h in Headers */,
+				94499D732A5CFCC600542739 /* sirdefaults.h in Headers */,
+				94499D7D2A5CFCC600542739 /* sirimpl.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		94499DB72A5D012F00542739 /* sirtests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 94499DBC2A5D012F00542739 /* Build configuration list for PBXNativeTarget "sirtests" */;
+			buildPhases = (
+				94499DB42A5D012F00542739 /* Sources */,
+				94499DB52A5D012F00542739 /* Frameworks */,
+				94499DB62A5D012F00542739 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				94499DC22A5D015200542739 /* PBXTargetDependency */,
+			);
+			name = sirtests;
+			productName = sirtests;
+			productReference = 94499DB82A5D012F00542739 /* sirtests */;
+			productType = "com.apple.product-type.tool";
+		};
+		94499DC62A5D01C400542739 /* sir */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 94499DC82A5D01C400542739 /* Build configuration list for PBXNativeTarget "sir" */;
+			buildPhases = (
+				94499DC32A5D01C400542739 /* Headers */,
+				94499DC42A5D01C400542739 /* Sources */,
+				94499DC52A5D01C400542739 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = sir;
+			productName = libsir;
+			productReference = 94499DC72A5D01C400542739 /* libsir.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+		94F943822A5CFBF900283819 /* sir_s */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 94F943872A5CFBF900283819 /* Build configuration list for PBXNativeTarget "sir_s" */;
+			buildPhases = (
+				94F9437F2A5CFBF900283819 /* Headers */,
+				94F943802A5CFBF900283819 /* Sources */,
+				94F943812A5CFBF900283819 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = sir_s;
+			productName = libsir;
+			productReference = 94F943832A5CFBF900283819 /* libsir_s.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		94F9437B2A5CFBF900283819 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1430;
+				ORGANIZATIONNAME = aremmell;
+				TargetAttributes = {
+					94499DB72A5D012F00542739 = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+					94499DC62A5D01C400542739 = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+					94F943822A5CFBF900283819 = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 94F9437E2A5CFBF900283819 /* Build configuration list for PBXProject "libsir" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 94F9437A2A5CFBF900283819;
+			productRefGroup = 94F943842A5CFBF900283819 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				94F943822A5CFBF900283819 /* sir_s */,
+				94499DC62A5D01C400542739 /* sir */,
+				94499DB72A5D012F00542739 /* sirtests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		94499DB42A5D012F00542739 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				94499DD22A5D03B100542739 /* tests.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		94499DC42A5D01C400542739 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		94F943802A5CFBF900283819 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				94499D882A5CFCE600542739 /* sirerrors.c in Sources */,
+				94499D8B2A5CFCE600542739 /* sirmaps.c in Sources */,
+				94499D8A2A5CFCE600542739 /* sirinternal.c in Sources */,
+				94499D902A5CFCE600542739 /* sirconsole.c in Sources */,
+				94499D8D2A5CFCE600542739 /* sirtextstyle.c in Sources */,
+				94499D8C2A5CFCE600542739 /* sirfilecache.c in Sources */,
+				94499D912A5CFCE600542739 /* sir.c in Sources */,
+				94499D892A5CFCE600542739 /* sirfilesystem.c in Sources */,
+				94499D8F2A5CFCE600542739 /* sirhelpers.c in Sources */,
+				94499D8E2A5CFCE600542739 /* sirmutex.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		94499DC22A5D015200542739 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 94F943822A5CFBF900283819 /* sir_s */;
+			targetProxy = 94499DC12A5D015200542739 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		94499DBD2A5D012F00542739 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				ENABLE_TESTABILITY = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYMROOT = ../build/bin;
+			};
+			name = Debug;
+		};
+		94499DBE2A5D012F00542739 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYMROOT = ../build/bin;
+			};
+			name = Release;
+		};
+		94499DC92A5D01C400542739 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_TESTABILITY = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SYMROOT = ../build/lib;
+			};
+			name = Debug;
+		};
+		94499DCA2A5D01C400542739 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SYMROOT = ../build/lib;
+			};
+			name = Release;
+		};
+		94F943852A5CFBF900283819 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = NO;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				OBJROOT = ../build/obj;
+				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = macosx;
+				SYMROOT = ../build/;
+			};
+			name = Debug;
+		};
+		94F943862A5CFBF900283819 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				OBJROOT = ../build/obj;
+				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = macosx;
+				SYMROOT = ../build/;
+			};
+			name = Release;
+		};
+		94F943882A5CFBF900283819 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				EXECUTABLE_PREFIX = lib;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright (C) 2004-2023 Ryan M. Lederman <lederman@gmail.com>";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SYMROOT = ../build/lib;
+			};
+			name = Debug;
+		};
+		94F943892A5CFBF900283819 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				EXECUTABLE_PREFIX = lib;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright (C) 2004-2023 Ryan M. Lederman <lederman@gmail.com>";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SYMROOT = ../build/lib;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		94499DBC2A5D012F00542739 /* Build configuration list for PBXNativeTarget "sirtests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				94499DBD2A5D012F00542739 /* Debug */,
+				94499DBE2A5D012F00542739 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		94499DC82A5D01C400542739 /* Build configuration list for PBXNativeTarget "sir" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				94499DC92A5D01C400542739 /* Debug */,
+				94499DCA2A5D01C400542739 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		94F9437E2A5CFBF900283819 /* Build configuration list for PBXProject "libsir" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				94F943852A5CFBF900283819 /* Debug */,
+				94F943862A5CFBF900283819 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		94F943872A5CFBF900283819 /* Build configuration list for PBXNativeTarget "sir_s" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				94F943882A5CFBF900283819 /* Debug */,
+				94F943892A5CFBF900283819 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 94F9437B2A5CFBF900283819 /* Project object */;
+}
