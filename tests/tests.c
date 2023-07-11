@@ -27,7 +27,7 @@
 
 static sir_test sir_tests[] = {
     {"performance",             sirtest_perf, false, true},
-    {"thread-race",             sirtest_mthread_race, false, true},
+    {"thread-race",             sirtest_threadrace, false, true},
     {"exceed-max-buffer-size",  sirtest_exceedmaxsize, false, true},
     {"no-output-destination",   sirtest_failnooutputdest, false, true},
     {"null-pointers",           sirtest_failnulls, false, true},
@@ -1517,14 +1517,14 @@ static unsigned sirtest_thread(void* arg);
 
 #define NUM_THREADS 4
 
-bool sirtest_mthread_race(void) {
+bool sirtest_threadrace(void) {
 #if !defined(__WIN__)
     pthread_t thrds[NUM_THREADS] = {0};
 #else /* __WIN__ */
     uintptr_t thrds[NUM_THREADS] = {0};
 #endif
 
-    INIT_N(si, SIRL_ALL, SIRO_NOPID, 0, 0, "multi-thread-race");
+    INIT_N(si, SIRL_DEFAULT, SIRO_NOPID | SIRO_NOHOST, 0, 0, "thread-race");
     bool pass           = si_init;
     bool any_created    = false;
     size_t last_created = 0;
@@ -1621,7 +1621,7 @@ unsigned sirtest_thread(void* arg) {
 #endif
     }
 
-    printf("\thi, i'm thread id %d, logging to: '%s'...\n",
+    printf("\thi, i'm thread (id: %d), logging to: '%s'...\n",
             PID_CAST threadid, my_args->log_file);
 
     for (size_t n = 0; n < 1000; n++) {
@@ -1633,7 +1633,7 @@ unsigned sirtest_thread(void* arg) {
             sir_debug("this is log message #%zu", n);
         } else {
             style = SIRS_FG_BLACK | SIRS_BG_CYAN;
-            sir_alert("this is log message #%zu", n);
+            sir_info("this is log message #%zu", n);
         }
 
         /* sometimes remove and re-add the log file, and set some options/styles.
@@ -1646,16 +1646,18 @@ unsigned sirtest_thread(void* arg) {
             if (NULL == id)
                 my_args->pass = print_test_error(false, false);
 
-            if (!sir_settextstyle(SIRL_DEBUG, style))
+            if (!sir_settextstyle(SIRL_DEBUG, style) ||
+                !sir_settextstyle(SIRL_INFO, style))
                 my_args->pass = print_test_error(false, false);
 
-            if (!sir_stdoutopts(SIRO_NOPID))
+            if (!sir_stdoutopts(SIRO_NONAME | SIRO_NOHOST | SIRO_NOMSEC))
                 my_args->pass = print_test_error(false, false);
         } else {
-            if (!sir_settextstyle(SIRL_DEBUG, style))
+            if (!sir_settextstyle(SIRL_DEBUG, style) ||
+                !sir_settextstyle(SIRL_INFO, style))
                 my_args->pass = print_test_error(false, false);
 
-            if (!sir_fileopts(id, SIRO_NOPID))
+            if (!sir_fileopts(id, SIRO_NOPID | SIRO_NOHOST))
                 my_args->pass = print_test_error(false, false);
 
             if (!sir_stdoutopts(SIRO_NOTIME | SIRO_NOLEVEL))
