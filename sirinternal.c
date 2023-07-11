@@ -75,6 +75,8 @@ bool _sir_makeinit(sirinit* si) {
     si->d_syslog.levels = SIRL_NONE;
 #endif
 
+    si->color_mode = SIRCM_16;
+
     return true;
 }
 

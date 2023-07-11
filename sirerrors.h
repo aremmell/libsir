@@ -50,7 +50,10 @@ enum sir_errorcode {
     SIR_E_NODEST    = 12,   /**< No destinations registered for level */
     SIR_E_UNAVAIL   = 13,   /**< Feature is disabled or unavailable */
     SIR_E_INTERNAL  = 14,   /**< An internal error has occurred */
-    SIR_E_PLATFORM  = 15,   /**< Platform error code %%d: %%s */
+    SIR_E_COLORMODE = 15,   /**< Invalid color mode */
+    SIR_E_TEXTATTR  = 16,   /**< Invalid text attributes */
+    SIR_E_TEXTCOLOR = 17,   /**< Invalid text color */
+    SIR_E_PLATFORM  = 18,   /**< Platform error code %%d: %%s */
     SIR_E_UNKNOWN   = 4095, /**< Unknown error */
 };
 
@@ -71,6 +74,9 @@ enum sir_errorcode {
 # define _SIR_E_NODEST    _sir_mkerror(SIR_E_NODEST)
 # define _SIR_E_UNAVAIL   _sir_mkerror(SIR_E_UNAVAIL)
 # define _SIR_E_INTERNAL  _sir_mkerror(SIR_E_INTERNAL)
+# define _SIR_E_COLORMODE _sir_mkerror(SIR_E_COLORMODE)
+# define _SIR_E_TEXTATTR  _sir_mkerror(SIR_E_TEXTATTR)
+# define _SIR_E_TEXTCOLOR _sir_mkerror(SIR_E_TEXTCOLOR)
 # define _SIR_E_PLATFORM  _sir_mkerror(SIR_E_PLATFORM)
 # define _SIR_E_UNKNOWN   _sir_mkerror(SIR_E_UNKNOWN)
 
@@ -93,6 +99,9 @@ static const struct {
     {_SIR_E_NODEST,    "No destinations registered for level"},
     {_SIR_E_UNAVAIL,   "Feature is disabled or unavailable"},
     {_SIR_E_INTERNAL,  "An internal error has occurred"},
+    {_SIR_E_COLORMODE, "Invalid color mode"},
+    {_SIR_E_TEXTATTR,  "Invalid text attributes"},
+    {_SIR_E_TEXTCOLOR, "Invalid text color"},
     {_SIR_E_PLATFORM,  "Platform error code %d: %s"},
     {_SIR_E_UNKNOWN,   "Unknown error"},
 };

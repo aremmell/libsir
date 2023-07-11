@@ -53,10 +53,16 @@ const char* _sir_gettextstyle(sir_level level) {
     return found;
 }
 
-bool _sir_settextstyle(sir_level level, sir_textstyle style) {
+bool _sir_maketextstyle(sir_colormode mode, sir_textattr attrs, sir_textcolor fg,
+    sir_textcolor bg, sir_textstyle* out) {
+
+    return false;
+}
+
+bool _sir_settextstyle(sir_colormode mode, sir_level level, const sir_textstyle* style) {
     _sir_seterror(_SIR_E_NOERROR);
 
-    if (!_sir_sanity() || !_sir_validlevel(level) || !_sir_validstyle(style, NULL, NULL, NULL))
+    if (!_sir_sanity() || !_sir_validlevel(level) || !_sir_validstyle(mode, style))
         return false;
 
     sir_level_style_tuple* map = _sir_locksection(SIRMI_TEXTSTYLE);
@@ -73,8 +79,8 @@ bool _sir_settextstyle(sir_level level, sir_textstyle style) {
     _SIR_BEGIN_BIN_SEARCH();
 
     if (map[_mid].level == level) {
-        map[_mid].style = style;
-        updated         = _sir_formatstyle(style, map[_mid].str, SIR_MAXSTYLE);
+        memcpy(&map[_mid].style, style, sizeof(sir_textstyle));
+        updated         = _sir_formatstyle(mode, style, map[_mid].str);
         break;
     }
 
@@ -87,23 +93,23 @@ bool _sir_settextstyle(sir_level level, sir_textstyle style) {
     return updated;
 }
 
-sir_textstyle _sir_getdefstyle(sir_level level) {
+const sir_textstyle const* _sir_getdefstyle(sir_level level) {
     switch (level) {
-        case SIRL_EMERG:  return sir_lvl_emerg_def_style;
-        case SIRL_ALERT:  return sir_lvl_alert_def_style;
-        case SIRL_CRIT:   return sir_lvl_crit_def_style;
-        case SIRL_ERROR:  return sir_lvl_error_def_style;
-        case SIRL_WARN:   return sir_lvl_warn_def_style;
-        case SIRL_NOTICE: return sir_lvl_notice_def_style;
-        case SIRL_INFO:   return sir_lvl_info_def_style;
-        case SIRL_DEBUG:  return sir_lvl_debug_def_style;
+        case SIRL_EMERG:  return &sir_lvl_emerg_def_style;
+        case SIRL_ALERT:  return &sir_lvl_alert_def_style;
+        case SIRL_CRIT:   return &sir_lvl_crit_def_style;
+        case SIRL_ERROR:  return &sir_lvl_error_def_style;
+        case SIRL_WARN:   return &sir_lvl_warn_def_style;
+        case SIRL_NOTICE: return &sir_lvl_notice_def_style;
+        case SIRL_INFO:   return &sir_lvl_info_def_style;
+        case SIRL_DEBUG:  return &sir_lvl_debug_def_style;
         default: /* this should never happen. */
             SIR_ASSERT(!"invalid sir_level");
-            return SIRS_INVALID;
+            return NULL;
     }
 }
 
-bool _sir_resettextstyles(void) {
+bool _sir_resettextstyles(sir_colormode mode) {
     _sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity())
@@ -117,85 +123,50 @@ bool _sir_resettextstyles(void) {
 
     bool all_ok = true;
     for (size_t n = 0; n < SIR_NUMLEVELS; n++) {
-        map[n].style = _sir_getdefstyle(map[n].level);
-        all_ok &= _sir_formatstyle(map[n].style, map[n].str, SIR_MAXSTYLE);
+        memcpy(&map[n].style, _sir_getdefstyle(map[n].level), sizeof(sir_textstyle));
+        all_ok &= _sir_formatstyle(mode, &map[n].style, map[n].str);
     }
 
     _sir_unlocksection(SIRMI_TEXTSTYLE);
     return all_ok;
 }
 
-uint16_t _sir_getprivstyle(sir_textstyle style) {
-    static const size_t idx_attr_start = 0;
-    static const size_t idx_attr_end   = 4;
+bool _sir_formatstyle(sir_colormode mode, const sir_textstyle* style,
+    char buf[SIR_MAXSTYLE]) {
+    if (!_validptr(style) || !_sir_validcolormode(mode))
+        return false;
 
-    static const size_t idx_fg_start = 5;
-    static const size_t idx_fg_end   = 21;
+    _sir_resetstr(buf);
 
-    static const size_t idx_bg_start = 22;
-    static const size_t idx_bg_end   = SIR_NUM16_COLOR_MAPPINGS - 1;
-
-    size_t low  = 0;
-    size_t high = 0;
-
-    if ((style & _SIRS_ATTR_MASK) != 0) {
-        /* looking up an attribute */
-        low  = idx_attr_start;
-        high = idx_attr_end;
-    } else if ((style & _SIRS_FG_MASK) != 0) {
-        /* looking up a foreground color */
-        low  = idx_fg_start;
-        high = idx_fg_end;
-    } else if ((style & _SIRS_BG_MASK) != 0) {
-        /* looking up a background color */
-        low  = idx_bg_start;
-        high = idx_bg_end;
+    bool formatted = false;
+    switch (mode) {
+        case SIRCM_16:
+        break;
+        case SIRCM_256:
+        break;
+        case SIRCM_RGB:
+        break;
     }
 
-    /* skip if not assigned due to invalid input. */
-    if (high > low) {
-        for (size_t n = low; n <= high; n++) {
-        if (sir_style_16color_map[n].from == style)
-            return sir_style_16color_map[n].to;
-        }
-    }
-
-    SIR_ASSERT("!invalid text style");
-    return SIRS_INVALID;
+    return formatted;
 }
 
-bool _sir_formatstyle(sir_textstyle style, char* buf, size_t size) {
-    if (_sir_validptr(buf)) {
-        uint32_t attr = 0;
-        uint32_t fg   = 0;
-        uint32_t bg   = 0;
+bool _sir_validstyle(sir_colormode mode, const sir_textstyle* style) {
+    if (!_validptr(style) || !_sir_validcolormode(mode))
+        return false;
 
-        if (_sir_validstyle(style, &attr, &fg, &bg)) {
-            uint16_t privattr = 0 != attr ? _sir_getprivstyle(attr) : 0;
-            uint16_t privfg   = 0 != fg   ? _sir_getprivstyle(fg)   : 0;
-            uint16_t privbg   = 0 != bg   ? _sir_getprivstyle(bg)   : 0;
-
-            char fgfmt[7] = {0};
-            char bgfmt[7] = {0};
-
-            if (0 != privfg && SIRS_INVALID != privfg)
-                snprintf(fgfmt, 7, ";%" PRIu16, privfg);
-
-            if (0 != privbg && SIRS_INVALID != privbg)
-                snprintf(bgfmt, 7, ";%" PRIu16, privbg);
-
-            /* '\x1b[n;nnn;nnnm' */
-            snprintf(buf, size, "%s%" PRIu16 "%s%sm", SIR_ESC, privattr, fgfmt, bgfmt);
-
-            return _sir_validstr(buf);
-        }
+    bool valid = false;
+    switch (mode) {
+        case SIRCM_16:
+        break;
+        case SIRCM_256:
+        break;
+        case SIRCM_RGB:
+        break;
     }
 
-    return false;
-}
-
-bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32_t* pbg) {
-    uint32_t attr = (style & _SIRS_ATTR_MASK);
+    return valid;
+    /*uint32_t attr = (style & _SIRS_ATTR_MASK);
     uint32_t fore = (style & _SIRS_FG_MASK);
     uint32_t back = (style & _SIRS_BG_MASK);
 
@@ -269,7 +240,7 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
 #if !defined(__clang_analyzer__)
     if (_sir_validptrnofail(pattr)) {
 #endif
-        /* cppcheck-suppress nullPointer */
+        /* cppcheck-suppress nullPointer * /
         *pattr = attrvalid ? attr : 0;
 #if !defined(__clang_analyzer__)
     }
@@ -278,7 +249,7 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
 #if !defined(__clang_analyzer__)
     if (_sir_validptrnofail(pfg)) {
 #endif
-        /* cppcheck-suppress nullPointer */
+        /* cppcheck-suppress nullPointer * /
         *pfg = fgvalid ? fore : 0;
 #if !defined(__clang_analyzer__)
     }
@@ -287,7 +258,7 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
 #if !defined(__clang_analyzer__)
     if (_sir_validptrnofail(pbg)) {
 #endif
-        /* cppcheck-suppress nullPointer */
+        /* cppcheck-suppress nullPointer * /
         *pbg = bgvalid ? back : 0;
 #if !defined(__clang_analyzer__)
     }
@@ -297,7 +268,5 @@ bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32
         return true;
 
     _sir_seterror(_SIR_E_TEXTSTYLE);
-    SIR_ASSERT("!invalid text style");
-
-    return false;
+    SIR_ASSERT("!invalid text style");*/
 }

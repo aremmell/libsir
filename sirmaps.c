@@ -33,14 +33,14 @@
  * values in this array at runtime; only the SIRL_* values are constant.
  */
 sir_level_style_tuple sir_level_to_style_map[SIR_NUMLEVELS] = {
-    {SIRL_EMERG,  SIRS_INVALID, {0}},
-    {SIRL_ALERT,  SIRS_INVALID, {0}},
-    {SIRL_CRIT,   SIRS_INVALID, {0}},
-    {SIRL_ERROR,  SIRS_INVALID, {0}},
-    {SIRL_WARN,   SIRS_INVALID, {0}},
-    {SIRL_NOTICE, SIRS_INVALID, {0}},
-    {SIRL_INFO,   SIRS_INVALID, {0}},
-    {SIRL_DEBUG,  SIRS_INVALID, {0}}
+    {SIRL_EMERG,  {0}, {0}},
+    {SIRL_ALERT,  {0}, {0}},
+    {SIRL_CRIT,   {0}, {0}},
+    {SIRL_ERROR,  {0}, {0}},
+    {SIRL_WARN,   {0}, {0}},
+    {SIRL_NOTICE, {0}, {0}},
+    {SIRL_INFO,   {0}, {0}},
+    {SIRL_DEBUG,  {0}, {0}}
 };
 
 /**
@@ -57,53 +57,4 @@ sir_level_str_pair sir_level_to_str_map[SIR_NUMLEVELS] = {
     {SIRL_NOTICE, SIR_LEVELPREFIX SIRL_S_NOTICE SIR_LEVELSUFFIX},
     {SIRL_INFO,   SIR_LEVELPREFIX SIRL_S_INFO   SIR_LEVELSUFFIX},
     {SIRL_DEBUG,  SIR_LEVELPREFIX SIRL_S_DEBUG  SIR_LEVELSUFFIX}
-};
-
-/**
- * @brief Mapping of ::sir_textstyle <-> values used to generate
- * styled terminal output for 4-bit (16-color) mode.
- */
-const sir_style_16color_pair sir_style_16color_map[SIR_NUM16_COLOR_MAPPINGS] = {
-    /* attributes. */
-    {SIRS_NONE,          0},
-    {SIRS_BOLD,          1},
-    {SIRS_DIM,           2},
-    {SIRS_EMPH,          3},
-    {SIRS_ULINE,         4},
-    /* foreground colors. */
-    {SIRS_FG_BLACK,     30},
-    {SIRS_FG_RED,       31},
-    {SIRS_FG_GREEN,     32},
-    {SIRS_FG_YELLOW,    33},
-    {SIRS_FG_BLUE,      34},
-    {SIRS_FG_MAGENTA,   35},
-    {SIRS_FG_CYAN,      36},
-    {SIRS_FG_LGRAY,     37},
-    {SIRS_FG_DEFAULT,   39},
-    {SIRS_FG_DGRAY,     90},
-    {SIRS_FG_LRED,      91},
-    {SIRS_FG_LGREEN,    92},
-    {SIRS_FG_LYELLOW,   93},
-    {SIRS_FG_LBLUE,     94},
-    {SIRS_FG_LMAGENTA,  95},
-    {SIRS_FG_LCYAN,     96},
-    {SIRS_FG_WHITE,     97},
-    /* background colors. */
-    {SIRS_BG_BLACK,     40},
-    {SIRS_BG_RED,       41},
-    {SIRS_BG_GREEN,     42},
-    {SIRS_BG_YELLOW,    43},
-    {SIRS_BG_BLUE,      44},
-    {SIRS_BG_MAGENTA,   45},
-    {SIRS_BG_CYAN,      46},
-    {SIRS_BG_LGRAY,     47},
-    {SIRS_BG_DEFAULT,   49},
-    {SIRS_BG_DGRAY,    100},
-    {SIRS_BG_LRED,     101},
-    {SIRS_BG_LGREEN,   102},
-    {SIRS_BG_LYELLOW,  103},
-    {SIRS_BG_LBLUE,    104},
-    {SIRS_BG_LMAGENTA, 105},
-    {SIRS_BG_LCYAN,    106},
-    {SIRS_BG_WHITE,    107}
 };

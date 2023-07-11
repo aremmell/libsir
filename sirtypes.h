@@ -77,51 +77,302 @@ typedef enum {
 /** ::sir_option bitmask type. */
 typedef uint32_t sir_options;
 
-/** Styles for 16-color stdio output. */
+/** Color mode selection. */
+typedef enum {
+    SIRCM_16  = 0, /**< 4-bit 16-color mode. */
+    SIRCM_256 = 1, /**< 8-bit 256-color mode. */
+    SIRCM_RGB = 2  /**< 24-bit RGB-color mode. */
+} sir_colormode;
+
+/** Attributes and colors for stdio output. */
 typedef enum {
     /* attributes. */
-    SIRS_NONE        = 0x00000000, /**< Used internally; has no effect. */
-    SIRS_BOLD        = 0x00000001, /**< Foreground color 'bold'. */
-    SIRS_ULINE       = 0x00000002, /**< Text underlined. */
-    SIRS_EMPH        = 0x00000004, /**< Text italicized/emphasized. */
-    SIRS_DIM         = 0x00000008, /**< Foreground color 'dimmed'. */
-    /* foreground colors. */
-    SIRS_FG_BLACK    = 0x000089a0, /**< Black foreground. */
-    SIRS_FG_RED      = 0x000059b0, /**< Red foreground. */
-    SIRS_FG_GREEN    = 0x00006670, /**< Green foreground. */
-    SIRS_FG_YELLOW   = 0x00001310, /**< Yellow foreground. */
-    SIRS_FG_BLUE     = 0x00004970, /**< Blue foreground. */
-    SIRS_FG_MAGENTA  = 0x00003430, /**< Magenta foreground. */
-    SIRS_FG_CYAN     = 0x00006090, /**< Cyan foreground. */
-    SIRS_FG_LGRAY    = 0x00006f00, /**< Light gray foreground. */
-    SIRS_FG_DEFAULT  = 0x00007210, /**< Use the default foreground color. */
-    SIRS_FG_DGRAY    = 0x00007880, /**< Dark gray foreground. */
-    SIRS_FG_LRED     = 0x00008220, /**< Light red foreground. */
-    SIRS_FG_LGREEN   = 0x00009300, /**< Light green foreground. */
-    SIRS_FG_LYELLOW  = 0x00003160, /**< Light yellow foreground. */
-    SIRS_FG_LBLUE    = 0x00007100, /**< Light blue foreground. */
-    SIRS_FG_LMAGENTA = 0x00005220, /**< Light magenta foreground. */
-    SIRS_FG_LCYAN    = 0x00005540, /**< Light cyan foreground. */
-    SIRS_FG_WHITE    = 0x00001480, /**< White foreground. */
-    /* background colors. */
-    SIRS_BG_BLACK    = 0x089a0000, /**< Black background. */
-    SIRS_BG_RED      = 0x059b0000, /**< Red background. */
-    SIRS_BG_GREEN    = 0x06670000, /**< Green background. */
-    SIRS_BG_YELLOW   = 0x01310000, /**< Yellow background. */
-    SIRS_BG_BLUE     = 0x04970000, /**< Blue background. */
-    SIRS_BG_MAGENTA  = 0x03430000, /**< Magenta background. */
-    SIRS_BG_CYAN     = 0x06090000, /**< Cyan background. */
-    SIRS_BG_LGRAY    = 0x06f00000, /**< Light gray background. */
-    SIRS_BG_DEFAULT  = 0x07210000, /**< Use the default background color. */
-    SIRS_BG_DGRAY    = 0x07880000, /**< Dark gray background. */
-    SIRS_BG_LRED     = 0x08220000, /**< Light red background. */
-    SIRS_BG_LGREEN   = 0x09300000, /**< Light green background. */
-    SIRS_BG_LYELLOW  = 0x03160000, /**< Light yellow background. */
-    SIRS_BG_LBLUE    = 0x07100000, /**< Light blue background. */
-    SIRS_BG_LMAGENTA = 0x05220000, /**< Light magenta background. */
-    SIRS_BG_LCYAN    = 0x05540000, /**< Light cyan background. */
-    SIRS_BG_WHITE    = 0x01480000, /**< White background. */
-    SIRS_INVALID     = 0x0000ffff  /**< Represents the invalid text style. */
+    SIRTA_NORMAL  = 0, /**< Normal text. */
+    SIRTA_BOLD    = 1, /**< Bold text. */
+    SIRTA_DIM     = 2, /**< Dimmed text. */
+    SIRTA_EMPH    = 3, /**< Italicized/emphasized text. */
+    SIRTA_ULINE   = 4, /**< Underlined text. */
+} sir_textattr;
+
+typedef enum {
+    /* 4-bit (16-color). */
+    SIRTC_BLACK    = 0,  /**< Black. */
+    SIRTC_RED      = 1,  /**< Red. */
+    SIRTC_GREEN    = 2,  /**< Green. */
+    SIRTC_YELLOW   = 3,  /**< Yellow. */
+    SIRTC_BLUE     = 4,  /**< Blue. */
+    SIRTC_MAGENTA  = 5,  /**< Magenta. */
+    SIRTC_CYAN     = 6,  /**< Cyan. */
+    SIRTC_LGRAY    = 7,  /**< Light gray. */
+    SIRTC_DGRAY    = 8,  /**< Dark gray. */
+    SIRTC_BRED     = 9,  /**< Bright red. */
+    SIRTC_BGREEN   = 10, /**< Bright green. */
+    SIRTC_BYELLOW  = 11, /**< Bright yellow. */
+    SIRTC_BBLUE    = 12, /**< Bright blue. */
+    SIRTC_BMAGENTA = 13, /**< Bright magenta. */
+    SIRTC_BCYAN    = 14, /**< Bright cyan. */
+    SIRTC_WHITE    = 15, /**< White foreground. */
+    /* 8-bit (256-color). */
+    SIRTC_16       = 16,
+    SIRTC_17       = 17,
+    SIRTC_18       = 18,
+    SIRTC_19       = 19,
+    SIRTC_20       = 20,
+    SIRTC_21       = 21,
+    SIRTC_22       = 22,
+    SIRTC_23       = 23,
+    SIRTC_24       = 24,
+    SIRTC_25       = 25,
+    SIRTC_26       = 26,
+    SIRTC_27       = 27,
+    SIRTC_28       = 28,
+    SIRTC_29       = 29,
+    SIRTC_30       = 30,
+    SIRTC_31       = 31,
+    SIRTC_32       = 32,
+    SIRTC_33       = 33,
+    SIRTC_34       = 34,
+    SIRTC_35       = 35,
+    SIRTC_36       = 36,
+    SIRTC_37       = 37,
+    SIRTC_38       = 38,
+    SIRTC_39       = 39,
+    SIRTC_40       = 40,
+    SIRTC_41       = 41,
+    SIRTC_42       = 42,
+    SIRTC_43       = 43,
+    SIRTC_44       = 44,
+    SIRTC_45       = 45,
+    SIRTC_46       = 46,
+    SIRTC_47       = 47,
+    SIRTC_48       = 48,
+    SIRTC_49       = 49,
+    SIRTC_50       = 50,
+    SIRTC_51       = 51,
+    SIRTC_52       = 52,
+    SIRTC_53       = 53,
+    SIRTC_54       = 54,
+    SIRTC_55       = 55,
+    SIRTC_56       = 56,
+    SIRTC_57       = 57,
+    SIRTC_58       = 58,
+    SIRTC_59       = 59,
+    SIRTC_60       = 60,
+    SIRTC_61       = 61,
+    SIRTC_62       = 62,
+    SIRTC_63       = 63,
+    SIRTC_64       = 64,
+    SIRTC_65       = 65,
+    SIRTC_66       = 66,
+    SIRTC_67       = 67,
+    SIRTC_68       = 68,
+    SIRTC_69       = 69,
+    SIRTC_70       = 70,
+    SIRTC_71       = 71,
+    SIRTC_72       = 72,
+    SIRTC_73       = 73,
+    SIRTC_74       = 74,
+    SIRTC_75       = 75,
+    SIRTC_76       = 76,
+    SIRTC_77       = 77,
+    SIRTC_78       = 78,
+    SIRTC_79       = 79,
+    SIRTC_80       = 80,
+    SIRTC_81       = 81,
+    SIRTC_82       = 82,
+    SIRTC_83       = 83,
+    SIRTC_84       = 84,
+    SIRTC_85       = 85,
+    SIRTC_86       = 86,
+    SIRTC_87       = 87,
+    SIRTC_88       = 88,
+    SIRTC_89       = 89,
+    SIRTC_90       = 90,
+    SIRTC_91       = 91,
+    SIRTC_92       = 92,
+    SIRTC_93       = 93,
+    SIRTC_94       = 94,
+    SIRTC_95       = 95,
+    SIRTC_96       = 96,
+    SIRTC_97       = 97,
+    SIRTC_98       = 98,
+    SIRTC_99       = 99,
+    SIRTC_100      = 100,
+    SIRTC_101      = 101,
+    SIRTC_102      = 102,
+    SIRTC_103      = 103,
+    SIRTC_104      = 104,
+    SIRTC_105      = 105,
+    SIRTC_106      = 106,
+    SIRTC_107      = 107,
+    SIRTC_108      = 108,
+    SIRTC_109      = 109,
+    SIRTC_110      = 110,
+    SIRTC_111      = 111,
+    SIRTC_112      = 112,
+    SIRTC_113      = 113,
+    SIRTC_114      = 114,
+    SIRTC_115      = 115,
+    SIRTC_116      = 116,
+    SIRTC_117      = 117,
+    SIRTC_118      = 118,
+    SIRTC_119      = 119,
+    SIRTC_120      = 120,
+    SIRTC_121      = 121,
+    SIRTC_122      = 122,
+    SIRTC_123      = 123,
+    SIRTC_124      = 124,
+    SIRTC_125      = 125,
+    SIRTC_126      = 126,
+    SIRTC_127      = 127,
+    SIRTC_128      = 128,
+    SIRTC_129      = 129,
+    SIRTC_130      = 130,
+    SIRTC_131      = 131,
+    SIRTC_132      = 132,
+    SIRTC_133      = 133,
+    SIRTC_134      = 134,
+    SIRTC_135      = 135,
+    SIRTC_136      = 136,
+    SIRTC_137      = 137,
+    SIRTC_138      = 138,
+    SIRTC_139      = 139,
+    SIRTC_140      = 140,
+    SIRTC_141      = 141,
+    SIRTC_142      = 142,
+    SIRTC_143      = 143,
+    SIRTC_144      = 144,
+    SIRTC_145      = 145,
+    SIRTC_146      = 146,
+    SIRTC_147      = 147,
+    SIRTC_148      = 148,
+    SIRTC_149      = 149,
+    SIRTC_150      = 150,
+    SIRTC_151      = 151,
+    SIRTC_152      = 152,
+    SIRTC_153      = 153,
+    SIRTC_154      = 154,
+    SIRTC_155      = 155,
+    SIRTC_156      = 156,
+    SIRTC_157      = 157,
+    SIRTC_158      = 158,
+    SIRTC_159      = 159,
+    SIRTC_160      = 160,
+    SIRTC_161      = 161,
+    SIRTC_162      = 162,
+    SIRTC_163      = 163,
+    SIRTC_164      = 164,
+    SIRTC_165      = 165,
+    SIRTC_166      = 166,
+    SIRTC_167      = 167,
+    SIRTC_168      = 168,
+    SIRTC_169      = 169,
+    SIRTC_170      = 170,
+    SIRTC_171      = 171,
+    SIRTC_172      = 172,
+    SIRTC_173      = 173,
+    SIRTC_174      = 174,
+    SIRTC_175      = 175,
+    SIRTC_176      = 176,
+    SIRTC_177      = 177,
+    SIRTC_178      = 178,
+    SIRTC_179      = 179,
+    SIRTC_180      = 180,
+    SIRTC_181      = 181,
+    SIRTC_182      = 182,
+    SIRTC_183      = 183,
+    SIRTC_184      = 184,
+    SIRTC_185      = 185,
+    SIRTC_186      = 186,
+    SIRTC_187      = 187,
+    SIRTC_188      = 188,
+    SIRTC_189      = 189,
+    SIRTC_190      = 190,
+    SIRTC_191      = 191,
+    SIRTC_192      = 192,
+    SIRTC_193      = 193,
+    SIRTC_194      = 194,
+    SIRTC_195      = 195,
+    SIRTC_196      = 196,
+    SIRTC_197      = 197,
+    SIRTC_198      = 198,
+    SIRTC_199      = 199,
+    SIRTC_200      = 200,
+    SIRTC_201      = 201,
+    SIRTC_202      = 202,
+    SIRTC_203      = 203,
+    SIRTC_204      = 204,
+    SIRTC_205      = 205,
+    SIRTC_206      = 206,
+    SIRTC_207      = 207,
+    SIRTC_208      = 208,
+    SIRTC_209      = 209,
+    SIRTC_210      = 210,
+    SIRTC_211      = 211,
+    SIRTC_212      = 212,
+    SIRTC_213      = 213,
+    SIRTC_214      = 214,
+    SIRTC_215      = 215,
+    SIRTC_216      = 216,
+    SIRTC_217      = 217,
+    SIRTC_218      = 218,
+    SIRTC_219      = 219,
+    SIRTC_220      = 220,
+    SIRTC_221      = 221,
+    SIRTC_222      = 222,
+    SIRTC_223      = 223,
+    SIRTC_224      = 224,
+    SIRTC_225      = 225,
+    SIRTC_226      = 226,
+    SIRTC_227      = 227,
+    SIRTC_228      = 228,
+    SIRTC_229      = 229,
+    SIRTC_230      = 230,
+    SIRTC_231      = 231,
+    SIRTC_232      = 232, /**< Greyscale begins here, through 255. */
+    SIRTC_233      = 233,
+    SIRTC_234      = 234,
+    SIRTC_235      = 235,
+    SIRTC_236      = 236,
+    SIRTC_237      = 237,
+    SIRTC_238      = 238,
+    SIRTC_239      = 239,
+    SIRTC_240      = 240,
+    SIRTC_241      = 241,
+    SIRTC_242      = 242,
+    SIRTC_243      = 243,
+    SIRTC_244      = 244,
+    SIRTC_245      = 245,
+    SIRTC_246      = 246,
+    SIRTC_247      = 247,
+    SIRTC_248      = 248,
+    SIRTC_249      = 249,
+    SIRTC_250      = 250,
+    SIRTC_251      = 251,
+    SIRTC_252      = 252,
+    SIRTC_253      = 253,
+    SIRTC_254      = 254,
+    SIRTC_255      = 255,
+    SIRTC_DEFAULT  = 256, /**< Represents the default color. */
+    SIRTC_INVALID  = -1   /**< Represents the invalid color. */
+};
+
+/** stdio text color type. */
+typedef uint32_t sir_textcolor;
+
+/**
+ * @struct sir_textstyle
+ * @brief Container for all the information associated with the appearance of text
+ * in the context of stdio.
+ *
+ * For 4-bit (16-color) and 8-bit (256-color) modes, fg and bg are simply the
+ * associated SIRTC_* value. For 24-bit RGB color mode, fg and bg are packed as
+ * follows: 0x00rrggbb.
+ */
+typedef struct {
+    sir_textattr attrs; /**< Text attributes. */
+    sir_textcolor fg;   /**< Foreground color. */
+    sir_textcolor bg;   /**< Background color. */
 } sir_textstyle;
 
 /**
@@ -198,6 +449,9 @@ typedef struct {
     sir_stdio_dest d_stderr;  /**< stderr configuration. */
     sir_syslog_dest d_syslog; /**< System logger configuration. */
 
+    /** The color mode to use for stdio. Defaults to 4-bit (16-color) mode. */
+    sir_colormode color_mode;
+
     /**
      * If set, defines the name that will appear in messages sent to stdio and
      * log file destinations.
@@ -212,18 +466,6 @@ typedef struct {
  * @}
  * @}
  */
-
-/** Text style attribute mask. */
-# define _SIRS_ATTR_MASK 0x0000000f
-
-/** Text style foreground color mask. */
-# define _SIRS_FG_MASK 0x0000fff0
-
-/** Text style background color mask. */
-# define _SIRS_BG_MASK 0x0fff0000
-
-/** True if foreground and background colors are the same. */
-# define _SIRS_SAME_COLOR(fg, bg) ((((bg) >> 12) & _SIRS_FG_MASK) == (fg))
 
 /** Magic number used to determine if libsir has been initialized. */
 # define _SIR_MAGIC 0x60906090
@@ -292,7 +534,7 @@ typedef struct {
 /** ::sir_level <-> ::sir_textstyle mapping. */
 typedef struct {
     const sir_level level;  /**< The level for which the style applies. */
-    sir_textstyle style;    /**< The ::sir_textstyle representation. */
+    sir_textstyle style;    /**< The un-formatted representation. */
     char str[SIR_MAXSTYLE]; /**< The formatted string representation. */
 } sir_level_style_tuple;
 
@@ -301,12 +543,6 @@ typedef struct {
     const sir_level level; /**< The level for which the string applies. */
     const char* fmt;       /**< The formatted string representation. */
 } sir_level_str_pair;
-
-/** Public (::sir_textstyle) <-> values used to generate styled stdio output. */
-typedef struct {
-    const sir_textstyle from; /**< The public text style flag(s). */
-    const uint16_t to;        /**< The internal value(s). */
-} sir_style_16color_pair;
 
 /** Mutex <-> protected section mapping. */
 typedef enum {
