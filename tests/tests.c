@@ -1514,7 +1514,9 @@ static void* sirtest_thread(void* arg);
 static unsigned sirtest_thread(void* arg);
 #endif
 
-#define NUM_THREADS 4
+enum {
+    NUM_THREADS = 4
+};
 
 bool sirtest_threadrace(void) {
 #if !defined(__WIN__)

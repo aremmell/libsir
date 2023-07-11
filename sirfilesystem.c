@@ -158,42 +158,44 @@ char* _sir_getcwd(void) {
 }
 
 char* _sir_getappfilename(void) {
-    char* buffer = (char*)calloc(SIR_MAXPATH, sizeof(char));
-    if (NULL == buffer) {
+#if defined(__linux__) || defined(__NetBSD__) || defined(__SOLARIS__) || \
+    defined(__DragonFly__) || defined(__CYGWIN__)
+# define __READLINK_OS__
+# if defined(__linux__) || defined(__CYGWIN__)
+#  define PROC_SELF "/proc/self/exe"
+# elif defined(__NetBSD__)
+#  define PROC_SELF "/proc/curproc/exe"
+# elif defined(__DragonFly__)
+#  define PROC_SELF "/proc/curproc/file"
+# elif defined(__SOLARIS__)
+#  define PROC_SELF "/proc/self/path/a.out"
+# endif
+    struct stat st;
+    if (-1 == lstat(PROC_SELF, &st)) {
         _sir_handleerr(errno);
         return NULL;
     }
 
-    bool resolved = false;
-    size_t size   = SIR_MAXPATH;
-    bool grow     = false;
-
-    do {
-        if (grow) {
-            _sir_safefree(&buffer);
-            buffer = (char*)calloc(size, sizeof(char));
-            if (NULL == buffer) {
-                _sir_handleerr(errno);
-                resolved = false;
-                break;
-            }
-
-            grow = false;
-        }
-
-#if defined(__linux__) || defined(__CYGWIN__)
-# define PROC_SELF "/proc/self/exe"
-#elif defined(__NetBSD__)
-# define PROC_SELF "/proc/curproc/exe"
-#elif defined(__DragonFly__)
-# define PROC_SELF "/proc/curproc/file"
-#elif defined(__SOLARIS__)
-# define PROC_SELF "/proc/self/path/a.out"
+    size_t size = (st.st_size > 0) ? st.st_size + 2 : SIR_MAXPATH;
+#else
+    size_t size = SIR_MAXPATH;
 #endif
 
+    char* buffer  = NULL;
+    bool resolved = false;
+
+    do {
+        _sir_safefree(&buffer);
+        buffer = (char*)calloc(size, sizeof(char));
+        if (NULL == buffer) {
+            _sir_handleerr(errno);
+            resolved = false;
+            break;
+        }
+
 #if !defined(__WIN__)
-# if defined(__linux__) || defined(__NetBSD__) || defined(__SOLARIS__) || \
-     defined(__DragonFly__) || defined(__CYGWIN__)
+# if defined(__READLINK_OS__)
+        /* Flawfinder: ignore */
         ssize_t read = readlink(PROC_SELF, buffer, size - 1);
         if (-1 != read && read < (ssize_t)size - 1) {
             resolved = true;
@@ -204,11 +206,11 @@ char* _sir_getappfilename(void) {
                 resolved = false;
                 break;
             } else if (read == (ssize_t)size - 1) {
-                /* It is possible that truncation occurred. Grow the
-                   buffer and try again. */
-                size += SIR_PATH_BUFFER_GROW_BY;
-                grow = true;
-                continue;
+                /* It is possible that truncation occurred. As a security
+                 * precaution, fail; someone may have tampered with the link. */
+                _sir_selflog("warning: readlink reported truncation; not using result!");
+                resolved = false;
+                break;
             }
         }
 # elif defined(__BSD__)
@@ -218,10 +220,9 @@ char* _sir_getappfilename(void) {
             resolved = true;
             break;
         } else {
-            if (ENOMEM == errno && 0 == sysctl(mib, 4, NULL, &size, NULL, 0)) {
-                grow = true;
-                continue;
-            }
+            if (ENOMEM == errno && 0 == sysctl(mib, 4, NULL, &size, NULL, 0))
+                continue; /* grow buffer. */
+
             _sir_handleerr(errno);
             resolved = false;
             break;
@@ -232,7 +233,7 @@ char* _sir_getappfilename(void) {
             resolved = true;
             break;
         } else if (B_BUFFER_OVERFLOW == ret) {
-            grow = true;
+            /* grow buffer. */
             continue;
         } else {
             _sir_handleerr(errno);
@@ -245,7 +246,7 @@ char* _sir_getappfilename(void) {
             resolved = true;
             break;
         } else if (-1 == ret) {
-            grow = true;
+            /* grow buffer. */
             continue;
         } else {
             _sir_handleerr(errno);
@@ -270,7 +271,6 @@ char* _sir_getappfilename(void) {
                 * your buffer needed to be; it just truncates the string and
                 * returns size. So, we'll guess. */
                 size += SIR_PATH_BUFFER_GROW_BY;
-                grow = true;
                 continue;
             }
         }
@@ -280,7 +280,7 @@ char* _sir_getappfilename(void) {
 
     if (!resolved) {
         _sir_safefree(&buffer);
-        _sir_selflog("failed to resolve filename!");
+        _sir_selflog("error: failed to resolve filename!");
         return NULL;
     }
 
