@@ -198,6 +198,7 @@ char* _sir_getappfilename(void) {
 #if !defined(__WIN__)
 # if defined(__READLINK_OS__)
         ssize_t read = readlink(PROC_SELF, buffer, size - 1);
+        _sir_selflog("readlink(%s) returned %ld, passed in size %zu", PROC_SELF, read, size - 1);
         if (-1 != read && read < (ssize_t)size - 1) {
             resolved = true;
             break;
