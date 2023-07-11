@@ -57,6 +57,7 @@ dark-mode-toggle {
     padding: 0;
 }
 
+
 #MSearchField {
     display: inline-block;
     vertical-align: middle;
@@ -107,6 +108,8 @@ dark-mode-toggle {
 .MSearchBoxActive #MSearchField {
     color: #C5C5C5;
 }
+
+
 
 /*---------------- Search filter selection */
 
@@ -187,8 +190,9 @@ iframe#MSearchResults {
 
 /* ----------------------------------- */
 
+
 #SRIndex {
-    clear:both;
+    clear:both; 
 }
 
 .SREntry {
@@ -207,7 +211,7 @@ div.SRPage {
 }
 
 .SRChildren {
-    padding-left: 3ex; padding-bottom: .5em
+    padding-left: 3ex; padding-bottom: .5em 
 }
 
 .SRPage .SRChildren {
