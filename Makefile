@@ -117,54 +117,57 @@ OUT_TESTS      = $(BINDIR)/sirtests
 # targets
 # ##########
 
-all: prep shared static example tests
+.PHONY: all
+all: $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS)
 
 -include $(INTDIR)/*.d
 
-$(BUILDDIR)   : prep
-$(INTDIR)     : $(BUILDDIR)
-$(LIBDIR)     : $(BUILDDIR)
-$(BINDIR)     : $(BUILDDIR)
-$(OBJ_SHARED) : $(INTDIR)
-$(OBJ_TESTS)  : $(OBJ_SHARED)
-$(OBJ_EXAMPLE): $(OBJ_SHARED)
-
 $(OBJ_EXAMPLE): $(EXAMPLE)/$(EXAMPLE).c $(DEPS)
+	@mkdir -p $(@D)
 	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -I..
 
 $(OBJ_TESTS): $(TESTS)/$(TESTS).c $(DEPS)
+	@mkdir -p $(@D)
 	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -I..
 
 $(INTDIR)/%.o: %.c $(DEPS)
+	@mkdir -p $(@D)
 	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS)
 
-prep:
-	$(shell mkdir -p $(BUILDDIR) && \
-			mkdir -p $(INTDIR)/$(EXAMPLE) && \
-			mkdir -p $(INTDIR)/$(TESTS) && \
-			mkdir -p $(LIBDIR) && \
-	        mkdir -p $(BINDIR))
-	-@echo directories prepared successfully.
-
-shared: $(OBJ_SHARED)
+.PHONY: shared
+shared: $(OUT_SHARED)
+$(OUT_SHARED): $(OBJ_SHARED)
+	@mkdir -p $(@D)
 	$(CC) -shared -o $(OUT_SHARED) $^ $(CFLAGS) $(LDFLAGS_SHARED)
 	-@echo built $(OUT_SHARED) successfully.
 
-static: shared
+.PHONY: static
+static: $(OUT_STATIC)
+$(OUT_STATIC): $(OUT_SHARED)
+	@mkdir -p $(@D)
 	ar -cr $(OUT_STATIC) $(OBJ_SHARED)
 	-@($(RANLIB) "$(OUT_STATIC)" || true) > /dev/null 2>&1
 	-@echo built $(OUT_STATIC) successfully.
 
-example: static $(OBJ_EXAMPLE)
+.PHONY: example
+example: $(OUT_EXAMPLE)
+$(OUT_EXAMPLE): $(OUT_STATIC) $(OBJ_EXAMPLE)
+	@mkdir -p $(@D)
+	@mkdir -p $(BINDIR)
 	$(CC) -o $(OUT_EXAMPLE) $(OBJ_EXAMPLE) $(CFLAGS) -I.. $(LDFLAGS)
 	-@echo built $(OUT_EXAMPLE) successfully.
 
-tests: static $(OBJ_TESTS)
+.PHONY: tests
+tests: $(OUT_TESTS)
+$(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS)
+	@mkdir -p $(@D)
+	@mkdir -p $(BINDIR)
 	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS) $(CFLAGS) -I.. $(LDFLAGS)
 	$(shell touch $(BINDIR)/file.exists)
 	-@echo built $(OUT_TESTS) successfully.
 
-docs: static
+.PHONY: docs
+docs: $(OUT_STATIC)
 	@doxygen Doxyfile
 	-@echo built documentation successfully.
 
