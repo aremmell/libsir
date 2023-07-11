@@ -87,7 +87,7 @@
  * @test Properly handle multiple threads competing for locked sections.
  * @returns bool `true` if the test passed, `false` otherwise.
  */
-bool sirtest_mthread_race(void);
+bool sirtest_threadrace(void);
 
 /**
  * @test Properly handle messages that exceed internal buffer sizes.
