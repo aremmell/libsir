@@ -158,14 +158,36 @@ char* _sir_getcwd(void) {
 }
 
 char* _sir_getappfilename(void) {
-    char* buffer = (char*)calloc(SIR_MAXPATH, sizeof(char));
+#if defined(__linux__) || defined(__NetBSD__) || defined(__SOLARIS__) || \
+    defined(__DragonFly__) || defined(__CYGWIN__)
+# define __READLINK_OS__
+# if defined(__linux__) || defined(__CYGWIN__)
+#  define PROC_SELF "/proc/self/exe"
+# elif defined(__NetBSD__)
+#  define PROC_SELF "/proc/curproc/exe"
+# elif defined(__DragonFly__)
+#  define PROC_SELF "/proc/curproc/file"
+# elif defined(__SOLARIS__)
+#  define PROC_SELF "/proc/self/path/a.out"
+# endif
+    struct stat st;
+    if (-1 == lstat(PROC_SELF, &st)) {
+        _sir_handleerr(errno);
+        return NULL;
+    }
+
+    size_t size = (st.st_size > 0) ? st.st_size + 1 : SIR_MAXPATH;
+#else
+    size_t size = SIR_MAXPATH;
+#endif
+
+    char* buffer = (char*)calloc(size, sizeof(char));
     if (NULL == buffer) {
         _sir_handleerr(errno);
         return NULL;
     }
 
     bool resolved = false;
-    size_t size   = SIR_MAXPATH;
     bool grow     = false;
 
     do {
@@ -181,19 +203,8 @@ char* _sir_getappfilename(void) {
             grow = false;
         }
 
-#if defined(__linux__) || defined(__CYGWIN__)
-# define PROC_SELF "/proc/self/exe"
-#elif defined(__NetBSD__)
-# define PROC_SELF "/proc/curproc/exe"
-#elif defined(__DragonFly__)
-# define PROC_SELF "/proc/curproc/file"
-#elif defined(__SOLARIS__)
-# define PROC_SELF "/proc/self/path/a.out"
-#endif
-
 #if !defined(__WIN__)
-# if defined(__linux__) || defined(__NetBSD__) || defined(__SOLARIS__) || \
-     defined(__DragonFly__) || defined(__CYGWIN__)
+# if defined(__READLINK_OS__)
         ssize_t read = readlink(PROC_SELF, buffer, size - 1);
         if (-1 != read && read < (ssize_t)size - 1) {
             resolved = true;
@@ -204,11 +215,11 @@ char* _sir_getappfilename(void) {
                 resolved = false;
                 break;
             } else if (read == (ssize_t)size - 1) {
-                /* It is possible that truncation occurred. Grow the
-                   buffer and try again. */
-                size += SIR_PATH_BUFFER_GROW_BY;
-                grow = true;
-                continue;
+                /* It is possible that truncation occurred. As a security
+                 * precaution, fail; someone may have tampered with the link. */
+                _sir_selflog("warning: readlink reported truncation; not using result!");
+                resolved = false;
+                break;
             }
         }
 # elif defined(__BSD__)
