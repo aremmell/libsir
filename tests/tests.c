@@ -562,7 +562,10 @@ bool sirtest_errorsanity(void) {
         {SIR_E_NODEST,    "SIR_E_NODEST"},    /**< No destinations registered for level (12) */
         {SIR_E_UNAVAIL,   "SIR_E_UNAVAIL"},   /**< Feature is disabled or unavailable (13) */
         {SIR_E_INTERNAL,  "SIR_E_INTERNAL"},  /**< An internal error has occurred (14) */
-        {SIR_E_PLATFORM,  "SIR_E_PLATFORM"},  /**< Platform error code %d: %s (15) */
+        {SIR_E_COLORMODE, "SIR_E_COLORMODE"}, /**< Invalid color mode (15) */
+        {SIR_E_TEXTATTR,  "SIR_E_TEXTATTR"},  /**< Invalid text attributes (16) */
+        {SIR_E_TEXTCOLOR, "SIR_E_TEXTCOLOR"}, /**< Invalid text color (17) */
+        {SIR_E_PLATFORM,  "SIR_E_PLATFORM"},  /**< Platform error code %d: %s (18) */
         {SIR_E_UNKNOWN,   "SIR_E_UNKNOWN"},   /**< Error is not known (4095) */
     };
 
@@ -685,7 +688,7 @@ bool sirtest_textstylesanity(void) {
                 continue;
 
             uint32_t attr, fg, bg;
-            if (_sir_validstyle(style | sir_style_16color_map[i].from, &attr, &fg, &bg)) {
+            if (_sir_validtextstyle(style | sir_style_16color_map[i].from, &attr, &fg, &bg)) {
                 pass = false;
                 printf(INDENT_ITEM RED("fg %08" PRIx32 " | %08" PRIx32 " (%08" PRIx32
                        ") is valid!") "\n", style, sir_style_16color_map[i].from,
@@ -701,7 +704,7 @@ bool sirtest_textstylesanity(void) {
                 continue;
 
             uint32_t attr, fg, bg;
-            if (_sir_validstyle(style | sir_style_16color_map[i].from, &attr, &fg, &bg)) {
+            if (_sir_validtextstyle(style | sir_style_16color_map[i].from, &attr, &fg, &bg)) {
                 pass = false;
                 printf(INDENT_ITEM RED("bg %08" PRIx32 " | %08" PRIx32 " (%08" PRIx32
                        ") is valid!") "\n", style, sir_style_16color_map[i].from,

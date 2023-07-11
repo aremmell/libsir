@@ -79,9 +79,10 @@ typedef uint32_t sir_options;
 
 /** Color mode selection. */
 typedef enum {
-    SIRCM_16  = 0, /**< 4-bit 16-color mode. */
-    SIRCM_256 = 1, /**< 8-bit 256-color mode. */
-    SIRCM_RGB = 2  /**< 24-bit RGB-color mode. */
+    SIRCM_16      = 0, /**< 4-bit 16-color mode. */
+    SIRCM_256     = 1, /**< 8-bit 256-color mode. */
+    SIRCM_RGB     = 2, /**< 24-bit RGB-color mode. */
+    SIRCM_INVALID = -1 /**< Represents the invalid color mode. */
 } sir_colormode;
 
 /** Attributes and colors for stdio output. */

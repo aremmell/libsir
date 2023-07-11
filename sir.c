@@ -125,7 +125,7 @@ bool sir_fileopts(sirfileid id, sir_options opts) {
     return _sir_updatefile(id, &data);
 }
 
-bool sir_settextstyle(sir_level level, sir_textstyle style) {
+bool sir_settextstyle(sir_level level, const sir_textstyle* style) {
     return _sir_settextstyle(level, style);
 }
 

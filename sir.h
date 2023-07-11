@@ -420,12 +420,12 @@ bool sir_fileopts(sirfileid id, sir_options opts);
  * @see ::default
  *
  * @param   level The ::sir_level for which to set the text styling.
- * @param   style New bitmask of ::sir_textstyle for the level.
+ * @param   style Pointer to the new ::sir_textstyle for `level`.
  * @returns bool  `true` if succcessfully updated, `false` otherwise. Use
  *                ::sir_geterror to obtain information about any error that may
  *                have occurred.
  */
-bool sir_settextstyle(sir_level level, sir_textstyle style);
+bool sir_settextstyle(sir_level level, const sir_textstyle* style);
 
 /**
  * @brief Reset text styling for stdio (stdout/stderr) destinations to their
