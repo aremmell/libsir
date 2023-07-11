@@ -1456,8 +1456,7 @@ bool sirtest_squelchspam(void) {
 
     printf("\t" BLUE("%zu non-repeating messages...") "\n", sequence[0]);
 
-    size_t ascii_idx = 33;
-    for (size_t n = 0; n < sequence[0]; n++, ascii_idx++) {
+    for (size_t n = 0, ascii_idx = 33; n < sequence[0]; n++, ascii_idx++) {
         pass &= sir_debug("%c%c a non-repeating message", (char)ascii_idx,
             (char)ascii_idx + 1);
 
