@@ -35,3 +35,6 @@ index.md
 
 # Automatic dependencies
 *.d
+
+# Advpng temporary files
+*.png.tmp*
