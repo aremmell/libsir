@@ -4,6 +4,7 @@ var group__tests =
     [ "sirtest_exceedmaxsize", "group__tests.html#ga90b7633a39946d2c201758aafbce43fa", null ],
     [ "sirtest_failnooutputdest", "group__tests.html#ga9472cbb9a62d343fe0272444a7f87ce1", null ],
     [ "sirtest_failnulls", "group__tests.html#gade87411ddfc55756dd519d7e9b8f33a7", null ],
+    [ "sirtest_failemptymessage", "group__tests.html#gaf70a501cd8ae0357d80b99df2b1de901", null ],
     [ "sirtest_filecachesanity", "group__tests.html#ga47f8191761084c5b3673b0efac0197d0", null ],
     [ "sirtest_failinvalidfilename", "group__tests.html#ga8d74e7810b41d505863eddced156f448", null ],
     [ "sirtest_failfilebadpermission", "group__tests.html#ga8f5266c274182a3dae54c48d8d8abba1", null ],
@@ -24,5 +25,5 @@ var group__tests =
     [ "sirtest_syslog", "group__tests.html#ga8db924f756e0ee2f04ff3e044a10f283", null ],
     [ "sirtest_os_log", "group__tests.html#ga54f0e8e0163d0aedf20616451f122017", null ],
     [ "sirtest_filesystem", "group__tests.html#gaa0b035b71e6a6e6df6b8a7bb95722e2a", null ],
-    [ "sirtest_failemptymessage", "group__tests.html#gaf70a501cd8ae0357d80b99df2b1de901", null ]
+    [ "sirtest_squelchspam", "group__tests.html#ga3ad5e95b1114eba573969077ebb40cb5", null ]
 ];

@@ -106,6 +106,7 @@ function toggleFolder(id)
   updateStripes();
 }
 
+
 function toggleInherit(id)
 {
   var rows = $('tr.inherit.'+id);
