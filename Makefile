@@ -94,91 +94,91 @@ all: $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS)
 
 -include $(INTDIR)/*.d
 
-.RECIPEPREFIX = ~
+.RECIPEPREFIX = :
 
 $(OBJ_EXAMPLE): $(EXAMPLE)/$(EXAMPLE).c $(DEPS)
-~  @mkdir -p $(@D)
-~  $(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -I..
+:  @mkdir -p $(@D)
+:  $(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -I..
 
 $(OBJ_TESTS): $(TESTS)/$(TESTS).c $(DEPS)
-~  @mkdir -p $(@D)
-~  $(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -I..
+:  @mkdir -p $(@D)
+:  $(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -I..
 
 $(INTDIR)/%.o: %.c $(DEPS)
-~  @mkdir -p $(@D)
-~  $(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS)
+:  @mkdir -p $(@D)
+:  $(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS)
 
 .PHONY: shared
 shared: $(OUT_SHARED)
 $(OUT_SHARED): $(OBJ_SHARED)
-~  @mkdir -p $(@D)
-~  $(CC) -shared -o $(OUT_SHARED) $^ $(CFLAGS) $(LDFLAGS_SHARED)
-~  -@echo built $(OUT_SHARED) successfully.
+:  @mkdir -p $(@D)
+:  $(CC) -shared -o $(OUT_SHARED) $^ $(CFLAGS) $(LDFLAGS_SHARED)
+:  -@echo built $(OUT_SHARED) successfully.
 
 .PHONY: static
 static: $(OUT_STATIC)
 $(OUT_STATIC): $(OUT_SHARED)
-~  @mkdir -p $(@D)
-~  ar -cr $(OUT_STATIC) $(OBJ_SHARED)
-~  -@($(RANLIB) "$(OUT_STATIC)" || true) > /dev/null 2>&1
-~  -@echo built $(OUT_STATIC) successfully.
+:  @mkdir -p $(@D)
+:  ar -cr $(OUT_STATIC) $(OBJ_SHARED)
+:  -@($(RANLIB) "$(OUT_STATIC)" || true) > /dev/null 2>&1
+:  -@echo built $(OUT_STATIC) successfully.
 
 .PHONY: example
 example: $(OUT_EXAMPLE)
 $(OUT_EXAMPLE): $(OUT_STATIC) $(OBJ_EXAMPLE)
-~  @mkdir -p $(@D)
-~  @mkdir -p $(BINDIR)
-~  $(CC) -o $(OUT_EXAMPLE) $(OBJ_EXAMPLE) $(CFLAGS) -I.. $(LDFLAGS)
-~  -@echo built $(OUT_EXAMPLE) successfully.
+:  @mkdir -p $(@D)
+:  @mkdir -p $(BINDIR)
+:  $(CC) -o $(OUT_EXAMPLE) $(OBJ_EXAMPLE) $(CFLAGS) -I.. $(LDFLAGS)
+:  -@echo built $(OUT_EXAMPLE) successfully.
 
 $(BINDIR)/file.exists:
-~  @touch $(BINDIR)/file.exists > /dev/null
+:  @touch $(BINDIR)/file.exists > /dev/null
 
 .PHONY: tests
 tests: $(OUT_TESTS) $(BINDIR)/file.exists
 $(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS)
-~  @mkdir -p $(@D)
-~  @mkdir -p $(BINDIR)
-~  $(CC) -o $(OUT_TESTS) $(OBJ_TESTS) $(CFLAGS) -I.. $(LDFLAGS)
-~  -@echo built $(OUT_TESTS) successfully.
+:  @mkdir -p $(@D)
+:  @mkdir -p $(BINDIR)
+:  $(CC) -o $(OUT_TESTS) $(OBJ_TESTS) $(CFLAGS) -I.. $(LDFLAGS)
+:  -@echo built $(OUT_TESTS) successfully.
 
 .PHONY: docs
 docs: $(OUT_STATIC)
-~  @doxygen Doxyfile
-~  -@find docs -name '*.png' -exec advpng -z4 "{}" \
+:  @doxygen Doxyfile
+:  -@find docs -name '*.png' -exec advpng -z4 "{}" \
       2> /dev/null \; 2> /dev/null || true
-~  -@echo built documentation successfully.
+:  -@echo built documentation successfully.
 
 .PHONY: install
 install: $(INSTALLSH)
-~  @test -x $(INSTALLSH) || \
+:  @test -x $(INSTALLSH) || \
       { printf 'Error: %s not executable.\n' "$(INSTALLSH)"; exit 1; }
-~  +@test -f "$(OUT_STATIC)" || $(MAKE) static
-~  +@test -f "$(OUT_SHARED)" || $(MAKE) shared
-~  -@echo installing libraries to $(INSTALLLIB) and headers to $(INSTALLINC)...
-~  $(INSTALLSH) -C -m 755 "$(OUT_SHARED)" "$(INSTALLLIB)"
-~  -($(LDCONFIG) || true) > /dev/null 2>&1
-~  $(INSTALLSH) -C -m 644 "$(OUT_STATIC)" "$(INSTALLLIB)"
-~  -($(RANLIB) "$(INSTALLLIB)/$(OUT_STATIC_FN)" || true) > /dev/null 2>&1
-~  $(INSTALLSH) -C -m 644 "sir.h" "$(INSTALLINC)"
-~  -@echo installed libsir successfully.
+:  +@test -f "$(OUT_STATIC)" || $(MAKE) static
+:  +@test -f "$(OUT_SHARED)" || $(MAKE) shared
+:  -@echo installing libraries to $(INSTALLLIB) and headers to $(INSTALLINC)...
+:  $(INSTALLSH) -C -m 755 "$(OUT_SHARED)" "$(INSTALLLIB)"
+:  -($(LDCONFIG) || true) > /dev/null 2>&1
+:  $(INSTALLSH) -C -m 644 "$(OUT_STATIC)" "$(INSTALLLIB)"
+:  -($(RANLIB) "$(INSTALLLIB)/$(OUT_STATIC_FN)" || true) > /dev/null 2>&1
+:  $(INSTALLSH) -C -m 644 "sir.h" "$(INSTALLINC)"
+:  -@echo installed libsir successfully.
 
 .PHONY: clean distclean
 clean distclean:
-~  @rm -rf $(BUILDDIR) > /dev/null 2>&1
-~  @rm -rf ./*.log > /dev/null 2>&1
-~  @rm -rf ./*.d > /dev/null 2>&1
-~  -@echo build directory and log files cleaned successfully.
+:  @rm -rf $(BUILDDIR) > /dev/null 2>&1
+:  @rm -rf ./*.log > /dev/null 2>&1
+:  @rm -rf ./*.d > /dev/null 2>&1
+:  -@echo build directory and log files cleaned successfully.
 
 .PHONY: printvars printenv
 printvars printenv:
-~  -@printf '%s: ' "FEATURES"; printf '%s ' "$(.FEATURES)"; printf '%s\n' ""
-~  -@$(foreach V,$(sort $(.VARIABLES)), \
+:  -@printf '%s: ' "FEATURES"; printf '%s ' "$(.FEATURES)"; printf '%s\n' ""
+:  -@$(foreach V,$(sort $(.VARIABLES)), \
       $(if $(filter-out environment% default automatic,$(origin $V)), \
         $(if $(strip $($V)),$(info $V: [$($V)]),)))
-~  -@true > /dev/null 2>&1
+:  -@true > /dev/null 2>&1
 
 .PHONY: print-%
 print-%:
-~  -@$(info $*: [$($*)] ($(flavor $*). set by $(origin $*)))@true
-~  -@true > /dev/null 2>&1
+:  -@$(info $*: [$($*)] ($(flavor $*). set by $(origin $*)))@true
+:  -@true > /dev/null 2>&1
