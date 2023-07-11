@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['name_0',['name',['../group__publictypes.html#ac003c97d6b63150341f2f29166a533e3',1,'sirinit']]]
+  ['mask_0',['mask',['../group__publictypes.html#af2ce11ebf110993621bedd8e747d7b1b',1,'sir_syslog_dest._state']]]
 ];

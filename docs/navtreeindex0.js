@@ -1,6 +1,5 @@
 var NAVTREEINDEX0 =
 {
-"config.html":[0],
 "dir_59425e443f801f1f2fd8bbe4959a3ccf.html":[3,0,1],
 "dir_cfafba98a580ce4b62f8a6fa96d7cbb0.html":[3,0,0],
 "example_8c.html":[3,0,0,0],
@@ -186,6 +185,8 @@ var NAVTREEINDEX0 =
 "group__tests.html#gaf38b29b3f35da81c5315f110745f360d":[2,2,12],
 "group__tests.html#gaf70a501cd8ae0357d80b99df2b1de901":[2,2,4],
 "index.html":[],
+"md_docs_2sources_2config.html":[0],
+"md_docs_2sources_2sirtests.html":[1],
 "modules.html":[2],
 "pages.html":[],
 "sir_8c.html":[3,0,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "sirconfig_8h.html#ac1e50274f913ef71f196f20b9dfbbba6":[3,0,5,28],
 "sirconfig_8h.html#ac42033f35206a8adbf1a4377c8e0d290":[3,0,5,35],
 "sirconfig_8h.html#aca213e22f32a371da7ca82eb86a16c9a":[3,0,5,13],
-"sirconfig_8h.html#acf0d0fad6a98c920cced53dbe9b54d26":[3,0,5,33],
-"sirconfig_8h.html#ad0d5f453c3eb6a7a0e9d507b122bfac4":[3,0,5,26]
+"sirconfig_8h.html#acf0d0fad6a98c920cced53dbe9b54d26":[3,0,5,33]
 };
