@@ -195,6 +195,7 @@ char* _sir_getappfilename(void) {
 
 #if !defined(__WIN__)
 # if defined(__READLINK_OS__)
+        /* Flawfinder: ignore */
         ssize_t read = readlink(PROC_SELF, buffer, size - 1);
         if (-1 != read && read < (ssize_t)size - 1) {
             resolved = true;
