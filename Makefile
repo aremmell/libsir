@@ -149,7 +149,7 @@ docs: $(OUT_STATIC)
 .PHONY: install
 install: $(INSTALLSH)
 	@test -x $(INSTALLSH) || \
-		{ printf 'Error: %s not executable.\n' "$(INSTALLSH)"; exit 1; }
+	  { printf 'Error: %s not executable.\n' "$(INSTALLSH)"; exit 1; }
 	+@test -f "$(OUT_STATIC)" || $(MAKE) static
 	+@test -f "$(OUT_SHARED)" || $(MAKE) shared
 	-@echo installing libraries to $(INSTALLLIB) and headers to $(INSTALLINC)...
@@ -170,8 +170,8 @@ clean distclean:
 .PHONY: printvars printenv
 printvars printenv:
 	-@$(foreach V,$(sort $(.VARIABLES)), \
-		$(if $(filter-out environment% default automatic,$(origin $V)), \
-		$(if $(strip $($V)),$(info $V: [$($V)]),)))
+	  $(if $(filter-out environment% default automatic,$(origin $V)), \
+	    $(if $(strip $($V)),$(info $V: [$($V)]),)))
 	-@true > /dev/null 2>&1
 
 .PHONY: print-%
