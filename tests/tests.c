@@ -1524,8 +1524,7 @@ bool sirtest_threadrace(void) {
     uintptr_t thrds[NUM_THREADS] = {0};
 #endif
 
-    INIT_N(si, SIRL_DEFAULT, SIRO_NOPID | SIRO_NOHOST, SIRL_DEFAULT,
-        SIRO_NOPID | SIRO_NOHOST, "thread-race");
+    INIT_N(si, SIRL_DEFAULT, SIRO_NOPID | SIRO_NOHOST, 0, 0, "thread-race");
     bool pass           = si_init;
     bool any_created    = false;
     size_t last_created = 0;
