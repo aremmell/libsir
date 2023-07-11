@@ -152,7 +152,7 @@ shared: $(OBJ_SHARED)
 
 static: shared
 	ar -cr $(OUT_STATIC) $(OBJ_SHARED)
-	-($(RANLIB) "$(OUT_STATIC)" || true) > /dev/null 2>&1
+	-@($(RANLIB) "$(OUT_STATIC)" || true) > /dev/null 2>&1
 	-@echo built $(OUT_STATIC) successfully.
 
 example: static $(OBJ_EXAMPLE)
