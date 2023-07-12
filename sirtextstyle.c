@@ -143,7 +143,6 @@ bool _sir_formatstyle(sir_colormode mode, const sir_textstyle* style,
 
     _sir_resetstr(buf);
 
-    bool formatted = false;
     switch (mode) {
         case SIRCM_16:
             /* \x1b[attr;fg;bgm */
@@ -172,8 +171,6 @@ bool _sir_formatstyle(sir_colormode mode, const sir_textstyle* style,
         default:
             return false;
     }
-
-    return formatted;
 }
 
 bool _sir_validtextstyle(sir_colormode mode, const sir_textstyle* style) {
