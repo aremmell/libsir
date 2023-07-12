@@ -56,7 +56,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
 # elif defined(__FreeBSD__) || defined(__CYGWIN__)
         int open_flags = O_EXEC | O_DIRECTORY;
 # elif defined(__SOLARIS__) || defined(__DragonFly__) || \
-       defined(__NetBSD__) || defined(__HAIKU__)
+       defined(__NetBSD__) || defined(__HAIKU__) || defined(__OpenBSD__)
         int open_flags = O_DIRECTORY;
 # else
 #  error "unknown for your platform; please contact the author."
@@ -157,6 +157,75 @@ char* _sir_getcwd(void) {
 #endif
 }
 
+#if defined(__OpenBSD__)
+static int
+_sir_openbsdself(char* out, int capacity, int* dirname_length)
+{
+  char   buffer1[4096];
+  char   buffer2[PATH_MAX];
+  char   buffer3[PATH_MAX];
+  char** argv     = (char**)buffer1;
+  char*  resolved = NULL;
+  int    length   = -1;
+
+  for (;;) {
+    int mib[4] = { CTL_KERN, KERN_PROC_ARGS, getpid(), KERN_PROC_ARGV };
+    size_t size;
+
+    if (sysctl(mib, 4, NULL, &size, NULL, 0) != 0) break;
+    if (size > sizeof(buffer1)) {
+      argv = (char**)malloc(size);
+      if (!argv) break;
+    }
+
+    if (sysctl(mib, 4, argv, &size, NULL, 0) != 0) break;
+    if (strchr(argv[0], '/')) {
+      resolved = realpath(argv[0], buffer2);
+      if (!resolved) break;
+    } else {
+      const char* PATH = getenv("PATH");
+      if (!PATH) break;
+      size_t argv0_length = strlen(argv[0]);
+      const char* begin = PATH;
+      while (1) {
+        const char* separator = strchr(begin, ':');
+        const char* end = separator ? separator : begin + strlen(begin);
+        if (end - begin > 0) {
+          if (*(end - 1) == '/') --end;
+          if (((end - begin) + 1UL + argv0_length + 1UL) <= sizeof(buffer2)) {
+            memcpy(buffer2, begin, end - begin);
+            buffer2[end - begin] = '/';
+            memcpy(buffer2 + (end - begin) + 1, argv[0], argv0_length + 1);
+            resolved = realpath(buffer2, buffer3);
+            if (resolved) break;
+          }
+        }
+        if (!separator) break;
+        begin = ++separator;
+      }
+      if (!resolved) break;
+    }
+
+    length = (int)strlen(resolved);
+    if (length <= capacity) {
+      memcpy(out, resolved, (unsigned long)length);
+      if (dirname_length) {
+        int i;
+        for (i = length - 1; i >= 0; --i) {
+          if (out[i] == '/') {
+            *dirname_length = i;
+            break;
+          }
+        }
+      }
+    }
+    break;
+  }
+  if (argv != (char**)buffer1) free(argv);
+  return length;
+}
+#endif
+
 char* _sir_getappfilename(void) {
 #if defined(__linux__) || defined(__NetBSD__) || defined(__SOLARIS__) || \
     defined(__DragonFly__) || defined(__CYGWIN__)
@@ -213,6 +282,27 @@ char* _sir_getappfilename(void) {
                 break;
             }
         }
+# elif defined(__OpenBSD__)
+        size_t length;
+        int dirname_length;
+        length = _sir_openbsdself(NULL, 0, &dirname_length);
+        if (length < 1) {
+            _sir_handleerr(errno);
+            resolved = false;
+            break;
+        }
+        if (length > size) {
+            resolved = false;
+            size = length;
+            continue;
+        }
+        (void)_sir_openbsdself(buffer, length, &dirname_length);
+        if (!buffer) {
+            resolved = false;
+            break;
+        }
+        resolved = true;
+        break;
 # elif defined(__BSD__)
         int mib[4] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
         int ret = sysctl(mib, 4, buffer, &size, NULL, 0);
