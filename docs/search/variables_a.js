@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['to_0',['to',['../structsir__style__16color__pair.html#a65482f5ea5aa6bc43c827766a1fea780',1,'sir_style_16color_pair']]]
+  ['opts_0',['opts',['../group__publictypes.html#a7e1370c46de95363162d1c7879fca723',1,'sir_stdio_dest::opts'],['../group__publictypes.html#ad8f026edd9c8667d897eb24016f2e81f',1,'sir_syslog_dest::opts'],['../structsir__update__config__data.html#a8736ae94a5aaea53a2e4c8f06f7a870a',1,'sir_update_config_data::opts']]]
 ];

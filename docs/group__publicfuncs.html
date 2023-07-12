@@ -166,12 +166,18 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf14164a64eca824a2bae72ef4e9689cd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gaf14164a64eca824a2bae72ef4e9689cd">sir_fileopts</a> (<a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442">sirfileid</a> id, <a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> opts)</td></tr>
 <tr class="memdesc:gaf14164a64eca824a2bae72ef4e9689cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set new formatting options for a log file already managed by libsir.  <br /></td></tr>
 <tr class="separator:gaf14164a64eca824a2bae72ef4e9689cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa628fae976081e7aaa302e5c5e43e06c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gaa628fae976081e7aaa302e5c5e43e06c">sir_settextstyle</a> (<a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level, <a class="el" href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf">sir_textstyle</a> style)</td></tr>
-<tr class="memdesc:gaa628fae976081e7aaa302e5c5e43e06c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.  <br /></td></tr>
-<tr class="separator:gaa628fae976081e7aaa302e5c5e43e06c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1a4726075fbcea9fc311f059e342213f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f">sir_settextstyle</a> (<a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level, <a class="el" href="group__publictypes.html#ga1bf5e489a6af0dcb905788c1e7a5ec2d">sir_textattr</a> attr, <a class="el" href="group__publictypes.html#gab4214e294af5ac3c91f21c1d379e10c5">sir_textcolor</a> fg, <a class="el" href="group__publictypes.html#gab4214e294af5ac3c91f21c1d379e10c5">sir_textcolor</a> bg)</td></tr>
+<tr class="memdesc:ga1a4726075fbcea9fc311f059e342213f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.  <br /></td></tr>
+<tr class="separator:ga1a4726075fbcea9fc311f059e342213f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga932eec2f9c73eecdd2b6b935452e5eed"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga932eec2f9c73eecdd2b6b935452e5eed">sir_resettextstyles</a> (void)</td></tr>
 <tr class="memdesc:ga932eec2f9c73eecdd2b6b935452e5eed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset text styling for stdio (stdout/stderr) destinations to their default values.  <br /></td></tr>
 <tr class="separator:ga932eec2f9c73eecdd2b6b935452e5eed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4691e42964819230e1f4b7fdf984ff66"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__publictypes.html#gab4214e294af5ac3c91f21c1d379e10c5">sir_textcolor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga4691e42964819230e1f4b7fdf984ff66">sir_makergb</a> (<a class="el" href="group__publictypes.html#gab4214e294af5ac3c91f21c1d379e10c5">sir_textcolor</a> r, <a class="el" href="group__publictypes.html#gab4214e294af5ac3c91f21c1d379e10c5">sir_textcolor</a> g, <a class="el" href="group__publictypes.html#gab4214e294af5ac3c91f21c1d379e10c5">sir_textcolor</a> b)</td></tr>
+<tr class="memdesc:ga4691e42964819230e1f4b7fdf984ff66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="group__publictypes.html#gab4214e294af5ac3c91f21c1d379e10c5" title="stdio text color type.">sir_textcolor</a> from red, green, and blue components.  <br /></td></tr>
+<tr class="separator:ga4691e42964819230e1f4b7fdf984ff66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga31639aba9a825f957a73689ef509f33d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga31639aba9a825f957a73689ef509f33d">sir_setcolormode</a> (<a class="el" href="group__publictypes.html#ga26686b620930358e8b50f287d6c96e51">sir_colormode</a> mode)</td></tr>
+<tr class="memdesc:ga31639aba9a825f957a73689ef509f33d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the ANSI color mode for stdio destinations.  <br /></td></tr>
+<tr class="separator:ga31639aba9a825f957a73689ef509f33d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6f17febe99cb0beb6f8119283cc62d42"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42">sir_stdoutlevels</a> (<a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a> levels)</td></tr>
 <tr class="memdesc:ga6f17febe99cb0beb6f8119283cc62d42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set new level registrations for <code>stdout</code>.  <br /></td></tr>
 <tr class="separator:ga6f17febe99cb0beb6f8119283cc62d42"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -339,7 +345,7 @@ Functions</h2></td></tr>
 
 <p>Dispatches a <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b" title="Debugging/diagnostic output.">SIRL_DEBUG</a> level message. </p>
 <p>The message will be delivered to all destinations registered to receive debug-level messages, each with their own formatting and styling options.</p>
-<dl class="section remark"><dt>Remarks</dt><dd>To change options or level registrations for <code>stdout</code>/<code>stderr</code>, call <a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a>/<a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a> and <a class="el" href="group__publicfuncs.html#ga0e78fb3ad87f02ef0f056a34200a4ab9" title="Set new formatting options for stderr.">sir_stderropts</a>/<a class="el" href="group__publicfuncs.html#ga421c13f6e269440cef0ac5c1ff3e65dd" title="Set new level registrations for stderr.">sir_stderrlevels</a>, respectively. To change the text styling on a per-level basis, call <a class="el" href="group__publicfuncs.html#gaa628fae976081e7aaa302e5c5e43e06c" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>.</dd></dl>
+<dl class="section remark"><dt>Remarks</dt><dd>To change options or level registrations for <code>stdout</code>/<code>stderr</code>, call <a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a>/<a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a> and <a class="el" href="group__publicfuncs.html#ga0e78fb3ad87f02ef0f056a34200a4ab9" title="Set new formatting options for stderr.">sir_stderropts</a>/<a class="el" href="group__publicfuncs.html#ga421c13f6e269440cef0ac5c1ff3e65dd" title="Set new level registrations for stderr.">sir_stderrlevels</a>, respectively. To change the text styling on a per-level basis, call <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> </dd>
 <dd>
 <a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> </dd>
@@ -384,7 +390,7 @@ Functions</h2></td></tr>
 
 <p>Dispatches a <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d" title="Informational messages.">SIRL_INFO</a> level message. </p>
 <p>The message will be delivered to all destinations registered to receive information-level messages, each with their own formatting and styling options.</p>
-<dl class="section remark"><dt>Remarks</dt><dd>To change options or level registrations for <code>stdout</code>/<code>stderr</code>, call <a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a>/<a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a> and <a class="el" href="group__publicfuncs.html#ga0e78fb3ad87f02ef0f056a34200a4ab9" title="Set new formatting options for stderr.">sir_stderropts</a>/<a class="el" href="group__publicfuncs.html#ga421c13f6e269440cef0ac5c1ff3e65dd" title="Set new level registrations for stderr.">sir_stderrlevels</a>, respectively. To change the text styling on a per-level basis, call <a class="el" href="group__publicfuncs.html#gaa628fae976081e7aaa302e5c5e43e06c" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>.</dd></dl>
+<dl class="section remark"><dt>Remarks</dt><dd>To change options or level registrations for <code>stdout</code>/<code>stderr</code>, call <a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a>/<a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a> and <a class="el" href="group__publicfuncs.html#ga0e78fb3ad87f02ef0f056a34200a4ab9" title="Set new formatting options for stderr.">sir_stderropts</a>/<a class="el" href="group__publicfuncs.html#ga421c13f6e269440cef0ac5c1ff3e65dd" title="Set new level registrations for stderr.">sir_stderrlevels</a>, respectively. To change the text styling on a per-level basis, call <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> </dd>
 <dd>
 <a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> </dd>
@@ -429,7 +435,7 @@ Functions</h2></td></tr>
 
 <p>Dispatches a <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a" title="Normal but significant.">SIRL_NOTICE</a> level message. </p>
 <p>The message will be delivered to all destinations registered to receive notice-level messages, each with their own formatting and styling options.</p>
-<dl class="section remark"><dt>Remarks</dt><dd>To change options or level registrations for <code>stdout</code>/<code>stderr</code>, call <a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a>/<a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a> and <a class="el" href="group__publicfuncs.html#ga0e78fb3ad87f02ef0f056a34200a4ab9" title="Set new formatting options for stderr.">sir_stderropts</a>/<a class="el" href="group__publicfuncs.html#ga421c13f6e269440cef0ac5c1ff3e65dd" title="Set new level registrations for stderr.">sir_stderrlevels</a>, respectively. To change the text styling on a per-level basis, call <a class="el" href="group__publicfuncs.html#gaa628fae976081e7aaa302e5c5e43e06c" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>.</dd></dl>
+<dl class="section remark"><dt>Remarks</dt><dd>To change options or level registrations for <code>stdout</code>/<code>stderr</code>, call <a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a>/<a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a> and <a class="el" href="group__publicfuncs.html#ga0e78fb3ad87f02ef0f056a34200a4ab9" title="Set new formatting options for stderr.">sir_stderropts</a>/<a class="el" href="group__publicfuncs.html#ga421c13f6e269440cef0ac5c1ff3e65dd" title="Set new level registrations for stderr.">sir_stderrlevels</a>, respectively. To change the text styling on a per-level basis, call <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> </dd>
 <dd>
 <a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> </dd>
@@ -474,7 +480,7 @@ Functions</h2></td></tr>
 
 <p>Dispatches a <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881" title="Warnings that could likely be ignored.">SIRL_WARN</a> level message. </p>
 <p>The message will be delivered to all destinations registered to receive warning-level messages, each with their own formatting and styling options.</p>
-<dl class="section remark"><dt>Remarks</dt><dd>To change options or level registrations for <code>stdout</code>/<code>stderr</code>, call <a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a>/<a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a> and <a class="el" href="group__publicfuncs.html#ga0e78fb3ad87f02ef0f056a34200a4ab9" title="Set new formatting options for stderr.">sir_stderropts</a>/<a class="el" href="group__publicfuncs.html#ga421c13f6e269440cef0ac5c1ff3e65dd" title="Set new level registrations for stderr.">sir_stderrlevels</a>, respectively. To change the text styling on a per-level basis, call <a class="el" href="group__publicfuncs.html#gaa628fae976081e7aaa302e5c5e43e06c" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>.</dd></dl>
+<dl class="section remark"><dt>Remarks</dt><dd>To change options or level registrations for <code>stdout</code>/<code>stderr</code>, call <a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a>/<a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a> and <a class="el" href="group__publicfuncs.html#ga0e78fb3ad87f02ef0f056a34200a4ab9" title="Set new formatting options for stderr.">sir_stderropts</a>/<a class="el" href="group__publicfuncs.html#ga421c13f6e269440cef0ac5c1ff3e65dd" title="Set new level registrations for stderr.">sir_stderrlevels</a>, respectively. To change the text styling on a per-level basis, call <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> </dd>
 <dd>
 <a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> </dd>
@@ -519,7 +525,7 @@ Functions</h2></td></tr>
 
 <p>Dispatches a <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76" title="Errors.">SIRL_ERROR</a> level message. </p>
 <p>The message will be delivered to all destinations registered to receive error-level messages, each with their own formatting and styling options.</p>
-<dl class="section remark"><dt>Remarks</dt><dd>To change options or level registrations for <code>stdout</code>/<code>stderr</code>, call <a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a>/<a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a> and <a class="el" href="group__publicfuncs.html#ga0e78fb3ad87f02ef0f056a34200a4ab9" title="Set new formatting options for stderr.">sir_stderropts</a>/<a class="el" href="group__publicfuncs.html#ga421c13f6e269440cef0ac5c1ff3e65dd" title="Set new level registrations for stderr.">sir_stderrlevels</a>, respectively. To change the text styling on a per-level basis, call <a class="el" href="group__publicfuncs.html#gaa628fae976081e7aaa302e5c5e43e06c" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>.</dd></dl>
+<dl class="section remark"><dt>Remarks</dt><dd>To change options or level registrations for <code>stdout</code>/<code>stderr</code>, call <a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a>/<a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a> and <a class="el" href="group__publicfuncs.html#ga0e78fb3ad87f02ef0f056a34200a4ab9" title="Set new formatting options for stderr.">sir_stderropts</a>/<a class="el" href="group__publicfuncs.html#ga421c13f6e269440cef0ac5c1ff3e65dd" title="Set new level registrations for stderr.">sir_stderrlevels</a>, respectively. To change the text styling on a per-level basis, call <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> </dd>
 <dd>
 <a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> </dd>
@@ -564,7 +570,7 @@ Functions</h2></td></tr>
 
 <p>Dispatches a <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435" title="Critical errors.">SIRL_CRIT</a> level message. </p>
 <p>The message will be delivered to all destinations registered to receive crtical-level messages, each with their own formatting and styling options.</p>
-<dl class="section remark"><dt>Remarks</dt><dd>To change options or level registrations for <code>stdout</code>/<code>stderr</code>, call <a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a>/<a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a> and <a class="el" href="group__publicfuncs.html#ga0e78fb3ad87f02ef0f056a34200a4ab9" title="Set new formatting options for stderr.">sir_stderropts</a>/<a class="el" href="group__publicfuncs.html#ga421c13f6e269440cef0ac5c1ff3e65dd" title="Set new level registrations for stderr.">sir_stderrlevels</a>, respectively. To change the text styling on a per-level basis, call <a class="el" href="group__publicfuncs.html#gaa628fae976081e7aaa302e5c5e43e06c" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>.</dd></dl>
+<dl class="section remark"><dt>Remarks</dt><dd>To change options or level registrations for <code>stdout</code>/<code>stderr</code>, call <a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a>/<a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a> and <a class="el" href="group__publicfuncs.html#ga0e78fb3ad87f02ef0f056a34200a4ab9" title="Set new formatting options for stderr.">sir_stderropts</a>/<a class="el" href="group__publicfuncs.html#ga421c13f6e269440cef0ac5c1ff3e65dd" title="Set new level registrations for stderr.">sir_stderrlevels</a>, respectively. To change the text styling on a per-level basis, call <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> </dd>
 <dd>
 <a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> </dd>
@@ -609,7 +615,7 @@ Functions</h2></td></tr>
 
 <p>Dispatches a <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955" title="Action required ASAP.">SIRL_ALERT</a> level message. </p>
 <p>The message will be delivered to all destinations registered to receive alert-level messages, each with their own formatting and styling options.</p>
-<dl class="section remark"><dt>Remarks</dt><dd>To change options or level registrations for <code>stdout</code>/<code>stderr</code>, call <a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a>/<a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a> and <a class="el" href="group__publicfuncs.html#ga0e78fb3ad87f02ef0f056a34200a4ab9" title="Set new formatting options for stderr.">sir_stderropts</a>/<a class="el" href="group__publicfuncs.html#ga421c13f6e269440cef0ac5c1ff3e65dd" title="Set new level registrations for stderr.">sir_stderrlevels</a>, respectively. To change the text styling on a per-level basis, call <a class="el" href="group__publicfuncs.html#gaa628fae976081e7aaa302e5c5e43e06c" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>.</dd></dl>
+<dl class="section remark"><dt>Remarks</dt><dd>To change options or level registrations for <code>stdout</code>/<code>stderr</code>, call <a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a>/<a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a> and <a class="el" href="group__publicfuncs.html#ga0e78fb3ad87f02ef0f056a34200a4ab9" title="Set new formatting options for stderr.">sir_stderropts</a>/<a class="el" href="group__publicfuncs.html#ga421c13f6e269440cef0ac5c1ff3e65dd" title="Set new level registrations for stderr.">sir_stderrlevels</a>, respectively. To change the text styling on a per-level basis, call <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> </dd>
 <dd>
 <a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> </dd>
@@ -654,7 +660,7 @@ Functions</h2></td></tr>
 
 <p>Dispatches a <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc" title="Nuclear war, Armageddon, etc.">SIRL_EMERG</a> level message. </p>
 <p>The message will be delivered to all destinations registered to receive emergency-level messages, each with their own formatting and styling options.</p>
-<dl class="section remark"><dt>Remarks</dt><dd>To change options or level registrations for <code>stdout</code>/<code>stderr</code>, call <a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a>/<a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a> and <a class="el" href="group__publicfuncs.html#ga0e78fb3ad87f02ef0f056a34200a4ab9" title="Set new formatting options for stderr.">sir_stderropts</a>/<a class="el" href="group__publicfuncs.html#ga421c13f6e269440cef0ac5c1ff3e65dd" title="Set new level registrations for stderr.">sir_stderrlevels</a>, respectively. To change the text styling on a per-level basis, call <a class="el" href="group__publicfuncs.html#gaa628fae976081e7aaa302e5c5e43e06c" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>.</dd></dl>
+<dl class="section remark"><dt>Remarks</dt><dd>To change options or level registrations for <code>stdout</code>/<code>stderr</code>, call <a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a>/<a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a> and <a class="el" href="group__publicfuncs.html#ga0e78fb3ad87f02ef0f056a34200a4ab9" title="Set new formatting options for stderr.">sir_stderropts</a>/<a class="el" href="group__publicfuncs.html#ga421c13f6e269440cef0ac5c1ff3e65dd" title="Set new level registrations for stderr.">sir_stderrlevels</a>, respectively. To change the text styling on a per-level basis, call <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> </dd>
 <dd>
 <a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> </dd>
@@ -846,8 +852,8 @@ To change the file's level registrations or options after adding it, call <a cla
 
 </div>
 </div>
-<a id="gaa628fae976081e7aaa302e5c5e43e06c" name="gaa628fae976081e7aaa302e5c5e43e06c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa628fae976081e7aaa302e5c5e43e06c">&#9670;&#160;</a></span>sir_settextstyle()</h2>
+<a id="ga1a4726075fbcea9fc311f059e342213f" name="ga1a4726075fbcea9fc311f059e342213f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1a4726075fbcea9fc311f059e342213f">&#9670;&#160;</a></span>sir_settextstyle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -861,8 +867,20 @@ To change the file's level registrations or options after adding it, call <a cla
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf">sir_textstyle</a>&#160;</td>
-          <td class="paramname"><em>style</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#ga1bf5e489a6af0dcb905788c1e7a5ec2d">sir_textattr</a>&#160;</td>
+          <td class="paramname"><em>attr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#gab4214e294af5ac3c91f21c1d379e10c5">sir_textcolor</a>&#160;</td>
+          <td class="paramname"><em>fg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#gab4214e294af5ac3c91f21c1d379e10c5">sir_textcolor</a>&#160;</td>
+          <td class="paramname"><em>bg</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -873,13 +891,18 @@ To change the file's level registrations or options after adding it, call <a cla
 </div><div class="memdoc">
 
 <p>Set new text styling for stdio (stdout/stderr) destinations on a per-level basis. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#ga932eec2f9c73eecdd2b6b935452e5eed" title="Reset text styling for stdio (stdout/stderr) destinations to their default values.">sir_resettextstyles</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#ga31639aba9a825f957a73689ef509f33d" title="Sets the ANSI color mode for stdio destinations.">sir_setcolormode</a> </dd>
+<dd>
+<a class="el" href="group__publicfuncs.html#ga932eec2f9c73eecdd2b6b935452e5eed" title="Reset text styling for stdio (stdout/stderr) destinations to their default values.">sir_resettextstyles</a> </dd>
 <dd>
 <a class="el" href="group__default.html" title="Default sir_option bitmasks, sir_level registrations, and sir_textstyle bitmasks.">Defaults</a></dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Use <code>SIRTC_DEFAULT</code> to get the default foreground or background color. To set colors in RGB color mode, use <a class="el" href="group__publicfuncs.html#ga4691e42964819230e1f4b7fdf984ff66" title="Creates a sir_textcolor from red, green, and blue components.">sir_makergb</a> to create the foreground and background colors.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">level</td><td>The <a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> for which to set the text styling. </td></tr>
-    <tr><td class="paramname">style</td><td>New bitmask of <a class="el" href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf" title="Styles for 16-color stdio output.">sir_textstyle</a> for the level. </td></tr>
+    <tr><td class="paramname">attr</td><td>The <a class="el" href="group__publictypes.html#ga1bf5e489a6af0dcb905788c1e7a5ec2d" title="Attributes for stdio output.">sir_textattr</a> attributes to apply to the text. </td></tr>
+    <tr><td class="paramname">fg</td><td>The foreground color to apply to the text. </td></tr>
+    <tr><td class="paramname">bg</td><td>The background color to apply to the text. </td></tr>
   </table>
   </dd>
 </dl>
@@ -904,10 +927,105 @@ To change the file's level registrations or options after adding it, call <a cla
 </div><div class="memdoc">
 
 <p>Reset text styling for stdio (stdout/stderr) destinations to their default values. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#gaa628fae976081e7aaa302e5c5e43e06c" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a> </dd>
+<dl class="section note"><dt>Note</dt><dd>The text styling will be applied according to the current color mode (as previously set by <a class="el" href="group__publicfuncs.html#ga31639aba9a825f957a73689ef509f33d" title="Sets the ANSI color mode for stdio destinations.">sir_setcolormode</a>, or by default, 16-color mode).</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#ga31639aba9a825f957a73689ef509f33d" title="Sets the ANSI color mode for stdio destinations.">sir_setcolormode</a> </dd>
+<dd>
+<a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a> </dd>
 <dd>
 <a class="el" href="group__default.html" title="Default sir_option bitmasks, sir_level registrations, and sir_textstyle bitmasks.">Defaults</a></dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if succcessfully reset, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+
+</div>
+</div>
+<a id="ga4691e42964819230e1f4b7fdf984ff66" name="ga4691e42964819230e1f4b7fdf984ff66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4691e42964819230e1f4b7fdf984ff66">&#9670;&#160;</a></span>sir_makergb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__publictypes.html#gab4214e294af5ac3c91f21c1d379e10c5">sir_textcolor</a> sir_makergb </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#gab4214e294af5ac3c91f21c1d379e10c5">sir_textcolor</a>&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#gab4214e294af5ac3c91f21c1d379e10c5">sir_textcolor</a>&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#gab4214e294af5ac3c91f21c1d379e10c5">sir_textcolor</a>&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a <a class="el" href="group__publictypes.html#gab4214e294af5ac3c91f21c1d379e10c5" title="stdio text color type.">sir_textcolor</a> from red, green, and blue components. </p>
+<dl class="section note"><dt>Note</dt><dd>Use this function to create colors suitable for <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a> when using RGB color mode.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#ga31639aba9a825f957a73689ef509f33d" title="Sets the ANSI color mode for stdio destinations.">sir_setcolormode</a> </dd>
+<dd>
+<a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a> </dd>
+<dd>
+<a class="el" href="group__default.html" title="Default sir_option bitmasks, sir_level registrations, and sir_textstyle bitmasks.">Defaults</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">r</td><td>The red component (0..255) </td></tr>
+    <tr><td class="paramname">g</td><td>The green component (0..255) </td></tr>
+    <tr><td class="paramname">b</td><td>The blue component (0..255) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>sir_textcolor The color created by combining the r, g, and b components. </dd></dl>
+
+</div>
+</div>
+<a id="ga31639aba9a825f957a73689ef509f33d" name="ga31639aba9a825f957a73689ef509f33d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga31639aba9a825f957a73689ef509f33d">&#9670;&#160;</a></span>sir_setcolormode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sir_setcolormode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#ga26686b620930358e8b50f287d6c96e51">sir_colormode</a>&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the ANSI color mode for stdio destinations. </p>
+<dl class="section note"><dt>Note</dt><dd>Some terminals may not support the color modes offered by libsir, so make sure everything looks right after changing the mode.</dd>
+<dd>
+When you change the color mode, all previously set text styles will be reset to their defaults. You will have to reapply any text styles set before this call.</dd></dl>
+<p>The available modes are:</p>
+<ul>
+<li>SIRCM_16: 4-bit, 16-color mode. Colors are defined by the <code>SIRTC_*</code> values. This is the default mode.</li>
+<li>SIRCM_256: 8-bit, 256-color mode. Colors are defined by numeric value (0..255)</li>
+<li>SIRCM_RGB: 24-bit RGB color mode. Colors are defined by numeric value, with red, green, and blue components (0..255) each.</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#ga4691e42964819230e1f4b7fdf984ff66" title="Creates a sir_textcolor from red, green, and blue components.">sir_makergb</a> </dd>
+<dd>
+<a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a> </dd>
+<dd>
+<a class="el" href="group__default.html" title="Default sir_option bitmasks, sir_level registrations, and sir_textstyle bitmasks.">Defaults</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mode</td><td>One of the <code>SIRCM_*</code> constants, defining the mode to use. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the color mode was changed successfully, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -1202,7 +1320,7 @@ To change the file's level registrations or options after adding it, call <a cla
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jul 11 2023 02:03:01 for libsir by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

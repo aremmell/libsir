@@ -36,7 +36,7 @@ var sirconfig_8h =
     [ "SIR_MAX_SYSLOG_CAT", "sirconfig_8h.html#acf0d0fad6a98c920cced53dbe9b54d26", null ],
     [ "SIR_MAXPID", "sirconfig_8h.html#a77d8a4249177fcf7703a811ca0154190", null ],
     [ "SIR_MAXMISC", "sirconfig_8h.html#ac42033f35206a8adbf1a4377c8e0d290", null ],
-    [ "SIR_MAXSTYLE_16_COLOR", "sirconfig_8h.html#a2fb5413dac03b2487edfeee377932402", null ],
+    [ "SIR_MAXSTYLE", "sirconfig_8h.html#a5cdaa944bfe2228355cc4c34c3d315e8", null ],
     [ "SIR_MAXOUTPUT", "sirconfig_8h.html#ab3e26cb9ac224cb9a695ddf1ed099218", null ],
     [ "SIR_MAXERROR", "sirconfig_8h.html#ad6fce840144259e992c33fb611f31262", null ],
     [ "SIR_ERRORFORMAT", "sirconfig_8h.html#a060398bb73afb43df07b1587bcec98ba", null ],

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['mask_0',['mask',['../group__publictypes.html#af2ce11ebf110993621bedd8e747d7b1b',1,'sir_syslog_dest._state']]]
+  ['identity_0',['identity',['../group__publictypes.html#acbc738f8c0f9dc404ac85e13cb43c7c5',1,'sir_syslog_dest']]]
 ];

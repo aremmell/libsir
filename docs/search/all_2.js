@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['category_0',['category',['../group__publictypes.html#ace79b2f2bd4d08d0c6e4151dafb3266b',1,'sir_syslog_dest']]],
-  ['color_1',['COLOR',['../siransimacros_8h.html#a1ebf33726fd433028ef8313fcc97fe02',1,'siransimacros.h']]],
-  ['configuration_2',['Configuration',['../md_docs_2sources_2config.html',1,'']]]
+  ['bg_0',['bg',['../group__publictypes.html#a3fb54399893a1e17b865471d22467231',1,'sir_textstyle']]],
+  ['bold_1',['BOLD',['../siransimacros_8h.html#a64dae5ea663596bf818ce1a65188b599',1,'siransimacros.h']]]
 ];

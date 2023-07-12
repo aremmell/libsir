@@ -33,7 +33,7 @@ var searchData=
   ['sir_5fmaxname_30',['SIR_MAXNAME',['../sirconfig_8h.html#a85ed3139018ee9e7545c74c0885dff55',1,'sirconfig.h']]],
   ['sir_5fmaxoutput_31',['SIR_MAXOUTPUT',['../sirconfig_8h.html#ab3e26cb9ac224cb9a695ddf1ed099218',1,'sirconfig.h']]],
   ['sir_5fmaxpid_32',['SIR_MAXPID',['../sirconfig_8h.html#a77d8a4249177fcf7703a811ca0154190',1,'sirconfig.h']]],
-  ['sir_5fmaxstyle_5f16_5fcolor_33',['SIR_MAXSTYLE_16_COLOR',['../sirconfig_8h.html#a2fb5413dac03b2487edfeee377932402',1,'sirconfig.h']]],
+  ['sir_5fmaxstyle_33',['SIR_MAXSTYLE',['../sirconfig_8h.html#a5cdaa944bfe2228355cc4c34c3d315e8',1,'sirconfig.h']]],
   ['sir_5fmaxtime_34',['SIR_MAXTIME',['../sirconfig_8h.html#ac1e50274f913ef71f196f20b9dfbbba6',1,'sirconfig.h']]],
   ['sir_5fmsecformat_35',['SIR_MSECFORMAT',['../sirconfig_8h.html#a11214c8798ccdaab052c3bc9db2e3e78',1,'sirconfig.h']]],
   ['sir_5fnum16_5fcolor_5fmappings_36',['SIR_NUM16_COLOR_MAPPINGS',['../sirconfig_8h.html#ad4797e353beace140ae7ac35e0e6ea11',1,'sirconfig.h']]],
