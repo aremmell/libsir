@@ -234,7 +234,7 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, const char
                         write_color = true;
                     }
 
-                    write2 = fprintf(stderr, (write_color ? LRED("%s%s") "\n" : "%s%s\n"),
+                    write2 = fprintf(stderr, (write_color ? BRED("%s%s") "\n" : "%s%s\n"),
                         prefix, buf);
                     success &= write2 > 0;
                 }
