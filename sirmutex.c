@@ -38,7 +38,7 @@ bool _sirmutex_create(sir_mutex* mutex) {
             _sir_handleerr(op);
 
         if (0 == op) {
-            op = pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_NORMAL);
+            op = pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
             if (0 != op)
                 _sir_handleerr(op);
 
