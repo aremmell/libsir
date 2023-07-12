@@ -481,11 +481,11 @@ sir_textcolor sir_makergb(sir_textcolor r, sir_textcolor g, sir_textcolor b);
  *
  * The available modes are:
  *
- * - SIRCM_16:  4-bit, 16-color mode. Colors are defined by the `SIRTC_*` values.
- *              This is the default mode.
- * - SIRCM_256: 8-bit, 256-color mode. Colors are defined by numeric value (0..255)
- * - SIRCM_RGB: 24-bit RGB color mode. Colors are defined by numeric value, with
- *              red, green, and blue components (0..255) each.
+ * - `SIRCM_16`:  4-bit, 16-color mode. Colors are defined by the `SIRTC_*` values.
+ *                This is the default mode.
+ * - `SIRCM_256`: 8-bit, 256-color mode. Colors are defined by numeric value (0..255)
+ * - `SIRCM_RGB`: 24-bit RGB color mode. Colors are defined by numeric value, with
+ *                red, green, and blue components (0..255) each.
  *
  * @see ::sir_makergb
  * @see ::sir_settextstyle
