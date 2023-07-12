@@ -106,15 +106,17 @@ void __sir_handleerr(int code, const char* func, const char* file, uint32_t line
         /* cppcheck-suppress knownConditionTrueFalse */
         if (0 == finderr && _sir_validstrnofail(message)) {
             __sir_setoserror(code, message, func, file, line);
+#if defined(__HAVE_XSI_STRERROR_R__) || defined(__HAVE_STRERROR_S__)
         } else {
             /* Per my reading of the man pages, GNU strerror_r and normal strerror "can't fail";
              * they simply return a string such as "Unknown nnn error" if unable to look up an
              * error code.
              */
-#if defined(__HAVE_XSI_STRERROR_R__)
+# if defined(__HAVE_XSI_STRERROR_R__)
             _sir_selflog("strerror_r failed! error: %d", finderr);
-#elif defined(__HAVE_STRERROR_S__)
+# elif defined(__HAVE_STRERROR_S__)
             _sir_selflog("strerror_s failed! error: %d", finderr);
+# endif
 #endif
         }
     }
