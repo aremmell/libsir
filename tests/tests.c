@@ -593,7 +593,7 @@ bool sirtest_textstylesanity(void) {
     pass &= !sir_settextstyle(SIRL_DEBUG, SIRTA_NORMAL, SIRTC_BLACK, SIRTC_BLACK);
     pass &= sir_info("oops, did it again...");
 
-    pass &= !sir_settextstyle(SIRL_ALERT, SIRTA_NORMAL, -1, -1);
+    pass &= !sir_settextstyle(SIRL_ALERT, SIRTA_NORMAL, 0xff, 0xff);
     pass &= sir_info("and again.");
     PRINT_PASS(pass, "\t--- explicitly invalid: %s ---\n\n", PRN_PASS(pass));
 
