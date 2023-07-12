@@ -57,73 +57,66 @@
 
 /**
  * Creates a sequence of colored characters 's' with foreground color 'fg',
- * background color 'bg', and attributes 'attr' (0=normal, 1=bold, 2=dim).
+ * background color 'bg', and attributes 'attr' (`0=normal, 1=bold, 2=dim,
+ * 3=italic, 4=underlined, 5=blinking, 7=inverted, 9=strikethrough`).
  * Ends by resetting to the default fg/bg color, and normal attr.
  */
 # define COLOR(attr, fg, bg, s) \
     SIR_ESC_SEQ(#attr ";" #fg ";" #bg, s) SIR_ESC_SEQE("0;39;49")
 
-/** Strike-through. */
-# define STRIKE(s) SIR_ESC_SEQ("9", s) SIR_ESC_SEQE("29")
+# define STRIKE(s) SIR_ESC_SEQ("9", s) SIR_ESC_SEQE("29") /**< Strike-through. */
+# define INVERT(s) SIR_ESC_SEQ("7", s) SIR_ESC_SEQE("27") /**< Inverted fg/bg. */
+# define ULINE(s)  SIR_ESC_SEQ("4", s) SIR_ESC_SEQE("24") /**< Underlined. */
+# define EMPH(s)   SIR_ESC_SEQ("3", s) SIR_ESC_SEQE("23") /**< Emphasis/italic. */
+# define BOLD(s)   SIR_ESC_SEQ("1", s) SIR_ESC_SEQE("22") /**< Bold. */
+# define BLINK(s)  SIR_ESC_SEQ("5", s) SIR_ESC_SEQE("25") /**< Blinking text. */
 
-/** Inverted fg/bg. */
-# define INVERT(s) SIR_ESC_SEQ("7", s) SIR_ESC_SEQE("27")
+# define BLACK(s)     COLOR(0, 30, 49, s) /**< Black foreground text. */
+# define BLACKB(s)    COLOR(1, 30, 49, s) /**< Bold black foreground text. */
 
-/** Underliend. */
-# define ULINE(s) SIR_ESC_SEQ("4", s) SIR_ESC_SEQE("24")
+# define RED(s)       COLOR(0, 31, 49, s) /**< Red foreground text. */
+# define REDB(s)      COLOR(1, 31, 49, s) /**< Bold red foreground text. */
 
-/** Emphasis/italic. */
-# define EMPH(s) SIR_ESC_SEQ("3", s) SIR_ESC_SEQE("23")
+# define BRED(s)      COLOR(0, 91, 49, s) /**< Bright red foreground text. */
+# define BREDB(s)     COLOR(1, 91, 49, s) /**< Bold bright red foreground text. */
 
-/** Bold. */
-# define BOLD(s) SIR_ESC_SEQ("1", s) SIR_ESC_SEQE("22")
+# define GREEN(s)     COLOR(0, 32, 49, s) /**< Green foreground text. */
+# define GREENB(s)    COLOR(1, 32, 49, s) /**< Bold green foreground text. */
 
-# define BLACK(s)     COLOR(0, 30, 49, s)
-# define BLACKB(s)    COLOR(1, 30, 49, s)
+# define BGREEN(s)    COLOR(0, 92, 49, s) /**< Bright green foreground text. */
+# define BGREENB(s)   COLOR(1, 92, 49, s) /**< Bold bright green foreground text. */
 
-# define RED(s)       COLOR(0, 31, 49, s)
-# define REDB(s)      COLOR(1, 31, 49, s)
+# define YELLOW(s)    COLOR(0, 33, 49, s) /**< Yellow foreground text. */
+# define YELLOWB(s)   COLOR(1, 33, 49, s) /**< Bold yellow foreground text. */
 
-# define LRED(s)      COLOR(0, 91, 49, s)
-# define LREDB(s)     COLOR(1, 91, 49, s)
+# define BYELLOW(s)   COLOR(0, 93, 49, s) /**< Bright yellow foreground text. */
+# define BYELLOWB(s)  COLOR(1, 93, 49, s) /**< Bold bright yellow foreground text. */
 
-# define GREEN(s)     COLOR(0, 32, 49, s)
-# define GREENB(s)    COLOR(1, 32, 49, s)
+# define BLUE(s)      COLOR(0, 34, 49, s) /**< Blue foreground text. */
+# define BLUEB(s)     COLOR(1, 34, 49, s) /**< Bold blue foreground text. */
 
-# define LGREEN(s)    COLOR(0, 92, 49, s)
-# define LGREENB(s)   COLOR(1, 92, 49, s)
+# define BBLUE(s)     COLOR(0, 94, 49, s) /**< Bright blue foreground text. */
+# define BBLUEB(s)    COLOR(1, 94, 49, s) /**< Bold bright blue foreground text. */
 
-# define YELLOW(s)    COLOR(0, 33, 49, s)
-# define YELLOWB(s)   COLOR(1, 33, 49, s)
+# define MAGENTA(s)   COLOR(0, 35, 49, s) /**< Magenta foreground text. */
+# define MAGENTAB(s)  COLOR(1, 35, 49, s) /**< Bold magenta foreground text. */
 
-# define LYELLOW(s)   COLOR(0, 93, 49, s)
-# define LYELLOWB(s)  COLOR(1, 93, 49, s)
+# define BMAGENTA(s)  COLOR(0, 95, 49, s) /**< Bright magenta foreground text. */
+# define BMAGENTAB(s) COLOR(1, 95, 49, s) /**< Bold bright magenta foreground text. */
 
-# define BLUE(s)      COLOR(0, 34, 49, s)
-# define BLUEB(s)     COLOR(1, 34, 49, s)
+# define CYAN(s)      COLOR(0, 36, 49, s) /**< Cyan foreground text. */
+# define CYANB(s)     COLOR(1, 36, 49, s) /**< Bold cyan foreground text. */
 
-# define LBLUE(s)     COLOR(0, 94, 49, s)
-# define LBLUEB(s)    COLOR(1, 94, 49, s)
+# define BCYAN(s)     COLOR(0, 96, 49, s) /**< Bright cyan foreground text. */
+# define BCYANB(s)    COLOR(1, 96, 49, s) /**< Bold bright cyan foreground text. */
 
-# define MAGENTA(s)   COLOR(0, 35, 49, s)
-# define MAGENTAB(s)  COLOR(1, 35, 49, s)
+# define BGRAY(s)     COLOR(0, 37, 49, s) /**< Bright gray foreground text. */
+# define BGRAYB(s)    COLOR(1, 37, 49, s) /**< Bold bright gray foreground text. */
 
-# define LMAGENTA(s)  COLOR(0, 95, 49, s)
-# define LMAGENTAB(s) COLOR(1, 95, 49, s)
+# define DGRAY(s)     COLOR(0, 90, 49, s) /**< Dark gray foreground text. */
+# define DGRAYB(s)    COLOR(1, 90, 49, s) /**< Bold dark gray foreground text. */
 
-# define CYAN(s)      COLOR(0, 36, 49, s)
-# define CYANB(s)     COLOR(1, 36, 49, s)
-
-# define LCYAN(s)     COLOR(0, 96, 49, s)
-# define LCYANB(s)    COLOR(1, 96, 49, s)
-
-# define LGRAY(s)     COLOR(0, 37, 49, s)
-# define LGRAYB(s)    COLOR(1, 37, 49, s)
-
-# define DGRAY(s)     COLOR(0, 90, 49, s)
-# define DGRAYB(s)    COLOR(1, 90, 49, s)
-
-# define WHITE(s)     COLOR(0, 97, 49, s)
-# define WHITEB(s)    COLOR(1, 97, 49, s)
+# define WHITE(s)     COLOR(0, 97, 49, s) /**< White foreground text. */
+# define WHITEB(s)    COLOR(1, 97, 49, s) /**< Bold white foreground text. */
 
 #endif /* ! _SIR_ANSI_MACROS_H_INCLUDED */
