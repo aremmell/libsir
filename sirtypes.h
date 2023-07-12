@@ -299,6 +299,12 @@ typedef struct {
     char str[SIR_MAXSTYLE]; /**< The formatted string representation. */
 } sir_level_style_tuple;
 
+/** Container for  text style related data that is mutex protected. */
+typedef struct {
+    sir_level_style_tuple* map;
+    sir_colormode* color_mode;
+} sir_text_style_data;
+
 /** ::sir_level <-> human-readable string form. */
 typedef struct {
     const sir_level level; /**< The level for which the string applies. */

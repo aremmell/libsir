@@ -28,6 +28,8 @@
 
 # include "sirtypes.h"
 
+extern sir_text_style_data sir_text_style_section;
+
 /**  Returns the final string form of the current ::sir_textstyle for a ::sir_level. */
 const char* _sir_gettextstyle(sir_level level);
 
@@ -49,8 +51,5 @@ bool _sir_validtextstyle(sir_colormode mode, const sir_textstyle* style);
 
 /** Sets the current color mode. */
 bool _sir_setcolormode(sir_colormode mode);
-
-/** Returns the current color mode. */
-sir_colormode _sir_getcolormode(void);
 
 #endif /* !_SIR_TEXTSTYLE_H_INCLUDED */

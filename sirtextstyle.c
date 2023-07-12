@@ -27,15 +27,18 @@
 #include "sirinternal.h"
 #include "sirdefaults.h"
 
-#if defined(__HAVE_ATOMIC_H__)
-    static _Atomic sir_colormode color_mode;
-#else
-    static volatile sir_colormode color_mode;
-#endif
+sir_colormode sir_color_mode = SIRCM_16;
+
+/** Wrapper around the level-to-style map and the color mode. This is the data
+ * structure protected by the SIRMI_TEXTSTYLE mutex. */
+sir_text_style_data sir_text_style_section = {
+    &sir_level_to_style_map[0],
+    &sir_color_mode
+};
 
 const char* _sir_gettextstyle(sir_level level) {
-    sir_level_style_tuple* map = _sir_locksection(SIRMI_TEXTSTYLE);
-    if (!map) {
+    sir_text_style_data* data = _sir_locksection(SIRMI_TEXTSTYLE);
+    if (!data) {
         _sir_seterror(_SIR_E_INTERNAL);
         return NULL;
     }
@@ -47,12 +50,12 @@ const char* _sir_gettextstyle(sir_level level) {
     _SIR_DECLARE_BIN_SEARCH(low, high);
     _SIR_BEGIN_BIN_SEARCH();
 
-    if (map[_mid].level == level) {
-        found = map[_mid].str;
+    if (data->map[_mid].level == level) {
+        found = data->map[_mid].str;
         break;
     }
 
-    _SIR_ITERATE_BIN_SEARCH((map[_mid].level < level ? 1 : -1));
+    _SIR_ITERATE_BIN_SEARCH((data->map[_mid].level < level ? 1 : -1));
     _SIR_END_BIN_SEARCH();
 
     _sir_unlocksection(SIRMI_TEXTSTYLE);
@@ -65,12 +68,8 @@ bool _sir_settextstyle(sir_level level, sir_textstyle* style) {
     if (!_sir_sanity() || !_sir_validlevel(level))
         return false;
 
-    sir_colormode mode = _sir_getcolormode();
-    if (!_sir_validtextstyle(mode, style))
-        return false;
-
-    sir_level_style_tuple* map = _sir_locksection(SIRMI_TEXTSTYLE);
-    if (!map) {
+    sir_text_style_data* data = _sir_locksection(SIRMI_TEXTSTYLE);
+    if (!data) {
         _sir_seterror(_SIR_E_INTERNAL);
         return false;
     }
@@ -82,13 +81,13 @@ bool _sir_settextstyle(sir_level level, sir_textstyle* style) {
     _SIR_DECLARE_BIN_SEARCH(low, high);
     _SIR_BEGIN_BIN_SEARCH();
 
-    if (map[_mid].level == level) {
-        memcpy(&map[_mid].style, style, sizeof(sir_textstyle));
-        updated         = _sir_formatstyle(mode, style, map[_mid].str);
+    if (data->map[_mid].level == level) {
+        memcpy(&data->map[_mid].style, style, sizeof(sir_textstyle));
+        updated = _sir_formatstyle(*data->color_mode, style, data->map[_mid].str);
         break;
     }
 
-    _SIR_ITERATE_BIN_SEARCH((map[_mid].level < level ? 1 : -1));
+    _SIR_ITERATE_BIN_SEARCH((data->map[_mid].level < level ? 1 : -1));
     _SIR_END_BIN_SEARCH();
 
     _sir_unlocksection(SIRMI_TEXTSTYLE);
@@ -119,20 +118,18 @@ bool _sir_resettextstyles(void) {
     if (!_sir_sanity())
         return false;
 
-    sir_colormode mode = _sir_getcolormode();
-    if (!_sir_validcolormode(mode))
-        return false;
-
-    sir_level_style_tuple* map = _sir_locksection(SIRMI_TEXTSTYLE);
-    if (!map) {
+    sir_text_style_data* data = _sir_locksection(SIRMI_TEXTSTYLE);
+    if (!data) {
         _sir_seterror(_SIR_E_INTERNAL);
         return false;
     }
 
     bool all_ok = true;
     for (size_t n = 0; n < SIR_NUMLEVELS; n++) {
-        memcpy(&map[n].style, _sir_getdefstyle(map[n].level), sizeof(sir_textstyle));
-        all_ok &= _sir_formatstyle(mode, &map[n].style, map[n].str);
+        memcpy(&data->map[n].style, _sir_getdefstyle(data->map[n].level),
+             sizeof(sir_textstyle));
+        all_ok &= _sir_formatstyle(*data->color_mode, &data->map[n].style,
+            data->map[n].str);
     }
 
     _sir_unlocksection(SIRMI_TEXTSTYLE);
@@ -205,23 +202,28 @@ bool _sir_validtextstyle(sir_colormode mode, const sir_textstyle* style) {
 }
 
 bool _sir_setcolormode(sir_colormode mode) {
-#pragma message("TODO: find a home for color mode, or make it a compile-time constant")
     if (!_sir_validcolormode(mode))
         return false;
 
-#if defined(__HAVE_ATOMIC_H__)
-    atomic_store(&color_mode, mode);
-#else
-    color_mode = mode;
-#endif
+    sir_text_style_data* data = _sir_locksection(SIRMI_TEXTSTYLE);
+    if (!data) {
+        _sir_seterror(_SIR_E_INTERNAL);
+        return false;
+    }
+
+    sir_colormode old = *data->color_mode;
+    *data->color_mode  = mode;
+
+    _sir_selflog("color mode changed from %"PRId32" to %"PRId32, old, mode);
+
+    /* when the color mode changes, it's necessary to regenerate the text styles
+     * we're holding. for example in the case of downgrading color modes, the
+     * styles in memory could be incompatible with the new mode. */
+    if (!_sir_resettextstyles())
+        _sir_selflog("error: failed to reset text styles!");
+
+    _sir_unlocksection(SIRMI_TEXTSTYLE);
 
     return true;
 }
 
-sir_colormode _sir_getcolormode(void) {
-#if defined(__HAVE_ATOMIC_H__)
-    return atomic_load(&color_mode);
-#else
-    return color_mode;
-#endif
-}
