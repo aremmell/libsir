@@ -1,12 +1,18 @@
-# 2.2.0
+# Changelog
 
-- Vastly improved support for syslog, if available, and macOS' system logger (os_log) as
+## 2.2.0
+
+##### July 15, 2023
+
+- *Vastly improved* support for syslog, if available, and macOS' system logger (os_log) as
   their own independent logging destination
 
 - Support for 256-color and RGB color modes.
   
-- Massive performance gains for both stdio and log files via
-  optimization/refactoring (I would estimate 30%+)
+- Better and more thorough documentation.
+  
+- <u>Massive performance gains</u> for both stdio and log files via
+  optimization/refactoring (estimated 30%+)
 - **Lots** of work to get things going smoothly on Windows
   - A Visual Studio 2022 solution in `msvs`
 - New macros in siransimacros.h that can be used with libsir or anything

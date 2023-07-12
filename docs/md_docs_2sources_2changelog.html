@@ -84,7 +84,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('pages.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('md_docs_2sources_2changelog.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -109,18 +109,44 @@ $(document).ready(function(){initNavTree('pages.html',''); initResizable(); });
 </div>
 </div>
 
-<div class="header">
-  <div class="headertitle"><div class="title">Related Pages</div></div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">Changelog</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock">Here is a list of all related documentation pages:</div><div class="directory">
-<table class="directory">
-<tr id="row_0_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="md_docs_2sources_2changelog.html" target="_self">Changelog</a></td><td class="desc"></td></tr>
-<tr id="row_1_" class="odd"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="md_docs_2sources_2config.html" target="_self">Configuration</a></td><td class="desc"></td></tr>
-<tr id="row_2_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="md_docs_2sources_2sirtests.html" target="_self">Test suite</a></td><td class="desc"></td></tr>
-</table>
-</div><!-- directory -->
-</div><!-- contents -->
+<div class="textblock"><h1>2.2.0</h1>
+<h4>July 15, 2023</h4>
+<ul>
+<li><em>Vastly improved</em> support for syslog, if available, and macOS' system logger (os_log) as their own independent logging destination</li>
+<li>Support for 256-color and RGB color modes.</li>
+<li>Better and more thorough documentation.</li>
+<li><u>Massive performance gains</u> for both stdio and log files via optimization/refactoring (estimated 30%+)</li>
+<li><b>Lots</b> of work to get things going smoothly on Windows<ul>
+<li>A Visual Studio 2022 solution in <code>msvs</code></li>
+</ul>
+</li>
+<li>New macros in <a class="el" href="siransimacros_8h.html" title="ANSI escape sequence macros.">siransimacros.h</a> that can be used with libsir or anything that writes to stdio (*printf, puts, etc.): <code>printf(RED("Oh lawd,
+  something " ULINE("awful") " has happened!\n");</code></li>
+<li>Many new/more vigorous tests</li>
+<li>The test rig now supports command-line arguments:<ul>
+<li><code>--list</code> : lists all the available tests</li>
+<li><code>--only</code>: only run the specified tests</li>
+<li><code>--wait</code> : wait for keypress before exiting</li>
+<li><code>--perf</code> : runs the performance benchmark test (normally skipped)</li>
+</ul>
+</li>
+<li>Bug fixes</li>
+<li>Potential memory leaks squashed</li>
+<li>Additional errors with better error reporting</li>
+<li>New preprocessor defines:<ul>
+<li><code>SIR_ASSERT_ENABLED</code>: if defined, libsir actually uses assert() (<em>if -DNDEBUG is present, this means nothing</em>), if not, <code>_sir_selflog</code> outputs a red message containing the condition that would have asserted, along with the file/line/func (<em>if -DSIR_SELFLOG is present, otherwise it’s a NOOP</em>).</li>
+<li><code>SIR_NO_SYSTEM_LOGGERS</code>: if defined, system logger support is completely disabled/not compiled in. The entry points still exist, but they will return an error that the feature is disabled or unavailable.</li>
+</ul>
+</li>
+<li>rename ‘thread_local’ – this is a C++ keyword</li>
+<li>renamed all typedefs ending in <code>_t</code> </li>
+</ul>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.7-->
 <!-- start footer part -->
