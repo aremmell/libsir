@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['category_0',['category',['../group__publictypes.html#ace79b2f2bd4d08d0c6e4151dafb3266b',1,'sir_syslog_dest']]]
+  ['attr_0',['attr',['../group__publictypes.html#a5dd5e64c144c5652c8bfea5d9f1eec9b',1,'sir_textstyle']]]
 ];

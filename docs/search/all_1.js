@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bold_0',['BOLD',['../siransimacros_8h.html#a64dae5ea663596bf818ce1a65188b599',1,'siransimacros.h']]]
+  ['attr_0',['attr',['../group__publictypes.html#a5dd5e64c144c5652c8bfea5d9f1eec9b',1,'sir_textstyle']]]
 ];

@@ -151,8 +151,11 @@ static const sir_options sir_file_def_opts
  *
  * @note Can be modified at runtime by calling ::sir_settextstyle.
  */
-static const sir_textstyle sir_lvl_emerg_def_style
-    = SIRS_BOLD | SIRS_FG_LYELLOW | SIRS_BG_RED;
+static const sir_textstyle sir_lvl_emerg_def_style = {
+    SIRTA_BOLD,
+    SIRTC_BYELLOW,
+    SIRTC_RED
+};
 
 /**
  * Default ::sir_textstyle for ::SIRL_ALERT.
@@ -161,8 +164,11 @@ static const sir_textstyle sir_lvl_emerg_def_style
  *
  * @note Can be modified at runtime by calling ::sir_settextstyle.
  */
-static const sir_textstyle sir_lvl_alert_def_style
-    = SIRS_BOLD | SIRS_FG_BLACK | SIRS_BG_LYELLOW;
+static const sir_textstyle sir_lvl_alert_def_style = {
+    SIRTA_BOLD,
+    SIRTC_BLACK,
+    SIRTC_BYELLOW
+};
 
 /**
  * Default ::sir_textstyle for ::SIRL_CRIT.
@@ -171,8 +177,11 @@ static const sir_textstyle sir_lvl_alert_def_style
  *
  * @note Can be modified at runtime by calling ::sir_settextstyle.
  */
-static const sir_textstyle sir_lvl_crit_def_style
-    = SIRS_BOLD | SIRS_FG_RED;
+static const sir_textstyle sir_lvl_crit_def_style = {
+    SIRTA_BOLD,
+    SIRTC_RED,
+    SIRTC_DEFAULT
+};
 
 /**
  * Default ::sir_textstyle for ::SIRL_ERROR.
@@ -181,8 +190,11 @@ static const sir_textstyle sir_lvl_crit_def_style
  *
  * @note Can be modified at runtime by calling ::sir_settextstyle.
  */
-static const sir_textstyle sir_lvl_error_def_style
-    = SIRS_FG_RED;
+static const sir_textstyle sir_lvl_error_def_style = {
+    SIRTA_NORMAL,
+    SIRTC_RED,
+    SIRTC_DEFAULT
+};
 
 /**
  * Default ::sir_textstyle for ::SIRL_WARN.
@@ -191,8 +203,11 @@ static const sir_textstyle sir_lvl_error_def_style
  *
  * @note Can be modified at runtime by calling ::sir_settextstyle.
  */
-static const sir_textstyle sir_lvl_warn_def_style
-    = SIRS_BOLD | SIRS_FG_YELLOW;
+static const sir_textstyle sir_lvl_warn_def_style = {
+    SIRTA_BOLD,
+    SIRTC_YELLOW,
+    SIRTC_DEFAULT
+};
 
 /**
  * Default ::sir_textstyle for ::SIRL_NOTICE.
@@ -201,8 +216,11 @@ static const sir_textstyle sir_lvl_warn_def_style
  *
  * @note Can be modified at runtime by calling ::sir_settextstyle.
  */
-static const sir_textstyle sir_lvl_notice_def_style
-    = SIRS_FG_CYAN;
+static const sir_textstyle sir_lvl_notice_def_style = {
+    SIRTA_NORMAL,
+    SIRTC_CYAN,
+    SIRTC_DEFAULT
+};
 
 /**
  * Default ::sir_textstyle for ::SIRL_INFO.
@@ -211,8 +229,11 @@ static const sir_textstyle sir_lvl_notice_def_style
  *
  * @note Can be modified at runtime by calling ::sir_settextstyle.
  */
-static const sir_textstyle sir_lvl_info_def_style
-    = SIRS_FG_WHITE;
+static const sir_textstyle sir_lvl_info_def_style = {
+    SIRTA_NORMAL,
+    SIRTC_WHITE,
+    SIRTC_DEFAULT
+};
 
 /**
  * Default ::sir_textstyle for ::SIRL_DEBUG.
@@ -221,8 +242,11 @@ static const sir_textstyle sir_lvl_info_def_style
  *
  * @note Can be modified at runtime by calling ::sir_settextstyle.
  */
-static const sir_textstyle sir_lvl_debug_def_style
-    = SIRS_FG_DGRAY;
+static const sir_textstyle sir_lvl_debug_def_style = {
+    SIRTA_NORMAL,
+    SIRTC_DGRAY,
+    SIRTC_DEFAULT
+};
 
 /** @} */
 

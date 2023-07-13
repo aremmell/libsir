@@ -162,6 +162,67 @@ void _sir_defaultopts(sir_options* opts, sir_options def) {
 /** Validates a set of ::sir_option flags. */
 bool _sir_validopts(sir_options opts);
 
+/** Validates a ::sir_colormode. */
+bool _sir_validcolormode(sir_colormode mode);
+
+/** Validates a ::sir_textattr. */
+bool _sir_validtextattr(sir_textattr attr);
+
+/** Validates a ::sir_textcolor based on color mode. */
+bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color);
+
+/** Converts a SIRTC_* value to a 16-color mode ANSI foreground color. */
+static inline
+sir_textcolor _sir_mkansifgcolor(sir_textcolor fg) {
+    return SIRTC_DEFAULT == fg ? 39 : fg < 8 ? fg + 30 : fg + 82;
+}
+
+/** Converts a SIRTC_* value to a 16-color mode ANSI background color. */
+static inline
+sir_textcolor _sir_mkansibgcolor(sir_textcolor bg) {
+    return SIRTC_DEFAULT == bg ? 49 : bg < 8 ? bg + 40 : bg + 92;
+}
+
+/** Returns the appropriate ANSI command for the specified foreground color. */
+static inline
+sir_textcolor _sir_getansifgcmd(sir_textcolor fg) {
+    return SIRTC_DEFAULT == fg ? 39 : 38;
+}
+
+/** Returns the appropriate ANSI command for the specified background color. */
+static inline
+sir_textcolor _sir_getansibgcmd(sir_textcolor bg) {
+    return SIRTC_DEFAULT == bg ? 49 : 48;
+}
+
+/** Extracts the red component out of an RGB color mode ::sir_textcolor. */
+# define _sir_getredfromcolor(color) (uint8_t)((color >> 16) & 0x000000ff)
+
+/** Sets the red component in an RGB color mode ::sir_textcolor. */
+# define _sir_setredincolor(color, red) (color |= ((red << 16) & 0x00ff0000))
+
+/** Extracts the green component out of an RGB color mode ::sir_textcolor. */
+# define _sir_getgreenfromcolor(color) (uint8_t)((color >> 8) & 0x000000ff)
+
+/** Sets the green component in an RGB color mode ::sir_textcolor. */
+# define _sir_setgreenincolor(color, green) (color |= ((green << 8) & 0x0000ff00))
+
+/** Extracts the blue component out of an RGB color mode ::sir_textcolor. */
+# define _sir_getbluefromcolor(color) (uint8_t)(color & 0x000000ff)
+
+/** Sets the blue component in an RGB color mode ::sir_textcolor. */
+# define _sir_setblueincolor(color, blue) (color |= (blue & 0x000000ff))
+
+/** Sets the red, blue, and green components in an RGB color mode ::sir_textcolor. */
+static inline
+sir_textcolor _sir_makergb(sir_textcolor r, sir_textcolor g, sir_textcolor b) {
+    sir_textcolor retval = 0;
+    _sir_setredincolor(retval, r);
+    _sir_setgreenincolor(retval, g);
+    _sir_setblueincolor(retval, b);
+    return retval;
+}
+
 /** Validates a string pointer and optionally fails if it's invalid. */
 bool __sir_validstr(const char* restrict str, bool fail);
 

@@ -143,23 +143,29 @@ $(document).ready(function(){initNavTree('sirtextstyle_8h_source.html',''); init
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor"># include &quot;sirtypes.h&quot;</span></div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keyword">const</span> <span class="keywordtype">char</span>* _sir_gettextstyle(<a class="code hl_enumeration" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level);</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keywordtype">bool</span> _sir_settextstyle(<a class="code hl_enumeration" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level, <a class="code hl_enumeration" href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf">sir_textstyle</a> style);</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><a class="code hl_enumeration" href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf">sir_textstyle</a> _sir_getdefstyle(<a class="code hl_enumeration" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level);</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keywordtype">bool</span> _sir_resettextstyles(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>uint16_t _sir_getprivstyle(<a class="code hl_enumeration" href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf">sir_textstyle</a> style);</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keywordtype">bool</span> _sir_formatstyle(<a class="code hl_enumeration" href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf">sir_textstyle</a> style, <span class="keywordtype">char</span>* buf, <span class="keywordtype">size_t</span> size);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">extern</span> <a class="code hl_struct" href="structsir__text__style__data.html">sir_text_style_data</a> sir_text_style_section;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">const</span> <span class="keywordtype">char</span>* _sir_gettextstyle(<a class="code hl_enumeration" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keywordtype">bool</span> _sir_settextstyle(<a class="code hl_enumeration" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level, <a class="code hl_struct" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a>* style);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keyword">const</span> <a class="code hl_struct" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a>* _sir_getdefstyle(<a class="code hl_enumeration" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keywordtype">bool</span> _sir_resettextstyles(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keywordtype">bool</span> _sir_formatstyle(<a class="code hl_enumeration" href="group__publictypes.html#ga26686b620930358e8b50f287d6c96e51">sir_colormode</a> mode, <span class="keyword">const</span> <a class="code hl_struct" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a>* style,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordtype">char</span> buf[<a class="code hl_define" href="sirconfig_8h.html#a5cdaa944bfe2228355cc4c34c3d315e8">SIR_MAXSTYLE</a>]);</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="keywordtype">bool</span> _sir_validstyle(<a class="code hl_enumeration" href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf">sir_textstyle</a> style, uint32_t* pattr, uint32_t* pfg, uint32_t* pbg);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="keywordtype">bool</span> _sir_validtextstyle(<a class="code hl_enumeration" href="group__publictypes.html#ga26686b620930358e8b50f287d6c96e51">sir_colormode</a> mode, <span class="keyword">const</span> <a class="code hl_struct" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a>* style);</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_TEXTSTYLE_H_INCLUDED */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="agroup__publictypes_html_ga3bd5959a607e5280a8db90ada2d80caf"><div class="ttname"><a href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf">sir_textstyle</a></div><div class="ttdeci">sir_textstyle</div><div class="ttdoc">Styles for 16-color stdio output.</div><div class="ttdef"><b>Definition</b> sirtypes.h:81</div></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="keywordtype">bool</span> _sir_setcolormode(<a class="code hl_enumeration" href="group__publictypes.html#ga26686b620930358e8b50f287d6c96e51">sir_colormode</a> mode);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_TEXTSTYLE_H_INCLUDED */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="agroup__publictypes_html_ga26686b620930358e8b50f287d6c96e51"><div class="ttname"><a href="group__publictypes.html#ga26686b620930358e8b50f287d6c96e51">sir_colormode</a></div><div class="ttdeci">sir_colormode</div><div class="ttdoc">Color mode selection.</div><div class="ttdef"><b>Definition</b> sirtypes.h:81</div></div>
 <div class="ttc" id="agroup__publictypes_html_ga4a3303c67acd49bea38fd3565d458cb2"><div class="ttname"><a href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a></div><div class="ttdeci">sir_level</div><div class="ttdoc">Defines the available levels (severity/priority) of logging output.</div><div class="ttdef"><b>Definition</b> sirtypes.h:45</div></div>
+<div class="ttc" id="agroup__publictypes_html_structsir__textstyle"><div class="ttname"><a href="group__publictypes.html#structsir__textstyle">sir_textstyle</a></div><div class="ttdoc">Container for all the information associated with the appearance of text in the context of stdio.</div><div class="ttdef"><b>Definition</b> sirtypes.h:136</div></div>
+<div class="ttc" id="asirconfig_8h_html_a5cdaa944bfe2228355cc4c34c3d315e8"><div class="ttname"><a href="sirconfig_8h.html#a5cdaa944bfe2228355cc4c34c3d315e8">SIR_MAXSTYLE</a></div><div class="ttdeci">#define SIR_MAXSTYLE</div><div class="ttdoc">The size, in characters, of the buffer used to hold a sequence of styling data in any color mode (the...</div><div class="ttdef"><b>Definition</b> sirconfig.h:277</div></div>
+<div class="ttc" id="astructsir__text__style__data_html"><div class="ttname"><a href="structsir__text__style__data.html">sir_text_style_data</a></div><div class="ttdoc">Container for text style related data that is mutex protected.</div><div class="ttdef"><b>Definition</b> sirtypes.h:303</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.7-->
@@ -167,7 +173,7 @@ $(document).ready(function(){initNavTree('sirtextstyle_8h_source.html',''); init
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>sirtextstyle.h</b></li>
-    <li class="footer">Generated on Tue Jul 11 2023 02:03:01 for libsir by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

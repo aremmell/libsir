@@ -271,10 +271,10 @@
 
 /**
  * The size, in characters, of the buffer used to hold a sequence of styling
- * data in 16-color mode.
+ * data in any color mode (the largest possible sequence, which is:
+ * `\x1b[a;fb;m;rrr;ggg;bbb;fb;m;rrr;ggg;bbbm`) plus a null terminator.
  */
-# define SIR_MAXSTYLE_16_COLOR 16
-# define SIR_MAXSTYLE SIR_MAXSTYLE_16_COLOR
+# define SIR_MAXSTYLE 39
 
 /** The maximum size, in characters, of final formatted output. */
 # define SIR_MAXOUTPUT \
@@ -330,10 +330,10 @@
 # define SIR_NUMOPTIONS 8
 
 /**
- * The number of entries in the 4-bit (16-color) map: 3 attributes + 17
+ * The number of entries in the 4-bit (16-color) map: 5 attributes + 17
  * foreground colors + 17 background colors (default counts as a color).
  */
-# define SIR_NUM16_COLOR_MAPPINGS 37
+# define SIR_NUM16_COLOR_MAPPINGS 39
 
 /**
  * The number of seconds to let elapse before checking if the hostname needs

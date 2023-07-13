@@ -32,7 +32,7 @@
 bool _sirmutex_create(sir_mutex* mutex);
 
 /** Determines if a mutex is locked without waiting. */
-bool _sir_mutexrylock(sir_mutex* mutex);
+bool _sir_mutextrylock(sir_mutex* mutex);
 
 /** Attempts to lock a mutex and waits indefinitely. */
 bool _sirmutex_lock(sir_mutex* mutex);

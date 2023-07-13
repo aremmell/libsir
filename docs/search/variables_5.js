@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['level_0',['level',['../structsir__level__style__tuple.html#aafe5ae7abfd17caaa4470368c3d2ed98',1,'sir_level_style_tuple::level'],['../structsir__level__str__pair.html#ab3366344595f3aae38b06cc570381885',1,'sir_level_str_pair::level']]],
-  ['levels_1',['levels',['../group__publictypes.html#a3dc07c2b3fbe96d9c6f4d8af2ef90687',1,'sir_stdio_dest::levels'],['../group__publictypes.html#a2fb4c11cdb645a46f008c34678260bbc',1,'sir_syslog_dest::levels'],['../structsir__update__config__data.html#a76c8c666c84b831bf2cc77f92c5fa16b',1,'sir_update_config_data::levels']]],
-  ['logger_2',['logger',['../group__publictypes.html#a6db435f352d7ea4a67807a3feb447bf7',1,'sir_syslog_dest._state']]]
+  ['fg_0',['fg',['../group__publictypes.html#ac6fb238c1a2b51dfff2b62b4c5acd42b',1,'sir_textstyle']]],
+  ['fields_1',['fields',['../structsir__update__config__data.html#ad61568937fcd6a019bd5e58d4103aa35',1,'sir_update_config_data']]],
+  ['fmt_2',['fmt',['../structsir__level__str__pair.html#abb5bc77ea76db28a9896bad436e4f2d6',1,'sir_level_str_pair']]]
 ];

@@ -38,3 +38,6 @@ index.md
 
 # Advpng temporary files
 *.png.tmp*
+
+# Oracle Lint
+*.ln
