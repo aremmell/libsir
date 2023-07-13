@@ -146,24 +146,25 @@ bool _sir_formatstyle(sir_colormode mode, const sir_textstyle* style,
     switch (mode) {
         case SIRCM_16:
             /* \x1b[attr;fg;bgm */
-            return 0 < snprintf(buf, SIR_MAXSTYLE, "%s%"PRId8";%"PRId8";%"PRId8"m",
-                SIR_ESC, (uint8_t)style->attr, _sir_mkansifgcolor(style->fg),
-                _sir_mkansibgcolor(style->bg));
+            return 0 < snprintf(buf, SIR_MAXSTYLE, "%s%"PRIu8";%"PRIu8";%"PRIu8"m",
+                SIR_ESC, (uint8_t)style->attr, (uint8_t)_sir_mkansifgcolor(style->fg),
+                (uint8_t)_sir_mkansibgcolor(style->bg));
         case SIRCM_256: {
             /* \x1b[attr;38;5;fg;48;5;bgm */
             return 0 < snprintf(buf, SIR_MAXSTYLE,
-                "%s%"PRId8";%"PRId8";5;%"PRId8";%"PRId8";5;%"PRId8"m", SIR_ESC,
-                (uint8_t)style->attr, _sir_getansifgcmd(style->fg), (uint8_t)style->fg,
-                _sir_getansibgcmd(style->bg), (uint8_t)style->bg);
+                "%s%"PRIu8";%"PRIu8";5;%"PRIu8";%"PRIu8";5;%"PRIu8"m", SIR_ESC,
+                (uint8_t)style->attr, (uint8_t)_sir_getansifgcmd(style->fg),
+                (uint8_t)style->fg, (uint8_t)_sir_getansibgcmd(style->bg),
+                (uint8_t)style->bg);
         }
         case SIRCM_RGB: {
             /* \x1b[attr;38;2;rrr;ggg;bbb;48;2;rrr;ggg;bbbm */
             return 0 < snprintf(buf, SIR_MAXSTYLE,
-                "%s%"PRId8";%"PRId8";2;%"PRId8";%"PRId8";%"PRId8";%"PRId8
-                ";2;%"PRId8";%"PRId8";%"PRId8"m", SIR_ESC, (uint8_t)style->attr,
-                _sir_getansifgcmd(style->fg),_sir_getredfromcolor(style->fg),
-                _sir_getgreenfromcolor(style->fg),_sir_getbluefromcolor(style->fg),
-                _sir_getansibgcmd(style->bg), _sir_getredfromcolor(style->bg),
+                "%s%"PRIu8";%"PRIu8";2;%"PRIu8";%"PRIu8";%"PRIu8";%"PRIu8
+                ";2;%"PRIu8";%"PRIu8";%"PRIu8"m", SIR_ESC, (uint8_t)style->attr,
+                (uint8_t)_sir_getansifgcmd(style->fg), _sir_getredfromcolor(style->fg),
+                _sir_getgreenfromcolor(style->fg), _sir_getbluefromcolor(style->fg),
+                (uint8_t)_sir_getansibgcmd(style->bg), _sir_getredfromcolor(style->bg),
                 _sir_getgreenfromcolor(style->bg), _sir_getbluefromcolor(style->bg));
         }
         case SIRCM_INVALID:
