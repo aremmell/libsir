@@ -26,6 +26,33 @@
 #ifndef _SIR_PLATFORM_H_INCLUDED
 # define _SIR_PLATFORM_H_INCLUDED
 
+# if defined(_MSC_VER)
+#  include <stddef.h>
+#  if defined(_USE_ATTRIBUTES_FOR_SAL)
+#   undef _USE_ATTRIBUTES_FOR_SAL
+#  endif
+#  define _USE_ATTRIBUTES_FOR_SAL 1
+#  include <sal.h>
+#  define PRINTF_FORMAT _Printf_format_string_
+#  define PRINTF_FORMAT_ATTR(fmt_p, va_p)
+# else
+#  define PRINTF_FORMAT /**/
+#  if defined(__MINGW32__) || defined(__MINGW64__)
+#   if !defined(__USE_MINGW_ANSI_STDIO)
+#    define __USE_MINGW_ANSI_STDIO 1
+#   endif
+#    define PRINTF_FORMAT_ATTR(fmt_p, va_p) \
+     __attribute__((format (gnu_printf, fmt_p, va_p)))
+#  else
+#   if !defined(__SUNPRO_C) && !defined(__SUNPRO_C)
+#    define PRINTF_FORMAT_ATTR(fmt_p, va_p) \
+     __attribute__((format (printf, fmt_p, va_p)))
+#   else
+#    define PRINTF_FORMAT_ATTR(fmt_p, va_p) /**/
+#   endif
+#  endif
+# endif
+
 # if !defined(_WIN32)
 #  if defined(__STDC_NO_ATOMICS__)
 #   undef __HAVE_ATOMIC_H__
@@ -160,9 +187,6 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  define _WIN32_WINNT 0x0A00
 #  define _CRT_RAND_S
 #  if defined(__MINGW32__) || defined(__MINGW64__)
-#   if !defined(__USE_MINGW_ANSI_STDIO)
-#    define __USE_MINGW_ANSI_STDIO 1
-#   endif
 #   define USE_PTHREAD_GETNAME_NP
 #  endif
 #  include <windows.h>

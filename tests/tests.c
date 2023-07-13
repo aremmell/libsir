@@ -177,7 +177,7 @@ bool sirtest_exceedmaxsize(void) {
     memset(toobig, 'a', SIR_MAXMESSAGE + 100);
     toobig[SIR_MAXMESSAGE + 99] = '\0';
 
-    pass &= sir_info(toobig);
+    pass &= sir_info("%s", toobig);
 
     sir_cleanup();
     return print_result_and_return(pass);
@@ -253,7 +253,7 @@ bool sirtest_filecachesanity(void) {
         snprintf(path, SIR_MAXPATH, "test-%zu.log", n);
         rmfile(path);
         ids[n] = sir_addfile(path, SIRL_ALL, (n % 2) ? odd : even);
-        pass &= NULL != ids[n] && sir_info("test %u", n);
+        pass &= NULL != ids[n] && sir_info("test %zu", n);
     }
 
     pass &= sir_info("test test test");

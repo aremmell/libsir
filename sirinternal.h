@@ -111,7 +111,9 @@ BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
 bool _sir_once(sir_once* once, sir_once_fn func);
 
 /** Core output formatting. */
-bool _sir_logv(sir_level level, const char* format, va_list args);
+PRINTF_FORMAT_ATTR(2, 0)
+bool
+_sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args);
 
 /** Output dispatching. */
 bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf);
