@@ -66,9 +66,6 @@
     <ClInclude Include="..\sirconfig.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\sir.hh">
-      <Filter>Include</Filter>
-    </ClInclude>
     <ClInclude Include="..\sir.h">
       <Filter>Include</Filter>
     </ClInclude>

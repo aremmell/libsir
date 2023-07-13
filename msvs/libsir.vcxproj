@@ -196,7 +196,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\sir.h" />
-    <ClInclude Include="..\sir.hh" />
     <ClInclude Include="..\siransimacros.h" />
     <ClInclude Include="..\sirconfig.h" />
     <ClInclude Include="..\sirconsole.h" />
