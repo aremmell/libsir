@@ -65,6 +65,10 @@ bool _sir_ispathrelative(const char* restrict path, bool* restrict relative);
 bool _sir_getrelbasepath(const char* restrict path, bool* restrict relative,
     const char* restrict* restrict base_path, sir_rel_to rel_to);
 
+# if defined(__OpenBSD__)
+static inline int _sir_openbsdself(char* out, int capacity, int* dirname_length);
+# endif
+
 # if defined(__cplusplus)
 }
 # endif

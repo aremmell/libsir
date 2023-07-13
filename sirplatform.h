@@ -71,6 +71,9 @@
 #  if defined(__APPLE__) && defined(__MACH__)
 #   define __MACOS__
 #   define _DARWIN_C_SOURCE
+#  elif defined(__OpenBSD__)
+#   define __BSD__
+#   define __FreeBSD_PTHREAD_NP_11_3__
 #  elif defined(__NetBSD__)
 #   define __BSD__
 #   if !defined(_NETBSD_SOURCE)
