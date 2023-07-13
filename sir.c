@@ -49,56 +49,64 @@ uint16_t sir_geterror(char message[SIR_MAXERROR]) {
     return _sir_geterrcode(_sir_geterror(message));
 }
 
-bool sir_debug(const char* format, ...) {
+PRINTF_FORMAT_ATTR(1, 2)
+bool sir_debug(PRINTF_FORMAT const char* format, ...) {
     _SIR_L_START(format);
     r = _sir_logv(SIRL_DEBUG, format, args);
     _SIR_L_END(args);
     return r;
 }
 
-bool sir_info(const char* format, ...) {
+PRINTF_FORMAT_ATTR(1, 2)
+bool sir_info(PRINTF_FORMAT const char* format, ...) {
     _SIR_L_START(format);
     r = _sir_logv(SIRL_INFO, format, args);
     _SIR_L_END(args);
     return r;
 }
 
-bool sir_notice(const char* format, ...) {
+PRINTF_FORMAT_ATTR(1, 2)
+bool sir_notice(PRINTF_FORMAT const char* format, ...) {
     _SIR_L_START(format);
     r = _sir_logv(SIRL_NOTICE, format, args);
     _SIR_L_END(args);
     return r;
 }
 
-bool sir_warn(const char* format, ...) {
+PRINTF_FORMAT_ATTR(1, 2)
+bool sir_warn(PRINTF_FORMAT const char* format, ...) {
     _SIR_L_START(format);
     r = _sir_logv(SIRL_WARN, format, args);
     _SIR_L_END(args);
     return r;
 }
 
-bool sir_error(const char* format, ...) {
+PRINTF_FORMAT_ATTR(1, 2)
+bool sir_error(PRINTF_FORMAT const char* format, ...) {
     _SIR_L_START(format);
     r = _sir_logv(SIRL_ERROR, format, args);
     _SIR_L_END(args);
     return r;
 }
 
-bool sir_crit(const char* format, ...) {
+PRINTF_FORMAT_ATTR(1, 2)
+bool sir_crit(PRINTF_FORMAT const char* format, ...) {
     _SIR_L_START(format);
     r = _sir_logv(SIRL_CRIT, format, args);
     _SIR_L_END(args);
     return r;
 }
 
-bool sir_alert(const char* format, ...) {
+PRINTF_FORMAT_ATTR(1, 2)
+bool sir_alert(PRINTF_FORMAT const char* format, ...) {
     _SIR_L_START(format);
     r = _sir_logv(SIRL_ALERT, format, args);
     _SIR_L_END(args);
     return r;
 }
 
-bool sir_emerg(const char* format, ...) {
+PRINTF_FORMAT_ATTR(1, 2)
+bool sir_emerg(PRINTF_FORMAT const char* format, ...) {
     _SIR_L_START(format);
     r = _sir_logv(SIRL_EMERG, format, args);
     _SIR_L_END(args);
