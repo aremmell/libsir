@@ -242,7 +242,7 @@ bool sirtest_filecachesanity(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    size_t numfiles               = SIR_MAXFILES + 1;
+    size_t numfiles             = SIR_MAXFILES + 1;
     sirfileid ids[SIR_MAXFILES] = {0};
 
     sir_options even = SIRO_MSGONLY;
@@ -253,7 +253,7 @@ bool sirtest_filecachesanity(void) {
         snprintf(path, SIR_MAXPATH, "test-%zu.log", n);
         rmfile(path);
         ids[n] = sir_addfile(path, SIRL_ALL, (n % 2) ? odd : even);
-        pass &= NULL != ids[n] && sir_info("test %u", n);
+        pass &= NULL != ids[n] && sir_info("test %zu", n);
     }
 
     pass &= sir_info("test test test");
