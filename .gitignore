@@ -25,6 +25,7 @@ index.md
 
 # test artifacts
 *.log
+logs/
 
 # annoying macOS files
 .DS_Store
