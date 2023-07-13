@@ -54,6 +54,8 @@ static sir_test sir_tests[] = {
     {"squelch-spam",            sirtest_squelchspam, false, true}
 };
 
+bool leave_logs = false;
+
 int main(int argc, char** argv) {
 #if defined(__HAIKU__) && defined(NDEBUG)
     disable_debugger(1);
@@ -73,8 +75,8 @@ int main(int argc, char** argv) {
 # endif
 #endif
 
-    bool wait  = false;
-    bool only  = false;
+    bool wait     = false;
+    bool only     = false;
     size_t to_run = 0;
 
     for (int n = 1; n < argc; n++) {
@@ -84,17 +86,6 @@ int main(int argc, char** argv) {
             if (only)
                 to_run = 1;
         } else if (_sir_strsame(argv[n], _cl_arg_list[1].flag,
-            strnlen(argv[n], SIR_MAXCLIFLAG))) {
-            wait = true;
-        } else if (_sir_strsame(argv[n], _cl_arg_list[3].flag,
-            strnlen(argv[n], SIR_MAXCLIFLAG))) {
-            print_test_list();
-            return EXIT_SUCCESS;
-        } else if (_sir_strsame(argv[n], _cl_arg_list[4].flag,
-            strnlen(argv[n], SIR_MAXCLIFLAG))) {
-            print_usage_info();
-            return EXIT_SUCCESS;
-        } else if (_sir_strsame(argv[n], _cl_arg_list[2].flag,
             strnlen(argv[n], SIR_MAXCLIFLAG))) {
             while (++n < argc) {
                 if (_sir_validstrnofail(argv[n])) {
@@ -106,7 +97,27 @@ int main(int argc, char** argv) {
                     to_run++;
                 }
             };
+            if (0 == to_run) {
+                fprintf(stderr, RED("value expected for '%s'") "\n",
+                    _cl_arg_list[1].flag);
+                print_usage_info();
+                return EXIT_FAILURE;
+            }
             only = true;
+        } else if (_sir_strsame(argv[n], _cl_arg_list[2].flag,
+            strnlen(argv[n], SIR_MAXCLIFLAG))) {
+            print_test_list();
+            return EXIT_SUCCESS;
+        } else if (_sir_strsame(argv[n], _cl_arg_list[3].flag,
+            strnlen(argv[n], SIR_MAXCLIFLAG))) {
+            leave_logs = true;
+        } else if (_sir_strsame(argv[n], _cl_arg_list[4].flag,
+            strnlen(argv[n], SIR_MAXCLIFLAG))) {
+            wait = true;
+        } else if (_sir_strsame(argv[n], _cl_arg_list[5].flag,
+            strnlen(argv[n], SIR_MAXCLIFLAG))) {
+            print_usage_info();
+            return EXIT_SUCCESS;
         } else {
             fprintf(stderr, "unknown argument: '%s'", argv[n]);
             print_usage_info();
@@ -187,7 +198,7 @@ bool sirtest_failnooutputdest(void) {
     INIT(si, 0, 0, 0, 0);
     bool pass = si_init;
 
-    static const char* logfilename = "nodestination.log";
+    static const char* logfilename = MAKE_LOG_NAME("nodestination.log");
 
     pass &= !sir_info("this goes nowhere!");
 
@@ -250,7 +261,7 @@ bool sirtest_filecachesanity(void) {
 
     for (size_t n = 0; n < numfiles - 1; n++) {
         char path[SIR_MAXPATH] = {0};
-        snprintf(path, SIR_MAXPATH, "test-%zu.log", n);
+        snprintf(path, SIR_MAXPATH, MAKE_LOG_NAME("test-%zu.log"), n);
         rmfile(path);
         ids[n] = sir_addfile(path, SIRL_ALL, (n % 2) ? odd : even);
         pass &= NULL != ids[n] && sir_info("test %zu", n);
@@ -259,7 +270,7 @@ bool sirtest_filecachesanity(void) {
     pass &= sir_info("test test test");
 
     /* this one should fail; max files already added. */
-    pass &= NULL == sir_addfile("should-fail.log", SIRL_ALL, SIRO_MSGONLY);
+    pass &= NULL == sir_addfile(MAKE_LOG_NAME("should-fail.log"), SIRL_ALL, SIRO_MSGONLY);
 
     if (pass)
         print_expected_error();
@@ -301,7 +312,7 @@ bool sirtest_filecachesanity(void) {
         pass &= sir_remfile(ids[removeorder[n]]);
 
         char path[SIR_MAXPATH] = {0};
-        snprintf(path, SIR_MAXPATH, "test-%zu.log", removeorder[n]);
+        snprintf(path, SIR_MAXPATH, MAKE_LOG_NAME("test-%zu.log"), removeorder[n]);
         rmfile(path);
     }
 
@@ -351,8 +362,8 @@ bool sirtest_faildupefile(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    const char* filename = "faildupefile.log";
-    sirfileid fid      = sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
+    const char* filename = MAKE_LOG_NAME("faildupefile.log");
+    sirfileid fid        = sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
 
     pass &= NULL != fid;
     pass &= NULL == sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
@@ -390,11 +401,12 @@ bool sirtest_rollandarchivefile(void) {
     static const char* line        = "hello, i am some data. nice to meet you.";
 
     char logfilename[SIR_MAXPATH] = {0};
-    snprintf(logfilename, SIR_MAXPATH, "%s%s", logbasename, logext);
+    snprintf(logfilename, SIR_MAXPATH, MAKE_LOG_NAME("%s%s"), logbasename, logext);
 
     unsigned delcount = 0;
     if (!enumfiles(logbasename, deletefiles, &delcount)) {
-        handle_os_error(false, "failed to enumerate log files with base name: %s!", logbasename);
+        handle_os_error(false, "failed to enumerate log files with base name: %s!",
+            logbasename);
         return false;
     }
 
@@ -450,8 +462,9 @@ bool sirtest_rollandarchivefile(void) {
             pass = false;
         }
 
-        /* if two are present, the test is a pass. */
-        pass &= foundlogs == 2;
+        /* if two (or more) are present, the test is a pass. */
+        printf("\tfound %u log files with base name: %s\n", foundlogs, logbasename);
+        pass &= foundlogs >= 2;
     }
 
     if (NULL != fileid)
@@ -885,7 +898,7 @@ bool sirtest_levelssanity(void) {
 }
 
 bool sirtest_perf(void) {
-    static const char* logbasename = "libsir-perf";
+    static const char* logbasename = MAKE_LOG_NAME("libsir-perf");
     static const char* logext      = ".log";
 
 #if !defined(__WIN__)
@@ -978,7 +991,7 @@ bool sirtest_updatesanity(void) {
 
 #define UPDATE_SANITY_ARRSIZE 10
 
-    static const char* logfile = "update-sanity.log";
+    static const char* logfile = MAKE_LOG_NAME("update-sanity.log");
     static const sir_options opts_array[UPDATE_SANITY_ARRSIZE] = {
         SIRO_NOHOST | SIRO_NOTIME | SIRO_NOLEVEL,
         SIRO_MSGONLY, SIRO_NONAME | SIRO_NOTID,
@@ -1516,7 +1529,7 @@ bool sirtest_threadrace(void) {
             break;
 
         heap_args[n].pass = true;
-        snprintf(heap_args[n].log_file, SIR_MAXPATH, "multi-thread-race-%zu.log", n);
+        snprintf(heap_args[n].log_file, SIR_MAXPATH, MAKE_LOG_NAME("multi-thread-race-%zu.log"), n);
 
 #if !defined(__WIN__)
         int create = pthread_create(&thrds[n], NULL, sirtest_thread, (void*)&heap_args[n]);
@@ -1607,11 +1620,11 @@ unsigned sirtest_thread(void* arg) {
         if (n % 2 == 0) {
             fg = SIRTC_CYAN;
             bg = SIRTC_BLACK;
-            sir_debug("this is log message #%zu", n);
+            sir_debug("log message #%zu", n);
         } else {
             fg = SIRTC_BLACK;
             bg = SIRTC_CYAN;
-            sir_info("this is log message #%zu", n);
+            sir_info("log message #%zu", n);
         }
 
         /* sometimes remove and re-add the log file, and set some options/styles.
@@ -1624,14 +1637,14 @@ unsigned sirtest_thread(void* arg) {
             if (NULL == id)
                 my_args->pass = print_test_error(false, false);
 
-            if (!sir_settextstyle(SIRL_DEBUG, SIRTA_NORMAL, fg, bg) ||
-                !sir_settextstyle(SIRL_INFO, SIRTA_NORMAL, fg, bg))
+            if (!sir_settextstyle(SIRL_DEBUG, SIRTA_EMPH, fg, bg) ||
+                !sir_settextstyle(SIRL_INFO, SIRTA_BOLD, fg, bg))
                 my_args->pass = print_test_error(false, false);
 
             if (!sir_stdoutopts(SIRO_NONAME | SIRO_NOHOST | SIRO_NOMSEC))
                 my_args->pass = print_test_error(false, false);
         } else {
-            if (!sir_settextstyle(SIRL_DEBUG, SIRTA_NORMAL, fg, bg) ||
+            if (!sir_settextstyle(SIRL_DEBUG, SIRTA_ULINE, fg, bg) ||
                 !sir_settextstyle(SIRL_INFO, SIRTA_NORMAL, fg, bg))
                 my_args->pass = print_test_error(false, false);
 
@@ -1716,7 +1729,14 @@ uint32_t getrand(uint32_t upper_bound) {
 bool rmfile(const char* filename) {
     bool removed = false;
 
-    /* just return true if the file doesn't exist. */
+    /* return true if leave_logs is true. */
+    if (leave_logs) {
+        printf("\t" WHITE("not deleting '%s' due to '%s'") "\n",
+            filename, _cl_arg_list[3].flag);
+        return true;
+    }
+
+    /* return true if the file doesn't exist. */
     struct stat st;
     if (0 != stat(filename, &st)) {
         if (ENOENT == errno)
@@ -1758,9 +1778,11 @@ bool countfiles(const char* search, const char* filename, unsigned* data) {
 
 bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
 #if !defined(__WIN__)
-    DIR* d = opendir(".");
-    if (!d)
+    DIR* d = opendir("./logs/");
+    if (!d) {
+        print_os_error();
         return false;
+    }
 
     rewinddir(d);
     struct dirent* di = readdir(d);
@@ -1777,7 +1799,7 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
     d = NULL;
 #else /* __WIN__ */
     WIN32_FIND_DATA finddata = {0};
-    HANDLE enumerator        = FindFirstFile("./*", &finddata);
+    HANDLE enumerator        = FindFirstFile("./logs/*", &finddata);
 
     if (INVALID_HANDLE_VALUE == enumerator)
         return false;
