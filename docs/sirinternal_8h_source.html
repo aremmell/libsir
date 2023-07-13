@@ -195,39 +195,40 @@ $(document).ready(function(){initNavTree('sirinternal_8h_source.html',''); initR
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="keywordtype">bool</span> _sir_once(sir_once* once, sir_once_fn func);</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="keywordtype">bool</span> _sir_logv(<a class="code hl_enumeration" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level, <span class="keyword">const</span> <span class="keywordtype">char</span>* format, va_list args);</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="keywordtype">bool</span> _sir_dispatch(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <a class="code hl_enumeration" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level, <a class="code hl_struct" href="structsirbuf.html">sirbuf</a>* buf);</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="keyword">const</span> <span class="keywordtype">char</span>* _sir_format(<span class="keywordtype">bool</span> styling, <a class="code hl_typedef" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> opts, <a class="code hl_struct" href="structsirbuf.html">sirbuf</a>* buf);</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="keywordtype">bool</span> _sir_syslog_init(<span class="keyword">const</span> <span class="keywordtype">char</span>* name, <a class="code hl_struct" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a>* ctx);</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="keywordtype">bool</span> _sir_syslog_open(<a class="code hl_struct" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a>* ctx);</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="keywordtype">bool</span> _sir_syslog_write(<a class="code hl_enumeration" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level, <span class="keyword">const</span> <a class="code hl_struct" href="structsirbuf.html">sirbuf</a>* buf, <a class="code hl_struct" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a>* ctx);</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="keywordtype">bool</span> _sir_syslog_updated(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data);</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="keywordtype">bool</span> _sir_syslog_close(<a class="code hl_struct" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a>* ctx);</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="keywordtype">void</span> _sir_syslog_reset(<a class="code hl_struct" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a>* ctx);</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="keyword">const</span> <span class="keywordtype">char</span>* _sir_formattedlevelstr(<a class="code hl_enumeration" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level);</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="keywordtype">bool</span> _sir_clock_gettime(time_t* tbuf, <span class="keywordtype">long</span>* msecbuf);</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="keywordtype">bool</span> _sir_formattime(time_t now, <span class="keywordtype">char</span>* buffer, <span class="keyword">const</span> <span class="keywordtype">char</span>* format);</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>pid_t _sir_getpid(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>pid_t _sir_gettid(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="keywordtype">bool</span> _sir_getthreadname(<span class="keywordtype">char</span> name[<a class="code hl_define" href="sirconfig_8h.html#a77d8a4249177fcf7703a811ca0154190">SIR_MAXPID</a>]);</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="keywordtype">bool</span> _sir_gethostname(<span class="keywordtype">char</span> name[SIR_MAXHOST]);</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_INTERNAL_H_INCLUDED */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>PRINTF_FORMAT_ATTR(2, 0)</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>bool _sir_logv(<a class="code hl_enumeration" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level, PRINTF_FORMAT const <span class="keywordtype">char</span>* format, va_list args);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="keywordtype">bool</span> _sir_dispatch(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <a class="code hl_enumeration" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level, <a class="code hl_struct" href="structsirbuf.html">sirbuf</a>* buf);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>const <span class="keywordtype">char</span>* _sir_format(<span class="keywordtype">bool</span> styling, <a class="code hl_typedef" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> opts, <a class="code hl_struct" href="structsirbuf.html">sirbuf</a>* buf);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="keywordtype">bool</span> _sir_syslog_init(const <span class="keywordtype">char</span>* name, <a class="code hl_struct" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a>* ctx);</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="keywordtype">bool</span> _sir_syslog_open(<a class="code hl_struct" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a>* ctx);</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="keywordtype">bool</span> _sir_syslog_write(<a class="code hl_enumeration" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level, const <a class="code hl_struct" href="structsirbuf.html">sirbuf</a>* buf, <a class="code hl_struct" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a>* ctx);</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="keywordtype">bool</span> _sir_syslog_updated(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data);</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="keywordtype">bool</span> _sir_syslog_close(<a class="code hl_struct" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a>* ctx);</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="keywordtype">void</span> _sir_syslog_reset(<a class="code hl_struct" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a>* ctx);</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>const <span class="keywordtype">char</span>* _sir_formattedlevelstr(<a class="code hl_enumeration" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level);</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="keywordtype">bool</span> _sir_clock_gettime(time_t* tbuf, <span class="keywordtype">long</span>* msecbuf);</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="keywordtype">bool</span> _sir_formattime(time_t now, <span class="keywordtype">char</span>* buffer, const <span class="keywordtype">char</span>* format);</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>pid_t _sir_getpid(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>pid_t _sir_gettid(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="keywordtype">bool</span> _sir_getthreadname(<span class="keywordtype">char</span> name[<a class="code hl_define" href="sirconfig_8h.html#a77d8a4249177fcf7703a811ca0154190">SIR_MAXPID</a>]);</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="keywordtype">bool</span> _sir_gethostname(<span class="keywordtype">char</span> name[SIR_MAXHOST]);</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_INTERNAL_H_INCLUDED */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="agroup__publictypes_html_ga4a3303c67acd49bea38fd3565d458cb2"><div class="ttname"><a href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a></div><div class="ttdeci">sir_level</div><div class="ttdoc">Defines the available levels (severity/priority) of logging output.</div><div class="ttdef"><b>Definition</b> sirtypes.h:45</div></div>
 <div class="ttc" id="agroup__publictypes_html_gafb659914aac0129182d86f7d3414e85d"><div class="ttname"><a href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a></div><div class="ttdeci">uint32_t sir_options</div><div class="ttdoc">sir_option bitmask type.</div><div class="ttdef"><b>Definition</b> sirtypes.h:78</div></div>
 <div class="ttc" id="agroup__publictypes_html_structsir__syslog__dest"><div class="ttname"><a href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a></div><div class="ttdoc">Configuration for the system logger destination.</div><div class="ttdef"><b>Definition</b> sirtypes.h:162</div></div>
@@ -242,7 +243,7 @@ $(document).ready(function(){initNavTree('sirinternal_8h_source.html',''); initR
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>sirinternal.h</b></li>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Jul 13 2023 05:42:02 for libsir by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
