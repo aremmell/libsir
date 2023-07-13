@@ -6,7 +6,11 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/bin/sirtests",
-            "args": [],
+            "args": [
+              /*"",
+                "",
+                "" */
+            ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
@@ -31,9 +35,9 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/bin/sirtests",
             "args": [
-                "--only",
-                "sanity-text-styles",
-                /*""*/
+              /*"",
+                "",
+                "" */
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -46,35 +50,12 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/bin/sirexample",
-            "args": [
-            ],
+            "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": true,
             "MIMode": "lldb"
-        }
-    ],
-    "inputs": [
-        {
-            "id": "wait",
-            "type": "pickString",
-            "description": "Wait for input once finished?",
-            "options": [
-                "--no-wait",
-                "--wait",
-            ],
-            "default": "--no-wait"
-        },
-        {
-            "id": "perf",
-            "type": "pickString",
-            "description": "Run perf instead of test suite?",
-            "options": [
-                "--no--perf",
-                "--perf",
-            ],
-            "default": "--no--perf"
         }
     ]
 }
