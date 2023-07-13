@@ -125,12 +125,27 @@ bool sir_fileopts(sirfileid id, sir_options opts) {
     return _sir_updatefile(id, &data);
 }
 
-bool sir_settextstyle(sir_level level, sir_textstyle style) {
-    return _sir_settextstyle(level, style);
+bool sir_settextstyle(sir_level level, sir_textattr attr, sir_textcolor fg,
+    sir_textcolor bg) {
+    sir_textstyle style = {
+        attr,
+        fg,
+        bg
+    };
+
+    return _sir_settextstyle(level, &style);
 }
 
 bool sir_resettextstyles(void) {
     return _sir_resettextstyles();
+}
+
+sir_textcolor sir_makergb(sir_textcolor r, sir_textcolor g, sir_textcolor b) {
+    return _sir_makergb(r, g, b);
+}
+
+bool sir_setcolormode(sir_colormode mode) {
+    return _sir_setcolormode(mode);
 }
 
 bool sir_stdoutlevels(sir_levels levels) {

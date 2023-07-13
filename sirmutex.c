@@ -38,7 +38,7 @@ bool _sirmutex_create(sir_mutex* mutex) {
             _sir_handleerr(op);
 
         if (0 == op) {
-            op = pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_NORMAL);
+            op = pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
             if (0 != op)
                 _sir_handleerr(op);
 
@@ -54,7 +54,7 @@ bool _sirmutex_create(sir_mutex* mutex) {
     return false;
 }
 
-bool _sir_mutexrylock(sir_mutex* mutex) {
+bool _sir_mutextrylock(sir_mutex* mutex) {
     if (_sir_validptr(mutex)) {
         int op = pthread_mutex_trylock(mutex);
         if (0 != op)
@@ -118,7 +118,7 @@ bool _sirmutex_create(sir_mutex* mutex) {
     return false;
 }
 
-bool _sir_mutexrylock(sir_mutex* mutex) {
+bool _sir_mutextrylock(sir_mutex* mutex) {
     return _sirmutex_waitwin32(*mutex, 0);
 }
 

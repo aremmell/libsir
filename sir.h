@@ -416,21 +416,33 @@ bool sir_fileopts(sirfileid id, sir_options opts);
  * @brief Set new text styling for stdio (stdout/stderr) destinations on a
  * per-level basis.
  *
+ * @see ::sir_setcolormode
  * @see ::sir_resettextstyles
  * @see ::default
  *
+ * @note Use `SIRTC_DEFAULT` to get the default foreground or background color.
+ * To set colors in RGB color mode, use ::sir_makergb to create the foreground
+ * and background colors.
+ *
  * @param   level The ::sir_level for which to set the text styling.
- * @param   style New bitmask of ::sir_textstyle for the level.
+ * @param   attr  The ::sir_textattr attributes to apply to the text.
+ * @param   fg    The foreground color to apply to the text.
+ * @param   bg    The background color to apply to the text.
  * @returns bool  `true` if succcessfully updated, `false` otherwise. Use
  *                ::sir_geterror to obtain information about any error that may
  *                have occurred.
  */
-bool sir_settextstyle(sir_level level, sir_textstyle style);
+bool sir_settextstyle(sir_level level, sir_textattr attr, sir_textcolor fg,
+    sir_textcolor bg);
 
 /**
  * @brief Reset text styling for stdio (stdout/stderr) destinations to their
  * default values.
  *
+ * @note The text styling will be applied according to the current color mode
+ * (as previously set by ::sir_setcolormode, or by default, 16-color mode).
+ *
+ * @see ::sir_setcolormode
  * @see ::sir_settextstyle
  * @see ::default
  *
@@ -438,6 +450,53 @@ bool sir_settextstyle(sir_level level, sir_textstyle style);
  *          to obtain information about any error that may have occurred.
  */
 bool sir_resettextstyles(void);
+
+
+/**
+ * @brief Creates a ::sir_textcolor from red, green, and blue components.
+ *
+ * @note Use this function to create colors suitable for ::sir_settextstyle when
+ * using RGB color mode.
+ *
+ * @see ::sir_setcolormode
+ * @see ::sir_settextstyle
+ * @see ::default
+ *
+ * @param   r             The red component (0..255)
+ * @param   g             The green component (0..255)
+ * @param   b             The blue component (0..255)
+ * @returns sir_textcolor The color created by combining the r, g, and b components.
+ */
+sir_textcolor sir_makergb(sir_textcolor r, sir_textcolor g, sir_textcolor b);
+
+/**
+ * @brief Sets the ANSI color mode for stdio destinations.
+ *
+ * @note Some terminals may not support the color modes offered by libsir, so
+ * make sure everything looks right after changing the mode.
+ *
+ * @note When you change the color mode, all previously set text styles will be
+ * reset to their defaults. You will have to reapply any text styles set before
+ * this call.
+ *
+ * The available modes are:
+ *
+ * - `SIRCM_16`:  4-bit, 16-color mode. Colors are defined by the `SIRTC_*` values.
+ *                This is the default mode.
+ * - `SIRCM_256`: 8-bit, 256-color mode. Colors are defined by numeric value (0..255)
+ * - `SIRCM_RGB`: 24-bit RGB color mode. Colors are defined by numeric value, with
+ *                red, green, and blue components (0..255) each.
+ *
+ * @see ::sir_makergb
+ * @see ::sir_settextstyle
+ * @see ::default
+ *
+ * @param   mode One of the `SIRCM_*` constants, defining the mode to use.
+ * @returns bool `true` if the color mode was changed successfully, `false`
+ * otherwise. Use ::sir_geterror to obtain information about any error that may
+ * have occurred.
+ */
+bool sir_setcolormode(sir_colormode mode);
 
 /**
  * @brief Set new level registrations for `stdout`.

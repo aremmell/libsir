@@ -28,25 +28,28 @@
 
 # include "sirtypes.h"
 
+extern sir_text_style_data sir_text_style_section;
+
 /**  Returns the final string form of the current ::sir_textstyle for a ::sir_level. */
 const char* _sir_gettextstyle(sir_level level);
 
 /** Sets the ::sir_textstyle for a ::sir_level. */
-bool _sir_settextstyle(sir_level level, sir_textstyle style);
+bool _sir_settextstyle(sir_level level, sir_textstyle* style);
 
 /** Retrieves the default ::sir_textstyle for a ::sir_level. */
-sir_textstyle _sir_getdefstyle(sir_level level);
+const sir_textstyle* _sir_getdefstyle(sir_level level);
 
-/** Resets all per-level ::sir_textstyle to default. */
+/** Resets all per-level ::sir_textstyle to defaults. */
 bool _sir_resettextstyles(void);
 
-/** Retrieves the opaque numeric value for a component part of a ::sir_textstyle. */
-uint16_t _sir_getprivstyle(sir_textstyle style);
+/** Creates the ANSI escape sequence that produces the associated text style. */
+bool _sir_formatstyle(sir_colormode mode, const sir_textstyle* style,
+    char buf[SIR_MAXSTYLE]);
 
-/** Combines component parts of a platform text style value into its final form. */
-bool _sir_formatstyle(sir_textstyle style, char* buf, size_t size);
+/** Validates a ::sir_textstyle based on color mode. */
+bool _sir_validtextstyle(sir_colormode mode, const sir_textstyle* style);
 
-/** Validates a ::sir_textstyle and splits it into its component parts. */
-bool _sir_validstyle(sir_textstyle style, uint32_t* pattr, uint32_t* pfg, uint32_t* pbg);
+/** Sets the current color mode. */
+bool _sir_setcolormode(sir_colormode mode);
 
 #endif /* !_SIR_TEXTSTYLE_H_INCLUDED */

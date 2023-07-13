@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['identity_0',['identity',['../group__publictypes.html#acbc738f8c0f9dc404ac85e13cb43c7c5',1,'sir_syslog_dest']]],
-  ['invert_1',['INVERT',['../siransimacros_8h.html#ac8f15eef1cd5bf5f8b127fe10c96aa62',1,'siransimacros.h']]]
+  ['fg_0',['fg',['../group__publictypes.html#ac6fb238c1a2b51dfff2b62b4c5acd42b',1,'sir_textstyle']]],
+  ['fields_1',['fields',['../structsir__update__config__data.html#ad61568937fcd6a019bd5e58d4103aa35',1,'sir_update_config_data']]],
+  ['fmt_2',['fmt',['../structsir__level__str__pair.html#abb5bc77ea76db28a9896bad436e4f2d6',1,'sir_level_str_pair']]],
+  ['functions_3',['Functions',['../group__publicfuncs.html',1,'']]]
 ];

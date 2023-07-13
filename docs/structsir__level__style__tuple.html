@@ -116,7 +116,7 @@ $(document).ready(function(){initNavTree('structsir__level__style__tuple.html','
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> &lt;-&gt; <a class="el" href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf" title="Styles for 16-color stdio output.">sir_textstyle</a> mapping.  
+<p><a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> &lt;-&gt; <a class="el" href="group__publictypes.html#structsir__textstyle" title="Container for all the information associated with the appearance of text in the context of stdio.">sir_textstyle</a> mapping.  
  <a href="structsir__level__style__tuple.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="sirtypes_8h_source.html">sirtypes.h</a>&gt;</code></p>
@@ -128,16 +128,16 @@ const <a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d45
 <tr class="memdesc:aafe5ae7abfd17caaa4470368c3d2ed98"><td class="mdescLeft">&#160;</td><td class="mdescRight">The level for which the style applies. <br /></td></tr>
 <tr class="separator:aafe5ae7abfd17caaa4470368c3d2ed98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fed0d03eeb0003783ccec5e26665a53"><td class="memItemLeft" align="right" valign="top"><a id="a8fed0d03eeb0003783ccec5e26665a53" name="a8fed0d03eeb0003783ccec5e26665a53"></a>
-<a class="el" href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf">sir_textstyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>style</b></td></tr>
-<tr class="memdesc:a8fed0d03eeb0003783ccec5e26665a53"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf" title="Styles for 16-color stdio output.">sir_textstyle</a> representation. <br /></td></tr>
+<a class="el" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>style</b></td></tr>
+<tr class="memdesc:a8fed0d03eeb0003783ccec5e26665a53"><td class="mdescLeft">&#160;</td><td class="mdescRight">The un-formatted representation. <br /></td></tr>
 <tr class="separator:a8fed0d03eeb0003783ccec5e26665a53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f67704e0d74d266d0a5d2d3c9459816"><td class="memItemLeft" align="right" valign="top"><a id="a5f67704e0d74d266d0a5d2d3c9459816" name="a5f67704e0d74d266d0a5d2d3c9459816"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><b>str</b> [SIR_MAXSTYLE]</td></tr>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>str</b> [<a class="el" href="sirconfig_8h.html#a5cdaa944bfe2228355cc4c34c3d315e8">SIR_MAXSTYLE</a>]</td></tr>
 <tr class="memdesc:a5f67704e0d74d266d0a5d2d3c9459816"><td class="mdescLeft">&#160;</td><td class="mdescRight">The formatted string representation. <br /></td></tr>
 <tr class="separator:a5f67704e0d74d266d0a5d2d3c9459816"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> &lt;-&gt; <a class="el" href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf" title="Styles for 16-color stdio output.">sir_textstyle</a> mapping. </p>
+<div class="textblock"><p><a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> &lt;-&gt; <a class="el" href="group__publictypes.html#structsir__textstyle" title="Container for all the information associated with the appearance of text in the context of stdio.">sir_textstyle</a> mapping. </p>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="aafe5ae7abfd17caaa4470368c3d2ed98" name="aafe5ae7abfd17caaa4470368c3d2ed98"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aafe5ae7abfd17caaa4470368c3d2ed98">&#9670;&#160;</a></span>level</h2>
@@ -162,12 +162,12 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>str</b> [SIR_MAXSTYLE
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf">sir_textstyle</a> sir_level_style_tuple::style</td>
+          <td class="memname"><a class="el" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a> sir_level_style_tuple::style</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The <a class="el" href="group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf" title="Styles for 16-color stdio output.">sir_textstyle</a> representation. </p>
+<p>The un-formatted representation. </p>
 
 </div>
 </div>
@@ -178,7 +178,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>str</b> [SIR_MAXSTYLE
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char sir_level_style_tuple::str[SIR_MAXSTYLE]</td>
+          <td class="memname">char sir_level_style_tuple::str[<a class="el" href="sirconfig_8h.html#a5cdaa944bfe2228355cc4c34c3d315e8">SIR_MAXSTYLE</a>]</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -197,7 +197,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>str</b> [SIR_MAXSTYLE
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structsir__level__style__tuple.html">sir_level_style_tuple</a></li>
-    <li class="footer">Generated on Tue Jul 11 2023 02:03:01 for libsir by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

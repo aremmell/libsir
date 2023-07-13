@@ -250,10 +250,10 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SIR_MAXMISC</b>&#160;&#160;&#160;7</td></tr>
 <tr class="memdesc:ac42033f35206a8adbf1a4377c8e0d290"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum number of whitespace and miscellaneous characters included in output. <br /></td></tr>
 <tr class="separator:ac42033f35206a8adbf1a4377c8e0d290"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fb5413dac03b2487edfeee377932402"><td class="memItemLeft" align="right" valign="top"><a id="a2fb5413dac03b2487edfeee377932402" name="a2fb5413dac03b2487edfeee377932402"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIR_MAXSTYLE_16_COLOR</b>&#160;&#160;&#160;16</td></tr>
-<tr class="memdesc:a2fb5413dac03b2487edfeee377932402"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size, in characters, of the buffer used to hold a sequence of styling data in 16-color mode. <br /></td></tr>
-<tr class="separator:a2fb5413dac03b2487edfeee377932402"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cdaa944bfe2228355cc4c34c3d315e8"><td class="memItemLeft" align="right" valign="top"><a id="a5cdaa944bfe2228355cc4c34c3d315e8" name="a5cdaa944bfe2228355cc4c34c3d315e8"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIR_MAXSTYLE</b>&#160;&#160;&#160;39</td></tr>
+<tr class="memdesc:a5cdaa944bfe2228355cc4c34c3d315e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size, in characters, of the buffer used to hold a sequence of styling data in any color mode (the largest possible sequence, which is: <code>\x1b[a;fb;m;rrr;ggg;bbb;fb;m;rrr;ggg;bbbm</code>) plus a null terminator. <br /></td></tr>
+<tr class="separator:a5cdaa944bfe2228355cc4c34c3d315e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3e26cb9ac224cb9a695ddf1ed099218"><td class="memItemLeft" align="right" valign="top"><a id="ab3e26cb9ac224cb9a695ddf1ed099218" name="ab3e26cb9ac224cb9a695ddf1ed099218"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SIR_MAXOUTPUT</b></td></tr>
 <tr class="memdesc:ab3e26cb9ac224cb9a695ddf1ed099218"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum size, in characters, of final formatted output. <br /></td></tr>
@@ -298,8 +298,8 @@ Macros</h2></td></tr>
 <tr class="memdesc:a3d40d22ca5d641892fc7b3cb8d0bb283"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of actual options; <a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba843ca9cff10528731dc9609e2fbfe34f" title="Include all formatting and functionality.">SIRO_ALL</a>, <a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02" title="Default options for this type of destination.">SIRO_DEFAULT</a>, and <a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0" title="Sets all other options except SIRO_NOHDR.">SIRO_MSGONLY</a> are pseudo options that end up being mapped (or not) to the others. <br /></td></tr>
 <tr class="separator:a3d40d22ca5d641892fc7b3cb8d0bb283"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4797e353beace140ae7ac35e0e6ea11"><td class="memItemLeft" align="right" valign="top"><a id="ad4797e353beace140ae7ac35e0e6ea11" name="ad4797e353beace140ae7ac35e0e6ea11"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIR_NUM16_COLOR_MAPPINGS</b>&#160;&#160;&#160;37</td></tr>
-<tr class="memdesc:ad4797e353beace140ae7ac35e0e6ea11"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of entries in the 4-bit (16-color) map: 3 attributes + 17 foreground colors + 17 background colors (default counts as a color). <br /></td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SIR_NUM16_COLOR_MAPPINGS</b>&#160;&#160;&#160;39</td></tr>
+<tr class="memdesc:ad4797e353beace140ae7ac35e0e6ea11"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of entries in the 4-bit (16-color) map: 5 attributes + 17 foreground colors + 17 background colors (default counts as a color). <br /></td></tr>
 <tr class="separator:ad4797e353beace140ae7ac35e0e6ea11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46e195050794e32a234cda5f1af57a2a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sirconfig_8h.html#a46e195050794e32a234cda5f1af57a2a">SIR_HNAME_CHK_INTERVAL</a>&#160;&#160;&#160;60</td></tr>
 <tr class="memdesc:a46e195050794e32a234cda5f1af57a2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of seconds to let elapse before checking if the hostname needs refreshing.  <br /></td></tr>
@@ -685,7 +685,7 @@ Macros</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="sirconfig_8h.html">sirconfig.h</a></li>
-    <li class="footer">Generated on Tue Jul 11 2023 02:03:01 for libsir by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

@@ -77,49 +77,66 @@ typedef enum {
 /** ::sir_option bitmask type. */
 typedef uint32_t sir_options;
 
-/** Styles for 16-color stdio output. */
+/** Color mode selection. */
+typedef enum {
+    SIRCM_16      = 0, /**< 4-bit 16-color mode. */
+    SIRCM_256     = 1, /**< 8-bit 256-color mode. */
+    SIRCM_RGB     = 2, /**< 24-bit RGB-color mode. */
+    SIRCM_INVALID = 3 /**< Represents the invalid color mode. */
+} sir_colormode;
+
+/** Attributes for stdio output. */
 typedef enum {
     /* attributes. */
-    SIRS_NONE        = 0x00000000, /**< Used internally; has no effect. */
-    SIRS_BOLD        = 0x00000001, /**< If set, the foreground color is 'bold'. */
-    SIRS_DIM         = 0x00000002, /**< If set, the foreground color is 'dimmed'. */
-    /* foreground colors. */
-    SIRS_FG_BLACK    = 0x000089a0, /**< Black foreground. */
-    SIRS_FG_RED      = 0x000059b0, /**< Red foreground. */
-    SIRS_FG_GREEN    = 0x00006670, /**< Green foreground. */
-    SIRS_FG_YELLOW   = 0x00001310, /**< Yellow foreground. */
-    SIRS_FG_BLUE     = 0x00004970, /**< Blue foreground. */
-    SIRS_FG_MAGENTA  = 0x00003430, /**< Magenta foreground. */
-    SIRS_FG_CYAN     = 0x00006090, /**< Cyan foreground. */
-    SIRS_FG_LGRAY    = 0x00006f00, /**< Light gray foreground. */
-    SIRS_FG_DEFAULT  = 0x00007210, /**< Use the default foreground color. */
-    SIRS_FG_DGRAY    = 0x00007880, /**< Dark gray foreground. */
-    SIRS_FG_LRED     = 0x00008220, /**< Light red foreground. */
-    SIRS_FG_LGREEN   = 0x00009300, /**< Light green foreground. */
-    SIRS_FG_LYELLOW  = 0x00003160, /**< Light yellow foreground. */
-    SIRS_FG_LBLUE    = 0x00007100, /**< Light blue foreground. */
-    SIRS_FG_LMAGENTA = 0x00005220, /**< Light magenta foreground. */
-    SIRS_FG_LCYAN    = 0x00005540, /**< Light cyan foreground. */
-    SIRS_FG_WHITE    = 0x00001480, /**< White foreground. */
-    /* background colors. */
-    SIRS_BG_BLACK    = 0x089a0000, /**< Black background. */
-    SIRS_BG_RED      = 0x059b0000, /**< Red background. */
-    SIRS_BG_GREEN    = 0x06670000, /**< Green background. */
-    SIRS_BG_YELLOW   = 0x01310000, /**< Yellow background. */
-    SIRS_BG_BLUE     = 0x04970000, /**< Blue background. */
-    SIRS_BG_MAGENTA  = 0x03430000, /**< Magenta background. */
-    SIRS_BG_CYAN     = 0x06090000, /**< Cyan background. */
-    SIRS_BG_LGRAY    = 0x06f00000, /**< Light gray background. */
-    SIRS_BG_DEFAULT  = 0x07210000, /**< Use the default background color. */
-    SIRS_BG_DGRAY    = 0x07880000, /**< Dark gray background. */
-    SIRS_BG_LRED     = 0x08220000, /**< Light red background. */
-    SIRS_BG_LGREEN   = 0x09300000, /**< Light green background. */
-    SIRS_BG_LYELLOW  = 0x03160000, /**< Light yellow background. */
-    SIRS_BG_LBLUE    = 0x07100000, /**< Light blue background. */
-    SIRS_BG_LMAGENTA = 0x05220000, /**< Light magenta background. */
-    SIRS_BG_LCYAN    = 0x05540000, /**< Light cyan background. */
-    SIRS_BG_WHITE    = 0x01480000, /**< White background. */
-    SIRS_INVALID     = 0x0000ffff  /**< Represents the invalid text style. */
+    SIRTA_NORMAL  = 0, /**< Normal text. */
+    SIRTA_BOLD    = 1, /**< Bold text. */
+    SIRTA_DIM     = 2, /**< Dimmed text. */
+    SIRTA_EMPH    = 3, /**< Italicized/emphasized text. */
+    SIRTA_ULINE   = 4, /**< Underlined text. */
+} sir_textattr;
+
+/** Colors for stdio output. */
+enum {
+    /* 4-bit (16-color). */
+    SIRTC_BLACK    = 0,  /**< Black. */
+    SIRTC_RED      = 1,  /**< Red. */
+    SIRTC_GREEN    = 2,  /**< Green. */
+    SIRTC_YELLOW   = 3,  /**< Yellow. */
+    SIRTC_BLUE     = 4,  /**< Blue. */
+    SIRTC_MAGENTA  = 5,  /**< Magenta. */
+    SIRTC_CYAN     = 6,  /**< Cyan. */
+    SIRTC_LGRAY    = 7,  /**< Light gray. */
+    SIRTC_DGRAY    = 8,  /**< Dark gray. */
+    SIRTC_BRED     = 9,  /**< Bright red. */
+    SIRTC_BGREEN   = 10, /**< Bright green. */
+    SIRTC_BYELLOW  = 11, /**< Bright yellow. */
+    SIRTC_BBLUE    = 12, /**< Bright blue. */
+    SIRTC_BMAGENTA = 13, /**< Bright magenta. */
+    SIRTC_BCYAN    = 14, /**< Bright cyan. */
+    SIRTC_WHITE    = 15, /**< White. */
+    /* 8-bit (256-color) and 24-bit (RGB color) modes:
+     * use the numeric representation (16..255) instead of an enum.
+     * these colors do not have defined names like the above. */
+    SIRTC_DEFAULT  = 256, /**< Represents the default color. */
+    SIRTC_INVALID  = 257  /**< Represents the invalid color. */
+};
+
+/** stdio text color type. */
+typedef uint32_t sir_textcolor;
+
+/**
+ * @struct sir_textstyle
+ * @brief Container for all the information associated with the appearance of text
+ * in the context of stdio.
+ *
+ * For 4-bit (16-color) and 8-bit (256-color) modes, fg and bg are simply the
+ * associated SIRTC_* value. For 24-bit RGB color mode, fg and bg are packed as
+ * follows: 0x00rrggbb.
+ */
+typedef struct {
+    sir_textattr attr; /**< Text attributes. */
+    sir_textcolor fg;  /**< Foreground color. */
+    sir_textcolor bg;  /**< Background color. */
 } sir_textstyle;
 
 /**
@@ -211,18 +228,6 @@ typedef struct {
  * @}
  */
 
-/** Text style attribute mask. */
-# define _SIRS_ATTR_MASK 0x0000000f
-
-/** Text style foreground color mask. */
-# define _SIRS_FG_MASK 0x0000fff0
-
-/** Text style background color mask. */
-# define _SIRS_BG_MASK 0x0fff0000
-
-/** True if foreground and background colors are the same. */
-# define _SIRS_SAME_COLOR(fg, bg) ((((bg) >> 12) & _SIRS_FG_MASK) == (fg))
-
 /** Magic number used to determine if libsir has been initialized. */
 # define _SIR_MAGIC 0x60906090
 
@@ -290,21 +295,21 @@ typedef struct {
 /** ::sir_level <-> ::sir_textstyle mapping. */
 typedef struct {
     const sir_level level;  /**< The level for which the style applies. */
-    sir_textstyle style;    /**< The ::sir_textstyle representation. */
+    sir_textstyle style;    /**< The un-formatted representation. */
     char str[SIR_MAXSTYLE]; /**< The formatted string representation. */
 } sir_level_style_tuple;
+
+/** Container for  text style related data that is mutex protected. */
+typedef struct {
+    sir_level_style_tuple* map;
+    sir_colormode* color_mode;
+} sir_text_style_data;
 
 /** ::sir_level <-> human-readable string form. */
 typedef struct {
     const sir_level level; /**< The level for which the string applies. */
     const char* fmt;       /**< The formatted string representation. */
 } sir_level_str_pair;
-
-/** Public (::sir_textstyle) <-> values used to generate styled stdio output. */
-typedef struct {
-    const sir_textstyle from; /**< The public text style flag(s). */
-    const uint16_t to;        /**< The internal value(s). */
-} sir_style_16color_pair;
 
 /** Mutex <-> protected section mapping. */
 typedef enum {

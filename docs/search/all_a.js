@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['opts_0',['opts',['../group__publictypes.html#a7e1370c46de95363162d1c7879fca723',1,'sir_stdio_dest::opts'],['../group__publictypes.html#ad8f026edd9c8667d897eb24016f2e81f',1,'sir_syslog_dest::opts'],['../structsir__update__config__data.html#a8736ae94a5aaea53a2e4c8f06f7a870a',1,'sir_update_config_data::opts']]]
+  ['magenta_0',['MAGENTA',['../siransimacros_8h.html#ab386ea91f0fa1ae29e693a1efda1ccdd',1,'siransimacros.h']]],
+  ['magentab_1',['MAGENTAB',['../siransimacros_8h.html#aaa1ee1774ac47559ef31ea2375571a40',1,'siransimacros.h']]],
+  ['main_2',['main',['../example_8c.html#a840291bc02cba5474a4cb46a9b9566fe',1,'example.c']]],
+  ['mask_3',['mask',['../group__publictypes.html#af2ce11ebf110993621bedd8e747d7b1b',1,'sir_syslog_dest._state']]]
 ];

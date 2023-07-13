@@ -41,3 +41,6 @@ index.md
 
 # Cores
 *.core
+
+# Oracle Lint
+*.ln

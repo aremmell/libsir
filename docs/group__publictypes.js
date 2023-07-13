@@ -1,5 +1,10 @@
 var group__publictypes =
 [
+    [ "sir_textstyle", "group__publictypes.html#structsir__textstyle", [
+      [ "attr", "group__publictypes.html#a5dd5e64c144c5652c8bfea5d9f1eec9b", null ],
+      [ "fg", "group__publictypes.html#ac6fb238c1a2b51dfff2b62b4c5acd42b", null ],
+      [ "bg", "group__publictypes.html#a3fb54399893a1e17b865471d22467231", null ]
+    ] ],
     [ "sir_stdio_dest", "group__publictypes.html#structsir__stdio__dest", [
       [ "levels", "group__publictypes.html#a3dc07c2b3fbe96d9c6f4d8af2ef90687", null ],
       [ "opts", "group__publictypes.html#a7e1370c46de95363162d1c7879fca723", null ]
@@ -7,7 +12,7 @@ var group__publictypes =
     [ "sir_syslog_dest", "group__publictypes.html#structsir__syslog__dest", [
       [ "levels", "group__publictypes.html#a2fb4c11cdb645a46f008c34678260bbc", null ],
       [ "opts", "group__publictypes.html#ad8f026edd9c8667d897eb24016f2e81f", null ],
-      [ "_state", "group__publictypes.html#a7120a461e55e114a173cddb56565e814", null ],
+      [ "_state", "group__publictypes.html#adb7f555cb381826a0aedfdbb58e96bd1", null ],
       [ "identity", "group__publictypes.html#acbc738f8c0f9dc404ac85e13cb43c7c5", null ],
       [ "category", "group__publictypes.html#ace79b2f2bd4d08d0c6e4151dafb3266b", null ]
     ] ],
@@ -24,6 +29,7 @@ var group__publictypes =
     [ "sirfileid", "group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442", null ],
     [ "sir_levels", "group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd", null ],
     [ "sir_options", "group__publictypes.html#gafb659914aac0129182d86f7d3414e85d", null ],
+    [ "sir_textcolor", "group__publictypes.html#gab4214e294af5ac3c91f21c1d379e10c5", null ],
     [ "sir_errorcode", "group__publictypes.html#ga861df9be69c6bcd01d29b77bd28ff7d3", [
       [ "SIR_E_NOERROR", "group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3ae9cf0dd9b54a0e456a565c6a8bf107f7", null ],
       [ "SIR_E_NOTREADY", "group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a87dc9e5593942f7413b84a17c64a01eb", null ],
@@ -40,6 +46,9 @@ var group__publictypes =
       [ "SIR_E_NODEST", "group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3ad8d3e0a7ff09ea46a966d07ad08536af", null ],
       [ "SIR_E_UNAVAIL", "group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a3b567998a2ca4da43348b5edb38dd865", null ],
       [ "SIR_E_INTERNAL", "group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a1cc3cc0a607357ce4e6e8931c5b26190", null ],
+      [ "SIR_E_COLORMODE", "group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3aa8be0c34a6b8a73f40cb8895ee3c43ca", null ],
+      [ "SIR_E_TEXTATTR", "group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3af4f4ba84fa79d43fa816717db4403abe", null ],
+      [ "SIR_E_TEXTCOLOR", "group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a078991e5214a2846ddaa2779f3f1c336", null ],
       [ "SIR_E_PLATFORM", "group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a0f293a6020f98a7e41b8afea0e402046", null ],
       [ "SIR_E_UNKNOWN", "group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a8090c8bc79ae660da7e58b2d0a47d785", null ]
     ] ],
@@ -69,44 +78,35 @@ var group__publictypes =
       [ "SIRO_MSGONLY", "group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0", null ],
       [ "SIRO_DEFAULT", "group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02", null ]
     ] ],
-    [ "sir_textstyle", "group__publictypes.html#ga3bd5959a607e5280a8db90ada2d80caf", [
-      [ "SIRS_NONE", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafaeedcdbdc654f326e211a2d2f653b07f5", null ],
-      [ "SIRS_BOLD", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa0f7f4142f934212c7a8cbe5fb890ef65", null ],
-      [ "SIRS_DIM", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa54175d114e639a05853b7f8f2291661a", null ],
-      [ "SIRS_FG_BLACK", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa0fbe677e96b8483b073584848bb5e4fc", null ],
-      [ "SIRS_FG_RED", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa1f11f323b6998adbd83b31d73bc538dc", null ],
-      [ "SIRS_FG_GREEN", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafae78e2dc1e4fed6ad5b12d089e80a07e8", null ],
-      [ "SIRS_FG_YELLOW", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa89c9ddbb6a10b8c5fe204247eb457641", null ],
-      [ "SIRS_FG_BLUE", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa2f75bdae21995a567531e37eec6e979d", null ],
-      [ "SIRS_FG_MAGENTA", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa78c026ced18436da03a138ac720d9739", null ],
-      [ "SIRS_FG_CYAN", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafaefc4595e6d22f5a5d6ce7fa13c64444d", null ],
-      [ "SIRS_FG_LGRAY", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafae27d8d5a99b25c1fa6a6f8e88c728847", null ],
-      [ "SIRS_FG_DEFAULT", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa94c0b7a28b98275970c70dc8cbf3ed86", null ],
-      [ "SIRS_FG_DGRAY", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa0a21b2c2577cffd925841a9bc549eb1a", null ],
-      [ "SIRS_FG_LRED", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafaa4b6a5f32e591cd5649c849555abcd32", null ],
-      [ "SIRS_FG_LGREEN", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa3ca695e05500c2577a8aed197c6f515a", null ],
-      [ "SIRS_FG_LYELLOW", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa044cfd76b272031ac7103a6f4b655c68", null ],
-      [ "SIRS_FG_LBLUE", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa9803c61fa699378b4d3d4da2e7a1fc43", null ],
-      [ "SIRS_FG_LMAGENTA", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa41034337d4b4513f07641d97b2450c06", null ],
-      [ "SIRS_FG_LCYAN", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa869cfb06440efa65ee401ccccec054b5", null ],
-      [ "SIRS_FG_WHITE", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafae6d57af48d2bca9848aa8cf926043e4e", null ],
-      [ "SIRS_BG_BLACK", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafae6d8923837281767bb30b4cfb59bcd2c", null ],
-      [ "SIRS_BG_RED", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafad0eec1607a2eefbabe5947bd595170a4", null ],
-      [ "SIRS_BG_GREEN", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa93166b30d32c8dbf52f93612aa0dcdd7", null ],
-      [ "SIRS_BG_YELLOW", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafabe3a20064515e10ac72eaf6e8a665b55", null ],
-      [ "SIRS_BG_BLUE", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafabbee0baeb2477032387f884c6f938129", null ],
-      [ "SIRS_BG_MAGENTA", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa989b172db1f8a3a212ef5b8e23d636cf", null ],
-      [ "SIRS_BG_CYAN", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa04083a920b7ed070f2bbb886e4691203", null ],
-      [ "SIRS_BG_LGRAY", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa05859c52a6ff0bdfccf869e1330889a3", null ],
-      [ "SIRS_BG_DEFAULT", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafab38f3ce262a13dd157fd1a2077fe27d6", null ],
-      [ "SIRS_BG_DGRAY", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa65b1ce8d8dcdf149a9ee515001ee7d69", null ],
-      [ "SIRS_BG_LRED", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa5dabc2332ba159af08c886c8d8cecd3e", null ],
-      [ "SIRS_BG_LGREEN", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa6dba92fe12cc2cf72ea2e77d9f083b25", null ],
-      [ "SIRS_BG_LYELLOW", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafaa57ce340d05ec022dc4a5f89d2bea212", null ],
-      [ "SIRS_BG_LBLUE", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafae30bf67c0667f08b92c10f6e14b1895e", null ],
-      [ "SIRS_BG_LMAGENTA", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa2bac829fbcfffa04182547d4a0a00e7a", null ],
-      [ "SIRS_BG_LCYAN", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafaf3b311d7fd2af0678d7ddff6f7967866", null ],
-      [ "SIRS_BG_WHITE", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa57f3210f2af19b6b3067a10ab5947a36", null ],
-      [ "SIRS_INVALID", "group__publictypes.html#gga3bd5959a607e5280a8db90ada2d80cafa42e4beda8d3aef8122f3b272c54632e2", null ]
+    [ "sir_colormode", "group__publictypes.html#ga26686b620930358e8b50f287d6c96e51", [
+      [ "SIRCM_16", "group__publictypes.html#gga26686b620930358e8b50f287d6c96e51a1e9b6fdb0f6841f91060766dfefaa504", null ],
+      [ "SIRCM_256", "group__publictypes.html#gga26686b620930358e8b50f287d6c96e51af6f2ac3c69c5fd02bac6d861bebdb441", null ],
+      [ "SIRCM_RGB", "group__publictypes.html#gga26686b620930358e8b50f287d6c96e51ae0caa45527e7c797fef3719f947bc2ab", null ],
+      [ "SIRCM_INVALID", "group__publictypes.html#gga26686b620930358e8b50f287d6c96e51aec247277302fc0b522454c2f02e77b70", null ]
+    ] ],
+    [ "sir_textattr", "group__publictypes.html#ga1bf5e489a6af0dcb905788c1e7a5ec2d", [
+      [ "SIRTA_NORMAL", "group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2daa0d426c2ea1dfa48ad6e29a69f03d04c", null ],
+      [ "SIRTA_BOLD", "group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2dabd921418f53873c49dea5f9f3ea81f4b", null ],
+      [ "SIRTA_DIM", "group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2da5c6d2b3a91b49ff14f9946799f00b20c", null ],
+      [ "SIRTA_EMPH", "group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2da57a1bd50ad704c18289c2bf74a2a68c5", null ],
+      [ "SIRTA_ULINE", "group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2da79ce8f5c35788a58b81c24684563e629", null ],
+      [ "SIRTC_BLACK", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a67abb820e54b6f4eb6c36889cdb161a1", null ],
+      [ "SIRTC_RED", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7aa62b22cd035e89e52f4f51e5ccc9802c", null ],
+      [ "SIRTC_GREEN", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7afbfeed1f48833f2fe7bb49c1d35d217f", null ],
+      [ "SIRTC_YELLOW", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a2c5ba8731523096ff871e27e82d9a9ba", null ],
+      [ "SIRTC_BLUE", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a4eedafe058fd32443278fbcfa4b9bc10", null ],
+      [ "SIRTC_MAGENTA", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7aa5528759208615ea1a26f2b31361962c", null ],
+      [ "SIRTC_CYAN", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a283e06452d5e663666c4274a94ccab2a", null ],
+      [ "SIRTC_LGRAY", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a047ba18fa823187083da9b56bfde7329", null ],
+      [ "SIRTC_DGRAY", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7afc39eaef40fe161644258c9465c537bd", null ],
+      [ "SIRTC_BRED", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7aed8555bf560bde4696de7340c04984d5", null ],
+      [ "SIRTC_BGREEN", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a51ff94e190c38445e9c1c14d81c47f74", null ],
+      [ "SIRTC_BYELLOW", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a17661620bd839f5e015a43d5e6913c0f", null ],
+      [ "SIRTC_BBLUE", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7ac20967fac8888c04ce03927236cf0b69", null ],
+      [ "SIRTC_BMAGENTA", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a8ca3ef305d6d19e9469e42cab90eda7f", null ],
+      [ "SIRTC_BCYAN", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a9c0ac02a1b3d8964b40ec838a14b48b3", null ],
+      [ "SIRTC_WHITE", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a79f980cfe1c098f99358b9250c52491b", null ],
+      [ "SIRTC_DEFAULT", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a6435ad1ff8e5c1495342f96398f73d8b", null ],
+      [ "SIRTC_INVALID", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7af7d338a61e4e72a3a18146f65a2072c6", null ]
     ] ]
 ];

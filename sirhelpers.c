@@ -159,6 +159,75 @@ bool _sir_validopts(sir_options opts) {
     return false;
 }
 
+bool _sir_validtextattr(sir_textattr attr) {
+    switch(attr) {
+        case SIRTA_NORMAL:
+        case SIRTA_BOLD:
+        case SIRTA_DIM:
+        case SIRTA_EMPH:
+        case SIRTA_ULINE:
+            return true;
+        default: {
+            _sir_selflog("invalid text attr: %d", attr);
+            _sir_seterror(_SIR_E_TEXTATTR);
+            return false;
+        }
+    }
+}
+
+bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color) {
+    if (!_sir_validcolormode(mode))
+        return false;
+
+    bool valid = false;
+    switch (mode) {
+        case SIRCM_16:
+            /* in 16-color mode:
+             * compare to 30..37, 39, 40..47, 49, 90..97, 100..107. */
+            valid = SIRTC_DEFAULT == color ||
+                    (color >= 30 && color <= 37) || color == 39 ||
+                    (color >= 40 && color <= 47) || color == 49 ||
+                    (color >= 90 && color <= 97) || (color >= 100 && color <= 107);
+            break;
+        case SIRCM_256:
+            /* in 256-color mode: compare to 0..255. sir_textcolor is unsigned,
+             * so only need to ensure it's <= 255. */
+            valid = SIRTC_DEFAULT == color || color <= 255;
+            break;
+        case SIRCM_RGB: {
+            /* in RGB-color mode: mask and compare to 0x00ffffff. */
+            valid = SIRTC_DEFAULT == color || ((color & 0xff000000) == 0);
+            break;
+        }
+        case SIRCM_INVALID:
+        default:
+            valid = false;
+            break;
+    }
+
+    if (!valid) {
+        _sir_selflog("invalid text color for mode %d %08" PRIx32 " (%" PRId32 ")",
+            mode, color);
+        _sir_seterror(_SIR_E_TEXTCOLOR);
+    }
+
+    return valid;
+}
+
+bool _sir_validcolormode(sir_colormode mode) {
+    switch (mode) {
+        case SIRCM_16:
+        case SIRCM_256:
+        case SIRCM_RGB:
+            return true;
+        default: {
+            _sir_selflog("invalid color mode: %d", mode);
+            _sir_seterror(_SIR_E_COLORMODE);
+            return false;
+        }
+    }
+}
+
 bool __sir_validstr(const char* restrict str, bool fail) {
     bool valid = str && (*str != '\0');
     if (!valid && fail) {

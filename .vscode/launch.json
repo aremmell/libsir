@@ -31,9 +31,9 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/bin/sirtests",
             "args": [
-                /*"--only",
-                "",
-                ""*/
+                "--only",
+                "sanity-text-styles",
+                /*""*/
             ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",

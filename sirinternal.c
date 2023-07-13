@@ -127,6 +127,8 @@ bool _sir_init(sirinit* si) {
     _sir_magic = _SIR_MAGIC;
 #endif
 
+    _sir_setcolormode(SIRCM_16);
+
     if (!_sir_resettextstyles())
         _sir_selflog("error: failed to reset text styles!");
 
@@ -356,7 +358,7 @@ bool _sir_writeinit(sir_update_config_data* data, sirinit_update update) {
     if (!_sir_sanity() || !_sir_validupdatedata(data) || !_sir_validfnptr(update))
         return false;
 
-    sirconfig* _cfg= _sir_locksection(SIRMI_CONFIG);
+    sirconfig* _cfg = _sir_locksection(SIRMI_CONFIG);
     if (!_sir_validptr(_cfg)) {
         _sir_seterror(_SIR_E_INTERNAL);
         return false;
@@ -371,8 +373,8 @@ bool _sir_writeinit(sir_update_config_data* data, sirinit_update update) {
 }
 
 void* _sir_locksection(sir_mutex_id mid) {
-    sir_mutex* m  = NULL;
-    void* sec     = NULL;
+    sir_mutex* m = NULL;
+    void* sec    = NULL;
 
     bool enter = _sir_mapmutexid(mid, &m, &sec) && _sirmutex_lock(m);
     SIR_ASSERT(enter);
@@ -384,8 +386,8 @@ void* _sir_locksection(sir_mutex_id mid) {
 }
 
 void _sir_unlocksection(sir_mutex_id mid) {
-    sir_mutex* m  = NULL;
-    void* sec     = NULL;
+    sir_mutex* m = NULL;
+    void* sec    = NULL;
 
     bool leave = _sir_mapmutexid(mid, &m, &sec) && _sirmutex_unlock(m);
     SIR_ASSERT(leave);
@@ -412,7 +414,7 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
         case SIRMI_TEXTSTYLE:
             _sir_once(&ts_once, _sir_initmutex_ts_once);
             tmpm   = &ts_mutex;
-            tmpsec = &sir_level_to_style_map[0];
+            tmpsec = &sir_text_style_section;
             break;
         default: /* this should never happen. */
             SIR_ASSERT("!invalid mutex id");
@@ -559,7 +561,7 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
          0
     };
 
-    bool fmt = false;
+    bool fmt              = false;
     const char* style_str = _sir_gettextstyle(level);
 
     SIR_ASSERT(NULL != style_str);
@@ -614,22 +616,21 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     if (match) {
         cfg.state.last.counter++;
 
-        _sir_selflog("message '%s' matches last; incremented counter to %zu",
-            buf.message, cfg.state.last.counter);
+        _sir_selflog("message '%s' matches last; incremented counter to %zu", buf.message,
+            cfg.state.last.counter);
 
         if (cfg.state.last.counter >= cfg.state.last.threshold - 2) {
             size_t old_threshold = cfg.state.last.threshold;
 
-            update_last_props         = false;
+            update_last_props = false;
             cfg.state.last.threshold *= SIR_SQUELCH_BACKOFF_FACTOR;
-            cfg.state.last.squelch    = true;
+            cfg.state.last.squelch = true;
 
             _sir_selflog("hit squelch threshold of %zu; setting new threshold"
-                         " to %zu (factor: %d)", old_threshold,
-                cfg.state.last.threshold, SIR_SQUELCH_BACKOFF_FACTOR);
+                         " to %zu (factor: %d)",
+                old_threshold, cfg.state.last.threshold, SIR_SQUELCH_BACKOFF_FACTOR);
 
-            if (0 > snprintf(buf.message, SIR_MAXMESSAGE, SIR_SQUELCH_MSG_FORMAT,
-                old_threshold))
+            if (0 > snprintf(buf.message, SIR_MAXMESSAGE, SIR_SQUELCH_MSG_FORMAT, old_threshold))
                 _sir_handleerr(errno);
         } else if (cfg.state.last.squelch) {
             exit_early = true;
@@ -650,12 +651,12 @@ bool _sir_logv(sir_level level, const char* format, va_list args) {
     _cfg->state.last.squelch = cfg.state.last.squelch;
 
     if (update_last_props) {
-        _cfg->state.last.hash = hash;
+        _cfg->state.last.hash      = hash;
         _cfg->state.last.prefix[0] = buf.message[0];
         _cfg->state.last.prefix[1] = buf.message[1];
     }
 
-    _cfg->state.last.counter = cfg.state.last.counter;
+    _cfg->state.last.counter   = cfg.state.last.counter;
     _cfg->state.last.threshold = cfg.state.last.threshold;
 
     _sir_unlocksection(SIRMI_CONFIG);
@@ -674,7 +675,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
 
     if (_sir_bittest(si->d_stdout.levels, level)) {
         const char* write = _sir_format(true, si->d_stdout.opts, buf);
-        bool wrote = _sir_validstrnofail(write) &&
+        bool wrote        = _sir_validstrnofail(write) &&
             _sir_write_stdout(write, buf->output_len);
         retval &= wrote;
 
@@ -685,7 +686,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
 
     if (_sir_bittest(si->d_stderr.levels, level)) {
         const char* write = _sir_format(true, si->d_stderr.opts, buf);
-        bool wrote = _sir_validstrnofail(write) &&
+        bool wrote        = _sir_validstrnofail(write) &&
             _sir_write_stderr(write, buf->output_len);
         retval &= wrote;
 
@@ -707,7 +708,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
     }
 
     size_t fdispatched = 0;
-    size_t fwanted = 0;
+    size_t fwanted     = 0;
     retval &= _sir_fcache_dispatch(sfc, level, buf, &fdispatched, &fwanted);
     _sir_unlocksection(SIRMI_FILECACHE);
 
@@ -872,7 +873,7 @@ bool _sir_syslog_open(sir_syslog_dest* ctx) {
     ctx->_state.logger = (void*)os_log_create(ctx->identity, ctx->category);
     _sir_selflog("opened os_log ('%s', '%s')", ctx->identity, ctx->category);
 # elif defined(SIR_SYSLOG_ENABLED)
-    int logopt = LOG_NDELAY | (_sir_bittest(ctx->opts, SIRO_NOPID) ? 0 : LOG_PID);
+    int logopt   = LOG_NDELAY | (_sir_bittest(ctx->opts, SIRO_NOPID) ? 0 : LOG_PID);
     int facility = LOG_USER;
 
     openlog(ctx->identity, logopt, facility);
@@ -897,28 +898,27 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx)
     }
 
 # if defined(SIR_OS_LOG_ENABLED)
-    if (SIRL_DEBUG == level) {
+    if (SIRL_DEBUG == level)
         os_log_debug((os_log_t)ctx->_state.logger, SIR_OS_LOG_FORMAT, buf->message);
-    } else if (SIRL_INFO == level || SIRL_NOTICE == level) {
+    else if (SIRL_INFO == level || SIRL_NOTICE == level)
         os_log_info((os_log_t)ctx->_state.logger, SIR_OS_LOG_FORMAT, buf->message);
-    } else if (SIRL_WARN == level || SIRL_ERROR == level) {
+    else if (SIRL_WARN == level || SIRL_ERROR == level)
         os_log_error((os_log_t)ctx->_state.logger, SIR_OS_LOG_FORMAT, buf->message);
-    } else if (SIRL_ALERT == level || SIRL_CRIT == level || SIRL_EMERG == level) {
+    else if (SIRL_ALERT == level || SIRL_CRIT == level || SIRL_EMERG == level)
         os_log_fault((os_log_t)ctx->_state.logger, SIR_OS_LOG_FORMAT, buf->message);
-    }
 
     return true;
 # elif defined(SIR_SYSLOG_ENABLED)
     int syslog_level;
     switch (level) {
-        case SIRL_INFO:   syslog_level = LOG_INFO;    break;
-        case SIRL_DEBUG:  syslog_level = LOG_DEBUG;   break;
-        case SIRL_NOTICE: syslog_level = LOG_NOTICE;  break;
+        case SIRL_DEBUG:  syslog_level = LOG_DEBUG; break;
+        case SIRL_INFO:   syslog_level = LOG_INFO; break;
+        case SIRL_NOTICE: syslog_level = LOG_NOTICE; break;
         case SIRL_WARN:   syslog_level = LOG_WARNING; break;
-        case SIRL_ERROR:  syslog_level = LOG_ERR;     break;
-        case SIRL_CRIT:   syslog_level = LOG_CRIT;    break;
-        case SIRL_ALERT:  syslog_level = LOG_ALERT;   break;
-        case SIRL_EMERG:  syslog_level = LOG_EMERG;   break;
+        case SIRL_ERROR:  syslog_level = LOG_ERR; break;
+        case SIRL_CRIT:   syslog_level = LOG_CRIT; break;
+        case SIRL_ALERT:  syslog_level = LOG_ALERT; break;
+        case SIRL_EMERG:  syslog_level = LOG_EMERG; break;
         default: /* this should never happen. */
             SIR_ASSERT(!"invalid sir_level");
             syslog_level = LOG_DEBUG;
@@ -1002,8 +1002,8 @@ bool _sir_syslog_close(sir_syslog_dest* ctx) {
 
 void _sir_syslog_reset(sir_syslog_dest* ctx) {
     if (_sir_validptr(ctx)) {
-        uint32_t old = ctx->_state.mask;
-        ctx->_state.mask = 0;
+        uint32_t old       = ctx->_state.mask;
+        ctx->_state.mask   = 0;
         ctx->_state.logger = NULL;
         _sir_selflog("state reset; mask was %08" PRIx32, old);
     }
@@ -1068,7 +1068,8 @@ bool _sir_formattime(time_t now, char* buffer, const char* format) {
     }
 
     struct tm timebuf = {0};
-    size_t fmttime = strftime(buffer, SIR_MAXTIME, format, _sir_localtime(&now, &timebuf));
+    size_t fmttime    = strftime(buffer, SIR_MAXTIME, format,
+        _sir_localtime(&now, &timebuf));
 
     SIR_ASSERT(0 != fmttime);
     if (0 == fmttime)
@@ -1162,7 +1163,7 @@ pid_t _sir_gettid(void) {
     pid_t tid = 0;
 #if defined(__MACOS__)
     uint64_t tid64 = 0;
-    int gettid = pthread_threadid_np(NULL, &tid64);
+    int gettid     = pthread_threadid_np(NULL, &tid64);
     if (0 != gettid)
         _sir_handleerr(gettid);
     tid = (pid_t)tid64;
@@ -1219,7 +1220,7 @@ bool _sir_gethostname(char name[SIR_MAXHOST]) {
     return true;
 #else
     WSADATA wsad = {0};
-    int ret = WSAStartup(MAKEWORD(2, 2), &wsad);
+    int ret      = WSAStartup(MAKEWORD(2, 2), &wsad);
     if (0 != ret) {
         _sir_handlewin32err(ret);
         return false;
