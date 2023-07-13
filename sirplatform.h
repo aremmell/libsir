@@ -34,7 +34,7 @@
 #  define _USE_ATTRIBUTES_FOR_SAL 1
 #  include <sal.h>
 #  define PRINTF_FORMAT _Printf_format_string_
-#  define PRINTF_FORMAT_ATTR(fmt_p, va_p)
+#  define PRINTF_FORMAT_ATTR(fmt_p, va_p) /**/
 # else
 #  define PRINTF_FORMAT /**/
 #  if defined(__MINGW32__) || defined(__MINGW64__)
