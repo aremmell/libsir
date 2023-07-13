@@ -1778,7 +1778,7 @@ bool countfiles(const char* search, const char* filename, unsigned* data) {
 
 bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
 #if !defined(__WIN__)
-    DIR* d = opendir("./logs/");
+    DIR* d = opendir("./logs");
     if (!d) {
         print_os_error();
         return false;
@@ -1786,11 +1786,17 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
 
     rewinddir(d);
     struct dirent* di = readdir(d);
-    if (!di)
+    if (!di) {
+        print_os_error();
         return false;
+    }
 
+    char realname[SIR_MAXPATH] = {0};
     while (NULL != di) {
-        if (!cb(search, di->d_name, data))
+        /* this is only used for logs, and they reside in ./logs. */
+        (void)snprintf(realname, SIR_MAXPATH, "./logs/%s", di->d_name);
+
+        if (!cb(search, realname, data))
             break;
         di = readdir(d);
     };
@@ -1804,8 +1810,10 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
     if (INVALID_HANDLE_VALUE == enumerator)
         return false;
 
+    char realname[SIR_MAXPATH] = {0};
     do {
-        if (!cb(search, finddata.cFileName, data))
+        (void)snprintf(realname, SIR_MAXPATH, "./logs/%s", finddata.cFileName);
+        if (!cb(search, realname, data))
             break;
     } while (FindNextFile(enumerator, &finddata) > 0);
 
