@@ -130,6 +130,7 @@ $(OUT_EXAMPLE): $(OUT_STATIC) $(OBJ_EXAMPLE)
 	-@echo built $(OUT_EXAMPLE) successfully.
 
 $(BINDIR)/file.exists:
+	@mkdir -p $(BINDIR)
 	@touch $(BINDIR)/file.exists > /dev/null
 
 .PHONY: tests
