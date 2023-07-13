@@ -25,6 +25,7 @@ index.md
 
 # test artifacts
 *.log
+logs/
 
 # annoying macOS files
 .DS_Store
@@ -32,6 +33,10 @@ index.md
 # Visual Studio temporary files
 .vs/
 *.user
+
+# Emacs temporary files
+*.bak
+*~
 
 # Automatic dependencies
 *.d

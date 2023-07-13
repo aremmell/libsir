@@ -7,6 +7,7 @@
 #
 
 BUILDDIR    = ./build
+LOGDIR      = ./logs
 DOCSDIR     = docs
 TESTS       = tests
 EXAMPLE     = example
@@ -138,6 +139,7 @@ tests: $(OUT_TESTS)
 $(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS) $(BINDIR)/file.exists
 	@mkdir -p $(@D)
 	@mkdir -p $(BINDIR)
+	@mkdir -p $(LOGDIR)
 	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS) $(CFLAGS) -I.. $(LDFLAGS)
 	-@echo built $(OUT_TESTS) successfully.
 
@@ -168,7 +170,9 @@ install: $(INSTALLSH)
 .PHONY: clean distclean
 clean distclean:
 	@rm -rf $(BUILDDIR) > /dev/null 2>&1
+	@rm -rf $(LOGDIR) > /dev/null 2>&1
 	@rm -rf ./*.log > /dev/null 2>&1
+	@rm -rf ./*.ln > /dev/null 2>&1
 	@rm -rf ./*.d > /dev/null 2>&1
 	-@echo build directory and log files cleaned successfully.
 
