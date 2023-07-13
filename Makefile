@@ -165,8 +165,8 @@ install: $(INSTALLSH)
 .PHONY: clean distclean
 clean distclean:
 	@rm -rf $(BUILDDIR) > /dev/null 2>&1
-	@rm -rf ./logs/* > /dev/null 2>&1
 	@rm -rf ./*.log > /dev/null 2>&1
+	@rm -rf ./logs > /dev/null 2>&1
 	@rm -rf ./*.ln > /dev/null 2>&1
 	@rm -rf ./*.d > /dev/null 2>&1
 	-@echo build directory and log files cleaned successfully.
