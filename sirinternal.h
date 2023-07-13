@@ -112,8 +112,7 @@ bool _sir_once(sir_once* once, sir_once_fn func);
 
 /** Core output formatting. */
 PRINTF_FORMAT_ATTR(2, 0)
-bool
-_sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args);
+bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args);
 
 /** Output dispatching. */
 bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf);

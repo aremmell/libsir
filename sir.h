@@ -137,8 +137,7 @@ uint16_t sir_geterror(char message[SIR_MAXERROR]);
  *                 to obtain information about any error that may have occurred.
  */
 PRINTF_FORMAT_ATTR(1, 2)
-bool
-sir_debug(PRINTF_FORMAT const char* format, ...);
+bool sir_debug(PRINTF_FORMAT const char* format, ...);
 
 /**
  * @brief Dispatches a ::SIRL_INFO level message.
@@ -164,8 +163,7 @@ sir_debug(PRINTF_FORMAT const char* format, ...);
  *                 to obtain information about any error that may have occurred.
  */
 PRINTF_FORMAT_ATTR(1, 2)
-bool
-sir_info(PRINTF_FORMAT const char* format, ...);
+bool sir_info(PRINTF_FORMAT const char* format, ...);
 
 /**
  * @brief Dispatches a ::SIRL_NOTICE level message.
@@ -191,8 +189,7 @@ sir_info(PRINTF_FORMAT const char* format, ...);
  *                 to obtain information about any error that may have occurred.
  */
 PRINTF_FORMAT_ATTR(1, 2)
-bool
-sir_notice(PRINTF_FORMAT const char* format, ...);
+bool sir_notice(PRINTF_FORMAT const char* format, ...);
 
 /**
  * @brief Dispatches a ::SIRL_WARN level message.
@@ -218,8 +215,7 @@ sir_notice(PRINTF_FORMAT const char* format, ...);
  *                 to obtain information about any error that may have occurred.
  */
 PRINTF_FORMAT_ATTR(1, 2)
-bool
-sir_warn(PRINTF_FORMAT const char* format, ...);
+bool sir_warn(PRINTF_FORMAT const char* format, ...);
 
 /**
  * @brief Dispatches a ::SIRL_ERROR level message.
@@ -245,8 +241,7 @@ sir_warn(PRINTF_FORMAT const char* format, ...);
  *                 to obtain information about any error that may have occurred.
  */
 PRINTF_FORMAT_ATTR(1, 2)
-bool
-sir_error(PRINTF_FORMAT const char* format, ...);
+bool sir_error(PRINTF_FORMAT const char* format, ...);
 
 /**
  * @brief Dispatches a ::SIRL_CRIT level message.
@@ -272,8 +267,7 @@ sir_error(PRINTF_FORMAT const char* format, ...);
  *                 to obtain information about any error that may have occurred.
  */
 PRINTF_FORMAT_ATTR(1, 2)
-bool
-sir_crit(PRINTF_FORMAT const char* format, ...);
+bool sir_crit(PRINTF_FORMAT const char* format, ...);
 
 /**
  * @brief Dispatches a ::SIRL_ALERT level message.
@@ -299,8 +293,7 @@ sir_crit(PRINTF_FORMAT const char* format, ...);
  *                 to obtain information about any error that may have occurred.
  */
 PRINTF_FORMAT_ATTR(1, 2)
-bool
-sir_alert(PRINTF_FORMAT const char* format, ...);
+bool sir_alert(PRINTF_FORMAT const char* format, ...);
 
 /**
  * @brief Dispatches a ::SIRL_EMERG level message.
@@ -326,8 +319,7 @@ sir_alert(PRINTF_FORMAT const char* format, ...);
  *                 to obtain information about any error that may have occurred.
  */
 PRINTF_FORMAT_ATTR(1, 2)
-bool
-sir_emerg(PRINTF_FORMAT const char* format, ...);
+bool sir_emerg(PRINTF_FORMAT const char* format, ...);
 
 /**
  * @brief Adds a log file and registeres it to receive log output.
