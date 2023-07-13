@@ -33,6 +33,10 @@ index.md
 .vs/
 *.user
 
+# Emacs temporary files
+*.bak
+*~
+
 # Automatic dependencies
 *.d
 
