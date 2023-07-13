@@ -124,26 +124,26 @@ $(document).ready(function(){initNavTree('md_docs_2sources_2changelog.html','');
 <li>A Visual Studio 2022 solution in <code>msvs</code></li>
 </ul>
 </li>
-<li>New macros in <a class="el" href="siransimacros_8h.html" title="ANSI escape sequence macros.">siransimacros.h</a> that can be used with libsir or anything that writes to stdio (*printf, puts, etc.): <code>printf(RED("Oh lawd,
-  something " ULINE("awful") " has happened!\n");</code></li>
-<li>Many new/more vigorous tests</li>
-<li>The test rig now supports command-line arguments:<ul>
+<li>New macros in <a class="el" href="siransimacros_8h.html" title="ANSI escape sequence macros.">siransimacros.h</a> that can be used with libsir or anything that writes to stdio (<em>printf, puts, etc.): <code>printf(RED("Oh lawd,
+  something " ULINE("awful") " has happened!\n");</code></em></li>
+<li><em>Many new/more vigorous tests</em></li>
+<li><em>The test rig now supports command-line arguments:<ul>
 <li><code>--list</code> : lists all the available tests</li>
 <li><code>--only</code>: only run the specified tests</li>
 <li><code>--wait</code> : wait for keypress before exiting</li>
 <li><code>--perf</code> : runs the performance benchmark test (normally skipped)</li>
 </ul>
-</li>
-<li>Bug fixes</li>
-<li>Potential memory leaks squashed</li>
-<li>Additional errors with better error reporting</li>
-<li>New preprocessor defines:<ul>
-<li><code>SIR_ASSERT_ENABLED</code>: if defined, libsir actually uses assert() (<em>if -DNDEBUG is present, this means nothing</em>), if not, <code>_sir_selflog</code> outputs a red message containing the condition that would have asserted, along with the file/line/func (<em>if -DSIR_SELFLOG is present, otherwise it’s a NOOP</em>).</li>
+</em></li>
+<li><em>Bug fixes</em></li>
+<li><em>Potential memory leaks squashed</em></li>
+<li><em>Additional errors with better error reporting</em></li>
+<li><em>New preprocessor defines:<ul>
+<li><code>SIR_ASSERT_ENABLED</code>: if defined, libsir actually uses assert() (*if -DNDEBUG is present, this means nothing), if not, <code>_sir_selflog</code> outputs a red message containing the condition that would have asserted, along with the file/line/func (<em>if -DSIR_SELFLOG is present, otherwise it’s a NOOP</em>).</li>
 <li><code>SIR_NO_SYSTEM_LOGGERS</code>: if defined, system logger support is completely disabled/not compiled in. The entry points still exist, but they will return an error that the feature is disabled or unavailable.</li>
 </ul>
-</li>
-<li>rename ‘thread_local’ – this is a C++ keyword</li>
-<li>renamed all typedefs ending in <code>_t</code> </li>
+</em></li>
+<li><em>rename ‘thread_local’ – this is a C++ keyword</em></li>
+<li><em>renamed all typedefs ending in <code>_t</code> </em></li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
