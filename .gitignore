@@ -24,6 +24,7 @@ docs/xml/
 index.md
 
 # test artifacts
+*.log
 logs/*
 
 # annoying macOS files
