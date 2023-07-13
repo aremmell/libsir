@@ -65,6 +65,8 @@
 # define INIT(var, l_stdout, o_stdout, l_stderr, o_stderr) \
     INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, "")
 
+# define MAKE_LOG_NAME(name) "logs/" name
+
 # define TEST_S(n) ((n) > 1 ? ("test" "s") : "test")
 # define PRN_STR(str) ((str) ? (str) : RED("NULL"))
 # define PRN_PASS(pass) ((pass) ? GREENB("PASS") : REDB("FAIL"))
@@ -343,11 +345,12 @@ static const struct cl_arg {
     const char* usage;
     const char* desc;
     } _cl_arg_list[] = {
-        {"--perf", "", "Only run the performance measurement test."},
-        {"--wait", "", "Wait for a keypress after running test(s) before exiting."},
-        {"--only", "" ULINE("name") " [, name, ...]", "Only run the test(s) specified."},
-        {"--list", "", "Prints a list of available test names for use with " BOLD("--only") "."},
-        {"--help", "", "Shows this message."}
+        {"--perf",       "", "Only run the performance measurement test."},
+        {"--only",       ""  ULINE("name") " [, name, ...]", "Only run the test(s) specified."},
+        {"--list",       "", "Prints a list of available test names for use with " BOLD("--only") "."},
+        {"--leave-logs", "", "Log files are not deleted so that they may be examined."},
+        {"--wait",       "", "Waits for a keypress after running test(s) before exiting."},
+        {"--help",       "", "Shows this message."}
     };
 
 bool mark_test_to_run(const char* name);
