@@ -149,7 +149,6 @@ bool _sir_formatstyle(sir_colormode mode, const sir_textstyle* style,
             return 0 < snprintf(buf, SIR_MAXSTYLE, "%s%"PRId8";%"PRId8";%"PRId8"m",
                 SIR_ESC, (uint8_t)style->attr, _sir_mkansifgcolor(style->fg),
                 _sir_mkansibgcolor(style->bg));
-        break;
         case SIRCM_256: {
             /* \x1b[attr;38;5;fg;48;5;bgm */
             return 0 < snprintf(buf, SIR_MAXSTYLE,
