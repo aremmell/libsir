@@ -678,6 +678,13 @@ bool sirtest_textstylesanity(void) {
     }
     PRINT_PASS(pass, "\t--- change mode: RGB-color: %s ---\n\n", PRN_PASS(pass));
 
+    printf("\t" WHITEB("--- change mode: 16-color ---") "\n");
+    pass &= sir_setcolormode(SIRCM_16);
+    pass &= sir_settextstyle(SIRL_DEBUG, SIRTA_EMPH, SIRTC_BMAGENTA, SIRTC_DEFAULT);
+    pass &= sir_debug("this is 16-color mode (fg: %" PRIu32 ", bg: default)",
+        SIRTC_BMAGENTA);
+    PRINT_PASS(pass, "\t--- change mode: 16-color: %s ---\n\n", PRN_PASS(pass));
+
     sir_cleanup();
 
     return print_result_and_return(pass);
