@@ -188,25 +188,19 @@ bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color) {
                     (color >= 30 && color <= 37) || color == 39 ||
                     (color >= 40 && color <= 47) || color == 49 ||
                     (color >= 90 && color <= 97) || (color >= 100 && color <= 107);
-        break;
+            break;
         case SIRCM_256:
             /* in 256-color mode: compare to 0..255. */
             valid = SIRTC_DEFAULT == color || (color >= 0 && color <= 255);
-        break;
+            break;
         case SIRCM_RGB: {
-            /* in RGB-color mode:
-             * extract each color component and compare to 0..255. */
-            sir_textcolor red   = _sir_getredfromcolor(color);
-            sir_textcolor green = _sir_getgreenfromcolor(color);
-            sir_textcolor blue  = _sir_getbluefromcolor(color);
-
-            valid = (SIRTC_DEFAULT == red   || (red >= 0 && red <= 255)) &&
-                    (SIRTC_DEFAULT == green || (green >= 0 && green <= 255)) &&
-                    (SIRTC_DEFAULT == blue  || (blue >= 0 && blue <= 255));
+            /* in RGB-color mode: mask and compare to 0x00ffffff. */
+            valid = SIRTC_DEFAULT == color || ((color & 0xff000000) == 0);
             break;
         }
         case SIRCM_INVALID:
         default:
+            valid = false;
             break;
     }
 
