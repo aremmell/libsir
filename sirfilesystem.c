@@ -303,7 +303,6 @@ char* _sir_getappfilename(void) {
             break;
         }
         if (length > size) {
-            resolved = false;
             size     = length;
             continue;
         }
