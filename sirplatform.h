@@ -41,8 +41,8 @@
 #   if !defined(__USE_MINGW_ANSI_STDIO)
 #    define __USE_MINGW_ANSI_STDIO 1
 #   endif
-#    define PRINTF_FORMAT_ATTR(fmt_p, va_p) \
-     __attribute__((format (gnu_printf, fmt_p, va_p)))
+#   define PRINTF_FORMAT_ATTR(fmt_p, va_p) \
+    __attribute__((format (gnu_printf, fmt_p, va_p)))
 #  else
 #   if !defined(__SUNPRO_C) && !defined(__SUNPRO_C)
 #    define PRINTF_FORMAT_ATTR(fmt_p, va_p) \
