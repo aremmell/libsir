@@ -190,8 +190,9 @@ bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color) {
                     (color >= 90 && color <= 97) || (color >= 100 && color <= 107);
             break;
         case SIRCM_256:
-            /* in 256-color mode: compare to 0..255. */
-            valid = SIRTC_DEFAULT == color || (color >= 0 && color <= 255);
+            /* in 256-color mode: compare to 0..255. sir_textcolor is unsigned,
+             * so only need to ensure it's <= 255. */
+            valid = SIRTC_DEFAULT == color || color <= 255;
             break;
         case SIRCM_RGB: {
             /* in RGB-color mode: mask and compare to 0x00ffffff. */
