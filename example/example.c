@@ -120,7 +120,7 @@ int main(void) {
         "210.10.54.3", 43113, "bob");
 
     sir_warn("Detected downgraded link speed on %s: last transfer rate: %.1f KiB/s",
-        "eth0", "219.4");
+        "eth0", 219.4f);
 
     /* Hmm, what else could go wrong... */
     sir_error("Failed to synchronize with node pool.846.myfooserver.io! Error:"
