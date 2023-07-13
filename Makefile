@@ -149,6 +149,10 @@ docs: $(OUT_STATIC)
 		-not -path 'docs/sources/*' \
 		-exec advpng -z4 "{}" 2> /dev/null \; \
 		2> /dev/null || true
+	-@sed --version 2>&1 | grep -qi 'GNU sed' && \
+		find docs -name '*.html' \
+		-exec sed -i 's/ on .* for libsir by / by /' {} \; \
+		2> /dev/null || true
 	-@echo built documentation successfully.
 
 .PHONY: install
