@@ -158,71 +158,82 @@ char* _sir_getcwd(void) {
 }
 
 #if defined(__OpenBSD__)
-static int
-_sir_openbsdself(char* out, int capacity, int* dirname_length)
-{
-  char   buffer1[4096];
-  char   buffer2[PATH_MAX];
-  char   buffer3[PATH_MAX];
-  char** argv     = (char**)buffer1;
-  char*  resolved = NULL;
-  int    length   = -1;
+static int _sir_openbsdself(char* out, int capacity, int* dirname_length) {
+    char buffer1[4096];
+    char buffer2[PATH_MAX];
+    char buffer3[PATH_MAX];
+    char** argv    = (char**)buffer1;
+    char* resolved = NULL;
+    int length     = -1;
 
-  for (;;) {
-    int mib[4] = { CTL_KERN, KERN_PROC_ARGS, getpid(), KERN_PROC_ARGV };
-    size_t size;
+    while (1) {
+        int mib[4] = { CTL_KERN, KERN_PROC_ARGS, getpid(), KERN_PROC_ARGV };
+        size_t size;
 
-    if (sysctl(mib, 4, NULL, &size, NULL, 0) != 0) break;
-    if (size > sizeof(buffer1)) {
-      argv = (char**)malloc(size);
-      if (!argv) break;
-    }
-
-    if (sysctl(mib, 4, argv, &size, NULL, 0) != 0) break;
-    if (strchr(argv[0], '/')) {
-      resolved = realpath(argv[0], buffer2);
-      if (!resolved) break;
-    } else {
-      const char* PATH = getenv("PATH");
-      if (!PATH) break;
-      size_t argv0_length = strlen(argv[0]);
-      const char* begin = PATH;
-      while (1) {
-        const char* separator = strchr(begin, ':');
-        const char* end = separator ? separator : begin + strlen(begin);
-        if (end - begin > 0) {
-          if (*(end - 1) == '/') --end;
-          if (((end - begin) + 1UL + argv0_length + 1UL) <= sizeof(buffer2)) {
-            memcpy(buffer2, begin, end - begin);
-            buffer2[end - begin] = '/';
-            memcpy(buffer2 + (end - begin) + 1, argv[0], argv0_length + 1);
-            resolved = realpath(buffer2, buffer3);
-            if (resolved) break;
-          }
-        }
-        if (!separator) break;
-        begin = ++separator;
-      }
-      if (!resolved) break;
-    }
-
-    length = (int)strlen(resolved);
-    if (length <= capacity) {
-      memcpy(out, resolved, (unsigned long)length);
-      if (dirname_length) {
-        int i;
-        for (i = length - 1; i >= 0; --i) {
-          if (out[i] == '/') {
-            *dirname_length = i;
+        if (sysctl(mib, 4, NULL, &size, NULL, 0) != 0)
             break;
-          }
+
+        if (size > sizeof(buffer1)) {
+            argv = (char**)malloc(size);
+            if (!argv)
+                break;
         }
-      }
+
+        if (sysctl(mib, 4, argv, &size, NULL, 0) != 0)
+            break;
+
+        if (strchr(argv[0], '/')) {
+            resolved = realpath(argv[0], buffer2);
+            if (!resolved)
+                break;
+        } else {
+            const char* PATH = getenv("PATH");
+            if (!PATH)
+                break;
+            size_t argv0_length = strlen(argv[0]);
+            const char* begin   = PATH;
+            while (1) {
+                const char* separator = strchr(begin, ':');
+                const char* end = separator ? separator : begin + strlen(begin);
+                if (end - begin > 0) {
+                    if (*(end - 1) == '/')
+                        --end;
+                    if (((end - begin) + 1UL + argv0_length + 1UL) <= sizeof(buffer2)) {
+                        memcpy(buffer2, begin, end - begin);
+                        buffer2[end - begin] = '/';
+                        memcpy(buffer2 + (end - begin) + 1, argv[0], argv0_length + 1);
+                        resolved = realpath(buffer2, buffer3);
+                        if (resolved)
+                            break;
+                    }
+                }
+                if (!separator)
+                    break;
+                begin = ++separator;
+            }
+            if (!resolved)
+                break;
+        }
+
+        length = (int)strlen(resolved);
+        if (length <= capacity) {
+            memcpy(out, resolved, (unsigned long)length);
+            if (dirname_length) {
+                int i;
+                for (i = length - 1; i >= 0; --i) {
+                    if (out[i] == '/') {
+                        *dirname_length = i;
+                        break;
+                    }
+                }
+            }
+        }
+        break;
     }
-    break;
-  }
-  if (argv != (char**)buffer1) free(argv);
-  return length;
+    if (argv != (char**)buffer1)
+        free(argv);
+
+    return length;
 }
 #endif
 
@@ -269,18 +280,18 @@ char* _sir_getappfilename(void) {
         if (-1 != read && read < (ssize_t)size - 1) {
             resolved = true;
             break;
-        } else {
-            if (-1 == read) {
-                _sir_handleerr(errno);
-                resolved = false;
-                break;
-            } else if (read == (ssize_t)size - 1) {
-                /* It is possible that truncation occurred. As a security
-                 * precaution, fail; someone may have tampered with the link. */
-                _sir_selflog("warning: readlink reported truncation; not using result!");
-                resolved = false;
-                break;
-            }
+        } else if (-1 == read) {
+            _sir_handleerr(errno);
+            resolved = false;
+            break;
+        } else if (read == (ssize_t)size - 1) {
+            /*
+             * It is possible that truncation occurred. As a security
+             * precaution, fail; someone may have tampered with the link.
+             */
+            _sir_selflog("warning: readlink reported truncation; not using result!");
+            resolved = false;
+            break;
         }
 # elif defined(__OpenBSD__)
         size_t length;
@@ -293,7 +304,7 @@ char* _sir_getappfilename(void) {
         }
         if (length > size) {
             resolved = false;
-            size = length;
+            size     = length;
             continue;
         }
         (void)_sir_openbsdself(buffer, length, &dirname_length);
@@ -318,7 +329,8 @@ char* _sir_getappfilename(void) {
             break;
         }
 # elif defined(__HAIKU__)
-        status_t ret = find_path(B_APP_IMAGE_SYMBOL, B_FIND_PATH_IMAGE_PATH, NULL, buffer, SIR_MAXPATH);
+        status_t ret =
+            find_path(B_APP_IMAGE_SYMBOL, B_FIND_PATH_IMAGE_PATH, NULL, buffer, SIR_MAXPATH);
         if (B_OK == ret) {
             resolved = true;
             break;
@@ -351,18 +363,16 @@ char* _sir_getappfilename(void) {
         if (0 != ret && ret < (DWORD)size) {
             resolved = true;
             break;
-        } else {
-            if (0 == ret) {
-                _sir_handlewin32err(GetLastError());
-                resolved = false;
-                break;
-            } else if (ret == (DWORD)size || ERROR_INSUFFICIENT_BUFFER == GetLastError()) {
-                /* Windows has no concept of letting you know how much larger
-                * your buffer needed to be; it just truncates the string and
-                * returns size. So, we'll guess. */
-                size += SIR_PATH_BUFFER_GROW_BY;
-                continue;
-            }
+        } else if (0 == ret) {
+            _sir_handlewin32err(GetLastError());
+            resolved = false;
+            break;
+        } else if (ret == (DWORD)size || ERROR_INSUFFICIENT_BUFFER == GetLastError()) {
+            /* Windows has no concept of letting you know how much larger
+             * your buffer needed to be; it just truncates the string and
+             * returns size. So, we'll guess. */
+            size += SIR_PATH_BUFFER_GROW_BY;
+            continue;
         }
 #endif
 
@@ -398,7 +408,7 @@ char* _sir_getappdir(void) {
         return NULL;
     }
 
-    char* retval = _sir_getdirname(filename);
+    char* retval  = _sir_getdirname(filename);
     char* dirname = strdup(retval);
 
     _sir_safefree(&filename);
