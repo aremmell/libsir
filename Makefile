@@ -144,8 +144,11 @@ $(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS) $(BINDIR)/file.exists
 .PHONY: docs
 docs: $(OUT_STATIC)
 	@doxygen Doxyfile
-	-@find docs -name '*.png' -exec advpng -z4 "{}" \
-		2> /dev/null \; 2> /dev/null || true
+	-@find docs -name '*.png' \
+		-not -path 'docs/res/*' \
+		-not -path 'docs/sources/*' \
+		-exec advpng -z4 "{}" 2> /dev/null \; \
+		2> /dev/null || true
 	-@echo built documentation successfully.
 
 .PHONY: install
