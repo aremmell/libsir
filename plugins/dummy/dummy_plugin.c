@@ -24,6 +24,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "dummy_plugin.h"
+#include <siransimacros.h>
 #include <stdio.h>
 
 static const char* author = "libsir contributors";
@@ -40,21 +41,21 @@ bool sir_plugin_query(sir_plugininfo* info) {
     info->desc      = desc;
     info->caps      = 0;
 
-    printf("dummy_plugin(%s)\n", __func__);
+    printf("\t" DGRAY("dummy_plugin(%s)") "\n", __func__);
     return true;
 }
 
 bool sir_plugin_init(void) {
-    printf("dummy_plugin(%s)\n", __func__);
+    printf("\t" DGRAY("dummy_plugin(%s)") "\n", __func__);
     return true;
 }
 
 bool sir_plugin_write(sir_level level, const char* message) {
-    printf("dummy_plugin(%s): %s\n", __func__, message);
+    printf("\t" DGRAY("dummy_plugin(%s): %s") "\n", __func__, message);
     return true;
 }
 
 bool sir_plugin_cleanup(void) {
-    printf("dummy_plugin(%s)\n", __func__);
+    printf("\t" DGRAY("dummy_plugin(%s)") "\n", __func__);
     return true;
 }
