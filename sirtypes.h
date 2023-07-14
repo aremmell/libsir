@@ -280,6 +280,19 @@ typedef struct {
     size_t count;
 } sirfcache;
 
+/** The libsir-to-plugin query data structure. */
+typedef struct {
+    uint8_t iface_ver; /**< Plugin interface version. */
+    uint8_t maj_ver;   /**< Major version number. */
+    uint8_t min_ver;   /**< Minor version number. */
+    uint8_t bld_ver;   /**< Build/patch version number. */
+    sir_levels levels; /**< Level registration bitmask. */
+    sir_options opts;  /**< Formatting options bitmask. */
+    char* author;      /**< Plugin author information. */
+    char* description; /**< Plugin description. */
+    uint64_t caps;     /**< Plugin capabilities bitmask. */
+} sir_plugininfo;
+
 /** Plugin versioning. */
 # define SIR_PLUGIN_V1 1
 # define SIR_PLUGIN_VCURRENT SIR_PLUGIN_V1
@@ -303,19 +316,6 @@ typedef struct {
     sir_plugin_writefn write;     /**< Handle to sir_plugin_write. */
     sir_plugin_cleanupfn cleanup; /**< Handle to sir_plugin_cleanup. */
 } sir_pluginv1;
-
-/** The libsir-to-plugin query data structure. */
-typedef struct {
-    uint8_t iface_ver; /**< Plugin interface version. */
-    uint8_t maj_ver;   /**< Major version number. */
-    uint8_t min_ver;   /**< Minor version number. */
-    uint8_t bld_ver;   /**< Build/patch version number. */
-    sir_levels levels; /**< Level registration bitmask. */
-    sir_options opts;  /**< Formatting options bitmask. */
-    char* author;      /**< Plugin author information. */
-    char* description; /**< Plugin description. */
-    uint64_t caps;     /**< Plugin capabilities bitmask. */
-} sir_plugininfo;
 
 /** Plugin module data. */
 typedef struct {
