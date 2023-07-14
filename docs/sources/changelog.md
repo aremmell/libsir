@@ -4,10 +4,9 @@
 
 ### July 15, 2023
 
-- *Vastly improved* support for syslog, if available, and macOS' system logger (os_log) as
-  their own independent logging destination
+- *Vastly improved* support for syslog, if available, and macOS' system logger (os_log) as their own independent logging destination.
 - Support for 256-color and RGB color modes.
-- Better and more thorough documentation.
+- Many new platforms and toolsets are now supported. See [the main page](https://libsir.rml.dev) for details.
 - <u>Massive performance gains</u> for both stdio and log files via optimization/refactoring (estimated 30%+)
 - *Lots* of work to get things going smoothly on Windows
   - A Visual Studio 2022 solution in `msvs`
@@ -28,3 +27,4 @@
   - `SIR_NO_SYSTEM_LOGGERS`: if defined, system logger support is completely disabled/not compiled in. The entry points still exist, but they will return an error that the feature is disabled or unavailable.
 - rename `thread_local` – this is a C++ keyword
 - renamed all typedefs ending in `_t`
+- Better and more thorough documentation.
