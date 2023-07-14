@@ -327,7 +327,7 @@ typedef struct {
     bool loaded;             /**< Whether the module is currently loaded. */
     bool valid;              /**< Whether the module is loaded and valid. */
     sir_pluginiface iface;   /**< Versioned interface to the plugin module. */
-    uint64_t id;             /**< Unique identifier. */
+    uint32_t id;             /**< Unique identifier. */
 } sir_plugin;
 
 /** Plugin module cache. */
