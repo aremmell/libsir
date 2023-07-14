@@ -242,7 +242,7 @@ void _sir_plugin_destroy(sir_plugin** plugin) {
 }
 
 bool _sir_plugin_cache_pred_id(const void* match, sir_plugin* iter) {
-    return iter->id == (sirpluginid)match;
+    return iter->id == *((sirpluginid*)match);
 }
 
 sirpluginid _sir_plugin_cache_add(sir_plugincache* spc, sir_plugin* plugin) {
@@ -262,7 +262,7 @@ sirpluginid _sir_plugin_cache_add(sir_plugincache* spc, sir_plugin* plugin) {
 }
 
 sir_plugin* _sir_plugin_cache_find_id(sir_plugincache* spc, sirpluginid id) {
-    return _sir_plugin_cache_find(spc, id, &_sir_plugin_cache_pred_id);
+    return _sir_plugin_cache_find(spc, &id, &_sir_plugin_cache_pred_id);
 }
 
 sir_plugin* _sir_plugin_cache_find(sir_plugincache* spc, const void* match,
