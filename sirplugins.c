@@ -109,12 +109,24 @@ sirpluginid _sir_plugin_probe(sirplugin* plugin) {
     if (plugin->info.iface_ver != SIR_PLUGIN_VCURRENT) {
         _sir_selflog("error: plugin (path: '%s', addr: %p) has version %"PRIu8
                      ", libsir has %"PRIu8, plugin->path, plugin->handle,
-                     plugin->info.iface_ver, SIR_PLUGIN_VCURRENT);
+                     plugin->info.iface_ver, (uint8_t)SIR_PLUGIN_VCURRENT);
         _sir_plugin_destroy(&plugin);
         return NULL;
     }
 
-    return NULL;
+    /* plugin is valid; print its information out and add to cache. */
+    plugin->valid = true;
+
+    _sir_selflog("successfully loaded plugin (path: '%s', addr: %p); properties:"
+                 "\n{\n\tmaj_ver = %"PRIu8"\n\tmin_ver = %"PRIu8"\n\tbld_ver = "
+                 "%"PRIu8"\n\tlevels = %04"PRIx16"\n\topts = %08"PRIx32"\n\t"
+                 "author = '%s'\n\tdesc = '%s'\n\tcaps = %016"PRIx64"\n}",
+                 plugin->path, plugin->handle, plugin->info.maj_ver,
+                 plugin->info.min_ver, plugin->info.bld_ver, plugin->info.levels,
+                 plugin->info.opts, _SIR_PRNSTR(plugin->info.author),
+                 _SIR_PRNSTR(plugin->info.description), plugin->info.caps);
+
+    return _sir_plugin_add(plugin);
 #else
 # error "no implementation for this plugin version"
 #endif

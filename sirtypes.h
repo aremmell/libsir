@@ -291,7 +291,7 @@ typedef struct {
     sir_pluginexport cleanup; /**< Handle to sir_plugin_cleanup. */
 } sir_pluginv1;
 
-/* The libsir-to-plugin query data structure. */
+/** The libsir-to-plugin query data structure. */
 typedef struct {
     uint8_t iface_ver; /**< Plugin interface version. */
     uint8_t maj_ver;   /**< Major version number. */
