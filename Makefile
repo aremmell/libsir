@@ -58,7 +58,7 @@ ifeq ($(SIR_NO_PLUGINS),1)
 endif
 
 # dependencies
-LIBS = $(PTHOPT)
+LIBS = $(PTHOPT) -ldl
 
 # for test rig and example:
 # link with static library, not shared
