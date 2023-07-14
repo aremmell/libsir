@@ -267,7 +267,7 @@ int _sir_strncpy(char* restrict dest, size_t destsz, const char* restrict src, s
 #else
         _SIR_UNUSED(count);
         size_t cpy = strlcpy(dest, src, destsz);
-        SIR_ASSERT(cpy >= destsz);
+        SIR_ASSERT(cpy < destsz);
         _SIR_UNUSED(cpy);
         return 0;
 #endif
