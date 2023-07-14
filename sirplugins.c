@@ -157,13 +157,13 @@ uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
         return 0;
     }
 #else /* __WIN__ */
-    sir_pluginexport addr = GetProcAddressA(handle, name);
+    sir_pluginexport addr = GetProcAddress(handle, name);
     if (!addr) {
         DWORD err = GetLastError();
         _sir_selflog("error: GetProcAddressA(%p, '%s') failed (%lu)", handle,
             name, err);
         _sir_handlewin32err(err);
-        return NULL;
+        return 0;
     }
 #endif
 
