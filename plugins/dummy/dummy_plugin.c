@@ -25,12 +25,52 @@
  */
 #include "dummy_plugin.h"
 #include <siransimacros.h>
+#include <sirhelpers.h>
 #include <stdio.h>
+
+#if defined(__WIN__)
+BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved)
+{
+    _SIR_UNUSED(module);
+    _SIR_UNUSED(ul_reason_for_call);
+    _SIR_UNUSED(reserved);
+    switch (ul_reason_for_call)
+    {
+        case DLL_PROCESS_ATTACH:
+            OutputDebugStringA("Got DLL_PROCESS_ATTACH\n");
+            break;
+        case DLL_THREAD_ATTACH:
+            OutputDebugStringA("Got DLL_THREAD_ATTACH\n");
+            break;
+        case DLL_THREAD_DETACH:
+            OutputDebugStringA("Got DLL_THREAD_DETACH\n");
+            break;
+        case DLL_PROCESS_DETACH:
+            OutputDebugStringA("Got DLL_PROCESS_DETACH\n");
+            break;
+    }
+
+    return TRUE;
+}
+#endif
 
 static const char* author = "libsir contributors";
 static const char* desc   = "Does nothing interesting. Logs messages to stdout.";
 
-bool sir_plugin_query(sir_plugininfo* info) {
+/* Controlling misbehavior via preprocessor macros:
+ *
+ * When the following are defined upon compilation, this plugin will exhibit behavior
+ * that will cause libsir to reject it during the loading/validation process. Only one
+ * at a time need be defined, since one failed check will result in the loader immediately
+ * unloading the module.
+ *
+ * - DUMMYPLUGIN_BADBEHAVIOR1: return false from 'sir_plugin_query'
+ * - DUMMYPLUGIN_BADBEHAVIOR2: set info::iface_ver != SIR_PLUGIN_VCURRENT
+ * - DUMMYPLUGIN_BADBEHAVIOR3: set info::levels and/or info::opts to invalid values
+ * - DUMMYPLUGIN_BADBEHAVIOR4: missing an export
+ */
+
+PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
     info->iface_ver = SIR_PLUGIN_VCURRENT;
     info->maj_ver   = 1;
     info->min_ver   = 0;
@@ -45,17 +85,18 @@ bool sir_plugin_query(sir_plugininfo* info) {
     return true;
 }
 
-bool sir_plugin_init(void) {
+PLUGIN_EXPORT bool sir_plugin_init(void) {
     printf("\t" DGRAY("dummy_plugin(%s)") "\n", __func__);
     return true;
 }
 
-bool sir_plugin_write(sir_level level, const char* message) {
+PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message) {
+    _SIR_UNUSED(level);
     printf("\t" DGRAY("dummy_plugin(%s): %s") "\n", __func__, message);
     return true;
 }
 
-bool sir_plugin_cleanup(void) {
+PLUGIN_EXPORT bool sir_plugin_cleanup(void) {
     printf("\t" DGRAY("dummy_plugin(%s)") "\n", __func__);
     return true;
 }

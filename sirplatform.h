@@ -249,7 +249,6 @@ _set_thread_local_invalid_parameter_handler(
 # include <sys/types.h>
 # include <limits.h>
 # include <time.h>
-# include <dlfcn.h>
 
 # if !defined(SIR_NO_SYSTEM_LOGGERS)
 #  if defined(__MACOS__)
@@ -266,6 +265,7 @@ _set_thread_local_invalid_parameter_handler(
 # define SIR_MAXHOST 256
 
 # if !defined(__WIN__)
+#  include <dlfcn.h>
 #  include <pthread.h>
 #  if defined(__illumos__)
 #   include <sys/fcntl.h>
