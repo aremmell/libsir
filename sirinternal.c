@@ -170,9 +170,9 @@ bool _sir_init(sirinit* si) {
     _sir_unlocksection(SIRMI_CONFIG);
 
     ////////// TEST CODE ///////////////
-    sirpluginid id = _sir_plugin_load("./build/lib/dummy_plugin.so");
+    sirpluginid id = _sir_plugin_load("./plugins/dummy/dummy_plugin.plugin");
     if (!id)
-        _sir_selflog("failed to load plugin /build/lib/dummy_plugin.so!");
+        _sir_selflog("failed to load plugin ./plugins/dummy/dummy_plugin.plugin!");
     ////////////////////////////////////
 
     return true;
