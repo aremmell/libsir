@@ -280,15 +280,28 @@ typedef struct {
     size_t count;
 } sirfcache;
 
+/** Plugin versioning. */
 # define SIR_PLUGIN_V1 1
 # define SIR_PLUGIN_VCURRENT SIR_PLUGIN_V1
 
+/** Plugin export names for v1 */
+# define SIR_PLUGIN_EXPORT_QUERY   "sir_plugin_query"
+# define SIR_PLUGIN_EXPORT_INIT    "sir_plugin_init"
+# define SIR_PLUGIN_EXPORT_WRITE   "sir_plugin_write"
+# define SIR_PLUGIN_EXPORT_CLEANUP "sir_plugin_cleanup"
+
+/** Plugin export typedefs for v1 */
+typedef bool (*sir_plugin_queryfn)(sir_plugininfo*);
+typedef bool (*sir_plugin_initfn)(void);
+typedef bool (*sir_plugin_writefn)(sir_level, const char*);
+typedef bool (*sir_plugin_cleanupfn)(void);
+
 /** Version 1 plugin interface. */
 typedef struct {
-    sir_pluginexport query;   /**< Handle to sir_plugin_query. */
-    sir_pluginexport init;    /**< Handle to sir_plugin_init. */
-    sir_pluginexport write;   /**< Handle to sir_plugin_write. */
-    sir_pluginexport cleanup; /**< Handle to sir_plugin_cleanup. */
+    sir_plugin_queryfn query;     /**< Handle to sir_plugin_query. */
+    sir_plugin_initfn init;       /**< Handle to sir_plugin_init. */
+    sir_plugin_writefn write;     /**< Handle to sir_plugin_write. */
+    sir_plugin_cleanupfn cleanup; /**< Handle to sir_plugin_cleanup. */
 } sir_pluginv1;
 
 /** The libsir-to-plugin query data structure. */

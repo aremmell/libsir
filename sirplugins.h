@@ -30,12 +30,6 @@
 
 typedef bool (*sir_plugin_pred)(const void*, sirplugin*);
 
-/** plugin export typedefs */
-typedef bool (*sir_plugin_queryfn)(sir_plugininfo*);
-typedef bool (*sir_plugin_initfn)(void);
-typedef bool (*sir_plugin_writefn)(sir_level, const char*);
-typedef bool (*sir_plugin_cleanupfn)(void);
-
 sirpluginid _sir_plugin_load(const char* path);
 sirpluginid _sir_plugin_probe(sirplugin* plugin);
 sir_pluginexport _sir_plugin_getexport(sir_pluginhandle handle, const char* name);

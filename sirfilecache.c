@@ -127,8 +127,10 @@ bool _sirfile_open(sirfile* sf) {
         return false;
 
     int fd = fileno(f);
-    if (!_sir_validfd(fd))
+    if (!_sir_validfd(fd)) {
+#pragma message("TODO: this can't just return false; we have to delete the file, because we created it with _sir_fopen.")
         return false;
+    }
 
     _sirfile_close(sf);
 
@@ -218,7 +220,8 @@ bool _sirfile_needsroll(sirfile* sf) {
         return false;
     }
 
-    return st.st_size + BUFSIZ >= SIR_FROLLSIZE || SIR_FROLLSIZE - (st.st_size + BUFSIZ) <= BUFSIZ;
+    return st.st_size + BUFSIZ >= SIR_FROLLSIZE ||
+        SIR_FROLLSIZE - (st.st_size + BUFSIZ) <= BUFSIZ;
 }
 
 bool _sirfile_roll(sirfile* sf, char** newpath) {
@@ -275,8 +278,7 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                         } else if (exists) {
                             /* the file already exists; add a number to the file name
                                 * until one that does not exist is found. */
-                            _sir_selflog("path: '%s' already exists; incrementing sequence",
-                                *newpath);
+                            _sir_selflog("path: '%s' already exists; incrementing sequence", *newpath);
                             sequence++;
                         } else {
                             _sir_selflog("found good path: '%s'", *newpath);
@@ -419,11 +421,6 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
         return NULL;
     }
 
-    // TODO: There is a potential bug here: just because the path strings don't
-    // match exactly doesn't mean they are not the same file.
-    // example:
-    // file 1: /Users/ryan/foo.log
-    // file 2: ~/foo.log
     sirfile* existing = _sir_fcache_find(sfc, (const void*)path, _sir_fcache_pred_path);
     if (NULL != existing) {
         _sir_seterror(_SIR_E_DUPFILE);
@@ -485,6 +482,7 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
 }
 
 bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
+#pragma message("TODO: GitHub issue #135")
     const char* path = (const char*)match;
 #if !defined(__WIN__)
     return 0 == strncmp(path, iter->path, SIR_MAXPATH);

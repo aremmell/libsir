@@ -78,14 +78,14 @@ sirpluginid _sir_plugin_probe(sirplugin* plugin) {
         return NULL;
 
 #if SIR_PLUGIN_VCURRENT == SIR_PLUGIN_V1
-    plugin->iface.query   =
-        _sir_plugin_getexport(plugin->handle, "sir_plugin_query");
-    plugin->iface.init    =
-        _sir_plugin_getexport(plugin->handle, "sir_plugin_init");
-    plugin->iface.write   =
-        _sir_plugin_getexport(plugin->handle, "sir_plugin_write");
-    plugin->iface.cleanup =
-        _sir_plugin_getexport(plugin->handle, "sir_plugin_cleanup");
+    plugin->iface.query   = (sir_plugin_queryfn)
+        _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_QUERY);
+    plugin->iface.init    = (sir_plugin_initfn)
+        _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_INIT);
+    plugin->iface.write   = (sir_plugin_writefn)
+        _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_WRITE);
+    plugin->iface.cleanup = (sir_plugin_cleanupfn)
+        _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_CLEANUP);
 
     if (!plugin->iface.query || !plugin->iface.init ||
         !plugin->iface.write || !plugin->iface.cleanup) {
@@ -99,7 +99,7 @@ sirpluginid _sir_plugin_probe(sirplugin* plugin) {
     }
 
     /* query the plugin for information. */
-    if (!((sir_plugin_queryfn)plugin->iface.query)(&plugin->info)) {
+    if (!plugin->iface.query(&plugin->info)) {
         _sir_selflog("error: plugin returned false from query fn!");
         _sir_plugin_destroy(&plugin);
         return NULL;
@@ -178,7 +178,7 @@ void _sir_plugin_unload(sirplugin* plugin) {
 
     /* if the cleanup export was resolved, call it. */
     if (plugin->iface.cleanup)
-        ((sir_plugin_cleanupfn)plugin->iface.cleanup)();
+        plugin->iface.cleanup();
 
 #if !defined(__WIN__)
     int ret = dlclose(plugin->handle);
@@ -199,6 +199,7 @@ void _sir_plugin_unload(sirplugin* plugin) {
 #endif
 
     plugin->handle = NULL;
+    plugin->loaded = false;
     _sir_selflog("unloaded plugin (path: '%s')", plugin->path);
 }
 
