@@ -214,7 +214,7 @@ bool sirtest_failnooutputdest(void) {
         pass &= NULL != fid;
         pass &= sir_info("this goes to %s", logfilename);
         pass &= sir_filelevels(fid, SIRL_NONE);
-        pass &= !sir_info("this goes nowhere!");
+        pass &= !sir_notice("this goes nowhere!");
 
         if (NULL != fid)
             pass &= sir_remfile(fid);
