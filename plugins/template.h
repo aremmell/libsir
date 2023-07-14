@@ -41,9 +41,11 @@
  * The plugin must fill out the information in the `info` structure in a way
  * satisfactory to libsir, or it will immediately be unloaded.
  *
- * - `iface_ver` should be set to `SIR_PLUGIN_CURRENT_VER`; if the interface
+ * - `iface_ver` should be set to `SIR_PLUGIN_VCURRENT`; if the interface
  * version does not match libsir's expectation, the plugin will be unloaded.
- * - `char*` members must be malloc'd by the plugin, and will be freed by libsir.
+ * - `char*` members must point at static memory that will not go out of scope
+ * when the function exits. Do not allocate heap memory for these properties;
+ * they will be leaked.
  *
  * @param   info Pointer to a ::sir_plugininfo structure to be initialized by
  * the plugin.

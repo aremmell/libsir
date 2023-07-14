@@ -125,7 +125,7 @@ sirpluginid _sir_plugin_probe(sirplugin* plugin) {
                  plugin->path, plugin->handle, plugin->info.maj_ver,
                  plugin->info.min_ver, plugin->info.bld_ver, plugin->info.levels,
                  plugin->info.opts, _SIR_PRNSTR(plugin->info.author),
-                 _SIR_PRNSTR(plugin->info.description), plugin->info.caps);
+                 _SIR_PRNSTR(plugin->info.desc), plugin->info.caps);
 
     return _sir_plugin_add(plugin);
 #else
