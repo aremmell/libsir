@@ -192,6 +192,7 @@
     <ClCompile Include="..\sirinternal.c" />
     <ClCompile Include="..\sirmaps.c" />
     <ClCompile Include="..\sirmutex.c" />
+    <ClCompile Include="..\sirplugins.c" />
     <ClCompile Include="..\sirtextstyle.c" />
   </ItemGroup>
   <ItemGroup>
@@ -208,6 +209,7 @@
     <ClInclude Include="..\sirmaps.h" />
     <ClInclude Include="..\sirmutex.h" />
     <ClInclude Include="..\sirplatform.h" />
+    <ClInclude Include="..\sirplugins.h" />
     <ClInclude Include="..\sirtextstyle.h" />
     <ClInclude Include="..\sirtypes.h" />
   </ItemGroup>
