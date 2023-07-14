@@ -200,7 +200,8 @@ bool sirtest_failnooutputdest(void) {
 
     static const char* logfilename = MAKE_LOG_NAME("nodestination.log");
 
-    pass &= !sir_info("this goes nowhere!");
+#pragma message("TODO: have to re-think this test; there could always be a plugin registered without this test knowing. for now, use a level that the plugin doesn't register for.")
+    pass &= !sir_notice("this goes nowhere!");
 
     if (pass) {
         print_expected_error();
