@@ -42,7 +42,7 @@
 typedef const int* sirfileid;
 
 /** Plugin module identifier type. */
-typedef const uint32_t sirpluginid;
+typedef uint32_t sirpluginid;
 
 /** Defines the available levels (severity/priority) of logging output. */
 typedef enum {
