@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testsuite", "testsuite.vcxp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example", "example.vcxproj", "{D9943E75-6EC9-4C97-B0FB-2F3A81C9553A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dummy_plugin", "dummy_plugin.vcxproj", "{9C8A75DD-BB53-4651-A79C-6E5C37A8950D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|arm64 = Debug|arm64
@@ -41,6 +43,14 @@ Global
 		{D9943E75-6EC9-4C97-B0FB-2F3A81C9553A}.Release|arm64.Build.0 = Release|arm64
 		{D9943E75-6EC9-4C97-B0FB-2F3A81C9553A}.Release|x64.ActiveCfg = Release|x64
 		{D9943E75-6EC9-4C97-B0FB-2F3A81C9553A}.Release|x64.Build.0 = Release|x64
+		{9C8A75DD-BB53-4651-A79C-6E5C37A8950D}.Debug|arm64.ActiveCfg = Debug|arm64
+		{9C8A75DD-BB53-4651-A79C-6E5C37A8950D}.Debug|arm64.Build.0 = Debug|arm64
+		{9C8A75DD-BB53-4651-A79C-6E5C37A8950D}.Debug|x64.ActiveCfg = Debug|x64
+		{9C8A75DD-BB53-4651-A79C-6E5C37A8950D}.Debug|x64.Build.0 = Debug|x64
+		{9C8A75DD-BB53-4651-A79C-6E5C37A8950D}.Release|arm64.ActiveCfg = Release|x64
+		{9C8A75DD-BB53-4651-A79C-6E5C37A8950D}.Release|arm64.Build.0 = Release|x64
+		{9C8A75DD-BB53-4651-A79C-6E5C37A8950D}.Release|x64.ActiveCfg = Release|x64
+		{9C8A75DD-BB53-4651-A79C-6E5C37A8950D}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
