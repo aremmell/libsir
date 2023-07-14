@@ -88,6 +88,6 @@ jobs:
       compiler: gcc
 script:
   - ${MAKE:?} printvars || true
-  - env SIR_SELFLOG=1 ${MAKE:?} clean tests example
+  - ${MAKE:?} clean tests example
   - build/bin/sirtests
   - build/bin/sirexample
