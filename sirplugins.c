@@ -101,7 +101,8 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
 
     /* query the plugin for information. */
     if (!plugin->iface.query(&plugin->info)) {
-        _sir_selflog("error: plugin returned false from query fn!");
+        _sir_selflog("error: plugin (path: '%s', addr: %p) returned false from"
+                     " query fn!", plugin->path, plugin->handle);
         _sir_plugin_destroy(&plugin);
         return 0;
     }
@@ -115,7 +116,15 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         return 0;
     }
 
-    /* plugin is valid; assign it an id, print its information, and add to cache. */
+    /* plugin is valid; tell it to initialize, assign it an id,
+     * print its information, and add to cache. */
+    if (!plugin->iface.init()) {
+        _sir_selflog("error: plugin (path: '%s', addr: %p) failed to initialize!",
+            plugin->path, plugin->handle);
+        _sir_plugin_destroy(&plugin);
+        return 0;
+    }
+
     plugin->id    = FNV32_1a((const uint8_t*)&plugin->iface, sizeof(sir_pluginiface));
     plugin->valid = true;
 
