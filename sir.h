@@ -459,7 +459,6 @@ bool sir_settextstyle(sir_level level, sir_textattr attr, sir_textcolor fg,
  */
 bool sir_resettextstyles(void);
 
-
 /**
  * @brief Creates a ::sir_textcolor from red, green, and blue components.
  *
