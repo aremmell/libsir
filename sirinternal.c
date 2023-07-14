@@ -169,18 +169,6 @@ bool _sir_init(sirinit* si) {
 
     _sir_unlocksection(SIRMI_CONFIG);
 
-/*    ////////// TEST CODE ///////////////
-#if defined(__WIN__)
-    static const char* plugin = "./build/lib/dummy_plugin.dll";
-#else
-    static const char* plugin = "./plugins/dummy/dummy_plugin_misbehave4.so";//"./build/lib/dummy_plugin.so";
-#endif
-    sirpluginid id = _sir_plugin_load(plugin);
-    if (!id)
-        _sir_selflog("error: failed to load plugin %s!", plugin);
-    ////////////////////////////////////
-*/
-
     return true;
 }
 
