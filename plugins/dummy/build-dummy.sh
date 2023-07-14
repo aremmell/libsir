@@ -1,16 +1,16 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-setopt sh_word_split
-
-SRC="dummy_plugin.c"
-HDR="dummy_header.h"
-INTDIR="/Users/ryan/Documents/Development/libsir/build/obj"
+BASEDIR="${HOME}/Documents/Development/libsir"
+INTDIR="${BASEDIR}/build/obj"
 OUTOBJ="${INTDIR}/dummy_plugin.o"
-OUTDIR="/Users/ryan/Documents/Development/libsir/build/lib"
+OUTDIR="${BASEDIR}/build/lib"
 OUTFILE="${OUTDIR}/dummy_plugin.so"
+THISDIR="${BASEDIR}/plugins/dummy"
+SRC="${THISDIR}/dummy_plugin.c"
+HDR="${THISDIR}/dummy_header.h"
 
-CFLAGS="-std=c11 -fPIC -O3 -DNDEBUG -I../../"
+CFLAGS="-std=c11 -fPIC -O3 -DNDEBUG -I. -I../../"
 LDFLAGS="-shared"
 
-clang -v -o "${OUTOBJ}" -MMD -c "${SRC}" ${CFLAGS} && \
-clang -v -o "${OUTFILE}" "${OUTOBJ}" ${CFLAGS} "${LDFLAGS}" || echo "failed to build!"
+cc -o "${OUTOBJ}" -MMD -c "${SRC}" ${CFLAGS} && \
+cc -o "${OUTFILE}" "${OUTOBJ}" ${CFLAGS} ${LDFLAGS}

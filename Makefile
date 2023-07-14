@@ -62,7 +62,7 @@ LIBS = $(PTHOPT)
 
 # for test rig and example:
 # link with static library, not shared
-LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s $(PLATFORM_LIBS) -Wl,--no-as-needed -ldl
+LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s $(PLATFORM_LIBS) -ldl
 
 # translation units
 TUS := $(wildcard *.c)
@@ -89,6 +89,10 @@ OUT_EXAMPLE    = $(BINDIR)/sirexample$(PLATFORM_EXE_EXT)
 # console test rig
 OBJ_TESTS      = $(INTDIR)/$(TESTS)/$(TESTS).o
 OUT_TESTS      = $(BINDIR)/sirtests$(PLATFORM_EXE_EXT)
+
+# temporary hack
+OUT_PLUGIN_FN  = dummy_plugin.so
+OBJ_PLUGIN     = $(LIBDIR)/${OUT_PLUGIN_FN}
 
 # ##########
 # targets
@@ -139,9 +143,12 @@ $(BINDIR)/file.exists:
 	@mkdir -p $(BINDIR)
 	@touch $(BINDIR)/file.exists > /dev/null
 
+$(OBJ_PLUGIN):
+	@bash -c ./plugins/dummy/build-dummy.sh
+
 .PHONY: tests
 tests: $(OUT_TESTS)
-$(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS) $(BINDIR)/file.exists
+$(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS) $(BINDIR)/file.exists $(OBJ_PLUGIN)
 	@mkdir -p $(@D)
 	@mkdir -p $(BINDIR)
 	@mkdir -p $(LOGDIR)
