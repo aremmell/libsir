@@ -30,6 +30,7 @@
 #include "sir.h"
 #include "sirinternal.h"
 #include "sirfilecache.h"
+#include "sirplugins.h"
 #include "sirtextstyle.h"
 #include "sirdefaults.h"
 
@@ -119,6 +120,14 @@ sirfileid sir_addfile(const char* path, sir_levels levels, sir_options opts) {
 
 bool sir_remfile(sirfileid id) {
     return _sir_remfile(id);
+}
+
+sirpluginid sir_loadplugin(const char*path) {
+    return _sir_plugin_load(path);
+}
+
+bool sir_unloadplugin(sirpluginid id) {
+    return _sir_plugin_rem(id);
 }
 
 bool sir_filelevels(sirfileid id, sir_levels levels) {

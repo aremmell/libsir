@@ -383,6 +383,9 @@ sirfileid sir_addfile(const char* path, sir_levels levels, sir_options opts);
  */
 bool sir_remfile(sirfileid id);
 
+sirpluginid sir_loadplugin(const char*path);
+bool sir_unloadplugin(sirpluginid id);
+
 /**
  * @brief Set new level registrations for a log file already managed by libsir.
  *
