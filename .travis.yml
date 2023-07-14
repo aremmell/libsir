@@ -5,7 +5,7 @@ language: c
 branches:
   only:
   - master
-  - syslog
+  - plugins
 env: MAKE=make
 jobs:
   include:
