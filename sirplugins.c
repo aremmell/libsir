@@ -27,6 +27,7 @@
 #include "sirplugins.h"
 #include "sirinternal.h"
 
+#if !defined(SIR_NO_PLUGINS)
 sirpluginid _sir_plugin_load(const char* path) {
     if (!_sir_validstr(path))
         return NULL;
@@ -211,3 +212,44 @@ void _sir_plugin_destroy(sirplugin** plugin) {
     _sir_safefree(&(*plugin)->path);
     _sir_safefree(plugin);
 }
+#else /* SIR_NO_PLUGINS */
+sirpluginid _sir_plugin_load(const char* path) {
+    _SIR_UNUSED(path);
+    return NULL;
+}
+
+sirpluginid _sir_plugin_probe(sirplugin* plugin) {
+    _SIR_UNUSED(plugin);
+    return NULL;
+}
+
+sir_pluginexport _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
+    _SIR_UNUSED(handle);
+    _SIR_UNUSED(name);
+    return NULL;
+}
+
+sirpluginid _sir_plugin_add(sirplugin* plugin) {
+    _SIR_UNUSED(plugin);
+    return NULL;
+}
+
+sirplugin* _sir_plugin_find(const void* match, sir_plugin_pred pred) {
+    _SIR_UNUSED(match);
+    _SIR_UNUSED(pred);
+    return NULL;
+}
+
+bool _sir_plugin_rem(sirpluginid id) {
+    _SIR_UNUSED(id);
+    return false;
+}
+
+void _sir_plugin_unload(sirplugin* plugin) {
+    _SIR_UNUSED(plugin);
+}
+
+void _sir_plugin_destroy(sirplugin** plugin) {
+    _SIR_UNUSED(plugin);
+}
+#endif

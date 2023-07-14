@@ -837,7 +837,6 @@ const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
 }
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
-
 bool _sir_syslog_init(const char* name, sir_syslog_dest* ctx) {
     if (!_sir_validptr(name) || !_sir_validptr(ctx))
         return false;

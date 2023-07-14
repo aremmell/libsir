@@ -51,6 +51,11 @@ ifeq ($(SIR_NO_SYSTEM_LOGGERS),1)
   CFLAGS += -DSIR_NO_SYSTEM_LOGGERS
 endif
 
+# disable plugins?
+ifeq ($(SIR_NO_PLUGINS),1)
+  CFLAGS += -DSIR_NO_PLUGINS
+endif
+
 # dependencies
 LIBS = $(PTHOPT)
 
