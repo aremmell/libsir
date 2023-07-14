@@ -404,7 +404,7 @@ bool sirtest_rollandarchivefile(void) {
     snprintf(logfilename, SIR_MAXPATH, MAKE_LOG_NAME("%s%s"), logbasename, logext);
 
     unsigned delcount = 0;
-    if (!enumfiles(logbasename, deletefiles, &delcount)) {
+    if (!enumfiles(SIR_TESTLOGDIR, logbasename, deletefiles, &delcount)) {
         handle_os_error(false, "failed to enumerate log files with base name: %s!",
             logbasename);
         return false;
@@ -456,7 +456,7 @@ bool sirtest_rollandarchivefile(void) {
 
         /* look for files matching the original name. */
         unsigned foundlogs = 0;
-        if (!enumfiles(logbasename, countfiles, &foundlogs)) {
+        if (!enumfiles(SIR_TESTLOGDIR, logbasename, countfiles, &foundlogs)) {
             handle_os_error(false, "failed to enumerate log files with base name: %s!",
                 logbasename);
             pass = false;
@@ -471,7 +471,7 @@ bool sirtest_rollandarchivefile(void) {
         pass &= sir_remfile(fileid);
 
     delcount = 0;
-    if (!enumfiles(logbasename, deletefiles, &delcount)) {
+    if (!enumfiles(SIR_TESTLOGDIR, logbasename, deletefiles, &delcount)) {
         handle_os_error(false, "failed to enumerate log files with base name: %s!", logbasename);
         return false;
     }
@@ -976,7 +976,7 @@ bool sirtest_perf(void) {
     }
 
     unsigned deleted = 0;
-    enumfiles(logbasename, deletefiles, &deleted);
+    enumfiles(SIR_TESTLOGDIR, logbasename, deletefiles, &deleted);
 
     if (deleted > 0)
         printf("\t" DGRAY("deleted %d log file(s)") "\n", deleted);
@@ -1727,35 +1727,38 @@ uint32_t getrand(uint32_t upper_bound) {
 }
 
 bool rmfile(const char* filename) {
+    char filepath[SIR_MAXPATH];
+    (void)snprintf(filepath, SIR_MAXPATH, "%s%s", SIR_TESTLOGDIR, filename);
+
     bool removed = false;
 
     /* return true if leave_logs is true. */
     if (leave_logs) {
         printf("\t" WHITE("not deleting '%s' due to '%s'") "\n",
-            filename, _cl_arg_list[3].flag);
+            filepath, _cl_arg_list[3].flag);
         return true;
     }
 
     /* return true if the file doesn't exist. */
     struct stat st;
-    if (0 != stat(filename, &st)) {
+    if (0 != stat(filepath, &st)) {
         if (ENOENT == errno)
             return true;
 
-        handle_os_error(true, "failed to stat %s!", filename);
+        handle_os_error(true, "failed to stat %s!", filepath);
         return false;
     }
 
 #if !defined(__WIN__)
-    removed = (0 == remove(filename));
+    removed = (0 == remove(filepath));
 #else /* __WIN__ */
-    removed = FALSE != DeleteFile(filename);
+    removed = FALSE != DeleteFile(filepath);
 #endif
 
     if (!removed) {
-        handle_os_error(false, "failed to delete %s!", filename);
+        handle_os_error(false, "failed to delete %s!", filepath);
     } else {
-        printf("\t" DGRAY("deleted %s (%ld bytes)...") "\n", filename,
+        printf("\t" DGRAY("deleted %s (%ld bytes)...") "\n", filepath,
             (long)st.st_size);
     }
 
@@ -1776,9 +1779,9 @@ bool countfiles(const char* search, const char* filename, unsigned* data) {
     return true;
 }
 
-bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
+bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* data) {
 #if !defined(__WIN__)
-    DIR* d = opendir("./logs");
+    DIR* d = opendir(path);
     if (!d) {
         print_os_error();
         return false;
@@ -1791,12 +1794,8 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
         return false;
     }
 
-    char realname[SIR_MAXPATH] = {0};
     while (NULL != di) {
-        /* this is only used for logs, and they reside in ./logs. */
-        (void)snprintf(realname, SIR_MAXPATH, "./logs/%s", di->d_name);
-
-        if (!cb(search, realname, data))
+        if (!cb(search, di->d_name, data))
             break;
         di = readdir(d);
     };
@@ -1805,15 +1804,17 @@ bool enumfiles(const char* search, fileenumproc cb, unsigned* data) {
     d = NULL;
 #else /* __WIN__ */
     WIN32_FIND_DATA finddata = {0};
-    HANDLE enumerator        = FindFirstFile("./logs/*", &finddata);
+    char buf[SIR_MAXPATH]    = {0};
+
+    (void)snprintf(buf, SIR_MAXPATH, "%s/*", path);
+
+    HANDLE enumerator = FindFirstFile(buf, &finddata);
 
     if (INVALID_HANDLE_VALUE == enumerator)
         return false;
 
-    char realname[SIR_MAXPATH] = {0};
     do {
-        (void)snprintf(realname, SIR_MAXPATH, "./logs/%s", finddata.cFileName);
-        if (!cb(search, realname, data))
+        if (!cb(search, finddata.cFileName, data))
             break;
     } while (FindNextFile(enumerator, &finddata) > 0);
 

@@ -76,6 +76,8 @@
 # define SIR_MAXCLIFLAG  32
 # define SIR_MAXUSAGE    256
 
+# define SIR_TESTLOGDIR "./logs/"
+
 /**
  * @defgroup tests Tests
  *
@@ -329,7 +331,7 @@ bool deletefiles(const char* search, const char* filename, unsigned* data);
 bool countfiles(const char* search, const char* filename, unsigned* data);
 
 typedef bool (*fileenumproc)(const char* search, const char* filename, unsigned* data);
-bool enumfiles(const char* search, fileenumproc cb, unsigned* data);
+bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* data);
 
 bool sirtimerstart(sir_timer* timer);
 float sirtimerelapsed(const sir_timer* timer); // msec
