@@ -112,6 +112,25 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         _sir_selflog("error: plugin (path: '%s', addr: %p) has version"
                      " %"PRIu8", libsir has %"PRIu8, plugin->path, plugin->handle,
                      plugin->info.iface_ver, (uint8_t)SIR_PLUGIN_VCURRENT);
+        _sir_seterror(_SIR_E_INVALID);
+        _sir_plugin_destroy(&plugin);
+        return 0;
+    }
+
+    /* verify level registration bitmask. */
+    if (!_sir_validlevels(plugin->info.levels)) {
+        _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid levels"
+                     " %04"PRIx16, plugin->path, plugin->handle, plugin->info.levels);
+        _sir_seterror(_SIR_E_LEVELS);
+        _sir_plugin_destroy(&plugin);
+        return 0;
+    }
+
+    /* verify formatting options bitmask. */
+    if (!_sir_validopts(plugin->info.opts)) {
+        _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid opts"
+                     " %08"PRIx32, plugin->path, plugin->handle, plugin->info.opts);
+        _sir_seterror(_SIR_E_OPTIONS);
         _sir_plugin_destroy(&plugin);
         return 0;
     }
