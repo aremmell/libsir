@@ -100,10 +100,10 @@
       <PreprocessorDefinitions>_DEBUG;SIR_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <PreBuildEvent>
-      <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists</Command>
+      <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists &amp; if not exist $(SolutionDir)\..\logs\NUL mkdir $(SolutionDir)\..\logs</Command>
     </PreBuildEvent>
     <PreBuildEvent>
-      <Message>Create file for use with filesystem tests</Message>
+      <Message>Create files and folders for use with tests</Message>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">
@@ -120,8 +120,8 @@
       <UseFullPaths>false</UseFullPaths>
     </ClCompile>
     <PreBuildEvent>
-      <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists</Command>
-      <Message>Create file for use with filesystem tests</Message>
+      <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists &amp; if not exist $(SolutionDir)\..\logs\NUL mkdir $(SolutionDir)\..\logs</Command>
+      <Message>Create files and folders for use with tests</Message>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'">
@@ -147,8 +147,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
-      <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists</Command>
-      <Message>Create file for use with filesystem tests</Message>
+      <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists &amp; if not exist $(SolutionDir)\..\logs\NUL mkdir $(SolutionDir)\..\logs</Command>
+      <Message>Create files and folders for use with tests</Message>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -173,8 +173,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
     <PreBuildEvent>
-      <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists</Command>
-      <Message>Create file for use with filesystem tests</Message>
+      <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists &amp; if not exist $(SolutionDir)\..\logs\NUL mkdir $(SolutionDir)\..\logs</Command>
+      <Message>Create files and folders for use with tests</Message>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
