@@ -1178,6 +1178,8 @@ pid_t _sir_gettid(void) {
     tid = (pid_t)pthread_self();
 #elif defined(__HAIKU__)
     tid = get_pthread_thread_id(pthread_self());
+#elif defined(__serenity__)
+    tid = gettid();
 #elif defined(_DEFAULT_SOURCE)
     tid = syscall(SYS_gettid);
 #elif defined(__WIN__)

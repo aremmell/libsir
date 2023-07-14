@@ -59,6 +59,7 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 | **Haiku**&nbsp;R1b4 | **GCC**&nbsp;(11.2),&nbsp; **Clang**&nbsp;(12.0.1) |
 | **Solaris**&nbsp;11.4 | **GCC**&nbsp;(10.3&nbsp;‑&nbsp;11.2),&nbsp; **Clang**&nbsp;(6&nbsp;‑&nbsp;11),&nbsp; **Oracle&nbsp;Studio&nbsp;C/C++**&nbsp;(≳12.6) |
 | **illumos** | **GCC**&nbsp;(7.5&nbsp;‑&nbsp;11.3),&nbsp; **Clang**&nbsp;(15.0.7) |
+| **SerenityOS** | **GCC**&nbsp;(13.1) |
 | *Coming soon* | *Support planned for* **AIX** |
 
 libsir is known to work on most common (and many uncommon) architectures.

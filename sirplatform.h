@@ -98,6 +98,8 @@
 #  if defined(__APPLE__) && defined(__MACH__)
 #   define __MACOS__
 #   define _DARWIN_C_SOURCE
+#  elif defined(__serenity__)
+#   define USE_PTHREAD_GETNAME_NP
 #  elif defined(__OpenBSD__)
 #   define __BSD__
 #   define __FreeBSD_PTHREAD_NP_11_3__
@@ -276,7 +278,8 @@ _set_thread_local_invalid_parameter_handler(
 #   include <fcntl.h>
 #  endif
 #  include <unistd.h>
-#  if !defined(__CYGWIN__) && !defined(__HAIKU__) && !defined(_AIX)
+#  if !defined(__CYGWIN__) && !defined(__HAIKU__) && \
+      !defined(__serenity__) && !defined(_AIX)
 #   include <sys/syscall.h>
 #  endif
 #  include <sys/time.h>
