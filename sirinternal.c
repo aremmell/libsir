@@ -644,8 +644,8 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     if (match) {
         cfg.state.last.counter++;
 
-        _sir_selflog("message '%s' matches last; incremented counter to %zu", buf.message,
-            cfg.state.last.counter);
+        /* _sir_selflog("message '%s' matches last; incremented counter to %zu", buf.message,
+            cfg.state.last.counter); */
 
         if (cfg.state.last.counter >= cfg.state.last.threshold - 2) {
             size_t old_threshold = cfg.state.last.threshold;
@@ -667,7 +667,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         cfg.state.last.squelch   = false;
         cfg.state.last.counter   = 0;
         cfg.state.last.threshold = SIR_SQUELCH_THRESHOLD;
-        _sir_selflog("message '%s' does not match last; resetting", buf.message);
+        /* _sir_selflog("message '%s' does not match last; resetting", buf.message); */
     }
 
     _cfg = _sir_locksection(SIRMI_CONFIG);
