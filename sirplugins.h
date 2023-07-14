@@ -32,7 +32,7 @@ typedef bool (*sir_plugin_pred)(const void*, sir_plugin*);
 
 sirpluginid _sir_plugin_load(const char* path);
 sirpluginid _sir_plugin_probe(sir_plugin* plugin);
-sir_pluginexport _sir_plugin_getexport(sir_pluginhandle handle, const char* name);
+uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name);
 void _sir_plugin_unload(sir_plugin* plugin);
 
 sirpluginid _sir_plugin_add(sir_plugin* plugin);

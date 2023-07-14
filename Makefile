@@ -58,11 +58,11 @@ ifeq ($(SIR_NO_PLUGINS),1)
 endif
 
 # dependencies
-LIBS = $(PTHOPT) -ldl
+LIBS = $(PTHOPT)
 
 # for test rig and example:
 # link with static library, not shared
-LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s $(PLATFORM_LIBS)
+LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s $(PLATFORM_LIBS) -Wl,--no-as-needed -ldl
 
 # translation units
 TUS := $(wildcard *.c)
