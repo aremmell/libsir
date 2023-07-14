@@ -227,6 +227,9 @@
 /** The maximum number of log files that may be registered at one time. */
 # define SIR_MAXFILES 16
 
+/** The maximum number of plugin modules that may be loaded at one time. */
+# define SIR_MAXPLUGINS 16
+
 /** The size, in characters, of the buffer used to hold file header format strings. */
 # define SIR_MAXFHEADER 128
 

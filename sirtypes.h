@@ -41,6 +41,9 @@
 /** Log file identifier type. */
 typedef const int* sirfileid;
 
+/** Plugin module identifier type. */
+typedef const int* sirpluginid;
+
 /** Defines the available levels (severity/priority) of logging output. */
 typedef enum {
     SIRL_NONE    = 0x0000, /**< No output. */
@@ -277,6 +280,46 @@ typedef struct {
     size_t count;
 } sirfcache;
 
+# define SIR_PLUGIN_V1 1
+# define SIR_PLUGIN_VCURRENT SIR_PLUGIN_V1
+
+/** Version 1 plugin interface. */
+typedef struct {
+    sir_pluginexport query;   /**< Handle to sir_plugin_query. */
+    sir_pluginexport init;    /**< Handle to sir_plugin_init. */
+    sir_pluginexport write;   /**< Handle to sir_plugin_write. */
+    sir_pluginexport cleanup; /**< Handle to sir_plugin_cleanup. */
+} sir_pluginv1;
+
+/* The libsir-to-plugin query data structure. */
+typedef struct {
+    uint8_t iface_ver; /**< Plugin interface version. */
+    uint8_t maj_ver;   /**< Major version number. */
+    uint8_t min_ver;   /**< Minor version number. */
+    uint8_t bld_ver;   /**< Build/patch version number. */
+    sir_levels levels; /**< Level registration bitmask. */
+    sir_options opts;  /**< Formatting options bitmask. */
+    char* author;      /**< Plugin author information. */
+    char* description; /**< Plugin description. */
+    uint64_t caps;     /**< Plugin capabilities bitmask. */
+} sir_plugininfo;
+
+/** Plugin module data. */
+typedef struct {
+    const char* path;        /**< Path to the shared library file. */
+    sir_pluginhandle handle; /**< Handle to loaded module. */
+    sir_plugininfo info;     /**< Information reported by the plugin.  */
+    bool loaded;             /**< Whether the module is currently loaded. */
+    bool valid;              /**< Whether the module is loaded and valid. */
+    sir_pluginv1 iface;      /**< Versioned interface to the plugin module. */
+} sirplugin;
+
+/** Plugin module cache. */
+typedef struct {
+    sirplugin* plugins[SIR_MAXPLUGINS];
+    size_t count;
+} sir_plugincache;
+
 /** Formatted output container. */
 typedef struct {
     char style[SIR_MAXSTYLE];
@@ -313,9 +356,10 @@ typedef struct {
 
 /** Mutex <-> protected section mapping. */
 typedef enum {
-    SIRMI_CONFIG = 0, /**< The ::sirconfig section. */
-    SIRMI_FILECACHE,  /**< The ::sirfcache section. */
-    SIRMI_TEXTSTYLE,  /**< The ::sir_level_style_tuple section. */
+    SIRMI_CONFIG = 0,  /**< The ::sirconfig section. */
+    SIRMI_FILECACHE,   /**< The ::sirfcache section. */
+    SIRMI_PLUGINCACHE, /**< The ::sir_plugincache section. */
+    SIRMI_TEXTSTYLE,   /**< The ::sir_level_style_tuple section. */
 } sir_mutex_id;
 
 /** Error type. */

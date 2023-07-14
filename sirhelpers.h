@@ -62,6 +62,9 @@ uint16_t _sir_geterrcode(uint32_t err) {
 /** Squelches warnings about unreferenced parameters. */
 # define _SIR_UNUSED(param) (void)param;
 
+/** Returns a printable string even if NULL. */
+# define _SIR_PRNSTR(str) (str ? str : "<null>")
+
 /** Even more evil macros used for binary searching arrays. */
 # define _SIR_DECLARE_BIN_SEARCH(low, high) \
     size_t _low  = low; \

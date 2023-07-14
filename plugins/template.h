@@ -34,22 +34,6 @@
 
 # include <sirtypes.h>
 
-# define SIR_PLUGIN_V1 1
-# define SIR_PLUGIN_VCURRENT SIR_PLUGIN_V1
-
-/* The libsir-to-plugin query data structure. */
-typedef struct {
-    uint8_t iface_ver; /**< Plugin interface version. */
-    uint8_t maj_ver;   /**< Major version number. */
-    uint8_t min_ver;   /**< Minor version number. */
-    uint8_t bld_ver;   /**< Build/patch version number. */
-    sir_levels levels; /**< Level registration bitmask. */
-    sir_options opts;  /**< Formatting options bitmask. */
-    char* author;      /**< Plugin author information. */
-    char* description; /**< Plugin description. */
-    uint64_t caps;     /**< Future-proof plugin capabilities bitmask. */
-} sir_plugin_info;
-
 /**
  * @brief Called by libsir after the plugin library object is loaded, but before
  * any other functions are probed or called.
@@ -61,12 +45,12 @@ typedef struct {
  * version does not match libsir's expectation, the plugin will be unloaded.
  * - `char*` members must be malloc'd by the plugin, and will be freed by libsir.
  *
- * @param   info Pointer to a ::sir_plugin_info structure to be initialized by
+ * @param   info Pointer to a ::sir_plugininfo structure to be initialized by
  * the plugin.
  * @returns bool `true` if the `info` structure was successfully initialized,
  * `false` otherwise.
  */
-bool sir_plugin_query(sir_plugin_info* info);
+bool sir_plugin_query(sir_plugininfo* info);
 
 // loaded, passed the checks on data from `sir_plugin_loaded`. Plugin should
 // initialize its internal state.
@@ -78,6 +62,6 @@ bool sir_plugin_write(sir_level level, const char* message);
 
 // the plugin is about to be unloaded, and should stop any ongoing operations
 // and clean up allocated resources.
-bool sir_plugin_shutdown(void);
+bool sir_plugin_cleanup(void);
 
 #endif /* !_SIR_PLUGINS_TEMPLATE_H_INCLUDED */

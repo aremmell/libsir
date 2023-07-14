@@ -35,14 +35,18 @@
 # pragma comment(lib, "ws2_32.lib")
 #endif
 
-static sirconfig _sir_cfg = {0};
-static sirfcache _sir_fc  = {0};
+static sirconfig _sir_cfg      = {0};
+static sirfcache _sir_fc       = {0};
+static sir_plugincache _sir_pc = {0};
 
 static sir_mutex cfg_mutex;
 static sir_once cfg_once = SIR_ONCE_INIT;
 
 static sir_mutex fc_mutex;
 static sir_once fc_once = SIR_ONCE_INIT;
+
+static sir_mutex pc_mutex;
+static sir_once pc_once = SIR_ONCE_INIT;
 
 static sir_mutex ts_mutex;
 static sir_once ts_once = SIR_ONCE_INIT;
@@ -411,6 +415,11 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
             tmpm   = &fc_mutex;
             tmpsec = &_sir_fc;
             break;
+        case SIRMI_PLUGINCACHE:
+            _sir_once(&pc_once, _sir_initmutex_pc_once);
+            tmpm   = &pc_mutex;
+            tmpsec = &_sir_pc;
+            break;
         case SIRMI_TEXTSTYLE:
             _sir_once(&ts_once, _sir_initmutex_ts_once);
             tmpm   = &ts_mutex;
@@ -448,6 +457,11 @@ void _sir_initmutex_fc_once(void) {
         _sir_selflog("error: failed to create mutex!");
 }
 
+void _sir_initmutex_pc_once(void) {
+    if (!_sirmutex_create(&pc_mutex))
+        _sir_selflog("error: failed to create mutex!");
+}
+
 void _sir_initmutex_ts_once(void) {
     if (!_sirmutex_create(&ts_mutex))
         _sir_selflog("error: failed to create mutex!");
@@ -479,6 +493,19 @@ BOOL CALLBACK _sir_initmutex_fc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) 
     _SIR_UNUSED(ctx)
 
     if (!_sirmutex_create(&fc_mutex)) {
+        _sir_selflog("error: failed to create mutex!");
+        return FALSE;
+    }
+
+    return TRUE;
+}
+
+BOOL CALLBACK _sir_initmutex_pc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
+    _SIR_UNUSED(ponce);
+    _SIR_UNUSED(param);
+    _SIR_UNUSED(ctx)
+
+    if (!_sirmutex_create(&pc_mutex)) {
         _sir_selflog("error: failed to create mutex!");
         return FALSE;
     }

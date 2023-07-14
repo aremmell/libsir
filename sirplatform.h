@@ -220,6 +220,7 @@ _set_thread_local_invalid_parameter_handler(
 # include <sys/types.h>
 # include <limits.h>
 # include <time.h>
+# include <dlfcn.h>
 
 # if !defined(SIR_NO_SYSTEM_LOGGERS)
 #  if defined(__MACOS__)
@@ -307,6 +308,12 @@ _set_thread_local_invalid_parameter_handler(
 #   undef SIR_MSEC_TIMER
 #  endif
 
+/** The plugin handle type. */
+typedef void* sir_pluginhandle;
+
+/** The plugin export address type. */
+typedef void* sir_pluginexport;
+
 /** The mutex type. */
 typedef pthread_mutex_t sir_mutex;
 
@@ -325,6 +332,12 @@ typedef void (*sir_once_fn)(void);
 
 #  define SIR_MSEC_TIMER
 #  define SIR_MSEC_WIN32
+
+/** The plugin handle type. */
+typedef HMODULE sir_pluginhandle;
+
+/** The plugin export address type. */
+typedef FARPROC sir_pluginexport;
 
 /** The mutex type. */
 typedef HANDLE sir_mutex;

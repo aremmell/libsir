@@ -419,6 +419,11 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
         return NULL;
     }
 
+    // TODO: There is a potential bug here: just because the path strings don't
+    // match exactly doesn't mean they are not the same file.
+    // example:
+    // file 1: /Users/ryan/foo.log
+    // file 2: ~/foo.log
     sirfile* existing = _sir_fcache_find(sfc, (const void*)path, _sir_fcache_pred_path);
     if (NULL != existing) {
         _sir_seterror(_SIR_E_DUPFILE);
