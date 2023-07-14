@@ -417,13 +417,13 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
         return NULL;
 
     if (sfc->count >= SIR_MAXFILES) {
-        _sir_seterror(_SIR_E_FCFULL);
+        _sir_seterror(_SIR_E_NOROOM);
         return NULL;
     }
 
     sirfile* existing = _sir_fcache_find(sfc, (const void*)path, _sir_fcache_pred_path);
     if (NULL != existing) {
-        _sir_seterror(_SIR_E_DUPFILE);
+        _sir_seterror(_SIR_E_DUPITEM);
         _sir_selflog("error: already managing file with path '%s'", path);
         return NULL;
     }
@@ -450,7 +450,7 @@ bool _sir_fcache_update(sirfcache* sfc, sirfileid id, sir_update_config_data* da
 
     sirfile* found = _sir_fcache_find(sfc, (const void*)id, _sir_fcache_pred_id);
     if (!found) {
-        _sir_seterror(_SIR_E_NOFILE);
+        _sir_seterror(_SIR_E_NOITEM);
         return false;
     }
 
@@ -477,7 +477,7 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
         }
     }
 
-    _sir_seterror(_SIR_E_NOFILE);
+    _sir_seterror(_SIR_E_NOITEM);
     return false;
 }
 
@@ -520,6 +520,7 @@ bool _sir_fcache_destroy(sirfcache* sfc) {
         sfc->count--;
     }
 
+    SIR_ASSERT(sfc->count == 0);
     memset(sfc, 0, sizeof(sirfcache));
     return true;
 }
@@ -530,20 +531,20 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
         !_sir_validptr(dispatched) || !_sir_validptr(wanted))
         return false;
 
-    bool retval = true;
-    const char* write = NULL;
+    const char* write    = NULL;
     sir_options lastopts = 0;
 
     *dispatched = 0;
-    *wanted = 0;
+    *wanted     = 0;
 
     for (size_t n = 0; n < sfc->count; n++) {
         SIR_ASSERT(_sirfile_validate(sfc->files[n]));
 
         if (!_sir_bittest(sfc->files[n]->levels, level)) {
             _sir_selflog("level %04" PRIx16 " not set in level mask (%04" PRIx16
-                         ") for file %d (path: '%s'); skipping",
-                level, sfc->files[n]->levels, sfc->files[n]->id, sfc->files[n]->path);
+                         ") for file %d (path: '%s'); skipping", level,
+                         sfc->files[n]->levels, sfc->files[n]->id,
+                         sfc->files[n]->path);
             continue;
         }
 
@@ -556,15 +557,14 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
         }
 
         if (write && _sirfile_write(sfc->files[n], write)) {
-            retval &= true;
             (*dispatched)++;
         } else {
-            _sir_selflog("error: write to file %d (path: '%s') failed!", sfc->files[n]->id,
-                sfc->files[n]->path);
+            _sir_selflog("error: write to file %d (path: '%s') failed!",
+                sfc->files[n]->id, sfc->files[n]->path);
         }
     }
 
-    return retval && (*dispatched == *wanted);
+    return (*dispatched == *wanted);
 }
 
 void _sir_fflush(FILE* f) {

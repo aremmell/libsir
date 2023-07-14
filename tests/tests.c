@@ -563,9 +563,9 @@ bool sirtest_errorsanity(void) {
         {SIR_E_NOERROR,   "SIR_E_NOERROR"},   /**< The operation completed successfully (0) */
         {SIR_E_NOTREADY,  "SIR_E_NOTREADY"},  /**< libsir has not been initialized (1) */
         {SIR_E_ALREADY,   "SIR_E_ALREADY"},   /**< libsir is already initialized (2) */
-        {SIR_E_DUPFILE,   "SIR_E_DUPFILE"},   /**< File already managed by libsir (3) */
-        {SIR_E_NOFILE,    "SIR_E_NOFILE"},    /**< File not managed by libsir (4) */
-        {SIR_E_FCFULL,    "SIR_E_FCFULL"},    /**< Maximum number of files already managed (5) */
+        {SIR_E_DUPITEM,   "SIR_E_DUPITEM"},   /**< Item already managed by libsir (3) */
+        {SIR_E_NOITEM,    "SIR_E_NOITEM"},    /**< Item not managed by libsir (4) */
+        {SIR_E_NOROOM,    "SIR_E_NOROOM"},    /**< Maximum number of items already stored (5) */
         {SIR_E_OPTIONS,   "SIR_E_OPTIONS"},   /**< Option flags are invalid (6) */
         {SIR_E_LEVELS,    "SIR_E_LEVELS"},    /**< Level flags are invalid (7) */
         {SIR_E_TEXTSTYLE, "SIR_E_TEXTSTYLE"}, /**< Text style is invalid (8) */
