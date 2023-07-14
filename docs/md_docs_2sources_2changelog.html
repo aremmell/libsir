@@ -114,22 +114,22 @@ $(document).ready(function(){initNavTree('md_docs_2sources_2changelog.html','');
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><h1>2.2.0</h1>
-<h4>July 15, 2023</h4>
+<h2>July 15, 2023</h2>
 <ul>
 <li><em>Vastly improved</em> support for syslog, if available, and macOS' system logger (os_log) as their own independent logging destination</li>
 <li>Support for 256-color and RGB color modes.</li>
 <li>Better and more thorough documentation.</li>
 <li><u>Massive performance gains</u> for both stdio and log files via optimization/refactoring (estimated 30%+)</li>
-<li><b>Lots</b> of work to get things going smoothly on Windows<ul>
+<li><em>Lots</em> of work to get things going smoothly on Windows<ul>
 <li>A Visual Studio 2022 solution in <code>msvs</code></li>
 </ul>
 </li>
-<li>New macros in <a class="el" href="siransimacros_8h.html" title="ANSI escape sequence macros.">siransimacros.h</a> that can be used with libsir or anything that writes to stdio (<em>printf, puts, etc.): <code>printf(RED("Oh lawd,
-  something " ULINE("awful") " has happened!\n");</code></em></li>
+<li>New macros in <a class="el" href="siransimacros_8h.html" title="ANSI escape sequence macros.">siransimacros.h</a> that can be used with libsir or anything that writes to stdio (<em>printf, puts, etc.): <code>printf(RED("Oh lawd, something " ULINE("awful") " has happened!\n");</code></em></li>
 <li><em>Many new/more vigorous tests</em></li>
 <li><em>The test rig now supports command-line arguments:<ul>
 <li><code>--list</code> : lists all the available tests</li>
 <li><code>--only</code>: only run the specified tests</li>
+<li><code>--leave-logs</code>: leave log files behind for examination</li>
 <li><code>--wait</code> : wait for keypress before exiting</li>
 <li><code>--perf</code> : runs the performance benchmark test (normally skipped)</li>
 </ul>
@@ -138,11 +138,11 @@ $(document).ready(function(){initNavTree('md_docs_2sources_2changelog.html','');
 <li><em>Potential memory leaks squashed</em></li>
 <li><em>Additional errors with better error reporting</em></li>
 <li><em>New preprocessor defines:<ul>
-<li><code>SIR_ASSERT_ENABLED</code>: if defined, libsir actually uses assert() (*if -DNDEBUG is present, this means nothing), if not, <code>_sir_selflog</code> outputs a red message containing the condition that would have asserted, along with the file/line/func (<em>if -DSIR_SELFLOG is present, otherwise it’s a NOOP</em>).</li>
+<li><code>SIR_ASSERT_ENABLED</code>: if defined, libsir actually uses assert() (*if <code>-DNDEBUG</code> is present, this means nothing), if not defined, <code>_sir_selflog</code> outputs a red message containing the condition that would have asserted, along with the file/line/func (<em>if <code>-DSIR_SELFLOG</code> is present, otherwise it’s a NOOP</em>).</li>
 <li><code>SIR_NO_SYSTEM_LOGGERS</code>: if defined, system logger support is completely disabled/not compiled in. The entry points still exist, but they will return an error that the feature is disabled or unavailable.</li>
 </ul>
 </em></li>
-<li><em>rename ‘thread_local’ – this is a C++ keyword</em></li>
+<li><em>rename <code>thread_local</code> – this is a C++ keyword</em></li>
 <li><em>renamed all typedefs ending in <code>_t</code> </em></li>
 </ul>
 </div></div><!-- contents -->

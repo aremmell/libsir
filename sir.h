@@ -136,7 +136,8 @@ uint16_t sir_geterror(char message[SIR_MAXERROR]);
  *                 registered destinations, `false` otherwise. Call ::sir_geterror
  *                 to obtain information about any error that may have occurred.
  */
-bool sir_debug(const char* format, ...);
+PRINTF_FORMAT_ATTR(1, 2)
+bool sir_debug(PRINTF_FORMAT const char* format, ...);
 
 /**
  * @brief Dispatches a ::SIRL_INFO level message.
@@ -161,7 +162,8 @@ bool sir_debug(const char* format, ...);
  *                 registered destinations, `false` otherwise. Call ::sir_geterror
  *                 to obtain information about any error that may have occurred.
  */
-bool sir_info(const char* format, ...);
+PRINTF_FORMAT_ATTR(1, 2)
+bool sir_info(PRINTF_FORMAT const char* format, ...);
 
 /**
  * @brief Dispatches a ::SIRL_NOTICE level message.
@@ -186,7 +188,8 @@ bool sir_info(const char* format, ...);
  *                 registered destinations, `false` otherwise. Call ::sir_geterror
  *                 to obtain information about any error that may have occurred.
  */
-bool sir_notice(const char* format, ...);
+PRINTF_FORMAT_ATTR(1, 2)
+bool sir_notice(PRINTF_FORMAT const char* format, ...);
 
 /**
  * @brief Dispatches a ::SIRL_WARN level message.
@@ -211,7 +214,8 @@ bool sir_notice(const char* format, ...);
  *                 registered destinations, `false` otherwise. Call ::sir_geterror
  *                 to obtain information about any error that may have occurred.
  */
-bool sir_warn(const char* format, ...);
+PRINTF_FORMAT_ATTR(1, 2)
+bool sir_warn(PRINTF_FORMAT const char* format, ...);
 
 /**
  * @brief Dispatches a ::SIRL_ERROR level message.
@@ -236,7 +240,8 @@ bool sir_warn(const char* format, ...);
  *                 registered destinations, `false` otherwise. Call ::sir_geterror
  *                 to obtain information about any error that may have occurred.
  */
-bool sir_error(const char* format, ...);
+PRINTF_FORMAT_ATTR(1, 2)
+bool sir_error(PRINTF_FORMAT const char* format, ...);
 
 /**
  * @brief Dispatches a ::SIRL_CRIT level message.
@@ -261,7 +266,8 @@ bool sir_error(const char* format, ...);
  *                 registered destinations, `false` otherwise. Call ::sir_geterror
  *                 to obtain information about any error that may have occurred.
  */
-bool sir_crit(const char* format, ...);
+PRINTF_FORMAT_ATTR(1, 2)
+bool sir_crit(PRINTF_FORMAT const char* format, ...);
 
 /**
  * @brief Dispatches a ::SIRL_ALERT level message.
@@ -286,7 +292,8 @@ bool sir_crit(const char* format, ...);
  *                 registered destinations, `false` otherwise. Call ::sir_geterror
  *                 to obtain information about any error that may have occurred.
  */
-bool sir_alert(const char* format, ...);
+PRINTF_FORMAT_ATTR(1, 2)
+bool sir_alert(PRINTF_FORMAT const char* format, ...);
 
 /**
  * @brief Dispatches a ::SIRL_EMERG level message.
@@ -311,7 +318,8 @@ bool sir_alert(const char* format, ...);
  *                 registered destinations, `false` otherwise. Call ::sir_geterror
  *                 to obtain information about any error that may have occurred.
  */
-bool sir_emerg(const char* format, ...);
+PRINTF_FORMAT_ATTR(1, 2)
+bool sir_emerg(PRINTF_FORMAT const char* format, ...);
 
 /**
  * @brief Adds a log file and registeres it to receive log output.
@@ -450,7 +458,6 @@ bool sir_settextstyle(sir_level level, sir_textattr attr, sir_textcolor fg,
  *          to obtain information about any error that may have occurred.
  */
 bool sir_resettextstyles(void);
-
 
 /**
  * @brief Creates a ::sir_textcolor from red, green, and blue components.

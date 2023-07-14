@@ -545,7 +545,8 @@ bool _sir_once(sir_once* once, sir_once_fn func) {
 #endif
 }
 
-bool _sir_logv(sir_level level, const char* format, va_list args) {
+PRINTF_FORMAT_ATTR(2, 0)
+bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) {
     if (!_sir_sanity() || !_sir_validlevel(level) || !_sir_validstr(format))
         return false;
 
@@ -1193,12 +1194,18 @@ pid_t _sir_gettid(void) {
     if (0 != gettid)
         _sir_handleerr(gettid);
     tid = (pid_t)tid64;
-#elif (defined(__BSD__) && !defined(__NetBSD__)) || defined(__DragonFly_getthreadid__)
+#elif (defined(__BSD__) && !defined(__NetBSD__) && !defined(__OpenBSD__)) || \
+      defined(__DragonFly_getthreadid__)
     tid = (pid_t)pthread_getthreadid_np();
-#elif defined(__SOLARIS__) || defined(__NetBSD__) || defined(__DragonFly__) || defined(__CYGWIN__)
+#elif defined(__OpenBSD__)
+    tid = (pid_t)getthrid();
+#elif defined(__SOLARIS__) || defined(__NetBSD__) || \
+      defined(__DragonFly__) || defined(__CYGWIN__)
     tid = (pid_t)pthread_self();
 #elif defined(__HAIKU__)
     tid = get_pthread_thread_id(pthread_self());
+#elif defined(__serenity__)
+    tid = gettid();
 #elif defined(_DEFAULT_SOURCE)
     tid = syscall(SYS_gettid);
 #elif defined(__WIN__)
