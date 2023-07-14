@@ -27,6 +27,7 @@
 #include "sirconsole.h"
 #include "sirdefaults.h"
 #include "sirfilecache.h"
+#include "sirplugins.h"
 #include "sirtextstyle.h"
 #include "sirfilesystem.h"
 #include "sirmutex.h"
@@ -167,6 +168,13 @@ bool _sir_init(sirinit* si) {
 #endif
 
     _sir_unlocksection(SIRMI_CONFIG);
+
+    ////////// TEST CODE ///////////////
+    sirpluginid id = _sir_plugin_load("./build/lib/dummy_plugin.so");
+    if (!id)
+        _sir_selflog("failed to load plugin /build/lib/dummy_plugin.so!");
+    ////////////////////////////////////
+
     return true;
 }
 
@@ -186,6 +194,16 @@ bool _sir_cleanup(void) {
 
     _sir_unlocksection(SIRMI_FILECACHE);
     cleanup &= destroyfc;
+
+    sir_plugincache* spc = _sir_locksection(SIRMI_PLUGINCACHE);
+    if (!_sir_validptr(spc)) {
+        _sir_seterror(_SIR_E_INTERNAL);
+        return false;
+    }
+
+    bool destroypc = _sir_plugin_cache_destroy(spc);
+    _sir_unlocksection(SIRMI_PLUGINCACHE);
+    cleanup &= destroypc;
 
     sirconfig* _cfg = _sir_locksection(SIRMI_CONFIG);
     if (!_sir_validptr(_cfg)) {
@@ -594,7 +612,8 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     SIR_ASSERT(NULL != style_str);
     if (NULL != style_str)
-        fmt = (0 == _sir_strncpy(buf.style, SIR_MAXSTYLE, style_str, SIR_MAXSTYLE));
+        fmt = (0 == _sir_strncpy(buf.style, SIR_MAXSTYLE, style_str,
+            strnlen(style_str, SIR_MAXSTYLE)));
     _SIR_UNUSED(fmt);
     SIR_ASSERT(fmt);
 
@@ -637,7 +656,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     if (cfg.state.last.prefix[0] == buf.message[0]  &&
         cfg.state.last.prefix[1] == buf.message[1]) {
-        hash  = FNV_1a(buf.message);
+        hash  = FNV64_1a(buf.message);
         match = cfg.state.last.hash == hash;
     }
 
@@ -742,6 +761,20 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
 
     dispatched += fdispatched;
     wanted += fwanted;
+
+    sir_plugincache* spc = _sir_locksection(SIRMI_PLUGINCACHE);
+    if (!_sir_validptr(spc)) {
+        _sir_seterror(_SIR_E_INTERNAL);
+        return false;
+    }
+
+    size_t pdispatched = 0;
+    size_t pwanted     = 0;
+    retval &= _sir_plugin_cache_dispatch(spc, level, buf, &pdispatched, &pwanted);
+    _sir_unlocksection(SIRMI_PLUGINCACHE);
+
+    dispatched += pdispatched;
+    wanted += pwanted;
 
     if (0 == wanted) {
         _sir_seterror(_SIR_E_NODEST);

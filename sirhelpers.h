@@ -308,11 +308,24 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
 int _sir_getchar(void);
 
 /**
- * Implementation of the FNV-1a OWHF (http://www.isthe.com/chongo/tech/comp/fnv/)
- * watered down to only hash null-terminated strings.
+ * Implementation of the 32-bit FNV-1a OWHF (http://isthe.com/chongo/tech/comp/fnv/)
  */
 static inline
-uint64_t FNV_1a(const char* str)
+uint32_t FNV32_1a(const uint8_t* data, size_t len) {
+    uint32_t hash = 2166136261U;
+    for (size_t n = 0; n < len; n++) {
+        hash ^= (uint32_t)data[n];
+        hash *= 16777619U;
+    }
+    return hash;
+}
+
+/**
+ * Implementation of the 64-bit FNV-1a OWHF (http://isthe.com/chongo/tech/comp/fnv/)
+ * watered down to only handle null-terminated strings.
+ */
+static inline
+uint64_t FNV64_1a(const char* str)
 {
     uint64_t hash = 14695981039346656037UL;
     for (const char* c = str; *c; c++) {

@@ -42,7 +42,7 @@
 typedef const int* sirfileid;
 
 /** Plugin module identifier type. */
-typedef const int* sirpluginid;
+typedef const uint32_t sirpluginid;
 
 /** Defines the available levels (severity/priority) of logging output. */
 typedef enum {
@@ -315,7 +315,9 @@ typedef struct {
     sir_plugin_initfn init;       /**< Handle to sir_plugin_init. */
     sir_plugin_writefn write;     /**< Handle to sir_plugin_write. */
     sir_plugin_cleanupfn cleanup; /**< Handle to sir_plugin_cleanup. */
-} sir_pluginv1;
+} sir_pluginifacev1;
+
+# define sir_pluginiface sir_pluginifacev1
 
 /** Plugin module data. */
 typedef struct {
@@ -324,12 +326,13 @@ typedef struct {
     sir_plugininfo info;     /**< Information reported by the plugin.  */
     bool loaded;             /**< Whether the module is currently loaded. */
     bool valid;              /**< Whether the module is loaded and valid. */
-    sir_pluginv1 iface;      /**< Versioned interface to the plugin module. */
-} sirplugin;
+    sir_pluginiface iface;   /**< Versioned interface to the plugin module. */
+    uint64_t id;             /**< Unique identifier. */
+} sir_plugin;
 
 /** Plugin module cache. */
 typedef struct {
-    sirplugin* plugins[SIR_MAXPLUGINS];
+    sir_plugin* plugins[SIR_MAXPLUGINS];
     size_t count;
 } sir_plugincache;
 
