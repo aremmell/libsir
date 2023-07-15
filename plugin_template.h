@@ -1,5 +1,5 @@
 /**
- * @file template.h
+ * @file plugin_template.h
  * @brief Defines the interface that libsir plugins must implement.
  *
  * libsir plugins are shared library objects, which must export a specific set
