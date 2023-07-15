@@ -123,11 +123,23 @@ bool sir_remfile(sirfileid id) {
 }
 
 sirpluginid sir_loadplugin(const char*path) {
+#if !defined(SIR_NO_PLUGINS)
     return _sir_plugin_load(path);
+#else
+    _SIR_UNUSED(path);
+    _sir_seterror(_SIR_E_UNAVAIL);
+    return 0;
+#endif
 }
 
 bool sir_unloadplugin(sirpluginid id) {
+#if !defined(SIR_NO_PLUGINS)
     return _sir_plugin_rem(id);
+#else
+    _SIR_UNUSED(id);
+    _sir_seterror(_SIR_E_UNAVAIL);
+    return false;
+#endif
 }
 
 bool sir_filelevels(sirfileid id, sir_levels levels) {
