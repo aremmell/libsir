@@ -146,8 +146,8 @@ $(BINDIR)/file.exists:
 	@touch $(BINDIR)/file.exists > /dev/null
 
 .PHONY: tests
-tests: $(OUT_TESTS)
-$(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS) $(BINDIR)/file.exists
+tests: $(OUT_TESTS) plugins
+$(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS) $(BINDIR)/file.exists plugins
 	@mkdir -p $(@D)
 	@mkdir -p $(BINDIR)
 	@mkdir -p $(LOGDIR)
