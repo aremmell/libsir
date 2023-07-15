@@ -484,27 +484,52 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
 bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
     const char* path = (const char*)match;
 #if !defined(__WIN__)
-    return 0 == strncmp(path, iter->path, SIR_MAXPATH);
+    char resolved1[SIR_MAXPATH] = {0};
+    char resolved2[SIR_MAXPATH] = {0};
+    struct stat st1 = {0}, st2  = {0};
+    bool stat1 = false, stat2   = false;
+
+    if (NULL == realpath(path, resolved1))
+        _sir_selflog("warning: realpath('%s') failed (%d); resolved: '%s'",
+            path, errno, resolved1);
+
+    stat1 = 0 == stat(resolved1, &st1);
+    if (!stat1)
+        _sir_selflog("warning: stat('%s') failed (%d);", resolved1, errno);
+
+    if (NULL == realpath(iter->path, resolved2))
+        _sir_selflog("warning: realpath('%s') failed (%d); resolved: '%s'",
+            iter->path, errno, resolved2);
+
+    stat2 = 0 == stat(resolved2, &st2);
+    if (!stat2)
+        _sir_selflog("warning: stat('%s') failed (%d)", resolved2, errno);
+
+    /* if we were able to stat both files, then we can do a comparison through
+     * the data returned. if not, fall back on trying to match the path by
+     * string comparison. */
+    bool equal = false;
+    if (stat1 && stat2)
+        equal = st1.st_dev == st2.st_dev && st1.st_ino == st2.st_ino;
+    else
+        equal = 0 == strncmp(resolved1, resolved2, SIR_MAXPATH);
+
+    _sir_selflog("returning %d for '%s' == '%s'", equal, resolved1, resolved2);
+    return equal;
 #else /* __WIN__ */
     /* open both files and compare their filesystem info. */
     bool equal = false;
     HANDLE h1 = CreateFileA(path, 0, FILE_SHARE_READ, NULL, OPEN_ALWAYS,
         FILE_ATTRIBUTE_NORMAL, NULL);
-    if (INVALID_HANDLE_VALUE == h1) {
-        _sir_selflog("error: failed to open '%s' (%lu); unable to compare to '%s'",
-            path, GetLastError(), iter->path);
-        _sir_handlewin32err(GetLastError());
-    }
+    if (INVALID_HANDLE_VALUE == h1)
+        _sir_selflog("warning: failed to open '%s' (%lu)", path, GetLastError());
 
     bool created1 = INVALID_HANDLE_VALUE != h1 && ERROR_ALREADY_EXISTS != GetLastError();
 
     HANDLE h2 = CreateFileA(iter->path, 0, FILE_SHARE_READ, NULL, OPEN_ALWAYS,
         FILE_ATTRIBUTE_NORMAL, NULL);
-    if (INVALID_HANDLE_VALUE == h2) {
-        _sir_selflog("error: failed to open '%s' (%lu); unable to compare to '%s'",
-            iter->path, GetLastError(), path);
-        _sir_handlewin32err(GetLastError());
-    }
+    if (INVALID_HANDLE_VALUE == h2)
+        _sir_selflog("warning: failed to open '%s' (%lu)", iter->path, GetLastError());
 
     bool created2 = INVALID_HANDLE_VALUE != h2 && ERROR_ALREADY_EXISTS != GetLastError();
 
