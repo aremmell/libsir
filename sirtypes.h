@@ -309,7 +309,7 @@ typedef bool (*sir_plugin_initfn)(void);
 typedef bool (*sir_plugin_writefn)(sir_level, const char*);
 typedef bool (*sir_plugin_cleanupfn)(void);
 
-/** Version 1 plugin interface. */
+/** Plugin interface for v1. */
 typedef struct {
     sir_plugin_queryfn query;     /**< Handle to sir_plugin_query. */
     sir_plugin_initfn init;       /**< Handle to sir_plugin_init. */
@@ -317,7 +317,7 @@ typedef struct {
     sir_plugin_cleanupfn cleanup; /**< Handle to sir_plugin_cleanup. */
 } sir_pluginifacev1;
 
-# define sir_pluginiface sir_pluginifacev1
+typedef sir_pluginifacev1 sir_pluginiface;
 
 /** Plugin module data. */
 typedef struct {
