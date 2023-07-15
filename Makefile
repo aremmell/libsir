@@ -67,17 +67,17 @@ LIBS = $(PTHOPT)
 
 # for test rig and example:
 # link with static library, not shared
-LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s $(PLATFORM_LIBS) $(LIBDL)
+LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s $(PLATFORM_LIBS)$(LIBDL)
 
 # translation units
 TUS := $(wildcard *.c)
 
 # intermediate files
-_OBJ = $(patsubst %.c, %.o, $(TUS))
-OBJ  = $(patsubst %, $(INTDIR)/%, $(_OBJ))
+_OBJ = $(strip $(patsubst %.c, %.o, $(TUS)))
+OBJ  = $(strip $(patsubst %, $(INTDIR)/%, $(_OBJ)))
 
 # shared library
-OBJ_SHARED     = $(patsubst %.o, $(INTDIR)/%.o, $(_OBJ))
+OBJ_SHARED     = $(strip $(patsubst %.o, $(INTDIR)/%.o, $(_OBJ)))
 OUT_SHARED_FN  = libsir$(PLATFORM_DLL_EXT)
 OUT_SHARED     = $(LIBDIR)/$(OUT_SHARED_FN)
 LDFLAGS_SHARED = $(LIBS) $(PLATFORM_LIBS)
@@ -101,7 +101,7 @@ OUT_TESTS      = $(BINDIR)/sirtests$(PLATFORM_EXE_EXT)
 
 .DEFAULT_GOAL := all
 .PHONY: all
-all: $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS) $(PGOALS)
+all: $(PGOALS) $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS)
 
 -include $(INTDIR)/*.d
 
@@ -189,12 +189,18 @@ clean distclean:
 ifneq ($(SIR_NO_PLUGINS),1)
 .PHONY: plugins
 plugins:
-	@$(MAKE) $(foreach V,$(sort $(strip $(PLUGINNAMES))), plugin-$V)
+	@$(MAKE) -q --no-print-directory $(OUT_SHARED) $(TUS) || \
+		$(MAKE) --no-print-directory \
+			$(foreach V,$(sort $(strip $(PLUGINNAMES))), plugin-$V) REMAKE=1
+	@$(MAKE) --no-print-directory $(foreach V,$(sort $(strip $(PLUGINNAMES))), plugin-$V)
 
 .PHONY: plugin-%
-plugin-%: $(OUT_SHARED)
-	$(CC) -shared -o $(LIBDIR)/$@$(PLATFORM_DLL_EXT) $(CFLAGS) $(wildcard $(subst plugin-,$(PLUGINS)/,$@)/*) $(LDFLAGS_SHARED)
-	-@printf 'built %s ($(LIBDIR)/$@$(PLATFORM_DLL_EXT)) successfully.\n' "$@" 2> /dev/null
+plugin-%: $(OUT_SHARED) $(TUS)
+	@$(MAKE) -q --no-print-directory $(OUT_SHARED) $(TUS) || export REMAKE=1; \
+	test -f $(LIBDIR)/$@$(PLATFORM_DLL_EXT) || export REMAKE=1; \
+	test $${REMAKE:-0} -eq 0 || { $(CC) -shared -o $(LIBDIR)/$@$(PLATFORM_DLL_EXT) $(CFLAGS) \
+		$(wildcard $(subst plugin-,$(PLUGINS)/,$@)/*) $(LDFLAGS_SHARED) && \
+	printf 'built %s successfully.\n' "$(LIBDIR)/$@$(PLATFORM_DLL_EXT)" 2> /dev/null; }
 endif
 
 .PHONY: printvars printenv
