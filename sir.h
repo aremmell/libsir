@@ -383,7 +383,33 @@ sirfileid sir_addfile(const char* path, sir_levels levels, sir_options opts);
  */
 bool sir_remfile(sirfileid id);
 
-sirpluginid sir_loadplugin(const char*path);
+/**
+ * @brief Loads a plugin module from disk.
+ *
+ * TODO lorem ipsum
+ *
+ * @see ::sir_unloadplugin
+ *
+ * @param  path
+ * @return sirpluginid A unique identifier that may later be used to unload the
+ *                     plugin module. Upon failure, returns zero. Use
+ *                     ::sir_geterror to obtain information about any error that
+ *                     may have occurred.
+ */
+sirpluginid sir_loadplugin(const char* path);
+
+/**
+ * @brief Unloads a previously loaded plugin module.
+ *
+ * TODO lorem ipsum
+ *
+ * @see ::sir_loadplugin
+ *
+ * @param   id   The ::sirpluginid obtained when the plugin was loaded via
+ *               ::sir_loadplugin.
+ * @returns bool `true` if the plugin module was located and successfully unloaded,
+ *               `false` otherwise.
+ */
 bool sir_unloadplugin(sirpluginid id);
 
 /**

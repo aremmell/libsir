@@ -122,7 +122,7 @@ bool sir_remfile(sirfileid id) {
     return _sir_remfile(id);
 }
 
-sirpluginid sir_loadplugin(const char*path) {
+sirpluginid sir_loadplugin(const char* path) {
 #if !defined(SIR_NO_PLUGINS)
     return _sir_plugin_load(path);
 #else
