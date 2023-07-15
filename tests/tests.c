@@ -362,18 +362,54 @@ bool sirtest_faildupefile(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    const char* filename = MAKE_LOG_NAME("faildupefile.log");
-    sirfileid fid        = sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
+#if !defined(__WIN__)
+    static const char* filename1 = "./logs/faildupefile.log";
+    static const char* filename2 = "logs/faildupefile.log"; 
+#else
+    static const char* filename1 = "logs\\faildupefile.log";
+    static const char* filename2 = "logs/faildupefile.log";
+#endif
 
+    static const char* filename3 = "logs/not-a-dupe.log";
+
+    printf("\tadding log file '%s'...\n", filename1);
+
+    /* should be fine; no other files added yet. */
+    sirfileid fid = sir_addfile(filename1, SIRL_ALL, SIRO_DEFAULT);
     pass &= NULL != fid;
-    pass &= NULL == sir_addfile(filename, SIRL_ALL, SIRO_DEFAULT);
+
+    printf("\ttrying again to add log file '%s'...\n", filename1);
+
+    /* should fail. this is the same file we already added. */
+    pass &= NULL == sir_addfile(filename1, SIRL_ALL, SIRO_DEFAULT);
 
     if (pass)
         print_expected_error();
 
-    pass &= sir_remfile(fid);
+    printf("\tadding log file '%s'...\n", filename2);
 
-    rmfile(filename);
+    /* should also fail. this is the same file we already added, even
+     * if the path strings don't match. */
+    pass &= NULL == sir_addfile(filename2, SIRL_ALL, SIRO_DEFAULT);
+
+    if (pass)
+        print_expected_error();
+
+    printf("\tadding log file '%s'...\n", filename3);
+
+    /* should pass. this is a different file. */
+    sirfileid fid2 = sir_addfile(filename3, SIRL_ALL, SIRO_DEFAULT);
+    pass &= NULL != fid2;
+
+    pass &= sir_info("hello two valid files");
+
+    pass &= sir_remfile(fid);
+    pass &= sir_remfile(fid2);
+
+    rmfile(filename1);
+    rmfile(filename2);
+    rmfile(filename3);
+
     sir_cleanup();
     return print_result_and_return(pass);
 }

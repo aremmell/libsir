@@ -337,12 +337,12 @@ bool _sirfile_archive(sirfile* sf, const char* newpath) {
 }
 
 bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
-    if (NULL != name)
+    if (_sir_validptrptr(name))
         *name = NULL;
-    if (NULL != ext)
+    if (_sir_validptrptr(ext))
         *ext = NULL;
 
-    if (!_sirfile_validate(sf) || !_sir_validptr(name) || !_sir_validptr(ext))
+    if (!_sirfile_validate(sf) || !_sir_validptrptr(name) || !_sir_validptrptr(ext))
         return false;
 
     char* lastfullstop = strrchr(sf->path, '.');
@@ -482,13 +482,50 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
 }
 
 bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
-#pragma message("TODO: GitHub issue #135")
     const char* path = (const char*)match;
 #if !defined(__WIN__)
     return 0 == strncmp(path, iter->path, SIR_MAXPATH);
 #else /* __WIN__ */
-    /* paths/file names are not case sensitive on windows. */
-    return 0 == _strnicmp(path, iter->path, SIR_MAXPATH);
+    /* open both files and compare their filesystem info. */
+    bool equal = false;
+    HANDLE h1 = CreateFileA(path, 0, FILE_SHARE_READ, NULL, OPEN_ALWAYS,
+        FILE_ATTRIBUTE_NORMAL, NULL);
+    if (INVALID_HANDLE_VALUE == h1) {
+        _sir_selflog("error: failed to open '%s' (%lu); unable to compare to '%s'",
+            path, GetLastError(), iter->path);
+        _sir_handlewin32err(GetLastError());
+    }
+
+    bool created1 = INVALID_HANDLE_VALUE != h1 && ERROR_ALREADY_EXISTS != GetLastError();
+
+    HANDLE h2 = CreateFileA(iter->path, 0, FILE_SHARE_READ, NULL, OPEN_ALWAYS,
+        FILE_ATTRIBUTE_NORMAL, NULL);
+    if (INVALID_HANDLE_VALUE == h2) {
+        _sir_selflog("error: failed to open '%s' (%lu); unable to compare to '%s'",
+            iter->path, GetLastError(), path);
+        _sir_handlewin32err(GetLastError());
+    }
+
+    bool created2 = INVALID_HANDLE_VALUE != h2 && ERROR_ALREADY_EXISTS != GetLastError();
+
+    BY_HANDLE_FILE_INFORMATION fi1 = {0}, fi2 = {0};
+    if (!GetFileInformationByHandle(h1, &fi1) || !GetFileInformationByHandle(h2, &fi2)) {
+        _sir_selflog("GetFileInformationByHandle failed (%lu)", GetLastError());
+        _sir_handlewin32err(GetLastError());
+    } else {
+        equal = fi1.dwVolumeSerialNumber == fi2.dwVolumeSerialNumber &&
+                fi1.nFileIndexLow        == fi2.nFileIndexLow        &&
+                fi1.nFileIndexHigh       == fi2.nFileIndexHigh;
+    }
+
+    if (created1)
+        DeleteFileA(path);
+
+    if (created2)
+        DeleteFileA(iter->path);
+
+    _sir_selflog("returning %d for '%s' == '%s'", equal, path, iter->path);
+    return equal;
 #endif
 }
 
