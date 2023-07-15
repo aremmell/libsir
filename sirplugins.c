@@ -387,7 +387,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
 uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
     _SIR_UNUSED(handle);
     _SIR_UNUSED(name);
-    return NULL;
+    return 0;
 }
 
 void _sir_plugin_unload(sir_plugin* plugin) {
