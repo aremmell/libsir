@@ -50,10 +50,14 @@ enum sir_errorcode {
     SIR_E_NODEST    = 12,   /**< No destinations registered for level */
     SIR_E_UNAVAIL   = 13,   /**< Feature is disabled or unavailable */
     SIR_E_INTERNAL  = 14,   /**< An internal error has occurred */
-    SIR_E_COLORMODE = 15,   /**< Invalid color mode */
-    SIR_E_TEXTATTR  = 16,   /**< Invalid text attributes */
-    SIR_E_TEXTCOLOR = 17,   /**< Invalid text color */
-    SIR_E_PLATFORM  = 18,   /**< Platform error code %%d: %%s */
+    SIR_E_COLORMODE = 15,   /**< Color mode is invalid */
+    SIR_E_TEXTATTR  = 16,   /**< Text attributes are invalid */
+    SIR_E_TEXTCOLOR = 17,   /**< Text color is invalid for mode */
+    SIR_E_PLUGINBAD = 18,   /**< Plugin module is malformed */
+    SIR_E_PLUGINDAT = 19,   /**< Data produced by plugin is invalid */
+    SIR_E_PLUGINVER = 20,   /**< Plugin interface version unsupported */
+    SIR_E_PLUGINERR = 21,   /**< Plugin reported failure */
+    SIR_E_PLATFORM  = 22,   /**< Platform error code %%d: %%s */
     SIR_E_UNKNOWN   = 4095, /**< Unknown error */
 };
 
@@ -77,6 +81,10 @@ enum sir_errorcode {
 # define _SIR_E_COLORMODE _sir_mkerror(SIR_E_COLORMODE)
 # define _SIR_E_TEXTATTR  _sir_mkerror(SIR_E_TEXTATTR)
 # define _SIR_E_TEXTCOLOR _sir_mkerror(SIR_E_TEXTCOLOR)
+# define _SIR_E_PLUGINBAD _sir_mkerror(SIR_E_PLUGINBAD)
+# define _SIR_E_PLUGINDAT _sir_mkerror(SIR_E_PLUGINDAT)
+# define _SIR_E_PLUGINVER _sir_mkerror(SIR_E_PLUGINVER)
+# define _SIR_E_PLUGINERR _sir_mkerror(SIR_E_PLUGINERR)
 # define _SIR_E_PLATFORM  _sir_mkerror(SIR_E_PLATFORM)
 # define _SIR_E_UNKNOWN   _sir_mkerror(SIR_E_UNKNOWN)
 
@@ -99,9 +107,13 @@ static const struct {
     {_SIR_E_NODEST,    "No destinations registered for level"},
     {_SIR_E_UNAVAIL,   "Feature is disabled or unavailable"},
     {_SIR_E_INTERNAL,  "An internal error has occurred"},
-    {_SIR_E_COLORMODE, "Invalid color mode"},
-    {_SIR_E_TEXTATTR,  "Invalid text attributes"},
-    {_SIR_E_TEXTCOLOR, "Invalid text color"},
+    {_SIR_E_COLORMODE, "Color mode is invalid"},
+    {_SIR_E_TEXTATTR,  "Text attributes are invalid"},
+    {_SIR_E_TEXTCOLOR, "Text color is invalid for mode"},
+    {_SIR_E_PLUGINBAD, "Plugin module is malformed"},
+    {_SIR_E_PLUGINDAT, "Data produced by plugin is invalid"},
+    {_SIR_E_PLUGINVER, "Plugin interface version unsupported"},
+    {_SIR_E_PLUGINERR, "Plugin reported failure"},
     {_SIR_E_PLATFORM,  "Platform error code %d: %s"},
     {_SIR_E_UNKNOWN,   "Unknown error"},
 };

@@ -614,8 +614,12 @@ bool sirtest_errorsanity(void) {
         {SIR_E_COLORMODE, "SIR_E_COLORMODE"}, /**< Invalid color mode (15) */
         {SIR_E_TEXTATTR,  "SIR_E_TEXTATTR"},  /**< Invalid text attributes (16) */
         {SIR_E_TEXTCOLOR, "SIR_E_TEXTCOLOR"}, /**< Invalid text color (17) */
-        {SIR_E_PLATFORM,  "SIR_E_PLATFORM"},  /**< Platform error code %d: %s (18) */
-        {SIR_E_UNKNOWN,   "SIR_E_UNKNOWN"},   /**< Error is not known (4095) */
+        {SIR_E_PLUGINBAD, "SIR_E_PLUGINBAD"}, /**< Plugin module is malformed (18) */
+        {SIR_E_PLUGINDAT, "SIR_E_PLUGINDAT"}, /**< Data produced by plugin is invalid (19) */
+        {SIR_E_PLUGINVER, "SIR_E_PLUGINVER"}, /**< Plugin interface version unsupported (20) */
+        {SIR_E_PLUGINERR, "SIR_E_PLUGINERR"}, /**< Plugin reported failure (21) */
+        {SIR_E_PLATFORM,  "SIR_E_PLATFORM"},  /**< Platform error code %d: %s (22) */
+        {SIR_E_UNKNOWN,   "SIR_E_UNKNOWN"},   /**< Unknown error (4095) */
     };
 
     char message[SIR_MAXERROR] = {0};
