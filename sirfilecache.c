@@ -517,39 +517,42 @@ bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
     _sir_selflog("returning %d for '%s' == '%s'", equal, resolved1, resolved2);
     return equal;
 #else /* __WIN__ */
-    /* open both files and compare their filesystem info. */
+    /* open both files (only if they already exist) and compare their
+     * filesystem info. failing that, fall back on conversion to canonical path
+     * and string comparison. */
     bool equal = false;
-    HANDLE h1 = CreateFileA(path, 0, FILE_SHARE_READ, NULL, OPEN_ALWAYS,
-        FILE_ATTRIBUTE_NORMAL, NULL);
-    if (INVALID_HANDLE_VALUE == h1)
-        _sir_selflog("warning: failed to open '%s' (%lu)", path, GetLastError());
+    HANDLE h1 = CreateFileA(path,0, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+                    NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    bool opened1 = INVALID_HANDLE_VALUE != h1;
 
-    bool created1 = INVALID_HANDLE_VALUE != h1 && ERROR_ALREADY_EXISTS != GetLastError();
+    HANDLE h2 = CreateFileA(iter->path,0, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+                    NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    bool opened2 = INVALID_HANDLE_VALUE != h2;
 
-    HANDLE h2 = CreateFileA(iter->path, 0, FILE_SHARE_READ, NULL, OPEN_ALWAYS,
-        FILE_ATTRIBUTE_NORMAL, NULL);
-    if (INVALID_HANDLE_VALUE == h2)
-        _sir_selflog("warning: failed to open '%s' (%lu)", iter->path, GetLastError());
-
-    bool created2 = INVALID_HANDLE_VALUE != h2 && ERROR_ALREADY_EXISTS != GetLastError();
-
-    BY_HANDLE_FILE_INFORMATION fi1 = {0}, fi2 = {0};
-    if (!GetFileInformationByHandle(h1, &fi1) || !GetFileInformationByHandle(h2, &fi2)) {
-        _sir_selflog("GetFileInformationByHandle failed (%lu)", GetLastError());
-        _sir_handlewin32err(GetLastError());
+    if (opened1 && opened2) {
+        BY_HANDLE_FILE_INFORMATION fi1 = {0}, fi2 = {0};
+        if (GetFileInformationByHandle(h1, &fi1) && GetFileInformationByHandle(h2, &fi2)) {
+            equal = fi1.dwVolumeSerialNumber == fi2.dwVolumeSerialNumber &&
+                    fi1.nFileIndexLow        == fi2.nFileIndexLow        &&
+                    fi1.nFileIndexHigh       == fi2.nFileIndexHigh;
+        }
+        _sir_selflog("returning %d for '%s' == '%s'", equal, path, iter->path);
     } else {
-        equal = fi1.dwVolumeSerialNumber == fi2.dwVolumeSerialNumber &&
-                fi1.nFileIndexLow        == fi2.nFileIndexLow        &&
-                fi1.nFileIndexHigh       == fi2.nFileIndexHigh;
+        _sir_selflog("falling back to conversion to canonical path and string compare");
+        char resolved1[SIR_MAXPATH] = {0}, resolved2[SIR_MAXPATH] = {0};
+        DWORD getpath1 = GetFullPathNameA(path, SIR_MAXPATH, resolved1, NULL);
+        DWORD getpath2 = GetFullPathNameA(iter->path, SIR_MAXPATH, resolved2, NULL);
+        if (0 != getpath1 && 0 != getpath2)
+            equal = 0 == StrCmpIA(resolved1, resolved2);
+        _sir_selflog("returning %d for '%s' == '%s'", equal, resolved1, resolved2);
     }
 
-    if (created1)
-        DeleteFileA(path);
+    if (opened1)
+        CloseHandle(h1);
 
-    if (created2)
-        DeleteFileA(iter->path);
+    if (opened2)
+        CloseHandle(h2);
 
-    _sir_selflog("returning %d for '%s' == '%s'", equal, path, iter->path);
     return equal;
 #endif
 }
