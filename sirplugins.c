@@ -90,11 +90,12 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
 
     if (!plugin->iface.query || !plugin->iface.init ||
         !plugin->iface.write || !plugin->iface.cleanup) {
-        _sir_selflog("error: >=1 exports not resolved for plugin (path:"
+        _sir_selflog("error: export(s) not resolved for plugin (path:"
                      " '%s', addr: %p)!", plugin->path, plugin->handle);
         _sir_selflog("exports (query: %p, init: %p, write: %p, cleanup; %p)",
                      (void*)plugin->iface.query, (void*)plugin->iface.init,
                      (void*)plugin->iface.write, (void*)plugin->iface.cleanup);
+        _sir_seterror(_SIR_E_PLUGINBAD);
         _sir_plugin_destroy(&plugin);
         return 0;
     }
@@ -103,6 +104,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     if (!plugin->iface.query(&plugin->info)) {
         _sir_selflog("error: plugin (path: '%s', addr: %p) returned false from"
                      " query fn!", plugin->path, plugin->handle);
+        _sir_seterror(_SIR_E_PLUGINERR);
         _sir_plugin_destroy(&plugin);
         return 0;
     }
@@ -110,9 +112,9 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     /* verify version. */
     if (plugin->info.iface_ver != SIR_PLUGIN_VCURRENT) {
         _sir_selflog("error: plugin (path: '%s', addr: %p) has version"
-                     " %"PRIu8", libsir has %"PRIu8, plugin->path, plugin->handle,
-                     plugin->info.iface_ver, (uint8_t)SIR_PLUGIN_VCURRENT);
-        _sir_seterror(_SIR_E_INVALID);
+                     " %"PRIu8"; libsir has %d", plugin->path, plugin->handle,
+                     plugin->info.iface_ver, SIR_PLUGIN_VCURRENT);
+        _sir_seterror(_SIR_E_PLUGINVER);
         _sir_plugin_destroy(&plugin);
         return 0;
     }
@@ -121,7 +123,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     if (!_sir_validlevels(plugin->info.levels)) {
         _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid levels"
                      " %04"PRIx16, plugin->path, plugin->handle, plugin->info.levels);
-        _sir_seterror(_SIR_E_LEVELS);
+        _sir_seterror(_SIR_E_PLUGINDAT);
         _sir_plugin_destroy(&plugin);
         return 0;
     }
@@ -130,7 +132,17 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     if (!_sir_validopts(plugin->info.opts)) {
         _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid opts"
                      " %08"PRIx32, plugin->path, plugin->handle, plugin->info.opts);
-        _sir_seterror(_SIR_E_OPTIONS);
+        _sir_seterror(_SIR_E_PLUGINDAT);
+        _sir_plugin_destroy(&plugin);
+        return 0;
+    }
+
+    /* verify strings */
+    if (!_sir_validstrnofail(plugin->info.author) ||
+        !_sir_validstrnofail(plugin->info.desc)) {
+        _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid author"
+                     " or description", plugin->path, plugin->handle);
+        _sir_seterror(_SIR_E_PLUGINDAT);
         _sir_plugin_destroy(&plugin);
         return 0;
     }
@@ -140,6 +152,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     if (!plugin->iface.init()) {
         _sir_selflog("error: plugin (path: '%s', addr: %p) failed to initialize!",
             plugin->path, plugin->handle);
+        _sir_seterror(_SIR_E_PLUGINERR);
         _sir_plugin_destroy(&plugin);
         return 0;
     }
@@ -147,23 +160,30 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     plugin->id    = FNV32_1a((const uint8_t*)&plugin->iface, sizeof(sir_pluginiface));
     plugin->valid = true;
 
-    _sir_selflog("successfully loaded plugin (path: '%s', id: %08"PRIx32");"
-                 " properties:\n{\n\tmaj_ver = %"PRIu8"\n\tmin_ver = %"PRIu8
-                 "\n\tbld_ver = %"PRIu8"\n\tlevels = %04"PRIx16"\n\topts = %08"
-                 PRIx32"\n\tauthor = '%s'\n\tdesc = '%s'\n\tcaps = %016"PRIx64"\n}",
-                 plugin->path, plugin->id, plugin->info.maj_ver,
-                 plugin->info.min_ver, plugin->info.bld_ver, plugin->info.levels,
-                 plugin->info.opts, _SIR_PRNSTR(plugin->info.author),
-                 _SIR_PRNSTR(plugin->info.desc), plugin->info.caps);
+    _sir_selflog("successfully validated plugin (path: '%s', id: %08"PRIx32")."
+                 " properties:\n{\n\tversion =\t%"PRIu8".%"PRIu8".%"PRIu8"\n\t"
+                 "levels =\t%04"PRIx16"\n\topts =\t%08"PRIx32"\n\tauthor =\t'%s'"
+                 "\n\tdesc =\t'%s'\n\tcaps =\t%016"PRIx64"\n}", plugin->path,
+                 plugin->id, plugin->info.maj_ver, plugin->info.min_ver,
+                 plugin->info.bld_ver, plugin->info.levels, plugin->info.opts,
+                 _SIR_PRNSTR(plugin->info.author), _SIR_PRNSTR(plugin->info.desc),
+                 plugin->info.caps);
 
-    return _sir_plugin_add(plugin);
+    sirpluginid retval = _sir_plugin_add(plugin);
+    if (0 == retval) {
+        _sir_selflog("error: failed to add plugin (path: '%s', addr: %p) to"
+                     " cache; unloading", plugin->path, plugin->id);
+        _sir_plugin_destroy(&plugin);
+    }
+
+    return retval;
 #else
-# error "no implementation for this plugin version"
+# error "plugin version not implemented"
 #endif
 }
 
 uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
-    if (!_sir_validptr(handle))
+    if (!_sir_validptr(handle) || !_sir_validstr(name))
         return 0;
 
 #if !defined(__WIN__)
@@ -179,14 +199,15 @@ uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
     sir_pluginexport addr = GetProcAddress(handle, name);
     if (!addr) {
         DWORD err = GetLastError();
-        _sir_selflog("error: GetProcAddressA(%p, '%s') failed (%lu)", handle,
+        _sir_selflog("error: GetProcAddress(%p, '%s') failed (%lu)", handle,
             name, err);
         _sir_handlewin32err(err);
         return 0;
     }
 #endif
 
-    _sir_selflog("resolved plugin export (name: '%s', addr: %p)", name, addr);
+    _sir_selflog("successfully resolved plugin export (name: '%s', addr: %p)",
+        name, addr);
     return (uintptr_t)addr;
 }
 
