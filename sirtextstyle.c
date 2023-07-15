@@ -208,16 +208,20 @@ bool _sir_setcolormode(sir_colormode mode) {
         return false;
     }
 
-    sir_colormode old = *data->color_mode;
-    *data->color_mode  = mode;
 
-    _sir_selflog("color mode changed from %"PRId32" to %"PRId32, old, mode);
+    if (*data->color_mode != mode) {
+        sir_colormode old = *data->color_mode;
+        *data->color_mode = mode;
+        _sir_selflog("color mode changed from %"PRId32" to %"PRId32, old, mode);
 
-    /* when the color mode changes, it's necessary to regenerate the text styles
-     * we're holding. for example in the case of downgrading color modes, the
-     * styles in memory could be incompatible with the new mode. */
-    if (!_sir_resettextstyles())
-        _sir_selflog("error: failed to reset text styles!");
+        /* when the color mode changes, it's necessary to regenerate the text styles
+        * we're holding. for example in the case of downgrading color modes, the
+        * styles in memory could be incompatible with the new mode. */
+        if (!_sir_resettextstyles())
+            _sir_selflog("error: failed to reset text styles!");
+    } else {
+        _sir_selflog("skipped superfluous update of color mode: %"PRId32, mode);
+    }
 
     _sir_unlocksection(SIRMI_TEXTSTYLE);
 
