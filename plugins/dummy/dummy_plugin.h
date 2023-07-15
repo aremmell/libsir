@@ -26,15 +26,15 @@
 #ifndef _SIR_DUMMY_PLUGIN_H_INCLUDED
 # define _SIR_DUMMY_PLUGIN_H_INCLUDED
 
-#include <sirplatform.h>
-#include <sirtypes.h>
+# include <sirplatform.h>
+# include <sirtypes.h>
 
-#if defined(__WIN__)
+# if defined(__WIN__)
 BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved);
-#define PLUGIN_EXPORT __declspec(dllexport)
-#else
-#define PLUGIN_EXPORT
-#endif
+#  define PLUGIN_EXPORT __declspec(dllexport)
+# else
+#  define PLUGIN_EXPORT
+# endif
 
 PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info);
 PLUGIN_EXPORT bool sir_plugin_init(void);

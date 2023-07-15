@@ -32,7 +32,7 @@ sirpluginid _sir_plugin_load(const char* path) {
     if (!_sir_validstr(path))
         return 0;
 
-#if !defined (__WIN__)
+# if !defined (__WIN__)
     sir_pluginhandle handle = dlopen(path, RTLD_NOW | RTLD_LOCAL);
     if (!handle) {
         const char* err = dlerror();
@@ -40,7 +40,7 @@ sirpluginid _sir_plugin_load(const char* path) {
         _sir_handleerr(errno);
         return 0;
     }
-#else /* __WIN__ */
+# else /* __WIN__ */
     UINT old_error_mode     = SetErrorMode(SEM_FAILCRITICALERRORS);
     sir_pluginhandle handle = LoadLibraryA(path);
     SetErrorMode(old_error_mode);
@@ -50,7 +50,7 @@ sirpluginid _sir_plugin_load(const char* path) {
         _sir_handlewin32err(err);
         return 0;
     }
-#endif
+# endif
 
     sir_plugin* plugin = (sir_plugin*)calloc(1, sizeof(sir_plugin));
     if (!plugin) {
@@ -78,7 +78,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         !_sir_validstr(plugin->path))
         return 0;
 
-#if SIR_PLUGIN_VCURRENT == SIR_PLUGIN_V1
+# if SIR_PLUGIN_VCURRENT == SIR_PLUGIN_V1
     plugin->iface.query   = (sir_plugin_queryfn)
         _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_QUERY);
     plugin->iface.init    = (sir_plugin_initfn)
@@ -177,16 +177,16 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     }
 
     return retval;
-#else
-# error "plugin version not implemented"
-#endif
+# else
+#  error "plugin version not implemented"
+# endif
 }
 
 uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
     if (!_sir_validptr(handle) || !_sir_validstr(name))
         return 0;
 
-#if !defined(__WIN__)
+# if !defined(__WIN__)
     sir_pluginexport addr = dlsym(handle, name);
     if (!addr) {
         const char* err = dlerror();
@@ -195,7 +195,7 @@ uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
         _sir_handleerr(errno);
         return 0;
     }
-#else /* __WIN__ */
+# else /* __WIN__ */
     sir_pluginexport addr = GetProcAddress(handle, name);
     if (!addr) {
         DWORD err = GetLastError();
@@ -204,7 +204,7 @@ uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
         _sir_handlewin32err(err);
         return 0;
     }
-#endif
+# endif
 
     _sir_selflog("successfully resolved plugin export (name: '%s', addr: %p)",
         name, addr);
@@ -219,7 +219,7 @@ void _sir_plugin_unload(sir_plugin* plugin) {
     if (plugin->iface.cleanup)
         plugin->iface.cleanup();
 
-#if !defined(__WIN__)
+# if !defined(__WIN__)
     int ret = dlclose(plugin->handle);
     if (0 != ret) {
         const char* err = dlerror();
@@ -228,14 +228,14 @@ void _sir_plugin_unload(sir_plugin* plugin) {
         _sir_handleerr(errno);
         return;
     }
-#else /* __WIN__ */
+# else /* __WIN__ */
     if (!FreeLibrary(plugin->handle)) {
         DWORD err = GetLastError();
         _sir_selflog("error: FreeLibrary(%p) failed (%lu)", plugin->handle, err);
         _sir_handlewin32err(err);
         return;
     }
-#endif
+# endif
 
     plugin->handle = NULL;
     plugin->loaded = false;

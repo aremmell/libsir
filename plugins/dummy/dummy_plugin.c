@@ -47,7 +47,7 @@ BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved)
 {
     _SIR_UNUSED(module);
     _SIR_UNUSED(reserved);
-#if defined(SIR_DEBUG)
+# if defined(SIR_DEBUG)
     switch (ul_reason_for_call)
     {
         case DLL_PROCESS_ATTACH:
@@ -63,9 +63,9 @@ BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved)
             OutputDebugStringA("Got DLL_PROCESS_DETACH\n");
             break;
     }
-#else
+# else
     _SIR_UNUSED(ul_reason_for_call);
-#endif
+# endif
 
     return TRUE;
 }
