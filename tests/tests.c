@@ -1546,11 +1546,11 @@ bool sirtest_pluginloader(void) {
 # define PLUGIN_EXT "dll"
 #endif
 
-    static const char* plugin1 = "build/lib/plugin-dummy."PLUGIN_EXT;
-    static const char* plugin2 = "build/lib/plugin-dummy_bad1."PLUGIN_EXT;
-    static const char* plugin3 = "build/lib/plugin-dummy_bad2."PLUGIN_EXT;
-    static const char* plugin4 = "build/lib/plugin-dummy_bad3."PLUGIN_EXT;
-    static const char* plugin5 = "build/lib/plugin-dummy_bad4."PLUGIN_EXT;
+    static const char* plugin1 = "build/lib/dummy_plugin."PLUGIN_EXT;
+    static const char* plugin2 = "build/lib/dummy_plugin_bad1."PLUGIN_EXT;
+    static const char* plugin3 = "build/lib/dummy_plugin_bad2."PLUGIN_EXT;
+    static const char* plugin4 = "build/lib/dummy_plugin_bad3."PLUGIN_EXT;
+    static const char* plugin5 = "build/lib/dummy_plugin_bad4."PLUGIN_EXT;
 
     /* load a valid, well-behaved plugin. */
     printf("\tloading good plugin: '%s'...\n", plugin1);
