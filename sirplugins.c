@@ -273,6 +273,14 @@ sirpluginid _sir_plugin_cache_add(sir_plugincache* spc, sir_plugin* plugin) {
         return 0;
     }
 
+    sir_plugin* existing = _sir_plugin_cache_find_id(spc, plugin->id);
+    if (NULL != existing) {
+        _sir_selflog("error: already have plugin with id %08"PRIx32 " at path"
+                     " '%s'", plugin->id, existing->path);
+        _sir_seterror(_SIR_E_DUPITEM);
+        return 0;
+    }
+
     spc->plugins[spc->count++] = plugin;
     _sir_selflog("added plugin (path: %s, id: %08"PRIx32") to cache; count = %zu",
         plugin->path, plugin->id, spc->count);
