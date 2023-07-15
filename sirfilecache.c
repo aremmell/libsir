@@ -155,7 +155,7 @@ bool _sirfile_write(sirfile* sf, const char* output) {
         bool rolled   = false;
         char* newpath = NULL;
 
-        _sir_selflog("file %d (path: '%s') reached ~%ld bytes in size; rolling...",
+        _sir_selflog("file %d (path: '%s') reached ~%d bytes in size; rolling...",
             sf->id, sf->path, SIR_FROLLSIZE);
 
         _sir_fflush(sf->f);

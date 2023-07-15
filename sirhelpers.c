@@ -207,7 +207,7 @@ bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color) {
 
     if (!valid) {
         _sir_selflog("invalid text color for mode %d %08" PRIx32 " (%" PRId32 ")",
-            mode, color);
+            mode, color, color);
         _sir_seterror(_SIR_E_TEXTCOLOR);
     }
 
