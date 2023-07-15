@@ -51,7 +51,8 @@ static sir_test sir_tests[] = {
     {"syslog",                  sirtest_syslog, false, true},
     {"os_log",                  sirtest_os_log, false, true},
     {"filesystem",              sirtest_filesystem, false, true},
-    {"squelch-spam",            sirtest_squelchspam, false, true}
+    {"squelch-spam",            sirtest_squelchspam, false, true},
+    {"plugin-loader",           sirtest_pluginloader, false, true}
 };
 
 bool leave_logs = false;
@@ -1530,6 +1531,69 @@ bool sirtest_squelchspam(void) {
         if (ascii_idx == 125)
             ascii_idx = 33;
     }
+
+    sir_cleanup();
+    return print_result_and_return(pass);
+}
+
+bool sirtest_pluginloader(void) {
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+#if !defined(__WIN__)
+# define PLUGIN_EXT "so"
+#else
+# define PLUGIN_EXT "dll"
+#endif
+
+    static const char* plugin1 = "build/lib/plugin-dummy."PLUGIN_EXT;
+    static const char* plugin2 = "build/lib/plugin-dummy_bad1."PLUGIN_EXT;
+    static const char* plugin3 = "build/lib/plugin-dummy_bad2."PLUGIN_EXT;
+    static const char* plugin4 = "build/lib/plugin-dummy_bad3."PLUGIN_EXT;
+    static const char* plugin5 = "build/lib/plugin-dummy_bad4."PLUGIN_EXT;
+
+    /* load a valid, well-behaved plugin. */
+    printf("\tloading good plugin: '%s'...\n", plugin1);
+    sirpluginid id = sir_loadplugin(plugin1);
+    pass &= 0 != id;
+    pass &= sir_info("welcome, mister plugin.");
+
+    /* re-loading the same plugin should fail. */
+    printf("\tloading duplicate plugin: '%s'...\n", plugin1);
+    id = sir_loadplugin(plugin1);
+    pass &= 0 == id;
+
+    if (pass)
+        print_expected_error();
+
+    /* the following are all invalid or misbehaved, and should all fail. */
+    printf("\tloading bad plugin: '%s'...\n", plugin2);
+    id = sir_loadplugin(plugin2);
+    pass &= 0 == id;
+
+    if (pass)
+        print_expected_error();
+
+    printf("\tloading bad plugin: '%s'...\n", plugin3);
+    id = sir_loadplugin(plugin3);
+    pass &= 0 == id;
+
+    if (pass)
+        print_expected_error();
+
+    printf("\tloading bad plugin: '%s'...\n", plugin4);
+    id = sir_loadplugin(plugin4);
+    pass &= 0 == id;
+
+    if (pass)
+        print_expected_error();
+
+    printf("\tloading bad plugin: '%s'...\n", plugin5);
+    id = sir_loadplugin(plugin5);
+    pass &= 0 == id;
+
+    if (pass)
+        print_expected_error();
 
     sir_cleanup();
     return print_result_and_return(pass);

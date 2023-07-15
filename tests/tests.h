@@ -246,11 +246,18 @@ bool sirtest_filesystem(void);
  */
 bool sirtest_squelchspam(void);
 
+/**
+ * @test Ensure that well-formed, valid plugins are successfully loaded, and
+ * that ill-formed/incorrectly behaving plugins are rejected.
+ * @returns bool `true` if the test passed, `false` otherwise.
+ */
+bool sirtest_pluginloader(void);
+
 /** @} */
 
 /**
  * @ test
- * @returns bool `true` if the test passed, `false` otherwise.
+ * @ returns bool `true` if the test passed, `false` otherwise.
 bool sirtest_xxxx(void); */
 
 /*

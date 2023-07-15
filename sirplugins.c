@@ -161,9 +161,9 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     plugin->valid = true;
 
     _sir_selflog("successfully validated plugin (path: '%s', id: %08"PRIx32")."
-                 " properties:\n{\n\tversion =\t%"PRIu8".%"PRIu8".%"PRIu8"\n\t"
-                 "levels =\t%04"PRIx16"\n\topts =\t%08"PRIx32"\n\tauthor =\t'%s'"
-                 "\n\tdesc =\t'%s'\n\tcaps =\t%016"PRIx64"\n}", plugin->path,
+                 " properties:\n{\n\tversion = %"PRIu8".%"PRIu8".%"PRIu8"\n\t"
+                 "levels = %04"PRIx16"\n\topts = %08"PRIx32"\n\tauthor = '%s'"
+                 "\n\tdesc = '%s'\n\tcaps = %016"PRIx64"\n}", plugin->path,
                  plugin->id, plugin->info.maj_ver, plugin->info.min_ver,
                  plugin->info.bld_ver, plugin->info.levels, plugin->info.opts,
                  _SIR_PRNSTR(plugin->info.author), _SIR_PRNSTR(plugin->info.desc),
