@@ -134,7 +134,8 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]);
 
 # if defined(SIR_SELFLOG)
 /** Log an internal debug message to stderr. */
-void __sir_selflog(const char* func, const char* file, uint32_t line, const char* format, ...);
+PRINTF_FORMAT_ATTR(4, 5)
+void __sir_selflog(const char* func, const char* file, uint32_t line, PRINTF_FORMAT const char* format, ...);
 #  define _sir_selflog(...) __sir_selflog(__func__, __file__, __LINE__, __VA_ARGS__)
 # else
 static inline
