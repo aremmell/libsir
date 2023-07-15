@@ -54,49 +54,56 @@ BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved)
 }
 #endif
 
-static const char* author = "libsir contributors";
-static const char* desc   = "Does nothing interesting. Logs messages to stdout.";
+const uint8_t maj_ver   = 1;
+const uint8_t min_ver   = 0;
+const uint8_t bld_ver   = 0;
+const sir_levels levels = SIRL_DEBUG | SIRL_INFO;
+const sir_options opts  = SIRO_NOHOST | SIRO_NOTID;
+const char* author      = "libsir contributors";
+const char* desc        = "Does nothing interesting. Logs messages to stdout.";
+const uint64_t caps     = 0;
 
-/* Controlling misbehavior via preprocessor macros:
+/** Controlling misbehavior via preprocessor macros:
  *
  * When the following are defined upon compilation, this plugin will exhibit behavior
  * that will cause libsir to reject it during the loading/validation process. Only one
- * at a time need be defined, since one failed check will result in the loader immediately
- * unloading the module.
+ * at a time need be defined, since one failed check will result in the loader
+ * immediately rejecting and unloading the module.
  *
- * - DUMMYPLUGIN_BADBEHAVIOR1: return false from 'sir_plugin_query'
- * - DUMMYPLUGIN_BADBEHAVIOR2: set info::iface_ver != SIR_PLUGIN_VCURRENT
- * - DUMMYPLUGIN_BADBEHAVIOR3: set info::levels and/or info::opts to invalid values
- * - DUMMYPLUGIN_BADBEHAVIOR4: missing an export
+ * - SAMPLEPLUGIN_BADBEHAVIOR1: return false from 'sir_plugin_query'
+ * - SAMPLEPLUGIN_BADBEHAVIOR2: set info::iface_ver != SIR_PLUGIN_VCURRENT
+ * - SAMPLEPLUGIN_BADBEHAVIOR3: set info::levels and/or info::opts to invalid values
+ * - SAMPLEPLUGIN_BADBEHAVIOR4: missing an export
  */
 
 PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
     info->iface_ver = SIR_PLUGIN_VCURRENT;
-    info->maj_ver   = 1;
-    info->min_ver   = 0;
-    info->bld_ver   = 0;
-    info->levels    = SIRL_DEBUG | SIRL_INFO;
-    info->opts      = SIRO_NOHOST | SIRO_NOTID;
+    info->maj_ver   = maj_ver;
+    info->min_ver   = min_ver;
+    info->bld_ver   = bld_ver;
+    info->levels    = levels;
+    info->opts      = opts;
     info->author    = author;
     info->desc      = desc;
-    info->caps      = 0;
+    info->caps      = caps;
 
-    printf("\t" DGRAY("sample_plugin(%s)") "\n", __func__);
+    printf("\t" DGRAY("sample_plugin ('%s')") "\n", __func__);
     return true;
 }
 
 PLUGIN_EXPORT bool sir_plugin_init(void) {
-    printf("\t" DGRAY("sample_plugin(%s)") "\n", __func__);
+    printf("\t" DGRAY("sample_plugin ('%s')") "\n", __func__);
     return true;
 }
 
 PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message) {
     _SIR_UNUSED(level);
-    printf("\t" DGRAY("sample_plugin(%s): %s") "\n", __func__, message);
+    printf("\t" DGRAY("sample_plugin (%s): level: %04"PRIx16", message: '%s'") "\n",
+        __func__, level, message);
     return true;
 }
 
 PLUGIN_EXPORT bool sir_plugin_cleanup(void) {
-    printf("\t" DGRAY("sample_plugin(%s)") "\n", __func__);
+    printf("\t" DGRAY("sample_plugin ('%s')") "\n", __func__);
     return true;
 }

@@ -23,8 +23,8 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#ifndef _SIR_DUMMY_PLUGIN_H_INCLUDED
-# define _SIR_DUMMY_PLUGIN_H_INCLUDED
+#ifndef _SIR_SAMPLE_PLUGIN_H_INCLUDED
+# define _SIR_SAMPLE_PLUGIN_H_INCLUDED
 
 #include <sirplatform.h>
 #include <sirtypes.h>
@@ -41,4 +41,4 @@ PLUGIN_EXPORT bool sir_plugin_init(void);
 PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message);
 PLUGIN_EXPORT bool sir_plugin_cleanup(void);
 
-#endif // ! _SIR_DUMMY_PLUGIN_H_INCLUDED
+#endif // ! _SIR_SAMPLE_PLUGIN_H_INCLUDED
