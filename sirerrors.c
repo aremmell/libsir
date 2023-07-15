@@ -199,7 +199,8 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
 }
 
 #if defined(SIR_SELFLOG)
-void __sir_selflog(const char* func, const char* file, uint32_t line, const char* format, ...) {
+PRINTF_FORMAT_ATTR(4, 5)
+void __sir_selflog(const char* func, const char* file, uint32_t line, PRINTF_FORMAT const char* format, ...) {
     bool success = true;
     char prefix[256];
 
