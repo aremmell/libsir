@@ -6,6 +6,7 @@
 # SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 #
 
+SHELL      := $(shell env sh -c 'PATH="$$(command -p getconf PATH)" command -v sh')
 BUILDDIR    = ./build
 LOGDIR      = ./logs
 DOCSDIR     = docs
@@ -20,7 +21,8 @@ INSTALLINC  = $(DESTDIR)$(PREFIX)/include
 INSTALLSH   = ./build-aux/install-sh
 RANLIB     ?= ranlib
 LDCONFIG   ?= ldconfig
-SHELL      := $(shell env sh -c 'PATH="$$(command -p getconf PATH)" command -v sh')
+PLUGINS     = ./plugins
+PLUGINNAMES = $(subst $(PLUGINS)/,,$(wildcard $(PLUGINS)/*))
 
 # platform specifics
 include sirplatform.mk
@@ -55,6 +57,9 @@ endif
 # disable plugins?
 ifeq ($(SIR_NO_PLUGINS),1)
   CFLAGS += -DSIR_NO_PLUGINS
+else
+  LIBDL  ?= -ldl
+  PGOALS  = plugins
 endif
 
 # dependencies
@@ -62,7 +67,7 @@ LIBS = $(PTHOPT)
 
 # for test rig and example:
 # link with static library, not shared
-LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s $(PLATFORM_LIBS) -ldl
+LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s $(PLATFORM_LIBS) $(LIBDL)
 
 # translation units
 TUS := $(wildcard *.c)
@@ -90,17 +95,13 @@ OUT_EXAMPLE    = $(BINDIR)/sirexample$(PLATFORM_EXE_EXT)
 OBJ_TESTS      = $(INTDIR)/$(TESTS)/$(TESTS).o
 OUT_TESTS      = $(BINDIR)/sirtests$(PLATFORM_EXE_EXT)
 
-# temporary hack
-OUT_PLUGIN_FN  = dummy_plugin.so
-OBJ_PLUGIN     = $(LIBDIR)/${OUT_PLUGIN_FN}
-
 # ##########
 # targets
 # ##########
 
 .DEFAULT_GOAL := all
 .PHONY: all
-all: $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS)
+all: $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS) $(PGOALS)
 
 -include $(INTDIR)/*.d
 
@@ -143,12 +144,9 @@ $(BINDIR)/file.exists:
 	@mkdir -p $(BINDIR)
 	@touch $(BINDIR)/file.exists > /dev/null
 
-$(OBJ_PLUGIN):
-	@bash -c ./plugins/dummy/build-dummy.sh
-
 .PHONY: tests
 tests: $(OUT_TESTS)
-$(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS) $(BINDIR)/file.exists $(OBJ_PLUGIN)
+$(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS) $(BINDIR)/file.exists
 	@mkdir -p $(@D)
 	@mkdir -p $(BINDIR)
 	@mkdir -p $(LOGDIR)
@@ -187,6 +185,17 @@ clean distclean:
 	@rm -rf ./*.ln > /dev/null 2>&1
 	@rm -rf ./*.d > /dev/null 2>&1
 	-@echo build directory and log files cleaned successfully.
+
+ifneq ($(SIR_NO_PLUGINS),1)
+.PHONY: plugins
+plugins:
+	@$(MAKE) $(foreach V,$(sort $(strip $(PLUGINNAMES))), plugin-$V)
+
+.PHONY: plugin-%
+plugin-%: $(OUT_SHARED)
+	$(CC) -shared -o $(LIBDIR)/$@$(PLATFORM_DLL_EXT) $(CFLAGS) $(wildcard $(subst plugin-,$(PLUGINS)/,$@)/*) $(LDFLAGS_SHARED)
+	-@printf 'built %s ($(LIBDIR)/$@$(PLATFORM_DLL_EXT)) successfully.\n' "$@" 2> /dev/null
+endif
 
 .PHONY: printvars printenv
 printvars printenv:
