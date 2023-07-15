@@ -23,6 +23,7 @@ RANLIB     ?= ranlib
 LDCONFIG   ?= ldconfig
 PLUGINS     = ./plugins
 PLUGINNAMES = $(subst $(PLUGINS)/,,$(wildcard $(PLUGINS)/*))
+PLUGPREFIX  = plugin_
 
 # platform specifics
 include sirplatform.mk
@@ -197,15 +198,15 @@ ifneq ($(SIR_NO_PLUGINS),1)
 plugins:
 	@$(MAKE) -q --no-print-directory $(OUT_SHARED) $(TUS) || \
 		$(MAKE) --no-print-directory \
-			$(foreach V,$(sort $(strip $(PLUGINNAMES))), plugin-$V) REMAKE=1
-	@$(MAKE) --no-print-directory $(foreach V,$(sort $(strip $(PLUGINNAMES))), plugin-$V)
+			$(foreach V,$(sort $(strip $(PLUGINNAMES))), $(PLUGPREFIX)$V) REMAKE=1
+	@$(MAKE) --no-print-directory $(foreach V,$(sort $(strip $(PLUGINNAMES))), $(PLUGPREFIX)$V)
 
-.PHONY: plugin-%
-plugin-%: $(OUT_SHARED) $(TUS)
+.PHONY: $(PLUGPREFIX)%
+$(PLUGPREFIX)%: $(OUT_SHARED) $(TUS)
 	@$(MAKE) -q --no-print-directory $(OUT_SHARED) $(TUS) || export REMAKE=1; \
 	test -f $(LIBDIR)/$@$(PLATFORM_DLL_EXT) || export REMAKE=1; \
 	test $${REMAKE:-0} -eq 0 || { $(CC) -shared -o $(LIBDIR)/$@$(PLATFORM_DLL_EXT) $(CFLAGS) \
-		$(wildcard $(subst plugin-,$(PLUGINS)/,$@)/*.c) $(LDFLAGS_SHARED) && \
+		$(wildcard $(subst $(PLUGPREFIX),$(PLUGINS)/,$@)/*.c) $(LDFLAGS_SHARED) && \
 	printf 'built %s successfully.\n' "$(LIBDIR)/$@$(PLATFORM_DLL_EXT)" 2> /dev/null; }
 endif
 
