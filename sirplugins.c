@@ -172,7 +172,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     sirpluginid retval = _sir_plugin_add(plugin);
     if (0 == retval) {
         _sir_selflog("error: failed to add plugin (path: '%s', addr: %p) to"
-                     " cache; unloading", plugin->path, plugin->id);
+                     " cache; unloading", plugin->path, plugin->handle);
         _sir_plugin_destroy(&plugin);
     }
 
