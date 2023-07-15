@@ -9,12 +9,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\plugins\dummy\dummy_plugin.c">
+    <ClCompile Include="..\plugins\sample\sample_plugin.c">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\plugins\dummy\dummy_plugin.h">
+    <ClInclude Include="..\plugins\sample\sample_plugin.h">
       <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>

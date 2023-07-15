@@ -9,7 +9,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testsuite", "testsuite.vcxp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example", "example.vcxproj", "{D9943E75-6EC9-4C97-B0FB-2F3A81C9553A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dummy_plugin", "dummy_plugin.vcxproj", "{9C8A75DD-BB53-4651-A79C-6E5C37A8950D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sample_plugin", "sample_plugin.vcxproj", "{9C8A75DD-BB53-4651-A79C-6E5C37A8950D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
