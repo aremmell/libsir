@@ -364,7 +364,7 @@ bool sirtest_faildupefile(void) {
 
 #if !defined(__WIN__)
     static const char* filename1 = "./logs/faildupefile.log";
-    static const char* filename2 = "logs/faildupefile.log"; 
+    static const char* filename2 = "logs/faildupefile.log";
 #else
     static const char* filename1 = "logs\\faildupefile.log";
     static const char* filename2 = "logs/faildupefile.log";
@@ -707,7 +707,7 @@ bool sirtest_textstylesanity(void) {
         if (fg == bg)
             continue;
         pass &= sir_settextstyle(SIRL_DEBUG, SIRTA_NORMAL, fg, bg);
-        pass &= sir_debug("this is 256-color mode (fg: %" PRIu32 ", bg: %" PRIu32 ")",
+        pass &= sir_debug("this is 256-color mode (fg: %"PRIu32", bg: %"PRIu32")",
             fg, bg);
     }
 
@@ -720,8 +720,8 @@ bool sirtest_textstylesanity(void) {
         sir_textcolor fg = _sir_makergb(getrand(255), getrand(255), getrand(255));
         sir_textcolor bg = _sir_makergb(getrand(255), getrand(255), getrand(255));
         pass &= sir_settextstyle(SIRL_DEBUG, SIRTA_NORMAL, fg, bg);
-        pass &= sir_debug("this is RGB-color mode (fg: %" PRIu32 ", %" PRIu32 ", %" PRIu32
-            ", bg: %" PRIu32 ", %" PRIu32 ", %" PRIu32 ")", _sir_getredfromcolor(fg),
+        pass &= sir_debug("this is RGB-color mode (fg: %"PRIu32", %"PRIu32", %"PRIu32
+            ", bg: %"PRIu32", %"PRIu32", %"PRIu32")", _sir_getredfromcolor(fg),
             _sir_getgreenfromcolor(fg), _sir_getbluefromcolor(fg), _sir_getredfromcolor(bg),
             _sir_getgreenfromcolor(bg), _sir_getbluefromcolor(bg));
     }
@@ -730,7 +730,7 @@ bool sirtest_textstylesanity(void) {
     printf("\t" WHITEB("--- change mode: 16-color ---") "\n");
     pass &= sir_setcolormode(SIRCM_16);
     pass &= sir_settextstyle(SIRL_DEBUG, SIRTA_EMPH, SIRTC_BMAGENTA, SIRTC_DEFAULT);
-    pass &= sir_debug("this is 16-color mode (fg: %" PRIu32 ", bg: default)",
+    pass &= sir_debug("this is 16-color mode (fg: %"PRIu32", bg: default)",
         SIRTC_BMAGENTA);
     PRINT_PASS(pass, "\t--- change mode: 16-color: %s ---\n\n", PRN_PASS(pass));
 
@@ -748,23 +748,23 @@ bool sirtest_optionssanity(void) {
     /* these should all be valid. */
     printf("\t" WHITEB("--- individual valid options ---") "\n");
     pass &= _sir_validopts(SIRO_ALL);
-    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_ALL);
+    printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_ALL);
     pass &= _sir_validopts(SIRO_NOTIME);
-    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOTIME);
+    printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NOTIME);
     pass &= _sir_validopts(SIRO_NOHOST);
-    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOHOST);
+    printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NOHOST);
     pass &= _sir_validopts(SIRO_NOLEVEL);
-    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOLEVEL);
+    printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NOLEVEL);
     pass &= _sir_validopts(SIRO_NONAME);
-    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NONAME);
+    printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NONAME);
     pass &= _sir_validopts(SIRO_NOPID);
-    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOPID);
+    printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NOPID);
     pass &= _sir_validopts(SIRO_NOTID);
-    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOTID);
+    printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NOTID);
     pass &= _sir_validopts(SIRO_NOHDR);
-    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_NOHDR);
+    printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NOHDR);
     pass &= _sir_validopts(SIRO_MSGONLY);
-    printf(INDENT_ITEM WHITE("valid option: %08" PRIx32) "\n", SIRO_MSGONLY);
+    printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_MSGONLY);
     PRINT_PASS(pass, "\t--- individual valid options: %s ---\n\n", PRN_PASS(pass));
 
     /* any combination these bitwise OR'd together
@@ -809,8 +809,8 @@ bool sirtest_optionssanity(void) {
         }
 
         pass &= _sir_validopts(opts);
-        printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %" PRIu32
-            ", options: %08" PRIx32 ")") "\n", n + 1, iterations, rand_count, opts);
+        printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %"PRIu32
+            ", options: %08"PRIx32")") "\n", n + 1, iterations, rand_count, opts);
     }
     PRINT_PASS(pass, "\t--- random bitmask of valid options: %s ---\n\n", PRN_PASS(pass));
 
@@ -819,24 +819,24 @@ bool sirtest_optionssanity(void) {
     /* the lowest byte is not valid. */
     sir_options invalid = 0x000000ff;
     pass &= !_sir_validopts(invalid);
-    printf(INDENT_ITEM WHITE("lowest byte: %08" PRIx32) "\n", invalid);
+    printf(INDENT_ITEM WHITE("lowest byte: %08"PRIx32) "\n", invalid);
 
     /* gaps inbetween valid options. */
     invalid = 0x0001ff00 & ~(SIRO_NOTIME | SIRO_NOHOST | SIRO_NOLEVEL | SIRO_NONAME |
                              SIRO_NOMSEC | SIRO_NOPID | SIRO_NOTID  | SIRO_NOHDR);
     pass &= !_sir_validopts(invalid);
-    printf(INDENT_ITEM WHITE("gaps in 0x001ff00: %08" PRIx32) "\n", invalid);
+    printf(INDENT_ITEM WHITE("gaps in 0x001ff00: %08"PRIx32) "\n", invalid);
 
     /* greater than SIRO_MSGONLY and less than SIRO_NOHDR. */
     for (sir_option o = 0x00008f00; o < SIRO_NOHDR; o += 0x1000) {
         pass &= !_sir_validopts(o);
-        printf(INDENT_ITEM WHITE("SIRO_MSGONLY >< SIRO_NOHDR: %08" PRIx32) "\n", o);
+        printf(INDENT_ITEM WHITE("SIRO_MSGONLY >< SIRO_NOHDR: %08"PRIx32) "\n", o);
     }
 
     /* greater than SIRO_NOHDR. */
     invalid = (0xFFFF0000 & ~SIRO_NOHDR);
     pass &= !_sir_validopts(invalid);
-    printf(INDENT_ITEM WHITE("greater than SIRO_NOHDR: %08" PRIx32) "\n", invalid);
+    printf(INDENT_ITEM WHITE("greater than SIRO_NOHDR: %08"PRIx32) "\n", invalid);
 
     PRINT_PASS(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 
@@ -915,8 +915,8 @@ bool sirtest_levelssanity(void) {
         }
 
         pass &= _sir_validlevels(levels);
-        printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %" PRIu32 ", levels:"
-                                 " %04" PRIx16) ")\n", n + 1, iterations, rand_count, levels);
+        printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %"PRIu32", levels:"
+                                 " %04"PRIx16) ")\n", n + 1, iterations, rand_count, levels);
     }
     PRINT_PASS(pass, "\t--- random bitmask of valid levels: %s ---\n\n", PRN_PASS(pass));
 
@@ -925,7 +925,7 @@ bool sirtest_levelssanity(void) {
     /* greater than SIRL_ALL. */
     sir_levels invalid = (0xffff & ~SIRL_ALL);
     pass &= !_sir_validlevels(invalid);
-    printf(INDENT_ITEM WHITE("greater than SIRL_ALL: %04" PRIx16) "\n", invalid);
+    printf(INDENT_ITEM WHITE("greater than SIRL_ALL: %04"PRIx16) "\n", invalid);
 
     PRINT_PASS(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 
@@ -1071,26 +1071,26 @@ bool sirtest_updatesanity(void) {
         uint32_t rnd = getrand(UPDATE_SANITY_ARRSIZE);
         pass &= sir_stdoutlevels(levels_array[rnd]);
         pass &= sir_stdoutopts(opts_array[rnd]);
-        printf("\t" WHITE("set random config #%" PRIu32 " for stdout") "\n", rnd);
+        printf("\t" WHITE("set random config #%"PRIu32" for stdout") "\n", rnd);
 
         rnd = getrand(UPDATE_SANITY_ARRSIZE);
         pass &= sir_stderrlevels(levels_array[rnd]);
         pass &= sir_stderropts(opts_array[rnd]);
-        printf("\t" WHITE("set random config #%" PRIu32 " for stderr") "\n", rnd);
+        printf("\t" WHITE("set random config #%"PRIu32" for stderr") "\n", rnd);
 
         rnd = getrand(UPDATE_SANITY_ARRSIZE);
         pass &= sir_filelevels(id1, levels_array[rnd]);
         pass &= sir_fileopts(id1, opts_array[rnd]);
-        printf("\t" WHITE("set random config #%" PRIu32 " for %s") "\n", rnd, logfile);
+        printf("\t" WHITE("set random config #%"PRIu32" for %s") "\n", rnd, logfile);
 
-        pass &= filter_error(sir_debug("modified config #%" PRIu32 " (debug)", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_info("modified config #%" PRIu32 " (info)", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_notice("modified config #%" PRIu32 " (notice)", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_warn("modified config #%" PRIu32 " (warning)", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_error("modified config #%" PRIu32 " (error)", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_crit("modified config #%" PRIu32 " (critical)", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_alert("modified config #%" PRIu32 " (alert)", rnd), SIR_E_NODEST);
-        pass &= filter_error(sir_emerg("modified config #%" PRIu32 " (emergency)", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_debug("modified config #%"PRIu32" (debug)", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_info("modified config #%"PRIu32" (info)", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_notice("modified config #%"PRIu32" (notice)", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_warn("modified config #%"PRIu32" (warning)", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_error("modified config #%"PRIu32" (error)", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_crit("modified config #%"PRIu32" (critical)", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_alert("modified config #%"PRIu32" (alert)", rnd), SIR_E_NODEST);
+        pass &= filter_error(sir_emerg("modified config #%"PRIu32" (emergency)", rnd), SIR_E_NODEST);
     }
 
     if (pass) {
@@ -1724,9 +1724,9 @@ bool print_test_error(bool result, bool expected) {
     uint16_t code              = sir_geterror(message);
 
     if (!expected && !result && SIR_E_NOERROR != code)
-        printf("\t" RED("!! Unexpected (%" PRIu16 ", %s)") "\n", code, message);
+        printf("\t" RED("!! Unexpected (%"PRIu16", %s)") "\n", code, message);
     else if (expected)
-        printf("\t" GREEN("Expected (%" PRIu16 ", %s)") "\n", code, message);
+        printf("\t" GREEN("Expected (%"PRIu16", %s)") "\n", code, message);
 
     return result;
 }
@@ -1734,7 +1734,7 @@ bool print_test_error(bool result, bool expected) {
 void print_os_error(void) {
     char message[SIR_MAXERROR] = {0};
     uint16_t code              = sir_geterror(message);
-    fprintf(stderr, "\t" RED("OS error: (%" PRIu16 ", %s)") "\n", code, message);
+    fprintf(stderr, "\t" RED("OS error: (%"PRIu16", %s)") "\n", code, message);
 }
 
 bool filter_error(bool pass, uint16_t err) {

@@ -186,7 +186,7 @@ bool _sir_validtextstyle(sir_colormode mode, const sir_textstyle* style) {
 
     if (SIRTC_DEFAULT != style->fg && SIRTC_DEFAULT != style->bg &&
         style->fg == style->bg) {
-        _sir_selflog("error: fg color %08" PRIx32 " and bg color %08" PRIx32
+        _sir_selflog("error: fg color %08"PRIx32" and bg color %08"PRIx32
                      " are identical; text would be invisible", style->fg,
                      style->bg);
         // TODO: more validation

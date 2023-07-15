@@ -204,7 +204,7 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, PRINTF_FOR
     bool success = true;
     char prefix[256];
 
-    int write1 = snprintf(prefix, 256, "%s (%s:%" PRIu32 "): ", func, file, line);
+    int write1 = snprintf(prefix, 256, "%s (%s:%"PRIu32"): ", func, file, line);
     success &= write1 > 0;
 
     if (write1 > 0) {

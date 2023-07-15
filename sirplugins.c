@@ -93,8 +93,8 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         _sir_selflog("error: >=1 exports not resolved for plugin (path:"
                      " '%s', addr: %p)!", plugin->path, plugin->handle);
         _sir_selflog("exports (query: %p, init: %p, write: %p, cleanup; %p)",
-                     plugin->iface.query, plugin->iface.init,
-                     plugin->iface.write, plugin->iface.cleanup);
+                     (void*)plugin->iface.query, (void*)plugin->iface.init,
+                     (void*)plugin->iface.write, (void*)plugin->iface.cleanup);
         _sir_plugin_destroy(&plugin);
         return 0;
     }
@@ -348,7 +348,7 @@ bool _sir_plugin_cache_dispatch(sir_plugincache* spc, sir_level level, sirbuf* b
 
     for (size_t n = 0; n < spc->count; n++) {
         if (!_sir_bittest(spc->plugins[n]->info.levels, level)) {
-            _sir_selflog("level %04"PRIx16" not set in level mask (%04"PRIx16
+            _sir_selflog("level %04"PRIx32" not set in level mask (%04"PRIx16
                          ") for plugin (path: '%s', id: %08"PRIx32"); skipping",
                          level, spc->plugins[n]->info.levels, spc->plugins[n]->path,
                          spc->plugins[n]->id);
