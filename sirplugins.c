@@ -92,9 +92,10 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         !plugin->iface.write || !plugin->iface.cleanup) {
         _sir_selflog("error: export(s) not resolved for plugin (path:"
                      " '%s', addr: %p)!", plugin->path, plugin->handle);
-        _sir_selflog("exports (query: %p, init: %p, write: %p, cleanup; %p)",
-                     (void*)plugin->iface.query, (void*)plugin->iface.init,
-                     (void*)plugin->iface.write, (void*)plugin->iface.cleanup);
+        _sir_selflog("exports (query: %"PRIxPTR", init: %"PRIxPTR", write:"
+                     " %"PRIxPTR", cleanup; %"PRIxPTR")",
+                     (uintptr_t)plugin->iface.query, (uintptr_t)plugin->iface.init,
+                     (uintptr_t)plugin->iface.write, (uintptr_t)plugin->iface.cleanup);
         _sir_seterror(_SIR_E_PLUGINBAD);
         _sir_plugin_destroy(&plugin);
         return 0;
