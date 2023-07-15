@@ -41,4 +41,4 @@ PLUGIN_EXPORT bool sir_plugin_init(void);
 PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message);
 PLUGIN_EXPORT bool sir_plugin_cleanup(void);
 
-#endif // ! _SIR_SAMPLE_PLUGIN_H_INCLUDED
+#endif /* !_SIR_SAMPLE_PLUGIN_H_INCLUDED */

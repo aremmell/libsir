@@ -1,5 +1,5 @@
 /*
- * dummy_plugin.c
+ * dummy_bad_plugin.c
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
@@ -23,4 +23,5 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+#define DUMMYPLUGIN_BADBEHAVIOR3
 #include "../dummy/dummy_plugin.c"

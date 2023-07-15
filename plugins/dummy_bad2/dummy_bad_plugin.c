@@ -1,5 +1,5 @@
 /*
- * dummy_plugin.h
+ * dummy_bad_plugin.c
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
@@ -23,22 +23,5 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#ifndef _SIR_DUMMY_PLUGIN_H_INCLUDED
-# define _SIR_DUMMY_PLUGIN_H_INCLUDED
-
-#include <sirplatform.h>
-#include <sirtypes.h>
-
-#if defined(__WIN__)
-BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved);
-#define PLUGIN_EXPORT __declspec(dllexport)
-#else
-#define PLUGIN_EXPORT
-#endif
-
-PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info);
-PLUGIN_EXPORT bool sir_plugin_init(void);
-PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message);
-PLUGIN_EXPORT bool sir_plugin_cleanup(void);
-
-#endif /* !_SIR_DUMMY_PLUGIN_H_INCLUDED */
+#define DUMMYPLUGIN_BADBEHAVIOR2
+#include "../dummy/dummy_plugin.c"

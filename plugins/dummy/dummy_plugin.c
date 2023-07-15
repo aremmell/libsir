@@ -28,12 +28,26 @@
 #include <sirhelpers.h>
 #include <stdio.h>
 
+/*
+ * Controlling misbehavior via preprocessor macros:
+ *
+ * When the following are defined upon compilation, this plugin will exhibit
+ * behavior that will cause libsir to reject it during the loading/validation
+ * process. Only one at a time need be defined, since one failed check will result
+ * in the loader immediately rejecting and unloading the module.
+ *
+ * - DUMMYPLUGIN_BADBEHAVIOR1: return false from 'sir_plugin_query'
+ * - DUMMYPLUGIN_BADBEHAVIOR2: set info::iface_ver != SIR_PLUGIN_VCURRENT
+ * - DUMMYPLUGIN_BADBEHAVIOR3: set info::levels and/or info::opts to invalid values
+ * - DUMMYPLUGIN_BADBEHAVIOR4: missing an export
+ */
+
 #if defined(__WIN__)
 BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved)
 {
     _SIR_UNUSED(module);
-    _SIR_UNUSED(ul_reason_for_call);
     _SIR_UNUSED(reserved);
+#if defined(SIR_DEBUG)
     switch (ul_reason_for_call)
     {
         case DLL_PROCESS_ATTACH:
@@ -49,54 +63,66 @@ BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved)
             OutputDebugStringA("Got DLL_PROCESS_DETACH\n");
             break;
     }
+#else
+    _SIR_UNUSED(ul_reason_for_call);
+#endif
 
     return TRUE;
 }
 #endif
 
-static const char* author = "libsir contributors";
-static const char* desc   = "Does nothing interesting. Logs messages to stdout.";
-
-/* Controlling misbehavior via preprocessor macros:
- *
- * When the following are defined upon compilation, this plugin will exhibit behavior
- * that will cause libsir to reject it during the loading/validation process. Only one
- * at a time need be defined, since one failed check will result in the loader immediately
- * unloading the module.
- *
- * - DUMMYPLUGIN_BADBEHAVIOR1: return false from 'sir_plugin_query'
- * - DUMMYPLUGIN_BADBEHAVIOR2: set info::iface_ver != SIR_PLUGIN_VCURRENT
- * - DUMMYPLUGIN_BADBEHAVIOR3: set info::levels and/or info::opts to invalid values
- * - DUMMYPLUGIN_BADBEHAVIOR4: missing an export
- */
+const uint8_t maj_ver   = 1;
+const uint8_t min_ver   = 0;
+const uint8_t bld_ver   = 0;
+const sir_levels levels = SIRL_DEBUG | SIRL_INFO;
+const sir_options opts  = SIRO_NOHOST | SIRO_NOTID;
+const char* author      = "libsir contributors";
+const char* desc        = "Logs messages and function calls to stdout.";
+const uint64_t caps     = 0;
 
 PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
+#if defined(DUMMYPLUGIN_BADBEHAVIOR2)
+    info->iface_ver = 255;
+#else
     info->iface_ver = SIR_PLUGIN_VCURRENT;
-    info->maj_ver   = 1;
-    info->min_ver   = 0;
-    info->bld_ver   = 0;
-    info->levels    = SIRL_DEBUG | SIRL_INFO;
-    info->opts      = SIRO_NOHOST | SIRO_NOTID;
+#endif
+    info->maj_ver   = maj_ver;
+    info->min_ver   = min_ver;
+    info->bld_ver   = bld_ver;
+#if defined(DUMMYPLUGIN_BADBEHAVIOR3)
+    info->levels    = 0xfe23;
+    info->opts      = 0x1234abcd;
+#else
+    info->levels    = levels;
+    info->opts      = opts;
+#endif
     info->author    = author;
     info->desc      = desc;
-    info->caps      = 0;
+    info->caps      = caps;
 
-    printf("\t" DGRAY("dummy_plugin(%s)") "\n", __func__);
+    printf("\t" DGRAY("dummy_plugin ('%s')") "\n", __func__);
+
+#if defined(DUMMYPLUGIN_BADBEHAVIOR1)
+    return false;
+#else
     return true;
+#endif
 }
 
+#if !defined(DUMMYPLUGIN_BADBEHAVIOR4)
 PLUGIN_EXPORT bool sir_plugin_init(void) {
-    printf("\t" DGRAY("dummy_plugin(%s)") "\n", __func__);
+    printf("\t" DGRAY("dummy_plugin ('%s')") "\n", __func__);
     return true;
 }
+#endif
 
 PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message) {
-    _SIR_UNUSED(level);
-    printf("\t" DGRAY("dummy_plugin(%s): %s") "\n", __func__, message);
+    printf("\t" DGRAY("dummy_plugin (%s): level: %04"PRIx32", message: '%s'") "\n",
+        __func__, level, message);
     return true;
 }
 
 PLUGIN_EXPORT bool sir_plugin_cleanup(void) {
-    printf("\t" DGRAY("dummy_plugin(%s)") "\n", __func__);
+    printf("\t" DGRAY("dummy_plugin ('%s')") "\n", __func__);
     return true;
 }
