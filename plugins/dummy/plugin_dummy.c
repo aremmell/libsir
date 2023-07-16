@@ -1,5 +1,5 @@
 /*
- * dummy_plugin.c
+ * plugin_dummy.c
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
@@ -23,7 +23,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#include "dummy_plugin.h"
+#include "plugin_dummy.h"
 #include <siransimacros.h>
 #include <sirhelpers.h>
 #include <stdio.h>
@@ -36,10 +36,10 @@
  * process. Only one at a time need be defined, since one failed check will result
  * in the loader immediately rejecting and unloading the module.
  *
- * - DUMMYPLUGIN_BADBEHAVIOR1: return false from 'sir_plugin_query'
- * - DUMMYPLUGIN_BADBEHAVIOR2: set info::iface_ver != SIR_PLUGIN_VCURRENT
- * - DUMMYPLUGIN_BADBEHAVIOR3: set info::levels and/or info::opts to invalid values
- * - DUMMYPLUGIN_BADBEHAVIOR4: missing an export
+ * - PLUGINDUMMY_BADBEHAVIOR1: return false from 'sir_plugin_query'
+ * - PLUGINDUMMY_BADBEHAVIOR2: set info::iface_ver != SIR_PLUGIN_VCURRENT
+ * - PLUGINDUMMY_BADBEHAVIOR3: set info::levels and/or info::opts to invalid values
+ * - PLUGINDUMMY_BADBEHAVIOR4: missing an export
  */
 
 #if defined(__WIN__)
@@ -81,7 +81,7 @@ const char* desc        = "Logs messages and function calls to stdout.";
 const uint64_t caps     = 0;
 
 PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
-#if defined(DUMMYPLUGIN_BADBEHAVIOR2)
+#if defined(PLUGINDUMMY_BADBEHAVIOR2)
     info->iface_ver = 255;
 #else
     info->iface_ver = SIR_PLUGIN_VCURRENT;
@@ -89,7 +89,7 @@ PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
     info->maj_ver   = maj_ver;
     info->min_ver   = min_ver;
     info->bld_ver   = bld_ver;
-#if defined(DUMMYPLUGIN_BADBEHAVIOR3)
+#if defined(PLUGINDUMMY_BADBEHAVIOR3)
     info->levels    = 0xfe23;
     info->opts      = 0x1234abcd;
 #else
@@ -102,14 +102,14 @@ PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
 
     printf("\t" DGRAY("dummy_plugin ('%s')") "\n", __func__);
 
-#if defined(DUMMYPLUGIN_BADBEHAVIOR1)
+#if defined(PLUGINDUMMY_BADBEHAVIOR1)
     return false;
 #else
     return true;
 #endif
 }
 
-#if !defined(DUMMYPLUGIN_BADBEHAVIOR4)
+#if !defined(PLUGINDUMMY_BADBEHAVIOR4)
 PLUGIN_EXPORT bool sir_plugin_init(void) {
     printf("\t" DGRAY("dummy_plugin ('%s')") "\n", __func__);
     return true;
