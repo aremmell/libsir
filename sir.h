@@ -390,6 +390,7 @@ bool sir_remfile(sirfileid id);
  * TODO lorem ipsum
  *
  * @see ::sir_unloadplugin
+ * @see ::plugins
  *
  * @param  path
  * @return sirpluginid A unique identifier that may later be used to unload the
@@ -405,9 +406,10 @@ sirpluginid sir_loadplugin(const char* path);
  * TODO lorem ipsum
  *
  * @see ::sir_loadplugin
+ * @see ::plugins
  *
- * @param   id   The ::sirpluginid obtained when the plugin was loaded via
- *               ::sir_loadplugin.
+ * @param   id   The ::sirpluginid obtained when the plugin was loaded via the
+ *               return value of ::sir_loadplugin.
  * @returns bool `true` if the plugin module was located and successfully unloaded,
  *               `false` otherwise.
  */
