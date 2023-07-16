@@ -114,37 +114,40 @@ $(document).ready(function(){initNavTree('md_docs_2sources_2changelog.html','');
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><h1>2.2.0</h1>
-<h2>July 15, 2023</h2>
+<h2>July 17, 2023</h2>
 <ul>
-<li><em>Vastly improved</em> support for syslog, if available, and macOS' system logger (os_log) as their own independent logging destination</li>
-<li>Support for 256-color and RGB color modes.</li>
 <li>Many new platforms and toolsets are now supported. See <a href="https://libsir.rml.dev">the main page</a> for details.</li>
-<li>Better and more thorough documentation.</li>
-<li><u>Massive performance gains</u> for both stdio and log files via optimization/refactoring (estimated 30%+)</li>
-<li><em>Lots</em> of work to get things going smoothly on Windows<ul>
-<li>A Visual Studio 2022 solution in <code>msvs</code></li>
+<li>Plugin loader and sample plugin module implemented! This gives libsir virtually unlimited potential, and in the near future, some standard plugins will be available as part of the library. See documentation for <code>sir_loadplugin</code> and <code>sir_unloadplugin</code>. The sample plugin is located at <code>plugins/sample/sample_plugin.c</code></li>
+<li><em>Big performance gains</em> through optimization and refactoring *(estimated 30% faster than the previous version–try the perf test for yourself)*</li>
+<li><em>Much improved</em> support for syslog, if available, and added support for macOS' centralized logging facility (os_log).</li>
+<li>Support for 256-color and RGB color modes.</li>
+<li>Windows got a lot of love, and support for that platform is better than ever<ul>
+<li>A Visual Studio 2022 solution can now be found in the <a href="https://github.com/aremmell/libsir/tree/master/msvs">msvs</a> directory with both <code>x64</code> and <code>arm64</code> configurations</li>
 </ul>
 </li>
-<li>New macros in <a class="el" href="siransimacros_8h.html" title="ANSI escape sequence macros.">siransimacros.h</a> that can be used with libsir or anything that writes to stdio (<em>printf, puts, etc.): <code>printf(RED("Oh lawd, something " ULINE("awful") " has happened!\n");</code></em></li>
-<li><em>Many new/more vigorous tests</em></li>
-<li><em>The test rig now supports command-line arguments:<ul>
+<li>New macros in <a href="https://github.com/aremmell/libsir/blob/master/siransimacros.h">siransimacros.h</a> that can be used with libsir or anything that writes to stdio *(printf, puts, etc.)*: <code>printf(RED("Oh lawd, something " ULINE("awful") " has happened!\n");</code></li>
+<li>Test suite:<ul>
+<li>New and more vigorous tests</li>
+<li>Now supports command-line arguments:<ul>
 <li><code>--list</code> : lists all the available tests</li>
 <li><code>--only</code>: only run the specified tests</li>
 <li><code>--leave-logs</code>: leave log files behind for examination</li>
 <li><code>--wait</code> : wait for keypress before exiting</li>
 <li><code>--perf</code> : runs the performance benchmark test (normally skipped)</li>
 </ul>
-</em></li>
-<li><em>Bug fixes</em></li>
-<li><em>Potential memory leaks squashed</em></li>
-<li><em>Additional errors with better error reporting</em></li>
-<li><em>New preprocessor defines:<ul>
-<li><code>SIR_ASSERT_ENABLED</code>: if defined, libsir actually uses assert() (*if <code>-DNDEBUG</code> is present, this means nothing), if not defined, <code>_sir_selflog</code> outputs a red message containing the condition that would have asserted, along with the file/line/func (<em>if <code>-DSIR_SELFLOG</code> is present, otherwise it’s a NOOP</em>).</li>
-<li><code>SIR_NO_SYSTEM_LOGGERS</code>: if defined, system logger support is completely disabled/not compiled in. The entry points still exist, but they will return an error that the feature is disabled or unavailable.</li>
+</li>
 </ul>
-</em></li>
-<li><em>rename <code>thread_local</code> – this is a C++ keyword</em></li>
-<li><em>renamed all typedefs ending in <code>_t</code> </em></li>
+</li>
+<li>Eliminated several bugs</li>
+<li>Potential memory leaks squashed</li>
+<li>More specific error codes and better error reporting</li>
+<li>New preprocessor defines:<ul>
+<li><code>SIR_ASSERT_ENABLED</code>: if defined, libsir calls <code>assert</code> (<em>note that if <code>-DNDEBUG</code> is present, this becomes a NOOP</em>). If not defined and <code>SIR_SELFLOG=1</code>, libsir writes a red message to stderr containing the condition that would have asserted, along with the file, line, and function. This allows for fine-grain control over assertions.</li>
+<li><code>SIR_NO_SYSTEM_LOGGERS</code>: if defined, system logger support is completely disabled/compiled out. The entry points still exist, but they will return an error that the feature is disabled or unavailable.</li>
+<li><code>SIR_NO_PLUGINS</code>: The same as <code>SIR_NO_SYSTEM_LOGGERS</code>, but for the plugin system.</li>
+</ul>
+</li>
+<li>Better and more thorough documentation. </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
