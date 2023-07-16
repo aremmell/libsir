@@ -92,7 +92,7 @@ static const struct {
     uint32_t e;
     const char* msg;
 } sir_errors[] = {
-    {_SIR_E_NOERROR,   "The operation completed successfully"},
+    {_SIR_E_NOERROR,   "The operation completed successfully"}, //-V616
     {_SIR_E_NOTREADY,  "libsir has not been initialized"},
     {_SIR_E_ALREADY,   "libsir is already initialized"},
     {_SIR_E_DUPITEM,   "Item already managed by libsir"},
@@ -118,6 +118,7 @@ static const struct {
     {_SIR_E_UNKNOWN,   "Unknown error"},
 };
 
+//-V:_sir_seterror:616
 void __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t line);
 # define _sir_seterror(err) __sir_seterror(err, __func__, __file__, __LINE__)
 
