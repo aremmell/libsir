@@ -23,6 +23,14 @@ else
   PLATFORM_LIB_EXT=.a
 endif
 
+# NetBSD
+ifneq "$(findstring NetBSD,$(shell uname -s 2> /dev/null))" ""
+  NETBSD?=1
+endif
+ifeq ($(NETBSD),1)
+  LIBDL=
+endif
+
 # Enable MinGW MSVCRT workaround?
 ifeq ($(SIR_MSVCRT_MINGW),1)
   CFLAGS+=-DSIR_MSVCRT_MINGW
