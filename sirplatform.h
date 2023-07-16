@@ -135,6 +135,7 @@
 #     define _GNU_SOURCE 1
 #    endif
 #    if defined(__clang__) && !defined(_GNU_PTHREAD_H_)
+#     include <pthread.h>
 extern /* Workaround a Clang on Haiku bug. */
 int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #    endif
