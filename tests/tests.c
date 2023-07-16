@@ -23,6 +23,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+//-V:_sir_logv:575
 #include "tests.h"
 
 static sir_test sir_tests[] = {
@@ -230,7 +231,7 @@ bool sirtest_failnulls(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    pass &= !sir_info(NULL); //-V618
+    pass &= !sir_info(NULL); //-V575 //-V618
     pass &= NULL == sir_addfile(NULL, SIRL_ALL, SIRO_MSGONLY);
 
     if (pass)
