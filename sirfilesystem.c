@@ -435,7 +435,7 @@ int _sir_aixself(char* buffer, size_t* size) {
     if ((buffer == NULL) || (size == NULL))
         return -1;
 
-    snprintf(pp, sizeof(pp), "/proc/%luu/psinfo", (unsigned long long)_sir_getpid());
+    snprintf(pp, sizeof(pp), "/proc/%llu/psinfo", (unsigned long long)_sir_getpid());
 
     fd = open(pp, O_RDONLY);
     if (fd < 0)
