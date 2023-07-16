@@ -71,17 +71,15 @@ sirpluginid _sir_plugin_load(const char* path) {
     _sir_selflog("loaded plugin (path: '%s', addr: %p); probing...",
         plugin->path, plugin->handle);
 
-    sirpluginid id = _sir_plugin_probe(plugin);
-    if (0 == id)
-        _sir_plugin_destroy(&plugin);
-
-    return id;
+    return _sir_plugin_probe(plugin);
 }
 
 sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     if (!_sir_validptr(plugin) || !_sir_validptr(plugin->handle) ||
-        !_sir_validstr(plugin->path))
+        !_sir_validstr(plugin->path)) {
+        _sir_plugin_destroy(&plugin);
         return 0;
+    }
 
 # if SIR_PLUGIN_VCURRENT == SIR_PLUGIN_V1
     plugin->iface.query   = (sir_plugin_queryfn)
