@@ -69,3 +69,20 @@ ifeq ($(NVIDIAC),1)
   CFLAGS+=--diag_suppress cast_to_qualified_type
   CFLAGS+=--diag_suppress nonstd_ellipsis_only_param
 endif
+
+# IBM XL C/C++ for AIX
+ifneq "$(findstring AIX,$(shell uname -s 2> /dev/null))" ""
+  ifneq "$(findstring xlc,$(CC))" ""
+    IBMXLC?=1
+  endif
+endif
+ifeq ($(IBMXLC),1)
+  NO_DEFAULT_CFLAGS=1
+  SIR_SHARED=-qmkshrobj
+  CFLAGS+=-I. -I..
+  CFLAGS+=-qformat=all
+  CFLAGS+=-qtls
+  MMDOPT=
+  PTHOPT=
+endif
+SIR_SHARED?=-shared

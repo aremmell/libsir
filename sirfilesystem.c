@@ -45,7 +45,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
 
     if (relative) {
 #if !defined(__WIN__)
-# if defined(__MACOS__)
+# if defined(__MACOS__) || defined(_AIX)
         int open_flags = O_SEARCH;
 # elif defined(__linux__)
 #  if !defined(__SUNPRO_C) && !defined(__SUNPRO_CC)
@@ -136,6 +136,9 @@ bool _sir_openfile(FILE* restrict* restrict f, const char* restrict path,
     return 0 == _sir_fopen(f, path, mode);
 }
 
+#if defined(_AIX)
+static char cur[PATH_MAX];
+#endif
 char* _sir_getcwd(void) {
 #if !defined(__WIN__)
 # if defined(__linux__) && (defined(__GLIBC__) && defined(_GNU_SOURCE))
@@ -143,6 +146,13 @@ char* _sir_getcwd(void) {
     if (NULL == cur)
         _sir_handleerr(errno);
     return cur;
+# elif defined(_AIX)
+    if (getcwd(cur, sizeof(cur)) == 0) {
+        _sir_handleerr(errno);
+        return NULL;
+    } else {
+        return cur;
+    }
 # else
     char* cur = getcwd(NULL, 0);
     if (NULL == cur)
@@ -213,6 +223,22 @@ char* _sir_getappfilename(void) {
             resolved = false;
             break;
         }
+# elif defined(_AIX)
+	size_t length;
+	length = sizeof(&buffer) / sizeof(buffer[0]);
+	if (size <= ((PATH_MAX * 2) + 32)) {
+	    size = (length + 1) + ((PATH_MAX * 2) + 32);
+	    continue;
+	}
+	int ret = _sir_aixself(buffer, &size);
+	if (ret == 0) {
+	    resolved = true;
+	    break;
+	} else {
+	    _sir_handleerr(errno);
+	    resolved = false;
+	    break;
+	}
 # elif defined(__OpenBSD__)
         size_t length;
         int dirname_length;
@@ -396,8 +422,167 @@ bool _sir_getrelbasepath(const char* restrict path, bool* restrict relative,
     return true;
 }
 
+#if defined(_AIX)
+int _sir_aixself(char *buffer, size_t *size) {
+    ssize_t        res;
+    char           cwd[PATH_MAX*2+1], cwdl[PATH_MAX+1];
+    char           symlink[PATH_MAX*2+17], temp_buffer[PATH_MAX*2+1];
+    char           pp[64];
+    struct psinfo  ps;
+    int            fd;
+    char **        argv;
+
+    if (( buffer == NULL ) || ( size == NULL ))
+        return -1;
+
+    snprintf(pp, sizeof ( pp ), "/proc/%lu/psinfo", (unsigned long)getpid());
+
+    fd = open(pp, O_RDONLY);
+    if (fd < 0)
+        return -1;
+
+    res = read(fd, &ps, sizeof ( ps ));
+    close(fd);
+    if (res < 0)
+        return -1;
+
+    if (ps.pr_argv == 0)
+        return -1;
+
+    argv = (char **)*((char ***)(intptr_t)ps.pr_argv );
+
+    if (( argv == NULL ) || ( argv[0] == NULL ))
+        return -1;
+
+    if (argv[0][0] == '/') {
+        snprintf(symlink, PATH_MAX * 2 - 1, "%s", argv[0]);
+
+        /* Flawfinder: ignore */
+        res = readlink(symlink, temp_buffer, PATH_MAX * 2 - 1);
+        if (res < 0) {
+            strcpy(buffer, symlink);
+        } else {
+            snprintf(buffer, *size - 1, "%s/%s", (char *)dirname(symlink), temp_buffer);
+        }
+
+        *size = strlen(buffer);
+        return 0;
+    } else if (argv[0][0] == '.') {
+        char *relative = strchr(argv[0], '/');
+        if (relative == NULL)
+            return -1;
+
+        snprintf(cwd, PATH_MAX * 2 - 1, "/proc/%lu/cwd",
+            (unsigned long)getpid());
+
+        /* Flawfinder: ignore */
+        res = readlink(cwd, cwdl, sizeof ( cwdl ) - 1);
+        if (res < 0)
+            return -1;
+
+        snprintf(symlink, PATH_MAX * 2 + 1, "%s%s", cwdl, relative + 1);
+
+        /* Flawfinder: ignore */
+        res = readlink(symlink, temp_buffer, PATH_MAX * 2 - 1);
+        if (res < 0) {
+            strcpy(buffer, symlink);
+        } else {
+            snprintf(buffer, *size - 1, "%s/%s", (char *)dirname(symlink), temp_buffer);
+        }
+
+        *size = strlen(buffer);
+        return 0;
+    } else if (strchr(argv[0], '/') != NULL) {
+        snprintf(cwd, PATH_MAX * 2 - 1, "/proc/%lu/cwd",
+            (unsigned long)getpid());
+
+        /* Flawfinder: ignore */
+        res = readlink(cwd, cwdl, sizeof ( cwdl ) - 1);
+        if (res < 0)
+            return -1;
+
+        snprintf(symlink, PATH_MAX * 2 + 1, "%s%s", cwdl, argv[0]);
+
+        /* Flawfinder: ignore */
+        res = readlink(symlink, temp_buffer, PATH_MAX * 2 - 1);
+        if (res < 0) {
+            strcpy(buffer, symlink);
+        } else {
+            snprintf(buffer, *size - 1, "%s/%s", (char *)dirname(symlink), temp_buffer);
+        }
+
+        *size = strlen(buffer);
+        return 0;
+    } else {
+        char         clonedpath[16384];
+        char *       token = NULL;
+        struct stat  statstruct;
+
+        char *       path = getenv("PATH");
+        if (sizeof ( clonedpath ) <= strlen(path))
+            return -1;
+
+        strcpy(clonedpath, path);
+
+        token = strtok(clonedpath, ":");
+
+        snprintf(cwd, PATH_MAX * 2 - 1, "/proc/%lu/cwd",
+            (unsigned long)getpid());
+        /* Flawfinder: ignore */
+        res = readlink(cwd, cwdl, sizeof ( cwdl ) - 1);
+        if (res < 0)
+            return -1;
+
+        while (token != NULL) {
+            if (token[0] == '.') {
+                char *relative = strchr(token, '/');
+                if (relative != NULL) {
+                    snprintf(symlink, PATH_MAX*2+17, "%s%s/%s",
+                                cwdl, relative + 1, ps.pr_fname);
+                } else {
+                    snprintf(symlink, PATH_MAX*2+16, "%s%s",
+                                cwdl, ps.pr_fname);
+                }
+
+                if (stat(symlink, &statstruct) != -1) {
+                    /* Flawfinder: ignore */
+                    res = readlink(symlink, temp_buffer, PATH_MAX * 2 - 1);
+                    if (res < 0) {
+                        strcpy(buffer, symlink);
+                    } else {
+                        snprintf(buffer, *size - 1, "%s/%s",
+                                (char *)dirname(symlink), temp_buffer);
+                    }
+
+                    *size = strlen(buffer);
+                    return 0;
+                }
+            } else {
+                snprintf(symlink, PATH_MAX * 2 - 1, "%s/%s", token, ps.pr_fname);
+                if (stat(symlink, &statstruct) != -1) {
+                    /* Flawfinder: ignore */
+                    res = readlink(symlink, temp_buffer, PATH_MAX * 2 - 1);
+                    if (res < 0) {
+                        strcpy(buffer, symlink);
+                    } else {
+                        snprintf(buffer, *size - 1, "%s/%s",
+                                (char *)dirname(symlink), temp_buffer);
+                    }
+
+                    *size = strlen(buffer);
+                    return 0;
+                }
+            }
+
+            token = strtok(NULL, ":");
+        }
+        return -1;
+    }
+}
+#endif
+
 #if defined(__OpenBSD__)
-static inline int _sir_openbsdself(char* out, int capacity, int* dirname_length) {
+int _sir_openbsdself(char* out, int capacity, int* dirname_length) {
     char buffer1[4096];
     char buffer2[PATH_MAX];
     char buffer3[PATH_MAX];

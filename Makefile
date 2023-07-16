@@ -111,7 +111,7 @@ $(INTDIR)/%.o: %.c $(DEPS)
 shared: $(OUT_SHARED)
 $(OUT_SHARED): $(OBJ_SHARED)
 	@mkdir -p $(@D)
-	$(CC) -shared -o $(OUT_SHARED) $^ $(CFLAGS) $(LDFLAGS_SHARED)
+	$(CC) $(SIR_SHARED) -o $(OUT_SHARED) $^ $(CFLAGS) $(LDFLAGS_SHARED)
 	-@echo built $(OUT_SHARED) successfully.
 
 .PHONY: static
