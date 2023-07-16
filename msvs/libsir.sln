@@ -17,19 +17,19 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testsuite", "testsuite.vcxp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example", "example.vcxproj", "{D9943E75-6EC9-4C97-B0FB-2F3A81C9553A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sample_plugin", "sample_plugin.vcxproj", "{9C8A75DD-BB53-4651-A79C-6E5C37A8950D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plugin_sample", "plugin_sample.vcxproj", "{9C8A75DD-BB53-4651-A79C-6E5C37A8950D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{D5BF035C-4B5E-459E-84F0-0AA73C4158AC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dummy_plugin", "dummy_plugin.vcxproj", "{A992192B-9A61-4969-AFB1-C2969AAECD04}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plugin_dummy", "plugin_dummy.vcxproj", "{A992192B-9A61-4969-AFB1-C2969AAECD04}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dummy_plugin_bad1", "dummy_plugin_bad1.vcxproj", "{E2FC3804-829E-41AD-88B4-83DAE8B0CE21}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plugin_dummy_bad1", "plugin_dummy_bad1.vcxproj", "{E2FC3804-829E-41AD-88B4-83DAE8B0CE21}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dummy_plugin_bad2", "dummy_plugin_bad2.vcxproj", "{87EAF3EC-2661-45A2-AF71-ABCB21C9E2B3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plugin_dummy_bad2", "plugin_dummy_bad2.vcxproj", "{87EAF3EC-2661-45A2-AF71-ABCB21C9E2B3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dummy_plugin_bad3", "dummy_plugin_bad3.vcxproj", "{D9BB184A-E384-47A0-8B17-07D6DE97F21E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plugin_dummy_bad3", "plugin_dummy_bad3.vcxproj", "{D9BB184A-E384-47A0-8B17-07D6DE97F21E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dummy_plugin_bad4", "dummy_plugin_bad4.vcxproj", "{C1D7852D-BC32-4EB5-83E9-16EBFCCEF65F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plugin_dummy_bad4", "plugin_dummy_bad4.vcxproj", "{C1D7852D-BC32-4EB5-83E9-16EBFCCEF65F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Help", "Help", "{9DAC6CCC-EA91-4038-9D25-4E94D7061151}"
 	ProjectSection(SolutionItems) = preProject
