@@ -7,7 +7,7 @@
 #
 
 # What system?
-UNAME_S:=$(strip$(shell uname -s 2> /dev/null))
+UNAME_S:=$(shell uname -s 2> /dev/null)
 
 # MinGW-w64 and standard Unix
 ifneq "$(findstring mingw,$(CC))" ""
