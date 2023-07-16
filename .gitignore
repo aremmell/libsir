@@ -52,3 +52,7 @@ _ReSharper.Caches/
 
 # Oracle Lint
 *.ln
+
+# PVS
+compile_commands.json
+*.pvs
