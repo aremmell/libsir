@@ -373,6 +373,7 @@ bool sirtest_faildupefile(void) {
 #endif
 
     static const char* filename3 = "logs/not-a-dupe.log";
+    static const char* filename4 = "logs/also-not-a-dupe.log";
 
     printf("\tadding log file '%s'...\n", filename1);
 
@@ -403,14 +404,26 @@ bool sirtest_faildupefile(void) {
     sirfileid fid2 = sir_addfile(filename3, SIRL_ALL, SIRO_DEFAULT);
     pass &= NULL != fid2;
 
-    pass &= sir_info("hello two valid files");
+    /* should also pass. */
+    sirfileid fid3 = sir_addfile(filename4, SIRL_ALL, SIRO_DEFAULT);
+    pass &= NULL != fid3;
+
+    pass &= sir_info("hello three valid files");
+
+    /* should now fail since we added it earlier. */
+    pass &= NULL == sir_addfile(filename3, SIRL_ALL, SIRO_DEFAULT);
+
+    if (pass)
+        print_expected_error();
 
     pass &= sir_remfile(fid);
     pass &= sir_remfile(fid2);
+    pass &= sir_remfile(fid3);
 
     rmfile(filename1);
     rmfile(filename2);
     rmfile(filename3);
+    rmfile(filename4);
 
     sir_cleanup();
     return print_result_and_return(pass);
@@ -1842,53 +1855,48 @@ uint32_t getrand(uint32_t upper_bound) {
 }
 
 bool rmfile(const char* filename) {
-    char filepath[SIR_MAXPATH];
-    (void)snprintf(filepath, SIR_MAXPATH, "%s%s", SIR_TESTLOGDIR, filename);
-
     bool removed = false;
 
     /* return true if leave_logs is true. */
     if (leave_logs) {
         printf("\t" WHITE("not deleting '%s' due to '%s'") "\n",
-            filepath, _cl_arg_list[3].flag);
+            filename, _cl_arg_list[3].flag);
         return true;
     }
 
     /* return true if the file doesn't exist. */
     struct stat st;
-    if (0 != stat(filepath, &st)) {
+    if (0 != stat(filename, &st)) {
         if (ENOENT == errno)
             return true;
 
-        handle_os_error(true, "failed to stat %s!", filepath);
+        handle_os_error(true, "failed to stat %s!", filename);
         return false;
     }
 
-#if !defined(__WIN__)
-    removed = (0 == remove(filepath));
-#else /* __WIN__ */
-    removed = FALSE != DeleteFile(filepath);
-#endif
-
-    if (!removed) {
-        handle_os_error(false, "failed to delete %s!", filepath);
+    if (!_sir_deletefile(filename)) {
+        handle_os_error(false, "failed to delete %s!", filename);
     } else {
-        printf("\t" DGRAY("deleted %s (%ld bytes)...") "\n", filepath,
+        printf("\t" DGRAY("deleted %s (%ld bytes)...") "\n", filename,
             (long)st.st_size);
     }
 
     return removed;
 }
 
-bool deletefiles(const char* search, const char* filename, unsigned* data) {
+bool deletefiles(const char* search, const char* path, const char* filename, unsigned* data) {
     if (strstr(filename, search)) {
-        rmfile(filename);
+        char filepath[SIR_MAXPATH];
+        (void)snprintf(filepath, SIR_MAXPATH, "%s%s", path, filename);
+
+        rmfile(filepath);
         (*data)++;
     }
     return true;
 }
 
-bool countfiles(const char* search, const char* filename, unsigned* data) {
+bool countfiles(const char* search, const char* path, const char* filename, unsigned* data) {
+    _SIR_UNUSED(path);
     if (strstr(filename, search))
         (*data)++;
     return true;
@@ -1910,7 +1918,7 @@ bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* 
     }
 
     while (NULL != di) {
-        if (!cb(search, di->d_name, data))
+        if (!cb(search, path, di->d_name, data))
             break;
         di = readdir(d);
     };
