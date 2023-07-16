@@ -736,11 +736,13 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
         wanted++;
     }
 
+#if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (_sir_bittest(si->d_syslog.levels, level)) {
         if (_sir_syslog_write(level, buf, &si->d_syslog))
             dispatched++;
         wanted++;
     }
+#endif
 
     sirfcache* sfc = _sir_locksection(SIRMI_FILECACHE);
     if (!_sir_validptr(sfc)) {
@@ -756,6 +758,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
     dispatched += fdispatched;
     wanted += fwanted;
 
+#if !defined(SIR_NO_PLUGINS)
     sir_plugincache* spc = _sir_locksection(SIRMI_PLUGINCACHE);
     if (!_sir_validptr(spc)) {
         _sir_seterror(_SIR_E_INTERNAL);
@@ -769,6 +772,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
 
     dispatched += pdispatched;
     wanted += pwanted;
+#endif
 
     if (0 == wanted) {
         _sir_seterror(_SIR_E_NODEST);
