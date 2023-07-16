@@ -462,7 +462,7 @@ int _sir_aixself(char* buffer, size_t* size) {
         /* Flawfinder: ignore */
         res = readlink(symlink, temp_buffer, SIR_MAXPATH);
         if (res < 0)
-            strlcpy(buffer, symlink, SIR_MAXPATH);
+            _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
         else
             snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
@@ -485,7 +485,7 @@ int _sir_aixself(char* buffer, size_t* size) {
         /* Flawfinder: ignore */
         res = readlink(symlink, temp_buffer, SIR_MAXPATH);
         if (res < 0)
-            strlcpy(buffer, symlink, SIR_MAXPATH);
+            _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
         else
             snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
@@ -504,7 +504,7 @@ int _sir_aixself(char* buffer, size_t* size) {
         /* Flawfinder: ignore */
         res = readlink(symlink, temp_buffer, SIR_MAXPATH);
         if (res < 0)
-            strlcpy(buffer, symlink, SIR_MAXPATH);
+            _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
         else
             snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
@@ -519,7 +519,7 @@ int _sir_aixself(char* buffer, size_t* size) {
         if (sizeof(clonedpath) <= strlen(path))
             return -1;
 
-        strlcpy(clonedpath, path, SIR_MAXPATH);
+        _sir_strncpy(clonedpath, SIR_MAXPATH, path, SIR_MAXPATH);
 
         token = strtok_r(clonedpath, ":", &tokptr);
 
@@ -543,7 +543,7 @@ int _sir_aixself(char* buffer, size_t* size) {
                     /* Flawfinder: ignore */
                     res = readlink(symlink, temp_buffer, SIR_MAXPATH);
                     if (res < 0)
-                        strlcpy(buffer, symlink, SIR_MAXPATH);
+                        _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
                     else
                         snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
@@ -556,7 +556,7 @@ int _sir_aixself(char* buffer, size_t* size) {
                     /* Flawfinder: ignore */
                     res = readlink(symlink, temp_buffer, SIR_MAXPATH);
                     if (res < 0)
-                        strlcpy(buffer, symlink, SIR_MAXPATH);
+                        _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
                     else
                         snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
