@@ -334,10 +334,11 @@ bool getrand_bool(uint32_t upper_bound) {
         printf(RED(msg), __VA_ARGS__);
 
 bool rmfile(const char* filename);
-bool deletefiles(const char* search, const char* filename, unsigned* data);
-bool countfiles(const char* search, const char* filename, unsigned* data);
+bool deletefiles(const char* search, const char* path, const char* filename, unsigned* data);
+bool countfiles(const char* search, const char* path, const char* filename, unsigned* data);
 
-typedef bool (*fileenumproc)(const char* search, const char* filename, unsigned* data);
+typedef bool (*fileenumproc)(const char* search, const char* path, const char* filename,
+    unsigned* data);
 bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* data);
 
 bool sirtimerstart(sir_timer* timer);
