@@ -29,8 +29,9 @@ Available preprocessor macros:
 | ^ | `1`     | `-DSIR_NO_SYSTEM_LOGGERS`                     | Even if the current platform has a system logger facility, the functionality will be disabled (_and most of it compiled out_). |
 | `SIR_NO_PLUGINS (0)` | `0`   | `N/A`                        | The plugin system is available for use. Call ::sir_loadplugin to load a plugin, and ::sir_unloadplugin to unload one.
 | ^                    | `1`   | `-DSIR_NO_PLUGINS`           | The plugin system's functionality will be disabled (_and most of it compiled out_).
+---
 
-@note These must be set differently if you're utilizing the Visual Studio solution (_or just not using make_). The instructions for those build environments are not included here.
+@note If you plan to use the Visual Studio solution, see `README.md` under `Help` once the solution is loaded.
 
 sirconfig.h
 -----------
