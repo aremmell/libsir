@@ -189,6 +189,7 @@ bool _sir_cleanup(void) {
     _sir_unlocksection(SIRMI_FILECACHE);
     cleanup &= destroyfc;
 
+#if !defined(SIR_NO_PLUGINS)
     sir_plugincache* spc = _sir_locksection(SIRMI_PLUGINCACHE);
     if (!_sir_validptr(spc)) {
         _sir_seterror(_SIR_E_INTERNAL);
@@ -196,8 +197,10 @@ bool _sir_cleanup(void) {
     }
 
     bool destroypc = _sir_plugin_cache_destroy(spc);
+    SIR_ASSERT(destroypc);
     _sir_unlocksection(SIRMI_PLUGINCACHE);
     cleanup &= destroypc;
+#endif
 
     sirconfig* _cfg = _sir_locksection(SIRMI_CONFIG);
     if (!_sir_validptr(_cfg)) {
