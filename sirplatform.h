@@ -224,7 +224,7 @@ _set_thread_local_invalid_parameter_handler(
 # endif
 
 # if defined(_AIX)
-#  define CLOCK_CAST
+#  define CLOCK_CAST (clockid_t)
 # else
 #  define CLOCK_CAST
 # endif
