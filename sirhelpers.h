@@ -35,7 +35,8 @@
  * Creates an error code that (hopefully) doesn't conflict
  * with any of those defined by the platform.
  */
-# define _sir_mkerror(code) (((uint32_t)((code) & 0x7fff) << 16) | 0x80000000)
+# define _sir_mkerror(code) \
+    (code ? (((uint32_t)((code) & 0x7fff) << 16) | 0x80000000) : 0x80000000)
 
 /** Validates an internal error. */
 static inline
@@ -54,10 +55,14 @@ uint16_t _sir_geterrcode(uint32_t err) {
 # define _SIR_L_START(format) \
     bool r = false; \
     va_list args = {0}; \
-    va_start(args, format);
+    va_start(args, format); \
+    \
+    if (_sir_validptr(format)) { \
 
 /** Evil macro used for _sir_lv wrappers. */
-# define _SIR_L_END(args) va_end(args);
+# define _SIR_L_END(args) \
+    } \
+    va_end(args);
 
 /** Squelches warnings about unreferenced parameters. */
 # define _SIR_UNUSED(param) (void)param;
