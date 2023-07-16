@@ -23,6 +23,14 @@ else
   PLATFORM_LIB_EXT=.a
 endif
 
+# Haiku
+ifneq "$(findstring Haiku,$(shell uname -s 2> /dev/null))" ""
+  HAIKU?=1
+endif
+ifeq ($(HAIKU),1)
+  LIBDL=
+endif
+
 # NetBSD
 ifneq "$(findstring NetBSD,$(shell uname -s 2> /dev/null))" ""
   NETBSD?=1
