@@ -58,6 +58,8 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
 # elif defined(__SOLARIS__) || defined(__DragonFly__) || \
        defined(__NetBSD__) || defined(__HAIKU__) || defined(__OpenBSD__)
         int open_flags = O_DIRECTORY;
+# elif defined(__VXWORKS__)
+        int open_flags = 0;
 # else
 #  error "unknown open_flags for your platform; please contact the author."
 # endif
@@ -69,7 +71,9 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
             return false;
         }
 
+#ifndef __VXWORKS__
         stat_ret = fstatat(fd, path, st, AT_SYMLINK_NOFOLLOW);
+#endif
         _sir_safeclose(&fd);
         _sir_safefree(&base_path);
     } else {
@@ -298,6 +302,9 @@ char* _sir_getappfilename(void) {
             resolved = false;
             break;
         }
+# elif defined(__VXWORKS__)
+        resolved = false;
+        break;
 # else
 #  error "no implementation for your platform; please contact the author."
 # endif
