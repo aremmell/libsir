@@ -154,6 +154,9 @@ docs: $(OUT_STATIC)
 	-@echo built documentation successfully.
 
 .PHONY: install
+ifneq (,$(findstring install,$(MAKECMDGOALS)))
+.NOTPARALLEL:
+endif
 install: $(INSTALLSH)
 	@test -x $(INSTALLSH) || \
 		{ printf 'Error: %s not executable.\n' "$(INSTALLSH)"; exit 1; }
@@ -168,6 +171,9 @@ install: $(INSTALLSH)
 	-@echo installed libsir successfully.
 
 .PHONY: clean distclean
+ifneq (,$(findstring clean,$(MAKECMDGOALS)))
+.NOTPARALLEL:
+endif
 clean distclean:
 	@rm -rf $(BUILDDIR) > /dev/null 2>&1
 	@rm -rf $(LOGDIR) > /dev/null 2>&1
