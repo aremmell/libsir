@@ -547,7 +547,7 @@ bool sirtest_failinvalidinitdata(void) {
     sirinit si;
 
     /* fill with bad data. */
-    memset(&si, 0xbadf00d, sizeof(sirinit));
+    memset(&si, 0xbadf00d, sizeof(sirinit)); //-V575
 
     printf("\tcalling sir_init with invalid data...\n");
     bool pass = !sir_init(&si);
@@ -1156,7 +1156,7 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
         if (set_category)
             _sir_strncpy(si.d_syslog.category, SIR_MAX_SYSLOG_CAT, category, SIR_MAX_SYSLOG_CAT);
 
-        si_init = sir_init(&si);
+        si_init = sir_init(&si); //-V519
         pass &= si_init;
 
         if (do_update)
