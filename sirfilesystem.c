@@ -435,7 +435,7 @@ int _sir_aixself(char* buffer, size_t* size) {
     if ((buffer == NULL) || (size == NULL))
         return -1;
 
-    snprintf(pp, sizeof(pp), "/proc/%lu/psinfo", (unsigned long)getpid());
+    snprintf(pp, sizeof(pp), "/proc/%luu/psinfo", (unsigned long long)_sir_getpid());
 
     fd = open(pp, O_RDONLY);
     if (fd < 0)
@@ -471,7 +471,7 @@ int _sir_aixself(char* buffer, size_t* size) {
         if (relative == NULL)
             return -1;
 
-        snprintf(cwd, PATH_MAX * 2 - 1, "/proc/%lu/cwd", (unsigned long)getpid());
+        snprintf(cwd, PATH_MAX * 2 - 1, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
 
         /* Flawfinder: ignore */
         res = readlink(cwd, cwdl, sizeof(cwdl) - 1);
@@ -490,7 +490,7 @@ int _sir_aixself(char* buffer, size_t* size) {
         *size = strlen(buffer);
         return 0;
     } else if (strchr(argv[0], '/') != NULL) {
-        snprintf(cwd, PATH_MAX * 2 - 1, "/proc/%lu/cwd", (unsigned long)getpid());
+        snprintf(cwd, PATH_MAX * 2 - 1, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
 
         /* Flawfinder: ignore */
         res = readlink(cwd, cwdl, sizeof(cwdl) - 1);
@@ -521,7 +521,7 @@ int _sir_aixself(char* buffer, size_t* size) {
 
         token = strtok(clonedpath, ":");
 
-        snprintf(cwd, PATH_MAX * 2 - 1, "/proc/%lu/cwd", (unsigned long)getpid());
+        snprintf(cwd, PATH_MAX * 2 - 1, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
         /* Flawfinder: ignore */
         res = readlink(cwd, cwdl, sizeof(cwdl) - 1);
         if (res < 0)
