@@ -45,7 +45,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
 
     if (relative) {
 #if !defined(__WIN__)
-# if defined(__MACOS__)
+# if defined(__MACOS__) || defined(_AIX)
         int open_flags = O_SEARCH;
 # elif defined(__linux__)
 #  if !defined(__SUNPRO_C) && !defined(__SUNPRO_CC)
@@ -136,6 +136,9 @@ bool _sir_openfile(FILE* restrict* restrict f, const char* restrict path,
     return 0 == _sir_fopen(f, path, mode);
 }
 
+#if defined(_AIX)
+static char cur_cwd[SIR_MAXPATH];
+#endif
 char* _sir_getcwd(void) {
 #if !defined(__WIN__)
 # if defined(__linux__) && (defined(__GLIBC__) && defined(_GNU_SOURCE))
@@ -143,6 +146,13 @@ char* _sir_getcwd(void) {
     if (NULL == cur)
         _sir_handleerr(errno);
     return cur;
+# elif defined(_AIX)
+    if (getcwd(cur_cwd, sizeof(cur_cwd)) == 0) {
+        _sir_handleerr(errno);
+        return NULL;
+    } else {
+        return strndup(cur_cwd, SIR_MAXPATH);
+    }
 # else
     char* cur = getcwd(NULL, 0);
     if (NULL == cur)
@@ -213,6 +223,20 @@ char* _sir_getappfilename(void) {
             resolved = false;
             break;
         }
+# elif defined(_AIX)
+        if (size <= SIR_MAXPATH) {
+            size = size + SIR_MAXPATH + 1;
+            continue;
+        }
+        int ret = _sir_aixself(buffer, &size);
+        if (ret == 0) {
+            resolved = true;
+            break;
+        } else {
+            _sir_handleerr(errno);
+            resolved = false;
+            break;
+        }
 # elif defined(__OpenBSD__)
         size_t length;
         int dirname_length;
@@ -223,7 +247,7 @@ char* _sir_getappfilename(void) {
             break;
         }
         if (length > size) {
-            size = length;
+            size = length + 1;
             continue;
         }
         (void)_sir_openbsdself(buffer, length, &dirname_length);
@@ -396,6 +420,156 @@ bool _sir_getrelbasepath(const char* restrict path, bool* restrict relative,
     return true;
 }
 
+#if defined(_AIX)
+# define SIR_MAXSLPATH SIR_MAXPATH + 16
+int _sir_aixself(char* buffer, size_t* size) {
+    ssize_t res;
+    char cwd[SIR_MAXPATH], cwdl[SIR_MAXPATH];
+    char symlink[SIR_MAXSLPATH], temp_buffer[SIR_MAXPATH];
+    char pp[64];
+    struct psinfo ps;
+    int fd;
+    char** argv;
+    char* tokptr;
+
+    if ((buffer == NULL) || (size == NULL))
+        return -1;
+
+    snprintf(pp, sizeof(pp), "/proc/%llu/psinfo", (unsigned long long)_sir_getpid());
+
+    fd = open(pp, O_RDONLY);
+    if (fd < 0)
+        return -1;
+
+    res = read(fd, &ps, sizeof(ps));
+    close(fd);
+    if (res < 0)
+        return -1;
+
+    if (ps.pr_argv == 0)
+        return -1;
+
+    argv = (char**)*((char***)(intptr_t)ps.pr_argv);
+
+    if ((argv == NULL) || (argv[0] == NULL))
+        return -1;
+
+    if (argv[0][0] == '/') {
+        snprintf(symlink, SIR_MAXPATH, "%s", argv[0]);
+
+        /* Flawfinder: ignore */
+        res = readlink(symlink, temp_buffer, SIR_MAXPATH);
+        if (res < 0)
+            _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
+        else
+            snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
+
+        *size = strlen(buffer);
+        return 0;
+    } else if (argv[0][0] == '.') {
+        char* relative = strchr(argv[0], '/');
+        if (relative == NULL)
+            return -1;
+
+        snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
+
+        /* Flawfinder: ignore */
+        res = readlink(cwd, cwdl, sizeof(cwdl) - 1);
+        if (res < 0)
+            return -1;
+
+        snprintf(symlink, SIR_MAXPATH, "%s%s", cwdl, relative + 1);
+
+        /* Flawfinder: ignore */
+        res = readlink(symlink, temp_buffer, SIR_MAXPATH);
+        if (res < 0)
+            _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
+        else
+            snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
+
+        *size = strlen(buffer);
+        return 0;
+    } else if (strchr(argv[0], '/') != NULL) {
+        snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
+
+        /* Flawfinder: ignore */
+        res = readlink(cwd, cwdl, sizeof(cwdl) - 1);
+        if (res < 0)
+            return -1;
+
+        snprintf(symlink, SIR_MAXPATH, "%s%s", cwdl, argv[0]);
+
+        /* Flawfinder: ignore */
+        res = readlink(symlink, temp_buffer, SIR_MAXPATH);
+        if (res < 0)
+            _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
+        else
+            snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
+
+        *size = strlen(buffer);
+        return 0;
+    } else {
+        char clonedpath[16384];
+        char* token = NULL;
+        struct stat statstruct;
+
+        char* path = getenv("PATH");
+        if (sizeof(clonedpath) <= strlen(path))
+            return -1;
+
+        _sir_strncpy(clonedpath, SIR_MAXPATH, path, SIR_MAXPATH);
+
+        token = strtok_r(clonedpath, ":", &tokptr);
+
+        snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
+        /* Flawfinder: ignore */
+        res = readlink(cwd, cwdl, sizeof(cwdl) - 1);
+        if (res < 0)
+            return -1;
+
+        while (token != NULL) {
+            if (token[0] == '.') {
+                char* relative = strchr(token, '/');
+                if (relative != NULL) {
+                    snprintf(symlink, SIR_MAXSLPATH, "%s%s/%s", cwdl, relative + 1,
+                        ps.pr_fname);
+                } else {
+                    snprintf(symlink, SIR_MAXSLPATH, "%s%s", cwdl, ps.pr_fname);
+                }
+
+                if (stat(symlink, &statstruct) != -1) {
+                    /* Flawfinder: ignore */
+                    res = readlink(symlink, temp_buffer, SIR_MAXPATH);
+                    if (res < 0)
+                        _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
+                    else
+                        snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
+
+                    *size = strlen(buffer);
+                    return 0;
+                }
+            } else {
+                snprintf(symlink, SIR_MAXPATH, "%s/%s", token, ps.pr_fname);
+                if (stat(symlink, &statstruct) != -1) {
+                    /* Flawfinder: ignore */
+                    res = readlink(symlink, temp_buffer, SIR_MAXPATH);
+                    if (res < 0)
+                        _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
+                    else
+                        snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
+
+                    *size = strlen(buffer);
+                    return 0;
+                }
+            }
+
+            token = strtok_r(NULL, ":", &tokptr);
+        }
+        return -1;
+    }
+}
+#endif
+
 bool _sir_deletefile(const char* restrict path) {
     if (!_sir_validstr(path))
         return false;
@@ -416,7 +590,7 @@ bool _sir_deletefile(const char* restrict path) {
 }
 
 #if defined(__OpenBSD__)
-static inline int _sir_openbsdself(char* out, int capacity, int* dirname_length) {
+int _sir_openbsdself(char* out, int capacity, int* dirname_length) {
     char buffer1[4096];
     char buffer2[PATH_MAX];
     char buffer3[PATH_MAX];

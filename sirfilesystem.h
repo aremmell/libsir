@@ -67,8 +67,12 @@ bool _sir_getrelbasepath(const char* restrict path, bool* restrict relative,
 
 bool _sir_deletefile(const char* restrict path);
 
+# if defined(_AIX)
+int _sir_aixself(char *buffer, size_t *size);
+# endif
+
 # if defined(__OpenBSD__)
-static inline int _sir_openbsdself(char* out, int capacity, int* dirname_length);
+int _sir_openbsdself(char* out, int capacity, int* dirname_length);
 # endif
 
 # if defined(__cplusplus)

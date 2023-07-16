@@ -96,3 +96,26 @@ ifeq ($(NVIDIAC),1)
   CFLAGS+=--diag_suppress cast_to_qualified_type
   CFLAGS+=--diag_suppress nonstd_ellipsis_only_param
 endif
+
+# IBM XL C/C++ and GCC for AIX
+ifneq "$(findstring AIX,$(UNAME_S))" ""
+  ifneq "$(findstring xlc,$(CC))" ""
+    IBMXLC?=1
+  endif
+endif
+ifneq "$(findstring powerpc-ibm-aix7,$(CC))" ""
+  AIXTLS?=1
+endif
+ifeq ($(IBMXLC),1)
+  NO_DEFAULT_CFLAGS=1
+  CFLAGS+=-O3 -I. -I.. -qtls -qthreaded -qinfo=mt -qformat=all -qpic=small
+  SIR_SHARED=-qmkshrobj
+  MMDOPT=
+  PTHOPT=
+endif
+ifeq ($(AIXTLS),1)
+  CFLAGS+=-ftls-model=initial-exec
+endif
+
+# Default way to link shared library?
+SIR_SHARED?=-shared

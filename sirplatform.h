@@ -224,6 +224,12 @@ _set_thread_local_invalid_parameter_handler(
 #  define PID_CAST
 # endif
 
+# if defined(_AIX)
+#  define CLOCK_CAST (int)
+# else
+#  define CLOCK_CAST
+# endif
+
 # if defined(SIR_ASSERT_ENABLED)
 #  include <assert.h>
 #  define SIR_ASSERT(...) assert(__VA_ARGS__)
@@ -294,6 +300,9 @@ _set_thread_local_invalid_parameter_handler(
 #  endif
 #  if defined(SIR_SYSLOG_ENABLED)
 #   include <syslog.h>
+#  endif
+#  if defined(_AIX)
+#   include <sys/procfs.h>
 #  endif
 #  if defined(__BSD__)
 #   if !defined(__NetBSD__)
@@ -391,10 +400,14 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 # if (__STDC_VERSION__ >= 201112 && !defined(__STDC_NO_THREADS__)) || \
      (defined(__SUNPRO_C) || defined(__SUNPRO_CC))
-#  define _sir_thread_local _Thread_local
+#  if defined(_AIX) && defined(__GNUC__)
+#   define _sir_thread_local __thread
+#  else
+#   define _sir_thread_local _Thread_local
+#  endif
 # elif defined(__WIN__)
 #  define _sir_thread_local __declspec(thread)
-# elif defined(__GNUC__)
+# elif defined(__GNUC__) || (defined(_AIX) && (defined(__xlC_ver__) || defined(__ibmxl__)))
 #  define _sir_thread_local __thread
 # else
 #  error "unable to resolve thread local attribute; please contact the author."

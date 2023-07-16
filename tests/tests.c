@@ -1944,7 +1944,7 @@ bool sirtimerstart(sir_timer* timer) {
 #if !defined(__WIN__)
     int gettime = clock_gettime(SIRTEST_CLOCK, &timer->ts);
     if (0 != gettime) {
-        handle_os_error(true, "clock_gettime(%d) failed!", SIRTEST_CLOCK);
+        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK);
     }
 
     return 0 == gettime;
@@ -1961,7 +1961,7 @@ float sirtimerelapsed(const sir_timer* timer) {
         return (float)((now.tv_sec * 1e3) + (now.tv_nsec / 1e6) - (timer->ts.tv_sec * 1e3) +
             (timer->ts.tv_nsec / 1e6));
     } else {
-        handle_os_error(true, "clock_gettime(%d) failed!", SIRTEST_CLOCK);
+        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK);
     }
     return 0.0f;
 #else /* __WIN__ */
@@ -1984,7 +1984,7 @@ long sirtimergetres(void) {
     if (0 == clock_getres(SIRTEST_CLOCK, &res)) {
         retval = res.tv_nsec;
     } else {
-        handle_os_error(true, "clock_getres(%d) failed!", SIRTEST_CLOCK);
+        handle_os_error(true, "clock_getres(%d) failed!", CLOCK_CAST SIRTEST_CLOCK);
     }
 #else /* __WIN__ */
     retval = 100;
