@@ -1217,7 +1217,7 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
 }
 #endif
 
-#if !defined(SIR_SYSLOG_ENABLED) || !defined(SIR_OS_LOG_ENABLED)
+#if defined(SIR_NO_SYSTEM_LOGGERS)
 static bool generic_disabled_syslog_test(const char* sl_name, const char* identity,
     const char* category) {
     INIT_SL(si, SIRL_ALL, SIRO_NOHOST | SIRO_NOTID, 0, 0, "sir_disabled_sltest");
@@ -1225,32 +1225,34 @@ static bool generic_disabled_syslog_test(const char* sl_name, const char* identi
     si.d_syslog.levels = SIRL_DEFAULT;
     bool pass = true;
 
-    printf("\tsystem logger: '%s' is disabled; expecting calls to fail...\n", sl_name);
+    _SIR_UNUSED(sl_name);
+
+    printf("\tSIR_NO_SYSTEM_LOGGERS is defined; expecting calls to fail...\n");
 
     /* init should just ignore the syslog settings. */
     si_init = sir_init(&si);
     pass &= si_init;
 
     /* these calls should all fail. */
-    printf("\tsetting %s levels...\n", sl_name);
+    printf("\tsetting levels...\n");
     pass &= !sir_sysloglevels(SIRL_ALL);
 
     if (pass)
         print_expected_error();
 
-    printf("\tsetting %s options...\n", sl_name);
+    printf("\tsetting options...\n");
     pass &= !sir_syslogopts(SIRO_DEFAULT);
 
     if (pass)
         print_expected_error();
 
-    printf("\tsetting %s identity...\n", sl_name);
+    printf("\tsetting identity...\n");
     pass &= !sir_syslogid(identity);
 
     if (pass)
         print_expected_error();
 
-    printf("\tsetting %s category...\n", sl_name);
+    printf("\tsetting category...\n");
     pass &= !sir_syslogcat(category);
 
     if (pass)
@@ -1263,15 +1265,23 @@ static bool generic_disabled_syslog_test(const char* sl_name, const char* identi
 
 bool sirtest_syslog(void) {
 #if !defined(SIR_SYSLOG_ENABLED)
-    return generic_disabled_syslog_test("syslog", "sirtests", "tests");
+# if defined(SIR_NO_SYSTEM_LOGGERS)
+    bool pass = generic_disabled_syslog_test("syslog", "sirtests", "tests");
+    return print_result_and_return(pass);
+# else
+    printf("\t" DGRAY("SIR_SYSLOG_ENABLED is not defined; skipping") "\n");
+    return true;
+# endif
 #else
-    return generic_syslog_test("syslog", "sirtests", "tests");
+    bool pass = generic_syslog_test("syslog", "sirtests", "tests");
+    return print_result_and_return(pass);
 #endif
 }
 
 bool sirtest_os_log(void) {
 #if !defined(SIR_OS_LOG_ENABLED)
-    return generic_disabled_syslog_test("os_log", "com.aremmell.libsir.tests", "tests");
+    printf("\t" DGRAY("SIR_OS_LOG_ENABLED is not defined; skipping") "\n");
+    return true;
 #else
     bool pass = generic_syslog_test("os_log", "com.aremmell.libsir.tests", "tests");
     return print_result_and_return(pass);
@@ -1644,37 +1654,37 @@ bool sirtest_pluginloader(void) {
 
     /* re-loading the same plugin should fail. */
     printf("\tloading duplicate plugin: '%s'...\n", plugin1);
-    id = sir_loadplugin(plugin1);
-    pass &= 0 == id;
+    sirpluginid badid = sir_loadplugin(plugin1);
+    pass &= 0 == badid;
 
     if (pass)
         print_expected_error();
 
     /* the following are all invalid or misbehaved, and should all fail. */
     printf("\tloading bad plugin: '%s'...\n", plugin2);
-    id = sir_loadplugin(plugin2);
-    pass &= 0 == id;
+    badid = sir_loadplugin(plugin2);
+    pass &= 0 == badid;
 
     if (pass)
         print_expected_error();
 
     printf("\tloading bad plugin: '%s'...\n", plugin3);
-    id = sir_loadplugin(plugin3);
-    pass &= 0 == id;
+    badid = sir_loadplugin(plugin3);
+    pass &= 0 == badid;
 
     if (pass)
         print_expected_error();
 
     printf("\tloading bad plugin: '%s'...\n", plugin4);
-    id = sir_loadplugin(plugin4);
-    pass &= 0 == id;
+    badid = sir_loadplugin(plugin4);
+    pass &= 0 == badid;
 
     if (pass)
         print_expected_error();
 
     printf("\tloading bad plugin: '%s'...\n", plugin5);
-    id = sir_loadplugin(plugin5);
-    pass &= 0 == id;
+    badid = sir_loadplugin(plugin5);
+    pass &= 0 == badid;
 
     if (pass)
         print_expected_error();
