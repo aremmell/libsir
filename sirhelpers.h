@@ -35,8 +35,7 @@
  * Creates an error code that (hopefully) doesn't conflict
  * with any of those defined by the platform.
  */
-# define _sir_mkerror(code) \
-    (code ? (((uint32_t)((code) & 0x7fff) << 16) | 0x80000000) : 0x80000000)
+# define _sir_mkerror(code) (((uint32_t)((code) & 0x7fff) << 16) | 0x80000000)
 
 /** Validates an internal error. */
 static inline
