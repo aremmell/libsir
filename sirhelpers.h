@@ -204,22 +204,22 @@ sir_textcolor _sir_getansibgcmd(sir_textcolor bg) {
 }
 
 /** Extracts the red component out of an RGB color mode ::sir_textcolor. */
-# define _sir_getredfromcolor(color) (uint8_t)((color >> 16) & 0x000000ff)
+# define _sir_getredfromcolor(color) (uint8_t)(((color) >> 16) & 0x000000ff)
 
 /** Sets the red component in an RGB color mode ::sir_textcolor. */
-# define _sir_setredincolor(color, red) (color |= ((red << 16) & 0x00ff0000))
+# define _sir_setredincolor(color, red) (color |= (((red) << 16) & 0x00ff0000))
 
 /** Extracts the green component out of an RGB color mode ::sir_textcolor. */
-# define _sir_getgreenfromcolor(color) (uint8_t)((color >> 8) & 0x000000ff)
+# define _sir_getgreenfromcolor(color) (uint8_t)(((color) >> 8) & 0x000000ff)
 
 /** Sets the green component in an RGB color mode ::sir_textcolor. */
-# define _sir_setgreenincolor(color, green) (color |= ((green << 8) & 0x0000ff00))
+# define _sir_setgreenincolor(color, green) ((color) |= (((green) << 8) & 0x0000ff00))
 
 /** Extracts the blue component out of an RGB color mode ::sir_textcolor. */
-# define _sir_getbluefromcolor(color) (uint8_t)(color & 0x000000ff)
+# define _sir_getbluefromcolor(color) (uint8_t)((color) & 0x000000ff)
 
 /** Sets the blue component in an RGB color mode ::sir_textcolor. */
-# define _sir_setblueincolor(color, blue) (color |= (blue & 0x000000ff))
+# define _sir_setblueincolor(color, blue) ((color) |= ((blue) & 0x000000ff))
 
 /** Sets the red, blue, and green components in an RGB color mode ::sir_textcolor. */
 static inline
