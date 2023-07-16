@@ -122,7 +122,7 @@ bool _sir_validlevels(sir_levels levels) {
          ((levels & ~SIRL_ALL) == 0)))
          return true;
 
-    _sir_selflog("invalid levels: %04" PRIx16, levels);
+    _sir_selflog("invalid levels: %04"PRIx16, levels);
     _sir_seterror(_SIR_E_LEVELS);
 
     return false;
@@ -135,7 +135,7 @@ bool _sir_validlevel(sir_level level) {
         SIRL_ALERT  == level || SIRL_EMERG == level)
         return true;
 
-    _sir_selflog("invalid level: %04" PRIx16, level);
+    _sir_selflog("invalid level: %04"PRIx32, level);
     _sir_seterror(_SIR_E_LEVELS);
     return false;
 }
@@ -153,7 +153,7 @@ bool _sir_validopts(sir_options opts) {
          ((opts & ~(SIRO_MSGONLY | SIRO_NOHDR)) == 0)))
          return true;
 
-    _sir_selflog("invalid options: %08" PRIx32, opts);
+    _sir_selflog("invalid options: %08"PRIx32, opts);
     _sir_seterror(_SIR_E_OPTIONS);
 
     return false;
@@ -206,8 +206,8 @@ bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color) {
     }
 
     if (!valid) {
-        _sir_selflog("invalid text color for mode %d %08" PRIx32 " (%" PRId32 ")",
-            mode, color);
+        _sir_selflog("invalid text color for mode %d %08"PRIx32" (%"PRId32")",
+            mode, color, color);
         _sir_seterror(_SIR_E_TEXTCOLOR);
     }
 
@@ -267,7 +267,7 @@ int _sir_strncpy(char* restrict dest, size_t destsz, const char* restrict src, s
 #else
         _SIR_UNUSED(count);
         size_t cpy = strlcpy(dest, src, destsz);
-        SIR_ASSERT(cpy >= destsz);
+        SIR_ASSERT(cpy < destsz);
         _SIR_UNUSED(cpy);
         return 0;
 #endif

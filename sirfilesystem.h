@@ -65,6 +65,8 @@ bool _sir_ispathrelative(const char* restrict path, bool* restrict relative);
 bool _sir_getrelbasepath(const char* restrict path, bool* restrict relative,
     const char* restrict* restrict base_path, sir_rel_to rel_to);
 
+bool _sir_deletefile(const char* restrict path);
+
 # if defined(_AIX)
 int _sir_aixself(char *buffer, size_t *size);
 # endif

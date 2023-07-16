@@ -34,6 +34,9 @@ logs/
 .vs/
 *.user
 
+# ReSharper caches
+_ReSharper.Caches/
+
 # Emacs temporary files
 *.bak
 *~
@@ -49,3 +52,7 @@ logs/
 
 # Oracle Lint
 *.ln
+
+# PVS
+compile_commands.json
+*.pvs

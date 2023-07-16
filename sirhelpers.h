@@ -54,13 +54,20 @@ uint16_t _sir_geterrcode(uint32_t err) {
 # define _SIR_L_START(format) \
     bool r = false; \
     va_list args = {0}; \
-    va_start(args, format);
+    va_start(args, format); \
+    \
+    if (_sir_validptr(format)) { \
 
 /** Evil macro used for _sir_lv wrappers. */
-# define _SIR_L_END(args) va_end(args);
+# define _SIR_L_END(args) \
+    } \
+    va_end(args);
 
 /** Squelches warnings about unreferenced parameters. */
 # define _SIR_UNUSED(param) (void)param;
+
+/** Returns a printable string even if NULL. */
+# define _SIR_PRNSTR(str) (str ? str : "<null>")
 
 /** Even more evil macros used for binary searching arrays. */
 # define _SIR_DECLARE_BIN_SEARCH(low, high) \
@@ -196,22 +203,22 @@ sir_textcolor _sir_getansibgcmd(sir_textcolor bg) {
 }
 
 /** Extracts the red component out of an RGB color mode ::sir_textcolor. */
-# define _sir_getredfromcolor(color) (uint8_t)((color >> 16) & 0x000000ff)
+# define _sir_getredfromcolor(color) (uint8_t)(((color) >> 16) & 0x000000ff)
 
 /** Sets the red component in an RGB color mode ::sir_textcolor. */
-# define _sir_setredincolor(color, red) (color |= ((red << 16) & 0x00ff0000))
+# define _sir_setredincolor(color, red) (color |= (((red) << 16) & 0x00ff0000))
 
 /** Extracts the green component out of an RGB color mode ::sir_textcolor. */
-# define _sir_getgreenfromcolor(color) (uint8_t)((color >> 8) & 0x000000ff)
+# define _sir_getgreenfromcolor(color) (uint8_t)(((color) >> 8) & 0x000000ff)
 
 /** Sets the green component in an RGB color mode ::sir_textcolor. */
-# define _sir_setgreenincolor(color, green) (color |= ((green << 8) & 0x0000ff00))
+# define _sir_setgreenincolor(color, green) ((color) |= (((green) << 8) & 0x0000ff00))
 
 /** Extracts the blue component out of an RGB color mode ::sir_textcolor. */
-# define _sir_getbluefromcolor(color) (uint8_t)(color & 0x000000ff)
+# define _sir_getbluefromcolor(color) (uint8_t)((color) & 0x000000ff)
 
 /** Sets the blue component in an RGB color mode ::sir_textcolor. */
-# define _sir_setblueincolor(color, blue) (color |= (blue & 0x000000ff))
+# define _sir_setblueincolor(color, blue) ((color) |= ((blue) & 0x000000ff))
 
 /** Sets the red, blue, and green components in an RGB color mode ::sir_textcolor. */
 static inline
@@ -305,11 +312,24 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
 int _sir_getchar(void);
 
 /**
- * Implementation of the FNV-1a OWHF (http://www.isthe.com/chongo/tech/comp/fnv/)
- * watered down to only hash null-terminated strings.
+ * Implementation of the 32-bit FNV-1a OWHF (http://isthe.com/chongo/tech/comp/fnv/)
  */
 static inline
-uint64_t FNV_1a(const char* str)
+uint32_t FNV32_1a(const uint8_t* data, size_t len) {
+    uint32_t hash = 2166136261U;
+    for (size_t n = 0; n < len; n++) {
+        hash ^= (uint32_t)data[n];
+        hash *= 16777619U;
+    }
+    return hash;
+}
+
+/**
+ * Implementation of the 64-bit FNV-1a OWHF (http://isthe.com/chongo/tech/comp/fnv/)
+ * watered down to only handle null-terminated strings.
+ */
+static inline
+uint64_t FNV64_1a(const char* str)
 {
     uint64_t hash = 14695981039346656037UL;
     for (const char* c = str; *c; c++) {

@@ -27,6 +27,7 @@
 #include "sirconsole.h"
 #include "sirdefaults.h"
 #include "sirfilecache.h"
+#include "sirplugins.h"
 #include "sirtextstyle.h"
 #include "sirfilesystem.h"
 #include "sirmutex.h"
@@ -35,14 +36,18 @@
 # pragma comment(lib, "ws2_32.lib")
 #endif
 
-static sirconfig _sir_cfg = {0};
-static sirfcache _sir_fc  = {0};
+static sirconfig _sir_cfg      = {0};
+static sirfcache _sir_fc       = {0};
+static sir_plugincache _sir_pc = {0};
 
 static sir_mutex cfg_mutex;
 static sir_once cfg_once = SIR_ONCE_INIT;
 
 static sir_mutex fc_mutex;
 static sir_once fc_once = SIR_ONCE_INIT;
+
+static sir_mutex pc_mutex;
+static sir_once pc_once = SIR_ONCE_INIT;
 
 static sir_mutex ts_mutex;
 static sir_once ts_once = SIR_ONCE_INIT;
@@ -163,6 +168,7 @@ bool _sir_init(sirinit* si) {
 #endif
 
     _sir_unlocksection(SIRMI_CONFIG);
+
     return true;
 }
 
@@ -182,6 +188,16 @@ bool _sir_cleanup(void) {
 
     _sir_unlocksection(SIRMI_FILECACHE);
     cleanup &= destroyfc;
+
+    sir_plugincache* spc = _sir_locksection(SIRMI_PLUGINCACHE);
+    if (!_sir_validptr(spc)) {
+        _sir_seterror(_SIR_E_INTERNAL);
+        return false;
+    }
+
+    bool destroypc = _sir_plugin_cache_destroy(spc);
+    _sir_unlocksection(SIRMI_PLUGINCACHE);
+    cleanup &= destroypc;
 
     sirconfig* _cfg = _sir_locksection(SIRMI_CONFIG);
     if (!_sir_validptr(_cfg)) {
@@ -257,10 +273,10 @@ bool _sir_init_sanity(const sirinit* si) {
 static
 bool _sir_updatelevels(const char* name, sir_levels* old, sir_levels* new) {
     if (*old != *new) {
-        _sir_selflog("updating %s levels from %04" PRIx16 " to %04" PRIx16, name, *old, *new);
+        _sir_selflog("updating %s levels from %04"PRIx16" to %04"PRIx16, name, *old, *new);
         *old = *new;
     } else {
-        _sir_selflog("skipped superfluous update of %s levels: %04" PRIx16, name, *old);
+        _sir_selflog("skipped superfluous update of %s levels: %04"PRIx16, name, *old);
     }
     return true;
 }
@@ -268,10 +284,10 @@ bool _sir_updatelevels(const char* name, sir_levels* old, sir_levels* new) {
 static
 bool _sir_updateopts(const char* name, sir_options* old, sir_options* new) {
     if (*old != *new) {
-        _sir_selflog("updating %s options from %08" PRIx32 " to %08" PRIx32, name, *old, *new);
+        _sir_selflog("updating %s options from %08"PRIx32" to %08"PRIx32, name, *old, *new);
         *old = *new;
     } else {
-        _sir_selflog("skipped superfluous update of %s options: %08" PRIx32, name, *old);
+        _sir_selflog("skipped superfluous update of %s options: %08"PRIx32, name, *old);
     }
     return true;
 }
@@ -411,6 +427,11 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
             tmpm   = &fc_mutex;
             tmpsec = &_sir_fc;
             break;
+        case SIRMI_PLUGINCACHE:
+            _sir_once(&pc_once, _sir_initmutex_pc_once);
+            tmpm   = &pc_mutex;
+            tmpsec = &_sir_pc;
+            break;
         case SIRMI_TEXTSTYLE:
             _sir_once(&ts_once, _sir_initmutex_ts_once);
             tmpm   = &ts_mutex;
@@ -448,6 +469,11 @@ void _sir_initmutex_fc_once(void) {
         _sir_selflog("error: failed to create mutex!");
 }
 
+void _sir_initmutex_pc_once(void) {
+    if (!_sirmutex_create(&pc_mutex))
+        _sir_selflog("error: failed to create mutex!");
+}
+
 void _sir_initmutex_ts_once(void) {
     if (!_sirmutex_create(&ts_mutex))
         _sir_selflog("error: failed to create mutex!");
@@ -479,6 +505,19 @@ BOOL CALLBACK _sir_initmutex_fc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) 
     _SIR_UNUSED(ctx)
 
     if (!_sirmutex_create(&fc_mutex)) {
+        _sir_selflog("error: failed to create mutex!");
+        return FALSE;
+    }
+
+    return TRUE;
+}
+
+BOOL CALLBACK _sir_initmutex_pc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
+    _SIR_UNUSED(ponce);
+    _SIR_UNUSED(param);
+    _SIR_UNUSED(ctx)
+
+    if (!_sirmutex_create(&pc_mutex)) {
         _sir_selflog("error: failed to create mutex!");
         return FALSE;
     }
@@ -534,7 +573,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     /* from time to time, update the host name in the config, just in case. */
     time_t now = -1;
     if (-1 != time(&now) &&
-        (now - _cfg->state.last_hname_chk) > SIR_HNAME_CHK_INTERVAL) {
+        (now - _cfg->state.last_hname_chk) > SIR_HNAME_CHK_INTERVAL) { //-V522
         _sir_selflog("updating hostname...");
         if (!_sir_gethostname(_cfg->state.hostname)) {
             _sir_selflog("error: failed to get hostname!");
@@ -567,7 +606,8 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     SIR_ASSERT(NULL != style_str);
     if (NULL != style_str)
-        fmt = (0 == _sir_strncpy(buf.style, SIR_MAXSTYLE, style_str, SIR_MAXSTYLE));
+        fmt = (0 == _sir_strncpy(buf.style, SIR_MAXSTYLE, style_str,
+            strnlen(style_str, SIR_MAXSTYLE)));
     _SIR_UNUSED(fmt);
     SIR_ASSERT(fmt);
 
@@ -610,15 +650,15 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     if (cfg.state.last.prefix[0] == buf.message[0]  &&
         cfg.state.last.prefix[1] == buf.message[1]) {
-        hash  = FNV_1a(buf.message);
+        hash  = FNV64_1a(buf.message);
         match = cfg.state.last.hash == hash;
     }
 
     if (match) {
         cfg.state.last.counter++;
 
-        _sir_selflog("message '%s' matches last; incremented counter to %zu", buf.message,
-            cfg.state.last.counter);
+        /* _sir_selflog("message '%s' matches last; incremented counter to %zu", buf.message,
+            cfg.state.last.counter); */
 
         if (cfg.state.last.counter >= cfg.state.last.threshold - 2) {
             size_t old_threshold = cfg.state.last.threshold;
@@ -640,7 +680,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         cfg.state.last.squelch   = false;
         cfg.state.last.counter   = 0;
         cfg.state.last.threshold = SIR_SQUELCH_THRESHOLD;
-        _sir_selflog("message '%s' does not match last; resetting", buf.message);
+        /* _sir_selflog("message '%s' does not match last; resetting", buf.message); */
     }
 
     _cfg = _sir_locksection(SIRMI_CONFIG);
@@ -696,11 +736,13 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
         wanted++;
     }
 
+#if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (_sir_bittest(si->d_syslog.levels, level)) {
         if (_sir_syslog_write(level, buf, &si->d_syslog))
             dispatched++;
         wanted++;
     }
+#endif
 
     sirfcache* sfc = _sir_locksection(SIRMI_FILECACHE);
     if (!_sir_validptr(sfc)) {
@@ -716,9 +758,25 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
     dispatched += fdispatched;
     wanted += fwanted;
 
+#if !defined(SIR_NO_PLUGINS)
+    sir_plugincache* spc = _sir_locksection(SIRMI_PLUGINCACHE);
+    if (!_sir_validptr(spc)) {
+        _sir_seterror(_SIR_E_INTERNAL);
+        return false;
+    }
+
+    size_t pdispatched = 0;
+    size_t pwanted     = 0;
+    retval &= _sir_plugin_cache_dispatch(spc, level, buf, &pdispatched, &pwanted);
+    _sir_unlocksection(SIRMI_PLUGINCACHE);
+
+    dispatched += pdispatched;
+    wanted += pwanted;
+#endif
+
     if (0 == wanted) {
         _sir_seterror(_SIR_E_NODEST);
-        _sir_selflog("error: no destinations registered for level %04" PRIx16, level);
+        _sir_selflog("error: no destinations registered for level %04"PRIx32, level);
         return false;
     }
 
@@ -811,7 +869,6 @@ const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
 }
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
-
 bool _sir_syslog_init(const char* name, sir_syslog_dest* ctx) {
     if (!_sir_validptr(name) || !_sir_validptr(ctx))
         return false;
@@ -867,7 +924,7 @@ bool _sir_syslog_open(sir_syslog_dest* ctx) {
         return true;
     }
 
-    _sir_selflog("opening log (levels: %04" PRIx16 ", options: %08" PRIx32 ")", ctx->levels,
+    _sir_selflog("opening log (levels: %04"PRIx16", options: %08"PRIx32")", ctx->levels,
         ctx->opts);
 
 # if defined(SIR_OS_LOG_ENABLED)
@@ -1006,7 +1063,7 @@ void _sir_syslog_reset(sir_syslog_dest* ctx) {
         uint32_t old       = ctx->_state.mask;
         ctx->_state.mask   = 0;
         ctx->_state.logger = NULL;
-        _sir_selflog("state reset; mask was %08" PRIx32, old);
+        _sir_selflog("state reset; mask was %08"PRIx32, old);
     }
 }
 

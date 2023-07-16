@@ -5,13 +5,13 @@
       <Configuration>Debug</Configuration>
       <Platform>arm64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|arm64">
-      <Configuration>Release</Configuration>
-      <Platform>arm64</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|arm64">
+      <Configuration>Release</Configuration>
+      <Platform>arm64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
@@ -20,33 +20,33 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
-    <ProjectGuid>{B6298410-E9E6-49E6-B743-0B55B7C1F95D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{C1D7852D-BC32-4EB5-83E9-16EBFCCEF65F}</ProjectGuid>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <CharacterSet>MultiByte</CharacterSet>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -73,11 +73,11 @@
     <OutDir>$(SolutionDir)\..\build\lib\</OutDir>
     <IntDir>$(SolutionDir)\..\build\obj\$(ProjectName)\</IntDir>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)\..\build\lib\</OutDir>
     <IntDir>$(SolutionDir)\..\build\obj\$(ProjectName)\</IntDir>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">
     <OutDir>$(SolutionDir)\..\build\lib\</OutDir>
     <IntDir>$(SolutionDir)\..\build\obj\$(ProjectName)\</IntDir>
   </PropertyGroup>
@@ -87,8 +87,8 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PreprocessorDefinitions>_DEBUG;_LIB;SIR_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;SIR_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -101,14 +101,14 @@
       <UseFullPaths>false</UseFullPaths>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">
     <ClCompile>
-      <PreprocessorDefinitions>_DEBUG;_LIB;SIR_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;SIR_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -121,13 +121,13 @@
       <UseFullPaths>false</UseFullPaths>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>false</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -144,18 +144,15 @@
       <UseFullPaths>false</UseFullPaths>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
-    <Lib>
-      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
-    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'">
     <ClCompile>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>false</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -173,134 +170,17 @@
       <OmitFramePointers />
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
-    <Lib>
-      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
-    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\sir.c" />
-    <ClCompile Include="..\sirconsole.c" />
-    <ClCompile Include="..\sirerrors.c" />
-    <ClCompile Include="..\sirfilecache.c" />
-    <ClCompile Include="..\sirfilesystem.c" />
-    <ClCompile Include="..\sirhelpers.c" />
-    <ClCompile Include="..\sirinternal.c" />
-    <ClCompile Include="..\sirmaps.c" />
-    <ClCompile Include="..\sirmutex.c" />
-    <ClCompile Include="..\sirplugins.c" />
-    <ClCompile Include="..\sirtextstyle.c" />
+    <ClCompile Include="..\plugins\dummy_bad4\plugin_dummy_bad.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\sir.h" />
-    <ClInclude Include="..\siransimacros.h" />
-    <ClInclude Include="..\sirconfig.h" />
-    <ClInclude Include="..\sirconsole.h" />
-    <ClInclude Include="..\sirdefaults.h" />
-    <ClInclude Include="..\sirerrors.h" />
-    <ClInclude Include="..\sirfilecache.h" />
-    <ClInclude Include="..\sirfilesystem.h" />
-    <ClInclude Include="..\sirhelpers.h" />
-    <ClInclude Include="..\sirinternal.h" />
-    <ClInclude Include="..\sirmaps.h" />
-    <ClInclude Include="..\sirmutex.h" />
-    <ClInclude Include="..\sirplatform.h" />
-    <ClInclude Include="..\sirplugins.h" />
-    <ClInclude Include="..\sirtextstyle.h" />
-    <ClInclude Include="..\sirtypes.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\docs\alert.png" />
-    <Image Include="..\docs\bc_s.png" />
-    <Image Include="..\docs\bc_sd.png" />
-    <Image Include="..\docs\bdwn.png" />
-    <Image Include="..\docs\closed.png" />
-    <Image Include="..\docs\critical.png" />
-    <Image Include="..\docs\debug.png" />
-    <Image Include="..\docs\doc.png" />
-    <Image Include="..\docs\doxygen.png" />
-    <Image Include="..\docs\emergency.png" />
-    <Image Include="..\docs\error.png" />
-    <Image Include="..\docs\folderclosed.png" />
-    <Image Include="..\docs\folderopen.png" />
-    <Image Include="..\docs\info.png" />
-    <Image Include="..\docs\nav_f.png" />
-    <Image Include="..\docs\nav_fd.png" />
-    <Image Include="..\docs\nav_g.png" />
-    <Image Include="..\docs\nav_h.png" />
-    <Image Include="..\docs\nav_hd.png" />
-    <Image Include="..\docs\notice.png" />
-    <Image Include="..\docs\open.png" />
-    <Image Include="..\docs\splitbar.png" />
-    <Image Include="..\docs\splitbard.png" />
-    <Image Include="..\docs\sync_off.png" />
-    <Image Include="..\docs\sync_on.png" />
-    <Image Include="..\docs\tab_a.png" />
-    <Image Include="..\docs\tab_ad.png" />
-    <Image Include="..\docs\tab_b.png" />
-    <Image Include="..\docs\tab_bd.png" />
-    <Image Include="..\docs\tab_h.png" />
-    <Image Include="..\docs\tab_hd.png" />
-    <Image Include="..\docs\tab_s.png" />
-    <Image Include="..\docs\tab_sd.png" />
-    <Image Include="..\docs\warning.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\docs\annotated.html" />
-    <None Include="..\docs\annotated_dup.js" />
-    <None Include="..\docs\classes.html" />
-    <None Include="..\docs\dir_2a0e42225bcdeb5b2736d446e720b95e.html" />
-    <None Include="..\docs\dir_59425e443f801f1f2fd8bbe4959a3ccf.html" />
-    <None Include="..\docs\dir_59425e443f801f1f2fd8bbe4959a3ccf.js" />
-    <None Include="..\docs\dir_cfafba98a580ce4b62f8a6fa96d7cbb0.html" />
-    <None Include="..\docs\dir_cfafba98a580ce4b62f8a6fa96d7cbb0.js" />
-    <None Include="..\docs\doc.svg" />
-    <None Include="..\docs\docd.svg" />
-    <None Include="..\docs\doxygen.css" />
-    <None Include="..\docs\doxygen.svg" />
-    <None Include="..\docs\dynsections.js" />
-    <None Include="..\docs\examples.html" />
-    <None Include="..\docs\examples.js" />
-    <None Include="..\docs\files.html" />
-    <None Include="..\docs\files.js" />
-    <None Include="..\docs\files_dup.js" />
-    <None Include="..\docs\folderclosed.svg" />
-    <None Include="..\docs\folderclosedd.svg" />
-    <None Include="..\docs\folderopen.svg" />
-    <None Include="..\docs\folderopend.svg" />
-    <None Include="..\docs\functions.html" />
-    <None Include="..\docs\functions_vars.html" />
-    <None Include="..\docs\globals.html" />
-    <None Include="..\docs\globals_defs.html" />
-    <None Include="..\docs\globals_dup.js" />
-    <None Include="..\docs\globals_enum.html" />
-    <None Include="..\docs\globals_eval.html" />
-    <None Include="..\docs\globals_func.html" />
-    <None Include="..\docs\globals_p.html" />
-    <None Include="..\docs\globals_s.html" />
-    <None Include="..\docs\globals_type.html" />
-    <None Include="..\docs\globals_vars.html" />
-    <None Include="..\docs\index.html" />
-    <None Include="..\docs\index.js" />
-    <None Include="..\docs\jquery.js" />
-    <None Include="..\docs\modules.html" />
-    <None Include="..\docs\modules.js" />
-    <None Include="..\docs\namespacemembers.html" />
-    <None Include="..\docs\namespacemembers_func.html" />
-    <None Include="..\docs\namespacemembers_type.html" />
-    <None Include="..\docs\navtree.css" />
-    <None Include="..\docs\navtree.js" />
-    <None Include="..\docs\navtreedata.js" />
-    <None Include="..\docs\navtreeindex0.js" />
-    <None Include="..\docs\navtreeindex1.js" />
-    <None Include="..\docs\navtreeindex2.js" />
-    <None Include="..\docs\pages.html" />
-    <None Include="..\docs\resize.js" />
-    <None Include="..\docs\tabs.css" />
+    <ClInclude Include="..\plugins\dummy_bad4\plugin_dummy_bad.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -41,6 +41,9 @@
 /** Log file identifier type. */
 typedef const int* sirfileid;
 
+/** Plugin module identifier type. */
+typedef uint32_t sirpluginid;
+
 /** Defines the available levels (severity/priority) of logging output. */
 typedef enum {
     SIRL_NONE    = 0x0000, /**< No output. */
@@ -277,6 +280,62 @@ typedef struct {
     size_t count;
 } sirfcache;
 
+/** The libsir-to-plugin query data structure. */
+typedef struct {
+    uint8_t iface_ver;  /**< Plugin interface version. */
+    uint8_t maj_ver;    /**< Major version number. */
+    uint8_t min_ver;    /**< Minor version number. */
+    uint8_t bld_ver;    /**< Build/patch version number. */
+    sir_levels levels;  /**< Level registration bitmask. */
+    sir_options opts;   /**< Formatting options bitmask. */
+    const char* author; /**< Plugin author information. */
+    const char* desc;   /**< Plugin description. */
+    uint64_t caps;      /**< Plugin capabilities bitmask. */
+} sir_plugininfo;
+
+/** Plugin versioning. */
+# define SIR_PLUGIN_V1 1
+# define SIR_PLUGIN_VCURRENT SIR_PLUGIN_V1
+
+/** Plugin export names for v1 */
+# define SIR_PLUGIN_EXPORT_QUERY   "sir_plugin_query"
+# define SIR_PLUGIN_EXPORT_INIT    "sir_plugin_init"
+# define SIR_PLUGIN_EXPORT_WRITE   "sir_plugin_write"
+# define SIR_PLUGIN_EXPORT_CLEANUP "sir_plugin_cleanup"
+
+/** Plugin export typedefs for v1 */
+typedef bool (*sir_plugin_queryfn)(sir_plugininfo*);
+typedef bool (*sir_plugin_initfn)(void);
+typedef bool (*sir_plugin_writefn)(sir_level, const char*);
+typedef bool (*sir_plugin_cleanupfn)(void);
+
+/** Plugin interface for v1. */
+typedef struct {
+    sir_plugin_queryfn query;     /**< Handle to sir_plugin_query. */
+    sir_plugin_initfn init;       /**< Handle to sir_plugin_init. */
+    sir_plugin_writefn write;     /**< Handle to sir_plugin_write. */
+    sir_plugin_cleanupfn cleanup; /**< Handle to sir_plugin_cleanup. */
+} sir_pluginifacev1;
+
+typedef sir_pluginifacev1 sir_pluginiface;
+
+/** Plugin module data. */
+typedef struct {
+    const char* path;        /**< Path to the shared library file. */
+    sir_pluginhandle handle; /**< Handle to loaded module. */
+    sir_plugininfo info;     /**< Information reported by the plugin.  */
+    bool loaded;             /**< Whether the module is currently loaded. */
+    bool valid;              /**< Whether the module is loaded and valid. */
+    sir_pluginiface iface;   /**< Versioned interface to the plugin module. */
+    uint32_t id;             /**< Unique identifier. */
+} sir_plugin;
+
+/** Plugin module cache. */
+typedef struct {
+    sir_plugin* plugins[SIR_MAXPLUGINS];
+    size_t count;
+} sir_plugincache;
+
 /** Formatted output container. */
 typedef struct {
     char style[SIR_MAXSTYLE];
@@ -313,9 +372,10 @@ typedef struct {
 
 /** Mutex <-> protected section mapping. */
 typedef enum {
-    SIRMI_CONFIG = 0, /**< The ::sirconfig section. */
-    SIRMI_FILECACHE,  /**< The ::sirfcache section. */
-    SIRMI_TEXTSTYLE,  /**< The ::sir_level_style_tuple section. */
+    SIRMI_CONFIG = 0,  /**< The ::sirconfig section. */
+    SIRMI_FILECACHE,   /**< The ::sirfcache section. */
+    SIRMI_PLUGINCACHE, /**< The ::sir_plugincache section. */
+    SIRMI_TEXTSTYLE,   /**< The ::sir_level_style_tuple section. */
 } sir_mutex_id;
 
 /** Error type. */

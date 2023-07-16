@@ -29,7 +29,6 @@
 # include "sirtypes.h"
 
 typedef bool (*sir_fcache_pred)(const void* match, sirfile* iter);
-typedef void (*sir_fcache_update)(sirfile* si, sir_update_config_data* data);
 
 sirfileid _sir_addfile(const char* path, sir_levels levels, sir_options opts);
 bool _sir_updatefile(sirfileid id, sir_update_config_data* data);

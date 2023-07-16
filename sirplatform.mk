@@ -6,6 +6,9 @@
 # SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 #
 
+# What system?
+UNAME_S:=$(shell uname -s 2> /dev/null)
+
 # MinGW-w64 and standard Unix
 ifneq "$(findstring mingw,$(CC))" ""
   MINGW?=1
@@ -21,6 +24,30 @@ ifeq ($(MINGW),1)
 else
   PLATFORM_DLL_EXT=.so
   PLATFORM_LIB_EXT=.a
+endif
+
+# Haiku
+ifneq "$(findstring Haiku,$(UNAME_S))" ""
+  HAIKU?=1
+endif
+ifeq ($(HAIKU),1)
+  LIBDL=
+endif
+
+# OpenBSD
+ifneq "$(findstring OpenBSD,$(UNAME_S))" ""
+  OPENBSD?=1
+endif
+ifeq ($(OPENBSD),1)
+  LIBDL=
+endif
+
+# NetBSD
+ifneq "$(findstring NetBSD,$(UNAME_S))" ""
+  NETBSD?=1
+endif
+ifeq ($(NETBSD),1)
+  LIBDL=
 endif
 
 # Enable MinGW MSVCRT workaround?
@@ -71,7 +98,7 @@ ifeq ($(NVIDIAC),1)
 endif
 
 # IBM XL C/C++ and GCC for AIX
-ifneq "$(findstring AIX,$(shell uname -s 2> /dev/null))" ""
+ifneq "$(findstring AIX,$(UNAME_S))" ""
   ifneq "$(findstring xlc,$(CC))" ""
     IBMXLC?=1
   endif

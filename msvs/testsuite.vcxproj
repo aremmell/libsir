@@ -91,7 +91,7 @@
       <TreatWarningAsError>false</TreatWarningAsError>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>$(SolutionDir)\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -100,10 +100,10 @@
       <PreprocessorDefinitions>_DEBUG;SIR_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <PreBuildEvent>
-      <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists</Command>
+      <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists &amp; if not exist $(SolutionDir)\..\logs\NUL mkdir $(SolutionDir)\..\logs</Command>
     </PreBuildEvent>
     <PreBuildEvent>
-      <Message>Create file for use with filesystem tests</Message>
+      <Message>Create files and folders for use with tests</Message>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">
@@ -112,7 +112,7 @@
       <TreatWarningAsError>false</TreatWarningAsError>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>$(SolutionDir)\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -120,8 +120,8 @@
       <UseFullPaths>false</UseFullPaths>
     </ClCompile>
     <PreBuildEvent>
-      <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists</Command>
-      <Message>Create file for use with filesystem tests</Message>
+      <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists &amp; if not exist $(SolutionDir)\..\logs\NUL mkdir $(SolutionDir)\..\logs</Command>
+      <Message>Create files and folders for use with tests</Message>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'">
@@ -132,7 +132,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <StringPooling>true</StringPooling>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
       <AdditionalIncludeDirectories>$(SolutionDir)\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
@@ -147,8 +147,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
-      <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists</Command>
-      <Message>Create file for use with filesystem tests</Message>
+      <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists &amp; if not exist $(SolutionDir)\..\logs\NUL mkdir $(SolutionDir)\..\logs</Command>
+      <Message>Create files and folders for use with tests</Message>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -159,7 +159,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <StringPooling>true</StringPooling>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
       <AdditionalIncludeDirectories>$(SolutionDir)\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
@@ -173,8 +173,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
     <PreBuildEvent>
-      <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists</Command>
-      <Message>Create file for use with filesystem tests</Message>
+      <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists &amp; if not exist $(SolutionDir)\..\logs\NUL mkdir $(SolutionDir)\..\logs</Command>
+      <Message>Create files and folders for use with tests</Message>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
