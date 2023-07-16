@@ -223,6 +223,12 @@ _set_thread_local_invalid_parameter_handler(
 #  define PID_CAST
 # endif
 
+# if defined(_AIX)
+#  define CLOCK_CAST
+# else
+#  define CLOCK_CAST
+# endif
+
 # if defined(SIR_ASSERT_ENABLED)
 #  include <assert.h>
 #  define SIR_ASSERT(...) assert(__VA_ARGS__)
