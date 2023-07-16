@@ -396,25 +396,6 @@ bool _sir_getrelbasepath(const char* restrict path, bool* restrict relative,
     return true;
 }
 
-bool _sir_deletefile(const char* restrict path) {
-    if (!_sir_validstr(path))
-        return false;
-
-#if !defined(__WIN__)
-    if (0 != unlink(path)) {
-        _sir_selflog("failed to delete: '%s' (%d)", path, errno);
-        return false;
-    }
-    return true;
-#else /* __WIN__ */
-    if (!DeleteFileA(path)) {
-        _sir_selflog("failed to delete: '%s' (%lu)", path, GetLastError());
-        return false;
-    }
-    return true;
-#endif
-}
-
 #if defined(__OpenBSD__)
 static inline int _sir_openbsdself(char* out, int capacity, int* dirname_length) {
     char buffer1[4096];

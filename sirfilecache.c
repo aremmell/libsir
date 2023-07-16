@@ -127,10 +127,8 @@ bool _sirfile_open(sirfile* sf) {
         return false;
 
     int fd = fileno(f);
-    if (!_sir_validfd(fd)) {
-        _sir_deletefile(sf->path);
+    if (!_sir_validfd(fd))
         return false;
-    }
 
     _sirfile_close(sf);
 
@@ -155,7 +153,7 @@ bool _sirfile_write(sirfile* sf, const char* output) {
         bool rolled   = false;
         char* newpath = NULL;
 
-        _sir_selflog("file %d (path: '%s') reached ~%d bytes in size; rolling...",
+        _sir_selflog("file %d (path: '%s') reached ~%ld bytes in size; rolling...",
             sf->id, sf->path, SIR_FROLLSIZE);
 
         _sir_fflush(sf->f);
@@ -205,7 +203,7 @@ bool _sirfile_writeheader(sirfile* sf, const char* msg) {
         return false;
     }
 
-    return 0 <= fmt && _sirfile_write(sf, header); //-V560
+    return 0 <= fmt && _sirfile_write(sf, header);
 }
 
 bool _sirfile_needsroll(sirfile* sf) {
@@ -220,8 +218,7 @@ bool _sirfile_needsroll(sirfile* sf) {
         return false;
     }
 
-    return st.st_size + BUFSIZ >= SIR_FROLLSIZE ||
-        SIR_FROLLSIZE - (st.st_size + BUFSIZ) <= BUFSIZ;
+    return st.st_size + BUFSIZ >= SIR_FROLLSIZE || SIR_FROLLSIZE - (st.st_size + BUFSIZ) <= BUFSIZ;
 }
 
 bool _sirfile_roll(sirfile* sf, char** newpath) {
@@ -278,7 +275,8 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                         } else if (exists) {
                             /* the file already exists; add a number to the file name
                                 * until one that does not exist is found. */
-                            _sir_selflog("path: '%s' already exists; incrementing sequence", *newpath);
+                            _sir_selflog("path: '%s' already exists; incrementing sequence",
+                                *newpath);
                             sequence++;
                         } else {
                             _sir_selflog("found good path: '%s'", *newpath);
@@ -337,12 +335,12 @@ bool _sirfile_archive(sirfile* sf, const char* newpath) {
 }
 
 bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
-    if (_sir_validptrptr(name))
+    if (NULL != name)
         *name = NULL;
-    if (_sir_validptrptr(ext))
+    if (NULL != ext)
         *ext = NULL;
 
-    if (!_sirfile_validate(sf) || !_sir_validptrptr(name) || !_sir_validptrptr(ext))
+    if (!_sirfile_validate(sf) || !_sir_validptr(name) || !_sir_validptr(ext))
         return false;
 
     char* lastfullstop = strrchr(sf->path, '.');
@@ -383,11 +381,11 @@ bool _sirfile_update(sirfile* sf, sir_update_config_data* data) {
 
     if (_sir_bittest(data->fields, SIRU_LEVELS)) {
         if (sf->levels != *data->levels) {
-            _sir_selflog("updating file %d levels from %04"PRIx16" to %04"PRIx16,
+            _sir_selflog("updating file %d levels from %04" PRIx16 " to %04" PRIx16,
                 sf->id, sf->levels, *data->levels);
             sf->levels = *data->levels;
         } else {
-            _sir_selflog("skipped superfluous update of file %d levels: %04"PRIx16,
+            _sir_selflog("skipped superfluous update of file %d levels: %04" PRIx16,
                 sf->id, sf->levels);
         }
 
@@ -396,11 +394,11 @@ bool _sirfile_update(sirfile* sf, sir_update_config_data* data) {
 
     if (_sir_bittest(data->fields, SIRU_OPTIONS)) {
         if (sf->opts != *data->opts) {
-            _sir_selflog("updating file %d options from %08"PRIx32" to %08"PRIx32, sf->id,
+            _sir_selflog("updating file %d options from %08" PRIx32 " to %08" PRIx32, sf->id,
                 sf->opts, *data->opts);
             sf->opts = *data->opts;
         } else {
-            _sir_selflog("skipped superfluous update of file %d options: %08"PRIx32, sf->id,
+            _sir_selflog("skipped superfluous update of file %d options: %08" PRIx32, sf->id,
                 sf->opts);
         }
 
@@ -417,14 +415,14 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
         return NULL;
 
     if (sfc->count >= SIR_MAXFILES) {
-        _sir_seterror(_SIR_E_NOROOM);
+        _sir_seterror(_SIR_E_FCFULL);
         return NULL;
     }
 
     sirfile* existing = _sir_fcache_find(sfc, (const void*)path, _sir_fcache_pred_path);
     if (NULL != existing) {
-        _sir_selflog("error: already have file with path '%s'", path);
-        _sir_seterror(_SIR_E_DUPITEM);
+        _sir_seterror(_SIR_E_DUPFILE);
+        _sir_selflog("error: already managing file with path '%s'", path);
         return NULL;
     }
 
@@ -432,7 +430,7 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
     if (_sirfile_validate(sf)) {
         sfc->files[sfc->count++] = sf;
 
-        if (!_sir_bittest(sf->opts, SIRO_NOHDR)) //-V522
+        if (!_sir_bittest(sf->opts, SIRO_NOHDR))
             _sirfile_writeheader(sf, SIR_FHBEGIN);
 
         return &sf->id;
@@ -450,7 +448,7 @@ bool _sir_fcache_update(sirfcache* sfc, sirfileid id, sir_update_config_data* da
 
     sirfile* found = _sir_fcache_find(sfc, (const void*)id, _sir_fcache_pred_id);
     if (!found) {
-        _sir_seterror(_SIR_E_NOITEM);
+        _sir_seterror(_SIR_E_NOFILE);
         return false;
     }
 
@@ -477,77 +475,17 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
         }
     }
 
-    _sir_seterror(_SIR_E_NOITEM);
+    _sir_seterror(_SIR_E_NOFILE);
     return false;
 }
 
 bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
     const char* path = (const char*)match;
 #if !defined(__WIN__)
-    char resolved1[SIR_MAXPATH] = {0}, resolved2[SIR_MAXPATH] = {0};
-    struct stat st1 = {0}, st2  = {0};
-
-    /* realpath "fails" if the file does not exist, but it still puts
-     * the canonical absolute path to the file in the buffer. */
-    char* realpath1 = realpath(path, resolved1);
-    if (!realpath1)
-        _sir_selflog("warning: realpath('%s') failed", path);
-
-    char* realpath2 = realpath(iter->path, resolved2);
-    if (!realpath2)
-        _sir_selflog("warning: realpath('%s') failed", iter->path);
-
-    /* if we are able to stat both files, then we can do a comparison through
-     * the data returned. if not, fall back on trying to match the path by
-     * string comparison. */
-    bool equal = false;
-    if (0 == stat(resolved1, &st1) && 0 == stat(resolved2, &st2)) {
-        equal = st1.st_dev == st2.st_dev && st1.st_ino == st2.st_ino;
-    } else {
-        _sir_selflog("falling back to conversion to canonical path and string compare");
-        equal = 0 == strncmp(resolved1, resolved2, SIR_MAXPATH);
-    }
-
-    _sir_selflog("returning %d for '%s' == '%s'", equal, resolved1, resolved2);
-    return equal;
+    return 0 == strncmp(path, iter->path, SIR_MAXPATH);
 #else /* __WIN__ */
-    /* open both files (only if they already exist) and compare their
-     * filesystem info. failing that, fall back on conversion to canonical path
-     * and string comparison. */
-    bool equal = false;
-    HANDLE h1 = CreateFileA(path,0, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
-                    NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-    bool opened1 = INVALID_HANDLE_VALUE != h1;
-
-    HANDLE h2 = CreateFileA(iter->path,0, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
-                    NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-    bool opened2 = INVALID_HANDLE_VALUE != h2;
-
-    if (opened1 && opened2) {
-        BY_HANDLE_FILE_INFORMATION fi1 = {0}, fi2 = {0};
-        if (GetFileInformationByHandle(h1, &fi1) && GetFileInformationByHandle(h2, &fi2)) {
-            equal = fi1.dwVolumeSerialNumber == fi2.dwVolumeSerialNumber &&
-                    fi1.nFileIndexLow        == fi2.nFileIndexLow        &&
-                    fi1.nFileIndexHigh       == fi2.nFileIndexHigh;
-        }
-        _sir_selflog("returning %d for '%s' == '%s'", equal, path, iter->path);
-    } else {
-        _sir_selflog("falling back to conversion to canonical path and string compare");
-        char resolved1[SIR_MAXPATH] = {0}, resolved2[SIR_MAXPATH] = {0};
-        DWORD getpath1 = GetFullPathNameA(path, SIR_MAXPATH, resolved1, NULL);
-        DWORD getpath2 = GetFullPathNameA(iter->path, SIR_MAXPATH, resolved2, NULL);
-        if (0 != getpath1 && 0 != getpath2)
-            equal = 0 == StrCmpIA(resolved1, resolved2);
-        _sir_selflog("returning %d for '%s' == '%s'", equal, resolved1, resolved2);
-    }
-
-    if (opened1)
-        CloseHandle(h1);
-
-    if (opened2)
-        CloseHandle(h2);
-
-    return equal;
+    /* paths/file names are not case sensitive on windows. */
+    return 0 == _strnicmp(path, iter->path, SIR_MAXPATH);
 #endif
 }
 
@@ -579,7 +517,6 @@ bool _sir_fcache_destroy(sirfcache* sfc) {
         sfc->count--;
     }
 
-    SIR_ASSERT(sfc->count == 0);
     memset(sfc, 0, sizeof(sirfcache));
     return true;
 }
@@ -590,20 +527,20 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
         !_sir_validptr(dispatched) || !_sir_validptr(wanted))
         return false;
 
-    const char* write    = NULL;
+    bool retval = true;
+    const char* write = NULL;
     sir_options lastopts = 0;
 
     *dispatched = 0;
-    *wanted     = 0;
+    *wanted = 0;
 
     for (size_t n = 0; n < sfc->count; n++) {
         SIR_ASSERT(_sirfile_validate(sfc->files[n]));
 
         if (!_sir_bittest(sfc->files[n]->levels, level)) {
-            _sir_selflog("level %04"PRIx32" not set in level mask (%04"PRIx16
-                         ") for file %d (path: '%s'); skipping", level,
-                         sfc->files[n]->levels, sfc->files[n]->id,
-                         sfc->files[n]->path);
+            _sir_selflog("level %04" PRIx16 " not set in level mask (%04" PRIx16
+                         ") for file %d (path: '%s'); skipping",
+                level, sfc->files[n]->levels, sfc->files[n]->id, sfc->files[n]->path);
             continue;
         }
 
@@ -616,14 +553,15 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
         }
 
         if (write && _sirfile_write(sfc->files[n], write)) {
+            retval &= true;
             (*dispatched)++;
         } else {
-            _sir_selflog("error: write to file %d (path: '%s') failed!",
-                sfc->files[n]->id, sfc->files[n]->path);
+            _sir_selflog("error: write to file %d (path: '%s') failed!", sfc->files[n]->id,
+                sfc->files[n]->path);
         }
     }
 
-    return (*dispatched == *wanted);
+    return retval && (*dispatched == *wanted);
 }
 
 void _sir_fflush(FILE* f) {
