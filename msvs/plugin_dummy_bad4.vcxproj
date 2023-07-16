@@ -177,10 +177,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\plugins\dummy_bad4\dummy_bad_plugin.c" />
+    <ClCompile Include="..\plugins\dummy_bad4\plugin_dummy_bad.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\plugins\dummy_bad4\dummy_bad_plugin.h" />
+    <ClInclude Include="..\plugins\dummy_bad4\plugin_dummy_bad.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
