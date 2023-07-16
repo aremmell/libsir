@@ -205,7 +205,7 @@ plugins:
 $(PLUGPREFIX)%: $(OUT_SHARED) $(TUS)
 	@$(MAKE) -q --no-print-directory $(OUT_SHARED) $(TUS) || export REMAKE=1; \
 	test -f $(LIBDIR)/$@$(PLATFORM_DLL_EXT) || export REMAKE=1; \
-	test $${REMAKE:-0} -eq 0 || { $(CC) -shared -o $(LIBDIR)/$@$(PLATFORM_DLL_EXT) $(CFLAGS) \
+	test $${REMAKE:-0} -eq 0 || { $(CC) $(SIR_SHARED) -o $(LIBDIR)/$@$(PLATFORM_DLL_EXT) $(CFLAGS) \
 		$(wildcard $(subst $(PLUGPREFIX),$(PLUGINS)/,$@)/*.c) $(LDFLAGS_SHARED) && \
 	printf 'built %s successfully.\n' "$(LIBDIR)/$@$(PLATFORM_DLL_EXT)" 2> /dev/null; }
 endif
