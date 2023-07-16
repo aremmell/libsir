@@ -137,7 +137,7 @@ bool _sir_openfile(FILE* restrict* restrict f, const char* restrict path,
 }
 
 #if defined(_AIX)
-static char cur[PATH_MAX];
+static char cur[SIR_MAXPATH];
 #endif
 char* _sir_getcwd(void) {
 #if !defined(__WIN__)
@@ -151,7 +151,7 @@ char* _sir_getcwd(void) {
         _sir_handleerr(errno);
         return NULL;
     } else {
-        return cur;
+        return strndup(cur, SIR_MAXPATH);
     }
 # else
     char* cur = getcwd(NULL, 0);
