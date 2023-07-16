@@ -1,10 +1,8 @@
-Configuration         {#config}
-=============
+# Configuration         {#config}
 
 Compile-time configuration of libsir.
 
-Preprocessor macros
--------------------
+## Preprocessor macros
 
 The following are applied at compile-time when executing `make`:
 
@@ -15,7 +13,7 @@ env SIR_PREPROCESSOR_FOO=1 make ...
 The Makefile takes care of the rest; you may also feel free to edit the Makefile
 to suit your needs, avoiding this step entirely.
 
-Available preprocessor macros:
+**Available preprocessor macros:**
 
 | Macro (default)      | State | Compiler settings            | Description |
 | :------------------: | :---: | :--------------------------: | :---------- |
@@ -33,8 +31,7 @@ Available preprocessor macros:
 
 @note If you plan to use the Visual Studio solution, see `README.md` under `Help` once the solution is loaded.
 
-sirconfig.h
------------
+## sirconfig.h
 
 All of the fine-grained compile-time constants, such as (but not limited to):
 
