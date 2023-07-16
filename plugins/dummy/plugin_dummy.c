@@ -117,7 +117,7 @@ PLUGIN_EXPORT bool sir_plugin_init(void) {
 #endif
 
 PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message) {
-    printf("\t" DGRAY("dummy_plugin (%s): level: %04"PRIx32", message: '%s'"),
+    printf("\t" DGRAY("dummy_plugin (%s): level: %04"PRIx32", message: %s") "\n",
         __func__, level, message);
     return true;
 }
