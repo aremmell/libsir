@@ -205,7 +205,7 @@ bool _sirfile_writeheader(sirfile* sf, const char* msg) {
         return false;
     }
 
-    return 0 <= fmt && _sirfile_write(sf, header);
+    return 0 <= fmt && _sirfile_write(sf, header); //-V560
 }
 
 bool _sirfile_needsroll(sirfile* sf) {
@@ -432,7 +432,7 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
     if (_sirfile_validate(sf)) {
         sfc->files[sfc->count++] = sf;
 
-        if (!_sir_bittest(sf->opts, SIRO_NOHDR))
+        if (!_sir_bittest(sf->opts, SIRO_NOHDR)) //-V522
             _sirfile_writeheader(sf, SIR_FHBEGIN);
 
         return &sf->id;
