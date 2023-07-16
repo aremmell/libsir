@@ -324,7 +324,7 @@ bool sir_emerg(PRINTF_FORMAT const char* format, ...);
 /**
  * @brief Adds a log file and registeres it to receive log output.
  *
- * The file at `path` will be created if it does not exist, otherwise it
+ * The file at `path` will be created if it does not exist, otherwise it will
  * be appended to.
  *
  * The levels for which the file will receive output are specified in the
@@ -440,12 +440,12 @@ bool sir_filelevels(sirfileid id, sir_levels levels);
  *
  * @see ::sir_filelevels
  *
- * @param   id    The ::sirfileid obtained when the file was added to libsir.
- * @param   opts  New bitmask of ::sir_option for the file. If you wish to use
- *                the default options, pass ::SIRO_DEFAULT.
- * @returns bool  `true` if the file is known to libsir and was succcessfully
- *                updated, `false` otherwise. Use ::sir_geterror to obtain
- *                information about any error that may have occurred.
+ * @param   id   The ::sirfileid obtained when the file was added to libsir.
+ * @param   opts New bitmask of ::sir_option for the file. If you wish to use
+ *               the default options, pass ::SIRO_DEFAULT.
+ * @returns bool `true` if the file is known to libsir and was succcessfully
+ *               updated, `false` otherwise. Use ::sir_geterror to obtain
+ *               information about any error that may have occurred.
  */
 bool sir_fileopts(sirfileid id, sir_options opts);
 
@@ -529,8 +529,8 @@ sir_textcolor sir_makergb(sir_textcolor r, sir_textcolor g, sir_textcolor b);
  *
  * @param   mode One of the `SIRCM_*` constants, defining the mode to use.
  * @returns bool `true` if the color mode was changed successfully, `false`
- * otherwise. Use ::sir_geterror to obtain information about any error that may
- * have occurred.
+ *               otherwise. Use ::sir_geterror to obtain information about any
+ *               error that may have occurred.
  */
 bool sir_setcolormode(sir_colormode mode);
 
