@@ -128,7 +128,7 @@ bool _sirfile_open(sirfile* sf) {
 
     int fd = fileno(f);
     if (!_sir_validfd(fd)) {
-#pragma message("TODO: this can't just return false; we have to delete the file, because we created it with _sir_fopen.")
+        _sir_deletefile(sf->path);
         return false;
     }
 
