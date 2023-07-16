@@ -1248,17 +1248,21 @@ bool sirtest_filesystem(void) {
                 char* _basename = _sir_getbasename(filename2);
                 printf("\t_sir_getbasename: '%s'\n", PRN_STR(_basename));
 
-                /* the last strlen(_basename) chars of filename should match. */
-                size_t len    = strnlen(_basename, SIR_MAXPATH);
-                size_t offset = strnlen(filename, SIR_MAXPATH) - len;
-                size_t n      = 0;
+                if (!_basename) {
+                    pass = false;
+                } else {
+                    /* the last strlen(_basename) chars of filename should match. */
+                    size_t len    = strnlen(_basename, SIR_MAXPATH);
+                    size_t offset = strnlen(filename, SIR_MAXPATH) - len;
+                    size_t n      = 0;
 
-                while (n < len) {
-                    if (filename[offset++] != _basename[n++]) {
-                        pass = false;
-                        break;
-                    }
-                };
+                    while (n < len) {
+                        if (filename[offset++] != _basename[n++]) {
+                            pass = false;
+                            break;
+                        }
+                    };
+                }
             }
 
             /* directory this binary file resides in. */
@@ -1277,7 +1281,8 @@ bool sirtest_filesystem(void) {
                 printf("\t_sir_getdirname: '%s'\n", PRN_STR(_dirname));
 
                 pass &= 0 == strncmp(filename, appdir, strnlen(appdir, SIR_MAXPATH));
-                pass &= 0 == strncmp(filename, _dirname, strnlen(_dirname, SIR_MAXPATH));
+                pass &= NULL != _dirname &&
+                    0 == strncmp(filename, _dirname, strnlen(_dirname, SIR_MAXPATH));
             }
 
             _sir_safefree(&appdir);
