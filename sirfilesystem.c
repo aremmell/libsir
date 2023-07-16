@@ -226,8 +226,8 @@ char* _sir_getappfilename(void) {
 # elif defined(_AIX)
         size_t length;
         length = sizeof(&buffer) / sizeof(buffer[0]);
-        if (size <= ((PATH_MAX * 2) + 32)) {
-            size = (length + 1) + ((PATH_MAX * 2) + 32);
+        if (size <= SIR_MAXPATH + 1) {
+            size = (length + 1) + SIR_MAXPATH + 1;
             continue;
         }
         int ret = _sir_aixself(buffer, &size);
