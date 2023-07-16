@@ -1537,6 +1537,10 @@ bool sirtest_squelchspam(void) {
 }
 
 bool sirtest_pluginloader(void) {
+#if defined(SIR_NO_PLUGINS)
+    printf("\t" DGRAY("SIR_NO_PLUGINS is defined; skipping.") "\n");
+    return true;
+#else
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
@@ -1597,6 +1601,7 @@ bool sirtest_pluginloader(void) {
 
     sir_cleanup();
     return print_result_and_return(pass);
+#endif
 }
 
 #if !defined(__WIN__)
