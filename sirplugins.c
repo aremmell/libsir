@@ -61,6 +61,7 @@ sirpluginid _sir_plugin_load(const char* path) {
     plugin->path = strdup(path);
     if (!plugin->path) {
         _sir_handleerr(errno);
+        _sir_safefree(&plugin);
         return 0;
     }
 
