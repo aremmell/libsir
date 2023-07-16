@@ -423,10 +423,11 @@ bool _sir_getrelbasepath(const char* restrict path, bool* restrict relative,
 }
 
 #if defined(_AIX)
+# define SIR_MAXSLPATH SIR_MAXPATH + 16
 int _sir_aixself(char* buffer, size_t* size) {
     ssize_t res;
     char cwd[SIR_MAXPATH], cwdl[SIR_MAXPATH];
-    char symlink[SIR_MAXPATH], temp_buffer[SIR_MAXPATH];
+    char symlink[SIR_MAXSLPATH], temp_buffer[SIR_MAXPATH];
     char pp[64];
     struct psinfo ps;
     int fd;
@@ -532,10 +533,10 @@ int _sir_aixself(char* buffer, size_t* size) {
             if (token[0] == '.') {
                 char* relative = strchr(token, '/');
                 if (relative != NULL) {
-                    snprintf(symlink, SIR_MAXPATH, "%s%s/%s", cwdl, relative + 1,
+                    snprintf(symlink, SIR_MAXSLPATH, "%s%s/%s", cwdl, relative + 1,
                         ps.pr_fname);
                 } else {
-                    snprintf(symlink, SIR_MAXPATH, "%s%s", cwdl, ps.pr_fname);
+                    snprintf(symlink, SIR_MAXSLPATH, "%s%s", cwdl, ps.pr_fname);
                 }
 
                 if (stat(symlink, &statstruct) != -1) {
