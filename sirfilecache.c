@@ -423,7 +423,8 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
 
     sirfile* existing = _sir_fcache_find(sfc, (const void*)path, _sir_fcache_pred_path);
     if (NULL != existing) {
-        _sir_selflog("error: already have file (path: '%s')", path);
+        _sir_selflog("error: already have file (path: '%s', id: %d)",
+            path, existing->id);
         _sir_seterror(_SIR_E_DUPITEM);
         return NULL;
     }

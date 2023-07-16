@@ -248,7 +248,9 @@ void _sir_plugin_unload(sir_plugin* plugin) {
 }
 
 sirpluginid _sir_plugin_add(sir_plugin* plugin) {
-    if (!_sir_validptr(plugin))
+    _sir_seterror(_SIR_E_NOERROR);
+
+    if (!_sir_sanity() || !_sir_validptr(plugin))
         return 0;
 
     sir_plugincache* spc = _sir_locksection(SIRMI_PLUGINCACHE);
@@ -264,10 +266,15 @@ sirpluginid _sir_plugin_add(sir_plugin* plugin) {
 }
 
 bool _sir_plugin_rem(sirpluginid id) {
+    _sir_seterror(_SIR_E_NOERROR);
+
+    if (!_sir_sanity())
+        return false;
+
     sir_plugincache* spc = _sir_locksection(SIRMI_PLUGINCACHE);
     if (!spc) {
         _sir_seterror(_SIR_E_INTERNAL);
-        return 0;
+        return false;
     }
 
     bool retval = _sir_plugin_cache_rem(spc, id);
@@ -300,16 +307,15 @@ sirpluginid _sir_plugin_cache_add(sir_plugincache* spc, sir_plugin* plugin) {
 
     sir_plugin* existing = _sir_plugin_cache_find_id(spc, plugin->id);
     if (NULL != existing) {
-        _sir_selflog("error: already have plugin with id %08"PRIx32 " at path"
-                     " '%s'", plugin->id, existing->path);
+        _sir_selflog("error: already have plugin (path: '%s', id %08"PRIx32")",
+            existing->path, plugin->id);
         _sir_seterror(_SIR_E_DUPITEM);
         return 0;
     }
 
+    _sir_selflog("adding plugin (path: %s, id: %08"PRIx32"); count = %zu",
+    plugin->path, plugin->id, spc->count + 1);
     spc->plugins[spc->count++] = plugin;
-    _sir_selflog("added plugin (path: %s, id: %08"PRIx32") to cache; count = %zu",
-        plugin->path, plugin->id, spc->count);
-
     return plugin->id;
 }
 
@@ -336,6 +342,9 @@ bool _sir_plugin_cache_rem(sir_plugincache* spc, sirpluginid id) {
 
     for (size_t n = 0; n < spc->count; n++) {
         if (spc->plugins[n]->id == id) {
+            _sir_selflog("removing plugin (path: '%s', id: %"PRIx32"); count = %zu",
+                spc->plugins[n]->path, spc->plugins[n]->id, spc->count - 1);
+
             _sir_plugin_destroy(&spc->plugins[n]);
 
             for (size_t i = n; i < spc->count - 1; i++) {
