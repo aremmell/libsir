@@ -431,6 +431,7 @@ int _sir_aixself(char* buffer, size_t* size) {
     struct psinfo ps;
     int fd;
     char** argv;
+    char* tokptr;
 
     if ((buffer == NULL) || (size == NULL))
         return -1;
@@ -519,7 +520,7 @@ int _sir_aixself(char* buffer, size_t* size) {
 
         strcpy(clonedpath, path);
 
-        token = strtok(clonedpath, ":");
+        token = strtok_r(clonedpath, ":", &tokptr);
 
         snprintf(cwd, PATH_MAX * 2 - 1, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
         /* Flawfinder: ignore */
@@ -563,7 +564,7 @@ int _sir_aixself(char* buffer, size_t* size) {
                 }
             }
 
-            token = strtok(NULL, ":");
+            token = strtok_r(NULL, ":", &tokptr);
         }
         return -1;
     }
