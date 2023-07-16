@@ -70,19 +70,27 @@ ifeq ($(NVIDIAC),1)
   CFLAGS+=--diag_suppress nonstd_ellipsis_only_param
 endif
 
-# IBM XL C/C++ for AIX
+# IBM XL C/C++ and GCC for AIX
 ifneq "$(findstring AIX,$(shell uname -s 2> /dev/null))" ""
   ifneq "$(findstring xlc,$(CC))" ""
     IBMXLC?=1
   endif
 endif
+ifneq "$(findstring powerpc-ibm-aix7,$(CC))" ""
+  AIXTLS?=1
+endif
 ifeq ($(IBMXLC),1)
   NO_DEFAULT_CFLAGS=1
-  SIR_SHARED=-qmkshrobj
   CFLAGS+=-I. -I..
   CFLAGS+=-qformat=all
   CFLAGS+=-qtls
+  SIR_SHARED=-qmkshrobj
   MMDOPT=
   PTHOPT=
 endif
+ifeq ($(AIXTLS),1)
+  CFLAGS+=-ftls-model=initial-exec
+endif
+
+# Default way to link shared library?
 SIR_SHARED?=-shared

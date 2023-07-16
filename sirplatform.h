@@ -380,7 +380,11 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 # if (__STDC_VERSION__ >= 201112 && !defined(__STDC_NO_THREADS__)) || \
      (defined(__SUNPRO_C) || defined(__SUNPRO_CC))
-#  define _sir_thread_local _Thread_local
+#  if defined(_AIX) && defined(__GNUC__)
+#   define _sir_thread_local __thread
+#  else
+#   define _sir_thread_local _Thread_local
+#  endif
 # elif defined(__WIN__)
 #  define _sir_thread_local __declspec(thread)
 # elif defined(__GNUC__) || (defined(_AIX) && (defined(__xlC_ver__) || defined(__ibmxl__)))
