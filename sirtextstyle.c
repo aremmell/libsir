@@ -108,7 +108,7 @@ const sir_textstyle* _sir_getdefstyle(sir_level level) {
         case SIRL_DEBUG:  return &sir_lvl_debug_def_style;
         default: /* this should never happen. */
             SIR_ASSERT(!"invalid sir_level");
-            return NULL;
+            return &sir_lvl_info_def_style;
     }
 }
 

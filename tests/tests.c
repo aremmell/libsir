@@ -1020,7 +1020,7 @@ bool sirtest_perf(void) {
     enumfiles(SIR_TESTLOGDIR, logbasename, deletefiles, &deleted);
 
     if (deleted > 0)
-        printf("\t" DGRAY("deleted %d log file(s)") "\n", deleted);
+        printf("\t" DGRAY("deleted %u log file(s)") "\n", deleted);
 
     sir_cleanup();
     return print_result_and_return(pass);

@@ -180,7 +180,7 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
         }
 
         int fmtmsg = snprintf(message, SIR_MAXERROR, SIR_ERRORFORMAT, sir_te.loc.func,
-            sir_te.loc.file, sir_te.loc.line, final);
+            sir_te.loc.file, sir_te.loc.line, _PRNSTR(final));
 
         _SIR_UNUSED(fmtmsg);
         SIR_ASSERT(fmtmsg >= 0);
