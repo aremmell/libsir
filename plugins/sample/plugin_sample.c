@@ -92,7 +92,7 @@ PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message) {
     return true;
 }
 
-PLUGIN_EXPORT bool sir_plugin_cleanup(void) {
+PLUGIN_EXPORT bool sir_plugin_cleanup(void) { //-V524
     printf("\t" DGRAY("sample_plugin ('%s')") "\n", __func__);
     return true;
 }
