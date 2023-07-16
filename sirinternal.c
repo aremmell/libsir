@@ -573,7 +573,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     /* from time to time, update the host name in the config, just in case. */
     time_t now = -1;
     if (-1 != time(&now) &&
-        (now - _cfg->state.last_hname_chk) > SIR_HNAME_CHK_INTERVAL) {
+        (now - _cfg->state.last_hname_chk) > SIR_HNAME_CHK_INTERVAL) { //-V522
         _sir_selflog("updating hostname...");
         if (!_sir_gethostname(_cfg->state.hostname)) {
             _sir_selflog("error: failed to get hostname!");

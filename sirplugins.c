@@ -229,7 +229,7 @@ void _sir_plugin_unload(sir_plugin* plugin) {
     int ret = dlclose(plugin->handle);
     if (0 != ret) {
         const char* err = dlerror();
-        _sir_selflog("error: dlclose(%p) failed (%s)", plugin->handle,
+        _sir_selflog("error: dlclose(%p) failed (%s)", plugin->handle, //-V774
             _SIR_PRNSTR(err));
         _sir_handleerr(errno);
         return;

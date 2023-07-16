@@ -230,7 +230,7 @@ bool sirtest_failnulls(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    pass &= !sir_info(NULL);
+    pass &= !sir_info(NULL); //-V618
     pass &= NULL == sir_addfile(NULL, SIRL_ALL, SIRO_MSGONLY);
 
     if (pass)
