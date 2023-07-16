@@ -224,9 +224,7 @@ char* _sir_getappfilename(void) {
             break;
         }
 # elif defined(_AIX)
-        size_t length;
-        length = sizeof(&buffer) / sizeof(buffer[0]);
-        if (size <= SIR_MAXPATH + 1) {
+        if (size <= SIR_MAXPATH) {
             size = (length + 1) + SIR_MAXPATH + 1;
             continue;
         }
