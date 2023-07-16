@@ -1217,10 +1217,53 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
 }
 #endif
 
+#if !defined(SIR_SYSLOG_ENABLED) || !defined(SIR_OS_LOG_ENABLED)
+static bool generic_disabled_syslog_test(const char* sl_name, const char* identity,
+    const char* category) {
+    INIT_SL(si, SIRL_ALL, SIRO_NOHOST | SIRO_NOTID, 0, 0, "sir_disabled_sltest");
+    si.d_syslog.opts   = SIRO_DEFAULT;
+    si.d_syslog.levels = SIRL_DEFAULT;
+    bool pass = true;
+
+    printf("\tsystem logger: '%s' is disabled; expecting calls to fail...\n", sl_name);
+
+    /* init should just ignore the syslog settings. */
+    si_init = sir_init(&si);
+    pass &= si_init;
+
+    /* these calls should all fail. */
+    printf("\tsetting %s levels...\n", sl_name);
+    pass &= !sir_sysloglevels(SIRL_ALL);
+
+    if (pass)
+        print_expected_error();
+
+    printf("\tsetting %s options...\n", sl_name);
+    pass &= !sir_syslogopts(SIRO_DEFAULT);
+
+    if (pass)
+        print_expected_error();
+
+    printf("\tsetting %s identity...\n", sl_name);
+    pass &= !sir_syslogid(identity);
+
+    if (pass)
+        print_expected_error();
+
+    printf("\tsetting %s category...\n", sl_name);
+    pass &= !sir_syslogcat(category);
+
+    if (pass)
+        print_expected_error();
+
+    pass &= sir_cleanup();
+    return print_result_and_return(pass);
+}
+#endif
+
 bool sirtest_syslog(void) {
 #if !defined(SIR_SYSLOG_ENABLED)
-    printf("\t" DGRAY("SIR_SYSLOG_ENABLED is not defined; skipping.") "\n");
-    return true;
+    return generic_disabled_syslog_test("syslog", "sirtests", "tests");
 #else
     return generic_syslog_test("syslog", "sirtests", "tests");
 #endif
@@ -1228,8 +1271,7 @@ bool sirtest_syslog(void) {
 
 bool sirtest_os_log(void) {
 #if !defined(SIR_OS_LOG_ENABLED)
-    printf("\t" DGRAY("SIR_OS_LOG_ENABLED is not defined; skipping.") "\n");
-    return true;
+    return generic_disabled_syslog_test("os_log", "com.aremmell.libsir.tests", "tests");
 #else
     bool pass = generic_syslog_test("os_log", "com.aremmell.libsir.tests", "tests");
     return print_result_and_return(pass);
@@ -1556,10 +1598,6 @@ bool sirtest_squelchspam(void) {
 }
 
 bool sirtest_pluginloader(void) {
-#if defined(SIR_NO_PLUGINS)
-    printf("\t" DGRAY("SIR_NO_PLUGINS is defined; skipping.") "\n");
-    return true;
-#else
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
@@ -1575,6 +1613,29 @@ bool sirtest_pluginloader(void) {
     static const char* plugin4 = "build/lib/plugin_dummy_bad3."PLUGIN_EXT;
     static const char* plugin5 = "build/lib/plugin_dummy_bad4."PLUGIN_EXT;
 
+#if defined(SIR_NO_PLUGINS)
+    _SIR_UNUSED(plugin2);
+    _SIR_UNUSED(plugin3);
+    _SIR_UNUSED(plugin4);
+    _SIR_UNUSED(plugin5);
+
+    printf("\tSIR_NO_PLUGINS is defined; expecting calls to fail\n");
+
+    printf("\tloading good plugin: '%s'...\n", plugin1);
+    /* load a valid, well-behaved plugin. */
+    sirpluginid id = sir_loadplugin(plugin1);
+    pass &= 0 == id;
+
+    if (pass)
+        print_expected_error();
+
+    printf("\tunloading good plugin: '%s'...\n", plugin1);
+    /* also try the unload function. */
+    pass &= !sir_unloadplugin(id);
+
+    if (pass)
+        print_expected_error();
+#else
     /* load a valid, well-behaved plugin. */
     printf("\tloading good plugin: '%s'...\n", plugin1);
     sirpluginid id = sir_loadplugin(plugin1);
@@ -1618,9 +1679,11 @@ bool sirtest_pluginloader(void) {
     if (pass)
         print_expected_error();
 
-    sir_cleanup();
-    return print_result_and_return(pass);
+    printf("\tunloading good plugin: '%s'...\n", plugin1);
+    pass &= sir_unloadplugin(id);
 #endif
+    pass &= sir_cleanup();
+    return print_result_and_return(pass);
 }
 
 #if !defined(__WIN__)

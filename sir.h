@@ -658,7 +658,7 @@ bool sir_sysloglevels(sir_levels levels);
  * @see ::sir_sysloglevels
  *
  * @param   opts New bitmask of ::sir_option for the system logger. If you wish
- *               to use the default values, pass ::SIRL_DEFAULT.
+ *               to use the default values, pass ::SIRO_DEFAULT.
  * @returns bool `true` if succcessfully updated, `false` otherwise. Use
  *               ::sir_geterror to obtain information about any error that may
  *               have occurred.
