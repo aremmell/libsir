@@ -6,6 +6,9 @@
 # SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 #
 
+# What system?
+UNAME_S:=$(strip$(shell uname -s 2> /dev/null))
+
 # MinGW-w64 and standard Unix
 ifneq "$(findstring mingw,$(CC))" ""
   MINGW?=1
@@ -24,15 +27,23 @@ else
 endif
 
 # Haiku
-ifneq "$(findstring Haiku,$(shell uname -s 2> /dev/null))" ""
+ifneq "$(findstring Haiku,$(UNAME_S))" ""
   HAIKU?=1
 endif
 ifeq ($(HAIKU),1)
   LIBDL=
 endif
 
+# OpenBSD
+ifneq "$(findstring OpenBSD,$(UNAME_S))" ""
+  OPENBSD?=1
+endif
+ifeq ($(OPENBSD),1)
+  LIBDL=
+endif
+
 # NetBSD
-ifneq "$(findstring NetBSD,$(shell uname -s 2> /dev/null))" ""
+ifneq "$(findstring NetBSD,$(UNAME_S))" ""
   NETBSD?=1
 endif
 ifeq ($(NETBSD),1)
