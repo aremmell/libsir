@@ -266,6 +266,7 @@ _set_thread_local_invalid_parameter_handler(
 # define SIR_MAXHOST 256
 
 # if !defined(__WIN__)
+#  include <dlfcn.h>
 #  include <pthread.h>
 #  if defined(__illumos__)
 #   include <sys/fcntl.h>
@@ -338,6 +339,12 @@ _set_thread_local_invalid_parameter_handler(
 #   undef SIR_MSEC_TIMER
 #  endif
 
+/** The plugin handle type. */
+typedef void* sir_pluginhandle;
+
+/** The plugin export address type. */
+typedef void* sir_pluginexport;
+
 /** The mutex type. */
 typedef pthread_mutex_t sir_mutex;
 
@@ -356,6 +363,12 @@ typedef void (*sir_once_fn)(void);
 
 #  define SIR_MSEC_TIMER
 #  define SIR_MSEC_WIN32
+
+/** The plugin handle type. */
+typedef HMODULE sir_pluginhandle;
+
+/** The plugin export address type. */
+typedef FARPROC sir_pluginexport;
 
 /** The mutex type. */
 typedef HANDLE sir_mutex;

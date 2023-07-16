@@ -6,6 +6,7 @@
 # SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 #
 
+SHELL      := $(shell env sh -c 'PATH="$$(command -p getconf PATH)" command -v sh')
 BUILDDIR    = ./build
 LOGDIR      = ./logs
 DOCSDIR     = docs
@@ -20,7 +21,9 @@ INSTALLINC  = $(DESTDIR)$(PREFIX)/include
 INSTALLSH   = ./build-aux/install-sh
 RANLIB     ?= ranlib
 LDCONFIG   ?= ldconfig
-SHELL      := $(shell env sh -c 'PATH="$$(command -p getconf PATH)" command -v sh')
+PLUGINS     = ./plugins
+PLUGINNAMES = $(subst $(PLUGINS)/,,$(wildcard $(PLUGINS)/*))
+PLUGPREFIX  = plugin_
 
 # platform specifics
 include sirplatform.mk
@@ -52,22 +55,30 @@ ifeq ($(SIR_NO_SYSTEM_LOGGERS),1)
   CFLAGS += -DSIR_NO_SYSTEM_LOGGERS
 endif
 
+# disable plugins?
+ifeq ($(SIR_NO_PLUGINS),1)
+  CFLAGS += -DSIR_NO_PLUGINS
+else
+  LIBDL  ?= -ldl
+  PGOALS  = plugins
+endif
+
 # dependencies
 LIBS = $(PTHOPT)
 
 # for test rig and example:
 # link with static library, not shared
-LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s $(PLATFORM_LIBS)
+LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s $(PLATFORM_LIBS)$(LIBDL)
 
 # translation units
 TUS := $(wildcard *.c)
 
 # intermediate files
-_OBJ = $(patsubst %.c, %.o, $(TUS))
-OBJ  = $(patsubst %, $(INTDIR)/%, $(_OBJ))
+_OBJ = $(strip $(patsubst %.c, %.o, $(TUS)))
+OBJ  = $(strip $(patsubst %, $(INTDIR)/%, $(_OBJ)))
 
 # shared library
-OBJ_SHARED     = $(patsubst %.o, $(INTDIR)/%.o, $(_OBJ))
+OBJ_SHARED     = $(strip $(patsubst %.o, $(INTDIR)/%.o, $(_OBJ)))
 OUT_SHARED_FN  = libsir$(PLATFORM_DLL_EXT)
 OUT_SHARED     = $(LIBDIR)/$(OUT_SHARED_FN)
 LDFLAGS_SHARED = $(LIBS) $(PLATFORM_LIBS)
@@ -91,7 +102,7 @@ OUT_TESTS      = $(BINDIR)/sirtests$(PLATFORM_EXE_EXT)
 
 .DEFAULT_GOAL := all
 .PHONY: all
-all: $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS)
+all: $(PGOALS) $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS)
 
 -include $(INTDIR)/*.d
 
@@ -135,8 +146,8 @@ $(BINDIR)/file.exists:
 	@touch $(BINDIR)/file.exists > /dev/null
 
 .PHONY: tests
-tests: $(OUT_TESTS)
-$(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS) $(BINDIR)/file.exists
+tests: $(OUT_TESTS) plugins
+$(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS) $(BINDIR)/file.exists plugins
 	@mkdir -p $(@D)
 	@mkdir -p $(BINDIR)
 	@mkdir -p $(LOGDIR)
@@ -181,6 +192,23 @@ clean distclean:
 	@rm -rf ./*.ln > /dev/null 2>&1
 	@rm -rf ./*.d > /dev/null 2>&1
 	-@echo build directory and log files cleaned successfully.
+
+ifneq ($(SIR_NO_PLUGINS),1)
+.PHONY: plugins
+plugins:
+	@$(MAKE) -q --no-print-directory $(OUT_SHARED) $(TUS) || \
+		$(MAKE) --no-print-directory \
+			$(foreach V,$(sort $(strip $(PLUGINNAMES))), $(PLUGPREFIX)$V) REMAKE=1
+	@$(MAKE) --no-print-directory $(foreach V,$(sort $(strip $(PLUGINNAMES))), $(PLUGPREFIX)$V)
+
+.PHONY: $(PLUGPREFIX)%
+$(PLUGPREFIX)%: $(OUT_SHARED) $(TUS)
+	@$(MAKE) -q --no-print-directory $(OUT_SHARED) $(TUS) || export REMAKE=1; \
+	test -f $(LIBDIR)/$@$(PLATFORM_DLL_EXT) || export REMAKE=1; \
+	test $${REMAKE:-0} -eq 0 || { $(CC) -shared -o $(LIBDIR)/$@$(PLATFORM_DLL_EXT) $(CFLAGS) \
+		$(wildcard $(subst $(PLUGPREFIX),$(PLUGINS)/,$@)/*.c) $(LDFLAGS_SHARED) && \
+	printf 'built %s successfully.\n' "$(LIBDIR)/$@$(PLATFORM_DLL_EXT)" 2> /dev/null; }
+endif
 
 .PHONY: printvars printenv
 printvars printenv:

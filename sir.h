@@ -27,6 +27,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+//-V::1071
 #ifndef _SIR_H_INCLUDED
 # define _SIR_H_INCLUDED
 
@@ -324,7 +325,7 @@ bool sir_emerg(PRINTF_FORMAT const char* format, ...);
 /**
  * @brief Adds a log file and registeres it to receive log output.
  *
- * The file at `path` will be created if it does not exist, otherwise it
+ * The file at `path` will be created if it does not exist, otherwise it will
  * be appended to.
  *
  * The levels for which the file will receive output are specified in the
@@ -384,6 +385,35 @@ sirfileid sir_addfile(const char* path, sir_levels levels, sir_options opts);
 bool sir_remfile(sirfileid id);
 
 /**
+ * @brief Loads a plugin module from disk.
+ *
+ * TODO lorem ipsum
+ *
+ * @see ::sir_unloadplugin
+ *
+ * @param  path
+ * @return sirpluginid A unique identifier that may later be used to unload the
+ *                     plugin module. Upon failure, returns zero. Use
+ *                     ::sir_geterror to obtain information about any error that
+ *                     may have occurred.
+ */
+sirpluginid sir_loadplugin(const char* path);
+
+/**
+ * @brief Unloads a previously loaded plugin module.
+ *
+ * TODO lorem ipsum
+ *
+ * @see ::sir_loadplugin
+ *
+ * @param   id   The ::sirpluginid obtained when the plugin was loaded via
+ *               ::sir_loadplugin.
+ * @returns bool `true` if the plugin module was located and successfully unloaded,
+ *               `false` otherwise.
+ */
+bool sir_unloadplugin(sirpluginid id);
+
+/**
  * @brief Set new level registrations for a log file already managed by libsir.
  *
  * By default, log files are registered for the following levels:
@@ -411,12 +441,12 @@ bool sir_filelevels(sirfileid id, sir_levels levels);
  *
  * @see ::sir_filelevels
  *
- * @param   id    The ::sirfileid obtained when the file was added to libsir.
- * @param   opts  New bitmask of ::sir_option for the file. If you wish to use
- *                the default options, pass ::SIRO_DEFAULT.
- * @returns bool  `true` if the file is known to libsir and was succcessfully
- *                updated, `false` otherwise. Use ::sir_geterror to obtain
- *                information about any error that may have occurred.
+ * @param   id   The ::sirfileid obtained when the file was added to libsir.
+ * @param   opts New bitmask of ::sir_option for the file. If you wish to use
+ *               the default options, pass ::SIRO_DEFAULT.
+ * @returns bool `true` if the file is known to libsir and was succcessfully
+ *               updated, `false` otherwise. Use ::sir_geterror to obtain
+ *               information about any error that may have occurred.
  */
 bool sir_fileopts(sirfileid id, sir_options opts);
 
@@ -500,8 +530,8 @@ sir_textcolor sir_makergb(sir_textcolor r, sir_textcolor g, sir_textcolor b);
  *
  * @param   mode One of the `SIRCM_*` constants, defining the mode to use.
  * @returns bool `true` if the color mode was changed successfully, `false`
- * otherwise. Use ::sir_geterror to obtain information about any error that may
- * have occurred.
+ *               otherwise. Use ::sir_geterror to obtain information about any
+ *               error that may have occurred.
  */
 bool sir_setcolormode(sir_colormode mode);
 

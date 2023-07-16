@@ -54,7 +54,7 @@
         _sir_strncpy(var.name, SIR_MAXNAME, p_name, SIR_MAXNAME); \
     bool var##_init = false; \
     if (init) \
-        var##_init = sir_init(&var);
+        var##_init = sir_init(&var)
 
 # define INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, name) \
     INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, name, true)
@@ -75,6 +75,8 @@
 # define SIR_MAXTESTNAME 32
 # define SIR_MAXCLIFLAG  32
 # define SIR_MAXUSAGE    256
+
+# define SIR_TESTLOGDIR "./logs/"
 
 /**
  * @defgroup tests Tests
@@ -244,11 +246,18 @@ bool sirtest_filesystem(void);
  */
 bool sirtest_squelchspam(void);
 
+/**
+ * @test Ensure that well-formed, valid plugins are successfully loaded, and
+ * that ill-formed/incorrectly behaving plugins are rejected.
+ * @returns bool `true` if the test passed, `false` otherwise.
+ */
+bool sirtest_pluginloader(void);
+
 /** @} */
 
 /**
  * @ test
- * @returns bool `true` if the test passed, `false` otherwise.
+ * @ returns bool `true` if the test passed, `false` otherwise.
 bool sirtest_xxxx(void); */
 
 /*
@@ -329,7 +338,7 @@ bool deletefiles(const char* search, const char* filename, unsigned* data);
 bool countfiles(const char* search, const char* filename, unsigned* data);
 
 typedef bool (*fileenumproc)(const char* search, const char* filename, unsigned* data);
-bool enumfiles(const char* search, fileenumproc cb, unsigned* data);
+bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* data);
 
 bool sirtimerstart(sir_timer* timer);
 float sirtimerelapsed(const sir_timer* timer); // msec

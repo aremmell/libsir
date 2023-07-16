@@ -104,7 +104,7 @@ void __sir_handleerr(int code, const char* func, const char* file, uint32_t line
         _sir_strncpy(message, SIR_MAXERROR, tmp, strnlen(tmp, SIR_MAXERROR));
 #endif
         /* cppcheck-suppress knownConditionTrueFalse */
-        if (0 == finderr && _sir_validstrnofail(message)) {
+        if (0 == finderr && _sir_validstrnofail(message)) { //-V560
             __sir_setoserror(code, message, func, file, line);
 #if defined(__HAVE_XSI_STRERROR_R__) || defined(__HAVE_STRERROR_S__)
         } else {
@@ -180,7 +180,7 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
         }
 
         int fmtmsg = snprintf(message, SIR_MAXERROR, SIR_ERRORFORMAT, sir_te.loc.func,
-            sir_te.loc.file, sir_te.loc.line, final);
+            sir_te.loc.file, sir_te.loc.line, _SIR_PRNSTR(final));
 
         _SIR_UNUSED(fmtmsg);
         SIR_ASSERT(fmtmsg >= 0);
@@ -204,7 +204,7 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, PRINTF_FOR
     bool success = true;
     char prefix[256];
 
-    int write1 = snprintf(prefix, 256, "%s (%s:%" PRIu32 "): ", func, file, line);
+    int write1 = snprintf(prefix, 256, "%s (%s:%"PRIu32"): ", func, file, line);
     success &= write1 > 0;
 
     if (write1 > 0) {

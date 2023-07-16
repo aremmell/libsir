@@ -38,9 +38,9 @@ enum sir_errorcode {
     SIR_E_NOERROR   = 0,    /**< The operation completed successfully */
     SIR_E_NOTREADY  = 1,    /**< libsir has not been initialized */
     SIR_E_ALREADY   = 2,    /**< libsir is already initialized */
-    SIR_E_DUPFILE   = 3,    /**< File already managed by libsir */
-    SIR_E_NOFILE    = 4,    /**< File not managed by libsir */
-    SIR_E_FCFULL    = 5,    /**< Maximum number of files already managed */
+    SIR_E_DUPITEM   = 3,    /**< Item already managed by libsir */
+    SIR_E_NOITEM    = 4,    /**< Item not managed by libsir */
+    SIR_E_NOROOM    = 5,    /**< Maximum number of items already stored */
     SIR_E_OPTIONS   = 6,    /**< Option flags are invalid */
     SIR_E_LEVELS    = 7,    /**< Level flags are invalid */
     SIR_E_TEXTSTYLE = 8,    /**< Text style is invalid */
@@ -50,10 +50,14 @@ enum sir_errorcode {
     SIR_E_NODEST    = 12,   /**< No destinations registered for level */
     SIR_E_UNAVAIL   = 13,   /**< Feature is disabled or unavailable */
     SIR_E_INTERNAL  = 14,   /**< An internal error has occurred */
-    SIR_E_COLORMODE = 15,   /**< Invalid color mode */
-    SIR_E_TEXTATTR  = 16,   /**< Invalid text attributes */
-    SIR_E_TEXTCOLOR = 17,   /**< Invalid text color */
-    SIR_E_PLATFORM  = 18,   /**< Platform error code %%d: %%s */
+    SIR_E_COLORMODE = 15,   /**< Color mode is invalid */
+    SIR_E_TEXTATTR  = 16,   /**< Text attributes are invalid */
+    SIR_E_TEXTCOLOR = 17,   /**< Text color is invalid for mode */
+    SIR_E_PLUGINBAD = 18,   /**< Plugin module is malformed */
+    SIR_E_PLUGINDAT = 19,   /**< Data produced by plugin is invalid */
+    SIR_E_PLUGINVER = 20,   /**< Plugin interface version unsupported */
+    SIR_E_PLUGINERR = 21,   /**< Plugin reported failure */
+    SIR_E_PLATFORM  = 22,   /**< Platform error code %%d: %%s */
     SIR_E_UNKNOWN   = 4095, /**< Unknown error */
 };
 
@@ -62,9 +66,9 @@ enum sir_errorcode {
 # define _SIR_E_NOERROR   _sir_mkerror(SIR_E_NOERROR)
 # define _SIR_E_NOTREADY  _sir_mkerror(SIR_E_NOTREADY)
 # define _SIR_E_ALREADY   _sir_mkerror(SIR_E_ALREADY)
-# define _SIR_E_DUPFILE   _sir_mkerror(SIR_E_DUPFILE)
-# define _SIR_E_NOFILE    _sir_mkerror(SIR_E_NOFILE)
-# define _SIR_E_FCFULL    _sir_mkerror(SIR_E_FCFULL)
+# define _SIR_E_DUPITEM   _sir_mkerror(SIR_E_DUPITEM)
+# define _SIR_E_NOITEM    _sir_mkerror(SIR_E_NOITEM)
+# define _SIR_E_NOROOM    _sir_mkerror(SIR_E_NOROOM)
 # define _SIR_E_OPTIONS   _sir_mkerror(SIR_E_OPTIONS)
 # define _SIR_E_LEVELS    _sir_mkerror(SIR_E_LEVELS)
 # define _SIR_E_TEXTSTYLE _sir_mkerror(SIR_E_TEXTSTYLE)
@@ -77,6 +81,10 @@ enum sir_errorcode {
 # define _SIR_E_COLORMODE _sir_mkerror(SIR_E_COLORMODE)
 # define _SIR_E_TEXTATTR  _sir_mkerror(SIR_E_TEXTATTR)
 # define _SIR_E_TEXTCOLOR _sir_mkerror(SIR_E_TEXTCOLOR)
+# define _SIR_E_PLUGINBAD _sir_mkerror(SIR_E_PLUGINBAD)
+# define _SIR_E_PLUGINDAT _sir_mkerror(SIR_E_PLUGINDAT)
+# define _SIR_E_PLUGINVER _sir_mkerror(SIR_E_PLUGINVER)
+# define _SIR_E_PLUGINERR _sir_mkerror(SIR_E_PLUGINERR)
 # define _SIR_E_PLATFORM  _sir_mkerror(SIR_E_PLATFORM)
 # define _SIR_E_UNKNOWN   _sir_mkerror(SIR_E_UNKNOWN)
 
@@ -84,12 +92,12 @@ static const struct {
     uint32_t e;
     const char* msg;
 } sir_errors[] = {
-    {_SIR_E_NOERROR,   "The operation completed successfully"},
+    {_SIR_E_NOERROR,   "The operation completed successfully"}, //-V616
     {_SIR_E_NOTREADY,  "libsir has not been initialized"},
     {_SIR_E_ALREADY,   "libsir is already initialized"},
-    {_SIR_E_DUPFILE,   "File already managed by libsir"},
-    {_SIR_E_NOFILE,    "File not managed by libsir"},
-    {_SIR_E_FCFULL,    "Maximum number of files already managed"},
+    {_SIR_E_DUPITEM,   "Item already managed by libsir"},
+    {_SIR_E_NOITEM,    "Item not managed by libsir"},
+    {_SIR_E_NOROOM,    "Maximum number of items already stored"},
     {_SIR_E_OPTIONS,   "Option flags are invalid"},
     {_SIR_E_LEVELS,    "Level flags are invalid"},
     {_SIR_E_TEXTSTYLE, "Text style is invalid"},
@@ -99,13 +107,18 @@ static const struct {
     {_SIR_E_NODEST,    "No destinations registered for level"},
     {_SIR_E_UNAVAIL,   "Feature is disabled or unavailable"},
     {_SIR_E_INTERNAL,  "An internal error has occurred"},
-    {_SIR_E_COLORMODE, "Invalid color mode"},
-    {_SIR_E_TEXTATTR,  "Invalid text attributes"},
-    {_SIR_E_TEXTCOLOR, "Invalid text color"},
+    {_SIR_E_COLORMODE, "Color mode is invalid"},
+    {_SIR_E_TEXTATTR,  "Text attributes are invalid"},
+    {_SIR_E_TEXTCOLOR, "Text color is invalid for mode"},
+    {_SIR_E_PLUGINBAD, "Plugin module is malformed"},
+    {_SIR_E_PLUGINDAT, "Data produced by plugin is invalid"},
+    {_SIR_E_PLUGINVER, "Plugin interface version unsupported"},
+    {_SIR_E_PLUGINERR, "Plugin reported failure"},
     {_SIR_E_PLATFORM,  "Platform error code %d: %s"},
     {_SIR_E_UNKNOWN,   "Unknown error"},
 };
 
+//-V:_sir_seterror:616
 void __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t line);
 # define _sir_seterror(err) __sir_seterror(err, __func__, __file__, __LINE__)
 

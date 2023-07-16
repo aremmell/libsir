@@ -108,7 +108,7 @@ const sir_textstyle* _sir_getdefstyle(sir_level level) {
         case SIRL_DEBUG:  return &sir_lvl_debug_def_style;
         default: /* this should never happen. */
             SIR_ASSERT(!"invalid sir_level");
-            return NULL;
+            return &sir_lvl_info_def_style;
     }
 }
 
@@ -186,7 +186,7 @@ bool _sir_validtextstyle(sir_colormode mode, const sir_textstyle* style) {
 
     if (SIRTC_DEFAULT != style->fg && SIRTC_DEFAULT != style->bg &&
         style->fg == style->bg) {
-        _sir_selflog("error: fg color %08" PRIx32 " and bg color %08" PRIx32
+        _sir_selflog("error: fg color %08"PRIx32" and bg color %08"PRIx32
                      " are identical; text would be invisible", style->fg,
                      style->bg);
         // TODO: more validation
@@ -208,16 +208,20 @@ bool _sir_setcolormode(sir_colormode mode) {
         return false;
     }
 
-    sir_colormode old = *data->color_mode;
-    *data->color_mode  = mode;
 
-    _sir_selflog("color mode changed from %"PRId32" to %"PRId32, old, mode);
+    if (*data->color_mode != mode) {
+        sir_colormode old = *data->color_mode;
+        *data->color_mode = mode;
+        _sir_selflog("color mode changed from %"PRId32" to %"PRId32, old, mode);
 
-    /* when the color mode changes, it's necessary to regenerate the text styles
-     * we're holding. for example in the case of downgrading color modes, the
-     * styles in memory could be incompatible with the new mode. */
-    if (!_sir_resettextstyles())
-        _sir_selflog("error: failed to reset text styles!");
+        /* when the color mode changes, it's necessary to regenerate the text styles
+        * we're holding. for example in the case of downgrading color modes, the
+        * styles in memory could be incompatible with the new mode. */
+        if (!_sir_resettextstyles())
+            _sir_selflog("error: failed to reset text styles!");
+    } else {
+        _sir_selflog("skipped superfluous update of color mode: %"PRId32, mode);
+    }
 
     _sir_unlocksection(SIRMI_TEXTSTYLE);
 
