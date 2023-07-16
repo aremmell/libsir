@@ -81,9 +81,7 @@ ifneq "$(findstring powerpc-ibm-aix7,$(CC))" ""
 endif
 ifeq ($(IBMXLC),1)
   NO_DEFAULT_CFLAGS=1
-  CFLAGS+=-I. -I..
-  CFLAGS+=-qformat=all
-  CFLAGS+=-qtls
+  CFLAGS+=-O3 -I. -I.. -qtls -qthreaded -qinfo=mt -qformat=all
   SIR_SHARED=-qmkshrobj
   MMDOPT=
   PTHOPT=
