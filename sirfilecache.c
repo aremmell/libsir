@@ -121,6 +121,10 @@ bool _sirfile_open(sirfile* sf) {
     if (!_sir_validptr(sf) && !_sir_validstr(sf->path))
         return false;
 
+    bool existed = false;
+    if (!_sir_pathexists(sf->path, &existed, SIR_PATH_REL_TO_CWD))
+        return false;
+
     FILE* f  = NULL;
     int open = _sir_fopen(&f, sf->path, SIR_FOPENMODE);
     if (0 != open || !f)
@@ -128,7 +132,8 @@ bool _sirfile_open(sirfile* sf) {
 
     int fd = fileno(f);
     if (!_sir_validfd(fd)) {
-        _sir_deletefile(sf->path);
+        if (!existed)
+            _sir_deletefile(sf->path);
         return false;
     }
 
