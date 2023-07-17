@@ -143,6 +143,18 @@ void _sir_safefclose(FILE* restrict* restrict f);
 /** Validates a log file descriptor. */
 bool _sir_validfd(int fd);
 
+/** Validates a file identifier */
+static inline
+bool _sir_validfileid(sirfileid id) {
+    return 0 != id;
+}
+
+/** Validates a plugin identifier */
+static inline
+bool _sir_validpluginid(sirpluginid id) {
+    return 0 != id;
+}
+
 /** Validates a sir_update_config_data structure. */
 bool _sir_validupdatedata(sir_update_config_data* data);
 

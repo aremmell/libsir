@@ -212,12 +212,12 @@ bool sirtest_failnooutputdest(void) {
         pass &= sir_stdoutlevels(SIRL_NONE);
 
         sirfileid fid = sir_addfile(logfilename, SIRL_INFO, SIRO_DEFAULT);
-        pass &= NULL != fid;
+        pass &= 0 != fid;
         pass &= sir_info("this goes to %s", logfilename);
         pass &= sir_filelevels(fid, SIRL_NONE);
         pass &= !sir_notice("this goes nowhere!");
 
-        if (NULL != fid)
+        if (0 != fid)
             pass &= sir_remfile(fid);
 
         rmfile(logfilename);
@@ -232,7 +232,7 @@ bool sirtest_failnulls(void) {
     bool pass = si_init;
 
     pass &= !sir_info(NULL); //-V575 //-V618
-    pass &= NULL == sir_addfile(NULL, SIRL_ALL, SIRO_MSGONLY);
+    pass &= 0 == sir_addfile(NULL, SIRL_ALL, SIRO_MSGONLY);
 
     if (pass)
         print_expected_error();
@@ -266,13 +266,13 @@ bool sirtest_filecachesanity(void) {
         snprintf(path, SIR_MAXPATH, MAKE_LOG_NAME("test-%zu.log"), n);
         rmfile(path);
         ids[n] = sir_addfile(path, SIRL_ALL, (n % 2) ? odd : even);
-        pass &= NULL != ids[n] && sir_info("test %zu", n);
+        pass &= 0 != ids[n] && sir_info("test %zu", n);
     }
 
     pass &= sir_info("test test test");
 
     /* this one should fail; max files already added. */
-    pass &= NULL == sir_addfile(MAKE_LOG_NAME("should-fail.log"), SIRL_ALL, SIRO_MSGONLY);
+    pass &= 0 == sir_addfile(MAKE_LOG_NAME("should-fail.log"), SIRL_ALL, SIRO_MSGONLY);
 
     if (pass)
         print_expected_error();
@@ -328,7 +328,7 @@ bool sirtest_failinvalidfilename(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    pass &= NULL == sir_addfile("bad file!/name", SIRL_ALL, SIRO_MSGONLY);
+    pass &= 0 == sir_addfile("bad file!/name", SIRL_ALL, SIRO_MSGONLY);
 
     if (pass)
         print_expected_error();
@@ -351,7 +351,7 @@ bool sirtest_failfilebadpermission(void) {
 # endif
 #endif
 
-    pass &= NULL == sir_addfile(path, SIRL_ALL, SIRO_MSGONLY);
+    pass &= 0 == sir_addfile(path, SIRL_ALL, SIRO_MSGONLY);
 
     if (pass)
         print_expected_error();
@@ -379,12 +379,12 @@ bool sirtest_faildupefile(void) {
 
     /* should be fine; no other files added yet. */
     sirfileid fid = sir_addfile(filename1, SIRL_ALL, SIRO_DEFAULT);
-    pass &= NULL != fid;
+    pass &= 0 != fid;
 
     printf("\ttrying again to add log file '%s'...\n", filename1);
 
     /* should fail. this is the same file we already added. */
-    pass &= NULL == sir_addfile(filename1, SIRL_ALL, SIRO_DEFAULT);
+    pass &= 0 == sir_addfile(filename1, SIRL_ALL, SIRO_DEFAULT);
 
     if (pass)
         print_expected_error();
@@ -393,7 +393,7 @@ bool sirtest_faildupefile(void) {
 
     /* should also fail. this is the same file we already added, even
      * if the path strings don't match. */
-    pass &= NULL == sir_addfile(filename2, SIRL_ALL, SIRO_DEFAULT);
+    pass &= 0 == sir_addfile(filename2, SIRL_ALL, SIRO_DEFAULT);
 
     if (pass)
         print_expected_error();
@@ -402,16 +402,16 @@ bool sirtest_faildupefile(void) {
 
     /* should pass. this is a different file. */
     sirfileid fid2 = sir_addfile(filename3, SIRL_ALL, SIRO_DEFAULT);
-    pass &= NULL != fid2;
+    pass &= 0 != fid2;
 
     /* should also pass. */
     sirfileid fid3 = sir_addfile(filename4, SIRL_ALL, SIRO_DEFAULT);
-    pass &= NULL != fid3;
+    pass &= 0 != fid3;
 
     pass &= sir_info("hello three valid files");
 
     /* should now fail since we added it earlier. */
-    pass &= NULL == sir_addfile(filename3, SIRL_ALL, SIRO_DEFAULT);
+    pass &= 0 == sir_addfile(filename3, SIRL_ALL, SIRO_DEFAULT);
 
     if (pass)
         print_expected_error();
@@ -433,8 +433,8 @@ bool sirtest_failremovebadfile(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    int invalidid = 9999999;
-    pass &= !sir_remfile(&invalidid);
+    sirfileid invalidid = 9999999;
+    pass &= !sir_remfile(invalidid);
 
     if (pass)
         print_expected_error();
@@ -490,7 +490,7 @@ bool sirtest_rollandarchivefile(void) {
     bool pass = si_init;
 
     sirfileid fileid = sir_addfile(logfilename, SIRL_DEBUG, SIRO_MSGONLY | SIRO_NOHDR);
-    pass &= NULL != fileid;
+    pass &= 0 != fileid;
 
     if (pass) {
         /* write an (approximately) known quantity until we should have rolled */
@@ -518,8 +518,7 @@ bool sirtest_rollandarchivefile(void) {
         pass &= foundlogs >= 2;
     }
 
-    if (NULL != fileid)
-        pass &= sir_remfile(fileid);
+    pass &= sir_remfile(fileid);
 
     delcount = 0;
     if (!enumfiles(SIR_TESTLOGDIR, logbasename, deletefiles, &delcount)) {
@@ -1001,7 +1000,7 @@ bool sirtest_perf(void) {
         snprintf(logfilename, SIR_MAXPATH, "%s%s", logbasename, logext);
 
         sirfileid logid = sir_addfile(logfilename, SIRL_ALL, SIRO_NOMSEC | SIRO_NONAME);
-        pass &= NULL != logid;
+        pass &= 0 != logid;
 
         if (pass) {
             printf("\t" BLUE("%zu lines libsir(log file)...") "\n", perflines);
@@ -1065,7 +1064,7 @@ bool sirtest_updatesanity(void) {
 
     rmfile(logfile);
     sirfileid id1 = sir_addfile(logfile, SIRL_DEFAULT, SIRO_DEFAULT);
-    pass &= NULL != id1;
+    pass &= 0 != id1;
 
     for (int i = 0; i < 10; i++) {
         if (!pass)
@@ -1800,7 +1799,7 @@ unsigned sirtest_thread(void* arg) {
     rmfile(my_args->log_file);
     sirfileid id = sir_addfile(my_args->log_file, SIRL_ALL, SIRO_MSGONLY);
 
-    if (NULL == id) {
+    if (0 == id) {
         bool unused = print_test_error(false, false);
         _SIR_UNUSED(unused);
 #if !defined(__WIN__)
@@ -1835,7 +1834,7 @@ unsigned sirtest_thread(void* arg) {
                 my_args->pass = print_test_error(false, false);
 
             id = sir_addfile(my_args->log_file, SIRL_ALL, SIRO_MSGONLY);
-            if (NULL == id)
+            if (0 == id)
                 my_args->pass = print_test_error(false, false);
 
             if (!sir_settextstyle(SIRL_DEBUG, SIRTA_EMPH, fg, bg) ||
