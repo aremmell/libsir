@@ -127,7 +127,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga9bf3e92cefac01de4e3c6c359a58706f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga9bf3e92cefac01de4e3c6c359a58706f">sir_cleanup</a> (void)</td></tr>
 <tr class="memdesc:ga9bf3e92cefac01de4e3c6c359a58706f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tears down and cleans up libsir after use.  <br /></td></tr>
 <tr class="separator:ga9bf3e92cefac01de4e3c6c359a58706f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac0c399c73c25d1128befc6b75cbae300"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300">sir_geterror</a> (char message[<a class="el" href="sirconfig_8h.html#ad6fce840144259e992c33fb611f31262">SIR_MAXERROR</a>])</td></tr>
+<tr class="memitem:gac0c399c73c25d1128befc6b75cbae300"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300">sir_geterror</a> (char message[<a class="el" href="config_8h.html#ad6fce840144259e992c33fb611f31262">SIR_MAXERROR</a>])</td></tr>
 <tr class="memdesc:gac0c399c73c25d1128befc6b75cbae300"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves information about the last error that occurred.  <br /></td></tr>
 <tr class="separator:gac0c399c73c25d1128befc6b75cbae300"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7e2563198d16d5c7ba7bdf55fec9215c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga7e2563198d16d5c7ba7bdf55fec9215c">sir_debug</a> (PRINTF_FORMAT const char *format,...)</td></tr>
@@ -154,16 +154,22 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf94f3dcbd6a14e81f6eca555733dce23"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gaf94f3dcbd6a14e81f6eca555733dce23">sir_emerg</a> (PRINTF_FORMAT const char *format,...)</td></tr>
 <tr class="memdesc:gaf94f3dcbd6a14e81f6eca555733dce23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispatches a <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc" title="Nuclear war, Armageddon, etc.">SIRL_EMERG</a> level message.  <br /></td></tr>
 <tr class="separator:gaf94f3dcbd6a14e81f6eca555733dce23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa04f4ca1fc06e1d99ca4f0fd6422b573"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442">sirfileid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gaa04f4ca1fc06e1d99ca4f0fd6422b573">sir_addfile</a> (const char *path, <a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a> levels, <a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> opts)</td></tr>
+<tr class="memitem:gaa04f4ca1fc06e1d99ca4f0fd6422b573"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__publictypes.html#ga0da4ab4b4468b6b71cd8e924b2adf2e2">sirfileid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gaa04f4ca1fc06e1d99ca4f0fd6422b573">sir_addfile</a> (const char *path, <a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a> levels, <a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> opts)</td></tr>
 <tr class="memdesc:gaa04f4ca1fc06e1d99ca4f0fd6422b573"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a log file and registeres it to receive log output.  <br /></td></tr>
 <tr class="separator:gaa04f4ca1fc06e1d99ca4f0fd6422b573"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaba84f2fef8ac18a28483ee02c1c57240"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gaba84f2fef8ac18a28483ee02c1c57240">sir_remfile</a> (<a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442">sirfileid</a> id)</td></tr>
+<tr class="memitem:gaba84f2fef8ac18a28483ee02c1c57240"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gaba84f2fef8ac18a28483ee02c1c57240">sir_remfile</a> (<a class="el" href="group__publictypes.html#ga0da4ab4b4468b6b71cd8e924b2adf2e2">sirfileid</a> id)</td></tr>
 <tr class="memdesc:gaba84f2fef8ac18a28483ee02c1c57240"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a file previously added to libsir.  <br /></td></tr>
 <tr class="separator:gaba84f2fef8ac18a28483ee02c1c57240"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5a776d3d55e9f993eb0fad82788e1160"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga5a776d3d55e9f993eb0fad82788e1160">sir_filelevels</a> (<a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442">sirfileid</a> id, <a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a> levels)</td></tr>
+<tr class="memitem:ga1a50b52b3ce1af7543b76a219ff01060"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__publictypes.html#gadbc71df98df765cddfed4aa11c805470">sirpluginid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga1a50b52b3ce1af7543b76a219ff01060">sir_loadplugin</a> (const char *path)</td></tr>
+<tr class="memdesc:ga1a50b52b3ce1af7543b76a219ff01060"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a plugin module from disk.  <br /></td></tr>
+<tr class="separator:ga1a50b52b3ce1af7543b76a219ff01060"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6796c068e61eb505e8dd8e230fbc1423"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga6796c068e61eb505e8dd8e230fbc1423">sir_unloadplugin</a> (<a class="el" href="group__publictypes.html#gadbc71df98df765cddfed4aa11c805470">sirpluginid</a> id)</td></tr>
+<tr class="memdesc:ga6796c068e61eb505e8dd8e230fbc1423"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unloads a previously registered plugin module.  <br /></td></tr>
+<tr class="separator:ga6796c068e61eb505e8dd8e230fbc1423"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5a776d3d55e9f993eb0fad82788e1160"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga5a776d3d55e9f993eb0fad82788e1160">sir_filelevels</a> (<a class="el" href="group__publictypes.html#ga0da4ab4b4468b6b71cd8e924b2adf2e2">sirfileid</a> id, <a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a> levels)</td></tr>
 <tr class="memdesc:ga5a776d3d55e9f993eb0fad82788e1160"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set new level registrations for a log file already managed by libsir.  <br /></td></tr>
 <tr class="separator:ga5a776d3d55e9f993eb0fad82788e1160"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf14164a64eca824a2bae72ef4e9689cd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gaf14164a64eca824a2bae72ef4e9689cd">sir_fileopts</a> (<a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442">sirfileid</a> id, <a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> opts)</td></tr>
+<tr class="memitem:gaf14164a64eca824a2bae72ef4e9689cd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gaf14164a64eca824a2bae72ef4e9689cd">sir_fileopts</a> (<a class="el" href="group__publictypes.html#ga0da4ab4b4468b6b71cd8e924b2adf2e2">sirfileid</a> id, <a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> opts)</td></tr>
 <tr class="memdesc:gaf14164a64eca824a2bae72ef4e9689cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set new formatting options for a log file already managed by libsir.  <br /></td></tr>
 <tr class="separator:gaf14164a64eca824a2bae72ef4e9689cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1a4726075fbcea9fc311f059e342213f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f">sir_settextstyle</a> (<a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a> level, <a class="el" href="group__publictypes.html#ga1bf5e489a6af0dcb905788c1e7a5ec2d">sir_textattr</a> attr, <a class="el" href="group__publictypes.html#gab4214e294af5ac3c91f21c1d379e10c5">sir_textcolor</a> fg, <a class="el" href="group__publictypes.html#gab4214e294af5ac3c91f21c1d379e10c5">sir_textcolor</a> bg)</td></tr>
@@ -202,6 +208,15 @@ Functions</h2></td></tr>
 <tr class="memitem:gac48e99ced63f02c6999f50aca7c56efd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gac48e99ced63f02c6999f50aca7c56efd">sir_syslogcat</a> (const char *category)</td></tr>
 <tr class="memdesc:gac48e99ced63f02c6999f50aca7c56efd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set new system logger category.  <br /></td></tr>
 <tr class="separator:gac48e99ced63f02c6999f50aca7c56efd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad1e38749df3016bd75c3d7442b708ee9"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gad1e38749df3016bd75c3d7442b708ee9">sir_getversionstring</a> (void)</td></tr>
+<tr class="memdesc:gad1e38749df3016bd75c3d7442b708ee9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current libsir version as a string.  <br /></td></tr>
+<tr class="separator:gad1e38749df3016bd75c3d7442b708ee9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga747855ef6deb460266e79629d19451ab"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga747855ef6deb460266e79629d19451ab">sir_getversionhex</a> (void)</td></tr>
+<tr class="memdesc:ga747855ef6deb460266e79629d19451ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current libsir version as a number.  <br /></td></tr>
+<tr class="separator:ga747855ef6deb460266e79629d19451ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf7c8bdb30b25e51a494271851677a8d3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gaf7c8bdb30b25e51a494271851677a8d3">sir_isprerelease</a> (void)</td></tr>
+<tr class="memdesc:gaf7c8bdb30b25e51a494271851677a8d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this is a pre-release version of libsir.  <br /></td></tr>
+<tr class="separator:gaf7c8bdb30b25e51a494271851677a8d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Function Documentation</h2>
@@ -309,7 +324,7 @@ Functions</h2></td></tr>
 <p>libsir maintains errors on a per-thread basis, so it's important that the same thread that encountered a failed library call be the one to get the error information.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">message</td><td>A buffer of <a class="el" href="sirconfig_8h.html#ad6fce840144259e992c33fb611f31262" title="The maximum size, in characters, of an error message.">SIR_MAXERROR</a> chars to receive an error message. </td></tr>
+    <tr><td class="paramname">message</td><td>A buffer of <a class="el" href="config_8h.html#ad6fce840144259e992c33fb611f31262" title="The maximum size, in characters, of an error message.">SIR_MAXERROR</a> chars to receive an error message. </td></tr>
   </table>
   </dd>
 </dl>
@@ -684,7 +699,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442">sirfileid</a> sir_addfile </td>
+          <td class="memname"><a class="el" href="group__publictypes.html#ga0da4ab4b4468b6b71cd8e924b2adf2e2">sirfileid</a> sir_addfile </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>path</em>, </td>
@@ -710,26 +725,26 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Adds a log file and registeres it to receive log output. </p>
-<p>The file at <code>path</code> will be created if it does not exist, otherwise it be appended to.</p>
+<p>The file at <code>path</code> will be created if it does not exist, otherwise it will be appended to.</p>
 <p>The levels for which the file will receive output are specified in the <code>levels</code> bitmask. If you wish to use the default levels, pass <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804" title="Default levels for this type of destination.">SIRL_DEFAULT</a>.</p>
 <p>The formatting options for the log output sent to the file are specified in the <code>opts</code> bitmask. If you wish to use the default options, pass <a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02" title="Default options for this type of destination.">SIRO_DEFAULT</a>. By default, log files receive all available information.</p>
-<dl class="section remark"><dt>Remarks</dt><dd>Take note of the <a class="el" href="sirconfig_8h.html#a019fb62b107343bafedb0f5ad84f7d3a" title="The size, in bytes, at which a log file will be rolled/archived.">SIR_FROLLSIZE</a> compile-time constant. When any log file reaches that size in bytes, it will be archived to a date-stamped file in the same directory, and logging will resume at the path of the original file.</dd>
+<dl class="section remark"><dt>Remarks</dt><dd>Take note of the <a class="el" href="config_8h.html#a019fb62b107343bafedb0f5ad84f7d3a" title="The size, in bytes, at which a log file will be rolled/archived.">SIR_FROLLSIZE</a> compile-time constant. When any log file reaches that size in bytes, it will be archived to a date-stamped file in the same directory, and logging will resume at the path of the original file.</dd>
 <dd>
-If <code>path</code> is a relative path, it shall be treated as relative to the <em>current working directory</em>. This is not necessarily the same path that your process' binary file resides in.</dd>
+If <code>path</code> is a relative path, it shall be treated as relative to the <em>current working directory</em>. This is not necessarily the same directory that your application's binary file resides in.</dd>
 <dd>
-The return value from this function is only valid for the lifetime of the process. If a crash or restart occurs, you will no longer be able to refer to the file by that identifier, and will have to add the file again (libsir does not persist its list of log files).</dd>
+The return value from this function is only valid for the lifetime of the process. If a crash or restart occurs, you will no longer be able to refer to the file by that identifier, and will have to add it again (libsir does not persist its log file cache).</dd>
 <dd>
 To change the file's level registrations or options after adding it, call <a class="el" href="group__publicfuncs.html#ga5a776d3d55e9f993eb0fad82788e1160" title="Set new level registrations for a log file already managed by libsir.">sir_filelevels</a> and <a class="el" href="group__publicfuncs.html#gaf14164a64eca824a2bae72ef4e9689cd" title="Set new formatting options for a log file already managed by libsir.">sir_fileopts</a>, respectively.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#gaba84f2fef8ac18a28483ee02c1c57240" title="Removes a file previously added to libsir.">sir_remfile</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">path</td><td>Either a relative or absolute path to a file name which shall become a log file managed by libsir. </td></tr>
-    <tr><td class="paramname">levels</td><td>Levels of output to register the file for. </td></tr>
-    <tr><td class="paramname">opts</td><td>Formatting options for the output sent to the file. </td></tr>
+    <tr><td class="paramname">path</td><td>The absolute or relative path of the file to become a logging destination for libsir. </td></tr>
+    <tr><td class="paramname">levels</td><td>Level registration bitmask. </td></tr>
+    <tr><td class="paramname">opts</td><td>Formatting options bitmask. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>sirfileid If successful, a unique identifier that can later be used to modify level registrations, options, or remove the file from libsir. Upon failure, returns <code>NULL</code>. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>sirfileid If successful, a unique identifier that can later be used to modify level registrations, options, or remove the file from libsir. Upon failure, returns zero. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -742,7 +757,7 @@ To change the file's level registrations or options after adding it, call <a cla
         <tr>
           <td class="memname">bool sir_remfile </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442">sirfileid</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#ga0da4ab4b4468b6b71cd8e924b2adf2e2">sirfileid</a>&#160;</td>
           <td class="paramname"><em>id</em></td><td>)</td>
           <td></td>
         </tr>
@@ -757,11 +772,79 @@ To change the file's level registrations or options after adding it, call <a cla
 <a class="el" href="group__publicfuncs.html#gaf14164a64eca824a2bae72ef4e9689cd" title="Set new formatting options for a log file already managed by libsir.">sir_fileopts</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">id</td><td>The <a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442" title="Log file identifier type.">sirfileid</a> obtained when the file was added to libsir. </td></tr>
+    <tr><td class="paramname">id</td><td>The <a class="el" href="group__publictypes.html#ga0da4ab4b4468b6b71cd8e924b2adf2e2" title="Log file identifier type.">sirfileid</a> obtained when the file was added to libsir. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the file is known to libsir, and was successfully removed, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the file is known to libsir and was successfully removed, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+
+</div>
+</div>
+<a id="ga1a50b52b3ce1af7543b76a219ff01060" name="ga1a50b52b3ce1af7543b76a219ff01060"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1a50b52b3ce1af7543b76a219ff01060">&#9670;&#160;</a></span>sir_loadplugin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__publictypes.html#gadbc71df98df765cddfed4aa11c805470">sirpluginid</a> sir_loadplugin </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Loads a plugin module from disk. </p>
+<p>Loads, queries, validates, and initializes a libsir plugin module. If loading and validation are successful, the plugin is registered in the internal cache.</p>
+<p>After that point in time, the plugin will be notified upon the dispatching of log messages on any <a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> the plugin registered for when it was loaded.</p>
+<p>Read the ::plugins page for more information about libsir plugins.</p>
+<dl class="section remark"><dt>Remarks</dt><dd>If <code>path</code> is a relative path, it shall be treated as relative to the <em>current working directory</em>. This is not necessarily the same directory that your application's binary file resides in.</dd>
+<dd>
+The return value from this function is only valid for the lifetime of the process. If a crash or restart occurs, you will no longer be able to refer to the plugin by that identifier, and will have to load it again (libsir does not persist its plugin cache).</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#ga6796c068e61eb505e8dd8e230fbc1423" title="Unloads a previously registered plugin module.">sir_unloadplugin</a> </dd>
+<dd>
+::plugins</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>The absolute or relative path of the plugin to be loaded and registered. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>sirpluginid If successful, a unique identifier that may later be used to unload the plugin module. Upon failure, returns zero. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+
+</div>
+</div>
+<a id="ga6796c068e61eb505e8dd8e230fbc1423" name="ga6796c068e61eb505e8dd8e230fbc1423"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6796c068e61eb505e8dd8e230fbc1423">&#9670;&#160;</a></span>sir_unloadplugin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sir_unloadplugin </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#gadbc71df98df765cddfed4aa11c805470">sirpluginid</a>&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Unloads a previously registered plugin module. </p>
+<p>Cleans up, de-registers, and unloads a plugin represented by <code>id</code> (the value returned from <a class="el" href="group__publicfuncs.html#ga1a50b52b3ce1af7543b76a219ff01060" title="Loads a plugin module from disk.">sir_loadplugin</a>).</p>
+<p>If the plugin is located in the cache, it is instructed to clean up and prepare to be unloaded. Upon completion of the plugin's clean up routine, it is unloaded.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#ga1a50b52b3ce1af7543b76a219ff01060" title="Loads a plugin module from disk.">sir_loadplugin</a> </dd>
+<dd>
+::plugins</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>The <a class="el" href="group__publictypes.html#gadbc71df98df765cddfed4aa11c805470" title="Plugin module identifier type.">sirpluginid</a> obtained when the plugin was loaded. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the plugin was located and successfully unloaded,<code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -774,7 +857,7 @@ To change the file's level registrations or options after adding it, call <a cla
         <tr>
           <td class="memname">bool sir_filelevels </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442">sirfileid</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#ga0da4ab4b4468b6b71cd8e924b2adf2e2">sirfileid</a>&#160;</td>
           <td class="paramname"><em>id</em>, </td>
         </tr>
         <tr>
@@ -799,7 +882,7 @@ To change the file's level registrations or options after adding it, call <a cla
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#gaf14164a64eca824a2bae72ef4e9689cd" title="Set new formatting options for a log file already managed by libsir.">sir_fileopts</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">id</td><td>The <a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442" title="Log file identifier type.">sirfileid</a> obtained when the file was added to libsir. </td></tr>
+    <tr><td class="paramname">id</td><td>The <a class="el" href="group__publictypes.html#ga0da4ab4b4468b6b71cd8e924b2adf2e2" title="Log file identifier type.">sirfileid</a> obtained when the file was added to libsir. </td></tr>
     <tr><td class="paramname">levels</td><td>New bitmask of <a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> to register for. If you wish to use the default levels, pass <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804" title="Default levels for this type of destination.">SIRL_DEFAULT</a>. </td></tr>
   </table>
   </dd>
@@ -817,7 +900,7 @@ To change the file's level registrations or options after adding it, call <a cla
         <tr>
           <td class="memname">bool sir_fileopts </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442">sirfileid</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#ga0da4ab4b4468b6b71cd8e924b2adf2e2">sirfileid</a>&#160;</td>
           <td class="paramname"><em>id</em>, </td>
         </tr>
         <tr>
@@ -843,7 +926,7 @@ To change the file's level registrations or options after adding it, call <a cla
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#ga5a776d3d55e9f993eb0fad82788e1160" title="Set new level registrations for a log file already managed by libsir.">sir_filelevels</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">id</td><td>The <a class="el" href="group__publictypes.html#ga8516ef5d4009ae3070a86e49f75c4442" title="Log file identifier type.">sirfileid</a> obtained when the file was added to libsir. </td></tr>
+    <tr><td class="paramname">id</td><td>The <a class="el" href="group__publictypes.html#ga0da4ab4b4468b6b71cd8e924b2adf2e2" title="Log file identifier type.">sirfileid</a> obtained when the file was added to libsir. </td></tr>
     <tr><td class="paramname">opts</td><td>New bitmask of <a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> for the file. If you wish to use the default options, pass <a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02" title="Default options for this type of destination.">SIRO_DEFAULT</a>. </td></tr>
   </table>
   </dd>
@@ -1235,7 +1318,7 @@ When you change the color mode, all previously set text styles will be reset to 
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#ga2b383287c821bb519868776a4d8bae83" title="Set new level registrations for the system logger destination.">sir_sysloglevels</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">opts</td><td>New bitmask of <a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> for the system logger. If you wish to use the default values, pass <a class="el" href="group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804" title="Default levels for this type of destination.">SIRL_DEFAULT</a>. </td></tr>
+    <tr><td class="paramname">opts</td><td>New bitmask of <a class="el" href="group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b" title="Formatting options for a destination.">sir_option</a> for the system logger. If you wish to use the default values, pass <a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02" title="Default options for this type of destination.">SIRO_DEFAULT</a>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1266,7 +1349,7 @@ When you change the color mode, all previously set text styles will be reset to 
 <li>If the <a class="el" href="group__publictypes.html#acbc738f8c0f9dc404ac85e13cb43c7c5">sirinit.d_syslog.identity</a> string is set, it will be used.</li>
 <li>If the <a class="el" href="group__publictypes.html#ac003c97d6b63150341f2f29166a533e3" title="If set, defines the name that will appear in messages sent to stdio and log file destinations.">sirinit.name</a> string is set, it will be used.</li>
 <li>If the name of the current process is available, it will be used.</li>
-<li>If none of these are available, the string <a class="el" href="sirconfig_8h.html#a08083686de6372fdeb9b52e73a6d6808" title="Fallback system logger identity.">SIR_FALLBACK_SYSLOG_ID</a> will be used.</li>
+<li>If none of these are available, the string <a class="el" href="config_8h.html#a08083686de6372fdeb9b52e73a6d6808" title="Fallback system logger identity.">SIR_FALLBACK_SYSLOG_ID</a> will be used.</li>
 </ol>
 <dl class="section remark"><dt>Remarks</dt><dd>If <code>SIR_NO_SYSTEM_LOGGERS</code> is defined when compiling libsir, this function will immediately return false, and set the last error to <a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a3b567998a2ca4da43348b5edb38dd865" title="Feature is disabled or unavailable.">SIR_E_UNAVAIL</a>.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1301,7 +1384,7 @@ When you change the color mode, all previously set text styles will be reset to 
 <p>Upon library initialization, the system logger category is resolved as follows:</p>
 <ol type="1">
 <li>If the <a class="el" href="group__publictypes.html#ace79b2f2bd4d08d0c6e4151dafb3266b">sirinit.d_syslog.category</a> string is set, it will be used.</li>
-<li>The string <a class="el" href="sirconfig_8h.html#a9b99ae577cedc922bded630216627070" title="Fallback system logger category.">SIR_FALLBACK_SYSLOG_CAT</a> will be used.</li>
+<li>The string <a class="el" href="config_8h.html#a9b99ae577cedc922bded630216627070" title="Fallback system logger category.">SIR_FALLBACK_SYSLOG_CAT</a> will be used.</li>
 </ol>
 <dl class="section remark"><dt>Remarks</dt><dd>If <code>SIR_NO_SYSTEM_LOGGERS</code> is defined when compiling libsir, this function will immediately return false, and set the last error to <a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a3b567998a2ca4da43348b5edb38dd865" title="Feature is disabled or unavailable.">SIR_E_UNAVAIL</a>.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1311,6 +1394,73 @@ When you change the color mode, all previously set text styles will be reset to 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if succcessfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+
+</div>
+</div>
+<a id="gad1e38749df3016bd75c3d7442b708ee9" name="gad1e38749df3016bd75c3d7442b708ee9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad1e38749df3016bd75c3d7442b708ee9">&#9670;&#160;</a></span>sir_getversionstring()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char * sir_getversionstring </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the current libsir version as a string. </p>
+<dl class="section note"><dt>Note</dt><dd>This may be helpful when using libsir as a shared library–it will always return the value of the shared library, not the source version of libsir that you built against.</dd></dl>
+<p><b>Example:</b></p>
+<div class="fragment"><div class="line">2.2.0-dev</div>
+</div><!-- fragment --><dl class="section return"><dt>Returns</dt><dd>const char* The current libsir version string. </dd></dl>
+
+</div>
+</div>
+<a id="ga747855ef6deb460266e79629d19451ab" name="ga747855ef6deb460266e79629d19451ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga747855ef6deb460266e79629d19451ab">&#9670;&#160;</a></span>sir_getversionhex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t sir_getversionhex </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the current libsir version as a number. </p>
+<dl class="section note"><dt>Note</dt><dd>Can be formatted as a hexidecimal number with %08x.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>uint32_t The current libsir version number. </dd></dl>
+
+</div>
+</div>
+<a id="gaf7c8bdb30b25e51a494271851677a8d3" name="gaf7c8bdb30b25e51a494271851677a8d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf7c8bdb30b25e51a494271851677a8d3">&#9670;&#160;</a></span>sir_isprerelease()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sir_isprerelease </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether or not this is a pre-release version of libsir. </p>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if this is a pre-release version of libsir (i.e., not a public release), <code>false</code> if this is a public release version. </dd></dl>
 
 </div>
 </div>

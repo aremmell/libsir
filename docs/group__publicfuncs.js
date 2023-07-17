@@ -14,6 +14,8 @@ var group__publicfuncs =
     [ "sir_emerg", "group__publicfuncs.html#gaf94f3dcbd6a14e81f6eca555733dce23", null ],
     [ "sir_addfile", "group__publicfuncs.html#gaa04f4ca1fc06e1d99ca4f0fd6422b573", null ],
     [ "sir_remfile", "group__publicfuncs.html#gaba84f2fef8ac18a28483ee02c1c57240", null ],
+    [ "sir_loadplugin", "group__publicfuncs.html#ga1a50b52b3ce1af7543b76a219ff01060", null ],
+    [ "sir_unloadplugin", "group__publicfuncs.html#ga6796c068e61eb505e8dd8e230fbc1423", null ],
     [ "sir_filelevels", "group__publicfuncs.html#ga5a776d3d55e9f993eb0fad82788e1160", null ],
     [ "sir_fileopts", "group__publicfuncs.html#gaf14164a64eca824a2bae72ef4e9689cd", null ],
     [ "sir_settextstyle", "group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f", null ],
@@ -27,5 +29,8 @@ var group__publicfuncs =
     [ "sir_sysloglevels", "group__publicfuncs.html#ga2b383287c821bb519868776a4d8bae83", null ],
     [ "sir_syslogopts", "group__publicfuncs.html#ga5b32a04501257df43bbe56169ab383c2", null ],
     [ "sir_syslogid", "group__publicfuncs.html#gabc5831ef9b59c181b6ad7944c2ef1d5f", null ],
-    [ "sir_syslogcat", "group__publicfuncs.html#gac48e99ced63f02c6999f50aca7c56efd", null ]
+    [ "sir_syslogcat", "group__publicfuncs.html#gac48e99ced63f02c6999f50aca7c56efd", null ],
+    [ "sir_getversionstring", "group__publicfuncs.html#gad1e38749df3016bd75c3d7442b708ee9", null ],
+    [ "sir_getversionhex", "group__publicfuncs.html#ga747855ef6deb460266e79629d19451ab", null ],
+    [ "sir_isprerelease", "group__publicfuncs.html#gaf7c8bdb30b25e51a494271851677a8d3", null ]
 ];

@@ -94,7 +94,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OmitFramePointers>false</OmitFramePointers>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -114,7 +114,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OmitFramePointers>false</OmitFramePointers>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -138,7 +138,7 @@
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <UseFullPaths>false</UseFullPaths>
@@ -166,7 +166,7 @@
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <UseFullPaths>false</UseFullPaths>
@@ -183,35 +183,35 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\sir.c" />
-    <ClCompile Include="..\sirconsole.c" />
-    <ClCompile Include="..\sirerrors.c" />
-    <ClCompile Include="..\sirfilecache.c" />
-    <ClCompile Include="..\sirfilesystem.c" />
-    <ClCompile Include="..\sirhelpers.c" />
-    <ClCompile Include="..\sirinternal.c" />
-    <ClCompile Include="..\sirmaps.c" />
-    <ClCompile Include="..\sirmutex.c" />
-    <ClCompile Include="..\sirplugins.c" />
-    <ClCompile Include="..\sirtextstyle.c" />
+    <ClCompile Include="..\src\sir.c" />
+    <ClCompile Include="..\src\sirconsole.c" />
+    <ClCompile Include="..\src\sirerrors.c" />
+    <ClCompile Include="..\src\sirfilecache.c" />
+    <ClCompile Include="..\src\sirfilesystem.c" />
+    <ClCompile Include="..\src\sirhelpers.c" />
+    <ClCompile Include="..\src\sirinternal.c" />
+    <ClCompile Include="..\src\sirmaps.c" />
+    <ClCompile Include="..\src\sirmutex.c" />
+    <ClCompile Include="..\src\sirplugins.c" />
+    <ClCompile Include="..\src\sirtextstyle.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\sir.h" />
-    <ClInclude Include="..\siransimacros.h" />
-    <ClInclude Include="..\sirconfig.h" />
-    <ClInclude Include="..\sirconsole.h" />
-    <ClInclude Include="..\sirdefaults.h" />
-    <ClInclude Include="..\sirerrors.h" />
-    <ClInclude Include="..\sirfilecache.h" />
-    <ClInclude Include="..\sirfilesystem.h" />
-    <ClInclude Include="..\sirhelpers.h" />
-    <ClInclude Include="..\sirinternal.h" />
-    <ClInclude Include="..\sirmaps.h" />
-    <ClInclude Include="..\sirmutex.h" />
-    <ClInclude Include="..\sirplatform.h" />
-    <ClInclude Include="..\sirplugins.h" />
-    <ClInclude Include="..\sirtextstyle.h" />
-    <ClInclude Include="..\sirtypes.h" />
+    <ClInclude Include="..\include\sir.h" />
+    <ClInclude Include="..\include\ansimacros.h" />
+    <ClInclude Include="..\include\config.h" />
+    <ClInclude Include="..\include\console.h" />
+    <ClInclude Include="..\include\defaults.h" />
+    <ClInclude Include="..\include\errors.h" />
+    <ClInclude Include="..\include\filecache.h" />
+    <ClInclude Include="..\include\filesystem.h" />
+    <ClInclude Include="..\include\helpers.h" />
+    <ClInclude Include="..\include\internal.h" />
+    <ClInclude Include="..\include\maps.h" />
+    <ClInclude Include="..\include\mutex.h" />
+    <ClInclude Include="..\include\platform.h" />
+    <ClInclude Include="..\include\plugins.h" />
+    <ClInclude Include="..\include\textstyle.h" />
+    <ClInclude Include="..\include\types.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\docs\alert.png" />

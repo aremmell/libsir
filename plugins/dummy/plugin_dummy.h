@@ -26,8 +26,8 @@
 #ifndef _SIR_PLUGIN_DUMMY_H_INCLUDED
 # define _SIR_PLUGIN_DUMMY_H_INCLUDED
 
-# include <sirplatform.h>
-# include <sirtypes.h>
+# include "sir/platform.h"
+# include "sir/types.h"
 
 # if defined(__WIN__)
 BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved);
