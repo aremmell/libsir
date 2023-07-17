@@ -23,10 +23,10 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#include "plugin_dummy.h"
-#include <siransimacros.h>
-#include <sirhelpers.h>
 #include <stdio.h>
+#include "plugin_dummy.h"
+#include "sir/ansimacros.h"
+#include "sir/helpers.h"
 
 /*
  * Controlling misbehavior via preprocessor macros:

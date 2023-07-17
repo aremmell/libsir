@@ -30,7 +30,7 @@ include sirplatform.mk
 
 # base CFLAGS
 ifndef NO_DEFAULT_CFLAGS
-  CFLAGS += -Wall -Wextra -Wpedantic -std=c11 -I. -fPIC
+  CFLAGS += -Wall -Wextra -Wpedantic -std=c11 -Iinclude -fPIC
 endif
 
 # debug/non-debug CFLAGS
@@ -71,7 +71,7 @@ LIBS = $(PTHOPT)
 LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s $(PLATFORM_LIBS)$(LIBDL)
 
 # translation units
-TUS := $(wildcard *.c)
+TUS := $(wildcard src/*.c)
 
 # intermediate files
 _OBJ = $(strip $(patsubst %.c, %.o, $(TUS)))
@@ -108,11 +108,11 @@ all: $(PGOALS) $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS)
 
 $(OBJ_EXAMPLE): $(EXAMPLE)/$(EXAMPLE).c $(DEPS)
 	@mkdir -p $(@D)
-	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -I..
+	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -Iinclude
 
 $(OBJ_TESTS): $(TESTS)/$(TESTS).c $(DEPS)
 	@mkdir -p $(@D)
-	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -I..
+	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -Iinclude
 
 $(INTDIR)/%.o: %.c $(DEPS)
 	@mkdir -p $(@D)
@@ -138,7 +138,7 @@ example: $(OUT_EXAMPLE)
 $(OUT_EXAMPLE): $(OUT_STATIC) $(OBJ_EXAMPLE)
 	@mkdir -p $(@D)
 	@mkdir -p $(BINDIR)
-	$(CC) -o $(OUT_EXAMPLE) $(OBJ_EXAMPLE) $(CFLAGS) -I.. $(LDFLAGS)
+	$(CC) -o $(OUT_EXAMPLE) $(OBJ_EXAMPLE) $(CFLAGS) -Iinclude $(LDFLAGS)
 	-@echo built $(OUT_EXAMPLE) successfully.
 
 $(BINDIR)/file.exists:
@@ -151,7 +151,7 @@ $(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS) $(BINDIR)/file.exists plugins
 	@mkdir -p $(@D)
 	@mkdir -p $(BINDIR)
 	@mkdir -p $(LOGDIR)
-	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS) $(CFLAGS) -I.. $(LDFLAGS)
+	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS) $(CFLAGS) -Iinclude $(LDFLAGS)
 	-@echo built $(OUT_TESTS) successfully.
 
 .PHONY: docs
@@ -174,11 +174,31 @@ install: $(INSTALLSH)
 	+@test -f "$(OUT_STATIC)" || $(MAKE) static
 	+@test -f "$(OUT_SHARED)" || $(MAKE) shared
 	-@echo installing libraries to $(INSTALLLIB) and headers to $(INSTALLINC)...
+	$(INSTALLSH) -m 755 -d "$(INSTALLLIB)"
 	$(INSTALLSH) -C -m 755 "$(OUT_SHARED)" "$(INSTALLLIB)"
 	-($(LDCONFIG) || true) > /dev/null 2>&1
 	$(INSTALLSH) -C -m 644 "$(OUT_STATIC)" "$(INSTALLLIB)"
 	-($(RANLIB) "$(INSTALLLIB)/$(OUT_STATIC_FN)" || true) > /dev/null 2>&1
-	$(INSTALLSH) -C -m 644 "sir.h" "$(INSTALLINC)"
+	$(INSTALLSH) -m 755 -d "$(INSTALLINC)"
+	$(INSTALLSH) -m 755 -d "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir.h" "$(INSTALLINC)"
+	$(INSTALLSH) -C -m 644 "include/sir/ansimacros.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/config.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/console.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/defaults.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/errors.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/filecache.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/filesystem.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/helpers.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/impl.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/internal.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/maps.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/mutex.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/platform.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/plugins.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/textstyle.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/types.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/version.h" "$(INSTALLINC)/sir"
 	-@echo installed libsir successfully.
 
 .PHONY: clean distclean

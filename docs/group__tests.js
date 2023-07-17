@@ -25,5 +25,6 @@ var group__tests =
     [ "sirtest_syslog", "group__tests.html#ga8db924f756e0ee2f04ff3e044a10f283", null ],
     [ "sirtest_os_log", "group__tests.html#ga54f0e8e0163d0aedf20616451f122017", null ],
     [ "sirtest_filesystem", "group__tests.html#gaa0b035b71e6a6e6df6b8a7bb95722e2a", null ],
-    [ "sirtest_squelchspam", "group__tests.html#ga3ad5e95b1114eba573969077ebb40cb5", null ]
+    [ "sirtest_squelchspam", "group__tests.html#ga3ad5e95b1114eba573969077ebb40cb5", null ],
+    [ "sirtest_pluginloader", "group__tests.html#ga1b5a43deceffa8c36174e7b04576f6a3", null ]
 ];

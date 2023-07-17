@@ -125,7 +125,7 @@ $(document).ready(function(){initNavTree('md_docs_2sources_2changelog.html','');
 <li>A Visual Studio 2022 solution can now be found in the <a href="https://github.com/aremmell/libsir/tree/master/msvs">msvs</a> directory with both <code>x64</code> and <code>arm64</code> configurations</li>
 </ul>
 </li>
-<li>New macros in <a href="https://github.com/aremmell/libsir/blob/master/siransimacros.h">siransimacros.h</a> that can be used with libsir or anything that writes to stdio *(printf, puts, etc.)*: <code>printf(RED("Oh lawd, something " ULINE("awful") " has happened!\n");</code></li>
+<li>New macros in <a href="https://github.com/aremmell/libsir/blob/master/include/sir/ansimacros.h">siransimacros.h</a> that can be used with libsir or anything that writes to stdio *(printf, puts, etc.)*: <code>printf(RED("Oh lawd, something " ULINE("awful") " has happened!\n");</code></li>
 <li>Test suite:<ul>
 <li>New and more vigorous tests</li>
 <li>Now supports command-line arguments:<ul>
@@ -134,6 +134,7 @@ $(document).ready(function(){initNavTree('md_docs_2sources_2changelog.html','');
 <li><code>--leave-logs</code>: leave log files behind for examination</li>
 <li><code>--wait</code> : wait for keypress before exiting</li>
 <li><code>--perf</code> : runs the performance benchmark test (normally skipped)</li>
+<li><code>--version</code>: shows the version of libsir the test suite was built with.</li>
 </ul>
 </li>
 </ul>

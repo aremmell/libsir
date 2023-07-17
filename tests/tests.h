@@ -26,14 +26,14 @@
 #ifndef _SIR_TESTS_H_INCLUDED
 # define _SIR_TESTS_H_INCLUDED
 
-# include <sir.h>
-# include <sirerrors.h>
-# include <sirfilecache.h>
-# include <sirinternal.h>
-# include <sirfilesystem.h>
-# include <sirhelpers.h>
-# include <sirtextstyle.h>
-# include <siransimacros.h>
+# include "sir.h"
+# include "sir/errors.h"
+# include "sir/filecache.h"
+# include "sir/internal.h"
+# include "sir/filesystem.h"
+# include "sir/helpers.h"
+# include "sir/textstyle.h"
+# include "sir/ansimacros.h"
 
 # if !defined(__WIN__)
 #  include <dirent.h>
@@ -272,15 +272,15 @@ void print_os_error(void);
 bool filter_error(bool pass, uint16_t err);
 
 # if !defined(__WIN__)
-#  define handle_os_error(clib, fmt, ...)               \
-     (void)clib;                                        \
-     _sir_handleerr(errno);                             \
+#  define handle_os_error(clib, fmt, ...) \
+     (void)clib; \
+     _sir_handleerr(errno); \
      fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
      print_os_error();
 # else /* __WIN__ */
-#  define handle_os_error(clib, fmt, ...)                                \
+#  define handle_os_error(clib, fmt, ...) \
      clib ? _sir_handleerr(errno) : _sir_handlewin32err(GetLastError()); \
-     fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__);                  \
+     fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
      print_os_error();
 # endif
 
@@ -355,17 +355,19 @@ static const struct cl_arg {
     const char* usage;
     const char* desc;
     } _cl_arg_list[] = {
-        {"--perf",       "", "Only run the performance measurement test."},
-        {"--only",       ""  ULINE("name") " [, name, ...]", "Only run the test(s) specified."},
-        {"--list",       "", "Prints a list of available test names for use with " BOLD("--only") "."},
+        {"--perf",       "", "Runs only the performance measurement test."},
+        {"--only",       ""  ULINE("name") " [, " ULINE("name") ", ...]", "Only run the test(s) specified."},
+        {"--list",       "", "Prints a list of available test names for use with '" BOLD("--only") "'."},
         {"--leave-logs", "", "Log files are not deleted so that they may be examined."},
-        {"--wait",       "", "Waits for a keypress after running test(s) before exiting."},
-        {"--help",       "", "Shows this message."}
+        {"--wait",       "", "After running test(s), waits for a keypress before exiting."},
+        {"--version",    "", "Prints the version of libsir that the test suite was built with."},
+        {"--help",       "", "Shows this message."},
     };
 
 bool mark_test_to_run(const char* name);
 
 void print_usage_info(void);
 void print_test_list(void);
+void print_libsir_version(void);
 
 #endif /* !_SIR_TESTS_H_INCLUDED */

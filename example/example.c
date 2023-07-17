@@ -26,8 +26,8 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#include <sir.h>
-#include <sirhelpers.h>
+#include "sir.h"
+#include "sir/helpers.h"
 
 int report_error(void);
 

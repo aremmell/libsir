@@ -11,7 +11,7 @@
 - Support for 256-color and RGB color modes.
 - Windows got a lot of love, and support for that platform is better than ever
   - A Visual Studio 2022 solution can now be found in the [msvs](https://github.com/aremmell/libsir/tree/master/msvs) directory with both `x64` and `arm64` configurations
-- New macros in [siransimacros.h](https://github.com/aremmell/libsir/blob/master/siransimacros.h) that can be used with libsir or anything
+- New macros in [siransimacros.h](https://github.com/aremmell/libsir/blob/master/include/sir/ansimacros.h) that can be used with libsir or anything
   that writes to stdio *(printf, puts, etc.)*: `printf(RED("Oh lawd, something " ULINE("awful") " has happened!\n");`
 - Test suite:
   - New and more vigorous tests
@@ -21,6 +21,7 @@
     - `--leave-logs`: leave log files behind for examination
     - `--wait` : wait for keypress before exiting
     - `--perf` : runs the performance benchmark test (normally skipped)
+    - `--version`: shows the version of libsir the test suite was built with.
 - Eliminated several bugs
 - Potential memory leaks squashed
 - More specific error codes and better error reporting
