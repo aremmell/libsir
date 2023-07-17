@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['test_20suite_0',['Test suite',['../md_docs_2sources_2sirtests.html',1,'']]]
+  ['plugins_0',['Plugins',['../md_docs_2sources_2plugins.html',1,'']]]
 ];

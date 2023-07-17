@@ -27,15 +27,14 @@ var NAVTREE =
   [ "libsir", "index.html", [
     [ "Changelog", "md_docs_2sources_2changelog.html", null ],
     [ "Configuration", "md_docs_2sources_2config.html", null ],
+    [ "Plugins", "md_docs_2sources_2plugins.html", null ],
     [ "Test suite", "md_docs_2sources_2sirtests.html", null ],
     [ "Modules", "modules.html", "modules" ],
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],
       [ "Globals", "globals.html", [
         [ "All", "globals.html", null ],
-        [ "Functions", "globals_func.html", null ],
-        [ "Variables", "globals_vars.html", null ],
-        [ "Macros", "globals_defs.html", null ]
+        [ "Functions", "globals_func.html", null ]
       ] ]
     ] ]
   ] ]
@@ -43,8 +42,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"dir_59425e443f801f1f2fd8bbe4959a3ccf.html",
-"sirconfig_8h.html#a362f77b1b5555a0ea57fdfb64ae09229"
+"dir_59425e443f801f1f2fd8bbe4959a3ccf.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

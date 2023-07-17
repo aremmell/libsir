@@ -114,11 +114,11 @@ $(document).ready(function(){initNavTree('md_docs_2sources_2config.html',''); in
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>Compile-time configuration of libsir.</p>
-<h1>Preprocessor macros </h1>
+<h1>Preprocessor macros</h1>
 <p>The following are applied at compile-time when executing <code>make</code>:</p>
-<div class="fragment"><div class="line">SIR_PREPROCESSOR_FOO=1 make ...</div>
+<div class="fragment"><div class="line">env SIR_PREPROCESSOR_FOO=1 make ...</div>
 </div><!-- fragment --><p>The Makefile takes care of the rest; you may also feel free to edit the Makefile to suit your needs, avoiding this step entirely.</p>
-<p>Available preprocessor macros:</p>
+<p><b>Available preprocessor macros:</b></p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadCenter">Macro (default)   </th><th class="markdownTableHeadCenter">State   </th><th class="markdownTableHeadCenter">Compiler settings   </th><th class="markdownTableHeadLeft">Description    </th></tr>
@@ -137,10 +137,15 @@ $(document).ready(function(){initNavTree('md_docs_2sources_2config.html',''); in
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyCenter" rowspan="2"><code>SIR_NO_SYSTEM_LOGGERS (0)</code>   </td><td class="markdownTableBodyCenter"><code>0</code>   </td><td class="markdownTableBodyCenter"><code>N/A</code>   </td><td class="markdownTableBodyLeft">If the current platform has a system logger facility (<em>currently all platforms do by default except Windows</em>), you can utilize it as a destination in libsir.    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter"><code>1</code>   </td><td class="markdownTableBodyCenter"><code>-DSIR_NO_SYSTEM_LOGGERS</code>   </td><td class="markdownTableBodyLeft">Even if the current platform has a system logger facility, the functionality will be disabled (<em>and most of it compiled out</em>).   </td></tr>
+<td class="markdownTableBodyCenter"><code>1</code>   </td><td class="markdownTableBodyCenter"><code>-DSIR_NO_SYSTEM_LOGGERS</code>   </td><td class="markdownTableBodyLeft">Even if the current platform has a system logger facility, the functionality will be disabled (<em>and most of it compiled out</em>).    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter" rowspan="2"><code>SIR_NO_PLUGINS (0)</code>   </td><td class="markdownTableBodyCenter"><code>0</code>   </td><td class="markdownTableBodyCenter"><code>N/A</code>   </td><td class="markdownTableBodyLeft">The plugin system is available for use. Call ::sir_loadplugin to load a plugin, and ::sir_unloadplugin to unload one.    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyCenter"><code>1</code>   </td><td class="markdownTableBodyCenter"><code>-DSIR_NO_PLUGINS</code>   </td><td class="markdownTableBodyLeft">The plugin system's functionality will be disabled (<em>and most of it compiled out</em>).   </td></tr>
 </table>
-<dl class="section note"><dt>Note</dt><dd>These must be set differently if you're utilizing the Visual Studio solution (<em>or just not using make</em>). The instructions for those build environments are not included here.</dd></dl>
-<h1><a class="el" href="sirconfig_8h.html" title="Compile-time configuration.">sirconfig.h</a> </h1>
+<hr  />
+<dl class="section note"><dt>Note</dt><dd>If you plan to use the Visual Studio solution, see <code>README.md</code> under <code>Help</code> once the solution is loaded.</dd></dl>
+<h1>sirconfig.h</h1>
 <p>All of the fine-grained compile-time constants, such as (but not limited to):</p>
 <ol type="1">
 <li>Date/time format strings</li>
@@ -149,7 +154,7 @@ $(document).ready(function(){initNavTree('md_docs_2sources_2config.html',''); in
 <li>Buffer sizes</li>
 <li>Thresholds</li>
 </ol>
-<p>can be found in <a href="https://github.com/aremmell/libsir/blob/master/sirconfig.h">sirconfig.h</a>, and may be modified to fit your specific needs.</p>
+<p>can be found in <a href="https://github.com/aremmell/libsir/blob/master/include/sir/config.h">config.h</a>, and may be modified to fit your specific needs.</p>
 <dl class="section remark"><dt>Remarks</dt><dd>All format strings containing specifiers such as <code>%d</code> are <code>printf</code>-style. The man page or documentation for <code>printf</code> can be used as a guide.</dd></dl>
 <dl class="section attention"><dt>Attention</dt><dd>Don't make changes until you've examined how these values are utilized elsewhere in the source code! You <em>will</em> break something. </dd></dl>
 </div></div><!-- contents -->
