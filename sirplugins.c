@@ -82,6 +82,15 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     }
 
 # if SIR_PLUGIN_VCURRENT == SIR_PLUGIN_V1
+    /* if/when new versions of plugin interfaces are introduced, we will need to
+     * modify/extend the following code:
+     *
+     * - remove the enclosing #if
+     * - get the v1 exports (all versions will have v1 exports), resolve them, and
+     * call sir_plugin_query.
+     * - switch on version returned to resolve additional exports. this will
+     * necessitate additional versioned interface strctures as members of the
+     * sir_plugin struct, e.g. ifacev1, ifacev2). */
     plugin->iface.query   = (sir_plugin_queryfn)
         _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_QUERY);
     plugin->iface.init    = (sir_plugin_initfn)
@@ -103,6 +112,9 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         _sir_plugin_destroy(&plugin);
         return 0;
     }
+# else
+#  error "plugin version not implemented"
+# endif
 
     /* query the plugin for information. */
     if (!plugin->iface.query(&plugin->info)) {
@@ -181,9 +193,6 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     }
 
     return retval;
-# else
-#  error "plugin version not implemented"
-# endif
 }
 
 uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
