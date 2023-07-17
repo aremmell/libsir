@@ -134,7 +134,7 @@ int main(int argc, char** argv) {
     sir_timer timer  = {0};
 
 #if defined(_SIR_VERSION_H_INCLUDED)
-    printf(ULINE("libsir") " %d.%d.%d%s", SIR_VERSION_MAJOR, SIR_VERSION_MINOR,
+    printf(ULINE("libsir") " %d.%d.%d%s\n", SIR_VERSION_MAJOR, SIR_VERSION_MINOR,
             SIR_VERSION_PATCH, SIR_VERSION_SUFFIX);
 # if !SIR_VERSION_IS_RELEASE
     printf(" (prerelease)\n");
@@ -142,6 +142,7 @@ int main(int argc, char** argv) {
     printf(" (release)\n");
 # endif
 #endif
+
     printf(WHITEB("\nrunning %zu " ULINE("libsir") " %s...") "\n", tgt_tests, TEST_S(tgt_tests));
     sirtimerstart(&timer);
 
@@ -2018,7 +2019,7 @@ bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* 
         return false;
 
     do {
-        if (!cb(search, finddata.cFileName, data))
+        if (!cb(search, path, finddata.cFileName, data))
             break;
     } while (FindNextFile(enumerator, &finddata) > 0);
 

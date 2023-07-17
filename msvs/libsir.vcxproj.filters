@@ -1,88 +1,88 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\sirtextstyle.c">
+    <ClCompile Include="..\src\sirtextstyle.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\sir.c">
+    <ClCompile Include="..\src\sir.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\sirconsole.c">
+    <ClCompile Include="..\src\sirconsole.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\sirerrors.c">
+    <ClCompile Include="..\src\sirerrors.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\sirfilecache.c">
+    <ClCompile Include="..\src\sirfilecache.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\sirhelpers.c">
+    <ClCompile Include="..\src\sirhelpers.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\sirinternal.c">
+    <ClCompile Include="..\src\sirinternal.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\sirmutex.c">
+    <ClCompile Include="..\src\sirmutex.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\sirfilesystem.c">
+    <ClCompile Include="..\src\sirfilesystem.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\sirmaps.c">
+    <ClCompile Include="..\src\sirmaps.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\sirplugins.c">
+    <ClCompile Include="..\src\sirplugins.c">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\sirtypes.h">
+    <ClInclude Include="..\include\sir.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\sirtextstyle.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="..\include\types.h">
+      <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\sirplatform.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="..\include\ansimacros.h">
+      <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\sirmutex.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="..\include\config.h">
+      <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\sirinternal.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="..\include\console.h">
+      <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\sirhelpers.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="..\include\defaults.h">
+      <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\sirfilecache.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="..\include\errors.h">
+      <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\sirerrors.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="..\include\filecache.h">
+      <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\sirdefaults.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="..\include\filesystem.h">
+      <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\sirconsole.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="..\include\helpers.h">
+      <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\sirconfig.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="..\include\internal.h">
+      <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\sir.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="..\include\maps.h">
+      <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\sirmaps.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="..\include\mutex.h">
+      <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\sirfilesystem.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="..\include\platform.h">
+      <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\siransimacros.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="..\include\plugins.h">
+      <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\sirplugins.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="..\include\textstyle.h">
+      <Filter>Include\sir</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -353,6 +353,9 @@
     </Filter>
     <Filter Include="Documentation">
       <UniqueIdentifier>{cc320764-66c0-4a3f-a9a6-4d9b370799c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\sir">
+      <UniqueIdentifier>{a6c4a0e5-6cd9-422c-a4dc-f2a6bafb19cd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
