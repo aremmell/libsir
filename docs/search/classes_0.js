@@ -1,5 +1,25 @@
 var searchData=
 [
-  ['sir_5ftest_0',['sir_test',['../structsir__test.html',1,'']]],
-  ['sir_5ftimer_1',['sir_timer',['../structsir__timer.html',1,'']]]
+  ['sir_5flevel_5fstr_5fpair_0',['sir_level_str_pair',['../structsir__level__str__pair.html',1,'']]],
+  ['sir_5flevel_5fstyle_5ftuple_1',['sir_level_style_tuple',['../structsir__level__style__tuple.html',1,'']]],
+  ['sir_5fplugin_2',['sir_plugin',['../structsir__plugin.html',1,'']]],
+  ['sir_5fplugincache_3',['sir_plugincache',['../structsir__plugincache.html',1,'']]],
+  ['sir_5fpluginifacev1_4',['sir_pluginifacev1',['../structsir__pluginifacev1.html',1,'']]],
+  ['sir_5fplugininfo_5',['sir_plugininfo',['../structsir__plugininfo.html',1,'']]],
+  ['sir_5fstdio_5fdest_6',['sir_stdio_dest',['../group__publictypes.html#structsir__stdio__dest',1,'']]],
+  ['sir_5fsyslog_5fdest_7',['sir_syslog_dest',['../group__publictypes.html#structsir__syslog__dest',1,'']]],
+  ['sir_5fsyslog_5fdest_2e_5fstate_8',['sir_syslog_dest._state',['../group__publictypes.html#structsir__syslog__dest_8__state',1,'']]],
+  ['sir_5ftest_9',['sir_test',['../structsir__test.html',1,'']]],
+  ['sir_5ftext_5fstyle_5fdata_10',['sir_text_style_data',['../structsir__text__style__data.html',1,'']]],
+  ['sir_5ftextstyle_11',['sir_textstyle',['../group__publictypes.html#structsir__textstyle',1,'']]],
+  ['sir_5fthread_5ferr_12',['sir_thread_err',['../structsir__thread__err.html',1,'']]],
+  ['sir_5ftimer_13',['sir_timer',['../structsir__timer.html',1,'']]],
+  ['sir_5fupdate_5fconfig_5fdata_14',['sir_update_config_data',['../structsir__update__config__data.html',1,'']]],
+  ['sirbuf_15',['sirbuf',['../structsirbuf.html',1,'']]],
+  ['sirconfig_16',['sirconfig',['../structsirconfig.html',1,'']]],
+  ['sirconfig_2estate_2elast_17',['sirconfig.state.last',['../structsirconfig_8state_8last.html',1,'']]],
+  ['sirerror_18',['sirerror',['../structsirerror.html',1,'']]],
+  ['sirfcache_19',['sirfcache',['../structsirfcache.html',1,'']]],
+  ['sirfile_20',['sirfile',['../structsirfile.html',1,'']]],
+  ['sirinit_21',['sirinit',['../group__publictypes.html#structsirinit',1,'']]]
 ];

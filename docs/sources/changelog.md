@@ -21,6 +21,7 @@
     - `--leave-logs`: leave log files behind for examination
     - `--wait` : wait for keypress before exiting
     - `--perf` : runs the performance benchmark test (normally skipped)
+    - `--version`: shows the version of libsir the test suite was built with.
 - Eliminated several bugs
 - Potential memory leaks squashed
 - More specific error codes and better error reporting

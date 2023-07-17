@@ -138,10 +138,14 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga8516ef5d4009ae3070a86e49f75c4442"><td class="memItemLeft" align="right" valign="top"><a id="ga8516ef5d4009ae3070a86e49f75c4442" name="ga8516ef5d4009ae3070a86e49f75c4442"></a>
-typedef const int *&#160;</td><td class="memItemRight" valign="bottom"><b>sirfileid</b></td></tr>
-<tr class="memdesc:ga8516ef5d4009ae3070a86e49f75c4442"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log file identifier type. <br /></td></tr>
-<tr class="separator:ga8516ef5d4009ae3070a86e49f75c4442"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0da4ab4b4468b6b71cd8e924b2adf2e2"><td class="memItemLeft" align="right" valign="top"><a id="ga0da4ab4b4468b6b71cd8e924b2adf2e2" name="ga0da4ab4b4468b6b71cd8e924b2adf2e2"></a>
+typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>sirfileid</b></td></tr>
+<tr class="memdesc:ga0da4ab4b4468b6b71cd8e924b2adf2e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log file identifier type. <br /></td></tr>
+<tr class="separator:ga0da4ab4b4468b6b71cd8e924b2adf2e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadbc71df98df765cddfed4aa11c805470"><td class="memItemLeft" align="right" valign="top"><a id="gadbc71df98df765cddfed4aa11c805470" name="gadbc71df98df765cddfed4aa11c805470"></a>
+typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>sirpluginid</b></td></tr>
+<tr class="memdesc:gadbc71df98df765cddfed4aa11c805470"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plugin module identifier type. <br /></td></tr>
+<tr class="separator:gadbc71df98df765cddfed4aa11c805470"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7ee5f2908abd2df9e89bcab0b6608edd"><td class="memItemLeft" align="right" valign="top"><a id="ga7ee5f2908abd2df9e89bcab0b6608edd" name="ga7ee5f2908abd2df9e89bcab0b6608edd"></a>
 typedef uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>sir_levels</b></td></tr>
 <tr class="memdesc:ga7ee5f2908abd2df9e89bcab0b6608edd"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> bitmask type. <br /></td></tr>
@@ -164,11 +168,11 @@ Enumerations</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a96e01762a7feb2dbbd6f3c4504ba3470">SIR_E_ALREADY</a> = 2
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a72dc62bc5b5c1687a3bb221f04323119">SIR_E_DUPFILE</a> = 3
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a1b1cb52b01bb034e47cf015ebb49b3f1">SIR_E_DUPITEM</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3ab36a8affcc9e8f80b94b9c7264bfd492">SIR_E_NOFILE</a> = 4
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a50f94f27851a7d56cec2d32b00ac383e">SIR_E_NOITEM</a> = 4
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3ab48caca75bfe042380f8ccb9be8249a9">SIR_E_FCFULL</a> = 5
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3ae0cbdf962c6cdc1985795e07a705244b">SIR_E_NOROOM</a> = 5
 , <br />
 &#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a502a8e20f25ecee09eb75576238bb797">SIR_E_OPTIONS</a> = 6
 , <br />
@@ -194,7 +198,15 @@ Enumerations</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a078991e5214a2846ddaa2779f3f1c336">SIR_E_TEXTCOLOR</a> = 17
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a0f293a6020f98a7e41b8afea0e402046">SIR_E_PLATFORM</a> = 18
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3aa8ed1f05c3de1319d6eba4c3f44ec183">SIR_E_PLUGINBAD</a> = 18
+, <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a80c1d698c56a8b54ae747dc5c4c969a8">SIR_E_PLUGINDAT</a> = 19
+, <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a72ce4f1dddbcac7f0a5d2224c5164927">SIR_E_PLUGINVER</a> = 20
+, <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a99ffe5bf9046a13802a9e0680e7f5e57">SIR_E_PLUGINERR</a> = 21
+, <br />
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a0f293a6020f98a7e41b8afea0e402046">SIR_E_PLATFORM</a> = 22
 , <br />
 &#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a8090c8bc79ae660da7e58b2d0a47d785">SIR_E_UNKNOWN</a> = 4095
 <br />
@@ -429,14 +441,14 @@ Reserved for internal use; do not modify. </td></tr>
 <tr><td class="fieldtype">
 <a id="acbc738f8c0f9dc404ac85e13cb43c7c5" name="acbc738f8c0f9dc404ac85e13cb43c7c5"></a>char</td>
 <td class="fieldname">
-identity[<a class="el" href="sirconfig_8h.html#a24a907a8ba87d4355d11dca2476383b2">SIR_MAX_SYSLOG_ID</a>]</td>
+identity[<a class="el" href="config_8h.html#a24a907a8ba87d4355d11dca2476383b2">SIR_MAX_SYSLOG_ID</a>]</td>
 <td class="fielddoc">
 The identity string to pass to the system logger. <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#gabc5831ef9b59c181b6ad7944c2ef1d5f" title="Set new system logger identity.">sir_syslogid</a> </dd></dl>
 </td></tr>
 <tr><td class="fieldtype">
 <a id="ace79b2f2bd4d08d0c6e4151dafb3266b" name="ace79b2f2bd4d08d0c6e4151dafb3266b"></a>char</td>
 <td class="fieldname">
-category[<a class="el" href="sirconfig_8h.html#acf0d0fad6a98c920cced53dbe9b54d26">SIR_MAX_SYSLOG_CAT</a>]</td>
+category[<a class="el" href="config_8h.html#acf0d0fad6a98c920cced53dbe9b54d26">SIR_MAX_SYSLOG_CAT</a>]</td>
 <td class="fielddoc">
 The category string to pass to the system logger. <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#gac48e99ced63f02c6999f50aca7c56efd" title="Set new system logger category.">sir_syslogcat</a> </dd></dl>
 </td></tr>
@@ -485,7 +497,7 @@ System logger configuration. </td></tr>
 <tr><td class="fieldtype">
 <a id="ac003c97d6b63150341f2f29166a533e3" name="ac003c97d6b63150341f2f29166a533e3"></a>char</td>
 <td class="fieldname">
-name[<a class="el" href="sirconfig_8h.html#a85ed3139018ee9e7545c74c0885dff55">SIR_MAXNAME</a>]</td>
+name[<a class="el" href="config_8h.html#a85ed3139018ee9e7545c74c0885dff55">SIR_MAXNAME</a>]</td>
 <td class="fielddoc">
 If set, defines the name that will appear in messages sent to stdio and log file destinations. <p>Set <a class="el" href="group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba59020fdfee0aaf393ed80ef7bab4bb4e" title="Exclude process/app name.">SIRO_NONAME</a> in a destination's options bitmask to exclude it from log messages. </p>
 </td></tr>
@@ -544,11 +556,11 @@ System logger handle/identifier. </td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a96e01762a7feb2dbbd6f3c4504ba3470" name="gga861df9be69c6bcd01d29b77bd28ff7d3a96e01762a7feb2dbbd6f3c4504ba3470"></a>SIR_E_ALREADY&#160;</td><td class="fielddoc"><p>libsir is already initialized </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a72dc62bc5b5c1687a3bb221f04323119" name="gga861df9be69c6bcd01d29b77bd28ff7d3a72dc62bc5b5c1687a3bb221f04323119"></a>SIR_E_DUPFILE&#160;</td><td class="fielddoc"><p>File already managed by libsir. </p>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a1b1cb52b01bb034e47cf015ebb49b3f1" name="gga861df9be69c6bcd01d29b77bd28ff7d3a1b1cb52b01bb034e47cf015ebb49b3f1"></a>SIR_E_DUPITEM&#160;</td><td class="fielddoc"><p>Item already managed by libsir. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3ab36a8affcc9e8f80b94b9c7264bfd492" name="gga861df9be69c6bcd01d29b77bd28ff7d3ab36a8affcc9e8f80b94b9c7264bfd492"></a>SIR_E_NOFILE&#160;</td><td class="fielddoc"><p>File not managed by libsir. </p>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a50f94f27851a7d56cec2d32b00ac383e" name="gga861df9be69c6bcd01d29b77bd28ff7d3a50f94f27851a7d56cec2d32b00ac383e"></a>SIR_E_NOITEM&#160;</td><td class="fielddoc"><p>Item not managed by libsir. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3ab48caca75bfe042380f8ccb9be8249a9" name="gga861df9be69c6bcd01d29b77bd28ff7d3ab48caca75bfe042380f8ccb9be8249a9"></a>SIR_E_FCFULL&#160;</td><td class="fielddoc"><p>Maximum number of files already managed. </p>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3ae0cbdf962c6cdc1985795e07a705244b" name="gga861df9be69c6bcd01d29b77bd28ff7d3ae0cbdf962c6cdc1985795e07a705244b"></a>SIR_E_NOROOM&#160;</td><td class="fielddoc"><p>Maximum number of items already stored. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a502a8e20f25ecee09eb75576238bb797" name="gga861df9be69c6bcd01d29b77bd28ff7d3a502a8e20f25ecee09eb75576238bb797"></a>SIR_E_OPTIONS&#160;</td><td class="fielddoc"><p>Option flags are invalid. </p>
 </td></tr>
@@ -568,11 +580,19 @@ System logger handle/identifier. </td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a1cc3cc0a607357ce4e6e8931c5b26190" name="gga861df9be69c6bcd01d29b77bd28ff7d3a1cc3cc0a607357ce4e6e8931c5b26190"></a>SIR_E_INTERNAL&#160;</td><td class="fielddoc"><p>An internal error has occurred. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3aa8be0c34a6b8a73f40cb8895ee3c43ca" name="gga861df9be69c6bcd01d29b77bd28ff7d3aa8be0c34a6b8a73f40cb8895ee3c43ca"></a>SIR_E_COLORMODE&#160;</td><td class="fielddoc"><p>Invalid color mode. </p>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3aa8be0c34a6b8a73f40cb8895ee3c43ca" name="gga861df9be69c6bcd01d29b77bd28ff7d3aa8be0c34a6b8a73f40cb8895ee3c43ca"></a>SIR_E_COLORMODE&#160;</td><td class="fielddoc"><p>Color mode is invalid. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3af4f4ba84fa79d43fa816717db4403abe" name="gga861df9be69c6bcd01d29b77bd28ff7d3af4f4ba84fa79d43fa816717db4403abe"></a>SIR_E_TEXTATTR&#160;</td><td class="fielddoc"><p>Invalid text attributes. </p>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3af4f4ba84fa79d43fa816717db4403abe" name="gga861df9be69c6bcd01d29b77bd28ff7d3af4f4ba84fa79d43fa816717db4403abe"></a>SIR_E_TEXTATTR&#160;</td><td class="fielddoc"><p>Text attributes are invalid. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a078991e5214a2846ddaa2779f3f1c336" name="gga861df9be69c6bcd01d29b77bd28ff7d3a078991e5214a2846ddaa2779f3f1c336"></a>SIR_E_TEXTCOLOR&#160;</td><td class="fielddoc"><p>Invalid text color. </p>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a078991e5214a2846ddaa2779f3f1c336" name="gga861df9be69c6bcd01d29b77bd28ff7d3a078991e5214a2846ddaa2779f3f1c336"></a>SIR_E_TEXTCOLOR&#160;</td><td class="fielddoc"><p>Text color is invalid for mode. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3aa8ed1f05c3de1319d6eba4c3f44ec183" name="gga861df9be69c6bcd01d29b77bd28ff7d3aa8ed1f05c3de1319d6eba4c3f44ec183"></a>SIR_E_PLUGINBAD&#160;</td><td class="fielddoc"><p>Plugin module is malformed. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a80c1d698c56a8b54ae747dc5c4c969a8" name="gga861df9be69c6bcd01d29b77bd28ff7d3a80c1d698c56a8b54ae747dc5c4c969a8"></a>SIR_E_PLUGINDAT&#160;</td><td class="fielddoc"><p>Data produced by plugin is invalid. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a72ce4f1dddbcac7f0a5d2224c5164927" name="gga861df9be69c6bcd01d29b77bd28ff7d3a72ce4f1dddbcac7f0a5d2224c5164927"></a>SIR_E_PLUGINVER&#160;</td><td class="fielddoc"><p>Plugin interface version unsupported. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a99ffe5bf9046a13802a9e0680e7f5e57" name="gga861df9be69c6bcd01d29b77bd28ff7d3a99ffe5bf9046a13802a9e0680e7f5e57"></a>SIR_E_PLUGINERR&#160;</td><td class="fielddoc"><p>Plugin reported failure. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="gga861df9be69c6bcd01d29b77bd28ff7d3a0f293a6020f98a7e41b8afea0e402046" name="gga861df9be69c6bcd01d29b77bd28ff7d3a0f293a6020f98a7e41b8afea0e402046"></a>SIR_E_PLATFORM&#160;</td><td class="fielddoc"><p>Platform error code %d: %s. </p>
 </td></tr>
