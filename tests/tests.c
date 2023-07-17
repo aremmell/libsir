@@ -83,12 +83,12 @@ int main(int argc, char** argv) {
 
     for (int n = 1; n < argc; n++) {
         if (_sir_strsame(argv[n], _cl_arg_list[0].flag,
-            strnlen(_cl_arg_list[0].flag, SIR_MAXCLIFLAG))) {
+            strnlen(_cl_arg_list[0].flag, SIR_MAXCLIFLAG))) { /* --perf */
             only = mark_test_to_run("performance");
             if (only)
                 to_run = 1;
         } else if (_sir_strsame(argv[n], _cl_arg_list[1].flag,
-            strnlen(argv[n], SIR_MAXCLIFLAG))) {
+            strnlen(argv[n], SIR_MAXCLIFLAG))) { /* --only */
             while (++n < argc) {
                 if (_sir_validstrnofail(argv[n])) {
                     if (*argv[n] == '-' || !mark_test_to_run(argv[n])) {
@@ -107,17 +107,21 @@ int main(int argc, char** argv) {
             }
             only = true;
         } else if (_sir_strsame(argv[n], _cl_arg_list[2].flag,
-            strnlen(argv[n], SIR_MAXCLIFLAG))) {
+            strnlen(argv[n], SIR_MAXCLIFLAG))) { /* --list */
             print_test_list();
             return EXIT_SUCCESS;
         } else if (_sir_strsame(argv[n], _cl_arg_list[3].flag,
-            strnlen(argv[n], SIR_MAXCLIFLAG))) {
+            strnlen(argv[n], SIR_MAXCLIFLAG))) { /* --leave-logs */
             leave_logs = true;
         } else if (_sir_strsame(argv[n], _cl_arg_list[4].flag,
-            strnlen(argv[n], SIR_MAXCLIFLAG))) {
+            strnlen(argv[n], SIR_MAXCLIFLAG))) { /* --wait */
             wait = true;
-        } else if (_sir_strsame(argv[n], _cl_arg_list[5].flag,
-            strnlen(argv[n], SIR_MAXCLIFLAG))) {
+        }  else if (_sir_strsame(argv[n], _cl_arg_list[5].flag,
+            strnlen(argv[n], SIR_MAXCLIFLAG))) { /* --version */
+            print_libsir_version();
+            return EXIT_SUCCESS;
+        }else if (_sir_strsame(argv[n], _cl_arg_list[6].flag,
+            strnlen(argv[n], SIR_MAXCLIFLAG))) { /* --help */
             print_usage_info();
             return EXIT_SUCCESS;
         } else {
@@ -133,17 +137,9 @@ int main(int argc, char** argv) {
     size_t ran       = 0;
     sir_timer timer  = {0};
 
-#if defined(_SIR_VERSION_H_INCLUDED)
-    printf(ULINE("libsir") " %d.%d.%d%s", SIR_VERSION_MAJOR, SIR_VERSION_MINOR,
-            SIR_VERSION_PATCH, SIR_VERSION_SUFFIX);
-# if !SIR_VERSION_IS_RELEASE
-    printf(" (prerelease)\n");
-# else
-    printf(" (release)\n");
-# endif
-#endif
-
-    printf(WHITEB("\nrunning %zu " ULINE("libsir") " %s...") "\n", tgt_tests, TEST_S(tgt_tests));
+    printf(WHITEB("\n" ULINE("libsir") " %s (%s) running %zu %s...") "\n",
+        sir_getversionstring(), (sir_isprerelease() ? "prerelease" : "release"),
+        tgt_tests, TEST_S(tgt_tests));
     sirtimerstart(&timer);
 
     for (size_t n = first; n < _sir_countof(sir_tests); n++) {
@@ -2082,61 +2078,6 @@ long sirtimergetres(void) {
     return retval;
 }
 
-bool mark_test_to_run(const char* name) {
-    bool found = false;
-    for (size_t t = 0; t < _sir_countof(sir_tests); t++) {
-        if (_sir_strsame(name, sir_tests[t].name,
-            strnlen(sir_tests[t].name, SIR_MAXTESTNAME))) {
-            found = sir_tests[t].run = true;
-            break;
-        }
-    }
-
-    if (!found)
-        _sir_selflog("warning: unable to locate '%s' in test array", name);
-
-    return found;
-}
-
-void print_usage_info(void) {
-    fprintf(stderr, "\n" WHITE("Usage:") "\n\n");
-
-    for (size_t i = 0; i < _sir_countof(_cl_arg_list); i++) {
-        fprintf(stderr, "\t%s%s%s%s%s\n", _cl_arg_list[i].flag,
-            strnlen(_cl_arg_list[i].usage, SIR_MAXUSAGE) == 0
-                ? "" : "\t", _cl_arg_list[i].usage,
-            strnlen(_cl_arg_list[i].usage, SIR_MAXUSAGE) == 0
-                ? "\t" : " ", _cl_arg_list[i].desc);
-    }
-
-    fprintf(stderr, "\n");
-}
-
-void print_test_list(void) {
-    size_t longest = 0;
-    for (size_t i = 0; i < _sir_countof(sir_tests); i++) {
-        size_t len = strnlen(sir_tests[i].name, SIR_MAXTESTNAME);
-        if (len > longest)
-            longest = len;
-    }
-
-    printf("\n" WHITE("Available tests:") "\n\n");
-
-    for (size_t i = 0; i < _sir_countof(sir_tests); i++) {
-        printf("\t%s\t", sir_tests[i].name);
-
-        size_t len = strnlen(sir_tests[i].name, SIR_MAXTESTNAME);
-        if (len < longest)
-            for (size_t n = len; n < longest; n++)
-                printf(" ");
-
-        if ((i % 2) != 0 || i == _sir_countof(sir_tests) - 1)
-            printf("\n");
-    }
-
-    printf("\n");
-}
-
 #if defined(SIR_OS_LOG_ENABLED)
 void os_log_parent_activity(void* ctx) {
     sir_debug("confirming with ground control that we are a go...");
@@ -2168,3 +2109,75 @@ void os_log_child_activity(void* ctx) {
     sir_info("all sectors counted; heading back to the lunar lander");
 }
 #endif
+
+bool mark_test_to_run(const char* name) {
+    bool found = false;
+    for (size_t t = 0; t < _sir_countof(sir_tests); t++) {
+        if (_sir_strsame(name, sir_tests[t].name,
+            strnlen(sir_tests[t].name, SIR_MAXTESTNAME))) {
+            found = sir_tests[t].run = true;
+            break;
+        }
+    }
+
+    if (!found)
+        _sir_selflog("warning: unable to locate '%s' in test array", name);
+
+    return found;
+}
+
+void print_usage_info(void) {
+    size_t longest = 0;
+    for (size_t i = 0; i < _sir_countof(_cl_arg_list); i++) {
+        size_t len = strnlen(_cl_arg_list[i].flag, SIR_MAXCLIFLAG);
+        if (len > longest)
+            longest = len;
+    }
+
+    fprintf(stderr, "\n" WHITE("Usage:") "\n\n");
+
+    for (size_t i = 0; i < _sir_countof(_cl_arg_list); i++) {
+        fprintf(stderr, "\t%s ", _cl_arg_list[i].flag);
+
+        size_t len = strnlen(_cl_arg_list[i].flag, SIR_MAXCLIFLAG);
+        if (len < longest)
+            for (size_t n = len; n < longest; n++)
+                fprintf(stderr, " ");
+
+        fprintf(stderr, "%s%s%s\n", _cl_arg_list[i].usage,
+            strnlen(_cl_arg_list[i].usage, SIR_MAXUSAGE) > 0 ? " " : "",
+            _cl_arg_list[i].desc);
+    }
+
+    fprintf(stderr, "\n");
+}
+
+void print_test_list(void) {
+    size_t longest = 0;
+    for (size_t i = 0; i < _sir_countof(sir_tests); i++) {
+        size_t len = strnlen(sir_tests[i].name, SIR_MAXTESTNAME);
+        if (len > longest)
+            longest = len;
+    }
+
+    printf("\n" WHITE("Available tests:") "\n\n");
+
+    for (size_t i = 0; i < _sir_countof(sir_tests); i++) {
+        printf("\t%s\t", sir_tests[i].name);
+
+        size_t len = strnlen(sir_tests[i].name, SIR_MAXTESTNAME);
+        if (len < longest)
+            for (size_t n = len; n < longest; n++)
+                printf(" ");
+
+        if ((i % 2) != 0 || i == _sir_countof(sir_tests) - 1)
+            printf("\n");
+    }
+
+    printf("\n");
+}
+
+void print_libsir_version(void) {
+    printf("\n"ULINE("libsir") " %s (%s)\n\n", sir_getversionstring(),
+        sir_isprerelease() ? "prerelease" : "release");
+}
