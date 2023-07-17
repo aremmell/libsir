@@ -94,7 +94,7 @@ A very recent addition is an `sln` and some `vcxproj` files in the [msvc](https:
 | Example app    | `make example`      |                  *build/bin/sirexample[.exe]*                 |
 | Static library |    `make static`    |                   *build/lib/libsir_s.a*                      |
 | Shared library |    `make shared`    |                    *build/lib/libsir.so*                      |
-|    Install     | `sudo make install` |    <ul><li>*$PREFIX/lib/libsir_s.a*</li><li>*$PREFIX/lib/libsir.so*</li><li>*$PREFIX/include/sir.h*</li><li>*$PREFIX/include/sir/\*.h*</li></ul>  |
+|    Install     | `make install` |    <ul><li>*$PREFIX/lib/libsir_s.a*</li><li>*$PREFIX/lib/libsir.so*</li><li>*$PREFIX/include/sir.h*</li><li>*$PREFIX/include/sir/\*.h*</li></ul>  |
 
 ## <a id="dig-in" /> Dig in
 
