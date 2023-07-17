@@ -63,6 +63,18 @@ uint16_t _sir_geterrcode(uint32_t err) {
     } \
     va_end(args);
 
+/** Evil macros used to enter/leave locked sections. */
+# define _SIR_LOCK_SECTION(type, name, mid, ret) \
+    type* name = _sir_locksection(mid); \
+    if (!name) { \
+        _sir_seterror(_SIR_E_INTERNAL); \
+        return ret; \
+    }
+
+/** Evil macros used to enter/leave locked sections. */
+# define _SIR_UNLOCK_SECTION(mid) \
+    _sir_unlocksection(mid);
+
 /** Squelches warnings about unreferenced parameters. */
 # define _SIR_UNUSED(param) (void)param;
 
