@@ -134,7 +134,7 @@ int main(int argc, char** argv) {
     sir_timer timer  = {0};
 
 #if defined(_SIR_VERSION_H_INCLUDED)
-    printf(ULINE("libsir") " %d.%d.%d%s\n", SIR_VERSION_MAJOR, SIR_VERSION_MINOR,
+    printf(ULINE("libsir") " %d.%d.%d%s", SIR_VERSION_MAJOR, SIR_VERSION_MINOR,
             SIR_VERSION_PATCH, SIR_VERSION_SUFFIX);
 # if !SIR_VERSION_IS_RELEASE
     printf(" (prerelease)\n");
