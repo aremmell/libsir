@@ -27,7 +27,6 @@
 #include "sir/internal.h"
 
 #if !defined(__WIN__)
-
 bool _sir_write_stdio(FILE* stream, const char* message) {
     if (EOF == fputs(message, stream)) {
         _sir_handleerr(errno);
@@ -38,7 +37,6 @@ bool _sir_write_stdio(FILE* stream, const char* message) {
 }
 
 #else /* __WIN__ */
-
 HANDLE __sir_stdout = INVALID_HANDLE_VALUE;
 HANDLE __sir_stderr = INVALID_HANDLE_VALUE;
 
@@ -102,5 +100,4 @@ static BOOL CALLBACK __sir_config_consoles_once(PINIT_ONCE ponce, PVOID param, P
 
     return (_sir_config_console(__sir_stdout) && _sir_config_console(__sir_stderr)) ? TRUE : FALSE;
 }
-
 #endif /* !__WIN__ */
