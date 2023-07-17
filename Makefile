@@ -174,11 +174,30 @@ install: $(INSTALLSH)
 	+@test -f "$(OUT_STATIC)" || $(MAKE) static
 	+@test -f "$(OUT_SHARED)" || $(MAKE) shared
 	-@echo installing libraries to $(INSTALLLIB) and headers to $(INSTALLINC)...
+	$(INSTALLSH) -m 755 -d "$(INSTALLLIB)"
 	$(INSTALLSH) -C -m 755 "$(OUT_SHARED)" "$(INSTALLLIB)"
 	-($(LDCONFIG) || true) > /dev/null 2>&1
 	$(INSTALLSH) -C -m 644 "$(OUT_STATIC)" "$(INSTALLLIB)"
 	-($(RANLIB) "$(INSTALLLIB)/$(OUT_STATIC_FN)" || true) > /dev/null 2>&1
-	$(INSTALLSH) -C -m 644 "sir.h" "$(INSTALLINC)"
+	$(INSTALLSH) -m 755 -d "$(INSTALLINC)"
+	$(INSTALLSH) -m 755 -d "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir.h" "$(INSTALLINC)"
+	$(INSTALLSH) -C -m 644 "include/sir/ansimacros.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/config.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/console.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/defaults.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/errors.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/filecache.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/filesystem.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/helpers.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/impl.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/internal.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/maps.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/mutex.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/platform.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/plugins.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/textstyle.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/types.h" "$(INSTALLINC)/sir"
 	-@echo installed libsir successfully.
 
 .PHONY: clean distclean
