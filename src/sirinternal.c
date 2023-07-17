@@ -173,7 +173,6 @@ bool _sir_cleanup(void) {
         return false;
 
     _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, false);
-
     bool cleanup   = true;
     bool destroyfc = _sir_fcache_destroy(sfc);
     SIR_ASSERT(destroyfc);
