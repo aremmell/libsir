@@ -41,7 +41,7 @@ All of the fine-grained compile-time constants, such as (but not limited to):
 4. Buffer sizes
 5. Thresholds
 
-can be found in [sirconfig.h](https://github.com/aremmell/libsir/blob/master/sirconfig.h), and may be modified to fit your specific needs.
+can be found in [config.h](https://github.com/aremmell/libsir/blob/master/include/sir/config.h), and may be modified to fit your specific needs.
 
 @remark All format strings containing specifiers such as `%%d` are `printf`-style. The man page or documentation for `printf` can be used as a guide.
 

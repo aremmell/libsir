@@ -113,20 +113,20 @@ $(document).ready(function(){initNavTree('md_docs_2sources_2sirtests.html',''); 
   <div class="headertitle"><div class="title">Test suite</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>In order to ensure that libsir is working properly on your system, the first thing you should do after compiliation is verify that the test suite runs successfully (<em>in fact, I would personally recommend making it part of your deployment workflow</em>).</p>
+<div class="textblock"><p>In order to ensure that libsir is working properly on your system, the first thing you should do after compiliation is verify that the test suite runs successfully (<em>in fact, we recommend making it part of your deployment workflow</em>).</p>
 <p>It will exit with <code>0</code> if all test(s) ran successfully and passed, or <code>1</code> if errors occurred/any test failed.</p>
-<h1>Basic usage </h1>
+<h1>Basic usage</h1>
 <p>The simplest way to achieve this is simply to run <code>build/bin/sirtests</code> from the root of the repository. You should see output similar to the following:</p>
-<div class="fragment"><div class="line">done: all 23 libsir tests passed in 0.690sec!</div>
-</div><!-- fragment --><h1>Advanced usage </h1>
+<div class="fragment"><div class="line">done: all 26 libsir tests passed in 0.690sec!</div>
+</div><!-- fragment --><h1>Advanced usage</h1>
 <p><code>sirtests</code> has a command-line interface that allows you to control its behavior. For the current options, run <code>sirtests --help</code>. You should see output similar to the following:</p>
 <div class="fragment"><div class="line">Usage:</div>
 <div class="line"> </div>
 <div class="line">        --perf  Only run the performance measurement test.</div>
-<div class="line">        --wait  Wait for a keypress after running test(s) before exiting.</div>
+<div class="line">        --wait  Wait <span class="keywordflow">for</span> a keypress after running test(s) before exiting.</div>
 <div class="line">        --only  name [, name, ...] Only run the test(s) specified.</div>
-<div class="line">        --list  Prints a list of available test names for use with --only.</div>
-<div class="line">        --help  Shows this message.</div>
+<div class="line">        --list  Prints a list of available test names <span class="keywordflow">for</span> use with --only.</div>
+<div class="line">        --help  Shows <span class="keyword">this</span> message.</div>
 </div><!-- fragment --><p>Of note here is the obvious one, <code>--perf</code>. The perf test is only run if you explicitly specify this flag. It is a good way to ensure that libsir is compiled correctly for deployment in a production environment. If you get a very slow (<em>or dubiously fast</em>) result, you should re-examine your configuration.</p>
 <p>The result includes a comparison to an equivalent raw <code>printf</code> call for the same number of iterations. I expect this to always be faster than libsir for many reasons, but I have seen it beaten once.</p>
 <p>Here is an example of the results of <code>--perf</code> on this development machine (<em>iMac Pro, 3.2GHz 8-core Xeon, 64GB 2666MHz DDR4, SSD</em>):</p>
@@ -134,7 +134,8 @@ $(document).ready(function(){initNavTree('md_docs_2sources_2sirtests.html',''); 
 <div class="line">libsir(stdout): 1000000 lines in 8.116sec (123209.8 lines/sec)</div>
 <div class="line">libsir(log file): 1000000 lines in 7.978sec (125342.3 lines/sec)</div>
 <div class="line">timer resolution: ~1nsec</div>
-</div><!-- fragment --><dl class="section remark"><dt>Remarks</dt><dd>The perf test only outputs to the debug level. If level switching were introduced where formatting options varied from level to level, a much slower elapsed time could be expected, since some of libsir's internal formatting buffers would need to be recalculated each time.</dd></dl>
+</div><!-- fragment --><hr  />
+<dl class="section remark"><dt>Remarks</dt><dd>The perf test only outputs to the debug level. If level switching were introduced where formatting options varied from level to level, a much slower elapsed time could be expected, since some of libsir's internal formatting buffers would need to be recalculated each time.</dd></dl>
 <p>The other useful flags include <code>--list</code> and <code>--only</code> if you wish to narrow down a problem test or set of tests. Please let me know if you think of additional tests that should be performed by <a href="https://github.com/aremmell/libsir/issues/new?template=Feature_request.md">opening a feature request</a>. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

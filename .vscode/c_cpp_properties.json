@@ -3,13 +3,12 @@
         {
             "name": "Mac",
             "includePath": [
-                "${workspaceFolder}",
-                "${workspaceFolder}/**",
+                "${workspaceFolder}/include/**",
                 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include",
                 "/usr/local/include"
             ],
             "defines": [
-                
+
             ],
             "macFrameworkPath": [
                 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
@@ -22,8 +21,7 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}",
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/include/**",
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

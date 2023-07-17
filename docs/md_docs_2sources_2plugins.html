@@ -84,7 +84,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('files.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('md_docs_2sources_2plugins.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -109,19 +109,17 @@ $(document).ready(function(){initNavTree('files.html',''); initResizable(); });
 </div>
 </div>
 
-<div class="header">
-  <div class="headertitle"><div class="title">File List</div></div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">Plugins</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock">Here is a list of all documented files with brief descriptions:</div><div class="directory">
-<div class="levels">[detail level <span onclick="javascript:toggleLevel(1);">1</span><span onclick="javascript:toggleLevel(2);">2</span>]</div><table class="directory">
-<tr id="row_0_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_0_" class="arrow" onclick="toggleFolder('0_')">&#9660;</span><span id="img_0_" class="iconfopen" onclick="toggleFolder('0_')">&#160;</span><a class="el" href="dir_cfafba98a580ce4b62f8a6fa96d7cbb0.html" target="_self">example</a></td><td class="desc"></td></tr>
-<tr id="row_0_0_" class="odd"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="example_8c.html" target="_self">example.c</a></td><td class="desc">A simple demonstration of initialization, configuration, and basic usage of libsir </td></tr>
-<tr id="row_1_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_1_" class="arrow" onclick="toggleFolder('1_')">&#9660;</span><span id="img_1_" class="iconfopen" onclick="toggleFolder('1_')">&#160;</span><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html" target="_self">tests</a></td><td class="desc"></td></tr>
-<tr id="row_1_0_" class="odd"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="tests_8h_source.html"><span class="icondoc"></span></a><b>tests.h</b></td><td class="desc"></td></tr>
-</table>
-</div><!-- directory -->
-</div><!-- contents -->
+<div class="textblock"><p>Using plugins, it is possible to extend libsir's reach when dispatching log messages. A simple example of this would be a plugin that only registered for emergency-level messages. Whenever it receives a message, it posts the message to a REST API endpoint which results in a push notification being sent to your mobile device.</p>
+<p>Another example would be as part of some critical process, the application utilizing libsir is responsible for monitoring the state of said process, and using physical hardware (lights, audible tones), alert the humans present to a potential problem. This plugin would, upon receiving a critical-level or higher message, turn on a flashing red light and play an alert tone on an external speaker.</p>
+<h1>Anatomy of a libsir plugin</h1>
+<p>libsir's plugin interface will be versioned&mdash;with this initial release, we'll be starting at 1. Every time a new function is added (or one is modified), the version number will be bumped.</p>
+<p>When plugins are compiled, they hard-code their interface version. This means that as libsir continues to evolve (and the version number increases), it can still communicate with older plugins via their versioned interface. </p>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.7-->
 <!-- start footer part -->
