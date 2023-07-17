@@ -394,8 +394,6 @@ bool sir_remfile(sirfileid id);
  * After that point in time, the plugin will be notified upon the dispatching of
  * log messages on any ::sir_level the plugin registered for when it was loaded.
  *
- * Read the ::plugins page for more information about libsir plugins.
- *
  * @remark If `path` is a relative path, it shall be treated as relative to the
  * _current working directory_. This is not necessarily the same directory that
  * your application's binary file resides in.
@@ -406,7 +404,6 @@ bool sir_remfile(sirfileid id);
  * not persist its plugin cache).
  *
  * @see ::sir_unloadplugin
- * @see ::plugins
  *
  * @param  path        The absolute or relative path of the plugin to be loaded
  *                     and registered.
@@ -427,7 +424,6 @@ sirpluginid sir_loadplugin(const char* path);
  * to be unloaded. Upon completion of the plugin's clean up routine, it is unloaded.
  *
  * @see ::sir_loadplugin
- * @see ::plugins
  *
  * @param   id   The ::sirpluginid obtained when the plugin was loaded.
  * @returns bool `true` if the plugin was located and successfully unloaded,`false`
