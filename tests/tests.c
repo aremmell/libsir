@@ -62,7 +62,7 @@ int main(int argc, char** argv) {
 #if defined(__HAIKU__) && defined(NDEBUG)
     disable_debugger(1);
 #endif
-#if !defined(__WIN__) && !defined(__HAIKU__)
+#if !defined(__WIN__) && !defined(__HAIKU__) && !defined(__VXWORKS__)
     /* Disallow execution by root / sudo; some of the tests rely on lack of permissions. */
     if (geteuid() == 0) {
         fprintf(stderr, "Sorry, but this program may not be executed by root.\n");

@@ -117,5 +117,14 @@ ifeq ($(AIXTLS),1)
   CFLAGS+=-ftls-model=initial-exec
 endif
 
+# VxWorks 7 RTP
+ifneq "$(findstring wr-cc,$(CC))" ""
+  VXWORKS?=1
+endif
+ifeq ($(VXWORKS),1)
+  PTHOPT=
+  PLATFORM_EXE_EXT=.vxe
+endif
+
 # Default way to link shared library?
 SIR_SHARED?=-shared

@@ -59,21 +59,25 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
        defined(__NetBSD__) || defined(__HAIKU__) || defined(__OpenBSD__)
         int open_flags = O_DIRECTORY;
 # elif defined(__VXWORKS__)
-        int open_flags = 0;
+# pragma message("VxWorks: Implement open_flags for your filesystem.")
+        int open_flags = O_RDONLY;
 # else
 #  error "unknown open_flags for your platform; please contact the author."
 # endif
 
         int fd = open(base_path, open_flags);
+#if !defined(__VXWORKS__)
         if (-1 == fd) {
             _sir_handleerr(errno);
             _sir_safefree(&base_path);
             return false;
         }
-
-#ifndef __VXWORKS__
-        stat_ret = fstatat(fd, path, st, AT_SYMLINK_NOFOLLOW);
 #endif
+
+#if defined(__VXWORKS__)
+# define fstatat(fd, name, st, sym) stat((name), (st))
+#endif
+        stat_ret = fstatat(fd, path, st, AT_SYMLINK_NOFOLLOW);
         _sir_safeclose(&fd);
         _sir_safefree(&base_path);
     } else {
@@ -89,6 +93,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         stat_ret = stat(path, st);
     }
 #endif
+#if !defined(__VXWORKS__)
     if (-1 == stat_ret) {
         if (ENOENT == errno) {
             st->st_size = SIR_STAT_NONEXISTENT;
@@ -98,6 +103,9 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
             return false;
         }
     }
+#else
+# pragma message("VxWorks: Implement for your filesystem.")
+#endif
 
     return true;
 }
@@ -140,7 +148,7 @@ bool _sir_openfile(FILE* restrict* restrict f, const char* restrict path,
     return 0 == _sir_fopen(f, path, mode);
 }
 
-#if defined(_AIX)
+#if defined(_AIX) || defined(__VXWORKS__)
 static char cur_cwd[SIR_MAXPATH];
 #endif
 char* _sir_getcwd(void) {
@@ -150,7 +158,7 @@ char* _sir_getcwd(void) {
     if (NULL == cur)
         _sir_handleerr(errno);
     return cur;
-# elif defined(_AIX)
+# elif defined(_AIX) || defined(__VXWORKS__)
     if (getcwd(cur_cwd, sizeof(cur_cwd)) == 0) {
         _sir_handleerr(errno);
         return NULL;
@@ -303,6 +311,7 @@ char* _sir_getappfilename(void) {
             break;
         }
 # elif defined(__VXWORKS__)
+# pragma message("VxWorks: Implement _sir_getappfilename for your filesystem.")
         resolved = false;
         break;
 # else

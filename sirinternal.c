@@ -1199,7 +1199,8 @@ pid_t _sir_gettid(void) {
 #elif defined(__OpenBSD__)
     tid = (pid_t)getthrid();
 #elif defined(__SOLARIS__) || defined(__NetBSD__) || \
-      defined(__DragonFly__) || defined(__CYGWIN__) || defined(_AIX) || defined(__VXWORKS__)
+      defined(__DragonFly__) || defined(__CYGWIN__) || \
+      defined(_AIX) || (defined(__VXWORKS__) && defined(__RTP__))
     tid = (pid_t)pthread_self();
 #elif defined(__HAIKU__)
     tid = get_pthread_thread_id(pthread_self());
@@ -1224,6 +1225,9 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
         _sir_handleerr(ret);
         return false;
     }
+# if defined(__VXWORKS__) && defined(__RTP__)
+#  pragma message("TODO: implement VxWorks RTP pthread_attr_getname")
+# endif
 # if defined(__HAIKU__)
     if ((strncmp(name, "pthread_func", SIR_MAXPID)) || _sir_validstrnofail(name))
         snprintf(name, SIR_MAXPID, "%ld", (long)get_pthread_thread_id(pthread_self()));

@@ -227,6 +227,7 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, PRINTF_FOR
 
                 bool write_color = false;
                 if (write2 > 0) {
+# if !defined(__VXWORKS__)
 # if !defined(__WIN__)
                     if (NULL != strcasestr(buf, "error") ||
                         NULL != strcasestr(buf, "assert")) {
@@ -236,6 +237,7 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, PRINTF_FOR
 # endif
                         write_color = true;
                     }
+#endif
 
                     write2 = fprintf(stderr, (write_color ? BRED("%s%s") "\n" : "%s%s\n"),
                         prefix, buf);
