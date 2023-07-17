@@ -198,6 +198,7 @@ install: $(INSTALLSH)
 	$(INSTALLSH) -C -m 644 "include/sir/plugins.h" "$(INSTALLINC)/sir"
 	$(INSTALLSH) -C -m 644 "include/sir/textstyle.h" "$(INSTALLINC)/sir"
 	$(INSTALLSH) -C -m 644 "include/sir/types.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/version.h" "$(INSTALLINC)/sir"
 	-@echo installed libsir successfully.
 
 .PHONY: clean distclean
