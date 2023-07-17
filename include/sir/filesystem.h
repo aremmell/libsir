@@ -1,5 +1,5 @@
 /*
- * sirfilesystem.h
+ * filesystem.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
@@ -26,7 +26,7 @@
 #ifndef _SIR_FILESYSTEM_H_INCLUDED
 # define _SIR_FILESYSTEM_H_INCLUDED
 
-# include "sirplatform.h"
+# include "sir/platform.h"
 
 # if defined(__cplusplus)
 extern "C" {

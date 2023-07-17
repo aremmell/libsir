@@ -24,8 +24,8 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#include "sirplugins.h"
-#include "sirinternal.h"
+#include "sir/plugins.h"
+#include "sir/internal.h"
 
 #if !defined(SIR_NO_PLUGINS)
 sirpluginid _sir_plugin_load(const char* path) {

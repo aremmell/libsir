@@ -1,5 +1,5 @@
 /*
- * sirplatform.h
+ * platform.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
@@ -328,7 +328,7 @@ _set_thread_local_invalid_parameter_handler(
 #    include <os/activity.h>
 #   endif
 #  endif
-#  include "sirimpl.h"
+#  include "sir/impl.h"
 
 #  if defined(PATH_MAX)
 #   define SIR_MAXPATH PATH_MAX

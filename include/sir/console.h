@@ -1,5 +1,5 @@
 /*
- * sirmutex.h
+ * console.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
@@ -23,24 +23,42 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#ifndef _SIR_MUTEX_H_INCLUDED
-# define _SIR_MUTEX_H_INCLUDED
+#ifndef _SIR_CONSOLE_H_INCLUDED
+# define _SIR_CONSOLE_H_INCLUDED
 
-# include "sirtypes.h"
+# include "sir/types.h"
+# include "sir/helpers.h"
 
-/** Creates/initializes a new mutex. */
-bool _sirmutex_create(sir_mutex* mutex);
+# if !defined(__WIN__)
+bool _sir_write_stdio(FILE* stream, const char* message);
 
-/** Determines if a mutex is locked without waiting. */
-bool _sir_mutextrylock(sir_mutex* mutex);
+static inline
+bool _sir_write_stdout(const char* message, size_t len) {
+    _SIR_UNUSED(len);
+    return _sir_write_stdio(stdout, message);
+}
 
-/** Attempts to lock a mutex and waits indefinitely. */
-bool _sirmutex_lock(sir_mutex* mutex);
+static inline
+bool _sir_write_stderr(const char* message, size_t len) {
+    _SIR_UNUSED(len);
+    return _sir_write_stdio(stderr, message);
+}
+# else /* __WIN__ */
+extern HANDLE __sir_stdout;
+extern HANDLE __sir_stderr;
 
-/** Unlocks a previously locked mutex. */
-bool _sirmutex_unlock(sir_mutex* mutex);
+bool _sir_initialize_stdio(void);
+bool _sir_write_stdio(HANDLE console, const char* message, size_t len);
 
-/** Destroys a mutex. */
-bool _sirmutex_destroy(sir_mutex* mutex);
+static inline
+bool _sir_write_stdout(const char* message, size_t len) {
+    return _sir_write_stdio(__sir_stdout, message, len);
+}
 
-#endif /* !_SIR_MUTEX_H_INCLUDED */
+static inline
+bool _sir_write_stderr(const char* message, size_t len) {
+    return _sir_write_stdio(__sir_stderr, message, len);
+}
+# endif // !__WIN__
+
+#endif /* !_SIR_CONSOLE_H_INCLUDED */

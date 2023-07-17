@@ -1,5 +1,5 @@
 /*
- * sirerrors.h
+ * errors.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
@@ -26,7 +26,7 @@
 #ifndef _SIR_ERRORS_H_INCLUDED
 # define _SIR_ERRORS_H_INCLUDED
 
-# include "sirhelpers.h"
+# include "sir/helpers.h"
 
 /**
  * @addtogroup publictypes Types

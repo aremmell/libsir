@@ -1,5 +1,5 @@
 /*
- * sirtextstyle.h
+ * textstyle.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
@@ -26,7 +26,7 @@
 #ifndef _SIR_TEXTSTYLE_H_INCLUDED
 # define _SIR_TEXTSTYLE_H_INCLUDED
 
-# include "sirtypes.h"
+# include "sir/types.h"
 
 extern sir_text_style_data sir_text_style_section;
 

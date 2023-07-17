@@ -23,10 +23,10 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#include "sirfilecache.h"
-#include "sirfilesystem.h"
-#include "sirinternal.h"
-#include "sirdefaults.h"
+#include "sir/filecache.h"
+#include "sir/filesystem.h"
+#include "sir/internal.h"
+#include "sir/defaults.h"
 
 sirfileid _sir_addfile(const char* path, sir_levels levels, sir_options opts) {
     _sir_seterror(_SIR_E_NOERROR);

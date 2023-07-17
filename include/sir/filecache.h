@@ -1,5 +1,5 @@
 /*
- * sirfilecache.h
+ * filecache.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
@@ -26,7 +26,7 @@
 #ifndef _SIR_FILECACHE_H_INCLUDED
 # define _SIR_FILECACHE_H_INCLUDED
 
-# include "sirtypes.h"
+# include "sir/types.h"
 
 typedef bool (*sir_fcache_pred)(const void* match, sirfile* iter);
 

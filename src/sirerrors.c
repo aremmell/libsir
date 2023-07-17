@@ -23,7 +23,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#include "sirerrors.h"
+#include "sir/errors.h"
 
 #if defined(__WIN__)
 # pragma comment(lib, "Shlwapi.lib")

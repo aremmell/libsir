@@ -1,5 +1,5 @@
 /**
- * @file siransimacros.h
+ * @file ansimacros.h
  * @brief ANSI escape sequence macros
  *
  * A collection of macros that can be used with libsir's logging functions as well

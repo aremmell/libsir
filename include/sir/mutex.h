@@ -1,5 +1,5 @@
 /*
- * sirplugins.h
+ * mutex.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
@@ -23,30 +23,24 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#ifndef _SIR_PLUGINS_H_INCLUDED
-# define _SIR_PLUGINS_H_INCLUDED
+#ifndef _SIR_MUTEX_H_INCLUDED
+# define _SIR_MUTEX_H_INCLUDED
 
-# include <sirtypes.h>
+# include "sir/types.h"
 
-typedef bool (*sir_plugin_pred)(const void*, sir_plugin*);
+/** Creates/initializes a new mutex. */
+bool _sirmutex_create(sir_mutex* mutex);
 
-sirpluginid _sir_plugin_load(const char* path);
-sirpluginid _sir_plugin_probe(sir_plugin* plugin);
-uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name);
-void _sir_plugin_unload(sir_plugin* plugin);
+/** Determines if a mutex is locked without waiting. */
+bool _sir_mutextrylock(sir_mutex* mutex);
 
-sirpluginid _sir_plugin_add(sir_plugin* plugin);
-bool _sir_plugin_rem(sirpluginid id);
+/** Attempts to lock a mutex and waits indefinitely. */
+bool _sirmutex_lock(sir_mutex* mutex);
 
-void _sir_plugin_destroy(sir_plugin** plugin);
+/** Unlocks a previously locked mutex. */
+bool _sirmutex_unlock(sir_mutex* mutex);
 
-bool _sir_plugin_cache_pred_id(const void* match, sir_plugin* iter);
+/** Destroys a mutex. */
+bool _sirmutex_destroy(sir_mutex* mutex);
 
-sirpluginid _sir_plugin_cache_add(sir_plugincache* spc, sir_plugin* plugin);
-sir_plugin* _sir_plugin_cache_find_id(sir_plugincache* spc, sirpluginid id);
-sir_plugin* _sir_plugin_cache_find(sir_plugincache* spc, const void* match, sir_plugin_pred pred);
-bool _sir_plugin_cache_rem(sir_plugincache* spc, sirpluginid id);
-bool _sir_plugin_cache_destroy(sir_plugincache* spc);
-bool _sir_plugin_cache_dispatch(sir_plugincache* spc, sir_level level, sirbuf* buf,
-    size_t* dispatched, size_t* wanted);
-#endif // !_SIR_PLUGINS_H_INCLUDED
+#endif /* !_SIR_MUTEX_H_INCLUDED */

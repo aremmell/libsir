@@ -30,7 +30,7 @@ include sirplatform.mk
 
 # base CFLAGS
 ifndef NO_DEFAULT_CFLAGS
-  CFLAGS += -Wall -Wextra -Wpedantic -std=c11 -I. -fPIC
+  CFLAGS += -Wall -Wextra -Wpedantic -std=c11 -Iinclude -fPIC
 endif
 
 # debug/non-debug CFLAGS
@@ -71,7 +71,7 @@ LIBS = $(PTHOPT)
 LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s $(PLATFORM_LIBS)$(LIBDL)
 
 # translation units
-TUS := $(wildcard *.c)
+TUS := $(wildcard src/*.c)
 
 # intermediate files
 _OBJ = $(strip $(patsubst %.c, %.o, $(TUS)))
@@ -108,11 +108,11 @@ all: $(PGOALS) $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS)
 
 $(OBJ_EXAMPLE): $(EXAMPLE)/$(EXAMPLE).c $(DEPS)
 	@mkdir -p $(@D)
-	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -I..
+	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -Iinclude
 
 $(OBJ_TESTS): $(TESTS)/$(TESTS).c $(DEPS)
 	@mkdir -p $(@D)
-	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -I..
+	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -Iinclude
 
 $(INTDIR)/%.o: %.c $(DEPS)
 	@mkdir -p $(@D)
@@ -138,7 +138,7 @@ example: $(OUT_EXAMPLE)
 $(OUT_EXAMPLE): $(OUT_STATIC) $(OBJ_EXAMPLE)
 	@mkdir -p $(@D)
 	@mkdir -p $(BINDIR)
-	$(CC) -o $(OUT_EXAMPLE) $(OBJ_EXAMPLE) $(CFLAGS) -I.. $(LDFLAGS)
+	$(CC) -o $(OUT_EXAMPLE) $(OBJ_EXAMPLE) $(CFLAGS) -Iinclude $(LDFLAGS)
 	-@echo built $(OUT_EXAMPLE) successfully.
 
 $(BINDIR)/file.exists:
@@ -151,7 +151,7 @@ $(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS) $(BINDIR)/file.exists plugins
 	@mkdir -p $(@D)
 	@mkdir -p $(BINDIR)
 	@mkdir -p $(LOGDIR)
-	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS) $(CFLAGS) -I.. $(LDFLAGS)
+	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS) $(CFLAGS) -Iinclude $(LDFLAGS)
 	-@echo built $(OUT_TESTS) successfully.
 
 .PHONY: docs

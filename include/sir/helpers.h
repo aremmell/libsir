@@ -1,5 +1,5 @@
 /*
- * sirhelpers.h
+ * helpers.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
@@ -26,7 +26,7 @@
 #ifndef _SIR_HELPERS_H_INCLUDED
 # define _SIR_HELPERS_H_INCLUDED
 
-# include "sirtypes.h"
+# include "sir/types.h"
 
 /** Computes the size of an array. */
 # define _sir_countof(arr) (sizeof(arr) / sizeof(arr[0]))

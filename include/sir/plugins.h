@@ -1,5 +1,5 @@
 /*
- * sirmaps.h
+ * plugins.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
@@ -23,12 +23,30 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#ifndef _SIR_MAPS_H_INCLUDED
-# define _SIR_MAPS_H_INCLUDED
+#ifndef _SIR_PLUGINS_H_INCLUDED
+# define _SIR_PLUGINS_H_INCLUDED
 
-# include "sirtypes.h"
+# include "sir/types.h"
 
-extern sir_level_style_tuple sir_level_to_style_map[SIR_NUMLEVELS];
-extern sir_level_str_pair sir_level_to_str_map[SIR_NUMLEVELS];
+typedef bool (*sir_plugin_pred)(const void*, sir_plugin*);
 
-#endif // !_SIR_MAPS_H_INCLUDED
+sirpluginid _sir_plugin_load(const char* path);
+sirpluginid _sir_plugin_probe(sir_plugin* plugin);
+uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name);
+void _sir_plugin_unload(sir_plugin* plugin);
+
+sirpluginid _sir_plugin_add(sir_plugin* plugin);
+bool _sir_plugin_rem(sirpluginid id);
+
+void _sir_plugin_destroy(sir_plugin** plugin);
+
+bool _sir_plugin_cache_pred_id(const void* match, sir_plugin* iter);
+
+sirpluginid _sir_plugin_cache_add(sir_plugincache* spc, sir_plugin* plugin);
+sir_plugin* _sir_plugin_cache_find_id(sir_plugincache* spc, sirpluginid id);
+sir_plugin* _sir_plugin_cache_find(sir_plugincache* spc, const void* match, sir_plugin_pred pred);
+bool _sir_plugin_cache_rem(sir_plugincache* spc, sirpluginid id);
+bool _sir_plugin_cache_destroy(sir_plugincache* spc);
+bool _sir_plugin_cache_dispatch(sir_plugincache* spc, sir_level level, sirbuf* buf,
+    size_t* dispatched, size_t* wanted);
+#endif // !_SIR_PLUGINS_H_INCLUDED

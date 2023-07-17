@@ -23,9 +23,9 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#include "sirtextstyle.h"
-#include "sirinternal.h"
-#include "sirdefaults.h"
+#include "sir/textstyle.h"
+#include "sir/internal.h"
+#include "sir/defaults.h"
 
 sir_colormode sir_color_mode = SIRCM_16;
 

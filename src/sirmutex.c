@@ -23,9 +23,9 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#include "sirmutex.h"
-#include "sirinternal.h"
-#include "sirplatform.h"
+#include "sir/mutex.h"
+#include "sir/internal.h"
+#include "sir/platform.h"
 
 #if !defined(__WIN__) /* pthread mutex implementation */
 

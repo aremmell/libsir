@@ -23,8 +23,8 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#include "sirmaps.h"
-#include "sirdefaults.h"
+#include "sir/maps.h"
+#include "sir/defaults.h"
 
 /**
  * @brief Mapping of ::sir_level <-> ::sir_textstyle & ANSI escape codes.

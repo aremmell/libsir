@@ -31,8 +31,8 @@
 #ifndef _SIR_H_INCLUDED
 # define _SIR_H_INCLUDED
 
-# include "sirplatform.h"
-# include "sirtypes.h"
+# include "sir/platform.h"
+# include "sir/types.h"
 
 # if defined(__cplusplus)
 extern "C" {

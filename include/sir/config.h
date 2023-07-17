@@ -1,5 +1,5 @@
 /**
- * @file sirconfig.h
+ * @file config.h
  * @brief Compile-time configuration
  *
  * The definitions herein may be modified for fine-grained control over the

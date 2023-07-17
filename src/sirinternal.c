@@ -23,14 +23,14 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#include "sirinternal.h"
-#include "sirconsole.h"
-#include "sirdefaults.h"
-#include "sirfilecache.h"
-#include "sirplugins.h"
-#include "sirtextstyle.h"
-#include "sirfilesystem.h"
-#include "sirmutex.h"
+#include "sir/internal.h"
+#include "sir/console.h"
+#include "sir/defaults.h"
+#include "sir/filecache.h"
+#include "sir/plugins.h"
+#include "sir/textstyle.h"
+#include "sir/filesystem.h"
+#include "sir/mutex.h"
 
 #if defined(__WIN__)
 # pragma comment(lib, "ws2_32.lib")

@@ -28,11 +28,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "sir.h"
-#include "sirinternal.h"
-#include "sirfilecache.h"
-#include "sirplugins.h"
-#include "sirtextstyle.h"
-#include "sirdefaults.h"
+#include "sir/internal.h"
+#include "sir/filecache.h"
+#include "sir/plugins.h"
+#include "sir/textstyle.h"
+#include "sir/defaults.h"
 
 bool sir_makeinit(sirinit* si) {
     return _sir_makeinit(si);

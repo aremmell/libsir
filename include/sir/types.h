@@ -1,5 +1,5 @@
 /*
- * sirtypes.h
+ * types.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
@@ -26,9 +26,9 @@
 #ifndef _SIR_TYPES_H_INCLUDED
 # define _SIR_TYPES_H_INCLUDED
 
-# include "sirplatform.h"
-# include "sirconfig.h"
-# include "siransimacros.h"
+# include "sir/platform.h"
+# include "sir/config.h"
+# include "sir/ansimacros.h"
 
 /**
  * @addtogroup public

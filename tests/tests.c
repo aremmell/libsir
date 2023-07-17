@@ -1610,11 +1610,11 @@ bool sirtest_pluginloader(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-# if !defined(__WIN__)
-#  define PLUGIN_EXT "so"
-# else
-#  define PLUGIN_EXT "dll"
-# endif
+#if !defined(__WIN__)
+# define PLUGIN_EXT "so"
+#else
+# define PLUGIN_EXT "dll"
+#endif
 
     static const char* plugin1 = "build/lib/plugin_dummy."PLUGIN_EXT;
     static const char* plugin2 = "build/lib/plugin_dummy_bad1."PLUGIN_EXT;

@@ -24,9 +24,9 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "plugin_sample.h"
-#include <siransimacros.h>
-#include <sirhelpers.h>
 #include <stdio.h>
+#include "sir/ansimacros.h"
+#include "sir/helpers.h"
 
 #if defined(__WIN__)
 BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved)

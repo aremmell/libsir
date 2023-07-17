@@ -26,14 +26,14 @@
 #ifndef _SIR_TESTS_H_INCLUDED
 # define _SIR_TESTS_H_INCLUDED
 
-# include <sir.h>
-# include <sirerrors.h>
-# include <sirfilecache.h>
-# include <sirinternal.h>
-# include <sirfilesystem.h>
-# include <sirhelpers.h>
-# include <sirtextstyle.h>
-# include <siransimacros.h>
+# include "sir.h"
+# include "sir/errors.h"
+# include "sir/filecache.h"
+# include "sir/internal.h"
+# include "sir/filesystem.h"
+# include "sir/helpers.h"
+# include "sir/textstyle.h"
+# include "sir/ansimacros.h"
 
 # if !defined(__WIN__)
 #  include <dirent.h>

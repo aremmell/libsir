@@ -1,5 +1,5 @@
 /**
- * @file sirdefaults.h
+ * @file defaults.h
  * @brief Default levels, options, and text styilng.
  *
  * The values herein represent the defaults for output destinations if defaults
@@ -30,7 +30,7 @@
 #ifndef _SIR_DEFAULTS_H_INCLUDED
 # define _SIR_DEFAULTS_H_INCLUDED
 
-# include "sirtypes.h"
+# include "sir/types.h"
 
 /**
  * @defgroup default Defaults

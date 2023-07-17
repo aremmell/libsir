@@ -1,5 +1,5 @@
 /*
- * sirinternal.h
+ * internal.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
@@ -26,9 +26,9 @@
 #ifndef _SIR_INTERNAL_H_INCLUDED
 # define _SIR_INTERNAL_H_INCLUDED
 
-# include "sirhelpers.h"
-# include "sirmaps.h"
-# include "sirerrors.h"
+# include "sir/helpers.h"
+# include "sir/maps.h"
+# include "sir/errors.h"
 
 /**
  * Initializes a ::sirinit structure suitable to pass to ::sir_init
