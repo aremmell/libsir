@@ -37,13 +37,22 @@ BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved)
 # endif
 
 /**
+ * @defgroup plugins Plugins
+ *
+ * Functions exported by libsir plugins.
+ *
+ * @addtogroup plugins
+ * @{
+ */
+
+/**
  * @brief Called by libsir after the plugin library object is loaded, but before
  * any other functions are probed or called.
  *
  * The plugin must fill out the information in the `info` structure in a way
  * satisfactory to libsir, or it will immediately be unloaded:
  *
- * - all members of the ::sirplugininfo structure are required to be set by the
+ * - all members of the ::sir_plugininfo structure are required to be set by the
  *   plugin.
  * - `iface_ver` must be set to `SIR_PLUGIN_VCURRENT`; if the interface version
  *   does not match libsir's expectation, the plugin will be unloaded.
@@ -102,5 +111,7 @@ PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message);
  * @returns bool `true` if the plugin cleaned up successfully, `false` otherwise.
  */
 PLUGIN_EXPORT bool sir_plugin_cleanup(void);
+
+/** @}@} */
 
 #endif /* !_SIR_PLUGIN_SAMPLE_H_INCLUDED */
