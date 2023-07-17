@@ -26,7 +26,7 @@
 #ifndef _SIR_VERSION_H_INCLUDED
 # define _SIR_VERSION_H_INCLUDED
 
-#include "sir/helpers.h"
+# include <stdint.h>
 
 /** The current libsir major version component. */
 # define SIR_VERSION_MAJOR 2
