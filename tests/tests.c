@@ -43,6 +43,7 @@ static sir_test sir_tests[] = {
     {"init-superfluous",        sirtest_failinittwice, false, true},
     {"init-bad-data",           sirtest_failinvalidinitdata, false, true},
     {"init-cleanup-init",       sirtest_initcleanupinit, false, true},
+    {"init-with-makeinit",      sirtest_initmakeinit, false, true},
     {"cleanup-output-after",    sirtest_failaftercleanup, false, true},
     {"sanity-errors",           sirtest_errorsanity, false, true},
     {"sanity-text-styles",      sirtest_textstylesanity, false, true},
@@ -53,7 +54,8 @@ static sir_test sir_tests[] = {
     {"os_log",                  sirtest_os_log, false, true},
     {"filesystem",              sirtest_filesystem, false, true},
     {"squelch-spam",            sirtest_squelchspam, false, true},
-    {"plugin-loader",           sirtest_pluginloader, false, true}
+    {"plugin-loader",           sirtest_pluginloader, false, true},
+    {"get-version-ok",          sirtest_getversionok, false, true}
 };
 
 bool leave_logs = false;
@@ -595,6 +597,19 @@ bool sirtest_initcleanupinit(void) {
     return print_result_and_return(pass);
 }
 
+bool sirtest_initmakeinit(void) {
+    bool pass = true;
+    sirinit si;
+    if (!sir_makeinit(&si))
+        pass = false;
+
+    pass &= sir_init(&si);
+    pass &= sir_info("initialized with sir_makeinit");
+
+    pass &= sir_cleanup();
+    return print_result_and_return(pass);
+}
+
 bool sirtest_failaftercleanup(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
@@ -741,8 +756,8 @@ bool sirtest_textstylesanity(void) {
     pass &= sir_setcolormode(SIRCM_RGB);
 
     for (size_t n = 0; n < 256; n++) {
-        sir_textcolor fg = _sir_makergb(getrand(255), getrand(255), getrand(255));
-        sir_textcolor bg = _sir_makergb(getrand(255), getrand(255), getrand(255));
+        sir_textcolor fg = sir_makergb(getrand(255), getrand(255), getrand(255));
+        sir_textcolor bg = sir_makergb(getrand(255), getrand(255), getrand(255));
         pass &= sir_settextstyle(SIRL_DEBUG, SIRTA_NORMAL, fg, bg);
         pass &= sir_debug("this is RGB-color mode (fg: %"PRIu32", %"PRIu32", %"PRIu32
             ", bg: %"PRIu32", %"PRIu32", %"PRIu32")", _sir_getredfromcolor(fg),
@@ -1701,6 +1716,29 @@ bool sirtest_pluginloader(void) {
     return print_result_and_return(pass);
 }
 
+bool sirtest_getversionok(void) {
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+    printf("\tchecking version retrival functions...\n");
+
+    const char* str = sir_getversionstring();
+    pass &= _sir_validstrnofail(str);
+
+    printf("\tversion as string: '%s'\n", _SIR_PRNSTR(str));
+
+    uint32_t hex = sir_getversionhex();
+    pass &= 0 != hex;
+
+    printf("\tversion as hex: 0x%08"PRIx32"\n", hex);
+
+    bool prerel = sir_isprerelease();
+    printf("\tprerelease: %s\n", prerel ? "true" : "false");
+
+    pass &= sir_cleanup();
+    return print_result_and_return(pass);
+}
+
 #if !defined(__WIN__)
 static void* sirtest_thread(void* arg);
 #else /* __WIN__ */
@@ -1882,7 +1920,7 @@ bool sirtest_XXX(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 */
