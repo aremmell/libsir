@@ -40,7 +40,7 @@ Each 'level' or 'priority' of output can be visually styled however you wish for
 - Won't fail silently&mdash;C library or platform level errors are captured and stored for posterity, on a per-thread basis. The *function, file, and line number from which it originated* are also captured. Additionally, libsir defines its own set of error messages to aid in troubleshooting.
 - Hardened&mdash;every function contains sanity checks for internal state as well as arguments passed in through the external interfaces. libsir's make recipes use *‑Wall&nbsp;‑Wextra&nbsp;‑Wpedantic*, too.
 - [Full documentation](https://libsir.rml.dev), thanks to Doxygen.
-- Lightweight&mdash;the shared library comes in at around 76&nbsp;KiB, and the static library around 70&nbsp;KiB.
+- Lightweight&mdash;the shared library comes in at around 64&nbsp;KiB, and the static library around 60&nbsp;KiB.
 
 ## <a id="cross-platform-compatibility" /> Cross-platform compatibility
 
