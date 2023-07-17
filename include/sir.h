@@ -32,6 +32,7 @@
 # define _SIR_H_INCLUDED
 
 # include "sir/platform.h"
+# include "sir/version.h"
 # include "sir/types.h"
 
 # if defined(__cplusplus)

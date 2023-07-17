@@ -133,6 +133,15 @@ int main(int argc, char** argv) {
     size_t ran       = 0;
     sir_timer timer  = {0};
 
+#if defined(_SIR_VERSION_H_INCLUDED)
+    printf(ULINE("libsir") " %d.%d.%d%s", SIR_VERSION_MAJOR, SIR_VERSION_MINOR,
+            SIR_VERSION_PATCH, SIR_VERSION_SUFFIX);
+# if !SIR_VERSION_IS_RELEASE
+    printf(" (prerelease)\n");
+# else
+    printf(" (release)\n");
+# endif
+#endif
     printf(WHITEB("\nrunning %zu " ULINE("libsir") " %s...") "\n", tgt_tests, TEST_S(tgt_tests));
     sirtimerstart(&timer);
 
