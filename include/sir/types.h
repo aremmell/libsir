@@ -85,7 +85,7 @@ typedef enum {
     SIRCM_16      = 0, /**< 4-bit 16-color mode. */
     SIRCM_256     = 1, /**< 8-bit 256-color mode. */
     SIRCM_RGB     = 2, /**< 24-bit RGB-color mode. */
-    SIRCM_INVALID = 3 /**< Represents the invalid color mode. */
+    SIRCM_INVALID = 3  /**< Represents the invalid color mode. */
 } sir_colormode;
 
 /** Attributes for stdio output. */
@@ -98,7 +98,7 @@ typedef enum {
     SIRTA_ULINE   = 4, /**< Underlined text. */
 } sir_textattr;
 
-/** Colors for stdio output. */
+/** Colors for stdio output (16-color mode). */
 enum {
     /* 4-bit (16-color). */
     SIRTC_BLACK    = 0,  /**< Black. */

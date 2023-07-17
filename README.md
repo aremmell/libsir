@@ -40,7 +40,7 @@ Each 'level' or 'priority' of output can be visually styled however you wish for
 - Won't fail silently&mdash;C library or platform level errors are captured and stored for posterity, on a per-thread basis. The *function, file, and line number from which it originated* are also captured. Additionally, libsir defines its own set of error messages to aid in troubleshooting.
 - Hardened&mdash;every function contains sanity checks for internal state as well as arguments passed in through the external interfaces. libsir's make recipes use *‑Wall&nbsp;‑Wextra&nbsp;‑Wpedantic*, too.
 - [Full documentation](https://libsir.rml.dev), thanks to Doxygen.
-- Lightweight&mdash;the shared library comes in at around 76&nbsp;KiB, and the static library around 70&nbsp;KiB.
+- Lightweight&mdash;the shared library comes in at around 64&nbsp;KiB, and the static library around 60&nbsp;KiB.
 
 ## <a id="cross-platform-compatibility" /> Cross-platform compatibility
 
@@ -56,7 +56,7 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 | **FreeBSD**&nbsp;≳11.3 | **GCC**&nbsp;(11.4&nbsp;‑&nbsp;12.2),&nbsp; **Clang**&nbsp;(10&nbsp;‑&nbsp;14.0.5) |
 | **NetBSD**&nbsp;9.2 | **GCC**&nbsp;(7.5&nbsp;‑&nbsp;13.1),&nbsp; **Clang**&nbsp;(15.0.7) |
 | **OpenBSD**&nbsp;7.3 | **GCC**&nbsp;(11.2),&nbsp; **Clang**&nbsp;(13) |
-| **DragonFly**&nbsp;**BSD**&nbsp;6.4 | **GCC**&nbsp;(8.3&nbsp;‑&nbsp;13),&nbsp; **Clang**&nbsp;(10.0.1&nbsp;‑&nbsp;14.0.6) |
+| **DragonFly**&nbsp;**BSD**&nbsp;6.4 | **GCC**&nbsp;(8.3&nbsp;‑&nbsp;13),&nbsp; **Clang**&nbsp;(10.0.1&nbsp;‑&nbsp;16.0.6) |
 | **Haiku**&nbsp;R1b4 | **GCC**&nbsp;(11.2),&nbsp; **Clang**&nbsp;(12.0.1) |
 | **Solaris**&nbsp;11.4 | **GCC**&nbsp;(10.3&nbsp;‑&nbsp;11.2),&nbsp; **Clang**&nbsp;(6&nbsp;‑&nbsp;11),&nbsp; **Oracle&nbsp;Studio&nbsp;C/C++**&nbsp;(≳12.6) |
 | **illumos** | **GCC**&nbsp;(7.5&nbsp;‑&nbsp;11.3),&nbsp; **Clang**&nbsp;(15.0.7) |
@@ -94,7 +94,7 @@ A very recent addition is an `sln` and some `vcxproj` files in the [msvc](https:
 | Example app    | `make example`      |                  *build/bin/sirexample[.exe]*                 |
 | Static library |    `make static`    |                   *build/lib/libsir_s.a*                      |
 | Shared library |    `make shared`    |                    *build/lib/libsir.so*                      |
-|    Install     | `sudo make install` |    *`$(INSTALLLIB)`/libsir.so  &amp; `$(INSTALLINC)`/sir.h*   |
+|    Install     | `make install` |    <ul><li>*$PREFIX/lib/libsir_s.a*</li><li>*$PREFIX/lib/libsir.so*</li><li>*$PREFIX/include/sir.h*</li><li>*$PREFIX/include/sir/\*.h*</li></ul>  |
 
 ## <a id="dig-in" /> Dig in
 

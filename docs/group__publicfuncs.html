@@ -799,13 +799,12 @@ To change the file's level registrations or options after adding it, call <a cla
 <p>Loads a plugin module from disk. </p>
 <p>Loads, queries, validates, and initializes a libsir plugin module. If loading and validation are successful, the plugin is registered in the internal cache.</p>
 <p>After that point in time, the plugin will be notified upon the dispatching of log messages on any <a class="el" href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2" title="Defines the available levels (severity/priority) of logging output.">sir_level</a> the plugin registered for when it was loaded.</p>
-<p>Read the ::plugins page for more information about libsir plugins.</p>
 <dl class="section remark"><dt>Remarks</dt><dd>If <code>path</code> is a relative path, it shall be treated as relative to the <em>current working directory</em>. This is not necessarily the same directory that your application's binary file resides in.</dd>
 <dd>
 The return value from this function is only valid for the lifetime of the process. If a crash or restart occurs, you will no longer be able to refer to the plugin by that identifier, and will have to load it again (libsir does not persist its plugin cache).</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#ga6796c068e61eb505e8dd8e230fbc1423" title="Unloads a previously registered plugin module.">sir_unloadplugin</a> </dd>
 <dd>
-::plugins</dd></dl>
+<a class="el" href="group__plugins.html">Plugins</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">path</td><td>The absolute or relative path of the plugin to be loaded and registered. </td></tr>
@@ -837,7 +836,7 @@ The return value from this function is only valid for the lifetime of the proces
 <p>If the plugin is located in the cache, it is instructed to clean up and prepare to be unloaded. Upon completion of the plugin's clean up routine, it is unloaded.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#ga1a50b52b3ce1af7543b76a219ff01060" title="Loads a plugin module from disk.">sir_loadplugin</a> </dd>
 <dd>
-::plugins</dd></dl>
+<a class="el" href="group__plugins.html">Plugins</a></dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">id</td><td>The <a class="el" href="group__publictypes.html#gadbc71df98df765cddfed4aa11c805470" title="Plugin module identifier type.">sirpluginid</a> obtained when the plugin was loaded. </td></tr>

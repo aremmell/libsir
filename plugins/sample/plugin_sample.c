@@ -24,35 +24,15 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "plugin_sample.h"
-#include <stdio.h>
 #include "sir/ansimacros.h"
 #include "sir/helpers.h"
+#include <stdio.h>
 
 #if defined(__WIN__)
-BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved)
-{
+BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved) {
     _SIR_UNUSED(module);
-    _SIR_UNUSED(reserved);
-# if defined(SIR_DEBUG)
-    switch (ul_reason_for_call)
-    {
-        case DLL_PROCESS_ATTACH:
-            OutputDebugStringA("Got DLL_PROCESS_ATTACH\n");
-            break;
-        case DLL_THREAD_ATTACH:
-            OutputDebugStringA("Got DLL_THREAD_ATTACH\n");
-            break;
-        case DLL_THREAD_DETACH:
-            OutputDebugStringA("Got DLL_THREAD_DETACH\n");
-            break;
-        case DLL_PROCESS_DETACH:
-            OutputDebugStringA("Got DLL_PROCESS_DETACH\n");
-            break;
-    }
-# else
     _SIR_UNUSED(ul_reason_for_call);
-# endif
-
+    _SIR_UNUSED(reserved);
     return TRUE;
 }
 #endif
@@ -77,22 +57,22 @@ PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
     info->desc      = desc;
     info->caps      = caps;
 
-    printf("\t" DGRAY("sample_plugin ('%s')") "\n", __func__);
+    printf("\t" DGRAY("plugin_sample ('%s')") "\n", __func__);
     return true;
 }
 
 PLUGIN_EXPORT bool sir_plugin_init(void) {
-    printf("\t" DGRAY("sample_plugin ('%s')") "\n", __func__);
+    printf("\t" DGRAY("plugin_sample ('%s')") "\n", __func__);
     return true;
 }
 
 PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message) {
-    printf("\t" DGRAY("sample_plugin (%s): level: %04"PRIx32", message: %s") "\n",
+    printf("\t" DGRAY("plugin_sample (%s): level: %04"PRIx32", message: %s") "\n",
         __func__, level, message);
     return true;
 }
 
 PLUGIN_EXPORT bool sir_plugin_cleanup(void) { //-V524
-    printf("\t" DGRAY("sample_plugin ('%s')") "\n", __func__);
+    printf("\t" DGRAY("plugin_sample ('%s')") "\n", __func__);
     return true;
 }

@@ -27,7 +27,6 @@ var NAVTREE =
   [ "libsir", "index.html", [
     [ "Changelog", "md_docs_2sources_2changelog.html", null ],
     [ "Configuration", "md_docs_2sources_2config.html", null ],
-    [ "Plugins", "md_docs_2sources_2plugins.html", null ],
     [ "Test suite", "md_docs_2sources_2sirtests.html", null ],
     [ "Modules", "modules.html", "modules" ],
     [ "Files", "files.html", [
@@ -45,7 +44,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "ansimacros_8h.html",
-"group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0"
+"group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

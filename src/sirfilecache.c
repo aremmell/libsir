@@ -36,7 +36,6 @@ sirfileid _sir_addfile(const char* path, sir_levels levels, sir_options opts) {
 
     _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, 0);
 
-
     _sir_defaultlevels(&levels, sir_file_def_lvls);
     _sir_defaultopts(&opts, sir_file_def_opts);
 
@@ -260,13 +259,13 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                             * already exist. */
                         if (!_sir_pathexists(*newpath, &exists, SIR_PATH_REL_TO_CWD)) {
                             /* failed to determine if the file already exists; it is better
-                                * to continue logging to the same file than to possibly overwrite
-                                * another (if it failed this time, it will again, so there's no
-                                * way to definitively choose a good new path). */
+                             * to continue logging to the same file than to possibly overwrite
+                             * another (if it failed this time, it will again, so there's no
+                             * way to definitively choose a good new path). */
                             break;
                         } else if (exists) {
                             /* the file already exists; add a number to the file name
-                                * until one that does not exist is found. */
+                             * until one that does not exist is found. */
                             _sir_selflog("path: '%s' already exists; incrementing sequence", *newpath);
                             sequence++;
                         } else {
