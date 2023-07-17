@@ -404,6 +404,7 @@ bool sir_remfile(sirfileid id);
  * not persist its plugin cache).
  *
  * @see ::sir_unloadplugin
+ * @see ::plugins
  *
  * @param  path        The absolute or relative path of the plugin to be loaded
  *                     and registered.
@@ -424,6 +425,7 @@ sirpluginid sir_loadplugin(const char* path);
  * to be unloaded. Upon completion of the plugin's clean up routine, it is unloaded.
  *
  * @see ::sir_loadplugin
+ * @see ::plugins
  *
  * @param   id   The ::sirpluginid obtained when the plugin was loaded.
  * @returns bool `true` if the plugin was located and successfully unloaded,`false`
