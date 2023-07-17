@@ -360,7 +360,7 @@ bool sir_emerg(PRINTF_FORMAT const char* format, ...);
  * @param opts        Formatting options bitmask.
  * @returns sirfileid If successful, a unique identifier that can later be used
  *                    to modify level registrations, options, or remove the file
- *                    from libsir. Upon failure, returns `NULL`. Use ::sir_geterror
+ *                    from libsir. Upon failure, returns zero. Use ::sir_geterror
  *                    to obtain information about any error that may have occurred.
  */
 sirfileid sir_addfile(const char* path, sir_levels levels, sir_options opts);
