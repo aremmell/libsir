@@ -33,7 +33,7 @@
 # define SIR_VERSION_SUFFIX "-dev"
 
 # define SIR_VERSION_HEX  ((SIR_VERSION_MAJOR << 16) | \
-                          (SIR_VERSION_MINOR <<  8) | \
-                          (SIR_VERSION_PATCH))
+                           (SIR_VERSION_MINOR <<  8) | \
+                           (SIR_VERSION_PATCH))
 
 #endif // !_SIR_VERSION_H_INCLUDED
