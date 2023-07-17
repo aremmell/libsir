@@ -5,7 +5,6 @@ language: c
 branches:
   only:
   - master
-  - plugins
 env: MAKE=make
 jobs:
   include:
@@ -88,6 +87,6 @@ jobs:
       compiler: gcc
 script:
   - ${MAKE:?} printvars || true
-  - env SIR_SELFLOG=1 ${MAKE:?} clean tests plugins example
+  - env ${MAKE:?} clean tests example
   - build/bin/sirtests
   - build/bin/sirexample

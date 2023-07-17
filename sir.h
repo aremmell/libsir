@@ -340,27 +340,27 @@ bool sir_emerg(PRINTF_FORMAT const char* format, ...);
  * file reaches that size in bytes, it will be archived to a date-stamped file
  * in the same directory, and logging will resume at the path of the original file.
  *
- * @remark If `path` is a relative path, it shall be treated as relative
- * to the _current working directory_. This is not necessarily the same path
- * that your process' binary file resides in.
+ * @remark If `path` is a relative path, it shall be treated as relative to the
+ * _current working directory_. This is not necessarily the same directory that
+ * your application's binary file resides in.
  *
  * @remark The return value from this function is only valid for the lifetime of
  * the process. If a crash or restart occurs, you will no longer be able to refer
- * to the file by that identifier, and will have to add the file again (libsir
- * does not persist its list of log files).
+ * to the file by that identifier, and will have to add it again (libsir does not
+ * persist its log file cache).
  *
  * @remark To change the file's level registrations or options after adding it,
  * call ::sir_filelevels and ::sir_fileopts, respectively.
  *
  * @see ::sir_remfile
  *
- * @param path        Either a relative or absolute path to a file name which
- *                    shall become a log file managed by libsir.
- * @param levels      Levels of output to register the file for.
- * @param opts        Formatting options for the output sent to the file.
+ * @param path        The absolute or relative path of the file to become a
+ *                    logging destination for libsir.
+ * @param levels      Level registration bitmask.
+ * @param opts        Formatting options bitmask.
  * @returns sirfileid If successful, a unique identifier that can later be used
  *                    to modify level registrations, options, or remove the file
- *                    from libsir. Upon failure, returns `NULL`. Use ::sir_geterror
+ *                    from libsir. Upon failure, returns zero. Use ::sir_geterror
  *                    to obtain information about any error that may have occurred.
  */
 sirfileid sir_addfile(const char* path, sir_levels levels, sir_options opts);
@@ -378,7 +378,7 @@ sirfileid sir_addfile(const char* path, sir_levels levels, sir_options opts);
  * @see ::sir_fileopts
  *
  * @param   id   The ::sirfileid obtained when the file was added to libsir.
- * @returns bool `true` if the file is known to libsir, and was successfully
+ * @returns bool `true` if the file is known to libsir and was successfully
  *               removed, `false` otherwise. Use ::sir_geterror to obtain
  *               information about any error that may have occurred.
  */
@@ -387,29 +387,51 @@ bool sir_remfile(sirfileid id);
 /**
  * @brief Loads a plugin module from disk.
  *
- * TODO lorem ipsum
+ * Loads, queries, validates, and initializes a libsir plugin module. If loading
+ * and validation are successful, the plugin is registered in the internal cache.
+ *
+ * After that point in time, the plugin will be notified upon the dispatching of
+ * log messages on any ::sir_level the plugin registered for when it was loaded.
+ *
+ * Read the ::plugins page for more information about libsir plugins.
+ *
+ * @remark If `path` is a relative path, it shall be treated as relative to the
+ * _current working directory_. This is not necessarily the same directory that
+ * your application's binary file resides in.
+ *
+ * @remark The return value from this function is only valid for the lifetime of
+ * the process. If a crash or restart occurs, you will no longer be able to refer
+ * to the plugin by that identifier, and will have to load it again (libsir does
+ * not persist its plugin cache).
  *
  * @see ::sir_unloadplugin
+ * @see ::plugins
  *
- * @param  path
- * @return sirpluginid A unique identifier that may later be used to unload the
- *                     plugin module. Upon failure, returns zero. Use
- *                     ::sir_geterror to obtain information about any error that
- *                     may have occurred.
+ * @param  path        The absolute or relative path of the plugin to be loaded
+ *                     and registered.
+ * @return sirpluginid If successful, a unique identifier that may later be used
+ *                     to unload the plugin module. Upon failure, returns zero.
+ *                     Use ::sir_geterror to obtain information about any error
+ *                     that may have occurred.
  */
 sirpluginid sir_loadplugin(const char* path);
 
 /**
- * @brief Unloads a previously loaded plugin module.
+ * @brief Unloads a previously registered plugin module.
  *
- * TODO lorem ipsum
+ * Cleans up, de-registers, and unloads a plugin represented by `id` (the value
+ * returned from ::sir_loadplugin).
+ *
+ * If the plugin is located in the cache, it is instructed to clean up and prepare
+ * to be unloaded. Upon completion of the plugin's clean up routine, it is unloaded.
  *
  * @see ::sir_loadplugin
+ * @see ::plugins
  *
- * @param   id   The ::sirpluginid obtained when the plugin was loaded via
- *               ::sir_loadplugin.
- * @returns bool `true` if the plugin module was located and successfully unloaded,
- *               `false` otherwise.
+ * @param   id   The ::sirpluginid obtained when the plugin was loaded.
+ * @returns bool `true` if the plugin was located and successfully unloaded,`false`
+ *               otherwise. Use ::sir_geterror to obtain information about any
+ *               error that may have occurred.
  */
 bool sir_unloadplugin(sirpluginid id);
 
@@ -658,7 +680,7 @@ bool sir_sysloglevels(sir_levels levels);
  * @see ::sir_sysloglevels
  *
  * @param   opts New bitmask of ::sir_option for the system logger. If you wish
- *               to use the default values, pass ::SIRL_DEFAULT.
+ *               to use the default values, pass ::SIRO_DEFAULT.
  * @returns bool `true` if succcessfully updated, `false` otherwise. Use
  *               ::sir_geterror to obtain information about any error that may
  *               have occurred.

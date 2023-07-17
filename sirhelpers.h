@@ -63,6 +63,18 @@ uint16_t _sir_geterrcode(uint32_t err) {
     } \
     va_end(args);
 
+/** Evil macros used to enter/leave locked sections. */
+# define _SIR_LOCK_SECTION(type, name, mid, ret) \
+    type* name = _sir_locksection(mid); \
+    if (!name) { \
+        _sir_seterror(_SIR_E_INTERNAL); \
+        return ret; \
+    }
+
+/** Evil macros used to enter/leave locked sections. */
+# define _SIR_UNLOCK_SECTION(mid) \
+    _sir_unlocksection(mid);
+
 /** Squelches warnings about unreferenced parameters. */
 # define _SIR_UNUSED(param) (void)param;
 
@@ -142,6 +154,18 @@ void _sir_safefclose(FILE* restrict* restrict f);
 
 /** Validates a log file descriptor. */
 bool _sir_validfd(int fd);
+
+/** Validates a file identifier */
+static inline
+bool _sir_validfileid(sirfileid id) {
+    return 0 != id;
+}
+
+/** Validates a plugin identifier */
+static inline
+bool _sir_validpluginid(sirpluginid id) {
+    return 0 != id;
+}
 
 /** Validates a sir_update_config_data structure. */
 bool _sir_validupdatedata(sir_update_config_data* data);

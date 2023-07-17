@@ -87,7 +87,7 @@ int main(void) {
      * and send all levels there.
      */
     sirfileid fileid = sir_addfile("libsir-example.log", SIRL_ALL, SIRO_NONAME | SIRO_NOHOST);
-    if (NULL == fileid)
+    if (0 == fileid)
         report_error();
 
     /*

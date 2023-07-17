@@ -32,19 +32,16 @@ sirfileid _sir_addfile(const char* path, sir_levels levels, sir_options opts) {
     _sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity())
-        return NULL;
+        return 0;
 
-    sirfcache* sfc = _sir_locksection(SIRMI_FILECACHE);
-    if (!sfc) {
-        _sir_seterror(_SIR_E_INTERNAL);
-        return NULL;
-    }
+    _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, 0);
+
 
     _sir_defaultlevels(&levels, sir_file_def_lvls);
     _sir_defaultopts(&opts, sir_file_def_opts);
 
     sirfileid retval = _sir_fcache_add(sfc, path, levels, opts);
-    _sir_unlocksection(SIRMI_FILECACHE);
+    _SIR_UNLOCK_SECTION(SIRMI_FILECACHE);
 
     return retval;
 }
@@ -52,18 +49,12 @@ sirfileid _sir_addfile(const char* path, sir_levels levels, sir_options opts) {
 bool _sir_updatefile(sirfileid id, sir_update_config_data* data) {
     _sir_seterror(_SIR_E_NOERROR);
 
-    if (!_sir_sanity() || !_sir_validptr(id) || !_sir_validfd(*id) ||
-        !_sir_validupdatedata(data))
-            return false;
-
-    sirfcache* sfc = _sir_locksection(SIRMI_FILECACHE);
-    if (!sfc) {
-        _sir_seterror(_SIR_E_INTERNAL);
+    if (!_sir_sanity() || !_sir_validfileid(id) || !_sir_validupdatedata(data))
         return false;
-    }
 
+    _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, false);
     bool retval = _sir_fcache_update(sfc, id, data);
-    _sir_unlocksection(SIRMI_FILECACHE);
+    _SIR_UNLOCK_SECTION(SIRMI_FILECACHE);
 
     return retval;
 }
@@ -71,17 +62,12 @@ bool _sir_updatefile(sirfileid id, sir_update_config_data* data) {
 bool _sir_remfile(sirfileid id) {
     _sir_seterror(_SIR_E_NOERROR);
 
-    if (!_sir_sanity() || !_sir_validptr(id) || !_sir_validfd(*id))
+    if (!_sir_sanity() || !_sir_validfileid(id))
         return false;
 
-    sirfcache* sfc = _sir_locksection(SIRMI_FILECACHE);
-    if (!sfc) {
-        _sir_seterror(_SIR_E_INTERNAL);
-        return false;
-    }
-
+    _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, false);
     bool retval = _sir_fcache_rem(sfc, id);
-    _sir_unlocksection(SIRMI_FILECACHE);
+    _SIR_UNLOCK_SECTION(SIRMI_FILECACHE);
 
     return retval;
 }
@@ -96,15 +82,12 @@ sirfile* _sirfile_create(const char* path, sir_levels levels, sir_options opts) 
         return NULL;
     }
 
-    size_t pathLen = strnlen(path, SIR_MAXPATH);
-    sf->path       = (char*)calloc(pathLen + 1, sizeof(char));
+    sf->path = strdup(path);
     if (!sf->path) {
         _sir_handleerr(errno);
         _sir_safefree(&sf);
         return NULL;
     }
-
-    _sir_strncpy(sf->path, pathLen + 1, path, pathLen);
 
     sf->levels = levels;
     sf->opts   = opts;
@@ -121,6 +104,10 @@ bool _sirfile_open(sirfile* sf) {
     if (!_sir_validptr(sf) && !_sir_validstr(sf->path))
         return false;
 
+    bool existed = false;
+    if (!_sir_pathexists(sf->path, &existed, SIR_PATH_REL_TO_CWD))
+        return false;
+
     FILE* f  = NULL;
     int open = _sir_fopen(&f, sf->path, SIR_FOPENMODE);
     if (0 != open || !f)
@@ -128,14 +115,16 @@ bool _sirfile_open(sirfile* sf) {
 
     int fd = fileno(f);
     if (!_sir_validfd(fd)) {
-        _sir_deletefile(sf->path);
+        if (!existed)
+            _sir_deletefile(sf->path);
         return false;
     }
 
     _sirfile_close(sf);
 
     sf->f  = f;
-    sf->id = fd;
+    sf->fd = fd;
+    sf->id = FNV32_1a((const uint8_t*)sf->path, strnlen(sf->path, SIR_MAXPATH));
 
     return true;
 }
@@ -155,8 +144,8 @@ bool _sirfile_write(sirfile* sf, const char* output) {
         bool rolled   = false;
         char* newpath = NULL;
 
-        _sir_selflog("file %d (path: '%s') reached ~%d bytes in size; rolling...",
-            sf->id, sf->path, SIR_FROLLSIZE);
+        _sir_selflog("file (path: '%s', id: %"PRIx32") reached ~%d bytes in size;"
+                     " rolling...", sf->path, sf->id, SIR_FROLLSIZE);
 
         _sir_fflush(sf->f);
 
@@ -168,8 +157,8 @@ bool _sirfile_write(sirfile* sf, const char* output) {
 
         _sir_safefree(&newpath);
         if (!rolled) /* write anyway; don't want to lose data. */
-            _sir_selflog("error: failed to roll file %d (path: '%s')!",
-                sf->id, sf->path);
+            _sir_selflog("error: failed to roll file (path: '%s', id: %" PRIx32")!",
+                sf->path, sf->id);
     }
 
     size_t writeLen = strnlen(output, SIR_MAXFHEADER);
@@ -213,7 +202,7 @@ bool _sirfile_needsroll(sirfile* sf) {
         return false;
 
     struct stat st = {0};
-    int getstat    = fstat(sf->id, &st);
+    int getstat    = fstat(sf->fd, &st);
 
     if (0 != getstat) {
         _sir_handleerr(errno);
@@ -374,7 +363,8 @@ void _sirfile_destroy(sirfile** sf) {
 
 bool _sirfile_validate(sirfile* sf) {
     return _sir_validptrnofail(sf) && _sir_validptrnofail(sf->f) &&
-           _sir_validstrnofail(sf->path) && _sir_validfd(sf->id);
+           _sir_validstrnofail(sf->path) && _sir_validfd(sf->fd) &&
+           _sir_validfileid(sf->id);
 }
 
 bool _sirfile_update(sirfile* sf, sir_update_config_data* data) {
@@ -383,12 +373,12 @@ bool _sirfile_update(sirfile* sf, sir_update_config_data* data) {
 
     if (_sir_bittest(data->fields, SIRU_LEVELS)) {
         if (sf->levels != *data->levels) {
-            _sir_selflog("updating file %d levels from %04"PRIx16" to %04"PRIx16,
-                sf->id, sf->levels, *data->levels);
+            _sir_selflog("updating file (id: %"PRIx32") levels from %04"PRIx16
+                         " to %04"PRIx16, sf->id, sf->levels, *data->levels);
             sf->levels = *data->levels;
         } else {
-            _sir_selflog("skipped superfluous update of file %d levels: %04"PRIx16,
-                sf->id, sf->levels);
+            _sir_selflog("skipped superfluous update of file (id: %"PRIx32")"
+                         " levels: %04"PRIx16, sf->id, sf->levels);
         }
 
         return true;
@@ -396,12 +386,12 @@ bool _sirfile_update(sirfile* sf, sir_update_config_data* data) {
 
     if (_sir_bittest(data->fields, SIRU_OPTIONS)) {
         if (sf->opts != *data->opts) {
-            _sir_selflog("updating file %d options from %08"PRIx32" to %08"PRIx32,
-                sf->id, sf->opts, *data->opts);
+            _sir_selflog("updating file (id: %"PRIx32") options from %08"PRIx32
+                         " to %08"PRIx32, sf->id, sf->opts, *data->opts);
             sf->opts = *data->opts;
         } else {
-            _sir_selflog("skipped superfluous update of file %d options: %08"PRIx32,
-                sf->id, sf->opts);
+            _sir_selflog("skipped superfluous update of file (id: %"PRIx32")"
+                         " options: %08"PRIx32, sf->id, sf->opts);
         }
 
         return true;
@@ -414,44 +404,44 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
     sir_options opts) {
     if (!_sir_validptr(sfc) || !_sir_validstr(path) || !_sir_validlevels(levels) ||
         !_sir_validopts(opts))
-        return NULL;
+        return 0;
 
     if (sfc->count >= SIR_MAXFILES) {
         _sir_seterror(_SIR_E_NOROOM);
-        return NULL;
+        return 0;
     }
 
     sirfile* existing = _sir_fcache_find(sfc, (const void*)path, _sir_fcache_pred_path);
     if (NULL != existing) {
-        _sir_selflog("error: already have file (path: '%s')", path);
+        _sir_selflog("error: already have file (path: '%s', id: %"PRIx32")",
+            path, existing->id);
         _sir_seterror(_SIR_E_DUPITEM);
-        return NULL;
+        return 0;
     }
 
     sirfile* sf = _sirfile_create(path, levels, opts);
     if (_sirfile_validate(sf)) {
-        _sir_selflog("adding file (path: '%s', id = %d); count = %zu", sf->path,
-            sf->id, sfc->count + 1);
+        _sir_selflog("adding file (path: '%s', id: %"PRIx32"); count = %zu",
+            sf->path, sf->id, sfc->count + 1);
 
         sfc->files[sfc->count++] = sf;
 
         if (!_sir_bittest(sf->opts, SIRO_NOHDR)) //-V522
             _sirfile_writeheader(sf, SIR_FHBEGIN);
 
-        return &sf->id;
+        return sf->id;
     }
 
     _sir_safefree(&sf);
 
-    return NULL;
+    return 0;
 }
 
 bool _sir_fcache_update(sirfcache* sfc, sirfileid id, sir_update_config_data* data) {
-    if (!_sir_validptr(sfc) || !_sir_validptr(id) || !_sir_validfd(*id) ||
-        !_sir_validupdatedata(data))
+    if (!_sir_validptr(sfc) || !_sir_validfileid(id) || !_sir_validupdatedata(data))
         return false;
 
-    sirfile* found = _sir_fcache_find(sfc, (const void*)id, _sir_fcache_pred_id);
+    sirfile* found = _sir_fcache_find(sfc, (const void*)&id, _sir_fcache_pred_id);
     if (!found) {
         _sir_seterror(_SIR_E_NOITEM);
         return false;
@@ -461,14 +451,14 @@ bool _sir_fcache_update(sirfcache* sfc, sirfileid id, sir_update_config_data* da
 }
 
 bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
-    if (!_sir_validptr(sfc) || !_sir_validptr(id) || !_sir_validfd(*id))
+    if (!_sir_validptr(sfc) || !_sir_validfileid(id))
         return false;
 
     for (size_t n = 0; n < sfc->count; n++) {
         SIR_ASSERT(_sirfile_validate(sfc->files[n]));
 
-        if (sfc->files[n]->id == *id) {
-            _sir_selflog("removing file (path: '%s', id: %d); count = %zu",
+        if (sfc->files[n]->id == id) {
+            _sir_selflog("removing file (path: '%s', id: %"PRIx32"); count = %zu",
                 sfc->files[n]->path, sfc->files[n]->id, sfc->count - 1);
 
             _sirfile_destroy(&sfc->files[n]);
@@ -555,7 +545,7 @@ bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
 }
 
 bool _sir_fcache_pred_id(const void* match, sirfile* iter) {
-    sirfileid id = (sirfileid)match;
+    sirfileid* id = (sirfileid*)match;
     return iter->id == *id;
 }
 
@@ -604,9 +594,9 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
 
         if (!_sir_bittest(sfc->files[n]->levels, level)) {
             _sir_selflog("level %04"PRIx32" not set in level mask (%04"PRIx16
-                         ") for file %d (path: '%s'); skipping", level,
-                         sfc->files[n]->levels, sfc->files[n]->id,
-                         sfc->files[n]->path);
+                         ") for file (path: '%s', id: %"PRIx32"); skipping",
+                         level, sfc->files[n]->levels, sfc->files[n]->path,
+                         sfc->files[n]->id);
             continue;
         }
 
@@ -621,8 +611,8 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
         if (write && _sirfile_write(sfc->files[n], write)) {
             (*dispatched)++;
         } else {
-            _sir_selflog("error: write to file %d (path: '%s') failed!",
-                sfc->files[n]->id, sfc->files[n]->path);
+            _sir_selflog("error: write to file (path: '%s', id: %"PRIx32") failed!",
+                sfc->files[n]->path, sfc->files[n]->id);
         }
     }
 

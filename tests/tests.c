@@ -212,12 +212,12 @@ bool sirtest_failnooutputdest(void) {
         pass &= sir_stdoutlevels(SIRL_NONE);
 
         sirfileid fid = sir_addfile(logfilename, SIRL_INFO, SIRO_DEFAULT);
-        pass &= NULL != fid;
+        pass &= 0 != fid;
         pass &= sir_info("this goes to %s", logfilename);
         pass &= sir_filelevels(fid, SIRL_NONE);
         pass &= !sir_notice("this goes nowhere!");
 
-        if (NULL != fid)
+        if (0 != fid)
             pass &= sir_remfile(fid);
 
         rmfile(logfilename);
@@ -232,7 +232,7 @@ bool sirtest_failnulls(void) {
     bool pass = si_init;
 
     pass &= !sir_info(NULL); //-V575 //-V618
-    pass &= NULL == sir_addfile(NULL, SIRL_ALL, SIRO_MSGONLY);
+    pass &= 0 == sir_addfile(NULL, SIRL_ALL, SIRO_MSGONLY);
 
     if (pass)
         print_expected_error();
@@ -266,13 +266,13 @@ bool sirtest_filecachesanity(void) {
         snprintf(path, SIR_MAXPATH, MAKE_LOG_NAME("test-%zu.log"), n);
         rmfile(path);
         ids[n] = sir_addfile(path, SIRL_ALL, (n % 2) ? odd : even);
-        pass &= NULL != ids[n] && sir_info("test %zu", n);
+        pass &= 0 != ids[n] && sir_info("test %zu", n);
     }
 
     pass &= sir_info("test test test");
 
     /* this one should fail; max files already added. */
-    pass &= NULL == sir_addfile(MAKE_LOG_NAME("should-fail.log"), SIRL_ALL, SIRO_MSGONLY);
+    pass &= 0 == sir_addfile(MAKE_LOG_NAME("should-fail.log"), SIRL_ALL, SIRO_MSGONLY);
 
     if (pass)
         print_expected_error();
@@ -328,7 +328,7 @@ bool sirtest_failinvalidfilename(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    pass &= NULL == sir_addfile("bad file!/name", SIRL_ALL, SIRO_MSGONLY);
+    pass &= 0 == sir_addfile("bad file!/name", SIRL_ALL, SIRO_MSGONLY);
 
     if (pass)
         print_expected_error();
@@ -351,7 +351,7 @@ bool sirtest_failfilebadpermission(void) {
 # endif
 #endif
 
-    pass &= NULL == sir_addfile(path, SIRL_ALL, SIRO_MSGONLY);
+    pass &= 0 == sir_addfile(path, SIRL_ALL, SIRO_MSGONLY);
 
     if (pass)
         print_expected_error();
@@ -379,12 +379,12 @@ bool sirtest_faildupefile(void) {
 
     /* should be fine; no other files added yet. */
     sirfileid fid = sir_addfile(filename1, SIRL_ALL, SIRO_DEFAULT);
-    pass &= NULL != fid;
+    pass &= 0 != fid;
 
     printf("\ttrying again to add log file '%s'...\n", filename1);
 
     /* should fail. this is the same file we already added. */
-    pass &= NULL == sir_addfile(filename1, SIRL_ALL, SIRO_DEFAULT);
+    pass &= 0 == sir_addfile(filename1, SIRL_ALL, SIRO_DEFAULT);
 
     if (pass)
         print_expected_error();
@@ -393,7 +393,7 @@ bool sirtest_faildupefile(void) {
 
     /* should also fail. this is the same file we already added, even
      * if the path strings don't match. */
-    pass &= NULL == sir_addfile(filename2, SIRL_ALL, SIRO_DEFAULT);
+    pass &= 0 == sir_addfile(filename2, SIRL_ALL, SIRO_DEFAULT);
 
     if (pass)
         print_expected_error();
@@ -402,16 +402,16 @@ bool sirtest_faildupefile(void) {
 
     /* should pass. this is a different file. */
     sirfileid fid2 = sir_addfile(filename3, SIRL_ALL, SIRO_DEFAULT);
-    pass &= NULL != fid2;
+    pass &= 0 != fid2;
 
     /* should also pass. */
     sirfileid fid3 = sir_addfile(filename4, SIRL_ALL, SIRO_DEFAULT);
-    pass &= NULL != fid3;
+    pass &= 0 != fid3;
 
     pass &= sir_info("hello three valid files");
 
     /* should now fail since we added it earlier. */
-    pass &= NULL == sir_addfile(filename3, SIRL_ALL, SIRO_DEFAULT);
+    pass &= 0 == sir_addfile(filename3, SIRL_ALL, SIRO_DEFAULT);
 
     if (pass)
         print_expected_error();
@@ -433,8 +433,8 @@ bool sirtest_failremovebadfile(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    int invalidid = 9999999;
-    pass &= !sir_remfile(&invalidid);
+    sirfileid invalidid = 9999999;
+    pass &= !sir_remfile(invalidid);
 
     if (pass)
         print_expected_error();
@@ -490,7 +490,7 @@ bool sirtest_rollandarchivefile(void) {
     bool pass = si_init;
 
     sirfileid fileid = sir_addfile(logfilename, SIRL_DEBUG, SIRO_MSGONLY | SIRO_NOHDR);
-    pass &= NULL != fileid;
+    pass &= 0 != fileid;
 
     if (pass) {
         /* write an (approximately) known quantity until we should have rolled */
@@ -518,8 +518,7 @@ bool sirtest_rollandarchivefile(void) {
         pass &= foundlogs >= 2;
     }
 
-    if (NULL != fileid)
-        pass &= sir_remfile(fileid);
+    pass &= sir_remfile(fileid);
 
     delcount = 0;
     if (!enumfiles(SIR_TESTLOGDIR, logbasename, deletefiles, &delcount)) {
@@ -1001,7 +1000,7 @@ bool sirtest_perf(void) {
         snprintf(logfilename, SIR_MAXPATH, "%s%s", logbasename, logext);
 
         sirfileid logid = sir_addfile(logfilename, SIRL_ALL, SIRO_NOMSEC | SIRO_NONAME);
-        pass &= NULL != logid;
+        pass &= 0 != logid;
 
         if (pass) {
             printf("\t" BLUE("%zu lines libsir(log file)...") "\n", perflines);
@@ -1065,7 +1064,7 @@ bool sirtest_updatesanity(void) {
 
     rmfile(logfile);
     sirfileid id1 = sir_addfile(logfile, SIRL_DEFAULT, SIRO_DEFAULT);
-    pass &= NULL != id1;
+    pass &= 0 != id1;
 
     for (int i = 0; i < 10; i++) {
         if (!pass)
@@ -1217,18 +1216,70 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
 }
 #endif
 
+#if defined(SIR_NO_SYSTEM_LOGGERS)
+static bool generic_disabled_syslog_test(const char* sl_name, const char* identity,
+    const char* category) {
+    INIT_SL(si, SIRL_ALL, SIRO_NOHOST | SIRO_NOTID, 0, 0, "sir_disabled_sltest");
+    si.d_syslog.opts   = SIRO_DEFAULT;
+    si.d_syslog.levels = SIRL_DEFAULT;
+    bool pass = true;
+
+    _SIR_UNUSED(sl_name);
+
+    printf("\tSIR_NO_SYSTEM_LOGGERS is defined; expecting calls to fail...\n");
+
+    /* init should just ignore the syslog settings. */
+    si_init = sir_init(&si);
+    pass &= si_init;
+
+    /* these calls should all fail. */
+    printf("\tsetting levels...\n");
+    pass &= !sir_sysloglevels(SIRL_ALL);
+
+    if (pass)
+        print_expected_error();
+
+    printf("\tsetting options...\n");
+    pass &= !sir_syslogopts(SIRO_DEFAULT);
+
+    if (pass)
+        print_expected_error();
+
+    printf("\tsetting identity...\n");
+    pass &= !sir_syslogid(identity);
+
+    if (pass)
+        print_expected_error();
+
+    printf("\tsetting category...\n");
+    pass &= !sir_syslogcat(category);
+
+    if (pass)
+        print_expected_error();
+
+    pass &= sir_cleanup();
+    return print_result_and_return(pass);
+}
+#endif
+
 bool sirtest_syslog(void) {
 #if !defined(SIR_SYSLOG_ENABLED)
-    printf("\t" DGRAY("SIR_SYSLOG_ENABLED is not defined; skipping.") "\n");
+# if defined(SIR_NO_SYSTEM_LOGGERS)
+    bool pass = generic_disabled_syslog_test("syslog", "sirtests", "tests");
+    return print_result_and_return(pass);
+# else
+    printf("\t" DGRAY("SIR_SYSLOG_ENABLED is not defined; skipping") "\n");
     return true;
+# endif
 #else
-    return generic_syslog_test("syslog", "sirtests", "tests");
+    bool pass = generic_syslog_test("syslog", "sirtests", "tests");
+    return print_result_and_return(pass);
 #endif
 }
 
 bool sirtest_os_log(void) {
 #if !defined(SIR_OS_LOG_ENABLED)
-    printf("\t" DGRAY("SIR_OS_LOG_ENABLED is not defined; skipping.") "\n");
+    printf("\t" DGRAY("SIR_OS_LOG_ENABLED is not defined; skipping") "\n");
     return true;
 #else
     bool pass = generic_syslog_test("os_log", "com.aremmell.libsir.tests", "tests");
@@ -1556,18 +1607,14 @@ bool sirtest_squelchspam(void) {
 }
 
 bool sirtest_pluginloader(void) {
-#if defined(SIR_NO_PLUGINS)
-    printf("\t" DGRAY("SIR_NO_PLUGINS is defined; skipping.") "\n");
-    return true;
-#else
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-#if !defined(__WIN__)
-# define PLUGIN_EXT "so"
-#else
-# define PLUGIN_EXT "dll"
-#endif
+# if !defined(__WIN__)
+#  define PLUGIN_EXT "so"
+# else
+#  define PLUGIN_EXT "dll"
+# endif
 
     static const char* plugin1 = "build/lib/plugin_dummy."PLUGIN_EXT;
     static const char* plugin2 = "build/lib/plugin_dummy_bad1."PLUGIN_EXT;
@@ -1575,6 +1622,29 @@ bool sirtest_pluginloader(void) {
     static const char* plugin4 = "build/lib/plugin_dummy_bad3."PLUGIN_EXT;
     static const char* plugin5 = "build/lib/plugin_dummy_bad4."PLUGIN_EXT;
 
+#if defined(SIR_NO_PLUGINS)
+    _SIR_UNUSED(plugin2);
+    _SIR_UNUSED(plugin3);
+    _SIR_UNUSED(plugin4);
+    _SIR_UNUSED(plugin5);
+
+    printf("\tSIR_NO_PLUGINS is defined; expecting calls to fail\n");
+
+    printf("\tloading good plugin: '%s'...\n", plugin1);
+    /* load a valid, well-behaved plugin. */
+    sirpluginid id = sir_loadplugin(plugin1);
+    pass &= 0 == id;
+
+    if (pass)
+        print_expected_error();
+
+    printf("\tunloading good plugin: '%s'...\n", plugin1);
+    /* also try the unload function. */
+    pass &= !sir_unloadplugin(id);
+
+    if (pass)
+        print_expected_error();
+#else
     /* load a valid, well-behaved plugin. */
     printf("\tloading good plugin: '%s'...\n", plugin1);
     sirpluginid id = sir_loadplugin(plugin1);
@@ -1583,44 +1653,46 @@ bool sirtest_pluginloader(void) {
 
     /* re-loading the same plugin should fail. */
     printf("\tloading duplicate plugin: '%s'...\n", plugin1);
-    id = sir_loadplugin(plugin1);
-    pass &= 0 == id;
+    sirpluginid badid = sir_loadplugin(plugin1);
+    pass &= 0 == badid;
 
     if (pass)
         print_expected_error();
 
     /* the following are all invalid or misbehaved, and should all fail. */
     printf("\tloading bad plugin: '%s'...\n", plugin2);
-    id = sir_loadplugin(plugin2);
-    pass &= 0 == id;
+    badid = sir_loadplugin(plugin2);
+    pass &= 0 == badid;
 
     if (pass)
         print_expected_error();
 
     printf("\tloading bad plugin: '%s'...\n", plugin3);
-    id = sir_loadplugin(plugin3);
-    pass &= 0 == id;
+    badid = sir_loadplugin(plugin3);
+    pass &= 0 == badid;
 
     if (pass)
         print_expected_error();
 
     printf("\tloading bad plugin: '%s'...\n", plugin4);
-    id = sir_loadplugin(plugin4);
-    pass &= 0 == id;
+    badid = sir_loadplugin(plugin4);
+    pass &= 0 == badid;
 
     if (pass)
         print_expected_error();
 
     printf("\tloading bad plugin: '%s'...\n", plugin5);
-    id = sir_loadplugin(plugin5);
-    pass &= 0 == id;
+    badid = sir_loadplugin(plugin5);
+    pass &= 0 == badid;
 
     if (pass)
         print_expected_error();
 
-    sir_cleanup();
-    return print_result_and_return(pass);
+    printf("\tunloading good plugin: '%s'...\n", plugin1);
+    pass &= sir_unloadplugin(id);
 #endif
+    pass &= sir_cleanup();
+    return print_result_and_return(pass);
 }
 
 #if !defined(__WIN__)
@@ -1727,7 +1799,7 @@ unsigned sirtest_thread(void* arg) {
     rmfile(my_args->log_file);
     sirfileid id = sir_addfile(my_args->log_file, SIRL_ALL, SIRO_MSGONLY);
 
-    if (NULL == id) {
+    if (0 == id) {
         bool unused = print_test_error(false, false);
         _SIR_UNUSED(unused);
 #if !defined(__WIN__)
@@ -1762,7 +1834,7 @@ unsigned sirtest_thread(void* arg) {
                 my_args->pass = print_test_error(false, false);
 
             id = sir_addfile(my_args->log_file, SIRL_ALL, SIRO_MSGONLY);
-            if (NULL == id)
+            if (0 == id)
                 my_args->pass = print_test_error(false, false);
 
             if (!sir_settextstyle(SIRL_DEBUG, SIRTA_EMPH, fg, bg) ||

@@ -82,6 +82,15 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     }
 
 # if SIR_PLUGIN_VCURRENT == SIR_PLUGIN_V1
+    /* if/when new versions of plugin interfaces are introduced, we will need to
+     * modify/extend the following code:
+     *
+     * - remove the enclosing #if
+     * - get the v1 exports (all versions will have v1 exports), resolve them, and
+     * call sir_plugin_query.
+     * - switch on version returned to resolve additional exports. this will
+     * necessitate additional versioned interface strctures as members of the
+     * sir_plugin struct, e.g. ifacev1, ifacev2). */
     plugin->iface.query   = (sir_plugin_queryfn)
         _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_QUERY);
     plugin->iface.init    = (sir_plugin_initfn)
@@ -103,6 +112,9 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         _sir_plugin_destroy(&plugin);
         return 0;
     }
+# else
+#  error "plugin version not implemented"
+# endif
 
     /* query the plugin for information. */
     if (!plugin->iface.query(&plugin->info)) {
@@ -114,7 +126,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     }
 
     /* verify version. */
-    if (plugin->info.iface_ver != SIR_PLUGIN_VCURRENT) {
+    if (!plugin->info.iface_ver || plugin->info.iface_ver > SIR_PLUGIN_VCURRENT) {
         _sir_selflog("error: plugin (path: '%s', addr: %p) has version"
                      " %"PRIu8"; libsir has %d", plugin->path, plugin->handle,
                      plugin->info.iface_ver, SIR_PLUGIN_VCURRENT);
@@ -181,9 +193,6 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     }
 
     return retval;
-# else
-#  error "plugin version not implemented"
-# endif
 }
 
 uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
@@ -248,30 +257,27 @@ void _sir_plugin_unload(sir_plugin* plugin) {
 }
 
 sirpluginid _sir_plugin_add(sir_plugin* plugin) {
-    if (!_sir_validptr(plugin))
+    _sir_seterror(_SIR_E_NOERROR);
+
+    if (!_sir_sanity() || !_sir_validptr(plugin))
         return 0;
 
-    sir_plugincache* spc = _sir_locksection(SIRMI_PLUGINCACHE);
-    if (!spc) {
-        _sir_seterror(_SIR_E_INTERNAL);
-        return 0;
-    }
-
+    _SIR_LOCK_SECTION(sir_plugincache, spc, SIRMI_PLUGINCACHE, 0);
     sirpluginid retval = _sir_plugin_cache_add(spc, plugin);
-    _sir_unlocksection(SIRMI_PLUGINCACHE);
+    _SIR_UNLOCK_SECTION(SIRMI_PLUGINCACHE);
 
     return retval;
 }
 
 bool _sir_plugin_rem(sirpluginid id) {
-    sir_plugincache* spc = _sir_locksection(SIRMI_PLUGINCACHE);
-    if (!spc) {
-        _sir_seterror(_SIR_E_INTERNAL);
-        return 0;
-    }
+    _sir_seterror(_SIR_E_NOERROR);
 
+    if (!_sir_sanity())
+        return false;
+
+    _SIR_LOCK_SECTION(sir_plugincache, spc, SIRMI_PLUGINCACHE, false);
     bool retval = _sir_plugin_cache_rem(spc, id);
-    _sir_unlocksection(SIRMI_PLUGINCACHE);
+    _SIR_UNLOCK_SECTION(SIRMI_PLUGINCACHE);
 
     return retval;
 }
@@ -300,16 +306,15 @@ sirpluginid _sir_plugin_cache_add(sir_plugincache* spc, sir_plugin* plugin) {
 
     sir_plugin* existing = _sir_plugin_cache_find_id(spc, plugin->id);
     if (NULL != existing) {
-        _sir_selflog("error: already have plugin with id %08"PRIx32 " at path"
-                     " '%s'", plugin->id, existing->path);
+        _sir_selflog("error: already have plugin (path: '%s', id %08"PRIx32")",
+            existing->path, plugin->id);
         _sir_seterror(_SIR_E_DUPITEM);
         return 0;
     }
 
+    _sir_selflog("adding plugin (path: %s, id: %08"PRIx32"); count = %zu",
+    plugin->path, plugin->id, spc->count + 1);
     spc->plugins[spc->count++] = plugin;
-    _sir_selflog("added plugin (path: %s, id: %08"PRIx32") to cache; count = %zu",
-        plugin->path, plugin->id, spc->count);
-
     return plugin->id;
 }
 
@@ -336,6 +341,9 @@ bool _sir_plugin_cache_rem(sir_plugincache* spc, sirpluginid id) {
 
     for (size_t n = 0; n < spc->count; n++) {
         if (spc->plugins[n]->id == id) {
+            _sir_selflog("removing plugin (path: '%s', id: %"PRIx32"); count = %zu",
+                spc->plugins[n]->path, spc->plugins[n]->id, spc->count - 1);
+
             _sir_plugin_destroy(&spc->plugins[n]);
 
             for (size_t i = n; i < spc->count - 1; i++) {

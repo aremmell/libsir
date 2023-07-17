@@ -39,7 +39,7 @@
  */
 
 /** Log file identifier type. */
-typedef const int* sirfileid;
+typedef uint32_t sirfileid;
 
 /** Plugin module identifier type. */
 typedef uint32_t sirpluginid;
@@ -265,13 +265,14 @@ typedef struct {
     const char* const message;
 } sirerror;
 
-/** Log file data. */
+/** Internally-used log file data. */
 typedef struct {
-    char* path;
+    const char* path;
     sir_levels levels;
     sir_options opts;
     FILE* f;
-    int id;
+    int fd;
+    sirfileid id;
 } sirfile;
 
 /** Log file cache. */
@@ -311,23 +312,23 @@ typedef bool (*sir_plugin_cleanupfn)(void);
 
 /** Plugin interface for v1. */
 typedef struct {
-    sir_plugin_queryfn query;     /**< Handle to sir_plugin_query. */
-    sir_plugin_initfn init;       /**< Handle to sir_plugin_init. */
-    sir_plugin_writefn write;     /**< Handle to sir_plugin_write. */
-    sir_plugin_cleanupfn cleanup; /**< Handle to sir_plugin_cleanup. */
+    sir_plugin_queryfn query;     /**< Address of sir_plugin_query. */
+    sir_plugin_initfn init;       /**< Address of sir_plugin_init. */
+    sir_plugin_writefn write;     /**< Address of sir_plugin_write. */
+    sir_plugin_cleanupfn cleanup; /**< Address of sir_plugin_cleanup. */
 } sir_pluginifacev1;
 
 typedef sir_pluginifacev1 sir_pluginiface;
 
-/** Plugin module data. */
+/** Internally-used plugin module data. */
 typedef struct {
-    const char* path;        /**< Path to the shared library file. */
-    sir_pluginhandle handle; /**< Handle to loaded module. */
-    sir_plugininfo info;     /**< Information reported by the plugin.  */
-    bool loaded;             /**< Whether the module is currently loaded. */
-    bool valid;              /**< Whether the module is loaded and valid. */
-    sir_pluginiface iface;   /**< Versioned interface to the plugin module. */
-    uint32_t id;             /**< Unique identifier. */
+    const char* path;
+    sir_pluginhandle handle;
+    sir_plugininfo info;
+    bool loaded;
+    bool valid;
+    sir_pluginiface iface;
+    sirpluginid id;
 } sir_plugin;
 
 /** Plugin module cache. */
