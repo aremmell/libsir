@@ -26,14 +26,30 @@
 #ifndef _SIR_VERSION_H_INCLUDED
 # define _SIR_VERSION_H_INCLUDED
 
+#include "sir/helpers.h"
+
+/** The current libsir major version component. */
 # define SIR_VERSION_MAJOR 2
+
+/** The current libsir minor version component. */
 # define SIR_VERSION_MINOR 2
+
+/** The current libsir patch version component. */
 # define SIR_VERSION_PATCH 0
+
+/** 1 if this is a release version of libsir, 0 otherwise. */
 # define SIR_VERSION_IS_RELEASE 0
+
+/** The current libsir version suffix. */
 # define SIR_VERSION_SUFFIX "-dev"
 
-# define SIR_VERSION_HEX  ((SIR_VERSION_MAJOR << 16) | \
-                           (SIR_VERSION_MINOR <<  8) | \
-                           (SIR_VERSION_PATCH))
+/** The current libsir version as a number. */
+# define SIR_VERSION_HEX ((SIR_VERSION_MAJOR << 16) | \
+                          (SIR_VERSION_MINOR <<  8) | \
+                          (SIR_VERSION_PATCH))
 
-#endif // !_SIR_VERSION_H_INCLUDED
+# define _SIR_VER2STR(x) #x
+# define _SIR_MK_VER_STR(maj, min, patch) \
+    _SIR_VER2STR(maj) "." _SIR_VER2STR(min) "." _SIR_VER2STR(patch) SIR_VERSION_SUFFIX
+
+#endif /* !_SIR_VERSION_H_INCLUDED */
