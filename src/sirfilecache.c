@@ -36,7 +36,6 @@ sirfileid _sir_addfile(const char* path, sir_levels levels, sir_options opts) {
 
     _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, 0);
 
-
     _sir_defaultlevels(&levels, sir_file_def_lvls);
     _sir_defaultopts(&opts, sir_file_def_opts);
 
