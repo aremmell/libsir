@@ -98,7 +98,7 @@ typedef enum {
     SIRTA_ULINE   = 4, /**< Underlined text. */
 } sir_textattr;
 
-/** Colors for stdio output. */
+/** Colors for stdio output (16-color mode). */
 enum {
     /* 4-bit (16-color). */
     SIRTC_BLACK    = 0,  /**< Black. */
