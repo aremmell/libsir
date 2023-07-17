@@ -421,7 +421,7 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
 
     sirfile* sf = _sirfile_create(path, levels, opts);
     if (_sirfile_validate(sf)) {
-        _sir_selflog("adding file (path: '%s', id: %"PRIx32"); count = %zu",
+        _sir_selflog("adding file (path: '%s', id: %"PRIx32"); count = %zu", //-V522
             sf->path, sf->id, sfc->count + 1);
 
         sfc->files[sfc->count++] = sf;

@@ -421,7 +421,7 @@ bool _sir_getrelbasepath(const char* restrict path, bool* restrict relative,
 }
 
 #if defined(_AIX)
-# define SIR_MAXSLPATH SIR_MAXPATH + 16
+# define SIR_MAXSLPATH (SIR_MAXPATH + 16)
 int _sir_aixself(char* buffer, size_t* size) {
     ssize_t res;
     char cwd[SIR_MAXPATH], cwdl[SIR_MAXPATH];
