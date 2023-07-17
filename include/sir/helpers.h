@@ -81,6 +81,9 @@ uint16_t _sir_geterrcode(uint32_t err) {
 /** Returns a printable string even if NULL. */
 # define _SIR_PRNSTR(str) (str ? str : "<null>")
 
+/** 'Stringifies' x */
+# define _SIR_MKSTR(x) #x
+
 /** Even more evil macros used for binary searching arrays. */
 # define _SIR_DECLARE_BIN_SEARCH(low, high) \
     size_t _low  = low; \
