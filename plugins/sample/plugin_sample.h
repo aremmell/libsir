@@ -148,56 +148,7 @@ PLUGIN_EXPORT bool sir_plugin_cleanup(void);
  * - Study the implementation of the sample plugin. It is included below for your
  * convenience. Modify your copy to suit your specific needs.
  *
- * ```c
- *  #if defined(__WIN__)
- *  BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved) {
- *     _SIR_UNUSED(module);
- *     _SIR_UNUSED(ul_reason_for_call);
- *     _SIR_UNUSED(reserved);
- *     return TRUE;
- *  }
- *  #endif
- *
- *  const uint8_t maj_ver   = 1;
- *  const uint8_t min_ver   = 0;
- *  const uint8_t bld_ver   = 0;
- *  const sir_levels levels = SIRL_DEBUG | SIRL_INFO;
- *  const sir_options opts  = SIRO_NOHOST | SIRO_NOTID;
- *  const char* author      = "libsir contributors";
- *  const char* desc        = "Logs messages and function calls to stdout.";
- *  const uint64_t caps     = 0;
- *
- *  PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
- *      info->iface_ver = SIR_PLUGIN_VCURRENT;
- *      info->maj_ver   = maj_ver;
- *      info->min_ver   = min_ver;
- *      info->bld_ver   = bld_ver;
- *      info->levels    = levels;
- *      info->opts      = opts;
- *      info->author    = author;
- *      info->desc      = desc;
- *      info->caps      = caps;
- *
- *      printf("\t" DGRAY("plugin_sample ('%s')") "\n", __func__);
- *      return true;
- *  }
- *
- *  PLUGIN_EXPORT bool sir_plugin_init(void) {
- *      printf("\t" DGRAY("plugin_sample ('%s')") "\n", __func__);
- *      return true;
- *  }
- *
- *  PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message) {
- *      printf("\t" DGRAY("plugin_sample (%s): level: %04"PRIx32", message: %s") "\n",
- *          __func__, level, message);
- *     return true;
- *  }
- *
- *  PLUGIN_EXPORT bool sir_plugin_cleanup(void) { //-V524
- *      printf("\t" DGRAY("plugin_sample ('%s')") "\n", __func__);
- *      return true;
- *  }
- * ```
+ * @include plugin_sample.c
  *
  * - `cd` back into the root directory of the repository and run `make clean
  * plugins`. If everything goes smoothly, your shiny new plugin should now be
