@@ -114,7 +114,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     }
 
     /* verify version. */
-    if (plugin->info.iface_ver != SIR_PLUGIN_VCURRENT) {
+    if (!plugin->info.iface_ver || plugin->info.iface_ver > SIR_PLUGIN_VCURRENT) {
         _sir_selflog("error: plugin (path: '%s', addr: %p) has version"
                      " %"PRIu8"; libsir has %d", plugin->path, plugin->handle,
                      plugin->info.iface_ver, SIR_PLUGIN_VCURRENT);
