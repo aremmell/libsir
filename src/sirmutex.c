@@ -28,7 +28,6 @@
 #include "sir/platform.h"
 
 #if !defined(__WIN__) /* pthread mutex implementation */
-
 bool _sirmutex_create(sir_mutex* mutex) {
     if (_sir_validptr(mutex)) {
         pthread_mutexattr_t attr;
@@ -86,20 +85,7 @@ bool _sirmutex_unlock(sir_mutex* mutex) {
 
     return false;
 }
-
-bool _sirmutex_destroy(sir_mutex* mutex) {
-    if (_sir_validptr(mutex)) {
-        int op = pthread_mutex_destroy(mutex);
-        if (0 != op)
-            _sir_handleerr(op);
-        return 0 == op;
-    }
-
-    return false;
-}
-
 #else /* __WIN__ */
-
 static bool _sirmutex_waitwin32(sir_mutex mutex, DWORD msec);
 
 bool _sirmutex_create(sir_mutex* mutex) {
@@ -139,19 +125,6 @@ bool _sirmutex_unlock(sir_mutex* mutex) {
     return false;
 }
 
-bool _sirmutex_destroy(sir_mutex* mutex) {
-    if (_sir_validptr(mutex)) {
-        BOOL close = CloseHandle(*mutex);
-
-        if (!close)
-            _sir_handlewin32err(GetLastError());
-
-        return FALSE != close;
-    }
-
-    return false;
-}
-
 static bool _sirmutex_waitwin32(sir_mutex mutex, DWORD msec) {
     if (_sir_validptr(mutex)) {
         DWORD wait = WaitForSingleObject(mutex, msec);
@@ -169,5 +142,4 @@ static bool _sirmutex_waitwin32(sir_mutex mutex, DWORD msec) {
 
     return false;
 }
-
 #endif // !__WIN__
