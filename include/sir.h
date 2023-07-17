@@ -743,6 +743,40 @@ bool sir_syslogid(const char* identity);
 bool sir_syslogcat(const char* category);
 
 /**
+ * @brief Returns the current libsir version as a string.
+ *
+ * @note This may be helpful when using libsir as a shared library–it will always
+ * return the value of the shared library, not the source version of libsir
+ * that you built against.
+ *
+ * **Example:**
+ *
+ * ~~~
+ * 2.2.0-dev
+ * ~~~
+ *
+ * @return const char* The current libsir version string.
+ */
+const char* sir_getversionstring(void);
+
+/**
+ * @brief Returns the current libsir version as a number.
+ *
+ * @note Can be formatted as a hexidecimal number with %08x.
+ *
+ * @return uint32_t The current libsir version number.
+ */
+uint32_t sir_getversionhex(void);
+
+/**
+ * @brief Whether or not this is a pre-release version of libsir.
+ *
+ * @returns bool `true` if this is a pre-release version of libsir (i.e., not
+ * a public release), `false` if this is a public release version.
+ */
+bool sir_isprerelease(void);
+
+/**
  * @}
  * @}
  */

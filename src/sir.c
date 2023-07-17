@@ -246,3 +246,15 @@ bool sir_syslogcat(const char* category) {
     return false;
 #endif
 }
+
+const char* sir_getversionstring(void) {
+    return _SIR_MK_VER_STR(SIR_VERSION_MAJOR, SIR_VERSION_MINOR, SIR_VERSION_PATCH);
+}
+
+uint32_t sir_getversionhex(void) {
+    return SIR_VERSION_HEX;
+}
+
+bool sir_isprerelease(void) {
+    return (0 == SIR_VERSION_IS_RELEASE);
+}
