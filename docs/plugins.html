@@ -84,7 +84,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('md_docs_2sources_2changelog.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('plugins.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -110,60 +110,10 @@ $(document).ready(function(){initNavTree('md_docs_2sources_2changelog.html','');
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Changelog</div></div>
+  <div class="headertitle"><div class="title">plugins</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1>2.2.0</h1>
-<h2>July 17, 2023</h2>
-<ul>
-<li>Many new platforms and toolsets are now supported. See <a class="el" href="index.html">the main page</a> for details.</li>
-<li><a class="el" href="group__plugins.html">Plugin</a> loader and sample plugin module implemented! In the near future, some standard plugins will be available as part of the library.</li>
-<li>Big performance gains through optimization and refactoring.</li>
-<li>Much improved support for syslog and added support for macOS' centralized logging facility (os_log). See <a class="el" href="group__publictypes.html#structsir__syslog__dest" title="Configuration for the system logger destination.">sir_syslog_dest</a>.</li>
-<li>Support for 256-color and RGB color modes:<ul>
-<li><a class="el" href="group__publicfuncs.html#ga31639aba9a825f957a73689ef509f33d" title="Sets the ANSI color mode for stdio destinations.">sir_setcolormode</a></li>
-<li><a class="el" href="group__publicfuncs.html#ga4691e42964819230e1f4b7fdf984ff66" title="Creates a sir_textcolor from red, green, and blue components.">sir_makergb</a></li>
-<li><a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a></li>
-</ul>
-</li>
-<li>Windows got a lot of love, and support for that platform is better than ever<ul>
-<li>A Visual Studio 2022 solution can now be found in the <a href="https://github.com/aremmell/libsir/tree/master/msvs">msvs</a> directory with both <code>x64</code> and <code>arm64</code> configurations</li>
-</ul>
-</li>
-<li>New macros in <a href="https://github.com/aremmell/libsir/blob/master/include/sir/ansimacros.h">sir/ansimacros.h</a> that can be used with libsir or anything that writes to stdio (<em>printf, puts, etc.</em>): <code>printf(RED("Oh lawd, something " ULINE("awful") " has happened!\n");</code></li>
-<li>Test suite:<ul>
-<li>New and more vigorous tests</li>
-<li>Now supports command-line arguments:<ul>
-<li><code>--list</code> : lists all the available tests</li>
-<li><code>--only</code>: only run the specified tests</li>
-<li><code>--leave-logs</code>: leave log files behind for examination</li>
-<li><code>--wait</code> : wait for keypress before exiting</li>
-<li><code>--perf</code> : runs the performance benchmark test (normally skipped)</li>
-<li><code>--version</code>: shows the version of libsir the test suite was built with.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Eliminated several bugs and potential memory leaks (<em>Flawfinder, Valgrind, PVS Studio, clang-analyzer, cppcheck</em>)</li>
-<li>More specific error codes and better error reporting</li>
-<li>New preprocessor defines:<ul>
-<li><code>SIR_ASSERT_ENABLED</code>: if defined, libsir calls <code>assert</code> (<em>note that if <code>-DNDEBUG</code> is present, this becomes a NOOP</em>). If not defined and <code>SIR_SELFLOG=1</code>, libsir writes a red message to stderr containing the condition that would have asserted, along with the file, line, and function. This allows for fine-grain control over assertions.</li>
-<li><code>SIR_NO_SYSTEM_LOGGERS</code>: if defined, system logger support is completely disabled/compiled out. The entry points still exist, but they will return an error that the feature is disabled or unavailable.</li>
-<li><code>SIR_NO_PLUGINS</code>: The same as <code>SIR_NO_SYSTEM_LOGGERS</code>, but for the plugin system.</li>
-</ul>
-</li>
-<li>Better and more thorough documentation.</li>
-</ul>
-<hr  />
-<h1>2.1.1</h1>
-<h2>May 17, 2023</h2>
-<ul>
-<li>Fixed crash on macOS when handling OS errors</li>
-<li>Added FreeBSD support</li>
-<li>Fixed -Wstrict-prototype, -Wformat warnings</li>
-<li>Fixed bug in Makefile (make clean was not deleting all intermediate files)</li>
-<li>Disallow root/sudo running the test suite; some of the tests depend on file permissions being unavailable. </li>
-</ul>
+<div class="textblock"><p><a class="el" href="md_docs_2sources_2plugins.html#interface">Plugin interface v1</a></p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
