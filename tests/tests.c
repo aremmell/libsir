@@ -424,16 +424,16 @@ bool sirtest_faildupefile(void) {
     if (pass)
         print_expected_error();
 
+    /* don't remove all of the log files in order to also test
+     * cache tear-down. */
     pass &= sir_remfile(fid);
-    pass &= sir_remfile(fid2);
-    pass &= sir_remfile(fid3);
 
     rmfile(filename1);
     rmfile(filename2);
     rmfile(filename3);
     rmfile(filename4);
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
