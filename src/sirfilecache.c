@@ -353,13 +353,12 @@ bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
         }
 
         _sir_strncpy(*name, namesize + 1, tmp, namesize);
-        _sir_safefree(&tmp);
-
         *ext = strdup(sf->path + namesize);
     } else {
         *name = strdup(sf->path);
     }
 
+    _sir_safefree(&tmp);
     return _sir_validstr(*name) && (!lastfullstop || _sir_validstr(*ext));
 }
 
