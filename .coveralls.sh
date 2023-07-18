@@ -89,6 +89,9 @@ run_gcovr()
   gcovr --gcov-ignore-parse-errors=negative_hits.warn_once_per_file --json "${1}"
 }
 
+# Redirect
+exec 5>&1 > coverage-out.txt 2>&1
+
 # Run 1
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
@@ -142,6 +145,9 @@ build/bin/sirtests --version
 remove_sample || true
 run_gcovr run-6.json
 remove_coverage
+
+# Undo redirect
+exec 1>&5
 
 # Process results
 MERGE_MODE="merge-use-line-max"
