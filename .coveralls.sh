@@ -1,13 +1,20 @@
 #!/bin/sh
 
 # Setup for Ubuntu or Debian.
+PATH="/usr/local/bin:/usr/local/sbin:${PATH:-}" && export PATH
 test -n "${NO_APTSETUP:-}" \
   || {
-    ( export DEBIAN_FRONTEND=noninteractive ;
+    { # Check this is Ubuntu 22.04 Jammy
+      grep '22.04' /etc/*elease || exit 1
+      printf '\n\n\n%s\n\n\n' "About to run commands as root - press ^C now if you didn't read the script!!!" ;
+      sleep 6 ;
+      export DEBIAN_FRONTEND=noninteractive ;
       sudo apt-get update -y ;
-      sudo apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install -y curl gcovr git ;
-      true
-    )
+      sudo apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install -y curl python3-pip git ;
+      #sudo python3 -m pip install --break-system-packages install -U gcovr || true ;  # for later Ubuntu versions
+      sudo python3 -m pip install install -U gcovr || true ;
+      command -v gcovr || true ;
+    }
   }
 
 # NOTE: Needs GNU rm
