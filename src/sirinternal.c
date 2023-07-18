@@ -1071,7 +1071,7 @@ bool _sir_syslog_close(sir_syslog_dest* ctx) {
 void _sir_syslog_reset(sir_syslog_dest* ctx) {
     _SIR_UNUSED(ctx);
 }
-#endif // !SIR_NO_SYSTEM_LOGGERS
+#endif /* !SIR_NO_SYSTEM_LOGGERS */
 
 const char* _sir_formattedlevelstr(sir_level level) {
     static const size_t low  = 0;
@@ -1267,5 +1267,5 @@ bool _sir_gethostname(char name[SIR_MAXHOST]) {
 
     WSACleanup();
     return true;
-#endif // !__WIN__
+#endif /* !__WIN__ */
 }

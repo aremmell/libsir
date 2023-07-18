@@ -328,7 +328,7 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
         }
 
         return buf;
-# else // __WIN__
+# else /* __WIN__ */
         struct tm* ret = localtime_s(timer, buf);
         if (!ret)
             _sir_handleerr(errno);
@@ -350,7 +350,7 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
 int _sir_getchar(void) {
 #if defined(__WIN__)
     return _getch();
-#else // !__WIN__
+#else /* !__WIN__ */
     struct termios cur = {0};
     struct termios new = {0};
 
