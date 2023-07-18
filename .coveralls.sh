@@ -198,11 +198,11 @@ exec 1>&5
 MERGE_MODE="merge-use-line-0"
 gcovr \
   --add-tracefile "run-*.json" \
-  --merge-mode-functions="${MERGE_MODE:?}" \
+  --merge-mode-functions="${MERGE_MODE:?}" -u -s \
   --gcov-ignore-parse-errors=negative_hits.warn_once_per_file --html-details coverage-out.html
 gcovr \
   --add-tracefile "run-*.json" \
-  --merge-mode-functions="${MERGE_MODE:?}" \
+  --merge-mode-functions="${MERGE_MODE:?}" -u \
   --gcov-ignore-parse-errors=negative_hits.warn_once_per_file --coveralls coveralls.json
 
 # Submit results
