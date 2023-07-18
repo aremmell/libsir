@@ -141,7 +141,7 @@ bool _sir_init(sirinit* si) {
 
     /* Store host name and PID. */
     if (!_sir_gethostname(_cfg->state.hostname)) {
-        _sir_selflog("error: failed to get hostname!"); // GCOVR_EXCL_LINE
+        _sir_selflog("error: failed to get hostname!");
     } else {
         time_t now;
         _cfg->state.last_hname_chk = -1 != time(&now) ? now : 1;
@@ -151,7 +151,7 @@ bool _sir_init(sirinit* si) {
 
     if (0 > snprintf(_cfg->state.pidbuf, SIR_MAXPID, SIR_PIDFORMAT,
                      PID_CAST _cfg->state.pid))
-        _sir_handleerr(errno); // GCOVR_EXCL_LINE
+        _sir_handleerr(errno);
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     /* initialize system logger. */
@@ -444,22 +444,22 @@ void _sir_initialize_once(void) {
 
 void _sir_initmutex_cfg_once(void) {
     if (!_sirmutex_create(&cfg_mutex))
-        _sir_selflog("error: failed to create mutex!"); // GCOVR_EXCL_LINE
+        _sir_selflog("error: failed to create mutex!");
 }
 
 void _sir_initmutex_fc_once(void) {
     if (!_sirmutex_create(&fc_mutex))
-        _sir_selflog("error: failed to create mutex!"); // GCOVR_EXCL_LINE
+        _sir_selflog("error: failed to create mutex!");
 }
 
 void _sir_initmutex_pc_once(void) {
     if (!_sirmutex_create(&pc_mutex))
-        _sir_selflog("error: failed to create mutex!"); // GCOVR_EXCL_LINE
+        _sir_selflog("error: failed to create mutex!");
 }
 
 void _sir_initmutex_ts_once(void) {
     if (!_sirmutex_create(&ts_mutex))
-        _sir_selflog("error: failed to create mutex!"); // GCOVR_EXCL_LINE
+        _sir_selflog("error: failed to create mutex!");
 }
 #else /* __WIN__ */
 BOOL CALLBACK _sir_initialize_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
@@ -526,9 +526,9 @@ bool _sir_once(sir_once* once, sir_once_fn func) {
 #if !defined(__WIN__)
     int ret = pthread_once(once, func);
     if (0 != ret) {
-        _sir_handleerr(ret); // GCOVR_EXCL_START
+        _sir_handleerr(ret);
         return false;
-    } // GCOVR_EXCL_STOP
+    }
     return true;
 #else /* __WIN__ */
     BOOL ret = InitOnceExecuteOnce(once, func, NULL, NULL);
@@ -553,13 +553,13 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     time_t now = -1;
     if (-1 != time(&now) &&
         (now - _cfg->state.last_hname_chk) > SIR_HNAME_CHK_INTERVAL) { //-V522
-        _sir_selflog("updating hostname..."); // GCOVR_EXCL_START
+        _sir_selflog("updating hostname...");
         if (!_sir_gethostname(_cfg->state.hostname)) {
             _sir_selflog("error: failed to get hostname!");
         } else {
             _cfg->state.last_hname_chk = now;
             _sir_selflog("hostname: '%s'", _cfg->state.hostname);
-        } // GCOVR_EXCL_STOP
+        }
     }
 
     sirconfig cfg;
@@ -601,7 +601,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         _SIR_UNUSED(fmt);
 
         if (0 > snprintf(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec))
-            _sir_handleerr(errno); // GCOVR_EXCL_LINE
+            _sir_handleerr(errno);
     }
 
     buf.level = _sir_formattedlevelstr(level);
@@ -609,15 +609,15 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     pid_t tid = _sir_gettid();
     if (tid != cfg.state.pid) {
         if (!_sir_getthreadname(buf.tid)) {
-            if (0 > snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, PID_CAST tid)) // GCOVR_EXCL_START
+            if (0 > snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, PID_CAST tid))
                 _sir_handleerr(errno);
-        } // GCOVR_EXCL_STOP
+        }
     }
 
     if (0 > vsnprintf(buf.message, SIR_MAXMESSAGE, format, args)) {
-        _sir_handleerr(errno); // GCOVR_EXCL_START
+        _sir_handleerr(errno);
         SIR_ASSERT(false);
-    } // GCOVR_EXCL_STOP
+    }
 
     if (!_sir_validstr(buf.message))
         return false;
@@ -651,7 +651,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
                 old_threshold, cfg.state.last.threshold, SIR_SQUELCH_BACKOFF_FACTOR);
 
             if (0 > snprintf(buf.message, SIR_MAXMESSAGE, SIR_SQUELCH_MSG_FORMAT, old_threshold))
-                _sir_handleerr(errno); // GCOVR_EXCL_LINE
+                _sir_handleerr(errno);
         } else if (cfg.state.last.squelch) {
             exit_early = true;
         }
@@ -664,9 +664,9 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     _cfg = _sir_locksection(SIRMI_CONFIG);
     if (!_cfg) {
-        _sir_seterror(_SIR_E_INTERNAL); // GCOVR_EXCL_START
+        _sir_seterror(_SIR_E_INTERNAL);
         return false;
-    } // GCOVR_EXCL_STOP
+    }
 
     _cfg->state.last.squelch = cfg.state.last.squelch;
 
@@ -834,7 +834,7 @@ const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
         return buf->output;
     }
 
-    return NULL; // GCOVR_EXCL_LINE
+    return NULL;
 }
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
@@ -1000,9 +1000,9 @@ bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data) {
 
         return init;
     } else {
-        _sir_selflog("BUG: called without 'updated' flag set!"); // GCOVR_EXCL_START
+        _sir_selflog("BUG: called without 'updated' flag set!");
         return false;
-    } // GCOVR_EXCL_STOP
+    }
 }
 
 bool _sir_syslog_close(sir_syslog_dest* ctx) {
@@ -1102,7 +1102,7 @@ bool _sir_formattime(time_t now, char* buffer, const char* format) {
 
     SIR_ASSERT(0 != fmttime);
     if (0 == fmttime)
-        _sir_selflog("error: strftime failed; format string: '%s'", format); // GCOVR_EXCL_LINE
+        _sir_selflog("error: strftime failed; format string: '%s'", format);
 
     return 0 != fmttime;
 }
@@ -1224,9 +1224,9 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
       defined(USE_PTHREAD_GETNAME_NP) || defined(__MACOS__)
     int ret = pthread_getname_np(pthread_self(), name, SIR_MAXPID);
     if (0 != ret) {
-        _sir_handleerr(ret); // GCOVR_EXCL_START
+        _sir_handleerr(ret);
         return false;
-    } // GCOVR_EXCL_STOP
+    }
 # if defined(__HAIKU__)
     if ((strncmp(name, "pthread_func", SIR_MAXPID)) || _sir_validstrnofail(name))
         snprintf(name, SIR_MAXPID, "%ld", (long)get_pthread_thread_id(pthread_self()));
@@ -1247,9 +1247,9 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
 bool _sir_gethostname(char name[SIR_MAXHOST]) {
 #if !defined(__WIN__)
     if (-1 == gethostname(name, SIR_MAXHOST - 1)) {
-        _sir_handleerr(errno); // GCOVR_EXCL_START
+        _sir_handleerr(errno);
         return false;
-    } // GCOVR_EXCL_STOP
+    }
     return true;
 #else
     WSADATA wsad = {0};

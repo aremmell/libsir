@@ -29,9 +29,9 @@
 #if !defined(__WIN__)
 bool _sir_write_stdio(FILE* stream, const char* message) {
     if (EOF == fputs(message, stream)) {
-        _sir_handleerr(errno); // GCOVR_EXCL_START
+        _sir_handleerr(errno);
         return false;
-    } // GCOVR_EXCL_STOP
+    }
 
     return true;
 }

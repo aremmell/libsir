@@ -54,7 +54,7 @@ int main(void) {
      */
     sirinit si;
     if (!sir_makeinit(&si))
-        return report_error(); // GCOVR_EXCL_LINE
+        return report_error();
 
     /* Levels for stdout: send debug, information, warning, and notice there. */
     si.d_stdout.levels = SIRL_DEBUG | SIRL_INFO | SIRL_WARN | SIRL_NOTICE;
@@ -80,7 +80,7 @@ int main(void) {
 
     /* Initialize libsir. */
     if (!sir_init(&si))
-        return report_error(); // GCOVR_EXCL_LINE
+        return report_error();
 
     /*
      * Configure and add a log file; don't log the process name or hostname,
@@ -88,7 +88,7 @@ int main(void) {
      */
     sirfileid fileid = sir_addfile("libsir-example.log", SIRL_ALL, SIRO_NONAME | SIRO_NOHOST);
     if (0 == fileid)
-        report_error(); // GCOVR_EXCL_LINE
+        report_error();
 
     /*
      * Ready to start logging. The messages passed to sir_debug() will be sent
@@ -139,13 +139,13 @@ int main(void) {
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!sir_syslogid(appname))
-        report_error(); // GCOVR_EXCL_LINE
+        report_error();
 
     if (!sir_syslogopts(SIRO_NOPID))
-        report_error(); // GCOVR_EXCL_LINE
+        report_error();
 
     if (!sir_sysloglevels(SIRL_ERROR | SIRL_CRIT | SIRL_EMERG))
-        report_error(); // GCOVR_EXCL_LINE
+        report_error();
 #endif
 
     /* Okay, syslog should be configured now. Continue executing. */
@@ -161,7 +161,7 @@ int main(void) {
 
     /* Deregister (and close) the log file. */
     if (fileid && !sir_remfile(fileid))
-        report_error(); // GCOVR_EXCL_LINE
+        report_error();
 
     /*
      * Now, you can examine the terminal output, libsir-example.log, and
@@ -179,9 +179,9 @@ int main(void) {
  *
  * @return EXIT_FAILURE
  */
-int report_error(void) { // GCOVR_EXCL_START
+int report_error(void) {
     char message[SIR_MAXERROR] = {0};
     uint16_t code              = sir_geterror(message);
     fprintf(stderr, "libsir error: (%"PRIu16", %s)\n", code, message);
     return EXIT_FAILURE;
-} // GCOVR_EXCL_STOP
+}

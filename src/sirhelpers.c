@@ -270,7 +270,7 @@ int _sir_strncpy(char* restrict dest, size_t destsz, const char* restrict src, s
 #endif
     }
 
-    return -1; // GCOVR_EXCL_LINE
+    return -1;
 }
 
 int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src, size_t count) {
@@ -291,7 +291,7 @@ int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src, s
 #endif
     }
 
-    return -1; // GCOVR_EXCL_LINE
+    return -1;
 }
 
 int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename,
@@ -314,7 +314,7 @@ int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename
 #endif
     }
 
-    return -1; // GCOVR_EXCL_LINE
+    return -1;
 }
 
 struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf) {
@@ -339,15 +339,14 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
         _SIR_UNUSED(buf);
         struct tm* ret = localtime(timer);
         if (!ret)
-            _sir_handleerr(errno); // GCOVR_EXCL_LINE
+            _sir_handleerr(errno);
         return ret;
 #endif
     }
 
-    return NULL; // GCOVR_EXCL_LINE
+    return NULL;
 }
 
-// GCOVR_EXCL_START
 int _sir_getchar(void) {
 #if defined(__WIN__)
     return _getch();
@@ -379,6 +378,5 @@ int _sir_getchar(void) {
     }
 
     return ch;
-// GCOVR_EXCL_STOP
 #endif
 }

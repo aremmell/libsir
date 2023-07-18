@@ -92,14 +92,14 @@ int main(int argc, char** argv) {
         } else if (_sir_strsame(argv[n], _cl_arg_list[1].flag,
             strnlen(argv[n], SIR_MAXCLIFLAG))) { /* --only */
             while (++n < argc) {
-                if (_sir_validstrnofail(argv[n])) { // GCOVR_EXCL_START
+                if (_sir_validstrnofail(argv[n])) {
                     if (*argv[n] == '-' || !mark_test_to_run(argv[n])) {
                         fprintf(stderr, RED("invalid argument: '%s'") "\n", argv[n]);
                         print_usage_info();
                         return EXIT_FAILURE;
                     }
                     to_run++;
-                } // GCOVR_EXCL_STOP
+                }
             };
             if (0 == to_run) {
                 fprintf(stderr, RED("value expected for '%s'") "\n",
@@ -107,17 +107,17 @@ int main(int argc, char** argv) {
                 print_usage_info();
                 return EXIT_FAILURE;
             }
-            only = true; // GCOVR_EXCL_LINE
+            only = true;
         } else if (_sir_strsame(argv[n], _cl_arg_list[2].flag,
             strnlen(argv[n], SIR_MAXCLIFLAG))) { /* --list */
             print_test_list();
             return EXIT_SUCCESS;
         } else if (_sir_strsame(argv[n], _cl_arg_list[3].flag,
             strnlen(argv[n], SIR_MAXCLIFLAG))) { /* --leave-logs */
-            leave_logs = true; // GCOVR_EXCL_LINE
+            leave_logs = true;
         } else if (_sir_strsame(argv[n], _cl_arg_list[4].flag,
             strnlen(argv[n], SIR_MAXCLIFLAG))) { /* --wait */
-            wait = true; // GCOVR_EXCL_LINE
+            wait = true;
         }  else if (_sir_strsame(argv[n], _cl_arg_list[5].flag,
             strnlen(argv[n], SIR_MAXCLIFLAG))) { /* --version */
             print_libsir_version();
@@ -169,7 +169,7 @@ int main(int argc, char** argv) {
                    GREENB("%s%zu " ULINE("libsir") " %s passed in %.03fsec!") "\n\n",
             tgt_tests > 1 ? "all " : "", tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
     } else {
-        printf("\n" WHITEB("done: ") // GCOVR_EXCL_START
+        printf("\n" WHITEB("done: ")
                    REDB("%zu of %zu " ULINE("libsir") " %s failed in %.03fsec") "\n\n",
             tgt_tests - passed, tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
 
@@ -179,13 +179,13 @@ int main(int argc, char** argv) {
             if (!sir_tests[t].pass)
                 printf(RED(INDENT_ITEM "%s\n"), sir_tests[t].name);
         printf("\n");
-    } // GCOVR_EXCL_STOP
+    }
 
-    if (wait) { // GCOVR_EXCL_START
+    if (wait) {
         printf(WHITEB(EMPH("press any key to exit...")) "\n");
         int ch = _sir_getchar();
         _SIR_UNUSED(ch);
-    } // GCOVR_EXCL_STOP
+    }
 
     return passed == tgt_tests ? EXIT_SUCCESS : EXIT_FAILURE;
 }
@@ -481,16 +481,16 @@ bool sirtest_rollandarchivefile(void) {
     }
 
     if (0 != fseek(f, fillsize, SEEK_SET)) {
-        handle_os_error(true, "fseek in file %s failed!", logfilename); // GCOVR_EXCL_START
+        handle_os_error(true, "fseek in file %s failed!", logfilename);
         fclose(f);
         return false;
-    } // GCOVR_EXCL_STOP
+    }
 
     if (EOF == fputc('\0', f)) {
-        handle_os_error(true, "fputc in file %s failed!", logfilename); // GCOVR_EXCL_START
+        handle_os_error(true, "fputc in file %s failed!", logfilename);
         fclose(f);
         return false;
-    } // GCOVR_EXCL_STOP
+    }
 
     fclose(f);
 
@@ -1981,13 +1981,11 @@ bool print_test_error(bool result, bool expected) {
     return result;
 }
 
-// GCOVR_EXCL_START
 void print_os_error(void) {
     char message[SIR_MAXERROR] = {0};
     uint16_t code              = sir_geterror(message);
     fprintf(stderr, "\t" RED("OS error: (%"PRIu16", %s)") "\n", code, message);
 }
-// GCOVR_EXCL_STOP
 
 bool filter_error(bool pass, uint16_t err) {
     if (!pass) {
