@@ -94,11 +94,11 @@ PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
 #if !defined(PLUGINDUMMY_BADBEHAVIOR4)
 PLUGIN_EXPORT bool sir_plugin_init(void) {
     printf("\t" DGRAY("plugin_dummy ('%s')") "\n", __func__);
-#if defined(PLUGINDUMMY_BADBEHAVIOR5)
+# if defined(PLUGINDUMMY_BADBEHAVIOR5)
     return false;
-#else
+# else
     return true;
-#endif
+# endif
 }
 #endif
 
