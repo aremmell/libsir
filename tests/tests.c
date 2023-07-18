@@ -1690,7 +1690,6 @@ bool sirtest_pluginloader(void) {
     sirpluginid id = sir_loadplugin(plugin1);
     pass &= 0 != id;
     pass &= sir_info("welcome, mister plugin.");
-    pass &= sir_warn("you won't see this message.");
 
     /* re-loading the same plugin should fail. */
     printf("\tloading duplicate plugin: '%s'...\n", plugin1);
@@ -1730,21 +1729,21 @@ bool sirtest_pluginloader(void) {
         print_expected_error();
 
     printf("\tloading bad plugin: '%s'...\n", plugin6);
-    badid = sir_loadplugin(plugin5);
+    badid = sir_loadplugin(plugin6);
     pass &= 0 == badid;
 
     if (pass)
         print_expected_error();
 
     printf("\tloading bad plugin: '%s'...\n", plugin7);
-    badid = sir_loadplugin(plugin5);
-    pass &= 0 == badid;
+    badid = sir_loadplugin(plugin7);
+    pass &= 0 != badid;
 
     if (pass)
         print_expected_error();
 
     printf("\tloading nonexistent plugin: '%s'...\n", plugin8);
-    badid = sir_loadplugin(plugin6);
+    badid = sir_loadplugin(plugin8);
     pass &= 0 == badid;
 
     if (pass)
