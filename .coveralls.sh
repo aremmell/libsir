@@ -15,7 +15,7 @@ test -n "${NO_APTSETUP:-}" \
 set -ex
 
 # How parallel?
-JOBS=6
+JOBS=1
 
 # What make to use?
 test -n "${MAKE:-}" && DO_MAKE="${MAKE:-}"
