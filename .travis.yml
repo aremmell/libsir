@@ -12,6 +12,11 @@ jobs:
       dist: jammy
       arch: amd64
       compiler: gcc
+      env:
+        - CC=gcc
+        - CXX=g++
+        - MAKE=make
+        - COVERALLS=1
     - os: linux
       dist: jammy
       arch: amd64
@@ -86,7 +91,9 @@ jobs:
       dist: trusty
       compiler: gcc
 script:
-  - ${MAKE:?} printvars || true
-  - env ${MAKE:?} clean tests example
+  - env ${MAKE:?} printvars || true
+  - env ${MAKE:?} clean
+  - env ${MAKE:?}
   - build/bin/sirtests
   - build/bin/sirexample
+  - test ${COVERALLS:-0} = "1" && { sh ./.coveralls.sh; } || true
