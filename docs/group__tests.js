@@ -15,6 +15,7 @@ var group__tests =
     [ "sirtest_failinittwice", "group__tests.html#gaf38b29b3f35da81c5315f110745f360d", null ],
     [ "sirtest_failinvalidinitdata", "group__tests.html#ga2b65799988fe973a542371b8131b4e7f", null ],
     [ "sirtest_initcleanupinit", "group__tests.html#ga9f7ccc25d41c5980dae048951ba60c8b", null ],
+    [ "sirtest_initmakeinit", "group__tests.html#gaa55b1ea9a036318bfdc44823ad704a9b", null ],
     [ "sirtest_failaftercleanup", "group__tests.html#gabf5a4643e79df2f6b06956ffd6a465ab", null ],
     [ "sirtest_errorsanity", "group__tests.html#ga1d9150c929ba0b79bf06592563ea81e1", null ],
     [ "sirtest_textstylesanity", "group__tests.html#ga18ccd68f2c37d9798a06c403380c9308", null ],
@@ -26,5 +27,6 @@ var group__tests =
     [ "sirtest_os_log", "group__tests.html#ga54f0e8e0163d0aedf20616451f122017", null ],
     [ "sirtest_filesystem", "group__tests.html#gaa0b035b71e6a6e6df6b8a7bb95722e2a", null ],
     [ "sirtest_squelchspam", "group__tests.html#ga3ad5e95b1114eba573969077ebb40cb5", null ],
-    [ "sirtest_pluginloader", "group__tests.html#ga1b5a43deceffa8c36174e7b04576f6a3", null ]
+    [ "sirtest_pluginloader", "group__tests.html#ga1b5a43deceffa8c36174e7b04576f6a3", null ],
+    [ "sirtest_getversioninfo", "group__tests.html#ga3b90eec512f445effa4990dbc130ac82", null ]
 ];
