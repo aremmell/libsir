@@ -977,7 +977,7 @@ bool sirtest_levelssanity(void) {
     /* individual invalid level. */
     sir_level invalid2 = 0x1337;
     pass &= !_sir_validlevel(invalid2);
-    printf(INDENT_ITEM WHITE("indivudal invalid level: %04"PRIx32) "\n", invalid2);
+    printf(INDENT_ITEM WHITE("individual invalid level: %04"PRIx32) "\n", invalid2);
 
     PRINT_PASS(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 
@@ -1690,6 +1690,7 @@ bool sirtest_pluginloader(void) {
     sirpluginid id = sir_loadplugin(plugin1);
     pass &= 0 != id;
     pass &= sir_info("welcome, mister plugin.");
+    pass &= sir_warn("you won't see this message.");
 
     /* re-loading the same plugin should fail. */
     printf("\tloading duplicate plugin: '%s'...\n", plugin1);
