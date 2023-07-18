@@ -40,6 +40,8 @@
  * - PLUGINDUMMY_BADBEHAVIOR2: set info::iface_ver != SIR_PLUGIN_VCURRENT
  * - PLUGINDUMMY_BADBEHAVIOR3: set info::levels and/or info::opts to invalid values
  * - PLUGINDUMMY_BADBEHAVIOR4: missing an export
+ * - PLUGINDUMMY_BADBEHAVIOR5: return false from 'sir_plugin_init'
+ * - PLUGINDUMMY_BADBEHAVIOR6: return false from 'sir_plugin_cleanup'
  */
 
 #if defined(__WIN__)
@@ -92,7 +94,11 @@ PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
 #if !defined(PLUGINDUMMY_BADBEHAVIOR4)
 PLUGIN_EXPORT bool sir_plugin_init(void) {
     printf("\t" DGRAY("plugin_dummy ('%s')") "\n", __func__);
+#if defined(PLUGINDUMMY_BADBEHAVIOR5)
+    return false;
+#else
     return true;
+#endif
 }
 #endif
 
@@ -104,5 +110,9 @@ PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message) {
 
 PLUGIN_EXPORT bool sir_plugin_cleanup(void) { //-V524
     printf("\t" DGRAY("plugin_dummy ('%s')") "\n", __func__);
+#if defined(PLUGINDUMMY_BADBEHAVIOR6)
+    return false;
+#else
     return true;
+#endif
 }
