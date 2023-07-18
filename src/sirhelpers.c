@@ -339,12 +339,12 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
         _SIR_UNUSED(buf);
         struct tm* ret = localtime(timer);
         if (!ret)
-            _sir_handleerr(errno);
+            _sir_handleerr(errno); // GCOVR_EXCL_LINE
         return ret;
 #endif
     }
 
-    return NULL;
+    return NULL; // GCOVR_EXCL_LINE
 }
 
 // GCOVR_EXCL_START
