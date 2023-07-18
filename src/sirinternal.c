@@ -141,7 +141,7 @@ bool _sir_init(sirinit* si) {
 
     /* Store host name and PID. */
     if (!_sir_gethostname(_cfg->state.hostname)) {
-        _sir_selflog("error: failed to get hostname!");
+        _sir_selflog("error: failed to get hostname!"); // GCOVR_EXCL_LINE
     } else {
         time_t now;
         _cfg->state.last_hname_chk = -1 != time(&now) ? now : 1;
@@ -151,7 +151,7 @@ bool _sir_init(sirinit* si) {
 
     if (0 > snprintf(_cfg->state.pidbuf, SIR_MAXPID, SIR_PIDFORMAT,
                      PID_CAST _cfg->state.pid))
-        _sir_handleerr(errno);
+        _sir_handleerr(errno); // GCOVR_EXCL_LINE
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     /* initialize system logger. */
@@ -418,11 +418,13 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
             tmpm   = &ts_mutex;
             tmpsec = &sir_text_style_section;
             break;
+        // GCOVR_EXCL_START
         default: /* this should never happen. */
             SIR_ASSERT("!invalid mutex id");
             tmpm   = NULL;
             tmpsec = NULL;
             break;
+        // GCOVR_EXCL_STOP
     }
 
     *m = tmpm;
@@ -442,22 +444,22 @@ void _sir_initialize_once(void) {
 
 void _sir_initmutex_cfg_once(void) {
     if (!_sirmutex_create(&cfg_mutex))
-        _sir_selflog("error: failed to create mutex!");
+        _sir_selflog("error: failed to create mutex!"); // GCOVR_EXCL_LINE
 }
 
 void _sir_initmutex_fc_once(void) {
     if (!_sirmutex_create(&fc_mutex))
-        _sir_selflog("error: failed to create mutex!");
+        _sir_selflog("error: failed to create mutex!"); // GCOVR_EXCL_LINE
 }
 
 void _sir_initmutex_pc_once(void) {
     if (!_sirmutex_create(&pc_mutex))
-        _sir_selflog("error: failed to create mutex!");
+        _sir_selflog("error: failed to create mutex!"); // GCOVR_EXCL_LINE
 }
 
 void _sir_initmutex_ts_once(void) {
     if (!_sirmutex_create(&ts_mutex))
-        _sir_selflog("error: failed to create mutex!");
+        _sir_selflog("error: failed to create mutex!"); // GCOVR_EXCL_LINE
 }
 #else /* __WIN__ */
 BOOL CALLBACK _sir_initialize_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
@@ -551,13 +553,13 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     time_t now = -1;
     if (-1 != time(&now) &&
         (now - _cfg->state.last_hname_chk) > SIR_HNAME_CHK_INTERVAL) { //-V522
-        _sir_selflog("updating hostname...");
+        _sir_selflog("updating hostname..."); // GCOVR_EXCL_START
         if (!_sir_gethostname(_cfg->state.hostname)) {
             _sir_selflog("error: failed to get hostname!");
         } else {
             _cfg->state.last_hname_chk = now;
             _sir_selflog("hostname: '%s'", _cfg->state.hostname);
-        }
+        } // GCOVR_EXCL_STOP
     }
 
     sirconfig cfg;
@@ -607,15 +609,15 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     pid_t tid = _sir_gettid();
     if (tid != cfg.state.pid) {
         if (!_sir_getthreadname(buf.tid)) {
-            if (0 > snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, PID_CAST tid))
+            if (0 > snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, PID_CAST tid)) // GCOVR_EXCL_START
                 _sir_handleerr(errno);
-        }
+        } // GCOVR_EXCL_STOP
     }
 
     if (0 > vsnprintf(buf.message, SIR_MAXMESSAGE, format, args)) {
-        _sir_handleerr(errno);
+        _sir_handleerr(errno); // GCOVR_EXCL_START
         SIR_ASSERT(false);
-    }
+    } // GCOVR_EXCL_STOP
 
     if (!_sir_validstr(buf.message))
         return false;
@@ -662,9 +664,9 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     _cfg = _sir_locksection(SIRMI_CONFIG);
     if (!_cfg) {
-        _sir_seterror(_SIR_E_INTERNAL);
+        _sir_seterror(_SIR_E_INTERNAL); // GCOVR_EXCL_START
         return false;
-    }
+    } // GCOVR_EXCL_STOP
 
     _cfg->state.last.squelch = cfg.state.last.squelch;
 
@@ -832,7 +834,7 @@ const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
         return buf->output;
     }
 
-    return NULL;
+    return NULL; // GCOVR_EXCL_LINE
 }
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
@@ -944,9 +946,11 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx)
         case SIRL_CRIT:   syslog_level = LOG_CRIT; break;
         case SIRL_ALERT:  syslog_level = LOG_ALERT; break;
         case SIRL_EMERG:  syslog_level = LOG_EMERG; break;
+        // GCOVR_EXCL_START
         default: /* this should never happen. */
             SIR_ASSERT(!"invalid sir_level");
             syslog_level = LOG_DEBUG;
+        // GCOVR_EXCL_STOP
     }
 
     syslog(syslog_level, "%s", buf->message);
@@ -996,9 +1000,9 @@ bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data) {
 
         return init;
     } else {
-        _sir_selflog("BUG: called without 'updated' flag set!");
+        _sir_selflog("BUG: called without 'updated' flag set!"); // GCOVR_EXCL_START
         return false;
-    }
+    } // GCOVR_EXCL_STOP
 }
 
 bool _sir_syslog_close(sir_syslog_dest* ctx) {

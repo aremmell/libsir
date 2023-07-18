@@ -415,6 +415,7 @@ bool _sir_plugin_cache_dispatch(sir_plugincache* spc, sir_level level, sirbuf* b
     return (*dispatched == *wanted);
 }
 #else /* SIR_NO_PLUGINS */
+// GCOVR_EXCL_START
 sirpluginid _sir_plugin_load(const char* path) {
     _SIR_UNUSED(path);
     return 0;
@@ -495,4 +496,5 @@ bool _sir_plugin_cache_dispatch(sir_plugincache* spc, sir_level level, sirbuf* b
     _SIR_UNUSED(wanted);
     return false;
 }
+// GCOVR_EXCL_STOP
 #endif

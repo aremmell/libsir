@@ -189,7 +189,7 @@ remove_coverage
 exec 1>&5
 
 # Process results
-MERGE_MODE="merge-use-line-max"
+MERGE_MODE="merge-use-line-0"
 gcovr \
   --add-tracefile "run-*.json" \
   --merge-mode-functions="${MERGE_MODE:?}" \

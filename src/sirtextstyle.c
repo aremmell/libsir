@@ -94,9 +94,11 @@ const sir_textstyle* _sir_getdefstyle(sir_level level) {
         case SIRL_NOTICE: return &sir_lvl_notice_def_style;
         case SIRL_INFO:   return &sir_lvl_info_def_style;
         case SIRL_DEBUG:  return &sir_lvl_debug_def_style;
+        // GCOVR_EXCL_START
         default: /* this should never happen. */
             SIR_ASSERT(!"invalid sir_level");
             return &sir_lvl_info_def_style;
+        // GCOVR_EXCL_STOP
     }
 }
 

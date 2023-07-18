@@ -64,10 +64,10 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
 
         int fd = open(base_path, open_flags);
         if (-1 == fd) {
-            _sir_handleerr(errno);
+            _sir_handleerr(errno); // GCOVR_EXCL_START
             _sir_safefree(&base_path);
             return false;
-        }
+        } // GCOVR_EXCL_STOP
 
         stat_ret = fstatat(fd, path, st, AT_SYMLINK_NOFOLLOW);
         _sir_safeclose(&fd);
@@ -90,9 +90,9 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
             st->st_size = SIR_STAT_NONEXISTENT;
             return true;
         } else {
-            _sir_handleerr(errno);
+            _sir_handleerr(errno); // GCOVR_EXCL_START
             return false;
-        }
+        } // GCOVR_EXCL_STOP
     }
 
     return true;
@@ -182,9 +182,9 @@ char* _sir_getappfilename(void) {
 # endif
     struct stat st;
     if (-1 == lstat(PROC_SELF, &st)) {
-        _sir_handleerr(errno);
+        _sir_handleerr(errno); // GCOVR_EXCL_START
         return NULL;
-    }
+    } // GCOVR_EXCL_STOP
 
     size_t size = (st.st_size > 0) ? st.st_size + 2 : SIR_MAXPATH;
 #else
@@ -198,10 +198,10 @@ char* _sir_getappfilename(void) {
         _sir_safefree(&buffer);
         buffer = (char*)calloc(size, sizeof(char));
         if (NULL == buffer) {
-            _sir_handleerr(errno);
+            _sir_handleerr(errno); // GCOVR_EXCL_START
             resolved = false;
             break;
-        }
+        } // GCOVR_EXCL_STOP
 
 #if !defined(__WIN__)
 # if defined(__READLINK_OS__)
@@ -210,7 +210,7 @@ char* _sir_getappfilename(void) {
         if (-1 != read && read < (ssize_t)size - 1) {
             resolved = true;
             break;
-        } else if (-1 == read) {
+        } else if (-1 == read) { // GCOVR_EXCL_START
             _sir_handleerr(errno);
             resolved = false;
             break;
@@ -222,7 +222,7 @@ char* _sir_getappfilename(void) {
             _sir_selflog("warning: readlink reported truncation; not using result!");
             resolved = false;
             break;
-        }
+        } // GCOVR_EXCL_STOP
 # elif defined(_AIX)
         if (size <= SIR_MAXPATH) {
             size = size + SIR_MAXPATH + 1;
@@ -322,10 +322,10 @@ char* _sir_getappfilename(void) {
     } while (true);
 
     if (!resolved) {
-        _sir_safefree(&buffer);
+        _sir_safefree(&buffer); // GCOVR_EXCL_START
         _sir_selflog("error: failed to resolve filename!");
         return NULL;
-    }
+    } // GCOVR_EXCL_STOP
 
     return buffer;
 }
@@ -410,11 +410,11 @@ bool _sir_getrelbasepath(const char* restrict path, bool* restrict relative,
         switch (rel_to) {
             case SIR_PATH_REL_TO_APP: *base_path = _sir_getappdir(); break;
             case SIR_PATH_REL_TO_CWD: *base_path = _sir_getcwd(); break;
-            default: _sir_seterror(_SIR_E_INVALID); return false;
+            default: _sir_seterror(_SIR_E_INVALID); return false; // GCOVR_EXCL_LINE
         }
 
         if (!*base_path)
-            return false;
+            return false; // GCOVR_EXCL_LINE
     }
 
     return true;
@@ -576,9 +576,9 @@ bool _sir_deletefile(const char* restrict path) {
 
 #if !defined(__WIN__)
     if (0 != unlink(path)) {
-        _sir_selflog("failed to delete: '%s' (%d)", path, errno);
+        _sir_selflog("failed to delete: '%s' (%d)", path, errno); // GCOVR_EXCL_START
         return false;
-    }
+    } // GCOVR_EXCL_STOP
     return true;
 #else /* __WIN__ */
     if (!DeleteFileA(path)) {

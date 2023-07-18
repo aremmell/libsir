@@ -196,11 +196,11 @@ bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color) {
             valid = SIRTC_DEFAULT == color || ((color & 0xff000000) == 0);
             break;
         }
-        case SIRCM_INVALID:
+        case SIRCM_INVALID: // GCOVR_EXCL_START
         default:
             valid = false;
             break;
-    }
+    } // GCOVR_EXCL_STOP
 
     if (!valid) {
         _sir_selflog("invalid text color for mode %d %08"PRIx32" (%"PRId32")",
@@ -270,7 +270,7 @@ int _sir_strncpy(char* restrict dest, size_t destsz, const char* restrict src, s
 #endif
     }
 
-    return -1;
+    return -1; // GCOVR_EXCL_LINE
 }
 
 int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src, size_t count) {
@@ -291,7 +291,7 @@ int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src, s
 #endif
     }
 
-    return -1;
+    return -1; // GCOVR_EXCL_LINE
 }
 
 int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename,
@@ -314,7 +314,7 @@ int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename
 #endif
     }
 
-    return -1;
+    return -1; // GCOVR_EXCL_LINE
 }
 
 struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf) {
@@ -347,6 +347,7 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
     return NULL;
 }
 
+// GCOVR_EXCL_START
 int _sir_getchar(void) {
 #if defined(__WIN__)
     return _getch();
@@ -378,5 +379,6 @@ int _sir_getchar(void) {
     }
 
     return ch;
+// GCOVR_EXCL_STOP
 #endif
 }
