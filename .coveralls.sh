@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
+
 # Setup for Ubuntu or Debian.
 PATH="/usr/local/bin:/usr/local/sbin:${PATH:-}" && export PATH
 test -n "${NO_APTSETUP:-}" \
