@@ -60,4 +60,7 @@ compile_commands.json
 # Coverage
 *.gcno
 *.gcda
-*.json
+coveralls.json
+run*.json
+coverage-out*.*
+coveralls
