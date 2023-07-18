@@ -144,7 +144,7 @@ libsir visual graph</div></div>
 <li>Won't fail silently&mdash;C library or platform level errors are captured and stored for posterity, on a per-thread basis. The <em>function, file, and line number from which it originated</em> are also captured. Additionally, libsir defines its own set of error messages to aid in troubleshooting.</li>
 <li>Hardened&mdash;every function contains sanity checks for internal state as well as arguments passed in through the external interfaces. libsir's make recipes use <em>‑Wall&#160;‑Wextra&#160;‑Wpedantic</em>, too.</li>
 <li><a href="https://libsir.rml.dev">Full documentation</a>, thanks to Doxygen.</li>
-<li>Lightweight&mdash;the shared library comes in at around 76&#160;KiB, and the static library around 70&#160;KiB.</li>
+<li>Lightweight&mdash;the shared library comes in at around 64&#160;KiB, and the static library around 60&#160;KiB.</li>
 </ul>
 <h1><a class="anchor" id="cross-platform-compatibility"></a> Cross-platform compatibility</h1>
 <p>At this time, libsir is supported (<em>that is, it compiles and passes the test suite</em>) on at least the following operating system and toolchain combinations:</p>
@@ -169,7 +169,7 @@ libsir visual graph</div></div>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyRight"><b>OpenBSD</b>&#160;7.3   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(11.2),&#160; <b>Clang</b>&#160;(13)    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyRight"><b>DragonFly</b>&#160;<b>BSD</b>&#160;6.4   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(8.3&#160;‑&#160;13),&#160; <b>Clang</b>&#160;(10.0.1&#160;‑&#160;14.0.6)    </td></tr>
+<td class="markdownTableBodyRight"><b>DragonFly</b>&#160;<b>BSD</b>&#160;6.4   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(8.3&#160;‑&#160;13),&#160; <b>Clang</b>&#160;(10.0.1&#160;‑&#160;16.0.6)    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyRight"><b>Haiku</b>&#160;R1b4   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(11.2),&#160; <b>Clang</b>&#160;(12.0.1)    </td></tr>
 <tr class="markdownTableRowOdd">
@@ -206,7 +206,17 @@ sample terminal output</div></div>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyCenter">Shared library   </td><td class="markdownTableBodyCenter"><code>make shared</code>   </td><td class="markdownTableBodyCenter"><em>build/lib/libsir.so</em>    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter">Install   </td><td class="markdownTableBodyCenter"><code>sudo make install</code>   </td><td class="markdownTableBodyCenter">*<code>$(INSTALLLIB)</code>/libsir.so &amp; <code>$(INSTALLINC)</code>/sir.h*   </td></tr>
+<td class="markdownTableBodyCenter">Install   </td><td class="markdownTableBodyCenter"><code>make install</code>   </td><td class="markdownTableBodyCenter"><ul>
+<li>
+<em>$PREFIX/lib/libsir_s.a</em></li>
+<li>
+<em>$PREFIX/lib/libsir.so</em></li>
+<li>
+<em>$PREFIX/include/sir.h</em></li>
+<li>
+<em>$PREFIX/include/sir/*.h</em></li>
+</ul>
+</td></tr>
 </table>
 <h1><a class="anchor" id="dig-in"></a> Dig in</h1>
 <p>If you are genuinely interested in utilizing libsir, you are encouraged to read the <a href="https://libsir.rml.dev">full online documentation</a> to get a better understanding of the library's capabilities and interfaces.</p>

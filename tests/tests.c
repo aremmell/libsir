@@ -43,6 +43,7 @@ static sir_test sir_tests[] = {
     {"init-superfluous",        sirtest_failinittwice, false, true},
     {"init-bad-data",           sirtest_failinvalidinitdata, false, true},
     {"init-cleanup-init",       sirtest_initcleanupinit, false, true},
+    {"init-with-makeinit",      sirtest_initmakeinit, false, true},
     {"cleanup-output-after",    sirtest_failaftercleanup, false, true},
     {"sanity-errors",           sirtest_errorsanity, false, true},
     {"sanity-text-styles",      sirtest_textstylesanity, false, true},
@@ -53,7 +54,8 @@ static sir_test sir_tests[] = {
     {"os_log",                  sirtest_os_log, false, true},
     {"filesystem",              sirtest_filesystem, false, true},
     {"squelch-spam",            sirtest_squelchspam, false, true},
-    {"plugin-loader",           sirtest_pluginloader, false, true}
+    {"plugin-loader",           sirtest_pluginloader, false, true},
+    {"get-version-ok",          sirtest_getversionok, false, true}
 };
 
 bool leave_logs = false;
@@ -422,16 +424,16 @@ bool sirtest_faildupefile(void) {
     if (pass)
         print_expected_error();
 
+    /* don't remove all of the log files in order to also test
+     * cache tear-down. */
     pass &= sir_remfile(fid);
-    pass &= sir_remfile(fid2);
-    pass &= sir_remfile(fid3);
 
     rmfile(filename1);
     rmfile(filename2);
     rmfile(filename3);
     rmfile(filename4);
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -595,6 +597,19 @@ bool sirtest_initcleanupinit(void) {
     return print_result_and_return(pass);
 }
 
+bool sirtest_initmakeinit(void) {
+    bool pass = true;
+    sirinit si;
+    if (!sir_makeinit(&si))
+        pass = false;
+
+    pass &= sir_init(&si);
+    pass &= sir_info("initialized with sir_makeinit");
+
+    pass &= sir_cleanup();
+    return print_result_and_return(pass);
+}
+
 bool sirtest_failaftercleanup(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
@@ -741,8 +756,8 @@ bool sirtest_textstylesanity(void) {
     pass &= sir_setcolormode(SIRCM_RGB);
 
     for (size_t n = 0; n < 256; n++) {
-        sir_textcolor fg = _sir_makergb(getrand(255), getrand(255), getrand(255));
-        sir_textcolor bg = _sir_makergb(getrand(255), getrand(255), getrand(255));
+        sir_textcolor fg = sir_makergb(getrand(255), getrand(255), getrand(255));
+        sir_textcolor bg = sir_makergb(getrand(255), getrand(255), getrand(255));
         pass &= sir_settextstyle(SIRL_DEBUG, SIRTA_NORMAL, fg, bg);
         pass &= sir_debug("this is RGB-color mode (fg: %"PRIu32", %"PRIu32", %"PRIu32
             ", bg: %"PRIu32", %"PRIu32", %"PRIu32")", _sir_getredfromcolor(fg),
@@ -950,6 +965,11 @@ bool sirtest_levelssanity(void) {
     sir_levels invalid = (0xffff & ~SIRL_ALL);
     pass &= !_sir_validlevels(invalid);
     printf(INDENT_ITEM WHITE("greater than SIRL_ALL: %04"PRIx16) "\n", invalid);
+
+    /* individual invalid level. */
+    sir_level invalid2 = 0x1337;
+    pass &= !_sir_validlevel(invalid2);
+    printf(INDENT_ITEM WHITE("indivudal invalid level: %04"PRIx32) "\n", invalid2);
 
     PRINT_PASS(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 
@@ -1627,12 +1647,14 @@ bool sirtest_pluginloader(void) {
     static const char* plugin3 = "build/lib/plugin_dummy_bad2."PLUGIN_EXT;
     static const char* plugin4 = "build/lib/plugin_dummy_bad3."PLUGIN_EXT;
     static const char* plugin5 = "build/lib/plugin_dummy_bad4."PLUGIN_EXT;
+    static const char* plugin6 = "build/lib/i_dont_exist."PLUGIN_EXT;
 
 #if defined(SIR_NO_PLUGINS)
     _SIR_UNUSED(plugin2);
     _SIR_UNUSED(plugin3);
     _SIR_UNUSED(plugin4);
     _SIR_UNUSED(plugin5);
+    _SIR_UNUSED(plugin6);
 
     printf("\tSIR_NO_PLUGINS is defined; expecting calls to fail\n");
 
@@ -1656,6 +1678,7 @@ bool sirtest_pluginloader(void) {
     sirpluginid id = sir_loadplugin(plugin1);
     pass &= 0 != id;
     pass &= sir_info("welcome, mister plugin.");
+    pass &= sir_warn("you won't see this message.");
 
     /* re-loading the same plugin should fail. */
     printf("\tloading duplicate plugin: '%s'...\n", plugin1);
@@ -1694,9 +1717,40 @@ bool sirtest_pluginloader(void) {
     if (pass)
         print_expected_error();
 
+    printf("\tloading nonexistent plugin: '%s'...\n", plugin6);
+    badid = sir_loadplugin(plugin6);
+    pass &= 0 == badid;
+
+    if (pass)
+        print_expected_error();
+
+    /* unload the good plugin manually. */
     printf("\tunloading good plugin: '%s'...\n", plugin1);
     pass &= sir_unloadplugin(id);
 #endif
+    pass &= sir_cleanup();
+    return print_result_and_return(pass);
+}
+
+bool sirtest_getversionok(void) {
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+    printf("\tchecking version retrieval functions...\n");
+
+    const char* str = sir_getversionstring();
+    pass &= _sir_validstrnofail(str);
+
+    printf("\tversion as string: '%s'\n", _SIR_PRNSTR(str));
+
+    uint32_t hex = sir_getversionhex();
+    pass &= 0 != hex;
+
+    printf("\tversion as hex: 0x%08"PRIx32"\n", hex);
+
+    bool prerel = sir_isprerelease();
+    printf("\tprerelease: %s\n", prerel ? "true" : "false");
+
     pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
@@ -1882,7 +1936,7 @@ bool sirtest_XXX(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 */

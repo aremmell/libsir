@@ -178,6 +178,12 @@ bool sirtest_failinvalidinitdata(void);
 bool sirtest_initcleanupinit(void);
 
 /**
+ * @test Properly initialize using sir_makeinit.
+ * @returns bool `true` if the test passed, `false` otherwise.
+ */
+bool sirtest_initmakeinit(void);
+
+/**
  * @test Properly handle calls after cleanup.
  * @returns bool `true` if the test passed, `false` otherwise.
  */
@@ -252,6 +258,12 @@ bool sirtest_squelchspam(void);
  * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_pluginloader(void);
+
+/**
+ * @test Ensure that version retrieval exports are functioning properly.
+ * @returns bool `true` if the test passed, `false` otherwise.
+ */
+bool sirtest_getversionok(void);
 
 /** @} */
 
