@@ -1731,7 +1731,7 @@ bool sirtest_getversionok(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    printf("\tchecking version retrival functions...\n");
+    printf("\tchecking version retrieval functions...\n");
 
     const char* str = sir_getversionstring();
     pass &= _sir_validstrnofail(str);
