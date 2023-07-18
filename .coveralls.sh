@@ -10,7 +10,7 @@ test -n "${NO_APTSETUP:-}" \
       sleep 6 ;
       export DEBIAN_FRONTEND=noninteractive ;
       sudo apt-get update -y ;
-      sudo apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install -y curl python3-pip git ;
+      sudo apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install -y ccache curl python3-pip git ;
       #sudo python3 -m pip install --break-system-packages install -U gcovr || true ;  # for later Ubuntu versions
       sudo python3 -m pip install install -U gcovr || true ;
       command -v gcovr || true ;
@@ -21,10 +21,13 @@ test -n "${NO_APTSETUP:-}" \
 
 set -ex
 
-# How parallel?
+# (Try to) disable messages to terminal from syslog
+mesg n || true
+
+# How parallel? Use "1" for Travis CI.
 JOBS=1
 
-# What make to use?
+# What MAKE to use?
 test -n "${MAKE:-}" && DO_MAKE="${MAKE:-}"
 
 # Clean-up
@@ -64,7 +67,7 @@ curl -fsSL https://coveralls.io/coveralls-linux.tar.gz | tar -xz
 chmod a+x ./coveralls
 
 # Setup compiler.
-CC="gcc"
+CC="ccache gcc"
 CFLAGS="-fno-inline -fprofile-arcs -ftest-coverage --coverage"
 LDFLAGS="-fprofile-arcs -ftest-coverage"
 export CC CFLAGS LDFLAGS
@@ -92,7 +95,7 @@ run_gcovr()
 # Redirect
 exec 5>&1 > coverage-out.txt 2>&1
 
-# Run 1
+# Run 1 - Debug and self-log
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
 build/bin/sirexample
@@ -101,7 +104,7 @@ remove_sample || true
 run_gcovr run-1.json
 remove_coverage
 
-# Run 2
+# Run 2 - No plugins
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1 SIR_NO_PLUGINS=1
 build/bin/sirexample
@@ -110,7 +113,7 @@ remove_sample || true
 run_gcovr run-2.json
 remove_coverage
 
-# Run 3
+# Run 3 - Perf test
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1 SIR_NO_PLUGINS=1
 build/bin/sirexample
@@ -119,7 +122,7 @@ remove_sample || true
 run_gcovr run-3.json
 remove_coverage
 
-# Run 4
+# Run 4 - Test help
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1 SIR_NO_PLUGINS=1
 build/bin/sirexample
@@ -128,7 +131,7 @@ remove_sample || true
 run_gcovr run-4.json
 remove_coverage
 
-# Run 5
+# Run 5 - List tests
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1 SIR_NO_PLUGINS=1
 build/bin/sirexample
@@ -137,13 +140,40 @@ remove_sample || true
 run_gcovr run-5.json
 remove_coverage
 
-# Run 6
+# Run 6 - Version check
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1 SIR_NO_PLUGINS=1
 build/bin/sirexample
 build/bin/sirtests --version
 remove_sample || true
 run_gcovr run-6.json
+remove_coverage
+
+# Run 7 - Invalid arguments to sirtest
+${DO_MAKE:-make} -j ${JOBS:?} clean
+${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1 SIR_NO_PLUGINS=1
+build/bin/sirexample
+build/bin/sirtests --INVALID_ARGUMENTS || true
+remove_sample || true
+run_gcovr run-7.json
+remove_coverage
+
+# Run 8 - Bad `--only` without arguments to sirtest
+${DO_MAKE:-make} -j ${JOBS:?} clean
+${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1 SIR_NO_PLUGINS=1
+build/bin/sirexample
+build/bin/sirtests --only || true
+remove_sample || true
+run_gcovr run-8.json
+remove_coverage
+
+# Run 9 - No debug and no self-log
+${DO_MAKE:-make} -j ${JOBS:?} clean
+${DO_MAKE:-make} -j ${JOBS:?}
+build/bin/sirexample
+build/bin/sirtests
+remove_sample || true
+run_gcovr run-9.json
 remove_coverage
 
 # Undo redirect
@@ -158,6 +188,9 @@ gcovr \
   --add-tracefile run-4.json \
   --add-tracefile run-5.json \
   --add-tracefile run-6.json \
+  --add-tracefile run-7.json \
+  --add-tracefile run-8.json \
+  --add-tracefile run-9.json \
   --merge-mode-functions="${MERGE_MODE:?}" \
   --gcov-ignore-parse-errors=negative_hits.warn_once_per_file --html-details coverage-out.html
 gcovr \
@@ -167,6 +200,9 @@ gcovr \
   --add-tracefile run-4.json \
   --add-tracefile run-5.json \
   --add-tracefile run-6.json \
+  --add-tracefile run-7.json \
+  --add-tracefile run-8.json \
+  --add-tracefile run-9.json \
   --merge-mode-functions="${MERGE_MODE:?}" \
   --gcov-ignore-parse-errors=negative_hits.warn_once_per_file --coveralls coveralls.json
 
