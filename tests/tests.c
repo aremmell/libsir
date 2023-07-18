@@ -1647,7 +1647,9 @@ bool sirtest_pluginloader(void) {
     static const char* plugin3 = "build/lib/plugin_dummy_bad2."PLUGIN_EXT;
     static const char* plugin4 = "build/lib/plugin_dummy_bad3."PLUGIN_EXT;
     static const char* plugin5 = "build/lib/plugin_dummy_bad4."PLUGIN_EXT;
-    static const char* plugin6 = "build/lib/i_dont_exist."PLUGIN_EXT;
+    static const char* plugin6 = "build/lib/plugin_dummy_bad5."PLUGIN_EXT;
+    static const char* plugin7 = "build/lib/plugin_dummy_bad6."PLUGIN_EXT;
+    static const char* plugin8 = "build/lib/i_dont_exist."PLUGIN_EXT;
 
 #if defined(SIR_NO_PLUGINS)
     _SIR_UNUSED(plugin2);
@@ -1717,7 +1719,21 @@ bool sirtest_pluginloader(void) {
     if (pass)
         print_expected_error();
 
-    printf("\tloading nonexistent plugin: '%s'...\n", plugin6);
+    printf("\tloading bad plugin: '%s'...\n", plugin6);
+    badid = sir_loadplugin(plugin5);
+    pass &= 0 == badid;
+
+    if (pass)
+        print_expected_error();
+
+    printf("\tloading bad plugin: '%s'...\n", plugin7);
+    badid = sir_loadplugin(plugin5);
+    pass &= 0 == badid;
+
+    if (pass)
+        print_expected_error();
+
+    printf("\tloading nonexistent plugin: '%s'...\n", plugin8);
     badid = sir_loadplugin(plugin6);
     pass &= 0 == badid;
 
