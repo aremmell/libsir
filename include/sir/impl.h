@@ -43,7 +43,6 @@ _sir_strlcat(char *dst, const char *src, size_t dsize)
   size_t       dlen;
 
   /* Find the end of dst and adjust bytes left but don't go past end. */
-
   while (n-- != 0 && *dst != '\0')
     dst++;
 

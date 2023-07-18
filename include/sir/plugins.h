@@ -49,4 +49,5 @@ bool _sir_plugin_cache_rem(sir_plugincache* spc, sirpluginid id);
 bool _sir_plugin_cache_destroy(sir_plugincache* spc);
 bool _sir_plugin_cache_dispatch(sir_plugincache* spc, sir_level level, sirbuf* buf,
     size_t* dispatched, size_t* wanted);
+
 #endif // !_SIR_PLUGINS_H_INCLUDED
