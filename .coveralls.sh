@@ -176,33 +176,26 @@ remove_sample || true
 run_gcovr run-9.json
 remove_coverage
 
+# Run 10 - Just self-log
+${DO_MAKE:-make} -j ${JOBS:?} clean
+${DO_MAKE:-make} -j ${JOBS:?} SIR_SELFLOG=1
+build/bin/sirexample
+build/bin/sirtests
+remove_sample || true
+run_gcovr run-10.json
+remove_coverage
+
 # Undo redirect
 exec 1>&5
 
 # Process results
 MERGE_MODE="merge-use-line-max"
 gcovr \
-  --add-tracefile run-1.json \
-  --add-tracefile run-2.json \
-  --add-tracefile run-3.json \
-  --add-tracefile run-4.json \
-  --add-tracefile run-5.json \
-  --add-tracefile run-6.json \
-  --add-tracefile run-7.json \
-  --add-tracefile run-8.json \
-  --add-tracefile run-9.json \
+  --add-tracefile "run-*.json" \
   --merge-mode-functions="${MERGE_MODE:?}" \
   --gcov-ignore-parse-errors=negative_hits.warn_once_per_file --html-details coverage-out.html
 gcovr \
-  --add-tracefile run-1.json \
-  --add-tracefile run-2.json \
-  --add-tracefile run-3.json \
-  --add-tracefile run-4.json \
-  --add-tracefile run-5.json \
-  --add-tracefile run-6.json \
-  --add-tracefile run-7.json \
-  --add-tracefile run-8.json \
-  --add-tracefile run-9.json \
+  --add-tracefile "run-*.json" \
   --merge-mode-functions="${MERGE_MODE:?}" \
   --gcov-ignore-parse-errors=negative_hits.warn_once_per_file --coveralls coveralls.json
 
