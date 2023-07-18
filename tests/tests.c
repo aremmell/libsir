@@ -1980,11 +1980,13 @@ bool print_test_error(bool result, bool expected) {
     return result;
 }
 
-void print_os_error(void) { // GCOVR_EXCL_START
+// GCOVR_EXCL_START
+void print_os_error(void) {
     char message[SIR_MAXERROR] = {0};
     uint16_t code              = sir_geterror(message);
     fprintf(stderr, "\t" RED("OS error: (%"PRIu16", %s)") "\n", code, message);
-} // GCOVR_EXCL_STOP
+}
+// GCOVR_EXCL_STOP
 
 bool filter_error(bool pass, uint16_t err) {
     if (!pass) {
