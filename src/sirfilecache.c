@@ -333,17 +333,29 @@ bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
     if (!_sirfile_validate(sf) || !_sir_validptrptr(name) || !_sir_validptrptr(ext))
         return false;
 
-    char* lastfullstop = strrchr(sf->path, '.');
+    char* tmp = strdup(sf->path);
+    if (!tmp) {
+        _sir_handleerr(errno);
+        return false;
+    }
+
+    char* lastfullstop = strrchr(tmp, '.');
     if (lastfullstop) {
-        uintptr_t namesize = lastfullstop - sf->path;
+        uintptr_t namesize = lastfullstop - tmp;
         SIR_ASSERT(namesize < SIR_MAXPATH);
 
-        if (namesize < SIR_MAXPATH) {
-            *name = (char*)calloc(namesize + 1, sizeof(char));
-            _sir_strncpy(*name, namesize + 1, sf->path, namesize);
+        tmp[namesize] = '\0';
+        *name = (char*)calloc(namesize + 1, sizeof(char));
+        if (!*name) {
+            _sir_handlerr(errno);
+            _sir_safefree(&tmp);
+            return false;
         }
 
-        *ext = strdup(lastfullstop);
+        _sir_strncpy(*name, namesize + 1, tmp, namesize);
+        _sir_safefree(&tmp);
+
+        *ext = strdup(sf->path + namesize);
     } else {
         *name = strdup(sf->path);
     }
