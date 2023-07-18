@@ -1657,6 +1657,8 @@ bool sirtest_pluginloader(void) {
     _SIR_UNUSED(plugin4);
     _SIR_UNUSED(plugin5);
     _SIR_UNUSED(plugin6);
+    _SIR_UNUSED(plugin7);
+    _SIR_UNUSED(plugin8);
 
     printf("\tSIR_NO_PLUGINS is defined; expecting calls to fail\n");
 
