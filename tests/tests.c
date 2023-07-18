@@ -1673,6 +1673,7 @@ bool sirtest_pluginloader(void) {
     sirpluginid id = sir_loadplugin(plugin1);
     pass &= 0 != id;
     pass &= sir_info("welcome, mister plugin.");
+    pass &= sir_warning("you won't see this message.");
 
     /* re-loading the same plugin should fail. */
     printf("\tloading duplicate plugin: '%s'...\n", plugin1);
