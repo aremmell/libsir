@@ -1673,6 +1673,7 @@ bool sirtest_pluginloader(void) {
     sirpluginid id = sir_loadplugin(plugin1);
     pass &= 0 != id;
     pass &= sir_info("welcome, mister plugin.");
+    pass &= sir_warning("you won't see this message.");
 
     /* re-loading the same plugin should fail. */
     printf("\tloading duplicate plugin: '%s'...\n", plugin1);
@@ -1730,7 +1731,7 @@ bool sirtest_getversionok(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    printf("\tchecking version retrival functions...\n");
+    printf("\tchecking version retrieval functions...\n");
 
     const char* str = sir_getversionstring();
     pass &= _sir_validstrnofail(str);
