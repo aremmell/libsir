@@ -55,7 +55,7 @@ static sir_test sir_tests[] = {
     {"filesystem",              sirtest_filesystem, false, true},
     {"squelch-spam",            sirtest_squelchspam, false, true},
     {"plugin-loader",           sirtest_pluginloader, false, true},
-    {"get-version-ok",          sirtest_getversionok, false, true}
+    {"get-version-info",        sirtest_getversioninfo, false, true}
 };
 
 bool leave_logs = false;
@@ -1758,7 +1758,7 @@ bool sirtest_pluginloader(void) {
     return print_result_and_return(pass);
 }
 
-bool sirtest_getversionok(void) {
+bool sirtest_getversioninfo(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 

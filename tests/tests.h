@@ -263,7 +263,7 @@ bool sirtest_pluginloader(void);
  * @test Ensure that version retrieval exports are functioning properly.
  * @returns bool `true` if the test passed, `false` otherwise.
  */
-bool sirtest_getversionok(void);
+bool sirtest_getversioninfo(void);
 
 /** @} */
 
