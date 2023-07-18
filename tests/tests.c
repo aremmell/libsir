@@ -766,6 +766,14 @@ bool sirtest_textstylesanity(void) {
     }
     PRINT_PASS(pass, "\t--- change mode: RGB-color: %s ---\n\n", PRN_PASS(pass));
 
+    printf("\t" WHITEB("--- change mode: invalid mode ---") "\n");
+    pass &= !sir_setcolormode(SIRCM_INVALID);
+    sir_textcolor fg = sir_makergb(255, 0, 0);
+    sir_textcolor bg = sir_makergb(0, 0, 0);
+    pass &= sir_settextstyle(SIRL_DEBUG, SIRTA_NORMAL, fg, bg);
+    pass &= sir_debug("this is still RGB color mode");
+    PRINT_PASS(pass, "\t--- change mode: invalid mode %s ---\n\n", PRN_PASS(pass));
+
     printf("\t" WHITEB("--- change mode: 16-color ---") "\n");
     pass &= sir_setcolormode(SIRCM_16);
     pass &= sir_settextstyle(SIRL_DEBUG, SIRTA_EMPH, SIRTC_BMAGENTA, SIRTC_DEFAULT);
