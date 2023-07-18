@@ -41,32 +41,32 @@ bool _sirmutex_create(sir_mutex* mutex) {
             }
         }
 
-        _sir_handleerr(op);
+        _sir_handleerr(op); // GCOVR_EXCL_LINE
     }
 
-    return false;
+    return false; // GCOVR_EXCL_LINE
 }
 
 bool _sirmutex_lock(sir_mutex* mutex) {
     if (_sir_validptr(mutex)) {
         int op = pthread_mutex_lock(mutex);
         if (0 != op)
-            _sir_handleerr(op);
+            _sir_handleerr(op); // GCOVR_EXCL_LINE
         return 0 == op;
     }
 
-    return false;
+    return false; // GCOVR_EXCL_LINE
 }
 
 bool _sirmutex_unlock(sir_mutex* mutex) {
     if (_sir_validptr(mutex)) {
         int op = pthread_mutex_unlock(mutex);
         if (0 != op)
-            _sir_handleerr(op);
+            _sir_handleerr(op); // GCOVR_EXCL_LINE
         return 0 == op;
     }
 
-    return false;
+    return false; // GCOVR_EXCL_LINE
 }
 #else /* __WIN__ */
 static bool _sirmutex_waitwin32(sir_mutex mutex, DWORD msec);

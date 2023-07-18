@@ -526,9 +526,9 @@ bool _sir_once(sir_once* once, sir_once_fn func) {
 #if !defined(__WIN__)
     int ret = pthread_once(once, func);
     if (0 != ret) {
-        _sir_handleerr(ret);
+        _sir_handleerr(ret); // GCOVR_EXCL_START
         return false;
-    }
+    } // GCOVR_EXCL_STOP
     return true;
 #else /* __WIN__ */
     BOOL ret = InitOnceExecuteOnce(once, func, NULL, NULL);
@@ -601,7 +601,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         _SIR_UNUSED(fmt);
 
         if (0 > snprintf(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec))
-            _sir_handleerr(errno);
+            _sir_handleerr(errno); // GCOVR_EXCL_LINE
     }
 
     buf.level = _sir_formattedlevelstr(level);
@@ -651,7 +651,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
                 old_threshold, cfg.state.last.threshold, SIR_SQUELCH_BACKOFF_FACTOR);
 
             if (0 > snprintf(buf.message, SIR_MAXMESSAGE, SIR_SQUELCH_MSG_FORMAT, old_threshold))
-                _sir_handleerr(errno);
+                _sir_handleerr(errno); // GCOVR_EXCL_LINE
         } else if (cfg.state.last.squelch) {
             exit_early = true;
         }
@@ -1102,7 +1102,7 @@ bool _sir_formattime(time_t now, char* buffer, const char* format) {
 
     SIR_ASSERT(0 != fmttime);
     if (0 == fmttime)
-        _sir_selflog("error: strftime failed; format string: '%s'", format);
+        _sir_selflog("error: strftime failed; format string: '%s'", format); // GCOVR_EXCL_LINE
 
     return 0 != fmttime;
 }
@@ -1224,9 +1224,9 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
       defined(USE_PTHREAD_GETNAME_NP) || defined(__MACOS__)
     int ret = pthread_getname_np(pthread_self(), name, SIR_MAXPID);
     if (0 != ret) {
-        _sir_handleerr(ret);
+        _sir_handleerr(ret); // GCOVR_EXCL_START
         return false;
-    }
+    } // GCOVR_EXCL_STOP
 # if defined(__HAIKU__)
     if ((strncmp(name, "pthread_func", SIR_MAXPID)) || _sir_validstrnofail(name))
         snprintf(name, SIR_MAXPID, "%ld", (long)get_pthread_thread_id(pthread_self()));
@@ -1247,9 +1247,9 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
 bool _sir_gethostname(char name[SIR_MAXHOST]) {
 #if !defined(__WIN__)
     if (-1 == gethostname(name, SIR_MAXHOST - 1)) {
-        _sir_handleerr(errno);
+        _sir_handleerr(errno); // GCOVR_EXCL_START
         return false;
-    }
+    } // GCOVR_EXCL_STOP
     return true;
 #else
     WSADATA wsad = {0};
