@@ -53,17 +53,6 @@ bool _sirmutex_create(sir_mutex* mutex) {
     return false;
 }
 
-bool _sir_mutextrylock(sir_mutex* mutex) {
-    if (_sir_validptr(mutex)) {
-        int op = pthread_mutex_trylock(mutex);
-        if (0 != op)
-            _sir_handleerr(op);
-        return 0 == op;
-    }
-
-    return false;
-}
-
 bool _sirmutex_lock(sir_mutex* mutex) {
     if (_sir_validptr(mutex)) {
         int op = pthread_mutex_lock(mutex);
@@ -104,10 +93,6 @@ bool _sirmutex_create(sir_mutex* mutex) {
     return false;
 }
 
-bool _sir_mutextrylock(sir_mutex* mutex) {
-    return _sirmutex_waitwin32(*mutex, 0);
-}
-
 bool _sirmutex_lock(sir_mutex* mutex) {
     return _sirmutex_waitwin32(*mutex, INFINITE);
 }
@@ -142,4 +127,4 @@ static bool _sirmutex_waitwin32(sir_mutex mutex, DWORD msec) {
 
     return false;
 }
-#endif // !__WIN__
+#endif /* !__WIN__ */
