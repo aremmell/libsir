@@ -31,23 +31,17 @@
 bool _sirmutex_create(sir_mutex* mutex) {
     if (_sir_validptr(mutex)) {
         pthread_mutexattr_t attr;
-
         int op = pthread_mutexattr_init(&attr);
-        if (0 != op)
-            _sir_handleerr(op);
-
         if (0 == op) {
             op = pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
-            if (0 != op)
-                _sir_handleerr(op);
-
             if (0 == op) {
                 op = pthread_mutex_init(mutex, &attr);
-                if (0 != op)
-                    _sir_handleerr(op);
-                return 0 == op;
+                if (0 == op)
+                    return true;
             }
         }
+
+        _sir_handleerr(op);
     }
 
     return false;
@@ -80,7 +74,6 @@ static bool _sirmutex_waitwin32(sir_mutex mutex, DWORD msec);
 bool _sirmutex_create(sir_mutex* mutex) {
     if (_sir_validptr(mutex)) {
         sir_mutex tmp = CreateMutex(NULL, FALSE, NULL);
-
         if (!tmp) {
             _sir_handlewin32err(GetLastError());
             return false;
@@ -100,7 +93,6 @@ bool _sirmutex_lock(sir_mutex* mutex) {
 bool _sirmutex_unlock(sir_mutex* mutex) {
     if (_sir_validptr(mutex)) {
         BOOL release = ReleaseMutex(*mutex);
-
         if (!release)
             _sir_handlewin32err(GetLastError());
 

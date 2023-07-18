@@ -35,7 +35,7 @@
 # define SIR_VERSION_MINOR 2
 
 /** The current libsir patch version component. */
-# define SIR_VERSION_PATCH 0
+# define SIR_VERSION_PATCH 1
 
 /** 1 if this is a release version of libsir, 0 otherwise. */
 # define SIR_VERSION_IS_RELEASE 0
