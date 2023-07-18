@@ -258,7 +258,7 @@ _set_thread_local_invalid_parameter_handler(
 # include <time.h>
 
 # if !defined(SIR_NO_SYSTEM_LOGGERS)
-#  if defined(__MACOS__)
+#  if defined(__MACOS__) && !defined(__GNUC__)
 #   define SIR_OS_LOG_ENABLED
 #  else
 #   undef SIR_OS_LOG_ENABLED

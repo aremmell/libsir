@@ -55,7 +55,7 @@ static sir_test sir_tests[] = {
     {"filesystem",              sirtest_filesystem, false, true},
     {"squelch-spam",            sirtest_squelchspam, false, true},
     {"plugin-loader",           sirtest_pluginloader, false, true},
-    {"get-version-ok",          sirtest_getversionok, false, true}
+    {"get-version-info",        sirtest_getversioninfo, false, true}
 };
 
 bool leave_logs = false;
@@ -765,6 +765,14 @@ bool sirtest_textstylesanity(void) {
             _sir_getgreenfromcolor(bg), _sir_getbluefromcolor(bg));
     }
     PRINT_PASS(pass, "\t--- change mode: RGB-color: %s ---\n\n", PRN_PASS(pass));
+
+    printf("\t" WHITEB("--- change mode: invalid mode ---") "\n");
+    pass &= !sir_setcolormode(SIRCM_INVALID);
+    sir_textcolor fg = sir_makergb(255, 0, 0);
+    sir_textcolor bg = sir_makergb(0, 0, 0);
+    pass &= sir_settextstyle(SIRL_DEBUG, SIRTA_NORMAL, fg, bg);
+    pass &= sir_debug("this is still RGB color mode");
+    PRINT_PASS(pass, "\t--- change mode: invalid mode %s ---\n\n", PRN_PASS(pass));
 
     printf("\t" WHITEB("--- change mode: 16-color ---") "\n");
     pass &= sir_setcolormode(SIRCM_16);
@@ -1647,7 +1655,9 @@ bool sirtest_pluginloader(void) {
     static const char* plugin3 = "build/lib/plugin_dummy_bad2."PLUGIN_EXT;
     static const char* plugin4 = "build/lib/plugin_dummy_bad3."PLUGIN_EXT;
     static const char* plugin5 = "build/lib/plugin_dummy_bad4."PLUGIN_EXT;
-    static const char* plugin6 = "build/lib/i_dont_exist."PLUGIN_EXT;
+    static const char* plugin6 = "build/lib/plugin_dummy_bad5."PLUGIN_EXT;
+    static const char* plugin7 = "build/lib/plugin_dummy_bad6."PLUGIN_EXT;
+    static const char* plugin8 = "build/lib/i_dont_exist."PLUGIN_EXT;
 
 #if defined(SIR_NO_PLUGINS)
     _SIR_UNUSED(plugin2);
@@ -1655,6 +1665,8 @@ bool sirtest_pluginloader(void) {
     _SIR_UNUSED(plugin4);
     _SIR_UNUSED(plugin5);
     _SIR_UNUSED(plugin6);
+    _SIR_UNUSED(plugin7);
+    _SIR_UNUSED(plugin8);
 
     printf("\tSIR_NO_PLUGINS is defined; expecting calls to fail\n");
 
@@ -1717,7 +1729,21 @@ bool sirtest_pluginloader(void) {
     if (pass)
         print_expected_error();
 
-    printf("\tloading nonexistent plugin: '%s'...\n", plugin6);
+    printf("\tloading bad plugin: '%s'...\n", plugin6);
+    badid = sir_loadplugin(plugin5);
+    pass &= 0 == badid;
+
+    if (pass)
+        print_expected_error();
+
+    printf("\tloading bad plugin: '%s'...\n", plugin7);
+    badid = sir_loadplugin(plugin5);
+    pass &= 0 == badid;
+
+    if (pass)
+        print_expected_error();
+
+    printf("\tloading nonexistent plugin: '%s'...\n", plugin8);
     badid = sir_loadplugin(plugin6);
     pass &= 0 == badid;
 
@@ -1732,7 +1758,7 @@ bool sirtest_pluginloader(void) {
     return print_result_and_return(pass);
 }
 
-bool sirtest_getversionok(void) {
+bool sirtest_getversioninfo(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 

@@ -176,9 +176,6 @@ bool _sir_validtextattr(sir_textattr attr) {
 }
 
 bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color) {
-    if (!_sir_validcolormode(mode))
-        return false;
-
     bool valid = false;
     switch (mode) {
         case SIRCM_16:
