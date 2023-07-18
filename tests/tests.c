@@ -3,7 +3,7 @@
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
- * Version:   2.2.0
+ * Version:   2.2.1
  * License:   The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -66,10 +66,10 @@ int main(int argc, char** argv) {
 #endif
 #if !defined(__WIN__) && !defined(__HAIKU__)
     /* Disallow execution by root / sudo; some of the tests rely on lack of permissions. */
-    if (geteuid() == 0) {
+    if (geteuid() == 0) { // GCOVR_EXCL_START
         fprintf(stderr, "Sorry, but this program may not be executed by root.\n");
         return EXIT_FAILURE;
-    }
+    } // GCOVR_EXCL_STOP
 #else /* __WIN__ */
 # if defined(_DEBUG) && defined(SIR_ASSERT_ENABLED)
     /* Prevents assert() from calling abort() before the user is able to:
@@ -977,7 +977,7 @@ bool sirtest_levelssanity(void) {
     /* individual invalid level. */
     sir_level invalid2 = 0x1337;
     pass &= !_sir_validlevel(invalid2);
-    printf(INDENT_ITEM WHITE("indivudal invalid level: %04"PRIx32) "\n", invalid2);
+    printf(INDENT_ITEM WHITE("individual invalid level: %04"PRIx32) "\n", invalid2);
 
     PRINT_PASS(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 
@@ -1184,7 +1184,7 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
 
     for (int i = 0; i < runs; i++) {
         /* randomly skip setting process name, identity/category to thoroughly
-           test fallback routines; randomly update the config mid-run. */
+         * test fallback routines; randomly update the config mid-run. */
         bool set_procname = getrand_bool((uint32_t)sirtimerelapsed(&timer));
         bool set_identity = getrand_bool((uint32_t)sirtimerelapsed(&timer));
         bool set_category = getrand_bool((uint32_t)sirtimerelapsed(&timer));
@@ -1730,21 +1730,21 @@ bool sirtest_pluginloader(void) {
         print_expected_error();
 
     printf("\tloading bad plugin: '%s'...\n", plugin6);
-    badid = sir_loadplugin(plugin5);
+    badid = sir_loadplugin(plugin6);
     pass &= 0 == badid;
 
     if (pass)
         print_expected_error();
 
     printf("\tloading bad plugin: '%s'...\n", plugin7);
-    badid = sir_loadplugin(plugin5);
-    pass &= 0 == badid;
+    badid = sir_loadplugin(plugin7);
+    pass &= 0 != badid;
 
     if (pass)
         print_expected_error();
 
     printf("\tloading nonexistent plugin: '%s'...\n", plugin8);
-    badid = sir_loadplugin(plugin6);
+    badid = sir_loadplugin(plugin8);
     pass &= 0 == badid;
 
     if (pass)
@@ -2110,7 +2110,7 @@ bool sirtimerstart(sir_timer* timer) {
 #if !defined(__WIN__)
     int gettime = clock_gettime(SIRTEST_CLOCK, &timer->ts);
     if (0 != gettime) {
-        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK);
+        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK); // GCOVR_EXCL_LINE
     }
 
     return 0 == gettime;
@@ -2127,7 +2127,7 @@ float sirtimerelapsed(const sir_timer* timer) {
         return (float)((now.tv_sec * 1e3) + (now.tv_nsec / 1e6) - (timer->ts.tv_sec * 1e3) +
             (timer->ts.tv_nsec / 1e6));
     } else {
-        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK);
+        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK); // GCOVR_EXCL_LINE
     }
     return 0.0f;
 #else /* __WIN__ */
@@ -2150,7 +2150,7 @@ long sirtimergetres(void) {
     if (0 == clock_getres(SIRTEST_CLOCK, &res)) {
         retval = res.tv_nsec;
     } else {
-        handle_os_error(true, "clock_getres(%d) failed!", CLOCK_CAST SIRTEST_CLOCK);
+        handle_os_error(true, "clock_getres(%d) failed!", CLOCK_CAST SIRTEST_CLOCK); // GCOVR_EXCL_LINE
     }
 #else /* __WIN__ */
     retval = 100;
@@ -2201,7 +2201,7 @@ bool mark_test_to_run(const char* name) {
     }
 
     if (!found)
-        _sir_selflog("warning: unable to locate '%s' in test array", name);
+        _sir_selflog("warning: unable to locate '%s' in test array", name); // GCOVR_EXCL_LINE
 
     return found;
 }

@@ -3,7 +3,7 @@
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
- * Version:   2.2.0
+ * Version:   2.2.1
  * License:   The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -64,10 +64,10 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
 
         int fd = open(base_path, open_flags);
         if (-1 == fd) {
-            _sir_handleerr(errno);
+            _sir_handleerr(errno); // GCOVR_EXCL_START
             _sir_safefree(&base_path);
             return false;
-        }
+        } // GCOVR_EXCL_STOP
 
         stat_ret = fstatat(fd, path, st, AT_SYMLINK_NOFOLLOW);
         _sir_safeclose(&fd);

@@ -3,7 +3,7 @@
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
- * Version:   2.2.0
+ * Version:   2.2.1
  * License:   The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -34,9 +34,9 @@
 #  define _USE_ATTRIBUTES_FOR_SAL 1
 #  include <sal.h>
 #  define PRINTF_FORMAT _Printf_format_string_
-#  define PRINTF_FORMAT_ATTR(fmt_p, va_p) /**/
+#  define PRINTF_FORMAT_ATTR(fmt_p, va_p)
 # else
-#  define PRINTF_FORMAT /**/
+#  define PRINTF_FORMAT
 #  if defined(__MINGW32__) || defined(__MINGW64__)
 #   if !defined(__USE_MINGW_ANSI_STDIO)
 #    define __USE_MINGW_ANSI_STDIO 1
@@ -48,7 +48,7 @@
 #    define PRINTF_FORMAT_ATTR(fmt_p, va_p) \
      __attribute__((format (printf, fmt_p, va_p)))
 #   else
-#    define PRINTF_FORMAT_ATTR(fmt_p, va_p) /**/
+#    define PRINTF_FORMAT_ATTR(fmt_p, va_p)
 #   endif
 #  endif
 # endif

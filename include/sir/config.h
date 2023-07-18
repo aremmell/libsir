@@ -8,7 +8,7 @@
  *
  * @author    Ryan M. Lederman \<lederman@gmail.com\>
  * @date      2018-2023
- * @version   2.2.0
+ * @version   2.2.1
  * @copyright The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of

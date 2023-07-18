@@ -3,7 +3,7 @@
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
- * Version:   2.2.0
+ * Version:   2.2.1
  * License:   The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -196,11 +196,11 @@ bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color) {
             valid = SIRTC_DEFAULT == color || ((color & 0xff000000) == 0);
             break;
         }
-        case SIRCM_INVALID:
+        case SIRCM_INVALID: // GCOVR_EXCL_START
         default:
             valid = false;
             break;
-    }
+    } // GCOVR_EXCL_STOP
 
     if (!valid) {
         _sir_selflog("invalid text color for mode %d %08"PRIx32" (%"PRId32")",

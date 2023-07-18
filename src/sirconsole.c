@@ -3,7 +3,7 @@
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
- * Version:   2.2.0
+ * Version:   2.2.1
  * License:   The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -29,9 +29,9 @@
 #if !defined(__WIN__)
 bool _sir_write_stdio(FILE* stream, const char* message) {
     if (EOF == fputs(message, stream)) {
-        _sir_handleerr(errno);
+        _sir_handleerr(errno); // GCOVR_EXCL_START
         return false;
-    }
+    } // GCOVR_EXCL_STOP
 
     return true;
 }

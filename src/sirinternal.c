@@ -3,7 +3,7 @@
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
- * Version:   2.2.0
+ * Version:   2.2.1
  * License:   The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -418,11 +418,13 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
             tmpm   = &ts_mutex;
             tmpsec = &sir_text_style_section;
             break;
+        // GCOVR_EXCL_START
         default: /* this should never happen. */
             SIR_ASSERT("!invalid mutex id");
             tmpm   = NULL;
             tmpsec = NULL;
             break;
+        // GCOVR_EXCL_STOP
     }
 
     *m = tmpm;
@@ -944,9 +946,11 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx)
         case SIRL_CRIT:   syslog_level = LOG_CRIT; break;
         case SIRL_ALERT:  syslog_level = LOG_ALERT; break;
         case SIRL_EMERG:  syslog_level = LOG_EMERG; break;
+        // GCOVR_EXCL_START
         default: /* this should never happen. */
             SIR_ASSERT(!"invalid sir_level");
             syslog_level = LOG_DEBUG;
+        // GCOVR_EXCL_STOP
     }
 
     syslog(syslog_level, "%s", buf->message);

@@ -6,7 +6,7 @@
  *
  * @author    Ryan M. Lederman \<lederman@gmail.com\>
  * @date      2018-2023
- * @version   2.2.0
+ * @version   2.2.1
  * @copyright The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -102,7 +102,7 @@ int main(void) {
     /* Pretend to read a config file */
     sir_debug("Config file successfully parsed; connecting to database...");
 
-    /* pretend to connect to a database */
+    /* Pretend to connect to a database */
     sir_debug("Database connection established.");
     sir_debug("Binding a TCP socket to interface '%s'"
               " (IPv4: %s) on port %u and listening for connections...",
@@ -148,15 +148,11 @@ int main(void) {
         report_error();
 #endif
 
-    /*
-     * Okay, syslog should be configured now. Continue executing.
-     */
+    /* Okay, syslog should be configured now. Continue executing. */
     sir_crit("Database query failure! Ignoring incoming client requests while"
              " the database is analyzed and repaired...");
 
-    /*
-     * Things just keep getting worse for this poor sysadmin.
-     */
+    /* Things just keep getting worse for this poor sysadmin. */
     sir_alert("Database repair attempt unsuccessful! Error: %s", "<unknown>");
     sir_emerg("Unable to process client requests for %s! Restarting...", "4m52s");
 

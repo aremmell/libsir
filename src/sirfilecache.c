@@ -3,7 +3,7 @@
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
- * Version:   2.2.0
+ * Version:   2.2.1
  * License:   The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -254,9 +254,9 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                         }
 
                         /* if less than one second has elasped since the last roll
-                            * operation, then we'll overwrite the last rolled log file,
-                            * and that = data loss. make sure the target path does not
-                            * already exist. */
+                         * operation, then we'll overwrite the last rolled log file,
+                         * and that = data loss. make sure the target path does not
+                         * already exist. */
                         if (!_sir_pathexists(*newpath, &exists, SIR_PATH_REL_TO_CWD)) {
                             /* failed to determine if the file already exists; it is better
                              * to continue logging to the same file than to possibly overwrite

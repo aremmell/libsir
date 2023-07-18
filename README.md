@@ -5,7 +5,7 @@ libsir&mdash;a cross-platform, thread-safe logging library
 <!-- SPDX-License-Identifier: MIT -->
 <!-- Copyright (c) 2018-current Ryan M. Lederman <lederman@gmail.com> -->
 
-[![Build Status](https://app.travis-ci.com/aremmell/libsir.svg?branch=master)](https://app.travis-ci.com/aremmell/libsir)&nbsp;![REUSE Compliance](https://img.shields.io/reuse/compliance/github.com%2Faremmell%2Flibsir?label=REUSE3&color=2340b911)&nbsp;![GitHub](https://img.shields.io/github/license/aremmell/libsir?color=%2340b911)&nbsp;[![Codacy Badge](https://app.codacy.com/project/badge/Grade/c631edd919a94bafa21c98dfcf72f2ad)](https://app.codacy.com/gh/aremmell/libsir/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)&nbsp;[![Coverage Status](https://coveralls.io/repos/github/aremmell/libsir/badge.svg)](https://coveralls.io/github/aremmell/libsir)
+[![Build Status](https://app.travis-ci.com/aremmell/libsir.svg?branch=master)](https://app.travis-ci.com/aremmell/libsir)&nbsp;![REUSE Compliance](https://img.shields.io/reuse/compliance/github.com%2Faremmell%2Flibsir?label=REUSE3&color=2340b911)&nbsp;![GitHub](https://img.shields.io/github/license/aremmell/libsir?color=%2340b911)&nbsp;[![Codacy Badge](https://app.codacy.com/project/badge/Grade/c631edd919a94bafa21c98dfcf72f2ad)](https://app.codacy.com/gh/aremmell/libsir/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)&nbsp;[![Coverage Status](https://coveralls.io/repos/github/aremmell/libsir/badge.svg?)](https://coveralls.io/github/aremmell/libsir)
 
 ## <a id="overview" /> Overview
 
