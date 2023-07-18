@@ -57,7 +57,7 @@
 #  if defined(__STDC_NO_ATOMICS__)
 #   undef __HAVE_ATOMIC_H__
 #  else
-#   define __HAVE_ATOMIC_H__
+#   define __HAVE_ATOMIC_H__ /**/
 #  endif
 #  if defined(__GNUC__)
 #   if __GNUC__ <= 4
@@ -96,24 +96,24 @@
 #  endif
 #  define __STDC_WANT_LIB_EXT2__ 1
 #  if defined(__APPLE__) && defined(__MACH__)
-#   define __MACOS__
-#   define _DARWIN_C_SOURCE
+#   define __MACOS__ /**/
+#   define _DARWIN_C_SOURCE /**/
 #  elif defined(__serenity__)
-#   define USE_PTHREAD_GETNAME_NP
+#   define USE_PTHREAD_GETNAME_NP /**/
 #  elif defined(__OpenBSD__)
-#   define __BSD__
+#   define __BSD__ /**/
 #   define __FreeBSD_PTHREAD_NP_11_3__
 #  elif defined(__NetBSD__)
-#   define __BSD__
+#   define __BSD__ /**/
 #   if !defined(_NETBSD_SOURCE)
 #    define _NETBSD_SOURCE 1
 #   endif
-#   define USE_PTHREAD_GETNAME_NP
+#   define USE_PTHREAD_GETNAME_NP /**/
 #  elif defined(__FreeBSD__) || defined(__DragonFly__)
-#   define __BSD__
-#   define _BSD_SOURCE
+#   define __BSD__ /**/
+#   define _BSD_SOURCE /**/
 #   if !defined(_DEFAULT_SOURCE)
-#    define _DEFAULT_SOURCE
+#    define _DEFAULT_SOURCE /**/
 #   endif
 #   include <sys/param.h>
 #   if __FreeBSD_version >= 1202500
@@ -121,15 +121,15 @@
 #   elif __FreeBSD_version >= 1103500
 #    define __FreeBSD_PTHREAD_NP_11_3__
 #   elif __DragonFly_version >= 400907
-#    define __DragonFly_getthreadid__
+#    define __DragonFly_getthreadid__ /**/
 #   endif
 #   if defined(__DragonFly__)
-#    define USE_PTHREAD_GETNAME_NP
+#    define USE_PTHREAD_GETNAME_NP /**/
 #   endif
 #  else
 #   if defined(__HAIKU__)
 #    if !defined(__USE_GNU)
-#     define __USE_GNU
+#     define __USE_GNU /**/
 #    endif
 #    if !defined(_GNU_SOURCE)
 #     define _GNU_SOURCE 1
@@ -139,19 +139,19 @@
 extern /* Workaround a Clang on Haiku bug. */
 int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #    endif
-#    define USE_PTHREAD_GETNAME_NP
+#    define USE_PTHREAD_GETNAME_NP /**/
 #   endif
 #   if defined(__linux__)
 #    if !defined(_GNU_SOURCE)
 #     define _GNU_SOURCE 1
 #    endif
-#    define USE_PTHREAD_GETNAME_NP
+#    define USE_PTHREAD_GETNAME_NP /**/
 #   endif
 #   if defined(__CYGWIN__)
 #    if !defined(_GNU_SOURCE)
 #     define _GNU_SOURCE 1
 #    endif
-#    define USE_PTHREAD_GETNAME_NP
+#    define USE_PTHREAD_GETNAME_NP /**/
 #    include <sys/features.h>
 #   endif
 #   if defined(__ANDROID__) && defined(__ANDROID_API__)
@@ -161,36 +161,36 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #   endif
 #   if defined(__illumos__) || ((defined(__sun) || defined(__sun__)) && \
               (defined(__SVR4) || defined(__svr4__)))
-#    define __SOLARIS__
-#    define USE_PTHREAD_GETNAME_NP
+#    define __SOLARIS__ /**/
+#    define USE_PTHREAD_GETNAME_NP /**/
 #    if !defined(_ATFILE_SOURCE)
 #     define _ATFILE_SOURCE 1
 #    endif
 #    if !defined(__EXTENSIONS__)
-#     define __EXTENSIONS__
+#     define __EXTENSIONS__ /**/
 #    endif
 #   endif
 #   if !defined(_POSIX_C_SOURCE)
 #    define _POSIX_C_SOURCE 200809L
 #   endif
 #   if !defined(_DEFAULT_SOURCE)
-#    define _DEFAULT_SOURCE
+#    define _DEFAULT_SOURCE /**/
 #   endif
 #   if !defined(_XOPEN_SOURCE)
 #    define _XOPEN_SOURCE 700
 #   endif
 #  endif
 # else /* _WIN32 */
-#  define __WIN__
-#  define SIR_NO_SYSTEM_LOGGERS
+#  define __WIN__ /**/
+#  define SIR_NO_SYSTEM_LOGGERS /**/
 #  undef __HAVE_ATOMIC_H__
 #  define __WANT_STDC_SECURE_LIB__ 1
 #  define WIN32_LEAN_AND_MEAN
 #  define WINVER       0x0A00 /** Windows 10 SDK */
 #  define _WIN32_WINNT 0x0A00
-#  define _CRT_RAND_S
+#  define _CRT_RAND_S /**/
 #  if defined(__MINGW32__) || defined(__MINGW64__)
-#   define USE_PTHREAD_GETNAME_NP
+#   define USE_PTHREAD_GETNAME_NP /**/
 #  endif
 #  include <windows.h>
 #  include <io.h>
@@ -221,13 +221,13 @@ _set_thread_local_invalid_parameter_handler(
 # if defined(__MINGW64__)
 #  define PID_CAST (int)
 # else
-#  define PID_CAST
+#  define PID_CAST /**/
 # endif
 
 # if defined(_AIX)
 #  define CLOCK_CAST (int)
 # else
-#  define CLOCK_CAST
+#  define CLOCK_CAST /**/
 # endif
 
 # if defined(SIR_ASSERT_ENABLED)
@@ -259,10 +259,10 @@ _set_thread_local_invalid_parameter_handler(
 
 # if !defined(SIR_NO_SYSTEM_LOGGERS)
 #  if defined(__MACOS__) && !defined(__GNUC__)
-#   define SIR_OS_LOG_ENABLED
+#   define SIR_OS_LOG_ENABLED /**/
 #  else
 #   undef SIR_OS_LOG_ENABLED
-#   define SIR_SYSLOG_ENABLED
+#   define SIR_SYSLOG_ENABLED /**/
 #  endif
 # else
 #  undef SIR_OS_LOG_ENABLED
@@ -281,7 +281,7 @@ _set_thread_local_invalid_parameter_handler(
              (defined(__SUNPRO_C) || defined(__SUNPRO_CC))
 #   undef __USE_GNU
 #   include <fcntl.h>
-#   define __USE_GNU
+#   define __USE_GNU /**/
 #  else
 #   include <fcntl.h>
 #  endif
@@ -339,11 +339,11 @@ _set_thread_local_invalid_parameter_handler(
 #  endif
 
 #  if defined(__MACOS__)
-#   define SIR_MSEC_TIMER
-#   define SIR_MSEC_MACH
+#   define SIR_MSEC_TIMER /**/
+#   define SIR_MSEC_MACH /**/
 #  elif _POSIX_TIMERS > 0
-#   define SIR_MSEC_TIMER
-#   define SIR_MSEC_POSIX
+#   define SIR_MSEC_TIMER /**/
+#   define SIR_MSEC_POSIX /**/
 #  else
 #   undef SIR_MSEC_TIMER
 #  endif
@@ -370,8 +370,8 @@ typedef void (*sir_once_fn)(void);
 
 #  define SIR_MAXPATH MAX_PATH
 
-#  define SIR_MSEC_TIMER
-#  define SIR_MSEC_WIN32
+#  define SIR_MSEC_TIMER /**/
+#  define SIR_MSEC_WIN32 /**/
 
 /** The plugin handle type. */
 typedef HMODULE sir_pluginhandle;

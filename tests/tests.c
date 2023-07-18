@@ -1184,7 +1184,7 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
 
     for (int i = 0; i < runs; i++) {
         /* randomly skip setting process name, identity/category to thoroughly
-           test fallback routines; randomly update the config mid-run. */
+         * test fallback routines; randomly update the config mid-run. */
         bool set_procname = getrand_bool((uint32_t)sirtimerelapsed(&timer));
         bool set_identity = getrand_bool((uint32_t)sirtimerelapsed(&timer));
         bool set_category = getrand_bool((uint32_t)sirtimerelapsed(&timer));

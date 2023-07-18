@@ -39,7 +39,7 @@
 BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved);
 #  define PLUGIN_EXPORT __declspec(dllexport) /**< Windows-only export keyword. */
 # else
-#  define PLUGIN_EXPORT
+#  define PLUGIN_EXPORT /**/
 # endif
 
 /**

@@ -170,7 +170,7 @@ char* _sir_getcwd(void) {
 char* _sir_getappfilename(void) {
 #if defined(__linux__) || defined(__NetBSD__) || defined(__SOLARIS__) || \
     defined(__DragonFly__) || defined(__CYGWIN__) || defined(__serenity__)
-# define __READLINK_OS__
+# define __READLINK_OS__ /**/
 # if defined(__linux__) || defined(__CYGWIN__) || defined(__serenity__)
 #  define PROC_SELF "/proc/self/exe"
 # elif defined(__NetBSD__)

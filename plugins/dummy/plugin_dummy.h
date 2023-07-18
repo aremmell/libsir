@@ -33,7 +33,7 @@
 BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved);
 #  define PLUGIN_EXPORT __declspec(dllexport)
 # else
-#  define PLUGIN_EXPORT
+#  define PLUGIN_EXPORT /**/
 # endif
 
 PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info);
