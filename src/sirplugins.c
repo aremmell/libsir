@@ -37,8 +37,7 @@ sirpluginid _sir_plugin_load(const char* path) {
     if (!handle) {
         const char* err = dlerror();
         _sir_selflog("error: dlopen('%s') failed (%s)", path, _SIR_PRNSTR(err));
-        _sir_handleerr(errno);
-        return 0;
+        return _sir_handleerr(errno);
     }
 # else /* __WIN__ */
     UINT old_error_mode     = SetErrorMode(SEM_FAILCRITICALERRORS);
@@ -47,26 +46,22 @@ sirpluginid _sir_plugin_load(const char* path) {
     if (!handle) {
         DWORD err = GetLastError();
         _sir_selflog("error: LoadLibraryA(%s) failed (%lu)", path, err);
-        _sir_handlewin32err(err);
-        return 0;
+        return _sir_handlewin32err(err);
     }
 # endif
 
     sir_plugin* plugin = (sir_plugin*)calloc(1, sizeof(sir_plugin));
-    if (!plugin) {
-        _sir_handleerr(errno);
-        return 0;
-    }
-
-    plugin->path = strdup(path);
-    if (!plugin->path) {
-        _sir_handleerr(errno);
-        _sir_safefree(&plugin);
-        return 0;
-    }
+    if (!plugin)
+        return _sir_handleerr(errno);
 
     plugin->handle = handle;
     plugin->loaded = true;
+    plugin->path   = strdup(path);
+
+    if (!plugin->path) {
+        _sir_plugin_destroy(&plugin);
+        return _sir_handleerr(errno);
+    }
 
     _sir_selflog("loaded plugin (path: '%s', addr: %p); probing...",
         plugin->path, plugin->handle);
@@ -86,8 +81,8 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
      * modify/extend the following code:
      *
      * - remove the enclosing #if
-     * - get the v1 exports (all versions will have v1 exports), resolve them, and
-     * call sir_plugin_query.
+     * - get the v1 exports (all versions will have v1 exports), resolve them,
+     * and call sir_plugin_query.
      * - switch on version returned to resolve additional exports. this will
      * necessitate additional versioned interface strctures as members of the
      * sir_plugin struct, e.g. ifacev1, ifacev2). */
@@ -108,9 +103,8 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
                      " %"PRIxPTR", cleanup; %"PRIxPTR")",
                      (uintptr_t)plugin->iface.query, (uintptr_t)plugin->iface.init,
                      (uintptr_t)plugin->iface.write, (uintptr_t)plugin->iface.cleanup);
-        _sir_seterror(_SIR_E_PLUGINBAD);
         _sir_plugin_destroy(&plugin);
-        return 0;
+        return _sir_seterror(_SIR_E_PLUGINBAD);
     }
 # else
 #  error "plugin version not implemented"
@@ -120,9 +114,8 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     if (!plugin->iface.query(&plugin->info)) {
         _sir_selflog("error: plugin (path: '%s', addr: %p) returned false from"
                      " query fn!", plugin->path, plugin->handle);
-        _sir_seterror(_SIR_E_PLUGINERR);
         _sir_plugin_destroy(&plugin);
-        return 0;
+        return _sir_seterror(_SIR_E_PLUGINERR);
     }
 
     /* verify version. */
@@ -130,27 +123,24 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         _sir_selflog("error: plugin (path: '%s', addr: %p) has version"
                      " %"PRIu8"; libsir has %d", plugin->path, plugin->handle,
                      plugin->info.iface_ver, SIR_PLUGIN_VCURRENT);
-        _sir_seterror(_SIR_E_PLUGINVER);
         _sir_plugin_destroy(&plugin);
-        return 0;
+        return _sir_seterror(_SIR_E_PLUGINVER);
     }
 
     /* verify level registration bitmask. */
     if (!_sir_validlevels(plugin->info.levels)) {
         _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid levels"
                      " %04"PRIx16, plugin->path, plugin->handle, plugin->info.levels);
-        _sir_seterror(_SIR_E_PLUGINDAT);
         _sir_plugin_destroy(&plugin);
-        return 0;
+        return _sir_seterror(_SIR_E_PLUGINDAT);
     }
 
     /* verify formatting options bitmask. */
     if (!_sir_validopts(plugin->info.opts)) {
         _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid opts"
                      " %08"PRIx32, plugin->path, plugin->handle, plugin->info.opts);
-        _sir_seterror(_SIR_E_PLUGINDAT);
         _sir_plugin_destroy(&plugin);
-        return 0;
+        return _sir_seterror(_SIR_E_PLUGINDAT);
     }
 
     /* verify strings */
@@ -158,9 +148,8 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         !_sir_validstrnofail(plugin->info.desc)) {
         _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid author"
                      " or description", plugin->path, plugin->handle);
-        _sir_seterror(_SIR_E_PLUGINDAT);
         _sir_plugin_destroy(&plugin);
-        return 0;
+        return _sir_seterror(_SIR_E_PLUGINDAT);
     }
 
     /* plugin is valid; tell it to initialize, assign it an id,
@@ -168,9 +157,8 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     if (!plugin->iface.init()) {
         _sir_selflog("error: plugin (path: '%s', addr: %p) failed to initialize!",
             plugin->path, plugin->handle);
-        _sir_seterror(_SIR_E_PLUGINERR);
         _sir_plugin_destroy(&plugin);
-        return 0;
+        return _sir_seterror(_SIR_E_PLUGINERR);
     }
 
     plugin->id    = FNV32_1a((const uint8_t*)&plugin->iface, sizeof(sir_pluginiface));
@@ -205,8 +193,7 @@ uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
         const char* err = dlerror();
         _sir_selflog("error: dlsym(%p, '%s') failed (%s)", handle, name,
             _SIR_PRNSTR(err));
-        _sir_handleerr(errno);
-        return 0;
+        return _sir_handleerr(errno);
     }
 # else /* __WIN__ */
     sir_pluginexport addr = GetProcAddress(handle, name);
@@ -214,8 +201,7 @@ uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
         DWORD err = GetLastError();
         _sir_selflog("error: GetProcAddress(%p, '%s') failed (%lu)", handle,
             name, err);
-        _sir_handlewin32err(err);
-        return 0;
+        return _sir_handlewin32err(err);
     }
 # endif
 
@@ -228,24 +214,23 @@ void _sir_plugin_unload(sir_plugin* plugin) {
     if (!_sir_validptrnofail(plugin))
         return;
 
-    /* if the cleanup export was resolved, call it. */
-    if (plugin->iface.cleanup)
-        plugin->iface.cleanup();
+    /* if the plugin cleanup export was resolved, call it. */
+    if (plugin->iface.cleanup && !plugin->iface.cleanup())
+        _sir_selflog("error: plugin (path: '%s', addr: %p) reports unsuccessful"
+                     " cleanup!", plugin->path, plugin->handle);
 
 # if !defined(__WIN__)
-    int ret = dlclose(plugin->handle);
-    if (0 != ret) {
-        const char* err = dlerror();
-        _sir_selflog("error: dlclose(%p) failed (%s)", plugin->handle, //-V774
-            _SIR_PRNSTR(err));
-        _sir_handleerr(errno);
+    if (0 != dlclose(plugin->handle)) {
+        _sir_selflog("error: dlclose(%p) failed (%s)", plugin->handle, //-V576
+            _SIR_PRNSTR(dlerror()));
+        (void)_sir_handleerr(errno);
         return;
     }
 # else /* __WIN__ */
     if (!FreeLibrary(plugin->handle)) {
         DWORD err = GetLastError();
         _sir_selflog("error: FreeLibrary(%p) failed (%lu)", plugin->handle, err);
-        _sir_handlewin32err(err);
+        (void)_sir_handlewin32err(err);
         return;
     }
 # endif
@@ -257,7 +242,7 @@ void _sir_plugin_unload(sir_plugin* plugin) {
 }
 
 sirpluginid _sir_plugin_add(sir_plugin* plugin) {
-    _sir_seterror(_SIR_E_NOERROR);
+    (void)_sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validptr(plugin))
         return 0;
@@ -270,7 +255,7 @@ sirpluginid _sir_plugin_add(sir_plugin* plugin) {
 }
 
 bool _sir_plugin_rem(sirpluginid id) {
-    _sir_seterror(_SIR_E_NOERROR);
+    (void)_sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity())
         return false;
@@ -299,17 +284,14 @@ sirpluginid _sir_plugin_cache_add(sir_plugincache* spc, sir_plugin* plugin) {
     if (!_sir_validptr(spc) || !_sir_validptr(plugin))
         return 0;
 
-    if (spc->count >= SIR_MAXPLUGINS) {
-        _sir_seterror(_SIR_E_NOROOM);
-        return 0;
-    }
+    if (spc->count >= SIR_MAXPLUGINS)
+        return _sir_seterror(_SIR_E_NOROOM);
 
     sir_plugin* existing = _sir_plugin_cache_find_id(spc, plugin->id);
     if (NULL != existing) {
         _sir_selflog("error: already have plugin (path: '%s', id %08"PRIx32")",
             existing->path, plugin->id);
-        _sir_seterror(_SIR_E_DUPITEM);
-        return 0;
+        return _sir_seterror(_SIR_E_DUPITEM);
     }
 
     _sir_selflog("adding plugin (path: %s, id: %08"PRIx32"); count = %zu",
@@ -356,8 +338,7 @@ bool _sir_plugin_cache_rem(sir_plugincache* spc, sirpluginid id) {
         }
     }
 
-    _sir_seterror(_SIR_E_NOITEM);
-    return false;
+    return _sir_seterror(_SIR_E_NOITEM);
 }
 
 bool _sir_plugin_cache_destroy(sir_plugincache* spc) {

@@ -48,7 +48,7 @@ static _sir_thread_local sir_thread_err sir_te = {
     _SIR_E_NOERROR, 0, {0}, {SIR_UNKNOWN, SIR_UNKNOWN, 0}
 };
 
-void __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t line) {
+bool __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t line) {
     if (_sir_validerror(err)) {
         sir_te.lasterror = err;
         sir_te.loc.func  = func;
@@ -56,13 +56,14 @@ void __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t l
         sir_te.loc.line  = line;
     }
 #if defined(DEBUG) && defined(SIR_SELFLOG)
-    if (_SIR_E_NOERROR != err) {
+    if (_SIR_E_NOERROR != err) { //-V616
         char errmsg[SIR_MAXERROR] = {0};
         uint32_t code             = _sir_geterror(errmsg);
         _SIR_UNUSED(code);
         __sir_selflog(func, file, line, "%s", errmsg);
     }
 #endif
+    return false;
 }
 
 void __sir_setoserror(int code, const char* msg, const char* func, const char* file,
@@ -76,7 +77,7 @@ void __sir_setoserror(int code, const char* msg, const char* func, const char* f
     __sir_seterror(_SIR_E_PLATFORM, func, file, line);
 }
 
-void __sir_handleerr(int code, const char* func, const char* file, uint32_t line) {
+bool __sir_handleerr(int code, const char* func, const char* file, uint32_t line) {
     if (SIR_E_NOERROR != code) {
         char message[SIR_MAXERROR] = {0};
         int finderr                = 0;
@@ -120,6 +121,7 @@ void __sir_handleerr(int code, const char* func, const char* file, uint32_t line
 #endif
         }
     }
+    return false;
 }
 
 #if defined(__WIN__)
@@ -130,7 +132,7 @@ void _sir_invalidparameter(const wchar_t* expr, const wchar_t* func, const wchar
     _SIR_UNUSED(reserved);
 }
 
-void __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32_t line) {
+bool __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32_t line) {
     char* errbuf = NULL;
     DWORD flags  = FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |
                    FORMAT_MESSAGE_IGNORE_INSERTS  | FORMAT_MESSAGE_MAX_WIDTH_MASK;
@@ -141,7 +143,7 @@ void __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32
             errbuf[fmtmsg - 1] = '\0';
         __sir_setoserror((int)code, errbuf, func, file, line);
     } else {
-        _sir_selflog("FormatMessage failed! error: %d", GetLastError());
+        _sir_selflog("FormatMessage failed! error: %lu", GetLastError());
         SIR_ASSERT(false);
     }
 
@@ -151,6 +153,7 @@ void __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32
         SIR_ASSERT(NULL == local_free);
         errbuf = NULL;
     }
+    return false;
 }
 #endif
 

@@ -30,6 +30,7 @@
 # include "sir/errors.h"
 # include "sir/filecache.h"
 # include "sir/internal.h"
+# include "sir/mutex.h"
 # include "sir/filesystem.h"
 # include "sir/helpers.h"
 # include "sir/textstyle.h"
@@ -214,6 +215,12 @@ bool sirtest_optionssanity(void);
 bool sirtest_levelssanity(void);
 
 /**
+ * @test Ensure that the mutex implementation is functioning properly.
+ * @returns bool `true` if the test passed, `false` otherwise.
+ */
+bool sirtest_mutexsanity(void);
+
+/**
  * @test Performance evaluation.
  * @returns bool `true` if the test passed, `false` otherwise.
  */
@@ -265,6 +272,7 @@ bool sirtest_pluginloader(void);
  */
 bool sirtest_getversioninfo(void);
 
+
 /** @} */
 
 /**
@@ -286,12 +294,12 @@ bool filter_error(bool pass, uint16_t err);
 # if !defined(__WIN__)
 #  define handle_os_error(clib, fmt, ...) \
      (void)clib; \
-     _sir_handleerr(errno); \
+     (void)_sir_handleerr(errno); \
      fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
      print_os_error();
 # else /* __WIN__ */
 #  define handle_os_error(clib, fmt, ...) \
-     clib ? _sir_handleerr(errno) : _sir_handlewin32err(GetLastError()); \
+     clib ? (void)_sir_handleerr(errno) : (void)_sir_handlewin32err(GetLastError()); \
      fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
      print_os_error();
 # endif

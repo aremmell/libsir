@@ -31,10 +31,8 @@
 /** Computes the size of an array. */
 # define _sir_countof(arr) (sizeof(arr) / sizeof(arr[0]))
 
-/**
- * Creates an error code that (hopefully) doesn't conflict
- * with any of those defined by the platform.
- */
+/** Creates an error code that (hopefully) doesn't conflict with any of those
+ * defined by the platform. */
 # define _sir_mkerror(code) (((uint32_t)((code) & 0x7fff) << 16) | 0x80000000)
 
 /** Validates an internal error. */
@@ -67,7 +65,7 @@ uint16_t _sir_geterrcode(uint32_t err) {
 # define _SIR_LOCK_SECTION(type, name, mid, ret) \
     type* name = _sir_locksection(mid); \
     if (!name) { \
-        _sir_seterror(_SIR_E_INTERNAL); \
+        (void)_sir_seterror(_SIR_E_INTERNAL); \
         return ret; \
     }
 
@@ -108,8 +106,20 @@ uint16_t _sir_geterrcode(uint32_t err) {
 # define _SIR_END_BIN_SEARCH() \
     } while (true);
 
+/* Validates a pointer and optionally fails if it's invalid. */
+bool __sir_validptr(const void* restrict p, bool fail);
+
+/** Validates a pointer-to-pointer and optionally fails if it's invalid. */
+bool __sir_validptrptr(const void* restrict* pp, bool fail);
+
+/** Validates a pointer but ignores whether it's invalid. */
+# define _sir_validptrnofail(p) __sir_validptr(p, false)
+
 /** Validates a pointer and fails if it's invalid. */
 # define _sir_validptr(p) __sir_validptr((const void* restrict)p, true)
+
+/** Validates a pointer-to-function and fails if it's invalid. */
+# define _sir_validfnptr(fnp) __sir_validptrptr((const void* restrict*)&fnp, true)
 
 /** Validates a pointer-to-pointer and fails if it's invalid. */
 # define _sir_validptrptr(pp) __sir_validptrptr((const void* restrict*)pp, true)
@@ -140,16 +150,16 @@ bool _sir_setbitslow(uint32_t* flags, uint32_t set) {
     return true;
 }
 
-/** Calls free and then sets pointer to NULL after freeing. */
+/** Calls free and sets the pointer to NULL. */
 void __sir_safefree(void** pp);
 
 /** Wraps __sir_safefree with a cast to void**. */
 # define _sir_safefree(pp) __sir_safefree((void**)pp)
 
-/** Wraps close. */
+/** Calls close and sets the descriptor to -1. */
 void _sir_safeclose(int* restrict fd);
 
-/** Wraps fclose. */
+/** Calls fclose and sets the stream pointer to NULL. */
 void _sir_safefclose(FILE* restrict* restrict f);
 
 /** Validates a log file descriptor. */
@@ -193,14 +203,14 @@ void _sir_defaultopts(sir_options* opts, sir_options def) {
 /** Validates a set of ::sir_option flags. */
 bool _sir_validopts(sir_options opts);
 
-/** Validates a ::sir_colormode. */
-bool _sir_validcolormode(sir_colormode mode);
-
 /** Validates a ::sir_textattr. */
 bool _sir_validtextattr(sir_textattr attr);
 
 /** Validates a ::sir_textcolor based on color mode. */
 bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color);
+
+/** Validates a ::sir_colormode. */
+bool _sir_validcolormode(sir_colormode mode);
 
 /** Converts a SIRTC_* value to a 16-color mode ANSI foreground color. */
 static inline
@@ -258,34 +268,10 @@ sir_textcolor _sir_makergb(sir_textcolor r, sir_textcolor g, sir_textcolor b) {
 bool __sir_validstr(const char* restrict str, bool fail);
 
 /** Validates a string pointer and fails if it's invalid. */
-static inline
-bool _sir_validstr(const char* restrict str) {
-    return __sir_validstr(str, true);
-}
+# define _sir_validstr(str) __sir_validstr(str, true)
 
 /** Validates a string pointer but ignores whether it's invalid. */
-static inline
-bool _sir_validstrnofail(const char* restrict str) {
-    return __sir_validstr(str, false);
-}
-
-/** Validates a pointer and optionally fails if it's invalid. */
-bool __sir_validptr(const void* restrict p, bool fail);
-
-/** Validates a pointer but ignores whether it's invalid. */
-static inline
-bool _sir_validptrnofail(const void* restrict p) {
-    return __sir_validptr(p, false);
-}
-
-/** Validates a pointer-to-pointer and optionally fails if it's invalid. */
-bool __sir_validptrptr(const void* restrict* pp, bool fail);
-
-/** Validates a pointer and fails if it's invalid. */
-# define _sir_validptr(p) __sir_validptr((const void* restrict)p, true)
-
-/** Validates a pointer-to-function and fails if it's invalid. */
-# define _sir_validfnptr(fnp) __sir_validptrptr((const void* restrict*)&fnp, true)
+# define _sir_validstrnofail(str) __sir_validstr(str, false)
 
 /** Places a null terminator at the first index in a string buffer. */
 static inline
@@ -333,7 +319,7 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
  * A portable "press any key to continue" implementation; On Windows, uses _getch().
  * otherwise, uses tcgetattr()/tcsetattr() and getchar().
  */
-int _sir_getchar(void);
+bool _sir_getchar(char* input);
 
 /**
  * Implementation of the 32-bit FNV-1a OWHF (http://isthe.com/chongo/tech/comp/fnv/)

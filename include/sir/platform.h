@@ -186,7 +186,9 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  undef __HAVE_ATOMIC_H__
 #  define __WANT_STDC_SECURE_LIB__ 1
 #  define WIN32_LEAN_AND_MEAN
+#  undef WINVER
 #  define WINVER       0x0A00 /** Windows 10 SDK */
+#  undef _WIN32_WINNT
 #  define _WIN32_WINNT 0x0A00
 #  define _CRT_RAND_S
 #  if defined(__MINGW32__) || defined(__MINGW64__)
@@ -201,6 +203,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  include <shlwapi.h>
 #  include <direct.h>
 #  if defined(__MINGW32__) || defined(__MINGW64__)
+#   undef __USE_MINGW_ANSI_STDIO
 #   define __USE_MINGW_ANSI_STDIO 1
 #   include <pthread.h>
 typedef  /* Workaround a MinGW bug */
@@ -366,6 +369,9 @@ typedef void (*sir_once_fn)(void);
 /** The one-time initializer. */
 #  define SIR_ONCE_INIT PTHREAD_ONCE_INIT
 
+/** The mutex initializer. */
+#  define SIR_MUTEX_INIT PTHREAD_MUTEX_INITIALIZER
+
 # else /* __WIN__ */
 
 #  define SIR_MAXPATH MAX_PATH
@@ -395,6 +401,9 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 /** The one-time initializer. */
 #  define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
+
+/** The mutex initializer. */
+#  define SIR_MUTEX_INIT NULL
 
 # endif /* !__WIN__ */
 
