@@ -126,7 +126,7 @@ void __sir_setoserror(int code, const char* msg, const char* func,
     const char* file, uint32_t line);
 
 /** Handle a C library error. */
-bool __sir_handleerr(int code, const char* func, const char* file, uint32_t line);
+bool __sir_handleerr(int code, const char* func, const char* file, uint32_t line); //-V1071
 # define _sir_handleerr(code) __sir_handleerr(code, __func__, __file__, __LINE__)
 
 # if defined(__WIN__)
