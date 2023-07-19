@@ -202,7 +202,7 @@ char* _sir_getappfilename(void) {
             resolved = true;
             break;
         } else if (-1 == read) {
-            resolved = _sir_handleerr(errno);;
+            resolved = _sir_handleerr(errno);
             break;
         } else if (read == (ssize_t)size - 1) {
             /*
@@ -223,7 +223,7 @@ char* _sir_getappfilename(void) {
             resolved = true;
             break;
         } else {
-            resolved = _sir_handleerr(errno);;
+            resolved = _sir_handleerr(errno);
             break;
         }
 # elif defined(__OpenBSD__)
@@ -280,7 +280,7 @@ char* _sir_getappfilename(void) {
             /* grow buffer. */
             continue;
         } else {
-            resolved = _sir_handleerr(errno);;
+            resolved = _sir_handleerr(errno);
             break;
         }
 # else
