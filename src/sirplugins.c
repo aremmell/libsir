@@ -39,7 +39,7 @@ sirpluginid _sir_plugin_load(const char* path) {
 # if !defined (__WIN__)
     plugin->handle = dlopen(path, RTLD_NOW | RTLD_LOCAL);
     if (!plugin->handle) {
-        _sir_selflog("error: dlopen('%s') failed (%s)", path, _SIR_PRNSTR(dlerror()));
+        _sir_selflog("error: dlopen('%s') failed (%s)", path, _SIR_PRNSTR(dlerror())); //-V576
         _sir_plugin_destroy(&plugin);
         return _sir_handleerr(errno);
     }
@@ -55,7 +55,7 @@ sirpluginid _sir_plugin_load(const char* path) {
 # endif
 
     plugin->loaded = true;
-    plugin->path   = strdup(path);
+    plugin->path   = strndup(path, SIR_MAXPATH);
 
     if (!plugin->path) {
         _sir_plugin_destroy(&plugin);
