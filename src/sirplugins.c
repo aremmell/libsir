@@ -221,7 +221,7 @@ void _sir_plugin_unload(sir_plugin* plugin) {
 
 # if !defined(__WIN__)
     if (0 != dlclose(plugin->handle)) {
-        _sir_selflog("error: dlclose(%p) failed (%s)", plugin->handle, //-V774
+        _sir_selflog("error: dlclose(%p) failed (%s)", plugin->handle, //-V576
             _SIR_PRNSTR(dlerror()));
         (void)_sir_handleerr(errno);
         return;
