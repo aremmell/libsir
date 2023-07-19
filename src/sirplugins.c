@@ -37,8 +37,7 @@ sirpluginid _sir_plugin_load(const char* path) {
     if (!handle) {
         const char* err = dlerror();
         _sir_selflog("error: dlopen('%s') failed (%s)", path, _SIR_PRNSTR(err));
-        (void)_sir_handleerr(errno);
-        return 0;
+        return _sir_handleerr(errno);
     }
 # else /* __WIN__ */
     UINT old_error_mode     = SetErrorMode(SEM_FAILCRITICALERRORS);
@@ -53,10 +52,8 @@ sirpluginid _sir_plugin_load(const char* path) {
 # endif
 
     sir_plugin* plugin = (sir_plugin*)calloc(1, sizeof(sir_plugin));
-    if (!plugin) {
-        (void)_sir_handleerr(errno);
-        return 0;
-    }
+    if (!plugin)
+        return _sir_handleerr(errno);
 
     plugin->handle = handle;
     plugin->loaded = true;
@@ -85,8 +82,8 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
      * modify/extend the following code:
      *
      * - remove the enclosing #if
-     * - get the v1 exports (all versions will have v1 exports), resolve them, and
-     * call sir_plugin_query.
+     * - get the v1 exports (all versions will have v1 exports), resolve them,
+     * and call sir_plugin_query.
      * - switch on version returned to resolve additional exports. this will
      * necessitate additional versioned interface strctures as members of the
      * sir_plugin struct, e.g. ifacev1, ifacev2). */
@@ -204,8 +201,7 @@ uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
         const char* err = dlerror();
         _sir_selflog("error: dlsym(%p, '%s') failed (%s)", handle, name,
             _SIR_PRNSTR(err));
-        (void)_sir_handleerr(errno);
-        return 0;
+        return _sir_handleerr(errno);
     }
 # else /* __WIN__ */
     sir_pluginexport addr = GetProcAddress(handle, name);
@@ -213,8 +209,7 @@ uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
         DWORD err = GetLastError();
         _sir_selflog("error: GetProcAddress(%p, '%s') failed (%lu)", handle,
             name, err);
-        (void)_sir_handlewin32err(err);
-        return 0;
+        return _sir_handlewin32err(err);
     }
 # endif
 
