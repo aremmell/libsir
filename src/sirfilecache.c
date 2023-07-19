@@ -116,6 +116,7 @@ bool _sirfile_open(sirfile* sf) {
     if (!_sir_validfd(fd)) {
         if (!existed)
             _sir_deletefile(sf->path);
+        _sirfile_close(sf);
         return false;
     }
 
