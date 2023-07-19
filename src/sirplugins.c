@@ -232,7 +232,7 @@ void _sir_plugin_unload(sir_plugin* plugin) {
 #if !defined(SIR_NO_PLUGINS)
     if (!_sir_validptrnofail(plugin) || !_sir_validptrnofail(plugin->handle)) {
         _sir_selflog("error: plugin object (%p) or handle (%p) are null;"
-                     " cannot unload!", plugin, (plugin ? plugin->handle : NULL));
+                     " cannot unload!", (void*)plugin, (plugin ? plugin->handle : NULL));
         return;
     }
 
