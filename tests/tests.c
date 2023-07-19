@@ -1979,8 +1979,9 @@ unsigned sirtest_thread(void* arg) {
         }
 
         /* sometimes remove and re-add the log file, and set some options/styles.
-           other times, just set different options/styles. */
-        if (getrand_bool((uint32_t)(n + threadid + 1))) {
+         * other times, just set different options/styles. */
+        uint32_t rnd = (uint32_t)(n + threadid);
+        if (getrand_bool((uint32_t)(rnd > 1 ? rnd : 1))) {
             if (!sir_remfile(id))
                 my_args->pass = print_test_error(false, false);
 
