@@ -305,18 +305,15 @@ char* _sir_getappfilename(void) {
 
     } while (true);
 
-    if (!resolved) {
+    if (!resolved)
         _sir_safefree(&buffer);
-        _sir_selflog("error: failed to resolve filename!");
-        return NULL;
-    }
 
     return buffer;
 }
 
 char* _sir_getappbasename(void) {
     char* filename = _sir_getappfilename();
-    if (_sir_validptr(filename) && !_sir_validstr(filename)) {
+    if (!_sir_validstr(filename)) {
         _sir_safefree(&filename);
         return NULL;
     }
@@ -330,7 +327,7 @@ char* _sir_getappbasename(void) {
 
 char* _sir_getappdir(void) {
     char* filename = _sir_getappfilename();
-    if (_sir_validptr(filename) && !_sir_validstr(filename)) {
+    if (!_sir_validstr(filename)) {
         _sir_safefree(&filename);
         return NULL;
     }
@@ -360,8 +357,7 @@ char* _sir_getdirname(char* restrict path) {
 #if !defined(__WIN__)
     return dirname(path);
 #else /* __WIN__ */
-    BOOL unused = PathRemoveFileSpecA((LPSTR)path);
-    _SIR_UNUSED(unused);
+    (void)PathRemoveFileSpecA((LPSTR)path);
     return path;
 #endif
 }
@@ -392,13 +388,10 @@ bool _sir_getrelbasepath(const char* restrict path, bool* restrict relative,
 
     if (*relative) {
         switch (rel_to) {
-            case SIR_PATH_REL_TO_APP: *base_path = _sir_getappdir(); break;
-            case SIR_PATH_REL_TO_CWD: *base_path = _sir_getcwd(); break;
+            case SIR_PATH_REL_TO_APP: return NULL != (*base_path = _sir_getappdir());
+            case SIR_PATH_REL_TO_CWD: return NULL != (*base_path = _sir_getcwd());
             default: return _sir_seterror(_SIR_E_INVALID);
         }
-
-        if (!*base_path)
-            return false;
     }
 
     return true;
@@ -559,17 +552,9 @@ bool _sir_deletefile(const char* restrict path) {
         return false;
 
 #if !defined(__WIN__)
-    if (0 != unlink(path)) {
-        _sir_selflog("failed to delete: '%s' (%d)", path, errno);
-        return false;
-    }
-    return true;
+    return (0 == unlink(path)) ? true : _sir_handleerr(errno);
 #else /* __WIN__ */
-    if (!DeleteFileA(path)) {
-        _sir_selflog("failed to delete: '%s' (%lu)", path, GetLastError());
-        return false;
-    }
-    return true;
+    return (FALSE != DeleteFileA(path)) ? true : _sir_handlewin32err(GetLastError());
 #endif
 }
 
