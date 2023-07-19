@@ -1465,14 +1465,16 @@ bool sirtest_filesystem(void) {
         "/foo/",
         "/foo/bar",
         "/foo/bar/bad:filename",
-        "/"
+        "/",
+        ""
 #else /* __WIN__ */
         "C:\\foo",
         "C:\\foo\\",
         "C:\\foo\\bar",
         "C:\\foo\\bar\\bad:>filename",
         "C:\\",
-        "//network-share/myfolder"
+        "//network-share/myfolder",
+        ""
 #endif
     };
 
@@ -1490,13 +1492,15 @@ bool sirtest_filesystem(void) {
         "foo/bar/file-or-directory",
         "/foo/bar/file-or-directory",
         "/foo/bar/illegal:filename",
-        "/"
+        "/",
+        ""
 #else /* __WIN__ */
         "foo\\bar\\file.with.many.full.stops",
         "C:\\foo\\bar\\poorly-renamed.txt.pdf",
         "C:\\foo\\bar\\illegal>filename.txt",
         "C:\\",
-        "\\Program Files\\foo.bar"
+        "\\Program Files\\foo.bar",
+        ""
 #endif
     };
 
