@@ -32,11 +32,15 @@ sirpluginid _sir_plugin_load(const char* path) {
     if (!_sir_validstr(path))
         return 0;
 
+    sir_plugin* plugin = (sir_plugin*)calloc(1, sizeof(sir_plugin));
+    if (!plugin)
+        return _sir_handleerr(errno);
+
 # if !defined (__WIN__)
-    sir_pluginhandle handle = dlopen(path, RTLD_NOW | RTLD_LOCAL);
-    if (!handle) {
-        const char* err = dlerror();
-        _sir_selflog("error: dlopen('%s') failed (%s)", path, _SIR_PRNSTR(err));
+    plugin->handle = dlopen(path, RTLD_NOW | RTLD_LOCAL);
+    if (!plugin->handle) {
+        _sir_selflog("error: dlopen('%s') failed (%s)", path, _SIR_PRNSTR(dlerror()));
+        _sir_plugin_destroy(&plugin);
         return _sir_handleerr(errno);
     }
 # else /* __WIN__ */
@@ -50,11 +54,6 @@ sirpluginid _sir_plugin_load(const char* path) {
     }
 # endif
 
-    sir_plugin* plugin = (sir_plugin*)calloc(1, sizeof(sir_plugin));
-    if (!plugin)
-        return _sir_handleerr(errno);
-
-    plugin->handle = handle;
     plugin->loaded = true;
     plugin->path   = strdup(path);
 
@@ -226,12 +225,15 @@ uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
 
 void _sir_plugin_unload(sir_plugin* plugin) {
 #if !defined(SIR_NO_PLUGINS)
-    if (!_sir_validptrnofail(plugin))
+    if (!_sir_validptrnofail(plugin) || !_sir_validptrnofail(plugin->handle)) {
+        _sir_selflog("error: plugin object (%p) or handle (%p) are null;"
+                     " cannot unload!", plugin, (plugin ? plugin->handle : NULL));
         return;
+    }
 
     /* if the plugin cleanup export was resolved, call it. */
     if (plugin->iface.cleanup && !plugin->iface.cleanup())
-        _sir_selflog("error: plugin (path: '%s', addr: %p) reports unsuccessful"
+        _sir_selflog("warning: plugin (path: '%s', addr: %p) reports unsuccessful"
                      " cleanup!", plugin->path, plugin->handle);
 
 # if !defined(__WIN__)
