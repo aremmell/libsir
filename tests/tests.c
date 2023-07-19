@@ -15,7 +15,7 @@
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ *p
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
@@ -1738,7 +1738,7 @@ bool sirtest_pluginloader(void) {
 
     printf("\tloading bad plugin: '%s'...\n", plugin7);
     badid = sir_loadplugin(plugin7);
-    pass &= 0 != badid;
+    pass &= 0 == badid;
 
     if (pass)
         print_expected_error();
