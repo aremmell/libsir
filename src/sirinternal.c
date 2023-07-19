@@ -40,17 +40,17 @@ static sirconfig _sir_cfg      = {0};
 static sirfcache _sir_fc       = {0};
 static sir_plugincache _sir_pc = {0};
 
-static sir_mutex cfg_mutex;
-static sir_once cfg_once = SIR_ONCE_INIT;
+static sir_mutex cfg_mutex = SIR_MUTEX_INIT;
+static sir_once cfg_once   = SIR_ONCE_INIT;
 
-static sir_mutex fc_mutex;
-static sir_once fc_once = SIR_ONCE_INIT;
+static sir_mutex fc_mutex  = SIR_MUTEX_INIT;
+static sir_once fc_once    = SIR_ONCE_INIT;
 
-static sir_mutex pc_mutex;
-static sir_once pc_once = SIR_ONCE_INIT;
+static sir_mutex pc_mutex  = SIR_MUTEX_INIT;
+static sir_once pc_once    = SIR_ONCE_INIT;
 
-static sir_mutex ts_mutex;
-static sir_once ts_once = SIR_ONCE_INIT;
+static sir_mutex ts_mutex  = SIR_MUTEX_INIT;
+static sir_once ts_once    = SIR_ONCE_INIT;
 
 static sir_once magic_once = SIR_ONCE_INIT;
 
@@ -84,20 +84,18 @@ bool _sir_makeinit(sirinit* si) {
 }
 
 bool _sir_init(sirinit* si) {
-    _sir_seterror(_SIR_E_NOERROR);
+    (void)_sir_seterror(_SIR_E_NOERROR);
     _sir_once(&magic_once, _sir_initialize_once);
 
     if (!_sir_validptr(si))
         return false;
 
 #if defined(__HAVE_ATOMIC_H__)
-    if (_SIR_MAGIC == atomic_load(&_sir_magic)) {
+    if (_SIR_MAGIC == atomic_load(&_sir_magic))
 #else
-    if (_SIR_MAGIC == _sir_magic) {
+    if (_SIR_MAGIC == _sir_magic)
 #endif
-        _sir_seterror(_SIR_E_ALREADY);
-        return false;
-    }
+        return _sir_seterror(_SIR_E_ALREADY);
 
     _sir_defaultlevels(&si->d_stdout.levels, sir_stdout_def_lvls);
     _sir_defaultopts(&si->d_stdout.opts, sir_stdout_def_opts);
@@ -151,7 +149,7 @@ bool _sir_init(sirinit* si) {
 
     if (0 > snprintf(_cfg->state.pidbuf, SIR_MAXPID, SIR_PIDFORMAT,
                      PID_CAST _cfg->state.pid))
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     /* initialize system logger. */
@@ -227,9 +225,7 @@ bool _sir_sanity(void) {
     if (_SIR_MAGIC == _sir_magic)
         return true;
 #endif
-
-    _sir_seterror(_SIR_E_NOTREADY);
-    return false;
+    return _sir_seterror(_SIR_E_NOTREADY);
 }
 
 bool _sir_init_sanity(const sirinit* si) {
@@ -354,7 +350,7 @@ bool _sir_syslogcat(sirinit* si, sir_update_config_data* data) {
 }
 
 bool _sir_writeinit(sir_update_config_data* data, sirinit_update update) {
-    _sir_seterror(_SIR_E_NOERROR);
+    (void)_sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validupdatedata(data) || !_sir_validfnptr(update))
         return false;
@@ -373,7 +369,7 @@ void* _sir_locksection(sir_mutex_id mid) {
     sir_mutex* m = NULL;
     void* sec    = NULL;
 
-    bool enter = _sir_mapmutexid(mid, &m, &sec) && _sirmutex_lock(m);
+    bool enter = _sir_mapmutexid(mid, &m, &sec) && _sir_mutexlock(m);
     SIR_ASSERT(enter);
 
     if (!enter)
@@ -386,7 +382,7 @@ void _sir_unlocksection(sir_mutex_id mid) {
     sir_mutex* m = NULL;
     void* sec    = NULL;
 
-    bool leave = _sir_mapmutexid(mid, &m, &sec) && _sirmutex_unlock(m);
+    bool leave = _sir_mapmutexid(mid, &m, &sec) && _sir_mutexunlock(m);
     SIR_ASSERT(leave);
 
     if (!leave)
@@ -443,22 +439,22 @@ void _sir_initialize_once(void) {
 }
 
 void _sir_initmutex_cfg_once(void) {
-    if (!_sirmutex_create(&cfg_mutex))
+    if (!_sir_mutexcreate(&cfg_mutex))
         _sir_selflog("error: failed to create mutex!");
 }
 
 void _sir_initmutex_fc_once(void) {
-    if (!_sirmutex_create(&fc_mutex))
+    if (!_sir_mutexcreate(&fc_mutex))
         _sir_selflog("error: failed to create mutex!");
 }
 
 void _sir_initmutex_pc_once(void) {
-    if (!_sirmutex_create(&pc_mutex))
+    if (!_sir_mutexcreate(&pc_mutex))
         _sir_selflog("error: failed to create mutex!");
 }
 
 void _sir_initmutex_ts_once(void) {
-    if (!_sirmutex_create(&ts_mutex))
+    if (!_sir_mutexcreate(&ts_mutex))
         _sir_selflog("error: failed to create mutex!");
 }
 #else /* __WIN__ */
@@ -474,7 +470,7 @@ BOOL CALLBACK _sir_initmutex_cfg_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx)
     _SIR_UNUSED(param);
     _SIR_UNUSED(ctx)
 
-    if (!_sirmutex_create(&cfg_mutex)) {
+    if (!_sir_mutexcreate(&cfg_mutex)) {
         _sir_selflog("error: failed to create mutex!");
         return FALSE;
     }
@@ -487,7 +483,7 @@ BOOL CALLBACK _sir_initmutex_fc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) 
     _SIR_UNUSED(param);
     _SIR_UNUSED(ctx)
 
-    if (!_sirmutex_create(&fc_mutex)) {
+    if (!_sir_mutexcreate(&fc_mutex)) {
         _sir_selflog("error: failed to create mutex!");
         return FALSE;
     }
@@ -500,7 +496,7 @@ BOOL CALLBACK _sir_initmutex_pc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) 
     _SIR_UNUSED(param);
     _SIR_UNUSED(ctx)
 
-    if (!_sirmutex_create(&pc_mutex)) {
+    if (!_sir_mutexcreate(&pc_mutex)) {
         _sir_selflog("error: failed to create mutex!");
         return FALSE;
     }
@@ -513,7 +509,7 @@ BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) 
     _SIR_UNUSED(param);
     _SIR_UNUSED(ctx)
 
-    if (!_sirmutex_create(&ts_mutex)) {
+    if (!_sir_mutexcreate(&ts_mutex)) {
         _sir_selflog("error: failed to create mutex!");
         return FALSE;
     }
@@ -525,18 +521,10 @@ BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) 
 bool _sir_once(sir_once* once, sir_once_fn func) {
 #if !defined(__WIN__)
     int ret = pthread_once(once, func);
-    if (0 != ret) {
-        _sir_handleerr(ret);
-        return false;
-    }
-    return true;
+    return 0 == ret ? true : _sir_handleerr(ret);
 #else /* __WIN__ */
-    BOOL ret = InitOnceExecuteOnce(once, func, NULL, NULL);
-    if (!ret) {
-        _sir_handlewin32err(GetLastError());
-        return false;
-    }
-    return true;
+    return (FALSE != InitOnceExecuteOnce(once, func, NULL, NULL)) ? true
+        : _sir_handlewin32err(GetLastError());
 #endif
 }
 
@@ -545,7 +533,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     if (!_sir_sanity() || !_sir_validlevel(level) || !_sir_validstr(format))
         return false;
 
-    _sir_seterror(_SIR_E_NOERROR);
+    (void)_sir_seterror(_SIR_E_NOERROR);
 
     _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false);
 
@@ -601,7 +589,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         _SIR_UNUSED(fmt);
 
         if (0 > snprintf(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec))
-            _sir_handleerr(errno);
+            (void)_sir_handleerr(errno);
     }
 
     buf.level = _sir_formattedlevelstr(level);
@@ -610,12 +598,12 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     if (tid != cfg.state.pid) {
         if (!_sir_getthreadname(buf.tid)) {
             if (0 > snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, PID_CAST tid))
-                _sir_handleerr(errno);
+                (void)_sir_handleerr(errno);
         }
     }
 
     if (0 > vsnprintf(buf.message, SIR_MAXMESSAGE, format, args)) {
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
         SIR_ASSERT(false);
     }
 
@@ -651,7 +639,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
                 old_threshold, cfg.state.last.threshold, SIR_SQUELCH_BACKOFF_FACTOR);
 
             if (0 > snprintf(buf.message, SIR_MAXMESSAGE, SIR_SQUELCH_MSG_FORMAT, old_threshold))
-                _sir_handleerr(errno);
+                (void)_sir_handleerr(errno);
         } else if (cfg.state.last.squelch) {
             exit_early = true;
         }
@@ -663,10 +651,8 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     }
 
     _cfg = _sir_locksection(SIRMI_CONFIG);
-    if (!_cfg) {
-        _sir_seterror(_SIR_E_INTERNAL);
-        return false;
-    }
+    if (!_cfg)
+        return _sir_seterror(_SIR_E_INTERNAL);
 
     _cfg->state.last.squelch = cfg.state.last.squelch;
 
@@ -744,9 +730,8 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
 #endif
 
     if (0 == wanted) {
-        _sir_seterror(_SIR_E_NODEST);
         _sir_selflog("error: no destinations registered for level %04"PRIx32, level);
-        return false;
+        return _sir_seterror(_SIR_E_NODEST);
     }
 
     return retval && (dispatched == wanted);
@@ -883,9 +868,8 @@ bool _sir_syslog_init(const char* name, sir_syslog_dest* ctx) {
 
 bool _sir_syslog_open(sir_syslog_dest* ctx) {
     if (!_sir_bittest(ctx->_state.mask, SIRSL_IS_INIT)) {
-        _sir_seterror(_SIR_E_INVALID);
         _sir_selflog("not initialized; ignoring");
-        return false;
+        return _sir_seterror(_SIR_E_INVALID);
     }
 
     if (_sir_bittest(ctx->_state.mask, SIRSL_IS_OPEN)) {
@@ -913,15 +897,13 @@ bool _sir_syslog_open(sir_syslog_dest* ctx) {
 
 bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx) {
     if (!_sir_bittest(ctx->_state.mask, SIRSL_IS_INIT)) {
-        _sir_seterror(_SIR_E_INVALID);
         _sir_selflog("not initialized; ignoring");
-        return false;
+        return _sir_seterror(_SIR_E_INVALID);
     }
 
     if (!_sir_bittest(ctx->_state.mask, SIRSL_IS_OPEN)) {
-        _sir_seterror(_SIR_E_INVALID);
         _sir_selflog("log not open; ignoring");
-        return false;
+        return _sir_seterror(_SIR_E_INVALID);
     }
 
 # if defined(SIR_OS_LOG_ENABLED)
@@ -1090,11 +1072,12 @@ const char* _sir_formattedlevelstr(sir_level level) {
     return SIR_UNKNOWN;
 }
 
+#if defined(__GNUC__)
+__attribute__ ((format (strftime, 3, 0)))
+#endif
 bool _sir_formattime(time_t now, char* buffer, const char* format) {
-    if (0 == now || -1 == now) {
-        _sir_seterror(_SIR_E_INVALID);
-        return false;
-    }
+    if (0 == now || -1 == now)
+        return _sir_seterror(_SIR_E_INVALID);
 
     struct tm timebuf = {0};
     size_t fmttime    = strftime(buffer, SIR_MAXTIME, format,
@@ -1113,8 +1096,7 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
         if ((time_t)-1 == ret) {
             if (msecbuf)
                 *msecbuf = 0;
-            _sir_handleerr(errno);
-            return false;
+            return _sir_handleerr(errno);
         }
 #if defined(SIR_MSEC_POSIX)
         struct timespec ts = {0};
@@ -1127,7 +1109,7 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
         } else {
             if (msecbuf)
                 *msecbuf = 0;
-            _sir_handleerr(errno);
+            return _sir_handleerr(errno);
         }
 #elif defined(SIR_MSEC_MACH)
         kern_return_t retval = KERN_SUCCESS;
@@ -1144,7 +1126,7 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
         } else {
             if (msecbuf)
                 *msecbuf = 0;
-            _sir_handleerr(retval);
+            return _sir_handleerr(retval);
         }
 #elif defined(SIR_MSEC__WIN__)
         static const ULONGLONG uepoch = (ULONGLONG)116444736e9;
@@ -1166,7 +1148,7 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
         } else {
             if (msecbuf)
                 *msecbuf = 0;
-            _sir_handlewin32err(GetLastError());
+            return _sir_handlewin32err(GetLastError());
         }
 
 #else
@@ -1176,7 +1158,6 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
 #endif
         return true;
     }
-
     return false;
 }
 
@@ -1194,7 +1175,7 @@ pid_t _sir_gettid(void) {
     uint64_t tid64 = 0;
     int gettid     = pthread_threadid_np(NULL, &tid64);
     if (0 != gettid)
-        _sir_handleerr(gettid);
+        (void)_sir_handleerr(gettid);
     tid = (pid_t)tid64;
 #elif (defined(__BSD__) && !defined(__NetBSD__) && !defined(__OpenBSD__)) || \
       defined(__DragonFly_getthreadid__)
@@ -1223,10 +1204,9 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
      (defined(__GLIBC__) && defined(_GNU_SOURCE)) || \
       defined(USE_PTHREAD_GETNAME_NP) || defined(__MACOS__)
     int ret = pthread_getname_np(pthread_self(), name, SIR_MAXPID);
-    if (0 != ret) {
-        _sir_handleerr(ret);
-        return false;
-    }
+    if (0 != ret)
+        return _sir_handleerr(ret);
+
 # if defined(__HAIKU__)
     if ((strncmp(name, "pthread_func", SIR_MAXPID)) || _sir_validstrnofail(name))
         snprintf(name, SIR_MAXPID, "%ld", (long)get_pthread_thread_id(pthread_self()));
@@ -1246,23 +1226,18 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
 
 bool _sir_gethostname(char name[SIR_MAXHOST]) {
 #if !defined(__WIN__)
-    if (-1 == gethostname(name, SIR_MAXHOST - 1)) {
-        _sir_handleerr(errno);
-        return false;
-    }
-    return true;
+    int ret = gethostname(name, SIR_MAXHOST - 1);
+    return 0 == ret ? true : _sir_handleerr(errno);
 #else
     WSADATA wsad = {0};
     int ret      = WSAStartup(MAKEWORD(2, 2), &wsad);
-    if (0 != ret) {
-        _sir_handlewin32err(ret);
-        return false;
-    }
+    if (0 != ret)
+        return _sir_handlewin32err(ret);
 
     if (SOCKET_ERROR == gethostname(name, SIR_MAXHOST)) {
-        _sir_handlewin32err(WSAGetLastError());
+        int err = WSAGetLastError();
         WSACleanup();
-        return false;
+        return _sir_handlewin32err(err);
     }
 
     WSACleanup();

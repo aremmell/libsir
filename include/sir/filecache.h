@@ -37,7 +37,7 @@ bool _sir_remfile(sirfileid id);
 sirfile* _sirfile_create(const char* path, sir_levels levels, sir_options opts);
 bool _sirfile_open(sirfile* sf);
 void _sirfile_close(sirfile* sf);
-bool _sir_write(sirfile* sf, const char* output);
+bool _sirfile_write(sirfile* sf, const char* output);
 bool _sirfile_writeheader(sirfile* sf, const char* msg);
 bool _sirfile_needsroll(sirfile* sf);
 bool _sirfile_roll(sirfile* sf, char** newpath);

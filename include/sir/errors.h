@@ -119,14 +119,14 @@ static const struct {
 };
 
 //-V:_sir_seterror:616
-void __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t line);
+bool __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t line);
 # define _sir_seterror(err) __sir_seterror(err, __func__, __file__, __LINE__)
 
 void __sir_setoserror(int code, const char* msg, const char* func,
     const char* file, uint32_t line);
 
 /** Handle a C library error. */
-void __sir_handleerr(int code, const char* func, const char* file, uint32_t line);
+bool __sir_handleerr(int code, const char* func, const char* file, uint32_t line); //-V1071
 # define _sir_handleerr(code) __sir_handleerr(code, __func__, __file__, __LINE__)
 
 # if defined(__WIN__)
@@ -138,8 +138,8 @@ void _sir_invalidparameter(const wchar_t* expr, const wchar_t* func, const wchar
  * Mapping them sounds great, but in practice, valuable information about what went wrong is totally
  * lost in translation.
  */
-void __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32_t line);
-#  define _sir_handlewin32err(code) __sir_handlewin32err(code, __func__, __file__, __LINE__)
+bool __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32_t line);
+#  define _sir_handlewin32err(code) __sir_handlewin32err((DWORD)code, __func__, __file__, __LINE__)
 # endif
 
 /** Returns information about the last error that occurred. */

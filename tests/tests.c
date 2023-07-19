@@ -15,7 +15,7 @@
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ *p
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
@@ -49,6 +49,7 @@ static sir_test sir_tests[] = {
     {"sanity-text-styles",      sirtest_textstylesanity, false, true},
     {"sanity-options",          sirtest_optionssanity, false, true},
     {"sanity-levels",           sirtest_levelssanity, false, true},
+    {"sanity-mutexes",          sirtest_mutexsanity, false, true},
     {"sanity-update-config",    sirtest_updatesanity, false, true},
     {"syslog",                  sirtest_syslog, false, true},
     {"os_log",                  sirtest_os_log, false, true},
@@ -183,7 +184,8 @@ int main(int argc, char** argv) {
 
     if (wait) {
         printf(WHITEB(EMPH("press any key to exit...")) "\n");
-        int ch = _sir_getchar();
+        char ch = '\0';
+        (void)_sir_getchar(&ch);
         _SIR_UNUSED(ch);
     }
 
@@ -659,7 +661,7 @@ bool sirtest_errorsanity(void) {
 
     char message[SIR_MAXERROR] = {0};
     for (size_t n = 0; n < _sir_countof(errors); n++) {
-        _sir_seterror(_sir_mkerror(errors[n].code));
+        (void)_sir_seterror(_sir_mkerror(errors[n].code));
         memset(message, 0, SIR_MAXERROR);
         uint16_t err = sir_geterror(message);
         pass &= errors[n].code == err && *message != '\0';
@@ -982,6 +984,68 @@ bool sirtest_levelssanity(void) {
     PRINT_PASS(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 
     sir_cleanup();
+    return print_result_and_return(pass);
+}
+
+bool sirtest_mutexsanity(void) {
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+    printf("\t" WHITEB("create, lock, unlock, destroy") "\n");
+    printf(INDENT_ITEM WHITE("creating mutex...") "\n");
+
+    sir_mutex m1 = SIR_MUTEX_INIT;
+    pass &= _sir_mutexcreate(&m1);
+
+    print_test_error(pass, pass);
+
+    if (pass) {
+        printf(INDENT_ITEM WHITE("locking mutex (wait)...") "\n");
+        pass &= _sir_mutexlock(&m1);
+
+        print_test_error(pass, pass);
+
+        if (pass) {
+            printf(INDENT_ITEM WHITE("entered mutex; unlocking...") "\n");
+            pass &= _sir_mutexunlock(&m1);
+
+            print_test_error(pass, pass);
+        }
+
+        printf(INDENT_ITEM WHITE("locking mutex (without wait)...") "\n");
+        pass &= _sir_mutextrylock(&m1);
+
+        print_test_error(pass, pass);
+
+        if (pass) {
+            printf(INDENT_ITEM WHITE("entered mutex; unlocking...") "\n");
+            pass &= _sir_mutexunlock(&m1);
+
+            print_test_error(pass, pass);
+        }
+
+        printf(INDENT_ITEM WHITE("destryoing mutex...") "\n");
+        pass &= _sir_mutexdestroy(&m1);
+
+        print_test_error(pass, pass);
+
+    }
+    PRINT_PASS(pass, "\t--- create, lock, unlock, destroy: %s ---\n\n", PRN_PASS(pass));
+
+    printf("\t" WHITEB("invalid arguments") "\n");
+    printf(INDENT_ITEM WHITE("create with NULL pointer...") "\n");
+    pass &= !_sir_mutexcreate(NULL);
+    printf(INDENT_ITEM WHITE("lock with NULL pointer...") "\n");
+    pass &= !_sir_mutexlock(NULL);
+    printf(INDENT_ITEM WHITE("trylock with NULL pointer...") "\n");
+    pass &= !_sir_mutextrylock(NULL);
+    printf(INDENT_ITEM WHITE("unlock with NULL pointer...") "\n");
+    pass &= !_sir_mutexunlock(NULL);
+    printf(INDENT_ITEM WHITE("destroy with NULL pointer...") "\n");
+    pass &= !_sir_mutexdestroy(NULL);
+    PRINT_PASS(pass, "\t--- pass invalid arguments: %s ---\n\n", PRN_PASS(pass));
+
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -1689,70 +1753,71 @@ bool sirtest_pluginloader(void) {
     printf("\tloading good plugin: '%s'...\n", plugin1);
     sirpluginid id = sir_loadplugin(plugin1);
     pass &= 0 != id;
-    pass &= sir_info("welcome, mister plugin.");
-    pass &= sir_warn("you won't see this message.");
+
+    print_test_error(pass, pass);
+
+    pass &= sir_info("this message will be dispatched to the plugin.");
+    pass &= sir_warn("this message will *not* be dispatched to the plugin.");
 
     /* re-loading the same plugin should fail. */
     printf("\tloading duplicate plugin: '%s'...\n", plugin1);
     sirpluginid badid = sir_loadplugin(plugin1);
     pass &= 0 == badid;
 
-    if (pass)
-        print_expected_error();
+    print_test_error(pass, pass);
 
     /* the following are all invalid or misbehaved, and should all fail. */
     printf("\tloading bad plugin: '%s'...\n", plugin2);
     badid = sir_loadplugin(plugin2);
     pass &= 0 == badid;
 
-    if (pass)
-        print_expected_error();
+    print_test_error(pass, pass);
 
     printf("\tloading bad plugin: '%s'...\n", plugin3);
     badid = sir_loadplugin(plugin3);
     pass &= 0 == badid;
 
-    if (pass)
-        print_expected_error();
+    print_test_error(pass, pass);
 
     printf("\tloading bad plugin: '%s'...\n", plugin4);
     badid = sir_loadplugin(plugin4);
     pass &= 0 == badid;
 
-    if (pass)
-        print_expected_error();
+    print_test_error(pass, pass);
 
     printf("\tloading bad plugin: '%s'...\n", plugin5);
     badid = sir_loadplugin(plugin5);
     pass &= 0 == badid;
 
-    if (pass)
-        print_expected_error();
+    print_test_error(pass, pass);
 
     printf("\tloading bad plugin: '%s'...\n", plugin6);
     badid = sir_loadplugin(plugin6);
     pass &= 0 == badid;
 
-    if (pass)
-        print_expected_error();
+    print_test_error(pass, pass);
 
     printf("\tloading bad plugin: '%s'...\n", plugin7);
     badid = sir_loadplugin(plugin7);
-    pass &= 0 != badid;
+    pass &= 0 != badid; /* this one should load, just return false from write */
 
-    if (pass)
-        print_expected_error();
+    pass &= !sir_info("this should fail, because one plugin failed to process"
+                      " the message.");
+
+    print_test_error(pass, pass);
 
     printf("\tloading nonexistent plugin: '%s'...\n", plugin8);
     badid = sir_loadplugin(plugin8);
     pass &= 0 == badid;
 
-    if (pass)
-        print_expected_error();
+    print_test_error(pass, pass);
 
     /* unload the good plugin manually. */
     printf("\tunloading good plugin: '%s'...\n", plugin1);
     pass &= sir_unloadplugin(id);
+
+    print_test_error(pass, pass);
+
 #endif
     pass &= sir_cleanup();
     return print_result_and_return(pass);
@@ -1975,7 +2040,7 @@ bool print_test_error(bool result, bool expected) {
 
     if (!expected && !result && SIR_E_NOERROR != code)
         printf("\t" RED("!! Unexpected (%"PRIu16", %s)") "\n", code, message);
-    else if (expected)
+    else if (expected && SIR_E_NOERROR != code)
         printf("\t" GREEN("Expected (%"PRIu16", %s)") "\n", code, message);
 
     return result;

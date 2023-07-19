@@ -26,6 +26,24 @@
 #include "sir/helpers.h"
 #include "sir/errors.h"
 
+bool __sir_validptrptr(const void* restrict* pp, bool fail) {
+    bool valid = NULL != pp;
+    if (!valid && fail) {
+        (void)_sir_seterror(_SIR_E_NULLPTR);
+        SIR_ASSERT("!NULL pointer");
+    }
+    return valid;
+}
+
+bool __sir_validptr(const void* restrict p, bool fail) {
+    bool valid = NULL != p;
+    if (!valid && fail) {
+        (void)_sir_seterror(_SIR_E_NULLPTR);
+        SIR_ASSERT(!"NULL pointer");
+    }
+    return valid;
+}
+
 void __sir_safefree(void** pp) {
     if (!pp || !*pp)
         return;
@@ -39,7 +57,7 @@ void _sir_safeclose(int* restrict fd) {
         return;
 
     if (-1 == close(*fd))
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
 
     *fd = -1;
 }
@@ -49,17 +67,16 @@ void _sir_safefclose(FILE* restrict* restrict f) {
         return;
 
     if (0 != fclose(*f))
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
 
     *f = NULL;
 }
 
 bool _sir_validfd(int fd) {
     /** stdin, stdout, stderr use up 0, 1, 2 */
-    if (2 >= fd) {
-        _sir_handleerr(EBADF);
-        return false;
-    }
+    if (2 >= fd)
+        return _sir_handleerr(EBADF);
+
 #if !defined(__WIN__)
     int ret = fcntl(fd, F_GETFL);
 #else /* __WIN__ */
@@ -72,10 +89,7 @@ bool _sir_validfd(int fd) {
     _set_thread_local_invalid_parameter_handler(old);
 # endif
 #endif
-    bool valid = -1 != ret || EBADF != errno;
-    if (-1 == ret)
-        _sir_handleerr(errno);
-    return valid;
+    return (-1 != ret || EBADF != errno) ? true : _sir_handleerr(errno);
 }
 
 /** Validates a sir_update_config_data structure. */
@@ -102,7 +116,7 @@ bool _sir_validupdatedata(sir_update_config_data* data) {
         valid &= _sir_validstrnofail(data->sl_category);
 
     if (!valid) {
-        _sir_seterror(_SIR_E_INVALID);
+        (void)_sir_seterror(_SIR_E_INVALID);
         SIR_ASSERT("!invalid sir_update_config_data");
     }
 
@@ -123,9 +137,7 @@ bool _sir_validlevels(sir_levels levels) {
          return true;
 
     _sir_selflog("invalid levels: %04"PRIx16, levels);
-    _sir_seterror(_SIR_E_LEVELS);
-
-    return false;
+    return _sir_seterror(_SIR_E_LEVELS);
 }
 
 bool _sir_validlevel(sir_level level) {
@@ -136,8 +148,7 @@ bool _sir_validlevel(sir_level level) {
         return true;
 
     _sir_selflog("invalid level: %04"PRIx32, level);
-    _sir_seterror(_SIR_E_LEVELS);
-    return false;
+    return _sir_seterror(_SIR_E_LEVELS);
 }
 
 bool _sir_validopts(sir_options opts) {
@@ -154,9 +165,7 @@ bool _sir_validopts(sir_options opts) {
          return true;
 
     _sir_selflog("invalid options: %08"PRIx32, opts);
-    _sir_seterror(_SIR_E_OPTIONS);
-
-    return false;
+    return _sir_seterror(_SIR_E_OPTIONS);
 }
 
 bool _sir_validtextattr(sir_textattr attr) {
@@ -169,8 +178,7 @@ bool _sir_validtextattr(sir_textattr attr) {
             return true;
         default: {
             _sir_selflog("invalid text attr: %d", attr);
-            _sir_seterror(_SIR_E_TEXTATTR);
-            return false;
+            return _sir_seterror(_SIR_E_TEXTATTR);
         }
     }
 }
@@ -203,9 +211,9 @@ bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color) {
     } // GCOVR_EXCL_STOP
 
     if (!valid) {
-        _sir_selflog("invalid text color for mode %d %08"PRIx32" (%"PRId32")",
+        _sir_selflog("invalid text color for mode %d %08"PRIx32" (%"PRIu32")",
             mode, color, color);
-        _sir_seterror(_SIR_E_TEXTCOLOR);
+        (void)_sir_seterror(_SIR_E_TEXTCOLOR);
     }
 
     return valid;
@@ -217,10 +225,10 @@ bool _sir_validcolormode(sir_colormode mode) {
         case SIRCM_256:
         case SIRCM_RGB:
             return true;
+        case SIRCM_INVALID:
         default: {
             _sir_selflog("invalid color mode: %d", mode);
-            _sir_seterror(_SIR_E_COLORMODE);
-            return false;
+            return _sir_seterror(_SIR_E_COLORMODE);
         }
     }
 }
@@ -228,26 +236,8 @@ bool _sir_validcolormode(sir_colormode mode) {
 bool __sir_validstr(const char* restrict str, bool fail) {
     bool valid = str && (*str != '\0');
     if (!valid && fail) {
-        _sir_seterror(_SIR_E_STRING);
+        (void)_sir_seterror(_SIR_E_STRING);
         SIR_ASSERT(!"invalid string");
-    }
-    return valid;
-}
-
-bool __sir_validptr(const void* restrict p, bool fail) {
-    bool valid = NULL != p;
-    if (!valid && fail) {
-        _sir_seterror(_SIR_E_NULLPTR);
-        SIR_ASSERT(!"NULL pointer");
-    }
-    return valid;
-}
-
-bool __sir_validptrptr(const void* restrict* pp, bool fail) {
-    bool valid = NULL != pp;
-    if (!valid && fail) {
-        _sir_seterror(_SIR_E_NULLPTR);
-        SIR_ASSERT("!NULL pointer");
     }
     return valid;
 }
@@ -257,7 +247,7 @@ int _sir_strncpy(char* restrict dest, size_t destsz, const char* restrict src, s
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
         int ret = strncpy_s(dest, destsz, src, count);
         if (0 != ret) {
-            _sir_handleerr(ret);
+            (void)_sir_handleerr(ret);
             return -1;
         }
         return 0;
@@ -278,7 +268,7 @@ int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src, s
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
         int ret = strncat_s(dest, destsz, src, count);
         if (0 != ret) {
-            _sir_handleerr(ret);
+            (void)_sir_handleerr(ret);
             return -1;
         }
         return 0;
@@ -300,14 +290,14 @@ int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
         int ret = fopen_s(streamptr, filename, mode);
         if (0 != ret) {
-            _sir_handleerr(ret);
+            (void)_sir_handleerr(ret);
             return -1;
         }
         return 0;
 #else
         *streamptr = fopen(filename, mode);
         if (!*streamptr) {
-            _sir_handleerr(errno);
+            (void)_sir_handleerr(errno);
             return -1;
         }
         return 0;
@@ -323,7 +313,7 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
 # if defined(__WIN__)
         errno_t ret = (errno_t)localtime_s(buf, timer);
         if (0 != ret) {
-            _sir_handleerr(ret);
+            (void)_sir_handleerr(ret);
             return NULL;
         }
 
@@ -331,7 +321,7 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
 # else /* __WIN__ */
         struct tm* ret = localtime_s(timer, buf);
         if (!ret)
-            _sir_handleerr(errno);
+            (void)_sir_handleerr(errno);
 
         return ret;
 # endif
@@ -339,7 +329,8 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
         _SIR_UNUSED(buf);
         struct tm* ret = localtime(timer);
         if (!ret)
-            _sir_handleerr(errno);
+            (void)_sir_handleerr(errno);
+
         return ret;
 #endif
     }
@@ -347,36 +338,27 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
     return NULL;
 }
 
-int _sir_getchar(void) {
-#if defined(__WIN__)
-    return _getch();
-#else /* !__WIN__ */
-    struct termios cur = {0};
-    struct termios new = {0};
+bool _sir_getchar(char* input) {
+    if (!_sir_validptr(input))
+        return false;
 
-    int get = tcgetattr(STDIN_FILENO, &cur);
-    if (0 != get) {
-        _sir_handleerr(errno);
-        return -1;
-    }
+#if defined(__WIN__)
+     *input = (char)_getch();
+     return true;
+#else /* !__WIN__ */
+    struct termios cur = {0}, new = {0};
+    if (0 != tcgetattr(STDIN_FILENO, &cur))
+        return _sir_handleerr(errno);
 
     memcpy(&new, &cur, sizeof(struct termios));
     new.c_lflag &= ~(ICANON | ECHO);
 
-    int set = tcsetattr(STDIN_FILENO, TCSANOW, &new);
-    if (0 != set) {
-        _sir_handleerr(errno);
-        return -1;
-    }
+    if (0 != tcsetattr(STDIN_FILENO, TCSANOW, &new))
+        return _sir_handleerr(errno);
 
-    int ch = getchar();
+    *input = (char)getchar();
 
-    set = tcsetattr(STDIN_FILENO, TCSANOW, &cur);
-    if (0 != set) {
-        _sir_handleerr(errno);
-        return -1;
-    }
-
-    return ch;
+    return 0 == tcsetattr(STDIN_FILENO, TCSANOW, &cur) ? true
+        : _sir_handleerr(errno);
 #endif
 }

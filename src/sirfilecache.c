@@ -29,7 +29,7 @@
 #include "sir/defaults.h"
 
 sirfileid _sir_addfile(const char* path, sir_levels levels, sir_options opts) {
-    _sir_seterror(_SIR_E_NOERROR);
+    (void)_sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity())
         return 0;
@@ -46,7 +46,7 @@ sirfileid _sir_addfile(const char* path, sir_levels levels, sir_options opts) {
 }
 
 bool _sir_updatefile(sirfileid id, sir_update_config_data* data) {
-    _sir_seterror(_SIR_E_NOERROR);
+    (void)_sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validfileid(id) || !_sir_validupdatedata(data))
         return false;
@@ -59,7 +59,7 @@ bool _sir_updatefile(sirfileid id, sir_update_config_data* data) {
 }
 
 bool _sir_remfile(sirfileid id) {
-    _sir_seterror(_SIR_E_NOERROR);
+    (void)_sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validfileid(id))
         return false;
@@ -77,13 +77,13 @@ sirfile* _sirfile_create(const char* path, sir_levels levels, sir_options opts) 
 
     sirfile* sf = (sirfile*)calloc(1, sizeof(sirfile));
     if (!sf) {
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
         return NULL;
     }
 
     sf->path = strdup(path);
     if (!sf->path) {
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
         _sir_safefree(&sf);
         return NULL;
     }
@@ -166,7 +166,7 @@ bool _sirfile_write(sirfile* sf, const char* output) {
     SIR_ASSERT(write == writeLen);
 
     if (write < writeLen) {
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
         clearerr(sf->f);
     }
 
@@ -188,10 +188,8 @@ bool _sirfile_writeheader(sirfile* sf, const char* msg) {
     char header[SIR_MAXFHEADER] = {0};
     int fmt = snprintf(header, SIR_MAXFHEADER, SIR_FHFORMAT, msg, timestamp);
 
-    if (0 > fmt) {
-        _sir_handleerr(errno);
-        return false;
-    }
+    if (0 > fmt)
+        return _sir_handleerr(errno);
 
     return 0 <= fmt && _sirfile_write(sf, header); //-V560
 }
@@ -203,10 +201,8 @@ bool _sirfile_needsroll(sirfile* sf) {
     struct stat st = {0};
     int getstat    = fstat(sf->fd, &st);
 
-    if (0 != getstat) {
-        _sir_handleerr(errno);
-        return false;
-    }
+    if (0 != getstat)
+        return _sir_handleerr(errno);
 
     return st.st_size + BUFSIZ >= SIR_FROLLSIZE ||
         SIR_FROLLSIZE - (st.st_size + BUFSIZ) <= BUFSIZ;
@@ -249,7 +245,7 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                             _sir_validstrnofail(ext) ? ext : "");
 
                         if (print < 0) {
-                            _sir_handleerr(errno);
+                            (void)_sir_handleerr(errno);
                             break;
                         }
 
@@ -266,7 +262,7 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                         } else if (exists) {
                             /* the file already exists; add a number to the file name
                              * until one that does not exist is found. */
-                            _sir_selflog("path: '%s' already exists; incrementing sequence", *newpath);
+                            _sir_selflog("path: '%s' already exists; incrementing sequence", *newpath); //-V576
                             sequence++;
                         } else {
                             _sir_selflog("found good path: '%s'", *newpath);
@@ -278,7 +274,7 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                             print = snprintf(seqbuf, 7, SIR_FNAMESEQFORMAT, sequence);
 
                             if (print < 0) {
-                                _sir_handleerr(errno);
+                                (void)_sir_handleerr(errno);
                                 break;
                             }
                         }
@@ -311,10 +307,8 @@ bool _sirfile_archive(sirfile* sf, const char* newpath) {
     _sirfile_close(sf);
 #endif
 
-    if (0 != rename(sf->path, newpath)) {
-        _sir_handleerr(errno);
-        return false;
-    }
+    if (0 != rename(sf->path, newpath))
+        return _sir_handleerr(errno);
 
     if (_sirfile_open(sf)) {
         _sir_selflog("archived '%s' " SIR_R_ARROW " '%s'", sf->path, newpath);
@@ -334,10 +328,8 @@ bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
         return false;
 
     char* tmp = strdup(sf->path);
-    if (!tmp) {
-        _sir_handleerr(errno);
-        return false;
-    }
+    if (!tmp)
+        return _sir_handleerr(errno);
 
     char* lastfullstop = strrchr(tmp, '.');
     if (lastfullstop) {
@@ -347,9 +339,8 @@ bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
         tmp[namesize] = '\0';
         *name = (char*)calloc(namesize + 1, sizeof(char));
         if (!*name) {
-            _sir_handleerr(errno);
             _sir_safefree(&tmp);
-            return false;
+            return _sir_handleerr(errno);
         }
 
         _sir_strncpy(*name, namesize + 1, tmp, namesize);
@@ -416,17 +407,14 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
         !_sir_validopts(opts))
         return 0;
 
-    if (sfc->count >= SIR_MAXFILES) {
-        _sir_seterror(_SIR_E_NOROOM);
-        return 0;
-    }
+    if (sfc->count >= SIR_MAXFILES)
+        return _sir_seterror(_SIR_E_NOROOM);
 
     sirfile* existing = _sir_fcache_find(sfc, (const void*)path, _sir_fcache_pred_path);
     if (NULL != existing) {
         _sir_selflog("error: already have file (path: '%s', id: %"PRIx32")",
             path, existing->id);
-        _sir_seterror(_SIR_E_DUPITEM);
-        return 0;
+        return _sir_seterror(_SIR_E_DUPITEM);
     }
 
     sirfile* sf = _sirfile_create(path, levels, opts);
@@ -452,12 +440,7 @@ bool _sir_fcache_update(sirfcache* sfc, sirfileid id, sir_update_config_data* da
         return false;
 
     sirfile* found = _sir_fcache_find(sfc, (const void*)&id, _sir_fcache_pred_id);
-    if (!found) {
-        _sir_seterror(_SIR_E_NOITEM);
-        return false;
-    }
-
-    return _sirfile_update(found, data);
+    return found ? _sirfile_update(found, data) : _sir_seterror(_SIR_E_NOITEM);
 }
 
 bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
@@ -483,8 +466,7 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
         }
     }
 
-    _sir_seterror(_SIR_E_NOITEM);
-    return false;
+    return _sir_seterror(_SIR_E_NOITEM);
 }
 
 bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
@@ -634,7 +616,7 @@ void _sir_fflush(FILE* f) {
         return;
 
     if (0 != fflush(f)) {
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
         return;
     }
 }
