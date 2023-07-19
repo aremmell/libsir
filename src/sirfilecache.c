@@ -262,7 +262,7 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                         } else if (exists) {
                             /* the file already exists; add a number to the file name
                              * until one that does not exist is found. */
-                            _sir_selflog("path: '%s' already exists; incrementing sequence", *newpath);
+                            _sir_selflog("path: '%s' already exists; incrementing sequence", *newpath); //-V576
                             sequence++;
                         } else {
                             _sir_selflog("found good path: '%s'", *newpath);
