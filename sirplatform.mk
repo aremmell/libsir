@@ -17,6 +17,7 @@ ifeq ($(MINGW),1)
   ifneq "$(findstring gcc,$(CC))" ""
     CFLAGS+=-Wno-unknown-pragmas
   endif
+  LIBDL=
   PLATFORM_DLL_EXT=.dll
   PLATFORM_EXE_EXT=.exe
   PLATFORM_LIB_EXT=.lib
