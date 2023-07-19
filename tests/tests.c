@@ -1689,70 +1689,68 @@ bool sirtest_pluginloader(void) {
     printf("\tloading good plugin: '%s'...\n", plugin1);
     sirpluginid id = sir_loadplugin(plugin1);
     pass &= 0 != id;
-    pass &= sir_info("welcome, mister plugin.");
-    pass &= sir_warn("you won't see this message.");
+
+    print_test_error(pass, pass);
+
+    pass &= sir_info("this message will be dispatched to the plugin.");
+    pass &= sir_warn("this message will *not* be dispatched to the plugin.");
 
     /* re-loading the same plugin should fail. */
     printf("\tloading duplicate plugin: '%s'...\n", plugin1);
     sirpluginid badid = sir_loadplugin(plugin1);
     pass &= 0 == badid;
 
-    if (pass)
-        print_expected_error();
+    print_test_error(pass, pass);
 
     /* the following are all invalid or misbehaved, and should all fail. */
     printf("\tloading bad plugin: '%s'...\n", plugin2);
     badid = sir_loadplugin(plugin2);
     pass &= 0 == badid;
 
-    if (pass)
-        print_expected_error();
+    print_test_error(pass, pass);
 
     printf("\tloading bad plugin: '%s'...\n", plugin3);
     badid = sir_loadplugin(plugin3);
     pass &= 0 == badid;
 
-    if (pass)
-        print_expected_error();
+    print_test_error(pass, pass);
 
     printf("\tloading bad plugin: '%s'...\n", plugin4);
     badid = sir_loadplugin(plugin4);
     pass &= 0 == badid;
 
-    if (pass)
-        print_expected_error();
+    print_test_error(pass, pass);
 
     printf("\tloading bad plugin: '%s'...\n", plugin5);
     badid = sir_loadplugin(plugin5);
     pass &= 0 == badid;
 
-    if (pass)
-        print_expected_error();
+    print_test_error(pass, pass);
 
     printf("\tloading bad plugin: '%s'...\n", plugin6);
     badid = sir_loadplugin(plugin6);
     pass &= 0 == badid;
 
-    if (pass)
-        print_expected_error();
+    print_test_error(pass, pass);
 
     printf("\tloading bad plugin: '%s'...\n", plugin7);
     badid = sir_loadplugin(plugin7);
     pass &= 0 == badid;
 
-    if (pass)
-        print_expected_error();
+    print_test_error(pass, pass);
 
     printf("\tloading nonexistent plugin: '%s'...\n", plugin8);
     badid = sir_loadplugin(plugin8);
     pass &= 0 == badid;
 
-    if (pass)
-        print_expected_error();
+    print_test_error(pass, pass);
 
     /* unload the good plugin manually. */
     printf("\tunloading good plugin: '%s'...\n", plugin1);
     pass &= sir_unloadplugin(id);
+
+    print_test_error(pass, pass);
+
 #endif
     pass &= sir_cleanup();
     return print_result_and_return(pass);
@@ -1975,7 +1973,7 @@ bool print_test_error(bool result, bool expected) {
 
     if (!expected && !result && SIR_E_NOERROR != code)
         printf("\t" RED("!! Unexpected (%"PRIu16", %s)") "\n", code, message);
-    else if (expected)
+    else if (expected && SIR_E_NOERROR != code)
         printf("\t" GREEN("Expected (%"PRIu16", %s)") "\n", code, message);
 
     return result;
