@@ -30,6 +30,7 @@
 # include "sir/errors.h"
 # include "sir/filecache.h"
 # include "sir/internal.h"
+# include "sir/mutex.h"
 # include "sir/filesystem.h"
 # include "sir/helpers.h"
 # include "sir/textstyle.h"
@@ -214,6 +215,12 @@ bool sirtest_optionssanity(void);
 bool sirtest_levelssanity(void);
 
 /**
+ * @test Ensure that the mutex implementation is functioning properly.
+ * @returns bool `true` if the test passed, `false` otherwise.
+ */
+bool sirtest_mutexsanity(void);
+
+/**
  * @test Performance evaluation.
  * @returns bool `true` if the test passed, `false` otherwise.
  */
@@ -264,6 +271,7 @@ bool sirtest_pluginloader(void);
  * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_getversioninfo(void);
+
 
 /** @} */
 
