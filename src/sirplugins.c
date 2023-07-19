@@ -130,20 +130,20 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         return _sir_seterror(_SIR_E_PLUGINVER);
     }
 
+    bool data_valid = true;
+
     /* verify level registration bitmask. */
     if (!_sir_validlevels(plugin->info.levels)) {
         _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid levels"
                      " %04"PRIx16, plugin->path, plugin->handle, plugin->info.levels);
-        _sir_plugin_destroy(&plugin);
-        return _sir_seterror(_SIR_E_PLUGINDAT);
+        data_valid = false;
     }
 
     /* verify formatting options bitmask. */
     if (!_sir_validopts(plugin->info.opts)) {
         _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid opts"
                      " %08"PRIx32, plugin->path, plugin->handle, plugin->info.opts);
-        _sir_plugin_destroy(&plugin);
-        return _sir_seterror(_SIR_E_PLUGINDAT);
+        data_valid = false;
     }
 
     /* verify strings */
@@ -151,6 +151,11 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         !_sir_validstrnofail(plugin->info.desc)) {
         _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid author"
                      " or description", plugin->path, plugin->handle);
+        data_valid = false;
+    }
+
+    /* if any category of data is invalid, fail and unload. */
+    if (!data_valid) {
         _sir_plugin_destroy(&plugin);
         return _sir_seterror(_SIR_E_PLUGINDAT);
     }
