@@ -64,10 +64,9 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
 
         int fd = open(base_path, open_flags);
         if (-1 == fd) {
-            _sir_handleerr(errno); // GCOVR_EXCL_START
             _sir_safefree(&base_path);
-            return false;
-        } // GCOVR_EXCL_STOP
+            return _sir_handleerr(errno);
+        }
 
         stat_ret = fstatat(fd, path, st, AT_SYMLINK_NOFOLLOW);
         _sir_safeclose(&fd);
@@ -85,17 +84,10 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         stat_ret = stat(path, st);
     }
 #endif
-    if (-1 == stat_ret) {
-        if (ENOENT == errno) {
-            st->st_size = SIR_STAT_NONEXISTENT;
-            return true;
-        } else {
-            _sir_handleerr(errno);
-            return false;
-        }
-    }
+    if (-1 == stat_ret && ENOENT == errno)
+        st->st_size = SIR_STAT_NONEXISTENT;
 
-    return true;
+    return (-1 != stat_ret || ENOENT == errno) ? true : _sir_handleerr(errno);
 }
 
 bool _sir_pathexists(const char* path, bool* exists, sir_rel_to rel_to) {
@@ -144,11 +136,11 @@ char* _sir_getcwd(void) {
 # if defined(__linux__) && (defined(__GLIBC__) && defined(_GNU_SOURCE))
     char* cur = get_current_dir_name();
     if (NULL == cur)
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
     return cur;
 # elif defined(_AIX)
     if (getcwd(cur_cwd, sizeof(cur_cwd)) == 0) {
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
         return NULL;
     } else {
         return strndup(cur_cwd, SIR_MAXPATH);
@@ -156,13 +148,13 @@ char* _sir_getcwd(void) {
 # else
     char* cur = getcwd(NULL, 0);
     if (NULL == cur)
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
     return cur;
 # endif
 #else /* __WIN__ */
     char* cur = _getcwd(NULL, 0);
     if (NULL == cur)
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
     return cur;
 #endif
 }
@@ -182,7 +174,7 @@ char* _sir_getappfilename(void) {
 # endif
     struct stat st;
     if (-1 == lstat(PROC_SELF, &st)) {
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
         return NULL;
     }
 
@@ -198,8 +190,7 @@ char* _sir_getappfilename(void) {
         _sir_safefree(&buffer);
         buffer = (char*)calloc(size, sizeof(char));
         if (NULL == buffer) {
-            _sir_handleerr(errno);
-            resolved = false;
+            resolved = _sir_handleerr(errno);
             break;
         }
 
@@ -211,8 +202,7 @@ char* _sir_getappfilename(void) {
             resolved = true;
             break;
         } else if (-1 == read) {
-            _sir_handleerr(errno);
-            resolved = false;
+            resolved = _sir_handleerr(errno);;
             break;
         } else if (read == (ssize_t)size - 1) {
             /*
@@ -233,8 +223,7 @@ char* _sir_getappfilename(void) {
             resolved = true;
             break;
         } else {
-            _sir_handleerr(errno);
-            resolved = false;
+            resolved = _sir_handleerr(errno);;
             break;
         }
 # elif defined(__OpenBSD__)
@@ -242,8 +231,7 @@ char* _sir_getappfilename(void) {
         int dirname_length;
         length = _sir_openbsdself(NULL, 0, &dirname_length);
         if (length < 1) {
-            _sir_handleerr(errno);
-            resolved = false;
+            resolved = _sir_handleerr(errno);
             break;
         }
         if (length > size) {
@@ -267,8 +255,7 @@ char* _sir_getappfilename(void) {
             if (ENOMEM == errno && 0 == sysctl(mib, 4, NULL, &size, NULL, 0))
                 continue; /* grow buffer. */
 
-            _sir_handleerr(errno);
-            resolved = false;
+            resolved = _sir_handleerr(errno);
             break;
         }
 # elif defined(__HAIKU__)
@@ -281,8 +268,7 @@ char* _sir_getappfilename(void) {
             /* grow buffer. */
             continue;
         } else {
-            _sir_handleerr(errno);
-            resolved = false;
+            resolved = _sir_handleerr(errno);
             break;
         }
 # elif defined(__MACOS__)
@@ -294,8 +280,7 @@ char* _sir_getappfilename(void) {
             /* grow buffer. */
             continue;
         } else {
-            _sir_handleerr(errno);
-            resolved = false;
+            resolved = _sir_handleerr(errno);;
             break;
         }
 # else
@@ -307,8 +292,7 @@ char* _sir_getappfilename(void) {
             resolved = true;
             break;
         } else if (0 == ret) {
-            _sir_handlewin32err(GetLastError());
-            resolved = false;
+            resolved = _sir_handlewin32err(GetLastError());
             break;
         } else if (ret == (DWORD)size || ERROR_INSUFFICIENT_BUFFER == GetLastError()) {
             /* Windows has no concept of letting you know how much larger

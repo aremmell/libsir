@@ -39,7 +39,7 @@ void _sir_safeclose(int* restrict fd) {
         return;
 
     if (-1 == close(*fd))
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
 
     *fd = -1;
 }
@@ -49,17 +49,16 @@ void _sir_safefclose(FILE* restrict* restrict f) {
         return;
 
     if (0 != fclose(*f))
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
 
     *f = NULL;
 }
 
 bool _sir_validfd(int fd) {
     /** stdin, stdout, stderr use up 0, 1, 2 */
-    if (2 >= fd) {
-        _sir_handleerr(EBADF);
-        return false;
-    }
+    if (2 >= fd)
+        return _sir_handleerr(EBADF);
+        
 #if !defined(__WIN__)
     int ret = fcntl(fd, F_GETFL);
 #else /* __WIN__ */

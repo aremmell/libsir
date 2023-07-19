@@ -37,7 +37,7 @@ sirpluginid _sir_plugin_load(const char* path) {
     if (!handle) {
         const char* err = dlerror();
         _sir_selflog("error: dlopen('%s') failed (%s)", path, _SIR_PRNSTR(err));
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
         return 0;
     }
 # else /* __WIN__ */
@@ -47,20 +47,20 @@ sirpluginid _sir_plugin_load(const char* path) {
     if (!handle) {
         DWORD err = GetLastError();
         _sir_selflog("error: LoadLibraryA(%s) failed (%lu)", path, err);
-        _sir_handlewin32err(err);
+        (void)_sir_handlewin32err(err);
         return 0;
     }
 # endif
 
     sir_plugin* plugin = (sir_plugin*)calloc(1, sizeof(sir_plugin));
     if (!plugin) {
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
         return 0;
     }
 
     plugin->path = strdup(path);
     if (!plugin->path) {
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
         _sir_safefree(&plugin);
         return 0;
     }
@@ -205,7 +205,7 @@ uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
         const char* err = dlerror();
         _sir_selflog("error: dlsym(%p, '%s') failed (%s)", handle, name,
             _SIR_PRNSTR(err));
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
         return 0;
     }
 # else /* __WIN__ */
@@ -214,7 +214,7 @@ uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
         DWORD err = GetLastError();
         _sir_selflog("error: GetProcAddress(%p, '%s') failed (%lu)", handle,
             name, err);
-        _sir_handlewin32err(err);
+        (void)_sir_handlewin32err(err);
         return 0;
     }
 # endif
@@ -238,14 +238,14 @@ void _sir_plugin_unload(sir_plugin* plugin) {
         const char* err = dlerror();
         _sir_selflog("error: dlclose(%p) failed (%s)", plugin->handle, //-V774
             _SIR_PRNSTR(err));
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
         return;
     }
 # else /* __WIN__ */
     if (!FreeLibrary(plugin->handle)) {
         DWORD err = GetLastError();
         _sir_selflog("error: FreeLibrary(%p) failed (%lu)", plugin->handle, err);
-        _sir_handlewin32err(err);
+        (void)_sir_handlewin32err(err);
         return;
     }
 # endif

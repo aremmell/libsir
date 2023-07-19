@@ -77,13 +77,13 @@ sirfile* _sirfile_create(const char* path, sir_levels levels, sir_options opts) 
 
     sirfile* sf = (sirfile*)calloc(1, sizeof(sirfile));
     if (!sf) {
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
         return NULL;
     }
 
     sf->path = strdup(path);
     if (!sf->path) {
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
         _sir_safefree(&sf);
         return NULL;
     }
@@ -166,7 +166,7 @@ bool _sirfile_write(sirfile* sf, const char* output) {
     SIR_ASSERT(write == writeLen);
 
     if (write < writeLen) {
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
         clearerr(sf->f);
     }
 
@@ -188,10 +188,8 @@ bool _sirfile_writeheader(sirfile* sf, const char* msg) {
     char header[SIR_MAXFHEADER] = {0};
     int fmt = snprintf(header, SIR_MAXFHEADER, SIR_FHFORMAT, msg, timestamp);
 
-    if (0 > fmt) {
-        _sir_handleerr(errno);
-        return false;
-    }
+    if (0 > fmt)
+        return _sir_handleerr(errno);
 
     return 0 <= fmt && _sirfile_write(sf, header); //-V560
 }
@@ -203,10 +201,8 @@ bool _sirfile_needsroll(sirfile* sf) {
     struct stat st = {0};
     int getstat    = fstat(sf->fd, &st);
 
-    if (0 != getstat) {
-        _sir_handleerr(errno);
-        return false;
-    }
+    if (0 != getstat)
+        return _sir_handleerr(errno);
 
     return st.st_size + BUFSIZ >= SIR_FROLLSIZE ||
         SIR_FROLLSIZE - (st.st_size + BUFSIZ) <= BUFSIZ;
@@ -249,7 +245,7 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                             _sir_validstrnofail(ext) ? ext : "");
 
                         if (print < 0) {
-                            _sir_handleerr(errno);
+                            (void)_sir_handleerr(errno);
                             break;
                         }
 
@@ -278,7 +274,7 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                             print = snprintf(seqbuf, 7, SIR_FNAMESEQFORMAT, sequence);
 
                             if (print < 0) {
-                                _sir_handleerr(errno);
+                                (void)_sir_handleerr(errno);
                                 break;
                             }
                         }
@@ -311,10 +307,8 @@ bool _sirfile_archive(sirfile* sf, const char* newpath) {
     _sirfile_close(sf);
 #endif
 
-    if (0 != rename(sf->path, newpath)) {
-        _sir_handleerr(errno);
-        return false;
-    }
+    if (0 != rename(sf->path, newpath))
+        return _sir_handleerr(errno);
 
     if (_sirfile_open(sf)) {
         _sir_selflog("archived '%s' " SIR_R_ARROW " '%s'", sf->path, newpath);
@@ -334,10 +328,8 @@ bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
         return false;
 
     char* tmp = strdup(sf->path);
-    if (!tmp) {
-        _sir_handleerr(errno);
-        return false;
-    }
+    if (!tmp)
+        return _sir_handleerr(errno);
 
     char* lastfullstop = strrchr(tmp, '.');
     if (lastfullstop) {
@@ -347,9 +339,8 @@ bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
         tmp[namesize] = '\0';
         *name = (char*)calloc(namesize + 1, sizeof(char));
         if (!*name) {
-            _sir_handleerr(errno);
             _sir_safefree(&tmp);
-            return false;
+            return _sir_handleerr(errno);;
         }
 
         _sir_strncpy(*name, namesize + 1, tmp, namesize);

@@ -28,10 +28,8 @@
 
 #if !defined(__WIN__)
 bool _sir_write_stdio(FILE* stream, const char* message) {
-    if (EOF == fputs(message, stream)) {
-        _sir_handleerr(errno); // GCOVR_EXCL_START
-        return false;
-    } // GCOVR_EXCL_STOP
+    if (EOF == fputs(message, stream))
+        return _sir_handleerr(errno);
 
     return true;
 }
@@ -59,7 +57,7 @@ bool _sir_write_stdio(HANDLE console, const char* message, size_t len) {
         DWORD pass = 0;
 
         if (!WriteConsole(console, message + written, chars - written, &pass, NULL)) {
-            _sir_handlewin32err(GetLastError());
+            (void)_sir_handlewin32err(GetLastError());
             break;
         }
 
@@ -70,22 +68,16 @@ bool _sir_write_stdio(HANDLE console, const char* message, size_t len) {
 }
 
 static bool _sir_config_console(HANDLE console) {
-    if (INVALID_HANDLE_VALUE == console || NULL == console) {
-        _sir_handlewin32err(GetLastError());
-        return false;
-    }
+    if (INVALID_HANDLE_VALUE == console || NULL == console)
+        return _sir_handlewin32err(GetLastError());;
 
     DWORD mode = 0;
-    if (!GetConsoleMode(console, &mode)) {
-        _sir_handlewin32err(GetLastError());
-        return false;
-    }
+    if (!GetConsoleMode(console, &mode))
+        return _sir_handlewin32err(GetLastError());
 
     mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING | ENABLE_PROCESSED_OUTPUT;
-    if (!SetConsoleMode(console, mode)) {
-        _sir_handlewin32err(GetLastError());
-        return false;
-    }
+    if (!SetConsoleMode(console, mode))
+        return _sir_handlewin32err(GetLastError());
 
     return true;
 }

@@ -76,7 +76,7 @@ void __sir_setoserror(int code, const char* msg, const char* func, const char* f
     __sir_seterror(_SIR_E_PLATFORM, func, file, line);
 }
 
-void __sir_handleerr(int code, const char* func, const char* file, uint32_t line) {
+bool __sir_handleerr(int code, const char* func, const char* file, uint32_t line) {
     if (SIR_E_NOERROR != code) {
         char message[SIR_MAXERROR] = {0};
         int finderr                = 0;
@@ -120,6 +120,7 @@ void __sir_handleerr(int code, const char* func, const char* file, uint32_t line
 #endif
         }
     }
+    return false;
 }
 
 #if defined(__WIN__)
@@ -130,7 +131,7 @@ void _sir_invalidparameter(const wchar_t* expr, const wchar_t* func, const wchar
     _SIR_UNUSED(reserved);
 }
 
-void __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32_t line) {
+bool __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32_t line) {
     char* errbuf = NULL;
     DWORD flags  = FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |
                    FORMAT_MESSAGE_IGNORE_INSERTS  | FORMAT_MESSAGE_MAX_WIDTH_MASK;
@@ -151,6 +152,7 @@ void __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32
         SIR_ASSERT(NULL == local_free);
         errbuf = NULL;
     }
+    return false;
 }
 #endif
 

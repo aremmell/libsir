@@ -41,7 +41,7 @@ bool _sirmutex_create(sir_mutex* mutex) {
             }
         }
 
-        _sir_handleerr(op);
+        (void)_sir_handleerr(op);
     }
 
     return false;
@@ -50,9 +50,7 @@ bool _sirmutex_create(sir_mutex* mutex) {
 bool _sirmutex_lock(sir_mutex* mutex) {
     if (_sir_validptr(mutex)) {
         int op = pthread_mutex_lock(mutex);
-        if (0 != op)
-            _sir_handleerr(op);
-        return 0 == op;
+        return 0 == op ? true : _sir_handleerr(op);
     }
 
     return false;
@@ -61,9 +59,7 @@ bool _sirmutex_lock(sir_mutex* mutex) {
 bool _sirmutex_unlock(sir_mutex* mutex) {
     if (_sir_validptr(mutex)) {
         int op = pthread_mutex_unlock(mutex);
-        if (0 != op)
-            _sir_handleerr(op);
-        return 0 == op;
+        return 0 == op ? true : _sir_handleerr(op);
     }
 
     return false;
@@ -74,10 +70,8 @@ static bool _sirmutex_waitwin32(sir_mutex mutex, DWORD msec);
 bool _sirmutex_create(sir_mutex* mutex) {
     if (_sir_validptr(mutex)) {
         sir_mutex tmp = CreateMutex(NULL, FALSE, NULL);
-        if (!tmp) {
-            _sir_handlewin32err(GetLastError());
-            return false;
-        }
+        if (!tmp)
+            return _sir_handlewin32err(GetLastError());
 
         *mutex = tmp;
         return true;
@@ -93,10 +87,7 @@ bool _sirmutex_lock(sir_mutex* mutex) {
 bool _sirmutex_unlock(sir_mutex* mutex) {
     if (_sir_validptr(mutex)) {
         BOOL release = ReleaseMutex(*mutex);
-        if (!release)
-            _sir_handlewin32err(GetLastError());
-
-        return FALSE != release;
+        return FALSE != release ? true : _sir_handlewin32err(GetLastError());;
     }
 
     return false;
@@ -114,6 +105,7 @@ static bool _sirmutex_waitwin32(sir_mutex mutex, DWORD msec) {
                 break;
             case WAIT_TIMEOUT:
             case WAIT_OBJECT_0: return true;
+            default: return false; // GCOVR_EXCL_LINE
         }
     }
 

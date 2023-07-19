@@ -151,7 +151,7 @@ bool _sir_init(sirinit* si) {
 
     if (0 > snprintf(_cfg->state.pidbuf, SIR_MAXPID, SIR_PIDFORMAT,
                      PID_CAST _cfg->state.pid))
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     /* initialize system logger. */
@@ -525,18 +525,10 @@ BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) 
 bool _sir_once(sir_once* once, sir_once_fn func) {
 #if !defined(__WIN__)
     int ret = pthread_once(once, func);
-    if (0 != ret) {
-        _sir_handleerr(ret);
-        return false;
-    }
-    return true;
+    return 0 == ret ? true : _sir_handleerr(ret);
 #else /* __WIN__ */
     BOOL ret = InitOnceExecuteOnce(once, func, NULL, NULL);
-    if (!ret) {
-        _sir_handlewin32err(GetLastError());
-        return false;
-    }
-    return true;
+    return FALSE != ret ? true : _sir_handlewin32err(GetLastError());
 #endif
 }
 
@@ -601,7 +593,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         _SIR_UNUSED(fmt);
 
         if (0 > snprintf(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec))
-            _sir_handleerr(errno);
+            (void)_sir_handleerr(errno);
     }
 
     buf.level = _sir_formattedlevelstr(level);
@@ -610,12 +602,12 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     if (tid != cfg.state.pid) {
         if (!_sir_getthreadname(buf.tid)) {
             if (0 > snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, PID_CAST tid))
-                _sir_handleerr(errno);
+                (void)_sir_handleerr(errno);
         }
     }
 
     if (0 > vsnprintf(buf.message, SIR_MAXMESSAGE, format, args)) {
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
         SIR_ASSERT(false);
     }
 
@@ -651,7 +643,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
                 old_threshold, cfg.state.last.threshold, SIR_SQUELCH_BACKOFF_FACTOR);
 
             if (0 > snprintf(buf.message, SIR_MAXMESSAGE, SIR_SQUELCH_MSG_FORMAT, old_threshold))
-                _sir_handleerr(errno);
+                (void)_sir_handleerr(errno);
         } else if (cfg.state.last.squelch) {
             exit_early = true;
         }
@@ -1113,8 +1105,7 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
         if ((time_t)-1 == ret) {
             if (msecbuf)
                 *msecbuf = 0;
-            _sir_handleerr(errno);
-            return false;
+            return _sir_handleerr(errno);
         }
 #if defined(SIR_MSEC_POSIX)
         struct timespec ts = {0};
@@ -1127,7 +1118,7 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
         } else {
             if (msecbuf)
                 *msecbuf = 0;
-            _sir_handleerr(errno);
+            return _sir_handleerr(errno);
         }
 #elif defined(SIR_MSEC_MACH)
         kern_return_t retval = KERN_SUCCESS;
@@ -1144,7 +1135,7 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
         } else {
             if (msecbuf)
                 *msecbuf = 0;
-            _sir_handleerr(retval);
+            return _sir_handleerr(retval);
         }
 #elif defined(SIR_MSEC__WIN__)
         static const ULONGLONG uepoch = (ULONGLONG)116444736e9;
@@ -1166,7 +1157,7 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
         } else {
             if (msecbuf)
                 *msecbuf = 0;
-            _sir_handlewin32err(GetLastError());
+            return _sir_handlewin32err(GetLastError());
         }
 
 #else
@@ -1176,7 +1167,6 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
 #endif
         return true;
     }
-
     return false;
 }
 
@@ -1194,7 +1184,7 @@ pid_t _sir_gettid(void) {
     uint64_t tid64 = 0;
     int gettid     = pthread_threadid_np(NULL, &tid64);
     if (0 != gettid)
-        _sir_handleerr(gettid);
+        (void)_sir_handleerr(gettid);
     tid = (pid_t)tid64;
 #elif (defined(__BSD__) && !defined(__NetBSD__) && !defined(__OpenBSD__)) || \
       defined(__DragonFly_getthreadid__)
@@ -1223,10 +1213,9 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
      (defined(__GLIBC__) && defined(_GNU_SOURCE)) || \
       defined(USE_PTHREAD_GETNAME_NP) || defined(__MACOS__)
     int ret = pthread_getname_np(pthread_self(), name, SIR_MAXPID);
-    if (0 != ret) {
-        _sir_handleerr(ret);
-        return false;
-    }
+    if (0 != ret)
+        return _sir_handleerr(ret);
+
 # if defined(__HAIKU__)
     if ((strncmp(name, "pthread_func", SIR_MAXPID)) || _sir_validstrnofail(name))
         snprintf(name, SIR_MAXPID, "%ld", (long)get_pthread_thread_id(pthread_self()));
@@ -1246,23 +1235,18 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
 
 bool _sir_gethostname(char name[SIR_MAXHOST]) {
 #if !defined(__WIN__)
-    if (-1 == gethostname(name, SIR_MAXHOST - 1)) {
-        _sir_handleerr(errno);
-        return false;
-    }
-    return true;
+    int ret = gethostname(name, SIR_MAXHOST - 1);
+    return 0 == ret ? true : _sir_handleerr(errno);
 #else
     WSADATA wsad = {0};
     int ret      = WSAStartup(MAKEWORD(2, 2), &wsad);
-    if (0 != ret) {
-        _sir_handlewin32err(ret);
-        return false;
-    }
+    if (0 != ret)
+        return _sir_handlewin32err(ret);
 
     if (SOCKET_ERROR == gethostname(name, SIR_MAXHOST)) {
-        _sir_handlewin32err(WSAGetLastError());
+        int err = WSAGetLastError();
         WSACleanup();
-        return false;
+        return _sir_handlewin32err(err);
     }
 
     WSACleanup();
