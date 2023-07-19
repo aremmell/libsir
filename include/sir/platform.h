@@ -369,6 +369,9 @@ typedef void (*sir_once_fn)(void);
 /** The one-time initializer. */
 #  define SIR_ONCE_INIT PTHREAD_ONCE_INIT
 
+/** The mutex initializer. */
+#  define SIR_MUTEX_INIT PTHREAD_MUTEX_INITIALIZER
+
 # else /* __WIN__ */
 
 #  define SIR_MAXPATH MAX_PATH
@@ -398,6 +401,9 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 /** The one-time initializer. */
 #  define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
+
+/** The mutex initializer. */
+#  define SIR_MUTEX_INIT NULL
 
 # endif /* !__WIN__ */
 
