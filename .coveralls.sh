@@ -226,6 +226,15 @@ remove_sample || true
 run_gcovr run-13.json
 remove_coverage
 
+# Run 14 - Fail more.
+${DO_MAKE:-make} -j ${JOBS:?} clean
+${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
+build/bin/sirexample
+build/bin/sirtests --only 0000 || true
+remove_sample || true
+run_gcovr run-14.json
+remove_coverage
+
 # Undo redirect
 exec 1>&5
 
