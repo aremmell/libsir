@@ -5,7 +5,14 @@ libsir&mdash;a cross-platform, thread-safe logging library
 <!-- SPDX-License-Identifier: MIT -->
 <!-- Copyright (c) 2018-current Ryan M. Lederman <lederman@gmail.com> -->
 
-[![Build Status](https://app.travis-ci.com/aremmell/libsir.svg?branch=master)](https://app.travis-ci.com/aremmell/libsir)&nbsp;![REUSE Compliance](https://img.shields.io/reuse/compliance/github.com%2Faremmell%2Flibsir?label=REUSE3&color=2340b911)&nbsp;![GitHub](https://img.shields.io/github/license/aremmell/libsir?color=%2340b911)&nbsp;[![Codacy Badge](https://app.codacy.com/project/badge/Grade/c631edd919a94bafa21c98dfcf72f2ad)](https://app.codacy.com/gh/aremmell/libsir/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)&nbsp;[![Coverage Status](https://coveralls.io/repos/github/aremmell/libsir/badge.svg?)](https://coveralls.io/github/aremmell/libsir)&nbsp;[![Coverity](https://img.shields.io/coverity/scan/28843.svg?)](https://scan.coverity.com/projects/aremmell-libsir)
+![Release](https://img.shields.io/github/v/release/aremmell/libsir)
+[![Build](https://app.travis-ci.com/aremmell/libsir.svg?branch=master)](https://app.travis-ci.com/aremmell/libsir)
+![REUSE](https://img.shields.io/reuse/compliance/github.com%2Faremmell%2Flibsir?label=REUSE3&color=2340b911)
+![License](https://img.shields.io/github/license/aremmell/libsir?color=%2340b911)
+[![Codacy](https://app.codacy.com/project/badge/Grade/c631edd919a94bafa21c98dfcf72f2ad)](https://app.codacy.com/gh/aremmell/libsir/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![OpenHub](https://img.shields.io/badge/openhub-libsir-ok.svg?)](https://www.openhub.net/p/libsir/)
+[![Coverage](https://coveralls.io/repos/github/aremmell/libsir/badge.svg?)](https://coveralls.io/github/aremmell/libsir)
+[![Coverity](https://img.shields.io/coverity/scan/28843.svg?)](https://scan.coverity.com/projects/aremmell-libsir)
 
 ## <a id="overview" /> Overview
 

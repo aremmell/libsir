@@ -116,11 +116,11 @@ bool _sir_mutexcreate(sir_mutex* mutex) {
 }
 
 bool _sir_mutexlock(sir_mutex* mutex) {
-    return _sirmutex_waitwin32(*mutex, INFINITE);
+    return NULL != mutex ? _sirmutex_waitwin32(*mutex, INFINITE) : false;
 }
 
 bool _sir_mutextrylock(sir_mutex* mutex) {
-    return _sirmutex_waitwin32(*mutex, 0);
+    return NULL != mutex ? _sirmutex_waitwin32(*mutex, 0) : false;
 }
 
 bool _sir_mutexunlock(sir_mutex* mutex) {
