@@ -209,11 +209,21 @@ remove_coverage
 
 # Run 12 - Deny root
 ${DO_MAKE:-make} -j ${JOBS:?} clean
-${DO_MAKE:-make} -j ${JOBS:?}
+${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
 build/bin/sirexample
 fakeroot build/bin/sirtests || true
 remove_sample || true
 run_gcovr run-12.json
+remove_coverage
+
+# Run 13 - Fail some tests (no logs directory)
+${DO_MAKE:-make} -j ${JOBS:?} clean
+${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
+build/bin/sirexample
+rm -rf logs || true
+build/bin/sirtests || true
+remove_sample || true
+run_gcovr run-13.json
 remove_coverage
 
 # Undo redirect
