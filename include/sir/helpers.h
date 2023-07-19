@@ -87,10 +87,6 @@ uint16_t _sir_geterrcode(uint32_t err) {
 
 # define _SIR_BEGIN_BIN_SEARCH() do {
 # define _SIR_ITERATE_BIN_SEARCH(comparison) \
-    if (0 == comparison) { \
-        break; \
-    } \
-    \
     if (_low == _high) \
         break; \
     \
