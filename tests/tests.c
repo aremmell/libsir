@@ -2136,6 +2136,7 @@ bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* 
     rewinddir(d);
     struct dirent* di = readdir(d);
     if (!di) {
+        closedir(d);
         print_os_error();
         return false;
     }
