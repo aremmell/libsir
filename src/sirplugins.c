@@ -58,15 +58,14 @@ sirpluginid _sir_plugin_load(const char* path) {
         return 0;
     }
 
-    plugin->path = strdup(path);
-    if (!plugin->path) {
-        (void)_sir_handleerr(errno);
-        _sir_safefree(&plugin);
-        return 0;
-    }
-
     plugin->handle = handle;
     plugin->loaded = true;
+    plugin->path   = strdup(path);
+
+    if (!plugin->path) {
+        _sir_plugin_destroy(&plugin);
+        return _sir_handleerr(errno);
+    }
 
     _sir_selflog("loaded plugin (path: '%s', addr: %p); probing...",
         plugin->path, plugin->handle);
