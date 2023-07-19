@@ -13,7 +13,7 @@ test -n "${NO_APTSETUP:-}" \
       sleep 6 ;
       export DEBIAN_FRONTEND=noninteractive ;
       sudo apt-get update -y ;
-      sudo apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install -y ccache curl python3-pip git expect ;
+      sudo apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install -y ccache curl python3-pip git expect fakeroot ;
       #sudo python3 -m pip install --break-system-packages install -U gcovr || true ;  # for later Ubuntu versions
       sudo python3 -m pip install install -U gcovr || true ;
       command -v gcovr || true ;
@@ -205,6 +205,15 @@ chmod a+x r.sh && ./r.sh
 remove_sample || true
 rm -f r.sh || true
 run_gcovr run-11.json
+remove_coverage
+
+# Run 12 - Deny root
+${DO_MAKE:-make} -j ${JOBS:?} clean
+${DO_MAKE:-make} -j ${JOBS:?}
+build/bin/sirexample
+fakeroot build/bin/sirtests || true
+remove_sample || true
+run_gcovr run-12.json
 remove_coverage
 
 # Undo redirect
