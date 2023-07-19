@@ -6,6 +6,24 @@
 
 ##############################################################################
 
+test "$(uname -s 2> /dev/null)" = "Linux" ||
+  {
+    printf '%s\n' \
+      '#### Error: Not running on Linux.'
+    exit 1
+  }
+
+##############################################################################
+
+uname -mp 2> /dev/null | grep -q -E '(amd64|x86_64)' 2> /dev/null ||
+  {
+    printf '%s\n' \
+      '#### Error: Not running on x86_64 platform.'
+    exit 1
+  }
+
+##############################################################################
+
 test -d "./.git" ||
   {
     printf '%s\n' \
@@ -66,6 +84,7 @@ test -z "${COVERITY_PROJECT:-}" &&
 
 ##############################################################################
 
+# XXX(johnsonjh): Read from environment?
 test -z "${COVERITY_DLDIR:-}" &&
   {
     printf '%s\n' \
@@ -98,24 +117,6 @@ curl --version > /dev/null ||
   {
     printf '%s\n' \
       '#### Error: No usable curl in PATH.'
-    exit 1
-  }
-
-##############################################################################
-
-test "$(uname -s 2> /dev/null)" = "Linux" ||
-  {
-    printf '%s\n' \
-      '#### Error: Not running on Linux.'
-    exit 1
-  }
-
-##############################################################################
-
-uname -mp 2> /dev/null | grep -q -E '(amd64|x86_64)' 2> /dev/null ||
-  {
-    printf '%s\n' \
-      '#### Error: Not running on x86_64 platform.'
     exit 1
   }
 
