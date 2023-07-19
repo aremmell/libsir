@@ -1737,8 +1737,8 @@ bool sirtest_pluginloader(void) {
     badid = sir_loadplugin(plugin7);
     pass &= 0 != badid; /* this one should load, just return false from write */
 
-    pass &= !sir_info("this should fail, because the plugin failed to process"
-                      "the message.");
+    pass &= !sir_info("this should fail, because one plugin failed to process"
+                      " the message.");
 
     print_test_error(pass, pass);
 
