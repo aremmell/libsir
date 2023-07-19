@@ -147,9 +147,9 @@ rm -f  ./libsir-coverity.xz > /dev/null 2>&1
 
 printf '%s\n' '#### Notice: Downloading latest Coverity Tools checksum.'
 
-wget --show-progress --quiet                                           \
+wget --show-progress --quiet  --no-check-certificate                   \
       "https://scan.coverity.com/download/linux64"                     \
-     --post-data --no-check-certificate                                \
+     --post-data                                                       \
        "token=${COVERITY_TOKEN:?}&project=${COVERITY_PROJECT:?}&md5=1" \
      -O "${COVERITY_DLDIR:?}/coverity_tool.md5" || true
 
@@ -184,9 +184,9 @@ test "$(2> /dev/null md5sum "${COVERITY_DLDIR:?}/coverity_tool.tgz" | \
 test -z "${COVERITY_NEED_UPDATE:-}" ||
   {
     printf '%s\n' '#### Notice: Downloading latest Coverity Tools archive.'
-    wget --show-progress --quiet                                    \
+    wget --show-progress --quiet  --no-check-certificate            \
           "https://scan.coverity.com/download/linux64"              \
-         --post-data --no-check-certificate                         \
+         --post-data                                                \
           "token=${COVERITY_TOKEN:?}&project=${COVERITY_PROJECT:?}" \
          -O "${COVERITY_DLDIR:?}/coverity_tool.tgz" || true
   }
