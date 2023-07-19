@@ -58,7 +58,7 @@ bool _sir_validfd(int fd) {
     /** stdin, stdout, stderr use up 0, 1, 2 */
     if (2 >= fd)
         return _sir_handleerr(EBADF);
-        
+
 #if !defined(__WIN__)
     int ret = fcntl(fd, F_GETFL);
 #else /* __WIN__ */
@@ -202,7 +202,7 @@ bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color) {
     } // GCOVR_EXCL_STOP
 
     if (!valid) {
-        _sir_selflog("invalid text color for mode %d %08"PRIx32" (%"PRId32")",
+        _sir_selflog("invalid text color for mode %d %08"PRIx32" (%"PRIu32")",
             mode, color, color);
         _sir_seterror(_SIR_E_TEXTCOLOR);
     }

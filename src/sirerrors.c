@@ -56,7 +56,7 @@ void __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t l
         sir_te.loc.line  = line;
     }
 #if defined(DEBUG) && defined(SIR_SELFLOG)
-    if (_SIR_E_NOERROR != err) {
+    if (_SIR_E_NOERROR != err) { //-V616
         char errmsg[SIR_MAXERROR] = {0};
         uint32_t code             = _sir_geterror(errmsg);
         _SIR_UNUSED(code);
