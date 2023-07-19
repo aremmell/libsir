@@ -570,7 +570,7 @@ bool sirtest_failinvalidinitdata(void) {
     sirinit si;
 
     /* fill with bad data. */
-    memset(&si, 0xbadf00d, sizeof(sirinit)); //-V575
+    memset(&si, 0xab, sizeof(sirinit));
 
     printf("\tcalling sir_init with invalid data...\n");
     bool pass = !sir_init(&si);
@@ -1403,7 +1403,7 @@ bool sirtest_filesystem(void) {
         if (NULL != filename) {
             /* _sir_get[base|dir]name() can potentially modify filename,
              * so make a copy for each call. */
-            char* filename2 = strdup(filename);
+            char* filename2 = strndup(filename, strnlen(filename, SIR_MAXPATH));
             pass &= NULL != filename2;
 
             if (NULL != filename2) {
@@ -1980,7 +1980,7 @@ unsigned sirtest_thread(void* arg) {
 
         /* sometimes remove and re-add the log file, and set some options/styles.
            other times, just set different options/styles. */
-        if (getrand_bool((uint32_t)(n + threadid))) {
+        if (getrand_bool((uint32_t)(n + threadid + 1))) {
             if (!sir_remfile(id))
                 my_args->pass = print_test_error(false, false);
 
