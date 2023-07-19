@@ -137,14 +137,7 @@ bool _sir_init(sirinit* si) {
     /* forcibly null-terminate the process name. */
     _cfg->si.name[SIR_MAXNAME - 1] = '\0';
 
-    /* Store host name and PID. */
-    if (!_sir_gethostname(_cfg->state.hostname)) {
-        _sir_selflog("error: failed to get hostname!");
-    } else {
-        time_t now;
-        _cfg->state.last_hname_chk = -1 != time(&now) ? now : 1;
-    }
-
+    /* Store PID. */
     _cfg->state.pid = _sir_getpid();
 
     if (0 > snprintf(_cfg->state.pidbuf, SIR_MAXPID, SIR_PIDFORMAT,
