@@ -1435,7 +1435,7 @@ bool sirtest_filesystem(void) {
 
             /* _sir_get[base|dir]name can potentially modify filename,
              * so make a copy for each call. */
-            char* filename3 = strdup(filename);
+            char* filename3 = strndup(filename, strnlen(filename, SIR_MAXPATH));
             pass &= NULL != filename3;
 
             if (NULL != appdir && NULL != filename3) {
