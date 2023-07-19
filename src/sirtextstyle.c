@@ -57,7 +57,7 @@ const char* _sir_gettextstyle(sir_level level) {
 }
 
 bool _sir_settextstyle(sir_level level, sir_textstyle* style) {
-    _sir_seterror(_SIR_E_NOERROR);
+    (void)_sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validlevel(level))
         return false;
@@ -103,7 +103,7 @@ const sir_textstyle* _sir_getdefstyle(sir_level level) {
 }
 
 bool _sir_resettextstyles(void) {
-    _sir_seterror(_SIR_E_NOERROR);
+    (void)_sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity())
         return false;
@@ -174,9 +174,8 @@ bool _sir_validtextstyle(sir_colormode mode, const sir_textstyle* style) {
         _sir_selflog("error: fg color %08"PRIx32" and bg color %08"PRIx32
                      " are identical; text would be invisible", style->fg,
                      style->bg);
-        _sir_seterror(_SIR_E_TEXTSTYLE);
         SIR_ASSERT("!invalid text style");
-        return false;
+        return _sir_seterror(_SIR_E_TEXTSTYLE);
     }
 
     return true;

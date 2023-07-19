@@ -84,20 +84,18 @@ bool _sir_makeinit(sirinit* si) {
 }
 
 bool _sir_init(sirinit* si) {
-    _sir_seterror(_SIR_E_NOERROR);
+    (void)_sir_seterror(_SIR_E_NOERROR);
     _sir_once(&magic_once, _sir_initialize_once);
 
     if (!_sir_validptr(si))
         return false;
 
 #if defined(__HAVE_ATOMIC_H__)
-    if (_SIR_MAGIC == atomic_load(&_sir_magic)) {
+    if (_SIR_MAGIC == atomic_load(&_sir_magic))
 #else
-    if (_SIR_MAGIC == _sir_magic) {
+    if (_SIR_MAGIC == _sir_magic)
 #endif
-        _sir_seterror(_SIR_E_ALREADY);
-        return false;
-    }
+        return _sir_seterror(_SIR_E_ALREADY);
 
     _sir_defaultlevels(&si->d_stdout.levels, sir_stdout_def_lvls);
     _sir_defaultopts(&si->d_stdout.opts, sir_stdout_def_opts);
@@ -227,9 +225,7 @@ bool _sir_sanity(void) {
     if (_SIR_MAGIC == _sir_magic)
         return true;
 #endif
-
-    _sir_seterror(_SIR_E_NOTREADY);
-    return false;
+    return _sir_seterror(_SIR_E_NOTREADY);
 }
 
 bool _sir_init_sanity(const sirinit* si) {
@@ -354,7 +350,7 @@ bool _sir_syslogcat(sirinit* si, sir_update_config_data* data) {
 }
 
 bool _sir_writeinit(sir_update_config_data* data, sirinit_update update) {
-    _sir_seterror(_SIR_E_NOERROR);
+    (void)_sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validupdatedata(data) || !_sir_validfnptr(update))
         return false;
@@ -537,7 +533,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     if (!_sir_sanity() || !_sir_validlevel(level) || !_sir_validstr(format))
         return false;
 
-    _sir_seterror(_SIR_E_NOERROR);
+    (void)_sir_seterror(_SIR_E_NOERROR);
 
     _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false);
 
@@ -655,10 +651,8 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     }
 
     _cfg = _sir_locksection(SIRMI_CONFIG);
-    if (!_cfg) {
-        _sir_seterror(_SIR_E_INTERNAL);
-        return false;
-    }
+    if (!_cfg)
+        return _sir_seterror(_SIR_E_INTERNAL);
 
     _cfg->state.last.squelch = cfg.state.last.squelch;
 
@@ -736,9 +730,8 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
 #endif
 
     if (0 == wanted) {
-        _sir_seterror(_SIR_E_NODEST);
         _sir_selflog("error: no destinations registered for level %04"PRIx32, level);
-        return false;
+        return _sir_seterror(_SIR_E_NODEST);
     }
 
     return retval && (dispatched == wanted);
@@ -875,9 +868,8 @@ bool _sir_syslog_init(const char* name, sir_syslog_dest* ctx) {
 
 bool _sir_syslog_open(sir_syslog_dest* ctx) {
     if (!_sir_bittest(ctx->_state.mask, SIRSL_IS_INIT)) {
-        _sir_seterror(_SIR_E_INVALID);
         _sir_selflog("not initialized; ignoring");
-        return false;
+        return _sir_seterror(_SIR_E_INVALID);
     }
 
     if (_sir_bittest(ctx->_state.mask, SIRSL_IS_OPEN)) {
@@ -905,15 +897,13 @@ bool _sir_syslog_open(sir_syslog_dest* ctx) {
 
 bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx) {
     if (!_sir_bittest(ctx->_state.mask, SIRSL_IS_INIT)) {
-        _sir_seterror(_SIR_E_INVALID);
         _sir_selflog("not initialized; ignoring");
-        return false;
+        return _sir_seterror(_SIR_E_INVALID);
     }
 
     if (!_sir_bittest(ctx->_state.mask, SIRSL_IS_OPEN)) {
-        _sir_seterror(_SIR_E_INVALID);
         _sir_selflog("log not open; ignoring");
-        return false;
+        return _sir_seterror(_SIR_E_INVALID);
     }
 
 # if defined(SIR_OS_LOG_ENABLED)
@@ -1083,10 +1073,8 @@ const char* _sir_formattedlevelstr(sir_level level) {
 }
 
 bool _sir_formattime(time_t now, char* buffer, const char* format) {
-    if (0 == now || -1 == now) {
-        _sir_seterror(_SIR_E_INVALID);
-        return false;
-    }
+    if (0 == now || -1 == now)
+        return _sir_seterror(_SIR_E_INVALID);
 
     struct tm timebuf = {0};
     size_t fmttime    = strftime(buffer, SIR_MAXTIME, format,

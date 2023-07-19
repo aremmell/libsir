@@ -101,7 +101,7 @@ bool _sir_validupdatedata(sir_update_config_data* data) {
         valid &= _sir_validstrnofail(data->sl_category);
 
     if (!valid) {
-        _sir_seterror(_SIR_E_INVALID);
+        (void)_sir_seterror(_SIR_E_INVALID);
         SIR_ASSERT("!invalid sir_update_config_data");
     }
 
@@ -122,9 +122,7 @@ bool _sir_validlevels(sir_levels levels) {
          return true;
 
     _sir_selflog("invalid levels: %04"PRIx16, levels);
-    _sir_seterror(_SIR_E_LEVELS);
-
-    return false;
+    return _sir_seterror(_SIR_E_LEVELS);
 }
 
 bool _sir_validlevel(sir_level level) {
@@ -135,8 +133,7 @@ bool _sir_validlevel(sir_level level) {
         return true;
 
     _sir_selflog("invalid level: %04"PRIx32, level);
-    _sir_seterror(_SIR_E_LEVELS);
-    return false;
+    return _sir_seterror(_SIR_E_LEVELS);
 }
 
 bool _sir_validopts(sir_options opts) {
@@ -153,9 +150,7 @@ bool _sir_validopts(sir_options opts) {
          return true;
 
     _sir_selflog("invalid options: %08"PRIx32, opts);
-    _sir_seterror(_SIR_E_OPTIONS);
-
-    return false;
+    return _sir_seterror(_SIR_E_OPTIONS);
 }
 
 bool _sir_validtextattr(sir_textattr attr) {
@@ -168,8 +163,7 @@ bool _sir_validtextattr(sir_textattr attr) {
             return true;
         default: {
             _sir_selflog("invalid text attr: %d", attr);
-            _sir_seterror(_SIR_E_TEXTATTR);
-            return false;
+            return _sir_seterror(_SIR_E_TEXTATTR);
         }
     }
 }
@@ -204,7 +198,7 @@ bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color) {
     if (!valid) {
         _sir_selflog("invalid text color for mode %d %08"PRIx32" (%"PRIu32")",
             mode, color, color);
-        _sir_seterror(_SIR_E_TEXTCOLOR);
+        (void)_sir_seterror(_SIR_E_TEXTCOLOR);
     }
 
     return valid;
@@ -216,10 +210,10 @@ bool _sir_validcolormode(sir_colormode mode) {
         case SIRCM_256:
         case SIRCM_RGB:
             return true;
+        case SIRCM_INVALID:
         default: {
             _sir_selflog("invalid color mode: %d", mode);
-            _sir_seterror(_SIR_E_COLORMODE);
-            return false;
+            return _sir_seterror(_SIR_E_COLORMODE);
         }
     }
 }
@@ -227,7 +221,7 @@ bool _sir_validcolormode(sir_colormode mode) {
 bool __sir_validstr(const char* restrict str, bool fail) {
     bool valid = str && (*str != '\0');
     if (!valid && fail) {
-        _sir_seterror(_SIR_E_STRING);
+        (void)_sir_seterror(_SIR_E_STRING);
         SIR_ASSERT(!"invalid string");
     }
     return valid;
@@ -236,7 +230,7 @@ bool __sir_validstr(const char* restrict str, bool fail) {
 bool __sir_validptr(const void* restrict p, bool fail) {
     bool valid = NULL != p;
     if (!valid && fail) {
-        _sir_seterror(_SIR_E_NULLPTR);
+        (void)_sir_seterror(_SIR_E_NULLPTR);
         SIR_ASSERT(!"NULL pointer");
     }
     return valid;
@@ -245,7 +239,7 @@ bool __sir_validptr(const void* restrict p, bool fail) {
 bool __sir_validptrptr(const void* restrict* pp, bool fail) {
     bool valid = NULL != pp;
     if (!valid && fail) {
-        _sir_seterror(_SIR_E_NULLPTR);
+        (void)_sir_seterror(_SIR_E_NULLPTR);
         SIR_ASSERT("!NULL pointer");
     }
     return valid;

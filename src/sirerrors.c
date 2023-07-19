@@ -48,7 +48,7 @@ static _sir_thread_local sir_thread_err sir_te = {
     _SIR_E_NOERROR, 0, {0}, {SIR_UNKNOWN, SIR_UNKNOWN, 0}
 };
 
-void __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t line) {
+bool __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t line) {
     if (_sir_validerror(err)) {
         sir_te.lasterror = err;
         sir_te.loc.func  = func;
@@ -63,6 +63,7 @@ void __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t l
         __sir_selflog(func, file, line, "%s", errmsg);
     }
 #endif
+    return false;
 }
 
 void __sir_setoserror(int code, const char* msg, const char* func, const char* file,

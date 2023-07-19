@@ -119,7 +119,7 @@ static const struct {
 };
 
 //-V:_sir_seterror:616
-void __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t line);
+bool __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t line);
 # define _sir_seterror(err) __sir_seterror(err, __func__, __file__, __LINE__)
 
 void __sir_setoserror(int code, const char* msg, const char* func,

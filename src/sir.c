@@ -127,8 +127,7 @@ sirpluginid sir_loadplugin(const char* path) {
     return _sir_plugin_load(path);
 #else
     _SIR_UNUSED(path);
-    _sir_seterror(_SIR_E_UNAVAIL);
-    return 0;
+    return _sir_seterror(_SIR_E_UNAVAIL);
 #endif
 }
 
@@ -137,8 +136,7 @@ bool sir_unloadplugin(sirpluginid id) {
     return _sir_plugin_rem(id);
 #else
     _SIR_UNUSED(id);
-    _sir_seterror(_SIR_E_UNAVAIL);
-    return false;
+    return _sir_seterror(_SIR_E_UNAVAIL);
 #endif
 }
 
@@ -208,8 +206,7 @@ bool sir_sysloglevels(sir_levels levels) {
     return _sir_writeinit(&data, _sir_sysloglevels);
 #else
     _SIR_UNUSED(levels);
-    _sir_seterror(_SIR_E_UNAVAIL);
-    return false;
+    return _sir_seterror(_SIR_E_UNAVAIL);
 #endif
 }
 
@@ -220,8 +217,7 @@ bool sir_syslogopts(sir_options opts) {
     return _sir_writeinit(&data, _sir_syslogopts);
 #else
     _SIR_UNUSED(opts);
-    _sir_seterror(_SIR_E_UNAVAIL);
-    return false;
+    return _sir_seterror(_SIR_E_UNAVAIL);
 #endif
 }
 
@@ -231,8 +227,7 @@ bool sir_syslogid(const char* identity) {
     return _sir_writeinit(&data, _sir_syslogid);
 #else
     _SIR_UNUSED(identity);
-    _sir_seterror(_SIR_E_UNAVAIL);
-    return false;
+    return _sir_seterror(_SIR_E_UNAVAIL);
 #endif
 }
 
@@ -242,8 +237,7 @@ bool sir_syslogcat(const char* category) {
     return _sir_writeinit(&data, _sir_syslogcat);
 #else
     _SIR_UNUSED(category);
-    _sir_seterror(_SIR_E_UNAVAIL);
-    return false;
+    return _sir_seterror(_SIR_E_UNAVAIL);
 #endif
 }
 

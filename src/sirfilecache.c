@@ -29,7 +29,7 @@
 #include "sir/defaults.h"
 
 sirfileid _sir_addfile(const char* path, sir_levels levels, sir_options opts) {
-    _sir_seterror(_SIR_E_NOERROR);
+    (void)_sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity())
         return 0;
@@ -46,7 +46,7 @@ sirfileid _sir_addfile(const char* path, sir_levels levels, sir_options opts) {
 }
 
 bool _sir_updatefile(sirfileid id, sir_update_config_data* data) {
-    _sir_seterror(_SIR_E_NOERROR);
+    (void)_sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validfileid(id) || !_sir_validupdatedata(data))
         return false;
@@ -59,7 +59,7 @@ bool _sir_updatefile(sirfileid id, sir_update_config_data* data) {
 }
 
 bool _sir_remfile(sirfileid id) {
-    _sir_seterror(_SIR_E_NOERROR);
+    (void)_sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validfileid(id))
         return false;
@@ -407,17 +407,14 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
         !_sir_validopts(opts))
         return 0;
 
-    if (sfc->count >= SIR_MAXFILES) {
-        _sir_seterror(_SIR_E_NOROOM);
-        return 0;
-    }
+    if (sfc->count >= SIR_MAXFILES)
+        return _sir_seterror(_SIR_E_NOROOM);
 
     sirfile* existing = _sir_fcache_find(sfc, (const void*)path, _sir_fcache_pred_path);
     if (NULL != existing) {
         _sir_selflog("error: already have file (path: '%s', id: %"PRIx32")",
             path, existing->id);
-        _sir_seterror(_SIR_E_DUPITEM);
-        return 0;
+        return _sir_seterror(_SIR_E_DUPITEM);
     }
 
     sirfile* sf = _sirfile_create(path, levels, opts);
@@ -443,12 +440,7 @@ bool _sir_fcache_update(sirfcache* sfc, sirfileid id, sir_update_config_data* da
         return false;
 
     sirfile* found = _sir_fcache_find(sfc, (const void*)&id, _sir_fcache_pred_id);
-    if (!found) {
-        _sir_seterror(_SIR_E_NOITEM);
-        return false;
-    }
-
-    return _sirfile_update(found, data);
+    return found ? _sirfile_update(found, data) : _sir_seterror(_SIR_E_NOITEM);
 }
 
 bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
@@ -474,8 +466,7 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
         }
     }
 
-    _sir_seterror(_SIR_E_NOITEM);
-    return false;
+    return _sir_seterror(_SIR_E_NOITEM);
 }
 
 bool _sir_fcache_pred_path(const void* match, sirfile* iter) {

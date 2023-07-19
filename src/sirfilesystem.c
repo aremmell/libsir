@@ -394,7 +394,7 @@ bool _sir_getrelbasepath(const char* restrict path, bool* restrict relative,
         switch (rel_to) {
             case SIR_PATH_REL_TO_APP: *base_path = _sir_getappdir(); break;
             case SIR_PATH_REL_TO_CWD: *base_path = _sir_getcwd(); break;
-            default: _sir_seterror(_SIR_E_INVALID); return false;
+            default: return _sir_seterror(_SIR_E_INVALID);
         }
 
         if (!*base_path)

@@ -67,7 +67,7 @@ uint16_t _sir_geterrcode(uint32_t err) {
 # define _SIR_LOCK_SECTION(type, name, mid, ret) \
     type* name = _sir_locksection(mid); \
     if (!name) { \
-        _sir_seterror(_SIR_E_INTERNAL); \
+        (void)_sir_seterror(_SIR_E_INTERNAL); \
         return ret; \
     }
 
