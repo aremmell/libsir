@@ -143,7 +143,7 @@ bool __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32
             errbuf[fmtmsg - 1] = '\0';
         __sir_setoserror((int)code, errbuf, func, file, line);
     } else {
-        _sir_selflog("FormatMessage failed! error: %d", GetLastError());
+        _sir_selflog("FormatMessage failed! error: %lu", GetLastError());
         SIR_ASSERT(false);
     }
 

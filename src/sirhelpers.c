@@ -26,6 +26,24 @@
 #include "sir/helpers.h"
 #include "sir/errors.h"
 
+bool __sir_validptrptr(const void* restrict* pp, bool fail) {
+    bool valid = NULL != pp;
+    if (!valid && fail) {
+        (void)_sir_seterror(_SIR_E_NULLPTR);
+        SIR_ASSERT("!NULL pointer");
+    }
+    return valid;
+}
+
+bool __sir_validptr(const void* restrict p, bool fail) {
+    bool valid = NULL != p;
+    if (!valid && fail) {
+        (void)_sir_seterror(_SIR_E_NULLPTR);
+        SIR_ASSERT(!"NULL pointer");
+    }
+    return valid;
+}
+
 void __sir_safefree(void** pp) {
     if (!pp || !*pp)
         return;
@@ -71,10 +89,7 @@ bool _sir_validfd(int fd) {
     _set_thread_local_invalid_parameter_handler(old);
 # endif
 #endif
-    bool valid = -1 != ret || EBADF != errno;
-    if (-1 == ret)
-        _sir_handleerr(errno);
-    return valid;
+    return (-1 != ret || EBADF != errno) ? true : _sir_handleerr(errno);
 }
 
 /** Validates a sir_update_config_data structure. */
@@ -227,30 +242,12 @@ bool __sir_validstr(const char* restrict str, bool fail) {
     return valid;
 }
 
-bool __sir_validptr(const void* restrict p, bool fail) {
-    bool valid = NULL != p;
-    if (!valid && fail) {
-        (void)_sir_seterror(_SIR_E_NULLPTR);
-        SIR_ASSERT(!"NULL pointer");
-    }
-    return valid;
-}
-
-bool __sir_validptrptr(const void* restrict* pp, bool fail) {
-    bool valid = NULL != pp;
-    if (!valid && fail) {
-        (void)_sir_seterror(_SIR_E_NULLPTR);
-        SIR_ASSERT("!NULL pointer");
-    }
-    return valid;
-}
-
 int _sir_strncpy(char* restrict dest, size_t destsz, const char* restrict src, size_t count) {
     if (_sir_validptr(dest) && _sir_validstr(src)) {
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
         int ret = strncpy_s(dest, destsz, src, count);
         if (0 != ret) {
-            _sir_handleerr(ret);
+            (void)_sir_handleerr(ret);
             return -1;
         }
         return 0;
@@ -271,7 +268,7 @@ int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src, s
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
         int ret = strncat_s(dest, destsz, src, count);
         if (0 != ret) {
-            _sir_handleerr(ret);
+            (void)_sir_handleerr(ret);
             return -1;
         }
         return 0;
@@ -293,14 +290,14 @@ int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename
 #if defined(__HAVE_STDC_SECURE_OR_EXT1__)
         int ret = fopen_s(streamptr, filename, mode);
         if (0 != ret) {
-            _sir_handleerr(ret);
+            (void)_sir_handleerr(ret);
             return -1;
         }
         return 0;
 #else
         *streamptr = fopen(filename, mode);
         if (!*streamptr) {
-            _sir_handleerr(errno);
+            (void)_sir_handleerr(errno);
             return -1;
         }
         return 0;
@@ -316,7 +313,7 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
 # if defined(__WIN__)
         errno_t ret = (errno_t)localtime_s(buf, timer);
         if (0 != ret) {
-            _sir_handleerr(ret);
+            (void)_sir_handleerr(ret);
             return NULL;
         }
 
@@ -324,7 +321,7 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
 # else /* __WIN__ */
         struct tm* ret = localtime_s(timer, buf);
         if (!ret)
-            _sir_handleerr(errno);
+            (void)_sir_handleerr(errno);
 
         return ret;
 # endif
@@ -332,7 +329,8 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
         _SIR_UNUSED(buf);
         struct tm* ret = localtime(timer);
         if (!ret)
-            _sir_handleerr(errno);
+            (void)_sir_handleerr(errno);
+
         return ret;
 #endif
     }
@@ -340,36 +338,27 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
     return NULL;
 }
 
-int _sir_getchar(void) {
-#if defined(__WIN__)
-    return _getch();
-#else /* !__WIN__ */
-    struct termios cur = {0};
-    struct termios new = {0};
+bool _sir_getchar(char* input) {
+    if (!_sir_validptr(input))
+        return false;
 
-    int get = tcgetattr(STDIN_FILENO, &cur);
-    if (0 != get) {
-        _sir_handleerr(errno);
-        return -1;
-    }
+#if defined(__WIN__)
+     *input = (char)_getch();
+     return true;
+#else /* !__WIN__ */
+    struct termios cur = {0}, new = {0};
+    if (0 != tcgetattr(STDIN_FILENO, &cur))
+        return _sir_handleerr(errno);
 
     memcpy(&new, &cur, sizeof(struct termios));
     new.c_lflag &= ~(ICANON | ECHO);
 
-    int set = tcsetattr(STDIN_FILENO, TCSANOW, &new);
-    if (0 != set) {
-        _sir_handleerr(errno);
-        return -1;
-    }
+    if (0 != tcsetattr(STDIN_FILENO, TCSANOW, &new))
+        return _sir_handleerr(errno);
 
-    int ch = getchar();
+    *input = (char)getchar();
 
-    set = tcsetattr(STDIN_FILENO, TCSANOW, &cur);
-    if (0 != set) {
-        _sir_handleerr(errno);
-        return -1;
-    }
-
-    return ch;
+    return 0 == tcsetattr(STDIN_FILENO, TCSANOW, &cur) ? true
+        : _sir_handleerr(errno);
 #endif
 }

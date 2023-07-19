@@ -183,7 +183,8 @@ int main(int argc, char** argv) {
 
     if (wait) {
         printf(WHITEB(EMPH("press any key to exit...")) "\n");
-        int ch = _sir_getchar();
+        char ch = '\0';
+        (void)_sir_getchar(&ch);
         _SIR_UNUSED(ch);
     }
 

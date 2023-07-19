@@ -35,13 +35,38 @@ bool _sir_write_stdio(FILE* stream, const char* message) {
 }
 
 #else /* __WIN__ */
-HANDLE __sir_stdout = INVALID_HANDLE_VALUE;
-HANDLE __sir_stderr = INVALID_HANDLE_VALUE;
-
+static HANDLE __sir_stdout  = INVALID_HANDLE_VALUE;
+static HANDLE __sir_stderr  = INVALID_HANDLE_VALUE;
 static sir_once config_once = SIR_ONCE_INIT;
 
-static bool _sir_config_console(HANDLE console);
-static BOOL CALLBACK __sir_config_consoles_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
+static
+bool _sir_config_console(HANDLE console) {
+    if (INVALID_HANDLE_VALUE == console || NULL == console)
+        return _sir_handlewin32err(GetLastError());
+
+    DWORD mode = 0;
+    if (!GetConsoleMode(console, &mode))
+        return _sir_handlewin32err(GetLastError());
+
+    mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING | ENABLE_PROCESSED_OUTPUT;
+    if (!SetConsoleMode(console, mode))
+        return _sir_handlewin32err(GetLastError());
+
+    return true;
+}
+
+static
+BOOL CALLBACK __sir_config_consoles_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
+    _SIR_UNUSED(ponce);
+    _SIR_UNUSED(param);
+    _SIR_UNUSED(ctx);
+
+    __sir_stdout = GetStdHandle(STD_OUTPUT_HANDLE);
+    __sir_stderr = GetStdHandle(STD_ERROR_HANDLE);
+
+    return (_sir_config_console(__sir_stdout) && _sir_config_console(__sir_stderr))
+        ? TRUE : FALSE;
+}
 
 bool _sir_initialize_stdio(void) {
     bool configure = _sir_once(&config_once, __sir_config_consoles_once);
@@ -56,40 +81,12 @@ bool _sir_write_stdio(HANDLE console, const char* message, size_t len) {
     do {
         DWORD pass = 0;
 
-        if (!WriteConsole(console, message + written, chars - written, &pass, NULL)) {
-            (void)_sir_handlewin32err(GetLastError());
-            break;
-        }
+        if (!WriteConsole(console, message + written, chars - written, &pass, NULL))
+            return _sir_handlewin32err(GetLastError());
 
         written += pass;
     } while (written < chars);
 
     return written == chars;
-}
-
-static bool _sir_config_console(HANDLE console) {
-    if (INVALID_HANDLE_VALUE == console || NULL == console)
-        return _sir_handlewin32err(GetLastError());;
-
-    DWORD mode = 0;
-    if (!GetConsoleMode(console, &mode))
-        return _sir_handlewin32err(GetLastError());
-
-    mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING | ENABLE_PROCESSED_OUTPUT;
-    if (!SetConsoleMode(console, mode))
-        return _sir_handlewin32err(GetLastError());
-
-    return true;
-}
-
-static BOOL CALLBACK __sir_config_consoles_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
-    _SIR_UNUSED(ponce);
-    _SIR_UNUSED(param);
-    _SIR_UNUSED(ctx);
-
-    __sir_stdout = GetStdHandle(STD_OUTPUT_HANDLE);
-    __sir_stderr = GetStdHandle(STD_ERROR_HANDLE);
-
-    return (_sir_config_console(__sir_stdout) && _sir_config_console(__sir_stderr)) ? TRUE : FALSE;
 }
 #endif /* !__WIN__ */

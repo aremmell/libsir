@@ -85,18 +85,14 @@ bool _sirmutex_lock(sir_mutex* mutex) {
 }
 
 bool _sirmutex_unlock(sir_mutex* mutex) {
-    if (_sir_validptr(mutex)) {
-        BOOL release = ReleaseMutex(*mutex);
-        return FALSE != release ? true : _sir_handlewin32err(GetLastError());;
-    }
-
+    if (_sir_validptr(mutex))
+        return (FALSE != ReleaseMutex(*mutex)) ? true : _sir_handlewin32err(GetLastError());
     return false;
 }
 
 static bool _sirmutex_waitwin32(sir_mutex mutex, DWORD msec) {
     if (_sir_validptr(mutex)) {
         DWORD wait = WaitForSingleObject(mutex, msec);
-
         switch (wait) {
             case WAIT_ABANDONED:
             case WAIT_FAILED:
@@ -108,7 +104,6 @@ static bool _sirmutex_waitwin32(sir_mutex mutex, DWORD msec) {
             default: return false; // GCOVR_EXCL_LINE
         }
     }
-
     return false;
 }
 #endif /* !__WIN__ */

@@ -523,8 +523,8 @@ bool _sir_once(sir_once* once, sir_once_fn func) {
     int ret = pthread_once(once, func);
     return 0 == ret ? true : _sir_handleerr(ret);
 #else /* __WIN__ */
-    BOOL ret = InitOnceExecuteOnce(once, func, NULL, NULL);
-    return FALSE != ret ? true : _sir_handlewin32err(GetLastError());
+    return (FALSE != InitOnceExecuteOnce(once, func, NULL, NULL)) ? true
+        : _sir_handlewin32err(GetLastError());
 #endif
 }
 

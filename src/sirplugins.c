@@ -46,8 +46,7 @@ sirpluginid _sir_plugin_load(const char* path) {
     if (!handle) {
         DWORD err = GetLastError();
         _sir_selflog("error: LoadLibraryA(%s) failed (%lu)", path, err);
-        (void)_sir_handlewin32err(err);
-        return 0;
+        return _sir_handlewin32err(err);
     }
 # endif
 
@@ -221,11 +220,9 @@ void _sir_plugin_unload(sir_plugin* plugin) {
                      " cleanup!", plugin->path, plugin->handle);
 
 # if !defined(__WIN__)
-    int ret = dlclose(plugin->handle);
-    if (0 != ret) {
-        const char* err = dlerror();
+    if (0 != dlclose(plugin->handle)) {
         _sir_selflog("error: dlclose(%p) failed (%s)", plugin->handle, //-V774
-            _SIR_PRNSTR(err));
+            _SIR_PRNSTR(dlerror()));
         (void)_sir_handleerr(errno);
         return;
     }

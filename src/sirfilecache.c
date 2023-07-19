@@ -616,7 +616,7 @@ void _sir_fflush(FILE* f) {
         return;
 
     if (0 != fflush(f)) {
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
         return;
     }
 }
