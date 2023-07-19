@@ -354,8 +354,8 @@ typedef bool (*fileenumproc)(const char* search, const char* path, const char* f
 bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* data);
 
 bool sirtimerstart(sir_timer* timer);
-float sirtimerelapsed(const sir_timer* timer); // msec
-long sirtimergetres(void); // nsec
+float sirtimerelapsed(const sir_timer* timer); /* msec */
+long sirtimergetres(void); /* nsec */
 
 # if defined(SIR_OS_LOG_ENABLED)
 void os_log_parent_activity(void* ctx);

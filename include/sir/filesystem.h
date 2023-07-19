@@ -79,4 +79,4 @@ int _sir_openbsdself(char* out, int capacity, int* dirname_length);
 }
 # endif
 
-#endif // !_SIR_FILESYSTEM_H_INCLUDED
+#endif /* !_SIR_FILESYSTEM_H_INCLUDED */

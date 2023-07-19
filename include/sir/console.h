@@ -59,6 +59,6 @@ static inline
 bool _sir_write_stderr(const char* message, size_t len) {
     return _sir_write_stdio(__sir_stderr, message, len);
 }
-# endif // !__WIN__
+# endif /* !__WIN__ */
 
 #endif /* !_SIR_CONSOLE_H_INCLUDED */

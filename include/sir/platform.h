@@ -396,7 +396,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 /** The one-time initializer. */
 #  define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
 
-# endif // !__WIN__
+# endif /* !__WIN__ */
 
 # if (__STDC_VERSION__ >= 201112 && !defined(__STDC_NO_THREADS__)) || \
      (defined(__SUNPRO_C) || defined(__SUNPRO_CC))

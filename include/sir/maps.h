@@ -31,4 +31,4 @@
 extern sir_level_style_tuple sir_level_to_style_map[SIR_NUMLEVELS];
 extern sir_level_str_pair sir_level_to_str_map[SIR_NUMLEVELS];
 
-#endif // !_SIR_MAPS_H_INCLUDED
+#endif /* !_SIR_MAPS_H_INCLUDED */
