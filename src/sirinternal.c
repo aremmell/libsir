@@ -1072,6 +1072,9 @@ const char* _sir_formattedlevelstr(sir_level level) {
     return SIR_UNKNOWN;
 }
 
+#if defined(__GNUC__)
+__attribute__ ((format (strftime, 3, 0)))
+#endif
 bool _sir_formattime(time_t now, char* buffer, const char* format) {
     if (0 == now || -1 == now)
         return _sir_seterror(_SIR_E_INVALID);
