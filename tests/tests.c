@@ -1000,31 +1000,27 @@ bool sirtest_mutexsanity(void) {
     print_test_error(pass, pass);
 
     if (pass) {
-        printf(INDENT_ITEM WHITE("locking mutex (wait)...") "\n");
+        printf(INDENT_ITEM WHITE("locking (wait)...") "\n");
         pass &= _sir_mutexlock(&m1);
 
         print_test_error(pass, pass);
 
-        if (pass) {
-            printf(INDENT_ITEM WHITE("entered mutex; unlocking...") "\n");
-            pass &= _sir_mutexunlock(&m1);
+        printf(INDENT_ITEM WHITE("entered; unlocking...") "\n");
+        pass &= _sir_mutexunlock(&m1);
 
-            print_test_error(pass, pass);
-        }
+        print_test_error(pass, pass);
 
-        printf(INDENT_ITEM WHITE("locking mutex (without wait)...") "\n");
+        printf(INDENT_ITEM WHITE("locking (without wait)...") "\n");
         pass &= _sir_mutextrylock(&m1);
 
         print_test_error(pass, pass);
 
-        if (pass) {
-            printf(INDENT_ITEM WHITE("entered mutex; unlocking...") "\n");
-            pass &= _sir_mutexunlock(&m1);
+        printf(INDENT_ITEM WHITE("unlocking...") "\n");
+        pass &= _sir_mutexunlock(&m1);
 
-            print_test_error(pass, pass);
-        }
+        print_test_error(pass, pass);
 
-        printf(INDENT_ITEM WHITE("destryoing mutex...") "\n");
+        printf(INDENT_ITEM WHITE("destryoing...") "\n");
         pass &= _sir_mutexdestroy(&m1);
 
         print_test_error(pass, pass);
