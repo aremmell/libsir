@@ -35,8 +35,8 @@ bool _sir_write_stdio(FILE* stream, const char* message) {
 }
 
 #else /* __WIN__ */
-static HANDLE __sir_stdout  = INVALID_HANDLE_VALUE;
-static HANDLE __sir_stderr  = INVALID_HANDLE_VALUE;
+HANDLE __sir_stdout  = INVALID_HANDLE_VALUE;
+HANDLE __sir_stderr  = INVALID_HANDLE_VALUE;
 static sir_once config_once = SIR_ONCE_INIT;
 
 static
