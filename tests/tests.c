@@ -1735,7 +1735,10 @@ bool sirtest_pluginloader(void) {
 
     printf("\tloading bad plugin: '%s'...\n", plugin7);
     badid = sir_loadplugin(plugin7);
-    pass &= 0 == badid;
+    pass &= 0 != badid; /* this one should load, just return false from write */
+
+    pass &= !sir_info("this should fail, because the plugin failed to process"
+                      "the message.");
 
     print_test_error(pass, pass);
 

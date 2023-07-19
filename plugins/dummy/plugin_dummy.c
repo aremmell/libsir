@@ -41,7 +41,8 @@
  * - PLUGINDUMMY_BADBEHAVIOR3: set info::levels and/or info::opts to invalid values
  * - PLUGINDUMMY_BADBEHAVIOR4: missing an export
  * - PLUGINDUMMY_BADBEHAVIOR5: return false from 'sir_plugin_init'
- * - PLUGINDUMMY_BADBEHAVIOR6: return false from 'sir_plugin_cleanup'
+ * - PLUGINDUMMY_BADBEHAVIOR6: return false from 'sir_plugin_write' and
+ *   'sir_plugin_cleanup'
  */
 
 #if defined(__WIN__)
@@ -105,7 +106,11 @@ PLUGIN_EXPORT bool sir_plugin_init(void) {
 PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message) {
     printf("\t" DGRAY("plugin_dummy (%s): level: %04"PRIx32", message: %s"),
         __func__, level, message);
+#if defined(PLUGINDUMMY_BADBEHAVIOR6)
+    return false;
+#else
     return true;
+#endif
 }
 
 PLUGIN_EXPORT bool sir_plugin_cleanup(void) { //-V524

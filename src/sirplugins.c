@@ -228,9 +228,10 @@ void _sir_plugin_unload(sir_plugin* plugin) {
     if (!_sir_validptrnofail(plugin))
         return;
 
-    /* if the cleanup export was resolved, call it. */
-    if (plugin->iface.cleanup)
-        plugin->iface.cleanup();
+    /* if the plugin cleanup export was resolved, call it. */
+    if (plugin->iface.cleanup && !plugin->iface.cleanup())
+        _sir_selflog("error: plugin (path: '%s', addr: %p) reports unsuccessful"
+                     " cleanup!", plugin->path, plugin->handle);
 
 # if !defined(__WIN__)
     int ret = dlclose(plugin->handle);
