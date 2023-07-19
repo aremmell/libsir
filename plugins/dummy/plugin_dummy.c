@@ -38,7 +38,7 @@
  *
  * - PLUGINDUMMY_BADBEHAVIOR1: return false from 'sir_plugin_query'
  * - PLUGINDUMMY_BADBEHAVIOR2: set info::iface_ver != SIR_PLUGIN_VCURRENT
- * - PLUGINDUMMY_BADBEHAVIOR3: set info::levels and/or info::opts to invalid values
+ * - PLUGINDUMMY_BADBEHAVIOR3: set invalid values in sir_plugininfo
  * - PLUGINDUMMY_BADBEHAVIOR4: missing an export
  * - PLUGINDUMMY_BADBEHAVIOR5: return false from 'sir_plugin_init'
  * - PLUGINDUMMY_BADBEHAVIOR6: return false from 'sir_plugin_write' and
@@ -75,12 +75,14 @@ PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
 #if defined(PLUGINDUMMY_BADBEHAVIOR3)
     info->levels    = 0xfe23;
     info->opts      = 0x1234abcd;
+    info->author    = NULL;
+    info->desc      = "";
 #else
     info->levels    = levels;
     info->opts      = opts;
-#endif
     info->author    = author;
     info->desc      = desc;
+#endif
     info->caps      = caps;
 
     printf("\t" DGRAY("plugin_dummy ('%s')") "\n", __func__);
