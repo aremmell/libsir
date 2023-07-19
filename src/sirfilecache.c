@@ -340,7 +340,7 @@ bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
         *name = (char*)calloc(namesize + 1, sizeof(char));
         if (!*name) {
             _sir_safefree(&tmp);
-            return _sir_handleerr(errno);;
+            return _sir_handleerr(errno);
         }
 
         _sir_strncpy(*name, namesize + 1, tmp, namesize);
