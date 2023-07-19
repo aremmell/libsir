@@ -69,7 +69,7 @@ test_for gcovr
 test_for git
 
 # Get coveralls tool.
-curl -fsSL https://coveralls.io/coveralls-linux.tar.gz | tar -xz
+curl -kfsSL https://coveralls.io/coveralls-linux.tar.gz | tar -xz
 chmod a+x ./coveralls
 
 # Setup compiler.

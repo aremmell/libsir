@@ -149,7 +149,7 @@ printf '%s\n' '#### Notice: Downloading latest Coverity Tools checksum.'
 
 wget --show-progress --quiet                                           \
       "https://scan.coverity.com/download/linux64"                     \
-     --post-data                                                       \
+     --post-data --no-check-certificate                                \
        "token=${COVERITY_TOKEN:?}&project=${COVERITY_PROJECT:?}&md5=1" \
      -O "${COVERITY_DLDIR:?}/coverity_tool.md5" || true
 
@@ -186,7 +186,7 @@ test -z "${COVERITY_NEED_UPDATE:-}" ||
     printf '%s\n' '#### Notice: Downloading latest Coverity Tools archive.'
     wget --show-progress --quiet                                    \
           "https://scan.coverity.com/download/linux64"              \
-         --post-data                                                \
+         --post-data --no-check-certificate                         \
           "token=${COVERITY_TOKEN:?}&project=${COVERITY_PROJECT:?}" \
          -O "${COVERITY_DLDIR:?}/coverity_tool.tgz" || true
   }
@@ -220,11 +220,11 @@ tar caf libsir-coverity.xz cov-int
 ##############################################################################
 
 printf '%s\n' '#### Notice: Uploading Coverity submission.'
-curl --form token="${COVERITY_TOKEN:?}"           \
-     --form email="${COVERITY_EMAIL:?}"           \
-     --form file=@"libsir-coverity.xz"            \
-     --form version="$(date -u "+R9-%s")"         \
-     --form description="$(date -u "+LIBSIR-%s")" \
+curl --form token="${COVERITY_TOKEN:?}"              \
+     --form email="${COVERITY_EMAIL:?}"              \
+     --form file=@"libsir-coverity.xz"               \
+     --form version="$(date -u "+R9-%s")"            \
+     --form description="$(date -u "+LIBSIR-%s")" -k \
   "https://scan.coverity.com/builds?project=${COVERITY_PROJECT:?}"
 
 ##############################################################################
