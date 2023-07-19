@@ -271,7 +271,6 @@ typedef struct {
     sir_levels levels;
     sir_options opts;
     FILE* f;
-    int fd;
     sirfileid id;
 } sirfile;
 

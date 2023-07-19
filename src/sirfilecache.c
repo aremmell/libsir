@@ -112,18 +112,9 @@ bool _sirfile_open(sirfile* sf) {
     if (0 != open || !f)
         return false;
 
-    int fd = fileno(f);
-    if (!_sir_validfd(fd)) {
-        if (!existed)
-            _sir_deletefile(sf->path);
-        _sirfile_close(sf);
-        return false;
-    }
-
     _sirfile_close(sf);
 
     sf->f  = f;
-    sf->fd = fd;
     sf->id = FNV32_1a((const uint8_t*)sf->path, strnlen(sf->path, SIR_MAXPATH));
 
     return true;
@@ -200,10 +191,13 @@ bool _sirfile_needsroll(sirfile* sf) {
         return false;
 
     struct stat st = {0};
-    int getstat    = fstat(sf->fd, &st);
+    int getstat    = fstat(fileno(sf->f), &st);
 
-    if (0 != getstat)
-        return _sir_handleerr(errno);
+    if (0 != getstat) { /* if fstat fails, try stat on the path. */
+        getstat = stat(sf->path, &st);
+        if (0 != getstat)
+            return _sir_handleerr(errno);
+    }
 
     return st.st_size + BUFSIZ >= SIR_FROLLSIZE ||
         SIR_FROLLSIZE - (st.st_size + BUFSIZ) <= BUFSIZ;
@@ -365,8 +359,7 @@ void _sirfile_destroy(sirfile** sf) {
 
 bool _sirfile_validate(sirfile* sf) {
     return _sir_validptrnofail(sf) && _sir_validptrnofail(sf->f) &&
-           _sir_validstrnofail(sf->path) && _sir_validfd(sf->fd) &&
-           _sir_validfileid(sf->id);
+           _sir_validstrnofail(sf->path) && _sir_validfileid(sf->id);
 }
 
 bool _sirfile_update(sirfile* sf, sir_update_config_data* data) {
