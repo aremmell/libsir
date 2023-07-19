@@ -815,8 +815,8 @@ const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
     return NULL;
 }
 
-#if !defined(SIR_NO_SYSTEM_LOGGERS)
 bool _sir_syslog_init(const char* name, sir_syslog_dest* ctx) {
+#if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!_sir_validptr(name) || !_sir_validptr(ctx))
         return false;
 
@@ -857,9 +857,15 @@ bool _sir_syslog_init(const char* name, sir_syslog_dest* ctx) {
     _sir_selflog("resolved (identity: '%s', category: '%s')", ctx->identity, ctx->category);
 
     return _sir_syslog_open(ctx);
+#else
+    _SIR_UNUSED(name);
+    _SIR_UNUSED(ctx);
+    return false;
+#endif
 }
 
 bool _sir_syslog_open(sir_syslog_dest* ctx) {
+#if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!_sir_bittest(ctx->_state.mask, SIRSL_IS_INIT)) {
         _sir_selflog("not initialized; ignoring");
         return _sir_seterror(_SIR_E_INVALID);
@@ -886,9 +892,14 @@ bool _sir_syslog_open(sir_syslog_dest* ctx) {
 
     _sir_setbitshigh(&ctx->_state.mask, SIRSL_IS_OPEN);
     return true;
+#else
+    _SIR_UNUSED(ctx);
+    return false;
+#endif
 }
 
 bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx) {
+#if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!_sir_bittest(ctx->_state.mask, SIRSL_IS_INIT)) {
         _sir_selflog("not initialized; ignoring");
         return _sir_seterror(_SIR_E_INVALID);
@@ -931,9 +942,16 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx)
     syslog(syslog_level, "%s", buf->message);
     return true;
 # endif
+#else
+    _SIR_UNUSED(level);
+    _SIR_UNUSED(buf);
+    _SIR_UNUSED(ctx);
+    return false;
+#endif
 }
 
 bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data) {
+#if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!_sir_validptr(si) || !_sir_validptr(data))
         return false;
 
@@ -978,9 +996,15 @@ bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data) {
         _sir_selflog("BUG: called without 'updated' flag set!");
         return false;
     }
+#else
+    _SIR_UNUSED(si);
+    _SIR_UNUSED(data);
+    return false;
+#endif
 }
 
 bool _sir_syslog_close(sir_syslog_dest* ctx) {
+#if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!_sir_validptr(ctx))
         return false;
 
@@ -1002,51 +1026,24 @@ bool _sir_syslog_close(sir_syslog_dest* ctx) {
     _sir_selflog("closed log");
     return true;
 # endif
+#else
+    _SIR_UNUSED(ctx);
+    return false;
+#endif
 }
 
 void _sir_syslog_reset(sir_syslog_dest* ctx) {
+#if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (_sir_validptr(ctx)) {
         uint32_t old       = ctx->_state.mask;
         ctx->_state.mask   = 0;
         ctx->_state.logger = NULL;
         _sir_selflog("state reset; mask was %08"PRIx32, old);
     }
-}
-
-#else /* SIR_NO_SYSTEM_LOGGERS */
-bool _sir_syslog_init(const char* name, sir_syslog_dest* ctx) {
-    _SIR_UNUSED(name);
+#else
     _SIR_UNUSED(ctx);
-    return false;
+#endif
 }
-
-bool _sir_syslog_open(sir_syslog_dest* ctx) {
-    _SIR_UNUSED(ctx);
-    return false;
-}
-
-bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx) {
-    _SIR_UNUSED(level);
-    _SIR_UNUSED(buf);
-    _SIR_UNUSED(ctx);
-    return false;
-}
-
-bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data) {
-    _SIR_UNUSED(si);
-    _SIR_UNUSED(data);
-    return false;
-}
-
-bool _sir_syslog_close(sir_syslog_dest* ctx) {
-    _SIR_UNUSED(ctx);
-    return false;
-}
-
-void _sir_syslog_reset(sir_syslog_dest* ctx) {
-    _SIR_UNUSED(ctx);
-}
-#endif /* !SIR_NO_SYSTEM_LOGGERS */
 
 const char* _sir_formattedlevelstr(sir_level level) {
     static const size_t low  = 0;
