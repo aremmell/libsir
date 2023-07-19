@@ -13,7 +13,7 @@ test -n "${NO_APTSETUP:-}" \
       sleep 6 ;
       export DEBIAN_FRONTEND=noninteractive ;
       sudo apt-get update -y ;
-      sudo apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install -y ccache curl python3-pip git ;
+      sudo apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install -y ccache curl python3-pip git expect fakeroot ;
       #sudo python3 -m pip install --break-system-packages install -U gcovr || true ;  # for later Ubuntu versions
       sudo python3 -m pip install install -U gcovr || true ;
       command -v gcovr || true ;
@@ -189,6 +189,59 @@ build/bin/sirexample
 build/bin/sirtests
 remove_sample || true
 run_gcovr run-10.json
+remove_coverage
+
+# Run 11 - Interactive
+printf '%s\n' '#!/usr/bin/env expect'              > r.sh
+printf '%s\n' 'spawn ./build/bin/sirtests --wait' >> r.sh
+printf '%s\n' 'set timeout 999'                   >> r.sh
+printf '%s\n' 'expect "press any key to exit..."' >> r.sh
+printf '%s\n' 'send -- "\r"'                      >> r.sh
+printf '%s\n' 'expect eof'                        >> r.sh
+${DO_MAKE:-make} -j ${JOBS:?} clean
+${DO_MAKE:-make} -j ${JOBS:?} SIR_SELFLOG=1
+build/bin/sirexample
+chmod a+x r.sh && ./r.sh
+remove_sample || true
+rm -f r.sh || true
+run_gcovr run-11.json
+remove_coverage
+
+# Run 12 - Deny root
+${DO_MAKE:-make} -j ${JOBS:?} clean
+${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
+build/bin/sirexample
+fakeroot build/bin/sirtests || true
+remove_sample || true
+run_gcovr run-12.json
+remove_coverage
+
+# Run 13 - Fail some tests (no logs directory)
+${DO_MAKE:-make} -j ${JOBS:?} clean
+${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
+build/bin/sirexample
+rm -rf logs || true
+build/bin/sirtests || true
+remove_sample || true
+run_gcovr run-13.json
+remove_coverage
+
+# Run 14 - Fail more.
+${DO_MAKE:-make} -j ${JOBS:?} clean
+${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
+build/bin/sirexample
+build/bin/sirtests --only 0000 || true
+remove_sample || true
+run_gcovr run-14.json
+remove_coverage
+
+# Run 15 - Leave logs
+${DO_MAKE:-make} -j ${JOBS:?} clean
+${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
+build/bin/sirexample
+build/bin/sirtests --leave-logs || true
+remove_sample || true
+run_gcovr run-15.json
 remove_coverage
 
 # Undo redirect
