@@ -8,6 +8,56 @@ Files: docs/*
 Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
 License: MIT
 
+# SVGPan
+Files: docs/svgpan.js
+Copyright: 2009-2010 Andrea Leofreddi <a.leofreddi@itcharm.com>
+License: BSD-2-Clause-Views
+
+# SVG.js
+Files: docs/svg.min.js
+Copyright: Wout Fierens <wout@mick-wout.com>
+License: MIT
+
+# JQuery
+Files: docs/jquery.js
+Copyright: OpenJS Foundation and other contributors
+License: MIT
+
+# Menu
+Files: docs/menu.js
+Copyright: 1997-2020 by Dimitri van Heesch
+License: MIT
+
+# Menudata
+Files: docs/menudata.js
+Copyright: 1997-2020 by Dimitri van Heesch
+License: MIT
+
+# Navtree
+Files: docs/navtree.js
+Copyright: 1997-2020 by Dimitri van Heesch
+License: MIT
+
+# Navtreedata
+Files: docs/navtreedata.js
+Copyright: 1997-2020 by Dimitri van Heesch
+License: MIT
+
+# Search
+Files: docs/search.js
+Copyright: 1997-2020 by Dimitri van Heesch
+License: MIT
+
+# Resize
+Files: docs/resize.js
+Copyright: 1997-2020 by Dimitri van Heesch
+License: MIT
+
+# Dynsections
+Files: docs/dynsections.js
+Copyright: 1997-2020 by Dimitri van Heesch
+License: MIT
+
 # GitHub templates
 Files: .github/ISSUE_TEMPLATE/*.md
 Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
