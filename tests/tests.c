@@ -49,6 +49,7 @@ static sir_test sir_tests[] = {
     {"sanity-text-styles",      sirtest_textstylesanity, false, true},
     {"sanity-options",          sirtest_optionssanity, false, true},
     {"sanity-levels",           sirtest_levelssanity, false, true},
+    {"sanity-mutexes",          sirtest_mutexsanity, false, true},
     {"sanity-update-config",    sirtest_updatesanity, false, true},
     {"syslog",                  sirtest_syslog, false, true},
     {"os_log",                  sirtest_os_log, false, true},
@@ -983,6 +984,68 @@ bool sirtest_levelssanity(void) {
     PRINT_PASS(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 
     sir_cleanup();
+    return print_result_and_return(pass);
+}
+
+bool sirtest_mutexsanity(void) {
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+    printf("\t" WHITEB("create, lock, unlock, destroy") "\n");
+    printf(INDENT_ITEM WHITE("creating mutex...") "\n");
+
+    sir_mutex m1 = SIR_MUTEX_INIT;
+    pass &= _sir_mutexcreate(&m1);
+
+    print_test_error(pass, pass);
+
+    if (pass) {
+        printf(INDENT_ITEM WHITE("locking mutex (wait)...") "\n");
+        pass &= _sir_mutexlock(&m1);
+
+        print_test_error(pass, pass);
+
+        if (pass) {
+            printf(INDENT_ITEM WHITE("entered mutex; unlocking...") "\n");
+            pass &= _sir_mutexunlock(&m1);
+
+            print_test_error(pass, pass);
+        }
+
+        printf(INDENT_ITEM WHITE("locking mutex (without wait)...") "\n");
+        pass &= _sir_mutextrylock(&m1);
+
+        print_test_error(pass, pass);
+
+        if (pass) {
+            printf(INDENT_ITEM WHITE("entered mutex; unlocking...") "\n");
+            pass &= _sir_mutexunlock(&m1);
+
+            print_test_error(pass, pass);
+        }
+
+        printf(INDENT_ITEM WHITE("destryoing mutex...") "\n");
+        pass &= _sir_mutexdestroy(&m1);
+
+        print_test_error(pass, pass);
+
+    }
+    PRINT_PASS(pass, "\t--- create, lock, unlock, destroy: %s ---\n\n", PRN_PASS(pass));
+
+    printf("\t" WHITEB("invalid arguments") "\n");
+    printf(INDENT_ITEM WHITE("create with NULL pointer...") "\n");
+    pass &= !_sir_mutexcreate(NULL);
+    printf(INDENT_ITEM WHITE("lock with NULL pointer...") "\n");
+    pass &= !_sir_mutexlock(NULL);
+    printf(INDENT_ITEM WHITE("trylock with NULL pointer...") "\n");
+    pass &= !_sir_mutextrylock(NULL);
+    printf(INDENT_ITEM WHITE("unlock with NULL pointer...") "\n");
+    pass &= !_sir_mutexunlock(NULL);
+    printf(INDENT_ITEM WHITE("destroy with NULL pointer...") "\n");
+    pass &= !_sir_mutexdestroy(NULL);
+    PRINT_PASS(pass, "\t--- pass invalid arguments: %s ---\n\n", PRN_PASS(pass));
+
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
