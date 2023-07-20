@@ -101,7 +101,7 @@ A very recent addition is an `sln` and some `vcxproj` files in the [msvc](https:
 
 The included *GNU-style* Makefile supports native and cross-compilation on a wide variety of platforms using [GNU Make](https://www.gnu.org/software/make/) 3.81 (*or later*), with many [variables](#make-variables) and [options](#make-options) to influence the build.
 
-**Simply executing `make`, will do the right thing for the vast majority of users on any supported platform.**
+**Simply executing `make` will do the right thing for the vast majority of users on any supported platform.**
 
 #### <a id="make-targets" /> Make targets
 
@@ -132,7 +132,7 @@ The following variables influencing the build may be present in the shell enviro
 
 #### <a id="make-options" /> Make options
 
-The following options influence the *compilation and installation* of libsir, and should be passed as arguments to `make` (*e.g.* `make install DESTDIR=$HOME/staging PREFIX=/usr` *or* `make SIR_NO_SYSTEM_LOGGERS=1`). Most users won't need modify these options. Review the [**`sirplatform.mk`**](sirplatform.mk) file for additional details.
+The following options should be passed as arguments to `make` (*e.g.* `make install DESTDIR=$HOME/staging PREFIX=/usr` *or* `make SIR_NO_SYSTEM_LOGGERS=1`). Most users won't need to set these options. Review the [**`sirplatform.mk`**](sirplatform.mk) and the [**`Makefile`**](Makefile) for additional details.
 
 | <ins>**Make** **Option**</ins> | <ins>**Description**</ins>                                                                                                   | <ins>**Default**</ins>                                 |
 |-------------------------------:|:----------------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------|
