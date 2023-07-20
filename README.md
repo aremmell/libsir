@@ -99,22 +99,20 @@ A very recent addition is an `sln` and some `vcxproj` files in the [msvc](https:
 
 ### <a id="unix-makefile" /> Unix Makefile
 
-The included *GNU-style* Makefile supports native and cross-compilation on a wide variety of platforms using [GNU Make](https://www.gnu.org/software/make/) 3.81 (*or later*).
-
-Developers, package builders, and advanced users may want to review the available [variables](#make-variables) and [options](#make-options) that influence the build.
+The included *GNU-style* Makefile supports native and cross-compilation on a wide variety of platforms using [GNU Make](https://www.gnu.org/software/make/) 3.81 (*or later*), with many [variables](#make-variables) and [options](#make-options) to influence the build.
 
 **Simply executing `make`, will do the right thing for the vast majority of users on any supported platform.**
 
 #### <a id="make-targets" /> Make targets
 
-| <ins>**Desired action**</ins> | <ins>**Make command**</ins> | <ins>**Build output</ins>                                                                                               |
-|------------------------------:|:---------------------------:|:------------------------------------------------------------------------------------------------------------------------|
-|                  **Clean up** | `make clean`                | *Removes*&nbsp;`build/*`                                                                                                |
-|                **Test suite** | `make tests`                | `build/bin/sirtests(.exe)`                                                                                              |
-|               **Example app** | `make example`              | `build/bin/sirexample(.exe)`                                                                                            |
-|            **Static library** | `make static`               | `build/lib/libsir_s.(a,lib)`                                                                                            |
-|            **Shared library** | `make shared`               | `build/lib/libsir.(so,dll)`                                                                                             |
-|              **Installation** | `make install`              | `$PREFIX/lib/libsir_s.(a,lib)`<br>`$PREFIX/lib/libsir.(so,dll)`<br>`$PREFIX/include/sir.h`<br>`$PREFIX/include/sir/*.h` |
+| <ins>**Action**</ins> | <ins>**Command**</ins> | <ins>**Build output**</ins>                                                                                             |
+|----------------------:|:----------------------:|:------------------------------------------------------------------------------------------------------------------------|
+|          **Clean up** | `make clean`           | *Removes*&nbsp;`build/*`                                                                                                |
+|        **Test suite** | `make tests`           | `build/bin/sirtests(.exe)`                                                                                              |
+|       **Example app** | `make example`         | `build/bin/sirexample(.exe)`                                                                                            |
+|    **Static library** | `make static`          | `build/lib/libsir_s.(a,lib)`                                                                                            |
+|    **Shared library** | `make shared`          | `build/lib/libsir.(so,dll)`                                                                                             |
+|      **Installation** | `make install`         | `$PREFIX/lib/libsir_s.(a,lib)`<br>`$PREFIX/lib/libsir.(so,dll)`<br>`$PREFIX/include/sir.h`<br>`$PREFIX/include/sir/*.h` |
 
 #### <a id="make-variables" /> Make variables
 
