@@ -8,11 +8,13 @@ libsir&mdash;a cross-platform, thread-safe logging library
 [![License](https://img.shields.io/github/license/aremmell/libsir?color=%2340b911&cacheSeconds=60)](LICENSE)
 [![OpenHub](https://img.shields.io/badge/openhub-libsir-ok.svg?color=%2340b911&cacheSeconds=60)](https://www.openhub.net/p/libsir/)
 []()
+
 []()
 [![Release](https://img.shields.io/github/v/release/aremmell/libsir?color=%2340b911?cacheSeconds=60)](releases/latest)
 [![Commits](https://img.shields.io/github/commits-since/aremmell/libsir/latest?cacheSeconds=60&color=%2340b911)](commits/master)
 [![Build](https://img.shields.io/travis/com/aremmell/libsir?cacheSeconds=60&color=%2340b911)](https://app.travis-ci.com/aremmell/libsir)
 []()
+
 []()
 [![Coverity](https://img.shields.io/coverity/scan/28843.svg?color=%2340b911&cacheSeconds=60)](https://scan.coverity.com/projects/aremmell-libsir)
 [![Codacy](https://img.shields.io/codacy/grade/c631edd919a94bafa21c98dfcf72f2ad?color=%2340b911&cacheSeconds=60)](https://app.codacy.com/gh/aremmell/libsir/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
