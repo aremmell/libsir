@@ -105,14 +105,14 @@ The included *GNU-style* Makefile supports native and cross-compilation on a wid
 
 #### <a id="make-targets" /> Make targets
 
-|     <ins>**Command**</ins> |   <ins>**Description**</ins>   | <ins>**Build&nbsp;output**</ins>                                                                                        |
-|---------------------------:|:------------------------------:|:------------------------------------------------------------------------------------------------------------------------|
-| **`make clean`**           | Cleans&nbsp;up                 | *Removes*&nbsp;`build/*`                                                                                                |
-| **`make tests`**           | Build&nbsp;test&nbsp;suite     | `build/bin/sirtests(.exe)`                                                                                              |
-| **`make example`**         | Build&nbsp;example&nbsp;app    | `build/bin/sirexample(.exe)`                                                                                            |
-| **`make static`**          | Build&nbsp;static&nbsp;library | `build/lib/libsir_s.(a,lib)`                                                                                            |
-| **`make shared`**          | Build&nbsp;shared&nbsp;library | `build/lib/libsir.(so,dll)`                                                                                             |
-| **`make install`**         | Perform&nbsp;installation      | `$PREFIX/lib/libsir_s.(a,lib)`<br>`$PREFIX/lib/libsir.(so,dll)`<br>`$PREFIX/include/sir.h`<br>`$PREFIX/include/sir/*.h` |
+|     <ins>**Command**</ins> | <ins>**Description**</ins>              | <ins>**Build&nbsp;output**</ins>                                                                                        |
+|---------------------------:|:----------------------------------------:|:------------------------------------------------------------------------------------------------------------------------|
+| **`make clean`**           | Cleans&nbsp;up                           | Removes&nbsp;`build/*`                                                                                                  |
+| **`make tests`**           | Builds&nbsp;the&nbsp;test&nbsp;suite     | `build/bin/sirtests(.exe)`                                                                                              |
+| **`make example`**         | Builds&nbsp;the&nbsp;example&nbsp;app    | `build/bin/sirexample(.exe)`                                                                                            |
+| **`make static`**          | Builds&nbsp;the&nbsp;static&nbsp;library | `build/lib/libsir_s.(a,lib)`                                                                                            |
+| **`make shared`**          | Builds&nbsp;the&nbsp;shared&nbsp;library | `build/lib/libsir.(so,dll)`                                                                                             |
+| **`make install`**         | Performs&nbsp;the&nbsp;installation      | `$PREFIX/lib/libsir_s.(a,lib)`<br>`$PREFIX/lib/libsir.(so,dll)`<br>`$PREFIX/include/sir.h`<br>`$PREFIX/include/sir/*.h` |
 
 #### <a id="make-variables" /> Make variables
 
