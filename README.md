@@ -99,9 +99,9 @@ A very recent addition is an `sln` and some `vcxproj` files in the [msvc](https:
 
 ### <a id="unix-makefile" /> Unix Makefile
 
-The included *GNU* *Makefile* supports native and cross-compilation on a wide variety of platforms using [**GNU Make**](https://www.gnu.org/software/make/) (or [**Remake**](http://bashdb.sf.net/remake)) version **3.81** (*or later*). On *macOS* systems, Apple [**gnumake**](https://github.com/apple-oss-distributions/gnumake) version **199** or later (derived from **GNU Make** version **3.81**) and bundled with any [**Apple Xcode**](https://developer.apple.com/xcode/), is sufficient.
+The included *GNU* *Makefile* supports native and cross-compilation on a wide variety of platforms using [**GNU Make**](https://www.gnu.org/software/make/) (or [**Remake**](http://bashdb.sf.net/remake)) **3.81** (*or later*). Developers, package builders, and advanced users should review the available [variables](#make-variables) and [options](#make-options) that influence the build.
 
-Developers, package builders, or advanced users may want to review the [variables](#make-variables) and [options](#make-options) that influence the build, however, **simply executing `make` will do the right thing for the vast majority of users on any supported platform.**
+*Simply executing `make` will do the right thing for the vast majority of users on any supported platform.*
 
 #### <a id="make-targets" /> Make targets
 
@@ -116,25 +116,23 @@ Developers, package builders, or advanced users may want to review the [variable
 
 #### <a id="make-variables" /> Make variables
 
-The following variables influence the *default build configuration*, and may be set in the shell environment or when executing `make` (*e.g.* `env CC=clang make`).
+The following variables influencing the build may be present in the shell environment or set when executing `make` (*e.g.* `env CC=clang make`). Review the [**`Makefile`**](Makefile) for additional details.
 
 | <ins>**Environment** **Variable**</ins> | <ins>**Description**</ins>                                                                                                                    | <ins>**Default**</ins>                                        |
 |----------------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------|
 | **`CC`**                                | Compiler driver to execute for code compilation and linking                                                                                   | System specific; usually **`cc`**                             |
+| **`NO_DEFAULT_CFLAGS`**                 | Prevents additional flags (*i.e.* `-Wall -Wextra -Wpedantic -std=c11 -Iinclude -fPIC`) from being appended to the user-supplied `CFLAGS`      | **`0`** (disabled)&nbsp;&nbsp;(**`1`** to enable)             |
 | **`CFLAGS`**                            | Default flags passed to the compiler driver during compilation                                                                                | System specific; usually unset                                |
 | **`LDFLAGS`**                           | Default flags passed to the compiler driver during linking                                                                                    | System specific; usually unset                                |
-| **`LIBDL`**                             | Compiler driver flags requesting [dynamic linking functions](https://pubs.opengroup.org/onlinepubs/9699919799/) be included at link time      | System specific; usually **`-ldl`**                           |
-| **`NO_DEFAULT_CFLAGS`**                 | Prevents additional flags (*i.e.* `-Wall -Wextra -Wpedantic -std=c11 -Iinclude -fPIC`) from being appended to the user-supplied `CFLAGS`      | **`0`** (disabled)&nbsp;&nbsp;(**`1`** to enable)             |
-| **`FORTIFY_FLAGS`**                     | Compiler driver flags to request [function call fortifications](https://www.gnu.org/software/libc/manual/html_node/Source-Fortification.html) | `-D_FORTIFY_SOURCE=2`                                         |
-| **`LDCONFIG`**                          | Path to an `ldconfig` utility, used to index shared object names and refresh the dynamic linker cache, used during installation               | *`ldconfig`*                                                  |
-| **`RANLIB`**                            | Path to an `ranlib` utility, used to index object names within a static archive, used after linking and during installation                   | *`ranlab`*                                                    |
+| **`LIBDL`**                             | Compiler driver flags to provide [dynamic linking functions](https://pubs.opengroup.org/onlinepubs/9699919799/)                               | System specific; usually **`-ldl`**                           |
+| **`FORTIFY_FLAGS`**                     | Compiler driver flags to enable [function call fortification](https://www.gnu.org/software/libc/manual/html_node/Source-Fortification.html)   | `-D_FORTIFY_SOURCE=2`                                         |
+| **`LDCONFIG`**                          | Name of the `ldconfig` program, used to index shared object names and refresh the dynamic linker cache, used during installation              | *`ldconfig`*                                                  |
+| **`RANLIB`**                            | Name of the `ranlib` program, used to index object names within a static archive, used after linking and during installation                  | *`ranlab`*                                                    |
 | **`SIR_SHARED`**                        | Compiler driver flags to be passed to the compiler driver when linking a shared library                                                       | *`-qmkshrobj* for IBM XL C/C++ for AIX, *`-shared`* otherwise |
-
-Review the [**`Makefile`**](Makefile) for additional details.
 
 #### <a id="make-options" /> Make options
 
-The following options influence the *compilation and installation of libsir*, and should be passed as arguments to `make` (*e.g.* `make install DESTDIR=$HOME/staging PREFIX=/usr` *or* `make SIR_NO_SYSTEM_LOGGERS=1`).  Most developers and users will never need to use any of these options.
+The following options influence the *compilation and installation of libsir*, and should be passed as arguments to `make` (*e.g.* `make install DESTDIR=$HOME/staging PREFIX=/usr` *or* `make SIR_NO_SYSTEM_LOGGERS=1`).  Most developers and users will never need to use any of these options. Review the [**`sirplatform.mk**`](sirplatform.mk) file for additional details.
 
 | <ins>**Make** **Option**</ins> | <ins>**Description**</ins>                                                                                                                                                 | <ins>**Default**</ins>                                      |
 |-------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------|
@@ -156,8 +154,6 @@ The following options influence the *compilation and installation of libsir*, an
 | **`INTELC`**                   | Configures the build system to use the [(legacy) Intel C++ Compiler Classic](https://en.wikipedia.org/wiki/Intel_C%2B%2B_Compiler) toolchain                               | *Auto-detected, normally `0` (disabled; use `1` to enable)* |
 | **`NVIDIAC`**                  | Configures the build system to use the [NVIDIA HPC SDK](https://developer.nvidia.com/hpc-sdk) (*or the legacy Portland Group PGI C/C++*) toolchain                         | *Auto-detected, normally `0` (disabled; use `1` to enable)* |
 | **`IBMXLC`**                   | Configures the build system to use the [(legacy) IBM XL C/C++ for AIX](https://www.ibm.com/docs/en/xl-c-and-cpp-aix/16.1) toolchain                                        | *Auto-detected, normally `0` (disabled; use `1` to enable)* |
-
-Review the [**`sirplatform.mk**`](sirplatform.mk) file for additional details.
 
 ## <a id="dig-in" /> Dig in
 
