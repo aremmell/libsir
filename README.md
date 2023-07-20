@@ -96,7 +96,7 @@ A very recent addition is an `sln` and some `vcxproj` files in the [msvc](https:
 
 ### <a id="unix-makefile" /> Unix Makefile
 
-|  **Build** **Type** |  ***`Make`*** **target** | &nbsp;&nbsp;&nbsp;**Output** **file**(***s***)         |
+|  **Build** **Type** |  ***`Make`*** **target** | <ul><li>**Output** **file**(***s***)</li></ul>         |
 |--------------------:|:------------------------:|:-------------------------------------------------------|
 |      **Test suite** | `tests`                  | <ul><li>*`./build/bin/sirtests(.exe)`*</li></ul>       |
 |     **Example app** | `example`                | <ul><li>*`./build/bin/sirexample(.exe)`*</li></ul>     |
