@@ -99,9 +99,9 @@ A very recent addition is an `sln` and some `vcxproj` files in the [msvc](https:
 
 ### <a id="unix-makefile" /> Unix Makefile
 
-The included *GNU* *Makefile* supports native and cross-compilation on a wide variety of platforms using [**GNU Make**](https://www.gnu.org/software/make/) (or [**Remake**](http://bashdb.sf.net/remake)) **3.81** (*or later*). Developers, package builders, and advanced users should review the available [variables](#make-variables) and [options](#make-options) that influence the build.
+The included *GNU-style* Makefile supports native and cross-compilation on a wide variety of platforms using [GNU Make](https://www.gnu.org/software/make/) 3.81 (*or later*).
 
-*Simply executing `make` will do the right thing for the vast majority of users on any supported platform.*
+*Simply executing `make` will do the right thing for the vast majority of users on any supported platform.* Developers, package builders, and advanced users may want to review the available [variables](#make-variables) and [options](#make-options) that influence the build.
 
 #### <a id="make-targets" /> Make targets
 
@@ -121,8 +121,8 @@ The following variables influencing the build may be present in the shell enviro
 | <ins>**Environment** **Variable**</ins> | <ins>**Description**</ins>                                                                                                                    | <ins>**Default**</ins>                                        |
 |----------------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------|
 | **`CC`**                                | Compiler driver to execute for code compilation and linking                                                                                   | System specific; usually **`cc`**                             |
-| **`NO_DEFAULT_CFLAGS`**                 | Prevents additional flags (*i.e.* `-Wall -Wextra -Wpedantic -std=c11 -Iinclude -fPIC`) from being appended to the user-supplied `CFLAGS`      | **`0`** (disabled)&nbsp;&nbsp;(**`1`** to enable)             |
 | **`CFLAGS`**                            | Default flags passed to the compiler driver during compilation                                                                                | System specific; usually unset                                |
+| **`NO_DEFAULT_CFLAGS`**                 | Prevents additional flags (*i.e.* `-Wall -Wextra -Wpedantic -std=c11 -Iinclude -fPIC`) from being appended to the user-supplied `CFLAGS`      | **`0`** (disabled)&nbsp;&nbsp;(**`1`** to enable)             |
 | **`LDFLAGS`**                           | Default flags passed to the compiler driver during linking                                                                                    | System specific; usually unset                                |
 | **`LIBDL`**                             | Compiler driver flags to provide [dynamic linking functions](https://pubs.opengroup.org/onlinepubs/9699919799/)                               | System specific; usually **`-ldl`**                           |
 | **`FORTIFY_FLAGS`**                     | Compiler driver flags to enable [function call fortification](https://www.gnu.org/software/libc/manual/html_node/Source-Fortification.html)   | `-D_FORTIFY_SOURCE=2`                                         |
