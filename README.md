@@ -120,12 +120,12 @@ The following variables influencing the build may be present in the shell enviro
 
 | <ins>**Environment**&nbsp;**Variable**</ins> | <ins>**Description**</ins>                                                                                                                         | <ins>**Default**</ins>                      |
 |---------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------|
-| **`CC`**                                     | Compiler driver to execute for the build.                                                                                                          | *Usually* **`cc`**                          |
+| **`CC`**                                     | Compiler driver to execute for the build.                                                                                                          | Usually **`cc`**                            |
 | **`NO_DEFAULT_CFLAGS`**                      | No default `CFLAGS` (`‑Wall ‑Wextra ‑Wpedantic ‑std=c11 ‑fPIC`).                                                                                   | **`0`**&nbsp;(*disabled*)                   |
-| **`CFLAGS`**                                 | Flags passed to the compiler when building source code.                                                                                            | *Usually* unset                             |
-| **`LDFLAGS`**                                | Flags passed to the compiler when linking an executable.                                                                                           | *Usually* unset                             |
+| **`CFLAGS`**                                 | Flags passed to the compiler when building source code.                                                                                            | Usually *unset*                             |
+| **`LDFLAGS`**                                | Flags passed to the compiler when linking an executable.                                                                                           | Usually *unset*                             |
 | **`SIR_SHARED`**                             | Flags passed to the compiler when linking a shared library.                                                                                        | **`‑shared`**&nbsp;or&nbsp;**`‑qmkshrobj`** |
-| **`LIBDL`**                                  | Flags passed to the compiler enabling [dynamic linking functions](https://pubs.opengroup.org/onlinepubs/9699919799/).                              | *Usually* **`‑ldl`**                        |
+| **`LIBDL`**                                  | Flags passed to the compiler enabling [dynamic linking functions](https://pubs.opengroup.org/onlinepubs/9699919799/).                              | Usually **`‑ldl`**                          |
 | **`FORTIFY_FLAGS`**                          | Flags passed to the compiler enabling [function call fortification](https://www.gnu.org/software/libc/manual/html_node/Source-Fortification.html). | **`‑D_FORTIFY_SOURCE=2`**                   |
 | **`LDCONFIG`**                               | Name of the `ldconfig` program to be used during installation.                                                                                     | **`ldconfig`**                              |
 | **`RANLIB`**                                 | Name of the `ranlib` program to be used during installation.                                                                                       | **`ranlib`**                                |
@@ -136,7 +136,7 @@ The following options influence the *compilation and installation* of libsir, an
 
 | <ins>**Make** **Option**</ins> | <ins>**Description**</ins>                                                                                                   | <ins>**Default**</ins>                                 |
 |-------------------------------:|:----------------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------|
-| **`SHELL`**                    | Path to the [shell](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html) to be used for the build.     | *Automatic,&nbsp;usually*&nbsp;**`/bin/sh`**           |
+| **`SHELL`**                    | Path to the [shell](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html) to be used for the build.     | *Automatic,&nbsp;*usually&nbsp;**`/bin/sh`**           |
 | **`PREFIX`**                   | Path to the default installation destination.                                                                                | **`/usr/local`**                                       |
 | **`DESTDIR`**                  | Path to the [staged installation directory](https://www.gnu.org/prep/standards/html_node/DESTDIR.html) for package builders. | *unset*                                                |
 | **`INSTALLSH`**                | Path to the `install` program to be used during installation.                                                                | **`build-aux/install-sh`**                             |
@@ -146,14 +146,14 @@ The following options influence the *compilation and installation* of libsir, an
 | **`SIR_ASSERT_ENABLED`**       | Build with calls to `assert`; needs `SIR_DEBUG=1` to be useful.                                                              | **`0`**&nbsp;(disabled)                                | 
 | **`SIR_SELFLOG`**              | Build with internal diagnostic routines that log events to aid in debugging.                                                 | **`0`**&nbsp;(disabled)                                |
 | **`SIR_MSVCRT_MINGW`**         | Build with [MinGW-w64](https://www.mingw-w64.org/) for legacy MSVCRT-only linking.                                           | **`0`**&nbsp;(disabled)                                |
-| **`MINGW`**                    | Support the [MinGW-w64](https://www.mingw-w64.org/) toolchain.                                                               | *Automatic,&nbsp;usually*&nbsp;**`0`**&nbsp;(disabled) |
-| **`HAIKU`**                    | Support the [Haiku](https://www.haiku-os.org/) toolchain.                                                                    | *Automatic,&nbsp;usually*&nbsp;**`0`**&nbsp;(disabled) |
-| **`OPENBSD`**                  | Support the [OpenBSD](https://www.openbsd.org/) toolchain.                                                                   | *Automatic,&nbsp;usually*&nbsp;**`0`**&nbsp;(disabled) |
-| **`NETBSD`**                   | Support the [NetBSD](https://www.netbsd.org/) toolchain.                                                                     | *Automatic,&nbsp;usually*&nbsp;**`0`**&nbsp;(disabled) |
-| **`SUNPRO`**                   | Support the [Oracle Developer Studio](https://www.oracle.com/application-development/developerstudio/) toolchain.            | *Automatic,&nbsp;usually*&nbsp;**`0`**&nbsp;(disabled) |
-| **`INTELC`**                   | Support the [Intel C++ Compiler Classic](https://en.wikipedia.org/wiki/Intel_C%2B%2B_Compiler) toolchain.                    | *Automatic,&nbsp;usually*&nbsp;**`0`**&nbsp;(disabled) |
-| **`NVIDIAC`**                  | Support the [NVIDIA HPC SDK](https://developer.nvidia.com/hpc-sdk) toolchain.                                                | *Automatic,&nbsp;usually*&nbsp;**`0`**&nbsp;(disabled) |
-| **`IBMXLC`**                   | Support the [IBM XL C/C++ for AIX V16.1](https://www.ibm.com/docs/en/xl-c-and-cpp-aix/16.1) toolchain.                       | *Automatic,&nbsp;usually*&nbsp;**`0`**&nbsp;(disabled) |
+| **`MINGW`**                    | Support the [MinGW-w64](https://www.mingw-w64.org/) toolchain.                                                               | *Automatic,&nbsp;*usually&nbsp;**`0`**&nbsp;(disabled) |
+| **`HAIKU`**                    | Support the [Haiku](https://www.haiku-os.org/) toolchain.                                                                    | *Automatic,&nbsp;*usually&nbsp;**`0`**&nbsp;(disabled) |
+| **`OPENBSD`**                  | Support the [OpenBSD](https://www.openbsd.org/) toolchain.                                                                   | *Automatic,&nbsp;*usually&nbsp;**`0`**&nbsp;(disabled) |
+| **`NETBSD`**                   | Support the [NetBSD](https://www.netbsd.org/) toolchain.                                                                     | *Automatic,&nbsp;*usually&nbsp;**`0`**&nbsp;(disabled) |
+| **`SUNPRO`**                   | Support the [Oracle Developer Studio](https://www.oracle.com/application-development/developerstudio/) toolchain.            | *Automatic,&nbsp;*usually&nbsp;**`0`**&nbsp;(disabled) |
+| **`INTELC`**                   | Support the [Intel C++ Compiler Classic](https://en.wikipedia.org/wiki/Intel_C%2B%2B_Compiler) toolchain.                    | *Automatic,&nbsp;*usually&nbsp;**`0`**&nbsp;(disabled) |
+| **`NVIDIAC`**                  | Support the [NVIDIA HPC SDK](https://developer.nvidia.com/hpc-sdk) toolchain.                                                | *Automatic,&nbsp;*usually&nbsp;**`0`**&nbsp;(disabled) |
+| **`IBMXLC`**                   | Support the [IBM XL C/C++ for AIX V16.1](https://www.ibm.com/docs/en/xl-c-and-cpp-aix/16.1) toolchain.                       | *Automatic,&nbsp;*usually&nbsp;**`0`**&nbsp;(disabled) |
 
 ## <a id="dig-in" /> Dig in
 
