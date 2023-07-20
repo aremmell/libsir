@@ -29,7 +29,7 @@ PLUGPREFIX  = plugin_
 include sirplatform.mk
 
 # base CFLAGS
-ifndef NO_DEFAULT_CFLAGS
+ifeq ($(NO_DEFAULT_CFLAGS),1)
   CFLAGS += -Wall -Wextra -Wpedantic -std=c11 -Iinclude -fPIC
 endif
 
