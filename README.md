@@ -26,9 +26,9 @@ libsir&mdash;a cross-platform, thread-safe logging library
   - [Visual Studio Code](#visual-studio-code)
   - [Visual Studio 2022](#visual-studio-2022)
   - [Unix Makefile](#unix-makefile)
-      - [Make targets](#make-targets)
-      - [Make variables](#make-variables)
-      - [Make options](#make-options)
+    - [Make targets](#make-targets)
+    - [Make variables](#make-variables)
+    - [Make options](#make-options)
 - [Dig in](#dig-in)
 
 <!-- tocstop -->
@@ -154,7 +154,7 @@ The following options should be passed as arguments to `make` (*e.g.* `make inst
 | **`NVIDIAC`**                  | Support the [NVIDIA HPC SDK](https://developer.nvidia.com/hpc-sdk) toolchain.                                                | *Automatic*,&nbsp;usually&nbsp;**`0`**&nbsp;(disabled) |
 | **`IBMXLC`**                   | Support the [IBM XL C/C++ for AIX V16.1](https://www.ibm.com/docs/en/xl-c-and-cpp-aix/16.1) toolchain.                       | *Automatic*,&nbsp;usually&nbsp;**`0`**&nbsp;(disabled) |
 
-  * Review the [**`sirplatform.mk`**](sirplatform.mk) and the [**`Makefile`**](Makefile) for more details.
+Review the [**`sirplatform.mk`**](sirplatform.mk) and the [**`Makefile`**](Makefile) for more details.
 
 ## <a id="dig-in" /> Dig in
 
