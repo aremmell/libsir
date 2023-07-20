@@ -109,12 +109,12 @@ Developers, package builders, and advanced users may want to review the availabl
 
 |  <ins>**Build** **action**</ins> | <ins>***Make*** **target**</ins>  | <ins>**Output** **file**(**s**)</ins>          |
 |---------------------------------:|:---------------------------------:|:-----------------------------------------------|
-|                     **Clean up** |            `clean`                | <ul><li>*Removes `build/*`*</li></ul>          |
-|                   **Test suite** |            `tests`                | <ul><li>`build/bin/sirtests(.exe)`</li></ul>   |
-|                  **Example app** |            `example`              | <ul><li>`build/bin/sirexample(.exe)`</li></ul> |
-|               **Static library** |            `static`               | <ul><li>`build/lib/libsir_s.(a,lib)`</li></ul> |
-|               **Shared library** |            `shared`               | <ul><li>`build/lib/libsir.(so,dll)`</li></ul>  |
-|                 **Installation** |            `install`              | <ul><li>`$PREFIX/lib/libsir_s.(a,lib)`</li><li>`$PREFIX/lib/libsir.(so,dll)`</li><li>`$PREFIX/include/sir.h`</li><li>`$PREFIX/include/sir/*.h`</li></ul> |
+|                     **Clean up** |            `clean`                | *Removes* `build/*`           |
+|                   **Test suite** |            `tests`                | `build/bin/sirtests(.exe)`    |
+|                  **Example app** |            `example`              | `build/bin/sirexample(.exe)`  |
+|               **Static library** |            `static`               | `build/lib/libsir_s.(a,lib)`  |
+|               **Shared library** |            `shared`               | `build/lib/libsir.(so,dll)`   |
+|                 **Installation** |            `install`              | `$PREFIX/lib/libsir_s.(a,lib)`<br>`$PREFIX/lib/libsir.(so,dll)`<br>`$PREFIX/include/sir.h`<br>`$PREFIX/include/sir/*.h` |
 
 #### <a id="make-variables" /> Make variables
 
@@ -125,7 +125,7 @@ The following variables influencing the build may be present in the shell enviro
 | **`CC`**                                | Compiler to execute.                                                                                                                               | System specific; usually **`cc`**                     |
 | **`CFLAGS`**                            | Flags passed to the compiler when building source code.                                                                                            | System specific; usually unset                        |
 | **`LDFLAGS`**                           | Flags passed to the compiler when linking an executable.                                                                                           | System specific; usually unset                        |
-| **`SIR_SHARED`**                        | Flags passed to the compiler when linking a shared library.                                                                                        | **`‑shared`** (**`‑qmkshrobj`** for AIX)              |
+| **`SIR_SHARED`**                        | Flags passed to the compiler when linking a shared library.                                                                                        | **`‑shared`**<br>(or **`‑qmkshrobj`** on AIX)         |
 | **`NO_DEFAULT_CFLAGS`**                 | Prevents default flags (*i.e.* `‑Wall ‑Wextra ‑Wpedantic ‑std=c11 ‑fPIC`) from being appended to the user-supplied `CFLAGS`.                       | **`0`**&nbsp;&nbsp;(disabled)                         |
 | **`LIBDL`**                             | Flags passed to the compiler enabling [dynamic linking functions](https://pubs.opengroup.org/onlinepubs/9699919799/).                              | System specific; usually **`‑ldl`**                   |
 | **`FORTIFY_FLAGS`**                     | Flags passed to the compiler enabling [function call fortification](https://www.gnu.org/software/libc/manual/html_node/Source-Fortification.html). | **`‑D_FORTIFY_SOURCE=2`**                             |
