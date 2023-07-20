@@ -116,7 +116,7 @@ The included *GNU-style* Makefile supports native and cross-compilation on a wid
 
 #### <a id="make-variables" /> Make variables
 
-The following variables influencing the build may be present in the shell environment or explicitly set when executing `make` (*e.g.* `env CC=clang make`). Review the [**`Makefile`**](Makefile) for additional details.
+The following variables influencing the build may be present in the shell environment or explicitly set when executing `make` (*e.g.* `env CC=clang make`).
 
 | <ins>**Environment**&nbsp;**Variable**</ins> | <ins>**Description**</ins>                                                                                                                         | <ins>**Default**</ins>                      |
 |---------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------|
@@ -132,13 +132,13 @@ The following variables influencing the build may be present in the shell enviro
 
 #### <a id="make-options" /> Make options
 
-The following options should be passed as arguments to `make` (*e.g.* `make install DESTDIR=$HOME/staging PREFIX=/usr` *or* `make SIR_NO_SYSTEM_LOGGERS=1`). Most users won't need to set these options. Review the [**`sirplatform.mk`**](sirplatform.mk) and the [**`Makefile`**](Makefile) for additional details.
+The following options should be passed as arguments to `make` (*e.g.* `make install DESTDIR=$HOME/staging PREFIX=/usr` *or* `make SIR_NO_SYSTEM_LOGGERS=1`).
 
 | <ins>**Make** **Option**</ins> | <ins>**Description**</ins>                                                                                                   | <ins>**Default**</ins>                                 |
 |-------------------------------:|:----------------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------|
-| **`SHELL`**                    | Path to the [shell](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html) to be used for the build.     | *Automatic*,&nbsp;usually&nbsp;**`/bin/sh`**           |
+| **`SHELL`**                    | Path to a [shell](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html) to be used for the build.       | *Automatic*,&nbsp;usually&nbsp;**`/bin/sh`**           |
 | **`PREFIX`**                   | Path to the default installation destination.                                                                                | **`/usr/local`**                                       |
-| **`DESTDIR`**                  | Path to the [staged installation directory](https://www.gnu.org/prep/standards/html_node/DESTDIR.html) for package builders. | *unset*                                                |
+| **`DESTDIR`**                  | Path to a [staged installation directory](https://www.gnu.org/prep/standards/html_node/DESTDIR.html), for package builders.  | *unset*                                                |
 | **`INSTALLSH`**                | Path to the `install` program to be used during installation.                                                                | **`build-aux/install-sh`**                             |
 | **`SIR_NO_SYSTEM_LOGGERS`**    | Build without platform-specific logging facilities.                                                                          | **`0`**&nbsp;(disabled)                                |
 | **`SIR_NO_PLUGINS`**           | Build without plugin support.                                                                                                | **`0`**&nbsp;(disabled)                                |
@@ -154,6 +154,8 @@ The following options should be passed as arguments to `make` (*e.g.* `make inst
 | **`INTELC`**                   | Support the [Intel C++ Compiler Classic](https://en.wikipedia.org/wiki/Intel_C%2B%2B_Compiler) toolchain.                    | *Automatic*,&nbsp;usually&nbsp;**`0`**&nbsp;(disabled) |
 | **`NVIDIAC`**                  | Support the [NVIDIA HPC SDK](https://developer.nvidia.com/hpc-sdk) toolchain.                                                | *Automatic*,&nbsp;usually&nbsp;**`0`**&nbsp;(disabled) |
 | **`IBMXLC`**                   | Support the [IBM XL C/C++ for AIX V16.1](https://www.ibm.com/docs/en/xl-c-and-cpp-aix/16.1) toolchain.                       | *Automatic*,&nbsp;usually&nbsp;**`0`**&nbsp;(disabled) |
+
+* Review the [**`sirplatform.mk`**](sirplatform.mk) and the [**`Makefile`**](Makefile) for additional details.
 
 ## <a id="dig-in" /> Dig in
 
