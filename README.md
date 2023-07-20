@@ -99,17 +99,15 @@ A very recent addition is an `sln` and some `vcxproj` files in the [msvc](https:
 
 ### <a id="unix-makefile" /> Unix Makefile
 
-The included *GNU* *Makefile* supports both native and cross-compilation on a wide variety of platforms using [**GNU Make**](https://www.gnu.org/software/make/) or [**Remake**](http://bashdb.sf.net/remake) version **3.81** (*or later*). On *macOS* systems, [**Apple Make**](https://github.com/apple-oss-distributions/gnumake) version **199** or later (derived from **GNU Make** version **3.81**) as bundled with [**Apple Xcode**](https://developer.apple.com/xcode/), is sufficient.
+The included *GNU* *Makefile* supports native and cross-compilation on a wide variety of platforms using [**GNU Make**](https://www.gnu.org/software/make/) (or [**Remake**](http://bashdb.sf.net/remake)) version **3.81** (*or later*). On *macOS* systems, Apple [**gnumake**](https://github.com/apple-oss-distributions/gnumake) version **199** or later (derived from **GNU Make** version **3.81**) and bundled with any [**Apple Xcode**](https://developer.apple.com/xcode/), is sufficient.
 
-*Simply executing `make` will do the right thing for the vast majority of users on any supported platform.*
-
-Developers, package builders, or advanced users should also review the [variables](#make-variables) and [options](#make-options) that influence the build.
+Developers, package builders, or advanced users may want to review the [variables](#make-variables) and [options](#make-options) that influence the build, however, **simply executing `make` will do the right thing for the vast majority of users on any supported platform.**
 
 #### <a id="make-targets" /> Make targets
 
 |  <ins>**Build** **action**</ins> | <ins>***Make*** **target**</ins>  | <ins>**Output** **file**(**s**)</ins>          |
 |---------------------------------:|:---------------------------------:|:-----------------------------------------------|
-|                     **Clean up** |            `clean`                | <ul><li>*(removes build/\*)*</li></ul>         |
+|                     **Clean up** |            `clean`                | <ul><li>*Removes `build/*`*</li></ul>          |
 |                   **Test suite** |            `tests`                | <ul><li>`build/bin/sirtests(.exe)`</li></ul>   |
 |                  **Example app** |            `example`              | <ul><li>`build/bin/sirexample(.exe)`</li></ul> |
 |               **Static library** |            `static`               | <ul><li>`build/lib/libsir_s.(a,lib)`</li></ul> |
