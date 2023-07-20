@@ -322,6 +322,7 @@ bool _sir_syslogid(sirinit* si, sir_update_config_data* data) {
     return updated;
 }
 
+#if defined(SIR_OS_LOG_ENABLED)
 bool _sir_syslogcat(sirinit* si, sir_update_config_data* data) {
     bool cur_valid = _sir_validstrnofail(si->d_syslog.category);
     if (!cur_valid || 0 != strncmp(si->d_syslog.category, data->sl_category, SIR_MAX_SYSLOG_CAT)) {
@@ -341,6 +342,7 @@ bool _sir_syslogcat(sirinit* si, sir_update_config_data* data) {
 
     return updated;
 }
+#endif
 
 bool _sir_writeinit(sir_update_config_data* data, sirinit_update update) {
     (void)_sir_seterror(_SIR_E_NOERROR);

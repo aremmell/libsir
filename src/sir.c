@@ -232,7 +232,7 @@ bool sir_syslogid(const char* identity) {
 }
 
 bool sir_syslogcat(const char* category) {
-#if !defined(SIR_NO_SYSTEM_LOGGERS)
+#if defined(SIR_OS_LOG_ENABLED)
     sir_update_config_data data = {SIRU_SYSLOG_CAT, NULL, NULL, NULL, category};
     return _sir_writeinit(&data, _sir_syslogcat);
 #else
