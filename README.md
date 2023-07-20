@@ -101,7 +101,9 @@ A very recent addition is an `sln` and some `vcxproj` files in the [msvc](https:
 
 The included *GNU-style* Makefile supports native and cross-compilation on a wide variety of platforms using [GNU Make](https://www.gnu.org/software/make/) 3.81 (*or later*).
 
-*Simply executing `make` will do the right thing for the vast majority of users on any supported platform.* Developers, package builders, and advanced users may want to review the available [variables](#make-variables) and [options](#make-options) that influence the build.
+Developers, package builders, and advanced users may want to review the available [variables](#make-variables) and [options](#make-options) that influence the build.
+
+***Simply executing `make` will do the right thing for the vast majority of users on any supported platform.***
 
 #### <a id="make-targets" /> Make targets
 
