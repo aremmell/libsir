@@ -96,12 +96,12 @@ A very recent addition is an `sln` and some `vcxproj` files in the [msvc](https:
 
 ### <a id="unix-makefile" /> Unix Makefile
 
-|  <ins>**Build** **Type**</ins> |  <ins>***`Make`*** **target**</ins> | <ins>**Output** **file**(***s***)</ins>                |
-|-------------------------------:|:-----------------------------------:|:-------------------------------------------------------|
-|                 **Test suite** |              `tests`                | <ul><li>*`./build/bin/sirtests(.exe)`*</li></ul>       |
-|                **Example app** |              `example`              | <ul><li>*`./build/bin/sirexample(.exe)`*</li></ul>     |
-|             **Static library** |              `static`               | <ul><li>*`./build/lib/libsir_s(.a \| .lib)`*</li></ul> |
-|             **Shared library** |              `shared`               | <ul><li>*`./build/lib/libsir(.so \| .dll)`*</li></ul>  |
+|  <ins>**Build** **Type**</ins> |  <ins>***`Make`*** **target**</ins> | <ins>**Output** **file**(***s***)</ins>              |
+|-------------------------------:|:-----------------------------------:|:-----------------------------------------------------|
+|                 **Test suite** |              `tests`                | <ul><li>*`build/bin/sirtests(.exe)`*</li></ul>       |
+|                **Example app** |              `example`              | <ul><li>*`build/bin/sirexample(.exe)`*</li></ul>     |
+|             **Static library** |              `static`               | <ul><li>*`build/lib/libsir_s(.a \| .lib)`*</li></ul> |
+|             **Shared library** |              `shared`               | <ul><li>*`build/lib/libsir(.so \| .dll)`*</li></ul>  |
 |               **Installation** |              `install`              | <ul><li>*`${PREFIX}/lib/libsir_s(.a \| .lib)`*</li><li>*`${PREFIX}/lib/libsir(.so \| .dll)`*</li><li>*`${PREFIX}/include/sir.h`*</li><li>*`${PREFIX}/include/sir/*.h`*</li></ul> |
 
 ## <a id="dig-in" /> Dig in
