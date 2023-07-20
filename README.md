@@ -122,8 +122,8 @@ The following variables influencing the build may be present in the shell enviro
 |---------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------|
 | **`CC`**                                     | Compiler driver to execute for the build.                                                                                                          | Usually **`cc`**                            |
 | **`NO_DEFAULT_CFLAGS`**                      | No default `CFLAGS` (`‑Wall ‑Wextra ‑Wpedantic ‑std=c11 ‑fPIC`).                                                                                   | **`0`**&nbsp;(*disabled*)                   |
-| **`CFLAGS`**                                 | Extra flags passed to the compiler when building source code.                                                                                            | Usually *unset*                             |
-| **`LDFLAGS`**                                | Extra flags passed to the compiler when linking an executable.                                                                                           | Usually *unset*                             |
+| **`CFLAGS`**                                 | Extra flags passed to the compiler when building source code.                                                                                      | Usually *unset*                             |
+| **`LDFLAGS`**                                | Extra flags passed to the compiler when linking an executable.                                                                                     | Usually *unset*                             |
 | **`SIR_SHARED`**                             | Flags passed to the compiler when linking a shared library.                                                                                        | **`‑shared`**&nbsp;or&nbsp;**`‑qmkshrobj`** |
 | **`LIBDL`**                                  | Flags passed to the compiler enabling [dynamic linking functions](https://pubs.opengroup.org/onlinepubs/9699919799/).                              | Usually **`‑ldl`**                          |
 | **`FORTIFY_FLAGS`**                          | Flags passed to the compiler enabling [function call fortification](https://www.gnu.org/software/libc/manual/html_node/Source-Fortification.html). | **`‑D_FORTIFY_SOURCE=2`**                   |
@@ -155,11 +155,11 @@ The following options should be passed as arguments to `make` (*e.g.* `make inst
 | **`NVIDIAC`**                  | Support the [NVIDIA HPC SDK](https://developer.nvidia.com/hpc-sdk) toolchain.                                                | *Automatic*,&nbsp;usually&nbsp;**`0`**&nbsp;(disabled) |
 | **`IBMXLC`**                   | Support the [IBM XL C/C++ for AIX V16.1](https://www.ibm.com/docs/en/xl-c-and-cpp-aix/16.1) toolchain.                       | *Automatic*,&nbsp;usually&nbsp;**`0`**&nbsp;(disabled) |
 
-* Review the [**`sirplatform.mk`**](sirplatform.mk) and the [**`Makefile`**](Makefile) for additional details.
+* Review the [**`sirplatform.mk`**](sirplatform.mk) and the [**`Makefile`**](Makefile) for more details.
 
 ## <a id="dig-in" /> Dig in
 
-If you are genuinely interested in utilizing libsir, you are encouraged to read the [full online documentation](https://libsir.rml.dev) to get a better understanding of the library's capabilities and interfaces.
+The information presented above is intended to get you started&mdash;it is by no means exhaustive. If you are genuinely interested in utilizing libsir, you are encouraged to read the [full online documentation](https://libsir.rml.dev) to get a better understanding of the library's capabilities and interfaces.
 
 Suggested initial sections:
 
