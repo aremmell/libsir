@@ -27,6 +27,9 @@ libsir&mdash;a cross-platform, thread-safe logging library
   - [Visual Studio Code](#visual-studio-code)
   - [Visual Studio 2022](#visual-studio-2022)
   - [Unix Makefile](#unix-makefile)
+    - [Make targets](#make-targets)
+    - [Make variables](#make-variables)
+    - [Make options](#make-options)
 - [Dig in](#dig-in)
 
 <!-- tocstop -->
@@ -96,13 +99,67 @@ A very recent addition is an `sln` and some `vcxproj` files in the [msvc](https:
 
 ### <a id="unix-makefile" /> Unix Makefile
 
-|  <ins>**Build** **Type**</ins> |   <ins>***Make*** **target**</ins>  | <ins>**Output** **file**(***s***)</ins>        |
-|-------------------------------:|:-----------------------------------:|:-----------------------------------------------|
-|                 **Test suite** |              `tests`                | <ul><li>`build/bin/sirtests(.exe)`</li></ul>   |
-|                **Example app** |              `example`              | <ul><li>`build/bin/sirexample(.exe)`</li></ul> |
-|             **Static library** |              `static`               | <ul><li>`build/lib/libsir_s.(a,lib)`</li></ul> |
-|             **Shared library** |              `shared`               | <ul><li>`build/lib/libsir.(so,dll)`</li></ul>  |
-|               **Installation** |              `install`              | <ul><li>`$PREFIX/lib/libsir_s.(a,lib)`</li><li>`$PREFIX/lib/libsir.(so,dll)`</li><li>`$PREFIX/include/sir.h`</li><li>`$PREFIX/include/sir/*.h`</li></ul> |
+The included *GNU* *Makefile* supports both native and cross-compilation on a wide variety of platforms using [**GNU Make**](https://www.gnu.org/software/make/) or [**Remake**](http://bashdb.sf.net/remake) version **3.81** (*or later*). On *macOS* systems, [**Apple Make**](https://github.com/apple-oss-distributions/gnumake) version **199** or later (derived from **GNU Make** version **3.81**) as bundled with [**Apple Xcode**](https://developer.apple.com/xcode/), is sufficient.
+
+*Simply executing `make` will do the right thing for the vast majority of users on any supported platform.*
+
+Developers, package builders, or advanced users should also review the [variables](#make-variables) and [options](#make-options) that influence the build.
+
+#### <a id="make-targets" /> Make targets
+
+|  <ins>**Build** **action**</ins> | <ins>***Make*** **target**</ins>  | <ins>**Output** **file**(**s**)</ins>          |
+|---------------------------------:|:---------------------------------:|:-----------------------------------------------|
+|                     **Clean up** |            `clean`                | <ul><li>*(removes build/\*)*</li></ul>         |
+|                   **Test suite** |            `tests`                | <ul><li>`build/bin/sirtests(.exe)`</li></ul>   |
+|                  **Example app** |            `example`              | <ul><li>`build/bin/sirexample(.exe)`</li></ul> |
+|               **Static library** |            `static`               | <ul><li>`build/lib/libsir_s.(a,lib)`</li></ul> |
+|               **Shared library** |            `shared`               | <ul><li>`build/lib/libsir.(so,dll)`</li></ul>  |
+|                 **Installation** |            `install`              | <ul><li>`$PREFIX/lib/libsir_s.(a,lib)`</li><li>`$PREFIX/lib/libsir.(so,dll)`</li><li>`$PREFIX/include/sir.h`</li><li>`$PREFIX/include/sir/*.h`</li></ul> |
+
+#### <a id="make-variables" /> Make variables
+
+The following variables influence the *default build configuration*, and should be set in the shell environment when executing `make` (*e.g.* `env CC=clang make`). Some developers or users may wish to configure one or more of these options.
+
+| <ins>**Environment** **Variable**</ins> | <ins>**Description**</ins>                                                                                                                    | <ins>**Default**</ins>                                        |
+|----------------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------|
+| **`CC`**                                | Compiler driver front-end to execute for source code compilation and object linking                                                           | *System specific, usually `cc`*                               |
+| **`CFLAGS`**                            | Default flags to be passed to the compiler driver during compilation                                                                          | *System specific, usually unset*                              |
+| **`LDFLAGS`**                           | Default flags to be passed to the compiler driver during linking                                                                              | *System specific, usually unset*                              |
+| **`LIBDL`**                             | Compiler driver flags to request [dynamic linking functions](https://pubs.opengroup.org/onlinepubs/9699919799/) be included during linking    | *System specific, usually `-ldl`*                             |
+| **`NO_DEFAULT_CFLAGS`**                 | Prevents additional flags (*i.e.* `-Wall -Wextra -Wpedantic -std=c11 -Iinclude -fPIC`) from being appended to the user-supplied `CFLAGS`      | *`0` (disabled; use `1` to enable)*                           |
+| **`FORTIFY_FLAGS`**                     | Compiler driver flags to request [function call fortifications](https://www.gnu.org/software/libc/manual/html_node/Source-Fortification.html) | *`-D_FORTIFY_SOURCE=2`                                        |
+| **`LDCONFIG`**                          | Path to an `ldconfig` utility, used to index shared object names and refresh the dynamic linker cache, used during installation               | *`ldconfig`*                                                  |
+| **`RANLIB`**                            | Path to an `ranlib` utility, used to index object names within a static archive, used after linking and during installation                   | *`ranlab`*                                                    |
+| **`SIR_SHARED`**                        | Compiler driver flags to be passed to the compiler driver when linking a shared library                                                       | *`-qmkshrobj* for IBM XL C/C++ for AIX, *`-shared`* otherwise |
+
+Review the [**`Makefile`**](Makefile) for additional details.
+
+#### <a id="make-options" /> Make options
+
+The following options influence the *compilation and installation of libsir*, and should be passed as arguments to `make` (*e.g.* `make install DESTDIR=$HOME/staging PREFIX=/usr` *or* `make SIR_NO_SYSTEM_LOGGERS=1`).  Most developers and users will never need to use any of these options.
+
+| <ins>**Make** **Option**</ins> | <ins>**Description**</ins>                                                                                                                                                 | <ins>**Default**</ins>                                      |
+|-------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------|
+| **`SHELL`**                    | Path to a [*POSIX-conforming* shell interpreter](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html) to be used during compilation and installation | *Auto-detected, normally `/bin/sh`*                         |
+| **`PREFIX`**                   | Path value used to construct the default destination paths used during installation                                                                                        | *`/usr/local`*                                              |
+| **`DESTDIR`**                  | Path value used to support [staged installations](https://www.gnu.org/prep/standards/html_node/DESTDIR.html), normally used when building redistributable binary packages  | *(Unset)*                                                   |
+| **`INSTALLSH`**                | Path to an *X11-compatible* `install` program to be used during installation                                                                                               | *`build-aux/install-sh`*                                    |
+| **`SIR_DEBUG`**                | Configures the build system to produce a build with no optimizations enabled and full debugging symbols included&mdash;not intended for production                         | *`0` (disabled; use `1` to enable)*                         |
+| **`SIR_SELFLOG`**              | Configures the build system to produce a build including internal diagnostic routines that report certain events that may aid in debugging and troubleshooting             | *`0` (disabled; use `1` to enable)*                         |
+| **`SIR_ASSERT_ENABLED`**       | Configures the build system to produce a build that calls `assert`; in order for this to be useful, you will also need to `SIR_DEBUG=1`&mdash;not intended for production  | *`0` (disabled; use `1` to enable)*                         |
+| **`SIR_NO_SYSTEM_LOGGERS`**    | Configures the build system to produce a build without support for any platform-specific logging facilities                                                                | *`0` (disabled; use `1` to enable)*                         |
+| **`SIR_MSVCRT_MINGW`**         | Configures the build system allowing MSVCRT-specific [MinGW-w64](https://www.mingw-w64.org/) toolchains to produce binaries depending *only* on the *legacy* MSVC runtime  | *`0` (disabled; use `1` to enable)*                         |
+| **`SIR_NO_PLUGINS`**           | Configures the build system to produce a build without support the dynamic loading and unloading of plugins                                                                | *`0` (disabled; use `1` to enable)*                         |
+| **`MINGW`**                    | Configures the build system to use the [MinGW-w64](https://www.mingw-w64.org/) toolchain                                                                                   | *Auto-detected, normally `0` (disabled; use `1` to enable)* |
+| **`HAIKU`**                    | Configures the build system to use the [Haiku](https://www.haiku-os.org/) toolchain                                                                                        | *Auto-detected, normally `0` (disabled; use `1` to enable)* |
+| **`OPENBSD`**                  | Configures the build system to use the [OpenBSD](https://www.openbsd.org/) toolchain                                                                                       | *Auto-detected, normally `0` (disabled; use `1` to enable)* |
+| **`NETBSD`**                   | Configures the build system to use the [NetBSD](https://www.netbsd.org/) toolchain                                                                                         | *Auto-detected, normally `0` (disabled; use `1` to enable)* |
+| **`SUNPRO`**                   | Configures the build system to use the [Oracle Developer Studio](https://www.oracle.com/application-development/developerstudio/) toolchain                                | *Auto-detected, normally `0` (disabled; use `1` to enable)* |
+| **`INTELC`**                   | Configures the build system to use the [(legacy) Intel C++ Compiler Classic](https://en.wikipedia.org/wiki/Intel_C%2B%2B_Compiler) toolchain                               | *Auto-detected, normally `0` (disabled; use `1` to enable)* |
+| **`NVIDIAC`**                  | Configures the build system to use the [NVIDIA HPC SDK](https://developer.nvidia.com/hpc-sdk) (*or the legacy Portland Group PGI C/C++*) toolchain                         | *Auto-detected, normally `0` (disabled; use `1` to enable)* |
+| **`IBMXLC`**                   | Configures the build system to use the [(legacy) IBM XL C/C++ for AIX](https://www.ibm.com/docs/en/xl-c-and-cpp-aix/16.1) toolchain                                        | *Auto-detected, normally `0` (disabled; use `1` to enable)* |
+
+Review the [**`sirplatform.mk**`](sirplatform.mk) file for additional details.
 
 ## <a id="dig-in" /> Dig in
 
