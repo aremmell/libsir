@@ -105,30 +105,30 @@ The included *GNU-style* Makefile supports native and cross-compilation on a wid
 
 #### <a id="make-targets" /> Make targets
 
-| <ins>**Action**</ins> | <ins>**Command**</ins> | <ins>**Build output**</ins>                                                                                             |
-|----------------------:|:----------------------:|:------------------------------------------------------------------------------------------------------------------------|
-|          **Clean up** | `make clean`           | *Removes*&nbsp;`build/*`                                                                                                |
-|        **Test suite** | `make tests`           | `build/bin/sirtests(.exe)`                                                                                              |
-|       **Example app** | `make example`         | `build/bin/sirexample(.exe)`                                                                                            |
-|    **Static library** | `make static`          | `build/lib/libsir_s.(a,lib)`                                                                                            |
-|    **Shared library** | `make shared`          | `build/lib/libsir.(so,dll)`                                                                                             |
-|      **Installation** | `make install`         | `$PREFIX/lib/libsir_s.(a,lib)`<br>`$PREFIX/lib/libsir.(so,dll)`<br>`$PREFIX/include/sir.h`<br>`$PREFIX/include/sir/*.h` |
+| <ins>**Command**</ins> | <ins>**Description**</ins> | <ins>**Build&nbsp;output**</ins>                                                                                        |
+|-----------------------:|:---------------------------|:------------------------------------------------------------------------------------------------------------------------|
+| `make clean`           | **Cleans up**              | *Removes*&nbsp;`build/*`                                                                                                |
+| `make tests`           | **Build test suite**       | `build/bin/sirtests(.exe)`                                                                                              |
+| `make example`         | **Build example app**      | `build/bin/sirexample(.exe)`                                                                                            |
+| `make static`          | **Build static library**   | `build/lib/libsir_s.(a,lib)`                                                                                            |
+| `make shared`          | **Build shared library**   | `build/lib/libsir.(so,dll)`                                                                                             |
+| `make install`         | **Perform installation**   | `$PREFIX/lib/libsir_s.(a,lib)`<br>`$PREFIX/lib/libsir.(so,dll)`<br>`$PREFIX/include/sir.h`<br>`$PREFIX/include/sir/*.h` |
 
 #### <a id="make-variables" /> Make variables
 
 The following variables influencing the build may be present in the shell environment or explicitly set when executing `make` (*e.g.* `env CC=clang make`). Review the [**`Makefile`**](Makefile) for additional details.
 
-| <ins>**Environment** **Variable**</ins> | <ins>**Description**</ins>                                                                                                                         | <ins>**Default**</ins>                                |
-|----------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------|
-| **`CC`**                                | Compiler to execute.                                                                                                                               | System specific; usually **`cc`**                     |
-| **`CFLAGS`**                            | Flags passed to the compiler when building source code.                                                                                            | System specific; usually unset                        |
-| **`LDFLAGS`**                           | Flags passed to the compiler when linking an executable.                                                                                           | System specific; usually unset                        |
-| **`SIR_SHARED`**                        | Flags passed to the compiler when linking a shared library.                                                                                        | **`‑shared`**<br>(or **`‑qmkshrobj`** on AIX)         |
-| **`NO_DEFAULT_CFLAGS`**                 | Prevents default flags (*i.e.* `‑Wall ‑Wextra ‑Wpedantic ‑std=c11 ‑fPIC`) from being appended to the user-supplied `CFLAGS`.                       | **`0`**&nbsp;&nbsp;(disabled)                         |
-| **`LIBDL`**                             | Flags passed to the compiler enabling [dynamic linking functions](https://pubs.opengroup.org/onlinepubs/9699919799/).                              | System specific; usually **`‑ldl`**                   |
-| **`FORTIFY_FLAGS`**                     | Flags passed to the compiler enabling [function call fortification](https://www.gnu.org/software/libc/manual/html_node/Source-Fortification.html). | **`‑D_FORTIFY_SOURCE=2`**                             |
-| **`LDCONFIG`**                          | Name of the `ldconfig` program to be used during installation.                                                                                     | **`ldconfig`**                                        |
-| **`RANLIB`**                            | Name of the `ranlib` program to be used during installation.                                                                                       | **`ranlib`**                                          |
+| <ins>**Environment**&nbsp;**Variable**</ins> | <ins>**Description**</ins>                                                                                                                         | <ins>**Default**</ins>                                |
+|---------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------|
+| **`CC`**                                     | Compiler to execute.                                                                                                                               | System specific; usually **`cc`**                     |
+| **`CFLAGS`**                                 | Flags passed to the compiler when building source code.                                                                                            | System specific; usually unset                        |
+| **`LDFLAGS`**                                | Flags passed to the compiler when linking an executable.                                                                                           | System specific; usually unset                        |
+| **`SIR_SHARED`**                             | Flags passed to the compiler when linking a shared library.                                                                                        | **`‑shared`**<br>(or **`‑qmkshrobj`** on AIX)         |
+| **`NO_DEFAULT_CFLAGS`**                      | Prevents default flags (*i.e.* `‑Wall ‑Wextra ‑Wpedantic ‑std=c11 ‑fPIC`) from being appended to the user-supplied `CFLAGS`.                       | **`0`**&nbsp;&nbsp;(disabled)                         |
+| **`LIBDL`**                                  | Flags passed to the compiler enabling [dynamic linking functions](https://pubs.opengroup.org/onlinepubs/9699919799/).                              | System specific; usually **`‑ldl`**                   |
+| **`FORTIFY_FLAGS`**                          | Flags passed to the compiler enabling [function call fortification](https://www.gnu.org/software/libc/manual/html_node/Source-Fortification.html). | **`‑D_FORTIFY_SOURCE=2`**                             |
+| **`LDCONFIG`**                               | Name of the `ldconfig` program to be used during installation.                                                                                     | **`ldconfig`**                                        |
+| **`RANLIB`**                                 | Name of the `ranlib` program to be used during installation.                                                                                       | **`ranlib`**                                          |
 
 #### <a id="make-options" /> Make options
 
