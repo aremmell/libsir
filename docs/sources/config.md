@@ -7,7 +7,7 @@ Compile-time configuration of libsir.
 The following are applied at compile-time when executing `make`:
 
 ```sh
-make SIR_PREPROCESSOR_FOO=1 ...
+env SIR_PREPROCESSOR_FOO=1 make ...
 ```
 
 The Makefile takes care of the rest; you may also feel free to edit the Makefile
