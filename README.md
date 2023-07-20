@@ -106,7 +106,7 @@ The included *GNU-style* Makefile supports native and cross-compilation on a wid
 #### <a id="make-targets" /> Make targets
 
 |     <ins>**Command**</ins> |   <ins>**Description**</ins>   | <ins>**Build&nbsp;output**</ins>                                                                                        |
-|---------------------------:|:------------------------------:|:------------------------------------------------------------------------------------------------------------------------|
+|---------------------------:|:-------------------------------|:------------------------------------------------------------------------------------------------------------------------|
 | **`make clean`**           | Cleans&nbsp;up                 | *Removes*&nbsp;`build/*`                                                                                                |
 | **`make tests`**           | Build&nbsp;test&nbsp;suite     | `build/bin/sirtests(.exe)`                                                                                              |
 | **`make example`**         | Build&nbsp;example&nbsp;app    | `build/bin/sirexample(.exe)`                                                                                            |
@@ -119,9 +119,9 @@ The included *GNU-style* Makefile supports native and cross-compilation on a wid
 The following variables influencing the build may be present in the shell environment or explicitly set when executing `make` (*e.g.* `env CC=clang make`). Review the [**`Makefile`**](Makefile) for additional details.
 
 | <ins>**Environment**&nbsp;**Variable**</ins> | <ins>**Description**</ins>                                                                                                                         | <ins>**Default**</ins>                    |
-|---------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------:|:------------------------------------------|
+|---------------------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------|:------------------------------------------|
 | **`CC`**                                     | Compiler to execute.                                                                                                                               | *Usually* **`cc`**                        |
-| **`NO_DEFAULT_CFLAGS`**                      | Don't use recommended `CFLAGS` (*i.e.* `‑Wall ‑Wextra ‑Wpedantic ‑std=c11 ‑fPIC`).                                                                 | **`0`**&nbsp;(*disabled*)                 |
+| **`NO_DEFAULT_CFLAGS`**                      | No default `CFLAGS` (`‑Wall ‑Wextra ‑Wpedantic ‑std=c11 ‑fPIC`).                                                                                   | **`0`**&nbsp;(*disabled*)                 |
 | **`CFLAGS`**                                 | Flags passed to the compiler when building source code.                                                                                            | *Usually* unset                           |
 | **`LDFLAGS`**                                | Flags passed to the compiler when linking an executable.                                                                                           | *Usually* unset                           |
 | **`SIR_SHARED`**                             | Flags passed to the compiler when linking a shared library.                                                                                        | **`‑shared`**&nbsp;or&nbsp;**`‑qmkshrobj` |
@@ -135,7 +135,7 @@ The following variables influencing the build may be present in the shell enviro
 The following options influence the *compilation and installation of libsir*, and should be passed as arguments to `make` (*e.g.* `make install DESTDIR=$HOME/staging PREFIX=/usr` *or* `make SIR_NO_SYSTEM_LOGGERS=1`).  Most developers and users will never need to use any of these options. Review the [**`sirplatform.mk**`](sirplatform.mk) file for additional details.
 
 | <ins>**Make** **Option**</ins> | <ins>**Description**</ins>                                                                                                                                                 | <ins>**Default**</ins>                                      |
-|-------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------|
+|-------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------|
 | **`SHELL`**                    | Path to a [*POSIX-conforming* shell interpreter](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html) to be used during compilation and installation | *Auto-detected, normally `/bin/sh`*                         |
 | **`PREFIX`**                   | Path value used to construct the default destination paths used during installation                                                                                        | *`/usr/local`*                                              |
 | **`DESTDIR`**                  | Path value used to support [staged installations](https://www.gnu.org/prep/standards/html_node/DESTDIR.html), normally used when building redistributable binary packages  | *(Unset)*                                                   |
