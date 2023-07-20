@@ -27,9 +27,9 @@ libsir&mdash;a cross-platform, thread-safe logging library
   - [Visual Studio Code](#visual-studio-code)
   - [Visual Studio 2022](#visual-studio-2022)
   - [Unix Makefile](#unix-makefile)
-    - [Make targets](#make-targets)
-    - [Make variables](#make-variables)
-    - [Make options](#make-options)
+      - [Make targets](#make-targets)
+      - [Make variables](#make-variables)
+      - [Make options](#make-options)
 - [Dig in](#dig-in)
 
 <!-- tocstop -->
@@ -143,7 +143,7 @@ The following options should be passed as arguments to `make` (*e.g.* `make inst
 | **`SIR_NO_SYSTEM_LOGGERS`**    | Build without platform-specific logging facilities.                                                                          | **`0`**&nbsp;(disabled)                                |
 | **`SIR_NO_PLUGINS`**           | Build without plugin support.                                                                                                | **`0`**&nbsp;(disabled)                                |
 | **`SIR_DEBUG`**                | Build without optimization and with full debug symbols.                                                                      | **`0`**&nbsp;(disabled)                                |
-| **`SIR_ASSERT_ENABLED`**       | Build with calls to `assert`; needs `SIR_DEBUG=1` to be useful.                                                              | **`0`**&nbsp;(disabled)                                | 
+| **`SIR_ASSERT_ENABLED`**       | Build with calls to `assert`; needs `SIR_DEBUG=1` to be useful.                                                              | **`0`**&nbsp;(disabled)                                |
 | **`SIR_SELFLOG`**              | Build with diagnostic routines that log events to aid in debugging.                                                          | **`0`**&nbsp;(disabled)                                |
 | **`SIR_MSVCRT_MINGW`**         | Build with [MinGW-w64](https://www.mingw-w64.org/) for legacy MSVCRT-only linking.                                           | **`0`**&nbsp;(disabled)                                |
 | **`MINGW`**                    | Support the [MinGW-w64](https://www.mingw-w64.org/) toolchain.                                                               | *Automatic*,&nbsp;usually&nbsp;**`0`**&nbsp;(disabled) |
@@ -155,7 +155,7 @@ The following options should be passed as arguments to `make` (*e.g.* `make inst
 | **`NVIDIAC`**                  | Support the [NVIDIA HPC SDK](https://developer.nvidia.com/hpc-sdk) toolchain.                                                | *Automatic*,&nbsp;usually&nbsp;**`0`**&nbsp;(disabled) |
 | **`IBMXLC`**                   | Support the [IBM XL C/C++ for AIX V16.1](https://www.ibm.com/docs/en/xl-c-and-cpp-aix/16.1) toolchain.                       | *Automatic*,&nbsp;usually&nbsp;**`0`**&nbsp;(disabled) |
 
-* Review the [**`sirplatform.mk`**](sirplatform.mk) and the [**`Makefile`**](Makefile) for more details.
+  * Review the [**`sirplatform.mk`**](sirplatform.mk) and the [**`Makefile`**](Makefile) for more details.
 
 ## <a id="dig-in" /> Dig in
 
