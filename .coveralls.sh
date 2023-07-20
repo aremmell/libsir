@@ -253,6 +253,17 @@ remove_sample || true
 run_gcovr run-16.json
 remove_coverage
 
+# Run 17 - Unmount proc
+${DO_MAKE:-make} -j ${JOBS:?} clean
+${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
+( sudo umount /proc ) || true
+build/bin/sirexample
+build/bin/sirtests --leave-logs || true
+( sudo mount /proc ) || true
+remove_sample || true
+run_gcovr run-17.json
+remove_coverage
+
 # Undo redirect
 exec 1>&5
 
