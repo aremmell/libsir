@@ -105,14 +105,14 @@ The included *GNU-style* Makefile supports native and cross-compilation on a wid
 
 #### <a id="make-targets" /> Make targets
 
-| <ins>**Command**</ins> |   <ins>**Description**</ins>   | <ins>**Build&nbsp;output**</ins>                                                                                        |
-|-----------------------:|:------------------------------:|:------------------------------------------------------------------------------------------------------------------------|
-| `make clean`           | Cleans&nbsp;up                 | *Removes*&nbsp;`build/*`                                                                                                |
-| `make tests`           | Build&nbsp;test&nbsp;suite     | `build/bin/sirtests(.exe)`                                                                                              |
-| `make example`         | Build&nbsp;example&nbsp;app    | `build/bin/sirexample(.exe)`                                                                                            |
-| `make static`          | Build&nbsp;static&nbsp;library | `build/lib/libsir_s.(a,lib)`                                                                                            |
-| `make shared`          | Build&nbsp;shared&nbsp;library | `build/lib/libsir.(so,dll)`                                                                                             |
-| `make install`         | Perform&nbsp;installation      | `$PREFIX/lib/libsir_s.(a,lib)`<br>`$PREFIX/lib/libsir.(so,dll)`<br>`$PREFIX/include/sir.h`<br>`$PREFIX/include/sir/*.h` |
+|     <ins>**Command**</ins> |   <ins>**Description**</ins>   | <ins>**Build&nbsp;output**</ins>                                                                                        |
+|---------------------------:|:------------------------------:|:------------------------------------------------------------------------------------------------------------------------|
+| **`make clean`**           | Cleans&nbsp;up                 | *Removes*&nbsp;`build/*`                                                                                                |
+| **`make tests`**           | Build&nbsp;test&nbsp;suite     | `build/bin/sirtests(.exe)`                                                                                              |
+| **`make example`**         | Build&nbsp;example&nbsp;app    | `build/bin/sirexample(.exe)`                                                                                            |
+| **`make static`**          | Build&nbsp;static&nbsp;library | `build/lib/libsir_s.(a,lib)`                                                                                            |
+| **`make shared`**          | Build&nbsp;shared&nbsp;library | `build/lib/libsir.(so,dll)`                                                                                             |
+| **`make install`**         | Perform&nbsp;installation      | `$PREFIX/lib/libsir_s.(a,lib)`<br>`$PREFIX/lib/libsir.(so,dll)`<br>`$PREFIX/include/sir.h`<br>`$PREFIX/include/sir/*.h` |
 
 #### <a id="make-variables" /> Make variables
 
@@ -124,7 +124,7 @@ The following variables influencing the build may be present in the shell enviro
 | **`CFLAGS`**                                 | Flags passed to the compiler when building source code.                                                                                            | Usually unset                                        |
 | **`LDFLAGS`**                                | Flags passed to the compiler when linking an executable.                                                                                           | Usually unset                                        |
 | **`SIR_SHARED`**                             | Flags passed to the compiler when linking a shared library.                                                                                        | **`‑shared`**<br>(**`‑qmkshrobj`**&nbsp;on&nbsp;AIX) |
-| **`NO_DEFAULT_CFLAGS`**                      | Prevents default flags (*i.e.* `‑Wall ‑Wextra ‑Wpedantic ‑std=c11 ‑fPIC`) from being appended to the user-supplied `CFLAGS`.                       | **`0`**&nbsp;&nbsp;(*disabled*)                      |
+| **`NO_DEFAULT_CFLAGS`**                      | Do not append default flags (*i.e.* `‑Wall ‑Wextra ‑Wpedantic ‑std=c11 ‑fPIC`) to `CFLAGS`.                                                        | **`0`**&nbsp;&nbsp;(*disabled*)                      |
 | **`LIBDL`**                                  | Flags passed to the compiler enabling [dynamic linking functions](https://pubs.opengroup.org/onlinepubs/9699919799/).                              | Usually **`‑ldl`**                                   |
 | **`FORTIFY_FLAGS`**                          | Flags passed to the compiler enabling [function call fortification](https://www.gnu.org/software/libc/manual/html_node/Source-Fortification.html). | **`‑D_FORTIFY_SOURCE=2`**                            |
 | **`LDCONFIG`**                               | Name of the `ldconfig` program to be used during installation.                                                                                     | **`ldconfig`**                                       |
