@@ -26,9 +26,9 @@ libsir&mdash;a cross-platform, thread-safe logging library
   - [Visual Studio Code](#visual-studio-code)
   - [Visual Studio 2022](#visual-studio-2022)
   - [Unix Makefile](#unix-makefile)
-    - [Make targets](#make-targets)
-    - [Make variables](#make-variables)
-    - [Make options](#make-options)
+      - [Make targets](#make-targets)
+      - [Make variables](#make-variables)
+      - [Make options](#make-options)
 - [Dig in](#dig-in)
 
 <!-- tocstop -->
