@@ -134,6 +134,8 @@ The following variables influencing the build may be present in the shell enviro
 
 The following options should be passed as arguments to `make` (*e.g.* `make install DESTDIR=$HOME/staging PREFIX=/usr` *or* `make SIR_NO_SYSTEM_LOGGERS=1`).
 
+<CENTER>
+
 | <ins>**Make** **Option**</ins> | <ins>**Description**</ins>                                                                                                   | <ins>**Default**</ins>                                 |
 |-------------------------------:|:----------------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------|
 | **`SHELL`**                    | Path to a [shell](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html) to be used for the build.       | *Automatic*,&nbsp;usually&nbsp;**`/bin/sh`**           |
@@ -156,6 +158,8 @@ The following options should be passed as arguments to `make` (*e.g.* `make inst
 | **`IBMXLC`**                   | Support the [IBM XL C/C++ for AIX V16.1](https://www.ibm.com/docs/en/xl-c-and-cpp-aix/16.1) toolchain.                       | *Automatic*,&nbsp;usually&nbsp;**`0`**&nbsp;(disabled) |
 
 * Review the [**`sirplatform.mk`**](sirplatform.mk) and the [**`Makefile`**](Makefile) for more details.
+
+</CENTER>
 
 ## <a id="dig-in" /> Dig in
 
