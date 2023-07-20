@@ -106,7 +106,7 @@ The included *GNU-style* Makefile supports native and cross-compilation on a wid
 #### <a id="make-targets" /> Make targets
 
 |     <ins>**Command**</ins> |   <ins>**Description**</ins>   | <ins>**Build&nbsp;output**</ins>                                                                                        |
-|---------------------------:|:-------------------------------|:------------------------------------------------------------------------------------------------------------------------|
+|---------------------------:|:------------------------------:|:------------------------------------------------------------------------------------------------------------------------|
 | **`make clean`**           | Cleans&nbsp;up                 | *Removes*&nbsp;`build/*`                                                                                                |
 | **`make tests`**           | Build&nbsp;test&nbsp;suite     | `build/bin/sirtests(.exe)`                                                                                              |
 | **`make example`**         | Build&nbsp;example&nbsp;app    | `build/bin/sirexample(.exe)`                                                                                            |
@@ -119,7 +119,7 @@ The included *GNU-style* Makefile supports native and cross-compilation on a wid
 The following variables influencing the build may be present in the shell environment or explicitly set when executing `make` (*e.g.* `env CC=clang make`). Review the [**`Makefile`**](Makefile) for additional details.
 
 | <ins>**Environment**&nbsp;**Variable**</ins> | <ins>**Description**</ins>                                                                                                                         | <ins>**Default**</ins>                      |
-|---------------------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------|
+|---------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------|
 | **`CC`**                                     | Compiler driver to execute for the build.                                                                                                          | *Usually* **`cc`**                          |
 | **`NO_DEFAULT_CFLAGS`**                      | No default `CFLAGS` (`‑Wall ‑Wextra ‑Wpedantic ‑std=c11 ‑fPIC`).                                                                                   | **`0`**&nbsp;(*disabled*)                   |
 | **`CFLAGS`**                                 | Flags passed to the compiler when building source code.                                                                                            | *Usually* unset                             |
@@ -135,17 +135,17 @@ The following variables influencing the build may be present in the shell enviro
 The following options influence the *compilation and installation* of libsir, and should be passed as arguments to `make` (*e.g.* `make install DESTDIR=$HOME/staging PREFIX=/usr` *or* `make SIR_NO_SYSTEM_LOGGERS=1`). Most users won't need modify these options. Review the [**`sirplatform.mk`**](sirplatform.mk) file for additional details.
 
 | <ins>**Make** **Option**</ins> | <ins>**Description**</ins>                                                                                                   | <ins>**Default**</ins>                                 |
-|-------------------------------:|:-----------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------|
+|-------------------------------:|:----------------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------|
 | **`SHELL`**                    | Path to the [shell](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html) to be used for the build.     | *Automatic,&nbsp;usually*&nbsp;**`/bin/sh`**           |
 | **`PREFIX`**                   | Path to the default installation destination.                                                                                | **`/usr/local`**                                       |
-| **`DESTDIR`**                  | Path to the [staged installation directory](https://www.gnu.org/prep/standards/html_node/DESTDIR.html) for package builders. | *(unset)*                                              |
+| **`DESTDIR`**                  | Path to the [staged installation directory](https://www.gnu.org/prep/standards/html_node/DESTDIR.html) for package builders. | *unset*                                                |
 | **`INSTALLSH`**                | Path to the `install` program to be used during installation.                                                                | **`build-aux/install-sh`**                             |
 | **`SIR_NO_SYSTEM_LOGGERS`**    | Build without platform-specific logging facilities.                                                                          | **`0`**&nbsp;(disabled)                                |
 | **`SIR_NO_PLUGINS`**           | Build without plugin support.                                                                                                | **`0`**&nbsp;(disabled)                                |
 | **`SIR_DEBUG`**                | Build without optimization and with full debug symbols.                                                                      | **`0`**&nbsp;(disabled)                                |
 | **`SIR_ASSERT_ENABLED`**       | Build with calls to `assert`; needs `SIR_DEBUG=1` to be useful.                                                              | **`0`**&nbsp;(disabled)                                | 
 | **`SIR_SELFLOG`**              | Build with internal diagnostic routines that log events to aid in debugging.                                                 | **`0`**&nbsp;(disabled)                                |
-| **`SIR_MSVCRT_MINGW`**         | Build with [MinGW-w64](https://www.mingw-w64.org/) capable of using *only* the MSVCRT runtime.                               | **`0`**&nbsp;(disabled)                                |
+| **`SIR_MSVCRT_MINGW`**         | Build with [MinGW-w64](https://www.mingw-w64.org/) for legacy MSVCRT-only linking.                                           | **`0`**&nbsp;(disabled)                                |
 | **`MINGW`**                    | Support the [MinGW-w64](https://www.mingw-w64.org/) toolchain.                                                               | *Automatic,&nbsp;usually*&nbsp;**`0`**&nbsp;(disabled) |
 | **`HAIKU`**                    | Support the [Haiku](https://www.haiku-os.org/) toolchain.                                                                    | *Automatic,&nbsp;usually*&nbsp;**`0`**&nbsp;(disabled) |
 | **`OPENBSD`**                  | Support the [OpenBSD](https://www.openbsd.org/) toolchain.                                                                   | *Automatic,&nbsp;usually*&nbsp;**`0`**&nbsp;(disabled) |
