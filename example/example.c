@@ -29,6 +29,7 @@
 #include "sir.h"
 #include "sir/helpers.h"
 
+bool force_error = false;
 int report_error(void);
 
 /**
@@ -44,7 +45,11 @@ int report_error(void);
  * @returns EXIT_SUCCESS if execution completes successfully, or EXIT_FAILURE
  * if an error occurs.
  */
-int main(void) {
+int main(int argc, char** argv) {
+    /* Always use error handler if '--error' argument is specified. */
+    for (int n = 1; n < argc; n++)
+        if (_sir_strsame(argv[n], "--error", 7))
+            force_error = true;
     /**
      * Instantiate the libsir initialization struct and customize the
      * configuration.
@@ -171,7 +176,7 @@ int main(void) {
      */
     sir_cleanup();
 
-    return EXIT_SUCCESS;
+    return (!force_error) ? EXIT_SUCCESS : report_error();
 }
 
 /**
