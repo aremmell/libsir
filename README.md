@@ -103,7 +103,7 @@ The included *GNU-style* Makefile supports native and cross-compilation on a wid
 
 Developers, package builders, and advanced users may want to review the available [variables](#make-variables) and [options](#make-options) that influence the build.
 
-***Simply executing `make` will do the right thing for the vast majority of users on any supported platform.***
+**Simply executing `make`, either alone or specifying one of the following targets, will do the right thing for the vast majority of users on any supported platform.**
 
 #### <a id="make-targets" /> Make targets
 
@@ -118,14 +118,14 @@ Developers, package builders, and advanced users may want to review the availabl
 
 #### <a id="make-variables" /> Make variables
 
-The following variables influencing the build may be present in the shell environment or set when executing `make` (*e.g.* `env CC=clang make`). Review the [**`Makefile`**](Makefile) for additional details.
+The following variables influencing the build may be present in the shell environment or explicitly set when executing `make` (*e.g.* `env CC=clang make`). Review the [**`Makefile`**](Makefile) for additional details.
 
 | <ins>**Environment** **Variable**</ins> | <ins>**Description**</ins>                                                                                                                    | <ins>**Default**</ins>                                        |
 |----------------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------|
 | **`CC`**                                | Compiler driver to execute for code compilation and linking                                                                                   | System specific; usually **`cc`**                             |
-| **`CFLAGS`**                            | Default flags passed to the compiler driver during compilation                                                                                | System specific; usually unset                                |
-| **`NO_DEFAULT_CFLAGS`**                 | Prevents additional flags (*i.e.* `-Wall -Wextra -Wpedantic -std=c11 -Iinclude -fPIC`) from being appended to the user-supplied `CFLAGS`      | **`0`** (disabled)&nbsp;&nbsp;(**`1`** to enable)             |
-| **`LDFLAGS`**                           | Default flags passed to the compiler driver during linking                                                                                    | System specific; usually unset                                |
+| **`NO_DEFAULT_CFLAGS`**                 | Prevents default flags (*i.e.* `-Wall -Wextra -Wpedantic -std=c11 -Iinclude -fPIC`) from being appended to the user-supplied `CFLAGS`         | **`0`** (disabled)&nbsp;&nbsp;(**`1`** to enable)             |
+| **`CFLAGS`**                            | Flags to be passed to the compiler driver during compilation                                                                                  | System specific; usually unset                                |
+| **`LDFLAGS`**                           | Flags to be passed to the compiler driver during linking                                                                                      | System specific; usually unset                                |
 | **`LIBDL`**                             | Compiler driver flags to provide [dynamic linking functions](https://pubs.opengroup.org/onlinepubs/9699919799/)                               | System specific; usually **`-ldl`**                           |
 | **`FORTIFY_FLAGS`**                     | Compiler driver flags to enable [function call fortification](https://www.gnu.org/software/libc/manual/html_node/Source-Fortification.html)   | `-D_FORTIFY_SOURCE=2`                                         |
 | **`LDCONFIG`**                          | Name of the `ldconfig` program, used to index shared object names and refresh the dynamic linker cache, used during installation              | *`ldconfig`*                                                  |
