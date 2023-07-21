@@ -245,7 +245,7 @@ remove_coverage
 # Run 16 - Break readlink function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
-printf '%s\n' "long readlink(...) { return -1; }" > bad.c
+printf '%s\n' "long readlink() { return -1; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
@@ -258,8 +258,8 @@ rm -f bad.so > /dev/null 2>&1
 # Run 17 - Break clock functions
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
-printf '%s\n' "int clock_gettime(...) { return -1; }" > bad.c
-printf '%s\n' "int clock_getres(...) { return -1; }" >> bad.c
+printf '%s\n' "int clock_gettime() { return -1; }" > bad.c
+printf '%s\n' "int clock_getres() { return -1; }" >> bad.c
 gcc -shared -fPIC bad.c -o bad.so || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
@@ -272,8 +272,8 @@ rm -f bad.so > /dev/null 2>&1
 # Run 18 - Break fstat and lstat functions
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
-printf '%s\n' "int fstat(...) { return -1; }" > bad.c
-printf '%s\n' "int lstat(...) { return -1; }" >> bad.c
+printf '%s\n' "int fstat() { return -1; }" > bad.c
+printf '%s\n' "int lstat() { return -1; }" >> bad.c
 gcc -shared -fPIC bad.c -o bad.so
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
@@ -286,7 +286,7 @@ rm -f bad.so > /dev/null 2>&1
 # Run 19 - Break fputs function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
-printf '%s\n' "int fputs(...) { return -1; }" > bad.c
+printf '%s\n' "int fputs() { return -1; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
@@ -299,7 +299,7 @@ rm -f bad.so > /dev/null 2>&1
 # Run 20 - Break fseek function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
-printf '%s\n' "int fseek(...) { return -1; }" > bad.c
+printf '%s\n' "int fseek() { return -1; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
@@ -312,7 +312,7 @@ rm -f bad.so > /dev/null 2>&1
 # Run 21 - Break fputc function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
-printf '%s\n' "int fputc(...) { return -1; }" > bad.c
+printf '%s\n' "int fputc() { return -1; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
@@ -325,7 +325,7 @@ rm -f bad.so > /dev/null 2>&1
 # Run 22 - Break gethostname function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
-printf '%s\n' "int gethostname(...) { return -1; }" > bad.c
+printf '%s\n' "int gethostname() { return -1; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
@@ -338,7 +338,7 @@ rm -f bad.so > /dev/null 2>&1
 # Run 23 - Break stat functions
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
-printf '%s\n' "int stat(...) { return -1; }" > bad.c
+printf '%s\n' "int stat() { return -1; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
