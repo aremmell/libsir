@@ -351,7 +351,7 @@ rm -f bad.so > /dev/null 2>&1
 # Undo redirect
 exec 1>&5
 
-# Show reults
+# Show results
 ls -l ./run-*.json || true
 
 # Process results
