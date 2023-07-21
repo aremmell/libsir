@@ -68,7 +68,7 @@ LIBS = $(PTHOPT)
 
 # for test rig and example:
 # link with static library, not shared
-LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s $(PLATFORM_LIBS) $(LIBDL)
+LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s $(PLATFORM_LIBS) $(LIBDL) $(EXTRA_LIBS)
 
 # translation units
 TUS := $(wildcard src/*.c)
