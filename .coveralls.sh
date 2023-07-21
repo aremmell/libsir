@@ -331,7 +331,7 @@ rm -f bad.c > /dev/null 2>&1
 exec 1>&5
 
 # Show reults
-ls -l *run-*.json || true
+ls -l ./run-*.json || true
 
 # Process results
 MERGE_MODE="merge-use-line-0"
