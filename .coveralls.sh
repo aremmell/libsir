@@ -190,6 +190,7 @@ remove_coverage
 
 # Run 11 - Interactive
 printf '%s\n' '#!/usr/bin/env expect'              > r.sh
+# shellcheck disable=SC2129
 printf '%s\n' 'spawn ./build/bin/sirtests --wait' >> r.sh
 printf '%s\n' 'set timeout 999'                   >> r.sh
 printf '%s\n' 'expect "press any key to exit..."' >> r.sh
