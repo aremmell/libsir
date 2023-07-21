@@ -49,6 +49,7 @@ _ReSharper.Caches/
 
 # Cores
 *.core
+core
 
 # Oracle Lint
 *.ln
