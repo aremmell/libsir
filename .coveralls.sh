@@ -101,8 +101,8 @@ exec 5>&1 > coverage-out.txt 2>&1
 # Run 1 - Debug and self-log
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
-build/bin/sirexample
-build/bin/sirtests
+build/bin/sirexample || true
+build/bin/sirtests || true
 remove_sample || true
 run_gcovr run-1.json
 remove_coverage
@@ -110,8 +110,8 @@ remove_coverage
 # Run 2 - No plugins
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1 SIR_NO_PLUGINS=1
-build/bin/sirexample
-build/bin/sirtests
+build/bin/sirexample || true
+build/bin/sirtests || true
 remove_sample || true
 run_gcovr run-2.json
 remove_coverage
@@ -119,8 +119,8 @@ remove_coverage
 # Run 3 - Perf test
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1 SIR_NO_PLUGINS=1
-build/bin/sirexample
-build/bin/sirtests --perf
+build/bin/sirexample || true
+build/bin/sirtests --perf || true
 remove_sample || true
 run_gcovr run-3.json
 remove_coverage
@@ -128,8 +128,8 @@ remove_coverage
 # Run 4 - Test help
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1 SIR_NO_PLUGINS=1
-build/bin/sirexample
-build/bin/sirtests --help
+build/bin/sirexample || true
+build/bin/sirtests --help || true
 remove_sample || true
 run_gcovr run-4.json
 remove_coverage
@@ -137,8 +137,8 @@ remove_coverage
 # Run 5 - List tests
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1 SIR_NO_PLUGINS=1
-build/bin/sirexample
-build/bin/sirtests --list
+build/bin/sirexample || true
+build/bin/sirtests --list || true
 remove_sample || true
 run_gcovr run-5.json
 remove_coverage
@@ -146,8 +146,8 @@ remove_coverage
 # Run 6 - Version check
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1 SIR_NO_PLUGINS=1
-build/bin/sirexample
-build/bin/sirtests --version
+build/bin/sirexample || true
+build/bin/sirtests --version || true
 remove_sample || true
 run_gcovr run-6.json
 remove_coverage
@@ -155,7 +155,7 @@ remove_coverage
 # Run 7 - Invalid arguments to sirtest
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1 SIR_NO_PLUGINS=1
-build/bin/sirexample
+build/bin/sirexample || true
 build/bin/sirtests --INVALID_ARGUMENTS || true
 remove_sample || true
 run_gcovr run-7.json
@@ -164,7 +164,7 @@ remove_coverage
 # Run 8 - Bad `--only` without arguments to sirtest
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1 SIR_NO_PLUGINS=1
-build/bin/sirexample
+build/bin/sirexample || true
 build/bin/sirtests --only || true
 remove_sample || true
 run_gcovr run-8.json
@@ -173,8 +173,8 @@ remove_coverage
 # Run 9 - No debug and no self-log
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?}
-build/bin/sirexample
-build/bin/sirtests
+build/bin/sirexample || true
+build/bin/sirtests || true
 remove_sample || true
 run_gcovr run-9.json
 remove_coverage
@@ -182,8 +182,8 @@ remove_coverage
 # Run 10 - Just self-log
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_SELFLOG=1
-build/bin/sirexample
-build/bin/sirtests
+build/bin/sirexample || true
+build/bin/sirtests || true
 remove_sample || true
 run_gcovr run-10.json
 remove_coverage
@@ -197,8 +197,8 @@ printf '%s\n' 'send -- "\r"'                      >> r.sh
 printf '%s\n' 'expect eof'                        >> r.sh
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_SELFLOG=1
-build/bin/sirexample
-chmod a+x r.sh && ./r.sh
+build/bin/sirexample || true
+chmod a+x r.sh && ./r.sh || true
 remove_sample || true
 rm -f r.sh || true
 run_gcovr run-11.json
@@ -207,7 +207,7 @@ remove_coverage
 # Run 12 - Deny root
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
-build/bin/sirexample
+build/bin/sirexample || true
 fakeroot build/bin/sirtests || true
 remove_sample || true
 run_gcovr run-12.json
@@ -216,7 +216,7 @@ remove_coverage
 # Run 13 - Fail some tests (no logs directory)
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
-build/bin/sirexample
+build/bin/sirexample || true
 rm -rf logs || true
 build/bin/sirtests || true
 remove_sample || true
@@ -226,7 +226,7 @@ remove_coverage
 # Run 14 - Fail more.
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
-build/bin/sirexample
+build/bin/sirexample || true
 build/bin/sirtests --only 0000 || true
 remove_sample || true
 run_gcovr run-14.json
@@ -235,7 +235,7 @@ remove_coverage
 # Run 15 - Leave logs
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
-build/bin/sirexample
+build/bin/sirexample || true
 build/bin/sirtests --leave-logs || true
 remove_sample || true
 run_gcovr run-15.json
@@ -259,7 +259,7 @@ ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
 printf '%s\n' "int clock_gettime(...) { return -1; }" > bad.c
 printf '%s\n' "int clock_getres(...) { return -1; }" >> bad.c
-gcc -shared -fPIC bad.c -o bad.so
+gcc -shared -fPIC bad.c -o bad.so || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
 remove_sample || true

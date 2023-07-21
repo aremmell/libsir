@@ -106,7 +106,7 @@ all: $(PGOALS) $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS)
 
 -include $(INTDIR)/*.d
 
-$(OBJ_EXAMPLE): $(EXAMPLE)/$(EXAMPLE).c $(EXAMPLE)/$(EXAMPLE).h $(DEPS)
+$(OBJ_EXAMPLE): $(EXAMPLE)/$(EXAMPLE).c $(DEPS)
 	@mkdir -p $(@D)
 	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -Iinclude
 
