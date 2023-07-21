@@ -44,13 +44,10 @@ cleanup_files()
 cleanup_files
 
 # Make sure we have a token set.
-test -n "${NO_COVERALLS:-}" \
+test -n "${COVERALLS_REPO_TOKEN:-}" \
   || {
-    test -n "${COVERALLS_REPO_TOKEN:-}" \
-      || {
-        printf '%s\n' "Error: COVERALLS_REPO_TOKEN is unset."
-        exit 1
-      }
+    printf '%s\n' "Error: COVERALLS_REPO_TOKEN is unset."
+    exit 1
   }
 
 # Test for command
