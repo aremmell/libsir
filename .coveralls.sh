@@ -327,6 +327,18 @@ run_gcovr run-22.json
 remove_coverage
 rm -f bad.c > /dev/null 2>&1
 
+# Run 23 - Break stat functions
+${DO_MAKE:-make} -j ${JOBS:?} clean
+${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
+printf '%s\n' "int stat(...) { return -1; }" > bad.c
+gcc -shared -fPIC bad.c -o bad.so
+env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
+env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
+remove_sample || true
+run_gcovr run-23.json
+remove_coverage
+rm -f bad.c > /dev/null 2>&1
+
 # Undo redirect
 exec 1>&5
 
