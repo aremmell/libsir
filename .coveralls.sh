@@ -198,7 +198,8 @@ printf '%s\n' 'expect eof'                        >> r.sh
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_SELFLOG=1
 build/bin/sirexample || true
-chmod a+x r.sh && ./r.sh || true
+chmod a+x r.sh
+./r.sh || true
 remove_sample || true
 rm -f r.sh || true
 run_gcovr run-11.json
