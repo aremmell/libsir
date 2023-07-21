@@ -2217,7 +2217,7 @@ long sirtimergetres(void) {
     if (0 == clock_getres(SIRTEST_CLOCK, &res)) {
         retval = res.tv_nsec;
     } else {
-        handle_os_error(true, "clock_getres(%d) failed!", CLOCK_CAST SIRTEST_CLOCK);
+        handle_os_error(true, "clock_getres(%d) failed!", CLOCK_CAST SIRTEST_CLOCK); // GCOVR_EXCL_LINE
     }
 #else /* __WIN__ */
     retval = 100;

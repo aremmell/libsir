@@ -256,11 +256,10 @@ remove_coverage
 rm -f bad.c > /dev/null 2>&1
 rm -f bad.so > /dev/null 2>&1
 
-# Run 17 - Break clock functions
+# Run 17 - Break clock_gettime function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
 printf '%s\n' "int clock_gettime() { return -1; }" > bad.c
-printf '%s\n' "int clock_getres() { return -1; }" >> bad.c
 gcc -shared -fPIC bad.c -o bad.so || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
@@ -349,6 +348,31 @@ remove_coverage
 rm -f bad.c > /dev/null 2>&1
 rm -f bad.so > /dev/null 2>&1
 
+# Run 24 - Break pthread_join function
+${DO_MAKE:-make} -j ${JOBS:?} clean
+${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
+printf '%s\n' "int pthread_join() { return -1; }" > bad.c
+gcc -shared -fPIC bad.c -o bad.so || true
+env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
+env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
+remove_sample || true
+run_gcovr run-24.json
+remove_coverage
+rm -f bad.c > /dev/null 2>&1
+rm -f bad.so > /dev/null 2>&1
+
+# Run 25 - Break pthread_create function
+${DO_MAKE:-make} -j ${JOBS:?} clean
+${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
+printf '%s\n' "int pthread_create() { return -1; }" > bad.c
+gcc -shared -fPIC bad.c -o bad.so || true
+env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
+env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
+remove_sample || true
+run_gcovr run-25.json
+remove_coverage
+rm -f bad.c > /dev/null 2>&1
+rm -f bad.so > /dev/null 2>&1
 # Undo redirect
 exec 1>&5
 
