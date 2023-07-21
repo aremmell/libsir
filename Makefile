@@ -106,11 +106,11 @@ all: $(PGOALS) $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS)
 
 -include $(INTDIR)/*.d
 
-$(OBJ_EXAMPLE): $(EXAMPLE)/$(EXAMPLE).c $(DEPS)
+$(OBJ_EXAMPLE): $(EXAMPLE)/$(EXAMPLE).c $(EXAMPLE)/$(EXAMPLE).h $(DEPS)
 	@mkdir -p $(@D)
 	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -Iinclude
 
-$(OBJ_TESTS): $(TESTS)/$(TESTS).c $(DEPS)
+$(OBJ_TESTS): $(TESTS)/$(TESTS).c $(TESTS)/$(TESTS).h $(DEPS)
 	@mkdir -p $(@D)
 	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -Iinclude
 
