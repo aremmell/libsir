@@ -252,6 +252,7 @@ remove_sample || true
 run_gcovr run-16.json
 remove_coverage
 rm -f bad.c > /dev/null 2>&1
+rm -f bad.so > /dev/null 2>&1
 
 # Run 17 - Break clock functions
 ${DO_MAKE:-make} -j ${JOBS:?} clean
@@ -265,6 +266,7 @@ remove_sample || true
 run_gcovr run-17.json
 remove_coverage
 rm -f bad.c > /dev/null 2>&1
+rm -f bad.so > /dev/null 2>&1
 
 # Run 18 - Break fstat and lstat functions
 ${DO_MAKE:-make} -j ${JOBS:?} clean
@@ -278,6 +280,7 @@ remove_sample || true
 run_gcovr run-18.json
 remove_coverage
 rm -f bad.c > /dev/null 2>&1
+rm -f bad.so > /dev/null 2>&1
 
 # Run 19 - Break fputs function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
@@ -290,6 +293,7 @@ remove_sample || true
 run_gcovr run-19.json
 remove_coverage
 rm -f bad.c > /dev/null 2>&1
+rm -f bad.so > /dev/null 2>&1
 
 # Run 20 - Break fseek function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
@@ -302,6 +306,7 @@ remove_sample || true
 run_gcovr run-20.json
 remove_coverage
 rm -f bad.c > /dev/null 2>&1
+rm -f bad.so > /dev/null 2>&1
 
 # Run 21 - Break fputc function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
@@ -314,6 +319,7 @@ remove_sample || true
 run_gcovr run-21.json
 remove_coverage
 rm -f bad.c > /dev/null 2>&1
+rm -f bad.so > /dev/null 2>&1
 
 # Run 22 - Break gethostname function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
@@ -326,6 +332,7 @@ remove_sample || true
 run_gcovr run-22.json
 remove_coverage
 rm -f bad.c > /dev/null 2>&1
+rm -f bad.so > /dev/null 2>&1
 
 # Run 23 - Break stat functions
 ${DO_MAKE:-make} -j ${JOBS:?} clean
@@ -338,6 +345,7 @@ remove_sample || true
 run_gcovr run-23.json
 remove_coverage
 rm -f bad.c > /dev/null 2>&1
+rm -f bad.so > /dev/null 2>&1
 
 # Undo redirect
 exec 1>&5

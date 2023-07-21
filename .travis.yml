@@ -45,7 +45,7 @@ script:
   - env ${MAKE:?}
   - build/bin/sirtests
   - build/bin/sirexample
-  - test ${COVERALLS:-0} = "1" && { sh ./.coveralls.sh; } || true
+  - test ${COVERALLS:-0} = "1" && { sh ./.coveralls.sh; tail -35 coverage-out.txt; } || true
 #
 ############################ Disabled jobs ########################
 # - os: linux
