@@ -9,23 +9,23 @@ test -n "${NO_APTSETUP:-}" \
   || {
     { # Check this is Ubuntu 22.04 Jammy
       grep '22.04' /etc/*elease || exit 1
-      printf '\n\n\n%s\n\n\n' "About to run commands as root - press ^C now if you didn't read the script!!!" ;
-      sleep 6 ;
-      export DEBIAN_FRONTEND=noninteractive ;
-      sudo apt-get update -y ;
-      sudo apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install -y ccache curl python3-pip git expect fakeroot ;
-      #sudo python3 -m pip install --break-system-packages install -U gcovr || true ;  # for later Ubuntu versions
-      sudo python3 -m pip install install -U gcovr || true ;
-      command -v gcovr || true ;
+      printf '\n\n\n%s\n\n\n' \
+        "Running dangerous commands as root in 10s; press ^C now to abort."
+      sleep 10
+      export DEBIAN_FRONTEND=noninteractive
+      sudo apt-get update -y
+      sudo apt-get -o Dpkg::Options::="--force-confdef" \
+                   -o Dpkg::Options::="--force-confold" \
+        install -y ccache curl python3-pip git expect fakeroot
+      sudo python3 -m pip install --break-system-packages \
+          install -U gcovr || \
+      sudo python3 -m pip install \
+          install -U gcovr
+      command -v gcovr
     }
   }
 
-# NOTE: Needs GNU rm
-
 set -ex
-
-# (Try to) disable messages to terminal from syslog
-mesg n || true
 
 # How parallel? Use "1" for Travis CI.
 JOBS=1
@@ -36,9 +36,9 @@ test -n "${MAKE:-}" && DO_MAKE="${MAKE:-}"
 # Clean-up
 cleanup_files()
 {
-  rm -f ./coveralls > /dev/null 2>&1
+  rm -f ./coveralls       > /dev/null 2>&1
   rm -f ./coverage-out*.* > /dev/null 2>&1
-  rm -f ./coveralls.json > /dev/null 2>&1
+  rm -f ./coveralls.json  > /dev/null 2>&1
 }
 
 cleanup_files
@@ -79,20 +79,22 @@ export CC CFLAGS LDFLAGS
 remove_sample()
 {
   # shellcheck disable=SC2046
-  env rm -v $(find . -name 'plugin_sample*.*gc*' -print) || true
+  env rm $(find . -name 'plugin_sample*.*gc*' -print) || true
 }
 
 # Removes all coverage files
 remove_coverage()
 {
   # shellcheck disable=SC2046
-  env rm -v $(find . -name '*.*gc*' -print) || true
+  env rm $(find . -name '*.*gc*' -print) || true
 }
 
 # Runs gcovr
 run_gcovr()
 {
-  gcovr --gcov-ignore-parse-errors=negative_hits.warn_once_per_file --json "${1}"
+  gcovr \
+      --gcov-ignore-parse-errors=negative_hits.warn_once_per_file \
+      --json "${1}"
 }
 
 # Redirect
@@ -189,7 +191,7 @@ run_gcovr run-10.json
 remove_coverage
 
 # Run 11 - Interactive
-printf '%s\n' '#!/usr/bin/env expect'              > r.sh
+printf '%s\n' '#!/usr/bin/env expect' > r.sh
 # shellcheck disable=SC2129
 printf '%s\n' 'spawn ./build/bin/sirtests --wait' >> r.sh
 printf '%s\n' 'set timeout 999'                   >> r.sh
@@ -384,14 +386,17 @@ MERGE_MODE="merge-use-line-0"
 gcovr \
   --add-tracefile "run-*.json" \
   --merge-mode-functions="${MERGE_MODE:?}" -u -s \
-  --gcov-ignore-parse-errors=negative_hits.warn_once_per_file --html-details coverage-out.html
+  --gcov-ignore-parse-errors=negative_hits.warn_once_per_file \
+  --html-details coverage-out.html
 gcovr \
   --add-tracefile "run-*.json" \
   --merge-mode-functions="${MERGE_MODE:?}" -u \
-  --gcov-ignore-parse-errors=negative_hits.warn_once_per_file --coveralls coveralls.json
+  --gcov-ignore-parse-errors=negative_hits.warn_once_per_file \
+  --coveralls coveralls.json
 
 # Submit results
-test -n "${NO_COVERALLS:-}" || ./coveralls coveralls.json -r "${COVERALLS_REPO_TOKEN:?}"
+test -n "${NO_COVERALLS:-}" || \
+    ./coveralls coveralls.json -r "${COVERALLS_REPO_TOKEN:?}"
 
 # Cleanup
 test -n "${NO_CLEANUP:-}" \
