@@ -272,7 +272,6 @@ bool sirtest_pluginloader(void);
  */
 bool sirtest_getversioninfo(void);
 
-
 /** @} */
 
 /**
