@@ -67,10 +67,10 @@ int main(int argc, char** argv) {
 #endif
 #if !defined(__WIN__) && !defined(__HAIKU__)
     /* Disallow execution by root / sudo; some of the tests rely on lack of permissions. */
-    if (geteuid() == 0) { // GCOVR_EXCL_START
+    if (geteuid() == 0) {
         fprintf(stderr, "Sorry, but this program may not be executed by root.\n");
         return EXIT_FAILURE;
-    } // GCOVR_EXCL_STOP
+    }
 #else /* __WIN__ */
 # if defined(_DEBUG) && defined(SIR_ASSERT_ENABLED)
     /* Prevents assert() from calling abort() before the user is able to:
@@ -2177,7 +2177,7 @@ bool sirtimerstart(sir_timer* timer) {
 #if !defined(__WIN__)
     int gettime = clock_gettime(SIRTEST_CLOCK, &timer->ts);
     if (0 != gettime) {
-        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK); // GCOVR_EXCL_LINE
+        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK);
     }
 
     return 0 == gettime;
@@ -2194,7 +2194,7 @@ float sirtimerelapsed(const sir_timer* timer) {
         return (float)((now.tv_sec * 1e3) + (now.tv_nsec / 1e6) - (timer->ts.tv_sec * 1e3) +
             (timer->ts.tv_nsec / 1e6));
     } else {
-        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK); // GCOVR_EXCL_LINE
+        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK);
     }
     return 0.0f;
 #else /* __WIN__ */
@@ -2217,7 +2217,7 @@ long sirtimergetres(void) {
     if (0 == clock_getres(SIRTEST_CLOCK, &res)) {
         retval = res.tv_nsec;
     } else {
-        handle_os_error(true, "clock_getres(%d) failed!", CLOCK_CAST SIRTEST_CLOCK); // GCOVR_EXCL_LINE
+        handle_os_error(true, "clock_getres(%d) failed!", CLOCK_CAST SIRTEST_CLOCK);
     }
 #else /* __WIN__ */
     retval = 100;
