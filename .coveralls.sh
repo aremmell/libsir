@@ -294,10 +294,10 @@ run_gcovr run-19.json
 remove_coverage
 rm -f bad.c > /dev/null 2>&1
 
-# Run 20 - Break snprintf function
+# Run 20 - Break fseek function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
-printf '%s\n' "int snprintf(...) { return -1; }" > bad.c
+printf '%s\n' "int fseek(...) { return -1; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
@@ -306,10 +306,10 @@ run_gcovr run-20.json
 remove_coverage
 rm -f bad.c > /dev/null 2>&1
 
-# Run 21 - Break fseek function
+# Run 21 - Break fputc function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
-printf '%s\n' "int fseek(...) { return -1; }" > bad.c
+printf '%s\n' "int fputc(...) { return -1; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
@@ -318,10 +318,10 @@ run_gcovr run-21.json
 remove_coverage
 rm -f bad.c > /dev/null 2>&1
 
-# Run 22 - Break fputc function
+# Run 22 - Break gethostname function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
-printf '%s\n' "int fputc(...) { return -1; }" > bad.c
+printf '%s\n' "int gethostname(...) { return -1; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
@@ -330,20 +330,11 @@ run_gcovr run-22.json
 remove_coverage
 rm -f bad.c > /dev/null 2>&1
 
-# Run 23 - Break gethostname function
-${DO_MAKE:-make} -j ${JOBS:?} clean
-${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
-printf '%s\n' "int gethostname(...) { return -1; }" > bad.c
-gcc -shared -fPIC bad.c -o bad.so
-env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
-env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
-remove_sample || true
-run_gcovr run-23.json
-remove_coverage
-rm -f bad.c > /dev/null 2>&1
-
 # Undo redirect
 exec 1>&5
+
+# Show reults
+ls -l *run-*.json || true
 
 # Process results
 MERGE_MODE="merge-use-line-0"
