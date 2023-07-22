@@ -1187,8 +1187,6 @@ pid_t _sir_gettid(void) {
 # endif
 #elif defined(__WIN__)
     tid = (pid_t)GetCurrentThreadId();
-#elif defined(_DEFAULT_SOURCE)
-    tid = syscall(SYS_gettid);
 #else
 # error "cannot determine how to get thread id; please contact the author"
 #endif
