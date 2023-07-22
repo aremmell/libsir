@@ -26,5 +26,10 @@
 #ifndef _SIR_THREADPOOL_H_INCLUDED
 #define _SIR_THREADPOOL_H_INCLUDED
 
+#include "sir/types.h"
+
+bool thread_pool_create(sir_threadpool** pool, size_t num);
+bool thread_pool_add_job(sir_threadpool* pool, sir_threadpool_job* job);
+bool thread_pool_destroy(sir_threadpool** pool);
 
 #endif /* !_SIR_THREADPOOL_H_INCLUDED */

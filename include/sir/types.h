@@ -344,20 +344,23 @@ typedef struct _sir_queue_node {
 
 /** FIFO queue. */
 typedef struct {
-    sir_queue_node* head;
+    sir_queue_node* head; /**< The first node in the linked list. */
 } sir_queue;
 
 /** Job used by a job queue. */
 typedef struct {
-    bool (*fn)(void);
-    void* payload;
-} sir_job;
+    bool (*fn)(void*); /**< Callback to be executed as part of the job. */
+    void* data;        /**< Data to pass to the callback. */
+} sir_threadpool_job;
 
 /** Thread pool/job queue data container. */
 typedef struct {
     sir_thread* threads; /**< A list of thread handles. */
-    sir_queue job_queue; /**< A queue of jobs to run (FIFO). */
+    size_t num_threads;  /**< The number of threads in the pool. */
+    sir_queue* jobs;     /**< A queue of jobs to run (FIFO). */
     sir_condition cond;  /**< A condition which indicates that a job is ready. */
+    sir_mutex mutex;     /**< A mutex to be paired with the condition variable. */
+    bool cancel;         /**< Causes threads in the pool to exit when true. */
 } sir_threadpool;
 
 /** Formatted output container. */

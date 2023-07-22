@@ -82,11 +82,65 @@ bool _sir_mutexdestroy(sir_mutex* mutex) {
 
     return false;
 }
+
+bool _sir_condcreate(sir_condition* cond) {
+    if (_sir_validptr(cond)) {
+        int op = pthread_cond_init(cond, NULL);
+        return 0 == op ? true : _sir_handleerr(op);
+    }
+
+    return false;
+}
+
+bool _sir_condsignal(sir_condition* cond) {
+    if (_sir_validptr(cond)) {
+        int op = pthread_cond_signal(cond);
+        return 0 == op ? true : _sir_handleerr(op);
+    }
+
+    return false;
+}
+
+bool _sir_condbroadcast(sir_condition* cond) {
+    if (_sir_validptr(cond)) {
+        int op = pthread_cond_broadcast(cond);
+        return 0 == op ? true : _sir_handleerr(op);
+    }
+
+    return false;
+}
+
+bool _sir_conddestroy(sir_condition* cond) {
+    if (_sir_validptr(cond)) {
+        int op = pthread_cond_destroy(cond);
+        return 0 == op ? true : _sir_handleerr(op);
+    }
+
+    return false;
+}
+
+bool _sir_condwait(sir_condition* cond, sir_mutex* mutex) {
+    if (_sir_validptr(cond) && _sir_validptr(mutex)) {
+        int op = pthread_cond_wait(cond, mutex);
+        return 0 == op ? true : _sir_handleerr(op);
+    }
+
+    return false;
+}
+
+bool _sir_condwait_timeout(sir_condition* cond, sir_mutex* mutex, sir_wait* howlong) {
+    if (_sir_validptr(cond) && _sir_validptr(mutex) && _sir_validptr(howlong)) {
+        int op = pthread_cond_timedwait(cond, mutex, howlong);
+        return 0 == op ? true : _sir_handleerr(op);
+    }
+
+    return false;
+}
 #else /* __WIN__ */
 static
-bool _sirmutex_waitwin32(sir_mutex mutex, DWORD msec) {
-    if (_sir_validptr(mutex)) {
-        DWORD wait = WaitForSingleObject(mutex, msec);
+bool _sir_waitwin32(HANDLE handle, DWORD msec) {
+    if (_sir_validptr(handle)) {
+        DWORD wait = WaitForSingleObject(handle, msec);
         switch (wait) {
             case WAIT_ABANDONED:
             case WAIT_FAILED:
@@ -116,11 +170,11 @@ bool _sir_mutexcreate(sir_mutex* mutex) {
 }
 
 bool _sir_mutexlock(sir_mutex* mutex) {
-    return NULL != mutex ? _sirmutex_waitwin32(*mutex, INFINITE) : false;
+    return _sir_validptr(mutex) ? _sir_waitwin32(*mutex, INFINITE) : false;
 }
 
 bool _sir_mutextrylock(sir_mutex* mutex) {
-    return NULL != mutex ? _sirmutex_waitwin32(*mutex, 0) : false;
+    return _sir_validptr(mutex) ? _sir_waitwin32(*mutex, 0) : false;
 }
 
 bool _sir_mutexunlock(sir_mutex* mutex) {
@@ -132,6 +186,55 @@ bool _sir_mutexunlock(sir_mutex* mutex) {
 bool _sir_mutexdestroy(sir_mutex* mutex) {
     if (_sir_validptr(mutex))
         return (FALSE != CloseHandle(*mutex)) ? true : _sir_handlewin32err(GetLastError());
+    return false;
+}
+
+bool _sir_condcreate(sir_condition* cond) {
+    if (_sir_validptr(cond)) {
+        sir_mutex tmp = CreateEvent(NULL, FALSE, FALSE, NULL);
+        if (!tmp)
+            return _sir_handlewin32err(GetLastError());
+
+        *cond = tmp;
+        return true;
+    }
+
+    return false;
+}
+
+bool _sir_condsignal(sir_condition* cond) {
+    if (_sir_validptr(cond))
+        return (FALSE != SetEvent(*cond)) ? true : _sir_handlewin32err(GetLastError());
+    return false;
+}
+
+bool _sir_condbroadcast(sir_condition* cond) {
+    return _sir_condsignal(cond);
+}
+
+bool _sir_conddestroy(sir_condition* cond) {
+    if (_sir_validptr(cond)) {
+        return (FALSE != CloseHandle(*cond)) ? true : _sir_handlewin32err(GetLastError());
+    return false;
+}
+
+bool _sir_condwait(sir_condition* cond, sir_mutex* mutex) {
+    _SIR_UNUSED(mutex);
+
+    if (_sir_validptr(cond)) {
+        DWORD wait = WaitForSingleObject(*cond, INFINITE);
+        return WAIT_OBJECT_0 == wait ? true : _sir_handlewin32err(GetLastError());
+    }
+
+    return false;
+}
+
+bool _sir_condwait_timeout(sir_condition* cond, sir_mutex* mutex, sir_wait* howlong) {
+    _SIR_UNUSED(mutex);
+
+    if (_sir_validptr(cond) && _sir_validptr(howlong))
+        return _sir_waitwin32(*cond, *howlong);
+
     return false;
 }
 #endif /* !__WIN__ */
