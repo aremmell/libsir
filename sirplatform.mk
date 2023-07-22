@@ -51,6 +51,21 @@ ifeq ($(NETBSD),1)
   LIBDL=
 endif
 
+# SunOS
+ifneq "$(findstring SunOS,$(UNAME_S))" ""
+  UNAME_O:=$(shell uname -o 2> /dev/null)
+  ifneq "$(findstring Solaris,$(UNAME_O))" ""
+    SUNSYSV?=1
+  endif
+  ifneq "$(findstring illumos,$(UNAME_O))" ""
+    SUNSYSV?=1
+  endif
+endif
+ifeq ($(SUNSYSV),1)
+  CFLAGS+=-DMTMALLOC
+  EXTRA_LIBS+=-lmtmalloc
+endif
+
 # Enable MinGW MSVCRT workaround?
 ifeq ($(SIR_MSVCRT_MINGW),1)
   CFLAGS+=-DSIR_MSVCRT_MINGW
