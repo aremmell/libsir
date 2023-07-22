@@ -1179,10 +1179,16 @@ pid_t _sir_gettid(void) {
     tid = get_pthread_thread_id(pthread_self());
 #elif defined(__serenity__)
     tid = gettid();
-#elif defined(_DEFAULT_SOURCE)
+#elif defined(__linux__) && defined(__GLIBC__)
+# if (__GLIBC__ >= 2 && __GLIBC_MINOR__ < 30)
     tid = syscall(SYS_gettid);
+# else
+    tid = gettid();
+# endif
 #elif defined(__WIN__)
     tid = (pid_t)GetCurrentThreadId();
+#elif defined(_DEFAULT_SOURCE)
+    tid = syscall(SYS_gettid);
 #else
 # error "cannot determine how to get thread id; please contact the author"
 #endif
