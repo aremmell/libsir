@@ -336,6 +336,18 @@ typedef struct {
     size_t count;
 } sir_plugincache;
 
+/** A node in a sir_queue. */
+typedef struct _sir_queue_node {
+    struct _sir_queue_node* next;
+    void* data;
+} sir_queue_node;
+
+/** FIFO queue. */
+typedef struct {
+    sir_queue_node* head;
+} sir_queue;
+
+
 /** Formatted output container. */
 typedef struct {
     char style[SIR_MAXSTYLE];
