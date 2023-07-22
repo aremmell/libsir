@@ -66,28 +66,28 @@ int main(int argc, char** argv) {
     disable_debugger(1);
 #endif
 
-# if defined(MTMALLOC)
-#  include <mtmalloc.h>
-#  if !defined(DEBUG)
+#if defined(MTMALLOC)
+# include <mtmalloc.h>
+# if !defined(DEBUG)
 mallocctl(MTDOUBLEFREE, 0);
-#  else
+# else
 mallocctl(MTDOUBLEFREE, 1);
 mallocctl(MTINITBUFFER, 1);
 mallocctl(MTDEBUGPATTERN, 1);
-#  endif
 # endif
+#endif
 
-# if defined(__OpenBSD__) && defined(DEBUG)
+#if defined(__OpenBSD__) && defined(DEBUG)
 extern char *malloc_options;
 malloc_options = "CFGRSU";
-# endif
+#endif
 
 #if !defined(__WIN__) && !defined(__HAIKU__)
     /* Disallow execution by root / sudo; some of the tests rely on lack of permissions. */
-    if (geteuid() == 0) { // GCOVR_EXCL_START
+    if (geteuid() == 0) {
         fprintf(stderr, "Sorry, but this program may not be executed by root.\n");
         return EXIT_FAILURE;
-    } // GCOVR_EXCL_STOP
+    }
 #else /* __WIN__ */
 # if defined(_DEBUG) && defined(SIR_ASSERT_ENABLED)
     /* Prevents assert() from calling abort() before the user is able to:
@@ -1926,8 +1926,7 @@ bool sirtest_threadrace(void) {
             if (0 != join) {
                 joined = false;
                 errno  = join;
-                handle_os_error(true, "pthread_join() for thread #%zu (%p) failed!", j + 1,
-                    (void*)thrds[j]);
+                handle_os_error(true, "pthread_join() for thread #%zu failed!", j + 1);
             }
 #else /* __WIN__ */
             DWORD wait = WaitForSingleObject((HANDLE)thrds[j], INFINITE);
@@ -2194,7 +2193,7 @@ bool sirtimerstart(sir_timer* timer) {
 #if !defined(__WIN__)
     int gettime = clock_gettime(SIRTEST_CLOCK, &timer->ts);
     if (0 != gettime) {
-        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK); // GCOVR_EXCL_LINE
+        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK);
     }
 
     return 0 == gettime;
@@ -2211,7 +2210,7 @@ float sirtimerelapsed(const sir_timer* timer) {
         return (float)((now.tv_sec * 1e3) + (now.tv_nsec / 1e6) - (timer->ts.tv_sec * 1e3) +
             (timer->ts.tv_nsec / 1e6));
     } else {
-        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK); // GCOVR_EXCL_LINE
+        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK);
     }
     return 0.0f;
 #else /* __WIN__ */
