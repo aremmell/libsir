@@ -108,7 +108,7 @@ malloc_options = "CFGRSU";
             if (only)
                 to_run = 1;
         } else if (_sir_strsame(argv[n], _cl_arg_list[1].flag,
-            strnlen(argv[n], SIR_MAXCLIFLAG))) { /* --only */
+            strnlen(_cl_arg_list[1].flag, SIR_MAXCLIFLAG))) { /* --only */
             while (++n < argc) {
                 if (_sir_validstrnofail(argv[n])) {
                     if (*argv[n] == '-' || !mark_test_to_run(argv[n])) {
@@ -127,21 +127,21 @@ malloc_options = "CFGRSU";
             }
             only = true;
         } else if (_sir_strsame(argv[n], _cl_arg_list[2].flag,
-            strnlen(argv[n], SIR_MAXCLIFLAG))) { /* --list */
+            strnlen(_cl_arg_list[1].flag, SIR_MAXCLIFLAG))) { /* --list */
             print_test_list();
             return EXIT_SUCCESS;
         } else if (_sir_strsame(argv[n], _cl_arg_list[3].flag,
-            strnlen(argv[n], SIR_MAXCLIFLAG))) { /* --leave-logs */
+            strnlen(_cl_arg_list[1].flag, SIR_MAXCLIFLAG))) { /* --leave-logs */
             leave_logs = true;
         } else if (_sir_strsame(argv[n], _cl_arg_list[4].flag,
-            strnlen(argv[n], SIR_MAXCLIFLAG))) { /* --wait */
+            strnlen(_cl_arg_list[1].flag, SIR_MAXCLIFLAG))) { /* --wait */
             wait = true;
         }  else if (_sir_strsame(argv[n], _cl_arg_list[5].flag,
-            strnlen(argv[n], SIR_MAXCLIFLAG))) { /* --version */
+            strnlen(_cl_arg_list[1].flag, SIR_MAXCLIFLAG))) { /* --version */
             print_libsir_version();
             return EXIT_SUCCESS;
         }else if (_sir_strsame(argv[n], _cl_arg_list[6].flag,
-            strnlen(argv[n], SIR_MAXCLIFLAG))) { /* --help */
+            strnlen(_cl_arg_list[1].flag, SIR_MAXCLIFLAG))) { /* --help */
             print_usage_info();
             return EXIT_SUCCESS;
         } else {
