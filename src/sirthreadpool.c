@@ -34,8 +34,7 @@ static void* thread_pool_proc(void* arg);
 static unsigned thread_pool_proc(void* arg);
 #endif
 
-bool thread_pool_create(sir_threadpool** pool, size_t num_threads)
-{
+bool thread_pool_create(sir_threadpool** pool, size_t num_threads) {
     if (!pool || !num_threads)
         return false;
 
@@ -63,7 +62,7 @@ bool thread_pool_create(sir_threadpool** pool, size_t num_threads)
         goto _cleanup;
 
     for (size_t n = 0; n < num_threads; n++) {
-#if !defined (__WIN__)
+#if !defined(__WIN__)
         pthread_attr_t attr;
         pthread_attr_init(&attr);
         int op = pthread_create(&(*pool)->threads[n], &attr, &thread_pool_proc, *pool);
@@ -73,8 +72,8 @@ bool thread_pool_create(sir_threadpool** pool, size_t num_threads)
         }
 
 #else /* __WIN__ */
-        (*pool)->threads[n] = (HANDLE)_beginthreadex(NULL, 0, &thread_pool_proc, *pool,
-            0, NULL);
+        (*pool)->threads[n] = (HANDLE)_beginthreadex(NULL, 0, &thread_pool_proc,
+            *pool, 0, NULL);
         if (!(*pool)->threads[n]) {
             _sir_handleerr(errno);
             goto _cleanup;
@@ -93,8 +92,7 @@ _ret:
     return !!*pool;
 }
 
-bool thread_pool_add_job(sir_threadpool* pool, sir_threadpool_job* job)
-{
+bool thread_pool_add_job(sir_threadpool* pool, sir_threadpool_job* job) {
     if (!pool || !pool->jobs || !job)
         return false;
 
@@ -115,8 +113,7 @@ bool thread_pool_add_job(sir_threadpool* pool, sir_threadpool_job* job)
     return retval;
 }
 
-bool thread_pool_destroy(sir_threadpool** pool)
-{
+bool thread_pool_destroy(sir_threadpool** pool) {
     if (!pool || !*pool)
         return false;
 
@@ -175,7 +172,7 @@ static unsigned thread_pool_proc(void* arg)
 
         while (_sir_queue_isempty(pool->jobs) && !pool->cancel) {
 #if !defined(__WIN__)
-             /* seconds; absolute fixed time. */
+            /* seconds; absolute fixed time. */
             sir_wait wait = {time(NULL) + 2, 0};
 #else
             /* msec; relative from now. */

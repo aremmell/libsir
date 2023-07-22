@@ -24,9 +24,9 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #ifndef _SIR_QUEUE_H_INCLUDED
-#define _SIR_QUEUE_H_INCLUDED
+# define _SIR_QUEUE_H_INCLUDED
 
-#include "sir/types.h"
+# include "sir/types.h"
 
 /** Creates a sir_queue_node and sets its data property. */
 sir_queue_node* _sir_queue_node_create(void* data);

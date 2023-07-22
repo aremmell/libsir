@@ -24,9 +24,9 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #ifndef _SIR_THREADPOOL_H_INCLUDED
-#define _SIR_THREADPOOL_H_INCLUDED
+# define _SIR_THREADPOOL_H_INCLUDED
 
-#include "sir/types.h"
+# include "sir/types.h"
 
 bool thread_pool_create(sir_threadpool** pool, size_t num);
 bool thread_pool_add_job(sir_threadpool* pool, sir_threadpool_job* job);

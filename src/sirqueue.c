@@ -27,8 +27,7 @@
 #include "sir/helpers.h"
 #include "sir/errors.h"
 
-sir_queue_node* _sir_queue_node_create(void* data)
-{
+sir_queue_node* _sir_queue_node_create(void* data) {
     sir_queue_node* retval = calloc(1, sizeof(sir_queue_node));
     if (!retval)
         _sir_handleerr(errno);
@@ -38,8 +37,7 @@ sir_queue_node* _sir_queue_node_create(void* data)
     return retval;
 }
 
-bool _sir_queue_node_destroy(sir_queue_node** node, void** data)
-{
+bool _sir_queue_node_destroy(sir_queue_node** node, void** data) {
     if (!node || !*node)
         return false;
 
@@ -62,16 +60,15 @@ bool _sir_queue_create(sir_queue** q) {
     return !!*q;
 }
 
-bool _sir_queue_destroy(sir_queue** q)
-{
+bool _sir_queue_destroy(sir_queue** q) {
     if (!q || !*q)
         return false;
 
     sir_queue_node* next = (*q)->head;
     while (next) {
         sir_queue_node* this_node = next;
-        next = this_node->next;
-        void* data = NULL;
+        next                      = this_node->next;
+        void* data                = NULL;
         (void)_sir_queue_node_destroy(&this_node, &data);
         _sir_safefree(&data);
     }
@@ -81,13 +78,12 @@ bool _sir_queue_destroy(sir_queue** q)
     return true;
 }
 
-size_t _sir_queue_size(sir_queue* q)
-{
+size_t _sir_queue_size(sir_queue* q) {
     if (_sir_queue_isempty(q))
         return 0;
 
     sir_queue_node* next = q->head->next;
-    size_t idx = 1;
+    size_t idx           = 1;
     while (next) {
         idx++;
         next = next->next;
@@ -96,13 +92,11 @@ size_t _sir_queue_size(sir_queue* q)
     return idx;
 }
 
-bool _sir_queue_isempty(sir_queue* q)
-{
+bool _sir_queue_isempty(sir_queue* q) {
     return !q || !q->head;
 }
 
-bool _sir_queue_push(sir_queue* q, void* data)
-{
+bool _sir_queue_push(sir_queue* q, void* data) {
     if (!q)
         return false;
 
@@ -124,13 +118,12 @@ bool _sir_queue_push(sir_queue* q, void* data)
     return false;
 }
 
-bool _sir_queue_pop(sir_queue* q, void** data)
-{
+bool _sir_queue_pop(sir_queue* q, void** data) {
     if (_sir_queue_isempty(q) || !data)
         return false;
 
     sir_queue_node* old_head = q->head;
-    q->head = old_head->next;
+    q->head                  = old_head->next;
 
     return _sir_queue_node_destroy(&old_head, data);
 }
