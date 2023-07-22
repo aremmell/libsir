@@ -88,7 +88,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
      * - get the v1 exports (all versions will have v1 exports), resolve them,
      * and call sir_plugin_query.
      * - switch on version returned to resolve additional exports. this will
-     * necessitate additional versioned interface strctures as members of the
+     * necessitate additional versioned interface structures as members of the
      * sir_plugin struct, e.g. ifacev1, ifacev2). */
     plugin->iface.query   = (sir_plugin_queryfn)
         _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_QUERY);
