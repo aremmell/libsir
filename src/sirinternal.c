@@ -1177,13 +1177,12 @@ pid_t _sir_gettid(void) {
     tid = (pid_t)pthread_self();
 #elif defined(__HAIKU__)
     tid = get_pthread_thread_id(pthread_self());
-#elif defined(__serenity__)
+#elif defined(__linux__) || defined(__serenity__)
+# if (defined(__GLIBC__) && (__GLIBC__ >= 2 && __GLIBC_MINOR__ >= 30)) || \
+     defined(__serenity__)
     tid = gettid();
-#elif defined(__linux__) && defined(__GLIBC__)
-# if (__GLIBC__ >= 2 && __GLIBC_MINOR__ < 30)
-    tid = syscall(SYS_gettid);
 # else
-    tid = gettid();
+    tid = syscall(SYS_gettid);
 # endif
 #elif defined(__WIN__)
     tid = (pid_t)GetCurrentThreadId();
