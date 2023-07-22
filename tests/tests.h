@@ -272,7 +272,6 @@ bool sirtest_pluginloader(void);
  */
 bool sirtest_getversioninfo(void);
 
-
 /** @} */
 
 /**
@@ -343,7 +342,7 @@ uint32_t getrand(uint32_t upper_bound);
 /** Calls getrand() and returns true if even, false if odd. */
 static inline
 bool getrand_bool(uint32_t upper_bound) {
-    return getrand(upper_bound) % 2 == 0;
+    return ((!upper_bound) ? true : getrand(upper_bound) % 2 == 0);
 }
 
 /** prints a message in green if pass is true, or red otherwise. */

@@ -35,7 +35,8 @@ endif
 
 # debug/non-debug CFLAGS
 ifeq ($(SIR_DEBUG),1)
-  CFLAGS += -g -O0 -DDEBUG -U_FORTIFY_SOURCE
+ DBGFLAG ?= -g3
+  CFLAGS += $(DBGFLAG) -O0 -DDEBUG -U_FORTIFY_SOURCE
 else
   CFLAGS += -O3 -DNDEBUG $(FORTIFY_FLAGS)
 endif
@@ -68,7 +69,7 @@ LIBS = $(PTHOPT)
 
 # for test rig and example:
 # link with static library, not shared
-LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s $(PLATFORM_LIBS) $(LIBDL)
+LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s $(PLATFORM_LIBS) $(LIBDL) $(EXTRA_LIBS)
 
 # translation units
 TUS := $(wildcard src/*.c)
