@@ -360,6 +360,12 @@ typedef void* sir_pluginexport;
 /** The mutex type. */
 typedef pthread_mutex_t sir_mutex;
 
+/** The thread type. */
+typedef pthread_t sir_thread;
+
+/** The condition variable type. */
+typedef pthread_cond_t sir_condition;
+
 /** The one-time type. */
 typedef pthread_once_t sir_once;
 
@@ -387,6 +393,12 @@ typedef FARPROC sir_pluginexport;
 
 /** The mutex type. */
 typedef HANDLE sir_mutex;
+
+/** The thread type. */
+typedef HANDLE sir_thread;
+
+/** The condition variable type. */
+typedef HANDLE sir_condition;
 
 /** The one-time type. */
 typedef INIT_ONCE sir_once;
