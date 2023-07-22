@@ -71,7 +71,9 @@ bool _sir_queue_destroy(sir_queue** q)
     while (next) {
         sir_queue_node* this_node = next;
         next = this_node->next;
-        (void)_sir_queue_node_destroy(&this_node, NULL);
+        void* data = NULL;
+        (void)_sir_queue_node_destroy(&this_node, &data);
+        _sir_safefree(&data);
     }
 
     _sir_safefree(q);
