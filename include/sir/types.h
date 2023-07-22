@@ -347,6 +347,18 @@ typedef struct {
     sir_queue_node* head;
 } sir_queue;
 
+/** Job used by a job queue. */
+typedef struct {
+    bool (*fn)(void);
+    void* payload;
+} sir_job;
+
+/** Thread pool/job queue data container. */
+typedef struct {
+    sir_thread* threads; /**< A list of thread handles. */
+    sir_queue job_queue; /**< A queue of jobs to run (FIFO). */
+    sir_condition cond;  /**< A condition which indicates that a job is ready. */
+} sir_threadpool;
 
 /** Formatted output container. */
 typedef struct {
