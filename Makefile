@@ -111,7 +111,7 @@ $(OBJ_EXAMPLE): $(EXAMPLE)/$(EXAMPLE).c $(DEPS)
 	@mkdir -p $(@D)
 	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -Iinclude
 
-$(OBJ_TESTS): $(TESTS)/$(TESTS).c $(TESTS)/$(TESTS).h $(DEPS)
+$(OBJ_TESTS): $(TESTS)/$(TESTS).c $(DEPS)
 	@mkdir -p $(@D)
 	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -Iinclude
 
