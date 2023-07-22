@@ -131,7 +131,7 @@ bool _sir_condwait(sir_condition* cond, sir_mutex* mutex) {
 bool _sir_condwait_timeout(sir_condition* cond, sir_mutex* mutex, sir_wait* howlong) {
     if (_sir_validptr(cond) && _sir_validptr(mutex) && _sir_validptr(howlong)) {
         int op = pthread_cond_timedwait(cond, mutex, howlong);
-        return 0 == op ? true : _sir_handleerr(op);
+        return 0 == op ? true : ETIMEDOUT == op ? false : _sir_handleerr(op);
     }
 
     return false;
