@@ -66,21 +66,21 @@ int main(int argc, char** argv) {
     disable_debugger(1);
 #endif
 
-# if defined(MTMALLOC)
-#  include <mtmalloc.h>
-#  if !defined(DEBUG)
+#if defined(MTMALLOC)
+# include <mtmalloc.h>
+# if !defined(DEBUG)
 mallocctl(MTDOUBLEFREE, 0);
-#  else
+# else
 mallocctl(MTDOUBLEFREE, 1);
 mallocctl(MTINITBUFFER, 1);
 mallocctl(MTDEBUGPATTERN, 1);
-#  endif
 # endif
+#endif
 
-# if defined(__OpenBSD__) && defined(DEBUG)
+#if defined(__OpenBSD__) && defined(DEBUG)
 extern char *malloc_options;
 malloc_options = "CFGRSU";
-# endif
+#endif
 
 #if !defined(__WIN__) && !defined(__HAIKU__)
     /* Disallow execution by root / sudo; some of the tests rely on lack of permissions. */
