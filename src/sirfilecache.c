@@ -479,8 +479,8 @@ bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
     char* real1 = realpath(path, resolved1);
     char* real2 = realpath(iter->path, resolved2);
 
-    _SIR_UNUSED(real1);
-    _SIR_UNUSED(real2);
+    SIR_UNUSED(real1);
+    SIR_UNUSED(real2);
 
     if ((!stat(resolved1, &st1) && !stat(resolved2, &st2)) ||
         (!stat(path, &st1) && !stat(iter->path, &st2))) {

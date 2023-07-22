@@ -219,7 +219,7 @@ bool _sir_conddestroy(sir_condition* cond) {
 }
 
 bool _sir_condwait(sir_condition* cond, sir_mutex* mutex) {
-    _SIR_UNUSED(mutex);
+    SIR_UNUSED(mutex);
 
     if (_sir_validptr(cond)) {
         DWORD wait = WaitForSingleObject(*cond, INFINITE);
@@ -230,7 +230,7 @@ bool _sir_condwait(sir_condition* cond, sir_mutex* mutex) {
 }
 
 bool _sir_condwait_timeout(sir_condition* cond, sir_mutex* mutex, sir_wait* howlong) {
-    _SIR_UNUSED(mutex);
+    SIR_UNUSED(mutex);
 
     if (_sir_validptr(cond) && _sir_validptr(howlong))
         return _sir_waitwin32(*cond, *howlong);

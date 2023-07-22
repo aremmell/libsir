@@ -203,7 +203,7 @@ malloc_options = "CFGRSU";
         printf(WHITEB(EMPH("press any key to exit...")) "\n");
         char ch = '\0';
         (void)_sir_getchar(&ch);
-        _SIR_UNUSED(ch);
+        SIR_UNUSED(ch);
     }
 
     return passed == tgt_tests ? EXIT_SUCCESS : EXIT_FAILURE;
@@ -1335,7 +1335,7 @@ static bool generic_disabled_syslog_test(const char* sl_name, const char* identi
     si.d_syslog.levels = SIRL_DEFAULT;
     bool pass = true;
 
-    _SIR_UNUSED(sl_name);
+    SIR_UNUSED(sl_name);
 
     printf("\tSIR_NO_SYSTEM_LOGGERS is defined; expecting calls to fail...\n");
 
@@ -1555,7 +1555,7 @@ bool sirtest_filesystem(void) {
         pass &= ret;
         if (!ret) {
             bool unused = print_test_error(false, false);
-            _SIR_UNUSED(unused);
+            SIR_UNUSED(unused);
             continue;
         }
 
@@ -1601,7 +1601,7 @@ bool sirtest_filesystem(void) {
         pass &= ret;
         if (!ret) {
             bool unused = print_test_error(false, false);
-            _SIR_UNUSED(unused);
+            SIR_UNUSED(unused);
             continue;
         }
 
@@ -1741,13 +1741,13 @@ bool sirtest_pluginloader(void) {
     static const char* plugin8 = "build/lib/i_dont_exist."PLUGIN_EXT;
 
 #if defined(SIR_NO_PLUGINS)
-    _SIR_UNUSED(plugin2);
-    _SIR_UNUSED(plugin3);
-    _SIR_UNUSED(plugin4);
-    _SIR_UNUSED(plugin5);
-    _SIR_UNUSED(plugin6);
-    _SIR_UNUSED(plugin7);
-    _SIR_UNUSED(plugin8);
+    SIR_UNUSED(plugin2);
+    SIR_UNUSED(plugin3);
+    SIR_UNUSED(plugin4);
+    SIR_UNUSED(plugin5);
+    SIR_UNUSED(plugin6);
+    SIR_UNUSED(plugin7);
+    SIR_UNUSED(plugin8);
 
     printf("\tSIR_NO_PLUGINS is defined; expecting calls to fail\n");
 
@@ -1968,7 +1968,7 @@ unsigned sirtest_thread(void* arg) {
 
     if (0 == id) {
         bool unused = print_test_error(false, false);
-        _SIR_UNUSED(unused);
+        SIR_UNUSED(unused);
 #if !defined(__WIN__)
         return NULL;
 #else /* __WIN__ */
@@ -2136,7 +2136,7 @@ bool deletefiles(const char* search, const char* path, const char* filename, uns
 }
 
 bool countfiles(const char* search, const char* path, const char* filename, unsigned* data) {
-    _SIR_UNUSED(path);
+    SIR_UNUSED(path);
     if (strstr(filename, search))
         (*data)++;
     return true;

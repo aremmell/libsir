@@ -47,9 +47,9 @@
 
 #if defined(__WIN__)
 BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved) {
-    _SIR_UNUSED(module);
-    _SIR_UNUSED(ul_reason_for_call);
-    _SIR_UNUSED(reserved);
+    SIR_UNUSED(module);
+    SIR_UNUSED(ul_reason_for_call);
+    SIR_UNUSED(reserved);
     return TRUE;
 }
 #endif
@@ -107,8 +107,8 @@ PLUGIN_EXPORT bool sir_plugin_init(void) {
 
 PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message) {
 #if defined(PLUGINDUMMY_BADBEHAVIOR6)
-    _SIR_UNUSED(level);
-    _SIR_UNUSED(message);
+    SIR_UNUSED(level);
+    SIR_UNUSED(message);
     return false;
 #else
     printf("\t" DGRAY("plugin_dummy (%s): level: %04"PRIx32", message: %s"),

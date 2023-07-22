@@ -105,12 +105,12 @@ bool thread_pool_add_job(sir_threadpool* pool, sir_threadpool_job* job)
     if (retval) {
         bool bcast = _sir_condbroadcast(&pool->cond);
         SIR_ASSERT(bcast);
-        _SIR_UNUSED(bcast);
+        SIR_UNUSED(bcast);
     }
 
     bool unlock = _sir_mutexunlock(&pool->mutex);
     SIR_ASSERT(unlock);
-    _SIR_UNUSED(unlock);
+    SIR_UNUSED(unlock);
 
     return retval;
 }
@@ -125,36 +125,36 @@ bool thread_pool_destroy(sir_threadpool** pool)
     if (_sir_mutexlock(&(*pool)->mutex)) {
         bool bcast = _sir_condbroadcast(&(*pool)->cond);
         SIR_ASSERT(bcast);
-        _SIR_UNUSED(bcast);
+        SIR_UNUSED(bcast);
 
         bool unlock = _sir_mutexunlock(&(*pool)->mutex);
         SIR_ASSERT(unlock);
-        _SIR_UNUSED(unlock);
+        SIR_UNUSED(unlock);
     }
 
     for (size_t n = 0; n < (*pool)->num_threads; n++) {
 #if !defined(__WIN__)
         int join = pthread_join((*pool)->threads[n], NULL);
         SIR_ASSERT(0 == join);
-        _SIR_UNUSED(join);
+        SIR_UNUSED(join);
 #else /* __WIN__ */
         DWORD join = WaitForSingleObject((*pool)->threads[n], INFINITY);
         SIR_ASSERT(WAIT_OBJECT_0 == join);
-        _SIR_UNUSED(join);
+        SIR_UNUSED(join);
 #endif
     }
 
     bool destroy = _sir_queue_destroy(&(*pool)->jobs);
     SIR_ASSERT(destroy);
-    _SIR_UNUSED(destroy);
+    SIR_UNUSED(destroy);
 
     destroy = _sir_conddestroy(&(*pool)->cond);
     SIR_ASSERT(destroy);
-    _SIR_UNUSED(destroy);
+    SIR_UNUSED(destroy);
 
     destroy = _sir_mutexdestroy(&(*pool)->mutex);
     SIR_ASSERT(destroy);
-    _SIR_UNUSED(destroy);
+    SIR_UNUSED(destroy);
 
     _sir_safefree(pool);
 
@@ -171,7 +171,7 @@ static unsigned thread_pool_proc(void* arg)
     while (true) {
         bool locked = _sir_mutexlock(&pool->mutex);
         SIR_ASSERT(locked);
-        _SIR_UNUSED(locked);
+        SIR_UNUSED(locked);
 
         while (_sir_queue_isempty(pool->jobs) && !pool->cancel) {
 #if !defined(__WIN__)
@@ -183,7 +183,7 @@ static unsigned thread_pool_proc(void* arg)
 #endif
             bool waited = _sir_condwait_timeout(&pool->cond, &pool->mutex, &wait);
             SIR_ASSERT(waited);
-            _SIR_UNUSED(waited);
+            SIR_UNUSED(waited);
         }
 
         if (!pool->cancel) {
@@ -192,7 +192,7 @@ static unsigned thread_pool_proc(void* arg)
 
             bool unlocked = _sir_mutexunlock(&pool->mutex);
             SIR_ASSERT(unlocked);
-            _SIR_UNUSED(unlocked);
+            SIR_UNUSED(unlocked);
 
             if (job_popped) {
                 job->fn(job->data);
@@ -201,7 +201,7 @@ static unsigned thread_pool_proc(void* arg)
         } else {
             bool unlocked = _sir_mutexunlock(&pool->mutex);
             SIR_ASSERT(unlocked);
-            _SIR_UNUSED(unlocked);
+            SIR_UNUSED(unlocked);
             break;
         }
     }
