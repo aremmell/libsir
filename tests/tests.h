@@ -31,6 +31,8 @@
 # include "sir/filecache.h"
 # include "sir/internal.h"
 # include "sir/mutex.h"
+# include "sir/threadpool.h"
+# include "sir/queue.h"
 # include "sir/filesystem.h"
 # include "sir/helpers.h"
 # include "sir/textstyle.h"
@@ -271,6 +273,13 @@ bool sirtest_pluginloader(void);
  * @returns bool `true` if the test passed, `false` otherwise.
  */
 bool sirtest_getversioninfo(void);
+
+/**
+ * @test Ensure the proper functioning of the thread pool and job queue mech-
+ * anisms.
+ * @returns bool `true` if the test passed, `false` otherwise.
+ */
+bool sirtest_threadpool(void);
 
 /** @} */
 

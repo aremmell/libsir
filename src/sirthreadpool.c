@@ -34,7 +34,7 @@ static void* thread_pool_proc(void* arg);
 static unsigned thread_pool_proc(void* arg);
 #endif
 
-bool thread_pool_create(sir_threadpool** pool, size_t num_threads) {
+bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
     if (!pool || !num_threads)
         return false;
 
@@ -84,6 +84,7 @@ bool thread_pool_create(sir_threadpool** pool, size_t num_threads) {
     goto _ret;
 
 _cleanup:
+    _sir_selflog("error: something's gone wrong; cleaning up and returning false");
     _sir_safefree(&(*pool)->jobs);
     _sir_safefree(&(*pool)->threads);
     _sir_safefree(pool);
@@ -92,8 +93,8 @@ _ret:
     return !!*pool;
 }
 
-bool thread_pool_add_job(sir_threadpool* pool, sir_threadpool_job* job) {
-    if (!pool || !pool->jobs || !job)
+bool _sir_threadpool_add_job(sir_threadpool* pool, sir_threadpool_job* job) {
+    if (!pool || !pool->jobs || !job || !job->fn || !job->data)
         return false;
 
     if (!_sir_mutexlock(&pool->mutex))
@@ -113,13 +114,17 @@ bool thread_pool_add_job(sir_threadpool* pool, sir_threadpool_job* job) {
     return retval;
 }
 
-bool thread_pool_destroy(sir_threadpool** pool) {
+bool _sir_threadpool_destroy(sir_threadpool** pool) {
     if (!pool || !*pool)
         return false;
 
     (*pool)->cancel = true;
 
-    if (_sir_mutexlock(&(*pool)->mutex)) {
+    bool locked = _sir_mutexlock(&(*pool)->mutex);
+    SIR_ASSERT(locked);
+
+    if (locked) {
+        _sir_selflog("broadcasting signal to condition var...");
         bool bcast = _sir_condbroadcast(&(*pool)->cond);
         SIR_ASSERT(bcast);
         SIR_UNUSED(bcast);
@@ -130,6 +135,7 @@ bool thread_pool_destroy(sir_threadpool** pool) {
     }
 
     for (size_t n = 0; n < (*pool)->num_threads; n++) {
+        _sir_selflog("joining thread %zu/%zu...", n + 1, (*pool)->num_threads);
 #if !defined(__WIN__)
         int join = pthread_join((*pool)->threads[n], NULL);
         SIR_ASSERT(0 == join);
@@ -178,9 +184,7 @@ static unsigned thread_pool_proc(void* arg)
             /* msec; relative from now. */
             sir_wait wait = 2000;
 #endif
-            bool waited = _sir_condwait_timeout(&pool->cond, &pool->mutex, &wait);
-            SIR_ASSERT(waited);
-            SIR_UNUSED(waited);
+            (void)_sir_condwait_timeout(&pool->cond, &pool->mutex, &wait);
         }
 
         if (!pool->cancel) {
@@ -192,10 +196,12 @@ static unsigned thread_pool_proc(void* arg)
             SIR_UNUSED(unlocked);
 
             if (job_popped) {
+                _sir_selflog("picked up job (fn: %p, data: %p)", (void*)job->fn, job->data);
                 job->fn(job->data);
                 _sir_safefree(&job);
             }
         } else {
+            _sir_selflog("cancel flag is set; exiting");
             bool unlocked = _sir_mutexunlock(&pool->mutex);
             SIR_ASSERT(unlocked);
             SIR_UNUSED(unlocked);

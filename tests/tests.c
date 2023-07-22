@@ -29,6 +29,7 @@
 static sir_test sir_tests[] = {
     {"performance",             sirtest_perf, false, true},
     {"thread-race",             sirtest_threadrace, false, true},
+    {"thread-pool",             sirtest_threadpool, false, true},
     {"exceed-max-buffer-size",  sirtest_exceedmaxsize, false, true},
     {"no-output-destination",   sirtest_failnooutputdest, false, true},
     {"null-pointers",           sirtest_failnulls, false, true},
@@ -1863,15 +1864,56 @@ bool sirtest_getversioninfo(void) {
     return print_result_and_return(pass);
 }
 
-#if !defined(__WIN__)
-static void* sirtest_thread(void* arg);
-#else /* __WIN__ */
-static unsigned sirtest_thread(void* arg);
-#endif
-
 enum {
     NUM_THREADS = 4
 };
+
+static bool threadpool_pseudojob(void* arg) {
+    sir_debug("this is a pseudo job that actually does nothing (arg: %p)", arg);
+    return true;
+}
+
+bool sirtest_threadpool(void) {
+    INIT(si, SIRL_ALL, SIRO_NOTIME | SIRO_NOHOST | SIRO_NONAME, 0, 0);
+    bool pass = si_init;
+
+    static const size_t num_jobs = 30;
+    sir_threadpool* pool         = NULL;
+
+    pass &= _sir_threadpool_create(&pool, NUM_THREADS);
+    if (pass) {
+        /* dispatch a whole bunch of jobs. */
+        for (size_t n = 0; n < num_jobs; n++) {
+            sir_threadpool_job* job = calloc(1, sizeof(sir_threadpool_job));
+            pass &= NULL != job;
+            if (job) {
+                job->fn = &threadpool_pseudojob;
+                job->data = (void*)(n + 1);
+                pass &= _sir_threadpool_add_job(pool, job);
+                pass &= sir_info("dispatched job (fn: %p, data: %p, queue size: %zu)",
+                    (void*)job->fn, job->data, _sir_queue_size(pool->jobs));
+            }
+        }
+
+        /* wait a few seconds for the threads in the pool to process the jobs,
+         * then destroy the thread pool. */
+        pass &= sir_info("sleeping for 1 second in order to let the thread pool"
+                         " process all pending jobs...");
+        sleep(1);
+
+        pass &= sir_info("destroying thread pool...");
+        pass &= _sir_threadpool_destroy(&pool);
+    }
+
+    pass &= sir_cleanup();
+    return print_result_and_return(pass);
+}
+
+#if !defined(__WIN__)
+static void* threadrace_thread(void* arg);
+#else /* __WIN__ */
+static unsigned threadrace_thread(void* arg);
+#endif
 
 bool sirtest_threadrace(void) {
 #if !defined(__WIN__)
@@ -1900,12 +1942,12 @@ bool sirtest_threadrace(void) {
         snprintf(heap_args[n].log_file, SIR_MAXPATH, MAKE_LOG_NAME("multi-thread-race-%zu.log"), n);
 
 #if !defined(__WIN__)
-        int create = pthread_create(&thrds[n], NULL, sirtest_thread, (void*)&heap_args[n]);
+        int create = pthread_create(&thrds[n], NULL, threadrace_thread, (void*)&heap_args[n]);
         if (0 != create) {
             errno = create;
             handle_os_error(true, "pthread_create() for thread #%zu failed!", n + 1);
 #else /* __WIN__ */
-        thrds[n] = _beginthreadex(NULL, 0, sirtest_thread, (void*)&heap_args[n], 0, NULL);
+        thrds[n] = _beginthreadex(NULL, 0, threadrace_thread, (void*)&heap_args[n], 0, NULL);
         if (0 == thrds[n]) {
             handle_os_error(true, "_beginthreadex() for thread #%zu failed!", n + 1);
 #endif
@@ -1956,9 +1998,9 @@ bool sirtest_threadrace(void) {
 }
 
 #if !defined(__WIN__)
-static void* sirtest_thread(void* arg) {
+static void* threadrace_thread(void* arg) {
 #else /* __WIN__ */
-unsigned sirtest_thread(void* arg) {
+unsigned threadrace_thread(void* arg) {
 #endif
     pid_t threadid       = _sir_gettid();
     thread_args* my_args = (thread_args*)arg;
