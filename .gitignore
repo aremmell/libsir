@@ -47,10 +47,6 @@ _ReSharper.Caches/
 # Advpng temporary files
 *.png.tmp*
 
-# Cores
-*.core
-core
-
 # Oracle Lint
 *.ln
 
