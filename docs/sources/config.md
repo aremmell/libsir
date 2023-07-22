@@ -18,7 +18,7 @@ to suit your needs, avoiding this step entirely.
 | Macro (default)      | State | Compiler settings            | Description |
 | :------------------: | :---: | :--------------------------: | :---------- |
 | `SIR_DEBUG (0)`      | `0`   | `-O3 -DNDEBUG`               | Full optimization is applied, and no debugging symbols are included. |
-| ^                    | `1`   | `-g -00 -DDEBUG`             | No optimizations are applied, and debugging symbols are included. |
+| ^                    | `1`   | `-g3 -00 -DDEBUG`            | No optimizations are applied, and full debugging symbols are included. |
 | `SIR_SELFLOG (0)`    | `0`   | `N/A`                        | NOOP |
 | ^                    | `1`   | `-DSIR_SELFLOG`              | Diagnostic information is sent to `stderr` to report certain events that may aid in debugging. Includes the function name, source file, and line where the event took place. If `SIR_DEBUG` and `SIR_SELFLOG` are enabled, each error handled internally will be logged in real time as it is captured. |
 | `SIR_ASSERT_ENABLED (0)` | `0` | `N/A` | `assert` will never be called. If `SIR_SELFLOG` is enabled, where asserts normally would take place, a `_sir_selflog` call is made, producing output to stderr such as '`somefunc (file.c:123): !!! would be asserting (NULL != ptr)`'. |
