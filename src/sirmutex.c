@@ -213,7 +213,7 @@ bool _sir_condbroadcast(sir_condition* cond) {
 }
 
 bool _sir_conddestroy(sir_condition* cond) {
-    if (_sir_validptr(cond)) {
+    if (_sir_validptr(cond))
         return (FALSE != CloseHandle(*cond)) ? true : _sir_handlewin32err(GetLastError());
     return false;
 }
