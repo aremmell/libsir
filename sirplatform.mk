@@ -51,6 +51,21 @@ ifeq ($(NETBSD),1)
   LIBDL=
 endif
 
+# SunOS
+ifneq "$(findstring SunOS,$(UNAME_S))" ""
+  UNAME_O:=$(shell uname -o 2> /dev/null)
+  ifneq "$(findstring Solaris,$(UNAME_O))" ""
+    SUNSYSV?=1
+  endif
+  ifneq "$(findstring illumos,$(UNAME_O))" ""
+    SUNSYSV?=1
+  endif
+endif
+ifeq ($(SUNSYSV),1)
+  CFLAGS+=-DMTMALLOC
+  EXTRA_LIBS+=-lmtmalloc
+endif
+
 # Enable MinGW MSVCRT workaround?
 ifeq ($(SIR_MSVCRT_MINGW),1)
   CFLAGS+=-DSIR_MSVCRT_MINGW
@@ -95,6 +110,7 @@ ifneq "$(findstring nvc,$(CC))" ""
   NVIDIAC?=1
 endif
 ifeq ($(NVIDIAC),1)
+  DBGFLAG=-g
   CFLAGS+=--diag_suppress mixed_enum_type
   CFLAGS+=--diag_suppress cast_to_qualified_type
   CFLAGS+=--diag_suppress nonstd_ellipsis_only_param
@@ -102,6 +118,7 @@ endif
 
 # IBM XL C/C++ and GCC for AIX
 ifneq "$(findstring AIX,$(UNAME_S))" ""
+  IBMAIX?=1
   ifneq "$(findstring xlc,$(CC))" ""
     IBMXLC?=1
   endif
@@ -109,14 +126,22 @@ endif
 ifneq "$(findstring powerpc-ibm-aix7,$(CC))" ""
   AIXTLS?=1
 endif
+ifeq ($(IBMAIX),1)
+  DBGFLAG=-g
+endif
 ifeq ($(IBMXLC),1)
   NO_DEFAULT_CFLAGS=1
-  CFLAGS+=-O3 -Iinclude -qtls -qthreaded -qinfo=mt -qformat=all -qpic=small
+  ifeq ($(SIR_DEBUG),1)
+    CFLAGS+=$(DBGFLAG) -O0 -DDEBUG -Iinclude -qtls -qthreaded -qinfo=mt -qformat=all
+  else
+    CFLAGS+=-DNDEBUG -O3 -Iinclude -qtls -qthreaded -qinfo=mt -qformat=all -qpic=small
+  endif
   SIR_SHARED=-qmkshrobj
   MMDOPT=
   PTHOPT=
 endif
 ifeq ($(AIXTLS),1)
+  DBGFLAG=-g
   CFLAGS+=-ftls-model=initial-exec
 endif
 
