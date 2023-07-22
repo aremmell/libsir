@@ -1926,8 +1926,7 @@ bool sirtest_threadrace(void) {
             if (0 != join) {
                 joined = false;
                 errno  = join;
-                handle_os_error(true, "pthread_join() for thread #%zu (%p) failed!", j + 1,
-                    (void*)thrds[j]);
+                handle_os_error(true, "pthread_join() for thread #%zu failed!", j + 1);
             }
 #else /* __WIN__ */
             DWORD wait = WaitForSingleObject((HANDLE)thrds[j], INFINITE);
