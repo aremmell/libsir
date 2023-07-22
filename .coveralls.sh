@@ -3,12 +3,11 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 
-# Setup for Ubuntu or Debian.
+# Setup for Ubuntu or Debian unless NO_APTSETUP is set.
 PATH="/usr/local/bin:/usr/local/sbin:${PATH:-}" && export PATH
 test -n "${NO_APTSETUP:-}" \
   || {
-    { # Check this is Ubuntu 22.04 Jammy
-      grep '22.04' /etc/*elease || exit 1
+    {
       printf '\n\n\n%s\n\n\n' \
         "Running dangerous commands as root in 10s; press ^C now to abort."
       sleep 10
@@ -16,12 +15,11 @@ test -n "${NO_APTSETUP:-}" \
       sudo apt-get update -y
       sudo apt-get -o Dpkg::Options::="--force-confdef" \
                    -o Dpkg::Options::="--force-confold" \
-        install -y ccache curl python3-pip git expect fakeroot
+           install -y ccache curl python3-pip git expect fakeroot
       sudo python3 -m pip install --break-system-packages \
-          install -U gcovr || \
-      sudo python3 -m pip install \
-          install -U gcovr
-      command -v gcovr
+           install -U gcovr || \
+              sudo python3 -m pip install \
+                   install -U gcovr
     }
   }
 
