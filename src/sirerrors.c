@@ -74,7 +74,7 @@ void __sir_setoserror(int code, const char* msg, const char* func, const char* f
     if (_sir_validstrnofail(msg))
         _sir_strncpy(sir_te.os_errmsg, SIR_MAXERROR, msg, SIR_MAXERROR);
 
-    __sir_seterror(_SIR_E_PLATFORM, func, file, line);
+    (void)__sir_seterror(_SIR_E_PLATFORM, func, file, line);
 }
 
 bool __sir_handleerr(int code, const char* func, const char* file, uint32_t line) {
