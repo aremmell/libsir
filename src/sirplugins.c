@@ -417,9 +417,10 @@ bool _sir_plugin_cache_destroy(sir_plugincache* spc) {
     if (!_sir_validptr(spc))
         return false;
 
-    for (size_t n = 0; n < spc->count; n++) {
-        _sir_plugin_destroy(&spc->plugins[n]);
-        spc->plugins[n] = NULL;
+    while (spc->count > 0) {
+        size_t idx = spc->count - 1;
+        _sir_plugin_destroy(&spc->plugins[idx]);
+        spc->plugins[idx] = NULL;
         spc->count--;
     }
 
