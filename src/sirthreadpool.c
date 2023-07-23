@@ -66,7 +66,7 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
         pthread_attr_init(&attr);
         int op = pthread_create(&(*pool)->threads[n], &attr, &thread_pool_proc, *pool);
         if (0 != op) {
-            (*pool)->threads[n] = NULL;
+            (*pool)->threads[n] = 0;
             _sir_handleerr(op);
             _sir_threadpool_destroy(pool);
             return false;

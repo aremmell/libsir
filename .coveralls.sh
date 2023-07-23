@@ -85,6 +85,7 @@ remove_coverage()
 {
   # shellcheck disable=SC2046
   env rm $(find . -name '*.*gc*' -print) || true
+  sleep 1 || true
 }
 
 # Runs gcovr
