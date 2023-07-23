@@ -268,11 +268,26 @@ bool sirtest_failnooutputdest(void) {
 }
 
 bool sirtest_failnulls(void) {
-    INIT(si, SIRL_ALL, 0, 0, 0);
-    bool pass = si_init;
+    INIT_BASE(si, SIRL_ALL, 0, 0, 0, "", false);
+    bool pass = true;
 
+    pass &= !sir_init(NULL);
+
+    if (pass)
+        print_expected_error();
+
+    pass &= sir_init(&si);
     pass &= !sir_info(NULL); //-V575 //-V618
+
+    if (pass)
+        print_expected_error();
+
     pass &= 0 == sir_addfile(NULL, SIRL_ALL, SIRO_MSGONLY);
+
+    if (pass)
+        print_expected_error();
+
+    pass &= !sir_remfile(0);
 
     if (pass)
         print_expected_error();
