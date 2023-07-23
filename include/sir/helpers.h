@@ -74,7 +74,7 @@ uint16_t _sir_geterrcode(uint32_t err) {
     _sir_unlocksection(mid);
 
 /** Squelches warnings about unreferenced parameters. */
-# define SIR_UNUSED(param) (void)param;
+# define SIR_UNUSED(param) (void)param
 
 /** Returns a printable string even if NULL. */
 # define _SIR_PRNSTR(str) (str ? str : "<null>")
