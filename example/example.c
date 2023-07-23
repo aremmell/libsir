@@ -114,13 +114,13 @@ int main(void) {
      * stderr.
      */
     sir_info("MyFooServer v%d.%d.%d (amd64) started successfully in %.2fsec.",
-        2, 9, 4, 1.94f);
+        2, 9, 4, (double)1.94f);
 
     sir_notice("Client at %s:%u (username: %s) failed 5 authentication attempts!",
         "210.10.54.3", 43113, "bob");
 
     sir_warn("Detected downgraded link speed on %s: last transfer rate: %.1f KiB/s",
-        "eth0", 219.4f);
+        "eth0", (double)219.4f);
 
     /* Hmm, what else could go wrong... */
     sir_error("Failed to synchronize with node pool.846.myfooserver.io! Error:"

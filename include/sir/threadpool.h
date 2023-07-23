@@ -1,5 +1,5 @@
 /*
- * plugin_dummy_bad.c
+ * threadpool.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
@@ -23,7 +23,13 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#undef PLUGIN_NAME
-#define PLUGIN_NAME "plugin_bad1"
-#define PLUGINDUMMY_BADBEHAVIOR1
-#include "../dummy/plugin_dummy.c"
+#ifndef _SIR_THREADPOOL_H_INCLUDED
+# define _SIR_THREADPOOL_H_INCLUDED
+
+# include "sir/types.h"
+
+bool _sir_threadpool_create(sir_threadpool** pool, size_t num);
+bool _sir_threadpool_add_job(sir_threadpool* pool, sir_threadpool_job* job);
+bool _sir_threadpool_destroy(sir_threadpool** pool);
+
+#endif /* !_SIR_THREADPOOL_H_INCLUDED */

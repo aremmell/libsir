@@ -28,10 +28,7 @@
 
 #if !defined(__WIN__)
 bool _sir_write_stdio(FILE* stream, const char* message) {
-    if (EOF == fputs(message, stream))
-        return _sir_handleerr(errno);
-
-    return true;
+    return (EOF != fputs(message, stream)) ? true : _sir_handleerr(errno);
 }
 
 #else /* __WIN__ */
@@ -57,9 +54,9 @@ bool _sir_config_console(HANDLE console) {
 
 static
 BOOL CALLBACK __sir_config_consoles_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
-    _SIR_UNUSED(ponce);
-    _SIR_UNUSED(param);
-    _SIR_UNUSED(ctx);
+    SIR_UNUSED(ponce);
+    SIR_UNUSED(param);
+    SIR_UNUSED(ctx);
 
     __sir_stdout = GetStdHandle(STD_OUTPUT_HANDLE);
     __sir_stderr = GetStdHandle(STD_ERROR_HANDLE);

@@ -323,7 +323,7 @@ char* _sir_getappbasename(void) {
     }
 
     char* retval = _sir_getbasename(filename);
-    char* bname  = strdup(retval);
+    char* bname  = strndup(retval, strnlen(retval, SIR_MAXPATH));
 
     _sir_safefree(&filename);
     return bname;
@@ -337,7 +337,7 @@ char* _sir_getappdir(void) {
     }
 
     char* retval  = _sir_getdirname(filename);
-    char* dirname = strdup(retval);
+    char* dirname = strndup(retval, strnlen(retval, SIR_MAXPATH));
 
     _sir_safefree(&filename);
     return dirname;
@@ -445,7 +445,7 @@ int _sir_aixself(char* buffer, size_t* size) {
         else
             snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
-        *size = strlen(buffer);
+        *size = strnlen(buffer, SIR_MAXPATH);
         return 0;
     } else if (argv[0][0] == '.') {
         char* relative = strchr(argv[0], '/');
@@ -468,7 +468,7 @@ int _sir_aixself(char* buffer, size_t* size) {
         else
             snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
-        *size = strlen(buffer);
+        *size = strnlen(buffer, SIR_MAXPATH);
         return 0;
     } else if (strchr(argv[0], '/') != NULL) {
         snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
@@ -487,7 +487,7 @@ int _sir_aixself(char* buffer, size_t* size) {
         else
             snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
-        *size = strlen(buffer);
+        *size = strnlen(buffer, SIR_MAXPATH);
         return 0;
     } else {
         char clonedpath[16384];
@@ -526,7 +526,7 @@ int _sir_aixself(char* buffer, size_t* size) {
                     else
                         snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
-                    *size = strlen(buffer);
+                    *size = strnlen(buffer, SIR_MAXPATH);
                     return 0;
                 }
             } else {
@@ -539,7 +539,7 @@ int _sir_aixself(char* buffer, size_t* size) {
                     else
                         snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
-                    *size = strlen(buffer);
+                    *size = strnlen(buffer, SIR_MAXPATH);
                     return 0;
                 }
             }
@@ -565,8 +565,8 @@ bool _sir_deletefile(const char* restrict path) {
 #if defined(__OpenBSD__)
 int _sir_openbsdself(char* out, int capacity, int* dirname_length) {
     char buffer1[4096];
-    char buffer2[PATH_MAX];
-    char buffer3[PATH_MAX];
+    char buffer2[SIR_MAXPATH];
+    char buffer3[SIR_MAXPATH];
     char** argv    = (char**)buffer1;
     char* resolved = NULL;
     int length     = -1;
@@ -595,11 +595,11 @@ int _sir_openbsdself(char* out, int capacity, int* dirname_length) {
             const char* PATH = getenv("PATH");
             if (!PATH)
                 break;
-            size_t argv0_length = strlen(argv[0]);
+            size_t argv0_length = strnlen(argv[0], SIR_MAXPATH);
             const char* begin   = PATH;
             while (1) {
                 const char* separator = strchr(begin, ':');
-                const char* end = separator ? separator : begin + strlen(begin);
+                const char* end = separator ? separator : begin + strnlen(begin, SIR_MAXPATH);
                 if (end - begin > 0) {
                     if (*(end - 1) == '/')
                         --end;
@@ -620,7 +620,7 @@ int _sir_openbsdself(char* out, int capacity, int* dirname_length) {
                 break;
         }
 
-        length = (int)strlen(resolved);
+        length = (int)strnlen(resolved, SIR_MAXPATH);
         if (length <= capacity) {
             memcpy(out, resolved, (unsigned long)length);
             if (dirname_length) {

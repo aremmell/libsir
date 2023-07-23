@@ -34,315 +34,74 @@
     <ClCompile Include="..\src\sirplugins.c">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\sirqueue.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\sirthreadpool.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\sircondition.c">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\sir.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\types.h">
+    <ClInclude Include="..\include\sir\types.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\ansimacros.h">
+    <ClInclude Include="..\include\sir\ansimacros.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\config.h">
+    <ClInclude Include="..\include\sir\config.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\console.h">
+    <ClInclude Include="..\include\sir\console.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\defaults.h">
+    <ClInclude Include="..\include\sir\defaults.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\errors.h">
+    <ClInclude Include="..\include\sir\errors.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\filecache.h">
+    <ClInclude Include="..\include\sir\filecache.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\filesystem.h">
+    <ClInclude Include="..\include\sir\filesystem.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\helpers.h">
+    <ClInclude Include="..\include\sir\helpers.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\internal.h">
+    <ClInclude Include="..\include\sir\internal.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\maps.h">
+    <ClInclude Include="..\include\sir\maps.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\mutex.h">
+    <ClInclude Include="..\include\sir\mutex.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\platform.h">
+    <ClInclude Include="..\include\sir\platform.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\plugins.h">
+    <ClInclude Include="..\include\sir\plugins.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\textstyle.h">
+    <ClInclude Include="..\include\sir\textstyle.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\docs\alert.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\bc_s.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\bc_sd.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\bdwn.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\closed.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\critical.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\debug.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\doc.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\doxygen.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\emergency.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\error.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\folderclosed.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\folderopen.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\info.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\nav_f.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\nav_fd.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\nav_g.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\nav_h.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\nav_hd.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\notice.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\open.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\warning.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\splitbar.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\splitbard.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\sync_off.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\sync_on.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\tab_a.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\tab_ad.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\tab_b.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\tab_bd.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\tab_h.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\tab_hd.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\tab_s.png">
-      <Filter>Documentation</Filter>
-    </Image>
-    <Image Include="..\docs\tab_sd.png">
-      <Filter>Documentation</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\docs\resize.js">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\annotated.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\annotated_dup.js">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\classes.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\dir_2a0e42225bcdeb5b2736d446e720b95e.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\dir_59425e443f801f1f2fd8bbe4959a3ccf.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\dir_59425e443f801f1f2fd8bbe4959a3ccf.js">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\dir_cfafba98a580ce4b62f8a6fa96d7cbb0.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\dir_cfafba98a580ce4b62f8a6fa96d7cbb0.js">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\doc.svg">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\docd.svg">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\doxygen.css">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\doxygen.svg">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\dynsections.js">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\examples.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\examples.js">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\files.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\files.js">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\files_dup.js">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\folderclosed.svg">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\folderclosedd.svg">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\folderopen.svg">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\folderopend.svg">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\functions.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\functions_vars.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\globals.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\globals_defs.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\globals_dup.js">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\globals_enum.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\globals_eval.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\globals_func.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\globals_p.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\globals_s.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\globals_type.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\globals_vars.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\index.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\index.js">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\jquery.js">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\modules.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\modules.js">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\namespacemembers.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\namespacemembers_func.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\namespacemembers_type.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\navtree.css">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\navtree.js">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\navtreedata.js">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\navtreeindex0.js">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\navtreeindex1.js">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\navtreeindex2.js">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\pages.html">
-      <Filter>Documentation</Filter>
-    </None>
-    <None Include="..\docs\tabs.css">
-      <Filter>Documentation</Filter>
-    </None>
+    <ClInclude Include="..\include\sir\queue.h">
+      <Filter>Include\sir</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\sir\threadpool.h">
+      <Filter>Include\sir</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\sir\condition.h">
+      <Filter>Include\sir</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">

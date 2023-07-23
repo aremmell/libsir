@@ -454,16 +454,16 @@ void _sir_initmutex_ts_once(void) {
 }
 #else /* __WIN__ */
 BOOL CALLBACK _sir_initialize_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
-    _SIR_UNUSED(ponce);
-    _SIR_UNUSED(param);
-    _SIR_UNUSED(ctx)
+    SIR_UNUSED(ponce);
+    SIR_UNUSED(param);
+    SIR_UNUSED(ctx);
     return TRUE;
 }
 
 BOOL CALLBACK _sir_initmutex_cfg_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
-    _SIR_UNUSED(ponce);
-    _SIR_UNUSED(param);
-    _SIR_UNUSED(ctx)
+    SIR_UNUSED(ponce);
+    SIR_UNUSED(param);
+    SIR_UNUSED(ctx);
 
     if (!_sir_mutexcreate(&cfg_mutex)) {
         _sir_selflog("error: failed to create mutex!");
@@ -474,9 +474,9 @@ BOOL CALLBACK _sir_initmutex_cfg_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx)
 }
 
 BOOL CALLBACK _sir_initmutex_fc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
-    _SIR_UNUSED(ponce);
-    _SIR_UNUSED(param);
-    _SIR_UNUSED(ctx)
+    SIR_UNUSED(ponce);
+    SIR_UNUSED(param);
+    SIR_UNUSED(ctx);
 
     if (!_sir_mutexcreate(&fc_mutex)) {
         _sir_selflog("error: failed to create mutex!");
@@ -487,9 +487,9 @@ BOOL CALLBACK _sir_initmutex_fc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) 
 }
 
 BOOL CALLBACK _sir_initmutex_pc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
-    _SIR_UNUSED(ponce);
-    _SIR_UNUSED(param);
-    _SIR_UNUSED(ctx)
+    SIR_UNUSED(ponce);
+    SIR_UNUSED(param);
+    SIR_UNUSED(ctx);
 
     if (!_sir_mutexcreate(&pc_mutex)) {
         _sir_selflog("error: failed to create mutex!");
@@ -500,9 +500,9 @@ BOOL CALLBACK _sir_initmutex_pc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) 
 }
 
 BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
-    _SIR_UNUSED(ponce);
-    _SIR_UNUSED(param);
-    _SIR_UNUSED(ctx)
+    SIR_UNUSED(ponce);
+    SIR_UNUSED(param);
+    SIR_UNUSED(ctx);
 
     if (!_sir_mutexcreate(&ts_mutex)) {
         _sir_selflog("error: failed to create mutex!");
@@ -570,7 +570,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     if (NULL != style_str)
         fmt = (0 == _sir_strncpy(buf.style, SIR_MAXSTYLE, style_str,
             strnlen(style_str, SIR_MAXSTYLE)));
-    _SIR_UNUSED(fmt);
+    SIR_UNUSED(fmt);
     SIR_ASSERT(fmt);
 
     now          = -1;
@@ -581,7 +581,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     if (gettime) {
         fmt = _sir_formattime(now, buf.timestamp, SIR_TIMEFORMAT);
         SIR_ASSERT(fmt);
-        _SIR_UNUSED(fmt);
+        SIR_UNUSED(fmt);
 
         if (0 > snprintf(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec))
             (void)_sir_handleerr(errno);
@@ -860,8 +860,8 @@ bool _sir_syslog_init(const char* name, sir_syslog_dest* ctx) {
 
     return _sir_syslog_open(ctx);
 #else
-    _SIR_UNUSED(name);
-    _SIR_UNUSED(ctx);
+    SIR_UNUSED(name);
+    SIR_UNUSED(ctx);
     return false;
 #endif
 }
@@ -895,7 +895,7 @@ bool _sir_syslog_open(sir_syslog_dest* ctx) {
     _sir_setbitshigh(&ctx->_state.mask, SIRSL_IS_OPEN);
     return true;
 #else
-    _SIR_UNUSED(ctx);
+    SIR_UNUSED(ctx);
     return false;
 #endif
 }
@@ -945,9 +945,9 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx)
     return true;
 # endif
 #else
-    _SIR_UNUSED(level);
-    _SIR_UNUSED(buf);
-    _SIR_UNUSED(ctx);
+    SIR_UNUSED(level);
+    SIR_UNUSED(buf);
+    SIR_UNUSED(ctx);
     return false;
 #endif
 }
@@ -999,8 +999,8 @@ bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data) {
         return false;
     }
 #else
-    _SIR_UNUSED(si);
-    _SIR_UNUSED(data);
+    SIR_UNUSED(si);
+    SIR_UNUSED(data);
     return false;
 #endif
 }
@@ -1029,7 +1029,7 @@ bool _sir_syslog_close(sir_syslog_dest* ctx) {
     return true;
 # endif
 #else
-    _SIR_UNUSED(ctx);
+    SIR_UNUSED(ctx);
     return false;
 #endif
 }
@@ -1043,7 +1043,7 @@ void _sir_syslog_reset(sir_syslog_dest* ctx) {
         _sir_selflog("state reset; mask was %08"PRIx32, old);
     }
 #else
-    _SIR_UNUSED(ctx);
+    SIR_UNUSED(ctx);
 #endif
 }
 
@@ -1097,7 +1097,7 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
 
         if (0 == clock) {
             if (msecbuf)
-                *msecbuf = (long)(ts.tv_nsec / 1e6);
+                *msecbuf = (long)(ts.tv_nsec / (long)1e6);
         } else {
             if (msecbuf)
                 *msecbuf = 0;
@@ -1214,7 +1214,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
 # if !defined(_AIX)
 #  pragma message("unable to determine how to get a thread name")
 # endif
-    _SIR_UNUSED(name);
+    SIR_UNUSED(name);
     return false;
 #endif
 }

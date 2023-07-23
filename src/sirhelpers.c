@@ -252,10 +252,10 @@ int _sir_strncpy(char* restrict dest, size_t destsz, const char* restrict src, s
         }
         return 0;
 #else
-        _SIR_UNUSED(count);
+        SIR_UNUSED(count);
         size_t cpy = strlcpy(dest, src, destsz);
         SIR_ASSERT(cpy < destsz);
-        _SIR_UNUSED(cpy);
+        SIR_UNUSED(cpy);
         return 0;
 #endif
     }
@@ -273,10 +273,10 @@ int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src, s
         }
         return 0;
 #else
-        _SIR_UNUSED(count);
+        SIR_UNUSED(count);
         size_t cat = strlcat(dest, src, destsz);
         SIR_ASSERT(cat < destsz);
-        _SIR_UNUSED(cat);
+        SIR_UNUSED(cat);
         return 0;
 #endif
     }
@@ -326,7 +326,7 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
         return ret;
 # endif
 #else
-        _SIR_UNUSED(buf);
+        SIR_UNUSED(buf);
         struct tm* ret = localtime(timer);
         if (!ret)
             (void)_sir_handleerr(errno);

@@ -126,7 +126,7 @@ sirpluginid sir_loadplugin(const char* path) {
 #if !defined(SIR_NO_PLUGINS)
     return _sir_plugin_load(path);
 #else
-    _SIR_UNUSED(path);
+    SIR_UNUSED(path);
     return _sir_seterror(_SIR_E_UNAVAIL);
 #endif
 }
@@ -135,7 +135,7 @@ bool sir_unloadplugin(sirpluginid id) {
 #if !defined(SIR_NO_PLUGINS)
     return _sir_plugin_rem(id);
 #else
-    _SIR_UNUSED(id);
+    SIR_UNUSED(id);
     return _sir_seterror(_SIR_E_UNAVAIL);
 #endif
 }
@@ -205,7 +205,7 @@ bool sir_sysloglevels(sir_levels levels) {
     sir_update_config_data data = {SIRU_LEVELS, &levels, NULL, NULL, NULL};
     return _sir_writeinit(&data, _sir_sysloglevels);
 #else
-    _SIR_UNUSED(levels);
+    SIR_UNUSED(levels);
     return _sir_seterror(_SIR_E_UNAVAIL);
 #endif
 }
@@ -216,7 +216,7 @@ bool sir_syslogopts(sir_options opts) {
     sir_update_config_data data = {SIRU_OPTIONS, NULL, &opts, NULL, NULL};
     return _sir_writeinit(&data, _sir_syslogopts);
 #else
-    _SIR_UNUSED(opts);
+    SIR_UNUSED(opts);
     return _sir_seterror(_SIR_E_UNAVAIL);
 #endif
 }
@@ -226,7 +226,7 @@ bool sir_syslogid(const char* identity) {
     sir_update_config_data data = {SIRU_SYSLOG_ID, NULL, NULL, identity, NULL};
     return _sir_writeinit(&data, _sir_syslogid);
 #else
-    _SIR_UNUSED(identity);
+    SIR_UNUSED(identity);
     return _sir_seterror(_SIR_E_UNAVAIL);
 #endif
 }
@@ -236,7 +236,7 @@ bool sir_syslogcat(const char* category) {
     sir_update_config_data data = {SIRU_SYSLOG_CAT, NULL, NULL, NULL, category};
     return _sir_writeinit(&data, _sir_syslogcat);
 #else
-    _SIR_UNUSED(category);
+    SIR_UNUSED(category);
     return _sir_seterror(_SIR_E_UNAVAIL);
 #endif
 }

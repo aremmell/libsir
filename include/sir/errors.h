@@ -153,7 +153,7 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, PRINTF_FOR
 # else
 static inline
 void __sir_fakefunc(const char* format, ...) {
-    _SIR_UNUSED(format);
+    SIR_UNUSED(format);
 }
 #  define _sir_selflog(...) __sir_fakefunc(__VA_ARGS__)
 # endif
