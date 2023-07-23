@@ -585,10 +585,8 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     (void)vsnprintf(buf.message, SIR_MAXMESSAGE, format, args);
 
-    if (!_sir_validstr(buf.message)) {
-        _sir_seterror(_SIR_E_INTERNAL);
-        return false;
-    }
+    if (!_sir_validstr(buf.message))
+        return _sir_seterror(_SIR_E_INTERNAL);
 
     bool match             = false;
     bool exit_early        = false;
