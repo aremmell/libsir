@@ -1074,7 +1074,7 @@ bool sirtest_mutexsanity(void) {
 }
 
 bool sirtest_perf(void) {
-    static const char* logbasename = MAKE_LOG_NAME("libsir-perf");
+    static const char* logbasename = "libsir-perf";
     static const char* logext      = "";
 
 #if !defined(__WIN__) && !defined(DUMA)
@@ -1119,7 +1119,7 @@ bool sirtest_perf(void) {
         pass &= si2_init;
 
         char logfilename[SIR_MAXPATH] = {0};
-        snprintf(logfilename, SIR_MAXPATH, "%s%s", logbasename, logext);
+        snprintf(logfilename, SIR_MAXPATH, MAKE_LOG_NAME("%s%s"), logbasename, logext);
 
         sirfileid logid = sir_addfile(logfilename, SIRL_ALL, SIRO_NOMSEC | SIRO_NONAME);
         pass &= 0 != logid;
