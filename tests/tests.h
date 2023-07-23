@@ -57,7 +57,9 @@
         _sir_strncpy(var.name, SIR_MAXNAME, p_name, SIR_MAXNAME); \
     bool var##_init = false; \
     if (init) \
-        var##_init = sir_init(&var)
+        var##_init = sir_init(&var); \
+    else \
+        (void)var##_init
 
 # define INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, name) \
     INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, name, true)
