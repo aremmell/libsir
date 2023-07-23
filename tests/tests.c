@@ -537,11 +537,8 @@ bool sirtest_rollandarchivefile(void) {
 
         do {
             pass &= sir_debug("%zu %s", written, line);
-            if (!pass)
-                break;
-
             written += linesize;
-        } while (written < deltasize + (linesize * 50));
+        } while (pass && (written < deltasize + (linesize * 50)));
 
         /* look for files matching the original name. */
         unsigned foundlogs = 0;
@@ -603,11 +600,10 @@ bool sirtest_failinvalidinitdata(void) {
     printf("\tcalling sir_init with invalid data...\n");
     bool pass = !sir_init(&si);
 
-    if (!pass)
-        sir_cleanup();
-    else
+    if (pass)
         print_expected_error();
 
+    sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -629,14 +625,13 @@ bool sirtest_initcleanupinit(void) {
 
 bool sirtest_initmakeinit(void) {
     bool pass = true;
-    sirinit si;
-    if (!sir_makeinit(&si))
-        pass = false;
 
+    sirinit si;
+    pass &= sir_makeinit(&si);
     pass &= sir_init(&si);
     pass &= sir_info("initialized with sir_makeinit");
-
     pass &= sir_cleanup();
+
     return print_result_and_return(pass);
 }
 
@@ -773,11 +768,11 @@ bool sirtest_textstylesanity(void) {
     pass &= sir_setcolormode(SIRCM_256);
 
     for (sir_textcolor fg = 0, bg = 255; fg < 256; fg++, bg--) {
-        if (fg == bg)
-            continue;
-        pass &= sir_settextstyle(SIRL_DEBUG, SIRTA_NORMAL, fg, bg);
-        pass &= sir_debug("this is 256-color mode (fg: %"PRIu32", bg: %"PRIu32")",
-            fg, bg);
+        if (fg != bg) {
+            pass &= sir_settextstyle(SIRL_DEBUG, SIRTA_NORMAL, fg, bg);
+            pass &= sir_debug("this is 256-color mode (fg: %"PRIu32", bg: %"PRIu32")",
+                fg, bg);
+        }
     }
 
     PRINT_PASS(pass, "\t--- change mode: 256-color: %s ---\n\n", PRN_PASS(pass));
