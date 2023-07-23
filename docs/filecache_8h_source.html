@@ -45,7 +45,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">libsir<span id="projectnumber">&#160;2.2.1</span>
+   <div id="projectname">libsir<span id="projectnumber">&#160;2.2.0</span>
    </div>
    <div id="projectbrief">Standard Incident Reporter</div>
   </td>
@@ -118,7 +118,7 @@ $(document).ready(function(){initNavTree('filecache_8h_source.html',''); initRes
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"> * Author:    Ryan M. Lederman &lt;lederman@gmail.com&gt;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"> * Copyright: Copyright (c) 2018-2023</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"> * Version:   2.2.1</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"> * Version:   2.2.0</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"> * License:   The MIT License (MIT)</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of</span></div>
@@ -152,7 +152,7 @@ $(document).ready(function(){initNavTree('filecache_8h_source.html',''); initRes
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><a class="code hl_struct" href="structsirfile.html">sirfile</a>* _sirfile_create(<span class="keyword">const</span> <span class="keywordtype">char</span>* path, <a class="code hl_typedef" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a> levels, <a class="code hl_typedef" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> opts);</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keywordtype">bool</span> _sirfile_open(<a class="code hl_struct" href="structsirfile.html">sirfile</a>* sf);</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="keywordtype">void</span> _sirfile_close(<a class="code hl_struct" href="structsirfile.html">sirfile</a>* sf);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keywordtype">bool</span> _sirfile_write(<a class="code hl_struct" href="structsirfile.html">sirfile</a>* sf, <span class="keyword">const</span> <span class="keywordtype">char</span>* output);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keywordtype">bool</span> _sir_write(<a class="code hl_struct" href="structsirfile.html">sirfile</a>* sf, <span class="keyword">const</span> <span class="keywordtype">char</span>* output);</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keywordtype">bool</span> _sirfile_writeheader(<a class="code hl_struct" href="structsirfile.html">sirfile</a>* sf, <span class="keyword">const</span> <span class="keywordtype">char</span>* msg);</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keywordtype">bool</span> _sirfile_needsroll(<a class="code hl_struct" href="structsirfile.html">sirfile</a>* sf);</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keywordtype">bool</span> _sirfile_roll(<a class="code hl_struct" href="structsirfile.html">sirfile</a>* sf, <span class="keywordtype">char</span>** newpath);</div>
@@ -182,9 +182,9 @@ $(document).ready(function(){initNavTree('filecache_8h_source.html',''); initRes
 <div class="ttc" id="agroup__publictypes_html_ga4a3303c67acd49bea38fd3565d458cb2"><div class="ttname"><a href="group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2">sir_level</a></div><div class="ttdeci">sir_level</div><div class="ttdoc">Defines the available levels (severity/priority) of logging output.</div><div class="ttdef"><b>Definition</b> types.h:48</div></div>
 <div class="ttc" id="agroup__publictypes_html_ga7ee5f2908abd2df9e89bcab0b6608edd"><div class="ttname"><a href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a></div><div class="ttdeci">uint16_t sir_levels</div><div class="ttdoc">sir_level bitmask type.</div><div class="ttdef"><b>Definition</b> types.h:63</div></div>
 <div class="ttc" id="agroup__publictypes_html_gafb659914aac0129182d86f7d3414e85d"><div class="ttname"><a href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a></div><div class="ttdeci">uint32_t sir_options</div><div class="ttdoc">sir_option bitmask type.</div><div class="ttdef"><b>Definition</b> types.h:81</div></div>
-<div class="ttc" id="astructsir__update__config__data_html"><div class="ttname"><a href="structsir__update__config__data.html">sir_update_config_data</a></div><div class="ttdoc">Encapsulates dynamic updating of current configuration.</div><div class="ttdef"><b>Definition</b> types.h:431</div></div>
-<div class="ttc" id="astructsirbuf_html"><div class="ttname"><a href="structsirbuf.html">sirbuf</a></div><div class="ttdoc">Formatted output container.</div><div class="ttdef"><b>Definition</b> types.h:367</div></div>
-<div class="ttc" id="astructsirfcache_html"><div class="ttname"><a href="structsirfcache.html">sirfcache</a></div><div class="ttdoc">Log file cache.</div><div class="ttdef"><b>Definition</b> types.h:278</div></div>
+<div class="ttc" id="astructsir__update__config__data_html"><div class="ttname"><a href="structsir__update__config__data.html">sir_update_config_data</a></div><div class="ttdoc">Encapsulates dynamic updating of current configuration.</div><div class="ttdef"><b>Definition</b> types.h:405</div></div>
+<div class="ttc" id="astructsirbuf_html"><div class="ttname"><a href="structsirbuf.html">sirbuf</a></div><div class="ttdoc">Formatted output container.</div><div class="ttdef"><b>Definition</b> types.h:341</div></div>
+<div class="ttc" id="astructsirfcache_html"><div class="ttname"><a href="structsirfcache.html">sirfcache</a></div><div class="ttdoc">Log file cache.</div><div class="ttdef"><b>Definition</b> types.h:279</div></div>
 <div class="ttc" id="astructsirfile_html"><div class="ttname"><a href="structsirfile.html">sirfile</a></div><div class="ttdoc">Internally-used log file data.</div><div class="ttdef"><b>Definition</b> types.h:269</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

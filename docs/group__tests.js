@@ -21,7 +21,6 @@ var group__tests =
     [ "sirtest_textstylesanity", "group__tests.html#ga18ccd68f2c37d9798a06c403380c9308", null ],
     [ "sirtest_optionssanity", "group__tests.html#gac9f9aabf53c8cfadba8b0f76927e6bae", null ],
     [ "sirtest_levelssanity", "group__tests.html#ga3e19675d370d9b538ba320c49ecc7b05", null ],
-    [ "sirtest_mutexsanity", "group__tests.html#ga8545a7006242a1e925b0f937fa875850", null ],
     [ "sirtest_perf", "group__tests.html#ga607e96cb52e248a2277ab3ecc31b7195", null ],
     [ "sirtest_updatesanity", "group__tests.html#gaf3428b620d3540baf058f6b7dd42c075", null ],
     [ "sirtest_syslog", "group__tests.html#ga8db924f756e0ee2f04ff3e044a10f283", null ],
@@ -29,6 +28,5 @@ var group__tests =
     [ "sirtest_filesystem", "group__tests.html#gaa0b035b71e6a6e6df6b8a7bb95722e2a", null ],
     [ "sirtest_squelchspam", "group__tests.html#ga3ad5e95b1114eba573969077ebb40cb5", null ],
     [ "sirtest_pluginloader", "group__tests.html#ga1b5a43deceffa8c36174e7b04576f6a3", null ],
-    [ "sirtest_getversioninfo", "group__tests.html#ga3b90eec512f445effa4990dbc130ac82", null ],
-    [ "sirtest_threadpool", "group__tests.html#ga9ec172056871a719049c1c40ffdaf292", null ]
+    [ "sirtest_getversioninfo", "group__tests.html#ga3b90eec512f445effa4990dbc130ac82", null ]
 ];

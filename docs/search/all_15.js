@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['white_0',['WHITE',['../ansimacros_8h.html#a19752df0782e1de2f46ff5bd98d49b74',1,'ansimacros.h']]],
-  ['whiteb_1',['WHITEB',['../ansimacros_8h.html#a5586030a10a83acbaa0816d19f73c70d',1,'ansimacros.h']]],
-  ['write_2',['write',['../structsir__pluginifacev1.html#a7be5d9cb671d562cdc031bb6962c9258',1,'sir_pluginifacev1']]]
+  ['yellow_0',['YELLOW',['../ansimacros_8h.html#a5e729c164b03ac9f9d76aad1798a422d',1,'ansimacros.h']]],
+  ['yellowb_1',['YELLOWB',['../ansimacros_8h.html#a03b5aff800fc00eecc2e533bcf83249a',1,'ansimacros.h']]]
 ];

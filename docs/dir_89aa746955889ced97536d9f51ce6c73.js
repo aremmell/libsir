@@ -1,7 +1,6 @@
 var dir_89aa746955889ced97536d9f51ce6c73 =
 [
     [ "ansimacros.h", "ansimacros_8h.html", "ansimacros_8h" ],
-    [ "condition.h", "condition_8h_source.html", null ],
     [ "config.h", "config_8h.html", "config_8h" ],
     [ "console.h", "console_8h_source.html", null ],
     [ "defaults.h", "defaults_8h.html", "defaults_8h" ],
@@ -15,9 +14,7 @@ var dir_89aa746955889ced97536d9f51ce6c73 =
     [ "mutex.h", "mutex_8h_source.html", null ],
     [ "platform.h", "platform_8h_source.html", null ],
     [ "plugins.h", "plugins_8h_source.html", null ],
-    [ "queue.h", "queue_8h_source.html", null ],
     [ "textstyle.h", "textstyle_8h_source.html", null ],
-    [ "threadpool.h", "threadpool_8h_source.html", null ],
     [ "types.h", "types_8h_source.html", null ],
     [ "version.h", "version_8h_source.html", null ]
 ];

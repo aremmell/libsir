@@ -1,10 +1,4 @@
 var searchData=
 [
-  ['magenta_0',['MAGENTA',['../ansimacros_8h.html#ab386ea91f0fa1ae29e693a1efda1ccdd',1,'ansimacros.h']]],
-  ['magentab_1',['MAGENTAB',['../ansimacros_8h.html#aaa1ee1774ac47559ef31ea2375571a40',1,'ansimacros.h']]],
-  ['main_2',['main',['../example_8c.html#a840291bc02cba5474a4cb46a9b9566fe',1,'example.c']]],
-  ['maj_5fver_3',['maj_ver',['../structsir__plugininfo.html#ada7d4dcf686295a51247716ed20b36be',1,'sir_plugininfo']]],
-  ['mask_4',['mask',['../group__publictypes.html#af2ce11ebf110993621bedd8e747d7b1b',1,'sir_syslog_dest._state']]],
-  ['min_5fver_5',['min_ver',['../structsir__plugininfo.html#a71e87991b1776d2a9346598ceebf1f1a',1,'sir_plugininfo']]],
-  ['mutex_6',['mutex',['../structsir__threadpool.html#af0a4d59c2d0cf18b34d11820b1fd2a5b',1,'sir_threadpool']]]
+  ['opts_0',['opts',['../group__publictypes.html#a7e1370c46de95363162d1c7879fca723',1,'sir_stdio_dest::opts'],['../group__publictypes.html#ad8f026edd9c8667d897eb24016f2e81f',1,'sir_syslog_dest::opts'],['../structsir__plugininfo.html#af8690ae21184c15db2a8a93655d3a516',1,'sir_plugininfo::opts'],['../structsir__update__config__data.html#a8736ae94a5aaea53a2e4c8f06f7a870a',1,'sir_update_config_data::opts']]]
 ];
