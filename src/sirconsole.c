@@ -28,10 +28,7 @@
 
 #if !defined(__WIN__)
 bool _sir_write_stdio(FILE* stream, const char* message) {
-    if (EOF == fputs(message, stream))
-        return _sir_handleerr(errno);
-
-    return true;
+    return (EOF != fputs(message, stream)) ? true : _sir_handleerr(errno);
 }
 
 #else /* __WIN__ */
