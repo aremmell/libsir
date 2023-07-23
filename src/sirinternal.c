@@ -373,8 +373,7 @@ void _sir_unlocksection(sir_mutex_id mid) {
     void* sec    = NULL;
 
     bool leave = _sir_mapmutexid(mid, &m, &sec) && _sir_mutexunlock(m);
-    SIR_ASSERT(leave);
-    SIR_UNUSED(leave);
+    SIR_ASSERT_UNUSED(leave, leave);
 }
 
 bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
@@ -563,8 +562,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     if (NULL != style_str)
         fmt = (0 == _sir_strncpy(buf.style, SIR_MAXSTYLE, style_str,
             strnlen(style_str, SIR_MAXSTYLE)));
-    SIR_UNUSED(fmt);
-    SIR_ASSERT(fmt);
+    SIR_ASSERT_UNUSED(fmt, fmt);
 
     now          = -1;
     long nowmsec = 0;
@@ -573,8 +571,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     if (gettime) {
         fmt = _sir_formattime(now, buf.timestamp, SIR_TIMEFORMAT);
-        SIR_ASSERT(fmt);
-        SIR_UNUSED(fmt);
+        SIR_ASSERT_UNUSED(fmt, fmt);
 
         if (0 > snprintf(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec))
             (void)_sir_handleerr(errno);

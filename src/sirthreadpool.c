@@ -96,16 +96,14 @@ bool _sir_threadpool_add_job(sir_threadpool* pool, sir_threadpool_job* job) {
     bool retval = _sir_queue_push(pool->jobs, job);
     if (retval) {
         bool bcast = _sir_condbroadcast(&pool->cond);
-        SIR_ASSERT(bcast);
-        SIR_UNUSED(bcast);
+        SIR_ASSERT_UNUSED(bcast, bcast);
     }
 
     if (retval)
         _sir_selflog("added job; new size: %zu", _sir_queue_size(pool->jobs));
 
     bool unlock = _sir_mutexunlock(&pool->mutex);
-    SIR_ASSERT(unlock);
-    SIR_UNUSED(unlock);
+    SIR_ASSERT_UNUSED(unlock, unlock);
 
     return retval;
 }
@@ -122,12 +120,10 @@ bool _sir_threadpool_destroy(sir_threadpool** pool) {
     if (locked) {
         _sir_selflog("broadcasting signal to condition var...");
         bool bcast = _sir_condbroadcast(&(*pool)->cond);
-        SIR_ASSERT(bcast);
-        SIR_UNUSED(bcast);
+        SIR_ASSERT_UNUSED(bcast, bcast);
 
         bool unlock = _sir_mutexunlock(&(*pool)->mutex);
-        SIR_ASSERT(unlock);
-        SIR_UNUSED(unlock);
+        SIR_ASSERT_UNUSED(unlock, unlock);
     }
 
     for (size_t n = 0; n < (*pool)->num_threads; n++) {
@@ -135,27 +131,22 @@ bool _sir_threadpool_destroy(sir_threadpool** pool) {
             _sir_selflog("joining thread %zu/%zu...", n + 1, (*pool)->num_threads);
 #if !defined(__WIN__)
             int join = pthread_join((*pool)->threads[n], NULL);
-            SIR_ASSERT(0 == join);
-            SIR_UNUSED(join);
+            SIR_ASSERT_UNUSED(0 == join, join);
 #else /* __WIN__ */
             DWORD join = WaitForSingleObject((*pool)->threads[n], INFINITE);
-            SIR_ASSERT(WAIT_OBJECT_0 == join);
-            SIR_UNUSED(join);
+            SIR_ASSERT_UNUSED(WAIT_OBJECT_0 == join, join);
 #endif
         }
     }
 
     bool destroy = _sir_queue_destroy(&(*pool)->jobs);
-    SIR_ASSERT(destroy);
-    SIR_UNUSED(destroy);
+    SIR_ASSERT_UNUSED(destroy, destroy);
 
     destroy = _sir_conddestroy(&(*pool)->cond);
-    SIR_ASSERT(destroy);
-    SIR_UNUSED(destroy);
+    SIR_ASSERT_UNUSED(destroy, destroy);
 
     destroy = _sir_mutexdestroy(&(*pool)->mutex);
-    SIR_ASSERT(destroy);
-    SIR_UNUSED(destroy);
+    SIR_ASSERT_UNUSED(destroy, destroy);
 
     _sir_safefree(&(*pool)->threads);
     _sir_safefree(pool);

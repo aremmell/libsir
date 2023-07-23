@@ -254,8 +254,7 @@ int _sir_strncpy(char* restrict dest, size_t destsz, const char* restrict src, s
 #else
         SIR_UNUSED(count);
         size_t cpy = strlcpy(dest, src, destsz);
-        SIR_ASSERT(cpy < destsz);
-        SIR_UNUSED(cpy);
+        SIR_ASSERT_UNUSED(cpy < destsz, cpy);
         return 0;
 #endif
     }
@@ -275,8 +274,7 @@ int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src, s
 #else
         SIR_UNUSED(count);
         size_t cat = strlcat(dest, src, destsz);
-        SIR_ASSERT(cat < destsz);
-        SIR_UNUSED(cat);
+        SIR_ASSERT_UNUSED(cat < destsz, cat);
         return 0;
 #endif
     }
