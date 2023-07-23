@@ -426,22 +426,22 @@ void _sir_initialize_once(void) {
 }
 
 void _sir_initmutex_cfg_once(void) {
-    bool created = _sir_mutexcreate(&cfg_mutex)
+    bool created = _sir_mutexcreate(&cfg_mutex);
     SIR_ASSERT_UNUSED(created, created);
 }
 
 void _sir_initmutex_fc_once(void) {
-    bool created = _sir_mutexcreate(&fc_mutex)
+    bool created = _sir_mutexcreate(&fc_mutex);
     SIR_ASSERT_UNUSED(created, created);
 }
 
 void _sir_initmutex_pc_once(void) {
-    bool created = _sir_mutexcreate(&pc_mutex)
+    bool created = _sir_mutexcreate(&pc_mutex);
     SIR_ASSERT_UNUSED(created, created);
 }
 
 void _sir_initmutex_ts_once(void) {
-    bool created = _sir_mutexcreate(&ts_mutex)
+    bool created = _sir_mutexcreate(&ts_mutex);
     SIR_ASSERT_UNUSED(created, created);
 }
 
