@@ -45,9 +45,9 @@ sirpluginid _sir_plugin_load(const char* path) {
     }
 # else /* __WIN__ */
     UINT old_error_mode     = SetErrorMode(SEM_FAILCRITICALERRORS);
-    sir_pluginhandle handle = LoadLibraryA(path);
+    plugin->handle = LoadLibraryA(path);
     SetErrorMode(old_error_mode);
-    if (!handle) {
+    if (!plugin->handle) {
         DWORD err = GetLastError();
         _sir_selflog("error: LoadLibraryA(%s) failed (%lu)", path, err);
         return _sir_handlewin32err(err);
