@@ -298,7 +298,7 @@ rm -f bad.so > /dev/null 2>&1
 
 # Run 20 - Break fseek function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
-${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
+${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
 printf '%s\n' "int fseek() { return -1; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
@@ -311,7 +311,7 @@ rm -f bad.so > /dev/null 2>&1
 
 # Run 21 - Break fputc function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
-${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
+${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
 printf '%s\n' "int fputc() { return -1; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
@@ -324,7 +324,7 @@ rm -f bad.so > /dev/null 2>&1
 
 # Run 22 - Break gethostname function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
-${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
+${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
 printf '%s\n' "int gethostname() { return -1; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
@@ -337,7 +337,7 @@ rm -f bad.so > /dev/null 2>&1
 
 # Run 23 - Break stat functions
 ${DO_MAKE:-make} -j ${JOBS:?} clean
-${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
+${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
 printf '%s\n' "int stat() { return -1; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
@@ -350,7 +350,7 @@ rm -f bad.so > /dev/null 2>&1
 
 # Run 24 - Break pthread_join function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
-${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
+${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
 printf '%s\n' "int pthread_join() { return -1; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
@@ -363,7 +363,7 @@ rm -f bad.so > /dev/null 2>&1
 
 # Run 25 - Break pthread_create function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
-${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
+${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
 printf '%s\n' "int pthread_create() { return -1; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
@@ -376,7 +376,7 @@ rm -f bad.so > /dev/null 2>&1
 
 # Run 26 - Break dlopen function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
-${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
+${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
 printf '%s\n' "int dlopen() { return 0; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
@@ -389,7 +389,7 @@ rm -f bad.so > /dev/null 2>&1
 
 # Run 27 - Break dlsym function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
-${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
+${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
 printf '%s\n' "int dlsym() { return 0; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
@@ -402,7 +402,7 @@ rm -f bad.so > /dev/null 2>&1
 
 # Run 28 - Break readdir function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
-${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
+${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
 printf '%s\n' "int readdir() { return -1; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
@@ -415,13 +415,39 @@ rm -f bad.so > /dev/null 2>&1
 
 # Run 29 - Break opendir function
 ${DO_MAKE:-make} -j ${JOBS:?} clean
-${DO_MAKE:-make} -j ${JOBS:?} SIR_NO_SYSTEM_LOGGERS=1 SIR_DEBUG=1 SIR_SELFLOG=1
+${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
 printf '%s\n' "int opendir() { return 0; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
 remove_sample || true
 run_gcovr run-29.json
+remove_coverage
+rm -f bad.c > /dev/null 2>&1
+rm -f bad.so > /dev/null 2>&1
+
+# Run 30 - Break calloc function
+${DO_MAKE:-make} -j ${JOBS:?} clean
+${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
+printf '%s\n' "int calloc() { return 0; }" > bad.c
+gcc -shared -fPIC bad.c -o bad.so || true
+env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
+env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
+remove_sample || true
+run_gcovr run-30.json
+remove_coverage
+rm -f bad.c > /dev/null 2>&1
+rm -f bad.so > /dev/null 2>&1
+
+# Run 31 - Break malloc function
+${DO_MAKE:-make} -j ${JOBS:?} clean
+${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
+printf '%s\n' "int malloc() { return 0; }" > bad.c
+gcc -shared -fPIC bad.c -o bad.so || true
+env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
+env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
+remove_sample || true
+run_gcovr run-31.json
 remove_coverage
 rm -f bad.c > /dev/null 2>&1
 rm -f bad.so > /dev/null 2>&1
