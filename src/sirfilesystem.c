@@ -496,7 +496,7 @@ int _sir_aixself(char* buffer, size_t* size) {
         struct stat statstruct;
 
         char* path = getenv("PATH");
-        if (sizeof(clonedpath) <= strlen(path))
+        if (sizeof(clonedpath) <= strnlen(path, SIR_MAXPATH))
             return -1;
 
         _sir_strncpy(clonedpath, SIR_MAXPATH, path, SIR_MAXPATH);
