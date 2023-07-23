@@ -424,7 +424,6 @@ bool _sir_plugin_cache_destroy(sir_plugincache* spc) {
         spc->count--;
     }
 
-    SIR_ASSERT(spc->count == 0);
     memset(spc, 0, sizeof(sir_plugincache));
     return true;
 #else

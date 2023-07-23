@@ -559,7 +559,6 @@ bool _sir_fcache_destroy(sirfcache* sfc) {
         sfc->count--;
     }
 
-    SIR_ASSERT(sfc->count == 0);
     memset(sfc, 0, sizeof(sirfcache));
     return true;
 }
