@@ -365,9 +365,6 @@ void* _sir_locksection(sir_mutex_id mid) {
     bool enter = _sir_mapmutexid(mid, &m, &sec) && _sir_mutexlock(m);
     SIR_ASSERT(enter);
 
-    if (!enter)
-        _sir_selflog("error: failed to lock mutex!");
-
     return enter ? sec : NULL;
 }
 
@@ -377,9 +374,7 @@ void _sir_unlocksection(sir_mutex_id mid) {
 
     bool leave = _sir_mapmutexid(mid, &m, &sec) && _sir_mutexunlock(m);
     SIR_ASSERT(leave);
-
-    if (!leave)
-        _sir_selflog("error: failed to unlock mutex!");
+    SIR_UNUSED(leave);
 }
 
 bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
