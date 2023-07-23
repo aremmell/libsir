@@ -365,9 +365,6 @@ void* _sir_locksection(sir_mutex_id mid) {
     bool enter = _sir_mapmutexid(mid, &m, &sec) && _sir_mutexlock(m);
     SIR_ASSERT(enter);
 
-    if (!enter)
-        _sir_selflog("error: failed to lock mutex!");
-
     return enter ? sec : NULL;
 }
 
@@ -377,9 +374,7 @@ void _sir_unlocksection(sir_mutex_id mid) {
 
     bool leave = _sir_mapmutexid(mid, &m, &sec) && _sir_mutexunlock(m);
     SIR_ASSERT(leave);
-
-    if (!leave)
-        _sir_selflog("error: failed to unlock mutex!");
+    SIR_UNUSED(leave);
 }
 
 bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
@@ -433,22 +428,22 @@ void _sir_initialize_once(void) {
 
 void _sir_initmutex_cfg_once(void) {
     if (!_sir_mutexcreate(&cfg_mutex))
-        _sir_selflog("error: failed to create mutex!");
+        SIR_ASSERT(!"failed to create mutex!");
 }
 
 void _sir_initmutex_fc_once(void) {
     if (!_sir_mutexcreate(&fc_mutex))
-        _sir_selflog("error: failed to create mutex!");
+        SIR_ASSERT(!"failed to create mutex!");
 }
 
 void _sir_initmutex_pc_once(void) {
     if (!_sir_mutexcreate(&pc_mutex))
-        _sir_selflog("error: failed to create mutex!");
+        SIR_ASSERT(!"failed to create mutex!");
 }
 
 void _sir_initmutex_ts_once(void) {
     if (!_sir_mutexcreate(&ts_mutex))
-        _sir_selflog("error: failed to create mutex!");
+        SIR_ASSERT(!"failed to create mutex!");
 }
 #else /* __WIN__ */
 BOOL CALLBACK _sir_initialize_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
@@ -464,7 +459,7 @@ BOOL CALLBACK _sir_initmutex_cfg_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx)
     SIR_UNUSED(ctx);
 
     if (!_sir_mutexcreate(&cfg_mutex)) {
-        _sir_selflog("error: failed to create mutex!");
+        SIR_ASSERT(!"failed to create mutex!");
         return FALSE;
     }
 
@@ -477,7 +472,7 @@ BOOL CALLBACK _sir_initmutex_fc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) 
     SIR_UNUSED(ctx);
 
     if (!_sir_mutexcreate(&fc_mutex)) {
-        _sir_selflog("error: failed to create mutex!");
+        SIR_ASSERT(!"failed to create mutex!");
         return FALSE;
     }
 
@@ -490,7 +485,7 @@ BOOL CALLBACK _sir_initmutex_pc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) 
     SIR_UNUSED(ctx);
 
     if (!_sir_mutexcreate(&pc_mutex)) {
-        _sir_selflog("error: failed to create mutex!");
+        SIR_ASSERT(!"failed to create mutex!");
         return FALSE;
     }
 
@@ -503,7 +498,7 @@ BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) 
     SIR_UNUSED(ctx);
 
     if (!_sir_mutexcreate(&ts_mutex)) {
-        _sir_selflog("error: failed to create mutex!");
+        SIR_ASSERT(!"failed to create mutex!");
         return FALSE;
     }
 
@@ -589,7 +584,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     pid_t tid = _sir_gettid();
     if (tid != cfg.state.pid) {
-        if (!_sir_getthreadname(buf.tid)) {
+        if (!_sir_getthreadname(buf.tid) || !_sir_validstrnofail(buf.tid)) {
             if (0 > snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, PID_CAST tid))
                 (void)_sir_handleerr(errno);
         }

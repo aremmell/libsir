@@ -5,7 +5,6 @@ language: c
 branches:
   only:
   - master
-  - thread-pool
 env: MAKE=make
 jobs:
   include:
