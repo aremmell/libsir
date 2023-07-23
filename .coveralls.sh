@@ -466,11 +466,11 @@ remove_coverage
 rm -f bad.c > /dev/null 2>&1
 rm -f bad.so > /dev/null 2>&1
 
-# Run 33 - Do --only filesystem
+# Run 33 - Do --only file-archive-large
 ${DO_MAKE:-make} -j ${JOBS:?} clean
 ${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
 build/bin/sirexample || true
-build/bin/sirtests --only filesystem || true
+build/bin/sirtests --only file-archive-large || true
 remove_sample || true
 run_gcovr run-33.json
 remove_coverage
