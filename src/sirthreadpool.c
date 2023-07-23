@@ -86,7 +86,7 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
 
 _cleanup:
     _sir_selflog("error: something's gone awry; cleaning up and returning false");
-    _sir_safefree(&(*pool)->jobs);
+    _sir_safefree(&(*pool)->jobs); //-V522
     _sir_safefree(&(*pool)->threads);
     _sir_safefree(pool);
 

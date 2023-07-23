@@ -1344,7 +1344,7 @@ static bool generic_disabled_syslog_test(const char* sl_name, const char* identi
     printf("\tSIR_NO_SYSTEM_LOGGERS is defined; expecting calls to fail...\n");
 
     /* init should just ignore the syslog settings. */
-    si_init = sir_init(&si);
+    si_init = sir_init(&si); //-V519
     pass &= si_init;
 
     /* these calls should all fail. */
