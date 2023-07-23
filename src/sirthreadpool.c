@@ -42,25 +42,23 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
     *pool = calloc(1, sizeof(sir_threadpool));
     if (!*pool) {
         _sir_handleerr(errno);
-        goto _cleanup;
+        return false;
     }
 
     (*pool)->threads = calloc(num_threads, sizeof(sir_thread));
     if (!(*pool)->threads) {
         _sir_handleerr(errno);
-        goto _cleanup;
+        _sir_threadpool_destroy(pool);
+        return false;
     }
 
     (*pool)->num_threads = num_threads;
 
-    if (!_sir_queue_create(&(*pool)->jobs))
-        goto _cleanup;
-
-    if (!_sir_condcreate(&(*pool)->cond))
-        goto _cleanup;
-
-    if (!_sir_mutexcreate(&(*pool)->mutex))
-        goto _cleanup;
+    if (!_sir_queue_create(&(*pool)->jobs) || !_sir_condcreate(&(*pool)->cond) ||
+        !_sir_mutexcreate(&(*pool)->mutex)) {
+            _sir_threadpool_destroy(pool);
+            return false;
+    }
 
     for (size_t n = 0; n < num_threads; n++) {
 #if !defined(__WIN__)
@@ -69,7 +67,8 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
         int op = pthread_create(&(*pool)->threads[n], &attr, &thread_pool_proc, *pool);
         if (0 != op) {
             _sir_handleerr(op);
-            goto _cleanup;
+            _sir_threadpool_destroy(pool);
+            return false;
         }
 
 #else /* __WIN__ */
@@ -77,20 +76,12 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
             *pool, 0, NULL);
         if (!(*pool)->threads[n]) {
             _sir_handleerr(errno);
-            goto _cleanup;
+            _sir_threadpool_destroy(pool);
+            return false;
         }
 #endif
     }
 
-    goto _ret;
-
-_cleanup:
-    _sir_selflog("error: something's gone awry; cleaning up and returning false");
-    _sir_safefree(&(*pool)->jobs); //-V522
-    _sir_safefree(&(*pool)->threads);
-    _sir_safefree(pool);
-
-_ret:
     return !!*pool;
 }
 
