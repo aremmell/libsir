@@ -198,7 +198,8 @@ static unsigned thread_pool_proc(void* arg)
             SIR_UNUSED(unlocked);
 
             if (job_popped) {
-                _sir_selflog("picked up job (fn: %p, data: %p)", (void*)job->fn, job->data);
+                _sir_selflog("picked up job (fn: %"PRIxPTR", data: %p)",
+                    (uintptr_t)job->fn, job->data);
                 job->fn(job->data);
                 _sir_safefree(&job);
             }

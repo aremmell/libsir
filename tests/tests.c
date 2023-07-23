@@ -1890,8 +1890,8 @@ bool sirtest_threadpool(void) {
                 job->fn = &threadpool_pseudojob;
                 job->data = (void*)(n + 1);
                 pass &= _sir_threadpool_add_job(pool, job);
-                pass &= sir_info("dispatched job (fn: %p, data: %p, queue size: %zu)",
-                    (void*)job->fn, job->data, _sir_queue_size(pool->jobs));
+                pass &= sir_info("dispatched job (fn: %"PRIxPTR", data: %p, queue size: %zu)",
+                    (uintptr_t)job->fn, job->data, _sir_queue_size(pool->jobs));
             }
         }
 
