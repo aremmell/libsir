@@ -259,6 +259,9 @@ _set_thread_local_invalid_parameter_handler(
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# if defined(DUMA)
+#  include <duma.h>
+# endif
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <limits.h>

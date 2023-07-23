@@ -1067,7 +1067,7 @@ bool sirtest_perf(void) {
     static const char* logbasename = MAKE_LOG_NAME("libsir-perf");
     static const char* logext      = ".log";
 
-#if !defined(__WIN__)
+#if !defined(__WIN__) && !defined(DUMA)
     static const size_t perflines = 1000000;
 #else /* __WIN__ */
     static const size_t perflines = 100000;
@@ -2028,7 +2028,13 @@ unsigned threadrace_thread(void* arg) {
     printf("\thi, i'm thread (id: %d), logging to: '%s'...\n",
             PID_CAST threadid, my_args->log_file);
 
-    for (size_t n = 0; n < 1000; n++) {
+#if !defined(DUMA)
+# define NUM_ITERATIONS 1000
+#else
+# define NUM_ITERATIONS 100
+#endif
+
+    for (size_t n = 0; n < NUM_ITERATIONS; n++) {
         /* choose a random level, and colors. */
         sir_textcolor fg = SIRTC_INVALID;
         sir_textcolor bg = SIRTC_INVALID;
