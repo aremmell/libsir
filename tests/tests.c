@@ -492,7 +492,7 @@ bool sirtest_rollandarchivefile(void) {
     static const char* line        = "hello, i am some data. nice to meet you.";
 
     char logfilename[SIR_MAXPATH] = {0};
-    snprintf(logfilename, SIR_MAXPATH, MAKE_LOG_NAME("%s%s"), logbasename, logext);
+    (void)snprintf(logfilename, SIR_MAXPATH, MAKE_LOG_NAME("%s%s"), logbasename, logext);
 
     unsigned delcount = 0;
     if (!enumfiles(SIR_TESTLOGDIR, logbasename, deletefiles, &delcount)) {
@@ -1075,7 +1075,7 @@ bool sirtest_mutexsanity(void) {
 
 bool sirtest_perf(void) {
     static const char* logbasename = MAKE_LOG_NAME("libsir-perf");
-    static const char* logext      = ".log";
+    static const char* logext      = "";
 
 #if !defined(__WIN__) && !defined(DUMA)
     static const size_t perflines = 1000000;
