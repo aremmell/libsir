@@ -466,6 +466,15 @@ remove_coverage
 rm -f bad.c > /dev/null 2>&1
 rm -f bad.so > /dev/null 2>&1
 
+# Run 33 - Do --only filesystem
+${DO_MAKE:-make} -j ${JOBS:?} clean
+${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
+build/bin/sirexample || true
+build/bin/sirtests --only filesystem || true
+remove_sample || true
+run_gcovr run-33.json
+remove_coverage
+
 # Undo redirect
 exec 1>&5
 
