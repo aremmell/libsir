@@ -186,11 +186,11 @@ malloc_options = "CFGRSU";
     if (passed == tgt_tests) {
         printf("\n" WHITEB("done: ")
                    GREENB("%s%zu " ULINE("libsir") " %s passed in %.03fsec!") "\n\n",
-            tgt_tests > 1 ? "all " : "", tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
+            tgt_tests > 1 ? "all " : "", tgt_tests, TEST_S(tgt_tests), (double)elapsed / (double)1e3);
     } else {
         printf("\n" WHITEB("done: ")
                    REDB("%zu of %zu " ULINE("libsir") " %s failed in %.03fsec") "\n\n",
-            tgt_tests - passed, tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
+            tgt_tests - passed, tgt_tests, TEST_S(tgt_tests), (double)elapsed / (double)1e3);
 
         printf(REDB("Failed %s:") "\n\n", TEST_S(tgt_tests - passed));
 
@@ -1088,7 +1088,7 @@ bool sirtest_perf(void) {
 
         for (size_t n = 0; n < perflines; n++)
             printf(WHITE("%.2f: lorem ipsum foo bar %s: %zu") "\n",
-                sirtimerelapsed(&printftimer), "baz", 1234 + n);
+                (double)sirtimerelapsed(&printftimer), "baz", 1234 + n);
 
         printfelapsed = sirtimerelapsed(&printftimer);
 
@@ -1099,7 +1099,7 @@ bool sirtest_perf(void) {
 
         for (size_t n = 0; n < perflines; n++)
             sir_debug("%.2f: lorem ipsum foo bar %s: %zu",
-                sirtimerelapsed(&stdiotimer), "baz", 1234 + n);
+                (double)sirtimerelapsed(&stdiotimer), "baz", 1234 + n);
 
         stdioelapsed = sirtimerelapsed(&stdiotimer);
 
@@ -1130,13 +1130,16 @@ bool sirtest_perf(void) {
 
         if (pass) {
             printf("\t" WHITEB("printf: ") CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
-                perflines, printfelapsed / 1e3, perflines / (printfelapsed / 1e3));
+                perflines, (double)printfelapsed / (double)1e3,
+                (double)perflines / (double)((double)printfelapsed / (double)1e3));
             printf("\t" WHITEB("libsir(stdout): ")
                    CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
-                perflines, stdioelapsed / 1e3, perflines / (stdioelapsed / 1e3));
+                perflines, (double)stdioelapsed / (double)1e3,
+                (double)perflines / (double)((double)stdioelapsed / (double)1e3));
             printf("\t" WHITEB("libsir(log file): ")
                    CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
-                perflines, fileelapsed / 1e3, perflines / (fileelapsed / 1e3));
+                perflines, (double)fileelapsed / (double)1e3,
+                (double)perflines / (double)((double)fileelapsed / (double)1e3));
             printf("\t" WHITEB("timer resolution: ") CYAN("~%ldnsec") "\n", sirtimergetres());
         }
     }
@@ -2253,8 +2256,10 @@ float sirtimerelapsed(const sir_timer* timer) {
 #if !defined(__WIN__)
     struct timespec now;
     if (0 == clock_gettime(SIRTEST_CLOCK, &now)) {
-        return (float)((now.tv_sec * 1e3) + (now.tv_nsec / 1e6) - (timer->ts.tv_sec * 1e3) +
-            (timer->ts.tv_nsec / 1e6));
+        return (float)(((double)now.tv_sec * (double)1e3)
+            + ((double)now.tv_nsec / (double)1e6)
+            - ((double)timer->ts.tv_sec * (double)1e3)
+            + ((double)timer->ts.tv_nsec / (double)1e6));
     } else {
         handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK);
     }

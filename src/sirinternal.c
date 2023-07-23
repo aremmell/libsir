@@ -1095,7 +1095,7 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
 
         if (0 == clock) {
             if (msecbuf)
-                *msecbuf = (long)(ts.tv_nsec / 1e6);
+                *msecbuf = (long)(ts.tv_nsec / (long)1e6);
         } else {
             if (msecbuf)
                 *msecbuf = 0;
