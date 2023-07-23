@@ -45,7 +45,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">libsir<span id="projectnumber">&#160;2.2.0</span>
+   <div id="projectname">libsir<span id="projectnumber">&#160;2.2.1</span>
    </div>
    <div id="projectbrief">Standard Incident Reporter</div>
   </td>
@@ -125,7 +125,7 @@ $(document).ready(function(){initNavTree('md_docs_2sources_2config.html',''); in
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyCenter" rowspan="2"><code>SIR_DEBUG (0)</code>   </td><td class="markdownTableBodyCenter"><code>0</code>   </td><td class="markdownTableBodyCenter"><code>-O3 -DNDEBUG</code>   </td><td class="markdownTableBodyLeft">Full optimization is applied, and no debugging symbols are included.    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter"><code>1</code>   </td><td class="markdownTableBodyCenter"><code>-g -00 -DDEBUG</code>   </td><td class="markdownTableBodyLeft">No optimizations are applied, and debugging symbols are included.    </td></tr>
+<td class="markdownTableBodyCenter"><code>1</code>   </td><td class="markdownTableBodyCenter"><code>-g3 -00 -DDEBUG</code>   </td><td class="markdownTableBodyLeft">No optimizations are applied, and full debugging symbols are included.    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyCenter" rowspan="2"><code>SIR_SELFLOG (0)</code>   </td><td class="markdownTableBodyCenter"><code>0</code>   </td><td class="markdownTableBodyCenter"><code>N/A</code>   </td><td class="markdownTableBodyLeft">NOOP    </td></tr>
 <tr class="markdownTableRowEven">
@@ -133,7 +133,7 @@ $(document).ready(function(){initNavTree('md_docs_2sources_2config.html',''); in
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyCenter" rowspan="2"><code>SIR_ASSERT_ENABLED (0)</code>   </td><td class="markdownTableBodyCenter"><code>0</code>   </td><td class="markdownTableBodyCenter"><code>N/A</code>   </td><td class="markdownTableBodyLeft"><code>assert</code> will never be called. If <code>SIR_SELFLOG</code> is enabled, where asserts normally would take place, a <code>_sir_selflog</code> call is made, producing output to stderr such as '<code>somefunc (file.c:123): !!! would be asserting (NULL != ptr)</code>'.    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter"><code>1</code>   </td><td class="markdownTableBodyCenter"><code>-DSIR_ASSERT_ENABLED</code>   </td><td class="markdownTableBodyLeft"><code>assert</code> will be used. Note that assert has no effect if <code>NDEBUG</code> is defined, so in order for this to be useful, you will also need <code>SIR_DEBUG=1</code> (<em>or manually add <code>-DNDEBUG</code> in the Makefile</em>).    </td></tr>
+<td class="markdownTableBodyCenter"><code>1</code>   </td><td class="markdownTableBodyCenter"><code>-DSIR_ASSERT_ENABLED</code>   </td><td class="markdownTableBodyLeft"><code>assert</code> will be used. Note that assert has no effect if <code>NDEBUG</code> is defined, so in order for this to be useful, you will also need <code>SIR_DEBUG=1</code> (<em>or manually change <code>-DNDEBUG</code> to <code>-DDEBUG</code> in the Makefile</em>).    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyCenter" rowspan="2"><code>SIR_NO_SYSTEM_LOGGERS (0)</code>   </td><td class="markdownTableBodyCenter"><code>0</code>   </td><td class="markdownTableBodyCenter"><code>N/A</code>   </td><td class="markdownTableBodyLeft">If the current platform has a system logger facility (<em>currently all platforms do by default except Windows</em>), you can utilize it as a destination in libsir.    </td></tr>
 <tr class="markdownTableRowEven">
