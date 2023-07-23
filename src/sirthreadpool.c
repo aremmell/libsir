@@ -23,6 +23,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+#include "sir/condition.h"
 #include "sir/threadpool.h"
 #include "sir/internal.h"
 #include "sir/queue.h"
@@ -84,7 +85,7 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
     goto _ret;
 
 _cleanup:
-    _sir_selflog("error: something's gone wrong; cleaning up and returning false");
+    _sir_selflog("error: something's gone awry; cleaning up and returning false");
     _sir_safefree(&(*pool)->jobs);
     _sir_safefree(&(*pool)->threads);
     _sir_safefree(pool);
@@ -156,6 +157,7 @@ bool _sir_threadpool_destroy(sir_threadpool** pool) {
     SIR_UNUSED(destroy);
 
     destroy = _sir_mutexdestroy(&(*pool)->mutex);
+
     SIR_ASSERT(destroy);
     SIR_UNUSED(destroy);
 

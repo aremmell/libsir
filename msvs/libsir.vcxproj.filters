@@ -40,60 +40,66 @@
     <ClCompile Include="..\src\sirthreadpool.c">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\sircondition.c">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\sir.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\types.h">
+    <ClInclude Include="..\include\sir\types.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\ansimacros.h">
+    <ClInclude Include="..\include\sir\ansimacros.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\config.h">
+    <ClInclude Include="..\include\sir\config.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\console.h">
+    <ClInclude Include="..\include\sir\console.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\defaults.h">
+    <ClInclude Include="..\include\sir\defaults.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\errors.h">
+    <ClInclude Include="..\include\sir\errors.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\filecache.h">
+    <ClInclude Include="..\include\sir\filecache.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\filesystem.h">
+    <ClInclude Include="..\include\sir\filesystem.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\helpers.h">
+    <ClInclude Include="..\include\sir\helpers.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\internal.h">
+    <ClInclude Include="..\include\sir\internal.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\maps.h">
+    <ClInclude Include="..\include\sir\maps.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\mutex.h">
+    <ClInclude Include="..\include\sir\mutex.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\platform.h">
+    <ClInclude Include="..\include\sir\platform.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\plugins.h">
+    <ClInclude Include="..\include\sir\plugins.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\textstyle.h">
+    <ClInclude Include="..\include\sir\textstyle.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
     <ClInclude Include="..\include\sir\queue.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
     <ClInclude Include="..\include\sir\threadpool.h">
+      <Filter>Include\sir</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\sir\condition.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
   </ItemGroup>

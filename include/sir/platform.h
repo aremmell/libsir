@@ -395,13 +395,13 @@ typedef HMODULE sir_pluginhandle;
 typedef FARPROC sir_pluginexport;
 
 /** The mutex type. */
-typedef HANDLE sir_mutex;
+typedef CRITICAL_SECTION sir_mutex;
 
 /** The thread type. */
 typedef HANDLE sir_thread;
 
 /** The condition variable type. */
-typedef HANDLE sir_condition;
+typedef CONDITION_VARIABLE sir_condition;
 
 /** The mutex/condition variable wait time type. */
 typedef DWORD sir_wait;
@@ -421,7 +421,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #  define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
 
 /** The mutex initializer. */
-#  define SIR_MUTEX_INIT NULL
+#  define SIR_MUTEX_INIT {0}
 
 # endif /* !__WIN__ */
 
