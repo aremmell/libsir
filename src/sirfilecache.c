@@ -349,12 +349,11 @@ bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
 }
 
 void _sirfile_destroy(sirfile** sf) {
-    if (!sf || !*sf)
-        return;
-
-    _sirfile_close(*sf);
-    _sir_safefree(&(*sf)->path);
-    _sir_safefree(sf);
+    if (sf && *sf) {
+        _sirfile_close(*sf);
+        _sir_safefree(&(*sf)->path);
+        _sir_safefree(sf);
+    }
 }
 
 bool _sirfile_validate(sirfile* sf) {
@@ -606,11 +605,8 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
 }
 
 void _sir_fflush(FILE* f) {
-    if (!_sir_validptr(f))
-        return;
-
-    if (0 != fflush(f)) {
-        (void)_sir_handleerr(errno);
-        return;
+    if (_sir_validptr(f)) {
+        if (0 != fflush(f))
+            (void)_sir_handleerr(errno);
     }
 }
