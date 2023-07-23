@@ -236,7 +236,7 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                             timestamp, (sequence > 0 ? seqbuf : ""),
                             _sir_validstrnofail(ext) ? ext : "");
 
-                          /* if less than one second has elasped since the last roll
+                        /* if less than one second has elasped since the last roll
                          * operation, then we'll overwrite the last rolled log file,
                          * and that = data loss. make sure the target path does not
                          * already exist. */

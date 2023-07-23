@@ -472,7 +472,7 @@ int _sir_aixself(char* buffer, size_t* size) {
         *size = strnlen(buffer, SIR_MAXPATH);
         return 0;
     } else if (strchr(argv[0], '/') != NULL) {
-        (void)(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
+        (void)snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
 
         /* Flawfinder: ignore */
         res = readlink(cwd, cwdl, sizeof(cwdl) - 1);
@@ -525,7 +525,7 @@ int _sir_aixself(char* buffer, size_t* size) {
                     if (res < 0)
                         _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
                     else
-                        (void)(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
+                        (void)snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
                     *size = strnlen(buffer, SIR_MAXPATH);
                     return 0;
