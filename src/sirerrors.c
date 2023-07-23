@@ -154,7 +154,7 @@ bool __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32
     }
     return false;
 }
-#endif
+#endif /* !__WIN__ */
 
 uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
     _sir_resetstr(message);
@@ -184,8 +184,7 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
         int fmtmsg = snprintf(message, SIR_MAXERROR, SIR_ERRORFORMAT, sir_te.loc.func,
             sir_te.loc.file, sir_te.loc.line, _SIR_PRNSTR(final));
 
-        SIR_UNUSED(fmtmsg);
-        SIR_ASSERT(fmtmsg >= 0);
+        SIR_ASSERT_UNUSED(fmtmsg >= 0, fmtmsg);
 
         if (alloc)
             _sir_safefree(&final);
