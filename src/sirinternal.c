@@ -140,9 +140,8 @@ bool _sir_init(sirinit* si) {
     /* Store PID. */
     _cfg->state.pid = _sir_getpid();
 
-    if (0 > snprintf(_cfg->state.pidbuf, SIR_MAXPID, SIR_PIDFORMAT,
-                     PID_CAST _cfg->state.pid))
-        (void)_sir_handleerr(errno);
+    (void)snprintf(_cfg->state.pidbuf, SIR_MAXPID, SIR_PIDFORMAT,
+        PID_CAST _cfg->state.pid);
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     /* initialize system logger. */
@@ -574,27 +573,22 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         fmt = _sir_formattime(now, buf.timestamp, SIR_TIMEFORMAT);
         SIR_ASSERT_UNUSED(fmt, fmt);
 
-        if (0 > snprintf(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec))
-            (void)_sir_handleerr(errno);
+        (void)snprintf(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec);
     }
 
     buf.level = _sir_formattedlevelstr(level);
 
     pid_t tid = _sir_gettid();
-    if (tid != cfg.state.pid) {
-        if (!_sir_getthreadname(buf.tid) || !_sir_validstrnofail(buf.tid)) {
-            if (0 > snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, PID_CAST tid))
-                (void)_sir_handleerr(errno);
-        }
-    }
+    if (tid != cfg.state.pid)
+        if (!_sir_getthreadname(buf.tid) || !_sir_validstrnofail(buf.tid))
+            (void)snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, PID_CAST tid);
 
-    if (0 > vsnprintf(buf.message, SIR_MAXMESSAGE, format, args)) {
-        (void)_sir_handleerr(errno);
-        SIR_ASSERT(false);
-    }
+    (void)vsnprintf(buf.message, SIR_MAXMESSAGE, format, args);
 
-    if (!_sir_validstr(buf.message))
+    if (!_sir_validstr(buf.message)) {
+        _sir_seterror(_SIR_E_INTERNAL);
         return false;
+    }
 
     bool match             = false;
     bool exit_early        = false;
@@ -624,8 +618,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
                          " to %zu (factor: %d)",
                 old_threshold, cfg.state.last.threshold, SIR_SQUELCH_BACKOFF_FACTOR);
 
-            if (0 > snprintf(buf.message, SIR_MAXMESSAGE, SIR_SQUELCH_MSG_FORMAT, old_threshold))
-                (void)_sir_handleerr(errno);
+            (void)snprintf(buf.message, SIR_MAXMESSAGE, SIR_SQUELCH_MSG_FORMAT, old_threshold);
         } else if (cfg.state.last.squelch) {
             exit_early = true;
         }
@@ -1195,7 +1188,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
 
 # if defined(__HAIKU__)
     if ((strncmp(name, "pthread_func", SIR_MAXPID)) || _sir_validstrnofail(name))
-        snprintf(name, SIR_MAXPID, "%ld", (long)get_pthread_thread_id(pthread_self()));
+        (void)snprintf(name, SIR_MAXPID, "%ld", (long)get_pthread_thread_id(pthread_self()));
 # endif
     return _sir_validstrnofail(name);
 #elif defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)

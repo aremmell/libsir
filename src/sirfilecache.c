@@ -142,7 +142,7 @@ bool _sirfile_write(sirfile* sf, const char* output) {
 
         if (_sirfile_roll(sf, &newpath)) {
             char header[SIR_MAXFHEADER] = {0};
-            snprintf(header, SIR_MAXFHEADER, SIR_FHROLLED, newpath);
+            (void)snprintf(header, SIR_MAXFHEADER, SIR_FHROLLED, newpath);
             rolled = _sirfile_writeheader(sf, header);
         }
 
@@ -178,12 +178,9 @@ bool _sirfile_writeheader(sirfile* sf, const char* msg) {
         return false;
 
     char header[SIR_MAXFHEADER] = {0};
-    int fmt = snprintf(header, SIR_MAXFHEADER, SIR_FHFORMAT, msg, timestamp);
+    (void)snprintf(header, SIR_MAXFHEADER, SIR_FHFORMAT, msg, timestamp);
 
-    if (0 > fmt)
-        return _sir_handleerr(errno);
-
-    return 0 <= fmt && _sirfile_write(sf, header); //-V560
+    return _sirfile_write(sf, header);
 }
 
 bool _sirfile_needsroll(sirfile* sf) {
@@ -235,16 +232,11 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                     uint16_t sequence = 0;
 
                     do {
-                        int print = snprintf(*newpath, SIR_MAXPATH, SIR_FNAMEFORMAT, name,
+                        (void)snprintf(*newpath, SIR_MAXPATH, SIR_FNAMEFORMAT, name,
                             timestamp, (sequence > 0 ? seqbuf : ""),
                             _sir_validstrnofail(ext) ? ext : "");
 
-                        if (print < 0) {
-                            (void)_sir_handleerr(errno);
-                            break;
-                        }
-
-                        /* if less than one second has elasped since the last roll
+                          /* if less than one second has elasped since the last roll
                          * operation, then we'll overwrite the last rolled log file,
                          * and that = data loss. make sure the target path does not
                          * already exist. */
@@ -265,14 +257,8 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                             break;
                         }
 
-                        if (sequence > 0) {
-                            print = snprintf(seqbuf, 7, SIR_FNAMESEQFORMAT, sequence);
-
-                            if (print < 0) {
-                                (void)_sir_handleerr(errno);
-                                break;
-                            }
-                        }
+                        if (sequence > 0)
+                            (void)snprintf(seqbuf, 7, SIR_FNAMESEQFORMAT, sequence);
 
                     } while (sequence <= 999);
 

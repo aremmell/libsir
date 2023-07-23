@@ -174,17 +174,15 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
 
             if (_sir_validptr(final)) {
                 alloc = true;
-                snprintf(final, SIR_MAXERROR, sir_errors[_mid].msg, sir_te.os_error,
+                (void)snprintf(final, SIR_MAXERROR, sir_errors[_mid].msg, sir_te.os_error,
                     (_sir_validstrnofail(sir_te.os_errmsg) ? sir_te.os_errmsg : SIR_UNKNOWN));
             }
         } else {
             final = (char*)sir_errors[_mid].msg;
         }
 
-        int fmtmsg = snprintf(message, SIR_MAXERROR, SIR_ERRORFORMAT, sir_te.loc.func,
+        (void)snprintf(message, SIR_MAXERROR, SIR_ERRORFORMAT, sir_te.loc.func,
             sir_te.loc.file, sir_te.loc.line, _SIR_PRNSTR(final));
-
-        SIR_ASSERT_UNUSED(fmtmsg >= 0, fmtmsg);
 
         if (alloc)
             _sir_safefree(&final);
@@ -231,7 +229,7 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, PRINTF_FOR
 # if !defined(__WIN__)
                     if (NULL != strcasestr(buf, "error") ||
                         NULL != strcasestr(buf, "assert")) {
-# else
+# else /* __WIN__ */
                     if (NULL != StrStrIA(buf, "error") ||
                         NULL != StrStrIA(buf, "assert")) {
 # endif

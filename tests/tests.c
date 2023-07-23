@@ -303,7 +303,7 @@ bool sirtest_filecachesanity(void) {
 
     for (size_t n = 0; n < numfiles - 1; n++) {
         char path[SIR_MAXPATH] = {0};
-        snprintf(path, SIR_MAXPATH, MAKE_LOG_NAME("test-%zu.log"), n);
+        (void)snprintf(path, SIR_MAXPATH, MAKE_LOG_NAME("test-%zu.log"), n);
         rmfile(path);
         ids[n] = sir_addfile(path, SIRL_ALL, (n % 2) ? odd : even);
         pass &= 0 != ids[n] && sir_info("test %zu", n);
@@ -354,7 +354,7 @@ bool sirtest_filecachesanity(void) {
         pass &= sir_remfile(ids[removeorder[n]]);
 
         char path[SIR_MAXPATH] = {0};
-        snprintf(path, SIR_MAXPATH, MAKE_LOG_NAME("test-%zu.log"), removeorder[n]);
+        (void)snprintf(path, SIR_MAXPATH, MAKE_LOG_NAME("test-%zu.log"), removeorder[n]);
         rmfile(path);
     }
 
@@ -1119,7 +1119,7 @@ bool sirtest_perf(void) {
         pass &= si2_init;
 
         char logfilename[SIR_MAXPATH] = {0};
-        snprintf(logfilename, SIR_MAXPATH, MAKE_LOG_NAME("%s%s"), logbasename, logext);
+        (void)snprintf(logfilename, SIR_MAXPATH, MAKE_LOG_NAME("%s%s"), logbasename, logext);
 
         sirfileid logid = sir_addfile(logfilename, SIRL_ALL, SIRO_NOMSEC | SIRO_NONAME);
         pass &= 0 != logid;
@@ -1966,7 +1966,8 @@ bool sirtest_threadrace(void) {
             break;
 
         heap_args[n].pass = true;
-        snprintf(heap_args[n].log_file, SIR_MAXPATH, MAKE_LOG_NAME("multi-thread-race-%zu.log"), n);
+        (void)snprintf(heap_args[n].log_file, SIR_MAXPATH,
+            MAKE_LOG_NAME("multi-thread-race-%zu.log"), n);
 
 #if !defined(__WIN__)
         int create = pthread_create(&thrds[n], NULL, threadrace_thread, (void*)&heap_args[n]);

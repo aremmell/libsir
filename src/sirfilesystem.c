@@ -80,7 +80,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
     }
 #else /* __WIN__ */
         char abs_path[SIR_MAXPATH] = {0};
-        snprintf(abs_path, SIR_MAXPATH, "%s\\%s", base_path, path);
+        (void)snprintf(abs_path, SIR_MAXPATH, "%s\\%s", base_path, path);
 
         stat_ret = stat(abs_path, st);
         _sir_safefree(&base_path);
@@ -122,7 +122,7 @@ bool _sir_openfile(FILE* restrict* restrict f, const char* restrict path,
 
     if (relative) {
         char abs_path[SIR_MAXPATH] = {0};
-        snprintf(abs_path, SIR_MAXPATH, "%s/%s", base_path, path);
+        (void)snprintf(abs_path, SIR_MAXPATH, "%s/%s", base_path, path);
 
         int ret = _sir_fopen(f, abs_path, mode);
         _sir_safefree(&base_path);
@@ -416,7 +416,7 @@ int _sir_aixself(char* buffer, size_t* size) {
     if ((buffer == NULL) || (size == NULL))
         return -1;
 
-    snprintf(pp, sizeof(pp), "/proc/%llu/psinfo", (unsigned long long)_sir_getpid());
+    (void)snprintf(pp, sizeof(pp), "/proc/%llu/psinfo", (unsigned long long)_sir_getpid());
 
     fd = open(pp, O_RDONLY);
     if (fd < 0)
@@ -436,14 +436,15 @@ int _sir_aixself(char* buffer, size_t* size) {
         return -1;
 
     if (argv[0][0] == '/') {
-        snprintf(symlink, SIR_MAXPATH, "%s", argv[0]);
+        (void)snprintf(symlink, SIR_MAXPATH, "%s", argv[0]);
 
         /* Flawfinder: ignore */
         res = readlink(symlink, temp_buffer, SIR_MAXPATH);
         if (res < 0)
             _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
         else
-            snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
+            (void)snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink),
+                temp_buffer);
 
         *size = strnlen(buffer, SIR_MAXPATH);
         return 0;
@@ -452,40 +453,40 @@ int _sir_aixself(char* buffer, size_t* size) {
         if (relative == NULL)
             return -1;
 
-        snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
+        (void)snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
 
         /* Flawfinder: ignore */
         res = readlink(cwd, cwdl, sizeof(cwdl) - 1);
         if (res < 0)
             return -1;
 
-        snprintf(symlink, SIR_MAXPATH, "%s%s", cwdl, relative + 1);
+        (void)snprintf(symlink, SIR_MAXPATH, "%s%s", cwdl, relative + 1);
 
         /* Flawfinder: ignore */
         res = readlink(symlink, temp_buffer, SIR_MAXPATH);
         if (res < 0)
             _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
         else
-            snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
+            (void)snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
         *size = strnlen(buffer, SIR_MAXPATH);
         return 0;
     } else if (strchr(argv[0], '/') != NULL) {
-        snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
+        (void)(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
 
         /* Flawfinder: ignore */
         res = readlink(cwd, cwdl, sizeof(cwdl) - 1);
         if (res < 0)
             return -1;
 
-        snprintf(symlink, SIR_MAXPATH, "%s%s", cwdl, argv[0]);
+        (void)snprintf(symlink, SIR_MAXPATH, "%s%s", cwdl, argv[0]);
 
         /* Flawfinder: ignore */
         res = readlink(symlink, temp_buffer, SIR_MAXPATH);
         if (res < 0)
             _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
         else
-            snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
+            (void)snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
         *size = strnlen(buffer, SIR_MAXPATH);
         return 0;
@@ -502,7 +503,7 @@ int _sir_aixself(char* buffer, size_t* size) {
 
         token = strtok_r(clonedpath, ":", &tokptr);
 
-        snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
+        (void)snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
         /* Flawfinder: ignore */
         res = readlink(cwd, cwdl, sizeof(cwdl) - 1);
         if (res < 0)
@@ -512,10 +513,10 @@ int _sir_aixself(char* buffer, size_t* size) {
             if (token[0] == '.') {
                 char* relative = strchr(token, '/');
                 if (relative != NULL) {
-                    snprintf(symlink, SIR_MAXSLPATH, "%s%s/%s", cwdl, relative + 1,
+                    (void)snprintf(symlink, SIR_MAXSLPATH, "%s%s/%s", cwdl, relative + 1,
                         ps.pr_fname);
                 } else {
-                    snprintf(symlink, SIR_MAXSLPATH, "%s%s", cwdl, ps.pr_fname);
+                    (void)snprintf(symlink, SIR_MAXSLPATH, "%s%s", cwdl, ps.pr_fname);
                 }
 
                 if (stat(symlink, &statstruct) != -1) {
@@ -524,20 +525,20 @@ int _sir_aixself(char* buffer, size_t* size) {
                     if (res < 0)
                         _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
                     else
-                        snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
+                        (void)(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
                     *size = strnlen(buffer, SIR_MAXPATH);
                     return 0;
                 }
             } else {
-                snprintf(symlink, SIR_MAXPATH, "%s/%s", token, ps.pr_fname);
+                (void)snprintf(symlink, SIR_MAXPATH, "%s/%s", token, ps.pr_fname);
                 if (stat(symlink, &statstruct) != -1) {
                     /* Flawfinder: ignore */
                     res = readlink(symlink, temp_buffer, SIR_MAXPATH);
                     if (res < 0)
                         _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
                     else
-                        snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
+                        (void)snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
                     *size = strnlen(buffer, SIR_MAXPATH);
                     return 0;
