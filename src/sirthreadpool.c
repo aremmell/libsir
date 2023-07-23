@@ -141,7 +141,7 @@ bool _sir_threadpool_destroy(sir_threadpool** pool) {
         SIR_ASSERT(0 == join);
         SIR_UNUSED(join);
 #else /* __WIN__ */
-        DWORD join = WaitForSingleObject((*pool)->threads[n], INFINITY);
+        DWORD join = WaitForSingleObject((*pool)->threads[n], INFINITE);
         SIR_ASSERT(WAIT_OBJECT_0 == join);
         SIR_UNUSED(join);
 #endif
