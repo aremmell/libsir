@@ -1914,6 +1914,12 @@ bool sirtest_threadpool(void) {
             }
         }
 
+#if !defined(__WIN__)
+        sleep(1);
+#else
+        Sleep(1000);
+#endif
+
         pass &= sir_info("destroying thread pool...");
         pass &= _sir_threadpool_destroy(&pool);
     }
