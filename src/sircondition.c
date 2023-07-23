@@ -12,6 +12,7 @@ bool _sir_condcreate(sir_condition* cond) {
     return false;
 }
 
+#if 0
 bool _sir_condsignal(sir_condition* cond) {
     if (_sir_validptr(cond)) {
         int op = pthread_cond_signal(cond);
@@ -20,6 +21,7 @@ bool _sir_condsignal(sir_condition* cond) {
 
     return false;
 }
+#endif
 
 bool _sir_condbroadcast(sir_condition* cond) {
     if (_sir_validptr(cond)) {
@@ -39,6 +41,7 @@ bool _sir_conddestroy(sir_condition* cond) {
     return false;
 }
 
+#if 0
 bool _sir_condwait(sir_condition* cond, sir_mutex* mutex) {
     if (_sir_validptr(cond) && _sir_validptr(mutex)) {
         int op = pthread_cond_wait(cond, mutex);
@@ -47,6 +50,7 @@ bool _sir_condwait(sir_condition* cond, sir_mutex* mutex) {
 
     return false;
 }
+#endif
 
 bool _sir_condwait_timeout(sir_condition* cond, sir_mutex* mutex, sir_wait* howlong) {
     if (_sir_validptr(cond) && _sir_validptr(mutex) && _sir_validptr(howlong)) {
@@ -66,6 +70,7 @@ bool _sir_condcreate(sir_condition* cond) {
     return false;
 }
 
+#if 0
 bool _sir_condsignal(sir_condition* cond) {
     if (_sir_validptr(cond)) {
         WakeConditionVariable(cond);
@@ -74,6 +79,7 @@ bool _sir_condsignal(sir_condition* cond) {
 
     return false;
 }
+#endif
 
 bool _sir_condbroadcast(sir_condition* cond) {
     if (_sir_validptr(cond)) {
@@ -89,10 +95,12 @@ bool _sir_conddestroy(sir_condition* cond) {
     return true;
 }
 
+#if 0
 bool _sir_condwait(sir_condition* cond, sir_mutex* mutex) {
     DWORD how_long = INFINITE;
     return _sir_condwait_timeout(cond, mutex, &how_long);
 }
+#endif
 
 bool _sir_condwait_timeout(sir_condition* cond, sir_mutex* mutex, sir_wait* how_long) {
     if (_sir_validptr(cond) && _sir_validptr(mutex) && _sir_validptr(how_long))

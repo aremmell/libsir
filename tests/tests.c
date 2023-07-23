@@ -1884,6 +1884,11 @@ enum {
 
 static bool threadpool_pseudojob(void* arg) {
     sir_debug("this is a pseudo job that actually does nothing (arg: %p)", arg);
+#if !defined(__WIN__)
+    sleep(1);
+#else
+    Sleep(1000);
+#endif
     return true;
 }
 
@@ -1908,16 +1913,6 @@ bool sirtest_threadpool(void) {
                     (uintptr_t)job->fn, job->data);
             }
         }
-
-        /* wait a few seconds for the threads in the pool to process the jobs,
-         * then destroy the thread pool. */
-        pass &= sir_info("sleeping for 1 second in order to let the thread pool"
-                         " process all pending jobs...");
-#if !defined(__WIN__)
-        sleep(1);
-#else /* __WIN__ */
-        Sleep(1000);
-#endif
 
         pass &= sir_info("destroying thread pool...");
         pass &= _sir_threadpool_destroy(&pool);
