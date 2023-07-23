@@ -3,8 +3,10 @@
 /*
  * strlcat from: $OpenBSD: strlcat.c,v 1.19 2019/01/25 00:19:25 millert Exp $
  * strlcpy from: $OpenBSD: strlcpy.c,v 1.16 2019/01/25 00:19:25 millert Exp $
+ * strnlen from: $OpenBSD: strnlen.c,v 1.9  2019/01/25 00:19:25 millert Exp $
+ * strndup from: $OpenBSD: strndup.c,v 1.3  2019/01/25 00:19:25 millert Exp $
  *
- * Copyright (c) 1998, 2015 Todd C. Miller <millert@openbsd.org>
+ * Copyright (c) 1998, 2010, 2015 Todd C. Miller <millert@openbsd.org>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -18,22 +20,17 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-#ifndef _SIR_IMPL_H_INCLUDED
-# define _SIR_IMPL_H_INCLUDED
 
-# if defined(SIR_IMPL_STRLCPY)
-#  undef strlcat
-
+/******************************************************************************/
 /* OpenBSD strlcat() */
+#if defined(SIR_IMPL_STRLCAT) && !defined(SIR_IMPL_STRLCAT_DEF)
+# undef strlcat
 
-/*
- * Appends src to string dst of size dsize (unlike strncat, dsize is the
+/* Appends src to string dst of size dsize (unlike strncat, dsize is the
  * full size of dst, not space left).  At most dsize-1 characters
  * will be copied.  Always NUL terminates (unless dsize <= strlen(dst)).
  * Returns strlen(src) + MIN(dsize, strlen(initial dst)).
- * If retval >= dsize, truncation occurred.
- */
-
+ * If retval >= dsize, truncation occurred. */
 static inline size_t
 _sir_strlcat(char *dst, const char *src, size_t dsize)
 {
@@ -63,20 +60,18 @@ _sir_strlcat(char *dst, const char *src, size_t dsize)
 
   return dlen + (src - osrc); /* count does not include NUL */
 }
-#  define strlcat _sir_strlcat
-# endif /* SIR_IMPL_STRLCAT */
+# define strlcat _sir_strlcat
+# define SIR_IMPL_STRLCAT_DEF 1
+#endif /* SIR_IMPL_STRLCAT */
 
-# if defined(SIR_IMPL_STRLCPY)
-#  undef strlcpy
-
+/******************************************************************************/
 /* OpenBSD strlcpy */
+#if defined(SIR_IMPL_STRLCPY) && !defined(SIR_IMPL_STRLCPY_DEF)
+# undef strlcpy
 
-/*
- * Copy string src to buffer dst of size dsize.  At most dsize-1
+/* Copy string src to buffer dst of size dsize.  At most dsize-1
  * chars will be copied.  Always NUL terminates (unless dsize == 0).
- * Returns strlen(src); if retval >= dsize, truncation occurred.
- */
-
+ * Returns strlen(src); if retval >= dsize, truncation occurred. */
 static inline size_t
 _sir_strlcpy(char *dst, const char *src, size_t dsize)
 {
@@ -100,7 +95,49 @@ _sir_strlcpy(char *dst, const char *src, size_t dsize)
 
   return src - osrc - 1; /* count does not include NUL */
 }
-#  define strlcpy _sir_strlcpy
-# endif /* SIR_IMPL_STRLCPY */
+# define strlcpy _sir_strlcpy
+# define SIR_IMPL_STRLCPY_DEF 1
+#endif /* SIR_IMPL_STRLCPY */
 
-#endif /* !_SIR_IMPL_H_INCLUDED */
+/******************************************************************************/
+/* OpenBSD strnlen */
+#if (defined(SIR_IMPL_STRNLEN) || defined(SIR_IMPL_STRNDUP)) && \
+     !defined(SIR_IMPL_STRNLEN_DEF)
+# undef strnlen
+
+static inline size_t
+_sir_strnlen(const char *str, size_t maxlen)
+{
+  const char *cp;
+
+  for (cp = str; maxlen != 0 && *cp != '\0'; cp++, maxlen--);
+
+  return (size_t)(cp - str);
+}
+# define strnlen _sir_strnlen
+# define SIR_IMPL_STRNLEN_DEF 1
+#endif /* SIR_IMPL_STRNLEN */
+
+/******************************************************************************/
+/* OpenBSD strndup */
+#if defined(SIR_IMPL_STRNDUP) && !defined(SIR_IMPL_STRNDUP_DEF)
+# undef strndup
+
+static inline char *
+_sir_strndup(const char *str, size_t maxlen)
+{
+  char *copy;
+  size_t len;
+
+  len = _sir_strnlen(str, maxlen);
+  copy = malloc(len + 1);
+  if (copy != NULL) {
+    (void)memcpy(copy, str, len);
+    copy[len] = '\0';
+  }
+
+  return copy;
+}
+# define strndup _sir_strndup
+# define SIR_IMPL_STRNDUP_DEF 1
+#endif /* SIR_IMPL_STRNDUP */

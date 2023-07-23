@@ -221,6 +221,10 @@ _set_thread_local_invalid_parameter_handler(
 #  define SIR_IMPL_STRLCAT 1
 # endif
 
+# if defined(__WIN__)
+#  define SIR_IMPL_STRNDUP 1
+# endif
+
 # if defined(__MINGW64__)
 #  define PID_CAST (int)
 # else
@@ -331,7 +335,6 @@ _set_thread_local_invalid_parameter_handler(
 #    include <os/activity.h>
 #   endif
 #  endif
-#  include "sir/impl.h"
 
 #  if defined(PATH_MAX)
 #   define SIR_MAXPATH PATH_MAX
@@ -467,3 +470,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 # endif
 
 #endif /* !_SIR_PLATFORM_H_INCLUDED */
+
+#include "sir/impl.h"
+
+/* End of platform.h */
