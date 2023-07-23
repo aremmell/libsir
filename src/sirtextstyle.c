@@ -152,10 +152,10 @@ bool _sir_formatstyle(sir_colormode mode, const sir_textstyle* style,
                 (uint8_t)_sir_getansibgcmd(style->bg), _sir_getredfromcolor(style->bg),
                 _sir_getgreenfromcolor(style->bg), _sir_getbluefromcolor(style->bg));
         }
-        case SIRCM_INVALID:
+        case SIRCM_INVALID: // GCOVR_EXCL_START
         default:
             return false;
-    }
+    } // GCOVR_EXCL_STOP
 }
 
 bool _sir_validtextstyle(sir_colormode mode, const sir_textstyle* style) {
