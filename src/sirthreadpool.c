@@ -97,10 +97,8 @@ bool _sir_threadpool_add_job(sir_threadpool* pool, sir_threadpool_job* job) {
     if (retval) {
         bool bcast = _sir_condbroadcast(&pool->cond);
         SIR_ASSERT_UNUSED(bcast, bcast);
-    }
-
-    if (retval)
         _sir_selflog("added job; new size: %zu", _sir_queue_size(pool->jobs));
+    }
 
     bool unlock = _sir_mutexunlock(&pool->mutex);
     SIR_ASSERT_UNUSED(unlock, unlock);
