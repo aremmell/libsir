@@ -1307,6 +1307,12 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
         pass &= sir_warn("%d/%d: this warning message sent to stdout and %s.", i + 1, runs, sl_name);
         pass &= sir_error("%d/%d: this error message sent to stdout and %s.", i + 1, runs, sl_name);
 
+        if (set_identity)
+            pass &= sir_syslogid("my test ID");
+
+        if (set_category)
+            pass &= sir_syslogcat("my test category");
+
         if (do_update)
             pass &= sir_syslogopts(SIRO_MSGONLY & ~(SIRO_NOLEVEL | SIRO_NOPID));
 
