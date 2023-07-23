@@ -162,6 +162,8 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
     static const size_t low  = 0;
     static const size_t high = _sir_countof(sir_errors) - 1;
 
+    uint32_t retval = _SIR_E_UNKNOWN;
+
     _SIR_DECLARE_BIN_SEARCH(low, high);
     _SIR_BEGIN_BIN_SEARCH();
 
@@ -187,14 +189,14 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
         if (alloc)
             _sir_safefree(&final);
 
-        return sir_errors[_mid].e;
+        retval = sir_errors[_mid].e;
+        break;
     }
 
     _SIR_ITERATE_BIN_SEARCH((sir_errors[_mid].e < sir_te.lasterror ? 1 : -1));
     _SIR_END_BIN_SEARCH();
 
-    SIR_ASSERT(false);
-    return _SIR_E_UNKNOWN;
+    return retval;
 }
 
 #if defined(SIR_SELFLOG)
