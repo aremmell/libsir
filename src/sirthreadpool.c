@@ -131,20 +131,18 @@ bool _sir_threadpool_destroy(sir_threadpool** pool) {
     }
 
     for (size_t n = 0; n < (*pool)->num_threads; n++) {
-        _sir_selflog("joining thread %zu/%zu...", n + 1, (*pool)->num_threads);
-#if !defined(__WIN__)
         if ((*pool)->threads[n]) {
+            _sir_selflog("joining thread %zu/%zu...", n + 1, (*pool)->num_threads);
+#if !defined(__WIN__)
             int join = pthread_join((*pool)->threads[n], NULL);
             SIR_ASSERT(0 == join);
             SIR_UNUSED(join);
-        }
 #else /* __WIN__ */
-        if ((*pool)->threads[n]) {
             DWORD join = WaitForSingleObject((*pool)->threads[n], INFINITE);
             SIR_ASSERT(WAIT_OBJECT_0 == join);
             SIR_UNUSED(join);
-        }
 #endif
+        }
     }
 
     bool destroy = _sir_queue_destroy(&(*pool)->jobs);
