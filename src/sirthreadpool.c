@@ -157,10 +157,10 @@ bool _sir_threadpool_destroy(sir_threadpool** pool) {
     SIR_UNUSED(destroy);
 
     destroy = _sir_mutexdestroy(&(*pool)->mutex);
-
     SIR_ASSERT(destroy);
     SIR_UNUSED(destroy);
 
+    _sir_safefree((*pool)->threads);
     _sir_safefree(pool);
 
     return true;

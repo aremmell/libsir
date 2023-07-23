@@ -551,10 +551,11 @@ bool _sir_fcache_destroy(sirfcache* sfc) {
     if (!_sir_validptr(sfc))
         return false;
 
-    for (size_t n = 0; n < sfc->count; n++) {
-        SIR_ASSERT(_sirfile_validate(sfc->files[n]));
-        _sirfile_destroy(&sfc->files[n]);
-        sfc->files[n] = NULL;
+    while (sfc->count > 0) {
+        size_t idx = sfc->count - 1;
+        SIR_ASSERT(_sirfile_validate(sfc->files[idx]));
+        _sirfile_destroy(&sfc->files[idx]);
+        sfc->files[idx] = NULL;
         sfc->count--;
     }
 
