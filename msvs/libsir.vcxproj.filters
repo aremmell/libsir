@@ -34,6 +34,12 @@
     <ClCompile Include="..\src\sirplugins.c">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\sirqueue.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\sirthreadpool.c">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\sir.h">
@@ -82,6 +88,12 @@
       <Filter>Include\sir</Filter>
     </ClInclude>
     <ClInclude Include="..\include\textstyle.h">
+      <Filter>Include\sir</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\sir\queue.h">
+      <Filter>Include\sir</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\sir\threadpool.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
   </ItemGroup>

@@ -193,7 +193,9 @@
     <ClCompile Include="..\src\sirmaps.c" />
     <ClCompile Include="..\src\sirmutex.c" />
     <ClCompile Include="..\src\sirplugins.c" />
+    <ClCompile Include="..\src\sirqueue.c" />
     <ClCompile Include="..\src\sirtextstyle.c" />
+    <ClCompile Include="..\src\sirthreadpool.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\sir.h" />
@@ -210,6 +212,8 @@
     <ClInclude Include="..\include\mutex.h" />
     <ClInclude Include="..\include\platform.h" />
     <ClInclude Include="..\include\plugins.h" />
+    <ClInclude Include="..\include\sir\queue.h" />
+    <ClInclude Include="..\include\sir\threadpool.h" />
     <ClInclude Include="..\include\textstyle.h" />
     <ClInclude Include="..\include\types.h" />
   </ItemGroup>
