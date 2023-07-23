@@ -454,14 +454,14 @@ void _sir_initmutex_ts_once(void) {
 BOOL CALLBACK _sir_initialize_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
     SIR_UNUSED(ponce);
     SIR_UNUSED(param);
-    SIR_UNUSED(ctx)
+    SIR_UNUSED(ctx);
     return TRUE;
 }
 
 BOOL CALLBACK _sir_initmutex_cfg_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
     SIR_UNUSED(ponce);
     SIR_UNUSED(param);
-    SIR_UNUSED(ctx)
+    SIR_UNUSED(ctx);
 
     if (!_sir_mutexcreate(&cfg_mutex)) {
         _sir_selflog("error: failed to create mutex!");
@@ -474,7 +474,7 @@ BOOL CALLBACK _sir_initmutex_cfg_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx)
 BOOL CALLBACK _sir_initmutex_fc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
     SIR_UNUSED(ponce);
     SIR_UNUSED(param);
-    SIR_UNUSED(ctx)
+    SIR_UNUSED(ctx);
 
     if (!_sir_mutexcreate(&fc_mutex)) {
         _sir_selflog("error: failed to create mutex!");
@@ -487,7 +487,7 @@ BOOL CALLBACK _sir_initmutex_fc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) 
 BOOL CALLBACK _sir_initmutex_pc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
     SIR_UNUSED(ponce);
     SIR_UNUSED(param);
-    SIR_UNUSED(ctx)
+    SIR_UNUSED(ctx);
 
     if (!_sir_mutexcreate(&pc_mutex)) {
         _sir_selflog("error: failed to create mutex!");
@@ -500,7 +500,7 @@ BOOL CALLBACK _sir_initmutex_pc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) 
 BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
     SIR_UNUSED(ponce);
     SIR_UNUSED(param);
-    SIR_UNUSED(ctx)
+    SIR_UNUSED(ctx);
 
     if (!_sir_mutexcreate(&ts_mutex)) {
         _sir_selflog("error: failed to create mutex!");
