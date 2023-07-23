@@ -223,7 +223,7 @@ uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
         name, addr);
     return (uintptr_t)addr;
 #else
-    SIR_UNUSED(handle)
+    SIR_UNUSED(handle);
     SIR_UNUSED(name);
     return 0;
 #endif
