@@ -1507,7 +1507,7 @@ bool sirtest_filesystem(void) {
     };
 
     for (size_t n = 0; n < _sir_countof(dubious_dirnames); n++) {
-        char* tmp = strdup(dubious_dirnames[n]);
+        char* tmp = strndup(dubious_dirnames[n], strnlen(dubious_dirnames[n], SIR_MAXPATH));
         if (NULL != tmp) {
             printf("\t_sir_getdirname(" WHITE("'%s'") ") = " WHITE("'%s'") "\n",
                 tmp, _sir_getdirname(tmp));
@@ -1533,7 +1533,7 @@ bool sirtest_filesystem(void) {
     };
 
     for (size_t n = 0; n < _sir_countof(dubious_filenames); n++) {
-        char* tmp = strdup(dubious_filenames[n]);
+        char* tmp = strndup(dubious_filenames[n], strnlen(dubious_filenames[n], SIR_MAXPATH));
         if (NULL != tmp) {
             printf("\t_sir_getbasename(" WHITE("'%s'") ") = " WHITE("'%s'") "\n",
                 tmp, _sir_getbasename(tmp));

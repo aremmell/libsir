@@ -81,7 +81,7 @@ sirfile* _sirfile_create(const char* path, sir_levels levels, sir_options opts) 
         return NULL;
     }
 
-    sf->path = strdup(path);
+    sf->path = strndup(path, strnlen(path, SIR_MAXPATH));
     if (!sf->path) {
         (void)_sir_handleerr(errno);
         _sir_safefree(&sf);
@@ -322,7 +322,7 @@ bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
     if (!_sirfile_validate(sf) || !_sir_validptrptr(name) || !_sir_validptrptr(ext))
         return false;
 
-    char* tmp = strdup(sf->path);
+    char* tmp = strndup(sf->path, strnlen(sf->path, SIR_MAXPATH));
     if (!tmp)
         return _sir_handleerr(errno);
 
@@ -339,9 +339,9 @@ bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
         }
 
         _sir_strncpy(*name, namesize + 1, tmp, namesize);
-        *ext = strdup(sf->path + namesize);
+        *ext = strndup(sf->path + namesize, strnlen(sf->path + namesize, SIR_MAXPATH));
     } else {
-        *name = strdup(sf->path);
+        *name = strndup(sf->path, strnlen(sf->path, SIR_MAXPATH));
     }
 
     _sir_safefree(&tmp);
