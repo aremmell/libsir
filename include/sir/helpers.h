@@ -76,6 +76,9 @@ uint16_t _sir_geterrcode(uint32_t err) {
 /** Squelches warnings about unreferenced parameters. */
 # define SIR_UNUSED(param) (void)param
 
+/** Combines SIR_ASSERT and SIR_UNUSED, which are frequently used together. */
+# define SIR_ASSERT_UNUSED(assertion, var) SIR_ASSERT(assertion); SIR_UNUSED(var)
+
 /** Returns a printable string even if NULL. */
 # define _SIR_PRNSTR(str) (str ? str : "<null>")
 

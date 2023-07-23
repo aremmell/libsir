@@ -149,8 +149,7 @@ bool __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32
 
     if (errbuf) {
         HLOCAL local_free = LocalFree((HLOCAL)errbuf);
-        SIR_UNUSED(local_free);
-        SIR_ASSERT(NULL == local_free);
+        SIR_ASSERT_UNUSED(NULL == local_free, local_free);
         errbuf = NULL;
     }
     return false;
@@ -250,7 +249,6 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, PRINTF_FOR
         }
     }
 
-    SIR_ASSERT(success);
-    SIR_UNUSED(success);
+    SIR_ASSERT_UNUSED(success, success);
 }
 #endif
