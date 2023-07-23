@@ -1899,7 +1899,11 @@ bool sirtest_threadpool(void) {
          * then destroy the thread pool. */
         pass &= sir_info("sleeping for 1 second in order to let the thread pool"
                          " process all pending jobs...");
+#if !defined(__WIN__)
         sleep(1);
+#else /* __WIN__ */
+        Sleep(1000);
+#endif
 
         pass &= sir_info("destroying thread pool...");
         pass &= _sir_threadpool_destroy(&pool);

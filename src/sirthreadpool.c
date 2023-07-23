@@ -209,5 +209,9 @@ static unsigned thread_pool_proc(void* arg)
         }
     }
 
+#if !defined(__WIN__)
     return NULL;
+#else /* __WIN__ */
+    return 0;
+#endif
 }
