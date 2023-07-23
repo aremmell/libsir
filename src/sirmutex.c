@@ -27,7 +27,7 @@
 #include "sir/internal.h"
 #include "sir/platform.h"
 
-#if !defined(__WIN__) /* pthread mutex implementation */
+#if !defined(__WIN__) /* pthread implementation */
 bool _sir_mutexcreate(sir_mutex* mutex) {
     if (_sir_validptr(mutex)) {
         pthread_mutexattr_t attr;
@@ -83,32 +83,9 @@ bool _sir_mutexdestroy(sir_mutex* mutex) {
     return false;
 }
 #else /* __WIN__ */
-static
-bool _sirmutex_waitwin32(sir_mutex mutex, DWORD msec) {
-    if (_sir_validptr(mutex)) {
-        DWORD wait = WaitForSingleObject(mutex, msec);
-        switch (wait) {
-            case WAIT_ABANDONED:
-            case WAIT_FAILED:
-                _sir_selflog("warning: WaitForSingleObject returned %08x; danger ahead", wait);
-                return WAIT_FAILED != wait;
-                break;
-            case WAIT_TIMEOUT:
-            case WAIT_OBJECT_0: return true;
-            default: return false; // GCOVR_EXCL_LINE
-        }
-    }
-
-    return false;
-}
-
 bool _sir_mutexcreate(sir_mutex* mutex) {
     if (_sir_validptr(mutex)) {
-        sir_mutex tmp = CreateMutex(NULL, FALSE, NULL);
-        if (!tmp)
-            return _sir_handlewin32err(GetLastError());
-
-        *mutex = tmp;
+        InitializeCriticalSection(mutex);
         return true;
     }
 
@@ -116,22 +93,36 @@ bool _sir_mutexcreate(sir_mutex* mutex) {
 }
 
 bool _sir_mutexlock(sir_mutex* mutex) {
-    return NULL != mutex ? _sirmutex_waitwin32(*mutex, INFINITE) : false;
+    if (_sir_validptr(mutex)) {
+        EnterCriticalSection(mutex);
+        return true;
+    }
+
+    return false;
 }
 
 bool _sir_mutextrylock(sir_mutex* mutex) {
-    return NULL != mutex ? _sirmutex_waitwin32(*mutex, 0) : false;
+    if (_sir_validptr(mutex))
+        return FALSE != TryEnterCriticalSection(mutex);
+
+    return false;
 }
 
 bool _sir_mutexunlock(sir_mutex* mutex) {
-    if (_sir_validptr(mutex))
-        return (FALSE != ReleaseMutex(*mutex)) ? true : _sir_handlewin32err(GetLastError());
+    if (_sir_validptr(mutex)) {
+        LeaveCriticalSection(mutex);
+        return true;
+    }
+
     return false;
 }
 
 bool _sir_mutexdestroy(sir_mutex* mutex) {
-    if (_sir_validptr(mutex))
-        return (FALSE != CloseHandle(*mutex)) ? true : _sir_handlewin32err(GetLastError());
+    if (_sir_validptr(mutex)) {
+        DeleteCriticalSection(mutex);
+        return true;
+    }
+
     return false;
 }
 #endif /* !__WIN__ */

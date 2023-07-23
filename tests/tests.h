@@ -31,6 +31,8 @@
 # include "sir/filecache.h"
 # include "sir/internal.h"
 # include "sir/mutex.h"
+# include "sir/threadpool.h"
+# include "sir/queue.h"
 # include "sir/filesystem.h"
 # include "sir/helpers.h"
 # include "sir/textstyle.h"
@@ -55,7 +57,9 @@
         _sir_strncpy(var.name, SIR_MAXNAME, p_name, SIR_MAXNAME); \
     bool var##_init = false; \
     if (init) \
-        var##_init = sir_init(&var)
+        var##_init = sir_init(&var); \
+    else \
+        (void)var##_init
 
 # define INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, name) \
     INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, name, true)
@@ -272,6 +276,13 @@ bool sirtest_pluginloader(void);
  */
 bool sirtest_getversioninfo(void);
 
+/**
+ * @test Ensure the proper functioning of the thread pool and job queue mech-
+ * anisms.
+ * @returns bool `true` if the test passed, `false` otherwise.
+ */
+bool sirtest_threadpool(void);
+
 /** @} */
 
 /**
@@ -287,7 +298,7 @@ bool print_test_error(bool result, bool expected);
 # define print_expected_error() print_test_error(true, true)
 # define print_result_and_return(pass) print_test_error(pass, false)
 
-void print_os_error(void);
+bool print_os_error(void);
 bool filter_error(bool pass, uint16_t err);
 
 # if !defined(__WIN__)

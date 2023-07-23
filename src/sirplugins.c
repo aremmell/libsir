@@ -44,12 +44,13 @@ sirpluginid _sir_plugin_load(const char* path) {
         return _sir_handleerr(errno);
     }
 # else /* __WIN__ */
-    UINT old_error_mode     = SetErrorMode(SEM_FAILCRITICALERRORS);
-    sir_pluginhandle handle = LoadLibraryA(path);
+    UINT old_error_mode = SetErrorMode(SEM_FAILCRITICALERRORS);
+    plugin->handle      = LoadLibraryA(path);
     SetErrorMode(old_error_mode);
-    if (!handle) {
+    if (!plugin->handle) {
         DWORD err = GetLastError();
         _sir_selflog("error: LoadLibraryA(%s) failed (%lu)", path, err);
+        _sir_plugin_destroy(&plugin);
         return _sir_handlewin32err(err);
     }
 # endif
@@ -67,7 +68,7 @@ sirpluginid _sir_plugin_load(const char* path) {
 
     return _sir_plugin_probe(plugin);
 #else
-    _SIR_UNUSED(path);
+    SIR_UNUSED(path);
     return 0;
 #endif
 }
@@ -88,7 +89,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
      * - get the v1 exports (all versions will have v1 exports), resolve them,
      * and call sir_plugin_query.
      * - switch on version returned to resolve additional exports. this will
-     * necessitate additional versioned interface strctures as members of the
+     * necessitate additional versioned interface structures as members of the
      * sir_plugin struct, e.g. ifacev1, ifacev2). */
     plugin->iface.query   = (sir_plugin_queryfn)
         _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_QUERY);
@@ -190,7 +191,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
 
     return retval;
 #else
-    _SIR_UNUSED(plugin);
+    SIR_UNUSED(plugin);
     return 0;
 #endif
 }
@@ -222,8 +223,8 @@ uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
         name, addr);
     return (uintptr_t)addr;
 #else
-    _SIR_UNUSED(handle)
-    _SIR_UNUSED(name);
+    SIR_UNUSED(handle);
+    SIR_UNUSED(name);
     return 0;
 #endif
 }
@@ -262,7 +263,7 @@ void _sir_plugin_unload(sir_plugin* plugin) {
     _sir_selflog("unloaded plugin (path: '%s', id: %08"PRIx32")", plugin->path,
         plugin->id);
 #else
-    _SIR_UNUSED(plugin);
+    SIR_UNUSED(plugin);
 #endif
 }
 
@@ -279,7 +280,7 @@ sirpluginid _sir_plugin_add(sir_plugin* plugin) {
 
     return retval;
 #else
-    _SIR_UNUSED(plugin);
+    SIR_UNUSED(plugin);
     return 0;
 #endif
 }
@@ -297,7 +298,7 @@ bool _sir_plugin_rem(sirpluginid id) {
 
     return retval;
 #else
-    _SIR_UNUSED(id);
+    SIR_UNUSED(id);
     return false;
 #endif
 }
@@ -311,7 +312,7 @@ void _sir_plugin_destroy(sir_plugin** plugin) {
     _sir_safefree(&(*plugin)->path);
     _sir_safefree(plugin);
 #else
-    _SIR_UNUSED(plugin);
+    SIR_UNUSED(plugin);
 #endif
 }
 
@@ -319,8 +320,8 @@ bool _sir_plugin_cache_pred_id(const void* match, sir_plugin* iter) {
 #if !defined(SIR_NO_PLUGINS)
     return iter->id == *((sirpluginid*)match);
 #else
-    _SIR_UNUSED(match);
-    _SIR_UNUSED(iter);
+    SIR_UNUSED(match);
+    SIR_UNUSED(iter);
     return false;
 #endif
 }
@@ -345,8 +346,8 @@ sirpluginid _sir_plugin_cache_add(sir_plugincache* spc, sir_plugin* plugin) {
     spc->plugins[spc->count++] = plugin;
     return plugin->id;
 #else
-    _SIR_UNUSED(spc);
-    _SIR_UNUSED(plugin);
+    SIR_UNUSED(spc);
+    SIR_UNUSED(plugin);
     return 0;
 #endif
 }
@@ -355,8 +356,8 @@ sir_plugin* _sir_plugin_cache_find_id(sir_plugincache* spc, sirpluginid id) {
 #if !defined(SIR_NO_PLUGINS)
     return _sir_plugin_cache_find(spc, &id, &_sir_plugin_cache_pred_id);
 #else
-    _SIR_UNUSED(spc);
-    _SIR_UNUSED(id);
+    SIR_UNUSED(spc);
+    SIR_UNUSED(id);
     return NULL;
 #endif
 }
@@ -374,9 +375,9 @@ sir_plugin* _sir_plugin_cache_find(sir_plugincache* spc, const void* match,
 
     return NULL;
 #else
-    _SIR_UNUSED(spc);
-    _SIR_UNUSED(match);
-    _SIR_UNUSED(pred);
+    SIR_UNUSED(spc);
+    SIR_UNUSED(match);
+    SIR_UNUSED(pred);
     return NULL;
 #endif
 }
@@ -405,8 +406,8 @@ bool _sir_plugin_cache_rem(sir_plugincache* spc, sirpluginid id) {
 
     return _sir_seterror(_SIR_E_NOITEM);
 #else
-    _SIR_UNUSED(spc);
-    _SIR_UNUSED(id);
+    SIR_UNUSED(spc);
+    SIR_UNUSED(id);
     return false;
 #endif
 }
@@ -416,17 +417,17 @@ bool _sir_plugin_cache_destroy(sir_plugincache* spc) {
     if (!_sir_validptr(spc))
         return false;
 
-    for (size_t n = 0; n < spc->count; n++) {
-        _sir_plugin_destroy(&spc->plugins[n]);
-        spc->plugins[n] = NULL;
+    while (spc->count > 0) {
+        size_t idx = spc->count - 1;
+        _sir_plugin_destroy(&spc->plugins[idx]);
+        spc->plugins[idx] = NULL;
         spc->count--;
     }
 
-    SIR_ASSERT(spc->count == 0);
     memset(spc, 0, sizeof(sir_plugincache));
     return true;
 #else
-    _SIR_UNUSED(spc);
+    SIR_UNUSED(spc);
     return false;
 #endif
 }
@@ -471,11 +472,11 @@ bool _sir_plugin_cache_dispatch(sir_plugincache* spc, sir_level level, sirbuf* b
 
     return (*dispatched == *wanted);
 #else
-    _SIR_UNUSED(spc);
-    _SIR_UNUSED(level);
-    _SIR_UNUSED(buf);
-    _SIR_UNUSED(dispatched);
-    _SIR_UNUSED(wanted);
+    SIR_UNUSED(spc);
+    SIR_UNUSED(level);
+    SIR_UNUSED(buf);
+    SIR_UNUSED(dispatched);
+    SIR_UNUSED(wanted);
     return false;
 #endif
 }

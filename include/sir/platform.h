@@ -221,6 +221,10 @@ _set_thread_local_invalid_parameter_handler(
 #  define SIR_IMPL_STRLCAT 1
 # endif
 
+# if defined(__WIN__)
+#  define SIR_IMPL_STRNDUP 1
+# endif
+
 # if defined(__MINGW64__)
 #  define PID_CAST (int)
 # else
@@ -255,6 +259,9 @@ _set_thread_local_invalid_parameter_handler(
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# if defined(DUMA)
+#  include <duma.h>
+# endif
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <limits.h>
@@ -331,7 +338,6 @@ _set_thread_local_invalid_parameter_handler(
 #    include <os/activity.h>
 #   endif
 #  endif
-#  include "sir/impl.h"
 
 #  if defined(PATH_MAX)
 #   define SIR_MAXPATH PATH_MAX
@@ -360,6 +366,15 @@ typedef void* sir_pluginexport;
 /** The mutex type. */
 typedef pthread_mutex_t sir_mutex;
 
+/** The thread type. */
+typedef pthread_t sir_thread;
+
+/** The condition variable type. */
+typedef pthread_cond_t sir_condition;
+
+/** The mutex/condition variable wait time type. */
+typedef struct timespec sir_wait;
+
 /** The one-time type. */
 typedef pthread_once_t sir_once;
 
@@ -386,7 +401,16 @@ typedef HMODULE sir_pluginhandle;
 typedef FARPROC sir_pluginexport;
 
 /** The mutex type. */
-typedef HANDLE sir_mutex;
+typedef CRITICAL_SECTION sir_mutex;
+
+/** The thread type. */
+typedef HANDLE sir_thread;
+
+/** The condition variable type. */
+typedef CONDITION_VARIABLE sir_condition;
+
+/** The mutex/condition variable wait time type. */
+typedef DWORD sir_wait;
 
 /** The one-time type. */
 typedef INIT_ONCE sir_once;
@@ -403,7 +427,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #  define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
 
 /** The mutex initializer. */
-#  define SIR_MUTEX_INIT NULL
+#  define SIR_MUTEX_INIT {0}
 
 # endif /* !__WIN__ */
 
@@ -449,3 +473,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 # endif
 
 #endif /* !_SIR_PLATFORM_H_INCLUDED */
+
+#include "sir/impl.h"
+
+/* End of platform.h */

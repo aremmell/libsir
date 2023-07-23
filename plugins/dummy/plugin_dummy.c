@@ -28,6 +28,10 @@
 #include "sir/ansimacros.h"
 #include "sir/helpers.h"
 
+#if !defined(PLUGIN_NAME)
+# define PLUGIN_NAME "plugin_dummy"
+#endif
+
 /*
  * Controlling misbehavior via preprocessor macros:
  *
@@ -47,9 +51,9 @@
 
 #if defined(__WIN__)
 BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved) {
-    _SIR_UNUSED(module);
-    _SIR_UNUSED(ul_reason_for_call);
-    _SIR_UNUSED(reserved);
+    SIR_UNUSED(module);
+    SIR_UNUSED(ul_reason_for_call);
+    SIR_UNUSED(reserved);
     return TRUE;
 }
 #endif
@@ -85,7 +89,8 @@ PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
 #endif
     info->caps      = caps;
 
-    printf("\t" DGRAY("plugin_dummy ('%s')") "\n", __func__);
+    /* cppcheck-suppress syntaxError */
+    printf("\t" DGRAY("" PLUGIN_NAME " ('%s')") "\n", __func__);
 
 #if defined(PLUGINDUMMY_BADBEHAVIOR1)
     return false;
@@ -96,7 +101,7 @@ PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
 
 #if !defined(PLUGINDUMMY_BADBEHAVIOR4)
 PLUGIN_EXPORT bool sir_plugin_init(void) {
-    printf("\t" DGRAY("plugin_dummy ('%s')") "\n", __func__);
+    printf("\t" DGRAY("" PLUGIN_NAME " ('%s')") "\n", __func__);
 # if defined(PLUGINDUMMY_BADBEHAVIOR5)
     return false;
 # else
@@ -107,18 +112,18 @@ PLUGIN_EXPORT bool sir_plugin_init(void) {
 
 PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message) {
 #if defined(PLUGINDUMMY_BADBEHAVIOR6)
-    _SIR_UNUSED(level);
-    _SIR_UNUSED(message);
+    SIR_UNUSED(level);
+    SIR_UNUSED(message);
     return false;
 #else
-    printf("\t" DGRAY("plugin_dummy (%s): level: %04"PRIx32", message: %s"),
+    printf("\t" DGRAY("" PLUGIN_NAME " (%s): level: %04"PRIx32", message: %s"),
         __func__, level, message);
     return true;
 #endif
 }
 
 PLUGIN_EXPORT bool sir_plugin_cleanup(void) { //-V524
-    printf("\t" DGRAY("plugin_dummy ('%s')") "\n", __func__);
+    printf("\t" DGRAY("" PLUGIN_NAME " ('%s')") "\n", __func__);
 #if defined(PLUGINDUMMY_BADBEHAVIOR6)
     return false;
 #else

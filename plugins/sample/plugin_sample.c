@@ -30,9 +30,9 @@
 
 #if defined(__WIN__)
 BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved) {
-    _SIR_UNUSED(module);
-    _SIR_UNUSED(ul_reason_for_call);
-    _SIR_UNUSED(reserved);
+    SIR_UNUSED(module);
+    SIR_UNUSED(ul_reason_for_call);
+    SIR_UNUSED(reserved);
     return TRUE;
 }
 #endif

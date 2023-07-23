@@ -29,6 +29,7 @@
 static sir_test sir_tests[] = {
     {"performance",             sirtest_perf, false, true},
     {"thread-race",             sirtest_threadrace, false, true},
+    {"thread-pool",             sirtest_threadpool, false, true},
     {"exceed-max-buffer-size",  sirtest_exceedmaxsize, false, true},
     {"no-output-destination",   sirtest_failnooutputdest, false, true},
     {"null-pointers",           sirtest_failnulls, false, true},
@@ -80,6 +81,18 @@ mallocctl(MTDEBUGPATTERN, 1);
 #if defined(__OpenBSD__) && defined(DEBUG)
 extern char *malloc_options;
 malloc_options = "CFGRSU";
+#endif
+
+#if defined(DUMA)
+# if defined(DUMA_EXPLICIT_INIT)
+duma_init();
+# endif
+# if defined(DUMA_MIN_ALIGNMENT)
+#  if DUMA_MIN_ALIGNMENT > 0
+DUMA_SET_ALIGNMENT(DUMA_MIN_ALIGNMENT);
+#  endif
+# endif
+DUMA_SET_FILL(0x2E);
 #endif
 
 #if !defined(__WIN__) && !defined(__HAIKU__)
@@ -185,11 +198,11 @@ malloc_options = "CFGRSU";
     if (passed == tgt_tests) {
         printf("\n" WHITEB("done: ")
                    GREENB("%s%zu " ULINE("libsir") " %s passed in %.03fsec!") "\n\n",
-            tgt_tests > 1 ? "all " : "", tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
+            tgt_tests > 1 ? "all " : "", tgt_tests, TEST_S(tgt_tests), (double)elapsed / (double)1e3);
     } else {
         printf("\n" WHITEB("done: ")
                    REDB("%zu of %zu " ULINE("libsir") " %s failed in %.03fsec") "\n\n",
-            tgt_tests - passed, tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
+            tgt_tests - passed, tgt_tests, TEST_S(tgt_tests), (double)elapsed / (double)1e3);
 
         printf(REDB("Failed %s:") "\n\n", TEST_S(tgt_tests - passed));
 
@@ -203,7 +216,7 @@ malloc_options = "CFGRSU";
         printf(WHITEB(EMPH("press any key to exit...")) "\n");
         char ch = '\0';
         (void)_sir_getchar(&ch);
-        _SIR_UNUSED(ch);
+        SIR_UNUSED(ch);
     }
 
     return passed == tgt_tests ? EXIT_SUCCESS : EXIT_FAILURE;
@@ -494,10 +507,8 @@ bool sirtest_rollandarchivefile(void) {
     FILE* f = NULL;
     _sir_fopen(&f, logfilename, "w");
 
-    if (!f) {
-        print_os_error();
-        return false;
-    }
+    if (!f)
+        return print_os_error();
 
     if (0 != fseek(f, fillsize, SEEK_SET)) {
         handle_os_error(true, "fseek in file %s failed!", logfilename);
@@ -1066,7 +1077,7 @@ bool sirtest_perf(void) {
     static const char* logbasename = MAKE_LOG_NAME("libsir-perf");
     static const char* logext      = ".log";
 
-#if !defined(__WIN__)
+#if !defined(__WIN__) && !defined(DUMA)
     static const size_t perflines = 1000000;
 #else /* __WIN__ */
     static const size_t perflines = 100000;
@@ -1087,7 +1098,7 @@ bool sirtest_perf(void) {
 
         for (size_t n = 0; n < perflines; n++)
             printf(WHITE("%.2f: lorem ipsum foo bar %s: %zu") "\n",
-                sirtimerelapsed(&printftimer), "baz", 1234 + n);
+                (double)sirtimerelapsed(&printftimer), "baz", 1234 + n);
 
         printfelapsed = sirtimerelapsed(&printftimer);
 
@@ -1098,7 +1109,7 @@ bool sirtest_perf(void) {
 
         for (size_t n = 0; n < perflines; n++)
             sir_debug("%.2f: lorem ipsum foo bar %s: %zu",
-                sirtimerelapsed(&stdiotimer), "baz", 1234 + n);
+                (double)sirtimerelapsed(&stdiotimer), "baz", 1234 + n);
 
         stdioelapsed = sirtimerelapsed(&stdiotimer);
 
@@ -1129,13 +1140,16 @@ bool sirtest_perf(void) {
 
         if (pass) {
             printf("\t" WHITEB("printf: ") CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
-                perflines, printfelapsed / 1e3, perflines / (printfelapsed / 1e3));
+                perflines, (double)printfelapsed / (double)1e3,
+                (double)perflines / (double)((double)printfelapsed / (double)1e3));
             printf("\t" WHITEB("libsir(stdout): ")
                    CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
-                perflines, stdioelapsed / 1e3, perflines / (stdioelapsed / 1e3));
+                perflines, (double)stdioelapsed / (double)1e3,
+                (double)perflines / (double)((double)stdioelapsed / (double)1e3));
             printf("\t" WHITEB("libsir(log file): ")
                    CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
-                perflines, fileelapsed / 1e3, perflines / (fileelapsed / 1e3));
+                perflines, (double)fileelapsed / (double)1e3,
+                (double)perflines / (double)((double)fileelapsed / (double)1e3));
             printf("\t" WHITEB("timer resolution: ") CYAN("~%ldnsec") "\n", sirtimergetres());
         }
     }
@@ -1335,13 +1349,12 @@ static bool generic_disabled_syslog_test(const char* sl_name, const char* identi
     si.d_syslog.levels = SIRL_DEFAULT;
     bool pass = true;
 
-    _SIR_UNUSED(sl_name);
+    SIR_UNUSED(sl_name);
 
     printf("\tSIR_NO_SYSTEM_LOGGERS is defined; expecting calls to fail...\n");
 
     /* init should just ignore the syslog settings. */
-    si_init = sir_init(&si);
-    pass &= si_init;
+    pass &= sir_init(&si);
 
     /* these calls should all fail. */
     printf("\tsetting levels...\n");
@@ -1492,7 +1505,7 @@ bool sirtest_filesystem(void) {
     };
 
     for (size_t n = 0; n < _sir_countof(dubious_dirnames); n++) {
-        char* tmp = strdup(dubious_dirnames[n]);
+        char* tmp = strndup(dubious_dirnames[n], strnlen(dubious_dirnames[n], SIR_MAXPATH));
         if (NULL != tmp) {
             printf("\t_sir_getdirname(" WHITE("'%s'") ") = " WHITE("'%s'") "\n",
                 tmp, _sir_getdirname(tmp));
@@ -1518,7 +1531,7 @@ bool sirtest_filesystem(void) {
     };
 
     for (size_t n = 0; n < _sir_countof(dubious_filenames); n++) {
-        char* tmp = strdup(dubious_filenames[n]);
+        char* tmp = strndup(dubious_filenames[n], strnlen(dubious_filenames[n], SIR_MAXPATH));
         if (NULL != tmp) {
             printf("\t_sir_getbasename(" WHITE("'%s'") ") = " WHITE("'%s'") "\n",
                 tmp, _sir_getbasename(tmp));
@@ -1555,7 +1568,7 @@ bool sirtest_filesystem(void) {
         pass &= ret;
         if (!ret) {
             bool unused = print_test_error(false, false);
-            _SIR_UNUSED(unused);
+            SIR_UNUSED(unused);
             continue;
         }
 
@@ -1601,7 +1614,7 @@ bool sirtest_filesystem(void) {
         pass &= ret;
         if (!ret) {
             bool unused = print_test_error(false, false);
-            _SIR_UNUSED(unused);
+            SIR_UNUSED(unused);
             continue;
         }
 
@@ -1741,13 +1754,13 @@ bool sirtest_pluginloader(void) {
     static const char* plugin8 = "build/lib/i_dont_exist."PLUGIN_EXT;
 
 #if defined(SIR_NO_PLUGINS)
-    _SIR_UNUSED(plugin2);
-    _SIR_UNUSED(plugin3);
-    _SIR_UNUSED(plugin4);
-    _SIR_UNUSED(plugin5);
-    _SIR_UNUSED(plugin6);
-    _SIR_UNUSED(plugin7);
-    _SIR_UNUSED(plugin8);
+    SIR_UNUSED(plugin2);
+    SIR_UNUSED(plugin3);
+    SIR_UNUSED(plugin4);
+    SIR_UNUSED(plugin5);
+    SIR_UNUSED(plugin6);
+    SIR_UNUSED(plugin7);
+    SIR_UNUSED(plugin8);
 
     printf("\tSIR_NO_PLUGINS is defined; expecting calls to fail\n");
 
@@ -1863,15 +1876,61 @@ bool sirtest_getversioninfo(void) {
     return print_result_and_return(pass);
 }
 
-#if !defined(__WIN__)
-static void* sirtest_thread(void* arg);
-#else /* __WIN__ */
-static unsigned sirtest_thread(void* arg);
-#endif
-
 enum {
     NUM_THREADS = 4
 };
+
+static bool threadpool_pseudojob(void* arg) {
+    sir_debug("this is a pseudo job that actually does nothing (arg: %p)", arg);
+#if !defined(__WIN__)
+    sleep(1);
+#else
+    Sleep(1000);
+#endif
+    return true;
+}
+
+bool sirtest_threadpool(void) {
+    INIT(si, SIRL_ALL, SIRO_NOTIME | SIRO_NOHOST | SIRO_NONAME, 0, 0);
+    bool pass = si_init;
+
+    static const size_t num_jobs = 30;
+    sir_threadpool* pool         = NULL;
+
+    pass &= _sir_threadpool_create(&pool, NUM_THREADS);
+    if (pass) {
+        /* dispatch a whole bunch of jobs. */
+        for (size_t n = 0; n < num_jobs; n++) {
+            sir_threadpool_job* job = calloc(1, sizeof(sir_threadpool_job));
+            pass &= NULL != job;
+            if (job) {
+                job->fn = &threadpool_pseudojob;
+                job->data = (void*)(n + 1);
+                pass &= _sir_threadpool_add_job(pool, job);
+                pass &= sir_info("dispatched job (fn: %"PRIxPTR", data: %p)",
+                    (uintptr_t)job->fn, job->data);
+            }
+        }
+
+#if !defined(__WIN__)
+        sleep(1);
+#else
+        Sleep(1000);
+#endif
+
+        pass &= sir_info("destroying thread pool...");
+        pass &= _sir_threadpool_destroy(&pool);
+    }
+
+    pass &= sir_cleanup();
+    return print_result_and_return(pass);
+}
+
+#if !defined(__WIN__)
+static void* threadrace_thread(void* arg);
+#else /* __WIN__ */
+static unsigned threadrace_thread(void* arg);
+#endif
 
 bool sirtest_threadrace(void) {
 #if !defined(__WIN__)
@@ -1900,12 +1959,12 @@ bool sirtest_threadrace(void) {
         snprintf(heap_args[n].log_file, SIR_MAXPATH, MAKE_LOG_NAME("multi-thread-race-%zu.log"), n);
 
 #if !defined(__WIN__)
-        int create = pthread_create(&thrds[n], NULL, sirtest_thread, (void*)&heap_args[n]);
+        int create = pthread_create(&thrds[n], NULL, threadrace_thread, (void*)&heap_args[n]);
         if (0 != create) {
             errno = create;
             handle_os_error(true, "pthread_create() for thread #%zu failed!", n + 1);
 #else /* __WIN__ */
-        thrds[n] = _beginthreadex(NULL, 0, sirtest_thread, (void*)&heap_args[n], 0, NULL);
+        thrds[n] = _beginthreadex(NULL, 0, threadrace_thread, (void*)&heap_args[n], 0, NULL);
         if (0 == thrds[n]) {
             handle_os_error(true, "_beginthreadex() for thread #%zu failed!", n + 1);
 #endif
@@ -1956,9 +2015,9 @@ bool sirtest_threadrace(void) {
 }
 
 #if !defined(__WIN__)
-static void* sirtest_thread(void* arg) {
+static void* threadrace_thread(void* arg) {
 #else /* __WIN__ */
-unsigned sirtest_thread(void* arg) {
+unsigned threadrace_thread(void* arg) {
 #endif
     pid_t threadid       = _sir_gettid();
     thread_args* my_args = (thread_args*)arg;
@@ -1968,7 +2027,7 @@ unsigned sirtest_thread(void* arg) {
 
     if (0 == id) {
         bool unused = print_test_error(false, false);
-        _SIR_UNUSED(unused);
+        SIR_UNUSED(unused);
 #if !defined(__WIN__)
         return NULL;
 #else /* __WIN__ */
@@ -1979,7 +2038,13 @@ unsigned sirtest_thread(void* arg) {
     printf("\thi, i'm thread (id: %d), logging to: '%s'...\n",
             PID_CAST threadid, my_args->log_file);
 
-    for (size_t n = 0; n < 1000; n++) {
+#if !defined(DUMA)
+# define NUM_ITERATIONS 1000
+#else
+# define NUM_ITERATIONS 100
+#endif
+
+    for (size_t n = 0; n < NUM_ITERATIONS; n++) {
         /* choose a random level, and colors. */
         sir_textcolor fg = SIRTC_INVALID;
         sir_textcolor bg = SIRTC_INVALID;
@@ -2063,10 +2128,11 @@ bool print_test_error(bool result, bool expected) {
     return result;
 }
 
-void print_os_error(void) {
+bool print_os_error(void) {
     char message[SIR_MAXERROR] = {0};
     uint16_t code              = sir_geterror(message);
     fprintf(stderr, "\t" RED("OS error: (%"PRIu16", %s)") "\n", code, message);
+    return false;
 }
 
 bool filter_error(bool pass, uint16_t err) {
@@ -2136,7 +2202,7 @@ bool deletefiles(const char* search, const char* path, const char* filename, uns
 }
 
 bool countfiles(const char* search, const char* path, const char* filename, unsigned* data) {
-    _SIR_UNUSED(path);
+    SIR_UNUSED(path);
     if (strstr(filename, search))
         (*data)++;
     return true;
@@ -2145,17 +2211,14 @@ bool countfiles(const char* search, const char* path, const char* filename, unsi
 bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* data) {
 #if !defined(__WIN__)
     DIR* d = opendir(path);
-    if (!d) {
-        print_os_error();
-        return false;
-    }
+    if (!d)
+        return print_os_error();
 
     rewinddir(d);
     struct dirent* di = readdir(d);
     if (!di) {
         closedir(d);
-        print_os_error();
-        return false;
+        return print_os_error();
     }
 
     while (NULL != di) {
@@ -2207,8 +2270,10 @@ float sirtimerelapsed(const sir_timer* timer) {
 #if !defined(__WIN__)
     struct timespec now;
     if (0 == clock_gettime(SIRTEST_CLOCK, &now)) {
-        return (float)((now.tv_sec * 1e3) + (now.tv_nsec / 1e6) - (timer->ts.tv_sec * 1e3) +
-            (timer->ts.tv_nsec / 1e6));
+        return (float)(((double)now.tv_sec * (double)1e3)
+            + ((double)now.tv_nsec / (double)1e6)
+            - ((double)timer->ts.tv_sec * (double)1e3)
+            + ((double)timer->ts.tv_nsec / (double)1e6));
     } else {
         handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK);
     }

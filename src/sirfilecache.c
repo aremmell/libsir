@@ -81,7 +81,7 @@ sirfile* _sirfile_create(const char* path, sir_levels levels, sir_options opts) 
         return NULL;
     }
 
-    sf->path = strdup(path);
+    sf->path = strndup(path, strnlen(path, SIR_MAXPATH));
     if (!sf->path) {
         (void)_sir_handleerr(errno);
         _sir_safefree(&sf);
@@ -322,7 +322,7 @@ bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
     if (!_sirfile_validate(sf) || !_sir_validptrptr(name) || !_sir_validptrptr(ext))
         return false;
 
-    char* tmp = strdup(sf->path);
+    char* tmp = strndup(sf->path, strnlen(sf->path, SIR_MAXPATH));
     if (!tmp)
         return _sir_handleerr(errno);
 
@@ -339,9 +339,9 @@ bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
         }
 
         _sir_strncpy(*name, namesize + 1, tmp, namesize);
-        *ext = strdup(sf->path + namesize);
+        *ext = strndup(sf->path + namesize, strnlen(sf->path + namesize, SIR_MAXPATH));
     } else {
-        *name = strdup(sf->path);
+        *name = strndup(sf->path, strnlen(sf->path, SIR_MAXPATH));
     }
 
     _sir_safefree(&tmp);
@@ -479,8 +479,8 @@ bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
     char* real1 = realpath(path, resolved1);
     char* real2 = realpath(iter->path, resolved2);
 
-    _SIR_UNUSED(real1);
-    _SIR_UNUSED(real2);
+    SIR_UNUSED(real1);
+    SIR_UNUSED(real2);
 
     if ((!stat(resolved1, &st1) && !stat(resolved2, &st2)) ||
         (!stat(path, &st1) && !stat(iter->path, &st2))) {
@@ -551,14 +551,14 @@ bool _sir_fcache_destroy(sirfcache* sfc) {
     if (!_sir_validptr(sfc))
         return false;
 
-    for (size_t n = 0; n < sfc->count; n++) {
-        SIR_ASSERT(_sirfile_validate(sfc->files[n]));
-        _sirfile_destroy(&sfc->files[n]);
-        sfc->files[n] = NULL;
+    while (sfc->count > 0) {
+        size_t idx = sfc->count - 1;
+        SIR_ASSERT(_sirfile_validate(sfc->files[idx]));
+        _sirfile_destroy(&sfc->files[idx]);
+        sfc->files[idx] = NULL;
         sfc->count--;
     }
 
-    SIR_ASSERT(sfc->count == 0);
     memset(sfc, 0, sizeof(sirfcache));
     return true;
 }

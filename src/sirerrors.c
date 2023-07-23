@@ -59,7 +59,7 @@ bool __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t l
     if (_SIR_E_NOERROR != err) { //-V616
         char errmsg[SIR_MAXERROR] = {0};
         uint32_t code             = _sir_geterror(errmsg);
-        _SIR_UNUSED(code);
+        SIR_UNUSED(code);
         __sir_selflog(func, file, line, "%s", errmsg);
     }
 #endif
@@ -129,7 +129,7 @@ void _sir_invalidparameter(const wchar_t* expr, const wchar_t* func, const wchar
     unsigned int line, uintptr_t reserved) {
     _sir_selflog("invalid parameter handler: expression: '%S' in %S (%S:%u)",
         expr, func, file, line);
-    _SIR_UNUSED(reserved);
+    SIR_UNUSED(reserved);
 }
 
 bool __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32_t line) {
@@ -149,7 +149,7 @@ bool __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32
 
     if (errbuf) {
         HLOCAL local_free = LocalFree((HLOCAL)errbuf);
-        _SIR_UNUSED(local_free);
+        SIR_UNUSED(local_free);
         SIR_ASSERT(NULL == local_free);
         errbuf = NULL;
     }
@@ -185,7 +185,7 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
         int fmtmsg = snprintf(message, SIR_MAXERROR, SIR_ERRORFORMAT, sir_te.loc.func,
             sir_te.loc.file, sir_te.loc.line, _SIR_PRNSTR(final));
 
-        _SIR_UNUSED(fmtmsg);
+        SIR_UNUSED(fmtmsg);
         SIR_ASSERT(fmtmsg >= 0);
 
         if (alloc)
@@ -251,6 +251,6 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, PRINTF_FOR
     }
 
     SIR_ASSERT(success);
-    _SIR_UNUSED(success);
+    SIR_UNUSED(success);
 }
 #endif
