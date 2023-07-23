@@ -426,24 +426,25 @@ void _sir_initialize_once(void) {
 }
 
 void _sir_initmutex_cfg_once(void) {
-    if (!_sir_mutexcreate(&cfg_mutex))
-        SIR_ASSERT(!"failed to create mutex!");
+    bool created = _sir_mutexcreate(&cfg_mutex)
+    SIR_ASSERT_UNUSED(created, created);
 }
 
 void _sir_initmutex_fc_once(void) {
-    if (!_sir_mutexcreate(&fc_mutex))
-        SIR_ASSERT(!"failed to create mutex!");
+    bool created = _sir_mutexcreate(&fc_mutex)
+    SIR_ASSERT_UNUSED(created, created);
 }
 
 void _sir_initmutex_pc_once(void) {
-    if (!_sir_mutexcreate(&pc_mutex))
-        SIR_ASSERT(!"failed to create mutex!");
+    bool created = _sir_mutexcreate(&pc_mutex)
+    SIR_ASSERT_UNUSED(created, created);
 }
 
 void _sir_initmutex_ts_once(void) {
-    if (!_sir_mutexcreate(&ts_mutex))
-        SIR_ASSERT(!"failed to create mutex!");
+    bool created = _sir_mutexcreate(&ts_mutex)
+    SIR_ASSERT_UNUSED(created, created);
 }
+
 #else /* __WIN__ */
 BOOL CALLBACK _sir_initialize_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
     SIR_UNUSED(ponce);
