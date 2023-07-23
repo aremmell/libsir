@@ -83,6 +83,18 @@ extern char *malloc_options;
 malloc_options = "CFGRSU";
 #endif
 
+#if defined(DUMA)
+# if defined(DUMA_EXPLICIT_INIT)
+duma_init();
+# endif
+# if defined(DUMA_MIN_ALIGNMENT)
+#  if DUMA_MIN_ALIGNMENT > 0
+DUMA_SET_ALIGNMENT(DUMA_MIN_ALIGNMENT);
+#  endif
+# endif
+DUMA_SET_FILL(0x2E);
+#endif
+
 #if !defined(__WIN__) && !defined(__HAIKU__)
     /* Disallow execution by root / sudo; some of the tests rely on lack of permissions. */
     if (geteuid() == 0) {
