@@ -507,10 +507,8 @@ bool sirtest_rollandarchivefile(void) {
     FILE* f = NULL;
     _sir_fopen(&f, logfilename, "w");
 
-    if (!f) {
-        print_os_error();
-        return false;
-    }
+    if (!f)
+        return print_os_error();
 
     if (0 != fseek(f, fillsize, SEEK_SET)) {
         handle_os_error(true, "fseek in file %s failed!", logfilename);
@@ -2130,10 +2128,11 @@ bool print_test_error(bool result, bool expected) {
     return result;
 }
 
-void print_os_error(void) {
+bool print_os_error(void) {
     char message[SIR_MAXERROR] = {0};
     uint16_t code              = sir_geterror(message);
     fprintf(stderr, "\t" RED("OS error: (%"PRIu16", %s)") "\n", code, message);
+    return false;
 }
 
 bool filter_error(bool pass, uint16_t err) {
@@ -2212,17 +2211,14 @@ bool countfiles(const char* search, const char* path, const char* filename, unsi
 bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* data) {
 #if !defined(__WIN__)
     DIR* d = opendir(path);
-    if (!d) {
-        print_os_error();
-        return false;
-    }
+    if (!d)
+        return print_os_error();
 
     rewinddir(d);
     struct dirent* di = readdir(d);
     if (!di) {
         closedir(d);
-        print_os_error();
-        return false;
+        return print_os_error();
     }
 
     while (NULL != di) {
