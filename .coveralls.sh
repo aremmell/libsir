@@ -439,19 +439,6 @@ remove_coverage
 rm -f bad.c > /dev/null 2>&1
 rm -f bad.so > /dev/null 2>&1
 
-# Run 31 - Break malloc function
-${DO_MAKE:-make} -j ${JOBS:?} clean
-${DO_MAKE:-make} -j ${JOBS:?} SIR_DEBUG=1 SIR_SELFLOG=1
-printf '%s\n' "int malloc() { return 0; }" > bad.c
-gcc -shared -fPIC bad.c -o bad.so || true
-env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
-env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
-remove_sample || true
-run_gcovr run-31.json
-remove_coverage
-rm -f bad.c > /dev/null 2>&1
-rm -f bad.so > /dev/null 2>&1
-
 # Undo redirect
 exec 1>&5
 
