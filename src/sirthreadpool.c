@@ -161,8 +161,7 @@ static unsigned thread_pool_proc(void* arg)
     sir_threadpool* pool = (sir_threadpool*)arg;
     while (true) {
         bool locked = _sir_mutexlock(&pool->mutex);
-        SIR_ASSERT(locked);
-        SIR_UNUSED(locked);
+        SIR_ASSERT_UNUSED(locked, locked);
 
         while (_sir_queue_isempty(pool->jobs) && !pool->cancel) {
 #if !defined(__WIN__)
@@ -180,8 +179,7 @@ static unsigned thread_pool_proc(void* arg)
             bool job_popped         = _sir_queue_pop(pool->jobs, (void**)&job);
 
             bool unlocked = _sir_mutexunlock(&pool->mutex);
-            SIR_ASSERT(unlocked);
-            SIR_UNUSED(unlocked);
+            SIR_ASSERT_UNUSED(unlocked, unlocked);
 
             if (job_popped) {
                 _sir_selflog("picked up job (fn: %"PRIxPTR", data: %p)",
@@ -192,8 +190,7 @@ static unsigned thread_pool_proc(void* arg)
         } else {
             _sir_selflog("cancel flag is set; exiting");
             bool unlocked = _sir_mutexunlock(&pool->mutex);
-            SIR_ASSERT(unlocked);
-            SIR_UNUSED(unlocked);
+            SIR_ASSERT_UNUSED(unlocked, unlocked);
             break;
         }
     }
