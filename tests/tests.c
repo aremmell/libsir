@@ -1309,9 +1309,11 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
 
         if (set_identity)
             pass &= sir_syslogid("my test ID");
+            pass &= sir_syslogid("my test ID"); /* test deduping. */
 
         if (set_category)
             pass &= sir_syslogcat("my test category");
+            pass &= sir_syslogcat("my test category"); /* test deduping. */
 
         if (do_update)
             pass &= sir_syslogopts(SIRO_MSGONLY & ~(SIRO_NOLEVEL | SIRO_NOPID));
