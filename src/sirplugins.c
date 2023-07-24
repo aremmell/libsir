@@ -229,12 +229,12 @@ uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
 #endif
 }
 
-void _sir_plugin_unload(sir_plugin* plugin) {
+bool _sir_plugin_unload(sir_plugin* plugin) {
 #if !defined(SIR_NO_PLUGINS)
     if (!_sir_validptrnofail(plugin) || !_sir_validptrnofail(plugin->handle)) {
         _sir_selflog("error: plugin object (%p) or handle (%p) are null;"
                      " cannot unload!", (void*)plugin, (plugin ? plugin->handle : NULL));
-        return;
+        return false;
     }
 
     /* if the plugin cleanup export was resolved, call it. */
@@ -244,17 +244,15 @@ void _sir_plugin_unload(sir_plugin* plugin) {
 
 # if !defined(__WIN__)
     if (0 != dlclose(plugin->handle)) {
-        _sir_selflog("error: dlclose(%p) failed (%s)", plugin->handle, //-V576
-            _SIR_PRNSTR(dlerror()));
-        (void)_sir_handleerr(errno);
-        return;
+        const char* err = dlerror();
+        _sir_selflog("error: dlclose(%p) failed (%s)", plugin->handle, _SIR_PRNSTR(err));
+        return _sir_handleerr(errno);
     }
 # else /* __WIN__ */
     if (!FreeLibrary(plugin->handle)) {
         DWORD err = GetLastError();
         _sir_selflog("error: FreeLibrary(%p) failed (%lu)", plugin->handle, err);
-        (void)_sir_handlewin32err(err);
-        return;
+        return _sir_handlewin32err(err);
     }
 # endif
 
@@ -262,8 +260,10 @@ void _sir_plugin_unload(sir_plugin* plugin) {
     plugin->loaded = false;
     _sir_selflog("unloaded plugin (path: '%s', id: %08"PRIx32")", plugin->path,
         plugin->id);
+    return true;
 #else
     SIR_UNUSED(plugin);
+    return false;
 #endif
 }
 
@@ -303,12 +303,13 @@ bool _sir_plugin_rem(sirpluginid id) {
 
 void _sir_plugin_destroy(sir_plugin** plugin) {
 #if !defined(SIR_NO_PLUGINS)
-    if (!_sir_validptrptr(plugin) || !_sir_validptr(*plugin))
-        return;
-
-    _sir_plugin_unload(*plugin);
-    _sir_safefree(&(*plugin)->path);
-    _sir_safefree(plugin);
+    if (_sir_validptrptr(plugin) && _sir_validptr(*plugin)) {
+        bool unloaded = _sir_plugin_unload(*plugin);
+        SIR_ASSERT_UNUSED(unloaded, unloaded);
+        
+        _sir_safefree(&(*plugin)->path);
+        _sir_safefree(plugin);
+    }
 #else
     SIR_UNUSED(plugin);
 #endif
