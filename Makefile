@@ -160,12 +160,14 @@ $(OUT_EXAMPLE): $(OUT_STATIC) $(OBJ_EXAMPLE)
 	-@printf 'built %s successfully.\n' "$(OUT_EXAMPLE)" 2> /dev/null
 
 .PHONY: mcmb cmb
+ifneq ($(NO_MCMB),1)
 mcmb cmb: $(OUT_MCMB)
 $(OUT_MCMB): $(OBJ_MCMB)
 	mkdir -p $(@D)
 	mkdir -p $(BINDIR)
 	$(CC) -o $(OUT_MCMB) $(OBJ_MCMB) $(LDFLAGS)
 	-@printf 'built %s successfully.\n' "$(OUT_MCMB)" 2> /dev/null
+endif
 
 .PHONY: tests test
 tests test: $(OUT_TESTS)

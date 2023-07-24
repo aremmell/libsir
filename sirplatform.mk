@@ -18,6 +18,7 @@ ifeq ($(MINGW),1)
     CFLAGS+=-Wno-unknown-pragmas
   endif
   LIBDL=
+  NO_MCMB=1
   PLATFORM_DLL_EXT=.dll
   PLATFORM_EXE_EXT=.exe
   PLATFORM_LIB_EXT=.lib
