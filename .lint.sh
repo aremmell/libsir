@@ -118,11 +118,24 @@ SIR_OPTIONS="''                      \
 
 ################################################################################
 
-command -v duma > /dev/null 2>&1 ||
+DUMA_OS="$(uname -s 2> /dev/null)"
+test "${DUMA_OS:-}" = "Darwin" &&
   {
-    printf '%s\n' \
-        "NOTICE: DUMA not found, skipping DUMA check."
-    NO_DUMA=1
+    command -v /opt/duma/bin/duma > /dev/null 2>&1 ||
+      {
+        printf '%s\n' \
+            "NOTICE: DUMA not found, skipping DUMA check."
+        NO_DUMA=1
+      }
+  }
+test "${DUMA_OS:-}" != "Darwin" ||
+  {
+    command -v duma > /dev/null 2>&1 ||
+      {
+        printf '%s\n' \
+            "NOTICE: DUMA not found, skipping DUMA check."
+        NO_DUMA=1
+      }
   }
 command -v gcc > /dev/null 2>&1 ||
   {
@@ -135,12 +148,12 @@ test -z "${NO_DUMA:-}" &&
     rm -f ./duma*.log
     ${DEBUG_CALL:?} building with DUMA ...
     env ${MAKE:-make} clean
-    env CC="gcc"                   \
-        EXTRA_LIBS="-l:libduma.a"  \
-        CFLAGS="-DDUMA=1"          \
-            ${MAKE:-make}          \
-                -j "${CPUS:-1}"    \
-                SIR_DEBUG=1        \
+    env CC="gcc"                                  \
+        EXTRA_LIBS="-L/opt/duma/lib -l:libduma.a" \
+        CFLAGS="-DDUMA=1"                         \
+            ${MAKE:-make}                         \
+                -j "${CPUS:-1}"                   \
+                SIR_DEBUG=1                       \
                 SIR_SELFLOG=1
     ${DEBUG_CALL:?} running DUMA-enabled example ...
     env DUMA_OUTPUT_FILE=duma1.log \
