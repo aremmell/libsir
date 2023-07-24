@@ -186,7 +186,6 @@ static unsigned thread_pool_proc(void* arg)
                 _sir_selflog("picked up job (fn: %"PRIxPTR", data: %p)",
                     (uintptr_t)job->fn, job->data);
                 job->fn(job->data);
-                _sir_safefree(&job->data);
                 _sir_safefree(&job);
             }
         } else {
