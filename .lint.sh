@@ -376,7 +376,7 @@ test -z "${NO_PVSSTUDIO:-}" &&
       }
     rm -f ./compile_commands.json
     rm -f ./log.pvs
-    rm -f ./pvsreport
+    rm -rf ./pvsreport
   }
 
 ################################################################################
@@ -409,5 +409,10 @@ test -z "${NO_PVSSTUDIO:-}" &&
         --error-exitcode=1  \
             build/bin/sirtests
   }
+
+################################################################################
+
+sleep 1 || true
+printf '%s\n' "End of linting"
 
 ################################################################################
