@@ -11,8 +11,10 @@ jobs:
   include:
     - os: windows
       install:
-        - choco install visualstudio2022buildtools --package-parameters "--includeRecommended --passive"
+        - choco install visualstudio2022buildtools --package-parameters "--no-includeRecommended --passive"
+        - choco install visualstudio2022-workload-vctools --package-parameters "--no-includeRecommended --passive"
       script:
+        - powershell Get-Content C:\ProgramData\chocolatey\logs\chocolatey.log
         - powershell Get-ChildItem -Path C:\ -Include MSBuild.exe -File -Recurse -ErrorAction SilentlyContinue
     - os: linux
       dist: jammy
