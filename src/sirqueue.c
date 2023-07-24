@@ -38,42 +38,44 @@ sir_queue_node* _sir_queue_node_create(void* data) {
 }
 
 bool _sir_queue_node_destroy(sir_queue_node** node, void** data) {
-    if (!node || !*node)
-        return false;
+    bool valid = node && *node;
 
-    if (data)
-        *data = (*node)->data;
+    if (valid) {
+        if (data)
+            *data = (*node)->data;
 
-    _sir_safefree(node);
+        _sir_safefree(node);
+    }
 
-    return true;
+    return valid;
 }
 
 bool _sir_queue_create(sir_queue** q) {
-    if (!q)
-        return false;
 
-    *q = calloc(1, sizeof(sir_queue));
-    if (!*q)
-        _sir_handleerr(errno);
+    if (q) {
+        *q = calloc(1, sizeof(sir_queue));
+        if (!*q)
+            _sir_handleerr(errno);
+    }
 
-    return !!*q;
+    return q && *q;
 }
 
 bool _sir_queue_destroy(sir_queue** q) {
-    if (!q || !*q)
-        return false;
+    bool valid = q && *q;
 
-    sir_queue_node* next = (*q)->head;
-    while (next) {
-        sir_queue_node* this_node = next;
-        next                      = this_node->next;
-        (void)_sir_queue_node_destroy(&this_node, NULL);
+    if (valid) {
+        sir_queue_node* next = (*q)->head;
+        while (next) {
+            sir_queue_node* this_node = next;
+            next                      = this_node->next;
+            (void)_sir_queue_node_destroy(&this_node, NULL);
+        }
+
+        _sir_safefree(q);
     }
 
-    _sir_safefree(q);
-
-    return true;
+    return valid;
 }
 
 size_t _sir_queue_size(sir_queue* q) {
@@ -95,33 +97,39 @@ bool _sir_queue_isempty(sir_queue* q) {
 }
 
 bool _sir_queue_push(sir_queue* q, void* data) {
-    if (!q)
-        return false;
+    bool retval = false;
 
-    if (!q->head) {
-        q->head = _sir_queue_node_create(data);
-        return true;
-    }
-
-    sir_queue_node* next = q->head;
-    while (next) {
-        if (!next->next) {
-            next->next = _sir_queue_node_create(data);
-            if (next->next)
-                return true;
+    if (q) {
+        if (!q->head) {
+            q->head = _sir_queue_node_create(data);
+            retval = NULL != q->head;
+        } else {
+            sir_queue_node* next = q->head;
+            while (next) {
+                if (!next->next) {
+                    next->next = _sir_queue_node_create(data);
+                    if (next->next) {
+                        retval = true;
+                        break;
+                    }
+                }
+                next = next->next;
+            }
         }
-        next = next->next;
     }
 
-    return false;
+    return retval;
 }
 
 bool _sir_queue_pop(sir_queue* q, void** data) {
-    if (_sir_queue_isempty(q) || !data)
-        return false;
+    bool retval = false;
 
-    sir_queue_node* old_head = q->head;
-    q->head                  = old_head->next;
+    if (!_sir_queue_isempty(q) && data) {
+        sir_queue_node* old_head = q->head;
+        q->head                  = old_head->next;
 
-    return _sir_queue_node_destroy(&old_head, data);
+        retval = _sir_queue_node_destroy(&old_head, data);
+    }
+
+    return retval;
 }
