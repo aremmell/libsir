@@ -53,6 +53,9 @@ cppcheck.xml
 # Oracle Lint
 *.ln
 
+# Clang Analzyer
+.scan-build.sh
+
 # PVS
 compile_commands.json
 *.pvs
