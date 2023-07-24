@@ -13,7 +13,7 @@ jobs:
       install:
         - choco install visualstudio2022buildtools --package-parameters "--quiet --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.Windows11SDK.22621 --includeRecommended --installWhileDownloading --channelUri https://aka.ms/vs/17/release/channel --channelId VisualStudio.17.Release --productId Microsoft.VisualStudio.Product.Community"
       script:
-        - env SIR_SELFLOG=1 make tests
+        - ./configure-win.sh
         - ./build/bin/sirtests.exe
     - os: linux
       dist: jammy
