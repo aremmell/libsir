@@ -73,11 +73,12 @@ CFLAGS="-fno-inline -fprofile-arcs -ftest-coverage --coverage"
 LDFLAGS="-fprofile-arcs -ftest-coverage"
 export CC CFLAGS LDFLAGS
 
-# Removes sample plugin results
+# Removes unwanted results
 remove_sample()
 {
   # shellcheck disable=SC2046
   env rm $(find . -name 'plugin_sample*.*gc*' -print) || true
+  env rm $(find . -name 'mcmb*.*gc*' -print) || true
 }
 
 # Removes all coverage files

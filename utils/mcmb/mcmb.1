@@ -1,0 +1,385 @@
+.\" SPDX-License-Identifier: BSD-2-Clause
+.\" scspell-id: a5f69ec5-f630-11ec-bcc3-80ee73e9b8e7
+.\"
+.\" --------------------------------------------------------------------------
+.\"
+.\" Copyright (c) 2002-2019 Devin Teske <dteske@FreeBSD.org>
+.\" Copyright (c) 2020-2021 Jeffrey H. Johnson <trnsz@pobox.com>
+.\" Copyright (c) 2021-2023 The DPS8M Development Team
+.\"
+.\" All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\"
+.\"  1. Redistributions of source code must retain the above copyright
+.\"     notice, this list of conditions and the following disclaimer.
+.\"
+.\"  2. Redistributions in binary form must reproduce the above copyright
+.\"     notice, this list of conditions and the following disclaimer in the
+.\"     documentation and/or other materials provided with the distribution.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
+.\"
+.\" --------------------------------------------------------------------------
+.\"
+.Dd June 27, 2022
+.Dt MCMB 1
+.Os
+.Sh NAME
+.Nm mcmb
+.Nd (miniature) combinatorics utility
+.Sh SYNOPSIS
+.Nm
+.Op Fl 0efNrStvz
+.Op Fl c Ar num
+.Op Fl d Ar str
+.Op Fl F Ar num
+.Op Fl i Ar num
+.Op Fl k Ar size
+.Op Fl n Ar num
+.Op Fl P Ar num
+.Op Fl p Ar str
+.Op Fl s Ar str
+.Op Fl X Ar op
+.Op Ar item Ar \ ...
+.Sh DESCRIPTION
+The
+.Nm
+utility prints combinations,
+one per line
+.Pq default ,
+with items in each combination separated by space
+.Pq default .
+Given N items on the command-line,
+there are N sets where each set consists of an increasing number of items
+.Pq default .
+By default,
+all sets are produced
+.Pq Ql Li -k 0 .
+Combination order within a set of N-items is always consistent and repeatable
+given the order of items on the command-line.
+The order of combinations within a single set of N-items
+.Pq where every combination in the set has the same number of items
+is dependent upon the order of items on the command-line.
+.Pp
+Available options:
+.Bl -tag -width ".Fl r Ar range"
+.It Fl 0
+Change the behavior of
+.Ql Fl f
+to read items separated by NUL character
+.Pq character code 0
+instead of newline.
+.It Fl c Ar num
+Produce at-most
+.Ar num
+combinations.
+If
+.Ql 0
+.Pq default
+all combinations produced.
+Ignored when given
+.Ql Fl t .
+.It Fl d Ar text
+Delimiter for separating items.
+Default is space
+.Pq Dq " " .
+Ignored when given
+.Ql Fl t .
+.It Fl e
+Show empty set.
+A single combination containing no-items.
+.It Fl F Ar num
+Find
+.Sq Fl X Ar op
+values that equal
+.Ar num .
+Requires
+.Sq Fl X Ar op .
+.It Fl f
+Treat each command-line argument as a file containing items,
+one item per line
+.Pq default .
+With
+.Ql Fl 0 ,
+read items separated by NUL character.
+If an argument is
+.Ql Li - ,
+read from stdin.
+The sum of items read from all files cannot exceed the value of
+.Va UINT_MAX
+(4,294,967,295 on most systems).
+.It Fl h
+Print help text to stderr and exit.
+.It Fl i Ar num
+Skip the first
+.Va num - 1
+combinations.
+If
+.Va num
+is negative,
+skip to
+.Va |num|
+combinations before the end.
+If
+.Va num
+matches
+.Ql Li random
+.Pq case-sensitive
+a random number between 1 and the total number of combinations is chosen.
+Ignored when given
+.Ql Fl t .
+.It Fl k Ar size
+Number or range
+.Pq Qo min..max Qc or Qo min-max Qc
+of how many items must appear in each combination.
+A value of
+.Ql 0
+.Pq default
+calculates all sets starting with 1-item combinations.
+If
+.Va size
+is negative one
+.Pq Li -1 ,
+calculate sets in descending order,
+starting with the maximum number of items.
+A range of
+.Ql Li -1..N
+will do the same but stop at N-item combinations.
+A range of
+.Ql Li N..-1
+will start with N-item combinations and end with the maximum number of items.
+The order of combinations in each set is unaffected by negative
+.Va size
+values.
+A range of
+.Ql Li -1..-1
+calculates the ending set consisting of only the maximum number of items.
+.It Fl N
+Show combination sequence numbers.
+Combinations are calculated in arithmetic progression,
+providing predictable order.
+The sequence number can be used as a value to
+.Ql Fl i Ar num
+to start at that combination.
+Ignored when given
+.Ql Fl t .
+.It Fl n Ar num
+Limit the number of arguments taken from the command-line.
+No effect if
+.Va num
+is greater than the number of arguments.
+.It Fl P Ar num
+Change the behavior of
+.Ql Fl X Ar op
+to use
+.Ar num
+units of precision when printing floating point results.
+Default behavior of
+.Ql Fl X Ar op
+is to use the highest precision of provided arguments.
+Ignored when given
+.Ql Fl t .
+.It Fl p Ar text
+Prefix each combination with
+.Ar text .
+Ignored when given
+.Ql Fl t .
+.It Fl q
+Quiet mode.
+Do not print items from set when given
+.Ql Fl X Ar op .
+.It Fl r
+Treat each command-line argument as a number or range to be expanded.
+If a single number,
+expand to numbers 1 to num.
+If a range
+.Pq Qo min..max Qc or Qo min-max Qc ,
+expand to numbers min to max.
+Numbers must be whole positive integers between 0 and 4,294,967,295.
+.It Fl S
+Silent mode.
+Do not print combinations to stdout.
+Useful with
+.Xr time 1
+to determine
+.Xr stdio 3
+overhead.
+With
+.Ql Fl t ,
+do not print result.
+.It Fl s Ar text
+Suffix each combination with
+.Ar text .
+Ignored when given
+.Ql Fl t .
+.It Fl t
+Print total number of combinations and exit.
+.It Fl V
+Print build information to stdout and exit.
+.It Fl v
+Print version information to stdout and exit.
+.It Fl X Ar op
+Perform math on items where
+.Ar op
+is
+.Ql Li add ,
+.Ql Li subtract ,
+.Ql Li divide ,
+or
+.Ql Li multiply
+.Pq case-sensitive .
+Argument
+.Ar op
+can be shortened to its minimally distinct representation;
+such as
+.Ql Li a
+for
+.Ql Li add .
+Ignored when given
+.Ql Fl t .
+.It Fl z
+Print combinations followed by ASCII NUL character
+.Pq character code 0
+instead of newline
+.Pq character code 10 .
+With
+.Ql Fl t ,
+do not print a trailing character after the result.
+.El
+.Sh EXAMPLES
+Print all two-word combinations
+.Pq Qo bird dog Qc , Qo bird house Qc , and Qo dog house Qc
+given
+.Qq bird ,
+.Qq dog ,
+and
+.Qq house :
+.Bd -literal -offset indent
+mcmb -k 2 bird dog house
+.Ed
+.Pp
+Print number of combinations
+.Pq 7
+given
+.Qq a ,
+.Qq b ,
+and
+.Qq c :
+.Bd -literal -offset indent
+mcmb -t a b c
+.Ed
+.Pp
+Print first 5 combinations
+.Pq Qo x Qc , Qo y Qc , Qo z Qc , Qo x y Qc , and Qo x z Qc
+given
+.Qq x ,
+.Qq y ,
+and
+.Qq z :
+.Bd -literal -offset indent
+mcmb -c 5 x y z
+.Ed
+.Pp
+Skip first 3 combinations
+.Pq Qo x Qc , Qo y Qc , and Qo z Qc
+given
+.Qq x ,
+.Qq y ,
+and
+.Qq z :
+.Bd -literal -offset indent
+mcmb -i 4 x y z
+.Ed
+.Pp
+Print last 5 combinations
+.Pq Qo z Qc , Qo x y Qc , Qo x z Qc , Qo y z Qc , and Qo x y z Qc
+given
+.Qq x ,
+.Qq y ,
+and
+.Qq z :
+.Bd -literal -offset indent
+mcmb -i -5 x y z
+.Ed
+.Pp
+Print items separated by comma instead of space:
+.Bd -literal -offset indent
+mcmb -d , a b c
+.Ed
+.Pp
+Print numbers as JSON:
+.Bd -literal -offset indent
+mcmb -p '{"values":[' -s ']}' -d , 1 2 3
+.Ed
+.Pp
+Print strings as JSON:
+.Bd -literal -offset indent
+mcmb -p '{"values":[' -s ']}' -d , '"a"' '"b"' '"c"'
+.Ed
+.Pp
+Print all 2- and 3-word combinations
+.Po
+.Qq big blue ,
+.Qq big red ,
+.Qq big couch ,
+.Qq blue red ,
+.Qq blue couch ,
+.Qq red couch ,
+.Qq big blue red ,
+.Qq big blue couch ,
+.Qq big red couch ,
+and
+.Qq blue red couch
+.Pc
+given
+.Qq big ,
+.Qq blue ,
+.Qq red ,
+and
+.Qq couch :
+.Bd -literal -offset indent
+mcmb -k 2..3 big blue red couch
+.Ed
+.Pp
+Print combinations starting with the maximum number of items
+.Pq 3 ,
+ending with 2-item combinations:
+.Bd -literal -offset indent
+mcmb -k -1..2 1 2 3
+.Ed
+.Pp
+Print combinations starting with 2-items ending with maximum items
+.Pq 3 :
+.Bd -literal -offset indent
+mcmb -k 2..-1 x y z
+.Ed
+.Pp
+Roll a set of 2 six-sided dice,
+producing a single random combination of two numbers:
+.Bd -literal -offset indent
+mcmb -c 1 -k 2 -i rand -r 6 6
+.Ed
+.Pp
+Find all combinations of numbers 1, 2, and 3 that produce the sum of 4:
+.Bd -literal -offset indent
+mcmb -X add -F 4 -r 3
+.Ed
+.Sh AUTHOR
+.An Devin Teske Aq Mt dteske@FreeBSD.org
+.Sh MODIFICATIONS
+.An Jeffrey H. Johnson Aq Mt trnsz@pobox.com
+.Pp
+.An The DPS8M Development Team Aq Mt https://gitlab.com/dps8m/dps8m/
