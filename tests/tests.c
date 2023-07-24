@@ -2213,7 +2213,7 @@ bool rmfile(const char* filename) {
     return removed;
 }
 
-bool deletefiles(const char* search, const char* path, const char* filename, unsigned* data) {
+void deletefiles(const char* search, const char* path, const char* filename, unsigned* data) {
     if (strstr(filename, search)) {
         char filepath[SIR_MAXPATH];
         (void)snprintf(filepath, SIR_MAXPATH, "%s%s", path, filename);
@@ -2221,14 +2221,12 @@ bool deletefiles(const char* search, const char* path, const char* filename, uns
         rmfile(filepath);
         (*data)++;
     }
-    return true;
 }
 
-bool countfiles(const char* search, const char* path, const char* filename, unsigned* data) {
+void countfiles(const char* search, const char* path, const char* filename, unsigned* data) {
     SIR_UNUSED(path);
     if (strstr(filename, search))
         (*data)++;
-    return true;
 }
 
 bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* data) {
@@ -2245,8 +2243,7 @@ bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* 
     }
 
     while (NULL != di) {
-        if (!cb(search, path, di->d_name, data))
-            break;
+        cb(search, path, di->d_name, data);
         di = readdir(d);
     };
 
