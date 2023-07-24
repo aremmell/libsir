@@ -71,8 +71,10 @@ fi
 ################################################################################
 
 ${DEBUG_CALL:?} checking source code for tabs ...
-set +e; TLIST="$(find src include -print | grep '\.[ch]$' | \
-    xargs -L 1 grep -l "$(printf '\t')" 2> /dev/null)"; set -e
+set +e
+TLIST="$(find src include -print | grep '\.[ch]$' | \
+    xargs -L 1 grep -l "$(printf '\t')" 2> /dev/null)"
+set -e
 printf "%s\n" "${TLIST:-}" | grep -v '^$' 2> /dev/null | grep . &&
   {
     printf '%s\n' "ERROR: Tabs check failed!";
@@ -82,8 +84,11 @@ printf "%s\n" "${TLIST:-}" | grep -v '^$' 2> /dev/null | grep . &&
 ################################################################################
 
 ${DEBUG_CALL:?} checking source code for trailing whitespace ...
-set +e; TLIST="$(find src include -print | \
-    xargs -I{} grep -al ' \+$' "{}" 2> /dev/null)"; set -e
+set +e
+# shellcheck disable=SC2038
+TLIST="$(find src include -print | \
+    xargs -I{} grep -al ' \+$' "{}" 2> /dev/null)"
+set -e
 printf "%s\n" "${TLIST:-}" | grep -v '^$' 2> /dev/null | grep . &&
   {
     printf '%s\n' "ERROR: Trailing whitespace check failed!";
@@ -99,6 +104,7 @@ test -x "${MCMB:-build/bin/mcmb}" ||
         "NOTICE: ${MCMB:-build/bin/mcmb} is not an executable, aborting ${0}."
     exit 1;
   }
+# shellcheck disable=SC2089
 SIR_OPTIONS="''                      \
              SIR_DEBUG=1             \
              SIR_NO_SYSTEM_LOGGERS=1 \
@@ -133,11 +139,11 @@ test -z "${NO_DUMA:-}" &&
   {
     rm -f ./duma*.log
     ${DEBUG_CALL:?} building with DUMA ...
-    env ${MAKE:-make} clean
+    env "${MAKE:-make}" clean
     env CC="gcc"                                  \
         EXTRA_LIBS="-L/opt/duma/lib -l:libduma.a" \
         CFLAGS="-I/opt/duma/include -DDUMA=1"     \
-            ${MAKE:-make}                         \
+            "${MAKE:-make}"                       \
                 -j "${CPUS:-1}"                   \
                 SIR_DEBUG=1                       \
                 SIR_SELFLOG=1
@@ -187,14 +193,15 @@ command -v clang > /dev/null 2>&1 ||
 test -z "${NO_EXTRAWARN:-}" &&
   {
     ${DEBUG_CALL:?} building with extra-warning flags ...
-    env ${MAKE:-make} clean
+    env "${MAKE:-make}" clean
     rm -f ./.extra.sh
     env CC="clang"              \
-            ${MAKE:-make}       \
+            "${MAKE:-make}"       \
                 -j "${CPUS:-1}" \
                 mcmb
     printf '%s' 'true' > ./.extra.sh
-    ${MCMB:-build/bin/mcmb} -e ${SIR_OPTIONS:?} | xargs -L1 echo \
+    # shellcheck disable=SC2090,SC2086,SC2016
+    "${MCMB:-build/bin/mcmb}" -e ${SIR_OPTIONS:?} | xargs -L1 echo \
         ' && ${MAKE:-make} clean &&
         env CC="clang"
             CFLAGS="-Werror
@@ -242,12 +249,13 @@ command -v scan-build > /dev/null 2>&1 ||
 test -z "${NO_SCANBUILD:-}" &&
   {
     ${DEBUG_CALL:?} running scan-build check ...
-    env ${MAKE:-make} clean
-    env CC="clang" ${MAKE:-make} \
-                -j "${CPUS:-1}"  \
+    env "${MAKE:-make}" clean
+    env CC="clang" "${MAKE:-make}" \
+                -j "${CPUS:-1}"    \
                 mcmb
     printf '%s' 'true' > ./.scan-build.sh
-    ${MCMB:-build/bin/mcmb} -e ${SIR_OPTIONS:?} | xargs -L1 echo \
+    # shellcheck disable=SC2090,SC2086,SC2016
+    "${MCMB:-build/bin/mcmb}" -e ${SIR_OPTIONS:?} | xargs -L1 echo \
         ' && ${MAKE:-make} clean &&
          env CC="clang"
            scan-build -no-failure-reports
@@ -288,6 +296,7 @@ test -z "${NO_CPPCHECK:-}" &&
     rm -rf ./cppcheck
     rm -f ./cppcheck.xml
     mkdir -p cppcheck
+    # shellcheck disable=SC2046
     cppcheck --force                                      \
              --enable="warning,performance,portability"   \
              --suppress=shadowArgument                    \
@@ -305,7 +314,7 @@ test -z "${NO_CPPCHECK:-}" &&
              --platform=unix64                            \
              --std="c11"                                  \
              --inconclusive                               \
-             -j ${CPUS:?}                                 \
+             -j "${CPUS:?}"                               \
                   $(find . -name '*.[ch]' |               \
                       grep -v 'mcmb.c')                   \
                    --xml --xml-version=2 2> cppcheck.xml  \
@@ -354,7 +363,7 @@ test -z "${NO_PVSSTUDIO:-}" &&
     rm -f ./log.pvs
     rm -f ./compile_commands.json
     ${MAKE:-make} clean
-    env CC="clang" bear -- ${MAKE:-make} -j "${CPUS:-1}"
+    env CC="clang" bear -- "${MAKE:-make}" -j "${CPUS:-1}"
     pvs-studio-analyzer analyze --intermodular -j "${CPUS:-1}" -o log.pvs
     plog-converter -a "GA:1,2,3" -t fullhtml log.pvs -o pvsreport
     grep -q 'Congratulations!' ./pvsreport/index.html ||
@@ -382,11 +391,11 @@ command -v clang > /dev/null 2>&1 ||
         "NOTICE: clang not found, skipping valgrind checks."
     NO_VALGRIND=1
   }
-test -z "${NO_PVSSTUDIO:-}" &&
+test -z "${NO_VALGRIND:-}" &&
   {
     ${DEBUG_CALL:?} running valgrind checks ...
     ${MAKE:-make} clean
-    env CC="clang" ${MAKE:-make} -j "${CPUS:-1}" SIR_DEBUG=1 SIR_SELFLOG=1
+    env CC="clang" "${MAKE:-make}" -j "${CPUS:-1}" SIR_DEBUG=1 SIR_SELFLOG=1
     valgrind                \
         --leak-check=full   \
         --track-origins=yes \
