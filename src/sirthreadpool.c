@@ -87,21 +87,22 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
 }
 
 bool _sir_threadpool_add_job(sir_threadpool* pool, sir_threadpool_job* job) {
-    if (!pool || !pool->jobs || !job || !job->fn || !job->data)
-        return false;
+    bool retval = false;
 
-    if (!_sir_mutexlock(&pool->mutex))
-        return false;
+    if (pool && pool->jobs && job && job->fn && job->data) {
+        bool locked = _sir_mutexlock(&pool->mutex);
+        SIR_ASSERT(locked);
 
-    bool retval = _sir_queue_push(pool->jobs, job);
-    if (retval) {
-        bool bcast = _sir_condbroadcast(&pool->cond);
-        SIR_ASSERT_UNUSED(bcast, bcast);
-        _sir_selflog("added job; new size: %zu", _sir_queue_size(pool->jobs));
+        if (locked) {
+            if (_sir_queue_push(pool->jobs, job)) {
+                retval = _sir_condbroadcast(&pool->cond);
+                _sir_selflog("added job; new size: %zu", _sir_queue_size(pool->jobs));
+            }
+
+            bool unlocked = _sir_mutexunlock(&pool->mutex);
+            SIR_ASSERT_UNUSED(unlocked, unlocked);
+        }
     }
-
-    bool unlock = _sir_mutexunlock(&pool->mutex);
-    SIR_ASSERT_UNUSED(unlock, unlock);
 
     return retval;
 }
@@ -110,13 +111,13 @@ bool _sir_threadpool_destroy(sir_threadpool** pool) {
     if (!pool || !*pool)
         return false;
 
-    (*pool)->cancel = true;
-
     bool locked = _sir_mutexlock(&(*pool)->mutex);
     SIR_ASSERT(locked);
 
     if (locked) {
         _sir_selflog("broadcasting signal to condition var...");
+        (*pool)->cancel = true;
+
         bool bcast = _sir_condbroadcast(&(*pool)->cond);
         SIR_ASSERT_UNUSED(bcast, bcast);
 
@@ -126,7 +127,7 @@ bool _sir_threadpool_destroy(sir_threadpool** pool) {
 
     for (size_t n = 0; n < (*pool)->num_threads; n++) {
         if ((*pool)->threads[n]) {
-            _sir_selflog("joining thread %zu/%zu...", n + 1, (*pool)->num_threads);
+            _sir_selflog("joining thread %zu of %zu...", n + 1, (*pool)->num_threads);
 #if !defined(__WIN__)
             int join = pthread_join((*pool)->threads[n], NULL);
             SIR_ASSERT_UNUSED(0 == join, join);
