@@ -13,8 +13,8 @@ jobs:
       install:
         - powershell choco install visualstudio2022buildtools --package-parameters "--includeRecommended --passive"
       script:
-        - powershell ls C:\Program Files\Microsoft Visual Studio\2022\
-        - powershell C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\msbuild .\msvs\libsir.sln /t:Clean /t:Build /p:Config=Release /p:Platform=x64
+        - powershell ls "C:\Program Files\Microsoft Visual Studio\2022\"
+        - powershell "C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\msbuild.exe" .\msvs\libsir.sln /t:Clean /t:Build /p:Config=Release /p:Platform=x64
     - os: linux
       dist: jammy
       arch: amd64
