@@ -1937,10 +1937,13 @@ bool sirtest_threadpool(void) {
             pass &= NULL != job;
             if (job) {
                 job->fn = &threadpool_pseudojob;
-                job->data = (void*)(n + 1);
-                pass &= _sir_threadpool_add_job(pool, job);
-                pass &= sir_info("dispatched job (fn: %"PRIxPTR", data: %p)",
-                    (uintptr_t)job->fn, job->data);
+                job->data = calloc(1, sizeof(uintptr_t));
+                if (job->data) {
+                    memcpy(job->data, &n, sizeof(size_t));
+                    pass &= _sir_threadpool_add_job(pool, job);
+                    pass &= sir_info("dispatched job (fn: %"PRIxPTR", data: %p)",
+                        (uintptr_t)job->fn, job->data);
+                }
             }
         }
 
