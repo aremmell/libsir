@@ -12,10 +12,8 @@ jobs:
     - os: windows
       install:
         - choco install visualstudio2022buildtools --package-parameters "--includeRecommended --passive"
-        - choco install visualstudio2022-workload-vctools
       script:
-        - ls C:/Program Files\ (x86)/Microsoft\ Visual\ Studio/Installer
-        - msbuild.exe ./msvs/libsir.sln /t:Clean /t:Build /p:Config=Release /p:Platform=x64
+        - powershell Get-ChildItem -Path C:\ -Include MSBuild.exe -File -Recurse -ErrorAction SilentlyContinue
     - os: linux
       dist: jammy
       arch: amd64
