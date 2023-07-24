@@ -52,7 +52,7 @@ bool _sir_queue_node_destroy(sir_queue_node** node, void** data) {
 
 bool _sir_queue_create(sir_queue** q) {
 
-    if (q) {
+    if (_sir_validptrptr(q)) {
         *q = calloc(1, sizeof(sir_queue));
         if (!*q)
             _sir_handleerr(errno);
@@ -99,7 +99,7 @@ bool _sir_queue_isempty(sir_queue* q) {
 bool _sir_queue_push(sir_queue* q, void* data) {
     bool retval = false;
 
-    if (q) {
+    if (_sir_validptr(q)) {
         if (!q->head) {
             q->head = _sir_queue_node_create(data);
             retval = NULL != q->head;
@@ -124,7 +124,7 @@ bool _sir_queue_push(sir_queue* q, void* data) {
 bool _sir_queue_pop(sir_queue* q, void** data) {
     bool retval = false;
 
-    if (!_sir_queue_isempty(q) && data) {
+    if (!_sir_queue_isempty(q) && _sir_validptrptr(data)) {
         sir_queue_node* old_head = q->head;
         q->head                  = old_head->next;
 

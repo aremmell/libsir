@@ -5,6 +5,7 @@ language: c
 branches:
   only:
   - master
+  - write-async
 env: MAKE=make
 jobs:
   include:

@@ -103,13 +103,9 @@ bool _sirfile_open(sirfile* sf) {
     if (!_sir_validptr(sf) && !_sir_validstr(sf->path))
         return false;
 
-    bool existed = false;
-    if (!_sir_pathexists(sf->path, &existed, SIR_PATH_REL_TO_CWD))
-        return false;
-
     FILE* f  = NULL;
-    int open = _sir_fopen(&f, sf->path, SIR_FOPENMODE);
-    if (0 != open || !f)
+    bool open = _sir_openfile(&f, sf->path, SIR_FOPENMODE, SIR_PATH_REL_TO_CWD);
+    if (!open || !f)
         return false;
 
     _sirfile_close(sf);

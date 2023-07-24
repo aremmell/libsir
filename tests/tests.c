@@ -1874,6 +1874,12 @@ bool sirtest_pluginloader(void) {
 
     print_test_error(pass, pass);
 
+    /* test bad paths. */
+    printf("\ntrying to  load plugin with NULL path...\n");
+    badid = sir_loadplugin(NULL);
+    pass &= 0 == badid;
+
+    print_test_error(pass, pass);
 #endif
     pass &= sir_cleanup();
     return print_result_and_return(pass);
@@ -2261,8 +2267,7 @@ bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* 
         return false;
 
     do {
-        if (!cb(search, path, finddata.cFileName, data))
-            break;
+        cb(search, path, finddata.cFileName, data);
     } while (FindNextFile(enumerator, &finddata) > 0);
 
     FindClose(enumerator);
