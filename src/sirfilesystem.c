@@ -370,7 +370,6 @@ bool _sir_ispathrelative(const char* restrict path, bool* restrict relative) {
     bool valid = _sir_validstr(path) && _sir_validptr(relative);
 
     if (valid) {
-
 #if !defined(__WIN__)
         if (path[0] == '/' || (path[0] == '~' && path[1] == '/'))
             *relative = false;
