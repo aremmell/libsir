@@ -53,6 +53,7 @@ _ReSharper.Caches/
 # PVS
 compile_commands.json
 *.pvs
+pvsreport/*
 
 # Coverage
 *.gcno
