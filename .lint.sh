@@ -410,6 +410,20 @@ test -z "${NO_VALGRIND:-}" &&
 
 ################################################################################
 
+command -v reuse > /dev/null 2>&1 ||
+  {
+    printf '%s\n' \
+        "NOTICE: reuse not found, skipping checks."
+    NO_REUSE=1
+  }
+test -z "${NO_REUSE:-}" &&
+  {
+    ${DEBUG_CALL:?} running valgrind checks ...
+    reuse lint
+  }
+
+################################################################################
+
 sleep 1 || true
 printf '%s\n' "End of linting"
 
