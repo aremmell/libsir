@@ -5,9 +5,17 @@ language: c
 branches:
   only:
   - master
+  - write-async
 env: MAKE=make
 jobs:
   include:
+    - os: windows
+      install:
+        - powershell Install-Module -Name VSSetup
+        - powershell choco install visualstudio2022buildtools --package-parameters "--includeRecommended --passive --locale en-US --installPath C:\VS2022"
+      script:
+        - powershell ls C:\VS2022
+        - powershell C:\VS2022\MSBuild\Current\Bin\msbuild .\msvs\libsir.sln /t:Clean /t:Build /p:Config=Release /p:Platform=x64
     - os: linux
       dist: jammy
       arch: amd64
