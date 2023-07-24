@@ -11,11 +11,14 @@ jobs:
   include:
     - os: windows
       install:
+        - choco install tree
         - choco install visualstudio2022buildtools --package-parameters "--includeRecommended  --passive --norestart --installWhileDownloading --channelUri https://aka.ms/vs/17/release/channel --channelId VisualStudio.17.Release --productId Microsoft.VisualStudio.Product.Community"
         - choco install visualstudio2022-workload-vctools --package-parameters "--includeRecommended --passive"
       script:
+        - export PATH="${PATH}:/c/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/MSBuild/VC/v170"
         - /c/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe ./msvs/libsir.sln -t:Rebuild -p:Config=Release -p:Platform=x64
         - ./build/bin/sirtests.exe
+        - tree -L 5 -C /c/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/MSBuild
     - os: linux
       dist: jammy
       arch: amd64
