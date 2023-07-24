@@ -181,8 +181,4 @@ bool _sir_getthreadname(char name[SIR_MAXPID]);
 /** Retrieves the hostname of this machine. */
 bool _sir_gethostname(char name[SIR_MAXHOST]);
 
-/** For avoiding linting false positives. */
-#define SUPPRESS_CLANG_LEAK_WARNING(x) ignore_memory_leak = (x)
-extern void *ignore_memory_leak;
-
 #endif /* !_SIR_INTERNAL_H_INCLUDED */

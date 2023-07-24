@@ -60,8 +60,6 @@ static atomic_uint_fast32_t _sir_magic;
 static volatile uint32_t _sir_magic;
 #endif
 
-void *ignore_memory_leak;
-
 bool _sir_makeinit(sirinit* si) {
     bool retval = _sir_validptr(si);
 

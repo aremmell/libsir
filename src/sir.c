@@ -252,3 +252,5 @@ uint32_t sir_getversionhex(void) {
 bool sir_isprerelease(void) {
     return (0 == SIR_VERSION_IS_RELEASE);
 }
+
+void *ignore_memory_leak;
