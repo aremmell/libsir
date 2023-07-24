@@ -367,7 +367,7 @@ char* _sir_getdirname(char* restrict path) {
 }
 
 bool _sir_ispathrelative(const char* restrict path, bool* restrict relative) {
-    bool valid = !_sir_validstr(path) || !_sir_validptr(relative);
+    bool valid = _sir_validstr(path) && _sir_validptr(relative);
 
     if (valid) {
 
