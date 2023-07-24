@@ -1868,6 +1868,12 @@ bool sirtest_pluginloader(void) {
 
     print_test_error(pass, pass);
 
+    /* try to unload the plugin again. */
+    printf("\nunloading already unloaded plugin '%s'...\n", plugin1);
+    pass &= !sir_unloadplugin(id);
+
+    print_test_error(pass, pass);
+
 #endif
     pass &= sir_cleanup();
     return print_result_and_return(pass);
