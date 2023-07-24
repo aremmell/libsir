@@ -11,7 +11,6 @@ jobs:
   include:
     - os: windows
       install:
-        - powershell Install-Module -Name VSSetup
         - powershell choco install visualstudio2022buildtools --package-parameters "--includeRecommended --passive --locale en-US --installPath C:\VS2022"
       script:
         - powershell ls C:\VS2022
