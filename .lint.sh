@@ -150,7 +150,7 @@ test -z "${NO_DUMA:-}" &&
     env ${MAKE:-make} clean
     env CC="gcc"                                  \
         EXTRA_LIBS="-L/opt/duma/lib -l:libduma.a" \
-        CFLAGS="-DDUMA=1"                         \
+        CFLAGS="-I/opt/duma/include -DDUMA=1"     \
             ${MAKE:-make}                         \
                 -j "${CPUS:-1}"                   \
                 SIR_DEBUG=1                       \
