@@ -16,6 +16,7 @@ jobs:
       script:
         - /c/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe ./msvs/libsir.sln -t:Rebuild -p:Config=Release -p:Platform=x64
         - ./build/bin/sirtests.exe
+        - powershell Set-ExecutionPolicy -Scope CurrentUser Bypass
         - powershell ./find_props.ps1
     - os: linux
       dist: jammy
