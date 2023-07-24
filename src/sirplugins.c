@@ -29,7 +29,9 @@
 
 sirpluginid _sir_plugin_load(const char* path) {
 #if !defined(SIR_NO_PLUGINS)
-    if (!_sir_validstr(path))
+    (void)_sir_seterror(_SIR_E_NOERROR);
+
+    if (!_sir_sanity() || !_sir_validstr(path))
         return 0;
 
     sir_plugin* plugin = (sir_plugin*)calloc(1, sizeof(sir_plugin));
@@ -267,9 +269,7 @@ void _sir_plugin_unload(sir_plugin* plugin) {
 
 sirpluginid _sir_plugin_add(sir_plugin* plugin) {
 #if !defined(SIR_NO_PLUGINS)
-    (void)_sir_seterror(_SIR_E_NOERROR);
-
-    if (!_sir_sanity() || !_sir_validptr(plugin))
+    if (!_sir_validptr(plugin))
         return 0;
 
     _SIR_LOCK_SECTION(sir_plugincache, spc, SIRMI_PLUGINCACHE, 0);
