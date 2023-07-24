@@ -310,6 +310,7 @@ void _sir_plugin_destroy(sir_plugin** plugin) {
     if (_sir_validptrptr(plugin) && _sir_validptr(*plugin)) {
         bool unloaded = _sir_plugin_unload(*plugin);
         SIR_ASSERT_UNUSED(unloaded, unloaded);
+
         _sir_safefree(&(*plugin)->path);
         _sir_safefree(plugin);
     }
