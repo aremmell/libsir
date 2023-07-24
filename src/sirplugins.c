@@ -69,7 +69,11 @@ sirpluginid _sir_plugin_load(const char* path) {
     _sir_selflog("loaded plugin (path: '%s', addr: %p); probing...", //-V576
         plugin->path, plugin->handle);
 
-    return _sir_plugin_probe(plugin);
+    sirpluginid retval =  _sir_plugin_probe(plugin);
+    if (0 == retval)
+        _sir_plugin_destroy(&plugin);
+
+    return retval;
 #else
     SIR_UNUSED(path);
     return 0;
@@ -306,7 +310,7 @@ void _sir_plugin_destroy(sir_plugin** plugin) {
     if (_sir_validptrptr(plugin) && _sir_validptr(*plugin)) {
         bool unloaded = _sir_plugin_unload(*plugin);
         SIR_ASSERT_UNUSED(unloaded, unloaded);
-        
+
         _sir_safefree(&(*plugin)->path);
         _sir_safefree(plugin);
     }
