@@ -2267,8 +2267,7 @@ bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* 
         return false;
 
     do {
-        if (!cb(search, path, finddata.cFileName, data))
-            break;
+        cb(search, path, finddata.cFileName, data);
     } while (FindNextFile(enumerator, &finddata) > 0);
 
     FindClose(enumerator);
