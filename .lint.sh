@@ -121,12 +121,9 @@ SIR_OPTIONS="''                      \
 DUMA_OS="$(uname -s 2> /dev/null)"
 test "${DUMA_OS:-}" = "Darwin" &&
   {
-    command -v /opt/duma/bin/duma > /dev/null 2>&1 ||
-      {
-        printf '%s\n' \
-            "NOTICE: DUMA not found, skipping DUMA check."
-        NO_DUMA=1
-      }
+    printf '%s\n' \
+        "NOTICE: Skipping DUMA checks on macOS."
+    NO_DUMA=1
   }
 test "${DUMA_OS:-}" = "Darwin" ||
   {
@@ -379,6 +376,37 @@ test -z "${NO_PVSSTUDIO:-}" &&
     rm -f ./compile_commands.json
     rm -f ./log.pvs
     rm -f ./pvsreport
+  }
+
+################################################################################
+
+command -v valgrind > /dev/null 2>&1 ||
+  {
+    printf '%s\n' \
+        "NOTICE: valgrind not found, skipping checks."
+    NO_VALGRIND=1
+  }
+command -v clang > /dev/null 2>&1 ||
+  {
+    printf '%s\n' \
+        "NOTICE: clang not found, skipping valgrind checks."
+    NO_VALGRIND=1
+  }
+test -z "${NO_PVSSTUDIO:-}" &&
+  {
+    ${DEBUG_CALL:?} running valgrind checks ...
+    ${MAKE:-make} clean
+    env CC="clang" ${MAKE:-make} -j "${CPUS:-1}" SIR_DEBUG=1 SIR_SELFLOG=1
+    valgrind                \
+        --leak-check=full   \
+        --track-origins=yes \
+        --error-exitcode=1  \
+            build/bin/sirexample
+    valgrind                \
+        --leak-check=full   \
+        --track-origins=yes \
+        --error-exitcode=1  \
+            build/bin/sirtests
   }
 
 ################################################################################
