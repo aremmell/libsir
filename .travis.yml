@@ -11,8 +11,7 @@ jobs:
   include:
     - os: windows
       install:
-        - choco install visualstudio2022buildtools --package-parameters "--includeRecommended --passive"
-        - /c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio/Installer/setup.exe install --passive --force --norestart --installWhileDownloading --channelUri https://aka.ms/vs/17/release/channel --channelId VisualStudio.17.Release --productId Microsoft.VisualStudio.Product.Community
+        - choco install visualstudio2022buildtools --package-parameters "--no-includeRecommended --add Microsoft.VisualStudio.Workload.VCTools --quiet --passive --norestart --installWhileDownloading --channelUri https://aka.ms/vs/17/release/channel --channelId VisualStudio.17.Release --productId Microsoft.VisualStudio.Product.Community"
       script:
         - powershell Get-ChildItem -Path C:\ -Include MSBuild.exe -File -Recurse -ErrorAction SilentlyContinue
     - os: linux
