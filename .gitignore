@@ -49,6 +49,7 @@ _ReSharper.Caches/
 
 # Cppcheck
 cppcheck.xml
+.extra.sh
 
 # Oracle Lint
 *.ln
