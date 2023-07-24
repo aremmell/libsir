@@ -368,9 +368,10 @@ test -z "${NO_PVSSTUDIO:-}" &&
     env CC="clang" bear -- ${MAKE:-make} -j "${CPUS:-1}"
     pvs-studio-analyzer analyze --intermodular -j "${CPUS:-1}" -o log.pvs
     plog-converter -a "GA:1,2,3" -t fullhtml log.pvs -o pvsreport
-    grep -q 'Congratulations!' ./cppcheck/index.html ||
+    grep -q 'Congratulations!' ./pvsreport/index.html ||
       {
         printf '%s\n' "ERROR: PVS-Studio failed ..."
+        printf '\n%s\n' "Review output in ./pvsreport ..."
         exit "${EXIT_STATUS:-1}";
       }
     rm -f ./compile_commands.json

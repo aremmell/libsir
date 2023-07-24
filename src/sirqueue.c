@@ -54,7 +54,7 @@ bool _sir_queue_create(sir_queue** q) {
 
     if (_sir_validptrptr(q)) {
         *q = calloc(1, sizeof(sir_queue));
-        if (!*q)
+        if (!*q) //-V595
             _sir_handleerr(errno);
     }
 
