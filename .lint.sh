@@ -6,7 +6,6 @@
 # Variables:
 #   VERBOSE - extra output is printed when set
 #   DEBUGLN - debug output is printed when set
-#   SKIPERR - makes many tool errors non-fatal
 
 # Future plans:
 #   Detect installed compilers and build with each
@@ -42,7 +41,7 @@ test -z "${VERBOSE:-}" &&
 command -v "${GIT:-git}" > /dev/null 2>&1 ||
   {
     printf '%s\n' "ERROR: Unable to find git command!"
-    exit "${EXIT_STATUS:-1}";
+    exit 1;
   }
 
 ################################################################################
@@ -52,21 +51,11 @@ ${DEBUG_CALL:?} linting using "${CPUS:?}" processor\(s\) ...
 
 ################################################################################
 
-# shellcheck disable=SC2015
-test -z "${SKIPERR:-}" &&
-  {
-    EXIT_STATUS=1;
-  } || {
-    EXIT_STATUS=0;
-  };
-
-################################################################################
-
 ${DEBUG_CALL:?} checking for git toplevel ...
 cd "$(${GIT:-git} rev-parse --show-toplevel)" ||
   {
     printf '%s\n' "ERROR: Unable to find git toplevel!"
-    exit "${EXIT_STATUS:-1}";
+    exit 1;
   };
 
 ################################################################################
@@ -75,7 +64,7 @@ ${DEBUG_CALL:?} checking for spaces in filenames ...
 if (find src include -print | awk '{ print "\""$0"\"" }' | grep ' '); then
   {
     printf '%s\n' "ERROR: Filename check failed due to spaces!";
-    exit "${EXIT_STATUS:-1}";
+    exit 1;
   };
 fi
 
@@ -87,7 +76,7 @@ set +e; TLIST="$(find src include -print | grep '\.[ch]$' | \
 printf "%s\n" "${TLIST:-}" | grep -v '^$' 2> /dev/null | grep . &&
   {
     printf '%s\n' "ERROR: Tabs check failed!";
-    exit "${EXIT_STATUS:-1}";
+    exit 1;
   }
 
 ################################################################################
@@ -98,7 +87,7 @@ set +e; TLIST="$(find src include -print | \
 printf "%s\n" "${TLIST:-}" | grep -v '^$' 2> /dev/null | grep . &&
   {
     printf '%s\n' "ERROR: Trailing whitespace check failed!";
-    exit "${EXIT_STATUS:-1}";
+    exit 1;
   }
 
 ################################################################################
@@ -182,7 +171,7 @@ test -z "${NO_DUMA:-}" &&
       {
         printf '%s\n' "ERROR: DUMA failed, output follows ..."
         printf '%s\n' "${DUMAOUT:?}"
-        exit "${EXIT_STATUS:-1}";
+        exit 1;
       }
     rm -f ./duma*.log
   }
@@ -238,7 +227,7 @@ test -z "${NO_FLAWFINDER:-}" &&
       {
         printf '%s\n' "ERROR: Flawfinder failed, output follows ..."
         printf '%s\n' "${FLAWFINDER_OUTPUT:-}"
-        exit "${EXIT_STATUS:-1}";
+        exit 1;
       }
   }
 
@@ -326,7 +315,7 @@ test -z "${NO_CPPCHECK:-}" &&
     grep -q '<td>0</td><td>total</td>' ./cppcheck/index.html ||
       {
         printf '%s\n' "ERROR: Cppcheck failed ..."
-        exit "${EXIT_STATUS:-1}";
+        exit 1;
       }
     rm -rf ./cppcheck
     rm -f ./cppcheck.xml
@@ -372,7 +361,7 @@ test -z "${NO_PVSSTUDIO:-}" &&
       {
         printf '%s\n' "ERROR: PVS-Studio failed ..."
         printf '\n%s\n' "Review output in ./pvsreport ..."
-        exit "${EXIT_STATUS:-1}";
+        exit 1;
       }
     rm -f ./compile_commands.json
     rm -f ./log.pvs
