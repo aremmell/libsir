@@ -2116,8 +2116,7 @@ unsigned threadrace_thread(void* arg) {
             break;
     }
 
-    if (!sir_remfile(id))
-        my_args->pass = print_test_error(false, false);
+    my_args->pass = print_test_error(sir_remfile(id), false);
 
     rmfile(my_args->log_file);
 
