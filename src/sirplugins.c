@@ -69,11 +69,7 @@ sirpluginid _sir_plugin_load(const char* path) {
     _sir_selflog("loaded plugin (path: '%s', addr: %p); probing...", //-V576
         plugin->path, plugin->handle);
 
-    sirpluginid retval =  _sir_plugin_probe(plugin);
-    if (0 == retval)
-        _sir_plugin_destroy(&plugin);
-
-    return retval;
+    return _sir_plugin_probe(plugin);
 #else
     SIR_UNUSED(path);
     return 0;
@@ -82,115 +78,115 @@ sirpluginid _sir_plugin_load(const char* path) {
 
 sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
 #if !defined(SIR_NO_PLUGINS)
-    if (!_sir_validptr(plugin))
-        return 0;
-
+    sirpluginid retval = 0;
+    if (plugin) {
 # if SIR_PLUGIN_VCURRENT == SIR_PLUGIN_V1
-    /* if/when new versions of plugin interfaces are introduced, we will need to
-     * modify/extend the following code:
-     *
-     * - remove the enclosing #if
-     * - get the v1 exports (all versions will have v1 exports), resolve them,
-     * and call sir_plugin_query.
-     * - switch on version returned to resolve additional exports. this will
-     * necessitate additional versioned interface structures as members of the
-     * sir_plugin struct, e.g. ifacev1, ifacev2). */
-    plugin->iface.query   = (sir_plugin_queryfn)
-        _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_QUERY);
-    plugin->iface.init    = (sir_plugin_initfn)
-        _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_INIT);
-    plugin->iface.write   = (sir_plugin_writefn)
-        _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_WRITE);
-    plugin->iface.cleanup = (sir_plugin_cleanupfn)
-        _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_CLEANUP);
+        /* if/when new versions of plugin interfaces are introduced, we will need to
+        * modify/extend the following code:
+        *
+        * - remove the enclosing #if
+        * - get the v1 exports (all versions will have v1 exports), resolve them,
+        * and call sir_plugin_query.
+        * - switch on version returned to resolve additional exports. this will
+        * necessitate additional versioned interface structures as members of the
+        * sir_plugin struct, e.g. ifacev1, ifacev2). */
+        plugin->iface.query   = (sir_plugin_queryfn)
+            _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_QUERY);
+        plugin->iface.init    = (sir_plugin_initfn)
+            _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_INIT);
+        plugin->iface.write   = (sir_plugin_writefn)
+            _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_WRITE);
+        plugin->iface.cleanup = (sir_plugin_cleanupfn)
+            _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_CLEANUP);
 
-    if (!plugin->iface.query || !plugin->iface.init ||
-        !plugin->iface.write || !plugin->iface.cleanup) {
-        _sir_selflog("error: export(s) not resolved for plugin (path:"
-                     " '%s', addr: %p)!", plugin->path, plugin->handle);
-        _sir_selflog("exports (query: %"PRIxPTR", init: %"PRIxPTR", write:"
-                     " %"PRIxPTR", cleanup; %"PRIxPTR")",
-                     (uintptr_t)plugin->iface.query, (uintptr_t)plugin->iface.init,
-                     (uintptr_t)plugin->iface.write, (uintptr_t)plugin->iface.cleanup);
-        _sir_plugin_destroy(&plugin);
-        return _sir_seterror(_SIR_E_PLUGINBAD);
-    }
+        if (!plugin->iface.query || !plugin->iface.init ||
+            !plugin->iface.write || !plugin->iface.cleanup) {
+            _sir_selflog("error: export(s) not resolved for plugin (path:"
+                        " '%s', addr: %p)!", plugin->path, plugin->handle);
+            _sir_selflog("exports (query: %"PRIxPTR", init: %"PRIxPTR", write:"
+                        " %"PRIxPTR", cleanup; %"PRIxPTR")",
+                        (uintptr_t)plugin->iface.query, (uintptr_t)plugin->iface.init,
+                        (uintptr_t)plugin->iface.write, (uintptr_t)plugin->iface.cleanup);
+            _sir_plugin_destroy(&plugin);
+            return _sir_seterror(_SIR_E_PLUGINBAD);
+        }
 # else
 #  error "plugin version not implemented"
 # endif
-    /* query the plugin for information. */
-    if (!plugin->iface.query(&plugin->info)) {
-        _sir_selflog("error: plugin (path: '%s', addr: %p) returned false from"
-                     " query fn!", plugin->path, plugin->handle);
-        _sir_plugin_destroy(&plugin);
-        return _sir_seterror(_SIR_E_PLUGINERR);
-    }
+        /* query the plugin for information. */
+        if (!plugin->iface.query(&plugin->info)) {
+            _sir_selflog("error: plugin (path: '%s', addr: %p) returned false from"
+                        " query fn!", plugin->path, plugin->handle);
+            _sir_plugin_destroy(&plugin);
+            return _sir_seterror(_SIR_E_PLUGINERR);
+        }
 
-    /* verify version. */
-    if (!plugin->info.iface_ver || plugin->info.iface_ver > SIR_PLUGIN_VCURRENT) {
-        _sir_selflog("error: plugin (path: '%s', addr: %p) has version"
-                     " %"PRIu8"; libsir has %d", plugin->path, plugin->handle,
-                     plugin->info.iface_ver, SIR_PLUGIN_VCURRENT);
-        _sir_plugin_destroy(&plugin);
-        return _sir_seterror(_SIR_E_PLUGINVER);
-    }
+        /* verify version. */
+        if (!plugin->info.iface_ver || plugin->info.iface_ver > SIR_PLUGIN_VCURRENT) {
+            _sir_selflog("error: plugin (path: '%s', addr: %p) has version"
+                        " %"PRIu8"; libsir has %d", plugin->path, plugin->handle,
+                        plugin->info.iface_ver, SIR_PLUGIN_VCURRENT);
+            _sir_plugin_destroy(&plugin);
+            return _sir_seterror(_SIR_E_PLUGINVER);
+        }
 
-    bool data_valid = true;
+        bool data_valid = true;
 
-    /* verify level registration bitmask. */
-    if (!_sir_validlevels(plugin->info.levels)) {
-        _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid levels"
-                     " %04"PRIx16, plugin->path, plugin->handle, plugin->info.levels);
-        data_valid = false;
-    }
+        /* verify level registration bitmask. */
+        if (!_sir_validlevels(plugin->info.levels)) {
+            _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid levels"
+                        " %04"PRIx16, plugin->path, plugin->handle, plugin->info.levels);
+            data_valid = false;
+        }
 
-    /* verify formatting options bitmask. */
-    if (!_sir_validopts(plugin->info.opts)) {
-        _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid opts"
-                     " %08"PRIx32, plugin->path, plugin->handle, plugin->info.opts);
-        data_valid = false;
-    }
+        /* verify formatting options bitmask. */
+        if (!_sir_validopts(plugin->info.opts)) {
+            _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid opts"
+                        " %08"PRIx32, plugin->path, plugin->handle, plugin->info.opts);
+            data_valid = false;
+        }
 
-    /* verify strings */
-    if (!_sir_validstrnofail(plugin->info.author) ||
-        !_sir_validstrnofail(plugin->info.desc)) {
-        _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid author"
-                     " or description", plugin->path, plugin->handle);
-        data_valid = false;
-    }
+        /* verify strings */
+        if (!_sir_validstrnofail(plugin->info.author) ||
+            !_sir_validstrnofail(plugin->info.desc)) {
+            _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid author"
+                        " or description", plugin->path, plugin->handle);
+            data_valid = false;
+        }
 
-    /* if any category of data is invalid, fail and unload. */
-    if (!data_valid) {
-        _sir_plugin_destroy(&plugin);
-        return _sir_seterror(_SIR_E_PLUGINDAT);
-    }
+        /* if any category of data is invalid, fail and unload. */
+        if (!data_valid) {
+            _sir_plugin_destroy(&plugin);
+            return _sir_seterror(_SIR_E_PLUGINDAT);
+        }
 
-    /* plugin is valid; tell it to initialize, assign it an id,
-     * print its information, and add to cache. */
-    if (!plugin->iface.init()) {
-        _sir_selflog("error: plugin (path: '%s', addr: %p) failed to initialize!",
-            plugin->path, plugin->handle);
-        _sir_plugin_destroy(&plugin);
-        return _sir_seterror(_SIR_E_PLUGINERR);
-    }
+        /* plugin is valid; tell it to initialize, assign it an id,
+        * print its information, and add to cache. */
+        if (!plugin->iface.init()) {
+            _sir_selflog("error: plugin (path: '%s', addr: %p) failed to initialize!",
+                plugin->path, plugin->handle);
+            _sir_plugin_destroy(&plugin);
+            return _sir_seterror(_SIR_E_PLUGINERR);
+        }
 
-    plugin->id    = FNV32_1a((const uint8_t*)&plugin->iface, sizeof(sir_pluginiface));
-    plugin->valid = true;
+        plugin->id    = FNV32_1a((const uint8_t*)&plugin->iface, sizeof(sir_pluginiface));
+        plugin->valid = true;
 
-    _sir_selflog("successfully validated plugin (path: '%s', id: %08"PRIx32");"
-                 " properties:\n{\n\tversion = %"PRIu8".%"PRIu8".%"PRIu8"\n\t"
-                 "levels = %04"PRIx16"\n\topts = %08"PRIx32"\n\tauthor = '%s'"
-                 "\n\tdesc = '%s'\n\tcaps = %016"PRIx64"\n}", plugin->path,
-                 plugin->id, plugin->info.maj_ver, plugin->info.min_ver,
-                 plugin->info.bld_ver, plugin->info.levels, plugin->info.opts,
-                 _SIR_PRNSTR(plugin->info.author), _SIR_PRNSTR(plugin->info.desc),
-                 plugin->info.caps);
+        _sir_selflog("successfully validated plugin (path: '%s', id: %08"PRIx32");"
+                    " properties:\n{\n\tversion = %"PRIu8".%"PRIu8".%"PRIu8"\n\t"
+                    "levels = %04"PRIx16"\n\topts = %08"PRIx32"\n\tauthor = '%s'"
+                    "\n\tdesc = '%s'\n\tcaps = %016"PRIx64"\n}", plugin->path,
+                    plugin->id, plugin->info.maj_ver, plugin->info.min_ver,
+                    plugin->info.bld_ver, plugin->info.levels, plugin->info.opts,
+                    _SIR_PRNSTR(plugin->info.author), _SIR_PRNSTR(plugin->info.desc),
+                    plugin->info.caps);
 
-    sirpluginid retval = _sir_plugin_add(plugin);
-    if (0 == retval) {
-        _sir_selflog("error: failed to add plugin (path: '%s', addr: %p) to"
-                     " cache; unloading", plugin->path, plugin->handle);
-        _sir_plugin_destroy(&plugin);
+        retval = _sir_plugin_add(plugin);
+        if (0 == retval) {
+            _sir_selflog("error: failed to add plugin (path: '%s', addr: %p) to"
+                        " cache; unloading", plugin->path, plugin->handle);
+            _sir_plugin_destroy(&plugin);
+        }
     }
 
     return retval;
