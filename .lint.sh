@@ -128,7 +128,7 @@ test "${DUMA_OS:-}" = "Darwin" &&
         NO_DUMA=1
       }
   }
-test "${DUMA_OS:-}" != "Darwin" ||
+test "${DUMA_OS:-}" = "Darwin" ||
   {
     command -v duma > /dev/null 2>&1 ||
       {
