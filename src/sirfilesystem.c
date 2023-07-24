@@ -367,27 +367,27 @@ char* _sir_getdirname(char* restrict path) {
 }
 
 bool _sir_ispathrelative(const char* restrict path, bool* restrict relative) {
-    if (!_sir_validstr(path) || !_sir_validptr(relative))
-        return false;
+    bool valid = !_sir_validstr(path) || !_sir_validptr(relative);
+
+    if (valid) {
 
 #if !defined(__WIN__)
-    if (path[0] == '/' || (path[0] == '~' && path[1] == '/'))
-        *relative = false;
-    else
-        *relative = true;
-    return true;
+        if (path[0] == '/' || (path[0] == '~' && path[1] == '/'))
+            *relative = false;
+        else
+            *relative = true;
 #else /* __WIN__ */
-    *relative = (TRUE == PathIsRelativeA(path));
-    return true;
+        *relative = (TRUE == PathIsRelativeA(path));
 #endif
+    }
+
+    return valid;
 }
 
 bool _sir_getrelbasepath(const char* restrict path, bool* restrict relative,
     const char* restrict* restrict base_path, sir_rel_to rel_to) {
-    if (!_sir_validstr(path) || !_sir_validptr(relative) || !_sir_validptrptr(base_path))
-        return false;
-
-    if (!_sir_ispathrelative(path, relative))
+    if (!_sir_validstr(path) || !_sir_validptr(relative) ||
+        !_sir_validptrptr(base_path) || !_sir_ispathrelative(path, relative))
         return false;
 
     if (*relative) {
