@@ -39,7 +39,8 @@ sirpluginid _sir_plugin_load(const char* path) {
 # if !defined (__WIN__)
     plugin->handle = dlopen(path, RTLD_NOW | RTLD_LOCAL);
     if (!plugin->handle) {
-        _sir_selflog("error: dlopen('%s') failed (%s)", path, _SIR_PRNSTR(dlerror())); //-V576
+        const char* err = dlerror();
+        _sir_selflog("error: dlopen('%s') failed (%s)", path, _SIR_PRNSTR(err));
         _sir_plugin_destroy(&plugin);
         return _sir_handleerr(errno);
     }
@@ -56,14 +57,14 @@ sirpluginid _sir_plugin_load(const char* path) {
 # endif
 
     plugin->loaded = true;
-    plugin->path   = strndup(path, SIR_MAXPATH);
+    plugin->path   = strndup(path, strnlen(path, SIR_MAXPATH));
 
-    if (!plugin->path) {
+    if (!_sir_validstrnofail(plugin->path)) {
         _sir_plugin_destroy(&plugin);
         return _sir_handleerr(errno);
     }
 
-    _sir_selflog("loaded plugin (path: '%s', addr: %p); probing...",
+    _sir_selflog("loaded plugin (path: '%s', addr: %p); probing...", //-V576
         plugin->path, plugin->handle);
 
     return _sir_plugin_probe(plugin);
@@ -75,11 +76,8 @@ sirpluginid _sir_plugin_load(const char* path) {
 
 sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
 #if !defined(SIR_NO_PLUGINS)
-    if (!_sir_validptr(plugin) || !_sir_validptr(plugin->handle) ||
-        !_sir_validstr(plugin->path)) {
-        _sir_plugin_destroy(&plugin);
+    if (!_sir_validptr(plugin))
         return 0;
-    }
 
 # if SIR_PLUGIN_VCURRENT == SIR_PLUGIN_V1
     /* if/when new versions of plugin interfaces are introduced, we will need to
@@ -173,7 +171,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     plugin->id    = FNV32_1a((const uint8_t*)&plugin->iface, sizeof(sir_pluginiface));
     plugin->valid = true;
 
-    _sir_selflog("successfully validated plugin (path: '%s', id: %08"PRIx32")."
+    _sir_selflog("successfully validated plugin (path: '%s', id: %08"PRIx32");"
                  " properties:\n{\n\tversion = %"PRIu8".%"PRIu8".%"PRIu8"\n\t"
                  "levels = %04"PRIx16"\n\topts = %08"PRIx32"\n\tauthor = '%s'"
                  "\n\tdesc = '%s'\n\tcaps = %016"PRIx64"\n}", plugin->path,

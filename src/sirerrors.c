@@ -45,7 +45,7 @@
 
 /** Per-thread error data */
 static _sir_thread_local sir_thread_err sir_te = {
-    _SIR_E_NOERROR, 0, {0}, {SIR_UNKNOWN, SIR_UNKNOWN, 0}
+    _SIR_E_NOERROR, 0, {0}, {SIR_UNKNOWN, SIR_UNKNOWN, 0} //-V616
 };
 
 bool __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t line) {
@@ -201,7 +201,8 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
 
 #if defined(SIR_SELFLOG)
 PRINTF_FORMAT_ATTR(4, 5)
-void __sir_selflog(const char* func, const char* file, uint32_t line, PRINTF_FORMAT const char* format, ...) {
+void __sir_selflog(const char* func, const char* file, uint32_t line,
+    PRINTF_FORMAT const char* format, ...) {
     bool success = true;
     char prefix[256];
 
@@ -226,7 +227,8 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, PRINTF_FOR
                 va_end(args2);
                 success &= write2 > 0;
 
-                bool write_color = false;
+                bool error = false;
+                bool warn  = false;
                 if (write2 > 0) {
 # if !defined(__WIN__)
                     if (NULL != strcasestr(buf, "error") ||
@@ -235,11 +237,17 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, PRINTF_FOR
                     if (NULL != StrStrIA(buf, "error") ||
                         NULL != StrStrIA(buf, "assert")) {
 # endif
-                        write_color = true;
+                        error = true;
+# if !defined(__WIN__)
+                    } else if (NULL != strcasestr(buf, "warn")) {
+# else /* __WIN__ */
+                    } else if (NULL != StrStrIA(buf, "warn")) {
+# endif
+                        warn = true;
                     }
 
-                    write2 = fprintf(stderr, (write_color ? BRED("%s%s") "\n" : "%s%s\n"),
-                        prefix, buf);
+                    write2 = fprintf(stderr, ((error ? BRED("%s%s") "\n" :
+                        (warn ? YELLOW("%s%s") "\n" : "%s%s\n"))), prefix, buf);
                     success &= write2 > 0;
                 }
 
