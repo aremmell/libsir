@@ -69,6 +69,7 @@ sirpluginid _sir_plugin_load(const char* path) {
     _sir_selflog("loaded plugin (path: '%s', addr: %p); probing...", //-V576
         plugin->path, plugin->handle);
 
+    SUPPRESS_CLANG_LEAK_WARNING(plugin);
     return _sir_plugin_probe(plugin);
 #else
     SIR_UNUSED(path);
