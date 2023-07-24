@@ -37,23 +37,25 @@ sir_text_style_data sir_text_style_section = {
 };
 
 const char* _sir_gettextstyle(sir_level level) {
-    _SIR_LOCK_SECTION(sir_text_style_data, data, SIRMI_TEXTSTYLE, NULL);
-    const char* found        = SIR_UNKNOWN;
     static const size_t low  = 0;
     static const size_t high = SIR_NUMLEVELS - 1;
+
+    _SIR_LOCK_SECTION(sir_text_style_data, data, SIRMI_TEXTSTYLE, NULL);
+    const char* retval = SIR_UNKNOWN;
 
     _SIR_DECLARE_BIN_SEARCH(low, high);
     _SIR_BEGIN_BIN_SEARCH();
 
     if (data->map[_mid].level == level) {
-        found = data->map[_mid].str;
+        retval = data->map[_mid].str;
         break;
     }
 
     _SIR_ITERATE_BIN_SEARCH((data->map[_mid].level < level ? 1 : -1));
     _SIR_END_BIN_SEARCH();
     _SIR_UNLOCK_SECTION(SIRMI_TEXTSTYLE);
-    return found;
+
+    return retval;
 }
 
 bool _sir_settextstyle(sir_level level, sir_textstyle* style) {
