@@ -198,7 +198,6 @@ test -z "${NO_EXTRAWARN:-}" &&
     ${MCMB:-build/bin/mcmb} -e ${SIR_OPTIONS:?} | xargs -L1 echo \
         ' && ${MAKE:-make} clean &&
         env CC="clang"
-            EXTRA_LIBS="-l:libduma.a"
             CFLAGS="-Werror
                     -Wmissing-prototypes
                     -Wdouble-promotion
