@@ -1875,7 +1875,7 @@ bool sirtest_pluginloader(void) {
     print_test_error(pass, pass);
 
     /* test bad paths. */
-    printf("\ntrying to  load plugin with NULL path...\n");
+    printf("\ntrying to load plugin with NULL path...\n");
     badid = sir_loadplugin(NULL);
     pass &= 0 == badid;
 
