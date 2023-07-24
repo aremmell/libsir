@@ -2090,29 +2090,26 @@ unsigned threadrace_thread(void* arg) {
          * other times, just set different options/styles. */
         uint32_t rnd = (uint32_t)(n + threadid);
         if (getrand_bool((uint32_t)(rnd > 1 ? rnd : 1))) {
-            if (!sir_remfile(id))
-                my_args->pass = print_test_error(false, false);
+            my_args->pass = print_test_error(sir_remfile(id), false);
+            my_args->pass = print_test_error(0 != sir_addfile(my_args->log_file,
+                SIRL_ALL, SIRO_MSGONLY), false);
 
-            id = sir_addfile(my_args->log_file, SIRL_ALL, SIRO_MSGONLY);
-            if (0 == id)
-                my_args->pass = print_test_error(false, false);
+            bool test = sir_settextstyle(SIRL_DEBUG, SIRTA_EMPH, fg, bg) &&
+                        sir_settextstyle(SIRL_INFO, SIRTA_BOLD, fg, bg);
+            my_args->pass = print_test_error(test, false);
 
-            if (!sir_settextstyle(SIRL_DEBUG, SIRTA_EMPH, fg, bg) ||
-                !sir_settextstyle(SIRL_INFO, SIRTA_BOLD, fg, bg))
-                my_args->pass = print_test_error(false, false);
-
-            if (!sir_stdoutopts(SIRO_NONAME | SIRO_NOHOST | SIRO_NOMSEC))
-                my_args->pass = print_test_error(false, false);
+            test = sir_stdoutopts(SIRO_NONAME | SIRO_NOHOST | SIRO_NOMSEC);
+            my_args->pass = print_test_error(test, false);
         } else {
-            if (!sir_settextstyle(SIRL_DEBUG, SIRTA_ULINE, fg, bg) ||
-                !sir_settextstyle(SIRL_INFO, SIRTA_NORMAL, fg, bg))
-                my_args->pass = print_test_error(false, false);
+            bool test = sir_settextstyle(SIRL_DEBUG, SIRTA_ULINE, fg, bg) &&
+                        sir_settextstyle(SIRL_INFO, SIRTA_NORMAL, fg, bg);
+            my_args->pass = print_test_error(test, false);
 
-            if (!sir_fileopts(id, SIRO_NOPID | SIRO_NOHOST))
-                my_args->pass = print_test_error(false, false);
+            test = sir_fileopts(id, SIRO_NOPID | SIRO_NOHOST);
+            my_args->pass = print_test_error(test, false);
 
-            if (!sir_stdoutopts(SIRO_NOTIME | SIRO_NOLEVEL))
-                my_args->pass = print_test_error(false, false);
+            test = sir_stdoutopts(SIRO_NOTIME | SIRO_NOLEVEL);
+            my_args->pass = print_test_error(test, false);
         }
 
         if (!my_args->pass)
