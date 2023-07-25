@@ -168,26 +168,21 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
     _SIR_BEGIN_BIN_SEARCH();
 
     if (sir_errors[_mid].e == sir_te.lasterror) {
-        char* final = NULL;
-        bool alloc  = false;
+        char* heap_msg = NULL;
 
         if (_SIR_E_PLATFORM == sir_errors[_mid].e) {
-            final = (char*)calloc(SIR_MAXERROR, sizeof(char));
-
-            if (_sir_validptr(final)) {
-                alloc = true;
-                (void)snprintf(final, SIR_MAXERROR, sir_errors[_mid].msg, sir_te.os_error,
+            heap_msg = calloc(SIR_MAXERROR, sizeof(char));
+            if (_sir_validptrnofail(heap_msg)) {
+                (void)snprintf(heap_msg, SIR_MAXERROR, sir_errors[_mid].msg, sir_te.os_error,
                     (_sir_validstrnofail(sir_te.os_errmsg) ? sir_te.os_errmsg : SIR_UNKNOWN));
             }
-        } else {
-            final = (char*)sir_errors[_mid].msg;
         }
 
         (void)snprintf(message, SIR_MAXERROR, SIR_ERRORFORMAT, sir_te.loc.func,
-            sir_te.loc.file, sir_te.loc.line, _SIR_PRNSTR(final));
+            sir_te.loc.file, sir_te.loc.line, (_sir_validstrnofail(heap_msg)
+                ? heap_msg : sir_errors[_mid].msg));
 
-        if (alloc)
-            _sir_safefree(&final);
+        _sir_safefree(&heap_msg);
 
         retval = sir_errors[_mid].e;
         break;
@@ -246,8 +241,8 @@ void __sir_selflog(const char* func, const char* file, uint32_t line,
                         warn = true;
                     }
 
-                    write2 = fprintf(stderr, ((error ? BRED("%s%s") "\n" :
-                        (warn ? YELLOW("%s%s") "\n" : "%s%s\n"))), prefix, buf);
+                    write2 = fprintf(stderr, (error ? BRED("%s%s") "\n" :
+                        (warn ? YELLOW("%s%s") "\n" : "%s%s\n")), prefix, buf);
                     success &= write2 > 0;
                 }
 

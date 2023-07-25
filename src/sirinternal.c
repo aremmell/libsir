@@ -1100,7 +1100,7 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
 
         if (KERN_SUCCESS == retval) {
             if (msecbuf)
-                *msecbuf = (mts.tv_nsec / 1e6);
+                *msecbuf = (mts.tv_nsec / (long)1e6);
         } else {
             if (msecbuf)
                 *msecbuf = 0;

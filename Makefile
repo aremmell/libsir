@@ -9,9 +9,12 @@
 SHELL      := $(shell env sh -c 'PATH="$$(command -p getconf PATH)" command -v sh')
 BUILDDIR    = ./build
 LOGDIR      = ./logs
+LINTSH      = ./.lint.sh
 DOCSDIR     = docs
 TESTS       = tests
 EXAMPLE     = example
+UTILS       = utils
+MCMB        = mcmb
 INTDIR      = $(BUILDDIR)/obj
 LIBDIR      = $(BUILDDIR)/lib
 BINDIR      = $(BUILDDIR)/bin
@@ -28,9 +31,13 @@ PLUGPREFIX  = plugin_
 # platform specifics
 include sirplatform.mk
 
+# C standard
+SIR_CSTD ?= -std=c11
+SIR_GSTD ?= -std=gnu11
+
 # base CFLAGS
 ifneq ($(NO_DEFAULT_CFLAGS),1)
-  CFLAGS += -Wall -Wextra -Wpedantic -std=c11 -Iinclude -fPIC
+  CFLAGS += -Wall -Wextra -Wpedantic -Iinclude -fPIC
 endif
 
 # debug/non-debug CFLAGS
@@ -67,9 +74,11 @@ endif
 # dependencies
 LIBS = $(PTHOPT)
 
-# for test rig and example:
-# link with static library, not shared
-LDFLAGS += $(LIBS) -L$(LIBDIR) -lsir_s $(PLATFORM_LIBS) $(LIBDL) $(EXTRA_LIBS)
+# linker flags
+LDFLAGS += $(LIBS) -L$(LIBDIR) $(PLATFORM_LIBS) $(LIBDL) $(EXTRA_LIBS)
+
+# static libsir for test rig and example
+LIBSIR_S = -lsir_s
 
 # translation units
 TUS := $(wildcard src/*.c)
@@ -97,34 +106,42 @@ OUT_EXAMPLE    = $(BINDIR)/sirexample$(PLATFORM_EXE_EXT)
 OBJ_TESTS      = $(INTDIR)/$(TESTS)/$(TESTS).o
 OUT_TESTS      = $(BINDIR)/sirtests$(PLATFORM_EXE_EXT)
 
+# miniature combinatorics utility
+OBJ_MCMB       = $(INTDIR)/$(MCMB)/$(MCMB).o
+OUT_MCMB       = $(BINDIR)/mcmb$(PLATFORM_EXE_EXT)
+
 # ##########
 # targets
 # ##########
 
 .DEFAULT_GOAL := all
 .PHONY: all
-all: $(PGOALS) $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS)
+all: $(PGOALS) $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS) $(OUT_MCMB)
 
 -include $(INTDIR)/*.d
 
 $(OBJ_EXAMPLE): $(EXAMPLE)/$(EXAMPLE).c $(DEPS)
 	@mkdir -p $(@D)
-	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -Iinclude
+	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) $(SIR_CSTD) -Iinclude
+
+$(OBJ_MCMB): $(UTILS)/$(MCMB)/$(MCMB).c $(DEPS)
+	@mkdir -p $(@D)
+	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) $(SIR_GSTD)
 
 $(OBJ_TESTS): $(TESTS)/$(TESTS).c $(DEPS)
 	@mkdir -p $(@D)
-	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) -Iinclude
+	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) $(SIR_CSTD) -Iinclude
 
 $(INTDIR)/%.o: %.c $(DEPS)
 	@mkdir -p $(@D)
-	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS)
+	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) $(SIR_CSTD)
 
 .PHONY: shared
 shared: $(OUT_SHARED)
 $(OUT_SHARED): $(OBJ_SHARED)
 	@mkdir -p $(@D)
-	$(CC) $(SIR_SHARED) -o $(OUT_SHARED) $^ $(CFLAGS) $(LDFLAGS_SHARED)
-	-@echo built $(OUT_SHARED) successfully.
+	$(CC) $(SIR_SHARED) -o $(OUT_SHARED) $^ $(LDFLAGS_SHARED)
+	-@printf 'built %s successfully.\n' "$(OUT_SHARED)" 2> /dev/null
 
 .PHONY: static
 static: $(OUT_STATIC)
@@ -132,38 +149,56 @@ $(OUT_STATIC): $(OUT_SHARED)
 	@mkdir -p $(@D)
 	ar -cr $(OUT_STATIC) $(OBJ_SHARED)
 	-@($(RANLIB) "$(OUT_STATIC)" || true) > /dev/null 2>&1
-	-@echo built $(OUT_STATIC) successfully.
+	-@printf 'built %s successfully.\n' "$(OUT_STATIC)" 2> /dev/null
 
 .PHONY: example
 example: $(OUT_EXAMPLE)
 $(OUT_EXAMPLE): $(OUT_STATIC) $(OBJ_EXAMPLE)
 	@mkdir -p $(@D)
 	@mkdir -p $(BINDIR)
-	$(CC) -o $(OUT_EXAMPLE) $(OBJ_EXAMPLE) $(CFLAGS) -Iinclude $(LDFLAGS)
-	-@echo built $(OUT_EXAMPLE) successfully.
+	$(CC) -o $(OUT_EXAMPLE) $(OBJ_EXAMPLE) -Iinclude $(LIBSIR_S) $(LDFLAGS)
+	-@printf 'built %s successfully.\n' "$(OUT_EXAMPLE)" 2> /dev/null
 
-$(BINDIR)/file.exists:
-	@mkdir -p $(BINDIR)
-	@touch $(BINDIR)/file.exists > /dev/null
+.PHONY: mcmb cmb
+ifneq ($(NO_MCMB),1)
+mcmb cmb: $(OUT_MCMB)
+$(OUT_MCMB): $(OBJ_MCMB)
+	mkdir -p $(@D)
+	mkdir -p $(BINDIR)
+	$(CC) -o $(OUT_MCMB) $(OBJ_MCMB) $(LDFLAGS)
+	-@printf 'built %s successfully.\n' "$(OUT_MCMB)" 2> /dev/null
+endif
 
-.PHONY: tests
-tests: $(OUT_TESTS) plugins
-$(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS) $(BINDIR)/file.exists plugins
+.PHONY: tests test
+tests test: $(OUT_TESTS)
+$(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS)
+	$(MAKE) --no-print-directory plugins
 	@mkdir -p $(@D)
 	@mkdir -p $(BINDIR)
 	@mkdir -p $(LOGDIR)
-	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS) $(CFLAGS) -Iinclude $(LDFLAGS)
-	-@echo built $(OUT_TESTS) successfully.
+	@touch $(BINDIR)/file.exists > /dev/null
+	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS) -Iinclude $(LIBSIR_S) $(LDFLAGS)
+	-@printf 'built %s successfully.\n' "$(OUT_TESTS)" 2> /dev/null
 
-.PHONY: docs
-docs: $(OUT_STATIC)
+.PHONY: docs doc
+docs doc: $(OUT_STATIC)
 	@doxygen Doxyfile
 	-@find docs -name '*.png' \
 		-not -path 'docs/res/*' \
 		-not -path 'docs/sources/*' \
 		-exec advpng -z4 "{}" 2> /dev/null \; \
 		2> /dev/null || true
-	-@echo built documentation successfully.
+	-@printf 'built documentation successfully.\n' 2> /dev/null
+
+.PHONY: lint check
+lint check:
+	$(MAKE) --no-print-directory clean
+	$(MAKE) --no-print-directory
+	@test -x $(LINTSH) || \
+		{ printf '%s\n' "Error: %s not executable.\n" "$(LINTSH)" \
+			2> /dev/null; exit 1; }
+	-@printf 'running %s ...\n' "$(LINTSH)"
+	@env VERBOSE=1 $(LINTSH)
 
 .PHONY: install
 ifneq (,$(findstring install,$(MAKECMDGOALS)))
@@ -171,10 +206,11 @@ ifneq (,$(findstring install,$(MAKECMDGOALS)))
 endif
 install: $(INSTALLSH)
 	@test -x $(INSTALLSH) || \
-		{ printf 'Error: %s not executable.\n' "$(INSTALLSH)"; exit 1; }
-	+@test -f "$(OUT_STATIC)" || $(MAKE) static
-	+@test -f "$(OUT_SHARED)" || $(MAKE) shared
-	-@echo installing libraries to $(INSTALLLIB) and headers to $(INSTALLINC)...
+		{ printf 'Error: %s not executable.\n' "$(INSTALLSH)" \
+			2> /dev/null; exit 1; }
+	@test -f "$(OUT_STATIC)" || $(MAKE) --no-print-directory static
+	@test -f "$(OUT_SHARED)" || $(MAKE) --no-print-directory shared
+	-@printf 'installing libraries to %s and headers to %s...' "$(INSTALLLIB)" "$(INSTALLINC)" 2> /dev/null
 	$(INSTALLSH) -m 755 -d "$(INSTALLLIB)"
 	$(INSTALLSH) -C -m 755 "$(OUT_SHARED)" "$(INSTALLLIB)"
 	-($(LDCONFIG) || true) > /dev/null 2>&1
@@ -200,7 +236,7 @@ install: $(INSTALLSH)
 	$(INSTALLSH) -C -m 644 "include/sir/textstyle.h" "$(INSTALLINC)/sir"
 	$(INSTALLSH) -C -m 644 "include/sir/types.h" "$(INSTALLINC)/sir"
 	$(INSTALLSH) -C -m 644 "include/sir/version.h" "$(INSTALLINC)/sir"
-	-@echo installed libsir successfully.
+	-@printf 'installed libsir successfully.\n' 2> /dev/null
 
 .PHONY: clean distclean
 ifneq (,$(findstring clean,$(MAKECMDGOALS)))
@@ -212,11 +248,11 @@ clean distclean:
 	@rm -rf ./*.log > /dev/null 2>&1
 	@rm -rf ./*.ln > /dev/null 2>&1
 	@rm -rf ./*.d > /dev/null 2>&1
-	-@echo build directory and log files cleaned successfully.
+	-@printf 'build directory and log files cleaned successfully.\n' 2> /dev/null
 
 ifneq ($(SIR_NO_PLUGINS),1)
-.PHONY: plugins
-plugins:
+.PHONY: plugins plugin
+plugins plugin:
 	@$(MAKE) -q --no-print-directory $(OUT_SHARED) $(TUS) || \
 		$(MAKE) --no-print-directory \
 			$(foreach V,$(sort $(strip $(PLUGINNAMES))), $(PLUGPREFIX)$V) REMAKE=1
@@ -228,13 +264,16 @@ $(PLUGPREFIX)%: $(OUT_SHARED) $(TUS)
 	test -f $(LIBDIR)/$@$(PLATFORM_DLL_EXT) || export REMAKE=1; \
 	test $${REMAKE:-0} -eq 0 || \
 		{ (set -x; $(CC) $(SIR_SHARED) -o $(LIBDIR)/$@$(PLATFORM_DLL_EXT) $(CFLAGS) \
-		$(wildcard $(subst $(PLUGPREFIX),$(PLUGINS)/,$@)/*.c) $(LDFLAGS_SHARED)) && \
+		   $(SIR_CSTD) $(wildcard $(subst $(PLUGPREFIX),$(PLUGINS)/,$@)/*.c) \
+		   $(LDFLAGS_SHARED)) && \
 	printf 'built %s successfully.\n' "$(LIBDIR)/$@$(PLATFORM_DLL_EXT)" 2> /dev/null; }
 endif
 
 .PHONY: printvars printenv
 printvars printenv:
-	-@printf '%s: ' "FEATURES"; printf '%s ' "$(.FEATURES)"; printf '%s\n' ""
+	-@printf '%s: ' "FEATURES" 2> /dev/null
+	-@printf '%s ' "$(.FEATURES)" 2> /dev/null
+	-@printf '%s\n' "" 2> /dev/null
 	-@$(foreach V,$(sort $(.VARIABLES)), \
 		$(if $(filter-out environment% default automatic,$(origin $V)), \
 			$(if $(strip $($V)),$(info $V: [$($V)]),)))
