@@ -172,14 +172,14 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
 
         if (_SIR_E_PLATFORM == sir_errors[_mid].e) {
             heap_msg = calloc(SIR_MAXERROR, sizeof(char));
-            if (_sir_validptr(heap_msg)) {
+            if (_sir_validptrnofail(heap_msg)) {
                 (void)snprintf(heap_msg, SIR_MAXERROR, sir_errors[_mid].msg, sir_te.os_error,
                     (_sir_validstrnofail(sir_te.os_errmsg) ? sir_te.os_errmsg : SIR_UNKNOWN));
             }
         }
 
         (void)snprintf(message, SIR_MAXERROR, SIR_ERRORFORMAT, sir_te.loc.func,
-            sir_te.loc.file, sir_te.loc.line, (_sir_validstr(heap_msg)
+            sir_te.loc.file, sir_te.loc.line, (_sir_validstrnofail(heap_msg)
                 ? heap_msg : sir_errors[_mid].msg));
 
         _sir_safefree(&heap_msg);
