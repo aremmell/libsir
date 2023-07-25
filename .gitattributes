@@ -1,4 +1,19 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 
-docs/ linguist-vendored
+build-aux/** linguist-vendored
+docs/** linguist-vendored
+LICENSES/** linguist-vendored
+msvs/** linguist-vendored
+utils/mcmb/** linguist-vendored
+autoformat.sh linguist-vendored
+Makefile linguist-vendored
+sir.code-workspace linguist-vendored
+sirplatform.mk linguist-vendored
+.clang-format linguist-vendored
+.coveralls.sh linguist-vendored
+.coverity.sh linguist-vendored
+.editorconfig linguist-vendored
+.github linguist-vendored
+.reuse linguist-vendored
+.vscode linguist-vendored
