@@ -81,7 +81,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     sirpluginid retval = 0;
     if (plugin) {
 # if SIR_PLUGIN_VCURRENT == SIR_PLUGIN_V1
-        /* if/when new versions of plugin interfaces are introduced, we will need to
+       /* if/when new versions of plugin interfaces are introduced, we will need to
         * modify/extend the following code:
         *
         * - remove the enclosing #if
