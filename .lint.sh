@@ -256,7 +256,7 @@ test -z "${NO_SCANBUILD:-}" &&
     printf '%s' 'true' > ./.scan-build.sh
     # shellcheck disable=SC2090,SC2086,SC2016
     "${MCMB:-build/bin/mcmb}" -e ${SIR_OPTIONS:?} | xargs -L1 echo \
-        ' && ${MAKE:-make} clean && $(MAKE:-make} mcmb &&
+        ' && ${MAKE:-make} clean && ${MAKE:-make} mcmb &&
          env CC="clang"
            scan-build -no-failure-reports
                --status-bugs
