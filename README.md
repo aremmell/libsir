@@ -5,8 +5,8 @@ libsir&mdash;a cross-platform, thread-safe logging library
 <!-- SPDX-License-Identifier: MIT -->
 <!-- Copyright (c) 2018-current Ryan M. Lederman <lederman@gmail.com> -->
 
-[![Release](https://img.shields.io/github/v/release/aremmell/libsir?color=%2340b900?cacheSeconds=60)](releases/latest)
-[![Commits](https://img.shields.io/github/commits-since/aremmell/libsir/latest?cacheSeconds=60&color=%2340b900)](commits/master)
+[![Release](https://img.shields.io/github/v/release/aremmell/libsir?color=%2340b900&cacheSeconds=60)](https://github.com/aremmell/libsir/releases/latest)
+[![Commits](https://img.shields.io/github/commits-since/aremmell/libsir/latest?cacheSeconds=60&color=%2340b900)](https://github.com/aremmell/libsir/commits/master)
 [![License](https://img.shields.io/github/license/aremmell/libsir?color=%2340b900&cacheSeconds=60)](LICENSE)
 [![OpenHub](https://img.shields.io/badge/openhub-libsir-ok.svg?color=%2340b900&cacheSeconds=60)](https://www.openhub.net/p/libsir/)
 [![Build](https://img.shields.io/travis/com/aremmell/libsir?cacheSeconds=60&color=%2340b900)](https://app.travis-ci.com/aremmell/libsir)
