@@ -472,10 +472,6 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #  define __file__ __FILE__
 # endif
 
-/* For avoiding linting false positives. */
-#define SUPPRESS_CLANG_LEAK_WARNING(x) ignore_memory_leak = (x)
-extern void *ignore_memory_leak;
-
 #endif /* !_SIR_PLATFORM_H_INCLUDED */
 
 #include "sir/impl.h"

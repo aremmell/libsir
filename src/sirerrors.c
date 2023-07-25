@@ -184,7 +184,6 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
 
         _sir_safefree(&heap_msg);
 
-        SUPPRESS_CLANG_LEAK_WARNING(final);
         retval = sir_errors[_mid].e;
         break;
     }
