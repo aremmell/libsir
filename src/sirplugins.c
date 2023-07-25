@@ -105,8 +105,8 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
                          " '%s', addr: %p)!", plugin->path, plugin->handle);
             _sir_selflog("exports (query: %"PRIxPTR", init: %"PRIxPTR", write:"
                          " %"PRIxPTR", cleanup; %"PRIxPTR")",
-                        (uintptr_t)plugin->iface.query, (uintptr_t)plugin->iface.init,
-                        (uintptr_t)plugin->iface.write, (uintptr_t)plugin->iface.cleanup);
+                         (uintptr_t)plugin->iface.query, (uintptr_t)plugin->iface.init,
+                         (uintptr_t)plugin->iface.write, (uintptr_t)plugin->iface.cleanup);
             _sir_plugin_destroy(&plugin);
             return _sir_seterror(_SIR_E_PLUGINBAD);
         }
@@ -116,7 +116,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         /* query the plugin for information. */
         if (!plugin->iface.query(&plugin->info)) {
             _sir_selflog("error: plugin (path: '%s', addr: %p) returned false from"
-                        " query fn!", plugin->path, plugin->handle);
+                         " query fn!", plugin->path, plugin->handle);
             _sir_plugin_destroy(&plugin);
             return _sir_seterror(_SIR_E_PLUGINERR);
         }
@@ -124,7 +124,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         /* verify version. */
         if (!plugin->info.iface_ver || plugin->info.iface_ver > SIR_PLUGIN_VCURRENT) {
             _sir_selflog("error: plugin (path: '%s', addr: %p) has version"
-                        " %"PRIu8"; libsir has %d", plugin->path, plugin->handle,
+                         " %"PRIu8"; libsir has %d", plugin->path, plugin->handle,
                         plugin->info.iface_ver, SIR_PLUGIN_VCURRENT);
             _sir_plugin_destroy(&plugin);
             return _sir_seterror(_SIR_E_PLUGINVER);
@@ -135,14 +135,14 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         /* verify level registration bitmask. */
         if (!_sir_validlevels(plugin->info.levels)) {
             _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid levels"
-                        " %04"PRIx16, plugin->path, plugin->handle, plugin->info.levels);
+                         " %04"PRIx16, plugin->path, plugin->handle, plugin->info.levels);
             data_valid = false;
         }
 
         /* verify formatting options bitmask. */
         if (!_sir_validopts(plugin->info.opts)) {
             _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid opts"
-                        " %08"PRIx32, plugin->path, plugin->handle, plugin->info.opts);
+                         " %08"PRIx32, plugin->path, plugin->handle, plugin->info.opts);
             data_valid = false;
         }
 
@@ -150,7 +150,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         if (!_sir_validstrnofail(plugin->info.author) ||
             !_sir_validstrnofail(plugin->info.desc)) {
             _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid author"
-                        " or description", plugin->path, plugin->handle);
+                         " or description", plugin->path, plugin->handle);
             data_valid = false;
         }
 
@@ -173,18 +173,18 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         plugin->valid = true;
 
         _sir_selflog("successfully validated plugin (path: '%s', id: %08"PRIx32");"
-                    " properties:\n{\n\tversion = %"PRIu8".%"PRIu8".%"PRIu8"\n\t"
-                    "levels = %04"PRIx16"\n\topts = %08"PRIx32"\n\tauthor = '%s'"
-                    "\n\tdesc = '%s'\n\tcaps = %016"PRIx64"\n}", plugin->path,
-                    plugin->id, plugin->info.maj_ver, plugin->info.min_ver,
-                    plugin->info.bld_ver, plugin->info.levels, plugin->info.opts,
-                    _SIR_PRNSTR(plugin->info.author), _SIR_PRNSTR(plugin->info.desc),
-                    plugin->info.caps);
+                     " properties:\n{\n\tversion = %"PRIu8".%"PRIu8".%"PRIu8"\n\t"
+                     "levels = %04"PRIx16"\n\topts = %08"PRIx32"\n\tauthor = '%s'"
+                     "\n\tdesc = '%s'\n\tcaps = %016"PRIx64"\n}", plugin->path,
+                     plugin->id, plugin->info.maj_ver, plugin->info.min_ver,
+                     plugin->info.bld_ver, plugin->info.levels, plugin->info.opts,
+                     _SIR_PRNSTR(plugin->info.author), _SIR_PRNSTR(plugin->info.desc),
+                     plugin->info.caps);
 
         retval = _sir_plugin_add(plugin);
         if (0 == retval) {
             _sir_selflog("error: failed to add plugin (path: '%s', addr: %p) to"
-                        " cache; unloading", plugin->path, plugin->handle);
+                         " cache; unloading", plugin->path, plugin->handle);
             _sir_plugin_destroy(&plugin);
         }
     }
