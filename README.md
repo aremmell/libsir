@@ -114,3 +114,7 @@ Suggested initial sections:
 - [Public Types](https://libsir.rml.dev/group__publictypes.html)
 - [Configuration](https://libsir.rml.dev/config.html)
 - [Test suite](https://libsir.rml.dev/testsuite.html)
+
+## SAST Tools
+
+[PVS-Studio](https://pvs-studio.com/pvs-studio/?utm_source=website&utm_medium=github&utm_campaign=open_source) - static analyzer for C, C++, C#, and Java code.
