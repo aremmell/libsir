@@ -241,8 +241,8 @@ void __sir_selflog(const char* func, const char* file, uint32_t line,
                         warn = true;
                     }
 
-                    write2 = fprintf(stderr, (error ? (BRED("%s%s") "\n" :
-                        (warn ? YELLOW("%s%s") "\n" : "%s%s\n"))), prefix, buf);
+                    write2 = fprintf(stderr, (error ? BRED("%s%s") "\n" :
+                        (warn ? YELLOW("%s%s") "\n" : "%s%s\n")), prefix, buf);
                     success &= write2 > 0;
                 }
 
