@@ -49,8 +49,6 @@
   - `SIR_NO_PLUGINS`: The same as `SIR_NO_SYSTEM_LOGGERS`, but for the plugin system.
 - Better and more thorough documentation.
 
----
-
 ## 2.1.1
 
 ### May 17, 2023
