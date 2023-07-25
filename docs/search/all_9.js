@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['level_0',['level',['../structsir__level__style__tuple.html#aafe5ae7abfd17caaa4470368c3d2ed98',1,'sir_level_style_tuple::level'],['../structsir__level__str__pair.html#ab3366344595f3aae38b06cc570381885',1,'sir_level_str_pair::level']]],
-  ['levels_1',['levels',['../group__publictypes.html#a3dc07c2b3fbe96d9c6f4d8af2ef90687',1,'sir_stdio_dest::levels'],['../group__publictypes.html#a2fb4c11cdb645a46f008c34678260bbc',1,'sir_syslog_dest::levels'],['../structsir__plugininfo.html#ab3d8e14fb3f09579052cfc6f48e638b7',1,'sir_plugininfo::levels'],['../structsir__update__config__data.html#a76c8c666c84b831bf2cc77f92c5fa16b',1,'sir_update_config_data::levels']]],
-  ['libsir_2',['libsir',['../index.html',1,'']]],
-  ['logger_3',['logger',['../group__publictypes.html#a6db435f352d7ea4a67807a3feb447bf7',1,'sir_syslog_dest._state']]]
+  ['identity_0',['identity',['../group__publictypes.html#acbc738f8c0f9dc404ac85e13cb43c7c5',1,'sir_syslog_dest']]],
+  ['iface_5fver_1',['iface_ver',['../structsir__plugininfo.html#a125b2cde17902e0d197fa3157337f3ae',1,'sir_plugininfo']]],
+  ['init_2',['init',['../structsir__pluginifacev1.html#af8ba5a3a8a30ff6decd9c1795003cfcf',1,'sir_pluginifacev1']]],
+  ['invert_3',['INVERT',['../ansimacros_8h.html#ac8f15eef1cd5bf5f8b127fe10c96aa62',1,'ansimacros.h']]]
 ];
