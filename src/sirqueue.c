@@ -38,7 +38,7 @@ sir_queue_node* _sir_queue_node_create(void* data) {
 }
 
 bool _sir_queue_node_destroy(sir_queue_node** node, void** data) {
-    bool valid = node && *node;
+    bool valid = _sir_validptrptr(node) && _sir_validptr(*node);
 
     if (valid) {
         if (data)
@@ -51,18 +51,19 @@ bool _sir_queue_node_destroy(sir_queue_node** node, void** data) {
 }
 
 bool _sir_queue_create(sir_queue** q) {
+    bool valid = _sir_validptrptr(q);
 
-    if (_sir_validptrptr(q)) {
+    if (valid) {
         *q = calloc(1, sizeof(sir_queue));
-        if (!*q)
+        if (!_sir_validptrnofail(*q))
             _sir_handleerr(errno);
     }
 
-    return q && *q;
+    return valid && _sir_validptrnofail(*q);
 }
 
 bool _sir_queue_destroy(sir_queue** q) {
-    bool valid = q && *q;
+    bool valid = _sir_validptrptr(q) && _sir_validptr(*q);
 
     if (valid) {
         sir_queue_node* next = (*q)->head;
