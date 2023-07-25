@@ -118,6 +118,7 @@
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>SIR_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <PreBuildEvent>
       <Command>echo.&gt;$(ProjectDir)../build/bin/file.exists &amp; if not exist $(SolutionDir)\..\logs\NUL mkdir $(SolutionDir)\..\logs</Command>
@@ -166,7 +167,7 @@
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <DebugInformationFormat>None</DebugInformationFormat>
       <UseFullPaths>false</UseFullPaths>
-      <PreprocessorDefinitions>_MBCS;SIR_SELFLOG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
