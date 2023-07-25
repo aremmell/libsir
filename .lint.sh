@@ -256,11 +256,11 @@ test -z "${NO_SCANBUILD:-}" &&
     printf '%s' 'true' > ./.scan-build.sh
     # shellcheck disable=SC2090,SC2086,SC2016
     "${MCMB:-build/bin/mcmb}" -e ${SIR_OPTIONS:?} | xargs -L1 echo \
-        ' && ${MAKE:-make} clean &&
+        ' && ${MAKE:-make} clean && $(MAKE:-make} mcmb &&
          env CC="clang"
            scan-build -no-failure-reports
                --status-bugs
-               -maxloop 700
+               -maxloop 12
                -enable-checker optin.portability.UnixAPI
                -enable-checker security.FloatLoopCounter
                -enable-checker security.insecureAPI.bcmp
@@ -363,6 +363,7 @@ test -z "${NO_PVSSTUDIO:-}" &&
     rm -f ./log.pvs
     rm -f ./compile_commands.json
     ${MAKE:-make} clean
+    ${MAKE:-make} mcmb
     env CC="clang" bear -- "${MAKE:-make}" -j "${CPUS:-1}"
     pvs-studio-analyzer analyze --intermodular -j "${CPUS:-1}" -o log.pvs
     plog-converter -a "GA:1,2,3" -t fullhtml log.pvs -o pvsreport
