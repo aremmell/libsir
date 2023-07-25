@@ -86,21 +86,17 @@ bool _sir_makeinit(sirinit* si) {
 
 bool _sir_init(sirinit* si) {
     (void)_sir_seterror(_SIR_E_NOERROR);
-    _sir_selflog("entered init");
     _sir_once(&magic_once, _sir_initialize_once);
 
     if (!_sir_validptr(si))
         return false;
 
-    _sir_selflog("checking if already initialized");
 #if defined(__HAVE_ATOMIC_H__)
     if (_SIR_MAGIC == atomic_load(&_sir_magic))
 #else
     if (_SIR_MAGIC == _sir_magic)
 #endif
         return _sir_seterror(_SIR_E_ALREADY);
-
-    _sir_selflog("setting defaults");
 
     _sir_defaultlevels(&si->d_stdout.levels, sir_stdout_def_lvls);
     _sir_defaultopts(&si->d_stdout.opts, sir_stdout_def_opts);
@@ -113,11 +109,8 @@ bool _sir_init(sirinit* si) {
     _sir_defaultopts(&si->d_syslog.opts, sir_syslog_def_opts);
 #endif
 
-    _sir_selflog("checking input sanity");
     if (!_sir_init_sanity(si))
         return false;
-
-    _sir_selflog("input sane, initializing stdio");
 
 #if defined(__WIN__)
     if (!_sir_initialize_stdio()) {
@@ -126,19 +119,12 @@ bool _sir_init(sirinit* si) {
     }
 #endif
 
-    _sir_selflog("stdio initialized; entering SIRMI_CONFIG");
-
     _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false);
 
 #if defined(__HAVE_ATOMIC_H__)
     atomic_store(&_sir_magic, _SIR_MAGIC);
 #else
     _sir_magic = _SIR_MAGIC;
-#endif
-
-#if !defined(__HAVE_ATOMIC_H__)
-_sir_selflog("entered SIRMI_CONFIG, set _sir_magic, now has value: %"PRIx32,
-    _sir_magic);
 #endif
 
     _sir_setcolormode(SIRCM_16);
@@ -168,10 +154,8 @@ _sir_selflog("entered SIRMI_CONFIG, set _sir_magic, now has value: %"PRIx32,
     }
 #endif
 
-    _sir_selflog("unlocking SIRMI_CONFIG");
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
 
-    _sir_selflog("returning true");
     return true;
 }
 
