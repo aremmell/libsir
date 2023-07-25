@@ -3,7 +3,7 @@
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
- * Version:   2.2.1
+ * Version:   2.2.2
  * License:   The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -35,13 +35,13 @@
 # define SIR_VERSION_MINOR 2
 
 /** The current libsir patch version component. */
-# define SIR_VERSION_PATCH 1
+# define SIR_VERSION_PATCH 2
 
 /** 1 if this is a release version of libsir, 0 otherwise. */
-# define SIR_VERSION_IS_RELEASE 1
+# define SIR_VERSION_IS_RELEASE 0
 
 /** The current libsir version suffix. */
-# define SIR_VERSION_SUFFIX ""
+# define SIR_VERSION_SUFFIX "-dev"
 
 /** The current libsir version as a number. */
 # define SIR_VERSION_HEX ((SIR_VERSION_MAJOR << 16) | \
