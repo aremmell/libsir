@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.2
+
+- In progress
+
 ## 2.2.1
 
 ### July 25, 2023
@@ -44,8 +48,6 @@
   - `SIR_NO_SYSTEM_LOGGERS`: if defined, system logger support is completely disabled/compiled out. The entry points still exist, but they will return an error that the feature is disabled or unavailable.
   - `SIR_NO_PLUGINS`: The same as `SIR_NO_SYSTEM_LOGGERS`, but for the plugin system.
 - Better and more thorough documentation.
-
----
 
 ## 2.1.1
 
