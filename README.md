@@ -11,7 +11,6 @@ libsir&mdash;a cross-platform, thread-safe logging library
 [![OpenHub](https://img.shields.io/badge/openhub-libsir-ok.svg?color=%2340b900&cacheSeconds=60)](https://www.openhub.net/p/libsir/)
 [![Build](https://img.shields.io/travis/com/aremmell/libsir?cacheSeconds=60&color=%2340b900)](https://app.travis-ci.com/aremmell/libsir)
 [![Coverity](https://img.shields.io/coverity/scan/28843.svg?color=%2340b900&cacheSeconds=60)](https://scan.coverity.com/projects/aremmell-libsir)
-[![Codacy](https://img.shields.io/codacy/grade/c631edd919a94bafa21c98dfcf72f2ad?color=%2340b900&cacheSeconds=60)](https://app.codacy.com/gh/aremmell/libsir/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Coverage](https://img.shields.io/coverallsCoverage/github/aremmell/libsir?color=%2340b900&cacheSeconds=60)](https://coveralls.io/github/aremmell/libsir)
 [![REUSE](https://img.shields.io/reuse/compliance/github.com%2Faremmell%2Flibsir?label=REUSE3&color=%2340b900&cacheSeconds=60)](https://api.reuse.software/info/github.com/aremmell/libsir)
 
@@ -114,3 +113,7 @@ Suggested initial sections:
 - [Public Types](https://libsir.rml.dev/group__publictypes.html)
 - [Configuration](https://libsir.rml.dev/config.html)
 - [Test suite](https://libsir.rml.dev/testsuite.html)
+
+## SAST Tools
+
+[PVS-Studio](https://pvs-studio.com/pvs-studio/?utm_source=website&utm_medium=github&utm_campaign=open_source) - static analyzer for C, C++, C#, and Java code.
