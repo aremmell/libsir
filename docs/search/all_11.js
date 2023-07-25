@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['test_20suite_0',['Test suite',['../md_docs_2sources_2sirtests.html',1,'']]],
-  ['tests_1',['Tests',['../group__tests.html',1,'']]],
-  ['thread_5fargs_2',['thread_args',['../structthread__args.html',1,'']]],
-  ['types_3',['Types',['../group__publictypes.html',1,'']]]
+  ['red_0',['RED',['../ansimacros_8h.html#ae96a94895f9559215e6fb40c3c23c740',1,'ansimacros.h']]],
+  ['redb_1',['REDB',['../ansimacros_8h.html#a208bd811244427dc2b12d239617c8e0c',1,'ansimacros.h']]],
+  ['report_5ferror_2',['report_error',['../example_8c.html#a929f3d3b8335f1827cf00af79a26ade7',1,'example.c']]]
 ];
