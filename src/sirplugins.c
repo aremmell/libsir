@@ -102,9 +102,9 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         if (!plugin->iface.query || !plugin->iface.init ||
             !plugin->iface.write || !plugin->iface.cleanup) {
             _sir_selflog("error: export(s) not resolved for plugin (path:"
-                        " '%s', addr: %p)!", plugin->path, plugin->handle);
+                         " '%s', addr: %p)!", plugin->path, plugin->handle);
             _sir_selflog("exports (query: %"PRIxPTR", init: %"PRIxPTR", write:"
-                        " %"PRIxPTR", cleanup; %"PRIxPTR")",
+                         " %"PRIxPTR", cleanup; %"PRIxPTR")",
                         (uintptr_t)plugin->iface.query, (uintptr_t)plugin->iface.init,
                         (uintptr_t)plugin->iface.write, (uintptr_t)plugin->iface.cleanup);
             _sir_plugin_destroy(&plugin);
@@ -161,7 +161,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         }
 
         /* plugin is valid; tell it to initialize, assign it an id,
-        * print its information, and add to cache. */
+         * print its information, and add to cache. */
         if (!plugin->iface.init()) {
             _sir_selflog("error: plugin (path: '%s', addr: %p) failed to initialize!",
                 plugin->path, plugin->handle);
