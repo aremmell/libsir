@@ -45,7 +45,7 @@ Linux/x86_64 (GCC):
     - build/bin/sirtests
   dependencies: []
   artifacts:
-    expire in: 7 days
+    expire_in: 7 days
     paths:
       - build/
       - logs/
@@ -71,7 +71,7 @@ Linux/x86_64 (GCC, musl-libc):
     - build/bin/sirtests
   dependencies: []
   artifacts:
-    expire in: 7 days
+    expire_in: 7 days
     paths:
       - build/
       - logs/
@@ -97,7 +97,7 @@ Linux/x86_64 (Clang):
     - build/bin/sirtests
   dependencies: []
   artifacts:
-    expire in: 7 days
+    expire_in: 7 days
     paths:
       - build/
       - logs/
@@ -122,7 +122,7 @@ Linux/x86_64 (Chibicc):
     - build/bin/sirtests
   dependencies: []
   artifacts:
-    expire in: 7 days
+    expire_in: 7 days
     paths:
       - build/
       - logs/
@@ -150,7 +150,7 @@ Windows/x64 (MinGW-MSVCRT):
     - true wine64 build/bin/sirtests || true
   dependencies: []
   artifacts:
-    expire in: 7 days
+    expire_in: 7 days
     paths:
       - build/
       - logs/
@@ -178,7 +178,7 @@ Windows/x64 (MinGW-UCRT):
     - true wine64 build/bin/sirtests || true
   dependencies: []
   artifacts:
-    expire in: 7 days
+    expire_in: 7 days
     paths:
       - build/
       - logs/
@@ -206,7 +206,7 @@ Windows/i686 (MinGW):
     - true wine64 build/bin/sirtests || true
   dependencies: []
   artifacts:
-    expire in: 7 days
+    expire_in: 7 days
     paths:
       - build/
       - logs/
@@ -230,7 +230,7 @@ Cygwin/x86_64:
     - env CC="ccache x86_64-pc-cygwin-gcc" make
   dependencies: []
   artifacts:
-    expire in: 7 days
+    expire_in: 7 days
     paths:
       - build/
   retry: 2
@@ -253,7 +253,7 @@ Cygwin/i686:
     - env CC="ccache i686-pc-cygwin-gcc" make
   dependencies: []
   artifacts:
-    expire in: 7 days
+    expire_in: 7 days
     paths:
       - build/
   retry: 2
@@ -275,7 +275,7 @@ Coverage:
     - ./.coveralls.sh
   dependencies: []
   artifacts:
-    expire in: 7 days
+    expire_in: 7 days
     paths:
       - build/
       - logs/
@@ -301,7 +301,7 @@ Coverage:
 #     - make lint
 #   dependencies: []
 #   artifacts:
-#     expire in: 7 days
+#     expire_in: 7 days
 #     paths:
 #       - build/
 #       - logs/
