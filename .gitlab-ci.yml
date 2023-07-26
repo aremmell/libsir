@@ -117,7 +117,7 @@ Linux/x86_64 (Chibicc):
   script:
     - *Configuration
     - make clean
-    - env PATH="/opt/chibicc:${PATH:-}" CC="ccache /opt/chibicc/chibicc"
+    - env PATH="/opt/chibicc:${PATH:-}" CC="ccache /opt/chibicc/chibicc" make
     - build/bin/sirexample
     - build/bin/sirtests
   dependencies: []
