@@ -7,20 +7,18 @@
 PATH="/usr/local/bin:/usr/local/sbin:${PATH:-}" && export PATH
 test -n "${NO_APTSETUP:-}" \
   || {
-    {
-      printf '\n\n\n%s\n\n\n' \
-        "Running dangerous commands as root in 10s; press ^C now to abort."
-      sleep 10
-      export DEBIAN_FRONTEND=noninteractive
-      sudo apt-get update -y
-      sudo apt-get -o Dpkg::Options::="--force-confdef" \
-                   -o Dpkg::Options::="--force-confold" \
-           install -y ccache curl python3-pip git expect fakeroot
-      sudo python3 -m pip install --break-system-packages \
-           install -U gcovr || \
-              sudo python3 -m pip install \
-                   install -U gcovr
-    }
+       printf '\n\n\n%s\n\n\n' \
+         "Running dangerous commands as root in 10s; press ^C now to abort."
+       sleep 10
+       export DEBIAN_FRONTEND=noninteractive
+       sudo apt-get update -y
+       sudo apt-get -o Dpkg::Options::="--force-confdef" \
+                    -o Dpkg::Options::="--force-confold" \
+            install -y ccache curl python3-pip git expect fakeroot
+       sudo python3 -m pip install --break-system-packages \
+            install -U gcovr || \
+               sudo python3 -m pip install \
+                    install -U gcovr
   }
 
 set -ex
@@ -98,7 +96,10 @@ run_gcovr()
 }
 
 # Redirect
-exec 5>&1 > coverage-out.txt 2>&1
+test -n "${NO_REDIRECT:-}" \
+  || {
+       exec 5>&1 > coverage-out.txt 2>&1
+  }
 
 # Run 1 - Debug and self-log
 ${DO_MAKE:-make} -j ${JOBS:?} clean
@@ -477,7 +478,10 @@ run_gcovr run-33.json
 remove_coverage
 
 # Undo redirect
-exec 1>&5
+test -n "${NO_REDIRECT:-}" \
+  || {
+       exec 1>&5
+  }
 
 # Show results
 ls -l ./run-*.json || true
@@ -502,6 +506,6 @@ test -n "${NO_COVERALLS:-}" || \
 # Cleanup
 test -n "${NO_CLEANUP:-}" \
   || {
-    cleanup_files
-    rm -f ./run*.json > /dev/null 2>&1
+    cleanup_files || true
+    rm -f ./run*.json > /dev/null 2>&1 || true
   }

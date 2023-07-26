@@ -272,14 +272,14 @@ Coverage:
     entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
   script:
     - *Configuration
-    - ./.coveralls.sh
+    - env NO_CLEANUP=1 NO_APTSETUP=1 NO_REDIRECT=1 ./.coveralls.sh
   dependencies: []
   artifacts:
     expire_in: 7 days
     paths:
       - build/
       - logs/
-      - coverage*
+      - cover*
   retry: 2
   interruptible: true
 
