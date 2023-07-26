@@ -499,6 +499,10 @@ gcovr \
   --merge-mode-functions="${MERGE_MODE:?}" -u \
   --gcov-ignore-parse-errors=negative_hits.warn_once_per_file \
   --coveralls coveralls.json
+gcovr \
+  --add-tracefile "run-*.json" \
+  --merge-mode-functions="${MERGE_MODE:?}" -u -s \
+  --gcov-ignore-parse-errors=negative_hits.warn_once_per_file
 
 # Submit results
 test -n "${NO_COVERALLS:-}" || \

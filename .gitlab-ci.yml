@@ -39,11 +39,15 @@ Linux/x86_64 (GCC):
   script:
     - *Configuration
     - gcc --version
-    - echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - make clean
     - env CC="ccache gcc" make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - |
+      # Tests ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -70,11 +74,15 @@ Linux/x86_64 (GCC, musl-libc):
   script:
     - *Configuration
     - musl-gcc --version
-    - echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - make clean
     - env CC="ccache musl-gcc" make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - |
+      # Tests
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -101,11 +109,15 @@ Linux/x86_64 (Clang):
   script:
     - *Configuration
     - clang --version
-    - echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - make clean
     - env CC="ccache clang" make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - |
+      # Tests ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -133,11 +145,15 @@ Linux/x86_64 (AOCC):
     - *Configuration
     - . /opt/AMD/aocc-compiler-4.0.0/setenv_AOCC.sh
     - clang --version
-    - echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - make clean
     - env CC="ccache clang" make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - |
+      # Tests ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -150,6 +166,7 @@ Linux/x86_64 (AOCC):
       - logs/
   retry: 2
   interruptible: true
+
 ############################################################################
 
 Linux/x86_64 (Chibicc):
@@ -162,11 +179,15 @@ Linux/x86_64 (Chibicc):
     entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
   script:
     - *Configuration
-    - echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - make clean
     - env PATH="/opt/chibicc:${PATH:-}" CC="ccache /opt/chibicc/chibicc" make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - |
+      # Tests ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -193,13 +214,17 @@ Windows/x64 (MinGW-MSVCRT):
   script:
     - *Configuration
     - x86_64-w64-mingw32-gcc --version
-    - echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - make clean
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
     - env CC="ccache x86_64-w64-mingw32-gcc" make SIR_MSVCRT_MINGW=1
     - cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/libwinpthread-1.dll build/bin
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - |
+      # Tests...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
     - true wine64 build/bin/sirexample.exe
     - true wine64 build/bin/sirtests || true
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -226,13 +251,17 @@ Windows/x64 (MinGW-UCRT):
   script:
     - *Configuration
     - x86_64-w64-mingw32ucrt-gcc --version
-    - echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - make clean
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
     - env CC="ccache x86_64-w64-mingw32ucrt-gcc" make
     - cp -f /usr/x86_64-w64-mingw32ucrt/sys-root/mingw/bin/libwinpthread-1.dll build/bin
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - |
+      # Tests ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
     - true wine64 build/bin/sirexample.exe
     - true wine64 build/bin/sirtests || true
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -259,13 +288,17 @@ Windows/i686 (MinGW):
   script:
     - *Configuration
     - i686-w64-mingw32-gcc --version
-    - echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - make clean
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
     - env CC="ccache i686-w64-mingw32-gcc" make SIR_MSVCRT_MINGW=1
     - cp -f /usr/i686-w64-mingw32/sys-root/mingw/bin/libwinpthread-1.dll build/bin
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - |
+      # Tests ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
     - true wine64 build/bin/sirexample.exe
     - true wine64 build/bin/sirtests || true
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -292,7 +325,9 @@ Cygwin/x86_64:
   script:
     - *Configuration
     - x86_64-pc-cygwin-gcc --version
-    - echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - make clean
     - env CC="ccache x86_64-pc-cygwin-gcc" make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -318,7 +353,9 @@ Cygwin/i686:
   script:
     - *Configuration
     - i686-pc-cygwin-gcc --version
-    - echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - make clean
     - env CC="ccache i686-pc-cygwin-gcc" make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true

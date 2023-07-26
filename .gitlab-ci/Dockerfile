@@ -169,6 +169,6 @@ RUN \
     "[openssl_init]" \
     "" \
     "[evp_properties]" \
-    "" \
+    "" > /etc/crypto-policies/back-ends/opensslcnf.config \
 && \
   touch /.OK
