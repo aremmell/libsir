@@ -1,10 +1,11 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 ##
+## Disabled
 #################
-#  dnf -q -y --setopt=install_weak_deps=True --setopt=keepcache=True install --no-docs wine \
 #&& \
 #################
+## NOTE: Uses local webserver.
 ##
 FROM quay.io/fedora/fedora:rawhide
 WORKDIR /
@@ -106,6 +107,8 @@ RUN \
       cygwin64-gcc \
       cygwin-w32api-headers \
 && \
+  dnf -q -y --setopt=install_weak_deps=True --setopt=keepcache=True install --no-docs wine \
+&& \
   mkdir -p /opt && \
   cd /opt && \
   git clone -v --depth=1 https://github.com/rui314/chibicc && \
@@ -124,8 +127,10 @@ RUN \
          "baseurl=https://cdn.pvs-studio.com/rpm" \
 	 "gpgcheck=0" \
 	 "enabled=1" > /etc/yum.repos.d/viva64.repo && \
-  dnf -q -y --setopt=install_weak_deps=True --setopt=keepcache=True --no-docs install \
-      pvs-studio \
+  (dnf -q -y --setopt=install_weak_deps=True --setopt=keepcache=True --no-docs install \
+          pvs-studio) || \
+  (dnf -q -y --setopt=install_weak_deps=True --setopt=keepcache=True --no-docs install \
+          --nogpgcheck http://192.168.1.187:8088/~jhj/cache/pvs-studio.x86_64.rpm) \
 && \
   printf '%s\n' \
          "[viva64-beta]" \
@@ -135,6 +140,9 @@ RUN \
 	 "enabled=1" \
          "skip_if_unavailable=True" > /etc/yum.repos.d/viva64-beta.repo && \
   dnf -q -y --setopt=install_weak_deps=True --setopt=keepcache=True --no-docs upgrade \
+&& \
+  (dnf -q -y --setopt=install_weak_deps=True --setopt=keepcache=True --no-docs install \
+          --nogpgcheck http://192.168.1.187:8088/~jhj/cache/aocc-compiler.x86_64.rpm) \
 && \
   mkdir -p /tmp/duma-build && \
   cd /tmp/duma-build && \
