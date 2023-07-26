@@ -76,6 +76,7 @@ remove_sample()
 {
   # shellcheck disable=SC2046
   env rm $(find . -name 'plugin_sample*.*gc*' -print) || true
+  # shellcheck disable=SC2046
   env rm $(find . -name 'mcmb*.*gc*' -print) || true
 }
 
