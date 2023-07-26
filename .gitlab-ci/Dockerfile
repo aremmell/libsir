@@ -152,4 +152,15 @@ RUN \
   rm -rf /var/log/dnf* && \
   ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true) \
 && \
+  rm -f /etc/crypto-policies/back-ends/opensslcnf.config && \
+  printf '%s\n' \
+    "CipherString = @SECLEVEL=2:kEECDH:kRSA:kEDH:kPSK:kDHEPSK:kECDHEPSK:kRSAPSK:-aDSS:-3DES:!DES:!RC4:!RC2:!IDEA:-SEED:!eNULL:!aNULL:!MD5:-SHA384:-CAMELLIA:-ARIA:-AESCCM8" \
+    "Ciphersuites = TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:TLS_AES_128_CCM_SHA256" \
+    "SignatureAlgorithms = ECDSA+SHA256:ECDSA+SHA384:ECDSA+SHA512:ed25519:ed448:rsa_pss_pss_sha256:rsa_pss_pss_sha384:rsa_pss_pss_sha512:rsa_pss_rsae_sha256:rsa_pss_rsae_sha384:rsa_pss_rsae_sha512:RSA+SHA256:RSA+SHA384:RSA+SHA512:ECDSA+SHA224:RSA+SHA224" \
+    "" \
+    "[openssl_init]" \
+    "" \
+    "[evp_properties]" \
+    "" \
+&& \
   touch /.OK
