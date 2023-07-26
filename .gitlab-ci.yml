@@ -1,0 +1,321 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2018-current Ryan M. Lederman
+
+############################################################################
+
+stages:
+  - build
+  - coverage
+# - lint
+
+############################################################################
+
+.Configuration: &Configuration |
+  # *Configuration - CI/CD Configuration
+  echo -e "section_start:`date +%s`:Configuration_section[collapsed=false]\r\e[0K\033[0;36mCI/CD Configuration ...\033[0m" || true
+  ulimit -n 65535 > /dev/null 2>&1 || true
+  ccache -X uncompressed > /dev/null 2>&1 || true
+  ccache -F 0 -M 0 > /dev/null 2>&1 || true
+  echo "Project Name              : ${CI_PROJECT_TITLE:-Unknown}"
+  echo "Project Git Commit        : ${CI_COMMIT_SHA:-Unknown}"
+  echo "Project Git Branch        : ${CI_COMMIT_BRANCH:-Unknown}"
+  echo "GitLab CI User Details    : ${GITLAB_USER_LOGIN:-Unknown} - ${GITLAB_USER_NAME:-Unknown} (${GITLAB_USER_ID:-Unknown}) ${GITLAB_USER_EMAIL:-}"
+  echo "GitLab CI Job Name        : ${CI_JOB_NAME:-Unknown}"
+  echo "GitLab CI Job ID          : ${CI_JOB_ID:-Unknown}"
+  echo "GitLab CI Job Stage       : ${CI_JOB_STAGE:-Unknown}"
+  echo "GitLab CI Runner Details  : ${CI_RUNNER_VERSION:-Unknown} (${CI_RUNNER_REVISION:-Unknown})"
+  echo -e "section_end:`date +%s`:Configuration_section\r\e[0K" || true
+
+############################################################################
+
+Linux/x86_64 (GCC):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/helper:latest
+    entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
+  script:
+    - *Configuration
+    - gcc --version
+    - make clean
+    - env CC="ccache gcc" make
+    - build/bin/sirexample
+    - build/bin/sirtests
+  dependencies: []
+  artifacts:
+    expire in: 7 days
+    paths:
+      - build/
+      - logs/
+      - *.log
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Linux/x86_64 (GCC, musl-libc):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/helper:latest
+    entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
+  script:
+    - *Configuration
+    - musl-gcc --version
+    - make clean
+    - env CC="ccache musl-gcc" make
+    - build/bin/sirexample
+    - build/bin/sirtests
+  dependencies: []
+  artifacts:
+    expire in: 7 days
+    paths:
+      - build/
+      - logs/
+      - *.log
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Linux/x86_64 (Clang):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/helper:latest
+    entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
+  script:
+    - *Configuration
+    - clang --version
+    - make clean
+    - env CC="ccache clang" make
+    - build/bin/sirexample
+    - build/bin/sirtests
+  dependencies: []
+  artifacts:
+    expire in: 7 days
+    paths:
+      - build/
+      - logs/
+      - *.log
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Linux/x86_64 (Chibicc):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/helper:latest
+    entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
+  script:
+    - *Configuration
+    - make clean
+    - env PATH="/opt/chibicc:${PATH:-}" CC="ccache /opt/chibicc/chibicc"
+    - build/bin/sirexample
+    - build/bin/sirtests
+  dependencies: []
+  artifacts:
+    expire in: 7 days
+    paths:
+      - build/
+      - logs/
+      - *.log
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Windows/x64 (MinGW-MSVCRT):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/helper:latest
+    entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
+  script:
+    - *Configuration
+    - x86_64-w64-mingw32-gcc --version
+    - make clean
+    - mkdir -p build/bin && touch -f build/bin/mcmb.exe
+    - env CC="ccache x86_64-w64-mingw32-gcc" make SIR_MSVCRT_MINGW=1
+    - cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/libwinpthread-1.dll build/bin
+    - true wine64 build/bin/sirexample.exe
+    - true wine64 build/bin/sirtests || true
+  dependencies: []
+  artifacts:
+    expire in: 7 days
+    paths:
+      - build/
+      - logs/
+      - *.log
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Windows/x64 (MinGW-UCRT):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/helper:latest
+    entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
+  script:
+    - *Configuration
+    - x86_64-w64-mingw32ucrt-gcc --version
+    - make clean
+    - mkdir -p build/bin && touch -f build/bin/mcmb.exe
+    - env CC="ccache x86_64-w64-mingw32ucrt-gcc" make
+    - cp -f /usr/x86_64-w64-mingw32ucrt/sys-root/mingw/bin/libwinpthread-1.dll build/bin
+    - true wine64 build/bin/sirexample.exe
+    - true wine64 build/bin/sirtests || true
+  dependencies: []
+  artifacts:
+    expire in: 7 days
+    paths:
+      - build/
+      - logs/
+      - *.log
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Windows/i686 (MinGW):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/helper:latest
+    entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
+  script:
+    - *Configuration
+    - i686-w64-mingw32-gcc --version
+    - make clean
+    - mkdir -p build/bin && touch -f build/bin/mcmb.exe
+    - env CC="ccache i686-w64-mingw32-gcc" make SIR_MSVCRT_MINGW=1
+    - cp -f /usr/i686-w64-mingw32/sys-root/mingw/bin/libwinpthread-1.dll build/bin
+    - true wine64 build/bin/sirexample.exe
+    - true wine64 build/bin/sirtests || true
+  dependencies: []
+  artifacts:
+    expire in: 7 days
+    paths:
+      - build/
+      - logs/
+      - *.log
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Cygwin/x86_64:
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/helper:latest
+    entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
+  script:
+    - *Configuration
+    - make clean
+    - x86_64-pc-cygwin-gcc --version
+    - env CC="ccache x86_64-pc-cygwin-gcc" make
+  dependencies: []
+  artifacts:
+    expire in: 7 days
+    paths:
+      - build/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Cygwin/i686:
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/helper:latest
+    entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
+  script:
+    - *Configuration
+    - make clean
+    - i686-pc-cygwin-gcc --version
+    - env CC="ccache i686-pc-cygwin-gcc" make
+  dependencies: []
+  artifacts:
+    expire in: 7 days
+    paths:
+      - build/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Coverage:
+  stage: coverage
+  coverage: '/^TOTAL.*\s+(\d+\%)$/'
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/helper:latest
+    entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
+  script:
+    - *Configuration
+    - ./.coveralls.sh
+  dependencies: []
+  artifacts:
+    expire in: 7 days
+    paths:
+      - build/
+      - logs/
+      - *.log
+      - *.json
+      - coverage*
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+# Lint:
+#   stage: lint
+#   when: manual
+#   tags:
+#     - Docker-x64
+#     - Linux
+#   image:
+#     name: registry.gitlab.com/libsir/libsir/helper:latest
+#     entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
+#   script:
+#     - *Configuration
+#     - pvs-studio-analyzer credentials "${PVS_STUDIO_NAME:?}" "${PVS_STUDIO_KEY:?}" || true
+#     - make clean
+#     - make lint
+#   dependencies: []
+#   artifacts:
+#     expire in: 7 days
+#     paths:
+#       - build/
+#       - logs/
+#       - *.log
+#   retry: 2
+#   interruptible: true
+
+############################################################################
