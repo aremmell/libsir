@@ -49,7 +49,6 @@ Linux/x86_64 (GCC):
     paths:
       - build/
       - logs/
-      - *.log
   retry: 2
   interruptible: true
 
@@ -76,7 +75,6 @@ Linux/x86_64 (GCC, musl-libc):
     paths:
       - build/
       - logs/
-      - *.log
   retry: 2
   interruptible: true
 
@@ -103,7 +101,6 @@ Linux/x86_64 (Clang):
     paths:
       - build/
       - logs/
-      - *.log
   retry: 2
   interruptible: true
 
@@ -129,7 +126,6 @@ Linux/x86_64 (Chibicc):
     paths:
       - build/
       - logs/
-      - *.log
   retry: 2
   interruptible: true
 
@@ -158,7 +154,6 @@ Windows/x64 (MinGW-MSVCRT):
     paths:
       - build/
       - logs/
-      - *.log
   retry: 2
   interruptible: true
 
@@ -187,7 +182,6 @@ Windows/x64 (MinGW-UCRT):
     paths:
       - build/
       - logs/
-      - *.log
   retry: 2
   interruptible: true
 
@@ -216,7 +210,6 @@ Windows/i686 (MinGW):
     paths:
       - build/
       - logs/
-      - *.log
   retry: 2
   interruptible: true
 
@@ -286,8 +279,6 @@ Coverage:
     paths:
       - build/
       - logs/
-      - *.log
-      - *.json
       - coverage*
   retry: 2
   interruptible: true
@@ -314,7 +305,6 @@ Coverage:
 #     paths:
 #       - build/
 #       - logs/
-#       - *.log
 #   retry: 2
 #   interruptible: true
 
