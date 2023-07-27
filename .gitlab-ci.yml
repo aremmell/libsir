@@ -6,6 +6,7 @@
 stages:
   - build
   - coverage
+  - smoke_test
   - lint
 
 ############################################################################
@@ -395,7 +396,160 @@ Coverage:
 
 ############################################################################
 
-Lint:
+Smoke test:
+  stage: smoke_test
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/helper:latest
+    entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
+  script:
+    - *Configuration
+    - make clean
+    - make mcmb
+    - ./.lint.sh smoke
+  dependencies: []
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Clang Analyzer:
+  stage: lint
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/helper:latest
+    entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
+  script:
+    - *Configuration
+    - make clean
+    - ./.lint.sh scanbuild
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Clang Extra:
+  stage: lint
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/helper:latest
+    entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
+  script:
+    - *Configuration
+    - make clean
+    - ./.lint.sh extra
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Flawfinder:
+  stage: lint
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/helper:latest
+    entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
+  script:
+    - *Configuration
+    - make clean
+    - ./.lint.sh flawfinder
+  dependencies: []
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Cppcheck:
+  stage: lint
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/helper:latest
+    entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
+  script:
+    - *Configuration
+    - make clean
+    - ./.lint.sh cppcheck
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+      - cppcheck/
+      - cppcheck.xml
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Valgrind:
+  stage: lint
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/helper:latest
+    entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
+  script:
+    - *Configuration
+    - make clean
+    - ./.lint.sh valgrind
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+REUSE:
+  stage: lint
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/helper:latest
+    entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
+  script:
+    - *Configuration
+    - make clean
+    - ./.lint.sh reuse
+  dependencies: []
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+PVS-Studio:
   stage: lint
   tags:
     - Docker-x64
@@ -407,7 +561,7 @@ Lint:
     - *Configuration
     - pvs-studio-analyzer credentials "${PVS_STUDIO_NAME:?}" "${PVS_STUDIO_KEY:?}" || true
     - make clean
-    - make lint
+    - ./.lint.sh pvs
   dependencies: []
   artifacts:
     when: always
@@ -415,6 +569,8 @@ Lint:
     paths:
       - build/
       - logs/
+      - pvsreport/
+      - pvs.log
   retry: 2
   interruptible: true
 
