@@ -17,11 +17,13 @@ command -v "${GIT:-git}" > /dev/null 2>&1 \
 
 ################################################################################
 
-CPUS="$(getconf _NPROCESSORS_ONLN 2> /dev/null || printf '%s\n' '1')"
+CPUS="$(getconf _NPROCESSORS_ONLN 2> /dev/null || printf '%s\n' '1')" && \
+    export CPUS
 
 ################################################################################
 
-CCACHE="$(command -v ccache 2> /dev/null || printf '%s\n' 'env')"
+CCACHE="$(command -v ccache 2> /dev/null || printf '%s\n' 'env')" && \
+    export CCACHE
 
 ################################################################################
 

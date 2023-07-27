@@ -384,6 +384,7 @@ Coverage:
   script:
     - *Configuration
     - env NO_CLEANUP=1 NO_APTSETUP=1 ./.coveralls.sh
+    - pigz -9v coverage-out.txt || true
   dependencies: []
   artifacts:
     when: always
@@ -575,6 +576,31 @@ PVS-Studio:
       - logs/
       - pvsreport/
       - pvs.log
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Coverity:
+  when: manual
+  allow_failure: true
+  stage: lint
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/helper:latest
+    entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
+  script:
+    - *Configuration
+    - ./.coverity.sh
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - cov-int/
+      - libsir-coverity.xz
   retry: 2
   interruptible: true
 
