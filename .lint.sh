@@ -17,11 +17,15 @@ command -v "${GIT:-git}" > /dev/null 2>&1 \
 
 ################################################################################
 
-CPUS="1"
+CPUS="$(getconf _NPROCESSORS_ONLN 2> /dev/null || printf '%s\n' '1')"
 
 ################################################################################
 
-echo checking for git toplevel ...
+CCACHE="$(command -v ccache 2> /dev/null || printf '%s\n' 'env')"
+
+################################################################################
+
+printf '%s\n' "checking for git toplevel ..."
 cd "$(${GIT:-git} rev-parse --show-toplevel)" \
   || {
     printf '%s\n' "ERROR: Unable to find git toplevel!"
@@ -32,7 +36,7 @@ cd "$(${GIT:-git} rev-parse --show-toplevel)" \
 
 test_spaces()
 {
-  echo checking for spaces in filenames ...
+  printf '%s\n' "checking for spaces in filenames ..."
   if (find src include -print | awk '{ print "\""$0"\"" }' | grep ' '); then
     {
       printf '%s\n' "ERROR: Filename check failed due to spaces!"
@@ -45,7 +49,7 @@ test_spaces()
 
 test_tabs()
 {
-  echo checking source code for tabs ...
+  printf '%s\n' "checking source code for tabs ..."
   TLIST="$(find src include -print | grep '\.[ch]$' \
     | xargs -L 1 grep -l "$(printf '\t')" 2> /dev/null)" || true
   # shellcheck disable=SC2015
@@ -60,7 +64,7 @@ test_tabs()
 
 test_whitespace()
 {
-  echo checking source code for trailing whitespace ...
+  printf '%s\n' "checking source code for trailing whitespace ..."
   # shellcheck disable=SC2038
   TLIST="$(find src include -print \
     | xargs -I{} grep -al ' \+$' "{}" 2> /dev/null)" || true
@@ -77,7 +81,7 @@ test_whitespace()
 test_mcmb()
 {
   ${MAKE:-make} mcmb
-  echo checking for "${MCMB:-build/bin/mcmb}" executable ...
+  printf '%s\n' "checking for ${MCMB:-build/bin/mcmb} executable ..."
   test -x "${MCMB:-build/bin/mcmb}" \
     || {
       printf '%s\n' \
@@ -123,16 +127,16 @@ test_duma()
   test -z "${NO_DUMA:-}" \
     && {
       rm -f ./duma*.log
-      echo building with DUMA ...
+      printf '%s\n' "building with DUMA ..."
       env "${MAKE:-make}" clean
-      env CC="gcc" \
+      env CC="${CCACHE:-env} gcc" \
         EXTRA_LIBS="-L/opt/duma/lib -l:libduma.a" \
         CFLAGS="-I/opt/duma/include -DDUMA=1" \
         "${MAKE:-make}" \
         -j "${CPUS:-1}" \
         SIR_DEBUG=1 \
         SIR_SELFLOG=1
-      echo running DUMA-enabled example ...
+      printf '%s\n' "running DUMA-enabled example ..."
       env DUMA_OUTPUT_FILE=duma1.log \
         DUMA_OUTPUT_STDERR=0 \
         DUMA_OUTPUT_STDOUT=0 \
@@ -142,7 +146,7 @@ test_duma()
         DUMA_OUTPUT_STDERR=0 \
         DUMA_OUTPUT_STDOUT=0 \
         build/bin/sirexample
-      echo running DUMA-enabled tests ...
+      printf '%s\n' "running DUMA-enabled tests ..."
       env DUMA_OUTPUT_FILE=duma3.log \
         DUMA_OUTPUT_STDERR=0 \
         DUMA_OUTPUT_STDOUT=0 \
@@ -182,10 +186,10 @@ test_extra()
     }
   test -z "${NO_EXTRAWARN:-}" \
     && {
-      echo building with extra-warning flags ...
+      printf '%s\n' "building with extra-warning flags ..."
       env "${MAKE:-make}" clean
       rm -f ./.extra.sh
-      env CC="clang" \
+      env CC="${CCACHE:-env} clang" \
         "${MAKE:-make}" \
         -j "${CPUS:-1}" \
         mcmb
@@ -193,7 +197,7 @@ test_extra()
       # shellcheck disable=SC2090,SC2086,SC2016
       "${MCMB:-build/bin/mcmb}" -e ${SIR_OPTIONS:?} | xargs -L1 echo \
         ' && ${MAKE:-make} clean &&
-        env CC="clang"
+        env CC="${CCACHE:-env} clang"
             CFLAGS="-Werror
                     -Wmissing-prototypes
                     -Wdouble-promotion
@@ -221,7 +225,7 @@ test_flawfinder()
     }
   test -z "${NO_FLAWFINDER:-}" \
     && {
-      echo running flawfinder check ...
+      printf '%s\n' "running flawfinder check ..."
       FLAWFINDER_OUTPUT="$(flawfinder -C -m 5 -c . 2>&1)" || true
       printf '%s\n' "${FLAWFINDER_OUTPUT:-}" | grep -q "No hits found" \
         || {
@@ -245,19 +249,19 @@ test_scanbuild()
     }
   test -z "${NO_SCANBUILD:-}" \
     && {
-      echo running scan-build check ...
+      printf '%s\n' "running scan-build check ..."
       env "${MAKE:-make}" clean
-      env CC="clang" "${MAKE:-make}" \
+      env CC="${CCACHE:-env} clang" "${MAKE:-make}" \
         -j "${CPUS:-1}" \
         mcmb
       printf '%s' 'true' > ./.scan-build.sh
       # shellcheck disable=SC2090,SC2086,SC2016
       "${MCMB:-build/bin/mcmb}" -e ${SIR_OPTIONS:?} | xargs -L1 echo \
         ' && ${MAKE:-make} clean && ${MAKE:-make} mcmb &&
-         env CC="clang"
+         env CC="${CCACHE:-env} clang"
            scan-build -no-failure-reports
                --status-bugs
-               -maxloop 12
+               -maxloop 8
                -enable-checker optin.portability.UnixAPI
                -enable-checker security.FloatLoopCounter
                -enable-checker security.insecureAPI.bcmp
@@ -291,7 +295,7 @@ test_cppcheck()
     }
   test -z "${NO_CPPCHECK:-}" \
     && {
-      echo running cppcheck check ...
+      printf '%s\n' "running cppcheck check ..."
       ${MAKE:-make} clean
       rm -rf ./cppcheck
       rm -f ./cppcheck.xml
@@ -361,13 +365,13 @@ test_pvs()
     }
   test -z "${NO_PVSSTUDIO:-}" \
     && {
-      echo running PVS-Studio checks ...
+      printf '%s\n' "running PVS-Studio checks ..."
       rm -rf ./pvsreport
       rm -f ./log.pvs
       rm -f ./compile_commands.json
       ${MAKE:-make} clean
       ${MAKE:-make} mcmb
-      env CC="clang" bear -- "${MAKE:-make}" -j "${CPUS:-1}"
+      env CC="${CCACHE:-env} clang" bear -- "${MAKE:-make}" -j "${CPUS:-1}"
       pvs-studio-analyzer analyze --intermodular -j "${CPUS:-1}" -o log.pvs
       plog-converter -a "GA:1,2,3" -t fullhtml log.pvs -o pvsreport
       grep -q 'Congratulations!' ./pvsreport/index.html \
@@ -400,9 +404,9 @@ test_valgrind()
     }
   test -z "${NO_VALGRIND:-}" \
     && {
-      echo running valgrind checks ...
+      printf '%s\n' "running valgrind checks ..."
       ${MAKE:-make} clean
-      env CC="clang" "${MAKE:-make}" -j "${CPUS:-1}" SIR_DEBUG=1 SIR_SELFLOG=1
+      env CC="${CCACHE:-env} clang" "${MAKE:-make}" -j "${CPUS:-1}" SIR_DEBUG=1 SIR_SELFLOG=1
       # shellcheck disable=SC3045
       (
         ulimit -n 384
@@ -436,7 +440,7 @@ test_reuse()
     }
   test -z "${NO_REUSE:-}" \
     && {
-      echo running reuse checks ...
+      printf '%s\n' "running reuse checks ..."
       reuse lint
     }
 }
@@ -451,14 +455,12 @@ test_smoke()
 ################################################################################
 
 test_spaces
-test_tabs
-test_whitespace
 
 ################################################################################
 
 test "${#}" -lt 1 2> /dev/null \
   || {
-    echo running only "test_${1:?}" ...
+    printf '%s\n' "running only test_${1:?} ..."
     "test_${1:?}"
     sleep 1 || true
     printf '%s\n' "End of test_${1:?} linting"

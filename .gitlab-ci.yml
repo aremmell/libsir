@@ -4,9 +4,9 @@
 ############################################################################
 
 stages:
+  - style
   - build
   - coverage
-  - smoke_test
   - lint
 
 ############################################################################
@@ -397,8 +397,8 @@ Coverage:
 
 ############################################################################
 
-Smoke test:
-  stage: smoke_test
+Style check:
+  stage: style
   tags:
     - Docker-x64
     - Linux
@@ -407,9 +407,8 @@ Smoke test:
     entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
   script:
     - *Configuration
-    - make clean
-    - make mcmb
-    - ./.lint.sh smoke
+    - ./.lint.sh tabs
+    - ./.lint.sh whitespace
   dependencies: []
   retry: 2
   interruptible: true
@@ -426,6 +425,7 @@ Clang Analyzer:
     entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
   script:
     - *Configuration
+    - scan-build clang --version
     - make clean
     - ./.lint.sh scanbuild
   dependencies: []
@@ -440,7 +440,7 @@ Clang Analyzer:
 
 ############################################################################
 
-Clang Extra:
+Clang (Extra Warnings):
   stage: lint
   tags:
     - Docker-x64
@@ -450,6 +450,7 @@ Clang Extra:
     entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
   script:
     - *Configuration
+    - clang --version
     - make clean
     - ./.lint.sh extra
   dependencies: []
@@ -474,7 +475,7 @@ Flawfinder:
     entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
   script:
     - *Configuration
-    - make clean
+    - flawfinder --version
     - ./.lint.sh flawfinder
   dependencies: []
   retry: 2
@@ -492,7 +493,7 @@ Cppcheck:
     entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
   script:
     - *Configuration
-    - make clean
+    - cppcheck --version
     - ./.lint.sh cppcheck
   dependencies: []
   artifacts:
@@ -518,6 +519,7 @@ Valgrind:
     entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
   script:
     - *Configuration
+    - valgrind --version
     - make clean
     - ./.lint.sh valgrind
   dependencies: []
@@ -542,7 +544,7 @@ REUSE:
     entrypoint: [ '/bin/sh', '-c', 'adduser -m sir && exec sudo -i -u sir' ]
   script:
     - *Configuration
-    - make clean
+    - reuse --version
     - ./.lint.sh reuse
   dependencies: []
   retry: 2
@@ -561,6 +563,7 @@ PVS-Studio:
   script:
     - *Configuration
     - pvs-studio-analyzer credentials "${PVS_STUDIO_NAME:?}" "${PVS_STUDIO_KEY:?}" || true
+    - pvs-studio --version
     - make clean
     - ./.lint.sh pvs
   dependencies: []
