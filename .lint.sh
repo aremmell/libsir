@@ -397,16 +397,20 @@ test -z "${NO_VALGRIND:-}" &&
     ${DEBUG_CALL:?} running valgrind checks ...
     ${MAKE:-make} clean
     env CC="clang" "${MAKE:-make}" -j "${CPUS:-1}" SIR_DEBUG=1 SIR_SELFLOG=1
-    valgrind                \
-        --leak-check=full   \
-        --track-origins=yes \
-        --error-exitcode=1  \
+    ( ulimit -n 384 ;            \
+      valgrind                   \
+        --leak-check=full        \
+        --track-origins=yes      \
+        --error-exitcode=1       \
             build/bin/sirexample
-    valgrind                \
-        --leak-check=full   \
-        --track-origins=yes \
-        --error-exitcode=1  \
+    )
+    ( ulimit -n 384 ;            \
+      valgrind                   \
+        --leak-check=full        \
+        --track-origins=yes      \
+        --error-exitcode=1       \
             build/bin/sirtests
+    )
   }
 
 ################################################################################
@@ -419,7 +423,7 @@ command -v reuse > /dev/null 2>&1 ||
   }
 test -z "${NO_REUSE:-}" &&
   {
-    ${DEBUG_CALL:?} running valgrind checks ...
+    ${DEBUG_CALL:?} running reuse checks ...
     reuse lint
   }
 
