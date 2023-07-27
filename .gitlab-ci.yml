@@ -17,6 +17,7 @@ stages:
   ulimit -n 65535 > /dev/null 2>&1 || true
   ccache -X uncompressed > /dev/null 2>&1 || true
   ccache -F 0 -M 0 > /dev/null 2>&1 || true
+  git config --global --add safe.directory $(find . -type d 2> /dev/null) > /dev/null 2>&1
   echo "Project Name              : ${CI_PROJECT_TITLE:-Unknown}"
   echo "Project Git Commit        : ${CI_COMMIT_SHA:-Unknown}"
   echo "Project Git Branch        : ${CI_COMMIT_BRANCH:-Unknown}"
