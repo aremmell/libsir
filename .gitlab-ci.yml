@@ -346,6 +346,7 @@ Windows/x64 (LLVM-MinGW):
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
     - env CC="x86_64-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes" make PLATFORM_LIB_EXT=".a"
     - cp -f /opt/llvm-mingw/x86_64-w64-mingw32/bin/libwinpthread-1.dll build/bin
+    - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -405,10 +406,10 @@ Windows/i686 (LLVM-MinGW):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - make clean
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
     - env CC="i686-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes -Wno-incompatible-function-pointer-types" make PLATFORM_LIB_EXT=".a"
     - cp -f /opt/llvm-mingw/i686-w64-mingw32/bin/libwinpthread-1.dll build/bin
+    - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -679,7 +680,6 @@ Windows/Arm64 (MSVC):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - make clean
     - mkdir -p build/bin
     - cl.exe src/*.c example/example.c -Iinclude /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirexample.exe
     - cl.exe src/*.c tests/tests.c -Iinclude /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirtests.exe
@@ -769,6 +769,7 @@ Windows/x64 (MinGW-MSVCRT):
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
     - env CC="ccache x86_64-w64-mingw32-gcc" make SIR_MSVCRT_MINGW=1
     - cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/libwinpthread-1.dll build/bin
+    - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -797,6 +798,7 @@ Windows/x64 (MinGW-UCRT):
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
     - env CC="ccache x86_64-w64-mingw32ucrt-gcc" make
     - cp -f /usr/x86_64-w64-mingw32ucrt/sys-root/mingw/bin/libwinpthread-1.dll build/bin
+    - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -825,6 +827,7 @@ Windows/i686 (MinGW):
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
     - env CC="ccache i686-w64-mingw32-gcc" make SIR_MSVCRT_MINGW=1
     - cp -f /usr/i686-w64-mingw32/sys-root/mingw/bin/libwinpthread-1.dll build/bin
+    - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -958,6 +961,7 @@ Clang Analyzer:
   tags:
     - Docker-x64
     - Linux
+    - Docker-x64-fast
   image:
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
@@ -981,6 +985,7 @@ Clang (Extra Warnings):
   tags:
     - Docker-x64
     - Linux
+    - Docker-x64-fast
   image:
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
