@@ -492,11 +492,11 @@ Android/ARMv7A (API 21):
   script:
     - *Configuration
     - PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}" && export PATH
-    - armv7a-linux-android21-clang --version
+    - armv7a-linux-androideabi21-clang --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache armv7a-linux-android21-clang" make
+    - env CC="ccache armv7a-linux-androideabi21-clang" make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
