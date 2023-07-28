@@ -163,7 +163,7 @@ Linux/x86_64 (AOCC):
 
 ############################################################################
 
-Linux/x86_64 (Intel C++ Compiler Classic):
+Linux/x86_64 (Intel C++ Classic):
   stage: build
   tags:
     - Docker-x64
@@ -197,7 +197,7 @@ Linux/x86_64 (Intel C++ Compiler Classic):
 
 ############################################################################
 
-Linux/x86_64 (Intel oneAPI DPC++/C++):
+Linux/x86_64 (Intel oneAPI C++):
   stage: build
   tags:
     - Docker-x64
@@ -264,7 +264,7 @@ Linux/x86_64 (Oracle Studio C/C++):
 
 ############################################################################
 
-Linux/x86_64 (NVIDIA HPC SDK C/C++):
+Linux/x86_64 (NVIDIA HPC C/C++):
   stage: build
   tags:
     - Docker-x64
