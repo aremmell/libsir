@@ -18,13 +18,14 @@ command -v docker > /dev/null 2>&1 ||
   }
 
 printf '%s\n' "Testing docker ..."
-docker run --rm -it "hello-world:latest" ||
+docker run --rm -it "hello-world:latest" > /dev/null ||
   {
     printf '%s\n' "ERROR: Docker cannot run containers."
     exit 1
   }
 
-printf '%s\n' "Building image ..."
-docker build --no-cache --squash -t registry.gitlab.com/libsir/libsir/helper:latest .
+printf '%s\n' "Pushing intel image ..."
+
+docker push registry.gitlab.com/libsir/libsir/intel:latest
 
 printf '%s\n' "Complete."

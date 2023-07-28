@@ -1,14 +1,14 @@
 # SPDX-License-Identifier: MIT
-# SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
-##
-## Disabled
-#################
-#&& \
-#################
-## NOTE: Uses local webserver.
-##
+# Copyright (c) 2018-current Ryan M. Lederman
+
+## NOTE: Uses local webserver at 192.168.1.187:8088
+
 FROM quay.io/fedora/fedora:rawhide
+
+USER 0
+
 WORKDIR /
+
 RUN \
   (sed -i 's/tsflags=nodocs//' /etc/dnf/dnf.conf || true) \
 && \
@@ -53,9 +53,16 @@ RUN \
       gcovr \
       git \
       glibc-static \
+      libnsl \
+      libnsl.i686 \
+      libnsl2 \
+      libnsl2.i686 \
+      libtirpc \
+      libtirpc.i686 \
       lld \
       make \
       openssl \
+      perl-core \
       pigz \
       python3-setuptools \
       reuse \
@@ -123,10 +130,10 @@ RUN \
 && \
   printf '%s\n' \
          "[viva64]" \
-	 "name=Viva64 - PVS-Studio - Stable" \
+         "name=Viva64 - PVS-Studio - Stable" \
          "baseurl=https://cdn.pvs-studio.com/rpm" \
-	 "gpgcheck=0" \
-	 "enabled=1" > /etc/yum.repos.d/viva64.repo && \
+         "gpgcheck=0" \
+         "enabled=1" > /etc/yum.repos.d/viva64.repo && \
   (dnf -q -y --setopt=install_weak_deps=True --setopt=keepcache=True --no-docs install \
           pvs-studio) || \
   (dnf -q -y --setopt=install_weak_deps=True --setopt=keepcache=True --no-docs install \
@@ -134,10 +141,10 @@ RUN \
 && \
   printf '%s\n' \
          "[viva64-beta]" \
-	 "name=Viva64 - PVS-Studio - Beta" \
+         "name=Viva64 - PVS-Studio - Beta" \
          "baseurl=http://cdn.pvs-studio.com/beta/rpm" \
-	 "gpgcheck=0" \
-	 "enabled=1" \
+         "gpgcheck=0" \
+         "enabled=1" \
          "skip_if_unavailable=True" > /etc/yum.repos.d/viva64-beta.repo && \
   dnf -q -y --setopt=install_weak_deps=True --setopt=keepcache=True --no-docs upgrade \
 && \
@@ -172,3 +179,7 @@ RUN \
     "" > /etc/crypto-policies/back-ends/opensslcnf.config \
 && \
   touch /.OK
+
+RUN adduser -m -U -G wheel --uid 10000 -c "CI/CD User" user
+
+USER 10000
