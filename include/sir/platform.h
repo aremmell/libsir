@@ -352,7 +352,11 @@ _set_thread_local_invalid_parameter_handler(
 #  elif defined(NI_MAXHOST)
 #   define SIR_MAXHOST NI_MAXHOST
 #  elif defined(MAXDNAME)
-#   define SIR_MAXHOST MAXDNAME
+#   if MAXDNAME > 256
+#    define SIR_MAXHOST MAXDNAME
+#   else
+#    define SIR_MAXHOST 256
+#   endif
 #  else
 #   define SIR_MAXHOST 256
 #  endif
