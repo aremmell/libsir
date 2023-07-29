@@ -161,6 +161,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #   endif
 #   if defined(__illumos__) || ((defined(__sun) || defined(__sun__)) && \
               (defined(__SVR4) || defined(__svr4__)))
+#    include <netdb.h>
 #    define __SOLARIS__
 #    define USE_PTHREAD_GETNAME_NP
 #    if !defined(_ATFILE_SOURCE)
@@ -279,8 +280,6 @@ _set_thread_local_invalid_parameter_handler(
 #  undef SIR_SYSLOG_ENABLED
 # endif
 
-# define SIR_MAXHOST 256
-
 # if !defined(__WIN__)
 #  include <dlfcn.h>
 #  include <pthread.h>
@@ -312,6 +311,8 @@ _set_thread_local_invalid_parameter_handler(
 #   include <syslog.h>
 #  endif
 #  if defined(_AIX)
+#   include <netdb.h>
+#   include <sys/param.h>
 #   include <sys/procfs.h>
 #  endif
 #  if defined(__BSD__)
@@ -338,6 +339,24 @@ _set_thread_local_invalid_parameter_handler(
 #    include <os/activity.h>
 #   endif
 #  endif
+
+# if !defined(SIR_MAXHOST)
+#  if defined(MAXHOSTNAMELEN) && defined(NI_MAXHOST)
+#   if MAXHOSTNAMELEN < NI_MAXHOST
+#    define SIR_MAXHOST NI_MAXHOST
+#   else
+#    define SIR_MAXHOST MAXHOSTNAMELEN
+#   endif
+#  elif defined(MAXHOSTNAMELEN)
+#   define SIR_MAXHOST MAXHOSTNAMELEN
+#  elif defined(NI_MAXHOST)
+#   define SIR_MAXHOST NI_MAXHOST
+#  elif defined(MAXDNAME)
+#   define SIR_MAXHOST MAXDNAME
+#  else
+#   define SIR_MAXHOST 256
+#  endif
+# endif
 
 #  if defined(PATH_MAX)
 #   define SIR_MAXPATH PATH_MAX
