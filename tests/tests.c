@@ -402,7 +402,12 @@ bool sirtest_failfilebadpermission(void) {
 # if defined(__CYGWIN__)
     static const char* path = "/cygdrive/c/Windows/System32/noperms";
 # else
-    static const char* path = "C:\\Windows\\System32\\noperms";
+    static const char* path;
+    if (_sirtest_wine) {
+        path = "Z:\\noperms";
+    } else {
+        path = "C:\\Windows\\System32\\noperms";
+    }
 # endif
 #endif
 
@@ -1431,9 +1436,28 @@ bool sirtest_os_log(void) {
 #endif
 }
 
+char *_sirtest_wine(void) {
+#if defined(__WIN__)
+    static const char *(CDECL *_p_wine_get_version)(void);
+    HMODULE _h_ntdll;
+
+    _h_ntdll = GetModuleHandle("ntdll.dll");
+    _p_wine_get_version = (void *)GetProcAddress(_h_ntdll, "wine_get_version");
+    if (_h_ntdll != NULL) {
+        char *wine_version = (char *)_p_wine_get_version();
+        if (wine_version)
+            return wine_version;
+    }
+#endif
+    return NULL;
+}
+
 bool sirtest_filesystem(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
+
+    /* Wine version */
+    printf("\t_sirtest_wine: '%s'\n", PRN_STR(_sirtest_wine()));
 
     /* current working directory. */
     char* cwd = _sir_getcwd();
@@ -1618,8 +1642,8 @@ bool sirtest_filesystem(void) {
 # endif
         {"/dev", true},
 #else /* __WIN__ */
-        {"\\Windows", true},
-        {"\\Program Files", true},
+        {"C:\\Windows", true},
+        {"C:\\Program Files", true},
 #endif
         {"../../LICENSES/MIT.txt", true},
         {"../../msvs/libsir.sln", true},
@@ -2278,7 +2302,7 @@ bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* 
 }
 
 bool sirtimerstart(sir_timer* timer) {
-#if !defined(__WIN__)
+#if !defined(__WIN__) || defined(__ORANGEC__)
     int gettime = clock_gettime(SIRTEST_CLOCK, &timer->ts);
     if (0 != gettime) {
         handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK);
@@ -2292,7 +2316,7 @@ bool sirtimerstart(sir_timer* timer) {
 }
 
 float sirtimerelapsed(const sir_timer* timer) {
-#if !defined(__WIN__)
+#if !defined(__WIN__) || defined(__ORANGEC__)
     struct timespec now;
     if (0 == clock_gettime(SIRTEST_CLOCK, &now)) {
         return (float)(((double)now.tv_sec * (double)1e3)
