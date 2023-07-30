@@ -26,7 +26,7 @@
 #ifndef _SIR_PLATFORM_H_INCLUDED
 # define _SIR_PLATFORM_H_INCLUDED
 
-# if defined(_MSC_VER)
+# if defined(_MSC_VER) && !defined(__clang__)
 #  include <stddef.h>
 #  if defined(_USE_ATTRIBUTES_FOR_SAL)
 #   undef _USE_ATTRIBUTES_FOR_SAL
