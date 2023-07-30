@@ -1438,23 +1438,30 @@ bool sirtest_os_log(void) {
 
 char *_sirtest_wine(void) {
 #if defined(__WIN__)
-    static const char *(CDECL *_p_wine_get_version)(void);
-    HMODULE _h_ntdll;
-
-    _h_ntdll = GetModuleHandle("ntdll.dll");
 # if defined(_MSC_VER) && !defined(__clang__)
 #  pragma warning(push)
 #  pragma warning(disable : 4152)
 # endif
-    _p_wine_get_version = (void *)GetProcAddress(_h_ntdll, "wine_get_version");
-# if defined(_MSC_VER) && !defined(__clang__)
-#  pragma warning(pop)
-# endif
+    static const char *(CDECL *_p_wine_get_version)(void);
+    HMODULE _h_ntdll;
+
+    _h_ntdll = GetModuleHandle("ntdll.dll");
     if (_h_ntdll != NULL) {
+# if defined(__GNUC__)
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Wpedantic"
+# endif
+        _p_wine_get_version = (void *)GetProcAddress(_h_ntdll, "wine_get_version");
+# if defined(__GNUC__)
+#  pragma GCC diagnostic pop
+# endif
         char *wine_version = (char *)_p_wine_get_version();
         if (wine_version)
             return wine_version;
     }
+# if defined(_MSC_VER) && !defined(__clang__)
+#  pragma warning(pop)
+# endif
 #endif
     return NULL;
 }
