@@ -1442,6 +1442,9 @@ char *_sirtest_wine(void) {
     HMODULE _h_ntdll;
 
     _h_ntdll = GetModuleHandle("ntdll.dll");
+# if defined(_MSC_VER) && !defined(__clang__)
+#  pragma warning disable 4152
+# endif
     _p_wine_get_version = (void *)GetProcAddress(_h_ntdll, "wine_get_version");
     if (_h_ntdll != NULL) {
         char *wine_version = (char *)_p_wine_get_version();
