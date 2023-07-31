@@ -505,8 +505,9 @@ bool sir_settextstyle(sir_level level, sir_textattr attr, sir_textcolor fg,
  * @see ::sir_settextstyle
  * @see ::default
  *
- * @returns `true` if succcessfully reset, `false` otherwise. Use ::sir_geterror
- *          to obtain information about any error that may have occurred.
+ * @returns bool `true` if succcessfully reset, `false` otherwise. Use
+ *          ::sir_geterror to obtain information about any error that may have
+ *          occurred.
  */
 bool sir_resettextstyles(void);
 

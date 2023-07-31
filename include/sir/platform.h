@@ -418,7 +418,7 @@ typedef DWORD sir_wait;
 typedef INIT_ONCE sir_once;
 
 /** Process/thread ID. */
-#  if !defined(__MINGW64__) && !defined(__MINGW32__)
+#  if !defined(__MINGW64__) && !defined(__MINGW32__) && !defined(__ORANGEC__)
 typedef int pid_t;
 #  endif
 
@@ -446,6 +446,24 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #  define _sir_thread_local __thread
 # else
 #  error "unable to resolve thread local attribute; please contact the author."
+# endif
+
+# if defined(__WIN__) && defined(__ORANGEC__)
+#  if defined(__ORANGEC_MAJOR__) && defined(__ORANGEC_MINOR__) && defined(__ORANGEC_PATCHLEVEL__)
+#   if __ORANGEC_MAJOR__ <= 6
+#    if __ORANGEC_MINOR__ <= 70
+#     if __ORANGEC_PATCHLEVEL__ <= 92
+#      if !defined(ORANGEC_VERSION_WARNING)
+#       warning OrangeC versions before 6.0.70.93 are unsupported.
+#       define ORANGEC_VERSION_WARNING
+#      endif
+#     endif
+#    endif
+#   endif
+#  endif
+#  if !defined(SIR_MSVCRT_MINGW)
+#   define SIR_MSVCRT_MINGW
+#  endif
 # endif
 
 # if defined(__WIN__) && defined(__STDC_SECURE_LIB__)

@@ -64,11 +64,17 @@
 # define COLOR(attr, fg, bg, s) \
     SIR_ESC_SEQ(#attr ";" #fg ";" #bg, s) SIR_ESC_SEQE("0;39;49")
 
+# undef STRIKE
 # define STRIKE(s) SIR_ESC_SEQ("9", s) SIR_ESC_SEQE("29") /**< Strike-through. */
+# undef INVERT
 # define INVERT(s) SIR_ESC_SEQ("7", s) SIR_ESC_SEQE("27") /**< Inverted fg/bg. */
+# undef ULINE
 # define ULINE(s)  SIR_ESC_SEQ("4", s) SIR_ESC_SEQE("24") /**< Underlined. */
+# undef EMPH
 # define EMPH(s)   SIR_ESC_SEQ("3", s) SIR_ESC_SEQE("23") /**< Emphasis/italic. */
+# undef BOLD
 # define BOLD(s)   SIR_ESC_SEQ("1", s) SIR_ESC_SEQE("22") /**< Bold. */
+# undef BLINK
 # define BLINK(s)  SIR_ESC_SEQ("5", s) SIR_ESC_SEQE("25") /**< Blinking text. */
 
 # define BLACK(s)     COLOR(0, 30, 49, s) /**< Black foreground text. */
