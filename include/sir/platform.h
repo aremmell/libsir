@@ -82,6 +82,10 @@
 #    endif
 #   endif
 #  endif
+#  if defined(__IMPORTC__)
+#   undef __HAVE_ATOMIC_H__
+#   define _BITS_FLOATN_H 1
+#  endif
 #  if !defined(__open_xl__) && defined(__xlC_ver__)
 #   if __xlC_ver__ <= 0x0000000e
 #    undef __HAVE_ATOMIC_H__
