@@ -24,8 +24,8 @@ docker run --rm -it "hello-world:latest" > /dev/null ||
     exit 1
   }
 
-printf '%s\n' "Building nvhpc image ..."
+printf 'Building %s image ...\n' "$(basename "$(pwd -P)")"
 
-docker build --no-cache --squash -t registry.gitlab.com/libsir/libsir/nvhpc:latest .
+docker build --no-cache --squash -t registry.gitlab.com/libsir/libsir/"$(basename "$(pwd -P)")":latest .
 
 printf '%s\n' "Complete."

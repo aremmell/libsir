@@ -24,8 +24,8 @@ docker run --rm -it "hello-world:latest" > /dev/null ||
     exit 1
   }
 
-printf '%s\n' "Pushing intel image ..."
+printf 'Pushing %s image ...\n' "$(basename "$(pwd -P)")"
 
-docker push registry.gitlab.com/libsir/libsir/intel:latest
+docker push registry.gitlab.com/libsir/libsir/"$(basename "$(pwd -P)")":latest
 
 printf '%s\n' "Complete."
