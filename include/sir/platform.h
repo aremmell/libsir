@@ -282,7 +282,9 @@ _set_thread_local_invalid_parameter_handler(
 # define SIR_MAXHOST 256
 
 # if !defined(__WIN__)
-#  include <dlfcn.h>
+#  if !defined(SIR_NO_PLUGINS)
+#   include <dlfcn.h>
+#  endif
 #  include <pthread.h>
 #  if defined(__illumos__)
 #   include <sys/fcntl.h>
