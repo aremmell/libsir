@@ -1442,7 +1442,7 @@ char *_sirtest_wine(void) {
 #  pragma warning(push)
 #  pragma warning(disable : 4152)
 # endif
-    static const char *(CDECL *_p_wine_get_version)(void);
+    static const char* (CDECL* _p_wine_get_version)(void);
     HMODULE _h_ntdll;
 
     _h_ntdll = GetModuleHandle("ntdll.dll");
