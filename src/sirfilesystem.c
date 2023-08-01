@@ -156,20 +156,25 @@ char* _sir_getcwd(void) {
     return cur;
 # endif
 #else /* __WIN__ */
-# if defined(__ORANGEC__)
-    char cur[SIR_MAXPATH];
-    if (getcwd(cur, SIR_MAXPATH) == 0) {
-        (void)_sir_handleerr(errno);
+    DWORD size = GetCurrentDirectoryA(0, NULL);
+    if (0 == size) {
+        _sir_handlewin32err(GetLastError());
         return NULL;
-    } else {
-        return strndup(cur, SIR_MAXPATH);
     }
-# else
-    char* cur = _getcwd(NULL, 0);
-    if (NULL == cur)
-        (void)_sir_handleerr(errno);
+
+    char* cur = calloc(size, sizeof(char));
+    if (!cur) {
+        _sir_handleerr(errno);
+        return NULL;
+    }
+
+    if (!GetCurrentDirectoryA(size, cur)) {
+        _sir_handlewin32err(GetLastError());
+        _sir_safefree(cur);
+        return NULL;
+    }
+
     return cur;
-# endif
 #endif
 }
 
