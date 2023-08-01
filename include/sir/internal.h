@@ -132,7 +132,7 @@ bool _sir_syslog_init(const char* name, sir_syslog_dest* ctx);
  * logger facilities.
  *
  * Called upon initialization of the library (and if the configuration is modified).
- * Performs any necesssary preparation: connecting/opening handles, etc.
+ * Performs any necessary preparation: connecting/opening handles, etc.
  */
 bool _sir_syslog_open(sir_syslog_dest* ctx);
 
