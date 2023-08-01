@@ -403,7 +403,7 @@ bool sirtest_failfilebadpermission(void) {
     static const char* path = "/cygdrive/c/Windows/System32/noperms";
 # else
     static const char* path;
-    if (_sirtest_wine()) {
+    if (sirtest_get_wineversion()) {
         path = "Z:\\noperms";
     } else {
         path = "C:\\Windows\\System32\\noperms";
@@ -1436,7 +1436,7 @@ bool sirtest_os_log(void) {
 #endif
 }
 
-char *_sirtest_wine(void) {
+char *sirtest_get_wineversion(void) {
 #if defined(__WIN__)
 # if defined(_MSC_VER) && !defined(__clang__)
 #  pragma warning(push)
@@ -1471,7 +1471,7 @@ bool sirtest_filesystem(void) {
     bool pass = si_init;
 
     /* Wine version */
-    printf("\t_sirtest_wine: '%s'\n", PRN_STR(_sirtest_wine()));
+    printf("\tsirtest_get_wineversion: '%s'\n", PRN_STR(sirtest_get_wineversion()));
 
     /* current working directory. */
     char* cwd = _sir_getcwd();
