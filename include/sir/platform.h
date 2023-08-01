@@ -26,7 +26,7 @@
 #ifndef _SIR_PLATFORM_H_INCLUDED
 # define _SIR_PLATFORM_H_INCLUDED
 
-# if defined(_MSC_VER)
+# if defined(_MSC_VER) && !defined(__clang__)
 #  include <stddef.h>
 #  if defined(_USE_ATTRIBUTES_FOR_SAL)
 #   undef _USE_ATTRIBUTES_FOR_SAL
@@ -81,6 +81,10 @@
 #     undef __HAVE_ATOMIC_H__
 #    endif
 #   endif
+#  endif
+#  if defined(__IMPORTC__)
+#   undef __HAVE_ATOMIC_H__
+#   define _BITS_FLOATN_H 1
 #  endif
 #  if !defined(__open_xl__) && defined(__xlC_ver__)
 #   if __xlC_ver__ <= 0x0000000e
@@ -201,7 +205,6 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  include <winsock2.h>
 #  include <conio.h>
 #  include <shlwapi.h>
-#  include <direct.h>
 #  if defined(__MINGW32__) || defined(__MINGW64__)
 #   undef __USE_MINGW_ANSI_STDIO
 #   define __USE_MINGW_ANSI_STDIO 1
@@ -282,7 +285,9 @@ _set_thread_local_invalid_parameter_handler(
 # define SIR_MAXHOST 256
 
 # if !defined(__WIN__)
-#  include <dlfcn.h>
+#  if !defined(SIR_NO_PLUGINS)
+#   include <dlfcn.h>
+#  endif
 #  include <pthread.h>
 #  if defined(__illumos__)
 #   include <sys/fcntl.h>
@@ -416,7 +421,7 @@ typedef DWORD sir_wait;
 typedef INIT_ONCE sir_once;
 
 /** Process/thread ID. */
-#  if !defined(__MINGW64__) && !defined(__MINGW32__)
+#  if !defined(__MINGW64__) && !defined(__MINGW32__) && !defined(__ORANGEC__)
 typedef int pid_t;
 #  endif
 
@@ -444,6 +449,24 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #  define _sir_thread_local __thread
 # else
 #  error "unable to resolve thread local attribute; please contact the author."
+# endif
+
+# if defined(__WIN__) && defined(__ORANGEC__)
+#  if defined(__ORANGEC_MAJOR__) && defined(__ORANGEC_MINOR__) && defined(__ORANGEC_PATCHLEVEL__)
+#   if __ORANGEC_MAJOR__ <= 6
+#    if __ORANGEC_MINOR__ <= 70
+#     if __ORANGEC_PATCHLEVEL__ <= 92
+#      if !defined(ORANGEC_VERSION_WARNING)
+#       warning OrangeC versions before 6.0.70.93 are unsupported.
+#       define ORANGEC_VERSION_WARNING
+#      endif
+#     endif
+#    endif
+#   endif
+#  endif
+#  if !defined(SIR_MSVCRT_MINGW)
+#   define SIR_MSVCRT_MINGW
+#  endif
 # endif
 
 # if defined(__WIN__) && defined(__STDC_SECURE_LIB__)

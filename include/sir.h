@@ -134,7 +134,7 @@ uint16_t sir_geterror(char message[SIR_MAXERROR]);
  *                 the message to dispatch.
  * @param   ...    Arguments whose type and position align with the format
  *                 specifiers in `format`.
- * @returns bool   `true` if the message was dispatched succcessfully to all
+ * @returns bool   `true` if the message was dispatched successfully to all
  *                 registered destinations, `false` otherwise. Call ::sir_geterror
  *                 to obtain information about any error that may have occurred.
  */
@@ -160,7 +160,7 @@ bool sir_debug(PRINTF_FORMAT const char* format, ...);
  *                 the message to dispatch.
  * @param   ...    Arguments whose type and position align with the format
  *                 specifiers in `format`.
- * @returns bool   `true` if the message was dispatched succcessfully to all
+ * @returns bool   `true` if the message was dispatched successfully to all
  *                 registered destinations, `false` otherwise. Call ::sir_geterror
  *                 to obtain information about any error that may have occurred.
  */
@@ -186,7 +186,7 @@ bool sir_info(PRINTF_FORMAT const char* format, ...);
  *                 the message to dispatch.
  * @param   ...    Arguments whose type and position align with the format
  *                 specifiers in `format`.
- * @returns bool   `true` if the message was dispatched succcessfully to all
+ * @returns bool   `true` if the message was dispatched successfully to all
  *                 registered destinations, `false` otherwise. Call ::sir_geterror
  *                 to obtain information about any error that may have occurred.
  */
@@ -212,7 +212,7 @@ bool sir_notice(PRINTF_FORMAT const char* format, ...);
  *                 the message to dispatch.
  * @param   ...    Arguments whose type and position align with the format
  *                 specifiers in `format`.
- * @returns bool   `true` if the message was dispatched succcessfully to all
+ * @returns bool   `true` if the message was dispatched successfully to all
  *                 registered destinations, `false` otherwise. Call ::sir_geterror
  *                 to obtain information about any error that may have occurred.
  */
@@ -238,7 +238,7 @@ bool sir_warn(PRINTF_FORMAT const char* format, ...);
  *                 the message to dispatch.
  * @param   ...    Arguments whose type and position align with the format
  *                 specifiers in `format`.
- * @returns bool   `true` if the message was dispatched succcessfully to all
+ * @returns bool   `true` if the message was dispatched successfully to all
  *                 registered destinations, `false` otherwise. Call ::sir_geterror
  *                 to obtain information about any error that may have occurred.
  */
@@ -264,7 +264,7 @@ bool sir_error(PRINTF_FORMAT const char* format, ...);
  *                 the message to dispatch.
  * @param   ...    Arguments whose type and position align with the format
  *                 specifiers in `format`.
- * @returns bool   `true` if the message was dispatched succcessfully to all
+ * @returns bool   `true` if the message was dispatched successfully to all
  *                 registered destinations, `false` otherwise. Call ::sir_geterror
  *                 to obtain information about any error that may have occurred.
  */
@@ -290,7 +290,7 @@ bool sir_crit(PRINTF_FORMAT const char* format, ...);
  *                 the message to dispatch.
  * @param   ...    Arguments whose type and position align with the format
  *                 specifiers in `format`.
- * @returns bool   `true` if the message was dispatched succcessfully to all
+ * @returns bool   `true` if the message was dispatched successfully to all
  *                 registered destinations, `false` otherwise. Call ::sir_geterror
  *                 to obtain information about any error that may have occurred.
  */
@@ -316,7 +316,7 @@ bool sir_alert(PRINTF_FORMAT const char* format, ...);
  *                 the message to dispatch.
  * @param   ...    Arguments whose type and position align with the format
  *                 specifiers in `format`.
- * @returns bool   `true` if the message was dispatched succcessfully to all
+ * @returns bool   `true` if the message was dispatched successfully to all
  *                 registered destinations, `false` otherwise. Call ::sir_geterror
  *                 to obtain information about any error that may have occurred.
  */
@@ -446,7 +446,7 @@ bool sir_unloadplugin(sirpluginid id);
  * @param   id     The ::sirfileid obtained when the file was added to libsir.
  * @param   levels New bitmask of ::sir_level to register for. If you wish to use
  *                 the default levels, pass ::SIRL_DEFAULT.
- * @returns bool   `true` if the file is known to libsir and was succcessfully
+ * @returns bool   `true` if the file is known to libsir and was successfully
  *                 updated, `false` otherwise. Use ::sir_geterror to obtain
  *                 information about any error that may have occurred.
  */
@@ -465,7 +465,7 @@ bool sir_filelevels(sirfileid id, sir_levels levels);
  * @param   id   The ::sirfileid obtained when the file was added to libsir.
  * @param   opts New bitmask of ::sir_option for the file. If you wish to use
  *               the default options, pass ::SIRO_DEFAULT.
- * @returns bool `true` if the file is known to libsir and was succcessfully
+ * @returns bool `true` if the file is known to libsir and was successfully
  *               updated, `false` otherwise. Use ::sir_geterror to obtain
  *               information about any error that may have occurred.
  */
@@ -487,7 +487,7 @@ bool sir_fileopts(sirfileid id, sir_options opts);
  * @param   attr  The ::sir_textattr attributes to apply to the text.
  * @param   fg    The foreground color to apply to the text.
  * @param   bg    The background color to apply to the text.
- * @returns bool  `true` if succcessfully updated, `false` otherwise. Use
+ * @returns bool  `true` if successfully updated, `false` otherwise. Use
  *                ::sir_geterror to obtain information about any error that may
  *                have occurred.
  */
@@ -505,8 +505,9 @@ bool sir_settextstyle(sir_level level, sir_textattr attr, sir_textcolor fg,
  * @see ::sir_settextstyle
  * @see ::default
  *
- * @returns `true` if succcessfully reset, `false` otherwise. Use ::sir_geterror
- *          to obtain information about any error that may have occurred.
+ * @returns bool `true` if successfully reset, `false` otherwise. Use
+ *          ::sir_geterror to obtain information about any error that may have
+ *          occurred.
  */
 bool sir_resettextstyles(void);
 
@@ -572,7 +573,7 @@ bool sir_setcolormode(sir_colormode mode);
  *
  * @param   levels New bitmask of ::sir_level to register for. If you wish to use
  *                 the default levels, pass ::SIRL_DEFAULT.
- * @returns bool   `true` if succcessfully updated, `false` otherwise. Use
+ * @returns bool   `true` if successfully updated, `false` otherwise. Use
  *                 ::sir_geterror to obtain information about any error that may
  *                 have occurred.
  */
@@ -594,7 +595,7 @@ bool sir_stdoutlevels(sir_levels levels);
  *
  * @param   opts New bitmask of ::sir_option for `stdout`. If you wish to use the
  *               default values, pass ::SIRL_DEFAULT.
- * @returns bool `true` if succcessfully updated, `false` otherwise. Use
+ * @returns bool `true` if successfully updated, `false` otherwise. Use
  *               ::sir_geterror to obtain information about any error that may
  *               have occurred.
  */
@@ -616,7 +617,7 @@ bool sir_stdoutopts(sir_options opts);
  *
  * @param   levels New bitmask of ::sir_level to register for. If you wish to use
  *                 the default levels, pass ::SIRL_DEFAULT.
- * @returns bool   `true` if succcessfully updated, `false` otherwise. Use
+ * @returns bool   `true` if successfully updated, `false` otherwise. Use
  *                 ::sir_geterror to obtain information about any error that may
  *                 have occurred.
  */
@@ -638,7 +639,7 @@ bool sir_stderrlevels(sir_levels levels);
  *
  * @param   opts New bitmask of ::sir_option for `stderr`. If you wish to use the
  *               default values, pass ::SIRL_DEFAULT.
- * @returns bool `true` if succcessfully updated, `false` otherwise. Use
+ * @returns bool `true` if successfully updated, `false` otherwise. Use
  *               ::sir_geterror to obtain information about any error that may
  *               have occurred.
  */
@@ -661,7 +662,7 @@ bool sir_stderropts(sir_options opts);
  *
  * @param   levels New bitmask of ::sir_level to register for. If you wish to use
  *                 the default levels, pass ::SIRL_DEFAULT.
- * @returns bool   `true` if succcessfully updated, `false` otherwise. Use
+ * @returns bool   `true` if successfully updated, `false` otherwise. Use
  *                 ::sir_geterror to obtain information about any error that may
  *                 have occurred.
  */
@@ -680,7 +681,7 @@ bool sir_sysloglevels(sir_levels levels);
  *
  * @param   opts New bitmask of ::sir_option for the system logger. If you wish
  *               to use the default values, pass ::SIRO_DEFAULT.
- * @returns bool `true` if succcessfully updated, `false` otherwise. Use
+ * @returns bool `true` if successfully updated, `false` otherwise. Use
  *               ::sir_geterror to obtain information about any error that may
  *               have occurred.
  */
@@ -706,7 +707,7 @@ bool sir_syslogopts(sir_options opts);
  * ::SIR_E_UNAVAIL.
  *
  * @param   identity The string to use as the system logger identity.
- * @returns bool     `true` if succcessfully updated, `false` otherwise. Use
+ * @returns bool     `true` if successfully updated, `false` otherwise. Use
  *                   ::sir_geterror to obtain information about any error that
  *                   may have occurred.
  */
@@ -734,7 +735,7 @@ bool sir_syslogid(const char* identity);
  * ::SIR_E_UNAVAIL.
  *
  * @param category The string to use as the system logger category.
- * @returns bool   `true` if succcessfully updated, `false` otherwise. Use
+ * @returns bool   `true` if successfully updated, `false` otherwise. Use
  *                 ::sir_geterror to obtain information about any error that
  *                 may have occurred.
  */

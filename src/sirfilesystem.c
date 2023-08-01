@@ -27,7 +27,7 @@
 #include "sir/internal.h"
 
 #if defined(__WIN__)
-# pragma comment(lib, "Shlwapi.lib")
+# pragma comment(lib, "shlwapi.lib")
 #endif
 
 bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_rel_to rel_to) {
@@ -156,9 +156,24 @@ char* _sir_getcwd(void) {
     return cur;
 # endif
 #else /* __WIN__ */
-    char* cur = _getcwd(NULL, 0);
-    if (NULL == cur)
-        (void)_sir_handleerr(errno);
+    DWORD size = GetCurrentDirectoryA(0, NULL);
+    if (0 == size) {
+        _sir_handlewin32err(GetLastError());
+        return NULL;
+    }
+
+    char* cur = calloc(size, sizeof(char));
+    if (!cur) {
+        _sir_handleerr(errno);
+        return NULL;
+    }
+
+    if (!GetCurrentDirectoryA(size, cur)) {
+        _sir_handlewin32err(GetLastError());
+        _sir_safefree(cur);
+        return NULL;
+    }
+
     return cur;
 #endif
 }

@@ -65,10 +65,9 @@ BOOL CALLBACK __sir_config_consoles_once(PINIT_ONCE ponce, PVOID param, PVOID* c
         ? TRUE : FALSE;
 }
 
-bool _sir_initialize_stdio(void) {
-    bool configure = _sir_once(&config_once, __sir_config_consoles_once);
-    SIR_ASSERT(configure);
-    return configure;
+void _sir_initialize_stdio(void) {
+    if (!_sir_once(&config_once, __sir_config_consoles_once))
+        _sir_selflog("warning: unable to configure stdio consoles!");
 }
 
 bool _sir_write_stdio(HANDLE console, const char* message, size_t len) {

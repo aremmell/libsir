@@ -38,8 +38,10 @@
 # include "sir/textstyle.h"
 # include "sir/ansimacros.h"
 
-# if !defined(__WIN__)
-#  include <dirent.h>
+# if !defined(__WIN__) || defined(__ORANGEC__)
+#  if !defined(__ORANGEC__)
+#   include <dirent.h>
+#  endif
 #  if defined(CLOCK_MONOTONIC_RAW)
 #   define SIRTEST_CLOCK CLOCK_MONOTONIC_RAW
 #  else
@@ -251,6 +253,12 @@ bool sirtest_syslog(void);
 bool sirtest_os_log(void);
 
 /**
+ * @test Check if running under Wine.
+ * @returns char* `version` if running under Wine, `NULL` otherwise.
+ */
+char* sirtest_get_wineversion(void);
+
+/**
  * @test Ensure the proper functionality of portable filesystem implementation.
  * @returns bool `true` if the test passed, `false` otherwise.
  */
@@ -334,7 +342,7 @@ typedef struct {
 
 /** A simple timer type. */
 typedef struct {
-# if !defined(__WIN__)
+# if !defined(__WIN__) || defined(__ORANGEC__)
     struct timespec ts;
 # else /* __WIN__ */
     FILETIME ft;
