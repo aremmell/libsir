@@ -1455,7 +1455,7 @@ char *sirtest_get_wineversion(void) {
 # if defined(__GNUC__)
 #  pragma GCC diagnostic pop
 # endif
-        char *wine_version = (char *)_p_wine_get_version();
+        char* wine_version = (char *)_p_wine_get_version();
         if (wine_version)
             return wine_version;
     }
