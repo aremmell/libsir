@@ -1471,7 +1471,8 @@ bool sirtest_filesystem(void) {
     bool pass = si_init;
 
     /* Wine version */
-    printf("\tRunning under Wine: %s\n", sirtest_get_wineversion() ? sirtest_get_wineversion() : "no");
+    printf("\tRunning under Wine: %s\n",
+            sirtest_get_wineversion() ? sirtest_get_wineversion() : "no"); //-V547
 
     /* current working directory. */
     char* cwd = _sir_getcwd();
