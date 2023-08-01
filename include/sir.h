@@ -3,7 +3,7 @@
  * @brief Public interface to libsir
  *
  * The functions and types defined here comprise the entire set intended for
- * use by an implementor of the library-unless modification is desired.
+ * use by an implementer of the library-unless modification is desired.
  *
  * @author    Ryan M. Lederman \<lederman@gmail.com\>
  * @date      2018-2023
@@ -249,7 +249,7 @@ bool sir_error(PRINTF_FORMAT const char* format, ...);
  * @brief Dispatches a ::SIRL_CRIT level message.
  *
  * The message will be delivered to all destinations registered to receive
- * crtical-level messages, each with their own formatting and styling options.
+ * critical-level messages, each with their own formatting and styling options.
  *
  * @remark To change options or level registrations for `stdout`/`stderr`, call
  * ::sir_stdoutopts/::sir_stdoutlevels and ::sir_stderropts/::sir_stderrlevels,
@@ -324,7 +324,7 @@ PRINTF_FORMAT_ATTR(1, 2)
 bool sir_emerg(PRINTF_FORMAT const char* format, ...);
 
 /**
- * @brief Adds a log file and registeres it to receive log output.
+ * @brief Adds a log file and registers it to receive log output.
  *
  * The file at `path` will be created if it does not exist, otherwise it will
  * be appended to.
@@ -761,7 +761,7 @@ const char* sir_getversionstring(void);
 /**
  * @brief Returns the current libsir version as a number.
  *
- * @note Can be formatted as a hexidecimal number with %08x.
+ * @note Can be formatted as a hexadecimal number with %08x.
  *
  * @return uint32_t The current libsir version number.
  */

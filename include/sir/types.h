@@ -173,7 +173,7 @@ typedef struct {
      * already include the information represented by ::sir_option on their own.
      *
      * Furthermore, the supported options vary based on the system logging
-     * factility in use.
+     * facility in use.
      *
      * @note If your system supports syslog, and libsir is compiled with the intent
      * to use it (::SIR_SYSLOG_ENABLED is defined), then at least ::SIRO_NOPID is

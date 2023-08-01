@@ -1,6 +1,6 @@
 # Test suite              {#testsuite}
 
-In order to ensure that libsir is working properly on your system, the first thing you should do after compiliation is
+In order to ensure that libsir is working properly on your system, the first thing you should do after compilation is
 verify that the test suite runs successfully (_in fact, we recommend making it part of your deployment workflow_).
 
 It will exit with `0` if all test(s) ran successfully and passed, or `1` if errors occurred/any test failed.

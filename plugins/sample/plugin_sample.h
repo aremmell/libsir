@@ -152,7 +152,7 @@ PLUGIN_EXPORT bool sir_plugin_cleanup(void);
  *
  * - `cd` back into the root directory of the repository and run `make clean
  * plugins`. If everything goes smoothly, your shiny new plugin should now be
- * located in `build/lib`. If you named your directory 'foo', you shouuld see a
+ * located in `build/lib`. If you named your directory 'foo', you should see a
  * `plugin_foo.[so/dll]`.
  * - You can now move the plugin wherever you'd like, and use ::sir_loadplugin
  * to load it (after you've called ::sir_init, of course).
