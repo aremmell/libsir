@@ -256,7 +256,7 @@ bool sirtest_os_log(void);
  * @test Check if running under Wine.
  * @returns char* `version` if running under Wine, `NULL` otherwise.
  */
-char *_sirtest_wine(void);
+char* sirtest_get_wineversion(void);
 
 /**
  * @test Ensure the proper functionality of portable filesystem implementation.
