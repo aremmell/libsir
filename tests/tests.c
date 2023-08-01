@@ -1437,33 +1437,24 @@ bool sirtest_os_log(void) {
 }
 
 char *sirtest_get_wineversion(void) {
-#if defined(__WIN__)
-# if defined(_MSC_VER) && !defined(__clang__)
-#  pragma warning(push)
-#  pragma warning(disable : 4152)
-# endif
-    static const char* (CDECL* _p_wine_get_version)(void);
-    HMODULE _h_ntdll;
-
-    _h_ntdll = GetModuleHandle("ntdll.dll");
-    if (_h_ntdll != NULL) {
-# if defined(__GNUC__)
-#  pragma GCC diagnostic push
-#  pragma GCC diagnostic ignored "-Wpedantic"
-# endif
-        _p_wine_get_version = (void *)GetProcAddress(_h_ntdll, "wine_get_version");
-# if defined(__GNUC__)
-#  pragma GCC diagnostic pop
-# endif
-        char* wine_version = (char *)_p_wine_get_version();
-        if (wine_version)
-            return wine_version;
-    }
-# if defined(_MSC_VER) && !defined(__clang__)
-#  pragma warning(pop)
-# endif
-#endif
+#if !defined(__WIN__)
     return NULL;
+#else /* __WIN__ */
+    typedef char* (__stdcall *get_wine_ver_proc)(void);
+    static get_wine_ver_proc _p_wine_get_version = NULL;
+
+    HMODULE _h_ntdll = GetModuleHandle("ntdll.dll");
+    if (_h_ntdll != NULL) {
+        _p_wine_get_version = (get_wine_ver_proc)GetProcAddress(_h_ntdll, "wine_get_version");
+        if (_p_wine_get_version) {
+            char *wine_version = _p_wine_get_version();
+            if (wine_version)
+                return wine_version;
+        }
+        CloseHandle(_h_ntdll);
+    }
+    return NULL;
+#endif
 }
 
 bool sirtest_filesystem(void) {
