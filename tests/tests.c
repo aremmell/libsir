@@ -1451,7 +1451,7 @@ char *sirtest_get_wineversion(void) {
 #  pragma GCC diagnostic push
 #  pragma GCC diagnostic ignored "-Wpedantic"
 # endif
-        _p_wine_get_version = (void *)GetProcAddressA(_h_ntdll, "wine_get_version");
+        _p_wine_get_version = (void *)GetProcAddress(_h_ntdll, "wine_get_version");
 # if defined(__GNUC__)
 #  pragma GCC diagnostic pop
 # endif
