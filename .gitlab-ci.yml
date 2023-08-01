@@ -894,6 +894,10 @@ Cygwin/i686:
 
 Coverage:
   stage: coverage
+  needs:
+    - job: Linux/x86_64 (Clang)
+    - job: Linux/x86_64 (GCC)
+    - job: Windows/x64 (MSVC)
   coverage: '/^TOTAL.*\s+(\d+\%)$/'
   tags:
     - Docker-x64
@@ -936,6 +940,8 @@ Style check:
 
 MSVC Static Analyzer:
   stage: lint
+  needs:
+    - job: Windows/x64 (MSVC)
   tags:
     - Docker-x64
     - Linux
@@ -958,6 +964,8 @@ MSVC Static Analyzer:
 
 Clang Analyzer:
   stage: lint
+  needs:
+    - job: Linux/x86_64 (Clang)
   tags:
     - Docker-x64
     - Linux
@@ -982,6 +990,8 @@ Clang Analyzer:
 
 Clang (Extra Warnings):
   stage: lint
+  needs:
+    - job: Linux/x86_64 (Clang)
   tags:
     - Docker-x64
     - Linux
