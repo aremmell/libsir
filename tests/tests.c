@@ -1440,7 +1440,7 @@ char *sirtest_get_wineversion(void) {
 #if defined(__WIN__)
 # if defined(_MSC_VER) && !defined(__clang__)
 #  pragma warning(push)
-#  pragma warning(disable : 4152)
+//#  pragma warning(disable : 4152)
 # endif
     static const char* (CDECL* _p_wine_get_version)(void);
     HMODULE _h_ntdll;
@@ -1449,7 +1449,7 @@ char *sirtest_get_wineversion(void) {
     if (_h_ntdll != NULL) {
 # if defined(__GNUC__)
 #  pragma GCC diagnostic push
-#  pragma GCC diagnostic ignored "-Wpedantic"
+//#  pragma GCC diagnostic ignored "-Wpedantic"
 # endif
         _p_wine_get_version = (void *)GetProcAddress(_h_ntdll, "wine_get_version");
 # if defined(__GNUC__)
