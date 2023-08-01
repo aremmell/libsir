@@ -47,7 +47,7 @@ bool _sir_write_stderr(const char* message, size_t len) {
 extern HANDLE __sir_stdout;
 extern HANDLE __sir_stderr;
 
-bool _sir_initialize_stdio(void);
+void _sir_initialize_stdio(void);
 bool _sir_write_stdio(HANDLE console, const char* message, size_t len);
 
 static inline
