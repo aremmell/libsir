@@ -205,7 +205,6 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  include <winsock2.h>
 #  include <conio.h>
 #  include <shlwapi.h>
-#  include <direct.h>
 #  if defined(__MINGW32__) || defined(__MINGW64__)
 #   undef __USE_MINGW_ANSI_STDIO
 #   define __USE_MINGW_ANSI_STDIO 1
