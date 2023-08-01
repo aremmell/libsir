@@ -112,19 +112,16 @@ bool _sir_init(sirinit* si) {
     if (!_sir_init_sanity(si))
         return false;
 
-#if defined(__WIN__)
-    if (!_sir_initialize_stdio()) {
-        _sir_selflog("error: failed to initialize stdio!");
-        return false;
-    }
-#endif
-
     _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false);
 
 #if defined(__HAVE_ATOMIC_H__)
     atomic_store(&_sir_magic, _SIR_MAGIC);
 #else
     _sir_magic = _SIR_MAGIC;
+#endif
+
+#if defined(__WIN__)
+    _sir_initialize_stdio();
 #endif
 
     _sir_setcolormode(SIRCM_16);
