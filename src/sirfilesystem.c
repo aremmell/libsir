@@ -157,7 +157,7 @@ char* _sir_getcwd(void) {
 # endif
 #else /* __WIN__ */
 # if defined(__ORANGEC__)
-    char cur[SIR_MAXPATH + 1];
+    char cur[SIR_MAXPATH];
     if (getcwd(cur, SIR_MAXPATH) == 0) {
         (void)_sir_handleerr(errno);
         return NULL;
