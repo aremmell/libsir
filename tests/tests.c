@@ -1451,7 +1451,6 @@ char *sirtest_get_wineversion(void) {
             if (wine_version)
                 return wine_version;
         }
-        CloseHandle(_h_ntdll);
     }
     return NULL;
 #endif
