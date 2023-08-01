@@ -1154,13 +1154,13 @@ Windows/i686 (OrangeC):
     - wine64 /opt/orangec/bin/occ.exe /1 /O2 -Iinclude src/*.c example/example.c -o build/bin/sirexample.exe -DSIR_NO_PLUGINS=1
     - wine64 /opt/orangec/bin/occ.exe /1 /O2 -Iinclude src/*.c tests/tests.c -o build/bin/sirtests.exe -DSIR_NO_PLUGINS=1
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
-    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; echo $?' && tail -1 screenlog.0 | dos2unix -f | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - cat screenlog.0
     - rm -f screenlog.0
-    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; echo $?' && tail -1 screenlog.0 | dos2unix -f | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
