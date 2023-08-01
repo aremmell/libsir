@@ -1,0 +1,1137 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2018-current Ryan M. Lederman
+
+############################################################################
+
+stages:
+  - style
+  - build
+  - coverage
+  - lint
+
+############################################################################
+
+.Configuration: &Configuration |
+  # *Configuration - CI/CD Configuration
+  echo -e "section_start:`date +%s`:Configuration_section[collapsed=false]\r\e[0K\033[0;36mCI/CD Configuration ...\033[0m" || true
+  ulimit -n 65535 > /dev/null 2>&1 || true
+  ccache -X uncompressed > /dev/null 2>&1 || true
+  ccache -F 0 -M 0 > /dev/null 2>&1 || true
+  test -f 2> /dev/null /.dockerenv && { git config --global --add safe.directory '*' > /dev/null 2>&1 || true; } || true
+  echo "Project Name              : ${CI_PROJECT_TITLE:-Unknown}"
+  echo "Project Git Commit        : ${CI_COMMIT_SHA:-Unknown}"
+  echo "Project Git Branch        : ${CI_COMMIT_BRANCH:-Unknown}"
+  echo "GitLab CI User Details    : ${GITLAB_USER_LOGIN:-Unknown} - ${GITLAB_USER_NAME:-Unknown} (${GITLAB_USER_ID:-Unknown}) ${GITLAB_USER_EMAIL:-}"
+  echo "GitLab CI Job Name        : ${CI_JOB_NAME:-Unknown}"
+  echo "GitLab CI Job ID          : ${CI_JOB_ID:-Unknown}"
+  echo "GitLab CI Job Stage       : ${CI_JOB_STAGE:-Unknown}"
+  echo "GitLab CI Runner Details  : ${CI_RUNNER_VERSION:-Unknown} (${CI_RUNNER_REVISION:-Unknown})"
+  echo -e "section_end:`date +%s`:Configuration_section\r\e[0K" || true
+
+############################################################################
+
+Linux/x86_64 (GCC):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - gcc --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env CC="ccache gcc" make
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Tests ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - build/bin/sirexample
+    - build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Linux/x86_64 (GCC, musl-libc):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - musl-gcc --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env CC="ccache musl-gcc" make
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Tests
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - build/bin/sirexample
+    - build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Linux/x86_64 (Clang):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - clang --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env CC="ccache clang" make
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Tests ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - build/bin/sirexample
+    - build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Linux/x86_64 (AOCC):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - . /opt/AMD/aocc-compiler-4.0.0/setenv_AOCC.sh
+    - clang --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env CC="ccache clang" make
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Tests ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - build/bin/sirexample
+    - build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Linux/x86_64 (Intel C++ Classic):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/intel:latest
+  script:
+    - *Configuration
+    - . /opt/intel/oneapi/setvars.sh
+    - icc -diag-disable=10441 --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env CC="ccache icc" make
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Tests ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - build/bin/sirexample
+    - build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Linux/x86_64 (Intel oneAPI C++):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/intel:latest
+  script:
+    - *Configuration
+    - . /opt/intel/oneapi/setvars.sh
+    - icx --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env CC="ccache icx" make
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Tests ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - build/bin/sirexample
+    - build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Linux/x86_64 (Oracle Studio C/C++):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/oracle:latest
+  script:
+    - *Configuration
+    - /opt/oracle/developerstudio-latest/bin/suncc -V
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env CC="ccache /opt/oracle/developerstudio-latest/bin/suncc" make
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Tests ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - build/bin/sirexample
+    - build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Linux/x86_64 (NVIDIA HPC C/C++):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/nvhpc:latest
+  script:
+    - *Configuration
+    - NVC="$(command -v /opt/nvidia/hpc_sdk/Linux_x86_64/*/compilers/bin/nvc | sort -V | head -n 1)" && export NVC
+    - ${NVC:?} --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env CC="ccache ${NVC:?}" make
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Tests ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - build/bin/sirexample
+    - build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Linux/x86_64 (Chibicc):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env PATH="/opt/chibicc:${PATH:-}" CC="ccache /opt/chibicc/chibicc" make
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Tests ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - build/bin/sirexample
+    - build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Windows/x64 (LLVM-MinGW):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/llvm-mingw:latest
+  script:
+    - *Configuration
+    - x86_64-w64-mingw32-gcc --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - mkdir -p build/bin && touch -f build/bin/mcmb.exe
+    - env CC="x86_64-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes" make PLATFORM_LIB_EXT=".a"
+    - cp -f /opt/llvm-mingw/x86_64-w64-mingw32/bin/libwinpthread-1.dll build/bin
+    - rm -f build/bin/mcmb.exe
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Linux/x86_64 (AMD Open64):
+  allow_failure: true
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/ao64:latest
+  script:
+    - *Configuration
+    - /opt/x86_open64-4.5.2.1/bin/opencc --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env CC=/opt/x86_open64-4.5.2.1/bin/opencc NO_DEFAULT_CFLAGS=1 SIR_CSTD="-std=gnu9x" CFLAGS="-Iinclude -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers -Wno-strict-aliasing -fno-strict-aliasing -fPIC -O3" make
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Tests...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - build/bin/sirexample
+    - build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Windows/i686 (LLVM-MinGW):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/llvm-mingw:latest
+  script:
+    - *Configuration
+    - i686-w64-mingw32-clang --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - mkdir -p build/bin && touch -f build/bin/mcmb.exe
+    - env CC="i686-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes -Wno-incompatible-function-pointer-types" make PLATFORM_LIB_EXT=".a"
+    - cp -f /opt/llvm-mingw/i686-w64-mingw32/bin/libwinpthread-1.dll build/bin
+    - rm -f build/bin/mcmb.exe
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Android/x86_64 (API Level 21):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/ndk:latest
+  script:
+    - *Configuration
+    - PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}" && export PATH
+    - x86_64-linux-android21-clang --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env LDFLAGS="-static" CC="ccache x86_64-linux-android21-clang" make SIR_NO_PLUGINS=1
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Tests...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - build/bin/sirexample
+    - build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Android/i686 (API Level 21):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/ndk:latest
+  script:
+    - *Configuration
+    - PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}" && export PATH
+    - i686-linux-android21-clang --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env LDFLAGS="-static" CC="ccache i686-linux-android21-clang" make SIR_NO_PLUGINS=1
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Tests...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - build/bin/sirexample
+    - build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Android/ARM64 (API Level 21):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/ndk:latest
+  script:
+    - *Configuration
+    - PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}" && export PATH
+    - aarch64-linux-android21-clang --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env CC="ccache aarch64-linux-android21-clang" make
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Android/ARMv7A (API Level 21):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/ndk:latest
+  script:
+    - *Configuration
+    - PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}" && export PATH
+    - armv7a-linux-androideabi21-clang --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env CC="ccache armv7a-linux-androideabi21-clang" make
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Android/x86_64 (API Level 33):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/ndk:latest
+  script:
+    - *Configuration
+    - PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}" && export PATH
+    - x86_64-linux-android33-clang --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env LDFLAGS="-static" CC="ccache x86_64-linux-android33-clang" make SIR_NO_PLUGINS=1
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Tests...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - build/bin/sirexample
+    - build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Android/i686 (API Level 33):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/ndk:latest
+  script:
+    - *Configuration
+    - PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}" && export PATH
+    - i686-linux-android33-clang --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env LDFLAGS="-static" CC="ccache i686-linux-android33-clang" make SIR_NO_PLUGINS=1
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Tests...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTests ...\033[0m" || true
+    - build/bin/sirexample
+    - build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Android/ARM64 (API Level 33):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/ndk:latest
+  script:
+    - *Configuration
+    - PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}" && export PATH
+    - aarch64-linux-android33-clang --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env CC="ccache aarch64-linux-android33-clang" make
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Android/ARMv7A (API Level 33):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/ndk:latest
+  script:
+    - *Configuration
+    - PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}" && export PATH
+    - armv7a-linux-androideabi33-clang --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env CC="ccache armv7a-linux-androideabi33-clang" make
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Windows/Arm64 (MSVC):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/msvc:latest
+  script:
+    - *Configuration
+    - PATH="/opt/msvc/bin/arm64:${PATH:?}" && export PATH
+    - cl.exe 2>&1 | head -3
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - mkdir -p build/bin
+    - cl.exe src/*.c example/example.c -Iinclude /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirexample.exe
+    - cl.exe src/*.c tests/tests.c -Iinclude /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirtests.exe
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Windows/Arm (MSVC):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/msvc:latest
+  script:
+    - *Configuration
+    - PATH="/opt/msvc/bin/arm:${PATH:?}" && export PATH
+    - cl.exe 2>&1 | head -3
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - mkdir -p build/bin
+    - cl.exe src/*.c example/example.c -Iinclude /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirexample.exe
+    - cl.exe src/*.c tests/tests.c -Iinclude /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirtests.exe
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Windows/x64 (MSVC):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/msvc:latest
+  script:
+    - *Configuration
+    - PATH="/opt/msvc/bin/x64:${PATH:?}" && export PATH
+    - cl.exe 2>&1 | head -3
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - mkdir -p build/bin
+    - cl.exe src/*.c example/example.c -Iinclude /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirexample.exe
+    - cl.exe src/*.c tests/tests.c -Iinclude /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirtests.exe
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Windows/x64 (MinGW-MSVCRT):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - x86_64-w64-mingw32-gcc --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - mkdir -p build/bin && touch -f build/bin/mcmb.exe
+    - env CC="ccache x86_64-w64-mingw32-gcc" make SIR_MSVCRT_MINGW=1
+    - cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/libwinpthread-1.dll build/bin
+    - rm -f build/bin/mcmb.exe
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Windows/x64 (MinGW-UCRT):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - x86_64-w64-mingw32ucrt-gcc --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - mkdir -p build/bin && touch -f build/bin/mcmb.exe
+    - env CC="ccache x86_64-w64-mingw32ucrt-gcc" make
+    - cp -f /usr/x86_64-w64-mingw32ucrt/sys-root/mingw/bin/libwinpthread-1.dll build/bin
+    - rm -f build/bin/mcmb.exe
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Windows/i686 (MinGW):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - i686-w64-mingw32-gcc --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - mkdir -p build/bin && touch -f build/bin/mcmb.exe
+    - env CC="ccache i686-w64-mingw32-gcc" make SIR_MSVCRT_MINGW=1
+    - cp -f /usr/i686-w64-mingw32/sys-root/mingw/bin/libwinpthread-1.dll build/bin
+    - rm -f build/bin/mcmb.exe
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Cygwin/x86_64:
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - x86_64-pc-cygwin-gcc --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env CC="ccache x86_64-pc-cygwin-gcc" make
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Cygwin/i686:
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - i686-pc-cygwin-gcc --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env CC="ccache i686-pc-cygwin-gcc" make
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Coverage:
+  stage: coverage
+  coverage: '/^TOTAL.*\s+(\d+\%)$/'
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - env NO_CLEANUP=1 NO_APTSETUP=1 ./.coveralls.sh
+    - pigz -9v coverage-out.txt || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+      - cover*
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Style check:
+  stage: style
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - ./.lint.sh tabs
+    - ./.lint.sh whitespace
+  dependencies: []
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+MSVC Static Analyzer:
+  stage: lint
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/msvc:latest
+  script:
+    - *Configuration
+    - PATH="/opt/msvc/bin/x64:${PATH:?}" && export PATH
+    - cl.exe 2>&1 | head -3
+    - cl.exe src/*.c example/example.c -Iinclude /O2 /GL /W4 /WX /analyze /std:c11 /sdl /wd4996
+    - cl.exe src/*.c tests/tests.c -Iinclude /O2 /GL /W4 /WX /analyze /std:c11 /sdl /wd4996
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Clang Analyzer:
+  stage: lint
+  tags:
+    - Docker-x64
+    - Linux
+    - Docker-x64-fast
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - scan-build clang --version
+    - ./.lint.sh scanbuild
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Clang (Extra Warnings):
+  stage: lint
+  tags:
+    - Docker-x64
+    - Linux
+    - Docker-x64-fast
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - clang --version
+    - ./.lint.sh extra
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Flawfinder:
+  stage: lint
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - flawfinder --version
+    - ./.lint.sh flawfinder
+  dependencies: []
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Cppcheck:
+  stage: lint
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - cppcheck --version
+    - ./.lint.sh cppcheck
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+      - cppcheck/
+      - cppcheck.xml
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Valgrind:
+  stage: lint
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - valgrind --version
+    - ./.lint.sh valgrind
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+REUSE:
+  stage: lint
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - reuse --version
+    - ./.lint.sh reuse
+  dependencies: []
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+PVS-Studio:
+  stage: lint
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - pvs-studio-analyzer credentials "${PVS_STUDIO_NAME:?}" "${PVS_STUDIO_KEY:?}" || true
+    - pvs-studio --version
+    - ./.lint.sh pvs
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+      - pvsreport/
+      - pvs.log
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Coverity:
+  when: manual
+  allow_failure: true
+  stage: lint
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - ./.coverity.sh
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - cov-int/
+      - libsir-coverity.xz
+  retry: 2
+  interruptible: true
+
+############################################################################

@@ -8,6 +8,11 @@ Files: docs/*
 Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
 License: MIT
 
+# MSVC wrappers
+Files: .gitlab-ci/msvc/wrappers/*
+Copyright: Copyright (c) 2019 Martin Storsjo
+License: ISC
+
 # SVGPan
 Files: docs/svgpan.js
 Copyright: 2009-2010 Andrea Leofreddi <a.leofreddi@itcharm.com>

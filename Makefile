@@ -116,7 +116,7 @@ OUT_MCMB       = $(BINDIR)/mcmb$(PLATFORM_EXE_EXT)
 
 .DEFAULT_GOAL := all
 .PHONY: all
-all: $(PGOALS) $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS) $(OUT_MCMB)
+all: $(PGOALS) $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS)
 
 -include $(INTDIR)/*.d
 
@@ -160,14 +160,12 @@ $(OUT_EXAMPLE): $(OUT_STATIC) $(OBJ_EXAMPLE)
 	-@printf 'built %s successfully.\n' "$(OUT_EXAMPLE)" 2> /dev/null
 
 .PHONY: mcmb cmb
-ifneq ($(NO_MCMB),1)
 mcmb cmb: $(OUT_MCMB)
 $(OUT_MCMB): $(OBJ_MCMB)
 	mkdir -p $(@D)
 	mkdir -p $(BINDIR)
 	$(CC) -o $(OUT_MCMB) $(OBJ_MCMB) $(LDFLAGS)
 	-@printf 'built %s successfully.\n' "$(OUT_MCMB)" 2> /dev/null
-endif
 
 .PHONY: tests test
 tests test: $(OUT_TESTS)
@@ -194,11 +192,14 @@ docs doc: $(OUT_STATIC)
 lint check:
 	$(MAKE) --no-print-directory clean
 	$(MAKE) --no-print-directory
+	$(MAKE) --no-print-directory mcmb
+	@rm -rf ./.coverity > /dev/null 2>&1
+	@rm -rf ./cov-int > /dev/null 2>&1
 	@test -x $(LINTSH) || \
 		{ printf '%s\n' "Error: %s not executable.\n" "$(LINTSH)" \
 			2> /dev/null; exit 1; }
 	-@printf 'running %s ...\n' "$(LINTSH)"
-	@env VERBOSE=1 $(LINTSH)
+	@$(LINTSH)
 
 .PHONY: install
 ifneq (,$(findstring install,$(MAKECMDGOALS)))

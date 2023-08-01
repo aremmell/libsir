@@ -48,6 +48,7 @@ _ReSharper.Caches/
 *.png.tmp*
 
 # Cppcheck
+cppcheck/
 cppcheck.xml
 .extra.sh
 
