@@ -28,6 +28,8 @@ RUN \
 && \
   dnf -q -y --setopt=install_weak_deps=True --setopt=keepcache=True --no-docs install \
       advancecomp \
+      ansifilter \
+      atool \
       bear \
       ca-certificates \
       ccache \
@@ -46,30 +48,36 @@ RUN \
       g++ \
       gawk \
       gcc \
-      musl-devel \
-      musl-gcc \
-      musl-libc \
-      musl-libc-static \
       gcovr \
       git \
       glibc-static \
+      global \
       libnsl \
-      libnsl.i686 \
       libnsl2 \
       libnsl2.i686 \
+      libnsl.i686 \
       libtirpc \
       libtirpc.i686 \
       lld \
       make \
+      musl-devel \
+      musl-gcc \
+      musl-libc \
+      musl-libc-static \
       openssl \
       perl-core \
       pigz \
       python3-setuptools \
       reuse \
+      screen \
       symlinks \
       time \
+      tmux \
+      unzip \
       valgrind \
+      vim \
       wget \
+      zip \
 && \
   (curl -fsSL https://coveralls.io/coveralls-linux.tar.gz | tar -zxv -C /usr/bin) \
 && \

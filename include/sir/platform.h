@@ -84,6 +84,7 @@
 #  endif
 #  if defined(__IMPORTC__)
 #   undef __HAVE_ATOMIC_H__
+#   undef __SIZEOF_INT128__
 #   define _BITS_FLOATN_H 1
 #  endif
 #  if !defined(__open_xl__) && defined(__xlC_ver__)

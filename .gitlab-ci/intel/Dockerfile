@@ -9,7 +9,23 @@ USER 0
 
 WORKDIR /
 
-RUN cd /tmp && wget -q http://192.168.1.187:8088/~jhj/cache/BaseKit_offline.sh && chmod a+x ./BaseKit_offline.sh && ./BaseKit_offline.sh -a -s --eula accept && rm -f BaseKit_offline.sh
-RUN cd /tmp && wget -q http://192.168.1.187:8088/~jhj/cache/HPCKit_offline.sh && chmod a+x ./HPCKit_offline.sh && ./HPCKit_offline.sh -a -s --eula accept && rm -f HPCKit_offline.sh
+RUN ( rpm --import https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB || true ) && \
+    printf '%s\n' \
+      "[oneAPI]" \
+      "name=Intel® oneAPI repository" \
+      "baseurl=https://yum.repos.intel.com/oneapi" \
+      "enabled=1" \
+      "gpgcheck=1" \
+      "repo_gpgcheck=1" \
+      "gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB" \
+        > /etc/yum.repos.d/oneAPI.repo && \
+    dnf -q -y --refresh --setopt=install_weak_deps=True install \
+      intel-basekit \
+      intel-hpckit && \
+  dnf -q -y clean all && \
+  rm -rf ~/.cache && \
+  rm -rf /var/tmp/* && \
+  rm -rf /var/log/dnf* && \
+  ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true)
 
 USER 10000
