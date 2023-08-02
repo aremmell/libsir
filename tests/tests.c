@@ -1682,7 +1682,7 @@ bool sirtest_filesystem(void) {
         0,
         1,
         2,
-        1234
+        999999
     };
 
     for (size_t n = 0; n < _sir_countof(bad_fds); n++) {
