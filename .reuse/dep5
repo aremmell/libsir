@@ -68,6 +68,16 @@ Files: .github/ISSUE_TEMPLATE/*.md
 Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
 License: MIT
 
+# Plugin code files
+Files: plugins/*
+Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
+License: MIT
+
+# Test suite
+Files: tests/*
+Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
+License: MIT
+
 # Example code files
 Files: example/*
 Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
@@ -89,11 +99,11 @@ Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
 License: MIT
 
 # All other C source files
-Files: *.c
+Files: src/*.c
 Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
 License: MIT
 
 # All other C header files
-Files: *.h
+Files: include/*.h
 Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
 License: MIT
