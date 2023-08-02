@@ -85,12 +85,17 @@
 #  if defined(__IMPORTC__)
 #   undef __HAVE_ATOMIC_H__
 #   undef __SIZEOF_INT128__
-#   define __asm__ asm
 #   define _BITS_FLOATN_H 1
+#   undef __builtin_bswap16
 #   define __builtin_bswap16
+#   undef __builtin_bswap32
 #   define __builtin_bswap32
+#   undef __builtin_bswap64
 #   define __builtin_bswap64
+#   undef __extension__
 #   define __extension__
+#   undef __asm__
+#   define __asm__ asm
 #   if !defined(__restrict)
 #    define __restrict restrict
 #   endif
