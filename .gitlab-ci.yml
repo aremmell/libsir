@@ -353,6 +353,7 @@ Windows/x64 (LLVM-MinGW):
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
+    - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - cat screenlog.0
     - rm -f screenlog.0
@@ -430,6 +431,7 @@ Windows/i686 (LLVM-MinGW):
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
+    - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - cat screenlog.0
     - rm -f screenlog.0
@@ -775,6 +777,7 @@ Windows/x64 (MSVC):
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
+    - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - cat screenlog.0
     - rm -f screenlog.0
@@ -818,6 +821,7 @@ Windows/x64 (MinGW-MSVCRT):
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
+    - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - cat screenlog.0
     - rm -f screenlog.0
@@ -861,6 +865,7 @@ Windows/x64 (MinGW-UCRT):
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
+    - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - cat screenlog.0
     - rm -f screenlog.0
@@ -904,6 +909,7 @@ Windows/i686 (MinGW):
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
+    - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - cat screenlog.0
     - rm -f screenlog.0
