@@ -1205,13 +1205,15 @@ Linux/x86_64 (DMD64 ImportC):
     - mkdir -p build/bin
     - touch build/bin/file.exists
     - mkdir -p logs
-    - mkdir -p d && cd d
-    - ln -s ../src/* ../include/sir/* ../include/sir.h . && ln -s . sir
+    - mkdir -p d
+    - cd d
+    - ln -s ../src/* ../include/sir/* ../include/sir.h .
+    - ln -s . sir
     - ln -s ../example/* .
-    - dmd -fPIC -fPIE -O -inline -release -v -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirexample
+    - dmd -m64 -betterC -fPIC -fPIE -O -inline -release -v -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirexample
     - rm -f example*
     - ln -s ../tests/* .
-    - dmd -fPIC -fPIE -O -inline -release -v -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirtests
+    - dmd -m64 -betterC -fPIC -fPIE -O -inline -release -v -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirtests
     - cd ..
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
@@ -1227,7 +1229,6 @@ Linux/x86_64 (DMD64 ImportC):
     paths:
       - build/
       - logs/
-      - screenlog.0
   retry: 2
   interruptible: true
 

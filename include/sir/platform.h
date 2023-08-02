@@ -85,7 +85,18 @@
 #  if defined(__IMPORTC__)
 #   undef __HAVE_ATOMIC_H__
 #   undef __SIZEOF_INT128__
+#   define __asm__ asm
 #   define _BITS_FLOATN_H 1
+#   define __builtin_bswap16
+#   define __builtin_bswap32
+#   define __builtin_bswap64
+#   define __extension__
+#   if !defined(__restrict)
+#    define __restrict restrict
+#   endif
+#   if !defined(__inline)
+#    define __inline
+#   endif
 #  endif
 #  if !defined(__open_xl__) && defined(__xlC_ver__)
 #   if __xlC_ver__ <= 0x0000000e
