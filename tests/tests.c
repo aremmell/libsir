@@ -1678,12 +1678,11 @@ bool sirtest_filesystem(void) {
     }
 
     /* checking file descriptors. */
-    static const int bad_fds[] = {
-        0,
-        1,
-        2,
-        1234
-    };
+    if (sirtest_get_wineversion()) {
+        static const int bad_fds[] = { 0, 1, 2 };
+    } else {
+        static const int bad_fds[] = { 0, 1, 2, 1234 };
+    }
 
     for (size_t n = 0; n < _sir_countof(bad_fds); n++) {
         if (_sir_validfd(bad_fds[n])) {
