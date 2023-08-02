@@ -10,7 +10,6 @@ RUN apt -q -y update && \
     apt -q -y full-upgrade && \
     apt -q -y install \
 	dos2unix \
-	gdebi \
 	screen \
         tmux \
 	git \
