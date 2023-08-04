@@ -7,7 +7,7 @@ USER 0
 
 WORKDIR /
 
-RUN dnf -q -y install gcc-gdc ldc elinks && \
+RUN dnf -q -y install elinks && \
     dnf -q -y --nogpgcheck install \
         "$(elinks -dump https://dlang.org/download.html | \
            awk '/\/releases\/.*fedora.*x86_64.rpm$/ { print $2 }' | \
