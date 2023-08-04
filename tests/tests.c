@@ -1678,7 +1678,12 @@ bool sirtest_filesystem(void) {
     }
 
     /* checking file descriptors. */
-    static int bad_fds[] = { 0, 1, 2, 1234 };
+    static int bad_fds[] = {
+        0,
+        1,
+        2,
+        1234
+    };
     if (sirtest_get_wineversion()) { //-V547
         bad_fds[3] = 0;
     }
