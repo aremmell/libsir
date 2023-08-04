@@ -7,6 +7,6 @@ USER 0
 
 WORKDIR /
 
-RUN dnf -q -y install ansifilter tmux screen zip unzip atool && dnf -q clean all && cd /opt && wget http://192.168.1.187:8088/~jhj/cache/OrangeC.zip && atool -x OrangeC.zip && env rm OrangeC.zip
+RUN cd /opt && wget http://192.168.1.187:8088/~jhj/cache/OrangeC.zip && atool -x OrangeC.zip && env rm OrangeC.zip
 
 USER 10000
