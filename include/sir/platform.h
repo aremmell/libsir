@@ -166,7 +166,9 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #    if !defined(_GNU_SOURCE)
 #     define _GNU_SOURCE 1
 #    endif
-#    define USE_PTHREAD_GETNAME_NP
+#    if defined(__GLIBC__) && __GLIBC_MINOR__ >= 12
+#     define USE_PTHREAD_GETNAME_NP
+#    endif
 #   endif
 #   if defined(__CYGWIN__)
 #    if !defined(_GNU_SOURCE)

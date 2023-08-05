@@ -52,7 +52,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         int open_flags = O_SEARCH;
 #  endif
 # elif defined(__linux__)
-#  if !defined(__SUNPRO_C) && !defined(__SUNPRO_CC)
+#  if !defined(__SUNPRO_C) && !defined(__SUNPRO_CC) && defined(O_PATH)
         int open_flags = O_PATH | O_DIRECTORY;
 #  else
         int open_flags = O_DIRECTORY;
