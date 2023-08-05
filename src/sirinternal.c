@@ -1157,7 +1157,7 @@ pid_t _sir_gettid(void) {
     tid = (pid_t)pthread_getthreadid_np();
 #elif defined(__OpenBSD__)
     tid = (pid_t)getthrid();
-#elif defined(__SOLARIS__) || defined(__NetBSD__) || \
+#elif defined(__SOLARIS__) || defined(__NetBSD__) || defined(__HURD__) || \
       defined(__DragonFly__) || defined(__CYGWIN__) || defined(_AIX)
     tid = (pid_t)pthread_self();
 #elif defined(__HAIKU__)
@@ -1195,7 +1195,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
     return _sir_validstrnofail(name);
 #else
-# if !defined(_AIX)
+# if !defined(_AIX) && !defined(__HURD__)
 #  pragma message("unable to determine how to get a thread name")
 # endif
     SIR_UNUSED(name);
