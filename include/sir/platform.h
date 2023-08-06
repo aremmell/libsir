@@ -162,11 +162,18 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #    endif
 #    define USE_PTHREAD_GETNAME_NP
 #   endif
+#   if defined(__GNU__) && !defined(__linux__)
+#    if !defined(__HURD__)
+#     define __HURD__ 1
+#    endif
+#   endif
 #   if defined(__linux__)
 #    if !defined(_GNU_SOURCE)
 #     define _GNU_SOURCE 1
 #    endif
-#    define USE_PTHREAD_GETNAME_NP
+#    if defined(__GLIBC__) && __GLIBC_MINOR__ >= 12
+#     define USE_PTHREAD_GETNAME_NP
+#    endif
 #   endif
 #   if defined(__CYGWIN__)
 #    if !defined(_GNU_SOURCE)
