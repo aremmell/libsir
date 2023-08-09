@@ -19,10 +19,10 @@ RUN ( rpm --import https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-
       "repo_gpgcheck=1" \
       "gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB" \
         > /etc/yum.repos.d/oneAPI.repo && \
-    dnf -q -y --refresh --setopt=install_weak_deps=True install \
+    dnf -y --refresh --setopt=install_weak_deps=True install \
       intel-basekit \
       intel-hpckit && \
-  dnf -q -y clean all && \
+  dnf -y clean all && \
   rm -rf ~/.cache && \
   rm -rf /var/tmp/* && \
   rm -rf /var/log/dnf* && \

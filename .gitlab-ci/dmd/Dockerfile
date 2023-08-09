@@ -7,11 +7,11 @@ USER 0
 
 WORKDIR /
 
-RUN dnf -q -y install elinks && \
-    dnf -q -y --nogpgcheck install \
+RUN dnf -y install elinks && \
+    dnf -y --nogpgcheck install \
         "$(elinks -dump https://dlang.org/download.html | \
            awk '/\/releases\/.*fedora.*x86_64.rpm$/ { print $2 }' | \
 	   head -1)" && \
-    dnf -q -y clean all
+    dnf -y clean all
 
 USER 10000
