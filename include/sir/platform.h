@@ -59,14 +59,10 @@
 #  else
 #   define __HAVE_ATOMIC_H__
 #  endif
-#  if defined(__GNUC__)
-#   if __GNUC__ <= 4
-#    if defined(__GNUC_MINOR__)
-#     if __GNUC_MINOR__ <= 8
-#      if !defined(__clang_version__)
-#       undef __HAVE_ATOMIC_H__
-#      endif
-#     endif
+#  if defined(__GNUC__) && __GNUC__ <= 4
+#   if defined(__GNUC_MINOR__) && __GNUC_MINOR__ <= 8
+#    if !defined(__clang_version__)
+#     undef __HAVE_ATOMIC_H__
 #    endif
 #   endif
 #  endif
@@ -477,14 +473,10 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 # if defined(__WIN__) && defined(__ORANGEC__)
 #  if defined(__ORANGEC_MAJOR__) && defined(__ORANGEC_MINOR__) && defined(__ORANGEC_PATCHLEVEL__)
-#   if __ORANGEC_MAJOR__ <= 6
-#    if __ORANGEC_MINOR__ <= 70
-#     if __ORANGEC_PATCHLEVEL__ <= 92
-#      if !defined(ORANGEC_VERSION_WARNING)
-#       warning OrangeC versions before 6.0.70.93 are unsupported.
-#       define ORANGEC_VERSION_WARNING
-#      endif
-#     endif
+#   if __ORANGEC_MAJOR__ <= 6 && __ORANGEC_MINOR__ <= 70 && __ORANGEC_PATCHLEVEL__ <= 92
+#    if !defined(ORANGEC_VERSION_WARNING)
+#     warning OrangeC versions before 6.0.70.93 are unsupported.
+#     define ORANGEC_VERSION_WARNING
 #    endif
 #   endif
 #  endif

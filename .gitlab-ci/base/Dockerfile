@@ -12,21 +12,21 @@ WORKDIR /
 RUN \
   (sed -i 's/tsflags=nodocs//' /etc/dnf/dnf.conf || true) \
 && \
-  dnf -q -y --refresh --no-docs update \
+  dnf -y --refresh update \
 && \
-  dnf -q -y --no-docs install dnf-plugins-core dnf-utils \
+  dnf -y install dnf-plugins-core dnf-utils \
 && \
-  dnf -q -y --refresh --no-docs update \
+  dnf -y --refresh update \
 && \
-  dnf -q -y --no-docs install rpmconf \
+  dnf -y install rpmconf \
 && \
   (rpmconf --all --unattended use_maintainer || true) \
 && \
   (rpmconf --all --unattended use_maintainer --clean || true) \
 && \
-  dnf -q -y --refresh --no-docs update \
+  dnf -y --refresh update \
 && \
-  dnf -q -y --setopt=install_weak_deps=True --setopt=keepcache=True --no-docs install \
+  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
       advancecomp \
       ansifilter \
       atool \
@@ -58,6 +58,8 @@ RUN \
       libnsl.i686 \
       libtirpc \
       libtirpc.i686 \
+      libxml2-devel \
+      libxslt-devel \
       lld \
       make \
       musl-devel \
@@ -67,6 +69,8 @@ RUN \
       openssl \
       perl-core \
       pigz \
+      python3 \
+      python3-devel \
       python3-setuptools \
       reuse \
       screen \
@@ -79,9 +83,34 @@ RUN \
       wget \
       zip \
 && \
+  ( curl -fsSLO https://rpm.nodesource.com/setup_20.x || true ) \
+&& \
+  ( chmod a+x "setup_20.x" || true ) \
+&& \
+  ( sed -i "s/## Given the distro.*/DIST_VERSION=38/" "setup_20.x" || true ) \
+&& \
+  ( bash -x ./setup_20.x || true ) \
+&& \
+  ( rm -f ./setup_* || true ) \
+&& \
+  dnf -y --refresh update \
+&& \
+  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
+      nodejs \
+&& \
+  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True group install \
+      development-tools \
+      c-development \
+&& \
+  dnf -y --refresh update \
+&& \
+  (rpmconf --all --unattended use_maintainer || true) \
+&& \
+  (rpmconf --all --unattended use_maintainer --clean || true) \
+&& \
   (curl -fsSL https://coveralls.io/coveralls-linux.tar.gz | tar -zxv -C /usr/bin) \
 && \
-  dnf -q -y --setopt=install_weak_deps=True --setopt=keepcache=True --no-docs install \
+  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
       mingw-binutils-generic \
       mingw32-binutils \
       mingw32-cpp \
@@ -112,7 +141,7 @@ RUN \
 && \
   (yes | dnf -y copr enable yselkowitz/cygwin fedora-rawhide-x86_64) \
 && \
-  dnf -q -y --setopt=install_weak_deps=True --setopt=keepcache=True --no-docs install \
+  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
       cygport \
       cygwin32 \
       cygwin32-binutils \
@@ -122,7 +151,7 @@ RUN \
       cygwin64-gcc \
       cygwin-w32api-headers \
 && \
-  dnf -q -y --setopt=install_weak_deps=True --setopt=keepcache=True install --no-docs wine \
+  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install wine \
 && \
   mkdir -p /opt && \
   cd /opt && \
@@ -142,9 +171,9 @@ RUN \
          "baseurl=https://cdn.pvs-studio.com/rpm" \
          "gpgcheck=0" \
          "enabled=1" > /etc/yum.repos.d/viva64.repo && \
-  (dnf -q -y --setopt=install_weak_deps=True --setopt=keepcache=True --no-docs install \
+  (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
           pvs-studio) || \
-  (dnf -q -y --setopt=install_weak_deps=True --setopt=keepcache=True --no-docs install \
+  (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
           --nogpgcheck http://192.168.1.187:8088/~jhj/cache/pvs-studio.x86_64.rpm) \
 && \
   printf '%s\n' \
@@ -154,9 +183,9 @@ RUN \
          "gpgcheck=0" \
          "enabled=1" \
          "skip_if_unavailable=True" > /etc/yum.repos.d/viva64-beta.repo && \
-  dnf -q -y --setopt=install_weak_deps=True --setopt=keepcache=True --no-docs upgrade \
+  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True upgrade \
 && \
-  (dnf -q -y --setopt=install_weak_deps=True --setopt=keepcache=True --no-docs install \
+  (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
           --nogpgcheck http://192.168.1.187:8088/~jhj/cache/aocc-compiler.x86_64.rpm) \
 && \
   mkdir -p /tmp/duma-build && \
@@ -169,7 +198,7 @@ RUN \
   rm -rf /tmp/duma-build && \
   ldconfig \
 && \
-  dnf -q -y clean all && \
+  dnf -y clean all && \
   rm -rf ~/.cache && \
   rm -rf /var/tmp/* && \
   rm -rf /var/log/dnf* && \
@@ -189,5 +218,17 @@ RUN \
   touch /.OK
 
 RUN adduser -m -U -G wheel --uid 10000 -c "CI/CD User" user
+
+RUN git clone -v https://github.com/Ericsson/codechecker.git --depth=1 && \
+    cd codechecker && \
+    ( grep 'lxml==4\.9\.2' -rl . | xargs -I{} sed -i 's/lxml==4.9.2/lxml==4.9.3/' "{}" || true ) && \
+    make venv && \
+    . $(pwd)/venv/bin/activate && \
+    pip install setuptools && \
+    env BUILD_LOGGER_64_BIT_ONLY=YES \
+                   BUILD_UI_DIST=NO \
+	make package standalone_package && \
+    export PATH=/codechecker/build/CodeChecker/bin:$PATH && \
+    chown user:user -R /codechecker
 
 USER 10000

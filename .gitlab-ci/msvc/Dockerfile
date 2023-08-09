@@ -6,7 +6,7 @@ FROM registry.gitlab.com/libsir/libsir/base:latest
 
 USER 0
 
-RUN dnf -q -y --refresh --no-docs \
+RUN dnf -y --refresh \
         --setopt=install_weak_deps=True install \
             msitools \
             cabextract \
@@ -36,7 +36,7 @@ RUN curl -fsSL https://raw.githubusercontent.com/Winetricks/winetricks/master/sr
 
 RUN ln -s /opt/msvc /opt/MSVC
 
-RUN dnf -q -y clean all && \
+RUN dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
     rm -rf /var/log/dnf* && \
