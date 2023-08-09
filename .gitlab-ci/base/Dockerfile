@@ -91,6 +91,8 @@ RUN \
 && \
   ( bash -x ./setup_20.x || true ) \
 && \
+  ( rm -f ./setup_* || true ) \
+&& \
   dnf -y --refresh update \
 && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
