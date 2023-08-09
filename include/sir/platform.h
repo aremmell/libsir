@@ -493,6 +493,14 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #  define __HAVE_STDC_EXT2__
 # endif
 
+# if (defined(__TURBOC__) || defined(__BORLANDC__) || \
+     defined(__BCPLUSPLUS__) || defined(__CODEGEARC__))
+#  if !defined(SIR_MSVCRT_MINGW)
+#   define SIR_MSVCRT_MINGW
+#  endif
+#  undef __HAVE_STDC_SECURE_OR_EXT1__
+# endif
+
 # if !defined(__MACOS__)
 #  if defined(__linux__) && _POSIX_C_SOURCE >= 199309L
 #   define SIR_MSECCLOCK CLOCK_REALTIME
