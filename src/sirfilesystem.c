@@ -108,7 +108,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
             }
           }
         }
-#endif
+# endif
         stat_ret = stat(abs_path, st);
         _sir_safefree(&base_path);
     } else {

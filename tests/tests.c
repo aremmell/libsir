@@ -2230,7 +2230,7 @@ uint32_t getrand(uint32_t upper_bound) {
     return (uint32_t)(random(upper_bound));
 #  else
     return (uint32_t)(random() % upper_bound);
-# endif
+#  endif
 # endif
 #else /* __WIN__ */
     uint32_t ctx = 0;
