@@ -94,7 +94,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
                 (abs_path[strnlen(abs_path, SIR_MAXPATH) - 2] != '.') &&
                 (abs_path[strnlen(abs_path, SIR_MAXPATH) - 1] != '\\') &&
                 (abs_path[strnlen(abs_path, SIR_MAXPATH) - 2] != '/'))
-                  break;
+              break;
             if (((abs_path[strnlen(abs_path, SIR_MAXPATH) - 1] == '/') ||
                  (abs_path[strnlen(abs_path, SIR_MAXPATH) - 1] == '\\')) &&
                 ((abs_path[strnlen(abs_path, SIR_MAXPATH) - 2] != '/') ||
