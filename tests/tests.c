@@ -1649,10 +1649,22 @@ bool sirtest_filesystem(void) {
 #else /* __WIN__ */
         {"C:\\Windows", true},
         {"C:\\Program Files", true},
+		{"\\", true},
+		{".\\", true},
+		{"..\\", true},
+		{"..\\\\", true},
+		{"..\\\\\\", true},
 #endif
         {"../../LICENSES/MIT.txt", true},
+        {"../../LICENSES/MIT.txt/", false},
+        {"../../LICENSES/MIT.txt//", false},
+        {"../../LICENSES/MIT.txt/////", false},
         {"../../msvs/libsir.sln", true},
+		{"/", true},
+		{"./", true},
         {"../", true},
+		{"..//", true},
+		{"..///", true},
         {"file.exists", true}
     };
 
@@ -2207,11 +2219,18 @@ bool filter_error(bool pass, uint16_t err) {
 }
 
 uint32_t getrand(uint32_t upper_bound) {
-#if !defined(__WIN__)
+#if !defined(__WIN__) || \
+    (defined(__TURBOC__) || defined(__BORLANDC__) || \
+    defined(__BCPLUSPLUS__) || defined(__CODEGEARC__))
 # if defined(__MACOS__) || defined(__BSD__)
     return arc4random_uniform(upper_bound);
 # else
+#  if (defined(__TURBOC__) || defined(__BORLANDC__) || \
+     defined(__BCPLUSPLUS__) || defined(__CODEGEARC__))
+    return (uint32_t)(random(upper_bound));
+#  else
     return (uint32_t)(random() % upper_bound);
+# endif
 # endif
 #else /* __WIN__ */
     uint32_t ctx = 0;

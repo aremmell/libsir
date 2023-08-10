@@ -341,7 +341,12 @@ bool _sir_getchar(char* input) {
         return false;
 
 #if defined(__WIN__)
+# if (defined(__TURBOC__) || defined(__BORLANDC__) || \
+     defined(__BCPLUSPLUS__) || defined(__CODEGEARC__))
+     *input = (char)getch();
+# else
      *input = (char)_getch();
+# endif
      return true;
 #else /* !__WIN__ */
     struct termios cur = {0}, new = {0};

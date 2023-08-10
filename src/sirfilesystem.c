@@ -27,7 +27,13 @@
 #include "sir/internal.h"
 
 #if defined(__WIN__)
-# pragma comment(lib, "shlwapi.lib")
+# if (defined(__TURBOC__) || defined(__BORLANDC__) || \
+     defined(__BCPLUSPLUS__) || defined(__CODEGEARC__)) && \
+     defined(_WIN64)
+#  pragma comment(lib, "shlwapi.a")
+# else
+#  pragma comment(lib, "shlwapi.lib")
+# endif
 #endif
 
 bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_rel_to rel_to) {
@@ -82,6 +88,27 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         char abs_path[SIR_MAXPATH] = {0};
         (void)snprintf(abs_path, SIR_MAXPATH, "%s\\%s", base_path, path);
 
+# if (defined(__TURBOC__) || defined(__BORLANDC__) || \
+     defined(__BCPLUSPLUS__) || defined(__CODEGEARC__))
+        if (_sir_validstr(abs_path) && strnlen(abs_path, SIR_MAXPATH) > 2) {
+          while(1) {
+            if ((abs_path[strnlen(abs_path, SIR_MAXPATH) - 2] != '/') &&
+                (abs_path[strnlen(abs_path, SIR_MAXPATH) - 2] != '\\') &&
+                (abs_path[strnlen(abs_path, SIR_MAXPATH) - 2] != '.') &&
+                (abs_path[strnlen(abs_path, SIR_MAXPATH) - 1] != '\\') &&
+                (abs_path[strnlen(abs_path, SIR_MAXPATH) - 2] != '/'))
+                  break;
+            if (((abs_path[strnlen(abs_path, SIR_MAXPATH) - 1] == '/') ||
+                 (abs_path[strnlen(abs_path, SIR_MAXPATH) - 1] == '\\')) &&
+                ((abs_path[strnlen(abs_path, SIR_MAXPATH) - 2] != '/') ||
+                 (abs_path[strnlen(abs_path, SIR_MAXPATH) - 2] != '\\'))) {
+              abs_path[strnlen(abs_path, SIR_MAXPATH) - 1] = 0;
+            } else {
+              break;
+            }
+          }
+        }
+#endif
         stat_ret = stat(abs_path, st);
         _sir_safefree(&base_path);
     } else {
