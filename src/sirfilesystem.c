@@ -27,7 +27,7 @@
 #include "sir/internal.h"
 
 #if defined(__WIN__)
-# if defined(__EMBARCADEROC___) && defined(_WIN64)
+# if defined(__EMBARCADEROC__) && defined(_WIN64)
 #  pragma comment(lib, "shlwapi.a")
 # else
 #  pragma comment(lib, "shlwapi.lib")
