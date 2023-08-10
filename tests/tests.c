@@ -1291,10 +1291,10 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
     for (int i = 0; i < runs; i++) {
         /* randomly skip setting process name, identity/category to thoroughly
          * test fallback routines; randomly update the config mid-run. */
-        bool set_procname = getrand_bool((uint32_t)sirtimerelapsed(&timer));
-        bool set_identity = getrand_bool((uint32_t)sirtimerelapsed(&timer));
-        bool set_category = getrand_bool((uint32_t)sirtimerelapsed(&timer));
-        bool do_update    = getrand_bool((uint32_t)sirtimerelapsed(&timer));
+        bool set_procname = getrand_bool(1+(uint32_t)sirtimerelapsed(&timer));
+        bool set_identity = getrand_bool(1+(uint32_t)sirtimerelapsed(&timer));
+        bool set_category = getrand_bool(1+(uint32_t)sirtimerelapsed(&timer));
+        bool do_update    = getrand_bool(1+(uint32_t)sirtimerelapsed(&timer));
 
         printf("\tset_procname: %d, set_identity: %d, set_category: %d, do_update: %d\n",
             set_procname, set_identity, set_category, do_update);
@@ -2219,6 +2219,8 @@ bool filter_error(bool pass, uint16_t err) {
 uint32_t getrand(uint32_t upper_bound) {
 #if !defined(__WIN__) || defined(__EMBARCADEROC__)
 # if defined(__MACOS__) || defined(__BSD__)
+    if (upper_bound < 1)
+        upper_bound = 1;
     return arc4random_uniform(upper_bound);
 # else
 #  if defined(__EMBARCADEROC__)
