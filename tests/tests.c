@@ -2221,7 +2221,7 @@ uint32_t getrand(uint32_t upper_bound) {
 # if defined(__MACOS__) || defined(__BSD__)
     return arc4random_uniform(upper_bound);
 # else
-#  if (defined(__TURBOC__) || defined(__EMBARCADEROC__)
+#  if defined(__EMBARCADEROC__)
     return (uint32_t)(random(upper_bound));
 #  else
     return (uint32_t)(random() % upper_bound);
