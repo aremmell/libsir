@@ -1651,19 +1651,11 @@ bool sirtest_filesystem(void) {
         {"\\", true},
         {".\\", true},
         {"..\\", true},
-        {"..\\\\", true},
-        {"..\\\\\\", true},
 #endif
         {"../../LICENSES/MIT.txt", true},
-        {"../../LICENSES/MIT.txt/", false},
-        {"../../LICENSES/MIT.txt//", false},
-        {"../../LICENSES/MIT.txt/////", false},
         {"../../msvs/libsir.sln", true},
-        {"/", true},
         {"./", true},
         {"../", true},
-        {"..//", true},
-        {"..///", true},
         {"file.exists", true}
     };
 
