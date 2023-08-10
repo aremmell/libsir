@@ -115,10 +115,10 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         stat_ret = stat(path, st);
     }
 #endif
-    if (-1 == stat_ret && ENOENT == errno)
+    if (-1 == stat_ret && ((ENOENT == errno) || (ENOTDIR == errno)))
         st->st_size = SIR_STAT_NONEXISTENT;
 
-    return (-1 != stat_ret || ENOENT == errno) ? true : _sir_handleerr(errno);
+    return (-1 != stat_ret || (ENOENT == errno) || (ENOTDIR == errno)) ? true : _sir_handleerr(errno);
 }
 
 bool _sir_pathexists(const char* path, bool* exists, sir_rel_to rel_to) {

@@ -1614,13 +1614,6 @@ bool sirtest_filesystem(void) {
         bool relative = false;
         bool ret      = _sir_ispathrelative(abs_or_rel_paths[n].path, &relative);
 
-        pass &= ret;
-        if (!ret) {
-            bool unused = print_test_error(false, false);
-            SIR_UNUSED(unused);
-            continue;
-        }
-
         if (relative == abs_or_rel_paths[n].abs) {
             pass = false;
             printf("\t" RED("_sir_ispathrelative('%s') = %s") "\n", abs_or_rel_paths[n].path,
@@ -1628,6 +1621,12 @@ bool sirtest_filesystem(void) {
         } else {
             printf("\t" GREEN("_sir_ispathrelative('%s') = %s") "\n", abs_or_rel_paths[n].path,
                 relative ? "true" : "false");
+        }
+
+        pass &= ret;
+        if (!ret) {
+            bool unused = print_test_error(false, false);
+            SIR_UNUSED(unused);
         }
     }
 
@@ -1649,35 +1648,28 @@ bool sirtest_filesystem(void) {
 #else /* __WIN__ */
         {"C:\\Windows", true},
         {"C:\\Program Files", true},
-		{"\\", true},
-		{".\\", true},
-		{"..\\", true},
-		{"..\\\\", true},
-		{"..\\\\\\", true},
+        {"\\", true},
+        {".\\", true},
+        {"..\\", true},
+        {"..\\\\", true},
+        {"..\\\\\\", true},
 #endif
         {"../../LICENSES/MIT.txt", true},
         {"../../LICENSES/MIT.txt/", false},
         {"../../LICENSES/MIT.txt//", false},
         {"../../LICENSES/MIT.txt/////", false},
         {"../../msvs/libsir.sln", true},
-		{"/", true},
-		{"./", true},
+        {"/", true},
+        {"./", true},
         {"../", true},
-		{"..//", true},
-		{"..///", true},
+        {"..//", true},
+        {"..///", true},
         {"file.exists", true}
     };
 
     for (size_t n = 0; n < _sir_countof(real_or_not); n++) {
         bool exists = false;
         bool ret    = _sir_pathexists(real_or_not[n].path, &exists, SIR_PATH_REL_TO_APP);
-
-        pass &= ret;
-        if (!ret) {
-            bool unused = print_test_error(false, false);
-            SIR_UNUSED(unused);
-            continue;
-        }
 
         if (exists != real_or_not[n].exists) {
             pass = false;
@@ -1686,6 +1678,12 @@ bool sirtest_filesystem(void) {
         } else {
             printf("\t" GREEN("_sir_pathexists('%s') = %s") "\n", real_or_not[n].path,
                 exists ? "true" : "false");
+        }
+
+        pass &= ret;
+        if (!ret) {
+            bool unused = print_test_error(false, false);
+            SIR_UNUSED(unused);
         }
     }
 
