@@ -27,9 +27,7 @@
 #include "sir/internal.h"
 
 #if defined(__WIN__)
-# if (defined(__TURBOC__) || defined(__BORLANDC__) || \
-     defined(__BCPLUSPLUS__) || defined(__CODEGEARC__)) && \
-     defined(_WIN64)
+# if defined(__EMBARCADEROC___) && defined(_WIN64)
 #  pragma comment(lib, "shlwapi.a")
 # else
 #  pragma comment(lib, "shlwapi.lib")
@@ -88,8 +86,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         char abs_path[SIR_MAXPATH] = {0};
         (void)snprintf(abs_path, SIR_MAXPATH, "%s\\%s", base_path, path);
 
-# if (defined(__TURBOC__) || defined(__BORLANDC__) || \
-     defined(__BCPLUSPLUS__) || defined(__CODEGEARC__))
+# if defined(__EMBARCADEROC__)
         if (_sir_validstr(abs_path) && strnlen(abs_path, SIR_MAXPATH) > 2) {
           while(1) {
             if ((abs_path[strnlen(abs_path, SIR_MAXPATH) - 2] != '/') &&

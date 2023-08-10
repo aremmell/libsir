@@ -33,9 +33,7 @@
 #include "sir/mutex.h"
 
 #if defined(__WIN__)
-# if (defined(__TURBOC__) || defined(__BORLANDC__) || \
-     defined(__BCPLUSPLUS__) || defined(__CODEGEARC__)) && \
-     defined(_WIN64)
+# if defined(__EMBARCADEROC__) && defined(_WIN64)
 #  pragma comment(lib, "ws2_32.a")
 # else
 #  pragma comment(lib, "ws2_32.lib")

@@ -2217,14 +2217,11 @@ bool filter_error(bool pass, uint16_t err) {
 }
 
 uint32_t getrand(uint32_t upper_bound) {
-#if !defined(__WIN__) || \
-    (defined(__TURBOC__) || defined(__BORLANDC__) || \
-    defined(__BCPLUSPLUS__) || defined(__CODEGEARC__))
+#if !defined(__WIN__) || defined(__EMBARCADEROC__)
 # if defined(__MACOS__) || defined(__BSD__)
     return arc4random_uniform(upper_bound);
 # else
-#  if (defined(__TURBOC__) || defined(__BORLANDC__) || \
-     defined(__BCPLUSPLUS__) || defined(__CODEGEARC__))
+#  if (defined(__TURBOC__) || defined(__EMBARCADEROC__)
     return (uint32_t)(random(upper_bound));
 #  else
     return (uint32_t)(random() % upper_bound);

@@ -495,11 +495,13 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 # if (defined(__TURBOC__) || defined(__BORLANDC__) || \
      defined(__BCPLUSPLUS__) || defined(__CODEGEARC__))
+#  if !defined(__EMBARCADEROC__)
+#   define __EMBARCADEROC__
+#  endif
 #  if !defined(SIR_MSVCRT_MINGW)
 #   define SIR_MSVCRT_MINGW
 #  endif
 #  undef __HAVE_STDC_SECURE_OR_EXT1__
-#  include <fcntl.h>
 # endif
 
 # if !defined(__MACOS__)

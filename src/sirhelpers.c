@@ -341,8 +341,7 @@ bool _sir_getchar(char* input) {
         return false;
 
 #if defined(__WIN__)
-# if (defined(__TURBOC__) || defined(__BORLANDC__) || \
-     defined(__BCPLUSPLUS__) || defined(__CODEGEARC__))
+# if defined(__EMBARCADEROC__)
      *input = (char)getch();
 # else
      *input = (char)_getch();
