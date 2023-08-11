@@ -87,35 +87,29 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         (void)snprintf(abs_path, SIR_MAXPATH, "%s\\%s", base_path, path);
 
 # if defined(__EMBARCADEROC__)
-        if (_sir_validstr(abs_path) && strnlen(abs_path, SIR_MAXPATH) > 2) {
-          while(1) {
-            if ((abs_path[strnlen(abs_path, SIR_MAXPATH) - 2] != '/') &&
-                (abs_path[strnlen(abs_path, SIR_MAXPATH) - 2] != '\\') &&
-                (abs_path[strnlen(abs_path, SIR_MAXPATH) - 2] != '.') &&
-                (abs_path[strnlen(abs_path, SIR_MAXPATH) - 1] != '\\') &&
-                (abs_path[strnlen(abs_path, SIR_MAXPATH) - 2] != '/'))
-              break;
-            if (((abs_path[strnlen(abs_path, SIR_MAXPATH) - 1] == '/') ||
-                 (abs_path[strnlen(abs_path, SIR_MAXPATH) - 1] == '\\')) &&
-                ((abs_path[strnlen(abs_path, SIR_MAXPATH) - 2] != '/') ||
-                 (abs_path[strnlen(abs_path, SIR_MAXPATH) - 2] != '\\'))) {
-              abs_path[strnlen(abs_path, SIR_MAXPATH) - 1] = 0;
-            } else {
-              break;
-            }
-          }
+        /* Embarcadero does not like paths that end in slashes, nor does it appreciate
+         * paths like './' and '../'; this is a hack until those defects are resolved. */
+        char resolved_path[SIR_MAXPATH] = {0};
+
+        if (!GetFullPathNameA(abs_path, SIR_MAXPATH, resolved_path, NULL)) {
+            _sir_safefree(&base_path);
+            return _sir_handlewin32err(GetLastError());
         }
+
+        PathRemoveBackslashA(resolved_path);
+        (void)_sir_strlcpy(abs_path, resolved_path, SIR_MAXPATH);
 # endif
+
         stat_ret = stat(abs_path, st);
         _sir_safefree(&base_path);
     } else {
         stat_ret = stat(path, st);
     }
 #endif
-    if (-1 == stat_ret && ((ENOENT == errno) || (ENOTDIR == errno)))
+    if (-1 == stat_ret && (ENOENT == errno || ENOTDIR == errno))
         st->st_size = SIR_STAT_NONEXISTENT;
 
-    return (-1 != stat_ret || (ENOENT == errno) || (ENOTDIR == errno)) ? true : _sir_handleerr(errno);
+    return (-1 != stat_ret || ENOENT == errno || ENOTDIR == errno) ? true : _sir_handleerr(errno);
 }
 
 bool _sir_pathexists(const char* path, bool* exists, sir_rel_to rel_to) {
