@@ -305,14 +305,10 @@ test_cppcheck()
       # shellcheck disable=SC2046
       cppcheck --force \
         --enable="warning,performance,portability" \
-        --suppress=shadowArgument \
-        --suppress=shadowVariable \
-        --suppress=shadowFunction \
         --suppress=ConfigurationNotChecked \
         --suppress=unknownMacro \
         --suppress=syntaxError:/usr/include/stdlib.h \
         --suppress=unmatchedSuppression \
-        --suppress=variableScope \
         --suppress=va_list_usedBeforeStarted \
         --suppress="*:/usr/*" \
         --inline-suppr \
