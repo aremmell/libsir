@@ -2211,8 +2211,8 @@ bool filter_error(bool pass, uint16_t err) {
 uint32_t getrand(uint32_t upper_bound) {
 #if !defined(__WIN__) || defined(__EMBARCADEROC__)
 # if defined(__MACOS__) || defined(__BSD__)
-    if (upper_bound < 1)
-        upper_bound = 1;
+    if (upper_bound < 2)
+        upper_bound = 2;
     return arc4random_uniform(upper_bound);
 # else
 #  if defined(__EMBARCADEROC__)
