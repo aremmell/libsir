@@ -341,7 +341,11 @@ bool _sir_getchar(char* input) {
         return false;
 
 #if defined(__WIN__)
+# if defined(__EMBARCADEROC__)
+     *input = (char)getch();
+# else
      *input = (char)_getch();
+# endif
      return true;
 #else /* !__WIN__ */
     struct termios cur = {0}, new = {0};

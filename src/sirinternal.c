@@ -33,7 +33,11 @@
 #include "sir/mutex.h"
 
 #if defined(__WIN__)
-# pragma comment(lib, "ws2_32.lib")
+# if defined(__EMBARCADEROC__) && defined(_WIN64)
+#  pragma comment(lib, "ws2_32.a")
+# else
+#  pragma comment(lib, "ws2_32.lib")
+# endif
 #endif
 
 static sirconfig _sir_cfg      = {0};

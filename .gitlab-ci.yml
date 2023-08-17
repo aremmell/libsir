@@ -1350,3 +1350,93 @@ GCC Analyzer:
   interruptible: true
 
 ############################################################################
+
+Windows/x64 (Embarcadero):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/embarcadero:latest
+  script:
+    - *Configuration
+    - export WINEDEBUG=-all
+    - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc64.exe --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - mkdir -p build/bin
+    - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc64.exe tests/tests.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1
+    - mv tests.exe build/bin/sirtests.exe
+    - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc64.exe example/example.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1
+    - mv example.exe build/bin/sirexample.exe
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - mkdir -p logs
+    - touch build/bin/file.exists
+    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - cat screenlog.0
+    - rm -f screenlog.0
+    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - cat screenlog.0
+    - rm -f screenlog.0
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+      - screenlog.0
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Windows/i686 (Embarcadero):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/embarcadero:latest
+  script:
+    - *Configuration
+    - export WINEDEBUG=-all
+    - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc32x.exe --version
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - mkdir -p build/bin
+    - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc32x.exe tests/tests.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1
+    - mv tests.exe build/bin/sirtests.exe
+    - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc32x.exe example/example.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1
+    - mv example.exe build/bin/sirexample.exe
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - mkdir -p logs
+    - touch build/bin/file.exists
+    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - cat screenlog.0
+    - rm -f screenlog.0
+    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - cat screenlog.0
+    - rm -f screenlog.0
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+      - screenlog.0
+  retry: 2
+  interruptible: true
+
+############################################################################

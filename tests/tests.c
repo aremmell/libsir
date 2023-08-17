@@ -1614,13 +1614,6 @@ bool sirtest_filesystem(void) {
         bool relative = false;
         bool ret      = _sir_ispathrelative(abs_or_rel_paths[n].path, &relative);
 
-        pass &= ret;
-        if (!ret) {
-            bool unused = print_test_error(false, false);
-            SIR_UNUSED(unused);
-            continue;
-        }
-
         if (relative == abs_or_rel_paths[n].abs) {
             pass = false;
             printf("\t" RED("_sir_ispathrelative('%s') = %s") "\n", abs_or_rel_paths[n].path,
@@ -1628,6 +1621,12 @@ bool sirtest_filesystem(void) {
         } else {
             printf("\t" GREEN("_sir_ispathrelative('%s') = %s") "\n", abs_or_rel_paths[n].path,
                 relative ? "true" : "false");
+        }
+
+        pass &= ret;
+        if (!ret) {
+            bool unused = print_test_error(false, false);
+            SIR_UNUSED(unused);
         }
     }
 
@@ -1649,9 +1648,13 @@ bool sirtest_filesystem(void) {
 #else /* __WIN__ */
         {"C:\\Windows", true},
         {"C:\\Program Files", true},
+        {"\\", true},
+        {".\\", true},
+        {"..\\", true},
 #endif
         {"../../LICENSES/MIT.txt", true},
         {"../../msvs/libsir.sln", true},
+        {"./", true},
         {"../", true},
         {"file.exists", true}
     };
@@ -1660,13 +1663,6 @@ bool sirtest_filesystem(void) {
         bool exists = false;
         bool ret    = _sir_pathexists(real_or_not[n].path, &exists, SIR_PATH_REL_TO_APP);
 
-        pass &= ret;
-        if (!ret) {
-            bool unused = print_test_error(false, false);
-            SIR_UNUSED(unused);
-            continue;
-        }
-
         if (exists != real_or_not[n].exists) {
             pass = false;
             printf("\t" RED("_sir_pathexists('%s') = %s") "\n", real_or_not[n].path,
@@ -1674,6 +1670,12 @@ bool sirtest_filesystem(void) {
         } else {
             printf("\t" GREEN("_sir_pathexists('%s') = %s") "\n", real_or_not[n].path,
                 exists ? "true" : "false");
+        }
+
+        pass &= ret;
+        if (!ret) {
+            bool unused = print_test_error(false, false);
+            SIR_UNUSED(unused);
         }
     }
 
@@ -2207,11 +2209,17 @@ bool filter_error(bool pass, uint16_t err) {
 }
 
 uint32_t getrand(uint32_t upper_bound) {
-#if !defined(__WIN__)
+#if !defined(__WIN__) || defined(__EMBARCADEROC__)
 # if defined(__MACOS__) || defined(__BSD__)
+    if (upper_bound < 2)
+        upper_bound = 2;
     return arc4random_uniform(upper_bound);
 # else
+#  if defined(__EMBARCADEROC__)
+    return (uint32_t)(random(upper_bound));
+#  else
     return (uint32_t)(random() % upper_bound);
+#  endif
 # endif
 #else /* __WIN__ */
     uint32_t ctx = 0;

@@ -26,7 +26,11 @@
 #include "sir/errors.h"
 
 #if defined(__WIN__)
-# pragma comment(lib, "shlwapi.lib")
+# if defined(__EMBARCADEROC__) && defined(_WIN64)
+#  pragma comment(lib, "shlwapi.a")
+# else
+#  pragma comment(lib, "shlwapi.lib")
+# endif
 #endif
 
 #if defined(__MACOS__) || defined(__BSD__) || \
