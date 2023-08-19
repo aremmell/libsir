@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['report_5ferror_0',['report_error',['../example_8c.html#a929f3d3b8335f1827cf00af79a26ade7',1,'example.c']]]
+  ['main_0',['main',['../example_8c.html#a840291bc02cba5474a4cb46a9b9566fe',1,'example.c']]]
 ];

@@ -45,7 +45,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">libsir<span id="projectnumber">&#160;2.2.1</span>
+   <div id="projectname">libsir<span id="projectnumber">&#160;2.2.2</span>
    </div>
    <div id="projectbrief">Standard Incident Reporter</div>
   </td>
@@ -150,7 +150,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="comment"> *</span></div>
 <div class="line"><span class="comment"> * Author:    Ryan M. Lederman &lt;lederman@gmail.com&gt;</span></div>
 <div class="line"><span class="comment"> * Copyright: Copyright (c) 2018-2023</span></div>
-<div class="line"><span class="comment"> * Version:   2.2.1</span></div>
+<div class="line"><span class="comment"> * Version:   2.2.2</span></div>
 <div class="line"><span class="comment"> * License:   The MIT License (MIT)</span></div>
 <div class="line"><span class="comment"> *</span></div>
 <div class="line"><span class="comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of</span></div>
@@ -224,7 +224,7 @@ Functions</h2></td></tr>
 <div class="line">    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line">}</div>
 <div class="ttc" id="aansimacros_8h_html"><div class="ttname"><a href="ansimacros_8h.html">ansimacros.h</a></div><div class="ttdoc">ANSI escape sequence macros.</div></div>
-<div class="ttc" id="aansimacros_8h_html_aa2c113dbbb07cf163d87b13d8ba6477b"><div class="ttname"><a href="ansimacros_8h.html#aa2c113dbbb07cf163d87b13d8ba6477b">DGRAY</a></div><div class="ttdeci">#define DGRAY(s)</div><div class="ttdoc">Dark gray foreground text.</div><div class="ttdef"><b>Definition</b> ansimacros.h:116</div></div>
+<div class="ttc" id="aansimacros_8h_html_aa2c113dbbb07cf163d87b13d8ba6477b"><div class="ttname"><a href="ansimacros_8h.html#aa2c113dbbb07cf163d87b13d8ba6477b">DGRAY</a></div><div class="ttdeci">#define DGRAY(s)</div><div class="ttdoc">Dark gray foreground text.</div><div class="ttdef"><b>Definition</b> ansimacros.h:122</div></div>
 <div class="ttc" id="agroup__plugins_html_ga16ed2c82f4bf0b4571c2d79bb946ce2d"><div class="ttname"><a href="group__plugins.html#ga16ed2c82f4bf0b4571c2d79bb946ce2d">sir_plugin_init</a></div><div class="ttdeci">PLUGIN_EXPORT bool sir_plugin_init(void)</div><div class="ttdoc">Called by libsir after the plugin is queried and successfully validated.</div><div class="ttdef"><b>Definition</b> plugin_sample.c:64</div></div>
 <div class="ttc" id="agroup__plugins_html_ga43748071f13fd42b462fab8e3ea9faef"><div class="ttname"><a href="group__plugins.html#ga43748071f13fd42b462fab8e3ea9faef">sir_plugin_cleanup</a></div><div class="ttdeci">PLUGIN_EXPORT bool sir_plugin_cleanup(void)</div><div class="ttdoc">Called by libsir when the plugin is about to be unloaded.</div><div class="ttdef"><b>Definition</b> plugin_sample.c:75</div></div>
 <div class="ttc" id="agroup__plugins_html_ga8bcc79c4667749f5c81e6b1f22db0f1d"><div class="ttname"><a href="group__plugins.html#ga8bcc79c4667749f5c81e6b1f22db0f1d">sir_plugin_write</a></div><div class="ttdeci">PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char *message)</div><div class="ttdoc">Called by libsir when a message is dispatched on any level whose bit was set in the levels bitmask of...</div><div class="ttdef"><b>Definition</b> plugin_sample.c:69</div></div>
@@ -247,7 +247,7 @@ Functions</h2></td></tr>
 <div class="ttc" id="astructsir__plugininfo_html_ada7d4dcf686295a51247716ed20b36be"><div class="ttname"><a href="structsir__plugininfo.html#ada7d4dcf686295a51247716ed20b36be">sir_plugininfo::maj_ver</a></div><div class="ttdeci">uint8_t maj_ver</div><div class="ttdoc">Major version number.</div><div class="ttdef"><b>Definition</b> types.h:286</div></div>
 <div class="ttc" id="astructsir__plugininfo_html_af8690ae21184c15db2a8a93655d3a516"><div class="ttname"><a href="structsir__plugininfo.html#af8690ae21184c15db2a8a93655d3a516">sir_plugininfo::opts</a></div><div class="ttdeci">sir_options opts</div><div class="ttdoc">Formatting options bitmask.</div><div class="ttdef"><b>Definition</b> types.h:290</div></div>
 </div><!-- fragment --><ul>
-<li><code>cd</code> back into the root directory of the repository and run <code>make clean plugins</code>. If everything goes smoothly, your shiny new plugin should now be located in <code>build/lib</code>. If you named your directory 'foo', you shouuld see a <code>plugin_foo.[so/dll]</code>.</li>
+<li><code>cd</code> back into the root directory of the repository and run <code>make clean plugins</code>. If everything goes smoothly, your shiny new plugin should now be located in <code>build/lib</code>. If you named your directory 'foo', you should see a <code>plugin_foo.[so/dll]</code>.</li>
 <li>You can now move the plugin wherever you'd like, and use <a class="el" href="group__publicfuncs.html#ga1a50b52b3ce1af7543b76a219ff01060" title="Loads a plugin module from disk.">sir_loadplugin</a> to load it (after you've called <a class="el" href="group__publicfuncs.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes libsir for use.">sir_init</a>, of course).</li>
 </ul>
 <p>If you encounter any problems, rebuild with <code>env SIR_SELFLOG=1 SIR_DEBUG=1 make clean plugins</code>. This will enable diagnostic output from libsir that should aid in the diagnosis of any issues you encounter. If you're still stuck, <a href="https://github.com/aremmell/libsir/discussions/new?category=q-a">reach out</a> and somebody will assist you within a reasonable amount of time. </p>

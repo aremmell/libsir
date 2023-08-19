@@ -45,7 +45,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">libsir<span id="projectnumber">&#160;2.2.1</span>
+   <div id="projectname">libsir<span id="projectnumber">&#160;2.2.2</span>
    </div>
    <div id="projectbrief">Standard Incident Reporter</div>
   </td>
@@ -173,6 +173,8 @@ Functions</h2></td></tr>
 <tr class="separator:ga8db924f756e0ee2f04ff3e044a10f283"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga54f0e8e0163d0aedf20616451f122017"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tests.html#ga54f0e8e0163d0aedf20616451f122017">sirtest_os_log</a> (void)</td></tr>
 <tr class="separator:ga54f0e8e0163d0aedf20616451f122017"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga81a9057299bf85b258c93fb294156ab7"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tests.html#ga81a9057299bf85b258c93fb294156ab7">sirtest_get_wineversion</a> (void)</td></tr>
+<tr class="separator:ga81a9057299bf85b258c93fb294156ab7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa0b035b71e6a6e6df6b8a7bb95722e2a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tests.html#gaa0b035b71e6a6e6df6b8a7bb95722e2a">sirtest_filesystem</a> (void)</td></tr>
 <tr class="separator:gaa0b035b71e6a6e6df6b8a7bb95722e2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3ad5e95b1114eba573969077ebb40cb5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tests.html#ga3ad5e95b1114eba573969077ebb40cb5">sirtest_squelchspam</a> (void)</td></tr>
@@ -680,6 +682,25 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section note"><dt>Note</dt><dd>macOS only. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the test passed, <code>false</code> otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="ga81a9057299bf85b258c93fb294156ab7" name="ga81a9057299bf85b258c93fb294156ab7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga81a9057299bf85b258c93fb294156ab7">&#9670;&#160;</a></span>sirtest_get_wineversion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char * sirtest_get_wineversion </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>char* <code>version</code> if running under Wine, <code>NULL</code> otherwise. </dd></dl>
 
 </div>
 </div>
