@@ -325,10 +325,10 @@ bool _sir_getchar(char* input);
  */
 static inline
 uint32_t FNV32_1a(const uint8_t* data, size_t len) {
-    uint32_t hash = 2166136261U;
+    uint32_t hash = 2166136261UL;
     for (size_t n = 0; n < len; n++) {
         hash ^= (uint32_t)data[n];
-        hash *= 16777619U;
+        hash *= 16777619UL;
     }
     return hash;
 }
@@ -340,10 +340,10 @@ uint32_t FNV32_1a(const uint8_t* data, size_t len) {
 static inline
 uint64_t FNV64_1a(const char* str)
 {
-    uint64_t hash = 14695981039346656037UL;
+    uint64_t hash = 14695981039346656037ULL;
     for (const char* c = str; *c; c++) {
         hash ^= (uint64_t)(unsigned char)(*c);
-        hash *= 1099511628211UL;
+        hash *= 1099511628211ULL;
     }
     return hash;
 }
