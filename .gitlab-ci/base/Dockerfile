@@ -37,6 +37,8 @@ RUN \
       clang-analyzer \
       clang-tools-extra \
       cmake \
+      compiler-rt \
+      compiler-rt.i686 \
       cppcheck \
       cppcheck-htmlreport \
       cppi \
@@ -52,12 +54,16 @@ RUN \
       git \
       glibc-static \
       global \
+      libasan \
+      libasan.i686 \
       libnsl \
       libnsl2 \
       libnsl2.i686 \
       libnsl.i686 \
       libtirpc \
       libtirpc.i686 \
+      libubsan \
+      libubsan.i686 \
       libxml2-devel \
       libxslt-devel \
       lld \
