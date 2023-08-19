@@ -1995,7 +1995,7 @@ bool sirtest_threadpool(void) {
 #if !defined(__WIN__)
 static void* threadrace_thread(void* arg);
 #else /* __WIN__ */
-static unsigned threadrace_thread(void* arg);
+static unsigned __stdcall threadrace_thread(void* arg);
 #endif
 
 bool sirtest_threadrace(void) {
@@ -2084,7 +2084,7 @@ bool sirtest_threadrace(void) {
 #if !defined(__WIN__)
 static void* threadrace_thread(void* arg) {
 #else /* __WIN__ */
-unsigned threadrace_thread(void* arg) {
+unsigned __stdcall threadrace_thread(void* arg) {
 #endif
     pid_t threadid       = _sir_gettid();
     thread_args* my_args = (thread_args*)arg;
