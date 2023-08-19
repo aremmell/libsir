@@ -32,7 +32,7 @@
 #if !defined(__WIN__)
 static void* thread_pool_proc(void* arg);
 #else
-static unsigned thread_pool_proc(void* arg);
+static unsigned __stdcall thread_pool_proc(void* arg);
 #endif
 
 bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
@@ -156,7 +156,7 @@ bool _sir_threadpool_destroy(sir_threadpool** pool) {
 #if !defined(__WIN__)
 static void* thread_pool_proc(void* arg)
 #else
-static unsigned thread_pool_proc(void* arg)
+static unsigned __stdcall thread_pool_proc(void* arg)
 #endif
 {
     sir_threadpool* pool = (sir_threadpool*)arg;
