@@ -7,8 +7,9 @@ var searchData=
   ['cleanup_4',['cleanup',['../structsir__pluginifacev1.html#a17698cba1d7ed214a11774078526c615',1,'sir_pluginifacev1']]],
   ['color_5',['COLOR',['../ansimacros_8h.html#a1ebf33726fd433028ef8313fcc97fe02',1,'ansimacros.h']]],
   ['cond_6',['cond',['../structsir__threadpool.html#a982e2a7ec6c7715b055df6a4b7f44173',1,'sir_threadpool']]],
-  ['config_2eh_7',['config.h',['../config_8h.html',1,'']]],
-  ['configuration_8',['Configuration',['../md_docs_2sources_2config.html',1,'']]],
-  ['cyan_9',['CYAN',['../ansimacros_8h.html#afee42f2a94b0160102ef13e62e19a216',1,'ansimacros.h']]],
-  ['cyanb_10',['CYANB',['../ansimacros_8h.html#af5cdd3198d4f493478334610ecdc63c5',1,'ansimacros.h']]]
+  ['condition_2eh_7',['condition.h',['../condition_8h.html',1,'']]],
+  ['config_2eh_8',['config.h',['../config_8h.html',1,'']]],
+  ['configuration_9',['Configuration',['../md_docs_2sources_2config.html',1,'']]],
+  ['cyan_10',['CYAN',['../ansimacros_8h.html#afee42f2a94b0160102ef13e62e19a216',1,'ansimacros.h']]],
+  ['cyanb_11',['CYANB',['../ansimacros_8h.html#af5cdd3198d4f493478334610ecdc63c5',1,'ansimacros.h']]]
 ];

@@ -45,7 +45,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">libsir<span id="projectnumber">&#160;2.2.1</span>
+   <div id="projectname">libsir<span id="projectnumber">&#160;2.2.2</span>
    </div>
    <div id="projectbrief">Standard Incident Reporter</div>
   </td>
@@ -114,7 +114,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md__r_e_a_d_m_e"></a> libsir&mdash;a cross-platform, thread-safe logging library</p>
-<p><a href="https://github.com/aremmell/libsir/blob/master/LICENSE"><img src="https://img.shields.io/github/license/aremmell/libsir?color=%2340b900&amp;cacheSeconds=60" alt="License" class="inline"/></a> <a href="https://www.openhub.net/p/libsir/"><img src="https://img.shields.io/badge/openhub-libsir-ok.svg?color=%2340b900&amp;cacheSeconds=60" alt="OpenHub" style="pointer-events: none;" class="inline"/></a></p>
+<p><a href="https://github.com/aremmell/libsir/releases/latest"><img src="https://img.shields.io/github/v/release/aremmell/libsir?color=%2340b900&amp;cacheSeconds=60" alt="Release" class="inline"/></a> <a href="https://github.com/aremmell/libsir/commits/master"><img src="https://img.shields.io/github/commits-since/aremmell/libsir/latest?cacheSeconds=60&amp;color=%2340b900" alt="Commits" class="inline"/></a> <a href="https://github.com/aremmell/libsir/blob/master/LICENSE"><img src="https://img.shields.io/github/license/aremmell/libsir?color=%2340b900&amp;cacheSeconds=60" alt="License" class="inline"/></a> <a href="https://www.openhub.net/p/libsir/"><img src="https://img.shields.io/badge/openhub-libsir-ok.svg?color=%2340b900&amp;cacheSeconds=60" alt="OpenHub" style="pointer-events: none;" class="inline"/></a> <a href="https://scan.coverity.com/projects/aremmell-libsir"><img src="https://img.shields.io/coverity/scan/28843.svg?color=%2340b900&amp;cacheSeconds=60" alt="Coverity" style="pointer-events: none;" class="inline"/></a> <a href="https://coveralls.io/github/aremmell/libsir"><img src="https://img.shields.io/coverallsCoverage/github/aremmell/libsir?color=%2340b900&amp;cacheSeconds=60" alt="Coverage" class="inline"/></a> <a href="https://api.reuse.software/info/github.com/aremmell/libsir"><img src="https://img.shields.io/reuse/compliance/github.com%2Faremmell%2Flibsir?label=REUSE3&amp;color=%2340b900&amp;cacheSeconds=60" alt="REUSE" class="inline"/></a> <a href="https://gitlab.com/libsir/libsir/pipelines/master/latest"><img src="https://gitlab.com/libsir/libsir/badges/master/pipeline.svg?" alt="GitLab" style="pointer-events: none;" class="inline"/></a></p>
 <h1><a class="anchor" id="overview"></a> Overview</h1>
 <ul>
 <li><a class="el" href="index.html#synopsis">Synopsis</a></li>
@@ -153,13 +153,13 @@ libsir visual graph</div></div>
 <th class="markdownTableHeadRight">System   </th><th class="markdownTableHeadLeft">Toolchain    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyRight"><b>Linux</b>&#160;≳2.6.32<br  />
-(glibc&#160;2.18, musl&#160;≳1.2.3, uClibc‑ng&#160;1.0.43, Bionic&#160;19)   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(4.8.4&#160;‑&#160;13.1.1),&#160; <b>Clang</b>&#160;(3.8&#160;‑&#160;16.0.6),&#160; <b>Oracle&#160;Studio&#160;C/C++</b>&#160;(≳12.6),&#160; <b>IBM&#160;Advance&#160;Toolchain</b>&#160;(14&#160;‑&#160;16),&#160; <b>IBM&#160;XL&#160;C/C++</b>&#160;(16.1),&#160; <b>IBM&#160;Open&#160;XL&#160;C/C++</b>&#160;(17.1.1),&#160; <b>NVIDIA&#160;HPC&#160;SDK&#160;C/C++</b>&#160;(23.5),&#160; <b>Arm&#160;HPC&#160;C/C++</b>&#160;(22.1),&#160; <b>AMD&#160;Optimizing&#160;C/C++</b>&#160;(4.0.0),&#160; <b>Intel&#160;oneAPI&#160;DPC++/C++</b>&#160;(2023.1),&#160; <b>Intel&#160;C++&#160;Compiler&#160;Classic</b>&#160;(2021.9),&#160; <b>Android&#160;NDK</b>&#160;(r25c),&#160; <b>Chibicc</b>&#160;(2020.12.6)    </td></tr>
+(glibc&#160;≳2.4, musl&#160;≳1.2.3, uClibc‑ng&#160;1.0.43, Bionic&#160;19)   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(4.8.4&#160;‑&#160;13.2.1),&#160; <b>Clang</b>&#160;(3.8&#160;‑&#160;16.0.6),&#160; <b>Oracle&#160;Studio&#160;C/C++</b>&#160;(≳12.6),&#160; <b>IBM&#160;Advance&#160;Toolchain</b>&#160;(14&#160;‑&#160;16),&#160; <b>IBM&#160;XL&#160;C/C++</b>&#160;(16.1),&#160; <b>IBM&#160;Open&#160;XL&#160;C/C++</b>&#160;(17.1.1),&#160; <b>NVIDIA&#160;HPC&#160;SDK&#160;C/C++</b>&#160;(23.5&#160;‑&#160;23.7),&#160; <b>Arm&#160;HPC&#160;C/C++</b>&#160;(22.1&#160;‑&#160;23.04.1),&#160; <b>AMD&#160;Optimizing&#160;C/C++</b>&#160;(4.0.0),&#160; <b>Intel&#160;oneAPI&#160;DPC++/C++</b>&#160;(2023.1),&#160; <b>Open64</b>&#160;(5,&#160;AMD&#160;4.5.2.1),&#160; <b>Intel&#160;C++&#160;Compiler&#160;Classic</b>&#160;(2021.9),&#160; <b>Android&#160;NDK</b>&#160;(r25c),&#160; <b>Portable&#160;C&#160;Compiler</b>&#160;(1.2.0.DEVEL‑20230730),&#160; <b>Chibicc</b>&#160;(2020.12.6)    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyRight"><b>AIX</b>&#160;7.2   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(8.3&#160;‑&#160;11.3),&#160; <b>IBM&#160;XL&#160;C/C++</b>&#160;(16.1),&#160; <b>IBM&#160;Open&#160;XL&#160;C/C++</b>&#160;(17.1)    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyRight"><b>macOS</b>&#160;≳10.15   </td><td class="markdownTableBodyLeft"><b>Xcode</b>&#160;(11.7&#160;‑&#160;15),&#160; <b>GCC</b>&#160;(10.4&#160;‑&#160;13.1),&#160; <b>Clang</b>&#160;(11.0.3&#160;‑&#160;16.0.6),&#160; <b>Intel&#160;C++&#160;Compiler&#160;Classic</b>&#160;(2021.9)    </td></tr>
+<td class="markdownTableBodyRight"><b>macOS</b>&#160;≳10.15   </td><td class="markdownTableBodyLeft"><b>Xcode</b>&#160;(11.7&#160;‑&#160;15),&#160; <b>GCC</b>&#160;(10.4&#160;‑&#160;13.2.1),&#160; <b>Clang</b>&#160;(11.0.3&#160;‑&#160;16.0.6),&#160; <b>Intel&#160;C++&#160;Compiler&#160;Classic</b>&#160;(2021.9)    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyRight"><b>Windows</b>&#160;≳10, 11   </td><td class="markdownTableBodyLeft"><b>Microsoft&#160;Visual&#160;C/C++</b>&#160;(17.6),&#160; <b>GCC‑MinGW</b>&#160;(12.2.1&#160;‑&#160;13.1.1),&#160; <b>LLVM‑MinGW</b>&#160;(15.0&#160;‑&#160;16.0.6)    </td></tr>
+<td class="markdownTableBodyRight"><b>Windows</b>&#160;≳10, 11   </td><td class="markdownTableBodyLeft"><b>Microsoft&#160;Visual&#160;C/C++</b>&#160;(17.6&#160;‑&#160;17.7.1),&#160; <b>Clang‑CL</b>&#160;(16.0.6),&#160; <b>GCC‑MinGW</b>&#160;(12.2.1&#160;‑&#160;13.2.1),&#160; <b>LLVM‑MinGW</b>&#160;(15.0&#160;‑&#160;16.0.6),&#160; <b>Embarcadero&#160;C++</b>&#160;(7.20&#160;‑&#160;7.60),&#160; <b>OrangeC</b>&#160;(≳6.0.70.93)    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyRight"><b>Cygwin</b>&#160;3.4   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(11.2&#160;‑&#160;11.4)    </td></tr>
 <tr class="markdownTableRowEven">
@@ -171,15 +171,20 @@ libsir visual graph</div></div>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyRight"><b>DragonFly</b>&#160;<b>BSD</b>&#160;6.4   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(8.3&#160;‑&#160;13),&#160; <b>Clang</b>&#160;(10.0.1&#160;‑&#160;16.0.6)    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyRight"><b>Haiku</b>&#160;R1b4   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(11.2),&#160; <b>Clang</b>&#160;(12.0.1)    </td></tr>
+<td class="markdownTableBodyRight"><b>GNU/Hurd</b>   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(9.5&#160;‑&#160;13.2),&#160; <b>Clang</b>&#160;(9.0.1&#160;‑&#160;13.0.1)    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyRight"><b>Solaris</b>&#160;11.4   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(10.3&#160;‑&#160;11.2),&#160; <b>Clang</b>&#160;(6&#160;‑&#160;11),&#160; <b>Oracle&#160;Studio&#160;C/C++</b>&#160;(≳12.6)    </td></tr>
+<td class="markdownTableBodyRight"><b>Haiku</b>&#160;R1b4   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(11.2&#160;‑&#160;13.2),&#160; <b>Clang</b>&#160;(12.0.1)    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyRight"><b>illumos</b>   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(7.5&#160;‑&#160;11.3),&#160; <b>Clang</b>&#160;(15.0.7)    </td></tr>
+<td class="markdownTableBodyRight"><b>Solaris</b>&#160;11.4   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(10.3&#160;‑&#160;11.2),&#160; <b>Clang</b>&#160;(6&#160;‑&#160;11),&#160; <b>Oracle&#160;Studio&#160;C/C++</b>&#160;(≳12.6)    </td></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyRight"><b>illumos</b>   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(7.5&#160;‑&#160;11.3),&#160; <b>Clang</b>&#160;(15.0.7)    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyRight"><b>SerenityOS</b>   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(13.1)   </td></tr>
 </table>
-<p>libsir is known to work on most common (and many uncommon) architectures. It has actually been built and tested on <b>Intel</b> (x86_64, i686), <b>ARM</b> (ARMv6, ARMv7HF, ARMv8‑A), <b>POWER</b> (PowerPC, PPC64, PPC64le), <b>MIPS</b> (MIPS64, MIPS32, 74Kc), <b>z/Architecture</b> (S390X), <b>SuperH</b> (SH‑4A), <b>RISC‑V</b> (RV64), <b>OpenRISC</b> (OR1200), and <b>m68k</b> (68020+). If it doesn't work on your machine, it's probably a bug.</p>
+<ul>
+<li>libsir is known to work on most common (and many uncommon) architectures. It has actually been built and tested on <b>Intel</b> (x86_64, i686, x32), <b>ARM</b> (ARMv6, ARMv7HF, ARMv8‑A), <b>POWER</b> (PowerPC, PPC64, PPC64le), <b>MIPS</b> (MIPS64, MIPS32, 74Kc), <b>SPARC</b> (SPARC64, V8, LEON3), <b>z/Architecture</b> (S390X), <b>SuperH</b> (SH‑4A), <b>RISC‑V</b> (RV64), <b>OpenRISC</b> (OR1200), and <b>m68k</b> (68020+).</li>
+<li>This table only lists toolchains that have actually been tested and is by no means exhaustive&mdash;newer (or older) versions are likely to work without fanfare. In fact, if it <em>doesn't</em> work on your machine, it's probably a bug.</li>
+</ul>
 <h1><a class="anchor" id="an-example"></a> An example</h1>
 <p>Some sample terminal output from libsir demonstrating the default configuration:</p>
 <div class="image">
