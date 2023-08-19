@@ -2,7 +2,14 @@
 
 ## 2.2.2
 
-- In progress
+### August 18, 2023
+
+- Added support for
+  - Embarcadero C++ for Windows
+  - GNU/Hurd
+  - Older glibc versions
+- Updated graphics, fixed typos in Doxygen comments (updated docs)
+- Fixed some MSVC analyzer warnings
 
 ## 2.2.1
 
