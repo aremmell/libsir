@@ -53,6 +53,16 @@
 #  endif
 # endif
 
+# if defined(__has_attribute) && (defined(__clang__) || defined(__GNUC__))
+#  if __has_attribute(no_sanitize)
+#   define SANITIZE_SUPPRESS(str) __attribute__((no_sanitize(str)))
+#  else
+#   define SANITIZE_SUPPRESS(str)
+#  endif
+# else
+#  define SANITIZE_SUPPRESS(str)
+# endif
+
 # if !defined(_WIN32)
 #  if defined(__STDC_NO_ATOMICS__)
 #   undef __HAVE_ATOMIC_H__
