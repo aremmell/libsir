@@ -787,7 +787,7 @@ bool sirtest_textstylesanity(void) {
     printf("\t" WHITEB("--- change mode: 256-color ---") "\n");
     pass &= sir_setcolormode(SIRCM_256);
 
-    for (sir_textcolor fg = 0, bg = 255; fg < 256; fg++, bg--) {
+    for (sir_textcolor fg = 0, bg = 255; (fg < 256 && bg > 0); fg++, bg--) {
         if (fg != bg) {
             pass &= sir_settextstyle(SIRL_DEBUG, SIRTA_NORMAL, fg, bg);
             pass &= sir_debug("this is 256-color mode (fg: %"PRIu32", bg: %"PRIu32")",
