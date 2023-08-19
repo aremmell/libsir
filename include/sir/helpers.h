@@ -337,7 +337,7 @@ uint32_t FNV32_1a(const uint8_t* data, size_t len) {
  * Implementation of the 64-bit FNV-1a OWHF (http://isthe.com/chongo/tech/comp/fnv/)
  * watered down to only handle null-terminated strings.
  */
-# if defined(__clang__) /* only Clang has unsigned-integer-overflow */
+# if defined(__clang__) /* only Clang has unsigned-integer-overflow; GCC BZ#96829 */
 SANITIZE_SUPPRESS("unsigned-integer-overflow")
 # endif
 static inline

@@ -831,6 +831,9 @@ bool sirtest_textstylesanity(void) {
     return print_result_and_return(pass);
 }
 
+# if defined(__clang__) /* only Clang has implicit-conversion; GCC BZ#87454 */
+SANITIZE_SUPPRESS("implicit-conversion")
+#endif
 bool sirtest_optionssanity(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
@@ -926,7 +929,7 @@ bool sirtest_optionssanity(void) {
     }
 
     /* greater than SIRO_NOHDR. */
-    invalid = (0xFFFF0000 & ~SIRO_NOHDR);
+    invalid = (0xFFFF0000 & ~SIRO_NOHDR); /* implicit-conversion */
     pass &= !_sir_validopts(invalid);
     printf(INDENT_ITEM WHITE("greater than SIRO_NOHDR: %08"PRIx32) "\n", invalid);
 
