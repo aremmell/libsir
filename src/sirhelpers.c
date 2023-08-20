@@ -101,7 +101,8 @@ bool _sir_validupdatedata(sir_update_config_data* data) {
         return false;
 
     bool valid = true;
-    if ((data->fields & SIRU_ALL) == 0 || (data->fields & ~SIRU_ALL) != 0)
+    if ((data->fields & SIRU_ALL) == 0 ||
+          (data->fields & ~SIRU_ALL) != 0) /* implicit-conversion */
         valid = false;
 
     if (valid && _sir_bittest(data->fields, SIRU_LEVELS))
@@ -167,7 +168,7 @@ bool _sir_validopts(sir_options opts) {
          _sir_bittest(opts, SIRO_NOPID)            ||
          _sir_bittest(opts, SIRO_NOTID)            ||
          _sir_bittest(opts, SIRO_NOHDR))           &&
-         ((opts & ~(SIRO_MSGONLY | SIRO_NOHDR)) == 0)))
+         ((opts & ~(SIRO_MSGONLY | SIRO_NOHDR)) == 0))) /* implicit-conversion */
          return true;
 
     _sir_selflog("invalid options: %08"PRIx32, opts);

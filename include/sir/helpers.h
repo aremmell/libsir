@@ -346,7 +346,7 @@ uint64_t FNV64_1a(const char* str)
     uint64_t hash = 14695981039346656037ULL;
     for (const char* c = str; *c; c++) {
         hash ^= (uint64_t)(unsigned char)(*c);
-        hash *= 1099511628211ULL;
+        hash *= 1099511628211ULL; /* unsigned-integer-overflow */
     }
     return hash;
 }
