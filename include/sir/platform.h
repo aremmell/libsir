@@ -468,17 +468,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 # endif
 
 # if defined(__WIN__) && defined(__ORANGEC__)
-#  if defined(__ORANGEC_MAJOR__) && defined(__ORANGEC_MINOR__) && defined(__ORANGEC_PATCHLEVEL__)
-#   if __ORANGEC_MAJOR__ <= 6 && __ORANGEC_MINOR__ <= 70 && __ORANGEC_PATCHLEVEL__ <= 92
-#    if !defined(ORANGEC_VERSION_WARNING)
-#     warning OrangeC versions before 6.0.70.93 are unsupported.
-#     define ORANGEC_VERSION_WARNING
-#    endif
-#   endif
-#  endif
-#  if !defined(SIR_MSVCRT_MINGW)
-#   define SIR_MSVCRT_MINGW
-#  endif
+#  include "sir/platform_orangec.h"
 # endif
 
 # if defined(__WIN__) && defined(__STDC_SECURE_LIB__)

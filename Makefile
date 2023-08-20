@@ -234,6 +234,7 @@ install: $(INSTALLSH)
 	$(INSTALLSH) -C -m 644 "include/sir/mutex.h" "$(INSTALLINC)/sir"
 	$(INSTALLSH) -C -m 644 "include/sir/platform.h" "$(INSTALLINC)/sir"
 	$(INSTALLSH) -C -m 644 "include/sir/platform_importc.h" "$(INSTALLINC)/sir"
+	$(INSTALLSH) -C -m 644 "include/sir/platform_orangec.h" "$(INSTALLINC)/sir"
 	$(INSTALLSH) -C -m 644 "include/sir/plugins.h" "$(INSTALLINC)/sir"
 	$(INSTALLSH) -C -m 644 "include/sir/textstyle.h" "$(INSTALLINC)/sir"
 	$(INSTALLSH) -C -m 644 "include/sir/types.h" "$(INSTALLINC)/sir"
