@@ -468,7 +468,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 # endif
 
 # if defined(__WIN__) && defined(__ORANGEC__)
-#  include "sir\platform_orangec.h"
+#  include "platform_orangec.h"
 # endif
 
 # if defined(__WIN__) && defined(__STDC_SECURE_LIB__)
