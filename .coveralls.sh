@@ -32,7 +32,6 @@ test -n "${MAKE:-}" && DO_MAKE="${MAKE:-}"
 # Clean-up
 cleanup_files()
 {
-  rm -f ./coveralls       > /dev/null 2>&1
   rm -f ./coverage-out*.* > /dev/null 2>&1
   rm -f ./coveralls.json  > /dev/null 2>&1
 }
@@ -60,10 +59,6 @@ test_for()
 test_for curl
 test_for gcovr
 test_for git
-
-# Get coveralls tool.
-curl -kfsSL https://coveralls.io/coveralls-linux.tar.gz | tar -xz
-chmod a+x ./coveralls
 
 # Setup compiler.
 CC="ccache gcc"
@@ -506,7 +501,7 @@ gcovr \
 
 # Submit results
 test -n "${NO_COVERALLS:-}" || \
-    ./coveralls coveralls.json -r "${COVERALLS_REPO_TOKEN:?}"
+    coveralls coveralls.json -r "${COVERALLS_REPO_TOKEN:?}"
 
 # Cleanup
 test -n "${NO_CLEANUP:-}" \
