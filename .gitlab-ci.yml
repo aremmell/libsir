@@ -1627,7 +1627,7 @@ Clang Sanitizer (Address 64-bit):
   interruptible: true
 
 ############################################################################
-#
+
 Clang Sanitizer (Address 32-bit):
   stage: lint
   needs:
