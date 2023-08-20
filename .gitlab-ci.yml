@@ -1455,11 +1455,27 @@ Clang UBSan:
     - export UBSAN_OPTIONS="print_stacktrace=1"
     - export UBSAN_FLAGS="-fsanitize=undefined,float-divide-by-zero,unsigned-integer-overflow,implicit-conversion,local-bounds,nullability-arg,nullability-assign,nullability-return"
     - export UBSAN_CFLAGS="${UBSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build32_section[collapsed=true]\r\e[0K\033[0;36mBuild 32-bit ...\033[0m" || true
     - env CC="ccache clang -m32 ${UBSAN_CFLAGS:?}" LDFLAGS="${UBSAN_FLAGS:?} -lubsan" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
+    - |
+      # Test ...
+      echo -e "section_start:`date +%s`:Test32_section[collapsed=true]\r\e[0K\033[0;36mTest 32-bit ...\033[0m" || true
     - ./build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test32_section\r\e[0K" || true
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build64_section[collapsed=true]\r\e[0K\033[0;36mBuild 64-bit ...\033[0m" || true
     - make clean
     - env CC="ccache clang -m64 ${UBSAN_CFLAGS:?}" LDFLAGS="${UBSAN_FLAGS:?} -lubsan" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - echo -e "section_end:`date +%s`:Build64_section\r\e[0K" || true
+    - |
+      # Test ...
+      echo -e "section_start:`date +%s`:Test64_section[collapsed=true]\r\e[0K\033[0;36mTest 64-bit ...\033[0m" || true
     - ./build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test64_section\r\e[0K" || true
   dependencies: []
   artifacts:
     when: always
@@ -1485,11 +1501,16 @@ Clang MSan:
     - *Configuration
     - export MSAN_FLAGS="-fsanitize=memory -fsanitize-memory-track-origins=2"
     - export MSAN_CFLAGS="${MSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
-    - env CC="ccache clang -m32 ${MSAN_CFLAGS:?}" LDFLAGS="${MSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
-    - ./build/bin/sirtests
-    - make clean
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - env CC="ccache clang -m64 ${MSAN_CFLAGS:?}" LDFLAGS="${MSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - ./build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
   artifacts:
     when: always
@@ -1516,11 +1537,27 @@ Clang ASan:
     - export ASAN_OPTIONS="check_initialization_order=1"
     - export ASAN_FLAGS="-fsanitize=address -fsanitize-address-use-after-scope"
     - export ASAN_CFLAGS="${ASAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build32_section[collapsed=true]\r\e[0K\033[0;36mBuild 32-bit ...\033[0m" || true
     - env CC="ccache clang -m32 ${ASAN_CFLAGS:?}" LDFLAGS="${ASAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
+    - |
+      # Test ...
+      echo -e "section_start:`date +%s`:Test32_section[collapsed=true]\r\e[0K\033[0;36mTest 32-bit ...\033[0m" || true
     - ./build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test32_section\r\e[0K" || true
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build64_section[collapsed=true]\r\e[0K\033[0;36mBuild 64-bit ...\033[0m" || true
     - make clean
     - env CC="ccache clang -m64 ${ASAN_CFLAGS:?}" LDFLAGS="${ASAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - echo -e "section_end:`date +%s`:Build64_section\r\e[0K" || true
+    - |
+      # Test ...
+      echo -e "section_start:`date +%s`:Test64_section[collapsed=true]\r\e[0K\033[0;36mTest 64-bit ...\033[0m" || true
     - ./build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test64_section\r\e[0K" || true
   dependencies: []
   artifacts:
     when: always
