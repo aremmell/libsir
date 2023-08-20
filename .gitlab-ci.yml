@@ -1516,10 +1516,10 @@ Clang ASan:
     - export ASAN_OPTIONS="check_initialization_order=1"
     - export ASAN_FLAGS="-fsanitize=address -fsanitize-address-use-after-scope"
     - export ASAN_CFLAGS="${ASAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
-    - env CC="ccache clang -m32 ${ASAN_CFLAGS:?}" LDFLAGS="${ASAN_FLAGS:?} -lasan" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - env CC="ccache clang -m32 ${ASAN_CFLAGS:?}" LDFLAGS="${ASAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
     - ./build/bin/sirtests
     - make clean
-    - env CC="ccache clang -m64 ${ASAN_CFLAGS:?}" LDFLAGS="${ASAN_FLAGS:?} -lasan" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - env CC="ccache clang -m64 ${ASAN_CFLAGS:?}" LDFLAGS="${ASAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
     - ./build/bin/sirtests
   dependencies: []
   artifacts:
