@@ -1441,7 +1441,7 @@ Windows/i686 (Embarcadero):
 
 ############################################################################
 
-Clang UBSan:
+Clang Sanitizer (UBSan):
   stage: lint
   needs:
     - job: Linux/x86_64 (Clang)
@@ -1488,7 +1488,7 @@ Clang UBSan:
 
 ############################################################################
 
-Clang MSan:
+Clang Sanitizer (MSan):
   stage: lint
   needs:
     - job: Linux/x86_64 (Clang)
@@ -1523,7 +1523,7 @@ Clang MSan:
 
 ############################################################################
 
-Clang ASan:
+Clang Sanitizer (ASan):
   stage: lint
   needs:
     - job: Linux/x86_64 (Clang)
