@@ -52,6 +52,9 @@ RUN \
       gcc \
       gcovr \
       git \
+      glibc-devel \
+      glibc-devel.i686 \
+      glibc-headers-x86 \
       glibc-static \
       global \
       libasan \
