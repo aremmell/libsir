@@ -53,13 +53,17 @@
 #  endif
 # endif
 
+# undef HAS_ATTRIBUTE
 # if defined(__has_attribute) && (defined(__clang__) || defined(__GNUC__))
-#  if __has_attribute(no_sanitize)
-#   define SANITIZE_SUPPRESS(str) __attribute__((no_sanitize(str)))
-#  else
-#   define SANITIZE_SUPPRESS(str)
-#  endif
+#  define HAS_ATTRIBUTE(atr) __has_attribute(atr)
 # else
+#  define HAS_ATTRIBUTE(atr) 0
+# endif
+# undef SANITIZE_SUPPRESS
+# if HAS_ATTRIBUTE(no_sanitize)
+#  define SANITIZE_SUPPRESS(str) __attribute__((no_sanitize(str)))
+# endif
+# if !defined(SANITIZE_SUPPRESS)
 #  define SANITIZE_SUPPRESS(str)
 # endif
 

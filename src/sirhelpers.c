@@ -93,9 +93,9 @@ bool _sir_validfd(int fd) {
 }
 
 /** Validates a sir_update_config_data structure. */
-# if defined(__clang__) /* only Clang has implicit-conversion; GCC BZ#87454 */
+#if defined(__clang__) /* only Clang has implicit-conversion; GCC BZ#87454 */
 SANITIZE_SUPPRESS("implicit-conversion")
-# endif
+#endif
 bool _sir_validupdatedata(sir_update_config_data* data) {
     if (!_sir_validptr(data))
         return false;
@@ -154,7 +154,7 @@ bool _sir_validlevel(sir_level level) {
     return _sir_seterror(_SIR_E_LEVELS);
 }
 
-# if defined(__clang__) /* only Clang has implicit-conversion; GCC BZ#87454 */
+#if defined(__clang__) /* only Clang has implicit-conversion; GCC BZ#87454 */
 SANITIZE_SUPPRESS("implicit-conversion")
 #endif
 bool _sir_validopts(sir_options opts) {
