@@ -26,16 +26,16 @@
 #ifndef _SIR_PLATFORM_ORANGEC_H_INCLUDED
 # define _SIR_PLATFORM_ORANGEC_H_INCLUDED
 
-#  if defined(__ORANGEC_MAJOR__) && defined(__ORANGEC_MINOR__) && defined(__ORANGEC_PATCHLEVEL__)
-#   if __ORANGEC_MAJOR__ <= 6 && __ORANGEC_MINOR__ <= 70 && __ORANGEC_PATCHLEVEL__ <= 92
-#    if !defined(ORANGEC_VERSION_WARNING)
-#     warning OrangeC versions before 6.0.70.93 are unsupported.
-#     define ORANGEC_VERSION_WARNING
-#    endif
+# if defined(__ORANGEC_MAJOR__) && defined(__ORANGEC_MINOR__) && defined(__ORANGEC_PATCHLEVEL__)
+#  if __ORANGEC_MAJOR__ <= 6 && __ORANGEC_MINOR__ <= 70 && __ORANGEC_PATCHLEVEL__ <= 92
+#   if !defined(ORANGEC_VERSION_WARNING)
+#    warning OrangeC versions before 6.0.70.93 are unsupported.
+#    define ORANGEC_VERSION_WARNING
 #   endif
 #  endif
-#  if !defined(SIR_MSVCRT_MINGW)
-#   define SIR_MSVCRT_MINGW
-#  endif
+# endif
+# if !defined(SIR_MSVCRT_MINGW)
+#  define SIR_MSVCRT_MINGW
+# endif
 
 #endif /* !_SIR_PLATFORM_ORANGEC_H_INCLUDED */
