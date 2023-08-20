@@ -787,7 +787,7 @@ bool sirtest_textstylesanity(void) {
     printf("\t" WHITEB("--- change mode: 256-color ---") "\n");
     pass &= sir_setcolormode(SIRCM_256);
 
-    for (sir_textcolor fg = 0, bg = 255; fg < 256; fg++, bg--) {
+    for (sir_textcolor fg = 0, bg = 255; (fg < 256 && bg > 0); fg++, bg--) {
         if (fg != bg) {
             pass &= sir_settextstyle(SIRL_DEBUG, SIRTA_NORMAL, fg, bg);
             pass &= sir_debug("this is 256-color mode (fg: %"PRIu32", bg: %"PRIu32")",
@@ -831,6 +831,9 @@ bool sirtest_textstylesanity(void) {
     return print_result_and_return(pass);
 }
 
+#if defined(__clang__) /* only Clang has implicit-conversion; GCC BZ#87454 */
+SANITIZE_SUPPRESS("implicit-conversion")
+#endif
 bool sirtest_optionssanity(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
@@ -926,7 +929,7 @@ bool sirtest_optionssanity(void) {
     }
 
     /* greater than SIRO_NOHDR. */
-    invalid = (0xFFFF0000 & ~SIRO_NOHDR);
+    invalid = (0xFFFF0000 & ~SIRO_NOHDR); /* implicit-conversion */
     pass &= !_sir_validopts(invalid);
     printf(INDENT_ITEM WHITE("greater than SIRO_NOHDR: %08"PRIx32) "\n", invalid);
 

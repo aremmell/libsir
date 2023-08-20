@@ -37,6 +37,7 @@ RUN \
       clang-analyzer \
       clang-tools-extra \
       cmake \
+      compiler-rt \
       cppcheck \
       cppcheck-htmlreport \
       cppi \
@@ -50,14 +51,15 @@ RUN \
       gcc \
       gcovr \
       git \
+      glibc-devel \
+      glibc-headers-x86 \
       glibc-static \
       global \
+      libasan \
       libnsl \
       libnsl2 \
-      libnsl2.i686 \
-      libnsl.i686 \
       libtirpc \
-      libtirpc.i686 \
+      libubsan \
       libxml2-devel \
       libxslt-devel \
       lld \
@@ -82,6 +84,18 @@ RUN \
       vim \
       wget \
       zip \
+&& \
+  dnf4 -y --allowerasing --setopt=install_weak_deps=True --setopt=keepcache=True install \
+      compiler-rt.i686 \
+      glibc-devel.i686 \
+      libasan.i686 \
+      libnsl2.i686 \
+      libnsl.i686 \
+      libtirpc.i686 \
+      libubsan.i686 \
+&& \
+  dnf4 -y --allowerasing reinstall \
+      compiler-rt \
 && \
   ( curl -fsSLO https://rpm.nodesource.com/setup_20.x || true ) \
 && \
@@ -198,6 +212,7 @@ RUN \
   rm -rf /tmp/duma-build && \
   ldconfig \
 && \
+  ( dnf4 -y clean > /dev/null 2>&1 ; dnf4 -y clean all > /dev/null 2>&1 ; true ) || true && \
   dnf -y clean all && \
   rm -rf ~/.cache && \
   rm -rf /var/tmp/* && \

@@ -798,6 +798,50 @@ Windows/x64 (MSVC):
 
 ############################################################################
 
+Windows/i686 (MSVC):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/msvc:latest
+  script:
+    - *Configuration
+    - PATH="/opt/msvc/bin/x86:${PATH:?}" && export PATH
+    - cl.exe 2>&1 | head -3
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - mkdir -p build/bin
+    - cl.exe src/*.c example/example.c -Iinclude /DSIR_NO_PLUGINS=1 /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirexample.exe
+    - cl.exe src/*.c tests/tests.c -Iinclude /DSIR_NO_PLUGINS=1 /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirtests.exe
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - mkdir -p logs
+    - touch build/bin/file.exists
+    - export WINEDEBUG=-all
+    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - cat screenlog.0
+    - rm -f screenlog.0
+    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - cat screenlog.0
+    - rm -f screenlog.0
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+      - screenlog.0
+  retry: 2
+  interruptible: true
+
+############################################################################
+
 Windows/x64 (MinGW-MSVCRT):
   stage: build
   tags:
@@ -1436,6 +1480,185 @@ Windows/i686 (Embarcadero):
       - build/
       - logs/
       - screenlog.0
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Clang Sanitizer (UB, 32-bit):
+  stage: lint
+  needs:
+    - job: Linux/x86_64 (Clang)
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - export UBSAN_OPTIONS="print_stacktrace=1"
+    - export UBSAN_FLAGS="-fsanitize=undefined,float-divide-by-zero,unsigned-integer-overflow,implicit-conversion,local-bounds,nullability-arg,nullability-assign,nullability-return"
+    - export UBSAN_CFLAGS="${UBSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build32_section[collapsed=true]\r\e[0K\033[0;36mBuild 32-bit ...\033[0m" || true
+    - env CC="ccache clang -m32 ${UBSAN_CFLAGS:?}" LDFLAGS="${UBSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
+    - |
+      # Test ...
+      echo -e "section_start:`date +%s`:Test32_section[collapsed=true]\r\e[0K\033[0;36mTest 32-bit ...\033[0m" || true
+    - ./build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test32_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Clang Sanitizer (UB, 64-bit):
+  stage: lint
+  needs:
+    - job: Linux/x86_64 (Clang)
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - export UBSAN_OPTIONS="print_stacktrace=1"
+    - export UBSAN_FLAGS="-fsanitize=undefined,float-divide-by-zero,unsigned-integer-overflow,implicit-conversion,local-bounds,nullability-arg,nullability-assign,nullability-return"
+    - export UBSAN_CFLAGS="${UBSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build64_section[collapsed=true]\r\e[0K\033[0;36mBuild 64-bit ...\033[0m" || true
+    - env CC="ccache clang -m64 ${UBSAN_CFLAGS:?}" LDFLAGS="${UBSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - echo -e "section_end:`date +%s`:Build64_section\r\e[0K" || true
+    - |
+      # Test ...
+      echo -e "section_start:`date +%s`:Test64_section[collapsed=true]\r\e[0K\033[0;36mTest 64-bit ...\033[0m" || true
+    - ./build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test64_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Clang Sanitizer (Memory):
+  stage: lint
+  needs:
+    - job: Linux/x86_64 (Clang)
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - export MSAN_FLAGS="-fsanitize=memory -fsanitize-memory-track-origins=2"
+    - export MSAN_CFLAGS="${MSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env CC="ccache clang -m64 ${MSAN_CFLAGS:?}" LDFLAGS="${MSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - ./build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Clang Sanitizer (Address, 64-bit):
+  stage: lint
+  needs:
+    - job: Linux/x86_64 (Clang)
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - export ASAN_OPTIONS="check_initialization_order=1"
+    - export ASAN_FLAGS="-fsanitize=address -fsanitize-address-use-after-scope"
+    - export ASAN_CFLAGS="${ASAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build64_section[collapsed=true]\r\e[0K\033[0;36mBuild 64-bit ...\033[0m" || true
+    - env CC="ccache clang -m64 ${ASAN_CFLAGS:?}" LDFLAGS="${ASAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - echo -e "section_end:`date +%s`:Build64_section\r\e[0K" || true
+    - |
+      # Test ...
+      echo -e "section_start:`date +%s`:Test64_section[collapsed=true]\r\e[0K\033[0;36mTest 64-bit ...\033[0m" || true
+    - ./build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test64_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Clang Sanitizer (Address, 32-bit):
+  stage: lint
+  needs:
+    - job: Linux/x86_64 (Clang)
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - export ASAN_OPTIONS="check_initialization_order=1"
+    - export ASAN_FLAGS="-fsanitize=address -fsanitize-address-use-after-scope"
+    - export ASAN_CFLAGS="${ASAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build32_section[collapsed=true]\r\e[0K\033[0;36mBuild 32-bit ...\033[0m" || true
+    - env CC="ccache clang -m32 ${ASAN_CFLAGS:?}" LDFLAGS="${ASAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
+    - |
+      # Test ...
+      echo -e "section_start:`date +%s`:Test32_section[collapsed=true]\r\e[0K\033[0;36mTest 32-bit ...\033[0m" || true
+    - ./build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test32_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
   retry: 2
   interruptible: true
 
