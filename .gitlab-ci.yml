@@ -1485,7 +1485,7 @@ Windows/i686 (Embarcadero):
 
 ############################################################################
 
-Clang Sanitizer (UB 32-bit):
+Clang Sanitizer (UB, 32-bit):
   stage: lint
   needs:
     - job: Linux/x86_64 (Clang)
@@ -1521,7 +1521,7 @@ Clang Sanitizer (UB 32-bit):
 
 ############################################################################
 
-Clang Sanitizer (UB 64-bit):
+Clang Sanitizer (UB, 64-bit):
   stage: lint
   needs:
     - job: Linux/x86_64 (Clang)
@@ -1592,7 +1592,7 @@ Clang Sanitizer (Memory):
 
 ############################################################################
 
-Clang Sanitizer (Address 64-bit):
+Clang Sanitizer (Address, 64-bit):
   stage: lint
   needs:
     - job: Linux/x86_64 (Clang)
@@ -1628,7 +1628,7 @@ Clang Sanitizer (Address 64-bit):
 
 ############################################################################
 
-Clang Sanitizer (Address 32-bit):
+Clang Sanitizer (Address, 32-bit):
   stage: lint
   needs:
     - job: Linux/x86_64 (Clang)
