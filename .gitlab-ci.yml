@@ -1440,3 +1440,95 @@ Windows/i686 (Embarcadero):
   interruptible: true
 
 ############################################################################
+
+Clang UBSan:
+  stage: lint
+  needs:
+    - job: Linux/x86_64 (Clang)
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - export UBSAN_OPTIONS="print_stacktrace=1"
+    - export UBSAN_FLAGS="-fsanitize=undefined,float-divide-by-zero,unsigned-integer-overflow,implicit-conversion,local-bounds,nullability-arg,nullability-assign,nullability-return"
+    - export UBSAN_CFLAGS="${UBSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
+    - env CC="ccache clang -m32 ${UBSAN_CFLAGS:?}" LDFLAGS="${UBSAN_FLAGS:?} -lubsan" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - ./build/bin/sirtests
+    - make clean
+    - env CC="ccache clang -m64 ${UBSAN_CFLAGS:?}" LDFLAGS="${UBSAN_FLAGS:?} -lubsan" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - ./build/bin/sirtests
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Clang MSan:
+  stage: lint
+  needs:
+    - job: Linux/x86_64 (Clang)
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - export MSAN_FLAGS="-fsanitize=memory -fsanitize-memory-track-origins=2"
+    - export MSAN_CFLAGS="${MSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
+    - env CC="ccache clang -m32 ${MSAN_CFLAGS:?}" LDFLAGS="${MSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - ./build/bin/sirtests
+    - make clean
+    - env CC="ccache clang -m64 ${MSAN_CFLAGS:?}" LDFLAGS="${MSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - ./build/bin/sirtests
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Clang ASan:
+  stage: lint
+  needs:
+    - job: Linux/x86_64 (Clang)
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - export ASAN_OPTIONS="check_initialization_order=1"
+    - export ASAN_FLAGS="-fsanitize-address -fsanitize-address-use-after-return -fsanitize-address-use-after-scope"
+    - export ASAN_CFLAGS="${ASAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
+    - env CC="ccache clang -m32 ${ASAN_CFLAGS:?}" LDFLAGS="${ASAN_FLAGS:?} -lasan" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - ./build/bin/sirtests
+    - make clean
+    - env CC="ccache clang -m64 ${ASAN_CFLAGS:?}" LDFLAGS="${ASAN_FLAGS:?} -lasan" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - ./build/bin/sirtests
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+############################################################################
