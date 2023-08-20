@@ -91,7 +91,7 @@ There is a `code‑workspace` in the repository. As of right now, the build and 
 
 ### <a id="visual-studio-2022" /> Visual Studio 2022
 
-A very recent addition is an `sln` and some `vcxproj` files in the [msvc](https://github.com/aremmell/libsir/tree/master/msvs) directory. They are confirmed to work correctly on Windows 11 (x64 &amp; Arm64) with Visual Studio 17.6.
+A very recent addition is an `sln` and some `vcxproj` files in the [msvc](https://github.com/aremmell/libsir/tree/master/msvs) directory. They are confirmed to work correctly on Windows 11 (x86, x64, Arm64) with Visual Studio 17.6.
 
 ### <a id="unix-makefile" /> Unix Makefile
 
