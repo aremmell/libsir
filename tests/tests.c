@@ -831,7 +831,8 @@ bool sirtest_textstylesanity(void) {
     return print_result_and_return(pass);
 }
 
-#if defined(__clang__) /* only Clang has implicit-conversion; GCC BZ#87454 */
+#if defined(__clang__) && !defined(__EMBARCADEROC__)
+/* only Clang has implicit-conversion; GCC BZ#87454 */
 SANITIZE_SUPPRESS("implicit-conversion")
 #endif
 bool sirtest_optionssanity(void) {
