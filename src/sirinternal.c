@@ -250,10 +250,10 @@ bool _sir_init_sanity(const sirinit* si) {
 }
 
 static
-bool _sir_updatelevels(const char* name, sir_levels* old, sir_levels* xnew) {
-    if (*old != *xnew) {
-        _sir_selflog("updating %s levels from %04" PRIx16" to %04" PRIx16, name, *old, *xnew);
-        *old = *xnew;
+bool _sir_updatelevels(const char* name, sir_levels* old, sir_levels* lnew) {
+    if (*old != *lnew) {
+        _sir_selflog("updating %s levels from %04" PRIx16" to %04" PRIx16, name, *old, *lnew);
+        *old = *lnew;
     } else {
         _sir_selflog("skipped superfluous update of %s levels: %04" PRIx16, name, *old);
     }
@@ -261,10 +261,10 @@ bool _sir_updatelevels(const char* name, sir_levels* old, sir_levels* xnew) {
 }
 
 static
-bool _sir_updateopts(const char* name, sir_options* old, sir_options* xnew) {
-    if (*old != *xnew) {
-        _sir_selflog("updating %s options from %08" PRIx32" to %08" PRIx32, name, *old, *xnew);
-        *old = *xnew;
+bool _sir_updateopts(const char* name, sir_options* old, sir_options* onew) {
+    if (*old != *onew) {
+        _sir_selflog("updating %s options from %08" PRIx32" to %08" PRIx32, name, *old, *onew);
+        *old = *onew;
     } else {
         _sir_selflog("skipped superfluous update of %s options: %08" PRIx32, name, *old);
     }

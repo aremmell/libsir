@@ -720,7 +720,7 @@ bool sirtest_textstylesanity(void) {
     bool pass = si_init;
 
     printf("\t" WHITEB("--- explicitly invalid ---") "\n");
-    pass &= !sir_settextstyle(SIRL_INFO, (sir_textattr)0xbbb, 800, 920);
+    pass &= !sir_settextstyle(SIRL_INFO, TA_CAST 0xbbb, 800, 920);
     pass &= sir_info("I have set an invalid text style.");
 
     pass &= !sir_settextstyle(SIRL_DEBUG, SIRTA_NORMAL, SIRTC_BLACK, SIRTC_BLACK);

@@ -357,14 +357,14 @@ bool _sir_getchar(char* input) {
 # endif
      return true;
 #else /* !__WIN__ */
-    struct termios cur = {0}, xnew = {0};
+    struct termios cur = {0}, tnew = {0};
     if (0 != tcgetattr(STDIN_FILENO, &cur))
         return _sir_handleerr(errno);
 
-    memcpy(&xnew, &cur, sizeof(struct termios));
-    xnew.c_lflag &= ~(ICANON | ECHO);
+    memcpy(&tnew, &cur, sizeof(struct termios));
+    tnew.c_lflag &= ~(ICANON | ECHO);
 
-    if (0 != tcsetattr(STDIN_FILENO, TCSANOW, &xnew))
+    if (0 != tcsetattr(STDIN_FILENO, TCSANOW, &tnew))
         return _sir_handleerr(errno);
 
     *input = (char)getchar();
