@@ -93,25 +93,7 @@
 #   endif
 #  endif
 #  if defined(__IMPORTC__)
-#   undef __HAVE_ATOMIC_H__
-#   undef __SIZEOF_INT128__
-#   define _BITS_FLOATN_H 1
-#   undef __builtin_bswap16
-#   define __builtin_bswap16
-#   undef __builtin_bswap32
-#   define __builtin_bswap32
-#   undef __builtin_bswap64
-#   define __builtin_bswap64
-#   undef __extension__
-#   define __extension__
-#   undef __asm__
-#   define __asm__ asm
-#   if !defined(__restrict)
-#    define __restrict restrict
-#   endif
-#   if !defined(__inline)
-#    define __inline
-#   endif
+#   include "sir/platform_importc.h"
 #  endif
 #  if !defined(__open_xl__) && defined(__xlC_ver__)
 #   if __xlC_ver__ <= 0x0000000e
@@ -486,17 +468,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 # endif
 
 # if defined(__WIN__) && defined(__ORANGEC__)
-#  if defined(__ORANGEC_MAJOR__) && defined(__ORANGEC_MINOR__) && defined(__ORANGEC_PATCHLEVEL__)
-#   if __ORANGEC_MAJOR__ <= 6 && __ORANGEC_MINOR__ <= 70 && __ORANGEC_PATCHLEVEL__ <= 92
-#    if !defined(ORANGEC_VERSION_WARNING)
-#     warning OrangeC versions before 6.0.70.93 are unsupported.
-#     define ORANGEC_VERSION_WARNING
-#    endif
-#   endif
-#  endif
-#  if !defined(SIR_MSVCRT_MINGW)
-#   define SIR_MSVCRT_MINGW
-#  endif
+#  include "sir/platform_orangec.h"
 # endif
 
 # if defined(__WIN__) && defined(__STDC_SECURE_LIB__)

@@ -1,5 +1,5 @@
 /*
- * version.h
+ * platform-importc.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
@@ -23,33 +23,37 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#ifndef _SIR_VERSION_H_INCLUDED
-# define _SIR_VERSION_H_INCLUDED
+#ifndef _SIR_PLATFORM_IMPORTC_H_INCLUDED
+# define _SIR_PLATFORM_IMPORTC_H_INCLUDED
 
-# include <stdint.h>
+# undef __HAVE_ATOMIC_H__
+# undef __SIZEOF_INT128__
+# define _BITS_FLOATN_H 1
+# undef __builtin_bswap16
+# define __builtin_bswap16
+# undef __builtin_bswap32
+# define __builtin_bswap32
+# undef __builtin_bswap64
+# define __builtin_bswap64
+# undef __builtin___snprintf_chk
+# define __builtin___snprintf_chk
+# undef __builtin___vsnprintf_chk
+# define __builtin___vsnprintf_chk
+# undef __builtin___strlcpy_chk
+# define __builtin___strlcpy_chk
+# undef __builtin___strlcat_chk
+# define __builtin___strlcat_chk
+# undef __builtin_object_size
+# define __builtin_object_size
+# undef __extension__
+# define __extension__
+# undef __asm__
+# define __asm__ asm
+# if !defined(__restrict)
+#  define __restrict restrict
+# endif
+# if !defined(__inline)
+#  define __inline
+# endif
 
-/** The current libsir major version component. */
-# define SIR_VERSION_MAJOR 2
-
-/** The current libsir minor version component. */
-# define SIR_VERSION_MINOR 2
-
-/** The current libsir patch version component. */
-# define SIR_VERSION_PATCH 3
-
-/** 1 if this is a release version of libsir, 0 otherwise. */
-# define SIR_VERSION_IS_RELEASE 0
-
-/** The current libsir version suffix. */
-# define SIR_VERSION_SUFFIX "-dev"
-
-/** The current libsir version as a number. */
-# define SIR_VERSION_HEX ((SIR_VERSION_MAJOR << 16) | \
-                          (SIR_VERSION_MINOR <<  8) | \
-                          (SIR_VERSION_PATCH))
-
-# define _SIR_VER2STR(x) #x
-# define _SIR_MK_VER_STR(maj, min, patch) \
-    _SIR_VER2STR(maj) "." _SIR_VER2STR(min) "." _SIR_VER2STR(patch) SIR_VERSION_SUFFIX
-
-#endif /* !_SIR_VERSION_H_INCLUDED */
+#endif /* !_SIR_PLATFORM_IMPORTC_H_INCLUDED */

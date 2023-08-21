@@ -1,5 +1,5 @@
 /*
- * version.h
+ * platform_orangec.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
@@ -23,33 +23,19 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#ifndef _SIR_VERSION_H_INCLUDED
-# define _SIR_VERSION_H_INCLUDED
+#ifndef _SIR_PLATFORM_ORANGEC_H_INCLUDED
+# define _SIR_PLATFORM_ORANGEC_H_INCLUDED
 
-# include <stdint.h>
+# if defined(__ORANGEC_MAJOR__) && defined(__ORANGEC_MINOR__) && defined(__ORANGEC_PATCHLEVEL__)
+#  if __ORANGEC_MAJOR__ <= 6 && __ORANGEC_MINOR__ <= 70 && __ORANGEC_PATCHLEVEL__ <= 92
+#   if !defined(ORANGEC_VERSION_WARNING)
+#    warning OrangeC versions before 6.0.70.93 are unsupported.
+#    define ORANGEC_VERSION_WARNING
+#   endif
+#  endif
+# endif
+# if !defined(SIR_MSVCRT_MINGW)
+#  define SIR_MSVCRT_MINGW
+# endif
 
-/** The current libsir major version component. */
-# define SIR_VERSION_MAJOR 2
-
-/** The current libsir minor version component. */
-# define SIR_VERSION_MINOR 2
-
-/** The current libsir patch version component. */
-# define SIR_VERSION_PATCH 3
-
-/** 1 if this is a release version of libsir, 0 otherwise. */
-# define SIR_VERSION_IS_RELEASE 0
-
-/** The current libsir version suffix. */
-# define SIR_VERSION_SUFFIX "-dev"
-
-/** The current libsir version as a number. */
-# define SIR_VERSION_HEX ((SIR_VERSION_MAJOR << 16) | \
-                          (SIR_VERSION_MINOR <<  8) | \
-                          (SIR_VERSION_PATCH))
-
-# define _SIR_VER2STR(x) #x
-# define _SIR_MK_VER_STR(maj, min, patch) \
-    _SIR_VER2STR(maj) "." _SIR_VER2STR(min) "." _SIR_VER2STR(patch) SIR_VERSION_SUFFIX
-
-#endif /* !_SIR_VERSION_H_INCLUDED */
+#endif /* !_SIR_PLATFORM_ORANGEC_H_INCLUDED */
