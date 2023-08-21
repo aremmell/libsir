@@ -29,6 +29,7 @@
 # include "sir/platform.h"
 # include "sir/types.h"
 
+__BEGIN_DECLS
 # if defined(__WIN__)
 BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved);
 #  define PLUGIN_EXPORT __declspec(dllexport)
@@ -41,4 +42,5 @@ PLUGIN_EXPORT bool sir_plugin_init(void);
 PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message);
 PLUGIN_EXPORT bool sir_plugin_cleanup(void);
 
+__END_DECLS
 #endif /* !_SIR_PLUGIN_DUMMY_H_INCLUDED */

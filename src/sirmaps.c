@@ -33,14 +33,14 @@
  * values in this array at runtime; only the SIRL_* values are constant.
  */
 sir_level_style_tuple sir_level_to_style_map[SIR_NUMLEVELS] = {
-    {SIRL_EMERG,  {0}, {0}},
-    {SIRL_ALERT,  {0}, {0}},
-    {SIRL_CRIT,   {0}, {0}},
-    {SIRL_ERROR,  {0}, {0}},
-    {SIRL_WARN,   {0}, {0}},
-    {SIRL_NOTICE, {0}, {0}},
-    {SIRL_INFO,   {0}, {0}},
-    {SIRL_DEBUG,  {0}, {0}}
+    {SIRL_EMERG,  {TA_CAST 0}, {0}},
+    {SIRL_ALERT,  {TA_CAST 0}, {0}},
+    {SIRL_CRIT,   {TA_CAST 0}, {0}},
+    {SIRL_ERROR,  {TA_CAST 0}, {0}},
+    {SIRL_WARN,   {TA_CAST 0}, {0}},
+    {SIRL_NOTICE, {TA_CAST 0}, {0}},
+    {SIRL_INFO,   {TA_CAST 0}, {0}},
+    {SIRL_DEBUG,  {TA_CAST 0}, {0}}
 };
 
 /**

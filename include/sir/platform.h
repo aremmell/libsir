@@ -26,6 +26,24 @@
 #ifndef _SIR_PLATFORM_H_INCLUDED
 # define _SIR_PLATFORM_H_INCLUDED
 
+# if defined(__cplusplus)
+#  if defined(restrict)
+#   undef restrict
+#  endif
+#  define restrict __restrict
+#  if defined(__BEGIN_DECLS)
+#   undef __BEGIN_DECLS
+#  endif
+#  define __BEGIN_DECLS extern "C" {
+#  if defined(__END_DECLS)
+#   undef __END_DECLS
+#  endif
+#  define __END_DECLS }
+# else
+#  define __BEGIN_DECLS
+#  define __END_DECLS
+# endif
+
 # if defined(_MSC_VER) && !defined(__clang__)
 #  include <stddef.h>
 #  if defined(_USE_ATTRIBUTES_FOR_SAL)
@@ -72,6 +90,9 @@
 #   undef __HAVE_ATOMIC_H__
 #  else
 #   define __HAVE_ATOMIC_H__
+#  endif
+#  if defined(__circle_lang__)
+#   include "sir/platform_circle.h"
 #  endif
 #  if defined(__GNUC__) && __GNUC__ <= 4
 #   if defined(__GNUC_MINOR__) && __GNUC_MINOR__ <= 8
@@ -254,6 +275,19 @@ _set_thread_local_invalid_parameter_handler(
 #  define CLOCK_CAST (int)
 # else
 #  define CLOCK_CAST
+# endif
+
+# if defined(__cplusplus) || defined(__circle_lang__)
+#  define TA_CAST (sir_textattr)
+# else
+#  define TA_CAST
+# endif
+
+# if !defined(_MSC_VER) && \
+     (defined(__cplusplus) || defined(__circle_lang__))
+#  define PT_CAST (unsigned long*)
+# else
+#  define PT_CAST
 # endif
 
 # if defined(SIR_ASSERT_ENABLED)

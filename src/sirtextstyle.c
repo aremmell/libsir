@@ -133,13 +133,13 @@ bool _sir_formatstyle(sir_colormode mode, const sir_textstyle* style,
     switch (mode) {
         case SIRCM_16:
             /* \x1b[attr;fg;bgm */
-            return 0 < snprintf(buf, SIR_MAXSTYLE, "%s%"PRIu8";%"PRIu8";%"PRIu8"m",
+            return 0 < snprintf(buf, SIR_MAXSTYLE, "%s%" PRIu8";%" PRIu8";%" PRIu8"m",
                 SIR_ESC, (uint8_t)style->attr, (uint8_t)_sir_mkansifgcolor(style->fg),
                 (uint8_t)_sir_mkansibgcolor(style->bg));
         case SIRCM_256: {
             /* \x1b[attr;38;5;fg;48;5;bgm */
             return 0 < snprintf(buf, SIR_MAXSTYLE,
-                "%s%"PRIu8";%"PRIu8";5;%"PRIu8";%"PRIu8";5;%"PRIu8"m", SIR_ESC,
+                "%s%" PRIu8";%" PRIu8";5;%" PRIu8";%" PRIu8";5;%" PRIu8"m", SIR_ESC,
                 (uint8_t)style->attr, (uint8_t)_sir_getansifgcmd(style->fg),
                 (uint8_t)style->fg, (uint8_t)_sir_getansibgcmd(style->bg),
                 (uint8_t)style->bg);
@@ -147,8 +147,8 @@ bool _sir_formatstyle(sir_colormode mode, const sir_textstyle* style,
         case SIRCM_RGB: {
             /* \x1b[attr;38;2;rrr;ggg;bbb;48;2;rrr;ggg;bbbm */
             return 0 < snprintf(buf, SIR_MAXSTYLE,
-                "%s%"PRIu8";%"PRIu8";2;%"PRIu8";%"PRIu8";%"PRIu8";%"PRIu8
-                ";2;%"PRIu8";%"PRIu8";%"PRIu8"m", SIR_ESC, (uint8_t)style->attr,
+                "%s%" PRIu8";%" PRIu8";2;%" PRIu8";%" PRIu8";%" PRIu8";%" PRIu8
+                ";2;%" PRIu8";%" PRIu8";%" PRIu8"m", SIR_ESC, (uint8_t)style->attr,
                 (uint8_t)_sir_getansifgcmd(style->fg), _sir_getredfromcolor(style->fg),
                 _sir_getgreenfromcolor(style->fg), _sir_getbluefromcolor(style->fg),
                 (uint8_t)_sir_getansibgcmd(style->bg), _sir_getredfromcolor(style->bg),
@@ -173,7 +173,7 @@ bool _sir_validtextstyle(sir_colormode mode, const sir_textstyle* style) {
 
     if (SIRTC_DEFAULT != style->fg && SIRTC_DEFAULT != style->bg &&
         style->fg == style->bg) {
-        _sir_selflog("error: fg color %08"PRIx32" and bg color %08"PRIx32
+        _sir_selflog("error: fg color %08" PRIx32" and bg color %08" PRIx32
                      " are identical; text would be invisible", style->fg,
                      style->bg);
         SIR_ASSERT("!invalid text style");
@@ -191,7 +191,7 @@ bool _sir_setcolormode(sir_colormode mode) {
     if (*data->color_mode != mode) {
         sir_colormode old = *data->color_mode;
         *data->color_mode = mode;
-        _sir_selflog("color mode changed from %"PRId32" to %"PRId32, old, mode);
+        _sir_selflog("color mode changed from %" PRId32" to %" PRId32, old, mode);
 
         /* when the color mode changes, it's necessary to regenerate the text styles
          * we're holding. for example in the case of downgrading color modes, the
@@ -199,7 +199,7 @@ bool _sir_setcolormode(sir_colormode mode) {
         if (!_sir_resettextstyles())
             _sir_selflog("error: failed to reset text styles!");
     } else {
-        _sir_selflog("skipped superfluous update of color mode: %"PRId32, mode);
+        _sir_selflog("skipped superfluous update of color mode: %" PRId32, mode);
     }
     _SIR_UNLOCK_SECTION(SIRMI_TEXTSTYLE);
 

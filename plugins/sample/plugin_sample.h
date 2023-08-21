@@ -34,6 +34,7 @@
  * @{
  */
 
+__BEGIN_DECLS
 # if defined(__WIN__)
 /** Windows-only DLL entry point. */
 BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved);
@@ -166,4 +167,5 @@ PLUGIN_EXPORT bool sir_plugin_cleanup(void);
 
 /** @} */
 
+__END_DECLS
 #endif /* !_SIR_PLUGIN_SAMPLE_H_INCLUDED */

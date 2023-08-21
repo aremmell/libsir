@@ -175,7 +175,7 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
         char* heap_msg = NULL;
 
         if (_SIR_E_PLATFORM == sir_errors[_mid].e) {
-            heap_msg = calloc(SIR_MAXERROR, sizeof(char));
+            heap_msg = (char *)calloc(SIR_MAXERROR, sizeof(char));
             if (_sir_validptrnofail(heap_msg)) {
                 (void)snprintf(heap_msg, SIR_MAXERROR, sir_errors[_mid].msg, sir_te.os_error,
                     (_sir_validstrnofail(sir_te.os_errmsg) ? sir_te.os_errmsg : SIR_UNKNOWN));
@@ -205,7 +205,7 @@ void __sir_selflog(const char* func, const char* file, uint32_t line,
     bool success = true;
     char prefix[256];
 
-    int write1 = snprintf(prefix, 256, "%s (%s:%"PRIu32"): ", func, file, line);
+    int write1 = snprintf(prefix, 256, "%s (%s:%" PRIu32"): ", func, file, line);
     success &= write1 > 0;
 
     if (write1 > 0) {

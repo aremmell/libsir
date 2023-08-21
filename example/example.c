@@ -182,6 +182,6 @@ int main(void) {
 int report_error(void) {
     char message[SIR_MAXERROR] = {0};
     uint16_t code              = sir_geterror(message);
-    fprintf(stderr, "libsir error: (%"PRIu16", %s)\n", code, message);
+    fprintf(stderr, "libsir error: (%" PRIu16", %s)\n", code, message);
     return EXIT_FAILURE;
 }

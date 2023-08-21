@@ -59,6 +59,10 @@ static sir_once ts_once    = SIR_ONCE_INIT;
 static sir_once magic_once = SIR_ONCE_INIT;
 
 #if defined(__HAVE_ATOMIC_H__)
+# if defined(__cplusplus)
+#  include <atomic>
+using namespace std;
+# endif
 static atomic_uint_fast32_t _sir_magic;
 #else
 static volatile uint32_t _sir_magic;
@@ -246,23 +250,23 @@ bool _sir_init_sanity(const sirinit* si) {
 }
 
 static
-bool _sir_updatelevels(const char* name, sir_levels* old, sir_levels* new) {
-    if (*old != *new) {
-        _sir_selflog("updating %s levels from %04"PRIx16" to %04"PRIx16, name, *old, *new);
-        *old = *new;
+bool _sir_updatelevels(const char* name, sir_levels* old, sir_levels* xnew) {
+    if (*old != *xnew) {
+        _sir_selflog("updating %s levels from %04" PRIx16" to %04" PRIx16, name, *old, *xnew);
+        *old = *xnew;
     } else {
-        _sir_selflog("skipped superfluous update of %s levels: %04"PRIx16, name, *old);
+        _sir_selflog("skipped superfluous update of %s levels: %04" PRIx16, name, *old);
     }
     return true;
 }
 
 static
-bool _sir_updateopts(const char* name, sir_options* old, sir_options* new) {
-    if (*old != *new) {
-        _sir_selflog("updating %s options from %08"PRIx32" to %08"PRIx32, name, *old, *new);
-        *old = *new;
+bool _sir_updateopts(const char* name, sir_options* old, sir_options* xnew) {
+    if (*old != *xnew) {
+        _sir_selflog("updating %s options from %08" PRIx32" to %08" PRIx32, name, *old, *xnew);
+        *old = *xnew;
     } else {
-        _sir_selflog("skipped superfluous update of %s options: %08"PRIx32, name, *old);
+        _sir_selflog("skipped superfluous update of %s options: %08" PRIx32, name, *old);
     }
     return true;
 }
@@ -629,7 +633,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         /* _sir_selflog("message '%s' does not match last; resetting", buf.message); */
     }
 
-    _cfg = _sir_locksection(SIRMI_CONFIG);
+    _cfg = (sirconfig*)_sir_locksection(SIRMI_CONFIG);
     if (!_cfg)
         return _sir_seterror(_SIR_E_INTERNAL);
 
@@ -709,7 +713,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
 #endif
 
     if (0 == wanted) {
-        _sir_selflog("error: no destinations registered for level %04"PRIx32, level);
+        _sir_selflog("error: no destinations registered for level %04" PRIx32, level);
         return _sir_seterror(_SIR_E_NODEST);
     }
 
@@ -862,7 +866,7 @@ bool _sir_syslog_open(sir_syslog_dest* ctx) {
         return true;
     }
 
-    _sir_selflog("opening log (levels: %04"PRIx16", options: %08"PRIx32")", ctx->levels,
+    _sir_selflog("opening log (levels: %04" PRIx16", options: %08" PRIx32")", ctx->levels,
         ctx->opts);
 
 # if defined(SIR_OS_LOG_ENABLED)
@@ -1024,7 +1028,7 @@ void _sir_syslog_reset(sir_syslog_dest* ctx) {
         uint32_t old       = ctx->_state.mask;
         ctx->_state.mask   = 0;
         ctx->_state.logger = NULL;
-        _sir_selflog("state reset; mask was %08"PRIx32, old);
+        _sir_selflog("state reset; mask was %08" PRIx32, old);
     }
 #else
     SIR_UNUSED(ctx);

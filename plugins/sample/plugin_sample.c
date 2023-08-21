@@ -28,6 +28,7 @@
 #include "sir/helpers.h"
 #include <stdio.h>
 
+__BEGIN_DECLS
 #if defined(__WIN__)
 BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved) {
     SIR_UNUSED(module);
@@ -67,7 +68,7 @@ PLUGIN_EXPORT bool sir_plugin_init(void) {
 }
 
 PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message) {
-    printf("\t" DGRAY("plugin_sample (%s): level: %04"PRIx32", message: %s"),
+    printf("\t" DGRAY("plugin_sample (%s): level: %04" PRIx32", message: %s"),
         __func__, level, message);
     return true;
 }
@@ -76,3 +77,4 @@ PLUGIN_EXPORT bool sir_plugin_cleanup(void) { //-V524
     printf("\t" DGRAY("plugin_sample ('%s')") "\n", __func__);
     return true;
 }
+__END_DECLS

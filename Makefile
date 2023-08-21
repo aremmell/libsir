@@ -27,45 +27,63 @@ LDCONFIG   ?= ldconfig
 PLUGINS     = ./plugins
 PLUGINNAMES = $(subst $(PLUGINS)/,,$(wildcard $(PLUGINS)/*))
 PLUGPREFIX  = plugin_
+SIR_CFLAGS := $(CFLAGS)
+
+# optimization
+OPTFLAGS ?= -O3
 
 # platform specifics
 include sirplatform.mk
 
 # C standard
-SIR_CSTD ?= -std=c11
-SIR_GSTD ?= -std=gnu11
+ifneq ($(CPLUSPLUS),1)
+  SIR_CSTD ?= -std=c11
+  SIR_GSTD ?= -std=gnu11
+else
+  SIR_CSTD ?= -std=c++11
+  SIR_GSTD ?= -std=gnu++11
+endif
 
 # base CFLAGS
 ifneq ($(NO_DEFAULT_CFLAGS),1)
-  CFLAGS += -Wall -Wextra -Wpedantic -Iinclude -fPIC
+  SIR_CFLAGS += -Wall -Wextra -Wpedantic -Iinclude -fPIC
 endif
 
 # debug/non-debug CFLAGS
 ifeq ($(SIR_DEBUG),1)
- DBGFLAG ?= -g3
-  CFLAGS += $(DBGFLAG) -O0 -DDEBUG -U_FORTIFY_SOURCE
+  DBGFLAG ?= -g3
+  ifneq ($(NO_DEFAULT_CFLAGS),1)
+    SIR_CFLAGS += $(DBGFLAG) -O0 -DDEBUG -U_FORTIFY_SOURCE
+  endif
 else
-  CFLAGS += -O3 -DNDEBUG $(FORTIFY_FLAGS)
+  ifneq ($(NO_DEFAULT_CFLAGS),1)
+    SIR_CFLAGS += $(OPTFLAGS) -DNDEBUG $(FORTIFY_FLAGS)
+  endif
+endif
+
+# append to CFLAGS?
+ifneq (,$(findstring -,$(APPEND_CFLAGS)))
+  SIR_CFLAGS += $(APPEND_CFLAGS)
 endif
 
 # enable internal diagnostic logging?
 ifeq ($(SIR_SELFLOG),1)
-  CFLAGS += -DSIR_SELFLOG
+  SIR_CFLAGS += -DSIR_SELFLOG
 endif
 
 # enable assertions?
 ifeq ($(SIR_ASSERT_ENABLED),1)
-  CFLAGS += -DSIR_ASSERT_ENABLED
+  SIR_CFLAGS += -DSIR_ASSERT_ENABLED
 endif
 
 # disable system loggers?
 ifeq ($(SIR_NO_SYSTEM_LOGGERS),1)
-  CFLAGS += -DSIR_NO_SYSTEM_LOGGERS
+  SIR_CFLAGS += -DSIR_NO_SYSTEM_LOGGERS
 endif
 
 # disable plugins?
 ifeq ($(SIR_NO_PLUGINS),1)
-  CFLAGS += -DSIR_NO_PLUGINS
+  SIR_CFLAGS += -DSIR_NO_PLUGINS
 else
   LIBDL  ?= -ldl
   PGOALS  = plugins
@@ -122,19 +140,19 @@ all: $(PGOALS) $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS)
 
 $(OBJ_EXAMPLE): $(EXAMPLE)/$(EXAMPLE).c $(DEPS)
 	@mkdir -p $(@D)
-	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) $(SIR_CSTD) -Iinclude
+	$(CC) $(MMDOPT) $(SIR_CSTD) $(SIR_CFLAGS) -Iinclude -c -o $@ $<
 
 $(OBJ_MCMB): $(UTILS)/$(MCMB)/$(MCMB).c $(DEPS)
 	@mkdir -p $(@D)
-	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) $(SIR_GSTD)
+	$(CC) $(MMDOPT) $(SIR_GSTD) $(SIR_CFLAGS) -c -o $@ $<
 
 $(OBJ_TESTS): $(TESTS)/$(TESTS).c $(DEPS)
 	@mkdir -p $(@D)
-	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) $(SIR_CSTD) -Iinclude
+	$(CC) $(MMDOPT) $(SIR_CSTD) $(SIR_CFLAGS) -Iinclude -c -o $@ $<
 
 $(INTDIR)/%.o: %.c $(DEPS)
 	@mkdir -p $(@D)
-	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) $(SIR_CSTD)
+	$(CC) $(MMDOPT) $(SIR_CSTD) $(SIR_CFLAGS) -c -o $@ $<
 
 .PHONY: shared
 shared: $(OUT_SHARED)
@@ -266,8 +284,9 @@ $(PLUGPREFIX)%: $(OUT_SHARED) $(TUS)
 	@$(MAKE) -q --no-print-directory $(OUT_SHARED) $(TUS) || export REMAKE=1; \
 	test -f $(LIBDIR)/$@$(PLATFORM_DLL_EXT) || export REMAKE=1; \
 	test $${REMAKE:-0} -eq 0 || \
-		{ (set -x; $(CC) $(SIR_SHARED) -o $(LIBDIR)/$@$(PLATFORM_DLL_EXT) $(CFLAGS) \
-		   $(SIR_CSTD) $(wildcard $(subst $(PLUGPREFIX),$(PLUGINS)/,$@)/*.c) \
+		{ (set -x; $(CC) $(SIR_SHARED) -o \
+		   $(LIBDIR)/$@$(PLATFORM_DLL_EXT) $(SIR_CFLAGS) $(SIR_CSTD) \
+		   $(wildcard $(subst $(PLUGPREFIX),$(PLUGINS)/,$@)/*.c) \
 		   $(LDFLAGS_SHARED)) && \
 	printf 'built %s successfully.\n' "$(LIBDIR)/$@$(PLATFORM_DLL_EXT)" 2> /dev/null; }
 endif

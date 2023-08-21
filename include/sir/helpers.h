@@ -49,9 +49,14 @@ uint16_t _sir_geterrcode(uint32_t err) {
 }
 
 /** Evil macro used for _sir_lv wrappers. */
+# if defined(__cplusplus) && defined(__GNUC__) && !defined(__clang_version__)
+#  define VA_ARGS {{0}}
+# else
+#  define VA_ARGS {0}
+# endif
 # define _SIR_L_START(format) \
     bool r = false; \
-    va_list args = {0}; \
+    va_list args = VA_ARGS; \
     va_start(args, format); \
     \
     if (_sir_validptr(format)) { \
@@ -63,7 +68,7 @@ uint16_t _sir_geterrcode(uint32_t err) {
 
 /** Evil macros used to enter/leave locked sections. */
 # define _SIR_LOCK_SECTION(type, name, mid, ret) \
-    type* name = _sir_locksection(mid); \
+    type* name = (type*)_sir_locksection(mid); \
     if (!name) { \
         (void)_sir_seterror(_SIR_E_INTERNAL); \
         return ret; \

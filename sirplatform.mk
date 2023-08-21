@@ -15,7 +15,7 @@ ifneq "$(findstring mingw,$(CC))" ""
 endif
 ifeq ($(MINGW),1)
   ifneq "$(findstring gcc,$(CC))" ""
-    CFLAGS+=-Wno-unknown-pragmas
+    SIR_CFLAGS+=-Wno-unknown-pragmas
   endif
   LIBDL=
   PLATFORM_DLL_EXT=.dll
@@ -62,13 +62,13 @@ ifneq "$(findstring SunOS,$(UNAME_S))" ""
   endif
 endif
 ifeq ($(SUNSYSV),1)
-  CFLAGS+=-DMTMALLOC
+  SIR_CFLAGS+=-DMTMALLOC
   EXTRA_LIBS+=-lmtmalloc
 endif
 
 # Enable MinGW MSVCRT workaround?
 ifeq ($(SIR_MSVCRT_MINGW),1)
-  CFLAGS+=-DSIR_MSVCRT_MINGW
+  SIR_CFLAGS+=-DSIR_MSVCRT_MINGW
 endif
 
 # Oracle Studio C
@@ -77,7 +77,7 @@ ifneq "$(findstring suncc,$(CC))" ""
 endif
 ifeq ($(SUNPRO),1)
   ifneq ($(SUNLINT),1)
-    CFLAGS+=-fcommon
+    SIR_CFLAGS+=-fcommon
   endif
   FORTIFY_FLAGS=-U_FORTIFY_SOURCE
   MMDOPT=-xMMD
@@ -98,10 +98,10 @@ ifneq "$(findstring icc,$(CC))" ""
   endif
 endif
 ifeq ($(INTELC),1)
-  CFLAGS+=-diag-disable=188
-  CFLAGS+=-diag-disable=191
-  CFLAGS+=-diag-disable=10441
-  CFLAGS+=-diag-disable=10148
+  SIR_CFLAGS+=-diag-disable=188
+  SIR_CFLAGS+=-diag-disable=191
+  SIR_CFLAGS+=-diag-disable=10441
+  SIR_CFLAGS+=-diag-disable=10148
   FORTIFY_FLAGS=-U_FORTIFY_SOURCE
 endif
 
@@ -111,9 +111,26 @@ ifneq "$(findstring nvc,$(CC))" ""
 endif
 ifeq ($(NVIDIAC),1)
   DBGFLAG=-g
-  CFLAGS+=--diag_suppress mixed_enum_type
-  CFLAGS+=--diag_suppress cast_to_qualified_type
-  CFLAGS+=--diag_suppress nonstd_ellipsis_only_param
+  SIR_CFLAGS+=--diag_suppress mixed_enum_type
+  SIR_CFLAGS+=--diag_suppress cast_to_qualified_type
+  SIR_CFLAGS+=--diag_suppress nonstd_ellipsis_only_param
+endif
+
+# Circle/C++
+ifneq "$(findstring circle,$(CC))" ""
+  CIRCLECPP?=1
+endif
+ifeq ($(CIRCLECPP),1)
+  DBGFLAG=-g
+  NO_DEFAULT_CFLAGS=1
+  SIR_CSTD=
+  SIR_GSTD=
+  SIR_STDCFLAGS=-Wall -Wformat -Wformat-security -Wsign-conversion
+  ifeq ($(SIR_DEBUG),1)
+    SIR_CFLAGS+=$(DBGFLAG) $(SIR_STDFLAGS) -fPIC -O0 -DDEBUG -Iinclude
+  else
+    SIR_CFLAGS+=$(SIR_STDFLAGS) -DNDEBUG -fPIC $(OPTFLAGS) -Iinclude
+  endif
 endif
 
 # IBM XL C/C++ and GCC for AIX
@@ -132,9 +149,9 @@ endif
 ifeq ($(IBMXLC),1)
   NO_DEFAULT_CFLAGS=1
   ifeq ($(SIR_DEBUG),1)
-    CFLAGS+=$(DBGFLAG) -O0 -DDEBUG -Iinclude -qtls -qthreaded -qinfo=mt -qformat=all
+    SIR_CFLAGS+=$(DBGFLAG) -O0 -DDEBUG -Iinclude -qtls -qthreaded -qinfo=mt -qformat=all
   else
-    CFLAGS+=-DNDEBUG -O3 -Iinclude -qtls -qthreaded -qinfo=mt -qformat=all -qpic=small
+    SIR_CFLAGS+=-DNDEBUG $(OPTFLAGS) -Iinclude -qtls -qthreaded -qinfo=mt -qformat=all -qpic=small
   endif
   SIR_SHARED=-qmkshrobj
   MMDOPT=
@@ -142,8 +159,19 @@ ifeq ($(IBMXLC),1)
 endif
 ifeq ($(AIXTLS),1)
   DBGFLAG=-g
-  CFLAGS+=-ftls-model=initial-exec
+  SIR_CFLAGS+=-ftls-model=initial-exec
 endif
 
 # Default way to link shared library?
 SIR_SHARED?=-shared
+
+# Using a C++ compiler?
+ifneq "$(findstring ++,$(CC))" ""
+  CPLUSPLUS?=1
+  ifneq "$(findstring g++,$(CC))" ""
+    APPEND_CFLAGS:=-Wno-missing-field-initializers -Wno-write-strings
+  endif
+  ifneq "$(findstring clang++,$(CC))" ""
+    APPEND_CFLAGS:=-Wno-missing-field-initializers -Wno-missing-braces -Wno-deprecated -Wno-writable-strings
+  endif
+endif

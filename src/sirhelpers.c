@@ -140,7 +140,7 @@ bool _sir_validlevels(sir_levels levels) {
          ((levels & ~SIRL_ALL) == 0)))
          return true;
 
-    _sir_selflog("invalid levels: %04"PRIx16, levels);
+    _sir_selflog("invalid levels: %04" PRIx16, levels);
     return _sir_seterror(_SIR_E_LEVELS);
 }
 
@@ -151,7 +151,7 @@ bool _sir_validlevel(sir_level level) {
         SIRL_ALERT  == level || SIRL_EMERG == level)
         return true;
 
-    _sir_selflog("invalid level: %04"PRIx32, level);
+    _sir_selflog("invalid level: %04" PRIx32, level);
     return _sir_seterror(_SIR_E_LEVELS);
 }
 
@@ -171,7 +171,7 @@ bool _sir_validopts(sir_options opts) {
          ((opts & ~(SIRO_MSGONLY | SIRO_NOHDR)) == 0))) /* implicit-conversion */
          return true;
 
-    _sir_selflog("invalid options: %08"PRIx32, opts);
+    _sir_selflog("invalid options: %08" PRIx32, opts);
     return _sir_seterror(_SIR_E_OPTIONS);
 }
 
@@ -218,7 +218,7 @@ bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color) {
     } // GCOVR_EXCL_STOP
 
     if (!valid) {
-        _sir_selflog("invalid text color for mode %d %08"PRIx32" (%"PRIu32")",
+        _sir_selflog("invalid text color for mode %d %08" PRIx32" (%" PRIu32")",
             mode, color, color);
         (void)_sir_seterror(_SIR_E_TEXTCOLOR);
     }
@@ -355,14 +355,14 @@ bool _sir_getchar(char* input) {
 # endif
      return true;
 #else /* !__WIN__ */
-    struct termios cur = {0}, new = {0};
+    struct termios cur = {0}, xnew = {0};
     if (0 != tcgetattr(STDIN_FILENO, &cur))
         return _sir_handleerr(errno);
 
-    memcpy(&new, &cur, sizeof(struct termios));
-    new.c_lflag &= ~(ICANON | ECHO);
+    memcpy(&xnew, &cur, sizeof(struct termios));
+    xnew.c_lflag &= ~(ICANON | ECHO);
 
-    if (0 != tcsetattr(STDIN_FILENO, TCSANOW, &new))
+    if (0 != tcsetattr(STDIN_FILENO, TCSANOW, &xnew))
         return _sir_handleerr(errno);
 
     *input = (char)getchar();

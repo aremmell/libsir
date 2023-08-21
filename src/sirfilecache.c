@@ -131,7 +131,7 @@ bool _sirfile_write(sirfile* sf, const char* output) {
         bool rolled   = false;
         char* newpath = NULL;
 
-        _sir_selflog("file (path: '%s', id: %"PRIx32") reached ~%d bytes in size;"
+        _sir_selflog("file (path: '%s', id: %" PRIx32") reached ~%d bytes in size;"
                      " rolling...", sf->path, sf->id, SIR_FROLLSIZE);
 
         _sir_fflush(sf->f);
@@ -349,12 +349,12 @@ bool _sirfile_update(sirfile* sf, sir_update_config_data* data) {
 
     if (_sir_bittest(data->fields, SIRU_LEVELS)) {
         if (sf->levels != *data->levels) {
-            _sir_selflog("updating file (id: %"PRIx32") levels from %04"PRIx16
-                         " to %04"PRIx16, sf->id, sf->levels, *data->levels);
+            _sir_selflog("updating file (id: %" PRIx32") levels from %04" PRIx16
+                         " to %04" PRIx16, sf->id, sf->levels, *data->levels);
             sf->levels = *data->levels;
         } else {
-            _sir_selflog("skipped superfluous update of file (id: %"PRIx32")"
-                         " levels: %04"PRIx16, sf->id, sf->levels);
+            _sir_selflog("skipped superfluous update of file (id: %" PRIx32")"
+                         " levels: %04" PRIx16, sf->id, sf->levels);
         }
 
         return true;
@@ -362,12 +362,12 @@ bool _sirfile_update(sirfile* sf, sir_update_config_data* data) {
 
     if (_sir_bittest(data->fields, SIRU_OPTIONS)) {
         if (sf->opts != *data->opts) {
-            _sir_selflog("updating file (id: %"PRIx32") options from %08"PRIx32
-                         " to %08"PRIx32, sf->id, sf->opts, *data->opts);
+            _sir_selflog("updating file (id: %" PRIx32") options from %08" PRIx32
+                         " to %08" PRIx32, sf->id, sf->opts, *data->opts);
             sf->opts = *data->opts;
         } else {
-            _sir_selflog("skipped superfluous update of file (id: %"PRIx32")"
-                         " options: %08"PRIx32, sf->id, sf->opts);
+            _sir_selflog("skipped superfluous update of file (id: %" PRIx32")"
+                         " options: %08" PRIx32, sf->id, sf->opts);
         }
 
         return true;
@@ -387,14 +387,14 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
 
     sirfile* existing = _sir_fcache_find(sfc, (const void*)path, _sir_fcache_pred_path);
     if (NULL != existing) {
-        _sir_selflog("error: already have file (path: '%s', id: %"PRIx32")",
+        _sir_selflog("error: already have file (path: '%s', id: %" PRIx32")",
             path, existing->id);
         return _sir_seterror(_SIR_E_DUPITEM);
     }
 
     sirfile* sf = _sirfile_create(path, levels, opts);
     if (_sirfile_validate(sf)) {
-        _sir_selflog("adding file (path: '%s', id: %"PRIx32"); count = %zu", //-V522
+        _sir_selflog("adding file (path: '%s', id: %" PRIx32"); count = %zu", //-V522
             sf->path, sf->id, sfc->count + 1);
 
         sfc->files[sfc->count++] = sf;
@@ -426,7 +426,7 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
         SIR_ASSERT(_sirfile_validate(sfc->files[n]));
 
         if (sfc->files[n]->id == id) {
-            _sir_selflog("removing file (path: '%s', id: %"PRIx32"); count = %zu",
+            _sir_selflog("removing file (path: '%s', id: %" PRIx32"); count = %zu",
                 sfc->files[n]->path, sfc->files[n]->id, sfc->count - 1);
 
             _sirfile_destroy(&sfc->files[n]);
@@ -560,8 +560,8 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
         SIR_ASSERT(_sirfile_validate(sfc->files[n]));
 
         if (!_sir_bittest(sfc->files[n]->levels, level)) {
-            _sir_selflog("level %04"PRIx32" not set in level mask (%04"PRIx16
-                         ") for file (path: '%s', id: %"PRIx32"); skipping",
+            _sir_selflog("level %04" PRIx32" not set in level mask (%04" PRIx16
+                         ") for file (path: '%s', id: %" PRIx32"); skipping",
                          level, sfc->files[n]->levels, sfc->files[n]->path,
                          sfc->files[n]->id);
             continue;
@@ -578,7 +578,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
         if (write && _sirfile_write(sfc->files[n], write)) {
             (*dispatched)++;
         } else {
-            _sir_selflog("error: write to file (path: '%s', id: %"PRIx32") failed!",
+            _sir_selflog("error: write to file (path: '%s', id: %" PRIx32") failed!",
                 sfc->files[n]->path, sfc->files[n]->id);
         }
     }

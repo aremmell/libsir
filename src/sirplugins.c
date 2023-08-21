@@ -103,8 +103,8 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
             !plugin->iface.write || !plugin->iface.cleanup) {
             _sir_selflog("error: export(s) not resolved for plugin (path:"
                          " '%s', addr: %p)!", plugin->path, plugin->handle);
-            _sir_selflog("exports (query: %"PRIxPTR", init: %"PRIxPTR", write:"
-                         " %"PRIxPTR", cleanup; %"PRIxPTR")",
+            _sir_selflog("exports (query: %" PRIxPTR", init: %" PRIxPTR", write:"
+                         " %" PRIxPTR", cleanup; %" PRIxPTR")",
                          (uintptr_t)plugin->iface.query, (uintptr_t)plugin->iface.init,
                          (uintptr_t)plugin->iface.write, (uintptr_t)plugin->iface.cleanup);
             _sir_plugin_destroy(&plugin);
@@ -124,7 +124,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         /* verify version. */
         if (!plugin->info.iface_ver || plugin->info.iface_ver > SIR_PLUGIN_VCURRENT) {
             _sir_selflog("error: plugin (path: '%s', addr: %p) has version"
-                         " %"PRIu8"; libsir has %d", plugin->path, plugin->handle,
+                         " %" PRIu8"; libsir has %d", plugin->path, plugin->handle,
                         plugin->info.iface_ver, SIR_PLUGIN_VCURRENT);
             _sir_plugin_destroy(&plugin);
             return _sir_seterror(_SIR_E_PLUGINVER);
@@ -135,14 +135,14 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         /* verify level registration bitmask. */
         if (!_sir_validlevels(plugin->info.levels)) {
             _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid levels"
-                         " %04"PRIx16, plugin->path, plugin->handle, plugin->info.levels);
+                         " %04" PRIx16, plugin->path, plugin->handle, plugin->info.levels);
             data_valid = false;
         }
 
         /* verify formatting options bitmask. */
         if (!_sir_validopts(plugin->info.opts)) {
             _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid opts"
-                         " %08"PRIx32, plugin->path, plugin->handle, plugin->info.opts);
+                         " %08" PRIx32, plugin->path, plugin->handle, plugin->info.opts);
             data_valid = false;
         }
 
@@ -172,10 +172,10 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         plugin->id    = FNV32_1a((const uint8_t*)&plugin->iface, sizeof(sir_pluginiface));
         plugin->valid = true;
 
-        _sir_selflog("successfully validated plugin (path: '%s', id: %08"PRIx32");"
-                     " properties:\n{\n\tversion = %"PRIu8".%"PRIu8".%"PRIu8"\n\t"
-                     "levels = %04"PRIx16"\n\topts = %08"PRIx32"\n\tauthor = '%s'"
-                     "\n\tdesc = '%s'\n\tcaps = %016"PRIx64"\n}", plugin->path,
+        _sir_selflog("successfully validated plugin (path: '%s', id: %08" PRIx32");"
+                     " properties:\n{\n\tversion = %" PRIu8".%" PRIu8".%" PRIu8"\n\t"
+                     "levels = %04" PRIx16"\n\topts = %08" PRIx32"\n\tauthor = '%s'"
+                     "\n\tdesc = '%s'\n\tcaps = %016" PRIx64"\n}", plugin->path,
                      plugin->id, plugin->info.maj_ver, plugin->info.min_ver,
                      plugin->info.bld_ver, plugin->info.levels, plugin->info.opts,
                      _SIR_PRNSTR(plugin->info.author), _SIR_PRNSTR(plugin->info.desc),
@@ -258,7 +258,7 @@ bool _sir_plugin_unload(sir_plugin* plugin) {
 
     plugin->handle = NULL;
     plugin->loaded = false;
-    _sir_selflog("unloaded plugin (path: '%s', id: %08"PRIx32")", plugin->path,
+    _sir_selflog("unloaded plugin (path: '%s', id: %08" PRIx32")", plugin->path,
         plugin->id);
     return true;
 #else
@@ -335,12 +335,12 @@ sirpluginid _sir_plugin_cache_add(sir_plugincache* spc, sir_plugin* plugin) {
 
     sir_plugin* existing = _sir_plugin_cache_find_id(spc, plugin->id);
     if (NULL != existing) {
-        _sir_selflog("error: already have plugin (path: '%s', id %08"PRIx32")",
+        _sir_selflog("error: already have plugin (path: '%s', id %08" PRIx32")",
             existing->path, plugin->id);
         return _sir_seterror(_SIR_E_DUPITEM);
     }
 
-    _sir_selflog("adding plugin (path: %s, id: %08"PRIx32"); count = %zu",
+    _sir_selflog("adding plugin (path: %s, id: %08" PRIx32"); count = %zu",
     plugin->path, plugin->id, spc->count + 1);
     spc->plugins[spc->count++] = plugin;
     return plugin->id;
@@ -388,7 +388,7 @@ bool _sir_plugin_cache_rem(sir_plugincache* spc, sirpluginid id) {
 
     for (size_t n = 0; n < spc->count; n++) {
         if (spc->plugins[n]->id == id) {
-            _sir_selflog("removing plugin (path: '%s', id: %"PRIx32"); count = %zu",
+            _sir_selflog("removing plugin (path: '%s', id: %" PRIx32"); count = %zu",
                 spc->plugins[n]->path, spc->plugins[n]->id, spc->count - 1);
 
             _sir_plugin_destroy(&spc->plugins[n]);
@@ -446,8 +446,8 @@ bool _sir_plugin_cache_dispatch(sir_plugincache* spc, sir_level level, sirbuf* b
 
     for (size_t n = 0; n < spc->count; n++) {
         if (!_sir_bittest(spc->plugins[n]->info.levels, level)) {
-            _sir_selflog("level %04"PRIx32" not set in level mask (%04"PRIx16
-                         ") for plugin (path: '%s', id: %08"PRIx32"); skipping",
+            _sir_selflog("level %04" PRIx32" not set in level mask (%04" PRIx16
+                         ") for plugin (path: '%s', id: %08" PRIx32"); skipping",
                          level, spc->plugins[n]->info.levels, spc->plugins[n]->path,
                          spc->plugins[n]->id);
             continue;
@@ -464,7 +464,7 @@ bool _sir_plugin_cache_dispatch(sir_plugincache* spc, sir_level level, sirbuf* b
         if (write && spc->plugins[n]->iface.write(level, write)) {
             (*dispatched)++;
         } else {
-            _sir_selflog("error: write to plugin (path: '%s', id: %08"PRIx32")"
+            _sir_selflog("error: write to plugin (path: '%s', id: %08" PRIx32")"
                          " failed!", spc->plugins[n]->path, spc->plugins[n]->id);
         }
     }

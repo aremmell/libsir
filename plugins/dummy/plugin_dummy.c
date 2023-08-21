@@ -28,6 +28,7 @@
 #include "sir/ansimacros.h"
 #include "sir/helpers.h"
 
+__BEGIN_DECLS
 #if !defined(PLUGIN_NAME)
 # define PLUGIN_NAME "plugin_dummy"
 #endif
@@ -116,7 +117,7 @@ PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message) {
     SIR_UNUSED(message);
     return false;
 #else
-    printf("\t" DGRAY("" PLUGIN_NAME " (%s): level: %04"PRIx32", message: %s"),
+    printf("\t" DGRAY("" PLUGIN_NAME " (%s): level: %04" PRIx32", message: %s"),
         __func__, level, message);
     return true;
 #endif
@@ -130,3 +131,4 @@ PLUGIN_EXPORT bool sir_plugin_cleanup(void) { //-V524
     return true;
 #endif
 }
+__END_DECLS

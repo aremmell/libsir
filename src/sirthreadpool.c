@@ -39,13 +39,13 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
     if (!pool || !num_threads)
         return false;
 
-    *pool = calloc(1, sizeof(sir_threadpool));
+    *pool = (sir_threadpool*)calloc(1, sizeof(sir_threadpool));
     if (!*pool) {
         _sir_handleerr(errno);
         return false;
     }
 
-    (*pool)->threads = calloc(num_threads, sizeof(sir_thread));
+    (*pool)->threads = PT_CAST calloc(num_threads, sizeof(sir_thread));
     if (!(*pool)->threads) {
         _sir_handleerr(errno);
         _sir_threadpool_destroy(pool);
@@ -183,7 +183,7 @@ static unsigned __stdcall thread_pool_proc(void* arg)
             SIR_ASSERT_UNUSED(unlocked, unlocked);
 
             if (job_popped) {
-                _sir_selflog("picked up job (fn: %"PRIxPTR", data: %p)",
+                _sir_selflog("picked up job (fn: %" PRIxPTR", data: %p)",
                     (uintptr_t)job->fn, job->data);
                 job->fn(job->data);
                 _sir_safefree(&job);
