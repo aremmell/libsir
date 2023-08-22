@@ -1733,9 +1733,9 @@ Linux/x86_64 (G++):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache g++" CFLAGS="-m64" make SIR_SELFLOG=1
+    - env CC="ccache g++ -m64" make SIR_SELFLOG=1
     - make clean
-    - env CC="ccache g++" CFLAGS="-m64" make
+    - env CC="ccache g++ -m64" make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
@@ -1768,9 +1768,9 @@ Linux/i686 (G++):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache g++" CFLAGS="-m32" make SIR_SELFLOG=1
+    - env CC="ccache g++ -m32" make SIR_SELFLOG=1
     - make clean
-    - env CC="ccache g++" CFLAGS="-m32" make
+    - env CC="ccache g++ -m32" make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
@@ -1803,9 +1803,9 @@ Linux/x86_64 (Clang++):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache clang++" CFLAGS="-m64" make SIR_SELFLOG=1
+    - env CC="ccache clang++ -m64" make SIR_SELFLOG=1
     - make clean
-    - env CC="ccache clang++" CFLAGS="-m64" make
+    - env CC="ccache clang++ -m64" make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
@@ -1838,9 +1838,9 @@ Linux/i686 (Clang++):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache clang++" CFLAGS="-m32" make SIR_SELFLOG=1
+    - env CC="ccache clang++ -m32" make SIR_SELFLOG=1
     - make clean
-    - env CC="ccache clang++" CFLAGS="-m32" make
+    - env CC="ccache clang++ -m32" make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
