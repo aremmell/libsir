@@ -2484,7 +2484,7 @@ void print_libsir_version(void) {
 # else
 #  define VER_PREFIX ""
 # endif
-# if defined(__cplusplus)
+# if defined(CPLUSPLUS_MODE)
 #  define VER_CPLUSPLUS " (C++ mode)"
 # else
 #  define VER_CPLUSPLUS ""

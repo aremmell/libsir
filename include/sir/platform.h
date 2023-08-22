@@ -343,7 +343,7 @@ _set_thread_local_invalid_parameter_handler(
 #  include <termios.h>
 #  include <limits.h>
 #  include <libgen.h>
-#  if !defined(__cplusplus)
+#  if !defined(CPLUSPLUS_MODE)
 #   if defined(__HAVE_ATOMIC_H__)
 #    include <stdatomic.h>
 #   endif

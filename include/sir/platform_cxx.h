@@ -27,6 +27,9 @@
 # define _SIR_PLATFORM_CXX_H_INCLUDED
 
 # if defined(__cplusplus)
+#  if !defined(CPLUSPLUS_MODE)
+#   define CPLUSPLUS_MODE 1
+#  endif
 #  if !defined(NEED_TA_CAST)
 #   define NEED_TA_CAST 1
 #  endif
