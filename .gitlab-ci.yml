@@ -388,7 +388,7 @@ Linux/x86_64 (AMD Open64):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC=/opt/x86_open64-4.5.2.1/bin/opencc NO_DEFAULT_CFLAGS=1 SIR_CSTD="-std=gnu9x" CFLAGS="-Iinclude -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers -Wno-strict-aliasing -fno-strict-aliasing -fPIC -O3" make
+    - env CC=/opt/x86_open64-4.5.2.1/bin/opencc NO_DEFAULT_CFLAGS=1 SIR_CSTD="-std=gnu9x" CFLAGS="-Iinclude -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers -Wno-strict-aliasing -fno-strict-aliasing -fPIC -O3" LDFLAGS="-lmcompat" make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
