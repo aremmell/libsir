@@ -80,7 +80,9 @@ PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
     info->levels    = 0xfe23;
     info->opts      = 0x1234abcd;
     info->author    = NULL;
+    SIR_UNUSED(author);
     info->desc      = "";
+    SIR_UNUSED(desc);
 #else
     info->levels    = levels;
     info->opts      = opts;
