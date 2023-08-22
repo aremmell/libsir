@@ -204,6 +204,7 @@ test_extra()
                     -Wmissing-prototypes
                     -Wdouble-promotion
                     -Wconversion
+                    -Wbad-function-cast
                     -Wno-sign-conversion
                     -Wno-string-conversion"
             ${MAKE:-make}

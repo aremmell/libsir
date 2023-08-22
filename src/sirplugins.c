@@ -90,13 +90,13 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         * - switch on version returned to resolve additional exports. this will
         * necessitate additional versioned interface structures as members of the
         * sir_plugin struct, e.g. ifacev1, ifacev2). */
-        plugin->iface.query   = (sir_plugin_queryfn)
+        plugin->iface.query   = (sir_plugin_queryfn)(uintptr_t)
             _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_QUERY);
-        plugin->iface.init    = (sir_plugin_initfn)
+        plugin->iface.init    = (sir_plugin_initfn)(uintptr_t)
             _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_INIT);
-        plugin->iface.write   = (sir_plugin_writefn)
+        plugin->iface.write   = (sir_plugin_writefn)(uintptr_t)
             _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_WRITE);
-        plugin->iface.cleanup = (sir_plugin_cleanupfn)
+        plugin->iface.cleanup = (sir_plugin_cleanupfn)(uintptr_t)
             _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_CLEANUP);
 
         if (!plugin->iface.query || !plugin->iface.init ||

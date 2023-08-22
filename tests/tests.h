@@ -38,6 +38,8 @@
 # include "sir/textstyle.h"
 # include "sir/ansimacros.h"
 
+# include <math.h>
+
 # if !defined(__WIN__) || defined(__ORANGEC__)
 #  if !defined(__ORANGEC__)
 #   include <dirent.h>
