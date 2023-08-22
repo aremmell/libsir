@@ -116,7 +116,7 @@ bool _sir_init(sirinit* si) {
     if (!_sir_init_sanity(si))
         return false;
 
-    _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false);
+    _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false)
 
 #if defined(__HAVE_ATOMIC_H__)
     atomic_store(&_sir_magic, _SIR_MAGIC);
@@ -155,7 +155,7 @@ bool _sir_init(sirinit* si) {
     }
 #endif
 
-    _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
+    _SIR_UNLOCK_SECTION(SIRMI_CONFIG)
 
     return true;
 }
@@ -164,23 +164,23 @@ bool _sir_cleanup(void) {
     if (!_sir_sanity())
         return false;
 
-    _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, false);
+    _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, false)
     bool cleanup   = true;
     bool destroyfc = _sir_fcache_destroy(sfc);
     SIR_ASSERT(destroyfc);
 
-    _SIR_UNLOCK_SECTION(SIRMI_FILECACHE);
+    _SIR_UNLOCK_SECTION(SIRMI_FILECACHE)
     cleanup &= destroyfc;
 
 #if !defined(SIR_NO_PLUGINS)
-    _SIR_LOCK_SECTION(sir_plugincache, spc, SIRMI_PLUGINCACHE, false);
+    _SIR_LOCK_SECTION(sir_plugincache, spc, SIRMI_PLUGINCACHE, false)
     bool destroypc = _sir_plugin_cache_destroy(spc);
     SIR_ASSERT(destroypc);
-    _SIR_UNLOCK_SECTION(SIRMI_PLUGINCACHE);
+    _SIR_UNLOCK_SECTION(SIRMI_PLUGINCACHE)
     cleanup &= destroypc;
 #endif
 
-    _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false);
+    _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false)
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!_sir_syslog_close(&_cfg->si.d_syslog)) {
@@ -203,7 +203,7 @@ bool _sir_cleanup(void) {
 #endif
 
     memset(_cfg, 0, sizeof(sirconfig));
-    _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
+    _SIR_UNLOCK_SECTION(SIRMI_CONFIG)
 
     _sir_selflog("cleanup: %s", (cleanup ? "successful" : "with errors"));
 
@@ -349,13 +349,13 @@ bool _sir_writeinit(sir_update_config_data* data, sirinit_update update) {
     if (!_sir_sanity() || !_sir_validupdatedata(data) || !_sir_validfnptr(update))
         return false;
 
-    _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false);
+    _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false)
 
     bool updated = update(&_cfg->si, data);
     if (!updated)
         _sir_selflog("error: update routine failed!");
 
-    _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
+    _SIR_UNLOCK_SECTION(SIRMI_CONFIG)
     return updated;
 }
 
@@ -524,7 +524,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     (void)_sir_seterror(_SIR_E_NOERROR);
 
-    _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false);
+    _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false)
 
     /* from time to time, update the host name in the config, just in case. */
     time_t now = -1;
@@ -541,7 +541,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     sirconfig cfg;
     memcpy(&cfg, _cfg, sizeof(sirconfig));
-    _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
+    _SIR_UNLOCK_SECTION(SIRMI_CONFIG)
 
     sirbuf buf = {
         {0},
@@ -644,7 +644,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     _cfg->state.last.counter   = cfg.state.last.counter;
     _cfg->state.last.threshold = cfg.state.last.threshold;
 
-    _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
+    _SIR_UNLOCK_SECTION(SIRMI_CONFIG)
 
     if (exit_early)
         return false;
@@ -688,21 +688,21 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
     }
 #endif
 
-    _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, false);
+    _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, false)
     size_t fdispatched = 0;
     size_t fwanted     = 0;
     retval &= _sir_fcache_dispatch(sfc, level, buf, &fdispatched, &fwanted);
-    _SIR_UNLOCK_SECTION(SIRMI_FILECACHE);
+    _SIR_UNLOCK_SECTION(SIRMI_FILECACHE)
 
     dispatched += fdispatched;
     wanted += fwanted;
 
 #if !defined(SIR_NO_PLUGINS)
-    _SIR_LOCK_SECTION(sir_plugincache, spc, SIRMI_PLUGINCACHE, false);
+    _SIR_LOCK_SECTION(sir_plugincache, spc, SIRMI_PLUGINCACHE, false)
     size_t pdispatched = 0;
     size_t pwanted     = 0;
     retval &= _sir_plugin_cache_dispatch(spc, level, buf, &pdispatched, &pwanted);
-    _SIR_UNLOCK_SECTION(SIRMI_PLUGINCACHE);
+    _SIR_UNLOCK_SECTION(SIRMI_PLUGINCACHE)
 
     dispatched += pdispatched;
     wanted += pwanted;

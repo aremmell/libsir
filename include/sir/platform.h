@@ -262,9 +262,11 @@ _set_thread_local_invalid_parameter_handler(
 # else
 #  if defined(SIR_SELFLOG)
 #   define SIR_ASSERT(...) \
-     if (!(__VA_ARGS__)) { \
-         _sir_selflog(BRED("!!! would be asserting: " #__VA_ARGS__ "")); \
-     }
+     do { \
+       if (!(__VA_ARGS__)) { \
+           _sir_selflog(BRED("!!! would be asserting: " #__VA_ARGS__ "")); \
+       } \
+     } while(0)
 #  else
 #   define SIR_ASSERT(...)
 #  endif

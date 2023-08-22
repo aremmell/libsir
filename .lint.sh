@@ -201,6 +201,7 @@ test_extra()
         ' && ${MAKE:-make} clean &&
         env CC="${CCACHE:-env} clang"
             CFLAGS="-Werror
+                    -Wextra-semi-stmt
                     -Wmissing-prototypes
                     -Wdouble-promotion
                     -Wconversion

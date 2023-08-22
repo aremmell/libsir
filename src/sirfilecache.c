@@ -34,13 +34,13 @@ sirfileid _sir_addfile(const char* path, sir_levels levels, sir_options opts) {
     if (!_sir_sanity())
         return 0;
 
-    _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, 0);
+    _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, 0)
 
     _sir_defaultlevels(&levels, sir_file_def_lvls);
     _sir_defaultopts(&opts, sir_file_def_opts);
 
     sirfileid retval = _sir_fcache_add(sfc, path, levels, opts);
-    _SIR_UNLOCK_SECTION(SIRMI_FILECACHE);
+    _SIR_UNLOCK_SECTION(SIRMI_FILECACHE)
 
     return retval;
 }
@@ -51,9 +51,9 @@ bool _sir_updatefile(sirfileid id, sir_update_config_data* data) {
     if (!_sir_sanity() || !_sir_validfileid(id) || !_sir_validupdatedata(data))
         return false;
 
-    _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, false);
+    _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, false)
     bool retval = _sir_fcache_update(sfc, id, data);
-    _SIR_UNLOCK_SECTION(SIRMI_FILECACHE);
+    _SIR_UNLOCK_SECTION(SIRMI_FILECACHE)
 
     return retval;
 }
@@ -64,9 +64,9 @@ bool _sir_remfile(sirfileid id) {
     if (!_sir_sanity() || !_sir_validfileid(id))
         return false;
 
-    _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, false);
+    _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, false)
     bool retval = _sir_fcache_rem(sfc, id);
-    _SIR_UNLOCK_SECTION(SIRMI_FILECACHE);
+    _SIR_UNLOCK_SECTION(SIRMI_FILECACHE)
 
     return retval;
 }

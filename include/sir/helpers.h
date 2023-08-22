@@ -77,7 +77,11 @@ uint16_t _sir_geterrcode(uint32_t err) {
 # define SIR_UNUSED(param) (void)param
 
 /** Combines SIR_ASSERT and SIR_UNUSED, which are frequently used together. */
-# define SIR_ASSERT_UNUSED(assertion, var) SIR_ASSERT(assertion); SIR_UNUSED(var)
+# define SIR_ASSERT_UNUSED(assertion, var) \
+    do { \
+      SIR_ASSERT(assertion); \
+      SIR_UNUSED(var); \
+    } while(0)
 
 /** Returns a printable string even if NULL. */
 # define _SIR_PRNSTR(str) (str ? str : "<null>")
@@ -86,13 +90,12 @@ uint16_t _sir_geterrcode(uint32_t err) {
 # define _SIR_DECLARE_BIN_SEARCH(low, high) \
     size_t _low  = low; \
     size_t _high = high; \
-    size_t _mid  = (_low + _high) / 2;
+    size_t _mid  = ((_low + _high) / 2);
 
 # define _SIR_BEGIN_BIN_SEARCH() do {
 # define _SIR_ITERATE_BIN_SEARCH(comparison) \
     if (_low == _high) \
         break; \
-    \
     if (0 > comparison && (_mid - 1) >= _low) { \
         _high = _mid - 1; \
     } else if ((_mid + 1) <= _high) { \
@@ -100,8 +103,7 @@ uint16_t _sir_geterrcode(uint32_t err) {
     } else { \
         break; \
     } \
-    \
-    _mid = (_low + _high) / 2;
+    _mid = ((_low + _high) / 2);
 # define _SIR_END_BIN_SEARCH() \
     } while (true);
 
