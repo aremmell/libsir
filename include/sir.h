@@ -35,9 +35,7 @@
 # include "sir/version.h"
 # include "sir/types.h"
 
-# if defined(__cplusplus)
-extern "C" {
-# endif
+__BEGIN_DECLS
 
 /**
  * @defgroup public Public Interface
@@ -780,8 +778,6 @@ bool sir_isprerelease(void);
  * @}
  */
 
-# if defined(__cplusplus)
-}
-# endif
+__END_DECLS
 
 #endif /* !_SIR_H_INCLUDED */

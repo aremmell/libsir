@@ -28,9 +28,7 @@
 
 # include "sir/platform.h"
 
-# if defined(__cplusplus)
-extern "C" {
-# endif
+__BEGIN_DECLS
 
 /** Defines how many characters to grow a buffer by which was deemed too small
  * by a system call (w/o information regarding the necessary size). */
@@ -75,8 +73,6 @@ int _sir_aixself(char *buffer, size_t *size);
 int _sir_openbsdself(char* out, int capacity, int* dirname_length);
 # endif
 
-# if defined(__cplusplus)
-}
-# endif
+__END_DECLS
 
 #endif /* !_SIR_FILESYSTEM_H_INCLUDED */

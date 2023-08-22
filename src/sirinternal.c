@@ -59,10 +59,6 @@ static sir_once ts_once    = SIR_ONCE_INIT;
 static sir_once magic_once = SIR_ONCE_INIT;
 
 #if defined(__HAVE_ATOMIC_H__)
-# if defined(__cplusplus)
-#  include <atomic>
-using namespace std;
-# endif
 static atomic_uint_fast32_t _sir_magic;
 #else
 static volatile uint32_t _sir_magic;

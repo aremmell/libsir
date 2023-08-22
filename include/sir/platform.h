@@ -26,23 +26,7 @@
 #ifndef _SIR_PLATFORM_H_INCLUDED
 # define _SIR_PLATFORM_H_INCLUDED
 
-# if defined(__cplusplus)
-#  if defined(restrict)
-#   undef restrict
-#  endif
-#  define restrict __restrict
-#  if defined(__BEGIN_DECLS)
-#   undef __BEGIN_DECLS
-#  endif
-#  define __BEGIN_DECLS extern "C" {
-#  if defined(__END_DECLS)
-#   undef __END_DECLS
-#  endif
-#  define __END_DECLS }
-# else
-#  define __BEGIN_DECLS
-#  define __END_DECLS
-# endif
+# include "sir/platform_cxx.h"
 
 # if defined(_MSC_VER) && !defined(__clang__)
 #  include <stddef.h>
@@ -277,14 +261,13 @@ _set_thread_local_invalid_parameter_handler(
 #  define CLOCK_CAST
 # endif
 
-# if defined(__cplusplus) || defined(__circle_lang__)
+# if defined(NEED_TA_CAST)
 #  define TA_CAST (sir_textattr)
 # else
 #  define TA_CAST
 # endif
 
-# if !defined(_MSC_VER) && \
-     (defined(__cplusplus) || defined(__circle_lang__))
+# if defined(NEED_PT_CAST)
 #  define PT_CAST (unsigned long*)
 # else
 #  define PT_CAST
@@ -360,8 +343,13 @@ _set_thread_local_invalid_parameter_handler(
 #  include <termios.h>
 #  include <limits.h>
 #  include <libgen.h>
-#  if defined(__HAVE_ATOMIC_H__) && !defined(__cplusplus)
-#   include <stdatomic.h>
+#  if !defined(__cplusplus)
+#   if defined(__HAVE_ATOMIC_H__)
+#    include <stdatomic.h>
+#   endif
+#  else
+#   include <atomic>
+using namespace std;
 #  endif
 #  if defined(SIR_SYSLOG_ENABLED)
 #   include <syslog.h>

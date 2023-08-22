@@ -26,6 +26,13 @@
 #ifndef _SIR_PLATFORM_CIRCLE_H_INCLUDED
 # define _SIR_PLATFORM_CIRCLE_H_INCLUDED
 
+# if !defined(NEED_TA_CAST)
+#  define NEED_TA_CAST 1
+# endif
+# if !defined(NEED_PT_CAST)
+#  define NEED_PT_CAST 1
+# endif
+
 /*
  * Avoid stdatomic.h when using GNU libstdc++
  * https://github.com/seanbaxter/circle/issues/183
