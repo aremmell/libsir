@@ -236,7 +236,7 @@ test_gccextra()
       rm -f ./.extra.sh
       env CC="${CCACHE:-env} gcc" \
         "${MAKE:-make}" \
-        -j "${CPUS:-1}" \
+        -j 1 \
         mcmb
       printf '%s' 'true' > ./.extra.sh
       # shellcheck disable=SC2090,SC2086,SC2016
@@ -254,7 +254,7 @@ test_gccextra()
                     -Wformat-nonliteral
                     -Wformat-truncation"
             ${MAKE:-make}
-                -j "${CPUS:-1}" ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
+                -j 1 ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
       printf '%s\n' ' && true' >> ./.extra.sh
       chmod a+x ./.extra.sh
       sh ./.extra.sh

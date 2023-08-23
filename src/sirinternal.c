@@ -1062,13 +1062,13 @@ bool _sir_formattime(time_t now, char* buffer, const char* format) {
         return _sir_seterror(_SIR_E_INVALID);
 
     struct tm timebuf = {0};
-#if defined(__GNUC__) && !defined(__clang__)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__OPEN64__)
 # pragma GCC diagnostic push
 # pragma GCC diagnostic ignored "-Wformat-nonliteral"
 #endif
     size_t fmttime    = strftime(buffer, SIR_MAXTIME, format,
         _sir_localtime(&now, &timebuf));
-#if defined(__GNUC__) && !defined(__clang__)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__OPEN64__)
 # pragma GCC diagnostic pop
 #endif
 
