@@ -1,11 +1,15 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2018-current Ryan M. Lederman
 
+# Use --build-arg URL="..." to override default
+
 FROM registry.gitlab.com/libsir/libsir/base:latest
 
 USER 0
 
 WORKDIR /
+
+ARG URL
 
 RUN dnf -y install \
               pigz \
@@ -19,7 +23,7 @@ RUN dnf -y install \
     ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true) && \
     cd /tmp && mkdir -p circle && cd circle && \
     ( wget -S -v -c -t 0 https://www.circle-lang.org/linux/build_200.tgz || \
-      wget -S -v -c -t 0 http://192.168.1.187:8088/~jhj/cache/build_200.tgz ) && \
+      wget -S -v -c -t 0 ${URL:-http://192.168.1.187:8088/~jhj/cache/build_200.tgz} ) && \
     pigz -dvc build_200.tgz | tar xvf - circle && \
     printf '%s\n' \
       'begin 644 circle200.vcdiff' \
