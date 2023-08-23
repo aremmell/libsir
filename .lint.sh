@@ -203,6 +203,7 @@ test_extra()
             CFLAGS="-Werror
                     -Wmissing-prototypes
                     -Wdouble-promotion
+                    -Wmissing-variable-declarations
                     -Wconversion
                     -Wno-sign-conversion
                     -Wswitch-enum

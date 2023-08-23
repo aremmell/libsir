@@ -27,7 +27,7 @@
 #include "sir/internal.h"
 #include "sir/defaults.h"
 
-sir_colormode sir_color_mode = SIRCM_16;
+static sir_colormode sir_color_mode = SIRCM_16;
 
 /** Wrapper around the level-to-style map and the color mode. This is the data
  * structure protected by the SIRMI_TEXTSTYLE mutex. */
