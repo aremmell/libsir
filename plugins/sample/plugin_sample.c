@@ -38,14 +38,14 @@ BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved)
 }
 #endif
 
-const uint8_t maj_ver   = 1;
-const uint8_t min_ver   = 0;
-const uint8_t bld_ver   = 0;
-const sir_levels levels = SIRL_DEBUG | SIRL_INFO;
-const sir_options opts  = SIRO_NOHOST | SIRO_NOTID;
-const char* author      = "libsir contributors";
-const char* desc        = "Logs messages and function calls to stdout.";
-const uint64_t caps     = 0;
+static const uint8_t maj_ver   = 1;
+static const uint8_t min_ver   = 0;
+static const uint8_t bld_ver   = 0;
+static const sir_levels levels = SIRL_DEBUG | SIRL_INFO;
+static const sir_options opts  = SIRO_NOHOST | SIRO_NOTID;
+static const char* author      = "libsir contributors";
+static const char* desc        = "Logs messages and function calls to stdout.";
+static const uint64_t caps     = 0;
 
 PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
     info->iface_ver = SIR_PLUGIN_VCURRENT;
