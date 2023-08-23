@@ -26,6 +26,6 @@ docker run --rm -it "hello-world:latest" > /dev/null ||
 
 printf 'Building %s image ...\n' "$(basename "$(pwd -P)")"
 
-docker build --no-cache --squash -t registry.gitlab.com/libsir/libsir/"$(basename "$(pwd -P)")":latest .
+docker build --no-cache --squash -t registry.gitlab.com/libsir/libsir/"$(basename "$(pwd -P)")":latest . "${@}"
 
 printf '%s\n' "Complete."
