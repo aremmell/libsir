@@ -207,7 +207,52 @@ test_extra()
                     -Wconversion
                     -Wno-sign-conversion
                     -Wswitch-enum
-                    -Wno-string-conversion"
+                    -Wno-string-conversion
+                    -Wformat-nonliteral"
+            ${MAKE:-make}
+                -j "${CPUS:-1}" ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
+      printf '%s\n' ' && true' >> ./.extra.sh
+      chmod a+x ./.extra.sh
+      sh ./.extra.sh
+      rm -f ./.extra.sh
+    }
+}
+
+################################################################################
+
+test_gccextra()
+{
+  test_mcmb
+  command -v gcc > /dev/null 2>&1 \
+    || {
+      printf '%s\n' \
+        "NOTICE: gcc is required for the gccextra-warning check."
+      NO_EXTRAWARN=1
+    }
+  test -z "${NO_EXTRAWARN:-}" \
+    && {
+      printf '%s\n' "building with extra-warning flags ..."
+      env "${MAKE:-make}" clean
+      rm -f ./.extra.sh
+      env CC="${CCACHE:-env} gcc" \
+        "${MAKE:-make}" \
+        -j "${CPUS:-1}" \
+        mcmb
+      printf '%s' 'true' > ./.extra.sh
+      # shellcheck disable=SC2090,SC2086,SC2016
+      "${MCMB:-build/bin/mcmb}" -e ${SIR_OPTIONS:?} | xargs -L1 echo \
+        ' && ${MAKE:-make} clean &&
+        env CC="${CCACHE:-env} gcc"
+            CFLAGS="-Werror
+                    -Wmissing-prototypes
+                    -Wdouble-promotion
+                    -Wmissing-declarations
+                    -Wconversion
+                    -Wno-sign-conversion
+                    -Wswitch-enum
+                    -Wno-string-conversion
+                    -Wformat-nonliteral
+                    -Wformat-truncation"
             ${MAKE:-make}
                 -j "${CPUS:-1}" ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
       printf '%s\n' ' && true' >> ./.extra.sh

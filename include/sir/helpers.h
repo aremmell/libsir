@@ -334,6 +334,15 @@ uint32_t FNV32_1a(const uint8_t* data, size_t len) {
 }
 
 /**
+ * Wrapper for snprintf when truncation is intended.
+ */
+# define snprintf_truncate(dst, size, ...) \
+    do { \
+      volatile size_t n = size; \
+      (void)snprintf (dst, n, __VA_ARGS__); \
+    } while (false)
+
+/**
  * Implementation of the 64-bit FNV-1a OWHF (http://isthe.com/chongo/tech/comp/fnv/)
  * watered down to only handle null-terminated strings.
  */

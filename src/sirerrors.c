@@ -177,7 +177,7 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
         if (_SIR_E_PLATFORM == sir_errors[_mid].e) {
             heap_msg = calloc(SIR_MAXERROR, sizeof(char));
             if (_sir_validptrnofail(heap_msg)) {
-                (void)snprintf(heap_msg, SIR_MAXERROR, sir_errors[_mid].msg, sir_te.os_error,
+                snprintf_truncate(heap_msg, SIR_MAXERROR, _SIR_E_PLATFORM_ERRORFORMAT, sir_te.os_error,
                     (_sir_validstrnofail(sir_te.os_errmsg) ? sir_te.os_errmsg : SIR_UNKNOWN));
             }
         }
