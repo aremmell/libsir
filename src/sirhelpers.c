@@ -327,10 +327,10 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
 
         return buf;
 #else /* !__HAVE_STDC_SECURE_OR_EXT1___ */
-# if defined(__WIN__) && !defined(__EMBARCADEROC__)
-        struct tm* ret = localtime(timer);
-# else
+# if !defined(__WIN__) || defined(__EMBARCADEROC__)
         struct tm* ret = localtime_r(timer, buf);
+# else /* __WIN__ */
+        struct tm* ret = localtime(timer);
 # endif
         if (!ret)
             (void)_sir_handleerr(errno);
