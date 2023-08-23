@@ -36,10 +36,8 @@
 #if defined(__MACOS__) || defined(__BSD__) || \
     (defined(_POSIX_C_SOURCE) && (_POSIX_C_SOURCE >= 200112L && !defined(_GNU_SOURCE)))
 # define __HAVE_XSI_STRERROR_R__
-# if defined(__GLIBC__)
-#  if (__GLIBC__ >= 2 && __GLIBC_MINOR__ < 13)
-#   define __HAVE_XSI_STRERROR_R_ERRNO__
-#  endif
+# if defined(__GLIBC__) && GLIBC_VERSION < 21300
+#  define __HAVE_XSI_STRERROR_R_ERRNO__
 # endif
 #elif defined(_GNU_SOURCE) && defined(__GLIBC__)
 # define __HAVE_GNU_STRERROR_R__

@@ -163,7 +163,21 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #    if !defined(_GNU_SOURCE)
 #     define _GNU_SOURCE 1
 #    endif
-#    if defined(__GLIBC__) && __GLIBC_MINOR__ >= 12
+#    if defined(__has_include)
+#     if __has_include(<features.h>)
+#      include <features.h>
+#     endif
+#    endif
+#    if defined(__GLIBC__)
+#     if defined(GLIBC_VERSION)
+#      undef GLIBC_VERSION
+#     endif
+#     define GLIBC_VERSION (((0 + __GLIBC__) * 10000) + ((0 + __GLIBC_MINOR__) * 100))
+#    endif
+#    if !defined(GLIBC_VERSION)
+#     define GLIBC_VERSION 0
+#    endif
+#    if defined(__GLIBC__) && GLIBC_VERSION >= 21200
 #     define USE_PTHREAD_GETNAME_NP
 #    endif
 #   endif
@@ -235,7 +249,8 @@ _set_thread_local_invalid_parameter_handler(
 #  endif
 # endif
 
-# if !defined(__MACOS__) && !defined(__BSD__) && !defined(__SOLARIS__)
+# if !defined(__MACOS__) && !defined(__BSD__) && !defined(__SOLARIS__) && \
+     !(defined(__GLIBC__) && GLIBC_VERSION >= 23800)
 #  define SIR_IMPL_STRLCPY 1
 #  define SIR_IMPL_STRLCAT 1
 # endif
