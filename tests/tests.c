@@ -60,7 +60,7 @@ static sir_test sir_tests[] = {
     {"get-version-info",        sirtest_getversioninfo, false, true}
 };
 
-bool leave_logs = false;
+static bool leave_logs = false;
 
 int main(int argc, char** argv) {
 #if defined(__HAIKU__) && !defined(DEBUG)

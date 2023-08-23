@@ -203,9 +203,11 @@ test_extra()
             CFLAGS="-Werror
                     -Wmissing-prototypes
                     -Wdouble-promotion
+                    -Wmissing-variable-declarations
                     -Wconversion
                     -Wbad-function-cast
                     -Wno-sign-conversion
+                    -Wswitch-enum
                     -Wno-string-conversion"
             ${MAKE:-make}
                 -j "${CPUS:-1}" ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
