@@ -1,13 +1,17 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2018-current Ryan M. Lederman
 
-## NOTE: Uses local webserver at 192.168.1.187:8088
+# Use --build-arg URL1="..." to override default PVS-Studio fallback link
+# Use --build-arg URL2="..." to override default AOCC link
 
 FROM quay.io/fedora/fedora:rawhide
 
 USER 0
 
 WORKDIR /
+
+ARG URL1
+ARG URL2
 
 RUN \
   (sed -i 's/tsflags=nodocs//' /etc/dnf/dnf.conf || true) \
@@ -188,7 +192,7 @@ RUN \
   (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
           pvs-studio) || \
   (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-          --nogpgcheck http://192.168.1.187:8088/~jhj/cache/pvs-studio.x86_64.rpm) \
+          --nogpgcheck ${URL1:-http://192.168.1.187:8088/~jhj/cache/pvs-studio.x86_64.rpm}) \
 && \
   printf '%s\n' \
          "[viva64-beta]" \
@@ -200,7 +204,7 @@ RUN \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True upgrade \
 && \
   (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-          --nogpgcheck http://192.168.1.187:8088/~jhj/cache/aocc-compiler.x86_64.rpm) \
+          --nogpgcheck ${URL2:-http://192.168.1.187:8088/~jhj/cache/aocc-compiler.x86_64.rpm}) \
 && \
   mkdir -p /tmp/duma-build && \
   cd /tmp/duma-build && \
