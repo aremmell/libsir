@@ -90,13 +90,13 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         * - switch on version returned to resolve additional exports. this will
         * necessitate additional versioned interface structures as members of the
         * sir_plugin struct, e.g. ifacev1, ifacev2). */
-        plugin->iface.query   = (sir_plugin_queryfn)(uintptr_t)
+        plugin->iface.query   = (sir_plugin_queryfn)
             _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_QUERY);
-        plugin->iface.init    = (sir_plugin_initfn)(uintptr_t)
+        plugin->iface.init    = (sir_plugin_initfn)
             _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_INIT);
-        plugin->iface.write   = (sir_plugin_writefn)(uintptr_t)
+        plugin->iface.write   = (sir_plugin_writefn)
             _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_WRITE);
-        plugin->iface.cleanup = (sir_plugin_cleanupfn)(uintptr_t)
+        plugin->iface.cleanup = (sir_plugin_cleanupfn)
             _sir_plugin_getexport(plugin->handle, SIR_PLUGIN_EXPORT_CLEANUP);
 
         if (!plugin->iface.query || !plugin->iface.init ||
@@ -196,10 +196,10 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
 #endif
 }
 
-uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
+void* _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
 #if !defined(SIR_NO_PLUGINS)
     if (!_sir_validptr(handle) || !_sir_validstr(name))
-        return 0;
+        return NULL;
 
 # if !defined(__WIN__)
     sir_pluginexport addr = dlsym(handle, name);
@@ -207,7 +207,8 @@ uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
         const char* err = dlerror();
         _sir_selflog("error: dlsym(%p, '%s') failed (%s)", handle, name,
             _SIR_PRNSTR(err));
-        return _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
+        return NULL;
     }
 # else /* __WIN__ */
     sir_pluginexport addr = GetProcAddress(handle, name);
@@ -215,17 +216,18 @@ uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
         DWORD err = GetLastError();
         _sir_selflog("error: GetProcAddress(%p, '%s') failed (%lu)", handle,
             name, err);
-        return _sir_handlewin32err(err);
+        (void)_sir_handlewin32err(err);
+        return NULL;
     }
 # endif
 
     _sir_selflog("successfully resolved plugin export (name: '%s', addr: %p)",
         name, addr);
-    return (uintptr_t)addr;
+    return addr;
 #else
     SIR_UNUSED(handle);
     SIR_UNUSED(name);
-    return 0;
+    return NULL;
 #endif
 }
 
