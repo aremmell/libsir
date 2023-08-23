@@ -923,7 +923,10 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx)
         case SIRL_ALERT:  syslog_level = LOG_ALERT; break;
         case SIRL_EMERG:  syslog_level = LOG_EMERG; break;
         // GCOVR_EXCL_START
-        default: /* this should never happen. */
+        case SIRL_NONE: /* this should never happen. */
+        case SIRL_ALL:
+        case SIRL_DEFAULT:
+        default:
             SIR_ASSERT(!"invalid sir_level");
             syslog_level = LOG_DEBUG;
         // GCOVR_EXCL_STOP
