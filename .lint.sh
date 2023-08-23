@@ -227,9 +227,9 @@ test_gccextra()
     || {
       printf '%s\n' \
         "NOTICE: gcc is required for the gccextra-warning check."
-      NO_EXTRAWARN=1
+      NO_EXTRAGCCWARN=1
     }
-  test -z "${NO_EXTRAWARN:-}" \
+  test -z "${NO_EXTRAGCCWARN:-}" \
     && {
       printf '%s\n' "building with extra-warning flags ..."
       env "${MAKE:-make}" clean
