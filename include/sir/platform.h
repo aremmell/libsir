@@ -250,7 +250,7 @@ _set_thread_local_invalid_parameter_handler(
 # endif
 
 # if !defined(__MACOS__) && !defined(__BSD__) && !defined(__SOLARIS__) && \
-     !(defined(__GLIBC__) && GLIBC_VERSION >= 23800)
+     !defined(__HAIKU__) && !(defined(__GLIBC__) && GLIBC_VERSION >= 23800)
 #  define SIR_IMPL_STRLCPY 1
 #  define SIR_IMPL_STRLCAT 1
 # endif
