@@ -205,6 +205,7 @@ test_extra()
                     -Wdouble-promotion
                     -Wconversion
                     -Wno-sign-conversion
+                    -Wswitch-enum
                     -Wno-string-conversion"
             ${MAKE:-make}
                 -j "${CPUS:-1}" ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
