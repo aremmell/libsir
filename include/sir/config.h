@@ -123,7 +123,7 @@
  *   15:13:41 Fri 9 Jun 23 (-0600)
  *   ~~~
  */
-# define SIR_FHTIMEFORMAT "%H:%M:%S %a %d %b %y (%z)"
+# define SIR_FHTIMEFORMAT "%H:%M:%S %a %d %b %Y %Z (%z)"
 
 /**
  * The format string written to a log file when logging begins or the file
