@@ -224,7 +224,7 @@ test_extra()
 test_gccextra()
 {
   test_mcmb
-  command -v gcc > /dev/null 2>&1 \
+  gcc --version 2>&1 | grep -qi GCC > /dev/null 2>&1 \
     || {
       printf '%s\n' \
         "NOTICE: gcc is required for the gccextra-warning check."
