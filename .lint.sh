@@ -206,6 +206,7 @@ test_extra()
                     -Wmissing-variable-declarations
                     -Wconversion
                     -Wbad-function-cast
+                    -Wextra-semi-stmt
                     -Wno-sign-conversion
                     -Wswitch-enum
                     -Wno-string-conversion"

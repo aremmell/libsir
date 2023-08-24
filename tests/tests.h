@@ -316,12 +316,12 @@ bool filter_error(bool pass, uint16_t err);
      (void)clib; \
      (void)_sir_handleerr(errno); \
      fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
-     print_os_error();
+     print_os_error()
 # else /* __WIN__ */
 #  define handle_os_error(clib, fmt, ...) \
      clib ? (void)_sir_handleerr(errno) : (void)_sir_handlewin32err(GetLastError()); \
      fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
-     print_os_error();
+     print_os_error()
 # endif
 
 /*
@@ -367,11 +367,8 @@ bool getrand_bool(uint32_t upper_bound) {
 }
 
 /** prints a message in green if pass is true, or red otherwise. */
-# define PRINT_PASS(pass, msg, ...)      \
-    if (pass)                            \
-        printf(GREEN(msg), __VA_ARGS__); \
-    else                                 \
-        printf(RED(msg), __VA_ARGS__);
+# define PRINT_PASS(pass, msg, ...) \
+    printf(pass ? GREEN(msg) : RED(msg), __VA_ARGS__)
 
 bool rmfile(const char* filename);
 void deletefiles(const char* search, const char* path, const char* filename, unsigned* data);

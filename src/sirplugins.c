@@ -220,7 +220,6 @@ void* _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
         return NULL;
     }
 # endif
-
     _sir_selflog("successfully resolved plugin export (name: '%s', addr: %p)",
         name, addr);
     return addr;
