@@ -168,7 +168,7 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
 
     uint32_t retval = _SIR_E_UNKNOWN;
 
-    _SIR_DECLARE_BIN_SEARCH(low, high)
+    _SIR_DECLARE_BIN_SEARCH(low, high);
     _SIR_BEGIN_BIN_SEARCH()
 
     if (sir_errors[_mid].e == sir_te.lasterror) {
@@ -192,8 +192,8 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
         break;
     }
 
-    _SIR_ITERATE_BIN_SEARCH((sir_errors[_mid].e < sir_te.lasterror ? 1 : -1))
-    _SIR_END_BIN_SEARCH()
+    _SIR_ITERATE_BIN_SEARCH((sir_errors[_mid].e < sir_te.lasterror ? 1 : -1));
+    _SIR_END_BIN_SEARCH();
 
     return retval;
 }

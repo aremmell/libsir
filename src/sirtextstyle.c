@@ -40,10 +40,10 @@ const char* _sir_gettextstyle(sir_level level) {
     static const size_t low  = 0;
     static const size_t high = SIR_NUMLEVELS - 1;
 
-    _SIR_LOCK_SECTION(sir_text_style_data, data, SIRMI_TEXTSTYLE, NULL)
+    _SIR_LOCK_SECTION(sir_text_style_data, data, SIRMI_TEXTSTYLE, NULL);
     const char* retval = SIR_UNKNOWN;
 
-    _SIR_DECLARE_BIN_SEARCH(low, high)
+    _SIR_DECLARE_BIN_SEARCH(low, high);
     _SIR_BEGIN_BIN_SEARCH()
 
     if (data->map[_mid].level == level) {
@@ -51,9 +51,9 @@ const char* _sir_gettextstyle(sir_level level) {
         break;
     }
 
-    _SIR_ITERATE_BIN_SEARCH((data->map[_mid].level < level ? 1 : -1))
-    _SIR_END_BIN_SEARCH()
-    _SIR_UNLOCK_SECTION(SIRMI_TEXTSTYLE)
+    _SIR_ITERATE_BIN_SEARCH((data->map[_mid].level < level ? 1 : -1));
+    _SIR_END_BIN_SEARCH();
+    _SIR_UNLOCK_SECTION(SIRMI_TEXTSTYLE);
 
     return retval;
 }
@@ -64,12 +64,12 @@ bool _sir_settextstyle(sir_level level, sir_textstyle* style) {
     if (!_sir_sanity() || !_sir_validlevel(level))
         return false;
 
-    _SIR_LOCK_SECTION(sir_text_style_data, data, SIRMI_TEXTSTYLE, false)
+    _SIR_LOCK_SECTION(sir_text_style_data, data, SIRMI_TEXTSTYLE, false);
     bool updated              = false;
     static const size_t low   = 0;
     static const size_t high  = SIR_NUMLEVELS - 1;
 
-    _SIR_DECLARE_BIN_SEARCH(low, high)
+    _SIR_DECLARE_BIN_SEARCH(low, high);
     _SIR_BEGIN_BIN_SEARCH()
 
     if (data->map[_mid].level == level) {
@@ -78,9 +78,9 @@ bool _sir_settextstyle(sir_level level, sir_textstyle* style) {
         break;
     }
 
-    _SIR_ITERATE_BIN_SEARCH((data->map[_mid].level < level ? 1 : -1))
-    _SIR_END_BIN_SEARCH()
-    _SIR_UNLOCK_SECTION(SIRMI_TEXTSTYLE)
+    _SIR_ITERATE_BIN_SEARCH((data->map[_mid].level < level ? 1 : -1));
+    _SIR_END_BIN_SEARCH();
+    _SIR_UNLOCK_SECTION(SIRMI_TEXTSTYLE);
 
     SIR_ASSERT(updated);
     return updated;
@@ -113,7 +113,7 @@ bool _sir_resettextstyles(void) {
     if (!_sir_sanity())
         return false;
 
-    _SIR_LOCK_SECTION(sir_text_style_data, data, SIRMI_TEXTSTYLE, false)
+    _SIR_LOCK_SECTION(sir_text_style_data, data, SIRMI_TEXTSTYLE, false);
     bool all_ok = true;
     for (size_t n = 0; n < SIR_NUMLEVELS; n++) {
         memcpy(&data->map[n].style, _sir_getdefstyle(data->map[n].level),
@@ -122,7 +122,7 @@ bool _sir_resettextstyles(void) {
             data->map[n].str);
     }
 
-    _SIR_UNLOCK_SECTION(SIRMI_TEXTSTYLE)
+    _SIR_UNLOCK_SECTION(SIRMI_TEXTSTYLE);
     return all_ok;
 }
 
@@ -190,7 +190,7 @@ bool _sir_setcolormode(sir_colormode mode) {
     if (!_sir_validcolormode(mode))
         return false;
 
-    _SIR_LOCK_SECTION(sir_text_style_data, data, SIRMI_TEXTSTYLE, false)
+    _SIR_LOCK_SECTION(sir_text_style_data, data, SIRMI_TEXTSTYLE, false);
     if (*data->color_mode != mode) {
         sir_colormode old = *data->color_mode;
         *data->color_mode = mode;
@@ -204,7 +204,7 @@ bool _sir_setcolormode(sir_colormode mode) {
     } else {
         _sir_selflog("skipped superfluous update of color mode: %"PRId32, mode);
     }
-    _SIR_UNLOCK_SECTION(SIRMI_TEXTSTYLE)
+    _SIR_UNLOCK_SECTION(SIRMI_TEXTSTYLE);
 
     return true;
 }
