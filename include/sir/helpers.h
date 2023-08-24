@@ -338,10 +338,10 @@ uint32_t FNV32_1a(const uint8_t* data, size_t len) {
 /**
  * Wrapper for snprintf when truncation is intended.
  */
-# define snprintf_truncate(dst, size, ...) \
+# define _sir_snprintf_trunc(dst, size, ...) \
     do { \
       volatile size_t n = size; \
-      (void)snprintf (dst, n, __VA_ARGS__); \
+      (void)snprintf(dst, n, __VA_ARGS__); \
     } while (false)
 
 /**
