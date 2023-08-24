@@ -202,7 +202,9 @@ sir_pluginexport _sir_plugin_getexport(sir_pluginhandle handle, const char* name
         return NULL;
 
 # if !defined(__WIN__)
-    sir_pluginexport addr = dlsym(handle, name);
+    sir_pluginexport addr = NULL;
+    *(void**)(&addr) = dlsym(handle, name);
+
     if (!addr) {
         const char* err = dlerror();
         _sir_selflog("error: dlsym(%p, '%s') failed (%s)", handle, name,
