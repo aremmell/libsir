@@ -83,9 +83,12 @@ ifeq ($(SIR_MSVCRT_MINGW),1)
   SIR_CFLAGS+=-DSIR_MSVCRT_MINGW
 endif
 
-# Oracle Studio C
+# Oracle Studio C/C++
 ifneq "$(findstring suncc,$(CC))" ""
   SUNPRO?=1
+endif
+ifneq "$(findstring sunCC,$(CC))" ""
+  SUNPROCPP?=1
 endif
 ifeq ($(SUNPRO),1)
   ifneq ($(SUNLINT),1)
@@ -95,9 +98,21 @@ ifeq ($(SUNPRO),1)
   MMDOPT=-xMMD
   PTHOPT=-mt=yes
 else
-  FORTIFY_FLAGS=-D_FORTIFY_SOURCE=2
-  MMDOPT=-MMD
-  PTHOPT=-pthread
+  ifeq ($(SUNPROCPP),1)
+    ifneq ($(SUNLINT),1)
+      SIR_CFLAGS+=-fcommon
+    endif
+    SIR_CFLAGS+=-erroff=doubunder
+    FORTIFY_FLAGS=-U_FORTIFY_SOURCE
+    MMDOPT=-xMMD
+    PTHOPT=-mt=yes
+    SIR_CSTD=-std=c++11
+    SIR_GSTD=-std=c++11
+  else
+    FORTIFY_FLAGS=-D_FORTIFY_SOURCE=2
+    MMDOPT=-MMD
+    PTHOPT=-pthread
+  endif
 endif
 
 # Chibicc and Intel C++ Compiler Classic

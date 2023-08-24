@@ -46,7 +46,7 @@
 #   define PRINTF_FORMAT_ATTR(fmt_p, va_p) \
     __attribute__((format (gnu_printf, fmt_p, va_p)))
 #  else
-#   if !defined(__SUNPRO_C) && !defined(__SUNPRO_C)
+#   if !defined(__SUNPRO_C) && !defined(__SUNPRO_CC)
 #    define PRINTF_FORMAT_ATTR(fmt_p, va_p) \
      __attribute__((format (printf, fmt_p, va_p)))
 #   else
@@ -481,7 +481,12 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #  if defined(_AIX) && defined(__GNUC__)
 #   define _sir_thread_local __thread
 #  else
-#   define _sir_thread_local _Thread_local
+#   if defined(__SUNPRO_CC)
+#    undef __HAVE_ATOMIC_H__
+#    define _sir_thread_local thread_local
+#   else
+#    define _sir_thread_local _Thread_local
+#   endif
 #  endif
 # elif defined(__WIN__)
 #  define _sir_thread_local __declspec(thread)
