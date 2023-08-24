@@ -8,6 +8,7 @@ stages:
   - build
   - coverage
   - lint
+  - coverity
 
 ############################################################################
 
@@ -1342,9 +1343,11 @@ PVS-Studio:
 ############################################################################
 
 Coverity:
+  only:
+    - master
   when: manual
   allow_failure: true
-  stage: lint
+  stage: coverity
   tags:
     - Docker-x64
     - Linux
