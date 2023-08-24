@@ -222,8 +222,8 @@ sir_pluginexport _sir_plugin_getexport(sir_pluginhandle handle, const char* name
         return NULL;
     }
 # endif
-    _sir_selflog("successfully resolved plugin export (name: '%s', addr: %p)",
-        name, addr);
+    _sir_selflog("successfully resolved plugin export (name: '%s', addr: %"
+                 PRIxPTR")", name, (uintptr_t)addr);
     return addr;
 #else
     SIR_UNUSED(handle);
