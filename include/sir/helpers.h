@@ -51,7 +51,6 @@ uint16_t _sir_geterrcode(uint32_t err) {
 /** Evil macro used for _sir_lv wrappers. */
 # define _SIR_L_START(format) \
     bool ret     = false; \
-    va_list args = {0}; \
     do { \
         if (!_sir_validptr(format)) \
             return false; \
