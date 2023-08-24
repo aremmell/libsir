@@ -228,7 +228,7 @@ test_gccextra()
   gcc --version 2>&1 | grep -qi GCC > /dev/null 2>&1 \
     || {
       printf '%s\n' \
-        "NOTICE: gcc is required for the gccextra-warning check."
+        "NOTICE: gcc is required for the gcc extra-warning check."
       NO_EXTRAGCCWARN=1
     }
   test -z "${NO_EXTRAGCCWARN:-}" \
