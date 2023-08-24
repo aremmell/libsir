@@ -2387,7 +2387,7 @@ void os_log_parent_activity(void* ctx) {
     float rock_count = 0.0f;
     os_activity_apply_f(child, (void*)&rock_count, os_log_child_activity);
     sir_info("astronauts safely back on board. official count: ~%.02f moon rocks",
-        rock_count);
+        (double)rock_count);
 }
 
 void os_log_child_activity(void* ctx) {
@@ -2398,7 +2398,7 @@ void os_log_child_activity(void* ctx) {
     }
 
     float* rock_count = (float*)ctx;
-    *rock_count = 1e12;
+    *rock_count = 1e12f;
     sir_info("all sectors counted; heading back to the lunar lander");
 }
 #endif
