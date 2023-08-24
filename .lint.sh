@@ -205,6 +205,7 @@ test_extra()
                     -Wdouble-promotion
                     -Wmissing-variable-declarations
                     -Wconversion
+                    -Wbad-function-cast
                     -Wextra-semi-stmt
                     -Wno-sign-conversion
                     -Wswitch-enum

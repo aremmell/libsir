@@ -196,18 +196,21 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
 #endif
 }
 
-uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
+sir_pluginexport _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
 #if !defined(SIR_NO_PLUGINS)
     if (!_sir_validptr(handle) || !_sir_validstr(name))
-        return 0;
+        return NULL;
 
 # if !defined(__WIN__)
-    sir_pluginexport addr = dlsym(handle, name);
+    sir_pluginexport addr = NULL;
+    *(void**)(&addr) = dlsym(handle, name);
+
     if (!addr) {
         const char* err = dlerror();
         _sir_selflog("error: dlsym(%p, '%s') failed (%s)", handle, name,
             _SIR_PRNSTR(err));
-        return _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
+        return NULL;
     }
 # else /* __WIN__ */
     sir_pluginexport addr = GetProcAddress(handle, name);
@@ -215,16 +218,17 @@ uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
         DWORD err = GetLastError();
         _sir_selflog("error: GetProcAddress(%p, '%s') failed (%lu)", handle,
             name, err);
-        return _sir_handlewin32err(err);
+        (void)_sir_handlewin32err(err);
+        return NULL;
     }
 # endif
-    _sir_selflog("successfully resolved plugin export (name: '%s', addr: %p)",
-        name, addr);
-    return (uintptr_t)addr;
+    _sir_selflog("successfully resolved plugin export (name: '%s', addr: %"
+                 PRIxPTR")", name, (uintptr_t)addr);
+    return addr;
 #else
     SIR_UNUSED(handle);
     SIR_UNUSED(name);
-    return 0;
+    return NULL;
 #endif
 }
 

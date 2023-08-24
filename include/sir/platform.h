@@ -384,7 +384,7 @@ _set_thread_local_invalid_parameter_handler(
 typedef void* sir_pluginhandle;
 
 /** The plugin export address type. */
-typedef void* sir_pluginexport;
+typedef void (*sir_pluginexport)(void);
 
 /** The mutex type. */
 typedef pthread_mutex_t sir_mutex;
