@@ -1288,7 +1288,7 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
            "identity: '%s', category: '%s')...\n", runs, sl_name, identity, category);
 
     uint32_t rnd_input = (uint32_t)time(NULL);
-    for (uint32_t i = 1; i <= runs; i++) {
+    for (int i = 1; i <= runs; i++) {
         /* randomly skip setting process name, identity/category to thoroughly
          * test fallback routines; randomly update the config mid-run. */
         bool set_procname = getrand_bool(rnd_input | 0x5a5a5a5au);
