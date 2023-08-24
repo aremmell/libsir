@@ -64,7 +64,7 @@ uint16_t _sir_geterrcode(uint32_t err) {
 
 /** Evil macros used to enter/leave locked sections. */
 # define _SIR_LOCK_SECTION(type, name, mid, ret) \
-    type* name = _sir_locksection(mid); \
+    type* name = (type*)_sir_locksection(mid); \
     do { \
         if (!name) { \
             (void)_sir_seterror(_SIR_E_INTERNAL); \
