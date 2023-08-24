@@ -88,6 +88,8 @@ enum sir_errorcode {
 # define _SIR_E_PLATFORM  _sir_mkerror(SIR_E_PLATFORM)
 # define _SIR_E_UNKNOWN   _sir_mkerror(SIR_E_UNKNOWN)
 
+# define _SIR_E_PLATFORM_ERRORFORMAT "Platform error code %d: %s"
+
 static const struct {
     uint32_t e;
     const char* msg;
@@ -114,7 +116,7 @@ static const struct {
     {_SIR_E_PLUGINDAT, "Data produced by plugin is invalid"},
     {_SIR_E_PLUGINVER, "Plugin interface version unsupported"},
     {_SIR_E_PLUGINERR, "Plugin reported failure"},
-    {_SIR_E_PLATFORM,  "Platform error code %d: %s"},
+    {_SIR_E_PLATFORM,  _SIR_E_PLATFORM_ERRORFORMAT},
     {_SIR_E_UNKNOWN,   "Unknown error"},
 };
 
