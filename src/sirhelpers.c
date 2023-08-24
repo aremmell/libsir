@@ -323,7 +323,7 @@ struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf)
         }
 # else
         struct tm* ret = localtime_s(timer, buf);
-        if (0 == ret) {
+        if (!ret) {
             (void)_sir_handleerr(ret);
             return NULL;
         }
