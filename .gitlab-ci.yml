@@ -1316,6 +1316,8 @@ PVS-Studio:
 ############################################################################
 
 Coverity:
+  only:
+    - master
   when: manual
   allow_failure: true
   stage: lint
