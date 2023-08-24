@@ -44,7 +44,7 @@ const char* _sir_gettextstyle(sir_level level) {
     const char* retval = SIR_UNKNOWN;
 
     _SIR_DECLARE_BIN_SEARCH(low, high);
-    _SIR_BEGIN_BIN_SEARCH();
+    _SIR_BEGIN_BIN_SEARCH()
 
     if (data->map[_mid].level == level) {
         retval = data->map[_mid].str;
@@ -70,7 +70,7 @@ bool _sir_settextstyle(sir_level level, sir_textstyle* style) {
     static const size_t high  = SIR_NUMLEVELS - 1;
 
     _SIR_DECLARE_BIN_SEARCH(low, high);
-    _SIR_BEGIN_BIN_SEARCH();
+    _SIR_BEGIN_BIN_SEARCH()
 
     if (data->map[_mid].level == level) {
         memcpy(&data->map[_mid].style, style, sizeof(sir_textstyle));

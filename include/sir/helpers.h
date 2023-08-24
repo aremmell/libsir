@@ -50,27 +50,31 @@ uint16_t _sir_geterrcode(uint32_t err) {
 
 /** Evil macro used for _sir_lv wrappers. */
 # define _SIR_L_START(format) \
-    bool r = false; \
-    va_list args; \
-    va_start(args, format); \
-    if (_sir_validptr(format)) { \
+    bool ret     = false; \
+    va_list args = {0}; \
+    do { \
+        if (!_sir_validptr(format)) \
+            return false; \
+        va_start(args, format); \
+    } while (false)
 
 /** Evil macro used for _sir_lv wrappers. */
-# define _SIR_L_END(args) \
-    } \
-    va_end(args);
+# define _SIR_L_END() \
+    va_end(args)
 
 /** Evil macros used to enter/leave locked sections. */
 # define _SIR_LOCK_SECTION(type, name, mid, ret) \
-    type* name = (type*)_sir_locksection(mid); \
-    if (!name) { \
-        (void)_sir_seterror(_SIR_E_INTERNAL); \
-        return ret; \
-    }
+    type* name = _sir_locksection(mid); \
+    do { \
+        if (!name) { \
+            (void)_sir_seterror(_SIR_E_INTERNAL); \
+            return ret; \
+        } \
+    } while (false)
 
 /** Evil macros used to enter/leave locked sections. */
 # define _SIR_UNLOCK_SECTION(mid) \
-    _sir_unlocksection(mid);
+    _sir_unlocksection(mid)
 
 /** Squelches warnings about unreferenced parameters. */
 # define SIR_UNUSED(param) (void)param
@@ -83,15 +87,14 @@ uint16_t _sir_geterrcode(uint32_t err) {
 
 /** Even more evil macros used for binary searching arrays. */
 # define _SIR_DECLARE_BIN_SEARCH(low, high) \
-    size_t _low  = low; \
-    size_t _high = high; \
-    size_t _mid  = (_low + _high) / 2;
+    size_t _low = low, _high = high; \
+    size_t _mid = (_low + _high) / 2
 
 # define _SIR_BEGIN_BIN_SEARCH() do {
+
 # define _SIR_ITERATE_BIN_SEARCH(comparison) \
     if (_low == _high) \
         break; \
-    \
     if (0 > comparison && (_mid - 1) >= _low) { \
         _high = _mid - 1; \
     } else if ((_mid + 1) <= _high) { \
@@ -99,10 +102,10 @@ uint16_t _sir_geterrcode(uint32_t err) {
     } else { \
         break; \
     } \
-    \
-    _mid = (_low + _high) / 2;
+    _mid = (_low + _high) / 2
+
 # define _SIR_END_BIN_SEARCH() \
-    } while (true);
+    } while (true)
 
 /* Validates a pointer and optionally fails if it's invalid. */
 bool __sir_validptr(const void* restrict p, bool fail);

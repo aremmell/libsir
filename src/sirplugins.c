@@ -218,7 +218,6 @@ uintptr_t _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
         return _sir_handlewin32err(err);
     }
 # endif
-
     _sir_selflog("successfully resolved plugin export (name: '%s', addr: %p)",
         name, addr);
     return (uintptr_t)addr;
