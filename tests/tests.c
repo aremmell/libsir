@@ -131,7 +131,7 @@ DUMA_SET_FILL(0x2E);
                     }
                     to_run++;
                 }
-            };
+            }
             if (0 == to_run) {
                 fprintf(stderr, RED("value expected for '%s'") "\n",
                     _cl_arg_list[1].flag);
@@ -1502,7 +1502,7 @@ bool sirtest_filesystem(void) {
                             pass = false;
                             break;
                         }
-                    };
+                    }
                 }
             }
 
@@ -2294,7 +2294,7 @@ bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* 
     while (NULL != di) {
         cb(search, path, di->d_name, data);
         di = readdir(d);
-    };
+    }
 
     closedir(d);
     d = NULL;
