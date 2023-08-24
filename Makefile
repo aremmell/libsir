@@ -175,7 +175,7 @@ $(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS)
 	@mkdir -p $(BINDIR)
 	@mkdir -p $(LOGDIR)
 	@touch $(BINDIR)/file.exists > /dev/null
-	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS) -Iinclude $(LIBSIR_S) $(LDFLAGS) -lm
+	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS) -Iinclude $(LIBSIR_S) $(LDFLAGS)
 	-@printf 'built %s successfully.\n' "$(OUT_TESTS)" 2> /dev/null
 
 .PHONY: docs doc
