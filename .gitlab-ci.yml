@@ -244,7 +244,7 @@ Linux/x86_64 (Oracle Studio C):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache /opt/oracle/developerstudio-latest/bin/suncc" make
+    - env CC="/opt/oracle/developerstudio-latest/bin/suncc" make -j 1
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
@@ -277,7 +277,7 @@ Linux/x86_64 (Oracle Studio C++):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache /opt/oracle/developerstudio-latest/bin/sunCC" make
+    - env CC="/opt/oracle/developerstudio-latest/bin/sunCC" make -j 1
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
