@@ -167,7 +167,7 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
     uint32_t retval = _SIR_E_UNKNOWN;
 
     _SIR_DECLARE_BIN_SEARCH(low, high);
-    _SIR_BEGIN_BIN_SEARCH();
+    _SIR_BEGIN_BIN_SEARCH()
 
     if (sir_errors[_mid].e == sir_te.lasterror) {
         char* heap_msg = NULL;
