@@ -1174,7 +1174,7 @@ pid_t _sir_gettid(void) {
 #elif defined(__HAIKU__)
     tid = get_pthread_thread_id(pthread_self());
 #elif defined(__linux__) || defined(__serenity__)
-# if (defined(__GLIBC__) && (__GLIBC__ >= 2 && __GLIBC_MINOR__ >= 30)) || \
+# if (defined(__GLIBC__) && GLIBC_VERSION >= 23000) || \
      defined(__serenity__)
     tid = gettid();
 # else
@@ -1191,7 +1191,7 @@ pid_t _sir_gettid(void) {
 bool _sir_getthreadname(char name[SIR_MAXPID]) {
 #if defined(__MACOS__) || \
    (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
-   (defined(__GLIBC__) && __GLIBC_MINOR__ >= 12 && defined(_GNU_SOURCE)) || \
+   (defined(__GLIBC__) && GLIBC_VERSION >= 21200 && defined(_GNU_SOURCE)) || \
     defined(USE_PTHREAD_GETNAME_NP)
     int ret = pthread_getname_np(pthread_self(), name, SIR_MAXPID);
     if (0 != ret)
