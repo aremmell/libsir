@@ -1044,7 +1044,7 @@ const char* _sir_formattedlevelstr(sir_level level) {
 
     const char* retval = SIR_UNKNOWN;
 
-    _SIR_DECLARE_BIN_SEARCH(low, high)
+    _SIR_DECLARE_BIN_SEARCH(low, high);
     _SIR_BEGIN_BIN_SEARCH()
 
     if (sir_level_to_str_map[_mid].level == level) {
@@ -1052,8 +1052,8 @@ const char* _sir_formattedlevelstr(sir_level level) {
         break;
     }
 
-    _SIR_ITERATE_BIN_SEARCH((sir_level_to_str_map[_mid].level < level ? 1 : -1))
-    _SIR_END_BIN_SEARCH()
+    _SIR_ITERATE_BIN_SEARCH((sir_level_to_str_map[_mid].level < level ? 1 : -1));
+    _SIR_END_BIN_SEARCH();
 
     return retval;
 }
