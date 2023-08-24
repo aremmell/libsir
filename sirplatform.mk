@@ -27,6 +27,18 @@ else
   PLATFORM_LIB_EXT=.a
 endif
 
+# LLVM-MinGW ARMv7
+ifneq "$(findstring armv7-w64-mingw32-clang,$(CC))" ""
+  RANLIB=llvm-ranlib
+  PLATFORM_LIB_EXT=.a
+endif
+
+# LLVM-MinGW ARM64
+ifneq "$(findstring aarch64-w64-mingw32-clang,$(CC))" ""
+  RANLIB=llvm-ranlib
+  PLATFORM_LIB_EXT=.a
+endif
+
 # Haiku
 ifneq "$(findstring Haiku,$(UNAME_S))" ""
   HAIKU?=1
