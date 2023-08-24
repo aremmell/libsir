@@ -28,9 +28,7 @@
 
 # if defined(_MSC_VER) && !defined(__clang__)
 #  include <stddef.h>
-#  if defined(_USE_ATTRIBUTES_FOR_SAL)
-#   undef _USE_ATTRIBUTES_FOR_SAL
-#  endif
+#  undef _USE_ATTRIBUTES_FOR_SAL
 #  define _USE_ATTRIBUTES_FOR_SAL 1
 #  include <sal.h>
 #  define PRINTF_FORMAT _Printf_format_string_
@@ -100,13 +98,9 @@
 #    undef __HAVE_ATOMIC_H__
 #   endif
 #  endif
-#  if defined(__STDC_WANT_LIB_EXT1__)
-#   undef __STDC_WANT_LIB_EXT1__
-#  endif
+#  undef __STDC_WANT_LIB_EXT1__
 #  define __STDC_WANT_LIB_EXT1__ 1
-#  if defined(__STDC_WANT_LIB_EXT2__)
-#   undef __STDC_WANT_LIB_EXT2__
-#  endif
+#  undef __STDC_WANT_LIB_EXT2__
 #  define __STDC_WANT_LIB_EXT2__ 1
 #  if defined(__APPLE__) && defined(__MACH__)
 #   define __MACOS__
@@ -163,7 +157,19 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #    if !defined(_GNU_SOURCE)
 #     define _GNU_SOURCE 1
 #    endif
-#    if defined(__GLIBC__) && __GLIBC_MINOR__ >= 12
+#    if defined(__has_include)
+#     if __has_include(<features.h>)
+#      include <features.h>
+#     endif
+#    endif
+#    if defined(__GLIBC__)
+#     undef GLIBC_VERSION
+#     define GLIBC_VERSION (((0 + __GLIBC__) * 10000) + ((0 + __GLIBC_MINOR__) * 100))
+#    endif
+#    if !defined(GLIBC_VERSION)
+#     define GLIBC_VERSION 0
+#    endif
+#    if defined(__GLIBC__) && GLIBC_VERSION >= 21200
 #     define USE_PTHREAD_GETNAME_NP
 #    endif
 #   endif
@@ -235,7 +241,8 @@ _set_thread_local_invalid_parameter_handler(
 #  endif
 # endif
 
-# if !defined(__MACOS__) && !defined(__BSD__) && !defined(__SOLARIS__)
+# if !defined(__MACOS__) && !defined(__BSD__) && !defined(__SOLARIS__) && \
+     !defined(__HAIKU__) && !(defined(__GLIBC__) && GLIBC_VERSION >= 23800)
 #  define SIR_IMPL_STRLCPY 1
 #  define SIR_IMPL_STRLCAT 1
 # endif
@@ -384,7 +391,7 @@ _set_thread_local_invalid_parameter_handler(
 typedef void* sir_pluginhandle;
 
 /** The plugin export address type. */
-typedef void* sir_pluginexport;
+typedef void (*sir_pluginexport)(void);
 
 /** The mutex type. */
 typedef pthread_mutex_t sir_mutex;

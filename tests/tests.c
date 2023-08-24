@@ -1284,20 +1284,17 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
     static const int runs = 5;
 
     /* repeat initializing, opening, logging, closing, cleaning up n times. */
-    sir_timer timer = {0};
-    pass &= sirtimerstart(&timer);
-
     printf("\trunning %d passes of random configs (system logger: '%s', "
-           "identity: '%s', category: '%s')...\n",
-        runs, sl_name, identity, category);
+           "identity: '%s', category: '%s')...\n", runs, sl_name, identity, category);
 
-    for (int i = 0; i < runs; i++) {
+    uint32_t rnd_input = (uint32_t)time(NULL);
+    for (int i = 1; i <= runs; i++) {
         /* randomly skip setting process name, identity/category to thoroughly
          * test fallback routines; randomly update the config mid-run. */
-        bool set_procname = getrand_bool((uint32_t)sirtimerelapsed(&timer));
-        bool set_identity = getrand_bool((uint32_t)sirtimerelapsed(&timer));
-        bool set_category = getrand_bool((uint32_t)sirtimerelapsed(&timer));
-        bool do_update    = getrand_bool((uint32_t)sirtimerelapsed(&timer));
+        bool set_procname = getrand_bool(rnd_input | 0x5a5a5a5au);
+        bool set_identity = getrand_bool(rnd_input | 0xcacacacau);
+        bool set_category = getrand_bool(rnd_input | 0x32323232u);
+        bool do_update    = getrand_bool(rnd_input | 0x28282828u);
 
         printf("\tset_procname: %d, set_identity: %d, set_category: %d, do_update: %d\n",
             set_procname, set_identity, set_category, do_update);
@@ -1318,12 +1315,12 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
         if (do_update)
             pass &= sir_sysloglevels(SIRL_ALL);
 
-        pass &= sir_debug("%d/%d: this debug message sent to stdout and %s.", i + 1, runs, sl_name);
-        pass &= sir_info("%d/%d: this info message sent to stdout and %s.", i + 1, runs, sl_name);
+        pass &= sir_debug("%d/%d: this debug message sent to stdout and %s.", i, runs, sl_name);
+        pass &= sir_info("%d/%d: this info message sent to stdout and %s.", i, runs, sl_name);
 
-        pass &= sir_notice("%d/%d: this notice message sent to stdout and %s.", i + 1, runs, sl_name);
-        pass &= sir_warn("%d/%d: this warning message sent to stdout and %s.", i + 1, runs, sl_name);
-        pass &= sir_error("%d/%d: this error message sent to stdout and %s.", i + 1, runs, sl_name);
+        pass &= sir_notice("%d/%d: this notice message sent to stdout and %s.", i, runs, sl_name);
+        pass &= sir_warn("%d/%d: this warning message sent to stdout and %s.", i, runs, sl_name);
+        pass &= sir_error("%d/%d: this error message sent to stdout and %s.", i, runs, sl_name);
 
         if (set_identity) {
             pass &= sir_syslogid("my test ID");
@@ -1338,9 +1335,9 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
         if (do_update)
             pass &= sir_syslogopts(SIRO_MSGONLY & ~(SIRO_NOLEVEL | SIRO_NOPID));
 
-        pass &= sir_crit("%d/%d: this critical message sent to stdout and %s.", i + 1, runs, sl_name);
-        pass &= sir_alert("%d/%d: this alert message sent to stdout and %s.", i + 1, runs, sl_name);
-        pass &= sir_emerg("%d/%d: this emergency message sent to stdout and %s.", i + 1, runs, sl_name);
+        pass &= sir_crit("%d/%d: this critical message sent to stdout and %s.", i, runs, sl_name);
+        pass &= sir_alert("%d/%d: this alert message sent to stdout and %s.", i, runs, sl_name);
+        pass &= sir_emerg("%d/%d: this emergency message sent to stdout and %s.", i, runs, sl_name);
 
 # if defined(SIR_OS_LOG_ENABLED)
 #  if defined(__APPLE__) && !defined(__INTEL_COMPILER)
