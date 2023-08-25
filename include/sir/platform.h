@@ -42,7 +42,7 @@
 #   define PRINTF_FORMAT_ATTR(fmt_p, va_p) \
     __attribute__((format (gnu_printf, fmt_p, va_p)))
 #  else
-#   if !defined(__SUNPRO_C) && !defined(__SUNPRO_C)
+#   if !defined(__SUNPRO_C) && !defined(__SUNPRO_CC)
 #    define PRINTF_FORMAT_ATTR(fmt_p, va_p) \
      __attribute__((format (printf, fmt_p, va_p)))
 #   else
