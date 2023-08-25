@@ -575,7 +575,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         fmt = _sir_formattime(now, buf.timestamp, SIR_TIMEFORMAT);
         SIR_ASSERT_UNUSED(fmt, fmt);
 
-        (void)snprintf(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec);
+        _sir_snprintf_trunc(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec);
     }
 
     buf.level = _sir_formattedlevelstr(level);

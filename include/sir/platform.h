@@ -522,4 +522,13 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 #include "sir/impl.h"
 
+/* Support Clang's -Wdisabled-macro-expansion check on Linux/glibc */
+#if (defined(__linux__) && defined(__GLIBC__)) && \
+    (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L) && \
+    (defined(__clang__) || defined(__clang_version__))
+# undef stdin
+# undef stdout
+# undef stderr
+#endif
+
 /* End of platform.h */

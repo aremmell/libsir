@@ -205,12 +205,16 @@ test_extra()
                     -Wdouble-promotion
                     -Wmissing-variable-declarations
                     -Wconversion
+                    -Wdisabled-macro-expansion
+                    -Wassign-enum
                     -Wbad-function-cast
                     -Wextra-semi-stmt
                     -Wno-sign-conversion
                     -Wswitch-enum
                     -Wno-string-conversion
-                    -Wformat-nonliteral"
+                    -Wformat-nonliteral
+                    -Wformat=2
+                    -Wshift-overflow"
             ${MAKE:-make}
                 -j "${CPUS:-1}" ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
       printf '%s\n' ' && true' >> ./.extra.sh
@@ -250,11 +254,15 @@ test_gccextra()
                     -Wdouble-promotion
                     -Wmissing-declarations
                     -Wconversion
+                    -Wbad-function-cast
+                    -Wextra-semi-stmt
                     -Wno-sign-conversion
                     -Wswitch-enum
                     -Wno-string-conversion
                     -Wformat-nonliteral
-                    -Wformat-truncation"
+                    -Wformat=2
+                    -Wformat-overflow
+                    -Wformat-truncation=2"
             ${MAKE:-make}
                 -j 1 ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
       printf '%s\n' ' && true' >> ./.extra.sh

@@ -720,7 +720,14 @@ bool sirtest_textstylesanity(void) {
     bool pass = si_init;
 
     printf("\t" WHITEB("--- explicitly invalid ---") "\n");
+#if defined(__clang__) || defined(__clang_version__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wassign-enum"
+#endif
     pass &= !sir_settextstyle(SIRL_INFO, 0xbbb, 800, 920);
+#if defined(__clang__) || defined(__clang_version__)
+# pragma clang diagnostic pop
+#endif
     pass &= sir_info("I have set an invalid text style.");
 
     pass &= !sir_settextstyle(SIRL_DEBUG, SIRTA_NORMAL, SIRTC_BLACK, SIRTC_BLACK);
@@ -923,7 +930,14 @@ bool sirtest_optionssanity(void) {
     printf(INDENT_ITEM WHITE("gaps in 0x001ff00: %08"PRIx32) "\n", invalid);
 
     /* greater than SIRO_MSGONLY and less than SIRO_NOHDR. */
+#if defined(__clang__) || defined(__clang_version__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wassign-enum"
+#endif
     for (sir_option o = 0x00008f00; o < SIRO_NOHDR; o += 0x1000) {
+#if defined(__clang__) || defined(__clang_version__)
+# pragma clang diagnostic pop
+#endif
         pass &= !_sir_validopts(o);
         printf(INDENT_ITEM WHITE("SIRO_MSGONLY >< SIRO_NOHDR: %08"PRIx32) "\n", o);
     }
@@ -1023,7 +1037,14 @@ bool sirtest_levelssanity(void) {
     printf(INDENT_ITEM WHITE("greater than SIRL_ALL: %04"PRIx16) "\n", invalid);
 
     /* individual invalid level. */
+#if defined(__clang__) || defined(__clang_version__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wassign-enum"
+#endif
     sir_level invalid2 = 0x1337;
+#if defined(__clang__) || defined(__clang_version__)
+# pragma clang diagnostic pop
+#endif
     pass &= !_sir_validlevel(invalid2);
     printf(INDENT_ITEM WHITE("individual invalid level: %04"PRIx32) "\n", invalid2);
 
