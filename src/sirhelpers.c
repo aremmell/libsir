@@ -244,7 +244,7 @@ bool __sir_validstr(const char* restrict str, bool fail) {
     bool valid = str && (*str != '\0');
     if (!valid && fail) {
         (void)_sir_seterror(_SIR_E_STRING);
-        SIR_ASSERT(!(bool)"invalid string");
+        SIR_ASSERT(!(bool)"invalid string!");
     }
     return valid;
 }
