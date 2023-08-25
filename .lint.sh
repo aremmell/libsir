@@ -201,21 +201,21 @@ test_extra()
         ' && ${MAKE:-make} clean &&
         env CC="${CCACHE:-env} clang"
             CFLAGS="-Werror
-                    -Wmissing-prototypes
-                    -Wdouble-promotion
-                    -Wmissing-variable-declarations
+                    -Wassign-enum
+                    -Wbad-function-cast
                     -Wconversion
                     -Wdisabled-macro-expansion
-                    -Wassign-enum
-                    -Wstring-conversion
-                    -Wbad-function-cast
+                    -Wdouble-promotion
                     -Wextra-semi-stmt
-                    -Wno-sign-conversion
-                    -Wswitch-enum
-                    -Wno-string-conversion
-                    -Wformat-nonliteral
                     -Wformat=2
-                    -Wshift-overflow"
+                    -Wformat-nonliteral
+                    -Wmissing-prototypes
+                    -Wmissing-variable-declarations
+                    -Wno-sign-conversion
+                    -Wno-string-conversion
+                    -Wshift-overflow
+                    -Wstring-conversion
+                    -Wswitch-enum"
             ${MAKE:-make}
                 -j "${CPUS:-1}" ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
       printf '%s\n' ' && true' >> ./.extra.sh
@@ -251,19 +251,19 @@ test_gccextra()
         ' && ${MAKE:-make} clean &&
         env CC="${CCACHE:-env} gcc"
             CFLAGS="-Werror
-                    -Wmissing-prototypes
-                    -Wdouble-promotion
-                    -Wmissing-declarations
-                    -Wconversion
                     -Wbad-function-cast
+                    -Wconversion
+                    -Wdouble-promotion
                     -Wextra-semi
-                    -Wno-sign-conversion
-                    -Wswitch-enum
-                    -Wno-string-conversion
-                    -Wformat-nonliteral
                     -Wformat=2
+                    -Wformat-nonliteral
                     -Wformat-overflow
-                    -Wformat-truncation=2"
+                    -Wformat-truncation=2
+                    -Wmissing-declarations
+                    -Wmissing-prototypes
+                    -Wno-sign-conversion
+                    -Wno-string-conversion
+                    -Wswitch-enum"
             ${MAKE:-make}
                 -j 1 ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
       printf '%s\n' ' && true' >> ./.extra.sh
