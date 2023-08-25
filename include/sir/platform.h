@@ -57,6 +57,7 @@
 # else
 #  define HAS_ATTRIBUTE(atr) 0
 # endif
+
 # undef SANITIZE_SUPPRESS
 # if HAS_ATTRIBUTE(no_sanitize)
 #  define SANITIZE_SUPPRESS(str) __attribute__((no_sanitize(str)))
@@ -83,15 +84,15 @@
 #    undef __HAVE_ATOMIC_H__
 #   endif
 #  endif
+#  if defined(__IMPORTC__)
+#   include "sir/platform_importc.h"
+#  endif
 #  if !defined(__open_xl__) && defined(__ibmxl__) && defined(__ibmxl_release__)
 #   if __ibmxl__ <= 16
 #    if __ibmxl_release__ <= 1
 #     undef __HAVE_ATOMIC_H__
 #    endif
 #   endif
-#  endif
-#  if defined(__IMPORTC__)
-#   include "sir/platform_importc.h"
 #  endif
 #  if !defined(__open_xl__) && defined(__xlC_ver__)
 #   if __xlC_ver__ <= 0x0000000e
