@@ -345,7 +345,7 @@ Windows/x64 (LLVM-MinGW):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
-    - env CC="x86_64-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes" make PLATFORM_LIB_EXT=".a"
+    - env CC="x86_64-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes -Wno-unknown-pragmas" make PLATFORM_LIB_EXT=".a"
     - cp -f /opt/llvm-mingw/x86_64-w64-mingw32/bin/libwinpthread-1.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -356,10 +356,8 @@ Windows/x64 (LLVM-MinGW):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
@@ -389,7 +387,7 @@ Windows/Arm (LLVM-MinGW):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
-    - env CC="armv7-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes" make
+    - env CC="armv7-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes -Wno-unknown-pragmas" make
     - cp -f /opt/llvm-mingw/armv7-w64-mingw32/bin/libwinpthread-1.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -418,7 +416,7 @@ Windows/Arm64 (LLVM-MinGW):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
-    - env CC="aarch64-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes" make
+    - env CC="aarch64-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes -Wno-unknown-pragmas" make
     - cp -f /opt/llvm-mingw/aarch64-w64-mingw32/bin/libwinpthread-1.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -482,7 +480,7 @@ Windows/i686 (LLVM-MinGW):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
-    - env CC="i686-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes -Wno-incompatible-function-pointer-types" make PLATFORM_LIB_EXT=".a"
+    - env CC="i686-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes -Wno-incompatible-function-pointer-types -Wno-unknown-pragmas" make PLATFORM_LIB_EXT=".a"
     - cp -f /opt/llvm-mingw/i686-w64-mingw32/bin/libwinpthread-1.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -493,10 +491,8 @@ Windows/i686 (LLVM-MinGW):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
@@ -839,10 +835,8 @@ Windows/x64 (MSVC):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
@@ -883,10 +877,8 @@ Windows/i686 (MSVC):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
@@ -927,10 +919,8 @@ Windows/x64 (MinGW-MSVCRT):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
@@ -971,10 +961,8 @@ Windows/x64 (MinGW-UCRT):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
@@ -1015,10 +1003,8 @@ Windows/i686 (MinGW):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
@@ -1392,10 +1378,8 @@ Windows/i686 (OrangeC):
     - mkdir -p logs
     - touch build/bin/file.exists
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
@@ -1509,10 +1493,8 @@ Windows/x64 (Embarcadero):
     - mkdir -p logs
     - touch build/bin/file.exists
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
@@ -1554,10 +1536,8 @@ Windows/i686 (Embarcadero):
     - mkdir -p logs
     - touch build/bin/file.exists
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
