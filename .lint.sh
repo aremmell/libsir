@@ -256,7 +256,7 @@ test_gccextra()
                     -Wmissing-declarations
                     -Wconversion
                     -Wbad-function-cast
-                    -Wextra-semi-stmt
+                    -Wextra-semi
                     -Wno-sign-conversion
                     -Wswitch-enum
                     -Wno-string-conversion
