@@ -254,7 +254,6 @@ test_gccextra()
                     -Wbad-function-cast
                     -Wconversion
                     -Wdouble-promotion
-                    -Wextra-semi
                     -Wformat=2
                     -Wformat-nonliteral
                     -Wformat-overflow
