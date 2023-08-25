@@ -207,6 +207,7 @@ test_extra()
                     -Wconversion
                     -Wdisabled-macro-expansion
                     -Wassign-enum
+                    -Wstring-conversion
                     -Wbad-function-cast
                     -Wextra-semi-stmt
                     -Wno-sign-conversion
