@@ -277,7 +277,7 @@
  * data in any color mode (the largest possible sequence, which is:
  * `\x1b[a;fb;m;rrr;ggg;bbb;fb;m;rrr;ggg;bbbm`) plus a null terminator.
  */
-# define SIR_MAXSTYLE 43
+# define SIR_MAXSTYLE 39
 
 /** The maximum size, in characters, of final formatted output. */
 # define SIR_MAXOUTPUT \
