@@ -1731,3 +1731,32 @@ Clang Sanitizer (Address, 32-bit):
   interruptible: true
 
 ############################################################################
+
+Oracle Lint:
+  stage: lint
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/oracle:latest
+  script:
+    - *Configuration
+    - /opt/oracle/developerstudio-latest/bin/lint -V
+    - |
+      # Lint ...
+      echo -e "section_start:`date +%s`:Lint_section[collapsed=true]\r\e[0K\033[0;36mLint ...\033[0m" || true
+    - make clean
+    - export CFLAGS="-errsecurity=extended -errtags=yes -erroff=E_PTRDIFF_OVERFLOW,E_CONSTANT_CONDITION,E_STATIC_UNUSED -fd -m64 -XCC=yes -errchk=structarg,parentheses,signext,locfmtchk -errfmt=src -errtags=yes -Xalias_level=any"
+    - env CC="/opt/oracle/developerstudio-latest/bin/lint" make SUNPRO=1 SUNLINT=1 SIR_NO_PLUGINS=1 2>&1 | sed 's/ \-erroff=E_.*SUNLINT=1 / /' | tee orstlint.txt
+    - ( grep "E_" orstlint.txt || exit 0 && exit 1 )
+    - echo -e "section_end:`date +%s`:Lint_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - orstlint.txt
+  retry: 2
+  interruptible: true
+
+############################################################################

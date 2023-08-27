@@ -84,6 +84,9 @@
 #    undef __HAVE_ATOMIC_H__
 #   endif
 #  endif
+#  if defined(SUNLINT)
+#   undef __HAVE_ATOMIC_H__
+#  endif
 #  if defined(__IMPORTC__)
 #   include "sir/platform_importc.h"
 #  endif

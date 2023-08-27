@@ -54,6 +54,7 @@ cppcheck.xml
 
 # Oracle Lint
 *.ln
+orstlint.txt
 
 # Clang Analzyer
 .scan-build.sh

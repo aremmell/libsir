@@ -903,7 +903,6 @@ bool sirtest_optionssanity(void) {
                 if (++tries > SIR_NUMOPTIONS - 2)
                     break;
                 rand_idx = (size_t)getrand(SIR_NUMOPTIONS);
-
             } while (rand_idx == last_idx || _sir_bittest(opts, option_arr[rand_idx]));
 
             last_idx = rand_idx;
@@ -986,14 +985,14 @@ bool sirtest_levelssanity(void) {
     /* any combination these bitwise OR'd together
        to form a bitmask should also be valid. */
     static const sir_levels levels_arr[SIR_NUMLEVELS] = {
-       SIRL_EMERG,
-       SIRL_ALERT,
-       SIRL_CRIT,
-       SIRL_ERROR,
-       SIRL_WARN,
-       SIRL_NOTICE,
-       SIRL_INFO,
-       SIRL_DEBUG
+        SIRL_EMERG,
+        SIRL_ALERT,
+        SIRL_CRIT,
+        SIRL_ERROR,
+        SIRL_WARN,
+        SIRL_NOTICE,
+        SIRL_INFO,
+        SIRL_DEBUG
     };
 
     printf("\t" WHITEB("--- random bitmask of valid levels ---") "\n");
@@ -2239,6 +2238,7 @@ uint32_t getrand(uint32_t upper_bound) {
 #  if defined(__EMBARCADEROC__)
     return (uint32_t)(random(upper_bound));
 #  else
+    /* LINTED E_SEC_RAND_WARN */
     return (uint32_t)(random() % upper_bound);
 #  endif
 # endif

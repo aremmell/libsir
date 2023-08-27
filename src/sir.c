@@ -250,5 +250,6 @@ uint32_t sir_getversionhex(void) {
 }
 
 bool sir_isprerelease(void) {
+    /* LINTED E_CONST_EXPR */
     return (!SIR_VERSION_IS_RELEASE);
 }

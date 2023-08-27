@@ -1211,7 +1211,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
     return _sir_validstrnofail(name);
 #else
-# if !defined(_AIX) && !defined(__HURD__)
+# if !defined(_AIX) && !defined(__HURD__) && !defined(SUNLINT)
 #  pragma message("unable to determine how to get a thread name")
 # endif
     SIR_UNUSED(name);
