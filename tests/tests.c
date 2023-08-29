@@ -720,7 +720,7 @@ bool sirtest_textstylesanity(void) {
     bool pass = si_init;
 
     printf("\t" WHITEB("--- explicitly invalid ---") "\n");
-    pass &= !sir_settextstyle(SIRL_INFO, 0xbbb, 800, 920);
+    pass &= !sir_settextstyle(SIRL_INFO, (sir_textattr)0xbbb, 800, 920);
     pass &= sir_info("I have set an invalid text style.");
 
     pass &= !sir_settextstyle(SIRL_DEBUG, SIRTA_NORMAL, SIRTC_BLACK, SIRTC_BLACK);
@@ -923,7 +923,7 @@ bool sirtest_optionssanity(void) {
     printf(INDENT_ITEM WHITE("gaps in 0x001ff00: %08"PRIx32) "\n", invalid);
 
     /* greater than SIRO_MSGONLY and less than SIRO_NOHDR. */
-    for (sir_option o = 0x00008f00; o < SIRO_NOHDR; o += 0x1000) {
+    for (sir_option o = (sir_option)0x00008f00; o < SIRO_NOHDR; o += 0x1000) {
         pass &= !_sir_validopts(o);
         printf(INDENT_ITEM WHITE("SIRO_MSGONLY >< SIRO_NOHDR: %08"PRIx32) "\n", o);
     }
@@ -1023,7 +1023,7 @@ bool sirtest_levelssanity(void) {
     printf(INDENT_ITEM WHITE("greater than SIRL_ALL: %08"PRIx32) "\n", invalid);
 
     /* individual invalid level. */
-    sir_level invalid2 = 0x1337;
+    sir_level invalid2 = (sir_level)0x1337;
     pass &= !_sir_validlevel(invalid2);
     printf(INDENT_ITEM WHITE("individual invalid level: %04"PRIx32) "\n", invalid2);
 
@@ -1279,22 +1279,28 @@ bool sirtest_updatesanity(void) {
 }
 
 #if defined(SIR_SYSLOG_ENABLED) || defined(SIR_OS_LOG_ENABLED)
-static bool generic_syslog_test(const char* sl_name, const char* identity, const char* category) {
-    bool pass             = true;
+static
+bool generic_syslog_test(const char* sl_name, const char* identity, const char* category) {
     static const int runs = 5;
 
     /* repeat initializing, opening, logging, closing, cleaning up n times. */
     printf("\trunning %d passes of random configs (system logger: '%s', "
            "identity: '%s', category: '%s')...\n", runs, sl_name, identity, category);
 
-    uint32_t rnd_input = (uint32_t)time(NULL);
+#if !defined(__WIN__)
+    uint32_t rnd = (uint32_t)(_sir_getpid() + _sir_gettid());
+#else
+    uint32_t rnd = (uint32_t)GetTickCount();
+#endif
+
+    bool pass = true;
     for (int i = 1; i <= runs; i++) {
         /* randomly skip setting process name, identity/category to thoroughly
          * test fallback routines; randomly update the config mid-run. */
-        bool set_procname = getrand_bool(rnd_input | 0x5a5a5a5au);
-        bool set_identity = getrand_bool(rnd_input | 0xcacacacau);
-        bool set_category = getrand_bool(rnd_input | 0x32323232u);
-        bool do_update    = getrand_bool(rnd_input | 0x28282828u);
+        bool set_procname = getrand_bool(rnd ^ 0x5a5a5a5au);
+        bool set_identity = getrand_bool(rnd ^ 0xc9c9c9c9u);
+        bool set_category = getrand_bool(rnd ^ 0x32323232u);
+        bool do_update    = getrand_bool(rnd ^ 0xe7e7e7e7u);
 
         printf("\tset_procname: %d, set_identity: %d, set_category: %d, do_update: %d\n",
             set_procname, set_identity, set_category, do_update);
@@ -1340,7 +1346,7 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
         pass &= sir_emerg("%d/%d: this emergency message sent to stdout and %s.", i, runs, sl_name);
 
 # if defined(SIR_OS_LOG_ENABLED)
-#  if defined(__APPLE__) && !defined(__INTEL_COMPILER)
+#  if defined(__MACOS__) && !defined(__INTEL_COMPILER)
         if (i == runs -1 && 0 == strncmp(sl_name, "os_log", 6)) {
             printf("\ttesting os_log activity feature...\n");
 
