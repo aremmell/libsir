@@ -60,7 +60,7 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
             return false;
     }
 
-    for (size_t n = 0; n < num_threads; n++) {
+    for (size_t n = 0ul; n < num_threads; n++) {
 #if !defined(__WIN__)
         pthread_attr_t attr;
         pthread_attr_init(&attr);
@@ -125,9 +125,9 @@ bool _sir_threadpool_destroy(sir_threadpool** pool) {
         SIR_ASSERT_UNUSED(unlock, unlock);
     }
 
-    for (size_t n = 0; n < (*pool)->num_threads; n++) {
+    for (size_t n = 0ul; n < (*pool)->num_threads; n++) {
         if ((*pool)->threads[n]) {
-            _sir_selflog("joining thread %zu of %zu...", n + 1, (*pool)->num_threads);
+            _sir_selflog("joining thread %zu of %zu...", n + 1ul, (*pool)->num_threads);
 #if !defined(__WIN__)
             int join = pthread_join((*pool)->threads[n], NULL);
             SIR_ASSERT_UNUSED(0 == join, join);
@@ -199,6 +199,6 @@ static unsigned __stdcall thread_pool_proc(void* arg)
 #if !defined(__WIN__)
     return NULL;
 #else /* __WIN__ */
-    return 0;
+    return 0u;
 #endif
 }
