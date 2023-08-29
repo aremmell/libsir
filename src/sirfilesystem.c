@@ -157,7 +157,7 @@ char* _sir_getcwd(void) {
 #if !defined(__WIN__)
 # if defined(__linux__) && (defined(__GLIBC__) && defined(_GNU_SOURCE))
     char* cur = get_current_dir_name();
-    if (NULL == cur)
+    if (!_sir_validptrnofail(cur))
         (void)_sir_handleerr(errno);
     return cur;
 # elif defined(_AIX)
@@ -174,8 +174,8 @@ char* _sir_getcwd(void) {
     return cur;
 # endif
 #else /* __WIN__ */
-    DWORD size = GetCurrentDirectoryA(0, NULL);
-    if (0 == size) {
+    DWORD size = GetCurrentDirectoryA(0ul, NULL);
+    if (0ul == size) {
         _sir_handlewin32err(GetLastError());
         return NULL;
     }
@@ -237,13 +237,13 @@ char* _sir_getappfilename(void) {
 # if defined(__READLINK_OS__)
         /* Flawfinder: ignore */ /* LINTED E_SEC_READLINK_WARN */
         ssize_t read = readlink(PROC_SELF, buffer, size - 1);
-        if (-1 != read && read < (ssize_t)size - 1) {
+        if (-1l != read && read < (ssize_t)size - 1) {
             resolved = true;
             break;
-        } else if (-1 == read) {
+        } else if (-1l == read) {
             resolved = _sir_handleerr(errno);
             break;
-        } else if (read == (ssize_t)size - 1) {
+        } else if (read == (ssize_t)size - 1l) {
             /*
              * It is possible that truncation occurred. As a security
              * precaution, fail; someone may have tampered with the link.
@@ -254,7 +254,7 @@ char* _sir_getappfilename(void) {
         }
 # elif defined(_AIX)
         if (size <= SIR_MAXPATH) {
-            size = size + SIR_MAXPATH + 1;
+            size = size + SIR_MAXPATH + 1l;
             continue;
         }
         int ret = _sir_aixself(buffer, &size);
@@ -327,10 +327,10 @@ char* _sir_getappfilename(void) {
 # endif
 #else /* __WIN__ */
         DWORD ret = GetModuleFileNameA(NULL, buffer, (DWORD)size);
-        if (0 != ret && ret < (DWORD)size) {
+        if (0ul != ret && ret < (DWORD)size) {
             resolved = true;
             break;
-        } else if (0 == ret) {
+        } else if (0ul == ret) {
             resolved = _sir_handlewin32err(GetLastError());
             break;
         } else if (ret == (DWORD)size || ERROR_INSUFFICIENT_BUFFER == GetLastError()) {
