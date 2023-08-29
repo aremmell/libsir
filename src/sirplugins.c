@@ -160,7 +160,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         if (!data_valid) {
             _sir_plugin_destroy(&plugin);
             (void)_sir_seterror(_SIR_E_PLUGINDAT);
-            return 0u;ßß
+            return 0u;
         }
 
         /* plugin is valid; tell it to initialize, assign it an id,

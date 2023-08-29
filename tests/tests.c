@@ -1729,11 +1729,11 @@ bool sirtest_squelchspam(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    static const size_t alternate   = 50;
+    static const size_t alternate   = 50ul;
     static const size_t sequence[3] = {
-        1000, /* non-repeating messages. */
-        1000, /* repeating messages. */
-        1000  /* alternating repeating and non-repeating messages. */
+        1000ul, /* non-repeating messages. */
+        1000ul, /* repeating messages. */
+        1000ul  /* alternating repeating and non-repeating messages. */
     };
 
     sir_timer timer;
@@ -1741,12 +1741,12 @@ bool sirtest_squelchspam(void) {
 
     printf("\t" BLUE("%zu non-repeating messages...") "\n", sequence[0]);
 
-    for (size_t n = 0ul; ascii_idx = 33; n < sequence[0]; n++, ascii_idx++) {
+    for (size_t n = 0ul, ascii_idx = 33ul; n < sequence[0]; n++, ascii_idx++) {
         pass &= sir_debug("%c%c a non-repeating message", (char)ascii_idx,
             (char)ascii_idx + 1);
 
-        if (ascii_idx == 125)
-            ascii_idx = 33;
+        if (ascii_idx == 125ul)
+            ascii_idx = 33ul;
     }
 
     printf("\t" BLUE("%zu repeating messages...") "\n", sequence[1]);
@@ -1766,14 +1766,14 @@ bool sirtest_squelchspam(void) {
     bool repeating   = false;
     size_t counter   = 0ul;
     size_t repeat_id = 0ul;
-    for (size_t n = 0ul; ascii_idx = 33; n < sequence[2]; n++, counter++, ascii_idx++) {
+    for (size_t n = 0ul, ascii_idx = 33ul; n < sequence[2]; n++, counter++, ascii_idx++) {
         if (!repeating) {
             pass &= sir_debug("%c%c a non-repeating message", (char)ascii_idx,
                 (char)ascii_idx + 1);
         } else {
             bool ret = sir_debug("%zu a repeating message", repeat_id);
 
-            if (counter - 1 >= SIR_SQUELCH_THRESHOLD - 1)
+            if (counter - 1ul >= SIR_SQUELCH_THRESHOLD - 1ul)
                 pass &= !ret;
             else
                 pass &= ret;
@@ -1781,12 +1781,12 @@ bool sirtest_squelchspam(void) {
 
         if (counter == alternate) {
             repeating = !repeating;
-            counter = 0;
+            counter = 0ul;
             repeat_id++;
         }
 
-        if (ascii_idx == 125)
-            ascii_idx = 33;
+        if (ascii_idx == 125ul)
+            ascii_idx = 33ul;
     }
 
     sir_cleanup();
