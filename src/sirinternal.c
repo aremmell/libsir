@@ -521,6 +521,7 @@ bool _sir_once(sir_once* once, sir_once_fn func) {
 #endif
 }
 
+FLATTEN_ATTR
 PRINTF_FORMAT_ATTR(2, 0)
 bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) {
     if (!_sir_sanity() || !_sir_validlevel(level) || !_sir_validstr(format))

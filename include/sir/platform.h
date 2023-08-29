@@ -90,6 +90,14 @@
 #  define ALWAYS_INLINE_ATTR
 # endif
 
+# undef FLATTEN_ATTR
+# if HAS_ATTRIBUTE(flatten) || \
+     (defined(__GNUC__) && (!defined(__SUNPRO_C) && !defined(__SUNPRO_CC)))
+#  define FLATTEN_ATTR __attribute__((flatten))
+# else
+#  define FLATTEN_ATTR
+# endif
+
 # if !defined(_WIN32)
 #  if defined(__STDC_NO_ATOMICS__)
 #   undef __HAVE_ATOMIC_H__
