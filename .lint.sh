@@ -139,6 +139,8 @@ test_duma()
         SIR_DEBUG=1 \
         SIR_SELFLOG=1
       printf '%s\n' "running DUMA-enabled example ..."
+      ulimit -n 65535 > /dev/null 2>&1 || true
+      ulimit -m 1048576 > /dev/null 2>&1 || true
       env DUMA_OUTPUT_FILE=duma1.log \
         DUMA_OUTPUT_STDERR=0 \
         DUMA_OUTPUT_STDOUT=0 \
