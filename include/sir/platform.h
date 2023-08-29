@@ -42,7 +42,7 @@
 #   define PRINTF_FORMAT_ATTR(fmt_p, va_p) \
     __attribute__((format (gnu_printf, fmt_p, va_p)))
 #  else
-#   if !defined(__SUNPRO_C) && !defined(__SUNPRO_C)
+#   if !defined(__SUNPRO_C) && !defined(__SUNPRO_CC)
 #    define PRINTF_FORMAT_ATTR(fmt_p, va_p) \
      __attribute__((format (printf, fmt_p, va_p)))
 #   else
@@ -63,6 +63,28 @@
 # endif
 # if !defined(SANITIZE_SUPPRESS)
 #  define SANITIZE_SUPPRESS(str)
+# endif
+
+# undef PURE_ATTR
+# if defined(__SUNPRO_C) || defined(__SUNPRO_CC) || \
+     defined(__GNUC__) || HAS_ATTRIBUTE(pure)
+#  define PURE_ATTR __attribute__((pure))
+# else
+#  define PURE_ATTR
+# endif
+# undef CONST_ATTR
+# if defined(__SUNPRO_C) || defined(__SUNPRO_CC) || \
+     defined(__GNUC__) || HAS_ATTRIBUTE(const)
+#  define CONST_ATTR __attribute__((const))
+# else
+#  define CONST_ATTR
+# endif
+# undef ALWAYS_INLINE_ATTR
+# if defined(__SUNPRO_C) || defined(__SUNPRO_CC) || \
+     defined(__GNUC__) || HAS_ATTRIBUTE(always_inline)
+#  define ALWAYS_INLINE_ATTR __attribute__((always_inline))
+# else
+#  define ALWAYS_INLINE_ATTR
 # endif
 
 # if !defined(_WIN32)

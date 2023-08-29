@@ -1287,11 +1287,11 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
     printf("\trunning %d passes of random configs (system logger: '%s', "
            "identity: '%s', category: '%s')...\n", runs, sl_name, identity, category);
 
-#if !defined(__WIN__)
+# if !defined(__WIN__)
     uint32_t rnd = (uint32_t)(_sir_getpid() + _sir_gettid());
-#else
+# else
     uint32_t rnd = (uint32_t)GetTickCount();
-#endif
+# endif
 
     bool pass = true;
     for (int i = 1; i <= runs; i++) {
@@ -1442,6 +1442,9 @@ bool sirtest_os_log(void) {
 #endif
 }
 
+#if !defined(__WIN__)
+CONST_ATTR
+#endif
 char *sirtest_get_wineversion(void) {
 #if !defined(__WIN__)
     return NULL;

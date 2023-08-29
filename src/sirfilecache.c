@@ -511,6 +511,7 @@ bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
 #endif
 }
 
+PURE_ATTR
 bool _sir_fcache_pred_id(const void* match, sirfile* iter) {
     sirfileid* id = (sirfileid*)match;
     return iter->id == *id;

@@ -112,6 +112,9 @@ PLUGIN_EXPORT bool sir_plugin_init(void) {
 }
 #endif
 
+#if defined(PLUGINDUMMY_BADBEHAVIOR6)
+CONST_ATTR
+#endif
 PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message) {
 #if defined(PLUGINDUMMY_BADBEHAVIOR6)
     SIR_UNUSED(level);

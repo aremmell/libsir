@@ -153,6 +153,7 @@ PRINTF_FORMAT_ATTR(4, 5)
 void __sir_selflog(const char* func, const char* file, uint32_t line, PRINTF_FORMAT const char* format, ...);
 #  define _sir_selflog(...) __sir_selflog(__func__, __file__, __LINE__, __VA_ARGS__)
 # else
+ALWAYS_INLINE_ATTR
 static inline
 void __sir_fakefunc(const char* format, ...) {
     SIR_UNUSED(format);

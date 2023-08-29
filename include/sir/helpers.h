@@ -36,6 +36,7 @@
 # define _sir_mkerror(code) (((uint32_t)((code) & 0x7fff) << 16) | 0x80000000)
 
 /** Validates an internal error. */
+ALWAYS_INLINE_ATTR
 static inline
 bool _sir_validerror(uint32_t err) {
     uint32_t masked = err & 0x8fffffff;
@@ -43,6 +44,7 @@ bool _sir_validerror(uint32_t err) {
 }
 
 /** Extracts just the code from an internal error. */
+ALWAYS_INLINE_ATTR
 static inline
 uint16_t _sir_geterrcode(uint32_t err) {
     return (err >> 16) & 0x7fff;
@@ -126,12 +128,14 @@ bool __sir_validptrptr(const void* restrict* pp, bool fail);
 # define _sir_validptrptr(pp) __sir_validptrptr((const void* restrict*)pp, true)
 
 /** Checks a bitmask for a specific set of bits. */
+ALWAYS_INLINE_ATTR
 static inline
 bool _sir_bittest(uint32_t flags, uint32_t test) {
     return (flags & test) == test;
 }
 
 /** Sets a specific set of bits high in a bitmask. */
+ALWAYS_INLINE_ATTR
 static inline
 bool _sir_setbitshigh(uint32_t* flags, uint32_t set) {
     if (!flags)
@@ -142,6 +146,7 @@ bool _sir_setbitshigh(uint32_t* flags, uint32_t set) {
 }
 
 /** Sets a specific set of bits low in a bitmask. */
+ALWAYS_INLINE_ATTR
 static inline
 bool _sir_setbitslow(uint32_t* flags, uint32_t set) {
     if (!flags)
@@ -167,12 +172,14 @@ void _sir_safefclose(FILE* restrict* restrict f);
 bool _sir_validfd(int fd);
 
 /** Validates a file identifier */
+ALWAYS_INLINE_ATTR
 static inline
 bool _sir_validfileid(sirfileid id) {
     return 0 != id;
 }
 
 /** Validates a plugin identifier */
+ALWAYS_INLINE_ATTR
 static inline
 bool _sir_validpluginid(sirpluginid id) {
     return 0 != id;
@@ -188,6 +195,7 @@ bool _sir_validlevels(sir_levels levels);
 bool _sir_validlevel(sir_level level);
 
 /** Applies default ::sir_level flags if applicable. */
+ALWAYS_INLINE_ATTR
 static inline
 void _sir_defaultlevels(sir_levels* levels, sir_levels def) {
     if (levels && SIRL_DEFAULT == *levels)
@@ -195,6 +203,7 @@ void _sir_defaultlevels(sir_levels* levels, sir_levels def) {
 }
 
 /** Applies default ::sir_options flags if applicable. */
+ALWAYS_INLINE_ATTR
 static inline
 void _sir_defaultopts(sir_options* opts, sir_options def) {
     if (opts && SIRO_DEFAULT == *opts)
@@ -214,24 +223,28 @@ bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color);
 bool _sir_validcolormode(sir_colormode mode);
 
 /** Converts a SIRTC_* value to a 16-color mode ANSI foreground color. */
+ALWAYS_INLINE_ATTR
 static inline
 sir_textcolor _sir_mkansifgcolor(sir_textcolor fg) {
     return SIRTC_DEFAULT == fg ? 39 : fg < 8 ? fg + 30 : fg + 82;
 }
 
 /** Converts a SIRTC_* value to a 16-color mode ANSI background color. */
+ALWAYS_INLINE_ATTR
 static inline
 sir_textcolor _sir_mkansibgcolor(sir_textcolor bg) {
     return SIRTC_DEFAULT == bg ? 49 : bg < 8 ? bg + 40 : bg + 92;
 }
 
 /** Returns the appropriate ANSI command for the specified foreground color. */
+ALWAYS_INLINE_ATTR
 static inline
 sir_textcolor _sir_getansifgcmd(sir_textcolor fg) {
     return SIRTC_DEFAULT == fg ? 39 : 38;
 }
 
 /** Returns the appropriate ANSI command for the specified background color. */
+ALWAYS_INLINE_ATTR
 static inline
 sir_textcolor _sir_getansibgcmd(sir_textcolor bg) {
     return SIRTC_DEFAULT == bg ? 49 : 48;
@@ -256,6 +269,7 @@ sir_textcolor _sir_getansibgcmd(sir_textcolor bg) {
 # define _sir_setblueincolor(color, blue) ((color) |= ((blue) & 0x000000ff))
 
 /** Sets the red, blue, and green components in an RGB color mode ::sir_textcolor. */
+ALWAYS_INLINE_ATTR
 static inline
 sir_textcolor _sir_makergb(sir_textcolor r, sir_textcolor g, sir_textcolor b) {
     sir_textcolor retval = 0;
@@ -275,6 +289,7 @@ bool __sir_validstr(const char* restrict str, bool fail);
 # define _sir_validstrnofail(str) __sir_validstr(str, false)
 
 /** Places a null terminator at the first index in a string buffer. */
+ALWAYS_INLINE_ATTR
 static inline
 void _sir_resetstr(char* str) {
     str[0] = '\0';
@@ -284,6 +299,7 @@ void _sir_resetstr(char* str) {
  * Wrapper for strncmp. Just easier to read and use if you only wish to
  * test for equality. Not case-sensitive.
  */
+ALWAYS_INLINE_ATTR
 static inline
 bool _sir_strsame(const char* lhs, const char* rhs, size_t count) {
     return 0 == strncmp(lhs, rhs, count);
@@ -325,6 +341,7 @@ bool _sir_getchar(char* input);
 /**
  * Implementation of the 32-bit FNV-1a OWHF (http://isthe.com/chongo/tech/comp/fnv/)
  */
+ALWAYS_INLINE_ATTR
 static inline
 uint32_t FNV32_1a(const uint8_t* data, size_t len) {
     uint32_t hash = 2166136261U;
@@ -351,6 +368,8 @@ uint32_t FNV32_1a(const uint8_t* data, size_t len) {
 # if defined(__clang__) /* only Clang has unsigned-integer-overflow; GCC BZ#96829 */
 SANITIZE_SUPPRESS("unsigned-integer-overflow")
 # endif
+PURE_ATTR
+ALWAYS_INLINE_ATTR
 static inline
 uint64_t FNV64_1a(const char* str)
 {
