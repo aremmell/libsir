@@ -423,11 +423,11 @@ typedef struct {
 /** Bitmask defining which values are to be updated in the global config. */
 typedef uint32_t sir_config_data_field;
 
-#define SIRU_LEVELS     0x00000001u /**< Update level registrations. */
-#define SIRU_OPTIONS    0x00000002u /**< Update formatting options. */
-#define SIRU_SYSLOG_ID  0x00000004u /**< Update system logger identity. */
-#define SIRU_SYSLOG_CAT 0x00000008u /**< Update system logger category. */
-#define SIRU_ALL        0x0000000fu /**< Update all available fields. */
+# define SIRU_LEVELS     0x00000001u /**< Update level registrations. */
+# define SIRU_OPTIONS    0x00000002u /**< Update formatting options. */
+# define SIRU_SYSLOG_ID  0x00000004u /**< Update system logger identity. */
+# define SIRU_SYSLOG_CAT 0x00000008u /**< Update system logger category. */
+# define SIRU_ALL        0x0000000fu /**< Update all available fields. */
 
 /** Encapsulates dynamic updating of current configuration. */
 typedef struct {
@@ -441,12 +441,12 @@ typedef struct {
 /** Bitmask defining the state of a system logger facility. */
 typedef uint32_t sir_syslog_state;
 
-#define SIRSL_IS_OPEN  0x00000001u /**< Log is open. */
-#define SIRSL_LEVELS   0x00000002u /**< Level registrations. */
-#define SIRSL_OPTIONS  0x00000004u /**< Formatting options. */
-#define SIRSL_CATEGORY 0x00000008u /**< Category. */
-#define SIRSL_IDENTITY 0x00000010u /**< Identity. */
-#define SIRSL_UPDATED  0x00000020u /**< Config has been updated. */
-#define SIRSL_IS_INIT  0x00000040u /**< Subsystem is initialized. */
+# define SIRSL_IS_OPEN  0x00000001u /**< Log is open. */
+# define SIRSL_LEVELS   0x00000002u /**< Level registrations. */
+# define SIRSL_OPTIONS  0x00000004u /**< Formatting options. */
+# define SIRSL_CATEGORY 0x00000008u /**< Category. */
+# define SIRSL_IDENTITY 0x00000010u /**< Identity. */
+# define SIRSL_UPDATED  0x00000020u /**< Config has been updated. */
+# define SIRSL_IS_INIT  0x00000040u /**< Subsystem is initialized. */
 
 #endif /* !_SIR_TYPES_H_INCLUDED */
