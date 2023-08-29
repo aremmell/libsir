@@ -235,9 +235,9 @@ char* _sir_getappfilename(void) {
 
 #if !defined(__WIN__)
 # if defined(__READLINK_OS__)
-        /* Flawfinder: ignore / LINTED E_SEC_READLINK_WARN
-         * Suppress warnings from Oracle Lint and Flawfinder about the use of
+        /* Suppress unconditional warning from Flawfinder about the use of
          * the readlink function, which is prone to pathname race conditions. */
+        /* Flawfinder: ignore */
         ssize_t read = readlink(PROC_SELF, buffer, size - 1);
         if (-1l != read && read < (ssize_t)size - 1) {
             resolved = true;
@@ -474,9 +474,7 @@ int _sir_aixself(char* buffer, size_t* size) {
     if (argv[0][0] == '/') {
         (void)snprintf(symlink, SIR_MAXPATH, "%s", argv[0]);
 
-        /* Flawfinder: ignore / LINTED E_SEC_READLINK_WARN
-         * Suppress warnings from Oracle Lint and Flawfinder about the use of
-         * the readlink function, which is prone to pathname race conditions. */
+        /* Flawfinder: ignore */
         res = readlink(symlink, temp_buffer, SIR_MAXPATH);
         if (res < 0)
             _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
@@ -493,18 +491,14 @@ int _sir_aixself(char* buffer, size_t* size) {
 
         (void)snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
 
-        /* Flawfinder: ignore / LINTED E_SEC_READLINK_WARN
-         * Suppress warnings from Oracle Lint and Flawfinder about the use of
-         * the readlink function, which is prone to pathname race conditions. */
+        /* Flawfinder: ignore */
         res = readlink(cwd, cwdl, sizeof(cwdl) - 1);
         if (res < 0)
             return -1;
 
         (void)snprintf(symlink, SIR_MAXPATH, "%s%s", cwdl, relative + 1);
 
-        /* Flawfinder: ignore / LINTED E_SEC_READLINK_WARN
-         * Suppress warnings from Oracle Lint and Flawfinder about the use of
-         * the readlink function, which is prone to pathname race conditions. */
+        /* Flawfinder: ignore */
         res = readlink(symlink, temp_buffer, SIR_MAXPATH);
         if (res < 0)
             _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
@@ -516,18 +510,14 @@ int _sir_aixself(char* buffer, size_t* size) {
     } else if (strchr(argv[0], '/') != NULL) {
         (void)snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
 
-        /* Flawfinder: ignore / LINTED E_SEC_READLINK_WARN
-         * Suppress warnings from Oracle Lint and Flawfinder about the use of
-         * the readlink function, which is prone to pathname race conditions. */
+        /* Flawfinder: ignore */
         res = readlink(cwd, cwdl, sizeof(cwdl) - 1);
         if (res < 0)
             return -1;
 
         (void)snprintf(symlink, SIR_MAXPATH, "%s%s", cwdl, argv[0]);
 
-        /* Flawfinder: ignore / LINTED E_SEC_READLINK_WARN
-         * Suppress warnings from Oracle Lint and Flawfinder about the use of
-         * the readlink function, which is prone to pathname race conditions. */
+        /* Flawfinder: ignore */
         res = readlink(symlink, temp_buffer, SIR_MAXPATH);
         if (res < 0)
             _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
@@ -550,9 +540,7 @@ int _sir_aixself(char* buffer, size_t* size) {
         token = strtok_r(clonedpath, ":", &tokptr);
 
         (void)snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
-        /* Flawfinder: ignore / LINTED E_SEC_READLINK_WARN
-         * Suppress warnings from Oracle Lint and Flawfinder about the use of
-         * the readlink function, which is prone to pathname race conditions. */
+        /* Flawfinder: ignore */
         res = readlink(cwd, cwdl, sizeof(cwdl) - 1);
         if (res < 0)
             return -1;
@@ -568,9 +556,7 @@ int _sir_aixself(char* buffer, size_t* size) {
                 }
 
                 if (stat(symlink, &statstruct) != -1) {
-                    /* Flawfinder: ignore / LINTED E_SEC_READLINK_WARN
-                     * Suppress warnings from Oracle Lint and Flawfinder about the use of
-                     * the readlink function, which is prone to pathname race conditions. */
+                    /* Flawfinder: ignore */
                     res = readlink(symlink, temp_buffer, SIR_MAXPATH);
                     if (res < 0)
                         _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
@@ -583,9 +569,7 @@ int _sir_aixself(char* buffer, size_t* size) {
             } else {
                 (void)snprintf(symlink, SIR_MAXPATH, "%s/%s", token, ps.pr_fname);
                 if (stat(symlink, &statstruct) != -1) {
-                    /* Flawfinder: ignore / LINTED E_SEC_READLINK_WARN
-                     * Suppress warnings from Oracle Lint and Flawfinder about the use of
-                     * the readlink function, which is prone to pathname race conditions. */
+                    /* Flawfinder: ignore */
                     res = readlink(symlink, temp_buffer, SIR_MAXPATH);
                     if (res < 0)
                         _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
