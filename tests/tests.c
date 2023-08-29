@@ -2222,7 +2222,6 @@ uint32_t getrand(uint32_t upper_bound) {
 #  if defined(__EMBARCADEROC__)
     return (uint32_t)(random(upper_bound));
 #  else
-    /* LINTED E_SEC_RAND_WARN */
     return (uint32_t)(random() % upper_bound);
 #  endif
 # endif
