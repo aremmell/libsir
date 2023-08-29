@@ -57,6 +57,7 @@
 # else
 #  define HAS_ATTRIBUTE(atr) 0
 # endif
+
 # undef SANITIZE_SUPPRESS
 # if HAS_ATTRIBUTE(no_sanitize)
 #  define SANITIZE_SUPPRESS(str) __attribute__((no_sanitize(str)))
@@ -72,6 +73,7 @@
 # else
 #  define PURE_ATTR
 # endif
+
 # undef CONST_ATTR
 # if defined(__SUNPRO_C) || defined(__SUNPRO_CC) || \
      defined(__GNUC__) || HAS_ATTRIBUTE(const)
@@ -79,6 +81,7 @@
 # else
 #  define CONST_ATTR
 # endif
+
 # undef ALWAYS_INLINE_ATTR
 # if defined(__SUNPRO_C) || defined(__SUNPRO_CC) || \
      defined(__GNUC__) || HAS_ATTRIBUTE(always_inline)
