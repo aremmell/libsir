@@ -204,6 +204,7 @@ test_extra()
                     -Wassign-enum
                     -Wbad-function-cast
                     -Wconversion
+                    -DSIR_LINT=1
                     -Wdisabled-macro-expansion
                     -Wdouble-promotion
                     -Wextra-semi-stmt
