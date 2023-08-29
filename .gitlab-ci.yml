@@ -1732,6 +1732,30 @@ Clang Sanitizer (Address, 32-bit):
 
 ############################################################################
 
+DUMA:
+  stage: lint
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - duma true
+    - ./.lint.sh duma
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+      - ./duma*.log
+  retry: 2
+  interruptible: true
+
+############################################################################
+
 Oracle Lint:
   stage: lint
   tags:
@@ -1756,6 +1780,8 @@ Oracle Lint:
     expire_in: 7 days
     paths:
       - orstlint.txt
+      - build/
+      - logs/
   retry: 2
   interruptible: true
 
