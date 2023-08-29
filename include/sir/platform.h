@@ -90,6 +90,14 @@
 #  define ALWAYS_INLINE_ATTR
 # endif
 
+# undef MALLOC_ATTR
+# if defined(__SUNPRO_C) || defined(__SUNPRO_CC) || \
+     defined(__GNUC__) || HAS_ATTRIBUTE(malloc)
+#  define MALLOC_ATTR __attribute__((malloc))
+# else
+#  define MALLOC_ATTR
+# endif
+
 # undef FLATTEN_ATTR
 # if HAS_ATTRIBUTE(flatten) || \
      (defined(__GNUC__) && (!defined(__SUNPRO_C) && !defined(__SUNPRO_CC)))

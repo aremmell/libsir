@@ -350,6 +350,7 @@ char* _sir_getappfilename(void) {
     return buffer;
 }
 
+MALLOC_ATTR
 char* _sir_getappbasename(void) {
     char* filename = _sir_getappfilename();
     if (!_sir_validstr(filename)) {
@@ -364,6 +365,7 @@ char* _sir_getappbasename(void) {
     return bname;
 }
 
+MALLOC_ATTR
 char* _sir_getappdir(void) {
     char* filename = _sir_getappfilename();
     if (!_sir_validstr(filename)) {
