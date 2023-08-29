@@ -946,8 +946,8 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx)
     SIR_UNUSED(level);
     SIR_UNUSED(buf);
     SIR_UNUSED(ctx);
-    return false;
 #endif
+    return false;
 }
 
 #if defined(SIR_NO_SYSTEM_LOGGERS)
@@ -1031,8 +1031,8 @@ bool _sir_syslog_close(sir_syslog_dest* ctx) {
 # endif
 #else
     SIR_UNUSED(ctx);
-    return false;
 #endif
+    return false;
 }
 
 void _sir_syslog_reset(sir_syslog_dest* ctx) {
@@ -1048,6 +1048,9 @@ void _sir_syslog_reset(sir_syslog_dest* ctx) {
 #endif
 }
 
+#if !defined(__IMPORTC__)
+PURE_ATTR
+#endif
 const char* _sir_formattedlevelstr(sir_level level) {
     static const size_t low  = 0;
     static const size_t high = SIR_NUMLEVELS - 1;
