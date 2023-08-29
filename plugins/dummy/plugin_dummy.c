@@ -118,7 +118,7 @@ PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message) {
     SIR_UNUSED(message);
     return false;
 #else
-    printf("\t" DGRAY("" PLUGIN_NAME " (%s): level: %04"PRIx32", message: %s"),
+    printf("\t" DGRAY("" PLUGIN_NAME " (%s): level: %04"PRIx16", message: %s"),
         __func__, level, message);
     return true;
 #endif

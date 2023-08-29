@@ -916,13 +916,13 @@ bool sirtest_optionssanity(void) {
     printf(INDENT_ITEM WHITE("lowest byte: %08"PRIx32) "\n", invalid);
 
     /* gaps inbetween valid options. */
-    invalid = 0x0001ff00 & ~(SIRO_NOTIME | SIRO_NOHOST | SIRO_NOLEVEL | SIRO_NONAME |
+    invalid = 0x0001ff00u & ~(SIRO_NOTIME | SIRO_NOHOST | SIRO_NOLEVEL | SIRO_NONAME |
                              SIRO_NOMSEC | SIRO_NOPID | SIRO_NOTID  | SIRO_NOHDR);
     pass &= !_sir_validopts(invalid);
-    printf(INDENT_ITEM WHITE("gaps in 0x001ff00: %08"PRIx32) "\n", invalid);
+    printf(INDENT_ITEM WHITE("gaps in 0x001ff00u: %08"PRIx32) "\n", invalid);
 
     /* greater than SIRO_MSGONLY and less than SIRO_NOHDR. */
-    for (sir_option o = (sir_option)0x00008f00; o < SIRO_NOHDR; o += 0x1000) {
+    for (sir_option o = 0x00008f00u; o < SIRO_NOHDR; o += 0x1000u) {
         pass &= !_sir_validopts(o);
         printf(INDENT_ITEM WHITE("SIRO_MSGONLY >< SIRO_NOHDR: %08"PRIx32) "\n", o);
     }
@@ -1010,21 +1010,21 @@ bool sirtest_levelssanity(void) {
 
         pass &= _sir_validlevels(levels);
         printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %"PRIu32", levels:"
-                                 " %08"PRIx32) ")\n", n + 1, iterations, rand_count, levels);
+                                 " %04"PRIx16) ")\n", n + 1, iterations, rand_count, levels);
     }
     PRINT_PASS(pass, "\t--- random bitmask of valid levels: %s ---\n\n", PRN_PASS(pass));
 
     printf("\t" WHITEB("--- invalid values ---") "\n");
 
     /* greater than SIRL_ALL. */
-    sir_levels invalid = (0x0000ffffu & ~SIRL_ALL);
+    sir_levels invalid = (0xffffu & ~SIRL_ALL);
     pass &= !_sir_validlevels(invalid);
-    printf(INDENT_ITEM WHITE("greater than SIRL_ALL: %08"PRIx32) "\n", invalid);
+    printf(INDENT_ITEM WHITE("greater than SIRL_ALL: %04"PRIx16) "\n", invalid);
 
     /* individual invalid level. */
-    sir_level invalid2 = (sir_level)0x1337;
+    sir_level invalid2 = 0x1337u;
     pass &= !_sir_validlevel(invalid2);
-    printf(INDENT_ITEM WHITE("individual invalid level: %04"PRIx32) "\n", invalid2);
+    printf(INDENT_ITEM WHITE("individual invalid level: %04"PRIx16) "\n", invalid2);
 
     PRINT_PASS(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 

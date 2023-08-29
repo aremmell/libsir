@@ -349,12 +349,12 @@ bool _sirfile_update(sirfile* sf, sir_update_config_data* data) {
 
     if (_sir_bittest(data->fields, SIRU_LEVELS)) {
         if (sf->levels != *data->levels) {
-            _sir_selflog("updating file (id: %"PRIx32") levels from %08"PRIx32
-                         " to %08"PRIx32, sf->id, sf->levels, *data->levels);
+            _sir_selflog("updating file (id: %"PRIx32") levels from %04"PRIx16
+                         " to %04"PRIx16, sf->id, sf->levels, *data->levels);
             sf->levels = *data->levels;
         } else {
             _sir_selflog("skipped superfluous update of file (id: %"PRIx32")"
-                         " levels: %08"PRIx32, sf->id, sf->levels);
+                         " levels: %04"PRIx16, sf->id, sf->levels);
         }
 
         return true;
@@ -560,7 +560,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
         SIR_ASSERT(_sirfile_validate(sfc->files[n]));
 
         if (!_sir_bittest(sfc->files[n]->levels, level)) {
-            _sir_selflog("level %04"PRIx32" not set in level mask (%08"PRIx32
+            _sir_selflog("level %04"PRIx16" not set in level mask (%04"PRIx16
                          ") for file (path: '%s', id: %"PRIx32"); skipping",
                          level, sfc->files[n]->levels, sfc->files[n]->path,
                          sfc->files[n]->id);

@@ -137,7 +137,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         /* verify level registration bitmask. */
         if (!_sir_validlevels(plugin->info.levels)) {
             _sir_selflog("error: plugin (path: '%s', addr: %p) has invalid levels"
-                         " %08"PRIx32, plugin->path, plugin->handle, plugin->info.levels);
+                         " %04"PRIx16, plugin->path, plugin->handle, plugin->info.levels);
             data_valid = false;
         }
 
@@ -178,7 +178,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
 
         _sir_selflog("successfully validated plugin (path: '%s', id: %08"PRIx32");"
                      " properties:\n{\n\tversion = %"PRIu8".%"PRIu8".%"PRIu8"\n\t"
-                     "levels = %08"PRIx32"\n\topts = %08"PRIx32"\n\tauthor = '%s'"
+                     "levels = %04"PRIx16"\n\topts = %08"PRIx32"\n\tauthor = '%s'"
                      "\n\tdesc = '%s'\n\tcaps = %016"PRIx64"\n}", plugin->path,
                      plugin->id, plugin->info.maj_ver, plugin->info.min_ver,
                      plugin->info.bld_ver, plugin->info.levels, plugin->info.opts,
@@ -456,7 +456,7 @@ bool _sir_plugin_cache_dispatch(sir_plugincache* spc, sir_level level, sirbuf* b
 
     for (size_t n = 0; n < spc->count; n++) {
         if (!_sir_bittest(spc->plugins[n]->info.levels, level)) {
-            _sir_selflog("level %04"PRIx32" not set in level mask (%08"PRIx32
+            _sir_selflog("level %04"PRIx16" not set in level mask (%04"PRIx16
                          ") for plugin (path: '%s', id: %08"PRIx32"); skipping",
                          level, spc->plugins[n]->info.levels, spc->plugins[n]->path,
                          spc->plugins[n]->id);

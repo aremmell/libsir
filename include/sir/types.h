@@ -45,20 +45,20 @@ typedef uint32_t sirfileid;
 typedef uint32_t sirpluginid;
 
 /** Defines the available levels (severity/priority) of logging output. */
-#define SIRL_NONE    0x00000000u /**< No output. */
-#define SIRL_EMERG   0x00000001u /**< Nuclear war, Armageddon, etc. */
-#define SIRL_ALERT   0x00000002u /**< Action required ASAP. */
-#define SIRL_CRIT    0x00000004u /**< Critical errors. */
-#define SIRL_ERROR   0x00000008u /**< Errors. */
-#define SIRL_WARN    0x00000010u /**< Warnings that could likely be ignored. */
-#define SIRL_NOTICE  0x00000020u /**< Normal but significant. */
-#define SIRL_INFO    0x00000040u /**< Informational messages. */
-#define SIRL_DEBUG   0x00000080u /**< Debugging/diagnostic output. */
-#define SIRL_ALL     0x000000ffu /**< Include all logging levels. */
-#define SIRL_DEFAULT 0x00000100u /**< Default levels for this type of destination. */
+#define SIRL_NONE    0x0000u /**< No output. */
+#define SIRL_EMERG   0x0001u /**< Nuclear war, Armageddon, etc. */
+#define SIRL_ALERT   0x0002u /**< Action required ASAP. */
+#define SIRL_CRIT    0x0004u /**< Critical errors. */
+#define SIRL_ERROR   0x0008u /**< Errors. */
+#define SIRL_WARN    0x0010u /**< Warnings that could likely be ignored. */
+#define SIRL_NOTICE  0x0020u /**< Normal but significant. */
+#define SIRL_INFO    0x0040u /**< Informational messages. */
+#define SIRL_DEBUG   0x0080u /**< Debugging/diagnostic output. */
+#define SIRL_ALL     0x00ffu /**< Include all logging levels. */
+#define SIRL_DEFAULT 0x0100u /**< Default levels for this type of destination. */
 
 /** The ::sir_level type. */
-typedef uint32_t sir_level;
+typedef uint16_t sir_level;
 
 /** ::sir_level bitmask type. */
 typedef uint32_t sir_levels;

@@ -252,10 +252,10 @@ bool _sir_init_sanity(const sirinit* si) {
 static
 bool _sir_updatelevels(const char* name, sir_levels* old, sir_levels* new) {
     if (*old != *new) {
-        _sir_selflog("updating %s levels from %08"PRIx32" to %08"PRIx32, name, *old, *new);
+        _sir_selflog("updating %s levels from %04"PRIx16" to %04"PRIx16, name, *old, *new);
         *old = *new;
     } else {
-        _sir_selflog("skipped superfluous update of %s levels: %08"PRIx32, name, *old);
+        _sir_selflog("skipped superfluous update of %s levels: %04"PRIx16, name, *old);
     }
     return true;
 }
@@ -713,7 +713,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
 #endif
 
     if (0 == wanted) {
-        _sir_selflog("error: no destinations registered for level %04"PRIx32, level);
+        _sir_selflog("error: no destinations registered for level %04"PRIx16, level);
         return _sir_seterror(_SIR_E_NODEST);
     }
 
@@ -866,7 +866,7 @@ bool _sir_syslog_open(sir_syslog_dest* ctx) {
         return true;
     }
 
-    _sir_selflog("opening log (levels: %08"PRIx32", options: %08"PRIx32")", ctx->levels,
+    _sir_selflog("opening log (levels: %04"PRIx16", options: %08"PRIx32")", ctx->levels,
         ctx->opts);
 
 # if defined(SIR_OS_LOG_ENABLED)
