@@ -32,12 +32,14 @@
 # if !defined(__WIN__)
 bool _sir_write_stdio(FILE* stream, const char* message);
 
+ALWAYS_INLINE_ATTR
 static inline
 bool _sir_write_stdout(const char* message, size_t len) {
     SIR_UNUSED(len);
     return _sir_write_stdio(stdout, message);
 }
 
+ALWAYS_INLINE_ATTR
 static inline
 bool _sir_write_stderr(const char* message, size_t len) {
     SIR_UNUSED(len);
@@ -50,11 +52,13 @@ extern HANDLE __sir_stderr;
 void _sir_initialize_stdio(void);
 bool _sir_write_stdio(HANDLE console, const char* message, size_t len);
 
+ALWAYS_INLINE_ATTR
 static inline
 bool _sir_write_stdout(const char* message, size_t len) {
     return _sir_write_stdio(__sir_stdout, message, len);
 }
 
+ALWAYS_INLINE_ATTR
 static inline
 bool _sir_write_stderr(const char* message, size_t len) {
     return _sir_write_stdio(__sir_stderr, message, len);

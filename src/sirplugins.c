@@ -27,6 +27,9 @@
 #include "sir/plugins.h"
 #include "sir/internal.h"
 
+#if defined(SIR_NO_PLUGINS)
+CONST_ATTR
+#endif
 sirpluginid _sir_plugin_load(const char* path) {
 #if !defined(SIR_NO_PLUGINS)
     (void)_sir_seterror(_SIR_E_NOERROR);
@@ -76,6 +79,9 @@ sirpluginid _sir_plugin_load(const char* path) {
 #endif
 }
 
+#if defined(SIR_NO_PLUGINS)
+CONST_ATTR
+#endif
 sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
 #if !defined(SIR_NO_PLUGINS)
     sirpluginid retval = 0u;
@@ -200,6 +206,9 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
 #endif
 }
 
+#if defined(SIR_NO_PLUGINS)
+CONST_ATTR
+#endif
 sir_pluginexport _sir_plugin_getexport(sir_pluginhandle handle, const char* name) {
 #if !defined(SIR_NO_PLUGINS)
     if (!_sir_validptr(handle) || !_sir_validstr(name))
@@ -236,6 +245,9 @@ sir_pluginexport _sir_plugin_getexport(sir_pluginhandle handle, const char* name
 #endif
 }
 
+#if defined(SIR_NO_PLUGINS)
+CONST_ATTR
+#endif
 bool _sir_plugin_unload(sir_plugin* plugin) {
 #if !defined(SIR_NO_PLUGINS)
     if (!_sir_validptrnofail(plugin) || !_sir_validptrnofail(plugin->handle)) {
@@ -274,6 +286,9 @@ bool _sir_plugin_unload(sir_plugin* plugin) {
 #endif
 }
 
+#if defined(SIR_NO_PLUGINS)
+CONST_ATTR
+#endif
 sirpluginid _sir_plugin_add(sir_plugin* plugin) {
 #if !defined(SIR_NO_PLUGINS)
     if (!_sir_validptr(plugin))
@@ -290,6 +305,9 @@ sirpluginid _sir_plugin_add(sir_plugin* plugin) {
 #endif
 }
 
+#if defined(SIR_NO_PLUGINS)
+CONST_ATTR
+#endif
 bool _sir_plugin_rem(sirpluginid id) {
 #if !defined(SIR_NO_PLUGINS)
     (void)_sir_seterror(_SIR_E_NOERROR);
@@ -322,6 +340,11 @@ void _sir_plugin_destroy(sir_plugin** plugin) {
 #endif
 }
 
+#if defined(SIR_NO_PLUGINS)
+CONST_ATTR
+#else
+PURE_ATTR
+#endif
 bool _sir_plugin_cache_pred_id(const void* match, sir_plugin* iter) {
 #if !defined(SIR_NO_PLUGINS)
     return iter->id == *((sirpluginid*)match);
@@ -332,6 +355,9 @@ bool _sir_plugin_cache_pred_id(const void* match, sir_plugin* iter) {
 #endif
 }
 
+#if defined(SIR_NO_PLUGINS)
+CONST_ATTR
+#endif
 sirpluginid _sir_plugin_cache_add(sir_plugincache* spc, sir_plugin* plugin) {
 #if !defined(SIR_NO_PLUGINS)
     if (!_sir_validptr(spc) || !_sir_validptr(plugin))
@@ -361,6 +387,9 @@ sirpluginid _sir_plugin_cache_add(sir_plugincache* spc, sir_plugin* plugin) {
 #endif
 }
 
+#if defined(SIR_NO_PLUGINS)
+CONST_ATTR
+#endif
 sir_plugin* _sir_plugin_cache_find_id(sir_plugincache* spc, sirpluginid id) {
 #if !defined(SIR_NO_PLUGINS)
     return _sir_plugin_cache_find(spc, &id, &_sir_plugin_cache_pred_id);
@@ -371,6 +400,9 @@ sir_plugin* _sir_plugin_cache_find_id(sir_plugincache* spc, sirpluginid id) {
 #endif
 }
 
+#if defined(SIR_NO_PLUGINS)
+CONST_ATTR
+#endif
 sir_plugin* _sir_plugin_cache_find(sir_plugincache* spc, const void* match,
     sir_plugin_pred pred) {
 #if !defined(SIR_NO_PLUGINS)
@@ -391,6 +423,9 @@ sir_plugin* _sir_plugin_cache_find(sir_plugincache* spc, const void* match,
 #endif
 }
 
+#if defined(SIR_NO_PLUGINS)
+CONST_ATTR
+#endif
 bool _sir_plugin_cache_rem(sir_plugincache* spc, sirpluginid id) {
 #if !defined(SIR_NO_PLUGINS)
     if (!_sir_validptr(spc))
@@ -421,6 +456,9 @@ bool _sir_plugin_cache_rem(sir_plugincache* spc, sirpluginid id) {
 #endif
 }
 
+#if defined(SIR_NO_PLUGINS)
+CONST_ATTR
+#endif
 bool _sir_plugin_cache_destroy(sir_plugincache* spc) {
 #if !defined(SIR_NO_PLUGINS)
     if (!_sir_validptr(spc))
@@ -441,6 +479,9 @@ bool _sir_plugin_cache_destroy(sir_plugincache* spc) {
 #endif
 }
 
+#if defined(SIR_NO_PLUGINS)
+CONST_ATTR
+#endif
 bool _sir_plugin_cache_dispatch(sir_plugincache* spc, sir_level level, sirbuf* buf,
     size_t* dispatched, size_t* wanted) {
 #if !defined(SIR_NO_PLUGINS)
@@ -456,7 +497,7 @@ bool _sir_plugin_cache_dispatch(sir_plugincache* spc, sir_level level, sirbuf* b
 
     for (size_t n = 0; n < spc->count; n++) {
         if (!_sir_bittest(spc->plugins[n]->info.levels, level)) {
-            _sir_selflog("level %04"PRIx32" not set in level mask (%04"PRIx16
+            _sir_selflog("level %04"PRIx16" not set in level mask (%04"PRIx16
                          ") for plugin (path: '%s', id: %08"PRIx32"); skipping",
                          level, spc->plugins[n]->info.levels, spc->plugins[n]->path,
                          spc->plugins[n]->id);

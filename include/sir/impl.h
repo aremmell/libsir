@@ -31,6 +31,7 @@
  * will be copied.  Always NUL terminates (unless dsize <= strlen(dst)).
  * Returns strlen(src) + MIN(dsize, strlen(initial dst)).
  * If retval >= dsize, truncation occurred. */
+ALWAYS_INLINE_ATTR
 static inline size_t
 _sir_strlcat(char *dst, const char *src, size_t dsize)
 {
@@ -72,6 +73,7 @@ _sir_strlcat(char *dst, const char *src, size_t dsize)
 /* Copy string src to buffer dst of size dsize.  At most dsize-1
  * chars will be copied.  Always NUL terminates (unless dsize == 0).
  * Returns strlen(src); if retval >= dsize, truncation occurred. */
+ALWAYS_INLINE_ATTR
 static inline size_t
 _sir_strlcpy(char *dst, const char *src, size_t dsize)
 {
@@ -105,6 +107,7 @@ _sir_strlcpy(char *dst, const char *src, size_t dsize)
      !defined(SIR_IMPL_STRNLEN_DEF)
 # undef strnlen
 
+ALWAYS_INLINE_ATTR
 static inline size_t
 _sir_strnlen(const char *str, size_t maxlen)
 {
@@ -123,6 +126,7 @@ _sir_strnlen(const char *str, size_t maxlen)
 #if defined(SIR_IMPL_STRNDUP) && !defined(SIR_IMPL_STRNDUP_DEF)
 # undef strndup
 
+ALWAYS_INLINE_ATTR
 static inline char *
 _sir_strndup(const char *str, size_t maxlen)
 {

@@ -86,6 +86,7 @@ bool _sir_settextstyle(sir_level level, sir_textstyle* style) {
     return updated;
 }
 
+CONST_ATTR
 const sir_textstyle* _sir_getdefstyle(sir_level level) {
     switch (level) {
         case SIRL_EMERG:  return &sir_lvl_emerg_def_style;

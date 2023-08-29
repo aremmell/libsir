@@ -203,10 +203,10 @@ bool _sir_cleanup(void) {
 #if defined(__HAVE_ATOMIC_H__)
     atomic_store(&_sir_magic, 0);
 #else
-    _sir_magic = 0;
+    _sir_magic = 0u;
 #endif
 
-    memset(_cfg, 0, sizeof(sirconfig));
+    memset(_cfg, 0ul, sizeof(sirconfig));
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
 
     _sir_selflog("cleanup: %s", (cleanup ? "successful" : "with errors"));
@@ -521,6 +521,7 @@ bool _sir_once(sir_once* once, sir_once_fn func) {
 #endif
 }
 
+FLATTEN_ATTR
 PRINTF_FORMAT_ATTR(2, 0)
 bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) {
     if (!_sir_sanity() || !_sir_validlevel(level) || !_sir_validstr(format))
@@ -597,7 +598,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     bool match             = false;
     bool exit_early        = false;
     bool update_last_props = true;
-    uint64_t hash          = 0;
+    uint64_t hash          = 0ull;
 
     if (cfg.state.last.prefix[0] == buf.message[0]  &&
         cfg.state.last.prefix[1] == buf.message[1]) {
@@ -713,7 +714,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
 #endif
 
     if (0 == wanted) {
-        _sir_selflog("error: no destinations registered for level %04"PRIx32, level);
+        _sir_selflog("error: no destinations registered for level %04"PRIx16, level);
         return _sir_seterror(_SIR_E_NODEST);
     }
 
@@ -805,6 +806,9 @@ const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
     return NULL;
 }
 
+#if defined(SIR_NO_SYSTEM_LOGGERS)
+CONST_ATTR
+#endif
 bool _sir_syslog_init(const char* name, sir_syslog_dest* ctx) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!_sir_validptr(name) || !_sir_validptr(ctx))
@@ -854,6 +858,9 @@ bool _sir_syslog_init(const char* name, sir_syslog_dest* ctx) {
 #endif
 }
 
+#if defined(SIR_NO_SYSTEM_LOGGERS)
+CONST_ATTR
+#endif
 bool _sir_syslog_open(sir_syslog_dest* ctx) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!_sir_bittest(ctx->_state.mask, SIRSL_IS_INIT)) {
@@ -888,6 +895,9 @@ bool _sir_syslog_open(sir_syslog_dest* ctx) {
 #endif
 }
 
+#if defined(SIR_NO_SYSTEM_LOGGERS)
+CONST_ATTR
+#endif
 bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!_sir_bittest(ctx->_state.mask, SIRSL_IS_INIT)) {
@@ -939,10 +949,13 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx)
     SIR_UNUSED(level);
     SIR_UNUSED(buf);
     SIR_UNUSED(ctx);
-    return false;
 #endif
+    return false;
 }
 
+#if defined(SIR_NO_SYSTEM_LOGGERS)
+CONST_ATTR
+#endif
 bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!_sir_validptr(si) || !_sir_validptr(data))
@@ -996,6 +1009,9 @@ bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data) {
 #endif
 }
 
+#if defined(SIR_NO_SYSTEM_LOGGERS)
+CONST_ATTR
+#endif
 bool _sir_syslog_close(sir_syslog_dest* ctx) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!_sir_validptr(ctx))
@@ -1021,15 +1037,15 @@ bool _sir_syslog_close(sir_syslog_dest* ctx) {
 # endif
 #else
     SIR_UNUSED(ctx);
-    return false;
 #endif
+    return false;
 }
 
 void _sir_syslog_reset(sir_syslog_dest* ctx) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (_sir_validptr(ctx)) {
         uint32_t old       = ctx->_state.mask;
-        ctx->_state.mask   = 0;
+        ctx->_state.mask   = 0u;
         ctx->_state.logger = NULL;
         _sir_selflog("state reset; mask was %08"PRIx32, old);
     }
@@ -1038,6 +1054,9 @@ void _sir_syslog_reset(sir_syslog_dest* ctx) {
 #endif
 }
 
+#if !defined(__IMPORTC__)
+PURE_ATTR
+#endif
 const char* _sir_formattedlevelstr(sir_level level) {
     static const size_t low  = 0;
     static const size_t high = SIR_NUMLEVELS - 1;
@@ -1090,7 +1109,7 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
         time_t ret = time(tbuf);
         if ((time_t)-1 == ret) {
             if (msecbuf)
-                *msecbuf = 0;
+                *msecbuf = 0l;
             return _sir_handleerr(errno);
         }
 #if defined(SIR_MSEC_POSIX)
@@ -1103,7 +1122,7 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
                 *msecbuf = (long)(ts.tv_nsec / (long)1e6);
         } else {
             if (msecbuf)
-                *msecbuf = 0;
+                *msecbuf = 0l;
             return _sir_handleerr(errno);
         }
 #elif defined(SIR_MSEC_MACH)
@@ -1120,11 +1139,11 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
                 *msecbuf = (mts.tv_nsec / (long)1e6);
         } else {
             if (msecbuf)
-                *msecbuf = 0;
+                *msecbuf = 0l;
             return _sir_handleerr(retval);
         }
 #elif defined(SIR_MSEC__WIN__)
-        static const ULONGLONG uepoch = (ULONGLONG)116444736e9;
+        static const ULONGLONG uepoch = (ULONGLONG)116444736e9ull;
 
         FILETIME ftutc = {0};
         GetSystemTimePreciseAsFileTime(&ftutc);
@@ -1142,14 +1161,14 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
                 *msecbuf = st.wMilliseconds;
         } else {
             if (msecbuf)
-                *msecbuf = 0;
+                *msecbuf = 0l;
             return _sir_handlewin32err(GetLastError());
         }
 
 #else
         time(tbuf);
         if (msecbuf)
-            *msecbuf = 0;
+            *msecbuf = 0l;
 #endif
         return true;
     }
@@ -1167,7 +1186,7 @@ pid_t _sir_getpid(void) {
 pid_t _sir_gettid(void) {
     pid_t tid = 0;
 #if defined(__MACOS__)
-    uint64_t tid64 = 0;
+    uint64_t tid64 = 0ull;
     int gettid     = pthread_threadid_np(NULL, &tid64);
     if (0 != gettid)
         (void)_sir_handleerr(gettid);

@@ -82,6 +82,7 @@ bool _sir_queue_destroy(sir_queue** q) {
     return valid;
 }
 
+PURE_ATTR
 size_t _sir_queue_size(sir_queue* q) {
     if (_sir_queue_isempty(q))
         return 0;
@@ -96,6 +97,7 @@ size_t _sir_queue_size(sir_queue* q) {
     return idx;
 }
 
+PURE_ATTR
 bool _sir_queue_isempty(sir_queue* q) {
     return !q || !q->head;
 }

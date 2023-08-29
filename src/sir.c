@@ -167,6 +167,7 @@ bool sir_resettextstyles(void) {
     return _sir_resettextstyles();
 }
 
+CONST_ATTR
 sir_textcolor sir_makergb(sir_textcolor r, sir_textcolor g, sir_textcolor b) {
     return _sir_makergb(r, g, b);
 }
@@ -241,14 +242,17 @@ bool sir_syslogcat(const char* category) {
 #endif
 }
 
+CONST_ATTR
 const char* sir_getversionstring(void) {
     return _SIR_MK_VER_STR(SIR_VERSION_MAJOR, SIR_VERSION_MINOR, SIR_VERSION_PATCH);
 }
 
+CONST_ATTR
 uint32_t sir_getversionhex(void) {
     return SIR_VERSION_HEX;
 }
 
+CONST_ATTR
 bool sir_isprerelease(void) {
     return (!SIR_VERSION_IS_RELEASE);
 }
