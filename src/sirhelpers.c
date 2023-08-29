@@ -314,25 +314,28 @@ int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename
 
 struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf) {
     if (_sir_validptr(timer) && _sir_validptr(buf)) {
-#if defined(__HAVE_STDC_SECURE_OR_EXT1__)
-# if defined(__WIN__)
-        errno_t ret = (errno_t)localtime_s(buf, timer);
+#if defined(__HAVE_STDC_SECURE_OR_EXT1__) && !defined(__EMBARCADEROC__)
+# if !defined(__WIN__)
+        struct tm* ret = localtime_s(timer, buf);
+        if (!ret) {
+            (void)_sir_handleerr(errno);
+            return NULL;
+        }
+# else /* __WIN__ */
+        errno_t ret = localtime_s(buf, timer);
         if (0 != ret) {
             (void)_sir_handleerr(ret);
             return NULL;
         }
+# endif
 
         return buf;
-# else /* __WIN__ */
-        struct tm* ret = localtime_s(timer, buf);
-        if (!ret)
-            (void)_sir_handleerr(errno);
-
-        return ret;
-# endif
-#else
-        SIR_UNUSED(buf);
+#else /* !__HAVE_STDC_SECURE_OR_EXT1__ */
+# if !defined(__WIN__) || defined(__EMBARCADEROC__)
+        struct tm* ret = localtime_r(timer, buf);
+# else
         struct tm* ret = localtime(timer);
+# endif
         if (!ret)
             (void)_sir_handleerr(errno);
 
