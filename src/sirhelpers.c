@@ -93,16 +93,13 @@ bool _sir_validfd(int fd) {
 }
 
 /** Validates a sir_update_config_data structure. */
-#if defined(__clang__) /* only Clang has implicit-conversion; GCC BZ#87454 */
-SANITIZE_SUPPRESS("implicit-conversion")
-#endif
 bool _sir_validupdatedata(sir_update_config_data* data) {
     if (!_sir_validptr(data))
         return false;
 
     bool valid = true;
     if ((data->fields & SIRU_ALL) == 0u ||
-          (data->fields & ~SIRU_ALL) != 0u) /* implicit-conversion */
+          (data->fields & ~SIRU_ALL) != 0u)
         valid = false;
 
     if (valid && _sir_bittest(data->fields, SIRU_LEVELS))
