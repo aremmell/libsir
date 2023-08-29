@@ -377,7 +377,7 @@ sir_plugin* _sir_plugin_cache_find(sir_plugincache* spc, const void* match,
     if (!_sir_validptr(spc) || !_sir_validptr(match) || !_sir_validfnptr(pred))
         return NULL;
 
-    for (size_t n = 0; n < spc->count; n++) {
+    for (size_t n = 0ul; n < spc->count; n++) {
         if (pred(match, spc->plugins[n]))
             return spc->plugins[n];
     }
@@ -396,16 +396,16 @@ bool _sir_plugin_cache_rem(sir_plugincache* spc, sirpluginid id) {
     if (!_sir_validptr(spc))
         return false;
 
-    for (size_t n = 0; n < spc->count; n++) {
+    for (size_t n = 0ul; n < spc->count; n++) {
         if (spc->plugins[n]->id == id) {
             _sir_selflog("removing plugin (path: '%s', id: %"PRIx32"); count = %zu",
-                spc->plugins[n]->path, spc->plugins[n]->id, spc->count - 1);
+                spc->plugins[n]->path, spc->plugins[n]->id, spc->count - 1ul);
 
             _sir_plugin_destroy(&spc->plugins[n]);
 
-            for (size_t i = n; i < spc->count - 1; i++) {
-                spc->plugins[i] = spc->plugins[i + 1];
-                spc->plugins[i + 1] = NULL;
+            for (size_t i = n; i < spc->count - 1ul; i++) {
+                spc->plugins[i] = spc->plugins[i + 1ul];
+                spc->plugins[i + 1ul] = NULL;
             }
 
             spc->count--;
@@ -426,8 +426,8 @@ bool _sir_plugin_cache_destroy(sir_plugincache* spc) {
     if (!_sir_validptr(spc))
         return false;
 
-    while (spc->count > 0) {
-        size_t idx = spc->count - 1;
+    while (spc->count > 0ul) {
+        size_t idx = spc->count - 1ul;
         _sir_plugin_destroy(&spc->plugins[idx]);
         spc->plugins[idx] = NULL;
         spc->count--;
