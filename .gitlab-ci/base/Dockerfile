@@ -2,7 +2,7 @@
 # Copyright (c) 2018-current Ryan M. Lederman
 
 # Use --build-arg URL1="..." to override default PVS-Studio fallback link
-# Use --build-arg URL2="..." to override default AOCC link
+# Use --build-arg URL2="..." to override default AOCC 4.1.0 link
 
 FROM quay.io/fedora/fedora:rawhide
 
@@ -205,6 +205,8 @@ RUN \
 && \
   (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
           --nogpgcheck ${URL2:-http://192.168.1.187:8088/~jhj/cache/aocc-compiler.x86_64.rpm}) \
+&& \
+  ( ln -fs /opt/AMD/aocc-compiler-4.1.0 /opt/AMD/aocc-compiler-4.0.0 || true ) \
 && \
   mkdir -p /tmp/duma-build && \
   cd /tmp/duma-build && \
