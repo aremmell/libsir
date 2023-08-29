@@ -895,6 +895,9 @@ bool _sir_syslog_open(sir_syslog_dest* ctx) {
 #endif
 }
 
+#if defined(SIR_NO_SYSTEM_LOGGERS)
+CONST_ATTR
+#endif
 bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!_sir_bittest(ctx->_state.mask, SIRSL_IS_INIT)) {
@@ -1006,6 +1009,9 @@ bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data) {
 #endif
 }
 
+#if defined(SIR_NO_SYSTEM_LOGGERS)
+CONST_ATTR
+#endif
 bool _sir_syslog_close(sir_syslog_dest* ctx) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!_sir_validptr(ctx))
