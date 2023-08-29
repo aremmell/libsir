@@ -110,7 +110,7 @@ test_duma()
       printf '%s\n' \
         "NOTICE: Skipping DUMA checks on macOS."
       NO_DUMA=1
-    }
+    } || true
   test "${DUMA_OS:-}" = "Darwin" \
     || {
       command -v duma > /dev/null 2>&1 \
@@ -118,14 +118,14 @@ test_duma()
           printf '%s\n' \
             "NOTICE: DUMA not found, skipping DUMA check."
           NO_DUMA=1
-        }
-    }
+        } || true
+    } || true
   command -v gcc > /dev/null 2>&1 \
     || {
       printf '%s\n' \
         "NOTICE: GCC is required for DUMA check."
       NO_DUMA=1
-    }
+    } || true
   test -z "${NO_DUMA:-}" \
     && {
       rm -f ./duma*.log
@@ -172,7 +172,7 @@ test_duma()
           exit 1
         }
       rm -f ./duma*.log
-    }
+    } || true
 }
 
 ################################################################################
