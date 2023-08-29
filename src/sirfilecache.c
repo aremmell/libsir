@@ -253,8 +253,8 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                             break;
                         }
 
-                        if (sequence > 0u)
-                            (void)snprintf(seqbuf, 7ul, SIR_FNAMESEQFORMAT, sequence);
+                        if (sequence > 0)
+                            (void)snprintf(seqbuf, 7, SIR_FNAMESEQFORMAT, sequence);
 
                     } while (sequence <= 999u);
 
@@ -314,13 +314,13 @@ bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
         SIR_ASSERT(namesize < SIR_MAXPATH);
 
         tmp[namesize] = '\0';
-        *name = (char*)calloc(namesize + 1ul, sizeof(char));
+        *name = (char*)calloc(namesize + 1, sizeof(char));
         if (!*name) {
             _sir_safefree(&tmp);
             return _sir_handleerr(errno);
         }
 
-        _sir_strncpy(*name, namesize + 1ul, tmp, namesize);
+        _sir_strncpy(*name, namesize + 1, tmp, namesize);
         *ext = strndup(sf->path + namesize, strnlen(sf->path + namesize, SIR_MAXPATH));
     } else {
         *name = strndup(sf->path, strnlen(sf->path, SIR_MAXPATH));
@@ -422,7 +422,7 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
     if (!_sir_validptr(sfc) || !_sir_validfileid(id))
         return false;
 
-    for (size_t n = 0ul; n < sfc->count; n++) {
+    for (size_t n = 0; n < sfc->count; n++) {
         SIR_ASSERT(_sirfile_validate(sfc->files[n]));
 
         if (sfc->files[n]->id == id) {
@@ -431,9 +431,9 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
 
             _sirfile_destroy(&sfc->files[n]);
 
-            for (size_t i = n; i < sfc->count - 1ul; i++) {
-                sfc->files[i] = sfc->files[i + 1ul];
-                sfc->files[i + 1ul] = NULL;
+            for (size_t i = n; i < sfc->count - 1; i++) {
+                sfc->files[i] = sfc->files[i + 1];
+                sfc->files[i + 1] = NULL;
             }
 
             sfc->count--;
@@ -520,7 +520,7 @@ sirfile* _sir_fcache_find(sirfcache* sfc, const void* match, sir_fcache_pred pre
     if (!_sir_validptr(sfc) || !_sir_validptr(match) || !_sir_validfnptr(pred))
         return NULL;
 
-    for (size_t n = 0ul; n < sfc->count; n++) {
+    for (size_t n = 0; n < sfc->count; n++) {
         if (pred(match, sfc->files[n]))
             return sfc->files[n];
     }
@@ -532,15 +532,15 @@ bool _sir_fcache_destroy(sirfcache* sfc) {
     if (!_sir_validptr(sfc))
         return false;
 
-    while (sfc->count > 0ul) {
-        size_t idx = sfc->count - 1ul;
+    while (sfc->count > 0) {
+        size_t idx = sfc->count - 1;
         SIR_ASSERT(_sirfile_validate(sfc->files[idx]));
         _sirfile_destroy(&sfc->files[idx]);
         sfc->files[idx] = NULL;
         sfc->count--;
     }
 
-    memset(sfc, 0ul, sizeof(sirfcache));
+    memset(sfc, 0, sizeof(sirfcache));
     return true;
 }
 
@@ -553,10 +553,10 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
     const char* write    = NULL;
     sir_options lastopts = 0u;
 
-    *dispatched = 0ul;
-    *wanted     = 0ul;
+    *dispatched = 0;
+    *wanted     = 0;
 
-    for (size_t n = 0ul; n < sfc->count; n++) {
+    for (size_t n = 0; n < sfc->count; n++) {
         SIR_ASSERT(_sirfile_validate(sfc->files[n]));
 
         if (!_sir_bittest(sfc->files[n]->levels, level)) {

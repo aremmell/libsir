@@ -659,8 +659,8 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
 bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
     bool retval       = true;
-    size_t dispatched = 0ul;
-    size_t wanted     = 0ul;
+    size_t dispatched = 0;
+    size_t wanted     = 0;
 
     if (_sir_bittest(si->d_stdout.levels, level)) {
         const char* write = _sir_format(true, si->d_stdout.opts, buf);
@@ -693,8 +693,8 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
 #endif
 
     _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, false);
-    size_t fdispatched = 0ul;
-    size_t fwanted     = 0ul;
+    size_t fdispatched = 0;
+    size_t fwanted     = 0;
     retval &= _sir_fcache_dispatch(sfc, level, buf, &fdispatched, &fwanted);
     _SIR_UNLOCK_SECTION(SIRMI_FILECACHE);
 
@@ -703,8 +703,8 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
 
 #if !defined(SIR_NO_PLUGINS)
     _SIR_LOCK_SECTION(sir_plugincache, spc, SIRMI_PLUGINCACHE, false);
-    size_t pdispatched = 0ul;
-    size_t pwanted     = 0ul;
+    size_t pdispatched = 0;
+    size_t pwanted     = 0;
     retval &= _sir_plugin_cache_dispatch(spc, level, buf, &pdispatched, &pwanted);
     _SIR_UNLOCK_SECTION(SIRMI_PLUGINCACHE);
 
@@ -712,7 +712,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
     wanted += pwanted;
 #endif
 
-    if (0ul == wanted) {
+    if (0 == wanted) {
         _sir_selflog("error: no destinations registered for level %04"PRIx32, level);
         return _sir_seterror(_SIR_E_NODEST);
     }
@@ -1039,8 +1039,8 @@ void _sir_syslog_reset(sir_syslog_dest* ctx) {
 }
 
 const char* _sir_formattedlevelstr(sir_level level) {
-    static const size_t low  = 0ul;
-    static const size_t high = SIR_NUMLEVELS - 1ul;
+    static const size_t low  = 0;
+    static const size_t high = SIR_NUMLEVELS - 1;
 
     const char* retval = SIR_UNKNOWN;
 
@@ -1052,7 +1052,7 @@ const char* _sir_formattedlevelstr(sir_level level) {
         break;
     }
 
-    _SIR_ITERATE_BIN_SEARCH((sir_level_to_str_map[_mid].level < level ? 1u : -1));
+    _SIR_ITERATE_BIN_SEARCH((sir_level_to_str_map[_mid].level < level ? 1 : -1));
     _SIR_END_BIN_SEARCH();
 
     return retval;

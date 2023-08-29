@@ -217,7 +217,7 @@ char* _sir_getappfilename(void) {
         return NULL;
     }
 
-    size_t size = (st.st_size > 0ul) ? st.st_size + 2ul : SIR_MAXPATH;
+    size_t size = (st.st_size > 0) ? st.st_size + 2 : SIR_MAXPATH;
 #else
     size_t size = SIR_MAXPATH;
 #endif
@@ -287,7 +287,7 @@ char* _sir_getappfilename(void) {
 # elif defined(__BSD__)
         int mib[4] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
         int ret = sysctl(mib, 4, buffer, &size, NULL, 0);
-        if (0l == ret) {
+        if (0 == ret) {
             resolved = true;
             break;
         } else {

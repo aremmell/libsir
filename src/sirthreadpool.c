@@ -60,7 +60,7 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
             return false;
     }
 
-    for (size_t n = 0ul; n < num_threads; n++) {
+    for (size_t n = 0; n < num_threads; n++) {
 #if !defined(__WIN__)
         pthread_attr_t attr;
         pthread_attr_init(&attr);

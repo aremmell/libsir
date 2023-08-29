@@ -328,7 +328,7 @@ bool _sir_getchar(char* input);
 static inline
 uint32_t FNV32_1a(const uint8_t* data, size_t len) {
     uint32_t hash = 2166136261U;
-    for (size_t n = 0ul; n < len; n++) {
+    for (size_t n = 0; n < len; n++) {
         hash ^= (uint32_t)data[n];
         hash = (uint32_t)(hash * 16777619ULL);
     }

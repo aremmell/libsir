@@ -84,10 +84,10 @@ bool _sir_queue_destroy(sir_queue** q) {
 
 size_t _sir_queue_size(sir_queue* q) {
     if (_sir_queue_isempty(q))
-        return 0ul;
+        return 0;
 
     sir_queue_node* next = q->head->next;
-    size_t idx           = 1ul;
+    size_t idx           = 1;
     while (next) {
         idx++;
         next = next->next;

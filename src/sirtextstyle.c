@@ -37,8 +37,8 @@ sir_text_style_data sir_text_style_section = {
 };
 
 const char* _sir_gettextstyle(sir_level level) {
-    static const size_t low  = 0ul;
-    static const size_t high = SIR_NUMLEVELS - 1ul;
+    static const size_t low  = 0;
+    static const size_t high = SIR_NUMLEVELS - 1;
 
     _SIR_LOCK_SECTION(sir_text_style_data, data, SIRMI_TEXTSTYLE, NULL);
     const char* retval = SIR_UNKNOWN;
@@ -51,7 +51,7 @@ const char* _sir_gettextstyle(sir_level level) {
         break;
     }
 
-    _SIR_ITERATE_BIN_SEARCH((data->map[_mid].level < level ? 1u : -1));
+    _SIR_ITERATE_BIN_SEARCH((data->map[_mid].level < level ? 1 : -1));
     _SIR_END_BIN_SEARCH();
     _SIR_UNLOCK_SECTION(SIRMI_TEXTSTYLE);
 
@@ -66,8 +66,8 @@ bool _sir_settextstyle(sir_level level, sir_textstyle* style) {
 
     _SIR_LOCK_SECTION(sir_text_style_data, data, SIRMI_TEXTSTYLE, false);
     bool updated              = false;
-    static const size_t low   = 0ul;
-    static const size_t high  = SIR_NUMLEVELS - 1ul;
+    static const size_t low   = 0;
+    static const size_t high  = SIR_NUMLEVELS - 1;
 
     _SIR_DECLARE_BIN_SEARCH(low, high);
     _SIR_BEGIN_BIN_SEARCH()
@@ -78,7 +78,7 @@ bool _sir_settextstyle(sir_level level, sir_textstyle* style) {
         break;
     }
 
-    _SIR_ITERATE_BIN_SEARCH((data->map[_mid].level < level ? 1u : -1));
+    _SIR_ITERATE_BIN_SEARCH((data->map[_mid].level < level ? 1 : -1));
     _SIR_END_BIN_SEARCH();
     _SIR_UNLOCK_SECTION(SIRMI_TEXTSTYLE);
 
@@ -115,7 +115,7 @@ bool _sir_resettextstyles(void) {
 
     _SIR_LOCK_SECTION(sir_text_style_data, data, SIRMI_TEXTSTYLE, false);
     bool all_ok = true;
-    for (size_t n = 0ul; n < SIR_NUMLEVELS; n++) {
+    for (size_t n = 0; n < SIR_NUMLEVELS; n++) {
         memcpy(&data->map[n].style, _sir_getdefstyle(data->map[n].level),
              sizeof(sir_textstyle));
         all_ok &= _sir_formatstyle(*data->color_mode, &data->map[n].style,
