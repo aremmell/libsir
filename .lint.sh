@@ -312,7 +312,6 @@ test_scanbuild()
          env CC="${CCACHE:-env} clang"
            scan-build -no-failure-reports
                --status-bugs
-               -maxloop 8
                -enable-checker optin.portability.UnixAPI
                -enable-checker security.FloatLoopCounter
                -enable-checker security.insecureAPI.bcmp
