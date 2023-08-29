@@ -101,7 +101,7 @@ const sir_textstyle* _sir_getdefstyle(sir_level level) {
         case SIRL_ALL:
         case SIRL_DEFAULT:
         default:
-            SIR_ASSERT(!(bool)"invalid sir_level!");
+            SIR_ASSERT(level);
             return &sir_lvl_info_def_style;
         // GCOVR_EXCL_STOP
     }
@@ -179,7 +179,8 @@ bool _sir_validtextstyle(sir_colormode mode, const sir_textstyle* style) {
         _sir_selflog("error: fg color %08"PRIx32" and bg color %08"PRIx32
                      " are identical; text would be invisible", style->fg,
                      style->bg);
-        SIR_ASSERT(!(bool)"invalid text style!");
+        SIR_ASSERT(SIRTC_DEFAULT != style->fg && SIRTC_DEFAULT != style->bg &&
+                style->fg == style->bg);
         return _sir_seterror(_SIR_E_TEXTSTYLE);
     }
 

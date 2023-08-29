@@ -30,7 +30,7 @@ bool __sir_validptrptr(const void* restrict* pp, bool fail) {
     bool valid = NULL != pp;
     if (!valid && fail) {
         (void)_sir_seterror(_SIR_E_NULLPTR);
-        SIR_ASSERT(!(bool)"NULL pointer!");
+        SIR_ASSERT(!valid && fail);
     }
     return valid;
 }
@@ -39,7 +39,7 @@ bool __sir_validptr(const void* restrict p, bool fail) {
     bool valid = NULL != p;
     if (!valid && fail) {
         (void)_sir_seterror(_SIR_E_NULLPTR);
-        SIR_ASSERT(!(bool)"NULL pointer!");
+        SIR_ASSERT(!valid && fail);
     }
     return valid;
 }
@@ -118,7 +118,7 @@ bool _sir_validupdatedata(sir_update_config_data* data) {
 
     if (!valid) {
         (void)_sir_seterror(_SIR_E_INVALID);
-        SIR_ASSERT(!(bool)"invalid sir_update_config_data!");
+        SIR_ASSERT(!valid);
     }
 
     return valid;
@@ -241,7 +241,7 @@ bool __sir_validstr(const char* restrict str, bool fail) {
     bool valid = str && (*str != '\0');
     if (!valid && fail) {
         (void)_sir_seterror(_SIR_E_STRING);
-        SIR_ASSERT(!(bool)"invalid string!");
+        SIR_ASSERT(!valid && fail);
     }
     return valid;
 }
