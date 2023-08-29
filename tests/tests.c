@@ -1011,16 +1011,16 @@ bool sirtest_levelssanity(void) {
 
         pass &= _sir_validlevels(levels);
         printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %"PRIu32", levels:"
-                                 " %04"PRIx16) ")\n", n + 1, iterations, rand_count, levels);
+                                 " %08"PRIx32) ")\n", n + 1, iterations, rand_count, levels);
     }
     PRINT_PASS(pass, "\t--- random bitmask of valid levels: %s ---\n\n", PRN_PASS(pass));
 
     printf("\t" WHITEB("--- invalid values ---") "\n");
 
     /* greater than SIRL_ALL. */
-    sir_levels invalid = (0xffff & ~SIRL_ALL);
+    sir_levels invalid = (0xffffffffu & ~SIRL_ALL);
     pass &= !_sir_validlevels(invalid);
-    printf(INDENT_ITEM WHITE("greater than SIRL_ALL: %04"PRIx16) "\n", invalid);
+    printf(INDENT_ITEM WHITE("greater than SIRL_ALL: %08"PRIx32) "\n", invalid);
 
     /* individual invalid level. */
     sir_level invalid2 = 0x1337;

@@ -46,35 +46,35 @@ typedef uint32_t sirpluginid;
 
 /** Defines the available levels (severity/priority) of logging output. */
 typedef enum {
-    SIRL_NONE    = 0x0000, /**< No output. */
-    SIRL_EMERG   = 0x0001, /**< Nuclear war, Armageddon, etc. */
-    SIRL_ALERT   = 0x0002, /**< Action required ASAP. */
-    SIRL_CRIT    = 0x0004, /**< Critical errors. */
-    SIRL_ERROR   = 0x0008, /**< Errors. */
-    SIRL_WARN    = 0x0010, /**< Warnings that could likely be ignored. */
-    SIRL_NOTICE  = 0x0020, /**< Normal but significant. */
-    SIRL_INFO    = 0x0040, /**< Informational messages. */
-    SIRL_DEBUG   = 0x0080, /**< Debugging/diagnostic output. */
-    SIRL_ALL     = 0x00ff, /**< Include all logging levels. */
-    SIRL_DEFAULT = 0x0100  /**< Default levels for this type of destination. */
+    SIRL_NONE    = 0x00000000u, /**< No output. */
+    SIRL_EMERG   = 0x00000001u, /**< Nuclear war, Armageddon, etc. */
+    SIRL_ALERT   = 0x00000002u, /**< Action required ASAP. */
+    SIRL_CRIT    = 0x00000004u, /**< Critical errors. */
+    SIRL_ERROR   = 0x00000008u, /**< Errors. */
+    SIRL_WARN    = 0x00000010u, /**< Warnings that could likely be ignored. */
+    SIRL_NOTICE  = 0x00000020u, /**< Normal but significant. */
+    SIRL_INFO    = 0x00000040u, /**< Informational messages. */
+    SIRL_DEBUG   = 0x00000080u, /**< Debugging/diagnostic output. */
+    SIRL_ALL     = 0x000000ffu, /**< Include all logging levels. */
+    SIRL_DEFAULT = 0x00000100u  /**< Default levels for this type of destination. */
 } sir_level;
 
 /** ::sir_level bitmask type. */
-typedef uint16_t sir_levels;
+typedef uint32_t sir_levels;
 
 /** Formatting options for a destination. */
 typedef enum {
-    SIRO_ALL     = 0x00000000, /**< Include all formatting and functionality. */
-    SIRO_NOTIME  = 0x00000100, /**< Exclude time stamps (implies ::SIRO_NOMSEC). */
-    SIRO_NOMSEC  = 0x00000200, /**< Exclude millisecond-resolution in time stamps. */
-    SIRO_NOHOST  = 0x00000400, /**< Exclude local hostname. */
-    SIRO_NOLEVEL = 0x00000800, /**< Exclude human-readable logging level. */
-    SIRO_NONAME  = 0x00001000, /**< Exclude process/app name. */
-    SIRO_NOPID   = 0x00002000, /**< Exclude process ID. */
-    SIRO_NOTID   = 0x00004000, /**< Exclude thread ID/name. */
-    SIRO_NOHDR   = 0x00010000, /**< Don't write header messages to log files. */
-    SIRO_MSGONLY = 0x00007f00, /**< Sets all other options except ::SIRO_NOHDR. */
-    SIRO_DEFAULT = 0x00100000  /**< Default options for this type of destination. */
+    SIRO_ALL     = 0x00000000u, /**< Include all formatting and functionality. */
+    SIRO_NOTIME  = 0x00000100u, /**< Exclude time stamps (implies ::SIRO_NOMSEC). */
+    SIRO_NOMSEC  = 0x00000200u, /**< Exclude millisecond-resolution in time stamps. */
+    SIRO_NOHOST  = 0x00000400u, /**< Exclude local hostname. */
+    SIRO_NOLEVEL = 0x00000800u, /**< Exclude human-readable logging level. */
+    SIRO_NONAME  = 0x00001000u, /**< Exclude process/app name. */
+    SIRO_NOPID   = 0x00002000u, /**< Exclude process ID. */
+    SIRO_NOTID   = 0x00004000u, /**< Exclude thread ID/name. */
+    SIRO_NOHDR   = 0x00010000u, /**< Don't write header messages to log files. */
+    SIRO_MSGONLY = 0x00007f00u, /**< Sets all other options except ::SIRO_NOHDR. */
+    SIRO_DEFAULT = 0x00100000u  /**< Default options for this type of destination. */
 } sir_option;
 
 /** ::sir_option bitmask type. */

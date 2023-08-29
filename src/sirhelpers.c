@@ -140,7 +140,7 @@ bool _sir_validlevels(sir_levels levels) {
          ((levels & ~SIRL_ALL) == 0)))
          return true;
 
-    _sir_selflog("invalid levels: %04"PRIx16, levels);
+    _sir_selflog("invalid levels: %08"PRIx32, levels);
     return _sir_seterror(_SIR_E_LEVELS);
 }
 
