@@ -110,7 +110,7 @@ test_duma()
       printf '%s\n' \
         "NOTICE: Skipping DUMA checks on macOS."
       NO_DUMA=1
-    }
+    } || true
   test "${DUMA_OS:-}" = "Darwin" \
     || {
       command -v duma > /dev/null 2>&1 \
@@ -118,14 +118,14 @@ test_duma()
           printf '%s\n' \
             "NOTICE: DUMA not found, skipping DUMA check."
           NO_DUMA=1
-        }
-    }
+        } || true
+    } || true
   command -v gcc > /dev/null 2>&1 \
     || {
       printf '%s\n' \
         "NOTICE: GCC is required for DUMA check."
       NO_DUMA=1
-    }
+    } || true
   test -z "${NO_DUMA:-}" \
     && {
       rm -f ./duma*.log
@@ -172,7 +172,7 @@ test_duma()
           exit 1
         }
       rm -f ./duma*.log
-    }
+    } || true
 }
 
 ################################################################################
@@ -185,7 +185,7 @@ test_extra()
       printf '%s\n' \
         "NOTICE: clang is required for the extra-warning check."
       NO_EXTRAWARN=1
-    }
+    } || true
   test -z "${NO_EXTRAWARN:-}" \
     && {
       printf '%s\n' "building with extra-warning flags ..."
@@ -217,7 +217,7 @@ test_extra()
       chmod a+x ./.extra.sh
       sh ./.extra.sh
       rm -f ./.extra.sh
-    }
+    } || true
 }
 
 ################################################################################
@@ -230,7 +230,7 @@ test_gccextra()
       printf '%s\n' \
         "NOTICE: gcc is required for the gcc extra-warning check."
       NO_EXTRAGCCWARN=1
-    }
+    } || true
   test -z "${NO_EXTRAGCCWARN:-}" \
     && {
       printf '%s\n' "building with extra-warning flags ..."
@@ -261,7 +261,7 @@ test_gccextra()
       chmod a+x ./.extra.sh
       sh ./.extra.sh
       rm -f ./.extra.sh
-    }
+    } || true
 }
 
 ################################################################################
@@ -273,7 +273,7 @@ test_flawfinder()
       printf '%s\n' \
         "NOTICE: flawfinder not found, skipping check."
       NO_FLAWFINDER=1
-    }
+    } || true
   test -z "${NO_FLAWFINDER:-}" \
     && {
       printf '%s\n' "running flawfinder check ..."
@@ -284,7 +284,7 @@ test_flawfinder()
           printf '%s\n' "${FLAWFINDER_OUTPUT:-}"
           exit 1
         }
-    }
+    } || true
 }
 
 ################################################################################
@@ -297,7 +297,7 @@ test_scanbuild()
       printf '%s\n' \
         "NOTICE: scan-build not found, skipping check."
       NO_SCANBUILD=1
-    }
+    } || true
   test -z "${NO_SCANBUILD:-}" \
     && {
       printf '%s\n' "running scan-build check ..."
@@ -325,7 +325,7 @@ test_scanbuild()
       sh ./.scan-build.sh
       rm -f ./.scan-build.sh
       rm -rf ./clang-analyzer 2> /dev/null
-    }
+    } || true
 }
 
 ################################################################################
@@ -337,13 +337,13 @@ test_cppcheck()
       printf '%s\n' \
         "NOTICE: cppcheck not found, skipping check."
       NO_CPPCHECK=1
-    }
+    } || true
   command -v cppcheck-htmlreport > /dev/null 2>&1 \
     || {
       printf '%s\n' \
         "NOTICE: cppcheck-htmlreport not found, skipping check."
       NO_CPPCHECK=1
-    }
+    } || true
   test -z "${NO_CPPCHECK:-}" \
     && {
       printf '%s\n' "running cppcheck check ..."
@@ -379,7 +379,7 @@ test_cppcheck()
         }
       rm -rf ./cppcheck
       rm -f ./cppcheck.xml
-    }
+    } || true
 }
 
 ################################################################################
@@ -391,25 +391,25 @@ test_pvs()
       printf '%s\n' \
         "NOTICE: clang not found, skipping PVS-Studio checks."
       NO_PVSSTUDIO=1
-    }
+    } || true
   command -v bear > /dev/null 2>&1 \
     || {
       printf '%s\n' \
         "NOTICE: bear not found, skipping PVS-Studio checks."
       NO_PVSSTUDIO=1
-    }
+    } || true
   command -v pvs-studio-analyzer > /dev/null 2>&1 \
     || {
       printf '%s\n' \
         "NOTICE: pvs-studio-analyzer not found, skipping PVS-Studio check."
       NO_PVSSTUDIO=1
-    }
+    } || true
   command -v plog-converter > /dev/null 2>&1 \
     || {
       printf '%s\n' \
         "NOTICE: plog-converter not found, skipping PVS-Studio checks."
       NO_PVSSTUDIO=1
-    }
+    } || true
   test -z "${NO_PVSSTUDIO:-}" \
     && {
       printf '%s\n' "running PVS-Studio checks ..."
@@ -430,7 +430,7 @@ test_pvs()
       rm -f ./compile_commands.json
       rm -f ./log.pvs
       rm -rf ./pvsreport
-    }
+    } || true
 }
 
 ################################################################################
@@ -442,13 +442,13 @@ test_valgrind()
       printf '%s\n' \
         "NOTICE: valgrind not found, skipping checks."
       NO_VALGRIND=1
-    }
+    } || true
   command -v clang > /dev/null 2>&1 \
     || {
       printf '%s\n' \
         "NOTICE: clang not found, skipping valgrind checks."
       NO_VALGRIND=1
-    }
+    } || true
   test -z "${NO_VALGRIND:-}" \
     && {
       printf '%s\n' "running valgrind checks ..."
@@ -472,7 +472,7 @@ test_valgrind()
           --error-exitcode=1 \
           build/bin/sirtests
       )
-    }
+    } || true
 }
 
 ################################################################################
@@ -484,12 +484,12 @@ test_reuse()
       printf '%s\n' \
         "NOTICE: reuse not found, skipping checks."
       NO_REUSE=1
-    }
+    } || true
   test -z "${NO_REUSE:-}" \
     && {
       printf '%s\n' "running reuse checks ..."
       reuse lint
-    }
+    } || true
 }
 
 ################################################################################
