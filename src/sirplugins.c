@@ -456,7 +456,7 @@ bool _sir_plugin_cache_dispatch(sir_plugincache* spc, sir_level level, sirbuf* b
 
     for (size_t n = 0; n < spc->count; n++) {
         if (!_sir_bittest(spc->plugins[n]->info.levels, level)) {
-            _sir_selflog("level %04"PRIx32" not set in level mask (%04"PRIx16
+            _sir_selflog("level %04"PRIx16" not set in level mask (%04"PRIx16
                          ") for plugin (path: '%s', id: %08"PRIx32"); skipping",
                          level, spc->plugins[n]->info.levels, spc->plugins[n]->path,
                          spc->plugins[n]->id);
