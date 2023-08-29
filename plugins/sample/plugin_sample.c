@@ -37,14 +37,14 @@ BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved)
 }
 #endif
 
-static const uint8_t maj_ver   = 1;
-static const uint8_t min_ver   = 0;
-static const uint8_t bld_ver   = 0;
+static const uint8_t maj_ver   = 1u;
+static const uint8_t min_ver   = 0u;
+static const uint8_t bld_ver   = 0u;
 static const sir_levels levels = SIRL_DEBUG | SIRL_INFO;
 static const sir_options opts  = SIRO_NOHOST | SIRO_NOTID;
 static const char* author      = "libsir contributors";
 static const char* desc        = "Logs messages and function calls to stdout.";
-static const uint64_t caps     = 0;
+static const uint64_t caps     = 0ull;
 
 PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
     info->iface_ver = SIR_PLUGIN_VCURRENT;
@@ -67,7 +67,7 @@ PLUGIN_EXPORT bool sir_plugin_init(void) {
 }
 
 PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message) {
-    printf("\t" DGRAY("plugin_sample (%s): level: %04"PRIx32", message: %s"),
+    printf("\t" DGRAY("plugin_sample (%s): level: %04"PRIx16", message: %s"),
         __func__, level, message);
     return true;
 }
