@@ -118,6 +118,10 @@ bool _sir_init(sirinit* si) {
 
     _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false);
 
+#if !defined(__WIN__)
+    tzset();
+#endif
+
 #if defined(__HAVE_ATOMIC_H__)
     atomic_store(&_sir_magic, _SIR_MAGIC);
 #else

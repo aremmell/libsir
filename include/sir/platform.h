@@ -212,6 +212,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  endif
 # else /* _WIN32 */
 #  define __WIN__
+#  undef SIR_NO_SYSTEM_LOGGERS
 #  define SIR_NO_SYSTEM_LOGGERS
 #  undef __HAVE_ATOMIC_H__
 #  define __WANT_STDC_SECURE_LIB__ 1

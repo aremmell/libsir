@@ -1278,22 +1278,28 @@ bool sirtest_updatesanity(void) {
 }
 
 #if defined(SIR_SYSLOG_ENABLED) || defined(SIR_OS_LOG_ENABLED)
-static bool generic_syslog_test(const char* sl_name, const char* identity, const char* category) {
-    bool pass             = true;
+static
+bool generic_syslog_test(const char* sl_name, const char* identity, const char* category) {
     static const int runs = 5;
 
     /* repeat initializing, opening, logging, closing, cleaning up n times. */
     printf("\trunning %d passes of random configs (system logger: '%s', "
            "identity: '%s', category: '%s')...\n", runs, sl_name, identity, category);
 
-    uint32_t rnd_input = (uint32_t)time(NULL);
+#if !defined(__WIN__)
+    uint32_t rnd = (uint32_t)(_sir_getpid() + _sir_gettid());
+#else
+    uint32_t rnd = (uint32_t)GetTickCount();
+#endif
+
+    bool pass = true;
     for (int i = 1; i <= runs; i++) {
         /* randomly skip setting process name, identity/category to thoroughly
          * test fallback routines; randomly update the config mid-run. */
-        bool set_procname = getrand_bool(rnd_input | 0x5a5a5a5au);
-        bool set_identity = getrand_bool(rnd_input | 0xcacacacau);
-        bool set_category = getrand_bool(rnd_input | 0x32323232u);
-        bool do_update    = getrand_bool(rnd_input | 0x28282828u);
+        bool set_procname = getrand_bool(rnd ^ 0x5a5a5a5au);
+        bool set_identity = getrand_bool(rnd ^ 0xc9c9c9c9u);
+        bool set_category = getrand_bool(rnd ^ 0x32323232u);
+        bool do_update    = getrand_bool(rnd ^ 0xe7e7e7e7u);
 
         printf("\tset_procname: %d, set_identity: %d, set_category: %d, do_update: %d\n",
             set_procname, set_identity, set_category, do_update);
@@ -1339,7 +1345,7 @@ static bool generic_syslog_test(const char* sl_name, const char* identity, const
         pass &= sir_emerg("%d/%d: this emergency message sent to stdout and %s.", i, runs, sl_name);
 
 # if defined(SIR_OS_LOG_ENABLED)
-#  if defined(__APPLE__) && !defined(__INTEL_COMPILER)
+#  if defined(__MACOS__) && !defined(__INTEL_COMPILER)
         if (i == runs -1 && 0 == strncmp(sl_name, "os_log", 6)) {
             printf("\ttesting os_log activity feature...\n");
 
