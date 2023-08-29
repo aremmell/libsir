@@ -1054,7 +1054,9 @@ void _sir_syslog_reset(sir_syslog_dest* ctx) {
 #endif
 }
 
+#if !defined(__IMPORTC__)
 PURE_ATTR
+#endif
 const char* _sir_formattedlevelstr(sir_level level) {
     static const size_t low  = 0;
     static const size_t high = SIR_NUMLEVELS - 1;
