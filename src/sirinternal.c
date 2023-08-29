@@ -895,9 +895,6 @@ bool _sir_syslog_open(sir_syslog_dest* ctx) {
 #endif
 }
 
-#if defined(SIR_NO_SYSTEM_LOGGERS)
-CONST_ATTR
-#endif
 bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!_sir_bittest(ctx->_state.mask, SIRSL_IS_INIT)) {
@@ -1009,9 +1006,6 @@ bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data) {
 #endif
 }
 
-#if defined(SIR_NO_SYSTEM_LOGGERS)
-CONST_ATTR
-#endif
 bool _sir_syslog_close(sir_syslog_dest* ctx) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!_sir_validptr(ctx))
@@ -1054,9 +1048,6 @@ void _sir_syslog_reset(sir_syslog_dest* ctx) {
 #endif
 }
 
-#if !defined(__IMPORTC__)
-PURE_ATTR
-#endif
 const char* _sir_formattedlevelstr(sir_level level) {
     static const size_t low  = 0;
     static const size_t high = SIR_NUMLEVELS - 1;
