@@ -88,12 +88,10 @@ ifneq "$(findstring suncc,$(CC))" ""
   SUNPRO?=1
 endif
 ifeq ($(SUNPRO),1)
-  ifneq ($(SUNLINT),1)
-    CFLAGS+=-fcommon
-  endif
   FORTIFY_FLAGS=-U_FORTIFY_SOURCE
   MMDOPT=-xMMD
   PTHOPT=-mt=yes
+  CFLAGS+=-fcommon
 else
   FORTIFY_FLAGS=-D_FORTIFY_SOURCE=2
   MMDOPT=-MMD

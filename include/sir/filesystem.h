@@ -67,6 +67,16 @@ bool _sir_getrelbasepath(const char* restrict path, bool* restrict relative,
 
 bool _sir_deletefile(const char* restrict path);
 
+# if !defined(__WIN__)
+/* suppress unconditional warning from Flawfinder about the use of
+ * the readlink function, which is prone to pathname race conditions. */
+static inline
+ssize_t _sir_readlink(const char* restrict path, char* restrict buf, size_t bufsize)
+{
+    return readlink(path, buf, bufsize); /* flawfinder: ignore */
+}
+# endif
+
 # if defined(_AIX)
 int _sir_aixself(char *buffer, size_t *size);
 # endif

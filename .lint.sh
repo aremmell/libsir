@@ -172,7 +172,7 @@ test_duma()
           exit 1
         }
       rm -f ./duma*.log
-    } || true
+    }
 }
 
 ################################################################################
@@ -201,23 +201,29 @@ test_extra()
         ' && ${MAKE:-make} clean &&
         env CC="${CCACHE:-env} clang"
             CFLAGS="-Werror
-                    -Wmissing-prototypes
-                    -Wdouble-promotion
-                    -Wmissing-variable-declarations
-                    -Wconversion
+                    -Wassign-enum
                     -Wbad-function-cast
+                    -Wconversion
+                    -DSIR_LINT=1
+                    -Wdisabled-macro-expansion
+                    -Wdouble-promotion
                     -Wextra-semi-stmt
+                    -Wformat=2
+                    -Wformat-nonliteral
+                    -Wmissing-prototypes
+                    -Wmissing-variable-declarations
                     -Wno-sign-conversion
-                    -Wswitch-enum
                     -Wno-string-conversion
-                    -Wformat-nonliteral"
+                    -Wshift-overflow
+                    -Wstring-conversion
+                    -Wswitch-enum"
             ${MAKE:-make}
                 -j "${CPUS:-1}" ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
       printf '%s\n' ' && true' >> ./.extra.sh
       chmod a+x ./.extra.sh
       sh ./.extra.sh
       rm -f ./.extra.sh
-    } || true
+    }
 }
 
 ################################################################################
@@ -246,22 +252,25 @@ test_gccextra()
         ' && ${MAKE:-make} clean &&
         env CC="${CCACHE:-env} gcc"
             CFLAGS="-Werror
-                    -Wmissing-prototypes
-                    -Wdouble-promotion
-                    -Wmissing-declarations
+                    -Wbad-function-cast
                     -Wconversion
-                    -Wno-sign-conversion
-                    -Wswitch-enum
-                    -Wno-string-conversion
+                    -Wdouble-promotion
+                    -Wformat=2
                     -Wformat-nonliteral
-                    -Wformat-truncation"
+                    -Wformat-overflow
+                    -Wformat-truncation=2
+                    -Wmissing-declarations
+                    -Wmissing-prototypes
+                    -Wno-sign-conversion
+                    -Wno-string-conversion
+                    -Wswitch-enum"
             ${MAKE:-make}
                 -j 1 ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
       printf '%s\n' ' && true' >> ./.extra.sh
       chmod a+x ./.extra.sh
       sh ./.extra.sh
       rm -f ./.extra.sh
-    } || true
+    }
 }
 
 ################################################################################
@@ -325,7 +334,7 @@ test_scanbuild()
       sh ./.scan-build.sh
       rm -f ./.scan-build.sh
       rm -rf ./clang-analyzer 2> /dev/null
-    } || true
+    }
 }
 
 ################################################################################
@@ -379,7 +388,7 @@ test_cppcheck()
         }
       rm -rf ./cppcheck
       rm -f ./cppcheck.xml
-    } || true
+    }
 }
 
 ################################################################################
@@ -430,7 +439,7 @@ test_pvs()
       rm -f ./compile_commands.json
       rm -f ./log.pvs
       rm -rf ./pvsreport
-    } || true
+    }
 }
 
 ################################################################################
@@ -472,7 +481,7 @@ test_valgrind()
           --error-exitcode=1 \
           build/bin/sirtests
       )
-    } || true
+    }
 }
 
 ################################################################################
@@ -489,7 +498,7 @@ test_reuse()
     && {
       printf '%s\n' "running reuse checks ..."
       reuse lint
-    } || true
+    }
 }
 
 ################################################################################

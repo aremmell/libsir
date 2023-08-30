@@ -23,10 +23,10 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#include <stdio.h>
 #include "plugin_dummy.h"
 #include "sir/ansimacros.h"
 #include "sir/helpers.h"
+#include <stdio.h>
 
 #if !defined(PLUGIN_NAME)
 # define PLUGIN_NAME "plugin_dummy"
@@ -92,7 +92,7 @@ PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
     info->caps      = caps;
 
     /* cppcheck-suppress syntaxError */
-    printf("\t" DGRAY("" PLUGIN_NAME " ('%s')") "\n", __func__);
+    (void)printf("\t" DGRAY("" PLUGIN_NAME " ('%s')") "\n", __func__);
 
 #if defined(PLUGINDUMMY_BADBEHAVIOR1)
     return false;
@@ -103,7 +103,7 @@ PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
 
 #if !defined(PLUGINDUMMY_BADBEHAVIOR4)
 PLUGIN_EXPORT bool sir_plugin_init(void) {
-    printf("\t" DGRAY("" PLUGIN_NAME " ('%s')") "\n", __func__);
+    (void)printf("\t" DGRAY("" PLUGIN_NAME " ('%s')") "\n", __func__);
 # if defined(PLUGINDUMMY_BADBEHAVIOR5)
     return false;
 # else
@@ -118,14 +118,14 @@ PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message) {
     SIR_UNUSED(message);
     return false;
 #else
-    printf("\t" DGRAY("" PLUGIN_NAME " (%s): level: %04"PRIx16", message: %s"),
-        __func__, level, message);
+    (void)printf("\t" DGRAY("" PLUGIN_NAME " (%s): level: %04"PRIx16", message: %s"),
+                 __func__, level, message);
     return true;
 #endif
 }
 
 PLUGIN_EXPORT bool sir_plugin_cleanup(void) { //-V524
-    printf("\t" DGRAY("" PLUGIN_NAME " ('%s')") "\n", __func__);
+    (void)printf("\t" DGRAY("" PLUGIN_NAME " ('%s')") "\n", __func__);
 #if defined(PLUGINDUMMY_BADBEHAVIOR6)
     return false;
 #else
