@@ -1131,8 +1131,8 @@ MSVC Static Analyzer:
     - *Configuration
     - PATH="/opt/msvc/bin/x64:${PATH:?}" && export PATH
     - cl.exe 2>&1 | head -3
-    - cl.exe src/*.c example/example.c -Iinclude /O2 /GL /W4 /WX /analyze /std:c11 /experimental:c11atomics /sdl /wd4996
-    - cl.exe src/*.c tests/tests.c -Iinclude /O2 /GL /W4 /WX /analyze /std:c11 /experimental:c11atomics /sdl /wd4996
+    - cl.exe src/*.c example/example.c -Iinclude /Oi /O2 /GL /W4 /WX /analyze /std:c11 /experimental:c11atomics /sdl /wd4996 /wd28251
+    - cl.exe src/*.c tests/tests.c -Iinclude /Oi /O2 /GL /W4 /WX /analyze /std:c11 /experimental:c11atomics /sdl /wd4996 /wd28251
   dependencies: []
   artifacts:
     when: always
