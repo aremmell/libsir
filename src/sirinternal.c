@@ -924,8 +924,6 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx)
         case SIRL_EMERG:  syslog_level = LOG_EMERG; break;
         // GCOVR_EXCL_START
         case SIRL_NONE: /* this should never happen. */
-        case SIRL_ALL:
-        case SIRL_DEFAULT:
         default:
             SIR_ASSERT(level);
             syslog_level = LOG_DEBUG;
