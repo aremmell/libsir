@@ -91,15 +91,7 @@ ifeq ($(SUNPRO),1)
   FORTIFY_FLAGS=-U_FORTIFY_SOURCE
   MMDOPT=-xMMD
   PTHOPT=-mt=yes
-  ifneq ($(SUNLINT),1)
-    CFLAGS+=-fcommon
-  else
-    CFLAGS+=-DSUNPRO=1 -DSUNLINT=1
-    SIR_SHARED=
-    SIR_FPIC=
-    MMDOPT=
-    PTHOPT=
-  endif
+  CFLAGS+=-fcommon
 else
   FORTIFY_FLAGS=-D_FORTIFY_SOURCE=2
   MMDOPT=-MMD

@@ -124,21 +124,15 @@ all: $(PGOALS) $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS)
 
 $(OBJ_EXAMPLE): $(EXAMPLE)/$(EXAMPLE).c $(DEPS)
 	@mkdir -p $(@D)
-ifneq ($(SUNLINT),1)
 	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) $(SIR_CSTD) -Iinclude
-endif
 
 $(OBJ_MCMB): $(UTILS)/$(MCMB)/$(MCMB).c $(DEPS)
 	@mkdir -p $(@D)
-ifneq ($(SUNLINT),1)
 	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) $(SIR_GSTD)
-endif
 
 $(OBJ_TESTS): $(TESTS)/$(TESTS).c $(DEPS)
 	@mkdir -p $(@D)
-ifneq ($(SUNLINT),1)
 	$(CC) $(MMDOPT) -c -o $@ $< $(CFLAGS) $(SIR_CSTD) -Iinclude
-endif
 
 $(INTDIR)/%.o: %.c $(DEPS)
 	@mkdir -p $(@D)
@@ -148,40 +142,32 @@ $(INTDIR)/%.o: %.c $(DEPS)
 shared: $(OUT_SHARED)
 $(OUT_SHARED): $(OBJ_SHARED)
 	@mkdir -p $(@D)
-ifneq ($(SUNLINT),1)
 	$(CC) $(SIR_SHARED) -o $(OUT_SHARED) $^ $(LDFLAGS_SHARED)
 	-@printf 'built %s successfully.\n' "$(OUT_SHARED)" 2> /dev/null
-endif
 
 .PHONY: static
 static: $(OUT_STATIC)
 $(OUT_STATIC): $(OUT_SHARED)
 	@mkdir -p $(@D)
-ifneq ($(SUNLINT),1)
 	ar -cr $(OUT_STATIC) $(OBJ_SHARED)
 	-@($(RANLIB) "$(OUT_STATIC)" || true) > /dev/null 2>&1
 	-@printf 'built %s successfully.\n' "$(OUT_STATIC)" 2> /dev/null
-endif
 
 .PHONY: example
 example: $(OUT_EXAMPLE)
 $(OUT_EXAMPLE): $(OUT_STATIC) $(OBJ_EXAMPLE)
 	@mkdir -p $(@D)
 	@mkdir -p $(BINDIR)
-ifneq ($(SUNLINT),1)
 	$(CC) -o $(OUT_EXAMPLE) $(OBJ_EXAMPLE) -Iinclude $(LIBSIR_S) $(LDFLAGS)
 	-@printf 'built %s successfully.\n' "$(OUT_EXAMPLE)" 2> /dev/null
-endif
 
 .PHONY: mcmb cmb
 mcmb cmb: $(OUT_MCMB)
 $(OUT_MCMB): $(OBJ_MCMB)
 	mkdir -p $(@D)
 	mkdir -p $(BINDIR)
-ifneq ($(SUNLINT),1)
 	$(CC) -o $(OUT_MCMB) $(OBJ_MCMB) $(LDFLAGS)
 	-@printf 'built %s successfully.\n' "$(OUT_MCMB)" 2> /dev/null
-endif
 
 .PHONY: tests test
 tests test: $(OUT_TESTS)
@@ -191,10 +177,8 @@ $(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS)
 	@mkdir -p $(BINDIR)
 	@mkdir -p $(LOGDIR)
 	@touch $(BINDIR)/file.exists > /dev/null
-ifneq ($(SUNLINT),1)
 	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS) -Iinclude $(LIBSIR_S) $(LDFLAGS)
 	-@printf 'built %s successfully.\n' "$(OUT_TESTS)" 2> /dev/null
-endif
 
 .PHONY: docs doc
 docs doc: $(OUT_STATIC)
