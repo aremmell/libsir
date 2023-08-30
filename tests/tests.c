@@ -223,7 +223,7 @@ DUMA_SET_FILL(0x2E);
 }
 
 bool sirtest_exceedmaxsize(void) {
-    INIT(si, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     char toobig[SIR_MAXMESSAGE + 100] = {0};
@@ -237,7 +237,7 @@ bool sirtest_exceedmaxsize(void) {
 }
 
 bool sirtest_failnooutputdest(void) {
-    INIT(si, 0u, 0u, 0u, 0u);
+    INIT(si, 0, 0, 0, 0);
     bool pass = si_init;
 
     static const char* logfilename = MAKE_LOG_NAME("nodestination.log");
@@ -268,7 +268,7 @@ bool sirtest_failnooutputdest(void) {
 }
 
 bool sirtest_failnulls(void) {
-    INIT_BASE(si, SIRL_ALL, 0u, 0u, 0u, "", false);
+    INIT_BASE(si, SIRL_ALL, 0, 0, 0, "", false);
     bool pass = true;
 
     pass &= !sir_init(NULL);
@@ -297,7 +297,7 @@ bool sirtest_failnulls(void) {
 }
 
 bool sirtest_failemptymessage(void) {
-    INIT(si, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     pass &= !sir_debug("%s", "");
@@ -307,7 +307,7 @@ bool sirtest_failemptymessage(void) {
 }
 
 bool sirtest_filecachesanity(void) {
-    INIT(si, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     size_t numfiles             = SIR_MAXFILES + 1;
@@ -380,7 +380,7 @@ bool sirtest_filecachesanity(void) {
 }
 
 bool sirtest_failinvalidfilename(void) {
-    INIT(si, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     pass &= 0u == sir_addfile("bad file!/name", SIRL_ALL, SIRO_MSGONLY);
@@ -393,7 +393,7 @@ bool sirtest_failinvalidfilename(void) {
 }
 
 bool sirtest_failfilebadpermission(void) {
-    INIT(si, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
 #if !defined(__WIN__)
@@ -421,7 +421,7 @@ bool sirtest_failfilebadpermission(void) {
 }
 
 bool sirtest_faildupefile(void) {
-    INIT(si, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
 #if !defined(__WIN__)
@@ -490,7 +490,7 @@ bool sirtest_faildupefile(void) {
 }
 
 bool sirtest_failremovebadfile(void) {
-    INIT(si, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     sirfileid invalidid = 9999999;
@@ -544,7 +544,7 @@ bool sirtest_rollandarchivefile(void) {
 
     fclose(f);
 
-    INIT(si, 0u, 0u, 0u, 0u);
+    INIT(si, 0, 0, 0, 0);
     bool pass = si_init;
 
     sirfileid fileid = sir_addfile(logfilename, SIRL_DEBUG, SIRO_MSGONLY | SIRO_NOHDR);
@@ -597,10 +597,10 @@ bool sirtest_failwithoutinit(void) {
 }
 
 bool sirtest_failinittwice(void) {
-    INIT(si, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    INIT(si2, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si2, SIRL_ALL, 0, 0, 0);
     pass &= !si2_init;
 
     if (pass)
@@ -627,13 +627,13 @@ bool sirtest_failinvalidinitdata(void) {
 }
 
 bool sirtest_initcleanupinit(void) {
-    INIT(si1, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si1, SIRL_ALL, 0, 0, 0);
     bool pass = si1_init;
 
     pass &= sir_info("init called once; testing output...");
     sir_cleanup();
 
-    INIT(si2, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si2, SIRL_ALL, 0, 0, 0);
     pass &= si2_init;
 
     pass &= sir_info("init called again after re-init; testing output...");
@@ -655,7 +655,7 @@ bool sirtest_initmakeinit(void) {
 }
 
 bool sirtest_failaftercleanup(void) {
-    INIT(si, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     sir_cleanup();
@@ -668,7 +668,7 @@ bool sirtest_failaftercleanup(void) {
 }
 
 bool sirtest_errorsanity(void) {
-    INIT(si, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     struct {
@@ -715,7 +715,7 @@ bool sirtest_errorsanity(void) {
 }
 
 bool sirtest_textstylesanity(void) {
-    INIT(si, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     printf("\t" WHITEB("--- explicitly invalid ---") "\n");
@@ -834,7 +834,7 @@ bool sirtest_textstylesanity(void) {
 SANITIZE_SUPPRESS("implicit-conversion")
 #endif
 bool sirtest_optionssanity(void) {
-    INIT(si, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     static const size_t iterations = 10;
@@ -938,7 +938,7 @@ bool sirtest_optionssanity(void) {
 }
 
 bool sirtest_levelssanity(void) {
-    INIT(si, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     static const size_t iterations = 10;
@@ -1032,7 +1032,7 @@ bool sirtest_levelssanity(void) {
 }
 
 bool sirtest_mutexsanity(void) {
-    INIT(si, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     printf("\t" WHITEB("create, lock, unlock, destroy") "\n");
@@ -1099,7 +1099,7 @@ bool sirtest_perf(void) {
     static const size_t perflines = 100000;
 #endif
 
-    INIT_N(si, SIRL_ALL, SIRO_NOMSEC | SIRO_NOHOST, 0u, 0u, "perf");
+    INIT_N(si, SIRL_ALL, SIRO_NOMSEC | SIRO_NOHOST, 0, 0, "perf");
     bool pass = si_init;
 
     if (pass) {
@@ -1131,7 +1131,7 @@ bool sirtest_perf(void) {
 
         sir_cleanup();
 
-        INIT(si2, 0u, 0u, 0u, 0u);
+        INIT(si2, 0, 0, 0, 0);
         pass &= si2_init;
 
         char logfilename[SIR_MAXPATH] = {0};
@@ -1181,7 +1181,7 @@ bool sirtest_perf(void) {
 }
 
 bool sirtest_updatesanity(void) {
-    INIT_N(si, SIRL_DEFAULT, 0u, SIRL_DEFAULT, 0u, "update_sanity");
+    INIT_N(si, SIRL_DEFAULT, 0, SIRL_DEFAULT, 0, "update_sanity");
     bool pass = si_init;
 
 #define UPDATE_SANITY_ARRSIZE 10
@@ -1303,7 +1303,7 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
         printf("\tset_procname: %d, set_identity: %d, set_category: %d, do_update: %d\n",
             set_procname, set_identity, set_category, do_update);
 
-        INIT_SL(si, SIRL_ALL, SIRO_NOHOST | SIRO_NOTID, 0u, 0u, (set_procname ? "sir_sltest" : ""));
+        INIT_SL(si, SIRL_ALL, SIRO_NOHOST | SIRO_NOTID, 0, 0, (set_procname ? "sir_sltest" : ""));
         si.d_syslog.opts   = SIRO_DEFAULT;
         si.d_syslog.levels = SIRL_DEFAULT;
 
@@ -1461,7 +1461,7 @@ char *sirtest_get_wineversion(void) {
 }
 
 bool sirtest_filesystem(void) {
-    INIT(si, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     /* Wine version */
@@ -1725,7 +1725,7 @@ bool sirtest_filesystem(void) {
 }
 
 bool sirtest_squelchspam(void) {
-    INIT(si, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     static const size_t alternate   = 50ul;
@@ -1793,7 +1793,7 @@ bool sirtest_squelchspam(void) {
 }
 
 bool sirtest_pluginloader(void) {
-    INIT(si, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
 #if !defined(__WIN__)
@@ -1924,7 +1924,7 @@ bool sirtest_pluginloader(void) {
 }
 
 bool sirtest_getversioninfo(void) {
-    INIT(si, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     printf("\tchecking version retrieval functions...\n");
@@ -1961,7 +1961,7 @@ static bool threadpool_pseudojob(void* arg) {
 }
 
 bool sirtest_threadpool(void) {
-    INIT(si, SIRL_ALL, SIRO_NOTIME | SIRO_NOHOST | SIRO_NONAME, 0u, 0u);
+    INIT(si, SIRL_ALL, SIRO_NOTIME | SIRO_NOHOST | SIRO_NONAME, 0, 0);
     bool pass = si_init;
 
     static const size_t num_jobs = 30;
@@ -2009,7 +2009,7 @@ bool sirtest_threadrace(void) {
     uintptr_t thrds[NUM_THREADS] = {0};
 #endif
 
-    INIT_N(si, SIRL_DEFAULT, SIRO_NOPID | SIRO_NOHOST, 0u, 0u, "thread-race");
+    INIT_N(si, SIRL_DEFAULT, SIRO_NOPID | SIRO_NOHOST, 0, 0, "thread-race");
     bool pass           = si_init;
     bool any_created    = false;
     size_t last_created = 0;
