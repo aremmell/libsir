@@ -51,12 +51,12 @@
 
 # define INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, p_name, init) \
     sirinit var         = {0}; \
-    var.d_stdout.opts   = (o_stdout) > 0u ? o_stdout : SIRO_DEFAULT; \
-    var.d_stdout.levels = l_stdout; \
-    var.d_stderr.opts   = (o_stderr) > 0u ? o_stderr : SIRO_DEFAULT; \
-    var.d_stderr.levels = l_stderr; \
+    var.d_stdout.opts   = (o_stdout) >= 1u ? (o_stdout) : SIRO_DEFAULT; \
+    var.d_stdout.levels = (l_stdout); \
+    var.d_stderr.opts   = (o_stderr) >= 1u ? (o_stderr) : SIRO_DEFAULT; \
+    var.d_stderr.levels = (l_stderr); \
     if (_sir_validstrnofail(p_name)) \
-        _sir_strncpy(var.name, SIR_MAXNAME, p_name, SIR_MAXNAME); \
+        _sir_strncpy(var.name, SIR_MAXNAME, (p_name), SIR_MAXNAME); \
     bool var##_init = false; \
     if (init) \
         var##_init = sir_init(&var); \
