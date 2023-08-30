@@ -767,8 +767,8 @@ Windows/Arm64 (MSVC):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin
-    - cl.exe src/*.c example/example.c -Iinclude /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirexample.exe
-    - cl.exe src/*.c tests/tests.c -Iinclude /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirtests.exe
+    - cl.exe src/*.c example/example.c -Iinclude /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
+    - cl.exe src/*.c tests/tests.c -Iinclude /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -796,8 +796,8 @@ Windows/Arm (MSVC):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin
-    - cl.exe src/*.c example/example.c -Iinclude /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirexample.exe
-    - cl.exe src/*.c tests/tests.c -Iinclude /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirtests.exe
+    - cl.exe src/*.c example/example.c -Iinclude /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
+    - cl.exe src/*.c tests/tests.c -Iinclude /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -825,8 +825,8 @@ Windows/x64 (MSVC):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin
-    - cl.exe src/*.c example/example.c -Iinclude /DSIR_NO_PLUGINS=1 /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirexample.exe
-    - cl.exe src/*.c tests/tests.c -Iinclude /DSIR_NO_PLUGINS=1 /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirtests.exe
+    - cl.exe src/*.c example/example.c -Iinclude /DSIR_NO_PLUGINS=1 /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
+    - cl.exe src/*.c tests/tests.c -Iinclude /DSIR_NO_PLUGINS=1 /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
@@ -867,8 +867,8 @@ Windows/i686 (MSVC):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin
-    - cl.exe src/*.c example/example.c -Iinclude /DSIR_NO_PLUGINS=1 /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirexample.exe
-    - cl.exe src/*.c tests/tests.c -Iinclude /DSIR_NO_PLUGINS=1 /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirtests.exe
+    - cl.exe src/*.c example/example.c -Iinclude /DSIR_NO_PLUGINS=1 /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
+    - cl.exe src/*.c tests/tests.c -Iinclude /DSIR_NO_PLUGINS=1 /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
@@ -1131,8 +1131,8 @@ MSVC Static Analyzer:
     - *Configuration
     - PATH="/opt/msvc/bin/x64:${PATH:?}" && export PATH
     - cl.exe 2>&1 | head -3
-    - cl.exe src/*.c example/example.c -Iinclude /O2 /GL /W4 /WX /analyze /std:c11 /sdl /wd4996
-    - cl.exe src/*.c tests/tests.c -Iinclude /O2 /GL /W4 /WX /analyze /std:c11 /sdl /wd4996
+    - cl.exe src/*.c example/example.c -Iinclude /Oi /O2 /GL /W4 /WX /analyze /std:c11 /experimental:c11atomics /sdl /wd4996
+    - cl.exe src/*.c tests/tests.c -Iinclude /Oi /O2 /GL /W4 /WX /analyze /std:c11 /experimental:c11atomics /sdl /wd4996
   dependencies: []
   artifacts:
     when: always
