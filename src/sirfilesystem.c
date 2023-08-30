@@ -235,10 +235,7 @@ char* _sir_getappfilename(void) {
 
 #if !defined(__WIN__)
 # if defined(__READLINK_OS__)
-        /* Suppress unconditional warning from Flawfinder about the use of
-         * the readlink function, which is prone to pathname race conditions. */
-        /* Flawfinder: ignore */
-        ssize_t read = readlink(PROC_SELF, buffer, size - 1);
+        ssize_t read = _sir_readlink(PROC_SELF, buffer, size - 1);
         if (-1l != read && read < (ssize_t)size - 1) {
             resolved = true;
             break;
@@ -246,10 +243,8 @@ char* _sir_getappfilename(void) {
             resolved = _sir_handleerr(errno);
             break;
         } else if (read == (ssize_t)size - 1l) {
-            /*
-             * It is possible that truncation occurred. As a security
-             * precaution, fail; someone may have tampered with the link.
-             */
+            /* it is possible that truncation occurred. as a security
+             * precaution, fail; someone may have tampered with the link. */
             _sir_selflog("warning: readlink reported truncation; not using result!");
             resolved = false;
             break;
@@ -474,8 +469,7 @@ int _sir_aixself(char* buffer, size_t* size) {
     if (argv[0][0] == '/') {
         (void)snprintf(symlink, SIR_MAXPATH, "%s", argv[0]);
 
-        /* Flawfinder: ignore */
-        res = readlink(symlink, temp_buffer, SIR_MAXPATH);
+        res = _sir_readlink(symlink, temp_buffer, SIR_MAXPATH);
         if (res < 0)
             _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
         else
@@ -490,16 +484,13 @@ int _sir_aixself(char* buffer, size_t* size) {
             return -1;
 
         (void)snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
-
-        /* Flawfinder: ignore */
-        res = readlink(cwd, cwdl, sizeof(cwdl) - 1);
+        res = _sir_readlink(cwd, cwdl, sizeof(cwdl) - 1);
         if (res < 0)
             return -1;
 
         (void)snprintf(symlink, SIR_MAXPATH, "%s%s", cwdl, relative + 1);
 
-        /* Flawfinder: ignore */
-        res = readlink(symlink, temp_buffer, SIR_MAXPATH);
+        res = _sir_readlink(symlink, temp_buffer, SIR_MAXPATH);
         if (res < 0)
             _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
         else
@@ -510,15 +501,13 @@ int _sir_aixself(char* buffer, size_t* size) {
     } else if (strchr(argv[0], '/') != NULL) {
         (void)snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
 
-        /* Flawfinder: ignore */
-        res = readlink(cwd, cwdl, sizeof(cwdl) - 1);
+        res = _sir_readlink(cwd, cwdl, sizeof(cwdl) - 1);
         if (res < 0)
             return -1;
 
         (void)snprintf(symlink, SIR_MAXPATH, "%s%s", cwdl, argv[0]);
 
-        /* Flawfinder: ignore */
-        res = readlink(symlink, temp_buffer, SIR_MAXPATH);
+        res = _sir_readlink(symlink, temp_buffer, SIR_MAXPATH);
         if (res < 0)
             _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
         else
@@ -540,8 +529,8 @@ int _sir_aixself(char* buffer, size_t* size) {
         token = strtok_r(clonedpath, ":", &tokptr);
 
         (void)snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
-        /* Flawfinder: ignore */
-        res = readlink(cwd, cwdl, sizeof(cwdl) - 1);
+
+        res = _sir_readlink(cwd, cwdl, sizeof(cwdl) - 1);
         if (res < 0)
             return -1;
 
@@ -556,8 +545,7 @@ int _sir_aixself(char* buffer, size_t* size) {
                 }
 
                 if (stat(symlink, &statstruct) != -1) {
-                    /* Flawfinder: ignore */
-                    res = readlink(symlink, temp_buffer, SIR_MAXPATH);
+                    res = _sir_readlink(symlink, temp_buffer, SIR_MAXPATH);
                     if (res < 0)
                         _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
                     else
@@ -569,8 +557,7 @@ int _sir_aixself(char* buffer, size_t* size) {
             } else {
                 (void)snprintf(symlink, SIR_MAXPATH, "%s/%s", token, ps.pr_fname);
                 if (stat(symlink, &statstruct) != -1) {
-                    /* Flawfinder: ignore */
-                    res = readlink(symlink, temp_buffer, SIR_MAXPATH);
+                    res = _sir_readlink(symlink, temp_buffer, SIR_MAXPATH);
                     if (res < 0)
                         _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
                     else
