@@ -6,6 +6,7 @@
 # SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 #
 
+.NOTPARALLEL:
 SHELL      := $(shell env sh -c 'PATH="$$(command -p getconf PATH)" command -v sh')
 BUILDDIR    = ./build
 LOGDIR      = ./logs
@@ -27,6 +28,7 @@ LDCONFIG   ?= ldconfig
 PLUGINS     = ./plugins
 PLUGINNAMES = $(subst $(PLUGINS)/,,$(wildcard $(PLUGINS)/*))
 PLUGPREFIX  = plugin_
+SIR_FPIC   ?= -fPIC
 
 # platform specifics
 include sirplatform.mk
@@ -37,7 +39,7 @@ SIR_GSTD ?= -std=gnu11
 
 # base CFLAGS
 ifneq ($(NO_DEFAULT_CFLAGS),1)
-  CFLAGS += -Wall -Wextra -Wpedantic -Iinclude -fPIC
+  CFLAGS += -Wall -Wextra -Wpedantic -Iinclude $(SIR_FPIC)
 endif
 
 # debug/non-debug CFLAGS
@@ -202,9 +204,6 @@ lint check:
 	@$(LINTSH)
 
 .PHONY: install
-ifneq (,$(findstring install,$(MAKECMDGOALS)))
-.NOTPARALLEL:
-endif
 install: $(INSTALLSH)
 	@test -x $(INSTALLSH) || \
 		{ printf 'Error: %s not executable.\n' "$(INSTALLSH)" \
@@ -242,9 +241,6 @@ install: $(INSTALLSH)
 	-@printf 'installed libsir successfully.\n' 2> /dev/null
 
 .PHONY: clean distclean
-ifneq (,$(findstring clean,$(MAKECMDGOALS)))
-.NOTPARALLEL:
-endif
 clean distclean:
 	@rm -rf $(BUILDDIR) > /dev/null 2>&1
 	@rm -rf $(LOGDIR) > /dev/null 2>&1

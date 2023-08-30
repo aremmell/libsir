@@ -124,15 +124,18 @@
 #    undef __HAVE_ATOMIC_H__
 #   endif
 #  endif
+#  if defined(SUNLINT)
+#   undef __HAVE_ATOMIC_H__
+#  endif
+#  if defined(__IMPORTC__)
+#   include "sir/platform_importc.h"
+#  endif
 #  if !defined(__open_xl__) && defined(__ibmxl__) && defined(__ibmxl_release__)
 #   if __ibmxl__ <= 16
 #    if __ibmxl_release__ <= 1
 #     undef __HAVE_ATOMIC_H__
 #    endif
 #   endif
-#  endif
-#  if defined(__IMPORTC__)
-#   include "sir/platform_importc.h"
 #  endif
 #  if !defined(__open_xl__) && defined(__xlC_ver__)
 #   if __xlC_ver__ <= 0x0000000e
@@ -251,7 +254,6 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  define __WIN__
 #  undef SIR_NO_SYSTEM_LOGGERS
 #  define SIR_NO_SYSTEM_LOGGERS
-#  undef __HAVE_ATOMIC_H__
 #  define __WANT_STDC_SECURE_LIB__ 1
 #  define WIN32_LEAN_AND_MEAN
 #  undef WINVER
@@ -269,6 +271,14 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  include <winsock2.h>
 #  include <conio.h>
 #  include <shlwapi.h>
+
+#  undef __HAVE_ATOMIC_H__
+
+#  if defined(_MSC_VER) && _MSC_VER >= 1933 && !defined(__cplusplus)
+#   include <stdatomic.h>
+#   define __HAVE_ATOMIC_H__
+#  endif
+
 #  if defined(__MINGW32__) || defined(__MINGW64__)
 #   undef __USE_MINGW_ANSI_STDIO
 #   define __USE_MINGW_ANSI_STDIO 1
@@ -563,5 +573,14 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #endif /* !_SIR_PLATFORM_H_INCLUDED */
 
 #include "sir/impl.h"
+
+/* Support Clang's -Wdisabled-macro-expansion check on Linux/glibc */
+#if defined(SIR_LINT) && (defined(__linux__) && defined(__GLIBC__)) && \
+    (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L) && \
+    (defined(__clang__) || defined(__clang_version__))
+# undef stdin
+# undef stdout
+# undef stderr
+#endif
 
 /* End of platform.h */

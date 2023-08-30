@@ -408,7 +408,7 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
             break;
         // GCOVR_EXCL_START
         default: /* this should never happen. */
-            SIR_ASSERT("!invalid mutex id");
+            SIR_ASSERT(mid);
             tmpm   = NULL;
             tmpsec = NULL;
             break;
@@ -580,7 +580,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         fmt = _sir_formattime(now, buf.timestamp, SIR_TIMEFORMAT);
         SIR_ASSERT_UNUSED(fmt, fmt);
 
-        (void)snprintf(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec);
+        _sir_snprintf_trunc(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec);
     }
 
     buf.level = _sir_formattedlevelstr(level);
@@ -934,10 +934,8 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx)
         case SIRL_EMERG:  syslog_level = LOG_EMERG; break;
         // GCOVR_EXCL_START
         case SIRL_NONE: /* this should never happen. */
-        case SIRL_ALL:
-        case SIRL_DEFAULT:
         default:
-            SIR_ASSERT(!"invalid sir_level");
+            SIR_ASSERT(level);
             syslog_level = LOG_DEBUG;
         // GCOVR_EXCL_STOP
     }
@@ -1234,7 +1232,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
     return _sir_validstrnofail(name);
 #else
-# if !defined(_AIX) && !defined(__HURD__)
+# if !defined(_AIX) && !defined(__HURD__) && !defined(SUNLINT)
 #  pragma message("unable to determine how to get a thread name")
 # endif
     SIR_UNUSED(name);

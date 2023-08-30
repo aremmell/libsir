@@ -345,7 +345,7 @@ Windows/x64 (LLVM-MinGW):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
-    - env CC="x86_64-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes" make PLATFORM_LIB_EXT=".a"
+    - env CC="x86_64-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes -Wno-unknown-pragmas" make PLATFORM_LIB_EXT=".a"
     - cp -f /opt/llvm-mingw/x86_64-w64-mingw32/bin/libwinpthread-1.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -356,10 +356,8 @@ Windows/x64 (LLVM-MinGW):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
@@ -389,7 +387,7 @@ Windows/Arm (LLVM-MinGW):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
-    - env CC="armv7-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes" make
+    - env CC="armv7-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes -Wno-unknown-pragmas" make
     - cp -f /opt/llvm-mingw/armv7-w64-mingw32/bin/libwinpthread-1.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -418,7 +416,7 @@ Windows/Arm64 (LLVM-MinGW):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
-    - env CC="aarch64-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes" make
+    - env CC="aarch64-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes -Wno-unknown-pragmas" make
     - cp -f /opt/llvm-mingw/aarch64-w64-mingw32/bin/libwinpthread-1.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -482,7 +480,7 @@ Windows/i686 (LLVM-MinGW):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
-    - env CC="i686-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes -Wno-incompatible-function-pointer-types" make PLATFORM_LIB_EXT=".a"
+    - env CC="i686-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes -Wno-incompatible-function-pointer-types -Wno-unknown-pragmas" make PLATFORM_LIB_EXT=".a"
     - cp -f /opt/llvm-mingw/i686-w64-mingw32/bin/libwinpthread-1.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -493,10 +491,8 @@ Windows/i686 (LLVM-MinGW):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
@@ -771,8 +767,8 @@ Windows/Arm64 (MSVC):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin
-    - cl.exe src/*.c example/example.c -Iinclude /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirexample.exe
-    - cl.exe src/*.c tests/tests.c -Iinclude /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirtests.exe
+    - cl.exe src/*.c example/example.c -Iinclude /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
+    - cl.exe src/*.c tests/tests.c -Iinclude /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -800,8 +796,8 @@ Windows/Arm (MSVC):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin
-    - cl.exe src/*.c example/example.c -Iinclude /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirexample.exe
-    - cl.exe src/*.c tests/tests.c -Iinclude /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirtests.exe
+    - cl.exe src/*.c example/example.c -Iinclude /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
+    - cl.exe src/*.c tests/tests.c -Iinclude /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -829,8 +825,8 @@ Windows/x64 (MSVC):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin
-    - cl.exe src/*.c example/example.c -Iinclude /DSIR_NO_PLUGINS=1 /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirexample.exe
-    - cl.exe src/*.c tests/tests.c -Iinclude /DSIR_NO_PLUGINS=1 /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirtests.exe
+    - cl.exe src/*.c example/example.c -Iinclude /DSIR_NO_PLUGINS=1 /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
+    - cl.exe src/*.c tests/tests.c -Iinclude /DSIR_NO_PLUGINS=1 /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
@@ -839,10 +835,8 @@ Windows/x64 (MSVC):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
@@ -873,8 +867,8 @@ Windows/i686 (MSVC):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin
-    - cl.exe src/*.c example/example.c -Iinclude /DSIR_NO_PLUGINS=1 /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirexample.exe
-    - cl.exe src/*.c tests/tests.c -Iinclude /DSIR_NO_PLUGINS=1 /O2 /W4 /std:c11 /wd4996 /Febuild\\bin\\sirtests.exe
+    - cl.exe src/*.c example/example.c -Iinclude /DSIR_NO_PLUGINS=1 /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
+    - cl.exe src/*.c tests/tests.c -Iinclude /DSIR_NO_PLUGINS=1 /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
@@ -883,10 +877,8 @@ Windows/i686 (MSVC):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
@@ -927,10 +919,8 @@ Windows/x64 (MinGW-MSVCRT):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
@@ -971,10 +961,8 @@ Windows/x64 (MinGW-UCRT):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
@@ -1015,10 +1003,8 @@ Windows/i686 (MinGW):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
@@ -1145,8 +1131,8 @@ MSVC Static Analyzer:
     - *Configuration
     - PATH="/opt/msvc/bin/x64:${PATH:?}" && export PATH
     - cl.exe 2>&1 | head -3
-    - cl.exe src/*.c example/example.c -Iinclude /O2 /GL /W4 /WX /analyze /std:c11 /sdl /wd4996
-    - cl.exe src/*.c tests/tests.c -Iinclude /O2 /GL /W4 /WX /analyze /std:c11 /sdl /wd4996
+    - cl.exe src/*.c example/example.c -Iinclude /Oi /O2 /GL /W4 /WX /analyze /std:c11 /experimental:c11atomics /sdl /wd4996 /wd28251
+    - cl.exe src/*.c tests/tests.c -Iinclude /Oi /O2 /GL /W4 /WX /analyze /std:c11 /experimental:c11atomics /sdl /wd4996 /wd28251
   dependencies: []
   artifacts:
     when: always
@@ -1392,10 +1378,8 @@ Windows/i686 (OrangeC):
     - mkdir -p logs
     - touch build/bin/file.exists
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
@@ -1509,10 +1493,8 @@ Windows/x64 (Embarcadero):
     - mkdir -p logs
     - touch build/bin/file.exists
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
@@ -1554,10 +1536,8 @@ Windows/i686 (Embarcadero):
     - mkdir -p logs
     - touch build/bin/file.exists
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - cat screenlog.0
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
@@ -1771,6 +1751,39 @@ DUMA:
       - build/
       - logs/
       - ./duma*.log
+  retry: 2
+  interruptible: true
+
+############################################################################
+
+Oracle Lint:
+  stage: lint
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/oracle:latest
+  script:
+    - *Configuration
+    - /opt/oracle/developerstudio-latest/bin/lint -V
+    - |
+      # Lint ...
+      echo -e "section_start:`date +%s`:Lint_section[collapsed=true]\r\e[0K\033[0;36mLint ...\033[0m" || true
+    - make clean
+    - rm -f orstlint.txt > /dev/null 2>&1 || true
+    - export CFLAGS="-errsecurity=extended -errtags=yes -erroff=E_GLOBAL_COULD_BE_STATIC2,E_FUNC_RET_ALWAYS_IGNOR2,E_FUNC_RET_MAYBE_IGNORED2,E_NAME_DEF_NOT_USED2,E_SEC_READLINK_WARN,E_CONST_EXPR,E_SEC_RAND_WARN,E_PTRDIFF_OVERFLOW,E_CONSTANT_CONDITION,E_STATIC_UNUSED -fd -m64 -XCC=yes -errchk=structarg,parentheses,signext,locfmtchk -errfmt=src -errtags=yes -Xalias_level=any"
+    - eval /opt/oracle/developerstudio-latest/bin/lint -DSUNPRO=1 -DSUNLINT=1 ${CFLAGS:?} src/*.c -Iinclude -Itests tests/tests.c 2>&1 | tee orstlint.txt
+    - eval /opt/oracle/developerstudio-latest/bin/lint -DSUNPRO=1 -DSUNLINT=1 ${CFLAGS:?} src/*.c -Iinclude -Iexample example/example.c 2>&1 | tee -a orstlint.txt
+    - ( grep "E_" orstlint.txt || exit 0 && exit 1 )
+    - echo -e "section_end:`date +%s`:Lint_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - orstlint.txt
+      - build/
+      - logs/
   retry: 2
   interruptible: true
 
