@@ -29,8 +29,11 @@ PLUGINS      = ./plugins
 PLUGINNAMES  = $(subst $(PLUGINS)/,,$(wildcard $(PLUGINS)/*))
 PLUGPREFIX   = plugin_
 SIR_FPIC    ?= -fPIC
+AR          ?= ar
+AR_CR       ?= $(AR) -cr
 SIR_CFLAGS  := $(CFLAGS)
 SIR_LDFLAGS := $(LDFLAGS)
+SIR_SHFLAGS  = $(subst -static,,$(SIR_LDFLAGS))
 
 ##############################################################################
 # Optimization
@@ -216,7 +219,7 @@ shared: $(OUT_SHARED)
 
 $(OUT_SHARED): $(OBJ_SHARED)
 	@mkdir -p $(@D)
-	$(CC) $(SIR_SHARED) -o $(OUT_SHARED) $^ $(SIR_LDFLAGS)
+	$(CC) $(SIR_SHARED) -o $(OUT_SHARED) $^ $(SIR_SHFLAGS)
 	-@printf 'built %s successfully.\n' "$(OUT_SHARED)" 2> /dev/null
 
 ##############################################################################
@@ -228,7 +231,7 @@ static: $(OUT_STATIC)
 
 $(OUT_STATIC): $(OUT_SHARED)
 	@mkdir -p $(@D)
-	ar -cr $(OUT_STATIC) $(OBJ_SHARED)
+	$(AR_CR) $(OUT_STATIC) $(OBJ_SHARED)
 	-@($(RANLIB) "$(OUT_STATIC)" || true) > /dev/null 2>&1
 	-@printf 'built %s successfully.\n' "$(OUT_STATIC)" 2> /dev/null
 
