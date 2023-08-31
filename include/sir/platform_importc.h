@@ -28,21 +28,82 @@
 
 # undef __HAVE_ATOMIC_H__
 # undef __SIZEOF_INT128__
+# undef BSWAP_REDEFINED
 # define _BITS_FLOATN_H 1
-# undef __builtin_bswap16
-# define __builtin_bswap16
-# undef __builtin_bswap32
-# define __builtin_bswap32
-# undef __builtin_bswap64
-# define __builtin_bswap64
-# undef __builtin___snprintf_chk
-# define __builtin___snprintf_chk
-# undef __builtin___vsnprintf_chk
-# define __builtin___vsnprintf_chk
-# undef __builtin___strlcpy_chk
-# define __builtin___strlcpy_chk
-# undef __builtin___strlcat_chk
-# define __builtin___strlcat_chk
+# if defined(__APPLE__)
+#  undef _DARWIN_C_SOURCE
+#  define _DARWIN_C_SOURCE
+#  include <libkern/OSByteOrder.h>
+#  undef __builtin_bswap16
+#  define __builtin_bswap16(x) _OSSwapInt16(x)
+#  undef __builtin_bswap32
+#  define __builtin_bswap32(x) _OSSwapInt32(x)
+#  undef __builtin_bswap64
+#  define __builtin_bswap64(x) _OSSwapInt64(x)
+#  define BSWAP_REDEFINED 1
+# elif defined(__linux__)
+#  undef _GNU_SOURCE
+#  define _GNU_SOURCE 1
+#  if defined(__has_include)
+#   if __has_include(<features.h>)
+#    include <features.h>
+#   endif
+#  endif
+#  if defined(__has_include)
+#   if __has_include(<byteswap.h>)
+#    include <byteswap.h>
+#   endif
+#  endif
+#  if defined(__GLIBC__)
+#   undef __builtin_bswap16
+#   define __builtin_bswap16(x) swap_16(x)
+#   undef __builtin_bswap32
+#   define __builtin_bswap32(x) swap_32(x)
+#   undef __builtin_bswap64
+#   define __builtin_bswap64(x) swap_64(x)
+#   define BSWAP_REDEFINED 1
+#  elif defined(bswap_16) && defined(bswap_32) && defined(bswap_64)
+#   undef __builtin_bswap16
+#   define __builtin_bswap16(x) bswap_16(x)
+#   undef __builtin_bswap32
+#   define __builtin_bswap32(x) bswap_32(x)
+#   undef __builtin_bswap64
+#   define __builtin_bswap64(x) bswap_64(x)
+#   define BSWAP_REDEFINED 1
+#  endif
+# elif defined(__FreeBSD__)
+#  undef _BSD_SOURCE
+#  define _BSD_SOURCE
+#  undef _DEFAULT_SOURCE
+#  define _DEFAULT_SOURCE
+#  include <sys/endian.h>
+#  undef __builtin_bswap16
+#  define __builtin_bswap16(x) bswap16(x)
+#  undef __builtin_bswap32
+#  define __builtin_bswap32(x) bswap32(x)
+#  undef __builtin_bswap64
+#  define __builtin_bswap64(x) bswap64(x)
+#  define BSWAP_REDEFINED 1
+# endif
+# if !defined(BSWAP_REDEFINED)
+#  undef __builtin_bswap16
+#  define __builtin_bswap16
+#  undef __builtin_bswap32
+#  define __builtin_bswap32
+#  undef __builtin_bswap64
+#  define __builtin_bswap64
+#  define BSWAP_REDEFINED 1
+# endif
+# undef  __builtin___snprintf_chk
+# define __builtin___snprintf_chk(s, c, flag, os, fmt, ...) snprintf(s, c, fmt, __VA_ARGS__)
+# undef  __builtin___sprintf_chk
+# define __builtin___sprintf_chk(s, flag, os, fmt, ...) sprintf(s, fmt, __VA_ARGS__)
+# undef  __builtin___vsnprintf_chk
+# define __builtin___vsnprintf_chk(s, c, flag, os, fmt, ...) vsnprintf(s, c, fmt, __VA_ARGS__)
+# undef  __builtin___strlcat_chk
+# define __builtin___strlcat_chk(dest, src, x, n) strlcat(dest,src,x)
+# undef  __builtin___strlcpy_chk
+# define __builtin___strlcpy_chk(dest, src, x, n) strlcpy(dest,src,x)
 # undef __builtin_object_size
 # define __builtin_object_size
 # undef __extension__
