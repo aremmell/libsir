@@ -109,7 +109,11 @@
 # undef __extension__
 # define __extension__
 # undef __asm__
-# define __asm__ asm
+# if !defined(__FreeBSD__)
+#  define __asm__ asm
+# else
+#  define __asm__(...)
+# endif
 # if !defined(__restrict)
 #  define __restrict restrict
 # endif
