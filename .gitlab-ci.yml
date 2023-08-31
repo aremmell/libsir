@@ -1418,10 +1418,10 @@ Linux/x86_64 (DMD64 ImportC):
     - ln -s ../src/* ../include/sir/* ../include/sir.h .
     - ln -s . sir
     - ln -s ../example/* .
-    - dmd -m64 -betterC -fPIC -fPIE -O -inline -release -v -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirexample
+    - dmd -m64 -betterC -fPIC -fPIE -O -inline -release -check=off -boundscheck=off -v -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirexample
     - rm -f example*
     - ln -s ../tests/* .
-    - dmd -m64 -betterC -fPIC -fPIE -O -inline -release -v -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirtests
+    - dmd -m64 -betterC -fPIC -fPIE -O -inline -release -check=off -boundscheck=off -v -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirtests
     - cd ..
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
