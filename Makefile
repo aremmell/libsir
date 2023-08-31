@@ -353,6 +353,7 @@ install: $(INSTALLSH)
 
 clean distclean:
 	@rm -rf $(BUILDDIR) > /dev/null 2>&1
+	@rm -rf ./src/*.ln > /dev/null 2>&1
 	@rm -rf $(LOGDIR) > /dev/null 2>&1
 	@rm -rf ./*.log > /dev/null 2>&1
 	@rm -rf ./*.ln > /dev/null 2>&1
