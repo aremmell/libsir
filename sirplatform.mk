@@ -9,6 +9,15 @@
 UNAME_S:=$(shell uname -s 2> /dev/null)
 
 ##############################################################################
+# DUMA?
+
+ifdef DUMA
+  EXTRA_LIBS+=-l:libduma.a
+  SIR_CFLAGS+=-DDUMA=1
+  SIR_SHFLAGS=$(subst -l:libduma.a,,$(SIR_LDFLAGS))
+endif
+
+##############################################################################
 # MinGW-w64 and standard Unix
 
 ifneq "$(findstring mingw,$(CC))" ""

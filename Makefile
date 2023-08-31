@@ -31,12 +31,16 @@ PLUGPREFIX   = plugin_
 SIR_FPIC    ?= -fPIC
 AR          ?= ar
 AR_CR       ?= $(AR) -cr
+
+##############################################################################
+# Flags
+
 SIR_CFLAGS  := $(CFLAGS)
 SIR_LDFLAGS := $(LDFLAGS)
 SIR_SHFLAGS  = $(subst -static,,$(SIR_LDFLAGS))
 
 ##############################################################################
-# Optimization
+# Optimizations
 
 OPTFLAGS ?= -O3
 
