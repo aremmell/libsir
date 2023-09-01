@@ -105,6 +105,7 @@ test_mcmb()
 test_duma()
 {
   DUMA_OS="$(uname -s 2> /dev/null)"
+  # shellcheck disable=SC2015
   test "${DUMA_OS:-}" = "Darwin" \
     && {
       printf '%s\n' \
@@ -131,11 +132,12 @@ test_duma()
       rm -f ./duma*.log
       printf '%s\n' "building with DUMA ..."
       env "${MAKE:-make}" clean
-      env CC="${CCACHE:-env} gcc" \
-        EXTRA_LIBS="-L/opt/duma/lib -l:libduma.a" \
-        CFLAGS="-I/opt/duma/include -DDUMA=1" \
+      env DUMA=1 \
+          CC="gcc" \
+          EXTRA_LIBS="-L/opt/duma/lib" \
+          CFLAGS="-I/opt/duma/include" \
         "${MAKE:-make}" \
-        -j "${CPUS:-1}" \
+          -j 1 \
         SIR_DEBUG=1 \
         SIR_SELFLOG=1
       printf '%s\n' "running DUMA-enabled example ..."
@@ -159,10 +161,20 @@ test_duma()
         DUMA_OUTPUT_STDOUT=0 \
         build/bin/sirtests
       sleep 1 || true
+      printf '%s\n' "checking DUMA output ..."
+      test -f duma1.log || DUMA_FAIL=1
+      test -f duma2.log || DUMA_FAIL=1
+      test -f duma3.log || DUMA_FAIL=1
+      test -f duma4.log || DUMA_FAIL=1
+      test -z "${DUMA_FAIL:-}" \
+        || {
+          printf '\n%s\n' "ERROR: DUMA failed to log!"
+          exit 1
+        }
       DUMAOUT="$(cat ./duma*.log 2> /dev/null \
         | grep DUMA 2> /dev/null \
         | grep -Ev \
-          '(extra leak|Reported |compiled| alloced from.*duma\.c)' 2> /dev/null
+            '(^DUMA: .*extra leak|^DUMA: .*Reported [1-9]|^DUMA .*compiled |DUMA: .* alloced from.*duma\.c)' 2> /dev/null
       )" \
         || true
       test -z "${DUMAOUT:-}" \
@@ -283,6 +295,7 @@ test_flawfinder()
         "NOTICE: flawfinder not found, skipping check."
       NO_FLAWFINDER=1
     } || true
+  # shellcheck disable=SC2015
   test -z "${NO_FLAWFINDER:-}" \
     && {
       printf '%s\n' "running flawfinder check ..."
