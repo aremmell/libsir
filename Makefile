@@ -83,6 +83,13 @@ ifneq (,$(findstring -,$(APPEND_CFLAGS)))
   SIR_CFLAGS += $(APPEND_CFLAGS)
 endif
 
+#############################################################################
+# Developer profiling build?
+
+ifeq ($(SIR_PERF_PROFILE),1)
+  SIR_CFLAGS += -DSIR_PERF_PROFILE
+endif
+
 ##############################################################################
 # Enable internal diagnostic logging?
 
