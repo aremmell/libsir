@@ -236,7 +236,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  undef __HAVE_ATOMIC_H__
 
 #  if defined(_MSC_VER) && _MSC_VER >= 1933 && \
-      !defined(__IMPORTC__) && !defined(__cplusplus)
+      !defined(__cplusplus) && !defined(__IMPORTC__)
 #   include <stdatomic.h>
 #   define __HAVE_ATOMIC_H__
 #  endif
