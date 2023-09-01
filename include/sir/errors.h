@@ -26,7 +26,7 @@
 #ifndef _SIR_ERRORS_H_INCLUDED
 # define _SIR_ERRORS_H_INCLUDED
 
-# include "sir/helpers.h"
+# include "sir/types.h"
 
 /**
  * @addtogroup publictypes Types
@@ -62,6 +62,23 @@ enum sir_errorcode {
 };
 
 /** @} */
+
+/** Creates an error code that (hopefully) doesn't conflict with any of those
+ * defined by the platform. */
+# define _sir_mkerror(code) (((uint32_t)((code) & 0x7fffffffu) << 16) | 0x80000000u)
+
+/** Validates an internal error. */
+static inline
+bool _sir_validerror(uint32_t err) {
+    uint32_t masked = err & 0x8fffffffu;
+    return masked >= 0x80000000u && masked <= 0x8fff0000u;
+}
+
+/** Extracts just the code from an internal error. */
+static inline
+uint16_t _sir_geterrcode(uint32_t err) {
+    return (err >> 16) & 0x7fffu;
+}
 
 # define _SIR_E_NOERROR   _sir_mkerror(SIR_E_NOERROR)
 # define _SIR_E_NOTREADY  _sir_mkerror(SIR_E_NOTREADY)
@@ -154,9 +171,7 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, PRINTF_FOR
 #  define _sir_selflog(...) __sir_selflog(__func__, __file__, __LINE__, __VA_ARGS__)
 # else
 static inline
-void __sir_fakefunc(const char* format, ...) {
-    SIR_UNUSED(format);
-}
+void __sir_fakefunc(const char* format, ...) { (void)format; }
 #  define _sir_selflog(...) __sir_fakefunc(__VA_ARGS__)
 # endif
 

@@ -24,6 +24,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "sir/errors.h"
+#include "sir/helpers.h"
 
 #if defined(__WIN__)
 # if defined(__EMBARCADEROC__) && defined(_WIN64)

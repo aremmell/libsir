@@ -31,23 +31,6 @@
 /** Computes the size of an array. */
 # define _sir_countof(arr) (sizeof(arr) / sizeof(arr[0]))
 
-/** Creates an error code that (hopefully) doesn't conflict with any of those
- * defined by the platform. */
-# define _sir_mkerror(code) (((uint32_t)((code) & 0x7fffffffu) << 16) | 0x80000000u)
-
-/** Validates an internal error. */
-static inline
-bool _sir_validerror(uint32_t err) {
-    uint32_t masked = err & 0x8fffffffu;
-    return masked >= 0x80000000u && masked <= 0x8fff0000u;
-}
-
-/** Extracts just the code from an internal error. */
-static inline
-uint16_t _sir_geterrcode(uint32_t err) {
-    return (err >> 16) & 0x7fffu;
-}
-
 /** Evil macro used for _sir_lv wrappers. */
 # define _SIR_L_START(format) \
     bool ret     = false; \
