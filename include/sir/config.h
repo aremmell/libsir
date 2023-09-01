@@ -285,7 +285,7 @@
         SIR_MAXNAME + (SIR_MAXPID   * 2) + SIR_MAXMISC + 1)
 
 /** The maximum size, in characters, of an error message. */
-# define SIR_MAXERROR 256
+# define SIR_MAXERROR 289
 
 /**
  * The format string for error messages returned by ::sir_geterror.
