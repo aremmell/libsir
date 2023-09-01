@@ -2282,7 +2282,7 @@ bool rmfile(const char* filename) {
 void deletefiles(const char* search, const char* path, const char* filename, unsigned* data) {
     if (strstr(filename, search)) {
         char filepath[SIR_MAXPATH];
-        (void)snprintf(filepath, SIR_MAXPATH, "%s%s", path, filename);
+        _sir_snprintf_trunc(filepath, SIR_MAXPATH, "%s%s", path, filename);
 
         rmfile(filepath);
         (*data)++;
