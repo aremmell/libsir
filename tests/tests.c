@@ -1095,13 +1095,13 @@ bool sirtest_perf(void) {
     static const char* logext      = "";
 #endif
 
-#if !defined(__WIN__) && !defined(DUMA)
+#if !defined(DUMA)
 # if !defined(SIR_PERF_PROFILE)
     static const size_t perflines = 1000000;
 # else
     static const size_t perflines = 4000000;
 # endif
-#else /* __WIN__ */
+#else /* DUMA */
     static const size_t perflines = 100000;
 #endif
 
