@@ -26,24 +26,6 @@
 #include "sir/helpers.h"
 #include "sir/errors.h"
 
-bool __sir_validptrptr(const void* restrict* pp, bool fail) {
-    bool valid = NULL != pp;
-    if (!valid && fail) {
-        (void)_sir_seterror(_SIR_E_NULLPTR);
-        SIR_ASSERT(!valid && fail);
-    }
-    return valid;
-}
-
-bool __sir_validptr(const void* restrict p, bool fail) {
-    bool valid = NULL != p;
-    if (!valid && fail) {
-        (void)_sir_seterror(_SIR_E_NULLPTR);
-        SIR_ASSERT(!valid && fail);
-    }
-    return valid;
-}
-
 void __sir_safefree(void** pp) {
     if (!pp || !*pp)
         return;
@@ -98,8 +80,7 @@ bool _sir_validupdatedata(sir_update_config_data* data) {
         return false;
 
     bool valid = true;
-    if ((data->fields & SIRU_ALL) == 0u ||
-          (data->fields & ~SIRU_ALL) != 0u)
+    if ((data->fields & SIRU_ALL) == 0u || (data->fields & ~SIRU_ALL) != 0u)
         valid = false;
 
     if (valid && _sir_bittest(data->fields, SIRU_LEVELS))
@@ -152,9 +133,6 @@ bool _sir_validlevel(sir_level level) {
     return _sir_seterror(_SIR_E_LEVELS);
 }
 
-#if defined(__clang__) /* only Clang has implicit-conversion; GCC BZ#87454 */
-SANITIZE_SUPPRESS("implicit-conversion")
-#endif
 bool _sir_validopts(sir_options opts) {
     if ((SIRO_ALL == opts || SIRO_MSGONLY == opts) ||
         ((_sir_bittest(opts, SIRO_NOTIME)          ||
@@ -165,7 +143,7 @@ bool _sir_validopts(sir_options opts) {
          _sir_bittest(opts, SIRO_NOPID)            ||
          _sir_bittest(opts, SIRO_NOTID)            ||
          _sir_bittest(opts, SIRO_NOHDR))           &&
-         ((opts & ~(SIRO_MSGONLY | SIRO_NOHDR)) == 0u))) /* implicit-conversion */
+         ((opts & ~(SIRO_MSGONLY | SIRO_NOHDR)) == 0u)))
          return true;
 
     _sir_selflog("invalid options: %08"PRIx32, opts);
@@ -235,15 +213,6 @@ bool _sir_validcolormode(sir_colormode mode) {
             return _sir_seterror(_SIR_E_COLORMODE);
         }
     }
-}
-
-bool __sir_validstr(const char* restrict str, bool fail) {
-    bool valid = str && (*str != '\0');
-    if (!valid && fail) {
-        (void)_sir_seterror(_SIR_E_STRING);
-        SIR_ASSERT(!valid && fail);
-    }
-    return valid;
 }
 
 int _sir_strncpy(char* restrict dest, size_t destsz, const char* restrict src, size_t count) {

@@ -27,6 +27,7 @@
 # define _SIR_HELPERS_H_INCLUDED
 
 # include "sir/types.h"
+# include "sir/errors.h"
 
 /** Computes the size of an array. */
 # define _sir_countof(arr) (sizeof(arr) / sizeof(arr[0]))
@@ -91,10 +92,26 @@
     } while (true)
 
 /* Validates a pointer and optionally fails if it's invalid. */
-bool __sir_validptr(const void* restrict p, bool fail);
+static inline
+bool __sir_validptr(const void* restrict p, bool fail) {
+    bool valid = NULL != p;
+    if (fail && !valid) {
+        (void)_sir_seterror(_SIR_E_NULLPTR);
+        SIR_ASSERT(!valid && fail);
+    }
+    return valid;
+}
 
 /** Validates a pointer-to-pointer and optionally fails if it's invalid. */
-bool __sir_validptrptr(const void* restrict* pp, bool fail);
+static inline
+bool __sir_validptrptr(const void* restrict* pp, bool fail) {
+    bool valid = NULL != pp;
+    if (fail && !valid) {
+        (void)_sir_seterror(_SIR_E_NULLPTR);
+        SIR_ASSERT(!valid && fail);
+    }
+    return valid;
+}
 
 /** Validates a pointer but ignores whether it's invalid. */
 # define _sir_validptrnofail(p) __sir_validptr(p, false)
@@ -152,13 +169,13 @@ bool _sir_validfd(int fd);
 /** Validates a file identifier */
 static inline
 bool _sir_validfileid(sirfileid id) {
-    return 0 != id;
+    return 0U != id;
 }
 
 /** Validates a plugin identifier */
 static inline
 bool _sir_validpluginid(sirpluginid id) {
-    return 0 != id;
+    return 0U != id;
 }
 
 /** Validates a sir_update_config_data structure. */
@@ -249,7 +266,15 @@ sir_textcolor _sir_makergb(sir_textcolor r, sir_textcolor g, sir_textcolor b) {
 }
 
 /** Validates a string pointer and optionally fails if it's invalid. */
-bool __sir_validstr(const char* restrict str, bool fail);
+static inline
+bool __sir_validstr(const char* restrict str, bool fail) {
+    bool valid = str && (*str != '\0');
+    if (fail && !valid) {
+        (void)_sir_seterror(_SIR_E_STRING);
+        SIR_ASSERT(!valid && fail);
+    }
+    return valid;
+}
 
 /** Validates a string pointer and fails if it's invalid. */
 # define _sir_validstr(str) __sir_validstr(str, true)
@@ -260,7 +285,8 @@ bool __sir_validstr(const char* restrict str, bool fail);
 /** Places a null terminator at the first index in a string buffer. */
 static inline
 void _sir_resetstr(char* str) {
-    str[0] = '\0';
+    if (NULL != str)
+        *str = '\0';
 }
 
 /**

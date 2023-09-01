@@ -51,6 +51,38 @@ static _sir_thread_local sir_thread_err sir_te = {
     _SIR_E_NOERROR, 0, {0}, {SIR_UNKNOWN, SIR_UNKNOWN, 0} //-V616
 };
 
+#define _SIR_E_PLATFORM_ERRORFORMAT "Platform error code %d: %s"
+
+static const struct {
+    uint32_t e;
+    const char* msg;
+} sir_errors[] = {
+    {_SIR_E_NOERROR,   "The operation completed successfully"}, //-V616
+    {_SIR_E_NOTREADY,  "libsir has not been initialized"},
+    {_SIR_E_ALREADY,   "libsir is already initialized"},
+    {_SIR_E_DUPITEM,   "Item already managed by libsir"},
+    {_SIR_E_NOITEM,    "Item not managed by libsir"},
+    {_SIR_E_NOROOM,    "Maximum number of items already stored"},
+    {_SIR_E_OPTIONS,   "Option flags are invalid"},
+    {_SIR_E_LEVELS,    "Level flags are invalid"},
+    {_SIR_E_TEXTSTYLE, "Text style is invalid"},
+    {_SIR_E_STRING,    "Invalid string argument"},
+    {_SIR_E_NULLPTR,   "NULL pointer argument"},
+    {_SIR_E_INVALID,   "Invalid argument"},
+    {_SIR_E_NODEST,    "No destinations registered for level"},
+    {_SIR_E_UNAVAIL,   "Feature is disabled or unavailable"},
+    {_SIR_E_INTERNAL,  "An internal error has occurred"},
+    {_SIR_E_COLORMODE, "Color mode is invalid"},
+    {_SIR_E_TEXTATTR,  "Text attributes are invalid"},
+    {_SIR_E_TEXTCOLOR, "Text color is invalid for mode"},
+    {_SIR_E_PLUGINBAD, "Plugin module is malformed"},
+    {_SIR_E_PLUGINDAT, "Data produced by plugin is invalid"},
+    {_SIR_E_PLUGINVER, "Plugin interface version unsupported"},
+    {_SIR_E_PLUGINERR, "Plugin reported failure"},
+    {_SIR_E_PLATFORM,  _SIR_E_PLATFORM_ERRORFORMAT},
+    {_SIR_E_UNKNOWN,   "Unknown error"},
+};
+
 bool __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t line) {
     if (_sir_validerror(err)) {
         sir_te.lasterror = err;
