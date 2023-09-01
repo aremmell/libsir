@@ -349,10 +349,8 @@ uint32_t FNV32_1a(const uint8_t* data, size_t len) {
  */
 # define _sir_snprintf_trunc(dst, size, ...) \
     do { \
-      static volatile size_t _n = size; \
-      volatile int _sir_snprintf_trunc_toss = snprintf(dst, _n, __VA_ARGS__); \
-      (void)_sir_snprintf_trunc_toss; \
-      (void)_n; \
+      volatile size_t _n = size; \
+      if (!snprintf(dst, _n, __VA_ARGS__)) { (void)_n; }; \
     } while (false)
 
 /**
