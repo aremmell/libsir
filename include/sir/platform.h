@@ -235,15 +235,12 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  include <winsock2.h>
 #  include <conio.h>
 #  include <shlwapi.h>
-
 #  undef __HAVE_ATOMIC_H__
-
 #  if defined(_MSC_VER) && _MSC_VER >= 1933 && \
       !defined(__cplusplus) && !defined(__IMPORTC__)
 #   include <stdatomic.h>
 #   define __HAVE_ATOMIC_H__
 #  endif
-
 #  if defined(__MINGW32__) || defined(__MINGW64__)
 #   undef __USE_MINGW_ANSI_STDIO
 #   define __USE_MINGW_ANSI_STDIO 1
