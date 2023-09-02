@@ -1129,7 +1129,7 @@ bool _sir_clock_gettime(int64_t* tbuf, int64_t* msecbuf) {
             return _sir_handleerr(retval);
         }
 #elif defined(SIR_MSEC_WIN32)
-        static const ULONGLONG uepoch = (ULONGLONG)116444736e9ULL;
+        static const ULONGLONG uepoch = (ULONGLONG)116444736e9;
 
         FILETIME ftutc = {0};
         GetSystemTimePreciseAsFileTime(&ftutc);
