@@ -55,7 +55,7 @@
  *   .034
  *   ~~~
  */
-# define SIR_MSECFORMAT ".%03lld"
+# define SIR_MSECFORMAT ".%03"PRId64
 
 /**
  * The string placed directly before the human-readable logging level.
