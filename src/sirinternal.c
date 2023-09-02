@@ -592,8 +592,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         _sir_selflog("thread ID was not set; retrieved: %d", PID_CAST _sir_tid);
     }
 
-    if (_sir_tid != cfg.state.pid)
-        if (!_sir_getthreadname(buf.tid) || !_sir_validstrnofail(buf.tid))
+    if (_sir_tid != cfg.state.pid || (!_sir_getthreadname(buf.tid) || !_sir_validstrnofail(buf.tid)))
             (void)snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, PID_CAST _sir_tid);
 
     (void)vsnprintf(buf.message, SIR_MAXMESSAGE, format, args);
