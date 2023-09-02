@@ -222,6 +222,9 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  undef _WIN32_WINNT
 #  define _WIN32_WINNT 0x0A00
 #  define _CRT_RAND_S
+#  if defined(__ORANGEC__)
+#   include "sir/platform_orangec.h"
+#  endif
 #  if defined(__MINGW32__) || defined(__MINGW64__)
 #   define USE_PTHREAD_GETNAME_NP
 #  endif
@@ -490,10 +493,6 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #  define _sir_thread_local __thread
 # else
 #  error "unable to resolve thread local attribute; please contact the author."
-# endif
-
-# if defined(__WIN__) && defined(__ORANGEC__)
-#  include "sir/platform_orangec.h"
 # endif
 
 # if defined(__WIN__) && defined(__STDC_SECURE_LIB__)

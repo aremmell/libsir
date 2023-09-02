@@ -26,8 +26,6 @@
 #ifndef _SIR_PLATFORM_ORANGEC_H_INCLUDED
 # define _SIR_PLATFORM_ORANGEC_H_INCLUDED
 
-# include <sysinfoapi.h>
-
 # if defined(__ORANGEC_MAJOR__) && defined(__ORANGEC_MINOR__) && defined(__ORANGEC_PATCHLEVEL__)
 #  if __ORANGEC_MAJOR__ <= 6 && __ORANGEC_MINOR__ <= 70 && __ORANGEC_PATCHLEVEL__ <= 92
 #   if !defined(ORANGEC_VERSION_WARNING)
@@ -36,6 +34,9 @@
 #   endif
 #  endif
 # endif
+
+# include <sdkddkver.h>
+# include <sysinfoapi.h>
 
 # if !defined(SIR_MSVCRT_MINGW)
 #  define SIR_MSVCRT_MINGW
