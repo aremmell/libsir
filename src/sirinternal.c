@@ -543,14 +543,37 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         }
     }
 
+    /* update the string form of the timestamp if a given amount of
+     * time has elapsed since the last time it was updated (this code path
+     * is extremely slow, so we do it sparingly). */
+    time_t now_sec = 0;
+    long now_msec  = 0L;
+    long msec_since_time_chk = _sir_msec_since(_cfg->state.last_time_chk_secs,
+        _cfg->state.last_time_chk_msec, &now_sec, &now_msec);
+
+    /* always update milliseconds. */
+    (void)snprintf(_cfg->state.msec, SIR_MAXMSEC, SIR_MSECFORMAT, now_msec);
+
+    /* update hours/minutes/seconds if the correct amount of time has elapsed. */
+    if (msec_since_time_chk > SIR_TIME_CHK_INTERVAL) {
+        _sir_selflog("%ld msec elapsed since last time check; setting time to now",
+            msec_since_time_chk);
+        _cfg->state.last_time_chk_secs = now_sec;
+        _cfg->state.last_time_chk_msec = now_msec;
+
+        bool fmt = _sir_formattime(now_sec, _cfg->state.timestamp, SIR_TIMEFORMAT);
+        SIR_ASSERT_UNUSED(fmt, fmt);
+    }
+
+
     sirconfig cfg;
     memcpy(&cfg, _cfg, sizeof(sirconfig));
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
 
     sirbuf buf = {
         {0},
-        {0},
-        {0},
+        cfg.state.timestamp,
+        cfg.state.msec,
         cfg.state.hostname,
         cfg.state.pidbuf,
         NULL,
@@ -561,26 +584,12 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
          0
     };
 
-    bool fmt              = false;
     const char* style_str = _sir_gettextstyle(level);
 
     SIR_ASSERT(NULL != style_str);
     if (NULL != style_str)
-        fmt = (0 == _sir_strncpy(buf.style, SIR_MAXSTYLE, style_str,
-            strnlen(style_str, SIR_MAXSTYLE)));
-    SIR_ASSERT_UNUSED(fmt, fmt);
-
-    now          = -1;
-    long nowmsec = 0;
-    bool gettime = _sir_clock_gettime(&now, &nowmsec);
-    SIR_ASSERT(gettime);
-
-    if (gettime) {
-        fmt = _sir_formattime(now, buf.timestamp, SIR_TIMEFORMAT);
-        SIR_ASSERT_UNUSED(fmt, fmt);
-
-        _sir_snprintf_trunc(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec);
-    }
+        (void)_sir_strncpy(buf.style, SIR_MAXSTYLE, style_str,
+            strnlen(style_str, SIR_MAXSTYLE));
 
     buf.level = _sir_formattedlevelstr(level);
 
@@ -762,7 +771,7 @@ const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
         }
 
         bool wantpid = !_sir_bittest(opts, SIRO_NOPID) && _sir_validstrnofail(buf->pid);
-        bool wanttid = !_sir_bittest(opts, SIRO_NOTID);
+        bool wanttid = !_sir_bittest(opts, SIRO_NOTID) && _sir_validstrnofail(buf->tid);
 
         if (wantpid || wanttid) {
             if (name)
@@ -1062,24 +1071,26 @@ bool _sir_formattime(time_t now, char* buffer, const char* format) {
     if (0 == now || -1 == now)
         return _sir_seterror(_SIR_E_INVALID);
 
-    struct tm timebuf = {0};
 #if defined(__GNUC__) && !defined(__clang__) && \
     !(defined(__OPEN64__) || defined(__OPENCC__))
 # pragma GCC diagnostic push
 # pragma GCC diagnostic ignored "-Wformat-nonliteral"
 #endif
-    size_t fmttime = strftime(buffer, SIR_MAXTIME, format,
-        _sir_localtime(&now, &timebuf));
+    struct tm timebuf;
+    struct tm* ptb = _sir_localtime(&now, &timebuf);
+    bool formatted = false;
+    if (_sir_validptrnofail(ptb))
+        formatted = 0 != strftime(buffer, SIR_MAXTIME, format, ptb);
 #if defined(__GNUC__) && !defined(__clang__) && \
     !(defined(__OPEN64__) || defined(__OPENCC__))
 # pragma GCC diagnostic pop
 #endif
 
-    SIR_ASSERT(0 != fmttime);
-    if (0 == fmttime)
+    SIR_ASSERT(formatted);
+    if (!formatted)
         _sir_selflog("error: strftime failed; format string: '%s'", format);
 
-    return 0 != fmttime;
+    return formatted;
 }
 
 bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
@@ -1151,6 +1162,23 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
         return true;
     }
     return false;
+}
+
+long _sir_msec_since(time_t when_sec, long when_msec, time_t* out_sec,
+    long* out_msec) {
+    if (!_sir_validptr(out_sec) || !_sir_validptr(out_msec))
+        return 0L;
+
+    *out_sec  = 0;
+    *out_msec = 0L;
+
+    bool gettime = _sir_clock_gettime(out_sec, out_msec);
+    SIR_ASSERT(gettime);
+
+    if (!gettime)
+        return 0L;
+
+    return ((*out_sec * 1000L) + *out_msec) - ((when_sec * 1000) + when_msec);
 }
 
 pid_t _sir_getpid(void) {

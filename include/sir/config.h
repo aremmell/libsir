@@ -344,6 +344,12 @@
  */
 # define SIR_HNAME_CHK_INTERVAL 60
 
+/**
+ * The number of milliseconds to let elapse before re-formatting the current
+ * time as a string used in logging output.
+ */
+# define SIR_TIME_CHK_INTERVAL 333
+
 # if defined(SIR_OS_LOG_ENABLED)
 /**
  * The special format specifier to send to os_log. By default, the log will only
