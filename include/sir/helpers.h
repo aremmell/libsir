@@ -268,7 +268,7 @@ sir_textcolor _sir_makergb(sir_textcolor r, sir_textcolor g, sir_textcolor b) {
 /** Validates a string pointer and optionally fails if it's invalid. */
 static inline
 bool __sir_validstr(const char* restrict str, bool fail) {
-    bool valid = str && (*str != '\0');
+    bool valid = NULL != str && *str != '\0';
     if (fail && !valid) {
         (void)_sir_seterror(_SIR_E_STRING);
         SIR_ASSERT(!valid && fail);
@@ -302,15 +302,53 @@ bool _sir_strsame(const char* lhs, const char* rhs, size_t count) {
  * Wrapper for str[n,l]cpy/strncpy_s. Determines which one to use
  * based on preprocessor macros.
  */
-int _sir_strncpy(char* restrict dest, size_t destsz,
-    const char* restrict src, size_t count);
+static inline
+int _sir_strncpy(char* restrict dest, size_t destsz, const char* restrict src,
+    size_t count) {
+    if (_sir_validptr(dest) && _sir_validstr(src)) {
+#if defined(__HAVE_STDC_SECURE_OR_EXT1__)
+        int ret = strncpy_s(dest, destsz, src, count);
+        if (0 != ret) {
+            (void)_sir_handleerr(ret);
+            return -1;
+        }
+        return 0;
+#else
+        SIR_UNUSED(count);
+        size_t cpy = strlcpy(dest, src, destsz);
+        SIR_ASSERT_UNUSED(cpy < destsz, cpy);
+        return 0;
+#endif
+    }
+
+    return -1;
+}
 
 /**
  * Wrapper for str[n,l]cat/strncat_s. Determines which one to use
  * based on preprocessor macros.
  */
-int _sir_strncat(char* restrict dest, size_t destsz,
-    const char* restrict src, size_t count);
+static inline
+int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src,
+    size_t count) {
+    if (_sir_validptr(dest) && _sir_validstr(src)) {
+#if defined(__HAVE_STDC_SECURE_OR_EXT1__)
+        int ret = strncat_s(dest, destsz, src, count);
+        if (0 != ret) {
+            (void)_sir_handleerr(ret);
+            return -1;
+        }
+        return 0;
+#else
+        SIR_UNUSED(count);
+        size_t cat = strlcat(dest, src, destsz);
+        SIR_ASSERT_UNUSED(cat < destsz, cat);
+        return 0;
+#endif
+    }
+
+    return -1;
+}
 
 /**
  * Wrapper for fopen/fopen_s. Determines which one to use
