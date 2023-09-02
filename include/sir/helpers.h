@@ -268,7 +268,7 @@ sir_textcolor _sir_makergb(sir_textcolor r, sir_textcolor g, sir_textcolor b) {
 /** Validates a string pointer and optionally fails if it's invalid. */
 static inline
 bool __sir_validstr(const char* restrict str, bool fail) {
-    bool valid = NULL != str && *str != '\0';
+    bool valid = str && *str != '\0';
     if (fail && !valid) {
         (void)_sir_seterror(_SIR_E_STRING);
         SIR_ASSERT(!valid && fail);

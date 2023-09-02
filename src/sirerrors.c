@@ -213,7 +213,7 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
             }
         }
 
-        _sir_snprintf_trunc(message, SIR_MAXERROR, SIR_ERRORFORMAT, sir_te.loc.func,
+        _sir_snprintf_trunc(message, SIR_MAXERROR, SIR_ERRORFORMAT, sir_te.loc.func, //-V576
             sir_te.loc.file, sir_te.loc.line, (_sir_validstrnofail(heap_msg)
                 ? heap_msg : (_sir_validstrnofail(sir_errors[_mid].msg)
                 ? sir_errors[_mid].msg : SIR_UNKNOWN)));
