@@ -552,7 +552,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         _cfg->state.last_time_chk_msec, &now_sec, &now_msec);
 
     /* always update milliseconds. */
-    (void)snprintf(_cfg->state.msec, SIR_MAXMSEC, SIR_MSECFORMAT, now_msec);
+    _sir_snprintf_trunc(_cfg->state.msec, SIR_MAXMSEC, SIR_MSECFORMAT, now_msec);
 
     /* update hours/minutes/seconds if the correct amount of time has elapsed. */
     if (msec_since_time_chk > SIR_TIME_CHK_INTERVAL) {
