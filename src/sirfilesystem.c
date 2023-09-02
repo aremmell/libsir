@@ -174,8 +174,8 @@ char* _sir_getcwd(void) {
     return cur;
 # endif
 #else /* __WIN__ */
-    DWORD size = GetCurrentDirectoryA(0ul, NULL);
-    if (0ul == size) {
+    DWORD size = GetCurrentDirectoryA(0UL, NULL);
+    if (0UL == size) {
         _sir_handlewin32err(GetLastError());
         return NULL;
     }
@@ -236,13 +236,13 @@ char* _sir_getappfilename(void) {
 #if !defined(__WIN__)
 # if defined(__READLINK_OS__)
         ssize_t read = _sir_readlink(PROC_SELF, buffer, size - 1);
-        if (-1l != read && read < (ssize_t)size - 1) {
+        if (-1L != read && read < (ssize_t)size - 1) {
             resolved = true;
             break;
-        } else if (-1l == read) {
+        } else if (-1L == read) {
             resolved = _sir_handleerr(errno);
             break;
-        } else if (read == (ssize_t)size - 1l) {
+        } else if (read == (ssize_t)size - 1L) {
             /* it is possible that truncation occurred. as a security
              * precaution, fail; someone may have tampered with the link. */
             _sir_selflog("warning: readlink reported truncation; not using result!");
@@ -251,7 +251,7 @@ char* _sir_getappfilename(void) {
         }
 # elif defined(_AIX)
         if (size <= SIR_MAXPATH) {
-            size = size + SIR_MAXPATH + 1l;
+            size = size + SIR_MAXPATH + 1L;
             continue;
         }
         int ret = _sir_aixself(buffer, &size);
@@ -324,10 +324,10 @@ char* _sir_getappfilename(void) {
 # endif
 #else /* __WIN__ */
         DWORD ret = GetModuleFileNameA(NULL, buffer, (DWORD)size);
-        if (0ul != ret && ret < (DWORD)size) {
+        if (0UL != ret && ret < (DWORD)size) {
             resolved = true;
             break;
-        } else if (0ul == ret) {
+        } else if (0UL == ret) {
             resolved = _sir_handlewin32err(GetLastError());
             break;
         } else if (ret == (DWORD)size || ERROR_INSUFFICIENT_BUFFER == GetLastError()) {

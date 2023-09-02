@@ -80,7 +80,7 @@ bool _sir_validupdatedata(sir_update_config_data* data) {
         return false;
 
     bool valid = true;
-    if ((data->fields & SIRU_ALL) == 0u || (data->fields & ~SIRU_ALL) != 0u)
+    if ((data->fields & SIRU_ALL) == 0U || (data->fields & ~SIRU_ALL) != 0U)
         valid = false;
 
     if (valid && _sir_bittest(data->fields, SIRU_LEVELS))
@@ -115,7 +115,7 @@ bool _sir_validlevels(sir_levels levels) {
          _sir_bittest(levels, SIRL_CRIT)            ||
          _sir_bittest(levels, SIRL_ALERT)           ||
          _sir_bittest(levels, SIRL_EMERG))          &&
-         ((levels & ~SIRL_ALL) == 0u)))
+         ((levels & ~SIRL_ALL) == 0U)))
          return true;
 
     _sir_selflog("invalid levels: %04"PRIx16, levels);
@@ -143,7 +143,7 @@ bool _sir_validopts(sir_options opts) {
          _sir_bittest(opts, SIRO_NOPID)            ||
          _sir_bittest(opts, SIRO_NOTID)            ||
          _sir_bittest(opts, SIRO_NOHDR))           &&
-         ((opts & ~(SIRO_MSGONLY | SIRO_NOHDR)) == 0u)))
+         ((opts & ~(SIRO_MSGONLY | SIRO_NOHDR)) == 0U)))
          return true;
 
     _sir_selflog("invalid options: %08"PRIx32, opts);
@@ -172,18 +172,18 @@ bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color) {
             /* in 16-color mode:
              * compare to 30..37, 39, 40..47, 49, 90..97, 100..107. */
             valid = SIRTC_DEFAULT == color ||
-                    (color >= 30u && color <= 37u) || color == 39u ||
-                    (color >= 40u && color <= 47u) || color == 49u ||
-                    (color >= 90u && color <= 97u) || (color >= 100u && color <= 107u);
+                    (color >= 30U && color <= 37U) || color == 39U ||
+                    (color >= 40U && color <= 47U) || color == 49U ||
+                    (color >= 90U && color <= 97U) || (color >= 100U && color <= 107U);
             break;
         case SIRCM_256:
             /* in 256-color mode: compare to 0..255. sir_textcolor is unsigned,
              * so only need to ensure it's <= 255. */
-            valid = SIRTC_DEFAULT == color || color <= 255u;
+            valid = SIRTC_DEFAULT == color || color <= 255U;
             break;
         case SIRCM_RGB: {
             /* in RGB-color mode: mask and compare to 0x00ffffff. */
-            valid = SIRTC_DEFAULT == color || ((color & 0xff000000u) == 0u);
+            valid = SIRTC_DEFAULT == color || ((color & 0xff000000U) == 0U);
             break;
         }
         case SIRCM_INVALID: // GCOVR_EXCL_START

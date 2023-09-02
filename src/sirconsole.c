@@ -41,7 +41,7 @@ bool _sir_config_console(HANDLE console) {
     if (INVALID_HANDLE_VALUE == console || NULL == console)
         return _sir_handlewin32err(GetLastError());
 
-    DWORD mode = 0ul;
+    DWORD mode = 0UL;
     if (!GetConsoleMode(console, &mode))
         return _sir_handlewin32err(GetLastError());
 
@@ -72,10 +72,10 @@ void _sir_initialize_stdio(void) {
 
 bool _sir_write_stdio(HANDLE console, const char* message, size_t len) {
     DWORD chars   = (DWORD)len;
-    DWORD written = 0ul;
+    DWORD written = 0UL;
 
     do {
-        DWORD pass = 0ul;
+        DWORD pass = 0UL;
 
         if (!WriteConsole(console, message + written, chars - written, &pass, NULL))
             return _sir_handlewin32err(GetLastError());

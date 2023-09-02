@@ -45,17 +45,17 @@ typedef uint32_t sirfileid;
 typedef uint32_t sirpluginid;
 
 /** Defines the available levels (severity/priority) of logging output. */
-# define SIRL_NONE    0x0000u /**< No output. */
-# define SIRL_EMERG   0x0001u /**< Nuclear war, Armageddon, etc. */
-# define SIRL_ALERT   0x0002u /**< Action required ASAP. */
-# define SIRL_CRIT    0x0004u /**< Critical errors. */
-# define SIRL_ERROR   0x0008u /**< Errors. */
-# define SIRL_WARN    0x0010u /**< Warnings that could likely be ignored. */
-# define SIRL_NOTICE  0x0020u /**< Normal but significant. */
-# define SIRL_INFO    0x0040u /**< Informational messages. */
-# define SIRL_DEBUG   0x0080u /**< Debugging/diagnostic output. */
-# define SIRL_ALL     0x00ffu /**< Include all logging levels. */
-# define SIRL_DEFAULT 0x0100u /**< Default levels for this type of destination. */
+# define SIRL_NONE    0x0000U /**< No output. */
+# define SIRL_EMERG   0x0001U /**< Nuclear war, Armageddon, etc. */
+# define SIRL_ALERT   0x0002U /**< Action required ASAP. */
+# define SIRL_CRIT    0x0004U /**< Critical errors. */
+# define SIRL_ERROR   0x0008U /**< Errors. */
+# define SIRL_WARN    0x0010U /**< Warnings that could likely be ignored. */
+# define SIRL_NOTICE  0x0020U /**< Normal but significant. */
+# define SIRL_INFO    0x0040U /**< Informational messages. */
+# define SIRL_DEBUG   0x0080U /**< Debugging/diagnostic output. */
+# define SIRL_ALL     0x00ffU /**< Include all logging levels. */
+# define SIRL_DEFAULT 0x0100U /**< Default levels for this type of destination. */
 
 /** The ::sir_level type. */
 typedef uint16_t sir_level;
@@ -64,17 +64,17 @@ typedef uint16_t sir_level;
 typedef uint16_t sir_levels;
 
 /** Formatting options for a destination. */
-# define SIRO_ALL     0x00000000u /**< Include all formatting and functionality. */
-# define SIRO_NOTIME  0x00000100u /**< Exclude time stamps (implies ::SIRO_NOMSEC). */
-# define SIRO_NOMSEC  0x00000200u /**< Exclude millisecond-resolution in time stamps. */
-# define SIRO_NOHOST  0x00000400u /**< Exclude local hostname. */
-# define SIRO_NOLEVEL 0x00000800u /**< Exclude human-readable logging level. */
-# define SIRO_NONAME  0x00001000u /**< Exclude process/app name. */
-# define SIRO_NOPID   0x00002000u /**< Exclude process ID. */
-# define SIRO_NOTID   0x00004000u /**< Exclude thread ID/name. */
-# define SIRO_NOHDR   0x00010000u /**< Don't write header messages to log files. */
-# define SIRO_MSGONLY 0x00007f00u /**< Sets all other options except ::SIRO_NOHDR. */
-# define SIRO_DEFAULT 0x00100000u /**< Default options for this type of destination. */
+# define SIRO_ALL     0x00000000U /**< Include all formatting and functionality. */
+# define SIRO_NOTIME  0x00000100U /**< Exclude time stamps (implies ::SIRO_NOMSEC). */
+# define SIRO_NOMSEC  0x00000200U /**< Exclude millisecond-resolution in time stamps. */
+# define SIRO_NOHOST  0x00000400U /**< Exclude local hostname. */
+# define SIRO_NOLEVEL 0x00000800U /**< Exclude human-readable logging level. */
+# define SIRO_NONAME  0x00001000U /**< Exclude process/app name. */
+# define SIRO_NOPID   0x00002000U /**< Exclude process ID. */
+# define SIRO_NOTID   0x00004000U /**< Exclude thread ID/name. */
+# define SIRO_NOHDR   0x00010000U /**< Don't write header messages to log files. */
+# define SIRO_MSGONLY 0x00007f00U /**< Sets all other options except ::SIRO_NOHDR. */
+# define SIRO_DEFAULT 0x00100000U /**< Default options for this type of destination. */
 
 /** The ::sir_option type. */
 typedef uint32_t sir_option;
@@ -427,11 +427,11 @@ typedef struct {
 /** Bitmask defining which values are to be updated in the global config. */
 typedef uint32_t sir_config_data_field;
 
-# define SIRU_LEVELS     0x00000001u /**< Update level registrations. */
-# define SIRU_OPTIONS    0x00000002u /**< Update formatting options. */
-# define SIRU_SYSLOG_ID  0x00000004u /**< Update system logger identity. */
-# define SIRU_SYSLOG_CAT 0x00000008u /**< Update system logger category. */
-# define SIRU_ALL        0x0000000fu /**< Update all available fields. */
+# define SIRU_LEVELS     0x00000001U /**< Update level registrations. */
+# define SIRU_OPTIONS    0x00000002U /**< Update formatting options. */
+# define SIRU_SYSLOG_ID  0x00000004U /**< Update system logger identity. */
+# define SIRU_SYSLOG_CAT 0x00000008U /**< Update system logger category. */
+# define SIRU_ALL        0x0000000fU /**< Update all available fields. */
 
 /** Encapsulates dynamic updating of current configuration. */
 typedef struct {
@@ -445,12 +445,12 @@ typedef struct {
 /** Bitmask defining the state of a system logger facility. */
 typedef uint32_t sir_syslog_state;
 
-# define SIRSL_IS_OPEN  0x00000001u /**< Log is open. */
-# define SIRSL_LEVELS   0x00000002u /**< Level registrations. */
-# define SIRSL_OPTIONS  0x00000004u /**< Formatting options. */
-# define SIRSL_CATEGORY 0x00000008u /**< Category. */
-# define SIRSL_IDENTITY 0x00000010u /**< Identity. */
-# define SIRSL_UPDATED  0x00000020u /**< Config has been updated. */
-# define SIRSL_IS_INIT  0x00000040u /**< Subsystem is initialized. */
+# define SIRSL_IS_OPEN  0x00000001U /**< Log is open. */
+# define SIRSL_LEVELS   0x00000002U /**< Level registrations. */
+# define SIRSL_OPTIONS  0x00000004U /**< Formatting options. */
+# define SIRSL_CATEGORY 0x00000008U /**< Category. */
+# define SIRSL_IDENTITY 0x00000010U /**< Identity. */
+# define SIRSL_UPDATED  0x00000020U /**< Config has been updated. */
+# define SIRSL_IS_INIT  0x00000040U /**< Subsystem is initialized. */
 
 #endif /* !_SIR_TYPES_H_INCLUDED */

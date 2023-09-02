@@ -65,19 +65,19 @@ enum sir_errorcode {
 
 /** Creates an error code that (hopefully) doesn't conflict with any of those
  * defined by the platform. */
-# define _sir_mkerror(code) (((uint32_t)((code) & 0x7fffffffu) << 16) | 0x80000000u)
+# define _sir_mkerror(code) (((uint32_t)((code) & 0x7fffffffU) << 16) | 0x80000000U)
 
 /** Validates an internal error. */
 static inline
 bool _sir_validerror(uint32_t err) {
-    uint32_t masked = err & 0x8fffffffu;
-    return masked >= 0x80000000u && masked <= 0x8fff0000u;
+    uint32_t masked = err & 0x8fffffffU;
+    return masked >= 0x80000000U && masked <= 0x8fff0000U;
 }
 
 /** Extracts just the code from an internal error. */
 static inline
 uint16_t _sir_geterrcode(uint32_t err) {
-    return (err >> 16) & 0x7fffu;
+    return (err >> 16) & 0x7fffU;
 }
 
 /** Internal error codes. */

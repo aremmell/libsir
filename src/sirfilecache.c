@@ -32,9 +32,9 @@ sirfileid _sir_addfile(const char* path, sir_levels levels, sir_options opts) {
     (void)_sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity())
-        return 0u;
+        return 0U;
 
-    _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, 0u);
+    _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, 0U);
 
     _sir_defaultlevels(&levels, sir_file_def_lvls);
     _sir_defaultopts(&opts, sir_file_def_opts);
@@ -225,11 +225,11 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                     char seqbuf[7] = {0};
                     bool exists = false;
                     bool resolved = false;
-                    uint16_t sequence = 0u;
+                    uint16_t sequence = 0U;
 
                     do {
                         (void)snprintf(*newpath, SIR_MAXPATH, SIR_FNAMEFORMAT, name,
-                            timestamp, (sequence > 0u ? seqbuf : ""),
+                            timestamp, (sequence > 0U ? seqbuf : ""),
                             _sir_validstrnofail(ext) ? ext : "");
 
                         /* if less than one second has elapsed since the last roll
@@ -256,7 +256,7 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                         if (sequence > 0)
                             (void)snprintf(seqbuf, 7, SIR_FNAMESEQFORMAT, sequence);
 
-                    } while (sequence <= 999u);
+                    } while (sequence <= 999U);
 
                     if (!resolved)
                         _sir_selflog("error: unable to determine suitable path for '%s';"
@@ -380,7 +380,7 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
     sir_options opts) {
     if (!_sir_validptr(sfc) || !_sir_validstr(path) || !_sir_validlevels(levels) ||
         !_sir_validopts(opts))
-        return 0u;
+        return 0U;
 
     if (sfc->count >= SIR_MAXFILES)
         return _sir_seterror(_SIR_E_NOROOM);
@@ -407,7 +407,7 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
 
     _sir_safefree(&sf);
 
-    return 0u;
+    return 0U;
 }
 
 bool _sir_fcache_update(sirfcache* sfc, sirfileid id, sir_update_config_data* data) {
@@ -551,7 +551,7 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
         return false;
 
     const char* write    = NULL;
-    sir_options lastopts = 0u;
+    sir_options lastopts = 0U;
 
     *dispatched = 0;
     *wanted     = 0;
