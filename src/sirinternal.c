@@ -585,8 +585,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     buf.level = _sir_formattedlevelstr(level);
 
     pid_t tid = _sir_gettid();
-    if (tid != cfg.state.pid)
-        if (!_sir_getthreadname(buf.tid) || !_sir_validstrnofail(buf.tid))
+    if (tid != cfg.state.pid || (!_sir_getthreadname(buf.tid) || !_sir_validstrnofail(buf.tid)))
             (void)snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, PID_CAST tid);
 
     (void)vsnprintf(buf.message, SIR_MAXMESSAGE, format, args);
@@ -763,7 +762,7 @@ const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
         }
 
         bool wantpid = !_sir_bittest(opts, SIRO_NOPID) && _sir_validstrnofail(buf->pid);
-        bool wanttid = !_sir_bittest(opts, SIRO_NOTID) && _sir_validstrnofail(buf->tid);
+        bool wanttid = !_sir_bittest(opts, SIRO_NOTID);
 
         if (wantpid || wanttid) {
             if (name)
