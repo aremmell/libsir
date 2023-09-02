@@ -546,9 +546,9 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     /* update the string form of the timestamp if a given amount of
      * time has elapsed since the last time it was updated (this code path
      * is extremely slow, so we do it sparingly). */
-    time_t now_sec = 0;
-    long now_msec  = 0L;
-    long msec_since_time_chk = _sir_msec_since(_cfg->state.last_time_chk_secs,
+    int64_t now_sec  = 0LL;
+    int64_t now_msec = 0LL;
+    int64_t msec_since_time_chk = _sir_msec_since(_cfg->state.last_time_chk_secs,
         _cfg->state.last_time_chk_msec, &now_sec, &now_msec);
 
     /* always update milliseconds. */
@@ -1090,12 +1090,12 @@ bool _sir_formattime(time_t now, char* buffer, const char* format) {
     return formatted;
 }
 
-bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
+bool _sir_clock_gettime(int64_t* tbuf, int64_t* msecbuf) {
     if (tbuf) {
-        time_t ret = time(tbuf);
+        time_t ret = time((time_t*)tbuf);
         if ((time_t)-1 == ret) {
             if (msecbuf)
-                *msecbuf = 0L;
+                *msecbuf = 0LL;
             return _sir_handleerr(errno);
         }
 #if defined(SIR_MSEC_POSIX)
@@ -1105,10 +1105,10 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
 
         if (0 == clock) {
             if (msecbuf)
-                *msecbuf = (long)(ts.tv_nsec / (long)1e6);
+                *msecbuf = (int64_t)(ts.tv_nsec / (int64_t)1e6);
         } else {
             if (msecbuf)
-                *msecbuf = 0L;
+                *msecbuf = 0LL;
             return _sir_handleerr(errno);
         }
 #elif defined(SIR_MSEC_MACH)
@@ -1122,10 +1122,10 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
 
         if (KERN_SUCCESS == retval) {
             if (msecbuf)
-                *msecbuf = (mts.tv_nsec / (long)1e6);
+                *msecbuf = (int64_t)(mts.tv_nsec / (int64_t)1e6);
         } else {
             if (msecbuf)
-                *msecbuf = 0L;
+                *msecbuf = 0LL;
             return _sir_handleerr(retval);
         }
 #elif defined(SIR_MSEC__WIN__)
@@ -1139,43 +1139,43 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
         ftnow.LowPart  = ftutc.dwLowDateTime;
         ftnow.QuadPart = (ULONGLONG)((ftnow.QuadPart - uepoch) / 1e7);
 
-        *tbuf = (time_t)ftnow.QuadPart;
+        *tbuf = (int64_t)ftnow.QuadPart;
 
         SYSTEMTIME st = {0};
         if (FileTimeToSystemTime(&ftutc, &st)) {
             if (msecbuf)
-                *msecbuf = st.wMilliseconds;
+                *msecbuf = (int64_t)st.wMilliseconds;
         } else {
             if (msecbuf)
-                *msecbuf = 0L;
+                *msecbuf = 0LL;
             return _sir_handlewin32err(GetLastError());
         }
 
 #else
-        time(tbuf);
+        time((time_t)tbuf);
         if (msecbuf)
-            *msecbuf = 0L;
+            *msecbuf = 0LL;
 #endif
         return true;
     }
     return false;
 }
 
-long _sir_msec_since(time_t when_sec, long when_msec, time_t* out_sec,
-    long* out_msec) {
+int64_t _sir_msec_since(int64_t when_sec, int64_t when_msec, int64_t* out_sec,
+    int64_t* out_msec) {
     if (!_sir_validptr(out_sec) || !_sir_validptr(out_msec))
-        return 0L;
+        return 0LL;
 
-    *out_sec  = 0;
-    *out_msec = 0L;
+    *out_sec  = 0LL;
+    *out_msec = 0LL;
 
     bool gettime = _sir_clock_gettime(out_sec, out_msec);
     SIR_ASSERT(gettime);
 
     if (!gettime)
-        return 0L;
+        return 0LL;
 
-    return ((*out_sec * 1000) + *out_msec) - ((when_sec * 1000) + when_msec);
+    return ((*out_sec * 1000LL) + *out_msec) - ((when_sec * 1000LL) + when_msec);
 }
 
 pid_t _sir_getpid(void) {

@@ -251,8 +251,8 @@ typedef struct {
         pid_t pid;
         char timestamp[SIR_MAXTIME];
         char msec[SIR_MAXMSEC];
-        time_t last_time_chk_secs;
-        long last_time_chk_msec;
+        int64_t last_time_chk_secs;
+        int64_t last_time_chk_msec;
 
         /** Spam squelch state data. */
         struct {
