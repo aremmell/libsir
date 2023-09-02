@@ -38,4 +38,6 @@
 #  define SIR_MSVCRT_MINGW
 # endif
 
+# include <sysinfoapi.h>
+
 #endif /* !_SIR_PLATFORM_ORANGEC_H_INCLUDED */
