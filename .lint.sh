@@ -451,7 +451,7 @@ test_pvs()
           cat pvsreport/index.html | xargs | \
             grep -q -E 'info>Fails/Info:</th><td>1</td></tr>.*Your license will expire in [0-9]+ days.' \
               && {
-                printf '%s\n' "NOTE: Only warning is expiray, we are OK."
+                printf '%s\n' "NOTE: Only warning is expiry, we are OK."
                 PVS_EXIT=0; export PVS_EXIT
               } || true
           test ${PVS_EXIT:-0} -ne 0 && printf '%s\n' "ERROR: PVS-Studio failed ..."
