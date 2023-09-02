@@ -565,7 +565,6 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         SIR_ASSERT_UNUSED(fmt, fmt);
     }
 
-
     sirconfig cfg;
     memcpy(&cfg, _cfg, sizeof(sirconfig));
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
