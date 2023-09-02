@@ -770,7 +770,7 @@ const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
         }
 
         bool wantpid = !_sir_bittest(opts, SIRO_NOPID) && _sir_validstrnofail(buf->pid);
-        bool wanttid = !_sir_bittest(opts, SIRO_NOTID) && _sir_validstrnofail(buf->tid);
+        bool wanttid = !_sir_bittest(opts, SIRO_NOTID);
 
         if (wantpid || wanttid) {
             if (name)
