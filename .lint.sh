@@ -442,7 +442,8 @@ test_pvs()
       ${MAKE:-make} mcmb
       env CC="${CCACHE:-env} clang" bear -- "${MAKE:-make}" -j "${CPUS:-1}"
       echo Running PVS-Studio ...
-      pvs-studio-analyzer analyze --disableLicenseExpirationCheck --intermodular -j "${CPUS:-1}" -o log.pvs
+      pvs-studio-analyzer analyze --disableLicenseExpirationCheck --intermodular -j "${CPUS:-1}" -o log.pvs || true
+      test -f log.pvs
       echo PVS-Studio run completed ...
       plog-converter -a "GA:1,2,3" -t fullhtml log.pvs -o pvsreport
       PVS_EXIT=1
