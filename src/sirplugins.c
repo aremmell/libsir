@@ -324,7 +324,7 @@ void _sir_plugin_destroy(sir_plugin** plugin) {
 
 bool _sir_plugin_cache_pred_id(const void* match, sir_plugin* iter) {
 #if !defined(SIR_NO_PLUGINS)
-    return iter->id == *((sirpluginid*)match);
+    return iter->id == *((const sirpluginid*)match);
 #else
     SIR_UNUSED(match);
     SIR_UNUSED(iter);
