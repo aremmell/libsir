@@ -512,7 +512,7 @@ bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
 }
 
 bool _sir_fcache_pred_id(const void* match, sirfile* iter) {
-    sirfileid* id = (const sirfileid*)match;
+    sirfileid* id = (sirfileid*)match;
     return iter->id == *id;
 }
 
