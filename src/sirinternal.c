@@ -58,6 +58,8 @@ static sir_once ts_once    = SIR_ONCE_INIT;
 
 static sir_once magic_once = SIR_ONCE_INIT;
 
+static _sir_thread_local pid_t _sir_tid = 0;
+
 #if defined(__HAVE_ATOMIC_H__)
 static atomic_uint_fast32_t _sir_magic;
 #else
@@ -584,10 +586,15 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     buf.level = _sir_formattedlevelstr(level);
 
-    pid_t tid = _sir_gettid();
-    if (tid != cfg.state.pid)
+    if (0 == _sir_tid) {
+        _sir_tid = _sir_gettid();
+        SIR_ASSERT(0 != _sir_tid);
+        _sir_selflog("thread ID was not set; retrieved: %d", PID_CAST _sir_tid);
+    }
+
+    if (_sir_tid != cfg.state.pid)
         if (!_sir_getthreadname(buf.tid) || !_sir_validstrnofail(buf.tid))
-            (void)snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, PID_CAST tid);
+            (void)snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, PID_CAST _sir_tid);
 
     (void)vsnprintf(buf.message, SIR_MAXMESSAGE, format, args);
 
