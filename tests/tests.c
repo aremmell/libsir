@@ -2355,8 +2355,8 @@ float sirtimerelapsed(const sir_timer* timer) {
 #if !defined(__WIN__) || defined(__ORANGEC__)
     struct timespec now;
     if (0 == clock_gettime(SIRTEST_CLOCK, &now)) {
-        return (float)((((double)now.tv_sec * 1e9) + ((double)now.tv_nsec))
-               - (((double)timer->ts.tv_sec * 1e9) + ((double)timer->ts.tv_nsec))) / 1e6;
+        return (float)(((((double)now.tv_sec * 1e9) + ((double)now.tv_nsec))
+               - (((double)timer->ts.tv_sec * 1e9) + ((double)timer->ts.tv_nsec))) / 1e6);
     } else {
         handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK);
     }
