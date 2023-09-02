@@ -1572,12 +1572,12 @@ Clang Sanitizer (UB, 32-bit):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build32_section[collapsed=true]\r\e[0K\033[0;36mBuild 32-bit ...\033[0m" || true
-    - env CC="ccache clang -m32 ${UBSAN_CFLAGS:?}" LDFLAGS="${UBSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - env CC="ccache clang -m32 ${UBSAN_CFLAGS:?} -Werror" LDFLAGS="${UBSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test32_section[collapsed=true]\r\e[0K\033[0;36mTest 32-bit ...\033[0m" || true
-    - ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests 2>&1
     - echo -e "section_end:`date +%s`:Test32_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -1608,12 +1608,12 @@ Clang Sanitizer (UB, 64-bit):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build64_section[collapsed=true]\r\e[0K\033[0;36mBuild 64-bit ...\033[0m" || true
-    - env CC="ccache clang -m64 ${UBSAN_CFLAGS:?}" LDFLAGS="${UBSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - env CC="ccache clang -m64 ${UBSAN_CFLAGS:?} -Werror" LDFLAGS="${UBSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build64_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test64_section[collapsed=true]\r\e[0K\033[0;36mTest 64-bit ...\033[0m" || true
-    - ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests 2>&1
     - echo -e "section_end:`date +%s`:Test64_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -1643,12 +1643,12 @@ Clang Sanitizer (Memory):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache clang -m64 ${MSAN_CFLAGS:?}" LDFLAGS="${MSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - env CC="ccache clang -m64 ${MSAN_CFLAGS:?} -Werror" LDFLAGS="${MSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests 2>&1
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -1679,12 +1679,12 @@ Clang Sanitizer (Address, 64-bit):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build64_section[collapsed=true]\r\e[0K\033[0;36mBuild 64-bit ...\033[0m" || true
-    - env CC="ccache clang -m64 ${ASAN_CFLAGS:?}" LDFLAGS="${ASAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - env CC="ccache clang -m64 ${ASAN_CFLAGS:?} -Werror" LDFLAGS="${ASAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build64_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test64_section[collapsed=true]\r\e[0K\033[0;36mTest 64-bit ...\033[0m" || true
-    - ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests 2>&1
     - echo -e "section_end:`date +%s`:Test64_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -1715,12 +1715,12 @@ Clang Sanitizer (Address, 32-bit):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build32_section[collapsed=true]\r\e[0K\033[0;36mBuild 32-bit ...\033[0m" || true
-    - env CC="ccache clang -m32 ${ASAN_CFLAGS:?}" LDFLAGS="${ASAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - env CC="ccache clang -m32 ${ASAN_CFLAGS:?} -Werror" LDFLAGS="${ASAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test32_section[collapsed=true]\r\e[0K\033[0;36mTest 32-bit ...\033[0m" || true
-    - ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests 2>&1
     - echo -e "section_end:`date +%s`:Test32_section\r\e[0K" || true
   dependencies: []
   artifacts:
