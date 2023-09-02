@@ -1152,7 +1152,7 @@ bool _sir_clock_gettime(int64_t* tbuf, int64_t* msecbuf) {
         }
 
 #else
-        time((time_t)tbuf);
+        time((time_t*)tbuf);
         if (msecbuf)
             *msecbuf = 0LL;
 #endif
