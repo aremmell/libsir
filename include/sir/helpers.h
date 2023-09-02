@@ -280,7 +280,7 @@ bool __sir_validstr(const char* restrict str, bool fail) {
 # define _sir_validstr(str) __sir_validstr(str, true)
 
 /** Validates a string pointer but ignores whether it's invalid. */
-# define _sir_validstrnofail(str) (NULL != (str) && '\0' != *(str))
+# define _sir_validstrnofail(str) __sir_validstr(str, false)
 
 /** Places a null terminator at the first index in a string buffer. */
 static inline
