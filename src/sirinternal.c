@@ -556,8 +556,6 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     /* update hours/minutes/seconds if the correct amount of time has elapsed. */
     if (msec_since_time_chk > SIR_TIME_CHK_INTERVAL) {
-        _sir_selflog("%ld msec elapsed since last time check; setting time to now",
-            msec_since_time_chk);
         _cfg->state.last_time_chk_secs = now_sec;
         _cfg->state.last_time_chk_msec = now_msec;
 
