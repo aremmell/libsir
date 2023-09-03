@@ -157,7 +157,7 @@ int main(void) {
     sir_emerg("Unable to process client requests for %s! Restarting...", "4m52s");
 
     sir_debug("Begin server shutdown.");
-    sir_debug("Exiting with code %d.", 1);
+    sir_debug("If this was real, we would be exiting with code %d now!", 1);
 
     /* Deregister (and close) the log file. */
     if (fileid && !sir_remfile(fileid))
