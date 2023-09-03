@@ -336,13 +336,13 @@
  * The number of seconds to let elapse before checking if the hostname needs
  * refreshing. The default is an eager 1 minute. Better safe than wrong?
  */
-# define SIR_HNAME_CHK_INTERVAL 61
+# define SIR_HNAME_CHK_INTERVAL 60
 
 /**
  * The number of milliseconds to let elapse before re-formatting the current
  * thread identifier and/or name.
  */
-# define SIR_THRD_CHK_INTERVAL 331
+# define SIR_THRD_CHK_INTERVAL 333
 
 /**
  * Whether or not numeric thread identifiers should always be used instead of
