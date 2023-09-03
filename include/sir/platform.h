@@ -374,10 +374,6 @@ _set_thread_local_invalid_parameter_handler(
 #   include <FindDirectory.h>
 #  elif defined(__MACOS__)
 #   include <mach-o/dyld.h>
-#   include <sys/_types/_timespec.h>
-#   include <mach/mach.h>
-#   include <mach/clock.h>
-#   include <mach/mach_time.h>
 #   if defined(SIR_OS_LOG_ENABLED)
 #    include <os/log.h>
 #    include <os/trace.h>
