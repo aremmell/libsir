@@ -166,11 +166,9 @@ const char* _sir_formattedlevelstr(sir_level level);
 /** Retrieves the current time w/ optional milliseconds. */
 bool _sir_clock_gettime(int64_t* tbuf, int64_t* msecbuf);
 
-/** Returns the number of milliseconds elapsed since a point in time
- * represented in seconds and milliseconds by the when_ parameters. Places
- * the current time in the out_ parameters. */
-int64_t _sir_msec_since(int64_t when_sec, int64_t when_msec, int64_t* out_sec,
-    int64_t* out_msec);
+/** Returns the number of milliseconds elapsed since a point in time represented
+ * by the when parameter. Places the current time in the out parameter. */
+int64_t _sir_msec_since(sir_time* when, sir_time* out);
 
 /** Formats the current time as a string. */
 bool _sir_formattime(time_t now, char* buffer, const char* format);

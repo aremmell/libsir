@@ -241,6 +241,12 @@ typedef void (*invalparamfn)(const wchar_t*, const wchar_t*, const wchar_t*,
     unsigned int, uintptr_t);
 # endif
 
+/** Internally-used time value type. */
+typedef struct {
+    int64_t sec;
+    int64_t msec;
+} sir_time;
+
 /** Internally-used global config container. */
 typedef struct {
     sirinit si;
@@ -251,8 +257,7 @@ typedef struct {
         pid_t pid;
         char timestamp[SIR_MAXTIME];
         char msec[SIR_MAXMSEC];
-        int64_t last_time_chk_secs;
-        int64_t last_time_chk_msec;
+        sir_time last_time_chk;
 
         /** Spam squelch state data. */
         struct {

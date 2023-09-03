@@ -543,23 +543,20 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         }
     }
 
-    /* update the string form of the timestamp if a given amount of
-     * time has elapsed since the last time it was updated (this code path
-     * is extremely slow, so we do it sparingly). */
-    int64_t now_sec  = 0LL;
-    int64_t now_msec = 0LL;
-    int64_t msec_since_time_chk = _sir_msec_since(_cfg->state.last_time_chk_secs,
-        _cfg->state.last_time_chk_msec, &now_sec, &now_msec);
+    /* update the string form of the timestamp if SIR_TIME_CHK_INTERVAL msec
+     * have elapsed since the last time it was updated. */
+    sir_time now = {0};
+    int64_t msec_since_chk = _sir_msec_since(&_cfg->state.last_time_chk, &now);
 
     /* always update milliseconds. */
-    _sir_snprintf_trunc(_cfg->state.msec, SIR_MAXMSEC, SIR_MSECFORMAT, now_msec);
+    _sir_snprintf_trunc(_cfg->state.msec, SIR_MAXMSEC, SIR_MSECFORMAT, now.msec);
 
-    /* update hours/minutes/seconds if the correct amount of time has elapsed. */
-    if (msec_since_time_chk > SIR_TIME_CHK_INTERVAL) {
-        _cfg->state.last_time_chk_secs = now_sec;
-        _cfg->state.last_time_chk_msec = now_msec;
+    /* update hours/minutes/seconds if enough time has elapsed. */
+    if (msec_since_chk > SIR_TIME_CHK_INTERVAL) {
+        _cfg->state.last_time_chk.sec  = now.sec;
+        _cfg->state.last_time_chk.msec = now.msec;
 
-        bool fmt = _sir_formattime(now_sec, _cfg->state.timestamp, SIR_TIMEFORMAT);
+        bool fmt = _sir_formattime(now.sec, _cfg->state.timestamp, SIR_TIMEFORMAT);
         SIR_ASSERT_UNUSED(fmt, fmt);
     }
 
