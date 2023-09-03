@@ -1245,6 +1245,19 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
 #endif
 }
 
+bool _sir_setthreadname(const char* name) {
+    if (!_sir_validptr(name))
+        return false;
+#if defined (__MACOS__)
+    pthread_setname_np(name);
+    return true;
+#else
+# pragma message("unable to determine how to set a thraed name")
+    SIR_UNUSED(name);
+    return false;
+#endif
+}
+
 bool _sir_gethostname(char name[SIR_MAXHOST]) {
 #if !defined(__WIN__)
     int ret = gethostname(name, SIR_MAXHOST - 1);

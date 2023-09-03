@@ -184,6 +184,9 @@ pid_t _sir_gettid(void);
 /** Retrieves the current thread's name. */
 bool _sir_getthreadname(char name[SIR_MAXPID]);
 
+/** Sets the current thread's name. */
+bool _sir_setthreadname(const char* name);
+
 /** Retrieves the hostname of this machine. */
 bool _sir_gethostname(char name[SIR_MAXHOST]);
 
