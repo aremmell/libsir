@@ -264,7 +264,7 @@ typedef struct {
         pid_t pid;
         char timestamp[SIR_MAXTIME];
         char msec[SIR_MAXMSEC];
-        sir_time last_time_chk;
+        sir_time last_misc_chk;
 
         /** Spam squelch state data. */
         struct {
@@ -276,13 +276,6 @@ typedef struct {
         } last;
     } state;
 } sirconfig;
-
-/** Internally-used thread information type. */
-typedef struct {
-    char tidbuf[SIR_MAXPID];
-    pid_t tid;
-    sir_time last_chk;
-} sir_thread_info;
 
 /** Internally-used error type. */
 typedef struct {
@@ -397,7 +390,7 @@ typedef struct {
     const char* pid;
     const char* level;
     const char* name;
-    const char* tid;
+    char tid[SIR_MAXPID];
     char message[SIR_MAXMESSAGE];
     char output[SIR_MAXOUTPUT];
     size_t output_len;
