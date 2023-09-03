@@ -250,8 +250,8 @@ typedef void (*invalparamfn)(const wchar_t*, const wchar_t*, const wchar_t*,
 
 /** Internally-used time value type. */
 typedef struct {
-    int64_t sec;
-    int64_t msec;
+    time_t sec;
+    long msec;
 } sir_time;
 
 /** Internally-used global config container. */
@@ -262,7 +262,9 @@ typedef struct {
         time_t last_hname_chk;
         char pidbuf[SIR_MAXPID];
         pid_t pid;
-        sir_time last_misc_chk;
+        char timestamp[SIR_MAXTIME];
+        sir_time last_time_chk;
+        sir_time last_thrd_chk;
 
         /** Spam squelch state data. */
         struct {
@@ -382,7 +384,7 @@ typedef struct {
 /** Formatted output container. */
 typedef struct {
     char style[SIR_MAXSTYLE];
-    char timestamp[SIR_MAXTIME];
+    char* timestamp;
     char msec[SIR_MAXMSEC];
     const char* hostname;
     const char* pid;

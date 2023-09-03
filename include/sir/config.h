@@ -55,7 +55,7 @@
  *   .034
  *   ~~~
  */
-# define SIR_MSECFORMAT ".%03"PRId64
+# define SIR_MSECFORMAT ".%03ld"
 
 /**
  * The string placed directly before the human-readable logging level.
@@ -339,14 +339,15 @@
 # define SIR_HNAME_CHK_INTERVAL 60
 
 /**
- * The number of milliseconds to let elapse before:
- * - re-formatting the current timestamp.
- * - resolving the current thread identifier and/or name.
+ * The number of milliseconds to let elapse before re-formatting the current timestamp.
  */
-# define SIR_MISC_CHK_INTERVAL 10
+# define SIR_TIME_CHK_INTERVAL 50
 
-
-# define SIR_THREAD_ID_CHK_INTERVAL 300
+/**
+ * The number of milliseconds to let elapse before re-formatting the current
+ * thread identifier and/or name.
+ */
+# define SIR_THRD_CHK_INTERVAL 300
 
 /**
  * Whether or not numeric thread identifiers should always be used instead of

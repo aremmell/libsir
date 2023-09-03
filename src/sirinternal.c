@@ -547,25 +547,36 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         }
     }
 
-    sir_time now;
-    int64_t msec_since_chk = _sir_msec_since(&_cfg->state.last_misc_chk, &now);
+    sir_time time_chk;
+    int64_t msec_since_time_chk = _sir_msec_since(_cfg->state.last_time_chk.sec,
+        _cfg->state.last_time_chk.msec, &time_chk);
+
+    long now_msec = 0L;
+    bool gettime = _sir_clock_gettime(SIR_WALLCLOCK, &now_sec, &now_msec);
+    SIR_ASSERT_UNUSED(getttime, gettime);
 
     /* update milliseconds. */
-    _sir_snprintf_trunc(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, now.msec);
+    _sir_snprintf_trunc(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, now_msec);
 
     /* update the string form of the timestamp (h/m/s) and the thread identifier/name
-     * if SIR_MISC_CHK_INTERVAL milliseconds have elapsed since the last update. */
-    if (msec_since_chk > SIR_MISC_CHK_INTERVAL) {
-        _cfg->state.last_misc_chk = now;
+     * if SIR_TIME_CHK_INTERVAL milliseconds have elapsed since the last update. */
+    if (msec_since_time_chk > SIR_TIME_CHK_INTERVAL) {
+        _cfg->state.last_time_chk = time_chk;
 
         /* update hours/minutes/seconds. */
-        bool fmt = _sir_formattime(now.sec, buf.timestamp, SIR_TIMEFORMAT);
+        bool fmt = _sir_formattime(now_sec, _cfg->state.timestamp, SIR_TIMEFORMAT);
         SIR_ASSERT_UNUSED(fmt, fmt);
 
-        if (msec_since_chk > SIR_THREAD_ID_CHK_INTERVAL) {
-            /* update the thread identifier/name. decide how to identify this thread
-            * based on the configuration, and whether or not its identifier is
-            * identical to the process identifier. */
+        sir_time thrd_chk;
+        int64_t msec_since_thrd_chk = _sir_msec_since(_cfg->state.last_thrd_chk.sec,
+            _cfg->state.last_thrd_chk.msec, &thrd_chk);
+
+        if (msec_since_thrd_chk > SIR_THRD_CHK_INTERVAL) {
+            /* update the thread identifier/name. decide how to identify this
+             * thread based on the configuration, and whether or not its identifier
+             * is identical to the process identifier. */
+            _cfg->state.last_thrd_chk = thrd_chk;
+
             pid_t tid         = _sir_gettid();
             bool resolved_tid = false;
 
@@ -595,6 +606,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     memcpy(&cfg, _cfg, sizeof(sirconfig));
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
 
+    buf.timestamp = cfg.state.timestamp;
     buf.hostname  = cfg.state.hostname;
     buf.pid       = cfg.state.pidbuf;
     buf.name      = cfg.si.name;
@@ -1077,43 +1089,21 @@ const char* _sir_formattedlevelstr(sir_level level) {
     return retval;
 }
 
-bool _sir_clock_gettime(int64_t* tbuf, int64_t* msecbuf) {
+bool _sir_clock_gettime(int clock, time_t* tbuf, long* msecbuf) {
     if (tbuf) {
-        time_t ret = time((time_t*)tbuf);
-        if (-1 == ret) {
-            if (msecbuf)
-                *msecbuf = 0LL;
-            return _sir_handleerr(errno);
-        }
 #if defined(SIR_MSEC_POSIX)
         struct timespec ts = {0};
-        int clock          = clock_gettime(SIR_MSECCLOCK, &ts);
-        SIR_ASSERT(0 == clock);
+        int ret            = clock_gettime(clock, &ts);
+        SIR_ASSERT(0 == ret);
 
-        if (0 == clock) {
+        if (0 == ret) {
+            *tbuf = ts.tv_sec;
             if (msecbuf)
-                *msecbuf = (int64_t)(((double)ts.tv_nsec) / 1e6);
+                *msecbuf = (long)(ts.tv_nsec / 1000000L);
         } else {
             if (msecbuf)
-                *msecbuf = 0LL;
+                *msecbuf = 0L;
             return _sir_handleerr(errno);
-        }
-#elif defined(SIR_MSEC_MACH)
-        kern_return_t retval = KERN_SUCCESS;
-        mach_timespec_t mts  = {0};
-        clock_serv_t clock;
-
-        host_get_clock_service(mach_host_self(), SIR_MSECCLOCK, &clock);
-        retval = clock_get_time(clock, &mts);
-        mach_port_deallocate(mach_task_self(), clock);
-
-        if (KERN_SUCCESS == retval) {
-            if (msecbuf)
-                *msecbuf = (int64_t)(((double)mts.tv_nsec) / 1e6);
-        } else {
-            if (msecbuf)
-                *msecbuf = 0LL;
-            return _sir_handleerr(retval);
         }
 #elif defined(SIR_MSEC_WIN32)
         static const ULONGLONG uepoch = (ULONGLONG)116444736e9;
@@ -1124,44 +1114,44 @@ bool _sir_clock_gettime(int64_t* tbuf, int64_t* msecbuf) {
         ULARGE_INTEGER ftnow = {0};
         ftnow.HighPart = ftutc.dwHighDateTime;
         ftnow.LowPart  = ftutc.dwLowDateTime;
-        ftnow.QuadPart = (ULONGLONG)((double)(ftnow.QuadPart - uepoch) / 1e7);
+        ftnow.QuadPart = (ULONGLONG)((ftnow.QuadPart - uepoch) / 10000000ULL);
 
-        *tbuf = (int64_t)ftnow.QuadPart;
+        *tbuf = (time_t)ftnow.QuadPart;
 
         SYSTEMTIME st = {0};
         if (FileTimeToSystemTime(&ftutc, &st)) {
             if (msecbuf)
-                *msecbuf = (int64_t)st.wMilliseconds;
+                *msecbuf = (long)st.wMilliseconds;
         } else {
             if (msecbuf)
-                *msecbuf = 0LL;
+                *msecbuf = 0L;
             return _sir_handlewin32err(GetLastError());
         }
-
 #else
-        time((time_t*)tbuf);
+        time(tbuf);
         if (msecbuf)
-            *msecbuf = 0LL;
+            *msecbuf = 0L;
 #endif
         return true;
     }
     return false;
 }
 
-int64_t _sir_msec_since(sir_time* when, sir_time* out) {
-    if (!_sir_validptr(when) || !_sir_validptr(out))
+int64_t _sir_msec_since(time_t when_sec, long when_msec, sir_time* out) {
+    if (!_sir_validptr(out))
         return 0LL;
 
-    out->sec  = 0LL;
-    out->msec = 0LL;
+    out->sec  = 0;
+    out->msec = 0L;
 
-    bool gettime = _sir_clock_gettime(&out->sec, &out->msec);
+    bool gettime = _sir_clock_gettime(SIR_INTERVALCLOCK, &out->sec, &out->msec);
     SIR_ASSERT(gettime);
 
-    if (!gettime)
+    if (!gettime || (out->sec < when_sec))
         return 0LL;
 
-    return ((out->sec * 1000LL) + out->msec) - ((when->sec * 1000LL) + when->msec);
+    return ((((int64_t)out->sec) * 1000LL) + ((int64_t)out->msec)) -
+           ((((int64_t)when_sec) * 1000LL) + ((int64_t)when_msec));
 }
 
 pid_t _sir_getpid(void) {

@@ -393,14 +393,21 @@ _set_thread_local_invalid_parameter_handler(
 #   define SIR_MAXPATH 1024
 #  endif
 
-#  if defined(__MACOS__)
-#   define SIR_MSEC_TIMER
-#   define SIR_MSEC_MACH
-#  elif _POSIX_TIMERS > 0
+#  if (defined(_POSIX_TIMERS) && _POSIX_TIMERS > 0) || defined(__MACOS__)
 #   define SIR_MSEC_TIMER
 #   define SIR_MSEC_POSIX
 #  else
 #   undef SIR_MSEC_TIMER
+#  endif
+
+/** The clock used to obtain timestamps. */
+#   define SIR_WALLCLOCK CLOCK_REALTIME
+
+/** The clock used to measure intervals. */
+#  if defined(CLOCK_MONOTONIC_RAW)
+#   define SIR_INTERVALCLOCK CLOCK_MONOTONIC_RAW
+#  else
+#   define SIR_INTERVALCLOCK CLOCK_MONOTONIC
 #  endif
 
 /** The plugin handle type. */
@@ -509,16 +516,6 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #   define SIR_MSVCRT_MINGW
 #  endif
 #  undef __HAVE_STDC_SECURE_OR_EXT1__
-# endif
-
-# if !defined(__MACOS__)
-#  if defined(__linux__) && _POSIX_C_SOURCE >= 199309L
-#   define SIR_MSECCLOCK CLOCK_REALTIME
-#  else
-#   define SIR_MSECCLOCK CLOCK_REALTIME
-#  endif
-# else /* __MACOS__ */
-#  define SIR_MSECCLOCK REALTIME_CLOCK
 # endif
 
 # if (defined(__clang__) || defined(__GNUC__)) && defined(__FILE_NAME__)

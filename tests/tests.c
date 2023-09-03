@@ -253,14 +253,14 @@ bool sirtest_threadidsanity(void)
     printf("\tsetting the thread name to '%s' and logging again...\n", thread_name);
 
     _sir_setthreadname(thread_name);
-    sir_sleep_msec(SIR_MISC_CHK_INTERVAL * 3);
+    sir_sleep_msec(SIR_THRD_CHK_INTERVAL + 100);
 
     pass &= sir_debug("this is a test of the libsir system after setting thread name");
 
     printf("\tsetting the thread name to '' and logging again...\n");
 
     _sir_setthreadname("");
-    sir_sleep_msec(SIR_MISC_CHK_INTERVAL * 3);
+    sir_sleep_msec(SIR_THRD_CHK_INTERVAL + 100);
 
     pass &= sir_debug("this is a test of the libsir system after clearing thread name");
 

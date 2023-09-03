@@ -164,11 +164,11 @@ void _sir_syslog_reset(sir_syslog_dest* ctx);
 const char* _sir_formattedlevelstr(sir_level level);
 
 /** Retrieves the current time w/ optional milliseconds. */
-bool _sir_clock_gettime(int64_t* tbuf, int64_t* msecbuf);
+bool _sir_clock_gettime(int clock, time_t* tbuf, long* msecbuf);
 
 /** Returns the number of milliseconds elapsed since a point in time represented
- * by the when parameter. Places the current time in the out parameter. */
-int64_t _sir_msec_since(sir_time* when, sir_time* out);
+ * by the when parameters. */
+int64_t _sir_msec_since(time_t when_sec, long when_msec, sir_time* out);
 
 /** Returns the current process identifier. */
 pid_t _sir_getpid(void);
