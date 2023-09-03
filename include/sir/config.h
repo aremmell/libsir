@@ -346,7 +346,7 @@
 # define SIR_MISC_CHK_INTERVAL 10
 
 
-# define SIR_THREAD_ID_CHK_INTERVAL 50
+# define SIR_THREAD_ID_CHK_INTERVAL 300
 
 /**
  * Whether or not numeric thread identifiers should always be used instead of
