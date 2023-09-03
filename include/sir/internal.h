@@ -170,9 +170,6 @@ bool _sir_clock_gettime(int64_t* tbuf, int64_t* msecbuf);
  * by the when parameter. Places the current time in the out parameter. */
 int64_t _sir_msec_since(sir_time* when, sir_time* out);
 
-/** Formats the current time as a string. */
-bool _sir_formattime(time_t now, char* buffer, const char* format);
-
 /** Returns the current process identifier. */
 pid_t _sir_getpid(void);
 

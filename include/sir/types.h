@@ -262,8 +262,6 @@ typedef struct {
         time_t last_hname_chk;
         char pidbuf[SIR_MAXPID];
         pid_t pid;
-        char timestamp[SIR_MAXTIME];
-        char msec[SIR_MAXMSEC];
         sir_time last_misc_chk;
 
         /** Spam squelch state data. */
@@ -384,8 +382,8 @@ typedef struct {
 /** Formatted output container. */
 typedef struct {
     char style[SIR_MAXSTYLE];
-    char* timestamp;
-    char* msec;
+    char timestamp[SIR_MAXTIME];
+    char msec[SIR_MAXMSEC];
     const char* hostname;
     const char* pid;
     const char* level;

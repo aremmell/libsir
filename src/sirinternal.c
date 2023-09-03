@@ -547,21 +547,22 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         }
     }
 
-    sir_time now = {0};
+    sir_time now;
     int64_t msec_since_chk = _sir_msec_since(&_cfg->state.last_misc_chk, &now);
 
     /* update milliseconds. */
-    _sir_snprintf_trunc(_cfg->state.msec, SIR_MAXMSEC, SIR_MSECFORMAT, now.msec);
+    _sir_snprintf_trunc(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, now.msec);
+
+    /* update hours/minutes/seconds. */
+    bool fmt = _sir_formattime(now.sec, buf.timestamp, SIR_TIMEFORMAT);
+    SIR_ASSERT_UNUSED(fmt, fmt);
 
     /* update the string form of the timestamp (h/m/s) and the thread identifier/name
      * if SIR_MISC_CHK_INTERVAL milliseconds have elapsed since the last update. */
     if (msec_since_chk > SIR_MISC_CHK_INTERVAL) {
-        _cfg->state.last_misc_chk.sec  = now.sec;
-        _cfg->state.last_misc_chk.msec = now.msec;
-
-        /* update hours/minutes/seconds. */
-        bool fmt = _sir_formattime(now.sec, _cfg->state.timestamp, SIR_TIMEFORMAT);
-        SIR_ASSERT_UNUSED(fmt, fmt);
+/*         _cfg->state.last_misc_chk.sec  = now.sec;
+        _cfg->state.last_misc_chk.msec = now.msec; */
+        _cfg->state.last_misc_chk = now;
 
         /* update the thread identifier/name. decide how to identify this thread
          * based on the configuration, and whether or not its identifier is
@@ -594,8 +595,6 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     memcpy(&cfg, _cfg, sizeof(sirconfig));
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
 
-    buf.timestamp = cfg.state.timestamp;
-    buf.msec      = cfg.state.msec;
     buf.hostname  = cfg.state.hostname;
     buf.pid       = cfg.state.pidbuf;
     buf.name      = cfg.si.name;
@@ -1078,35 +1077,6 @@ const char* _sir_formattedlevelstr(sir_level level) {
     return retval;
 }
 
-#if defined(__GNUC__)
-__attribute__ ((format (strftime, 3, 0)))
-#endif
-bool _sir_formattime(time_t now, char* buffer, const char* format) {
-    if (0 == now || -1 == now)
-        return _sir_seterror(_SIR_E_INVALID);
-
-#if defined(__GNUC__) && !defined(__clang__) && \
-    !(defined(__OPEN64__) || defined(__OPENCC__))
-# pragma GCC diagnostic push
-# pragma GCC diagnostic ignored "-Wformat-nonliteral"
-#endif
-    struct tm timebuf;
-    struct tm* ptb = _sir_localtime(&now, &timebuf);
-    bool formatted = false;
-    if (_sir_validptrnofail(ptb))
-        formatted = 0 != strftime(buffer, SIR_MAXTIME, format, ptb);
-#if defined(__GNUC__) && !defined(__clang__) && \
-    !(defined(__OPEN64__) || defined(__OPENCC__))
-# pragma GCC diagnostic pop
-#endif
-
-    SIR_ASSERT(formatted);
-    if (!formatted)
-        _sir_selflog("error: strftime failed; format string: '%s'", format);
-
-    return formatted;
-}
-
 bool _sir_clock_gettime(int64_t* tbuf, int64_t* msecbuf) {
     if (tbuf) {
         time_t ret = time((time_t*)tbuf);
@@ -1222,7 +1192,7 @@ pid_t _sir_gettid(void) {
     tid = get_pthread_thread_id(pthread_self());
 #elif defined(__linux__) || defined(__serenity__)
 # if (defined(__GLIBC__) && GLIBC_VERSION >= 23000) || \
-     defined(__serenity__)
+      defined(__serenity__)
     tid = gettid();
 # else
     tid = syscall(SYS_gettid);
