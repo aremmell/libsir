@@ -106,7 +106,7 @@ int main(int argc, char** argv) {
 #   define _GNU_SOURCE 1
 #  endif
 #  if defined(__has_include)
-#   if __has_include(<malloc.h>)
+#   if __has_include(<malloc.h>) && !defined(DUMA)
 #    include <malloc.h>
 #   endif
 #  endif
