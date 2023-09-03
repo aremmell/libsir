@@ -92,7 +92,6 @@ typedef enum {
 
 /** Attributes for stdio output. */
 typedef enum {
-    /* attributes. */
     SIRTA_NORMAL  = 0, /**< Normal text. */
     SIRTA_BOLD    = 1, /**< Bold text. */
     SIRTA_DIM     = 2, /**< Dimmed text. */
@@ -122,8 +121,7 @@ enum {
     /* 8-bit (256-color) and 24-bit (RGB color) modes:
      * use the numeric representation (16..255) instead of an enum.
      * these colors do not have defined names like the above. */
-    SIRTC_DEFAULT  = 256, /**< Represents the default color. */
-    SIRTC_INVALID  = 257  /**< Represents the invalid color. */
+    SIRTC_DEFAULT  = 256 /**< Represents the default color. */
 };
 
 /** stdio text color type. */
@@ -219,11 +217,9 @@ typedef struct {
     sir_syslog_dest d_syslog; /**< System logger configuration. */
 
     /**
-     * If set, defines the name that will appear in messages sent to stdio and
-     * log file destinations.
-     *
-     * Set ::SIRO_NONAME in a destination's options bitmask to exclude it from
-     * log messages.
+     * If set, defines the name that will appear in messages sent to stdio, log
+     * file, and plugin destinations. Set ::SIRO_NONAME in a destination's options
+     * bitmask to exclude it from log messages.
      */
     char name[SIR_MAXNAME];
 } sirinit;
@@ -234,9 +230,20 @@ typedef struct {
  */
 
 /** Magic number used to determine if libsir has been initialized. */
-# define _SIR_MAGIC 0x60906090
+# define _SIR_MAGIC 0x60906090U
+
+/** System logger facility state flags. */
+# define SIRSL_IS_OPEN  0x00000001U /**< Log is open. */
+# define SIRSL_LEVELS   0x00000002U /**< Level registrations. */
+# define SIRSL_OPTIONS  0x00000004U /**< Formatting options. */
+# define SIRSL_CATEGORY 0x00000008U /**< Category. */
+# define SIRSL_IDENTITY 0x00000010U /**< Identity. */
+# define SIRSL_UPDATED  0x00000020U /**< Config has been updated. */
+# define SIRSL_IS_INIT  0x00000040U /**< Subsystem is initialized. */
 
 # if defined(__WIN__)
+/** Invalid parameter handler used when passing possibly invalid values to
+ * certain Windows libc calls. Without it, the default behavior is to abort. */
 typedef void (*invalparamfn)(const wchar_t*, const wchar_t*, const wchar_t*,
     unsigned int, uintptr_t);
 # endif
@@ -391,7 +398,7 @@ typedef struct {
     char str[SIR_MAXSTYLE]; /**< The formatted string representation. */
 } sir_level_style_tuple;
 
-/** Container for  text style related data that is mutex protected. */
+/** Container for text style related data that is mutex protected. */
 typedef struct {
     sir_level_style_tuple* map;
     sir_colormode* color_mode;
@@ -411,7 +418,7 @@ typedef enum {
     SIRMI_TEXTSTYLE,   /**< The ::sir_level_style_tuple section. */
 } sir_mutex_id;
 
-/** Error type. */
+/** Per-thread error type. */
 typedef struct {
     uint32_t lasterror;
     int os_error;
@@ -441,16 +448,5 @@ typedef struct {
     const char* sl_identity; /**< System logger identity. */
     const char* sl_category; /**< System logger category. */
 } sir_update_config_data;
-
-/** Bitmask defining the state of a system logger facility. */
-typedef uint32_t sir_syslog_state;
-
-# define SIRSL_IS_OPEN  0x00000001U /**< Log is open. */
-# define SIRSL_LEVELS   0x00000002U /**< Level registrations. */
-# define SIRSL_OPTIONS  0x00000004U /**< Formatting options. */
-# define SIRSL_CATEGORY 0x00000008U /**< Category. */
-# define SIRSL_IDENTITY 0x00000010U /**< Identity. */
-# define SIRSL_UPDATED  0x00000020U /**< Config has been updated. */
-# define SIRSL_IS_INIT  0x00000040U /**< Subsystem is initialized. */
 
 #endif /* !_SIR_TYPES_H_INCLUDED */
