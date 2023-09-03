@@ -239,6 +239,12 @@ bool sirtest_perf(void);
 bool sirtest_updatesanity(void);
 
 /**
+ * @test Properly format thread ID/names in output.
+ * @returns bool `true` if the test passed, `false` otherwise.
+ */
+bool sirtest_threadidsanity(void);
+
+/**
  * @test Properly open, configure, and send messages to syslog().
  * @note Disabled on Windows and macOS.
  * @returns bool `true` if the test passed, `false` otherwise.
@@ -379,6 +385,8 @@ bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* 
 bool sirtimerstart(sir_timer* timer);
 float sirtimerelapsed(const sir_timer* timer); /* msec */
 long sirtimergetres(void); /* nsec */
+
+void sir_sleep_msec(uint32_t msec);
 
 # if defined(SIR_OS_LOG_ENABLED)
 void os_log_parent_activity(void* ctx);
