@@ -2371,9 +2371,9 @@ bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* 
 
 bool sirtimerstart(sir_timer* timer) {
 #if !defined(__WIN__) || defined(__ORANGEC__)
-    int gettime = clock_gettime(SIRTEST_CLOCK, &timer->ts);
+    int gettime = clock_gettime(SIR_INTERVALCLOCK, &timer->ts);
     if (0 != gettime) {
-        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK);
+        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIR_INTERVALCLOCK);
     }
 
     return 0 == gettime;
@@ -2386,11 +2386,11 @@ bool sirtimerstart(sir_timer* timer) {
 float sirtimerelapsed(const sir_timer* timer) {
 #if !defined(__WIN__) || defined(__ORANGEC__)
     struct timespec now;
-    if (0 == clock_gettime(SIRTEST_CLOCK, &now)) {
+    if (0 == clock_gettime(SIR_INTERVALCLOCK, &now)) {
         return (float)(((((double)now.tv_sec * 1e9) + ((double)now.tv_nsec))
                - (((double)timer->ts.tv_sec * 1e9) + ((double)timer->ts.tv_nsec))) / 1e6);
     } else {
-        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK);
+        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIR_INTERVALCLOCK);
     }
     return 0.0f;
 #else /* __WIN__ */
@@ -2410,10 +2410,10 @@ long sirtimergetres(void) {
     long retval = 0;
 #if !defined(__WIN__)
     struct timespec res;
-    if (0 == clock_getres(SIRTEST_CLOCK, &res)) {
+    if (0 == clock_getres(SIR_INTERVALCLOCK, &res)) {
         retval = res.tv_nsec;
     } else {
-        handle_os_error(true, "clock_getres(%d) failed!", CLOCK_CAST SIRTEST_CLOCK); // GCOVR_EXCL_LINE
+        handle_os_error(true, "clock_getres(%d) failed!", CLOCK_CAST SIR_INTERVALCLOCK); // GCOVR_EXCL_LINE
     }
 #else /* __WIN__ */
     retval = 100;
