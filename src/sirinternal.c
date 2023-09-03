@@ -1265,10 +1265,20 @@ bool _sir_setthreadname(const char* name) {
     if (!_sir_validptr(name))
         return false;
 #if defined (__MACOS__)
-    pthread_setname_np(name);
+    int ret = pthread_setname_np(name);
+    return (0 != ret) ? _sir_handleerr(ret) : true;
+#elif (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
+      (defined(__GLIBC__) && GLIBC_VERSION >= 21200 && defined(_GNU_SOURCE)) || \
+       defined(USE_PTHREAD_GETNAME_NP)
+    int ret = pthread_setname_np(pthread_self(), name);
+    return (0 != ret) ? _sir_handleerr(ret) : true;
+#elif defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
+    pthread_set_name_np(pthread_self(), name);
     return true;
 #else
-# pragma message("unable to determine how to set a thread name")
+# if !defined(SUNLINT)
+#  pragma message("unable to determine how to set a thread name")
+# endif
     SIR_UNUSED(name);
     return false;
 #endif
