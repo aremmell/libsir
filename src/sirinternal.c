@@ -580,14 +580,14 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 #endif
         }
 
-        if (!resolved_tid) {
-            if (0 == SIR_PREFER_THREAD_ID)
-                resolved_tid = _sir_getthreadname(_sir_tid);
+#if !SIR_PREFER_THREAD_ID
+        if (!resolved_tid)
+            resolved_tid = _sir_getthreadname(_sir_tid);
+#endif
 
-            if (!resolved_tid)
-                _sir_snprintf_trunc(_sir_tid, SIR_MAXPID, SIR_PIDFORMAT,
-                    PID_CAST tid);
-        }
+        if (!resolved_tid)
+            _sir_snprintf_trunc(_sir_tid, SIR_MAXPID, SIR_PIDFORMAT,
+                PID_CAST tid);
 
         _sir_selflog("resolved thread id/name to '%s'...", _sir_tid);
     }
