@@ -553,42 +553,42 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     /* update milliseconds. */
     _sir_snprintf_trunc(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, now.msec);
 
-    /* update hours/minutes/seconds. */
-    bool fmt = _sir_formattime(now.sec, buf.timestamp, SIR_TIMEFORMAT);
-    SIR_ASSERT_UNUSED(fmt, fmt);
-
     /* update the string form of the timestamp (h/m/s) and the thread identifier/name
      * if SIR_MISC_CHK_INTERVAL milliseconds have elapsed since the last update. */
     if (msec_since_chk > SIR_MISC_CHK_INTERVAL) {
-/*         _cfg->state.last_misc_chk.sec  = now.sec;
-        _cfg->state.last_misc_chk.msec = now.msec; */
         _cfg->state.last_misc_chk = now;
 
-        /* update the thread identifier/name. decide how to identify this thread
-         * based on the configuration, and whether or not its identifier is
-         * identical to the process identifier. */
-        pid_t tid         = _sir_gettid();
-        bool resolved_tid = false;
+        /* update hours/minutes/seconds. */
+        bool fmt = _sir_formattime(now.sec, buf.timestamp, SIR_TIMEFORMAT);
+        SIR_ASSERT_UNUSED(fmt, fmt);
 
-        if (tid == _cfg->state.pid) {
+        if (msec_since_chk > SIR_THREAD_ID_CHK_INTERVAL) {
+            /* update the thread identifier/name. decide how to identify this thread
+            * based on the configuration, and whether or not its identifier is
+            * identical to the process identifier. */
+            pid_t tid         = _sir_gettid();
+            bool resolved_tid = false;
+
+            if (tid == _cfg->state.pid) {
 #if SIR_DUPE_THREAD_ID_USE_NAME
-            /* if a name is set, use it. */
-            resolved_tid = _sir_getthreadname(_sir_tid);
+                /* if a name is set, use it. */
+                resolved_tid = _sir_getthreadname(_sir_tid);
 #else
-            /* don't use anything to identify the thread. */
-            _sir_resetstr(_sir_tid);
-            resolved_tid = true;
+                /* don't use anything to identify the thread. */
+                _sir_resetstr(_sir_tid);
+                resolved_tid = true;
 #endif
-        }
+            }
 
 #if !SIR_PREFER_THREAD_ID
-        if (!resolved_tid)
-            resolved_tid = _sir_getthreadname(_sir_tid);
+            if (!resolved_tid)
+                resolved_tid = _sir_getthreadname(_sir_tid);
 #endif
 
-        if (!resolved_tid)
-            _sir_snprintf_trunc(_sir_tid, SIR_MAXPID, SIR_PIDFORMAT,
-                PID_CAST tid);
+            if (!resolved_tid)
+                _sir_snprintf_trunc(_sir_tid, SIR_MAXPID, SIR_PIDFORMAT,
+                    PID_CAST tid);
+        }
     }
 
     sirconfig cfg;
