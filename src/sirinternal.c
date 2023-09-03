@@ -547,59 +547,50 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         }
     }
 
-    sir_time time_chk;
-    int64_t msec_since_time_chk = _sir_msec_since(_cfg->state.last_time_chk.sec,
-        _cfg->state.last_time_chk.msec, &time_chk);
-
+    /* format timestamp. */
     long now_msec = 0L;
     bool gettime = _sir_clock_gettime(SIR_WALLCLOCK, &now_sec, &now_msec);
-    SIR_ASSERT_UNUSED(getttime, gettime);
+    SIR_ASSERT_UNUSED(gettime, gettime);
 
-    /* update milliseconds. */
+    /* milliseconds. */
     _sir_snprintf_trunc(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, now_msec);
 
-    /* update the string form of the timestamp (h/m/s) and the thread identifier/name
-     * if SIR_TIME_CHK_INTERVAL milliseconds have elapsed since the last update. */
-    if (msec_since_time_chk > SIR_TIME_CHK_INTERVAL) {
-        _cfg->state.last_time_chk = time_chk;
+    /* hours/minutes/seconds. */
+    bool fmt = _sir_formattime(now_sec, _cfg->state.timestamp, SIR_TIMEFORMAT);
+    SIR_ASSERT_UNUSED(fmt, fmt);
 
-        /* update hours/minutes/seconds. */
-        bool fmt = _sir_formattime(now_sec, _cfg->state.timestamp, SIR_TIMEFORMAT);
-        SIR_ASSERT_UNUSED(fmt, fmt);
+    sir_time thrd_chk;
+    int64_t msec_since_thrd_chk = _sir_msec_since(_cfg->state.last_thrd_chk.sec,
+        _cfg->state.last_thrd_chk.msec, &thrd_chk);
 
-        sir_time thrd_chk;
-        int64_t msec_since_thrd_chk = _sir_msec_since(_cfg->state.last_thrd_chk.sec,
-            _cfg->state.last_thrd_chk.msec, &thrd_chk);
+    /* update the thread identifier/name. decide how to identify this
+     * thread based on the configuration, and whether or not its identifier
+     * is identical to the process identifier. */
+    if (msec_since_thrd_chk > SIR_THRD_CHK_INTERVAL) {
+        _cfg->state.last_thrd_chk = thrd_chk;
 
-        if (msec_since_thrd_chk > SIR_THRD_CHK_INTERVAL) {
-            /* update the thread identifier/name. decide how to identify this
-             * thread based on the configuration, and whether or not its identifier
-             * is identical to the process identifier. */
-            _cfg->state.last_thrd_chk = thrd_chk;
+        pid_t tid         = _sir_gettid();
+        bool resolved_tid = false;
 
-            pid_t tid         = _sir_gettid();
-            bool resolved_tid = false;
-
-            if (tid == _cfg->state.pid) {
+        if (tid == _cfg->state.pid) {
 #if SIR_DUPE_THREAD_ID_USE_NAME
-                /* if a name is set, use it. */
-                resolved_tid = _sir_getthreadname(_sir_tid);
+            /* if a name is set, use it. */
+            resolved_tid = _sir_getthreadname(_sir_tid);
 #else
-                /* don't use anything to identify the thread. */
-                _sir_resetstr(_sir_tid);
-                resolved_tid = true;
+            /* don't use anything to identify the thread. */
+            _sir_resetstr(_sir_tid);
+            resolved_tid = true;
 #endif
-            }
+        }
 
 #if !SIR_PREFER_THREAD_ID
-            if (!resolved_tid)
-                resolved_tid = _sir_getthreadname(_sir_tid);
+        if (!resolved_tid)
+            resolved_tid = _sir_getthreadname(_sir_tid);
 #endif
 
-            if (!resolved_tid)
-                _sir_snprintf_trunc(_sir_tid, SIR_MAXPID, SIR_PIDFORMAT,
-                    PID_CAST tid);
-        }
+        if (!resolved_tid)
+            _sir_snprintf_trunc(_sir_tid, SIR_MAXPID, SIR_PIDFORMAT,
+                PID_CAST tid);
     }
 
     sirconfig cfg;

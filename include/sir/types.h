@@ -263,7 +263,6 @@ typedef struct {
         char pidbuf[SIR_MAXPID];
         pid_t pid;
         char timestamp[SIR_MAXTIME];
-        sir_time last_time_chk;
         sir_time last_thrd_chk;
 
         /** Spam squelch state data. */

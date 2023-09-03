@@ -339,11 +339,6 @@
 # define SIR_HNAME_CHK_INTERVAL 60
 
 /**
- * The number of milliseconds to let elapse before re-formatting the current timestamp.
- */
-# define SIR_TIME_CHK_INTERVAL 50
-
-/**
  * The number of milliseconds to let elapse before re-formatting the current
  * thread identifier and/or name.
  */
