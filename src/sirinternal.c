@@ -44,24 +44,20 @@ static sirconfig _sir_cfg      = {0};
 static sirfcache _sir_fc       = {0};
 static sir_plugincache _sir_pc = {0};
 
-static sir_mutex cfg_mutex = SIR_MUTEX_INIT;
-static sir_once cfg_once   = SIR_ONCE_INIT;
+static sir_mutex cfg_mutex  = SIR_MUTEX_INIT;
+static sir_mutex fc_mutex   = SIR_MUTEX_INIT;
+static sir_mutex pc_mutex   = SIR_MUTEX_INIT;
+static sir_mutex ts_mutex   = SIR_MUTEX_INIT;
+static sir_once static_once = SIR_ONCE_INIT;
 
-static sir_mutex fc_mutex  = SIR_MUTEX_INIT;
-static sir_once fc_once    = SIR_ONCE_INIT;
-
-static sir_mutex pc_mutex  = SIR_MUTEX_INIT;
-static sir_once pc_once    = SIR_ONCE_INIT;
-
-static sir_mutex ts_mutex  = SIR_MUTEX_INIT;
-static sir_once ts_once    = SIR_ONCE_INIT;
-
-static sir_once magic_once = SIR_ONCE_INIT;
+#if defined(__WIN__)
+static LARGE_INTEGER _sir_perfcntr_freq = {0};
+#endif
 
 #if defined(__HAVE_ATOMIC_H__)
 static atomic_uint_fast32_t _sir_magic;
 #else
-static volatile uint32_t _sir_magic;
+static volatile uint32_t _sir_magic = 0U;
 #endif
 
 static _sir_thread_local char _sir_tid[SIR_MAXPID]   = {0};
@@ -93,7 +89,11 @@ bool _sir_makeinit(sirinit* si) {
 
 bool _sir_init(sirinit* si) {
     (void)_sir_seterror(_SIR_E_NOERROR);
-    _sir_once(&magic_once, _sir_initialize_once);
+
+    if (!_sir_once(&static_once, _sir_init_static_once)) {
+        _sir_selflog("error: static data initialization routine failed!");
+        return false;
+    }
 
     if (!_sir_validptr(si))
         return false;
@@ -390,22 +390,18 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
 
     switch (mid) {
         case SIRMI_CONFIG:
-            _sir_once(&cfg_once, _sir_initmutex_cfg_once);
             tmpm   = &cfg_mutex;
             tmpsec = &_sir_cfg;
             break;
         case SIRMI_FILECACHE:
-            _sir_once(&fc_once, _sir_initmutex_fc_once);
             tmpm   = &fc_mutex;
             tmpsec = &_sir_fc;
             break;
         case SIRMI_PLUGINCACHE:
-            _sir_once(&pc_once, _sir_initmutex_pc_once);
             tmpm   = &pc_mutex;
             tmpsec = &_sir_pc;
             break;
         case SIRMI_TEXTSTYLE:
-            _sir_once(&ts_once, _sir_initmutex_ts_once);
             tmpm   = &ts_mutex;
             tmpsec = &sir_text_style_section;
             break;
@@ -427,92 +423,41 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
 }
 
 #if !defined(__WIN__)
-void _sir_initialize_once(void) {
+void _sir_init_static_once(void) {
+    (void)_sir_init_common_static();
+}
+#else /* __WIN__ */
+BOOL CALLBACK _sir_init_static_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
+    SIR_UNUSED(ponce);
+    SIR_UNUSED(param);
+    SIR_UNUSED(ctx);
+    return _sir_init_common_static() ? TRUE : FALSE;
+}
+#endif
+
+bool _sir_init_common_static(void) {
 # if defined(__HAVE_ATOMIC_H__)
     atomic_init(&_sir_magic, 0);
 # endif
-}
 
-void _sir_initmutex_cfg_once(void) {
+#if defined(__WIN__)
+    (void)QueryPerformanceFrequency(&_sir_perfcntr_freq);
+#endif
+
     bool created = _sir_mutexcreate(&cfg_mutex);
     SIR_ASSERT_UNUSED(created, created);
-}
 
-void _sir_initmutex_fc_once(void) {
-    bool created = _sir_mutexcreate(&fc_mutex);
+    created &= _sir_mutexcreate(&fc_mutex);
     SIR_ASSERT_UNUSED(created, created);
-}
 
-void _sir_initmutex_pc_once(void) {
-    bool created = _sir_mutexcreate(&pc_mutex);
+    created &= _sir_mutexcreate(&pc_mutex);
     SIR_ASSERT_UNUSED(created, created);
-}
 
-void _sir_initmutex_ts_once(void) {
-    bool created = _sir_mutexcreate(&ts_mutex);
+    created &= _sir_mutexcreate(&ts_mutex);
     SIR_ASSERT_UNUSED(created, created);
+
+    return created;
 }
-
-#else /* __WIN__ */
-BOOL CALLBACK _sir_initialize_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
-    SIR_UNUSED(ponce);
-    SIR_UNUSED(param);
-    SIR_UNUSED(ctx);
-    return TRUE;
-}
-
-BOOL CALLBACK _sir_initmutex_cfg_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
-    SIR_UNUSED(ponce);
-    SIR_UNUSED(param);
-    SIR_UNUSED(ctx);
-
-    if (!_sir_mutexcreate(&cfg_mutex)) {
-        SIR_ASSERT(!"failed to create mutex!");
-        return FALSE;
-    }
-
-    return TRUE;
-}
-
-BOOL CALLBACK _sir_initmutex_fc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
-    SIR_UNUSED(ponce);
-    SIR_UNUSED(param);
-    SIR_UNUSED(ctx);
-
-    if (!_sir_mutexcreate(&fc_mutex)) {
-        SIR_ASSERT(!"failed to create mutex!");
-        return FALSE;
-    }
-
-    return TRUE;
-}
-
-BOOL CALLBACK _sir_initmutex_pc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
-    SIR_UNUSED(ponce);
-    SIR_UNUSED(param);
-    SIR_UNUSED(ctx);
-
-    if (!_sir_mutexcreate(&pc_mutex)) {
-        SIR_ASSERT(!"failed to create mutex!");
-        return FALSE;
-    }
-
-    return TRUE;
-}
-
-BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
-    SIR_UNUSED(ponce);
-    SIR_UNUSED(param);
-    SIR_UNUSED(ctx);
-
-    if (!_sir_mutexcreate(&ts_mutex)) {
-        SIR_ASSERT(!"failed to create mutex!");
-        return FALSE;
-    }
-
-    return TRUE;
-}
-#endif
 
 bool _sir_once(sir_once* once, sir_once_fn func) {
 #if !defined(__WIN__)
