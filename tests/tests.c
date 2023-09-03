@@ -2133,8 +2133,8 @@ unsigned __stdcall threadrace_thread(void* arg) {
 
     for (size_t n = 0; n < NUM_ITERATIONS; n++) {
         /* choose a random level, and colors. */
-        sir_textcolor fg = SIRTC_INVALID;
-        sir_textcolor bg = SIRTC_INVALID;
+        sir_textcolor fg = SIRTC_DEFAULT;
+        sir_textcolor bg = SIRTC_DEFAULT;
 
         if (n % 2 == 0) {
             fg = SIRTC_CYAN;
