@@ -446,6 +446,8 @@ typedef void (*sir_once_fn)(void);
 
 #  define SIR_MSEC_TIMER
 #  define SIR_MSEC_WIN32
+#  define SIR_WALLCLOCK 0
+#  define SIR_INTERVALCLOCK 1
 
 /** The plugin handle type. */
 typedef HMODULE sir_pluginhandle;

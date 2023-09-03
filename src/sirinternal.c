@@ -1106,6 +1106,7 @@ bool _sir_clock_gettime(int clock, time_t* tbuf, long* msecbuf) {
             return _sir_handleerr(errno);
         }
 #elif defined(SIR_MSEC_WIN32)
+        SIR_UNUSED(clock);
         static const ULONGLONG uepoch = (ULONGLONG)116444736e9;
 
         FILETIME ftutc = {0};
