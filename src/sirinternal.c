@@ -1140,7 +1140,8 @@ int64_t _sir_msec_since(time_t when_sec, long when_msec, sir_time* out) {
     bool gettime = _sir_clock_gettime(SIR_INTERVALCLOCK, &out->sec, &out->msec);
     SIR_ASSERT(gettime);
 
-    if (!gettime || (out->sec < when_sec))
+    if (!gettime || (out->sec < when_sec ||
+        (out->sec == when_sec && out->msec < when_msec)))
         return 0LL;
 
     return ((((int64_t)out->sec) * 1000LL) + ((int64_t)out->msec)) -
