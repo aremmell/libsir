@@ -64,7 +64,8 @@ static atomic_uint_fast32_t _sir_magic;
 static volatile uint32_t _sir_magic;
 #endif
 
-static _sir_thread_local char _sir_tid[SIR_MAXPID] = {0};
+static _sir_thread_local char _sir_tid[SIR_MAXPID]   = {0};
+static _sir_thread_local sir_time _sir_last_thrd_chk = {0};
 
 bool _sir_makeinit(sirinit* si) {
     bool retval = _sir_validptr(si);
@@ -560,14 +561,14 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     SIR_ASSERT_UNUSED(fmt, fmt);
 
     sir_time thrd_chk;
-    int64_t msec_since_thrd_chk = _sir_msec_since(_cfg->state.last_thrd_chk.sec,
-        _cfg->state.last_thrd_chk.msec, &thrd_chk);
+    int64_t msec_since_thrd_chk = _sir_msec_since(_sir_last_thrd_chk.sec,
+        _sir_last_thrd_chk.msec, &thrd_chk);
 
     /* update the thread identifier/name. decide how to identify this
      * thread based on the configuration, and whether or not its identifier
      * is identical to the process identifier. */
     if (msec_since_thrd_chk > SIR_THRD_CHK_INTERVAL) {
-        _cfg->state.last_thrd_chk = thrd_chk;
+        _sir_last_thrd_chk = thrd_chk;
 
         pid_t tid         = _sir_gettid();
         bool resolved_tid = false;
