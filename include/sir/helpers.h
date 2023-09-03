@@ -320,10 +320,61 @@ int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename
     const char* restrict mode);
 
 /**
- * Wrapper for localtime/localtime_s. Determines which one to use
+ * Wrapper for localtime[_s,_r]. Determines which one to use
  * based on preprocessor macros.
  */
-struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf);
+static inline
+struct tm* _sir_localtime(const time_t* timer, struct tm* buf) {
+    if (!timer || !buf)
+        return NULL;
+#if defined(__HAVE_STDC_SECURE_OR_EXT1__) && !defined(__EMBARCADEROC__)
+# if !defined(__WIN__)
+        struct tm* ret = localtime_s(timer, buf);
+        if (!ret) {
+            (void)_sir_handleerr(errno);
+            return NULL;
+        }
+# else /* __WIN__ */
+        errno_t ret = localtime_s(buf, timer);
+        if (0 != ret) {
+            (void)_sir_handleerr(ret);
+            return NULL;
+        }
+# endif
+        return buf;
+#else /* !__HAVE_STDC_SECURE_OR_EXT1__ */
+# if !defined(__WIN__) || defined(__EMBARCADEROC__)
+        struct tm* ret = localtime_r(timer, buf);
+# else
+        struct tm* ret = localtime(timer);
+# endif
+        if (!ret)
+            (void)_sir_handleerr(errno);
+        return ret;
+#endif
+}
+
+/** Formats the current time as a string. */
+#if defined(__GNUC__)
+__attribute__ ((format (strftime, 3, 0)))
+#endif
+static inline
+bool _sir_formattime(time_t now, char* buffer, const char* format) {
+    if (!buffer || !format)
+        return false;
+#if defined(__GNUC__) && !defined(__clang__) && \
+    !(defined(__OPEN64__) || defined(__OPENCC__))
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wformat-nonliteral"
+#endif
+    struct tm timebuf;
+    struct tm* ptb = _sir_localtime(&now, &timebuf);
+    return NULL != ptb && 0 != strftime(buffer, SIR_MAXTIME, format, ptb);
+#if defined(__GNUC__) && !defined(__clang__) && \
+    !(defined(__OPEN64__) || defined(__OPENCC__))
+# pragma GCC diagnostic pop
+#endif
+}
 
 /**
  * A portable "press any key to continue" implementation; On Windows, uses _getch().

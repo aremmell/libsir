@@ -64,6 +64,9 @@ static atomic_uint_fast32_t _sir_magic;
 static volatile uint32_t _sir_magic;
 #endif
 
+static _sir_thread_local char _sir_tid[SIR_MAXPID]   = {0};
+static _sir_thread_local sir_time _sir_last_thrd_chk = {0};
+
 bool _sir_makeinit(sirinit* si) {
     bool retval = _sir_validptr(si);
 
@@ -530,56 +533,75 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false);
 
+    sirbuf buf = {0};
+
     /* from time to time, update the host name in the config, just in case. */
-    time_t now = -1;
-    if (-1 != time(&now) &&
-        (now - _cfg->state.last_hname_chk) > SIR_HNAME_CHK_INTERVAL) { //-V522
+    time_t now_sec = -1;
+    if (-1 != time(&now_sec) &&
+        (now_sec - _cfg->state.last_hname_chk) > SIR_HNAME_CHK_INTERVAL) { //-V522
         _sir_selflog("updating hostname...");
         if (!_sir_gethostname(_cfg->state.hostname)) {
             _sir_selflog("error: failed to get hostname!");
         } else {
-            _cfg->state.last_hname_chk = now;
+            _cfg->state.last_hname_chk = now_sec;
             _sir_selflog("hostname: '%s'", _cfg->state.hostname);
         }
     }
 
-    /* update the string form of the timestamp if a given amount of
-     * time has elapsed since the last time it was updated (this code path
-     * is extremely slow, so we do it sparingly). */
-    int64_t now_sec  = 0LL;
-    int64_t now_msec = 0LL;
-    int64_t msec_since_time_chk = _sir_msec_since(_cfg->state.last_time_chk_secs,
-        _cfg->state.last_time_chk_msec, &now_sec, &now_msec);
+    /* format timestamp. */
+    long now_msec = 0L;
+    bool gettime = _sir_clock_gettime(SIR_WALLCLOCK, &now_sec, &now_msec);
+    SIR_ASSERT_UNUSED(gettime, gettime);
 
-    /* always update milliseconds. */
-    _sir_snprintf_trunc(_cfg->state.msec, SIR_MAXMSEC, SIR_MSECFORMAT, now_msec);
+    /* milliseconds. */
+    _sir_snprintf_trunc(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, now_msec);
 
-    /* update hours/minutes/seconds if the correct amount of time has elapsed. */
-    if (msec_since_time_chk > SIR_TIME_CHK_INTERVAL) {
-        _cfg->state.last_time_chk_secs = now_sec;
-        _cfg->state.last_time_chk_msec = now_msec;
+    /* hours/minutes/seconds. */
+    bool fmt = _sir_formattime(now_sec, _cfg->state.timestamp, SIR_TIMEFORMAT);
+    SIR_ASSERT_UNUSED(fmt, fmt);
 
-        bool fmt = _sir_formattime(now_sec, _cfg->state.timestamp, SIR_TIMEFORMAT);
-        SIR_ASSERT_UNUSED(fmt, fmt);
+    sir_time thrd_chk;
+    int64_t msec_since_thrd_chk = _sir_msec_since(_sir_last_thrd_chk.sec,
+        _sir_last_thrd_chk.msec, &thrd_chk);
+
+    /* update the thread identifier/name. decide how to identify this
+     * thread based on the configuration, and whether or not its identifier
+     * is identical to the process identifier. */
+    if (msec_since_thrd_chk > SIR_THRD_CHK_INTERVAL) {
+        _sir_last_thrd_chk = thrd_chk;
+
+        pid_t tid         = _sir_gettid();
+        bool resolved_tid = false;
+
+        if (tid == _cfg->state.pid) {
+#if SIR_DUPE_THREAD_ID_USE_NAME
+            /* if a name is set, use it. */
+            resolved_tid = _sir_getthreadname(_sir_tid);
+#else
+            /* don't use anything to identify the thread. */
+            _sir_resetstr(_sir_tid);
+            resolved_tid = true;
+#endif
+        }
+
+#if !SIR_PREFER_THREAD_ID
+        if (!resolved_tid)
+            resolved_tid = _sir_getthreadname(_sir_tid);
+#endif
+
+        if (!resolved_tid)
+            _sir_snprintf_trunc(_sir_tid, SIR_MAXPID, SIR_PIDFORMAT,
+                PID_CAST tid);
     }
 
     sirconfig cfg;
     memcpy(&cfg, _cfg, sizeof(sirconfig));
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
 
-    sirbuf buf = {
-        {0},
-        cfg.state.timestamp,
-        cfg.state.msec,
-        cfg.state.hostname,
-        cfg.state.pidbuf,
-        NULL,
-        cfg.si.name,
-        {0},
-        {0},
-        {0},
-         0
-    };
+    buf.timestamp = cfg.state.timestamp;
+    buf.hostname  = cfg.state.hostname;
+    buf.pid       = cfg.state.pidbuf;
+    buf.name      = cfg.si.name;
 
     const char* style_str = _sir_gettextstyle(level);
 
@@ -590,9 +612,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     buf.level = _sir_formattedlevelstr(level);
 
-    pid_t tid = _sir_gettid();
-    if (tid != cfg.state.pid || (!_sir_getthreadname(buf.tid) || !_sir_validstrnofail(buf.tid)))
-            (void)snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, PID_CAST tid);
+    (void)_sir_strncpy(buf.tid, SIR_MAXPID, _sir_tid, SIR_MAXPID);
 
     (void)vsnprintf(buf.message, SIR_MAXMESSAGE, format, args);
 
@@ -1061,74 +1081,24 @@ const char* _sir_formattedlevelstr(sir_level level) {
     return retval;
 }
 
-#if defined(__GNUC__)
-__attribute__ ((format (strftime, 3, 0)))
-#endif
-bool _sir_formattime(time_t now, char* buffer, const char* format) {
-    if (0 == now || -1 == now)
-        return _sir_seterror(_SIR_E_INVALID);
-
-#if defined(__GNUC__) && !defined(__clang__) && \
-    !(defined(__OPEN64__) || defined(__OPENCC__))
-# pragma GCC diagnostic push
-# pragma GCC diagnostic ignored "-Wformat-nonliteral"
-#endif
-    struct tm timebuf;
-    struct tm* ptb = _sir_localtime(&now, &timebuf);
-    bool formatted = false;
-    if (_sir_validptrnofail(ptb))
-        formatted = 0 != strftime(buffer, SIR_MAXTIME, format, ptb);
-#if defined(__GNUC__) && !defined(__clang__) && \
-    !(defined(__OPEN64__) || defined(__OPENCC__))
-# pragma GCC diagnostic pop
-#endif
-
-    SIR_ASSERT(formatted);
-    if (!formatted)
-        _sir_selflog("error: strftime failed; format string: '%s'", format);
-
-    return formatted;
-}
-
-bool _sir_clock_gettime(int64_t* tbuf, int64_t* msecbuf) {
+bool _sir_clock_gettime(int clock, time_t* tbuf, long* msecbuf) {
     if (tbuf) {
-        time_t ret = time((time_t*)tbuf);
-        if ((time_t)-1 == ret) {
-            if (msecbuf)
-                *msecbuf = 0LL;
-            return _sir_handleerr(errno);
-        }
 #if defined(SIR_MSEC_POSIX)
         struct timespec ts = {0};
-        int clock          = clock_gettime(SIR_MSECCLOCK, &ts);
-        SIR_ASSERT(0 == clock);
+        int ret            = clock_gettime(clock, &ts);
+        SIR_ASSERT(0 == ret);
 
-        if (0 == clock) {
+        if (0 == ret) {
+            *tbuf = ts.tv_sec;
             if (msecbuf)
-                *msecbuf = (int64_t)(ts.tv_nsec / (int64_t)1e6);
+                *msecbuf = (long)(ts.tv_nsec / 1000000L);
         } else {
             if (msecbuf)
-                *msecbuf = 0LL;
+                *msecbuf = 0L;
             return _sir_handleerr(errno);
         }
-#elif defined(SIR_MSEC_MACH)
-        kern_return_t retval = KERN_SUCCESS;
-        mach_timespec_t mts  = {0};
-        clock_serv_t clock;
-
-        host_get_clock_service(mach_host_self(), SIR_MSECCLOCK, &clock);
-        retval = clock_get_time(clock, &mts);
-        mach_port_deallocate(mach_task_self(), clock);
-
-        if (KERN_SUCCESS == retval) {
-            if (msecbuf)
-                *msecbuf = (int64_t)(mts.tv_nsec / (int64_t)1e6);
-        } else {
-            if (msecbuf)
-                *msecbuf = 0LL;
-            return _sir_handleerr(retval);
-        }
 #elif defined(SIR_MSEC_WIN32)
+        SIR_UNUSED(clock);
         static const ULONGLONG uepoch = (ULONGLONG)116444736e9;
 
         FILETIME ftutc = {0};
@@ -1137,45 +1107,45 @@ bool _sir_clock_gettime(int64_t* tbuf, int64_t* msecbuf) {
         ULARGE_INTEGER ftnow = {0};
         ftnow.HighPart = ftutc.dwHighDateTime;
         ftnow.LowPart  = ftutc.dwLowDateTime;
-        ftnow.QuadPart = (ULONGLONG)((ftnow.QuadPart - uepoch) / 1e7);
+        ftnow.QuadPart = (ULONGLONG)((ftnow.QuadPart - uepoch) / 10000000ULL);
 
-        *tbuf = (int64_t)ftnow.QuadPart;
+        *tbuf = (time_t)ftnow.QuadPart;
 
         SYSTEMTIME st = {0};
         if (FileTimeToSystemTime(&ftutc, &st)) {
             if (msecbuf)
-                *msecbuf = (int64_t)st.wMilliseconds;
+                *msecbuf = (long)st.wMilliseconds;
         } else {
             if (msecbuf)
-                *msecbuf = 0LL;
+                *msecbuf = 0L;
             return _sir_handlewin32err(GetLastError());
         }
-
 #else
-        time((time_t*)tbuf);
+        time(tbuf);
         if (msecbuf)
-            *msecbuf = 0LL;
+            *msecbuf = 0L;
 #endif
         return true;
     }
     return false;
 }
 
-int64_t _sir_msec_since(int64_t when_sec, int64_t when_msec, int64_t* out_sec,
-    int64_t* out_msec) {
-    if (!_sir_validptr(out_sec) || !_sir_validptr(out_msec))
+int64_t _sir_msec_since(time_t when_sec, long when_msec, sir_time* out) {
+    if (!_sir_validptr(out))
         return 0LL;
 
-    *out_sec  = 0LL;
-    *out_msec = 0LL;
+    out->sec  = 0;
+    out->msec = 0L;
 
-    bool gettime = _sir_clock_gettime(out_sec, out_msec);
+    bool gettime = _sir_clock_gettime(SIR_INTERVALCLOCK, &out->sec, &out->msec);
     SIR_ASSERT(gettime);
 
-    if (!gettime)
+    if (!gettime || (out->sec < when_sec ||
+        (out->sec == when_sec && out->msec < when_msec)))
         return 0LL;
 
-    return ((*out_sec * 1000LL) + *out_msec) - ((when_sec * 1000LL) + when_msec);
+    return ((((int64_t)out->sec) * 1000LL) + ((int64_t)out->msec)) -
+           ((((int64_t)when_sec) * 1000LL) + ((int64_t)when_msec));
 }
 
 pid_t _sir_getpid(void) {
@@ -1206,7 +1176,7 @@ pid_t _sir_gettid(void) {
     tid = get_pthread_thread_id(pthread_self());
 #elif defined(__linux__) || defined(__serenity__)
 # if (defined(__GLIBC__) && GLIBC_VERSION >= 23000) || \
-     defined(__serenity__)
+      defined(__serenity__)
     tid = gettid();
 # else
     tid = syscall(SYS_gettid);
@@ -1220,6 +1190,7 @@ pid_t _sir_gettid(void) {
 }
 
 bool _sir_getthreadname(char name[SIR_MAXPID]) {
+    _sir_resetstr(name);
 #if defined(__MACOS__) || \
    (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
    (defined(__GLIBC__) && GLIBC_VERSION >= 21200 && defined(_GNU_SOURCE)) || \
@@ -1227,7 +1198,6 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     int ret = pthread_getname_np(pthread_self(), name, SIR_MAXPID);
     if (0 != ret)
         return _sir_handleerr(ret);
-
 # if defined(__HAIKU__)
     if ((strncmp(name, "pthread_func", SIR_MAXPID)) || _sir_validstrnofail(name))
         (void)snprintf(name, SIR_MAXPID, "%ld", (long)get_pthread_thread_id(pthread_self()));
@@ -1239,6 +1209,29 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
 #else
 # if !defined(_AIX) && !defined(__HURD__) && !defined(SUNLINT)
 #  pragma message("unable to determine how to get a thread name")
+# endif
+    SIR_UNUSED(name);
+    return false;
+#endif
+}
+
+bool _sir_setthreadname(const char* name) {
+    if (!_sir_validptr(name))
+        return false;
+#if defined (__MACOS__)
+    int ret = pthread_setname_np(name);
+    return (0 != ret) ? _sir_handleerr(ret) : true;
+#elif (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
+      (defined(__GLIBC__) && GLIBC_VERSION >= 21200 && defined(_GNU_SOURCE)) || \
+       defined(USE_PTHREAD_GETNAME_NP)
+    int ret = pthread_setname_np(pthread_self(), name);
+    return (0 != ret) ? _sir_handleerr(ret) : true;
+#elif defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
+    pthread_set_name_np(pthread_self(), name);
+    return true;
+#else
+# if !defined(SUNLINT)
+#  pragma message("unable to determine how to set a thread name")
 # endif
     SIR_UNUSED(name);
     return false;

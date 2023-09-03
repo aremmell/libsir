@@ -374,10 +374,6 @@ _set_thread_local_invalid_parameter_handler(
 #   include <FindDirectory.h>
 #  elif defined(__MACOS__)
 #   include <mach-o/dyld.h>
-#   include <sys/_types/_timespec.h>
-#   include <mach/mach.h>
-#   include <mach/clock.h>
-#   include <mach/mach_time.h>
 #   if defined(SIR_OS_LOG_ENABLED)
 #    include <os/log.h>
 #    include <os/trace.h>
@@ -393,14 +389,33 @@ _set_thread_local_invalid_parameter_handler(
 #   define SIR_MAXPATH 1024
 #  endif
 
-#  if defined(__MACOS__)
-#   define SIR_MSEC_TIMER
-#   define SIR_MSEC_MACH
-#  elif _POSIX_TIMERS > 0
+#  if (defined(_POSIX_TIMERS) && _POSIX_TIMERS > 0) || defined(__MACOS__)
 #   define SIR_MSEC_TIMER
 #   define SIR_MSEC_POSIX
 #  else
 #   undef SIR_MSEC_TIMER
+#  endif
+
+/** The clock used to obtain timestamps. */
+# if defined(CLOCK_REALTIME_FAST)
+#  define SIR_WALLCLOCK CLOCK_REALTIME_FAST
+# elif defined(CLOCK_REALTIME_COARSE)
+#  define SIR_WALLCLOCK CLOCK_REALTIME_COARSE
+# else
+#  define SIR_WALLCLOCK CLOCK_REALTIME
+# endif
+
+/** The clock used to measure intervals. */
+#  if defined(CLOCK_UPTIME)
+#   define SIR_INTERVALCLOCK CLOCK_UPTIME
+#  elif defined(CLOCK_BOOTTIME)
+#   define SIR_INTERVALCLOCK CLOCK_BOOTTIME
+#  elif defined(CLOCK_HIGHRES)
+#   define SIR_INTERVALCLOCK CLOCK_HIGHRES
+#  elif defined(CLOCK_MONOTONIC)
+#   define SIR_INTERVALCLOCK CLOCK_MONOTONIC
+#  else
+#   define SIR_INTERVALCLOCK CLOCK_REALTIME
 #  endif
 
 /** The plugin handle type. */
@@ -439,6 +454,8 @@ typedef void (*sir_once_fn)(void);
 
 #  define SIR_MSEC_TIMER
 #  define SIR_MSEC_WIN32
+#  define SIR_WALLCLOCK 0
+#  define SIR_INTERVALCLOCK 1
 
 /** The plugin handle type. */
 typedef HMODULE sir_pluginhandle;
@@ -509,16 +526,6 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #   define SIR_MSVCRT_MINGW
 #  endif
 #  undef __HAVE_STDC_SECURE_OR_EXT1__
-# endif
-
-# if !defined(__MACOS__)
-#  if defined(__linux__) && _POSIX_C_SOURCE >= 199309L
-#   define SIR_MSECCLOCK CLOCK_REALTIME
-#  else
-#   define SIR_MSECCLOCK CLOCK_REALTIME
-#  endif
-# else /* __MACOS__ */
-#  define SIR_MSECCLOCK REALTIME_CLOCK
 # endif
 
 # if (defined(__clang__) || defined(__GNUC__)) && defined(__FILE_NAME__)

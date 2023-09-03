@@ -164,16 +164,11 @@ void _sir_syslog_reset(sir_syslog_dest* ctx);
 const char* _sir_formattedlevelstr(sir_level level);
 
 /** Retrieves the current time w/ optional milliseconds. */
-bool _sir_clock_gettime(int64_t* tbuf, int64_t* msecbuf);
+bool _sir_clock_gettime(int clock, time_t* tbuf, long* msecbuf);
 
-/** Returns the number of milliseconds elapsed since a point in time
- * represented in seconds and milliseconds by the when_ parameters. Places
- * the current time in the out_ parameters. */
-int64_t _sir_msec_since(int64_t when_sec, int64_t when_msec, int64_t* out_sec,
-    int64_t* out_msec);
-
-/** Formats the current time as a string. */
-bool _sir_formattime(time_t now, char* buffer, const char* format);
+/** Returns the number of milliseconds elapsed since a point in time represented
+ * by the when parameters. */
+int64_t _sir_msec_since(time_t when_sec, long when_msec, sir_time* out);
 
 /** Returns the current process identifier. */
 pid_t _sir_getpid(void);
@@ -183,6 +178,9 @@ pid_t _sir_gettid(void);
 
 /** Retrieves the current thread's name. */
 bool _sir_getthreadname(char name[SIR_MAXPID]);
+
+/** Sets the current thread's name. */
+bool _sir_setthreadname(const char* name);
 
 /** Retrieves the hostname of this machine. */
 bool _sir_gethostname(char name[SIR_MAXHOST]);

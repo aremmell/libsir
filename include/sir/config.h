@@ -55,7 +55,7 @@
  *   .034
  *   ~~~
  */
-# define SIR_MSECFORMAT ".%03"PRId64
+# define SIR_MSECFORMAT ".%03ld"
 
 /**
  * The string placed directly before the human-readable logging level.
@@ -120,10 +120,10 @@
  *
  * **Example**
  *   ~~~
- *   15:13:41 Fri 9 Jun 23 (-0600)
+ *   15:13:41 Fri 9 Jun 2023 (-0600)
  *   ~~~
  */
-# define SIR_FHTIMEFORMAT "%H:%M:%S %a %d %b %y (%z)"
+# define SIR_FHTIMEFORMAT "%H:%M:%S %a %d %b %Y (%z)"
 
 /**
  * The format string written to a log file when logging begins or the file
@@ -162,10 +162,10 @@
  *
  * **Example**
  *   ~~~
- *   23-06-09-122049
+ *   2023-06-09-122049
  *   ~~~
  */
-# define SIR_FNAMETIMEFORMAT "%y-%m-%d-%H%M%S"
+# define SIR_FNAMETIMEFORMAT "%Y-%m-%d-%H%M%S"
 
 /**
  * The sequence number format string for rolled/archived log files (see
@@ -340,9 +340,22 @@
 
 /**
  * The number of milliseconds to let elapse before re-formatting the current
- * time as a string used in logging output.
+ * thread identifier and/or name.
  */
-# define SIR_TIME_CHK_INTERVAL 333
+# define SIR_THRD_CHK_INTERVAL 333
+
+/**
+ * Whether or not numeric thread identifiers should always be used instead of
+ * thread names, even if a name is available.
+ */
+# define SIR_PREFER_THREAD_ID 0
+
+/**
+ * Whether or not to use thread names if a thread identifier is identical to
+ * the process identifier. If set to 0, no identifier will be used for the thread.
+ * Takes precendence over SIR_PREFER_THREAD_ID.
+ */
+# define SIR_DUPE_THREAD_ID_USE_NAME 1
 
 # if defined(SIR_OS_LOG_ENABLED)
 /**
