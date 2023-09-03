@@ -333,12 +333,6 @@
 # define SIR_NUMOPTIONS 8
 
 /**
- * The number of entries in the 4-bit (16-color) map: 5 attributes + 17
- * foreground colors + 17 background colors (default counts as a color).
- */
-# define SIR_NUM16_COLOR_MAPPINGS 39
-
-/**
  * The number of seconds to let elapse before checking if the hostname needs
  * refreshing. The default is an eager 1 minute. Better safe than wrong?
  */
