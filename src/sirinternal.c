@@ -1270,7 +1270,7 @@ bool _sir_setthreadname(const char* name) {
     pthread_setname_np(name);
     return true;
 #else
-# pragma message("unable to determine how to set a thraed name")
+# pragma message("unable to determine how to set a thread name")
     SIR_UNUSED(name);
     return false;
 #endif
