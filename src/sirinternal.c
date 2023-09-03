@@ -64,6 +64,8 @@ static atomic_uint_fast32_t _sir_magic;
 static volatile uint32_t _sir_magic;
 #endif
 
+static _sir_thread_local sir_thread_info _sir_ti = {0};
+
 bool _sir_makeinit(sirinit* si) {
     bool retval = _sir_validptr(si);
 
@@ -531,14 +533,14 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false);
 
     /* from time to time, update the host name in the config, just in case. */
-    time_t now = -1;
-    if (-1 != time(&now) &&
-        (now - _cfg->state.last_hname_chk) > SIR_HNAME_CHK_INTERVAL) { //-V522
+    time_t now_sec = -1;
+    if (-1 != time(&now_sec) &&
+        (now_sec - _cfg->state.last_hname_chk) > SIR_HNAME_CHK_INTERVAL) { //-V522
         _sir_selflog("updating hostname...");
         if (!_sir_gethostname(_cfg->state.hostname)) {
             _sir_selflog("error: failed to get hostname!");
         } else {
-            _cfg->state.last_hname_chk = now;
+            _cfg->state.last_hname_chk = now_sec;
             _sir_selflog("hostname: '%s'", _cfg->state.hostname);
         }
     }
@@ -560,6 +562,41 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         SIR_ASSERT_UNUSED(fmt, fmt);
     }
 
+    /* update the thread ID/name if SIR_THREAD_ID_CHK_INTERVAL msec have elapsed
+     * since the last time it was updated. */
+    msec_since_chk = _sir_msec_since(&_sir_ti.last_chk, &now);
+    if (msec_since_chk > SIR_THREAD_ID_CHK_INTERVAL) {
+        _sir_ti.last_chk.sec  = now.sec;
+        _sir_ti.last_chk.msec = now.msec;
+
+        /* retrieve the thread ID only if it's unset. */
+        if (!_sir_ti.tid)
+            _sir_ti.tid = _sir_gettid();
+
+        /* decide what to use to identify this thread based on the configuration,
+         * and if its ID is the same as the process ID or not. */
+        bool resolved_tid  = false;
+        if (_sir_ti.tid == _cfg->state.pid) {
+#if SIR_DUPE_THREAD_ID_USE_NAME
+            /* if a name is set, use it. */
+            resolved_tid = _sir_getthreadname(_sir_ti.tidbuf);
+#else
+            /* don't use anything to identify the thread. */
+            _sir_resetstr(_sir_ti.tidbuf);
+            resolved_tid = true;
+#endif
+        }
+
+        if (!resolved_tid) {
+            if (0 == SIR_PREFER_THREAD_ID)
+                resolved_tid = _sir_getthreadname(_sir_ti.tidbuf);
+
+            if (!resolved_tid)
+                _sir_snprintf_trunc(_sir_ti.tidbuf, SIR_MAXPID, SIR_PIDFORMAT,
+                    PID_CAST _sir_ti.tid);
+        }
+    }
+
     sirconfig cfg;
     memcpy(&cfg, _cfg, sizeof(sirconfig));
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
@@ -572,7 +609,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         cfg.state.pidbuf,
         NULL,
         cfg.si.name,
-        {0},
+        _sir_ti.tidbuf,
         {0},
         {0},
          0
@@ -586,10 +623,6 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
             strnlen(style_str, SIR_MAXSTYLE));
 
     buf.level = _sir_formattedlevelstr(level);
-
-    pid_t tid = _sir_gettid();
-    if (tid != cfg.state.pid || (!_sir_getthreadname(buf.tid) || !_sir_validstrnofail(buf.tid)))
-            (void)snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, PID_CAST tid);
 
     (void)vsnprintf(buf.message, SIR_MAXMESSAGE, format, args);
 
@@ -1158,21 +1191,20 @@ bool _sir_clock_gettime(int64_t* tbuf, int64_t* msecbuf) {
     return false;
 }
 
-int64_t _sir_msec_since(int64_t when_sec, int64_t when_msec, int64_t* out_sec,
-    int64_t* out_msec) {
-    if (!_sir_validptr(out_sec) || !_sir_validptr(out_msec))
+int64_t _sir_msec_since(sir_time* when, sir_time* out) {
+    if (!_sir_validptr(when) || !_sir_validptr(out))
         return 0LL;
 
-    *out_sec  = 0LL;
-    *out_msec = 0LL;
+    out->sec  = 0LL;
+    out->msec = 0LL;
 
-    bool gettime = _sir_clock_gettime(out_sec, out_msec);
+    bool gettime = _sir_clock_gettime(&out->sec, &out->msec);
     SIR_ASSERT(gettime);
 
     if (!gettime)
         return 0LL;
 
-    return ((*out_sec * 1000LL) + *out_msec) - ((when_sec * 1000LL) + when_msec);
+    return ((out->sec * 1000LL) + out->msec) - ((when->sec * 1000LL) + when->msec);
 }
 
 pid_t _sir_getpid(void) {

@@ -277,6 +277,13 @@ typedef struct {
     } state;
 } sirconfig;
 
+/** Internally-used thread information type. */
+typedef struct {
+    char tidbuf[SIR_MAXPID];
+    pid_t tid;
+    sir_time last_chk;
+} sir_thread_info;
+
 /** Internally-used error type. */
 typedef struct {
     uint32_t code;
@@ -390,7 +397,7 @@ typedef struct {
     const char* pid;
     const char* level;
     const char* name;
-    char tid[SIR_MAXPID];
+    const char* tid;
     char message[SIR_MAXMESSAGE];
     char output[SIR_MAXOUTPUT];
     size_t output_len;
