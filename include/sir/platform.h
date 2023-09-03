@@ -406,7 +406,7 @@ _set_thread_local_invalid_parameter_handler(
 # endif
 
 /** The clock used to measure intervals. */
-#  elif defined(CLOCK_UPTIME)
+#  if defined(CLOCK_UPTIME)
 #   define SIR_INTERVALCLOCK CLOCK_UPTIME
 #  elif defined(CLOCK_BOOTTIME)
 #   define SIR_INTERVALCLOCK CLOCK_BOOTTIME
