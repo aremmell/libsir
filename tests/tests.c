@@ -52,6 +52,7 @@ static sir_test sir_tests[] = {
     {"sanity-levels",           sirtest_levelssanity, false, true},
     {"sanity-mutexes",          sirtest_mutexsanity, false, true},
     {"sanity-update-config",    sirtest_updatesanity, false, true},
+    {"sanity-thread-ids",       sirtest_threadidsanity, false, true},
     {"syslog",                  sirtest_syslog, false, true},
     {"os_log",                  sirtest_os_log, false, true},
     {"filesystem",              sirtest_filesystem, false, true},
@@ -234,6 +235,36 @@ bool sirtest_exceedmaxsize(void) {
 
     sir_cleanup();
     return print_result_and_return(pass);
+}
+
+bool sirtest_threadidsanity(void)
+{
+    INIT(si, SIRL_ALL, SIRO_NOHOST, 0, 0);
+    bool pass = si_init;
+
+    static const char* thread_name = "mythread";
+
+    /* this is a particularly difficult test to write: the behavior of libsir
+     * is set at compile time, so for certain configurations, we cannot perform
+     * the necessary testing. */
+    printf("\tlogging a message normally...\n");
+    pass &= sir_debug("this is a test of the libsir system");
+
+    printf("\tsetting the thread name to '%s' and logging again...\n", thread_name);
+
+    pass &= _sir_setthreadname(thread_name);
+    sir_sleep_msec(SIR_THREAD_ID_CHK_INTERVAL);
+
+    pass &= sir_debug("this is a test of the libsir system after setting thread name");
+
+    printf("\tsetting the thread name to '' and logging again...\n");
+    pass &= _sir_setthreadname("");
+    sir_sleep_msec(SIR_THREAD_ID_CHK_INTERVAL);
+
+    pass &= sir_debug("this is a test of the libsir system after clearing thread name");
+
+    pass &= sir_cleanup();
+    return pass;
 }
 
 bool sirtest_failnooutputdest(void) {
@@ -2387,6 +2418,18 @@ long sirtimergetres(void) {
     retval = 100;
 #endif
     return retval;
+}
+
+void sir_sleep_msec(uint32_t msec) {
+    if (0U == msec)
+        return;
+
+#if !defined(__WIN__)
+    struct timespec ts = { msec / 1000, (msec % 1000) * 1000000 };
+    (void)nanosleep(&ts, NULL);
+#else /* __WIN__ */
+    (void)SleepEx((DWORD)msec, TRUE);
+#endif
 }
 
 #if defined(SIR_OS_LOG_ENABLED)
