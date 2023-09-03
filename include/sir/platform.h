@@ -397,11 +397,21 @@ _set_thread_local_invalid_parameter_handler(
 #  endif
 
 /** The clock used to obtain timestamps. */
-#   define SIR_WALLCLOCK CLOCK_REALTIME
+# if defined(CLOCK_REALTIME_FAST)
+#  define SIR_WALLCLOCK CLOCK_REALTIME_FAST
+# elif defined(CLOCK_REALTIME_COARSE)
+#  define SIR_WALLCLOCK CLOCK_REALTIME_COARSE
+# else
+#  define SIR_WALLCLOCK CLOCK_REALTIME
+# endif
 
 /** The clock used to measure intervals. */
-#  if defined(CLOCK_MONOTONIC_RAW)
-#   define SIR_INTERVALCLOCK CLOCK_MONOTONIC_RAW
+#  elif defined(CLOCK_UPTIME)
+#   define SIR_INTERVALCLOCK CLOCK_UPTIME
+#  elif defined(CLOCK_BOOTTIME)
+#   define SIR_INTERVALCLOCK CLOCK_BOOTTIME
+#  elif defined(CLOCK_HIGHRES)
+#   define SIR_INTERVALCLOCK CLOCK_HIGHRES
 #  else
 #   define SIR_INTERVALCLOCK CLOCK_MONOTONIC
 #  endif
