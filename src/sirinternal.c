@@ -588,8 +588,6 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         if (!resolved_tid)
             _sir_snprintf_trunc(_sir_tid, SIR_MAXPID, SIR_PIDFORMAT,
                 PID_CAST tid);
-
-        _sir_selflog("resolved thread id/name to '%s'...", _sir_tid);
     }
 
     sirconfig cfg;
