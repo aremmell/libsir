@@ -120,10 +120,10 @@
  *
  * **Example**
  *   ~~~
- *   15:13:41 Fri 9 Jun 23 (-0600)
+ *   15:13:41 Fri 9 Jun 2023 (-0600)
  *   ~~~
  */
-# define SIR_FHTIMEFORMAT "%H:%M:%S %a %d %b %y (%z)"
+# define SIR_FHTIMEFORMAT "%H:%M:%S %a %d %b %Y (%z)"
 
 /**
  * The format string written to a log file when logging begins or the file
@@ -162,10 +162,10 @@
  *
  * **Example**
  *   ~~~
- *   23-06-09-122049
+ *   2023-06-09-122049
  *   ~~~
  */
-# define SIR_FNAMETIMEFORMAT "%y-%m-%d-%H%M%S"
+# define SIR_FNAMETIMEFORMAT "%Y-%m-%d-%H%M%S"
 
 /**
  * The sequence number format string for rolled/archived log files (see
