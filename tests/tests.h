@@ -42,11 +42,6 @@
 #  if !defined(__ORANGEC__)
 #   include <dirent.h>
 #  endif
-#  if defined(CLOCK_MONOTONIC_RAW)
-#   define SIRTEST_CLOCK CLOCK_MONOTONIC_RAW
-#  else
-#   define SIRTEST_CLOCK CLOCK_MONOTONIC
-#  endif
 # endif
 
 # define INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, p_name, init) \
