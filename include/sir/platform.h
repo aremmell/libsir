@@ -412,8 +412,10 @@ _set_thread_local_invalid_parameter_handler(
 #   define SIR_INTERVALCLOCK CLOCK_BOOTTIME
 #  elif defined(CLOCK_HIGHRES)
 #   define SIR_INTERVALCLOCK CLOCK_HIGHRES
-#  else
+#  elif defined(CLOCK_MONOTONIC)
 #   define SIR_INTERVALCLOCK CLOCK_MONOTONIC
+#  else
+#   define SIR_INTERVALCLOCK CLOCK_REALTIME
 #  endif
 
 /** The plugin handle type. */
