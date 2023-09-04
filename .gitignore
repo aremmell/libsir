@@ -75,3 +75,6 @@ coveralls
 # Coverity
 .coverity
 cov-int
+
+# Direnv
+.envrc

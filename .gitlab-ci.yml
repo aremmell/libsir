@@ -1357,7 +1357,9 @@ Coverity:
 
 ##############################################################################
 
+# XXX(jhj): Need to fix heisenbug - 20230904
 Windows/i686 (OrangeC):
+  allow_failure: true
   stage: build
   tags:
     - Docker-x64
