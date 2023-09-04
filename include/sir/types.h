@@ -217,9 +217,8 @@ typedef struct {
     sir_syslog_dest d_syslog; /**< System logger configuration. */
 
     /**
-     * If set, defines the name that will appear in messages sent to stdio, log
-     * file, and plugin destinations. Set ::SIRO_NONAME in a destination's options
-     * bitmask to exclude it from log messages.
+     * The name to use in log messages (usually the process name). Set ::SIRO_NONAME
+     * in a destination's options bitmask to suppress it..
      */
     char name[SIR_MAXNAME];
 } sirinit;
