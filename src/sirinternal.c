@@ -1165,7 +1165,8 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
     return _sir_validstrnofail(name);
 #elif defined(__WIN__)
-    HMODULE kb_dll_handle = _sir_load_dll(SIR_KB_DLL);
+    return true;
+    /*HMODULE kb_dll_handle = _sir_load_dll(SIR_KB_DLL);
     if (!kb_dll_handle)
         return false;
 
@@ -1179,7 +1180,6 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     bool retval        = false;
     wchar_t* wide_name = NULL;
     HRESULT hr = get_desc_fn(GetCurrentThread(), &wide_name);
-    _sir_selflog("hr = %08X, wide_name = %p ('%S')", hr, wide_name, wide_name);
     if (SUCCEEDED(hr)) {
 # if defined(__HAVE_STDC_SECURE_OR_EXT1__) && !defined(__ORANGEC__)
         size_t wide_len = wcsnlen_s(wide_name, SIR_MAXPID);
@@ -1188,21 +1188,18 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
 #else
         size_t wide_len = wcsnlen(wide_name, SIR_MAXPID);
 # endif
-_sir_selflog("wide_len = %zu", wide_len);
-if (wide_len > 0) {
         if (WideCharToMultiByte(CP_UTF8, 0UL, wide_name, (int)wide_len, name, SIR_MAXPID,
             NULL, NULL))
             retval = true;
         else
             (void)_sir_handlewin32err(GetLastError());
-}
+
         (void)LocalFree(wide_name);
         _sir_selflog("after free, unloading dll...");
     }
 
     (void)FreeLibrary(kb_dll_handle);
-    _sir_selflog("dll unloaded");
-    return retval;
+    return retval;*/
 #else
 # if !defined(_AIX) && !defined(__HURD__) && !defined(SUNLINT)
 #  pragma message("unable to determine how to get a thread name")
