@@ -1182,7 +1182,9 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     if (SUCCEEDED(hr)) {
 # if defined(__HAVE_STDC_SECURE_OR_EXT1__) && !defined(__ORANGEC__)
         size_t wide_len = wcsnlen_s(wide_name, SIR_MAXPID);
-# else
+# elif defined(__EMBARCADEROC__)
+        size_t wide_len = wcslen(wide_name);
+#else
         size_t wide_len = wcsnlen(wide_name, SIR_MAXPID);
 # endif
         if (WideCharToMultiByte(CP_UTF8, 0UL, wide_name, (int)wide_len, name, SIR_MAXPID,
