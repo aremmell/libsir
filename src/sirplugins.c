@@ -47,10 +47,14 @@ sirpluginid _sir_plugin_load(const char* path) {
         return _sir_handleerr(errno);
     }
 # else /* __WIN__ */
-    plugin->handle = _sir_load_dll(path);
+    UINT old_error_mode = SetErrorMode(SEM_FAILCRITICALERRORS);
+    plugin->handle      = LoadLibraryA(path);
+    SetErrorMode(old_error_mode);
     if (!plugin->handle) {
+        DWORD err = GetLastError();
+        _sir_selflog("error: LoadLibraryA(%s) failed (%lu)", path, err);
         _sir_plugin_destroy(&plugin);
-        return false;
+        return _sir_handlewin32err(err);
     }
 # endif
 

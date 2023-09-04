@@ -1165,25 +1165,15 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
     return _sir_validstrnofail(name);
 #elif defined(__WIN__)
-    /*HMODULE kb_dll_handle = _sir_load_dll(SIR_KB_DLL);
-    if (!kb_dll_handle)
-        return false;
-
-    get_thrd_desc_fn get_desc_fn = NULL;
-    *(void**)(&get_desc_fn) = _sir_get_dll_export(kb_dll_handle, "GetThreadDescription");
-    if (!get_desc_fn) {
-        (void)FreeLibrary(kb_dll_handle);
-        return false;
-    }
-
-    bool retval        = false;
-    wchar_t* wide_name = NULL;
-    HRESULT hr = get_desc_fn(GetCurrentThread(), &wide_name);*/
-    bool retval        = false;
+# if defined(__ORANGEC__)
+    // TODO: Deal with OrangeC not implementing [Get,Set]ThreadDescription
+    return true;
+# endif
+    bool success       = false;
     wchar_t* wide_name = NULL;
     HRESULT hr         = GetThreadDescription(GetCurrentThread(), &wide_name);
     if (SUCCEEDED(hr)) {
-# if defined(__HAVE_STDC_SECURE_OR_EXT1__) && !defined(__ORANGEC__)
+# if defined(__HAVE_STDC_SECURE_OR_EXT1__)
         size_t wide_len = wcsnlen_s(wide_name, SIR_MAXPID);
 # elif defined(__EMBARCADEROC__)
         size_t wide_len = wcslen(wide_name);
@@ -1193,15 +1183,15 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
         if (wide_len > 0) {
             if (WideCharToMultiByte(CP_UTF8, 0UL, wide_name, (int)wide_len, name, SIR_MAXPID,
                 NULL, NULL))
-                retval = true;
+                success = true;
             else
                 (void)_sir_handlewin32err(GetLastError());
+        } else {
+            success = true;
         }
-
         (void)LocalFree(wide_name);
     }
-//    (void)FreeLibrary(kb_dll_handle);
-    return retval;
+    return success;
 #else
 # if !defined(_AIX) && !defined(__HURD__) && !defined(SUNLINT)
 #  pragma message("unable to determine how to get a thread name")
@@ -1226,33 +1216,24 @@ bool _sir_setthreadname(const char* name) {
     pthread_set_name_np(pthread_self(), name);
     return true;
 #elif defined(__WIN__)
-    /*HMODULE kb_dll_handle = _sir_load_dll(SIR_KB_DLL);
-    if (!kb_dll_handle)
-        return false;
+# if defined(__ORANGEC__)
+    // TODO: Deal with OrangeC not implementing [Get,Set]ThreadDescription
+    return true;
+# endif
 
-    set_thrd_desc_fn set_desc_fn = NULL;
-    *(void**)(&set_desc_fn) = _sir_get_dll_export(kb_dll_handle, "SetThreadDescription");
-    if (!set_desc_fn) {
-        (void)FreeLibrary(kb_dll_handle);
-        return false;
-    }*/
-
-# if defined(__HAVE_STDC_SECURE_OR_EXT1__) && !defined(__ORANGEC__)
+# if defined(__HAVE_STDC_SECURE_OR_EXT1__)
     int name_len = (int)strnlen_s(name, SIR_MAXPID);
 # else
     int name_len = (int)strnlen(name, SIR_MAXPID);
 # endif
     if (0 == name_len)
         name_len = 1;
-    wchar_t buf[SIR_MAXPID] = {0};
-    if (!MultiByteToWideChar(CP_UTF8, 0UL, name, name_len, buf, SIR_MAXPID)) {
-        //(void)FreeLibrary(kb_dll_handle);
-        return _sir_handlewin32err(GetLastError());
-    }
 
-    //HRESULT hr = set_desc_fn(GetCurrentThread(), buf);
+    wchar_t buf[SIR_MAXPID] = {0};
+    if (!MultiByteToWideChar(CP_UTF8, 0UL, name, name_len, buf, SIR_MAXPID))
+        return _sir_handlewin32err(GetLastError());
+
     HRESULT hr = SetThreadDescription(GetCurrentThread(), buf);
-    //(void)FreeLibrary(kb_dll_handle);
     return FAILED(hr) ? _sir_handlewin32err(hr) : true;
 #else
 # if !defined(SUNLINT)

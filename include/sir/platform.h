@@ -236,7 +236,6 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  include <winsock2.h>
 #  include <conio.h>
 #  include <shlwapi.h>
-#  include <wchar.h>
 #  undef __HAVE_ATOMIC_H__
 #  if defined(_MSC_VER) && _MSC_VER >= 1933 && \
       !defined(__cplusplus) && !defined(__IMPORTC__)
@@ -487,15 +486,6 @@ typedef int pid_t;
 
 /** The one-time execution function type. */
 typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
-
-/** GetThreadDescription function type. */
-typedef HRESULT(*get_thrd_desc_fn)(HANDLE, PWSTR*);
-
-/** SetThreadDescription function type. */
-typedef HRESULT(*set_thrd_desc_fn)(HANDLE, PCWSTR);
-
-/** The DLL that exports [Get,Set]ThreadDescription(). */
-#  define SIR_KB_DLL "KernelBase.dll"
 
 /** The one-time initializer. */
 #  define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT

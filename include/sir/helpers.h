@@ -421,41 +421,4 @@ uint64_t FNV64_1a(const char* str) {
     return hash;
 }
 
-# if defined(__WIN__)
-/**
- * Dynamically loads a DLL and returns its address if successful, or NULL upon failure.
- */
-static inline
-HMODULE _sir_load_dll(const char* path) {
-    HMODULE retval = NULL;
-    if (_sir_validstr(path)) {
-        UINT old_error_mode = SetErrorMode(SEM_FAILCRITICALERRORS);
-        retval = LoadLibraryA(path);
-        (void)SetErrorMode(old_error_mode);
-        if (!retval) {
-            DWORD err = GetLastError();
-            _sir_selflog("error: LoadLibraryA(%s) failed (%lu)", path, err);
-            (void)_sir_handlewin32err(err);
-        }
-    }
-    return retval;
-}
-
-/**
- * Returns the address of the specified DLL export, or NULL upon failure.
- */
-static inline
-void* _sir_get_dll_export(HMODULE dll_handle, const char* name) {
-    if (!dll_handle || !_sir_validstr(name))
-        return NULL;
-    void* addr = (void*)GetProcAddress(dll_handle, name);
-    if (!addr) {
-        DWORD err = GetLastError();
-        _sir_selflog("error: GetProcAddress(%s) failed (%lu)", name, err);
-        (void)_sir_handlewin32err(err);
-    }
-    return addr;
-}
-# endif
-
 #endif /* !_SIR_HELPERS_H_INCLUDED */
