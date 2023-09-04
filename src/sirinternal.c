@@ -436,9 +436,9 @@ BOOL CALLBACK _sir_init_static_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
 #endif
 
 bool _sir_init_common_static(void) {
-# if defined(__HAVE_ATOMIC_H__)
+#if defined(__HAVE_ATOMIC_H__)
     atomic_init(&_sir_magic, 0);
-# endif
+#endif
 
 #if defined(__WIN__)
     (void)QueryPerformanceFrequency(&_sir_perfcntr_freq);
