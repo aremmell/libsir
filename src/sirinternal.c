@@ -1127,8 +1127,7 @@ pid_t _sir_gettid(void) {
 #elif defined(__HAIKU__)
     tid = get_pthread_thread_id(pthread_self());
 #elif defined(__linux__) || defined(__serenity__)
-# if (defined(__GLIBC__) && GLIBC_VERSION >= 23000) || \
-      defined(__serenity__)
+# if (defined(__GLIBC__) && GLIBC_VERSION >= 23000) || defined(__serenity__)
     tid = gettid();
 # else
     tid = syscall(SYS_gettid);
