@@ -52,7 +52,9 @@ static sir_test sir_tests[] = {
     {"sanity-levels",           sirtest_levelssanity, false, true},
     {"sanity-mutexes",          sirtest_mutexsanity, false, true},
     {"sanity-update-config",    sirtest_updatesanity, false, true},
+#if !defined(__ORANGEC__)
     {"sanity-thread-ids",       sirtest_threadidsanity, false, true},
+#endif
     {"syslog",                  sirtest_syslog, false, true},
     {"os_log",                  sirtest_os_log, false, true},
     {"filesystem",              sirtest_filesystem, false, true},
@@ -260,6 +262,7 @@ bool sirtest_exceedmaxsize(void) {
     return print_result_and_return(pass);
 }
 
+#if !defined(__ORANGEC__)
 bool sirtest_threadidsanity(void)
 {
     INIT(si, SIRL_ALL, SIRO_NOHOST, 0, 0);
@@ -294,6 +297,7 @@ bool sirtest_threadidsanity(void)
     pass &= sir_cleanup();
     return pass;
 }
+#endif
 
 bool sirtest_failnooutputdest(void) {
     INIT(si, 0, 0, 0, 0);
