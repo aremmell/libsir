@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 # install - install a program, script, or datafile
 # SPDX-License-Identifier: X11
 
@@ -305,8 +305,8 @@ do
       dstdir=$dst
       dstbase=`basename "$src"`
       case $dst in
-	*/) dst=$dst$dstbase;;
-	*)  dst=$dst/$dstbase;;
+        */) dst=$dst$dstbase;;
+        *)  dst=$dst/$dstbase;;
       esac
       dstdir_status=0
     else
@@ -335,49 +335,49 @@ do
         fi
 
         posix_mkdir=false
-	# The $RANDOM variable is not portable (e.g., dash).  Use it
-	# here however when possible just to lower collision chance.
-	tmpdir=${TMPDIR-/tmp}/ins$RANDOM-$$
+        # The $RANDOM variable is not portable (e.g., dash).  Use it
+        # here however when possible just to lower collision chance.
+        tmpdir=${TMPDIR-/tmp}/ins$RANDOM-$$
 
-	trap '
-	  ret=$?
-	  rmdir "$tmpdir/a/b" "$tmpdir/a" "$tmpdir" 2>/dev/null
-	  exit $ret
-	' 0
+        trap '
+          ret=$?
+          rmdir "$tmpdir/a/b" "$tmpdir/a" "$tmpdir" 2>/dev/null
+          exit $ret
+        ' 0
 
-	# Because "mkdir -p" follows existing symlinks and we likely work
-	# directly in world-writeable /tmp, make sure that the '$tmpdir'
-	# directory is successfully created first before we actually test
-	# 'mkdir -p'.
-	if (umask $mkdir_umask &&
-	    $mkdirprog $mkdir_mode "$tmpdir" &&
-	    exec $mkdirprog $mkdir_mode -p -- "$tmpdir/a/b") >/dev/null 2>&1
-	then
-	  if test -z "$dir_arg" || {
-	       # Check for POSIX incompatibilities with -m.
-	       # HP-UX 11.23 and IRIX 6.5 mkdir -m -p sets group- or
-	       # other-writable bit of parent directory when it shouldn't.
-	       # FreeBSD 6.1 mkdir -m -p sets mode of existing directory.
-	       test_tmpdir="$tmpdir/a"
-	       ls_ld_tmpdir=`ls -ld "$test_tmpdir"`
-	       case $ls_ld_tmpdir in
-		 d????-?r-*) different_mode=700;;
-		 d????-?--*) different_mode=755;;
-		 *) false;;
-	       esac &&
-	       $mkdirprog -m$different_mode -p -- "$test_tmpdir" && {
-		 ls_ld_tmpdir_1=`ls -ld "$test_tmpdir"`
-		 test "$ls_ld_tmpdir" = "$ls_ld_tmpdir_1"
-	       }
-	     }
-	  then posix_mkdir=:
-	  fi
-	  rmdir "$tmpdir/a/b" "$tmpdir/a" "$tmpdir"
-	else
-	  # Remove any dirs left behind by ancient mkdir implementations.
-	  rmdir ./$mkdir_mode ./-p ./-- "$tmpdir" 2>/dev/null
-	fi
-	trap '' 0;;
+        # Because "mkdir -p" follows existing symlinks and we likely work
+        # directly in world-writeable /tmp, make sure that the '$tmpdir'
+        # directory is successfully created first before we actually test
+        # 'mkdir -p'.
+        if (umask $mkdir_umask &&
+            $mkdirprog $mkdir_mode "$tmpdir" &&
+            exec $mkdirprog $mkdir_mode -p -- "$tmpdir/a/b") >/dev/null 2>&1
+        then
+          if test -z "$dir_arg" || {
+               # Check for POSIX incompatibilities with -m.
+               # HP-UX 11.23 and IRIX 6.5 mkdir -m -p sets group- or
+               # other-writable bit of parent directory when it shouldn't.
+               # FreeBSD 6.1 mkdir -m -p sets mode of existing directory.
+               test_tmpdir="$tmpdir/a"
+               ls_ld_tmpdir=`ls -ld "$test_tmpdir"`
+               case $ls_ld_tmpdir in
+                 d????-?r-*) different_mode=700;;
+                 d????-?--*) different_mode=755;;
+                 *) false;;
+               esac &&
+               $mkdirprog -m$different_mode -p -- "$test_tmpdir" && {
+                 ls_ld_tmpdir_1=`ls -ld "$test_tmpdir"`
+                 test "$ls_ld_tmpdir" = "$ls_ld_tmpdir_1"
+               }
+             }
+          then posix_mkdir=:
+          fi
+          rmdir "$tmpdir/a/b" "$tmpdir/a" "$tmpdir"
+        else
+          # Remove any dirs left behind by ancient mkdir implementations.
+          rmdir ./$mkdir_mode ./-p ./-- "$tmpdir" 2>/dev/null
+        fi
+        trap '' 0;;
     esac
 
     if
@@ -459,13 +459,13 @@ do
     # Copy the file name to the temp name.
     (umask $cp_umask &&
      { test -z "$stripcmd" || {
-	 # Create $dsttmp read-write so that cp doesn't create it read-only,
-	 # which would cause strip to fail.
-	 if test -z "$doit"; then
-	   : >"$dsttmp" # No need to fork-exec 'touch'.
-	 else
-	   $doit touch "$dsttmp"
-	 fi
+         # Create $dsttmp read-write so that cp doesn't create it read-only,
+         # which would cause strip to fail.
+         if test -z "$doit"; then
+           : >"$dsttmp" # No need to fork-exec 'touch'.
+         else
+           $doit touch "$dsttmp"
+         fi
        }
      } &&
      $doit_exec $cpprog "$src" "$dsttmp") &&
