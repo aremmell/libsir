@@ -207,7 +207,7 @@ ifeq ($(IBMXLC),1)
   ifeq ($(SIR_DEBUG),1)
     SIR_CFLAGS+=$(DBGFLAGS) -O0 -DDEBUG -Iinclude -qtls -qthreaded -qinfo=mt -qformat=all
   else
-    SIR_CFLAGS+=-DNDEBUG $(OPTFLAGS) -Iinclude -qtls -qthreaded -qinfo=mt -qformat=all -qpic=small
+    SIR_CFLAGS+=$(OPTFLAGS) -DNDEBUG -Iinclude -qtls -qthreaded -qinfo=mt -qformat=all -qpic=small
   endif
   SIR_SHARED=-qmkshrobj
   MMDOPT=
