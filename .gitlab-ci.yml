@@ -1791,3 +1791,75 @@ Oracle Lint:
   interruptible: true
 
 ##############################################################################
+
+Linux/x86_64 (Kefir, musl-libc):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/kefir:latest
+  script:
+    - *Configuration
+    - export KEFIR_RTINC="/opt/kefir-musl/include/kefir/runtime"
+    - export PATH="/opt/kefir-musl/bin:${PATH:?}"
+    - kefir --compiler-info
+    - kefir --environment-info
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env CC="kefir" make SIR_NO_PLUGINS=1
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - build/bin/sirexample
+    - build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
+Linux/x86_64 (Kefir):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/kefir:latest
+  script:
+    - *Configuration
+    - export KEFIR_RTINC="/opt/kefir/include/kefir/runtime"
+    - export PATH="/opt/kefir/bin:${PATH:?}"
+    - kefir --compiler-info
+    - kefir --environment-info
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env CC="kefir" make
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - build/bin/sirexample
+    - build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+##############################################################################
