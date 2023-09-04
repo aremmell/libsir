@@ -15,7 +15,7 @@
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *p
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
@@ -67,56 +67,7 @@ int main(int argc, char** argv) {
     disable_debugger(1);
 #endif
 
-#if defined(MTMALLOC)
-# include <mtmalloc.h>
-# if !defined(DEBUG)
-    mallocctl(MTDOUBLEFREE, 0);
-# else
-    mallocctl(MTDOUBLEFREE, 1);
-    mallocctl(MTINITBUFFER, 1);
-    mallocctl(MTDEBUGPATTERN, 1);
-# endif
-#endif
-
-#if defined(__OpenBSD__) && defined(DEBUG)
-    extern char *malloc_options;
-    malloc_options = "CFGRSU";
-#endif
-
-#if !defined(DEBUG_MALLOC_FILL_BYTE)
-# define DEBUG_MALLOC_FILL_BYTE 0x2E
-#endif
-
-#if defined(DUMA)
-# if defined(DUMA_EXPLICIT_INIT)
-    duma_init();
-# endif
-# if defined(DUMA_MIN_ALIGNMENT)
-#  if DUMA_MIN_ALIGNMENT > 0
-    DUMA_SET_ALIGNMENT(DUMA_MIN_ALIGNMENT);
-#  endif
-# endif
-    DUMA_SET_FILL(DEBUG_MALLOC_FILL_BYTE);
-#endif
-
-#if defined(DEBUG)
-# if defined(__GLIBC__)
-#  if !defined(_GNU_SOURCE)
-#   define _GNU_SOURCE 1
-#  endif
-#  if defined(__has_include)
-#   if __has_include(<malloc.h>) && !defined(DUMA)
-#    include <malloc.h>
-#   endif
-#  endif
-#  if GLIBC_VERSION >= 20400 && defined(M_PERTURB)
-    mallopt(M_PERTURB, DEBUG_MALLOC_FILL_BYTE);
-#  endif
-#  if defined(M_CHECK_ACTION)
-    mallopt(M_CHECK_ACTION, 3);
-#  endif
-# endif
-#endif
+#include "tests_malloc.h"
 
 #if !defined(__WIN__) && !defined(__HAIKU__)
     /* Disallow execution by root / sudo; some of the tests rely on lack of permissions. */

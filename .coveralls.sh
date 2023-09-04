@@ -506,6 +506,20 @@ remove_sample || true
 run_gcovr run-33.json
 remove_coverage
 
+# Run 34 - Break localtime_r function
+"${DO_MAKE:-make}" -j "${JOBS:?}" clean
+"${DO_MAKE:-make}" -j "${JOBS:?}" SIR_DEBUG=1 SIR_SELFLOG=1
+printf '%s\n' "long localtime_r() { return 0; }" > bad.c
+gcc -shared -fPIC bad.c -o bad.so || true
+env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
+env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
+# shellcheck disable=SC2310
+remove_sample || true
+run_gcovr run-34.json
+remove_coverage
+rm -f bad.c > /dev/null 2>&1
+rm -f bad.so > /dev/null 2>&1
+
 # Undo redirect
 test -n "${NO_REDIRECT:-}" \
   || {
