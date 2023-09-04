@@ -231,6 +231,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  include <windows.h>
 #  include <io.h>
 #  include <synchapi.h>
+#  include <processthreadsapi.h>
 #  include <process.h>
 #  include <winsock2.h>
 #  include <conio.h>
