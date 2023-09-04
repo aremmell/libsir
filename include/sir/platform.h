@@ -236,6 +236,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  include <winsock2.h>
 #  include <conio.h>
 #  include <shlwapi.h>
+#  include <wchar.h>
 #  undef __HAVE_ATOMIC_H__
 #  if defined(_MSC_VER) && _MSC_VER >= 1933 && \
       !defined(__cplusplus) && !defined(__IMPORTC__)
