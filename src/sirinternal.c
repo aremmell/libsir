@@ -1085,7 +1085,7 @@ double _sir_msec_since(const sir_time* when, sir_time* out) {
     SIR_ASSERT(gettime);
 
     if (!_sir_validptrnofail(when) || !gettime || (out->sec < when->sec ||
-        (out->sec == when_sec && out->msec < when->msec)))
+        (out->sec == when->sec && out->msec < when->msec)))
         return 0.0;
 
     return ((((double)out->sec) * 1e3) + (double)out->msec) -
