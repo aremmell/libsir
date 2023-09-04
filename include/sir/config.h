@@ -344,19 +344,6 @@
  */
 # define SIR_THRD_CHK_INTERVAL 333.0
 
-/**
- * Whether or not numeric thread identifiers should always be used instead of
- * thread names, even if a name is available.
- */
-# define SIR_PREFER_THREAD_ID 0
-
-/**
- * Whether or not to use thread names if a thread identifier is identical to
- * the process identifier. If set to 0, no identifier will be used for the thread.
- * Takes precendence over SIR_PREFER_THREAD_ID.
- */
-# define SIR_DUPE_THREAD_ID_USE_NAME 1
-
 # if defined(SIR_OS_LOG_ENABLED)
 /**
  * The special format specifier to send to os_log. By default, the log will only

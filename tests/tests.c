@@ -52,9 +52,6 @@ static sir_test sir_tests[] = {
     {"sanity-levels",           sirtest_levelssanity, false, true},
     {"sanity-mutexes",          sirtest_mutexsanity, false, true},
     {"sanity-update-config",    sirtest_updatesanity, false, true},
-#if !defined(__ORANGEC__)
-    {"sanity-thread-ids",       sirtest_threadidsanity, false, true},
-#endif
     {"syslog",                  sirtest_syslog, false, true},
     {"os_log",                  sirtest_os_log, false, true},
     {"filesystem",              sirtest_filesystem, false, true},
@@ -261,120 +258,6 @@ bool sirtest_exceedmaxsize(void) {
     sir_cleanup();
     return print_result_and_return(pass);
 }
-
-#if !defined(__ORANGEC__)
-bool sirtest_threadidsanity(void)
-{
-    INIT(si, SIRL_ALL, SIRO_NOHOST, 0, 0);
-    bool pass = si_init;
-
-    static const char* thread_name = "mythread";
-    static const char* logfilename = MAKE_LOG_NAME("thread-id-name.log");
-
-    /* this is a particularly difficult test to write: the behavior of libsir
-     * is set at compile time, so for certain configurations, we cannot perform
-     * the necessary testing.
-     *
-     * we'll either need to add preprocessor macros to override them at compile time,
-     * or convert them to runtime options. not being able to test those code paths is
-     * not kosher.
-     */
-    (void)rmfile(logfilename);
-
-    printf("\tadding log file '%s'...\n", logfilename);
-    sirfileid id = sir_addfile(logfilename, SIRL_DEBUG, SIRO_NOHDR);
-
-    print_test_error(pass, false);
-
-    printf("\tlogging a message normally...\n");
-    pass &= sir_debug("this is a test of the libsir system");
-
-    printf("\tsetting the thread name to '%s' and logging again...\n", thread_name);
-
-    pass &=_sir_setthreadname(thread_name);
-    sir_sleep_msec((uint32_t)SIR_THRD_CHK_INTERVAL + 200U);
-
-    print_test_error(pass, false);
-
-    pass &= sir_debug("this is a test of the libsir system after setting thread name");
-
-    printf("\tsetting the thread name to '' and logging again...\n");
-
-    pass &=_sir_setthreadname("");
-    sir_sleep_msec((uint32_t)SIR_THRD_CHK_INTERVAL + 200U);
-
-    print_test_error(pass, false);
-
-    pass &= sir_debug("this is a test of the libsir system after clearing thread name");
-
-    /* there should now be 3 lines of output in the log file, using default options, which
-     * are:
-     *
-     * - SIR_PREFER_THREAD_ID=0: if a name is set, use it.
-     * - SIR_DUPE_THREAD_ID_USE_NAME=1: in the case of TID==PID, use name if set, even
-     *   if SIR_PREFER_THREAD_ID=1.
-     *
-     * lines should appear as follows:
-     *
-     * 1. with PID<separator>TID
-     * 2. with PID<separator>mythread
-     * 3. with PID<separator>TID
-     *
-     * remove the log file from libsir, then open it and read it line by line.
-     */
-    printf("\tremoving log file...\n");
-    pass &= sir_remfile(id);
-
-    printf("\topening log file for reading...\n");
-
-    FILE* f = fopen(logfilename, "r");
-    if (!f) {
-        handle_os_error(true, "fopen(%s) failed", logfilename);
-        pass = false;
-    } else {
-        for (size_t n = 0; n < 3; n++) {
-            char buf[256] = {0};
-            int ch        = 0;
-
-            while ('\n' == (ch = getc(f)));
-
-            for (size_t idx = 0; idx < 256; idx++) {
-                ch = getc(f);
-                if (EOF == ch || '\n' == ch)
-                    break;
-                buf[idx] = (char)ch;
-            }
-
-            printf("\tread line %zu: '%s'\n", n, buf);
-
-            char search[SIR_MAXPID] = {0};
-            switch (n) {
-                case 0:
-                case 2:
-                    (void)snprintf(search, SIR_MAXPID, SIR_PIDFORMAT, _sir_gettid());
-                break;
-                case 1:
-                    (void)_sir_strncpy(search, SIR_MAXPID, thread_name, sizeof(thread_name));
-                break;
-            }
-
-            bool found = NULL != strstr(buf, search);
-            pass &= found;
-
-            if (found)
-                printf("\t" GREEN("line %zu: located '%s'") "\n", n, search);
-            else
-                printf("\t" RED("line %zu: did not locate '%s'") "\n", n, search);
-        }
-
-        fclose(f);
-    }
-
-    pass &= sir_cleanup();
-
-    return pass;
-}
-#endif
 
 bool sirtest_failnooutputdest(void) {
     INIT(si, 0, 0, 0, 0);

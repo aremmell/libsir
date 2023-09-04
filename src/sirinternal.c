@@ -505,34 +505,28 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     bool fmt = _sir_formattime(now_sec, _cfg->state.timestamp, SIR_TIMEFORMAT);
     SIR_ASSERT_UNUSED(fmt, fmt);
 
+    /* check elapsed time since updating thread identifier/name. */
     sir_time thrd_chk;
     double msec_since_thrd_chk = _sir_msec_since(&_sir_last_thrd_chk, &thrd_chk);
 
-    /* update the thread identifier/name. decide how to identify this
-     * thread based on the configuration, and whether or not its identifier
-     * is identical to the process identifier. */
+    /* update the thread identifier/name if enough time has elapsed. */
     if (msec_since_thrd_chk > SIR_THRD_CHK_INTERVAL) {
         _sir_last_thrd_chk = thrd_chk;
 
         pid_t tid         = _sir_gettid();
         bool resolved_tid = false;
 
-        if (tid == _cfg->state.pid) {
-#if SIR_DUPE_THREAD_ID_USE_NAME
-            /* if a name is set, use it. */
-            resolved_tid = _sir_getthreadname(_sir_tid);
-#else
+        /* prefer thread names. */
+        resolved_tid = _sir_getthreadname(_sir_tid);
+
+        /* if tid is identical to pid... */
+        if (!resolved_tid && tid == _cfg->state.pid) {
             /* don't use anything to identify the thread. */
             _sir_resetstr(_sir_tid);
             resolved_tid = true;
-#endif
         }
 
-#if !SIR_PREFER_THREAD_ID
-        if (!resolved_tid)
-            resolved_tid = _sir_getthreadname(_sir_tid);
-#endif
-
+        /* fall back on tid. */
         if (!resolved_tid)
             _sir_snprintf_trunc(_sir_tid, SIR_MAXPID, SIR_PIDFORMAT,
                 PID_CAST tid);
@@ -1198,52 +1192,6 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
 # endif
     SIR_UNUSED(name);
     return false;
-#endif
-}
-
-bool _sir_setthreadname(const char* name) {
-    if (!_sir_validptr(name))
-        return false;
-#if defined (__MACOS__)
-    int ret = pthread_setname_np(name);
-    return (0 != ret) ? _sir_handleerr(ret) : true;
-#elif (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
-      (defined(__GLIBC__) && GLIBC_VERSION >= 21200 && defined(_GNU_SOURCE)) || \
-       defined(USE_PTHREAD_GETNAME_NP)
-    int ret = pthread_setname_np(pthread_self(), name);
-    return (0 != ret) ? _sir_handleerr(ret) : true;
-#elif defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
-    pthread_set_name_np(pthread_self(), name);
-    return true;
-#elif defined(__WIN__)
-# if defined(__ORANGEC__)
-    // TODO: Deal with OrangeC not implementing [Get,Set]ThreadDescription
-    return true;
-# endif
-
-# if defined(__HAVE_STDC_SECURE_OR_EXT1__)
-    int name_len = (int)strnlen_s(name, SIR_MAXPID);
-# else
-    int name_len = (int)strnlen(name, SIR_MAXPID);
-# endif
-    if (0 == name_len)
-        name_len = 1;
-
-    wchar_t buf[SIR_MAXPID] = {0};
-    if (!MultiByteToWideChar(CP_UTF8, 0UL, name, name_len, buf, SIR_MAXPID))
-        return _sir_handlewin32err(GetLastError());
-
-    HRESULT hr = SetThreadDescription(GetCurrentThread(), buf);
-    return FAILED(hr) ? _sir_handlewin32err(hr) : true;
-#else
-# if !defined(SUNLINT)
-#  pragma message("unable to determine how to set a thread name")
-# endif
-    SIR_UNUSED(name);
-    // TODO: Jeff, you got this? Gotta add the other platforms, then this should return
-    // false if it actually can't do it. For now I'm setting it to true so the test will
-    // pass CI. - RML
-    return true;
 #endif
 }
 
