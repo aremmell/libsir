@@ -35,7 +35,7 @@
 /** Evil macro used for _sir_lv wrappers. */
 # define _SIR_L_START(format) \
     bool ret     = false; \
-    va_list args = {0}; \
+    va_list args; \
     do { \
         if (!_sir_validptr(format)) \
             return false; \
