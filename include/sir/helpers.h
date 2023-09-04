@@ -421,7 +421,7 @@ uint64_t FNV64_1a(const char* str) {
     return hash;
 }
 
-#if defined(__WIN__)
+# if defined(__WIN__)
 /**
  * Dynamically loads a DLL and returns its address if successful, or NULL upon failure.
  */
@@ -456,6 +456,6 @@ void* _sir_get_dll_export(HMODULE dll_handle, const char* name) {
     }
     return addr;
 }
-#endif
+# endif
 
 #endif /* !_SIR_HELPERS_H_INCLUDED */

@@ -1180,11 +1180,11 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     wchar_t* wide_name = NULL;
     HRESULT hr = get_desc_fn(GetCurrentThread(), &wide_name);
     if (SUCCEEDED(hr)) {
-#if defined(__HAVE_STDC_SECURE_OR_EXT1__) && !defined(__ORANGEC__)
+# if defined(__HAVE_STDC_SECURE_OR_EXT1__) && !defined(__ORANGEC__)
         size_t wide_len = wcsnlen_s(wide_name, SIR_MAXPID);
-#else
+# else
         size_t wide_len = wcsnlen(wide_name, SIR_MAXPID);
-#endif
+# endif
         if (WideCharToMultiByte(CP_UTF8, 0UL, wide_name, (int)wide_len, name, SIR_MAXPID,
             NULL, NULL))
             retval = true;
@@ -1231,11 +1231,11 @@ bool _sir_setthreadname(const char* name) {
     }
 
     wchar_t buf[SIR_MAXPID] = {0};
-#if defined(__HAVE_STDC_SECURE_OR_EXT1__) && !defined(__ORANGEC__)
+# if defined(__HAVE_STDC_SECURE_OR_EXT1__) && !defined(__ORANGEC__)
     int name_len = (int)strnlen_s(name, SIR_MAXPID);
-#else
+# else
     int name_len = (int)strnlen(name, SIR_MAXPID);
-#endif
+# endif
     if (0 == name_len)
         name_len = 1;
 
