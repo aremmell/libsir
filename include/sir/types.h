@@ -218,7 +218,7 @@ typedef struct {
 
     /**
      * The name to use in log messages (usually the process name). Set ::SIRO_NONAME
-     * in a destination's options bitmask to suppress it..
+     * in a destination's options bitmask to suppress it.
      */
     char name[SIR_MAXNAME];
 } sirinit;
