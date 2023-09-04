@@ -717,7 +717,7 @@ bool sir_syslogid(const char* identity);
  * @brief Set new system logger category.
  *
  * Some system logger facilities (e.g. `os_log`, the system logger on macOS), ask
- * for a category string when logging messages–to more easily group messages
+ * for a category string when logging messages-to more easily group messages
  * together (which, as a byproduct, enhances searching).
  *
  * If you are not utilizing a system logger that requires a category string, you
@@ -744,7 +744,7 @@ bool sir_syslogcat(const char* category);
 /**
  * @brief Returns the current libsir version as a string.
  *
- * @note This may be helpful when using libsir as a shared library–it will always
+ * @note This may be helpful when using libsir as a shared library-it will always
  * return the value of the shared library, not the source version of libsir
  * that you built against.
  *
