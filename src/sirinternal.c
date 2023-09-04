@@ -1177,7 +1177,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
         size_t wide_len = wcsnlen_s(wide_name, SIR_MAXPID);
 # elif defined(__EMBARCADEROC__)
         size_t wide_len = wcslen(wide_name);
-#else
+# else
         size_t wide_len = wcsnlen(wide_name, SIR_MAXPID);
 # endif
         if (wide_len > 0) {
