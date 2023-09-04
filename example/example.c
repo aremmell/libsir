@@ -133,7 +133,7 @@ int main(void) {
      * Set up an identity, some options, and register for error and higher.
      *
      * NOTE: If this platform does not have a supported system logger, or the
-     * SIR_NO_SYSTEM_LOGGERS preprcessor define was set when libsir was
+     * SIR_NO_SYSTEM_LOGGERS preprocessor define was set when libsir was
      * compiled, these calls will fail and have no effect.
      */
 
