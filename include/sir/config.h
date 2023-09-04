@@ -342,7 +342,7 @@
  * The number of milliseconds to let elapse before re-formatting the current
  * thread identifier and/or name.
  */
-# define SIR_THRD_CHK_INTERVAL 333
+# define SIR_THRD_CHK_INTERVAL 333.0
 
 /**
  * Whether or not numeric thread identifiers should always be used instead of

@@ -192,12 +192,12 @@ int main(int argc, char** argv) {
     size_t tgt_tests = (only ? to_run : _sir_countof(sir_tests) - first);
     size_t passed    = 0;
     size_t ran       = 0;
-    sir_timer timer  = {0};
+    sir_time timer  = {0};
 
     printf(WHITEB("\n" ULINE("libsir") " %s (%s) running %zu %s...") "\n",
         sir_getversionstring(), (sir_isprerelease() ? "prerelease" : "release"),
         tgt_tests, TEST_S(tgt_tests));
-    sirtimerstart(&timer);
+    sir_timer_start(&timer);
 
     for (size_t n = first; n < _sir_countof(sir_tests); n++) {
         if (only && !sir_tests[n].run) {
@@ -217,16 +217,16 @@ int main(int argc, char** argv) {
             PRN_PASS(sir_tests[n].pass));
     }
 
-    float elapsed = sirtimerelapsed(&timer);
+    double elapsed = sir_timer_elapsed(&timer);
 
     if (passed == tgt_tests) {
         printf("\n" WHITEB("done: ")
                    GREENB("%s%zu " ULINE("libsir") " %s passed in %.03fsec!") "\n\n",
-            tgt_tests > 1 ? "all " : "", tgt_tests, TEST_S(tgt_tests), (double)elapsed / (double)1e3);
+            tgt_tests > 1 ? "all " : "", tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
     } else {
         printf("\n" WHITEB("done: ")
                    REDB("%zu of %zu " ULINE("libsir") " %s failed in %.03fsec") "\n\n",
-            tgt_tests - passed, tgt_tests, TEST_S(tgt_tests), (double)elapsed / (double)1e3);
+            tgt_tests - passed, tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
 
         printf(REDB("Failed %s:") "\n\n", TEST_S(tgt_tests - passed));
 
@@ -275,15 +275,19 @@ bool sirtest_threadidsanity(void)
 
     printf("\tsetting the thread name to '%s' and logging again...\n", thread_name);
 
-    _sir_setthreadname(thread_name);
-    sir_sleep_msec(SIR_THRD_CHK_INTERVAL + 100);
+    pass &=_sir_setthreadname(thread_name);
+    sir_sleep_msec((uint32_t)SIR_THRD_CHK_INTERVAL + 200U);
+
+    print_test_error(pass, false);
 
     pass &= sir_debug("this is a test of the libsir system after setting thread name");
 
     printf("\tsetting the thread name to '' and logging again...\n");
 
-    _sir_setthreadname("");
-    sir_sleep_msec(SIR_THRD_CHK_INTERVAL + 100);
+    pass &=_sir_setthreadname("");
+    sir_sleep_msec((uint32_t)SIR_THRD_CHK_INTERVAL + 200U);
+
+    print_test_error(pass, false);
 
     pass &= sir_debug("this is a test of the libsir system after clearing thread name");
 
@@ -1152,10 +1156,14 @@ bool sirtest_perf(void) {
 
 #if !defined(DUMA)
 # if !defined(SIR_PERF_PROFILE)
+#  if !defined(__WIN__)
     static const size_t perflines = 1000000;
+#  else
+    static const size_t perflines = 10000;
+#  endif
 # else
     static const size_t perflines = 4000000;
-# endif
+# endif   
 #else /* DUMA */
     static const size_t perflines = 100000;
 #endif
@@ -1164,33 +1172,33 @@ bool sirtest_perf(void) {
     bool pass = si_init;
 
     if (pass) {
-        float stdioelapsed  = 0.0f;
+        double stdioelapsed  = 0.0;
 #if !defined(SIR_PERF_PROFILE)
-        float printfelapsed = 0.0f;
-        float fileelapsed   = 0.0f;
+        double printfelapsed = 0.0;
+        double fileelapsed   = 0.0;
 
         printf("\t" BLUE("%zu lines printf...") "\n", perflines);
 
-        sir_timer printftimer = {0};
-        sirtimerstart(&printftimer);
+        sir_time printftimer = {0};
+        sir_timer_start(&printftimer);
 
         for (size_t n = 0; n < perflines; n++)
             printf(WHITE("%.2f: lorem ipsum foo bar %s: %zu") "\n",
-                (double)sirtimerelapsed(&printftimer), "baz", 1234 + n);
+                sir_timer_elapsed(&printftimer), "baz", 1234 + n);
 
-        printfelapsed = sirtimerelapsed(&printftimer);
+        printfelapsed = sir_timer_elapsed(&printftimer);
 #endif
 
         printf("\t" BLUE("%zu lines libsir(stdout)...") "\n", perflines);
 
-        sir_timer stdiotimer = {0};
-        sirtimerstart(&stdiotimer);
+        sir_time stdiotimer = {0};
+        sir_timer_start(&stdiotimer);
 
         for (size_t n = 0; n < perflines; n++)
             sir_debug("%.2f: lorem ipsum foo bar %s: %zu",
-                (double)sirtimerelapsed(&stdiotimer), "baz", 1234 + n);
+                sir_timer_elapsed(&stdiotimer), "baz", 1234 + n);
 
-        stdioelapsed = sirtimerelapsed(&stdiotimer);
+        stdioelapsed = sir_timer_elapsed(&stdiotimer);
 
         sir_cleanup();
 
@@ -1207,13 +1215,13 @@ bool sirtest_perf(void) {
         if (pass) {
             printf("\t" BLUE("%zu lines libsir(log file)...") "\n", perflines);
 
-            sir_timer filetimer = {0};
-            sirtimerstart(&filetimer);
+            sir_time filetimer = {0};
+            sir_timer_start(&filetimer);
 
             for (size_t n = 0; n < perflines; n++)
                 sir_debug("lorem ipsum foo bar %s: %zu", "baz", 1234 + n);
 
-            fileelapsed = sirtimerelapsed(&filetimer);
+            fileelapsed = sir_timer_elapsed(&filetimer);
 
             pass &= sir_remfile(logid);
         }
@@ -1222,20 +1230,17 @@ bool sirtest_perf(void) {
         if (pass) {
 #if !defined(SIR_PERF_PROFILE)
             printf("\t" WHITEB("printf: ") CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
-                perflines, (double)printfelapsed / (double)1e3,
-                (double)perflines / (double)((double)printfelapsed / (double)1e3));
+                perflines, printfelapsed / 1e3, (double)perflines / printfelapsed / 1e3);
 #endif
             printf("\t" WHITEB("libsir(stdout): ")
-                   CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
-                perflines, (double)stdioelapsed / (double)1e3,
-                (double)perflines / (double)((double)stdioelapsed / (double)1e3));
+                   CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n", perflines,
+                    stdioelapsed / 1e3, (double)perflines / stdioelapsed / 1e3);
 #if !defined(SIR_PERF_PROFILE)
             printf("\t" WHITEB("libsir(log file): ")
-                   CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
-                perflines, (double)fileelapsed / (double)1e3,
-                (double)perflines / (double)((double)fileelapsed / (double)1e3));
+                   CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n", perflines,
+                    fileelapsed / 1e3, (double)perflines / fileelapsed / 1e3);
 #endif
-            printf("\t" WHITEB("timer resolution: ") CYAN("~%ldnsec") "\n", sirtimergetres());
+            printf("\t" WHITEB("timer resolution: ") CYAN("~%ldnsec") "\n", sir_timer_getres());
         }
     }
 
@@ -1806,8 +1811,8 @@ bool sirtest_squelchspam(void) {
         1000  /* alternating repeating and non-repeating messages. */
     };
 
-    sir_timer timer;
-    sirtimerstart(&timer);
+    sir_time timer;
+    sir_timer_start(&timer);
 
     printf("\t" BLUE("%zu non-repeating messages...") "\n", sequence[0]);
 
@@ -2392,45 +2397,13 @@ bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* 
     return true;
 }
 
-bool sirtimerstart(sir_timer* timer) {
-#if !defined(__WIN__) || defined(__ORANGEC__)
-    int gettime = clock_gettime(SIR_INTERVALCLOCK, &timer->ts);
-    if (0 != gettime) {
-        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIR_INTERVALCLOCK);
-    }
-
-    return 0 == gettime;
-#else /* __WIN__ */
-    GetSystemTimePreciseAsFileTime(&timer->ft);
-    return true;
-#endif
+double sir_timer_elapsed(const sir_time* timer) {
+    sir_time now;
+    return _sir_msec_since(timer, &now);
 }
 
-float sirtimerelapsed(const sir_timer* timer) {
-#if !defined(__WIN__) || defined(__ORANGEC__)
-    struct timespec now;
-    if (0 == clock_gettime(SIR_INTERVALCLOCK, &now)) {
-        return (float)(((((double)now.tv_sec * 1e9) + ((double)now.tv_nsec))
-               - (((double)timer->ts.tv_sec * 1e9) + ((double)timer->ts.tv_nsec))) / 1e6);
-    } else {
-        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIR_INTERVALCLOCK);
-    }
-    return 0.0f;
-#else /* __WIN__ */
-    FILETIME now;
-    GetSystemTimePreciseAsFileTime(&now);
-    ULARGE_INTEGER start   = {0};
-    start.LowPart          = timer->ft.dwLowDateTime;
-    start.HighPart         = timer->ft.dwHighDateTime;
-    ULARGE_INTEGER n100sec = {0};
-    n100sec.LowPart        = now.dwLowDateTime;
-    n100sec.HighPart       = now.dwHighDateTime;
-    return (float)((n100sec.QuadPart - start.QuadPart) / 1e4);
-#endif
-}
-
-long sirtimergetres(void) {
-    long retval = 0;
+long sir_timer_getres(void) {
+    long retval = 0L;
 #if !defined(__WIN__)
     struct timespec res;
     if (0 == clock_getres(SIR_INTERVALCLOCK, &res)) {
@@ -2439,7 +2412,12 @@ long sirtimergetres(void) {
         handle_os_error(true, "clock_getres(%d) failed!", CLOCK_CAST SIR_INTERVALCLOCK); // GCOVR_EXCL_LINE
     }
 #else /* __WIN__ */
-    retval = 100;
+    LARGE_INTEGER cntr_freq;
+    (void)QueryPerformanceFrequency(&cntr_freq);
+    if (cntr_freq.QuadPart <= 0)
+        retval = 0L;
+    else
+        retval = (long)(ceil(((double)cntr_freq.QuadPart) / 1e9));
 #endif
     return retval;
 }

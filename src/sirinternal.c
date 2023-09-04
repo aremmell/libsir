@@ -506,8 +506,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     SIR_ASSERT_UNUSED(fmt, fmt);
 
     sir_time thrd_chk;
-    int64_t msec_since_thrd_chk = _sir_msec_since(_sir_last_thrd_chk.sec,
-        _sir_last_thrd_chk.msec, &thrd_chk);
+    double msec_since_thrd_chk = _sir_msec_since(&_sir_last_thrd_chk, &thrd_chk);
 
     /* update the thread identifier/name. decide how to identify this
      * thread based on the configuration, and whether or not its identifier
@@ -1075,22 +1074,36 @@ bool _sir_clock_gettime(int clock, time_t* tbuf, long* msecbuf) {
     return false;
 }
 
-int64_t _sir_msec_since(time_t when_sec, long when_msec, sir_time* out) {
+double _sir_msec_since(const sir_time* when, sir_time* out) {
     if (!_sir_validptr(out))
-        return 0LL;
-
-    out->sec  = 0;
+        return 0.0;
+#if !defined(__WIN__) || defined(__ORANGEC__)
+    out->sec = 0;
     out->msec = 0L;
 
     bool gettime = _sir_clock_gettime(SIR_INTERVALCLOCK, &out->sec, &out->msec);
     SIR_ASSERT(gettime);
 
-    if (!gettime || (out->sec < when_sec ||
-        (out->sec == when_sec && out->msec < when_msec)))
-        return 0LL;
+    if (!_sir_validptrnofail(when) || !gettime || (out->sec < when->sec ||
+        (out->sec == when_sec && out->msec < when->msec)))
+        return 0.0;
 
-    return ((((int64_t)out->sec) * 1000LL) + ((int64_t)out->msec)) -
-           ((((int64_t)when_sec) * 1000LL) + ((int64_t)when_msec));
+    return ((((double)out->sec) * 1e3) + (double)out->msec) -
+           ((((double)when->sec) * 1e3) + (double)when->msec);
+#else /* __WIN__ */
+    SIR_ASSERT(_sir_perfcntr_freq.QuadPart > 0LL);
+
+    if (_sir_perfcntr_freq.QuadPart <= 0LL)
+        return 0.0;
+
+    (void)QueryPerformanceCounter(&out->counter);
+
+    if (!_sir_validptrnofail(when) || out->counter.QuadPart <= when->counter.QuadPart)
+        return 0.0;
+
+    double msec_ratio = ((double)_sir_perfcntr_freq.QuadPart) / 1e3;
+    return ((double)(out->counter.QuadPart - when->counter.QuadPart)) / msec_ratio;
+#endif
 }
 
 pid_t _sir_getpid(void) {

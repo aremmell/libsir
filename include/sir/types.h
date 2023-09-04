@@ -250,8 +250,12 @@ typedef void (*invalparamfn)(const wchar_t*, const wchar_t*, const wchar_t*,
 
 /** Internally-used time value type. */
 typedef struct {
+#if !defined(__WIN__)
     time_t sec;
     long msec;
+#else /* __WIN__ */
+    LARGE_INTEGER counter;
+#endif
 } sir_time;
 
 /** Internally-used global config container. */

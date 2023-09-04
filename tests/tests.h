@@ -42,6 +42,8 @@
 #  if !defined(__ORANGEC__)
 #   include <dirent.h>
 #  endif
+# elif defined(__WIN__)
+#  include <math.h>
 # endif
 
 # define INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, p_name, init) \
@@ -341,15 +343,6 @@ typedef struct {
     bool pass;
 } sir_test;
 
-/** A simple timer type. */
-typedef struct {
-# if !defined(__WIN__) || defined(__ORANGEC__)
-    struct timespec ts;
-# else /* __WIN__ */
-    FILETIME ft;
-# endif
-} sir_timer;
-
 /** Arguments passed to worker threads. */
 typedef struct {
     char log_file[SIR_MAXPATH];
@@ -377,9 +370,13 @@ typedef void (*fileenumproc)(const char* search, const char* path, const char* f
     unsigned* data);
 bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* data);
 
-bool sirtimerstart(sir_timer* timer);
-float sirtimerelapsed(const sir_timer* timer); /* msec */
-long sirtimergetres(void); /* nsec */
+static inline
+void sir_timer_start(sir_time* timer) {
+    (void)_sir_msec_since(NULL, timer);
+}
+
+double sir_timer_elapsed(const sir_time* timer); /* msec */
+long sir_timer_getres(void); /* nsec */
 
 void sir_sleep_msec(uint32_t msec);
 
