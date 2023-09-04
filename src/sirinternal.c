@@ -1191,7 +1191,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
         }
         (void)LocalFree(wide_name);
     }
-    return success;
+    return success && _sir_validstrnofail(name);
 #else
 # if !defined(_AIX) && !defined(__HURD__) && !defined(SUNLINT)
 #  pragma message("unable to determine how to get a thread name")
