@@ -250,7 +250,7 @@ typedef void (*invalparamfn)(const wchar_t*, const wchar_t*, const wchar_t*,
 
 /** Internally-used time value type. */
 typedef struct {
-#if !defined(__WIN__)
+#if !defined(__WIN__) || defined(__ORANGEC__)
     time_t sec;
     long msec;
 #else /* __WIN__ */
