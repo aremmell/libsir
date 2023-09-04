@@ -24,8 +24,10 @@ docker run --rm -it "hello-world:latest" > /dev/null ||
     exit 1
   }
 
+# shellcheck disable=SC2312
 printf 'Pushing %s image ...\n' "$(basename "$(pwd -P)")"
 
+# shellcheck disable=SC2312
 docker push registry.gitlab.com/libsir/libsir/"$(basename "$(pwd -P)")":latest
 
 printf '%s\n' "Complete."
