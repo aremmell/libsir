@@ -1159,7 +1159,7 @@ bool sirtest_perf(void) {
 #  if !defined(__WIN__)
     static const size_t perflines = 1000000;
 #  else
-    static const size_t perflines = 10000;
+    static const size_t perflines = 100000;
 #  endif
 # else
     static const size_t perflines = 4000000;
@@ -1230,15 +1230,15 @@ bool sirtest_perf(void) {
         if (pass) {
 #if !defined(SIR_PERF_PROFILE)
             printf("\t" WHITEB("printf: ") CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
-                perflines, printfelapsed / 1e3, (double)perflines / printfelapsed / 1e3);
+                perflines, printfelapsed / 1e3, (double)perflines / (printfelapsed / 1e3));
 #endif
             printf("\t" WHITEB("libsir(stdout): ")
                    CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n", perflines,
-                    stdioelapsed / 1e3, (double)perflines / stdioelapsed / 1e3);
+                    stdioelapsed / 1e3, (double)perflines / (stdioelapsed / 1e3));
 #if !defined(SIR_PERF_PROFILE)
             printf("\t" WHITEB("libsir(log file): ")
                    CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n", perflines,
-                    fileelapsed / 1e3, (double)perflines / fileelapsed / 1e3);
+                    fileelapsed / 1e3, (double)perflines / (fileelapsed / 1e3));
 #endif
             printf("\t" WHITEB("timer resolution: ") CYAN("~%ldnsec") "\n", sir_timer_getres());
         }
