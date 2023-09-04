@@ -1164,7 +1164,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
 #elif defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
     return _sir_validstrnofail(name);
-#elif defined(__WIN__)
+#elif defined(__WIN__) && !defined(__ORANGEC__)
     // TODO: Windows Server 2016, Windows 10 LTSB 2016 and Windows 10 version 1607:
     // GetThreadDescription is only available by Run Time Dynamic Linking in KernelBase.dll.
     // https://learn.microsoft.com/en-us/windows/win32/dlls/using-run-time-dynamic-linking
@@ -1204,7 +1204,7 @@ bool _sir_setthreadname(const char* name) {
 #elif defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
     pthread_set_name_np(pthread_self(), name);
     return true;
-#elif defined(__WIN__)
+#elif defined(__WIN__) && !defined(__ORANGEC__)
     wchar_t buf[SIR_MAXPID] = {0};
     int name_len = (int)strnlen(name, SIR_MAXPID);
     if (0 == name_len)
