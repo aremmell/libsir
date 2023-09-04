@@ -239,6 +239,7 @@ test_extra()
                     -Wextra-semi-stmt
                     -Wformat=2
                     -Wformat-nonliteral
+                    -Winvalid-utf8
                     -Wmissing-prototypes
                     -Wmissing-variable-declarations
                     -Wno-sign-conversion
