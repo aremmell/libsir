@@ -1158,10 +1158,6 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
     return _sir_validstrnofail(name);
 #elif defined(__WIN__)
-# if defined(__ORANGEC__)
-    // TODO: Deal with OrangeC not implementing [Get,Set]ThreadDescription
-    return true;
-# endif
     bool success       = false;
     wchar_t* wide_name = NULL;
     HRESULT hr         = GetThreadDescription(GetCurrentThread(), &wide_name);
