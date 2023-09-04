@@ -90,10 +90,16 @@ bool _sir_makeinit(sirinit* si) {
 bool _sir_init(sirinit* si) {
     (void)_sir_seterror(_SIR_E_NOERROR);
 
-    if (!_sir_once(&static_once, _sir_init_static_once)) {
+    /* can only fail on Windows. */
+    bool once_init = _sir_once(&static_once, _sir_init_static_once);
+#if !defined(__WIN__)
+    if (!once_init) {
         _sir_selflog("error: static data initialization routine failed!");
         return false;
     }
+#else
+    SIR_UNUSED(once_init);
+#endif
 
     if (!_sir_validptr(si))
         return false;
