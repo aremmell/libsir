@@ -32,7 +32,7 @@
 # define _SIR_CONFIG_H_INCLUDED
 
 /**
- * The time stamp format string at the start of log messages–not including
+ * The time stamp format string at the start of log messages-not including
  * milliseconds (as::SIR_MSECFORMAT), which is added separately.
  *
  * @remark Only applies if ::SIRO_NOTIME is not set.
