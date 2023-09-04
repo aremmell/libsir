@@ -383,6 +383,15 @@ bool _sir_formattime(time_t now, char* buffer, const char* format) {
 bool _sir_getchar(char* input);
 
 /**
+ * Wrapper for snprintf when truncation is intended.
+ */
+# define _sir_snprintf_trunc(dst, size, ...) \
+    do { \
+      volatile size_t _n = size; \
+      if (!snprintf(dst, _n, __VA_ARGS__)) { (void)_n; }; \
+    } while (false)
+
+/**
  * Implementation of the 32-bit FNV-1a OWHF (http://isthe.com/chongo/tech/comp/fnv/)
  */
 static inline
@@ -396,15 +405,6 @@ uint32_t FNV32_1a(const uint8_t* data, size_t len) {
 }
 
 /**
- * Wrapper for snprintf when truncation is intended.
- */
-# define _sir_snprintf_trunc(dst, size, ...) \
-    do { \
-      volatile size_t _n = size; \
-      if (!snprintf(dst, _n, __VA_ARGS__)) { (void)_n; }; \
-    } while (false)
-
-/**
  * Implementation of the 64-bit FNV-1a OWHF (http://isthe.com/chongo/tech/comp/fnv/)
  * watered down to only handle null-terminated strings.
  */
@@ -412,8 +412,7 @@ uint32_t FNV32_1a(const uint8_t* data, size_t len) {
 SANITIZE_SUPPRESS("unsigned-integer-overflow")
 # endif
 static inline
-uint64_t FNV64_1a(const char* str)
-{
+uint64_t FNV64_1a(const char* str) {
     uint64_t hash = 14695981039346656037ULL;
     for (const char* c = str; *c; c++) {
         hash ^= (uint64_t)(unsigned char)(*c);
@@ -421,5 +420,42 @@ uint64_t FNV64_1a(const char* str)
     }
     return hash;
 }
+
+#if defined(__WIN__)
+/**
+ * Dynamically loads a DLL and returns its address if successful, or NULL upon failure.
+ */
+static inline
+HMODULE _sir_load_dll(const char* path) {
+    HMODULE retval = NULL;
+    if (_sir_validstr(path)) {
+        UINT old_error_mode = SetErrorMode(SEM_FAILCRITICALERRORS);
+        retval = LoadLibraryA(path);
+        (void)SetErrorMode(old_error_mode);
+        if (!retval) {
+            DWORD err = GetLastError();
+            _sir_selflog("error: LoadLibraryA(%s) failed (%lu)", path, err);
+            (void)_sir_handlewin32err(err);
+        }
+    }
+    return retval;
+}
+
+/**
+ * Returns the address of the specified DLL export, or NULL upon failure.
+ */
+static inline
+void* _sir_get_dll_export(HMODULE dll_handle, const char* name) {
+    if (!dll_handle || !_sir_validstr(name))
+        return NULL;
+    void* addr = (void*)GetProcAddress(dll_handle, name);
+    if (!addr) {
+        DWORD err = GetLastError();
+        _sir_selflog("error: GetProcAddress(%s) failed (%lu)", name, err);
+        (void)_sir_handlewin32err(err);
+    }
+    return addr;
+}
+#endif
 
 #endif /* !_SIR_HELPERS_H_INCLUDED */

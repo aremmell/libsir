@@ -1164,23 +1164,33 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
 #elif defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
     return _sir_validstrnofail(name);
-#elif defined(__WIN__) && !defined(__ORANGEC__)
-    // TODO: Windows Server 2016, Windows 10 LTSB 2016 and Windows 10 version 1607:
-    // GetThreadDescription is only available by Run Time Dynamic Linking in KernelBase.dll.
-    // https://learn.microsoft.com/en-us/windows/win32/dlls/using-run-time-dynamic-linking
-    bool success       = false;
+#elif defined(__WIN__)
+    HMODULE kb_dll_handle = _sir_load_dll(SIR_KB_DLL);
+    if (!kb_dll_handle)
+        return false;
+
+    get_thrd_desc_fn get_desc_fn = NULL;
+    *(void**)(&get_desc_fn) = _sir_get_dll_export(kb_dll_handle, "GetThreadDescription");
+    if (!get_desc_fn) {
+        (void)FreeLibrary(kb_dll_handle);
+        return false;
+    }
+
+    bool retval        = false;
     wchar_t* wide_name = NULL;
-    HRESULT hr = GetThreadDescription(GetCurrentThread(), &wide_name);
+    HRESULT hr = get_desc_fn(GetCurrentThread(), &wide_name);
     if (SUCCEEDED(hr)) {
         size_t wide_len = wcsnlen_s(wide_name, SIR_MAXPID);
-        if (!WideCharToMultiByte(CP_UTF8, 0UL, wide_name, (int)wide_len, name, SIR_MAXPID,
+        if (WideCharToMultiByte(CP_UTF8, 0UL, wide_name, (int)wide_len, name, SIR_MAXPID,
             NULL, NULL))
-            (void)_sir_handlewin32err(GetLastError());
+            retval = true;
         else
-            success = true;
+            (void)_sir_handlewin32err(GetLastError());
         (void)LocalFree(wide_name);
     }
-    return success;
+
+    (void)FreeLibrary(kb_dll_handle);
+    return retval;
 #else
 # if !defined(_AIX) && !defined(__HURD__) && !defined(SUNLINT)
 #  pragma message("unable to determine how to get a thread name")
@@ -1204,17 +1214,30 @@ bool _sir_setthreadname(const char* name) {
 #elif defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
     pthread_set_name_np(pthread_self(), name);
     return true;
-#elif defined(__WIN__) && !defined(__ORANGEC__)
+#elif defined(__WIN__)
+    HMODULE kb_dll_handle = _sir_load_dll(SIR_KB_DLL);
+    if (!kb_dll_handle)
+        return false;
+
+    set_thrd_desc_fn set_desc_fn = NULL;
+    *(void**)(&set_desc_fn) = _sir_get_dll_export(kb_dll_handle, "SetThreadDescription");
+    if (!set_desc_fn) {
+        (void)FreeLibrary(kb_dll_handle);
+        return false;
+    }
+
     wchar_t buf[SIR_MAXPID] = {0};
     int name_len = (int)strnlen(name, SIR_MAXPID);
     if (0 == name_len)
         name_len = 1;
-    if (!MultiByteToWideChar(CP_UTF8, 0UL, name, name_len, buf, SIR_MAXPID))
+
+    if (!MultiByteToWideChar(CP_UTF8, 0UL, name, name_len, buf, SIR_MAXPID)) {
+        (void)FreeLibrary(kb_dll_handle);
         return _sir_handlewin32err(GetLastError());
-    // TODO: Windows Server 2016, Windows 10 LTSB 2016 and Windows 10 version 1607:
-    // SetThreadDescription is only available by Run Time Dynamic Linking in KernelBase.dll.
-    // https://learn.microsoft.com/en-us/windows/win32/dlls/using-run-time-dynamic-linking
-    HRESULT hr = SetThreadDescription(GetCurrentThread(), buf);
+    }
+
+    HRESULT hr = set_desc_fn(GetCurrentThread(), buf);
+    (void)FreeLibrary(kb_dll_handle);
     return FAILED(hr) ? _sir_handlewin32err(hr) : true;
 #else
 # if !defined(SUNLINT)
