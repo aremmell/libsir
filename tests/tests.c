@@ -274,7 +274,7 @@ bool sirtest_logwritesanity(void) {
     return print_result_and_return(pass);
 }
 
-#if !defined(__ORANGEC__)
+#if !defined(SIR_NO_THREAD_NAMES)
 bool sirtest_threadidsanity(void)
 {
     INIT(si, SIRL_ALL, 0, 0, 0);
