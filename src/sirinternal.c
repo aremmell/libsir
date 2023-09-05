@@ -1162,9 +1162,6 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
 #elif defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
     return _sir_validstrnofail(name);
-#elif defined(__ANDROID__) && __ANDROID_API__ < 26
-# define SIR_NO_THREAD_NAMES
-    return false;
 #elif defined(__WIN__) && !defined(__ORANGEC__)
     bool success       = false;
     wchar_t* wide_name = NULL;

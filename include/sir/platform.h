@@ -184,6 +184,8 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #   if defined(__ANDROID__) && defined(__ANDROID_API__)
 #    if __ANDROID_API__ < 26
 #     undef USE_PTHREAD_GETNAME_NP
+#     undef SIR_NO_THREAD_NAMES
+#     define SIR_NO_THREAD_NAMES
 #    endif
 #   endif
 #   if defined(__illumos__) || ((defined(__sun) || defined(__sun__)) && \

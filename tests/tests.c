@@ -52,9 +52,7 @@ static sir_test sir_tests[] = {
     {"sanity-levels",           sirtest_levelssanity, false, true},
     {"sanity-mutexes",          sirtest_mutexsanity, false, true},
     {"sanity-update-config",    sirtest_updatesanity, false, true},
-#if !defined(__ORANGEC__)
     {"sanity-thread-ids",       sirtest_threadidsanity, false, true},
-#endif
     {"sanity-file-write",       sirtest_logwritesanity, false, true},
     {"syslog",                  sirtest_syslog, false, true},
     {"os_log",                  sirtest_os_log, false, true},
@@ -274,7 +272,6 @@ bool sirtest_logwritesanity(void) {
     return print_result_and_return(pass);
 }
 
-#if !defined(SIR_NO_THREAD_NAMES)
 bool sirtest_threadidsanity(void)
 {
     INIT(si, SIRL_ALL, 0, 0, 0);
@@ -338,7 +335,11 @@ bool sirtest_threadidsanity(void)
             }
 
             bool found = NULL != strstr(buf, search);
+#if !defined(SIR_NO_THREAD_NAMES)
             pass &= found;
+#else
+            pass |= found;
+#endif
 
             if (found)
                 printf("\t" GREEN("line %zu: found '%s'") "\n", n, search);
@@ -354,7 +355,6 @@ bool sirtest_threadidsanity(void)
     pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
-#endif
 
 bool sirtest_failnooutputdest(void) {
     INIT(si, 0, 0, 0, 0);
