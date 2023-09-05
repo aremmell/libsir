@@ -451,16 +451,16 @@ bool _sir_init_common_static(void) {
 #endif
 
     bool created = _sir_mutexcreate(&cfg_mutex);
-    SIR_ASSERT_UNUSED(created, created);
+    SIR_ASSERT(created);
 
     _sir_andeql(created, _sir_mutexcreate(&fc_mutex));
-    SIR_ASSERT_UNUSED(created, created);
+    SIR_ASSERT(created);
 
     _sir_andeql(created, _sir_mutexcreate(&pc_mutex));
-    SIR_ASSERT_UNUSED(created, created);
+    SIR_ASSERT(created);
 
     _sir_andeql(created, _sir_mutexcreate(&ts_mutex));
-    SIR_ASSERT_UNUSED(created, created);
+    SIR_ASSERT(created);
 
     return created;
 }
@@ -1224,15 +1224,15 @@ bool _sir_setthreadname(const char* name) {
 # endif
 
 # if defined(__HAVE_STDC_SECURE_OR_EXT1__)
-    int name_len = (int)strnlen_s(name, SIR_MAXPID);
+    size_t name_len = strnlen_s(name, SIR_MAXPID);
 # else
-    int name_len = (int)strnlen(name, SIR_MAXPID);
+    size_t name_len = strnlen(name, SIR_MAXPID);
 # endif
     if (0 == name_len)
         name_len = 1;
 
     wchar_t buf[SIR_MAXPID] = {0};
-    if (!MultiByteToWideChar(CP_UTF8, 0UL, name, name_len, buf, SIR_MAXPID))
+    if (!MultiByteToWideChar(CP_UTF8, 0UL, name, (int)name_len, buf, SIR_MAXPID))
         return _sir_handlewin32err(GetLastError());
 
     HRESULT hr = SetThreadDescription(GetCurrentThread(), buf);

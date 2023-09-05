@@ -344,7 +344,7 @@ sirpluginid _sir_plugin_cache_add(sir_plugincache* spc, sir_plugin* plugin) {
 
     const sir_plugin* existing = _sir_plugin_cache_find_id(spc, plugin->id);
     if (NULL != existing) {
-        _sir_selflog("error: already have plugin (path: '%s', id %08"PRIx32")",
+        _sir_selflog("error: already have plugin (path: '%s', id: %08"PRIx32")",
             existing->path, plugin->id);
         (void)_sir_seterror(_SIR_E_DUPITEM);
         return 0U;
