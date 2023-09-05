@@ -265,7 +265,7 @@ bool sirtest_logwritesanity(void) {
         else
             printf("\t" RED("did not find '%s'") "\n", message);
 
-        fclose(f);
+        _sir_safefclose(&f);
         printf("\tdeleting %s...\n", logfilename);
         (void)rmfile(logfilename);
     }
@@ -346,7 +346,7 @@ bool sirtest_threadidsanity(void)
                 printf("\t" RED("line %zu: did not find '%s'") "\n", n, search);
         }
 
-        fclose(f);
+        _sir_safefclose(&f);
         printf("\tdeleting %s...\n", logfilename);
         (void)rmfile(logfilename);
     }
@@ -380,10 +380,10 @@ bool sirtest_failnooutputdest(void) {
         if (0U != fid)
             pass &= sir_remfile(fid);
 
-        rmfile(logfilename);
+        (void)rmfile(logfilename);
     }
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -412,7 +412,7 @@ bool sirtest_failnulls(void) {
     if (pass)
         print_expected_error();
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -422,7 +422,7 @@ bool sirtest_failemptymessage(void) {
 
     pass &= !sir_debug("%s", "");
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -439,7 +439,7 @@ bool sirtest_filecachesanity(void) {
     for (size_t n = 0; n < numfiles - 1; n++) {
         char path[SIR_MAXPATH] = {0};
         (void)snprintf(path, SIR_MAXPATH, MAKE_LOG_NAME("test-%zu.log"), n);
-        rmfile(path);
+        (void)rmfile(path);
         ids[n] = sir_addfile(path, SIRL_ALL, (n % 2) ? odd : even);
         pass &= 0U != ids[n] && sir_info("test %zu", n);
     }
@@ -490,12 +490,12 @@ bool sirtest_filecachesanity(void) {
 
         char path[SIR_MAXPATH] = {0};
         (void)snprintf(path, SIR_MAXPATH, MAKE_LOG_NAME("test-%zu.log"), removeorder[n]);
-        rmfile(path);
+        (void)rmfile(path);
     }
 
     pass &= sir_info("test test test");
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -508,7 +508,7 @@ bool sirtest_failinvalidfilename(void) {
     if (pass)
         print_expected_error();
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -536,7 +536,7 @@ bool sirtest_failfilebadpermission(void) {
     if (pass)
         print_expected_error();
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -599,13 +599,13 @@ bool sirtest_faildupefile(void) {
     /* don't remove all of the log files in order to also test
      * cache tear-down. */
     pass &= sir_remfile(fid);
-
-    rmfile(filename1);
-    rmfile(filename2);
-    rmfile(filename3);
-    rmfile(filename4);
-
     pass &= sir_cleanup();
+
+    (void)rmfile(filename1);
+    (void)rmfile(filename2);
+    (void)rmfile(filename3);
+    (void)rmfile(filename4);
+
     return print_result_and_return(pass);
 }
 
@@ -619,7 +619,7 @@ bool sirtest_failremovebadfile(void) {
     if (pass)
         print_expected_error();
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -652,17 +652,17 @@ bool sirtest_rollandarchivefile(void) {
 
     if (0 != fseek(f, fillsize, SEEK_SET)) {
         handle_os_error(true, "fseek in file %s failed!", logfilename);
-        fclose(f);
+        _sir_safefclose(&f);
         return false;
     }
 
     if (EOF == fputc('\0', f)) {
         handle_os_error(true, "fputc in file %s failed!", logfilename);
-        fclose(f);
+        _sir_safefclose(&f);
         return false;
     }
 
-    fclose(f);
+    _sir_safefclose(&f);
 
     INIT(si, 0, 0, 0, 0);
     bool pass = si_init;
@@ -703,7 +703,7 @@ bool sirtest_rollandarchivefile(void) {
     if (delcount > 0U)
         printf("\tfound and removed %u log file(s)\n", delcount);
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -726,7 +726,7 @@ bool sirtest_failinittwice(void) {
     if (pass)
         print_expected_error();
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -742,7 +742,7 @@ bool sirtest_failinvalidinitdata(void) {
     if (pass)
         print_expected_error();
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -751,13 +751,13 @@ bool sirtest_initcleanupinit(void) {
     bool pass = si1_init;
 
     pass &= sir_info("init called once; testing output...");
-    sir_cleanup();
+    pass &= sir_cleanup();
 
     INIT(si2, SIRL_ALL, 0, 0, 0);
     pass &= si2_init;
 
     pass &= sir_info("init called again after re-init; testing output...");
-    sir_cleanup();
+    pass &= sir_cleanup();
 
     return print_result_and_return(pass);
 }
@@ -778,7 +778,7 @@ bool sirtest_failaftercleanup(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     pass &= !sir_info("already cleaned up; this needs to fail");
 
     if (pass)
@@ -830,7 +830,7 @@ bool sirtest_errorsanity(void) {
         printf("\t%s = %s\n", errors[n].name, message);
     }
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -945,7 +945,7 @@ bool sirtest_textstylesanity(void) {
         SIRTC_BMAGENTA);
     PRINT_PASS(pass, "\t--- change mode: 16-color: %s ---\n\n", PRN_PASS(pass));
 
-    sir_cleanup();
+    pass &= sir_cleanup();
 
     return print_result_and_return(pass);
 }
@@ -1054,7 +1054,7 @@ bool sirtest_optionssanity(void) {
 
     PRINT_PASS(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -1148,7 +1148,7 @@ bool sirtest_levelssanity(void) {
 
     PRINT_PASS(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -1260,7 +1260,7 @@ bool sirtest_perf(void) {
 
         stdioelapsed = sir_timer_elapsed(&stdiotimer);
 
-        sir_cleanup();
+        pass &= sir_cleanup();
 
         INIT(si2, 0, 0, 0, 0);
         pass &= si2_init;
@@ -1308,7 +1308,7 @@ bool sirtest_perf(void) {
     if (deleted > 0U)
         printf("\t" DGRAY("deleted %u log file(s)") "\n", deleted);
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -1335,7 +1335,7 @@ bool sirtest_updatesanity(void) {
         SIRL_INFO, SIRL_DEBUG
     };
 
-    rmfile(logfile);
+    (void)rmfile(logfile);
     sirfileid id1 = sir_addfile(logfile, SIRL_DEFAULT, SIRO_DEFAULT);
     pass &= 0 != id1;
 
@@ -1402,9 +1402,9 @@ bool sirtest_updatesanity(void) {
     }
 
     pass &= sir_remfile(id1);
-    rmfile(logfile);
-    sir_cleanup();
+    (void)rmfile(logfile);
 
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -1492,7 +1492,7 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
 #  endif
 # endif
 
-        sir_cleanup();
+        pass &= sir_cleanup();
 
         if (!pass)
             break;
@@ -1852,7 +1852,7 @@ bool sirtest_filesystem(void) {
 
     _sir_safefclose(&f);
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -1920,7 +1920,7 @@ bool sirtest_squelchspam(void) {
             ascii_idx = 33;
     }
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -2213,7 +2213,7 @@ bool sirtest_threadrace(void) {
 
     _sir_safefree(&heap_args);
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -2225,10 +2225,10 @@ unsigned __stdcall threadrace_thread(void* arg) {
     pid_t threadid       = _sir_gettid();
     thread_args* my_args = (thread_args*)arg;
 
-    rmfile(my_args->log_file);
+    (void)rmfile(my_args->log_file);
     sirfileid id = sir_addfile(my_args->log_file, SIRL_ALL, SIRO_MSGONLY);
 
-    if (0 == id) {
+    if (0U == id) {
         bool unused = print_test_error(false, false);
         SIR_UNUSED(unused);
 #if !defined(__WIN__)
@@ -2294,7 +2294,7 @@ unsigned __stdcall threadrace_thread(void* arg) {
 
     my_args->pass = print_test_error(sir_remfile(id), false);
 
-    rmfile(my_args->log_file);
+    (void)rmfile(my_args->log_file);
 
 #if !defined(__WIN__)
     return NULL;
@@ -2400,7 +2400,7 @@ void deletefiles(const char* search, const char* path, const char* filename, uns
         char filepath[SIR_MAXPATH];
         _sir_snprintf_trunc(filepath, SIR_MAXPATH, "%s%s", path, filename);
 
-        rmfile(filepath);
+        (void)rmfile(filepath);
         (*data)++;
     }
 }
