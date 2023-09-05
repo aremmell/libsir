@@ -278,13 +278,7 @@ bool sirtest_threadidsanity(void)
     } else {
         for (size_t n = 0; n < 3; n++) {
             char buf[256] = {0};
-            int ch        = 0;
-
-            for (size_t idx = 0; (idx < 256) && ((ch = getc(f)) != EOF)
-                && ('\n' != ch); idx++) {
-                buf[idx] = (char)ch;
-            }
-
+            pass &= 0 != sir_readline(f, buf, 256);
             printf("\tread line %zu: '%s'\n", n, buf);
 
             char search[SIR_MAXPID] = {0};
@@ -2448,6 +2442,19 @@ void sir_sleep_msec(uint32_t msec) {
 #else /* __WIN__ */
     (void)SleepEx((DWORD)msec, TRUE);
 #endif
+}
+
+size_t sir_readline(FILE* f, char* buf, size_t size) {
+    if (!f || !buf || 0 == size)
+        return 0;
+
+    int ch     = 0;
+    size_t idx = 0;
+
+    for (; (idx < size) && ((ch = getc(f)) != EOF) && ('\n' != ch); idx++)
+        buf[idx] = (char)ch;
+
+    return (0 == ferror(f)) ? idx : 0;
 }
 
 #if defined(SIR_OS_LOG_ENABLED)

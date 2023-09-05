@@ -379,6 +379,7 @@ double sir_timer_elapsed(const sir_time* timer); /* msec */
 long sir_timer_getres(void); /* nsec */
 
 void sir_sleep_msec(uint32_t msec);
+size_t sir_readline(FILE* f, char* buf, size_t size);
 
 # if defined(SIR_OS_LOG_ENABLED)
 void os_log_parent_activity(void* ctx);
