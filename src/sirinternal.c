@@ -1064,6 +1064,7 @@ bool _sir_clock_gettime(int clock, time_t* tbuf, long* msecbuf) {
             return _sir_handlewin32err(GetLastError());
         }
 #else
+        SIR_UNUSED(clock);
         time(tbuf);
         if (msecbuf)
             *msecbuf = 0L;

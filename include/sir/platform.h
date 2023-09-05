@@ -421,7 +421,8 @@ _set_thread_local_invalid_parameter_handler(
 #   define SIR_MAXPID 15
 #  endif
 
-#  if (defined(_POSIX_TIMERS) && _POSIX_TIMERS > 0) || defined(__MACOS__)
+#  if (defined(_POSIX_TIMERS) && _POSIX_TIMERS > 0) || \
+       defined(__MACOS__) || defined(__OpenBSD__)
 #   define SIR_MSEC_TIMER
 #   define SIR_MSEC_POSIX
 #  else
