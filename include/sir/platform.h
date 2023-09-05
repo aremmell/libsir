@@ -111,7 +111,7 @@
 #   undef _DARWIN_C_SOURCE
 #   define _DARWIN_C_SOURCE
 #  elif defined(__serenity__)
-#   define USE_PTHREAD_GETNAME_NP
+#   define SIR_PTHREAD_GETNAME_NP
 #  elif defined(__OpenBSD__)
 #   define __BSD__
 #   define __FreeBSD_PTHREAD_NP_11_3__
@@ -120,7 +120,7 @@
 #   if !defined(_NETBSD_SOURCE)
 #    define _NETBSD_SOURCE 1
 #   endif
-#   define USE_PTHREAD_GETNAME_NP
+#   define SIR_PTHREAD_GETNAME_NP
 #  elif defined(__FreeBSD__) || defined(__DragonFly__)
 #   define __BSD__
 #   define _BSD_SOURCE
@@ -136,7 +136,7 @@
 #    define __DragonFly_getthreadid__
 #   endif
 #   if defined(__DragonFly__)
-#    define USE_PTHREAD_GETNAME_NP
+#    define SIR_PTHREAD_GETNAME_NP
 #   endif
 #  else
 #   if defined(__HAIKU__)
@@ -151,7 +151,7 @@
 extern /* Workaround a Clang on Haiku bug. */
 int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #    endif
-#    define USE_PTHREAD_GETNAME_NP
+#    define SIR_PTHREAD_GETNAME_NP
 #   endif
 #   if defined(__GNU__) && !defined(__linux__)
 #    if !defined(__HURD__)
@@ -171,7 +171,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #     define GLIBC_VERSION 0
 #    endif
 #    if defined(__GLIBC__) && GLIBC_VERSION >= 21200
-#     define USE_PTHREAD_GETNAME_NP
+#     define SIR_PTHREAD_GETNAME_NP
 #    endif
 #    if defined(__GLIBC__) && GLIBC_VERSION > 0 && GLIBC_VERSION < 21200
 #     undef SIR_NO_THREAD_NAMES
@@ -182,12 +182,12 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #    if !defined(_GNU_SOURCE)
 #     define _GNU_SOURCE 1
 #    endif
-#    define USE_PTHREAD_GETNAME_NP
+#    define SIR_PTHREAD_GETNAME_NP
 #    include <sys/features.h>
 #   endif
 #   if defined(__ANDROID__) && defined(__ANDROID_API__)
 #    if __ANDROID_API__ < 26
-#     undef USE_PTHREAD_GETNAME_NP
+#     undef SIR_PTHREAD_GETNAME_NP
 #     undef SIR_NO_THREAD_NAMES
 #     define SIR_NO_THREAD_NAMES
 #    endif
@@ -195,7 +195,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #   if defined(__illumos__) || ((defined(__sun) || defined(__sun__)) && \
               (defined(__SVR4) || defined(__svr4__)))
 #    define __SOLARIS__
-#    define USE_PTHREAD_GETNAME_NP
+#    define SIR_PTHREAD_GETNAME_NP
 #    if !defined(_ATFILE_SOURCE)
 #     define _ATFILE_SOURCE 1
 #    endif
@@ -228,7 +228,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #   include "sir/platform_orangec.h"
 #  endif
 #  if defined(__MINGW32__) || defined(__MINGW64__)
-#   define USE_PTHREAD_GETNAME_NP
+#   define SIR_PTHREAD_GETNAME_NP
 #  endif
 #  include <windows.h>
 #  include <io.h>

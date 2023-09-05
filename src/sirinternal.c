@@ -1149,7 +1149,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     _sir_resetstr(name);
 #if defined(__MACOS__) || (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
     (defined(__GLIBC__) && GLIBC_VERSION >= 21200 && defined(_GNU_SOURCE)) || \
-    (defined(__ANDROID__) &&  __ANDROID_API__ >= 26) || defined(USE_PTHREAD_GETNAME_NP) || \
+    (defined(__ANDROID__) &&  __ANDROID_API__ >= 26) || defined(SIR_PTHREAD_GETNAME_NP) || \
     (defined(__linux__) && !defined(__GLIBC__) && \
      defined(_GNU_SOURCE) && defined(__NEED_pthread_t))
     int ret = pthread_getname_np(pthread_self(), name, SIR_MAXPID);
@@ -1164,28 +1164,26 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
     return _sir_validstrnofail(name);
 #elif defined(__WIN__) && !defined(__ORANGEC__)
-    bool success       = false;
-    wchar_t* wide_name = NULL;
-    HRESULT hr         = GetThreadDescription(GetCurrentThread(), &wide_name);
-    if (SUCCEEDED(hr)) {
+    wchar_t* wname = NULL;
+    HRESULT hr     = GetThreadDescription(GetCurrentThread(), &wname);
+    if (FAILED(hr))
+        return _sir_handlewin32err(GetLastError());
+    bool success = true;
 # if defined(__HAVE_STDC_SECURE_OR_EXT1__)
-        size_t wide_len = wcsnlen_s(wide_name, SIR_MAXPID);
+    size_t wlen = wcsnlen_s(wname, SIR_MAXPID);
 # elif defined(__EMBARCADEROC__)
-        size_t wide_len = wcslen(wide_name);
+    size_t wlen = wcslen(wname);
 # else
-        size_t wide_len = wcsnlen(wide_name, SIR_MAXPID);
+    size_t wlen = wcsnlen(wname, SIR_MAXPID);
 # endif
-        if (wide_len > 0) {
-            if (WideCharToMultiByte(CP_UTF8, 0UL, wide_name, (int)wide_len, name, SIR_MAXPID,
-                NULL, NULL))
-                success = true;
-            else
-                (void)_sir_handlewin32err(GetLastError());
-        } else {
-            success = true;
+    if (wlen > 0) {
+        if (!WideCharToMultiByte(CP_UTF8, 0UL, wname, (int)wlen, name,
+            SIR_MAXPID, NULL, NULL)) {
+            success = false;
+            (void)_sir_handlewin32err(GetLastError());
         }
-        (void)LocalFree(wide_name);
     }
+    (void)LocalFree(wname);
     return success && _sir_validstrnofail(name);
 #else
 # if !defined(_AIX) && !defined(__HURD__) && !defined(SUNLINT)
@@ -1210,7 +1208,7 @@ bool _sir_setthreadname(const char* name) {
     return (0 != ret) ? _sir_handleerr(ret) : true;
 #elif (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
       (defined(__GLIBC__) && GLIBC_VERSION >= 21200 && defined(_GNU_SOURCE)) || \
-       defined(__QNXNTO__) || defined(__SOLARIS__) || defined(USE_PTHREAD_GETNAME_NP) || \
+       defined(__QNXNTO__) || defined(__SOLARIS__) || defined(SIR_PTHREAD_GETNAME_NP) || \
        defined(__ANDROID__) && !defined(__OpenBSD__) || \
       (defined(__linux__) && !defined(__GLIBC__) && \
        defined(_GNU_SOURCE) && defined(__NEED_pthread_t))
