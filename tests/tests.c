@@ -280,8 +280,6 @@ bool sirtest_threadidsanity(void)
             char buf[256] = {0};
             int ch        = 0;
 
-            while ('\n' == (char)(ch = getc(f)));
-
             for (size_t idx = 0; (idx < 256) && ((ch = getc(f)) != EOF)
                 && ('\n' != ch); idx++) {
                 buf[idx] = (char)ch;
