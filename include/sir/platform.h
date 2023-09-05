@@ -274,7 +274,7 @@ _set_thread_local_invalid_parameter_handler(
 #  define PID_CAST
 # endif
 
-# if defined(_AIX)
+# if defined(_AIX) || defined(__CYGWIN__)
 #  define CLOCK_CAST (int)
 # else
 #  define CLOCK_CAST
