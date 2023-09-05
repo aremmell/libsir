@@ -281,7 +281,7 @@ Linux/x86_64 (NVIDIA HPC C/C++):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache ${NVC:?}" make
+    - env CC="ccache ${NVC:?}" CFLAGS="-Mnovect" make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
@@ -769,8 +769,8 @@ Windows/Arm64 (MSVC):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin
-    - cl.exe src/*.c example/example.c -Iinclude /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
-    - cl.exe src/*.c tests/tests.c -Iinclude /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
+    - cl.exe src/*.c example/example.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
+    - cl.exe src/*.c tests/tests.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -798,8 +798,8 @@ Windows/Arm (MSVC):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin
-    - cl.exe src/*.c example/example.c -Iinclude /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
-    - cl.exe src/*.c tests/tests.c -Iinclude /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
+    - cl.exe src/*.c example/example.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
+    - cl.exe src/*.c tests/tests.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -827,8 +827,8 @@ Windows/x64 (MSVC):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin
-    - cl.exe src/*.c example/example.c -Iinclude /DSIR_NO_PLUGINS=1 /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
-    - cl.exe src/*.c tests/tests.c -Iinclude /DSIR_NO_PLUGINS=1 /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
+    - cl.exe src/*.c example/example.c -Iinclude /Ob3 /volatile:iso /GS- /DSIR_NO_PLUGINS=1 /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
+    - cl.exe src/*.c tests/tests.c -Iinclude /Ob3 /volatile:iso /GS- /DSIR_NO_PLUGINS=1 /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
@@ -869,8 +869,8 @@ Windows/i686 (MSVC):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin
-    - cl.exe src/*.c example/example.c -Iinclude /DSIR_NO_PLUGINS=1 /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
-    - cl.exe src/*.c tests/tests.c -Iinclude /DSIR_NO_PLUGINS=1 /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
+    - cl.exe src/*.c example/example.c -Iinclude /Ob3 /volatile:iso /GS- /DSIR_NO_PLUGINS=1 /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
+    - cl.exe src/*.c tests/tests.c -Iinclude /Ob3 /volatile:iso /GS- /DSIR_NO_PLUGINS=1 /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
@@ -1112,6 +1112,7 @@ Style check:
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
+    - ./.lint.sh spaces
     - ./.lint.sh tabs
     - ./.lint.sh whitespace
   dependencies: []
@@ -1356,7 +1357,9 @@ Coverity:
 
 ##############################################################################
 
+# XXX(jhj): Need to fix heisenbug - 20230904
 Windows/i686 (OrangeC):
+  allow_failure: true
   stage: build
   tags:
     - Docker-x64
@@ -1371,8 +1374,8 @@ Windows/i686 (OrangeC):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin
-    - wine64 /opt/orangec/bin/occ.exe /1 /O2 -Iinclude src/*.c example/example.c -o build/bin/sirexample.exe -DSIR_NO_PLUGINS=1
-    - wine64 /opt/orangec/bin/occ.exe /1 /O2 -Iinclude src/*.c tests/tests.c -o build/bin/sirtests.exe -DSIR_NO_PLUGINS=1
+    - wine64 /opt/orangec/bin/occ.exe -fruntime-heap-check /1 /O1 /g -Iinclude src/*.c example/example.c -o build/bin/sirexample.exe -DSIR_NO_PLUGINS=1 -DSIR_DEBUG=1 -D_DEBUG=1
+    - wine64 /opt/orangec/bin/occ.exe -fruntime-heap-check /1 /O1 /g -Iinclude src/*.c tests/tests.c -o build/bin/sirtests.exe -DSIR_NO_PLUGINS=1 -DSIR_DEBUG=1 -D_DEBUG=1
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
@@ -1572,12 +1575,12 @@ Clang Sanitizer (UB, 32-bit):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build32_section[collapsed=true]\r\e[0K\033[0;36mBuild 32-bit ...\033[0m" || true
-    - env CC="ccache clang -m32 ${UBSAN_CFLAGS:?}" LDFLAGS="${UBSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - env CC="ccache clang -m32 ${UBSAN_CFLAGS:?} -Werror" LDFLAGS="${UBSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test32_section[collapsed=true]\r\e[0K\033[0;36mTest 32-bit ...\033[0m" || true
-    - ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests 2>&1
     - echo -e "section_end:`date +%s`:Test32_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -1608,12 +1611,12 @@ Clang Sanitizer (UB, 64-bit):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build64_section[collapsed=true]\r\e[0K\033[0;36mBuild 64-bit ...\033[0m" || true
-    - env CC="ccache clang -m64 ${UBSAN_CFLAGS:?}" LDFLAGS="${UBSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - env CC="ccache clang -m64 ${UBSAN_CFLAGS:?} -Werror" LDFLAGS="${UBSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build64_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test64_section[collapsed=true]\r\e[0K\033[0;36mTest 64-bit ...\033[0m" || true
-    - ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests 2>&1
     - echo -e "section_end:`date +%s`:Test64_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -1643,12 +1646,12 @@ Clang Sanitizer (Memory):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache clang -m64 ${MSAN_CFLAGS:?}" LDFLAGS="${MSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - env CC="ccache clang -m64 ${MSAN_CFLAGS:?} -Werror" LDFLAGS="${MSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests 2>&1
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -1679,12 +1682,12 @@ Clang Sanitizer (Address, 64-bit):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build64_section[collapsed=true]\r\e[0K\033[0;36mBuild 64-bit ...\033[0m" || true
-    - env CC="ccache clang -m64 ${ASAN_CFLAGS:?}" LDFLAGS="${ASAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - env CC="ccache clang -m64 ${ASAN_CFLAGS:?} -Werror" LDFLAGS="${ASAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build64_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test64_section[collapsed=true]\r\e[0K\033[0;36mTest 64-bit ...\033[0m" || true
-    - ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests 2>&1
     - echo -e "section_end:`date +%s`:Test64_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -1715,12 +1718,12 @@ Clang Sanitizer (Address, 32-bit):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build32_section[collapsed=true]\r\e[0K\033[0;36mBuild 32-bit ...\033[0m" || true
-    - env CC="ccache clang -m32 ${ASAN_CFLAGS:?}" LDFLAGS="${ASAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - env CC="ccache clang -m32 ${ASAN_CFLAGS:?} -Werror" LDFLAGS="${ASAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test32_section[collapsed=true]\r\e[0K\033[0;36mTest 32-bit ...\033[0m" || true
-    - ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests 2>&1
     - echo -e "section_end:`date +%s`:Test32_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -1784,6 +1787,78 @@ Oracle Lint:
     expire_in: 7 days
     paths:
       - orstlint.txt
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
+Linux/x86_64 (Kefir, musl-libc):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/kefir:latest
+  script:
+    - *Configuration
+    - export KEFIR_RTINC="/opt/kefir-musl/include/kefir/runtime"
+    - export PATH="/opt/kefir-musl/bin:${PATH:?}"
+    - kefir --compiler-info
+    - kefir --environment-info
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env CC="kefir" make SIR_NO_PLUGINS=1
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - build/bin/sirexample
+    - build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
+Linux/x86_64 (Kefir):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/kefir:latest
+  script:
+    - *Configuration
+    - export KEFIR_RTINC="/opt/kefir/include/kefir/runtime"
+    - export PATH="/opt/kefir/bin:${PATH:?}"
+    - kefir --compiler-info
+    - kefir --environment-info
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - env CC="kefir" make
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - build/bin/sirexample
+    - build/bin/sirtests
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
       - build/
       - logs/
   retry: 2

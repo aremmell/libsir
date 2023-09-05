@@ -34,8 +34,19 @@
 #   endif
 #  endif
 # endif
+
+# include <sysinfoapi.h>
+
 # if !defined(SIR_MSVCRT_MINGW)
 #  define SIR_MSVCRT_MINGW
+# endif
+
+# if defined(SIR_MSEC_WIN32)
+#  undef SIR_MSEC_WIN32
+# endif
+
+# if !defined(SIR_MSEC_POSIX)
+#  define SIR_MSEC_POSIX
 # endif
 
 #endif /* !_SIR_PLATFORM_ORANGEC_H_INCLUDED */

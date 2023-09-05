@@ -32,7 +32,7 @@
 # define _SIR_CONFIG_H_INCLUDED
 
 /**
- * The time stamp format string at the start of log messages–not including
+ * The time stamp format string at the start of log messages-not including
  * milliseconds (as::SIR_MSECFORMAT), which is added separately.
  *
  * @remark Only applies if ::SIRO_NOTIME is not set.
@@ -120,10 +120,10 @@
  *
  * **Example**
  *   ~~~
- *   15:13:41 Fri 9 Jun 23 (-0600)
+ *   15:13:41 Fri 9 Jun 2023 (-0600)
  *   ~~~
  */
-# define SIR_FHTIMEFORMAT "%H:%M:%S %a %d %b %y (%z)"
+# define SIR_FHTIMEFORMAT "%H:%M:%S %a %d %b %Y (%z)"
 
 /**
  * The format string written to a log file when logging begins or the file
@@ -162,10 +162,10 @@
  *
  * **Example**
  *   ~~~
- *   23-06-09-122049
+ *   2023-06-09-122049
  *   ~~~
  */
-# define SIR_FNAMETIMEFORMAT "%y-%m-%d-%H%M%S"
+# define SIR_FNAMETIMEFORMAT "%Y-%m-%d-%H%M%S"
 
 /**
  * The sequence number format string for rolled/archived log files (see
@@ -333,16 +333,16 @@
 # define SIR_NUMOPTIONS 8
 
 /**
- * The number of entries in the 4-bit (16-color) map: 5 attributes + 17
- * foreground colors + 17 background colors (default counts as a color).
- */
-# define SIR_NUM16_COLOR_MAPPINGS 39
-
-/**
  * The number of seconds to let elapse before checking if the hostname needs
  * refreshing. The default is an eager 1 minute. Better safe than wrong?
  */
 # define SIR_HNAME_CHK_INTERVAL 60
+
+/**
+ * The number of milliseconds to let elapse before re-formatting the current
+ * thread identifier and/or name.
+ */
+# define SIR_THRD_CHK_INTERVAL 333.0
 
 # if defined(SIR_OS_LOG_ENABLED)
 /**

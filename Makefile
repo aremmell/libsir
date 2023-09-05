@@ -68,7 +68,7 @@ endif
 ifeq ($(SIR_DEBUG),1)
   DBGFLAGS ?= -g3
   ifneq ($(NO_DEFAULT_CFLAGS),1)
-    SIR_CFLAGS += -O0 -DDEBUG $(DBGFLAGS) -U_FORTIFY_SOURCE
+    SIR_CFLAGS += -O0 -DDEBUG -D_DEBUG $(DBGFLAGS) -U_FORTIFY_SOURCE
   endif
 else
   ifneq ($(NO_DEFAULT_CFLAGS),1)

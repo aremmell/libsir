@@ -15,7 +15,7 @@
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *p
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
@@ -67,33 +67,7 @@ int main(int argc, char** argv) {
     disable_debugger(1);
 #endif
 
-#if defined(MTMALLOC)
-# include <mtmalloc.h>
-# if !defined(DEBUG)
-mallocctl(MTDOUBLEFREE, 0);
-# else
-mallocctl(MTDOUBLEFREE, 1);
-mallocctl(MTINITBUFFER, 1);
-mallocctl(MTDEBUGPATTERN, 1);
-# endif
-#endif
-
-#if defined(__OpenBSD__) && defined(DEBUG)
-extern char *malloc_options;
-malloc_options = "CFGRSU";
-#endif
-
-#if defined(DUMA)
-# if defined(DUMA_EXPLICIT_INIT)
-duma_init();
-# endif
-# if defined(DUMA_MIN_ALIGNMENT)
-#  if DUMA_MIN_ALIGNMENT > 0
-DUMA_SET_ALIGNMENT(DUMA_MIN_ALIGNMENT);
-#  endif
-# endif
-DUMA_SET_FILL(0x2E);
-#endif
+#include "tests_malloc.h"
 
 #if !defined(__WIN__) && !defined(__HAIKU__)
     /* Disallow execution by root / sudo; some of the tests rely on lack of permissions. */
@@ -132,7 +106,7 @@ DUMA_SET_FILL(0x2E);
                     to_run++;
                 }
             }
-            if (0ul == to_run) {
+            if (0 == to_run) {
                 fprintf(stderr, RED("value expected for '%s'") "\n",
                     _cl_arg_list[1].flag);
                 print_usage_info();
@@ -168,12 +142,12 @@ DUMA_SET_FILL(0x2E);
     size_t tgt_tests = (only ? to_run : _sir_countof(sir_tests) - first);
     size_t passed    = 0;
     size_t ran       = 0;
-    sir_timer timer  = {0};
+    sir_time timer  = {0};
 
     printf(WHITEB("\n" ULINE("libsir") " %s (%s) running %zu %s...") "\n",
         sir_getversionstring(), (sir_isprerelease() ? "prerelease" : "release"),
         tgt_tests, TEST_S(tgt_tests));
-    sirtimerstart(&timer);
+    sir_timer_start(&timer);
 
     for (size_t n = first; n < _sir_countof(sir_tests); n++) {
         if (only && !sir_tests[n].run) {
@@ -193,20 +167,20 @@ DUMA_SET_FILL(0x2E);
             PRN_PASS(sir_tests[n].pass));
     }
 
-    float elapsed = sirtimerelapsed(&timer);
+    double elapsed = sir_timer_elapsed(&timer);
 
     if (passed == tgt_tests) {
         printf("\n" WHITEB("done: ")
                    GREENB("%s%zu " ULINE("libsir") " %s passed in %.03fsec!") "\n\n",
-            tgt_tests > 1 ? "all " : "", tgt_tests, TEST_S(tgt_tests), (double)elapsed / (double)1e3);
+            tgt_tests > 1 ? "all " : "", tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
     } else {
         printf("\n" WHITEB("done: ")
                    REDB("%zu of %zu " ULINE("libsir") " %s failed in %.03fsec") "\n\n",
-            tgt_tests - passed, tgt_tests, TEST_S(tgt_tests), (double)elapsed / (double)1e3);
+            tgt_tests - passed, tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
 
         printf(REDB("Failed %s:") "\n\n", TEST_S(tgt_tests - passed));
 
-        for (size_t t = 0ul; t < _sir_countof(sir_tests); t++)
+        for (size_t t = 0; t < _sir_countof(sir_tests); t++)
             if (!sir_tests[t].pass)
                 printf(RED(INDENT_ITEM "%s\n"), sir_tests[t].name);
         printf("\n");
@@ -252,12 +226,12 @@ bool sirtest_failnooutputdest(void) {
         pass &= sir_stdoutlevels(SIRL_NONE);
 
         sirfileid fid = sir_addfile(logfilename, SIRL_INFO, SIRO_DEFAULT);
-        pass &= 0u != fid;
+        pass &= 0U != fid;
         pass &= sir_info("this goes to %s", logfilename);
         pass &= sir_filelevels(fid, SIRL_NONE);
         pass &= !sir_notice("this goes nowhere!");
 
-        if (0u != fid)
+        if (0U != fid)
             pass &= sir_remfile(fid);
 
         rmfile(logfilename);
@@ -282,12 +256,12 @@ bool sirtest_failnulls(void) {
     if (pass)
         print_expected_error();
 
-    pass &= 0u == sir_addfile(NULL, SIRL_ALL, SIRO_MSGONLY);
+    pass &= 0U == sir_addfile(NULL, SIRL_ALL, SIRO_MSGONLY);
 
     if (pass)
         print_expected_error();
 
-    pass &= !sir_remfile(0u);
+    pass &= !sir_remfile(0U);
 
     if (pass)
         print_expected_error();
@@ -321,13 +295,13 @@ bool sirtest_filecachesanity(void) {
         (void)snprintf(path, SIR_MAXPATH, MAKE_LOG_NAME("test-%zu.log"), n);
         rmfile(path);
         ids[n] = sir_addfile(path, SIRL_ALL, (n % 2) ? odd : even);
-        pass &= 0u != ids[n] && sir_info("test %zu", n);
+        pass &= 0U != ids[n] && sir_info("test %zu", n);
     }
 
     pass &= sir_info("test test test");
 
     /* this one should fail; max files already added. */
-    pass &= 0u == sir_addfile(MAKE_LOG_NAME("should-fail.log"), SIRL_ALL, SIRO_MSGONLY);
+    pass &= 0U == sir_addfile(MAKE_LOG_NAME("should-fail.log"), SIRL_ALL, SIRO_MSGONLY);
 
     if (pass)
         print_expected_error();
@@ -338,14 +312,14 @@ bool sirtest_filecachesanity(void) {
     size_t removeorder[SIR_MAXFILES];
     memset(removeorder, -1, sizeof(removeorder));
 
-    long processed = 0l;
+    long processed = 0L;
     printf("\tcreating random file ID order...\n");
 
     do {
         size_t rnd = (size_t)getrand(SIR_MAXFILES);
         bool skip  = false;
 
-        for (size_t n = 0ul; n < SIR_MAXFILES; n++)
+        for (size_t n = 0; n < SIR_MAXFILES; n++)
             if (removeorder[n] == rnd) {
                 skip = true;
                 break;
@@ -383,7 +357,7 @@ bool sirtest_failinvalidfilename(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    pass &= 0u == sir_addfile("bad file!/name", SIRL_ALL, SIRO_MSGONLY);
+    pass &= 0U == sir_addfile("bad file!/name", SIRL_ALL, SIRO_MSGONLY);
 
     if (pass)
         print_expected_error();
@@ -411,7 +385,7 @@ bool sirtest_failfilebadpermission(void) {
 # endif
 #endif
 
-    pass &= 0u == sir_addfile(path, SIRL_ALL, SIRO_MSGONLY);
+    pass &= 0U == sir_addfile(path, SIRL_ALL, SIRO_MSGONLY);
 
     if (pass)
         print_expected_error();
@@ -439,12 +413,12 @@ bool sirtest_faildupefile(void) {
 
     /* should be fine; no other files added yet. */
     sirfileid fid = sir_addfile(filename1, SIRL_ALL, SIRO_DEFAULT);
-    pass &= 0u != fid;
+    pass &= 0U != fid;
 
     printf("\ttrying again to add log file '%s'...\n", filename1);
 
     /* should fail. this is the same file we already added. */
-    pass &= 0u == sir_addfile(filename1, SIRL_ALL, SIRO_DEFAULT);
+    pass &= 0U == sir_addfile(filename1, SIRL_ALL, SIRO_DEFAULT);
 
     if (pass)
         print_expected_error();
@@ -453,7 +427,7 @@ bool sirtest_faildupefile(void) {
 
     /* should also fail. this is the same file we already added, even
      * if the path strings don't match. */
-    pass &= 0u == sir_addfile(filename2, SIRL_ALL, SIRO_DEFAULT);
+    pass &= 0U == sir_addfile(filename2, SIRL_ALL, SIRO_DEFAULT);
 
     if (pass)
         print_expected_error();
@@ -462,16 +436,16 @@ bool sirtest_faildupefile(void) {
 
     /* should pass. this is a different file. */
     sirfileid fid2 = sir_addfile(filename3, SIRL_ALL, SIRO_DEFAULT);
-    pass &= 0u != fid2;
+    pass &= 0U != fid2;
 
     /* should also pass. */
     sirfileid fid3 = sir_addfile(filename4, SIRL_ALL, SIRO_DEFAULT);
-    pass &= 0u != fid3;
+    pass &= 0U != fid3;
 
     pass &= sir_info("hello three valid files");
 
     /* should now fail since we added it earlier. */
-    pass &= 0u == sir_addfile(filename3, SIRL_ALL, SIRO_DEFAULT);
+    pass &= 0U == sir_addfile(filename3, SIRL_ALL, SIRO_DEFAULT);
 
     if (pass)
         print_expected_error();
@@ -514,14 +488,14 @@ bool sirtest_rollandarchivefile(void) {
     char logfilename[SIR_MAXPATH] = {0};
     (void)snprintf(logfilename, SIR_MAXPATH, MAKE_LOG_NAME("%s%s"), logbasename, logext);
 
-    unsigned delcount = 0u;
+    unsigned delcount = 0U;
     if (!enumfiles(SIR_TESTLOGDIR, logbasename, deletefiles, &delcount)) {
         handle_os_error(false, "failed to enumerate log files with base name: %s!",
             logbasename);
         return false;
     }
 
-    if (delcount > 0u)
+    if (delcount > 0U)
         printf("\tfound and removed %u log file(s)\n", delcount);
 
     FILE* f = NULL;
@@ -548,7 +522,7 @@ bool sirtest_rollandarchivefile(void) {
     bool pass = si_init;
 
     sirfileid fileid = sir_addfile(logfilename, SIRL_DEBUG, SIRO_MSGONLY | SIRO_NOHDR);
-    pass &= 0u != fileid;
+    pass &= 0U != fileid;
 
     if (pass) {
         /* write an (approximately) known quantity until we should have rolled */
@@ -558,10 +532,10 @@ bool sirtest_rollandarchivefile(void) {
         do {
             pass &= sir_debug("%zu %s", written, line);
             written += linesize;
-        } while (pass && (written < deltasize + (linesize * 50ul)));
+        } while (pass && (written < deltasize + (linesize * 50)));
 
         /* look for files matching the original name. */
-        unsigned foundlogs = 0u;
+        unsigned foundlogs = 0U;
         if (!enumfiles(SIR_TESTLOGDIR, logbasename, countfiles, &foundlogs)) {
             handle_os_error(false, "failed to enumerate log files with base name: %s!", logbasename);
             pass = false;
@@ -569,18 +543,18 @@ bool sirtest_rollandarchivefile(void) {
 
         /* if two (or more) are present, the test is a pass. */
         printf("\tfound %u log files with base name: %s\n", foundlogs, logbasename);
-        pass &= foundlogs >= 2u;
+        pass &= foundlogs >= 2U;
     }
 
     pass &= sir_remfile(fileid);
 
-    delcount = 0u;
+    delcount = 0U;
     if (!enumfiles(SIR_TESTLOGDIR, logbasename, deletefiles, &delcount)) {
         handle_os_error(false, "failed to enumerate log files with base name: %s!", logbasename);
         return false;
     }
 
-    if (delcount > 0u)
+    if (delcount > 0U)
         printf("\tfound and removed %u log file(s)\n", delcount);
 
     sir_cleanup();
@@ -800,8 +774,8 @@ bool sirtest_textstylesanity(void) {
     pass &= sir_setcolormode(SIRCM_RGB);
 
     for (size_t n = 0; n < 256; n++) {
-        sir_textcolor fg = sir_makergb(getrand(255u), getrand(255u), getrand(255u));
-        sir_textcolor bg = sir_makergb(getrand(255u), getrand(255u), getrand(255u));
+        sir_textcolor fg = sir_makergb(getrand(255U), getrand(255U), getrand(255U));
+        sir_textcolor bg = sir_makergb(getrand(255U), getrand(255U), getrand(255U));
         pass &= sir_settextstyle(SIRL_DEBUG, SIRTA_NORMAL, fg, bg);
         pass &= sir_debug("this is RGB-color mode (fg: %"PRIu32", %"PRIu32", %"PRIu32
             ", bg: %"PRIu32", %"PRIu32", %"PRIu32")", _sir_getredfromcolor(fg),
@@ -830,7 +804,8 @@ bool sirtest_textstylesanity(void) {
     return print_result_and_return(pass);
 }
 
-#if defined(__clang__) /* only Clang has implicit-conversion; GCC BZ#87454 */
+#if defined(__clang__) && !defined(__EMBARCADEROC__)
+/* only Clang has implicit-conversion; GCC BZ#87454 */
 SANITIZE_SUPPRESS("implicit-conversion")
 #endif
 bool sirtest_optionssanity(void) {
@@ -915,13 +890,13 @@ bool sirtest_optionssanity(void) {
     printf(INDENT_ITEM WHITE("lowest byte: %08"PRIx32) "\n", invalid);
 
     /* gaps inbetween valid options. */
-    invalid = 0x0001ff00u & ~(SIRO_NOTIME | SIRO_NOHOST | SIRO_NOLEVEL | SIRO_NONAME |
+    invalid = 0x0001ff00U & ~(SIRO_NOTIME | SIRO_NOHOST | SIRO_NOLEVEL | SIRO_NONAME |
                              SIRO_NOMSEC | SIRO_NOPID | SIRO_NOTID  | SIRO_NOHDR);
     pass &= !_sir_validopts(invalid);
-    printf(INDENT_ITEM WHITE("gaps in 0x001ff00u: %08"PRIx32) "\n", invalid);
+    printf(INDENT_ITEM WHITE("gaps in 0x001ff00U: %08"PRIx32) "\n", invalid);
 
     /* greater than SIRO_MSGONLY and less than SIRO_NOHDR. */
-    for (sir_option o = 0x00008f00u; o < SIRO_NOHDR; o += 0x1000u) {
+    for (sir_option o = 0x00008f00U; o < SIRO_NOHDR; o += 0x1000U) {
         pass &= !_sir_validopts(o);
         printf(INDENT_ITEM WHITE("SIRO_MSGONLY >< SIRO_NOHDR: %08"PRIx32) "\n", o);
     }
@@ -983,13 +958,13 @@ bool sirtest_levelssanity(void) {
     printf("\t" WHITEB("--- random bitmask of valid levels ---") "\n");
     uint32_t last_count = SIR_NUMLEVELS;
     for (size_t n = 0; n < iterations; n++) {
-        sir_levels levels   = 0u;
-        uint32_t rand_count = 0u;
-        size_t last_idx     = 0ul;
+        sir_levels levels   = 0U;
+        uint32_t rand_count = 0U;
+        size_t last_idx     = 0UL;
 
         do {
             rand_count = getrand(SIR_NUMLEVELS);
-        } while (rand_count == last_count || rand_count <= 1u);
+        } while (rand_count == last_count || rand_count <= 1U);
 
         last_count = rand_count;
 
@@ -1021,7 +996,7 @@ bool sirtest_levelssanity(void) {
     printf(INDENT_ITEM WHITE("greater than SIRL_ALL: %04"PRIx16) "\n", invalid);
 
     /* individual invalid level. */
-    sir_level invalid2 = 0x1337u;
+    sir_level invalid2 = 0x1337U;
     pass &= !_sir_validlevel(invalid2);
     printf(INDENT_ITEM WHITE("individual invalid level: %04"PRIx16) "\n", invalid2);
 
@@ -1090,14 +1065,16 @@ bool sirtest_mutexsanity(void) {
 }
 
 bool sirtest_perf(void) {
-#if !defined(SIR_PERF_PROFILE)
     static const char* logbasename = "libsir-perf";
     static const char* logext      = "";
-#endif
 
 #if !defined(DUMA)
 # if !defined(SIR_PERF_PROFILE)
+#  if !defined(__WIN__)
     static const size_t perflines = 1000000;
+#  else
+    static const size_t perflines = 100000;
+#  endif
 # else
     static const size_t perflines = 4000000;
 # endif
@@ -1109,40 +1086,39 @@ bool sirtest_perf(void) {
     bool pass = si_init;
 
     if (pass) {
-        float stdioelapsed  = 0.0f;
+        double stdioelapsed  = 0.0;
+        double fileelapsed   = 0.0;
 #if !defined(SIR_PERF_PROFILE)
-        float printfelapsed = 0.0f;
-        float fileelapsed   = 0.0f;
+        double printfelapsed = 0.0;
 
         printf("\t" BLUE("%zu lines printf...") "\n", perflines);
 
-        sir_timer printftimer = {0};
-        sirtimerstart(&printftimer);
+        sir_time printftimer = {0};
+        sir_timer_start(&printftimer);
 
         for (size_t n = 0; n < perflines; n++)
             printf(WHITE("%.2f: lorem ipsum foo bar %s: %zu") "\n",
-                (double)sirtimerelapsed(&printftimer), "baz", 1234 + n);
+                sir_timer_elapsed(&printftimer), "baz", 1234 + n);
 
-        printfelapsed = sirtimerelapsed(&printftimer);
+        printfelapsed = sir_timer_elapsed(&printftimer);
 #endif
 
-        printf("\t" BLUE("%zu lines libsir(stdout)...") "\n", perflines);
+        printf("\t" BLUE("%zu lines libsir (stdout)...") "\n", perflines);
 
-        sir_timer stdiotimer = {0};
-        sirtimerstart(&stdiotimer);
+        sir_time stdiotimer = {0};
+        sir_timer_start(&stdiotimer);
 
         for (size_t n = 0; n < perflines; n++)
             sir_debug("%.2f: lorem ipsum foo bar %s: %zu",
-                (double)sirtimerelapsed(&stdiotimer), "baz", 1234 + n);
+                sir_timer_elapsed(&stdiotimer), "baz", 1234 + n);
 
-        stdioelapsed = sirtimerelapsed(&stdiotimer);
+        stdioelapsed = sir_timer_elapsed(&stdiotimer);
 
         sir_cleanup();
 
         INIT(si2, 0, 0, 0, 0);
         pass &= si2_init;
 
-#if !defined(SIR_PERF_PROFILE)
         char logfilename[SIR_MAXPATH] = {0};
         (void)snprintf(logfilename, SIR_MAXPATH, MAKE_LOG_NAME("%s%s"), logbasename, logext);
 
@@ -1150,47 +1126,41 @@ bool sirtest_perf(void) {
         pass &= 0 != logid;
 
         if (pass) {
-            printf("\t" BLUE("%zu lines libsir(log file)...") "\n", perflines);
+            printf("\t" BLUE("%zu lines libsir (file)...") "\n", perflines);
 
-            sir_timer filetimer = {0};
-            sirtimerstart(&filetimer);
+            sir_time filetimer = {0};
+            sir_timer_start(&filetimer);
 
             for (size_t n = 0; n < perflines; n++)
                 sir_debug("lorem ipsum foo bar %s: %zu", "baz", 1234 + n);
 
-            fileelapsed = sirtimerelapsed(&filetimer);
+            fileelapsed = sir_timer_elapsed(&filetimer);
 
             pass &= sir_remfile(logid);
         }
-#endif
 
         if (pass) {
 #if !defined(SIR_PERF_PROFILE)
             printf("\t" WHITEB("printf: ") CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
-                perflines, (double)printfelapsed / (double)1e3,
-                (double)perflines / (double)((double)printfelapsed / (double)1e3));
+                perflines, printfelapsed / 1e3, (double)perflines / (printfelapsed / 1e3));
 #endif
-            printf("\t" WHITEB("libsir(stdout): ")
-                   CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
-                perflines, (double)stdioelapsed / (double)1e3,
-                (double)perflines / (double)((double)stdioelapsed / (double)1e3));
-#if !defined(SIR_PERF_PROFILE)
-            printf("\t" WHITEB("libsir(log file): ")
-                   CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
-                perflines, (double)fileelapsed / (double)1e3,
-                (double)perflines / (double)((double)fileelapsed / (double)1e3));
-#endif
-            printf("\t" WHITEB("timer resolution: ") CYAN("~%ldnsec") "\n", sirtimergetres());
+            printf("\t" WHITEB("libsir (stdout): ")
+                   CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n", perflines,
+                    stdioelapsed / 1e3, (double)perflines / (stdioelapsed / 1e3));
+
+            printf("\t" WHITEB("libsir (file): ")
+                   CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n", perflines,
+                    fileelapsed / 1e3, (double)perflines / (fileelapsed / 1e3));
+
+            printf("\t" WHITEB("timer resolution: ") CYAN("~%ldnsec") "\n", sir_timer_getres());
         }
     }
 
-#if !defined(SIR_PERF_PROFILE)
-    unsigned deleted = 0u;
+    unsigned deleted = 0U;
     enumfiles(SIR_TESTLOGDIR, logbasename, deletefiles, &deleted);
 
-    if (deleted > 0u)
+    if (deleted > 0U)
         printf("\t" DGRAY("deleted %u log file(s)") "\n", deleted);
-#endif
 
     sir_cleanup();
     return print_result_and_return(pass);
@@ -1311,10 +1281,10 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
     for (int i = 1; i <= runs; i++) {
         /* randomly skip setting process name, identity/category to thoroughly
          * test fallback routines; randomly update the config mid-run. */
-        bool set_procname = getrand_bool(rnd ^ 0x5a5a5a5au);
-        bool set_identity = getrand_bool(rnd ^ 0xc9c9c9c9u);
-        bool set_category = getrand_bool(rnd ^ 0x32323232u);
-        bool do_update    = getrand_bool(rnd ^ 0xe7e7e7e7u);
+        bool set_procname = getrand_bool(rnd ^ 0x5a5a5a5aU);
+        bool set_identity = getrand_bool(rnd ^ 0xc9c9c9c9U);
+        bool set_category = getrand_bool(rnd ^ 0x32323232U);
+        bool do_update    = getrand_bool(rnd ^ 0xe7e7e7e7U);
 
         printf("\tset_procname: %d, set_identity: %d, set_category: %d, do_update: %d\n",
             set_procname, set_identity, set_category, do_update);
@@ -1389,7 +1359,7 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
 #if defined(SIR_NO_SYSTEM_LOGGERS)
 static bool generic_disabled_syslog_test(const char* sl_name, const char* identity,
     const char* category) {
-    INIT_SL(si, SIRL_ALL, SIRO_NOHOST | SIRO_NOTID, 0u, 0u, "sir_disabled_sltest");
+    INIT_SL(si, SIRL_ALL, SIRO_NOHOST | SIRO_NOTID, 0U, 0U, "sir_disabled_sltest");
     si.d_syslog.opts   = SIRO_DEFAULT;
     si.d_syslog.levels = SIRL_DEFAULT;
     bool pass = true;
@@ -1744,24 +1714,24 @@ bool sirtest_squelchspam(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    static const size_t alternate   = 50ul;
+    static const size_t alternate   = 50;
     static const size_t sequence[3] = {
-        1000ul, /* non-repeating messages. */
-        1000ul, /* repeating messages. */
-        1000ul  /* alternating repeating and non-repeating messages. */
+        1000, /* non-repeating messages. */
+        1000, /* repeating messages. */
+        1000  /* alternating repeating and non-repeating messages. */
     };
 
-    sir_timer timer;
-    sirtimerstart(&timer);
+    sir_time timer;
+    sir_timer_start(&timer);
 
     printf("\t" BLUE("%zu non-repeating messages...") "\n", sequence[0]);
 
-    for (size_t n = 0ul, ascii_idx = 33ul; n < sequence[0]; n++, ascii_idx++) {
+    for (size_t n = 0, ascii_idx = 33; n < sequence[0]; n++, ascii_idx++) {
         pass &= sir_debug("%c%c a non-repeating message", (char)ascii_idx,
             (char)ascii_idx + 1);
 
-        if (ascii_idx == 125ul)
-            ascii_idx = 33ul;
+        if (ascii_idx == 125)
+            ascii_idx = 33;
     }
 
     printf("\t" BLUE("%zu repeating messages...") "\n", sequence[1]);
@@ -1779,16 +1749,16 @@ bool sirtest_squelchspam(void) {
            "\n", sequence[2]);
 
     bool repeating   = false;
-    size_t counter   = 0ul;
-    size_t repeat_id = 0ul;
-    for (size_t n = 0ul, ascii_idx = 33ul; n < sequence[2]; n++, counter++, ascii_idx++) {
+    size_t counter   = 0;
+    size_t repeat_id = 0;
+    for (size_t n = 0, ascii_idx = 33; n < sequence[2]; n++, counter++, ascii_idx++) {
         if (!repeating) {
             pass &= sir_debug("%c%c a non-repeating message", (char)ascii_idx,
                 (char)ascii_idx + 1);
         } else {
             bool ret = sir_debug("%zu a repeating message", repeat_id);
 
-            if (counter - 1ul >= SIR_SQUELCH_THRESHOLD - 1ul)
+            if (counter - 1 >= SIR_SQUELCH_THRESHOLD - 1)
                 pass &= !ret;
             else
                 pass &= ret;
@@ -1796,12 +1766,12 @@ bool sirtest_squelchspam(void) {
 
         if (counter == alternate) {
             repeating = !repeating;
-            counter = 0ul;
+            counter = 0;
             repeat_id++;
         }
 
-        if (ascii_idx == 125ul)
-            ascii_idx = 33ul;
+        if (ascii_idx == 125)
+            ascii_idx = 33;
     }
 
     sir_cleanup();
@@ -2133,8 +2103,8 @@ unsigned __stdcall threadrace_thread(void* arg) {
 
     for (size_t n = 0; n < NUM_ITERATIONS; n++) {
         /* choose a random level, and colors. */
-        sir_textcolor fg = SIRTC_INVALID;
-        sir_textcolor bg = SIRTC_INVALID;
+        sir_textcolor fg = SIRTC_DEFAULT;
+        sir_textcolor bg = SIRTC_DEFAULT;
 
         if (n % 2 == 0) {
             fg = SIRTC_CYAN;
@@ -2183,13 +2153,13 @@ unsigned __stdcall threadrace_thread(void* arg) {
 #if !defined(__WIN__)
     return NULL;
 #else /* __WIN__ */
-    return 0u;
+    return 0U;
 #endif
 }
 
 /*
 bool sirtest_XXX(void) {
-    INIT(si, SIRL_ALL, 0u, 0u, 0u);
+    INIT(si, SIRL_ALL, 0U, 0U, 0U);
     bool pass = si_init;
 
     pass &= sir_cleanup();
@@ -2231,8 +2201,8 @@ bool filter_error(bool pass, uint16_t err) {
 uint32_t getrand(uint32_t upper_bound) {
 #if !defined(__WIN__) || defined(__EMBARCADEROC__)
 # if defined(__MACOS__) || defined(__BSD__)
-    if (upper_bound < 2u)
-        upper_bound = 2u;
+    if (upper_bound < 2U)
+        upper_bound = 2U;
     return arc4random_uniform(upper_bound);
 # else
 #  if defined(__EMBARCADEROC__)
@@ -2337,58 +2307,41 @@ bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* 
     return true;
 }
 
-bool sirtimerstart(sir_timer* timer) {
-#if !defined(__WIN__) || defined(__ORANGEC__)
-    int gettime = clock_gettime(SIRTEST_CLOCK, &timer->ts);
-    if (0 != gettime) {
-        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK);
-    }
-
-    return 0 == gettime;
-#else /* __WIN__ */
-    GetSystemTimePreciseAsFileTime(&timer->ft);
-    return true;
-#endif
+double sir_timer_elapsed(const sir_time* timer) {
+    sir_time now;
+    return _sir_msec_since(timer, &now);
 }
 
-float sirtimerelapsed(const sir_timer* timer) {
-#if !defined(__WIN__) || defined(__ORANGEC__)
-    struct timespec now;
-    if (0 == clock_gettime(SIRTEST_CLOCK, &now)) {
-        return (float)(((double)now.tv_sec * (double)1e3)
-            + ((double)now.tv_nsec / (double)1e6)
-            - ((double)timer->ts.tv_sec * (double)1e3)
-            + ((double)timer->ts.tv_nsec / (double)1e6));
-    } else {
-        handle_os_error(true, "clock_gettime(%d) failed!", CLOCK_CAST SIRTEST_CLOCK);
-    }
-    return 0.0f;
-#else /* __WIN__ */
-    FILETIME now;
-    GetSystemTimePreciseAsFileTime(&now);
-    ULARGE_INTEGER start   = {0};
-    start.LowPart          = timer->ft.dwLowDateTime;
-    start.HighPart         = timer->ft.dwHighDateTime;
-    ULARGE_INTEGER n100sec = {0};
-    n100sec.LowPart        = now.dwLowDateTime;
-    n100sec.HighPart       = now.dwHighDateTime;
-    return (float)((n100sec.QuadPart - start.QuadPart) / 1e4);
-#endif
-}
-
-long sirtimergetres(void) {
-    long retval = 0;
+long sir_timer_getres(void) {
+    long retval = 0L;
 #if !defined(__WIN__)
     struct timespec res;
-    if (0 == clock_getres(SIRTEST_CLOCK, &res)) {
+    if (0 == clock_getres(SIR_INTERVALCLOCK, &res)) {
         retval = res.tv_nsec;
     } else {
-        handle_os_error(true, "clock_getres(%d) failed!", CLOCK_CAST SIRTEST_CLOCK); // GCOVR_EXCL_LINE
+        handle_os_error(true, "clock_getres(%d) failed!", CLOCK_CAST SIR_INTERVALCLOCK); // GCOVR_EXCL_LINE
     }
 #else /* __WIN__ */
-    retval = 100;
+    LARGE_INTEGER cntr_freq;
+    (void)QueryPerformanceFrequency(&cntr_freq);
+    if (cntr_freq.QuadPart <= 0)
+        retval = 0L;
+    else
+        retval = (long)(ceil(((double)cntr_freq.QuadPart) / 1e9));
 #endif
     return retval;
+}
+
+void sir_sleep_msec(uint32_t msec) {
+    if (0U == msec)
+        return;
+
+#if !defined(__WIN__)
+    struct timespec ts = { msec / 1000, (msec % 1000) * 1000000 };
+    (void)nanosleep(&ts, NULL);
+#else /* __WIN__ */
+    (void)SleepEx((DWORD)msec, TRUE);
+#endif
 }
 
 #if defined(SIR_OS_LOG_ENABLED)

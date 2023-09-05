@@ -164,6 +164,27 @@ ifeq ($(NVIDIAC),1)
 endif
 
 ##############################################################################
+# Kefir
+
+ifneq "$(findstring kefir,$(CC))" ""
+  KEFIR?=1
+endif
+
+ifeq ($(KEFIR),1)
+  NO_DEFAULT_CFLAGS=1
+  ifeq ($(SIR_DEBUG),1)
+    SIR_CFLAGS+=-O0 -DDEBUG -Iinclude $(SIR_FPIC)
+  else
+    SIR_CFLAGS+=$(OPTFLAGS) -DNDEBUG -Iinclude $(SIR_FPIC)
+  endif
+  FORTIFY_FLAGS="-U_FORTIFY_SOURCE"
+  MMDOPT=
+  PTHOPT=
+  SIR_CSTD=
+  SIR_GSTD=
+endif
+
+##############################################################################
 # IBM XL C/C++ and GCC for AIX
 
 ifneq "$(findstring AIX,$(UNAME_S))" ""
@@ -184,9 +205,9 @@ endif
 ifeq ($(IBMXLC),1)
   NO_DEFAULT_CFLAGS=1
   ifeq ($(SIR_DEBUG),1)
-    CFLAGS+=$(DBGFLAGS) -O0 -DDEBUG -Iinclude -qtls -qthreaded -qinfo=mt -qformat=all
+    SIR_CFLAGS+=$(DBGFLAGS) -O0 -DDEBUG -Iinclude -qtls -qthreaded -qinfo=mt -qformat=all
   else
-    CFLAGS+=-DNDEBUG $(OPTFLAGS) -Iinclude -qtls -qthreaded -qinfo=mt -qformat=all -qpic=small
+    SIR_CFLAGS+=$(OPTFLAGS) -DNDEBUG -Iinclude -qtls -qthreaded -qinfo=mt -qformat=all -qpic=small
   endif
   SIR_SHARED=-qmkshrobj
   MMDOPT=

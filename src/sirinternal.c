@@ -44,25 +44,24 @@ static sirconfig _sir_cfg      = {0};
 static sirfcache _sir_fc       = {0};
 static sir_plugincache _sir_pc = {0};
 
-static sir_mutex cfg_mutex = SIR_MUTEX_INIT;
-static sir_once cfg_once   = SIR_ONCE_INIT;
+static sir_mutex cfg_mutex  = SIR_MUTEX_INIT;
+static sir_mutex fc_mutex   = SIR_MUTEX_INIT;
+static sir_mutex pc_mutex   = SIR_MUTEX_INIT;
+static sir_mutex ts_mutex   = SIR_MUTEX_INIT;
+static sir_once static_once = SIR_ONCE_INIT;
 
-static sir_mutex fc_mutex  = SIR_MUTEX_INIT;
-static sir_once fc_once    = SIR_ONCE_INIT;
-
-static sir_mutex pc_mutex  = SIR_MUTEX_INIT;
-static sir_once pc_once    = SIR_ONCE_INIT;
-
-static sir_mutex ts_mutex  = SIR_MUTEX_INIT;
-static sir_once ts_once    = SIR_ONCE_INIT;
-
-static sir_once magic_once = SIR_ONCE_INIT;
+#if defined(__WIN__)
+static LARGE_INTEGER _sir_perfcntr_freq = {0};
+#endif
 
 #if defined(__HAVE_ATOMIC_H__)
 static atomic_uint_fast32_t _sir_magic;
 #else
-static volatile uint32_t _sir_magic;
+static volatile uint32_t _sir_magic = 0U;
 #endif
+
+static _sir_thread_local char _sir_tid[SIR_MAXPID]   = {0};
+static _sir_thread_local sir_time _sir_last_thrd_chk = {0};
 
 bool _sir_makeinit(sirinit* si) {
     bool retval = _sir_validptr(si);
@@ -90,7 +89,17 @@ bool _sir_makeinit(sirinit* si) {
 
 bool _sir_init(sirinit* si) {
     (void)_sir_seterror(_SIR_E_NOERROR);
-    _sir_once(&magic_once, _sir_initialize_once);
+
+    /* can only fail on Windows. */
+    bool once_init = _sir_once(&static_once, _sir_init_static_once);
+#if !defined(__WIN__)
+    SIR_UNUSED(once_init);
+#else
+    if (!once_init) {
+        _sir_selflog("error: static data initialization routine failed!");
+        return false;
+    }
+#endif
 
     if (!_sir_validptr(si))
         return false;
@@ -203,10 +212,10 @@ bool _sir_cleanup(void) {
 #if defined(__HAVE_ATOMIC_H__)
     atomic_store(&_sir_magic, 0);
 #else
-    _sir_magic = 0u;
+    _sir_magic = 0U;
 #endif
 
-    memset(_cfg, 0ul, sizeof(sirconfig));
+    memset(_cfg, 0, sizeof(sirconfig));
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
 
     _sir_selflog("cleanup: %s", (cleanup ? "successful" : "with errors"));
@@ -387,22 +396,18 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
 
     switch (mid) {
         case SIRMI_CONFIG:
-            _sir_once(&cfg_once, _sir_initmutex_cfg_once);
             tmpm   = &cfg_mutex;
             tmpsec = &_sir_cfg;
             break;
         case SIRMI_FILECACHE:
-            _sir_once(&fc_once, _sir_initmutex_fc_once);
             tmpm   = &fc_mutex;
             tmpsec = &_sir_fc;
             break;
         case SIRMI_PLUGINCACHE:
-            _sir_once(&pc_once, _sir_initmutex_pc_once);
             tmpm   = &pc_mutex;
             tmpsec = &_sir_pc;
             break;
         case SIRMI_TEXTSTYLE:
-            _sir_once(&ts_once, _sir_initmutex_ts_once);
             tmpm   = &ts_mutex;
             tmpsec = &sir_text_style_section;
             break;
@@ -424,92 +429,41 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
 }
 
 #if !defined(__WIN__)
-void _sir_initialize_once(void) {
-# if defined(__HAVE_ATOMIC_H__)
-    atomic_init(&_sir_magic, 0);
-# endif
+void _sir_init_static_once(void) {
+    (void)_sir_init_common_static();
 }
-
-void _sir_initmutex_cfg_once(void) {
-    bool created = _sir_mutexcreate(&cfg_mutex);
-    SIR_ASSERT_UNUSED(created, created);
-}
-
-void _sir_initmutex_fc_once(void) {
-    bool created = _sir_mutexcreate(&fc_mutex);
-    SIR_ASSERT_UNUSED(created, created);
-}
-
-void _sir_initmutex_pc_once(void) {
-    bool created = _sir_mutexcreate(&pc_mutex);
-    SIR_ASSERT_UNUSED(created, created);
-}
-
-void _sir_initmutex_ts_once(void) {
-    bool created = _sir_mutexcreate(&ts_mutex);
-    SIR_ASSERT_UNUSED(created, created);
-}
-
 #else /* __WIN__ */
-BOOL CALLBACK _sir_initialize_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
+BOOL CALLBACK _sir_init_static_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
     SIR_UNUSED(ponce);
     SIR_UNUSED(param);
     SIR_UNUSED(ctx);
-    return TRUE;
-}
-
-BOOL CALLBACK _sir_initmutex_cfg_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
-    SIR_UNUSED(ponce);
-    SIR_UNUSED(param);
-    SIR_UNUSED(ctx);
-
-    if (!_sir_mutexcreate(&cfg_mutex)) {
-        SIR_ASSERT(!"failed to create mutex!");
-        return FALSE;
-    }
-
-    return TRUE;
-}
-
-BOOL CALLBACK _sir_initmutex_fc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
-    SIR_UNUSED(ponce);
-    SIR_UNUSED(param);
-    SIR_UNUSED(ctx);
-
-    if (!_sir_mutexcreate(&fc_mutex)) {
-        SIR_ASSERT(!"failed to create mutex!");
-        return FALSE;
-    }
-
-    return TRUE;
-}
-
-BOOL CALLBACK _sir_initmutex_pc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
-    SIR_UNUSED(ponce);
-    SIR_UNUSED(param);
-    SIR_UNUSED(ctx);
-
-    if (!_sir_mutexcreate(&pc_mutex)) {
-        SIR_ASSERT(!"failed to create mutex!");
-        return FALSE;
-    }
-
-    return TRUE;
-}
-
-BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx) {
-    SIR_UNUSED(ponce);
-    SIR_UNUSED(param);
-    SIR_UNUSED(ctx);
-
-    if (!_sir_mutexcreate(&ts_mutex)) {
-        SIR_ASSERT(!"failed to create mutex!");
-        return FALSE;
-    }
-
-    return TRUE;
+    return _sir_init_common_static() ? TRUE : FALSE;
 }
 #endif
+
+bool _sir_init_common_static(void) {
+#if defined(__HAVE_ATOMIC_H__)
+    atomic_init(&_sir_magic, 0);
+#endif
+
+#if defined(__WIN__)
+    (void)QueryPerformanceFrequency(&_sir_perfcntr_freq);
+#endif
+
+    bool created = _sir_mutexcreate(&cfg_mutex);
+    SIR_ASSERT_UNUSED(created, created);
+
+    created &= _sir_mutexcreate(&fc_mutex);
+    SIR_ASSERT_UNUSED(created, created);
+
+    created &= _sir_mutexcreate(&pc_mutex);
+    SIR_ASSERT_UNUSED(created, created);
+
+    created &= _sir_mutexcreate(&ts_mutex);
+    SIR_ASSERT_UNUSED(created, created);
+
+    return created;
+}
 
 bool _sir_once(sir_once* once, sir_once_fn func) {
 #if !defined(__WIN__)
@@ -530,63 +484,79 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false);
 
+    sirbuf buf = {0};
+
     /* from time to time, update the host name in the config, just in case. */
-    time_t now = -1;
-    if (-1 != time(&now) &&
-        (now - _cfg->state.last_hname_chk) > SIR_HNAME_CHK_INTERVAL) { //-V522
+    time_t now_sec = -1;
+    if (-1 != time(&now_sec) &&
+        (now_sec - _cfg->state.last_hname_chk) > SIR_HNAME_CHK_INTERVAL) { //-V522
         _sir_selflog("updating hostname...");
         if (!_sir_gethostname(_cfg->state.hostname)) {
             _sir_selflog("error: failed to get hostname!");
         } else {
-            _cfg->state.last_hname_chk = now;
+            _cfg->state.last_hname_chk = now_sec;
             _sir_selflog("hostname: '%s'", _cfg->state.hostname);
         }
+    }
+
+    /* format timestamp. */
+    long now_msec = 0L;
+    bool gettime = _sir_clock_gettime(SIR_WALLCLOCK, &now_sec, &now_msec);
+    SIR_ASSERT_UNUSED(gettime, gettime);
+
+    /* milliseconds. */
+    _sir_snprintf_trunc(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, now_msec);
+
+    /* hours/minutes/seconds. */
+    bool fmt = _sir_formattime(now_sec, _cfg->state.timestamp, SIR_TIMEFORMAT);
+    SIR_ASSERT_UNUSED(fmt, fmt);
+
+    /* check elapsed time since updating thread identifier/name. */
+    sir_time thrd_chk;
+    double msec_since_thrd_chk = _sir_msec_since(&_sir_last_thrd_chk, &thrd_chk);
+
+    /* update the thread identifier/name if enough time has elapsed. */
+    if (msec_since_thrd_chk > SIR_THRD_CHK_INTERVAL) {
+        _sir_last_thrd_chk = thrd_chk;
+
+        pid_t tid         = _sir_gettid();
+        bool resolved_tid = false;
+
+        /* prefer thread names. */
+        resolved_tid = _sir_getthreadname(_sir_tid);
+
+        /* if tid is identical to pid... */
+        if (!resolved_tid && tid == _cfg->state.pid) {
+            /* don't use anything to identify the thread. */
+            _sir_resetstr(_sir_tid);
+            resolved_tid = true;
+        }
+
+        /* fall back on tid. */
+        if (!resolved_tid)
+            _sir_snprintf_trunc(_sir_tid, SIR_MAXPID, SIR_PIDFORMAT,
+                PID_CAST tid);
     }
 
     sirconfig cfg;
     memcpy(&cfg, _cfg, sizeof(sirconfig));
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
 
-    sirbuf buf = {
-        {0},
-        {0},
-        {0},
-        cfg.state.hostname,
-        cfg.state.pidbuf,
-        NULL,
-        cfg.si.name,
-        {0},
-        {0},
-        {0},
-         0
-    };
+    buf.timestamp = cfg.state.timestamp;
+    buf.hostname  = cfg.state.hostname;
+    buf.pid       = cfg.state.pidbuf;
+    buf.name      = cfg.si.name;
 
-    bool fmt              = false;
     const char* style_str = _sir_gettextstyle(level);
 
     SIR_ASSERT(NULL != style_str);
     if (NULL != style_str)
-        fmt = (0 == _sir_strncpy(buf.style, SIR_MAXSTYLE, style_str,
-            strnlen(style_str, SIR_MAXSTYLE)));
-    SIR_ASSERT_UNUSED(fmt, fmt);
-
-    now          = -1;
-    long nowmsec = 0;
-    bool gettime = _sir_clock_gettime(&now, &nowmsec);
-    SIR_ASSERT(gettime);
-
-    if (gettime) {
-        fmt = _sir_formattime(now, buf.timestamp, SIR_TIMEFORMAT);
-        SIR_ASSERT_UNUSED(fmt, fmt);
-
-        _sir_snprintf_trunc(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, nowmsec);
-    }
+        (void)_sir_strncpy(buf.style, SIR_MAXSTYLE, style_str,
+            strnlen(style_str, SIR_MAXSTYLE));
 
     buf.level = _sir_formattedlevelstr(level);
 
-    pid_t tid = _sir_gettid();
-    if (tid != cfg.state.pid || (!_sir_getthreadname(buf.tid) || !_sir_validstrnofail(buf.tid)))
-            (void)snprintf(buf.tid, SIR_MAXPID, SIR_PIDFORMAT, PID_CAST tid);
+    (void)_sir_strncpy(buf.tid, SIR_MAXPID, _sir_tid, SIR_MAXPID);
 
     (void)vsnprintf(buf.message, SIR_MAXMESSAGE, format, args);
 
@@ -596,7 +566,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     bool match             = false;
     bool exit_early        = false;
     bool update_last_props = true;
-    uint64_t hash          = 0ull;
+    uint64_t hash          = 0ULL;
 
     if (cfg.state.last.prefix[0] == buf.message[0]  &&
         cfg.state.last.prefix[1] == buf.message[1]) {
@@ -762,7 +732,7 @@ const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
         }
 
         bool wantpid = !_sir_bittest(opts, SIRO_NOPID) && _sir_validstrnofail(buf->pid);
-        bool wanttid = !_sir_bittest(opts, SIRO_NOTID);
+        bool wanttid = !_sir_bittest(opts, SIRO_NOTID) && _sir_validstrnofail(buf->tid);
 
         if (wantpid || wanttid) {
             if (name)
@@ -1026,7 +996,7 @@ void _sir_syslog_reset(sir_syslog_dest* ctx) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (_sir_validptr(ctx)) {
         uint32_t old       = ctx->_state.mask;
-        ctx->_state.mask   = 0u;
+        ctx->_state.mask   = 0U;
         ctx->_state.logger = NULL;
         _sir_selflog("state reset; mask was %08"PRIx32, old);
     }
@@ -1055,73 +1025,25 @@ const char* _sir_formattedlevelstr(sir_level level) {
     return retval;
 }
 
-#if defined(__GNUC__)
-__attribute__ ((format (strftime, 3, 0)))
-#endif
-bool _sir_formattime(time_t now, char* buffer, const char* format) {
-    if (0 == now || -1 == now)
-        return _sir_seterror(_SIR_E_INVALID);
-
-    struct tm timebuf = {0};
-#if defined(__GNUC__) && !defined(__clang__) && \
-    !(defined(__OPEN64__) || defined(__OPENCC__))
-# pragma GCC diagnostic push
-# pragma GCC diagnostic ignored "-Wformat-nonliteral"
-#endif
-    size_t fmttime = strftime(buffer, SIR_MAXTIME, format,
-        _sir_localtime(&now, &timebuf));
-#if defined(__GNUC__) && !defined(__clang__) && \
-    !(defined(__OPEN64__) || defined(__OPENCC__))
-# pragma GCC diagnostic pop
-#endif
-
-    SIR_ASSERT(0 != fmttime);
-    if (0 == fmttime)
-        _sir_selflog("error: strftime failed; format string: '%s'", format);
-
-    return 0 != fmttime;
-}
-
-bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
+bool _sir_clock_gettime(int clock, time_t* tbuf, long* msecbuf) {
     if (tbuf) {
-        time_t ret = time(tbuf);
-        if ((time_t)-1 == ret) {
-            if (msecbuf)
-                *msecbuf = 0l;
-            return _sir_handleerr(errno);
-        }
 #if defined(SIR_MSEC_POSIX)
         struct timespec ts = {0};
-        int clock          = clock_gettime(SIR_MSECCLOCK, &ts);
-        SIR_ASSERT(0 == clock);
+        int ret            = clock_gettime(clock, &ts);
+        SIR_ASSERT(0 == ret);
 
-        if (0 == clock) {
+        if (0 == ret) {
+            *tbuf = ts.tv_sec;
             if (msecbuf)
-                *msecbuf = (long)(ts.tv_nsec / (long)1e6);
+                *msecbuf = (long)(ts.tv_nsec / 1000000L);
         } else {
             if (msecbuf)
-                *msecbuf = 0l;
+                *msecbuf = 0L;
             return _sir_handleerr(errno);
         }
-#elif defined(SIR_MSEC_MACH)
-        kern_return_t retval = KERN_SUCCESS;
-        mach_timespec_t mts  = {0};
-        clock_serv_t clock;
-
-        host_get_clock_service(mach_host_self(), SIR_MSECCLOCK, &clock);
-        retval = clock_get_time(clock, &mts);
-        mach_port_deallocate(mach_task_self(), clock);
-
-        if (KERN_SUCCESS == retval) {
-            if (msecbuf)
-                *msecbuf = (mts.tv_nsec / (long)1e6);
-        } else {
-            if (msecbuf)
-                *msecbuf = 0l;
-            return _sir_handleerr(retval);
-        }
-#elif defined(SIR_MSEC__WIN__)
-        static const ULONGLONG uepoch = (ULONGLONG)116444736e9ull;
+#elif defined(SIR_MSEC_WIN32)
+        SIR_UNUSED(clock);
+        static const ULONGLONG uepoch = (ULONGLONG)116444736e9;
 
         FILETIME ftutc = {0};
         GetSystemTimePreciseAsFileTime(&ftutc);
@@ -1129,28 +1051,59 @@ bool _sir_clock_gettime(time_t* tbuf, long* msecbuf) {
         ULARGE_INTEGER ftnow = {0};
         ftnow.HighPart = ftutc.dwHighDateTime;
         ftnow.LowPart  = ftutc.dwLowDateTime;
-        ftnow.QuadPart = (ULONGLONG)((ftnow.QuadPart - uepoch) / 1e7);
+        ftnow.QuadPart = (ULONGLONG)((ftnow.QuadPart - uepoch) / 10000000ULL);
 
         *tbuf = (time_t)ftnow.QuadPart;
 
         SYSTEMTIME st = {0};
         if (FileTimeToSystemTime(&ftutc, &st)) {
             if (msecbuf)
-                *msecbuf = st.wMilliseconds;
+                *msecbuf = (long)st.wMilliseconds;
         } else {
             if (msecbuf)
-                *msecbuf = 0l;
+                *msecbuf = 0L;
             return _sir_handlewin32err(GetLastError());
         }
-
 #else
         time(tbuf);
         if (msecbuf)
-            *msecbuf = 0l;
+            *msecbuf = 0L;
 #endif
         return true;
     }
     return false;
+}
+
+double _sir_msec_since(const sir_time* when, sir_time* out) {
+    if (!_sir_validptr(out))
+        return 0.0;
+#if !defined(__WIN__) || defined(__ORANGEC__)
+    out->sec = 0;
+    out->msec = 0L;
+
+    bool gettime = _sir_clock_gettime(SIR_INTERVALCLOCK, &out->sec, &out->msec);
+    SIR_ASSERT(gettime);
+
+    if (!_sir_validptrnofail(when) || !gettime || (out->sec < when->sec ||
+        (out->sec == when->sec && out->msec < when->msec)))
+        return 0.0;
+
+    return ((((double)out->sec) * 1e3) + (double)out->msec) -
+           ((((double)when->sec) * 1e3) + (double)when->msec);
+#else /* __WIN__ */
+    SIR_ASSERT(_sir_perfcntr_freq.QuadPart > 0LL);
+
+    if (_sir_perfcntr_freq.QuadPart <= 0LL)
+        return 0.0;
+
+    (void)QueryPerformanceCounter(&out->counter);
+
+    if (!_sir_validptrnofail(when) || out->counter.QuadPart <= when->counter.QuadPart)
+        return 0.0;
+
+    double msec_ratio = ((double)_sir_perfcntr_freq.QuadPart) / 1e3;
+    return ((double)(out->counter.QuadPart - when->counter.QuadPart)) / msec_ratio;
+#endif
 }
 
 pid_t _sir_getpid(void) {
@@ -1164,7 +1117,7 @@ pid_t _sir_getpid(void) {
 pid_t _sir_gettid(void) {
     pid_t tid = 0;
 #if defined(__MACOS__)
-    uint64_t tid64 = 0ull;
+    uint64_t tid64 = 0ULL;
     int gettid     = pthread_threadid_np(NULL, &tid64);
     if (0 != gettid)
         (void)_sir_handleerr(gettid);
@@ -1180,8 +1133,7 @@ pid_t _sir_gettid(void) {
 #elif defined(__HAIKU__)
     tid = get_pthread_thread_id(pthread_self());
 #elif defined(__linux__) || defined(__serenity__)
-# if (defined(__GLIBC__) && GLIBC_VERSION >= 23000) || \
-     defined(__serenity__)
+# if (defined(__GLIBC__) && GLIBC_VERSION >= 23000) || defined(__serenity__)
     tid = gettid();
 # else
     tid = syscall(SYS_gettid);
@@ -1195,6 +1147,7 @@ pid_t _sir_gettid(void) {
 }
 
 bool _sir_getthreadname(char name[SIR_MAXPID]) {
+    _sir_resetstr(name);
 #if defined(__MACOS__) || \
    (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
    (defined(__GLIBC__) && GLIBC_VERSION >= 21200 && defined(_GNU_SOURCE)) || \
@@ -1202,7 +1155,6 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     int ret = pthread_getname_np(pthread_self(), name, SIR_MAXPID);
     if (0 != ret)
         return _sir_handleerr(ret);
-
 # if defined(__HAIKU__)
     if ((strncmp(name, "pthread_func", SIR_MAXPID)) || _sir_validstrnofail(name))
         (void)snprintf(name, SIR_MAXPID, "%ld", (long)get_pthread_thread_id(pthread_self()));
@@ -1211,6 +1163,30 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
 #elif defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
     return _sir_validstrnofail(name);
+#elif defined(__WIN__) && !defined(__ORANGEC__)
+    bool success       = false;
+    wchar_t* wide_name = NULL;
+    HRESULT hr         = GetThreadDescription(GetCurrentThread(), &wide_name);
+    if (SUCCEEDED(hr)) {
+# if defined(__HAVE_STDC_SECURE_OR_EXT1__)
+        size_t wide_len = wcsnlen_s(wide_name, SIR_MAXPID);
+# elif defined(__EMBARCADEROC__)
+        size_t wide_len = wcslen(wide_name);
+# else
+        size_t wide_len = wcsnlen(wide_name, SIR_MAXPID);
+# endif
+        if (wide_len > 0) {
+            if (WideCharToMultiByte(CP_UTF8, 0UL, wide_name, (int)wide_len, name, SIR_MAXPID,
+                NULL, NULL))
+                success = true;
+            else
+                (void)_sir_handlewin32err(GetLastError());
+        } else {
+            success = true;
+        }
+        (void)LocalFree(wide_name);
+    }
+    return success && _sir_validstrnofail(name);
 #else
 # if !defined(_AIX) && !defined(__HURD__) && !defined(SUNLINT)
 #  pragma message("unable to determine how to get a thread name")

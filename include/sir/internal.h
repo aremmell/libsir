@@ -88,28 +88,15 @@ void _sir_unlocksection(sir_mutex_id mid);
 bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section);
 
 # if !defined(__WIN__)
-/** General initialization procedure. */
-void _sir_initialize_once(void);
-/** Initializes a specific mutex. */
-void _sir_initmutex_cfg_once(void);
-/** Initializes a specific mutex. */
-void _sir_initmutex_fc_once(void);
-/** Initializes a specific mutex. */
-void _sir_initmutex_pc_once(void);
-/** Initializes a specific mutex. */
-void _sir_initmutex_ts_once(void);
+/** Static initialization procedure. */
+void _sir_init_static_once(void);
 # else /* __WIN__ */
-/** General initialization procedure. */
-BOOL CALLBACK _sir_initialize_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
-/** Initializes a specific mutex. */
-BOOL CALLBACK _sir_initmutex_cfg_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
-/** Initializes a specific mutex. */
-BOOL CALLBACK _sir_initmutex_fc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
-/** Initializes a specific mutex. */
-BOOL CALLBACK _sir_initmutex_pc_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
-/** Initializes a specific mutex. */
-BOOL CALLBACK _sir_initmutex_ts_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
+/** Static initialization procedure. */
+BOOL CALLBACK _sir_init_static_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);
 # endif
+
+/** Shared one-time static data initialization routine. */
+bool _sir_init_common_static(void);
 
 /** Executes only one time. */
 bool _sir_once(sir_once* once, sir_once_fn func);
@@ -164,10 +151,13 @@ void _sir_syslog_reset(sir_syslog_dest* ctx);
 const char* _sir_formattedlevelstr(sir_level level);
 
 /** Retrieves the current time w/ optional milliseconds. */
-bool _sir_clock_gettime(time_t* tbuf, long* msecbuf);
+bool _sir_clock_gettime(int clock, time_t* tbuf, long* msecbuf);
 
-/** Formats the current time as a string. */
-bool _sir_formattime(time_t now, char* buffer, const char* format);
+/**
+ * Returns the number of milliseconds elapsed since a point in time represented
+ * by the when parameter.
+ */
+double _sir_msec_since(const sir_time* when, sir_time* out);
 
 /** Returns the current process identifier. */
 pid_t _sir_getpid(void);

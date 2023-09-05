@@ -32,7 +32,7 @@ sirpluginid _sir_plugin_load(const char* path) {
     (void)_sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validstr(path))
-        return 0u;
+        return 0U;
 
     sir_plugin* plugin = (sir_plugin*)calloc(1, sizeof(sir_plugin));
     if (!plugin)
@@ -72,13 +72,13 @@ sirpluginid _sir_plugin_load(const char* path) {
     return _sir_plugin_probe(plugin);
 #else
     SIR_UNUSED(path);
-    return 0u;
+    return 0U;
 #endif
 }
 
 sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
 #if !defined(SIR_NO_PLUGINS)
-    sirpluginid retval = 0u;
+    sirpluginid retval = 0U;
     if (plugin) {
 # if SIR_PLUGIN_VCURRENT == SIR_PLUGIN_V1
        /* if/when new versions of plugin interfaces are introduced, we will need to
@@ -119,7 +119,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
                          " query fn!", plugin->path, plugin->handle);
             _sir_plugin_destroy(&plugin);
             (void)_sir_seterror(_SIR_E_PLUGINERR);
-            return 0u;
+            return 0U;
         }
 
         /* verify version. */
@@ -129,7 +129,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
                         plugin->info.iface_ver, SIR_PLUGIN_VCURRENT);
             _sir_plugin_destroy(&plugin);
             (void)_sir_seterror(_SIR_E_PLUGINVER);
-            return 0u;
+            return 0U;
         }
 
         bool data_valid = true;
@@ -160,7 +160,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
         if (!data_valid) {
             _sir_plugin_destroy(&plugin);
             (void)_sir_seterror(_SIR_E_PLUGINDAT);
-            return 0u;
+            return 0U;
         }
 
         /* plugin is valid; tell it to initialize, assign it an id,
@@ -170,7 +170,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
                 plugin->path, plugin->handle);
             _sir_plugin_destroy(&plugin);
             (void)_sir_seterror(_SIR_E_PLUGINERR);
-            return 0u;
+            return 0U;
         }
 
         plugin->id    = FNV32_1a((const uint8_t*)&plugin->iface, sizeof(sir_pluginiface));
@@ -186,7 +186,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
                      plugin->info.caps);
 
         retval = _sir_plugin_add(plugin);
-        if (0u == retval) {
+        if (0U == retval) {
             _sir_selflog("error: failed to add plugin (path: '%s', addr: %p) to"
                          " cache; unloading", plugin->path, plugin->handle);
             _sir_plugin_destroy(&plugin);
@@ -196,7 +196,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
     return retval;
 #else
     SIR_UNUSED(plugin);
-    return 0u;
+    return 0U;
 #endif
 }
 
@@ -277,16 +277,16 @@ bool _sir_plugin_unload(sir_plugin* plugin) {
 sirpluginid _sir_plugin_add(sir_plugin* plugin) {
 #if !defined(SIR_NO_PLUGINS)
     if (!_sir_validptr(plugin))
-        return 0u;
+        return 0U;
 
-    _SIR_LOCK_SECTION(sir_plugincache, spc, SIRMI_PLUGINCACHE, 0u);
+    _SIR_LOCK_SECTION(sir_plugincache, spc, SIRMI_PLUGINCACHE, 0U);
     sirpluginid retval = _sir_plugin_cache_add(spc, plugin);
     _SIR_UNLOCK_SECTION(SIRMI_PLUGINCACHE);
 
     return retval;
 #else
     SIR_UNUSED(plugin);
-    return 0u;
+    return 0U;
 #endif
 }
 
@@ -335,11 +335,11 @@ bool _sir_plugin_cache_pred_id(const void* match, sir_plugin* iter) {
 sirpluginid _sir_plugin_cache_add(sir_plugincache* spc, sir_plugin* plugin) {
 #if !defined(SIR_NO_PLUGINS)
     if (!_sir_validptr(spc) || !_sir_validptr(plugin))
-        return 0u;
+        return 0U;
 
     if (spc->count >= SIR_MAXPLUGINS) {
         (void)_sir_seterror(_SIR_E_NOROOM);
-        return 0u;
+        return 0U;
     }
 
     sir_plugin* existing = _sir_plugin_cache_find_id(spc, plugin->id);
@@ -347,17 +347,17 @@ sirpluginid _sir_plugin_cache_add(sir_plugincache* spc, sir_plugin* plugin) {
         _sir_selflog("error: already have plugin (path: '%s', id %08"PRIx32")",
             existing->path, plugin->id);
         (void)_sir_seterror(_SIR_E_DUPITEM);
-        return 0u;
+        return 0U;
     }
 
     _sir_selflog("adding plugin (path: %s, id: %08"PRIx32"); count = %zu",
-    plugin->path, plugin->id, spc->count + 1ul);
+    plugin->path, plugin->id, spc->count + 1);
     spc->plugins[spc->count++] = plugin;
     return plugin->id;
 #else
     SIR_UNUSED(spc);
     SIR_UNUSED(plugin);
-    return 0u;
+    return 0U;
 #endif
 }
 
@@ -377,7 +377,7 @@ sir_plugin* _sir_plugin_cache_find(sir_plugincache* spc, const void* match,
     if (!_sir_validptr(spc) || !_sir_validptr(match) || !_sir_validfnptr(pred))
         return NULL;
 
-    for (size_t n = 0ul; n < spc->count; n++) {
+    for (size_t n = 0; n < spc->count; n++) {
         if (pred(match, spc->plugins[n]))
             return spc->plugins[n];
     }
@@ -396,16 +396,16 @@ bool _sir_plugin_cache_rem(sir_plugincache* spc, sirpluginid id) {
     if (!_sir_validptr(spc))
         return false;
 
-    for (size_t n = 0ul; n < spc->count; n++) {
+    for (size_t n = 0; n < spc->count; n++) {
         if (spc->plugins[n]->id == id) {
             _sir_selflog("removing plugin (path: '%s', id: %"PRIx32"); count = %zu",
-                spc->plugins[n]->path, spc->plugins[n]->id, spc->count - 1ul);
+                spc->plugins[n]->path, spc->plugins[n]->id, spc->count - 1);
 
             _sir_plugin_destroy(&spc->plugins[n]);
 
-            for (size_t i = n; i < spc->count - 1ul; i++) {
-                spc->plugins[i] = spc->plugins[i + 1ul];
-                spc->plugins[i + 1ul] = NULL;
+            for (size_t i = n; i < spc->count - 1; i++) {
+                spc->plugins[i] = spc->plugins[i + 1];
+                spc->plugins[i + 1] = NULL;
             }
 
             spc->count--;
@@ -426,8 +426,8 @@ bool _sir_plugin_cache_destroy(sir_plugincache* spc) {
     if (!_sir_validptr(spc))
         return false;
 
-    while (spc->count > 0ul) {
-        size_t idx = spc->count - 1ul;
+    while (spc->count > 0) {
+        size_t idx = spc->count - 1;
         _sir_plugin_destroy(&spc->plugins[idx]);
         spc->plugins[idx] = NULL;
         spc->count--;

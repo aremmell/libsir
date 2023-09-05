@@ -80,7 +80,7 @@ bool _sir_validupdatedata(sir_update_config_data* data) {
         return false;
 
     bool valid = true;
-    if ((data->fields & SIRU_ALL) == 0u || (data->fields & ~SIRU_ALL) != 0u)
+    if ((data->fields & SIRU_ALL) == 0U || (data->fields & ~SIRU_ALL) != 0U)
         valid = false;
 
     if (valid && _sir_bittest(data->fields, SIRU_LEVELS))
@@ -115,7 +115,7 @@ bool _sir_validlevels(sir_levels levels) {
          _sir_bittest(levels, SIRL_CRIT)            ||
          _sir_bittest(levels, SIRL_ALERT)           ||
          _sir_bittest(levels, SIRL_EMERG))          &&
-         ((levels & ~SIRL_ALL) == 0u)))
+         ((levels & ~SIRL_ALL) == 0U)))
          return true;
 
     _sir_selflog("invalid levels: %04"PRIx16, levels);
@@ -143,7 +143,7 @@ bool _sir_validopts(sir_options opts) {
          _sir_bittest(opts, SIRO_NOPID)            ||
          _sir_bittest(opts, SIRO_NOTID)            ||
          _sir_bittest(opts, SIRO_NOHDR))           &&
-         ((opts & ~(SIRO_MSGONLY | SIRO_NOHDR)) == 0u)))
+         ((opts & ~(SIRO_MSGONLY | SIRO_NOHDR)) == 0U)))
          return true;
 
     _sir_selflog("invalid options: %08"PRIx32, opts);
@@ -172,18 +172,18 @@ bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color) {
             /* in 16-color mode:
              * compare to 30..37, 39, 40..47, 49, 90..97, 100..107. */
             valid = SIRTC_DEFAULT == color ||
-                    (color >= 30u && color <= 37u) || color == 39u ||
-                    (color >= 40u && color <= 47u) || color == 49u ||
-                    (color >= 90u && color <= 97u) || (color >= 100u && color <= 107u);
+                    (color >= 30U && color <= 37U) || color == 39U ||
+                    (color >= 40U && color <= 47U) || color == 49U ||
+                    (color >= 90U && color <= 97U) || (color >= 100U && color <= 107U);
             break;
         case SIRCM_256:
             /* in 256-color mode: compare to 0..255. sir_textcolor is unsigned,
              * so only need to ensure it's <= 255. */
-            valid = SIRTC_DEFAULT == color || color <= 255u;
+            valid = SIRTC_DEFAULT == color || color <= 255U;
             break;
         case SIRCM_RGB: {
             /* in RGB-color mode: mask and compare to 0x00ffffff. */
-            valid = SIRTC_DEFAULT == color || ((color & 0xff000000u) == 0u);
+            valid = SIRTC_DEFAULT == color || ((color & 0xff000000U) == 0U);
             break;
         }
         case SIRCM_INVALID: // GCOVR_EXCL_START
@@ -215,6 +215,48 @@ bool _sir_validcolormode(sir_colormode mode) {
     }
 }
 
+int _sir_strncpy(char* restrict dest, size_t destsz, const char* restrict src,
+    size_t count) {
+    if (_sir_validptr(dest) && _sir_validstr(src)) {
+#if defined(__HAVE_STDC_SECURE_OR_EXT1__)
+        int ret = strncpy_s(dest, destsz, src, count);
+        if (0 != ret) {
+            (void)_sir_handleerr(ret);
+            return -1;
+        }
+        return 0;
+#else
+        SIR_UNUSED(count);
+        size_t cpy = strlcpy(dest, src, destsz);
+        SIR_ASSERT_UNUSED(cpy < destsz, cpy);
+        return 0;
+#endif
+    }
+
+    return -1;
+}
+
+int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src,
+    size_t count) {
+    if (_sir_validptr(dest) && _sir_validstr(src)) {
+#if defined(__HAVE_STDC_SECURE_OR_EXT1__)
+        int ret = strncat_s(dest, destsz, src, count);
+        if (0 != ret) {
+            (void)_sir_handleerr(ret);
+            return -1;
+        }
+        return 0;
+#else
+        SIR_UNUSED(count);
+        size_t cat = strlcat(dest, src, destsz);
+        SIR_ASSERT_UNUSED(cat < destsz, cat);
+        return 0;
+#endif
+    }
+
+    return -1;
+}
+
 int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename,
     const char* restrict mode) {
     if (_sir_validptrptr(streamptr) && _sir_validstr(filename) && _sir_validstr(mode)) {
@@ -236,40 +278,6 @@ int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename
     }
 
     return -1;
-}
-
-struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf) {
-    if (_sir_validptr(timer) && _sir_validptr(buf)) {
-#if defined(__HAVE_STDC_SECURE_OR_EXT1__) && !defined(__EMBARCADEROC__)
-# if !defined(__WIN__)
-        struct tm* ret = localtime_s(timer, buf);
-        if (!ret) {
-            (void)_sir_handleerr(errno);
-            return NULL;
-        }
-# else /* __WIN__ */
-        errno_t ret = localtime_s(buf, timer);
-        if (0 != ret) {
-            (void)_sir_handleerr(ret);
-            return NULL;
-        }
-# endif
-
-        return buf;
-#else /* !__HAVE_STDC_SECURE_OR_EXT1__ */
-# if !defined(__WIN__) || defined(__EMBARCADEROC__)
-        struct tm* ret = localtime_r(timer, buf);
-# else
-        struct tm* ret = localtime(timer);
-# endif
-        if (!ret)
-            (void)_sir_handleerr(errno);
-
-        return ret;
-#endif
-    }
-
-    return NULL;
 }
 
 bool _sir_getchar(char* input) {

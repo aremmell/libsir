@@ -133,7 +133,7 @@ int main(void) {
      * Set up an identity, some options, and register for error and higher.
      *
      * NOTE: If this platform does not have a supported system logger, or the
-     * SIR_NO_SYSTEM_LOGGERS preprcessor define was set when libsir was
+     * SIR_NO_SYSTEM_LOGGERS preprocessor define was set when libsir was
      * compiled, these calls will fail and have no effect.
      */
 
@@ -157,7 +157,7 @@ int main(void) {
     sir_emerg("Unable to process client requests for %s! Restarting...", "4m52s");
 
     sir_debug("Begin server shutdown.");
-    sir_debug("Exiting with code %d.", 1);
+    sir_debug("If this was real, we would be exiting with code %d now!", 1);
 
     /* Deregister (and close) the log file. */
     if (fileid && !sir_remfile(fileid))

@@ -34,8 +34,8 @@
 
 /** Evil macro used for _sir_lv wrappers. */
 # define _SIR_L_START(format) \
-    bool ret     = false; \
-    va_list args = {0}; \
+    bool ret = false; \
+    va_list args; \
     do { \
         if (!_sir_validptr(format)) \
             return false; \
@@ -238,22 +238,22 @@ sir_textcolor _sir_getansibgcmd(sir_textcolor bg) {
 }
 
 /** Extracts the red component out of an RGB color mode ::sir_textcolor. */
-# define _sir_getredfromcolor(color) (uint8_t)(((color) >> 16) & 0x000000ffu)
+# define _sir_getredfromcolor(color) (uint8_t)(((color) >> 16) & 0x000000ffU)
 
 /** Sets the red component in an RGB color mode ::sir_textcolor. */
-# define _sir_setredincolor(color, red) (color |= (((red) << 16) & 0x00ff0000u))
+# define _sir_setredincolor(color, red) (color |= (((red) << 16) & 0x00ff0000U))
 
 /** Extracts the green component out of an RGB color mode ::sir_textcolor. */
-# define _sir_getgreenfromcolor(color) (uint8_t)(((color) >> 8) & 0x000000ffu)
+# define _sir_getgreenfromcolor(color) (uint8_t)(((color) >> 8) & 0x000000ffU)
 
 /** Sets the green component in an RGB color mode ::sir_textcolor. */
-# define _sir_setgreenincolor(color, green) ((color) |= (((green) << 8) & 0x0000ff00u))
+# define _sir_setgreenincolor(color, green) ((color) |= (((green) << 8) & 0x0000ff00U))
 
 /** Extracts the blue component out of an RGB color mode ::sir_textcolor. */
-# define _sir_getbluefromcolor(color) (uint8_t)((color) & 0x000000ffu)
+# define _sir_getbluefromcolor(color) (uint8_t)((color) & 0x000000ffU)
 
 /** Sets the blue component in an RGB color mode ::sir_textcolor. */
-# define _sir_setblueincolor(color, blue) ((color) |= ((blue) & 0x000000ffu))
+# define _sir_setblueincolor(color, blue) ((color) |= ((blue) & 0x000000ffU))
 
 /** Sets the red, blue, and green components in an RGB color mode ::sir_textcolor. */
 static inline
@@ -302,53 +302,15 @@ bool _sir_strsame(const char* lhs, const char* rhs, size_t count) {
  * Wrapper for str[n,l]cpy/strncpy_s. Determines which one to use
  * based on preprocessor macros.
  */
-static inline
-int _sir_strncpy(char* restrict dest, size_t destsz, const char* restrict src,
-    size_t count) {
-    if (_sir_validptr(dest) && _sir_validstr(src)) {
-# if defined(__HAVE_STDC_SECURE_OR_EXT1__)
-        int ret = strncpy_s(dest, destsz, src, count);
-        if (0 != ret) {
-            (void)_sir_handleerr(ret);
-            return -1;
-        }
-        return 0;
-# else
-        SIR_UNUSED(count);
-        size_t cpy = strlcpy(dest, src, destsz);
-        SIR_ASSERT_UNUSED(cpy < destsz, cpy);
-        return 0;
-# endif
-    }
-
-    return -1;
-}
+int _sir_strncpy(char* restrict dest, size_t destsz,
+    const char* restrict src, size_t count);
 
 /**
  * Wrapper for str[n,l]cat/strncat_s. Determines which one to use
  * based on preprocessor macros.
  */
-static inline
-int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src,
-    size_t count) {
-    if (_sir_validptr(dest) && _sir_validstr(src)) {
-# if defined(__HAVE_STDC_SECURE_OR_EXT1__)
-        int ret = strncat_s(dest, destsz, src, count);
-        if (0 != ret) {
-            (void)_sir_handleerr(ret);
-            return -1;
-        }
-        return 0;
-# else
-        SIR_UNUSED(count);
-        size_t cat = strlcat(dest, src, destsz);
-        SIR_ASSERT_UNUSED(cat < destsz, cat);
-        return 0;
-# endif
-    }
-
-    return -1;
-}
+int _sir_strncat(char* restrict dest, size_t destsz,
+    const char* restrict src, size_t count);
 
 /**
  * Wrapper for fopen/fopen_s. Determines which one to use
@@ -358,16 +320,76 @@ int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename
     const char* restrict mode);
 
 /**
- * Wrapper for localtime/localtime_s. Determines which one to use
+ * Wrapper for localtime[_s,_r]. Determines which one to use
  * based on preprocessor macros.
  */
-struct tm* _sir_localtime(const time_t* restrict timer, struct tm* restrict buf);
+static inline
+struct tm* _sir_localtime(const time_t* timer, struct tm* buf) {
+    if (!timer || !buf)
+        return NULL;
+# if defined(__HAVE_STDC_SECURE_OR_EXT1__) && !defined(__EMBARCADEROC__)
+#  if !defined(__WIN__)
+        struct tm* ret = localtime_s(timer, buf);
+        if (!ret) {
+            (void)_sir_handleerr(errno);
+            return NULL;
+        }
+#  else /* __WIN__ */
+        errno_t ret = localtime_s(buf, timer);
+        if (0 != ret) {
+            (void)_sir_handleerr(ret);
+            return NULL;
+        }
+#  endif
+        return buf;
+# else /* !__HAVE_STDC_SECURE_OR_EXT1__ */
+#  if !defined(__WIN__) || defined(__EMBARCADEROC__)
+        struct tm* ret = localtime_r(timer, buf);
+#  else
+        struct tm* ret = localtime(timer);
+#  endif
+        if (!ret)
+            (void)_sir_handleerr(errno);
+        return ret;
+# endif
+}
+
+/** Formats the current time as a string. */
+# if defined(__GNUC__)
+__attribute__ ((format (strftime, 3, 0)))
+# endif
+static inline
+bool _sir_formattime(time_t now, char* buffer, const char* format) {
+    if (!buffer || !format)
+        return false;
+# if defined(__GNUC__) && !defined(__clang__) && \
+    !(defined(__OPEN64__) || defined(__OPENCC__))
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Wformat-nonliteral"
+# endif
+    struct tm timebuf;
+    struct tm* ptb = _sir_localtime(&now, &timebuf);
+    return NULL != ptb && 0 != strftime(buffer, SIR_MAXTIME, format, ptb);
+# if defined(__GNUC__) && !defined(__clang__) && \
+    !(defined(__OPEN64__) || defined(__OPENCC__))
+#  pragma GCC diagnostic pop
+# endif
+}
 
 /**
  * A portable "press any key to continue" implementation; On Windows, uses _getch().
  * otherwise, uses tcgetattr()/tcsetattr() and getchar().
  */
 bool _sir_getchar(char* input);
+
+/**
+ * Wrapper for snprintf when truncation is intended.
+ */
+# define _sir_snprintf_trunc(dst, size, ...) \
+    do { \
+      volatile size_t _n = size; \
+      if (!snprintf(dst, _n, __VA_ARGS__)) { (void)_n; }; \
+    } while (false)
 
 /**
  * Implementation of the 32-bit FNV-1a OWHF (http://isthe.com/chongo/tech/comp/fnv/)
@@ -383,15 +405,6 @@ uint32_t FNV32_1a(const uint8_t* data, size_t len) {
 }
 
 /**
- * Wrapper for snprintf when truncation is intended.
- */
-# define _sir_snprintf_trunc(dst, size, ...) \
-    do { \
-      volatile size_t _n = size; \
-      if (!snprintf(dst, _n, __VA_ARGS__)) { (void)_n; }; \
-    } while (false)
-
-/**
  * Implementation of the 64-bit FNV-1a OWHF (http://isthe.com/chongo/tech/comp/fnv/)
  * watered down to only handle null-terminated strings.
  */
@@ -399,8 +412,7 @@ uint32_t FNV32_1a(const uint8_t* data, size_t len) {
 SANITIZE_SUPPRESS("unsigned-integer-overflow")
 # endif
 static inline
-uint64_t FNV64_1a(const char* str)
-{
+uint64_t FNV64_1a(const char* str) {
     uint64_t hash = 14695981039346656037ULL;
     for (const char* c = str; *c; c++) {
         hash ^= (uint64_t)(unsigned char)(*c);
