@@ -31,7 +31,7 @@
 typedef bool (*sir_fcache_pred)(const void* match, const sirfile* iter);
 
 sirfileid _sir_addfile(const char* path, sir_levels levels, sir_options opts);
-bool _sir_updatefile(sirfileid id, sir_update_config_data* data);
+bool _sir_updatefile(sirfileid id, const sir_update_config_data* data);
 bool _sir_remfile(sirfileid id);
 
 sirfile* _sirfile_create(const char* path, sir_levels levels, sir_options opts);

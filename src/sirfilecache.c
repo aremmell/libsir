@@ -45,7 +45,7 @@ sirfileid _sir_addfile(const char* path, sir_levels levels, sir_options opts) {
     return retval;
 }
 
-bool _sir_updatefile(sirfileid id, sir_update_config_data* data) {
+bool _sir_updatefile(sirfileid id, const sir_update_config_data* data) {
     (void)_sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validfileid(id) || !_sir_validupdatedata(data))
