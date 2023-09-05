@@ -333,7 +333,7 @@ bool sirtest_threadidsanity(void)
                     (void)snprintf(search, SIR_MAXPID, SIR_PIDFORMAT, _sir_gettid());
                 break;
                 case 1:
-                    (void)_sir_strncpy(search, SIR_MAXPID, thread_name, sizeof(thread_name));
+                    (void)_sir_strncpy(search, SIR_MAXPID, thread_name, strlen(thread_name));
                 break;
             }
 
@@ -742,7 +742,7 @@ bool sirtest_failinvalidinitdata(void) {
     if (pass)
         print_expected_error();
 
-    pass &= sir_cleanup();
+    (void)sir_cleanup();
     return print_result_and_return(pass);
 }
 
