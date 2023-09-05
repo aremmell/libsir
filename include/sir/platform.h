@@ -154,6 +154,8 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #    define SIR_PTHREAD_GETNAME_NP
 #   endif
 #   if defined(__GNU__) && !defined(__linux__)
+#    undef SIR_NO_THREAD_NAMES
+#    define SIR_NO_THREAD_NAMES
 #    if !defined(__HURD__)
 #     define __HURD__ 1
 #    endif
@@ -362,6 +364,8 @@ _set_thread_local_invalid_parameter_handler(
 #  endif
 #  if defined(_AIX)
 #   include <sys/procfs.h>
+#   undef SIR_NO_THREAD_NAMES
+#   define SIR_NO_THREAD_NAMES
 #  endif
 #  if defined(__BSD__)
 #   if !defined(__NetBSD__)
@@ -390,6 +394,31 @@ _set_thread_local_invalid_parameter_handler(
 #   define SIR_MAXPATH MAXPATHLEN
 #  else
 #   define SIR_MAXPATH 1024
+#  endif
+
+#  if !defined(SIR_MAXPID) && defined(HAIKU) && defined(B_OS_NAME_LENGTH)
+#   define SIR_MAXPID B_OS_NAME_LENGTH
+#  endif
+#  if !defined(SIR_MAXPID) && defined(PTHREAD_MAX_NAMELEN_NP)
+#   define SIR_MAXPID PTHREAD_MAX_NAMELEN_NP
+#  endif
+#  if !defined(SIR_MAXPID) && defined(_NTO_THREAD_NAME_MAX)
+#   define SIR_MAXPID _NTO_THREAD_NAME_MAX
+#  endif
+#  if !defined(SIR_MAXPID) && defined(__APPLE__)
+#   define SIR_MAXPID 64
+#  endif
+#  if !defined(SIR_MAXPID) && defined(__OpenBSD__)
+#   define SIR_MAXPID 32
+#  endif
+#  if !defined(SIR_MAXPID) && defined(__SOLARIS__)
+#   define SIR_MAXPID 31
+#  endif
+#  if !defined(SIR_MAXPID) && defined(__linux__)
+#   define SIR_MAXPID 16
+#  endif
+#  if !defined(SIR_MAXPID)
+#   define SIR_MAXPID 15
 #  endif
 
 #  if (defined(_POSIX_TIMERS) && _POSIX_TIMERS > 0) || defined(__MACOS__)

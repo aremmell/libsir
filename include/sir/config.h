@@ -266,9 +266,6 @@
  */
 # define SIR_MAX_SYSLOG_CAT 64
 
-/** The size, in characters, of the buffer used to hold process/thread IDs/names. */
-# define SIR_MAXPID 16
-
 /** The maximum number of whitespace and miscellaneous characters included in output. */
 # define SIR_MAXMISC 7
 
