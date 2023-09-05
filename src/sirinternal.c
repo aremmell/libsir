@@ -1156,7 +1156,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     if (0 != ret)
         return _sir_handleerr(ret);
 # if defined(__HAIKU__)
-    if ((strncmp(name, "pthread_func", SIR_MAXPID)) || _sir_validstrnofail(name))
+    if (!(strncmp(name, "pthread func", SIR_MAXPID)) || !_sir_validstrnofail(name))
         (void)snprintf(name, SIR_MAXPID, "%ld", (long)get_pthread_thread_id(pthread_self()));
 # endif
     return _sir_validstrnofail(name);
@@ -1203,7 +1203,7 @@ bool _sir_setthreadname(const char* name) {
     int ret = pthread_setname_np(name);
     return (0 != ret) ? _sir_handleerr(ret) : true;
 #elif defined(__HAIKU__)
-    status_t ret = rename_thread(get_pthread_thread_id(pthread_self()), name);
+    status_t ret = rename_thread(find_thread(NULL), name);
     return (B_OK != ret) ? _sir_handleerr((int)ret) : true;
 #elif defined(__NetBSD__)
     int ret = pthread_setname_np(pthread_self(), "%s", name);
