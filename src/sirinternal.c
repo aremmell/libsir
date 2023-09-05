@@ -1218,7 +1218,7 @@ bool _sir_setthreadname(const char* name) {
 #elif defined(__OpenBSD__) || defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
     pthread_set_name_np(pthread_self(), name);
     return true;
-#elif defined(__WIN__)
+#elif defined(__WIN__) && !defined(__ORANGEC__)
 # if defined(__HAVE_STDC_SECURE_OR_EXT1__)
     size_t name_len = strnlen_s(name, SIR_MAXPID);
 # else
