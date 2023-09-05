@@ -42,14 +42,14 @@ bool _sirfile_writeheader(sirfile* sf, const char* msg);
 bool _sirfile_needsroll(sirfile* sf);
 bool _sirfile_roll(sirfile* sf, char** newpath);
 bool _sirfile_archive(sirfile* sf, const char* newpath);
-bool _sirfile_splitpath(sirfile* sf, char** name, char** ext);
+bool _sirfile_splitpath(const sirfile* sf, char** name, char** ext);
 void _sirfile_destroy(sirfile** sf);
 bool _sirfile_validate(const sirfile* sf);
 bool _sirfile_update(sirfile* sf, const sir_update_config_data* data);
 
 sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
     sir_options opts);
-bool _sir_fcache_update(sirfcache* sfc, sirfileid id, sir_update_config_data* data);
+bool _sir_fcache_update(const sirfcache* sfc, sirfileid id, const sir_update_config_data* data);
 bool _sir_fcache_rem(sirfcache* sfc, sirfileid id);
 
 bool _sir_fcache_pred_path(const void* match, const sirfile* iter);

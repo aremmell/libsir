@@ -280,23 +280,23 @@ bool _sir_updateopts(const char* name, sir_options* old, const sir_options* new)
     return true;
 }
 
-bool _sir_stdoutlevels(sirinit* si, sir_update_config_data* data) {
+bool _sir_stdoutlevels(sirinit* si, const sir_update_config_data* data) {
     return _sir_updatelevels(SIR_DESTNAME_STDOUT, &si->d_stdout.levels, data->levels);
 }
 
-bool _sir_stdoutopts(sirinit* si, sir_update_config_data* data) {
+bool _sir_stdoutopts(sirinit* si, const sir_update_config_data* data) {
     return _sir_updateopts(SIR_DESTNAME_STDOUT, &si->d_stdout.opts, data->opts);
 }
 
-bool _sir_stderrlevels(sirinit* si, sir_update_config_data* data) {
+bool _sir_stderrlevels(sirinit* si, const sir_update_config_data* data) {
     return _sir_updatelevels(SIR_DESTNAME_STDERR, &si->d_stderr.levels, data->levels);
 }
 
-bool _sir_stderropts(sirinit* si, sir_update_config_data* data) {
+bool _sir_stderropts(sirinit* si, const sir_update_config_data* data) {
     return _sir_updateopts(SIR_DESTNAME_STDERR, &si->d_stderr.opts, data->opts);
 }
 
-bool _sir_sysloglevels(sirinit* si, sir_update_config_data* data) {
+bool _sir_sysloglevels(sirinit* si, const sir_update_config_data* data) {
     bool updated = _sir_updatelevels(SIR_DESTNAME_SYSLOG, &si->d_syslog.levels, data->levels);
     if (updated) {
         _sir_setbitshigh(&si->d_syslog._state.mask, SIRSL_UPDATED | SIRSL_LEVELS);
@@ -306,7 +306,7 @@ bool _sir_sysloglevels(sirinit* si, sir_update_config_data* data) {
     return updated;
 }
 
-bool _sir_syslogopts(sirinit* si, sir_update_config_data* data) {
+bool _sir_syslogopts(sirinit* si, const sir_update_config_data* data) {
     bool updated = _sir_updateopts(SIR_DESTNAME_SYSLOG, &si->d_syslog.opts, data->opts);
     if (updated) {
         _sir_setbitshigh(&si->d_syslog._state.mask, SIRSL_UPDATED | SIRSL_OPTIONS);
@@ -316,7 +316,7 @@ bool _sir_syslogopts(sirinit* si, sir_update_config_data* data) {
     return updated;
 }
 
-bool _sir_syslogid(sirinit* si, sir_update_config_data* data) {
+bool _sir_syslogid(sirinit* si, const sir_update_config_data* data) {
     bool cur_valid = _sir_validstrnofail(si->d_syslog.identity);
     if (!cur_valid || 0 != strncmp(si->d_syslog.identity, data->sl_identity, SIR_MAX_SYSLOG_ID)) {
         _sir_selflog("updating %s identity from '%s' to '%s'", SIR_DESTNAME_SYSLOG,
@@ -336,7 +336,7 @@ bool _sir_syslogid(sirinit* si, sir_update_config_data* data) {
     return updated;
 }
 
-bool _sir_syslogcat(sirinit* si, sir_update_config_data* data) {
+bool _sir_syslogcat(sirinit* si, const sir_update_config_data* data) {
     bool cur_valid = _sir_validstrnofail(si->d_syslog.category);
     if (!cur_valid || 0 != strncmp(si->d_syslog.category, data->sl_category, SIR_MAX_SYSLOG_CAT)) {
         _sir_selflog("updating %s category from '%s' to '%s'", SIR_DESTNAME_SYSLOG,
@@ -626,7 +626,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     return update_last_props ? dispatched : false;
 }
 
-bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
+bool _sir_dispatch(const sirinit* si, sir_level level, sirbuf* buf) {
     bool retval       = true;
     size_t dispatched = 0;
     size_t wanted     = 0;

@@ -295,7 +295,7 @@ bool _sirfile_archive(sirfile* sf, const char* newpath) {
     return false;
 }
 
-bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
+bool _sirfile_splitpath(const sirfile* sf, char** name, char** ext) {
     if (_sir_validptrptr(name))
         *name = NULL;
     if (_sir_validptrptr(ext))
@@ -410,7 +410,7 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
     return 0U;
 }
 
-bool _sir_fcache_update(sirfcache* sfc, sirfileid id, sir_update_config_data* data) {
+bool _sir_fcache_update(const sirfcache* sfc, sirfileid id, const sir_update_config_data* data) {
     if (!_sir_validptr(sfc) || !_sir_validfileid(id) || !_sir_validupdatedata(data))
         return false;
 

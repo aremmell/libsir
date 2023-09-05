@@ -336,6 +336,7 @@ bool sirtest_threadidsanity(void)
                 case 1:
                     (void)_sir_strncpy(search, SIR_MAXPID, thread_name, strlen(thread_name));
                 break;
+                default: break; // GCOVR_EXCL_LINE
             }
 
             bool found = NULL != strstr(buf, search);
@@ -2497,8 +2498,12 @@ size_t sir_readline(FILE* f, char* buf, size_t size) {
     int ch     = 0;
     size_t idx = 0;
 
-    for (; (idx < size) && ((ch = getc(f)) != EOF) && ('\n' != ch); idx++)
-        buf[idx] = (char)ch;
+    while (idx < size) {
+        ch = getc(f);
+        if (EOF == ch || '\n' == ch)
+            break;
+        buf[idx++] = (char)ch;
+    }
 
     return (0 == ferror(f)) ? idx : 0;
 }

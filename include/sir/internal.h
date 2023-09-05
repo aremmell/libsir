@@ -49,28 +49,28 @@ bool _sir_sanity(void);
 bool _sir_init_sanity(const sirinit* si);
 
 /** Updates levels for stdout. */
-bool _sir_stdoutlevels(sirinit* si, sir_update_config_data* data);
+bool _sir_stdoutlevels(sirinit* si, const sir_update_config_data* data);
 
 /** Updates options for stdout. */
-bool _sir_stdoutopts(sirinit* si, sir_update_config_data* data);
+bool _sir_stdoutopts(sirinit* si, const sir_update_config_data* data);
 
 /** Updates levels for stderr. */
-bool _sir_stderrlevels(sirinit* si, sir_update_config_data* data);
+bool _sir_stderrlevels(sirinit* si, const sir_update_config_data* data);
 
 /** Updates options for stderr. */
-bool _sir_stderropts(sirinit* si, sir_update_config_data* data);
+bool _sir_stderropts(sirinit* si, const sir_update_config_data* data);
 
 /** Updates levels for the system logger. */
-bool _sir_sysloglevels(sirinit* si, sir_update_config_data* data);
+bool _sir_sysloglevels(sirinit* si, const sir_update_config_data* data);
 
 /** Updates options for the system logger. */
-bool _sir_syslogopts(sirinit* si, sir_update_config_data* data);
+bool _sir_syslogopts(sirinit* si, const sir_update_config_data* data);
 
 /** Updates the identity for the system logger.*/
-bool _sir_syslogid(sirinit* si, sir_update_config_data* data);
+bool _sir_syslogid(sirinit* si, const sir_update_config_data* data);
 
 /** Updates the category for the system logger. */
-bool _sir_syslogcat(sirinit* si, sir_update_config_data* data);
+bool _sir_syslogcat(sirinit* si, const sir_update_config_data* data);
 
 /** Callback for updating values in the global config. */
 typedef bool (*sirinit_update)(sirinit*, sir_update_config_data*);
@@ -106,7 +106,7 @@ PRINTF_FORMAT_ATTR(2, 0)
 bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args);
 
 /** Output dispatching. */
-bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf);
+bool _sir_dispatch(const sirinit* si, sir_level level, sirbuf* buf);
 
 /** Specific destination formatting. */
 const char* _sir_format(bool styling, sir_options opts, sirbuf* buf);
