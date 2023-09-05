@@ -603,6 +603,7 @@ test "${#}" -lt 1 2> /dev/null \
 
 (runtest test_spaces)     || exit 1
 (runtest test_tabs)       || exit 1
+(runtest whitespace)      || exit 1
 (runtest test_duma)       || exit 1
 (runtest test_extra)      || exit 1
 (runtest test_flawfinder) || exit 1

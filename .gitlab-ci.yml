@@ -564,7 +564,7 @@ Android/i686 (API Level 21):
       # Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
-    - build/bin/sirtests --leave-logs
+    - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
   dependencies: []
   artifacts:
