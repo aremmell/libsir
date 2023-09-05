@@ -55,6 +55,7 @@ static sir_test sir_tests[] = {
 #if !defined(__ORANGEC__)
     {"sanity-thread-ids",       sirtest_threadidsanity, false, true},
 #endif
+    {"sanity-file-write",       sirtest_logwritesanity, false, true},
     {"syslog",                  sirtest_syslog, false, true},
     {"os_log",                  sirtest_os_log, false, true},
     {"filesystem",              sirtest_filesystem, false, true},
@@ -209,31 +210,82 @@ bool sirtest_exceedmaxsize(void) {
 
     pass &= sir_info("%s", toobig);
 
-    sir_cleanup();
+    pass &= sir_cleanup();
+    return print_result_and_return(pass);
+}
+
+bool sirtest_logwritesanity(void) {
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+    static const char* logfilename = MAKE_LOG_NAME("write-validate.log");
+    static const char* message     = "Lorem ipsum dolor sit amet, sea ei dicit"
+                                     " regione laboramus, eos cu minim putent."
+                                     " Sale omnium conceptam est in, cu nam possim"
+                                     " prompta eleifend. Duo purto nostrud eu."
+                                     " Alia accumsan has cu, mentitum invenire"
+                                     " mel an, dicta noster legendos et pro."
+                                     " Solum nobis laboramus et quo, nam putant"
+                                     " dolores consequuntur ex. Sit veniam eruditi"
+                                     " contentiones at. Cu ponderum oporteat"
+                                     " oportere mel, has et saperet accusata"
+                                     " complectitur.";
+
+    printf("\tadding log file '%s' to libsir...\n", logfilename);
+    sirfileid id = sir_addfile(logfilename, SIRL_DEBUG, SIRO_NOHDR | SIRO_NOHOST);
+    pass &= 0U != id;
+
+    print_test_error(pass, false);
+
+    printf("\twriting message to stdout and %s...\n", logfilename);
+
+    pass &= sir_debug("%s", message);
+
+    print_test_error(pass, false);
+
+    printf("\tremoving %s from libsir...\n", logfilename);
+    pass &= sir_remfile(id);
+
+    print_test_error(pass, false);
+
+    printf("\topening %s for reading...\n", logfilename);
+
+    FILE* f = fopen(logfilename, "r");
+    if (!f) {
+        pass = false;
+    } else {
+        char buf[512] = {0};
+        pass &= 0 != sir_readline(f, buf, 512);
+
+        bool found = NULL != strstr(buf, message);
+        pass &= found;
+
+        if (found)
+            printf("\t" GREEN("found '%s'") "\n", message);
+        else
+            printf("\t" RED("did not find '%s'") "\n", message);
+
+        fclose(f);
+        printf("\tdeleting %s...\n", logfilename);
+        (void)rmfile(logfilename);
+    }
+
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
 #if !defined(__ORANGEC__)
 bool sirtest_threadidsanity(void)
 {
-    INIT(si, SIRL_ALL, SIRO_NOHOST, 0, 0);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     static const char* thread_name = "mythread";
     static const char* logfilename = MAKE_LOG_NAME("thread-id-name.log");
 
-    /* this is a particularly difficult test to write: the behavior of libsir
-     * is set at compile time, so for certain configurations, we cannot perform
-     * the necessary testing.
-     *
-     * we'll either need to add preprocessor macros to override them at compile time,
-     * or convert them to runtime options. not being able to test those code paths is
-     * not kosher.
-     */
-    (void)rmfile(logfilename);
-
-    printf("\tadding log file '%s'...\n", logfilename);
-    sirfileid id = sir_addfile(logfilename, SIRL_DEBUG, SIRO_NOHDR);
+    printf("\tadding log file '%s' to libsir...\n", logfilename);
+    sirfileid id = sir_addfile(logfilename, SIRL_DEBUG, SIRO_NOHDR | SIRO_NOHOST);
+    pass &= 0U != id;
 
     print_test_error(pass, false);
 
@@ -258,33 +310,20 @@ bool sirtest_threadidsanity(void)
 
     pass &= sir_debug("this is a test of the libsir system after clearing thread name");
 
-    /* there should now be 3 lines of output in the log file that should appear as follows:
-     *
-     * 1. with PID<separator>TID
-     * 2. with PID<separator>mythread
-     * 3. with PID<separator>TID
-     *
-     * remove the log file from libsir, then open it and read it line by line.
-     */
-    printf("\tremoving log file...\n");
+     /* remove the log file from libsir, then open it and read it line by line. */
+    printf("\tremoving %s from libsir...\n", logfilename);
     pass &= sir_remfile(id);
 
-    printf("\topening log file for reading...\n");
+    printf("\topening %s for reading...\n", logfilename);
 
     FILE* f = fopen(logfilename, "r");
     if (!f) {
-        handle_os_error(true, "fopen(%s) failed", logfilename);
         pass = false;
     } else {
+        /* look for, in order, TID, thread name, TID. */
         for (size_t n = 0; n < 3; n++) {
             char buf[256] = {0};
-            int ch        = 0;
-
-            for (size_t idx = 0; (idx < 256) && ((ch = getc(f)) != EOF)
-                && ('\n' != ch); idx++) {
-                buf[idx] = (char)ch;
-            }
-
+            pass &= 0 != sir_readline(f, buf, 256);
             printf("\tread line %zu: '%s'\n", n, buf);
 
             char search[SIR_MAXPID] = {0};
@@ -302,17 +341,18 @@ bool sirtest_threadidsanity(void)
             pass &= found;
 
             if (found)
-                printf("\t" GREEN("line %zu: located '%s'") "\n", n, search);
+                printf("\t" GREEN("line %zu: found '%s'") "\n", n, search);
             else
-                printf("\t" RED("line %zu: did not locate '%s'") "\n", n, search);
+                printf("\t" RED("line %zu: did not find '%s'") "\n", n, search);
         }
 
         fclose(f);
+        printf("\tdeleting %s...\n", logfilename);
+        (void)rmfile(logfilename);
     }
 
     pass &= sir_cleanup();
-
-    return pass;
+    return print_result_and_return(pass);
 }
 #endif
 
@@ -2265,7 +2305,7 @@ unsigned __stdcall threadrace_thread(void* arg) {
 
 /*
 bool sirtest_XXX(void) {
-    INIT(si, SIRL_ALL, 0U, 0U, 0U);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     pass &= sir_cleanup();
@@ -2348,7 +2388,7 @@ bool rmfile(const char* filename) {
     if (!_sir_deletefile(filename)) {
         handle_os_error(false, "failed to delete %s!", filename);
     } else {
-        printf("\t" DGRAY("deleted %s (%ld bytes)...") "\n", filename,
+        printf("\t" DGRAY("deleted %s (%ld bytes)") "\n", filename,
             (long)st.st_size);
     }
 
@@ -2448,6 +2488,19 @@ void sir_sleep_msec(uint32_t msec) {
 #else /* __WIN__ */
     (void)SleepEx((DWORD)msec, TRUE);
 #endif
+}
+
+size_t sir_readline(FILE* f, char* buf, size_t size) {
+    if (!f || !buf || 0 == size)
+        return 0;
+
+    int ch     = 0;
+    size_t idx = 0;
+
+    for (; (idx < size) && ((ch = getc(f)) != EOF) && ('\n' != ch); idx++)
+        buf[idx] = (char)ch;
+
+    return (0 == ferror(f)) ? idx : 0;
 }
 
 #if defined(SIR_OS_LOG_ENABLED)

@@ -104,6 +104,12 @@ bool sirtest_threadrace(void);
 bool sirtest_exceedmaxsize(void);
 
 /**
+ * @test Ensure the correct (and complete) message is written to a log file.
+ * @returns bool `true` if the test passed, `false` otherwise.
+ */
+bool sirtest_logwritesanity(void);
+
+/**
  * @test Properly handle the lack of any output destinations.
  * @returns bool `true` if the test passed, `false` otherwise.
  */
@@ -379,6 +385,7 @@ double sir_timer_elapsed(const sir_time* timer); /* msec */
 long sir_timer_getres(void); /* nsec */
 
 void sir_sleep_msec(uint32_t msec);
+size_t sir_readline(FILE* f, char* buf, size_t size);
 
 # if defined(SIR_OS_LOG_ENABLED)
 void os_log_parent_activity(void* ctx);
@@ -390,13 +397,13 @@ static const struct cl_arg {
     const char* usage;
     const char* desc;
     } _cl_arg_list[] = {
-        {"--perf",       "", "Runs only the performance measurement test."},
-        {"--only",       ""  ULINE("name") " [, " ULINE("name") ", ...]", "Only run the test(s) specified."},
-        {"--list",       "", "Prints a list of available test names for use with '" BOLD("--only") "'."},
-        {"--leave-logs", "", "Log files are not deleted so that they may be examined."},
-        {"--wait",       "", "After running test(s), waits for a keypress before exiting."},
-        {"--version",    "", "Prints the version of libsir that the test suite was built with."},
-        {"--help",       "", "Shows this message."},
+        {"--perf",       "", "Only run the performance measurement test"},
+        {"--only",       ""  ULINE("name") " [, " ULINE("name") ", ...]", "Only run the test(s) specified"},
+        {"--list",       "", "Prints a list of available test names for use with '" BOLD("--only") "'"},
+        {"--leave-logs", "", "Log files are not deleted so that they may be examined"},
+        {"--wait",       "", "After running test(s), waits for a keypress before exiting"},
+        {"--version",    "", "Prints the version of libsir that the test suite was built with"},
+        {"--help",       "", "Shows this message"},
     };
 
 bool mark_test_to_run(const char* name);
