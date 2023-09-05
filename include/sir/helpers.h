@@ -155,10 +155,6 @@ bool _sir_setbitslow(uint32_t* flags, uint32_t set) {
  * bool as an operand for that operator. */
 # define _sir_andeql(b, expr) ((b) = (b) && (expr))
 
-/** Effectively performs b |= expr without the linter warnings about using
- * bool as an operand for that operator. */
-# define _sir_oreql(b, expr) ((b) = (b) || (expr))
-
 /** Calls free and sets the pointer to NULL. */
 void __sir_safefree(void** pp);
 
