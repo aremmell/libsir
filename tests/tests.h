@@ -390,13 +390,13 @@ static const struct cl_arg {
     const char* usage;
     const char* desc;
     } _cl_arg_list[] = {
-        {"--perf",       "", "Runs only the performance measurement test."},
-        {"--only",       ""  ULINE("name") " [, " ULINE("name") ", ...]", "Only run the test(s) specified."},
-        {"--list",       "", "Prints a list of available test names for use with '" BOLD("--only") "'."},
-        {"--leave-logs", "", "Log files are not deleted so that they may be examined."},
-        {"--wait",       "", "After running test(s), waits for a keypress before exiting."},
-        {"--version",    "", "Prints the version of libsir that the test suite was built with."},
-        {"--help",       "", "Shows this message."},
+        {"--perf",       "", "Only run the performance measurement test"},
+        {"--only",       ""  ULINE("name") " [, " ULINE("name") ", ...]", "Only run the test(s) specified"},
+        {"--list",       "", "Prints a list of available test names for use with '" BOLD("--only") "'"},
+        {"--leave-logs", "", "Log files are not deleted so that they may be examined"},
+        {"--wait",       "", "After running test(s), waits for a keypress before exiting"},
+        {"--version",    "", "Prints the version of libsir that the test suite was built with"},
+        {"--help",       "", "Shows this message"},
     };
 
 bool mark_test_to_run(const char* name);
