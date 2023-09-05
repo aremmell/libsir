@@ -104,6 +104,12 @@ bool sirtest_threadrace(void);
 bool sirtest_exceedmaxsize(void);
 
 /**
+ * @test Ensure the correct (and complete) message is written to a log file.
+ * @returns bool `true` if the test passed, `false` otherwise.
+ */
+bool sirtest_logwritesanity(void);
+
+/**
  * @test Properly handle the lack of any output destinations.
  * @returns bool `true` if the test passed, `false` otherwise.
  */

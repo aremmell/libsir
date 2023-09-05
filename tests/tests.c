@@ -55,6 +55,7 @@ static sir_test sir_tests[] = {
 #if !defined(__ORANGEC__)
     {"sanity-thread-ids",       sirtest_threadidsanity, false, true},
 #endif
+    {"sanity-file-write",       sirtest_logwritesanity, false, true},
     {"syslog",                  sirtest_syslog, false, true},
     {"os_log",                  sirtest_os_log, false, true},
     {"filesystem",              sirtest_filesystem, false, true},
@@ -209,7 +210,67 @@ bool sirtest_exceedmaxsize(void) {
 
     pass &= sir_info("%s", toobig);
 
-    sir_cleanup();
+    pass &= sir_cleanup();
+    return print_result_and_return(pass);
+}
+
+bool sirtest_logwritesanity(void) {
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+    static const char* logfilename = MAKE_LOG_NAME("write-validate.log");
+    static const char* message     = "Lorem ipsum dolor sit amet, sea ei dicit"
+                                     " regione laboramus, eos cu minim putent."
+                                     " Sale omnium conceptam est in, cu nam possim"
+                                     " prompta eleifend. Duo purto nostrud eu."
+                                     " Alia accumsan has cu, mentitum invenire"
+                                     " mel an, dicta noster legendos et pro."
+                                     " Solum nobis laboramus et quo, nam putant"
+                                     " dolores consequuntur ex. Sit veniam eruditi"
+                                     " contentiones at. Cu ponderum oporteat"
+                                     " oportere mel, has et saperet accusata"
+                                     " complectitur.";
+
+    printf("\tadding log file '%s' to libsir...\n", logfilename);
+    sirfileid id = sir_addfile(logfilename, SIRL_DEBUG, SIRO_NOHDR | SIRO_NOHOST);
+    pass &= 0U != id;
+
+    print_test_error(pass, false);
+
+    printf("\twriting message to stdout and %s...\n", logfilename);
+
+    pass &= sir_debug("%s", message);
+
+    print_test_error(pass, false);
+
+    printf("\tremoving %s from libsir...\n", logfilename);
+    pass &= sir_remfile(id);
+
+    print_test_error(pass, false);
+
+    printf("\topening %s for reading...\n", logfilename);
+
+    FILE* f = fopen(logfilename, "r");
+    if (!f) {
+        pass = false;
+    } else {
+        char buf[512] = {0};
+        pass &= 0 != sir_readline(f, buf, 512);
+
+        bool found = NULL != strstr(buf, message);
+        pass &= found;
+
+        if (found)
+            printf("\t" GREEN("found '%s'") "\n", message);
+        else
+            printf("\t" RED("did not find '%s'") "\n", message);
+
+        fclose(f);
+        printf("\tdeleting %s...\n", logfilename);
+        (void)rmfile(logfilename);
+    }
+
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -222,8 +283,9 @@ bool sirtest_threadidsanity(void)
     static const char* thread_name = "mythread";
     static const char* logfilename = MAKE_LOG_NAME("thread-id-name.log");
 
-    printf("\tadding log file '%s'...\n", logfilename);
+    printf("\tadding log file '%s' to libsir...\n", logfilename);
     sirfileid id = sir_addfile(logfilename, SIRL_DEBUG, SIRO_NOHDR | SIRO_NOHOST);
+    pass &= 0U != id;
 
     print_test_error(pass, false);
 
@@ -256,7 +318,6 @@ bool sirtest_threadidsanity(void)
 
     FILE* f = fopen(logfilename, "r");
     if (!f) {
-        handle_os_error(true, "fopen(%s) failed", logfilename);
         pass = false;
     } else {
         /* look for, in order, TID, thread name, TID. */
@@ -280,9 +341,9 @@ bool sirtest_threadidsanity(void)
             pass &= found;
 
             if (found)
-                printf("\t" GREEN("line %zu: located '%s'") "\n", n, search);
+                printf("\t" GREEN("line %zu: found '%s'") "\n", n, search);
             else
-                printf("\t" RED("line %zu: did not locate '%s'") "\n", n, search);
+                printf("\t" RED("line %zu: did not find '%s'") "\n", n, search);
         }
 
         fclose(f);
@@ -291,7 +352,7 @@ bool sirtest_threadidsanity(void)
     }
 
     pass &= sir_cleanup();
-    return pass;
+    return print_result_and_return(pass);
 }
 #endif
 
@@ -2244,7 +2305,7 @@ unsigned __stdcall threadrace_thread(void* arg) {
 
 /*
 bool sirtest_XXX(void) {
-    INIT(si, SIRL_ALL, 0U, 0U, 0U);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     pass &= sir_cleanup();
