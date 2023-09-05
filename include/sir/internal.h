@@ -73,10 +73,10 @@ bool _sir_syslogid(sirinit* si, const sir_update_config_data* data);
 bool _sir_syslogcat(sirinit* si, const sir_update_config_data* data);
 
 /** Callback for updating values in the global config. */
-typedef bool (*sirinit_update)(sirinit*, sir_update_config_data*);
+typedef bool (*sirinit_update)(sirinit*, const sir_update_config_data*);
 
 /** Updates values in the global config. */
-bool _sir_writeinit(sir_update_config_data* data, sirinit_update update);
+bool _sir_writeinit(const sir_update_config_data* data, sirinit_update update);
 
 /** Locks a protected section. */
 void* _sir_locksection(sir_mutex_id mid);

@@ -356,7 +356,7 @@ bool _sir_syslogcat(sirinit* si, const sir_update_config_data* data) {
     return updated;
 }
 
-bool _sir_writeinit(sir_update_config_data* data, sirinit_update update) {
+bool _sir_writeinit(const sir_update_config_data* data, sirinit_update update) {
     (void)_sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validupdatedata(data) || !_sir_validfnptr(update))
