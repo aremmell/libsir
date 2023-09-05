@@ -483,6 +483,8 @@ typedef void (*sir_once_fn)(void);
 
 # else /* __WIN__ */
 
+#  define SIR_MAXPID 64
+
 #  define SIR_MAXPATH MAX_PATH
 
 #  define SIR_MSEC_TIMER

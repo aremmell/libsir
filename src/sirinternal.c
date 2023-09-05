@@ -1219,11 +1219,6 @@ bool _sir_setthreadname(const char* name) {
     pthread_set_name_np(pthread_self(), name);
     return true;
 #elif defined(__WIN__)
-# if defined(__ORANGEC__)
-    // TODO: Deal with OrangeC not implementing [Get,Set]ThreadDescription
-    return true;
-# endif
-
 # if defined(__HAVE_STDC_SECURE_OR_EXT1__)
     size_t name_len = strnlen_s(name, SIR_MAXPID);
 # else
