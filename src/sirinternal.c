@@ -1199,15 +1199,22 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
 bool _sir_setthreadname(const char* name) {
     if (!_sir_validptr(name))
         return false;
-#if defined (__MACOS__)
+#if defined(__MACOS__)
     int ret = pthread_setname_np(name);
+    return (0 != ret) ? _sir_handleerr(ret) : true;
+#elif defined(__HAIKU__)
+    status_t ret = rename_thread(get_pthread_thread_id(pthread_self()), name);
+    return (B_OK != ret) ? _sir_handleerr((int)ret) : true;
+#elif defined(__NetBSD__)
+    int ret = pthread_setname_np(pthread_self(), "%s", name);
     return (0 != ret) ? _sir_handleerr(ret) : true;
 #elif (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
       (defined(__GLIBC__) && GLIBC_VERSION >= 21200 && defined(_GNU_SOURCE)) || \
-       defined(USE_PTHREAD_GETNAME_NP)
+       defined(__QNXNTO__) || defined(__SOLARIS__) || defined(USE_PTHREAD_GETNAME_NP) || \
+       defined(__ANDROID__) && !defined(__OpenBSD__)
     int ret = pthread_setname_np(pthread_self(), name);
     return (0 != ret) ? _sir_handleerr(ret) : true;
-#elif defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
+#elif defined(__OpenBSD__) || defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
     pthread_set_name_np(pthread_self(), name);
     return true;
 #elif defined(__WIN__)
