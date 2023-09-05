@@ -362,6 +362,10 @@ _set_thread_local_invalid_parameter_handler(
 #  if defined(SIR_SYSLOG_ENABLED)
 #   include <syslog.h>
 #  endif
+#  if defined(__CYGWIN__)
+#   undef SIR_NO_THREAD_NAMES
+#   define SIR_NO_THREAD_NAMES
+#  endif
 #  if defined(_AIX)
 #   include <sys/procfs.h>
 #   undef SIR_NO_THREAD_NAMES
