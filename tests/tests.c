@@ -1065,10 +1065,8 @@ bool sirtest_mutexsanity(void) {
 }
 
 bool sirtest_perf(void) {
-#if !defined(SIR_PERF_PROFILE)
     static const char* logbasename = "libsir-perf";
     static const char* logext      = "";
-#endif
 
 #if !defined(DUMA)
 # if !defined(SIR_PERF_PROFILE)
@@ -1089,9 +1087,9 @@ bool sirtest_perf(void) {
 
     if (pass) {
         double stdioelapsed  = 0.0;
+        double fileelapsed   = 0.0;
 #if !defined(SIR_PERF_PROFILE)
         double printfelapsed = 0.0;
-        double fileelapsed   = 0.0;
 
         printf("\t" BLUE("%zu lines printf...") "\n", perflines);
 
@@ -1105,7 +1103,7 @@ bool sirtest_perf(void) {
         printfelapsed = sir_timer_elapsed(&printftimer);
 #endif
 
-        printf("\t" BLUE("%zu lines libsir(stdout)...") "\n", perflines);
+        printf("\t" BLUE("%zu lines libsir (stdout)...") "\n", perflines);
 
         sir_time stdiotimer = {0};
         sir_timer_start(&stdiotimer);
@@ -1121,7 +1119,6 @@ bool sirtest_perf(void) {
         INIT(si2, 0, 0, 0, 0);
         pass &= si2_init;
 
-#if !defined(SIR_PERF_PROFILE)
         char logfilename[SIR_MAXPATH] = {0};
         (void)snprintf(logfilename, SIR_MAXPATH, MAKE_LOG_NAME("%s%s"), logbasename, logext);
 
@@ -1129,7 +1126,7 @@ bool sirtest_perf(void) {
         pass &= 0 != logid;
 
         if (pass) {
-            printf("\t" BLUE("%zu lines libsir(log file)...") "\n", perflines);
+            printf("\t" BLUE("%zu lines libsir (file)...") "\n", perflines);
 
             sir_time filetimer = {0};
             sir_timer_start(&filetimer);
@@ -1141,32 +1138,29 @@ bool sirtest_perf(void) {
 
             pass &= sir_remfile(logid);
         }
-#endif
 
         if (pass) {
 #if !defined(SIR_PERF_PROFILE)
             printf("\t" WHITEB("printf: ") CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n",
                 perflines, printfelapsed / 1e3, (double)perflines / (printfelapsed / 1e3));
 #endif
-            printf("\t" WHITEB("libsir(stdout): ")
+            printf("\t" WHITEB("libsir (stdout): ")
                    CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n", perflines,
                     stdioelapsed / 1e3, (double)perflines / (stdioelapsed / 1e3));
-#if !defined(SIR_PERF_PROFILE)
-            printf("\t" WHITEB("libsir(log file): ")
+
+            printf("\t" WHITEB("libsir (file): ")
                    CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n", perflines,
                     fileelapsed / 1e3, (double)perflines / (fileelapsed / 1e3));
-#endif
+
             printf("\t" WHITEB("timer resolution: ") CYAN("~%ldnsec") "\n", sir_timer_getres());
         }
     }
 
-#if !defined(SIR_PERF_PROFILE)
     unsigned deleted = 0U;
     enumfiles(SIR_TESTLOGDIR, logbasename, deletefiles, &deleted);
 
     if (deleted > 0U)
         printf("\t" DGRAY("deleted %u log file(s)") "\n", deleted);
-#endif
 
     sir_cleanup();
     return print_result_and_return(pass);
