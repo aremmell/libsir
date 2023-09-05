@@ -44,12 +44,12 @@
 # elif defined(__linux__)
 #  undef _GNU_SOURCE
 #  define _GNU_SOURCE 1
-#  if defined(__has_include)
+#  if defined __has_include
 #   if __has_include(<features.h>)
 #    include <features.h>
 #   endif
 #  endif
-#  if defined(__has_include)
+#  if defined __has_include
 #   if __has_include(<byteswap.h>)
 #    include <byteswap.h>
 #   endif

@@ -63,10 +63,8 @@ DUMA_SET_FILL(DEBUG_MALLOC_FILL_BYTE);
 #   if !defined(_GNU_SOURCE)
 #    define _GNU_SOURCE 1
 #   endif
-#   if defined(__has_include)
-#    if __has_include(<malloc.h>) && !defined(DUMA)
-#     include <malloc.h>
-#    endif
+#   if !defined(DUMA)
+#    include <malloc.h>
 #   endif
 #   if GLIBC_VERSION >= 20400 && defined(M_PERTURB)
 mallopt(M_PERTURB, DEBUG_MALLOC_FILL_BYTE);

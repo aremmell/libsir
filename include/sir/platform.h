@@ -52,7 +52,7 @@
 # endif
 
 # undef HAS_ATTRIBUTE
-# if defined(__has_attribute) && (defined(__clang__) || defined(__GNUC__))
+# if defined __has_attribute  && (defined(__clang__) || defined(__GNUC__))
 #  define HAS_ATTRIBUTE(atr) __has_attribute(atr)
 # else
 #  define HAS_ATTRIBUTE(atr) 0
@@ -162,11 +162,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #    if !defined(_GNU_SOURCE)
 #     define _GNU_SOURCE 1
 #    endif
-#    if defined(__has_include)
-#     if __has_include(<features.h>)
-#      include <features.h>
-#     endif
-#    endif
+#    include <features.h>
 #    if defined(__GLIBC__)
 #     undef GLIBC_VERSION
 #     define GLIBC_VERSION (((0 + __GLIBC__) * 10000) + ((0 + __GLIBC_MINOR__) * 100))
