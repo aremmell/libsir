@@ -48,6 +48,6 @@ bool _sir_condwait(sir_condition* cond, sir_mutex* mutex);
 # endif
 
 /** Waits a given amount of time for a condition variable to become signaled. */
-bool _sir_condwait_timeout(sir_condition* cond, sir_mutex* mutex, sir_wait* how_long);
+bool _sir_condwait_timeout(sir_condition* cond, sir_mutex* mutex, const sir_wait* how_long);
 
 #endif /* !_SIR_CONDITION_H_INCLUDED */

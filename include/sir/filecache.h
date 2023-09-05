@@ -28,7 +28,7 @@
 
 # include "sir/types.h"
 
-typedef bool (*sir_fcache_pred)(const void* match, sirfile* iter);
+typedef bool (*sir_fcache_pred)(const void* match, const sirfile* iter);
 
 sirfileid _sir_addfile(const char* path, sir_levels levels, sir_options opts);
 bool _sir_updatefile(sirfileid id, sir_update_config_data* data);
@@ -44,20 +44,20 @@ bool _sirfile_roll(sirfile* sf, char** newpath);
 bool _sirfile_archive(sirfile* sf, const char* newpath);
 bool _sirfile_splitpath(sirfile* sf, char** name, char** ext);
 void _sirfile_destroy(sirfile** sf);
-bool _sirfile_validate(sirfile* sf);
-bool _sirfile_update(sirfile* sf, sir_update_config_data* data);
+bool _sirfile_validate(const sirfile* sf);
+bool _sirfile_update(sirfile* sf, const sir_update_config_data* data);
 
 sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
     sir_options opts);
 bool _sir_fcache_update(sirfcache* sfc, sirfileid id, sir_update_config_data* data);
 bool _sir_fcache_rem(sirfcache* sfc, sirfileid id);
 
-bool _sir_fcache_pred_path(const void* match, sirfile* iter);
-bool _sir_fcache_pred_id(const void* match, sirfile* iter);
-sirfile* _sir_fcache_find(sirfcache* sfc, const void* match, sir_fcache_pred pred);
+bool _sir_fcache_pred_path(const void* match, const sirfile* iter);
+bool _sir_fcache_pred_id(const void* match, const sirfile* iter);
+sirfile* _sir_fcache_find(const sirfcache* sfc, const void* match, sir_fcache_pred pred);
 
 bool _sir_fcache_destroy(sirfcache* sfc);
-bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
+bool _sir_fcache_dispatch(const sirfcache* sfc, sir_level level, sirbuf* buf,
     size_t* dispatched, size_t* wanted);
 
 void _sir_fflush(FILE* f);

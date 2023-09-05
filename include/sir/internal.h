@@ -127,13 +127,13 @@ bool _sir_syslog_open(sir_syslog_dest* ctx);
  * Abstraction for writing to platform-specific implementations of
  * system logger facilities.
  */
-bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx);
+bool _sir_syslog_write(sir_level level, const sirbuf* buf, const sir_syslog_dest* ctx);
 
 /**
  * Called after updates to the global config that may require reconfiguration
  * of the system logger.
  */
-bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data);
+bool _sir_syslog_updated(sirinit* si, const sir_update_config_data* data);
 
 /**
  * Abstraction for cleanup/closure of platform-specific implementations of

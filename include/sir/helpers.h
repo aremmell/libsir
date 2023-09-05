@@ -179,7 +179,7 @@ bool _sir_validpluginid(sirpluginid id) {
 }
 
 /** Validates a sir_update_config_data structure. */
-bool _sir_validupdatedata(sir_update_config_data* data);
+bool _sir_validupdatedata(const sir_update_config_data* data);
 
 /** Validates a set of ::sir_level flags. */
 bool _sir_validlevels(sir_levels levels);
@@ -368,7 +368,7 @@ bool _sir_formattime(time_t now, char* buffer, const char* format) {
 #  pragma GCC diagnostic ignored "-Wformat-nonliteral"
 # endif
     struct tm timebuf;
-    struct tm* ptb = _sir_localtime(&now, &timebuf);
+    const struct tm* ptb = _sir_localtime(&now, &timebuf);
     return NULL != ptb && 0 != strftime(buffer, SIR_MAXTIME, format, ptb);
 # if defined(__GNUC__) && !defined(__clang__) && \
     !(defined(__OPEN64__) || defined(__OPENCC__))

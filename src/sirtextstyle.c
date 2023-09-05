@@ -58,7 +58,7 @@ const char* _sir_gettextstyle(sir_level level) {
     return retval;
 }
 
-bool _sir_settextstyle(sir_level level, sir_textstyle* style) {
+bool _sir_settextstyle(sir_level level, const sir_textstyle* style) {
     (void)_sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validlevel(level))
@@ -97,8 +97,7 @@ const sir_textstyle* _sir_getdefstyle(sir_level level) {
         case SIRL_INFO:   return &sir_lvl_info_def_style;
         case SIRL_DEBUG:  return &sir_lvl_debug_def_style;
         // GCOVR_EXCL_START
-        case SIRL_NONE: /* this should never happen */
-        default:
+        default: /* this should never happen */
             SIR_ASSERT(level);
             return &sir_lvl_info_def_style;
         // GCOVR_EXCL_STOP
