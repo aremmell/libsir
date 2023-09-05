@@ -236,6 +236,12 @@ bool sirtest_perf(void);
 bool sirtest_updatesanity(void);
 
 /**
+ * @test Properly format thread ID/names in output.
+ * @returns bool `true` if the test passed, `false` otherwise.
+ */
+bool sirtest_threadidsanity(void);
+
+/**
  * @test Properly open, configure, and send messages to syslog().
  * @note Disabled on Windows and macOS.
  * @returns bool `true` if the test passed, `false` otherwise.
