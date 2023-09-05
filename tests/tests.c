@@ -265,7 +265,7 @@ bool sirtest_logwritesanity(void) {
         else
             printf("\t" RED("did not find '%s'") "\n", message);
 
-        fclose(f);
+        _sir_safefclose(&f);
         printf("\tdeleting %s...\n", logfilename);
         (void)rmfile(logfilename);
     }
@@ -346,7 +346,7 @@ bool sirtest_threadidsanity(void)
                 printf("\t" RED("line %zu: did not find '%s'") "\n", n, search);
         }
 
-        fclose(f);
+        _sir_safefclose(&f);
         printf("\tdeleting %s...\n", logfilename);
         (void)rmfile(logfilename);
     }
@@ -652,17 +652,17 @@ bool sirtest_rollandarchivefile(void) {
 
     if (0 != fseek(f, fillsize, SEEK_SET)) {
         handle_os_error(true, "fseek in file %s failed!", logfilename);
-        fclose(f);
+        _sir_safefclose(&f);
         return false;
     }
 
     if (EOF == fputc('\0', f)) {
         handle_os_error(true, "fputc in file %s failed!", logfilename);
-        fclose(f);
+        _sir_safefclose(&f);
         return false;
     }
 
-    fclose(f);
+    _sir_safefclose(&f);
 
     INIT(si, 0, 0, 0, 0);
     bool pass = si_init;
