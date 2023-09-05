@@ -77,4 +77,12 @@ mallopt(M_CHECK_ACTION, 3);
 #  endif
 # endif
 
+# if defined(__WIN__) && defined(DEBUG) && defined(_DEBUG)
+#  if defined(_CRTDBG_CHECK_ALWAYS_DF) && \
+      defined(_DELAY_FREE_MEM_DF) && \
+      defined(_CRTDBG_LEAK_CHECK_DF)
+_CrtSetDbgFlag(_CRTDBG_CHECK_ALWAYS_DF | _CRTDBG _DELAY_FREE_MEM_DF | _CRTDBG_LEAK_CHECK_DF)
+#  endif
+# endif
+
 #endif /* !_SIR_TESTS_MALLOC_H_INCLUDED */
