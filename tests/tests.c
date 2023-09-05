@@ -258,14 +258,7 @@ bool sirtest_threadidsanity(void)
 
     pass &= sir_debug("this is a test of the libsir system after clearing thread name");
 
-    /* there should now be 3 lines of output in the log file, using default options, which
-     * are:
-     *
-     * - SIR_PREFER_THREAD_ID=0: if a name is set, use it.
-     * - SIR_DUPE_THREAD_ID_USE_NAME=1: in the case of TID==PID, use name if set, even
-     *   if SIR_PREFER_THREAD_ID=1.
-     *
-     * lines should appear as follows:
+    /* there should now be 3 lines of output in the log file that should appear as follows:
      *
      * 1. with PID<separator>TID
      * 2. with PID<separator>mythread
@@ -287,12 +280,10 @@ bool sirtest_threadidsanity(void)
             char buf[256] = {0};
             int ch        = 0;
 
-            while ('\n' == (ch = getc(f)));
+            while ('\n' == (char)(ch = getc(f)));
 
-            for (size_t idx = 0; idx < 256; idx++) {
-                ch = getc(f);
-                if (EOF == ch || '\n' == ch)
-                    break;
+            for (size_t idx = 0; (idx < 256) && ((ch = getc(f)) != EOF)
+                && ('\n' != ch); idx++) {
                 buf[idx] = (char)ch;
             }
 
