@@ -216,24 +216,14 @@ bool sirtest_exceedmaxsize(void) {
 #if !defined(__ORANGEC__)
 bool sirtest_threadidsanity(void)
 {
-    INIT(si, SIRL_ALL, SIRO_NOHOST, 0, 0);
+    INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     static const char* thread_name = "mythread";
     static const char* logfilename = MAKE_LOG_NAME("thread-id-name.log");
 
-    /* this is a particularly difficult test to write: the behavior of libsir
-     * is set at compile time, so for certain configurations, we cannot perform
-     * the necessary testing.
-     *
-     * we'll either need to add preprocessor macros to override them at compile time,
-     * or convert them to runtime options. not being able to test those code paths is
-     * not kosher.
-     */
-    (void)rmfile(logfilename);
-
     printf("\tadding log file '%s'...\n", logfilename);
-    sirfileid id = sir_addfile(logfilename, SIRL_DEBUG, SIRO_NOHDR);
+    sirfileid id = sir_addfile(logfilename, SIRL_DEBUG, SIRO_NOHDR | SIRO_NOHOST);
 
     print_test_error(pass, false);
 
@@ -258,24 +248,18 @@ bool sirtest_threadidsanity(void)
 
     pass &= sir_debug("this is a test of the libsir system after clearing thread name");
 
-    /* there should now be 3 lines of output in the log file that should appear as follows:
-     *
-     * 1. with PID<separator>TID
-     * 2. with PID<separator>mythread
-     * 3. with PID<separator>TID
-     *
-     * remove the log file from libsir, then open it and read it line by line.
-     */
-    printf("\tremoving log file...\n");
+     /* remove the log file from libsir, then open it and read it line by line. */
+    printf("\tremoving %s from libsir...\n", logfilename);
     pass &= sir_remfile(id);
 
-    printf("\topening log file for reading...\n");
+    printf("\topening %s for reading...\n", logfilename);
 
     FILE* f = fopen(logfilename, "r");
     if (!f) {
         handle_os_error(true, "fopen(%s) failed", logfilename);
         pass = false;
     } else {
+        /* look for, in order, TID, thread name, TID. */
         for (size_t n = 0; n < 3; n++) {
             char buf[256] = {0};
             pass &= 0 != sir_readline(f, buf, 256);
@@ -302,10 +286,11 @@ bool sirtest_threadidsanity(void)
         }
 
         fclose(f);
+        printf("\tdeleting %s...\n", logfilename);
+        (void)rmfile(logfilename);
     }
 
     pass &= sir_cleanup();
-
     return pass;
 }
 #endif
