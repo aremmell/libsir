@@ -162,9 +162,9 @@ bool _sir_init(sirinit* si) {
     /* initialize system logger. */
     _sir_syslog_reset(&_cfg->si.d_syslog);
 
-    if (_cfg->si.d_syslog.levels != SIRL_NONE) {
-        if (!_sir_syslog_init(_cfg->si.name, &_cfg->si.d_syslog))
-            _sir_selflog("failed to initialize system logger!");
+    if (_cfg->si.d_syslog.levels != SIRL_NONE &&
+        !_sir_syslog_init(_cfg->si.name, &_cfg->si.d_syslog)) {
+        _sir_selflog("failed to initialize system logger!");
     }
 #endif
 
@@ -259,7 +259,7 @@ bool _sir_init_sanity(const sirinit* si) {
 }
 
 static
-bool _sir_updatelevels(const char* name, sir_levels* old, sir_levels* new) {
+bool _sir_updatelevels(const char* name, sir_levels* old, const sir_levels* new) {
     if (*old != *new) {
         _sir_selflog("updating %s levels from %04"PRIx16" to %04"PRIx16, name, *old, *new);
         *old = *new;
@@ -270,7 +270,7 @@ bool _sir_updatelevels(const char* name, sir_levels* old, sir_levels* new) {
 }
 
 static
-bool _sir_updateopts(const char* name, sir_options* old, sir_options* new) {
+bool _sir_updateopts(const char* name, sir_options* old, const sir_options* new) {
     if (*old != *new) {
         _sir_selflog("updating %s options from %08"PRIx32" to %08"PRIx32, name, *old, *new);
         *old = *new;
@@ -857,7 +857,7 @@ bool _sir_syslog_open(sir_syslog_dest* ctx) {
 #endif
 }
 
-bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx) {
+bool _sir_syslog_write(sir_level level, const sirbuf* buf, const sir_syslog_dest* ctx) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!_sir_bittest(ctx->_state.mask, SIRSL_IS_INIT)) {
         _sir_selflog("not initialized; ignoring");
@@ -892,9 +892,8 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx)
         case SIRL_ALERT:  syslog_level = LOG_ALERT; break;
         case SIRL_EMERG:  syslog_level = LOG_EMERG; break;
         // GCOVR_EXCL_START
-        case SIRL_NONE: /* this should never happen. */
-        default:
-            SIR_ASSERT(level);
+        default: /* this should never happen. */
+            SIR_ASSERT(false);
             syslog_level = LOG_DEBUG;
         // GCOVR_EXCL_STOP
     }
@@ -910,7 +909,7 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx)
 #endif
 }
 
-bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data) {
+bool _sir_syslog_updated(sirinit* si, const sir_update_config_data* data) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!_sir_validptr(si) || !_sir_validptr(data))
         return false;
@@ -1035,7 +1034,7 @@ bool _sir_clock_gettime(int clock, time_t* tbuf, long* msecbuf) {
         if (0 == ret) {
             *tbuf = ts.tv_sec;
             if (msecbuf)
-                *msecbuf = (long)(ts.tv_nsec / 1000000L);
+                *msecbuf = ts.tv_nsec / 1000000L;
         } else {
             if (msecbuf)
                 *msecbuf = 0L;

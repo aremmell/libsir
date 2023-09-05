@@ -96,7 +96,7 @@ size_t _sir_queue_size(sir_queue* q) {
     return idx;
 }
 
-bool _sir_queue_isempty(sir_queue* q) {
+bool _sir_queue_isempty(const sir_queue* q) {
     return !q || !q->head;
 }
 

@@ -128,7 +128,7 @@ bool __sir_handleerr(int code, const char* func, const char* file, uint32_t line
 # endif
 #elif defined(__HAVE_GNU_STRERROR_R__)
         _sir_selflog("using GNU strerror_r");
-        char* tmp = strerror_r(code, message, SIR_MAXERROR);
+        const char* tmp = strerror_r(code, message, SIR_MAXERROR);
         if (tmp != message)
             _sir_strncpy(message, SIR_MAXERROR, tmp, SIR_MAXERROR);
 #elif defined(__HAVE_STRERROR_S__)
@@ -136,7 +136,7 @@ bool __sir_handleerr(int code, const char* func, const char* file, uint32_t line
         finderr = (int)strerror_s(message, SIR_MAXERROR, code);
 #else
         _sir_selflog("using strerror");
-        char* tmp = strerror(code);
+        const char* tmp = strerror(code);
         _sir_strncpy(message, SIR_MAXERROR, tmp, strnlen(tmp, SIR_MAXERROR));
 #endif
         /* cppcheck-suppress knownConditionTrueFalse */
@@ -241,7 +241,8 @@ void __sir_selflog(const char* func, const char* file, uint32_t line,
     success &= write1 > 0;
 
     if (write1 > 0) {
-        va_list args, args2;
+        va_list args;
+        va_list args2;
         va_start(args, format);
         va_copy(args2, args);
 

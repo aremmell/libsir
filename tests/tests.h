@@ -392,19 +392,23 @@ void os_log_parent_activity(void* ctx);
 void os_log_child_activity(void* ctx);
 # endif
 
-static const struct cl_arg {
-    const char* flag;
-    const char* usage;
-    const char* desc;
-    } _cl_arg_list[] = {
-        {"--perf",       "", "Only run the performance measurement test"},
-        {"--only",       ""  ULINE("name") " [, " ULINE("name") ", ...]", "Only run the test(s) specified"},
-        {"--list",       "", "Prints a list of available test names for use with '" BOLD("--only") "'"},
-        {"--leave-logs", "", "Log files are not deleted so that they may be examined"},
-        {"--wait",       "", "After running test(s), waits for a keypress before exiting"},
-        {"--version",    "", "Prints the version of libsir that the test suite was built with"},
-        {"--help",       "", "Shows this message"},
-    };
+/** A command line argument. */
+typedef struct {
+    const char* flag;  /**< The 'flag' (e.g. '--help'). */
+    const char* usage; /**< Usage info (e.g. [foo, ...]). */
+    const char* desc;  /**< Description (e.g. displays a purple dinosaur). */
+} sir_cl_arg;
+
+/** List of available command line arguments. */
+static const sir_cl_arg _cl_arg_list[] = {
+    {"--perf",       "", "Only run the performance measurement test"},
+    {"--only",       ""  ULINE("name") " [, " ULINE("name") ", ...]", "Only run the test(s) specified"},
+    {"--list",       "", "Prints a list of available test names for use with '" BOLD("--only") "'"},
+    {"--leave-logs", "", "Log files are not deleted so that they may be examined"},
+    {"--wait",       "", "After running test(s), waits for a keypress before exiting"},
+    {"--version",    "", "Prints the version of libsir that the test suite was built with"},
+    {"--help",       "", "Shows this message"},
+};
 
 bool mark_test_to_run(const char* name);
 

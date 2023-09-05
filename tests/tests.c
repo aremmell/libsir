@@ -2265,7 +2265,7 @@ unsigned __stdcall threadrace_thread(void* arg) {
         /* sometimes remove and re-add the log file, and set some options/styles.
          * other times, just set different options/styles. */
         uint32_t rnd = (uint32_t)(n + threadid);
-        if (getrand_bool((uint32_t)(rnd > 1 ? rnd : 1))) {
+        if (getrand_bool(rnd > 1U ? rnd : 1U)) {
             my_args->pass = print_test_error(sir_remfile(id), false);
             my_args->pass = print_test_error(0 != sir_addfile(my_args->log_file,
                 SIRL_ALL, SIRO_MSGONLY), false);
@@ -2418,7 +2418,7 @@ bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* 
         return print_os_error();
 
     rewinddir(d);
-    struct dirent* di = readdir(d);
+    const struct dirent* di = readdir(d);
     if (!di) {
         closedir(d);
         return print_os_error();

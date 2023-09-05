@@ -75,7 +75,7 @@ bool _sir_validfd(int fd) {
 }
 
 /** Validates a sir_update_config_data structure. */
-bool _sir_validupdatedata(sir_update_config_data* data) {
+bool _sir_validupdatedata(const sir_update_config_data* data) {
     if (!_sir_validptr(data))
         return false;
 
@@ -292,10 +292,11 @@ bool _sir_getchar(char* input) {
 # endif
      return true;
 #else /* !__WIN__ */
-    struct termios cur = {0}, new = {0};
+    struct termios cur = {0};
     if (0 != tcgetattr(STDIN_FILENO, &cur))
         return _sir_handleerr(errno);
 
+    struct termios new = {0};
     memcpy(&new, &cur, sizeof(struct termios));
     new.c_lflag &= ~(ICANON | ECHO);
 

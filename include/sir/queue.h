@@ -45,7 +45,7 @@ bool _sir_queue_destroy(sir_queue** q);
 size_t _sir_queue_size(sir_queue* q);
 
 /** `true` if the queue contains zero nodes, `false` otherwise. */
-bool _sir_queue_isempty(sir_queue* q);
+bool _sir_queue_isempty(const sir_queue* q);
 
 /** Pushes a new node onto the back of a queue. */
 bool _sir_queue_push(sir_queue* q, void* data);
