@@ -2388,7 +2388,7 @@ bool rmfile(const char* filename) {
     if (!_sir_deletefile(filename)) {
         handle_os_error(false, "failed to delete %s!", filename);
     } else {
-        printf("\t" DGRAY("deleted %s (%ld bytes)...") "\n", filename,
+        printf("\t" DGRAY("deleted %s (%ld bytes)") "\n", filename,
             (long)st.st_size);
     }
 
