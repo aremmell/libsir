@@ -1209,7 +1209,7 @@ bool sirtest_mutexsanity(void) {
     PRINT_PASS(pass, "\t--- pass invalid arguments: %s ---\n\n", PRN_PASS(pass));
 
     _sir_andeql(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return print_result_and_return(pass); // -V1020
 }
 
 bool sirtest_perf(void) {
