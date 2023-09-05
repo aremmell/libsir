@@ -380,7 +380,7 @@ bool sirtest_failnooutputdest(void) {
         if (0U != fid)
             pass &= sir_remfile(fid);
 
-        rmfile(logfilename);
+        (void)rmfile(logfilename);
     }
 
     sir_cleanup();
@@ -439,7 +439,7 @@ bool sirtest_filecachesanity(void) {
     for (size_t n = 0; n < numfiles - 1; n++) {
         char path[SIR_MAXPATH] = {0};
         (void)snprintf(path, SIR_MAXPATH, MAKE_LOG_NAME("test-%zu.log"), n);
-        rmfile(path);
+        (void)rmfile(path);
         ids[n] = sir_addfile(path, SIRL_ALL, (n % 2) ? odd : even);
         pass &= 0U != ids[n] && sir_info("test %zu", n);
     }
@@ -490,7 +490,7 @@ bool sirtest_filecachesanity(void) {
 
         char path[SIR_MAXPATH] = {0};
         (void)snprintf(path, SIR_MAXPATH, MAKE_LOG_NAME("test-%zu.log"), removeorder[n]);
-        rmfile(path);
+        (void)rmfile(path);
     }
 
     pass &= sir_info("test test test");
@@ -599,13 +599,13 @@ bool sirtest_faildupefile(void) {
     /* don't remove all of the log files in order to also test
      * cache tear-down. */
     pass &= sir_remfile(fid);
-
-    rmfile(filename1);
-    rmfile(filename2);
-    rmfile(filename3);
-    rmfile(filename4);
-
     pass &= sir_cleanup();
+
+    (void)rmfile(filename1);
+    (void)rmfile(filename2);
+    (void)rmfile(filename3);
+    (void)rmfile(filename4);
+
     return print_result_and_return(pass);
 }
 
@@ -1335,7 +1335,7 @@ bool sirtest_updatesanity(void) {
         SIRL_INFO, SIRL_DEBUG
     };
 
-    rmfile(logfile);
+    (void)rmfile(logfile);
     sirfileid id1 = sir_addfile(logfile, SIRL_DEFAULT, SIRO_DEFAULT);
     pass &= 0 != id1;
 
@@ -1402,9 +1402,9 @@ bool sirtest_updatesanity(void) {
     }
 
     pass &= sir_remfile(id1);
-    rmfile(logfile);
-    sir_cleanup();
+    (void)rmfile(logfile);
 
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -2225,10 +2225,10 @@ unsigned __stdcall threadrace_thread(void* arg) {
     pid_t threadid       = _sir_gettid();
     thread_args* my_args = (thread_args*)arg;
 
-    rmfile(my_args->log_file);
+    (void)rmfile(my_args->log_file);
     sirfileid id = sir_addfile(my_args->log_file, SIRL_ALL, SIRO_MSGONLY);
 
-    if (0 == id) {
+    if (0U == id) {
         bool unused = print_test_error(false, false);
         SIR_UNUSED(unused);
 #if !defined(__WIN__)
@@ -2294,7 +2294,7 @@ unsigned __stdcall threadrace_thread(void* arg) {
 
     my_args->pass = print_test_error(sir_remfile(id), false);
 
-    rmfile(my_args->log_file);
+    (void)rmfile(my_args->log_file);
 
 #if !defined(__WIN__)
     return NULL;
@@ -2400,7 +2400,7 @@ void deletefiles(const char* search, const char* path, const char* filename, uns
         char filepath[SIR_MAXPATH];
         _sir_snprintf_trunc(filepath, SIR_MAXPATH, "%s%s", path, filename);
 
-        rmfile(filepath);
+        (void)rmfile(filepath);
         (*data)++;
     }
 }
