@@ -115,8 +115,8 @@ bool _sir_resettextstyles(void) {
     for (size_t n = 0; n < SIR_NUMLEVELS; n++) {
         memcpy(&data->map[n].style, _sir_getdefstyle(data->map[n].level),
              sizeof(sir_textstyle));
-        all_ok &= _sir_formatstyle(*data->color_mode, &data->map[n].style,
-            data->map[n].str);
+        _sir_andeql(all_ok, _sir_formatstyle(*data->color_mode, &data->map[n].style,
+            data->map[n].str));
     }
 
     _SIR_UNLOCK_SECTION(SIRMI_TEXTSTYLE);

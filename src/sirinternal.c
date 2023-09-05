@@ -183,14 +183,14 @@ bool _sir_cleanup(void) {
     SIR_ASSERT(destroyfc);
 
     _SIR_UNLOCK_SECTION(SIRMI_FILECACHE);
-    cleanup &= destroyfc;
+    _sir_andeql(cleanup, destroyfc);
 
 #if !defined(SIR_NO_PLUGINS)
     _SIR_LOCK_SECTION(sir_plugincache, spc, SIRMI_PLUGINCACHE, false);
     bool destroypc = _sir_plugin_cache_destroy(spc);
     SIR_ASSERT(destroypc);
     _SIR_UNLOCK_SECTION(SIRMI_PLUGINCACHE);
-    cleanup &= destroypc;
+    _sir_andeql(cleanup, destroypc);
 #endif
 
     _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false);
@@ -240,19 +240,19 @@ bool _sir_init_sanity(const sirinit* si) {
         return false;
 
     bool levelcheck = true;
-    levelcheck &= _sir_validlevels(si->d_stdout.levels);
-    levelcheck &= _sir_validlevels(si->d_stderr.levels);
+    _sir_andeql(levelcheck, _sir_validlevels(si->d_stdout.levels));
+    _sir_andeql(levelcheck, _sir_validlevels(si->d_stderr.levels));
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
-    levelcheck &= _sir_validlevels(si->d_syslog.levels);
+    _sir_andeql(levelcheck, _sir_validlevels(si->d_syslog.levels));
 #endif
 
     bool optscheck = true;
-    optscheck &= _sir_validopts(si->d_stdout.opts);
-    optscheck &= _sir_validopts(si->d_stderr.opts);
+    _sir_andeql(optscheck, _sir_validopts(si->d_stdout.opts));
+    _sir_andeql(optscheck, _sir_validopts(si->d_stderr.opts));
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
-    optscheck &= _sir_validopts(si->d_syslog.opts);
+    _sir_andeql(optscheck, _sir_validopts(si->d_syslog.opts));
 #endif
 
     return levelcheck && optscheck;
@@ -453,13 +453,13 @@ bool _sir_init_common_static(void) {
     bool created = _sir_mutexcreate(&cfg_mutex);
     SIR_ASSERT_UNUSED(created, created);
 
-    created &= _sir_mutexcreate(&fc_mutex);
+    _sir_andeql(created, _sir_mutexcreate(&fc_mutex));
     SIR_ASSERT_UNUSED(created, created);
 
-    created &= _sir_mutexcreate(&pc_mutex);
+    _sir_andeql(created, _sir_mutexcreate(&pc_mutex));
     SIR_ASSERT_UNUSED(created, created);
 
-    created &= _sir_mutexcreate(&ts_mutex);
+    _sir_andeql(created, _sir_mutexcreate(&ts_mutex));
     SIR_ASSERT_UNUSED(created, created);
 
     return created;
@@ -635,7 +635,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
         const char* write = _sir_format(true, si->d_stdout.opts, buf);
         bool wrote        = _sir_validstrnofail(write) &&
             _sir_write_stdout(write, buf->output_len);
-        retval &= wrote;
+        _sir_andeql(retval, wrote);
 
         if (wrote)
             dispatched++;
@@ -646,7 +646,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
         const char* write = _sir_format(true, si->d_stderr.opts, buf);
         bool wrote        = _sir_validstrnofail(write) &&
             _sir_write_stderr(write, buf->output_len);
-        retval &= wrote;
+        _sir_andeql(retval, wrote);
 
         if (wrote)
             dispatched++;
@@ -664,7 +664,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
     _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, false);
     size_t fdispatched = 0;
     size_t fwanted     = 0;
-    retval &= _sir_fcache_dispatch(sfc, level, buf, &fdispatched, &fwanted);
+    _sir_andeql(retval, _sir_fcache_dispatch(sfc, level, buf, &fdispatched, &fwanted));
     _SIR_UNLOCK_SECTION(SIRMI_FILECACHE);
 
     dispatched += fdispatched;
@@ -674,7 +674,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
     _SIR_LOCK_SECTION(sir_plugincache, spc, SIRMI_PLUGINCACHE, false);
     size_t pdispatched = 0;
     size_t pwanted     = 0;
-    retval &= _sir_plugin_cache_dispatch(spc, level, buf, &pdispatched, &pwanted);
+    _sir_andeql(retval, _sir_plugin_cache_dispatch(spc, level, buf, &pdispatched, &pwanted));
     _SIR_UNLOCK_SECTION(SIRMI_PLUGINCACHE);
 
     dispatched += pdispatched;

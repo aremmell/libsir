@@ -84,18 +84,18 @@ bool _sir_validupdatedata(const sir_update_config_data* data) {
         valid = false;
 
     if (valid && _sir_bittest(data->fields, SIRU_LEVELS))
-        valid &= (_sir_validptrnofail(data->levels) &&
-            _sir_validlevels(*data->levels));
+        _sir_andeql(valid, (_sir_validptrnofail(data->levels) &&
+            _sir_validlevels(*data->levels)));
 
     if (valid && _sir_bittest(data->fields, SIRU_OPTIONS))
-        valid &= (_sir_validptrnofail(data->opts) &&
-            _sir_validopts(*data->opts));
+        _sir_andeql(valid, (_sir_validptrnofail(data->opts) &&
+            _sir_validopts(*data->opts)));
 
     if (valid && _sir_bittest(data->fields, SIRU_SYSLOG_ID))
-        valid &= _sir_validstrnofail(data->sl_identity);
+        _sir_andeql(valid, _sir_validstrnofail(data->sl_identity));
 
     if (valid && _sir_bittest(data->fields, SIRU_SYSLOG_CAT))
-        valid &= _sir_validstrnofail(data->sl_category);
+        _sir_andeql(valid, _sir_validstrnofail(data->sl_category));
 
     if (!valid) {
         (void)_sir_seterror(_SIR_E_INVALID);
