@@ -148,7 +148,7 @@ bool _sirfile_write(sirfile* sf, const char* output) {
                 sf->path, sf->id);
     }
 
-    size_t writeLen = strnlen(output, SIR_MAXFHEADER);
+    size_t writeLen = strnlen(output, SIR_MAXOUTPUT);
     size_t write    = fwrite(output, sizeof(char), writeLen, sf->f);
 
     SIR_ASSERT(write == writeLen);
