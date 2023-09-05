@@ -1156,7 +1156,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     if (0 != ret)
         return _sir_handleerr(ret);
 # if defined(__HAIKU__)
-    if (!(strncmp(name, "pthread func", SIR_MAXPID)) || !_sir_validstrnofail(name))
+    if (!(strncmp(name, "pthread func", SIR_MAXPID)))
         (void)snprintf(name, SIR_MAXPID, "%ld", (long)get_pthread_thread_id(pthread_self()));
 # endif
     return _sir_validstrnofail(name);
