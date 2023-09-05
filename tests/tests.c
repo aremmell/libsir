@@ -275,6 +275,9 @@ bool sirtest_logwritesanity(void) {
 bool sirtest_threadidsanity(void)
 {
     INIT(si, SIRL_ALL, 0, 0, 0);
+#if defined(SIR_NO_THREAD_NAMES)
+    bool pass = sir_info("test skipped for this system configuration");
+#else
     bool pass = si_init;
 
     static const char* thread_name = "mythread";
@@ -335,11 +338,7 @@ bool sirtest_threadidsanity(void)
             }
 
             bool found = NULL != strstr(buf, search);
-#if !defined(SIR_NO_THREAD_NAMES)
             pass &= found;
-#else
-            pass |= found;
-#endif
 
             if (found)
                 printf("\t" GREEN("line %zu: found '%s'") "\n", n, search);
@@ -352,6 +351,7 @@ bool sirtest_threadidsanity(void)
         (void)rmfile(logfilename);
     }
 
+#endif
     pass &= sir_cleanup();
     return print_result_and_return(pass);
 }

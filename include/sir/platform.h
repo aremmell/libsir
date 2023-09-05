@@ -173,6 +173,10 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #    if defined(__GLIBC__) && GLIBC_VERSION >= 21200
 #     define USE_PTHREAD_GETNAME_NP
 #    endif
+#    if defined(__GLIBC__) && GLIBC_VERSION > 0 && GLIBC_VERSION < 21200
+#     undef SIR_NO_THREAD_NAMES
+#     define SIR_NO_THREAD_NAMES
+#    endif
 #   endif
 #   if defined(__CYGWIN__)
 #    if !defined(_GNU_SOURCE)

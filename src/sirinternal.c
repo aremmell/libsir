@@ -1150,7 +1150,9 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     _sir_resetstr(name);
 #if defined(__MACOS__) || (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
     (defined(__GLIBC__) && GLIBC_VERSION >= 21200 && defined(_GNU_SOURCE)) || \
-    (defined(__ANDROID__) &&  __ANDROID_API__ >= 26) || defined(USE_PTHREAD_GETNAME_NP)
+    (defined(__ANDROID__) &&  __ANDROID_API__ >= 26) || defined(USE_PTHREAD_GETNAME_NP) || \
+    (defined(__linux__) && !defined(__GLIBC__) && \
+     defined(_GNU_SOURCE) && defined(__NEED_pthread_t))
     int ret = pthread_getname_np(pthread_self(), name, SIR_MAXPID);
     if (0 != ret)
         return _sir_handleerr(ret);
@@ -1210,7 +1212,9 @@ bool _sir_setthreadname(const char* name) {
 #elif (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
       (defined(__GLIBC__) && GLIBC_VERSION >= 21200 && defined(_GNU_SOURCE)) || \
        defined(__QNXNTO__) || defined(__SOLARIS__) || defined(USE_PTHREAD_GETNAME_NP) || \
-       defined(__ANDROID__) && !defined(__OpenBSD__)
+       defined(__ANDROID__) && !defined(__OpenBSD__) || \
+      (defined(__linux__) && !defined(__GLIBC__) && \
+       defined(_GNU_SOURCE) && defined(__NEED_pthread_t))
     int ret = pthread_setname_np(pthread_self(), name);
     return (0 != ret) ? _sir_handleerr(ret) : true;
 #elif defined(__OpenBSD__) || defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
@@ -1241,10 +1245,7 @@ bool _sir_setthreadname(const char* name) {
 #  pragma message("unable to determine how to set a thread name")
 # endif
     SIR_UNUSED(name);
-    // TODO: Jeff, you got this? Gotta add the other platforms, then this should return
-    // false if it actually can't do it. For now I'm setting it to true so the test will
-    // pass CI. - RML
-    return true;
+    return false;
 #endif
 }
 
