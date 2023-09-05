@@ -383,7 +383,7 @@ bool sirtest_failnooutputdest(void) {
         (void)rmfile(logfilename);
     }
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -412,7 +412,7 @@ bool sirtest_failnulls(void) {
     if (pass)
         print_expected_error();
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -422,7 +422,7 @@ bool sirtest_failemptymessage(void) {
 
     pass &= !sir_debug("%s", "");
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -495,7 +495,7 @@ bool sirtest_filecachesanity(void) {
 
     pass &= sir_info("test test test");
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -508,7 +508,7 @@ bool sirtest_failinvalidfilename(void) {
     if (pass)
         print_expected_error();
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -536,7 +536,7 @@ bool sirtest_failfilebadpermission(void) {
     if (pass)
         print_expected_error();
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -619,7 +619,7 @@ bool sirtest_failremovebadfile(void) {
     if (pass)
         print_expected_error();
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -703,7 +703,7 @@ bool sirtest_rollandarchivefile(void) {
     if (delcount > 0U)
         printf("\tfound and removed %u log file(s)\n", delcount);
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -726,7 +726,7 @@ bool sirtest_failinittwice(void) {
     if (pass)
         print_expected_error();
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -742,7 +742,7 @@ bool sirtest_failinvalidinitdata(void) {
     if (pass)
         print_expected_error();
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -751,13 +751,13 @@ bool sirtest_initcleanupinit(void) {
     bool pass = si1_init;
 
     pass &= sir_info("init called once; testing output...");
-    sir_cleanup();
+    pass &= sir_cleanup();
 
     INIT(si2, SIRL_ALL, 0, 0, 0);
     pass &= si2_init;
 
     pass &= sir_info("init called again after re-init; testing output...");
-    sir_cleanup();
+    pass &= sir_cleanup();
 
     return print_result_and_return(pass);
 }
@@ -778,7 +778,7 @@ bool sirtest_failaftercleanup(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     pass &= !sir_info("already cleaned up; this needs to fail");
 
     if (pass)
@@ -830,7 +830,7 @@ bool sirtest_errorsanity(void) {
         printf("\t%s = %s\n", errors[n].name, message);
     }
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -945,7 +945,7 @@ bool sirtest_textstylesanity(void) {
         SIRTC_BMAGENTA);
     PRINT_PASS(pass, "\t--- change mode: 16-color: %s ---\n\n", PRN_PASS(pass));
 
-    sir_cleanup();
+    pass &= sir_cleanup();
 
     return print_result_and_return(pass);
 }
@@ -1054,7 +1054,7 @@ bool sirtest_optionssanity(void) {
 
     PRINT_PASS(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -1148,7 +1148,7 @@ bool sirtest_levelssanity(void) {
 
     PRINT_PASS(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -1260,7 +1260,7 @@ bool sirtest_perf(void) {
 
         stdioelapsed = sir_timer_elapsed(&stdiotimer);
 
-        sir_cleanup();
+        pass &= sir_cleanup();
 
         INIT(si2, 0, 0, 0, 0);
         pass &= si2_init;
@@ -1308,7 +1308,7 @@ bool sirtest_perf(void) {
     if (deleted > 0U)
         printf("\t" DGRAY("deleted %u log file(s)") "\n", deleted);
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -1492,7 +1492,7 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
 #  endif
 # endif
 
-        sir_cleanup();
+        pass &= sir_cleanup();
 
         if (!pass)
             break;
@@ -1852,7 +1852,7 @@ bool sirtest_filesystem(void) {
 
     _sir_safefclose(&f);
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -1920,7 +1920,7 @@ bool sirtest_squelchspam(void) {
             ascii_idx = 33;
     }
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
@@ -2213,7 +2213,7 @@ bool sirtest_threadrace(void) {
 
     _sir_safefree(&heap_args);
 
-    sir_cleanup();
+    pass &= sir_cleanup();
     return print_result_and_return(pass);
 }
 
