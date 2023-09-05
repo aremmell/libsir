@@ -742,7 +742,7 @@ bool sirtest_failinvalidinitdata(void) {
     if (pass)
         print_expected_error();
 
-    pass &= sir_cleanup();
+    (void)sir_cleanup();
     return print_result_and_return(pass);
 }
 
