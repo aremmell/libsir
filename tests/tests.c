@@ -174,11 +174,11 @@ int main(int argc, char** argv) {
     if (passed == tgt_tests) {
         printf("\n" WHITEB("done: ")
                    GREENB("%s%zu " ULINE("libsir") " %s passed in %.03fsec!") "\n\n",
-            tgt_tests > 1 ? "all " : "", tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
+            tgt_tests > 1 ? "all " : "", tgt_tests, TEST_S(tgt_tests), (elapsed / 1e3));
     } else {
         printf("\n" WHITEB("done: ")
                    REDB("%zu of %zu " ULINE("libsir") " %s failed in %.03fsec") "\n\n",
-            tgt_tests - passed, tgt_tests, TEST_S(tgt_tests), elapsed / 1e3);
+            tgt_tests - passed, tgt_tests, TEST_S(tgt_tests), (elapsed / 1e3));
 
         printf(REDB("Failed %s:") "\n\n", TEST_S(tgt_tests - passed));
 
