@@ -556,15 +556,10 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #  define __HAVE_STDC_EXT2__
 # endif
 
-# if (defined(__TURBOC__) || defined(__BORLANDC__) || \
-     defined(__BCPLUSPLUS__) || defined(__CODEGEARC__))
-#  if !defined(__EMBARCADEROC__)
-#   define __EMBARCADEROC__
-#  endif
-#  if !defined(SIR_MSVCRT_MINGW)
-#   define SIR_MSVCRT_MINGW
-#  endif
-#  undef __HAVE_STDC_SECURE_OR_EXT1__
+# include "sir/platform_embarcadero.h"
+# if defined(SIR_UIPTRx)
+#  undef PRIxPTR
+#  define PRIxPTR SIR_UIPTRx
 # endif
 
 # if (defined(__clang__) || defined(__GNUC__)) && defined(__FILE_NAME__)
