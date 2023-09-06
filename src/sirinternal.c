@@ -1094,7 +1094,7 @@ double _sir_msec_since(const sir_time* when, sir_time* out) {
     SIR_ASSERT(_sir_perfcntr_freq.QuadPart > 0LL);
 
     if (_sir_perfcntr_freq.QuadPart <= 0LL)
-        return 0.0;
+        (void)QueryPerformanceFrequency(&_sir_perfcntr_freq);
 
     (void)QueryPerformanceCounter(&out->counter);
 
