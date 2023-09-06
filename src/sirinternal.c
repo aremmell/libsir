@@ -1141,7 +1141,7 @@ pid_t _sir_gettid(void) {
 #elif defined(__WIN__)
     tid = (pid_t)GetCurrentThreadId();
 #else
-# error "cannot determine how to get thread id; please contact the author"
+# error "unable to determine how to get a thread identifier"
 #endif
     return tid;
 }
