@@ -237,7 +237,7 @@
  * The maximum number of characters allowable in one log message. This
  * does not include accompanying formatted output (see ::SIR_MAXOUTPUT).
  */
-# define SIR_MAXMESSAGE 2048
+# define SIR_MAXMESSAGE 4096
 
 /** The size, in characters, of the buffer used to hold time format strings. */
 # define SIR_MAXTIME 64
