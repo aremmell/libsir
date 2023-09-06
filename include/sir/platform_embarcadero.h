@@ -41,6 +41,10 @@
 #  elif defined(PRIxPTR)
 #   define SIR_UIPTRx PRIxPTR
 #  endif
+#  if defined(SIR_UIPTRx)
+#   undef PRIxPTR
+#   define PRIxPTR SIR_UIPTRx
+#  endif
 # endif
 
 #endif /* !_SIR_PLATFORM_EMBARCADERO_H_INCLUDED */

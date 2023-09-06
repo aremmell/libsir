@@ -557,10 +557,6 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 # endif
 
 # include "sir/platform_embarcadero.h"
-# if defined(SIR_UIPTRx)
-#  undef PRIxPTR
-#  define PRIxPTR SIR_UIPTRx
-# endif
 
 # if (defined(__clang__) || defined(__GNUC__)) && defined(__FILE_NAME__)
 #  define __file__ __FILE_NAME__
