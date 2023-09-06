@@ -30,7 +30,6 @@
 bool _sir_write_stdio(FILE* stream, const char* message) {
     return (EOF != fputs(message, stream)) ? true : _sir_handleerr(errno);
 }
-
 #else /* __WIN__ */
 HANDLE __sir_stdout  = INVALID_HANDLE_VALUE;
 HANDLE __sir_stderr  = INVALID_HANDLE_VALUE;
