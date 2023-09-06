@@ -151,6 +151,10 @@ bool _sir_setbitslow(uint32_t* flags, uint32_t set) {
     return true;
 }
 
+/** Effectively performs b &= expr without the linter warnings about using
+ * bool as an operand for that operator. */
+# define _sir_andeql(b, expr) ((b) = (b) && (expr))
+
 /** Calls free and sets the pointer to NULL. */
 void __sir_safefree(void** pp);
 
@@ -179,7 +183,7 @@ bool _sir_validpluginid(sirpluginid id) {
 }
 
 /** Validates a sir_update_config_data structure. */
-bool _sir_validupdatedata(sir_update_config_data* data);
+bool _sir_validupdatedata(const sir_update_config_data* data);
 
 /** Validates a set of ::sir_level flags. */
 bool _sir_validlevels(sir_levels levels);
@@ -329,28 +333,28 @@ struct tm* _sir_localtime(const time_t* timer, struct tm* buf) {
         return NULL;
 # if defined(__HAVE_STDC_SECURE_OR_EXT1__) && !defined(__EMBARCADEROC__)
 #  if !defined(__WIN__)
-        struct tm* ret = localtime_s(timer, buf);
-        if (!ret) {
-            (void)_sir_handleerr(errno);
-            return NULL;
-        }
+    struct tm* ret = localtime_s(timer, buf);
+    if (!ret) {
+        (void)_sir_handleerr(errno);
+        return NULL;
+    }
 #  else /* __WIN__ */
-        errno_t ret = localtime_s(buf, timer);
-        if (0 != ret) {
-            (void)_sir_handleerr(ret);
-            return NULL;
-        }
+    errno_t ret = localtime_s(buf, timer);
+    if (0 != ret) {
+        (void)_sir_handleerr(ret);
+        return NULL;
+    }
 #  endif
-        return buf;
+    return buf;
 # else /* !__HAVE_STDC_SECURE_OR_EXT1__ */
 #  if !defined(__WIN__) || defined(__EMBARCADEROC__)
-        struct tm* ret = localtime_r(timer, buf);
+    struct tm* ret = localtime_r(timer, buf);
 #  else
-        struct tm* ret = localtime(timer);
+    struct tm* ret = localtime(timer);
 #  endif
-        if (!ret)
-            (void)_sir_handleerr(errno);
-        return ret;
+    if (!ret)
+        (void)_sir_handleerr(errno);
+    return ret;
 # endif
 }
 
@@ -368,7 +372,7 @@ bool _sir_formattime(time_t now, char* buffer, const char* format) {
 #  pragma GCC diagnostic ignored "-Wformat-nonliteral"
 # endif
     struct tm timebuf;
-    struct tm* ptb = _sir_localtime(&now, &timebuf);
+    const struct tm* ptb = _sir_localtime(&now, &timebuf);
     return NULL != ptb && 0 != strftime(buffer, SIR_MAXTIME, format, ptb);
 # if defined(__GNUC__) && !defined(__clang__) && \
     !(defined(__OPEN64__) || defined(__OPENCC__))

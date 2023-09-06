@@ -1,5 +1,5 @@
 /*
- * plugins.h
+ * platform_embarcadero.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
@@ -23,30 +23,28 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#ifndef _SIR_PLUGINS_H_INCLUDED
-# define _SIR_PLUGINS_H_INCLUDED
+#ifndef _SIR_PLATFORM_EMBARCADERO_H_INCLUDED
+# define _SIR_PLATFORM_EMBARCADERO_H_INCLUDED
 
-# include "sir/types.h"
+# if (defined(__TURBOC__) || defined(__BORLANDC__) || \
+     defined(__BCPLUSPLUS__) || defined(__CODEGEARC__))
+#  include <stdint.h>
+#  if !defined(__EMBARCADEROC__)
+#   define __EMBARCADEROC__
+#  endif
+#  if !defined(SIR_MSVCRT_MINGW)
+#   define SIR_MSVCRT_MINGW
+#  endif
+#  undef __HAVE_STDC_SECURE_OR_EXT1__
+#  if defined(__UINTPTR_FMTx__)
+#   define SIR_UIPTRx __UINTPTR_FMTx__
+#  elif defined(PRIxPTR)
+#   define SIR_UIPTRx PRIxPTR
+#  endif
+#  if defined(SIR_UIPTRx)
+#   undef PRIxPTR
+#   define PRIxPTR SIR_UIPTRx
+#  endif
+# endif
 
-typedef bool (*sir_plugin_pred)(const void*, const sir_plugin*);
-
-sirpluginid _sir_plugin_load(const char* path);
-sirpluginid _sir_plugin_probe(sir_plugin* plugin);
-sir_pluginexport _sir_plugin_getexport(sir_pluginhandle handle, const char* name);
-bool _sir_plugin_unload(sir_plugin* plugin);
-
-sirpluginid _sir_plugin_add(sir_plugin* plugin);
-bool _sir_plugin_rem(sirpluginid id);
-void _sir_plugin_destroy(sir_plugin** plugin);
-
-bool _sir_plugin_cache_pred_id(const void* match, const sir_plugin* iter);
-
-sirpluginid _sir_plugin_cache_add(sir_plugincache* spc, sir_plugin* plugin);
-sir_plugin* _sir_plugin_cache_find_id(const sir_plugincache* spc, sirpluginid id);
-sir_plugin* _sir_plugin_cache_find(const sir_plugincache* spc, const void* match, sir_plugin_pred pred);
-bool _sir_plugin_cache_rem(sir_plugincache* spc, sirpluginid id);
-bool _sir_plugin_cache_destroy(sir_plugincache* spc);
-bool _sir_plugin_cache_dispatch(const sir_plugincache* spc, sir_level level, sirbuf* buf,
-    size_t* dispatched, size_t* wanted);
-
-#endif /* !_SIR_PLUGINS_H_INCLUDED */
+#endif /* !_SIR_PLATFORM_EMBARCADERO_H_INCLUDED */

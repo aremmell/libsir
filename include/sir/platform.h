@@ -52,7 +52,7 @@
 # endif
 
 # undef HAS_ATTRIBUTE
-# if defined(__has_attribute) && (defined(__clang__) || defined(__GNUC__))
+# if defined __has_attribute  && (defined(__clang__) || defined(__GNUC__))
 #  define HAS_ATTRIBUTE(atr) __has_attribute(atr)
 # else
 #  define HAS_ATTRIBUTE(atr) 0
@@ -111,7 +111,7 @@
 #   undef _DARWIN_C_SOURCE
 #   define _DARWIN_C_SOURCE
 #  elif defined(__serenity__)
-#   define USE_PTHREAD_GETNAME_NP
+#   define SIR_PTHREAD_GETNAME_NP
 #  elif defined(__OpenBSD__)
 #   define __BSD__
 #   define __FreeBSD_PTHREAD_NP_11_3__
@@ -120,7 +120,7 @@
 #   if !defined(_NETBSD_SOURCE)
 #    define _NETBSD_SOURCE 1
 #   endif
-#   define USE_PTHREAD_GETNAME_NP
+#   define SIR_PTHREAD_GETNAME_NP
 #  elif defined(__FreeBSD__) || defined(__DragonFly__)
 #   define __BSD__
 #   define _BSD_SOURCE
@@ -136,7 +136,7 @@
 #    define __DragonFly_getthreadid__
 #   endif
 #   if defined(__DragonFly__)
-#    define USE_PTHREAD_GETNAME_NP
+#    define SIR_PTHREAD_GETNAME_NP
 #   endif
 #  else
 #   if defined(__HAIKU__)
@@ -151,9 +151,11 @@
 extern /* Workaround a Clang on Haiku bug. */
 int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #    endif
-#    define USE_PTHREAD_GETNAME_NP
+#    define SIR_PTHREAD_GETNAME_NP
 #   endif
 #   if defined(__GNU__) && !defined(__linux__)
+#    undef SIR_NO_THREAD_NAMES
+#    define SIR_NO_THREAD_NAMES
 #    if !defined(__HURD__)
 #     define __HURD__ 1
 #    endif
@@ -162,11 +164,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #    if !defined(_GNU_SOURCE)
 #     define _GNU_SOURCE 1
 #    endif
-#    if defined(__has_include)
-#     if __has_include(<features.h>)
-#      include <features.h>
-#     endif
-#    endif
+#    include <features.h>
 #    if defined(__GLIBC__)
 #     undef GLIBC_VERSION
 #     define GLIBC_VERSION (((0 + __GLIBC__) * 10000) + ((0 + __GLIBC_MINOR__) * 100))
@@ -175,25 +173,31 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #     define GLIBC_VERSION 0
 #    endif
 #    if defined(__GLIBC__) && GLIBC_VERSION >= 21200
-#     define USE_PTHREAD_GETNAME_NP
+#     define SIR_PTHREAD_GETNAME_NP
+#    endif
+#    if defined(__GLIBC__) && GLIBC_VERSION > 0 && GLIBC_VERSION < 21200
+#     undef SIR_NO_THREAD_NAMES
+#     define SIR_NO_THREAD_NAMES
 #    endif
 #   endif
 #   if defined(__CYGWIN__)
 #    if !defined(_GNU_SOURCE)
 #     define _GNU_SOURCE 1
 #    endif
-#    define USE_PTHREAD_GETNAME_NP
+#    define SIR_PTHREAD_GETNAME_NP
 #    include <sys/features.h>
 #   endif
 #   if defined(__ANDROID__) && defined(__ANDROID_API__)
 #    if __ANDROID_API__ < 26
-#     undef USE_PTHREAD_GETNAME_NP
+#     undef SIR_PTHREAD_GETNAME_NP
+#     undef SIR_NO_THREAD_NAMES
+#     define SIR_NO_THREAD_NAMES
 #    endif
 #   endif
 #   if defined(__illumos__) || ((defined(__sun) || defined(__sun__)) && \
               (defined(__SVR4) || defined(__svr4__)))
 #    define __SOLARIS__
-#    define USE_PTHREAD_GETNAME_NP
+#    define SIR_PTHREAD_GETNAME_NP
 #    if !defined(_ATFILE_SOURCE)
 #     define _ATFILE_SOURCE 1
 #    endif
@@ -226,7 +230,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #   include "sir/platform_orangec.h"
 #  endif
 #  if defined(__MINGW32__) || defined(__MINGW64__)
-#   define USE_PTHREAD_GETNAME_NP
+#   define SIR_PTHREAD_GETNAME_NP
 #  endif
 #  include <windows.h>
 #  include <io.h>
@@ -272,7 +276,7 @@ _set_thread_local_invalid_parameter_handler(
 #  define PID_CAST
 # endif
 
-# if defined(_AIX)
+# if defined(_AIX) || defined(__CYGWIN__)
 #  define CLOCK_CAST (int)
 # else
 #  define CLOCK_CAST
@@ -358,8 +362,14 @@ _set_thread_local_invalid_parameter_handler(
 #  if defined(SIR_SYSLOG_ENABLED)
 #   include <syslog.h>
 #  endif
+#  if defined(__CYGWIN__)
+#   undef SIR_NO_THREAD_NAMES
+#   define SIR_NO_THREAD_NAMES
+#  endif
 #  if defined(_AIX)
 #   include <sys/procfs.h>
+#   undef SIR_NO_THREAD_NAMES
+#   define SIR_NO_THREAD_NAMES
 #  endif
 #  if defined(__BSD__)
 #   if !defined(__NetBSD__)
@@ -390,7 +400,33 @@ _set_thread_local_invalid_parameter_handler(
 #   define SIR_MAXPATH 1024
 #  endif
 
-#  if (defined(_POSIX_TIMERS) && _POSIX_TIMERS > 0) || defined(__MACOS__)
+#  if !defined(SIR_MAXPID) && defined(HAIKU) && defined(B_OS_NAME_LENGTH)
+#   define SIR_MAXPID B_OS_NAME_LENGTH
+#  endif
+#  if !defined(SIR_MAXPID) && defined(PTHREAD_MAX_NAMELEN_NP)
+#   define SIR_MAXPID PTHREAD_MAX_NAMELEN_NP
+#  endif
+#  if !defined(SIR_MAXPID) && defined(_NTO_THREAD_NAME_MAX)
+#   define SIR_MAXPID _NTO_THREAD_NAME_MAX
+#  endif
+#  if !defined(SIR_MAXPID) && defined(__APPLE__)
+#   define SIR_MAXPID 64
+#  endif
+#  if !defined(SIR_MAXPID) && defined(__OpenBSD__)
+#   define SIR_MAXPID 32
+#  endif
+#  if !defined(SIR_MAXPID) && defined(__SOLARIS__)
+#   define SIR_MAXPID 31
+#  endif
+#  if !defined(SIR_MAXPID) && defined(__linux__)
+#   define SIR_MAXPID 16
+#  endif
+#  if !defined(SIR_MAXPID)
+#   define SIR_MAXPID 15
+#  endif
+
+#  if (defined(_POSIX_TIMERS) && _POSIX_TIMERS > 0) || \
+       defined(__MACOS__) || defined(__OpenBSD__)
 #   define SIR_MSEC_TIMER
 #   define SIR_MSEC_POSIX
 #  else
@@ -450,6 +486,8 @@ typedef void (*sir_once_fn)(void);
 #  define SIR_MUTEX_INIT PTHREAD_MUTEX_INITIALIZER
 
 # else /* __WIN__ */
+
+#  define SIR_MAXPID 64
 
 #  define SIR_MAXPATH MAX_PATH
 
@@ -518,16 +556,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #  define __HAVE_STDC_EXT2__
 # endif
 
-# if (defined(__TURBOC__) || defined(__BORLANDC__) || \
-     defined(__BCPLUSPLUS__) || defined(__CODEGEARC__))
-#  if !defined(__EMBARCADEROC__)
-#   define __EMBARCADEROC__
-#  endif
-#  if !defined(SIR_MSVCRT_MINGW)
-#   define SIR_MSVCRT_MINGW
-#  endif
-#  undef __HAVE_STDC_SECURE_OR_EXT1__
-# endif
+# include "sir/platform_embarcadero.h"
 
 # if (defined(__clang__) || defined(__GNUC__)) && defined(__FILE_NAME__)
 #  define __file__ __FILE_NAME__

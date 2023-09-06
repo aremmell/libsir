@@ -322,9 +322,9 @@ void _sir_plugin_destroy(sir_plugin** plugin) {
 #endif
 }
 
-bool _sir_plugin_cache_pred_id(const void* match, sir_plugin* iter) {
+bool _sir_plugin_cache_pred_id(const void* match, const sir_plugin* iter) {
 #if !defined(SIR_NO_PLUGINS)
-    return iter->id == *((sirpluginid*)match);
+    return iter->id == *((const sirpluginid*)match);
 #else
     SIR_UNUSED(match);
     SIR_UNUSED(iter);
@@ -342,9 +342,9 @@ sirpluginid _sir_plugin_cache_add(sir_plugincache* spc, sir_plugin* plugin) {
         return 0U;
     }
 
-    sir_plugin* existing = _sir_plugin_cache_find_id(spc, plugin->id);
+    const sir_plugin* existing = _sir_plugin_cache_find_id(spc, plugin->id);
     if (NULL != existing) {
-        _sir_selflog("error: already have plugin (path: '%s', id %08"PRIx32")",
+        _sir_selflog("error: already have plugin (path: '%s', id: %08"PRIx32")",
             existing->path, plugin->id);
         (void)_sir_seterror(_SIR_E_DUPITEM);
         return 0U;
@@ -361,7 +361,7 @@ sirpluginid _sir_plugin_cache_add(sir_plugincache* spc, sir_plugin* plugin) {
 #endif
 }
 
-sir_plugin* _sir_plugin_cache_find_id(sir_plugincache* spc, sirpluginid id) {
+sir_plugin* _sir_plugin_cache_find_id(const sir_plugincache* spc, sirpluginid id) {
 #if !defined(SIR_NO_PLUGINS)
     return _sir_plugin_cache_find(spc, &id, &_sir_plugin_cache_pred_id);
 #else
@@ -371,7 +371,7 @@ sir_plugin* _sir_plugin_cache_find_id(sir_plugincache* spc, sirpluginid id) {
 #endif
 }
 
-sir_plugin* _sir_plugin_cache_find(sir_plugincache* spc, const void* match,
+sir_plugin* _sir_plugin_cache_find(const sir_plugincache* spc, const void* match,
     sir_plugin_pred pred) {
 #if !defined(SIR_NO_PLUGINS)
     if (!_sir_validptr(spc) || !_sir_validptr(match) || !_sir_validfnptr(pred))
@@ -441,7 +441,7 @@ bool _sir_plugin_cache_destroy(sir_plugincache* spc) {
 #endif
 }
 
-bool _sir_plugin_cache_dispatch(sir_plugincache* spc, sir_level level, sirbuf* buf,
+bool _sir_plugin_cache_dispatch(const sir_plugincache* spc, sir_level level, sirbuf* buf,
     size_t* dispatched, size_t* wanted) {
 #if !defined(SIR_NO_PLUGINS)
     if (!_sir_validptr(spc) || !_sir_validlevel(level) || !_sir_validptr(buf) ||

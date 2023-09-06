@@ -601,18 +601,16 @@ test "${#}" -lt 1 2> /dev/null \
 
 ################################################################################
 
-runtest test_spaces
-runtest test_tabs
-
-################################################################################
-
-runtest test_duma
-runtest test_extra
-runtest test_flawfinder
-runtest test_cppcheck
-runtest test_pvs
-runtest test_valgrind
-runtest test_reuse
+(runtest test_spaces)     || exit 1
+(runtest test_tabs)       || exit 1
+(runtest whitespace)      || exit 1
+(runtest test_duma)       || exit 1
+(runtest test_extra)      || exit 1
+(runtest test_flawfinder) || exit 1
+(runtest test_cppcheck)   || exit 1
+(runtest test_pvs)        || exit 1
+(runtest test_valgrind)   || exit 1
+(runtest test_reuse)      || exit 1
 
 sleep 1
 printf '%s\n' "End of linting"

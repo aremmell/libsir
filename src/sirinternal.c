@@ -162,9 +162,9 @@ bool _sir_init(sirinit* si) {
     /* initialize system logger. */
     _sir_syslog_reset(&_cfg->si.d_syslog);
 
-    if (_cfg->si.d_syslog.levels != SIRL_NONE) {
-        if (!_sir_syslog_init(_cfg->si.name, &_cfg->si.d_syslog))
-            _sir_selflog("failed to initialize system logger!");
+    if (_cfg->si.d_syslog.levels != SIRL_NONE &&
+        !_sir_syslog_init(_cfg->si.name, &_cfg->si.d_syslog)) {
+        _sir_selflog("failed to initialize system logger!");
     }
 #endif
 
@@ -183,14 +183,14 @@ bool _sir_cleanup(void) {
     SIR_ASSERT(destroyfc);
 
     _SIR_UNLOCK_SECTION(SIRMI_FILECACHE);
-    cleanup &= destroyfc;
+    _sir_andeql(cleanup, destroyfc);
 
 #if !defined(SIR_NO_PLUGINS)
     _SIR_LOCK_SECTION(sir_plugincache, spc, SIRMI_PLUGINCACHE, false);
     bool destroypc = _sir_plugin_cache_destroy(spc);
     SIR_ASSERT(destroypc);
     _SIR_UNLOCK_SECTION(SIRMI_PLUGINCACHE);
-    cleanup &= destroypc;
+    _sir_andeql(cleanup, destroypc);
 #endif
 
     _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false);
@@ -240,26 +240,26 @@ bool _sir_init_sanity(const sirinit* si) {
         return false;
 
     bool levelcheck = true;
-    levelcheck &= _sir_validlevels(si->d_stdout.levels);
-    levelcheck &= _sir_validlevels(si->d_stderr.levels);
+    _sir_andeql(levelcheck, _sir_validlevels(si->d_stdout.levels));
+    _sir_andeql(levelcheck, _sir_validlevels(si->d_stderr.levels));
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
-    levelcheck &= _sir_validlevels(si->d_syslog.levels);
+    _sir_andeql(levelcheck, _sir_validlevels(si->d_syslog.levels));
 #endif
 
     bool optscheck = true;
-    optscheck &= _sir_validopts(si->d_stdout.opts);
-    optscheck &= _sir_validopts(si->d_stderr.opts);
+    _sir_andeql(optscheck, _sir_validopts(si->d_stdout.opts));
+    _sir_andeql(optscheck, _sir_validopts(si->d_stderr.opts));
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
-    optscheck &= _sir_validopts(si->d_syslog.opts);
+    _sir_andeql(optscheck, _sir_validopts(si->d_syslog.opts));
 #endif
 
     return levelcheck && optscheck;
 }
 
 static
-bool _sir_updatelevels(const char* name, sir_levels* old, sir_levels* new) {
+bool _sir_updatelevels(const char* name, sir_levels* old, const sir_levels* new) {
     if (*old != *new) {
         _sir_selflog("updating %s levels from %04"PRIx16" to %04"PRIx16, name, *old, *new);
         *old = *new;
@@ -270,7 +270,7 @@ bool _sir_updatelevels(const char* name, sir_levels* old, sir_levels* new) {
 }
 
 static
-bool _sir_updateopts(const char* name, sir_options* old, sir_options* new) {
+bool _sir_updateopts(const char* name, sir_options* old, const sir_options* new) {
     if (*old != *new) {
         _sir_selflog("updating %s options from %08"PRIx32" to %08"PRIx32, name, *old, *new);
         *old = *new;
@@ -280,23 +280,23 @@ bool _sir_updateopts(const char* name, sir_options* old, sir_options* new) {
     return true;
 }
 
-bool _sir_stdoutlevels(sirinit* si, sir_update_config_data* data) {
+bool _sir_stdoutlevels(sirinit* si, const sir_update_config_data* data) {
     return _sir_updatelevels(SIR_DESTNAME_STDOUT, &si->d_stdout.levels, data->levels);
 }
 
-bool _sir_stdoutopts(sirinit* si, sir_update_config_data* data) {
+bool _sir_stdoutopts(sirinit* si, const sir_update_config_data* data) {
     return _sir_updateopts(SIR_DESTNAME_STDOUT, &si->d_stdout.opts, data->opts);
 }
 
-bool _sir_stderrlevels(sirinit* si, sir_update_config_data* data) {
+bool _sir_stderrlevels(sirinit* si, const sir_update_config_data* data) {
     return _sir_updatelevels(SIR_DESTNAME_STDERR, &si->d_stderr.levels, data->levels);
 }
 
-bool _sir_stderropts(sirinit* si, sir_update_config_data* data) {
+bool _sir_stderropts(sirinit* si, const sir_update_config_data* data) {
     return _sir_updateopts(SIR_DESTNAME_STDERR, &si->d_stderr.opts, data->opts);
 }
 
-bool _sir_sysloglevels(sirinit* si, sir_update_config_data* data) {
+bool _sir_sysloglevels(sirinit* si, const sir_update_config_data* data) {
     bool updated = _sir_updatelevels(SIR_DESTNAME_SYSLOG, &si->d_syslog.levels, data->levels);
     if (updated) {
         _sir_setbitshigh(&si->d_syslog._state.mask, SIRSL_UPDATED | SIRSL_LEVELS);
@@ -306,7 +306,7 @@ bool _sir_sysloglevels(sirinit* si, sir_update_config_data* data) {
     return updated;
 }
 
-bool _sir_syslogopts(sirinit* si, sir_update_config_data* data) {
+bool _sir_syslogopts(sirinit* si, const sir_update_config_data* data) {
     bool updated = _sir_updateopts(SIR_DESTNAME_SYSLOG, &si->d_syslog.opts, data->opts);
     if (updated) {
         _sir_setbitshigh(&si->d_syslog._state.mask, SIRSL_UPDATED | SIRSL_OPTIONS);
@@ -316,7 +316,7 @@ bool _sir_syslogopts(sirinit* si, sir_update_config_data* data) {
     return updated;
 }
 
-bool _sir_syslogid(sirinit* si, sir_update_config_data* data) {
+bool _sir_syslogid(sirinit* si, const sir_update_config_data* data) {
     bool cur_valid = _sir_validstrnofail(si->d_syslog.identity);
     if (!cur_valid || 0 != strncmp(si->d_syslog.identity, data->sl_identity, SIR_MAX_SYSLOG_ID)) {
         _sir_selflog("updating %s identity from '%s' to '%s'", SIR_DESTNAME_SYSLOG,
@@ -336,7 +336,7 @@ bool _sir_syslogid(sirinit* si, sir_update_config_data* data) {
     return updated;
 }
 
-bool _sir_syslogcat(sirinit* si, sir_update_config_data* data) {
+bool _sir_syslogcat(sirinit* si, const sir_update_config_data* data) {
     bool cur_valid = _sir_validstrnofail(si->d_syslog.category);
     if (!cur_valid || 0 != strncmp(si->d_syslog.category, data->sl_category, SIR_MAX_SYSLOG_CAT)) {
         _sir_selflog("updating %s category from '%s' to '%s'", SIR_DESTNAME_SYSLOG,
@@ -356,7 +356,7 @@ bool _sir_syslogcat(sirinit* si, sir_update_config_data* data) {
     return updated;
 }
 
-bool _sir_writeinit(sir_update_config_data* data, sirinit_update update) {
+bool _sir_writeinit(const sir_update_config_data* data, sirinit_update update) {
     (void)_sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validupdatedata(data) || !_sir_validfnptr(update))
@@ -451,16 +451,16 @@ bool _sir_init_common_static(void) {
 #endif
 
     bool created = _sir_mutexcreate(&cfg_mutex);
-    SIR_ASSERT_UNUSED(created, created);
+    SIR_ASSERT(created);
 
-    created &= _sir_mutexcreate(&fc_mutex);
-    SIR_ASSERT_UNUSED(created, created);
+    _sir_andeql(created, _sir_mutexcreate(&fc_mutex));
+    SIR_ASSERT(created);
 
-    created &= _sir_mutexcreate(&pc_mutex);
-    SIR_ASSERT_UNUSED(created, created);
+    _sir_andeql(created, _sir_mutexcreate(&pc_mutex));
+    SIR_ASSERT(created);
 
-    created &= _sir_mutexcreate(&ts_mutex);
-    SIR_ASSERT_UNUSED(created, created);
+    _sir_andeql(created, _sir_mutexcreate(&ts_mutex));
+    SIR_ASSERT(created);
 
     return created;
 }
@@ -626,7 +626,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     return update_last_props ? dispatched : false;
 }
 
-bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
+bool _sir_dispatch(const sirinit* si, sir_level level, sirbuf* buf) {
     bool retval       = true;
     size_t dispatched = 0;
     size_t wanted     = 0;
@@ -635,7 +635,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
         const char* write = _sir_format(true, si->d_stdout.opts, buf);
         bool wrote        = _sir_validstrnofail(write) &&
             _sir_write_stdout(write, buf->output_len);
-        retval &= wrote;
+        _sir_andeql(retval, wrote);
 
         if (wrote)
             dispatched++;
@@ -646,7 +646,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
         const char* write = _sir_format(true, si->d_stderr.opts, buf);
         bool wrote        = _sir_validstrnofail(write) &&
             _sir_write_stderr(write, buf->output_len);
-        retval &= wrote;
+        _sir_andeql(retval, wrote);
 
         if (wrote)
             dispatched++;
@@ -664,7 +664,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
     _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, false);
     size_t fdispatched = 0;
     size_t fwanted     = 0;
-    retval &= _sir_fcache_dispatch(sfc, level, buf, &fdispatched, &fwanted);
+    _sir_andeql(retval, _sir_fcache_dispatch(sfc, level, buf, &fdispatched, &fwanted));
     _SIR_UNLOCK_SECTION(SIRMI_FILECACHE);
 
     dispatched += fdispatched;
@@ -674,7 +674,7 @@ bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf) {
     _SIR_LOCK_SECTION(sir_plugincache, spc, SIRMI_PLUGINCACHE, false);
     size_t pdispatched = 0;
     size_t pwanted     = 0;
-    retval &= _sir_plugin_cache_dispatch(spc, level, buf, &pdispatched, &pwanted);
+    _sir_andeql(retval, _sir_plugin_cache_dispatch(spc, level, buf, &pdispatched, &pwanted));
     _SIR_UNLOCK_SECTION(SIRMI_PLUGINCACHE);
 
     dispatched += pdispatched;
@@ -857,7 +857,7 @@ bool _sir_syslog_open(sir_syslog_dest* ctx) {
 #endif
 }
 
-bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx) {
+bool _sir_syslog_write(sir_level level, const sirbuf* buf, const sir_syslog_dest* ctx) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!_sir_bittest(ctx->_state.mask, SIRSL_IS_INIT)) {
         _sir_selflog("not initialized; ignoring");
@@ -892,9 +892,8 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx)
         case SIRL_ALERT:  syslog_level = LOG_ALERT; break;
         case SIRL_EMERG:  syslog_level = LOG_EMERG; break;
         // GCOVR_EXCL_START
-        case SIRL_NONE: /* this should never happen. */
-        default:
-            SIR_ASSERT(level);
+        default: /* this should never happen. */
+            SIR_ASSERT(false);
             syslog_level = LOG_DEBUG;
         // GCOVR_EXCL_STOP
     }
@@ -910,7 +909,7 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx)
 #endif
 }
 
-bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data) {
+bool _sir_syslog_updated(sirinit* si, const sir_update_config_data* data) {
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!_sir_validptr(si) || !_sir_validptr(data))
         return false;
@@ -1035,7 +1034,7 @@ bool _sir_clock_gettime(int clock, time_t* tbuf, long* msecbuf) {
         if (0 == ret) {
             *tbuf = ts.tv_sec;
             if (msecbuf)
-                *msecbuf = (long)(ts.tv_nsec / 1000000L);
+                *msecbuf = ts.tv_nsec / 1000000L;
         } else {
             if (msecbuf)
                 *msecbuf = 0L;
@@ -1065,6 +1064,7 @@ bool _sir_clock_gettime(int clock, time_t* tbuf, long* msecbuf) {
             return _sir_handlewin32err(GetLastError());
         }
 #else
+        SIR_UNUSED(clock);
         time(tbuf);
         if (msecbuf)
             *msecbuf = 0L;
@@ -1094,7 +1094,7 @@ double _sir_msec_since(const sir_time* when, sir_time* out) {
     SIR_ASSERT(_sir_perfcntr_freq.QuadPart > 0LL);
 
     if (_sir_perfcntr_freq.QuadPart <= 0LL)
-        return 0.0;
+        (void)QueryPerformanceFrequency(&_sir_perfcntr_freq);
 
     (void)QueryPerformanceCounter(&out->counter);
 
@@ -1141,22 +1141,23 @@ pid_t _sir_gettid(void) {
 #elif defined(__WIN__)
     tid = (pid_t)GetCurrentThreadId();
 #else
-# error "cannot determine how to get thread id; please contact the author"
+# error "unable to determine how to get a thread identifier"
 #endif
     return tid;
 }
 
 bool _sir_getthreadname(char name[SIR_MAXPID]) {
     _sir_resetstr(name);
-#if defined(__MACOS__) || \
-   (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
-   (defined(__GLIBC__) && GLIBC_VERSION >= 21200 && defined(_GNU_SOURCE)) || \
-    defined(USE_PTHREAD_GETNAME_NP)
+#if defined(__MACOS__) || (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
+    (defined(__GLIBC__) && GLIBC_VERSION >= 21200 && defined(_GNU_SOURCE)) || \
+    (defined(__ANDROID__) &&  __ANDROID_API__ >= 26) || defined(SIR_PTHREAD_GETNAME_NP) || \
+    defined(__serenity__) || (defined(__linux__) && !defined(__GLIBC__) && \
+    defined(_GNU_SOURCE) && defined(__NEED_pthread_t))
     int ret = pthread_getname_np(pthread_self(), name, SIR_MAXPID);
     if (0 != ret)
         return _sir_handleerr(ret);
 # if defined(__HAIKU__)
-    if ((strncmp(name, "pthread_func", SIR_MAXPID)) || _sir_validstrnofail(name))
+    if (!(strncmp(name, "pthread func", SIR_MAXPID)))
         (void)snprintf(name, SIR_MAXPID, "%ld", (long)get_pthread_thread_id(pthread_self()));
 # endif
     return _sir_validstrnofail(name);
@@ -1164,32 +1165,77 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
     return _sir_validstrnofail(name);
 #elif defined(__WIN__) && !defined(__ORANGEC__)
-    bool success       = false;
-    wchar_t* wide_name = NULL;
-    HRESULT hr         = GetThreadDescription(GetCurrentThread(), &wide_name);
-    if (SUCCEEDED(hr)) {
+    wchar_t* wname = NULL;
+    HRESULT hr     = GetThreadDescription(GetCurrentThread(), &wname);
+    if (FAILED(hr))
+        return _sir_handlewin32err(GetLastError());
+    bool success = true;
 # if defined(__HAVE_STDC_SECURE_OR_EXT1__)
-        size_t wide_len = wcsnlen_s(wide_name, SIR_MAXPID);
+    size_t wlen = wcsnlen_s(wname, SIR_MAXPID);
 # elif defined(__EMBARCADEROC__)
-        size_t wide_len = wcslen(wide_name);
+    size_t wlen = wcslen(wname);
 # else
-        size_t wide_len = wcsnlen(wide_name, SIR_MAXPID);
+    size_t wlen = wcsnlen(wname, SIR_MAXPID);
 # endif
-        if (wide_len > 0) {
-            if (WideCharToMultiByte(CP_UTF8, 0UL, wide_name, (int)wide_len, name, SIR_MAXPID,
-                NULL, NULL))
-                success = true;
-            else
-                (void)_sir_handlewin32err(GetLastError());
-        } else {
-            success = true;
+    if (wlen > 0) {
+        if (!WideCharToMultiByte(CP_UTF8, 0UL, wname, (int)wlen, name,
+            SIR_MAXPID, NULL, NULL)) {
+            success = false;
+            (void)_sir_handlewin32err(GetLastError());
         }
-        (void)LocalFree(wide_name);
     }
+    (void)LocalFree(wname);
     return success && _sir_validstrnofail(name);
 #else
 # if !defined(_AIX) && !defined(__HURD__) && !defined(SUNLINT)
 #  pragma message("unable to determine how to get a thread name")
+# endif
+    SIR_UNUSED(name);
+    return false;
+#endif
+}
+
+bool _sir_setthreadname(const char* name) {
+    if (!_sir_validptr(name))
+        return false;
+#if defined(__MACOS__)
+    int ret = pthread_setname_np(name);
+    return (0 != ret) ? _sir_handleerr(ret) : true;
+#elif defined(__HAIKU__)
+    status_t ret = rename_thread(find_thread(NULL), name);
+    return (B_OK != ret) ? _sir_handleerr((int)ret) : true;
+#elif defined(__NetBSD__)
+    int ret = pthread_setname_np(pthread_self(), "%s", name);
+    return (0 != ret) ? _sir_handleerr(ret) : true;
+#elif (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
+      (defined(__GLIBC__) && GLIBC_VERSION >= 21200 && defined(_GNU_SOURCE)) || \
+       defined(__QNXNTO__) || defined(__SOLARIS__) || defined(SIR_PTHREAD_GETNAME_NP) || \
+       defined(__ANDROID__) && !defined(__OpenBSD__) || defined(__serenity__) || \
+      (defined(__linux__) && !defined(__GLIBC__) && \
+       defined(_GNU_SOURCE) && defined(__NEED_pthread_t))
+    int ret = pthread_setname_np(pthread_self(), name);
+    return (0 != ret) ? _sir_handleerr(ret) : true;
+#elif defined(__OpenBSD__) || defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
+    pthread_set_name_np(pthread_self(), name);
+    return true;
+#elif defined(__WIN__) && !defined(__ORANGEC__)
+# if defined(__HAVE_STDC_SECURE_OR_EXT1__)
+    size_t name_len = strnlen_s(name, SIR_MAXPID);
+# else
+    size_t name_len = strnlen(name, SIR_MAXPID);
+# endif
+    if (0 == name_len)
+        name_len = 1;
+
+    wchar_t buf[SIR_MAXPID] = {0};
+    if (!MultiByteToWideChar(CP_UTF8, 0UL, name, (int)name_len, buf, SIR_MAXPID))
+        return _sir_handlewin32err(GetLastError());
+
+    HRESULT hr = SetThreadDescription(GetCurrentThread(), buf);
+    return FAILED(hr) ? _sir_handlewin32err(hr) : true;
+#else
+# if !defined(SUNLINT)
+#  pragma message("unable to determine how to set a thread name")
 # endif
     SIR_UNUSED(name);
     return false;

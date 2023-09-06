@@ -49,34 +49,34 @@ bool _sir_sanity(void);
 bool _sir_init_sanity(const sirinit* si);
 
 /** Updates levels for stdout. */
-bool _sir_stdoutlevels(sirinit* si, sir_update_config_data* data);
+bool _sir_stdoutlevels(sirinit* si, const sir_update_config_data* data);
 
 /** Updates options for stdout. */
-bool _sir_stdoutopts(sirinit* si, sir_update_config_data* data);
+bool _sir_stdoutopts(sirinit* si, const sir_update_config_data* data);
 
 /** Updates levels for stderr. */
-bool _sir_stderrlevels(sirinit* si, sir_update_config_data* data);
+bool _sir_stderrlevels(sirinit* si, const sir_update_config_data* data);
 
 /** Updates options for stderr. */
-bool _sir_stderropts(sirinit* si, sir_update_config_data* data);
+bool _sir_stderropts(sirinit* si, const sir_update_config_data* data);
 
 /** Updates levels for the system logger. */
-bool _sir_sysloglevels(sirinit* si, sir_update_config_data* data);
+bool _sir_sysloglevels(sirinit* si, const sir_update_config_data* data);
 
 /** Updates options for the system logger. */
-bool _sir_syslogopts(sirinit* si, sir_update_config_data* data);
+bool _sir_syslogopts(sirinit* si, const sir_update_config_data* data);
 
 /** Updates the identity for the system logger.*/
-bool _sir_syslogid(sirinit* si, sir_update_config_data* data);
+bool _sir_syslogid(sirinit* si, const sir_update_config_data* data);
 
 /** Updates the category for the system logger. */
-bool _sir_syslogcat(sirinit* si, sir_update_config_data* data);
+bool _sir_syslogcat(sirinit* si, const sir_update_config_data* data);
 
 /** Callback for updating values in the global config. */
-typedef bool (*sirinit_update)(sirinit*, sir_update_config_data*);
+typedef bool (*sirinit_update)(sirinit*, const sir_update_config_data*);
 
 /** Updates values in the global config. */
-bool _sir_writeinit(sir_update_config_data* data, sirinit_update update);
+bool _sir_writeinit(const sir_update_config_data* data, sirinit_update update);
 
 /** Locks a protected section. */
 void* _sir_locksection(sir_mutex_id mid);
@@ -106,7 +106,7 @@ PRINTF_FORMAT_ATTR(2, 0)
 bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args);
 
 /** Output dispatching. */
-bool _sir_dispatch(sirinit* si, sir_level level, sirbuf* buf);
+bool _sir_dispatch(const sirinit* si, sir_level level, sirbuf* buf);
 
 /** Specific destination formatting. */
 const char* _sir_format(bool styling, sir_options opts, sirbuf* buf);
@@ -127,13 +127,13 @@ bool _sir_syslog_open(sir_syslog_dest* ctx);
  * Abstraction for writing to platform-specific implementations of
  * system logger facilities.
  */
-bool _sir_syslog_write(sir_level level, const sirbuf* buf, sir_syslog_dest* ctx);
+bool _sir_syslog_write(sir_level level, const sirbuf* buf, const sir_syslog_dest* ctx);
 
 /**
  * Called after updates to the global config that may require reconfiguration
  * of the system logger.
  */
-bool _sir_syslog_updated(sirinit* si, sir_update_config_data* data);
+bool _sir_syslog_updated(sirinit* si, const sir_update_config_data* data);
 
 /**
  * Abstraction for cleanup/closure of platform-specific implementations of
@@ -167,6 +167,9 @@ pid_t _sir_gettid(void);
 
 /** Retrieves the current thread's name. */
 bool _sir_getthreadname(char name[SIR_MAXPID]);
+
+/** Sets the current thread's name. */
+bool _sir_setthreadname(const char* name);
 
 /** Retrieves the hostname of this machine. */
 bool _sir_gethostname(char name[SIR_MAXHOST]);

@@ -37,6 +37,10 @@
 
 # include <sysinfoapi.h>
 
+# if !defined(SIR_NO_THREAD_NAMES)
+#  define SIR_NO_THREAD_NAMES
+# endif
+
 # if !defined(SIR_MSVCRT_MINGW)
 #  define SIR_MSVCRT_MINGW
 # endif

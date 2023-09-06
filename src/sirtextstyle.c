@@ -58,7 +58,7 @@ const char* _sir_gettextstyle(sir_level level) {
     return retval;
 }
 
-bool _sir_settextstyle(sir_level level, sir_textstyle* style) {
+bool _sir_settextstyle(sir_level level, const sir_textstyle* style) {
     (void)_sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validlevel(level))
@@ -97,8 +97,7 @@ const sir_textstyle* _sir_getdefstyle(sir_level level) {
         case SIRL_INFO:   return &sir_lvl_info_def_style;
         case SIRL_DEBUG:  return &sir_lvl_debug_def_style;
         // GCOVR_EXCL_START
-        case SIRL_NONE: /* this should never happen */
-        default:
+        default: /* this should never happen */
             SIR_ASSERT(level);
             return &sir_lvl_info_def_style;
         // GCOVR_EXCL_STOP
@@ -116,8 +115,8 @@ bool _sir_resettextstyles(void) {
     for (size_t n = 0; n < SIR_NUMLEVELS; n++) {
         memcpy(&data->map[n].style, _sir_getdefstyle(data->map[n].level),
              sizeof(sir_textstyle));
-        all_ok &= _sir_formatstyle(*data->color_mode, &data->map[n].style,
-            data->map[n].str);
+        _sir_andeql(all_ok, _sir_formatstyle(*data->color_mode, &data->map[n].style,
+            data->map[n].str));
     }
 
     _SIR_UNLOCK_SECTION(SIRMI_TEXTSTYLE);

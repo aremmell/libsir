@@ -75,7 +75,7 @@ bool _sir_validfd(int fd) {
 }
 
 /** Validates a sir_update_config_data structure. */
-bool _sir_validupdatedata(sir_update_config_data* data) {
+bool _sir_validupdatedata(const sir_update_config_data* data) {
     if (!_sir_validptr(data))
         return false;
 
@@ -84,18 +84,18 @@ bool _sir_validupdatedata(sir_update_config_data* data) {
         valid = false;
 
     if (valid && _sir_bittest(data->fields, SIRU_LEVELS))
-        valid &= (_sir_validptrnofail(data->levels) &&
-            _sir_validlevels(*data->levels));
+        valid = _sir_validptrnofail(data->levels) &&
+                _sir_validlevels(*data->levels);
 
     if (valid && _sir_bittest(data->fields, SIRU_OPTIONS))
-        valid &= (_sir_validptrnofail(data->opts) &&
-            _sir_validopts(*data->opts));
+        valid = _sir_validptrnofail(data->opts) &&
+                _sir_validopts(*data->opts);
 
     if (valid && _sir_bittest(data->fields, SIRU_SYSLOG_ID))
-        valid &= _sir_validstrnofail(data->sl_identity);
+        valid = _sir_validstrnofail(data->sl_identity);
 
     if (valid && _sir_bittest(data->fields, SIRU_SYSLOG_CAT))
-        valid &= _sir_validstrnofail(data->sl_category);
+        valid = _sir_validstrnofail(data->sl_category);
 
     if (!valid) {
         (void)_sir_seterror(_SIR_E_INVALID);
@@ -292,10 +292,11 @@ bool _sir_getchar(char* input) {
 # endif
      return true;
 #else /* !__WIN__ */
-    struct termios cur = {0}, new = {0};
+    struct termios cur = {0};
     if (0 != tcgetattr(STDIN_FILENO, &cur))
         return _sir_handleerr(errno);
 
+    struct termios new = {0};
     memcpy(&new, &cur, sizeof(struct termios));
     new.c_lflag &= ~(ICANON | ECHO);
 

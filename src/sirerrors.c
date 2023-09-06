@@ -128,7 +128,7 @@ bool __sir_handleerr(int code, const char* func, const char* file, uint32_t line
 # endif
 #elif defined(__HAVE_GNU_STRERROR_R__)
         _sir_selflog("using GNU strerror_r");
-        char* tmp = strerror_r(code, message, SIR_MAXERROR);
+        const char* tmp = strerror_r(code, message, SIR_MAXERROR);
         if (tmp != message)
             _sir_strncpy(message, SIR_MAXERROR, tmp, SIR_MAXERROR);
 #elif defined(__HAVE_STRERROR_S__)
@@ -136,7 +136,7 @@ bool __sir_handleerr(int code, const char* func, const char* file, uint32_t line
         finderr = (int)strerror_s(message, SIR_MAXERROR, code);
 #else
         _sir_selflog("using strerror");
-        char* tmp = strerror(code);
+        const char* tmp = strerror(code);
         _sir_strncpy(message, SIR_MAXERROR, tmp, strnlen(tmp, SIR_MAXERROR));
 #endif
         /* cppcheck-suppress knownConditionTrueFalse */
@@ -238,25 +238,26 @@ void __sir_selflog(const char* func, const char* file, uint32_t line,
     char prefix[256];
 
     int write1 = snprintf(prefix, 256, "%s (%s:%"PRIu32"): ", func, file, line);
-    success &= write1 > 0;
+    _sir_andeql(success, write1 > 0);
 
     if (write1 > 0) {
-        va_list args, args2;
+        va_list args;
+        va_list args2;
         va_start(args, format);
         va_copy(args2, args);
 
         int write2 = vsnprintf(NULL, 0, format, args);
         va_end(args);
-        success &= write2 > 0;
+        _sir_andeql(success, write2 > 0);
 
         if (write2 > 0) {
             char* buf = (char*)malloc(write2 + 1);
-            success &= NULL != buf;
+            _sir_andeql(success, NULL != buf);
 
             if (buf) {
                 write2 = vsnprintf(buf, write2 + 1, format, args2);
                 va_end(args2);
-                success &= write2 > 0;
+                _sir_andeql(success, write2 > 0);
 
                 bool error = false;
                 bool warn  = false;
@@ -279,7 +280,7 @@ void __sir_selflog(const char* func, const char* file, uint32_t line,
 
                     write2 = fprintf(stderr, (error ? BRED("%s%s") "\n" :
                         (warn ? YELLOW("%s%s") "\n" : "%s%s\n")), prefix, buf);
-                    success &= write2 > 0;
+                    _sir_andeql(success, write2 > 0);
                 }
 
                 _sir_safefree(&buf);

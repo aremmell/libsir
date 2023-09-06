@@ -45,7 +45,7 @@ sirfileid _sir_addfile(const char* path, sir_levels levels, sir_options opts) {
     return retval;
 }
 
-bool _sir_updatefile(sirfileid id, sir_update_config_data* data) {
+bool _sir_updatefile(sirfileid id, const sir_update_config_data* data) {
     (void)_sir_seterror(_SIR_E_NOERROR);
 
     if (!_sir_sanity() || !_sir_validfileid(id) || !_sir_validupdatedata(data))
@@ -148,7 +148,7 @@ bool _sirfile_write(sirfile* sf, const char* output) {
                 sf->path, sf->id);
     }
 
-    size_t writeLen = strnlen(output, SIR_MAXFHEADER);
+    size_t writeLen = strnlen(output, SIR_MAXOUTPUT);
     size_t write    = fwrite(output, sizeof(char), writeLen, sf->f);
 
     SIR_ASSERT(write == writeLen);
@@ -295,7 +295,7 @@ bool _sirfile_archive(sirfile* sf, const char* newpath) {
     return false;
 }
 
-bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
+bool _sirfile_splitpath(const sirfile* sf, char** name, char** ext) {
     if (_sir_validptrptr(name))
         *name = NULL;
     if (_sir_validptrptr(ext))
@@ -308,7 +308,7 @@ bool _sirfile_splitpath(sirfile* sf, char** name, char** ext) {
     if (!tmp)
         return _sir_handleerr(errno);
 
-    char* lastfullstop = strrchr(tmp, '.');
+    const char* lastfullstop = strrchr(tmp, '.');
     if (lastfullstop) {
         uintptr_t namesize = lastfullstop - tmp;
         SIR_ASSERT(namesize < SIR_MAXPATH);
@@ -338,12 +338,12 @@ void _sirfile_destroy(sirfile** sf) {
     }
 }
 
-bool _sirfile_validate(sirfile* sf) {
+bool _sirfile_validate(const sirfile* sf) {
     return _sir_validptrnofail(sf) && _sir_validptrnofail(sf->f) &&
            _sir_validstrnofail(sf->path) && _sir_validfileid(sf->id);
 }
 
-bool _sirfile_update(sirfile* sf, sir_update_config_data* data) {
+bool _sirfile_update(sirfile* sf, const sir_update_config_data* data) {
     if (!_sirfile_validate(sf))
         return false;
 
@@ -385,7 +385,7 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
     if (sfc->count >= SIR_MAXFILES)
         return _sir_seterror(_SIR_E_NOROOM);
 
-    sirfile* existing = _sir_fcache_find(sfc, (const void*)path, _sir_fcache_pred_path);
+    const sirfile* existing = _sir_fcache_find(sfc, (const void*)path, _sir_fcache_pred_path);
     if (NULL != existing) {
         _sir_selflog("error: already have file (path: '%s', id: %"PRIx32")",
             path, existing->id);
@@ -410,7 +410,7 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
     return 0U;
 }
 
-bool _sir_fcache_update(sirfcache* sfc, sirfileid id, sir_update_config_data* data) {
+bool _sir_fcache_update(const sirfcache* sfc, sirfileid id, const sir_update_config_data* data) {
     if (!_sir_validptr(sfc) || !_sir_validfileid(id) || !_sir_validupdatedata(data))
         return false;
 
@@ -444,7 +444,7 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
     return _sir_seterror(_SIR_E_NOITEM);
 }
 
-bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
+bool _sir_fcache_pred_path(const void* match, const sirfile* iter) {
     const char* path = (const char*)match;
     bool equal       = false;
 
@@ -454,11 +454,13 @@ bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
     /* if we're able to stat both files then we can use that information for the
      * comparison. otherwise, fall back on comparing the canonical path strings
      * returned by realpath. */
-    char resolved1[SIR_MAXPATH] = {0}, resolved2[SIR_MAXPATH] = {0};
-    struct stat st1 = {0}, st2  = {0};
+    char resolved1[SIR_MAXPATH] = {0};
+    char resolved2[SIR_MAXPATH] = {0};
+    struct stat st1             = {0};
+    struct stat st2             = {0};
 
-    char* real1 = realpath(path, resolved1);
-    char* real2 = realpath(iter->path, resolved2);
+    const char* real1 = realpath(path, resolved1);
+    const char* real2 = realpath(iter->path, resolved2);
 
     SIR_UNUSED(real1);
     SIR_UNUSED(real2);
@@ -481,7 +483,8 @@ bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
     DWORD sh_flags   = FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE;
     DWORD open_type  = OPEN_EXISTING;
     DWORD attr_flags = FILE_ATTRIBUTE_NORMAL;
-    BY_HANDLE_FILE_INFORMATION fi1 = {0}, fi2 = {0};
+    BY_HANDLE_FILE_INFORMATION fi1 = {0};
+    BY_HANDLE_FILE_INFORMATION fi2 = {0};
 
     HANDLE h1 = CreateFileA(path, 0, sh_flags, NULL, open_type, attr_flags, NULL);
     HANDLE h2 = CreateFileA(iter->path,0, sh_flags, NULL, open_type, attr_flags, NULL);
@@ -511,12 +514,12 @@ bool _sir_fcache_pred_path(const void* match, sirfile* iter) {
 #endif
 }
 
-bool _sir_fcache_pred_id(const void* match, sirfile* iter) {
-    sirfileid* id = (sirfileid*)match;
+bool _sir_fcache_pred_id(const void* match, const sirfile* iter) {
+    const sirfileid* id = (const sirfileid*)match;
     return iter->id == *id;
 }
 
-sirfile* _sir_fcache_find(sirfcache* sfc, const void* match, sir_fcache_pred pred) {
+sirfile* _sir_fcache_find(const sirfcache* sfc, const void* match, sir_fcache_pred pred) {
     if (!_sir_validptr(sfc) || !_sir_validptr(match) || !_sir_validfnptr(pred))
         return NULL;
 
@@ -544,7 +547,7 @@ bool _sir_fcache_destroy(sirfcache* sfc) {
     return true;
 }
 
-bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
+bool _sir_fcache_dispatch(const sirfcache* sfc, sir_level level, sirbuf* buf,
     size_t* dispatched, size_t* wanted) {
     if (!_sir_validptr(sfc) || !_sir_validlevel(level) || !_sir_validptr(buf) ||
         !_sir_validptr(dispatched) || !_sir_validptr(wanted))
@@ -587,8 +590,6 @@ bool _sir_fcache_dispatch(sirfcache* sfc, sir_level level, sirbuf* buf,
 }
 
 void _sir_fflush(FILE* f) {
-    if (_sir_validptr(f)) {
-        if (0 != fflush(f))
-            (void)_sir_handleerr(errno);
-    }
+    if (_sir_validptr(f) && 0 != fflush(f))
+        (void)_sir_handleerr(errno);
 }

@@ -34,7 +34,7 @@ extern sir_text_style_data sir_text_style_section;
 const char* _sir_gettextstyle(sir_level level);
 
 /** Sets the ::sir_textstyle for a ::sir_level. */
-bool _sir_settextstyle(sir_level level, sir_textstyle* style);
+bool _sir_settextstyle(sir_level level, const sir_textstyle* style);
 
 /** Retrieves the default ::sir_textstyle for a ::sir_level. */
 const sir_textstyle* _sir_getdefstyle(sir_level level);

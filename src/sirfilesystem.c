@@ -354,8 +354,8 @@ char* _sir_getappbasename(void) {
         return NULL;
     }
 
-    char* retval = _sir_getbasename(filename);
-    char* bname  = strndup(retval, strnlen(retval, SIR_MAXPATH));
+    const char* retval = _sir_getbasename(filename);
+    char* bname = strndup(retval, strnlen(retval, SIR_MAXPATH));
 
     _sir_safefree(&filename);
     return bname;
@@ -368,7 +368,7 @@ char* _sir_getappdir(void) {
         return NULL;
     }
 
-    char* retval  = _sir_getdirname(filename);
+    const char* retval = _sir_getdirname(filename);
     char* dirname = strndup(retval, strnlen(retval, SIR_MAXPATH));
 
     _sir_safefree(&filename);
