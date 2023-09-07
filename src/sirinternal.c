@@ -143,9 +143,6 @@ bool _sir_init(sirinit* si) {
 
     (void)_sir_setcolormode(SIRCM_16);
 
-    if (!_sir_resettextstyles())
-        _sir_selflog("error: failed to reset text styles!");
-
     memset(&_cfg->state, 0, sizeof(_cfg->state));
     memcpy(&_cfg->si, si, sizeof(sirinit));
 
