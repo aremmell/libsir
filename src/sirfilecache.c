@@ -374,7 +374,7 @@ bool _sirfile_validate(const sirfile* sf) {
 #if !defined(__WIN__)
         _sir_validptrnofail(sf->f) &&
 #else /* __WIN__ */
-        (_sir_validptrnofail(sf->h) && INVALID_HANDLE_VALUE != sf->h) && 
+        (_sir_validptrnofail(sf->h) && INVALID_HANDLE_VALUE != sf->h) &&
 #endif
         _sir_validstrnofail(sf->path) && _sir_validfileid(sf->id);
 }
