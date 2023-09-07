@@ -2084,12 +2084,19 @@ enum {
 };
 
 static bool threadpool_pseudojob(void* arg) {
-    sir_debug("this is a pseudo job that actually does nothing (arg: %p)", arg);
+    char thread_name[SIR_MAXPID];
+
+    _sir_snprintf_trunc(thread_name, SIR_MAXPID, "pool.%p", arg);
+    (void)_sir_setthreadname(thread_name);
+
+    (void)sir_debug("start of pseudo job that does nothing (arg: %p)", arg);
+
 #if !defined(__WIN__)
     sleep(1);
 #else
     Sleep(1000);
 #endif
+    (void)sir_debug("end of pseudo job that does nothing (arg: %p)", arg);
     return true;
 }
 
