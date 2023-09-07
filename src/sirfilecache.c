@@ -144,27 +144,29 @@ bool _sirfile_write(sirfile* sf, const char* output) {
     if (!_sirfile_validate(sf) || !_sir_validstr(output))
         return false;
 
-    if (_sirfile_needsroll(sf)) {
-        bool rolled   = false;
-        char* newpath = NULL;
+    if (sf->writes_since_size_chk++ > SIR_FILE_CHK_SIZE_WRITES) {
+        sf->writes_since_size_chk = 0;
 
-        _sir_selflog("file (path: '%s', id: %"PRIx32") reached ~%d bytes in size;"
-                     " rolling...", sf->path, sf->id, SIR_FROLLSIZE);
+        if (_sirfile_needsroll(sf)) {
+            bool rolled   = false;
+            char* newpath = NULL;
 
-#if !defined(__WIN__)
-        _sir_fflush(sf->f);
+            _sir_selflog("file (path: '%s', id: %"PRIx32") reached ~%d bytes in size;"
+                         " rolling...", sf->path, sf->id, SIR_FROLLSIZE);
+#if !defined(__WIN__)          
+            _sir_fflush(sf->f);
 #endif
+            if (_sirfile_roll(sf, &newpath)) {
+                char header[SIR_MAXFHEADER] = {0};
+                (void)snprintf(header, SIR_MAXFHEADER, SIR_FHROLLED, newpath);
+                rolled = _sirfile_writeheader(sf, header);
+            }
 
-        if (_sirfile_roll(sf, &newpath)) {
-            char header[SIR_MAXFHEADER] = {0};
-            (void)snprintf(header, SIR_MAXFHEADER, SIR_FHROLLED, newpath);
-            rolled = _sirfile_writeheader(sf, header);
+            _sir_safefree(&newpath);
+            if (!rolled) /* write anyway; don't want to lose data. */
+                _sir_selflog("error: failed to roll file (path: '%s', id: %" PRIx32")!",
+                    sf->path, sf->id);
         }
-
-        _sir_safefree(&newpath);
-        if (!rolled) /* write anyway; don't want to lose data. */
-            _sir_selflog("error: failed to roll file (path: '%s', id: %" PRIx32")!",
-                sf->path, sf->id);
     }
 
     size_t writeLen = strnlen(output, SIR_MAXOUTPUT);

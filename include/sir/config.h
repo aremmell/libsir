@@ -341,6 +341,12 @@
  */
 # define SIR_THRD_CHK_INTERVAL 333.0
 
+/**
+ * The number of writes to a file to let occur before checking its current size to
+ * determine if it needs to be rolled.
+ */
+# define SIR_FILE_CHK_SIZE_WRITES 10
+
 # if defined(SIR_OS_LOG_ENABLED)
 /**
  * The special format specifier to send to os_log. By default, the log will only

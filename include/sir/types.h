@@ -295,6 +295,7 @@ typedef struct {
     HANDLE h;
 # endif
     sirfileid id;
+    int writes_since_size_chk;
 } sirfile;
 
 /** Log file cache. */
