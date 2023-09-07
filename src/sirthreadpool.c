@@ -59,6 +59,7 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
         return false;
     }
 
+#if !defined(__WIN__)
     pthread_attr_t attr = {0};
     int op = pthread_attr_init(&attr);
     if (0 != op) {
@@ -66,6 +67,7 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
         SIR_ASSERT_UNUSED(destroy, destroy);
         return _sir_handleerr(op);
     }
+#endif
 
     int thrd_err     = 0;
     bool thrd_create = true;
@@ -90,8 +92,11 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
 #endif
     }
 
+#if !defined(__WIN__)
     op = pthread_attr_destroy(&attr);
+    SIR_UNUSED(op);
     SIR_ASSERT(0 == op);
+#endif
 
     if (!thrd_create) {
         bool destroy = _sir_threadpool_destroy(pool);
@@ -125,7 +130,7 @@ bool _sir_threadpool_add_job(sir_threadpool* pool, sir_threadpool_job* job) {
 
 bool _sir_threadpool_destroy(sir_threadpool** pool) {
     if (!pool || !*pool)
-        return _sir_seterror(_SIR_E_INVALID);;
+        return _sir_seterror(_SIR_E_INVALID);
 
     bool locked = _sir_mutexlock(&(*pool)->mutex);
     SIR_ASSERT(locked);
