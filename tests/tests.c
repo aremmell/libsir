@@ -454,7 +454,7 @@ bool sirtest_filecachesanity(void) {
     if (pass)
         print_expected_error();
 
-    (void)sir_info("test test test");
+    _sir_eqland(pass, sir_info("test test test"));
 
     /* now remove previously added files in a different order. */
     size_t removeorder[SIR_MAXFILES];
