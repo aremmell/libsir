@@ -1077,7 +1077,7 @@ bool _sir_clock_gettime(int clock, time_t* tbuf, long* msecbuf) {
 double _sir_msec_since(const sir_time* when, sir_time* out) {
     if (!_sir_validptr(out))
         return 0.0;
-#if !defined(__WIN__) || defined(__ORANGEC__)
+#if !defined(__WIN__)
     out->sec = 0;
     out->msec = 0L;
 
