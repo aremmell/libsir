@@ -207,6 +207,7 @@ bool _sirfile_needsroll(sirfile* sf) {
     if (!_sirfile_validate(sf))
         return false;
 
+    off_t size = 0;
 #if !defined (__WIN__)
     struct stat st = {0};
     int getstat    = fstat(fileno(sf->f), &st);
@@ -217,14 +218,15 @@ bool _sirfile_needsroll(sirfile* sf) {
             return _sir_handleerr(errno);
     }
 
-    return st.st_size + BUFSIZ >= SIR_FROLLSIZE ||
-        SIR_FROLLSIZE - (st.st_size + BUFSIZ) <= BUFSIZ;
+    size = st.st_size;
 #else /* __WIN__ */
-    LARGE_INTEGER size = {0};
-    if (!GetFileSizeEx(sf->h, &size))
+    LARGE_INTEGER li = {0};
+    if (!GetFileSizeEx(sf->h, &li))
         (void)_sir_handlewin32err(GetLastError());
-    return size.QuadPart >= SIR_FROLLSIZE;
+    size = (off_t)li.QuadPart;
 #endif
+    return size + BUFSIZ >= SIR_FROLLSIZE ||
+        SIR_FROLLSIZE - (size + BUFSIZ) <= BUFSIZ;
 }
 
 bool _sirfile_roll(sirfile* sf, char** newpath) {
