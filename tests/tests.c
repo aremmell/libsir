@@ -2358,7 +2358,6 @@ uint32_t getrand(uint32_t upper_bound) {
 #  if defined(__EMBARCADEROC__)
     return (uint32_t)(random(upper_bound));
 #  else
-    /* coverity[DC.WEAK_CRYPTO] */
     return (uint32_t)(random() % upper_bound);
 #  endif
 # endif
