@@ -1077,7 +1077,7 @@ bool _sir_clock_gettime(int clock, time_t* tbuf, long* msecbuf) {
 double _sir_msec_since(const sir_time* when, sir_time* out) {
     if (!_sir_validptr(out))
         return 0.0;
-#if !defined(__WIN__) || defined(__ORANGEC__)
+#if !defined(__WIN__)
     out->sec = 0;
     out->msec = 0L;
 
@@ -1164,7 +1164,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
 #elif defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
     return _sir_validstrnofail(name);
-#elif defined(__WIN__) && !defined(__ORANGEC__)
+#elif defined(__WIN__)
     wchar_t* wname = NULL;
     HRESULT hr     = GetThreadDescription(GetCurrentThread(), &wname);
     if (FAILED(hr))
@@ -1218,7 +1218,7 @@ bool _sir_setthreadname(const char* name) {
 #elif defined(__OpenBSD__) || defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
     pthread_set_name_np(pthread_self(), name);
     return true;
-#elif defined(__WIN__) && !defined(__ORANGEC__)
+#elif defined(__WIN__)
 # if defined(__HAVE_STDC_SECURE_OR_EXT1__)
     size_t name_len = strnlen_s(name, SIR_MAXPID);
 # else
