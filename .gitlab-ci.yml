@@ -1358,9 +1358,7 @@ Coverity:
 
 ##############################################################################
 
-# XXX(jhj): Need to fix heisenbug - 20230904
 Windows/i686 (OrangeC):
-  allow_failure: true
   stage: build
   tags:
     - Docker-x64
@@ -1375,8 +1373,8 @@ Windows/i686 (OrangeC):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin
-    - wine64 /opt/orangec/bin/occ.exe -fruntime-heap-check /1 /O1 /g -Iinclude src/*.c example/example.c -o build/bin/sirexample.exe -DSIR_NO_PLUGINS=1 -DSIR_DEBUG=1 -D_DEBUG=1
-    - wine64 /opt/orangec/bin/occ.exe -fruntime-heap-check /1 /O1 /g -Iinclude src/*.c tests/tests.c -o build/bin/sirtests.exe -DSIR_NO_PLUGINS=1 -DSIR_DEBUG=1 -D_DEBUG=1
+    - wine64 /opt/orangec/bin/occ.exe /1 /O2 -Iinclude src/*.c example/example.c -o build/bin/sirexample.exe -DSIR_NO_PLUGINS=1
+    - wine64 /opt/orangec/bin/occ.exe /1 /O2 -Iinclude src/*.c tests/tests.c -o build/bin/sirtests.exe -DSIR_NO_PLUGINS=1
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
