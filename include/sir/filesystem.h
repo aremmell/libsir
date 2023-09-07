@@ -49,8 +49,14 @@ typedef enum {
 
 bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_rel_to rel_to);
 bool _sir_pathexists(const char* restrict path, bool* restrict exists, sir_rel_to rel_to);
+
+#if !defined(__WIN__)
 bool _sir_openfile(FILE* restrict* restrict f, const char* restrict path,
     const char* restrict mode, sir_rel_to rel_to);
+#else /* __WIN__ */
+bool _sir_openfile(HANDLE* restrict h, const char* restrict path, DWORD access_mode,
+    DWORD share_mode, DWORD disposition, DWORD attributes, sir_rel_to rel_to);
+#endif
 
 char* _sir_getcwd(void);
 

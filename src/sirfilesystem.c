@@ -127,6 +127,7 @@ bool _sir_pathexists(const char* path, bool* exists, sir_rel_to rel_to) {
     return true;
 }
 
+#if !defined(__WIN__)
 bool _sir_openfile(FILE* restrict* restrict f, const char* restrict path,
     const char* restrict mode, sir_rel_to rel_to) {
     if (!_sir_validptrptr(f) || !_sir_validstr(path) || !_sir_validstr(mode))
@@ -149,6 +150,31 @@ bool _sir_openfile(FILE* restrict* restrict f, const char* restrict path,
 
     return 0 == _sir_fopen(f, path, mode);
 }
+#else /* __WIN__ */
+bool _sir_openfile(HANDLE* restrict h, const char* restrict path, DWORD access_mode,
+    DWORD share_mode, DWORD disposition, DWORD attributes, sir_rel_to rel_to) {
+    if (_sir_validptr(h) || !_sir_validstr(path))
+        return false;
+
+    bool relative         = false;
+    const char* base_bath = NULL:
+
+    if (!_sir_getrelbasepath(path, &relative, &base_path, rel_to))
+        return false;
+
+    if (relative) {
+        char abs_path[SIR_MAXPATH] = { 0 };
+        (void)snprintf(abs_path, SIR_MAXPATH, "%s/%s", base_path, path);
+
+        *h = CreateFileA(sf->path, mode, share_mode, NULL, disposition, attributes, NULL);
+        _sir_safefree(&base_path);
+        return INVALID_HANDLE_VALUE != *h;
+    }
+
+    *h = CreateFileA(sf->path, mode, share_mode, NULL, disposition, attributes, NULL);
+    return INVALID_HANDLE_VALUE != *h;
+}
+#endif
 
 #if defined(_AIX)
 static char cur_cwd[SIR_MAXPATH];

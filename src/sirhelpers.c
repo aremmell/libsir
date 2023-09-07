@@ -44,6 +44,7 @@ void _sir_safeclose(int* restrict fd) {
     *fd = -1;
 }
 
+#if !defined(__WIN__)
 void _sir_safefclose(FILE* restrict* restrict f) {
     if (!f || !*f)
         return;
@@ -53,6 +54,17 @@ void _sir_safefclose(FILE* restrict* restrict f) {
 
     *f = NULL;
 }
+#else /* __WIN__ */
+void _sir_safeclosehandle(HANDLE* restrict h) {
+    if (!h || !*h || INVALID_HANDLE_VALUE == *h)
+        return;
+
+    if (!CloseHandle(*h))
+        (void)_sir_handlewin32err(GetLastError());
+
+    *h = INVALID_HANDLE_VALUE;
+}
+#endif
 
 bool _sir_validfd(int fd) {
     /** stdin, stdout, stderr use up 0, 1, 2 */
