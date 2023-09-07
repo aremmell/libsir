@@ -63,9 +63,8 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
     pthread_attr_t attr;
     int retval = pthread_attr_init(&attr);
     if (0 != retval) {
-        _sir_handleerr(retval);
         _sir_threadpool_destroy(pool);
-        return false;
+        return _sir_handleerr(retval);
     }
 
     for (size_t n = 0; n < num_threads; n++) {
@@ -73,9 +72,8 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
         int op = pthread_create(&(*pool)->threads[n], &attr, &thread_pool_proc, *pool);
         if (0 != op) {
             (*pool)->threads[n] = 0;
-            _sir_handleerr(op);
             _sir_threadpool_destroy(pool);
-            return false;
+            return _sir_handleerr(op);
         }
 
 #else /* __WIN__ */

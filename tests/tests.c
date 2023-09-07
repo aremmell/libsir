@@ -2084,7 +2084,7 @@ enum {
 };
 
 static bool threadpool_pseudojob(void* arg) {
-    char thread_name[SIR_MAXPID];
+    char thread_name[SIR_MAXPID] = {0};
 
     _sir_snprintf_trunc(thread_name, SIR_MAXPID, "pool.%p", arg);
     (void)_sir_setthreadname(thread_name);
