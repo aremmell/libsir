@@ -60,6 +60,8 @@ bool _sir_fcache_destroy(sirfcache* sfc);
 bool _sir_fcache_dispatch(const sirfcache* sfc, sir_level level, sirbuf* buf,
     size_t* dispatched, size_t* wanted);
 
+# if !defined(__WIN__)
 void _sir_fflush(FILE* f);
+# endif
 
 #endif /* !_SIR_FILECACHE_H_INCLUDED */
