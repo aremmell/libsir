@@ -322,12 +322,12 @@ bool filter_error(bool pass, uint16_t err);
 #  define handle_os_error(clib, fmt, ...) \
      (void)clib; \
      (void)_sir_handleerr(errno); \
-     fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
+     (void)fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
      print_os_error()
 # else /* __WIN__ */
 #  define handle_os_error(clib, fmt, ...) \
      clib ? (void)_sir_handleerr(errno) : (void)_sir_handlewin32err(GetLastError()); \
-     fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
+     (void)fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
      print_os_error()
 # endif
 

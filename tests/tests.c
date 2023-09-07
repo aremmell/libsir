@@ -74,7 +74,7 @@ int main(int argc, char** argv) {
 #if !defined(__WIN__) && !defined(__HAIKU__)
     /* Disallow execution by root / sudo; some of the tests rely on lack of permissions. */
     if (geteuid() == 0) {
-        fprintf(stderr, "Sorry, but this program may not be executed by root.\n");
+        (void)fprintf(stderr, "Sorry, but this program may not be executed by root.\n");
         return EXIT_FAILURE;
     }
 #else /* __WIN__ */
@@ -101,7 +101,7 @@ int main(int argc, char** argv) {
             while (++n < argc) {
                 if (_sir_validstrnofail(argv[n])) {
                     if (*argv[n] == '-' || !mark_test_to_run(argv[n])) {
-                        fprintf(stderr, RED("invalid argument: '%s'") "\n", argv[n]);
+                        (void)fprintf(stderr, RED("invalid argument: '%s'") "\n", argv[n]);
                         print_usage_info();
                         return EXIT_FAILURE;
                     }
@@ -109,7 +109,7 @@ int main(int argc, char** argv) {
                 }
             }
             if (0 == to_run) {
-                fprintf(stderr, RED("value expected for '%s'") "\n",
+                (void)fprintf(stderr, RED("value expected for '%s'") "\n",
                     _cl_arg_list[1].flag);
                 print_usage_info();
                 return EXIT_FAILURE;
@@ -134,7 +134,7 @@ int main(int argc, char** argv) {
             print_usage_info();
             return EXIT_SUCCESS;
         } else {
-            fprintf(stderr, "unknown argument: '%s'", argv[n]);
+            (void)fprintf(stderr, "unknown argument: '%s'", argv[n]);
             print_usage_info();
             return EXIT_FAILURE;
         }
@@ -454,7 +454,7 @@ bool sirtest_filecachesanity(void) {
     if (pass)
         print_expected_error();
 
-    sir_info("test test test");
+    _sir_eqland(pass, sir_info("test test test"));
 
     /* now remove previously added files in a different order. */
     size_t removeorder[SIR_MAXFILES];
@@ -1268,7 +1268,7 @@ bool sirtest_perf(void) {
         sir_timer_start(&stdiotimer);
 
         for (size_t n = 0; n < perflines; n++)
-            sir_debug("%.2f: lorem ipsum foo bar %s: %zu",
+            (void)sir_debug("%.2f: lorem ipsum foo bar %s: %zu",
                 sir_timer_elapsed(&stdiotimer), "baz", 1234 + n);
 
         stdioelapsed = sir_timer_elapsed(&stdiotimer);
@@ -1291,7 +1291,7 @@ bool sirtest_perf(void) {
             sir_timer_start(&filetimer);
 
             for (size_t n = 0; n < perflines; n++)
-                sir_debug("lorem ipsum foo bar %s: %zu", "baz", 1234 + n);
+                (void)sir_debug("lorem ipsum foo bar %s: %zu", "baz", 1234 + n);
 
             fileelapsed = sir_timer_elapsed(&filetimer);
 
@@ -2103,6 +2103,7 @@ static bool threadpool_pseudojob(void* arg) {
     (void)sir_debug("start of pseudo job that does nothing (arg: %p)", arg);
     sir_sleep_msec(1000);
     (void)sir_debug("end of pseudo job that does nothing (arg: %p)", arg);
+
     return true;
 }
 
@@ -2269,11 +2270,11 @@ unsigned __stdcall threadrace_thread(void* arg) {
         if (n % 2 == 0) {
             fg = SIRTC_CYAN;
             bg = SIRTC_BLACK;
-            sir_debug("log message #%zu", n);
+            (void)sir_debug("log message #%zu", n);
         } else {
             fg = SIRTC_BLACK;
             bg = SIRTC_CYAN;
-            sir_info("log message #%zu", n);
+            (void)sir_info("log message #%zu", n);
         }
 
         /* sometimes remove and re-add the log file, and set some options/styles.
@@ -2344,7 +2345,7 @@ bool print_test_error(bool result, bool expected) {
 bool print_os_error(void) {
     char message[SIR_MAXERROR] = {0};
     uint16_t code              = sir_geterror(message);
-    fprintf(stderr, "\t" RED("OS error: (%"PRIu16", %s)") "\n", code, message);
+    (void)fprintf(stderr, "\t" RED("OS error: (%"PRIu16", %s)") "\n", code, message);
     return false;
 }
 
@@ -2526,12 +2527,12 @@ size_t sir_readline(FILE* f, char* buf, size_t size) {
 
 #if defined(SIR_OS_LOG_ENABLED)
 void os_log_parent_activity(void* ctx) {
-    sir_debug("confirming with ground control that we are a go...");
-    sir_info("all systems go; initiating launch sequence");
-    sir_warn("getting some excessive vibration here");
-    sir_info("safely reached escape velocity. catch you on the flip side");
-    sir_info("(3 days later) we have landed on the lunar surface");
-    sir_notice("beginning rock counting...");
+    (void)sir_debug("confirming with ground control that we are a go...");
+    (void)sir_info("all systems go; initiating launch sequence");
+    (void)sir_warn("getting some excessive vibration here");
+    (void)sir_info("safely reached escape velocity. catch you on the flip side");
+    (void)sir_info("(3 days later) we have landed on the lunar surface");
+    (void)sir_notice("beginning rock counting...");
 
     os_activity_t parent = (os_activity_t)ctx;
     os_activity_t child = os_activity_create("counting moon rocks", parent, // -V530
@@ -2539,20 +2540,20 @@ void os_log_parent_activity(void* ctx) {
 
     float rock_count = 0.0f;
     os_activity_apply_f(child, (void*)&rock_count, os_log_child_activity);
-    sir_info("astronauts safely back on board. official count: ~%.02f moon rocks",
+    (void)sir_info("astronauts safely back on board. official count: ~%.02f moon rocks",
         (double)rock_count);
 }
 
 void os_log_child_activity(void* ctx) {
-    sir_info("there are a lot of rocks here; we're going to be here a while");
+    (void)sir_info("there are a lot of rocks here; we're going to be here a while");
 
     for (size_t n = 0; n < 10; n++) {
-        sir_info("counting rocks in sector %zu...", n);
+        (void)sir_info("counting rocks in sector %zu...", n);
     }
 
     float* rock_count = (float*)ctx;
     *rock_count = 1e12f;
-    sir_info("all sectors counted; heading back to the lunar lander");
+    (void)sir_info("all sectors counted; heading back to the lunar lander");
 }
 #endif
 
@@ -2580,22 +2581,22 @@ void print_usage_info(void) {
             longest = len;
     }
 
-    fprintf(stderr, "\n" WHITE("Usage:") "\n\n");
+    (void)fprintf(stderr, "\n" WHITE("Usage:") "\n\n");
 
     for (size_t i = 0; i < _sir_countof(_cl_arg_list); i++) {
-        fprintf(stderr, "\t%s ", _cl_arg_list[i].flag);
+        (void)fprintf(stderr, "\t%s ", _cl_arg_list[i].flag);
 
         size_t len = strnlen(_cl_arg_list[i].flag, SIR_MAXCLIFLAG);
         if (len < longest)
             for (size_t n = len; n < longest; n++)
-                fprintf(stderr, " ");
+                (void)fprintf(stderr, " ");
 
-        fprintf(stderr, "%s%s%s\n", _cl_arg_list[i].usage,
+        (void)fprintf(stderr, "%s%s%s\n", _cl_arg_list[i].usage,
             strnlen(_cl_arg_list[i].usage, SIR_MAXUSAGE) > 0 ? " " : "",
             _cl_arg_list[i].desc);
     }
 
-    fprintf(stderr, "\n");
+    (void)fprintf(stderr, "\n");
 }
 
 void print_test_list(void) {
