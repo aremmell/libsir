@@ -80,7 +80,6 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
             thrd_create = false;
             break;
         }
-
 #else /* __WIN__ */
         (*pool)->threads[n] = (HANDLE)_beginthreadex(NULL, 0, &thread_pool_proc,
             *pool, 0, NULL);
