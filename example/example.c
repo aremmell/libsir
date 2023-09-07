@@ -88,7 +88,7 @@ int main(void) {
      */
     sirfileid fileid = sir_addfile("libsir-example.log", SIRL_ALL, SIRO_NONAME | SIRO_NOHOST);
     if (0 == fileid)
-        report_error();
+        (void)report_error();
 
     /*
      * Ready to start logging. The messages passed to sir_debug() will be sent
@@ -97,34 +97,34 @@ int main(void) {
      */
 
     /* Notice that it is not necessary to include a newline */
-    sir_debug("Reading config file %s...", "/usr/local/myapp/myapp.conf");
+    (void)sir_debug("Reading config file %s...", "/usr/local/myapp/myapp.conf");
 
     /* Pretend to read a config file */
-    sir_debug("Config file successfully parsed; connecting to database...");
+    (void)sir_debug("Config file successfully parsed; connecting to database...");
 
     /* Pretend to connect to a database */
-    sir_debug("Database connection established.");
-    sir_debug("Binding a TCP socket to interface '%s'"
-              " (IPv4: %s) on port %u and listening for connections...",
-              "eth0", "120.22.140.8", 5500);
+    (void)sir_debug("Database connection established.");
+    (void)sir_debug("Binding a TCP socket to interface '%s'"
+                    " (IPv4: %s) on port %u and listening for connections...",
+                    "eth0", "120.22.140.8", 5500);
 
     /*
      * Log a message for each of the remaining severity levels. Only up to
      * 'notice' will the messages be emitted from stdout; the rest will come from
      * stderr.
      */
-    sir_info("MyFooServer v%d.%d.%d (amd64) started successfully in %.2fsec.",
-        2, 9, 4, (double)1.94f);
+    (void)sir_info("MyFooServer v%d.%d.%d (amd64) started successfully in %.2fsec.",
+                   2, 9, 4, (double)1.94f);
 
-    sir_notice("Client at %s:%u (username: %s) failed 5 authentication attempts!",
-        "210.10.54.3", 43113, "bob");
+    (void)sir_notice("Client at %s:%u (username: %s) failed 5 authentication attempts!",
+                     "210.10.54.3", 43113, "bob");
 
-    sir_warn("Detected downgraded link speed on %s: last transfer rate: %.1f KiB/s",
-        "eth0", (double)219.4f);
+    (void)sir_warn("Detected downgraded link speed on %s: last transfer rate: %.1f KiB/s",
+                   "eth0", (double)219.4f);
 
     /* Hmm, what else could go wrong... */
-    sir_error("Failed to synchronize with node pool.846.myfooserver.io! Error:"
-              " %s", "connection reset by peer. Retry in 30sec");
+    (void)sir_error("Failed to synchronize with node pool.846.myfooserver.io! Error:"
+                    " %s", "connection reset by peer. Retry in 30sec");
 
     /*
      * Let's decide we better set up logging to the system logger; things seem
@@ -139,29 +139,29 @@ int main(void) {
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!sir_syslogid(appname))
-        report_error();
+        (void)report_error();
 
     if (!sir_syslogopts(SIRO_NOPID))
-        report_error();
+        (void)report_error();
 
     if (!sir_sysloglevels(SIRL_ERROR | SIRL_CRIT | SIRL_EMERG))
-        report_error();
+        (void)report_error();
 #endif
 
     /* Okay, syslog should be configured now. Continue executing. */
-    sir_crit("Database query failure! Ignoring incoming client requests while"
-             " the database is analyzed and repaired...");
+    (void)sir_crit("Database query failure! Ignoring incoming client requests while"
+                   " the database is analyzed and repaired...");
 
     /* Things just keep getting worse for this poor sysadmin. */
-    sir_alert("Database repair attempt unsuccessful! Error: %s", "<unknown>");
-    sir_emerg("Unable to process client requests for %s! Restarting...", "4m52s");
+    (void)sir_alert("Database repair attempt unsuccessful! Error: %s", "<unknown>");
+    (void)sir_emerg("Unable to process client requests for %s! Restarting...", "4m52s");
 
-    sir_debug("Begin server shutdown.");
-    sir_debug("If this was real, we would be exiting with code %d now!", 1);
+    (void)sir_debug("Begin server shutdown.");
+    (void)sir_debug("If this was real, we would be exiting with code %d now!", 1);
 
     /* Deregister (and close) the log file. */
     if (fileid && !sir_remfile(fileid))
-        report_error();
+        (void)report_error();
 
     /*
      * Now, you can examine the terminal output, libsir-example.log, and
@@ -169,7 +169,7 @@ int main(void) {
      *
      * The last thing we have to do is uninitialize libsir by calling sir_cleanup().
      */
-    sir_cleanup();
+    (void)sir_cleanup();
 
     return EXIT_SUCCESS;
 }
@@ -182,6 +182,6 @@ int main(void) {
 int report_error(void) {
     char message[SIR_MAXERROR] = {0};
     uint16_t code              = sir_geterror(message);
-    fprintf(stderr, "libsir error: (%"PRIu16", %s)\n", code, message);
+    (void)fprintf(stderr, "libsir error: (%"PRIu16", %s)\n", code, message);
     return EXIT_FAILURE;
 }
