@@ -36,55 +36,67 @@ static unsigned __stdcall thread_pool_proc(void* arg);
 #endif
 
 bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
-    if (!pool || !num_threads)
-        return false;
+    if (!pool || !num_threads || num_threads > SIR_THREADPOOL_MAX_THREADS)
+        return _sir_seterror(_SIR_E_INVALID);
 
     *pool = calloc(1, sizeof(sir_threadpool));
-    if (!*pool) {
-        _sir_handleerr(errno);
-        return false;
-    }
+    if (!*pool)
+        return _sir_handleerr(errno);
 
     (*pool)->threads = calloc(num_threads, sizeof(sir_thread));
     if (!(*pool)->threads) {
-        _sir_handleerr(errno);
-        _sir_threadpool_destroy(pool);
-        return false;
+        int err = errno;
+        _sir_safefree(pool);
+        return _sir_handleerr(err);
     }
 
     (*pool)->num_threads = num_threads;
 
     if (!_sir_queue_create(&(*pool)->jobs) || !_sir_condcreate(&(*pool)->cond) ||
         !_sir_mutexcreate(&(*pool)->mutex)) {
-            _sir_threadpool_destroy(pool);
-            return false;
+        bool destroy = _sir_threadpool_destroy(pool);
+        SIR_ASSERT_UNUSED(destroy, destroy);
+        return false;
     }
 
-    pthread_attr_t attr;
-    int retval = pthread_attr_init(&attr);
-    if (0 != retval) {
-        _sir_threadpool_destroy(pool);
-        return _sir_handleerr(retval);
+    pthread_attr_t attr = {0};
+    int op = pthread_attr_init(&attr);
+    if (0 != op) {
+        bool destroy = _sir_threadpool_destroy(pool);
+        SIR_ASSERT_UNUSED(destroy, destroy);
+        return _sir_handleerr(op);
     }
 
+    int thrd_err     = 0;
+    bool thrd_create = true;
     for (size_t n = 0; n < num_threads; n++) {
 #if !defined(__WIN__)
-        int op = pthread_create(&(*pool)->threads[n], &attr, &thread_pool_proc, *pool);
+        op = pthread_create(&(*pool)->threads[n], &attr, &thread_pool_proc, *pool);
         if (0 != op) {
             (*pool)->threads[n] = 0;
-            _sir_threadpool_destroy(pool);
-            return _sir_handleerr(op);
+            thrd_err    = op;
+            thrd_create = false;
+            break;
         }
 
 #else /* __WIN__ */
         (*pool)->threads[n] = (HANDLE)_beginthreadex(NULL, 0, &thread_pool_proc,
             *pool, 0, NULL);
         if (!(*pool)->threads[n]) {
-            _sir_handleerr(errno);
-            _sir_threadpool_destroy(pool);
-            return false;
+            thrd_err    = errno;
+            thrd_create = false;
+            break;
         }
 #endif
+    }
+
+    op = pthread_attr_destroy(&attr);
+    SIR_ASSERT(0 == op);
+
+    if (!thrd_create) {
+        bool destroy = _sir_threadpool_destroy(pool);
+        SIR_ASSERT_UNUSED(destroy, destroy);
+        return _sir_handleerr(thrd_err);
     }
 
     return !!*pool;
@@ -113,7 +125,7 @@ bool _sir_threadpool_add_job(sir_threadpool* pool, sir_threadpool_job* job) {
 
 bool _sir_threadpool_destroy(sir_threadpool** pool) {
     if (!pool || !*pool)
-        return false;
+        return _sir_seterror(_SIR_E_INVALID);;
 
     bool locked = _sir_mutexlock(&(*pool)->mutex);
     SIR_ASSERT(locked);
@@ -129,32 +141,36 @@ bool _sir_threadpool_destroy(sir_threadpool** pool) {
         SIR_ASSERT_UNUSED(unlock, unlock);
     }
 
+    bool destroy = true;
     for (size_t n = 0; n < (*pool)->num_threads; n++) {
-        if ((*pool)->threads[n]) {
-            _sir_selflog("joining thread %zu of %zu...", n + 1, (*pool)->num_threads);
+        SIR_ASSERT(0 != (*pool)->threads[n]);
+        if (0 == (*pool)->threads[n])
+            continue;
+        _sir_selflog("joining thread %zu of %zu...", n + 1, (*pool)->num_threads);
 #if !defined(__WIN__)
-            int join = pthread_join((*pool)->threads[n], NULL);
-            SIR_ASSERT_UNUSED(0 == join, join);
+        int join = pthread_join((*pool)->threads[n], NULL);
+        SIR_ASSERT(0 == join);
+        _sir_andeql(destroy, 0 == join);
 #else /* __WIN__ */
-            DWORD join = WaitForSingleObject((*pool)->threads[n], INFINITE);
-            SIR_ASSERT_UNUSED(WAIT_OBJECT_0 == join, join);
+        DWORD join = WaitForSingleObject((*pool)->threads[n], INFINITE);
+        SIR_ASSERT(WAIT_OBJECT_0 == join);
+        _sir_andeql(destroy, WAIT_OBJECT_0 == join);
 #endif
-        }
     }
 
-    bool destroy = _sir_queue_destroy(&(*pool)->jobs);
-    SIR_ASSERT_UNUSED(destroy, destroy);
+    _sir_andeql(destroy, _sir_queue_destroy(&(*pool)->jobs));
+    SIR_ASSERT(destroy);
 
-    destroy = _sir_conddestroy(&(*pool)->cond);
-    SIR_ASSERT_UNUSED(destroy, destroy);
+    _sir_andeql(destroy, _sir_conddestroy(&(*pool)->cond));
+    SIR_ASSERT(destroy);
 
-    destroy = _sir_mutexdestroy(&(*pool)->mutex);
-    SIR_ASSERT_UNUSED(destroy, destroy);
+    _sir_andeql(destroy, _sir_mutexdestroy(&(*pool)->mutex));
+    SIR_ASSERT(destroy);
 
     _sir_safefree(&(*pool)->threads);
     _sir_safefree(pool);
 
-    return true;
+    return destroy;
 }
 
 #if !defined(__WIN__)
