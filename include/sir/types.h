@@ -289,11 +289,11 @@ typedef struct {
     const char* path;
     sir_levels levels;
     sir_options opts;
-#if !defined(__WIN__)
+# if !defined(__WIN__)
     FILE* f;
-#else
+# else
     HANDLE h;
-#endif
+# endif
     sirfileid id;
 } sirfile;
 
