@@ -636,6 +636,8 @@ bool sirtest_rollandarchivefile(void) {
     char logfilename[SIR_MAXPATH] = {0};
     (void)snprintf(logfilename, SIR_MAXPATH, MAKE_LOG_NAME("%s%s"), logbasename, logext);
 
+    printf("\tdeleting any stale logs from a previous run...\n");
+
     unsigned delcount = 0U;
     if (!enumfiles(SIR_TESTLOGDIR, logbasename, deletefiles, &delcount)) {
         handle_os_error(false, "failed to enumerate log files with base name: %s!",
@@ -651,6 +653,8 @@ bool sirtest_rollandarchivefile(void) {
 
     if (!f)
         return print_os_error();
+
+    printf("\tfilling %s nearly to SIR_FROLLSIZE...\n", logfilename);
 
     if (0 != fseek(f, fillsize, SEEK_SET)) {
         handle_os_error(true, "fseek in file %s failed!", logfilename);
@@ -669,10 +673,15 @@ bool sirtest_rollandarchivefile(void) {
     INIT(si, 0, 0, 0, 0);
     bool pass = si_init;
 
+    printf("\tadding %s to libsir...\n", logfilename);
+
     sirfileid fileid = sir_addfile(logfilename, SIRL_DEBUG, SIRO_MSGONLY | SIRO_NOHDR);
     _sir_eqland(pass, 0U != fileid);
 
+    print_test_error(pass, false);
+
     if (pass) {
+        printf("\twriting to %s until SIR_FROLLSIZE has been exceeded...\n", logfilename);
         /* write an (approximately) known quantity until we should have rolled */
         size_t written  = 0;
         size_t linesize = strnlen(line, SIR_MAXMESSAGE);
@@ -681,6 +690,8 @@ bool sirtest_rollandarchivefile(void) {
             _sir_eqland(pass, sir_debug("%zu %s", written, line));
             written += linesize;
         } while (pass && (written < deltasize + (linesize * 50)));
+
+        printf("\tlooking for two log files, since it should have been rolled...\n");
 
         /* look for files matching the original name. */
         unsigned foundlogs = 0U;
@@ -699,7 +710,7 @@ bool sirtest_rollandarchivefile(void) {
     delcount = 0U;
     if (!enumfiles(SIR_TESTLOGDIR, logbasename, deletefiles, &delcount)) {
         handle_os_error(false, "failed to enumerate log files with base name: %s!", logbasename);
-        return false;
+        pass = false;
     }
 
     if (delcount > 0U)
