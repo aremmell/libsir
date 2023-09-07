@@ -27,19 +27,15 @@
 # define _SIR_PLATFORM_ORANGEC_H_INCLUDED
 
 # if defined(__ORANGEC_MAJOR__) && defined(__ORANGEC_MINOR__) && defined(__ORANGEC_PATCHLEVEL__)
-#  if __ORANGEC_MAJOR__ <= 6 && __ORANGEC_MINOR__ <= 70 && __ORANGEC_PATCHLEVEL__ <= 92
+#  if __ORANGEC_MAJOR__ <= 6 && __ORANGEC_MINOR__ <= 71 && __ORANGEC_PATCHLEVEL__ <= 10
 #   if !defined(ORANGEC_VERSION_WARNING)
-#    warning OrangeC versions before 6.0.70.93 are unsupported.
+#    warning OrangeC versions before 6.0.71.10 are unsupported.
 #    define ORANGEC_VERSION_WARNING
 #   endif
 #  endif
 # endif
 
 # include <sysinfoapi.h>
-
-# if !defined(SIR_NO_THREAD_NAMES)
-#  define SIR_NO_THREAD_NAMES
-# endif
 
 # if !defined(SIR_MSVCRT_MINGW)
 #  define SIR_MSVCRT_MINGW

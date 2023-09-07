@@ -1164,7 +1164,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
 #elif defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
     return _sir_validstrnofail(name);
-#elif defined(__WIN__) && !defined(__ORANGEC__)
+#elif defined(__WIN__)
     wchar_t* wname = NULL;
     HRESULT hr     = GetThreadDescription(GetCurrentThread(), &wname);
     if (FAILED(hr))
