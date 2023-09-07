@@ -238,7 +238,7 @@ void __sir_selflog(const char* func, const char* file, uint32_t line,
     char prefix[256];
 
     int write1 = snprintf(prefix, 256, "%s (%s:%"PRIu32"): ", func, file, line);
-    _sir_andeql(success, write1 > 0);
+    _sir_eqland(success, write1 > 0);
 
     if (write1 > 0) {
         va_list args;
@@ -248,16 +248,16 @@ void __sir_selflog(const char* func, const char* file, uint32_t line,
 
         int write2 = vsnprintf(NULL, 0, format, args);
         va_end(args);
-        _sir_andeql(success, write2 > 0);
+        _sir_eqland(success, write2 > 0);
 
         if (write2 > 0) {
             char* buf = (char*)malloc(write2 + 1);
-            _sir_andeql(success, NULL != buf);
+            _sir_eqland(success, NULL != buf);
 
             if (buf) {
                 write2 = vsnprintf(buf, write2 + 1, format, args2);
                 va_end(args2);
-                _sir_andeql(success, write2 > 0);
+                _sir_eqland(success, write2 > 0);
 
                 bool error = false;
                 bool warn  = false;
@@ -280,7 +280,7 @@ void __sir_selflog(const char* func, const char* file, uint32_t line,
 
                     write2 = fprintf(stderr, (error ? BRED("%s%s") "\n" :
                         (warn ? YELLOW("%s%s") "\n" : "%s%s\n")), prefix, buf);
-                    _sir_andeql(success, write2 > 0);
+                    _sir_eqland(success, write2 > 0);
                 }
 
                 _sir_safefree(&buf);
