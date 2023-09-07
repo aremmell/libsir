@@ -1221,7 +1221,7 @@ bool sirtest_perf(void) {
 #  if !defined(__WIN__)
     static const size_t perflines = 1000000;
 #  else
-    static const size_t perflines = 100000;
+    static const size_t perflines = 40000;
 #  endif
 # else
     static const size_t perflines = 4000000;

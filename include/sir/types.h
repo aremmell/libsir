@@ -292,7 +292,7 @@ typedef struct {
 #if !defined(__WIN__)
     FILE* f;
 #else
-    HANDLE f;
+    HANDLE h;
 #endif
     sirfileid id;
 } sirfile;
