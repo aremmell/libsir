@@ -154,21 +154,21 @@ bool _sir_threadpool_destroy(sir_threadpool** pool) {
 #if !defined(__WIN__)
         int join = pthread_join((*pool)->threads[n], NULL);
         SIR_ASSERT(0 == join);
-        _sir_andeql(destroy, 0 == join);
+        _sir_eqland(destroy, 0 == join);
 #else /* __WIN__ */
         DWORD join = WaitForSingleObject((*pool)->threads[n], INFINITE);
         SIR_ASSERT(WAIT_OBJECT_0 == join);
-        _sir_andeql(destroy, WAIT_OBJECT_0 == join);
+        _sir_eqland(destroy, WAIT_OBJECT_0 == join);
 #endif
     }
 
-    _sir_andeql(destroy, _sir_queue_destroy(&(*pool)->jobs));
+    _sir_eqland(destroy, _sir_queue_destroy(&(*pool)->jobs));
     SIR_ASSERT(destroy);
 
-    _sir_andeql(destroy, _sir_conddestroy(&(*pool)->cond));
+    _sir_eqland(destroy, _sir_conddestroy(&(*pool)->cond));
     SIR_ASSERT(destroy);
 
-    _sir_andeql(destroy, _sir_mutexdestroy(&(*pool)->mutex));
+    _sir_eqland(destroy, _sir_mutexdestroy(&(*pool)->mutex));
     SIR_ASSERT(destroy);
 
     _sir_safefree(&(*pool)->threads);
