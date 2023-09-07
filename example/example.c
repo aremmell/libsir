@@ -29,7 +29,7 @@
 #include "sir.h"
 #include "sir/helpers.h"
 
-int report_error(void);
+void report_error(void);
 
 /**
  * @brief This is a basic example of initializing and configuring libsir for use.
@@ -53,8 +53,10 @@ int main(void) {
      * libsir makes a copy of it before returning from ::sir_init.
      */
     sirinit si;
-    if (!sir_makeinit(&si))
-        return report_error();
+    if (!sir_makeinit(&si)) {
+        report_error();
+        return EXIT_FAILURE;
+    }
 
     /* Levels for stdout: send debug, information, warning, and notice there. */
     si.d_stdout.levels = SIRL_DEBUG | SIRL_INFO | SIRL_WARN | SIRL_NOTICE;
@@ -76,11 +78,13 @@ int main(void) {
 
     /* Configure a name to associate with our output. */
     static const char* appname = "MyFooServer";
-    _sir_strncpy(si.name, SIR_MAXNAME, appname, strnlen(appname, SIR_MAXNAME));
+    (void)_sir_strncpy(si.name, SIR_MAXNAME, appname, strnlen(appname, SIR_MAXNAME));
 
     /* Initialize libsir. */
-    if (!sir_init(&si))
-        return report_error();
+    if (!sir_init(&si)) {
+        report_error();
+        return EXIT_FAILURE;
+    }
 
     /*
      * Configure and add a log file; don't log the process name or hostname,
@@ -88,7 +92,7 @@ int main(void) {
      */
     sirfileid fileid = sir_addfile("libsir-example.log", SIRL_ALL, SIRO_NONAME | SIRO_NOHOST);
     if (0 == fileid)
-        (void)report_error();
+        report_error();
 
     /*
      * Ready to start logging. The messages passed to sir_debug() will be sent
@@ -139,13 +143,13 @@ int main(void) {
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!sir_syslogid(appname))
-        (void)report_error();
+        report_error();
 
     if (!sir_syslogopts(SIRO_NOPID))
-        (void)report_error();
+        report_error();
 
     if (!sir_sysloglevels(SIRL_ERROR | SIRL_CRIT | SIRL_EMERG))
-        (void)report_error();
+        report_error();
 #endif
 
     /* Okay, syslog should be configured now. Continue executing. */
@@ -161,7 +165,7 @@ int main(void) {
 
     /* Deregister (and close) the log file. */
     if (fileid && !sir_remfile(fileid))
-        (void)report_error();
+        report_error();
 
     /*
      * Now, you can examine the terminal output, libsir-example.log, and
@@ -169,19 +173,17 @@ int main(void) {
      *
      * The last thing we have to do is uninitialize libsir by calling sir_cleanup().
      */
-    (void)sir_cleanup();
+    if (!sir_cleanup())
+        report_error();
 
     return EXIT_SUCCESS;
 }
 
 /**
  * Prints the last libsir error to stderr.
- *
- * @return EXIT_FAILURE
  */
-int report_error(void) {
+void report_error(void) {
     char message[SIR_MAXERROR] = {0};
     uint16_t code              = sir_geterror(message);
     (void)fprintf(stderr, "libsir error: (%"PRIu16", %s)\n", code, message);
-    return EXIT_FAILURE;
 }
