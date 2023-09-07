@@ -2090,12 +2090,7 @@ static bool threadpool_pseudojob(void* arg) {
     (void)_sir_setthreadname(thread_name);
 
     (void)sir_debug("start of pseudo job that does nothing (arg: %p)", arg);
-
-#if !defined(__WIN__)
-    sleep(1);
-#else
-    Sleep(1000);
-#endif
+    sir_sleep_msec(1000);
     (void)sir_debug("end of pseudo job that does nothing (arg: %p)", arg);
     return true;
 }
