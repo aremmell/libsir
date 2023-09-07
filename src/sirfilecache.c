@@ -153,7 +153,7 @@ bool _sirfile_write(sirfile* sf, const char* output) {
 
             _sir_selflog("file (path: '%s', id: %"PRIx32") reached ~%d bytes in size;"
                          " rolling...", sf->path, sf->id, SIR_FROLLSIZE);
-#if !defined(__WIN__)          
+#if !defined(__WIN__)
             _sir_fflush(sf->f);
 #endif
             if (_sirfile_roll(sf, &newpath)) {
