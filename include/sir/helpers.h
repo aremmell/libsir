@@ -167,6 +167,11 @@ void _sir_safeclose(int* restrict fd);
 /** Calls fclose and sets the stream pointer to NULL. */
 void _sir_safefclose(FILE* restrict* restrict f);
 
+# if defined(__WIN__)
+/** Calls CloseHandle and sets the handle to INVALID_HANDLE_VALUE. */
+void _sir_safeclosehandle(HANDLE* restrict h);
+# endif
+
 /** Validates a log file descriptor. */
 bool _sir_validfd(int fd);
 

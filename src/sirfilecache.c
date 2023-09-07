@@ -103,24 +103,41 @@ bool _sirfile_open(sirfile* sf) {
     if (!_sir_validptr(sf) && !_sir_validstr(sf->path))
         return false;
 
+#if !defined(__WIN__)
     FILE* f  = NULL;
     bool open = _sir_openfile(&f, sf->path, SIR_FOPENMODE, SIR_PATH_REL_TO_CWD);
     if (!open || !f)
         return false;
+#else /* __WIN__ */
+    HANDLE h = NULL;
+    bool open = _sir_openfilewin32(&h, sf->path, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ,
+        OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, SIR_PATH_REL_TO_CWD);
+    if (!open || INVALID_HANDLE_VALUE == h)
+        return false;
+#endif
 
     _sirfile_close(sf);
 
-    sf->f  = f;
+#if !defined(__WIN__)
+    sf->f = f;
+#else
+    sf->h = h;
+#endif
+
     sf->id = FNV32_1a((const uint8_t*)sf->path, strnlen(sf->path, SIR_MAXPATH));
 
     return true;
 }
 
 void _sirfile_close(sirfile* sf) {
-    if (!_sir_validptrnofail(sf) || !_sir_validptrnofail(sf->f))
+    if (!_sir_validptrnofail(sf))
         return;
 
+#if !defined(__WIN__)
     _sir_safefclose(&sf->f);
+#else /* __WIN__ */
+    _sir_safeclosehandle(&sf->h);
+#endif
 }
 
 bool _sirfile_write(sirfile* sf, const char* output) {
@@ -136,9 +153,9 @@ bool _sirfile_write(sirfile* sf, const char* output) {
 
             _sir_selflog("file (path: '%s', id: %"PRIx32") reached ~%d bytes in size;"
                          " rolling...", sf->path, sf->id, SIR_FROLLSIZE);
-
+#if !defined(__WIN__)
             _sir_fflush(sf->f);
-
+#endif
             if (_sirfile_roll(sf, &newpath)) {
                 char header[SIR_MAXFHEADER] = {0};
                 (void)snprintf(header, SIR_MAXFHEADER, SIR_FHROLLED, newpath);
@@ -153,15 +170,20 @@ bool _sirfile_write(sirfile* sf, const char* output) {
     }
 
     size_t writeLen = strnlen(output, SIR_MAXOUTPUT);
-    size_t write    = fwrite(output, sizeof(char), writeLen, sf->f);
-
-    SIR_ASSERT(write == writeLen);
-
+#if !defined(__WIN__)
+    size_t write = fwrite(output, sizeof(char), writeLen, sf->f);
     if (write < writeLen) {
         (void)_sir_handleerr(errno);
         clearerr(sf->f);
     }
+#else /* __WIN__ */
+    DWORD from_write_file = 0UL;
+    if (!WriteFile(sf->h, output, (DWORD)writeLen, &from_write_file, NULL))
+        (void)_sir_handlewin32err(GetLastError());
+    size_t write = (size_t)from_write_file;
+#endif
 
+    SIR_ASSERT(write == writeLen);
     return write == writeLen;
 }
 
@@ -187,6 +209,8 @@ bool _sirfile_needsroll(sirfile* sf) {
     if (!_sirfile_validate(sf))
         return false;
 
+    off_t size = 0;
+#if !defined (__WIN__)
     struct stat st = {0};
     int getstat    = fstat(fileno(sf->f), &st);
 
@@ -196,8 +220,15 @@ bool _sirfile_needsroll(sirfile* sf) {
             return _sir_handleerr(errno);
     }
 
-    return st.st_size + BUFSIZ >= SIR_FROLLSIZE ||
-        SIR_FROLLSIZE - (st.st_size + BUFSIZ) <= BUFSIZ;
+    size = st.st_size;
+#else /* __WIN__ */
+    LARGE_INTEGER li = {0};
+    if (!GetFileSizeEx(sf->h, &li))
+        (void)_sir_handlewin32err(GetLastError());
+    size = (off_t)li.QuadPart;
+#endif
+    return size + BUFSIZ >= SIR_FROLLSIZE ||
+        SIR_FROLLSIZE - (size + BUFSIZ) <= BUFSIZ;
 }
 
 bool _sirfile_roll(sirfile* sf, char** newpath) {
@@ -343,8 +374,13 @@ void _sirfile_destroy(sirfile** sf) {
 }
 
 bool _sirfile_validate(const sirfile* sf) {
-    return _sir_validptrnofail(sf) && _sir_validptrnofail(sf->f) &&
-           _sir_validstrnofail(sf->path) && _sir_validfileid(sf->id);
+    return _sir_validptrnofail(sf) &&
+#if !defined(__WIN__)
+        _sir_validptrnofail(sf->f) &&
+#else /* __WIN__ */
+        (_sir_validptrnofail(sf->h) && INVALID_HANDLE_VALUE != sf->h) &&
+#endif
+        _sir_validstrnofail(sf->path) && _sir_validfileid(sf->id);
 }
 
 bool _sirfile_update(sirfile* sf, const sir_update_config_data* data) {
@@ -593,7 +629,9 @@ bool _sir_fcache_dispatch(const sirfcache* sfc, sir_level level, sirbuf* buf,
     return (*dispatched == *wanted);
 }
 
+#if !defined(__WIN__)
 void _sir_fflush(FILE* f) {
     if (_sir_validptr(f) && 0 != fflush(f))
         (void)_sir_handleerr(errno);
 }
+#endif
