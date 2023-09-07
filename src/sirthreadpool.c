@@ -94,8 +94,7 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
 
 #if !defined(__WIN__)
     op = pthread_attr_destroy(&attr);
-    SIR_UNUSED(op);
-    SIR_ASSERT(0 == op);
+    SIR_ASSERT_UNUSED(0 == op, op);
 #endif
 
     if (!thrd_create) {
