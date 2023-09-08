@@ -163,7 +163,7 @@ bool _sir_openfilewin32(HANDLE* restrict h, const char* restrict path, DWORD acc
         return false;
 
     if (relative) {
-        char abs_path[SIR_MAXPATH] = { 0 };
+        char abs_path[SIR_MAXPATH] = {0};
         (void)snprintf(abs_path, SIR_MAXPATH, "%s/%s", base_path, path);
 
         *h = CreateFileA(path, access_mode, share_mode, NULL, disposition, attributes, NULL);
