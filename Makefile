@@ -101,7 +101,8 @@ endif
 # Use dpsprintf?
 
 ifeq ($(SIR_DPSPRINTF),1)
-  SIR_CFLAGS += -DSIR_DPSPRINTF
+  SIR_CFLAGS  += -DSIR_DPSPRINTF
+  SIR_LDFLAGS += -lm
 endif
 
 ##############################################################################
