@@ -140,7 +140,8 @@ bool _sir_condwait(sir_condition* cond, sir_mutex* mutex) {
 }
 # endif
 
-bool _sir_condwait_timeout(sir_condition* cond, sir_mutex* mutex, sir_wait* how_long) {
+bool _sir_condwait_timeout(sir_condition* cond, sir_mutex* mutex,
+    const sir_wait* how_long) {
     bool valid = _sir_validptr(cond) && _sir_validptr(mutex) && _sir_validptr(how_long);
 
     if (valid)
