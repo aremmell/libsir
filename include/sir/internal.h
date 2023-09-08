@@ -48,6 +48,9 @@ bool _sir_sanity(void);
 /** Validates the configuration passed to ::sir_init. */
 bool _sir_init_sanity(const sirinit* si);
 
+/** Resets TLS data. */
+void _sir_reset_tls(void);
+
 /** Updates levels for stdout. */
 bool _sir_stdoutlevels(sirinit* si, const sir_update_config_data* data);
 

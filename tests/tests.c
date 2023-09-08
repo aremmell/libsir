@@ -2051,13 +2051,13 @@ bool sirtest_pluginloader(void) {
     print_test_error(pass, pass);
 
     /* try to unload the plugin again. */
-    printf("\nunloading already unloaded plugin '%s'...\n", plugin1);
+    printf("\tunloading already unloaded plugin '%s'...\n", plugin1);
     _sir_eqland(pass, !sir_unloadplugin(id));
 
     print_test_error(pass, pass);
 
     /* test bad paths. */
-    printf("\ntrying to load plugin with NULL path...\n");
+    printf("\ttrying to load plugin with NULL path...\n");
     badid = sir_loadplugin(NULL);
     _sir_eqland(pass, 0 == badid);
 
@@ -2362,8 +2362,7 @@ bool filter_error(bool pass, uint16_t err) {
 uint32_t getrand(uint32_t upper_bound) {
 #if !defined(__WIN__) || defined(__EMBARCADEROC__)
 # if defined(__MACOS__) || defined(__BSD__) || defined(__serenity__) || \
-     defined(__SOLARIS__) || defined(__ANDROID__) || \
-     (defined(__linux__) && defined(__UCLIBC__)) || defined(__CYGWIN__) || \
+     defined(__SOLARIS__) || defined(__ANDROID__) || defined(__CYGWIN__) || \
      (defined(__linux__) && defined(__GLIBC__) && GLIBC_VERSION >= 23600)
     if (upper_bound < 2U)
         upper_bound = 2U;

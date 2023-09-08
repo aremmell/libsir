@@ -62,6 +62,7 @@ static volatile uint32_t _sir_magic = 0U;
 
 static _sir_thread_local char _sir_tid[SIR_MAXPID]   = {0};
 static _sir_thread_local sir_time _sir_last_thrd_chk = {0};
+static _sir_thread_local time_t _sir_last_timestamp  = 0;
 
 bool _sir_makeinit(sirinit* si) {
     bool retval = _sir_validptr(si);
@@ -136,6 +137,8 @@ bool _sir_init(sirinit* si) {
 #else
     _sir_magic = _SIR_MAGIC;
 #endif
+
+    _sir_reset_tls();
 
 #if defined(__WIN__)
     _sir_initialize_stdio();
@@ -215,6 +218,8 @@ bool _sir_cleanup(void) {
     _sir_magic = 0U;
 #endif
 
+    _sir_reset_tls();
+
     memset(_cfg, 0, sizeof(sirconfig));
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
 
@@ -256,6 +261,13 @@ bool _sir_init_sanity(const sirinit* si) {
 #endif
 
     return levelcheck && optscheck;
+}
+
+void _sir_reset_tls(void) {
+    _sir_resetstr(_sir_tid);
+    memset(&_sir_last_thrd_chk, 0, sizeof(sir_time));
+    _sir_last_timestamp = 0;
+    _sir_reset_tls_error();
 }
 
 static
@@ -499,7 +511,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         }
     }
 
-    /* format timestamp. */
+    /* format timestamp (h/m/s only if the integer time has changed). */
     long now_msec = 0L;
     bool gettime = _sir_clock_gettime(SIR_WALLCLOCK, &now_sec, &now_msec);
     SIR_ASSERT_UNUSED(gettime, gettime);
@@ -508,8 +520,11 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     _sir_snprintf_trunc(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, now_msec);
 
     /* hours/minutes/seconds. */
-    bool fmt = _sir_formattime(now_sec, _cfg->state.timestamp, SIR_TIMEFORMAT);
-    SIR_ASSERT_UNUSED(fmt, fmt);
+    if (now_sec > _sir_last_timestamp || !*_cfg->state.timestamp) {
+        _sir_last_timestamp = now_sec;
+        bool fmt = _sir_formattime(now_sec, _cfg->state.timestamp, SIR_TIMEFORMAT);
+        SIR_ASSERT_UNUSED(fmt, fmt);
+    }
 
     /* check elapsed time since updating thread identifier/name. */
     sir_time thrd_chk;
@@ -556,11 +571,13 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     buf.level = _sir_formattedlevelstr(level);
 
-    (void)_sir_strncpy(buf.tid, SIR_MAXPID, _sir_tid, SIR_MAXPID);
+    if (_sir_validstrnofail(_sir_tid))
+        (void)_sir_strncpy(buf.tid, SIR_MAXPID, _sir_tid,
+            strnlen(_sir_tid, SIR_MAXPID));
 
     (void)vsnprintf(buf.message, SIR_MAXMESSAGE, format, args);
 
-    if (!_sir_validstr(buf.message))
+    if (!_sir_validstrnofail(buf.message))
         return _sir_seterror(_SIR_E_INTERNAL);
 
     bool match             = false;
@@ -1149,6 +1166,7 @@ pid_t _sir_gettid(void) {
 bool _sir_getthreadname(char name[SIR_MAXPID]) {
     _sir_resetstr(name);
 #if defined(__MACOS__) || (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
+    (defined(__linux__) && defined(__UCLIBC__) && defined(_GNU_SOURCE)) || \
     (defined(__GLIBC__) && GLIBC_VERSION >= 21200 && defined(_GNU_SOURCE)) || \
     (defined(__ANDROID__) &&  __ANDROID_API__ >= 26) || defined(SIR_PTHREAD_GETNAME_NP) || \
     defined(__serenity__) || (defined(__linux__) && !defined(__GLIBC__) && \
@@ -1208,6 +1226,7 @@ bool _sir_setthreadname(const char* name) {
     int ret = pthread_setname_np(pthread_self(), "%s", name);
     return (0 != ret) ? _sir_handleerr(ret) : true;
 #elif (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
+      (defined(__linux__) && defined(__UCLIBC__) && defined(_GNU_SOURCE)) || \
       (defined(__GLIBC__) && GLIBC_VERSION >= 21200 && defined(_GNU_SOURCE)) || \
        defined(__QNXNTO__) || defined(__SOLARIS__) || defined(SIR_PTHREAD_GETNAME_NP) || \
        defined(__ANDROID__) && !defined(__OpenBSD__) || defined(__serenity__) || \

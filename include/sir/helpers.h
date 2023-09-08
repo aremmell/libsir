@@ -97,10 +97,11 @@
 
 /* Validates a pointer and optionally fails if it's invalid. */
 static inline
-bool __sir_validptr(const void* restrict p, bool fail) {
+bool __sir_validptr(const void* restrict p, bool fail, const char* func,
+    const char* file, uint32_t line) {
     bool valid = NULL != p;
     if (fail && !valid) {
-        (void)_sir_seterror(_SIR_E_NULLPTR);
+        (void)__sir_seterror(_SIR_E_NULLPTR, func, file, line);
         SIR_ASSERT(!valid && fail);
     }
     return valid;
@@ -108,26 +109,31 @@ bool __sir_validptr(const void* restrict p, bool fail) {
 
 /** Validates a pointer-to-pointer and optionally fails if it's invalid. */
 static inline
-bool __sir_validptrptr(const void* restrict* pp, bool fail) {
+bool __sir_validptrptr(const void* restrict* pp, bool fail, const char* func,
+    const char* file, uint32_t line) {
     bool valid = NULL != pp;
     if (fail && !valid) {
-        (void)_sir_seterror(_SIR_E_NULLPTR);
+        (void)__sir_seterror(_SIR_E_NULLPTR, func, file, line);
         SIR_ASSERT(!valid && fail);
     }
     return valid;
 }
 
 /** Validates a pointer but ignores whether it's invalid. */
-# define _sir_validptrnofail(p) __sir_validptr(p, false)
+# define _sir_validptrnofail(p) \
+    __sir_validptr(p, false, __func__, __file__, __LINE__)
 
 /** Validates a pointer and fails if it's invalid. */
-# define _sir_validptr(p) __sir_validptr((const void* restrict)p, true)
+# define _sir_validptr(p) \
+    __sir_validptr((const void* restrict)p, true, __func__, __file__, __LINE__)
 
 /** Validates a pointer-to-function and fails if it's invalid. */
-# define _sir_validfnptr(fnp) __sir_validptrptr((const void* restrict*)&fnp, true)
+# define _sir_validfnptr(fnp) \
+    __sir_validptrptr((const void* restrict*)&fnp, true, __func__, __file__, __LINE__)
 
 /** Validates a pointer-to-pointer and fails if it's invalid. */
-# define _sir_validptrptr(pp) __sir_validptrptr((const void* restrict*)pp, true)
+# define _sir_validptrptr(pp) \
+    __sir_validptrptr((const void* restrict*)pp, true, __func__, __file__, __LINE__)
 
 /** Checks a bitmask for a specific set of bits. */
 static inline
@@ -171,11 +177,6 @@ void _sir_safeclose(int* restrict fd);
 /** Calls fclose and sets the stream pointer to NULL. */
 void _sir_safefclose(FILE* restrict* restrict f);
 
-# if defined(__WIN__)
-/** Calls CloseHandle and sets the handle to INVALID_HANDLE_VALUE. */
-void _sir_safeclosehandle(HANDLE* restrict h);
-# endif
-
 /** Validates a log file descriptor. */
 bool _sir_validfd(int fd);
 
@@ -192,13 +193,28 @@ bool _sir_validpluginid(sirpluginid id) {
 }
 
 /** Validates a sir_update_config_data structure. */
-bool _sir_validupdatedata(const sir_update_config_data* data);
+bool __sir_validupdatedata(const sir_update_config_data* data, const char* func,
+    const char* file, uint32_t line);
+
+/** Validates a sir_update_config_data structure. */
+# define _sir_validupdatedata(data) \
+    __sir_validupdatedata(data, __func__, __file__, __LINE__)
 
 /** Validates a set of ::sir_level flags. */
-bool _sir_validlevels(sir_levels levels);
+bool __sir_validlevels(sir_levels levels, const char* func, const char* file,
+    uint32_t line);
+
+/** Validates a set of ::sir_level flags. */
+# define _sir_validlevels(levels) \
+    __sir_validlevels(levels, __func__, __file__, __LINE__)
 
 /** Validates a single ::sir_level. */
-bool _sir_validlevel(sir_level level);
+bool __sir_validlevel(sir_level level, const char* func, const char* file,
+    uint32_t line);
+
+/** Validates a single ::sir_level. */
+# define _sir_validlevel(level) \
+    __sir_validlevel(level, __func__, __file__, __LINE__)
 
 /** Applies default ::sir_level flags if applicable. */
 static inline
@@ -215,16 +231,36 @@ void _sir_defaultopts(sir_options* opts, sir_options def) {
 }
 
 /** Validates a set of ::sir_option flags. */
-bool _sir_validopts(sir_options opts);
+bool __sir_validopts(sir_options opts, const char* func, const char* file,
+    uint32_t line);
+
+/** Validates a set of ::sir_option flags. */
+# define _sir_validopts(opts) \
+    __sir_validopts(opts, __func__, __file__, __LINE__)
 
 /** Validates a ::sir_textattr. */
-bool _sir_validtextattr(sir_textattr attr);
+bool __sir_validtextattr(sir_textattr attr, const char* func, const char* file,
+    uint32_t line);
+
+/** Validates a ::sir_textattr. */
+# define _sir_validtextattr(attr) \
+    __sir_validtextattr(attr, __func__, __file__, __LINE__)
 
 /** Validates a ::sir_textcolor based on color mode. */
-bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color);
+bool __sir_validtextcolor(sir_colormode mode, sir_textcolor color, const char* func,
+    const char* file, uint32_t line);
+
+/** Validates a ::sir_textcolor based on color mode. */
+# define _sir_validtextcolor(mode, color) \
+    __sir_validtextcolor(mode, color, __func__, __file__, __LINE__)
 
 /** Validates a ::sir_colormode. */
-bool _sir_validcolormode(sir_colormode mode);
+bool __sir_validcolormode(sir_colormode mode, const char* func, const char* file,
+    uint32_t line);
+
+/** Validates a ::sir_colormode. */
+# define _sir_validcolormode(mode) \
+    __sir_validcolormode(mode, __func__, __file__, __LINE__)
 
 /** Converts a SIRTC_* value to a 16-color mode ANSI foreground color. */
 static inline
@@ -280,20 +316,23 @@ sir_textcolor _sir_makergb(sir_textcolor r, sir_textcolor g, sir_textcolor b) {
 
 /** Validates a string pointer and optionally fails if it's invalid. */
 static inline
-bool __sir_validstr(const char* restrict str, bool fail) {
+bool __sir_validstr(const char* restrict str, bool fail, const char* func,
+    const char* file, uint32_t line) {
     bool valid = str && *str != '\0';
     if (fail && !valid) {
-        (void)_sir_seterror(_SIR_E_STRING);
         SIR_ASSERT(!valid && fail);
+        (void)__sir_seterror(_SIR_E_STRING, func, file, line);
     }
     return valid;
 }
 
 /** Validates a string pointer and fails if it's invalid. */
-# define _sir_validstr(str) __sir_validstr(str, true)
+# define _sir_validstr(str) \
+    __sir_validstr(str, true, __func__, __file__, __LINE__)
 
 /** Validates a string pointer but ignores whether it's invalid. */
-# define _sir_validstrnofail(str) __sir_validstr(str, false)
+# define _sir_validstrnofail(str) \
+    __sir_validstr(str, false, __func__, __file__, __LINE__)
 
 /** Places a null terminator at the first index in a string buffer. */
 static inline
