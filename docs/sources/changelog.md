@@ -7,7 +7,7 @@
 - Fixed a bug that caused some log file messages to be truncated.
 - Changed maximum message length to 4 KiB (4096 bytes).
 - Added support for additional compilers and platforms.
-* Added Oracle Lint to CI pipeline.
+- Added Oracle Lint to CI pipeline.
 - General portability improvements.
 - General linter and static analyzer conformance improvements.
 - Now utilizes `stdatomic.h` under MSVC on version 17.4+ using `/experimental:c11atomics`.
