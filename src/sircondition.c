@@ -3,7 +3,7 @@
  *
  * @author    Ryan M. Lederman \<lederman@gmail.com\>
  * @date      2018-2023
- * @version   2.2.3
+ * @version   2.2.4
  * @copyright The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
