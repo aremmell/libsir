@@ -267,6 +267,7 @@ void _sir_reset_tls(void) {
     _sir_resetstr(_sir_tid);
     memset(&_sir_last_thrd_chk, 0, sizeof(sir_time));
     _sir_last_timestamp = 0;
+    _sir_reset_tls_error();
 }
 
 static
