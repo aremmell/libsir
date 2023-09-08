@@ -2051,13 +2051,13 @@ bool sirtest_pluginloader(void) {
     print_test_error(pass, pass);
 
     /* try to unload the plugin again. */
-    printf("\nunloading already unloaded plugin '%s'...\n", plugin1);
+    printf("\tunloading already unloaded plugin '%s'...\n", plugin1);
     _sir_eqland(pass, !sir_unloadplugin(id));
 
     print_test_error(pass, pass);
 
     /* test bad paths. */
-    printf("\ntrying to load plugin with NULL path...\n");
+    printf("\ttrying to load plugin with NULL path...\n");
     badid = sir_loadplugin(NULL);
     _sir_eqland(pass, 0 == badid);
 
