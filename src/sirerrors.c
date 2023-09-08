@@ -47,7 +47,7 @@
 #endif
 
 /** Per-thread error data */
-static _sir_thread_local sir_thread_err sir_te = {
+static _sir_thread_local sir_thread_err _sir_te = {
     _SIR_E_NOERROR, 0, {0}, {SIR_UNKNOWN, SIR_UNKNOWN, 0} //-V616
 };
 
@@ -85,10 +85,10 @@ static const struct {
 
 bool __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t line) {
     if (_sir_validerror(err)) {
-        sir_te.lasterror = err;
-        sir_te.loc.func  = func;
-        sir_te.loc.file  = file;
-        sir_te.loc.line  = line;
+        _sir_te.lasterror = err;
+        _sir_te.loc.func  = func;
+        _sir_te.loc.file  = file;
+        _sir_te.loc.line  = line;
     }
 #if defined(DEBUG) && defined(SIR_SELFLOG)
     if (_SIR_E_NOERROR != err) { //-V616
@@ -103,11 +103,11 @@ bool __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t l
 
 void __sir_setoserror(int code, const char* msg, const char* func, const char* file,
     uint32_t line) {
-    sir_te.os_error = code;
-    _sir_resetstr(sir_te.os_errmsg);
+    _sir_te.os_error = code;
+    _sir_resetstr(_sir_te.os_errmsg);
 
     if (_sir_validstrnofail(msg))
-        _sir_strncpy(sir_te.os_errmsg, SIR_MAXERROR, msg, SIR_MAXERROR);
+        _sir_strncpy(_sir_te.os_errmsg, SIR_MAXERROR, msg, SIR_MAXERROR);
 
     (void)__sir_seterror(_SIR_E_PLATFORM, func, file, line);
 }
@@ -202,19 +202,19 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
     _SIR_DECLARE_BIN_SEARCH(low, high);
     _SIR_BEGIN_BIN_SEARCH()
 
-    if (sir_errors[_mid].e == sir_te.lasterror) {
+    if (sir_errors[_mid].e == _sir_te.lasterror) {
         char* heap_msg = NULL;
 
         if (_SIR_E_PLATFORM == sir_errors[_mid].e) {
             heap_msg = calloc(SIR_MAXERROR, sizeof(char));
             if (_sir_validptrnofail(heap_msg)) {
-                _sir_snprintf_trunc(heap_msg, SIR_MAXERROR, _SIR_E_PLATFORM_ERRORFORMAT, sir_te.os_error,
-                    (_sir_validstrnofail(sir_te.os_errmsg) ? sir_te.os_errmsg : SIR_UNKNOWN));
+                _sir_snprintf_trunc(heap_msg, SIR_MAXERROR, _SIR_E_PLATFORM_ERRORFORMAT, _sir_te.os_error,
+                    (_sir_validstrnofail(_sir_te.os_errmsg) ? _sir_te.os_errmsg : SIR_UNKNOWN));
             }
         }
 
-        _sir_snprintf_trunc(message, SIR_MAXERROR, SIR_ERRORFORMAT, sir_te.loc.func, //-V576
-            sir_te.loc.file, sir_te.loc.line, (_sir_validstrnofail(heap_msg)
+        _sir_snprintf_trunc(message, SIR_MAXERROR, SIR_ERRORFORMAT, _sir_te.loc.func, //-V576
+            _sir_te.loc.file, _sir_te.loc.line, (_sir_validstrnofail(heap_msg)
                 ? heap_msg : (_sir_validstrnofail(sir_errors[_mid].msg)
                 ? sir_errors[_mid].msg : SIR_UNKNOWN)));
 
@@ -224,10 +224,19 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
         break;
     }
 
-    _SIR_ITERATE_BIN_SEARCH((sir_errors[_mid].e < sir_te.lasterror ? 1 : -1));
+    _SIR_ITERATE_BIN_SEARCH((sir_errors[_mid].e < _sir_te.lasterror ? 1 : -1));
     _SIR_END_BIN_SEARCH();
 
     return retval;
+}
+
+void _sir_reset_tls_error(void) {
+    _sir_te.lasterror = _SIR_E_NOERROR; //-V616
+    _sir_te.os_error  = 0;
+    _sir_resetstr(_sir_te.os_errmsg);
+    _sir_te.loc.func = SIR_UNKNOWN;
+    _sir_te.loc.file = SIR_UNKNOWN;
+    _sir_te.loc.line = 0U;
 }
 
 #if defined(SIR_SELFLOG)
