@@ -414,6 +414,7 @@ test_cppcheck()
         --max-ctu-depth="16" \
         --platform=unix64 \
         --std="c11" \
+        -UDPS_SPRINTF_LD \
         --inconclusive \
         -j "${CPUS:?}" \
         $(find . -name '*.[ch]' \
