@@ -14,6 +14,7 @@ ARG URL
 
 RUN cd ~user && \
     mkdir -p x-tools && \
+    cd x-tools && \
     curl "${URL:-http://192.168.1.187:8088/~jhj/cache/x86_64-pc-linux-uclibc.tar.bz2}" | \
       bzip2 -dc | \
       tar xvf - && \
