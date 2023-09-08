@@ -45,7 +45,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">libsir<span id="projectnumber">&#160;2.2.2</span>
+   <div id="projectname">libsir<span id="projectnumber">&#160;2.2.3</span>
    </div>
    <div id="projectbrief">Standard Incident Reporter</div>
   </td>
@@ -142,9 +142,9 @@ libsir visual graph</div></div>
 <li>No dependencies (other than <code>libc</code> and <code>pthreads</code>). On Windows, libsir uses the native synchronization API.</li>
 <li>Accompanied by a robust test suite to ensure dependable behavior, even if you make modifications to the source.</li>
 <li>Won't fail silently&mdash;C library or platform level errors are captured and stored for posterity, on a per-thread basis. The <em>function, file, and line number from which it originated</em> are also captured. Additionally, libsir defines its own set of error messages to aid in troubleshooting.</li>
-<li>Hardened&mdash;every function contains sanity checks for internal state as well as arguments passed in through the external interfaces. libsir's standard make recipes use <em>‑Wall&#160;‑Wextra&#160;‑Wpedantic</em>, and pass with <em>‑Wmissing‑prototypes&#160;‑Wdouble‑promotion&#160;‑Wfloat‑conversion</em>, too.</li>
+<li>Hardened&mdash;every function contains sanity checks for internal state as well as arguments passed in through the external interfaces. libsir's standard make recipes use <em>‑Wall ‑Wextra ‑Wpedantic</em> (and pass with <em>‑Wmissing‑prototypes ‑Wdouble‑promotion ‑Wfloat‑conversion ‑Wmissing‑declarations ‑Wswitch‑enum ‑Wformat‑nonliteral ‑Wformat‑truncation ‑Wbad‑function‑cast ‑Wextra‑semi‑stmt</em>, too.)</li>
 <li><a href="https://libsir.rml.dev">Full documentation</a>, thanks to Doxygen.</li>
-<li>Lightweight&mdash;the shared library comes in at around 64&#160;KiB, and the static library around 60&#160;KiB.</li>
+<li>Lightweight&mdash;the shared library comes in at around 70&#160;KiB, and the static library around 50&#160;KiB.</li>
 </ul>
 <h1><a class="anchor" id="cross-platform-compatibility"></a> Cross-platform compatibility</h1>
 <p>At this time, libsir is supported (<em>that is, it compiles and passes the test suite</em>) on at least the following operating system and toolchain combinations:</p>
@@ -153,19 +153,19 @@ libsir visual graph</div></div>
 <th class="markdownTableHeadRight">System   </th><th class="markdownTableHeadLeft">Toolchain    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyRight"><b>Linux</b>&#160;≳2.6.32<br  />
-(glibc&#160;≳2.4, musl&#160;≳1.2.3, uClibc‑ng&#160;1.0.43, Bionic&#160;19)   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(4.8.4&#160;‑&#160;13.2.1),&#160; <b>Clang</b>&#160;(3.8&#160;‑&#160;16.0.6),&#160; <b>Oracle&#160;Studio&#160;C/C++</b>&#160;(≳12.6),&#160; <b>IBM&#160;Advance&#160;Toolchain</b>&#160;(14&#160;‑&#160;16),&#160; <b>IBM&#160;XL&#160;C/C++</b>&#160;(16.1),&#160; <b>IBM&#160;Open&#160;XL&#160;C/C++</b>&#160;(17.1.1),&#160; <b>NVIDIA&#160;HPC&#160;SDK&#160;C/C++</b>&#160;(23.5&#160;‑&#160;23.7),&#160; <b>Arm&#160;HPC&#160;C/C++</b>&#160;(22.1&#160;‑&#160;23.04.1),&#160; <b>AMD&#160;Optimizing&#160;C/C++</b>&#160;(4.0.0),&#160; <b>Intel&#160;oneAPI&#160;DPC++/C++</b>&#160;(2023.1),&#160; <b>Open64</b>&#160;(5,&#160;AMD&#160;4.5.2.1),&#160; <b>Intel&#160;C++&#160;Compiler&#160;Classic</b>&#160;(2021.9),&#160; <b>Android&#160;NDK</b>&#160;(r25c),&#160; <b>Portable&#160;C&#160;Compiler</b>&#160;(1.2.0.DEVEL‑20230730),&#160; <b>Chibicc</b>&#160;(2020.12.6)    </td></tr>
+(glibc&#160;≳2.4, musl&#160;≳1.2.3, uClibc‑ng&#160;1.0.43, Bionic&#160;19)   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(4.8.4&#160;‑&#160;13.2.1),&#160; <b>Clang</b>&#160;(3.8&#160;‑&#160;16.0.6),&#160; <b>Oracle&#160;Studio&#160;C/C++</b>&#160;(≳12.6),&#160; <b>IBM&#160;Advance&#160;Toolchain</b>&#160;(14&#160;‑&#160;16),&#160; <b>IBM&#160;XL&#160;C/C++</b>&#160;(16.1),&#160; <b>IBM&#160;Open&#160;XL&#160;C/C++</b>&#160;(17.1.1),&#160; <b>NVIDIA&#160;HPC&#160;SDK&#160;C/C++</b>&#160;(23.5&#160;‑&#160;23.7),&#160; <b>Arm&#160;HPC&#160;C/C++</b>&#160;(22.1&#160;‑&#160;23.04.1),&#160; <b>DMD&#160;ImportC</b>&#160;(2.104.2&#160;‑&#160;2.105.1),&#160; <b>AMD&#160;Optimizing&#160;C/C++</b>&#160;(4&#160;‑&#160;4.1),&#160; <b>Intel&#160;oneAPI&#160;DPC++/C++</b>&#160;(2023.1&#160;‑&#160;2023.2.1),&#160; <b>Open64</b>&#160;(5,&#160;AMD&#160;4.5.2.1),&#160; <b>Intel&#160;C++&#160;Compiler&#160;Classic</b>&#160;(2021.9.0&#160;‑&#160;2021.10.0),&#160; <b>Android&#160;NDK</b>&#160;(r25c),&#160; <b>Portable&#160;C&#160;Compiler</b>&#160;(1.2.0.DEVEL‑20230730),&#160; <b>Kefir</b>&#160;(≳0.3.0),&#160; <b>Chibicc</b>&#160;(2020.12.6)    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyRight"><b>AIX</b>&#160;7.2   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(8.3&#160;‑&#160;11.3),&#160; <b>IBM&#160;XL&#160;C/C++</b>&#160;(16.1),&#160; <b>IBM&#160;Open&#160;XL&#160;C/C++</b>&#160;(17.1)    </td></tr>
+<td class="markdownTableBodyRight"><b>AIX</b>&#160;7.2,&#160;7.3   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(8.3&#160;‑&#160;11.3),&#160; <b>IBM&#160;XL&#160;C/C++</b>&#160;(16.1),&#160; <b>IBM&#160;Open&#160;XL&#160;C/C++</b>&#160;(17.1)    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyRight"><b>macOS</b>&#160;≳10.15   </td><td class="markdownTableBodyLeft"><b>Xcode</b>&#160;(11.7&#160;‑&#160;15),&#160; <b>GCC</b>&#160;(10.4&#160;‑&#160;13.2.1),&#160; <b>Clang</b>&#160;(11.0.3&#160;‑&#160;16.0.6),&#160; <b>Intel&#160;C++&#160;Compiler&#160;Classic</b>&#160;(2021.9)    </td></tr>
+<td class="markdownTableBodyRight"><b>macOS</b>&#160;≳10.15   </td><td class="markdownTableBodyLeft"><b>Xcode</b>&#160;(11.7&#160;‑&#160;15),&#160; <b>GCC</b>&#160;(10.4&#160;‑&#160;13.2.1),&#160; <b>Clang</b>&#160;(11.0.3&#160;‑&#160;16.0.6),&#160; <b>DMD&#160;ImportC</b>&#160;(2.105.0&#160;‑&#160;2.105.1),&#160; <b>Intel&#160;C++&#160;Compiler&#160;Classic</b>&#160;(2021.9.0&#160;‑&#160;2021.10.0)    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyRight"><b>Windows</b>&#160;≳10, 11   </td><td class="markdownTableBodyLeft"><b>Microsoft&#160;Visual&#160;C/C++</b>&#160;(17.6&#160;‑&#160;17.7.1),&#160; <b>Clang‑CL</b>&#160;(16.0.6),&#160; <b>GCC‑MinGW</b>&#160;(12.2.1&#160;‑&#160;13.2.1),&#160; <b>LLVM‑MinGW</b>&#160;(15.0&#160;‑&#160;16.0.6),&#160; <b>Embarcadero&#160;C++</b>&#160;(7.20&#160;‑&#160;7.60),&#160; <b>OrangeC</b>&#160;(≳6.0.70.93)    </td></tr>
+<td class="markdownTableBodyRight"><b>Windows</b>&#160;≳10,&#160;11   </td><td class="markdownTableBodyLeft"><b>Microsoft&#160;Visual&#160;C/C++</b>&#160;(17.6&#160;‑&#160;17.7.3),&#160; <b>Clang‑CL</b>&#160;(16.0.6),&#160; <b>GCC‑MinGW</b>&#160;(12.2.1&#160;‑&#160;13.2.1),&#160; <b>LLVM‑MinGW</b>&#160;(15.0&#160;‑&#160;16.0.6),&#160; <b>Embarcadero&#160;C++</b>&#160;(7.20&#160;‑&#160;7.60),&#160; <b>OrangeC</b>&#160;(≳6.0.71.10)    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyRight"><b>Cygwin</b>&#160;3.4   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(11.2&#160;‑&#160;11.4)    </td></tr>
+<td class="markdownTableBodyRight"><b>Cygwin</b>&#160;3.4   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(11.2&#160;‑&#160;13.2)    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyRight"><b>FreeBSD</b>&#160;≳11.3   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(11.4&#160;‑&#160;12.2),&#160; <b>Clang</b>&#160;(10&#160;‑&#160;14.0.5)    </td></tr>
+<td class="markdownTableBodyRight"><b>FreeBSD</b>&#160;≳11.3   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(11.4&#160;‑&#160;13.1),&#160; <b>Clang</b>&#160;(10&#160;‑&#160;16.0.6),&#160; <b>DMD&#160;ImportC</b>&#160;(2.105.0&#160;‑&#160;2.105.1)    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyRight"><b>NetBSD</b>&#160;9.2   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(7.5&#160;‑&#160;13.1),&#160; <b>Clang</b>&#160;(15.0.7)    </td></tr>
+<td class="markdownTableBodyRight"><b>NetBSD</b>&#160;9.2   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(7.5&#160;‑&#160;13.2),&#160; <b>Clang</b>&#160;(15.0.7)    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyRight"><b>OpenBSD</b>&#160;7.3   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(11.2),&#160; <b>Clang</b>&#160;(13)    </td></tr>
 <tr class="markdownTableRowOdd">
@@ -173,11 +173,11 @@ libsir visual graph</div></div>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyRight"><b>GNU/Hurd</b>   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(9.5&#160;‑&#160;13.2),&#160; <b>Clang</b>&#160;(9.0.1&#160;‑&#160;13.0.1)    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyRight"><b>Haiku</b>&#160;R1b4   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(11.2&#160;‑&#160;13.2),&#160; <b>Clang</b>&#160;(12.0.1)    </td></tr>
+<td class="markdownTableBodyRight"><b>Haiku</b>&#160;R1b4   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(11.2&#160;‑&#160;13.2),&#160; <b>Clang</b>&#160;(12.0.1&#160;‑&#160;16.0.6)    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyRight"><b>Solaris</b>&#160;11.4   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(10.3&#160;‑&#160;11.2),&#160; <b>Clang</b>&#160;(6&#160;‑&#160;11),&#160; <b>Oracle&#160;Studio&#160;C/C++</b>&#160;(≳12.6)    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyRight"><b>illumos</b>   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(7.5&#160;‑&#160;11.3),&#160; <b>Clang</b>&#160;(15.0.7)    </td></tr>
+<td class="markdownTableBodyRight"><b>illumos</b>   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(7.5&#160;‑&#160;11.4),&#160; <b>Clang</b>&#160;(15.0.7)    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyRight"><b>SerenityOS</b>   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(13.1)   </td></tr>
 </table>
@@ -197,7 +197,7 @@ sample terminal output</div></div>
 <h2><a class="anchor" id="visual-studio-code"></a> Visual Studio Code</h2>
 <p>There is a <code>code‑workspace</code> in the repository. As of right now, the build and launch tasks are not fully functional for every platform, but everything else should be good to go.</p>
 <h2><a class="anchor" id="visual-studio-2022"></a> Visual Studio 2022</h2>
-<p>A very recent addition is an <code>sln</code> and some <code>vcxproj</code> files in the <a href="https://github.com/aremmell/libsir/tree/master/msvs">msvc</a> directory. They are confirmed to work correctly on Windows 11 (x64 &amp; Arm64) with Visual Studio 17.6.</p>
+<p>A very recent addition is an <code>sln</code> and some <code>vcxproj</code> files in the <a href="https://github.com/aremmell/libsir/tree/master/msvs">msvc</a> directory. They are confirmed to work correctly on Windows 11 (x86, x64, Arm64) with Visual Studio 17.6.</p>
 <h2><a class="anchor" id="unix-makefile"></a> Unix Makefile</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
