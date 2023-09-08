@@ -6,7 +6,7 @@ var searchData=
   ['data_3',['data',['../structsir__threadpool__job.html#a77b8d07917b5c1ae32f72f7ce71a6d8c',1,'sir_threadpool_job']]],
   ['defaults_4',['Defaults',['../group__default.html',1,'']]],
   ['defaults_2eh_5',['defaults.h',['../defaults_8h.html',1,'']]],
-  ['desc_6',['desc',['../structsir__plugininfo.html#aa52c4fcccd437ab1a4349bd8e6f64922',1,'sir_plugininfo']]],
+  ['desc_6',['desc',['../structsir__plugininfo.html#aa52c4fcccd437ab1a4349bd8e6f64922',1,'sir_plugininfo::desc'],['../structsir__cl__arg.html#a06d6e49c5bd5ba5877563abc636ad538',1,'sir_cl_arg::desc']]],
   ['dgray_7',['DGRAY',['../ansimacros_8h.html#aa2c113dbbb07cf163d87b13d8ba6477b',1,'ansimacros.h']]],
   ['dgrayb_8',['DGRAYB',['../ansimacros_8h.html#a155cb79be252611ae9cbe908850230a6',1,'ansimacros.h']]]
 ];

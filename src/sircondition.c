@@ -27,125 +27,99 @@
 #include "sir/internal.h"
 #include "sir/platform.h"
 
-#if !defined(__WIN__) /* pthread implementation */
 bool _sir_condcreate(sir_condition* cond) {
     bool valid = _sir_validptr(cond);
 
     if (valid) {
+#if !defined(__WIN__)
         int op = pthread_cond_init(cond, NULL);
         valid = 0 == op ? true : _sir_handleerr(op);
+#else
+        InitializeConditionVariable(cond);
+#endif
     }
 
     return valid;
 }
 
-# if 0
+#if 0
 bool _sir_condsignal(sir_condition* cond) {
     bool valid = _sir_validptr(cond);
 
     if (valid) {
+# if !defined(__WIN__)
         int op = pthread_cond_signal(cond);
         valid = 0 == op ? true : _sir_handleerr(op);
-    }
-
-    return valid;
-}
-# endif
-
-bool _sir_condbroadcast(sir_condition* cond) {
-    bool valid = _sir_validptr(cond);
-
-    if (valid) {
-        int op = pthread_cond_broadcast(cond);
-        valid = 0 == op ? true : _sir_handleerr(op);
-    }
-
-    return valid;
-}
-
-bool _sir_conddestroy(sir_condition* cond) {
-    bool valid = _sir_validptr(cond);
-
-    if (valid) {
-        int op = pthread_cond_destroy(cond);
-        valid = 0 == op ? true : _sir_handleerr(op);
-    }
-
-    return valid;
-}
-
-# if 0
-bool _sir_condwait(sir_condition* cond, sir_mutex* mutex) {
-    bool valid = _sir_validptr(cond) && _sir_validptr(mutex);
-
-    if (valid) {
-        int op = pthread_cond_wait(cond, mutex);
-        valid = 0 == op ? true : _sir_handleerr(op);
-    }
-
-    return valid;
-}
-# endif
-
-bool _sir_condwait_timeout(sir_condition* cond, sir_mutex* mutex, sir_wait* howlong) {
-    bool valid = _sir_validptr(cond) && _sir_validptr(mutex) && _sir_validptr(howlong);
-
-    if (valid) {
-        int op = pthread_cond_timedwait(cond, mutex, howlong);
-        valid = 0 == op ? true : ETIMEDOUT == op ? false : _sir_handleerr(op);
-    }
-
-    return valid;
-}
-#else /* __WIN__ */
-bool _sir_condcreate(sir_condition* cond) {
-    bool valid = _sir_validptr(cond);
-
-    if (valid)
-        InitializeConditionVariable(cond);
-
-    return valid;
-}
-
-# if 0
-bool _sir_condsignal(sir_condition* cond) {
-    bool valid = _sir_validptr(cond);
-
-    if (valid)
+# else
         WakeConditionVariable(cond);
-
-    return valid;
-}
 # endif
-
-bool _sir_condbroadcast(sir_condition* cond) {
-    bool valid = _sir_validptr(cond);
-
-    if (valid)
-        WakeAllConditionVariable(cond);
-
-    return valid;
-}
-
-bool _sir_conddestroy(sir_condition* cond) {
-    SIR_UNUSED(cond);
-    return true;
-}
-
-# if 0
-bool _sir_condwait(sir_condition* cond, sir_mutex* mutex) {
-    DWORD how_long = INFINITE;
-    return _sir_condwait_timeout(cond, mutex, &how_long);
-}
-# endif
-
-bool _sir_condwait_timeout(sir_condition* cond, sir_mutex* mutex, sir_wait* how_long) {
-    bool valid = _sir_validptr(cond) && _sir_validptr(mutex) && _sir_validptr(how_long);
-
-    if (valid)
-        valid = (FALSE != SleepConditionVariableCS(cond, mutex, *how_long))
-            ? true : _sir_handlewin32err(GetLastError());
+    }
 
     return valid;
 }
 #endif
+
+bool _sir_condbroadcast(sir_condition* cond) {
+    bool valid = _sir_validptr(cond);
+
+    if (valid) {
+#if !defined(__WIN__)
+        int op = pthread_cond_broadcast(cond);
+        valid = 0 == op ? true : _sir_handleerr(op);
+#else
+        WakeAllConditionVariable(cond);
+#endif
+    }
+
+    return valid;
+}
+
+bool _sir_conddestroy(sir_condition* cond) {
+    bool valid = _sir_validptr(cond);
+
+    if (valid) {
+#if !defined(__WIN__)
+        int op = pthread_cond_destroy(cond);
+        valid = 0 == op ? true : _sir_handleerr(op);
+#else
+        SIR_UNUSED(cond);
+#endif
+    }
+
+    return valid;
+}
+
+#if 0
+bool _sir_condwait(sir_condition* cond, sir_mutex* mutex) {
+    bool valid = _sir_validptr(cond) && _sir_validptr(mutex);
+
+    if (valid) {
+# if !defined(__WIN__)
+        int op = pthread_cond_wait(cond, mutex);
+        valid = 0 == op ? true : _sir_handleerr(op);
+# else
+        DWORD howlong = INFINITE;
+        valid = _sir_condwait_timeout(cond, mutex, &howlong);
+# endif
+    }
+
+    return valid;
+}
+#endif
+
+bool _sir_condwait_timeout(sir_condition* cond, sir_mutex* mutex,
+    const sir_wait* howlong) {
+    bool valid = _sir_validptr(cond) && _sir_validptr(mutex) && _sir_validptr(howlong);
+
+    if (valid) {
+#if !defined(__WIN__)
+        int op = pthread_cond_timedwait(cond, mutex, howlong);
+        valid = 0 == op ? true : ETIMEDOUT == op ? false : _sir_handleerr(op);
+#else
+        valid = (FALSE != SleepConditionVariableCS(cond, mutex, *howlong))
+            ? true : _sir_handlewin32err(GetLastError());
+#endif
+    }
+
+    return valid;
+}

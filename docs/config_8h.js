@@ -35,7 +35,6 @@ var config_8h =
     [ "SIR_MAXNAME", "config_8h.html#a85ed3139018ee9e7545c74c0885dff55", null ],
     [ "SIR_MAX_SYSLOG_ID", "config_8h.html#a24a907a8ba87d4355d11dca2476383b2", null ],
     [ "SIR_MAX_SYSLOG_CAT", "config_8h.html#acf0d0fad6a98c920cced53dbe9b54d26", null ],
-    [ "SIR_MAXPID", "config_8h.html#a77d8a4249177fcf7703a811ca0154190", null ],
     [ "SIR_MAXMISC", "config_8h.html#ac42033f35206a8adbf1a4377c8e0d290", null ],
     [ "SIR_MAXSTYLE", "config_8h.html#a5cdaa944bfe2228355cc4c34c3d315e8", null ],
     [ "SIR_MAXOUTPUT", "config_8h.html#ab3e26cb9ac224cb9a695ddf1ed099218", null ],
@@ -49,8 +48,9 @@ var config_8h =
     [ "SIR_FALLBACK_SYSLOG_CAT", "config_8h.html#a9b99ae577cedc922bded630216627070", null ],
     [ "SIR_NUMLEVELS", "config_8h.html#a54ab03b03f20338146a5ab69fcd90177", null ],
     [ "SIR_NUMOPTIONS", "config_8h.html#a3d40d22ca5d641892fc7b3cb8d0bb283", null ],
-    [ "SIR_NUM16_COLOR_MAPPINGS", "config_8h.html#ad4797e353beace140ae7ac35e0e6ea11", null ],
     [ "SIR_HNAME_CHK_INTERVAL", "config_8h.html#a46e195050794e32a234cda5f1af57a2a", null ],
+    [ "SIR_THRD_CHK_INTERVAL", "config_8h.html#aa9d8a09e5e0f6e384370950a13173f78", null ],
+    [ "SIR_FILE_CHK_SIZE_WRITES", "config_8h.html#ac7f6d6130d1078eae1a28008eea32a92", null ],
     [ "SIR_SQUELCH_THRESHOLD", "config_8h.html#a3e733628ed19a474bdfc6fa3fcc45790", null ],
     [ "SIR_SQUELCH_BACKOFF_FACTOR", "config_8h.html#ab84ea2d42dc216fad92bde1811dc4632", null ],
     [ "SIR_SQUELCH_MSG_FORMAT", "config_8h.html#a3b6b481d57fc3e954accee882d143a9a", null ]
