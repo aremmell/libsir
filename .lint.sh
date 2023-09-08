@@ -472,7 +472,7 @@ test_pvs()
       test "${ret}" -ne 0 && exit 99
       ${MAKE:-make} mcmb; ret=${?}
       test "${ret}" -ne 0 && exit 99
-      env CC="${CCACHE:-env} clang" bear -- "${MAKE:-make}" -j "${CPUS:-1}"; ret=${?}
+      env CC="${CCACHE:-env} clang" bear -- "${MAKE:-make}" SIR_DPSPRINTF=1 -j "${CPUS:-1}"; ret=${?}
       test "${ret}" -ne 0 && exit 99
       echo Running PVS-Studio ...
       pvs-studio-analyzer analyze --disableLicenseExpirationCheck --intermodular -j "${CPUS:-1}" -o log.pvs
