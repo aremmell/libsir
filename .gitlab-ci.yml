@@ -33,6 +33,14 @@ stages:
 
 ##############################################################################
 
+.CheckLogRemnants: &CheckLogRemnants |
+  # *CheckLogRemnants - Check logs/* for remaining files
+  echo -e "section_start:`date +%s`:CheckLogRemnants_section[collapsed=false]\r\e[0K\033[0;36mCheck logs/* for remaining files ...\033[0m" || true
+  test -f logs/* && { ls -l logs/* && exit 1; } || true
+  echo -e "section_end:`date +%s`:CheckLogRemnants_section\r\e[0K" || true
+
+##############################################################################
+
 Linux/x86_64 (GCC):
   stage: build
   tags:
@@ -54,6 +62,7 @@ Linux/x86_64 (GCC):
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -87,6 +96,7 @@ Linux/x86_64 (GCC, musl-libc):
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -120,6 +130,7 @@ Linux/x86_64 (Clang):
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -154,6 +165,7 @@ Linux/x86_64 (AOCC):
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -188,6 +200,7 @@ Linux/x86_64 (Intel C++ Classic):
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -222,6 +235,7 @@ Linux/x86_64 (Intel oneAPI C++):
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -255,6 +269,7 @@ Linux/x86_64 (Oracle Studio C/C++):
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -290,6 +305,7 @@ Linux/x86_64 (NVIDIA HPC C/C++):
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -322,6 +338,7 @@ Linux/x86_64 (Chibicc):
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -363,6 +380,7 @@ Windows/x64 (LLVM-MinGW):
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -457,6 +475,7 @@ Linux/x86_64 (AMD Open64):
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -498,6 +517,7 @@ Windows/i686 (LLVM-MinGW):
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -533,6 +553,7 @@ Android/x86_64 (API Level 21):
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -567,6 +588,7 @@ Android/i686 (API Level 21):
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -655,6 +677,7 @@ Android/x86_64 (API Level 33):
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -689,6 +712,7 @@ Android/i686 (API Level 33):
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -842,6 +866,7 @@ Windows/x64 (MSVC):
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -884,6 +909,7 @@ Windows/i686 (MSVC):
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -926,6 +952,7 @@ Windows/x64 (MinGW-MSVCRT):
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -968,6 +995,7 @@ Windows/x64 (MinGW-UCRT):
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -1010,6 +1038,7 @@ Windows/i686 (MinGW):
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -1386,6 +1415,7 @@ Windows/i686 (OrangeC):
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -1432,6 +1462,7 @@ Linux/x86_64 (DMD64 ImportC):
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -1501,6 +1532,7 @@ Windows/x64 (Embarcadero):
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -1544,6 +1576,7 @@ Windows/i686 (Embarcadero):
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -1581,6 +1614,7 @@ Clang Sanitizer (UB, 32-bit):
       echo -e "section_start:`date +%s`:Test32_section[collapsed=true]\r\e[0K\033[0;36mTest 32-bit ...\033[0m" || true
     - stdbuf -o L ./build/bin/sirtests 2>&1
     - echo -e "section_end:`date +%s`:Test32_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -1617,6 +1651,7 @@ Clang Sanitizer (UB, 64-bit):
       echo -e "section_start:`date +%s`:Test64_section[collapsed=true]\r\e[0K\033[0;36mTest 64-bit ...\033[0m" || true
     - stdbuf -o L ./build/bin/sirtests 2>&1
     - echo -e "section_end:`date +%s`:Test64_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -1652,6 +1687,7 @@ Clang Sanitizer (Memory):
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - stdbuf -o L ./build/bin/sirtests 2>&1
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -1688,6 +1724,7 @@ Clang Sanitizer (Address, 64-bit):
       echo -e "section_start:`date +%s`:Test64_section[collapsed=true]\r\e[0K\033[0;36mTest 64-bit ...\033[0m" || true
     - stdbuf -o L ./build/bin/sirtests 2>&1
     - echo -e "section_end:`date +%s`:Test64_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -1724,6 +1761,7 @@ Clang Sanitizer (Address, 32-bit):
       echo -e "section_start:`date +%s`:Test32_section[collapsed=true]\r\e[0K\033[0;36mTest 32-bit ...\033[0m" || true
     - stdbuf -o L ./build/bin/sirtests 2>&1
     - echo -e "section_end:`date +%s`:Test32_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -1817,6 +1855,7 @@ Linux/x86_64 (Kefir, musl-libc):
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
@@ -1853,6 +1892,7 @@ Linux/x86_64 (Kefir):
     - build/bin/sirexample
     - build/bin/sirtests
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
   dependencies: []
   artifacts:
     when: always
