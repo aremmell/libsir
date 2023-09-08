@@ -138,6 +138,8 @@ bool _sir_init(sirinit* si) {
     _sir_magic = _SIR_MAGIC;
 #endif
 
+    _sir_reset_tls();
+
 #if defined(__WIN__)
     _sir_initialize_stdio();
 #endif
@@ -216,6 +218,8 @@ bool _sir_cleanup(void) {
     _sir_magic = 0U;
 #endif
 
+    _sir_reset_tls();
+
     memset(_cfg, 0, sizeof(sirconfig));
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
 
@@ -257,6 +261,12 @@ bool _sir_init_sanity(const sirinit* si) {
 #endif
 
     return levelcheck && optscheck;
+}
+
+void _sir_reset_tls(void) {
+    _sir_resetstr(_sir_tid);
+    memset(&_sir_last_thrd_chk, 0, sizeof(sir_time));
+    _sir_last_timestamp = 0;
 }
 
 static
@@ -509,7 +519,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     _sir_snprintf_trunc(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, now_msec);
 
     /* hours/minutes/seconds. */
-    if (now_sec != _sir_last_timestamp) {
+    if (now_sec > _sir_last_timestamp || !*_cfg->state.timestamp) {
         _sir_last_timestamp = now_sec;
         bool fmt = _sir_formattime(now_sec, _cfg->state.timestamp, SIR_TIMEFORMAT);
         SIR_ASSERT_UNUSED(fmt, fmt);
@@ -560,11 +570,13 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     buf.level = _sir_formattedlevelstr(level);
 
-    (void)_sir_strncpy(buf.tid, SIR_MAXPID, _sir_tid, SIR_MAXPID);
+    if (_sir_validstrnofail(_sir_tid))
+        (void)_sir_strncpy(buf.tid, SIR_MAXPID, _sir_tid,
+            strnlen(_sir_tid, SIR_MAXPID));
 
     (void)vsnprintf(buf.message, SIR_MAXMESSAGE, format, args);
 
-    if (!_sir_validstr(buf.message))
+    if (!_sir_validstrnofail(buf.message))
         return _sir_seterror(_SIR_E_INTERNAL);
 
     bool match             = false;
