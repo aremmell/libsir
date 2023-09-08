@@ -118,7 +118,7 @@ void DPS_SPRINTF_DECORATE (set_separators)
 # endif
 
 # ifdef DPS_SPRINTF_IMPLEMENTATION
-const double PosPowerOf10_hi[]
+static const double PosPowerOf10_hi[]
   = { 1.00000000000000000000e+00,  1.00000000000000000000e+01,
       1.00000000000000000000e+02,  1.00000000000000000000e+03,
       1.00000000000000000000e+04,  1.00000000000000000000e+05,
@@ -275,7 +275,7 @@ const double PosPowerOf10_hi[]
       1.00000000000000001722e+306, 9.99999999999999986031e+306,
       1.00000000000000001098e+308 };
 
-const double PosPowerOf10_lo[]
+static const double PosPowerOf10_lo[]
   = {  0.00000000000000000000e+00,   0.00000000000000000000e+00,
        0.00000000000000000000e+00,   0.00000000000000000000e+00,
        0.00000000000000000000e+00,   0.00000000000000000000e+00,
@@ -432,7 +432,7 @@ const double PosPowerOf10_lo[]
       -1.72160645967364550754e+289,  1.39689402397435424146e+290,
       -1.09790636294404548849e+291 };
 
-const double NegPowerOf10_hi[]
+static const double NegPowerOf10_hi[]
   = { 1.00000000000000000000e+00,  1.00000000000000005551e-01,
       1.00000000000000002082e-02,  1.00000000000000002082e-03,
       1.00000000000000004792e-04,  1.00000000000000008180e-05,
@@ -596,7 +596,7 @@ const double NegPowerOf10_hi[]
       9.99988867182683005413e-321, 9.98012604599318019237e-322,
       9.88131291682493088353e-323, 9.88131291682493088353e-324 };
 
-const double NegPowerOf10_lo[]
+static const double NegPowerOf10_lo[]
   = {  0.00000000000000000000e+00,  -5.55111512312578301027e-18,
       -2.08166817117216843626e-19,  -2.08166817117216855663e-20,
       -4.79217360238592994257e-21,  -8.18030539140313054653e-22,
@@ -775,9 +775,9 @@ int32_t dps__real_to_str (char const **start, uint32_t *len, char *out,
 #  endif
 #  define DPS_S__SPECIAL 0x7000
 
-char dps__period = '.';
-char dps__comma  = ',';
-struct
+static char dps__period = '.';
+static char dps__comma  = ',';
+static struct
 {
   short temp;
   char pair[201];
@@ -809,7 +809,7 @@ DPS_SPRINTF_DECORATE (set_separators) (char pcomma, char pperiod)
 #  define DPS_S__QUARTWIDTH     8192
 #  define DPS_S__L             16384
 
-void
+static void
 dps__lead_sign (uint32_t fl, char *sign)
 {
   sign[0] = 0;
@@ -2364,6 +2364,10 @@ DPS_SPRINTF_DECORATE (fprintf) (FILE *stream, const char *format, ...)
 inline int
 DPS_SPRINTF_DECORATE (printf) (const char *format, ...)
 {
+  (void)NegPowerOf10_lo;
+  (void)NegPowerOf10_hi;
+  (void)PosPowerOf10_lo;
+  (void)PosPowerOf10_hi;
   int result;
   va_list va;
   va_start (va, format);
@@ -4027,7 +4031,9 @@ dps__real_to_str (char const **start, uint32_t *len, char *out,
 
 #else
 
-/* LINTED E_NAME_DECL_NOT_USED_DEF2 */
-extern char no_dpsprintf; /* Avoid empty translation unit */
+# if !defined(SUNLINT)
+/* Avoid empty translation unit */
+extern char no_dpsprintf;
+# endif
 
 #endif
