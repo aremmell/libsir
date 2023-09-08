@@ -1919,7 +1919,7 @@ Linux/x86_64 (GCC, uClibc-ng):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env LDFLAGS="-static" CC="ccache x86_64-pc-linux-uclibc-gcc" make
+    - env LDFLAGS="-static" CC="ccache x86_64-pc-linux-uclibc-gcc" make SIR_NO_PLUGINS=1
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
