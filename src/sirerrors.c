@@ -231,7 +231,7 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
 }
 
 void _sir_reset_tls_error(void) {
-    _sir_te.lasterror = _SIR_E_NOERROR;
+    _sir_te.lasterror = _SIR_E_NOERROR; //-V616
     _sir_te.os_error  = 0;
     _sir_resetstr(_sir_te.os_errmsg);
     _sir_te.loc.func = SIR_UNKNOWN;
