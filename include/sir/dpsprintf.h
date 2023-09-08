@@ -55,14 +55,14 @@
 #  undef fprintf
 #  undef printf
 
-#  define vsprintf  dps_vsprintf
-#  define vsnprintf dps_vsnprintf
-#  define sprintf   dps_sprintf
-#  define snprintf  dps_snprintf
-#  define vfprintf  dps_vfprintf
-#  define vprintf   dps_vprintf
-#  define fprintf   dps_fprintf
-#  define printf    dps_printf
+#  define vsprintf  dps_vsprintf  //-V1059
+#  define vsnprintf dps_vsnprintf //-V1059
+#  define sprintf   dps_sprintf   //-V1059
+#  define snprintf  dps_snprintf  //-V1059
+#  define vfprintf  dps_vfprintf  //-V1059
+#  define vprintf   dps_vprintf   //-V1059
+#  define fprintf   dps_fprintf   //-V1059
+#  define printf    dps_printf    //-V1059
 
 #  ifndef DPS_SPRINTF_IMPLEMENTATION
 #   define DPS_SPRINTF_IMPLEMENTATION 1

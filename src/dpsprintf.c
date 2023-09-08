@@ -32,6 +32,7 @@
  *
  * ---------------------------------------------------------------------------
  */
+//-V::1048
 #ifdef SIR_DPSPRINTF
 
 # ifndef _DPSPRINTF_H
@@ -1285,7 +1286,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
       dps__lead_sign (fl, lead);
       long double dmant = frexpl (fvL, &dp);
       n64 = (uint64_t)rintl (ldexpl (dmant, 64));
-      if (fvL != 0)
+      if (fvL != 0) //-V550
         dp -= 4;
 #  else
       int origpr = pr;
@@ -2039,7 +2040,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
         }
       }
 
-      if (fw + pr)
+      if (fw + pr) //-V793
       {
         int32_t i;
         uint32_t c;
@@ -3827,7 +3828,7 @@ dps__real_to_str (char const **start, uint32_t *len, char *out,
     *len = 3;
     return ng;
   }
-  else if (d == 0.0)
+  else if (d == 0.0) //-V550
   {
     *decimal_pos = 1;
     *start = out;
