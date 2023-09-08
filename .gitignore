@@ -30,9 +30,10 @@ logs/
 # annoying macOS files
 .DS_Store
 
-# Visual Studio temporary files
+# Visual Studio files
 .vs/
-*.user
+msvs/libsir*.user
+msvs/plugin*.user
 
 # ReSharper caches
 _ReSharper.Caches/
