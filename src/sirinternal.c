@@ -1153,6 +1153,7 @@ pid_t _sir_gettid(void) {
 bool _sir_getthreadname(char name[SIR_MAXPID]) {
     _sir_resetstr(name);
 #if defined(__MACOS__) || (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
+    (defined(__linux__) && defined(__UCLIBC__) && defined(_GNU_SOURCE)) || \
     (defined(__GLIBC__) && GLIBC_VERSION >= 21200 && defined(_GNU_SOURCE)) || \
     (defined(__ANDROID__) &&  __ANDROID_API__ >= 26) || defined(SIR_PTHREAD_GETNAME_NP) || \
     defined(__serenity__) || (defined(__linux__) && !defined(__GLIBC__) && \
@@ -1212,6 +1213,7 @@ bool _sir_setthreadname(const char* name) {
     int ret = pthread_setname_np(pthread_self(), "%s", name);
     return (0 != ret) ? _sir_handleerr(ret) : true;
 #elif (defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_12_2__)) || \
+      (defined(__linux__) && defined(__UCLIBC__) && defined(_GNU_SOURCE)) || \
       (defined(__GLIBC__) && GLIBC_VERSION >= 21200 && defined(_GNU_SOURCE)) || \
        defined(__QNXNTO__) || defined(__SOLARIS__) || defined(SIR_PTHREAD_GETNAME_NP) || \
        defined(__ANDROID__) && !defined(__OpenBSD__) || defined(__serenity__) || \
