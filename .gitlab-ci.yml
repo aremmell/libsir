@@ -1196,6 +1196,7 @@ Clang Static Analyzer:
     paths:
       - build/
       - logs/
+      - /tmp/scan-build*
   retry: 2
   interruptible: true
 
