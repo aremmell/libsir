@@ -87,7 +87,8 @@ bool _sir_validfd(int fd) {
 }
 
 /** Validates a sir_update_config_data structure. */
-bool _sir_validupdatedata(const sir_update_config_data* data) {
+bool __sir_validupdatedata(const sir_update_config_data* data, const char* func,
+    const char* file, uint32_t line) {
     if (!_sir_validptr(data))
         return false;
 
@@ -110,14 +111,15 @@ bool _sir_validupdatedata(const sir_update_config_data* data) {
         valid = _sir_validstrnofail(data->sl_category);
 
     if (!valid) {
-        (void)_sir_seterror(_SIR_E_INVALID);
+        (void)__sir_seterror(_SIR_E_INVALID, func, file, line);
         SIR_ASSERT(!valid);
     }
 
     return valid;
 }
 
-bool _sir_validlevels(sir_levels levels) {
+bool __sir_validlevels(sir_levels levels, const char* func,
+    const char* file, uint32_t line) {
     if ((SIRL_ALL == levels || SIRL_NONE == levels) ||
         ((_sir_bittest(levels, SIRL_INFO)           ||
          _sir_bittest(levels, SIRL_DEBUG)           ||
@@ -131,10 +133,11 @@ bool _sir_validlevels(sir_levels levels) {
          return true;
 
     _sir_selflog("invalid levels: %04"PRIx16, levels);
-    return _sir_seterror(_SIR_E_LEVELS);
+    return __sir_seterror(_SIR_E_LEVELS, func, file, line);
 }
 
-bool _sir_validlevel(sir_level level) {
+bool __sir_validlevel(sir_level level, const char* func, const char* file,
+    uint32_t line) {
     if (SIRL_INFO   == level || SIRL_DEBUG == level ||
         SIRL_NOTICE == level || SIRL_WARN  == level ||
         SIRL_ERROR  == level || SIRL_CRIT  == level ||
@@ -142,10 +145,11 @@ bool _sir_validlevel(sir_level level) {
         return true;
 
     _sir_selflog("invalid level: %04"PRIx16, level);
-    return _sir_seterror(_SIR_E_LEVELS);
+    return __sir_seterror(_SIR_E_LEVELS, func, file, line);
 }
 
-bool _sir_validopts(sir_options opts) {
+bool __sir_validopts(sir_options opts, const char* func, const char* file,
+    uint32_t line) {
     if ((SIRO_ALL == opts || SIRO_MSGONLY == opts) ||
         ((_sir_bittest(opts, SIRO_NOTIME)          ||
          _sir_bittest(opts, SIRO_NOHOST)           ||
@@ -159,10 +163,11 @@ bool _sir_validopts(sir_options opts) {
          return true;
 
     _sir_selflog("invalid options: %08"PRIx32, opts);
-    return _sir_seterror(_SIR_E_OPTIONS);
+    return __sir_seterror(_SIR_E_OPTIONS, func, file, line);
 }
 
-bool _sir_validtextattr(sir_textattr attr) {
+bool __sir_validtextattr(sir_textattr attr, const char* func, const char* file,
+    uint32_t line) {
     switch(attr) {
         case SIRTA_NORMAL:
         case SIRTA_BOLD:
@@ -172,12 +177,13 @@ bool _sir_validtextattr(sir_textattr attr) {
             return true;
         default: {
             _sir_selflog("invalid text attr: %d", attr);
-            return _sir_seterror(_SIR_E_TEXTATTR);
+            return __sir_seterror(_SIR_E_TEXTATTR, func, file, line);
         }
     }
 }
 
-bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color) {
+bool __sir_validtextcolor(sir_colormode mode, sir_textcolor color, const char* func,
+    const char* file, uint32_t line) {
     bool valid = false;
     switch (mode) {
         case SIRCM_16:
@@ -207,13 +213,14 @@ bool _sir_validtextcolor(sir_colormode mode, sir_textcolor color) {
     if (!valid) {
         _sir_selflog("invalid text color for mode %d %08"PRIx32" (%"PRIu32")",
             mode, color, color);
-        (void)_sir_seterror(_SIR_E_TEXTCOLOR);
+        (void)__sir_seterror(_SIR_E_TEXTCOLOR, func, file, line);
     }
 
     return valid;
 }
 
-bool _sir_validcolormode(sir_colormode mode) {
+bool __sir_validcolormode(sir_colormode mode, const char* func, const char* file,
+    uint32_t line) {
     switch (mode) {
         case SIRCM_16:
         case SIRCM_256:
@@ -222,7 +229,7 @@ bool _sir_validcolormode(sir_colormode mode) {
         case SIRCM_INVALID:
         default: {
             _sir_selflog("invalid color mode: %d", mode);
-            return _sir_seterror(_SIR_E_COLORMODE);
+            return __sir_seterror(_SIR_E_COLORMODE, func, file, line);
         }
     }
 }
