@@ -27,4 +27,7 @@
 %{
 #include "sir.h"
 %}
-bool sir_init(sirinit* si);
+
+%import <stdint.i>
+%include "../../include/sir/types.h"
+%include "../../include/sir.h"

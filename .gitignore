@@ -79,3 +79,6 @@ cov-int
 
 # Direnv
 .envrc
+
+# SWIG
+swig/python/__pycache__

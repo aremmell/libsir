@@ -35,6 +35,11 @@
 # include "sir/version.h"
 # include "sir/types.h"
 
+# if defined(SWIG)
+#  define PRINTF_FORMAT
+#  define PRINTF_FORMAT_ATTR(fmt_p, va_p)
+# endif
+
 # if defined(__cplusplus)
 extern "C" {
 # endif
