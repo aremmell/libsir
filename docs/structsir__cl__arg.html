@@ -84,7 +84,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('sircondition_8c.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('structsir__cl__arg.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -111,45 +111,90 @@ $(document).ready(function(){initNavTree('sircondition_8c.html',''); initResizab
 
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
-  <div class="headertitle"><div class="title">sircondition.c File Reference</div></div>
+<a href="#pub-attribs">Data Fields</a>  </div>
+  <div class="headertitle"><div class="title">sir_cl_arg Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>A command line argument.  
+ <a href="structsir__cl__arg.html#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:ae93cd64b12a564792d3bb0a48a8ddc32"><td class="memItemLeft" align="right" valign="top"><a id="ae93cd64b12a564792d3bb0a48a8ddc32" name="ae93cd64b12a564792d3bb0a48a8ddc32"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>_sir_condcreate</b> (sir_condition *cond)</td></tr>
-<tr class="memdesc:ae93cd64b12a564792d3bb0a48a8ddc32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates/initializes a new condition variable. <br /></td></tr>
-<tr class="separator:ae93cd64b12a564792d3bb0a48a8ddc32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8d6edc94bcfb430cf584b27a91e4040"><td class="memItemLeft" align="right" valign="top"><a id="ae8d6edc94bcfb430cf584b27a91e4040" name="ae8d6edc94bcfb430cf584b27a91e4040"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>_sir_condbroadcast</b> (sir_condition *cond)</td></tr>
-<tr class="memdesc:ae8d6edc94bcfb430cf584b27a91e4040"><td class="mdescLeft">&#160;</td><td class="mdescRight">Broadcast signals a condition variable. <br /></td></tr>
-<tr class="separator:ae8d6edc94bcfb430cf584b27a91e4040"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a150dd1b33dee56d4b02442f2f30f09c5"><td class="memItemLeft" align="right" valign="top"><a id="a150dd1b33dee56d4b02442f2f30f09c5" name="a150dd1b33dee56d4b02442f2f30f09c5"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>_sir_conddestroy</b> (sir_condition *cond)</td></tr>
-<tr class="memdesc:a150dd1b33dee56d4b02442f2f30f09c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a condition variable. <br /></td></tr>
-<tr class="separator:a150dd1b33dee56d4b02442f2f30f09c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae902dcda8cca588f9ff54182e9c761f0"><td class="memItemLeft" align="right" valign="top"><a id="ae902dcda8cca588f9ff54182e9c761f0" name="ae902dcda8cca588f9ff54182e9c761f0"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>_sir_condwait_timeout</b> (sir_condition *cond, sir_mutex *mutex, sir_wait *howlong)</td></tr>
-<tr class="memdesc:ae902dcda8cca588f9ff54182e9c761f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waits a given amount of time for a condition variable to become signaled. <br /></td></tr>
-<tr class="separator:ae902dcda8cca588f9ff54182e9c761f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Data Fields</h2></td></tr>
+<tr class="memitem:acb697d4476e3e108a0d7cc7fe1aef2ae"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsir__cl__arg.html#acb697d4476e3e108a0d7cc7fe1aef2ae">flag</a></td></tr>
+<tr class="memdesc:acb697d4476e3e108a0d7cc7fe1aef2ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">The 'flag' (e.g.  <br /></td></tr>
+<tr class="separator:acb697d4476e3e108a0d7cc7fe1aef2ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3ae5ef230bad0b7160ba6a9415e14ec"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsir__cl__arg.html#ac3ae5ef230bad0b7160ba6a9415e14ec">usage</a></td></tr>
+<tr class="memdesc:ac3ae5ef230bad0b7160ba6a9415e14ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Usage info (e.g.  <br /></td></tr>
+<tr class="separator:ac3ae5ef230bad0b7160ba6a9415e14ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06d6e49c5bd5ba5877563abc636ad538"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsir__cl__arg.html#a06d6e49c5bd5ba5877563abc636ad538">desc</a></td></tr>
+<tr class="memdesc:a06d6e49c5bd5ba5877563abc636ad538"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description (e.g.  <br /></td></tr>
+<tr class="separator:a06d6e49c5bd5ba5877563abc636ad538"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section author"><dt>Author</dt><dd>Ryan M. Lederman &lt;<a href="#" onclick="location.href='mai'+'lto:'+'led'+'er'+'man'+'@g'+'mai'+'l.'+'com'; return false;">leder<span class="obfuscator">.nosp@m.</span>man@<span class="obfuscator">.nosp@m.</span>gmail<span class="obfuscator">.nosp@m.</span>.com</a>&gt; </dd></dl>
-<dl class="section date"><dt>Date</dt><dd>2018-2023 </dd></dl>
-<dl class="section version"><dt>Version</dt><dd>2.2.3 </dd></dl>
-<dl class="section copyright"><dt>Copyright</dt><dd>The MIT License (MIT)</dd></dl>
-<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
-<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
-<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. </p>
-</div></div><!-- contents -->
+<div class="textblock"><p>A command line argument. </p>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="acb697d4476e3e108a0d7cc7fe1aef2ae" name="acb697d4476e3e108a0d7cc7fe1aef2ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb697d4476e3e108a0d7cc7fe1aef2ae">&#9670;&#160;</a></span>flag</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* sir_cl_arg::flag</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The 'flag' (e.g. </p>
+<p>'&ndash;help'). </p>
+
+</div>
+</div>
+<a id="ac3ae5ef230bad0b7160ba6a9415e14ec" name="ac3ae5ef230bad0b7160ba6a9415e14ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3ae5ef230bad0b7160ba6a9415e14ec">&#9670;&#160;</a></span>usage</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* sir_cl_arg::usage</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Usage info (e.g. </p>
+<p>[foo, ...]). </p>
+
+</div>
+</div>
+<a id="a06d6e49c5bd5ba5877563abc636ad538" name="a06d6e49c5bd5ba5877563abc636ad538"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06d6e49c5bd5ba5877563abc636ad538">&#9670;&#160;</a></span>desc</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* sir_cl_arg::desc</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Description (e.g. </p>
+<p>displays a purple dinosaur). </p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>tests/<a class="el" href="tests_8h_source.html">tests.h</a></li>
+</ul>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.7-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="sircondition_8c.html">sircondition.c</a></li>
+    <li class="navelem"><a class="el" href="structsir__cl__arg.html">sir_cl_arg</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>

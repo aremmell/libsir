@@ -26,9 +26,33 @@ var group__publictypes =
       [ "mask", "group__publictypes.html#af2ce11ebf110993621bedd8e747d7b1b", null ],
       [ "logger", "group__publictypes.html#a6db435f352d7ea4a67807a3feb447bf7", null ]
     ] ],
+    [ "SIRL_NONE", "group__publictypes.html#ga2b9222b9d95807e7e1d16bd9c86c130b", null ],
+    [ "SIRL_EMERG", "group__publictypes.html#ga2409f97357f1eb510ababeb6e0a030e8", null ],
+    [ "SIRL_ALERT", "group__publictypes.html#ga8549494d396c96ba66b5b78b298cff7d", null ],
+    [ "SIRL_CRIT", "group__publictypes.html#gac559a9050c927bf0dc9f88dfc3905e06", null ],
+    [ "SIRL_ERROR", "group__publictypes.html#ga39dffb8c9c5100251098820cb5b48446", null ],
+    [ "SIRL_WARN", "group__publictypes.html#ga91b18adc2526599377583951c29e84b9", null ],
+    [ "SIRL_NOTICE", "group__publictypes.html#gad4aefd62d77b020460d32c9350bec7d5", null ],
+    [ "SIRL_INFO", "group__publictypes.html#ga9e73defcee82050f038956ad7e911621", null ],
+    [ "SIRL_DEBUG", "group__publictypes.html#gaa2927c260f1d8fac96513442e50105fc", null ],
+    [ "SIRL_ALL", "group__publictypes.html#gac393a8a8f335fe44d28f39c91293af1f", null ],
+    [ "SIRL_DEFAULT", "group__publictypes.html#ga640c1b7e6daea59af42137e10e3c3b29", null ],
+    [ "SIRO_ALL", "group__publictypes.html#ga40584e96084fe85a8ad8a7be98ff5fc9", null ],
+    [ "SIRO_NOTIME", "group__publictypes.html#gac3370e3a2be554f93e9e67bea177c8a0", null ],
+    [ "SIRO_NOMSEC", "group__publictypes.html#ga0bdfbd616c096c6dfbb481b54fd1e397", null ],
+    [ "SIRO_NOHOST", "group__publictypes.html#gaf6a215c540807f3ba15f97d372feeaf0", null ],
+    [ "SIRO_NOLEVEL", "group__publictypes.html#ga3c68d15a3b9b9d5a4f4c8fd092b0e73d", null ],
+    [ "SIRO_NONAME", "group__publictypes.html#ga0d3bc4aa34b9399e72621632b877b16a", null ],
+    [ "SIRO_NOPID", "group__publictypes.html#gafd6f47db95d87395d4a37529f839c6de", null ],
+    [ "SIRO_NOTID", "group__publictypes.html#ga093cea38ace2acb674162a0f7fb153a6", null ],
+    [ "SIRO_NOHDR", "group__publictypes.html#ga7b417924811962ca0aeaca30bdf38cf6", null ],
+    [ "SIRO_MSGONLY", "group__publictypes.html#gafdc3b32bdee26cd4f457a4cecd2771ad", null ],
+    [ "SIRO_DEFAULT", "group__publictypes.html#ga2a7a55618343c4cb76d7e428af72232b", null ],
     [ "sirfileid", "group__publictypes.html#ga0da4ab4b4468b6b71cd8e924b2adf2e2", null ],
     [ "sirpluginid", "group__publictypes.html#gadbc71df98df765cddfed4aa11c805470", null ],
+    [ "sir_level", "group__publictypes.html#ga076e759e9aa36cde2977f754a7ea186c", null ],
     [ "sir_levels", "group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd", null ],
+    [ "sir_option", "group__publictypes.html#gac28da6e48402cc15ead5b5384bccb6fd", null ],
     [ "sir_options", "group__publictypes.html#gafb659914aac0129182d86f7d3414e85d", null ],
     [ "sir_textcolor", "group__publictypes.html#gab4214e294af5ac3c91f21c1d379e10c5", null ],
     [ "sir_errorcode", "group__publictypes.html#ga861df9be69c6bcd01d29b77bd28ff7d3", [
@@ -56,32 +80,6 @@ var group__publictypes =
       [ "SIR_E_PLUGINERR", "group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a99ffe5bf9046a13802a9e0680e7f5e57", null ],
       [ "SIR_E_PLATFORM", "group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a0f293a6020f98a7e41b8afea0e402046", null ],
       [ "SIR_E_UNKNOWN", "group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a8090c8bc79ae660da7e58b2d0a47d785", null ]
-    ] ],
-    [ "sir_level", "group__publictypes.html#ga4a3303c67acd49bea38fd3565d458cb2", [
-      [ "SIRL_NONE", "group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a7cc68341661fcb7a505aca67edb7a18e", null ],
-      [ "SIRL_EMERG", "group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a4ea9abe160c997d126806c4cca7f0cdc", null ],
-      [ "SIRL_ALERT", "group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a8ea85ed68763f9c00d5ceeeaaf550955", null ],
-      [ "SIRL_CRIT", "group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a803f36256e5e4e3b788b7fa3a267a435", null ],
-      [ "SIRL_ERROR", "group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a9c687f088db1de838ea5d5f8a8beed76", null ],
-      [ "SIRL_WARN", "group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a9bfe1efbd321a009ad518b2eaec35881", null ],
-      [ "SIRL_NOTICE", "group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a721700c8091aab00db0b87b53f6eb53a", null ],
-      [ "SIRL_INFO", "group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a5882fd7e849f6a3c1c7967bde4ef4f7d", null ],
-      [ "SIRL_DEBUG", "group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a3553c8c2c35e70495b8f8e826aa3ff9b", null ],
-      [ "SIRL_ALL", "group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2a4aa4a7193f36bf34a21ab48a17ffc444", null ],
-      [ "SIRL_DEFAULT", "group__publictypes.html#gga4a3303c67acd49bea38fd3565d458cb2ab218462c6cc1f43062f5d2d24a757804", null ]
-    ] ],
-    [ "sir_option", "group__publictypes.html#ga9ed1c599dfd76231f4e0dadf46bff40b", [
-      [ "SIRO_ALL", "group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba843ca9cff10528731dc9609e2fbfe34f", null ],
-      [ "SIRO_NOTIME", "group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40baeafb73ebdeb2df401d9fdfc39734fc8d", null ],
-      [ "SIRO_NOMSEC", "group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40bad78a6f66d21b01ace7574841495cacdd", null ],
-      [ "SIRO_NOHOST", "group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40bafe062f8fda5add3cb0e8fc3948aa6f9f", null ],
-      [ "SIRO_NOLEVEL", "group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba58882ac768eb1c0a0021d140f6b15deb", null ],
-      [ "SIRO_NONAME", "group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba59020fdfee0aaf393ed80ef7bab4bb4e", null ],
-      [ "SIRO_NOPID", "group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40babbdc2529081d58ebff50a8966db31fd2", null ],
-      [ "SIRO_NOTID", "group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba7079a31d6035c24aaa94d85c4a89c053", null ],
-      [ "SIRO_NOHDR", "group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba59b2a0e9b2dfd78bcfa053dcb3f2dcce", null ],
-      [ "SIRO_MSGONLY", "group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40bad3258e42ff275ce5e256ffdf368f7bd0", null ],
-      [ "SIRO_DEFAULT", "group__publictypes.html#gga9ed1c599dfd76231f4e0dadf46bff40ba10e73f8e471fa73704716a5efac8ed02", null ]
     ] ],
     [ "sir_colormode", "group__publictypes.html#ga26686b620930358e8b50f287d6c96e51", [
       [ "SIRCM_16", "group__publictypes.html#gga26686b620930358e8b50f287d6c96e51a1e9b6fdb0f6841f91060766dfefaa504", null ],
@@ -111,7 +109,6 @@ var group__publictypes =
       [ "SIRTC_BMAGENTA", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a8ca3ef305d6d19e9469e42cab90eda7f", null ],
       [ "SIRTC_BCYAN", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a9c0ac02a1b3d8964b40ec838a14b48b3", null ],
       [ "SIRTC_WHITE", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a79f980cfe1c098f99358b9250c52491b", null ],
-      [ "SIRTC_DEFAULT", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a6435ad1ff8e5c1495342f96398f73d8b", null ],
-      [ "SIRTC_INVALID", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7af7d338a61e4e72a3a18146f65a2072c6", null ]
+      [ "SIRTC_DEFAULT", "group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a6435ad1ff8e5c1495342f96398f73d8b", null ]
     ] ]
 ];
