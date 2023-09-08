@@ -32,8 +32,7 @@
  *
  * ---------------------------------------------------------------------------
  */
-
-#ifndef USE_SYSTEM_PRINTF
+#ifdef SIR_DPSPRINTF
 
 # ifndef _DPSPRINTF_H
 #  define _DPSPRINTF_H 1
@@ -4025,4 +4024,9 @@ dps__real_to_str (char const **start, uint32_t *len, char *out,
 #  undef int64_t
 
 # endif
+
+#else
+
+extern char no_dpsprintf;
+
 #endif

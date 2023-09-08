@@ -98,6 +98,13 @@ ifeq ($(SIR_ASSERT_ENABLED),1)
 endif
 
 ##############################################################################
+# Use dpsprintf?
+
+ifeq ($(SIR_DPSPRINTF),1)
+  SIR_CFLAGS += -DSIR_DPSPRINTF
+endif
+
+##############################################################################
 # Disable system loggers?
 
 ifeq ($(SIR_NO_SYSTEM_LOGGERS),1)

@@ -29,6 +29,10 @@
 # include "sir/types.h"
 # include "sir/errors.h"
 
+# if defined(SIR_DPSPRINTF)
+#  include "sir/dpsprintf.h"
+# endif
+
 /** Computes the size of an array. */
 # define _sir_countof(arr) (sizeof(arr) / sizeof(arr[0]))
 

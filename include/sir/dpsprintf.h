@@ -32,16 +32,15 @@
  *
  * ---------------------------------------------------------------------------
  */
+#ifdef SIR_DPSPRINTF
 
-#include <ctype.h>
-#include <math.h>
-#include <stdarg.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-
-#ifndef USE_SYSTEM_PRINTF
+# include <ctype.h>
+# include <math.h>
+# include <stdarg.h>
+# include <stddef.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <stdint.h>
 
 # ifndef _DPSPRINTF_H
 #  define _DPSPRINTF_H 1
@@ -108,4 +107,5 @@ void set_separators
        (char comma, char period);
 
 # endif
+
 #endif

@@ -44,7 +44,7 @@
 #  else
 #   if !defined(__SUNPRO_C) && !defined(__SUNPRO_CC)
 #    define PRINTF_FORMAT_ATTR(fmt_p, va_p) \
-     __attribute__((format (printf, fmt_p, va_p)))
+     __attribute__((format (__printf__, fmt_p, va_p)))
 #   else
 #    define PRINTF_FORMAT_ATTR(fmt_p, va_p)
 #   endif
@@ -569,6 +569,10 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #endif /* !_SIR_PLATFORM_H_INCLUDED */
 
 #include "sir/impl.h"
+
+#if defined(SIR_DPSPRINTF)
+# include "sir/dpsprintf.h"
+#endif
 
 /* Support Clang's -Wdisabled-macro-expansion check on Linux/glibc */
 #if defined(SIR_LINT) && (defined(__linux__) && defined(__GLIBC__)) && \
