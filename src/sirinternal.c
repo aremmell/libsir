@@ -62,6 +62,7 @@ static volatile uint32_t _sir_magic = 0U;
 
 static _sir_thread_local char _sir_tid[SIR_MAXPID]   = {0};
 static _sir_thread_local sir_time _sir_last_thrd_chk = {0};
+static _sir_thread_local time_t _sir_last_timestamp  = 0;
 
 bool _sir_makeinit(sirinit* si) {
     bool retval = _sir_validptr(si);
@@ -499,7 +500,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
         }
     }
 
-    /* format timestamp. */
+    /* format timestamp (h/m/s only if the integer time has changed). */
     long now_msec = 0L;
     bool gettime = _sir_clock_gettime(SIR_WALLCLOCK, &now_sec, &now_msec);
     SIR_ASSERT_UNUSED(gettime, gettime);
@@ -508,8 +509,11 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     _sir_snprintf_trunc(buf.msec, SIR_MAXMSEC, SIR_MSECFORMAT, now_msec);
 
     /* hours/minutes/seconds. */
-    bool fmt = _sir_formattime(now_sec, _cfg->state.timestamp, SIR_TIMEFORMAT);
-    SIR_ASSERT_UNUSED(fmt, fmt);
+    if (now_sec != _sir_last_timestamp) {
+        _sir_last_timestamp = now_sec;
+        bool fmt = _sir_formattime(now_sec, _cfg->state.timestamp, SIR_TIMEFORMAT);
+        SIR_ASSERT_UNUSED(fmt, fmt);
+    }
 
     /* check elapsed time since updating thread identifier/name. */
     sir_time thrd_chk;
