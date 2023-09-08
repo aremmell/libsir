@@ -98,8 +98,8 @@ bool _sir_condwait(sir_condition* cond, sir_mutex* mutex) {
         int op = pthread_cond_wait(cond, mutex);
         valid = 0 == op ? true : _sir_handleerr(op);
 #else
-        DWORD how_long = INFINITE;
-        valid = _sir_condwait_timeout(cond, mutex, &how_long);
+        DWORD howlong = INFINITE;
+        valid = _sir_condwait_timeout(cond, mutex, &howlong);
 #endif
     }
 
@@ -116,7 +116,7 @@ bool _sir_condwait_timeout(sir_condition* cond, sir_mutex* mutex,
         int op = pthread_cond_timedwait(cond, mutex, howlong);
         valid = 0 == op ? true : ETIMEDOUT == op ? false : _sir_handleerr(op);
 #else
-        valid = (FALSE != SleepConditionVariableCS(cond, mutex, *how_long))
+        valid = (FALSE != SleepConditionVariableCS(cond, mutex, *howlong))
             ? true : _sir_handlewin32err(GetLastError());
 #endif
     }
