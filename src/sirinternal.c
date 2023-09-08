@@ -138,6 +138,8 @@ bool _sir_init(sirinit* si) {
     _sir_magic = _SIR_MAGIC;
 #endif
 
+    _sir_reset_tls();
+
 #if defined(__WIN__)
     _sir_initialize_stdio();
 #endif
