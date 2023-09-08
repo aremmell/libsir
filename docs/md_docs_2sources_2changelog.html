@@ -116,38 +116,45 @@ $(document).ready(function(){initNavTree('md_docs_2sources_2changelog.html','');
 <div class="textblock"><h1>2.2.3</h1>
 <h2>September 8, 2023</h2>
 <ul>
-<li>Fixed a bug that caused some log file messages to be truncated</li>
-<li>Changed maximum message length to 4KiB (4096 bytes)</li>
-<li>Added additional compilers and platforms, as well as Oracle Lint to CI pipeline</li>
-<li>General portability improvements</li>
-<li>General linter/static analyzer conformance improvements</li>
-<li>Now utilizes <code>stdatomic.h</code> under MSVC on version 17.4+ using <code>/experimental:c11atomics</code></li>
-<li>Added two additional tests</li>
-<li>Optimized the primary code path to get some <em>really impressive</em> performance gains. Some samples:</li>
+<li>Fixed a bug that caused some log file messages to be truncated.</li>
+<li>Changed maximum message length to 4 KiB (4096 bytes).</li>
+<li>Added support for additional compilers and platforms.</li>
+<li>Added Oracle Lint to CI pipeline.</li>
+<li>General portability improvements.</li>
+<li>General linter and static analyzer conformance improvements.</li>
+<li>Now utilizes <code>stdatomic.h</code> under MSVC on version 17.4+ using <code>/experimental:c11atomics</code>.</li>
+<li>Added two additional tests.</li>
+<li>Optimized the primary code path for some <em>really impressive</em> performance gains. Some samples:</li>
 </ul>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Platform   </th><th class="markdownTableHeadNone">Change vs 2.2.2    </th></tr>
+<th class="markdownTableHeadNone">Platform   </th><th class="markdownTableHeadNone">Change vs. 2.2.2    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">macOS 13.5.2 (x86_64)   </td><td class="markdownTableBodyNone">361% ≠ 0.13    </td></tr>
+<td class="markdownTableBodyNone">macOS 13.5.2 (x86_64)   </td><td class="markdownTableBodyNone">+361% ± 0.13﹪    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">macOS 13.5.1 (aarch64)   </td><td class="markdownTableBodyNone">213% ≠ 0.12    </td></tr>
+<td class="markdownTableBodyNone">Arch 6.4.12 (x86_64)   </td><td class="markdownTableBodyNone">+276% ± 0.07﹪    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">Arch 6.4.12 (x86_64)   </td><td class="markdownTableBodyNone">276% ≠ 0.07    </td></tr>
+<td class="markdownTableBodyNone">RHEL 9 (x86_64)   </td><td class="markdownTableBodyNone">+256% ± 0.03﹪    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">RHEL9 (x86_64)   </td><td class="markdownTableBodyNone">256% ≠ 0.03    </td></tr>
+<td class="markdownTableBodyNone">Debian 12 (x86_64)   </td><td class="markdownTableBodyNone">+217% ± 0.09﹪    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">Fedora 38 (x86_64)   </td><td class="markdownTableBodyNone">121% ≠ 0.05    </td></tr>
+<td class="markdownTableBodyNone">macOS 13.5.1 (AArch64)   </td><td class="markdownTableBodyNone">+213% ± 0.12﹪    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">Debian 12 (x86_64)   </td><td class="markdownTableBodyNone">217% ≠ 0.09    </td></tr>
+<td class="markdownTableBodyNone">Fedora 38 (x86_64)   </td><td class="markdownTableBodyNone">+121% ± 0.05﹪    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">Debian 12 (aarch64)   </td><td class="markdownTableBodyNone">100% ≠ 0.04    </td></tr>
+<td class="markdownTableBodyNone">AIX 7.3 (POWER9)   </td><td class="markdownTableBodyNone">+119% ± 0.07﹪    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">FreeBSD 13.2 (x86_x64)   </td><td class="markdownTableBodyNone">76% ≠ 0.06    </td></tr>
+<td class="markdownTableBodyNone">Debian 12 (AArch64)   </td><td class="markdownTableBodyNone">+100% ± 0.04﹪    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">Windows 11 (x64_64)   </td><td class="markdownTableBodyNone">87% ≠ 0.03    </td></tr>
+<td class="markdownTableBodyNone">Windows 11 (x64_64)   </td><td class="markdownTableBodyNone">+87% ± 0.03﹪    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">Windows 11 (aarch64)   </td><td class="markdownTableBodyNone">67% ≠ 0.03   </td></tr>
+<td class="markdownTableBodyNone">FreeBSD 13.2 (x86_x64)   </td><td class="markdownTableBodyNone">+76% ± 0.06﹪    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Windows 11 (AArch64)   </td><td class="markdownTableBodyNone">+67% ± 0.03﹪    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">NetBSD 9.3 (ARM/A53)   </td><td class="markdownTableBodyNone">+62% ± 0.18﹪    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">OpenWrt 23 (MIPS32/74Kc)   </td><td class="markdownTableBodyNone">+6% ± 3.14﹪   </td></tr>
 </table>
 <h1>2.2.2</h1>
 <h2>August 18, 2023</h2>
