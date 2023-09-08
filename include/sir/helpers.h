@@ -332,7 +332,7 @@ bool __sir_validstr(const char* restrict str, const char* func,
     __sir_validstr(str, __func__, __file__, __LINE__)
 
 /** Validates a string pointer but ignores whether it's invalid. */
-# define _sir_validstrnofail(str) (NULL != (str) && '\0' != *(str))
+# define _sir_validstrnofail(str) ((str) && '\0' != *(str))
 
 /** Places a null terminator at the first index in a string buffer. */
 static inline
