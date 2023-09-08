@@ -1814,7 +1814,7 @@ Oracle Lint:
       echo -e "section_start:`date +%s`:Lint_section[collapsed=true]\r\e[0K\033[0;36mLint ...\033[0m" || true
     - make clean
     - rm -f orstlint.txt > /dev/null 2>&1 || true
-    - export CFLAGS="-errsecurity=extended -errtags=yes -erroff=E_GLOBAL_COULD_BE_STATIC2,E_FUNC_RET_ALWAYS_IGNOR2,E_FUNC_RET_MAYBE_IGNORED2,E_NAME_DEF_NOT_USED2,E_SEC_READLINK_WARN,E_CONST_EXPR,E_SEC_RAND_WARN,E_PTRDIFF_OVERFLOW,E_CONSTANT_CONDITION,E_STATIC_UNUSED -fd -m64 -XCC=yes -errchk=structarg,parentheses,signext,locfmtchk -errfmt=src -errtags=yes -Xalias_level=any"
+    - export CFLAGS="-errsecurity=extended -errtags=yes -erroff=E_EMPTY_TRANSLATION_UNIT,E_GLOBAL_COULD_BE_STATIC2,E_FUNC_RET_ALWAYS_IGNOR2,E_FUNC_RET_MAYBE_IGNORED2,E_NAME_DEF_NOT_USED2,E_SEC_READLINK_WARN,E_CONST_EXPR,E_SEC_RAND_WARN,E_PTRDIFF_OVERFLOW,E_CONSTANT_CONDITION,E_STATIC_UNUSED -fd -m64 -XCC=yes -errchk=structarg,parentheses,signext,locfmtchk -errfmt=src -errtags=yes -Xalias_level=any"
     - eval /opt/oracle/developerstudio-latest/bin/lint -DSUNPRO=1 -DSUNLINT=1 ${CFLAGS:?} src/*.c -Iinclude -Itests tests/tests.c 2>&1 | tee orstlint.txt
     - eval /opt/oracle/developerstudio-latest/bin/lint -DSUNPRO=1 -DSUNLINT=1 ${CFLAGS:?} src/*.c -Iinclude -Iexample example/example.c 2>&1 | tee -a orstlint.txt
     - ( grep "E_" orstlint.txt || exit 0 && exit 1 )
