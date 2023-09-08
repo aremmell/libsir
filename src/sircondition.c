@@ -42,22 +42,22 @@ bool _sir_condcreate(sir_condition* cond) {
     return valid;
 }
 
-# if 0
+#if 0
 bool _sir_condsignal(sir_condition* cond) {
     bool valid = _sir_validptr(cond);
 
     if (valid) {
-#if !defined(__WIN__)
+# if !defined(__WIN__)
         int op = pthread_cond_signal(cond);
         valid = 0 == op ? true : _sir_handleerr(op);
-#else
+# else
         WakeConditionVariable(cond);
-#endif
+# endif
     }
 
     return valid;
 }
-# endif
+#endif
 
 bool _sir_condbroadcast(sir_condition* cond) {
     bool valid = _sir_validptr(cond);
@@ -89,23 +89,23 @@ bool _sir_conddestroy(sir_condition* cond) {
     return valid;
 }
 
-# if 0
+#if 0
 bool _sir_condwait(sir_condition* cond, sir_mutex* mutex) {
     bool valid = _sir_validptr(cond) && _sir_validptr(mutex);
 
     if (valid) {
-#if !defined(__WIN__)
+# if !defined(__WIN__)
         int op = pthread_cond_wait(cond, mutex);
         valid = 0 == op ? true : _sir_handleerr(op);
-#else
+# else
         DWORD howlong = INFINITE;
         valid = _sir_condwait_timeout(cond, mutex, &howlong);
-#endif
+# endif
     }
 
     return valid;
 }
-# endif
+#endif
 
 bool _sir_condwait_timeout(sir_condition* cond, sir_mutex* mutex,
     const sir_wait* howlong) {
