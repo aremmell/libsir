@@ -317,11 +317,11 @@ sir_textcolor _sir_makergb(sir_textcolor r, sir_textcolor g, sir_textcolor b) {
 
 /** Validates a string pointer and optionally fails if it's invalid. */
 static inline
-bool __sir_validstr(const char* restrict str, const char* func,
+bool __sir_validstr(const char* restrict str, bool fail, const char* func,
     const char* file, uint32_t line) {
     bool valid = str && *str != '\0';
-    if (!valid) {
-        SIR_ASSERT(valid);
+    if (fail && !valid) {
+        SIR_ASSERT(!valid && fail);
         (void)__sir_seterror(_SIR_E_STRING, func, file, line);
     }
     return valid;
@@ -329,10 +329,11 @@ bool __sir_validstr(const char* restrict str, const char* func,
 
 /** Validates a string pointer and fails if it's invalid. */
 # define _sir_validstr(str) \
-    __sir_validstr(str, __func__, __file__, __LINE__)
+    __sir_validstr(str, true, __func__, __file__, __LINE__)
 
 /** Validates a string pointer but ignores whether it's invalid. */
-# define _sir_validstrnofail(str) ((str) && '\0' != *(str))
+# define _sir_validstrnofail(str) \
+    __sir_validstr(str, false, __func__, __file__, __LINE__)
 
 /** Places a null terminator at the first index in a string buffer. */
 static inline
