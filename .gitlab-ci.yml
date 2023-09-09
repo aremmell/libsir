@@ -1188,7 +1188,7 @@ Clang Static Analyzer:
   script:
     - *Configuration
     - scan-build clang --version
-    - ./.lint.sh scanbuild
+    - ./.lint.sh scanbuild || { mkdir -p scan-build; mv -f /tmp/scan-build* scan-build; exit 1; }; true
   dependencies: []
   artifacts:
     when: always
@@ -1196,7 +1196,7 @@ Clang Static Analyzer:
     paths:
       - build/
       - logs/
-      - /tmp/scan-build*
+      - scan-build/
   retry: 2
   interruptible: true
 
