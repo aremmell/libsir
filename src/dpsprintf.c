@@ -119,11 +119,11 @@ void DPS_SPRINTF_DECORATE (set_separators)
 # endif
 
 # if defined(__GNUC__)
-# pragma GCC diagnostic push
+#  pragma GCC diagnostic push
 #  if defined(__clang__)
-# pragma GCC diagnostic ignored "-Wmissing-variable-declarations"
+#   pragma GCC diagnostic ignored "-Wmissing-variable-declarations"
 #  elif defined(__GNUC_MINOR__)
-# pragma GCC diagnostic ignored "-Wmissing-declarations"
+#   pragma GCC diagnostic ignored "-Wmissing-declarations"
 #  endif
 # endif
 
@@ -1297,7 +1297,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
       s = num + 64;
       dps__lead_sign (fl, lead);
       long double dmant = frexpl (fvL, &dp);
-      n64 = (uint64_t)rintl (ldexpl (dmant, 64));
+      n64 = (uint64_t)(rintl (ldexpl (dmant, 64)));
       if (fvL != 0) //-V550
         dp -= 4;
 #  else
@@ -1313,8 +1313,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
       dps__lead_sign (fl, lead);
       double dmant
           = frexp (fv, &dp);
-      n64 = (uint64_t)rint (ldexp (
-          dmant, 64));
+      n64 = (uint64_t)(rint (ldexp (dmant, 64)));
       if (fv != 0)
         dp -= 4;
 #  endif
@@ -1416,7 +1415,14 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
       tail[0] = (char)n;
       for (;;)
       {
+#  if defined(__GNUC__) && defined(__GNUC_MINOR__) && !defined(__clang__)
+#   pragma GCC diagnostic push
+#   pragma GCC diagnostic ignored "-Wconversion"
+#  endif
         tail[n] = '0' + dp % 10;
+#  if defined(__GNUC__) && defined(__GNUC_MINOR__) && !defined(__clang__)
+#   pragma GCC diagnostic pop
+#  endif
         if (n <= 3)
           break;
         --n;
@@ -1477,7 +1483,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
       if (l > (uint32_t)pr)
         l = pr;
 
-      while ((l > 1) && (pr) && (sn[l - 1] == '0'))
+      while (((l > 1) && (pr)) && (sn[l - 1] == '0'))
       {
         --pr;
         --l;
@@ -1576,7 +1582,14 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
       tail[0] = (char)n;
       for (;;)
       {
+#  if defined(__GNUC__) && defined(__GNUC_MINOR__) && !defined(__clang__)
+#   pragma GCC diagnostic push
+#   pragma GCC diagnostic ignored "-Wconversion"
+#  endif
         tail[n] = '0' + dp % 10;
+#  if defined(__GNUC__) && defined(__GNUC_MINOR__) && !defined(__clang__)
+#   pragma GCC diagnostic pop
+#  endif
         if (n <= 3)
           break;
         --n;
@@ -2116,7 +2129,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
         int32_t i;
         dps__chk_cb_buf (1)
         dps__cb_buf_clamp (i, lead[0])
-        lead[0] -= i;
+        lead[0] -= (char)i;
         memcpy (bf, sn, i);
         bf += i;
         sn += i;
@@ -3741,9 +3754,9 @@ uint64_t const dps__powten[20] = {
   UINT64_C (1000000000000000000), UINT64_C (10000000000000000000)
 };
 
-# if defined(__GNUC__)
-# pragma GCC diagnostic pop
-# endif
+#   if defined(__GNUC__)
+#    pragma GCC diagnostic pop
+#   endif
 
 #   define dps__tento18th UINT64_C (1000000000000000000)
 
