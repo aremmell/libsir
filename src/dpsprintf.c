@@ -118,6 +118,15 @@ void DPS_SPRINTF_DECORATE (set_separators)
        (char comma, char period);
 # endif
 
+# if defined(__GNUC__)
+# pragma GCC diagnostic push
+#  if defined(__clang__)
+# pragma GCC diagnostic ignored "-Wmissing-variable-declarations"
+#  elif defined(__GNUC_MINOR__)
+# pragma GCC diagnostic ignored "-Wmissing-declarations"
+#  endif
+# endif
+
 # ifdef DPS_SPRINTF_IMPLEMENTATION
 const double PosPowerOf10_hi[]
   = { 1.00000000000000000000e+00,  1.00000000000000000000e+01,
@@ -1114,7 +1123,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
 #  else
         s = "(null)";
 #  endif
-      l = strlen (s);
+      l = (uint32_t)strlen (s);
       if (l > (uint32_t)pr)
         l = pr;
       lead[0] = 0;
@@ -1150,7 +1159,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
       else if (fl & DPS_S__INTMAX)
       {
         int64_t *d = va_arg (va, int64_t *);
-        *d = (int64_t)(tlen + (int)(bf - buf));
+        *d = (int64_t)((int64_t)tlen + (int64_t)(int)(bf - buf));
       }
       else
       {
@@ -1209,7 +1218,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
               sn = "inf";
           }
           s = (char *)sn;
-          l = strlen (s);
+          l = (uint32_t)strlen (s);
           cs = 0;
           pr = 0;
           goto scopy;
@@ -1261,7 +1270,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
               sn = "inf";
           }
           s = (char *)sn;
-          l = strlen (s);
+          l = (uint32_t)strlen (s);
           cs = 0;
           pr = 0;
           goto scopy;
@@ -1874,7 +1883,8 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
             *--s = dps__comma;
           }
         }
-      };
+      }
+
       cs = (uint32_t)((num + DPS_S__NUMSZ) - s) + ((((l >> 4) & 15)) << 24);
       l  = (uint32_t)((num + DPS_S__NUMSZ) - s);
       goto scopy;
@@ -2184,7 +2194,7 @@ endfmt:
   if (!callback)
     *bf = 0;
   else
-    dps__flush_cb ();
+    dps__flush_cb ()
 
 done:
   return tlen + (int)(bf - buf);
@@ -2200,6 +2210,7 @@ done:
 #  undef DPS_S__NEGATIVE
 #  undef DPS_S__METRIC_SUFFIX
 #  undef DPS_S__NUMSZ
+
 #  undef dps__chk_cb_bufL
 #  undef dps__chk_cb_buf
 #  undef dps__flush_cb
@@ -3730,6 +3741,10 @@ uint64_t const dps__powten[20] = {
   UINT64_C (1000000000000000000), UINT64_C (10000000000000000000)
 };
 
+# if defined(__GNUC__)
+# pragma GCC diagnostic pop
+# endif
+
 #   define dps__tento18th UINT64_C (1000000000000000000)
 
 long double dps__raise_to_power10 ( long double x, int32_t power);
@@ -3839,7 +3854,7 @@ dps__real_to_str (char const **start, uint32_t *len, char *out,
     *len = 3;
     return ng;
   }
-  else if (d == 0.0) //-V550
+  else if (d == (long double)0.0) //-V550
   {
     *decimal_pos = 1;
     *start = out;
