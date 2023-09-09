@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+# libsir Python module setup script
+# Copyright (c) 2018-2023
+# License: MIT
+
 from distutils.core import setup, Extension
 
 sir_module = Extension(
@@ -25,9 +29,9 @@ sir_module = Extension(
 )
 
 setup(name='sir',
-    version='0.1',
+    version='2.2.3',
     author="libsir contributors",
-    description="""The Standard Incident Reporter""",
+    description="""The Standard Incident Reporter Library""",
     ext_modules=[sir_module],
     py_modules=["sir"],
 )

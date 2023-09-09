@@ -82,3 +82,5 @@ cov-int
 
 # SWIG
 swig/python/__pycache__
+swig/python/src
+swig/python/build
