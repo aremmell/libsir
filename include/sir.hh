@@ -40,7 +40,7 @@
  * @addtogroup public
  * @{
  *
- * @defgroup cpp C++20 Wrapper
+ * @addtogroup cpp C++20 Wrapper
  * @{
  */
 

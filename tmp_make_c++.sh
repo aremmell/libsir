@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 selflog=true
-CFLAGS="--std=c++20"
+CFLAGS="--std=c++20 -Wall -Wextra -Wpedantic -O3"
 
 test ${selflog} = true && {
     make_env="env SIR_SELFLOG=1"
