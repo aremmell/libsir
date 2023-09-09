@@ -36,6 +36,21 @@
 # include <array>
 # include <string>
 
+# !defined(restrict)
+#  define restrict
+# endif
+
+# if defined __has_include
+#  if __has_include(<format>)
+#   include <format>
+#   define __SIR_HAVE_STD_FORMAT__
+#  endif
+#  if __has_include(<boost/format.hpp>)
+#   include <boost/format.hpp>
+#   define __SIR_HAVE_BOOST_FORMAT__
+#  endif
+# endif
+
 /**
  * @addtogroup public
  * @{
@@ -151,6 +166,27 @@ namespace sir
         }
     };
 
+#if defined(__SIR_HAVE_STD_FORMAT__)
+    /**
+     * @class std_format_adapter
+     * @brief Adapter for std::format (when available)
+     *
+     * If std::format is available on this platform, ::default_logger will
+     * export the methods from this adapter in addition to any others.
+     */
+    class std_format_adapter : public adapter {
+    public:
+        std_format_adapter() = default;
+        virtual ~std_format_adapter() = default;
+
+        template<class... Args>
+        bool debug(std::format_string<Args...> fmt, Args&&... args) const {
+            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            return sir_debug(str.c_str());
+        }
+    };
+#endif // !__SIR_HAVE_STD_FORMAT__
+
     /**
      * @class policy
      * @brief Base class for policies that control the behavior of the ::logger
@@ -229,7 +265,7 @@ namespace sir
 
     /** Ensures that the type argument derives from ::adapter. */
     template<typename... T>
-    concept DerivedFromAdapter    = std::is_base_of_v<adapter, T...>;
+    concept DerivedFromAdapter = std::is_base_of_v<adapter, T...>;
 
     /**
      * @class logger
@@ -272,7 +308,7 @@ namespace sir
          * if the configuration set by TInitPolicy is desired. */
         bool init() const noexcept {
             sirinit si {};
-            TIP policy {};
+            constinit TIP policy {};
             _sir_selflog("init policy: '%s'", policy.get_name().c_str());
             policy.on_initialization(&si);
 

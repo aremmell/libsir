@@ -298,10 +298,6 @@ _set_thread_local_invalid_parameter_handler(
 #  endif
 # endif
 
-# if defined(__cplusplus) && !defined(restrict)
-#  define restrict //-V1059
-# endif
-
 # include <errno.h>
 # include <stdarg.h>
 # include <stdbool.h>
