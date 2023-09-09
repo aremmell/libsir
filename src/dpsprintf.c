@@ -119,6 +119,7 @@ void DPS_SPRINTF_DECORATE (set_separators)
 # endif
 
 # ifdef DPS_SPRINTF_IMPLEMENTATION
+const double PosPowerOf10_hi[];
 const double PosPowerOf10_hi[]
   = { 1.00000000000000000000e+00,  1.00000000000000000000e+01,
       1.00000000000000000000e+02,  1.00000000000000000000e+03,
@@ -276,6 +277,7 @@ const double PosPowerOf10_hi[]
       1.00000000000000001722e+306, 9.99999999999999986031e+306,
       1.00000000000000001098e+308 };
 
+const double PosPowerOf10_lo[];
 const double PosPowerOf10_lo[]
   = {  0.00000000000000000000e+00,   0.00000000000000000000e+00,
        0.00000000000000000000e+00,   0.00000000000000000000e+00,
@@ -433,6 +435,7 @@ const double PosPowerOf10_lo[]
       -1.72160645967364550754e+289,  1.39689402397435424146e+290,
       -1.09790636294404548849e+291 };
 
+const double NegPowerOf10_hi[];
 const double NegPowerOf10_hi[]
   = { 1.00000000000000000000e+00,  1.00000000000000005551e-01,
       1.00000000000000002082e-02,  1.00000000000000002082e-03,
@@ -597,6 +600,7 @@ const double NegPowerOf10_hi[]
       9.99988867182683005413e-321, 9.98012604599318019237e-322,
       9.88131291682493088353e-323, 9.88131291682493088353e-324 };
 
+const double NegPowerOf10_lo[];
 const double NegPowerOf10_lo[]
   = {  0.00000000000000000000e+00,  -5.55111512312578301027e-18,
       -2.08166817117216843626e-19,  -2.08166817117216855663e-20,
@@ -810,6 +814,7 @@ DPS_SPRINTF_DECORATE (set_separators) (char pcomma, char pperiod)
 #  define DPS_S__QUARTWIDTH     8192
 #  define DPS_S__L             16384
 
+void dps__lead_sign (uint32_t fl, char *sign);
 void
 dps__lead_sign (uint32_t fl, char *sign)
 {
@@ -1137,22 +1142,22 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
       if (fl & DPS_S__QUARTWIDTH)
       {
         signed char *d = va_arg (va, signed char *);
-        *d = tlen + (int)(bf - buf);
+        *d = (signed char)(tlen + (int)(bf - buf));
       }
       else if (fl & DPS_S__HALFWIDTH)
       {
         short *d = va_arg (va, short *);
-        *d = tlen + (int)(bf - buf);
+        *d = (short)(tlen + (int)(bf - buf));
       }
       else if (fl & DPS_S__INTMAX)
       {
         int64_t *d = va_arg (va, int64_t *);
-        *d = tlen + (int)(bf - buf);
+        *d = (int64_t)(tlen + (int)(bf - buf));
       }
       else
       {
         int *d = va_arg (va, int *);
-        *d = tlen + (int)(bf - buf);
+        *d = (int)(tlen + (int)(bf - buf));
       }
     }
     break;
@@ -1275,7 +1280,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
       {
         if (pr == -1)
           pr = 13;
-        fvL = fv;
+        fvL = (long double)fv;
       }
       if (signbit (fvL) && !isnan (fvL))
       {
@@ -1431,7 +1436,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
       {
         fv = va_arg (va, double);
 #  ifdef DPS_SPRINTF_LD
-        fvL = fv;
+        fvL = (long double)fv;
 #  endif
       }
       if (pr == -1)
@@ -1504,7 +1509,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
       {
         fv = va_arg (va, double);
 #  ifdef DPS_SPRINTF_LD
-        fvL = fv;
+        fvL = (long double)fv;
 #  endif
       }
       if (pr == -1)
@@ -1586,7 +1591,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
       {
         fv = va_arg (va, double);
 #  ifdef DPS_SPRINTF_LD
-        fvL = fv;
+        fvL = (long double)fv;
 #  endif
       }
     doafloat:
@@ -1596,7 +1601,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
         long double divisor;
         divisor = 1000.0;
         if (fl & DPS_S__METRIC_1024)
-          divisor = 1024.0;
+          divisor = (long double)1024.0;
         while (fl < 0x8000000)
         {
           if ((fvL < divisor) && (fvL > -divisor))
@@ -1609,9 +1614,9 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
       if (fl & DPS_S__METRIC_SUFFIX)
       {
         double divisor;
-        divisor = 1000.0f;
+        divisor = (double)1000.0f;
         if (fl & DPS_S__METRIC_1024)
-          divisor = 1024.0;
+          divisor = (double)1024.0;
         while (fl < 0x8000000)
         {
           if ((fv < divisor) && (fv > -divisor))
@@ -1781,7 +1786,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
             tail[0] = idx;
           }
         }
-      };
+      }
 
     flt_lead:
       l = (uint32_t)(s - (num + 64));
