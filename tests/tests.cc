@@ -1,5 +1,6 @@
 #include "sir.hh"
 #include <cstdlib>
+#include <cstdio>
 
 using namespace std;
 using namespace sir;
@@ -31,12 +32,23 @@ int main(int argc, char** argv) {
     }
 
     {
-        sir::logger<false, default_init_policy, default_adapter> logger2;
+        class addl_adapter : public sir::adapter {
+        public:
+            addl_adapter() = default;
+
+            void nice_big_jugs(bool yes) {
+                printf("Big jugs? %s\n", yes ? "yeah" : "nah");
+            }
+        };
+
+        sir::logger<false, default_init_policy, default_adapter, addl_adapter> logger2;
         if (!logger2.init())
             SIR_ASSERT(false);
 
         logger2.debug("Manually initialized using default_init_policy");
         logger2.debug("Will not clean up in the destructor; cleaning up manually");
+        logger2.debug("Testing multi-adapters...");
+        logger2.nice_big_jugs(true);
 
         if (!logger2.cleanup())
             SIR_ASSERT(false);
