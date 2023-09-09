@@ -1,8 +1,6 @@
 /*
  * @file sir.hh
  * @brief C++20 interface to libsir
- * SPDX-License-Identifier: MIT
- * SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
  *
  * @author    Ryan M. Lederman \<lederman@gmail.com\>
  * @date      2018-2023
@@ -225,8 +223,11 @@ namespace sir
         }
     };
 
+    /** Ensures that the type argument derives from ::init_policy. */
     template<typename T>
     concept DerivedFromInitPolicy = std::is_base_of_v<init_policy, T>;
+
+    /** Ensures that the type argument derives from ::adapter. */
     template<typename... T>
     concept DerivedFromAdapter    = std::is_base_of_v<adapter, T...>;
 

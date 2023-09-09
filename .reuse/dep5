@@ -107,3 +107,8 @@ License: MIT
 Files: include/*.h
 Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
 License: MIT
+
+# C++ header files
+Files: include/*.hh
+Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
+License: MIT
