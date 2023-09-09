@@ -272,13 +272,6 @@ $(OUT_EXAMPLE): $(OUT_STATIC) $(OBJ_EXAMPLE)
 	@mkdir -p $(@D)
 	@mkdir -p $(BINDIR)
 	$(CC) -o $(OUT_EXAMPLE) $(OBJ_EXAMPLE) -Iinclude $(LIBSIR_S) $(SIR_LDFLAGS)
-ifeq ($(EMSCRIPTEN),1)
-	@mv -f $(OUT_EXAMPLE) $(OUT_EXAMPLE).bin
-	@printf %s\\n \
-		\#!/usr/bin/env\ sh \
-		\"\$$\(command\ -v\ node\)\"\ \"\$${0}.bin\"\ \"\$${@}\" > $(OUT_TESTS)
-	@chmod a+x $(OUT_EXAMPLE) || true
-endif
 	-@printf 'built %s successfully.\n' "$(OUT_EXAMPLE)" 2> /dev/null
 
 ##############################################################################
@@ -308,13 +301,6 @@ $(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS)
 	@mkdir -p $(LOGDIR)
 	@touch $(BINDIR)/file.exists > /dev/null
 	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS) -Iinclude $(LIBSIR_S) $(SIR_LDFLAGS)
-ifeq ($(EMSCRIPTEN),1)
-	@mv -f $(OUT_TESTS) $(OUT_TESTS).bin
-	@printf %s\\n \
-		\#!/usr/bin/env\ sh \
-		\"\$$\(command\ -v\ node\)\"\ \"\$${0}.bin\"\ \"\$${@}\" > $(OUT_TESTS)
-	@chmod a+x $(OUT_TESTS) || true
-endif
 	-@printf 'built %s successfully.\n' "$(OUT_TESTS)" 2> /dev/null
 
 ##############################################################################
