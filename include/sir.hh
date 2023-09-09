@@ -61,10 +61,9 @@ namespace sir
      * @brief Defines the abstract interface for an adapter, which ultimately
      * becomes a public base class of ::logger (there can be more than one).
      *
-     * There is no requirement to implement the default variadic argument
-     * interface, other than to declare the methods. `adapter` is designed to
-     * provide flexibility with regards to the types taken as input for logging,
-     * as well as return values, whether or not to throw exceptions, etc.
+     * `adapter` is designed to provide flexibility with regards to the types
+     * taken as input for logging, as well as return values, whether or not to
+     * throw exceptions, etc.
      *
      * For example, one could implement a boost adapter that takes boost::format
      * as an argument.
@@ -73,31 +72,6 @@ namespace sir
     protected:
         adapter() = default;
         virtual ~adapter() = default;
-
-    public:
-        /** Intended to mimic the C interface for maximum performance. */
-        virtual bool debug(const char* format, ...) noexcept = 0;
-
-        /** Intended to mimic the C interface for maximum performance. */
-        virtual bool info(const char* format, ...) noexcept = 0;
-
-        /** Intended to mimic the C interface for maximum performance. */
-        virtual bool notice(const char* format, ...) noexcept = 0;
-
-        /** Intended to mimic the C interface for maximum performance. */
-        virtual bool warn(const char* format, ...) noexcept = 0;
-
-        /** Intended to mimic the C interface for maximum performance. */
-        virtual bool error(const char* format, ...) noexcept = 0;
-
-        /** Intended to mimic the C interface for maximum performance. */
-        virtual bool crit(const char* format, ...) noexcept = 0;
-
-        /** Intended to mimic the C interface for maximum performance. */
-        virtual bool alert(const char* format, ...) noexcept = 0;
-
-        /** Intended to mimic the C interface for maximum performance. */
-        virtual bool emerg(const char* format, ...) noexcept = 0;
     };
 
     /**
@@ -113,7 +87,7 @@ namespace sir
         virtual ~default_adapter() = default;
 
         /** Logs a debug message (see ::sir_debug). */
-        bool debug(const char* format, ...) noexcept final {
+        bool debug(const char* format, ...) noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_DEBUG, format, args);
             _SIR_L_END();
@@ -121,7 +95,7 @@ namespace sir
         }
 
         /** Logs an info message (see ::sir_info). */
-        bool info(const char* format, ...) noexcept final {
+        bool info(const char* format, ...) noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_INFO, format, args);
             _SIR_L_END();
@@ -129,7 +103,7 @@ namespace sir
         }
 
         /** Logs a notice message (see ::sir_notice). */
-        bool notice(const char* format, ...) noexcept final {
+        bool notice(const char* format, ...) noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_NOTICE, format, args);
             _SIR_L_END();
@@ -137,7 +111,7 @@ namespace sir
         }
 
         /** Logs a warning message (see ::sir_warn). */
-        bool warn(const char* format, ...) noexcept final {
+        bool warn(const char* format, ...) noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_WARN, format, args);
             _SIR_L_END();
@@ -145,7 +119,7 @@ namespace sir
         }
 
         /** Logs an error message (see ::sir_error). */
-        bool error(const char* format, ...) noexcept final {
+        bool error(const char* format, ...) noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_ERROR, format, args);
             _SIR_L_END();
@@ -153,7 +127,7 @@ namespace sir
         }
 
         /** Logs a critical message (see ::sir_crit). */
-        bool crit(const char* format, ...) noexcept final {
+        bool crit(const char* format, ...) noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_CRIT, format, args);
             _SIR_L_END();
@@ -161,7 +135,7 @@ namespace sir
         }
 
         /** Logs an alert message (see ::sir_alert). */
-        bool alert(const char* format, ...) noexcept final {
+        bool alert(const char* format, ...) noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_ALERT, format, args);
             _SIR_L_END();
@@ -169,7 +143,7 @@ namespace sir
         }
 
         /** Logs an emergency message (see ::sir_emerg). */
-        bool emerg(const char* format, ...) noexcept final {
+        bool emerg(const char* format, ...) noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_EMERG, format, args);
             _SIR_L_END();
@@ -261,21 +235,20 @@ namespace sir
      * Instantiate this class in order to access libsir with all the benefits
      * of C++, including RAII initialization/cleanup, custom adapters, and more.
      *
-     * @param RAII  bool Set to `true` to enable 'resource acquisition is
-     *              initialization' behavior (i.e., libsir is initialized by the
-     *              ctor, and cleaned up by the dtor). Set to `false` to manually
-     *              manage the initialization/cleanup.
-     * @param TInitPolicy init_policy The policy class that determines the libsir
-     *                    configuration to use upon initialization.
+     * @param RAII bool Set to `true` to enable 'resource acquisition is
+     *             initialization' behavior (i.e., libsir is initialized by the
+     *             ctor, and cleaned up by the dtor). Set to `false` to manually
+     *             manage the initialization/cleanup.
+     * @param TIP  init_policy The policy class that determines the libsir
+     *             configuration to use upon initialization.
      *
-     * @param TAdapters adapter One or more ::adapter classes whose public
-     *                  methods will be exposed by this class.
+     * @param TA   adapter One or more ::adapter classes whose public
+     *             methods will be exposed by this class.
      */
-    template<bool RAII, typename TInitPolicy, typename... TAdapters>
-        requires (DerivedFromInitPolicy<TInitPolicy> && DerivedFromAdapter<TAdapters...>)
-    class logger : public TAdapters...  {
+    template<bool RAII, DerivedFromInitPolicy TIP, DerivedFromAdapter... TA>
+    class logger : public TA...  {
     public:
-        logger() : TAdapters()... {
+        logger() : TA()... {
             if (RAII && !init())
                 SIR_ASSERT(false);
         }
@@ -296,7 +269,7 @@ namespace sir
          * if the configuration set by TInitPolicy is desired. */
         bool init() const noexcept {
             sirinit si {};
-            TInitPolicy policy {};
+            TIP policy {};
             _sir_selflog("init policy: '%s'", policy.get_name().c_str());
             policy.on_initialization(&si);
 
