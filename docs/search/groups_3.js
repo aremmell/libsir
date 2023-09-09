@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['tests_0',['Tests',['../group__tests.html',1,'']]],
-  ['types_1',['Types',['../group__publictypes.html',1,'']]]
+  ['plugins_0',['Plugins',['../group__plugins.html',1,'']]],
+  ['public_20interface_1',['Public Interface',['../group__public.html',1,'']]]
 ];
