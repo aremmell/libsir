@@ -59,7 +59,7 @@ namespace sir
     /**
      * @class adapter
      * @brief Defines the abstract interface for an adapter, which ultimately
-     * becomes a public base class of ::log (there can be more than one).
+     * becomes a public base class of ::logger (there can be more than one).
      *
      * There is no requirement to implement the default variadic argument
      * interface, other than to declare the methods. `adapter` is designed to
@@ -112,7 +112,7 @@ namespace sir
         default_adapter() = default;
         virtual ~default_adapter() = default;
 
-        /** Logs a debug message (@see ::sir_debug). */
+        /** Logs a debug message (see ::sir_debug). */
         bool debug(const char* format, ...) noexcept final {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_DEBUG, format, args);
@@ -120,7 +120,7 @@ namespace sir
             return ret;
         }
 
-        /** Logs an info message (@see ::sir_info). */
+        /** Logs an info message (see ::sir_info). */
         bool info(const char* format, ...) noexcept final {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_INFO, format, args);
@@ -128,7 +128,7 @@ namespace sir
             return ret;
         }
 
-        /** Logs a notice message (@see ::sir_notice). */
+        /** Logs a notice message (see ::sir_notice). */
         bool notice(const char* format, ...) noexcept final {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_NOTICE, format, args);
@@ -136,7 +136,7 @@ namespace sir
             return ret;
         }
 
-        /** Logs a warning message (@see ::sir_warn). */
+        /** Logs a warning message (see ::sir_warn). */
         bool warn(const char* format, ...) noexcept final {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_WARN, format, args);
@@ -144,7 +144,7 @@ namespace sir
             return ret;
         }
 
-        /** Logs an error message (@see ::sir_error). */
+        /** Logs an error message (see ::sir_error). */
         bool error(const char* format, ...) noexcept final {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_ERROR, format, args);
@@ -152,7 +152,7 @@ namespace sir
             return ret;
         }
 
-        /** Logs a critical message (@see ::sir_crit). */
+        /** Logs a critical message (see ::sir_crit). */
         bool crit(const char* format, ...) noexcept final {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_CRIT, format, args);
@@ -160,7 +160,7 @@ namespace sir
             return ret;
         }
 
-        /** Logs an alert message (@see ::sir_alert). */
+        /** Logs an alert message (see ::sir_alert). */
         bool alert(const char* format, ...) noexcept final {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_ALERT, format, args);
@@ -168,7 +168,7 @@ namespace sir
             return ret;
         }
 
-        /** Logs an emergency message (@see ::sir_emerg). */
+        /** Logs an emergency message (see ::sir_emerg). */
         bool emerg(const char* format, ...) noexcept final {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_EMERG, format, args);
@@ -179,7 +179,7 @@ namespace sir
 
     /**
      * @class policy
-     * @brief Base class for policies that control the behavior of the ::log
+     * @brief Base class for policies that control the behavior of the ::logger
      * class.
      *
      * Multiple types of policies derive from this class. It serves only to
@@ -221,9 +221,9 @@ namespace sir
      * @brief The default initialization policy.
      *
      * Replace with your own custom class derived from ::init_policy in order to
-     * change the libsir configuration Applies only when RAII = true for the ::Log
-     * template. When RAII = false, you may call ::log::init at any time with a
-     * custom configuration..
+     * change the libsir configuration Applies only when RAII = true for the
+     * ::logger template. When RAII = false, you may call ::logger::init at any
+     * time with a custom configuration..
      */
     class default_init_policy : public init_policy {
     public:
@@ -250,7 +250,7 @@ namespace sir
     };
 
     /**
-     * @class log
+     * @class logger
      * @brief The primary C++ interface to libsir.
      *
      * Instantiate this class in order to access libsir with all the benefits
@@ -267,18 +267,18 @@ namespace sir
      *                  methods will be exposed by this class.
      */
     template<bool RAII, class TInitPolicy, class... TAdapters>
-    class log : public TAdapters... {
+    class logger : public TAdapters... {
         static_assert(std::is_base_of_v<adapter, TAdapters...>,
             "TAdapters must derive from adapter");
         static_assert(std::is_base_of_v<init_policy, TInitPolicy>,
             "TInitPolicy must derive from init_policy");
     public:
-        log() : TAdapters()... {
+        logger() : TAdapters()... {
             if (RAII && !init())
                 SIR_ASSERT(false);
         }
 
-        virtual ~log() {
+        virtual ~logger() {
             if (RAII && !cleanup())
                 SIR_ASSERT(false);
         }
@@ -295,6 +295,7 @@ namespace sir
         bool init() const noexcept {
             sirinit si {};
             TInitPolicy policy {};
+            _sir_selflog("init policy: '%s'", policy.get_name().c_str());
             policy.on_initialization(&si);
 
             bool init = sir_init(&si);
@@ -395,7 +396,7 @@ namespace sir
 
         /** Wraps ::sir_sysloglevels. */
         bool set_syslog_levels(const sir_levels& levels) const noexcept {
-            return sir_ssysloglevels(levels);
+            return sir_sysloglevels(levels);
         }
 
         /** Wraps ::sir_syslogopts. */
@@ -429,8 +430,8 @@ namespace sir
         }
     };
 
-    /** The default log: RAII = true, default init policy and adapter. */
-    using default_log = log<true, default_init_policy, default_adapter>;
+    /** The default logger: RAII = true, default init policy and adapter. */
+    using default_logger = logger<true, default_init_policy, default_adapter>;
 } // ! namespace sir
 
 /**

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-selflog=true
+selflog=false
 CFLAGS="--std=c++20 -Wall -Wextra -Wpedantic -O3"
 
 test ${selflog} = true && {
@@ -9,7 +9,7 @@ test ${selflog} = true && {
 }
 
 printf 'Making libsir static library...\n'
-${make_env} make static || {
+${make_env} make clean static || {
     printf 'Failed to compile; exiting!'
     exit 1
 }
@@ -18,6 +18,8 @@ printf 'Ensuring build/bin exists...\n'
 test -d build/bin || mkdir -p build/bin
 
 printf 'Compiling C++ test rig...\n'
+
+set -x
 
 c++ -c tests/tests.cc -o build/obj/tests.cc.o ${CFLAGS} -Iinclude && \
 c++ -o build/bin/sirtests++ build/obj/tests.cc.o -Lbuild/lib -lsir_s && \
