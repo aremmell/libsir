@@ -1,10 +1,10 @@
 /*
  * @file sir.hh
- * @brief C++ interface to libsir
+ * @brief C++20 interface to libsir
  *
  * @author    Ryan M. Lederman \<lederman@gmail.com\>
  * @date      2018-2023
- * @version   2.2.3
+ * @version   2.2.4
  * @copyright The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -52,14 +52,14 @@ namespace sir
      * @brief A libsir error object, possibly containing a code and message.
      */
     struct error {
-        uint32_t code = 0U;
-        std::string message;
+        uint32_t code = 0U;  /**< The error code associated with the message. */
+        std::string message; /**< A description of the error that occurred. */
     };
 
     /**
      * @class adapter
      * @brief Defines the abstract interface for an adapter, which ultimately
-     * becomes a public base class of `log` (there can be more than one).
+     * becomes a public base class of ::log (there can be more than one).
      *
      * There is no requirement to implement the default variadic argument
      * interface, other than to declare the methods. `adapter` is designed to
@@ -75,13 +75,28 @@ namespace sir
         virtual ~adapter() = default;
 
     public:
+        /** Intended to mimic the C interface for maximum performance. */
         virtual bool debug(const char* format, ...) noexcept = 0;
+
+        /** Intended to mimic the C interface for maximum performance. */
         virtual bool info(const char* format, ...) noexcept = 0;
+
+        /** Intended to mimic the C interface for maximum performance. */
         virtual bool notice(const char* format, ...) noexcept = 0;
+
+        /** Intended to mimic the C interface for maximum performance. */
         virtual bool warn(const char* format, ...) noexcept = 0;
+
+        /** Intended to mimic the C interface for maximum performance. */
         virtual bool error(const char* format, ...) noexcept = 0;
+
+        /** Intended to mimic the C interface for maximum performance. */
         virtual bool crit(const char* format, ...) noexcept = 0;
+
+        /** Intended to mimic the C interface for maximum performance. */
         virtual bool alert(const char* format, ...) noexcept = 0;
+
+        /** Intended to mimic the C interface for maximum performance. */
         virtual bool emerg(const char* format, ...) noexcept = 0;
     };
 
@@ -97,7 +112,7 @@ namespace sir
         default_adapter() = default;
         virtual ~default_adapter() = default;
 
-        /** The equivalent of calling ::sir_debug directly. */
+        /** Logs a debug message (@see ::sir_debug). */
         bool debug(const char* format, ...) noexcept final {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_DEBUG, format, args);
@@ -105,7 +120,7 @@ namespace sir
             return ret;
         }
 
-        /** The equivalent of calling ::sir_info directly. */
+        /** Logs an info message (@see ::sir_info). */
         bool info(const char* format, ...) noexcept final {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_INFO, format, args);
@@ -113,7 +128,7 @@ namespace sir
             return ret;
         }
 
-        /** The equivalent of calling ::sir_notice directly. */
+        /** Logs a notice message (@see ::sir_notice). */
         bool notice(const char* format, ...) noexcept final {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_NOTICE, format, args);
@@ -121,7 +136,7 @@ namespace sir
             return ret;
         }
 
-        /** The equivalent of calling ::sir_warn directly. */
+        /** Logs a warning message (@see ::sir_warn). */
         bool warn(const char* format, ...) noexcept final {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_WARN, format, args);
@@ -129,7 +144,7 @@ namespace sir
             return ret;
         }
 
-        /** The equivalent of calling ::sir_error directly. */
+        /** Logs an error message (@see ::sir_error). */
         bool error(const char* format, ...) noexcept final {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_ERROR, format, args);
@@ -137,7 +152,7 @@ namespace sir
             return ret;
         }
 
-        /** The equivalent of calling ::sir_crit directly. */
+        /** Logs a critical message (@see ::sir_crit). */
         bool crit(const char* format, ...) noexcept final {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_CRIT, format, args);
@@ -145,7 +160,7 @@ namespace sir
             return ret;
         }
 
-        /** The equivalent of calling ::sir_alert directly. */
+        /** Logs an alert message (@see ::sir_alert). */
         bool alert(const char* format, ...) noexcept final {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_ALERT, format, args);
@@ -153,7 +168,7 @@ namespace sir
             return ret;
         }
 
-        /** The equivalent of calling ::sir_emerg directly. */
+        /** Logs an emergency message (@see ::sir_emerg). */
         bool emerg(const char* format, ...) noexcept final {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_EMERG, format, args);
@@ -178,15 +193,15 @@ namespace sir
 
     /**
      * @class init_policy
-     * @brief Controls various configuration properties at initialization time.
+     * @brief Controls the configuration of libsir at initialization time.
      */
     class init_policy : public policy {
     public:
         init_policy() = default;
         virtual ~init_policy() = default;
 
-        /** When called, the policy must configure the initialization data as
-         * desired. Called directly before ::sir_init. */
+        /** When called, the policy must configure the initialization data `si`
+         * as desired. Called directly before ::sir_init. */
         virtual void on_initialization(sirinit* si) const noexcept = 0;
 
         /** When called, the policy may set a color mode other than the default
@@ -242,14 +257,14 @@ namespace sir
      * of C++, including RAII initialization/cleanup, custom adapters, and more.
      *
      * @param RAII  bool Set to `true` to enable 'resource acquisition is
-     *                   initialization' behavior (i.e., libsir is initialized
-     *                   by the ctor, and cleaned up by the dtor). Set to `false`
-     *                   to manually manage the initialization/cleanup.
+     *              initialization' behavior (i.e., libsir is initialized by the
+     *              ctor, and cleaned up by the dtor). Set to `false` to manually
+     *              manage the initialization/cleanup.
      * @param TInitPolicy init_policy The policy class that determines the libsir
-     *                                configuration to use upon initialization.
+     *                    configuration to use upon initialization.
      *
-     * @param TAdapters... adapter One or more ::adapter classes whose public
-     *                             methods will be exposed by this class.
+     * @param TAdapters adapter One or more ::adapter classes whose public
+     *                  methods will be exposed by this class.
      */
     template<bool RAII, class TInitPolicy, class... TAdapters>
     class log : public TAdapters... {
@@ -268,7 +283,7 @@ namespace sir
                 SIR_ASSERT(false);
         }
 
-        /* When RAII = false, call to manually initialize libsir at your leisure.
+        /** When RAII = false, call to manually initialize libsir at your leisure.
          * When RAII = true, always returns false without doing any work. */
         bool init(sirinit& si) const noexcept {
             return RAII ? false : sir_init(&si);
