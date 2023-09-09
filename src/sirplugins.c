@@ -3,7 +3,7 @@
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
- * Version:   2.2.3
+ * Version:   2.2.4
  *
  * License:   The MIT License (MIT)
  *
