@@ -1,5 +1,35 @@
 # Changelog
 
+## 2.2.3
+
+### September 8, 2023
+
+- Fixed a bug that caused some log file messages to be truncated.
+- Changed maximum message length to 4 KiB (4096 bytes).
+- Added support for additional compilers and platforms.
+- Added Oracle Lint to CI pipeline.
+- General portability improvements.
+- General linter and static analyzer conformance improvements.
+- Now utilizes `stdatomic.h` under MSVC on version 17.4+ using `/experimental:c11atomics`.
+- Added two additional tests.
+- Optimized the primary code path for some *really impressive* performance gains. Some samples:
+
+| Platform                 | Change vs. 2.2.2 |
+| ------------------------ | ---------------- |
+| macOS 13.5.2 (x86_64)    |  +361% ± 0.13﹪  |
+| Arch 6.4.12 (x86_64)     |  +276% ± 0.07﹪  |
+| RHEL 9 (x86_64)          |  +256% ± 0.03﹪  |
+| Debian 12 (x86_64)       |  +217% ± 0.09﹪  |
+| macOS 13.5.1 (AArch64)   |  +213% ± 0.12﹪  |
+| Fedora 38 (x86_64)       |  +121% ± 0.05﹪  |
+| AIX 7.3 (POWER9)         |  +119% ± 0.07﹪  |
+| Debian 12 (AArch64)      |  +100% ± 0.04﹪  |
+| Windows 11 (x64_64)      |   +87% ± 0.03﹪  |
+| FreeBSD 13.2 (x86_x64)   |   +76% ± 0.06﹪  |
+| Windows 11 (AArch64)     |   +67% ± 0.03﹪  |
+| NetBSD 9.3 (ARM/A53)     |   +62% ± 0.18﹪  |
+| OpenWrt 23 (MIPS32/74Kc) |    +6% ± 3.14﹪  |
+
 ## 2.2.2
 
 ### August 18, 2023

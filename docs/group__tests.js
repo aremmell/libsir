@@ -2,6 +2,7 @@ var group__tests =
 [
     [ "sirtest_threadrace", "group__tests.html#gacfda68c218d184e7a6998d9f2837481f", null ],
     [ "sirtest_exceedmaxsize", "group__tests.html#ga90b7633a39946d2c201758aafbce43fa", null ],
+    [ "sirtest_logwritesanity", "group__tests.html#gadad204381413cc93b367969e1c6a6d04", null ],
     [ "sirtest_failnooutputdest", "group__tests.html#ga9472cbb9a62d343fe0272444a7f87ce1", null ],
     [ "sirtest_failnulls", "group__tests.html#gade87411ddfc55756dd519d7e9b8f33a7", null ],
     [ "sirtest_failemptymessage", "group__tests.html#gaf70a501cd8ae0357d80b99df2b1de901", null ],
@@ -24,6 +25,7 @@ var group__tests =
     [ "sirtest_mutexsanity", "group__tests.html#ga8545a7006242a1e925b0f937fa875850", null ],
     [ "sirtest_perf", "group__tests.html#ga607e96cb52e248a2277ab3ecc31b7195", null ],
     [ "sirtest_updatesanity", "group__tests.html#gaf3428b620d3540baf058f6b7dd42c075", null ],
+    [ "sirtest_threadidsanity", "group__tests.html#gaf7edbef2bba9459091aa48d8b9512ede", null ],
     [ "sirtest_syslog", "group__tests.html#ga8db924f756e0ee2f04ff3e044a10f283", null ],
     [ "sirtest_os_log", "group__tests.html#ga54f0e8e0163d0aedf20616451f122017", null ],
     [ "sirtest_get_wineversion", "group__tests.html#ga81a9057299bf85b258c93fb294156ab7", null ],

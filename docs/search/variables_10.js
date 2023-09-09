@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['write_0',['write',['../structsir__pluginifacev1.html#a7be5d9cb671d562cdc031bb6962c9258',1,'sir_pluginifacev1']]]
+  ['usage_0',['usage',['../structsir__cl__arg.html#ac3ae5ef230bad0b7160ba6a9415e14ec',1,'sir_cl_arg']]]
 ];
