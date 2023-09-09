@@ -32,10 +32,30 @@
 # include "sir/internal.h"
 # include <type_traits>
 # include <exception>
+# include <tuple>
+# include <array>
+# include <string>
+
+/**
+ * @addtogroup public
+ * @{
+ *
+ * @defgroup cpp C++20 Wrapper
+ * @{
+ */
 
 /** The one and only namespace for libsir. */
 namespace sir
 {
+    /**
+     * @struct error
+     * @brief A libsir error object, possibly containing a code and message.
+     */
+    struct error {
+        uint32_t code = 0U;
+        std::string message;
+    };
+
     /**
      * @class adapter
      * @brief Defines the abstract interface for an adapter, which ultimately
@@ -142,14 +162,105 @@ namespace sir
         }
     };
 
-    template<bool RAII = true, class... TAdapters>
+    /**
+     * @class policy
+     * @brief Base class for policies that control the behavior of the ::log
+     * class.
+     *
+     * Multiple types of policies derive from this class. It serves only to
+     * identify derived classes as a policy.
+     */
+    class policy {
+    public:
+        /** Returns the name of this policy (e.g., 'My custom policy'). */
+        virtual std::string get_name() const = 0;
+    };
+
+    /**
+     * @class init_policy
+     * @brief Controls various configuration properties at initialization time.
+     */
+    class init_policy : public policy {
+    public:
+        init_policy() = default;
+        virtual ~init_policy() = default;
+
+        /** When called, the policy must configure the initialization data as
+         * desired. Called directly before ::sir_init. */
+        virtual void on_initialization(sirinit* si) const noexcept = 0;
+
+        /** When called, the policy may set a color mode other than the default
+         * (16-color mode) if desired. Called directly after ::sir_init. */
+        virtual void set_color_mode() const noexcept = 0;
+
+        /** When called, the policy may set per-level text styling if desired.
+         * Called directly after ::set_color_mode. */
+        virtual void set_text_styles() const noexcept = 0;
+
+        /** From policy. */
+        virtual std::string get_name() const override = 0;
+    };
+
+    /**
+     * @class default_init_policy
+     * @brief The default initialization policy.
+     *
+     * Replace with your own custom class derived from ::init_policy in order to
+     * change the libsir configuration Applies only when RAII = true for the ::Log
+     * template. When RAII = false, you may call ::log::init at any time with a
+     * custom configuration..
+     */
+    class default_init_policy : public init_policy {
+    public:
+        default_init_policy() = default;
+        ~default_init_policy() = default;
+
+        /** Uses ::sir_makeinit to set default values for all configuration
+         * properties. */
+        void on_initialization(sirinit* si) const noexcept final {
+            bool init = sir_makeinit(si);
+            SIR_ASSERT_UNUSED(init, init);
+        }
+
+        /** Uses the default color mode, so this is a NOOP. */
+        void set_color_mode() const noexcept final { }
+
+        /** Uses the default text styles, so this is a NOOP. */
+        void set_text_styles() const noexcept final { }
+
+        /** From policy. */
+        std::string get_name() const final {
+            return "Default";
+        }
+    };
+
+    /**
+     * @class log
+     * @brief The primary C++ interface to libsir.
+     *
+     * Instantiate this class in order to access libsir with all the benefits
+     * of C++, including RAII initialization/cleanup, custom adapters, and more.
+     *
+     * @param RAII  bool Set to `true` to enable 'resource acquisition is
+     *                   initialization' behavior (i.e., libsir is initialized
+     *                   by the ctor, and cleaned up by the dtor). Set to `false`
+     *                   to manually manage the initialization/cleanup.
+     * @param TInitPolicy init_policy The policy class that determines the libsir
+     *                                configuration to use upon initialization.
+     *
+     * @param TAdapters... adapter One or more ::adapter classes whose public
+     *                             methods will be exposed by this class.
+     */
+    template<bool RAII, class TInitPolicy, class... TAdapters>
     class log : public TAdapters... {
         static_assert(std::is_base_of_v<adapter, TAdapters...>,
             "TAdapters must derive from adapter");
+        static_assert(std::is_base_of_v<init_policy, TInitPolicy>,
+            "TInitPolicy must derive from init_policy");
     public:
         log() : TAdapters()... {
             if (RAII && !init())
-                throw std::exception(); // TODO
+                SIR_ASSERT(false);
         }
 
         virtual ~log() {
@@ -157,17 +268,82 @@ namespace sir
                 SIR_ASSERT(false);
         }
 
-        bool init() const noexcept {
-            sirinit si;
-            return sir_makeinit(&si) && sir_init(&si);
+        /* When RAII = false, call to manually initialize libsir at your leisure.
+         * When RAII = true, always returns false without doing any work. */
+        bool init(sirinit& si) const noexcept {
+            return RAII ? false : sir_init(&si);
         }
 
+        /** When RAII = true, called by the constructor. The configuration is
+         * determined by TInitPolicy. May be called manually when RAII = false
+         * if the configuration set by TInitPolicy is desired. */
+        bool init() const noexcept {
+            sirinit si {};
+            TInitPolicy policy {};
+            policy.on_initialization(&si);
+
+            bool init = sir_init(&si);
+            if (init) {
+                policy.set_color_mode();
+                policy.set_text_styles();
+            }
+
+            return init;
+        }
+
+        /** May be called manually, or when RAII = true, by the destructor. */
         bool cleanup() const noexcept {
             return sir_cleanup();
         }
+
+        /** Wraps ::sir_geterror. */
+        error get_error() const {
+            std::array<char, SIR_MAXERROR> message {};
+            uint32_t code = sir_geterror(message.data());
+            return { code, message.data() };
+        }
+
+        /** Wraps ::sir_addfile. */
+        sirfileid add_file(const std::string& path, const sir_levels& levels,
+            const sir_options& opts) const {
+            return sir_addfile(path.c_str(), levels, opts);
+        }
+
+        /** Wraps ::sir_remfile. */
+        bool rem_file(const sirfileid& id) const noexcept {
+            return sir_remfile(id);
+        }
+
+        /** Wraps ::sir_loadplugin. */
+        sirpluginid load_plugin(const std::string& path) const {
+            return sir_loadplugin(path.c_str());
+        }
+
+        /** Wraps ::sir_unloadplugin. */
+        bool unload_plugin(const sirpluginid& id) const noexcept {
+            return sir_unloadplugin(id);
+        }
+
+        /** Wraps ::sir_filelevels. */
+        bool set_file_levels(const sirfileid& id, const sir_levels& levels)
+            const noexcept {
+            return sir_filelevels(id, levels);
+        }
+
+        /** Wraps ::sir_fileopts. */
+        bool set_file_options(const sirfileid& id, const sir_options& opts)
+            const noexcept {
+            return sir_fileopts(id, opts);
+        }
     };
 
-    using default_log = log<true, default_adapter>;
+    /** The default log: RAII = true, default init policy and adapter. */
+    using default_log = log<true, default_init_policy, default_adapter>;
 } // ! namespace sir
+
+/**
+ * @}
+ * @}
+ */
 
 #endif // !_SIR_HH_INCLUDED
