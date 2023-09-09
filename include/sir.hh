@@ -272,8 +272,7 @@ namespace sir
      *                  methods will be exposed by this class.
      */
     template<bool RAII, typename TInitPolicy, typename... TAdapters>
-        requires (DerivedFromInitPolicy<TInitPolicy> &&
-                  DerivedFromAdapter<TAdapters...>)
+        requires (DerivedFromInitPolicy<TInitPolicy> && DerivedFromAdapter<TAdapters...>)
     class logger : public TAdapters...  {
     public:
         logger() : TAdapters()... {
