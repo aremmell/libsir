@@ -261,5 +261,6 @@ var searchData=
   ['sl_5fidentity_258',['sl_identity',['../structsir__update__config__data.html#a58f88542d9e282860be66fcbba694223',1,'sir_update_config_data']]],
   ['str_259',['str',['../structsir__level__style__tuple.html#a5f67704e0d74d266d0a5d2d3c9459816',1,'sir_level_style_tuple']]],
   ['strike_260',['STRIKE',['../ansimacros_8h.html#a1319b1d6256ace654ff3bad6275ead00',1,'ansimacros.h']]],
-  ['style_261',['style',['../structsir__level__style__tuple.html#a8fed0d03eeb0003783ccec5e26665a53',1,'sir_level_style_tuple']]]
+  ['style_261',['style',['../structsir__level__style__tuple.html#a8fed0d03eeb0003783ccec5e26665a53',1,'sir_level_style_tuple']]],
+  ['suite_262',['Test suite',['../testsuite.html',1,'']]]
 ];

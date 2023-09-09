@@ -9,7 +9,7 @@ var searchData=
   ['cond_6',['cond',['../structsir__threadpool.html#a982e2a7ec6c7715b055df6a4b7f44173',1,'sir_threadpool']]],
   ['condition_2eh_7',['condition.h',['../condition_8h.html',1,'']]],
   ['config_2eh_8',['config.h',['../config_8h.html',1,'']]],
-  ['configuration_9',['Configuration',['../md_docs_2sources_2config.html',1,'']]],
+  ['configuration_9',['Configuration',['../config.html',1,'']]],
   ['cyan_10',['CYAN',['../ansimacros_8h.html#afee42f2a94b0160102ef13e62e19a216',1,'ansimacros.h']]],
   ['cyanb_11',['CYANB',['../ansimacros_8h.html#af5cdd3198d4f493478334610ecdc63c5',1,'ansimacros.h']]]
 ];
