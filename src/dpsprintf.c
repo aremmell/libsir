@@ -1377,7 +1377,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
       lead[0] += 2;
       *s++ = h[(n64 >> 60) & 15];
       n64 <<= 4;
-      if (origpr >= 0 || (origpr < 0 && n64 != 0)
+      if (origpr >= 0 || (origpr < 0 && n64 != 0) //-V728 // XXX
           || (fl & DPS_S__LEADING_0X))
         *s++ = dps__period;
       sn = s;
@@ -1468,7 +1468,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
       {
         if ((dp <= -4) || (dp > pr))
         {
-          if (pr)
+          if (pr) //-V547 // XXX
             --pr;
           goto doexpfromg;
         }
