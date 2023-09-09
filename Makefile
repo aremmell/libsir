@@ -13,6 +13,7 @@ LOGDIR       = ./logs
 LINTSH       = ./.lint.sh
 DOCSDIR      = docs
 TESTS        = tests
+TESTSXX      = tests++
 EXAMPLE      = example
 UTILS        = utils
 MCMB         = mcmb
@@ -36,6 +37,7 @@ AR_CR       ?= $(AR) -cr
 # Flags
 
 SIR_CFLAGS  := $(CFLAGS)
+SIR_XFLAGS  := $(SIR_CFLAGS) $(CXXFLAGS)
 SIR_LDFLAGS := $(LDFLAGS)
 SIR_SHFLAGS  = $(subst -static,,$(SIR_LDFLAGS))
 
@@ -54,6 +56,7 @@ include sirplatform.mk
 
 SIR_CSTD ?= -std=c11
 SIR_GSTD ?= -std=gnu11
+SIR_XSTD ?= -std=c++20
 
 ##############################################################################
 # Base CFLAGS
@@ -77,10 +80,14 @@ else
 endif
 
 ##############################################################################
-# Append to CFLAGS?
+# Append to CFLAGS/CXXFLAGS?
 
 ifneq (,$(findstring -,$(APPEND_CFLAGS)))
   SIR_CFLAGS += $(APPEND_CFLAGS)
+endif
+
+ifneq (,$(findstring -,$(APPEND_CXXFLAGS)))
+  SIR_XFLAGS += $(APPEND_CFLAGS) $(APPEND_CXXFLAGS)
 endif
 
 ##############################################################################
@@ -189,6 +196,12 @@ OBJ_TESTS      = $(INTDIR)/$(TESTS)/$(TESTS).o
 OUT_TESTS      = $(BINDIR)/sirtests$(PLATFORM_EXE_EXT)
 
 ##############################################################################
+# Console C++ test rig
+
+OBJ_TESTSXX    = $(INTDIR)/$(TESTS)/$(TESTSXX).o
+OUT_TESTSXX    = $(BINDIR)/sirtests++$(PLATFORM_EXE_EXT)
+
+##############################################################################
 # Miniature combinatorics utility
 
 OBJ_MCMB       = $(INTDIR)/$(MCMB)/$(MCMB).o
@@ -230,7 +243,14 @@ $(OBJ_TESTS): $(TESTS)/$(TESTS).c $(DEPS)
 	$(CC) $(MMDOPT) $(SIR_CSTD) $(SIR_CFLAGS) -Iinclude -c -o $@ $<
 
 ##############################################################################
-# Compile sources
+# Compile tests++
+
+$(OBJ_TESTSXX): $(TESTS)/$(TESTSXX).cc $(DEPS)
+	@mkdir -p $(@D)
+	$(CXX) $(MMDOPT) $(SIR_XSTD) $(SIR_XFLAGS) -Iinclude -c -o $@ $<
+
+##############################################################################
+# Compile C sources
 
 $(INTDIR)/%.o: %.c $(DEPS)
 	@mkdir -p $(@D)
@@ -286,6 +306,22 @@ $(OUT_MCMB): $(OBJ_MCMB)
 	mkdir -p $(BINDIR)
 	$(CC) -o $(OUT_MCMB) $(OBJ_MCMB) $(SIR_LDFLAGS)
 	-@printf 'built %s successfully.\n' "$(OUT_MCMB)" 2> /dev/null
+
+##############################################################################
+# Link tests++
+
+.PHONY: tests++ test++
+
+tests++ test++: $(OUT_TESTSXX)
+
+$(OUT_TESTSXX): $(OUT_STATIC) $(OBJ_TESTSXX)
+	$(MAKE) --no-print-directory plugins
+	@mkdir -p $(@D)
+	@mkdir -p $(BINDIR)
+	@mkdir -p $(LOGDIR)
+	@touch $(BINDIR)/file.exists > /dev/null
+	$(CXX) -o $(OUT_TESTSXX) $(OBJ_TESTSXX) -Iinclude $(LIBSIR_S) $(SIR_LDFLAGS)
+	-@printf 'built %s successfully.\n' "$(OUT_TESTSXX)" 2> /dev/null
 
 ##############################################################################
 # Link tests

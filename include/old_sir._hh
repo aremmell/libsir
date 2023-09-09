@@ -1,6 +1,8 @@
 /**
  * @file sir.hh
  * @brief libsir C++ wrapper.
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
  *
  * This file and accompanying source code originated from <https://github.com/aremmell/libsir>.
  * If you obtained it elsewhere, all bets are off.

@@ -1,6 +1,8 @@
 /*
  * @file sir.hh
  * @brief C++20 interface to libsir
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
  *
  * @author    Ryan M. Lederman \<lederman@gmail.com\>
  * @date      2018-2023
