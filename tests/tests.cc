@@ -8,7 +8,7 @@ int main(int argc, char** argv) {
     SIR_UNUSED(argc);
     SIR_UNUSED(argv);
 
-    default_logger log;
+    default_log log;
 
     log.debug("Should have been initialized by ctor...");
 

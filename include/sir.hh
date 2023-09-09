@@ -77,6 +77,7 @@ namespace sir
         default_adapter() = default;
         virtual ~default_adapter() = default;
 
+        /** The equivalent of calling ::sir_debug directly. */
         bool debug(const char* format, ...) noexcept final {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_DEBUG, format, args);
@@ -84,32 +85,60 @@ namespace sir
             return ret;
         }
 
+        /** The equivalent of calling ::sir_info directly. */
         bool info(const char* format, ...) noexcept final {
-            return false;
+            _SIR_L_START(format);
+            ret = _sir_logv(SIRL_INFO, format, args);
+            _SIR_L_END();
+            return ret;
         }
 
+        /** The equivalent of calling ::sir_notice directly. */
         bool notice(const char* format, ...) noexcept final {
-            return false;
+            _SIR_L_START(format);
+            ret = _sir_logv(SIRL_NOTICE, format, args);
+            _SIR_L_END();
+            return ret;
         }
 
+        /** The equivalent of calling ::sir_warn directly. */
         bool warn(const char* format, ...) noexcept final {
-            return false;
+            _SIR_L_START(format);
+            ret = _sir_logv(SIRL_WARN, format, args);
+            _SIR_L_END();
+            return ret;
         }
 
+        /** The equivalent of calling ::sir_error directly. */
         bool error(const char* format, ...) noexcept final {
-            return false;
+            _SIR_L_START(format);
+            ret = _sir_logv(SIRL_ERROR, format, args);
+            _SIR_L_END();
+            return ret;
         }
 
+        /** The equivalent of calling ::sir_crit directly. */
         bool crit(const char* format, ...) noexcept final {
-            return false;
+            _SIR_L_START(format);
+            ret = _sir_logv(SIRL_CRIT, format, args);
+            _SIR_L_END();
+            return ret;
         }
 
+        /** The equivalent of calling ::sir_alert directly. */
         bool alert(const char* format, ...) noexcept final {
-            return false;
+            _SIR_L_START(format);
+            ret = _sir_logv(SIRL_ALERT, format, args);
+            _SIR_L_END();
+            return ret;
         }
 
+        /** The equivalent of calling ::sir_emerg directly. */
         bool emerg(const char* format, ...) noexcept final {
-            return false;
+            _SIR_L_START(format);
+            ret = _sir_logv(SIRL_EMERG, format, args);
+            _SIR_L_END();
+            return ret;
         }
     };
 
@@ -138,7 +167,7 @@ namespace sir
         }
     };
 
-    using default_logger = log<true, default_adapter>;
+    using default_log = log<true, default_adapter>;
 } // ! namespace sir
 
 #endif // !_SIR_HH_INCLUDED
