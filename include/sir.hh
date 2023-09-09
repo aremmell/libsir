@@ -249,6 +249,11 @@ namespace sir
         }
     };
 
+    template<typename T>
+    concept DerivedFromInitPolicy = std::is_base_of_v<init_policy, T>;
+    template<typename... T>
+    concept DerivedFromAdapter    = std::is_base_of_v<adapter, T...>;
+
     /**
      * @class logger
      * @brief The primary C++ interface to libsir.
@@ -266,12 +271,10 @@ namespace sir
      * @param TAdapters adapter One or more ::adapter classes whose public
      *                  methods will be exposed by this class.
      */
-    template<bool RAII, class TInitPolicy, class... TAdapters>
-    class logger : public TAdapters... {
-        static_assert(std::is_base_of_v<adapter, TAdapters...>,
-            "TAdapters must derive from adapter");
-        static_assert(std::is_base_of_v<init_policy, TInitPolicy>,
-            "TInitPolicy must derive from init_policy");
+    template<bool RAII, typename TInitPolicy, typename... TAdapters>
+        requires (DerivedFromInitPolicy<TInitPolicy> &&
+                  DerivedFromAdapter<TAdapters...>)
+    class logger : public TAdapters...  {
     public:
         logger() : TAdapters()... {
             if (RAII && !init())
