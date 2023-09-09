@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-
 # libsir Python module setup script
-# Copyright (c) 2018-2023
-# License: MIT
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 
 from distutils.core import setup, Extension
 

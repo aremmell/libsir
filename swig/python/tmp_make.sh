@@ -1,4 +1,6 @@
 #!/usr/bin/env sh
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 
 command -v swig || {
     printf '\033[31mswig is not installed; exiting!\033[0m\n'
