@@ -49,7 +49,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
 
     if (relative) {
 #if !defined(__WIN__)
-# if defined(__MACOS__) || defined(_AIX)
+# if defined(__MACOS__) || defined(_AIX) || defined(__EMSCRIPTEN__)
 #  if !defined(O_SEARCH)
         int open_flags = O_DIRECTORY;
 #  else
@@ -199,10 +199,10 @@ char* _sir_getcwd(void) {
 char* _sir_getappfilename(void) {
 #if defined(__linux__) || defined(__NetBSD__) || defined(__SOLARIS__) || \
     defined(__DragonFly__) || defined(__CYGWIN__) || defined(__serenity__) || \
-    defined(__HURD__)
+    defined(__HURD__) || defined(__EMSCRIPTEN__)
 # define __READLINK_OS__
 # if defined(__linux__) || defined(__CYGWIN__) || \
-     defined(__serenity__) || defined(__HURD__)
+     defined(__serenity__) || defined(__HURD__) || defined(__EMSCRIPTEN__)
 #  define PROC_SELF "/proc/self/exe"
 # elif defined(__NetBSD__)
 #  define PROC_SELF "/proc/curproc/exe"
