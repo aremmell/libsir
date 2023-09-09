@@ -27,9 +27,118 @@
 #ifndef _SIR_HH_INCLUDED
 # define _SIR_HH_INCLUDED
 
+# include "sir.h"
+# include "sir/helpers.h"
+# include "sir/internal.h"
+# include <type_traits>
+# include <exception>
+
+/** The one and only namespace for libsir. */
 namespace sir
 {
-    
+    /**
+     * @class adapter
+     * @brief Defines the abstract interface for an adapter, which ultimately
+     * becomes a public base class of `log` (there can be more than one).
+     *
+     * There is no requirement to implement the default variadic argument
+     * interface, other than to declare the methods. `adapter` is designed to
+     * provide flexibility with regards to the types taken as input for logging,
+     * as well as return values, whether or not to throw exceptions, etc.
+     *
+     * For example, one could implement a boost adapter that takes boost::format
+     * as an argument.
+     */
+    class adapter {
+    protected:
+        adapter() = default;
+        virtual ~adapter() = default;
+
+    public:
+        virtual bool debug(const char* format, ...) noexcept = 0;
+        virtual bool info(const char* format, ...) noexcept = 0;
+        virtual bool notice(const char* format, ...) noexcept = 0;
+        virtual bool warn(const char* format, ...) noexcept = 0;
+        virtual bool error(const char* format, ...) noexcept = 0;
+        virtual bool crit(const char* format, ...) noexcept = 0;
+        virtual bool alert(const char* format, ...) noexcept = 0;
+        virtual bool emerg(const char* format, ...) noexcept = 0;
+    };
+
+    /**
+     * @class default_adapter
+     * @brief The default adapter implementation.
+     *
+     * Utilizes the same code path that the C interface itself does, in order to
+     * achieve maximum performance (i.e., no unnecessary bloat is added).
+     */
+    class default_adapter : public adapter {
+    public:
+        default_adapter() = default;
+        virtual ~default_adapter() = default;
+
+        bool debug(const char* format, ...) noexcept final {
+            _SIR_L_START(format);
+            ret = _sir_logv(SIRL_DEBUG, format, args);
+            _SIR_L_END();
+            return ret;
+        }
+
+        bool info(const char* format, ...) noexcept final {
+            return false;
+        }
+
+        bool notice(const char* format, ...) noexcept final {
+            return false;
+        }
+
+        bool warn(const char* format, ...) noexcept final {
+            return false;
+        }
+
+        bool error(const char* format, ...) noexcept final {
+            return false;
+        }
+
+        bool crit(const char* format, ...) noexcept final {
+            return false;
+        }
+
+        bool alert(const char* format, ...) noexcept final {
+            return false;
+        }
+
+        bool emerg(const char* format, ...) noexcept final {
+            return false;
+        }
+    };
+
+    template<bool RAII = true, class... TAdapters>
+    class log : public TAdapters... {
+        static_assert(std::is_base_of_v<adapter, TAdapters...>,
+            "TAdapters must derive from adapter");
+    public:
+        log() : TAdapters()... {
+            if (RAII && !init())
+                throw std::exception(); // TODO
+        }
+
+        virtual ~log() {
+            if (RAII && !cleanup())
+                SIR_ASSERT(false);
+        }
+
+        bool init() const noexcept {
+            sirinit si;
+            return sir_makeinit(&si) && sir_init(&si);
+        }
+
+        bool cleanup() const noexcept {
+            return sir_cleanup();
+        }
+    };
+
+    using default_logger = log<true, default_adapter>;
 } // ! namespace sir
 
 #endif // !_SIR_HH_INCLUDED

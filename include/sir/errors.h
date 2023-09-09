@@ -63,6 +63,10 @@ enum sir_errorcode {
 
 /** @} */
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 /** Creates an error code that (hopefully) doesn't conflict with any of those
  * defined by the platform. */
 # define _sir_mkerror(code) (((uint32_t)((code) & 0x7fffffffU) << 16) | 0x80000000U)
@@ -146,5 +150,9 @@ static inline
 void __sir_fakefunc(const char* format, ...) { (void)format; }
 #  define _sir_selflog(...) __sir_fakefunc(__VA_ARGS__)
 # endif
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif /* !_SIR_ERRORS_H_INCLUDED */
