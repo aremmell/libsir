@@ -119,7 +119,6 @@ void DPS_SPRINTF_DECORATE (set_separators)
 # endif
 
 # ifdef DPS_SPRINTF_IMPLEMENTATION
-const double PosPowerOf10_hi[];
 const double PosPowerOf10_hi[]
   = { 1.00000000000000000000e+00,  1.00000000000000000000e+01,
       1.00000000000000000000e+02,  1.00000000000000000000e+03,
@@ -277,7 +276,6 @@ const double PosPowerOf10_hi[]
       1.00000000000000001722e+306, 9.99999999999999986031e+306,
       1.00000000000000001098e+308 };
 
-const double PosPowerOf10_lo[];
 const double PosPowerOf10_lo[]
   = {  0.00000000000000000000e+00,   0.00000000000000000000e+00,
        0.00000000000000000000e+00,   0.00000000000000000000e+00,
@@ -435,7 +433,6 @@ const double PosPowerOf10_lo[]
       -1.72160645967364550754e+289,  1.39689402397435424146e+290,
       -1.09790636294404548849e+291 };
 
-const double NegPowerOf10_hi[];
 const double NegPowerOf10_hi[]
   = { 1.00000000000000000000e+00,  1.00000000000000005551e-01,
       1.00000000000000002082e-02,  1.00000000000000002082e-03,
@@ -600,7 +597,6 @@ const double NegPowerOf10_hi[]
       9.99988867182683005413e-321, 9.98012604599318019237e-322,
       9.88131291682493088353e-323, 9.88131291682493088353e-324 };
 
-const double NegPowerOf10_lo[];
 const double NegPowerOf10_lo[]
   = {  0.00000000000000000000e+00,  -5.55111512312578301027e-18,
       -2.08166817117216843626e-19,  -2.08166817117216855663e-20,
@@ -782,6 +778,7 @@ int32_t dps__real_to_str (char const **start, uint32_t *len, char *out,
 
 char dps__period = '.';
 char dps__comma  = ',';
+
 struct
 {
   short temp;
@@ -836,6 +833,7 @@ dps__lead_sign (uint32_t fl, char *sign)
   }
 }
 
+inline int DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user, char *buf, char const *fmt, va_list va);
 inline int
 DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
                                    char *buf, char const *fmt, va_list va)
@@ -895,7 +893,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
         goto scandd;
       if (*f == 0)
         goto endfmt;
-      dps__chk_cb_buf (1);
+      dps__chk_cb_buf (1)
       *bf++ = *f++;
     }
   scandd:
@@ -1599,7 +1597,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
       if (fl & DPS_S__METRIC_SUFFIX)
       {
         long double divisor;
-        divisor = 1000.0;
+        divisor = (long double)1000.0;
         if (fl & DPS_S__METRIC_1024)
           divisor = (long double)1024.0;
         while (fl < 0x8000000)
@@ -2053,23 +2051,23 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
         if ((fl & DPS_S__LEFTJUST) == 0)
           while (fw > 0)
           {
-            dps__cb_buf_clamp (i, fw);
+            dps__cb_buf_clamp (i, fw)
             fw -= i;
             memset (bf, ' ', i);
             bf += i;
-            dps__chk_cb_buf (1);
+            dps__chk_cb_buf (1)
           }
 
         sn = lead + 1;
         while (lead[0])
         {
-          dps__chk_cb_buf (1);
-          dps__cb_buf_clamp (i, lead[0]);
+          dps__chk_cb_buf (1)
+          dps__cb_buf_clamp (i, lead[0])
           lead[0] -= (char)i;
           memcpy (bf, sn, i);
           bf += i;
           sn += i;
-          dps__chk_cb_buf (1);
+          dps__chk_cb_buf (1)
         }
 
         c = cs >> 24;
@@ -2079,7 +2077,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
                  : 0;
         while (pr > 0)
         {
-          dps__cb_buf_clamp (i, pr);
+          dps__cb_buf_clamp (i, pr)
           pr -= i;
           if ((fl & DPS_S__TRIPLET_COMMA) == 0)
           {
@@ -2098,7 +2096,7 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
               *bf++ = '0';
             --i;
           }
-          dps__chk_cb_buf (1);
+          dps__chk_cb_buf (1)
         }
       }
 
@@ -2106,21 +2104,21 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
       while (lead[0] > 0)
       {
         int32_t i;
-        dps__chk_cb_buf (1);
-        dps__cb_buf_clamp (i, lead[0]);
+        dps__chk_cb_buf (1)
+        dps__cb_buf_clamp (i, lead[0])
         lead[0] -= i;
         memcpy (bf, sn, i);
         bf += i;
         sn += i;
-        dps__chk_cb_buf (1);
+        dps__chk_cb_buf (1)
       }
 
       n = l;
       while (n)
       {
         int32_t i;
-        dps__chk_cb_buf (1);
-        dps__cb_buf_clamp (i, n);
+        dps__chk_cb_buf (1)
+        dps__cb_buf_clamp (i, n)
         n -= i;
         memcpy (bf, s, i);
         bf += i;
@@ -2130,25 +2128,25 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
       while (tz)
       {
         int32_t i;
-        dps__chk_cb_buf (1);
-        dps__cb_buf_clamp (i, tz);
+        dps__chk_cb_buf (1)
+        dps__cb_buf_clamp (i, tz)
         tz -= i;
         memset (bf, '0', i);
         bf += i;
-        dps__chk_cb_buf (1);
+        dps__chk_cb_buf (1)
       }
 
       sn = tail + 1;
       while (tail[0])
       {
         int32_t i;
-        dps__chk_cb_buf (1);
-        dps__cb_buf_clamp (i, tail[0]);
+        dps__chk_cb_buf (1)
+        dps__cb_buf_clamp (i, tail[0])
         tail[0] -= (char)i;
         memcpy (bf, sn, i);
         bf += i;
         sn += i;
-        dps__chk_cb_buf (1);
+        dps__chk_cb_buf (1)
       }
 
       if (fl & DPS_S__LEFTJUST)
@@ -2157,12 +2155,12 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
           while (fw)
           {
             int32_t i;
-            dps__chk_cb_buf (1);
-            dps__cb_buf_clamp (i, fw);
+            dps__chk_cb_buf (1)
+            dps__cb_buf_clamp (i, fw)
             fw -= i;
             memset (bf, ' ', i);
             bf += i;
-            dps__chk_cb_buf (1);
+            dps__chk_cb_buf (1)
           }
         }
       break;
@@ -2207,6 +2205,7 @@ done:
 #  undef dps__flush_cb
 #  undef dps__cb_buf_clamp
 
+inline int DPS_SPRINTF_DECORATE (sprintf) (char *buf, char const *fmt, ...);
 inline int
 DPS_SPRINTF_DECORATE (sprintf) (char *buf, char const *fmt, ...)
 {
@@ -2226,6 +2225,7 @@ typedef struct dps__context
   char tmp[DPS_SPRINTF_MIN];
 } dps__context;
 
+char * dps__clamp_callback (const char *buf, void *user, int len);
 char *
 dps__clamp_callback (const char *buf, void *user, int len)
 {
@@ -2260,6 +2260,7 @@ dps__clamp_callback (const char *buf, void *user, int len)
              : c->tmp;
 }
 
+char * dps__count_clamp_callback (const char *buf, void *user, int len);
 char *
 dps__count_clamp_callback (const char *buf, void *user, int len)
 {
@@ -2270,6 +2271,7 @@ dps__count_clamp_callback (const char *buf, void *user, int len)
   return c->tmp;
 }
 
+inline int DPS_SPRINTF_DECORATE (vsnprintf) (char *buf, int count, char const *fmt, va_list va);
 inline int
 DPS_SPRINTF_DECORATE (vsnprintf) (char *buf, int count, char const *fmt,
                                   va_list va)
@@ -2303,6 +2305,7 @@ DPS_SPRINTF_DECORATE (vsnprintf) (char *buf, int count, char const *fmt,
   return c.length;
 }
 
+inline int DPS_SPRINTF_DECORATE (snprintf) (char *buf, int count, char const *fmt, ...);
 inline int
 DPS_SPRINTF_DECORATE (snprintf) (char *buf, int count, char const *fmt, ...)
 {
@@ -2316,6 +2319,7 @@ DPS_SPRINTF_DECORATE (snprintf) (char *buf, int count, char const *fmt, ...)
   return result;
 }
 
+inline int DPS_SPRINTF_DECORATE (vsprintf) (char *buf, char const *fmt, va_list va);
 inline int
 DPS_SPRINTF_DECORATE (vsprintf) (char *buf, char const *fmt, va_list va)
 {
@@ -2329,6 +2333,7 @@ typedef struct dps__fcontext
   char tmp[DPS_SPRINTF_MIN];
 } dps__fcontext;
 
+char * dps__f_callback (const char *buf, void *user, int len);
 char *
 dps__f_callback (const char *buf, void *user, int len)
 {
@@ -3727,6 +3732,7 @@ uint64_t const dps__powten[20] = {
 
 #   define dps__tento18th UINT64_C (1000000000000000000)
 
+long double dps__raise_to_power10 ( long double x, int32_t power);
 long double
 dps__raise_to_power10 (
     long double x,
@@ -3855,7 +3861,7 @@ dps__real_to_str (char const **start, uint32_t *len, char *out,
       long double l10 = rintl (dps__raise_to_power10 (d, 18 - tens));
       if (i > 3 && l10 >= (long double)dps__powten[18])
       {
-        bits = l10;
+        bits = (uint64_t)l10;
         break;
       }
       if (l10 < (long double)dps__powten[18])
@@ -3864,7 +3870,7 @@ dps__real_to_str (char const **start, uint32_t *len, char *out,
         tens++;
       else
       {
-        bits = l10;
+        bits = (uint64_t)l10;
         break;
       }
     }
