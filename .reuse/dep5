@@ -8,6 +8,11 @@ Files: docs/*
 Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
 License: MIT
 
+# Xcode project
+Files: xcode/libsir.xcodeproj/*
+Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
+License: MIT
+
 # MSVC wrappers
 Files: .gitlab-ci/msvc/wrappers/*
 Copyright: Copyright (c) 2019 Martin Storsjo
