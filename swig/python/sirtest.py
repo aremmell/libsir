@@ -3,9 +3,9 @@
 import sir
 
 if __name__ == "__main__":
-    s = sir.sirinit()
-    if not sir.sir_makeinit(s):
-        print("Error: sir_makeinit failed")
+    s = sir.InitData()
+    if not sir.MakeInit(s):
+        print("Error: MakeInit failed")
         exit(1)
 
     s.name = "Python!"
@@ -13,23 +13,26 @@ if __name__ == "__main__":
     s.d_stdout.opts   = sir.SIRO_NOHOST
     s.d_syslog.levels = sir.SIRL_NONE
 
-    if not sir.sir_init(s):
-        print("Error: sir_init failed")
+    if not sir.Init(s):
+        print("Error: Init failed")
         exit(1)
 
-    sir.sir_debug('This is a test of the %s system. Testing %d' % ('libsir', 123))
-    sir.sir_debug('Adding log file %s' % ('sir-python.log'))
+    sir.Debug('This is a test of the %s system. Testing %d' % ('libsir', 123))
+    sir.Debug('Adding log file %s' % ('sir-python.log'))
 
-    f = sir.sir_addfile('sir-python.log', sir.SIRL_ALL, sir.SIRO_ALL)
+    f = sir.AddFile('sir-python.log', sir.SIRL_ALL, sir.SIRO_ALL)
+    if f == 0:
+        print("Error: AddFile failed")
+        exit(1)
 
-    sir.sir_info('Testing info level')
-    sir.sir_notice('Testing notice level')
-    sir.sir_warn('Testing warning level')
-    sir.sir_error('Testing error level')
-    sir.sir_crit('Testing critical level')
-    sir.sir_alert('Testing alert level')
-    sir.sir_emerg('Testing emergency level')
-    sir.sir_info('Cleaning up...')
+    sir.Info('Testing info level')
+    sir.Notice('Testing notice level')
+    sir.Warn('Testing warning level')
+    sir.Error('Testing error level')
+    sir.Crit('Testing critical level')
+    sir.Alert('Testing alert level')
+    sir.Emerg('Testing emergency level')
+    sir.Info('Cleaning up...')
 
-    sir.sir_remfile(f)
-    sir.sir_cleanup()
+    sir.RemFile(f)
+    sir.Cleanup()
