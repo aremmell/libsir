@@ -30,9 +30,9 @@
 # include "sir/maps.h"
 # include "sir/errors.h"
 
-#if defined(__cplusplus)
+# if defined(__cplusplus)
 extern "C" {
-#endif
+# endif
 
 /**
  * Initializes a ::sirinit structure suitable to pass to ::sir_init
@@ -181,8 +181,8 @@ bool _sir_setthreadname(const char* name);
 /** Retrieves the hostname of this machine. */
 bool _sir_gethostname(char name[SIR_MAXHOST]);
 
-#if defined(__cplusplus)
+# if defined(__cplusplus)
 }
-#endif
+# endif
 
 #endif /* !_SIR_INTERNAL_H_INCLUDED */

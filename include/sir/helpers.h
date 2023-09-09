@@ -29,9 +29,9 @@
 # include "sir/types.h"
 # include "sir/errors.h"
 
-#if defined(__cplusplus)
+# if defined(__cplusplus)
 extern "C" {
-#endif
+# endif
 
 /** Computes the size of an array. */
 # define _sir_countof(arr) (sizeof(arr) / sizeof(arr[0]))
@@ -473,8 +473,8 @@ uint64_t FNV64_1a(const char* str) {
     return hash;
 }
 
-#if defined(__cplusplus)
+# if defined(__cplusplus)
 }
-#endif
+# endif
 
 #endif /* !_SIR_HELPERS_H_INCLUDED */
