@@ -43,14 +43,6 @@
 #include <vector>
 #include "sir.h"
 
-/**
- * @defgroup cpp C++ wrapper
- *
- * C++ interface to libsir.
- *
- * @addtogroup cpp
- * @{
- */
 
 /** The one and only namespace for libsir. */
 namespace sir {
@@ -306,7 +298,5 @@ namespace sir {
     typedef logger_impl<default_adapter, default_policy> logger;
 
 }  // namespace sir
-
-/** @} */
 
 #endif /* !_SIR_HH_INCLUDED */
