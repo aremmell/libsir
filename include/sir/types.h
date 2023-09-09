@@ -44,7 +44,10 @@ typedef uint32_t sirfileid;
 /** Plugin module identifier type. */
 typedef uint32_t sirpluginid;
 
-/** Defines the available levels (severity/priority) of logging output. */
+/*
+ * The following define the available levels of logging output.
+ */
+
 # define SIRL_NONE    0x0000U /**< No output. */
 # define SIRL_EMERG   0x0001U /**< Nuclear war, Armageddon, etc. */
 # define SIRL_ALERT   0x0002U /**< Action required ASAP. */
@@ -63,7 +66,10 @@ typedef uint16_t sir_level;
 /** ::sir_level bitmask type. */
 typedef uint16_t sir_levels;
 
-/** Formatting options for a destination. */
+/*
+ * Formatting options for a destination.
+ */
+
 # define SIRO_ALL     0x00000000U /**< Include all formatting and functionality. */
 # define SIRO_NOTIME  0x00000100U /**< Exclude time stamps (implies ::SIRO_NOMSEC). */
 # define SIRO_NOMSEC  0x00000200U /**< Exclude millisecond-resolution in time stamps. */
