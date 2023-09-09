@@ -164,6 +164,9 @@ PLUGIN_EXPORT bool sir_plugin_cleanup(void);
  * and somebody will assist you within a reasonable amount of time.
  */
 
-/** @} */
+/**
+ * @}
+ * @}
+ */
 
 #endif /* !_SIR_PLUGIN_SAMPLE_H_INCLUDED */
