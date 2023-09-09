@@ -350,6 +350,83 @@ namespace sir
             const noexcept {
             return sir_fileopts(id, opts);
         }
+
+        /** Wraps ::sir_settextstyle. */
+        bool set_text_style(const sir_level& level, const sir_textattr& attr,
+            const sir_textcolor& fg, const sir_textcolor& bg) const noexcept {
+            return sir_settextstyle(level, attr, fg, bg);
+        }
+
+        /** Wraps ::sir_resettextstyles. */
+        bool reset_text_styles() const noexcept {
+            return sir_resettextstyles();
+        }
+
+        /** Wraps ::sir_makergb. */
+        sir_textcolor make_rgb(const sir_textcolor& r, const sir_textcolor& g,
+            const sir_textcolor& b) const noexcept {
+            return sir_makergb(r, g, b);
+        }
+
+        /** Wraps ::sir_setcolormode. */
+        bool set_color_mode(const sir_colormode& mode) const noexcept {
+            return sir_setcolormode(mode);
+        }
+
+        /** Wraps ::sir_stdoutlevels. */
+        bool set_stdout_levels(const sir_levels& levels) const noexcept {
+            return sir_stdoutlevels(levels);
+        }
+
+        /** Wraps ::sir_stdoutopts. */
+        bool set_stdout_options(const sir_options& opts) const noexcept {
+            return sir_stdoutopts(opts);
+        }
+
+        /** Wraps ::sir_stderrlevels. */
+        bool set_stderr_levels(const sir_levels& levels) const noexcept {
+            return sir_stderrlevels(levels);
+        }
+
+        /** Wraps ::sir_stderropts. */
+        bool set_stderr_options(const sir_options& opts) const noexcept {
+            return sir_stderropts(opts);
+        }
+
+        /** Wraps ::sir_sysloglevels. */
+        bool set_syslog_levels(const sir_levels& levels) const noexcept {
+            return sir_ssysloglevels(levels);
+        }
+
+        /** Wraps ::sir_syslogopts. */
+        bool set_syslog_options(const sir_options& opts) const noexcept {
+            return sir_syslogopts(opts);
+        }
+
+        /** Wraps ::sir_syslogid. */
+        bool set_syslog_id(const std::string& id) const {
+            return sir_syslogid(id.c_str());
+        }
+
+        /** Wraps ::sir_syslogcat. */
+        bool set_syslog_category(const std::string& category) const {
+            return sir_syslogcat(category.c_str());
+        }
+
+        /** Wraps ::sir_getversionstring. */
+        std::string get_version_string() const {
+            return sir_getversionstring();
+        }
+
+        /** Wraps ::sir_getversionhex. */
+        uint32_t get_version_hex() const noexcept {
+            return sir_getversionhex();
+        }
+
+        /** Wraps ::sir_isprerelease. */
+        bool is_prerelease() const noexcept {
+            return sir_isprerelease();
+        }
     };
 
     /** The default log: RAII = true, default init policy and adapter. */
