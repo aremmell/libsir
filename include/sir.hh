@@ -36,12 +36,9 @@
 # include <array>
 # include <string>
 
-# !defined(restrict)
-#  define restrict
-# endif
-
 # if defined __has_include
-#  if __has_include(<format>)
+#  if __has_include(<format>) && !(defined(__MACOS__) && \
+      defined(_LIBCPP_HAS_NO_INCOMPLETE_FORMAT))
 #   include <format>
 #   define __SIR_HAVE_STD_FORMAT__
 #  endif
@@ -308,7 +305,7 @@ namespace sir
          * if the configuration set by TInitPolicy is desired. */
         bool init() const noexcept {
             sirinit si {};
-            constinit TIP policy {};
+            TIP policy {};
             _sir_selflog("init policy: '%s'", policy.get_name().c_str());
             policy.on_initialization(&si);
 
