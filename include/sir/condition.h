@@ -28,26 +28,57 @@
 
 # include "sir/types.h"
 
-/** Creates/initializes a new condition variable. */
+/**
+ * Creates/initializes a new condition variable.
+ *
+ * @param cond Pointer to a sir_condition to initialize
+ * @returns bool `true` if successful, `false` otherwise.
+*/
 bool _sir_condcreate(sir_condition* cond);
 
 # if 0
-/** Signals a condition variable. */
+/**
+ * Signals a condition variable.
+ *
+ * @param cond Pointer to a sir_condition to signal.
+ * @returns bool `true` if successful, `false` otherwise.
+ * */
 bool _sir_condsignal(sir_condition* cond);
 # endif
 
-/** Broadcast signals a condition variable. */
+/**
+ * Broadcast signals a condition variable.
+ *
+ * @param cond Pointer to a sir_condition to broadcast on.
+ * @returns bool `true` if successful, `false` otherwise.
+ * */
 bool _sir_condbroadcast(sir_condition* cond);
 
-/** Destroys a condition variable. */
+/**
+ * Destroys a condition variable.
+ *
+ * @param cond Pointer to a sir_condition to destroy.
+ * @returns bool `true` if successful, `false` otherwise.
+ * */
 bool _sir_conddestroy(sir_condition* cond);
 
 # if 0
-/** Waits indefinitely for a condition variable to become signaled. */
+/**
+ * Waits indefinitely for a condition variable to become signaled.
+ *
+ * @param cond Pointer to a sir_condition to wait on.
+ * @returns bool `true` if successful, `false` otherwise.
+ * */
 bool _sir_condwait(sir_condition* cond, sir_mutex* mutex);
 # endif
 
-/** Waits a given amount of time for a condition variable to become signaled. */
+/**
+ * Waits a given amount of time for a condition variable to become signaled.
+ *
+ * @param cond Pointer to a sir_condition to wait on.
+ * @returns bool `true` if successful, `false` if an error occurred or the operation
+ * timed out..
+ * */
 bool _sir_condwait_timeout(sir_condition* cond, sir_mutex* mutex, sir_wait* how_long);
 
 #endif /* !_SIR_CONDITION_H_INCLUDED */
