@@ -27,6 +27,7 @@
 # define _TESTSXX_HH_INCLUDED
 
 # include "sir.hh"
+# include "tests_shared.h"
 # include <vector>
 
 /**
@@ -37,8 +38,8 @@
 /** Contains the C++ tests and test rig implementation. */
 namespace sir::tests
 {
-    /** Vector of unit test function pointers. */
-    typedef std::vector<bool(*)()> test_vector;
+    /** Vector of test data. */
+    typedef std::vector<sir_test> test_vector;
 
     /**
      * @test raii_init_cleanup
@@ -96,5 +97,31 @@ namespace sir::tests
      */
     //bool ();
 } // !namespace sir::tests
+
+/* @} */
+
+/**
+ * Macros
+ */
+
+/** Begins a test by declaring `pass` and entering a try/catch block. */
+# define _SIR_TEST_BEGIN \
+    bool pass = true; \
+    try {
+
+/** Implements recovery in the event that an exception is caught. */
+# define _SIR_ON_TEST_EXCEPTION(excpt) \
+    ERROR_MSG("exception in %s: '%s'", __PRETTY_FUNCTION__, excpt); \
+    pass = false; \
+    (void)sir_cleanup()
+
+/** Ends a test by closing the try/catch block and implementing exception handling. */
+# define _SIR_TEST_END \
+    } catch (const std::exception& ex) { \
+        _SIR_ON_TEST_EXCEPTION(ex.what()); \
+    } catch (...) { \
+        _SIR_ON_TEST_EXCEPTION(SIR_UNKNOWN); \
+    } \
+    return pass;
 
 #endif // !_TESTSXX_HH_INCLUDED
