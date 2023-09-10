@@ -1538,7 +1538,7 @@ bool sirtest_filesystem(void) {
 
     /* Wine version */
     TEST_MSG("Running under Wine: %s",
-            sirtest_get_wineversion() ? sirtest_get_wineversion() : "no"); //-V547
+            get_wineversion() ? get_wineversion() : "no"); //-V547
 
     /* current working directory. */
     char* cwd = _sir_getcwd();
@@ -1762,7 +1762,8 @@ bool sirtest_filesystem(void) {
         2,
         1234
     };
-    if (sirtest_get_wineversion()) { //-V547
+
+    if (get_wineversion()) { //-V547
         bad_fds[3] = 0;
     }
 
@@ -2299,7 +2300,7 @@ bool filter_error(bool pass, uint16_t err) {
         if (sir_geterror(msg) != err)
             return false;
     }
-    return true;
+    return true;d
 }
 
 char *get_wineversion(void) {
