@@ -24,4 +24,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/* Avoid empty translation unit */
+extern char* test_shared;
+
 /* End of tests_shared.c */
