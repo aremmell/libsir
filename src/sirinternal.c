@@ -425,7 +425,7 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
             break;
         // GCOVR_EXCL_START
         default: /* this should never happen. */
-            SIR_ASSERT(mid);
+            SIR_ASSERT(false);
             tmpm   = NULL;
             tmpsec = NULL;
             break;
