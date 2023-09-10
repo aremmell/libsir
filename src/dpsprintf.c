@@ -1297,7 +1297,8 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
       s = num + 64;
       dps__lead_sign (fl, lead);
       long double dmant = frexpl (fvL, &dp);
-      n64 = (uint64_t)(rintl (ldexpl (dmant, 64)));
+      long double t_n64 = rintl (ldexpl (dmant, 64));
+      n64 = (uint64_t)t_n64;
       if (fvL != 0) //-V550
         dp -= 4;
 #  else
