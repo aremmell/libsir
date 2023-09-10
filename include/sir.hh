@@ -35,7 +35,7 @@
 # include <array>
 # include <string>
 
-# if !defined(SIR_NO_IOSTREAM_FORMAT)
+# if !defined(SIR_NO_STD_IOSTREAM_FORMAT)
 # include <iostream>
 # endif
 
@@ -171,7 +171,7 @@ namespace sir
         }
     };
 
-# if !defined(SIR_NO_IOSTREAM_FORMAT)
+# if !defined(SIR_NO_STD_IOSTREAM_FORMAT)
     /**
      * @class iostream_adapter
      * @brief Provides a std::iostream interface to libsir's logging functions.
@@ -255,7 +255,7 @@ namespace sir
             stream emerg {&sir_emerg};   /**< ostream for emerg level. */
         } streams;
     };
-#endif // SIR_NO_IOSTREAM_FORMAT
+#endif // SIR_NO_STD_IOSTREAM_FORMAT
 
 # if defined(__SIR_HAVE_STD_FORMAT__)
     /**
@@ -712,6 +712,7 @@ namespace sir
      * includes the boost::format adapter.
      * - If fmt::format is available and SIR_NO_FMT_FORMAT is not defined, includes
      * the fmt::format adapter.
+     * - If SIR_NO_STD_IOSTREAM_FORMAT is not defined, includes the std::iostream adapter.
      */
     using default_logger = logger
     <
@@ -727,7 +728,7 @@ namespace sir
 # if defined(__SIR_HAVE_FMT_FORMAT__)
         , fmt_format_adapter
 # endif
-# if !defined(SIR_NO_IOSTREAM_FORMAT)
+# if !defined(SIR_NO_STD_IOSTREAM_FORMAT)
         , iostream_adapter
 # endif
     >;
