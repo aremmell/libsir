@@ -554,15 +554,10 @@ namespace sir
                 SIR_ASSERT(false);
         }
 
-        /** When RAII = false, call to manually initialize libsir at your leisure.
-         * When RAII = true, always returns false without doing any work. */
         virtual bool init(sirinit& si) const noexcept {
             return RAII ? false : sir_init(&si);
         }
 
-        /** When RAII = true, called by the constructor. The configuration is
-         * determined by TInitPolicy. May be called manually when RAII = false
-         * if the configuration set by TInitPolicy is desired. */
         virtual bool init() const noexcept {
             sirinit si {};
             TIP policy {};
@@ -578,7 +573,6 @@ namespace sir
             return init;
         }
 
-        /** May be called manually, or when RAII = true, by the destructor. */
         virtual bool cleanup() const noexcept {
             return sir_cleanup();
         }
