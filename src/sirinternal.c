@@ -259,9 +259,17 @@ bool _sir_init_sanity(const sirinit* si) {
     _sir_eqland(levelcheck, _sir_validlevels(si->d_stdout.levels));
     _sir_eqland(levelcheck, _sir_validlevels(si->d_stderr.levels));
 
+    bool regcheck = true;
+    _sir_eqland(regcheck, SIRL_NONE == si->d_stdout.levels);
+    _sir_eqland(regcheck, SIRL_NONE == si->d_stderr.levels);
+
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     _sir_eqland(levelcheck, _sir_validlevels(si->d_syslog.levels));
+    _sir_eqland(regcheck, SIRL_NONE == si->d_syslog.levels);
 #endif
+
+    if (regcheck)
+        _sir_selflog("warning: no level registrations set!");
 
     bool optscheck = true;
     _sir_eqland(optscheck, _sir_validopts(si->d_stdout.opts));
