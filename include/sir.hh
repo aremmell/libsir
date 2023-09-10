@@ -650,7 +650,6 @@ namespace sir
     using default_logger = logger
     <
         true,
-        default_init_policy,
         default_adapter
 # if defined(__SIR_HAVE_STD_FORMAT__)
         , std_format_adapter
