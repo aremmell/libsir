@@ -223,7 +223,9 @@ all: $(PGOALS) $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS)
 ##############################################################################
 # Automatic dependencies
 
--include $(INTDIR)/*.d
+ifneq (,$(wildcard $(INTDIR)/*/*.d))
+  -include $(wildcard $(INTDIR)/*/*.d)
+endif
 
 ##############################################################################
 # Compile example
