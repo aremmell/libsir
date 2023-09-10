@@ -101,8 +101,17 @@ endif
 # Use dpsprintf?
 
 ifeq ($(SIR_DPSPRINTF),1)
-  SIR_CFLAGS  += -DSIR_DPSPRINTF
-  SIR_LDFLAGS += -lm
+  SIR_CFLAGS    += -DSIR_DPSPRINTF
+  SIR_LDFLAGS   += -lm
+  ifneq "$(findstring gcc,$(CC))" ""
+    NO_BUILTINS ?=1
+  endif
+  ifneq "$(findstring clang,$(CC))" ""
+    NO_BUILTINS ?=1
+  endif
+  ifeq ($(NO_BUILTINS),1)
+    SIR_CFLAGS  += -fno-builtin-printf -fno-builtin-fprintf
+  endif
 endif
 
 ##############################################################################
