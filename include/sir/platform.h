@@ -102,10 +102,12 @@
 #    undef __HAVE_ATOMIC_H__
 #   endif
 #  endif
-#  undef __STDC_WANT_LIB_EXT1__
-#  define __STDC_WANT_LIB_EXT1__ 1
-#  undef __STDC_WANT_LIB_EXT2__
-#  define __STDC_WANT_LIB_EXT2__ 1
+#  if !defined(__STDC_WANT_LIB_EXT1__)
+#   define __STDC_WANT_LIB_EXT1__ 1
+#  endif
+#  if !defined(__STDC_WANT_LIB_EXT2__)
+#   define __STDC_WANT_LIB_EXT2__ 1
+#  endif
 #  if defined(__APPLE__) && defined(__MACH__)
 #   define __MACOS__
 #   undef _DARWIN_C_SOURCE
