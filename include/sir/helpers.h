@@ -436,7 +436,7 @@ bool _sir_getchar(char* input);
 # define _sir_snprintf_trunc(dst, size, ...) \
     do { \
       volatile size_t _n = size; \
-      if (!snprintf(dst, _n, __VA_ARGS__)) { (void)_n; }; \
+      if (!snprintf(dst, (short)_n, __VA_ARGS__)) { (void)_n; }; \
     } while (false)
 
 /**
