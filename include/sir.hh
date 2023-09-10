@@ -464,14 +464,14 @@ namespace sir
 
         /** When RAII = false, call to manually initialize libsir at your leisure.
          * When RAII = true, always returns false without doing any work. */
-        bool init(sirinit& si) const noexcept {
+        virtual bool init(sirinit& si) const noexcept {
             return RAII ? false : sir_init(&si);
         }
 
         /** When RAII = true, called by the constructor. The configuration is
          * determined by TInitPolicy. May be called manually when RAII = false
          * if the configuration set by TInitPolicy is desired. */
-        bool init() const noexcept {
+        virtual bool init() const noexcept {
             sirinit si {};
             TIP policy {};
             _sir_selflog("init policy: '%s'", policy.get_name().c_str());
@@ -487,109 +487,109 @@ namespace sir
         }
 
         /** May be called manually, or when RAII = true, by the destructor. */
-        bool cleanup() const noexcept {
+        virtual bool cleanup() const noexcept {
             return sir_cleanup();
         }
 
         /** Wraps ::sir_geterror. */
-        error get_error() const {
+        virtual error get_error() const {
             std::array<char, SIR_MAXERROR> message {};
             uint32_t code = sir_geterror(message.data());
             return { code, message.data() };
         }
 
         /** Wraps ::sir_addfile. */
-        sirfileid add_file(const std::string& path, const sir_levels& levels,
+        virtual sirfileid add_file(const std::string& path, const sir_levels& levels,
             const sir_options& opts) const {
             return sir_addfile(path.c_str(), levels, opts);
         }
 
         /** Wraps ::sir_remfile. */
-        bool rem_file(const sirfileid& id) const noexcept {
+        virtual bool rem_file(const sirfileid& id) const noexcept {
             return sir_remfile(id);
         }
 
         /** Wraps ::sir_loadplugin. */
-        sirpluginid load_plugin(const std::string& path) const {
+        virtual sirpluginid load_plugin(const std::string& path) const {
             return sir_loadplugin(path.c_str());
         }
 
         /** Wraps ::sir_unloadplugin. */
-        bool unload_plugin(const sirpluginid& id) const noexcept {
+        virtual bool unload_plugin(const sirpluginid& id) const noexcept {
             return sir_unloadplugin(id);
         }
 
         /** Wraps ::sir_filelevels. */
-        bool set_file_levels(const sirfileid& id, const sir_levels& levels)
+        virtual bool set_file_levels(const sirfileid& id, const sir_levels& levels)
             const noexcept {
             return sir_filelevels(id, levels);
         }
 
         /** Wraps ::sir_fileopts. */
-        bool set_file_options(const sirfileid& id, const sir_options& opts)
+        virtual bool set_file_options(const sirfileid& id, const sir_options& opts)
             const noexcept {
             return sir_fileopts(id, opts);
         }
 
         /** Wraps ::sir_settextstyle. */
-        bool set_text_style(const sir_level& level, const sir_textattr& attr,
+        virtual bool set_text_style(const sir_level& level, const sir_textattr& attr,
             const sir_textcolor& fg, const sir_textcolor& bg) const noexcept {
             return sir_settextstyle(level, attr, fg, bg);
         }
 
         /** Wraps ::sir_resettextstyles. */
-        bool reset_text_styles() const noexcept {
+        virtual bool reset_text_styles() const noexcept {
             return sir_resettextstyles();
         }
 
         /** Wraps ::sir_makergb. */
-        sir_textcolor make_rgb(const sir_textcolor& r, const sir_textcolor& g,
+        virtual sir_textcolor make_rgb(const sir_textcolor& r, const sir_textcolor& g,
             const sir_textcolor& b) const noexcept {
             return sir_makergb(r, g, b);
         }
 
         /** Wraps ::sir_setcolormode. */
-        bool set_color_mode(const sir_colormode& mode) const noexcept {
+        virtual bool set_color_mode(const sir_colormode& mode) const noexcept {
             return sir_setcolormode(mode);
         }
 
         /** Wraps ::sir_stdoutlevels. */
-        bool set_stdout_levels(const sir_levels& levels) const noexcept {
+        virtual bool set_stdout_levels(const sir_levels& levels) const noexcept {
             return sir_stdoutlevels(levels);
         }
 
         /** Wraps ::sir_stdoutopts. */
-        bool set_stdout_options(const sir_options& opts) const noexcept {
+        virtual bool set_stdout_options(const sir_options& opts) const noexcept {
             return sir_stdoutopts(opts);
         }
 
         /** Wraps ::sir_stderrlevels. */
-        bool set_stderr_levels(const sir_levels& levels) const noexcept {
+        virtual bool set_stderr_levels(const sir_levels& levels) const noexcept {
             return sir_stderrlevels(levels);
         }
 
         /** Wraps ::sir_stderropts. */
-        bool set_stderr_options(const sir_options& opts) const noexcept {
+        virtual bool set_stderr_options(const sir_options& opts) const noexcept {
             return sir_stderropts(opts);
         }
 
         /** Wraps ::sir_sysloglevels. */
-        bool set_syslog_levels(const sir_levels& levels) const noexcept {
+        virtual bool set_syslog_levels(const sir_levels& levels) const noexcept {
             return sir_sysloglevels(levels);
         }
 
         /** Wraps ::sir_syslogopts. */
-        bool set_syslog_options(const sir_options& opts) const noexcept {
+        virtual bool set_syslog_options(const sir_options& opts) const noexcept {
             return sir_syslogopts(opts);
         }
 
         /** Wraps ::sir_syslogid. */
-        bool set_syslog_id(const std::string& id) const {
+        virtual bool set_syslog_id(const std::string& id) const {
             return sir_syslogid(id.c_str());
         }
 
         /** Wraps ::sir_syslogcat. */
-        bool set_syslog_category(const std::string& category) const {
+        virtual bool set_syslog_category(const std::string& category) const {
             return sir_syslogcat(category.c_str());
         }
 
