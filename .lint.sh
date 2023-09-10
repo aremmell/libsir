@@ -84,6 +84,7 @@ test_whitespace()
 
 test_mcmb()
 {
+  mkdir -p build/lib > /dev/null 2>&1 || true
   ${MAKE:-make} mcmb; ret=${?}
   test "${ret}" -ne 0 && exit 99
   printf '%s\n' "checking for ${MCMB:-build/bin/mcmb} executable ..."
@@ -208,6 +209,15 @@ test_extra()
 { (
   test_mcmb; ret=${?}
   test "${ret}" -ne 0 && exit 99
+  PATH="$(2> /dev/null dirname \
+          "$(2> /dev/null printf '%s\n' \
+              "$(2> /dev/null env ls -1 \
+                   "$(brew --prefix 2> /dev/null)/Cellar/llvm/"*"/bin/clang" | \
+                 2> /dev/null sort -rV | \
+                 2> /dev/null head -1 \
+              )"\
+          )"\
+       ):/usr/local/bin:${PATH:-}" 2> /dev/null
   command -v clang > /dev/null 2>&1 \
     || {
       printf '%s\n' \
@@ -229,11 +239,12 @@ test_extra()
       "${MCMB:-build/bin/mcmb}" -e ${SIR_OPTIONS:?} | xargs -L1 echo \
         ' && ${MAKE:-make} clean &&
         env CC="${CCACHE:-env} clang"
-            CFLAGS="-Werror
+            CFLAGS="-DSIR_LINT=1
+                    -Werror
+                    -Wno-unknown-warning-option
                     -Wassign-enum
                     -Wbad-function-cast
                     -Wconversion
-                    -DSIR_LINT=1
                     -Wdisabled-macro-expansion
                     -Wdouble-promotion
                     -Wextra-semi-stmt
@@ -472,11 +483,11 @@ test_pvs()
       test "${ret}" -ne 0 && exit 99
       env CC="${CCACHE:-env} clang" bear -- "${MAKE:-make}" -j "${CPUS:-1}"; ret=${?}
       test "${ret}" -ne 0 && exit 99
-      echo Running PVS-Studio ...
+      printf '%s\n' "Running PVS-Studio ..."
       pvs-studio-analyzer analyze --disableLicenseExpirationCheck --intermodular -j "${CPUS:-1}" -o log.pvs
       test -f log.pvs; ret=${?}
       test "${ret}" -ne 0 && exit 99
-      echo PVS-Studio run completed ...
+      printf '%s\n' "PVS-Studio run completed ..."
       plog-converter -a "GA:1,2,3" -t fullhtml log.pvs -o pvsreport
       PVS_EXIT=99
       grep -q 'Congratulations!' ./pvsreport/index.html \
@@ -494,7 +505,7 @@ test_pvs()
       rm -f ./compile_commands.json
       rm -f ./log.pvs
       rm -rf ./pvsreport
-      echo PVS-Studio lint completed.
+      printf '%s\n' "PVS-Studio lint completed."
       exit 0
 ) }
 
@@ -574,7 +585,7 @@ test_smoke0()
 
 test_smoke()
 { (
-  test_smoke0; echo $?
+  test_smoke0; printf '%s\n' "${?}"
   exit 99
 ) }
 

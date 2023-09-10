@@ -37,7 +37,6 @@ AR_CR       ?= $(AR) -cr
 # Flags
 
 SIR_CFLAGS  := $(CFLAGS)
-SIR_XFLAGS  := $(SIR_CFLAGS) $(CXXFLAGS)
 SIR_LDFLAGS := $(LDFLAGS)
 SIR_SHFLAGS  = $(subst -static,,$(SIR_LDFLAGS))
 
@@ -77,17 +76,6 @@ else
   ifneq ($(NO_DEFAULT_CFLAGS),1)
     SIR_CFLAGS += $(OPTFLAGS) -DNDEBUG $(FORTIFY_FLAGS)
   endif
-endif
-
-##############################################################################
-# Append to CFLAGS/CXXFLAGS?
-
-ifneq (,$(findstring -,$(APPEND_CFLAGS)))
-  SIR_CFLAGS += $(APPEND_CFLAGS)
-endif
-
-ifneq (,$(findstring -,$(APPEND_CXXFLAGS)))
-  SIR_XFLAGS += $(APPEND_CFLAGS) $(APPEND_CXXFLAGS)
 endif
 
 ##############################################################################
@@ -245,18 +233,20 @@ $(OBJ_TESTS): $(TESTS)/$(TESTS).c $(DEPS)
 	$(CC) $(MMDOPT) $(SIR_CSTD) $(SIR_CFLAGS) -Iinclude -c -o $@ $<
 
 ##############################################################################
-# Compile tests++
-
-$(OBJ_TESTSXX): $(TESTS)/$(TESTSXX).cc $(DEPS)
-	@mkdir -p $(@D)
-	$(CXX) $(MMDOPT) $(SIR_XSTD) $(SIR_XFLAGS) -Iinclude -c -o $@ $<
-
-##############################################################################
 # Compile C sources
 
 $(INTDIR)/%.o: %.c $(DEPS)
 	@mkdir -p $(@D)
 	$(CC) $(MMDOPT) $(SIR_CSTD) $(SIR_CFLAGS) -c -o $@ $<
+
+##############################################################################
+# Compile tests++
+
+SIR_XFLAGS  := $(SIR_CFLAGS) $(CXXFLAGS)
+
+$(OBJ_TESTSXX): $(TESTS)/$(TESTSXX).cc $(DEPS)
+	@mkdir -p $(@D)
+	$(CXX) $(MMDOPT) $(SIR_XSTD) $(SIR_XFLAGS) -Iinclude -c -o $@ $<
 
 ##############################################################################
 # Link shared library
@@ -349,10 +339,23 @@ $(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS)
 docs doc: $(OUT_STATIC)
 	@doxygen Doxyfile
 	-@find docs -name '*.png' \
-		-not -path 'docs/res/*' \
-		-not -path 'docs/sources/*' \
-		-exec advpng -z4 "{}" 2> /dev/null \; \
-		2> /dev/null || true
+		    -not -path 'docs/res/*' \
+		    -not -path 'docs/sources/*' -print | \
+	  grep '/' > /dev/null 2>&1 && \
+	  find docs -name '*.png' \
+		    -not -path 'docs/res/*' \
+		    -not -path 'docs/sources/*' -print | \
+	  grep -Ev '(docs/sample-terminal.png$$|docs/libsir-alpha.png$$)' | \
+	  xargs -I {} -P \
+	    "$$(getconf NPROCESSORS_ONLN 2> /dev/null || \
+	        getconf getconf _NPROCESSORS_ONLN 2> /dev/null || \
+		nproc 2> /dev/null || \
+		printf '%s\n' \
+		  "$$(grep -E '^processor[[:space:]].*[0-9]+$$' \
+		      /proc/cpuinfo 2> /dev/null | wc -l 2> /dev/null | \
+		      tr -cd '0-9\n' 2> /dev/null)" 2> /dev/null || \
+		printf '%s\n' 1)" \
+	    $$(printf '%s\n' 'advpng -z4 {}')
 	-@printf 'built documentation successfully.\n' 2> /dev/null
 
 ##############################################################################
