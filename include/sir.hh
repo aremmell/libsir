@@ -46,6 +46,11 @@
 #   include <boost/format.hpp>
 #   define __SIR_HAVE_BOOST_FORMAT__
 #  endif
+#  if __has_include(<fmt/format.h>) && !defined(SIR_NO_FMT_FORMAT)
+#   define FMT_HEADER_ONLY
+#   include <fmt/format.h>
+#   define __SIR_HAVE_FMT_FORMAT__
+#  endif
 # endif
 
 /**
@@ -179,56 +184,56 @@ namespace sir
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
-        bool debug_format(std::format_string<Args...> fmt, Args&&... args) const {
+        inline bool debug_std(std::format_string<Args...> fmt, Args&&... args) const {
             auto str = std::vformat(fmt.get(), std::make_format_args(args...));
             return sir_debug(str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
-        bool info_format(std::format_string<Args...> fmt, Args&&... args) const {
+        inline bool info_std(std::format_string<Args...> fmt, Args&&... args) const {
             auto str = std::vformat(fmt.get(), std::make_format_args(args...));
             return sir_info(str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
-        bool notice_format(std::format_string<Args...> fmt, Args&&... args) const {
+        inline bool notice_std(std::format_string<Args...> fmt, Args&&... args) const {
             auto str = std::vformat(fmt.get(), std::make_format_args(args...));
             return sir_notice(str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
-        bool warn_format(std::format_string<Args...> fmt, Args&&... args) const {
+        inline bool warn_std(std::format_string<Args...> fmt, Args&&... args) const {
             auto str = std::vformat(fmt.get(), std::make_format_args(args...));
             return sir_warn(str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
-        bool error_format(std::format_string<Args...> fmt, Args&&... args) const {
+        inline bool error_std(std::format_string<Args...> fmt, Args&&... args) const {
             auto str = std::vformat(fmt.get(), std::make_format_args(args...));
             return sir_error(str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
-        bool crit_format(std::format_string<Args...> fmt, Args&&... args) const {
+        inline bool crit_std(std::format_string<Args...> fmt, Args&&... args) const {
             auto str = std::vformat(fmt.get(), std::make_format_args(args...));
             return sir_crit(str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
-        bool alert_format(std::format_string<Args...> fmt, Args&&... args) const {
+        inline bool alert_std(std::format_string<Args...> fmt, Args&&... args) const {
             auto str = std::vformat(fmt.get(), std::make_format_args(args...));
             return sir_alert(str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
-        bool emerg_format(std::format_string<Args...> fmt, Args&&... args) const {
+        inline bool emerg_std(std::format_string<Args...> fmt, Args&&... args) const {
             auto str = std::vformat(fmt.get(), std::make_format_args(args...));
             return sir_emerg(str.c_str());
         }
@@ -290,6 +295,70 @@ namespace sir
         }
     };
 # endif // !__SIR_HAVE_BOOST_FORMAT__
+
+# if defined(__SIR_HAVE_FMT_FORMAT__)
+    /**
+     * @class fmt_format_adapter
+     * @brief Adapter for fmt (when available)
+     *
+     * If fmt is available on this platform and SIR_NO_FMT_FORMAT is not
+     * defined, ::default_logger will export the methods from this adapter in
+     * addition to any others.
+     */
+    class fmt_format_adapter : public adapter {
+    public:
+        fmt_format_adapter() = default;
+        virtual ~fmt_format_adapter() = default;
+
+        /** Use as if you were calling fmt::format directly. */
+        template<typename... T>
+        inline bool debug_fmt(fmt::format_string<T...> fmt, T&&... args) const {
+            return sir_debug(fmt::vformat(fmt, fmt::make_format_args(args...)).c_str());
+        }
+
+        /** Use as if you were calling fmt::format directly. */
+        template<typename... T>
+        inline bool info_fmt(fmt::format_string<T...> fmt, T&&... args) const {
+            return sir_info(fmt::vformat(fmt, fmt::make_format_args(args...)).c_str());
+        }
+
+        /** Use as if you were calling fmt::format directly. */
+        template<typename... T>
+        inline bool notice_fmt(fmt::format_string<T...> fmt, T&&... args) const {
+            return sir_notice(fmt::vformat(fmt, fmt::make_format_args(args...)).c_str());
+        }
+
+        /** Use as if you were calling fmt::format directly. */
+        template<typename... T>
+        inline bool warn_fmt(fmt::format_string<T...> fmt, T&&... args) const {
+            return sir_warn(fmt::vformat(fmt, fmt::make_format_args(args...)).c_str());
+        }
+
+        /** Use as if you were calling fmt::format directly. */
+        template<typename... T>
+        inline bool error_fmt(fmt::format_string<T...> fmt, T&&... args) const {
+            return sir_error(fmt::vformat(fmt, fmt::make_format_args(args...)).c_str());
+        }
+
+        /** Use as if you were calling fmt::format directly. */
+        template<typename... T>
+        inline bool crit_fmt(fmt::format_string<T...> fmt, T&&... args) const {
+            return sir_crit(fmt::vformat(fmt, fmt::make_format_args(args...)).c_str());
+        }
+
+        /** Use as if you were calling fmt::format directly. */
+        template<typename... T>
+        inline bool alert_fmt(fmt::format_string<T...> fmt, T&&... args) const {
+            return sir_alert(fmt::vformat(fmt, fmt::make_format_args(args...)).c_str());
+        }
+
+        /** Use as if you were calling fmt::format directly. */
+        template<typename... T>
+        inline bool emerg_fmt(fmt::format_string<T...> fmt, T&&... args) const {
+            return sir_emerg(fmt::vformat(fmt, fmt::make_format_args(args...)).c_str());
+        }
+    };
+# endif // !__SIR_HAVE_FMT_FORMAT__
 
     /**
      * @class policy
@@ -573,6 +642,9 @@ namespace sir
 # endif
 # if defined(__SIR_HAVE_BOOST_FORMAT__)
         , boost_format_adapter
+# endif
+# if defined(__SIR_HAVE_FMT_FORMAT__)
+        , fmt_format_adapter
 # endif
     >;
 } // ! namespace sir

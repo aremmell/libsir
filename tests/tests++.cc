@@ -30,14 +30,14 @@ int main(int argc, char** argv) {
 
         /* std:: format. */
 #if defined(__SIR_HAVE_STD_FORMAT__)
-        logger.debug_format("Testing {} {}", "debug", "std::format");
-        logger.info_format("Testing {} {}", "info", "std::format");
-        logger.notice_format("Testing {} {}", "notice", "std::format");
-        logger.warn_format("Testing {} {}", "warn", "std::format");
-        logger.error_format("Testing {} {}", "error", "std::format");
-        logger.crit_format("Testing {} {}", "crit", "std::format");
-        logger.alert_format("Testing {} {}", "alert", "std::format");
-        logger.emerg_format("Testing {} {}", "emerg", "std::format");
+        logger.debug_std("Testing {} {}", "debug", "std::format");
+        logger.info_std("Testing {} {}", "info", "std::format");
+        logger.notice_std("Testing {} {}", "notice", "std::format");
+        logger.warn_std("Testing {} {}", "warn", "std::format");
+        logger.error_std("Testing {} {}", "error", "std::format");
+        logger.crit_std("Testing {} {}", "crit", "std::format");
+        logger.alert_std("Testing {} {}", "alert", "std::format");
+        logger.emerg_std("Testing {} {}", "emerg", "std::format");
 #endif // !__SIR_HAVE_STD_FORMAT__
 
         /* boost::format. */
@@ -51,6 +51,18 @@ int main(int argc, char** argv) {
         logger.alert_boost(boost::format("Testing %1% %2%}") % "alert" % "boost::format");
         logger.emerg_boost(boost::format("Testing %1% %2%") % "emerg" % "boost::format");
 #endif // !__SIR_HAVE_BOOST_FORMAT__
+
+        /* fmt */
+#if defined(__SIR_HAVE_FMT_FORMAT__)
+        logger.debug_fmt("Testing {} {}", "debug", "fmt");
+        logger.info_fmt("Testing {} {}", "info", "fmt");
+        logger.notice_fmt("Testing {} {}", "notice", "fmt");
+        logger.warn_fmt("Testing {} {}", "warn", "fmt");
+        logger.error_fmt("Testing {} {}", "error", "fmt");
+        logger.crit_fmt("Testing {} {}", "crit", "fmt");
+        logger.alert_fmt("Testing {} {}", "alert", "fmt");
+        logger.emerg_fmt("Testing {} {}", "emerg", "fmt");
+#endif // !__SIR_HAVE_FMT_FORMAT__
 
         logger.debug("sir_cleanup() will be called by the destructor");
     }
