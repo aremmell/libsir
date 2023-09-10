@@ -43,209 +43,237 @@
  */
 
 /**
- * @test Properly handle multiple threads competing for locked sections.
+ * @test sirtest_threadrace
+ * @brief Properly handle multiple threads competing for locked sections.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_threadrace(void);
 
 /**
- * @test Properly handle messages that exceed internal buffer sizes.
+ * @test sirtest_exceedmaxsize
+ * @brief Properly handle messages that exceed internal buffer sizes.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_exceedmaxsize(void);
 
 /**
- * @test Ensure the correct (and complete) message is written to a log file.
+ * @test sirtest_logwritesanity
+ * @brief Ensure the correct (and complete) message is written to a log file.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_logwritesanity(void);
 
 /**
- * @test Properly handle the lack of any output destinations.
+ * @test sirtest_failnooutputdest
+ * @brief Properly handle the lack of any output destinations.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_failnooutputdest(void);
 
 /**
- * @test Properly handle null/empty input.
+ * @test sirtest_failnulls
+ * @brief Properly handle null/empty input.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_failnulls(void);
 
 /**
- * @test Ensure an empty message is properly handled.
+ * @test sirtest_failemptymessage
+ * @brief Ensure an empty message is properly handled.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_failemptymessage(void);
 
 /**
- * @test Properly handle adding and removing log files.
+ * @test sirtest_filecachesanity
+ * @brief Properly handle adding and removing log files.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_filecachesanity(void);
 
 /**
- * @test Properly handle invalid log file name.
+ * @test sirtest_failinvalidfilename
+ * @brief Properly handle invalid log file name.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_failinvalidfilename(void);
 
 /**
- * @test Properly handle log file without appropriate permissions.
+ * @test sirtest_failfilebadpermission
+ * @brief Properly handle log file without appropriate permissions.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_failfilebadpermission(void);
 
 /**
- * @test Properly refuse to add a duplicate file.
+ * @test sirtest_faildupefile
+ * @brief Properly refuse to add a duplicate file.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_faildupefile(void);
 
 /**
- * @test Properly refuse to remove a file that isn't added.
+ * @test sirtest_failremovebadfile
+ * @brief Properly refuse to remove a file that isn't added.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_failremovebadfile(void);
 
 /**
- * @test Properly roll/archive a file when it hits max size.
+ * @test sirtest_rollandarchivefile
+ * @brief Properly roll/archive a file when it hits max size.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_rollandarchivefile(void);
 
 /**
- * @test Properly handle calls without initialization.
+ * @test sirtest_failwithoutinit
+ * @brief Properly handle calls without initialization.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_failwithoutinit(void);
 
 /**
- * @test Properly handle two initialization calls without corresponding cleanup.
+ * @test sirtest_failinittwice
+ * @brief Properly handle two initialization calls without corresponding cleanup.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_failinittwice(void);
 
 /**
- * @test Properly handle initialization with junk memory.
+ * @test sirtest_failinvalidinitdata
+ * @brief Properly handle initialization with junk memory.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_failinvalidinitdata(void);
 
 /**
- * @test Properly handle initialization, cleanup, re-initialization.
+ * @test sirtest_initcleanupinit
+ * @brief Properly handle initialization, cleanup, re-initialization.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_initcleanupinit(void);
 
 /**
- * @test Properly initialize using sir_makeinit.
+ * @test sirtest_initmakeinit
+ * @brief Properly initialize using sir_makeinit.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_initmakeinit(void);
 
 /**
- * @test Properly handle calls after cleanup.
+ * @test sirtest_failaftercleanup
+ * @brief Properly handle calls after cleanup.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_failaftercleanup(void);
 
 /**
- * @test Properly return valid codes and messages for all possible errors.
+ * @test sirtest_errorsanity
+ * @brief Properly return valid codes and messages for all possible errors.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_errorsanity(void);
 
 /**
- * @test Properly style stdio output for each level, and handle style overrides.
+ * @test sirtest_textstylesanity
+ * @brief Properly style stdio output for each level, and handle style overrides.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_textstylesanity(void);
 
 /**
- * @test Properly reject invalid option bitmasks.
+ * @test sirtest_optionssanity
+ * @brief Properly reject invalid option bitmasks.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_optionssanity(void);
 
 /**
- * @test Properly reject invalid level bitmasks.
+ * @test sirtest_levelssanity
+ * @brief Properly reject invalid level bitmasks.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_levelssanity(void);
 
 /**
- * @test Ensure that the mutex implementation is functioning properly.
+ * @test sirtest_mutexsanity
+ * @brief Ensure that the mutex implementation is functioning properly.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_mutexsanity(void);
 
 /**
- * @test Performance evaluation.
+ * @test sirtest_perf
+ * @brief Performance evaluation.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_perf(void);
 
 /**
- * @test Properly update levels/options at runtime.
+ * @test sirtest_updatesanity
+ * @brief Properly update levels/options at runtime.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_updatesanity(void);
 
 /**
- * @test Properly format thread ID/names in output.
+ * @test sirtest_threadidsanity
+ * @brief Properly format thread ID/names in output.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_threadidsanity(void);
 
 /**
- * @test Properly open, configure, and send messages to syslog().
- * @note Disabled on Windows and macOS.
+ * @test sirtest_syslog
+ * @brief Properly open, configure, and send messages to syslog().
+ * @note Disabled on Windows (and macOS if not compiled with Clang.).
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_syslog(void);
 
 /**
- * @test Properly open, configure, and send messages to os_log().
- * @note macOS only.
+ * @test sirtest_os_log
+ * @brief Properly open, configure, and send messages to os_log().
+ * @note Only enabled when compiled on macOS with Clang.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_os_log(void);
 
-/**
- * @test Check if running under Wine.
- * @returns char* `version` if running under Wine, `NULL` otherwise.
- */
-char* sirtest_get_wineversion(void);
 
 /**
- * @test Ensure the proper functionality of portable filesystem implementation.
+ * @test sirtest_filesystem
+ * @brief Ensure the proper functionality of portable filesystem implementation.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_filesystem(void);
 
 /**
- * @test Ensure that spam messages are squelched, normal messages are not,
+ * @test sirtest_squelchspam
+ * @brief Ensure that spam messages are squelched, normal messages are not,
  * and proper return values result from calls into libsir.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_squelchspam(void);
 
 /**
- * @test Ensure that well-formed, valid plugins are successfully loaded, and
+ * @test sirtest_pluginloader
+ * @brief Ensure that well-formed, valid plugins are successfully loaded, and
  * that ill-formed/incorrectly behaving plugins are rejected.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_pluginloader(void);
 
 /**
- * @test Ensure that version retrieval exports are functioning properly.
+ * @test sirtest_getversioninfo
+ * @brief Ensure that version retrieval exports are functioning properly.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
 bool sirtest_getversioninfo(void);
 
 /**
- * @test Ensure the proper functioning of the thread pool and job queue mech-
+ * @test sirtest_threadpool
+ * @brief Ensure the proper functioning of the thread pool and job queue mech-
  * anisms.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
@@ -296,5 +324,10 @@ void os_log_child_activity(void* ctx);
  * thread; false otherwise.
  */
 bool filter_error(bool pass, uint16_t err);
+
+/**
+ * If running under Wine, returns the Wine version. Returns NULL otherwise.
+ */
+char* get_wineversion(void);
 
 #endif /* !_SIR_TESTS_H_INCLUDED */

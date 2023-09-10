@@ -472,7 +472,7 @@ bool sirtest_failfilebadpermission(void) {
     static const char* path = "/cygdrive/c/Windows/System32/noperms";
 # else
     static const char* path;
-    if (sirtest_get_wineversion()) {
+    if (get_wineversion()) {
         path = "Z:\\noperms";
     } else {
         path = "C:\\Windows\\System32\\noperms";
