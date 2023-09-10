@@ -35,7 +35,7 @@
 # include <array>
 # include <string>
 
-# if !defined(SIR_NO_STD_IOSTREAM_FORMAT)
+# if !defined(SIR_NO_STD_IOSTREAM)
 # include <iostream>
 # endif
 
@@ -461,85 +461,6 @@ namespace sir
         }
     };
 # endif // !__SIR_HAVE_FMT_FORMAT__
-
-    /**
-     * @class policy
-     * @brief Base class for policies that control the behavior of the logger
-     * class.
-     *
-     * Multiple types of policies may derive from this class. It serves only to
-     * identify derived classes as a policy.
-     */
-    class policy {
-    public:
-        /** Returns the name of this policy (e.g., 'My custom policy'). */
-        virtual std::string get_name() const = 0;
-    };
-
-    /**
-     * @class init_policy
-     * @brief Base class for a policy that determines how libsir is configured
-     * during initialization.
-     *
-     * Derive from this class to create your own custom initialization policy.
-     */
-    class init_policy : public policy {
-    public:
-        init_policy() = default;
-        virtual ~init_policy() = default;
-
-        /** When called, the policy must configure the initialization data `si`
-         * as desired. Called directly before ::sir_init. */
-        virtual void on_initialization(sirinit* si) const noexcept = 0;
-
-        /** When called, the policy may set a color mode other than the default
-         * (16-color mode) if desired. Called directly after ::sir_init. */
-        virtual void set_color_mode() const noexcept = 0;
-
-        /** When called, the policy may set per-level text styling if desired.
-         * Called directly after ::set_color_mode. */
-        virtual void set_text_styles() const noexcept = 0;
-
-        /** From policy. */
-        virtual std::string get_name() const override = 0;
-    };
-
-    /**
-     * @class default_init_policy
-     * @brief The default initialization policy.
-     *
-     * Replace with your own custom class derived from init_policy in order to
-     * change the libsir configuration. Applies only when RAII = true for the
-     * logger template. When RAII = false, you may call logger::init at any
-     * time with a custom configuration.
-     */
-    class default_init_policy final : public init_policy {
-    public:
-        default_init_policy() = default;
-        ~default_init_policy() = default;
-
-        /** Uses ::sir_makeinit to set default values for all configuration
-         * properties. */
-        void on_initialization(sirinit* si) const noexcept {
-            bool init = sir_makeinit(si);
-            SIR_ASSERT_UNUSED(init, init);
-        }
-
-        /** Uses the default color mode, so this is a NOOP. */
-        void set_color_mode() const noexcept { }
-
-        /** Uses the default text styles, so this is a NOOP. */
-        void set_text_styles() const noexcept { }
-
-        /** From policy. */
-        std::string get_name() const {
-            return "Default";
-        }
-    };
-
-    /** Ensures that the type argument derives from init_policy. */
-    template<typename T>
-    concept DerivedFromInitPolicy = std::is_base_of_v<init_policy, T>;
 
     /** Ensures that the type argument derives from adapter. */
     template<typename... T>
