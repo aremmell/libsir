@@ -61,11 +61,47 @@ int main(int argc, char** argv) {
 
     int retval = EXIT_SUCCESS;
     try {
-        // TODO: consolidate main() from tests.c
-        print_intro(0);
+        size_t first     = 0;
+        size_t tgt_tests = (cl_cfg.only ? cl_cfg.to_run : _sir_countof(sirxx_tests));
+        size_t passed    = 0;
+        size_t ran       = 0;
+        sir_time timer {};
+
+        print_intro(tgt_tests);
+        sir_timer_start(&timer);
+
+        for (size_t n = first; n < _sir_countof(sirxx_tests); n++) {
+            if (cl_cfg.only && !sirxx_tests[n].run) {
+                _sir_selflog("skipping '%s'; not marked to run", sirxx_tests[n].name);
+                continue;
+            }
+
+            print_test_intro(ran + 1, tgt_tests, sirxx_tests[n].name);
+
+            sirxx_tests[n].pass = sirxx_tests[n].fn();
+            if (sirxx_tests[n].pass)
+                passed++;
+
+            ran++;
+
+            print_test_outro(ran, tgt_tests, sirxx_tests[n].name, sirxx_tests[n].pass);
+        }
+
+        print_test_summary(tgt_tests, passed, sir_timer_elapsed(&timer));
+
+        if (passed != tgt_tests) {
+            print_failed_test_intro(tgt_tests, passed);
+
+            for (size_t t = 0; t < _sir_countof(sirxx_tests); t++)
+                if (!sirxx_tests[t].pass)
+                    print_failed_test(sirxx_tests[t].name);
+            (void)printf("\n");
+        }
 
         if (cl_cfg.wait)
             wait_for_keypress();
+
+        retval = passed == tgt_tests ? EXIT_SUCCESS : EXIT_FAILURE;
     } catch (const std::exception& ex) {
         ERROR_MSG("std::exception: '%s'; exiting!", ex.what());
         retval = EXIT_FAILURE;
