@@ -185,57 +185,49 @@ namespace sir
         /** Use as if you were calling std::format directly. */
         template<class... Args>
         inline bool debug_std(std::format_string<Args...> fmt, Args&&... args) const {
-            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
-            return sir_debug(str.c_str());
+            return sir_debug(std::vformat(fmt.get(), std::make_format_args(args...)).c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
         inline bool info_std(std::format_string<Args...> fmt, Args&&... args) const {
-            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
-            return sir_info(str.c_str());
+            return sir_info(std::vformat(fmt.get(), std::make_format_args(args...)).c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
         inline bool notice_std(std::format_string<Args...> fmt, Args&&... args) const {
-            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
-            return sir_notice(str.c_str());
+            return sir_notice(std::vformat(fmt.get(), std::make_format_args(args...)).c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
         inline bool warn_std(std::format_string<Args...> fmt, Args&&... args) const {
-            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
-            return sir_warn(str.c_str());
+            return sir_warn(std::vformat(fmt.get(), std::make_format_args(args...)).c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
         inline bool error_std(std::format_string<Args...> fmt, Args&&... args) const {
-            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
-            return sir_error(str.c_str());
+            return sir_error(std::vformat(fmt.get(), std::make_format_args(args...)).c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
         inline bool crit_std(std::format_string<Args...> fmt, Args&&... args) const {
-            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
-            return sir_crit(str.c_str());
+            return sir_crit(std::vformat(fmt.get(), std::make_format_args(args...)).c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
         inline bool alert_std(std::format_string<Args...> fmt, Args&&... args) const {
-            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
-            return sir_alert(str.c_str());
+            return sir_alert(std::vformat(fmt.get(), std::make_format_args(args...)).c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
         inline bool emerg_std(std::format_string<Args...> fmt, Args&&... args) const {
-            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
-            return sir_emerg(str.c_str());
+            return sir_emerg(std::vformat(fmt.get(), std::make_format_args(args...)).c_str());
         }
     };
 # endif // !__SIR_HAVE_STD_FORMAT__
