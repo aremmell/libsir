@@ -484,23 +484,16 @@ test_pvs()
       env CC="${CCACHE:-env} clang" bear -- "${MAKE:-make}" -j "${CPUS:-1}"; ret=${?}
       test "${ret}" -ne 0 && exit 99
       printf '%s\n' "Running PVS-Studio ..."
-      pvs-studio-analyzer analyze --disableLicenseExpirationCheck --intermodular -j "${CPUS:-1}" -o log.pvs
+      pvs-studio-analyzer analyze --intermodular -j "${CPUS:-1}" -o log.pvs
       test -f log.pvs; ret=${?}
       test "${ret}" -ne 0 && exit 99
       printf '%s\n' "PVS-Studio run completed ..."
-      plog-converter -a "GA:1,2,3" -t fullhtml log.pvs -o pvsreport
-      PVS_EXIT=99
+      plog-converter -a "GA:1,2,3;OP:1,2,3;64:1,2,3;CS:1,2,3;MISRA:1,2,3;OWASP:1,2,3;AUTOSAR:1,2,3" -t fullhtml log.pvs -o pvsreport
       grep -q 'Congratulations!' ./pvsreport/index.html \
         || {
-          xargs < pvsreport/index.html | \
-            grep -q -E 'info>Fails/Info:</th><td>1</td></tr>.*Your license will expire in [0-9]+ days.' \
-              && {
-                printf '%s\n' "NOTE: Only warning is expiry, we are OK."
-                PVS_EXIT=0; export PVS_EXIT
-              }
-          test "${PVS_EXIT:-0}" -ne 0 && printf '%s\n' "ERROR: PVS-Studio failed ..."
-          test "${PVS_EXIT:-0}" -ne 0 && printf '\n%s\n' "Review output in ./pvsreport ..."
-          test "${PVS_EXIT:-0}" -ne 0 && exit "${PVS_EXIT:?}"
+          printf '%s\n' "ERROR: PVS-Studio failed ..."
+          printf '\n%s\n' "Review output in ./pvsreport ..."
+          exit 99
         }
       rm -f ./compile_commands.json
       rm -f ./log.pvs
