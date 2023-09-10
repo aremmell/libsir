@@ -55,11 +55,11 @@ static const sir_cl_arg cl_args[] = {
 static sir_cl_config cl_cfg {};
 
 int main(int argc, char** argv) {
-    if (!parse_cmd_line(argc, argv, cl_args, _sir_countof(cl_args),
-        sirxx_tests, _sir_countof(sirxx_tests), &cl_cfg))
+    bool parsed = parse_cmd_line(argc, argv, cl_args, _sir_countof(cl_args),
+        sirxx_tests, _sir_countof(sirxx_tests), &cl_cfg);
+    if (!parsed)
         return EXIT_FAILURE;
 
-    int retval = EXIT_SUCCESS;
     try {
         size_t first     = 0;
         size_t tgt_tests = (cl_cfg.only ? cl_cfg.to_run : _sir_countof(sirxx_tests));
@@ -101,16 +101,14 @@ int main(int argc, char** argv) {
         if (cl_cfg.wait)
             wait_for_keypress();
 
-        retval = passed == tgt_tests ? EXIT_SUCCESS : EXIT_FAILURE;
+        return passed == tgt_tests ? EXIT_SUCCESS : EXIT_FAILURE;
     } catch (const std::exception& ex) {
         ERROR_MSG("std::exception: '%s'; exiting!", ex.what());
-        retval = EXIT_FAILURE;
+        return EXIT_FAILURE;
     } catch (...) {
         ERROR_MSG_0("unknown exception; exiting!");
-        retval = EXIT_FAILURE;
+        return EXIT_FAILURE;
     }
-
-    return retval;
 }
 
 bool sir::tests::raii_init_cleanup() {
