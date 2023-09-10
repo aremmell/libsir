@@ -42,29 +42,6 @@
 #  include <math.h>
 # endif
 
-# define INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, p_name, init) \
-    sirinit var         = {0}; \
-    var.d_stdout.opts   = (o_stdout) > 0 ? (o_stdout) : SIRO_DEFAULT; \
-    var.d_stdout.levels = (l_stdout); \
-    var.d_stderr.opts   = (o_stderr) > 0 ? (o_stderr) : SIRO_DEFAULT; \
-    var.d_stderr.levels = (l_stderr); \
-    if (_sir_validstrnofail(p_name)) \
-        _sir_strncpy(var.name, SIR_MAXNAME, (p_name), SIR_MAXNAME); \
-    bool var##_init = false; \
-    if (init) \
-        var##_init = sir_init(&var); \
-    else \
-        (void)var##_init
-
-# define INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, name) \
-    INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, name, true)
-
-# define INIT_SL(var, l_stdout, o_stdout, l_stderr, o_stderr, name) \
-    INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, name, false)
-
-# define INIT(var, l_stdout, o_stdout, l_stderr, o_stderr) \
-    INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, "")
-
 /**
  * @defgroup tests Tests
  *
@@ -290,88 +267,51 @@ bool sirtest_threadpool(void);
  * @ returns bool `true` if the test succeeded, `false` otherwise.
 bool sirtest_xxxx(void); */
 
-/*
- * Error macros and functions
- */
-
-bool print_test_error(bool result, bool expected);
-# define print_expected_error() print_test_error(true, true)
-# define print_result_and_return(pass) print_test_error(pass, false)
-
-bool print_os_error(void);
-bool filter_error(bool pass, uint16_t err);
-
-# if !defined(__WIN__)
-#  define handle_os_error(clib, fmt, ...) \
-     (void)clib; \
-     (void)_sir_handleerr(errno); \
-     (void)fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
-     print_os_error()
-# else /* __WIN__ */
-#  define handle_os_error(clib, fmt, ...) \
-     clib ? (void)_sir_handleerr(errno) : (void)_sir_handlewin32err(GetLastError()); \
-     (void)fprintf(stderr, "\t" RED(fmt) ":\n", __VA_ARGS__); \
-     print_os_error()
+# if defined(SIR_OS_LOG_ENABLED)
+void os_log_parent_activity(void* ctx);
+void os_log_child_activity(void* ctx);
 # endif
 
 /*
  * Utility functions, macros, and types
  */
 
-/** Arguments passed to worker threads. */
-typedef struct {
-    char log_file[SIR_MAXPATH];
-    bool pass;
-} thread_args;
+# define INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, p_name, init) \
+    sirinit var         = {0}; \
+    var.d_stdout.opts   = (o_stdout) > 0 ? (o_stdout) : SIRO_DEFAULT; \
+    var.d_stdout.levels = (l_stdout); \
+    var.d_stderr.opts   = (o_stderr) > 0 ? (o_stderr) : SIRO_DEFAULT; \
+    var.d_stderr.levels = (l_stderr); \
+    if (_sir_validstrnofail(p_name)) \
+        _sir_strncpy(var.name, SIR_MAXNAME, (p_name), SIR_MAXNAME); \
+    bool var##_init = false; \
+    if (init) \
+        var##_init = sir_init(&var); \
+    else \
+        (void)var##_init
 
-/** Returns a random number from the system's best PRNG, modulus upper_bound */
-uint32_t getrand(uint32_t upper_bound);
+# define INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, name) \
+    INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, name, true)
 
-/** Calls getrand() and returns true if even, false if odd. */
-static inline
-bool getrand_bool(uint32_t upper_bound) {
-    return ((!upper_bound) ? true : getrand(upper_bound) % 2 == 0);
-}
+# define INIT_SL(var, l_stdout, o_stdout, l_stderr, o_stderr, name) \
+    INIT_BASE(var, l_stdout, o_stdout, l_stderr, o_stderr, name, false)
 
-bool rmfile(const char* filename);
+# define INIT(var, l_stdout, o_stdout, l_stderr, o_stderr) \
+    INIT_N(var, l_stdout, o_stdout, l_stderr, o_stderr, "")
+
+/**
+ * Allows a specific error (identified by `err`) to be filtered out. Returns true
+ * if no error occurred or if `err` is the last error that occurred on the current
+ * thread; false otherwise.
+ */
+bool filter_error(bool pass, uint16_t err);
+
+void rmfile(const char* filename);
 void deletefiles(const char* search, const char* path, const char* filename, unsigned* data);
 void countfiles(const char* search, const char* path, const char* filename, unsigned* data);
 
 typedef void (*fileenumproc)(const char* search, const char* path, const char* filename,
     unsigned* data);
 bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* data);
-
-static inline
-void sir_timer_start(sir_time* timer) {
-    (void)_sir_msec_since(NULL, timer);
-}
-
-double sir_timer_elapsed(const sir_time* timer); /* msec */
-long sir_timer_getres(void); /* nsec */
-
-void sir_sleep_msec(uint32_t msec);
-size_t sir_readline(FILE* f, char* buf, size_t size);
-
-# if defined(SIR_OS_LOG_ENABLED)
-void os_log_parent_activity(void* ctx);
-void os_log_child_activity(void* ctx);
-# endif
-
-/** List of available command line arguments. */
-static const sir_cl_arg _cl_arg_list[] = {
-    {"--perf",       "", "Only run the performance measurement test"},
-    {"--only",       ""  ULINE("name") " [, " ULINE("name") ", ...]", "Only run the test(s) specified"},
-    {"--list",       "", "Prints a list of available test names for use with '" BOLD("--only") "'"},
-    {"--leave-logs", "", "Log files are not deleted so that they may be examined"},
-    {"--wait",       "", "After running test(s), waits for a keypress before exiting"},
-    {"--version",    "", "Prints the version of libsir that the test suite was built with"},
-    {"--help",       "", "Shows this message"},
-};
-
-bool mark_test_to_run(const char* name);
-
-void print_usage_info(void);
-void print_test_list(void);
-void print_libsir_version(void);
 
 #endif /* !_SIR_TESTS_H_INCLUDED */

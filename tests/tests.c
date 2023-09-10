@@ -62,7 +62,18 @@ static sir_test sir_tests[] = {
     {"get-version-info",        sirtest_getversioninfo, false, true}
 };
 
-static bool leave_logs = false;
+/** List of available command line arguments. */
+static const sir_cl_arg cl_args[] = {
+    {SIR_CL_PERFFLAG,      "", SIR_CL_PERFDESC},
+    {SIR_CL_ONLYFLAG,      ""  SIR_CL_ONLYUSAGE, SIR_CL_ONLYDESC},
+    {SIR_CL_LISTFLAG,      "", SIR_CL_LISTDESC},
+    {SIR_CL_LEAVELOGSFLAG, "", SIR_CL_LEAVELOGSDESC},
+    {SIR_CL_WAITFLAG,      "", SIR_CL_WAITDESC},
+    {SIR_CL_VERSIONFLAG,   "", SIR_CL_VERSIONDESC},
+    {SIR_CL_HELPFLAG,      "", SIR_CL_HELPDESC}
+};
+
+static sir_cl_config cl_cfg = {0};
 
 int main(int argc, char** argv) {
 #if defined(__HAIKU__) && !defined(DEBUG)
@@ -86,61 +97,13 @@ int main(int argc, char** argv) {
 # endif
 #endif
 
-    bool wait     = false;
-    bool only     = false;
-    size_t to_run = 0;
+    bool parsed = parse_cmd_line(argc, argv, cl_args, _sir_countof(cl_args),
+        sir_tests, _sir_countof(sir_tests), &cl_cfg);
+    if (!parsed)
+        return EXIT_FAILURE;
 
-    for (int n = 1; n < argc; n++) {
-        if (_sir_strsame(argv[n], _cl_arg_list[0].flag,
-            strnlen(_cl_arg_list[0].flag, SIR_MAXCLIFLAG))) { /* --perf */
-            only = mark_test_to_run("performance");
-            if (only)
-                to_run = 1;
-        } else if (_sir_strsame(argv[n], _cl_arg_list[1].flag,
-            strnlen(_cl_arg_list[1].flag, SIR_MAXCLIFLAG))) { /* --only */
-            while (++n < argc) {
-                if (_sir_validstrnofail(argv[n])) {
-                    if (*argv[n] == '-' || !mark_test_to_run(argv[n])) {
-                        ERROR_MSG("invalid argument: '%s'", argv[n]);
-                        print_usage_info();
-                        return EXIT_FAILURE;
-                    }
-                    to_run++;
-                }
-            }
-            if (0 == to_run) {
-                ERROR_MSG("value expected for '%s'", _cl_arg_list[1].flag);
-                print_usage_info();
-                return EXIT_FAILURE;
-            }
-            only = true;
-        } else if (_sir_strsame(argv[n], _cl_arg_list[2].flag,
-            strnlen(_cl_arg_list[1].flag, SIR_MAXCLIFLAG))) { /* --list */
-            print_test_list();
-            return EXIT_SUCCESS;
-        } else if (_sir_strsame(argv[n], _cl_arg_list[3].flag,
-            strnlen(_cl_arg_list[1].flag, SIR_MAXCLIFLAG))) { /* --leave-logs */
-            leave_logs = true;
-        } else if (_sir_strsame(argv[n], _cl_arg_list[4].flag,
-            strnlen(_cl_arg_list[1].flag, SIR_MAXCLIFLAG))) { /* --wait */
-            wait = true;
-        }  else if (_sir_strsame(argv[n], _cl_arg_list[5].flag,
-            strnlen(_cl_arg_list[1].flag, SIR_MAXCLIFLAG))) { /* --version */
-            print_libsir_version();
-            return EXIT_SUCCESS;
-        }else if (_sir_strsame(argv[n], _cl_arg_list[6].flag,
-            strnlen(_cl_arg_list[1].flag, SIR_MAXCLIFLAG))) { /* --help */
-            print_usage_info();
-            return EXIT_SUCCESS;
-        } else {
-            ERROR_MSG("unknown argument: '%s'", argv[n]);
-            print_usage_info();
-            return EXIT_FAILURE;
-        }
-    }
-
-    size_t first     = (only ? 0 : 1);
-    size_t tgt_tests = (only ? to_run : _sir_countof(sir_tests) - first);
+    size_t first     = (cl_cfg.only ? 0 : 1);
+    size_t tgt_tests = (cl_cfg.only ? cl_cfg.to_run : _sir_countof(sir_tests) - first);
     size_t passed    = 0;
     size_t ran       = 0;
     sir_time timer  = {0};
@@ -149,7 +112,7 @@ int main(int argc, char** argv) {
     sir_timer_start(&timer);
 
     for (size_t n = first; n < _sir_countof(sir_tests); n++) {
-        if (only && !sir_tests[n].run) {
+        if (cl_cfg.only && !sir_tests[n].run) {
             _sir_selflog("skipping '%s'; not marked to run", sir_tests[n].name);
             continue;
         }
@@ -176,12 +139,8 @@ int main(int argc, char** argv) {
         (void)printf("\n");
     }
 
-    if (wait) {
-        (void)printf(WHITEB(EMPH("press any key to exit...")) "\n");
-        char ch = '\0';
-        (void)_sir_getchar(&ch);
-        SIR_UNUSED(ch);
-    }
+    if (cl_cfg.wait)
+        wait_for_keypress();
 
     return passed == tgt_tests ? EXIT_SUCCESS : EXIT_FAILURE;
 }
@@ -197,7 +156,7 @@ bool sirtest_exceedmaxsize(void) {
     _sir_eqland(pass, sir_info("%s", toobig));
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_logwritesanity(void) {
@@ -253,11 +212,11 @@ bool sirtest_logwritesanity(void) {
 
         _sir_safefclose(&f);
         TEST_MSG("deleting %s...", logfilename);
-        (void)rmfile(logfilename);
+        rmfile(logfilename);
     }
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_threadidsanity(void)
@@ -338,11 +297,11 @@ bool sirtest_threadidsanity(void)
 
         _sir_safefclose(&f);
         TEST_MSG("deleting %s...", logfilename);
-        (void)rmfile(logfilename);
+        rmfile(logfilename);
     }
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_failnooutputdest(void) {
@@ -354,7 +313,7 @@ bool sirtest_failnooutputdest(void) {
     _sir_eqland(pass, !sir_notice("this goes nowhere!"));
 
     if (pass) {
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
         _sir_eqland(pass, sir_stdoutlevels(SIRL_INFO));
         _sir_eqland(pass, sir_info("this goes to stdout"));
@@ -369,11 +328,11 @@ bool sirtest_failnooutputdest(void) {
         if (0U != fid)
             _sir_eqland(pass, sir_remfile(fid));
 
-        (void)rmfile(logfilename);
+        rmfile(logfilename);
     }
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_failnulls(void) {
@@ -383,26 +342,26 @@ bool sirtest_failnulls(void) {
     _sir_eqland(pass, !sir_init(NULL));
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
     _sir_eqland(pass, sir_init(&si));
     _sir_eqland(pass, !sir_info(NULL)); //-V575 //-V618
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
     _sir_eqland(pass, 0U == sir_addfile(NULL, SIRL_ALL, SIRO_MSGONLY));
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
     _sir_eqland(pass, !sir_remfile(0U));
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_failemptymessage(void) {
@@ -412,7 +371,7 @@ bool sirtest_failemptymessage(void) {
     _sir_eqland(pass, !sir_debug("%s", ""));
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_filecachesanity(void) {
@@ -428,7 +387,7 @@ bool sirtest_filecachesanity(void) {
     for (size_t n = 0; n < numfiles - 1; n++) {
         char path[SIR_MAXPATH] = {0};
         (void)snprintf(path, SIR_MAXPATH, MAKE_LOG_NAME("test-%zu.log"), n);
-        (void)rmfile(path);
+        rmfile(path);
         ids[n] = sir_addfile(path, SIRL_ALL, (n % 2) ? odd : even);
         _sir_eqland(pass, 0U != ids[n] && sir_info("test %zu", n));
     }
@@ -440,7 +399,7 @@ bool sirtest_filecachesanity(void) {
         SIRL_ALL, SIRO_MSGONLY));
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
     _sir_eqland(pass, sir_info("test test test"));
 
@@ -480,13 +439,13 @@ bool sirtest_filecachesanity(void) {
 
         char path[SIR_MAXPATH] = {0};
         (void)snprintf(path, SIR_MAXPATH, MAKE_LOG_NAME("test-%zu.log"), removeorder[n]);
-        (void)rmfile(path);
+        rmfile(path);
     }
 
     _sir_eqland(pass, sir_info("test test test"));
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_failinvalidfilename(void) {
@@ -496,10 +455,10 @@ bool sirtest_failinvalidfilename(void) {
     _sir_eqland(pass, 0U == sir_addfile("bad file!/name", SIRL_ALL, SIRO_MSGONLY));
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_failfilebadpermission(void) {
@@ -524,10 +483,10 @@ bool sirtest_failfilebadpermission(void) {
     _sir_eqland(pass, 0U == sir_addfile(path, SIRL_ALL, SIRO_MSGONLY));
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_faildupefile(void) {
@@ -557,7 +516,7 @@ bool sirtest_faildupefile(void) {
     _sir_eqland(pass, 0U == sir_addfile(filename1, SIRL_ALL, SIRO_DEFAULT));
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
     TEST_MSG("adding log file '%s'...", filename2);
 
@@ -566,7 +525,7 @@ bool sirtest_faildupefile(void) {
     _sir_eqland(pass, 0U == sir_addfile(filename2, SIRL_ALL, SIRO_DEFAULT));
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
     TEST_MSG("adding log file '%s'...", filename3);
 
@@ -584,19 +543,19 @@ bool sirtest_faildupefile(void) {
     _sir_eqland(pass, 0U == sir_addfile(filename3, SIRL_ALL, SIRO_DEFAULT));
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
     /* don't remove all of the log files in order to also test
      * cache tear-down. */
     _sir_eqland(pass, sir_remfile(fid));
     _sir_eqland(pass, sir_cleanup());
 
-    (void)rmfile(filename1);
-    (void)rmfile(filename2);
-    (void)rmfile(filename3);
-    (void)rmfile(filename4);
+    rmfile(filename1);
+    rmfile(filename2);
+    rmfile(filename3);
+    rmfile(filename4);
 
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_failremovebadfile(void) {
@@ -607,10 +566,10 @@ bool sirtest_failremovebadfile(void) {
     _sir_eqland(pass, !sir_remfile(invalidid));
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_rollandarchivefile(void) {
@@ -628,7 +587,7 @@ bool sirtest_rollandarchivefile(void) {
 
     unsigned delcount = 0U;
     if (!enumfiles(SIR_TESTLOGDIR, logbasename, deletefiles, &delcount)) {
-        handle_os_error(false, "failed to enumerate log files with base name: %s!",
+        HANDLE_OS_ERROR(false, "failed to enumerate log files with base name: %s!",
             logbasename);
         return false;
     }
@@ -640,18 +599,18 @@ bool sirtest_rollandarchivefile(void) {
     _sir_fopen(&f, logfilename, "w");
 
     if (!f)
-        return print_os_error();
+        return print_test_error(false, false);
 
     TEST_MSG("filling %s nearly to SIR_FROLLSIZE...", logfilename);
 
     if (0 != fseek(f, fillsize, SEEK_SET)) {
-        handle_os_error(true, "fseek in file %s failed!", logfilename);
+        HANDLE_OS_ERROR(true, "fseek in file %s failed!", logfilename);
         _sir_safefclose(&f);
         return false;
     }
 
     if (EOF == fputc('\0', f)) {
-        handle_os_error(true, "fputc in file %s failed!", logfilename);
+        HANDLE_OS_ERROR(true, "fputc in file %s failed!", logfilename);
         _sir_safefclose(&f);
         return false;
     }
@@ -684,7 +643,7 @@ bool sirtest_rollandarchivefile(void) {
         /* look for files matching the original name. */
         unsigned foundlogs = 0U;
         if (!enumfiles(SIR_TESTLOGDIR, logbasename, countfiles, &foundlogs)) {
-            handle_os_error(false, "failed to enumerate log files with base name: %s!", logbasename);
+            HANDLE_OS_ERROR(false, "failed to enumerate log files with base name: %s!", logbasename);
             pass = false;
         }
 
@@ -697,7 +656,7 @@ bool sirtest_rollandarchivefile(void) {
 
     delcount = 0U;
     if (!enumfiles(SIR_TESTLOGDIR, logbasename, deletefiles, &delcount)) {
-        handle_os_error(false, "failed to enumerate log files with base name: %s!", logbasename);
+        HANDLE_OS_ERROR(false, "failed to enumerate log files with base name: %s!", logbasename);
         pass = false;
     }
 
@@ -705,16 +664,16 @@ bool sirtest_rollandarchivefile(void) {
         TEST_MSG("found and removed %u log file(s)", delcount);
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_failwithoutinit(void) {
     bool pass = !sir_info("sir isn't initialized; this needs to fail");
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_failinittwice(void) {
@@ -725,10 +684,10 @@ bool sirtest_failinittwice(void) {
     _sir_eqland(pass, !si2_init);
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_failinvalidinitdata(void) {
@@ -741,10 +700,10 @@ bool sirtest_failinvalidinitdata(void) {
     bool pass = !sir_init(&si);
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
     (void)sir_cleanup();
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_initcleanupinit(void) {
@@ -760,7 +719,7 @@ bool sirtest_initcleanupinit(void) {
     _sir_eqland(pass, sir_info("init called again after re-init; testing output..."));
     _sir_eqland(pass, sir_cleanup());
 
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_initmakeinit(void) {
@@ -772,7 +731,7 @@ bool sirtest_initmakeinit(void) {
     _sir_eqland(pass, sir_info("initialized with sir_makeinit"));
     _sir_eqland(pass, sir_cleanup());
 
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_failaftercleanup(void) {
@@ -783,9 +742,9 @@ bool sirtest_failaftercleanup(void) {
     _sir_eqland(pass, !sir_info("already cleaned up; this needs to fail"));
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_errorsanity(void) {
@@ -832,7 +791,7 @@ bool sirtest_errorsanity(void) {
     }
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_textstylesanity(void) {
@@ -948,7 +907,7 @@ bool sirtest_textstylesanity(void) {
 
     _sir_eqland(pass, sir_cleanup());
 
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 #if defined(__clang__) && !defined(__EMBARCADEROC__)
@@ -1056,7 +1015,7 @@ bool sirtest_optionssanity(void) {
     PASSFAIL_MSG(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_levelssanity(void) {
@@ -1150,7 +1109,7 @@ bool sirtest_levelssanity(void) {
     PASSFAIL_MSG(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_mutexsanity(void) {
@@ -1208,7 +1167,7 @@ bool sirtest_mutexsanity(void) {
     PASSFAIL_MSG(pass, "\t--- pass invalid arguments: %s ---\n\n", PRN_PASS(pass));
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass); // -V1020
+    return PRINT_RESULT_RETURN(pass); // -V1020
 }
 
 bool sirtest_perf(void) {
@@ -1310,7 +1269,7 @@ bool sirtest_perf(void) {
         TEST_MSG(DGRAY("deleted %u log file(s)"), deleted);
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_updatesanity(void) {
@@ -1336,7 +1295,7 @@ bool sirtest_updatesanity(void) {
         SIRL_INFO, SIRL_DEBUG
     };
 
-    (void)rmfile(logfile);
+    rmfile(logfile);
     sirfileid id1 = sir_addfile(logfile, SIRL_DEFAULT, SIRO_DEFAULT);
     _sir_eqland(pass, 0 != id1);
 
@@ -1403,10 +1362,10 @@ bool sirtest_updatesanity(void) {
     }
 
     _sir_eqland(pass, sir_remfile(id1));
-    (void)rmfile(logfile);
+    rmfile(logfile);
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 #if defined(SIR_SYSLOG_ENABLED) || defined(SIR_OS_LOG_ENABLED)
@@ -1499,7 +1458,7 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
             break;
     }
 
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 #endif
 
@@ -1523,28 +1482,28 @@ static bool generic_disabled_syslog_test(const char* sl_name, const char* identi
     _sir_eqland(pass, !sir_sysloglevels(SIRL_ALL));
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
     TEST_MSG_0("setting options...");
     _sir_eqland(pass, !sir_syslogopts(SIRO_DEFAULT));
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
     TEST_MSG_0("setting identity...");
     _sir_eqland(pass, !sir_syslogid(identity));
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
     TEST_MSG_0("setting category...");
     _sir_eqland(pass, !sir_syslogcat(category));
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 #endif
 
@@ -1552,14 +1511,14 @@ bool sirtest_syslog(void) {
 #if !defined(SIR_SYSLOG_ENABLED)
 # if defined(SIR_NO_SYSTEM_LOGGERS)
     bool pass = generic_disabled_syslog_test("syslog", "sirtests", "tests");
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 # else
     TEST_MSG_0(DGRAY("SIR_SYSLOG_ENABLED is not defined; skipping"));
     return true;
 # endif
 #else
     bool pass = generic_syslog_test("syslog", "sirtests", "tests");
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 #endif
 }
 
@@ -1569,7 +1528,7 @@ bool sirtest_os_log(void) {
     return true;
 #else
     bool pass = generic_syslog_test("os_log", "com.aremmell.libsir.tests", "tests");
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 #endif
 }
 
@@ -1840,7 +1799,7 @@ bool sirtest_filesystem(void) {
     bool ret = _sir_openfile(&f, "file.exists", "r", SIR_PATH_REL_TO_APP);
     if (!ret) {
         pass = false;
-        handle_os_error(true, "fopen(%s) failed!", "file.exists");
+        HANDLE_OS_ERROR(true, "fopen(%s) failed!", "file.exists");
     } else {
         int fd = fileno(f);
         if (!_sir_validfd(fd)) {
@@ -1854,7 +1813,7 @@ bool sirtest_filesystem(void) {
     _sir_safefclose(&f);
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_squelchspam(void) {
@@ -1922,7 +1881,7 @@ bool sirtest_squelchspam(void) {
     }
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_pluginloader(void) {
@@ -1961,14 +1920,14 @@ bool sirtest_pluginloader(void) {
     _sir_eqland(pass, 0 == id);
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 
     TEST_MSG("unloading good plugin: '%s'...", plugin1);
     /* also try the unload function. */
     _sir_eqland(pass, !sir_unloadplugin(id));
 
     if (pass)
-        print_expected_error();
+        PRINT_EXPECTED_ERROR();
 #else
     /* load a valid, well-behaved plugin. */
     TEST_MSG("loading good plugin: '%s'...", plugin1);
@@ -2052,7 +2011,7 @@ bool sirtest_pluginloader(void) {
     print_test_error(pass, pass);
 #endif
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_getversioninfo(void) {
@@ -2075,7 +2034,7 @@ bool sirtest_getversioninfo(void) {
     TEST_MSG("prerelease: %s", prerel ? "true" : "false");
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 enum {
@@ -2128,7 +2087,7 @@ bool sirtest_threadpool(void) {
     }
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 #if !defined(__WIN__)
@@ -2136,6 +2095,11 @@ static void* threadrace_thread(void* arg);
 #else /* __WIN__ */
 static unsigned __stdcall threadrace_thread(void* arg);
 #endif
+
+typedef struct {
+    char log_file[SIR_MAXPATH];
+    bool pass;
+} thread_args;
 
 bool sirtest_threadrace(void) {
 #if !defined(__WIN__)
@@ -2150,9 +2114,8 @@ bool sirtest_threadrace(void) {
     size_t last_created = 0;
 
     thread_args* heap_args = (thread_args*)calloc(NUM_THREADS, sizeof(thread_args));
-    _sir_eqland(pass, NULL != heap_args);
     if (!heap_args) {
-        handle_os_error(true, "calloc(%zu) bytes failed!", NUM_THREADS * sizeof(thread_args));
+        HANDLE_OS_ERROR(true, "calloc() %zu bytes failed!", NUM_THREADS * sizeof(thread_args));
         return false;
     }
 
@@ -2168,11 +2131,11 @@ bool sirtest_threadrace(void) {
         int create = pthread_create(&thrds[n], NULL, threadrace_thread, (void*)&heap_args[n]);
         if (0 != create) {
             errno = create;
-            handle_os_error(true, "pthread_create() for thread #%zu failed!", n + 1);
+            HANDLE_OS_ERROR(true, "pthread_create() for thread #%zu failed!", n + 1);
 #else /* __WIN__ */
         thrds[n] = _beginthreadex(NULL, 0, threadrace_thread, (void*)&heap_args[n], 0, NULL);
         if (0 == thrds[n]) {
-            handle_os_error(true, "_beginthreadex() for thread #%zu failed!", n + 1);
+            HANDLE_OS_ERROR(true, "_beginthreadex() for thread #%zu failed!", n + 1);
 #endif
             pass = false;
             break;
@@ -2191,13 +2154,13 @@ bool sirtest_threadrace(void) {
             if (0 != join) {
                 joined = false;
                 errno  = join;
-                handle_os_error(true, "pthread_join() for thread #%zu failed!", j + 1);
+                HANDLE_OS_ERROR(true, "pthread_join() for thread #%zu failed!", j + 1);
             }
 #else /* __WIN__ */
             DWORD wait = WaitForSingleObject((HANDLE)thrds[j], INFINITE);
             if (WAIT_OBJECT_0 != wait) {
                 joined = false;
-                handle_os_error(false, "WaitForSingleObject() for thread #%zu (%p) failed!", j + 1,
+                HANDLE_OS_ERROR(false, "WaitForSingleObject() for thread #%zu (%p) failed!", j + 1,
                     (HANDLE)thrds[j]);
             }
 #endif
@@ -2217,7 +2180,7 @@ bool sirtest_threadrace(void) {
     _sir_safefree(&heap_args);
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 #if !defined(__WIN__)
@@ -2228,7 +2191,7 @@ unsigned __stdcall threadrace_thread(void* arg) {
     pid_t threadid       = _sir_gettid();
     thread_args* my_args = (thread_args*)arg;
 
-    (void)rmfile(my_args->log_file);
+    rmfile(my_args->log_file);
     sirfileid id = sir_addfile(my_args->log_file, SIRL_ALL, SIRO_MSGONLY);
 
     if (0U == id) {
@@ -2297,7 +2260,7 @@ unsigned __stdcall threadrace_thread(void* arg) {
 
     my_args->pass = print_test_error(sir_remfile(id), false);
 
-    (void)rmfile(my_args->log_file);
+    rmfile(my_args->log_file);
 
 #if !defined(__WIN__)
     return NULL;
@@ -2312,205 +2275,9 @@ bool sirtest_XXX(void) {
     bool pass = si_init;
 
     _sir_eqland(pass, sir_cleanup());
-    return print_result_and_return(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 */
-
-/* ========================== end tests ========================== */
-
-bool print_test_error(bool result, bool expected) {
-    char message[SIR_MAXERROR] = {0};
-    uint16_t code              = sir_geterror(message);
-
-    if (!expected && !result && SIR_E_NOERROR != code)
-        TEST_MSG(RED("!! Unexpected (%"PRIu16", %s)"), code, message);
-    else if (expected && SIR_E_NOERROR != code)
-        TEST_MSG(GREEN("Expected (%"PRIu16", %s)"), code, message);
-
-    return result;
-}
-
-bool print_os_error(void) {
-    char message[SIR_MAXERROR] = {0};
-    uint16_t code              = sir_geterror(message);
-    ERROR_MSG("\tOS error: (%"PRIu16", %s)", code, message);
-    return false;
-}
-
-bool filter_error(bool pass, uint16_t err) {
-    if (!pass) {
-        char message[SIR_MAXERROR] = {0};
-        uint16_t code              = sir_geterror(message);
-        if (code != err)
-            return false;
-    }
-    return true;
-}
-
-uint32_t getrand(uint32_t upper_bound) {
-#if !defined(__WIN__) || defined(__EMBARCADEROC__)
-# if defined(__MACOS__) || defined(__BSD__) || defined(__serenity__) || \
-     defined(__SOLARIS__) || defined(__ANDROID__) || defined(__CYGWIN__) || \
-     (defined(__linux__) && defined(__GLIBC__) && GLIBC_VERSION >= 23600)
-    if (upper_bound < 2U)
-        upper_bound = 2U;
-    return arc4random_uniform(upper_bound);
-# else
-#  if defined(__EMBARCADEROC__)
-    return (uint32_t)(random(upper_bound));
-#  else
-    return (uint32_t)(random() % upper_bound);
-#  endif
-# endif
-#else /* __WIN__ */
-    uint32_t ctx = 0;
-    if (0 != rand_s(&ctx))
-        ctx = (uint32_t)rand();
-    return ctx % upper_bound;
-#endif
-}
-
-bool rmfile(const char* filename) {
-    bool removed = false;
-
-    /* return true if leave_logs is true. */
-    if (leave_logs) {
-        TEST_MSG(WHITE("not deleting '%s' due to '%s'"),
-            filename, _cl_arg_list[3].flag);
-        return true;
-    }
-
-    /* return true if the file doesn't exist. */
-    struct stat st;
-    if (0 != stat(filename, &st)) {
-        if (ENOENT == errno)
-            return true;
-
-        handle_os_error(true, "failed to stat %s!", filename);
-        return false;
-    }
-
-    if (!_sir_deletefile(filename)) {
-        handle_os_error(false, "failed to delete %s!", filename);
-    } else {
-        TEST_MSG(DGRAY("deleted %s (%ld bytes)"), filename,
-            (long)st.st_size);
-    }
-
-    return removed;
-}
-
-void deletefiles(const char* search, const char* path, const char* filename, unsigned* data) {
-    if (strstr(filename, search)) {
-        char filepath[SIR_MAXPATH];
-        _sir_snprintf_trunc(filepath, SIR_MAXPATH, "%s%s", path, filename);
-
-        (void)rmfile(filepath);
-        (*data)++;
-    }
-}
-
-void countfiles(const char* search, const char* path, const char* filename, unsigned* data) {
-    SIR_UNUSED(path);
-    if (strstr(filename, search))
-        (*data)++;
-}
-
-bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* data) {
-#if !defined(__WIN__)
-    DIR* d = opendir(path);
-    if (!d)
-        return print_os_error();
-
-    rewinddir(d);
-    const struct dirent* di = readdir(d);
-    if (!di) {
-        closedir(d);
-        return print_os_error();
-    }
-
-    while (NULL != di) {
-        cb(search, path, di->d_name, data);
-        di = readdir(d);
-    }
-
-    closedir(d);
-    d = NULL;
-#else /* __WIN__ */
-    WIN32_FIND_DATA finddata = {0};
-    char buf[SIR_MAXPATH]    = {0};
-
-    (void)snprintf(buf, SIR_MAXPATH, "%s/*", path);
-
-    HANDLE enumerator = FindFirstFile(buf, &finddata);
-
-    if (INVALID_HANDLE_VALUE == enumerator)
-        return false;
-
-    do {
-        cb(search, path, finddata.cFileName, data);
-    } while (FindNextFile(enumerator, &finddata) > 0);
-
-    FindClose(enumerator);
-    enumerator = NULL;
-#endif
-
-    return true;
-}
-
-double sir_timer_elapsed(const sir_time* timer) {
-    sir_time now;
-    return _sir_msec_since(timer, &now);
-}
-
-long sir_timer_getres(void) {
-    long retval = 0L;
-#if !defined(__WIN__)
-    struct timespec res;
-    if (0 == clock_getres(SIR_INTERVALCLOCK, &res)) {
-        retval = res.tv_nsec;
-    } else {
-        handle_os_error(true, "clock_getres(%d) failed!", CLOCK_CAST SIR_INTERVALCLOCK); // GCOVR_EXCL_LINE
-    }
-#else /* __WIN__ */
-    LARGE_INTEGER cntr_freq;
-    (void)QueryPerformanceFrequency(&cntr_freq);
-    if (cntr_freq.QuadPart <= 0)
-        retval = 0L;
-    else
-        retval = (long)(ceil(((double)cntr_freq.QuadPart) / 1e9));
-#endif
-    return retval;
-}
-
-void sir_sleep_msec(uint32_t msec) {
-    if (0U == msec)
-        return;
-
-#if !defined(__WIN__)
-    struct timespec ts = { msec / 1000, (msec % 1000) * 1000000 };
-    (void)nanosleep(&ts, NULL);
-#else /* __WIN__ */
-    (void)SleepEx((DWORD)msec, TRUE);
-#endif
-}
-
-size_t sir_readline(FILE* f, char* buf, size_t size) {
-    if (!f || !buf || 0 == size)
-        return 0;
-
-    int ch     = 0;
-    size_t idx = 0;
-
-    while (idx < size) {
-        ch = getc(f);
-        if (EOF == ch || '\n' == ch)
-            break;
-        buf[idx++] = (char)ch;
-    }
-
-    return (0 == ferror(f)) ? idx : 0;
-}
 
 #if defined(SIR_OS_LOG_ENABLED)
 void os_log_parent_activity(void* ctx) {
@@ -2544,72 +2311,93 @@ void os_log_child_activity(void* ctx) {
 }
 #endif
 
-bool mark_test_to_run(const char* name) {
-    bool found = false;
-    for (size_t t = 0; t < _sir_countof(sir_tests); t++) {
-        if (_sir_strsame(name, sir_tests[t].name,
-            strnlen(sir_tests[t].name, SIR_MAXTESTNAME))) {
-            found = sir_tests[t].run = true;
-            break;
-        }
-    }
+/* ========================== end tests ========================== */
 
-    SIR_ASSERT(found);
-    return found;
+bool filter_error(bool pass, uint16_t err) {
+    if (!pass) {
+        char msg[SIR_MAXERROR] = {0};
+        if (sir_geterror(msg) != err)
+            return false;
+    }
+    return true;
 }
 
-void print_usage_info(void) {
-    size_t longest = 0;
-    for (size_t i = 0; i < _sir_countof(_cl_arg_list); i++) {
-        size_t len = strnlen(_cl_arg_list[i].flag, SIR_MAXCLIFLAG);
-        if (len > longest)
-            longest = len;
+void rmfile(const char* filename) {
+    /* return true if leave_logs is true. */
+    if (cl_cfg.leave_logs) {
+        TEST_MSG(WHITE("not deleting '%s' due to '%s'"), filename, SIR_CL_LEAVELOGSFLAG);
+        return;
     }
 
-    (void)fprintf(stderr, "\n" WHITE("Usage:") "\n\n");
-
-    for (size_t i = 0; i < _sir_countof(_cl_arg_list); i++) {
-        (void)fprintf(stderr, "\t%s ", _cl_arg_list[i].flag);
-
-        size_t len = strnlen(_cl_arg_list[i].flag, SIR_MAXCLIFLAG);
-        if (len < longest)
-            for (size_t n = len; n < longest; n++)
-                (void)fprintf(stderr, " ");
-
-        (void)fprintf(stderr, "%s%s%s\n", _cl_arg_list[i].usage,
-            strnlen(_cl_arg_list[i].usage, SIR_MAXCLIUSAGE) > 0 ? " " : "",
-            _cl_arg_list[i].desc);
+    /* return true if the file doesn't exist. */
+    struct stat st;
+    if (0 != stat(filename, &st)) {
+        if (ENOENT == errno)
+            return;
+        HANDLE_OS_ERROR(true, "failed to stat %s!", filename);
+        return;
     }
 
-    (void)fprintf(stderr, "\n");
+    if (!_sir_deletefile(filename))
+        HANDLE_OS_ERROR(false, "failed to delete %s!", filename);
+    else
+        TEST_MSG(DGRAY("deleted %s (%ld bytes)"), filename, (long)st.st_size);
 }
 
-void print_test_list(void) {
-    size_t longest = 0;
-    for (size_t i = 0; i < _sir_countof(sir_tests); i++) {
-        size_t len = strnlen(sir_tests[i].name, SIR_MAXTESTNAME);
-        if (len > longest)
-            longest = len;
+void deletefiles(const char* search, const char* path, const char* filename, unsigned* data) {
+    if (strstr(filename, search)) {
+        char filepath[SIR_MAXPATH];
+        _sir_snprintf_trunc(filepath, SIR_MAXPATH, "%s%s", path, filename);
+
+        rmfile(filepath);
+        (*data)++;
     }
-
-    printf("\n" WHITE("Available tests:") "\n\n");
-
-    for (size_t i = 0; i < _sir_countof(sir_tests); i++) {
-        (void)printf("\t%s\t", sir_tests[i].name);
-
-        size_t len = strnlen(sir_tests[i].name, SIR_MAXTESTNAME);
-        if (len < longest)
-            for (size_t n = len; n < longest; n++)
-                printf(" ");
-
-        if ((i % 2) != 0 || i == _sir_countof(sir_tests) - 1)
-            (void)printf("\n");
-    }
-
-    (void)printf("\n");
 }
 
-void print_libsir_version(void) {
-    (void)printf("\n"ULINE("libsir") " %s (%s)\n\n", sir_getversionstring(),
-        sir_isprerelease() ? "prerelease" : "release");
+void countfiles(const char* search, const char* path, const char* filename, unsigned* data) {
+    SIR_UNUSED(path);
+    if (strstr(filename, search))
+        (*data)++;
+}
+
+bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* data) {
+#if !defined(__WIN__)
+    DIR* d = opendir(path);
+    if (!d)
+        return print_test_error(false, false);
+
+    rewinddir(d);
+    const struct dirent* di = readdir(d);
+    if (!di) {
+        closedir(d);
+        return print_test_error(false, false);
+    }
+
+    while (NULL != di) {
+        cb(search, path, di->d_name, data);
+        di = readdir(d);
+    }
+
+    closedir(d);
+    d = NULL;
+#else /* __WIN__ */
+    WIN32_FIND_DATA finddata = {0};
+    char buf[SIR_MAXPATH]    = {0};
+
+    (void)snprintf(buf, SIR_MAXPATH, "%s/*", path);
+
+    HANDLE enumerator = FindFirstFile(buf, &finddata);
+
+    if (INVALID_HANDLE_VALUE == enumerator)
+        return false;
+
+    do {
+        cb(search, path, finddata.cFileName, data);
+    } while (FindNextFile(enumerator, &finddata) > 0);
+
+    FindClose(enumerator);
+    enumerator = NULL;
+#endif
+
+    return true;
 }

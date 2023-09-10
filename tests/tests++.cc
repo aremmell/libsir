@@ -6,7 +6,8 @@ using namespace std;
 using namespace sir;
 using namespace sir::tests;
 
-static test_vector tests = {
+/** List of available tests. */
+static sir_test sirxx_tests[] = {
     {"init-cleanup-raii",   raii_init_cleanup, false, true},
     {"init-cleanup-manual", manual_init_cleanup, false, true},
     {"error-handling",      error_handling, false, true},
@@ -16,16 +17,30 @@ static test_vector tests = {
     {"format-std-iostream", std_iostream_format, false, true}
 };
 
+/** List of available command line arguments. */
+static const sir_cl_arg cl_args[] = {
+    {SIR_CL_ONLYFLAG,      ""  SIR_CL_ONLYUSAGE, SIR_CL_ONLYDESC},
+    {SIR_CL_LISTFLAG,      "", SIR_CL_LISTDESC},
+    {SIR_CL_LEAVELOGSFLAG, "", SIR_CL_LEAVELOGSDESC},
+    {SIR_CL_WAITFLAG,      "", SIR_CL_WAITDESC},
+    {SIR_CL_VERSIONFLAG,   "", SIR_CL_VERSIONDESC},
+    {SIR_CL_HELPFLAG,      "", SIR_CL_HELPDESC}
+};
+
+static sir_cl_config cl_cfg = {0};
+
 int main(int argc, char** argv) {
-    SIR_UNUSED(argc);
-    SIR_UNUSED(argv);
+    if (!parse_cmd_line(argc, argv, cl_args, _sir_countof(cl_args),
+        sirxx_tests, _sir_countof(sirxx_tests), &cl_cfg))
+        return EXIT_FAILURE;
 
     int retval = EXIT_SUCCESS;
     try {
-        // TODO: implement CLI parser
         // TODO: consolidate main() from tests.c
         print_intro(0);
 
+        if (cl_cfg.wait)
+            wait_for_keypress();
     } catch (const std::exception& ex) {
         ERROR_MSG("std::exception: '%s'; exiting!", ex.what());
         retval = EXIT_FAILURE;

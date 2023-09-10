@@ -28,7 +28,6 @@
 
 # include "sir.hh"
 # include "tests_shared.h"
-# include <vector>
 
 /**
  * @addtogroup tests
@@ -38,9 +37,6 @@
 /** Contains the C++ tests and test rig implementation. */
 namespace sir::tests
 {
-    /** Vector of test data. */
-    typedef std::vector<sir_test> test_vector;
-
     /**
      * @test raii_init_cleanup
      * @brief Ensure that RAII loggers are functioning properly.
