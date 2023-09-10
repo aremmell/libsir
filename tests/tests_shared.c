@@ -74,6 +74,8 @@ bool mark_test_to_run(const char* const name, sir_test* tests, size_t num_tests)
 }
 
 void print_test_list(sir_test* tests, size_t num_tests) {
+    static const size_t tab_size = 4;
+
     size_t longest = 0;
     for (size_t i = 0; i < num_tests; i++) {
         size_t len = strnlen(tests[i].name, SIR_MAXTESTNAME);
@@ -84,12 +86,13 @@ void print_test_list(sir_test* tests, size_t num_tests) {
     (void)printf("\n" WHITE("Available tests:") "\n\n");
 
     for (size_t i = 0; i < num_tests; i++) {
-        (void)printf("\t%s\t", tests[i].name);
+        (void)printf("\t%s", tests[i].name);
 
         size_t len = strnlen(tests[i].name, SIR_MAXTESTNAME);
-        if (len < longest)
-            for (size_t n = len; n < longest; n++)
+        if (len < longest + tab_size) {
+            for (size_t n = len; n < longest + tab_size; n++)
                 (void)printf(" ");
+        }
 
         if ((i % 2) != 0 || i == num_tests - 1)
             (void)printf("\n");
@@ -184,6 +187,7 @@ bool parse_cmd_line(int argc, char** argv, const sir_cl_arg* args, size_t num_ar
                 print_usage_info(args, num_args);
                 return false;
             }
+            config->only = true;
         } else if (_sir_strsame(this_arg->flag, SIR_CL_LISTFLAG, strlen(SIR_CL_LISTFLAG))) {
             print_test_list(tests, num_tests);
             return false;
