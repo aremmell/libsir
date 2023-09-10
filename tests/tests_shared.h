@@ -544,6 +544,7 @@ void rmfile(const char* filename, bool leave_logs) {
  * Enumerates files at `path`, and if the filename contains `search`, `count` is
  * incremented. If `del` is true, the file is deleted.
  */
+static inline
 bool enumfiles(const char* path, const char* search, bool del, unsigned* count) {
 #if !defined(__WIN__)
     DIR* d = opendir(path);
