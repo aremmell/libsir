@@ -263,7 +263,7 @@ bool sirtest_logwritesanity(void) {
 bool sirtest_threadidsanity(void)
 {
 #if defined(SIR_NO_THREAD_NAMES)
-    TEST_MSG(DGRAY("test skipped for this system configuration"));
+    TEST_MSG_0(DGRAY("test skipped for this system configuration"));
     return true;
 #endif
     INIT(si, SIRL_ALL, 0, 0, 0);

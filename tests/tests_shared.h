@@ -73,7 +73,7 @@ extern "C" {
 # define TEST_MSG(msg, ...) (void)printf("\t" msg "\n", __VA_ARGS__)
 
 /** TEST_MSG but no varargs. Use when `msg` is just a string. */
-# define TEST_MSG_0(msg) (void)printf("\t" msg "\n");
+# define TEST_MSG_0(msg) (void)printf("\t" msg "\n")
 
 /** Prints `msg` in red to stderr. */
 # define ERROR_MSG(msg, ...) (void)fprintf(stderr, RED(msg) "\n", __VA_ARGS__)
