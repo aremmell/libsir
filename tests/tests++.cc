@@ -78,8 +78,7 @@ int main(int argc, char** argv) {
 
             print_test_intro(ran + 1, tgt_tests, sirxx_tests[n].name);
 
-            sirxx_tests[n].pass = sirxx_tests[n].fn();
-            if (sirxx_tests[n].pass)
+            if (sirxx_tests[n].pass = sirxx_tests[n].fn(); sirxx_tests[n].pass)
                 passed++;
 
             ran++;
@@ -95,6 +94,7 @@ int main(int argc, char** argv) {
             for (size_t t = 0; t < _sir_countof(sirxx_tests); t++)
                 if (!sirxx_tests[t].pass)
                     print_failed_test(sirxx_tests[t].name);
+
             (void)printf("\n");
         }
 
@@ -131,6 +131,7 @@ bool sir::tests::raii_init_cleanup() {
         _sir_eqland(pass, log.debug("Cleanup will be performed via destructor"));
     } while (false);
 
+     /* should fail; already cleaned up. */
     _sir_eqland(pass, !sir_cleanup());
 
     _SIR_TEST_END
@@ -142,7 +143,7 @@ bool sir::tests::manual_init_cleanup() {
     logger<false, default_adapter> log;
     _sir_eqland(pass, log.init());
 
-    _sir_eqland(pass, log.debug("Manually initialized using default_init_policy"));
+    _sir_eqland(pass, log.debug("Manually initialized"));
     _sir_eqland(pass, log.debug("Will not clean up in the destructor; cleaning up manually"));
 
     _sir_eqland(pass, log.cleanup());
@@ -236,9 +237,7 @@ bool sir::tests::std_iostream_format() {
     _SIR_TEST_BEGIN
 
     default_logger log;
-
-    log.debug_stream << "ABCDEF";
-    log.debug_stream << "GHIJKLMNOPQRSTUVWXYZ" << 1234 << "\n";
+    log.debug_stream << "If you can see this, std::iostream is working." << endl;
 
     _SIR_TEST_END
 #else
