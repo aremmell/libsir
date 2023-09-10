@@ -46,7 +46,7 @@ namespace sir::tests
 
     /**
      * @test manual_init_cleanup
-     * @brief Ensure that manually initializing and cleaning up is working properly.
+     * @brief Ensure that manual initialization and cleanup is working properly.
      * @returns `true` if the test succeeded, `false` otherwise.
      */
     bool manual_init_cleanup();
@@ -94,7 +94,7 @@ namespace sir::tests
     //bool ();
 } // !namespace sir::tests
 
-/* @} */
+/** @} */
 
 /**
  * Macros
