@@ -232,6 +232,7 @@ bool sir::tests::fmt_format() {
 }
 
 bool sir::tests::std_iostream_format() {
+#if !defined(SIR_NO_STD_IOSTREAM)
     _SIR_TEST_BEGIN
 
     default_logger log;
@@ -240,4 +241,8 @@ bool sir::tests::std_iostream_format() {
     log.debug_stream << "GHIJKLMNOPQRSTUVWXYZ" << 1234 << "\n";
 
     _SIR_TEST_END
+#else
+    TEST_MSG_0("std::iostream support not enabled; skipping");
+    pass = true;
+#endif
 }
