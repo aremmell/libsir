@@ -39,6 +39,21 @@ else
 endif
 
 ##############################################################################
+# Emscripten for Node.js
+
+ifneq "$(findstring emcc,$(CC))" ""
+  EMSCRIPTEN?=1
+endif
+
+ifeq ($(EMSCRIPTEN),1)
+  AR=emar
+  SIR_CSTD=-std=gnu11
+  SIR_CFLAGS+=-pthread
+  SIR_LDFLAGS=-lnoderawfs.js -lnodefs.js
+  SIR_NO_PLUGINS=1
+endif
+
+##############################################################################
 # LLVM-MinGW ARMv7
 
 ifneq "$(findstring armv7-w64-mingw32-clang,$(CC))" ""

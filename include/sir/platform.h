@@ -141,6 +141,13 @@
 #    define SIR_PTHREAD_GETNAME_NP
 #   endif
 #  else
+#   if defined(__EMSCRIPTEN__)
+#    define __USE_GNU
+#    define _GNU_SOURCE 1
+#    undef SIR_NO_THREAD_NAMES
+#    define SIR_NO_THREAD_NAMES
+#    include <emscripten.h>
+#   endif
 #   if defined(__HAIKU__)
 #    if !defined(__USE_GNU)
 #     define __USE_GNU
@@ -451,7 +458,7 @@ _set_thread_local_invalid_parameter_handler(
 /** The clock used to measure intervals. */
 #  if defined(CLOCK_UPTIME)
 #   define SIR_INTERVALCLOCK CLOCK_UPTIME
-#  elif defined(CLOCK_BOOTTIME)
+#  elif defined(CLOCK_BOOTTIME) && !defined(__EMSCRIPTEN__)
 #   define SIR_INTERVALCLOCK CLOCK_BOOTTIME
 #  elif defined(CLOCK_HIGHRES)
 #   define SIR_INTERVALCLOCK CLOCK_HIGHRES

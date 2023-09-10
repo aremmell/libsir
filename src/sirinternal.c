@@ -1145,7 +1145,8 @@ pid_t _sir_gettid(void) {
 #elif defined(__OpenBSD__)
     tid = (pid_t)getthrid();
 #elif defined(__SOLARIS__) || defined(__NetBSD__) || defined(__HURD__) || \
-      defined(__DragonFly__) || defined(__CYGWIN__) || defined(_AIX)
+      defined(__DragonFly__) || defined(__CYGWIN__) || defined(_AIX) || \
+      defined(__EMSCRIPTEN__)
     tid = (pid_t)pthread_self();
 #elif defined(__HAIKU__)
     tid = get_pthread_thread_id(pthread_self());
