@@ -202,8 +202,8 @@ bool sir::tests::std_iostream_format() {
 
     default_logger log;
 
-    log.streams.debug << "ABCDEF";
-    log.streams.debug << "GHIJKLMNOPQRSTUVWXYZ" << 1234 << "\n";
+    log.debug_stream << "ABCDEF";
+    log.debug_stream << "GHIJKLMNOPQRSTUVWXYZ" << 1234 << "\n";
 
     _SIR_TEST_END
 }
