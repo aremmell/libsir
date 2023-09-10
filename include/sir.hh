@@ -38,7 +38,6 @@
 
 # if !defined(SIR_NO_IOSTREAM_FORMAT)
 # include <iostream>
-# include <sstream>
 # endif
 
 # if defined(__has_include)
@@ -181,26 +180,29 @@ namespace sir
         iostream_adapter() = default;
         virtual ~iostream_adapter() = default;
 
+    private:
         typedef bool(*sir_log_pfn)(const char*, ...);
 
         class buffer : public std::streambuf {
         public:
-            using Base = std::streambuf;
-
             buffer() = delete;
             explicit buffer(sir_log_pfn pfn) : _pfn(pfn) {
                 // TODO: if exceptions enabled, throw if pfn is nullptr.
                 SIR_ASSERT(pfn != nullptr);
-                Base::setp(_buf.begin(), _buf.end());
+                reset_buffer();
             }
 
         protected:
+            void reset_buffer() {
+                std::streambuf::setp(_buf.begin(), _buf.end());
+            }
+
             void write_out() {
                 for (auto it = _buf.rbegin(); it != _buf.rend(); it++) {
                     if (*it != '\0') {
                         /* if the last character in the array is not a null
-                            * terminator, or the last non-null character is a
-                            * newline, set it to null. */
+                         * terminator, or the last non-null character is a
+                         * newline, set it to null. */
                         if (it == _buf.rbegin() || *it == '\n')
                             *it = '\0';
                         break;
@@ -210,13 +212,15 @@ namespace sir
                 [[maybe_unused]] bool write = _pfn(_buf.data());
                 SIR_ASSERT(write);
                 // TODO: if exceptions enabled, throw if write is false.
+                _buf.fill('\0');
+                reset_buffer();
             }
 
-            int_type overflow(int_type ch = EOF) override {
+            int_type overflow(int_type ch) override {
                 /* more characters have been written than we have space for.
                  * null-terminate the array and pass it to libsir. */
                 write_out();
-                return traits_type::eof();
+                return 0;
             }
 
             int sync() override {
@@ -231,17 +235,24 @@ namespace sir
 
         class stream : public std::ostream {
         public:
-            using base = std::ostream;
-
             stream() = delete;
-            explicit stream(sir_log_pfn pfn) : _buf(pfn), base(&_buf) {
-            }
+            explicit stream(sir_log_pfn pfn) : _buf(pfn), std::ostream(&_buf) { }
 
         private:
             buffer _buf;
         };
 
-        stream test_stream {&sir_debug};
+    public:
+        struct {
+            stream debug {&sir_debug};   /**< ostream for debug level. */
+            stream info {&sir_info};     /**< ostream for info level. */
+            stream notice {&sir_notice}; /**< ostream for notice level. */
+            stream warn {&sir_warn};     /**< ostream for warn level. */
+            stream error {&sir_error};   /**< ostream for error level. */
+            stream crit {&sir_crit};     /**< ostream for crit level. */
+            stream alert {&sir_alert};   /**< ostream for alert level. */
+            stream emerg {&sir_emerg};   /**< ostream for emerg level. */
+        } streams;
     };
 #endif // SIR_NO_IOSTREAM_FORMAT
 

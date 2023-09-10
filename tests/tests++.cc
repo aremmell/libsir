@@ -10,10 +10,10 @@ static test_vector tests = {
     {"init-cleanup-raii",   raii_init_cleanup, false, true},
     {"init-cleanup-manual", manual_init_cleanup, false, true},
     {"error-handling",      error_handling, false, true},
-    {"std-format",          std_format, false, true},
-    {"boost-format",        boost_format, false, true},
-    {"fmt-format",          fmt_format, false, true},
-    {"std-iostream-format", std_iostream_format, false, true}
+    {"format-std",          std_format, false, true},
+    {"format-boost",        boost_format, false, true},
+    {"format-fmt",          fmt_format, false, true},
+    {"format-std-iostream", std_iostream_format, false, true}
 };
 
 int main(int argc, char** argv) {
