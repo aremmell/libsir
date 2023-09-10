@@ -12,6 +12,7 @@ BUILDDIR     = ./build
 LOGDIR       = ./logs
 LINTSH       = ./.lint.sh
 DOCSDIR      = docs
+TESTS_SHX    = tests_shared
 TESTS        = tests
 TESTSXX      = tests++
 EXAMPLE      = example
@@ -178,6 +179,11 @@ OBJ_EXAMPLE    = $(INTDIR)/$(EXAMPLE)/$(EXAMPLE).o
 OUT_EXAMPLE    = $(BINDIR)/sirexample$(PLATFORM_EXE_EXT)
 
 ##############################################################################
+# Console test rig shared functionality
+
+OBJ_TESTS_SHX   = $(INTDIR)/$(TESTS)/$(TESTS_SHX).o
+
+##############################################################################
 # Console test rig
 
 OBJ_TESTS      = $(INTDIR)/$(TESTS)/$(TESTS).o
@@ -224,6 +230,13 @@ $(OBJ_EXAMPLE): $(EXAMPLE)/$(EXAMPLE).c $(DEPS)
 $(OBJ_MCMB): $(UTILS)/$(MCMB)/$(MCMB).c $(DEPS)
 	@mkdir -p $(@D)
 	$(CC) $(MMDOPT) $(SIR_GSTD) $(SIR_CFLAGS) -c -o $@ $<
+
+##############################################################################
+# Compile functionality shared between C and C++ test rigs
+
+$(OBJ_TESTS_SHX): $(TESTS)/$(TESTS_SHX).c $(DEPS)
+	@mkdir -p $(@D)
+	$(CC) $(MMDOPT) $(SIR_CSTD) $(SIR_CFLAGS) -Iinclude -c -o $@ $<
 
 ##############################################################################
 # Compile tests
@@ -306,13 +319,13 @@ $(OUT_MCMB): $(OBJ_MCMB)
 
 tests++ test++: $(OUT_TESTSXX)
 
-$(OUT_TESTSXX): $(OUT_STATIC) $(OBJ_TESTSXX)
+$(OUT_TESTSXX): $(OUT_STATIC) $(OBJ_TESTS_SHX) $(OBJ_TESTSXX)
 	$(MAKE) --no-print-directory plugins
 	@mkdir -p $(@D)
 	@mkdir -p $(BINDIR)
 	@mkdir -p $(LOGDIR)
 	@touch $(BINDIR)/file.exists > /dev/null
-	$(CXX) -o $(OUT_TESTSXX) $(OBJ_TESTSXX) -Iinclude $(LIBSIR_S) $(SIR_LDFLAGS)
+	$(CXX) -o $(OUT_TESTSXX) $(OBJ_TESTS_SHX) $(OBJ_TESTSXX) -Iinclude $(LIBSIR_S) $(SIR_LDFLAGS)
 	-@printf 'built %s successfully.\n' "$(OUT_TESTSXX)" 2> /dev/null
 
 ##############################################################################
@@ -322,13 +335,13 @@ $(OUT_TESTSXX): $(OUT_STATIC) $(OBJ_TESTSXX)
 
 tests test: $(OUT_TESTS)
 
-$(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS)
+$(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS_SHX) $(OBJ_TESTS)
 	$(MAKE) --no-print-directory plugins
 	@mkdir -p $(@D)
 	@mkdir -p $(BINDIR)
 	@mkdir -p $(LOGDIR)
 	@touch $(BINDIR)/file.exists > /dev/null
-	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS) -Iinclude $(LIBSIR_S) $(SIR_LDFLAGS)
+	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS_SHX) $(OBJ_TESTS) -Iinclude $(LIBSIR_S) $(SIR_LDFLAGS)
 	-@printf 'built %s successfully.\n' "$(OUT_TESTS)" 2> /dev/null
 
 ##############################################################################
