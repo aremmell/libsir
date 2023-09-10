@@ -538,7 +538,7 @@ namespace sir
      * @param TIP  The policy class that determines the libsir configuration to
      *             use upon initialization when RAII = true.
      *
-     * @param TA   One or more ::adapter classes whose public methods will be
+     * @param TA   One or more adapter classes whose public methods will be
      *             exposed by this class.
      */
     template<bool RAII, DerivedFromInitPolicy TIP, DerivedFromAdapter... TA>
