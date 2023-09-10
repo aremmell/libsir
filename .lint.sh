@@ -474,11 +474,11 @@ test_pvs()
       test "${ret}" -ne 0 && exit 99
       env CC="${CCACHE:-env} clang" bear -- "${MAKE:-make}" SIR_DPSPRINTF=1 -j "${CPUS:-1}"; ret=${?}
       test "${ret}" -ne 0 && exit 99
-      echo Running PVS-Studio ...
+      printf '%s\n' "Running PVS-Studio ..."
       pvs-studio-analyzer analyze --intermodular -j "${CPUS:-1}" -o log.pvs
       test -f log.pvs; ret=${?}
       test "${ret}" -ne 0 && exit 99
-      echo PVS-Studio run completed ...
+      printf '%s\n' "PVS-Studio run completed ..."
       plog-converter -a "GA:1,2,3;OP:1,2,3;64:1,2,3;CS:1,2,3;MISRA:1,2,3;OWASP:1,2,3;AUTOSAR:1,2,3" -t fullhtml log.pvs -o pvsreport
       grep -q 'Congratulations!' ./pvsreport/index.html \
         || {
@@ -489,7 +489,7 @@ test_pvs()
       rm -f ./compile_commands.json
       rm -f ./log.pvs
       rm -rf ./pvsreport
-      echo PVS-Studio lint completed.
+      printf '%s\n' "PVS-Studio lint completed."
       exit 0
 ) }
 
@@ -569,7 +569,7 @@ test_smoke0()
 
 test_smoke()
 { (
-  test_smoke0; echo $?
+  test_smoke0; printf '%s\n' "${?}"
   exit 99
 ) }
 
