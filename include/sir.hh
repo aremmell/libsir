@@ -74,17 +74,30 @@ namespace sir
      */
     struct error {
         uint32_t code = 0U;  /**< The error code associated with the message. */
-        std::string message; /**< A description of the error that occurred. */
+        std::string message; /**< Description of the error that occurred. */
     };
 
     /**
      * @class adapter
      * @brief Defines the abstract interface for an adapter, which ultimately
-     * becomes a public base class of logger (there can be more than one).
+     * becomes a public base class of ::logger (there can be more than one).
      *
-     * `adapter` is designed to provide flexibility with regards to the types
-     * taken as input for logging, as well as return values, whether or not to
-     * throw exceptions, etc.
+     * adapter is designed to provide flexibility and extensibility in relation
+     * to the public interface that is implemented by a logger.
+     *
+     * For an example of this, see ::std_format_adapter. When std::format is
+     * available, and SIR_NO_STD_FORMAT is not defined, std_format_adapter may
+     * be used to expose methods that behave exactly like std::format, but the
+     * resulting formatted strings are sent directly to libsir.
+     *
+     * @note One must take care to ensure that the methods implemented by an
+     * adapter can coexist with any other adapters that are applied to the logger
+     * template.
+     *
+     * @see ::std_format_adapter
+     * @see ::boost_format_adapter
+     * @see ::fmt_format_adapter
+     * @see ::std_iostream_adapter
      */
     class adapter {
     protected:
@@ -629,26 +642,20 @@ namespace sir
     };
 
     /**
-     * @class default_logger
+     * @typedef default_logger
      * @brief A logger that implements the default set of adapters.
      *
-     * The default logger has the following properties:
+     * The default logger has the following template parameters defined:
      *
      * - RAII = true
-     * - TIP  = default_init_policy
-     * - TA   = default_adapter [, std_format_adapter, boost_format_adapter,
-     *           fmt_format_adapter] (see below)
-     *
-     * - If std::format is available and SIR_NO_STD_FORMAT is not defined, includes
-     * the std::format adapter.
-     * - If boost::format is available and SIR_NO_BOOST_FORMAT is not defined,
-     * includes the boost::format adapter.
-     * - If fmt::format is available and SIR_NO_FMT_FORMAT is not defined, includes
-     * the fmt::format adapter.
-     * - If SIR_NO_STD_IOSTREAM_FORMAT is not defined, includes the std::iostream adapter.
+     * - TAdapters = default_adapter [, std_format_adapter, std_iostream_adapter]
+     *   - if `SIR_NO_STD_FORMAT` is not defined, and std::format is available,
+     *     includes the std::format adapter.
+     *   - if `SIR_NO_STD_IOSTREAM` is not defined, includes the std::iostream
+     *     adapter.
      */
     using default_logger = logger
-    <
+    < // TODO: don't include boost and fmt adapters by default
         true,
         default_adapter
 # if defined(__SIR_HAVE_STD_FORMAT__)
