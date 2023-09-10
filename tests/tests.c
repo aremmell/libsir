@@ -1532,26 +1532,6 @@ bool sirtest_os_log(void) {
 #endif
 }
 
-char *sirtest_get_wineversion(void) {
-#if !defined(__WIN__)
-    return NULL;
-#else /* __WIN__ */
-    typedef char* (__stdcall *get_wine_ver_proc)(void);
-    static get_wine_ver_proc _p_wine_get_version = NULL;
-
-    HMODULE _h_ntdll = GetModuleHandle("ntdll.dll");
-    if (_h_ntdll != NULL) {
-        _p_wine_get_version = (get_wine_ver_proc)GetProcAddress(_h_ntdll, "wine_get_version");
-        if (_p_wine_get_version) {
-            char *wine_version = _p_wine_get_version();
-            if (wine_version)
-                return wine_version;
-        }
-    }
-    return NULL;
-#endif
-}
-
 bool sirtest_filesystem(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
@@ -2320,4 +2300,24 @@ bool filter_error(bool pass, uint16_t err) {
             return false;
     }
     return true;
+}
+
+char *get_wineversion(void) {
+#if !defined(__WIN__)
+    return NULL;
+#else /* __WIN__ */
+    typedef char* (__stdcall *get_wine_ver_proc)(void);
+    static get_wine_ver_proc _p_wine_get_version = NULL;
+
+    HMODULE _h_ntdll = GetModuleHandle("ntdll.dll");
+    if (_h_ntdll != NULL) {
+        _p_wine_get_version = (get_wine_ver_proc)GetProcAddress(_h_ntdll, "wine_get_version");
+        if (_p_wine_get_version) {
+            char *wine_version = _p_wine_get_version();
+            if (wine_version)
+                return wine_version;
+        }
+    }
+    return NULL;
+#endif
 }
