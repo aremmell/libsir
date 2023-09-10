@@ -80,7 +80,7 @@ namespace sir
     /**
      * @class adapter
      * @brief Defines the abstract interface for an adapter, which ultimately
-     * becomes a public base class of ::logger (there can be more than one).
+     * becomes a public base class of logger (there can be more than one).
      *
      * `adapter` is designed to provide flexibility with regards to the types
      * taken as input for logging, as well as return values, whether or not to
@@ -443,7 +443,7 @@ namespace sir
 
     /**
      * @class policy
-     * @brief Base class for policies that control the behavior of the ::logger
+     * @brief Base class for policies that control the behavior of the logger
      * class.
      *
      * Multiple types of policies may derive from this class. It serves only to
@@ -487,9 +487,9 @@ namespace sir
      * @class default_init_policy
      * @brief The default initialization policy.
      *
-     * Replace with your own custom class derived from ::init_policy in order to
+     * Replace with your own custom class derived from init_policy in order to
      * change the libsir configuration. Applies only when RAII = true for the
-     * ::logger template. When RAII = false, you may call ::logger::init at any
+     * logger template. When RAII = false, you may call logger::init at any
      * time with a custom configuration.
      */
     class default_init_policy final : public init_policy {
@@ -516,11 +516,11 @@ namespace sir
         }
     };
 
-    /** Ensures that the type argument derives from ::init_policy. */
+    /** Ensures that the type argument derives from init_policy. */
     template<typename T>
     concept DerivedFromInitPolicy = std::is_base_of_v<init_policy, T>;
 
-    /** Ensures that the type argument derives from ::adapter. */
+    /** Ensures that the type argument derives from adapter. */
     template<typename... T>
     concept DerivedFromAdapter = std::is_base_of_v<adapter, T...>;
 
@@ -703,7 +703,7 @@ namespace sir
 
     /**
      * @class default_logger
-     * @brief A ::logger that implements the default set of adapters.
+     * @brief A logger that implements the default set of adapters.
      *
      * The default logger has the following properties:
      *
