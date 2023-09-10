@@ -23,8 +23,16 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+#include "tests_shared.h"
 
-/* Avoid empty translation unit */
-extern char* test_shared;
-
-/* End of tests_shared.c */
+bool mark_test_to_run(const char* const name, sir_test* tests, size_t num_tests) {
+    bool found = false;
+    for (size_t t = 0; t < num_tests; t++) {
+        if (_sir_strsame(name, tests[t].name,
+            strnlen(tests[t].name, SIR_MAXTESTNAME))) {
+            found = tests[t].run = true;
+            break;
+        }
+    }
+    return found;
+}

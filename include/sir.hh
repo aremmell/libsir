@@ -220,6 +220,7 @@ namespace sir
             int_type overflow(int_type ch) override {
                 /* more characters have been written than we have space for.
                  * null-terminate the array and pass it to libsir. */
+                SIR_UNUSED(ch);
                 write_out();
                 return 0;
             }
@@ -237,23 +238,27 @@ namespace sir
         class stream : public std::ostream {
         public:
             stream() = delete;
-            explicit stream(sir_log_pfn pfn) : _buf(pfn), std::ostream(&_buf) { }
-
-        private:
-            buffer _buf;
+            explicit stream(buffer* buf) : std::ostream(buf) { }
         };
 
+        buffer _buf_debug  {&sir_debug};
+        buffer _buf_info   {&sir_info};
+        buffer _buf_notice {&sir_notice};
+        buffer _buf_warn   {&sir_warn};
+        buffer _buf_error  {&sir_error};
+        buffer _buf_crit   {&sir_crit};
+        buffer _buf_alert  {&sir_alert};
+        buffer _buf_emerg  {&sir_emerg};
+
     public:
-        struct {
-            stream debug {&sir_debug};   /**< ostream for debug level. */
-            stream info {&sir_info};     /**< ostream for info level. */
-            stream notice {&sir_notice}; /**< ostream for notice level. */
-            stream warn {&sir_warn};     /**< ostream for warn level. */
-            stream error {&sir_error};   /**< ostream for error level. */
-            stream crit {&sir_crit};     /**< ostream for crit level. */
-            stream alert {&sir_alert};   /**< ostream for alert level. */
-            stream emerg {&sir_emerg};   /**< ostream for emerg level. */
-        } streams;
+        stream debug_stream  {&_buf_debug};  /**< ostream for debug level. */
+        stream info_stream   {&_buf_info};   /**< ostream for info level. */
+        stream notice_stream {&_buf_notice}; /**< ostream for notice level. */
+        stream warn_stream   {&_buf_warn};   /**< ostream for warn level. */
+        stream error_stream  {&_buf_error};  /**< ostream for error level. */
+        stream crit_stream   {&_buf_crit};   /**< ostream for crit level. */
+        stream alert_stream  {&_buf_alert};  /**< ostream for alert level. */
+        stream emerg_stream  {&_buf_emerg};  /**< ostream for emerg level. */
     };
 #endif // SIR_NO_STD_IOSTREAM_FORMAT
 
@@ -274,49 +279,57 @@ namespace sir
         /** Use as if you were calling std::format directly. */
         template<class... Args>
         inline bool debug_std(std::format_string<Args...> fmt, Args&&... args) const {
-            return sir_debug(std::vformat(fmt.get(), std::make_format_args(args...)).c_str());
+            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            return sir_debug("%s", str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
         inline bool info_std(std::format_string<Args...> fmt, Args&&... args) const {
-            return sir_info(std::vformat(fmt.get(), std::make_format_args(args...)).c_str());
+            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            return sir_info("%s", str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
         inline bool notice_std(std::format_string<Args...> fmt, Args&&... args) const {
-            return sir_notice(std::vformat(fmt.get(), std::make_format_args(args...)).c_str());
+            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            return sir_notice("%s", str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
         inline bool warn_std(std::format_string<Args...> fmt, Args&&... args) const {
-            return sir_warn(std::vformat(fmt.get(), std::make_format_args(args...)).c_str());
+            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            return sir_warn("%s", str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
         inline bool error_std(std::format_string<Args...> fmt, Args&&... args) const {
-            return sir_error(std::vformat(fmt.get(), std::make_format_args(args...)).c_str());
+            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            return sir_error("%s", str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
         inline bool crit_std(std::format_string<Args...> fmt, Args&&... args) const {
-            return sir_crit(std::vformat(fmt.get(), std::make_format_args(args...)).c_str());
+            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            return sir_crit("%s", str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
         inline bool alert_std(std::format_string<Args...> fmt, Args&&... args) const {
-            return sir_alert(std::vformat(fmt.get(), std::make_format_args(args...)).c_str());
+            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            return sir_alert("%s", str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
         inline bool emerg_std(std::format_string<Args...> fmt, Args&&... args) const {
-            return sir_emerg(std::vformat(fmt.get(), std::make_format_args(args...)).c_str());
+            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            return sir_emerg("%s", str.c_str());
         }
     };
 # endif // !__SIR_HAVE_STD_FORMAT__
@@ -337,42 +350,42 @@ namespace sir
 
         /** Takes `boost::format("...") % args [% ...]` as input. */
         bool debug_boost(const boost::format& fmt) const {
-            return sir_debug(fmt.str().c_str());
+            return sir_debug("%s", fmt.str().c_str());
         }
 
         /** Takes `boost::format("...") % args [% ...]` as input. */
         bool info_boost(const boost::format& fmt) const {
-            return sir_info(fmt.str().c_str());
+            return sir_info("%s", fmt.str().c_str());
         }
 
         /** Takes `boost::format("...") % args [% ...]` as input. */
         bool notice_boost(const boost::format& fmt) const {
-            return sir_notice(fmt.str().c_str());
+            return sir_notice("%s", fmt.str().c_str());
         }
 
         /** Takes `boost::format("...") % args [% ...]` as input. */
         bool warn_boost(const boost::format& fmt) const {
-            return sir_warn(fmt.str().c_str());
+            return sir_warn("%s", fmt.str().c_str());
         }
 
         /** Takes `boost::format("...") % args [% ...]` as input. */
         bool error_boost(const boost::format& fmt) const {
-            return sir_error(fmt.str().c_str());
+            return sir_error("%s", fmt.str().c_str());
         }
 
         /** Takes `boost::format("...") % args [% ...]` as input. */
         bool crit_boost(const boost::format& fmt) const {
-            return sir_crit(fmt.str().c_str());
+            return sir_crit("%s", fmt.str().c_str());
         }
 
         /** Takes `boost::format("...") % args [% ...]` as input. */
         bool alert_boost(const boost::format& fmt) const {
-            return sir_alert(fmt.str().c_str());
+            return sir_alert("%s", fmt.str().c_str());
         }
 
         /** Takes `boost::format("...") % args [% ...]` as input. */
         bool emerg_boost(const boost::format& fmt) const {
-            return sir_emerg(fmt.str().c_str());
+            return sir_emerg("%s", fmt.str().c_str());
         }
     };
 # endif // !__SIR_HAVE_BOOST_FORMAT__
@@ -394,49 +407,57 @@ namespace sir
         /** Use as if you were calling fmt::format directly. */
         template<typename... T>
         inline bool debug_fmt(fmt::format_string<T...> fmt, T&&... args) const {
-            return sir_debug(fmt::vformat(fmt, fmt::make_format_args(args...)).c_str());
+            auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
+            return sir_debug(str.c_str());
         }
 
         /** Use as if you were calling fmt::format directly. */
         template<typename... T>
         inline bool info_fmt(fmt::format_string<T...> fmt, T&&... args) const {
-            return sir_info(fmt::vformat(fmt, fmt::make_format_args(args...)).c_str());
+            auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
+            return sir_info(str.c_str());
         }
 
         /** Use as if you were calling fmt::format directly. */
         template<typename... T>
         inline bool notice_fmt(fmt::format_string<T...> fmt, T&&... args) const {
-            return sir_notice(fmt::vformat(fmt, fmt::make_format_args(args...)).c_str());
+            auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
+            return sir_notice(str.c_str());
         }
 
         /** Use as if you were calling fmt::format directly. */
         template<typename... T>
         inline bool warn_fmt(fmt::format_string<T...> fmt, T&&... args) const {
-            return sir_warn(fmt::vformat(fmt, fmt::make_format_args(args...)).c_str());
+            auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
+            return sir_warn(str.c_str());
         }
 
         /** Use as if you were calling fmt::format directly. */
         template<typename... T>
         inline bool error_fmt(fmt::format_string<T...> fmt, T&&... args) const {
-            return sir_error(fmt::vformat(fmt, fmt::make_format_args(args...)).c_str());
+            auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
+            return sir_error(str.c_str());
         }
 
         /** Use as if you were calling fmt::format directly. */
         template<typename... T>
         inline bool crit_fmt(fmt::format_string<T...> fmt, T&&... args) const {
-            return sir_crit(fmt::vformat(fmt, fmt::make_format_args(args...)).c_str());
+            auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
+            return sir_crit(str.c_str());
         }
 
         /** Use as if you were calling fmt::format directly. */
         template<typename... T>
         inline bool alert_fmt(fmt::format_string<T...> fmt, T&&... args) const {
-            return sir_alert(fmt::vformat(fmt, fmt::make_format_args(args...)).c_str());
+            auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
+            return sir_alert(str.c_str());
         }
 
         /** Use as if you were calling fmt::format directly. */
         template<typename... T>
         inline bool emerg_fmt(fmt::format_string<T...> fmt, T&&... args) const {
-            return sir_emerg(fmt::vformat(fmt, fmt::make_format_args(args...)).c_str());
+            auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
+            return sir_emerg(str.c_str());
         }
     };
 # endif // !__SIR_HAVE_FMT_FORMAT__
@@ -545,13 +566,15 @@ namespace sir
     class logger : public TA...  {
     public:
         logger() : TA()... {
-            if (RAII && !init())
+            if (RAII && !init()) {
                 SIR_ASSERT(false);
+            }
         }
 
         virtual ~logger() {
-            if (RAII && !cleanup())
+            if (RAII && !cleanup()) {
                 SIR_ASSERT(false);
+            }
         }
 
         virtual bool init(sirinit& si) const noexcept {

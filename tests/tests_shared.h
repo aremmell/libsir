@@ -236,18 +236,7 @@ void print_failed_test(const char* const name) {
  * Marks a test to be executed during this test run. Returns false if unable
  * to locate the requested test.
  */
-static inline
-bool mark_test_to_run(const char* const name, sir_test* tests, size_t num_tests) {
-    bool found = false;
-    for (size_t t = 0; t < num_tests; t++) {
-        if (_sir_strsame(name, tests[t].name,
-            strnlen(tests[t].name, SIR_MAXTESTNAME))) {
-            found = tests[t].run = true;
-            break;
-        }
-    }
-    return found;
-}
+bool mark_test_to_run(const char* const name, sir_test* tests, size_t num_tests);
 
 /** Prints a list of tests. */
 static inline
