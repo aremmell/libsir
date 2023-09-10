@@ -173,13 +173,13 @@ namespace sir
 
 # if !defined(SIR_NO_STD_IOSTREAM_FORMAT)
     /**
-     * @class iostream_adapter
+     * @class std_iostream_adapter
      * @brief Provides a std::iostream interface to libsir's logging functions.
      */
-    class iostream_adapter : public adapter {
+    class std_iostream_adapter : public adapter {
     public:
-        iostream_adapter() = default;
-        virtual ~iostream_adapter() = default;
+        std_iostream_adapter() = default;
+        virtual ~std_iostream_adapter() = default;
 
     private:
         typedef bool(*sir_log_pfn)(const char*, ...);
@@ -552,20 +552,17 @@ namespace sir
      * Instantiate this class in order to access libsir with all the benefits
      * of C++, including RAII initialization/cleanup, custom adapters, and more.
      *
-     * @param RAII Set to `true` to enable 'resource acquisition is
-     *             initialization' behavior (i.e., libsir is initialized by the
-     *             ctor, and cleaned up by the dtor). Set to `false` to manually
-     *             manage the initialization/cleanup.
-     * @param TIP  The policy class that determines the libsir configuration to
-     *             use upon initialization when RAII = true.
-     *
-     * @param TA   One or more adapter classes whose public methods will be
-     *             exposed by this class.
+     * @param RAII      Set to `true` to enable 'resource acquisition is
+     *                  initialization' behavior (i.e., libsir is initialized by
+     *                  the ctor, and cleaned up by the dtor). Set to `false` for
+     *                  manual management of initialization/cleanup.
+     * @param TAdapters One or more adapter classes whose public methods will be
+     *                  exposed by this class.
      */
-    template<bool RAII, DerivedFromInitPolicy TIP, DerivedFromAdapter... TA>
-    class logger : public TA...  {
+    template<bool RAII, DerivedFromAdapter... TAdapters>
+    class logger : public TAdapters...  {
     public:
-        logger() : TA()... {
+        logger() : TAdapters()... {
             if (RAII && !init()) {
                 SIR_ASSERT(false);
             }
@@ -583,17 +580,9 @@ namespace sir
 
         virtual bool init() const noexcept {
             sirinit si {};
-            TIP policy {};
-            _sir_selflog("init policy: '%s'", policy.get_name().c_str());
-            policy.on_initialization(&si);
-
-            bool init = sir_init(&si);
-            if (init) {
-                policy.set_color_mode();
-                policy.set_text_styles();
-            }
-
-            return init;
+            if (bool make = sir_makeinit(&si); !make)
+                return false;
+            return sir_init(&si);
         }
 
         virtual bool cleanup() const noexcept {
@@ -751,8 +740,8 @@ namespace sir
 # if defined(__SIR_HAVE_FMT_FORMAT__)
         , fmt_format_adapter
 # endif
-# if !defined(SIR_NO_STD_IOSTREAM_FORMAT)
-        , iostream_adapter
+# if !defined(SIR_NO_STD_IOSTREAM)
+        , std_iostream_adapter
 # endif
     >;
 } // ! namespace sir
