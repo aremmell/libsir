@@ -1565,7 +1565,7 @@ bool sirtest_syslog(void) {
 
 bool sirtest_os_log(void) {
 #if !defined(SIR_OS_LOG_ENABLED)
-    TEST_MSG(DGRAY("SIR_OS_LOG_ENABLED is not defined; skipping"));
+    TEST_MSG_0(DGRAY("SIR_OS_LOG_ENABLED is not defined; skipping"));
     return true;
 #else
     bool pass = generic_syslog_test("os_log", "com.aremmell.libsir.tests", "tests");
