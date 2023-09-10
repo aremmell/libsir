@@ -37,8 +37,8 @@
 # include <string>
 
 # if defined __has_include
-#  if __has_include(<format>) && !(defined(__MACOS__) && \
-      defined(_LIBCPP_HAS_NO_INCOMPLETE_FORMAT))
+#  if __has_include(<format>) && !defined(SIR_NO_STD_FORMAT) && \
+      !(defined(__MACOS__) && defined(_LIBCPP_HAS_NO_INCOMPLETE_FORMAT))
 #   include <format>
 #   define __SIR_HAVE_STD_FORMAT__
 #  endif
@@ -176,10 +176,60 @@ namespace sir
         std_format_adapter() = default;
         virtual ~std_format_adapter() = default;
 
+        /** Use as if you were calling std::format directly. */
         template<class... Args>
-        bool debug(std::format_string<Args...> fmt, Args&&... args) const {
+        bool debug_format(std::format_string<Args...> fmt, Args&&... args) const {
             auto str = std::vformat(fmt.get(), std::make_format_args(args...));
             return sir_debug(str.c_str());
+        }
+
+        /** Use as if you were calling std::format directly. */
+        template<class... Args>
+        bool info_format(std::format_string<Args...> fmt, Args&&... args) const {
+            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            return sir_info(str.c_str());
+        }
+
+        /** Use as if you were calling std::format directly. */
+        template<class... Args>
+        bool notice_format(std::format_string<Args...> fmt, Args&&... args) const {
+            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            return sir_notice(str.c_str());
+        }
+
+        /** Use as if you were calling std::format directly. */
+        template<class... Args>
+        bool warn_format(std::format_string<Args...> fmt, Args&&... args) const {
+            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            return sir_warn(str.c_str());
+        }
+
+        /** Use as if you were calling std::format directly. */
+        template<class... Args>
+        bool error_format(std::format_string<Args...> fmt, Args&&... args) const {
+            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            return sir_error(str.c_str());
+        }
+
+        /** Use as if you were calling std::format directly. */
+        template<class... Args>
+        bool crit_format(std::format_string<Args...> fmt, Args&&... args) const {
+            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            return sir_crit(str.c_str());
+        }
+
+        /** Use as if you were calling std::format directly. */
+        template<class... Args>
+        bool alert_format(std::format_string<Args...> fmt, Args&&... args) const {
+            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            return sir_alert(str.c_str());
+        }
+
+        /** Use as if you were calling std::format directly. */
+        template<class... Args>
+        bool emerg_format(std::format_string<Args...> fmt, Args&&... args) const {
+            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            return sir_emerg(str.c_str());
         }
     };
 #endif // !__SIR_HAVE_STD_FORMAT__
@@ -441,8 +491,19 @@ namespace sir
         }
     };
 
-    /** The default logger: RAII = true, default init policy and adapter. */
-    using default_logger = logger<true, default_init_policy, default_adapter>;
+    /** The default logger: RAII = true, default init policy and adapter.
+     *
+     * - If std::format is supported and SIR_NO_STD_FORMAT is not defined, also
+     * includes the std::format adapter.
+     */
+    using default_logger = logger<
+        true,
+        default_init_policy,
+        default_adapter
+#if defined(__SIR_HAVE_STD_FORMAT__)
+        , std_format_adapter
+#endif
+    >;
 } // ! namespace sir
 
 /**

@@ -23,10 +23,20 @@ int main(int argc, char** argv) {
 
         logger.debug("Testing get_error by doing something stupid...");
         logger.debug(NULL);
-        auto [ code, message ] = logger.get_error();
 
+        auto [ code, message ] = logger.get_error();
         logger.debug("Error info: code = %u, message = '%s'", code,
             message.c_str());
+
+        /* std:: format. */
+        logger.debug_format("Testing {} {}", "debug", "std::format");
+        logger.info_format("Testing {} {}", "info", "std::format");
+        logger.notice_format("Testing {} {}", "notice", "std::format");
+        logger.warn_format("Testing {} {}", "warn", "std::format");
+        logger.error_format("Testing {} {}", "error", "std::format");
+        logger.crit_format("Testing {} {}", "crit", "std::format");
+        logger.alert_format("Testing {} {}", "alert", "std::format");
+        logger.emerg_format("Testing {} {}", "emerg", "std::format");
 
         logger.debug("sir_cleanup() will be called by the destructor");
     }
