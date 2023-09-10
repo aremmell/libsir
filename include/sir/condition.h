@@ -76,9 +76,11 @@ bool _sir_condwait(sir_condition* cond, sir_mutex* mutex);
  * Waits a given amount of time for a condition variable to become signaled.
  *
  * @param cond Pointer to a sir_condition to wait on.
+ * @param mutex Associated mutex object.
+ * @param howlong How long to wait before timing out.
  * @returns bool `true` if successful, `false` if an error occurred or the operation
  * timed out..
  * */
-bool _sir_condwait_timeout(sir_condition* cond, sir_mutex* mutex, const sir_wait* how_long);
+bool _sir_condwait_timeout(sir_condition* cond, sir_mutex* mutex, const sir_wait* howlong);
 
 #endif /* !_SIR_CONDITION_H_INCLUDED */
