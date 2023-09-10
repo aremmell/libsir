@@ -104,7 +104,7 @@ namespace sir
         virtual ~default_adapter() = default;
 
         /** Logs a debug message (see ::sir_debug). */
-        bool debug(const char* format, ...) noexcept {
+        bool debug(const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_DEBUG, format, args);
             _SIR_L_END();
@@ -112,7 +112,7 @@ namespace sir
         }
 
         /** Logs an info message (see ::sir_info). */
-        bool info(const char* format, ...) noexcept {
+        bool info(const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_INFO, format, args);
             _SIR_L_END();
@@ -120,7 +120,7 @@ namespace sir
         }
 
         /** Logs a notice message (see ::sir_notice). */
-        bool notice(const char* format, ...) noexcept {
+        bool notice(const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_NOTICE, format, args);
             _SIR_L_END();
@@ -128,7 +128,7 @@ namespace sir
         }
 
         /** Logs a warning message (see ::sir_warn). */
-        bool warn(const char* format, ...) noexcept {
+        bool warn(const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_WARN, format, args);
             _SIR_L_END();
@@ -136,7 +136,7 @@ namespace sir
         }
 
         /** Logs an error message (see ::sir_error). */
-        bool error(const char* format, ...) noexcept {
+        bool error(const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_ERROR, format, args);
             _SIR_L_END();
@@ -144,7 +144,7 @@ namespace sir
         }
 
         /** Logs a critical message (see ::sir_crit). */
-        bool crit(const char* format, ...) noexcept {
+        bool crit(const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_CRIT, format, args);
             _SIR_L_END();
@@ -152,7 +152,7 @@ namespace sir
         }
 
         /** Logs an alert message (see ::sir_alert). */
-        bool alert(const char* format, ...) noexcept {
+        bool alert(const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_ALERT, format, args);
             _SIR_L_END();
@@ -160,7 +160,7 @@ namespace sir
         }
 
         /** Logs an emergency message (see ::sir_emerg). */
-        bool emerg(const char* format, ...) noexcept {
+        bool emerg(const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_EMERG, format, args);
             _SIR_L_END();
