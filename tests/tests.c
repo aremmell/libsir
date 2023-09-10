@@ -2300,7 +2300,7 @@ bool filter_error(bool pass, uint16_t err) {
         if (sir_geterror(msg) != err)
             return false;
     }
-    return true;d
+    return true;
 }
 
 char *get_wineversion(void) {
