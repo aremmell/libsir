@@ -43,13 +43,13 @@ int main(int argc, char** argv) {
         /* boost::format. */
 #if defined(__SIR_HAVE_BOOST_FORMAT__)
         logger.debug_boost(boost::format("Testing %1% %2%") % "debug" % "boost::format");
-        /* logger.info_boost(boost::format("Testing {0} {1}") % "debug" % "boost::format");
-        logger.notice_boost(boost::format("Testing {0} {1}") % "debug" % "boost::format");
-        logger.warn_boost(boost::format("Testing {0} {1}") % "debug" % "boost::format");
-        logger.error_boost(boost::format("Testing {0} {1}") % "debug" % "boost::format");
-        logger.crit_boost(boost::format("Testing {0} {1}") % "debug" % "boost::format");
-        logger.alert_boost(boost::format("Testing {0} {1}") % "debug" % "boost::format");
-        logger.emerg_boost(boost::format("Testing {0} {1}") % "debug" % "boost::format"); */
+        logger.info_boost(boost::format("Testing %1% %2%") % "info" % "boost::format");
+        logger.notice_boost(boost::format("Testing %1% %2%") % "notice" % "boost::format");
+        logger.warn_boost(boost::format("Testing %1% %2%") % "warn" % "boost::format");
+        logger.error_boost(boost::format("Testing %1% %2%") % "error" % "boost::format");
+        logger.crit_boost(boost::format("Testing %1% %2%") % "crit" % "boost::format");
+        logger.alert_boost(boost::format("Testing %1% %2%}") % "alert" % "boost::format");
+        logger.emerg_boost(boost::format("Testing %1% %2%") % "emerg" % "boost::format");
 #endif // !__SIR_HAVE_BOOST_FORMAT__
 
         logger.debug("sir_cleanup() will be called by the destructor");
