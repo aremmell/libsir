@@ -78,6 +78,10 @@ extern "C" {
 /** The maximum length of a command line argument's usage message. */
 # define SIR_CL_MAXUSAGE 256
 
+/**
+ * Command line argument flags.
+ */
+
 # define SIR_CL_PERFFLAG      "--perf"
 # define SIR_CL_ONLYFLAG      "--only"
 # define SIR_CL_LISTFLAG      "--list"
@@ -86,7 +90,19 @@ extern "C" {
 # define SIR_CL_VERSIONFLAG   "--version"
 # define SIR_CL_HELPFLAG      "--help"
 
-# define SIR_CL_ONLYUSAGE ULINE("name") " [, " ULINE("name") ", ...]"
+/**
+ * Command line usage messages.
+ */
+
+# define SIR_CL_ONLYUSAGE     ULINE("name") " [, " ULINE("name") ", ...]"
+
+/** The name for the performance test. It is referenced by name in the
+ * CLI parser, so this is our single source of truth. */
+# define SIR_CL_PERFNAME      "performance"
+
+/**
+ * Command line descriptions.
+ */
 
 # define SIR_CL_PERFDESC      "Only run the performance measurement test"
 # define SIR_CL_ONLYDESC      "Only run the test(s) specified"

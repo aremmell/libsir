@@ -27,7 +27,7 @@
 #include "tests.h"
 
 static sir_test sir_tests[] = {
-    {"performance",             sirtest_perf, false, true},
+    {SIR_CL_PERFNAME,           sirtest_perf, false, true},
     {"thread-race",             sirtest_threadrace, false, true},
     {"thread-pool",             sirtest_threadpool, false, true},
     {"exceed-max-buffer-size",  sirtest_exceedmaxsize, false, true},

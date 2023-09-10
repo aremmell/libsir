@@ -168,7 +168,7 @@ bool parse_cmd_line(int argc, char** argv, const sir_cl_arg* args, size_t num_ar
             return false;
         }
         if (_sir_strsame(this_arg->flag, SIR_CL_PERFFLAG, strlen(SIR_CL_PERFFLAG))) {
-            config->only = mark_test_to_run("performance", tests, num_tests);
+            config->only = mark_test_to_run(SIR_CL_PERFNAME, tests, num_tests);
             if (config->only)
                 config->to_run = 1;
         } else if (_sir_strsame(this_arg->flag, SIR_CL_ONLYFLAG, strlen(SIR_CL_ONLYFLAG))) {
