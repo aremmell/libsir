@@ -36,7 +36,7 @@
 # include <array>
 # include <string>
 
-# if defined __has_include
+# if defined(__has_include)
 #  if __has_include(<format>) && !defined(SIR_NO_STD_FORMAT) && \
       !(defined(__MACOS__) && defined(_LIBCPP_HAS_NO_INCOMPLETE_FORMAT))
 #   include <format>
@@ -66,7 +66,8 @@ namespace sir
 {
     /**
      * @struct error
-     * @brief A libsir error object, possibly containing a code and message.
+     * @brief A libsir error object, containing a numeric error code and associated
+     * message.
      */
     struct error {
         uint32_t code = 0U;  /**< The error code associated with the message. */
@@ -81,9 +82,6 @@ namespace sir
      * `adapter` is designed to provide flexibility with regards to the types
      * taken as input for logging, as well as return values, whether or not to
      * throw exceptions, etc.
-     *
-     * For example, one could implement a boost adapter that takes boost::format
-     * as an argument.
      */
     class adapter {
     protected:
@@ -171,7 +169,7 @@ namespace sir
 # if defined(__SIR_HAVE_STD_FORMAT__)
     /**
      * @class std_format_adapter
-     * @brief Adapter for std::format (when available)
+     * @brief Adapter for std::format (when available).
      *
      * If std::format is available on this platform and SIR_NO_STD_FORMAT is not
      * defined, ::default_logger will export the methods from this adapter in
@@ -235,7 +233,7 @@ namespace sir
 # if defined(__SIR_HAVE_BOOST_FORMAT__)
     /**
      * @class boost_format_adapter
-     * @brief Adapter for boost::format (when available)
+     * @brief Adapter for boost::format (when available).
      *
      * If boost::format is available on this platform and SIR_NO_BOOST_FORMAT is not
      * defined, ::default_logger will export the methods from this adapter in
@@ -291,11 +289,11 @@ namespace sir
 # if defined(__SIR_HAVE_FMT_FORMAT__)
     /**
      * @class fmt_format_adapter
-     * @brief Adapter for fmt (when available)
+     * @brief Adapter for fmt (when available).
      *
-     * If fmt is available on this platform and SIR_NO_FMT_FORMAT is not
-     * defined, ::default_logger will export the methods from this adapter in
-     * addition to any others.
+     * If fmt is available on this platform and SIR_NO_FMT_FORMAT is not defined,
+     * ::default_logger will export the methods from this adapter in addition
+     * to any others.
      */
     class fmt_format_adapter : public adapter {
     public:
@@ -357,7 +355,7 @@ namespace sir
      * @brief Base class for policies that control the behavior of the ::logger
      * class.
      *
-     * Multiple types of policies derive from this class. It serves only to
+     * Multiple types of policies may derive from this class. It serves only to
      * identify derived classes as a policy.
      */
     class policy {
@@ -398,7 +396,7 @@ namespace sir
      * Replace with your own custom class derived from ::init_policy in order to
      * change the libsir configuration Applies only when RAII = true for the
      * ::logger template. When RAII = false, you may call ::logger::init at any
-     * time with a custom configuration..
+     * time with a custom configuration.
      */
     class default_init_policy final : public init_policy {
     public:
@@ -439,15 +437,15 @@ namespace sir
      * Instantiate this class in order to access libsir with all the benefits
      * of C++, including RAII initialization/cleanup, custom adapters, and more.
      *
-     * @param RAII bool Set to `true` to enable 'resource acquisition is
+     * @param RAII Set to `true` to enable 'resource acquisition is
      *             initialization' behavior (i.e., libsir is initialized by the
      *             ctor, and cleaned up by the dtor). Set to `false` to manually
      *             manage the initialization/cleanup.
-     * @param TIP  init_policy The policy class that determines the libsir
-     *             configuration to use upon initialization.
+     * @param TIP  The policy class that determines the libsir configuration to
+     *             use upon initialization when RAII = true.
      *
-     * @param TA   adapter One or more ::adapter classes whose public
-     *             methods will be exposed by this class.
+     * @param TA   One or more ::adapter classes whose public methods will be
+     *             exposed by this class.
      */
     template<bool RAII, DerivedFromInitPolicy TIP, DerivedFromAdapter... TA>
     class logger : public TA...  {
@@ -613,16 +611,19 @@ namespace sir
      * @class default_logger
      * @brief A ::logger that implements the default set of adapters.
      *
-     * The default logger has these properties:
-     *   - RAII = true
-     *   - TIP  = default_init_policy
-     *   - TA   = default_adapter [, std_format_adapter, boost_format_adapter]
-     *     (see below)
+     * The default logger has the following properties:
+     *
+     * - RAII = true
+     * - TIP  = default_init_policy
+     * - TA   = default_adapter [, std_format_adapter, boost_format_adapter,
+     *           fmt_format_adapter] (see below)
      *
      * - If std::format is available and SIR_NO_STD_FORMAT is not defined, includes
      * the std::format adapter.
      * - If boost::format is available and SIR_NO_BOOST_FORMAT is not defined,
      * includes the boost::format adapter.
+     * - If fmt::format is available and SIR_NO_FMT_FORMAT is not defined, includes
+     * the fmt::format adapter.
      */
     using default_logger = logger
     <
