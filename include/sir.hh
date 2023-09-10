@@ -407,19 +407,19 @@ namespace sir
 
         /** Uses ::sir_makeinit to set default values for all configuration
          * properties. */
-        void on_initialization(sirinit* si) const noexcept final {
+        void on_initialization(sirinit* si) const noexcept {
             bool init = sir_makeinit(si);
             SIR_ASSERT_UNUSED(init, init);
         }
 
         /** Uses the default color mode, so this is a NOOP. */
-        void set_color_mode() const noexcept final { }
+        void set_color_mode() const noexcept { }
 
         /** Uses the default text styles, so this is a NOOP. */
-        void set_text_styles() const noexcept final { }
+        void set_text_styles() const noexcept { }
 
         /** From policy. */
-        std::string get_name() const final {
+        std::string get_name() const {
             return "Default";
         }
     };
