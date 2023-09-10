@@ -479,10 +479,13 @@ test_pvs()
       test -f log.pvs; ret=${?}
       test "${ret}" -ne 0 && exit 99
       echo PVS-Studio run completed ...
-      plog-converter -a "GA:1,2,3" -t fullhtml log.pvs -o pvsreport
-      test "${PVS_EXIT:-0}" -ne 0 && printf '%s\n' "ERROR: PVS-Studio failed ..."
-      test "${PVS_EXIT:-0}" -ne 0 && printf '\n%s\n' "Review output in ./pvsreport ..."
-      test "${PVS_EXIT:-0}" -ne 0 && exit 99
+      plog-converter -a "GA:1,2,3;OP:1,2,3;64:1,2,3;CS:1,2,3;MISRA:1,2,3;OWASP:1,2,3;AUTOSAR:1,2,3" -t fullhtml log.pvs -o pvsreport
+      grep -q 'Congratulations!' ./pvsreport/index.html \
+        || {
+          printf '%s\n' "ERROR: PVS-Studio failed ..."
+          printf '\n%s\n' "Review output in ./pvsreport ..."
+          exit 99
+        }
       rm -f ./compile_commands.json
       rm -f ./log.pvs
       rm -rf ./pvsreport
