@@ -400,7 +400,7 @@ namespace sir
      * ::logger template. When RAII = false, you may call ::logger::init at any
      * time with a custom configuration..
      */
-    class default_init_policy : public init_policy {
+    class default_init_policy final : public init_policy {
     public:
         default_init_policy() = default;
         ~default_init_policy() = default;
