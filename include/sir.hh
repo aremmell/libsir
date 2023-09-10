@@ -88,6 +88,8 @@ namespace sir
      */
     class adapter {
     protected:
+        /** Protected default constructor to prevent instantiation outside of
+         * a derived class. */
         adapter() = default;
         virtual ~adapter() = default;
     };
@@ -172,7 +174,7 @@ namespace sir
 # if !defined(SIR_NO_IOSTREAM_FORMAT)
     /**
      * @class iostream_adapter
-     * @brief Provides an std::iostream interface to libsir's logging functions.
+     * @brief Provides a std::iostream interface to libsir's logging functions.
      */
     class iostream_adapter : public adapter {
     public:
@@ -455,7 +457,10 @@ namespace sir
 
     /**
      * @class init_policy
-     * @brief Controls the configuration of libsir at initialization time.
+     * @brief Base class for a policy that determines how libsir is configured
+     * during initialization.
+     *
+     * Derive from this class to create your own custom initialization policy.
      */
     class init_policy : public policy {
     public:
@@ -483,7 +488,7 @@ namespace sir
      * @brief The default initialization policy.
      *
      * Replace with your own custom class derived from ::init_policy in order to
-     * change the libsir configuration Applies only when RAII = true for the
+     * change the libsir configuration. Applies only when RAII = true for the
      * ::logger template. When RAII = false, you may call ::logger::init at any
      * time with a custom configuration.
      */
