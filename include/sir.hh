@@ -42,7 +42,7 @@
 #   include <format>
 #   define __SIR_HAVE_STD_FORMAT__
 #  endif
-#  if __has_include(<boost/format.hpp>)
+#  if __has_include(<boost/format.hpp>) && !defined(SIR_NO_BOOST_FORMAT)
 #   include <boost/format.hpp>
 #   define __SIR_HAVE_BOOST_FORMAT__
 #  endif
@@ -163,13 +163,14 @@ namespace sir
         }
     };
 
-#if defined(__SIR_HAVE_STD_FORMAT__)
+# if defined(__SIR_HAVE_STD_FORMAT__)
     /**
      * @class std_format_adapter
      * @brief Adapter for std::format (when available)
      *
-     * If std::format is available on this platform, ::default_logger will
-     * export the methods from this adapter in addition to any others.
+     * If std::format is available on this platform and SIR_NO_STD_FORMAT is not
+     * defined, ::default_logger will export the methods from this adapter in
+     * addition to any others.
      */
     class std_format_adapter : public adapter {
     public:
@@ -232,7 +233,63 @@ namespace sir
             return sir_emerg(str.c_str());
         }
     };
-#endif // !__SIR_HAVE_STD_FORMAT__
+# endif // !__SIR_HAVE_STD_FORMAT__
+
+# if defined(__SIR_HAVE_BOOST_FORMAT__)
+    /**
+     * @class boost_format_adapter
+     * @brief Adapter for boost::format (when available)
+     *
+     * If boost::format is available on this platform and SIR_NO_BOOST_FORMAT is not
+     * defined, ::default_logger will export the methods from this adapter in
+     * addition to any others.
+     */
+    class boost_format_adapter : public adapter {
+    public:
+        boost_format_adapter() = default;
+        virtual ~boost_format_adapter() = default;
+
+        /** Takes `boost::format("...") % args [% ...]` as input. */
+        bool debug_boost(const boost::format& fmt) const {
+            return sir_debug(fmt.str().c_str());
+        }
+
+        /** Takes `boost::format("...") % args [% ...]` as input. */
+        bool info_boost(const boost::format& fmt) const {
+            return sir_info(fmt.str().c_str());
+        }
+
+        /** Takes `boost::format("...") % args [% ...]` as input. */
+        bool notice_boost(const boost::format& fmt) const {
+            return sir_notice(fmt.str().c_str());
+        }
+
+        /** Takes `boost::format("...") % args [% ...]` as input. */
+        bool warn_boost(const boost::format& fmt) const {
+            return sir_warn(fmt.str().c_str());
+        }
+
+        /** Takes `boost::format("...") % args [% ...]` as input. */
+        bool error_boost(const boost::format& fmt) const {
+            return sir_error(fmt.str().c_str());
+        }
+
+        /** Takes `boost::format("...") % args [% ...]` as input. */
+        bool crit_boost(const boost::format& fmt) const {
+            return sir_crit(fmt.str().c_str());
+        }
+
+        /** Takes `boost::format("...") % args [% ...]` as input. */
+        bool alert_boost(const boost::format& fmt) const {
+            return sir_alert(fmt.str().c_str());
+        }
+
+        /** Takes `boost::format("...") % args [% ...]` as input. */
+        bool emerg_boost(const boost::format& fmt) const {
+            return sir_emerg(fmt.str().c_str());
+        }
+    };
+# endif // !__SIR_HAVE_BOOST_FORMAT__
 
     /**
      * @class policy
@@ -491,18 +548,32 @@ namespace sir
         }
     };
 
-    /** The default logger: RAII = true, default init policy and adapter.
+    /**
+     * @class default_logger
+     * @brief A ::logger that implements the default set of adapters.
      *
-     * - If std::format is supported and SIR_NO_STD_FORMAT is not defined, also
-     * includes the std::format adapter.
+     * The default logger has these properties:
+     *   - RAII = true
+     *   - TIP  = default_init_policy
+     *   - TA   = default_adapter [, std_format_adapter, boost_format_adapter]
+     *     (see below)
+     *
+     * - If std::format is available and SIR_NO_STD_FORMAT is not defined, includes
+     * the std::format adapter.
+     * - If boost::format is available and SIR_NO_BOOST_FORMAT is not defined,
+     * includes the boost::format adapter.
      */
-    using default_logger = logger<
+    using default_logger = logger
+    <
         true,
         default_init_policy,
         default_adapter
-#if defined(__SIR_HAVE_STD_FORMAT__)
+# if defined(__SIR_HAVE_STD_FORMAT__)
         , std_format_adapter
-#endif
+# endif
+# if defined(__SIR_HAVE_BOOST_FORMAT__)
+        , boost_format_adapter
+# endif
     >;
 } // ! namespace sir
 
