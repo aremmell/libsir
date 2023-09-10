@@ -118,6 +118,6 @@ namespace sir::tests
     } catch (...) { \
         _SIR_ON_TEST_EXCEPTION(SIR_UNKNOWN); \
     } \
-    return pass;
+    return PRINT_RESULT_RETURN(pass);
 
 #endif // !_TESTSXX_HH_INCLUDED
