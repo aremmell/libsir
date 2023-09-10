@@ -29,10 +29,6 @@
 # include "sir/types.h"
 # include "sir/errors.h"
 
-# if defined(SIR_DPSPRINTF)
-#  include "sir/dpsprintf.h"
-# endif
-
 /** Computes the size of an array. */
 # define _sir_countof(arr) (sizeof(arr) / sizeof(arr[0]))
 
@@ -439,8 +435,8 @@ bool _sir_getchar(char* input);
  */
 # define _sir_snprintf_trunc(dst, size, ...) \
     do { \
-      volatile size_t _n = (size_t)size; \
-      if (!snprintf(dst, (int)(size_t)_n, __VA_ARGS__)) { (void)_n; }; \
+      volatile size_t _n = size; \
+      if (!snprintf(dst, _n, __VA_ARGS__)) { (void)_n; }; \
     } while (false)
 
 /**
