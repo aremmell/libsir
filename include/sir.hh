@@ -1,6 +1,6 @@
 /*
  * @file sir.hh
- * @brief C++20 interface to libsir
+ * @brief C++ interface to libsir
  *
  * @author    Ryan M. Lederman \<lederman@gmail.com\>
  * @date      2018-2023
@@ -36,6 +36,11 @@
 # include <array>
 # include <string>
 
+# if !defined(SIR_NO_IOSTREAM_FORMAT)
+# include <iostream>
+# include <sstream>
+# endif
+
 # if defined(__has_include)
 #  if __has_include(<format>) && !defined(SIR_NO_STD_FORMAT) && \
       !(defined(__MACOS__) && defined(_LIBCPP_HAS_NO_INCOMPLETE_FORMAT))
@@ -57,7 +62,7 @@
  * @addtogroup public
  * @{
  *
- * @addtogroup cpp C++20 Wrapper
+ * @addtogroup cpp C++ Wrapper
  * @{
  */
 
@@ -109,7 +114,7 @@ namespace sir
             return ret;
         }
 
-        /** Logs an info message (see ::sir_info). */
+        /** Logs an informational message (see ::sir_info). */
         bool info(const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_INFO, format, args);
@@ -165,6 +170,80 @@ namespace sir
             return ret;
         }
     };
+
+# if !defined(SIR_NO_IOSTREAM_FORMAT)
+    /**
+     * @class iostream_adapter
+     * @brief Provides an std::iostream interface to libsir's logging functions.
+     */
+    class iostream_adapter : public adapter {
+    public:
+        iostream_adapter() = default;
+        virtual ~iostream_adapter() = default;
+
+        typedef bool(*sir_log_pfn)(const char*, ...);
+
+        class buffer : public std::streambuf {
+        public:
+            using Base = std::streambuf;
+
+            buffer() = delete;
+            explicit buffer(sir_log_pfn pfn) : _pfn(pfn) {
+                // TODO: if exceptions enabled, throw if pfn is nullptr.
+                SIR_ASSERT(pfn != nullptr);
+                Base::setp(_buf.begin(), _buf.end());
+            }
+
+        protected:
+            void write_out() {
+                for (auto it = _buf.rbegin(); it != _buf.rend(); it++) {
+                    if (*it != '\0') {
+                        /* if the last character in the array is not a null
+                            * terminator, or the last non-null character is a
+                            * newline, set it to null. */
+                        if (it == _buf.rbegin() || *it == '\n')
+                            *it = '\0';
+                        break;
+                    }
+                }
+
+                [[maybe_unused]] bool write = _pfn(_buf.data());
+                SIR_ASSERT(write);
+                // TODO: if exceptions enabled, throw if write is false.
+            }
+
+            int_type overflow(int_type ch = EOF) override {
+                /* more characters have been written than we have space for.
+                 * null-terminate the array and pass it to libsir. */
+                write_out();
+                return traits_type::eof();
+            }
+
+            int sync() override {
+                /* flush has been called, or a newline was encountered. */
+                write_out();
+                return 0;
+            }
+
+            std::array<char_type, SIR_MAXMESSAGE> _buf {};
+            sir_log_pfn _pfn = nullptr;
+        };
+
+        class stream : public std::ostream {
+        public:
+            using base = std::ostream;
+
+            stream() = delete;
+            explicit stream(sir_log_pfn pfn) : _buf(pfn), base(&_buf) {
+            }
+
+        private:
+            buffer _buf;
+        };
+
+        stream test_stream {&sir_debug};
+    };
+#endif // SIR_NO_IOSTREAM_FORMAT
 
 # if defined(__SIR_HAVE_STD_FORMAT__)
     /**
@@ -638,6 +717,9 @@ namespace sir
 # endif
 # if defined(__SIR_HAVE_FMT_FORMAT__)
         , fmt_format_adapter
+# endif
+# if !defined(SIR_NO_IOSTREAM_FORMAT)
+        , iostream_adapter
 # endif
     >;
 } // ! namespace sir
