@@ -32,7 +32,6 @@
 # include "sir/internal.h"
 # include <type_traits>
 # include <exception>
-# include <tuple>
 # include <array>
 # include <string>
 
