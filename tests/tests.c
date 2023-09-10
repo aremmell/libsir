@@ -212,7 +212,7 @@ bool sirtest_logwritesanity(void) {
 
         _sir_safefclose(&f);
         TEST_MSG("deleting %s...", logfilename);
-        rmfile(logfilename);
+        rmfile(logfilename, cl_cfg.leave_logs);
     }
 
     _sir_eqland(pass, sir_cleanup());
@@ -297,7 +297,7 @@ bool sirtest_threadidsanity(void)
 
         _sir_safefclose(&f);
         TEST_MSG("deleting %s...", logfilename);
-        rmfile(logfilename);
+        rmfile(logfilename, cl_cfg.leave_logs);
     }
 
     _sir_eqland(pass, sir_cleanup());
@@ -328,7 +328,7 @@ bool sirtest_failnooutputdest(void) {
         if (0U != fid)
             _sir_eqland(pass, sir_remfile(fid));
 
-        rmfile(logfilename);
+        rmfile(logfilename, cl_cfg.leave_logs);
     }
 
     _sir_eqland(pass, sir_cleanup());
@@ -387,7 +387,7 @@ bool sirtest_filecachesanity(void) {
     for (size_t n = 0; n < numfiles - 1; n++) {
         char path[SIR_MAXPATH] = {0};
         (void)snprintf(path, SIR_MAXPATH, MAKE_LOG_NAME("test-%zu.log"), n);
-        rmfile(path);
+        rmfile(path, cl_cfg.leave_logs);
         ids[n] = sir_addfile(path, SIRL_ALL, (n % 2) ? odd : even);
         _sir_eqland(pass, 0U != ids[n] && sir_info("test %zu", n));
     }
@@ -439,7 +439,7 @@ bool sirtest_filecachesanity(void) {
 
         char path[SIR_MAXPATH] = {0};
         (void)snprintf(path, SIR_MAXPATH, MAKE_LOG_NAME("test-%zu.log"), removeorder[n]);
-        rmfile(path);
+        rmfile(path, cl_cfg.leave_logs);
     }
 
     _sir_eqland(pass, sir_info("test test test"));
@@ -550,10 +550,10 @@ bool sirtest_faildupefile(void) {
     _sir_eqland(pass, sir_remfile(fid));
     _sir_eqland(pass, sir_cleanup());
 
-    rmfile(filename1);
-    rmfile(filename2);
-    rmfile(filename3);
-    rmfile(filename4);
+    rmfile(filename1, cl_cfg.leave_logs);
+    rmfile(filename2, cl_cfg.leave_logs);
+    rmfile(filename3, cl_cfg.leave_logs);
+    rmfile(filename4, cl_cfg.leave_logs);
 
     return PRINT_RESULT_RETURN(pass);
 }
@@ -586,7 +586,7 @@ bool sirtest_rollandarchivefile(void) {
     TEST_MSG_0("deleting any stale logs from a previous run...");
 
     unsigned delcount = 0U;
-    if (!enumfiles(SIR_TESTLOGDIR, logbasename, deletefiles, &delcount)) {
+    if (!enumfiles(SIR_TESTLOGDIR, logbasename, !cl_cfg.leave_logs, &delcount)) {
         HANDLE_OS_ERROR(false, "failed to enumerate log files with base name: %s!",
             logbasename);
         return false;
@@ -642,7 +642,7 @@ bool sirtest_rollandarchivefile(void) {
 
         /* look for files matching the original name. */
         unsigned foundlogs = 0U;
-        if (!enumfiles(SIR_TESTLOGDIR, logbasename, countfiles, &foundlogs)) {
+        if (!enumfiles(SIR_TESTLOGDIR, logbasename, false, &foundlogs)) {
             HANDLE_OS_ERROR(false, "failed to enumerate log files with base name: %s!", logbasename);
             pass = false;
         }
@@ -655,7 +655,7 @@ bool sirtest_rollandarchivefile(void) {
     _sir_eqland(pass, sir_remfile(fileid));
 
     delcount = 0U;
-    if (!enumfiles(SIR_TESTLOGDIR, logbasename, deletefiles, &delcount)) {
+    if (!enumfiles(SIR_TESTLOGDIR, logbasename, !cl_cfg.leave_logs, &delcount)) {
         HANDLE_OS_ERROR(false, "failed to enumerate log files with base name: %s!", logbasename);
         pass = false;
     }
@@ -1263,7 +1263,7 @@ bool sirtest_perf(void) {
     }
 
     unsigned deleted = 0U;
-    enumfiles(SIR_TESTLOGDIR, logbasename, deletefiles, &deleted);
+    (void)enumfiles(SIR_TESTLOGDIR, logbasename, !cl_cfg.leave_logs, &deleted);
 
     if (deleted > 0U)
         TEST_MSG(DGRAY("deleted %u log file(s)"), deleted);
@@ -1295,7 +1295,7 @@ bool sirtest_updatesanity(void) {
         SIRL_INFO, SIRL_DEBUG
     };
 
-    rmfile(logfile);
+    rmfile(logfile, cl_cfg.leave_logs);
     sirfileid id1 = sir_addfile(logfile, SIRL_DEFAULT, SIRO_DEFAULT);
     _sir_eqland(pass, 0 != id1);
 
@@ -1362,7 +1362,7 @@ bool sirtest_updatesanity(void) {
     }
 
     _sir_eqland(pass, sir_remfile(id1));
-    rmfile(logfile);
+    rmfile(logfile, cl_cfg.leave_logs);
 
     _sir_eqland(pass, sir_cleanup());
     return PRINT_RESULT_RETURN(pass);
@@ -2191,7 +2191,7 @@ unsigned __stdcall threadrace_thread(void* arg) {
     pid_t threadid       = _sir_gettid();
     thread_args* my_args = (thread_args*)arg;
 
-    rmfile(my_args->log_file);
+    rmfile(my_args->log_file, cl_cfg.leave_logs);
     sirfileid id = sir_addfile(my_args->log_file, SIRL_ALL, SIRO_MSGONLY);
 
     if (0U == id) {
@@ -2260,7 +2260,7 @@ unsigned __stdcall threadrace_thread(void* arg) {
 
     my_args->pass = print_test_error(sir_remfile(id), false);
 
-    rmfile(my_args->log_file);
+    rmfile(my_args->log_file, cl_cfg.leave_logs);
 
 #if !defined(__WIN__)
     return NULL;
@@ -2319,85 +2319,5 @@ bool filter_error(bool pass, uint16_t err) {
         if (sir_geterror(msg) != err)
             return false;
     }
-    return true;
-}
-
-void rmfile(const char* filename) {
-    /* return true if leave_logs is true. */
-    if (cl_cfg.leave_logs) {
-        TEST_MSG(WHITE("not deleting '%s' due to '%s'"), filename, SIR_CL_LEAVELOGSFLAG);
-        return;
-    }
-
-    /* return true if the file doesn't exist. */
-    struct stat st;
-    if (0 != stat(filename, &st)) {
-        if (ENOENT == errno)
-            return;
-        HANDLE_OS_ERROR(true, "failed to stat %s!", filename);
-        return;
-    }
-
-    if (!_sir_deletefile(filename))
-        HANDLE_OS_ERROR(false, "failed to delete %s!", filename);
-    else
-        TEST_MSG(DGRAY("deleted %s (%ld bytes)"), filename, (long)st.st_size);
-}
-
-void deletefiles(const char* search, const char* path, const char* filename, unsigned* data) {
-    if (strstr(filename, search)) {
-        char filepath[SIR_MAXPATH];
-        _sir_snprintf_trunc(filepath, SIR_MAXPATH, "%s%s", path, filename);
-
-        rmfile(filepath);
-        (*data)++;
-    }
-}
-
-void countfiles(const char* search, const char* path, const char* filename, unsigned* data) {
-    SIR_UNUSED(path);
-    if (strstr(filename, search))
-        (*data)++;
-}
-
-bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* data) {
-#if !defined(__WIN__)
-    DIR* d = opendir(path);
-    if (!d)
-        return print_test_error(false, false);
-
-    rewinddir(d);
-    const struct dirent* di = readdir(d);
-    if (!di) {
-        closedir(d);
-        return print_test_error(false, false);
-    }
-
-    while (NULL != di) {
-        cb(search, path, di->d_name, data);
-        di = readdir(d);
-    }
-
-    closedir(d);
-    d = NULL;
-#else /* __WIN__ */
-    WIN32_FIND_DATA finddata = {0};
-    char buf[SIR_MAXPATH]    = {0};
-
-    (void)snprintf(buf, SIR_MAXPATH, "%s/*", path);
-
-    HANDLE enumerator = FindFirstFile(buf, &finddata);
-
-    if (INVALID_HANDLE_VALUE == enumerator)
-        return false;
-
-    do {
-        cb(search, path, finddata.cFileName, data);
-    } while (FindNextFile(enumerator, &finddata) > 0);
-
-    FindClose(enumerator);
-    enumerator = NULL;
-#endif
-
     return true;
 }

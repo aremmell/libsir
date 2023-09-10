@@ -33,6 +33,15 @@
 # include "sir/internal.h"
 # include "sir/helpers.h"
 # include "sir/ansimacros.h"
+# include "sir/filesystem.h"
+
+# if !defined(__WIN__) || defined(__ORANGEC__)
+#  if !defined(__ORANGEC__)
+#   include <dirent.h>
+#  endif
+# elif defined(__WIN__)
+#  include <math.h>
+# endif
 
 # if defined(__cplusplus)
 extern "C" {
@@ -305,9 +314,9 @@ bool print_test_error(bool result, bool expected) {
     uint16_t code          = sir_geterror(msg);
     if (SIR_E_NOERROR != code) {
         if (!expected && !result)
-            TEST_MSG(RED("!! Unexpected (%"PRIu16", %s)"), code, msg);
+            TEST_MSG(RED("!! Unexpected (%" PRIu16 ", %s)"), code, msg);
         else if (expected)
-            TEST_MSG(GREEN("Expected (%"PRIu16", %s)"), code, msg);
+            TEST_MSG(GREEN("Expected (%" PRIu16 ", %s)"), code, msg);
     }
     return result;
 }
@@ -317,7 +326,7 @@ bool print_test_error(bool result, bool expected) {
  */
 static inline
 void print_libsir_version(void) {
-    (void)printf("\n"ULINE("libsir") " %s (%s)\n\n", sir_getversionstring(),
+    (void)printf("\n" ULINE("libsir") " %s (%s)\n\n", sir_getversionstring(),
         sir_isprerelease() ? "prerelease" : "release");
 }
 
@@ -502,6 +511,91 @@ uint32_t getrand(uint32_t upper_bound) {
 static inline
 bool getrand_bool(uint32_t upper_bound) {
     return ((!upper_bound) ? true : getrand(upper_bound) % 2 == 0);
+}
+
+/**
+ * Deletes the file `filename`, unless `leave_logs` is true, in which case
+ * a message is printed and the file is left untouched.
+ */
+static inline
+void rmfile(const char* filename, bool leave_logs) {
+    /* skip if leave_logs is true. */
+    if (leave_logs) {
+        TEST_MSG(WHITE("skipping deletion of '%s' (%s)"), filename, SIR_CL_LEAVELOGSFLAG);
+        return;
+    }
+
+    struct stat st;
+    if (0 != stat(filename, &st)) {
+        /* ignore errors if the file doesn't exist. */
+        if (ENOENT == errno)
+            return;
+        HANDLE_OS_ERROR(true, "failed to stat %s!", filename);
+        return;
+    }
+
+    if (!_sir_deletefile(filename))
+        HANDLE_OS_ERROR(false, "failed to delete %s!", filename);
+    else
+        TEST_MSG(DGRAY("deleted %s (%ld bytes)"), filename, (long)st.st_size);
+}
+
+/**
+ * Enumerates files at `path`, and if the filename contains `search`, `count` is
+ * incremented. If `del` is true, the file is deleted.
+ */
+bool enumfiles(const char* path, const char* search, bool del, unsigned* count) {
+#if !defined(__WIN__)
+    DIR* d = opendir(path);
+    if (!d)
+        return print_test_error(false, false);
+
+    rewinddir(d);
+    const struct dirent* di = readdir(d);
+    if (!di) {
+        closedir(d);
+        return print_test_error(false, false);
+    }
+
+    while (NULL != di) {
+        if (strstr(di->d_name, search)) {
+            if (del) {
+                char filepath[SIR_MAXPATH];
+                _sir_snprintf_trunc(filepath, SIR_MAXPATH, "%s%s", path, di->d_name);
+                rmfile(filepath, false);
+            }
+            (*count)++;
+        }
+        di = readdir(d);
+    }
+
+    closedir(d);
+    d = NULL;
+#else /* __WIN__ */
+    WIN32_FIND_DATA finddata = {0};
+    char buf[SIR_MAXPATH]    = {0};
+
+    (void)snprintf(buf, SIR_MAXPATH, "%s/*", path);
+
+    HANDLE enumerator = FindFirstFile(buf, &finddata);
+    if (INVALID_HANDLE_VALUE == enumerator)
+        return false;
+
+    do {
+        if (strstr(finddata.cFileName, search)) {
+            if (del) {
+                char filepath[SIR_MAXPATH];
+                _sir_snprintf_trunc(filepath, SIR_MAXPATH, "%s%s", path, finddata.cFileName);
+                rmfile(filepath, false);
+            }
+            (*count)++;
+        }
+    } while (FindNextFile(enumerator, &finddata) > 0);
+
+    FindClose(enumerator);
+    enumerator = NULL;
+#endif
+    return true;
 }
 
 # if defined(__cplusplus)

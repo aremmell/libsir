@@ -32,15 +32,6 @@
 # include "sir/mutex.h"
 # include "sir/threadpool.h"
 # include "sir/queue.h"
-# include "sir/filesystem.h"
-
-# if !defined(__WIN__) || defined(__ORANGEC__)
-#  if !defined(__ORANGEC__)
-#   include <dirent.h>
-#  endif
-# elif defined(__WIN__)
-#  include <math.h>
-# endif
 
 /**
  * @defgroup tests Tests
@@ -305,13 +296,5 @@ void os_log_child_activity(void* ctx);
  * thread; false otherwise.
  */
 bool filter_error(bool pass, uint16_t err);
-
-void rmfile(const char* filename);
-void deletefiles(const char* search, const char* path, const char* filename, unsigned* data);
-void countfiles(const char* search, const char* path, const char* filename, unsigned* data);
-
-typedef void (*fileenumproc)(const char* search, const char* path, const char* filename,
-    unsigned* data);
-bool enumfiles(const char* path, const char* search, fileenumproc cb, unsigned* data);
 
 #endif /* !_SIR_TESTS_H_INCLUDED */
