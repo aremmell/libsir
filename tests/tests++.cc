@@ -139,7 +139,7 @@ bool sir::tests::raii_init_cleanup() {
 bool sir::tests::manual_init_cleanup() {
     _SIR_TEST_BEGIN
 
-    logger<false, default_init_policy, default_adapter> log;
+    logger<false, default_adapter> log;
     _sir_eqland(pass, log.init());
 
     _sir_eqland(pass, log.debug("Manually initialized using default_init_policy"));
