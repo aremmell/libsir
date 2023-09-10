@@ -87,6 +87,11 @@
 #  if defined(SUNLINT)
 #   undef __HAVE_ATOMIC_H__
 #  endif
+#  if defined(__NVCOMPILER)
+#   if !defined(_BITS_FLOATN_H)
+#    define _BITS_FLOATN_H
+#   endif
+#  endif
 #  if defined(__IMPORTC__)
 #   include "sir/platform_importc.h"
 #  endif
