@@ -280,12 +280,14 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">true</DeploymentContent>
     </ClCompile>
+    <ClCompile Include="..\tests\tests_shared.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tests\tests.h">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">true</DeploymentContent>
     </ClInclude>
+    <ClInclude Include="..\tests\tests_shared.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="libsir.vcxproj">
