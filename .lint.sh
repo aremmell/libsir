@@ -403,8 +403,9 @@ test_scanbuild()
       sleep 2
       env "${MAKE:-make}" clean; ret=${?}
       test "${ret}" -ne 0 && exit 99
-      env CC="${CCACHE:-env} clang" "${MAKE:-make}" \
-        -j "${CPUS:-1}" \
+      env CC="${CCACHE:-env} clang"
+          CXX="${CCACHE:-env} clang++" "${MAKE:-make}" \
+        -j "${CPUS:-1}" all tests++ \
         mcmb; ret=${?}
       test "${ret}" -ne 0 && exit 99
       printf '%s' 'true' > ./.scan-build.sh
@@ -412,14 +413,14 @@ test_scanbuild()
       "${MCMB:-build/bin/mcmb}" -e ${SIR_OPTIONS:?} | xargs -L1 echo \
         ' && ${MAKE:-make} clean && ${MAKE:-make} mcmb &&
          env CC="${CCACHE:-env} clang"
+             CXX="${CCACHE:-env} clang++"
            scan-build -no-failure-reports
                --status-bugs
-               -maxloop 8
                -enable-checker optin.portability.UnixAPI
                -enable-checker security.FloatLoopCounter
                -enable-checker security.insecureAPI.bcmp
                -enable-checker security.insecureAPI.bcopy
-                   ${MAKE:-make}
+                   ${MAKE:-make} all tests++
                        -j "${CPUS:-1}" ' \
         | tr '\n' ' ' | tr -s ' ' >> ./.scan-build.sh; ret=${?}
       test "${ret}" -ne 0 && exit 99
