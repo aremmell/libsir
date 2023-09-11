@@ -105,22 +105,22 @@ namespace sir::tests
  */
 
 /** Begins a test by declaring `pass` and entering a try/catch block. */
-# define _SIR_TEST_BEGIN \
+# define _SIR_TEST_COMMENCE \
     bool pass = true; \
     try {
 
 /** Implements recovery in the event that an exception is caught. */
-# define _SIR_ON_TEST_EXCEPTION(excpt) \
+# define _SIR_TEST_ON_EXCEPTION(excpt) \
     ERROR_MSG("exception in %s: '%s'", __PRETTY_FUNCTION__, excpt); \
     pass = false; \
     (void)sir_cleanup()
 
 /** Ends a test by closing the try/catch block and implementing exception handling. */
-# define _SIR_TEST_END \
+# define _SIR_TEST_COMPLETE \
     } catch (const std::exception& ex) { \
-        _SIR_ON_TEST_EXCEPTION(ex.what()); \
+        _SIR_TEST_ON_EXCEPTION(ex.what()); \
     } catch (...) { \
-        _SIR_ON_TEST_EXCEPTION(SIR_UNKNOWN); \
+        _SIR_TEST_ON_EXCEPTION(SIR_UNKNOWN); \
     } \
     return PRINT_RESULT_RETURN(pass);
 

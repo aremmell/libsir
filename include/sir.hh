@@ -31,11 +31,11 @@
 # include "sir/helpers.h"
 # include "sir/internal.h"
 # include <type_traits>
+# include <algorithm>
 # include <exception>
 # include <memory>
 # include <string>
 # include <array>
-//# include <bit>
 
 # if !defined(SIR_NO_STD_IOSTREAM)
 # include <iostream>
@@ -74,7 +74,7 @@
  * @{
  */
 
-/** The one and only namespace for libsir. */
+/** libsir C++ wrapper implementation. */
 namespace sir
 {
     /**
@@ -88,15 +88,127 @@ namespace sir
     };
 
     /**
+     * @class policy
+     * @brief Defines the abstract interface for a policy, which controls the
+     * behavior of logger at runtime.
+     *
+     * policy is designed to be practical–sure, you could have 3 or 4 different
+     * types of policy interfaces that made decisions for different categories
+     * of behavior, but in reality, engineers likely just want to have only one
+     * source file to consult when changes are required.
+     *
+     * For this reason, libsir's policy interface is a one-stop shop. Of course,
+     * a derived class can still be as elaborate as the engineer wishes, but the
+     * design goal here is a central source of control, and simplicity.
+     */
+    class policy {
+    public:
+        policy() = default;
+        virtual ~policy() = default;
+
+        /**
+         * Called by logger before initializing libsir. Provides the policy with
+         * the opportunity to fully customize the initial configuration.
+         *
+         * @param data libsir initial configuration data structure. Contains
+         * options for things such as level registrations and formatting options
+         * for stdio and system logger destinations.
+         *
+         * @see ::sirinit
+         * @see ::sir_makeinit
+         *
+         * @note Most, if not all of the options chosen during initialization
+         * can be modified at runtime using functions provided by libsir.
+         *
+         * @note For the default configuration, pass the address of the ::sirinit
+         * structure to ::sir_makeinit.
+         *
+         * @returns true if data was successfully configured, or false if an
+         * error occurred. Returning false will cause logger to abort the
+         * initialization process–either by throwing an exception, or by entering
+         * an 'invalid' state (determined by policy::throw_on_error).
+         */
+        virtual bool get_init_data(sirinit& data) const noexcept = 0;
+
+        /**
+         * Called by logger immediately after libsir has been initialized. This
+         * is the moment in time which should be utilized for further configuration
+         * than is possible via ::sirinit alone.
+         *
+         * Some items include:
+         * - Setting the ::sir_colormode for stdio (::sir_setcolormode)
+         * - Setting ::sir_textstyle on a per-level basis for stdio (::sir_settextstyle)
+         * - Adding log files (::sir_addfile)
+         * - Loading plugins (::sir_loadplugin)
+         *
+         * @returns true if configuration was completed successfully, or false if
+         * an error occurred. Returning false will cause logger to abort the
+         * initialization process–either by throwing an exception, or by entering
+         * an 'invalid' state (determined by policy::throw_on_error).
+         */
+        virtual bool on_init_complete() const noexcept = 0;
+
+        /**
+         * Determines whether or not exceptions are thrown in the event that a
+         * libsir or OS-level error is encountered by logger or its associated
+         * adapter(s).
+         *
+         * @note libsir's exception classes derive from std::exception.
+         *
+         * @returns true if exceptions should be thrown, false otherwise.
+         */
+        virtual constexpr bool throw_on_error() const noexcept = 0;
+
+        /**
+         * Useful when complications arise; the question "which policy made that
+         * decision?!" is then easy to answer.
+         *
+         * @returns A unique name for the policy.
+         */
+        virtual std::string get_name() const = 0;
+    };
+
+    /**
+     * @class default_policy
+     * @brief Implementation of the default policy, in the event that no
+     * custom configuration or behavior is desired.
+     */
+    class default_policy : policy {
+    public:
+        default_policy() = default;
+        virtual ~default_policy() = default;
+
+        /*
+         * policy overrides
+         */
+
+        bool get_init_data(sirinit& data) const noexcept final {
+            return sir_makeinit(&data);
+        }
+
+        bool on_init_complete() const noexcept final {
+            return true;
+        }
+
+        constexpr bool throw_on_error() const noexcept final {
+            return true;
+        }
+
+        std::string get_name() const final {
+            return "Default";
+        }
+    };
+
+    /**
      * @class adapter
      * @brief Defines the abstract interface for an adapter, which ultimately
-     * becomes a public base class of ::logger (there can be more than one).
+     * becomes a public base class of logger (there can be more than one).
      *
      * adapter is designed to provide flexibility and extensibility in relation
      * to the public interface that is implemented by a logger.
      *
      * For an example of this, see ::std_format_adapter. When std::format is
-     * available, and `SIR_NO_STD_FORMAT` is not defined, std_format_adapter may
+     * available, and SIR_NO_STD_FORMAT is not defined, std_format_adapter may
      * be used to expose methods that behave exactly like std::format, but the
      * resulting formatted strings are sent directly to libsir.
      *
@@ -283,9 +395,7 @@ namespace sir
      * @class boost_format_adapter
      * @brief Adapter for boost::format (when available).
      *
-     * If boost::format is available on this platform and SIR_NO_BOOST_FORMAT is not
-     * defined, ::default_logger will export the methods from this adapter in
-     * addition to any others.
+     * TODO: update description
      */
     class boost_format_adapter : public adapter {
     public:
@@ -339,9 +449,7 @@ namespace sir
      * @class fmt_format_adapter
      * @brief Adapter for fmt (when available).
      *
-     * If fmt is available on this platform and SIR_NO_FMT_FORMAT is not defined,
-     * ::default_logger will export the methods from this adapter in addition
-     * to any others.
+     * TODO: update description
      */
     class fmt_format_adapter : public adapter {
     public:
@@ -451,11 +559,7 @@ namespace sir
             }
 
             bool write_out() {
-                /* could be called by sync() when there's nothing to write. */
-                if (!*pptr())
-                    return true;
-
-                /* get rid of any trailing newline. */
+                /* get rid of a trailing newline if present. */
                 for (auto it = _buf->rbegin(); it != _buf->rend(); it++) {
                     if (*it != '\0') {
                         if (*it == '\n')
@@ -472,33 +576,35 @@ namespace sir
             }
 
             int_type overflow(int_type ch) override {
-                if (ch != traits_type::eof()) {
-                    reset_buffer();
+                if (ch != traits_type::eof() && write_out())
                     return ch;
-                }
                 return traits_type::eof();
             }
 
             int sync() override {
-                /* flush has been called, or a newline was encountered. */
                 return write_out() ? 0 : -1;
             }
 
             std::streamsize xsputn(const char_type* s, std::streamsize count) override {
-                ptrdiff_t left   = epptr() - pptr();
-                size_t out_bytes = 0;
+                std::streamsize written = 0;
+                do {
+                    ptrdiff_t left = epptr() - pptr();
+                    if (!left) {
+                        int_type ch = overflow(traits_type::to_int_type(*(s + written)));
+                        if (ch != traits_type::eof()) {
+                            continue;
+                        } else {
+                            break;
+                        }
+                    }
 
-                if (left > count) [[likely]] {
-                    out_bytes = static_cast<size_t>(count);
-                } else [[unlikely]] {
-                    out_bytes = static_cast<size_t>(left);
-                }
+                    auto this_write = std::min(static_cast<std::streamsize>(left), count - written);
+                    memcpy(pptr(), s + written, this_write);
+                    pbump(this_write);
+                    written += this_write;
+                } while (written < count);
 
-                memcpy(pptr(), s, out_bytes);
-                bool did_write = write_out();
-                SIR_ASSERT(did_write);
-
-                return did_write ? static_cast<std::streamsize>(out_bytes) : 0;
+                return written;
             }
 
             std::unique_ptr<array_type> _buf = std::make_unique<array_type>();
@@ -530,6 +636,10 @@ namespace sir
     template<typename... T>
     concept DerivedFromAdapter = std::is_base_of_v<adapter, T...>;
 
+    /** Ensures that T derives from policy. */
+    template<typename... T>
+    concept DerivedFromPolicy = std::is_base_of_v<policy, T...>;
+
     /**
      * @class logger
      * @brief The primary C++ interface to libsir.
@@ -541,140 +651,134 @@ namespace sir
      *                  initialization' behavior (i.e., libsir is initialized by
      *                  the ctor, and cleaned up by the dtor). Set to `false` for
      *                  manual management of initialization/cleanup.
+     * @param TPolicy   A policy class which will be responsible for certain
+     *                  aspects of logger's behavior.
      * @param TAdapters One or more adapter classes whose public methods will be
      *                  exposed by this class.
      */
-    template<bool RAII, DerivedFromAdapter... TAdapters>
+    template<bool RAII, DerivedFromPolicy TPolicy, DerivedFromAdapter... TAdapters>
     class logger : public TAdapters...  {
     public:
         logger() : TAdapters()... {
-            if (RAII && !init()) {
+            if (RAII && !_init()) {
+                // TODO: throw exception if policy says
                 SIR_ASSERT(false);
             }
         }
 
         virtual ~logger() {
-            if (RAII && !cleanup()) {
+            if (RAII && !_cleanup()) {
                 SIR_ASSERT(false);
             }
         }
 
-        virtual bool init(sirinit& si) const noexcept {
-            return RAII ? false : sir_init(&si);
+        bool init() noexcept {
+            return _init();
         }
 
-	/* cppcheck-suppress virtualCallInConstructor */
-        virtual bool init() const noexcept {
-            sirinit si {};
-            if (bool make = sir_makeinit(&si); !make)
-                return false;
-            return sir_init(&si);
-        }
-
-	/* cppcheck-suppress virtualCallInConstructor */
-        virtual bool cleanup() const noexcept {
-            return sir_cleanup();
+        bool cleanup() noexcept {
+            return _cleanup();
         }
 
         /** Wraps ::sir_geterror. */
-        virtual error get_error() const {
+        error get_error() const {
             std::array<char, SIR_MAXERROR> message {};
             uint32_t code = sir_geterror(message.data());
             return { code, message.data() };
         }
 
         /** Wraps ::sir_addfile. */
-        virtual sirfileid add_file(const std::string& path, const sir_levels& levels,
+        sirfileid add_file(const std::string& path, const sir_levels& levels,
             const sir_options& opts) const {
             return sir_addfile(path.c_str(), levels, opts);
         }
 
         /** Wraps ::sir_remfile. */
-        virtual bool rem_file(const sirfileid& id) const noexcept {
+        bool rem_file(const sirfileid& id) const noexcept {
             return sir_remfile(id);
         }
 
         /** Wraps ::sir_loadplugin. */
-        virtual sirpluginid load_plugin(const std::string& path) const {
+        sirpluginid load_plugin(const std::string& path) const {
             return sir_loadplugin(path.c_str());
         }
 
         /** Wraps ::sir_unloadplugin. */
-        virtual bool unload_plugin(const sirpluginid& id) const noexcept {
+        bool unload_plugin(const sirpluginid& id) const noexcept {
             return sir_unloadplugin(id);
         }
 
         /** Wraps ::sir_filelevels. */
-        virtual bool set_file_levels(const sirfileid& id, const sir_levels& levels)
+        bool set_file_levels(const sirfileid& id, const sir_levels& levels)
             const noexcept {
             return sir_filelevels(id, levels);
         }
 
         /** Wraps ::sir_fileopts. */
-        virtual bool set_file_options(const sirfileid& id, const sir_options& opts)
+        bool set_file_options(const sirfileid& id, const sir_options& opts)
             const noexcept {
             return sir_fileopts(id, opts);
         }
 
         /** Wraps ::sir_settextstyle. */
-        virtual bool set_text_style(const sir_level& level, const sir_textattr& attr,
+        bool set_text_style(const sir_level& level, const sir_textattr& attr,
             const sir_textcolor& fg, const sir_textcolor& bg) const noexcept {
             return sir_settextstyle(level, attr, fg, bg);
         }
 
         /** Wraps ::sir_resettextstyles. */
-        virtual bool reset_text_styles() const noexcept {
+        bool reset_text_styles() const noexcept {
             return sir_resettextstyles();
         }
 
         /** Wraps ::sir_makergb. */
-        virtual sir_textcolor make_rgb(const sir_textcolor& r, const sir_textcolor& g,
+        sir_textcolor make_rgb(const sir_textcolor& r, const sir_textcolor& g,
             const sir_textcolor& b) const noexcept {
             return sir_makergb(r, g, b);
         }
 
         /** Wraps ::sir_setcolormode. */
-        virtual bool set_color_mode(const sir_colormode& mode) const noexcept {
+        bool set_color_mode(const sir_colormode& mode) const noexcept {
             return sir_setcolormode(mode);
         }
 
         /** Wraps ::sir_stdoutlevels. */
-        virtual bool set_stdout_levels(const sir_levels& levels) const noexcept {
+        bool set_stdout_levels(const sir_levels& levels) const noexcept {
             return sir_stdoutlevels(levels);
         }
 
         /** Wraps ::sir_stdoutopts. */
-        virtual bool set_stdout_options(const sir_options& opts) const noexcept {
+        bool set_stdout_options(const sir_options& opts) const noexcept {
             return sir_stdoutopts(opts);
         }
 
         /** Wraps ::sir_stderrlevels. */
-        virtual bool set_stderr_levels(const sir_levels& levels) const noexcept {
+        bool set_stderr_levels(const sir_levels& levels) const noexcept {
             return sir_stderrlevels(levels);
         }
 
         /** Wraps ::sir_stderropts. */
-        virtual bool set_stderr_options(const sir_options& opts) const noexcept {
+        bool set_stderr_options(const sir_options& opts) const noexcept {
             return sir_stderropts(opts);
         }
 
         /** Wraps ::sir_sysloglevels. */
-        virtual bool set_syslog_levels(const sir_levels& levels) const noexcept {
+        bool set_syslog_levels(const sir_levels& levels) const noexcept {
             return sir_sysloglevels(levels);
         }
 
         /** Wraps ::sir_syslogopts. */
-        virtual bool set_syslog_options(const sir_options& opts) const noexcept {
+        bool set_syslog_options(const sir_options& opts) const noexcept {
             return sir_syslogopts(opts);
         }
 
         /** Wraps ::sir_syslogid. */
-        virtual bool set_syslog_id(const std::string& id) const {
+        bool set_syslog_id(const std::string& id) const {
             return sir_syslogid(id.c_str());
         }
 
         /** Wraps ::sir_syslogcat. */
-        virtual bool set_syslog_category(const std::string& category) const {
+        bool set_syslog_category(const std::string& category) const {
             return sir_syslogcat(category.c_str());
         }
 
@@ -692,6 +796,26 @@ namespace sir
         bool is_prerelease() const noexcept {
             return sir_isprerelease();
         }
+
+    protected:
+        bool _init() {
+            sirinit si {};
+            if (bool init = _policy.get_init_data(si) && sir_init(&si) &&
+                _policy.on_init_complete(); !init) {
+                return false;
+            }
+            return _initialized = true;
+        }
+
+        bool _cleanup() {
+            bool cleanup = sir_cleanup();
+            _initialized = false;
+            return cleanup;
+        }
+
+    protected:
+        TPolicy _policy;
+        bool _initialized = false;
     };
 
     /**
@@ -699,17 +823,12 @@ namespace sir
      * @brief A logger that implements the default set of adapters.
      *
      * The default logger has the following template parameters defined:
-     *
-     * - RAII = true
-     * - TAdapters = default_adapter [, std_format_adapter, std_iostream_adapter]
-     *   - if `SIR_NO_STD_FORMAT` is not defined, and std::format is available,
-     *     includes the std::format adapter.
-     *   - if `SIR_NO_STD_IOSTREAM` is not defined, includes the std::iostream
-     *     adapter.
+     * // TODO update description
      */
     using default_logger = logger
     < // TODO: don't include boost and fmt adapters by default
         true,
+        default_policy,
         default_adapter
 # if defined(__SIR_HAVE_STD_FORMAT__)
         , std_format_adapter
