@@ -318,13 +318,20 @@ test_gccextra()
         "NOTICE: gcc is required for the gcc extra-warning check."
       exit 1
     }
+  g++ --version 2>&1 | grep -qi GCC > /dev/null 2>&1 \
+    || {
+      printf '%s\n' \
+        "NOTICE: g++ is required for the gcc extra-warning check."
+      exit 1
+    }
       printf '%s\n' "building with extra-warning flags ..."
       sleep 2
       env "${MAKE:-make}" clean; ret=${?}
       test "${ret}" -ne 0 && exit 99
       rm -f ./.extra.sh
       env CC="${CCACHE:-env} gcc" \
-        "${MAKE:-make}" \
+          CXX="${CCACHE:-env} g++" \
+        "${MAKE:-make}" all tests++ \
         -j 1 \
         mcmb; ret=${?}
       test "${ret}" -ne 0 && exit 99
@@ -333,6 +340,7 @@ test_gccextra()
       "${MCMB:-build/bin/mcmb}" -e ${SIR_OPTIONS:?} | xargs -L1 echo \
         ' && ${MAKE:-make} clean &&
         env CC="${CCACHE:-env} gcc"
+            CXX="${CCACHE:-env} g++"
             CFLAGS="-Werror
                     -Wbad-function-cast
                     -Wconversion
@@ -346,7 +354,7 @@ test_gccextra()
                     -Wno-sign-conversion
                     -Wno-string-conversion
                     -Wswitch-enum"
-            ${MAKE:-make}
+            ${MAKE:-make} all tests++
                 -j 1 ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh; ret=${?}
       test "${ret}" -ne 0 && exit 99
       printf '%s\n' ' && true' >> ./.extra.sh
