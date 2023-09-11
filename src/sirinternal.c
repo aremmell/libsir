@@ -1166,7 +1166,11 @@ pid_t _sir_gettid(void) {
 #elif defined(__SOLARIS__) || defined(__NetBSD__) || defined(__HURD__) || \
       defined(__DragonFly__) || defined(__CYGWIN__) || defined(_AIX) || \
       defined(__EMSCRIPTEN__)
+# if defined(__CYGWIN__)
+    tid = (pid_t)(uintptr_t)pthread_self();
+# else
     tid = (pid_t)pthread_self();
+# endif
 #elif defined(__HAIKU__)
     tid = get_pthread_thread_id(pthread_self());
 #elif defined(__linux__) || defined(__serenity__)
