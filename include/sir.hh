@@ -115,9 +115,10 @@ namespace sir
          * @note For the default configuration, pass the address of the ::sirinit
          * structure to ::sir_makeinit.
          *
-         * @returns true if logger should proceed with initialization using the
-         * data structure, or false if it should abort the initialization
-         * process (see the return value description for policy::on_init_complete).
+         * @returns true if data was successfully configured, or false if an
+         * error occurred. Returning false will cause logger to abort the
+         * initialization process–either by throwing an exception, or by entering
+         * an 'invalid' state (determined by policy::throw_on_error).
          */
         virtual bool get_init_data(sirinit& data) const noexcept = 0;
 
@@ -159,12 +160,20 @@ namespace sir
         virtual std::string get_name() const = 0;
     };
 
+    /**
+     * @class default_policy
+     * @brief Implementation of the default policy, in the event that no
+     * custom configuration or behavior is desired.
+     */
     class default_policy : policy {
     public:
         default_policy() = default;
         virtual ~default_policy() = default;
 
-        /* policy implementation. */
+        /*
+         * policy overrides
+         */
+
         bool get_init_data(sirinit& data) const noexcept final {
             return sir_makeinit(&data);
         }
@@ -630,34 +639,26 @@ namespace sir
     template<bool RAII, DerivedFromPolicy TPolicy, DerivedFromAdapter... TAdapters>
     class logger : public TAdapters...  {
     public:
-        logger() : TAdapters()..., _policy(TPolicy()) {
-        }
-
-        explicit logger(TPolicy& policy) : TAdapters()..., _policy(policy) {
-            if (RAII && !init()) {
+        logger() : TAdapters()... {
+            if (RAII && !_init(sirinit {})) {
+                // TODO: throw exception if policy says
                 SIR_ASSERT(false);
             }
         }
 
         virtual ~logger() {
-            if (RAII && !cleanup()) {
+            if (RAII && !_cleanup()) {
                 SIR_ASSERT(false);
             }
         }
 
-        virtual bool init(sirinit& si) const noexcept {
-            return RAII ? false : sir_init(&si);
-        }
-
-        virtual bool init() const noexcept {
+        bool init() noexcept {
             sirinit si {};
-            if (bool make = sir_makeinit(&si); !make)
-                return false;
-            return sir_init(&si);
+            return RAII ? false : _init(si);
         }
 
-        virtual bool cleanup() const noexcept {
-            return sir_cleanup();
+        bool cleanup() noexcept {
+            return _cleanup();
         }
 
         /** Wraps ::sir_geterror. */
@@ -778,7 +779,23 @@ namespace sir
         }
 
     protected:
+        bool _init(sirinit si) {
+            if (bool init = _policy.get_init_data(si) && sir_init(&si) &&
+                _policy.on_init_complete(); !init) {
+                return false;
+            }
+            return _initialized = true;
+        }
+
+        bool _cleanup() {
+            bool cleanup = sir_cleanup();
+            _initialized = false;
+            return cleanup;
+        }
+
+    protected:
         TPolicy _policy;
+        bool _initialized = false;
     };
 
     /**
