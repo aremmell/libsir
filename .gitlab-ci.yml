@@ -1214,13 +1214,15 @@ Cygwin/x86_64:
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - x86_64-pc-cygwin-gcc --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CC="ccache x86_64-pc-cygwin-gcc"
+    - export CXX="ccache x86_64-pc-cygwin-gcc"
     - ${CC:?} --version
+    - ${CXX:?} --version
     - make
+    - make tests++
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:

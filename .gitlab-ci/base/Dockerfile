@@ -105,20 +105,15 @@ RUN \
   dnf4 -y --allowerasing reinstall \
       compiler-rt \
 && \
-  ( curl -fsSLO https://rpm.nodesource.com/setup_20.x || true ) \
-&& \
-  ( chmod a+x "setup_20.x" || true ) \
-&& \
-  ( sed -i "s/## Given the distro.*/DIST_VERSION=38/" "setup_20.x" || true ) \
-&& \
-  ( bash -x ./setup_20.x || true ) \
-&& \
-  ( rm -f ./setup_* || true ) \
+  dnf4 -y --allowerasing install \
+      https://rpm.nodesource.com/pub_20.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm \
 && \
   dnf -y --refresh update \
 && \
-  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-      nodejs \
+  dnf4 -y --refresh update \
+&& \
+  dnf4 -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
+      nodejs --setopt=nodesource-nodejs.module_hotfixes=1 \
 && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True group install \
       development-tools \
