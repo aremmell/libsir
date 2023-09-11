@@ -237,7 +237,9 @@ bool sir::tests::std_iostream_format() {
     _SIR_TEST_BEGIN
 
     default_logger log;
-    log.debug_stream << "If you can see this, std::iostream is working." << endl;
+    log.debug_stream << "If you can see this, std::iostream is working.";
+    log.debug_stream << " Without newlines!";
+    log.debug_stream << "And with newlines, too!" << endl;
 
     _SIR_TEST_END
 #else
