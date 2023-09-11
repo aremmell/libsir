@@ -89,6 +89,24 @@ RUN \
       tmux \
       unzip \
       valgrind \
+      ccache-swig \
+      guile \
+      guile-devel \
+      golang \
+      octave \
+      perl \
+      perl-core \
+      perl-devel \
+      python-setuptools \
+      R \
+      R-devel \
+      ruby \
+      ruby-devel \
+      lua \
+      lua-devel \
+      tcl \
+      tcl-devel \
+      swig \
       vim \
       wget \
       zip \
