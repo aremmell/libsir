@@ -13,6 +13,8 @@ RUN apt -y update && \
 	screen \
         tmux \
 	git \
+	libfmt-dev \
+	libboost-all-dev \
         wine && \
     yes | dpkg --add-architecture i386 && \
     apt -y update && \
