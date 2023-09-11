@@ -17,13 +17,15 @@ RUN dnf --nogpgcheck -y install \
       printf '%s\n' 'int matherr=0;' 'char* _LIB_VERSION="";' > tmp.c && \
       gcc -o libmcompat.o -c tmp.c && \
       ar -crs /usr/lib64/libmcompat.a libmcompat.o && \
-      ranlib /usr/lib64/libmcompat.a && \
       env rm -f libmcompat.o && \
-      gcc -fPIC -shared -o /usr/lib64/libmcompat.so -c tmp.c && \
-      chmod a+x /usr/lib64/libmcompat.so && \
       env rm -f tmp.c && \
+      ranlib /usr/lib64/libmcompat.a && \
       ( ldconfig -v || true ) && \
       ( env rm -f /setup*.x > /dev/null 2>&1 || true ) && \
-      touch /OK
+      dnf -y clean all && \
+      rm -rf ~/.cache && \
+      rm -rf /var/tmp/* && \
+      rm -rf /var/log/dnf* && \
+      ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true)
 
 USER 10000
