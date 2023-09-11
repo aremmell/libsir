@@ -496,6 +496,12 @@ test_cppcheck()
 
 test_pvs()
 { (
+  command -v clang++ > /dev/null 2>&1 \
+    || {
+      printf '%s\n' \
+        "NOTICE: clang++ not found, skipping PVS-Studio checks."
+      exit 1
+    }
   command -v clang > /dev/null 2>&1 \
     || {
       printf '%s\n' \
@@ -529,7 +535,10 @@ test_pvs()
       test "${ret}" -ne 0 && exit 99
       ${MAKE:-make} mcmb; ret=${?}
       test "${ret}" -ne 0 && exit 99
-      env CC="${CCACHE:-env} clang" bear -- "${MAKE:-make}" -j "${CPUS:-1}"; ret=${?}
+      env CXX="${CCACHE:-env} clang++" \
+           CC="${CCACHE:-env} clang" \
+              bear -- "${MAKE:-make}" all tests++ \
+                -j "${CPUS:-1}"; ret=${?}
       test "${ret}" -ne 0 && exit 99
       printf '%s\n' "Running PVS-Studio ..."
       pvs-studio-analyzer analyze --intermodular -j "${CPUS:-1}" -o log.pvs
