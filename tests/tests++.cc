@@ -238,8 +238,13 @@ bool sir::tests::std_iostream_format() {
 
     default_logger log;
     log.debug_stream << "If you can see this, std::iostream is working.";
-    log.debug_stream << " Without newlines!";
+    log.debug_stream << "Without newlines!";
     log.debug_stream << "And with newlines, too!" << endl;
+
+    log.debug_stream << "Let's see what happens with " << "some "
+                     << "longer messages, kind of like this one. "
+                     << "Is it split up into multiple messages, or "
+                     << "does it all appear in one?";
 
     _SIR_TEST_END
 #else

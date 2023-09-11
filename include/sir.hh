@@ -35,7 +35,7 @@
 # include <memory>
 # include <string>
 # include <array>
-# include <bit>
+//# include <bit>
 
 # if !defined(SIR_NO_STD_IOSTREAM)
 # include <iostream>
@@ -469,16 +469,16 @@ namespace sir
                 size_t out_bytes = 0;
 
                 if (left > count) [[likely]] {
-                    out_bytes = std::bit_cast<size_t>(count);
+                    out_bytes = static_cast<size_t>(count);
                 } else [[unlikely]] {
-                    out_bytes = std::bit_cast<size_t>(left);
+                    out_bytes = static_cast<size_t>(left);
                 }
 
                 memcpy(pptr(), s, out_bytes);
                 bool did_write = write_out();
                 SIR_ASSERT(did_write);
 
-                return did_write ? std::bit_cast<std::streamsize>(out_bytes) : 0;
+                return did_write ? static_cast<std::streamsize>(out_bytes) : 0;
             }
 
             std::unique_ptr<array_type> _buf = std::make_unique<array_type>();
