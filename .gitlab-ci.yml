@@ -50,17 +50,22 @@ Linux/x86_64 (GCC):
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - gcc --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache gcc" make
+    - export CC="ccache gcc"
+    - export CXX="ccache gcc"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make
+    - make tests++
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
+    - build/bin/sirtests++
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -84,11 +89,12 @@ Linux/x86_64 (GCC, musl-libc):
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - musl-gcc --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache musl-gcc" make
+    - export CC="ccache musl-gcc"
+    - ${CC:?} --version
+    - make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
@@ -118,17 +124,22 @@ Linux/x86_64 (Clang):
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - clang --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache clang" make
+    - export CC="ccache clang"
+    - export CXX="ccache clang++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make
+    - make tests++
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
+    - build/bin/sirtests++
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -152,18 +163,23 @@ Linux/x86_64 (AOCC):
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - . /opt/AMD/aocc-compiler-4.1.0/setenv_AOCC.sh
-    - clang --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache clang" make
+    - . /opt/AMD/aocc-compiler-4.1.0/setenv_AOCC.sh
+    - export CC="ccache clang"
+    - export CC="ccache clang++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make
+    - make tests++
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
+    - build/bin/sirtests++
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -187,18 +203,23 @@ Linux/x86_64 (Intel C++ Classic):
     name: registry.gitlab.com/libsir/libsir/intel:latest
   script:
     - *Configuration
-    - . /opt/intel/oneapi/setvars.sh
-    - icc -diag-disable=10441 --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache icc" make
+    - . /opt/intel/oneapi/setvars.sh
+    - export CC="ccache icc"
+    - export CXX="ccache icpc"
+    - ${CC:?} -diag-disable=10441 --version
+    - ${CXX:?} -diag-disable=10441 --version
+    - make
+    - make tests++
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
+    - build/bin/sirtests++
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -222,18 +243,23 @@ Linux/x86_64 (Intel oneAPI C++):
     name: registry.gitlab.com/libsir/libsir/intel:latest
   script:
     - *Configuration
-    - . /opt/intel/oneapi/setvars.sh
-    - icx --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache icx" make
+    - . /opt/intel/oneapi/setvars.sh
+    - export CC="ccache icx"
+    - export CXX="ccache icpx"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make
+    - make tests++
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
+    - build/bin/sirtests++
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -257,11 +283,12 @@ Linux/x86_64 (Oracle Studio C/C++):
     name: registry.gitlab.com/libsir/libsir/oracle:latest
   script:
     - *Configuration
-    - /opt/oracle/developerstudio-latest/bin/suncc -V
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache /opt/oracle/developerstudio-latest/bin/suncc" make
+    - export CC="ccache /opt/oracle/developerstudio-latest/bin/suncc"
+    - ${CC:?} -V
+    - make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
@@ -292,18 +319,26 @@ Linux/x86_64 (NVIDIA HPC C/C++):
     name: registry.gitlab.com/libsir/libsir/nvhpc:latest
   script:
     - *Configuration
-    - NVC="$(command -v /opt/nvidia/hpc_sdk/Linux_x86_64/*/compilers/bin/nvc | sort -V | head -n 1)" && export NVC
-    - ${NVC:?} -tp px --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache ${NVC:?}" CFLAGS="-Mnovect -tp px" make
+    - NVC="$(command -v /opt/nvidia/hpc_sdk/Linux_x86_64/*/compilers/bin/nvc | sort -V | head -n 1)"
+    - export NVC
+    - export CC="ccache ${NVC:?}"
+    - ${CC:?} -V
+    - NVCC="$(command -v /opt/nvidia/hpc_sdk/Linux_x86_64/*/compilers/bin/nvc++ | sort -V | head -n 1)"
+    - export NVCC
+    - export CXX="ccache ${NVCC:?}"
+    - ${CXX:?} -V
+    - make
+    - make tests++
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
+    - build/bin/sirtests++
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -330,7 +365,9 @@ Linux/x86_64 (Chibicc):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env PATH="/opt/chibicc:${PATH:-}" CC="ccache /opt/chibicc/chibicc" make
+    - export PATH="/opt/chibicc:${PATH:?}"
+    - export CC="ccache chibicc"
+    - make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
@@ -360,12 +397,17 @@ Windows/x64 (LLVM-MinGW):
     name: registry.gitlab.com/libsir/libsir/llvm-mingw:latest
   script:
     - *Configuration
-    - x86_64-w64-mingw32-gcc --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
-    - env CC="x86_64-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes -Wno-unknown-pragmas" make PLATFORM_LIB_EXT=".a"
+    - export CC="x86_64-w64-mingw32-clang"
+    - export CXX="x86_64-w64-mingw32-clang++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - export CFLAGS="-Wno-ignored-attributes -Wno-unknown-pragmas"
+    - make PLATFORM_LIB_EXT=".a"
+    - make tests++ PLATFORM_LIB_EXT=".a"
     - cp -f /opt/llvm-mingw/x86_64-w64-mingw32/bin/libwinpthread-1.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -378,6 +420,8 @@ Windows/x64 (LLVM-MinGW):
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - rm -f screenlog.0
+    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
@@ -403,12 +447,17 @@ Windows/Arm (LLVM-MinGW):
     name: registry.gitlab.com/libsir/libsir/llvm-mingw:latest
   script:
     - *Configuration
-    - armv7-w64-mingw32-gcc --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
-    - env CC="armv7-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes -Wno-unknown-pragmas" make
+    - export CC="armv7-w64-mingw32-clang"
+    - export CXX="armv7-w64-mingw32-clang++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - export CFLAGS="-Wno-ignored-attributes -Wno-unknown-pragmas"
+    - make
+    - make tests++
     - cp -f /opt/llvm-mingw/armv7-w64-mingw32/bin/libwinpthread-1.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -432,12 +481,17 @@ Windows/Arm64 (LLVM-MinGW):
     name: registry.gitlab.com/libsir/libsir/llvm-mingw:latest
   script:
     - *Configuration
-    - aarch64-w64-mingw32-gcc --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
-    - env CC="aarch64-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes -Wno-unknown-pragmas" make
+    - export CC="aarch64-w64-mingw32-clang"
+    - export CXX="aarch64-w64-mingw32-clang++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - CFLAGS="-Wno-ignored-attributes -Wno-unknown-pragmas"
+    - make
+    - make tests++
     - cp -f /opt/llvm-mingw/aarch64-w64-mingw32/bin/libwinpthread-1.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -467,7 +521,13 @@ Linux/x86_64 (AMD Open64):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC=/opt/x86_open64-4.5.2.1/bin/opencc NO_DEFAULT_CFLAGS=1 SIR_CSTD="-std=gnu9x" CFLAGS="-Iinclude -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers -Wno-strict-aliasing -fno-strict-aliasing -fPIC -O3" LDFLAGS="-lmcompat" make
+    - export PATH="/opt/x86_open64-4.5.2.1/bin:${PATH:?}"
+    - export CC="opencc"
+    - export NO_DEFAULT_CFLAGS="1"
+    - export SIR_CSTD="-std=gnu9x"
+    - export CFLAGS="-Iinclude -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers -Wno-strict-aliasing -fno-strict-aliasing -fPIC -O3"
+    - export LDFLAGS="-lmcompat"
+    - make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
@@ -497,12 +557,17 @@ Windows/i686 (LLVM-MinGW):
     name: registry.gitlab.com/libsir/libsir/llvm-mingw:latest
   script:
     - *Configuration
-    - i686-w64-mingw32-clang --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
-    - env CC="i686-w64-mingw32-clang" CFLAGS="-Wno-ignored-attributes -Wno-incompatible-function-pointer-types -Wno-unknown-pragmas" make PLATFORM_LIB_EXT=".a"
+    - export CC="i686-w64-mingw32-clang"
+    - export CXX="i686-w64-mingw32-clang++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - export CFLAGS="-Wno-ignored-attributes -Wno-incompatible-function-pointer-types -Wno-unknown-pragmas"
+    - make PLATFORM_LIB_EXT=".a"
+    - make tests++ PLATFORM_LIB_EXT=".a"
     - cp -f /opt/llvm-mingw/i686-w64-mingw32/bin/libwinpthread-1.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -515,6 +580,8 @@ Windows/i686 (LLVM-MinGW):
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - rm -f screenlog.0
+    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
@@ -540,18 +607,24 @@ Android/x86_64 (API Level 21):
     name: registry.gitlab.com/libsir/libsir/ndk:latest
   script:
     - *Configuration
-    - PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}" && export PATH
-    - x86_64-linux-android21-clang --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env LDFLAGS="-static" CC="ccache x86_64-linux-android21-clang" make SIR_NO_PLUGINS=1
+    - exprt PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
+    - export LDFLAGS="-static"
+    - export CC="ccache x86_64-linux-android21-clang"
+    - export CXX="ccache x86_64-linux-android21-clang++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make SIR_NO_PLUGINS=1
+    - make tests++ SIR_NO_PLUGINS=1
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
+    - build/bin/sirtests++
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -575,18 +648,24 @@ Android/i686 (API Level 21):
     name: registry.gitlab.com/libsir/libsir/ndk:latest
   script:
     - *Configuration
-    - PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}" && export PATH
-    - i686-linux-android21-clang --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env LDFLAGS="-static" CC="ccache i686-linux-android21-clang" make SIR_NO_PLUGINS=1
+    - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
+    - export LDFLAGS="-static"
+    - export CC="ccache i686-linux-android21-clang"
+    - export CXX="ccache i686-linux-android21-clang++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make SIR_NO_PLUGINS=1
+    - make tests++ SIR_NO_PLUGINS=1
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
+    - build/bin/sirtests++
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -610,12 +689,16 @@ Android/ARM64 (API Level 21):
     name: registry.gitlab.com/libsir/libsir/ndk:latest
   script:
     - *Configuration
-    - PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}" && export PATH
-    - aarch64-linux-android21-clang --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache aarch64-linux-android21-clang" make
+    - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
+    - export CC="ccache aarch64-linux-android21-clang"
+    - export CXX="ccache aarch64-linux-android21-clang++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make
+    - make tests++
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -637,12 +720,16 @@ Android/ARMv7A (API Level 21):
     name: registry.gitlab.com/libsir/libsir/ndk:latest
   script:
     - *Configuration
-    - PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}" && export PATH
-    - armv7a-linux-androideabi21-clang --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache armv7a-linux-androideabi21-clang" make
+    - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
+    - export CC="ccache armv7a-linux-androideabi21-clang"
+    - export CXX="ccache armv7a-linux-androideabi21-clang++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make
+    - make tests++
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -664,18 +751,22 @@ Android/x86_64 (API Level 33):
     name: registry.gitlab.com/libsir/libsir/ndk:latest
   script:
     - *Configuration
-    - PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}" && export PATH
-    - x86_64-linux-android33-clang --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env LDFLAGS="-static" CC="ccache x86_64-linux-android33-clang" make SIR_NO_PLUGINS=1
+    - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
+    - export LDFLAGS="-static"
+    - export CC="ccache x86_64-linux-android33-clang"
+    - export CXX="ccache x86_64-linux-android33-clang++"
+    - make SIR_NO_PLUGINS=1
+    - make tests++ SIR_NO_PLUGINS=1
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
+    - build/bin/sirtests++
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -699,18 +790,24 @@ Android/i686 (API Level 33):
     name: registry.gitlab.com/libsir/libsir/ndk:latest
   script:
     - *Configuration
-    - PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}" && export PATH
-    - i686-linux-android33-clang --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env LDFLAGS="-static" CC="ccache i686-linux-android33-clang" make SIR_NO_PLUGINS=1
+    - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
+    - export LDFLAGS="-static"
+    - export CC="ccache i686-linux-android33-clang"
+    - export CXX="ccache i686-linux-android33-clang++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make SIR_NO_PLUGINS=1
+    - make tests++ SIR_NO_PLUGINS=1
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
+    - build/bin/sirtests++
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -734,12 +831,14 @@ Android/ARM64 (API Level 33):
     name: registry.gitlab.com/libsir/libsir/ndk:latest
   script:
     - *Configuration
-    - PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}" && export PATH
-    - aarch64-linux-android33-clang --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache aarch64-linux-android33-clang" make
+    - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
+    - export CC="ccache aarch64-linux-android33-clang"
+    - export CXX="ccache aarch64-linux-android33-clang++"
+    - make
+    - make tests++
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -761,12 +860,16 @@ Android/ARMv7A (API Level 33):
     name: registry.gitlab.com/libsir/libsir/ndk:latest
   script:
     - *Configuration
-    - PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}" && export PATH
-    - armv7a-linux-androideabi33-clang --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache armv7a-linux-androideabi33-clang" make
+    - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
+    - export CC="ccache armv7a-linux-androideabi33-clang"
+    - export CXX="ccache armv7a-linux-androideabi33-clang++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make
+    - make tests++
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -788,14 +891,18 @@ Windows/Arm64 (MSVC):
     name: registry.gitlab.com/libsir/libsir/msvc:latest
   script:
     - *Configuration
-    - PATH="/opt/msvc/bin/arm64:${PATH:?}" && export PATH
-    - cl.exe 2>&1 | head -3
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export PATH="/opt/msvc/bin/arm64:${PATH:?}"
+    - cl.exe 2>&1 | head -3 | grep -v '^$' || true
     - mkdir -p build/bin
     - cl.exe src/*.c example/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
     - cl.exe src/*.c tests/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
+    - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996
+    - rm -f tests.obj
+    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996
+    - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -817,14 +924,20 @@ Windows/Arm (MSVC):
     name: registry.gitlab.com/libsir/libsir/msvc:latest
   script:
     - *Configuration
-    - PATH="/opt/msvc/bin/arm:${PATH:?}" && export PATH
-    - cl.exe 2>&1 | head -3
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - PATH="/opt/msvc/bin/arm:${PATH:?}"
+    - export PATH
+    - cl.exe 2>&1 | head -3 | grep -v '^$' || true
     - mkdir -p build/bin
     - cl.exe src/*.c example/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
     - cl.exe src/*.c tests/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
+    - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996
+    - rm -f tests.obj > /dev/null 2>&1 || true
+    - rm -f example.obj > /dev/null 2>&1 || true
+    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996
+    - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -846,14 +959,20 @@ Windows/x64 (MSVC):
     name: registry.gitlab.com/libsir/libsir/msvc:latest
   script:
     - *Configuration
-    - PATH="/opt/msvc/bin/x64:${PATH:?}" && export PATH
-    - cl.exe 2>&1 | head -3
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - PATH="/opt/msvc/bin/x64:${PATH:?}"
+    - export PATH
+    - cl.exe 2>&1 | head -3 | grep -v '^$' || true
     - mkdir -p build/bin
-    - cl.exe src/*.c example/*.c -Iinclude /Ob3 /volatile:iso /GS- /DSIR_NO_PLUGINS=1 /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
-    - cl.exe src/*.c tests/*.c -Iinclude /Ob3 /volatile:iso /GS- /DSIR_NO_PLUGINS=1 /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
+    - cl.exe src/*.c example/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
+    - cl.exe src/*.c tests/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
+    - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996
+    - rm -f tests.obj > /dev/null 2>&1 || true
+    - rm -f example.obj > /dev/null 2>&1 || true
+    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996
+    - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
@@ -864,6 +983,8 @@ Windows/x64 (MSVC):
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - rm -f screenlog.0
+    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
@@ -889,14 +1010,19 @@ Windows/i686 (MSVC):
     name: registry.gitlab.com/libsir/libsir/msvc:latest
   script:
     - *Configuration
-    - PATH="/opt/msvc/bin/x86:${PATH:?}" && export PATH
-    - cl.exe 2>&1 | head -3
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - PATH="/opt/msvc/bin/x86:${PATH:?}"
+    - export PATH
     - mkdir -p build/bin
-    - cl.exe src/*.c example/*.c -Iinclude /Ob3 /volatile:iso /GS- /DSIR_NO_PLUGINS=1 /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
-    - cl.exe src/*.c tests/*.c -Iinclude /Ob3 /volatile:iso /GS- /DSIR_NO_PLUGINS=1 /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
+    - cl.exe src/*.c example/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
+    - cl.exe src/*.c tests/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
+    - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996
+    - rm -f tests.obj > /dev/null 2>&1 || true
+    - rm -f example.obj > /dev/null 2>&1 || true
+    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996
+    - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
@@ -907,6 +1033,8 @@ Windows/i686 (MSVC):
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - rm -f screenlog.0
+    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
@@ -932,12 +1060,17 @@ Windows/x64 (MinGW-MSVCRT):
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - x86_64-w64-mingw32-gcc --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
-    - env CC="ccache x86_64-w64-mingw32-gcc" make SIR_MSVCRT_MINGW=1
+    - export CC="ccache x86_64-w64-mingw32-gcc"
+    - export CXX="ccache x86_64-w64-mingw32-g++"
+    - export SIR_MSVCRT_MINGW="1"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make
+    - make tests++
     - cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/libwinpthread-1.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -950,6 +1083,8 @@ Windows/x64 (MinGW-MSVCRT):
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - rm -f screenlog.0
+    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
@@ -975,12 +1110,16 @@ Windows/x64 (MinGW-UCRT):
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - x86_64-w64-mingw32ucrt-gcc --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
-    - env CC="ccache x86_64-w64-mingw32ucrt-gcc" make
+    - export CC="ccache x86_64-w64-mingw32ucrt-gcc"
+    - export CC="ccache x86_64-w64-mingw32ucrt-g++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make
+    - make tests++
     - cp -f /usr/x86_64-w64-mingw32ucrt/sys-root/mingw/bin/libwinpthread-1.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -993,6 +1132,8 @@ Windows/x64 (MinGW-UCRT):
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - rm -f screenlog.0
+    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
@@ -1018,12 +1159,17 @@ Windows/i686 (MinGW):
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - i686-w64-mingw32-gcc --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
-    - env CC="ccache i686-w64-mingw32-gcc" make SIR_MSVCRT_MINGW=1
+    - export CC="ccache i686-w64-mingw32-gcc"
+    - export CXX="ccache i686-w64-mingw32-g++"
+    - export SIR_MSVCRT_MINGW="1"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make
+    - make tests++
     - cp -f /usr/i686-w64-mingw32/sys-root/mingw/bin/libwinpthread-1.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -1036,6 +1182,8 @@ Windows/i686 (MinGW):
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - rm -f screenlog.0
+    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
     - rm -f screenlog.0
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
@@ -1065,7 +1213,12 @@ Cygwin/x86_64:
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache x86_64-pc-cygwin-gcc" make
+    - export CC="ccache x86_64-pc-cygwin-gcc"
+    - export CXX="ccache x86_64-pc-cygwin-g++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make
+    - make tests++
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -1091,7 +1244,11 @@ Cygwin/i686:
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache i686-pc-cygwin-gcc" make
+    - export CC="ccache i686-pc-cygwin-gcc"
+    - export CXX="ccache i686-pc-cygwin-g++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -1118,7 +1275,9 @@ Coverage:
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - env NO_CLEANUP=1 NO_APTSETUP=1 ./.coveralls.sh
+    - export NO_CLEANUP="1"
+    - export NO_APTSETUP="1"
+    - ./.coveralls.sh
     - pigz -9v coverage-out.txt || true
   dependencies: []
   artifacts:
@@ -1162,10 +1321,15 @@ MSVC Static Analyzer:
     name: registry.gitlab.com/libsir/libsir/msvc:latest
   script:
     - *Configuration
-    - PATH="/opt/msvc/bin/x64:${PATH:?}" && export PATH
-    - cl.exe 2>&1 | head -3
+    - PATH="/opt/msvc/bin/x64:${PATH:?}"
+    - export PATH
+    - cl.exe 2>&1 | head -3 | grep -v '^$' || true
     - cl.exe src/*.c example/*.c -Iinclude /Oi /O2 /GL /W4 /WX /analyze /std:c11 /experimental:c11atomics /sdl /wd4996 /wd28251
     - cl.exe src/*.c tests/*.c -Iinclude /Oi /O2 /GL /W4 /WX /analyze /std:c11 /experimental:c11atomics /sdl /wd4996 /wd28251
+    - rm -f tests.obj > /dev/null 2>&1 || true
+    - rm -f example.obj > /dev/null 2>&1 || true
+    - cl.exe tests/*.cc -c -Itests -Iinclude /GL /analyze /EHsc /Ob3 /volatile:iso /Oi /O2 /W4 /std:c++20 /wd4996 /wd28251 /sdl
+    - link.exe /LTCG /OUT:sirtests++.exe *.obj
   dependencies: []
   artifacts:
     when: always
@@ -1187,7 +1351,6 @@ Clang Static Analyzer:
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - scan-build clang --version
     - ./.lint.sh scanbuild
   dependencies: []
   artifacts:
@@ -1213,7 +1376,6 @@ Clang (Extra Warnings):
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - clang --version
     - ./.lint.sh extra
   dependencies: []
   artifacts:
@@ -1239,7 +1401,6 @@ GCC (Extra Warnings):
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - gcc --version
     - ./.lint.sh gccextra
   dependencies: []
   artifacts:
@@ -1262,7 +1423,6 @@ Flawfinder:
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - flawfinder --version
     - ./.lint.sh flawfinder
   dependencies: []
   retry: 2
@@ -1279,7 +1439,6 @@ Cppcheck:
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - cppcheck --version
     - ./.lint.sh cppcheck
   dependencies: []
   artifacts:
@@ -1304,7 +1463,6 @@ Valgrind:
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - valgrind --version
     - ./.lint.sh valgrind
   dependencies: []
   artifacts:
@@ -1327,7 +1485,6 @@ REUSE:
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - reuse --version
     - ./.lint.sh reuse
   dependencies: []
   retry: 2
@@ -1396,11 +1553,11 @@ Windows/i686 (OrangeC):
     name: registry.gitlab.com/libsir/libsir/orangec:latest
   script:
     - *Configuration
-    - export WINEDEBUG=-all
-    - wine64 /opt/orangec/bin/occ.exe --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export WINEDEBUG=-all
+    - wine64 /opt/orangec/bin/occ.exe --version
     - mkdir -p build/bin
     - wine64 /opt/orangec/bin/occ.exe /1 /O2 -Iinclude src/*.c example/*.c -o build/bin/sirexample.exe -DSIR_NO_PLUGINS=1
     - wine64 /opt/orangec/bin/occ.exe /1 /O2 -Iinclude src/*.c tests/*.c -o build/bin/sirtests.exe -DSIR_NO_PLUGINS=1
@@ -1438,7 +1595,6 @@ Linux/x86_64 (DMD64 ImportC):
     name: registry.gitlab.com/libsir/libsir/dmd:latest
   script:
     - *Configuration
-    - dmd --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -1450,6 +1606,7 @@ Linux/x86_64 (DMD64 ImportC):
     - ln -s ../src/* ../include/sir/* ../include/sir.h .
     - ln -s . sir
     - ln -s ../example/* .
+    - dmd --version
     - dmd -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -v -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirexample
     - rm -f example*
     - ln -s ../tests/* .
@@ -1487,9 +1644,11 @@ GCC Static Analyzer:
   script:
     - *Configuration
     - gcc --version
-    - env CFLAGS="-fanalyzer -Wno-analyzer-malloc-leak -fanalyzer-verbosity=3 -Werror" make
+    - export CFLAGS="-fanalyzer -Wno-analyzer-malloc-leak -fanalyzer-verbosity=3 -Werror"
+    - make
     - make clean
-    - env CFLAGS="-fanalyzer -fanalyzer-checker=taint -fanalyzer-verbosity=3 -Werror" make
+    - export CFLAGS="-fanalyzer -fanalyzer-checker=taint -fanalyzer-verbosity=3 -Werror"
+    - make
     - make clean
   dependencies: []
   artifacts:
@@ -1511,11 +1670,11 @@ Windows/x64 (Embarcadero):
     name: registry.gitlab.com/libsir/libsir/embarcadero:latest
   script:
     - *Configuration
-    - export WINEDEBUG=-all
-    - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc64.exe --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export WINEDEBUG=-all
+    - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc64.exe --version
     - mkdir -p build/bin
     - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc64.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
     - mv tests.exe build/bin/sirtests.exe
@@ -1555,11 +1714,11 @@ Windows/i686 (Embarcadero):
     name: registry.gitlab.com/libsir/libsir/embarcadero:latest
   script:
     - *Configuration
-    - export WINEDEBUG=-all
-    - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc32x.exe --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export WINEDEBUG=-all
+    - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc32x.exe --version
     - mkdir -p build/bin
     - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc32x.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
     - mv tests.exe build/bin/sirtests.exe
@@ -1601,18 +1760,26 @@ Clang Sanitizer (UB, 32-bit):
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - export UBSAN_OPTIONS="print_stacktrace=1"
-    - export UBSAN_FLAGS="-fsanitize=undefined,float-divide-by-zero,unsigned-integer-overflow,implicit-conversion,local-bounds,nullability-arg,nullability-assign,nullability-return"
-    - export UBSAN_CFLAGS="${UBSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build32_section[collapsed=true]\r\e[0K\033[0;36mBuild 32-bit ...\033[0m" || true
-    - env CC="ccache clang -m32 ${UBSAN_CFLAGS:?} -Werror" LDFLAGS="${UBSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - export UBSAN_OPTIONS="print_stacktrace=1"
+    - export UBSAN_FLAGS="-fsanitize=undefined,float-divide-by-zero,unsigned-integer-overflow,implicit-conversion,local-bounds,nullability-arg,nullability-assign,nullability-return"
+    - export UBSAN_CFLAGS="${UBSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
+    - export CC="ccache clang -m32 ${UBSAN_CFLAGS:?} -Werror"
+    - export CXX="ccache clang++ -m32 ${UBSAN_CFLAGS:?} -Werror"
+    - export LDFLAGS="${UBSAN_FLAGS:?}"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make SIR_DEBUG=1 SIR_SELFLOG=1
+    - make tests++ SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test32_section[collapsed=true]\r\e[0K\033[0;36mTest 32-bit ...\033[0m" || true
+    - stdbuf -o L ./build/bin/sirexample 2>&1
     - stdbuf -o L ./build/bin/sirtests 2>&1
+    - stdbuf -o L ./build/bin/sirtests++ 2>&1
     - echo -e "section_end:`date +%s`:Test32_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -1638,18 +1805,26 @@ Clang Sanitizer (UB, 64-bit):
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - export UBSAN_OPTIONS="print_stacktrace=1"
-    - export UBSAN_FLAGS="-fsanitize=undefined,float-divide-by-zero,unsigned-integer-overflow,implicit-conversion,local-bounds,nullability-arg,nullability-assign,nullability-return"
-    - export UBSAN_CFLAGS="${UBSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build64_section[collapsed=true]\r\e[0K\033[0;36mBuild 64-bit ...\033[0m" || true
-    - env CC="ccache clang -m64 ${UBSAN_CFLAGS:?} -Werror" LDFLAGS="${UBSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - export UBSAN_OPTIONS="print_stacktrace=1"
+    - export UBSAN_FLAGS="-fsanitize=undefined,float-divide-by-zero,unsigned-integer-overflow,implicit-conversion,local-bounds,nullability-arg,nullability-assign,nullability-return"
+    - export UBSAN_CFLAGS="${UBSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
+    - export CC="ccache clang -m64 ${UBSAN_CFLAGS:?} -Werror"
+    - export CXX="ccache clang++ -m64 ${UBSAN_CFLAGS:?} -Werror"
+    - export LDFLAGS="${UBSAN_FLAGS:?}"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make SIR_DEBUG=1 SIR_SELFLOG=1
+    - make tests++ SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build64_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test64_section[collapsed=true]\r\e[0K\033[0;36mTest 64-bit ...\033[0m" || true
+    - stdbuf -o L ./build/bin/sirexample 2>&1
     - stdbuf -o L ./build/bin/sirtests 2>&1
+    - stdbuf -o L ./build/bin/sirtests++ 2>&1
     - echo -e "section_end:`date +%s`:Test64_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -1675,17 +1850,25 @@ Clang Sanitizer (Memory):
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - export MSAN_FLAGS="-fsanitize=memory -fsanitize-memory-track-origins=2"
-    - export MSAN_CFLAGS="${MSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="ccache clang -m64 ${MSAN_CFLAGS:?} -Werror" LDFLAGS="${MSAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - export MSAN_FLAGS="-fsanitize=memory -fsanitize-memory-track-origins=2"
+    - export MSAN_CFLAGS="${MSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
+    - export CC="ccache clang -m64 ${MSAN_CFLAGS:?} -Werror"
+    - export CC="ccache clang++ -m64 ${MSAN_CFLAGS:?} -Werror"
+    - export LDFLAGS="${MSAN_FLAGS:?}"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make SIR_DEBUG=1 SIR_SELFLOG=1
+    - make tests++ SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - stdbuf -o L ./build/bin/sirexample 2>&1
     - stdbuf -o L ./build/bin/sirtests 2>&1
+    - stdbuf -o L ./build/bin/sirtests++ 2>&1
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -1711,18 +1894,26 @@ Clang Sanitizer (Address, 64-bit):
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - export ASAN_OPTIONS="check_initialization_order=1"
-    - export ASAN_FLAGS="-fsanitize=address -fsanitize-address-use-after-scope"
-    - export ASAN_CFLAGS="${ASAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build64_section[collapsed=true]\r\e[0K\033[0;36mBuild 64-bit ...\033[0m" || true
-    - env CC="ccache clang -m64 ${ASAN_CFLAGS:?} -Werror" LDFLAGS="${ASAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - export ASAN_OPTIONS="check_initialization_order=1"
+    - export ASAN_FLAGS="-fsanitize=address -fsanitize-address-use-after-scope"
+    - export ASAN_CFLAGS="${ASAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
+    - export CC="ccache clang -m64 ${ASAN_CFLAGS:?} -Werror"
+    - export CXX="ccache clang++ -m64 ${ASAN_CFLAGS:?} -Werror"
+    - export LDFLAGS="${ASAN_FLAGS:?}"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make SIR_DEBUG=1 SIR_SELFLOG=1
+    - make tests++ SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build64_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test64_section[collapsed=true]\r\e[0K\033[0;36mTest 64-bit ...\033[0m" || true
+    - stdbuf -o L ./build/bin/sirexample 2>&1
     - stdbuf -o L ./build/bin/sirtests 2>&1
+    - stdbuf -o L ./build/bin/sirtests++ 2>&1
     - echo -e "section_end:`date +%s`:Test64_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -1748,18 +1939,26 @@ Clang Sanitizer (Address, 32-bit):
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - export ASAN_OPTIONS="check_initialization_order=1"
-    - export ASAN_FLAGS="-fsanitize=address -fsanitize-address-use-after-scope"
-    - export ASAN_CFLAGS="${ASAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build32_section[collapsed=true]\r\e[0K\033[0;36mBuild 32-bit ...\033[0m" || true
-    - env CC="ccache clang -m32 ${ASAN_CFLAGS:?} -Werror" LDFLAGS="${ASAN_FLAGS:?}" make SIR_DEBUG=1 SIR_SELFLOG=1
+    - export ASAN_OPTIONS="check_initialization_order=1"
+    - export ASAN_FLAGS="-fsanitize=address -fsanitize-address-use-after-scope"
+    - export ASAN_CFLAGS="${ASAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
+    - export CC="ccache clang -m32 ${ASAN_CFLAGS:?} -Werror"
+    - export CXX="ccache clang++ -m32 ${ASAN_CFLAGS:?} -Werror"
+    - export LDFLAGS="${ASAN_FLAGS:?}"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make SIR_DEBUG=1 SIR_SELFLOG=1
+    - make tests++ SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test32_section[collapsed=true]\r\e[0K\033[0;36mTest 32-bit ...\033[0m" || true
+    - stdbuf -o L ./build/bin/sirexample 2>&1
     - stdbuf -o L ./build/bin/sirtests 2>&1
+    - stdbuf -o L ./build/bin/sirtests++ 2>&1
     - echo -e "section_end:`date +%s`:Test32_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -1807,10 +2006,10 @@ Oracle Lint:
     name: registry.gitlab.com/libsir/libsir/oracle:latest
   script:
     - *Configuration
-    - /opt/oracle/developerstudio-latest/bin/lint -V
     - |
       # Lint ...
       echo -e "section_start:`date +%s`:Lint_section[collapsed=true]\r\e[0K\033[0;36mLint ...\033[0m" || true
+    - /opt/oracle/developerstudio-latest/bin/lint -V
     - make clean
     - rm -f orstlint.txt > /dev/null 2>&1 || true
     - export CFLAGS="-errsecurity=extended -errtags=yes -erroff=E_GLOBAL_COULD_BE_STATIC2,E_FUNC_RET_ALWAYS_IGNOR2,E_FUNC_RET_MAYBE_IGNORED2,E_NAME_DEF_NOT_USED2,E_SEC_READLINK_WARN,E_CONST_EXPR,E_SEC_RAND_WARN,E_PTRDIFF_OVERFLOW,E_CONSTANT_CONDITION,E_STATIC_UNUSED -fd -m64 -XCC=yes -errchk=structarg,parentheses,signext,locfmtchk -errfmt=src -errtags=yes -Xalias_level=any"
@@ -1840,14 +2039,15 @@ Linux/x86_64 (Kefir, musl-libc):
     name: registry.gitlab.com/libsir/libsir/kefir:latest
   script:
     - *Configuration
-    - export KEFIR_RTINC="/opt/kefir-musl/include/kefir/runtime"
-    - export PATH="/opt/kefir-musl/bin:${PATH:?}"
-    - kefir --compiler-info
-    - kefir --environment-info
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="kefir" make SIR_NO_PLUGINS=1
+    - export KEFIR_RTINC="/opt/kefir-musl/include/kefir/runtime"
+    - export PATH="/opt/kefir-musl/bin:${PATH:?}"
+    - export CC="ccache kefir"
+    - ${CC:?} --compiler-info
+    - ${CC:?} --environment-info
+    - make SIR_NO_PLUGINS=1
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
@@ -1877,14 +2077,15 @@ Linux/x86_64 (Kefir):
     name: registry.gitlab.com/libsir/libsir/kefir:latest
   script:
     - *Configuration
-    - export KEFIR_RTINC="/opt/kefir/include/kefir/runtime"
-    - export PATH="/opt/kefir/bin:${PATH:?}"
-    - kefir --compiler-info
-    - kefir --environment-info
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env CC="kefir" make
+    - export KEFIR_RTINC="/opt/kefir/include/kefir/runtime"
+    - export PATH="/opt/kefir/bin:${PATH:?}"
+    - export CC="ccache kefir"
+    - ${CC:?} --compiler-info
+    - ${CC:?} --environment-info
+    - make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
@@ -1914,18 +2115,24 @@ Linux/x86_64 (GCC, uClibc-ng):
     name: registry.gitlab.com/libsir/libsir/uclibc-ng:latest
   script:
     - *Configuration
-    - export PATH="${HOME:?}/x-tools/x86_64-pc-linux-uclibc/x86_64-pc-linux-uclibc/bin:${HOME:?}/x-tools/x86_64-pc-linux-uclibc/bin:${PATH:?}"
-    - x86_64-pc-linux-uclibc-gcc --version
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - env LDFLAGS="-static" CC="ccache x86_64-pc-linux-uclibc-gcc" make SIR_NO_PLUGINS=1
+    - export PATH="${HOME:?}/x-tools/x86_64-pc-linux-uclibc/x86_64-pc-linux-uclibc/bin:${HOME:?}/x-tools/x86_64-pc-linux-uclibc/bin:${PATH:?}"
+    - export LDFLAGS="-static"
+    - export CC="ccache x86_64-pc-linux-uclibc-gcc"
+    - export CC="ccache x86_64-pc-linux-uclibc-g++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make SIR_NO_PLUGINS=1
+    - make tests++ SIR_NO_PLUGINS=1
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
+    - build/bin/sirtests++
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
