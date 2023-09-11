@@ -336,6 +336,7 @@ _set_thread_local_invalid_parameter_handler(
 # if !defined(SIR_NO_SYSTEM_LOGGERS)
 #  if defined(__MACOS__) && !defined(__IMPORTC__) && \
       ((defined(__clang__) || defined(__clang_version__)) && \
+      !(defined(__INTEL_COMPILER) && !defined(__llvm__)) && \
       defined(__clang_major__) && defined(__clang_minor__) && defined(__clang_patchlevel__))
 #   define SIR_OS_LOG_ENABLED
 #  else
