@@ -208,7 +208,11 @@ namespace sir
 
         protected:
             void reset_buffer() {
+#if !defined(_MSC_VER)
                 std::streambuf::setp(_buf.begin(), _buf.end());
+#else
+                std::streambuf::setp(_buf.data(), _buf.data() + _buf.size());
+#endif
             }
 
             void write_out() {

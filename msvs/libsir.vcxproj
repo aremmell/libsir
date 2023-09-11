@@ -307,6 +307,7 @@
     <ClInclude Include="..\include\sir\filecache.h" />
     <ClInclude Include="..\include\sir\filesystem.h" />
     <ClInclude Include="..\include\sir\helpers.h" />
+    <ClInclude Include="..\include\sir\impl.h" />
     <ClInclude Include="..\include\sir\internal.h" />
     <ClInclude Include="..\include\sir\maps.h" />
     <ClInclude Include="..\include\sir\mutex.h" />

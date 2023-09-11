@@ -29,6 +29,10 @@
 # include "sir.hh"
 # include "tests_shared.h"
 
+# if defined(_MSC_VER) && !defined(__PRETTY_FUNCTION__)
+#  define __PRETTY_FUNCTION__ __FUNCSIG__
+# endif
+
 /**
  * @addtogroup tests
  * @{
