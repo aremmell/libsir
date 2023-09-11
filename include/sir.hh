@@ -66,7 +66,7 @@
  * @{
  */
 
-/** The one and only namespace for libsir. */
+/** libsir C++ wrapper implementation. */
 namespace sir
 {
     /**
