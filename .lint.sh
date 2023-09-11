@@ -569,6 +569,12 @@ test_valgrind()
         "NOTICE: valgrind not found, skipping checks."
       exit 1
     }
+  command -v clang++ > /dev/null 2>&1 \
+    || {
+      printf '%s\n' \
+        "NOTICE: clang++ not found, skipping valgrind checks."
+      exit 1
+    }
   command -v clang > /dev/null 2>&1 \
     || {
       printf '%s\n' \
@@ -579,7 +585,12 @@ test_valgrind()
       sleep 2
       ${MAKE:-make} clean; ret=${?}
       test "${ret}" -ne 0 && exit 99
-      env CC="${CCACHE:-env} clang" "${MAKE:-make}" -j "${CPUS:-1}" SIR_DEBUG=1 SIR_SELFLOG=1; ret=${?}
+      env CXX="${CCACHE:-env} clang++" \
+           CC="${CCACHE:-env} clang" \
+               "${MAKE:-make}" all tests++ \
+                   -j "${CPUS:-1}" \
+                   SIR_DEBUG=1 \
+                   SIR_SELFLOG=1; ret=${?}
       test "${ret}" -ne 0 && exit 99
       # shellcheck disable=SC3045
       (
@@ -601,6 +612,18 @@ test_valgrind()
           --track-origins=yes \
           --error-exitcode=98 \
           build/bin/sirtests; ret=${?}
+        test "${ret}" -eq 98 && exit 99
+        exit 0
+      ); ret=${?}
+      test "${ret}" -ne 0 && exit 99
+      # shellcheck disable=SC3045
+      (
+        ulimit -n 384
+        valgrind \
+          --leak-check=full \
+          --track-origins=yes \
+          --error-exitcode=98 \
+          build/bin/sirtests++; ret=${?}
         test "${ret}" -eq 98 && exit 99
         exit 0
       ); ret=${?}
