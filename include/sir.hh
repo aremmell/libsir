@@ -82,7 +82,7 @@ namespace sir
     /**
      * @class adapter
      * @brief Defines the abstract interface for an adapter, which ultimately
-     * becomes a public base class of ::logger (there can be more than one).
+     * becomes a public base class of logger (there can be more than one).
      *
      * adapter is designed to provide flexibility and extensibility in relation
      * to the public interface that is implemented by a logger.
@@ -263,9 +263,7 @@ namespace sir
      * @class boost_format_adapter
      * @brief Adapter for boost::format (when available).
      *
-     * If boost::format is available on this platform and SIR_NO_BOOST_FORMAT is not
-     * defined, ::default_logger will export the methods from this adapter in
-     * addition to any others.
+     * TODO: update description
      */
     class boost_format_adapter : public adapter {
     public:
@@ -319,9 +317,7 @@ namespace sir
      * @class fmt_format_adapter
      * @brief Adapter for fmt (when available).
      *
-     * If fmt is available on this platform and SIR_NO_FMT_FORMAT is not defined,
-     * ::default_logger will export the methods from this adapter in addition
-     * to any others.
+     * TODO: update description
      */
     class fmt_format_adapter : public adapter {
     public:
@@ -431,11 +427,7 @@ namespace sir
             }
 
             bool write_out() {
-                /* could be called by sync() when there's nothing to write. */
-                if (!*pptr())
-                    return true;
-
-                /* get rid of any trailing newline. */
+                /* get rid of a trailing newline if present. */
                 for (auto it = _buf->rbegin(); it != _buf->rend(); it++) {
                     if (*it != '\0') {
                         if (*it == '\n')
@@ -452,33 +444,35 @@ namespace sir
             }
 
             int_type overflow(int_type ch) override {
-                if (ch != traits_type::eof()) {
-                    reset_buffer();
+                if (ch != traits_type::eof() && write_out())
                     return ch;
-                }
                 return traits_type::eof();
             }
 
             int sync() override {
-                /* flush has been called, or a newline was encountered. */
                 return write_out() ? 0 : -1;
             }
 
             std::streamsize xsputn(const char_type* s, std::streamsize count) override {
-                ptrdiff_t left   = epptr() - pptr();
-                size_t out_bytes = 0;
+                std::streamsize written = 0;
+                do {
+                    ptrdiff_t left = epptr() - pptr();
+                    if (!left) {
+                        int_type ch = overflow(traits_type::to_int_type(*(s + written)));
+                        if (ch != traits_type::eof()) {
+                            continue;
+                        } else {
+                            break;
+                        }
+                    }
 
-                if (left > count) [[likely]] {
-                    out_bytes = static_cast<size_t>(count);
-                } else [[unlikely]] {
-                    out_bytes = static_cast<size_t>(left);
-                }
+                    auto this_write = std::min(left, count - written);
+                    memcpy(pptr(), s + written, this_write);
+                    pbump(this_write);
+                    written += this_write;
+                } while (written < count);
 
-                memcpy(pptr(), s, out_bytes);
-                bool did_write = write_out();
-                SIR_ASSERT(did_write);
-
-                return did_write ? static_cast<std::streamsize>(out_bytes) : 0;
+                return written;
             }
 
             std::unique_ptr<array_type> _buf = std::make_unique<array_type>();
