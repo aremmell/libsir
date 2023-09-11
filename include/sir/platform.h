@@ -35,7 +35,8 @@
 #  define PRINTF_FORMAT_ATTR(fmt_p, va_p)
 # else
 #  define PRINTF_FORMAT
-#  if defined(__MINGW32__) || defined(__MINGW64__)
+#  if (defined(__MINGW32__) || defined(__MINGW64__)) && \
+     !defined(__clang_version__)
 #   if !defined(__USE_MINGW_ANSI_STDIO)
 #    define __USE_MINGW_ANSI_STDIO 1
 #   endif

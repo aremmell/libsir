@@ -41,7 +41,7 @@
 
 # if defined(__has_include)
 #  if __has_include(<format>) && !defined(SIR_NO_STD_FORMAT) && \
-      !((defined(_AIX) || defined(__MACOS__)) && defined(_LIBCPP_HAS_NO_INCOMPLETE_FORMAT))
+      !defined(_LIBCPP_HAS_NO_INCOMPLETE_FORMAT)
 #   include <format>
 #   define __SIR_HAVE_STD_FORMAT__
 #  endif
