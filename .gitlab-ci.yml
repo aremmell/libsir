@@ -901,12 +901,12 @@ Windows/Arm64 (MSVC):
     - export PATH="/opt/msvc/bin/arm64:${PATH:?}"
     - cl.exe 2>&1 | head -3 | grep -v '^$' || true
     - mkdir -p build/bin
-    - cl.exe src/*.c example/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
-    - cl.exe src/*.c tests/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
-    - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996
+    - cl.exe src/*.c example/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe /DSIR_NO_PLUGINS=1
+    - cl.exe src/*.c tests/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe /DSIR_NO_PLUGINS=1
+    - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /DSIR_NO_PLUGINS=1
     - rm -f tests.obj > /dev/null 2>&1 || true
     - rm -f example.obj > /dev/null 2>&1 || true
-    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996
+    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /DSIR_NO_PLUGINS=1
     - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
@@ -936,12 +936,12 @@ Windows/Arm (MSVC):
     - export PATH
     - cl.exe 2>&1 | head -3 | grep -v '^$' || true
     - mkdir -p build/bin
-    - cl.exe src/*.c example/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
-    - cl.exe src/*.c tests/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
-    - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996
+    - cl.exe src/*.c example/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe /DSIR_NO_PLUGINS=1
+    - cl.exe src/*.c tests/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe /DSIR_NO_PLUGINS=1
+    - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /DSIR_NO_PLUGINS=1
     - rm -f tests.obj > /dev/null 2>&1 || true
     - rm -f example.obj > /dev/null 2>&1 || true
-    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996
+    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /DSIR_NO_PLUGINS=1
     - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
@@ -971,12 +971,12 @@ Windows/x64 (MSVC):
     - export PATH
     - cl.exe 2>&1 | head -3 | grep -v '^$' || true
     - mkdir -p build/bin
-    - cl.exe src/*.c example/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
-    - cl.exe src/*.c tests/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
-    - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996
+    - cl.exe src/*.c example/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe /DSIR_NO_PLUGINS=1
+    - cl.exe src/*.c tests/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe /DSIR_NO_PLUGINS=1
+    - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /DSIR_NO_PLUGINS=1
     - rm -f tests.obj > /dev/null 2>&1 || true
     - rm -f example.obj > /dev/null 2>&1 || true
-    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996
+    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /DSIR_NO_PLUGINS=1
     - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
@@ -1021,12 +1021,12 @@ Windows/i686 (MSVC):
     - PATH="/opt/msvc/bin/x86:${PATH:?}"
     - export PATH
     - mkdir -p build/bin
-    - cl.exe src/*.c example/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
-    - cl.exe src/*.c tests/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
-    - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996
+    - cl.exe src/*.c example/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe /DSIR_NO_PLUGINS=1
+    - cl.exe src/*.c tests/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe /DSIR_NO_PLUGINS=1
+    - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /DSIR_NO_PLUGINS=1
     - rm -f tests.obj > /dev/null 2>&1 || true
     - rm -f example.obj > /dev/null 2>&1 || true
-    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996
+    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /DSIR_NO_PLUGINS=1
     - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
@@ -1324,11 +1324,11 @@ MSVC Static Analyzer:
     - PATH="/opt/msvc/bin/x64:${PATH:?}"
     - export PATH
     - cl.exe 2>&1 | head -3 | grep -v '^$' || true
-    - cl.exe src/*.c example/*.c -Iinclude /Oi /O2 /GL /W4 /WX /analyze /std:c11 /experimental:c11atomics /sdl /wd4996 /wd28251
-    - cl.exe src/*.c tests/*.c -Iinclude /Oi /O2 /GL /W4 /WX /analyze /std:c11 /experimental:c11atomics /sdl /wd4996 /wd28251
+    - cl.exe src/*.c example/*.c -Iinclude /Oi /O2 /GL /W4 /WX /analyze /std:c11 /experimental:c11atomics /sdl /wd4996 /wd28251 /DSIR_NO_PLUGINS=1
+    - cl.exe src/*.c tests/*.c -Iinclude /Oi /O2 /GL /W4 /WX /analyze /std:c11 /experimental:c11atomics /sdl /wd4996 /wd28251 /DSIR_NO_PLUGINS=1
     - rm -f tests.obj > /dev/null 2>&1 || true
     - rm -f example.obj > /dev/null 2>&1 || true
-    - cl.exe tests/*.cc -c -Itests -Iinclude /GL /analyze /EHsc /Ob3 /volatile:iso /Oi /O2 /W4 /std:c++20 /wd4996 /wd28251 /sdl
+    - cl.exe tests/*.cc -c -Itests -Iinclude /GL /analyze /EHsc /Ob3 /volatile:iso /Oi /O2 /W4 /std:c++20 /wd4996 /wd28251 /sdl /DSIR_NO_PLUGINS=1
     - link.exe /LTCG /OUT:sirtests++.exe *.obj
   dependencies: []
   artifacts:
