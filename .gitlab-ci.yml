@@ -80,7 +80,7 @@ Linux/x86_64 (GCC, G++):
 
 ##############################################################################
 
-Linux/x86_64 (GCC, musl-libc):
+Linux/x86_64 (musl-libc, GCC, G++):
   stage: build
   tags:
     - Docker-x64
@@ -1552,7 +1552,7 @@ Coverity:
 
 ##############################################################################
 
-Windows/i686 (OrangeC):
+Windows/i686 (OrangeC, C):
   stage: build
   tags:
     - Docker-x64
@@ -1669,7 +1669,7 @@ GCC Static Analyzer:
 
 ##############################################################################
 
-Windows/x64 (Embarcadero):
+Windows/x64 (Embarcadero, C):
   stage: build
   tags:
     - Docker-x64
@@ -1713,7 +1713,7 @@ Windows/x64 (Embarcadero):
 
 ##############################################################################
 
-Windows/i686 (Embarcadero):
+Windows/i686 (Embarcadero, C):
   stage: build
   tags:
     - Docker-x64
@@ -2044,7 +2044,7 @@ Oracle Lint:
 
 ##############################################################################
 
-Linux/x86_64 (Kefir, musl-libc):
+Linux/x86_64 (musl-libc, Kefir, C):
   stage: build
   tags:
     - Docker-x64
@@ -2082,7 +2082,7 @@ Linux/x86_64 (Kefir, musl-libc):
 
 ##############################################################################
 
-Linux/x86_64 (Kefir):
+Linux/x86_64 (Kefir, C):
   stage: build
   tags:
     - Docker-x64
@@ -2120,7 +2120,7 @@ Linux/x86_64 (Kefir):
 
 ##############################################################################
 
-Linux/x86_64 (GCC, uClibc-ng):
+Linux/x86_64 (uClibc-ng, GCC, G++):
   stage: build
   tags:
     - Docker-x64
