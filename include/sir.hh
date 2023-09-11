@@ -31,11 +31,11 @@
 # include "sir/helpers.h"
 # include "sir/internal.h"
 # include <type_traits>
+# include <algorithm>
 # include <exception>
 # include <memory>
 # include <string>
 # include <array>
-//# include <bit>
 
 # if !defined(SIR_NO_STD_IOSTREAM)
 # include <iostream>
