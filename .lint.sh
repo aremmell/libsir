@@ -51,7 +51,7 @@ test_tabs()
 { (
   printf '%s\n' "checking source code for tabs ..."
   sleep 2
-  TLIST="$(find src include -print | grep '\.[ch]$' \
+  TLIST="$(find src include -print | grep -E '(\.[ch]$|\.cc$|\.hh$)' \
     | xargs -L 1 grep -l "$(printf '\t')" 2> /dev/null)" || true
   # shellcheck disable=SC2015
   printf "%s\n" "${TLIST:-}" | grep -v '^$' 2> /dev/null | grep . \
@@ -130,6 +130,12 @@ test_duma()
           exit 1
         }
     }
+  command -v g++ > /dev/null 2>&1 \
+    || {
+      printf '%s\n' \
+        "NOTICE: G++ is required for DUMA check."
+      exit 1
+    }
   command -v gcc > /dev/null 2>&1 \
     || {
       printf '%s\n' \
@@ -146,6 +152,15 @@ test_duma()
           EXTRA_LIBS="-L/opt/duma/lib" \
           CFLAGS="-I/opt/duma/include" \
         "${MAKE:-make}" \
+          -j 1 \
+        SIR_DEBUG=1 \
+        SIR_SELFLOG=1; ret=${?}
+      test "${ret}" -ne 0 && exit 99
+      env DUMA=1 \
+          CXX="g++" \
+          EXTRA_LIBS="-L/opt/duma/lib" \
+          CFLAGS="-I/opt/duma/include" \
+        "${MAKE:-make}" tests++ \
           -j 1 \
         SIR_DEBUG=1 \
         SIR_SELFLOG=1; ret=${?}
@@ -176,13 +191,27 @@ test_duma()
         DUMA_OUTPUT_STDOUT=0 \
         build/bin/sirtests; ret=${?}
       test "${ret}" -ne 0 && exit 99
+      printf '%s\n' "running DUMA-enabled tests++ ..."
       sleep 1
+      env DUMA_OUTPUT_FILE=duma5.log \
+        DUMA_OUTPUT_STDERR=0 \
+        DUMA_OUTPUT_STDOUT=0 \
+        build/bin/sirtests++; ret=${?}
+      test "${ret}" -ne 0 && exit 99
+      env DUMA_OUTPUT_FILE=duma6.log \
+        DUMA_PROTECT_BELOW=1 \
+        DUMA_OUTPUT_STDERR=0 \
+        DUMA_OUTPUT_STDOUT=0 \
+        build/bin/sirtests++; ret=${?}
+      test "${ret}" -ne 0 && exit 99
       printf '%s\n' "checking DUMA output ..."
       sleep 1
       test -f duma1.log || DUMA_FAIL=1
       test -f duma2.log || DUMA_FAIL=1
       test -f duma3.log || DUMA_FAIL=1
       test -f duma4.log || DUMA_FAIL=1
+      test -f duma5.log || DUMA_FAIL=1
+      test -f duma6.log || DUMA_FAIL=1
       test -z "${DUMA_FAIL:-}" \
         || {
           printf '\n%s\n' "ERROR: DUMA failed to log!"
