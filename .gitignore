@@ -65,6 +65,7 @@ orstlint.txt
 compile_commands.json
 *.pvs
 pvsreport/*
+*.PVS-Studio.i
 
 # Coverage
 *.gcno
