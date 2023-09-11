@@ -41,7 +41,7 @@ stages:
 
 ##############################################################################
 
-Linux/x86_64 (GCC):
+Linux/x86_64 (GCC, G++):
   stage: build
   tags:
     - Docker-x64
@@ -115,7 +115,7 @@ Linux/x86_64 (GCC, musl-libc):
 
 ##############################################################################
 
-Linux/x86_64 (Clang):
+Linux/x86_64 (Clang, Clang++):
   stage: build
   tags:
     - Docker-x64
@@ -154,7 +154,7 @@ Linux/x86_64 (Clang):
 
 ##############################################################################
 
-Linux/x86_64 (AOCC):
+Linux/x86_64 (AOCC, AOCC++):
   stage: build
   tags:
     - Docker-x64
@@ -194,7 +194,7 @@ Linux/x86_64 (AOCC):
 
 ##############################################################################
 
-Linux/x86_64 (Intel C++ Classic):
+Linux/x86_64 (Intel C Classic):
   stage: build
   tags:
     - Docker-x64
@@ -230,7 +230,7 @@ Linux/x86_64 (Intel C++ Classic):
 
 ##############################################################################
 
-Linux/x86_64 (Intel oneAPI C++):
+Linux/x86_64 (Intel oneAPI C, C++):
   stage: build
   tags:
     - Docker-x64
@@ -270,7 +270,7 @@ Linux/x86_64 (Intel oneAPI C++):
 
 ##############################################################################
 
-Linux/x86_64 (Oracle Studio C/C++):
+Linux/x86_64 (Oracle Studio C):
   stage: build
   tags:
     - Docker-x64
@@ -305,7 +305,7 @@ Linux/x86_64 (Oracle Studio C/C++):
 
 ##############################################################################
 
-Linux/x86_64 (NVIDIA HPC C/C++):
+Linux/x86_64 (NVIDIA HPC C, C++):
   stage: build
   tags:
     - Docker-x64
@@ -349,7 +349,7 @@ Linux/x86_64 (NVIDIA HPC C/C++):
 
 ##############################################################################
 
-Linux/x86_64 (Chibicc):
+Linux/x86_64 (Chibicc, C):
   stage: build
   tags:
     - Docker-x64
@@ -384,7 +384,7 @@ Linux/x86_64 (Chibicc):
 
 ##############################################################################
 
-Windows/x64 (LLVM-MinGW):
+Windows/x64 (LLVM-MinGW, Clang, Clang++):
   stage: build
   tags:
     - Docker-x64
@@ -436,7 +436,7 @@ Windows/x64 (LLVM-MinGW):
 
 ##############################################################################
 
-Windows/Arm (LLVM-MinGW):
+Windows/Arm (LLVM-MinGW, Clang, Clang++):
   stage: build
   tags:
     - Docker-x64
@@ -472,7 +472,7 @@ Windows/Arm (LLVM-MinGW):
 
 ##############################################################################
 
-Windows/Arm64 (LLVM-MinGW):
+Windows/Arm64 (LLVM-MinGW, Clang, Clang++):
   stage: build
   tags:
     - Docker-x64
@@ -509,7 +509,7 @@ Windows/Arm64 (LLVM-MinGW):
 ##############################################################################
 
 
-Linux/x86_64 (AMD Open64):
+Linux/x86_64 (AMD Open64, C):
   allow_failure: true
   stage: build
   tags:
@@ -550,7 +550,7 @@ Linux/x86_64 (AMD Open64):
 
 ##############################################################################
 
-Windows/i686 (LLVM-MinGW):
+Windows/i686 (LLVM-MinGW, Clang, Clang++):
   stage: build
   tags:
     - Docker-x64
@@ -602,7 +602,7 @@ Windows/i686 (LLVM-MinGW):
 
 ##############################################################################
 
-Android/x86_64 (API Level 21):
+Android/x86_64 (API Level 21, Clang, Clang++):
   stage: build
   tags:
     - Docker-x64
@@ -643,7 +643,7 @@ Android/x86_64 (API Level 21):
 
 ##############################################################################
 
-Android/i686 (API Level 21):
+Android/i686 (API Level 21, Clang, Clang++):
   stage: build
   tags:
     - Docker-x64
@@ -684,7 +684,7 @@ Android/i686 (API Level 21):
 
 ##############################################################################
 
-Android/ARM64 (API Level 21):
+Android/ARM64 (API Level 21, Clang, Clang++):
   stage: build
   tags:
     - Docker-x64
@@ -715,7 +715,7 @@ Android/ARM64 (API Level 21):
 
 ##############################################################################
 
-Android/ARMv7A (API Level 21):
+Android/ARMv7A (API Level 21, Clang, Clang++):
   stage: build
   tags:
     - Docker-x64
@@ -746,7 +746,7 @@ Android/ARMv7A (API Level 21):
 
 ##############################################################################
 
-Android/x86_64 (API Level 33):
+Android/x86_64 (API Level 33, Clang, Clang++):
   stage: build
   tags:
     - Docker-x64
@@ -785,7 +785,7 @@ Android/x86_64 (API Level 33):
 
 ##############################################################################
 
-Android/i686 (API Level 33):
+Android/i686 (API Level 33, Clang, Clang++):
   stage: build
   tags:
     - Docker-x64
@@ -826,7 +826,7 @@ Android/i686 (API Level 33):
 
 ##############################################################################
 
-Android/ARM64 (API Level 33):
+Android/ARM64 (API Level 33, Clang, Clang++):
   stage: build
   tags:
     - Docker-x64
@@ -855,7 +855,7 @@ Android/ARM64 (API Level 33):
 
 ##############################################################################
 
-Android/ARMv7A (API Level 33):
+Android/ARMv7A (API Level 33, Clang, Clang++):
   stage: build
   tags:
     - Docker-x64
@@ -886,7 +886,7 @@ Android/ARMv7A (API Level 33):
 
 ##############################################################################
 
-Windows/Arm64 (MSVC):
+Windows/Arm64 (MSVC, C, C++):
   stage: build
   tags:
     - Docker-x64
@@ -920,7 +920,7 @@ Windows/Arm64 (MSVC):
 
 ##############################################################################
 
-Windows/Arm (MSVC):
+Windows/Arm (MSVC, C, C++):
   stage: build
   tags:
     - Docker-x64
@@ -955,7 +955,7 @@ Windows/Arm (MSVC):
 
 ##############################################################################
 
-Windows/x64 (MSVC):
+Windows/x64 (MSVC, C, C++):
   stage: build
   tags:
     - Docker-x64
@@ -1006,7 +1006,7 @@ Windows/x64 (MSVC):
 
 ##############################################################################
 
-Windows/i686 (MSVC):
+Windows/i686 (MSVC, C, C++):
   stage: build
   tags:
     - Docker-x64
@@ -1056,7 +1056,7 @@ Windows/i686 (MSVC):
 
 ##############################################################################
 
-Windows/x64 (MinGW-MSVCRT):
+Windows/x64 (MinGW-MSVCRT, GCC, G++):
   stage: build
   tags:
     - Docker-x64
@@ -1108,7 +1108,7 @@ Windows/x64 (MinGW-MSVCRT):
 
 ##############################################################################
 
-Windows/x64 (MinGW-UCRT):
+Windows/x64 (MinGW-UCRT, GCC, G++):
   stage: build
   tags:
     - Docker-x64
@@ -1159,7 +1159,7 @@ Windows/x64 (MinGW-UCRT):
 
 ##############################################################################
 
-Windows/i686 (MinGW):
+Windows/i686 (MinGW, GCC, G++):
   stage: build
   tags:
     - Docker-x64
@@ -1211,7 +1211,7 @@ Windows/i686 (MinGW):
 
 ##############################################################################
 
-Cygwin/x86_64:
+Cygwin/x86_64 (GCC, G++):
   stage: build
   tags:
     - Docker-x64
@@ -1241,7 +1241,7 @@ Cygwin/x86_64:
 
 ##############################################################################
 
-Cygwin/i686:
+Cygwin/i686 (GCC):
   stage: build
   tags:
     - Docker-x64
@@ -1272,9 +1272,9 @@ Cygwin/i686:
 Coverage:
   stage: coverage
   needs:
-    - job: Linux/x86_64 (Clang)
-    - job: Linux/x86_64 (GCC)
-    - job: Windows/x64 (MSVC)
+    - job: Linux/x86_64 (Clang, Clang++)
+    - job: Linux/x86_64 (GCC, G++)
+    - job: Windows/x64 (MSVC, C, C++)
   coverage: '/^TOTAL.*\s+(\d+\%)$/'
   tags:
     - Docker-x64
@@ -1321,7 +1321,7 @@ Style check:
 MSVC Static Analyzer:
   stage: lint
   needs:
-    - job: Windows/x64 (MSVC)
+    - job: Windows/x64 (MSVC, C, C++)
   tags:
     - Docker-x64
     - Linux
@@ -1350,7 +1350,7 @@ MSVC Static Analyzer:
 Clang Static Analyzer:
   stage: lint
   needs:
-    - job: Linux/x86_64 (Clang)
+    - job: Linux/x86_64 (Clang, Clang++)
   tags:
     - Docker-x64
     - Linux
@@ -1375,7 +1375,7 @@ Clang Static Analyzer:
 Clang (Extra Warnings):
   stage: lint
   needs:
-    - job: Linux/x86_64 (Clang)
+    - job: Linux/x86_64 (Clang, Clang++)
   tags:
     - Docker-x64
     - Linux
@@ -1400,7 +1400,7 @@ Clang (Extra Warnings):
 GCC (Extra Warnings):
   stage: lint
   needs:
-    - job: Linux/x86_64 (GCC)
+    - job: Linux/x86_64 (GCC, G++)
   tags:
     - Docker-x64
     - Linux
@@ -1643,7 +1643,7 @@ Linux/x86_64 (DMD64 ImportC):
 GCC Static Analyzer:
   stage: lint
   needs:
-    - job: Linux/x86_64 (GCC)
+    - job: Linux/x86_64 (GCC, G++)
   tags:
     - Docker-x64
     - Linux
@@ -1760,7 +1760,7 @@ Windows/i686 (Embarcadero):
 Clang Sanitizer (UB, 32-bit):
   stage: lint
   needs:
-    - job: Linux/x86_64 (Clang)
+    - job: Linux/x86_64 (Clang, Clang++)
   tags:
     - Docker-x64
     - Linux
@@ -1806,7 +1806,7 @@ Clang Sanitizer (UB, 32-bit):
 Clang Sanitizer (UB, 64-bit):
   stage: lint
   needs:
-    - job: Linux/x86_64 (Clang)
+    - job: Linux/x86_64 (Clang, Clang++)
   tags:
     - Docker-x64
     - Linux
@@ -1852,7 +1852,7 @@ Clang Sanitizer (UB, 64-bit):
 Clang Sanitizer (Memory):
   stage: lint
   needs:
-    - job: Linux/x86_64 (Clang)
+    - job: Linux/x86_64 (Clang, Clang++)
   tags:
     - Docker-x64
     - Linux
@@ -1896,7 +1896,7 @@ Clang Sanitizer (Memory):
 Clang Sanitizer (Address, 64-bit):
   stage: lint
   needs:
-    - job: Linux/x86_64 (Clang)
+    - job: Linux/x86_64 (Clang, Clang++)
   tags:
     - Docker-x64
     - Linux
@@ -1941,7 +1941,7 @@ Clang Sanitizer (Address, 64-bit):
 Clang Sanitizer (Address, 32-bit):
   stage: lint
   needs:
-    - job: Linux/x86_64 (Clang)
+    - job: Linux/x86_64 (Clang, Clang++)
   tags:
     - Docker-x64
     - Linux
