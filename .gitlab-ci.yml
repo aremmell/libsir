@@ -610,7 +610,7 @@ Android/x86_64 (API Level 21):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - exprt PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
+    - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
     - export LDFLAGS="-static"
     - export CC="ccache x86_64-linux-android21-clang"
     - export CXX="ccache x86_64-linux-android21-clang++"
