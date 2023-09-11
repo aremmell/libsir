@@ -460,11 +460,12 @@ test_cppcheck()
       # shellcheck disable=SC2046
       cppcheck --force \
         -D__CPPCHECK__=1 \
+        -DPRINTF_FORMAT_ATTR \
+        -DSANITIZE_SUPPRESS \
         --enable="warning,performance,portability" \
-        --suppress=ConfigurationNotChecked \
-        --suppress=unknownMacro \
         --suppress=syntaxError:/usr/include/stdlib.h \
         --suppress=unmatchedSuppression \
+        --suppress=unknownMacro \
         --suppress=va_list_usedBeforeStarted \
         --suppress="*:/usr/*" \
         --inline-suppr \

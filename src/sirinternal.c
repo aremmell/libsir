@@ -936,6 +936,11 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, const sir_syslog_dest
 
     syslog(syslog_level, "%s", buf->message);
     return true;
+# else
+    SIR_UNUSED(level);
+    SIR_UNUSED(buf);
+    SIR_UNUSED(ctx);
+    return false;
 # endif
 #else
     SIR_UNUSED(level);
@@ -1009,7 +1014,7 @@ bool _sir_syslog_close(sir_syslog_dest* ctx) {
     }
 
 # if defined(SIR_OS_LOG_ENABLED)
-    /* evidently, you don't need to close the handle returned from os_log_create(), and
+    /* Evidently, you don't need to close the handle returned from os_log_create(), and
      * if you make that call again, you'll get the same cached value. so let's keep the
      * value we've got in the global context. */
     _sir_setbitslow(&ctx->_state.mask, SIRSL_IS_OPEN);
@@ -1020,6 +1025,9 @@ bool _sir_syslog_close(sir_syslog_dest* ctx) {
     _sir_setbitslow(&ctx->_state.mask, SIRSL_IS_OPEN);
     _sir_selflog("closed log");
     return true;
+# else
+    SIR_UNUSED(ctx);
+    return false;
 # endif
 #else
     SIR_UNUSED(ctx);
