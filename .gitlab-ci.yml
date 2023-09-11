@@ -1781,6 +1781,7 @@ Clang Sanitizer (UB, 32-bit):
     - ${CXX:?} --version
     - make SIR_DEBUG=1 SIR_SELFLOG=1
     - export UBSAN_FLAGS="-fsanitize=undefined,float-divide-by-zero,unsigned-integer-overflow,local-bounds,nullability-arg,nullability-assign,nullability-return"
+    - export CC="ccache clang -m32 ${UBSAN_CFLAGS:?} -Werror"
     - export CXX="ccache clang++ -m32 ${UBSAN_CFLAGS:?} -Werror"
     - env CXXFLAGS="-D__MINGW32__ -U__MINGW64_VERSION_MAJOR" make tests++ SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
@@ -1828,6 +1829,7 @@ Clang Sanitizer (UB, 64-bit):
     - ${CXX:?} --version
     - make SIR_DEBUG=1 SIR_SELFLOG=1
     - export UBSAN_FLAGS="-fsanitize=undefined,float-divide-by-zero,unsigned-integer-overflow,local-bounds,nullability-arg,nullability-assign,nullability-return"
+    - export CC="ccache clang -m64 ${UBSAN_CFLAGS:?} -Werror"
     - export CXX="ccache clang++ -m64 ${UBSAN_CFLAGS:?} -Werror"
     - make tests++ SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build64_section\r\e[0K" || true
