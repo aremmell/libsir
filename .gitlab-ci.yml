@@ -1336,7 +1336,7 @@ MSVC Static Analyzer:
     - cl.exe src/*.c tests/*.c -Iinclude /Oi /O2 /GL /W4 /WX /analyze /std:c11 /experimental:c11atomics /sdl /wd4996 /wd28251 /DSIR_NO_PLUGINS=1
     - rm -f tests.obj > /dev/null 2>&1 || true
     - rm -f example.obj > /dev/null 2>&1 || true
-    - cl.exe tests/*.cc -c -Itests -Iinclude /GL /analyze /EHsc /Ob3 /volatile:iso /Oi /O2 /W4 /std:c++20 /wd4996 /wd28251 /sdl /DSIR_NO_PLUGINS=1
+    - cl.exe tests/*.cc -c -Itests -Iinclude /GL /analyze /EHsc /Ob3 /volatile:iso /Oi /O2 /W4 /std:c++20 /wd4996 /wd28251 /wd4127 /sdl /DSIR_NO_PLUGINS=1
     - link.exe /LTCG /OUT:sirtests++.exe *.obj
   dependencies: []
   artifacts:
