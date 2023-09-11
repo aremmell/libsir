@@ -48,10 +48,11 @@ _ReSharper.Caches/
 # Advpng temporary files
 *.png.tmp*
 
-# Cppcheck
+# Cppcheck and .lint.sh
 cppcheck/
 cppcheck.xml
 .extra.sh
+.extraN.sh
 
 # Oracle Lint
 *.ln
