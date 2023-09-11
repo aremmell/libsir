@@ -413,7 +413,7 @@ test_scanbuild()
         -j "${CPUS:-1}" all tests++ \
         mcmb; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      printf '%s' 'true' > ./.scan-build.sh
+      printf '%s' 'set -e;true' > ./.scan-build.sh
       # shellcheck disable=SC2090,SC2086,SC2016
       "${MCMB:-build/bin/mcmb}" -e ${SIR_OPTIONS:?} | xargs -L1 echo \
         ' && ${MAKE:-make} clean && ${MAKE:-make} mcmb &&
