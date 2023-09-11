@@ -258,7 +258,7 @@ test_extra()
         -j "${CPUS:-1}" \
         mcmb; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      printf '%s' 'true' > ./.extra.sh
+      printf '%s' 'set -e; true' > ./.extra.sh
       # shellcheck disable=SC2090,SC2086,SC2016
       "${MCMB:-build/bin/mcmb}" -e ${SIR_OPTIONS:?} | xargs -L1 echo \
         ' && ${MAKE:-make} clean &&
@@ -290,8 +290,10 @@ test_extra()
       chmod a+x ./.extra.sh > /dev/null 2>&1 || true
       sh -x ./.extra.sh; ret="${?}"
       test "${ret}" -ne 0 && exit 99
+      printf '%s\n' "set -e;" > ./.extraN.sh
+      ret="${?}"; test "${ret:-0}" -eq 99 && exit 99
       sed 's/\&\&/\&\&\n/g' ./.extra.sh | head -3 | tail -1 | \
-          sed 's/ SIR_.*=1 &&/ /' > ./.extraN.sh; ret="${?}"
+          sed 's/ SIR_.*=1 &&/ /' >> ./.extraN.sh; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       mv -f ./.extraN.sh ./.extra.sh > /dev/null 2>&1; ret="${?}"
       test "${ret}" -ne 0 && exit 99
@@ -330,7 +332,7 @@ test_gccextra()
         -j 1 \
         mcmb; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      printf '%s' 'true' > ./.extra.sh
+      printf '%s' 'set -e; true' > ./.extra.sh
       # shellcheck disable=SC2090,SC2086,SC2016
       "${MCMB:-build/bin/mcmb}" -e ${SIR_OPTIONS:?} | xargs -L1 echo \
         ' && ${MAKE:-make} clean &&
@@ -356,8 +358,10 @@ test_gccextra()
       chmod a+x ./.extra.sh > /dev/null 2>&1 || true
       sh -x ./.extra.sh; ret="${?}"
       test "${ret}" -ne 0 && exit 99
+      printf '%s\n' "set -e;" > ./.extraN.sh
+      ret="${?}"; test "${ret:-0}" -eq 99 && exit 99
       sed 's/\&\&/\&\&\n/g' ./.extra.sh | head -3 | tail -1 | \
-          sed 's/ SIR_.*=1 &&/ /' > ./.extraN.sh; ret="${?}"
+          sed 's/ SIR_.*=1 &&/ /' >> ./.extraN.sh; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       mv -f ./.extraN.sh ./.extra.sh > /dev/null 2>&1; ret="${?}"
       test "${ret}" -ne 0 && exit 99
@@ -500,9 +504,11 @@ test_pvs()
   test_mcmb; ret="${?}"
   test "${ret}" -ne 0 && exit 99
   # shellcheck disable=SC2140
+  printf '%s\n' "set -e;" > ./.extra.sh
+  ret="${?}"; test "${ret:-0}" -eq 99 && exit 99
   eval ./build/bin/mcmb "${SIR_OPTIONS:?}" | xargs -I{} \
     printf '%s\n' "export PVS_FLAGS=\""{}"\";./.lint.sh pvs_real" | \
-    sort -u > ./.extra.sh
+    sort -u >> ./.extra.sh
   ret="${?}"; test "${ret:-0}" -eq 99 && exit 99
   printf '%s\n' "export PVS_FLAGS=\"\";./.lint.sh pvs_real" >> ./.extra.sh
   ret="${?}"; test "${ret:-0}" -eq 99 && exit 99
