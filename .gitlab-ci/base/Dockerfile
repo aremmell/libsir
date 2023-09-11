@@ -35,8 +35,12 @@ RUN \
       ansifilter \
       atool \
       bear \
+      boost \
+      boost-devel \
+      bzip2 \
       ca-certificates \
       ccache \
+      ccache-swig \
       clang \
       clang-analyzer \
       clang-tools-extra \
@@ -52,8 +56,6 @@ RUN \
       flawfinder \
       fmt \
       fmt-devel \
-      boost \
-      boost-devel \
       g++ \
       gawk \
       gcc \
@@ -63,6 +65,9 @@ RUN \
       glibc-headers-x86 \
       glibc-static \
       global \
+      golang \
+      guile \
+      guile-devel \
       libasan \
       libnsl \
       libnsl2 \
@@ -71,45 +76,43 @@ RUN \
       libxml2-devel \
       libxslt-devel \
       lld \
+      lua \
+      lua-devel \
+      lzip \
       make \
       musl-devel \
       musl-gcc \
       musl-libc \
       musl-libc-static \
+      octave \
       openssl \
+      pbzip2 \
+      perl \
       perl-core \
+      perl-devel \
       pigz \
       python3 \
       python3-devel \
       python3-setuptools \
+      python-setuptools \
+      R \
+      R-devel \
       reuse \
+      ruby \
+      ruby-devel \
       screen \
+      swig \
       symlinks \
+      tcl \
+      tcl-devel \
       time \
       tmux \
       unzip \
       valgrind \
-      ccache-swig \
-      guile \
-      guile-devel \
-      golang \
-      octave \
-      perl \
-      perl-core \
-      perl-devel \
-      python-setuptools \
-      R \
-      R-devel \
-      ruby \
-      ruby-devel \
-      lua \
-      lua-devel \
-      tcl \
-      tcl-devel \
-      swig \
       vim \
       wget \
       zip \
+      zpaq \
 && \
   dnf4 -y --allowerasing --setopt=install_weak_deps=True --setopt=keepcache=True install \
       compiler-rt.i686 \
