@@ -555,104 +555,104 @@ namespace sir
         }
 
         /** Wraps ::sir_geterror. */
-        virtual error get_error() const {
+        error get_error() const {
             std::array<char, SIR_MAXERROR> message {};
             uint32_t code = sir_geterror(message.data());
             return { code, message.data() };
         }
 
         /** Wraps ::sir_addfile. */
-        virtual sirfileid add_file(const std::string& path, const sir_levels& levels,
+        sirfileid add_file(const std::string& path, const sir_levels& levels,
             const sir_options& opts) const {
             return sir_addfile(path.c_str(), levels, opts);
         }
 
         /** Wraps ::sir_remfile. */
-        virtual bool rem_file(const sirfileid& id) const noexcept {
+        bool rem_file(const sirfileid& id) const noexcept {
             return sir_remfile(id);
         }
 
         /** Wraps ::sir_loadplugin. */
-        virtual sirpluginid load_plugin(const std::string& path) const {
+        sirpluginid load_plugin(const std::string& path) const {
             return sir_loadplugin(path.c_str());
         }
 
         /** Wraps ::sir_unloadplugin. */
-        virtual bool unload_plugin(const sirpluginid& id) const noexcept {
+        bool unload_plugin(const sirpluginid& id) const noexcept {
             return sir_unloadplugin(id);
         }
 
         /** Wraps ::sir_filelevels. */
-        virtual bool set_file_levels(const sirfileid& id, const sir_levels& levels)
+        bool set_file_levels(const sirfileid& id, const sir_levels& levels)
             const noexcept {
             return sir_filelevels(id, levels);
         }
 
         /** Wraps ::sir_fileopts. */
-        virtual bool set_file_options(const sirfileid& id, const sir_options& opts)
+        bool set_file_options(const sirfileid& id, const sir_options& opts)
             const noexcept {
             return sir_fileopts(id, opts);
         }
 
         /** Wraps ::sir_settextstyle. */
-        virtual bool set_text_style(const sir_level& level, const sir_textattr& attr,
+        bool set_text_style(const sir_level& level, const sir_textattr& attr,
             const sir_textcolor& fg, const sir_textcolor& bg) const noexcept {
             return sir_settextstyle(level, attr, fg, bg);
         }
 
         /** Wraps ::sir_resettextstyles. */
-        virtual bool reset_text_styles() const noexcept {
+        bool reset_text_styles() const noexcept {
             return sir_resettextstyles();
         }
 
         /** Wraps ::sir_makergb. */
-        virtual sir_textcolor make_rgb(const sir_textcolor& r, const sir_textcolor& g,
+        sir_textcolor make_rgb(const sir_textcolor& r, const sir_textcolor& g,
             const sir_textcolor& b) const noexcept {
             return sir_makergb(r, g, b);
         }
 
         /** Wraps ::sir_setcolormode. */
-        virtual bool set_color_mode(const sir_colormode& mode) const noexcept {
+        bool set_color_mode(const sir_colormode& mode) const noexcept {
             return sir_setcolormode(mode);
         }
 
         /** Wraps ::sir_stdoutlevels. */
-        virtual bool set_stdout_levels(const sir_levels& levels) const noexcept {
+        bool set_stdout_levels(const sir_levels& levels) const noexcept {
             return sir_stdoutlevels(levels);
         }
 
         /** Wraps ::sir_stdoutopts. */
-        virtual bool set_stdout_options(const sir_options& opts) const noexcept {
+        bool set_stdout_options(const sir_options& opts) const noexcept {
             return sir_stdoutopts(opts);
         }
 
         /** Wraps ::sir_stderrlevels. */
-        virtual bool set_stderr_levels(const sir_levels& levels) const noexcept {
+        bool set_stderr_levels(const sir_levels& levels) const noexcept {
             return sir_stderrlevels(levels);
         }
 
         /** Wraps ::sir_stderropts. */
-        virtual bool set_stderr_options(const sir_options& opts) const noexcept {
+        bool set_stderr_options(const sir_options& opts) const noexcept {
             return sir_stderropts(opts);
         }
 
         /** Wraps ::sir_sysloglevels. */
-        virtual bool set_syslog_levels(const sir_levels& levels) const noexcept {
+        bool set_syslog_levels(const sir_levels& levels) const noexcept {
             return sir_sysloglevels(levels);
         }
 
         /** Wraps ::sir_syslogopts. */
-        virtual bool set_syslog_options(const sir_options& opts) const noexcept {
+        bool set_syslog_options(const sir_options& opts) const noexcept {
             return sir_syslogopts(opts);
         }
 
         /** Wraps ::sir_syslogid. */
-        virtual bool set_syslog_id(const std::string& id) const {
+        bool set_syslog_id(const std::string& id) const {
             return sir_syslogid(id.c_str());
         }
 
         /** Wraps ::sir_syslogcat. */
-        virtual bool set_syslog_category(const std::string& category) const {
+        bool set_syslog_category(const std::string& category) const {
             return sir_syslogcat(category.c_str());
         }
 
