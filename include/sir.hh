@@ -578,7 +578,7 @@ namespace sir
                         }
                     }
 
-                    auto this_write = std::min(left, count - written);
+                    auto this_write = std::min(static_cast<std::streamsize>(left), count - written);
                     memcpy(pptr(), s + written, this_write);
                     pbump(this_write);
                     written += this_write;
