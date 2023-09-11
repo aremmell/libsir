@@ -32,8 +32,10 @@
 # include "sir/internal.h"
 # include <type_traits>
 # include <exception>
-# include <array>
+# include <memory>
 # include <string>
+# include <array>
+# include <bit>
 
 # if !defined(SIR_NO_STD_IOSTREAM)
 # include <iostream>
@@ -86,7 +88,7 @@ namespace sir
      * to the public interface that is implemented by a logger.
      *
      * For an example of this, see ::std_format_adapter. When std::format is
-     * available, and SIR_NO_STD_FORMAT is not defined, std_format_adapter may
+     * available, and `SIR_NO_STD_FORMAT` is not defined, std_format_adapter may
      * be used to expose methods that behave exactly like std::format, but the
      * resulting formatted strings are sent directly to libsir.
      *
@@ -183,101 +185,6 @@ namespace sir
             return ret;
         }
     };
-
-# if !defined(SIR_NO_STD_IOSTREAM_FORMAT)
-    /**
-     * @class std_iostream_adapter
-     * @brief Provides a std::iostream interface to libsir's logging functions.
-     */
-    class std_iostream_adapter : public adapter {
-    public:
-        std_iostream_adapter() = default;
-        virtual ~std_iostream_adapter() = default;
-
-    private:
-        typedef bool(*sir_log_pfn)(const char*, ...);
-
-        class buffer : public std::streambuf {
-        public:
-            buffer() = delete;
-            explicit buffer(sir_log_pfn pfn) : _pfn(pfn) {
-                // TODO: if exceptions enabled, throw if pfn is nullptr.
-                SIR_ASSERT(pfn != nullptr);
-                reset_buffer();
-            }
-
-        protected:
-            void reset_buffer() {
-#if !defined(_MSC_VER)
-                std::streambuf::setp(_buf.begin(), _buf.end());
-#else
-                std::streambuf::setp(_buf.data(), _buf.data() + _buf.size());
-#endif
-            }
-
-            void write_out() {
-                for (auto it = _buf.rbegin(); it != _buf.rend(); it++) {
-                    if (*it != '\0') {
-                        /* if the last character in the array is not a null
-                         * terminator, or the last non-null character is a
-                         * newline, set it to null. */
-                        if (it == _buf.rbegin() || *it == '\n')
-                            *it = '\0';
-                        break;
-                    }
-                }
-
-                [[maybe_unused]] bool write = _pfn(_buf.data());
-                SIR_ASSERT(write);
-                // TODO: if exceptions enabled, throw if write is false.
-                _buf.fill('\0');
-                reset_buffer();
-            }
-
-            int_type overflow(int_type ch) override {
-                /* more characters have been written than we have space for.
-                 * null-terminate the array and pass it to libsir. */
-                SIR_UNUSED(ch);
-                write_out();
-                return 0;
-            }
-
-            int sync() override {
-                /* flush has been called, or a newline was encountered. */
-                write_out();
-                return 0;
-            }
-
-            std::array<char_type, SIR_MAXMESSAGE> _buf {};
-            sir_log_pfn _pfn = nullptr;
-        };
-
-        class stream : public std::ostream {
-        public:
-            stream() = delete;
-            explicit stream(buffer* buf) : std::ostream(buf) { }
-        };
-
-        buffer _buf_debug  {&sir_debug};
-        buffer _buf_info   {&sir_info};
-        buffer _buf_notice {&sir_notice};
-        buffer _buf_warn   {&sir_warn};
-        buffer _buf_error  {&sir_error};
-        buffer _buf_crit   {&sir_crit};
-        buffer _buf_alert  {&sir_alert};
-        buffer _buf_emerg  {&sir_emerg};
-
-    public:
-        stream debug_stream  {&_buf_debug};  /**< ostream for debug level. */
-        stream info_stream   {&_buf_info};   /**< ostream for info level. */
-        stream notice_stream {&_buf_notice}; /**< ostream for notice level. */
-        stream warn_stream   {&_buf_warn};   /**< ostream for warn level. */
-        stream error_stream  {&_buf_error};  /**< ostream for error level. */
-        stream crit_stream   {&_buf_crit};   /**< ostream for crit level. */
-        stream alert_stream  {&_buf_alert};  /**< ostream for alert level. */
-        stream emerg_stream  {&_buf_emerg};  /**< ostream for emerg level. */
-    };
-#endif // SIR_NO_STD_IOSTREAM_FORMAT
 
 # if defined(__SIR_HAVE_STD_FORMAT__)
     /**
@@ -479,7 +386,115 @@ namespace sir
     };
 # endif // !__SIR_HAVE_FMT_FORMAT__
 
-    /** Ensures that the type argument derives from adapter. */
+# if !defined(SIR_NO_STD_IOSTREAM)
+    /**
+     * @class std_iostream_adapter
+     * @brief Provides a std::iostream interface to libsir's logging functions.
+     */
+    class std_iostream_adapter : public adapter {
+    public:
+        std_iostream_adapter() = default;
+        virtual ~std_iostream_adapter() = default;
+
+    private:
+        typedef bool(*sir_log_pfn)(const char*, ...);
+
+        class buffer : public std::streambuf {
+        public:
+            using array_type = std::array<char_type, SIR_MAXMESSAGE>;
+
+            buffer() = delete;
+            explicit buffer(sir_log_pfn pfn) : _pfn(pfn) {
+                // TODO: if exceptions enabled, throw if pfn or _buf are nullptr.
+                SIR_ASSERT(pfn != nullptr && _buf);
+                reset_buffer();
+            }
+
+        protected:
+            void reset_buffer() {
+                _buf->fill('\0');
+                setp(_buf->data(), _buf->data() + _buf->size() - 1);
+            }
+
+            bool write_out() {
+                /* could be called by sync() while there is nothing to write. */
+                if (!*pptr())
+                    return true;
+
+                SIR_ASSERT(_buf);
+
+                /* get rid of any trailing newline. */
+                for (auto it = _buf->rbegin(); it != _buf->rend(); it++) {
+                    if (*it != '\0') {
+                        if (*it == '\n')
+                            *it = '\0';
+                        break;
+                    }
+                }
+
+                bool write = _pfn ? _pfn(_buf->data()) : false;
+                SIR_ASSERT(write);
+                // TODO: if exceptions enabled, throw if write is false.
+                reset_buffer();
+                return write;
+            }
+
+            int_type overflow(int_type ch) override {
+                if (ch != traits_type::eof()) {
+                    reset_buffer();
+                    return ch;
+                }
+                return traits_type::eof();
+            }
+
+            int sync() override {
+                /* flush has been called, or a newline was encountered. */
+                return write_out() ? 0 : -1;
+            }
+
+            std::streamsize xsputn(const char_type* s, std::streamsize count) override {
+                ptrdiff_t left   = epptr() - pptr();
+                size_t out_bytes = 0;
+
+                if (left > count) [[likely]] {
+                    out_bytes = std::bit_cast<size_t>(count);
+                } else [[unlikely]] {
+                    out_bytes = std::bit_cast<size_t>(left);
+                }
+
+                std::memcpy(pptr(), s, out_bytes);
+                bool did_write = write_out();
+                SIR_ASSERT(did_write);
+
+                return did_write ? std::bit_cast<std::streamsize>(out_bytes) : 0;
+            }
+
+            std::unique_ptr<array_type> _buf = std::make_unique<array_type>();
+            sir_log_pfn _pfn = nullptr;
+        };
+
+        buffer _buf_debug  {&sir_debug};
+        buffer _buf_info   {&sir_info};
+        buffer _buf_notice {&sir_notice};
+        buffer _buf_warn   {&sir_warn};
+        buffer _buf_error  {&sir_error};
+        buffer _buf_crit   {&sir_crit};
+        buffer _buf_alert  {&sir_alert};
+        buffer _buf_emerg  {&sir_emerg};
+
+    public:
+        std::ostream debug_stream  {&_buf_debug};  /**< ostream for debug level. */
+        std::ostream info_stream   {&_buf_info};   /**< ostream for info level. */
+        std::ostream notice_stream {&_buf_notice}; /**< ostream for notice level. */
+        std::ostream warn_stream   {&_buf_warn};   /**< ostream for warn level. */
+        std::ostream error_stream  {&_buf_error};  /**< ostream for error level. */
+        std::ostream crit_stream   {&_buf_crit};   /**< ostream for crit level. */
+        std::ostream alert_stream  {&_buf_alert};  /**< ostream for alert level. */
+        std::ostream emerg_stream  {&_buf_emerg};  /**< ostream for emerg level. */
+    };
+#endif // SIR_NO_STD_IOSTREAM
+
+    /** Ensures that T derives from adapter. */
     template<typename... T>
     concept DerivedFromAdapter = std::is_base_of_v<adapter, T...>;
 
