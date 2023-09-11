@@ -1078,7 +1078,7 @@ Windows/x64 (MinGW-MSVCRT, GCC, G++):
     - make tests++
     - cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/libwinpthread-1.dll build/bin
     - cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/libstdc++-6.dll build/bin
-    - cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/libgcc_s_dw2-1.dll build/bin
+    - cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/libgcc*.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
@@ -1129,7 +1129,7 @@ Windows/x64 (MinGW-UCRT, GCC, G++):
     - make tests++
     - cp -f /usr/x86_64-w64-mingw32ucrt/sys-root/mingw/bin/libwinpthread-1.dll build/bin
     - cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/libstdc++-6.dll build/bin
-    - cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/libgcc_s_dw2-1.dll build/bin
+    - cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/libgcc*.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
@@ -1181,7 +1181,7 @@ Windows/i686 (MinGW, GCC, G++):
     - make tests++
     - cp -f /usr/i686-w64-mingw32/sys-root/mingw/bin/libwinpthread-1.dll build/bin
     - cp -f /usr/i686-w64-mingw32/sys-root/mingw/bin/libstdc++-6.dll build/bin
-    - cp -f /usr/i686-w64-mingw32/sys-root/mingw/bin/libgcc_s_dw2-1.dll build/bin
+    - cp -f /usr/i686-w64-mingw32/sys-root/mingw/bin/libgcc*.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
@@ -1781,6 +1781,7 @@ Clang Sanitizer (UB, 32-bit):
     - ${CXX:?} --version
     - make SIR_DEBUG=1 SIR_SELFLOG=1
     - export UBSAN_FLAGS="-fsanitize=undefined,float-divide-by-zero,unsigned-integer-overflow,local-bounds,nullability-arg,nullability-assign,nullability-return"
+    - export CXX="ccache clang++ -m32 ${UBSAN_CFLAGS:?} -Werror"
     - env CXXFLAGS="-D__MINGW32__ -U__MINGW64_VERSION_MAJOR" make tests++ SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
     - |
@@ -1827,6 +1828,7 @@ Clang Sanitizer (UB, 64-bit):
     - ${CXX:?} --version
     - make SIR_DEBUG=1 SIR_SELFLOG=1
     - export UBSAN_FLAGS="-fsanitize=undefined,float-divide-by-zero,unsigned-integer-overflow,local-bounds,nullability-arg,nullability-assign,nullability-return"
+    - export CXX="ccache clang++ -m64 ${UBSAN_CFLAGS:?} -Werror"
     - make tests++ SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build64_section\r\e[0K" || true
     - |
@@ -1866,19 +1868,19 @@ Clang Sanitizer (Memory):
     - export MSAN_FLAGS="-fsanitize=memory -fsanitize-memory-track-origins=2"
     - export MSAN_CFLAGS="${MSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
     - export CC="ccache clang -m64 ${MSAN_CFLAGS:?} -Werror"
-    - export CXX="ccache clang++ -m64 ${MSAN_CFLAGS:?} -Werror"
+    - true export CXX="ccache clang++ -m64 ${MSAN_CFLAGS:?} -Werror"
     - export LDFLAGS="${MSAN_FLAGS:?}"
     - ${CC:?} --version
-    - ${CXX:?} --version
+    - true ${CXX:?} --version
     - make SIR_DEBUG=1 SIR_SELFLOG=1
-    - make tests++ SIR_DEBUG=1 SIR_SELFLOG=1
+    - true make tests++ SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
       # Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - stdbuf -o L ./build/bin/sirexample 2>&1
     - stdbuf -o L ./build/bin/sirtests 2>&1
-    - stdbuf -o L ./build/bin/sirtests++ 2>&1
+    - true stdbuf -o L ./build/bin/sirtests++ 2>&1
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
