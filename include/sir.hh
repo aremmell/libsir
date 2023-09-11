@@ -80,6 +80,109 @@ namespace sir
     };
 
     /**
+     * @class policy
+     * @brief Defines the abstract interface for a policy, which controls the
+     * behavior of logger at runtime.
+     *
+     * policy is designed to be practical–sure, you could have 3 or 4 different
+     * types of policy interfaces that made decisions for different categories
+     * of behavior, but in reality, engineers likely just want to have only one
+     * source file to consult when changes are required.
+     *
+     * For this reason, libsir's policy interface is a one-stop shop. Of course,
+     * a derived class can still be as elaborate as the engineer wishes, but the
+     * design goal here is a central source of control, and simplicity.
+     */
+    class policy {
+    public:
+        policy() = default;
+        virtual ~policy() = default;
+
+        /**
+         * Called by logger before initializing libsir. Provides the policy with
+         * the opportunity to fully customize the initial configuration.
+         *
+         * @param data libsir initial configuration data structure. Contains
+         * options for things such as level registrations and formatting options
+         * for stdio and system logger destinations.
+         *
+         * @see ::sirinit
+         * @see ::sir_makeinit
+         *
+         * @note Most, if not all of the options chosen during initialization
+         * can be modified at runtime using functions provided by libsir.
+         *
+         * @note For the default configuration, pass the address of the ::sirinit
+         * structure to ::sir_makeinit.
+         *
+         * @returns true if logger should proceed with initialization using the
+         * data structure, or false if it should abort the initialization
+         * process (see the return value description for policy::on_init_complete).
+         */
+        virtual bool get_init_data(sirinit& data) const noexcept = 0;
+
+        /**
+         * Called by logger immediately after libsir has been initialized. This
+         * is the moment in time which should be utilized for further configuration
+         * than is possible via ::sirinit alone.
+         *
+         * Some items include:
+         * - Setting the ::sir_colormode for stdio (::sir_setcolormode)
+         * - Setting ::sir_textstyle on a per-level basis for stdio (::sir_settextstyle)
+         * - Adding log files (::sir_addfile)
+         * - Loading plugins (::sir_loadplugin)
+         *
+         * @returns true if configuration was completed successfully, or false if
+         * an error occurred. Returning false will cause logger to abort the
+         * initialization process–either by throwing an exception, or by entering
+         * an 'invalid' state (determined by policy::throw_on_error).
+         */
+        virtual bool on_init_complete() const noexcept = 0;
+
+        /**
+         * Determines whether or not exceptions are thrown in the event that a
+         * libsir or OS-level error is encountered by logger or its associated
+         * adapter(s).
+         *
+         * @note libsir's exception classes derive from std::exception.
+         *
+         * @returns true if exceptions should be thrown, false otherwise.
+         */
+        virtual constexpr bool throw_on_error() const noexcept = 0;
+
+        /**
+         * Useful when complications arise; the question "which policy made that
+         * decision?!" is then easy to answer.
+         *
+         * @returns A unique name for the policy.
+         */
+        virtual std::string get_name() const = 0;
+    };
+
+    class default_policy : policy {
+    public:
+        default_policy() = default;
+        virtual ~default_policy() = default;
+
+        /* policy implementation. */
+        bool get_init_data(sirinit& data) const noexcept final {
+            return sir_makeinit(&data);
+        }
+
+        bool on_init_complete() const noexcept final {
+            return true;
+        }
+
+        constexpr bool throw_on_error() const noexcept final {
+            return true;
+        }
+
+        std::string get_name() const final {
+            return "Default";
+        }
+    };
+
+    /**
      * @class adapter
      * @brief Defines the abstract interface for an adapter, which ultimately
      * becomes a public base class of logger (there can be more than one).
@@ -88,7 +191,7 @@ namespace sir
      * to the public interface that is implemented by a logger.
      *
      * For an example of this, see ::std_format_adapter. When std::format is
-     * available, and `SIR_NO_STD_FORMAT` is not defined, std_format_adapter may
+     * available, and SIR_NO_STD_FORMAT is not defined, std_format_adapter may
      * be used to expose methods that behave exactly like std::format, but the
      * resulting formatted strings are sent directly to libsir.
      *
@@ -504,6 +607,10 @@ namespace sir
     template<typename... T>
     concept DerivedFromAdapter = std::is_base_of_v<adapter, T...>;
 
+    /** Ensures that T derives from policy. */
+    template<typename... T>
+    concept DerivedFromPolicy = std::is_base_of_v<policy, T...>;
+
     /**
      * @class logger
      * @brief The primary C++ interface to libsir.
@@ -515,13 +622,18 @@ namespace sir
      *                  initialization' behavior (i.e., libsir is initialized by
      *                  the ctor, and cleaned up by the dtor). Set to `false` for
      *                  manual management of initialization/cleanup.
+     * @param TPolicy   A policy class which will be responsible for certain
+     *                  aspects of logger's behavior.
      * @param TAdapters One or more adapter classes whose public methods will be
      *                  exposed by this class.
      */
-    template<bool RAII, DerivedFromAdapter... TAdapters>
+    template<bool RAII, DerivedFromPolicy TPolicy, DerivedFromAdapter... TAdapters>
     class logger : public TAdapters...  {
     public:
-        logger() : TAdapters()... {
+        logger() : TAdapters()..., _policy(TPolicy()) {
+        }
+
+        explicit logger(TPolicy& policy) : TAdapters()..., _policy(policy) {
             if (RAII && !init()) {
                 SIR_ASSERT(false);
             }
@@ -664,6 +776,9 @@ namespace sir
         bool is_prerelease() const noexcept {
             return sir_isprerelease();
         }
+
+    protected:
+        TPolicy _policy;
     };
 
     /**
@@ -671,17 +786,12 @@ namespace sir
      * @brief A logger that implements the default set of adapters.
      *
      * The default logger has the following template parameters defined:
-     *
-     * - RAII = true
-     * - TAdapters = default_adapter [, std_format_adapter, std_iostream_adapter]
-     *   - if `SIR_NO_STD_FORMAT` is not defined, and std::format is available,
-     *     includes the std::format adapter.
-     *   - if `SIR_NO_STD_IOSTREAM` is not defined, includes the std::iostream
-     *     adapter.
+     * // TODO update description
      */
     using default_logger = logger
     < // TODO: don't include boost and fmt adapters by default
         true,
+        default_policy,
         default_adapter
 # if defined(__SIR_HAVE_STD_FORMAT__)
         , std_format_adapter

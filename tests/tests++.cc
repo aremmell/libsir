@@ -24,6 +24,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "tests++.hh"
+#include <limits>
 #include <cstdlib>
 #include <cstdio>
 
@@ -140,7 +141,7 @@ bool sir::tests::raii_init_cleanup() {
 bool sir::tests::manual_init_cleanup() {
     _SIR_TEST_COMMENCE
 
-    logger<false, default_adapter> log;
+    logger<false, default_policy, default_adapter> log;
     _sir_eqland(pass, log.init());
 
     _sir_eqland(pass, log.debug("Manually initialized"));
