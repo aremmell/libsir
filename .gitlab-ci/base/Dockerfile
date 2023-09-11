@@ -50,6 +50,10 @@ RUN \
       expect \
       fakeroot \
       flawfinder \
+      fmt \
+      fmt-devel \
+      boost \
+      boost-devel \
       g++ \
       gawk \
       gcc \
@@ -136,6 +140,7 @@ RUN \
       mingw32-dlfcn \
       mingw32-dlfcn-static \
       mingw32-gcc \
+      mingw32-gcc-c++ \
       mingw32-headers \
       mingw32-winpthreads \
       mingw32-winpthreads-static \
@@ -145,6 +150,7 @@ RUN \
       mingw64-dlfcn \
       mingw64-dlfcn-static \
       mingw64-gcc \
+      mingw64-gcc-c++ \
       mingw64-headers \
       mingw64-winpthreads \
       mingw64-winpthreads-static \
@@ -153,6 +159,7 @@ RUN \
       ucrt64-cpp \
       ucrt64-crt \
       ucrt64-gcc \
+      ucrt64-gcc-c++ \
       ucrt64-headers \
       ucrt64-winpthreads \
       ucrt64-winpthreads-static \
@@ -166,7 +173,7 @@ RUN \
       cygwin32-gcc \
       cygwin64 \
       cygwin64-binutils \
-      cygwin64-gcc \
+      cygwin64-gcc-c++ \
       cygwin-w32api-headers \
 && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install wine \
