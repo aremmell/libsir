@@ -405,6 +405,8 @@ Windows/x64 (LLVM-MinGW):
     - make PLATFORM_LIB_EXT=".a"
     - make tests++ PLATFORM_LIB_EXT=".a"
     - cp -f /opt/llvm-mingw/x86_64-w64-mingw32/bin/libwinpthread-1.dll build/bin
+    - cp -f /opt/llvm-mingw/x86_64-w64-mingw32/bin/libunwind.dll build/bin
+    - cp -f /opt/llvm-mingw/x86_64-w64-mingw32/bin/libc++.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
@@ -455,6 +457,8 @@ Windows/Arm (LLVM-MinGW):
     - make
     - make tests++
     - cp -f /opt/llvm-mingw/armv7-w64-mingw32/bin/libwinpthread-1.dll build/bin
+    - cp -f /opt/llvm-mingw/armv7-w64-mingw32/bin/libunwind.dll build/bin
+    - cp -f /opt/llvm-mingw/armv7-w64-mingw32/bin/libc++.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
@@ -489,6 +493,8 @@ Windows/Arm64 (LLVM-MinGW):
     - make
     - make tests++
     - cp -f /opt/llvm-mingw/aarch64-w64-mingw32/bin/libwinpthread-1.dll build/bin
+    - cp -f /opt/llvm-mingw/aarch64-w64-mingw32/bin/libunwind.dll build/bin
+    - cp -f /opt/llvm-mingw/aarch64-w64-mingw32/bin/libc++.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
@@ -565,6 +571,8 @@ Windows/i686 (LLVM-MinGW):
     - make PLATFORM_LIB_EXT=".a"
     - make tests++ PLATFORM_LIB_EXT=".a"
     - cp -f /opt/llvm-mingw/i686-w64-mingw32/bin/libwinpthread-1.dll build/bin
+    - cp -f /opt/llvm-mingw/i686-w64-mingw32/bin/libunwind.dll build/bin
+    - cp -f /opt/llvm-mingw/i686-w64-mingw32/bin/libc++.dll build/bin
     - rm -f build/bin/mcmb.exe
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - |
@@ -896,7 +904,8 @@ Windows/Arm64 (MSVC):
     - cl.exe src/*.c example/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe
     - cl.exe src/*.c tests/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe
     - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996
-    - rm -f tests.obj
+    - rm -f tests.obj > /dev/null 2>&1 || true
+    - rm -f example.obj > /dev/null 2>&1 || true
     - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996
     - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
