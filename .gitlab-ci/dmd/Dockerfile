@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2018-current Ryan M. Lederman
 
+# Install release and nightly DMD
+
 FROM registry.gitlab.com/libsir/libsir/base:latest
 
 USER 0
@@ -8,6 +10,7 @@ USER 0
 WORKDIR /
 
 RUN dnf -y install elinks && \
+    ( dnf -y --nogpgcheck install https://downloads.dlang.org/releases/2.x/2.105.1/dmd-2.105.1-0.fedora.x86_64.rpm || true ) && \
     dnf -y --nogpgcheck install \
         "$(elinks -dump https://dlang.org/download.html | \
            awk '/\/releases\/.*fedora.*x86_64.rpm$/ { print $2 }' | \
