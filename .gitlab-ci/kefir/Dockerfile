@@ -59,7 +59,7 @@ RUN cd /tmp && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
     rm -rf /var/log/dnf* && \
-    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true)
+    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true) && \
     touch /OK
 
 USER 10000
