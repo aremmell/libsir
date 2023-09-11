@@ -390,6 +390,17 @@ namespace sir
     /**
      * @class std_iostream_adapter
      * @brief Provides a std::iostream interface to libsir's logging functions.
+     *
+     * Implements the following public std::ostream members:
+     *
+     * - debug_stream
+     * - info_stream
+     * - notice_stream
+     * - warn_stream
+     * - error_stream
+     * - crit_stream
+     * - alert_stream
+     * - emerg_stream
      */
     class std_iostream_adapter : public adapter {
     public:
@@ -409,19 +420,20 @@ namespace sir
                 SIR_ASSERT(pfn != nullptr && _buf);
                 reset_buffer();
             }
+            virtual ~buffer() = default;
 
         protected:
             void reset_buffer() {
-                _buf->fill('\0');
-                setp(_buf->data(), _buf->data() + _buf->size() - 1);
+                if (_buf) {
+                    _buf->fill('\0');
+                    setp(_buf->data(), _buf->data() + _buf->size() - 1);
+                }
             }
 
             bool write_out() {
-                /* could be called by sync() while there is nothing to write. */
+                /* could be called by sync() when there's nothing to write. */
                 if (!*pptr())
                     return true;
-
-                SIR_ASSERT(_buf);
 
                 /* get rid of any trailing newline. */
                 for (auto it = _buf->rbegin(); it != _buf->rend(); it++) {
@@ -462,7 +474,7 @@ namespace sir
                     out_bytes = std::bit_cast<size_t>(left);
                 }
 
-                std::memcpy(pptr(), s, out_bytes);
+                memcpy(pptr(), s, out_bytes);
                 bool did_write = write_out();
                 SIR_ASSERT(did_write);
 
