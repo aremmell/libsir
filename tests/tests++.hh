@@ -29,12 +29,16 @@
 # include "sir.hh"
 # include "tests_shared.h"
 
+# if defined(_MSC_VER) && !defined(__PRETTY_FUNCTION__)
+#  define __PRETTY_FUNCTION__ __FUNCSIG__
+# endif
+
 /**
  * @addtogroup tests
  * @{
  */
 
-/** Contains the C++ tests and test rig implementation. */
+/** libsir C++ wrapper tests. */
 namespace sir::tests
 {
     /**
@@ -60,28 +64,28 @@ namespace sir::tests
 
     /**
      * @test std_format
-     * @brief If std::format support is enabled, ensures that it is working properly.
+     * @brief If std::format support is enabled, ensure that it is working properly.
      * @returns `true` if the test succeeded, `false` otherwise.
      */
     bool std_format();
 
     /**
      * @test boost_format
-     * @brief If boost::format support is enabled, ensures that it is working properly.
+     * @brief If boost::format support is enabled, ensure that it is working properly.
      * @returns `true` if the test succeeded, `false` otherwise.
      */
     bool boost_format();
 
     /**
      * @test fmt_format
-     * @brief If fmt::format support is enabled, ensures that it is working properly.
+     * @brief If fmt::format support is enabled, ensure that it is working properly.
      * @returns `true` if the test succeeded, `false` otherwise.
      */
     bool fmt_format();
 
     /**
      * @test std_iostream_format
-     * @brief If std::iostream support is enabled, ensures that it is working properly.
+     * @brief If std::iostream support is enabled, ensure that it is working properly.
      * @returns `true` if the test succeeded, `false` otherwise.
      */
     bool std_iostream_format();
@@ -118,6 +122,6 @@ namespace sir::tests
     } catch (...) { \
         _SIR_ON_TEST_EXCEPTION(SIR_UNKNOWN); \
     } \
-    return pass;
+    return PRINT_RESULT_RETURN(pass);
 
 #endif // !_TESTSXX_HH_INCLUDED

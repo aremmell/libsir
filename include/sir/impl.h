@@ -26,6 +26,10 @@
 #if defined(SIR_IMPL_STRLCAT) && !defined(SIR_IMPL_STRLCAT_DEF)
 # undef strlcat
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 /* Appends src to string dst of size dsize (unlike strncat, dsize is the
  * full size of dst, not space left).  At most dsize-1 characters
  * will be copied.  Always NUL terminates (unless dsize <= strlen(dst)).
@@ -130,7 +134,7 @@ _sir_strndup(const char *str, size_t maxlen)
   size_t len;
 
   len = _sir_strnlen(str, maxlen);
-  copy = malloc(len + 1);
+  copy = (char*)malloc(len + 1);
   if (copy != NULL) {
     (void)memcpy(copy, str, len);
     copy[len] = '\0';
@@ -138,6 +142,12 @@ _sir_strndup(const char *str, size_t maxlen)
 
   return copy;
 }
+
+#if defined(__cplusplus)
+}
+#endif
+
 # define strndup _sir_strndup
 # define SIR_IMPL_STRNDUP_DEF 1
 #endif /* SIR_IMPL_STRNDUP */
+

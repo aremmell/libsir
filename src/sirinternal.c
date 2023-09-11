@@ -128,6 +128,8 @@ bool _sir_init(sirinit* si) {
 
     _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false);
 
+    bool init = true;
+
 #if !defined(__WIN__)
     tzset();
 #endif
@@ -144,10 +146,15 @@ bool _sir_init(sirinit* si) {
     _sir_initialize_stdio();
 #endif
 
-    _sir_setcolormode(SIRCM_16);
+    if (!_sir_setcolormode(SIRCM_16)) {
+        init = false;
+        _sir_selflog("error: failed to set color mode!");
+    }
 
-    if (!_sir_resettextstyles())
+    if (!_sir_resettextstyles()) {
+        init = false;
         _sir_selflog("error: failed to reset text styles!");
+    }
 
     memset(&_cfg->state, 0, sizeof(_cfg->state));
     memcpy(&_cfg->si, si, sizeof(sirinit));
@@ -167,13 +174,17 @@ bool _sir_init(sirinit* si) {
 
     if (_cfg->si.d_syslog.levels != SIRL_NONE &&
         !_sir_syslog_init(_cfg->si.name, &_cfg->si.d_syslog)) {
+        init = false;
         _sir_selflog("failed to initialize system logger!");
     }
 #endif
 
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
 
-    return true;
+    _sir_selflog("initialized %s", (init ? "successfully" : "with errors"));
+
+    SIR_ASSERT(init);
+    return init;
 }
 
 bool _sir_cleanup(void) {
@@ -223,7 +234,7 @@ bool _sir_cleanup(void) {
     memset(_cfg, 0, sizeof(sirconfig));
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
 
-    _sir_selflog("cleanup: %s", (cleanup ? "successful" : "with errors"));
+    _sir_selflog("cleaned up %s", (cleanup ? "successfully" : "with errors"));
 
     SIR_ASSERT(cleanup);
     return cleanup;
@@ -248,9 +259,17 @@ bool _sir_init_sanity(const sirinit* si) {
     _sir_eqland(levelcheck, _sir_validlevels(si->d_stdout.levels));
     _sir_eqland(levelcheck, _sir_validlevels(si->d_stderr.levels));
 
+    bool regcheck = true;
+    _sir_eqland(regcheck, SIRL_NONE == si->d_stdout.levels);
+    _sir_eqland(regcheck, SIRL_NONE == si->d_stderr.levels);
+
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     _sir_eqland(levelcheck, _sir_validlevels(si->d_syslog.levels));
+    _sir_eqland(regcheck, SIRL_NONE == si->d_syslog.levels);
 #endif
+
+    if (regcheck)
+        _sir_selflog("warning: no level registrations set!");
 
     bool optscheck = true;
     _sir_eqland(optscheck, _sir_validopts(si->d_stdout.opts));

@@ -74,17 +74,30 @@ namespace sir
      */
     struct error {
         uint32_t code = 0U;  /**< The error code associated with the message. */
-        std::string message; /**< A description of the error that occurred. */
+        std::string message; /**< Description of the error that occurred. */
     };
 
     /**
      * @class adapter
      * @brief Defines the abstract interface for an adapter, which ultimately
-     * becomes a public base class of logger (there can be more than one).
+     * becomes a public base class of ::logger (there can be more than one).
      *
-     * `adapter` is designed to provide flexibility with regards to the types
-     * taken as input for logging, as well as return values, whether or not to
-     * throw exceptions, etc.
+     * adapter is designed to provide flexibility and extensibility in relation
+     * to the public interface that is implemented by a logger.
+     *
+     * For an example of this, see ::std_format_adapter. When std::format is
+     * available, and SIR_NO_STD_FORMAT is not defined, std_format_adapter may
+     * be used to expose methods that behave exactly like std::format, but the
+     * resulting formatted strings are sent directly to libsir.
+     *
+     * @note One must take care to ensure that the methods implemented by an
+     * adapter can coexist with any other adapters that are applied to the logger
+     * template.
+     *
+     * @see ::std_format_adapter
+     * @see ::boost_format_adapter
+     * @see ::fmt_format_adapter
+     * @see ::std_iostream_adapter
      */
     class adapter {
     protected:
@@ -195,7 +208,11 @@ namespace sir
 
         protected:
             void reset_buffer() {
+#if !defined(_MSC_VER)
                 std::streambuf::setp(_buf.begin(), _buf.end());
+#else
+                std::streambuf::setp(_buf.data(), _buf.data() + _buf.size());
+#endif
             }
 
             void write_out() {
@@ -408,56 +425,56 @@ namespace sir
         template<typename... T>
         inline bool debug_fmt(fmt::format_string<T...> fmt, T&&... args) const {
             auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
-            return sir_debug(str.c_str());
+            return sir_debug("%s", str.c_str());
         }
 
         /** Use as if you were calling fmt::format directly. */
         template<typename... T>
         inline bool info_fmt(fmt::format_string<T...> fmt, T&&... args) const {
             auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
-            return sir_info(str.c_str());
+            return sir_info("%s", str.c_str());
         }
 
         /** Use as if you were calling fmt::format directly. */
         template<typename... T>
         inline bool notice_fmt(fmt::format_string<T...> fmt, T&&... args) const {
             auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
-            return sir_notice(str.c_str());
+            return sir_notice("%s", str.c_str());
         }
 
         /** Use as if you were calling fmt::format directly. */
         template<typename... T>
         inline bool warn_fmt(fmt::format_string<T...> fmt, T&&... args) const {
             auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
-            return sir_warn(str.c_str());
+            return sir_warn("%s", str.c_str());
         }
 
         /** Use as if you were calling fmt::format directly. */
         template<typename... T>
         inline bool error_fmt(fmt::format_string<T...> fmt, T&&... args) const {
             auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
-            return sir_error(str.c_str());
+            return sir_error("%s", str.c_str());
         }
 
         /** Use as if you were calling fmt::format directly. */
         template<typename... T>
         inline bool crit_fmt(fmt::format_string<T...> fmt, T&&... args) const {
             auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
-            return sir_crit(str.c_str());
+            return sir_crit("%s", str.c_str());
         }
 
         /** Use as if you were calling fmt::format directly. */
         template<typename... T>
         inline bool alert_fmt(fmt::format_string<T...> fmt, T&&... args) const {
             auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
-            return sir_alert(str.c_str());
+            return sir_alert("%s", str.c_str());
         }
 
         /** Use as if you were calling fmt::format directly. */
         template<typename... T>
         inline bool emerg_fmt(fmt::format_string<T...> fmt, T&&... args) const {
             auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
-            return sir_emerg(str.c_str());
+            return sir_emerg("%s", str.c_str());
         }
     };
 # endif // !__SIR_HAVE_FMT_FORMAT__
@@ -629,26 +646,20 @@ namespace sir
     };
 
     /**
-     * @class default_logger
+     * @typedef default_logger
      * @brief A logger that implements the default set of adapters.
      *
-     * The default logger has the following properties:
+     * The default logger has the following template parameters defined:
      *
      * - RAII = true
-     * - TIP  = default_init_policy
-     * - TA   = default_adapter [, std_format_adapter, boost_format_adapter,
-     *           fmt_format_adapter] (see below)
-     *
-     * - If std::format is available and SIR_NO_STD_FORMAT is not defined, includes
-     * the std::format adapter.
-     * - If boost::format is available and SIR_NO_BOOST_FORMAT is not defined,
-     * includes the boost::format adapter.
-     * - If fmt::format is available and SIR_NO_FMT_FORMAT is not defined, includes
-     * the fmt::format adapter.
-     * - If SIR_NO_STD_IOSTREAM_FORMAT is not defined, includes the std::iostream adapter.
+     * - TAdapters = default_adapter [, std_format_adapter, std_iostream_adapter]
+     *   - if `SIR_NO_STD_FORMAT` is not defined, and std::format is available,
+     *     includes the std::format adapter.
+     *   - if `SIR_NO_STD_IOSTREAM` is not defined, includes the std::iostream
+     *     adapter.
      */
     using default_logger = logger
-    <
+    < // TODO: don't include boost and fmt adapters by default
         true,
         default_adapter
 # if defined(__SIR_HAVE_STD_FORMAT__)
