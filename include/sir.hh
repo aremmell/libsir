@@ -121,6 +121,12 @@ namespace sir
         default_adapter() = default;
         virtual ~default_adapter() = default;
 
+# if defined(__GNUC__) || defined(__clang__) && \
+    !(defined(__OPEN64__) || defined(__OPENCC__))
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Wformat-nonliteral"
+# endif
+
         /** Logs a debug message (see ::sir_debug). */
         bool debug(const char* format, ...) const noexcept {
             _SIR_L_START(format);
@@ -184,6 +190,12 @@ namespace sir
             _SIR_L_END();
             return ret;
         }
+
+# if defined(__GNUC__) || defined(__clang__) && \
+    !(defined(__OPEN64__) || defined(__OPENCC__))
+#  pragma GCC diagnostic pop
+# endif
+
     };
 
 # if defined(__SIR_HAVE_STD_FORMAT__)

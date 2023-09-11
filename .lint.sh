@@ -247,6 +247,12 @@ test_extra()
               )"\
           )"\
        ):/usr/local/bin:${PATH:-}" 2> /dev/null
+  command -v clang++ > /dev/null 2>&1 \
+    || {
+      printf '%s\n' \
+        "NOTICE: clang++ is required for the extra-warning check."
+      exit 1
+    }
   command -v clang > /dev/null 2>&1 \
     || {
       printf '%s\n' \
@@ -259,7 +265,8 @@ test_extra()
       test "${ret}" -ne 0 && exit 99
       rm -f ./.extra.sh
       env CC="${CCACHE:-env} clang" \
-        "${MAKE:-make}" \
+          CXX="${CCACHE:-env} clang++" \
+        "${MAKE:-make}" all tests++ \
         -j "${CPUS:-1}" \
         mcmb; ret=${?}
       test "${ret}" -ne 0 && exit 99
@@ -268,6 +275,7 @@ test_extra()
       "${MCMB:-build/bin/mcmb}" -e ${SIR_OPTIONS:?} | xargs -L1 echo \
         ' && ${MAKE:-make} clean &&
         env CC="${CCACHE:-env} clang"
+            CXX="${CCACHE:-env} clang++"
             CFLAGS="-DSIR_LINT=1
                     -Werror
                     -Wno-unknown-warning-option
@@ -287,7 +295,7 @@ test_extra()
                     -Wshift-overflow
                     -Wstring-conversion
                     -Wswitch-enum"
-            ${MAKE:-make}
+            ${MAKE:-make} all tests++
                 -j "${CPUS:-1}" ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
       printf '%s\n' ' && true' >> ./.extra.sh; ret=${?}
       test "${ret}" -ne 0 && exit 99
