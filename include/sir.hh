@@ -640,7 +640,7 @@ namespace sir
     class logger : public TAdapters...  {
     public:
         logger() : TAdapters()... {
-            if (RAII && !_init(sirinit {})) {
+            if (RAII && !_init()) {
                 // TODO: throw exception if policy says
                 SIR_ASSERT(false);
             }
@@ -653,8 +653,7 @@ namespace sir
         }
 
         bool init() noexcept {
-            sirinit si {};
-            return RAII ? false : _init(si);
+            return _init();
         }
 
         bool cleanup() noexcept {
@@ -779,7 +778,8 @@ namespace sir
         }
 
     protected:
-        bool _init(sirinit si) {
+        bool _init() {
+            sirinit si {};
             if (bool init = _policy.get_init_data(si) && sir_init(&si) &&
                 _policy.on_init_complete(); !init) {
                 return false;

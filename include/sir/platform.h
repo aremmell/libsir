@@ -241,6 +241,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  undef _WIN32_WINNT
 #  define _WIN32_WINNT 0x0A00
 #  define _CRT_RAND_S
+#  define NOMINMAX
 #  if defined(__ORANGEC__)
 #   include "sir/platform_orangec.h"
 #  endif
