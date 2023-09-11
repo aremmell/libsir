@@ -42,19 +42,27 @@
 # endif
 
 # if defined(__has_include)
-#  if __has_include(<format>) && !defined(SIR_NO_STD_FORMAT) && \
-      !defined(_LIBCPP_HAS_NO_INCOMPLETE_FORMAT)
+#  if !defined(__CPPCHECK__) /* github.com/danmar/simplecpp/issues/229 */
+#   if __has_include(<format>) && !defined(SIR_NO_STD_FORMAT) && \
+       !defined(_LIBCPP_HAS_NO_INCOMPLETE_FORMAT)
+#    include <format>
+#    define __SIR_HAVE_STD_FORMAT__
+#   endif
+#  else
 #   include <format>
-#   define __SIR_HAVE_STD_FORMAT__
 #  endif
-#  if __has_include(<boost/format.hpp>) && !defined(SIR_NO_BOOST_FORMAT)
-#   include <boost/format.hpp>
-#   define __SIR_HAVE_BOOST_FORMAT__
+#  if !defined(__CPPCHECK__)
+#   if __has_include(<boost/format.hpp>) && !defined(SIR_NO_BOOST_FORMAT)
+#    include <boost/format.hpp>
+#    define __SIR_HAVE_BOOST_FORMAT__
+#   endif
 #  endif
-#  if __has_include(<fmt/format.h>) && !defined(SIR_NO_FMT_FORMAT)
-#   define FMT_HEADER_ONLY
-#   include <fmt/format.h>
-#   define __SIR_HAVE_FMT_FORMAT__
+#  if !defined(__CPPCHECK__)
+#   if __has_include(<fmt/format.h>) && !defined(SIR_NO_FMT_FORMAT)
+#    define FMT_HEADER_ONLY
+#    include <fmt/format.h>
+#    define __SIR_HAVE_FMT_FORMAT__
+#   endif
 #  endif
 # endif
 
@@ -555,6 +563,7 @@ namespace sir
             return RAII ? false : sir_init(&si);
         }
 
+	/* cppcheck-suppress virtualCallInConstructor */
         virtual bool init() const noexcept {
             sirinit si {};
             if (bool make = sir_makeinit(&si); !make)
@@ -562,6 +571,7 @@ namespace sir
             return sir_init(&si);
         }
 
+	/* cppcheck-suppress virtualCallInConstructor */
         virtual bool cleanup() const noexcept {
             return sir_cleanup();
         }

@@ -459,6 +459,7 @@ test_cppcheck()
       test "${ret}" -ne 0 && exit 99
       # shellcheck disable=SC2046
       cppcheck --force \
+        -D__CPPCHECK__=1 \
         --enable="warning,performance,portability" \
         --suppress=ConfigurationNotChecked \
         --suppress=unknownMacro \
@@ -472,7 +473,7 @@ test_cppcheck()
         --std="c11" \
         --inconclusive \
         -j "${CPUS:?}" \
-        $(find . -name '*.[ch]' \
+        $(find . -name '*.[ch]' -o -name '*.cc' -o -name '*.hh' \
           | grep -v 'mcmb.c') \
         --xml --xml-version=2 2> cppcheck.xml \
         && cppcheck-htmlreport --source-dir="." \
