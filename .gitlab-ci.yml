@@ -1871,7 +1871,7 @@ Clang Sanitizer (Memory):
     - true export CXX="ccache clang++ -m64 ${MSAN_CFLAGS:?} -Werror"
     - export LDFLAGS="${MSAN_FLAGS:?}"
     - ${CC:?} --version
-    - true ${CXX:?} --version
+    - true ${CXX:-} --version
     - make SIR_DEBUG=1 SIR_SELFLOG=1
     - true make tests++ SIR_DEBUG=1 SIR_SELFLOG=1
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
