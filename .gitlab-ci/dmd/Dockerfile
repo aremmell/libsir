@@ -13,6 +13,7 @@ RUN dnf -y install elinks && \
            awk '/\/releases\/.*fedora.*x86_64.rpm$/ { print $2 }' | \
 	   head -1)" ) || true && \
     dnf --nogpgcheck -y install "$(ls -1 ./*.rpm | sort -rV | head -1)" && \
+    rm -f ./*.rpm* && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
