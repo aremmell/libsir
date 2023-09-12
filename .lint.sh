@@ -440,6 +440,9 @@ test_scanbuild()
 
 ################################################################################
 
+        # -I"$(ls -1d /usr/lib/gcc/x86_64-redhat-linux/*/include | sort -Vr | head -1)" \
+        # -I"$(ls -1d /usr/include/c++/* | sort -Vr | head -1)" \
+        # -I"$(ls -1d /usr/include/c++/*/* | head -1)" \
 test_cppcheck()
 { (
   command -v cppcheck > /dev/null 2>&1 \
@@ -462,25 +465,62 @@ test_cppcheck()
       mkdir -p cppcheck; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       # shellcheck disable=SC2046
-      cppcheck --force \
-        -D__CPPCHECK__=1 \
-        -DPRINTF_FORMAT_ATTR="" \
-        -DSANITIZE_SUPPRESS="" \
-        --enable="warning,performance,portability" \
-        --suppress=syntaxError:/usr/include/stdlib.h \
-        --suppress=unmatchedSuppression \
-        --suppress=unknownMacro \
-        --suppress=va_list_usedBeforeStarted \
-        --suppress="*:/usr/*" \
-        --inline-suppr \
-        --max-ctu-depth="16" \
-        --platform=unix64 \
-        --std="c11" \
-        --inconclusive \
-        -j "${CPUS:?}" \
-        $(find . -name '*.[ch]' -o -name '*.cc' -o -name '*.hh' \
-          | grep -v 'mcmb.c') \
-        --xml --xml-version=2 2> cppcheck.xml \
+      export EXTRA_INCLUDES="$(gcc -Wp,-v -x c++ - -fsyntax-only < /dev/null 2>&1 | grep '^ /' | sed 's/^ /-I/' | awk '{ print $1 }')" || \
+          export EXTRA_INCLUDES="-I/usr/include"
+      cppcheck \
+      ${EXTRA_INCLUDES:-I/usr/include} \
+      --enable="all" \
+      --inline-suppr \
+      --library=posix \
+      --platform=unix64 \
+      --suppress=cstyleCast \
+      --suppress=unreadVariable \
+      --suppress=variableScope \
+      --suppress=redundantAssignment \
+      --suppress=shadowFunction \
+      --suppress=badBitmaskCheck:include/sir/defaults.h \
+      --suppress=comparisonError:tests/tests.c \
+      --suppress=constVariablePointer \
+      --suppress=internalAstError:/Applications/* \
+      --suppress=internalAstError:/Library/Developer/* \
+      --suppress=internalAstError:/usr/include/* \
+      --suppress=preprocessorErrorDirective:/usr/include/* \
+      --suppress=missingIncludeSystem \
+      --suppress=readdirCalled \
+      --suppress=syntaxError:/Applications/* \
+      --suppress=syntaxError:/Library/Developer/* \
+      --suppress=syntaxError:/usr/include/* \
+      --suppress=preprocessorErrorDirective:/usr/include/* \
+      --suppress=unmatchedSuppression \
+      -DCLOCK_REALTIME=1 \
+      -DCLOCK_MONOTONIC=6 \
+      -D_POSIX_TIMERS=2 \
+      --suppress=funcArgOrderDifferent:src/sirinternal.c \
+      -D"PRINTF_FORMAT_ATTR(x,y)=" \
+      -D"SANITIZE_SUPPRESS(x)=" \
+      -DBOOST_GCC_VERSION=80300 \
+      -DUCHAR_MAX=0xff \
+      -DUINT_MAX=0xffffffff \
+      -DULONG_MAX=18446744073709551615 \
+      -DUSHRT_MAX=0xffff \
+      -D_LIBCPP_CXX03_LANG \
+      -D_LIBCPP___COMPARE_SYNTH_THREE_WAY_H \
+      -D__CHAR_BIT__=8 \
+      -D__CPPCHECK__=1 \
+      -D__GLIBC__ \
+      -D__GNUC__=13 \
+      -D__SIZEOF_SIZE_T__=8 \
+      -D__STDC__ \
+      -D__linux__ \
+      -D__x86_64__ \
+      -I/usr/include \
+      -Iinclude \
+      -j "$(getconf NPROCESSORS_ONLN 2> /dev/null || \
+            getconf _NPROCESSORS_ONLN 2> /dev/null || \
+            nproc 2> /dev/null || printf '%s\n' 4)" \
+      $(find . -name '*.[ch]' -o -name '*.cc' -o -name '*.hh' \
+        | grep -v 'mcmb.c') \
+          --xml --xml-version=2 2> cppcheck.xml \
         && cppcheck-htmlreport --source-dir="." \
           --report-dir="./cppcheck" \
           --file="cppcheck.xml"

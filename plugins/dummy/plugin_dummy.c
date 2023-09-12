@@ -91,7 +91,6 @@ PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
 #endif
     info->caps      = caps;
 
-    /* cppcheck-suppress syntaxError */
     (void)printf("\t" DGRAY("" PLUGIN_NAME " ('%s')") "\n", __func__);
 
 #if defined(PLUGINDUMMY_BADBEHAVIOR1)

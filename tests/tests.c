@@ -1763,6 +1763,7 @@ bool sirtest_filesystem(void) {
         1234
     };
 
+    /* cppcheck-suppress knownConditionTrueFalse */
     if (get_wineversion()) { //-V547
         bad_fds[3] = 0;
     }
