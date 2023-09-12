@@ -38,32 +38,22 @@
 # include <array>
 
 # if !defined(SIR_NO_STD_IOSTREAM)
-# include <iostream>
+#  include <iostream>
 # endif
 
-# if defined(__has_include)
-#  if !defined(__CPPCHECK__) /* github.com/danmar/simplecpp/issues/229 */
-#   if __has_include(<format>) && !defined(SIR_NO_STD_FORMAT) && \
+# if HAS_INCLUDE(<format>) && !defined(SIR_NO_STD_FORMAT) && \
        !defined(_LIBCPP_HAS_NO_INCOMPLETE_FORMAT)
-#    include <format>
-#    define __SIR_HAVE_STD_FORMAT__
-#   endif
-#  else
-#   include <format>
-#  endif
-#  if !defined(__CPPCHECK__)
-#   if __has_include(<boost/format.hpp>) && !defined(SIR_NO_BOOST_FORMAT)
-#    include <boost/format.hpp>
-#    define __SIR_HAVE_BOOST_FORMAT__
-#   endif
-#  endif
-#  if !defined(__CPPCHECK__)
-#   if __has_include(<fmt/format.h>) && !defined(SIR_NO_FMT_FORMAT)
-#    define FMT_HEADER_ONLY
-#    include <fmt/format.h>
-#    define __SIR_HAVE_FMT_FORMAT__
-#   endif
-#  endif
+#  include <format>
+#  define __SIR_HAVE_STD_FORMAT__
+# endif
+# if HAS_INCLUDE(<boost/format.hpp>) && !defined(SIR_NO_BOOST_FORMAT)
+#  include <boost/format.hpp>
+#  define __SIR_HAVE_BOOST_FORMAT__
+# endif
+# if HAS_INCLUDE(<fmt/format.h>) && !defined(SIR_NO_FMT_FORMAT)
+#  define FMT_HEADER_ONLY
+#  include <fmt/format.h>
+#  define __SIR_HAVE_FMT_FORMAT__
 # endif
 
 /**
@@ -630,7 +620,7 @@ namespace sir
         std::ostream alert_stream  {&_buf_alert};  /**< ostream for alert level. */
         std::ostream emerg_stream  {&_buf_emerg};  /**< ostream for emerg level. */
     };
-#endif // SIR_NO_STD_IOSTREAM
+# endif // SIR_NO_STD_IOSTREAM
 
     /** Ensures that T derives from adapter. */
     template<typename... T>

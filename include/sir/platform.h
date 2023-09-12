@@ -59,6 +59,13 @@
 #  define HAS_ATTRIBUTE(atr) 0
 # endif
 
+# undef HAS_INCLUDE
+# if defined(__has_include) && !defined(__CPPCHECK__)
+#  define HAS_INCLUDE(inc) __has_include(inc)
+# else
+#  define HAS_INCLUDE(inc) 0
+# endif
+
 # undef SANITIZE_SUPPRESS
 # if HAS_ATTRIBUTE(no_sanitize)
 #  define SANITIZE_SUPPRESS(str) __attribute__((no_sanitize(str)))
