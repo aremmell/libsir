@@ -139,7 +139,6 @@ bool __sir_handleerr(int code, const char* func, const char* file, uint32_t line
         const char* tmp = strerror(code);
         _sir_strncpy(message, SIR_MAXERROR, tmp, strnlen(tmp, SIR_MAXERROR));
 #endif
-        /* cppcheck-suppress knownConditionTrueFalse */
         if (0 == finderr) { //-V547
             __sir_setoserror(code, message, func, file, line);
 #if defined(__HAVE_XSI_STRERROR_R__) || defined(__HAVE_STRERROR_S__)

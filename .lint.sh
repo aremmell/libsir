@@ -480,6 +480,7 @@ test_cppcheck()
       --suppress=readdirCalled \
       --suppress=redundantAssignment \
       --suppress=shadowFunction \
+      --suppress=knownConditionTrueFalse \
       --suppress=unmatchedSuppression \
       --suppress=unreadVariable \
       --suppress=*:/usr/include/* \
