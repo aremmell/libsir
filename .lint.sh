@@ -464,8 +464,8 @@ test_cppcheck()
       # shellcheck disable=SC2046
       cppcheck --force \
         -D__CPPCHECK__=1 \
-        -DPRINTF_FORMAT_ATTR \
-        -DSANITIZE_SUPPRESS \
+        -DPRINTF_FORMAT_ATTR="" \
+        -DSANITIZE_SUPPRESS="" \
         --enable="warning,performance,portability" \
         --suppress=syntaxError:/usr/include/stdlib.h \
         --suppress=unmatchedSuppression \
