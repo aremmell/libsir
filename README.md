@@ -7,12 +7,19 @@ libsir&mdash;a cross-platform, thread-safe logging library
 
 [![Release](https://img.shields.io/github/v/release/aremmell/libsir?color=%2340b900&cacheSeconds=60)](https://github.com/aremmell/libsir/releases/latest)
 [![Commits](https://img.shields.io/github/commits-since/aremmell/libsir/latest?cacheSeconds=60&color=%2340b900)](https://github.com/aremmell/libsir/commits/master)
-[![License](https://img.shields.io/github/license/aremmell/libsir?color=%2340b900&cacheSeconds=60)](https://github.com/aremmell/libsir/blob/master/LICENSE)
-[![OpenHub](https://img.shields.io/badge/openhub-libsir-ok.svg?color=%2340b900&cacheSeconds=60)](https://www.openhub.net/p/libsir/)
-[![Coverity](https://img.shields.io/coverity/scan/28843.svg?color=%2340b900&cacheSeconds=60)](https://scan.coverity.com/projects/aremmell-libsir)
-[![Coverage](https://img.shields.io/coverallsCoverage/github/aremmell/libsir?color=%2340b900&cacheSeconds=60)](https://coveralls.io/github/aremmell/libsir)
-[![REUSE](https://img.shields.io/reuse/compliance/github.com%2Faremmell%2Flibsir?label=REUSE3&color=%2340b900&cacheSeconds=60)](https://api.reuse.software/info/github.com/aremmell/libsir)
 [![GitLab](https://gitlab.com/libsir/libsir/badges/master/pipeline.svg?)](https://gitlab.com/libsir/libsir/pipelines/master/latest)
+[![Coverage](https://img.shields.io/coverallsCoverage/github/aremmell/libsir?color=%2340b900&cacheSeconds=60)](https://coveralls.io/github/aremmell/libsir)
+[![Coverity](https://img.shields.io/coverity/scan/28843.svg?color=%2340b900&cacheSeconds=60)](https://scan.coverity.com/projects/aremmell-libsir)
+[![REUSE](https://img.shields.io/reuse/compliance/github.com%2Faremmell%2Flibsir?label=REUSE3&color=%2340b900&cacheSeconds=60)](https://api.reuse.software/info/github.com/aremmell/libsir)
+[![OpenHub](https://img.shields.io/badge/openhub-libsir-ok.svg?color=%2340b900&cacheSeconds=60)](https://www.openhub.net/p/libsir/)
+
+<br>
+
+[![Quality](https://sonarcloud.io/api/project_badges/measure?project=aremmell_libsir&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=aremmell_libsir)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=aremmell_libsir&metric=bugs)](https://sonarcloud.io/summary/new_code?id=aremmell_libsir)
+[![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=aremmell_libsir&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=aremmell_libsir)
+[![Reliability](https://sonarcloud.io/api/project_badges/measure?project=aremmell_libsir&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=aremmell_libsir)
+[![Security](https://sonarcloud.io/api/project_badges/measure?project=aremmell_libsir&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=aremmell_libsir)
 
 ## <a id="overview" /> Overview
 
