@@ -83,7 +83,7 @@ namespace sir
      * message.
      */
     struct error {
-        uint32_t code = 0U;  /**< The error code associated with the message. */
+        uint16_t code = 0U;  /**< The error code associated with the message. */
         std::string message; /**< Description of the error that occurred. */
     };
 
@@ -683,7 +683,7 @@ namespace sir
         /** Wraps ::sir_geterror. */
         error get_error() const {
             std::array<char, SIR_MAXERROR> message {};
-            uint32_t code = sir_geterror(message.data());
+            auto code = sir_geterror(message.data());
             return { code, message.data() };
         }
 
