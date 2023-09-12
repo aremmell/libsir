@@ -337,6 +337,12 @@ _set_thread_local_invalid_parameter_handler(
 
 # define SIR_MAXHOST 256
 
+# if defined(SIR_DPSPRINTF)
+#  define N_CAST (uintptr_t)
+# else
+#  define N_CAST
+# endif
+
 # if !defined(__WIN__)
 #  if !defined(SIR_NO_PLUGINS)
 #   include <dlfcn.h>
