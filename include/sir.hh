@@ -37,12 +37,8 @@
 # include <string>
 # include <array>
 
-# if !defined(SIR_NO_STD_IOSTREAM)
-#  include <iostream>
-# endif
-
 # if HAS_INCLUDE(<format>) && !defined(SIR_NO_STD_FORMAT) && \
-       !defined(_LIBCPP_HAS_NO_INCOMPLETE_FORMAT)
+     !defined(_LIBCPP_HAS_NO_INCOMPLETE_FORMAT)
 #  include <format>
 #  define __SIR_HAVE_STD_FORMAT__
 # endif
@@ -54,6 +50,9 @@
 #  define FMT_HEADER_ONLY
 #  include <fmt/format.h>
 #  define __SIR_HAVE_FMT_FORMAT__
+# endif
+# if !defined(SIR_NO_STD_IOSTREAM)
+#  include <iostream>
 # endif
 
 /**

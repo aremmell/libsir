@@ -183,7 +183,6 @@ bool sir::tests::std_format() {
     _sir_eqland(pass, log.emerg_std("Testing {} {}",  "std::format", 3.14));
 #else
     TEST_MSG_0(EMPH(BBLUE("std::format support not enabled; skipping")));
-    pass = true;
 #endif // !__SIR_HAVE_STD_FORMAT__
 
     _SIR_TEST_COMPLETE
@@ -206,7 +205,6 @@ bool sir::tests::boost_format() {
     _sir_eqland(pass, log.emerg_boost(bf("Testing %1% %2%")  % "boost" % 3.14));
 #else
     TEST_MSG_0(EMPH(BBLUE("boost::format support not enabled; skipping")));
-    pass = true;
 #endif // !__SIR_HAVE_BOOST_FORMAT__
 
     _SIR_TEST_COMPLETE
@@ -228,7 +226,6 @@ bool sir::tests::fmt_format() {
     _sir_eqland(pass, log.emerg_fmt("Testing {} {}",  "fmt", 3.14));
 #else
     TEST_MSG_0(EMPH(BBLUE("fmt::format support not enabled; skipping")));
-    pass = true;
 #endif // !__SIR_HAVE_FMT_FORMAT__
 
     _SIR_TEST_COMPLETE
@@ -295,7 +292,6 @@ bool sir::tests::std_iostream_format() {
     pass &= log.debug_stream.good();
 #else
     TEST_MSG_0(EMPH(BBLUE("std::iostream support not enabled; skipping")));
-    pass = true;
 #endif
 
     _SIR_TEST_COMPLETE
