@@ -60,7 +60,7 @@
 # endif
 
 # undef HAS_INCLUDE
-# if defined(__has_include) && !defined(__CPPCHECK__)
+# if defined __has_include
 #  define HAS_INCLUDE(inc) __has_include(inc)
 # else
 #  define HAS_INCLUDE(inc) 0
