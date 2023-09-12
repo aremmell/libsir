@@ -13,9 +13,9 @@ libsir&mdash;a cross-platform, thread-safe logging library
 [![Coverage](https://img.shields.io/coverallsCoverage/github/aremmell/libsir?color=%2340b900&cacheSeconds=60)](https://coveralls.io/github/aremmell/libsir)
 [![Coverity](https://img.shields.io/coverity/scan/28843.svg?color=%2340b900&cacheSeconds=60)](https://scan.coverity.com/projects/aremmell-libsir)
 [![REUSE](https://img.shields.io/reuse/compliance/github.com%2Faremmell%2Flibsir?label=REUSE3&color=%2340b900&cacheSeconds=60)](https://api.reuse.software/info/github.com/aremmell/libsir)
-[![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=aremmell_libsir&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=aremmell_libsir)
-[![Reliability](https://sonarcloud.io/api/project_badges/measure?project=aremmell_libsir&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=aremmell_libsir)
-[![Security](https://sonarcloud.io/api/project_badges/measure?project=aremmell_libsir&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=aremmell_libsir)
+[![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=aremmell_libsir&metric=sqale_rating)](https://sonarcloud.io/component_measures?id=aremmell_libsir&metric=new_maintainability_rating&view=list)
+[![Reliability](https://sonarcloud.io/api/project_badges/measure?project=aremmell_libsir&metric=reliability_rating)](https://sonarcloud.io/component_measures?id=aremmell_libsir&metric=new_reliability_rating&view=list)
+[![Security](https://sonarcloud.io/api/project_badges/measure?project=aremmell_libsir&metric=security_rating)](https://sonarcloud.io/component_measures?id=aremmell_libsir&metric=new_security_rating&view=list)
 
 ## <a id="overview" /> Overview
 
