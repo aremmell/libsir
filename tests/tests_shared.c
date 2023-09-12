@@ -251,11 +251,10 @@ size_t sir_readline(FILE* f, char* buf, size_t size) {
     if (!f || !buf || 0 == size)
         return 0;
 
-    int ch     = 0;
     size_t idx = 0;
 
     while (idx < size) {
-        ch = getc(f);
+        int ch = getc(f);
         if (EOF == ch || '\n' == ch)
             break;
         buf[idx++] = (char)ch;
