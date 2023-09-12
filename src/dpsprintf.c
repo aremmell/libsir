@@ -1847,9 +1847,10 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
         pr = sizeof (void *) * 2;
       fl &= ~DPS_S__LEADINGZERO;
 #  endif
-      /* fall through */
+      /*FALLTHRU*/ /* fall through */ /* fallthrough */
 
     case 'X':
+      /*FALLTHRU*/ /* fall through */ /* fallthrough */
     case 'x':
       h = (f[0] == 'X') ? hexu : hex;
       l = (4 << 4) | (4 << 8);
@@ -1908,9 +1909,10 @@ DPS_SPRINTF_DECORATE (vsprintfcb) (DPS_S_SPRINTFCB *callback, void *user,
       fl &= ~DPS_S__LEADINGPLUS;
       fl &= ~DPS_S__LEADINGSPACE;
 #  endif
-      /* fall through */
+      /*FALLTHRU*/ /* fall through */ /* fallthrough */
 
     case 'i':
+      /*FALLTHRU*/ /* fall through */ /* fallthrough */
     case 'd':
       if (fl & DPS_S__INTMAX)
       {
