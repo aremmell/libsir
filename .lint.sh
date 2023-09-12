@@ -440,9 +440,6 @@ test_scanbuild()
 
 ################################################################################
 
-        # -I"$(ls -1d /usr/lib/gcc/x86_64-redhat-linux/*/include | sort -Vr | head -1)" \
-        # -I"$(ls -1d /usr/include/c++/* | sort -Vr | head -1)" \
-        # -I"$(ls -1d /usr/include/c++/*/* | head -1)" \
 test_cppcheck()
 { (
   command -v cppcheck > /dev/null 2>&1 \
