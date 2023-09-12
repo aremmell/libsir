@@ -73,7 +73,7 @@ namespace sir
      * message.
      */
     struct error {
-        uint32_t code = 0U;  /**< The error code associated with the message. */
+        uint16_t code = 0U;  /**< The error code associated with the message. */
         std::string message; /**< Description of the error that occurred. */
     };
 
@@ -590,7 +590,7 @@ namespace sir
 
                     auto this_write = std::min(static_cast<std::streamsize>(left), count - written);
                     memcpy(pptr(), s + written, this_write);
-                    pbump(this_write);
+                    pbump(static_cast<int>(this_write));
                     written += this_write;
                 } while (written < count);
 
@@ -673,7 +673,7 @@ namespace sir
         /** Wraps ::sir_geterror. */
         error get_error() const {
             std::array<char, SIR_MAXERROR> message {};
-            uint32_t code = sir_geterror(message.data());
+            auto code = sir_geterror(message.data());
             return { code, message.data() };
         }
 
