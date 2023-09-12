@@ -361,7 +361,7 @@ docs doc: $(OUT_STATIC)
 	  grep -Ev '(docs/sample-terminal.png$$|docs/libsir-alpha.png$$)' | \
 	  xargs -I {} -P \
 	    "$$(getconf NPROCESSORS_ONLN 2> /dev/null || \
-	        getconf getconf _NPROCESSORS_ONLN 2> /dev/null || \
+	        getconf _NPROCESSORS_ONLN 2> /dev/null || \
 		nproc 2> /dev/null || \
 		printf '%s\n' \
 		  "$$(grep -E '^processor[[:space:]].*[0-9]+$$' \
