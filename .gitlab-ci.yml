@@ -1106,7 +1106,7 @@ Windows/Arm64 (MSVC, C, C++):
     - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /DSIR_NO_PLUGINS=1
     - rm -f tests.obj > /dev/null 2>&1 || true
     - rm -f example.obj > /dev/null 2>&1 || true
-    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /DSIR_NO_PLUGINS=1
+    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /wd4127 /DSIR_NO_PLUGINS=1
     - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
@@ -1142,7 +1142,7 @@ Windows/Arm (MSVC, C, C++):
     - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /DSIR_NO_PLUGINS=1
     - rm -f tests.obj > /dev/null 2>&1 || true
     - rm -f example.obj > /dev/null 2>&1 || true
-    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /DSIR_NO_PLUGINS=1
+    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /wd4127 /DSIR_NO_PLUGINS=1
     - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
@@ -1178,7 +1178,7 @@ Windows/x64 (MSVC, C, C++):
     - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /DSIR_NO_PLUGINS=1
     - rm -f tests.obj > /dev/null 2>&1 || true
     - rm -f example.obj > /dev/null 2>&1 || true
-    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /DSIR_NO_PLUGINS=1
+    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /wd4127 /DSIR_NO_PLUGINS=1
     - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
@@ -1230,7 +1230,7 @@ Windows/i686 (MSVC, C, C++):
     - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /DSIR_NO_PLUGINS=1
     - rm -f tests.obj > /dev/null 2>&1 || true
     - rm -f example.obj > /dev/null 2>&1 || true
-    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /DSIR_NO_PLUGINS=1
+    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /wd4127 /DSIR_NO_PLUGINS=1
     - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
