@@ -102,7 +102,7 @@ Linux/i686 (GCC, G++):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CFLAGS="-m32"
-    - export CXXFLAGS="-m32"
+    - export CXXFLAGS="-m32 -DSIR_NO_BOOST_FORMAT=1"
     - export LDFLAGS="-m32"
     - export CC="ccache gcc"
     - export CXX="ccache g++"
@@ -221,7 +221,7 @@ Linux/i686 (Clang, Clang++):
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CFLAGS="-m32"
-    - export CXXFLAGS="-m32"
+    - export CXXFLAGS="-m32 -DSIR_NO_BOOST_FORMAT=1"
     - export LDFLAGS="-m32"
     - export CC="ccache clang"
     - export CXX="ccache clang++"
