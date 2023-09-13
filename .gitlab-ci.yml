@@ -308,7 +308,7 @@ Linux/i686 (AOCC, AOCC++):
     - export CC="ccache clang"
     - export CXX="ccache clang++"
     - export CFLAGS="-m32"
-    - export CXXFLAGS="-m32"
+    - export CXXFLAGS="-m32 -DSIR_NO_BOOST_FORMAT=1"
     - export LDFLAGS="-m32"
     - ${CC:?} --version
     - ${CXX:?} --version
