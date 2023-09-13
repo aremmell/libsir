@@ -236,6 +236,18 @@ ifeq ($(AIXTLS),1)
 endif
 
 ##############################################################################
+# Circle (C++ only)
+
+ifneq "$(findstring circle,$(CXX))" ""
+  CIRCLECPP?=1
+endif
+
+ifeq ($(CIRCLECPP),1)
+  CXXFLAGS+=-DSIR_NO_STD_FORMAT=1
+  WPEDANTIC=
+endif
+
+##############################################################################
 # Default flags for linking a shared library?
 
 SIR_SHARED?=-shared

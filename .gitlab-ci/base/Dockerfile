@@ -149,8 +149,9 @@ RUN \
   (curl -fsSL https://coveralls.io/coveralls-linux.tar.gz | tar -zxv -C /usr/bin) \
 && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-      mingw-binutils-generic \
       mingw32-binutils \
+      mingw32-boost \
+      mingw32-boost-static \
       mingw32-cpp \
       mingw32-crt \
       mingw32-dlfcn \
@@ -161,6 +162,8 @@ RUN \
       mingw32-winpthreads \
       mingw32-winpthreads-static \
       mingw64-binutils \
+      mingw64-boost \
+      mingw64-boost-static \
       mingw64-cpp \
       mingw64-crt \
       mingw64-dlfcn \
@@ -170,6 +173,7 @@ RUN \
       mingw64-headers \
       mingw64-winpthreads \
       mingw64-winpthreads-static \
+      mingw-binutils-generic \
       mingw-w64-tools \
       ucrt64-binutils \
       ucrt64-cpp \

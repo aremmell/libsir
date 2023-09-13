@@ -49,7 +49,7 @@ stages:
 
 ##############################################################################
 
-Linux/x86_64 (GCC, G++):
+Linux/x86_64 (G++, GCC):
   stage: build
   tags:
     - Docker-x64
@@ -89,7 +89,7 @@ Linux/x86_64 (GCC, G++):
 
 ##############################################################################
 
-Linux/i686 (GCC, G++):
+Linux/i686 (G++, GCC):
   stage: build
   tags:
     - Docker-x64
@@ -132,7 +132,7 @@ Linux/i686 (GCC, G++):
 
 ##############################################################################
 
-Linux/x86_64 (musl-libc, GCC, G++):
+Linux/x86_64 (musl-libc, G++, GCC):
   stage: build
   tags:
     - Docker-x64
@@ -168,7 +168,7 @@ Linux/x86_64 (musl-libc, GCC, G++):
 
 ##############################################################################
 
-Linux/x86_64 (Clang, Clang++):
+Linux/x86_64 (Clang++, Clang):
   stage: build
   tags:
     - Docker-x64
@@ -208,7 +208,7 @@ Linux/x86_64 (Clang, Clang++):
 
 ##############################################################################
 
-Linux/i686 (Clang, Clang++):
+Linux/i686 (Clang++, Clang):
   stage: build
   tags:
     - Docker-x64
@@ -251,7 +251,7 @@ Linux/i686 (Clang, Clang++):
 
 ##############################################################################
 
-Linux/x86_64 (AOCC, AOCC++):
+Linux/x86_64 (AOCC++, AOCC):
   stage: build
   tags:
     - Docker-x64
@@ -292,7 +292,7 @@ Linux/x86_64 (AOCC, AOCC++):
 
 ##############################################################################
 
-Linux/i686 (AOCC, AOCC++):
+Linux/i686 (AOCC++, AOCC):
   stage: build
   tags:
     - Docker-x64
@@ -336,7 +336,7 @@ Linux/i686 (AOCC, AOCC++):
 
 ##############################################################################
 
-Linux/x86_64 (Intel C Classic):
+Linux/x86_64 (Intel C Classic, ICC):
   stage: build
   tags:
     - Docker-x64
@@ -373,7 +373,7 @@ Linux/x86_64 (Intel C Classic):
 
 ##############################################################################
 
-Linux/x86_64 (Intel oneAPI C, C++):
+Linux/x86_64 (Intel oneAPI, ICPX, ICX):
   stage: build
   tags:
     - Docker-x64
@@ -488,7 +488,7 @@ Linux/i686 (Oracle Studio C):
 
 ##############################################################################
 
-Linux/x86_64 (NVIDIA HPC C, C++):
+Linux/x86_64 (NVIDIA HPC SDK C++, C):
   stage: build
   tags:
     - Docker-x64
@@ -569,7 +569,7 @@ Linux/x86_64 (Chibicc, C):
 
 ##############################################################################
 
-Windows/x64 (LLVM-MinGW, Clang, Clang++):
+Windows/x64 (LLVM-MinGW, Clang++, Clang):
   stage: build
   tags:
     - Docker-x64
@@ -623,7 +623,7 @@ Windows/x64 (LLVM-MinGW, Clang, Clang++):
 
 ##############################################################################
 
-Windows/Arm (LLVM-MinGW, Clang, Clang++):
+Windows/Arm (LLVM-MinGW, Clang++, Clang):
   stage: build
   tags:
     - Docker-x64
@@ -660,7 +660,7 @@ Windows/Arm (LLVM-MinGW, Clang, Clang++):
 
 ##############################################################################
 
-Windows/Arm64 (LLVM-MinGW, Clang, Clang++):
+Windows/Arm64 (LLVM-MinGW, Clang++, Clang):
   stage: build
   tags:
     - Docker-x64
@@ -740,7 +740,7 @@ Linux/x86_64 (AMD Open64, C):
 
 ##############################################################################
 
-Windows/i686 (LLVM-MinGW, Clang, Clang++):
+Windows/i686 (LLVM-MinGW, Clang++, Clang):
   stage: build
   tags:
     - Docker-x64
@@ -794,7 +794,7 @@ Windows/i686 (LLVM-MinGW, Clang, Clang++):
 
 ##############################################################################
 
-Android/x86_64 (API Level 21, Clang, Clang++):
+Android/x86_64 (API Level 21, Clang++, Clang):
   stage: build
   tags:
     - Docker-x64
@@ -836,7 +836,7 @@ Android/x86_64 (API Level 21, Clang, Clang++):
 
 ##############################################################################
 
-Android/i686 (API Level 21, Clang, Clang++):
+Android/i686 (API Level 21, Clang++, Clang):
   stage: build
   tags:
     - Docker-x64
@@ -878,7 +878,7 @@ Android/i686 (API Level 21, Clang, Clang++):
 
 ##############################################################################
 
-Android/ARM64 (API Level 21, Clang, Clang++):
+Android/ARM64 (API Level 21, Clang++, Clang):
   stage: build
   tags:
     - Docker-x64
@@ -910,7 +910,7 @@ Android/ARM64 (API Level 21, Clang, Clang++):
 
 ##############################################################################
 
-Android/ARMv7A (API Level 21, Clang, Clang++):
+Android/ARMv7A (API Level 21, Clang++, Clang):
   stage: build
   tags:
     - Docker-x64
@@ -942,7 +942,7 @@ Android/ARMv7A (API Level 21, Clang, Clang++):
 
 ##############################################################################
 
-Android/x86_64 (API Level 33, Clang, Clang++):
+Android/x86_64 (API Level 33, Clang++, Clang):
   stage: build
   tags:
     - Docker-x64
@@ -982,7 +982,7 @@ Android/x86_64 (API Level 33, Clang, Clang++):
 
 ##############################################################################
 
-Android/i686 (API Level 33, Clang, Clang++):
+Android/i686 (API Level 33, Clang++, Clang):
   stage: build
   tags:
     - Docker-x64
@@ -1024,7 +1024,7 @@ Android/i686 (API Level 33, Clang, Clang++):
 
 ##############################################################################
 
-Android/ARM64 (API Level 33, Clang, Clang++):
+Android/ARM64 (API Level 33, Clang++, Clang):
   stage: build
   tags:
     - Docker-x64
@@ -1054,7 +1054,7 @@ Android/ARM64 (API Level 33, Clang, Clang++):
 
 ##############################################################################
 
-Android/ARMv7A (API Level 33, Clang, Clang++):
+Android/ARMv7A (API Level 33, Clang++, Clang):
   stage: build
   tags:
     - Docker-x64
@@ -1086,7 +1086,7 @@ Android/ARMv7A (API Level 33, Clang, Clang++):
 
 ##############################################################################
 
-Windows/Arm64 (MSVC, C, C++):
+Windows/Arm64 (MSVC, C++, C):
   stage: build
   tags:
     - Docker-x64
@@ -1121,7 +1121,7 @@ Windows/Arm64 (MSVC, C, C++):
 
 ##############################################################################
 
-Windows/Arm (MSVC, C, C++):
+Windows/Arm (MSVC, C++, C):
   stage: build
   tags:
     - Docker-x64
@@ -1157,7 +1157,7 @@ Windows/Arm (MSVC, C, C++):
 
 ##############################################################################
 
-Windows/x64 (MSVC, C, C++):
+Windows/x64 (MSVC, C++, C):
   stage: build
   tags:
     - Docker-x64
@@ -1210,7 +1210,7 @@ Windows/x64 (MSVC, C, C++):
 
 ##############################################################################
 
-Windows/i686 (MSVC, C, C++):
+Windows/i686 (MSVC, C++, C):
   stage: build
   tags:
     - Docker-x64
@@ -1262,7 +1262,7 @@ Windows/i686 (MSVC, C, C++):
 
 ##############################################################################
 
-Windows/x64 (MinGW-MSVCRT, GCC, G++):
+Windows/x64 (MinGW-MSVCRT, G++, GCC):
   stage: build
   tags:
     - Docker-x64
@@ -1316,7 +1316,7 @@ Windows/x64 (MinGW-MSVCRT, GCC, G++):
 
 ##############################################################################
 
-Windows/x64 (MinGW-UCRT, GCC, G++):
+Windows/x64 (MinGW-UCRT, G++, GCC):
   stage: build
   tags:
     - Docker-x64
@@ -1369,7 +1369,7 @@ Windows/x64 (MinGW-UCRT, GCC, G++):
 
 ##############################################################################
 
-Windows/i686 (MinGW, GCC, G++):
+Windows/i686 (MinGW, G++, GCC):
   stage: build
   tags:
     - Docker-x64
@@ -1423,7 +1423,7 @@ Windows/i686 (MinGW, GCC, G++):
 
 ##############################################################################
 
-Cygwin/x86_64 (GCC, G++):
+Cygwin/x86_64 (G++, GCC):
   stage: build
   tags:
     - Docker-x64
@@ -1485,9 +1485,9 @@ Cygwin/i686 (GCC):
 Coverage:
   stage: coverage
   needs:
-    - job: Linux/x86_64 (Clang, Clang++)
-    - job: Linux/x86_64 (GCC, G++)
-    - job: Windows/x64 (MSVC, C, C++)
+    - job: Linux/x86_64 (Clang++, Clang)
+    - job: Linux/x86_64 (G++, GCC)
+    - job: Windows/x64 (MSVC, C++, C)
   coverage: '/^TOTAL.*\s+(\d+\%)$/'
   tags:
     - Docker-x64
@@ -1506,7 +1506,7 @@ Coverage:
     - |
       # Compress artifacts ...
       echo -e "section_start:`date +%s`:Comp_section[collapsed=true]\r\e[0K\033[0;36mCompress artifacts ...\033[0m" || true
-    - lzip -9 -s 512Mi -v coverage* || true
+    - lzip -9 -s 512Mi -v $(ls -1 ./coverage* | grep -Ev '(\.html$|\.css$)' 2> /dev/null || true) || true
     - echo -e "section_end:`date +%s`:Comp_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -1546,7 +1546,7 @@ Style check:
 MSVC Static Analyzer:
   stage: lint
   needs:
-    - job: Windows/x64 (MSVC, C, C++)
+    - job: Windows/x64 (MSVC, C++, C)
   tags:
     - Docker-x64
     - Linux
@@ -1579,7 +1579,7 @@ MSVC Static Analyzer:
 Clang Static Analyzer:
   stage: lint
   needs:
-    - job: Linux/x86_64 (Clang, Clang++)
+    - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
     - Linux
@@ -1608,7 +1608,7 @@ Clang Static Analyzer:
 Clang (Extra Warnings):
   stage: lint
   needs:
-    - job: Linux/x86_64 (Clang, Clang++)
+    - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
     - Linux
@@ -1637,7 +1637,7 @@ Clang (Extra Warnings):
 GCC (Extra Warnings):
   stage: lint
   needs:
-    - job: Linux/x86_64 (GCC, G++)
+    - job: Linux/x86_64 (G++, GCC)
   tags:
     - Docker-x64
     - Linux
@@ -1962,7 +1962,7 @@ Linux/i686 (DMD64 ImportC, C):
 GCC Static Analyzer:
   stage: lint
   needs:
-    - job: Linux/x86_64 (GCC, G++)
+    - job: Linux/x86_64 (G++, GCC)
   tags:
     - Docker-x64
     - Linux
@@ -2097,7 +2097,7 @@ Windows/i686 (Embarcadero, C):
 Clang Sanitizer (UB, 32-bit, C):
   stage: lint
   needs:
-    - job: Linux/x86_64 (Clang, Clang++)
+    - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
     - Linux
@@ -2139,7 +2139,7 @@ Clang Sanitizer (UB, 32-bit, C):
 Clang Sanitizer (UB, 64-bit, C):
   stage: lint
   needs:
-    - job: Linux/x86_64 (Clang, Clang++)
+    - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
     - Linux
@@ -2181,7 +2181,7 @@ Clang Sanitizer (UB, 64-bit, C):
 Clang Sanitizer (Memory, C):
   stage: lint
   needs:
-    - job: Linux/x86_64 (Clang, Clang++)
+    - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
     - Linux
@@ -2219,10 +2219,10 @@ Clang Sanitizer (Memory, C):
 
 ##############################################################################
 
-Clang Sanitizer (Address, 64-bit, C, C++):
+Clang Sanitizer (Address, 64-bit, C++, C):
   stage: lint
   needs:
-    - job: Linux/x86_64 (Clang, Clang++)
+    - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
     - Linux
@@ -2265,10 +2265,10 @@ Clang Sanitizer (Address, 64-bit, C, C++):
 
 ##############################################################################
 
-Clang Sanitizer (Address, 32-bit, C, C++):
+Clang Sanitizer (Address, 32-bit, C++, C):
   stage: lint
   needs:
-    - job: Linux/x86_64 (Clang, Clang++)
+    - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
     - Linux
@@ -2452,7 +2452,7 @@ Linux/x86_64 (Kefir, C):
 
 ##############################################################################
 
-Linux/x86_64 (uClibc-ng, GCC, G++):
+Linux/x86_64 (uClibc-ng, G++, GCC):
   stage: build
   tags:
     - Docker-x64
@@ -2472,6 +2472,46 @@ Linux/x86_64 (uClibc-ng, GCC, G++):
     - ${CXX:?} --version
     - make SIR_NO_PLUGINS=1
     - make tests++ SIR_NO_PLUGINS=1
+    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - *BuildInformation
+    - |
+      # Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - build/bin/sirexample
+    - build/bin/sirtests
+    - build/bin/sirtests++
+    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
+Linux/x86_64 (Circle C++, GCC):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/circle:latest
+  script:
+    - *Configuration
+    - |
+      # Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export CC="ccache gcc"
+    - export CXX="ccache circle"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make
+    - make tests++
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |

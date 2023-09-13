@@ -21,6 +21,7 @@ RUN ( dnf --refresh -y install libnsl2.x86_64 libnsl2.i686 libnsl.i686 libnsl.x8
     curl -fsSL ${URL2:-http://192.168.1.187:8088/~jhj/cache/oracle126.tar.gz} | \
         pigz -dc | \
 	tar xvf - && \
+    dnf -y upgrade && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \

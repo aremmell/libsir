@@ -33,6 +33,7 @@ PLUGPREFIX   = plugin_
 SIR_FPIC    ?= -fPIC
 AR          ?= ar
 AR_CR       ?= $(AR) -cr
+WPEDANTIC   ?= -Wpedantic
 
 ##############################################################################
 # Flags
@@ -62,7 +63,7 @@ SIR_XSTD ?= -std=c++20
 # Base CFLAGS
 
 ifneq ($(NO_DEFAULT_CFLAGS),1)
-  SIR_CFLAGS += -Wall -Wextra -Wpedantic -Iinclude $(SIR_FPIC)
+  SIR_CFLAGS += -Wall -Wextra $(WPEDANTIC) -Iinclude $(SIR_FPIC)
 endif
 
 ##############################################################################
