@@ -597,11 +597,11 @@ Windows/x64 (LLVM-MinGW, Clang, Clang++):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirexample.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirtests.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirtests++.out
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -612,6 +612,7 @@ Windows/x64 (LLVM-MinGW, Clang, Clang++):
       - build/
       - logs/
       - screenlog.0
+      - ./*.out
   retry: 2
   interruptible: true
 
@@ -767,11 +768,11 @@ Windows/i686 (LLVM-MinGW, Clang, Clang++):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirexample.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirtests.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirtests++.out
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -782,6 +783,7 @@ Windows/i686 (LLVM-MinGW, Clang, Clang++):
       - build/
       - logs/
       - screenlog.0
+      - ./*.out
   retry: 2
   interruptible: true
 
@@ -1182,11 +1184,11 @@ Windows/x64 (MSVC, C, C++):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirexample.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirtests.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirtests++.out
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -1197,6 +1199,7 @@ Windows/x64 (MSVC, C, C++):
       - build/
       - logs/
       - screenlog.0
+      - ./*.out
   retry: 2
   interruptible: true
 
@@ -1233,11 +1236,11 @@ Windows/i686 (MSVC, C, C++):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirexample.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirtests.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirtests++.out
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -1248,6 +1251,7 @@ Windows/i686 (MSVC, C, C++):
       - build/
       - logs/
       - screenlog.0
+      - ./*.out
   retry: 2
   interruptible: true
 
@@ -1286,11 +1290,11 @@ Windows/x64 (MinGW-MSVCRT, GCC, G++):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirexample.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirtests.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirtests++.out
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -1301,6 +1305,7 @@ Windows/x64 (MinGW-MSVCRT, GCC, G++):
       - build/
       - logs/
       - screenlog.0
+      - ./*.out
   retry: 2
   interruptible: true
 
@@ -1338,11 +1343,11 @@ Windows/x64 (MinGW-UCRT, GCC, G++):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirexample.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirtests.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirtests++.out
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -1353,6 +1358,7 @@ Windows/x64 (MinGW-UCRT, GCC, G++):
       - build/
       - logs/
       - screenlog.0
+      - ./*.out
   retry: 2
   interruptible: true
 
@@ -1391,11 +1397,11 @@ Windows/i686 (MinGW, GCC, G++):
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
     - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirexample.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirtests.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - mv -f screenlog.0 sirtests++.out
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -1406,6 +1412,7 @@ Windows/i686 (MinGW, GCC, G++):
       - build/
       - logs/
       - screenlog.0
+      - ./*.out
   retry: 2
   interruptible: true
 
@@ -1494,7 +1501,7 @@ Coverage:
     - |
       # Compress artifacts ...
       echo -e "section_start:`date +%s`:Comp_section[collapsed=true]\r\e[0K\033[0;36mCompress artifacts ...\033[0m" || true
-    - pigz -11v coverage-out.txt || true
+    - lzip -9 -s 512Mi -v coverage* || true
     - echo -e "section_end:`date +%s`:Comp_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -1684,14 +1691,14 @@ Cppcheck:
       # Cppcheck ...
       echo -e "section_start:`date +%s`:CppcheckA_section[collapsed=true]\r\e[0K\033[0;36mCppcheck ...\033[0m" || true
     - ./.lint.sh cppcheck
+    - mkdir -p cppcheck > /dev/null 2>&1 || true
+    - touch cppcheck.xml > /dev/null 2>&1 || true
     - echo -e "section_end:`date +%s`:CppcheckA_section\r\e[0K" || true
   dependencies: []
   artifacts:
     when: always
     expire_in: 7 days
     paths:
-      - build/
-      - logs/
       - cppcheck/
       - cppcheck.xml
   retry: 2
@@ -1764,6 +1771,8 @@ PVS-Studio:
       echo -e "section_start:`date +%s`:PVSStudio_section[collapsed=true]\r\e[0K\033[0;36mPVS-Studio Analysis ...\033[0m" || true
     - pvs-studio --version
     - ./.lint.sh pvs
+    - mkdir -p pvsreport > /dev/null 2>&1 || true
+    - touch pvs.log > /dev/null 2>&1 || true
     - echo -e "section_end:`date +%s`:PVSStudio_section\r\e[0K" || true
   dependencies: []
   artifacts:
@@ -1802,8 +1811,6 @@ Coverity:
     when: always
     expire_in: 7 days
     paths:
-      - cov-int/
-      - libsir-coverity.xz
   retry: 2
   interruptible: true
 
@@ -1960,16 +1967,24 @@ GCC Static Analyzer:
     - |
       # GCC Static Analyzer ...
       echo -e "section_start:`date +%s`:GCCSA_section[collapsed=true]\r\e[0K\033[0;36mGCC Static Analyzer ...\033[0m" || true
-    - gcc --version
+    - export CC="gcc"
+    - export CXX="g++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
     - export CFLAGS="-fanalyzer -Wno-analyzer-malloc-leak -fanalyzer-verbosity=3 -Werror"
     - make
     - make tests++
     - make clean
+    - echo -e "section_end:`date +%s`:GCCSA_section\r\e[0K" || true
+    - |
+      # GCC Static Analyzer - Taint ...
+      echo -e "section_start:`date +%s`:GCCST_section[collapsed=true]\r\e[0K\033[0;36mGCC Static Analyzer - Taint ...\033[0m" || true
     - export CFLAGS="-fanalyzer -fanalyzer-checker=taint -fanalyzer-verbosity=3 -Werror"
     - make
     - make tests++
     - make clean
-    - echo -e "section_end:`date +%s`:GCCSA_section\r\e[0K" || true
+    - mkdir -p build > /dev/null 2>&1 || true
+    - echo -e "section_end:`date +%s`:GCCST_section\r\e[0K" || true
   dependencies: []
   artifacts:
     when: always
@@ -2335,6 +2350,8 @@ Oracle Lint:
     - eval /opt/oracle/developerstudio-latest/bin/lint -DSUNPRO=1 -DSUNLINT=1 ${CFLAGS:?} src/*.c -Iinclude -Itests tests/*.c 2>&1 | tee orstlint.txt
     - eval /opt/oracle/developerstudio-latest/bin/lint -DSUNPRO=1 -DSUNLINT=1 ${CFLAGS:?} src/*.c -Iinclude -Iexample example/*.c 2>&1 | tee -a orstlint.txt
     - ( grep "E_" orstlint.txt || exit 0 && exit 1 )
+    - mkdir -p build > /dev/null 2>&1 || true
+    - mkdir -p logs > /dev/null 2>&1 || true
     - echo -e "section_end:`date +%s`:Lint_section\r\e[0K" || true
   dependencies: []
   artifacts:
