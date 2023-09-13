@@ -253,7 +253,7 @@ test_extra()
       test "${ret}" -ne 0 && exit 99
       rm -f ./.extra.sh
       env CC="${CCACHE:-env} clang" \
-          CXX="${CCACHE:-env} clang++" \
+         CXX="${CCACHE:-env} clang++" \
         "${MAKE:-make}" all tests++ \
         -j "${CPUS:-1}" \
         mcmb; ret="${?}"
@@ -327,7 +327,7 @@ test_gccextra()
       test "${ret}" -ne 0 && exit 99
       rm -f ./.extra.sh
       env CC="${CCACHE:-env} gcc" \
-          CXX="${CCACHE:-env} g++" \
+         CXX="${CCACHE:-env} g++" \
         "${MAKE:-make}" all tests++ \
         -j 1 \
         mcmb; ret="${?}"
@@ -408,8 +408,9 @@ test_scanbuild()
       printf '%s\n' "running scan-build check ..."
       env "${MAKE:-make}" clean; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      env CC="${CCACHE:-env} clang"
-          CXX="${CCACHE:-env} clang++" "${MAKE:-make}" \
+      env CC="${CCACHE:-env} clang" \
+          CXX="${CCACHE:-env} clang++" \
+          "${MAKE:-make}" \
         -j "${CPUS:-1}" all tests++ \
         mcmb; ret="${?}"
       test "${ret}" -ne 0 && exit 99
