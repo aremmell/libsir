@@ -101,12 +101,13 @@ Linux/i686 (GCC, G++):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export CFLAGS="-m32"
+    - export CXXFLAGS="-m32"
+    - export LDFLAGS="-m32"
     - export CC="ccache gcc"
     - export CXX="ccache g++"
     - ${CC:?} --version
     - ${CXX:?} --version
-    - export CFLAGS="-m32"
-    - export CXXFLAGS="-m32"
     - make
     - make tests++
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -219,12 +220,13 @@ Linux/i686 (Clang, Clang++):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export CFLAGS="-m32"
+    - export CXXFLAGS="-m32"
+    - export LDFLAGS="-m32"
     - export CC="ccache clang"
     - export CXX="ccache clang++"
     - ${CC:?} --version
     - ${CXX:?} --version
-    - export CFLAGS="-m32"
-    - export CXXFLAGS="-m32"
     - make
     - make tests++
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -305,10 +307,11 @@ Linux/i686 (AOCC, AOCC++):
     - . /opt/AMD/aocc-compiler-4.1.0/setenv_AOCC.sh
     - export CC="ccache clang"
     - export CXX="ccache clang++"
-    - ${CC:?} --version
-    - ${CXX:?} --version
     - export CFLAGS="-m32"
     - export CXXFLAGS="-m32"
+    - export LDFLAGS="-m32"
+    - ${CC:?} --version
+    - ${CXX:?} --version
     - make
     - make tests++
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -459,7 +462,9 @@ Linux/i686 (Oracle Studio C):
     - |
       # Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="ccache /opt/oracle/developerstudio-latest/bin/suncc -m32"
+    - export CC="ccache /opt/oracle/developerstudio-latest/bin/suncc"
+    - export CFLAGS="-m32"
+    - export LDFLAGS="-m32"
     - ${CC:?} -V
     - make
     - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -596,11 +601,11 @@ Windows/x64 (LLVM-MinGW, Clang, Clang++):
     - mkdir -p logs
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
-    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirexample.out
-    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests.out
-    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests++.out
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
@@ -767,11 +772,11 @@ Windows/i686 (LLVM-MinGW, Clang, Clang++):
     - mkdir -p logs
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
-    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirexample.out
-    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests.out
-    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests++.out
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
@@ -1183,11 +1188,11 @@ Windows/x64 (MSVC, C, C++):
     - mkdir -p logs
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
-    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirexample.out
-    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests.out
-    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests++.out
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
@@ -1235,11 +1240,11 @@ Windows/i686 (MSVC, C, C++):
     - mkdir -p logs
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
-    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirexample.out
-    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests.out
-    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests++.out
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
@@ -1289,11 +1294,11 @@ Windows/x64 (MinGW-MSVCRT, GCC, G++):
     - mkdir -p logs
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
-    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirexample.out
-    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests.out
-    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests++.out
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
@@ -1342,11 +1347,11 @@ Windows/x64 (MinGW-UCRT, GCC, G++):
     - mkdir -p logs
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
-    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirexample.out
-    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests.out
-    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests++.out
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
@@ -1396,11 +1401,11 @@ Windows/i686 (MinGW, GCC, G++):
     - mkdir -p logs
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
-    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirexample.out
-    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests.out
-    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
+    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests++.out
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
@@ -1840,10 +1845,10 @@ Windows/i686 (OrangeC, C):
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
-    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
-    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - mv -f screenlog.0 sirexample.out
+    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - mv -f screenlog.0 sirtests.out
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -1854,6 +1859,7 @@ Windows/i686 (OrangeC, C):
       - build/
       - logs/
       - screenlog.0
+      - ./*.out
   retry: 2
   interruptible: true
 
@@ -1971,7 +1977,7 @@ GCC Static Analyzer:
     - export CXX="g++"
     - ${CC:?} --version
     - ${CXX:?} --version
-    - export CFLAGS="-fanalyzer -Wno-analyzer-malloc-leak -fanalyzer-verbosity=3 -Werror"
+    - export CFLAGS="-g -fanalyzer -Wno-analyzer-malloc-leak -fanalyzer-verbosity=3 -Werror -DSIR_NO_STD_FORMAT=1"
     - make
     - make tests++
     - make clean
@@ -1979,7 +1985,7 @@ GCC Static Analyzer:
     - |
       # GCC Static Analyzer - Taint ...
       echo -e "section_start:`date +%s`:GCCST_section[collapsed=true]\r\e[0K\033[0;36mGCC Static Analyzer - Taint ...\033[0m" || true
-    - export CFLAGS="-fanalyzer -fanalyzer-checker=taint -fanalyzer-verbosity=3 -Werror"
+    - export CFLAGS="-g -fanalyzer -fanalyzer-checker=taint -fanalyzer-verbosity=3 -Werror -DSIR_NO_STD_FORMAT=1"
     - make
     - make tests++
     - make clean
@@ -2022,10 +2028,10 @@ Windows/x64 (Embarcadero, C):
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
-    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
-    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - mv -f screenlog.0 sirexample.out
+    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - mv -f screenlog.0 sirtests.out
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -2036,6 +2042,7 @@ Windows/x64 (Embarcadero, C):
       - build/
       - logs/
       - screenlog.0
+      - ./*.out
   retry: 2
   interruptible: true
 
@@ -2067,10 +2074,10 @@ Windows/i686 (Embarcadero, C):
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
-    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
-    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -E '^0$'
-    - rm -f screenlog.0
+    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - mv -f screenlog.0 sirexample.out
+    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - mv -f screenlog.0 sirtests.out
     - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
@@ -2081,6 +2088,7 @@ Windows/i686 (Embarcadero, C):
       - build/
       - logs/
       - screenlog.0
+      - ./*.out
   retry: 2
   interruptible: true
 
