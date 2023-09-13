@@ -588,7 +588,7 @@ namespace sir
                     }
 
                     auto this_write = std::min(static_cast<std::streamsize>(left), count - written);
-                    memcpy(pptr(), s + written, this_write);
+                    memcpy(pptr(), s + written, static_cast<size_t>(this_write));
                     pbump(static_cast<int>(this_write));
                     written += this_write;
                 } while (written < count);
