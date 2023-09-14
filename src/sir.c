@@ -46,6 +46,10 @@ bool sir_cleanup(void) {
     return _sir_cleanup();
 }
 
+bool sir_isinitialized(void) {
+    return _sir_isinitialized();
+}
+
 uint16_t sir_geterror(char message[SIR_MAXERROR]) {
     return _sir_geterrcode(_sir_geterror(message));
 }

@@ -104,6 +104,21 @@ bool sir_init(sirinit* si);
 bool sir_cleanup(void);
 
 /**
+ * @brief Determines whether or not libsir is in the initialized state.
+ *
+ * Provided as a convenience method to detect whether libsir requires initial-
+ * ization or cleanup at any given time.
+ *
+ * @remark Calling ::sir_init after libsir is initialized produces an error.
+ * Similarly, ::sir_cleanup behaves the same way if libsir is not initialized.
+ *
+ * @returns bool `true` if ::sir_init has been called and libsir is initialized;
+ * `false` if ::sir_init has not yet been called, or a corresponding call to
+ * ::sir_cleanup has already been made.
+ */
+bool sir_isinitialized(void);
+
+/**
  * @brief Retrieves information about the last error that occurred.
  *
  * libsir maintains errors on a per-thread basis, so it's important that the
