@@ -422,12 +422,12 @@ bool sir_remfile(sirfileid id);
  * @see ::sir_unloadplugin
  * @see ::plugins
  *
- * @param  path        The absolute or relative path of the plugin to be loaded
- *                     and registered.
- * @return sirpluginid If successful, a unique identifier that may later be used
- *                     to unload the plugin module. Upon failure, returns zero.
- *                     Use ::sir_geterror to obtain information about any error
- *                     that may have occurred.
+ * @param  path         The absolute or relative path of the plugin to be loaded
+ *                      and registered.
+ * @returns sirpluginid If successful, a unique identifier that may later be used
+ *                      to unload the plugin module. Upon failure, returns zero.
+ *                      Use ::sir_geterror to obtain information about any error
+ *                      that may have occurred.
  */
 sirpluginid sir_loadplugin(const char* path);
 
