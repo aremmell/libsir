@@ -27,13 +27,14 @@
 #include <limits>
 #include <cstdlib>
 #include <cstdio>
+#include <vector>
 
 using namespace std;
 using namespace sir;
 using namespace sir::tests;
 
 /** List of available tests. */
-static sir_test sirxx_tests[] = {
+static std::vector<sir_test> sirxx_tests = {
     {"init-cleanup-raii",   raii_init_cleanup, false, true},
     {"init-cleanup-manual", manual_init_cleanup, false, true},
     {"error-handling",      error_handling, false, true},
@@ -44,7 +45,7 @@ static sir_test sirxx_tests[] = {
 };
 
 /** List of available command line arguments. */
-static const sir_cl_arg cl_args[] = {
+static const std::vector<sir_cl_arg> cl_args = {
     {SIR_CL_ONLYFLAG,      ""  SIR_CL_ONLYUSAGE, SIR_CL_ONLYDESC},
     {SIR_CL_LISTFLAG,      "", SIR_CL_LISTDESC},
     {SIR_CL_LEAVELOGSFLAG, "", SIR_CL_LEAVELOGSDESC},
@@ -56,13 +57,11 @@ static const sir_cl_arg cl_args[] = {
 static sir_cl_config cl_cfg {};
 
 int main(int argc, char** argv) {
-    bool parsed = parse_cmd_line(argc, argv, cl_args, _sir_countof(cl_args),
-        sirxx_tests, _sir_countof(sirxx_tests), &cl_cfg);
-    if (!parsed)
+    if (bool parsed = parse_cmd_line(argc, argv, cl_args.data(), cl_args.size(),
+        sirxx_tests.data(), sirxx_tests.size(), &cl_cfg); !parsed)
         return EXIT_FAILURE;
 
     try {
-        size_t first     = 0;
         size_t tgt_tests = (cl_cfg.only ? cl_cfg.to_run : _sir_countof(sirxx_tests));
         size_t passed    = 0;
         size_t ran       = 0;
@@ -71,20 +70,20 @@ int main(int argc, char** argv) {
         print_intro(tgt_tests);
         sir_timer_start(&timer);
 
-        for (size_t n = first; n < _sir_countof(sirxx_tests); n++) {
-            if (cl_cfg.only && !sirxx_tests[n].run) {
-                _sir_selflog("skipping '%s'; not marked to run", sirxx_tests[n].name);
+        for (auto& test : sirxx_tests) {
+            if (cl_cfg.only && !test.run) {
+                _sir_selflog("skipping '%s'; not marked to run", test.name);
                 continue;
             }
 
-            print_test_intro(ran + 1, tgt_tests, sirxx_tests[n].name);
+            print_test_intro(ran + 1, tgt_tests, test.name);
 
-            if (sirxx_tests[n].pass = sirxx_tests[n].fn(); sirxx_tests[n].pass)
+            if (test.pass = test.fn(); test.pass)
                 passed++;
 
             ran++;
 
-            print_test_outro(ran, tgt_tests, sirxx_tests[n].name, sirxx_tests[n].pass);
+            print_test_outro(ran, tgt_tests, test.name, test.pass);
         }
 
         print_test_summary(tgt_tests, passed, sir_timer_elapsed(&timer));
@@ -92,9 +91,9 @@ int main(int argc, char** argv) {
         if (passed != tgt_tests) {
             print_failed_test_intro(tgt_tests, passed);
 
-            for (size_t t = 0; t < _sir_countof(sirxx_tests); t++)
-                if (!sirxx_tests[t].pass)
-                    print_failed_test(sirxx_tests[t].name);
+            for (auto& test : sirxx_tests)
+                if (!test.pass)
+                    print_failed_test(test.name);
 
             (void)printf("\n");
         }
