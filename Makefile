@@ -21,6 +21,7 @@ MCMB         = mcmb
 INTDIR       = $(BUILDDIR)/obj
 LIBDIR       = $(BUILDDIR)/lib
 BINDIR       = $(BUILDDIR)/bin
+BINDINGDIR   = bindings
 PREFIX      ?= /usr/local
 INSTALLLIB   = $(DESTDIR)$(PREFIX)/lib
 INSTALLINC   = $(DESTDIR)$(PREFIX)/include
@@ -63,7 +64,7 @@ SIR_XSTD ?= -std=c++20
 # Base CFLAGS
 
 ifneq ($(NO_DEFAULT_CFLAGS),1)
-  SIR_CFLAGS += -Wall -Wextra $(WPEDANTIC) -Iinclude $(SIR_FPIC)
+  SIR_CFLAGS += -Wall -Wextra $(strip $(strip $(WPEDANTIC) -Iinclude) $(SIR_FPIC))
 endif
 
 ##############################################################################
@@ -141,7 +142,7 @@ LIBS = $(PTHOPT)
 ##############################################################################
 # Linker flags
 
-SIR_LDFLAGS += $(LIBS) -L$(LIBDIR) $(PLATFORM_LIBS) $(LIBDL) $(EXTRA_LIBS)
+SIR_LDFLAGS += $(strip $(LIBS) -L)$(LIBDIR) $(strip $(strip $(PLATFORM_LIBS) $(LIBDL)) $(EXTRA_LIBS))
 
 ##############################################################################
 # Static libsir for test rig and example
@@ -443,6 +444,11 @@ clean distclean:
 	@rm -rf ./*.log > /dev/null 2>&1
 	@rm -rf ./*.ln > /dev/null 2>&1
 	@rm -rf ./*.d > /dev/null 2>&1
+	@test "$(SIR_BINDINGS)" > /dev/null 2>&1 && \
+		for i in $(SIR_BINDINGS); do \
+			$(MAKE) --no-print-directory -C "$${i:?}" \
+				clean-$(SIR_BINDINGS); \
+		done
 	-@printf 'build directory and log files cleaned successfully.\n' 2> /dev/null
 
 ##############################################################################
@@ -473,6 +479,23 @@ $(PLUGPREFIX)%: $(OUT_SHARED) $(TUS)
 	printf 'built %s successfully.\n' "$(LIBDIR)/$@$(PLATFORM_DLL_EXT)" 2> /dev/null; }
 
 endif # ifneq ($(SIR_NO_PLUGINS),1)
+
+##############################################################################
+# Language bindings
+
+ifneq (,$(wildcard $(BINDINGDIR)/*/Makefile))
+  export BINDINGDIR
+  include $(wildcard $(BINDINGDIR)/*/Makefile)
+  CURRENT_DIR:=
+  MKFILE_PATH:=
+
+.PHONY: bindings
+bindings:
+	@$(SHELL) -c 'set -e; \
+		for i in $(foreach X,$(SIR_BINDINGS),$(X)); do \
+			$(MAKE) -C "$${i:?}"; \
+		done'
+endif
 
 ##############################################################################
 # Print all make variables
