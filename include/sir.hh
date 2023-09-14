@@ -591,6 +591,7 @@ namespace sir
                 return written;
             }
 
+        private:
             std::unique_ptr<array_type> _buf = std::make_unique<array_type>();
             sir_log_pfn _pfn = nullptr;
         };
@@ -650,18 +651,24 @@ namespace sir
             }
         }
 
+        logger(const logger&) = delete;
+        logger(const logger&&) = delete;
+
         virtual ~logger() {
             if (RAII && !_cleanup()) {
                 SIR_ASSERT(false);
             }
         }
 
+        logger& operator=(const logger&) = delete;
+        logger& operator=(const logger&&) = delete;
+
         bool init() noexcept {
-            return _init();
+            return _initialized ? false: _init();
         }
 
         bool cleanup() noexcept {
-            return _cleanup();
+            return _initialized ? _cleanup() : false;
         }
 
         /** Wraps ::sir_geterror. */
