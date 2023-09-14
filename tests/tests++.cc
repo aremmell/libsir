@@ -62,7 +62,7 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
 
     try {
-        size_t tgt_tests = (cl_cfg.only ? cl_cfg.to_run : _sir_countof(sirxx_tests));
+        size_t tgt_tests = (cl_cfg.only ? cl_cfg.to_run : sirxx_tests.size());
         size_t passed    = 0;
         size_t ran       = 0;
         sir_time timer {};
