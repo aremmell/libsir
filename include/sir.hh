@@ -162,10 +162,10 @@ namespace sir
      * @brief Implementation of the default policy, in the event that no
      * custom configuration or behavior is desired.
      */
-    class default_policy : policy {
+    class default_policy : public policy {
     public:
         default_policy() = default;
-        virtual ~default_policy() = default;
+        ~default_policy() override = default;
 
         /*
          * policy overrides
@@ -228,7 +228,7 @@ namespace sir
     class default_adapter : public adapter {
     public:
         default_adapter() = default;
-        virtual ~default_adapter() = default;
+        ~default_adapter() override = default;
 
 # if defined(__GNUC__) || defined(__clang__) && \
     !(defined(__OPEN64__) || defined(__OPENCC__))
@@ -319,7 +319,7 @@ namespace sir
     class std_format_adapter : public adapter {
     public:
         std_format_adapter() = default;
-        virtual ~std_format_adapter() = default;
+        ~std_format_adapter() override = default;
 
         /** Use as if you were calling std::format directly. */
         template<class... Args>
@@ -389,7 +389,7 @@ namespace sir
     class boost_format_adapter : public adapter {
     public:
         boost_format_adapter() = default;
-        virtual ~boost_format_adapter() = default;
+        ~boost_format_adapter() override = default;
 
         /** Takes `boost::format("...") % args [% ...]` as input. */
         bool debug_boost(const boost::format& fmt) const {
@@ -443,7 +443,7 @@ namespace sir
     class fmt_format_adapter : public adapter {
     public:
         fmt_format_adapter() = default;
-        virtual ~fmt_format_adapter() = default;
+        ~fmt_format_adapter() override = default;
 
         /** Use as if you were calling fmt::format directly. */
         template<typename... T>
@@ -522,7 +522,7 @@ namespace sir
     class std_iostream_adapter : public adapter {
     public:
         std_iostream_adapter() = default;
-        virtual ~std_iostream_adapter() = default;
+        ~std_iostream_adapter() override = default;
 
     private:
         typedef bool(*sir_log_pfn)(const char*, ...);
@@ -537,7 +537,7 @@ namespace sir
                 SIR_ASSERT(pfn != nullptr && _buf);
                 reset_buffer();
             }
-            virtual ~buffer() = default;
+            ~buffer() override = default;
 
         protected:
             void reset_buffer() {
