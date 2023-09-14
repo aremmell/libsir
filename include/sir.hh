@@ -231,7 +231,7 @@ namespace sir
         ~default_adapter() override = default;
 
         /** Logs a debug message (see ::sir_debug). */
-	PRINTF_FORMAT_ATTR(2, 3)
+        PRINTF_FORMAT_ATTR(2, 3)
         bool debug(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_DEBUG, format, args);
@@ -240,7 +240,7 @@ namespace sir
         }
 
         /** Logs an informational message (see ::sir_info). */
-	PRINTF_FORMAT_ATTR(2, 3)
+        PRINTF_FORMAT_ATTR(2, 3)
         bool info(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_INFO, format, args);
@@ -249,7 +249,7 @@ namespace sir
         }
 
         /** Logs a notice message (see ::sir_notice). */
-	PRINTF_FORMAT_ATTR(2, 3)
+        PRINTF_FORMAT_ATTR(2, 3)
         bool notice(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_NOTICE, format, args);
@@ -258,7 +258,7 @@ namespace sir
         }
 
         /** Logs a warning message (see ::sir_warn). */
-	PRINTF_FORMAT_ATTR(2, 3)
+        PRINTF_FORMAT_ATTR(2, 3)
         bool warn(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_WARN, format, args);
@@ -267,7 +267,7 @@ namespace sir
         }
 
         /** Logs an error message (see ::sir_error). */
-	PRINTF_FORMAT_ATTR(2, 3)
+        PRINTF_FORMAT_ATTR(2, 3)
         bool error(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_ERROR, format, args);
@@ -276,7 +276,7 @@ namespace sir
         }
 
         /** Logs a critical message (see ::sir_crit). */
-	PRINTF_FORMAT_ATTR(2, 3)
+        PRINTF_FORMAT_ATTR(2, 3)
         bool crit(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_CRIT, format, args);
@@ -285,7 +285,7 @@ namespace sir
         }
 
         /** Logs an alert message (see ::sir_alert). */
-	PRINTF_FORMAT_ATTR(2, 3)
+        PRINTF_FORMAT_ATTR(2, 3)
         bool alert(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_ALERT, format, args);
@@ -294,7 +294,7 @@ namespace sir
         }
 
         /** Logs an emergency message (see ::sir_emerg). */
-	PRINTF_FORMAT_ATTR(2, 3)
+        PRINTF_FORMAT_ATTR(2, 3)
         bool emerg(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_EMERG, format, args);
