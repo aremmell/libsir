@@ -695,7 +695,7 @@ bool sirtest_isinitialized(void) {
     (void)printf("\tchecking sir_isinitialized after cleanup...");
     _sir_eqland(pass, !sir_isinitialized());
 
-    return PRINT_RESULT_AND_RETURN(pass);
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sirtest_failinittwice(void) {
