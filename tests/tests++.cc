@@ -91,7 +91,7 @@ int main(int argc, char** argv) {
         if (passed != tgt_tests) {
             print_failed_test_intro(tgt_tests, passed);
 
-            for (auto& test : sirxx_tests)
+            for (const auto& test : sirxx_tests)
                 if (!test.pass)
                     print_failed_test(test.name);
 
