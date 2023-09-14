@@ -230,14 +230,9 @@ namespace sir
         default_adapter() = default;
         virtual ~default_adapter() = default;
 
-# if defined(__GNUC__) || defined(__clang__) && \
-    !(defined(__OPEN64__) || defined(__OPENCC__))
-#  pragma GCC diagnostic push
-#  pragma GCC diagnostic ignored "-Wformat-nonliteral"
-# endif
-
         /** Logs a debug message (see ::sir_debug). */
-        bool debug(const char* format, ...) const noexcept {
+	PRINTF_FORMAT_ATTR(2, 3)
+        bool debug(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_DEBUG, format, args);
             _SIR_L_END();
@@ -245,7 +240,8 @@ namespace sir
         }
 
         /** Logs an informational message (see ::sir_info). */
-        bool info(const char* format, ...) const noexcept {
+	PRINTF_FORMAT_ATTR(2, 3)
+        bool info(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_INFO, format, args);
             _SIR_L_END();
@@ -253,7 +249,8 @@ namespace sir
         }
 
         /** Logs a notice message (see ::sir_notice). */
-        bool notice(const char* format, ...) const noexcept {
+	PRINTF_FORMAT_ATTR(2, 3)
+        bool notice(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_NOTICE, format, args);
             _SIR_L_END();
@@ -261,7 +258,8 @@ namespace sir
         }
 
         /** Logs a warning message (see ::sir_warn). */
-        bool warn(const char* format, ...) const noexcept {
+	PRINTF_FORMAT_ATTR(2, 3)
+        bool warn(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_WARN, format, args);
             _SIR_L_END();
@@ -269,7 +267,8 @@ namespace sir
         }
 
         /** Logs an error message (see ::sir_error). */
-        bool error(const char* format, ...) const noexcept {
+	PRINTF_FORMAT_ATTR(2, 3)
+        bool error(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_ERROR, format, args);
             _SIR_L_END();
@@ -277,7 +276,8 @@ namespace sir
         }
 
         /** Logs a critical message (see ::sir_crit). */
-        bool crit(const char* format, ...) const noexcept {
+	PRINTF_FORMAT_ATTR(2, 3)
+        bool crit(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_CRIT, format, args);
             _SIR_L_END();
@@ -285,7 +285,8 @@ namespace sir
         }
 
         /** Logs an alert message (see ::sir_alert). */
-        bool alert(const char* format, ...) const noexcept {
+	PRINTF_FORMAT_ATTR(2, 3)
+        bool alert(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_ALERT, format, args);
             _SIR_L_END();
@@ -293,18 +294,13 @@ namespace sir
         }
 
         /** Logs an emergency message (see ::sir_emerg). */
-        bool emerg(const char* format, ...) const noexcept {
+	PRINTF_FORMAT_ATTR(2, 3)
+        bool emerg(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_EMERG, format, args);
             _SIR_L_END();
             return ret;
         }
-
-# if defined(__GNUC__) || defined(__clang__) && \
-    !(defined(__OPEN64__) || defined(__OPENCC__))
-#  pragma GCC diagnostic pop
-# endif
-
     };
 
 # if defined(__SIR_HAVE_STD_FORMAT__)
