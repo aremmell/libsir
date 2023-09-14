@@ -229,7 +229,7 @@ bool _sir_cleanup(void) {
     return cleanup;
 }
 
-bool _sir_sanity(void) {
+bool _sir_isinitialized(void) {
 #if defined(__HAVE_ATOMIC_H__)
     if (_SIR_MAGIC == atomic_load(&_sir_magic))
         return true;
@@ -237,6 +237,12 @@ bool _sir_sanity(void) {
     if (_SIR_MAGIC == _sir_magic)
         return true;
 #endif
+    return false;
+}
+
+bool _sir_sanity(void) {
+    if (_sir_isinitialized())
+        return true;
     return _sir_seterror(_SIR_E_NOTREADY);
 }
 

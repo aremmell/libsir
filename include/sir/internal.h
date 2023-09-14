@@ -43,6 +43,12 @@ bool _sir_init(sirinit* si);
 bool _sir_cleanup(void);
 
 /** Evaluates whether or not libsir has been initialized. */
+bool _sir_isinitialized(void);
+
+/**
+ * Evaluates whether or not libsir has been initialized, and sets the last
+ * error to SIR_E_NOTREADY if not initialized.
+ */
 bool _sir_sanity(void);
 
 /** Validates the configuration passed to ::sir_init. */
