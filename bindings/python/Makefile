@@ -25,7 +25,7 @@ clean: clean-$(BINDINGDIR)/$(CURRENT_DIR)
 
 .PHONY: swig-$(BINDINGDIR)/$(CURRENT_DIR)
 swig-$(BINDINGDIR)/$(CURRENT_DIR):
-	@$(MAKE) module-$(CURRENT_DIR)
+	@$(MAKE) --no-print-directory module-$(CURRENT_DIR)
 
 ../$(CURRENT_DIR)/sir.py ../$(CURRENT_DIR)/sir_wrap.c: sir.i
 	swig -python -threads -outcurrentdir -v $<
@@ -35,9 +35,8 @@ swig-$(BINDINGDIR)/$(CURRENT_DIR):
 
 .PHONY: module-$(CURRENT_DIR)
 module-$(CURRENT_DIR): ../$(CURRENT_DIR)/sir_wrap.c ../$(CURRENT_DIR)/sir.py
-	 @python_options="setup.py build_ext --inplace"; \
-	  python $${python_options} && \
-	  printf '%s\n' "$(CURRENT_DIR) module built successfully!"
+	@python3 setup.py build_ext --inplace
+	-@printf '%s\n' "$(CURRENT_DIR) module built successfully!"
 
 ##############################################################################
 # Clean-up

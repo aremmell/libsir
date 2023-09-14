@@ -484,18 +484,32 @@ endif # ifneq ($(SIR_NO_PLUGINS),1)
 # Language bindings
 
 ifneq (,$(wildcard $(BINDINGDIR)/*/Makefile))
+
   export BINDINGDIR
   include $(wildcard $(BINDINGDIR)/*/Makefile)
   CURRENT_DIR:=
   MKFILE_PATH:=
 
+
+##############################################################################
+# Build all bindings
+
 .PHONY: bindings
+
 bindings:
 	@$(SHELL) -c 'set -e; \
 		for i in $(foreach X,$(SIR_BINDINGS),$(X)); do \
 			$(MAKE) -C "$${i:?}"; \
 		done'
-endif
+endif # ifneq (,$(wildcard $(BINDINGDIR)/*/Makefile))
+
+.PHONY: module-
+
+##############################################################################
+# Empty module target
+
+module-:
+	@true
 
 ##############################################################################
 # Print all make variables
