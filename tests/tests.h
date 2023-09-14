@@ -134,6 +134,12 @@ bool sirtest_rollandarchivefile(void);
 bool sirtest_failwithoutinit(void);
 
 /**
+ * @test Correctly determines the initialized state.
+ * @returns bool `true` if the test passed, `false` otherwise.
+ */
+bool sirtest_isinitialized(void);
+
+/**
  * @test sirtest_failinittwice
  * @brief Properly handle two initialization calls without corresponding cleanup.
  * @returns bool `true` if the test succeeded, `false` otherwise.

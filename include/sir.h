@@ -60,7 +60,8 @@ extern "C" {
  * @brief Fills out a ::sirinit structure with default values.
  *
  * Creates an initialization configuration for libsir essentially using all of
- * the default values (i.e., levels, options, text styling).
+ * the default values (i.e., level registrations, formatting options, and text
+ * styling).
  *
  * @note Does not fill in string fields, such as ::sirinit.name.
  *
@@ -106,6 +107,21 @@ bool sir_init(sirinit* si);
  * ::sir_geterror to obtain information about any error that may have occurred.
  */
 bool sir_cleanup(void);
+
+/**
+ * @brief Determines whether or not libsir is in the initialized state.
+ *
+ * Provided as a convenience method to detect whether libsir requires initial-
+ * ization or cleanup at any given time.
+ *
+ * @remark Calling ::sir_init after libsir is initialized produces an error.
+ * Similarly, ::sir_cleanup behaves the same way if libsir is not initialized.
+ *
+ * @returns bool `true` if ::sir_init has been called and libsir is initialized;
+ * `false` if ::sir_init has not yet been called, or a corresponding call to
+ * ::sir_cleanup has already been made.
+ */
+bool sir_isinitialized(void);
 
 /**
  * @brief Retrieves information about the last error that occurred.
@@ -411,12 +427,12 @@ bool sir_remfile(sirfileid id);
  * @see ::sir_unloadplugin
  * @see ::plugins
  *
- * @param  path        The absolute or relative path of the plugin to be loaded
- *                     and registered.
- * @return sirpluginid If successful, a unique identifier that may later be used
- *                     to unload the plugin module. Upon failure, returns zero.
- *                     Use ::sir_geterror to obtain information about any error
- *                     that may have occurred.
+ * @param  path         The absolute or relative path of the plugin to be loaded
+ *                      and registered.
+ * @returns sirpluginid If successful, a unique identifier that may later be used
+ *                      to unload the plugin module. Upon failure, returns zero.
+ *                      Use ::sir_geterror to obtain information about any error
+ *                      that may have occurred.
  */
 sirpluginid sir_loadplugin(const char* path);
 
@@ -511,8 +527,7 @@ bool sir_settextstyle(sir_level level, sir_textattr attr, sir_textcolor fg,
  * @see ::default
  *
  * @returns bool `true` if successfully reset, `false` otherwise. Use
- *          ::sir_geterror to obtain information about any error that may have
- *          occurred.
+ * ::sir_geterror to obtain information about any error that may have occurred.
  */
 bool sir_resettextstyles(void);
 
@@ -731,8 +746,8 @@ bool sir_syslogid(const char* identity);
  *
  * Upon library initialization, the system logger category is resolved as follows:
  *
- * 1. If the @ref sir_syslog_dest.category "sirinit.d_syslog.category" string is set,
- *    it will be used.
+ * 1. If the @ref sir_syslog_dest.category "sirinit.d_syslog.category" string is
+ *    set, it will be used.
  * 2. The string ::SIR_FALLBACK_SYSLOG_CAT will be used.
  *
  * @remark If `SIR_NO_SYSTEM_LOGGERS` is defined when compiling libsir, this
@@ -759,7 +774,7 @@ bool sir_syslogcat(const char* category);
  * 2.2.4-dev
  * ~~~
  *
- * @return const char* The current libsir version string.
+ * @returns const char* The current libsir version string.
  */
 const char* sir_getversionstring(void);
 
@@ -768,7 +783,7 @@ const char* sir_getversionstring(void);
  *
  * @note Can be formatted as a hexadecimal number with %08x.
  *
- * @return uint32_t The current libsir version number.
+ * @returns uint32_t The current libsir version number.
  */
 uint32_t sir_getversionhex(void);
 

@@ -41,6 +41,7 @@ static sir_test sir_tests[] = {
     {"file-remove-nonexistent", sirtest_failremovebadfile, false, true},
     {"file-archive-large",      sirtest_rollandarchivefile, false, true},
     {"init-output-before",      sirtest_failwithoutinit, false, true},
+    {"init-check-state",        sirtest_isinitialized, false, true},
     {"init-superfluous",        sirtest_failinittwice, false, true},
     {"init-bad-data",           sirtest_failinvalidinitdata, false, true},
     {"init-cleanup-init",       sirtest_initcleanupinit, false, true},
@@ -674,6 +675,27 @@ bool sirtest_failwithoutinit(void) {
         PRINT_EXPECTED_ERROR();
 
     return PRINT_RESULT_RETURN(pass);
+}
+
+bool sirtest_isinitialized(void) {
+    // TODO: replace printfs with TEST_MSG_0 after python branch is merged in.
+    bool pass = true;
+
+    (void)printf("\tchecking sir_isinitialized before initialization...");
+    _sir_eqland(pass, !sir_isinitialized());
+
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    _sir_eqland(pass, si_init);
+
+    (void)printf("\tchecking sir_isinitialized after initialization...");
+    _sir_eqland(pass, sir_isinitialized());
+
+    _sir_eqland(pass, sir_cleanup());
+
+    (void)printf("\tchecking sir_isinitialized after cleanup...");
+    _sir_eqland(pass, !sir_isinitialized());
+
+    return print_result_and_return(pass);
 }
 
 bool sirtest_failinittwice(void) {
