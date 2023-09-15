@@ -1536,6 +1536,8 @@ Style check:
     - ./.lint.sh spaces
     - ./.lint.sh tabs
     - ./.lint.sh whitespace
+    - ./autoformat.sh
+    - git diff | grep '.' && { printf '%s\n' "ERROR: autoformat check failed!"; exit 1; } || true
     - echo -e "section_end:`date +%s`:Style_section\r\e[0K" || true
   dependencies: []
   retry: 2
