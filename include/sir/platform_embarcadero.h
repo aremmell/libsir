@@ -45,6 +45,15 @@
 #   undef PRIxPTR
 #   define PRIxPTR SIR_UIPTRx
 #  endif
+#  if defined(__UINTPTR_FMTX__)
+#   define SIR_UIPTRX __UINTPTR_FMTX__
+#  elif defined(PRIXPTR)
+#   define SIR_UIPTRx PRIXPTR
+#  endif
+#  if defined(SIR_UIPTRX)
+#   undef PRIXPTR
+#   define PRIXPTR SIR_UIPTRX
+#  endif
 # endif
 
 #endif /* !_SIR_PLATFORM_EMBARCADERO_H_INCLUDED */
