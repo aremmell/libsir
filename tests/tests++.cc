@@ -34,7 +34,7 @@ using namespace sir;
 using namespace sir::tests;
 
 /** List of available tests. */
-static std::vector<sir_test> sirxx_tests = {
+static vector<sir_test> sirxx_tests = {
     {"init-cleanup-raii",   raii_init_cleanup, false, true},
     {"init-cleanup-manual", manual_init_cleanup, false, true},
     {"error-handling",      error_handling, false, true},
@@ -45,7 +45,7 @@ static std::vector<sir_test> sirxx_tests = {
 };
 
 /** List of available command line arguments. */
-static const std::vector<sir_cl_arg> cl_args = {
+static const vector<sir_cl_arg> cl_args = {
     {SIR_CL_ONLYFLAG,      ""  SIR_CL_ONLYUSAGE, SIR_CL_ONLYDESC},
     {SIR_CL_LISTFLAG,      "", SIR_CL_LISTDESC},
     {SIR_CL_LEAVELOGSFLAG, "", SIR_CL_LEAVELOGSDESC},
