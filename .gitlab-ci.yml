@@ -1533,13 +1533,23 @@ Style check:
     - |
       # Style ...
       echo -e "section_start:`date +%s`:Style_section[collapsed=false]\r\e[0K\033[0;36mStyle test ...\033[0m" || true
-    - ./.lint.sh spaces
-    - ./.lint.sh tabs
-    - ./.lint.sh whitespace
-    - ./autoformat.sh || true
-    - git diff | grep . && { printf '%s\n' "autoformat check failed!"; exit 1; } || true
-    - git ls-files '*.c' '*.h' '*.cc' '*.hh' | xargs -L1 sed -i -e '/./,$!d' -e :a -e '/^\n*$/{$d;N;ba' -e '}' || true
-    - git diff | grep '.' && { printf '%s\n' "whitespace check failed!"; exit 1; } || true
+    - |
+      # Checking for bad file names ...
+      ./.lint.sh spaces
+    - |
+      # Checking for tabs ...
+      ./.lint.sh tabs
+    - |
+      # Checking for extra whitespaces ...
+      ./.lint.sh whitespace
+    - |
+      # Checking preprocessor directive indentation ...
+      ./autoformat.sh || true
+      git diff | grep . && { printf '%s\n' "autoformat check failed!"; exit 1; } || true
+    - |
+      # Checking for extra newlines ...
+      git ls-files '*.c' '*.h' '*.cc' '*.hh' | xargs -L1 sed -i -e '/./,$!d' -e :a -e '/^\n*$/{$d;N;ba' -e '}' || true
+      git diff | grep '.' && { printf '%s\n' "whitespace check failed!"; exit 1; } || true
     - echo -e "section_end:`date +%s`:Style_section\r\e[0K" || true
   dependencies: []
   retry: 2
