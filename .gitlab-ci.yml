@@ -1627,7 +1627,7 @@ Coverage:
     - |
       # Start of Compress artifacts ...
       echo -e "section_start:`date +%s`:Comp_section[collapsed=true]\r\e[0K\033[0;36mCompress artifacts ...\033[0m" || true
-    - lzip -9 -s 512Mi -v $(ls -1 ./coverage* | grep -Ev '(\.html$|\.css$)' 2> /dev/null || true) || true
+    - lzip --fast -v $(ls -1 ./coverage* | grep -Ev '(\.html$|\.css$)' 2> /dev/null || true) || true
     - |
       # End of Compress artifacts ...
       echo -e "section_end:`date +%s`:Comp_section\r\e[0K" || true
