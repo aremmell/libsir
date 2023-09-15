@@ -21,7 +21,7 @@ MCMB         = mcmb
 INTDIR       = $(BUILDDIR)/obj
 LIBDIR       = $(BUILDDIR)/lib
 BINDIR       = $(BUILDDIR)/bin
-BINDINGDIR   = bindings
+BINDINGSDIR  = bindings
 PREFIX      ?= /usr/local
 INSTALLLIB   = $(DESTDIR)$(PREFIX)/lib
 INSTALLINC   = $(DESTDIR)$(PREFIX)/include
@@ -51,7 +51,7 @@ OPTFLAGS ?= -O3
 ##############################################################################
 # Platform specifics
 
-include sirplatform.mk
+-include sirplatform.mk
 
 ##############################################################################
 # C standard
@@ -354,22 +354,22 @@ $(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS_SHX) $(OBJ_TESTS)
 docs doc: $(OUT_STATIC)
 	@doxygen Doxyfile
 	-@find docs -name '*.png' \
-		    -not -path 'docs/res/*' \
-		    -not -path 'docs/sources/*' -print | \
+	    -not -path 'docs/res/*' \
+	    -not -path 'docs/sources/*' -print | \
 	  grep '/' > /dev/null 2>&1 && \
 	  find docs -name '*.png' \
-		    -not -path 'docs/res/*' \
-		    -not -path 'docs/sources/*' -print | \
+	    -not -path 'docs/res/*' \
+	    -not -path 'docs/sources/*' -print | \
 	  grep -Ev '(docs/sample-terminal.png$$|docs/libsir-alpha.png$$)' | \
 	  xargs -I {} -P \
 	    "$$(getconf NPROCESSORS_ONLN 2> /dev/null || \
 	        getconf _NPROCESSORS_ONLN 2> /dev/null || \
-		nproc 2> /dev/null || \
-		printf '%s\n' \
-		  "$$(grep -E '^processor[[:space:]].*[0-9]+$$' \
-		      /proc/cpuinfo 2> /dev/null | wc -l 2> /dev/null | \
-		      tr -cd '0-9\n' 2> /dev/null)" 2> /dev/null || \
-		printf '%s\n' 1)" \
+	        nproc 2> /dev/null || \
+	        printf '%s\n' \
+	          "$$(grep -E '^processor[[:space:]].*[0-9]+$$' \
+	              /proc/cpuinfo 2> /dev/null | wc -l 2> /dev/null | \
+	              tr -cd '0-9\n' 2> /dev/null)" 2> /dev/null || \
+	        printf '%s\n' 1)" \
 	    $$(printf '%s\n' 'advpng -z4 {}')
 	-@printf 'built documentation successfully.\n' 2> /dev/null
 
@@ -384,9 +384,9 @@ lint check:
 	$(MAKE) --no-print-directory mcmb
 	@rm -rf ./.coverity > /dev/null 2>&1
 	@rm -rf ./cov-int > /dev/null 2>&1
-	@test -x $(LINTSH) || \
-		{ printf '%s\n' "Error: %s not executable.\n" "$(LINTSH)" \
-			2> /dev/null; exit 1; }
+	@test -x $(LINTSH) || { \
+	  printf '%s\n' "Error: %s not executable.\n" "$(LINTSH)" \
+	  2> /dev/null; exit 1; }
 	-@printf 'running %s ...\n' "$(LINTSH)"
 	@$(LINTSH)
 
@@ -396,9 +396,9 @@ lint check:
 .PHONY: install
 
 install: $(INSTALLSH)
-	@test -x $(INSTALLSH) || \
-		{ printf 'Error: %s not executable.\n' "$(INSTALLSH)" \
-			2> /dev/null; exit 1; }
+	@test -x $(INSTALLSH) || { \
+	  printf 'Error: %s not executable.\n' "$(INSTALLSH)" \
+	  2> /dev/null; exit 1; }
 	@test -f "$(OUT_STATIC)" || $(MAKE) --no-print-directory static
 	@test -f "$(OUT_SHARED)" || $(MAKE) --no-print-directory shared
 	-@printf 'installing libraries to %s and headers to %s...' "$(INSTALLLIB)" "$(INSTALLINC)" 2> /dev/null
@@ -438,18 +438,17 @@ install: $(INSTALLSH)
 .PHONY: clean distclean
 
 clean distclean:
-	@rm -rf $(BUILDDIR) > /dev/null 2>&1
-	@rm -rf ./src/*.ln > /dev/null 2>&1
-	@rm -rf $(LOGDIR) > /dev/null 2>&1
-	@rm -rf ./*.log > /dev/null 2>&1
-	@rm -rf ./*.ln > /dev/null 2>&1
-	@rm -rf ./*.d > /dev/null 2>&1
-	@test "$(SIR_BINDINGS)" > /dev/null 2>&1 && \
-		for i in $(SIR_BINDINGS); do \
-			$(MAKE) --no-print-directory -C "$${i:?}" \
-				clean-$(SIR_BINDINGS); \
-		done
-	-@printf 'build directory and log files cleaned successfully.\n' 2> /dev/null
+	@rm -rf $(BUILDDIR) > /dev/null 2>&1 || true
+	@rm -rf ./src/*.ln > /dev/null 2>&1 || true
+	@rm -rf $(LOGDIR) > /dev/null 2>&1 || true
+	@rm -rf ./*.log > /dev/null 2>&1 || true
+	@rm -rf ./*.ln > /dev/null 2>&1 || true
+	@rm -rf ./*.d > /dev/null 2>&1 || true
+	@$(SHELL) -c "set +e > /dev/null 2>&1; \
+	for i in $(foreach X,$(wildcard $(BINDINGSDIR)/*/Makefile),$(X)); do \
+	  $(MAKE) --no-print-directory -C \"\$$(dirname \$${i:?})\" clean; \
+	done"
+	-@printf 'build artifacts cleaned successfully.\n' 2> /dev/null
 
 ##############################################################################
 # Rebuild all plugins
@@ -460,8 +459,8 @@ ifneq ($(SIR_NO_PLUGINS),1)
 
 plugins plugin:
 	@$(MAKE) -q --no-print-directory $(OUT_SHARED) $(TUS) || \
-		$(MAKE) --no-print-directory \
-			$(foreach V,$(sort $(strip $(PLUGINNAMES))), $(PLUGPREFIX)$V) REMAKE=1
+	  $(MAKE) --no-print-directory \
+	    $(foreach V,$(sort $(strip $(PLUGINNAMES))), $(PLUGPREFIX)$V) REMAKE=1
 	@$(MAKE) --no-print-directory $(foreach V,$(sort $(strip $(PLUGINNAMES))), $(PLUGPREFIX)$V)
 
 ##############################################################################
@@ -472,66 +471,16 @@ plugins plugin:
 $(PLUGPREFIX)%: $(OUT_SHARED) $(TUS)
 	@$(MAKE) -q --no-print-directory $(OUT_SHARED) $(TUS) || export REMAKE=1; \
 	test -f $(LIBDIR)/$@$(PLATFORM_DLL_EXT) || export REMAKE=1; \
-	test $${REMAKE:-0} -eq 0 || \
-		{ (set -x; $(CC) $(SIR_SHARED) -o $(LIBDIR)/$@$(PLATFORM_DLL_EXT) $(SIR_CFLAGS) \
-		   $(SIR_CSTD) $(wildcard $(subst $(PLUGPREFIX),$(PLUGINS)/,$@)/*.c) \
-		   $(SIR_LDFLAGS)) && \
-	printf 'built %s successfully.\n' "$(LIBDIR)/$@$(PLATFORM_DLL_EXT)" 2> /dev/null; }
+	test $${REMAKE:-0} -eq 0 || { \
+	  (set -x; $(CC) $(SIR_SHARED) -o $(LIBDIR)/$@$(PLATFORM_DLL_EXT) $(SIR_CFLAGS) \
+	    $(SIR_CSTD) $(wildcard $(subst $(PLUGPREFIX),$(PLUGINS)/,$@)/*.c) $(SIR_LDFLAGS)) && \
+	  printf 'built %s successfully.\n' "$(LIBDIR)/$@$(PLATFORM_DLL_EXT)" 2> /dev/null; }
 
 endif # ifneq ($(SIR_NO_PLUGINS),1)
 
 ##############################################################################
-# Language bindings
+# Common rules
 
-ifneq (,$(wildcard $(BINDINGDIR)/*/Makefile))
-
-  export BINDINGDIR
-  include $(wildcard $(BINDINGDIR)/*/Makefile)
-  CURRENT_DIR:=
-  MKFILE_PATH:=
-
-
-##############################################################################
-# Build all bindings
-
-.PHONY: bindings
-
-bindings:
-	@$(SHELL) -c 'set -e; \
-		for i in $(foreach X,$(SIR_BINDINGS),$(X)); do \
-			$(MAKE) -C "$${i:?}"; \
-		done'
-endif # ifneq (,$(wildcard $(BINDINGDIR)/*/Makefile))
-
-.PHONY: module-
-
-##############################################################################
-# Empty module target
-
-module-:
-	@true
-
-##############################################################################
-# Print all make variables
-
-.PHONY: printvars printenv
-
-printvars printenv:
-	-@printf '%s: ' "FEATURES" 2> /dev/null
-	-@printf '%s ' "$(.FEATURES)" 2> /dev/null
-	-@printf '%s\n' "" 2> /dev/null
-	-@$(foreach V,$(sort $(.VARIABLES)), \
-		$(if $(filter-out environment% default automatic,$(origin $V)), \
-			$(if $(strip $($V)),$(info $V: [$($V)]),)))
-	-@true > /dev/null 2>&1
-
-##############################################################################
-# Print a specific make variable
-
-.PHONY: print-%
-
-print-%:
-	-@$(info $*: [$($*)] ($(flavor $*). set by $(origin $*)))@true
-	-@true > /dev/null 2>&1
+-include sircommon.mk
 
 ##############################################################################

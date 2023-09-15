@@ -346,7 +346,7 @@ bool sirtest_failnulls(void) {
         PRINT_EXPECTED_ERROR();
 
     _sir_eqland(pass, sir_init(&si));
-    _sir_eqland(pass, !sir_info(NULL)); //-V575 //-V618
+    _sir_eqland(pass, !sir_info(NULL)); //-V618
 
     if (pass)
         PRINT_EXPECTED_ERROR();
@@ -1427,7 +1427,7 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
         if (set_category)
             _sir_strncpy(si.d_syslog.category, SIR_MAX_SYSLOG_CAT, category, SIR_MAX_SYSLOG_CAT);
 
-        si_init = sir_init(&si); //-V519
+        si_init = sir_init(&si);
         _sir_eqland(pass, si_init);
 
         if (do_update)
@@ -1560,7 +1560,7 @@ bool sirtest_filesystem(void) {
 
     /* Wine version */
     TEST_MSG("Running under Wine: %s",
-            get_wineversion() ? get_wineversion() : "no"); //-V547
+            get_wineversion() ? get_wineversion() : "no");
 
     /* current working directory. */
     char* cwd = _sir_getcwd();
@@ -1785,7 +1785,7 @@ bool sirtest_filesystem(void) {
         1234
     };
 
-    if (get_wineversion()) { //-V547
+    if (get_wineversion()) {
         bad_fds[3] = 0;
     }
 

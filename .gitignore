@@ -82,7 +82,9 @@ cov-int
 # Direnv
 .envrc
 
-# SWIG
-swig/python/__pycache__
-swig/python/src
-swig/python/build
+# Python bindings
+bindings/python/__pycache__
+bindings/python/src
+bindings/python/build
+bindings/python/sir_wrap.c
+bindings/python/sir.py

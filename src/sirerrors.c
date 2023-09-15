@@ -48,7 +48,7 @@
 
 /** Per-thread error data */
 static _sir_thread_local sir_thread_err _sir_te = {
-    _SIR_E_NOERROR, 0, {0}, {SIR_UNKNOWN, SIR_UNKNOWN, 0} //-V616
+    _SIR_E_NOERROR, 0, {0}, {SIR_UNKNOWN, SIR_UNKNOWN, 0}
 };
 
 #define _SIR_E_PLATFORM_ERRORFORMAT "Platform error code %d: %s"

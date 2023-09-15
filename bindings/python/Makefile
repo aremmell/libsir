@@ -4,53 +4,78 @@
 # SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 
 ##############################################################################
-# Python binding
+# Defaults
 
-MKFILE_PATH:=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-CURRENT_DIR:=$(notdir $(patsubst %/,%,$(dir $(MKFILE_PATH))))
-SIR_BINDINGS:=$(strip $(SIR_BINDINGS) $(BINDINGDIR)/$(CURRENT_DIR))
-export SIR_BINDINGS
+.NOTPARALLEL:
+RANLIB   ?= ranlib
+LDCONFIG ?= ldconfig
+AR       ?= ar
+
+##############################################################################
+# Platform specifics
+
+-include ../../sirplatform.mk
 
 ##############################################################################
 # Targets
 
 .PHONY: all
-all: swig-$(BINDINGDIR)/$(CURRENT_DIR)
 
-.PHONY: clean
-clean: clean-$(BINDINGDIR)/$(CURRENT_DIR)
-
-##############################################################################
-# Swig
-
-.PHONY: swig-$(BINDINGDIR)/$(CURRENT_DIR)
-swig-$(BINDINGDIR)/$(CURRENT_DIR):
-	@$(MAKE) --no-print-directory module-$(CURRENT_DIR)
-
-../$(CURRENT_DIR)/sir.py ../$(CURRENT_DIR)/sir_wrap.c: sir.i
-	swig -python -threads -outcurrentdir -v $<
+all:
+	@$(MAKE) --no-print-directory check_main
+	@$(MAKE) --no-print-directory module-python
 
 ##############################################################################
 # Python module
 
-.PHONY: module-$(CURRENT_DIR)
-module-$(CURRENT_DIR): ../$(CURRENT_DIR)/sir_wrap.c ../$(CURRENT_DIR)/sir.py
-	@python3 setup.py build_ext --inplace
-	-@printf '%s\n' "$(CURRENT_DIR) module built successfully!"
+.PHONY: module-python
+
+module-python: sir_wrap.c sir.py
+	python3 setup.py build_ext --inplace
+
+##############################################################################
+# Swig
+
+sir.py sir_wrap.c: sir.i
+	swig -w451 -python -threads -outcurrentdir -v $<
+
+##############################################################################
+# Check main build files
+
+.PHONY: check_main
+
+check_main:
+	@test -f ../../sirplatform.mk \
+		|| { \
+			printf '%s\n' "ERROR: Invalid working directory."; \
+			exit 1; \
+		}
+	@$(MAKE) --no-print-directory -q -C ../.. \
+		|| { \
+			$(MAKE) --no-print-directory clean; \
+			$(MAKE) --no-print-directory -C ../..; \
+		}
 
 ##############################################################################
 # Clean-up
 
-.PHONY: clean-$(BINDINGDIR)/$(CURRENT_DIR)
-clean-$(BINDINGDIR)/$(CURRENT_DIR):
-	-@rm -f ./sir-python.log 2> /dev/null || true
-	-@rm -rf ./__pycache__ 2> /dev/null || true
-	-@rm -f ./sir_wrap.c 2> /dev/null || true
-	-@rm -f ./_sir.*.so 2> /dev/null || true
-	-@rm -f ./src/*.obj 2> /dev/null || true
-	-@rm -f ./src/*.o 2> /dev/null || true
-	-@rm -rf ./build 2> /dev/null || true
-	-@rm -f ./sir.py 2> /dev/null || true
-	-@rmdir ./src 2> /dev/null || true
+.PHONY: clean
+
+clean:
+	@rm -f ./sir-python.log 2> /dev/null || true
+	@rm -rf ./__pycache__ 2> /dev/null || true
+	@rm -f ./sir_wrap.c 2> /dev/null || true
+	@rm -f ./check_main 2> /dev/null || true
+	@rm -f ./_sir.*.so 2> /dev/null || true
+	@rm -f ./src/*.obj 2> /dev/null || true
+	@rm -f ./src/*.o 2> /dev/null || true
+	@rm -rf ./build 2> /dev/null || true
+	@rm -f ./sir.py 2> /dev/null || true
+	@rmdir ./src 2> /dev/null || true
+
+##############################################################################
+# Common rules
+
+-include ../../sircommon.mk
 
 ##############################################################################

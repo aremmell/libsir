@@ -403,7 +403,7 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
 
         sfc->files[sfc->count++] = sf;
 
-        if (!_sir_bittest(sf->opts, SIRO_NOHDR)) //-V522
+        if (!_sir_bittest(sf->opts, SIRO_NOHDR))
             _sirfile_writeheader(sf, SIR_FHBEGIN);
 
         return sf->id;
