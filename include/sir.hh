@@ -37,6 +37,10 @@
 # include <string>
 # include <array>
 
+# if HAS_INCLUDE(<format>) && !defined (SIR_NO_STD_FORMAT) && \
+     !defined(_LIBCPP_HAS_NO_INCOMPLETE_FORMAT)
+# include <format>
+# define __SIR_HAVE_STD_FORMAT__
 # endif
 # if HAS_INCLUDE(<boost/format.hpp>) && !defined(SIR_NO_BOOST_FORMAT)
 #  include <boost/format.hpp>
