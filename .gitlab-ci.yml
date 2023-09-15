@@ -1536,8 +1536,10 @@ Style check:
     - ./.lint.sh spaces
     - ./.lint.sh tabs
     - ./.lint.sh whitespace
-    - ./autoformat.sh
+    - ./autoformat.sh || true
     - git diff | grep '.' && { printf '%s\n' "ERROR: autoformat check failed!"; exit 1; } || true
+    - git ls-files '*.c' '*.h' '*.cc' '*.hh' | xargs -L1 sed -i -e '/./,$!d' -e :a -e '/^\n*$/{$d;N;ba' -e '}' || true
+    - git diff | grep '.' && { printf '%s\n' "ERROR: whitespace check failed!"; exit 1; } || true
     - echo -e "section_end:`date +%s`:Style_section\r\e[0K" || true
   dependencies: []
   retry: 2
