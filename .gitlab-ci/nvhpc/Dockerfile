@@ -10,6 +10,10 @@ WORKDIR /
 RUN rpm --import https://developer.download.nvidia.com/hpc-sdk/rhel/RPM-GPG-KEY-NVIDIA-HPC-SDK && \
     curl -fsSL https://developer.download.nvidia.com/hpc-sdk/rhel/nvhpc.repo > /etc/yum.repos.d/nvhpc.repo && \
     dnf --refresh -y install nvhpc && \
-    dnf -y clean all
+    dnf -y clean all && \
+    rm -rf ~/.cache && \
+    rm -rf /var/tmp/* && \
+    rm -rf /var/log/dnf* && \
+    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true)
 
 USER 10000

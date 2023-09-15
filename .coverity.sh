@@ -211,7 +211,7 @@ printf '%s\n' '#### Notice: Building libsir for Coverity analysis.'
 make clean &&                                 \
 env TZ=UTC PATH="./.coverity/bin:${PATH:?}"   \
     ./.coverity/bin/cov-build --dir "cov-int" \
-      make
+      make all tests++
 
 ##############################################################################
 

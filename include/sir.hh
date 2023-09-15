@@ -31,29 +31,24 @@
 # include "sir/helpers.h"
 # include "sir/internal.h"
 # include <type_traits>
+# include <algorithm>
 # include <exception>
-# include <array>
+# include <memory>
 # include <string>
+# include <array>
 
-# if !defined(SIR_NO_STD_IOSTREAM)
-# include <iostream>
 # endif
-
-# if defined(__has_include)
-#  if __has_include(<format>) && !defined(SIR_NO_STD_FORMAT) && \
-      !((defined(_AIX) || defined(__MACOS__)) && defined(_LIBCPP_HAS_NO_INCOMPLETE_FORMAT))
-#   include <format>
-#   define __SIR_HAVE_STD_FORMAT__
-#  endif
-#  if __has_include(<boost/format.hpp>) && !defined(SIR_NO_BOOST_FORMAT)
-#   include <boost/format.hpp>
-#   define __SIR_HAVE_BOOST_FORMAT__
-#  endif
-#  if __has_include(<fmt/format.h>) && !defined(SIR_NO_FMT_FORMAT)
-#   define FMT_HEADER_ONLY
-#   include <fmt/format.h>
-#   define __SIR_HAVE_FMT_FORMAT__
-#  endif
+# if HAS_INCLUDE(<boost/format.hpp>) && !defined(SIR_NO_BOOST_FORMAT)
+#  include <boost/format.hpp>
+#  define __SIR_HAVE_BOOST_FORMAT__
+# endif
+# if HAS_INCLUDE(<fmt/format.h>) && !defined(SIR_NO_FMT_FORMAT)
+#  define FMT_HEADER_ONLY
+#  include <fmt/format.h>
+#  define __SIR_HAVE_FMT_FORMAT__
+# endif
+# if !defined(SIR_NO_STD_IOSTREAM)
+#  include <iostream>
 # endif
 
 /**
@@ -64,7 +59,7 @@
  * @{
  */
 
-/** The one and only namespace for libsir. */
+/** libsir C++ wrapper implementation. */
 namespace sir
 {
     /**
@@ -73,14 +68,126 @@ namespace sir
      * message.
      */
     struct error {
-        uint32_t code = 0U;  /**< The error code associated with the message. */
+        uint16_t code = 0U;  /**< The error code associated with the message. */
         std::string message; /**< Description of the error that occurred. */
+    };
+
+    /**
+     * @class policy
+     * @brief Defines the abstract interface for a policy, which controls the
+     * behavior of logger at runtime.
+     *
+     * policy is designed to be practical–sure, you could have 3 or 4 different
+     * types of policy interfaces that made decisions for different categories
+     * of behavior, but in reality, engineers likely just want to have only one
+     * source file to consult when changes are required.
+     *
+     * For this reason, libsir's policy interface is a one-stop shop. Of course,
+     * a derived class can still be as elaborate as the engineer wishes, but the
+     * design goal here is a central source of control, and simplicity.
+     */
+    class policy {
+    public:
+        policy() = default;
+        virtual ~policy() = default;
+
+        /**
+         * Called by logger before initializing libsir. Provides the policy with
+         * the opportunity to fully customize the initial configuration.
+         *
+         * @param data libsir initial configuration data structure. Contains
+         * options for things such as level registrations and formatting options
+         * for stdio and system logger destinations.
+         *
+         * @see ::sirinit
+         * @see ::sir_makeinit
+         *
+         * @note Most, if not all of the options chosen during initialization
+         * can be modified at runtime using functions provided by libsir.
+         *
+         * @note For the default configuration, pass the address of the ::sirinit
+         * structure to ::sir_makeinit.
+         *
+         * @returns true if data was successfully configured, or false if an
+         * error occurred. Returning false will cause logger to abort the
+         * initialization process–either by throwing an exception, or by entering
+         * an 'invalid' state (determined by policy::throw_on_error).
+         */
+        virtual bool get_init_data(sirinit& data) const noexcept = 0;
+
+        /**
+         * Called by logger immediately after libsir has been initialized. This
+         * is the moment in time which should be utilized for further configuration
+         * than is possible via ::sirinit alone.
+         *
+         * Some items include:
+         * - Setting the ::sir_colormode for stdio (::sir_setcolormode)
+         * - Setting ::sir_textstyle on a per-level basis for stdio (::sir_settextstyle)
+         * - Adding log files (::sir_addfile)
+         * - Loading plugins (::sir_loadplugin)
+         *
+         * @returns true if configuration was completed successfully, or false if
+         * an error occurred. Returning false will cause logger to abort the
+         * initialization process–either by throwing an exception, or by entering
+         * an 'invalid' state (determined by policy::throw_on_error).
+         */
+        virtual bool on_init_complete() const noexcept = 0;
+
+        /**
+         * Determines whether or not exceptions are thrown in the event that a
+         * libsir or OS-level error is encountered by logger or its associated
+         * adapter(s).
+         *
+         * @note libsir's exception classes derive from std::exception.
+         *
+         * @returns true if exceptions should be thrown, false otherwise.
+         */
+        virtual constexpr bool throw_on_error() const noexcept = 0;
+
+        /**
+         * Useful when complications arise; the question "which policy made that
+         * decision?!" is then easy to answer.
+         *
+         * @returns A unique name for the policy.
+         */
+        virtual std::string get_name() const = 0;
+    };
+
+    /**
+     * @class default_policy
+     * @brief Implementation of the default policy, in the event that no
+     * custom configuration or behavior is desired.
+     */
+    class default_policy : public policy {
+    public:
+        default_policy() = default;
+        ~default_policy() override = default;
+
+        /*
+         * policy overrides
+         */
+
+        bool get_init_data(sirinit& data) const noexcept final {
+            return sir_makeinit(&data);
+        }
+
+        bool on_init_complete() const noexcept final {
+            return true;
+        }
+
+        constexpr bool throw_on_error() const noexcept final {
+            return true;
+        }
+
+        std::string get_name() const final {
+            return "Default";
+        }
     };
 
     /**
      * @class adapter
      * @brief Defines the abstract interface for an adapter, which ultimately
-     * becomes a public base class of ::logger (there can be more than one).
+     * becomes a public base class of logger (there can be more than one).
      *
      * adapter is designed to provide flexibility and extensibility in relation
      * to the public interface that is implemented by a logger.
@@ -117,10 +224,11 @@ namespace sir
     class default_adapter : public adapter {
     public:
         default_adapter() = default;
-        virtual ~default_adapter() = default;
+        ~default_adapter() override = default;
 
         /** Logs a debug message (see ::sir_debug). */
-        bool debug(const char* format, ...) const noexcept {
+        PRINTF_FORMAT_ATTR(2, 3)
+        bool debug(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_DEBUG, format, args);
             _SIR_L_END();
@@ -128,7 +236,8 @@ namespace sir
         }
 
         /** Logs an informational message (see ::sir_info). */
-        bool info(const char* format, ...) const noexcept {
+        PRINTF_FORMAT_ATTR(2, 3)
+        bool info(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_INFO, format, args);
             _SIR_L_END();
@@ -136,7 +245,8 @@ namespace sir
         }
 
         /** Logs a notice message (see ::sir_notice). */
-        bool notice(const char* format, ...) const noexcept {
+        PRINTF_FORMAT_ATTR(2, 3)
+        bool notice(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_NOTICE, format, args);
             _SIR_L_END();
@@ -144,7 +254,8 @@ namespace sir
         }
 
         /** Logs a warning message (see ::sir_warn). */
-        bool warn(const char* format, ...) const noexcept {
+        PRINTF_FORMAT_ATTR(2, 3)
+        bool warn(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_WARN, format, args);
             _SIR_L_END();
@@ -152,7 +263,8 @@ namespace sir
         }
 
         /** Logs an error message (see ::sir_error). */
-        bool error(const char* format, ...) const noexcept {
+        PRINTF_FORMAT_ATTR(2, 3)
+        bool error(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_ERROR, format, args);
             _SIR_L_END();
@@ -160,7 +272,8 @@ namespace sir
         }
 
         /** Logs a critical message (see ::sir_crit). */
-        bool crit(const char* format, ...) const noexcept {
+        PRINTF_FORMAT_ATTR(2, 3)
+        bool crit(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_CRIT, format, args);
             _SIR_L_END();
@@ -168,7 +281,8 @@ namespace sir
         }
 
         /** Logs an alert message (see ::sir_alert). */
-        bool alert(const char* format, ...) const noexcept {
+        PRINTF_FORMAT_ATTR(2, 3)
+        bool alert(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_ALERT, format, args);
             _SIR_L_END();
@@ -176,108 +290,14 @@ namespace sir
         }
 
         /** Logs an emergency message (see ::sir_emerg). */
-        bool emerg(const char* format, ...) const noexcept {
+        PRINTF_FORMAT_ATTR(2, 3)
+        bool emerg(PRINTF_FORMAT const char* format, ...) const noexcept {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_EMERG, format, args);
             _SIR_L_END();
             return ret;
         }
     };
-
-# if !defined(SIR_NO_STD_IOSTREAM_FORMAT)
-    /**
-     * @class std_iostream_adapter
-     * @brief Provides a std::iostream interface to libsir's logging functions.
-     */
-    class std_iostream_adapter : public adapter {
-    public:
-        std_iostream_adapter() = default;
-        virtual ~std_iostream_adapter() = default;
-
-    private:
-        typedef bool(*sir_log_pfn)(const char*, ...);
-
-        class buffer : public std::streambuf {
-        public:
-            buffer() = delete;
-            explicit buffer(sir_log_pfn pfn) : _pfn(pfn) {
-                // TODO: if exceptions enabled, throw if pfn is nullptr.
-                SIR_ASSERT(pfn != nullptr);
-                reset_buffer();
-            }
-
-        protected:
-            void reset_buffer() {
-#if !defined(_MSC_VER)
-                std::streambuf::setp(_buf.begin(), _buf.end());
-#else
-                std::streambuf::setp(_buf.data(), _buf.data() + _buf.size());
-#endif
-            }
-
-            void write_out() {
-                for (auto it = _buf.rbegin(); it != _buf.rend(); it++) {
-                    if (*it != '\0') {
-                        /* if the last character in the array is not a null
-                         * terminator, or the last non-null character is a
-                         * newline, set it to null. */
-                        if (it == _buf.rbegin() || *it == '\n')
-                            *it = '\0';
-                        break;
-                    }
-                }
-
-                [[maybe_unused]] bool write = _pfn(_buf.data());
-                SIR_ASSERT(write);
-                // TODO: if exceptions enabled, throw if write is false.
-                _buf.fill('\0');
-                reset_buffer();
-            }
-
-            int_type overflow(int_type ch) override {
-                /* more characters have been written than we have space for.
-                 * null-terminate the array and pass it to libsir. */
-                SIR_UNUSED(ch);
-                write_out();
-                return 0;
-            }
-
-            int sync() override {
-                /* flush has been called, or a newline was encountered. */
-                write_out();
-                return 0;
-            }
-
-            std::array<char_type, SIR_MAXMESSAGE> _buf {};
-            sir_log_pfn _pfn = nullptr;
-        };
-
-        class stream : public std::ostream {
-        public:
-            stream() = delete;
-            explicit stream(buffer* buf) : std::ostream(buf) { }
-        };
-
-        buffer _buf_debug  {&sir_debug};
-        buffer _buf_info   {&sir_info};
-        buffer _buf_notice {&sir_notice};
-        buffer _buf_warn   {&sir_warn};
-        buffer _buf_error  {&sir_error};
-        buffer _buf_crit   {&sir_crit};
-        buffer _buf_alert  {&sir_alert};
-        buffer _buf_emerg  {&sir_emerg};
-
-    public:
-        stream debug_stream  {&_buf_debug};  /**< ostream for debug level. */
-        stream info_stream   {&_buf_info};   /**< ostream for info level. */
-        stream notice_stream {&_buf_notice}; /**< ostream for notice level. */
-        stream warn_stream   {&_buf_warn};   /**< ostream for warn level. */
-        stream error_stream  {&_buf_error};  /**< ostream for error level. */
-        stream crit_stream   {&_buf_crit};   /**< ostream for crit level. */
-        stream alert_stream  {&_buf_alert};  /**< ostream for alert level. */
-        stream emerg_stream  {&_buf_emerg};  /**< ostream for emerg level. */
-    };
-#endif // SIR_NO_STD_IOSTREAM_FORMAT
 
 # if defined(__SIR_HAVE_STD_FORMAT__)
     /**
@@ -291,59 +311,59 @@ namespace sir
     class std_format_adapter : public adapter {
     public:
         std_format_adapter() = default;
-        virtual ~std_format_adapter() = default;
+        ~std_format_adapter() override = default;
 
         /** Use as if you were calling std::format directly. */
-        template<class... Args>
+        template<typename... Args>
         inline bool debug_std(std::format_string<Args...> fmt, Args&&... args) const {
             auto str = std::vformat(fmt.get(), std::make_format_args(args...));
             return sir_debug("%s", str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
-        template<class... Args>
+        template<typename... Args>
         inline bool info_std(std::format_string<Args...> fmt, Args&&... args) const {
             auto str = std::vformat(fmt.get(), std::make_format_args(args...));
             return sir_info("%s", str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
-        template<class... Args>
+        template<typename... Args>
         inline bool notice_std(std::format_string<Args...> fmt, Args&&... args) const {
             auto str = std::vformat(fmt.get(), std::make_format_args(args...));
             return sir_notice("%s", str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
-        template<class... Args>
+        template<typename... Args>
         inline bool warn_std(std::format_string<Args...> fmt, Args&&... args) const {
             auto str = std::vformat(fmt.get(), std::make_format_args(args...));
             return sir_warn("%s", str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
-        template<class... Args>
+        template<typename... Args>
         inline bool error_std(std::format_string<Args...> fmt, Args&&... args) const {
             auto str = std::vformat(fmt.get(), std::make_format_args(args...));
             return sir_error("%s", str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
-        template<class... Args>
+        template<typename... Args>
         inline bool crit_std(std::format_string<Args...> fmt, Args&&... args) const {
             auto str = std::vformat(fmt.get(), std::make_format_args(args...));
             return sir_crit("%s", str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
-        template<class... Args>
+        template<typename... Args>
         inline bool alert_std(std::format_string<Args...> fmt, Args&&... args) const {
             auto str = std::vformat(fmt.get(), std::make_format_args(args...));
             return sir_alert("%s", str.c_str());
         }
 
         /** Use as if you were calling std::format directly. */
-        template<class... Args>
+        template<typename... Args>
         inline bool emerg_std(std::format_string<Args...> fmt, Args&&... args) const {
             auto str = std::vformat(fmt.get(), std::make_format_args(args...));
             return sir_emerg("%s", str.c_str());
@@ -356,14 +376,12 @@ namespace sir
      * @class boost_format_adapter
      * @brief Adapter for boost::format (when available).
      *
-     * If boost::format is available on this platform and SIR_NO_BOOST_FORMAT is not
-     * defined, ::default_logger will export the methods from this adapter in
-     * addition to any others.
+     * TODO: update description
      */
     class boost_format_adapter : public adapter {
     public:
         boost_format_adapter() = default;
-        virtual ~boost_format_adapter() = default;
+        ~boost_format_adapter() override = default;
 
         /** Takes `boost::format("...") % args [% ...]` as input. */
         bool debug_boost(const boost::format& fmt) const {
@@ -412,14 +430,12 @@ namespace sir
      * @class fmt_format_adapter
      * @brief Adapter for fmt (when available).
      *
-     * If fmt is available on this platform and SIR_NO_FMT_FORMAT is not defined,
-     * ::default_logger will export the methods from this adapter in addition
-     * to any others.
+     * TODO: update description
      */
     class fmt_format_adapter : public adapter {
     public:
         fmt_format_adapter() = default;
-        virtual ~fmt_format_adapter() = default;
+        ~fmt_format_adapter() override = default;
 
         /** Use as if you were calling fmt::format directly. */
         template<typename... T>
@@ -479,9 +495,131 @@ namespace sir
     };
 # endif // !__SIR_HAVE_FMT_FORMAT__
 
-    /** Ensures that the type argument derives from adapter. */
+# if !defined(SIR_NO_STD_IOSTREAM)
+    /**
+     * @class std_iostream_adapter
+     * @brief Provides a std::iostream interface to libsir's logging functions.
+     *
+     * Implements the following public std::ostream members:
+     *
+     * - debug_stream
+     * - info_stream
+     * - notice_stream
+     * - warn_stream
+     * - error_stream
+     * - crit_stream
+     * - alert_stream
+     * - emerg_stream
+     */
+    class std_iostream_adapter : public adapter {
+    public:
+        std_iostream_adapter() = default;
+        ~std_iostream_adapter() override = default;
+
+    private:
+        typedef bool(*sir_log_pfn)(const char*, ...);
+
+        class buffer : public std::streambuf {
+        public:
+            using array_type = std::array<char_type, SIR_MAXMESSAGE>;
+
+            buffer() = delete;
+            explicit buffer(sir_log_pfn pfn) : _pfn(pfn) {
+                // TODO: if exceptions enabled, throw if pfn or _buf are nullptr.
+                SIR_ASSERT(pfn != nullptr && _buf);
+                reset_buffer();
+            }
+            ~buffer() override = default;
+
+        protected:
+            void reset_buffer() {
+                if (_buf) {
+                    _buf->fill('\0');
+                    setp(_buf->data(), _buf->data() + _buf->size() - 1);
+                }
+            }
+
+            bool write_out() {
+                for (auto it = _buf->rbegin(); it != _buf->rend(); it++) {
+                    if (*it != '\0') {
+                        if (*it == '\n')
+                            *it = '\0';
+                        break;
+                    }
+                }
+
+                bool write = _pfn ? _pfn(_buf->data()) : false;
+                SIR_ASSERT(write);
+                // TODO: if exceptions enabled, throw if write is false.
+                reset_buffer();
+                return write;
+            }
+
+            int_type overflow(int_type ch) override {
+                if (ch != traits_type::eof() && write_out())
+                    return ch;
+                return traits_type::eof();
+            }
+
+            int sync() override {
+                return write_out() ? 0 : -1;
+            }
+
+            std::streamsize xsputn(const char_type* s, std::streamsize count) override {
+                std::streamsize written = 0;
+                do {
+                    ptrdiff_t left = epptr() - pptr();
+                    if (!left) {
+                        int_type ch = overflow(traits_type::to_int_type(*(s + written)));
+                        if (ch != traits_type::eof()) {
+                            continue;
+                        } else {
+                            break;
+                        }
+                    }
+
+                    auto this_write = std::min(static_cast<std::streamsize>(left), count - written);
+                    memcpy(pptr(), s + written, static_cast<size_t>(this_write));
+                    pbump(static_cast<int>(this_write));
+                    written += this_write;
+                } while (written < count);
+
+                return written;
+            }
+
+        private:
+            std::unique_ptr<array_type> _buf = std::make_unique<array_type>();
+            sir_log_pfn _pfn = nullptr;
+        };
+
+        buffer _buf_debug  {&sir_debug};
+        buffer _buf_info   {&sir_info};
+        buffer _buf_notice {&sir_notice};
+        buffer _buf_warn   {&sir_warn};
+        buffer _buf_error  {&sir_error};
+        buffer _buf_crit   {&sir_crit};
+        buffer _buf_alert  {&sir_alert};
+        buffer _buf_emerg  {&sir_emerg};
+
+    public:
+        std::ostream debug_stream  {&_buf_debug};  /**< ostream for debug level. */
+        std::ostream info_stream   {&_buf_info};   /**< ostream for info level. */
+        std::ostream notice_stream {&_buf_notice}; /**< ostream for notice level. */
+        std::ostream warn_stream   {&_buf_warn};   /**< ostream for warn level. */
+        std::ostream error_stream  {&_buf_error};  /**< ostream for error level. */
+        std::ostream crit_stream   {&_buf_crit};   /**< ostream for crit level. */
+        std::ostream alert_stream  {&_buf_alert};  /**< ostream for alert level. */
+        std::ostream emerg_stream  {&_buf_emerg};  /**< ostream for emerg level. */
+    };
+# endif // SIR_NO_STD_IOSTREAM
+
+    /** Ensures that T derives from adapter. */
     template<typename... T>
     concept DerivedFromAdapter = std::is_base_of_v<adapter, T...>;
+
+    /** Ensures that T derives from policy. */
+    template<typename... T>
+    concept DerivedFromPolicy = std::is_base_of_v<policy, T...>;
 
     /**
      * @class logger
@@ -494,138 +632,140 @@ namespace sir
      *                  initialization' behavior (i.e., libsir is initialized by
      *                  the ctor, and cleaned up by the dtor). Set to `false` for
      *                  manual management of initialization/cleanup.
+     * @param TPolicy   A policy class which will be responsible for certain
+     *                  aspects of logger's behavior.
      * @param TAdapters One or more adapter classes whose public methods will be
      *                  exposed by this class.
      */
-    template<bool RAII, DerivedFromAdapter... TAdapters>
+    template<bool RAII, DerivedFromPolicy TPolicy, DerivedFromAdapter... TAdapters>
     class logger : public TAdapters...  {
     public:
         logger() : TAdapters()... {
-            if (RAII && !init()) {
+            if (RAII && !_init()) {
+                // TODO: throw exception if policy says
                 SIR_ASSERT(false);
             }
         }
+
+        logger(const logger&) = delete;
+        logger(const logger&&) = delete;
 
         virtual ~logger() {
-            if (RAII && !cleanup()) {
+            if (RAII && !_cleanup()) {
                 SIR_ASSERT(false);
             }
         }
 
-        virtual bool init(sirinit& si) const noexcept {
-            return RAII ? false : sir_init(&si);
+        logger& operator=(const logger&) = delete;
+        logger& operator=(const logger&&) = delete;
+
+        bool init() noexcept {
+            return _initialized ? false: _init();
         }
 
-        virtual bool init() const noexcept {
-            sirinit si {};
-            if (bool make = sir_makeinit(&si); !make)
-                return false;
-            return sir_init(&si);
-        }
-
-        virtual bool cleanup() const noexcept {
-            return sir_cleanup();
+        bool cleanup() noexcept {
+            return _initialized ? _cleanup() : false;
         }
 
         /** Wraps ::sir_geterror. */
-        virtual error get_error() const {
+        error get_error() const {
             std::array<char, SIR_MAXERROR> message {};
-            uint32_t code = sir_geterror(message.data());
+            auto code = sir_geterror(message.data());
             return { code, message.data() };
         }
 
         /** Wraps ::sir_addfile. */
-        virtual sirfileid add_file(const std::string& path, const sir_levels& levels,
+        sirfileid add_file(const std::string& path, const sir_levels& levels,
             const sir_options& opts) const {
             return sir_addfile(path.c_str(), levels, opts);
         }
 
         /** Wraps ::sir_remfile. */
-        virtual bool rem_file(const sirfileid& id) const noexcept {
+        bool rem_file(const sirfileid& id) const noexcept {
             return sir_remfile(id);
         }
 
         /** Wraps ::sir_loadplugin. */
-        virtual sirpluginid load_plugin(const std::string& path) const {
+        sirpluginid load_plugin(const std::string& path) const {
             return sir_loadplugin(path.c_str());
         }
 
         /** Wraps ::sir_unloadplugin. */
-        virtual bool unload_plugin(const sirpluginid& id) const noexcept {
+        bool unload_plugin(const sirpluginid& id) const noexcept {
             return sir_unloadplugin(id);
         }
 
         /** Wraps ::sir_filelevels. */
-        virtual bool set_file_levels(const sirfileid& id, const sir_levels& levels)
+        bool set_file_levels(const sirfileid& id, const sir_levels& levels)
             const noexcept {
             return sir_filelevels(id, levels);
         }
 
         /** Wraps ::sir_fileopts. */
-        virtual bool set_file_options(const sirfileid& id, const sir_options& opts)
+        bool set_file_options(const sirfileid& id, const sir_options& opts)
             const noexcept {
             return sir_fileopts(id, opts);
         }
 
         /** Wraps ::sir_settextstyle. */
-        virtual bool set_text_style(const sir_level& level, const sir_textattr& attr,
+        bool set_text_style(const sir_level& level, const sir_textattr& attr,
             const sir_textcolor& fg, const sir_textcolor& bg) const noexcept {
             return sir_settextstyle(level, attr, fg, bg);
         }
 
         /** Wraps ::sir_resettextstyles. */
-        virtual bool reset_text_styles() const noexcept {
+        bool reset_text_styles() const noexcept {
             return sir_resettextstyles();
         }
 
         /** Wraps ::sir_makergb. */
-        virtual sir_textcolor make_rgb(const sir_textcolor& r, const sir_textcolor& g,
+        sir_textcolor make_rgb(const sir_textcolor& r, const sir_textcolor& g,
             const sir_textcolor& b) const noexcept {
             return sir_makergb(r, g, b);
         }
 
         /** Wraps ::sir_setcolormode. */
-        virtual bool set_color_mode(const sir_colormode& mode) const noexcept {
+        bool set_color_mode(const sir_colormode& mode) const noexcept {
             return sir_setcolormode(mode);
         }
 
         /** Wraps ::sir_stdoutlevels. */
-        virtual bool set_stdout_levels(const sir_levels& levels) const noexcept {
+        bool set_stdout_levels(const sir_levels& levels) const noexcept {
             return sir_stdoutlevels(levels);
         }
 
         /** Wraps ::sir_stdoutopts. */
-        virtual bool set_stdout_options(const sir_options& opts) const noexcept {
+        bool set_stdout_options(const sir_options& opts) const noexcept {
             return sir_stdoutopts(opts);
         }
 
         /** Wraps ::sir_stderrlevels. */
-        virtual bool set_stderr_levels(const sir_levels& levels) const noexcept {
+        bool set_stderr_levels(const sir_levels& levels) const noexcept {
             return sir_stderrlevels(levels);
         }
 
         /** Wraps ::sir_stderropts. */
-        virtual bool set_stderr_options(const sir_options& opts) const noexcept {
+        bool set_stderr_options(const sir_options& opts) const noexcept {
             return sir_stderropts(opts);
         }
 
         /** Wraps ::sir_sysloglevels. */
-        virtual bool set_syslog_levels(const sir_levels& levels) const noexcept {
+        bool set_syslog_levels(const sir_levels& levels) const noexcept {
             return sir_sysloglevels(levels);
         }
 
         /** Wraps ::sir_syslogopts. */
-        virtual bool set_syslog_options(const sir_options& opts) const noexcept {
+        bool set_syslog_options(const sir_options& opts) const noexcept {
             return sir_syslogopts(opts);
         }
 
         /** Wraps ::sir_syslogid. */
-        virtual bool set_syslog_id(const std::string& id) const {
+        bool set_syslog_id(const std::string& id) const {
             return sir_syslogid(id.c_str());
         }
 
         /** Wraps ::sir_syslogcat. */
-        virtual bool set_syslog_category(const std::string& category) const {
+        bool set_syslog_category(const std::string& category) const {
             return sir_syslogcat(category.c_str());
         }
 
@@ -643,6 +783,26 @@ namespace sir
         bool is_prerelease() const noexcept {
             return sir_isprerelease();
         }
+
+    protected:
+        bool _init() {
+            sirinit si {};
+            if (bool init = _policy.get_init_data(si) && sir_init(&si) &&
+                _policy.on_init_complete(); !init) {
+                return false;
+            }
+            return _initialized = true;
+        }
+
+        bool _cleanup() {
+            bool cleanup = sir_cleanup();
+            _initialized = false;
+            return cleanup;
+        }
+
+    protected:
+        TPolicy _policy;
+        bool _initialized = false;
     };
 
     /**
@@ -650,17 +810,12 @@ namespace sir
      * @brief A logger that implements the default set of adapters.
      *
      * The default logger has the following template parameters defined:
-     *
-     * - RAII = true
-     * - TAdapters = default_adapter [, std_format_adapter, std_iostream_adapter]
-     *   - if `SIR_NO_STD_FORMAT` is not defined, and std::format is available,
-     *     includes the std::format adapter.
-     *   - if `SIR_NO_STD_IOSTREAM` is not defined, includes the std::iostream
-     *     adapter.
+     * // TODO update description
      */
     using default_logger = logger
     < // TODO: don't include boost and fmt adapters by default
         true,
+        default_policy,
         default_adapter
 # if defined(__SIR_HAVE_STD_FORMAT__)
         , std_format_adapter

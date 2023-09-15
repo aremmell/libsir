@@ -35,8 +35,12 @@ RUN \
       ansifilter \
       atool \
       bear \
+      boost \
+      boost-devel \
+      bzip2 \
       ca-certificates \
       ccache \
+      ccache-swig \
       clang \
       clang-analyzer \
       clang-tools-extra \
@@ -50,6 +54,8 @@ RUN \
       expect \
       fakeroot \
       flawfinder \
+      fmt \
+      fmt-devel \
       g++ \
       gawk \
       gcc \
@@ -59,6 +65,9 @@ RUN \
       glibc-headers-x86 \
       glibc-static \
       global \
+      golang \
+      guile \
+      guile-devel \
       libasan \
       libnsl \
       libnsl2 \
@@ -67,20 +76,35 @@ RUN \
       libxml2-devel \
       libxslt-devel \
       lld \
+      lua \
+      lua-devel \
+      lzip \
       make \
       musl-devel \
       musl-gcc \
       musl-libc \
       musl-libc-static \
+      octave \
       openssl \
+      pbzip2 \
+      perl \
       perl-core \
+      perl-devel \
       pigz \
       python3 \
       python3-devel \
       python3-setuptools \
+      python-setuptools \
+      R \
+      R-devel \
       reuse \
+      ruby \
+      ruby-devel \
       screen \
+      swig \
       symlinks \
+      tcl \
+      tcl-devel \
       time \
       tmux \
       unzip \
@@ -88,6 +112,7 @@ RUN \
       vim \
       wget \
       zip \
+      zpaq \
 && \
   dnf4 -y --allowerasing --setopt=install_weak_deps=True --setopt=keepcache=True install \
       compiler-rt.i686 \
@@ -101,20 +126,15 @@ RUN \
   dnf4 -y --allowerasing reinstall \
       compiler-rt \
 && \
-  ( curl -fsSLO https://rpm.nodesource.com/setup_20.x || true ) \
-&& \
-  ( chmod a+x "setup_20.x" || true ) \
-&& \
-  ( sed -i "s/## Given the distro.*/DIST_VERSION=38/" "setup_20.x" || true ) \
-&& \
-  ( bash -x ./setup_20.x || true ) \
-&& \
-  ( rm -f ./setup_* || true ) \
+  dnf4 -y --allowerasing install \
+      https://rpm.nodesource.com/pub_20.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm \
 && \
   dnf -y --refresh update \
 && \
-  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-      nodejs \
+  dnf4 -y --refresh update \
+&& \
+  dnf4 -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
+      nodejs --setopt=nodesource-nodejs.module_hotfixes=1 \
 && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True group install \
       development-tools \
@@ -129,30 +149,37 @@ RUN \
   (curl -fsSL https://coveralls.io/coveralls-linux.tar.gz | tar -zxv -C /usr/bin) \
 && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-      mingw-binutils-generic \
       mingw32-binutils \
+      mingw32-boost \
+      mingw32-boost-static \
       mingw32-cpp \
       mingw32-crt \
       mingw32-dlfcn \
       mingw32-dlfcn-static \
       mingw32-gcc \
+      mingw32-gcc-c++ \
       mingw32-headers \
       mingw32-winpthreads \
       mingw32-winpthreads-static \
       mingw64-binutils \
+      mingw64-boost \
+      mingw64-boost-static \
       mingw64-cpp \
       mingw64-crt \
       mingw64-dlfcn \
       mingw64-dlfcn-static \
       mingw64-gcc \
+      mingw64-gcc-c++ \
       mingw64-headers \
       mingw64-winpthreads \
       mingw64-winpthreads-static \
+      mingw-binutils-generic \
       mingw-w64-tools \
       ucrt64-binutils \
       ucrt64-cpp \
       ucrt64-crt \
       ucrt64-gcc \
+      ucrt64-gcc-c++ \
       ucrt64-headers \
       ucrt64-winpthreads \
       ucrt64-winpthreads-static \
@@ -166,7 +193,7 @@ RUN \
       cygwin32-gcc \
       cygwin64 \
       cygwin64-binutils \
-      cygwin64-gcc \
+      cygwin64-gcc-c++ \
       cygwin-w32api-headers \
 && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install wine \

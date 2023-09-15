@@ -35,7 +35,8 @@
 #  define PRINTF_FORMAT_ATTR(fmt_p, va_p)
 # else
 #  define PRINTF_FORMAT
-#  if defined(__MINGW32__) || defined(__MINGW64__)
+#  if (defined(__MINGW32__) || defined(__MINGW64__)) && \
+     !defined(__clang_version__)
 #   if !defined(__USE_MINGW_ANSI_STDIO)
 #    define __USE_MINGW_ANSI_STDIO 1
 #   endif
@@ -56,6 +57,13 @@
 #  define HAS_ATTRIBUTE(atr) __has_attribute(atr)
 # else
 #  define HAS_ATTRIBUTE(atr) 0
+# endif
+
+# undef HAS_INCLUDE
+# if defined __has_include
+#  define HAS_INCLUDE(inc) __has_include(inc)
+# else
+#  define HAS_INCLUDE(inc) 0
 # endif
 
 # undef SANITIZE_SUPPRESS
@@ -87,7 +95,7 @@
 #  if defined(SUNLINT)
 #   undef __HAVE_ATOMIC_H__
 #  endif
-#  if defined(__NVCOMPILER)
+#  if defined(__NVCOMPILER) || (defined(__INTEL_COMPILER) && !defined(__llvm__))
 #   if !defined(_BITS_FLOATN_H)
 #    define _BITS_FLOATN_H
 #   endif
@@ -240,6 +248,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  undef _WIN32_WINNT
 #  define _WIN32_WINNT 0x0A00
 #  define _CRT_RAND_S
+#  define NOMINMAX
 #  if defined(__ORANGEC__)
 #   include "sir/platform_orangec.h"
 #  endif
@@ -335,6 +344,7 @@ _set_thread_local_invalid_parameter_handler(
 # if !defined(SIR_NO_SYSTEM_LOGGERS)
 #  if defined(__MACOS__) && !defined(__IMPORTC__) && \
       ((defined(__clang__) || defined(__clang_version__)) && \
+      !(defined(__INTEL_COMPILER) && !defined(__llvm__)) && \
       defined(__clang_major__) && defined(__clang_minor__) && defined(__clang_patchlevel__))
 #   define SIR_OS_LOG_ENABLED
 #  else

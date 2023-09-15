@@ -22,7 +22,7 @@ You should see output similar to the following:
 ~~~txt
 Usage:
 
-		--perf       Only run the performance measurement test
+    --perf       Only run the performance measurement test
     --only       name [, name, ...] Only run the test(s) specified
     --list       Prints a list of available test names for use with '--only'
     --leave-logs Log files are not deleted so that they may be examined

@@ -24,15 +24,17 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "tests++.hh"
+#include <limits>
 #include <cstdlib>
 #include <cstdio>
+#include <vector>
 
 using namespace std;
 using namespace sir;
 using namespace sir::tests;
 
 /** List of available tests. */
-static sir_test sirxx_tests[] = {
+static std::vector<sir_test> sirxx_tests = {
     {"init-cleanup-raii",   raii_init_cleanup, false, true},
     {"init-cleanup-manual", manual_init_cleanup, false, true},
     {"error-handling",      error_handling, false, true},
@@ -43,7 +45,7 @@ static sir_test sirxx_tests[] = {
 };
 
 /** List of available command line arguments. */
-static const sir_cl_arg cl_args[] = {
+static const std::vector<sir_cl_arg> cl_args = {
     {SIR_CL_ONLYFLAG,      ""  SIR_CL_ONLYUSAGE, SIR_CL_ONLYDESC},
     {SIR_CL_LISTFLAG,      "", SIR_CL_LISTDESC},
     {SIR_CL_LEAVELOGSFLAG, "", SIR_CL_LEAVELOGSDESC},
@@ -55,14 +57,12 @@ static const sir_cl_arg cl_args[] = {
 static sir_cl_config cl_cfg {};
 
 int main(int argc, char** argv) {
-    bool parsed = parse_cmd_line(argc, argv, cl_args, _sir_countof(cl_args),
-        sirxx_tests, _sir_countof(sirxx_tests), &cl_cfg);
-    if (!parsed)
+    if (bool parsed = parse_cmd_line(argc, argv, cl_args.data(), cl_args.size(),
+        sirxx_tests.data(), sirxx_tests.size(), &cl_cfg); !parsed)
         return EXIT_FAILURE;
 
     try {
-        size_t first     = 0;
-        size_t tgt_tests = (cl_cfg.only ? cl_cfg.to_run : _sir_countof(sirxx_tests));
+        size_t tgt_tests = (cl_cfg.only ? cl_cfg.to_run : sirxx_tests.size());
         size_t passed    = 0;
         size_t ran       = 0;
         sir_time timer {};
@@ -70,20 +70,20 @@ int main(int argc, char** argv) {
         print_intro(tgt_tests);
         sir_timer_start(&timer);
 
-        for (size_t n = first; n < _sir_countof(sirxx_tests); n++) {
-            if (cl_cfg.only && !sirxx_tests[n].run) {
-                _sir_selflog("skipping '%s'; not marked to run", sirxx_tests[n].name);
+        for (auto& test : sirxx_tests) {
+            if (cl_cfg.only && !test.run) {
+                _sir_selflog("skipping '%s'; not marked to run", test.name);
                 continue;
             }
 
-            print_test_intro(ran + 1, tgt_tests, sirxx_tests[n].name);
+            print_test_intro(ran + 1, tgt_tests, test.name);
 
-            if (sirxx_tests[n].pass = sirxx_tests[n].fn(); sirxx_tests[n].pass)
+            if (test.pass = test.fn(); test.pass)
                 passed++;
 
             ran++;
 
-            print_test_outro(ran, tgt_tests, sirxx_tests[n].name, sirxx_tests[n].pass);
+            print_test_outro(ran, tgt_tests, test.name, test.pass);
         }
 
         print_test_summary(tgt_tests, passed, sir_timer_elapsed(&timer));
@@ -91,9 +91,9 @@ int main(int argc, char** argv) {
         if (passed != tgt_tests) {
             print_failed_test_intro(tgt_tests, passed);
 
-            for (size_t t = 0; t < _sir_countof(sirxx_tests); t++)
-                if (!sirxx_tests[t].pass)
-                    print_failed_test(sirxx_tests[t].name);
+            for (const auto& test : sirxx_tests)
+                if (!test.pass)
+                    print_failed_test(test.name);
 
             (void)printf("\n");
         }
@@ -112,7 +112,7 @@ int main(int argc, char** argv) {
 }
 
 bool sir::tests::raii_init_cleanup() {
-    _SIR_TEST_BEGIN
+    _SIR_TEST_COMMENCE
 
     /* scope a RAII logger object and test whether or not it successfully
      * initializes and cleans up libsir. */
@@ -134,13 +134,13 @@ bool sir::tests::raii_init_cleanup() {
      /* should fail; already cleaned up. */
     _sir_eqland(pass, !sir_cleanup());
 
-    _SIR_TEST_END
+    _SIR_TEST_COMPLETE
 }
 
 bool sir::tests::manual_init_cleanup() {
-    _SIR_TEST_BEGIN
+    _SIR_TEST_COMMENCE
 
-    logger<false, default_adapter> log;
+    logger<false, default_policy, default_adapter> log;
     _sir_eqland(pass, log.init());
 
     _sir_eqland(pass, log.debug("Manually initialized"));
@@ -148,11 +148,11 @@ bool sir::tests::manual_init_cleanup() {
 
     _sir_eqland(pass, log.cleanup());
 
-    _SIR_TEST_END
+    _SIR_TEST_COMPLETE
 }
 
 bool sir::tests::error_handling() {
-    _SIR_TEST_BEGIN
+    _SIR_TEST_COMMENCE
 
     default_logger log;
 
@@ -163,85 +163,135 @@ bool sir::tests::error_handling() {
     _sir_eqland(pass, log.debug("Error info: code = %u, message = '%s'", code,
         message.c_str()));
 
-    _SIR_TEST_END
+    _SIR_TEST_COMPLETE
 }
 
 bool sir::tests::std_format() {
-    _SIR_TEST_BEGIN
+    _SIR_TEST_COMMENCE
 
     /* std:: format. */
 #if defined(__SIR_HAVE_STD_FORMAT__)
     default_logger log;
-    _sir_eqland(pass, log.debug_std("Testing {} {}", "debug", "std::format"));
-    _sir_eqland(pass, log.info_std("Testing {} {}", "info", "std::format"));
-    _sir_eqland(pass, log.notice_std("Testing {} {}", "notice", "std::format"));
-    _sir_eqland(pass, log.warn_std("Testing {} {}", "warn", "std::format"));
-    _sir_eqland(pass, log.error_std("Testing {} {}", "error", "std::format"));
-    _sir_eqland(pass, log.crit_std("Testing {} {}", "crit", "std::format"));
-    _sir_eqland(pass, log.alert_std("Testing {} {}", "alert", "std::format"));
-    _sir_eqland(pass, log.emerg_std("Testing {} {}", "emerg", "std::format"));
+    _sir_eqland(pass, log.debug_std("Testing {} {}",  "std::format", "Howdy"));
+    _sir_eqland(pass, log.info_std("Testing {} {}",   "std::format", true));
+    _sir_eqland(pass, log.notice_std("Testing {} {}", "std::format", 1.0 / 1e9));
+    _sir_eqland(pass, log.warn_std("Testing {} {}",   "std::format", std::to_string(123456789)));
+    _sir_eqland(pass, log.error_std("Testing {} {}",  "std::format", std::numeric_limits<uint64_t>::max()));
+    _sir_eqland(pass, log.crit_std("Testing {} {}",   "std::format", 0b10101010));
+    _sir_eqland(pass, log.alert_std("Testing {} {}",  "std::format", 0x80000000U));
+    _sir_eqland(pass, log.emerg_std("Testing {} {}",  "std::format", 3.14));
 #else
-    TEST_MSG_0("std::format support not enabled; skipping");
-    pass = true;
+    TEST_MSG_0(EMPH(BBLUE("std::format support not enabled; skipping")));
 #endif // !__SIR_HAVE_STD_FORMAT__
 
-    _SIR_TEST_END
+    _SIR_TEST_COMPLETE
 }
 
 bool sir::tests::boost_format() {
-    _SIR_TEST_BEGIN
+    _SIR_TEST_COMMENCE
 
     /* boost::format. */
 #if defined(__SIR_HAVE_BOOST_FORMAT__)
+    using bf = boost::format;
     default_logger log;
-    _sir_eqland(pass, log.debug_boost(boost::format("Testing %1% %2%") % "debug" % "boost::format"));
-    _sir_eqland(pass, log.info_boost(boost::format("Testing %1% %2%") % "info" % "boost::format"));
-    _sir_eqland(pass, log.notice_boost(boost::format("Testing %1% %2%") % "notice" % "boost::format"));
-    _sir_eqland(pass, log.warn_boost(boost::format("Testing %1% %2%") % "warn" % "boost::format"));
-    _sir_eqland(pass, log.error_boost(boost::format("Testing %1% %2%") % "error" % "boost::format"));
-    _sir_eqland(pass, log.crit_boost(boost::format("Testing %1% %2%") % "crit" % "boost::format"));
-    _sir_eqland(pass, log.alert_boost(boost::format("Testing %1% %2%}") % "alert" % "boost::format"));
-    _sir_eqland(pass, log.emerg_boost(boost::format("Testing %1% %2%") % "emerg" % "boost::format"));
+    _sir_eqland(pass, log.debug_boost(bf("Testing %1% %2%")  % "boost" % "Howdy"));
+    _sir_eqland(pass, log.info_boost(bf("Testing %1% %2%")   % "boost" % true));
+    _sir_eqland(pass, log.notice_boost(bf("Testing %1% %2%") % "boost" % (1.0 / 1e9)));
+    _sir_eqland(pass, log.warn_boost(bf("Testing %1% %2%")   % "boost" % std::to_string(123456789)));
+    _sir_eqland(pass, log.error_boost(bf("Testing %1% %2%")  % "boost" % std::numeric_limits<uint64_t>::max()));
+    _sir_eqland(pass, log.crit_boost(bf("Testing %1% %2%")   % "boost" % 0b10101010));
+    _sir_eqland(pass, log.alert_boost(bf("Testing %1% %2%")  % "boost" % 0x80000000U));
+    _sir_eqland(pass, log.emerg_boost(bf("Testing %1% %2%")  % "boost" % 3.14));
 #else
-    TEST_MSG_0("boost::format support not enabled; skipping");
-    pass = true;
+    TEST_MSG_0(EMPH(BBLUE("boost::format support not enabled; skipping")));
 #endif // !__SIR_HAVE_BOOST_FORMAT__
 
-    _SIR_TEST_END
+    _SIR_TEST_COMPLETE
 }
 
 bool sir::tests::fmt_format() {
-    _SIR_TEST_BEGIN
+    _SIR_TEST_COMMENCE
 
     /* fmt */
 #if defined(__SIR_HAVE_FMT_FORMAT__)
     default_logger log;
-    _sir_eqland(pass, log.debug_fmt("Testing {} {}", "debug", "fmt"));
-    _sir_eqland(pass, log.info_fmt("Testing {} {}", "info", "fmt"));
-    _sir_eqland(pass, log.notice_fmt("Testing {} {}", "notice", "fmt"));
-    _sir_eqland(pass, log.warn_fmt("Testing {} {}", "warn", "fmt"));
-    _sir_eqland(pass, log.error_fmt("Testing {} {}", "error", "fmt"));
-    _sir_eqland(pass, log.crit_fmt("Testing {} {}", "crit", "fmt"));
-    _sir_eqland(pass, log.alert_fmt("Testing {} {}", "alert", "fmt"));
-    _sir_eqland(pass, log.emerg_fmt("Testing {} {}", "emerg", "fmt"));
+    _sir_eqland(pass, log.debug_fmt("Testing {} {}",  "fmt", "Howdy"));
+    _sir_eqland(pass, log.info_fmt("Testing {} {}",   "fmt", true));
+    _sir_eqland(pass, log.notice_fmt("Testing {} {}", "fmt", 1.0 / 1e9));
+    _sir_eqland(pass, log.warn_fmt("Testing {} {}",   "fmt", std::to_string(123456789)));
+    _sir_eqland(pass, log.error_fmt("Testing {} {}",  "fmt", std::numeric_limits<uint64_t>::max()));
+    _sir_eqland(pass, log.crit_fmt("Testing {} {}",   "fmt", 0b10101010));
+    _sir_eqland(pass, log.alert_fmt("Testing {} {}",  "fmt", 0x80000000U));
+    _sir_eqland(pass, log.emerg_fmt("Testing {} {}",  "fmt", 3.14));
 #else
-    TEST_MSG_0("fmt::format support not enabled; skipping");
-    pass = true;
+    TEST_MSG_0(EMPH(BBLUE("fmt::format support not enabled; skipping")));
 #endif // !__SIR_HAVE_FMT_FORMAT__
 
-    _SIR_TEST_END
+    _SIR_TEST_COMPLETE
 }
 
 bool sir::tests::std_iostream_format() {
+    _SIR_TEST_COMMENCE
+
 #if !defined(SIR_NO_STD_IOSTREAM)
-    _SIR_TEST_BEGIN
-
     default_logger log;
-    log.debug_stream << "If you can see this, std::iostream is working." << endl;
 
-    _SIR_TEST_END
+    TEST_MSG_0("all levels...");
+
+    log.debug_stream << "Testing debug level" << endl;
+    pass &= log.debug_stream.good();
+
+    log.info_stream << "Testing info level" << endl;
+    pass &= log.info_stream.good();
+
+    log.notice_stream << "Testing notice level" << endl;
+    pass &= log.notice_stream.good();
+
+    log.warn_stream << "Testing warn level" << endl;
+    pass &= log.warn_stream.good();
+
+    log.error_stream << "Testing error level" << endl;
+    pass &= log.error_stream.good();
+
+    log.crit_stream << "Testing crit level" << endl;
+    pass &= log.crit_stream.good();
+
+    log.alert_stream << "Testing alert level" << endl;
+    pass &= log.alert_stream.good();
+
+    log.emerg_stream << "Testing emerg level" << endl;
+    pass &= log.emerg_stream.good();
+
+    TEST_MSG_0("some simple, short messages...");
+
+    log.debug_stream << "If you can see this, std::iostream is working." << flush;
+    pass &= log.debug_stream.good();
+    log.debug_stream << "With flush as a deliminator," << flush;
+    pass &= log.debug_stream.good();
+    log.debug_stream << "and newlines, too." << endl;
+    pass &= log.debug_stream.good();
+
+    TEST_MSG_0("a longer message...");
+
+    log.debug_stream << "Lorem ipsum dolor sit amet, vix essent aliquid ut, "
+                     << "modus propriae praesent ius ei. Ut nam sale feugait "
+                     << "petentium, no quem diceret mel. At assum apeirian "
+                     << "verterem qui. Ius ei illud quidam periculis. "
+                     << "Etiam aliquid labores ut ius, usu et numquam docendi. "
+                     << "Ne mucius quidam epicurei sea, te indoctum periculis per. "
+                     << "Mel utinam latine praesent eu. Dicat consulatu inciderint "
+                     << "duo ei, alterum concludaturque sit cu." << flush;
+    pass &= log.debug_stream.good();
+
+    TEST_MSG_0("ostream::write()...");
+
+    auto str = std::string("This is my string. There are many like it, but "
+        "this one is mine. I'm going to ostream::write it now.");
+    log.debug_stream.write(str.c_str(), str.size()) << endl;
+    pass &= log.debug_stream.good();
 #else
-    TEST_MSG_0("std::iostream support not enabled; skipping");
-    pass = true;
+    TEST_MSG_0(EMPH(BBLUE("std::iostream support not enabled; skipping")));
 #endif
+
+    _SIR_TEST_COMPLETE
 }

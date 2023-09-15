@@ -23,6 +23,7 @@
 
 /******************************************************************************/
 /* OpenBSD strlcat() */
+
 #if defined(SIR_IMPL_STRLCAT) && !defined(SIR_IMPL_STRLCAT_DEF)
 # undef strlcat
 
@@ -60,12 +61,14 @@ _sir_strlcat(char *dst, const char *src, size_t dsize)
 
   return dlen + (src - osrc); /* count does not include NUL */
 }
+
 # define strlcat _sir_strlcat
 # define SIR_IMPL_STRLCAT_DEF 1
 #endif /* SIR_IMPL_STRLCAT */
 
 /******************************************************************************/
 /* OpenBSD strlcpy */
+
 #if defined(SIR_IMPL_STRLCPY) && !defined(SIR_IMPL_STRLCPY_DEF)
 # undef strlcpy
 
@@ -95,12 +98,14 @@ _sir_strlcpy(char *dst, const char *src, size_t dsize)
 
   return src - osrc - 1; /* count does not include NUL */
 }
+
 # define strlcpy _sir_strlcpy
 # define SIR_IMPL_STRLCPY_DEF 1
 #endif /* SIR_IMPL_STRLCPY */
 
 /******************************************************************************/
 /* OpenBSD strnlen */
+
 #if (defined(SIR_IMPL_STRNLEN) || defined(SIR_IMPL_STRNDUP)) && \
      !defined(SIR_IMPL_STRNLEN_DEF)
 # undef strnlen
@@ -114,12 +119,14 @@ _sir_strnlen(const char *str, size_t maxlen)
 
   return (size_t)(cp - str);
 }
+
 # define strnlen _sir_strnlen
 # define SIR_IMPL_STRNLEN_DEF 1
 #endif /* SIR_IMPL_STRNLEN */
 
 /******************************************************************************/
 /* OpenBSD strndup */
+
 #if defined(SIR_IMPL_STRNDUP) && !defined(SIR_IMPL_STRNDUP_DEF)
 # undef strndup
 
@@ -142,4 +149,3 @@ _sir_strndup(const char *str, size_t maxlen)
 # define strndup _sir_strndup
 # define SIR_IMPL_STRNDUP_DEF 1
 #endif /* SIR_IMPL_STRNDUP */
-

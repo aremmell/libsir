@@ -225,7 +225,7 @@ void print_failed_test(const char* const name);
 bool mark_test_to_run(const char* const name, sir_test* tests, size_t num_tests);
 
 /** Prints a list of tests. */
-void print_test_list(sir_test* tests, size_t num_tests);
+void print_test_list(const sir_test* tests, size_t num_tests);
 
 /** Prints usage information. */
 void print_usage_info(const sir_cl_arg* args, size_t num_args);

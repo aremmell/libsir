@@ -28,6 +28,7 @@
  */
 #include "sir.h"
 #include "sir/helpers.h"
+#include "sir/internal.h"
 
 void report_error(void);
 
@@ -85,6 +86,10 @@ int main(void) {
         report_error();
         return EXIT_FAILURE;
     }
+
+    /* Set a friendly name for the current thread. */
+    static const char* thread_name = "example[main]";
+    (void)_sir_setthreadname(thread_name);
 
     /*
      * Configure and add a log file; don't log the process name or hostname,

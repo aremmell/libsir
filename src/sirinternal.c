@@ -240,7 +240,7 @@ bool _sir_cleanup(void) {
     return cleanup;
 }
 
-bool _sir_sanity(void) {
+bool _sir_isinitialized(void) {
 #if defined(__HAVE_ATOMIC_H__)
     if (_SIR_MAGIC == atomic_load(&_sir_magic))
         return true;
@@ -248,6 +248,12 @@ bool _sir_sanity(void) {
     if (_SIR_MAGIC == _sir_magic)
         return true;
 #endif
+    return false;
+}
+
+bool _sir_sanity(void) {
+    if (_sir_isinitialized())
+        return true;
     return _sir_seterror(_SIR_E_NOTREADY);
 }
 
@@ -788,8 +794,7 @@ const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
             if (name)
                 _sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_PIDSUFFIX, 1);
 
-            if (first)
-                first = false;
+            first = false;
         }
 
         if (!first)
@@ -936,6 +941,11 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, const sir_syslog_dest
 
     syslog(syslog_level, "%s", buf->message);
     return true;
+# else
+    SIR_UNUSED(level);
+    SIR_UNUSED(buf);
+    SIR_UNUSED(ctx);
+    return false;
 # endif
 #else
     SIR_UNUSED(level);
@@ -1009,7 +1019,7 @@ bool _sir_syslog_close(sir_syslog_dest* ctx) {
     }
 
 # if defined(SIR_OS_LOG_ENABLED)
-    /* evidently, you don't need to close the handle returned from os_log_create(), and
+    /* Evidently, you don't need to close the handle returned from os_log_create(), and
      * if you make that call again, you'll get the same cached value. so let's keep the
      * value we've got in the global context. */
     _sir_setbitslow(&ctx->_state.mask, SIRSL_IS_OPEN);
@@ -1020,6 +1030,9 @@ bool _sir_syslog_close(sir_syslog_dest* ctx) {
     _sir_setbitslow(&ctx->_state.mask, SIRSL_IS_OPEN);
     _sir_selflog("closed log");
     return true;
+# else
+    SIR_UNUSED(ctx);
+    return false;
 # endif
 #else
     SIR_UNUSED(ctx);
@@ -1166,7 +1179,11 @@ pid_t _sir_gettid(void) {
 #elif defined(__SOLARIS__) || defined(__NetBSD__) || defined(__HURD__) || \
       defined(__DragonFly__) || defined(__CYGWIN__) || defined(_AIX) || \
       defined(__EMSCRIPTEN__)
+# if defined(__CYGWIN__)
+    tid = (pid_t)(uintptr_t)pthread_self();
+# else
     tid = (pid_t)pthread_self();
+# endif
 #elif defined(__HAIKU__)
     tid = get_pthread_thread_id(pthread_self());
 #elif defined(__linux__) || defined(__serenity__)

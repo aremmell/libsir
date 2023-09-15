@@ -15,6 +15,11 @@ RUN cd ~user && \
     cd .wine/drive_c/Program\ Files\ \(x86\)/ && \
     mkdir -p Embarcadero/Studio && \
     cd Embarcadero/Studio && \
-    curl -fsSL ${URL:-http://192.168.1.187:8088/~jhj/cache/EMB22.tar} | tar xvf -
+    curl -fsSL ${URL:-http://192.168.1.187:8088/~jhj/cache/EMB22.tar} | tar xvf - && \
+    dnf -y clean all && \
+    rm -rf ~/.cache && \
+    rm -rf /var/tmp/* && \
+    rm -rf /var/log/dnf* && \
+    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true)
 
 USER 10000

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # libsir Python module setup script
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
@@ -28,7 +28,7 @@ sir_module = Extension(
 )
 
 setup(name='sir',
-    version='2.2.3',
+    version='2.2.4',
     author="libsir contributors",
     description="""The Standard Incident Reporter Library""",
     ext_modules=[sir_module],
