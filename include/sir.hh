@@ -655,7 +655,7 @@ namespace sir
         logger(const logger&&) = delete;
 
         virtual ~logger() {
-            if (RAII && !_cleanup()) {
+            if (RAII && !cleanup()) {
                 SIR_ASSERT(false);
             }
         }
@@ -663,12 +663,16 @@ namespace sir
         logger& operator=(const logger&) = delete;
         logger& operator=(const logger&&) = delete;
 
-        bool init() noexcept {
-            return _initialized ? false: _init();
+        bool init() const noexcept {
+            return is_initialized() ? false: _init();
         }
 
-        bool cleanup() noexcept {
-            return _initialized ? _cleanup() : false;
+        bool cleanup() const noexcept {
+            return is_initialized() ? sir_cleanup() : false;
+        }
+
+        bool is_initialized() const noexcept {
+            return sir_isinitialized();
         }
 
         /** Wraps ::sir_geterror. */
@@ -789,19 +793,13 @@ namespace sir
         }
 
     protected:
-        bool _init() {
+        bool _init() const noexcept {
             sirinit si {};
             if (bool init = _policy.get_init_data(si) && sir_init(&si) &&
                 _policy.on_init_complete(); !init) {
                 return false;
             }
-            return _initialized = true;
-        }
-
-        bool _cleanup() {
-            bool cleanup = sir_cleanup();
-            _initialized = false;
-            return cleanup;
+            return true;
         }
 
     protected:
