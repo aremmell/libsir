@@ -246,7 +246,6 @@ bool sirtest_syslog(void);
  */
 bool sirtest_os_log(void);
 
-
 /**
  * @test sirtest_filesystem
  * @brief Ensure the proper functionality of portable filesystem implementation.
