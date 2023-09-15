@@ -78,8 +78,9 @@ int main(int argc, char** argv) {
 
             print_test_intro(ran + 1, tgt_tests, test.name);
 
-            if (test.pass = test.fn(); test.pass)
+            if (test.pass = test.fn(); test.pass) {
                 passed++;
+            }
 
             ran++;
 
@@ -91,15 +92,18 @@ int main(int argc, char** argv) {
         if (passed != tgt_tests) {
             print_failed_test_intro(tgt_tests, passed);
 
-            for (const auto& test : sirxx_tests)
-                if (!test.pass)
+            for (const auto& test : sirxx_tests) {
+                if (!test.pass) {
                     print_failed_test(test.name);
+                }
+            }
 
             (void)printf("\n");
         }
 
-        if (cl_cfg.wait)
+        if (cl_cfg.wait) {
             wait_for_keypress();
+        }
 
         return passed == tgt_tests ? EXIT_SUCCESS : EXIT_FAILURE;
     } catch (const std::exception& ex) {
