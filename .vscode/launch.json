@@ -2,6 +2,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "(lldb) Attach (sirtests++)",
+            "type": "cppdbg",
+            "request": "attach",
+            "program": "${workspaceFolder}/build/bin/sirtests++",
+            "MIMode": "lldb"
+        },
+        {
             "name": "(lldb) Launch (sirtests++)",
             "type": "cppdbg",
             "request": "launch",
