@@ -59,7 +59,7 @@ Linux/x86_64 (G++, GCC):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CC="ccache gcc"
     - export CXX="ccache g++"
@@ -67,15 +67,19 @@ Linux/x86_64 (G++, GCC):
     - ${CXX:?} --version
     - make
     - make tests++
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
     - build/bin/sirtests++
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -99,7 +103,7 @@ Linux/i686 (G++, GCC):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CFLAGS="-m32"
     - export CXXFLAGS="-m32 -DSIR_NO_BOOST_FORMAT=1"
@@ -110,15 +114,19 @@ Linux/i686 (G++, GCC):
     - ${CXX:?} --version
     - make
     - make tests++
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
     - build/bin/sirtests++
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -142,19 +150,23 @@ Linux/x86_64 (musl-libc, G++, GCC):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CC="ccache musl-gcc"
     - ${CC:?} --version
     - make
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -178,7 +190,7 @@ Linux/x86_64 (Clang++, Clang):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CC="ccache clang"
     - export CXX="ccache clang++"
@@ -186,15 +198,19 @@ Linux/x86_64 (Clang++, Clang):
     - ${CXX:?} --version
     - make
     - make tests++
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
     - build/bin/sirtests++
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -218,7 +234,7 @@ Linux/i686 (Clang++, Clang):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CFLAGS="-m32"
     - export CXXFLAGS="-m32 -DSIR_NO_BOOST_FORMAT=1"
@@ -229,15 +245,18 @@ Linux/i686 (Clang++, Clang):
     - ${CXX:?} --version
     - make
     - make tests++
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ... echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
     - build/bin/sirtests++
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -261,7 +280,7 @@ Linux/x86_64 (AOCC++, AOCC):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - . /opt/AMD/aocc-compiler-4.1.0/setenv_AOCC.sh
     - export CC="ccache clang"
@@ -270,15 +289,19 @@ Linux/x86_64 (AOCC++, AOCC):
     - ${CXX:?} --version
     - make
     - make tests++
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
     - build/bin/sirtests++
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -302,7 +325,7 @@ Linux/i686 (AOCC++, AOCC):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - . /opt/AMD/aocc-compiler-4.1.0/setenv_AOCC.sh
     - export CC="ccache clang"
@@ -314,15 +337,19 @@ Linux/i686 (AOCC++, AOCC):
     - ${CXX:?} --version
     - make
     - make tests++
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
     - build/bin/sirtests++
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -346,20 +373,24 @@ Linux/x86_64 (Intel C Classic, ICC):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - . /opt/intel/oneapi/setvars.sh
     - export CC="ccache icc"
     - ${CC:?} -diag-disable=10441 --version
     - make
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -383,7 +414,7 @@ Linux/x86_64 (Intel oneAPI, ICPX, ICX):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - . /opt/intel/oneapi/setvars.sh
     - export CC="ccache icx"
@@ -392,15 +423,19 @@ Linux/x86_64 (Intel oneAPI, ICPX, ICX):
     - ${CXX:?} --version
     - make
     - make tests++
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
     - build/bin/sirtests++
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -424,19 +459,23 @@ Linux/x86_64 (Oracle Studio C):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CC="ccache /opt/oracle/developerstudio-latest/bin/suncc -m64"
     - ${CC:?} -V
     - make
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -460,21 +499,25 @@ Linux/i686 (Oracle Studio C):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CC="ccache /opt/oracle/developerstudio-latest/bin/suncc"
     - export CFLAGS="-m32"
     - export LDFLAGS="-m32"
     - ${CC:?} -V
     - make
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -499,7 +542,7 @@ Linux/x86_64 (NVIDIA HPC SDK C++, C):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - NVC="$(command -v /opt/nvidia/hpc_sdk/Linux_x86_64/*/compilers/bin/nvc | sort -V | head -n 1)"
     - export NVC
@@ -511,15 +554,19 @@ Linux/x86_64 (NVIDIA HPC SDK C++, C):
     - ${CXX:?} -V
     - make
     - make tests++
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
     - build/bin/sirtests++
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -543,19 +590,23 @@ Linux/x86_64 (Chibicc, C):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/chibicc:${PATH:?}"
     - export CC="ccache chibicc"
     - make
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -579,7 +630,7 @@ Windows/x64 (LLVM-MinGW, Clang++, Clang):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
     - export CC="x86_64-w64-mingw32-clang"
@@ -593,10 +644,12 @@ Windows/x64 (LLVM-MinGW, Clang++, Clang):
     - cp -f /opt/llvm-mingw/x86_64-w64-mingw32/bin/libunwind.dll build/bin
     - cp -f /opt/llvm-mingw/x86_64-w64-mingw32/bin/libc++.dll build/bin
     - rm -f build/bin/mcmb.exe
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
@@ -607,7 +660,9 @@ Windows/x64 (LLVM-MinGW, Clang++, Clang):
     - mv -f screenlog.0 sirtests.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests++.out
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -633,7 +688,7 @@ Windows/Arm (LLVM-MinGW, Clang++, Clang):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
     - export CC="armv7-w64-mingw32-clang"
@@ -647,7 +702,9 @@ Windows/Arm (LLVM-MinGW, Clang++, Clang):
     - cp -f /opt/llvm-mingw/armv7-w64-mingw32/bin/libunwind.dll build/bin
     - cp -f /opt/llvm-mingw/armv7-w64-mingw32/bin/libc++.dll build/bin
     - rm -f build/bin/mcmb.exe
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
   dependencies: []
   artifacts:
@@ -670,7 +727,7 @@ Windows/Arm64 (LLVM-MinGW, Clang++, Clang):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
     - export CC="aarch64-w64-mingw32-clang"
@@ -684,7 +741,9 @@ Windows/Arm64 (LLVM-MinGW, Clang++, Clang):
     - cp -f /opt/llvm-mingw/aarch64-w64-mingw32/bin/libunwind.dll build/bin
     - cp -f /opt/llvm-mingw/aarch64-w64-mingw32/bin/libc++.dll build/bin
     - rm -f build/bin/mcmb.exe
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
   dependencies: []
   artifacts:
@@ -710,7 +769,7 @@ Linux/x86_64 (AMD Open64, C):
     - *Configuration
     - /opt/x86_open64-4.5.2.1/bin/opencc --version
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/x86_open64-4.5.2.1/bin:${PATH:?}"
     - export CC="opencc"
@@ -719,14 +778,18 @@ Linux/x86_64 (AMD Open64, C):
     - export CFLAGS="-Iinclude -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers -Wno-strict-aliasing -fno-strict-aliasing -fPIC -O3"
     - export LDFLAGS="-lmcompat"
     - make
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -750,7 +813,7 @@ Windows/i686 (LLVM-MinGW, Clang++, Clang):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
     - export CC="i686-w64-mingw32-clang"
@@ -764,10 +827,12 @@ Windows/i686 (LLVM-MinGW, Clang++, Clang):
     - cp -f /opt/llvm-mingw/i686-w64-mingw32/bin/libunwind.dll build/bin
     - cp -f /opt/llvm-mingw/i686-w64-mingw32/bin/libc++.dll build/bin
     - rm -f build/bin/mcmb.exe
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
@@ -778,7 +843,9 @@ Windows/i686 (LLVM-MinGW, Clang++, Clang):
     - mv -f screenlog.0 sirtests.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests++.out
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -804,7 +871,7 @@ Android/x86_64 (API Level 21, Clang++, Clang):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
     - export LDFLAGS="-static"
@@ -814,15 +881,19 @@ Android/x86_64 (API Level 21, Clang++, Clang):
     - ${CXX:?} --version
     - make SIR_NO_PLUGINS=1
     - make tests++ SIR_NO_PLUGINS=1
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
     - build/bin/sirtests++
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -846,7 +917,7 @@ Android/i686 (API Level 21, Clang++, Clang):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
     - export LDFLAGS="-static"
@@ -856,15 +927,19 @@ Android/i686 (API Level 21, Clang++, Clang):
     - ${CXX:?} --version
     - make SIR_NO_PLUGINS=1
     - make tests++ SIR_NO_PLUGINS=1
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
     - build/bin/sirtests++
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -888,7 +963,7 @@ Android/ARM64 (API Level 21, Clang++, Clang):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
     - export CC="ccache aarch64-linux-android21-clang"
@@ -897,7 +972,9 @@ Android/ARM64 (API Level 21, Clang++, Clang):
     - ${CXX:?} --version
     - make
     - make tests++
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
   dependencies: []
   artifacts:
@@ -920,7 +997,7 @@ Android/ARMv7A (API Level 21, Clang++, Clang):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
     - export CC="ccache armv7a-linux-androideabi21-clang"
@@ -929,7 +1006,9 @@ Android/ARMv7A (API Level 21, Clang++, Clang):
     - ${CXX:?} --version
     - make
     - make tests++
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
   dependencies: []
   artifacts:
@@ -952,7 +1031,7 @@ Android/x86_64 (API Level 33, Clang++, Clang):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
     - export LDFLAGS="-static"
@@ -960,15 +1039,19 @@ Android/x86_64 (API Level 33, Clang++, Clang):
     - export CXX="ccache x86_64-linux-android33-clang++"
     - make SIR_NO_PLUGINS=1
     - make tests++ SIR_NO_PLUGINS=1
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
     - build/bin/sirtests++
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -992,7 +1075,7 @@ Android/i686 (API Level 33, Clang++, Clang):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
     - export LDFLAGS="-static"
@@ -1002,15 +1085,19 @@ Android/i686 (API Level 33, Clang++, Clang):
     - ${CXX:?} --version
     - make SIR_NO_PLUGINS=1
     - make tests++ SIR_NO_PLUGINS=1
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
     - build/bin/sirtests++
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -1034,14 +1121,16 @@ Android/ARM64 (API Level 33, Clang++, Clang):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
     - export CC="ccache aarch64-linux-android33-clang"
     - export CXX="ccache aarch64-linux-android33-clang++"
     - make
     - make tests++
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
   dependencies: []
   artifacts:
@@ -1064,7 +1153,7 @@ Android/ARMv7A (API Level 33, Clang++, Clang):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
     - export CC="ccache armv7a-linux-androideabi33-clang"
@@ -1073,7 +1162,9 @@ Android/ARMv7A (API Level 33, Clang++, Clang):
     - ${CXX:?} --version
     - make
     - make tests++
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
   dependencies: []
   artifacts:
@@ -1096,7 +1187,7 @@ Windows/Arm64 (MSVC, C++, C):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/msvc/bin/arm64:${PATH:?}"
     - cl.exe 2>&1 | head -3 | grep -v '^$' || true
@@ -1108,7 +1199,9 @@ Windows/Arm64 (MSVC, C++, C):
     - rm -f example.obj > /dev/null 2>&1 || true
     - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /wd4127 /DSIR_NO_PLUGINS=1
     - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
   dependencies: []
   artifacts:
@@ -1131,7 +1224,7 @@ Windows/Arm (MSVC, C++, C):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - PATH="/opt/msvc/bin/arm:${PATH:?}"
     - export PATH
@@ -1144,7 +1237,9 @@ Windows/Arm (MSVC, C++, C):
     - rm -f example.obj > /dev/null 2>&1 || true
     - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /wd4127 /DSIR_NO_PLUGINS=1
     - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
   dependencies: []
   artifacts:
@@ -1167,7 +1262,7 @@ Windows/x64 (MSVC, C++, C):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - PATH="/opt/msvc/bin/x64:${PATH:?}"
     - export PATH
@@ -1180,10 +1275,12 @@ Windows/x64 (MSVC, C++, C):
     - rm -f example.obj > /dev/null 2>&1 || true
     - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /wd4127 /DSIR_NO_PLUGINS=1
     - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
@@ -1194,7 +1291,9 @@ Windows/x64 (MSVC, C++, C):
     - mv -f screenlog.0 sirtests.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests++.out
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -1220,7 +1319,7 @@ Windows/i686 (MSVC, C++, C):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - PATH="/opt/msvc/bin/x86:${PATH:?}"
     - export PATH
@@ -1232,10 +1331,12 @@ Windows/i686 (MSVC, C++, C):
     - rm -f example.obj > /dev/null 2>&1 || true
     - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /wd4127 /DSIR_NO_PLUGINS=1
     - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
@@ -1246,7 +1347,9 @@ Windows/i686 (MSVC, C++, C):
     - mv -f screenlog.0 sirtests.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests++.out
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -1272,7 +1375,7 @@ Windows/x64 (MinGW-MSVCRT, G++, GCC):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
     - export CC="ccache x86_64-w64-mingw32-gcc"
@@ -1286,10 +1389,12 @@ Windows/x64 (MinGW-MSVCRT, G++, GCC):
     - cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/libstdc++-6.dll build/bin
     - cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/libgcc*.dll build/bin
     - rm -f build/bin/mcmb.exe
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
@@ -1300,7 +1405,9 @@ Windows/x64 (MinGW-MSVCRT, G++, GCC):
     - mv -f screenlog.0 sirtests.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests++.out
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -1326,7 +1433,7 @@ Windows/x64 (MinGW-UCRT, G++, GCC):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
     - export CC="ccache x86_64-w64-mingw32ucrt-gcc"
@@ -1339,10 +1446,12 @@ Windows/x64 (MinGW-UCRT, G++, GCC):
     - cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/libstdc++-6.dll build/bin
     - cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/libgcc*.dll build/bin
     - rm -f build/bin/mcmb.exe
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
@@ -1353,7 +1462,9 @@ Windows/x64 (MinGW-UCRT, G++, GCC):
     - mv -f screenlog.0 sirtests.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests++.out
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -1379,7 +1490,7 @@ Windows/i686 (MinGW, G++, GCC):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
     - export CC="ccache i686-w64-mingw32-gcc"
@@ -1393,10 +1504,12 @@ Windows/i686 (MinGW, G++, GCC):
     - cp -f /usr/i686-w64-mingw32/sys-root/mingw/bin/libstdc++-6.dll build/bin
     - cp -f /usr/i686-w64-mingw32/sys-root/mingw/bin/libgcc*.dll build/bin
     - rm -f build/bin/mcmb.exe
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
@@ -1407,7 +1520,9 @@ Windows/i686 (MinGW, G++, GCC):
     - mv -f screenlog.0 sirtests.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests++.out
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -1433,7 +1548,7 @@ Cygwin/x86_64 (G++, GCC):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CC="ccache x86_64-pc-cygwin-gcc"
     - export CXX="ccache x86_64-pc-cygwin-g++"
@@ -1441,7 +1556,9 @@ Cygwin/x86_64 (G++, GCC):
     - ${CXX:?} --version
     - make
     - make tests++
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
   dependencies: []
   artifacts:
@@ -1464,12 +1581,14 @@ Cygwin/i686 (GCC):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CC="ccache i686-pc-cygwin-gcc"
     - ${CC:?} --version
     - make
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
   dependencies: []
   artifacts:
@@ -1497,17 +1616,21 @@ Coverage:
   script:
     - *Configuration
     - |
-      # Coverage ...
+      # Start of Coverage ...
       echo -e "section_start:`date +%s`:Cover_section[collapsed=true]\r\e[0K\033[0;36mCoverage test ...\033[0m" || true
     - export NO_CLEANUP="1"
     - export NO_APTSETUP="1"
     - ./.coveralls.sh
-    - echo -e "section_end:`date +%s`:Cover_section\r\e[0K" || true
     - |
-      # Compress artifacts ...
+      # End of Coverage ...
+      echo -e "section_end:`date +%s`:Cover_section\r\e[0K" || true
+    - |
+      # Start of Compress artifacts ...
       echo -e "section_start:`date +%s`:Comp_section[collapsed=true]\r\e[0K\033[0;36mCompress artifacts ...\033[0m" || true
     - lzip -9 -s 512Mi -v $(ls -1 ./coverage* | grep -Ev '(\.html$|\.css$)' 2> /dev/null || true) || true
-    - echo -e "section_end:`date +%s`:Comp_section\r\e[0K" || true
+    - |
+      # End of Compress artifacts ...
+      echo -e "section_end:`date +%s`:Comp_section\r\e[0K" || true
   dependencies: []
   artifacts:
     when: always
@@ -1531,7 +1654,7 @@ Style check:
   script:
     - *Configuration
     - |
-      # Style ...
+      # Start of Style ...
       echo -e "section_start:`date +%s`:Style_section[collapsed=false]\r\e[0K\033[0;36mStyle test ...\033[0m" || true
     - |
       # Checking for bad file names ...
@@ -1550,7 +1673,9 @@ Style check:
       # Checking for extra newlines ...
       git ls-files '*.c' '*.h' '*.cc' '*.hh' | xargs -L1 sed -i -e '/./,$!d' -e :a -e '/^\n*$/{$d;N;ba' -e '}' || true
       git diff | grep '.' && { printf '%s\n' "whitespace check failed!"; exit 1; } || true
-    - echo -e "section_end:`date +%s`:Style_section\r\e[0K" || true
+    - |
+      # End of Style ...
+      echo -e "section_end:`date +%s`:Style_section\r\e[0K" || true
   dependencies: []
   retry: 2
   interruptible: true
@@ -1569,7 +1694,7 @@ MSVC Static Analyzer:
   script:
     - *Configuration
     - |
-      # MSVC Analyzer ...
+      # Start of MSVC Analyzer ...
       echo -e "section_start:`date +%s`:MSVCA_section[collapsed=true]\r\e[0K\033[0;36mMSVC Analyzer test ...\033[0m" || true
     - PATH="/opt/msvc/bin/x64:${PATH:?}"
     - export PATH
@@ -1580,7 +1705,9 @@ MSVC Static Analyzer:
     - rm -f example.obj > /dev/null 2>&1 || true
     - cl.exe tests/*.cc -c -Itests -Iinclude /GL /analyze /EHsc /Ob3 /volatile:iso /Oi /O2 /W4 /std:c++20 /wd4996 /wd28251 /wd4127 /sdl /DSIR_NO_PLUGINS=1
     - link.exe /LTCG /OUT:sirtests++.exe *.obj
-    - echo -e "section_end:`date +%s`:MSVCA_section\r\e[0K" || true
+    - |
+      # End of MSVC Analyzer ...
+      echo -e "section_end:`date +%s`:MSVCA_section\r\e[0K" || true
   dependencies: []
   artifacts:
     when: always
@@ -1603,10 +1730,12 @@ Clang Static Analyzer:
   script:
     - *Configuration
     - |
-      # Clang Analyzer ...
+      # Start of Clang Analyzer ...
       echo -e "section_start:`date +%s`:ClangA_section[collapsed=true]\r\e[0K\033[0;36mClang Analyzer test ...\033[0m" || true
     - ./.lint.sh scanbuild
-    - echo -e "section_end:`date +%s`:ClangA_section\r\e[0K" || true
+    - |
+      # End of Clang Analzyer ...
+      echo -e "section_end:`date +%s`:ClangA_section\r\e[0K" || true
   dependencies: []
   artifacts:
     when: always
@@ -1632,10 +1761,12 @@ Clang (Extra Warnings):
   script:
     - *Configuration
     - |
-      # Clang Extra Warnings ...
+      # Start of Clang Extra Warnings ...
       echo -e "section_start:`date +%s`:ClangEx_section[collapsed=true]\r\e[0K\033[0;36mClang Extra Warnings test ...\033[0m" || true
     - ./.lint.sh extra
-    - echo -e "section_end:`date +%s`:ClangEx_section\r\e[0K" || true
+    - |
+      # End of Clang Extra Warnings...
+      echo -e "section_end:`date +%s`:ClangEx_section\r\e[0K" || true
   dependencies: []
   artifacts:
     when: always
@@ -1661,10 +1792,12 @@ GCC (Extra Warnings):
   script:
     - *Configuration
     - |
-      # GCC Extra Warnings ...
+      # Start of GCC Extra Warnings ...
       echo -e "section_start:`date +%s`:GCCEx_section[collapsed=true]\r\e[0K\033[0;36mGCC Extra Warnings test ...\033[0m" || true
     - ./.lint.sh gccextra
-    - echo -e "section_end:`date +%s`:GCCEx_section\r\e[0K" || true
+    - |
+      # End of GCC Extra Warnings ...
+      echo -e "section_end:`date +%s`:GCCEx_section\r\e[0K" || true
   dependencies: []
   artifacts:
     when: always
@@ -1687,10 +1820,12 @@ Flawfinder:
   script:
     - *Configuration
     - |
-      # Flawfinder ...
+      # Start of Flawfinder ...
       echo -e "section_start:`date +%s`:Flawfinder_section[collapsed=true]\r\e[0K\033[0;36mFlawfinder ...\033[0m" || true
     - ./.lint.sh flawfinder
-    - echo -e "section_end:`date +%s`:Flawfinder_section\r\e[0K" || true
+    - |
+      # End of Flawfinder ...
+      echo -e "section_end:`date +%s`:Flawfinder_section\r\e[0K" || true
   dependencies: []
   retry: 2
   interruptible: true
@@ -1707,12 +1842,14 @@ Cppcheck:
   script:
     - *Configuration
     - |
-      # Cppcheck ...
+      # Start of Cppcheck ...
       echo -e "section_start:`date +%s`:CppcheckA_section[collapsed=true]\r\e[0K\033[0;36mCppcheck ...\033[0m" || true
     - ./.lint.sh cppcheck
     - mkdir -p cppcheck > /dev/null 2>&1 || true
     - touch cppcheck.xml > /dev/null 2>&1 || true
-    - echo -e "section_end:`date +%s`:CppcheckA_section\r\e[0K" || true
+    - |
+      # End of Cppcheck ...
+      echo -e "section_end:`date +%s`:CppcheckA_section\r\e[0K" || true
   dependencies: []
   artifacts:
     when: always
@@ -1735,10 +1872,12 @@ Valgrind:
   script:
     - *Configuration
     - |
-      # Valgrind ...
+      # Start of Valgrind ...
       echo -e "section_start:`date +%s`:Valgrind_section[collapsed=true]\r\e[0K\033[0;36mValgrind ...\033[0m" || true
     - ./.lint.sh valgrind
-    - echo -e "section_end:`date +%s`:Valgrind_section\r\e[0K" || true
+    - |
+      # End of Valgrind
+      echo -e "section_end:`date +%s`:Valgrind_section\r\e[0K" || true
   dependencies: []
   artifacts:
     when: always
@@ -1761,10 +1900,12 @@ REUSE:
   script:
     - *Configuration
     - |
-      # REUSE ...
+      # Start of REUSE ...
       echo -e "section_start:`date +%s`:REUSE_section[collapsed=false]\r\e[0K\033[0;36mREUSE ...\033[0m" || true
     - ./.lint.sh reuse
-    - echo -e "section_end:`date +%s`:REUSE_section\r\e[0K" || true
+    - |
+      # End of REUSE ...
+      echo -e "section_end:`date +%s`:REUSE_section\r\e[0K" || true
   dependencies: []
   retry: 2
   interruptible: true
@@ -1777,22 +1918,26 @@ PVS-Studio:
     - Docker-x64
     - Linux
   image:
-    name: registry.gitlab.com/libsir/libsir/base:latest
+    name: registry.gitlab.com/libsir/libsir/pvs:latest
   script:
     - *Configuration
     - |
-      # PVS-Studio Configuration ...
+      # Start of PVS-Studio Configuration ...
       echo -e "section_start:`date +%s`:PVSConfig_section[collapsed=true]\r\e[0K\033[0;36mPVS-Studio Configuration ...\033[0m" || true
     - pvs-studio-analyzer credentials "${PVS_STUDIO_NAME:?}" "${PVS_STUDIO_KEY:?}" || true
-    - echo -e "section_end:`date +%s`:PVSConfig_section\r\e[0K" || true
     - |
-      # PVS-Studio Analysis ...
+      # End of PVS-Studio Configuration ...
+      echo -e "section_end:`date +%s`:PVSConfig_section\r\e[0K" || true
+    - |
+      # Start of PVS-Studio Analysis ...
       echo -e "section_start:`date +%s`:PVSStudio_section[collapsed=true]\r\e[0K\033[0;36mPVS-Studio Analysis ...\033[0m" || true
     - pvs-studio --version
     - ./.lint.sh pvs
     - mkdir -p pvsreport > /dev/null 2>&1 || true
     - touch pvs.log > /dev/null 2>&1 || true
-    - echo -e "section_end:`date +%s`:PVSStudio_section\r\e[0K" || true
+    - |
+      # End of PVS-Studio Analysis ...
+      echo -e "section_end:`date +%s`:PVSStudio_section\r\e[0K" || true
   dependencies: []
   artifacts:
     when: always
@@ -1821,10 +1966,12 @@ Coverity:
   script:
     - *Configuration
     - |
-      # Coverity Submission ...
+      # Start of Coverity submission ...
       echo -e "section_start:`date +%s`:Coverity_section[collapsed=true]\r\e[0K\033[0;36mCoverity Submission ...\033[0m" || true
     - ./.coverity.sh
-    - echo -e "section_end:`date +%s`:Coverity_section\r\e[0K" || true
+    - |
+      # End of Coverity submission ...
+      echo -e "section_end:`date +%s`:Coverity_section\r\e[0K" || true
   dependencies: []
   artifacts:
     when: always
@@ -1845,17 +1992,19 @@ Windows/i686 (OrangeC, C):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export WINEDEBUG=-all
     - wine64 /opt/orangec/bin/occ.exe --version
     - mkdir -p build/bin
     - wine64 /opt/orangec/bin/occ.exe /1 /O2 -Iinclude src/*.c example/*.c -o build/bin/sirexample.exe -DSIR_NO_PLUGINS=1
     - wine64 /opt/orangec/bin/occ.exe /1 /O2 -Iinclude src/*.c tests/*.c -o build/bin/sirtests.exe -DSIR_NO_PLUGINS=1
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
@@ -1863,7 +2012,9 @@ Windows/i686 (OrangeC, C):
     - mv -f screenlog.0 sirexample.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests.out
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -1889,7 +2040,7 @@ Linux/x86_64 (DMD64 ImportC, C):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin
     - touch build/bin/file.exists
@@ -1905,14 +2056,18 @@ Linux/x86_64 (DMD64 ImportC, C):
     - ln -s ../tests/* .
     - dmd -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirtests
     - cd ..
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -1936,7 +2091,7 @@ Linux/i686 (DMD64 ImportC, C):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin
     - touch build/bin/file.exists
@@ -1952,14 +2107,18 @@ Linux/i686 (DMD64 ImportC, C):
     - ln -s ../tests/* .
     - dmd -m32 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirtests
     - cd ..
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -1985,7 +2144,7 @@ GCC Static Analyzer:
   script:
     - *Configuration
     - |
-      # GCC Static Analyzer ...
+      # Start of GCC Static Analyzer ...
       echo -e "section_start:`date +%s`:GCCSA_section[collapsed=true]\r\e[0K\033[0;36mGCC Static Analyzer ...\033[0m" || true
     - export CC="gcc"
     - export CXX="g++"
@@ -1995,16 +2154,20 @@ GCC Static Analyzer:
     - make
     - make tests++
     - make clean
-    - echo -e "section_end:`date +%s`:GCCSA_section\r\e[0K" || true
     - |
-      # GCC Static Analyzer - Taint ...
+      # ENd of GCC Static Analyzer ...
+      echo -e "section_end:`date +%s`:GCCSA_section\r\e[0K" || true
+    - |
+      # Start of GCC Static Analyzer - Taint ...
       echo -e "section_start:`date +%s`:GCCST_section[collapsed=true]\r\e[0K\033[0;36mGCC Static Analyzer - Taint ...\033[0m" || true
     - export CFLAGS="-g -fanalyzer -fanalyzer-checker=taint -fanalyzer-verbosity=3 -Werror -DSIR_NO_STD_FORMAT=1"
     - make
     - make tests++
     - make clean
     - mkdir -p build > /dev/null 2>&1 || true
-    - echo -e "section_end:`date +%s`:GCCST_section\r\e[0K" || true
+    - |
+      # End of GCC Static Analyzer - Taint ...
+      echo -e "section_end:`date +%s`:GCCST_section\r\e[0K" || true
   dependencies: []
   artifacts:
     when: always
@@ -2026,7 +2189,7 @@ Windows/x64 (Embarcadero, C):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export WINEDEBUG=-all
     - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc64.exe --version
@@ -2035,10 +2198,12 @@ Windows/x64 (Embarcadero, C):
     - mv tests.exe build/bin/sirtests.exe
     - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc64.exe example/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
     - mv example.exe build/bin/sirexample.exe
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
@@ -2046,7 +2211,9 @@ Windows/x64 (Embarcadero, C):
     - mv -f screenlog.0 sirexample.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests.out
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -2072,7 +2239,7 @@ Windows/i686 (Embarcadero, C):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export WINEDEBUG=-all
     - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc32x.exe --version
@@ -2081,10 +2248,12 @@ Windows/i686 (Embarcadero, C):
     - mv tests.exe build/bin/sirtests.exe
     - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc32x.exe example/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
     - mv example.exe build/bin/sirexample.exe
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
@@ -2092,7 +2261,9 @@ Windows/i686 (Embarcadero, C):
     - mv -f screenlog.0 sirexample.out
     - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests.out
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -2120,7 +2291,7 @@ Clang Sanitizer (UB, 32-bit, C):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build32_section[collapsed=true]\r\e[0K\033[0;36mBuild 32-bit ...\033[0m" || true
     - export UBSAN_OPTIONS="print_stacktrace=1"
     - export UBSAN_FLAGS="-fsanitize=undefined,float-divide-by-zero,unsigned-integer-overflow,implicit-conversion,local-bounds,nullability-arg,nullability-assign,nullability-return"
@@ -2129,14 +2300,18 @@ Clang Sanitizer (UB, 32-bit, C):
     - export LDFLAGS="${UBSAN_FLAGS:?}"
     - ${CC:?} --version
     - make SIR_DEBUG=1 SIR_SELFLOG=1
-    - echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test32_section[collapsed=true]\r\e[0K\033[0;36mTest 32-bit ...\033[0m" || true
     - stdbuf -o L ./build/bin/sirexample 2>&1
     - stdbuf -o L ./build/bin/sirtests 2>&1
-    - echo -e "section_end:`date +%s`:Test32_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test32_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -2162,7 +2337,7 @@ Clang Sanitizer (UB, 64-bit, C):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build64_section[collapsed=true]\r\e[0K\033[0;36mBuild 64-bit ...\033[0m" || true
     - export UBSAN_OPTIONS="print_stacktrace=1"
     - export UBSAN_FLAGS="-fsanitize=undefined,float-divide-by-zero,unsigned-integer-overflow,implicit-conversion,local-bounds,nullability-arg,nullability-assign,nullability-return"
@@ -2171,14 +2346,18 @@ Clang Sanitizer (UB, 64-bit, C):
     - export LDFLAGS="${UBSAN_FLAGS:?}"
     - ${CC:?} --version
     - make SIR_DEBUG=1 SIR_SELFLOG=1
-    - echo -e "section_end:`date +%s`:Build64_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build64_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test64_section[collapsed=true]\r\e[0K\033[0;36mTest 64-bit ...\033[0m" || true
     - stdbuf -o L ./build/bin/sirexample 2>&1
     - stdbuf -o L ./build/bin/sirtests 2>&1
-    - echo -e "section_end:`date +%s`:Test64_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test64_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -2204,7 +2383,7 @@ Clang Sanitizer (Memory, C):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export MSAN_FLAGS="-fsanitize=memory -fsanitize-memory-track-origins=2"
     - export MSAN_CFLAGS="${MSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
@@ -2212,14 +2391,18 @@ Clang Sanitizer (Memory, C):
     - export LDFLAGS="${MSAN_FLAGS:?}"
     - ${CC:?} --version
     - make SIR_DEBUG=1 SIR_SELFLOG=1
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - stdbuf -o L ./build/bin/sirexample 2>&1
     - stdbuf -o L ./build/bin/sirtests 2>&1
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -2245,7 +2428,7 @@ Clang Sanitizer (Address, 64-bit, C++, C):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build64_section[collapsed=true]\r\e[0K\033[0;36mBuild 64-bit ...\033[0m" || true
     - export ASAN_OPTIONS="check_initialization_order=1"
     - export ASAN_FLAGS="-fsanitize=address -fsanitize-address-use-after-scope"
@@ -2257,15 +2440,19 @@ Clang Sanitizer (Address, 64-bit, C++, C):
     - ${CXX:?} --version
     - make SIR_DEBUG=1 SIR_SELFLOG=1
     - make tests++ SIR_DEBUG=1 SIR_SELFLOG=1
-    - echo -e "section_end:`date +%s`:Build64_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build64_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test64_section[collapsed=true]\r\e[0K\033[0;36mTest 64-bit ...\033[0m" || true
     - stdbuf -o L ./build/bin/sirexample 2>&1
     - stdbuf -o L ./build/bin/sirtests 2>&1
     - stdbuf -o L ./build/bin/sirtests++ 2>&1
-    - echo -e "section_end:`date +%s`:Test64_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test64_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -2291,7 +2478,7 @@ Clang Sanitizer (Address, 32-bit, C++, C):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build32_section[collapsed=true]\r\e[0K\033[0;36mBuild 32-bit ...\033[0m" || true
     - export ASAN_OPTIONS="check_initialization_order=1"
     - export ASAN_FLAGS="-fsanitize=address -fsanitize-address-use-after-scope"
@@ -2303,15 +2490,19 @@ Clang Sanitizer (Address, 32-bit, C++, C):
     - ${CXX:?} --version
     - make SIR_DEBUG=1 SIR_SELFLOG=1
     - env CXXFLAGS="-D__MINGW32__ -U__MINGW64_VERSION_MAJOR" make tests++ SIR_DEBUG=1 SIR_SELFLOG=1
-    - echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test32_section[collapsed=true]\r\e[0K\033[0;36mTest 32-bit ...\033[0m" || true
     - stdbuf -o L ./build/bin/sirexample 2>&1
     - stdbuf -o L ./build/bin/sirtests 2>&1
     - stdbuf -o L ./build/bin/sirtests++ 2>&1
-    - echo -e "section_end:`date +%s`:Test32_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test32_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -2336,10 +2527,12 @@ DUMA:
     - *Configuration
     - duma true
     - |
-      # DUMA ...
+      # Start of DUMA ...
       echo -e "section_start:`date +%s`:DUMA_section[collapsed=true]\r\e[0K\033[0;36mDUMA ...\033[0m" || true
     - ./.lint.sh duma
-    - echo -e "section_end:`date +%s`:DUMA_section\r\e[0K" || true
+    - |
+      # End of DUMA ...
+      echo -e "section_end:`date +%s`:DUMA_section\r\e[0K" || true
   dependencies: []
   artifacts:
     when: always
@@ -2363,7 +2556,7 @@ Oracle Lint:
   script:
     - *Configuration
     - |
-      # Lint ...
+      # Start of Lint ...
       echo -e "section_start:`date +%s`:Lint_section[collapsed=true]\r\e[0K\033[0;36mLint ...\033[0m" || true
     - /opt/oracle/developerstudio-latest/bin/lint -V
     - make clean
@@ -2374,7 +2567,9 @@ Oracle Lint:
     - ( grep "E_" orstlint.txt || exit 0 && exit 1 )
     - mkdir -p build > /dev/null 2>&1 || true
     - mkdir -p logs > /dev/null 2>&1 || true
-    - echo -e "section_end:`date +%s`:Lint_section\r\e[0K" || true
+    - |
+      # End of Lint ...
+      echo -e "section_end:`date +%s`:Lint_section\r\e[0K" || true
   dependencies: []
   artifacts:
     when: always
@@ -2398,7 +2593,7 @@ Linux/x86_64 (musl-libc, Kefir, C):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export KEFIR_RTINC="/opt/kefir-musl/include/kefir/runtime"
     - export PATH="/opt/kefir-musl/bin:${PATH:?}"
@@ -2406,14 +2601,18 @@ Linux/x86_64 (musl-libc, Kefir, C):
     - ${CC:?} --compiler-info
     - ${CC:?} --environment-info
     - make SIR_NO_PLUGINS=1
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -2437,7 +2636,7 @@ Linux/x86_64 (Kefir, C):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export KEFIR_RTINC="/opt/kefir/include/kefir/runtime"
     - export PATH="/opt/kefir/bin:${PATH:?}"
@@ -2445,14 +2644,18 @@ Linux/x86_64 (Kefir, C):
     - ${CC:?} --compiler-info
     - ${CC:?} --environment-info
     - make
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -2476,7 +2679,7 @@ Linux/x86_64 (uClibc-ng, G++, GCC):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="${HOME:?}/x-tools/x86_64-pc-linux-uclibc/x86_64-pc-linux-uclibc/bin:${HOME:?}/x-tools/x86_64-pc-linux-uclibc/bin:${PATH:?}"
     - export LDFLAGS="-static"
@@ -2486,15 +2689,19 @@ Linux/x86_64 (uClibc-ng, G++, GCC):
     - ${CXX:?} --version
     - make SIR_NO_PLUGINS=1
     - make tests++ SIR_NO_PLUGINS=1
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
     - build/bin/sirtests++
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -2518,7 +2725,7 @@ Linux/x86_64 (Circle C++, GCC):
   script:
     - *Configuration
     - |
-      # Build ...
+      # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CC="ccache gcc"
     - export CXX="ccache circle"
@@ -2526,15 +2733,19 @@ Linux/x86_64 (Circle C++, GCC):
     - ${CXX:?} --version
     - make
     - make tests++
-    - echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Test ...
+      # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - build/bin/sirexample
     - build/bin/sirtests
     - build/bin/sirtests++
-    - echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
