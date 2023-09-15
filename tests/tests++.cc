@@ -294,6 +294,13 @@ bool sir::tests::std_iostream_format() {
     log.debug_stream.write(str.c_str(), str.size()) << endl;
     _sir_eqland(pass, log.debug_stream.good());
 
+    TEST_MSG_0("overflow internal buffer...");
+    array<char, SIR_MAXMESSAGE + 100> large_buffer {};
+    large_buffer.fill('a');
+    large_buffer.data()[large_buffer.size() - 1] = '\0';
+
+    log.info_stream << large_buffer.data() << endl;
+    _sir_eqland(pass, log.info_stream.good());
 #else
     TEST_MSG_0(EMPH(BBLUE("std::iostream support not enabled; skipping")));
 #endif
