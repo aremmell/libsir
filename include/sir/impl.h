@@ -27,11 +27,14 @@
 #if defined(SIR_IMPL_STRLCAT) && !defined(SIR_IMPL_STRLCAT_DEF)
 # undef strlcat
 
-/* Appends src to string dst of size dsize (unlike strncat, dsize is the
+/*
+ * Appends src to string dst of size dsize (unlike strncat, dsize is the
  * full size of dst, not space left).  At most dsize-1 characters
  * will be copied.  Always NUL terminates (unless dsize <= strlen(dst)).
  * Returns strlen(src) + MIN(dsize, strlen(initial dst)).
- * If retval >= dsize, truncation occurred. */
+ * If retval >= dsize, truncation occurred.
+ */
+
 static inline size_t
 _sir_strlcat(char *dst, const char *src, size_t dsize)
 {
@@ -72,9 +75,12 @@ _sir_strlcat(char *dst, const char *src, size_t dsize)
 #if defined(SIR_IMPL_STRLCPY) && !defined(SIR_IMPL_STRLCPY_DEF)
 # undef strlcpy
 
-/* Copy string src to buffer dst of size dsize.  At most dsize-1
+/*
+ * Copy string src to buffer dst of size dsize.  At most dsize-1
  * chars will be copied.  Always NUL terminates (unless dsize == 0).
- * Returns strlen(src); if retval >= dsize, truncation occurred. */
+ * Returns strlen(src); if retval >= dsize, truncation occurred.
+ */
+
 static inline size_t
 _sir_strlcpy(char *dst, const char *src, size_t dsize)
 {
