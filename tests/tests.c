@@ -1427,7 +1427,7 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
         if (set_category)
             _sir_strncpy(si.d_syslog.category, SIR_MAX_SYSLOG_CAT, category, SIR_MAX_SYSLOG_CAT);
 
-        si_init = sir_init(&si);
+        si_init = sir_init(&si); //-V519
         _sir_eqland(pass, si_init);
 
         if (do_update)
