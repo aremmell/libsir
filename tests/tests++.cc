@@ -243,37 +243,37 @@ bool sir::tests::std_iostream_format() {
     TEST_MSG_0("all levels...");
 
     log.debug_stream << "Testing debug level" << endl;
-    pass &= log.debug_stream.good();
+    _sir_eqland(pass, log.debug_stream.good());
 
     log.info_stream << "Testing info level" << endl;
-    pass &= log.info_stream.good();
+    _sir_eqland(pass, log.info_stream.good());
 
     log.notice_stream << "Testing notice level" << endl;
-    pass &= log.notice_stream.good();
+    _sir_eqland(pass, log.notice_stream.good());
 
     log.warn_stream << "Testing warn level" << endl;
-    pass &= log.warn_stream.good();
+    _sir_eqland(pass, log.warn_stream.good());
 
     log.error_stream << "Testing error level" << endl;
-    pass &= log.error_stream.good();
+    _sir_eqland(pass, log.error_stream.good());
 
     log.crit_stream << "Testing crit level" << endl;
-    pass &= log.crit_stream.good();
+    _sir_eqland(pass, log.crit_stream.good());
 
     log.alert_stream << "Testing alert level" << endl;
-    pass &= log.alert_stream.good();
+    _sir_eqland(pass, log.alert_stream.good());
 
     log.emerg_stream << "Testing emerg level" << endl;
-    pass &= log.emerg_stream.good();
+    _sir_eqland(pass, log.emerg_stream.good());
 
     TEST_MSG_0("some simple, short messages...");
 
     log.debug_stream << "If you can see this, std::iostream is working." << flush;
-    pass &= log.debug_stream.good();
+    _sir_eqland(pass, log.debug_stream.good());
     log.debug_stream << "With flush as a deliminator," << flush;
-    pass &= log.debug_stream.good();
+    _sir_eqland(pass, log.debug_stream.good());
     log.debug_stream << "and newlines, too." << endl;
-    pass &= log.debug_stream.good();
+    _sir_eqland(pass, log.debug_stream.good());
 
     TEST_MSG_0("a longer message...");
 
@@ -285,14 +285,15 @@ bool sir::tests::std_iostream_format() {
                      << "Ne mucius quidam epicurei sea, te indoctum periculis per. "
                      << "Mel utinam latine praesent eu. Dicat consulatu inciderint "
                      << "duo ei, alterum concludaturque sit cu." << flush;
-    pass &= log.debug_stream.good();
+    _sir_eqland(pass, log.debug_stream.good());
 
     TEST_MSG_0("ostream::write()...");
 
     const auto str = std::string("This is my string. There are many like it, but "
         "this one is mine. I'm going to ostream::write it now.");
     log.debug_stream.write(str.c_str(), str.size()) << endl;
-    pass &= log.debug_stream.good();
+    _sir_eqland(pass, log.debug_stream.good());
+
 #else
     TEST_MSG_0(EMPH(BBLUE("std::iostream support not enabled; skipping")));
 #endif
