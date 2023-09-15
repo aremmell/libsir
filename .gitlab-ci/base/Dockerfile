@@ -245,16 +245,16 @@ RUN \
 
 RUN adduser -m -U -G wheel --uid 10000 -c "CI/CD User" user
 
-RUN git clone -v https://github.com/Ericsson/codechecker.git --depth=1 && \
-    cd codechecker && \
-    ( grep 'lxml==4\.9\.2' -rl . | xargs -I{} sed -i 's/lxml==4.9.2/lxml==4.9.3/' "{}" || true ) && \
-    make venv && \
-    . $(pwd)/venv/bin/activate && \
-    pip install setuptools && \
-    env BUILD_LOGGER_64_BIT_ONLY=YES \
-                   BUILD_UI_DIST=NO \
-	make package standalone_package && \
-    export PATH=/codechecker/build/CodeChecker/bin:$PATH && \
-    chown user:user -R /codechecker
+# RUN git clone -v https://github.com/Ericsson/codechecker.git --depth=1 && \
+#     cd codechecker && \
+#     ( grep 'lxml==4\.9\.2' -rl . | xargs -I{} sed -i 's/lxml==4.9.2/lxml==4.9.3/' "{}" || true ) && \
+#     make venv && \
+#     . $(pwd)/venv/bin/activate && \
+#     pip install setuptools && \
+#     env BUILD_LOGGER_64_BIT_ONLY=YES \
+#                    BUILD_UI_DIST=NO \
+# 	make package standalone_package && \
+#     export PATH=/codechecker/build/CodeChecker/bin:$PATH && \
+#     chown user:user -R /codechecker
 
 USER 10000
