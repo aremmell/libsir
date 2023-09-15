@@ -647,7 +647,7 @@ namespace sir
     class logger : public TAdapters... {
     public:
         logger() : TAdapters()... {
-            if constexpr (RAII && !_init()) {
+            if (RAII && !_init()) {
                 // TODO: throw exception if policy says
                 SIR_ASSERT(false);
             }
@@ -657,7 +657,7 @@ namespace sir
         logger(const logger&&) = delete;
 
         virtual ~logger() {
-            if constexpr (RAII && !cleanup()) {
+            if (RAII && !cleanup()) {
                 SIR_ASSERT(false);
             }
         }
