@@ -285,7 +285,7 @@ bool sir::tests::std_iostream_format() {
 
     TEST_MSG_0("ostream::write()...");
 
-    auto str = std::string("This is my string. There are many like it, but "
+    const auto str = std::string("This is my string. There are many like it, but "
         "this one is mine. I'm going to ostream::write it now.");
     log.debug_stream.write(str.c_str(), str.size()) << endl;
     pass &= log.debug_stream.good();

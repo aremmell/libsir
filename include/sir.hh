@@ -528,11 +528,13 @@ namespace sir
             using array_type = std::array<char_type, SIR_MAXMESSAGE>;
 
             buffer() = delete;
+
             explicit buffer(sir_log_pfn pfn) : _pfn(pfn) {
                 // TODO: if exceptions enabled, throw if pfn or _buf are nullptr.
                 SIR_ASSERT(pfn != nullptr && _buf);
                 reset_buffer();
             }
+
             ~buffer() override = default;
 
         protected:
@@ -544,7 +546,7 @@ namespace sir
             }
 
             bool write_out() {
-                for (auto it = _buf->rbegin(); it != _buf->rend(); it++) {
+                for (auto it = _buf->rbegin(); it != _buf->rend(); ++it) {
                     if (*it != '\0') {
                         if (*it == '\n')
                             *it = '\0';
@@ -552,7 +554,7 @@ namespace sir
                     }
                 }
 
-                bool write = _pfn ? _pfn(_buf->data()) : false;
+                const bool write = _pfn ? _pfn(_buf->data()) : false;
                 SIR_ASSERT(write);
                 // TODO: if exceptions enabled, throw if write is false.
                 reset_buffer();
@@ -642,10 +644,10 @@ namespace sir
      *                  exposed by this class.
      */
     template<bool RAII, DerivedFromPolicy TPolicy, DerivedFromAdapter... TAdapters>
-    class logger : public TAdapters...  {
+    class logger : public TAdapters... {
     public:
         logger() : TAdapters()... {
-            if (RAII && !_init()) {
+            if constexpr (RAII && !_init()) {
                 // TODO: throw exception if policy says
                 SIR_ASSERT(false);
             }
@@ -655,7 +657,7 @@ namespace sir
         logger(const logger&&) = delete;
 
         virtual ~logger() {
-            if (RAII && !cleanup()) {
+            if constexpr (RAII && !cleanup()) {
                 SIR_ASSERT(false);
             }
         }
@@ -795,16 +797,15 @@ namespace sir
     protected:
         bool _init() const noexcept {
             sirinit si {};
-            if (bool init = _policy.get_init_data(si) && sir_init(&si) &&
+            if (const bool init = _policy.get_init_data(si) && sir_init(&si) &&
                 _policy.on_init_complete(); !init) {
                 return false;
             }
             return true;
         }
 
-    protected:
+    private:
         TPolicy _policy;
-        bool _initialized = false;
     };
 
     /**
