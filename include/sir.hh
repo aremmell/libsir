@@ -549,11 +549,9 @@ namespace sir
 
             bool write_out() {
                 for (auto it = _arr->rbegin(); it != _arr->rend(); it++) {
-                    if (*it != '\0') {
-                        if (*it == '\n') {
-                            *it = '\0';
-                            break;
-                        }
+                    if ((*it != '\0') && (*it == '\n')) {
+                        *it = '\0';
+                        break;
                     }
                 }
 
@@ -606,7 +604,7 @@ namespace sir
         template<DerivedFromStreamBuf TBuffer>
         class stream : public std::ostream {
         public:
-            stream(const TBuffer& buf) : std::ostream(&_buf), _buf(buf) {}
+            explicit stream(const TBuffer& buf) : std::ostream(&_buf), _buf(buf) {}
 
             ~stream() override = default;
 
