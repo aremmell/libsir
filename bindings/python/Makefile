@@ -40,7 +40,7 @@ module-python: sir_wrap.c sir.py
 sir.py sir_wrap.c: sir.i
 	env LDFLAGS="$(LDFLAGS) $(SIR_LDFLAGS)" \
 	  CC="$(CC) $(OPTFLAGS) $(CFLAGS) $(SIR_CFLAGS)" \
-	swig -w451 -python -threads -outcurrentdir -v $<
+	swig -O -w451 -python -threads -outcurrentdir -v $<
 
 ##############################################################################
 # Check main build files
