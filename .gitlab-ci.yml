@@ -2795,7 +2795,7 @@ Node.js/WebAssembly (Emscripten, Em++, Emcc):
     - ( stdbuf -o L node ./build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$)' | xargs -I{} echo "stdbuf -o L node ./build/bin/sirtests --only {}" ) >> test.sh || true
     - stdbuf -o L sh -x ./test.sh
     - rm -f ./test.sh
-    - stdubf -o L node ./build/bin/sirtests++
+    - stdbuf -o L node ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
