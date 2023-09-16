@@ -162,8 +162,8 @@ Linux/x86_64 (musl-libc, G++, GCC):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - stdbuf -o L ./build/bin/sirexample
-    - stdbuf -o L ./build/bin/sirtests
+    - ./build/bin/sirexample
+    - ./build/bin/sirtests
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -2608,8 +2608,8 @@ Linux/x86_64 (musl-libc, Kefir, C):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - stdbuf -o L ./build/bin/sirexample
-    - stdbuf -o L ./build/bin/sirtests
+    - ./build/bin/sirexample
+    - ./build/bin/sirtests
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
