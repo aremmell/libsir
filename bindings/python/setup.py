@@ -3,8 +3,8 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 
-from distutils.core import setup, Extension
 from setuptools.command.build_ext import build_ext
+from distutils.core import setup, Extension
 
 class BuildExt(build_ext):
     def build_extensions(self):
