@@ -4,6 +4,11 @@
 # SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 
 ##############################################################################
+# Default optimizations
+
+OPTFLAGS?=-O3
+
+##############################################################################
 # What system?
 
 UNAME_S:=$(shell uname -s 2> /dev/null)
@@ -219,23 +224,41 @@ endif
 
 ifeq ($(IBMAIX),1)
   DBGFLAGS=-g
+  OBJECT_MODE=64
+  export OBJECT_MODE
+  ifneq "$(findstring gcc,$(CC))" ""
+    IBMAIX_GCC=1
+    SIR_CFLAGS+=-fPIC -maix64 -ftls-model=global-dynamic
+  endif
+  ifneq "$(findstring gcc,$(CXX))" ""
+    IBMAIX_GCC=1
+    SIR_XFLAGS+=-fPIC -maix64 -ftls-model=global-dynamic
+  endif
+  ifeq ($(IBMAIX_GCC),1)
+    SIR_LDFLAGS+=-fPIC -maix64 -ftls-model=global-dynamic
+  endif
 endif
 
 ifeq ($(IBMXLC),1)
+  AIX_STDFLAGS=-Iinclude -qtls=global-dynamic -qthreaded -qformat=all:nonlt -qpic
   MMDOPT=
   NO_DEFAULT_CFLAGS=1
   PTHOPT=
   SIR_SHARED=-qmkshrobj
   ifeq ($(SIR_DEBUG),1)
-    SIR_CFLAGS+=$(DBGFLAGS) -O0 -DDEBUG -Iinclude -qtls -qthreaded -qinfo=mt -qformat=all
+    SIR_CFLAGS+=$(DBGFLAGS) -O0 -DDEBUG $(AIX_STDFLAGS)
+    SIR_XFLAGS+=$(DBGFLAGS) -O0 -DDEBUG $(AIX_STDFLAGS)
   else
-    SIR_CFLAGS+=$(OPTFLAGS) -DNDEBUG -Iinclude -qtls -qthreaded -qinfo=mt -qformat=all -qpic=small
+    SIR_CFLAGS+=$(OPTFLAGS) -DNDEBUG $(AIX_STDFLAGS)
+    SIR_XFLAGS+=$(OPTFLAGS) -DNDEBUG $(AIX_STDFLAGS)
   endif
 endif
 
 ifeq ($(AIXTLS),1)
   DBGFLAGS=-g
-  SIR_CFLAGS+=-ftls-model=initial-exec
+  SIR_CFLAGS+=-fPIC -ftls-model=global-dynamic
+  SIR_LDFLAGS+=-fPIC -ftls-model=global-dynamic
+  SIR_XFLAGS+=-fPIC -ftls-model=global-dynamic
 endif
 
 ##############################################################################

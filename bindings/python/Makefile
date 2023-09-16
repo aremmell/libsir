@@ -31,12 +31,16 @@ all:
 .PHONY: module-python
 
 module-python: sir_wrap.c sir.py
+	env LDFLAGS="$(LDFLAGS) $(SIR_LDFLAGS)" \
+	  CC="$(CC) $(OPTFLAGS) $(CFLAGS) $(SIR_CFLAGS)" \
 	python3 setup.py build_ext --inplace
 
 ##############################################################################
 # Swig
 
 sir.py sir_wrap.c: sir.i
+	env LDFLAGS="$(LDFLAGS) $(SIR_LDFLAGS)" \
+	  CC="$(CC) $(OPTFLAGS) $(CFLAGS) $(SIR_CFLAGS)" \
 	swig -w451 -python -threads -outcurrentdir -v $<
 
 ##############################################################################
@@ -46,15 +50,15 @@ sir.py sir_wrap.c: sir.i
 
 check_main:
 	@test -f ../../sirplatform.mk \
-		|| { \
-			printf '%s\n' "ERROR: Invalid working directory."; \
-			exit 1; \
-		}
+	  || { \
+	       printf '%s\n' "ERROR: Invalid working directory."; \
+	       exit 1; \
+	  }
 	@$(MAKE) --no-print-directory -q -C ../.. \
-		|| { \
-			$(MAKE) --no-print-directory clean; \
-			$(MAKE) --no-print-directory -C ../..; \
-		}
+	  || { \
+	       $(MAKE) --no-print-directory clean; \
+	       $(MAKE) --no-print-directory -C ../..; \
+	  }
 
 ##############################################################################
 # Clean-up

@@ -114,6 +114,7 @@
 #   if __xlC_ver__ <= 0x0000000e
 #    undef __HAVE_ATOMIC_H__
 #   endif
+#   define __XLC16__ 1
 #  endif
 #  if !defined(__STDC_WANT_LIB_EXT1__)
 #   define __STDC_WANT_LIB_EXT1__ 1
@@ -303,6 +304,16 @@ _set_thread_local_invalid_parameter_handler(
 #  define CLOCK_CAST (int)
 # else
 #  define CLOCK_CAST
+# endif
+
+# if defined(_AIX)
+#  if defined(_LINUX_SOURCE_COMPAT) && defined(_ALL_SOURCE)
+#   undef _LINUX_SOURCE_COMPAT
+#   undef _ALL_SOURCE
+#  endif
+#  if defined(_GNU_SOURCE)
+#   undef _GNU_SOURCE
+#  endif
 # endif
 
 # if defined(SIR_ASSERT_ENABLED)

@@ -44,11 +44,6 @@ SIR_LDFLAGS := $(LDFLAGS)
 SIR_SHFLAGS  = $(subst -static,,$(SIR_LDFLAGS))
 
 ##############################################################################
-# Optimizations
-
-OPTFLAGS ?= -O3
-
-##############################################################################
 # Platform specifics
 
 -include sirplatform.mk

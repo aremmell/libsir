@@ -1242,7 +1242,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     (void)LocalFree(wname);
     return success && _sir_validstrnofail(name);
 #else
-# if !defined(_AIX) && !defined(__HURD__) && !defined(SUNLINT)
+# if !defined(SUNLINT) && !defined(_AIX) && !defined(__HURD__)
 #  pragma message("unable to determine how to get a thread name")
 # endif
     SIR_UNUSED(name);
@@ -1290,7 +1290,7 @@ bool _sir_setthreadname(const char* name) {
     HRESULT hr = SetThreadDescription(GetCurrentThread(), buf);
     return FAILED(hr) ? _sir_handlewin32err(hr) : true;
 #else
-# if !defined(SUNLINT)
+# if !defined(SUNLINT) && !defined(_AIX)
 #  pragma message("unable to determine how to set a thread name")
 # endif
     SIR_UNUSED(name);
