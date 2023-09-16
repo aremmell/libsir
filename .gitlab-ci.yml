@@ -2716,8 +2716,6 @@ Linux/x86_64 (uClibc-ng, G++, GCC):
 ##############################################################################
 
 Linux/x86_64 (Circle C++, GCC):
-  allow_failure: true
-  when: manual
   stage: build
   tags:
     - Docker-x64
@@ -2731,6 +2729,7 @@ Linux/x86_64 (Circle C++, GCC):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CC="ccache gcc"
     - export CXX="ccache circle"
+    - export CXXFLAGS="-DSIR_NO_STD_IOSTREAM=1"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
