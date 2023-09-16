@@ -2758,3 +2758,99 @@ Linux/x86_64 (Circle C++, GCC):
   interruptible: true
 
 ##############################################################################
+
+Node.js/WebAssembly (Emscripten, Em++, Emcc):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/emscripten:latest
+  script:
+    - *Configuration
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    - export CC="ccache emcc"
+    - export CXX="ccache em++"
+    - export CFLAGS="-flto=full"
+    - export CXXFLAGS="-flto=full"
+    - export LDFLAGS="-sWASM=1"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make
+    - make tests++
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - *BuildInformation
+    - |
+      # Start of Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - node build/bin/sirexample
+    - ( set -e ; node build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$)' | xargs -I{} sh -xc "node build/bin/sirtests --only {}" )
+    - node build/bin/sirtests++
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
+Node.js/JavaScript (Emscripten, Em++, Emcc):
+  stage: build
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/emscripten:latest
+  script:
+    - *Configuration
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    - export CC="ccache emcc"
+    - export CXX="ccache em++"
+    - export CFLAGS="-flto=full"
+    - export CXXFLAGS="-flto=full"
+    - export LDFLAGS="-sWASM=0"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make
+    - make tests++
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - *BuildInformation
+    - |
+      # Start of Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - node build/bin/sirexample
+    - ( set -e ; node build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$)' | xargs -I{} sh -xc "node build/bin/sirtests --only {}" )
+    - node build/bin/sirtests++
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+##############################################################################

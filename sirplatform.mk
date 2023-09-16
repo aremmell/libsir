@@ -47,9 +47,12 @@ endif
 
 ifeq ($(EMSCRIPTEN),1)
   AR=emar
+  RANLIB=emranlib
   SIR_CFLAGS+=-pthread
+  SIR_XFLAGS+=-pthread
   SIR_CSTD=-std=gnu11
-  SIR_LDFLAGS=-lnoderawfs.js -lnodefs.js
+  SIR_XSTD=-std=gnu++20
+  SIR_LDFLAGS+=-lnoderawfs.js -lnodefs.js
   SIR_NO_PLUGINS=1
 endif
 
