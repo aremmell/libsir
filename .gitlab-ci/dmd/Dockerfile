@@ -8,7 +8,7 @@ USER 0
 WORKDIR /
 
 RUN dnf -y install elinks && \
-    ( wget https://downloads.dlang.org/releases/2.x/2.105.1/dmd-2.105.1-0.fedora.x86_64.rpm || true ) && \
+    ( wget https://downloads.dlang.org/releases/2.x/2.105.2/dmd-2.105.2-0.fedora.x86_64.rpm || true ) && \
     ( wget "$(elinks -dump https://dlang.org/download.html | \
            awk '/\/releases\/.*fedora.*x86_64.rpm$/ { print $2 }' | \
 	   head -1)" ) || true && \
