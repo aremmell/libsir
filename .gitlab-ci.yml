@@ -2717,6 +2717,7 @@ Linux/x86_64 (uClibc-ng, G++, GCC):
 
 Linux/x86_64 (Circle C++, GCC):
   allow_failure: true
+  when: manual
   stage: build
   tags:
     - Docker-x64
