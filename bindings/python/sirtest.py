@@ -4,6 +4,14 @@
 
 import sir
 
+try:
+    import setproctitle
+except ImportError:
+    setproctitle = 0
+
+if setproctitle:
+    setproctitle.setproctitle("sirtest.py")
+
 if __name__ == "__main__":
     s = sir.InitData()
     if not sir.makeinit(s):
@@ -19,22 +27,31 @@ if __name__ == "__main__":
         print("Error: init failed")
         exit(1)
 
-    sir.debug('This is a test of the %s system. Testing %d' % ('libsir', 123))
-    sir.debug('Adding log file %s' % ('sir-python.log'))
+    sir.debug("This is a test of the %s system. Testing %d" % ("libsir", 123))
+    sir.debug("Adding log file %s" % ("sir-python.log"))
+    print("")
 
-    f = sir.addfile('sir-python.log', sir.LVL_ALL, sir.OPT_ALL)
+    f = sir.addfile("sir-python.log", sir.LVL_ALL, sir.OPT_ALL)
     if f == 0:
         print("Error: addfile failed")
         exit(1)
 
-    sir.info('Testing info level')
-    sir.notice('Testing notice level')
-    sir.warn('Testing warning level')
-    sir.error('Testing error level')
-    sir.crit('Testing critical level')
-    sir.alert('Testing alert level')
-    sir.emerg('Testing emergency level')
-    sir.info('Cleaning up...')
+    sir.info("Testing info level")
+    sir.notice("Testing notice level")
+    sir.warn("Testing warning level")
+    sir.error("Testing error level")
+    sir.crit("Testing critical level")
+    sir.alert("Testing alert level")
+    sir.emerg("Testing emergency level")
+
+    sir.info("Cleaning up...")
+
+    if setproctitle:
+        # sir.cleanup()
+        # sir.init(s)
+        setproctitle.setproctitle("foobarbaz")
+
+    sir.warn("Changed name?")
 
     sir.remfile(f)
     sir.cleanup()
