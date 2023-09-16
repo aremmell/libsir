@@ -548,7 +548,7 @@ namespace sir
             }
 
             bool write_out() {
-                for (auto it = _arr->rbegin(); it != _arr->rend(); ++it) {
+                for (auto it = _arr->rbegin(); it != _arr->rend(); it++) {
                     if (*it != '\0') {
                         if (*it == '\n') {
                             *it = '\0';
