@@ -2790,12 +2790,12 @@ Node.js/WebAssembly (Emscripten, Em++, Emcc):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - stdbuf -o L ./node build/bin/sirexample
+    - stdbuf -o L node ./build/bin/sirexample
     - printf '%s\n' "#!/usr/bin/env sh" "set -eu" > test.sh
-    - ( stdbuf -o L node build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$)' | xargs -I{} echo "stdbuf -o L node build/bin/sirtests --only {}" ) >> test.sh || true
+    - ( stdbuf -o L node ./build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$)' | xargs -I{} echo "stdbuf -o L node ./build/bin/sirtests --only {}" ) >> test.sh || true
     - stdbuf -o L sh -x ./test.sh
     - rm -f ./test.sh
-    - stdubf -o L node build/bin/sirtests++
+    - stdubf -o L node ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -2841,12 +2841,12 @@ Node.js/JavaScript (Emscripten, Em++, Emcc):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - stdbuf -o L node build/bin/sirexample
+    - stdbuf -o L node ./build/bin/sirexample
     - printf '%s\n' "#!/usr/bin/env sh" "set -eu" > test.sh
-    - ( stdbuf -o L node build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$)' | xargs -I{} echo "stdbuf -o L node build/bin/sirtests --only {}" ) >> test.sh || true
+    - ( stdbuf -o L node ./build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$)' | xargs -I{} echo "stdbuf -o L node ./build/bin/sirtests --only {}" ) >> test.sh || true
     - stdbuf -o L sh -x ./test.sh
     - rm -f ./test.sh
-    - stdbuf -o L node build/bin/sirtests++
+    - stdbuf -o L node ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
