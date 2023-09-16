@@ -46,7 +46,7 @@ SIR_SHFLAGS  = $(subst -static,,$(SIR_LDFLAGS))
 ##############################################################################
 # Platform specifics
 
--include sirplatform.mk
+include sirplatform.mk
 
 ##############################################################################
 # C standard
@@ -211,7 +211,7 @@ all: $(PGOALS) $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS)
 # Automatic dependencies
 
 ifneq (,$(wildcard $(INTDIR)/*/*.d))
-  -include $(wildcard $(INTDIR)/*/*.d)
+  include $(wildcard $(INTDIR)/*/*.d)
 endif
 
 ##############################################################################
@@ -476,6 +476,6 @@ endif # ifneq ($(SIR_NO_PLUGINS),1)
 ##############################################################################
 # Common rules
 
--include sircommon.mk
+include sircommon.mk
 
 ##############################################################################
