@@ -500,6 +500,10 @@ namespace sir
 # endif // !__SIR_HAVE_FMT_FORMAT__
 
 # if !defined(SIR_NO_STD_IOSTREAM)
+    /** Ensures that T derives from std::streambuf. */
+    template<typename T>
+    concept DerivedFromStreamBuf = std::is_base_of_v<std::streambuf, T>;
+
     /**
      * @class std_iostream_adapter
      * @brief Provides a std::iostream interface to libsir's logging functions.
@@ -520,50 +524,50 @@ namespace sir
         std_iostream_adapter() = default;
         ~std_iostream_adapter() override = default;
 
-    private:
-        typedef bool(*sir_log_pfn)(const char*, ...);
-
+        template<typename TFunc>
         class buffer : public std::streambuf {
         public:
             using array_type = std::array<char_type, SIR_MAXMESSAGE>;
 
             buffer() = delete;
 
-            explicit buffer(sir_log_pfn pfn) : _pfn(pfn) {
+            explicit buffer(TFunc pfn) : _pfn(pfn) {
                 // TODO: if exceptions enabled, throw if pfn or _buf are nullptr.
-                SIR_ASSERT(pfn != nullptr && _buf);
-                reset_buffer();
+                SIR_ASSERT(pfn && _arr);
+                reset();
             }
 
             ~buffer() override = default;
 
         protected:
-            void reset_buffer() {
-                if (_buf) {
-                    _buf->fill('\0');
-                    setp(_buf->data(), _buf->data() + _buf->size() - 1);
+            void reset() {
+                if (_arr) {
+                    _arr->fill('\0');
+                    setp(_arr->data(), _arr->data() + _arr->size() - 1);
                 }
             }
 
             bool write_out() {
-                for (auto it = _buf->rbegin(); it != _buf->rend(); ++it) {
+                for (auto it = _arr->rbegin(); it != _arr->rend(); ++it) {
                     if (*it != '\0') {
-                        if (*it == '\n')
+                        if (*it == '\n') {
                             *it = '\0';
-                        break;
+                            break;
+                        }
                     }
                 }
 
-                const bool write = _pfn ? _pfn(_buf->data()) : false;
+                const bool write = _pfn ? _pfn(_arr->data()) : false;
                 SIR_ASSERT(write);
                 // TODO: if exceptions enabled, throw if write is false.
-                reset_buffer();
+                reset();
                 return write;
             }
 
             int_type overflow(int_type ch) override {
-                if (ch != traits_type::eof() && write_out())
+                if (ch != traits_type::eof() && write_out()) {
                     return ch;
+                }
                 return traits_type::eof();
             }
 
@@ -584,7 +588,8 @@ namespace sir
                         }
                     }
 
-                    auto this_write = std::min(static_cast<std::streamsize>(left), count - written);
+                    auto this_write = std::min(static_cast<std::streamsize>(left),
+                        count - written);
                     memcpy(pptr(), s + written, static_cast<size_t>(this_write));
                     pbump(static_cast<int>(this_write));
                     written += this_write;
@@ -594,28 +599,48 @@ namespace sir
             }
 
         private:
-            std::unique_ptr<array_type> _buf = std::make_unique<array_type>();
-            sir_log_pfn _pfn = nullptr;
+            std::shared_ptr<array_type> _arr = std::make_shared<array_type>();
+            TFunc _pfn = nullptr;
         };
 
-        buffer _buf_debug  {&sir_debug};
-        buffer _buf_info   {&sir_info};
-        buffer _buf_notice {&sir_notice};
-        buffer _buf_warn   {&sir_warn};
-        buffer _buf_error  {&sir_error};
-        buffer _buf_crit   {&sir_crit};
-        buffer _buf_alert  {&sir_alert};
-        buffer _buf_emerg  {&sir_emerg};
+        template<DerivedFromStreamBuf TBuffer>
+        class stream : public std::ostream {
+        public:
+            stream(const TBuffer& buf) : std::ostream(&_buf), _buf(buf) {}
 
-    public:
-        std::ostream debug_stream  {&_buf_debug};  /**< ostream for debug level. */
-        std::ostream info_stream   {&_buf_info};   /**< ostream for info level. */
-        std::ostream notice_stream {&_buf_notice}; /**< ostream for notice level. */
-        std::ostream warn_stream   {&_buf_warn};   /**< ostream for warn level. */
-        std::ostream error_stream  {&_buf_error};  /**< ostream for error level. */
-        std::ostream crit_stream   {&_buf_crit};   /**< ostream for crit level. */
-        std::ostream alert_stream  {&_buf_alert};  /**< ostream for alert level. */
-        std::ostream emerg_stream  {&_buf_emerg};  /**< ostream for emerg level. */
+            ~stream() override = default;
+
+        private:
+            TBuffer _buf;
+        };
+
+        using log_func = bool(*)(const char*, ...);
+        using buffer_type = buffer<log_func>;
+        using stream_type = stream<buffer_type>;
+
+        /** ostream for debug level. */
+        stream_type debug_stream {buffer_type {&sir_debug}};
+
+        /** ostream for info level. */
+        stream_type info_stream {buffer_type {&sir_info}};
+
+        /** ostream for notice level. */
+        stream_type notice_stream {buffer_type {&sir_notice}};
+
+        /** ostream for warn level. */
+        stream_type warn_stream {buffer_type {&sir_warn}};
+
+        /** ostream for error level. */
+        stream_type error_stream {buffer_type {&sir_error}};
+
+        /** ostream for crit level. */
+        stream_type crit_stream {buffer_type {&sir_crit}};
+
+        /** ostream for alert level. */
+        stream_type alert_stream {buffer_type {&sir_alert}};
+
+        /** ostream for emerg level. */
+        stream_type emerg_stream {buffer_type {&sir_emerg}};
     };
 # endif // SIR_NO_STD_IOSTREAM
 
@@ -624,8 +649,8 @@ namespace sir
     concept DerivedFromAdapter = std::is_base_of_v<adapter, T...>;
 
     /** Ensures that T derives from policy. */
-    template<typename... T>
-    concept DerivedFromPolicy = std::is_base_of_v<policy, T...>;
+    template<typename T>
+    concept DerivedFromPolicy = std::is_base_of_v<policy, T>;
 
     /**
      * @class logger
