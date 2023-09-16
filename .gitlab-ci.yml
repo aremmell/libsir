@@ -74,9 +74,9 @@ Linux/x86_64 (G++, GCC):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
-    - build/bin/sirtests++
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -121,9 +121,9 @@ Linux/i686 (G++, GCC):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
-    - build/bin/sirtests++
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -162,8 +162,8 @@ Linux/x86_64 (musl-libc, G++, GCC):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -205,9 +205,9 @@ Linux/x86_64 (Clang++, Clang):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
-    - build/bin/sirtests++
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -251,9 +251,9 @@ Linux/i686 (Clang++, Clang):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
-    - build/bin/sirtests++
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -296,9 +296,9 @@ Linux/x86_64 (AOCC++, AOCC):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
-    - build/bin/sirtests++
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -344,9 +344,9 @@ Linux/i686 (AOCC++, AOCC):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
-    - build/bin/sirtests++
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -386,8 +386,8 @@ Linux/x86_64 (Intel C Classic, ICC):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -430,9 +430,9 @@ Linux/x86_64 (Intel oneAPI, ICPX, ICX):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
-    - build/bin/sirtests++
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -471,8 +471,8 @@ Linux/x86_64 (Oracle Studio C):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -513,8 +513,8 @@ Linux/i686 (Oracle Studio C):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -561,9 +561,9 @@ Linux/x86_64 (NVIDIA HPC SDK C++, C):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
-    - build/bin/sirtests++
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -602,8 +602,8 @@ Linux/x86_64 (Chibicc, C):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -785,8 +785,8 @@ Linux/x86_64 (AMD Open64, C):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -888,9 +888,9 @@ Android/x86_64 (API Level 21, Clang++, Clang):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
-    - build/bin/sirtests++
+    - ./build/bin/sirexample
+    - ./build/bin/sirtests
+    - ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -934,9 +934,9 @@ Android/i686 (API Level 21, Clang++, Clang):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
-    - build/bin/sirtests++
+    - ./build/bin/sirexample
+    - ./build/bin/sirtests
+    - ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -1046,9 +1046,9 @@ Android/x86_64 (API Level 33, Clang++, Clang):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
-    - build/bin/sirtests++
+    - ./build/bin/sirexample
+    - ./build/bin/sirtests
+    - ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -1092,9 +1092,9 @@ Android/i686 (API Level 33, Clang++, Clang):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
-    - build/bin/sirtests++
+    - ./build/bin/sirexample
+    - ./build/bin/sirtests
+    - ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -2063,8 +2063,8 @@ Linux/x86_64 (DMD64 ImportC, C):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -2114,8 +2114,8 @@ Linux/i686 (DMD64 ImportC, C):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -2608,8 +2608,8 @@ Linux/x86_64 (musl-libc, Kefir, C):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -2651,8 +2651,8 @@ Linux/x86_64 (Kefir, C):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -2696,9 +2696,9 @@ Linux/x86_64 (uClibc-ng, G++, GCC):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
-    - build/bin/sirtests++
+    - ./build/bin/sirexample
+    - ./build/bin/sirtests
+    - ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -2741,9 +2741,9 @@ Linux/x86_64 (Circle C++, GCC):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - build/bin/sirexample
-    - build/bin/sirtests
-    - build/bin/sirtests++
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -2789,12 +2789,12 @@ Node.js/WebAssembly (Emscripten, Em++, Emcc):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - node build/bin/sirexample
+    - stdbuf -o L ./node build/bin/sirexample
     - printf '%s\n' "#!/usr/bin/env sh" "set -eu" > test.sh
-    - ( node build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$)' | xargs -I{} echo "node build/bin/sirtests --only {}" ) >> test.sh || true
-    - sh -x ./test.sh
+    - ( stdbuf -o L node build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$)' | xargs -I{} echo "stdbuf -o L node build/bin/sirtests --only {}" ) >> test.sh || true
+    - stdbuf -o L sh -x ./test.sh
     - rm -f ./test.sh
-    - node build/bin/sirtests++
+    - stdubf -o L node build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -2840,12 +2840,12 @@ Node.js/JavaScript (Emscripten, Em++, Emcc):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - node build/bin/sirexample
+    - stdbuf -o L node build/bin/sirexample
     - printf '%s\n' "#!/usr/bin/env sh" "set -eu" > test.sh
-    - ( node build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$)' | xargs -I{} echo "node build/bin/sirtests --only {}" ) >> test.sh || true
-    - sh -x ./test.sh
+    - ( stdbuf -o L node build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$)' | xargs -I{} echo "stdbuf -o L node build/bin/sirtests --only {}" ) >> test.sh || true
+    - stdbuf -o L sh -x ./test.sh
     - rm -f ./test.sh
-    - node build/bin/sirtests++
+    - stdbuf -o L node build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
