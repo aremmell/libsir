@@ -2789,7 +2789,10 @@ Node.js/WebAssembly (Emscripten, Em++, Emcc):
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - node build/bin/sirexample
-    - ( set +e ; node build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$)' | xargs -I{} sh -c "set +e; node build/bin/sirtests --only {} || { printf '\n%s\n' "TEST FAILURE" ) | grep -q "^TEST FAILURE$" && exit 1; true
+    - printf '%s\n' "#!/usr/bin/env sh" "set -eu" > test.sh
+    - ( node build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$)' | xargs -I{} echo "node build/bin/sirtests --only {}" ) >> test.sh || true
+    - sh -x ./test.sh
+    - rm -f ./test.sh
     - node build/bin/sirtests++
     - |
       # End of Test ...
@@ -2837,7 +2840,10 @@ Node.js/JavaScript (Emscripten, Em++, Emcc):
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - node build/bin/sirexample
-    - ( set +e ; node build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$)' | xargs -I{} sh -c "set +e; node build/bin/sirtests --only {} || { printf '\n%s\n' "TEST FAILURE" ) | grep -q "^TEST FAILURE$" && exit 1; true
+    - printf '%s\n' "#!/usr/bin/env sh" "set -eu" > test.sh
+    - ( node build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$)' | xargs -I{} echo "node build/bin/sirtests --only {}" ) >> test.sh || true
+    - sh -x ./test.sh
+    - rm -f ./test.sh
     - node build/bin/sirtests++
     - |
       # End of Test ...
