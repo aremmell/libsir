@@ -56,11 +56,18 @@ check_main:
 	@$(MAKE) --no-print-directory -q -C ../.. \
 	  || { \
 	       $(MAKE) --no-print-directory clean; \
+	       $(MAKE) --no-print-directory -C ../.. clean; \
 	       $(MAKE) --no-print-directory -C ../..; \
 	  }
 
 ##############################################################################
 # Clean-up
+
+.PHONY: clean-all
+
+clean-all:
+	$(MAKE) -C ../.. clean
+	$(MAKE) clean
 
 .PHONY: clean
 

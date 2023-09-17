@@ -8,42 +8,33 @@ from distutils.core import setup, Extension
 
 class BuildExt(build_ext):
     def build_extensions(self):
-        if "-Wstrict-prototypes" in self.compiler.compiler_so:
-            self.compiler.compiler_so.remove("-Wstrict-prototypes")
-        if "-Wall" in self.compiler.compiler_so:
-            self.compiler.compiler_so.remove("-Wall")
-        if "-Werror" in self.compiler.compiler_so:
-            self.compiler.compiler_so.remove("-Werror")
-        if "-Wno-unused-result" in self.compiler.compiler_so:
-            self.compiler.compiler_so.remove("-Wno-unused-result")
-        if "-Wsign-compare" in self.compiler.compiler_so:
-            self.compiler.compiler_so.remove("-Wsign-compare")
-        if "-fno-strict-overflow" in self.compiler.compiler_so:
-            self.compiler.compiler_so.remove("-fno-strict-overflow")
-        if "-fcf-protection" in self.compiler.compiler_so:
-            self.compiler.compiler_so.remove("-fcf-protection")
+        self.compiler.compiler_so = list( filter( lambda x: x != "-fasynchronous-unwind-tables", self.compiler.compiler_so))
+        self.compiler.compiler_so = list( filter( lambda x: x != "-fcf-protection", self.compiler.compiler_so))
+        self.compiler.compiler_so = list( filter( lambda x: x != "-fexceptions", self.compiler.compiler_so))
+        self.compiler.compiler_so = list( filter( lambda x: x != "-fno-exceptions", self.compiler.compiler_so))
+        self.compiler.compiler_so = list( filter( lambda x: x != "-fno-strict-overflow", self.compiler.compiler_so))
+        self.compiler.compiler_so = list( filter( lambda x: x != "-fstack-clash-protection", self.compiler.compiler_so))
+        self.compiler.compiler_so = list( filter( lambda x: x != "-fstack-protector-all", self.compiler.compiler_so))
+        self.compiler.compiler_so = list( filter( lambda x: x != "-fstack-protector-none", self.compiler.compiler_so))
+        self.compiler.compiler_so = list( filter( lambda x: x != "-fstack-protector-strong", self.compiler.compiler_so))
+        self.compiler.compiler_so = list( filter( lambda x: x != "-grecord-gcc-switches", self.compiler.compiler_so))
+        self.compiler.compiler_so = list( filter( lambda x: x != "-mtune=generic", self.compiler.compiler_so))
+        self.compiler.compiler_so = list( filter( lambda x: x != "-pipe", self.compiler.compiler_so))
+        self.compiler.compiler_so = list( filter( lambda x: x != "-Wall", self.compiler.compiler_so))
+        self.compiler.compiler_so = list( filter( lambda x: x != "-Werror=format-security", self.compiler.compiler_so))
+        self.compiler.compiler_so = list( filter( lambda x: x != "-Werror", self.compiler.compiler_so))
+        self.compiler.compiler_so = list( filter( lambda x: x != "-Wformat-security", self.compiler.compiler_so))
+        self.compiler.compiler_so = list( filter( lambda x: x != "-Wformat", self.compiler.compiler_so))
+        self.compiler.compiler_so = list( filter( lambda x: x != "-Wno-unused-result", self.compiler.compiler_so))
+        self.compiler.compiler_so = list( filter( lambda x: x != "-Wsign-compare", self.compiler.compiler_so))
+        self.compiler.compiler_so = list( filter( lambda x: x != "-Wstrict-prototypes", self.compiler.compiler_so))
         super().build_extensions()
 
 sir_module = Extension(
     "_sir",
-    sources=[
-        "sir_wrap.c",
-        "../../src/sir.c",
-        "../../src/sircondition.c",
-        "../../src/sirconsole.c",
-        "../../src/sirfilecache.c",
-        "../../src/sirfilesystem.c",
-        "../../src/sirhelpers.c",
-        "../../src/sirerrors.c",
-        "../../src/sirinternal.c",
-        "../../src/sirmaps.c",
-        "../../src/sirmutex.c",
-        "../../src/sirplugins.c",
-        "../../src/sirqueue.c",
-        "../../src/sirtextstyle.c",
-        "../../src/sirthreadpool.c",
-    ],
+    sources=["sir_wrap.c"],
     include_dirs=["../../include"],
+    extra_link_args=["-L../../build/lib", "-lsir_s"],
 )
 
 setup(
