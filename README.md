@@ -88,6 +88,7 @@ A wrapper is provided which allows libsir to be used in C++20 projects, with (op
 - [`**Boost**.**Format**`](https://theboostcpplibraries.com/boost.format)
 * [`**std**::**iostream**`](https://cplusplus.com/reference/istream/iostream/)
 - [`**tinyformat**`](https://github.com/c42f/tinyformat)
+- [Circle](https://www.circle-lang.org/) [constant formatting](https://github.com/seanbaxter/circle/blob/master/fmt/fmt.md)
 
 ## <a id="an-example" /> An example
 
