@@ -81,14 +81,14 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 
 ### <a id="c---compatibility" /> C++ compatibility
 
-A wrapper is provided which allows libsir to be used in C++20 projects, with (optional) adapters for the most popular C++ formatting libraries:
+A wrapper is provided allowing libsir to be used in C++20 projects, with (*optional*) adapters supporting popular formatting libraries:
 
-- [`**_{_fmt_}_**`](https://fmt.dev/)
-- [`**std**::**format**`](https://en.cppreference.com/w/cpp/utility/format/format)
-- [`**Boost**.**Format**`](https://theboostcpplibraries.com/boost.format)
-* [`**std**::**iostream**`](https://cplusplus.com/reference/istream/iostream/)
-- [`**tinyformat**`](https://github.com/c42f/tinyformat)
-- [Circle](https://www.circle-lang.org/) [constant formatting](https://github.com/seanbaxter/circle/blob/master/fmt/fmt.md)
+- [**_{_fmt_}_**](https://fmt.dev/)
+- [**std**::**format**](https://en.cppreference.com/w/cpp/utility/format/format)
+- [**Boost**.**Format**](https://theboostcpplibraries.com/boost.format)
+* [**std**::**iostream**](https://cplusplus.com/reference/istream/iostream/)
+- [tinyformat](https://github.com/c42f/tinyformat)
+- [Circle](https://www.circle-lang.org/) [*constant formatting*](https://github.com/seanbaxter/circle/blob/master/fmt/fmt.md)
 
 ## <a id="an-example" /> An example
 
