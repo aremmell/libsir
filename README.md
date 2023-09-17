@@ -30,6 +30,7 @@ libsir&mdash;a cross-platform, thread-safe logging library
   - [Visual Studio 2022](#visual-studio-2022)
   - [Unix Makefile](#unix-makefile)
 - [Dig in](#dig-in)
+- [SAST Tools](#sast-tools)
 
 <!-- tocstop -->
 
@@ -54,11 +55,11 @@ Each 'level' or 'priority' of output can be visually styled however you wish for
 
 ## <a id="cross-platform-compatibility" /> Cross-platform compatibility
 
-At this time, libsir is supported (*that is, it compiles and passes the test suite*) on at least the following operating system and toolchain combinations:
+At this time, libsir is supported (*that is, it compiles and passes the test suites*) on at least the following operating system and toolchain combinations:
 
 | System | Toolchain |
 | ------:|:--------- |
-| **Linux**&nbsp;≳2.6.32<br>(glibc&nbsp;≳2.4, musl&nbsp;≳1.2.3, uClibc‑ng&nbsp;1.0.43, Bionic&nbsp;19) | **GCC**&nbsp;(4.8.4&nbsp;‑&nbsp;13.2.1),&nbsp; **Clang**&nbsp;(3.8&nbsp;‑&nbsp;17.0.0),&nbsp; **Oracle&nbsp;Studio&nbsp;C/C++**&nbsp;(≳12.6),&nbsp; **IBM&nbsp;Advance&nbsp;Toolchain**&nbsp;(14&nbsp;‑&nbsp;16),&nbsp; **IBM&nbsp;XL&nbsp;C/C++**&nbsp;(16.1),&nbsp; **IBM&nbsp;Open&nbsp;XL&nbsp;C/C++**&nbsp;(17.1.1),&nbsp; **NVIDIA&nbsp;HPC&nbsp;SDK&nbsp;C/C++**&nbsp;(23.5&nbsp;‑&nbsp;23.7),&nbsp; **Arm&nbsp;HPC&nbsp;C/C++**&nbsp;(22.1&nbsp;‑&nbsp;23.04.1),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.104.2&nbsp;‑&nbsp;2.105.2),&nbsp; **AMD&nbsp;Optimizing&nbsp;C/C++**&nbsp;(4&nbsp;‑&nbsp;4.1),&nbsp; **Intel&nbsp;oneAPI&nbsp;DPC++/C++**&nbsp;(2023.1&nbsp;‑&nbsp;2023.2.1),&nbsp; **Open64**&nbsp;(5,&nbsp;AMD&nbsp;4.5.2.1),&nbsp; **Intel&nbsp;C++&nbsp;Compiler&nbsp;Classic**&nbsp;(2021.9.0&nbsp;‑&nbsp;2021.10.0),&nbsp; **Android&nbsp;NDK**&nbsp;(r25c),&nbsp; **Portable&nbsp;C&nbsp;Compiler**&nbsp;(1.2.0.DEVEL‑20230730),&nbsp; **Kefir**&nbsp;(≳0.3.0),&nbsp; **Chibicc**&nbsp;(2020.12.6) |
+| **Linux**&nbsp;≳2.6.32<br>(glibc&nbsp;≳2.4, musl&nbsp;≳1.2.3, uClibc‑ng&nbsp;1.0.43, Bionic&nbsp;19) | **GCC**&nbsp;(4.8.4&nbsp;‑&nbsp;13.2.1),&nbsp; **Clang**&nbsp;(3.8&nbsp;‑&nbsp;17.0.0),&nbsp; **Oracle&nbsp;Studio&nbsp;C/C++**&nbsp;(≳12.6),&nbsp; **Circle**&nbsp;(C++&nbsp;1.0.0‑200),&nbsp; **IBM&nbsp;Advance&nbsp;Toolchain**&nbsp;(14&nbsp;‑&nbsp;16),&nbsp; **IBM&nbsp;XL&nbsp;C/C++**&nbsp;(16.1),&nbsp; **IBM&nbsp;Open&nbsp;XL&nbsp;C/C++**&nbsp;(17.1.1),&nbsp; **NVIDIA&nbsp;HPC&nbsp;SDK&nbsp;C/C++**&nbsp;(23.5&nbsp;‑&nbsp;23.7),&nbsp; **Arm&nbsp;HPC&nbsp;C/C++**&nbsp;(22.1&nbsp;‑&nbsp;23.04.1),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.104.2&nbsp;‑&nbsp;2.105.2),&nbsp; **AMD&nbsp;Optimizing&nbsp;C/C++**&nbsp;(4&nbsp;‑&nbsp;4.1),&nbsp; **Intel&nbsp;oneAPI&nbsp;DPC++/C++**&nbsp;(2023.1&nbsp;‑&nbsp;2023.2.1),&nbsp; **Open64**&nbsp;(5,&nbsp;AMD&nbsp;4.5.2.1),&nbsp; **Intel&nbsp;C++&nbsp;Compiler&nbsp;Classic**&nbsp;(2021.9.0&nbsp;‑&nbsp;2021.10.0),&nbsp; **Android&nbsp;NDK**&nbsp;(r25c),&nbsp; **Portable&nbsp;C&nbsp;Compiler**&nbsp;(1.2.0.DEVEL‑20230730),&nbsp; **Kefir**&nbsp;(≳0.3.0),&nbsp; **Chibicc**&nbsp;(2020.12.6) |
 | **AIX**&nbsp;7.2,&nbsp;7.3 | **GCC**&nbsp;(8.3&nbsp;‑&nbsp;11.3),&nbsp; **IBM&nbsp;XL&nbsp;C/C++**&nbsp;(16.1),&nbsp; **IBM&nbsp;Open&nbsp;XL&nbsp;C/C++**&nbsp;(17.1) |
 | **macOS**&nbsp;≳10.15 | **Xcode**&nbsp;(11.7&nbsp;‑&nbsp;15),&nbsp; **GCC**&nbsp;(10.4&nbsp;‑&nbsp;13.2.1),&nbsp; **Clang**&nbsp;(11.0.3&nbsp;‑&nbsp;16.0.6),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.105.0&nbsp;‑&nbsp;2.105.2),&nbsp; **Intel&nbsp;C++&nbsp;Compiler&nbsp;Classic**&nbsp;(2021.9.0&nbsp;‑&nbsp;2021.10.0) |
 | **Windows**&nbsp;≳10,&nbsp;11 | **Microsoft&nbsp;Visual&nbsp;C/C++**&nbsp;(17.6&nbsp;‑&nbsp;17.7.4),&nbsp; **Clang‑CL**&nbsp;(16.0.6),&nbsp; **GCC‑MinGW**&nbsp;(12.2.1&nbsp;‑&nbsp;13.2.1),&nbsp; **LLVM‑MinGW**&nbsp;(15.0&nbsp;‑&nbsp;16.0.6),&nbsp; **Embarcadero&nbsp;C++**&nbsp;(7.20&nbsp;‑&nbsp;7.60),&nbsp; **OrangeC**&nbsp;(≳6.0.71.10) |
@@ -67,7 +68,7 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 | **NetBSD**&nbsp;9.2 | **GCC**&nbsp;(7.5&nbsp;‑&nbsp;13.2),&nbsp; **Clang**&nbsp;(15.0.7) |
 | **OpenBSD**&nbsp;7.3 | **GCC**&nbsp;(11.2),&nbsp; **Clang**&nbsp;(13) |
 | **DragonFly**&nbsp;**BSD**&nbsp;6.4 | **GCC**&nbsp;(8.3&nbsp;‑&nbsp;13),&nbsp; **Clang**&nbsp;(10.0.1&nbsp;‑&nbsp;16.0.6) |
-| **Wasm** (**Node.js**&nbsp;20.5) | **Emscripten**&nbsp;(3.1.45) |
+| **WebAssembly/JS** | **Emscripten**&nbsp;(3.1.45‑&nbsp;3.1.46),&nbsp; **Node.js**&nbsp;(20.5) |
 | **GNU/Hurd** | **GCC**&nbsp;(9.5&nbsp;‑&nbsp;13.2),&nbsp; **Clang**&nbsp;(9.0.1&nbsp;‑&nbsp;13.0.1) |
 | **Haiku**&nbsp;R1b4 | **GCC**&nbsp;(11.2&nbsp;‑&nbsp;13.2),&nbsp; **Clang**&nbsp;(12.0.1&nbsp;‑&nbsp;16.0.6) |
 | **Solaris**&nbsp;11.4 | **GCC**&nbsp;(10.3&nbsp;‑&nbsp;11.2),&nbsp; **Clang**&nbsp;(6&nbsp;‑&nbsp;11),&nbsp; **Oracle&nbsp;Studio&nbsp;C/C++**&nbsp;(≳12.6) |
@@ -95,41 +96,42 @@ There is a `code‑workspace` in the repository. As of right now, the build and 
 
 ### <a id="visual-studio-2022" /> Visual Studio 2022
 
-A very recent addition is an `sln` and some `vcxproj` files in the [msvc](https://github.com/aremmell/libsir/tree/master/msvs) directory. They are confirmed to work correctly on Windows 11 (x86, x64, Arm64) with Visual Studio 17.6.
+A very recent addition is an `sln` and some `vcxproj` files in the [msvc](https://github.com/aremmell/libsir/tree/master/msvs) directory. They are confirmed to work correctly on Windows 11 (x86, x64, Arm64) with Visual Studio 17.6+.
 
 ### <a id="unix-makefile" /> Unix Makefile
 
-| Recipe Type    |    Command          |       Output file(s)                                          |
-| :------------: | :-----------------: | :-----------------------------------------------------------: |
-| Test suite     |  `make tests`       |                  *build/bin/sirtests[.exe]*                   |
-| Example app    |  `make example`     |                  *build/bin/sirexample[.exe]*                 |
-| Static library |  `make static`      |                   *build/lib/libsir_s.a*                      |
-| Shared library |  `make shared`      |                    *build/lib/libsir.so*                      |
-| Installation   |  `make install`     | <ul><li>*$PREFIX/lib/libsir_s.a*</li><li>*$PREFIX/lib/libsir.so*</li><li>*$PREFIX/include/sir.h*</li><li>*$PREFIX/include/sir/\*.h*</li></ul> |
+| Recipe Type      |    Command          |       Output file(s)                                          |
+| ----------------:| :-----------------: |:------------------------------------------------------------- |
+| Test suite (C)   |  `make tests`       |                  *build/bin/sirtests[.exe]*                   |
+| Test suite (C++) |  `make tests++`     |                  *build/bin/sirtests++[.exe]*                 |
+| Example app      |  `make example`     |                  *build/bin/sirexample[.exe]*                 |
+| Static library   |  `make static`      |                   *build/lib/libsir_s.a*                      |
+| Shared library   |  `make shared`      |                    *build/lib/libsir.so*                      |
+| Installation     |  `make install`     | <ul><li>*$PREFIX/lib/libsir_s.a*</li><li>*$PREFIX/lib/libsir.so*</li><li>*$PREFIX/include/sir.h*</li><li>*$PREFIX/include/sir/\*.h*</li></ul> |
 
 ## <a id="dig-in" /> Dig in
 
 If you are genuinely interested in utilizing libsir, you are encouraged to read the [full online documentation](https://libsir.rml.dev) to get a better understanding of the library's capabilities and interfaces.
 
-Suggested initial sections:
+- Suggested initial sections:
 
-- [Public Functions](https://libsir.rml.dev/group__publicfuncs.html)
-- [Public Types](https://libsir.rml.dev/group__publictypes.html)
-- [Configuration](https://libsir.rml.dev/config.html)
-- [Test suite](https://libsir.rml.dev/testsuite.html)
+  * [Public Functions](https://libsir.rml.dev/group__publicfuncs.html)
+  * [Public Types](https://libsir.rml.dev/group__publictypes.html)
+  * [Configuration](https://libsir.rml.dev/config.html)
+  * [Test suite](https://libsir.rml.dev/testsuite.html)
 
-## SAST Tools
+## <a id="sast-tools" /> SAST Tools
 
-[PVS-Studio](https://pvs-studio.com/pvs-studio/?utm_source=website&utm_medium=github&utm_campaign=open_source) - static analyzer for C, C++, C#, and Java code.
-[Clang Static Analyzer](https://clang-analyzer.llvm.org/) - static analysis tool for C, C++, and Objective-C.
-[Coveralls](https://coveralls.io/github/aremmell/libsir) - line-by-line test coverage reports and statistics.
-[Coverity® Scan](https://scan.coverity.com/projects/aremmell-libsir) - find defects in Java, C/C++, C#, JavaScript, Ruby, or Python code.
-[Cppcheck](https://cppchecksolutions.com/) - static analysis tool for C/C++ code.
-[DUMA](https://github.com/johnsonjh/duma) - Detect Unintended Memory Access, a memory debugger.
-[Flawfinder](https://dwheeler.com/flawfinder/) - scan C/C++ source code for security weaknesses.
-[GCC Static Analyzer](https://gcc.gnu.org/onlinedocs/gcc/Static-Analyzer-Options.html) - coverage-guided symbolic execution analyzer for C.
-[Oracle Developer Studio](https://www.oracle.com/application-development/developerstudio/) - performance, security, and thread analysis tools.
-[REUSE](https://api.reuse.software/info/github.com/aremmell/libsir) - verifies compliance with [REUSE](https://reuse.software/) licensing recommendations.
-[SonarCloud](https://sonarcloud.io/project/overview?id=aremmell_libsir) - cloud-based code quality and security analysis.
-[Valgrind](https://valgrind.org/) - tools for memory debugging, memory leak detection, and profiling.
-[Visual Studio Code Analysis](https://learn.microsoft.com/en-us/cpp/code-quality/) - tools to analyze and improve C/C++ code quality.
+- [PVS-Studio](https://pvs-studio.com/pvs-studio/?utm_source=website&utm_medium=github&utm_campaign=open_source) - static analyzer for C, C++, C#, and Java code.
+- [Clang Static Analyzer](https://clang-analyzer.llvm.org/) - static analysis tool for C, C++, and Objective-C.
+- [Coveralls](https://coveralls.io/github/aremmell/libsir) - line-by-line test coverage reports and statistics.
+- [Coverity® Scan](https://scan.coverity.com/projects/aremmell-libsir) - find defects in Java, C/C++, C#, JavaScript, Ruby, or Python code.
+- [Cppcheck](https://cppchecksolutions.com/) - static analysis tool for C/C++ code.
+- [DUMA](https://github.com/johnsonjh/duma) - Detect Unintended Memory Access, a memory debugger.
+- [Flawfinder](https://dwheeler.com/flawfinder/) - scan C/C++ source code for security weaknesses.
+- [GCC Static Analyzer](https://gcc.gnu.org/onlinedocs/gcc/Static-Analyzer-Options.html) - coverage-guided symbolic execution analyzer for C.
+- [Oracle Developer Studio](https://www.oracle.com/application-development/developerstudio/) - performance, security, and thread analysis tools.
+- [REUSE](https://api.reuse.software/info/github.com/aremmell/libsir) - verifies compliance with [REUSE](https://reuse.software/) licensing recommendations.
+- [SonarCloud](https://sonarcloud.io/project/overview?id=aremmell_libsir) - cloud-based code quality and security analysis.
+- [Valgrind](https://valgrind.org/) - tools for memory debugging, memory leak detection, and profiling.
+- [Visual Studio Code Analyzer](https://learn.microsoft.com/en-us/cpp/code-quality/) - tools to analyze and improve C/C++ code quality.
