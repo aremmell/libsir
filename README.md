@@ -102,10 +102,10 @@ A very recent addition is an `sln` and some `vcxproj` files in the [msvc](https:
 | Recipe Type    |    Command          |       Output file(s)                                          |
 | :------------: | :-----------------: | :-----------------------------------------------------------: |
 | Test suite     |  `make tests`       |                  *build/bin/sirtests[.exe]*                   |
-| Example app    | `make example`      |                  *build/bin/sirexample[.exe]*                 |
-| Static library |    `make static`    |                   *build/lib/libsir_s.a*                      |
-| Shared library |    `make shared`    |                    *build/lib/libsir.so*                      |
-|    Install     | `make install` |    <ul><li>*$PREFIX/lib/libsir_s.a*</li><li>*$PREFIX/lib/libsir.so*</li><li>*$PREFIX/include/sir.h*</li><li>*$PREFIX/include/sir/\*.h*</li></ul>  |
+| Example app    |  `make example`     |                  *build/bin/sirexample[.exe]*                 |
+| Static library |  `make static`      |                   *build/lib/libsir_s.a*                      |
+| Shared library |  `make shared`      |                    *build/lib/libsir.so*                      |
+| Installation   |  `make install`     | <ul><li>*$PREFIX/lib/libsir_s.a*</li><li>*$PREFIX/lib/libsir.so*</li><li>*$PREFIX/include/sir.h*</li><li>*$PREFIX/include/sir/\*.h*</li></ul> |
 
 ## <a id="dig-in" /> Dig in
 
@@ -121,3 +121,15 @@ Suggested initial sections:
 ## SAST Tools
 
 [PVS-Studio](https://pvs-studio.com/pvs-studio/?utm_source=website&utm_medium=github&utm_campaign=open_source) - static analyzer for C, C++, C#, and Java code.
+[Clang Static Analyzer](https://clang-analyzer.llvm.org/) - static analysis tool for C, C++, and Objective-C.
+[Coveralls](https://coveralls.io/github/aremmell/libsir) - line-by-line test coverage reports and statistics.
+[Coverity® Scan](https://scan.coverity.com/projects/aremmell-libsir) - find defects in Java, C/C++, C#, JavaScript, Ruby, or Python code.
+[Cppcheck](https://cppchecksolutions.com/) - static analysis tool for C/C++ code.
+[DUMA](https://github.com/johnsonjh/duma) - Detect Unintended Memory Access, a memory debugger.
+[Flawfinder](https://dwheeler.com/flawfinder/) - scan C/C++ source code for security weaknesses.
+[GCC Static Analyzer](https://gcc.gnu.org/onlinedocs/gcc/Static-Analyzer-Options.html) - coverage-guided symbolic execution analyzer for C.
+[Oracle Developer Studio](https://www.oracle.com/application-development/developerstudio/) - performance, security, and thread analysis tools.
+[REUSE](https://api.reuse.software/info/github.com/aremmell/libsir) - verifies compliance with [REUSE](https://reuse.software/) licensing recommendations.
+[SonarCloud](https://sonarcloud.io/project/overview?id=aremmell_libsir) - cloud-based code quality and security analysis.
+[Valgrind](https://valgrind.org/) - tools for memory debugging, memory leak detection, and profiling.
+[Visual Studio Code Analysis](https://learn.microsoft.com/en-us/cpp/code-quality/) - tools to analyze and improve C/C++ code quality.
