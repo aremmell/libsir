@@ -12,22 +12,14 @@ WORKDIR /
 ARG URL
 
 RUN \
-  (sed -i 's/tsflags=nodocs//' /etc/dnf/dnf.conf || true) \
-&& \
-  dnf -y --refresh update \
-&& \
-  dnf -y install dnf-plugins-core dnf-utils \
-&& \
-  dnf -y --refresh update \
-&& \
-  dnf -y install rpmconf \
-&& \
-  (rpmconf --all --unattended use_maintainer || true) \
-&& \
-  (rpmconf --all --unattended use_maintainer --clean || true) \
-&& \
-  dnf -y --refresh update \
-&& \
+  (sed -i 's/tsflags=nodocs//' /etc/dnf/dnf.conf || true) && \
+  dnf -y --refresh update && \
+  dnf -y install dnf-plugins-core dnf-utils && \
+  dnf -y --refresh update && \
+  dnf -y install rpmconf && \
+  (rpmconf --all --unattended use_maintainer || true) && \
+  (rpmconf --all --unattended use_maintainer --clean || true) && \
+  dnf -y --refresh update && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
       advancecomp \
       ansifilter \
@@ -121,31 +113,21 @@ RUN \
       libtirpc.i686 \
       libubsan.i686 \
 && \
-  dnf4 -y --allowerasing reinstall \
-      compiler-rt \
-&& \
+  dnf4 -y --allowerasing reinstall compiler-rt && \
   dnf4 -y --allowerasing install \
-      https://rpm.nodesource.com/pub_20.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm \
-&& \
-  dnf -y --refresh update \
-&& \
-  dnf4 -y --refresh update \
-&& \
+    https://rpm.nodesource.com/pub_20.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm && \
+  dnf -y --refresh update && \
+  dnf4 -y --refresh update && \
   dnf4 -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-      nodejs --setopt=nodesource-nodejs.module_hotfixes=1 \
-&& \
+    nodejs --setopt=nodesource-nodejs.module_hotfixes=1 && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True group install \
       development-tools \
       c-development \
 && \
-  dnf -y --refresh update \
-&& \
-  (rpmconf --all --unattended use_maintainer || true) \
-&& \
-  (rpmconf --all --unattended use_maintainer --clean || true) \
-&& \
-  (curl -fsSL https://coveralls.io/coveralls-linux.tar.gz | tar -zxv -C /usr/bin) \
-&& \
+  dnf -y --refresh update && \
+  (rpmconf --all --unattended use_maintainer || true) && \
+  (rpmconf --all --unattended use_maintainer --clean || true) && \
+  (curl -fsSL https://coveralls.io/coveralls-linux.tar.gz | tar -zxv -C /usr/bin) && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
       mingw32-binutils \
       mingw32-boost \
@@ -182,8 +164,7 @@ RUN \
       ucrt64-winpthreads \
       ucrt64-winpthreads-static \
 && \
-  (yes | dnf -y copr enable yselkowitz/cygwin fedora-rawhide-x86_64) \
-&& \
+  (yes | dnf -y copr enable yselkowitz/cygwin fedora-rawhide-x86_64) && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
       cygport \
       cygwin32 \
@@ -194,8 +175,7 @@ RUN \
       cygwin64-gcc-c++ \
       cygwin-w32api-headers \
 && \
-  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install wine \
-&& \
+  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install wine && \
   mkdir -p /opt && \
   cd /opt && \
   git clone -v --depth=1 https://github.com/rui314/chibicc && \
@@ -206,13 +186,10 @@ RUN \
   env CFLAGS='-O2 -flto=auto' LDFLAGS='-flto=auto' make && \
   (rm -rf ./test ./.git ./*.o ./*.c ./*.h .gitignore LICENSE Makefile README.md || true) && \
   strip chibicc && \
-  cd / \
-&& \
+  cd / && \
   (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-          --nogpgcheck ${URL:-http://192.168.1.187:8088/~jhj/cache/aocc-compiler.x86_64.rpm}) \
-&& \
-  ( ln -fs /opt/AMD/aocc-compiler-4.1.0 /opt/AMD/aocc-compiler-4.0.0 || true ) \
-&& \
+     --nogpgcheck ${URL:-http://192.168.1.187:8088/~jhj/cache/aocc-compiler.x86_64.rpm}) && \
+  (ln -fs /opt/AMD/aocc-compiler-4.1.0 /opt/AMD/aocc-compiler-4.0.0 || true) && \
   mkdir -p /tmp/duma-build && \
   cd /tmp/duma-build && \
   git clone -v https://github.com/johnsonjh/duma && \
@@ -221,15 +198,13 @@ RUN \
   make install && \
   cd / && \
   rm -rf /tmp/duma-build && \
-  ldconfig \
-&& \
-  ( dnf4 -y clean > /dev/null 2>&1 ; dnf4 -y clean all > /dev/null 2>&1 ; true ) || true && \
+  ldconfig && \
+  (dnf4 -y clean > /dev/null 2>&1 ; dnf4 -y clean all > /dev/null 2>&1 || true) && \
   dnf -y clean all && \
   rm -rf ~/.cache && \
   rm -rf /var/tmp/* && \
   rm -rf /var/log/dnf* && \
-  ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true) \
-&& \
+  ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true) && \
   rm -f /etc/crypto-policies/back-ends/opensslcnf.config && \
   printf '%s\n' \
     "CipherString = @SECLEVEL=2:kEECDH:kRSA:kEDH:kPSK:kDHEPSK:kECDHEPSK:kRSAPSK:-aDSS:-3DES:!DES:!RC4:!RC2:!IDEA:-SEED:!eNULL:!aNULL:!MD5:-SHA384:-CAMELLIA:-ARIA:-AESCCM8" \
@@ -239,15 +214,19 @@ RUN \
     "[openssl_init]" \
     "" \
     "[evp_properties]" \
-    "" > /etc/crypto-policies/back-ends/opensslcnf.config \
-&& \
-  touch /.OK
-
-RUN adduser -m -U -G wheel --uid 10000 -c "CI/CD User" user
+    "" > /etc/crypto-policies/back-ends/opensslcnf.config && \
+    dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
+    dnf -y clean all && \
+    rm -rf ~/.cache > /dev/null 2>&1 && \
+    rm -rf /var/tmp/* > /dev/null 2>&1 && \
+    rm -rf /var/log/dnf* > /dev/null 2>&1 && \
+    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true )&& \
+    adduser -m -U -G wheel --uid 10000 -c "CI/CD User" user && \
+    touch /.OK
 
 # RUN git clone -v https://github.com/Ericsson/codechecker.git --depth=1 && \
 #     cd codechecker && \
-#     ( grep 'lxml==4\.9\.2' -rl . | xargs -I{} sed -i 's/lxml==4.9.2/lxml==4.9.3/' "{}" || true ) && \
+#     (grep 'lxml==4\.9\.2' -rl . | xargs -I{} sed -i 's/lxml==4.9.2/lxml==4.9.3/' "{}" || true) && \
 #     make venv && \
 #     . $(pwd)/venv/bin/activate && \
 #     pip install setuptools && \

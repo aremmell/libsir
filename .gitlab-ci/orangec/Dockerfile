@@ -11,7 +11,7 @@ WORKDIR /
 
 ARG URL
 
-RUN cd /opt && \
+RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && cd /opt && \
     wget ${URL:-http://192.168.1.187:8088/~jhj/cache/OrangeC.zip} && \
     atool -x OrangeC.zip && \
     env rm OrangeC.zip && \

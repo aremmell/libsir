@@ -11,12 +11,12 @@ WORKDIR /
 
 ARG URL
 
-RUN dnf -y install \
+RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && dnf -y install \
               pigz \
               sharutils \
               xdelta && \
-    ( dnf4 -y clean > /dev/null 2>&1 ; dnf4 -y clean all > /dev/null 2>&1 ; true ) || true && \
-    ( dnf4 -y clean all || true ) && \
+    (dnf4 -y clean > /dev/null 2>&1 ; dnf4 -y clean all > /dev/null 2>&1 || true) && \
+    (dnf4 -y clean all || true) && \
     cd /tmp && mkdir -p circle && cd circle && \
     ( wget -S -v -c -t 0 https://www.circle-lang.org/linux/build_200.tgz || \
       wget -S -v -c -t 0 ${URL:-http://192.168.1.187:8088/~jhj/cache/build_200.tgz} ) && \
@@ -42,7 +42,7 @@ RUN dnf -y install \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
     rm -rf /var/log/dnf* && \
-    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true) && \
+    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true ) && \
     touch /OK
 
 USER 10000

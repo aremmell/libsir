@@ -29,7 +29,7 @@ RUN apt -y update && \
       rm -rf ansifilter && \
     ansifilter --version && \
     apt -y clean all && \
-    useradd -m -U -G 0 --uid 10000 -c "CI/CD User" user
+    useradd -m -U -G 0 --uid 10000 -c "CI/CD User" user && cd
 
 WORKDIR /
 

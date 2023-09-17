@@ -6,14 +6,14 @@ FROM registry.gitlab.com/libsir/libsir/base:latest
 
 USER 0
 
-RUN dnf -y --refresh \
-        --setopt=install_weak_deps=True install \
-            msitools \
-            cabextract \
-            zip \
-            unzip \
-            libwbclient.i686 \
-            libwbclient.x86_64 && \
+RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
+    dnf --refresh -y install --setopt=install_weak_deps=True \
+        msitools \
+        cabextract \
+        zip \
+        unzip \
+        libwbclient.i686 \
+        libwbclient.x86_64 && \
     wine64 wineboot --init && \
     while pgrep wineserver > /dev/null; do sleep 10; done
 
@@ -40,7 +40,7 @@ RUN dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
     rm -rf /var/log/dnf* && \
-    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true)
+    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true )
 
 WORKDIR /
 
