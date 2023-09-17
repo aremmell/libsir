@@ -32,6 +32,7 @@ libsir&mdash;a cross-platform, thread-safe logging library
   - [Unix Makefile](#unix-makefile)
 - [Dig in](#dig-in)
 - [SAST Tools](#sast-tools)
+- [Other Tools](#other-tools)
 
 <!-- tocstop -->
 
@@ -83,12 +84,11 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 
 A wrapper is provided allowing libsir to be used in C++20 projects, with (*optional*) adapters supporting popular formatting libraries:
 
-- [**_{_**fmt**_}_**](https://fmt.dev/)
+- [**{fmt}**](https://fmt.dev/)
 - [**std**::**format**](https://en.cppreference.com/w/cpp/utility/format/format)
 - [**Boost**.**Format**](https://theboostcpplibraries.com/boost.format)
 - [**std**::**iostream**](https://cplusplus.com/reference/istream/iostream/)
 - [**tinyformat**](https://github.com/c42f/tinyformat)
-- [Circle](https://www.circle-lang.org/) [**constant formatting**](https://github.com/seanbaxter/circle/blob/master/fmt/fmt.md)
 
 ## <a id="an-example" /> An example
 
@@ -108,11 +108,11 @@ There is a `code‑workspace` in the repository. As of right now, the build and 
 
 ### <a id="visual-studio-2022" /> Visual Studio 2022
 
-A very recent addition is an `sln` and some `vcxproj` files in the [`msvc`](https://github.com/aremmell/libsir/tree/master/msvs) directory. They are confirmed to work correctly on Windows 11 (x86, x64, Arm64) with Visual Studio 17.6+.
+A recent addition is `sln` and `vcxproj` files in the [`msvc`](https://github.com/aremmell/libsir/tree/master/msvs) directory. They are confirmed to work correctly on Windows 11 (x86, x64, Arm64) with Visual Studio 17.6+.
 
 ### <a id="unix-makefile" /> Unix Makefile
 
-The Makefiles are compatible with **GNU Make** version **3.81** and later (**4.4** recommended).
+The Makefiles are compatible with **GNU Make** version **3.81** and later (**4.4** recommended) and support most Unix-like operating systems: AIX, Solaris, Linux, illumos, macOS, Cygwin, FreeBSD, OpenBSD, NetBSD, DragonFly BSD, GNU/Hurd, Haiku, etc.
 
 |   Recipe Type    |     Command      | &nbsp;&nbsp;&nbsp;&nbsp;Output file(s)         |
 |:----------------:|:----------------:|:-----------------------------------------------|
@@ -137,10 +137,10 @@ Suggested initial sections:
 
 The developers are obsessed with the quality, reliability, and correctness of libsir.
 
-The following **SAST** (*static application*/*analysis security*/*software testing*) and verification tools are used on **every commit** as part of our comprehensive [continuous integration](https://gitlab.com/libsir/libsir/-/pipelines) process.
+The following **SAST** (*static application*/*analysis security*/*software testing*) and verification tools are used on **every commit** as part of our comprehensive [continuous integration](https://gitlab.com/libsir/libsir/-/pipelines) process:
 
-| Tool   | Usage  |
-|-------:|:-------|
+| Tool | Usage |
+|-----:|:------|
 | [**PVS-Studio**](https://pvs-studio.com/pvs-studio/?utm_source=website&utm_medium=github&utm_campaign=open_source) | Static analysis tool for C, C++, C#, and Java code                 |
 | [Clang Static Analyzer](https://clang-analyzer.llvm.org/)                                                          | Static analysis tool for C, C++, and Objective-C code              |
 | [Coveralls](https://coveralls.io/github/aremmell/libsir)                                                           | Line-by-line test coverage reporting and statistical analysis      |
@@ -155,3 +155,17 @@ The following **SAST** (*static application*/*analysis security*/*software testi
 | [SonarCloud](https://sonarcloud.io/project/overview?id=aremmell_libsir)                                            | Cloud-based code quality and security analysis tools               |
 | [Valgrind](https://valgrind.org/)                                                                                  | Tools for memory debugging, memory leak detection, and profiling   |
 | [Visual Studio Code Analyzer](https://learn.microsoft.com/en-us/cpp/code-quality/)                                 | Tools to analyze and improve C/C++ source code quality             |
+
+## <a id="other-tools" /> Other Tools
+
+Additional tools utilized in the development and testing of libsir includes:
+
+| Tool | Usage |
+|-----:|:------|
+| [CBMC](http://www.cprover.org/cbmc/)                                                                         | Bounded Model Checker for C and C++ programs                        |
+| [Frama-C](https://frama-c.com)                                                                               | Framework for Modular Analysis of C programs                        |
+| [GNU Global](https://www.gnu.org/software/global/)                                                           | Source code indexing and tagging system                             |
+| [Intel® VTune™ Profiler](https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler.html) | Performance analysis and profiling tools for Intel systems          |
+| [PurifyPlus™](https://www.teamblue.unicomsi.com/products/purifyplus/)                                        | Run-time analysis tools for application reliability and performance |
+| [Semgrep](https://semgrep.dev)                                                                               | A fast, open-source, static analysis engine for many languages      |
+| [Very Sleepy](http://www.codersnotes.com/sleepy/)                                                            | Sampling CPU profiler for Microsoft Windows applications            |
