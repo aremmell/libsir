@@ -182,6 +182,7 @@ endif
 
 ifeq ($(NVIDIAC),1)
   DBGFLAGS=-g
+  SIR_CFLAGS+=-noswitcherror
   SIR_CFLAGS+=--diag_suppress cast_to_qualified_type
   SIR_CFLAGS+=--diag_suppress mixed_enum_type
   SIR_CFLAGS+=--diag_suppress nonstd_ellipsis_only_param
