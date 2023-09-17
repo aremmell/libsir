@@ -2865,6 +2865,8 @@ Node.js/JavaScript (Emscripten, Em++, Emcc):
 
 Linux/x86_64 (GCC, Fedora Python):
   stage: build_python
+  needs:
+    - job: Linux/x86_64 (G++, GCC)
   tags:
     - Docker-x64
     - Linux
@@ -2914,6 +2916,8 @@ Linux/x86_64 (GCC, Fedora Python):
 
 Linux/x86_64 (Oracle Studio C, Fedora Python):
   stage: build_python
+  needs:
+    - job: Linux/x86_64 (Oracle Studio C)
   tags:
     - Docker-x64
     - Linux
@@ -2963,6 +2967,8 @@ Linux/x86_64 (Oracle Studio C, Fedora Python):
 
 Linux/x86_64 (Clang, Fedora Python):
   stage: build_python
+  needs:
+    - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
     - Linux
@@ -3012,6 +3018,8 @@ Linux/x86_64 (Clang, Fedora Python):
 
 Linux/x86_64 (NVIDIA HPC SDK C, Fedora Python):
   stage: build_python
+  needs:
+    - job: Linux/x86_64 (NVIDIA HPC SDK C++, C)
   tags:
     - Docker-x64
     - Linux
@@ -3064,6 +3072,8 @@ Linux/x86_64 (NVIDIA HPC SDK C, Fedora Python):
 
 Linux/x86_64 (Intel oneAPI, Intel Python):
   stage: build_python
+  needs:
+    - job: Linux/x86_64 (Intel oneAPI, ICPX, ICX)
   tags:
     - Docker-x64
     - Linux
@@ -3114,6 +3124,8 @@ Linux/x86_64 (Intel oneAPI, Intel Python):
 
 Linux/x86_64 (GCC, Anaconda Python):
   stage: build_python
+  needs:
+    - job: Linux/x86_64 (G++, GCC)
   tags:
     - Docker-x64
     - Linux
@@ -3168,6 +3180,8 @@ Linux/x86_64 (GCC, Anaconda Python):
 
 Linux/x86_64 (AOCC, Fedora Python):
   stage: build_python
+  needs:
+    - job: Linux/x86_64 (AOCC++, AOCC)
   tags:
     - Docker-x64
     - Linux
