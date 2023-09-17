@@ -293,7 +293,7 @@ example: $(OUT_EXAMPLE)
 $(OUT_EXAMPLE): $(OUT_STATIC) $(OBJ_EXAMPLE)
 	@mkdir -p $(@D)
 	@mkdir -p $(BINDIR)
-	$(CC) -o $(OUT_EXAMPLE) $(OBJ_EXAMPLE) -Iinclude $(LIBSIR_S) $(SIR_LDFLAGS)
+	$(CC) -o $(OUT_EXAMPLE) $(OBJ_EXAMPLE) -Iinclude $(SIR_LDFLAGS) $(LIBSIR_S)
 	-@printf 'built %s successfully.\n' "$(OUT_EXAMPLE)" 2> /dev/null
 
 ##############################################################################
@@ -322,7 +322,7 @@ $(OUT_TESTSXX): $(OUT_STATIC) $(OBJ_TESTS_SHX) $(OBJ_TESTSXX)
 	@mkdir -p $(BINDIR)
 	@mkdir -p $(LOGDIR)
 	@touch $(BINDIR)/file.exists > /dev/null
-	$(CXX) -o $(OUT_TESTSXX) $(OBJ_TESTS_SHX) $(OBJ_TESTSXX) -Iinclude $(LIBSIR_S) $(SIR_LDFLAGS)
+	$(CXX) -o $(OUT_TESTSXX) $(OBJ_TESTS_SHX) $(OBJ_TESTSXX) -Iinclude $(SIR_LDFLAGS) $(LIBSIR_S)
 	-@printf 'built %s successfully.\n' "$(OUT_TESTSXX)" 2> /dev/null
 
 ##############################################################################
@@ -338,7 +338,7 @@ $(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS_SHX) $(OBJ_TESTS)
 	@mkdir -p $(BINDIR)
 	@mkdir -p $(LOGDIR)
 	@touch $(BINDIR)/file.exists > /dev/null
-	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS_SHX) $(OBJ_TESTS) -Iinclude $(LIBSIR_S) $(SIR_LDFLAGS)
+	$(CC) -o $(OUT_TESTS) $(OBJ_TESTS_SHX) $(OBJ_TESTS) -Iinclude $(SIR_LDFLAGS) $(LIBSIR_S)
 	-@printf 'built %s successfully.\n' "$(OUT_TESTS)" 2> /dev/null
 
 ##############################################################################
