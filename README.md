@@ -96,7 +96,7 @@ Some sample terminal output from libsir demonstrating the default configuration:
 
 ![sample terminal output](./docs/res/sample-terminal.png)
 
-This output is from the `example` application, whose source code can be located in the [example](https://github.com/aremmell/libsir/tree/master/example) directory. If you're curious about a basic implementation of libsir in a practical context, that's a good place to start.
+This output is from the `example` application, whose source code can be located in the [`example`](https://github.com/aremmell/libsir/tree/master/example) directory. If you're curious about a basic implementation of libsir in a practical context, that's a good place to start.
 
 ## <a id="building-from-source" /> Building from source
 
@@ -112,7 +112,7 @@ A very recent addition is an `sln` and some `vcxproj` files in the [`msvc`](http
 
 ### <a id="unix-makefile" /> Unix Makefile
 
-The Makefiles are compatible with **GNU Make** version **3.81** and later (_**4.4** recommended_).
+The Makefiles are compatible with **GNU Make** version **3.81** and later (**4.4** recommended).
 
 |   Recipe Type    |     Command      | &nbsp;&nbsp;&nbsp;&nbsp;Output file(s)         |
 |:----------------:|:----------------:|:-----------------------------------------------|
@@ -135,7 +135,9 @@ If you are genuinely interested in utilizing libsir, you are encouraged to read 
 
 ## <a id="sast-tools" /> SAST Tools
 
-| &nbsp; | &nbsp; |
+The developers are obsessed with the quality, reliability, and correctness of libsir, and utilize the following SAST (*static application/analysis security/software testing*) tools to verify every single commit as part of our comprehensive [continuous integration](https://gitlab.com/libsir/libsir/-/pipelines) process.
+
+| Tool   | Usage  |
 |-------:|:-------|
 | [PVS-Studio](https://pvs-studio.com/pvs-studio/?utm_source=website&utm_medium=github&utm_campaign=open_source) | Static analysis tool for C, C++, C#, and Java code                 |
 | [Clang Static Analyzer](https://clang-analyzer.llvm.org/)                                                      | Static analysis tool for C, C++, and Objective-C code              |
@@ -145,6 +147,7 @@ If you are genuinely interested in utilizing libsir, you are encouraged to read 
 | [DUMA](https://github.com/johnsonjh/duma)                                                                      | Detect Unintended Memory Access, a memory debugger                 |
 | [Flawfinder](https://dwheeler.com/flawfinder/)                                                                 | Scans C and C++ source code for security weaknesses                |
 | [GCC Static Analyzer](https://gcc.gnu.org/onlinedocs/gcc/Static-Analyzer-Options.html)                         | Coverage-guided symbolic execution static analyzer for C code      |
+| [GNU Cppi](https://www.gnu.org/software/cppi/)                                                                 | C preprocessor directive linting, indenting, and regularization    |
 | [Oracle Developer Studio](https://www.oracle.com/application-development/developerstudio/)                     | Performance, security, and thread analysis tools                   |
 | [REUSE](https://api.reuse.software/info/github.com/aremmell/libsir)                                            | Verifies [REUSE](https://reuse.software/) licensing compliance     |
 | [SonarCloud](https://sonarcloud.io/project/overview?id=aremmell_libsir)                                        | Cloud-based code quality and security analysis tools               |
