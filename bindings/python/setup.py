@@ -18,6 +18,10 @@ class BuildExt(build_ext):
             self.compiler.compiler_so.remove("-Wno-unused-result")
         if "-Wsign-compare" in self.compiler.compiler_so:
             self.compiler.compiler_so.remove("-Wsign-compare")
+        if "-fno-strict-overflow" in self.compiler.compiler_so:
+            self.compiler.compiler_so.remove("-fno-strict-overflow")
+        if "-fcf-protection" in self.compiler.compiler_so:
+            self.compiler.compiler_so.remove("-fcf-protection")
         super().build_extensions()
 
 sir_module = Extension(
