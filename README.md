@@ -127,29 +127,31 @@ The Makefiles are compatible with **GNU Make** version **3.81** and later (**4.4
 
 If you are genuinely interested in utilizing libsir, you are encouraged to read the [full online documentation](https://libsir.rml.dev) to get a better understanding of the library's capabilities and interfaces.
 
-- Suggested initial sections:
-  * [Public Functions](https://libsir.rml.dev/group__publicfuncs.html)
-  * [Public Types](https://libsir.rml.dev/group__publictypes.html)
-  * [Configuration](https://libsir.rml.dev/config.html)
-  * [Test suite](https://libsir.rml.dev/testsuite.html)
+Suggested initial sections:
+ * [Public Functions](https://libsir.rml.dev/group__publicfuncs.html)
+ * [Public Types](https://libsir.rml.dev/group__publictypes.html)
+ * [Configuration](https://libsir.rml.dev/config.html)
+ * [Test suite](https://libsir.rml.dev/testsuite.html)
 
 ## <a id="sast-tools" /> SAST Tools
 
-The developers are obsessed with the quality, reliability, and correctness of libsir, and utilize the following SAST (*static application/analysis security/software testing*) tools to verify every single commit as part of our comprehensive [continuous integration](https://gitlab.com/libsir/libsir/-/pipelines) process.
+The developers are obsessed with the quality, reliability, and correctness of libsir.
+
+The following **SAST** (*static application*/*analysis security*/*software testing*) and verification tools are used on **every commit** as part of our comprehensive [continuous integration](https://gitlab.com/libsir/libsir/-/pipelines) process.
 
 | Tool   | Usage  |
 |-------:|:-------|
-| [PVS-Studio](https://pvs-studio.com/pvs-studio/?utm_source=website&utm_medium=github&utm_campaign=open_source) | Static analysis tool for C, C++, C#, and Java code                 |
-| [Clang Static Analyzer](https://clang-analyzer.llvm.org/)                                                      | Static analysis tool for C, C++, and Objective-C code              |
-| [Coveralls](https://coveralls.io/github/aremmell/libsir)                                                       | Line-by-line test coverage reports and statistics                  |
-| [Coverity® Scan](https://scan.coverity.com/projects/aremmell-libsir)                                           | Find and fix defects in Java, C/C++, C#, JS, Ruby, and Python code |
-| [Cppcheck](https://cppchecksolutions.com/)                                                                     | Static analysis tool for C and C++ code                            |
-| [DUMA](https://github.com/johnsonjh/duma)                                                                      | Detect Unintended Memory Access, a memory debugger                 |
-| [Flawfinder](https://dwheeler.com/flawfinder/)                                                                 | Scans C and C++ source code for security weaknesses                |
-| [GCC Static Analyzer](https://gcc.gnu.org/onlinedocs/gcc/Static-Analyzer-Options.html)                         | Coverage-guided symbolic execution static analyzer for C code      |
-| [GNU Cppi](https://www.gnu.org/software/cppi/)                                                                 | C preprocessor directive linting, indenting, and regularization    |
-| [Oracle Developer Studio](https://www.oracle.com/application-development/developerstudio/)                     | Performance, security, and thread analysis tools                   |
-| [REUSE](https://api.reuse.software/info/github.com/aremmell/libsir)                                            | Verifies [REUSE](https://reuse.software/) licensing compliance     |
-| [SonarCloud](https://sonarcloud.io/project/overview?id=aremmell_libsir)                                        | Cloud-based code quality and security analysis tools               |
-| [Valgrind](https://valgrind.org/)                                                                              | Tools for memory debugging, memory leak detection, and profiling   |
-| [Visual Studio Code Analyzer](https://learn.microsoft.com/en-us/cpp/code-quality/)                             | Tools to analyze and improve C/C++ code quality                    |
+| [**PVS-Studio**](https://pvs-studio.com/pvs-studio/?utm_source=website&utm_medium=github&utm_campaign=open_source) | Static analysis tool for C, C++, C#, and Java code                 |
+| [Clang Static Analyzer](https://clang-analyzer.llvm.org/)                                                          | Static analysis tool for C, C++, and Objective-C code              |
+| [Coveralls](https://coveralls.io/github/aremmell/libsir)                                                           | Line-by-line test coverage reporting and statistical analysis      |
+| [Coverity® Scan](https://scan.coverity.com/projects/aremmell-libsir)                                               | Find and fix defects in Java, C/C++, C#, JS, Ruby, and Python code |
+| [Cppcheck](https://cppchecksolutions.com/)                                                                         | Static analysis tool for C and C++ code                            |
+| [DUMA](https://github.com/johnsonjh/duma)                                                                          | Detect Unintended Memory Access, a memory debugger                 |
+| [Flawfinder](https://dwheeler.com/flawfinder/)                                                                     | Scans C and C++ source code for security weaknesses                |
+| [GCC Static Analyzer](https://gcc.gnu.org/onlinedocs/gcc/Static-Analyzer-Options.html)                             | Coverage-guided symbolic execution static analyzer for C code      |
+| [GNU Cppi](https://www.gnu.org/software/cppi/)                                                                     | C preprocessor directive linting, indenting, and regularization    |
+| [Oracle Developer Studio](https://www.oracle.com/application-development/developerstudio/)                         | Performance, security, and thread analysis tools                   |
+| [REUSE](https://api.reuse.software/info/github.com/aremmell/libsir)                                                | Verifies [REUSE](https://reuse.software/) licensing compliance     |
+| [SonarCloud](https://sonarcloud.io/project/overview?id=aremmell_libsir)                                            | Cloud-based code quality and security analysis tools               |
+| [Valgrind](https://valgrind.org/)                                                                                  | Tools for memory debugging, memory leak detection, and profiling   |
+| [Visual Studio Code Analyzer](https://learn.microsoft.com/en-us/cpp/code-quality/)                                 | Tools to analyze and improve C/C++ source code quality             |
