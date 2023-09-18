@@ -25,6 +25,7 @@ libsir&mdash;a cross-platform, thread-safe logging library
 - [Notables](#notables)
 - [Cross-platform compatibility](#cross-platform-compatibility)
   - [C++ compatibility](#c---compatibility)
+  - [Language Bindings](#language-bindings)
 - [An example](#an-example)
 - [Building from source](#building-from-source)
   - [Visual Studio Code](#visual-studio-code)
@@ -89,6 +90,10 @@ A wrapper is provided allowing libsir to be used in C++20 projects, with (*optio
 - [**Boost**.**Format**](https://theboostcpplibraries.com/boost.format)
 - [**std**::**iostream**](https://cplusplus.com/reference/istream/iostream/)
 - [**tinyformat**](https://github.com/c42f/tinyformat)
+
+### <a id="language-bindings" /> Language Bindings
+
+Bindings for other high-level programming languages are being developed (mostly using [SWIG](https://www.swig.org/)) in the [bindings](https://github.com/aremmell/libsir/tree/master/bindings) directory.
 
 ## <a id="an-example" /> An example
 
