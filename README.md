@@ -142,7 +142,7 @@ Suggested initial sections:
 
 The developers are obsessed with the quality, reliability, and correctness of libsir.
 
-The following **SAST** (*static application*/*analysis security*/*software testing*) and verification tools are used on **every commit** as part of our comprehensive [continuous integration](https://gitlab.com/libsir/libsir/-/pipelines) process:
+The following **SAST** (*static application*/*analysis security*/*software testing*) and verification tools are used&mdash;on **every commit**&mdash;as part of our comprehensive [continuous integration](https://gitlab.com/libsir/libsir/-/pipelines) testing process:
 
 | Tool | Usage |
 |-----:|:------|
@@ -163,7 +163,7 @@ The following **SAST** (*static application*/*analysis security*/*software testi
 
 ## <a id="other-tools" /> Other Tools
 
-Additional tools utilized in the development and testing of libsir includes:
+Additional tools used for libsir development and testing include:
 
 | Tool | Usage |
 |-----:|:------|
@@ -173,4 +173,5 @@ Additional tools utilized in the development and testing of libsir includes:
 | [Intel® VTune™ Profiler](https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler.html) | Performance analysis and profiling tools for Intel systems          |
 | [PurifyPlus™](https://www.teamblue.unicomsi.com/products/purifyplus/)                                        | Run-time analysis tools for application reliability and performance |
 | [Semgrep](https://semgrep.dev)                                                                               | A fast, open-source, static analysis engine for many languages      |
+| [SoftIntegration Ch](https://www.softintegration.com/)                                                       | C/C++ interpreter and interactive platform for scientific computing |
 | [Very Sleepy](http://www.codersnotes.com/sleepy/)                                                            | Sampling CPU profiler for Microsoft Windows applications            |
