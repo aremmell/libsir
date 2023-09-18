@@ -93,7 +93,7 @@ A wrapper is provided allowing libsir to be used in C++20 projects, with (*optio
 
 ### <a id="language-bindings" /> Language Bindings
 
-Bindings for other high-level programming languages are being developed (*mostly using [SWIG](https://www.swig.org/)*) in the [`bindings`](bindings) directory.
+Bindings for other high-level programming languages are under development (*mostly using* [SWIG](https://www.swig.org/)), and located in the [`bindings`](https://github.com/aremmell/libsir/tree/master/bindings) directory.
 
 ## <a id="an-example" /> An example
 
