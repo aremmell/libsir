@@ -85,11 +85,18 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 
 A wrapper is provided allowing libsir to be used in C++20 projects, with (*optional*) adapters supporting popular formatting libraries:
 
-- [{fmt}](https://fmt.dev/)
-- [std*::*format](https://en.cppreference.com/w/cpp/utility/format/format)
-- [Boost*.*Format](https://theboostcpplibraries.com/boost.format)
-- [std*::*iostream](https://cplusplus.com/reference/istream/iostream/)
-- [tinyformat](https://github.com/c42f/tinyformat)
+<TABLE>
+ <TR>
+  <TD>[{fmt}](https://fmt.dev/)</TD>
+  <TD>[std::format](https://en.cppreference.com/w/cpp/utility/format/format)</TD>
+  <TD>[Boost.Format](https://theboostcpplibraries.com/boost.format)</TD>
+ </TR>
+ <TR>
+  <TD>[std::iostream](https://cplusplus.com/reference/istream/iostream/)</TD>
+  <TD>[tinyformat](https://github.com/c42f/tinyformat)</TD>
+  <TD>[Circle.format](https://github.com/seanbaxter/circle/blob/master/new-circle/README.md#string-constant-formatting)</TD>
+ </TR>
+</TABLE>
 
 ### <a id="language-bindings" /> Language Bindings
 
