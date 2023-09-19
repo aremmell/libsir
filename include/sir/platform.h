@@ -43,7 +43,8 @@
 #   define PRINTF_FORMAT_ATTR(fmt_p, va_p) \
     __attribute__((format (gnu_printf, fmt_p, va_p)))
 #  else
-#   if !defined(__SUNPRO_C) && !defined(__SUNPRO_CC)
+#   if !defined(__SUNPRO_C) && !defined(__SUNPRO_CC) && \
+      !defined(_CH_) && !defined(__CH__)
 #    define PRINTF_FORMAT_ATTR(fmt_p, va_p) \
      __attribute__((format (printf, fmt_p, va_p)))
 #   else
@@ -373,7 +374,13 @@ _set_thread_local_invalid_parameter_handler(
 #  if !defined(SIR_NO_PLUGINS)
 #   include <dlfcn.h>
 #  endif
-#  include <pthread.h>
+#  if !defined(_CH_) && !defined(__CH__)
+#   include <pthread.h>
+#  else
+#   include <sched.h>
+#   include <ch/pthread.h>
+#   undef __HAVE_ATOMIC_H__
+#  endif
 #  if defined(__illumos__)
 #   include <sys/fcntl.h>
 #  endif
@@ -387,7 +394,8 @@ _set_thread_local_invalid_parameter_handler(
 #  endif
 #  include <unistd.h>
 #  if !defined(__CYGWIN__) && !defined(__HAIKU__) && \
-      !defined(__serenity__) && !defined(_AIX)
+      !defined(__serenity__) && !defined(_AIX) && \
+      !defined(_CH_) && !defined(__CH__)
 #   include <sys/syscall.h>
 #  endif
 #  include <sys/time.h>
@@ -584,7 +592,9 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 # elif defined(__GNUC__) || (defined(_AIX) && (defined(__xlC_ver__) || defined(__ibmxl__)))
 #  define _sir_thread_local __thread
 # else
-#  error "unable to resolve thread local attribute; please contact the author."
+#  if !defined(_CH_) && !defined(__CH__)
+#   error "unable to resolve thread local attribute; please contact the author."
+#  endif
 # endif
 
 # if defined(__WIN__) && defined(__STDC_SECURE_LIB__)
