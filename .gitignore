@@ -2,18 +2,19 @@
 # SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 
 # Compiled Object files
-*.slo
+*.dll
 *.lo
 *.o
+*.slo
 
 # Compiled Dynamic libraries
-*.so
 *.dylib
+*.so
 
 # Compiled Static libraries
-*.lai
-*.la
 *.a
+*.la
+*.lai
 
 # build products
 build/
@@ -83,8 +84,19 @@ cov-int
 .envrc
 
 # Python bindings
-bindings/python/__pycache__
-bindings/python/src
 bindings/python/build
-bindings/python/sir_wrap.c
+bindings/python/__pycache__
 bindings/python/sir.py
+bindings/python/sir_wrap.c
+bindings/python/src
+
+# Ch bindings
+bindings/ch/libsir.dl
+bindings/ch/sir_alert.chf
+bindings/ch/sir_crit.chf
+bindings/ch/sir_debug.chf
+bindings/ch/sir_emerg.chf
+bindings/ch/sir_error.chf
+bindings/ch/sir_info.chf
+bindings/ch/sir_notice.chf
+bindings/ch/sir_warn.chf

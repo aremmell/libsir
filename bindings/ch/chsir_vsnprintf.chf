@@ -1,0 +1,129 @@
+/* TODO: Check Ch version and use upstream Ch vsnprintf when %b is fixed. */
+#include <stdio.h>
+#include <stdbool.h>
+#include <inttypes.h>
+
+int
+chsir_vsnprintf(char *str, size_t n, const char *fmt, va_list args) {
+    unsigned int printf_string_upper_bound(char *format, va_list args) {
+        unsigned int len = 1;
+        while (*format) {
+            _Bool long_int   = false;
+            _Bool extra_long = false;
+            char c;
+            char *string_arg;
+
+            c = *format++;
+
+            if (c == '%') {
+                _Bool done = false;
+
+                while (*format && !done) {
+                    switch (*format++) {
+                        case '*': len += va_arg(args, int); break;
+                        case '1':
+                        case '2':
+                        case '3':
+                        case '4':
+                        case '5':
+                        case '6':
+                        case '7':
+                        case '8':
+                        case '9':
+                            format -= 1;
+                            len += strtol(format, (char **)&format, 10);
+                            break;
+                        case 'h': break;
+                        case 'l':
+                            if (long_int)
+                                extra_long = true;
+                            else
+                                long_int = true;
+                            break;
+                        case 'q':
+                        case 'L':
+                            long_int   = true;
+                            extra_long = true;
+                            break;
+                        case 's':
+                            string_arg = va_arg(args, char *);
+                            if (string_arg)
+                                len += strlen(string_arg);
+                            else
+                                len += 16;
+                            done = true;
+                            break;
+                        case 'd':
+                        case 'i':
+                        case 'o':
+                        case 'u':
+                        case 'x':
+                        case 'X':
+                            if (extra_long)
+                                (void)va_arg(args, int64_t);
+                            else if (long_int)
+                                (void)va_arg(args, long);
+                            else
+                                (void)va_arg(args, int);
+                            len += extra_long ? 64 : 32;
+                            done = true;
+                            break;
+                        case 'D':
+                        case 'O':
+                        case 'U':
+                            (void)va_arg(args, long);
+                            len += 32;
+                            done = true;
+                            break;
+                        case 'e':
+                        case 'E':
+                        case 'f':
+                        case 'g':
+#ifdef HAVE_LONG_DOUBLE
+                            if (extra_long)
+                                (void)va_arg(args, long double);
+                            else
+#endif
+                                (void)va_arg(args, double);
+                            len += extra_long ? 128 : 64;
+                            done = true;
+                            break;
+                        case 'b':
+                            (void)va_arg(args, int);
+                            len += 64;
+                            done = true;
+                            break;
+                        case 'c':
+                            (void)va_arg(args, int);
+                            len += 1;
+                            done = true;
+                            break;
+                        case 'p':
+                        case 'n':
+                            (void)va_arg(args, void *);
+                            len += 32;
+                            done = true;
+                            break;
+                        case '%':
+                            len += 1;
+                            done = true;
+                            break;
+                        default: break;
+                    }
+                }
+            } else
+                len += 1;
+        }
+        return len;
+    }
+
+    char *printed;
+    int len;
+    printed = malloc(sizeof(char) * printf_string_upper_bound(fmt, args));
+    vsprintf(printed, fmt, args);
+    strncpy(str, printed, n);
+    len        = strlen(printed);
+    str[n - 1] = '\0';
+    free(printed);
+    return len;
+}
