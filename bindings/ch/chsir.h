@@ -30,7 +30,7 @@
 
 #  include <dlfcn.h>
 
-extern void* _Chsir_handle = dlopen("libsir.dt", RTLD_LAZY);
+extern void* _Chsir_handle = dlopen("libsir.dl", RTLD_LAZY);
 
 int
 _chsir_early_abort(void) {
