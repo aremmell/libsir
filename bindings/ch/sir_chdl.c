@@ -23,9 +23,9 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+//-V::1049
 #include <ch.h>
 #include <stdbool.h>
-#include <sir/types.h>
 #include "chsir.h"
 
 EXPORTCH bool
@@ -104,7 +104,7 @@ sir_debug_chdl(void *varg) {
 
     Ch_VaStart(interp, ap, varg);
     message = Ch_VaArg(interp, ap, const char *);
-    retval  = sir_debug(message);
+    retval  = sir_debug("%s", message);
     Ch_VaEnd(interp, ap);
     return retval;
 }
@@ -118,7 +118,7 @@ sir_info_chdl(void *varg) {
 
     Ch_VaStart(interp, ap, varg);
     message = Ch_VaArg(interp, ap, const char *);
-    retval  = sir_info(message);
+    retval  = sir_info("%s", message);
     Ch_VaEnd(interp, ap);
     return retval;
 }
@@ -132,7 +132,7 @@ sir_warn_chdl(void *varg) {
 
     Ch_VaStart(interp, ap, varg);
     message = Ch_VaArg(interp, ap, const char *);
-    retval  = sir_warn(message);
+    retval  = sir_warn("%s", message);
     Ch_VaEnd(interp, ap);
     return retval;
 }
@@ -146,7 +146,7 @@ sir_alert_chdl(void *varg) {
 
     Ch_VaStart(interp, ap, varg);
     message = Ch_VaArg(interp, ap, const char *);
-    retval  = sir_alert(message);
+    retval  = sir_alert("%s", message);
     Ch_VaEnd(interp, ap);
     return retval;
 }
@@ -160,7 +160,7 @@ sir_notice_chdl(void *varg) {
 
     Ch_VaStart(interp, ap, varg);
     message = Ch_VaArg(interp, ap, const char *);
-    retval  = sir_notice(message);
+    retval  = sir_notice("%s", message);
     Ch_VaEnd(interp, ap);
     return retval;
 }
@@ -174,7 +174,7 @@ sir_error_chdl(void *varg) {
 
     Ch_VaStart(interp, ap, varg);
     message = Ch_VaArg(interp, ap, const char *);
-    retval  = sir_error(message);
+    retval  = sir_error("%s", message);
     Ch_VaEnd(interp, ap);
     return retval;
 }
@@ -188,7 +188,7 @@ sir_crit_chdl(void *varg) {
 
     Ch_VaStart(interp, ap, varg);
     message = Ch_VaArg(interp, ap, const char *);
-    retval  = sir_crit(message);
+    retval  = sir_crit("%s", message);
     Ch_VaEnd(interp, ap);
     return retval;
 }
@@ -202,7 +202,7 @@ sir_emerg_chdl(void *varg) {
 
     Ch_VaStart(interp, ap, varg);
     message = Ch_VaArg(interp, ap, const char *);
-    retval  = sir_emerg(message);
+    retval  = sir_emerg("%s", message);
     Ch_VaEnd(interp, ap);
     return retval;
 }
