@@ -112,3 +112,8 @@ License: MIT
 Files: include/*.hh
 Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
 License: MIT
+
+# Ch bindings
+Files: bindings/ch/*
+Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
+License: MIT

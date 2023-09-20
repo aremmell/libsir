@@ -1,3 +1,28 @@
+/*
+ * sir_chdl.c
+ *
+ * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Copyright: Copyright (c) 2018-2023
+ * Version:   2.2.4
+ * License:   The MIT License (MIT)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 #include <ch.h>
 #include <stdbool.h>
 #include <sir/types.h>
@@ -50,8 +75,7 @@ EXPORTCH uint16_t
 sir_geterror_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
-    char m[SIR_MAXERROR];
-    char *message = m;
+    char *message;
     uint16_t retval;
 
     Ch_VaStart(interp, ap, varg);
@@ -75,8 +99,7 @@ EXPORTCH bool
 sir_debug_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
-    char ch_message[SIR_MAXMESSAGE];
-    const char *message = ch_message;
+    const char *message;
     bool retval;
 
     Ch_VaStart(interp, ap, varg);
@@ -90,8 +113,7 @@ EXPORTCH bool
 sir_info_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
-    char ch_message[SIR_MAXMESSAGE];
-    const char *message = ch_message;
+    const char *message;
     bool retval;
 
     Ch_VaStart(interp, ap, varg);
@@ -105,8 +127,7 @@ EXPORTCH bool
 sir_warn_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
-    char ch_message[SIR_MAXMESSAGE];
-    const char *message = ch_message;
+    const char *message;
     bool retval;
 
     Ch_VaStart(interp, ap, varg);
@@ -120,8 +141,7 @@ EXPORTCH bool
 sir_alert_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
-    char ch_message[SIR_MAXMESSAGE];
-    const char *message = ch_message;
+    const char *message;
     bool retval;
 
     Ch_VaStart(interp, ap, varg);
@@ -135,8 +155,7 @@ EXPORTCH bool
 sir_notice_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
-    char ch_message[SIR_MAXMESSAGE];
-    const char *message = ch_message;
+    const char *message;
     bool retval;
 
     Ch_VaStart(interp, ap, varg);
@@ -150,8 +169,7 @@ EXPORTCH bool
 sir_error_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
-    char ch_message[SIR_MAXMESSAGE];
-    const char *message = ch_message;
+    const char *message;
     bool retval;
 
     Ch_VaStart(interp, ap, varg);
@@ -165,8 +183,7 @@ EXPORTCH bool
 sir_crit_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
-    char ch_message[SIR_MAXMESSAGE];
-    const char *message = ch_message;
+    const char *message;
     bool retval;
 
     Ch_VaStart(interp, ap, varg);
@@ -180,8 +197,7 @@ EXPORTCH bool
 sir_emerg_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
-    char ch_message[SIR_MAXMESSAGE];
-    const char *message = ch_message;
+    const char *message;
     bool retval;
 
     Ch_VaStart(interp, ap, varg);

@@ -1,3 +1,10 @@
+# bindings/ch/Makefile
+# libsir: https://github.com/aremmell/libsir
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
+
+##############################################################################
+
 .NOTPARALLEL:
 
 # TODO: Windows needs manual linking, like:
