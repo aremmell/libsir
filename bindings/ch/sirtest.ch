@@ -56,7 +56,7 @@ main(void) {
 
     /* Configure a name to associate with our output. */
     static const char* appname = "ChDemo";
-    (void)strcpy(si.name, appname);
+    (void)chsir_strncpy(si.name, appname, SIR_MAXNAME);
 
     /* Initialize libsir. */
     if (!sir_init(&si)) {

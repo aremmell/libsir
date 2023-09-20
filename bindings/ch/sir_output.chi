@@ -36,7 +36,7 @@ SIR_OUTPUT(const char* message...) {
     char fmt_message[SIR_MAXOUTPUT];
 
     va_start(ap, message);
-    if (strlen(message)) {
+    if (chsir_strnlen(message, SIR_MAXOUTPUT)) {
         chsir_vsnprintf(fmt_message, SIR_MAXOUTPUT, message, ap);
     } else {
         va_end(ap);
@@ -44,7 +44,7 @@ SIR_OUTPUT(const char* message...) {
     }
     va_end(ap);
 
-    char* format = strdup(fmt_message);
+    char* format = chsir_strndup(fmt_message, SIR_MAXOUTPUT);
     if (!format)
         return false;
 
