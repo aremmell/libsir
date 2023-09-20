@@ -1,4 +1,5 @@
 #!/usr/bin/env ch
+
 /*
  * sirtest.ch
  *
@@ -25,22 +26,40 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "chsir.h"
+#include <stdio.h>
+#include <string.h>
+#include <locale.h>
+#include <chshell.h>
 
 void report_error(void);
 
 int
 main(void) {
+    /* Initialize locale data. */
+    setlocale(LC_ALL, "");
+
+    /* Read Ch version. */
+    chinfo_t ch;
+    if (chinfo(&ch)) {
+        (void)fprintf(_stderr,
+                      RED("Ch error: ") BRED("Failure reading Ch version.\n"));
+
+        return EXIT_FAILURE;
+    }
+
+    /* Configure libsir. */
     sirinit si;
     if (!sir_makeinit(&si)) {
         report_error();
+
         return EXIT_FAILURE;
     }
 
     /* Levels for stdout: send debug, information, warning, and notice there. */
     si.d_stdout.levels = SIRL_DEBUG | SIRL_INFO | SIRL_WARN | SIRL_NOTICE;
 
-    /* Options for stdout: don't show the timestamp, hostname, or thread ID. */
-    si.d_stdout.opts = SIRO_NOTIME | SIRO_NOHOST | SIRO_NOTID;
+    /* Options for stdout: show everything. */
+    si.d_stdout.opts = SIRO_ALL;
 
     /* Levels for stderr: send error and above there. */
     si.d_stderr.levels = SIRL_ERROR | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG;
@@ -48,10 +67,10 @@ main(void) {
     /* Options for stderr: don't show the timestamp, hostname, or thread ID. */
     si.d_stderr.opts = SIRO_NOTIME | SIRO_NOHOST | SIRO_NOTID;
 
-    /* Levels for the system logger: don't send any output there. */
+    /* Levels for the syslog logger: don't send any output there. */
     si.d_syslog.levels = SIRL_NONE;
 
-    /* Options for the system logger: use the default value. */
+    /* Options for the syslog logger: use the default value. */
     si.d_syslog.opts = SIRO_DEFAULT;
 
     /* Configure a name to associate with our output. */
@@ -61,38 +80,56 @@ main(void) {
     /* Initialize libsir. */
     if (!sir_init(&si)) {
         report_error();
+
         return EXIT_FAILURE;
     }
+
+    /* Set a friendly name for the current thread. */
+    const char* thread_name = _argv[0] ? chsir_basename(_argv[0]) : "sirtest";
+    (void)_sir_setthreadname(thread_name);
 
     /* Get libsir version. */
     const char* sir_versionstring = sir_getversionstring();
     if (!sir_versionstring) {
         report_error();
+
         return EXIT_FAILURE;
     }
 
+    /* Print startup herald with version info. */
     (void)fprintf(_stdout,
-            (CYAN("libsir ") BCYAN("%s") CYAN(" Ch bindings") BGRAY(" ...\n")),
-            sir_versionstring);
+                  WHITE("Ch") " binding test: " CYAN("libsir ") BCYAN("%s"),
+                  sir_versionstring);
+    (void)fprintf(_stdout,
+                  BGRAY(" on ") CYAN("Ch ") BCYAN("%d.%d.%d.%d") BGRAY(".\n"),
+                  ch.vermajor, ch.verminor, ch.vermicro, ch.verbuild);
 
-    (void)sir_debug  ("Testing output %b %s %s", __LINE__, __TIME__, __DATE__);
-    (void)sir_info   ("Testing output %b %s %s", __LINE__, __TIME__, __DATE__);
-    (void)sir_notice ("Testing output %b %s %s", __LINE__, __TIME__, __DATE__);
-    (void)sir_warn   ("Testing output %b %s %s", __LINE__, __TIME__, __DATE__);
-    (void)sir_error  ("Testing output %b %s %s", __LINE__, __TIME__, __DATE__);
-    (void)sir_crit   ("Testing output %b %s %s", __LINE__, __TIME__, __DATE__);
-    (void)sir_alert  ("Testing output %b %s %s", __LINE__, __TIME__, __DATE__);
-    (void)sir_emerg  ("Testing output %b %s %s", __LINE__, __TIME__, __DATE__);
+    /* Log to stdout. */
+    (void)fprintf(_stdout, "\nLogging four libsir messages to stdout:\n");
+    (void)sir_debug("%b Testing %s output", __LINE__, ULINE("debug"));
+    (void)sir_info("%b Testing %s output", __LINE__, ULINE("information"));
+    (void)sir_notice("%b Testing %s output", __LINE__, ULINE("notice"));
+    (void)sir_warn("%b Testing %s output", __LINE__, ULINE("warning"));
 
+    /* Log to stderr. */
+    (void)fprintf(_stderr, "\nLogging four libsir messages to stderr:\n");
+    (void)sir_error("%s %b Testing %s output", __TIME__, __LINE__, ULINE("error"));
+    (void)sir_crit("%s %b Testing %s output", __TIME__, __LINE__, ULINE("critical"));
+    (void)sir_alert("%s %b Testing %s output", __TIME__, __LINE__, ULINE("alert"));
+    (void)sir_emerg("%s %b Testing %s output", __TIME__, __LINE__, ULINE("emergency"));
+
+    /* Clean up. */
     sir_cleanup();
 
+    /* All done. */
     return EXIT_SUCCESS;
 }
 
+/* Print error message using libsir. */
 void
 report_error(void) {
     char message[SIR_MAXERROR] = {0};
     uint16_t code              = sir_geterror(message);
-    (void)fprintf(_stderr, (BRED("libsir error: (%" PRIu16 ", %s)") BGRAY("\n")),
+    (void)fprintf(_stderr, BRED("libsir error: (%" PRIu16 ", %s)") BGRAY("\n"),
                   code, message);
 }

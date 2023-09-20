@@ -36,12 +36,15 @@ SIR_OUTPUT(const char* message...) {
     char fmt_message[SIR_MAXOUTPUT];
 
     va_start(ap, message);
+
     if (chsir_strnlen(message, SIR_MAXOUTPUT)) {
-        chsir_vsnprintf(fmt_message, SIR_MAXOUTPUT, message, ap);
+        (void)chsir_vsnprintf(fmt_message, SIR_MAXOUTPUT, message, ap);
     } else {
         va_end(ap);
+
         return false;
     }
+
     va_end(ap);
 
     char* format = chsir_strndup(fmt_message, SIR_MAXOUTPUT);
@@ -50,11 +53,14 @@ SIR_OUTPUT(const char* message...) {
 
     fptr = dlsym(_Chsir_handle, "SIR_OUTPUT_chdl");
     if (fptr == NULL) {
-        fprintf(_stderr, "Error: %s(%d): dlsym(): %s\n",
-                __func__, __LINE__, dlerror());
+        (void)fprintf(_stderr, "Error: %s(%d): dlsym(): %s\n",
+                      __func__, __LINE__, dlerror());
+
         return false;
     }
+
     dlrunfun(fptr, &retval, SIR_OUTPUT, format);
+
     free(format);
 
     return retval;

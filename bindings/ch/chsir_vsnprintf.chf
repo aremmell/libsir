@@ -4,8 +4,6 @@
  * chsir_vsnprintf.chf
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
- *            Jeffrey H. Johnson <trnsz@pobox.com>
- *            SoftIntegration, Inc.
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -36,6 +34,7 @@ int
 chsir_vsnprintf(char *str, size_t n, const char *fmt, va_list args) {
     unsigned int printf_string_upper_bound(char *format, va_list args) {
         unsigned int len = 1;
+
         while (*format) {
             _Bool long_int   = false;
             _Bool extra_long = false;
@@ -49,7 +48,10 @@ chsir_vsnprintf(char *str, size_t n, const char *fmt, va_list args) {
 
                 while (*format && !done) {
                     switch (*format++) {
-                        case '*': len += va_arg(args, int); break;
+                        case '*':
+                            len += va_arg(args, int);
+                            break;
+
                         case '1':
                         case '2':
                         case '3':
@@ -62,18 +64,23 @@ chsir_vsnprintf(char *str, size_t n, const char *fmt, va_list args) {
                             format -= 1;
                             len += strtol(format, (char **)&format, 10);
                             break;
-                        case 'h': break;
+
+                        case 'h':
+                            break;
+
                         case 'l':
                             if (long_int)
                                 extra_long = true;
                             else
                                 long_int = true;
                             break;
+
                         case 'q':
                         case 'L':
                             long_int   = true;
                             extra_long = true;
                             break;
+
                         case 's':
                             string_arg = va_arg(args, char *);
                             if (string_arg)
@@ -82,6 +89,7 @@ chsir_vsnprintf(char *str, size_t n, const char *fmt, va_list args) {
                                 len += 16;
                             done = true;
                             break;
+
                         case 'd':
                         case 'i':
                         case 'o':
@@ -97,6 +105,7 @@ chsir_vsnprintf(char *str, size_t n, const char *fmt, va_list args) {
                             len += extra_long ? 64 : 32;
                             done = true;
                             break;
+
                         case 'D':
                         case 'O':
                         case 'U':
@@ -104,6 +113,7 @@ chsir_vsnprintf(char *str, size_t n, const char *fmt, va_list args) {
                             len += 32;
                             done = true;
                             break;
+
                         case 'e':
                         case 'E':
                         case 'f':
@@ -112,47 +122,56 @@ chsir_vsnprintf(char *str, size_t n, const char *fmt, va_list args) {
                             if (extra_long)
                                 (void)va_arg(args, long double);
                             else
-#endif
+#endif /* ifdef HAVE_LONG_DOUBLE */
                                 (void)va_arg(args, double);
                             len += extra_long ? 128 : 64;
                             done = true;
                             break;
+
                         case 'b':
                             (void)va_arg(args, int);
                             len += 64;
                             done = true;
                             break;
+
                         case 'c':
                             (void)va_arg(args, int);
                             len += 1;
                             done = true;
                             break;
+
                         case 'p':
                         case 'n':
                             (void)va_arg(args, void *);
                             len += 32;
                             done = true;
                             break;
+
                         case '%':
                             len += 1;
                             done = true;
                             break;
-                        default: break;
+
+                        default:
+                            break;
                     }
                 }
-            } else
+            } else {
                 len += 1;
+            }
         }
+
         return len;
     }
 
     char *printed;
     int len;
-    printed = malloc(sizeof(char) * printf_string_upper_bound(fmt, args));
-    vsprintf(printed, fmt, args);
-    strncpy(str, printed, n);
+    printed = (char *)malloc(sizeof(char) * printf_string_upper_bound(fmt, args));
+    (void)vsprintf(printed, fmt, args);
+    (void)strncpy(str, printed, n);
     len        = strlen(printed);
     str[n - 1] = '\0';
     free(printed);
+
     return len;
 }

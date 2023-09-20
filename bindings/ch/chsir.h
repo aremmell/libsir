@@ -30,19 +30,25 @@
 
 #  include <dlfcn.h>
 
-extern void* _Chsir_handle = dlopen("libsir.dl", RTLD_LAZY);
+extern void* _Chsir_handle = dlopen("libsir.dt", RTLD_LAZY);
 
-#  pragma exec _Chsir_handle ? 0 : \
-    fprintf(_stderr, "Error: dlopen(): %s\n", dlerror()), \
-    fprintf(_stderr, "       cannot get _Chsir_handle in %s:%d\n", \
-            __FILE__, __LINE__);
+int
+_chsir_early_abort(void) {
+    (void)fprintf(_stderr, "Error: dlopen(): %s"
+                  "\n       Cannot get _Chsir_handle in %s:%d\n",
+                  dlerror(), __FILE__, __LINE__);
+    _abort();
+    return 1;
+}
+
+#  pragma exec _Chsir_handle ? 0 : _chsir_early_abort();
 
 void
 _dlclose_sir(void) {
-    dlclose(_Chsir_handle);
+    (void)dlclose(_Chsir_handle);
 }
 
-atexit(_dlclose_sir);
+(void)atexit(_dlclose_sir);
 
 # endif
 

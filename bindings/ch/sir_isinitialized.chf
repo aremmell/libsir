@@ -27,15 +27,17 @@
 
 bool
 sir_isinitialized(void) {
-    void *fptr;
+    void* fptr;
     bool retval;
 
     fptr = dlsym(_Chsir_handle, "sir_isinitialized_chdl");
     if (fptr == NULL) {
-        fprintf(_stderr, "Error: %s(%d): dlsym(): %s\n",
-                __func__, __LINE__, dlerror());
+        (void)fprintf(_stderr, "Error: %s(%d): dlsym(): %s\n",
+                      __func__, __LINE__, dlerror());
+
         return false;
     }
+
     dlrunfun(fptr, &retval, sir_isinitialized);
 
     return retval;

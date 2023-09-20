@@ -20,11 +20,11 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 size_t
-chsir_strnlen(const char *str, size_t maxlen)
-{
-  const char *cp;
+chsir_strnlen(const char *str, size_t maxlen) {
+    const char *cp;
 
-  for (cp = str; maxlen != 0 && *cp != '\0'; cp++, maxlen--);
+    for (cp = str; maxlen != 0 && *cp != '\0'; cp++, maxlen--)
+        ;
 
-  return (size_t)(cp - str);
+    return (size_t)(cp - str);
 }

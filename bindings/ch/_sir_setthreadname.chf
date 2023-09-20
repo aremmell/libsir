@@ -1,5 +1,5 @@
 /*
- * sir_init.chf
+ * _sir_setthreadname.chf
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
@@ -26,11 +26,11 @@
 #include "chsir.h"
 
 bool
-sir_init(sirinit* si) {
+_sir_setthreadname(const char* name) {
     void* fptr;
     bool retval;
 
-    fptr = dlsym(_Chsir_handle, "sir_init_chdl");
+    fptr = dlsym(_Chsir_handle, "_sir_setthreadname_chdl");
     if (fptr == NULL) {
         (void)fprintf(_stderr, "Error: %s(%d): dlsym(): %s\n",
                       __func__, __LINE__, dlerror());
@@ -38,7 +38,7 @@ sir_init(sirinit* si) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, sir_init, si);
+    dlrunfun(fptr, &retval, _sir_setthreadname, name);
 
     return retval;
 }

@@ -23,6 +23,9 @@ include ../../sirplatform.mk
 all:
 	@$(MAKE) --no-print-directory check_main
 	@$(MAKE) --no-print-directory module-python
+	-@tput bold 2> /dev/null || true; tput setaf 2 2> /dev/null || true
+	-@printf '[binding] built python binding successfully.\n' 2> /dev/null
+	-@tput sgr0 2> /dev/null || true
 
 ##############################################################################
 # Python module
@@ -41,6 +44,9 @@ sir.py sir_wrap.c: sir.i
 	env LDFLAGS="$(LDFLAGS) $(SIR_LDFLAGS)" \
 	  CC="$(CC) $(OPTFLAGS) $(CFLAGS) $(SIR_CFLAGS)" \
 	swig -O -w451 -python -threads -outcurrentdir -v $<
+	-@tput setaf 6 2> /dev/null || true
+	-@printf '[binding] generated wrappers.\n' 2> /dev/null
+	-@tput sgr0 2> /dev/null || true
 
 ##############################################################################
 # Check main build files
@@ -48,15 +54,17 @@ sir.py sir_wrap.c: sir.i
 .PHONY: check_main
 
 check_main:
-	@test -f ../../sirplatform.mk \
+	@test -f ../../sirplatform.mk 2> /dev/null \
 	  || { \
+	       (tput bold 2> /dev/null || true; tput setaf 1 2> /dev/null || true); \
 	       printf '%s\n' "ERROR: Invalid working directory."; \
+	       (tput sgr0 2> /dev/null || true); \
 	       exit 1; \
 	  }
-	@$(MAKE) --no-print-directory -q -C ../.. \
+	@$(MAKE) --no-print-directory -q -C ../.. 2> /dev/null \
 	  || { \
-	       $(MAKE) --no-print-directory clean; \
-	       $(MAKE) --no-print-directory -C ../.. clean; \
+	       $(MAKE) --no-print-directory clean 2> /dev/null; \
+	       $(MAKE) --no-print-directory -C ../.. clean 2> /dev/null; \
 	       $(MAKE) --no-print-directory -C ../..; \
 	  }
 
@@ -66,8 +74,7 @@ check_main:
 .PHONY: clean-all
 
 clean-all:
-	$(MAKE) -C ../.. clean
-	$(MAKE) clean
+	@$(MAKE) --no-print-directory -C ../.. clean
 
 .PHONY: clean
 
@@ -82,6 +89,9 @@ clean:
 	@rm -rf ./build 2> /dev/null || true
 	@rm -f ./sir.py 2> /dev/null || true
 	@rmdir ./src 2> /dev/null || true
+	-@tput bold 2> /dev/null || true; tput setaf 2 2> /dev/null || true
+	-@printf '[clean] bindings/python cleaned successfully.\n' 2> /dev/null
+	-@tput sgr0 2> /dev/null || true
 
 ##############################################################################
 # Common rules

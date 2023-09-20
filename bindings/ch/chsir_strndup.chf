@@ -20,17 +20,17 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 char *
-chsir_strndup(const char *str, size_t maxlen)
-{
-  char *copy;
-  size_t len;
+chsir_strndup(const char *str, size_t maxlen) {
+    char *copy;
+    size_t len;
 
-  len = chsir_strnlen(str, maxlen);
-  copy = (char*)malloc(len + 1);
-  if (copy != NULL) {
-    (void)memcpy(copy, str, len);
-    copy[len] = '\0';
-  }
+    len = chsir_strnlen(str, maxlen);
 
-  return copy;
+    copy = (char *)malloc(len + 1);
+    if (copy != NULL) {
+        (void)memcpy(copy, str, len);
+        copy[len] = '\0';
+    }
+
+    return copy;
 }
