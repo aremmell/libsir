@@ -453,9 +453,9 @@ install: $(INSTALLSH)
 ##############################################################################
 # Cleanup
 
-.PHONY: clean distclean
+.PHONY: clean clean-all distclean
 
-clean distclean:
+clean clean-all distclean:
 	@rm -rf $(BUILDDIR) > /dev/null 2>&1 || true
 	@rm -rf ./src/*.ln > /dev/null 2>&1 || true
 	@rm -rf $(LOGDIR) > /dev/null 2>&1 || true

@@ -82,9 +82,9 @@ check_main:
 ##############################################################################
 # Clean-up
 
-.PHONY: clean-all
+.PHONY: clean-all distclean
 
-clean-all:
+clean-all distclean:
 	@$(MAKE) --no-print-directory -C ../.. clean
 
 .PHONY: clean
@@ -92,6 +92,7 @@ clean-all:
 clean:
 	@rm -f $(GEN_FUNCS)
 	@rm -f ./libsir-chdemo.log 2> /dev/null || true
+	@rm -f ./_sir.*.dylib 2> /dev/null || true
 	@rm -f ./check_main 2> /dev/null || true
 	@rm -f ./_sir.*.so 2> /dev/null || true
 	@rm -rf ./build 2> /dev/null || true

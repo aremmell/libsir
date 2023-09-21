@@ -152,7 +152,7 @@ main(void) {
     sir_cleanup();
 
     /* We made it! */
-    (void)fprintf(_stdout, WHITE("\nCh") " binding test:" BGREEN("completed") BGRAY(".\n"));
+    (void)fprintf(_stdout, WHITE("\nCh ") "binding test: " BGREEN("completed") BGRAY(".\n"));
 
     /* All done. */
     return EXIT_SUCCESS;

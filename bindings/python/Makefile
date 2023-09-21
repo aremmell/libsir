@@ -71,15 +71,16 @@ check_main:
 ##############################################################################
 # Clean-up
 
-.PHONY: clean-all
+.PHONY: clean-all distclean
 
-clean-all:
+clean-all distclean:
 	@$(MAKE) --no-print-directory -C ../.. clean
 
 .PHONY: clean
 
 clean:
 	@rm -f ./sir-python.log 2> /dev/null || true
+	@rm -f ./_sir.*.dylib 2> /dev/null || true
 	@rm -rf ./__pycache__ 2> /dev/null || true
 	@rm -f ./sir_wrap.c 2> /dev/null || true
 	@rm -f ./check_main 2> /dev/null || true
