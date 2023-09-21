@@ -159,7 +159,7 @@ namespace sir
     /**
      * @class default_policy
      * @brief In the event that no custom configuration or behavior is desired,
-     * provides the default behavior.
+     * provides defaults for everything.
      *
      * - Uses all default values for sir_init
      * - Performs no post-initialization configuration
@@ -216,6 +216,13 @@ namespace sir
         adapter() = default;
         virtual ~adapter() = default;
     };
+
+    template<DerivedFromPolicy TPolicy>
+    static inline void sir_policy_throw(bool expr) {
+        if (!expr && TPolicy::throw_on_error()) {
+            // TODO: get libsir error, format, throw.
+        }
+    }
 
     /**
      * @class default_adapter
