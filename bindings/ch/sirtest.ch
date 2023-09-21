@@ -26,6 +26,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "chsir.h"
+#include "sir/errors.h"
 #include <stdio.h>
 #include <string.h>
 #include <locale.h>
@@ -84,6 +85,11 @@ main(void) {
         return EXIT_FAILURE;
     }
 
+    /* Configure and add a log file. */
+    sirfileid fileid = sir_addfile("libsir-chdemo.log", SIRL_ALL, SIRO_NONAME | SIRO_NOHOST);
+    if (0 == fileid)
+        report_error();
+
     /* Set a friendly name for the current thread. */
     const char* thread_name = _argv[0] ? chsir_basename(_argv[0]) : "sirtest";
     (void)_sir_setthreadname(thread_name);
@@ -118,14 +124,41 @@ main(void) {
     (void)sir_alert("%s %b Testing %s output", __TIME__, __LINE__, ULINE("alert"));
     (void)sir_emerg("%s %b Testing %s output", __TIME__, __LINE__, ULINE("emergency"));
 
+    /* Set up a syslog output. */
+    char message[SIR_MAXERROR];
+    (void)sir_syslogid(appname);
+    if (SIR_E_UNAVAIL == sir_geterror(message)) {
+        (void)fprintf(_stderr, "\nLogging to syslog is not supported, skipping.\n");
+    } else {
+        /* Don't log PID; syslog has us covered. */
+        if (!sir_syslogopts(SIRO_NOPID))
+            report_error();
+
+        /* Send all levels */
+        if (!sir_sysloglevels(SIRL_ALL))
+            report_error();
+
+        /* Log to syslog. */
+        (void)fprintf(_stderr, "\nLogging two libsir messages to stderr and syslog:\n");
+        (void)sir_alert("%b Testing %s output", __LINE__, "alert");
+        (void)sir_emerg("%b Testing %s output", __LINE__, "emergency");
+    }
+
+    /* Deregister (and close) the log file. */
+    if (fileid && !sir_remfile(fileid))
+        report_error();
+
     /* Clean up. */
     sir_cleanup();
+
+    /* We made it! */
+    (void)fprintf(_stdout, WHITE("\nCh") " binding test:" BGREEN("completed") BGRAY(".\n"));
 
     /* All done. */
     return EXIT_SUCCESS;
 }
 
-/* Print error message using libsir. */
+/* Print error message. */
 void
 report_error(void) {
     char message[SIR_MAXERROR] = {0};

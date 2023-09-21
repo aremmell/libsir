@@ -91,7 +91,7 @@ clean-all:
 
 clean:
 	@rm -f $(GEN_FUNCS)
-	@rm -f ./sir-ch.log 2> /dev/null || true
+	@rm -f ./libsir-chdemo.log 2> /dev/null || true
 	@rm -f ./check_main 2> /dev/null || true
 	@rm -f ./_sir.*.so 2> /dev/null || true
 	@rm -rf ./build 2> /dev/null || true

@@ -265,3 +265,316 @@ _sir_setthreadname_chdl(void *varg) {
 
     return retval;
 }
+
+EXPORTCH sirfileid
+sir_addfile_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    const char *path;
+    sir_levels levels;
+    sir_options opts;
+    sirfileid retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    path   = Ch_VaArg(interp, ap, const char *);
+    levels = Ch_VaArg(interp, ap, sir_levels);
+    opts   = Ch_VaArg(interp, ap, sir_options);
+    retval = sir_addfile(path, levels, opts);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH bool
+sir_remfile_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    sirfileid id;
+    bool retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    id     = Ch_VaArg(interp, ap, sirfileid);
+    retval = sir_remfile(id);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH sirpluginid
+sir_loadplugin_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    const char* path;
+    sirpluginid retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    path   = Ch_VaArg(interp, ap, const char*);
+    retval = sir_loadplugin(path);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH bool
+sir_unloadplugin_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    sirpluginid id;
+    bool retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    id     = Ch_VaArg(interp, ap, sirpluginid);
+    retval = sir_unloadplugin(id);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH bool
+sir_resettextstyles_chdl(void) {
+
+    return sir_resettextstyles();
+}
+
+EXPORTCH bool
+sir_setcolormode_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    sir_colormode mode;
+    bool retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    mode = Ch_VaArg(interp, ap, sir_colormode);
+    retval = sir_setcolormode(mode);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH bool
+sir_stdoutlevels_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    sir_levels levels;
+    bool retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    levels = Ch_VaArg(interp, ap, sir_levels);
+    retval = sir_stdoutlevels(levels);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH bool
+sir_stdoutopts_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    sir_options opts;
+    bool retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    opts = Ch_VaArg(interp, ap, sir_options);
+    retval = sir_stdoutopts(opts);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH bool
+sir_stderrlevels_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    sir_levels levels;
+    bool retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    levels = Ch_VaArg(interp, ap, sir_levels);
+    retval = sir_stderrlevels(levels);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH bool
+sir_stderropts_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    sir_options opts;
+    bool retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    opts = Ch_VaArg(interp, ap, sir_options);
+    retval = sir_stderropts(opts);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH bool
+sir_sysloglevels_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    sir_levels levels;
+    bool retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    levels = Ch_VaArg(interp, ap, sir_levels);
+    retval = sir_sysloglevels(levels);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH bool
+sir_syslogopts_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    sir_options opts;
+    bool retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    opts = Ch_VaArg(interp, ap, sir_options);
+    retval = sir_syslogopts(opts);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH bool
+sir_syslogid_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    const char* identity;
+    bool retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    identity = Ch_VaArg(interp, ap, const char*);
+    retval = sir_syslogid(identity);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH bool
+sir_syslogcat_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    const char* category;
+    bool retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    category = Ch_VaArg(interp, ap, const char*);
+    retval = sir_syslogcat(category);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH sir_textcolor
+sir_makergb_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    sir_textcolor r;
+    sir_textcolor g;
+    sir_textcolor b;
+    sir_textcolor retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    r = Ch_VaArg(interp, ap, sir_textcolor);
+    g = Ch_VaArg(interp, ap, sir_textcolor);
+    b = Ch_VaArg(interp, ap, sir_textcolor);
+    retval = sir_makergb(r, g, b);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH bool
+sir_settextstyle_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    sir_level level;
+    sir_textattr attr;
+    sir_textcolor fg;
+    sir_textcolor bg;
+    bool retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    level = Ch_VaArg(interp, ap, sir_level);
+    attr = Ch_VaArg(interp, ap, sir_textattr);
+    fg = Ch_VaArg(interp, ap, sir_textcolor);
+    bg = Ch_VaArg(interp, ap, sir_textcolor);
+    retval = sir_settextstyle(level, attr, fg, bg);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH bool
+sir_filelevels_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    sirfileid id;
+    sir_levels levels;
+    bool retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    id = Ch_VaArg(interp, ap, sirfileid);
+    levels = Ch_VaArg(interp, ap, sir_levels);
+    retval = sir_filelevels(id, levels);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH bool
+sir_fileopts_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    sirfileid id;
+    sir_options opts;
+    bool retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    id = Ch_VaArg(interp, ap, sirfileid);
+    opts = Ch_VaArg(interp, ap, sir_options);
+    retval = sir_fileopts(id, opts);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
