@@ -11,8 +11,8 @@ if __name__ == "__main__":
         exit(1)
 
     s.name = "Python!"
-    s.d_stdout.levels = sir.LVL_ALL
     s.d_stdout.opts   = sir.OPT_NOHOST
+    s.d_stderr.opts   = sir.OPT_NOHOST
     s.d_syslog.levels = sir.LVL_NONE
 
     if not sir.init(s):
