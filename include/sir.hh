@@ -72,23 +72,14 @@ namespace sir
      * message.
      */
     struct error {
-        uint16_t code = 0U;  /**< The error code associated with the message. */
+        uint16_t code = 0;   /**< The error code associated with the message. */
         std::string message; /**< Description of the error that occurred. */
     };
 
     /**
      * @class policy
-     * @brief Defines the abstract interface for a policy, which controls the
-     * behavior of logger at runtime.
-     *
-     * policy is designed to be practical–sure, you could have 3 or 4 different
-     * types of policy interfaces that made decisions for different categories
-     * of behavior, but in reality, engineers likely just want to have only one
-     * source file to consult when changes are required.
-     *
-     * For this reason, libsir's policy interface is a one-stop shop. Of course,
-     * a derived class can still be as elaborate as the engineer wishes, but the
-     * design goal here is a central source of control, and simplicity.
+     * @brief Defines the partially abstract interface for a policy which
+     * controls the behavior of logger at runtime.
      */
     class policy {
     public:
@@ -97,11 +88,9 @@ namespace sir
 
         /**
          * Called by logger before initializing libsir. Provides the policy with
-         * the opportunity to fully customize the initial configuration.
+         * an opportunity to customize the initial libsir configuration.
          *
-         * @param data libsir initial configuration data structure. Contains
-         * options for things such as level registrations and formatting options
-         * for stdio and system logger destinations.
+         * @param data initial libisr configuration data.
          *
          * @see ::sirinit
          * @see ::sir_makeinit
@@ -142,44 +131,54 @@ namespace sir
          * libsir or OS-level error is encountered by logger or its associated
          * adapter(s).
          *
-         * @note libsir's exception classes derive from std::exception.
+         * @returns true if logger should throw exceptions (derived from std::
+         * exception) when errors are encountered, or false if errors should
+         * simply be communicated through a pass/fail Boolean return value.
          *
-         * @returns true if exceptions should be thrown, false otherwise.
+         * If exceptions are not enabled, the caller of a method that could
+         * potentially fail is responsible for obtaining error information by
+         * calling logger::get_error and reacting accordingly.
          */
-        virtual constexpr bool throw_on_error() const noexcept = 0;
+        static constexpr bool throw_on_error() noexcept {
+            return false;
+        }
 
         /**
-         * Useful when complications arise; the question "which policy made that
-         * decision?!" is then easy to answer.
+         * Useful when complications arise; the question "which policy caused that
+         * to happen?!" is then easy to answer.
          *
          * @returns A unique name for the policy.
          */
         virtual std::string get_name() const = 0;
     };
 
+    /** Ensures that T derives from policy. */
+    template<typename T>
+    concept DerivedFromPolicy = std::is_base_of_v<policy, T>;
+
     /**
      * @class default_policy
-     * @brief Implementation of the default policy, in the event that no
-     * custom configuration or behavior is desired.
+     * @brief In the event that no custom configuration or behavior is desired,
+     * provides the default behavior.
+     *
+     * - Uses all default values for sir_init
+     * - Performs no post-initialization configuration
+     * - Exceptions are thrown when errors are encountered
      */
     class default_policy : public policy {
     public:
         default_policy() = default;
         ~default_policy() override = default;
 
-        /*
-         * policy overrides
-         */
-
         bool get_init_data(sirinit& data) const noexcept final {
             return sir_makeinit(&data);
         }
 
-        bool on_init_complete() const noexcept final {
+        constexpr bool on_init_complete() const noexcept final {
             return true;
         }
 
-        constexpr bool throw_on_error() const noexcept final {
+        static constexpr bool throw_on_error() noexcept {
             return true;
         }
 
@@ -195,6 +194,8 @@ namespace sir
      *
      * adapter is designed to provide flexibility and extensibility in relation
      * to the public interface that is implemented by a logger.
+     *
+     * TODO: update description
      *
      * For an example of this, see ::std_format_adapter. When std::format is
      * available, and SIR_NO_STD_FORMAT is not defined, std_format_adapter may
@@ -212,8 +213,6 @@ namespace sir
      */
     class adapter {
     protected:
-        /** Protected default constructor to prevent instantiation outside of
-         * a derived class. */
         adapter() = default;
         virtual ~adapter() = default;
     };
@@ -224,7 +223,11 @@ namespace sir
      *
      * Utilizes the same code path that the C interface itself does, in order to
      * achieve maximum performance (i.e., no unnecessary bloat is added).
+     *
+     * @param TPolicy policy A derived class of policy which controls the behavior
+     * of logger and by association, its adapters.
      */
+    template<DerivedFromPolicy TPolicy>
     class default_adapter : public adapter {
     public:
         default_adapter() = default;
@@ -232,10 +235,15 @@ namespace sir
 
         /** Logs a debug message (see ::sir_debug). */
         PRINTF_FORMAT_ATTR(2, 3)
-        bool debug(PRINTF_FORMAT const char* format, ...) const noexcept {
+        bool debug(PRINTF_FORMAT const char* format, ...) const {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_DEBUG, format, args);
             _SIR_L_END();
+
+            if constexpr (TPolicy::throw_on_error()) {
+                if (!ret)
+                    throw std::runtime_error("");
+            }
             return ret;
         }
 
@@ -308,10 +316,12 @@ namespace sir
      * @class std_format_adapter
      * @brief Adapter for std::format (when available).
      *
-     * If std::format is available on this platform and SIR_NO_STD_FORMAT is not
-     * defined, ::default_logger will export the methods from this adapter in
-     * addition to any others.
+     * TODO: update description
+     *
+     * @param TPolicy policy A derived class of policy which controls the behavior
+     * of logger and by association, its adapters.
      */
+    template<DerivedFromPolicy TPolicy>
     class std_format_adapter : public adapter {
     public:
         std_format_adapter() = default;
@@ -381,7 +391,11 @@ namespace sir
      * @brief Adapter for boost::format (when available).
      *
      * TODO: update description
+     *
+     * @param TPolicy policy A derived class of policy which controls the behavior
+     * of logger and by association, its adapters.
      */
+    template<DerivedFromPolicy TPolicy>
     class boost_format_adapter : public adapter {
     public:
         boost_format_adapter() = default;
@@ -435,7 +449,11 @@ namespace sir
      * @brief Adapter for fmt (when available).
      *
      * TODO: update description
+     *
+     * @param TPolicy policy A derived class of policy which controls the behavior
+     * of logger and by association, its adapters.
      */
+    template<DerivedFromPolicy TPolicy>
     class fmt_format_adapter : public adapter {
     public:
         fmt_format_adapter() = default;
@@ -508,17 +526,16 @@ namespace sir
      * @class std_iostream_adapter
      * @brief Provides a std::iostream interface to libsir's logging functions.
      *
-     * Implements the following public std::ostream members:
+     * Implements a public std::ostream member for eacch available logging level
+     * (e.g. debug_stream, info_stream, ..., emerg_stream).
      *
-     * - debug_stream
-     * - info_stream
-     * - notice_stream
-     * - warn_stream
-     * - error_stream
-     * - crit_stream
-     * - alert_stream
-     * - emerg_stream
+     * @note Use std::endl or std::flush to indicate the end of a log message if
+     * using the iostream << operator.
+     *
+     * @param TPolicy policy A derived class of policy which controls the behavior
+     * of logger and by association, its adapters.
      */
+    template<DerivedFromPolicy TPolicy>
     class std_iostream_adapter : public adapter {
     public:
         std_iostream_adapter() = default;
@@ -616,39 +633,20 @@ namespace sir
         using buffer_type = buffer<log_func>;
         using stream_type = stream<buffer_type>;
 
-        /** ostream for debug level. */
-        stream_type debug_stream {buffer_type {&sir_debug}};
-
-        /** ostream for info level. */
-        stream_type info_stream {buffer_type {&sir_info}};
-
-        /** ostream for notice level. */
+        stream_type debug_stream  {buffer_type {&sir_debug}};
+        stream_type info_stream   {buffer_type {&sir_info}};
         stream_type notice_stream {buffer_type {&sir_notice}};
-
-        /** ostream for warn level. */
-        stream_type warn_stream {buffer_type {&sir_warn}};
-
-        /** ostream for error level. */
-        stream_type error_stream {buffer_type {&sir_error}};
-
-        /** ostream for crit level. */
-        stream_type crit_stream {buffer_type {&sir_crit}};
-
-        /** ostream for alert level. */
-        stream_type alert_stream {buffer_type {&sir_alert}};
-
-        /** ostream for emerg level. */
-        stream_type emerg_stream {buffer_type {&sir_emerg}};
+        stream_type warn_stream   {buffer_type {&sir_warn}};
+        stream_type error_stream  {buffer_type {&sir_error}};
+        stream_type crit_stream   {buffer_type {&sir_crit}};
+        stream_type alert_stream  {buffer_type {&sir_alert}};
+        stream_type emerg_stream  {buffer_type {&sir_emerg}};
     };
 # endif // SIR_NO_STD_IOSTREAM
 
-    /** Ensures that T derives from adapter. */
+    /** Ensures that T... derive from adapter. */
     template<typename... T>
-    concept DerivedFromAdapter = std::is_base_of_v<adapter, T...>;
-
-    /** Ensures that T derives from policy. */
-    template<typename T>
-    concept DerivedFromPolicy = std::is_base_of_v<policy, T>;
+    concept DerivedFromAdapter = std::is_base_of<adapter, T...>::value;
 
     /**
      * @class logger
@@ -666,10 +664,10 @@ namespace sir
      * @param TAdapters One or more adapter classes whose public methods will be
      *                  exposed by this class.
      */
-    template<bool RAII, DerivedFromPolicy TPolicy, DerivedFromAdapter... TAdapters>
-    class logger : public TAdapters... {
+    template<bool RAII, DerivedFromPolicy TPolicy, template<DerivedFromAdapter> class... TAdapters>
+    class logger : public TAdapters<TPolicy>... {
     public:
-        logger() : TAdapters()... {
+        logger() : TAdapters<TPolicy>()... {
             if (RAII && !_init()) {
                 // TODO: throw exception if policy says
                 SIR_ASSERT(false);
