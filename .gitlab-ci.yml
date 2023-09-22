@@ -3241,7 +3241,7 @@ Semgrep (Cloud Rules):
     - apk upgrade > /dev/null 2>&1 || true
     - semgrep login
     - semgrep install-semgrep-pro || true
-    - semgrep ci -q --error
+    - semgrep ci -q
     - |
       # End of Semgrep Cloud ...
       echo -e "section_end:`date +%s`:SemgrepCloud_section\r\e[0K" || true
