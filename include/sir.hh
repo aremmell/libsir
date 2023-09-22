@@ -755,7 +755,7 @@ namespace sir
             return throw_on_policy<TPolicy>(add);
         }
 
-        bool rem_file(const sirfileid& id) const noexcept {
+        bool rem_file(const sirfileid& id) const {
             const bool rem = sir_remfile(id);
             return throw_on_policy<TPolicy>(rem);
         }
@@ -765,71 +765,69 @@ namespace sir
             return throw_on_policy<TPolicy>(load);
         }
 
-        bool unload_plugin(const sirpluginid& id) const noexcept {
+        bool unload_plugin(const sirpluginid& id) const {
             const bool unload = sir_unloadplugin(id);
             return throw_on_policy<TPolicy>(unload);
         }
 
-        bool set_file_levels(const sirfileid& id, const sir_levels& levels)
-            const noexcept {
+        bool set_file_levels(const sirfileid& id, const sir_levels& levels) const {
             const bool set = sir_filelevels(id, levels);
             return throw_on_policy<TPolicy>(set);
         }
 
-        bool set_file_options(const sirfileid& id, const sir_options& opts)
-            const noexcept {
+        bool set_file_options(const sirfileid& id, const sir_options& opts) const {
             const bool set = sir_fileopts(id, opts);
             return throw_on_policy<TPolicy>(set);
         }
 
         bool set_text_style(const sir_level& level, const sir_textattr& attr,
-            const sir_textcolor& fg, const sir_textcolor& bg) const noexcept {
+            const sir_textcolor& fg, const sir_textcolor& bg) const {
             const bool set = sir_settextstyle(level, attr, fg, bg);
             return throw_on_policy<TPolicy>(set);
         }
 
-        bool reset_text_styles() const noexcept {
+        bool reset_text_styles() const {
             const bool reset = sir_resettextstyles();
             return throw_on_policy<TPolicy>(reset);
         }
 
         sir_textcolor make_rgb(const sir_textcolor& r, const sir_textcolor& g,
-            const sir_textcolor& b) const noexcept {
+            const sir_textcolor& b) const {
             const bool make = sir_makergb(r, g, b);
             return throw_on_policy<TPolicy>(make);
         }
 
-        bool set_color_mode(const sir_colormode& mode) const noexcept {
+        bool set_color_mode(const sir_colormode& mode) const {
             const bool set = sir_setcolormode(mode);
             return throw_on_policy<TPolicy>(set);
         }
 
-        bool set_stdout_levels(const sir_levels& levels) const noexcept {
+        bool set_stdout_levels(const sir_levels& levels) const {
             const bool set = sir_stdoutlevels(levels);
             return throw_on_policy<TPolicy>(set);
         }
 
-        bool set_stdout_options(const sir_options& opts) const noexcept {
+        bool set_stdout_options(const sir_options& opts) const {
             const bool set = sir_stdoutopts(opts);
             return throw_on_policy<TPolicy>(set);
         }
 
-        bool set_stderr_levels(const sir_levels& levels) const noexcept {
+        bool set_stderr_levels(const sir_levels& levels) const {
             const bool set = sir_stderrlevels(levels);
             return throw_on_policy<TPolicy>(set);
         }
 
-        bool set_stderr_options(const sir_options& opts) const noexcept {
+        bool set_stderr_options(const sir_options& opts) const {
             const bool set = sir_stderropts(opts);
             return throw_on_policy<TPolicy>(set);
         }
 
-        bool set_syslog_levels(const sir_levels& levels) const noexcept {
+        bool set_syslog_levels(const sir_levels& levels) const {
             const bool set = sir_sysloglevels(levels);
             return throw_on_policy<TPolicy>(set);
         }
 
-        bool set_syslog_options(const sir_options& opts) const noexcept {
+        bool set_syslog_options(const sir_options& opts) const {
             const bool set = sir_syslogopts(opts);
             return throw_on_policy<TPolicy>(set);
         }
