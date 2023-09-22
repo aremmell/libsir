@@ -587,7 +587,8 @@ namespace sir
             buffer() = delete;
 
             explicit buffer(TFunc pfn) : _pfn(pfn) {
-                throw_on_policy<TPolicy>(pfn != nullptr && _arr != nullptr);
+                [[maybe_unused]]
+                bool ok = throw_on_policy<TPolicy>(pfn != nullptr && _arr != nullptr);
                 reset();
             }
 
@@ -719,7 +720,8 @@ namespace sir
     public:
         logger() : TAdapters<TPolicy>()... {
             if constexpr(RAII) {
-                throw_on_policy<TPolicy>(_init());
+                [[maybe_unused]]
+                bool ok = throw_on_policy<TPolicy>(_init());
             }
         }
 
