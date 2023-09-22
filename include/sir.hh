@@ -79,9 +79,9 @@ namespace sir
 
     /**
      * @class exception
-     * @brief Derives from std::runtime_error in order to be caught by standard
-     * try/catch blocks, as well as to provide a useful error message by way of
-     * the what() method.
+     * @brief Derives from std::runtime_error in order to be caught easily by
+     * standard try/catch blocks, as well as to provide useful error messages
+     * by way of the what() method.
      */
     class exception : public std::runtime_error {
     public:
@@ -249,14 +249,18 @@ namespace sir
      * @param expr bool An expression that is evaluated against false. If false,
      *  an error is determined to have occurred and an exception will be thrown
      * if the policy requires it.
+     *
+     * @returns bool If no exception was thrown, the return value is expr (true
+     * if no error occurred, false otherwise).
      */
     template<DerivedFromPolicy TPolicy>
-    static inline void sir_policy_throw(bool expr) noexcept(false) {
+    static inline bool throw_on_policy(bool expr) noexcept(false) {
         if (!expr) {
             if constexpr(TPolicy::throw_on_error()) {
                 throw exception::from_libsir_error();
             }
         }
+        return expr;
     }
 
     /**
@@ -705,18 +709,20 @@ namespace sir
     class logger : public TAdapters<TPolicy>... {
     public:
         logger() : TAdapters<TPolicy>()... {
-            if (RAII && !_init()) {
-                // TODO: throw exception if policy says
-                SIR_ASSERT(false);
+            if constexpr(RAII) {
+                [[maybe_unused]] bool init = throw_on_policy<TPolicy>(_init());
+                SIR_ASSERT(init);
             }
         }
 
         logger(const logger&) = delete;
         logger(const logger&&) = delete;
 
-        virtual ~logger() {
-            if (RAII && !cleanup()) {
-                SIR_ASSERT(false);
+        ~logger() override {
+            if constexpr(RAII) {
+                if (!cleanup()) {
+                    SIR_ASSERT(false);
+                }
             }
         }
 
@@ -738,103 +744,121 @@ namespace sir
         /** Wraps ::sir_geterror. */
         error get_error() const {
             std::array<char, SIR_MAXERROR> message {};
-            auto code = sir_geterror(message.data());
+            const auto code = sir_geterror(message.data());
             return { code, message.data() };
         }
 
         /** Wraps ::sir_addfile. */
         sirfileid add_file(const std::string& path, const sir_levels& levels,
             const sir_options& opts) const {
-            return sir_addfile(path.c_str(), levels, opts);
+            const bool add = sir_addfile(path.c_str(), levels, opts);
+            return throw_on_policy<TPolicy>(add);
         }
 
         /** Wraps ::sir_remfile. */
         bool rem_file(const sirfileid& id) const noexcept {
-            return sir_remfile(id);
+            const bool rem = sir_remfile(id);
+            return throw_on_policy<TPolicy>(rem);
         }
 
         /** Wraps ::sir_loadplugin. */
         sirpluginid load_plugin(const std::string& path) const {
-            return sir_loadplugin(path.c_str());
+            const bool load = sir_loadplugin(path.c_str());
+            return throw_on_policy<TPolicy>(load);
         }
 
         /** Wraps ::sir_unloadplugin. */
         bool unload_plugin(const sirpluginid& id) const noexcept {
-            return sir_unloadplugin(id);
+            const bool unload = sir_unloadplugin(id);
+            return throw_on_policy<TPolicy>(unload);
         }
 
         /** Wraps ::sir_filelevels. */
         bool set_file_levels(const sirfileid& id, const sir_levels& levels)
             const noexcept {
-            return sir_filelevels(id, levels);
+            const bool set = sir_filelevels(id, levels);
+            return throw_on_policy<TPolicy>(set);
         }
 
         /** Wraps ::sir_fileopts. */
         bool set_file_options(const sirfileid& id, const sir_options& opts)
             const noexcept {
-            return sir_fileopts(id, opts);
+            const bool set = sir_fileopts(id, opts);
+            return throw_on_policy<TPolicy>(set);
         }
 
         /** Wraps ::sir_settextstyle. */
         bool set_text_style(const sir_level& level, const sir_textattr& attr,
             const sir_textcolor& fg, const sir_textcolor& bg) const noexcept {
-            return sir_settextstyle(level, attr, fg, bg);
+            const bool set = sir_settextstyle(level, attr, fg, bg);
+            return throw_on_policy<TPolicy>(set);
         }
 
         /** Wraps ::sir_resettextstyles. */
         bool reset_text_styles() const noexcept {
-            return sir_resettextstyles();
+            const bool reset = sir_resettextstyles();
+            return throw_on_policy<TPolicy>(reset);
         }
 
         /** Wraps ::sir_makergb. */
         sir_textcolor make_rgb(const sir_textcolor& r, const sir_textcolor& g,
             const sir_textcolor& b) const noexcept {
-            return sir_makergb(r, g, b);
+            const bool make = sir_makergb(r, g, b);
+            return throw_on_policy<TPolicy>(make);
         }
 
         /** Wraps ::sir_setcolormode. */
         bool set_color_mode(const sir_colormode& mode) const noexcept {
-            return sir_setcolormode(mode);
+            const bool set = sir_setcolormode(mode);
+            return throw_on_policy<TPolicy>(set);
         }
 
         /** Wraps ::sir_stdoutlevels. */
         bool set_stdout_levels(const sir_levels& levels) const noexcept {
-            return sir_stdoutlevels(levels);
+            const bool set = sir_stdoutlevels(levels);
+            return throw_on_policy<TPolicy>(set);
         }
 
         /** Wraps ::sir_stdoutopts. */
         bool set_stdout_options(const sir_options& opts) const noexcept {
-            return sir_stdoutopts(opts);
+            const bool set = sir_stdoutopts(opts);
+            return throw_on_policy<TPolicy>(set);
         }
 
         /** Wraps ::sir_stderrlevels. */
         bool set_stderr_levels(const sir_levels& levels) const noexcept {
-            return sir_stderrlevels(levels);
+            const bool set = sir_stderrlevels(levels);
+            return throw_on_policy<TPolicy>(set);
         }
 
         /** Wraps ::sir_stderropts. */
         bool set_stderr_options(const sir_options& opts) const noexcept {
-            return sir_stderropts(opts);
+            const bool set = sir_stderropts(opts);
+            return throw_on_policy<TPolicy>(set);
         }
 
         /** Wraps ::sir_sysloglevels. */
         bool set_syslog_levels(const sir_levels& levels) const noexcept {
-            return sir_sysloglevels(levels);
+            const bool set = sir_sysloglevels(levels);
+            return throw_on_policy<TPolicy>(set);
         }
 
         /** Wraps ::sir_syslogopts. */
         bool set_syslog_options(const sir_options& opts) const noexcept {
-            return sir_syslogopts(opts);
+            const bool set = sir_syslogopts(opts);
+            return throw_on_policy<TPolicy>(set);
         }
 
         /** Wraps ::sir_syslogid. */
         bool set_syslog_id(const std::string& id) const {
-            return sir_syslogid(id.c_str());
+            const bool set = sir_syslogid(id.c_str());
+            return throw_on_policy<TPolicy>(set);
         }
 
         /** Wraps ::sir_syslogcat. */
         bool set_syslog_category(const std::string& category) const {
-            return sir_syslogcat(category.c_str());
+            const bool set = sir_syslogcat(category.c_str());
+            return throw_on_policy<TPolicy>(set);
         }
 
         /** Wraps ::sir_getversionstring. */
@@ -854,16 +878,14 @@ namespace sir
 
     protected:
         bool _init() const noexcept {
+            TPolicy policy {};
             sirinit si {};
-            if (const bool init = _policy.get_init_data(si) && sir_init(&si) &&
-                _policy.on_init_complete(); !init) {
+            if (const bool init = policy.get_init_data(si) && sir_init(&si) &&
+                policy.on_init_complete(); !init) {
                 return false;
             }
             return true;
         }
-
-    private:
-        TPolicy _policy;
     };
 
     /**
