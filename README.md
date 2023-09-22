@@ -166,20 +166,21 @@ The following **SAST** (*static application*/*analysis security*/*software testi
 
 | Tool | Usage |
 |-----:|:------|
-| [**PVS-Studio**](https://pvs-studio.com/pvs-studio/?utm_source=website&utm_medium=github&utm_campaign=open_source) | Static analysis tool for C, C++, C#, and Java code                 |
-| [Clang Static Analyzer](https://clang-analyzer.llvm.org/)                                                          | Static analysis tool for C, C++, and Objective-C code              |
-| [Coveralls](https://coveralls.io/github/aremmell/libsir)                                                           | Line-by-line test coverage reporting and statistical analysis      |
-| [Coverity® Scan](https://scan.coverity.com/projects/aremmell-libsir)                                               | Find and fix defects in Java, C/C++, C#, JS, Ruby, and Python code |
-| [Cppcheck](https://cppchecksolutions.com/)                                                                         | Static analysis tool for C and C++ code                            |
-| [DUMA](https://github.com/johnsonjh/duma)                                                                          | Detect Unintended Memory Access, a memory debugger                 |
-| [Flawfinder](https://dwheeler.com/flawfinder/)                                                                     | Scans C and C++ source code for security weaknesses                |
-| [GCC Static Analyzer](https://gcc.gnu.org/onlinedocs/gcc/Static-Analyzer-Options.html)                             | Coverage-guided symbolic execution static analyzer for C code      |
-| [GNU Cppi](https://www.gnu.org/software/cppi/)                                                                     | C preprocessor directive linting, indenting, and regularization    |
-| [Oracle Developer Studio](https://www.oracle.com/application-development/developerstudio/)                         | Performance, security, and thread analysis tools                   |
-| [REUSE](https://api.reuse.software/info/github.com/aremmell/libsir)                                                | Verifies [REUSE](https://reuse.software/) licensing compliance     |
-| [SonarCloud](https://sonarcloud.io/project/overview?id=aremmell_libsir)                                            | Cloud-based code quality and security analysis tools               |
-| [Valgrind](https://valgrind.org/)                                                                                  | Tools for memory debugging, memory leak detection, and profiling   |
-| [Visual Studio Code Analyzer](https://learn.microsoft.com/en-us/cpp/code-quality/)                                 | Tools to analyze and improve C/C++ source code quality             |
+| [**PVS-Studio**](https://pvs-studio.com/pvs-studio/?utm_source=website&utm_medium=github&utm_campaign=open_source) | Static analysis tool for C, C++, C#, and Java code                                 |
+| [Clang Static Analyzer](https://clang-analyzer.llvm.org/)                                                          | Static analysis tool for C, C++, and Objective-C code                              |
+| [Coveralls](https://coveralls.io/github/aremmell/libsir)                                                           | Line-by-line test coverage reporting and statistical analysis                      |
+| [Coverity® Scan](https://scan.coverity.com/projects/aremmell-libsir)                                               | Find and fix defects in Java, C/C++, C#, JS, Ruby, and Python code                 |
+| [Cppcheck](https://cppchecksolutions.com/)                                                                         | Static analysis tool for C and C++ code                                            |
+| [DUMA](https://github.com/johnsonjh/duma)                                                                          | Detect Unintended Memory Access, a memory debugger                                 |
+| [Flawfinder](https://dwheeler.com/flawfinder/)                                                                     | Scans C and C++ source code for potential security weaknesses                      |
+| [GCC Static Analyzer](https://gcc.gnu.org/onlinedocs/gcc/Static-Analyzer-Options.html)                             | Coverage-guided symbolic execution static analyzer for C code                      |
+| [GNU Cppi](https://www.gnu.org/software/cppi/)                                                                     | C preprocessor directive linting, indenting, and regularization                    |
+| [Oracle Developer Studio](https://www.oracle.com/application-development/developerstudio/)                         | Performance, security, and thread analysis tools for C, C++, and Fortran           |
+| [REUSE](https://api.reuse.software/info/github.com/aremmell/libsir)                                                | Verifies compliance with the [REUSE](https://reuse.software/) licensing guidelines |
+| [Semgrep](https://semgrep.dev)  a                                                                                  | A fast, open-source, static analysis engine for many languages                     |
+| [SonarCloud](https://sonarcloud.io/project/overview?id=aremmell_libsir)                                            | Cloud-based code quality and security analysis tools                               |
+| [Valgrind](https://valgrind.org/)                                                                                  | Tools for memory debugging, memory leak detection, and profiling                   |
+| [Visual Studio Code Analyzer](https://learn.microsoft.com/en-us/cpp/code-quality/)                                 | Tools to analyze and improve C/C++ source code quality                             |
 
 ## <a id="other-tools" /> Other Tools
 
@@ -192,6 +193,5 @@ Additional tools used for libsir development and testing include:
 | [GNU Global](https://www.gnu.org/software/global/)                                                           | Source code indexing and tagging system                             |
 | [Intel® VTune™ Profiler](https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler.html) | Performance analysis and profiling tools for Intel systems          |
 | [PurifyPlus™](https://www.teamblue.unicomsi.com/products/purifyplus/)                                        | Run-time analysis tools for application reliability and performance |
-| [Semgrep](https://semgrep.dev)                                                                               | A fast, open-source, static analysis engine for many languages      |
 | [SoftIntegration Ch](https://www.softintegration.com/)                                                       | C/C++ interpreter and interactive platform for scientific computing |
 | [Very Sleepy](http://www.codersnotes.com/sleepy/)                                                            | Sampling CPU profiler for Microsoft Windows applications            |
