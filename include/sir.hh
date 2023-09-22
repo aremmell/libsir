@@ -169,7 +169,7 @@ namespace sir
          *
          * @returns A unique name for the policy.
          */
-        virtual constexpr std::string get_name() const = 0;
+        virtual constexpr const char* get_name() const = 0;
     };
 
     /** Ensures that T derives from policy. */
@@ -202,7 +202,7 @@ namespace sir
             return true;
         }
 
-        constexpr std::string get_name() const final {
+        constexpr const char* get_name() const final {
             return "Default";
         }
     };
