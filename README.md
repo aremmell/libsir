@@ -16,6 +16,8 @@ libsir&mdash;a cross-platform, thread-safe logging library
 [![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=aremmell_libsir&metric=sqale_rating)](https://sonarcloud.io/component_measures?id=aremmell_libsir&metric=new_maintainability_rating&view=list)
 [![Reliability](https://sonarcloud.io/api/project_badges/measure?project=aremmell_libsir&metric=reliability_rating)](https://sonarcloud.io/component_measures?id=aremmell_libsir&metric=new_reliability_rating&view=list)
 [![Security](https://sonarcloud.io/api/project_badges/measure?project=aremmell_libsir&metric=security_rating)](https://sonarcloud.io/component_measures?id=aremmell_libsir&metric=new_security_rating&view=list)
+[![Scorecard](https://img.shields.io/ossf-scorecard/github.com/aremmell/libsir?label=openssf%20scorecard&style=flat&color=%2340b900&cacheSeconds=60)](https://securityscorecards.dev/viewer/?uri=github.com/aremmell/libsir)
+[![Practices](https://img.shields.io/cii/level/7861?label=openssf%20best%20practices&color=2340b900&cacheSeconds=60)](https://www.bestpractices.dev/en/projects/7861)
 
 ## <a id="overview" /> Overview
 
