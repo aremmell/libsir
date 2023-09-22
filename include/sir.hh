@@ -40,18 +40,22 @@
 # include <string>
 # include <array>
 
-# if HAS_INCLUDE(<format>) && !defined(_LIBCPP_HAS_NO_INCOMPLETE_FORMAT)
+# if HAS_INCLUDE(<format>) && !defined (SIR_NO_STD_FORMAT) && \
+     !defined(_LIBCPP_HAS_NO_INCOMPLETE_FORMAT)
 #  include <format>
 #  define __SIR_HAVE_STD_FORMAT__
 # endif
-# if HAS_INCLUDE(<boost/format.hpp>)
+# if HAS_INCLUDE(<boost/format.hpp>) && !defined(SIR_NO_BOOST_FORMAT)
 #  include <boost/format.hpp>
 #  define __SIR_HAVE_BOOST_FORMAT__
 # endif
-# if HAS_INCLUDE(<fmt/format.h>)
+# if HAS_INCLUDE(<fmt/format.h>) && !defined(SIR_NO_FMT_FORMAT)
 #  define FMT_HEADER_ONLY
 #  include <fmt/format.h>
 #  define __SIR_HAVE_FMT_FORMAT__
+# endif
+# if !defined(SIR_NO_STD_IOSTREAM)
+#  include <iostream>
 # endif
 
 /**
@@ -551,6 +555,7 @@ namespace sir
     };
 # endif // !__SIR_HAVE_FMT_FORMAT__
 
+# if !defined(SIR_NO_STD_IOSTREAM)
     /** Ensures that T derives from std::streambuf. */
     template<typename T>
     concept DerivedFromStreamBuf = std::is_base_of_v<std::streambuf, T>;
@@ -671,6 +676,7 @@ namespace sir
         stream_type alert_stream  {buffer_type {&sir_alert}};
         stream_type emerg_stream  {buffer_type {&sir_emerg}};
     };
+# endif // SIR_NO_STD_IOSTREAM
 
     /** Utility template for obtaining the type of Nth item in a parameter pack. */
     template<size_t N, typename ...Ts>
@@ -872,19 +878,6 @@ namespace sir
      */
     using default_logger = logger<true, default_policy, default_adapter>;
 
-    /**
-     * @typedef iostream_logger
-     * @brief A logger that implements the default adapter as well as the
-     * std::iostream adapter.
-     */
-    using iostream_logger = logger
-    <
-        true,
-        default_policy,
-        default_adapter,
-        std_iostream_adapter
-    >;
-
 # if defined(__SIR_HAVE_STD_FORMAT__)
     using std_format_logger = logger
     <
@@ -912,6 +905,16 @@ namespace sir
         default_policy,
         default_adapter,
         fmt_format_adapter
+    >;
+# endif
+
+# if !defined(SIR_NO_STD_IOSTREAM)
+    using iostream_logger = logger
+    <
+        true,
+        default_policy,
+        default_adapter,
+        std_iostream_adapter
     >;
 # endif
 
