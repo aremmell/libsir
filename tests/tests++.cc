@@ -223,7 +223,7 @@ bool sir::tests::std_format() {
 
     /* std:: format. */
 #if defined(__SIR_HAVE_STD_FORMAT__)
-    default_logger log;
+    logger<true, default_policy, default_adapter, std_format_adapter> log;
     _sir_eqland(pass, log.debug_std("Testing {} {}",  "std::format", "Howdy"));
     _sir_eqland(pass, log.info_std("Testing {} {}",   "std::format", true));
     _sir_eqland(pass, log.notice_std("Testing {} {}", "std::format", 1.0 / 1e9));
@@ -245,7 +245,7 @@ bool sir::tests::boost_format() {
     /* boost::format. */
 #if defined(__SIR_HAVE_BOOST_FORMAT__)
     using bf = boost::format;
-    default_logger log;
+    logger<true, default_policy, default_adapter, boost_format_adapter> log;
     _sir_eqland(pass, log.debug_boost(bf("Testing %1% %2%")  % "boost" % "Howdy"));
     _sir_eqland(pass, log.info_boost(bf("Testing %1% %2%")   % "boost" % true));
     _sir_eqland(pass, log.notice_boost(bf("Testing %1% %2%") % "boost" % (1.0 / 1e9)));
@@ -266,7 +266,7 @@ bool sir::tests::fmt_format() {
 
     /* fmt */
 #if defined(__SIR_HAVE_FMT_FORMAT__)
-    default_logger log;
+    logger<true, default_policy, default_adapter, fmt_format_adapter> log;
     _sir_eqland(pass, log.debug_fmt("Testing {} {}",  "fmt", "Howdy"));
     _sir_eqland(pass, log.info_fmt("Testing {} {}",   "fmt", true));
     _sir_eqland(pass, log.notice_fmt("Testing {} {}", "fmt", 1.0 / 1e9));
@@ -286,7 +286,7 @@ bool sir::tests::std_iostream_format() {
     _SIR_TEST_COMMENCE
 
 #if !defined(SIR_NO_STD_IOSTREAM)
-    default_logger log;
+    logger<true, default_policy, std_iostream_adapter> log;
 
     TEST_MSG_0("all levels...");
 
