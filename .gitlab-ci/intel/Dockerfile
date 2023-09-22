@@ -7,7 +7,7 @@ USER 0
 
 WORKDIR /
 
-RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
+RUN dnf --nogpgcheck --refresh -y upgrade --setopt=install_weak_deps=True && \
     ( rpm --import https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB ) && \
     printf '%s\n' \
       "[oneAPI]" \
@@ -18,8 +18,8 @@ RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
       "repo_gpgcheck=1" \
       "gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB" \
         > /etc/yum.repos.d/oneAPI.repo && \
-    dnf -y --refresh --setopt=install_weak_deps=True upgrade && \
-    dnf -y --refresh --setopt=install_weak_deps=True install \
+    dnf -y --nogpgcheck --refresh --setopt=install_weak_deps=True upgrade && \
+    dnf -y --nogpgcheck --refresh --setopt=install_weak_deps=True install \
       intel-basekit \
       intel-hpckit \
       intel-oneapi-python && \
