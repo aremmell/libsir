@@ -884,32 +884,50 @@ namespace sir
 
     /**
      * @typedef default_logger
-     * @brief A logger that implements the default set of adapters.
-     *
-     * The default logger has the following template parameters defined:
-     * // TODO update description
+     * @brief A logger that implements the default adapter.
      */
     using default_logger = logger<true, default_policy, default_adapter>;
 
-    /* ,
-        std_iostream_adapter */
-/*#  if defined(__SIR_HAVE_STD_FORMAT__)
-        , std_format_adapter
-# endif
-# if defined(__SIR_HAVE_BOOST_FORMAT__)
-        , boost_format_adapter
-# endif
-# if defined(__SIR_HAVE_FMT_FORMAT__)
-        , fmt_format_adapter
-# endif
-# if !defined(SIR_NO_STD_IOSTREAM)
-        , std_iostream_adapter
-# endif
-    >;*/
-    /* #undef __SIR_HAVE_STD_FORMAT__
-    #undef __SIR_HAVE_BOOST_FORMAT__
-    #undef __SIR_HAVE_FMT_FORMAT__
-    #define SIR_NO_STD_IOSTREAM */
+#if defined(__SIR_HAVE_STD_FORMAT__)
+    using std_format_logger = logger
+    <
+        true,
+        default_policy,
+        default_adapter,
+        std_format_adapter
+    >;
+#endif
+
+#if defined(__SIR_HAVE_BOOST_FORMAT__)
+    using boost_logger = logger
+    <
+        true,
+        default_policy,
+        default_adapter,
+        boost_format_adapter
+    >;
+#endif
+
+#if defined(__SIR_HAVE_FMT_FORMAT__)
+    using fmt_logger = logger
+    <
+        true,
+        default_policy,
+        default_adapter,
+        fmt_format_adapter
+    >;
+#endif
+
+#if !defined(SIR_NO_STD_IOSTREAM)
+    using iostream_logger = logger
+    <
+        true,
+        default_policy,
+        default_adapter,
+        std_iostream_adapter
+    >;
+#endif
+
 } // ! namespace sir
 
 /**
