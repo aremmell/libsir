@@ -286,7 +286,7 @@ namespace sir
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_DEBUG, format, args);
             _SIR_L_END();
-            return ret;
+            return throw_on_policy<TPolicy>(ret);
         }
 
         /** Logs an informational message (see ::sir_info). */
@@ -295,7 +295,7 @@ namespace sir
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_INFO, format, args);
             _SIR_L_END();
-            return ret;
+            return throw_on_policy<TPolicy>(ret);
         }
 
         /** Logs a notice message (see ::sir_notice). */
@@ -304,7 +304,7 @@ namespace sir
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_NOTICE, format, args);
             _SIR_L_END();
-            return ret;
+            return throw_on_policy<TPolicy>(ret);
         }
 
         /** Logs a warning message (see ::sir_warn). */
@@ -313,7 +313,7 @@ namespace sir
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_WARN, format, args);
             _SIR_L_END();
-            return ret;
+            return throw_on_policy<TPolicy>(ret);
         }
 
         /** Logs an error message (see ::sir_error). */
@@ -322,7 +322,7 @@ namespace sir
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_ERROR, format, args);
             _SIR_L_END();
-            return ret;
+            return throw_on_policy<TPolicy>(ret);
         }
 
         /** Logs a critical message (see ::sir_crit). */
@@ -331,7 +331,7 @@ namespace sir
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_CRIT, format, args);
             _SIR_L_END();
-            return ret;
+            return throw_on_policy<TPolicy>(ret);
         }
 
         /** Logs an alert message (see ::sir_alert). */
@@ -340,7 +340,7 @@ namespace sir
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_ALERT, format, args);
             _SIR_L_END();
-            return ret;
+            return throw_on_policy<TPolicy>(ret);
         }
 
         /** Logs an emergency message (see ::sir_emerg). */
@@ -349,7 +349,7 @@ namespace sir
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_EMERG, format, args);
             _SIR_L_END();
-            return ret;
+            return throw_on_policy<TPolicy>(ret);
         }
     };
 
