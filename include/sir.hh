@@ -35,6 +35,7 @@
 # include <algorithm>
 # include <exception>
 # include <memory>
+# include <tuple>
 # include <string>
 # include <array>
 
@@ -89,7 +90,6 @@ namespace sir
 
         exception() = delete;
         exception(const error& err) : exception(err.message) { }
-
         ~exception() override = default;
 
         static exception from_libsir_error() {
@@ -609,8 +609,7 @@ namespace sir
             buffer() = delete;
 
             explicit buffer(TFunc pfn) : _pfn(pfn) {
-                [[maybe_unused]]
-                bool valid = throw_on_policy<TPolicy>(pfn != nullptr && _arr != nullptr);
+                throw_on_policy<TPolicy>(pfn != nullptr && _arr != nullptr);
                 reset();
             }
 
@@ -680,7 +679,6 @@ namespace sir
         class stream : public std::ostream {
         public:
             explicit stream(const TBuffer& buf) : std::ostream(&_buf), _buf(buf) {}
-
             ~stream() override = default;
 
         private:
@@ -702,9 +700,24 @@ namespace sir
     };
 # endif // SIR_NO_STD_IOSTREAM
 
-    /** Ensures that T... derive from adapter. */
-    template<typename... T>
-    concept DerivedFromAdapter = std::is_base_of_v<adapter, T...>;
+    /** Utility template for obtaining the type of Nth item in a parameter pack. */
+    template<size_t N, typename ...Ts>
+    using NthTypeOf = typename std::tuple_element<N, std::tuple<Ts...>>::type;
+
+    /** Ensures (at compile time) that all Ts are derived classes of TBase. */
+    template<size_t N, typename TBase, typename ...Ts>
+    consteval auto all_derived_from_t() {
+        if constexpr(!std::is_base_of_v<TBase, NthTypeOf<N, Ts...>>)
+            return std::false_type::value;
+        if constexpr(N == 0)
+            return std::true_type::value;
+        else
+            return all_derived_from_t<N - 1, TBase, Ts...>();
+    }
+
+    /** True if all Ts are derived classes of TBase, otherwise false. */
+    template<class TBase, class ...Ts>
+    concept DerivedFromT = all_derived_from_t<sizeof...(Ts) - 1, TBase, Ts...>();
 
     /**
      * @class logger
@@ -722,14 +735,13 @@ namespace sir
      * @param TAdapters One or more adapter classes whose public methods will be
      *                  exposed by this class.
      */
-    template<bool RAII, DerivedFromPolicy TPolicy,
-        template<DerivedFromPolicy> typename... TAdapters>
+    template<bool RAII, DerivedFromPolicy TPolicy, template<class> class ...TAdapters>
+    requires DerivedFromT<adapter, TAdapters<TPolicy>...>
     class logger : public TAdapters<TPolicy>... {
     public:
         logger() : TAdapters<TPolicy>()... {
             if constexpr(RAII) {
-                [[maybe_unused]] bool init = throw_on_policy<TPolicy>(_init());
-                SIR_ASSERT(init);
+                throw_on_policy<TPolicy>(_init());
             }
         }
 
