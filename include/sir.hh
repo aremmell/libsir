@@ -291,7 +291,7 @@ namespace sir
 
         /** Logs an informational message (see ::sir_info). */
         PRINTF_FORMAT_ATTR(2, 3)
-        bool info(PRINTF_FORMAT const char* format, ...) const noexcept {
+        bool info(PRINTF_FORMAT const char* format, ...) const {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_INFO, format, args);
             _SIR_L_END();
@@ -300,7 +300,7 @@ namespace sir
 
         /** Logs a notice message (see ::sir_notice). */
         PRINTF_FORMAT_ATTR(2, 3)
-        bool notice(PRINTF_FORMAT const char* format, ...) const noexcept {
+        bool notice(PRINTF_FORMAT const char* format, ...) const {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_NOTICE, format, args);
             _SIR_L_END();
@@ -309,7 +309,7 @@ namespace sir
 
         /** Logs a warning message (see ::sir_warn). */
         PRINTF_FORMAT_ATTR(2, 3)
-        bool warn(PRINTF_FORMAT const char* format, ...) const noexcept {
+        bool warn(PRINTF_FORMAT const char* format, ...) const {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_WARN, format, args);
             _SIR_L_END();
@@ -318,7 +318,7 @@ namespace sir
 
         /** Logs an error message (see ::sir_error). */
         PRINTF_FORMAT_ATTR(2, 3)
-        bool error(PRINTF_FORMAT const char* format, ...) const noexcept {
+        bool error(PRINTF_FORMAT const char* format, ...) const {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_ERROR, format, args);
             _SIR_L_END();
@@ -327,7 +327,7 @@ namespace sir
 
         /** Logs a critical message (see ::sir_crit). */
         PRINTF_FORMAT_ATTR(2, 3)
-        bool crit(PRINTF_FORMAT const char* format, ...) const noexcept {
+        bool crit(PRINTF_FORMAT const char* format, ...) const {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_CRIT, format, args);
             _SIR_L_END();
@@ -336,7 +336,7 @@ namespace sir
 
         /** Logs an alert message (see ::sir_alert). */
         PRINTF_FORMAT_ATTR(2, 3)
-        bool alert(PRINTF_FORMAT const char* format, ...) const noexcept {
+        bool alert(PRINTF_FORMAT const char* format, ...) const {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_ALERT, format, args);
             _SIR_L_END();
@@ -345,7 +345,7 @@ namespace sir
 
         /** Logs an emergency message (see ::sir_emerg). */
         PRINTF_FORMAT_ATTR(2, 3)
-        bool emerg(PRINTF_FORMAT const char* format, ...) const noexcept {
+        bool emerg(PRINTF_FORMAT const char* format, ...) const {
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_EMERG, format, args);
             _SIR_L_END();
@@ -451,49 +451,41 @@ namespace sir
         boost_format_adapter() = default;
         ~boost_format_adapter() override = default;
 
-        /** Takes `boost::format("...") % args [% ...]` as input. */
         bool debug_boost(const boost::format& fmt) const {
             const bool ret = sir_debug("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Takes `boost::format("...") % args [% ...]` as input. */
         bool info_boost(const boost::format& fmt) const {
             const bool ret = sir_info("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Takes `boost::format("...") % args [% ...]` as input. */
         bool notice_boost(const boost::format& fmt) const {
             const bool ret = sir_notice("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Takes `boost::format("...") % args [% ...]` as input. */
         bool warn_boost(const boost::format& fmt) const {
             const bool ret = sir_warn("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Takes `boost::format("...") % args [% ...]` as input. */
         bool error_boost(const boost::format& fmt) const {
             const bool ret = sir_error("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Takes `boost::format("...") % args [% ...]` as input. */
         bool crit_boost(const boost::format& fmt) const {
             const bool ret = sir_crit("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Takes `boost::format("...") % args [% ...]` as input. */
         bool alert_boost(const boost::format& fmt) const {
             const bool ret = sir_alert("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Takes `boost::format("...") % args [% ...]` as input. */
         bool emerg_boost(const boost::format& fmt) const {
             const bool ret = sir_emerg("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
@@ -729,7 +721,7 @@ namespace sir
      *                  exposed by this class.
      */
     template<bool RAII, DerivedFromPolicy TPolicy,
-        template<DerivedFromAdapter> typename... TAdapters>
+        template<DerivedFromPolicy> typename... TAdapters>
     class logger : public TAdapters<TPolicy>... {
     public:
         logger() : TAdapters<TPolicy>()... {
@@ -892,29 +884,50 @@ namespace sir
 
     /**
      * @typedef default_logger
-     * @brief A logger that implements the default set of adapters.
-     *
-     * The default logger has the following template parameters defined:
-     * // TODO update description
+     * @brief A logger that implements the default adapter.
      */
-    using default_logger = logger
-    < // TODO: don't include boost and fmt adapters by default
+    using default_logger = logger<true, default_policy, default_adapter>;
+
+# if defined(__SIR_HAVE_STD_FORMAT__)
+    using std_format_logger = logger
+    <
         true,
         default_policy,
-        default_adapter
-# if defined(__SIR_HAVE_STD_FORMAT__)
-        , std_format_adapter
-# endif
-# if defined(__SIR_HAVE_BOOST_FORMAT__)
-        , boost_format_adapter
-# endif
-# if defined(__SIR_HAVE_FMT_FORMAT__)
-        , fmt_format_adapter
-# endif
-# if !defined(SIR_NO_STD_IOSTREAM)
-        , std_iostream_adapter
-# endif
+        default_adapter,
+        std_format_adapter
     >;
+# endif
+
+# if defined(__SIR_HAVE_BOOST_FORMAT__)
+    using boost_logger = logger
+    <
+        true,
+        default_policy,
+        default_adapter,
+        boost_format_adapter
+    >;
+# endif
+
+# if defined(__SIR_HAVE_FMT_FORMAT__)
+    using fmt_logger = logger
+    <
+        true,
+        default_policy,
+        default_adapter,
+        fmt_format_adapter
+    >;
+# endif
+
+# if !defined(SIR_NO_STD_IOSTREAM)
+    using iostream_logger = logger
+    <
+        true,
+        default_policy,
+        default_adapter,
+        std_iostream_adapter
+    >;
+# endif
+
 } // ! namespace sir
 
 /**

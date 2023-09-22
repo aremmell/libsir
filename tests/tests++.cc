@@ -202,7 +202,6 @@ bool sir::tests::exception_handling() {
         default_logger log;
         TEST_MSG_0("throw an exception from a libsir error...");
         _sir_eqland(pass, !log.add_file("", SIRL_NONE, SIRO_ALL));
-        throw exception::from_libsir_error();
     } catch (std::exception& ex) {
         TEST_MSG("caught exception: '%s'", ex.what());
         _sir_eqland(pass, _sir_validstrnofail(ex.what()));
@@ -210,10 +209,7 @@ bool sir::tests::exception_handling() {
 
     try {
         TEST_MSG_0("throw an exception from an error struct...");
-
-        default_logger log;
-        _sir_eqland(pass, !log.rem_file(1234));
-        throw exception(log.get_error());
+        throw exception({ 1234, "a fake error"});
     } catch (std::exception& ex) {
         TEST_MSG("caught exception: '%s'", ex.what());
         _sir_eqland(pass, _sir_validstrnofail(ex.what()));
@@ -227,7 +223,7 @@ bool sir::tests::std_format() {
 
     /* std:: format. */
 #if defined(__SIR_HAVE_STD_FORMAT__)
-    default_logger log;
+    std_format_logger log;
     _sir_eqland(pass, log.debug_std("Testing {} {}",  "std::format", "Howdy"));
     _sir_eqland(pass, log.info_std("Testing {} {}",   "std::format", true));
     _sir_eqland(pass, log.notice_std("Testing {} {}", "std::format", 1.0 / 1e9));
@@ -249,7 +245,7 @@ bool sir::tests::boost_format() {
     /* boost::format. */
 #if defined(__SIR_HAVE_BOOST_FORMAT__)
     using bf = boost::format;
-    default_logger log;
+    boost_logger log;
     _sir_eqland(pass, log.debug_boost(bf("Testing %1% %2%")  % "boost" % "Howdy"));
     _sir_eqland(pass, log.info_boost(bf("Testing %1% %2%")   % "boost" % true));
     _sir_eqland(pass, log.notice_boost(bf("Testing %1% %2%") % "boost" % (1.0 / 1e9)));
@@ -270,7 +266,7 @@ bool sir::tests::fmt_format() {
 
     /* fmt */
 #if defined(__SIR_HAVE_FMT_FORMAT__)
-    default_logger log;
+    fmt_logger log;
     _sir_eqland(pass, log.debug_fmt("Testing {} {}",  "fmt", "Howdy"));
     _sir_eqland(pass, log.info_fmt("Testing {} {}",   "fmt", true));
     _sir_eqland(pass, log.notice_fmt("Testing {} {}", "fmt", 1.0 / 1e9));
@@ -290,7 +286,7 @@ bool sir::tests::std_iostream_format() {
     _SIR_TEST_COMMENCE
 
 #if !defined(SIR_NO_STD_IOSTREAM)
-    default_logger log;
+    iostream_logger log;
 
     TEST_MSG_0("all levels...");
 
