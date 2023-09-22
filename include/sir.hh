@@ -889,12 +889,11 @@ namespace sir
      * The default logger has the following template parameters defined:
      * // TODO update description
      */
-    using default_logger = logger
-    < // TODO: don't include boost and fmt adapters by default
-        true,
-        default_policy,
-        default_adapter
-# if defined(__SIR_HAVE_STD_FORMAT__)
+    using default_logger = logger<true, default_policy, default_adapter>;
+
+    /* ,
+        std_iostream_adapter */
+/*#  if defined(__SIR_HAVE_STD_FORMAT__)
         , std_format_adapter
 # endif
 # if defined(__SIR_HAVE_BOOST_FORMAT__)
@@ -906,7 +905,11 @@ namespace sir
 # if !defined(SIR_NO_STD_IOSTREAM)
         , std_iostream_adapter
 # endif
-    >;
+    >;*/
+    /* #undef __SIR_HAVE_STD_FORMAT__
+    #undef __SIR_HAVE_BOOST_FORMAT__
+    #undef __SIR_HAVE_FMT_FORMAT__
+    #define SIR_NO_STD_IOSTREAM */
 } // ! namespace sir
 
 /**
