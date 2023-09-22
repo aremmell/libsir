@@ -177,7 +177,7 @@ The following **SAST** (*static application*/*analysis security*/*software testi
 | [GNU Cppi](https://www.gnu.org/software/cppi/)                                                                     | C preprocessor directive linting, indenting, and regularization                    |
 | [Oracle Developer Studio](https://www.oracle.com/application-development/developerstudio/)                         | Performance, security, and thread analysis tools for C, C++, and Fortran           |
 | [REUSE](https://api.reuse.software/info/github.com/aremmell/libsir)                                                | Verifies compliance with the [REUSE](https://reuse.software/) licensing guidelines |
-| [Semgrep](https://semgrep.dev)  a                                                                                  | A fast, open-source, static analysis engine for many languages                     |
+| [Semgrep](https://semgrep.dev)                                                                                     | A fast, open-source, static analysis engine for many languages                     |
 | [SonarCloud](https://sonarcloud.io/project/overview?id=aremmell_libsir)                                            | Cloud-based code quality and security analysis tools                               |
 | [Valgrind](https://valgrind.org/)                                                                                  | Tools for memory debugging, memory leak detection, and profiling                   |
 | [Visual Studio Code Analyzer](https://learn.microsoft.com/en-us/cpp/code-quality/)                                 | Tools to analyze and improve C/C++ source code quality                             |
