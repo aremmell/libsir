@@ -515,7 +515,7 @@ namespace sir
         template<typename... Args>
         inline bool debug_fmt(fmt::format_string<Args...> fmt, Args&&... args) const {
             const auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
-            const bool ret = sir_debug("%s", str.c_str());
+            const auto ret = sir_debug("%s", str.c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
@@ -523,7 +523,7 @@ namespace sir
         template<typename... Args>
         inline bool info_fmt(fmt::format_string<Args...> fmt, Args&&... args) const {
             const auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
-            const bool ret = sir_info("%s", str.c_str());
+            const auto ret = sir_info("%s", str.c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
@@ -531,7 +531,7 @@ namespace sir
         template<typename... Args>
         inline bool notice_fmt(fmt::format_string<Args...> fmt, Args&&... args) const {
             const auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
-            const bool ret = sir_notice("%s", str.c_str());
+            const auto ret = sir_notice("%s", str.c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
@@ -539,7 +539,7 @@ namespace sir
         template<typename... Args>
         inline bool warn_fmt(fmt::format_string<Args...> fmt, Args&&... args) const {
             const auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
-            const bool ret = sir_warn("%s", str.c_str());
+            const auto ret = sir_warn("%s", str.c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
@@ -547,7 +547,7 @@ namespace sir
         template<typename... Args>
         inline bool error_fmt(fmt::format_string<Args...> fmt, Args&&... args) const {
             const auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
-            const bool ret = sir_error("%s", str.c_str());
+            const auto ret = sir_error("%s", str.c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
@@ -555,7 +555,7 @@ namespace sir
         template<typename... Args>
         inline bool crit_fmt(fmt::format_string<Args...> fmt, Args&&... args) const {
             const auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
-            const bool ret = sir_crit("%s", str.c_str());
+            const auto ret = sir_crit("%s", str.c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
@@ -563,7 +563,7 @@ namespace sir
         template<typename... Args>
         inline bool alert_fmt(fmt::format_string<Args...> fmt, Args&&... args) const {
             const auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
-            const bool ret = sir_alert("%s", str.c_str());
+            const auto ret = sir_alert("%s", str.c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
@@ -571,7 +571,7 @@ namespace sir
         template<typename... Args>
         inline bool emerg_fmt(fmt::format_string<Args...> fmt, Args&&... args) const {
             const auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
-            const bool ret = sir_emerg("%s", str.c_str());
+            const auto ret = sir_emerg("%s", str.c_str());
             return throw_on_policy<TPolicy>(ret);
         }
     };
