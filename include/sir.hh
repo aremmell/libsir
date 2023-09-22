@@ -397,7 +397,7 @@ namespace sir
         template<typename... Args>
         inline bool warn_std(std::format_string<Args...> fmt, Args&&... args) const {
             const auto str = std::vformat(fmt.get(), std::make_format_args(args...));
-            const bool ret =n sir_warn("%s", str.c_str());
+            const bool ret = sir_warn("%s", str.c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
