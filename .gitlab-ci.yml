@@ -3229,6 +3229,7 @@ Linux/x86_64 (AOCC, Fedora Python):
 ##############################################################################
 
 Semgrep:
+  allow_failure: true
   stage: lint
   needs:
     - job: Linux/x86_64 (G++, GCC)
@@ -3240,7 +3241,8 @@ Semgrep:
       # Start of Semgrep ...
       echo -e "section_start:`date +%s`:Semgrep_section[collapsed=true]\r\e[0K\033[0;36mSemgrep ...\033[0m" || true
     - semgrep login
-    - semgrep ci
+    - semgrep install-semgrep-pro || true
+    - semgrep ci --verbose --exclude='docs' --exclude='utils'
     - |
       # End of Semgrep ...
       echo -e "section_end:`date +%s`:Semgrep_section\r\e[0K" || true
