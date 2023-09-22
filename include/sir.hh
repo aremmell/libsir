@@ -151,13 +151,13 @@ namespace sir
          * libsir or OS-level error is encountered by logger or its associated
          * adapter(s).
          *
+         * @note If exceptions are not enabled, the caller of a method that could
+         * potentially fail is responsible for obtaining error information by
+         * calling logger::get_error and reacting accordingly.
+         *
          * @returns true if logger should throw exceptions (derived from std::
          * exception) when errors are encountered, or false if errors should
          * simply be communicated through a pass/fail Boolean return value.
-         *
-         * If exceptions are not enabled, the caller of a method that could
-         * potentially fail is responsible for obtaining error information by
-         * calling logger::get_error and reacting accordingly.
          */
         static constexpr bool throw_on_error() noexcept {
             return false;
@@ -169,7 +169,7 @@ namespace sir
          *
          * @returns A unique name for the policy.
          */
-        virtual std::string get_name() const = 0;
+        virtual constexpr std::string get_name() const = 0;
     };
 
     /** Ensures that T derives from policy. */
@@ -202,7 +202,7 @@ namespace sir
             return true;
         }
 
-        std::string get_name() const final {
+        constexpr std::string get_name() const final {
             return "Default";
         }
     };
@@ -214,13 +214,6 @@ namespace sir
      *
      * adapter is designed to provide flexibility and extensibility in relation
      * to the public interface that is implemented by a logger.
-     *
-     * TODO: update description
-     *
-     * For an example of this, see ::std_format_adapter. When std::format is
-     * available, and SIR_NO_STD_FORMAT is not defined, std_format_adapter may
-     * be used to expose methods that behave exactly like std::format, but the
-     * resulting formatted strings are sent directly to libsir.
      *
      * @note One must take care to ensure that the methods implemented by an
      * adapter can coexist with any other adapters that are applied to the logger
