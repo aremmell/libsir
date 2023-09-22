@@ -888,7 +888,7 @@ namespace sir
      */
     using default_logger = logger<true, default_policy, default_adapter>;
 
-#if defined(__SIR_HAVE_STD_FORMAT__)
+# if defined(__SIR_HAVE_STD_FORMAT__)
     using std_format_logger = logger
     <
         true,
@@ -896,9 +896,9 @@ namespace sir
         default_adapter,
         std_format_adapter
     >;
-#endif
+# endif
 
-#if defined(__SIR_HAVE_BOOST_FORMAT__)
+# if defined(__SIR_HAVE_BOOST_FORMAT__)
     using boost_logger = logger
     <
         true,
@@ -906,9 +906,9 @@ namespace sir
         default_adapter,
         boost_format_adapter
     >;
-#endif
+# endif
 
-#if defined(__SIR_HAVE_FMT_FORMAT__)
+# if defined(__SIR_HAVE_FMT_FORMAT__)
     using fmt_logger = logger
     <
         true,
@@ -916,9 +916,9 @@ namespace sir
         default_adapter,
         fmt_format_adapter
     >;
-#endif
+# endif
 
-#if !defined(SIR_NO_STD_IOSTREAM)
+# if !defined(SIR_NO_STD_IOSTREAM)
     using iostream_logger = logger
     <
         true,
@@ -926,7 +926,7 @@ namespace sir
         default_adapter,
         std_iostream_adapter
     >;
-#endif
+# endif
 
 } // ! namespace sir
 
