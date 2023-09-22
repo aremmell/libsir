@@ -2776,7 +2776,7 @@ Node.js/WebAssembly (Emscripten, Em++, Emcc):
     - export CXX="ccache em++"
     - export CFLAGS="-flto=full -fwasm-exceptions"
     - export CXXFLAGS="-flto=full -fwasm-exceptions"
-    - export LDFLAGS="-sWASM=1 -fwasm-exceptions -sNO_DISABLE_EXCEPTION_CATCHING=1"
+    - export LDFLAGS="-sWASM=1 -fwasm-exceptions"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
