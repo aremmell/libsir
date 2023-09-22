@@ -85,8 +85,10 @@ namespace sir
      */
     class exception : public std::runtime_error {
     public:
-        explicit exception(const char* msg) : std::runtime_error(msg) { }
-        explicit exception(const error& err) : std::runtime_error(err.message) { }
+        using std::runtime_error::runtime_error;
+
+        exception() = delete;
+        exception(const error& err) : exception(err.message) { }
 
         ~exception() override = default;
 
