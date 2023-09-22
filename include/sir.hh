@@ -721,7 +721,7 @@ namespace sir
      *                  exposed by this class.
      */
     template<bool RAII, DerivedFromPolicy TPolicy,
-        template<DerivedFromAdapter> typename... TAdapters>
+        template<DerivedFromPolicy> typename... TAdapters>
     class logger : public TAdapters<TPolicy>... {
     public:
         logger() : TAdapters<TPolicy>()... {
