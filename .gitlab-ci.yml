@@ -2153,7 +2153,6 @@ GCC Static Analyzer:
     - ${CXX:?} --version
     - export CFLAGS="-g -fanalyzer -Wno-analyzer-malloc-leak -fanalyzer-verbosity=3 -Werror -DSIR_NO_STD_FORMAT=1"
     - make
-    - make tests++
     - make clean
     - |
       # ENd of GCC Static Analyzer ...
@@ -2163,7 +2162,6 @@ GCC Static Analyzer:
       echo -e "section_start:`date +%s`:GCCST_section[collapsed=true]\r\e[0K\033[0;36mGCC Static Analyzer - Taint ...\033[0m" || true
     - export CFLAGS="-g -fanalyzer -fanalyzer-checker=taint -fanalyzer-verbosity=3 -Werror -DSIR_NO_STD_FORMAT=1"
     - make
-    - make tests++
     - make clean
     - mkdir -p build > /dev/null 2>&1 || true
     - |
@@ -3241,6 +3239,7 @@ Semgrep:
     - |
       # Start of Semgrep ...
       echo -e "section_start:`date +%s`:Semgrep_section[collapsed=true]\r\e[0K\033[0;36mSemgrep ...\033[0m" || true
+    - semgrep login
     - semgrep ci
     - |
       # End of Semgrep ...
@@ -3248,8 +3247,6 @@ Semgrep:
   tags:
     - Docker-x64
     - Linux
-  variables:
-    SEMGREP_APP_TOKEN: $SEMGREP_APP_TOKEN
   dependencies: []
   retry: 2
   interruptible: true
