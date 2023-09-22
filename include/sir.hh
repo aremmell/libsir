@@ -372,57 +372,65 @@ namespace sir
         /** Use as if you were calling std::format directly. */
         template<typename... Args>
         inline bool debug_std(std::format_string<Args...> fmt, Args&&... args) const {
-            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
-            return sir_debug("%s", str.c_str());
+            const auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            const bool ret = sir_debug("%s", str.c_str());
+            return throw_on_policy<TPolicy>(ret);
         }
 
         /** Use as if you were calling std::format directly. */
         template<typename... Args>
         inline bool info_std(std::format_string<Args...> fmt, Args&&... args) const {
-            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
-            return sir_info("%s", str.c_str());
+            const auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            const bool ret = sir_info("%s", str.c_str());
+            return throw_on_policy<TPolicy>(ret);
         }
 
         /** Use as if you were calling std::format directly. */
         template<typename... Args>
         inline bool notice_std(std::format_string<Args...> fmt, Args&&... args) const {
-            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
-            return sir_notice("%s", str.c_str());
+            const auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            const bool ret = sir_notice("%s", str.c_str());
+            return throw_on_policy<TPolicy>(ret);
         }
 
         /** Use as if you were calling std::format directly. */
         template<typename... Args>
         inline bool warn_std(std::format_string<Args...> fmt, Args&&... args) const {
-            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
-            return sir_warn("%s", str.c_str());
+            const auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            const bool ret =n sir_warn("%s", str.c_str());
+            return throw_on_policy<TPolicy>(ret);
         }
 
         /** Use as if you were calling std::format directly. */
         template<typename... Args>
         inline bool error_std(std::format_string<Args...> fmt, Args&&... args) const {
-            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
-            return sir_error("%s", str.c_str());
+            const auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            const bool ret = sir_error("%s", str.c_str());
+            return throw_on_policy<TPolicy>(ret);
         }
 
         /** Use as if you were calling std::format directly. */
         template<typename... Args>
         inline bool crit_std(std::format_string<Args...> fmt, Args&&... args) const {
-            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
-            return sir_crit("%s", str.c_str());
+            const auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            const bool ret = sir_crit("%s", str.c_str());
+            return throw_on_policy<TPolicy>(ret);
         }
 
         /** Use as if you were calling std::format directly. */
         template<typename... Args>
         inline bool alert_std(std::format_string<Args...> fmt, Args&&... args) const {
-            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
-            return sir_alert("%s", str.c_str());
+            const auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            const bool ret = sir_alert("%s", str.c_str());
+            return throw_on_policy<TPolicy>(ret);
         }
 
         /** Use as if you were calling std::format directly. */
         template<typename... Args>
         inline bool emerg_std(std::format_string<Args...> fmt, Args&&... args) const {
-            auto str = std::vformat(fmt.get(), std::make_format_args(args...));
-            return sir_emerg("%s", str.c_str());
+            const auto str = std::vformat(fmt.get(), std::make_format_args(args...));
+            const bool ret = sir_emerg("%s", str.c_str());
+            return throw_on_policy<TPolicy>(ret);
         }
     };
 # endif // !__SIR_HAVE_STD_FORMAT__
