@@ -361,7 +361,6 @@ namespace sir
         std_format_adapter() = default;
         ~std_format_adapter() override = default;
 
-        /** Use as if you were calling std::format directly. */
         template<typename... Args>
         inline bool debug_std(std::format_string<Args...> fmt, Args&&... args) const {
             const auto str = std::vformat(fmt.get(), std::make_format_args(args...));
@@ -369,7 +368,6 @@ namespace sir
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Use as if you were calling std::format directly. */
         template<typename... Args>
         inline bool info_std(std::format_string<Args...> fmt, Args&&... args) const {
             const auto str = std::vformat(fmt.get(), std::make_format_args(args...));
@@ -377,7 +375,6 @@ namespace sir
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Use as if you were calling std::format directly. */
         template<typename... Args>
         inline bool notice_std(std::format_string<Args...> fmt, Args&&... args) const {
             const auto str = std::vformat(fmt.get(), std::make_format_args(args...));
@@ -385,7 +382,6 @@ namespace sir
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Use as if you were calling std::format directly. */
         template<typename... Args>
         inline bool warn_std(std::format_string<Args...> fmt, Args&&... args) const {
             const auto str = std::vformat(fmt.get(), std::make_format_args(args...));
@@ -393,7 +389,6 @@ namespace sir
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Use as if you were calling std::format directly. */
         template<typename... Args>
         inline bool error_std(std::format_string<Args...> fmt, Args&&... args) const {
             const auto str = std::vformat(fmt.get(), std::make_format_args(args...));
@@ -401,7 +396,6 @@ namespace sir
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Use as if you were calling std::format directly. */
         template<typename... Args>
         inline bool crit_std(std::format_string<Args...> fmt, Args&&... args) const {
             const auto str = std::vformat(fmt.get(), std::make_format_args(args...));
@@ -409,7 +403,6 @@ namespace sir
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Use as if you were calling std::format directly. */
         template<typename... Args>
         inline bool alert_std(std::format_string<Args...> fmt, Args&&... args) const {
             const auto str = std::vformat(fmt.get(), std::make_format_args(args...));
@@ -417,7 +410,6 @@ namespace sir
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Use as if you were calling std::format directly. */
         template<typename... Args>
         inline bool emerg_std(std::format_string<Args...> fmt, Args&&... args) const {
             const auto str = std::vformat(fmt.get(), std::make_format_args(args...));
@@ -501,7 +493,6 @@ namespace sir
         fmt_format_adapter() = default;
         ~fmt_format_adapter() override = default;
 
-        /** Use as if you were calling fmt::format directly. */
         template<typename... Args>
         inline bool debug_fmt(fmt::format_string<Args...> fmt, Args&&... args) const {
             const auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
@@ -509,7 +500,6 @@ namespace sir
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Use as if you were calling fmt::format directly. */
         template<typename... Args>
         inline bool info_fmt(fmt::format_string<Args...> fmt, Args&&... args) const {
             const auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
@@ -517,7 +507,6 @@ namespace sir
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Use as if you were calling fmt::format directly. */
         template<typename... Args>
         inline bool notice_fmt(fmt::format_string<Args...> fmt, Args&&... args) const {
             const auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
@@ -525,7 +514,6 @@ namespace sir
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Use as if you were calling fmt::format directly. */
         template<typename... Args>
         inline bool warn_fmt(fmt::format_string<Args...> fmt, Args&&... args) const {
             const auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
@@ -533,7 +521,6 @@ namespace sir
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Use as if you were calling fmt::format directly. */
         template<typename... Args>
         inline bool error_fmt(fmt::format_string<Args...> fmt, Args&&... args) const {
             const auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
@@ -541,7 +528,6 @@ namespace sir
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Use as if you were calling fmt::format directly. */
         template<typename... Args>
         inline bool crit_fmt(fmt::format_string<Args...> fmt, Args&&... args) const {
             const auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
@@ -549,7 +535,6 @@ namespace sir
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Use as if you were calling fmt::format directly. */
         template<typename... Args>
         inline bool alert_fmt(fmt::format_string<Args...> fmt, Args&&... args) const {
             const auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
@@ -557,7 +542,6 @@ namespace sir
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Use as if you were calling fmt::format directly. */
         template<typename... Args>
         inline bool emerg_fmt(fmt::format_string<Args...> fmt, Args&&... args) const {
             const auto str = fmt::vformat(fmt, fmt::make_format_args(args...));
