@@ -1341,7 +1341,7 @@ PVS-Studio:
     - Docker-x64
     - Linux
   image:
-    name: registry.gitlab.com/libsir/libsir/base:latest
+    name: registry.gitlab.com/libsir/libsir/pvs:latest
   script:
     - *Configuration
     - pvs-studio-analyzer credentials "${PVS_STUDIO_NAME:?}" "${PVS_STUDIO_KEY:?}" || true
