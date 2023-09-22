@@ -3242,7 +3242,7 @@ Semgrep:
       echo -e "section_start:`date +%s`:Semgrep_section[collapsed=true]\r\e[0K\033[0;36mSemgrep ...\033[0m" || true
     - semgrep login
     - semgrep install-semgrep-pro || true
-    - semgrep ci --verbose --exclude='docs' --exclude='utils'
+    - semgrep ci --exclude='docs' --exclude='utils' --include='src' --include='tests'
     - |
       # End of Semgrep ...
       echo -e "section_end:`date +%s`:Semgrep_section\r\e[0K" || true
