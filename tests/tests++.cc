@@ -125,7 +125,7 @@ bool sir::tests::raii_init_cleanup() {
     {
         default_logger log;
 
-        _sir_eqland(pass, log.debug("C++ RAII logger initialized via constructor"));
+        _sir_eqland(pass, log.debug("RAII logger initialized via constructor"));
         _sir_eqland(pass, log.info("Testing info level"));
         _sir_eqland(pass, log.notice("Testing notice level"));
         _sir_eqland(pass, log.warn("Testing warning level"));
@@ -138,6 +138,21 @@ bool sir::tests::raii_init_cleanup() {
 
      /* should fail; already cleaned up. */
     _sir_eqland(pass, !sir_cleanup());
+
+    /* create a RAII logger object that will initialize libsir, then attempt
+     * to instantiate another. when using the default policy, this will result
+     * in an exception being thrown. */
+    try {
+        TEST_MSG_0("creating RAII logger...");
+        default_logger log;
+        TEST_MSG_0("RAII logger created; creating another which should throw...");
+        default_logger log2;
+        TEST_MSG_0("this message should not appear if the current policy throws"
+            " on error");
+    } catch (std::exception& ex) {
+        TEST_MSG("caught exception: '%s'", ex.what());
+        _sir_eqland(pass, _sir_validstrnofail(ex.what()));
+    }
 
     _SIR_TEST_COMPLETE
 }
@@ -159,7 +174,7 @@ bool sir::tests::manual_init_cleanup() {
 bool sir::tests::error_handling() {
     _SIR_TEST_COMMENCE
 
-    // test retrieval of libsir errors from logger::get_error().
+    /* test retrieval of libsir errors from logger::get_error(). */
     default_logger log;
 
     _sir_eqland(pass, log.debug("Testing get_error by doing something stupid..."));
@@ -173,8 +188,8 @@ bool sir::tests::error_handling() {
 }
 
 bool sir::tests::exception_handling() {
-    // exception tests
     bool pass = true;
+
     try {
         TEST_MSG_0("throw an exception with a string message...");
         throw exception("something has gone terribly wrong!");
@@ -184,9 +199,8 @@ bool sir::tests::exception_handling() {
     }
 
     try {
-        TEST_MSG_0("throw an exception from a libsir error...");
-
         default_logger log;
+        TEST_MSG_0("throw an exception from a libsir error...");
         _sir_eqland(pass, !log.add_file("", SIRL_NONE, SIRO_ALL));
         throw exception::from_libsir_error();
     } catch (std::exception& ex) {
