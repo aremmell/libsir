@@ -3222,8 +3222,11 @@ Linux/x86_64 (AOCC, Fedora Python):
 
 ##############################################################################
 
-Semgrep:
+Semgrep (Cloud Rules):
   allow_failure: false
+  tags:
+    - Docker-x64
+    - Linux
   stage: lint
   needs:
     - job: Linux/x86_64 (G++, GCC)
@@ -3232,17 +3235,48 @@ Semgrep:
   script:
     - *Configuration
     - |
-      # Start of Semgrep ...
-      echo -e "section_start:`date +%s`:Semgrep_section[collapsed=true]\r\e[0K\033[0;36mSemgrep ...\033[0m" || true
+      # Start of Semgrep Cloud ...
+      echo -e "section_start:`date +%s`:SemgrepCloud_section[collapsed=true]\r\e[0K\033[0;36mSemgrep Cloud ...\033[0m" || true
     - semgrep login
     - semgrep install-semgrep-pro || true
-    - semgrep ci --verbose --exclude='docs' --exclude='utils' --include='src' --include='tests'
+    - apk update || true
+    - apk upgrade || true
+    - semgrep ci --verbose
     - |
-      # End of Semgrep ...
-      echo -e "section_end:`date +%s`:Semgrep_section\r\e[0K" || true
+      # End of Semgrep Cloud ...
+      echo -e "section_end:`date +%s`:SemgrepCloud_section\r\e[0K" || true
+  dependencies: []
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
+Semgrep (GitLab Rules):
+  allow_failure: true
   tags:
     - Docker-x64
     - Linux
+  stage: lint
+  needs:
+    - job: Linux/x86_64 (G++, GCC)
+  image:
+    name: returntocorp/semgrep:latest
+  script:
+    - *Configuration
+    - |
+      # Start of Semgrep GitLab ...
+      echo -e "section_start:`date +%s`:SemgrepGitLab_section[collapsed=true]\r\e[0K\033[0;36mSemgrep GitLab ...\033[0m" || true
+    - semgrep login
+    - semgrep install-semgrep-pro || true
+    - apk update || true
+    - apk upgrade || true
+    - apk add ruby ruby-dev yaml yaml-dev gawk sed gcc libc-dev || true
+    - gem install psych yaml fileutils || true
+    - ( mkdir -p /tmp/gitlab-sast && cd /tmp/gitlab-sast && git clone --depth=1 https://gitlab.com/gitlab-org/security-products/sast-rules.git && cd sast-rules && ./ci/join.rb && sed '/ id. / s/\//./g' combined.yml > combined2.yml && mv -f combined2.yml combined.yml ) || true
+    - semgrep scan --verbose --config /tmp/gitlab-sast/sast-rules/combined.yml . --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-char_TCHAR.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.race.rule-readlink.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-printf_vprintf.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-realpath.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-memcpy_CopyMemory.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-getenv_curl_getenv.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.misc.rule-fopen_open.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-memcpy_CopyMemory.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-getchar_fgetc.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-strlen_wcslen.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-printf_vprintf.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-snprintf_vsnprintf.yml" --error
+    - |
+      # End of Semgrep ...
+      echo -e "section_end:`date +%s`:SemgrepGitLab_section\r\e[0K" || true
   dependencies: []
   retry: 2
   interruptible: true
