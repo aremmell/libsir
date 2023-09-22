@@ -3229,7 +3229,7 @@ Linux/x86_64 (AOCC, Fedora Python):
 ##############################################################################
 
 Semgrep:
-  allow_failure: true
+  allow_failure: false
   stage: lint
   needs:
     - job: Linux/x86_64 (G++, GCC)
