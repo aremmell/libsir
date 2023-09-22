@@ -256,6 +256,7 @@ namespace sir
     template<DerivedFromPolicy TPolicy>
     static inline bool throw_on_policy(bool expr) noexcept(false) {
         if (!expr) {
+            SIR_ASSERT(expr);
             if constexpr(TPolicy::throw_on_error()) {
                 throw exception::from_libsir_error();
             }
@@ -590,8 +591,8 @@ namespace sir
             buffer() = delete;
 
             explicit buffer(TFunc pfn) : _pfn(pfn) {
-                // TODO: if exceptions enabled, throw if pfn or _buf are nullptr.
-                SIR_ASSERT(pfn && _arr);
+                [[maybe_unused]]
+                bool valid = throw_on_policy<TPolicy>(pfn != nullptr && _arr != nullptr);
                 reset();
             }
 
@@ -614,10 +615,8 @@ namespace sir
                 }
 
                 const bool write = _pfn ? _pfn(_arr->data()) : false;
-                SIR_ASSERT(write);
-                // TODO: if exceptions enabled, throw if write is false.
                 reset();
-                return write;
+                return throw_on_policy<TPolicy>(write);
             }
 
             int_type overflow(int_type ch) override {
@@ -705,7 +704,8 @@ namespace sir
      * @param TAdapters One or more adapter classes whose public methods will be
      *                  exposed by this class.
      */
-    template<bool RAII, DerivedFromPolicy TPolicy, template<DerivedFromAdapter> typename... TAdapters>
+    template<bool RAII, DerivedFromPolicy TPolicy,
+        template<DerivedFromAdapter> typename... TAdapters>
     class logger : public TAdapters<TPolicy>... {
     public:
         logger() : TAdapters<TPolicy>()... {
