@@ -9,6 +9,7 @@ stages:
   - style
   - build
   - build_python
+  - build_ch
   - coverage
   - lint
   - coverity
@@ -2885,7 +2886,6 @@ Linux/x86_64 (GCC, Fedora Python):
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - *BuildInformation
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -2936,7 +2936,6 @@ Linux/x86_64 (Oracle Studio C, Fedora Python):
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - *BuildInformation
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -2987,7 +2986,6 @@ Linux/x86_64 (Clang, Fedora Python):
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - *BuildInformation
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -3041,7 +3039,6 @@ Linux/x86_64 (NVIDIA HPC SDK C, Fedora Python):
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - *BuildInformation
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -3093,7 +3090,6 @@ Linux/x86_64 (Intel oneAPI, Intel Python):
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - *BuildInformation
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -3149,7 +3145,6 @@ Linux/x86_64 (GCC, Anaconda Python):
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - *BuildInformation
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -3201,7 +3196,6 @@ Linux/x86_64 (AOCC, Fedora Python):
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - *BuildInformation
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -3250,6 +3244,51 @@ Semgrep:
     - Docker-x64
     - Linux
   dependencies: []
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
+Linux/x86_64 (Ch 8.5):
+  stage: build_ch
+  needs:
+    - job: Linux/x86_64 (G++, GCC)
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/ch:latest
+  script:
+    - *Configuration
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - command -v ch -v
+    - ch -v
+    - make
+    - cd bindings/ch
+    - make
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Start of Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - stdbuf -o L ./sirtest.ch
+    - stdbuf -o L cat libsir-chdemo.log
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - bindings/ch/*.dl
+      - bindings/ch/*.o
+      - bindings/ch/*.log
+      - logs/
   retry: 2
   interruptible: true
 
