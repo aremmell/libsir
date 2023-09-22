@@ -451,49 +451,41 @@ namespace sir
         boost_format_adapter() = default;
         ~boost_format_adapter() override = default;
 
-        /** Takes `boost::format("...") % args [% ...]` as input. */
         bool debug_boost(const boost::format& fmt) const {
             const bool ret = sir_debug("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Takes `boost::format("...") % args [% ...]` as input. */
         bool info_boost(const boost::format& fmt) const {
             const bool ret = sir_info("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Takes `boost::format("...") % args [% ...]` as input. */
         bool notice_boost(const boost::format& fmt) const {
             const bool ret = sir_notice("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Takes `boost::format("...") % args [% ...]` as input. */
         bool warn_boost(const boost::format& fmt) const {
             const bool ret = sir_warn("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Takes `boost::format("...") % args [% ...]` as input. */
         bool error_boost(const boost::format& fmt) const {
             const bool ret = sir_error("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Takes `boost::format("...") % args [% ...]` as input. */
         bool crit_boost(const boost::format& fmt) const {
             const bool ret = sir_crit("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Takes `boost::format("...") % args [% ...]` as input. */
         bool alert_boost(const boost::format& fmt) const {
             const bool ret = sir_alert("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        /** Takes `boost::format("...") % args [% ...]` as input. */
         bool emerg_boost(const boost::format& fmt) const {
             const bool ret = sir_emerg("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
