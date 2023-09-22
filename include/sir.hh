@@ -93,9 +93,9 @@ namespace sir
         ~exception() override = default;
 
         static exception from_libsir_error() {
-            char msg[SIR_MAXERROR] {};
-            const auto code = sir_geterror(msg);
-            return exception({ code, msg });
+            std::array<char, SIR_MAXERROR> msg {};
+            const auto code = sir_geterror(msg.data());
+            return exception({ code, msg.data() });
         }
     };
 
