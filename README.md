@@ -85,26 +85,37 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 
 ### <a id="c---compatibility" /> C++ compatibility
 
-A wrapper header is provided allowing libsir to be used in C++20 projects, optionally integrating with popular formatting libraries:
+A wrapper header is under development which will allow libsir to be used in C++20 projects, optionally integrating with popular formatting libraries:
 
 <table align="center">
  <tbody>
   <tr>
-   <td align="center"><center> <a href="https://fmt.dev/">{<b>fmt</b>}</a> </center></td>
-   <td align="center"><center> <a href="https://en.cppreference.com/w/cpp/utility/format/format"><b>std</b>::<b>format</b></a> </center></td>
-   <td align="center"><center> <a href="https://theboostcpplibraries.com/boost.format"><b>Boost</b>.<b>Format</b></a> </center></td>
+   <td align="center"><center><a href="https://fmt.dev/"><b>{fmt}</b></a></center></td>
+   <td align="center"><center><a href="https://en.cppreference.com/w/cpp/utility/format/format"><b>std</b>::<b>format</b></a></center></td>
+   <td align="center"><center><a href="https://theboostcpplibraries.com/boost.format"><b>Boost</b>.<b>Format</b></a></center></td>
   </tr>
   <tr>
-   <td align="center"><center> <a href="https://cplusplus.com/reference/istream/iostream"><b>std</b>::<b>iostream</b></a> </center></td>
-   <td align="center"><center> <a href="https://github.com/c42f/tinyformat"><b>tinyformat</b></a> </center></td>
-   <td align="center"><center> <a href="https://github.com/seanbaxter/circle/blob/master/new-circle/README.md#string-constant-formatting"><b>Circle</b>.<b>format</b></a> </center></td>
+   <td align="center"><center><a href="https://cplusplus.com/reference/istream/iostream"><b>std</b>::<b>iostream</b></a></center></td>
+   <td align="center"><center><a href="https://github.com/c42f/tinyformat"><b>tinyformat</b></a></center></td>
+   <td align="center"><center><a href="https://github.com/seanbaxter/circle/blob/master/new-circle/README.md#string-constant-formatting"><b>Circle</b>.<b>format</b></a></center></td>
   </tr>
  </tbody>
 </table>
 
 ### <a id="language-bindings" /> Language Bindings
 
-Bindings for high-level programming languages are under development (mostly using [**SWIG**](https://www.swig.org/)), and can be located in the [`bindings`](https://github.com/aremmell/libsir/tree/master/bindings) directory.
+Bindings for scripting tools and other high-level programming languages are being developed, including support for:
+
+<table align="center">
+ <tbody>
+  <tr>
+   <td align="center"><center><a href="https://www.softintegration.com/"><b>SoftIntegration Ch</b></a></center></td>
+   <td align="center"><center><a href="https://www.python.org/"><b>Python 3</b></a>&nbsp;(<i>via</i>&nbsp;<a href="https://www.swig.org/"><b>SWIG</b></a>)</center></td>
+  </tr>
+ </tbody>
+</table>
+
+Browse the [`bindings`](https://github.com/aremmell/libsir/tree/master/bindings) directory for more details.
 
 ## <a id="an-example" /> An example
 
