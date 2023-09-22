@@ -741,137 +741,115 @@ namespace sir
             return sir_isinitialized();
         }
 
-        /** Wraps ::sir_geterror. */
         error get_error() const {
             std::array<char, SIR_MAXERROR> message {};
             const auto code = sir_geterror(message.data());
             return { code, message.data() };
         }
 
-        /** Wraps ::sir_addfile. */
         sirfileid add_file(const std::string& path, const sir_levels& levels,
             const sir_options& opts) const {
             const bool add = sir_addfile(path.c_str(), levels, opts);
             return throw_on_policy<TPolicy>(add);
         }
 
-        /** Wraps ::sir_remfile. */
         bool rem_file(const sirfileid& id) const noexcept {
             const bool rem = sir_remfile(id);
             return throw_on_policy<TPolicy>(rem);
         }
 
-        /** Wraps ::sir_loadplugin. */
         sirpluginid load_plugin(const std::string& path) const {
             const bool load = sir_loadplugin(path.c_str());
             return throw_on_policy<TPolicy>(load);
         }
 
-        /** Wraps ::sir_unloadplugin. */
         bool unload_plugin(const sirpluginid& id) const noexcept {
             const bool unload = sir_unloadplugin(id);
             return throw_on_policy<TPolicy>(unload);
         }
 
-        /** Wraps ::sir_filelevels. */
         bool set_file_levels(const sirfileid& id, const sir_levels& levels)
             const noexcept {
             const bool set = sir_filelevels(id, levels);
             return throw_on_policy<TPolicy>(set);
         }
 
-        /** Wraps ::sir_fileopts. */
         bool set_file_options(const sirfileid& id, const sir_options& opts)
             const noexcept {
             const bool set = sir_fileopts(id, opts);
             return throw_on_policy<TPolicy>(set);
         }
 
-        /** Wraps ::sir_settextstyle. */
         bool set_text_style(const sir_level& level, const sir_textattr& attr,
             const sir_textcolor& fg, const sir_textcolor& bg) const noexcept {
             const bool set = sir_settextstyle(level, attr, fg, bg);
             return throw_on_policy<TPolicy>(set);
         }
 
-        /** Wraps ::sir_resettextstyles. */
         bool reset_text_styles() const noexcept {
             const bool reset = sir_resettextstyles();
             return throw_on_policy<TPolicy>(reset);
         }
 
-        /** Wraps ::sir_makergb. */
         sir_textcolor make_rgb(const sir_textcolor& r, const sir_textcolor& g,
             const sir_textcolor& b) const noexcept {
             const bool make = sir_makergb(r, g, b);
             return throw_on_policy<TPolicy>(make);
         }
 
-        /** Wraps ::sir_setcolormode. */
         bool set_color_mode(const sir_colormode& mode) const noexcept {
             const bool set = sir_setcolormode(mode);
             return throw_on_policy<TPolicy>(set);
         }
 
-        /** Wraps ::sir_stdoutlevels. */
         bool set_stdout_levels(const sir_levels& levels) const noexcept {
             const bool set = sir_stdoutlevels(levels);
             return throw_on_policy<TPolicy>(set);
         }
 
-        /** Wraps ::sir_stdoutopts. */
         bool set_stdout_options(const sir_options& opts) const noexcept {
             const bool set = sir_stdoutopts(opts);
             return throw_on_policy<TPolicy>(set);
         }
 
-        /** Wraps ::sir_stderrlevels. */
         bool set_stderr_levels(const sir_levels& levels) const noexcept {
             const bool set = sir_stderrlevels(levels);
             return throw_on_policy<TPolicy>(set);
         }
 
-        /** Wraps ::sir_stderropts. */
         bool set_stderr_options(const sir_options& opts) const noexcept {
             const bool set = sir_stderropts(opts);
             return throw_on_policy<TPolicy>(set);
         }
 
-        /** Wraps ::sir_sysloglevels. */
         bool set_syslog_levels(const sir_levels& levels) const noexcept {
             const bool set = sir_sysloglevels(levels);
             return throw_on_policy<TPolicy>(set);
         }
 
-        /** Wraps ::sir_syslogopts. */
         bool set_syslog_options(const sir_options& opts) const noexcept {
             const bool set = sir_syslogopts(opts);
             return throw_on_policy<TPolicy>(set);
         }
 
-        /** Wraps ::sir_syslogid. */
         bool set_syslog_id(const std::string& id) const {
             const bool set = sir_syslogid(id.c_str());
             return throw_on_policy<TPolicy>(set);
         }
 
-        /** Wraps ::sir_syslogcat. */
         bool set_syslog_category(const std::string& category) const {
             const bool set = sir_syslogcat(category.c_str());
             return throw_on_policy<TPolicy>(set);
         }
 
-        /** Wraps ::sir_getversionstring. */
         std::string get_version_string() const {
             return sir_getversionstring();
         }
 
-        /** Wraps ::sir_getversionhex. */
         uint32_t get_version_hex() const noexcept {
             return sir_getversionhex();
         }
 
-        /** Wraps ::sir_isprerelease. */
         bool is_prerelease() const noexcept {
             return sir_isprerelease();
         }
