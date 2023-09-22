@@ -38,6 +38,7 @@ static vector<sir_test> sirxx_tests = {
     {"init-cleanup-raii",   raii_init_cleanup, false, true},
     {"init-cleanup-manual", manual_init_cleanup, false, true},
     {"error-handling",      error_handling, false, true},
+    {"exception_handling",  exception_handling, false, true},
     {"format-std",          std_format, false, true},
     {"format-boost",        boost_format, false, true},
     {"format-fmt",          fmt_format, false, true},
@@ -158,6 +159,7 @@ bool sir::tests::manual_init_cleanup() {
 bool sir::tests::error_handling() {
     _SIR_TEST_COMMENCE
 
+    // test retrieval of libsir errors from logger::get_error().
     default_logger log;
 
     _sir_eqland(pass, log.debug("Testing get_error by doing something stupid..."));
@@ -168,6 +170,42 @@ bool sir::tests::error_handling() {
         message.c_str()));
 
     _SIR_TEST_COMPLETE
+}
+
+bool sir::tests::exception_handling() {
+    // exception tests
+    bool pass = true;
+    try {
+        TEST_MSG_0("throw an exception with a string message...");
+        throw exception("something has gone terribly wrong!");
+    } catch (std::exception& ex) {
+        TEST_MSG("caught exception: '%s'", ex.what());
+        _sir_eqland(pass, _sir_validstrnofail(ex.what()));
+    }
+
+    try {
+        TEST_MSG_0("throw an exception from a libsir error...");
+
+        default_logger log;
+        _sir_eqland(pass, !log.add_file("", SIRL_NONE, SIRO_ALL));
+        throw exception::from_libsir_error();
+    } catch (std::exception& ex) {
+        TEST_MSG("caught exception: '%s'", ex.what());
+        _sir_eqland(pass, _sir_validstrnofail(ex.what()));
+    }
+
+    try {
+        TEST_MSG_0("throw an exception from an error struct...");
+
+        default_logger log;
+        _sir_eqland(pass, !log.rem_file(1234));
+        throw exception(log.get_error());
+    } catch (std::exception& ex) {
+        TEST_MSG("caught exception: '%s'", ex.what());
+        _sir_eqland(pass, _sir_validstrnofail(ex.what()));
+    }
+
+    return PRINT_RESULT_RETURN(pass);
 }
 
 bool sir::tests::std_format() {

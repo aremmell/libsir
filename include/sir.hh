@@ -31,6 +31,7 @@
 # include "sir/helpers.h"
 # include "sir/internal.h"
 # include <type_traits>
+# include <stdexcept>
 # include <algorithm>
 # include <exception>
 # include <memory>
@@ -74,6 +75,26 @@ namespace sir
     struct error {
         uint16_t code = 0;   /**< The error code associated with the message. */
         std::string message; /**< Description of the error that occurred. */
+    };
+
+    /**
+     * @class exception
+     * @brief Derives from std::runtime_error in order to be caught by standard
+     * try/catch blocks, as well as to provide a useful error message by way of
+     * the what() method.
+     */
+    class exception : public std::runtime_error {
+    public:
+        explicit exception(const char* msg) : std::runtime_error(msg) { }
+        explicit exception(const error& err) : std::runtime_error(err.message) { }
+
+        ~exception() override = default;
+
+        static exception from_libsir_error() {
+            char msg[SIR_MAXERROR] {};
+            const auto code = sir_geterror(msg);
+            return exception({ code, msg });
+        }
     };
 
     /**
@@ -217,10 +238,24 @@ namespace sir
         virtual ~adapter() = default;
     };
 
+    /**
+     * @brief Handles a potential error; if an error is present and the policy
+     * in place requires throwing an exception, retrieves the associated error
+     * code and message from libsir, then throws.
+     *
+     * @param TPolicy policy A derived class of policy which determines whether
+     * or not to throw exceptions upon encountering an error.
+     *
+     * @param expr bool An expression that is evaluated against false. If false,
+     *  an error is determined to have occurred and an exception will be thrown
+     * if the policy requires it.
+     */
     template<DerivedFromPolicy TPolicy>
-    static inline void sir_policy_throw(bool expr) {
-        if (!expr && TPolicy::throw_on_error()) {
-            // TODO: get libsir error, format, throw.
+    static inline void sir_policy_throw(bool expr) noexcept(false) {
+        if (!expr) {
+            if constexpr(TPolicy::throw_on_error()) {
+                throw exception::from_libsir_error();
+            }
         }
     }
 
@@ -246,11 +281,6 @@ namespace sir
             _SIR_L_START(format);
             ret = _sir_logv(SIRL_DEBUG, format, args);
             _SIR_L_END();
-
-            if constexpr (TPolicy::throw_on_error()) {
-                if (!ret)
-                    throw std::runtime_error("");
-            }
             return ret;
         }
 
@@ -653,7 +683,7 @@ namespace sir
 
     /** Ensures that T... derive from adapter. */
     template<typename... T>
-    concept DerivedFromAdapter = std::is_base_of<adapter, T...>::value;
+    concept DerivedFromAdapter = std::is_base_of_v<adapter, T...>;
 
     /**
      * @class logger
@@ -671,7 +701,7 @@ namespace sir
      * @param TAdapters One or more adapter classes whose public methods will be
      *                  exposed by this class.
      */
-    template<bool RAII, DerivedFromPolicy TPolicy, template<DerivedFromAdapter> class... TAdapters>
+    template<bool RAII, DerivedFromPolicy TPolicy, template<DerivedFromAdapter> typename... TAdapters>
     class logger : public TAdapters<TPolicy>... {
     public:
         logger() : TAdapters<TPolicy>()... {

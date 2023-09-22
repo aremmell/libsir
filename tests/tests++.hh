@@ -63,6 +63,13 @@ namespace sir::tests
     bool error_handling();
 
     /**
+     * @test exception_handling
+     * @brief Ensure that exceptions are properly constructed in various ways.
+     * @returns `true` if the test succeeded, `false` otherwise.
+     */
+    bool exception_handling();
+
+    /**
      * @test std_format
      * @brief If std::format support is enabled, ensure that it is working properly.
      * @returns `true` if the test succeeded, `false` otherwise.
