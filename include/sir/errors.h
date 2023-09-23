@@ -85,7 +85,7 @@ uint16_t _sir_geterrcode(uint32_t err) {
 }
 
 /** Internal error codes. */
-# define _SIR_E_NOERROR   _sir_mkerror(SIR_E_NOERROR)
+# define _SIR_E_NOERROR   SIR_E_NOERROR
 # define _SIR_E_NOTREADY  _sir_mkerror(SIR_E_NOTREADY)
 # define _SIR_E_ALREADY   _sir_mkerror(SIR_E_ALREADY)
 # define _SIR_E_DUPITEM   _sir_mkerror(SIR_E_DUPITEM)
@@ -110,14 +110,13 @@ uint16_t _sir_geterrcode(uint32_t err) {
 # define _SIR_E_PLATFORM  _sir_mkerror(SIR_E_PLATFORM)
 # define _SIR_E_UNKNOWN   _sir_mkerror(SIR_E_UNKNOWN)
 
-//-V:_sir_seterror:616
 bool __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t line);
 # define _sir_seterror(err) __sir_seterror(err, __func__, __file__, __LINE__)
 
 void __sir_setoserror(int code, const char* msg, const char* func,
     const char* file, uint32_t line);
 
-/** Handle a C library error. */
+/** Handle an OS/libc error. */
 bool __sir_handleerr(int code, const char* func, const char* file, uint32_t line);
 # define _sir_handleerr(code) __sir_handleerr(code, __func__, __file__, __LINE__)
 
@@ -125,17 +124,16 @@ bool __sir_handleerr(int code, const char* func, const char* file, uint32_t line
 void _sir_invalidparameter(const wchar_t* expr, const wchar_t* func, const wchar_t* file,
     unsigned int line, uintptr_t reserved);
 
-/**
- * Some Win32 API error codes overlap C library error codes, so they need to be handled separately.
- * Mapping them sounds great, but in practice, valuable information about what went wrong is totally
- * lost in translation.
- */
 bool __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32_t line);
 #  define _sir_handlewin32err(code) __sir_handlewin32err((DWORD)code, __func__, __file__, __LINE__)
 # endif
 
-/** Returns information about the last error that occurred. */
+/** Retrieves a formatted message for the last error that occurred on the calling
+ * thread and returns the associated internal error code. */
 uint32_t _sir_geterror(char message[SIR_MAXERROR]);
+
+/** Returns information about the last error that occurred on the calling thread. */
+void _sir_geterrorinfo(sir_errinfo* err);
 
 /** Resets TLS error information. */
 void _sir_reset_tls_error(void);

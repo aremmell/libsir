@@ -751,6 +751,7 @@ namespace sir
             return sir_isinitialized();
         }
 
+        // TODO: split error into two types. add get_error_info
         error get_error() const {
             std::array<char, SIR_MAXERROR> message {};
             const auto code = sir_geterror(message.data());

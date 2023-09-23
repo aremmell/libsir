@@ -803,6 +803,8 @@ bool sirtest_errorsanity(void) {
         {SIR_E_UNKNOWN,   "SIR_E_UNKNOWN"},   /**< Unknown error (4095) */
     };
 
+    // TODO: add test for geterrorinfo.
+
     char message[SIR_MAXERROR] = {0};
     for (size_t n = 0; n < _sir_countof(errors); n++) {
         (void)_sir_seterror(_sir_mkerror(errors[n].code));
@@ -2323,7 +2325,7 @@ void os_log_child_activity(void* ctx) {
 bool filter_error(bool pass, uint16_t err) {
     if (!pass) {
         char msg[SIR_MAXERROR] = {0};
-        if (sir_geterror(msg) != err)
+        if (sir_geterror(msg) != err) // TODO: use sir_geterror
             return false;
     }
     return true;

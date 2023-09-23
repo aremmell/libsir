@@ -134,6 +134,23 @@ enum {
 typedef uint32_t sir_textcolor;
 
 /**
+ * @struct sir_error
+ * @brief Information about an error that occurred.
+ *
+ * Granular error information in order to provide the caller with flexibility in
+ * regards to error handling and formatting.
+*/
+typedef struct {
+    const char* func;          /**< Function name. */
+    const char* file;          /**< File name. */
+    uint32_t line;             /**< Line number. */
+    int os_code;               /**< If an OS/libc error, the associated code. */
+    char os_msg[SIR_MAXERROR]; /**< If an OS/libc error, the associated message. */
+    uint16_t code;             /**< libsir error code. */
+    char msg[SIR_MAXERROR];    /**< libsir error message. */
+} sir_errinfo;
+
+/**
  * @struct sir_textstyle
  * @brief Container for all the information associated with the appearance of text
  * in the context of stdio.
@@ -284,12 +301,6 @@ typedef struct {
     } state;
 } sirconfig;
 
-/** Internally-used error type. */
-typedef struct {
-    uint32_t code;
-    const char* const message;
-} sirerror;
-
 /** Internally-used log file data. */
 typedef struct {
     const char* path;
@@ -434,8 +445,8 @@ typedef enum {
 /** Per-thread error type. */
 typedef struct {
     uint32_t lasterror;
-    int os_error;
-    char os_errmsg[SIR_MAXERROR];
+    int os_code;
+    char os_msg[SIR_MAXERROR];
 
     struct {
         const char* func;
