@@ -1189,7 +1189,7 @@ bool sirtest_mutexsanity(void) {
     PASSFAIL_MSG(pass, "\t--- pass invalid arguments: %s ---\n\n", PRN_PASS(pass));
 
     _sir_eqland(pass, sir_cleanup());
-    return PRINT_RESULT_RETURN(pass); // -V1020
+    return PRINT_RESULT_RETURN(pass); //-V1020
 }
 
 bool sirtest_perf(void) {
@@ -1464,7 +1464,7 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
 
             /* also test activity grouping in Console. there's only one way to validate
              * this and that's by manually viewing the log. */
-             os_activity_t parent = os_activity_create("flying to the moon", // -V530
+             os_activity_t parent = os_activity_create("flying to the moon", //-V530
                 OS_ACTIVITY_NONE, OS_ACTIVITY_FLAG_DETACHED);
 
             /* execution now passes to os_log_parent_activity(), where some logging
@@ -2296,7 +2296,7 @@ void os_log_parent_activity(void* ctx) {
     (void)sir_notice("beginning rock counting...");
 
     os_activity_t parent = (os_activity_t)ctx;
-    os_activity_t child = os_activity_create("counting moon rocks", parent, // -V530
+    os_activity_t child = os_activity_create("counting moon rocks", parent, //-V530
         OS_ACTIVITY_FLAG_DEFAULT);
 
     float rock_count = 0.0f;
