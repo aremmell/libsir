@@ -11,10 +11,10 @@
       <tab type="modulemembers" visible="yes" title="" intro=""/>
     </tab>
     <tab type="namespaces" visible="yes" title="">
-      <tab type="namespacelist" visible="yes" title="" intro=""/>
-      <tab type="namespacemembers" visible="yes" title="" intro=""/>
+      <tab type="namespacelist" visible="no" title="" intro=""/>
+      <tab type="namespacemembers" visible="no" title="" intro=""/>
     </tab>
-    <tab type="concepts" visible="yes" title="">
+    <tab type="concepts" visible="no" title="">
     </tab>
     <tab type="interfaces" visible="yes" title="">
       <tab type="interfacelist" visible="yes" title="" intro=""/>
@@ -38,7 +38,7 @@
     </tab>
     <tab type="files" visible="yes" title="">
       <tab type="filelist" visible="yes" title="" intro=""/>
-      <tab type="globals" visible="yes" title="" intro=""/>
+      <tab type="globals" visible="no" title="" intro=""/>
     </tab>
     <tab type="examples" visible="yes" title="" intro=""/>
   </navindex>
