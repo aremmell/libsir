@@ -134,7 +134,7 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2>Intro</h2>
 <p>Using plugins, it is possible to extend libsir's reach when dispatching log messages. A simple example of this would be a plugin that only registers for emergency-level messages. Whenever it receives a message, it posts the message to a REST API endpoint which results in a push notification being sent to a mobile device.</p>
-<p>Use your imagination; essentially anything is possible. There are some caveats, though: until a thread pool and job queue mechanism can be implemented in libsir (<a href="https://github.com/aremmell/libsir/issues/121">#121</a>), plugins must either only perform operations that are guaranteed to complete quickly, or perform those operations asynchronously (<em>i.e., on another thread</em>).</p>
+<p>Use your imagination; essentially anything is possible. There are some caveats, though: until the thread pool and job queue mechanisms implemented in (<a href="https://github.com/aremmell/libsir/issues/121">#121</a>) are utilized, plugins must either only perform operations that are guaranteed to complete quickly, or perform those operations asynchronously (<em>i.e., on another thread</em>).</p>
 <h2>Versioning</h2>
 <p>libsir's plugin interface will be versioned; the functions appearing on this page comprise the plugin interface v1. If/when a new function export is added (or one is modified), the version number will be bumped.</p>
 <p>When plugins are compiled, their interface version is hard-coded in. This means that as libsir continues to evolve (and the version number increases), it can still communicate with older plugins via backwards-compatible versioned interfaces.</p>
@@ -252,6 +252,50 @@ Functions</h2></td></tr>
 </ul>
 <p>If you encounter any problems, rebuild with <code>env SIR_SELFLOG=1 SIR_DEBUG=1 make clean plugins</code>. This will enable diagnostic output from libsir that should aid in the diagnosis of any issues you encounter. If you're still stuck, <a href="https://github.com/aremmell/libsir/discussions/new?category=q-a">reach out</a> and somebody will assist you within a reasonable amount of time. </p>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ga43748071f13fd42b462fab8e3ea9faef" name="ga43748071f13fd42b462fab8e3ea9faef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga43748071f13fd42b462fab8e3ea9faef">&#9670;&#160;</a></span>sir_plugin_cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">PLUGIN_EXPORT bool sir_plugin_cleanup </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Called by libsir when the plugin is about to be unloaded. </p>
+<p>The plugin should immediately begin releasing allocated resources and resetting its internal state.</p>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the plugin cleaned up successfully, <code>false</code> otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="ga16ed2c82f4bf0b4571c2d79bb946ce2d" name="ga16ed2c82f4bf0b4571c2d79bb946ce2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga16ed2c82f4bf0b4571c2d79bb946ce2d">&#9670;&#160;</a></span>sir_plugin_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">PLUGIN_EXPORT bool sir_plugin_init </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Called by libsir after the plugin is queried and successfully validated. </p>
+<p>The plugin should only at the time of this call begin allocating resources and initializing its internal state.</p>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the plugin successfully initialized its internal state, <code>false</code> otherwise. </dd></dl>
+
+</div>
+</div>
 <a id="ga938b693a1eae42f7d93b136b8851f176" name="ga938b693a1eae42f7d93b136b8851f176"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga938b693a1eae42f7d93b136b8851f176">&#9670;&#160;</a></span>sir_plugin_query()</h2>
 
@@ -293,28 +337,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga16ed2c82f4bf0b4571c2d79bb946ce2d" name="ga16ed2c82f4bf0b4571c2d79bb946ce2d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga16ed2c82f4bf0b4571c2d79bb946ce2d">&#9670;&#160;</a></span>sir_plugin_init()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">PLUGIN_EXPORT bool sir_plugin_init </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Called by libsir after the plugin is queried and successfully validated. </p>
-<p>The plugin should only at the time of this call begin allocating resources and initializing its internal state.</p>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the plugin successfully initialized its internal state, <code>false</code> otherwise. </dd></dl>
-
-</div>
-</div>
 <a id="ga8bcc79c4667749f5c81e6b1f22db0f1d" name="ga8bcc79c4667749f5c81e6b1f22db0f1d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga8bcc79c4667749f5c81e6b1f22db0f1d">&#9670;&#160;</a></span>sir_plugin_write()</h2>
 
@@ -351,28 +373,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the message was successfully processed, <code>false</code> otherwise. </dd></dl>
-
-</div>
-</div>
-<a id="ga43748071f13fd42b462fab8e3ea9faef" name="ga43748071f13fd42b462fab8e3ea9faef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga43748071f13fd42b462fab8e3ea9faef">&#9670;&#160;</a></span>sir_plugin_cleanup()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">PLUGIN_EXPORT bool sir_plugin_cleanup </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Called by libsir when the plugin is about to be unloaded. </p>
-<p>The plugin should immediately begin releasing allocated resources and resetting its internal state.</p>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the plugin cleaned up successfully, <code>false</code> otherwise. </dd></dl>
 
 </div>
 </div>

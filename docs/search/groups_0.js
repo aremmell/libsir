@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['defaults_0',['Defaults',['../group__default.html',1,'']]]
+  ['c_20wrapper_0',['C++ Wrapper',['../group__cpp.html',1,'']]]
 ];

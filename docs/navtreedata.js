@@ -29,11 +29,19 @@ var NAVTREE =
     [ "Configuration", "config.html", null ],
     [ "Test suite", "testsuite.html", null ],
     [ "Topics", "topics.html", "topics" ],
+    [ "Namespace Members", "namespacemembers.html", [
+      [ "All", "namespacemembers.html", null ],
+      [ "Functions", "namespacemembers_func.html", null ],
+      [ "Typedefs", "namespacemembers_type.html", null ]
+    ] ],
+    [ "Concepts", "concepts.html", "concepts" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
+      [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Data Fields", "functions.html", [
         [ "All", "functions.html", null ],
+        [ "Functions", "functions_func.html", null ],
         [ "Variables", "functions_vars.html", null ]
       ] ]
     ] ],
@@ -52,7 +60,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a0f293a6020f98a7e41b8afea0e402046"
+"group__publictypes.html#ga7b417924811962ca0aeaca30bdf38cf6"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
