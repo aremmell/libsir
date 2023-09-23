@@ -20,3 +20,4 @@ sir.code-workspace linguist-vendored
 sirplatform.mk linguist-vendored
 utils/mcmb/** linguist-vendored
 .vscode linguist-vendored
+CODEOWNERS linguist-vendored
