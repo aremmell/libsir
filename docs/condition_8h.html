@@ -115,27 +115,28 @@ $(document).ready(function(){initNavTree('condition_8h.html',''); initResizable(
   <div class="headertitle"><div class="title">condition.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
+<div class="textblock"><div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="condition_8h__dep__incl.svg" width="159" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
 <p><a href="condition_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae93cd64b12a564792d3bb0a48a8ddc32" id="r_ae93cd64b12a564792d3bb0a48a8ddc32"><td class="memItemLeft" align="right" valign="top"><a id="ae93cd64b12a564792d3bb0a48a8ddc32" name="ae93cd64b12a564792d3bb0a48a8ddc32"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>_sir_condcreate</b> (sir_condition *cond)</td></tr>
-<tr class="memdesc:ae93cd64b12a564792d3bb0a48a8ddc32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates/initializes a new condition variable. <br /></td></tr>
+<tr class="memitem:ae93cd64b12a564792d3bb0a48a8ddc32" id="r_ae93cd64b12a564792d3bb0a48a8ddc32"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="condition_8h.html#ae93cd64b12a564792d3bb0a48a8ddc32">_sir_condcreate</a> (sir_condition *cond)</td></tr>
+<tr class="memdesc:ae93cd64b12a564792d3bb0a48a8ddc32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates/initializes a new condition variable.  <br /></td></tr>
 <tr class="separator:ae93cd64b12a564792d3bb0a48a8ddc32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8d6edc94bcfb430cf584b27a91e4040" id="r_ae8d6edc94bcfb430cf584b27a91e4040"><td class="memItemLeft" align="right" valign="top"><a id="ae8d6edc94bcfb430cf584b27a91e4040" name="ae8d6edc94bcfb430cf584b27a91e4040"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>_sir_condbroadcast</b> (sir_condition *cond)</td></tr>
-<tr class="memdesc:ae8d6edc94bcfb430cf584b27a91e4040"><td class="mdescLeft">&#160;</td><td class="mdescRight">Broadcast signals a condition variable. <br /></td></tr>
+<tr class="memitem:ae8d6edc94bcfb430cf584b27a91e4040" id="r_ae8d6edc94bcfb430cf584b27a91e4040"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="condition_8h.html#ae8d6edc94bcfb430cf584b27a91e4040">_sir_condbroadcast</a> (sir_condition *cond)</td></tr>
+<tr class="memdesc:ae8d6edc94bcfb430cf584b27a91e4040"><td class="mdescLeft">&#160;</td><td class="mdescRight">Broadcast signals a condition variable.  <br /></td></tr>
 <tr class="separator:ae8d6edc94bcfb430cf584b27a91e4040"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a150dd1b33dee56d4b02442f2f30f09c5" id="r_a150dd1b33dee56d4b02442f2f30f09c5"><td class="memItemLeft" align="right" valign="top"><a id="a150dd1b33dee56d4b02442f2f30f09c5" name="a150dd1b33dee56d4b02442f2f30f09c5"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>_sir_conddestroy</b> (sir_condition *cond)</td></tr>
-<tr class="memdesc:a150dd1b33dee56d4b02442f2f30f09c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a condition variable. <br /></td></tr>
+<tr class="memitem:a150dd1b33dee56d4b02442f2f30f09c5" id="r_a150dd1b33dee56d4b02442f2f30f09c5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="condition_8h.html#a150dd1b33dee56d4b02442f2f30f09c5">_sir_conddestroy</a> (sir_condition *cond)</td></tr>
+<tr class="memdesc:a150dd1b33dee56d4b02442f2f30f09c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a condition variable.  <br /></td></tr>
 <tr class="separator:a150dd1b33dee56d4b02442f2f30f09c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8dda6e64ad0dcf2d4bc8ccd1c0c7d2ad" id="r_a8dda6e64ad0dcf2d4bc8ccd1c0c7d2ad"><td class="memItemLeft" align="right" valign="top"><a id="a8dda6e64ad0dcf2d4bc8ccd1c0c7d2ad" name="a8dda6e64ad0dcf2d4bc8ccd1c0c7d2ad"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>_sir_condwait_timeout</b> (sir_condition *cond, sir_mutex *mutex, const sir_wait *how_long)</td></tr>
-<tr class="memdesc:a8dda6e64ad0dcf2d4bc8ccd1c0c7d2ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waits a given amount of time for a condition variable to become signaled. <br /></td></tr>
-<tr class="separator:a8dda6e64ad0dcf2d4bc8ccd1c0c7d2ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3a334d6709db41f5a96327c90b44e83" id="r_ad3a334d6709db41f5a96327c90b44e83"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="condition_8h.html#ad3a334d6709db41f5a96327c90b44e83">_sir_condwait_timeout</a> (sir_condition *cond, sir_mutex *mutex, const sir_wait *howlong)</td></tr>
+<tr class="memdesc:ad3a334d6709db41f5a96327c90b44e83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waits a given amount of time for a condition variable to become signaled.  <br /></td></tr>
+<tr class="separator:ad3a334d6709db41f5a96327c90b44e83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>Ryan M. Lederman &lt;<a href="#" onclick="location.href='mai'+'lto:'+'led'+'er'+'man'+'@g'+'mai'+'l.'+'com'; return false;">leder<span class="obfuscator">.nosp@m.</span>man@<span class="obfuscator">.nosp@m.</span>gmail<span class="obfuscator">.nosp@m.</span>.com</a>&gt; </dd></dl>
@@ -145,7 +146,134 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>_sir_condwait_timeout
 <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
 <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
 <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="ae8d6edc94bcfb430cf584b27a91e4040" name="ae8d6edc94bcfb430cf584b27a91e4040"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8d6edc94bcfb430cf584b27a91e4040">&#9670;&#160;</a></span>_sir_condbroadcast()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool _sir_condbroadcast </td>
+          <td>(</td>
+          <td class="paramtype">sir_condition *&#160;</td>
+          <td class="paramname"><em>cond</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Broadcast signals a condition variable. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cond</td><td>Pointer to a sir_condition to broadcast on. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successful, <code>false</code> otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="ae93cd64b12a564792d3bb0a48a8ddc32" name="ae93cd64b12a564792d3bb0a48a8ddc32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae93cd64b12a564792d3bb0a48a8ddc32">&#9670;&#160;</a></span>_sir_condcreate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool _sir_condcreate </td>
+          <td>(</td>
+          <td class="paramtype">sir_condition *&#160;</td>
+          <td class="paramname"><em>cond</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates/initializes a new condition variable. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cond</td><td>Pointer to a sir_condition to initialize </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successful, <code>false</code> otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="a150dd1b33dee56d4b02442f2f30f09c5" name="a150dd1b33dee56d4b02442f2f30f09c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a150dd1b33dee56d4b02442f2f30f09c5">&#9670;&#160;</a></span>_sir_conddestroy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool _sir_conddestroy </td>
+          <td>(</td>
+          <td class="paramtype">sir_condition *&#160;</td>
+          <td class="paramname"><em>cond</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Destroys a condition variable. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cond</td><td>Pointer to a sir_condition to destroy. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successful, <code>false</code> otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="ad3a334d6709db41f5a96327c90b44e83" name="ad3a334d6709db41f5a96327c90b44e83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3a334d6709db41f5a96327c90b44e83">&#9670;&#160;</a></span>_sir_condwait_timeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool _sir_condwait_timeout </td>
+          <td>(</td>
+          <td class="paramtype">sir_condition *&#160;</td>
+          <td class="paramname"><em>cond</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">sir_mutex *&#160;</td>
+          <td class="paramname"><em>mutex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const sir_wait *&#160;</td>
+          <td class="paramname"><em>howlong</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Waits a given amount of time for a condition variable to become signaled. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cond</td><td>Pointer to a sir_condition to wait on. </td></tr>
+    <tr><td class="paramname">mutex</td><td>Associated mutex object. </td></tr>
+    <tr><td class="paramname">howlong</td><td>How long to wait before timing out. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successful, <code>false</code> if an error occurred or the operation timed out.. </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.7-->
 <!-- start footer part -->

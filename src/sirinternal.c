@@ -128,6 +128,8 @@ bool _sir_init(sirinit* si) {
 
     _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false);
 
+    bool init = true;
+
 #if !defined(__WIN__)
     tzset();
 #endif
@@ -144,10 +146,15 @@ bool _sir_init(sirinit* si) {
     _sir_initialize_stdio();
 #endif
 
-    _sir_setcolormode(SIRCM_16);
+    if (!_sir_setcolormode(SIRCM_16)) {
+        init = false;
+        _sir_selflog("error: failed to set color mode!");
+    }
 
-    if (!_sir_resettextstyles())
+    if (!_sir_resettextstyles()) {
+        init = false;
         _sir_selflog("error: failed to reset text styles!");
+    }
 
     memset(&_cfg->state, 0, sizeof(_cfg->state));
     memcpy(&_cfg->si, si, sizeof(sirinit));
@@ -167,13 +174,17 @@ bool _sir_init(sirinit* si) {
 
     if (_cfg->si.d_syslog.levels != SIRL_NONE &&
         !_sir_syslog_init(_cfg->si.name, &_cfg->si.d_syslog)) {
+        init = false;
         _sir_selflog("failed to initialize system logger!");
     }
 #endif
 
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
 
-    return true;
+    _sir_selflog("initialized %s", (init ? "successfully" : "with errors"));
+
+    SIR_ASSERT(init);
+    return init;
 }
 
 bool _sir_cleanup(void) {
@@ -223,7 +234,7 @@ bool _sir_cleanup(void) {
     memset(_cfg, 0, sizeof(sirconfig));
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
 
-    _sir_selflog("cleanup: %s", (cleanup ? "successful" : "with errors"));
+    _sir_selflog("cleaned up %s", (cleanup ? "successfully" : "with errors"));
 
     SIR_ASSERT(cleanup);
     return cleanup;
@@ -254,9 +265,17 @@ bool _sir_init_sanity(const sirinit* si) {
     _sir_eqland(levelcheck, _sir_validlevels(si->d_stdout.levels));
     _sir_eqland(levelcheck, _sir_validlevels(si->d_stderr.levels));
 
+    bool regcheck = true;
+    _sir_eqland(regcheck, SIRL_NONE == si->d_stdout.levels);
+    _sir_eqland(regcheck, SIRL_NONE == si->d_stderr.levels);
+
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     _sir_eqland(levelcheck, _sir_validlevels(si->d_syslog.levels));
+    _sir_eqland(regcheck, SIRL_NONE == si->d_syslog.levels);
 #endif
+
+    if (regcheck)
+        _sir_selflog("warning: no level registrations set!");
 
     bool optscheck = true;
     _sir_eqland(optscheck, _sir_validopts(si->d_stdout.opts));
@@ -431,7 +450,7 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
             break;
         // GCOVR_EXCL_START
         default: /* this should never happen. */
-            SIR_ASSERT(mid);
+            SIR_ASSERT(false);
             tmpm   = NULL;
             tmpsec = NULL;
             break;
@@ -507,7 +526,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     /* from time to time, update the host name in the config, just in case. */
     time_t now_sec = -1;
     if (-1 != time(&now_sec) &&
-        (now_sec - _cfg->state.last_hname_chk) > SIR_HNAME_CHK_INTERVAL) { //-V522
+        (now_sec - _cfg->state.last_hname_chk) > SIR_HNAME_CHK_INTERVAL) {
         _sir_selflog("updating hostname...");
         if (!_sir_gethostname(_cfg->state.hostname)) {
             _sir_selflog("error: failed to get hostname!");
@@ -775,8 +794,7 @@ const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
             if (name)
                 _sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_PIDSUFFIX, 1);
 
-            if (first)
-                first = false;
+            first = false;
         }
 
         if (!first)
@@ -923,6 +941,11 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, const sir_syslog_dest
 
     syslog(syslog_level, "%s", buf->message);
     return true;
+# else
+    SIR_UNUSED(level);
+    SIR_UNUSED(buf);
+    SIR_UNUSED(ctx);
+    return false;
 # endif
 #else
     SIR_UNUSED(level);
@@ -996,7 +1019,7 @@ bool _sir_syslog_close(sir_syslog_dest* ctx) {
     }
 
 # if defined(SIR_OS_LOG_ENABLED)
-    /* evidently, you don't need to close the handle returned from os_log_create(), and
+    /* Evidently, you don't need to close the handle returned from os_log_create(), and
      * if you make that call again, you'll get the same cached value. so let's keep the
      * value we've got in the global context. */
     _sir_setbitslow(&ctx->_state.mask, SIRSL_IS_OPEN);
@@ -1007,6 +1030,9 @@ bool _sir_syslog_close(sir_syslog_dest* ctx) {
     _sir_setbitslow(&ctx->_state.mask, SIRSL_IS_OPEN);
     _sir_selflog("closed log");
     return true;
+# else
+    SIR_UNUSED(ctx);
+    return false;
 # endif
 #else
     SIR_UNUSED(ctx);
@@ -1153,7 +1179,11 @@ pid_t _sir_gettid(void) {
 #elif defined(__SOLARIS__) || defined(__NetBSD__) || defined(__HURD__) || \
       defined(__DragonFly__) || defined(__CYGWIN__) || defined(_AIX) || \
       defined(__EMSCRIPTEN__)
+# if defined(__CYGWIN__)
+    tid = (pid_t)(uintptr_t)pthread_self();
+# else
     tid = (pid_t)pthread_self();
+# endif
 #elif defined(__HAIKU__)
     tid = get_pthread_thread_id(pthread_self());
 #elif defined(__linux__) || defined(__serenity__)
@@ -1212,7 +1242,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     (void)LocalFree(wname);
     return success && _sir_validstrnofail(name);
 #else
-# if !defined(_AIX) && !defined(__HURD__) && !defined(SUNLINT)
+# if !defined(SUNLINT) && !defined(_AIX) && !defined(__HURD__)
 #  pragma message("unable to determine how to get a thread name")
 # endif
     SIR_UNUSED(name);
@@ -1260,7 +1290,7 @@ bool _sir_setthreadname(const char* name) {
     HRESULT hr = SetThreadDescription(GetCurrentThread(), buf);
     return FAILED(hr) ? _sir_handlewin32err(hr) : true;
 #else
-# if !defined(SUNLINT)
+# if !defined(SUNLINT) && !defined(_AIX)
 #  pragma message("unable to determine how to set a thread name")
 # endif
     SIR_UNUSED(name);

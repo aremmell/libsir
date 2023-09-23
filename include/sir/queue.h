@@ -54,4 +54,3 @@ bool _sir_queue_push(sir_queue* q, void* data);
 bool _sir_queue_pop(sir_queue* q, void** data);
 
 #endif /* !_SIR_QUEUE_H_INCLUDED */
-

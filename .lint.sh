@@ -35,7 +35,6 @@ cd "$(${GIT:-git} rev-parse --show-toplevel)" \
 test_spaces()
 { (
   printf '%s\n' "checking for spaces in filenames ..."
-  sleep 2
   if (find src include -print | awk '{ print "\""$0"\"" }' | grep ' '); then
     {
       printf '%s\n' "ERROR: Filename check failed due to spaces!"
@@ -50,8 +49,7 @@ test_spaces()
 test_tabs()
 { (
   printf '%s\n' "checking source code for tabs ..."
-  sleep 2
-  TLIST="$(find src include -print | grep '\.[ch]$' \
+  TLIST="$(find src include -print | grep -E '(\.[ch]$|\.cc$|\.hh$)' \
     | xargs -L 1 grep -l "$(printf '\t')" 2> /dev/null)" || true
   # shellcheck disable=SC2015
   printf "%s\n" "${TLIST:-}" | grep -v '^$' 2> /dev/null | grep . \
@@ -67,7 +65,6 @@ test_tabs()
 test_whitespace()
 { (
   printf '%s\n' "checking source code for trailing whitespace ..."
-  sleep 2
   # shellcheck disable=SC2038
   TLIST="$(find src include -print \
     | xargs -I{} grep -al ' \+$' "{}" 2> /dev/null)" || true
@@ -84,10 +81,10 @@ test_whitespace()
 
 test_mcmb()
 {
-  ${MAKE:-make} mcmb; ret=${?}
+  mkdir -p build/lib > /dev/null 2>&1 || true
+  ${MAKE:-make} mcmb; ret="${?}"
   test "${ret}" -ne 0 && exit 99
   printf '%s\n' "checking for ${MCMB:-build/bin/mcmb} executable ..."
-  sleep 2
   test -x "${MCMB:-build/bin/mcmb}" \
     || {
       printf '%s\n' \
@@ -95,11 +92,10 @@ test_mcmb()
       exit 99
     }
   # shellcheck disable=SC2089
-  SIR_OPTIONS="'' \
-             SIR_DEBUG=1 \
-             SIR_NO_SYSTEM_LOGGERS=1 \
-             SIR_NO_PLUGINS=1 \
-             SIR_SELFLOG=1"
+  SIR_OPTIONS="SIR_DEBUG=1 \
+               SIR_NO_SYSTEM_LOGGERS=1 \
+               SIR_NO_PLUGINS=1 \
+               SIR_SELFLOG=1"
   # shellcheck disable=SC2090
   printf '%s\n' "exported SIR_OPTIONS=' ${SIR_OPTIONS} '" | tr -s ' '
   # shellcheck disable=SC2090
@@ -111,7 +107,6 @@ test_mcmb()
 test_duma()
 { (
   printf '%s\n' "checking for duma ..."
-  sleep 2
   DUMA_OS="$(uname -s 2> /dev/null)"
   # shellcheck disable=SC2015
   test "${DUMA_OS:-}" = "Darwin" \
@@ -129,6 +124,12 @@ test_duma()
           exit 1
         }
     }
+  command -v g++ > /dev/null 2>&1 \
+    || {
+      printf '%s\n' \
+        "NOTICE: G++ is required for DUMA check."
+      exit 1
+    }
   command -v gcc > /dev/null 2>&1 \
     || {
       printf '%s\n' \
@@ -137,8 +138,7 @@ test_duma()
     }
       rm -f ./duma*.log
       printf '%s\n' "building with DUMA ..."
-      sleep 1
-      env "${MAKE:-make}" clean; ret=${?}
+      env "${MAKE:-make}" clean; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       env DUMA=1 \
           CC="gcc" \
@@ -147,41 +147,60 @@ test_duma()
         "${MAKE:-make}" \
           -j 1 \
         SIR_DEBUG=1 \
-        SIR_SELFLOG=1; ret=${?}
+        SIR_SELFLOG=1; ret="${?}"
+      test "${ret}" -ne 0 && exit 99
+      env DUMA=1 \
+          CXX="g++" \
+          EXTRA_LIBS="-L/opt/duma/lib" \
+          CFLAGS="-I/opt/duma/include" \
+        "${MAKE:-make}" tests++ \
+          -j 1 \
+        SIR_DEBUG=1 \
+        SIR_SELFLOG=1; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       printf '%s\n' "running DUMA-enabled example ..."
-      sleep 1
       env DUMA_OUTPUT_FILE=duma1.log \
         DUMA_OUTPUT_STDERR=0 \
         DUMA_OUTPUT_STDOUT=0 \
-        build/bin/sirexample; ret=${?}
+        build/bin/sirexample; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       env DUMA_OUTPUT_FILE=duma2.log \
         DUMA_PROTECT_BELOW=1 \
         DUMA_OUTPUT_STDERR=0 \
         DUMA_OUTPUT_STDOUT=0 \
-        build/bin/sirexample; ret=${?}
+        build/bin/sirexample; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       printf '%s\n' "running DUMA-enabled tests ..."
-      sleep 1
       env DUMA_OUTPUT_FILE=duma3.log \
         DUMA_OUTPUT_STDERR=0 \
         DUMA_OUTPUT_STDOUT=0 \
-        build/bin/sirtests; ret=${?}
+        build/bin/sirtests; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       env DUMA_OUTPUT_FILE=duma4.log \
         DUMA_PROTECT_BELOW=1 \
         DUMA_OUTPUT_STDERR=0 \
         DUMA_OUTPUT_STDOUT=0 \
-        build/bin/sirtests; ret=${?}
+        build/bin/sirtests; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      sleep 1
+      printf '%s\n' "running DUMA-enabled tests++ ..."
+      env DUMA_OUTPUT_FILE=duma5.log \
+        DUMA_OUTPUT_STDERR=0 \
+        DUMA_OUTPUT_STDOUT=0 \
+        build/bin/sirtests++; ret="${?}"
+      test "${ret}" -ne 0 && exit 99
+      env DUMA_OUTPUT_FILE=duma6.log \
+        DUMA_PROTECT_BELOW=1 \
+        DUMA_OUTPUT_STDERR=0 \
+        DUMA_OUTPUT_STDOUT=0 \
+        build/bin/sirtests++; ret="${?}"
+      test "${ret}" -ne 0 && exit 99
       printf '%s\n' "checking DUMA output ..."
-      sleep 1
       test -f duma1.log || DUMA_FAIL=1
       test -f duma2.log || DUMA_FAIL=1
       test -f duma3.log || DUMA_FAIL=1
       test -f duma4.log || DUMA_FAIL=1
+      test -f duma5.log || DUMA_FAIL=1
+      test -f duma6.log || DUMA_FAIL=1
       test -z "${DUMA_FAIL:-}" \
         || {
           printf '\n%s\n' "ERROR: DUMA failed to log!"
@@ -206,8 +225,23 @@ test_duma()
 
 test_extra()
 { (
-  test_mcmb; ret=${?}
+  test_mcmb; ret="${?}"
   test "${ret}" -ne 0 && exit 99
+  PATH="$(2> /dev/null dirname \
+          "$(2> /dev/null printf '%s\n' \
+              "$(2> /dev/null env ls -1 \
+                   "$(brew --prefix 2> /dev/null)/Cellar/llvm/"*"/bin/clang" | \
+                 2> /dev/null sort -rV | \
+                 2> /dev/null head -1 \
+              )"\
+          )"\
+       ):/usr/local/bin:${PATH:-}" 2> /dev/null
+  command -v clang++ > /dev/null 2>&1 \
+    || {
+      printf '%s\n' \
+        "NOTICE: clang++ is required for the extra-warning check."
+      exit 1
+    }
   command -v clang > /dev/null 2>&1 \
     || {
       printf '%s\n' \
@@ -215,25 +249,27 @@ test_extra()
       exit 1
     }
       printf '%s\n' "building with extra-warning flags ..."
-      sleep 2
-      env "${MAKE:-make}" clean; ret=${?}
+      env "${MAKE:-make}" clean; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       rm -f ./.extra.sh
       env CC="${CCACHE:-env} clang" \
-        "${MAKE:-make}" \
+         CXX="${CCACHE:-env} clang++" \
+        "${MAKE:-make}" all tests++ \
         -j "${CPUS:-1}" \
-        mcmb; ret=${?}
+        mcmb; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      printf '%s' 'true' > ./.extra.sh
+      printf '%s' 'set -e; true' > ./.extra.sh
       # shellcheck disable=SC2090,SC2086,SC2016
       "${MCMB:-build/bin/mcmb}" -e ${SIR_OPTIONS:?} | xargs -L1 echo \
         ' && ${MAKE:-make} clean &&
         env CC="${CCACHE:-env} clang"
-            CFLAGS="-Werror
+            CXX="${CCACHE:-env} clang++"
+            CFLAGS="-DSIR_LINT=1
+                    -Werror
+                    -Wno-unknown-warning-option
                     -Wassign-enum
                     -Wbad-function-cast
                     -Wconversion
-                    -DSIR_LINT=1
                     -Wdisabled-macro-expansion
                     -Wdouble-promotion
                     -Wextra-semi-stmt
@@ -247,14 +283,24 @@ test_extra()
                     -Wshift-overflow
                     -Wstring-conversion
                     -Wswitch-enum"
-            ${MAKE:-make}
+            ${MAKE:-make} all tests++
                 -j "${CPUS:-1}" ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
-      printf '%s\n' ' && true' >> ./.extra.sh; ret=${?}
+      printf '%s\n' ' && true' >> ./.extra.sh; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      chmod a+x ./.extra.sh
-      sh ./.extra.sh; ret=${?}
+      chmod a+x ./.extra.sh > /dev/null 2>&1 || true
+      sh -x ./.extra.sh; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      rm -f ./.extra.sh
+      printf '%s\n' "set -e;" > ./.extraN.sh
+      ret="${?}"; test "${ret:-0}" -eq 99 && exit 99
+      sed 's/\&\&/\&\&\n/g' ./.extra.sh | head -3 | tail -1 | \
+          sed 's/ SIR_.*=1 &&/ /' >> ./.extraN.sh; ret="${?}"
+      test "${ret}" -ne 0 && exit 99
+      mv -f ./.extraN.sh ./.extra.sh > /dev/null 2>&1; ret="${?}"
+      test "${ret}" -ne 0 && exit 99
+      ${MAKE:-make} clean || exit 99
+      sh -x ./.extra.sh; ret="${?}"
+      test "${ret}" -ne 0 && exit 99
+      rm -f ./.extra.sh > /dev/null 2>&1 || true
       exit 0
 ) }
 
@@ -262,7 +308,7 @@ test_extra()
 
 test_gccextra()
 { (
-  test_mcmb; ret=${?}
+  test_mcmb; ret="${?}"
   test "${ret}" -ne 0 && exit 99
   gcc --version 2>&1 | grep -qi GCC > /dev/null 2>&1 \
     || {
@@ -270,21 +316,28 @@ test_gccextra()
         "NOTICE: gcc is required for the gcc extra-warning check."
       exit 1
     }
+  g++ --version 2>&1 | grep -qi GCC > /dev/null 2>&1 \
+    || {
+      printf '%s\n' \
+        "NOTICE: g++ is required for the gcc extra-warning check."
+      exit 1
+    }
       printf '%s\n' "building with extra-warning flags ..."
-      sleep 2
-      env "${MAKE:-make}" clean; ret=${?}
+      env "${MAKE:-make}" clean; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       rm -f ./.extra.sh
       env CC="${CCACHE:-env} gcc" \
-        "${MAKE:-make}" \
+         CXX="${CCACHE:-env} g++" \
+        "${MAKE:-make}" all tests++ \
         -j 1 \
-        mcmb; ret=${?}
+        mcmb; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      printf '%s' 'true' > ./.extra.sh
+      printf '%s' 'set -e; true' > ./.extra.sh
       # shellcheck disable=SC2090,SC2086,SC2016
       "${MCMB:-build/bin/mcmb}" -e ${SIR_OPTIONS:?} | xargs -L1 echo \
         ' && ${MAKE:-make} clean &&
         env CC="${CCACHE:-env} gcc"
+            CXX="${CCACHE:-env} g++"
             CFLAGS="-Werror
                     -Wbad-function-cast
                     -Wconversion
@@ -298,14 +351,24 @@ test_gccextra()
                     -Wno-sign-conversion
                     -Wno-string-conversion
                     -Wswitch-enum"
-            ${MAKE:-make}
-                -j 1 ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh; ret=${?}
+            ${MAKE:-make} all tests++
+                -j 1 ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
+      printf '%s\n' ' && true' >> ./.extra.sh; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      printf '%s\n' ' && true' >> ./.extra.sh
-      chmod a+x ./.extra.sh
-      sh ./.extra.sh; ret=${?}
+      chmod a+x ./.extra.sh > /dev/null 2>&1 || true
+      sh -x ./.extra.sh; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      rm -f ./.extra.sh
+      printf '%s\n' "set -e;" > ./.extraN.sh
+      ret="${?}"; test "${ret:-0}" -eq 99 && exit 99
+      sed 's/\&\&/\&\&\n/g' ./.extra.sh | head -3 | tail -1 | \
+          sed 's/ SIR_.*=1 &&/ /' >> ./.extraN.sh; ret="${?}"
+      test "${ret}" -ne 0 && exit 99
+      mv -f ./.extraN.sh ./.extra.sh > /dev/null 2>&1; ret="${?}"
+      test "${ret}" -ne 0 && exit 99
+      ${MAKE:-make} clean || exit 99
+      sh -x ./.extra.sh; ret="${?}"
+      test "${ret}" -ne 0 && exit 99
+      rm -f ./.extra.sh > /dev/null 2>&1 || true
       exit 0
 ) }
 
@@ -321,7 +384,6 @@ test_flawfinder()
     }
       # shellcheck disable=SC2015
       printf '%s\n' "running flawfinder check ..."
-      sleep 2
       FLAWFINDER_OUTPUT="$(flawfinder -C -m 5 -c . 2>&1)"
       printf '%s\n' "${FLAWFINDER_OUTPUT:-}" | grep -q "No hits found" \
         || {
@@ -344,32 +406,33 @@ test_scanbuild()
       exit 1
     }
       printf '%s\n' "running scan-build check ..."
-      sleep 2
-      env "${MAKE:-make}" clean; ret=${?}
+      env "${MAKE:-make}" clean; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      env CC="${CCACHE:-env} clang" "${MAKE:-make}" \
-        -j "${CPUS:-1}" \
-        mcmb; ret=${?}
+      env CC="${CCACHE:-env} clang" \
+          CXX="${CCACHE:-env} clang++" \
+          "${MAKE:-make}" \
+        -j "${CPUS:-1}" all tests++ \
+        mcmb; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      printf '%s' 'true' > ./.scan-build.sh
+      printf '%s' 'set -e;true' > ./.scan-build.sh
       # shellcheck disable=SC2090,SC2086,SC2016
       "${MCMB:-build/bin/mcmb}" -e ${SIR_OPTIONS:?} | xargs -L1 echo \
         ' && ${MAKE:-make} clean && ${MAKE:-make} mcmb &&
          env CC="${CCACHE:-env} clang"
+             CXX="${CCACHE:-env} clang++"
            scan-build -no-failure-reports
                --status-bugs
-               -maxloop 8
                -enable-checker optin.portability.UnixAPI
                -enable-checker security.FloatLoopCounter
                -enable-checker security.insecureAPI.bcmp
                -enable-checker security.insecureAPI.bcopy
-                   ${MAKE:-make}
+                   ${MAKE:-make} all tests++
                        -j "${CPUS:-1}" ' \
-        | tr '\n' ' ' | tr -s ' ' >> ./.scan-build.sh; ret=${?}
+        | tr '\n' ' ' | tr -s ' ' >> ./.scan-build.sh; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       printf '%s\n' ' && true' >> ./.scan-build.sh
       chmod a+x ./.scan-build.sh
-      sh ./.scan-build.sh; ret=${?}
+      sh -x ./.scan-build.sh; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       rm -f ./.scan-build.sh
       rm -rf ./clang-analyzer 2> /dev/null
@@ -393,31 +456,65 @@ test_cppcheck()
       exit 1
     }
       printf '%s\n' "running cppcheck check ..."
-      sleep 2
-      ${MAKE:-make} clean; ret=${?}
+      ${MAKE:-make} clean; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       rm -rf ./cppcheck
       rm -f ./cppcheck.xml
-      mkdir -p cppcheck; ret=${?}
+      mkdir -p cppcheck; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       # shellcheck disable=SC2046
-      cppcheck --force \
-        --enable="warning,performance,portability" \
-        --suppress=ConfigurationNotChecked \
-        --suppress=unknownMacro \
-        --suppress=syntaxError:/usr/include/stdlib.h \
-        --suppress=unmatchedSuppression \
-        --suppress=va_list_usedBeforeStarted \
-        --suppress="*:/usr/*" \
-        --inline-suppr \
-        --max-ctu-depth="16" \
-        --platform=unix64 \
-        --std="c11" \
-        --inconclusive \
-        -j "${CPUS:?}" \
-        $(find . -name '*.[ch]' \
-          | grep -v 'mcmb.c') \
-        --xml --xml-version=2 2> cppcheck.xml \
+      export EXTRA_INCLUDES="$(gcc -Wp,-v -x c++ - -fsyntax-only < /dev/null 2>&1 | grep '^ /' | sed 's/^ /-I/' | awk '{ print $1 }')" || \
+          export EXTRA_INCLUDES="-I/usr/include"
+      cppcheck \
+      ${EXTRA_INCLUDES:-I/usr/include} \
+      --enable="all" \
+      --inline-suppr \
+      --library=posix \
+      --platform=unix64 \
+      --suppress=*:/Applications/* \
+      --suppress=badBitmaskCheck:include/sir/defaults.h \
+      --suppress=comparisonError:tests/tests.c \
+      --suppress=constVariablePointer \
+      --suppress=cstyleCast \
+      --suppress=*:/Library/Developer/* \
+      --suppress=missingIncludeSystem \
+      --suppress=readdirCalled \
+      --suppress=redundantAssignment \
+      --suppress=shadowFunction \
+      --suppress=knownConditionTrueFalse \
+      --suppress=unmatchedSuppression \
+      --suppress=unreadVariable \
+      --suppress=*:/usr/include/* \
+      --suppress=variableScope \
+      -DCLOCK_REALTIME=1 \
+      -DCLOCK_MONOTONIC=6 \
+      -D_POSIX_TIMERS=2 \
+      --suppress=funcArgOrderDifferent:src/sirinternal.c \
+      -D"PRINTF_FORMAT_ATTR(x,y)=" \
+      -D"SANITIZE_SUPPRESS(x)=" \
+      -DBOOST_GCC_VERSION=80300 \
+      -DUCHAR_MAX=0xff \
+      -DUINT_MAX=0xffffffff \
+      -DULONG_MAX=18446744073709551615 \
+      -DUSHRT_MAX=0xffff \
+      -D_LIBCPP_CXX03_LANG \
+      -D_LIBCPP___COMPARE_SYNTH_THREE_WAY_H \
+      -D__CHAR_BIT__=8 \
+      -D__CPPCHECK__=1 \
+      -D__GLIBC__ \
+      -D__GNUC__=13 \
+      -D__SIZEOF_SIZE_T__=8 \
+      -D__STDC__ \
+      -D__linux__ \
+      -D__x86_64__ \
+      -I/usr/include \
+      -Iinclude \
+      -j "$(getconf NPROCESSORS_ONLN 2> /dev/null || \
+            getconf _NPROCESSORS_ONLN 2> /dev/null || \
+            nproc 2> /dev/null || printf '%s\n' 4)" \
+      $(find . -name '*.[ch]' -o -name '*.cc' -o -name '*.hh' \
+        | grep -v 'mcmb.c') \
+          --xml --xml-version=2 2> cppcheck.xml \
         && cppcheck-htmlreport --source-dir="." \
           --report-dir="./cppcheck" \
           --file="cppcheck.xml"
@@ -437,6 +534,36 @@ test_cppcheck()
 
 test_pvs()
 { (
+  rm -f ./.extra.sh > /dev/null 2>&1 || true
+  test_mcmb; ret="${?}"
+  test "${ret}" -ne 0 && exit 99
+  # shellcheck disable=SC2140
+  printf '%s\n' "set -e;" > ./.extra.sh
+  ret="${?}"; test "${ret:-0}" -eq 99 && exit 99
+  eval ./build/bin/mcmb "${SIR_OPTIONS:?}" | xargs -I{} \
+    printf '%s\n' "export PVS_FLAGS=\""{}"\";./.lint.sh pvs_real" | \
+    sort -u >> ./.extra.sh
+  ret="${?}"; test "${ret:-0}" -eq 99 && exit 99
+  printf '%s\n' "export PVS_FLAGS=\"\";./.lint.sh pvs_real" >> ./.extra.sh
+  ret="${?}"; test "${ret:-0}" -eq 99 && exit 99
+  chmod a+x ./.extra.sh > /dev/null 2>&1 || true
+  sh -x ./.extra.sh; ret="${?}"
+  rm -f ./.extra.sh > /dev/null 2>&1 || true
+  test "${ret:-0}" -ne 0 && exit 99
+  exit 0
+) }
+
+################################################################################
+
+test_pvs_real()
+{ (
+  export P_FLAGS="${PVS_FLAGS:-}"
+  command -v clang++ > /dev/null 2>&1 \
+    || {
+      printf '%s\n' \
+        "NOTICE: clang++ not found, skipping PVS-Studio checks."
+      exit 1
+    }
   command -v clang > /dev/null 2>&1 \
     || {
       printf '%s\n' \
@@ -462,39 +589,35 @@ test_pvs()
       exit 1
     }
       printf '%s\n' "running PVS-Studio checks ..."
-      sleep 2
       rm -rf ./pvsreport
       rm -f ./log.pvs
       rm -f ./compile_commands.json
-      ${MAKE:-make} clean; ret=${?}
+      ${MAKE:-make} clean; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      ${MAKE:-make} mcmb; ret=${?}
+      ${MAKE:-make} mcmb; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      env CC="${CCACHE:-env} clang" bear -- "${MAKE:-make}" -j "${CPUS:-1}"; ret=${?}
+      # shellcheck disable=SC2086
+      env CXX="${CCACHE:-env} clang++" \
+           CC="${CCACHE:-env} clang" \
+              bear -- "${MAKE:-make}" all tests++ ${P_FLAGS:-} \
+                 -j "${CPUS:-1}"; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      echo Running PVS-Studio ...
-      pvs-studio-analyzer analyze --disableLicenseExpirationCheck --intermodular -j "${CPUS:-1}" -o log.pvs
-      test -f log.pvs; ret=${?}
+      printf '%s\n' "Running PVS-Studio ..."
+      pvs-studio-analyzer analyze --intermodular -j "${CPUS:-1}" -o log.pvs
+      test -f log.pvs; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      echo PVS-Studio run completed ...
-      plog-converter -a "GA:1,2,3" -t fullhtml log.pvs -o pvsreport
-      PVS_EXIT=99
+      printf '%s\n' "PVS-Studio run completed ..."
+      plog-converter -a "GA:1,2,3;OP:1,2,3;64:1,2,3;CS:1,2,3;MISRA:1,2,3;OWASP:1,2,3;AUTOSAR:1,2,3" -t fullhtml log.pvs -o pvsreport
       grep -q 'Congratulations!' ./pvsreport/index.html \
         || {
-          xargs < pvsreport/index.html | \
-            grep -q -E 'info>Fails/Info:</th><td>1</td></tr>.*Your license will expire in [0-9]+ days.' \
-              && {
-                printf '%s\n' "NOTE: Only warning is expiry, we are OK."
-                PVS_EXIT=0; export PVS_EXIT
-              }
-          test "${PVS_EXIT:-0}" -ne 0 && printf '%s\n' "ERROR: PVS-Studio failed ..."
-          test "${PVS_EXIT:-0}" -ne 0 && printf '\n%s\n' "Review output in ./pvsreport ..."
-          test "${PVS_EXIT:-0}" -ne 0 && exit "${PVS_EXIT:?}"
+          printf '%s\n' "ERROR: PVS-Studio failed ..."
+          printf '\n%s\n' "Review output in ./pvsreport ..."
+          exit 99
         }
       rm -f ./compile_commands.json
       rm -f ./log.pvs
       rm -rf ./pvsreport
-      echo PVS-Studio lint completed.
+      printf '%s\n' "PVS-Studio lint completed."
       exit 0
 ) }
 
@@ -508,6 +631,12 @@ test_valgrind()
         "NOTICE: valgrind not found, skipping checks."
       exit 1
     }
+  command -v clang++ > /dev/null 2>&1 \
+    || {
+      printf '%s\n' \
+        "NOTICE: clang++ not found, skipping valgrind checks."
+      exit 1
+    }
   command -v clang > /dev/null 2>&1 \
     || {
       printf '%s\n' \
@@ -515,22 +644,14 @@ test_valgrind()
       exit 1
     }
       printf '%s\n' "running valgrind checks ..."
-      sleep 2
-      ${MAKE:-make} clean; ret=${?}
+      ${MAKE:-make} clean; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      env CC="${CCACHE:-env} clang" "${MAKE:-make}" -j "${CPUS:-1}" SIR_DEBUG=1 SIR_SELFLOG=1; ret=${?}
-      test "${ret}" -ne 0 && exit 99
-      # shellcheck disable=SC3045
-      (
-        ulimit -n 384
-        valgrind \
-          --leak-check=full \
-          --track-origins=yes \
-          --error-exitcode=98 \
-          build/bin/sirexample; ret=${?}
-        test "${ret}" -eq 98 && exit 99
-        exit 0
-      ); ret=${?}
+      env CXX="${CCACHE:-env} clang++" \
+           CC="${CCACHE:-env} clang" \
+               "${MAKE:-make}" all tests++ \
+                   -j "${CPUS:-1}" \
+                   SIR_DEBUG=1 \
+                   SIR_SELFLOG=1; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       # shellcheck disable=SC3045
       (
@@ -539,10 +660,34 @@ test_valgrind()
           --leak-check=full \
           --track-origins=yes \
           --error-exitcode=98 \
-          build/bin/sirtests; ret=${?}
+          build/bin/sirexample; ret="${?}"
         test "${ret}" -eq 98 && exit 99
         exit 0
-      ); ret=${?}
+      ); ret="${?}"
+      test "${ret}" -ne 0 && exit 99
+      # shellcheck disable=SC3045
+      (
+        ulimit -n 384
+        valgrind \
+          --leak-check=full \
+          --track-origins=yes \
+          --error-exitcode=98 \
+          build/bin/sirtests; ret="${?}"
+        test "${ret}" -eq 98 && exit 99
+        exit 0
+      ); ret="${?}"
+      test "${ret}" -ne 0 && exit 99
+      # shellcheck disable=SC3045
+      (
+        ulimit -n 384
+        valgrind \
+          --leak-check=full \
+          --track-origins=yes \
+          --error-exitcode=98 \
+          build/bin/sirtests++; ret="${?}"
+        test "${ret}" -eq 98 && exit 99
+        exit 0
+      ); ret="${?}"
       test "${ret}" -ne 0 && exit 99
       exit 0
 ) }
@@ -558,13 +703,13 @@ test_reuse()
       exit 1
     }
       printf '%s\n' "running reuse checks ..."
-      sleep 2
-      reuse lint; ret=${?}
+      reuse lint; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       exit 0
 ) }
 
 ################################################################################
+
 test_smoke0()
 { (
   exit 0
@@ -574,7 +719,7 @@ test_smoke0()
 
 test_smoke()
 { (
-  test_smoke0; echo $?
+  test_smoke0; printf '%s\n' "${?}"
   exit 99
 ) }
 
@@ -582,7 +727,7 @@ test_smoke()
 
 runtest()
 {
-  "${@}"; ret=${?}
+  "${@}"; ret="${?}"
   test "${ret}" -eq 99 && exit 99
   printf '%s\n' "Tool ${*} returned ${ret:-}"
   exit 0
@@ -594,7 +739,6 @@ test "${#}" -lt 1 2> /dev/null \
   || {
     printf '%s\n' "running only test_${1:?} ..."
     runtest "test_${1:?}"
-    sleep 1
     printf '%s\n' "End of test_${1:?} linting"
     exit 0
   }
@@ -608,11 +752,10 @@ test "${#}" -lt 1 2> /dev/null \
 (runtest test_extra)      || exit 1
 (runtest test_flawfinder) || exit 1
 (runtest test_cppcheck)   || exit 1
-(runtest test_pvs)        || exit 1
 (runtest test_valgrind)   || exit 1
+(runtest test_pvs)        || exit 1
 (runtest test_reuse)      || exit 1
 
-sleep 1
 printf '%s\n' "End of linting"
 
 ################################################################################

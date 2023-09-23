@@ -3,7 +3,7 @@
 # SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 root = true
 
-[*.{c,h,sh}]
+[*.{c,cc,ch,h,hh,i,py,sh}]
 indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true

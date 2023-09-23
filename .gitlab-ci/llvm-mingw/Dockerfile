@@ -13,6 +13,8 @@ RUN apt -y update && \
 	screen \
         tmux \
 	git \
+	libfmt-dev \
+	libboost-all-dev \
         wine && \
     yes | dpkg --add-architecture i386 && \
     apt -y update && \
@@ -27,7 +29,7 @@ RUN apt -y update && \
       rm -rf ansifilter && \
     ansifilter --version && \
     apt -y clean all && \
-    useradd -m -U -G 0 --uid 10000 -c "CI/CD User" user
+    useradd -m -U -G 0 --uid 10000 -c "CI/CD User" user && cd
 
 WORKDIR /
 

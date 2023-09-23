@@ -27,13 +27,17 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-//-V::1071
 #ifndef _SIR_H_INCLUDED
 # define _SIR_H_INCLUDED
 
 # include "sir/platform.h"
 # include "sir/version.h"
 # include "sir/types.h"
+
+# if defined(SWIG)
+#  define PRINTF_FORMAT
+#  define PRINTF_FORMAT_ATTR(fmt_p, va_p)
+# endif
 
 # if defined(__cplusplus)
 extern "C" {

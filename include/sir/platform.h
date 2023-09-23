@@ -35,14 +35,16 @@
 #  define PRINTF_FORMAT_ATTR(fmt_p, va_p)
 # else
 #  define PRINTF_FORMAT
-#  if defined(__MINGW32__) || defined(__MINGW64__)
+#  if (defined(__MINGW32__) || defined(__MINGW64__)) && \
+     !defined(__clang_version__)
 #   if !defined(__USE_MINGW_ANSI_STDIO)
 #    define __USE_MINGW_ANSI_STDIO 1
 #   endif
 #   define PRINTF_FORMAT_ATTR(fmt_p, va_p) \
     __attribute__((format (gnu_printf, fmt_p, va_p)))
 #  else
-#   if !defined(__SUNPRO_C) && !defined(__SUNPRO_CC)
+#   if !defined(__SUNPRO_C) && !defined(__SUNPRO_CC) && \
+      !defined(_CH_) && !defined(__CH__)
 #    define PRINTF_FORMAT_ATTR(fmt_p, va_p) \
      __attribute__((format (printf, fmt_p, va_p)))
 #   else
@@ -56,6 +58,13 @@
 #  define HAS_ATTRIBUTE(atr) __has_attribute(atr)
 # else
 #  define HAS_ATTRIBUTE(atr) 0
+# endif
+
+# undef HAS_INCLUDE
+# if defined __has_include
+#  define HAS_INCLUDE(inc) __has_include(inc)
+# else
+#  define HAS_INCLUDE(inc) 0
 # endif
 
 # undef SANITIZE_SUPPRESS
@@ -87,6 +96,11 @@
 #  if defined(SUNLINT)
 #   undef __HAVE_ATOMIC_H__
 #  endif
+#  if defined(__NVCOMPILER) || (defined(__INTEL_COMPILER) && !defined(__llvm__))
+#   if !defined(_BITS_FLOATN_H)
+#    define _BITS_FLOATN_H
+#   endif
+#  endif
 #  if defined(__IMPORTC__)
 #   include "sir/platform_importc.h"
 #  endif
@@ -101,11 +115,14 @@
 #   if __xlC_ver__ <= 0x0000000e
 #    undef __HAVE_ATOMIC_H__
 #   endif
+#   define __XLC16__ 1
 #  endif
-#  undef __STDC_WANT_LIB_EXT1__
-#  define __STDC_WANT_LIB_EXT1__ 1
-#  undef __STDC_WANT_LIB_EXT2__
-#  define __STDC_WANT_LIB_EXT2__ 1
+#  if !defined(__STDC_WANT_LIB_EXT1__)
+#   define __STDC_WANT_LIB_EXT1__ 1
+#  endif
+#  if !defined(__STDC_WANT_LIB_EXT2__)
+#   define __STDC_WANT_LIB_EXT2__ 1
+#  endif
 #  if defined(__APPLE__) && defined(__MACH__)
 #   define __MACOS__
 #   undef _DARWIN_C_SOURCE
@@ -233,6 +250,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  undef _WIN32_WINNT
 #  define _WIN32_WINNT 0x0A00
 #  define _CRT_RAND_S
+#  define NOMINMAX
 #  if defined(__ORANGEC__)
 #   include "sir/platform_orangec.h"
 #  endif
@@ -289,6 +307,16 @@ _set_thread_local_invalid_parameter_handler(
 #  define CLOCK_CAST
 # endif
 
+# if defined(_AIX)
+#  if defined(_LINUX_SOURCE_COMPAT) && defined(_ALL_SOURCE)
+#   undef _LINUX_SOURCE_COMPAT
+#   undef _ALL_SOURCE
+#  endif
+#  if defined(_GNU_SOURCE)
+#   undef _GNU_SOURCE
+#  endif
+# endif
+
 # if defined(SIR_ASSERT_ENABLED)
 #  include <assert.h>
 #  define SIR_ASSERT(...) assert(__VA_ARGS__)
@@ -303,6 +331,10 @@ _set_thread_local_invalid_parameter_handler(
 #  else
 #   define SIR_ASSERT(...)
 #  endif
+# endif
+
+# if defined(__cplusplus) && !defined(restrict)
+#  define restrict //-V1059
 # endif
 
 # include <errno.h>
@@ -324,6 +356,7 @@ _set_thread_local_invalid_parameter_handler(
 # if !defined(SIR_NO_SYSTEM_LOGGERS)
 #  if defined(__MACOS__) && !defined(__IMPORTC__) && \
       ((defined(__clang__) || defined(__clang_version__)) && \
+      !(defined(__INTEL_COMPILER) && !defined(__llvm__)) && \
       defined(__clang_major__) && defined(__clang_minor__) && defined(__clang_patchlevel__))
 #   define SIR_OS_LOG_ENABLED
 #  else
@@ -341,7 +374,13 @@ _set_thread_local_invalid_parameter_handler(
 #  if !defined(SIR_NO_PLUGINS)
 #   include <dlfcn.h>
 #  endif
-#  include <pthread.h>
+#  if !defined(_CH_) && !defined(__CH__)
+#   include <pthread.h>
+#  else
+#   include <sched.h>
+#   include <ch/pthread.h>
+#   undef __HAVE_ATOMIC_H__
+#  endif
 #  if defined(__illumos__)
 #   include <sys/fcntl.h>
 #  endif
@@ -355,7 +394,8 @@ _set_thread_local_invalid_parameter_handler(
 #  endif
 #  include <unistd.h>
 #  if !defined(__CYGWIN__) && !defined(__HAIKU__) && \
-      !defined(__serenity__) && !defined(_AIX)
+      !defined(__serenity__) && !defined(_AIX) && \
+      !defined(_CH_) && !defined(__CH__)
 #   include <sys/syscall.h>
 #  endif
 #  include <sys/time.h>
@@ -552,7 +592,9 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 # elif defined(__GNUC__) || (defined(_AIX) && (defined(__xlC_ver__) || defined(__ibmxl__)))
 #  define _sir_thread_local __thread
 # else
-#  error "unable to resolve thread local attribute; please contact the author."
+#  if !defined(_CH_) && !defined(__CH__)
+#   error "unable to resolve thread local attribute; please contact the author."
+#  endif
 # endif
 
 # if defined(__WIN__) && defined(__STDC_SECURE_LIB__)

@@ -1,13 +1,12 @@
 # RML's clang-format
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
-Language: Cpp
 AlignAfterOpenBracket: DontAlign
 AlignArrayOfStructures: None
 AlignConsecutiveAssignments: Consecutive
-AlignConsecutiveMacros: None
 AlignConsecutiveBitFields: Consecutive
 AlignConsecutiveDeclarations: None
+AlignConsecutiveMacros: None
 AlignEscapedNewlines: DontAlign
 AlignOperands: DontAlign
 AlignTrailingComments:
@@ -22,7 +21,7 @@ AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLambdasOnASingleLine: Inline
 AllowShortLoopsOnASingleLine: true
-AlwaysBreakAfterReturnType: None
+AlwaysBreakAfterReturnType: AllDefinitions
 AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: Yes
 BinPackArguments: true
@@ -34,26 +33,26 @@ BraceWrapping:
   AfterClass: true
   AfterControlStatement: Never
   AfterEnum: false
+  AfterExternBlock: true
   AfterFunction: false
   AfterNamespace: true
   AfterStruct: false
   AfterUnion: false
-  AfterExternBlock: true
   BeforeCatch: false
   BeforeElse: false
   BeforeLambdaBody: true
   BeforeWhile: false
   SplitEmptyFunction: true
-  SplitEmptyRecord: true
   SplitEmptyNamespace: true
-BreakArrays: false
+  SplitEmptyRecord: true
 BreakAfterAttributes: Always
+BreakArrays: false
 BreakBeforeBinaryOperators: None
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: BeforeColon
 BreakInheritanceList: AfterComma
 BreakStringLiterals: true
-ColumnLimit: 100
+ColumnLimit: 132
 CompactNamespaces: false
 ContinuationIndentWidth: 4
 Cpp11BracedListStyle: true
@@ -72,13 +71,17 @@ IndentRequires: true
 IndentWidth: 4
 InsertNewlineAtEOF: true
 KeepEmptyLinesAtTheStartOfBlocks: false
-MaxEmptyLinesToKeep: 2
 LambdaBodyIndentation: OuterScope
+Language: Cpp
 LineEnding: LF
+MaxEmptyLinesToKeep: 2
 NamespaceIndentation: All
-PPIndentWidth: 1
-PointerAlignment: Left
 PackConstructorInitializers: BinPack
+PenaltyBreakAssignment: 15
+PenaltyBreakOpenParenthesis: 6
+PenaltyReturnTypeOnItsOwnLine: 3
+PointerAlignment: Left
+PPIndentWidth: 1
 QualifierAlignment: Custom
 QualifierOrder: ['constexpr', 'static', 'const', 'volatile', 'friend', 'type', 'restrict']
 ReferenceAlignment: Left
@@ -99,6 +102,3 @@ SpacesBeforeTrailingComments: 1
 Standard: Latest
 TabWidth: 4
 UseTab: Never
-PenaltyBreakAssignment: 15
-PenaltyBreakOpenParenthesis: 6
-PenaltyReturnTypeOnItsOwnLine: 3

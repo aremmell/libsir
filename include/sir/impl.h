@@ -23,14 +23,18 @@
 
 /******************************************************************************/
 /* OpenBSD strlcat() */
+
 #if defined(SIR_IMPL_STRLCAT) && !defined(SIR_IMPL_STRLCAT_DEF)
 # undef strlcat
 
-/* Appends src to string dst of size dsize (unlike strncat, dsize is the
+/*
+ * Appends src to string dst of size dsize (unlike strncat, dsize is the
  * full size of dst, not space left).  At most dsize-1 characters
  * will be copied.  Always NUL terminates (unless dsize <= strlen(dst)).
  * Returns strlen(src) + MIN(dsize, strlen(initial dst)).
- * If retval >= dsize, truncation occurred. */
+ * If retval >= dsize, truncation occurred.
+ */
+
 static inline size_t
 _sir_strlcat(char *dst, const char *src, size_t dsize)
 {
@@ -60,18 +64,23 @@ _sir_strlcat(char *dst, const char *src, size_t dsize)
 
   return dlen + (src - osrc); /* count does not include NUL */
 }
+
 # define strlcat _sir_strlcat
 # define SIR_IMPL_STRLCAT_DEF 1
 #endif /* SIR_IMPL_STRLCAT */
 
 /******************************************************************************/
 /* OpenBSD strlcpy */
+
 #if defined(SIR_IMPL_STRLCPY) && !defined(SIR_IMPL_STRLCPY_DEF)
 # undef strlcpy
 
-/* Copy string src to buffer dst of size dsize.  At most dsize-1
+/*
+ * Copy string src to buffer dst of size dsize.  At most dsize-1
  * chars will be copied.  Always NUL terminates (unless dsize == 0).
- * Returns strlen(src); if retval >= dsize, truncation occurred. */
+ * Returns strlen(src); if retval >= dsize, truncation occurred.
+ */
+
 static inline size_t
 _sir_strlcpy(char *dst, const char *src, size_t dsize)
 {
@@ -95,12 +104,14 @@ _sir_strlcpy(char *dst, const char *src, size_t dsize)
 
   return src - osrc - 1; /* count does not include NUL */
 }
+
 # define strlcpy _sir_strlcpy
 # define SIR_IMPL_STRLCPY_DEF 1
 #endif /* SIR_IMPL_STRLCPY */
 
 /******************************************************************************/
 /* OpenBSD strnlen */
+
 #if (defined(SIR_IMPL_STRNLEN) || defined(SIR_IMPL_STRNDUP)) && \
      !defined(SIR_IMPL_STRNLEN_DEF)
 # undef strnlen
@@ -114,12 +125,14 @@ _sir_strnlen(const char *str, size_t maxlen)
 
   return (size_t)(cp - str);
 }
+
 # define strnlen _sir_strnlen
 # define SIR_IMPL_STRNLEN_DEF 1
 #endif /* SIR_IMPL_STRNLEN */
 
 /******************************************************************************/
 /* OpenBSD strndup */
+
 #if defined(SIR_IMPL_STRNDUP) && !defined(SIR_IMPL_STRNDUP_DEF)
 # undef strndup
 
@@ -130,7 +143,7 @@ _sir_strndup(const char *str, size_t maxlen)
   size_t len;
 
   len = _sir_strnlen(str, maxlen);
-  copy = malloc(len + 1);
+  copy = (char*)malloc(len + 1);
   if (copy != NULL) {
     (void)memcpy(copy, str, len);
     copy[len] = '\0';
@@ -138,6 +151,7 @@ _sir_strndup(const char *str, size_t maxlen)
 
   return copy;
 }
+
 # define strndup _sir_strndup
 # define SIR_IMPL_STRNDUP_DEF 1
 #endif /* SIR_IMPL_STRNDUP */

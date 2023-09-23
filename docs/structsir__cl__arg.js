@@ -1,6 +1,5 @@
 var structsir__cl__arg =
 [
-    [ "flag", "structsir__cl__arg.html#acb697d4476e3e108a0d7cc7fe1aef2ae", null ],
-    [ "usage", "structsir__cl__arg.html#ac3ae5ef230bad0b7160ba6a9415e14ec", null ],
-    [ "desc", "structsir__cl__arg.html#a06d6e49c5bd5ba5877563abc636ad538", null ]
+    [ "desc", "structsir__cl__arg.html#aea028faff6351db0e5ab6385f2d3a4a2", null ],
+    [ "usage", "structsir__cl__arg.html#a9eb9a5f9208f07a0f500040fb1bca268", null ]
 ];

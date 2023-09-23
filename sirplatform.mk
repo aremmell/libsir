@@ -4,6 +4,11 @@
 # SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 
 ##############################################################################
+# Default optimizations
+
+OPTFLAGS?=-O3
+
+##############################################################################
 # What system?
 
 UNAME_S:=$(shell uname -s 2> /dev/null)
@@ -11,7 +16,7 @@ UNAME_S:=$(shell uname -s 2> /dev/null)
 ##############################################################################
 # DUMA?
 
-ifdef DUMA
+ifeq ($(DUMA),1)
   EXTRA_LIBS+=-l:libduma.a
   SIR_CFLAGS+=-DDUMA=1
   SIR_SHFLAGS=$(subst -l:libduma.a,,$(SIR_LDFLAGS))
@@ -25,14 +30,14 @@ ifneq "$(findstring mingw,$(CC))" ""
 endif
 
 ifeq ($(MINGW),1)
-  ifneq "$(findstring gcc,$(CC))" ""
-    SIR_CFLAGS+=-Wno-unknown-pragmas
-  endif
   LIBDL=
   PLATFORM_DLL_EXT=.dll
   PLATFORM_EXE_EXT=.exe
   PLATFORM_LIB_EXT=.lib
   PLATFORM_LIBS=-lshlwapi -lws2_32
+  ifneq "$(findstring gcc,$(CC))" ""
+    SIR_CFLAGS+=-Wno-unknown-pragmas
+  endif
 else
   PLATFORM_DLL_EXT=.so
   PLATFORM_LIB_EXT=.a
@@ -47,26 +52,29 @@ endif
 
 ifeq ($(EMSCRIPTEN),1)
   AR=emar
-  SIR_CSTD=-std=gnu11
+  RANLIB=emranlib
   SIR_CFLAGS+=-pthread
-  SIR_LDFLAGS=-lnoderawfs.js -lnodefs.js
+  SIR_XFLAGS+=-pthread
+  SIR_CSTD=-std=gnu11
+  SIR_XSTD=-std=gnu++20
+  SIR_LDFLAGS+=-lnoderawfs.js -lnodefs.js
   SIR_NO_PLUGINS=1
 endif
 
 ##############################################################################
-# LLVM-MinGW ARMv7
+# LLVM-MinGW ARM64/ARMv7
 
 ifneq "$(findstring armv7-w64-mingw32-clang,$(CC))" ""
-  RANLIB=llvm-ranlib
-  PLATFORM_LIB_EXT=.a
+  LLVM_RANLIB?=1
 endif
 
-##############################################################################
-# LLVM-MinGW ARM64
-
 ifneq "$(findstring aarch64-w64-mingw32-clang,$(CC))" ""
-  RANLIB=llvm-ranlib
+  LLVM_RANLIB?=1
+endif
+
+ifeq ($(LLVM_RANLIB),1)
   PLATFORM_LIB_EXT=.a
+  RANLIB=llvm-ranlib
 endif
 
 ##############################################################################
@@ -116,8 +124,8 @@ ifneq "$(findstring SunOS,$(UNAME_S))" ""
 endif
 
 ifeq ($(SUNSYSV),1)
-  SIR_CFLAGS+=-DMTMALLOC
   EXTRA_LIBS+=-lmtmalloc
+  SIR_CFLAGS+=-DMTMALLOC
 endif
 
 ##############################################################################
@@ -157,11 +165,12 @@ ifneq "$(findstring icc,$(CC))" ""
 endif
 
 ifeq ($(INTELC),1)
+  FORTIFY_FLAGS=-U_FORTIFY_SOURCE
   SIR_CFLAGS+=-diag-disable=188
   SIR_CFLAGS+=-diag-disable=191
-  SIR_CFLAGS+=-diag-disable=10441
   SIR_CFLAGS+=-diag-disable=10148
-  FORTIFY_FLAGS=-U_FORTIFY_SOURCE
+  SIR_CFLAGS+=-diag-disable=10441
+  SIR_LDFLAGS+=-diag-disable=10441
 endif
 
 ##############################################################################
@@ -173,8 +182,9 @@ endif
 
 ifeq ($(NVIDIAC),1)
   DBGFLAGS=-g
-  SIR_CFLAGS+=--diag_suppress mixed_enum_type
+  SIR_CFLAGS+=-noswitcherror
   SIR_CFLAGS+=--diag_suppress cast_to_qualified_type
+  SIR_CFLAGS+=--diag_suppress mixed_enum_type
   SIR_CFLAGS+=--diag_suppress nonstd_ellipsis_only_param
 endif
 
@@ -186,17 +196,17 @@ ifneq "$(findstring kefir,$(CC))" ""
 endif
 
 ifeq ($(KEFIR),1)
+  FORTIFY_FLAGS="-U_FORTIFY_SOURCE"
+  MMDOPT=
   NO_DEFAULT_CFLAGS=1
+  PTHOPT=
+  SIR_CSTD=
+  SIR_GSTD=
   ifeq ($(SIR_DEBUG),1)
     SIR_CFLAGS+=-O0 -DDEBUG -Iinclude $(SIR_FPIC)
   else
     SIR_CFLAGS+=$(OPTFLAGS) -DNDEBUG -Iinclude $(SIR_FPIC)
   endif
-  FORTIFY_FLAGS="-U_FORTIFY_SOURCE"
-  MMDOPT=
-  PTHOPT=
-  SIR_CSTD=
-  SIR_GSTD=
 endif
 
 ##############################################################################
@@ -215,23 +225,54 @@ endif
 
 ifeq ($(IBMAIX),1)
   DBGFLAGS=-g
+  OBJECT_MODE=64
+  export OBJECT_MODE
+  ifneq "$(findstring gcc,$(CC))" ""
+    IBMAIX_GCC=1
+    SIR_CFLAGS+=-fPIC -maix64 -ftls-model=global-dynamic
+  endif
+  ifneq "$(findstring gcc,$(CXX))" ""
+    IBMAIX_GCC=1
+    SIR_XFLAGS+=-fPIC -maix64 -ftls-model=global-dynamic
+  endif
+  ifeq ($(IBMAIX_GCC),1)
+    SIR_LDFLAGS+=-fPIC -maix64 -ftls-model=global-dynamic
+  endif
 endif
 
 ifeq ($(IBMXLC),1)
-  NO_DEFAULT_CFLAGS=1
-  ifeq ($(SIR_DEBUG),1)
-    SIR_CFLAGS+=$(DBGFLAGS) -O0 -DDEBUG -Iinclude -qtls -qthreaded -qinfo=mt -qformat=all
-  else
-    SIR_CFLAGS+=$(OPTFLAGS) -DNDEBUG -Iinclude -qtls -qthreaded -qinfo=mt -qformat=all -qpic=small
-  endif
-  SIR_SHARED=-qmkshrobj
+  AIX_STDFLAGS=-Iinclude -qtls=global-dynamic -qthreaded -qformat=all:nonlt -qpic
   MMDOPT=
+  NO_DEFAULT_CFLAGS=1
   PTHOPT=
+  SIR_CSTD=
+  SIR_SHARED=-qmkshrobj
+  ifeq ($(SIR_DEBUG),1)
+    SIR_CFLAGS+=$(DBGFLAGS) -O0 -DDEBUG $(AIX_STDFLAGS)
+    SIR_XFLAGS+=$(DBGFLAGS) -O0 -DDEBUG $(AIX_STDFLAGS)
+  else
+    SIR_CFLAGS+=$(OPTFLAGS) -DNDEBUG $(AIX_STDFLAGS)
+    SIR_XFLAGS+=$(OPTFLAGS) -DNDEBUG $(AIX_STDFLAGS)
+  endif
 endif
 
 ifeq ($(AIXTLS),1)
   DBGFLAGS=-g
-  SIR_CFLAGS+=-ftls-model=initial-exec
+  SIR_CFLAGS+=-fPIC -ftls-model=global-dynamic
+  SIR_LDFLAGS+=-fPIC -ftls-model=global-dynamic
+  SIR_XFLAGS+=-fPIC -ftls-model=global-dynamic
+endif
+
+##############################################################################
+# Circle (C++ only)
+
+ifneq "$(findstring circle,$(CXX))" ""
+  CIRCLECPP?=1
+endif
+
+ifeq ($(CIRCLECPP),1)
+  CXXFLAGS+=-DSIR_NO_STD_FORMAT=1
+  WPEDANTIC=
 endif
 
 ##############################################################################

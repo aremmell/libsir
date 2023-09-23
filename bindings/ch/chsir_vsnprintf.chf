@@ -1,0 +1,177 @@
+/*
+ * SPDX-License-Identifier: MIT
+ *
+ * chsir_vsnprintf.chf
+ *
+ * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Copyright: Copyright (c) 2018-2023
+ * Version:   2.2.4
+ * License:   The MIT License (MIT)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+#include <stdio.h>
+#include <stdbool.h>
+#include <inttypes.h>
+
+/* TODO: Check Ch version and use vsnprintf when %b formatting is fixed. */
+int
+chsir_vsnprintf(char *str, size_t n, const char *fmt, va_list args) {
+    unsigned int printf_string_upper_bound(char *format, va_list args) {
+        unsigned int len = 1;
+
+        while (*format) {
+            _Bool long_int   = false;
+            _Bool extra_long = false;
+            char c;
+            char *string_arg;
+
+            c = *format++;
+
+            if (c == '%') {
+                _Bool done = false;
+
+                while (*format && !done) {
+                    switch (*format++) {
+                        case '*':
+                            len += va_arg(args, int);
+                            break;
+
+                        case '1':
+                        case '2':
+                        case '3':
+                        case '4':
+                        case '5':
+                        case '6':
+                        case '7':
+                        case '8':
+                        case '9':
+                            format -= 1;
+                            len += strtol(format, (char **)&format, 10);
+                            break;
+
+                        case 'h':
+                            break;
+
+                        case 'l':
+                            if (long_int)
+                                extra_long = true;
+                            else
+                                long_int = true;
+                            break;
+
+                        case 'q':
+                        case 'L':
+                            long_int   = true;
+                            extra_long = true;
+                            break;
+
+                        case 's':
+                            string_arg = va_arg(args, char *);
+                            if (string_arg)
+                                len += strlen(string_arg);
+                            else
+                                len += 16;
+                            done = true;
+                            break;
+
+                        case 'd':
+                        case 'i':
+                        case 'o':
+                        case 'u':
+                        case 'x':
+                        case 'X':
+                            if (extra_long)
+                                (void)va_arg(args, int64_t);
+                            else if (long_int)
+                                (void)va_arg(args, long);
+                            else
+                                (void)va_arg(args, int);
+                            len += extra_long ? 64 : 32;
+                            done = true;
+                            break;
+
+                        case 'D':
+                        case 'O':
+                        case 'U':
+                            (void)va_arg(args, long);
+                            len += 32;
+                            done = true;
+                            break;
+
+                        case 'e':
+                        case 'E':
+                        case 'f':
+                        case 'g':
+#ifdef HAVE_LONG_DOUBLE
+                            if (extra_long)
+                                (void)va_arg(args, long double);
+                            else
+#endif /* ifdef HAVE_LONG_DOUBLE */
+                                (void)va_arg(args, double);
+                            len += extra_long ? 128 : 64;
+                            done = true;
+                            break;
+
+                        case 'b':
+                            (void)va_arg(args, int);
+                            len += 64;
+                            done = true;
+                            break;
+
+                        case 'c':
+                            (void)va_arg(args, int);
+                            len += 1;
+                            done = true;
+                            break;
+
+                        case 'p':
+                        case 'n':
+                            (void)va_arg(args, void *);
+                            len += 32;
+                            done = true;
+                            break;
+
+                        case '%':
+                            len += 1;
+                            done = true;
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            } else {
+                len += 1;
+            }
+        }
+
+        return len;
+    }
+
+    char *printed;
+    int len;
+    printed = (char *)malloc(sizeof(char) * printf_string_upper_bound(fmt, args));
+    (void)vsprintf(printed, fmt, args);
+    (void)strncpy(str, printed, n);
+    len        = strlen(printed);
+    str[n - 1] = '\0';
+    free(printed);
+
+    return len;
+}

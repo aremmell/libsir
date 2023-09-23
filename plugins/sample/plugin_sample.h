@@ -121,10 +121,10 @@ PLUGIN_EXPORT bool sir_plugin_cleanup(void);
  * mobile device.
  *
  * Use your imagination; essentially anything is possible. There are some caveats,
- * though: until a thread pool and job queue mechanism can be implemented in libsir
- * ([#121](https://github.com/aremmell/libsir/issues/121)), plugins must either
- * only perform operations that are guaranteed to complete quickly, or perform
- * those operations asynchronously (*i.e., on another thread*).
+ * though: until the thread pool and job queue mechanisms implemented in
+ * ([#121](https://github.com/aremmell/libsir/issues/121)) are utilized, plugins
+ * must either only perform operations that are guaranteed to complete quickly,
+ * or perform those operations asynchronously (*i.e., on another thread*).
  *
  * ## Versioning
  *
@@ -164,6 +164,9 @@ PLUGIN_EXPORT bool sir_plugin_cleanup(void);
  * and somebody will assist you within a reasonable amount of time.
  */
 
-/** @} */
+/**
+ * @}
+ * @}
+ */
 
 #endif /* !_SIR_PLUGIN_SAMPLE_H_INCLUDED */

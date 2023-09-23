@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2018-current Ryan M. Lederman
 
-# Use --build-arg URL1="..." to override default PVS-Studio fallback link
-# Use --build-arg URL2="..." to override default AOCC 4.1.0 link
+# Use --build-arg URL="..." to override default AOCC 4.1.0 link
 
 FROM quay.io/fedora/fedora:rawhide
 
@@ -10,33 +9,28 @@ USER 0
 
 WORKDIR /
 
-ARG URL1
-ARG URL2
+ARG URL
 
 RUN \
-  (sed -i 's/tsflags=nodocs//' /etc/dnf/dnf.conf || true) \
-&& \
-  dnf -y --refresh update \
-&& \
-  dnf -y install dnf-plugins-core dnf-utils \
-&& \
-  dnf -y --refresh update \
-&& \
-  dnf -y install rpmconf \
-&& \
-  (rpmconf --all --unattended use_maintainer || true) \
-&& \
-  (rpmconf --all --unattended use_maintainer --clean || true) \
-&& \
-  dnf -y --refresh update \
-&& \
+  (sed -i 's/tsflags=nodocs//' /etc/dnf/dnf.conf || true) && \
+  dnf -y --refresh update && \
+  dnf -y install dnf-plugins-core dnf-utils && \
+  dnf -y --refresh update && \
+  dnf -y install rpmconf && \
+  (rpmconf --all --unattended use_maintainer || true) && \
+  (rpmconf --all --unattended use_maintainer --clean || true) && \
+  dnf -y --refresh update && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
       advancecomp \
       ansifilter \
       atool \
       bear \
+      boost \
+      boost-devel \
+      bzip2 \
       ca-certificates \
       ccache \
+      ccache-swig \
       clang \
       clang-analyzer \
       clang-tools-extra \
@@ -50,6 +44,8 @@ RUN \
       expect \
       fakeroot \
       flawfinder \
+      fmt \
+      fmt-devel \
       g++ \
       gawk \
       gcc \
@@ -59,6 +55,9 @@ RUN \
       glibc-headers-x86 \
       glibc-static \
       global \
+      golang \
+      guile \
+      guile-devel \
       libasan \
       libnsl \
       libnsl2 \
@@ -67,20 +66,35 @@ RUN \
       libxml2-devel \
       libxslt-devel \
       lld \
+      lua \
+      lua-devel \
+      lzip \
       make \
       musl-devel \
       musl-gcc \
       musl-libc \
       musl-libc-static \
+      octave \
       openssl \
+      pbzip2 \
+      perl \
       perl-core \
+      perl-devel \
       pigz \
       python3 \
       python3-devel \
       python3-setuptools \
+      python-setuptools \
+      R \
+      R-devel \
       reuse \
+      ruby \
+      ruby-devel \
       screen \
+      swig \
       symlinks \
+      tcl \
+      tcl-devel \
       time \
       tmux \
       unzip \
@@ -88,6 +102,7 @@ RUN \
       vim \
       wget \
       zip \
+      zpaq \
 && \
   dnf4 -y --allowerasing --setopt=install_weak_deps=True --setopt=keepcache=True install \
       compiler-rt.i686 \
@@ -98,67 +113,58 @@ RUN \
       libtirpc.i686 \
       libubsan.i686 \
 && \
-  dnf4 -y --allowerasing reinstall \
-      compiler-rt \
-&& \
-  ( curl -fsSLO https://rpm.nodesource.com/setup_20.x || true ) \
-&& \
-  ( chmod a+x "setup_20.x" || true ) \
-&& \
-  ( sed -i "s/## Given the distro.*/DIST_VERSION=38/" "setup_20.x" || true ) \
-&& \
-  ( bash -x ./setup_20.x || true ) \
-&& \
-  ( rm -f ./setup_* || true ) \
-&& \
-  dnf -y --refresh update \
-&& \
-  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-      nodejs \
-&& \
+  dnf4 -y --allowerasing reinstall compiler-rt && \
+  dnf4 -y --allowerasing install \
+    https://rpm.nodesource.com/pub_20.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm && \
+  dnf -y --refresh update && \
+  dnf4 -y --refresh update && \
+  dnf4 -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
+    nodejs --setopt=nodesource-nodejs.module_hotfixes=1 && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True group install \
       development-tools \
       c-development \
 && \
-  dnf -y --refresh update \
-&& \
-  (rpmconf --all --unattended use_maintainer || true) \
-&& \
-  (rpmconf --all --unattended use_maintainer --clean || true) \
-&& \
-  (curl -fsSL https://coveralls.io/coveralls-linux.tar.gz | tar -zxv -C /usr/bin) \
-&& \
+  dnf -y --refresh update && \
+  (rpmconf --all --unattended use_maintainer || true) && \
+  (rpmconf --all --unattended use_maintainer --clean || true) && \
+  (curl -fsSL https://coveralls.io/coveralls-linux.tar.gz | tar -zxv -C /usr/bin) && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-      mingw-binutils-generic \
       mingw32-binutils \
+      mingw32-boost \
+      mingw32-boost-static \
       mingw32-cpp \
       mingw32-crt \
       mingw32-dlfcn \
       mingw32-dlfcn-static \
       mingw32-gcc \
+      mingw32-gcc-c++ \
       mingw32-headers \
       mingw32-winpthreads \
       mingw32-winpthreads-static \
       mingw64-binutils \
+      mingw64-boost \
+      mingw64-boost-static \
       mingw64-cpp \
       mingw64-crt \
       mingw64-dlfcn \
       mingw64-dlfcn-static \
       mingw64-gcc \
+      mingw64-gcc-c++ \
       mingw64-headers \
       mingw64-winpthreads \
       mingw64-winpthreads-static \
+      mingw-binutils-generic \
       mingw-w64-tools \
       ucrt64-binutils \
       ucrt64-cpp \
       ucrt64-crt \
       ucrt64-gcc \
+      ucrt64-gcc-c++ \
       ucrt64-headers \
       ucrt64-winpthreads \
       ucrt64-winpthreads-static \
 && \
-  (yes | dnf -y copr enable yselkowitz/cygwin fedora-rawhide-x86_64) \
-&& \
+  (yes | dnf -y copr enable yselkowitz/cygwin fedora-rawhide-x86_64) && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
       cygport \
       cygwin32 \
@@ -166,11 +172,10 @@ RUN \
       cygwin32-gcc \
       cygwin64 \
       cygwin64-binutils \
-      cygwin64-gcc \
+      cygwin64-gcc-c++ \
       cygwin-w32api-headers \
 && \
-  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install wine \
-&& \
+  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install wine && \
   mkdir -p /opt && \
   cd /opt && \
   git clone -v --depth=1 https://github.com/rui314/chibicc && \
@@ -181,33 +186,10 @@ RUN \
   env CFLAGS='-O2 -flto=auto' LDFLAGS='-flto=auto' make && \
   (rm -rf ./test ./.git ./*.o ./*.c ./*.h .gitignore LICENSE Makefile README.md || true) && \
   strip chibicc && \
-  cd / \
-&& \
-  printf '%s\n' \
-         "[viva64]" \
-         "name=Viva64 - PVS-Studio - Stable" \
-         "baseurl=https://cdn.pvs-studio.com/rpm" \
-         "gpgcheck=0" \
-         "enabled=1" > /etc/yum.repos.d/viva64.repo && \
+  cd / && \
   (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-          pvs-studio) || \
-  (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-          --nogpgcheck ${URL1:-http://192.168.1.187:8088/~jhj/cache/pvs-studio.x86_64.rpm}) \
-&& \
-  printf '%s\n' \
-         "[viva64-beta]" \
-         "name=Viva64 - PVS-Studio - Beta" \
-         "baseurl=http://cdn.pvs-studio.com/beta/rpm" \
-         "gpgcheck=0" \
-         "enabled=1" \
-         "skip_if_unavailable=True" > /etc/yum.repos.d/viva64-beta.repo && \
-  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True upgrade \
-&& \
-  (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-          --nogpgcheck ${URL2:-http://192.168.1.187:8088/~jhj/cache/aocc-compiler.x86_64.rpm}) \
-&& \
-  ( ln -fs /opt/AMD/aocc-compiler-4.1.0 /opt/AMD/aocc-compiler-4.0.0 || true ) \
-&& \
+     --nogpgcheck ${URL:-http://192.168.1.187:8088/~jhj/cache/aocc-compiler.x86_64.rpm}) && \
+  (ln -fs /opt/AMD/aocc-compiler-4.1.0 /opt/AMD/aocc-compiler-4.0.0 || true) && \
   mkdir -p /tmp/duma-build && \
   cd /tmp/duma-build && \
   git clone -v https://github.com/johnsonjh/duma && \
@@ -216,15 +198,13 @@ RUN \
   make install && \
   cd / && \
   rm -rf /tmp/duma-build && \
-  ldconfig \
-&& \
-  ( dnf4 -y clean > /dev/null 2>&1 ; dnf4 -y clean all > /dev/null 2>&1 ; true ) || true && \
+  ldconfig && \
+  (dnf4 -y clean > /dev/null 2>&1 ; dnf4 -y clean all > /dev/null 2>&1 || true) && \
   dnf -y clean all && \
   rm -rf ~/.cache && \
   rm -rf /var/tmp/* && \
   rm -rf /var/log/dnf* && \
-  ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true) \
-&& \
+  ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true) && \
   rm -f /etc/crypto-policies/back-ends/opensslcnf.config && \
   printf '%s\n' \
     "CipherString = @SECLEVEL=2:kEECDH:kRSA:kEDH:kPSK:kDHEPSK:kECDHEPSK:kRSAPSK:-aDSS:-3DES:!DES:!RC4:!RC2:!IDEA:-SEED:!eNULL:!aNULL:!MD5:-SHA384:-CAMELLIA:-ARIA:-AESCCM8" \
@@ -234,22 +214,26 @@ RUN \
     "[openssl_init]" \
     "" \
     "[evp_properties]" \
-    "" > /etc/crypto-policies/back-ends/opensslcnf.config \
-&& \
-  touch /.OK
+    "" > /etc/crypto-policies/back-ends/opensslcnf.config && \
+    dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
+    dnf -y clean all && \
+    rm -rf ~/.cache > /dev/null 2>&1 && \
+    rm -rf /var/tmp/* > /dev/null 2>&1 && \
+    rm -rf /var/log/dnf* > /dev/null 2>&1 && \
+    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true )&& \
+    adduser -m -U -G wheel --uid 10000 -c "CI/CD User" user && \
+    touch /.OK
 
-RUN adduser -m -U -G wheel --uid 10000 -c "CI/CD User" user
-
-RUN git clone -v https://github.com/Ericsson/codechecker.git --depth=1 && \
-    cd codechecker && \
-    ( grep 'lxml==4\.9\.2' -rl . | xargs -I{} sed -i 's/lxml==4.9.2/lxml==4.9.3/' "{}" || true ) && \
-    make venv && \
-    . $(pwd)/venv/bin/activate && \
-    pip install setuptools && \
-    env BUILD_LOGGER_64_BIT_ONLY=YES \
-                   BUILD_UI_DIST=NO \
-	make package standalone_package && \
-    export PATH=/codechecker/build/CodeChecker/bin:$PATH && \
-    chown user:user -R /codechecker
+# RUN git clone -v https://github.com/Ericsson/codechecker.git --depth=1 && \
+#     cd codechecker && \
+#     (grep 'lxml==4\.9\.2' -rl . | xargs -I{} sed -i 's/lxml==4.9.2/lxml==4.9.3/' "{}" || true) && \
+#     make venv && \
+#     . $(pwd)/venv/bin/activate && \
+#     pip install setuptools && \
+#     env BUILD_LOGGER_64_BIT_ONLY=YES \
+#                    BUILD_UI_DIST=NO \
+# 	make package standalone_package && \
+#     export PATH=/codechecker/build/CodeChecker/bin:$PATH && \
+#     chown user:user -R /codechecker
 
 USER 10000

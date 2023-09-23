@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['write_0',['write',['../structsir__pluginifacev1.html#a7be5d9cb671d562cdc031bb6962c9258',1,'sir_pluginifacev1']]]
+  ['threads_0',['threads',['../structsir__threadpool.html#ab7832daed4aced16c462f2340c79c436',1,'sir_threadpool']]],
+  ['to_5frun_1',['to_run',['../structsir__cl__config.html#abbe71d15c15073e2b4e6c7be16dc7ad3',1,'sir_cl_config']]]
 ];

@@ -182,7 +182,7 @@ typedef struct {
      * facility in use.
      *
      * @note If your system supports syslog, and libsir is compiled with the intent
-     * to use it (::SIR_SYSLOG_ENABLED is defined), then at least ::SIRO_NOPID is
+     * to use it (SIR_SYSLOG_ENABLED is defined), then at least SIRO_NOPID is
      * supported.
      */
     sir_options opts;
