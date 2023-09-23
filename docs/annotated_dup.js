@@ -2,12 +2,15 @@ var annotated_dup =
 [
     [ "sir", "namespacesir.html", [
       [ "adapter", "classsir_1_1adapter.html", null ],
+      [ "boost_format_adapter", "classsir_1_1boost__format__adapter.html", null ],
       [ "default_adapter", "classsir_1_1default__adapter.html", "classsir_1_1default__adapter" ],
       [ "default_policy", "classsir_1_1default__policy.html", "classsir_1_1default__policy" ],
       [ "error", "namespacesir.html#structsir_1_1error", "namespacesir_structsir_1_1error_dup" ],
       [ "exception", "classsir_1_1exception.html", null ],
+      [ "fmt_format_adapter", "classsir_1_1fmt__format__adapter.html", null ],
       [ "logger", "classsir_1_1logger.html", null ],
       [ "policy", "classsir_1_1policy.html", "classsir_1_1policy" ],
+      [ "std_format_adapter", "classsir_1_1std__format__adapter.html", null ],
       [ "std_iostream_adapter", "classsir_1_1std__iostream__adapter.html", null ]
     ] ],
     [ "sir_cl_arg", "structsir__cl__arg.html", "structsir__cl__arg" ],

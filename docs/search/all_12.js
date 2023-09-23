@@ -267,10 +267,11 @@ var searchData=
   ['sl_5fcategory_264',['sl_category',['../structsir__update__config__data.html#ac4509b5698aa330492a9d1508e3f9480',1,'sir_update_config_data']]],
   ['sl_5fidentity_265',['sl_identity',['../structsir__update__config__data.html#a58f88542d9e282860be66fcbba694223',1,'sir_update_config_data']]],
   ['std_5fformat_266',['std_format',['../namespacesir_1_1tests.html#aaf745facf6a22357d78827e5e5105626',1,'sir::tests']]],
-  ['std_5fiostream_5fadapter_267',['std_iostream_adapter',['../classsir_1_1std__iostream__adapter.html',1,'sir']]],
-  ['std_5fiostream_5fformat_268',['std_iostream_format',['../namespacesir_1_1tests.html#ab2d06b735ad2009d320c24227d346367',1,'sir::tests']]],
-  ['str_269',['str',['../structsir__level__style__tuple.html#a5f67704e0d74d266d0a5d2d3c9459816',1,'sir_level_style_tuple']]],
-  ['strike_270',['STRIKE',['../ansimacros_8h.html#a1319b1d6256ace654ff3bad6275ead00',1,'ansimacros.h']]],
-  ['style_271',['style',['../structsir__level__style__tuple.html#a8fed0d03eeb0003783ccec5e26665a53',1,'sir_level_style_tuple']]],
-  ['suite_272',['Test suite',['../testsuite.html',1,'']]]
+  ['std_5fformat_5fadapter_267',['std_format_adapter',['../classsir_1_1std__format__adapter.html',1,'sir']]],
+  ['std_5fiostream_5fadapter_268',['std_iostream_adapter',['../classsir_1_1std__iostream__adapter.html',1,'sir']]],
+  ['std_5fiostream_5fformat_269',['std_iostream_format',['../namespacesir_1_1tests.html#ab2d06b735ad2009d320c24227d346367',1,'sir::tests']]],
+  ['str_270',['str',['../structsir__level__style__tuple.html#a5f67704e0d74d266d0a5d2d3c9459816',1,'sir_level_style_tuple']]],
+  ['strike_271',['STRIKE',['../ansimacros_8h.html#a1319b1d6256ace654ff3bad6275ead00',1,'ansimacros.h']]],
+  ['style_272',['style',['../structsir__level__style__tuple.html#a8fed0d03eeb0003783ccec5e26665a53',1,'sir_level_style_tuple']]],
+  ['suite_273',['Test suite',['../testsuite.html',1,'']]]
 ];

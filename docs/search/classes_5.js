@@ -1,32 +1,4 @@
 var searchData=
 [
-  ['sir_5fcl_5farg_0',['sir_cl_arg',['../structsir__cl__arg.html',1,'']]],
-  ['sir_5fcl_5fconfig_1',['sir_cl_config',['../structsir__cl__config.html',1,'']]],
-  ['sir_5flevel_5fstr_5fpair_2',['sir_level_str_pair',['../structsir__level__str__pair.html',1,'']]],
-  ['sir_5flevel_5fstyle_5ftuple_3',['sir_level_style_tuple',['../structsir__level__style__tuple.html',1,'']]],
-  ['sir_5fplugin_4',['sir_plugin',['../structsir__plugin.html',1,'']]],
-  ['sir_5fplugincache_5',['sir_plugincache',['../structsir__plugincache.html',1,'']]],
-  ['sir_5fpluginifacev1_6',['sir_pluginifacev1',['../structsir__pluginifacev1.html',1,'']]],
-  ['sir_5fplugininfo_7',['sir_plugininfo',['../structsir__plugininfo.html',1,'']]],
-  ['sir_5fqueue_8',['sir_queue',['../structsir__queue.html',1,'']]],
-  ['sir_5fqueue_5fnode_9',['sir_queue_node',['../structsir__queue__node.html',1,'']]],
-  ['sir_5fstdio_5fdest_10',['sir_stdio_dest',['../group__publictypes.html#structsir__stdio__dest',1,'']]],
-  ['sir_5fsyslog_5fdest_11',['sir_syslog_dest',['../group__publictypes.html#structsir__syslog__dest',1,'']]],
-  ['sir_5fsyslog_5fdest_2e_5fstate_12',['sir_syslog_dest._state',['../group__publictypes.html#structsir__syslog__dest_8__state',1,'']]],
-  ['sir_5ftest_13',['sir_test',['../structsir__test.html',1,'']]],
-  ['sir_5ftext_5fstyle_5fdata_14',['sir_text_style_data',['../structsir__text__style__data.html',1,'']]],
-  ['sir_5ftextstyle_15',['sir_textstyle',['../group__publictypes.html#structsir__textstyle',1,'']]],
-  ['sir_5fthread_5ferr_16',['sir_thread_err',['../structsir__thread__err.html',1,'']]],
-  ['sir_5fthreadpool_17',['sir_threadpool',['../structsir__threadpool.html',1,'']]],
-  ['sir_5fthreadpool_5fjob_18',['sir_threadpool_job',['../structsir__threadpool__job.html',1,'']]],
-  ['sir_5ftime_19',['sir_time',['../structsir__time.html',1,'']]],
-  ['sir_5fupdate_5fconfig_5fdata_20',['sir_update_config_data',['../structsir__update__config__data.html',1,'']]],
-  ['sirbuf_21',['sirbuf',['../structsirbuf.html',1,'']]],
-  ['sirconfig_22',['sirconfig',['../structsirconfig.html',1,'']]],
-  ['sirconfig_2estate_2elast_23',['sirconfig.state.last',['../structsirconfig_8state_8last.html',1,'']]],
-  ['sirerror_24',['sirerror',['../structsirerror.html',1,'']]],
-  ['sirfcache_25',['sirfcache',['../structsirfcache.html',1,'']]],
-  ['sirfile_26',['sirfile',['../structsirfile.html',1,'']]],
-  ['sirinit_27',['sirinit',['../group__publictypes.html#structsirinit',1,'']]],
-  ['std_5fiostream_5fadapter_28',['std_iostream_adapter',['../classsir_1_1std__iostream__adapter.html',1,'sir']]]
+  ['logger_0',['logger',['../classsir_1_1logger.html',1,'sir']]]
 ];

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['logger_0',['logger',['../classsir_1_1logger.html',1,'sir']]]
+  ['error_0',['error',['../namespacesir.html#structsir_1_1error',1,'sir']]],
+  ['exception_1',['exception',['../classsir_1_1exception.html',1,'sir']]]
 ];
