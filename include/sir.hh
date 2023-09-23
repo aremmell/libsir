@@ -90,7 +90,7 @@ namespace sir
         using std::runtime_error::runtime_error;
 
         exception() = delete;
-        exception(const error& err) : exception(err.message) { }
+        explicit exception(const error& err) : exception(err.message) { }
         ~exception() override = default;
 
         static exception from_libsir_error() {

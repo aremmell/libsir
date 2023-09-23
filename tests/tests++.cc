@@ -193,7 +193,7 @@ bool sir::tests::exception_handling() {
     try {
         TEST_MSG_0("throw an exception with a string message...");
         throw exception("something has gone terribly wrong!");
-    } catch (std::exception& ex) {
+    } catch (sir::exception& ex) {
         TEST_MSG("caught exception: '%s'", ex.what());
         _sir_eqland(pass, _sir_validstrnofail(ex.what()));
     }
@@ -202,7 +202,7 @@ bool sir::tests::exception_handling() {
         default_logger log;
         TEST_MSG_0("throw an exception from a libsir error...");
         _sir_eqland(pass, !log.add_file("", SIRL_NONE, SIRO_ALL));
-    } catch (std::exception& ex) {
+    } catch (sir::exception& ex) {
         TEST_MSG("caught exception: '%s'", ex.what());
         _sir_eqland(pass, _sir_validstrnofail(ex.what()));
     }
@@ -210,7 +210,7 @@ bool sir::tests::exception_handling() {
     try {
         TEST_MSG_0("throw an exception from an error struct...");
         throw exception({ 1234, "a fake error"});
-    } catch (std::exception& ex) {
+    } catch (sir::exception& ex) {
         TEST_MSG("caught exception: '%s'", ex.what());
         _sir_eqland(pass, _sir_validstrnofail(ex.what()));
     }
