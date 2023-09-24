@@ -278,6 +278,7 @@ typedef struct {
             bool squelch;
             uint64_t hash;
             char prefix[2];
+            sir_level level;
             size_t counter;
             size_t threshold;
         } last;
