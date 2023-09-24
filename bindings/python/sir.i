@@ -211,7 +211,7 @@
 %rename(cleanup) sir_cleanup;
 %ignore sir_geterror;
 %rename(geterror) sir_geterror;
-%ignore sir_geterrorinfo
+%ignore sir_geterrorinfo;
 %rename (geterrorinfo) sir_geterrorinfo;
 %ignore sir_debug;
 %rename(debug) sir_debug;
