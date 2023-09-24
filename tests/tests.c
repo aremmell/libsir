@@ -816,7 +816,7 @@ bool sirtest_errorsanity(void) {
         sir_errinfo errinfo = {0};
         sir_geterrorinfo(&errinfo);
 
-        TEST_MSG("errinfo = {'%s', '%s', %"PRId32", %"PRId16", '%s', %d, '%s'}",
+        TEST_MSG("errinfo = {'%s', '%s', %"PRIu32", %"PRIu16", '%s', %d, '%s'}",
             errinfo.func, errinfo.file, errinfo.line, errinfo.code, errinfo.msg,
             errinfo.os_code, errinfo.os_msg);
 
