@@ -634,11 +634,23 @@ namespace sir
      * @class std_iostream_adapter
      * @brief Provides a std::iostream interface to libsir's logging functions.
      *
+     * Enabled so long as SIR_NO_STD_IOSTREAM is not defined.
+     *
      * Implements a public std::ostream member for each available logging level
      * (e.g. debug_stream, info_stream, ..., emerg_stream).
      *
+     * **Example:**
+     *
+     * ~~~
+     * using my_logger = logger<true, default_policy, std_iostream_adapter>;
+     * my_logger log;
+     * log.info_stream << "This is from std::iostream!" << std::endl;
+     * ~~~
+     *
+     * @see std_iostream_logger
+     *
      * @note Use std::endl or std::flush to indicate the end of a log message if
-     * using the iostream << operator.
+     * using the ostream << operator.
      *
      * @tparam TPolicy A derived class of policy which controls the behavior
      * of logger and by association, its adapters.
