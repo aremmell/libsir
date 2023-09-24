@@ -127,27 +127,7 @@ bool _sirfile_write(sirfile* sf, const char* output) {
     if (retval) {
         if (sf->writes_since_size_chk++ > SIR_FILE_CHK_SIZE_WRITES) {
             sf->writes_since_size_chk = 0;
-
-            if (_sirfile_needsroll(sf)) {
-                bool rolled   = false;
-                char* newpath = NULL;
-
-                _sir_selflog("file (path: '%s', id: %"PRIx32") reached ~%d bytes"
-                    " in size; rolling...", sf->path, sf->id, SIR_FROLLSIZE);
-
-                _sir_fflush(sf->f);
-
-                if (_sirfile_roll(sf, &newpath)) {
-                    char header[SIR_MAXFHEADER] = {0};
-                    (void)snprintf(header, SIR_MAXFHEADER, SIR_FHROLLED, newpath);
-                    rolled = _sirfile_writeheader(sf, header);
-                }
-
-                _sir_safefree(&newpath);
-                if (!rolled) /* write anyway; don't want to lose data. */
-                    _sir_selflog("error: failed to roll file (path: '%s', id: %"
-                        PRIx32")!", sf->path, sf->id);
-            }
+            _sirfile_rollifneeded(sf);
         }
 
         size_t writeLen = strnlen(output, SIR_MAXOUTPUT);
@@ -283,6 +263,29 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
     _sir_safefree(&ext);
 
     return retval;
+}
+
+void _sirfile_rollifneeded(sirfile* sf) {
+    if (_sirfile_validate(sf) && _sirfile_needsroll(sf)) {
+        bool rolled   = false;
+        char* newpath = NULL;
+
+        _sir_selflog("file (path: '%s', id: %"PRIx32") reached ~%d bytes"
+            " in size; rolling...", sf->path, sf->id, SIR_FROLLSIZE);
+
+        _sir_fflush(sf->f);
+
+        if (_sirfile_roll(sf, &newpath)) {
+            char header[SIR_MAXFHEADER] = {0};
+            (void)snprintf(header, SIR_MAXFHEADER, SIR_FHROLLED, newpath);
+            rolled = _sirfile_writeheader(sf, header);
+        }
+
+        _sir_safefree(&newpath);
+        if (!rolled) /* write anyway; don't want to lose data. */
+            _sir_selflog("error: failed to roll file (path: '%s', id: %"
+                PRIx32")!", sf->path, sf->id);
+    }
 }
 
 bool _sirfile_archive(sirfile* sf, const char* newpath) {
@@ -451,11 +454,7 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
                     sfc->files[n]->path, sfc->files[n]->id, sfc->count - 1);
 
                 _sirfile_destroy(&sfc->files[n]);
-
-                for (size_t i = n; i < sfc->count - 1; i++) {
-                    sfc->files[i] = sfc->files[i + 1];
-                    sfc->files[i + 1] = NULL;
-                }
+                _sir_fcache_shift(sfc, n);
 
                 sfc->count--;
                 found = true;
@@ -468,6 +467,15 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
     }
 
     return retval;
+}
+
+void _sir_fcache_shift(sirfcache* sfc, size_t idx) {
+    if (_sir_validptr(sfc) && idx < SIR_MAXFILES) {
+        for (size_t n = idx; n < sfc->count - 1; n++) {
+            sfc->files[n] = sfc->files[n + 1];
+            sfc->files[n + 1] = NULL;
+        }
+    }
 }
 
 bool _sir_fcache_pred_path(const void* match, const sirfile* iter) {
