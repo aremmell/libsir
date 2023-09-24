@@ -75,8 +75,23 @@ namespace sir
      * message.
      */
     struct error {
-        uint16_t code = 0;   /**< The error code associated with the message. */
-        std::string message; /**< Description of the error that occurred. */
+        uint16_t code {};    /**< libsir error code (see ::sir_errorcode). */
+        std::string message; /**< Message describing the error that occurred. */
+    };
+
+    /**
+     * @struct error_info
+     * @brief Extends ::error to provide granular information about an error.
+     *
+     * In order to enable custom error handling, provides all available infor-
+     * mation about an error, without applying the default message formatting.
+     */
+    struct error_info : public error {
+        std::string func;       /**< Name of the function in which the error occurred. */
+        std::string file;       /**< Name of the file in which the error occurred. */
+        uint32_t line {};       /**< Line number at which the error occurred. */
+        int os_code {};         /**< If an OS/libc error, the associated code. */
+        std::string os_message; /**< If an OS/libc error, the associated message. */
     };
 
     /**
@@ -751,11 +766,17 @@ namespace sir
             return sir_isinitialized();
         }
 
-        // TODO: split error into two types. add get_error_info
         error get_error() const {
             std::array<char, SIR_MAXERROR> message {};
             const auto code = sir_geterror(message.data());
             return { code, message.data() };
+        }
+
+        error_info get_error_info() const {
+            sir_errinfo errinfo {};
+            sir_geterrorinfo(&errinfo);
+            return { { errinfo.code, errinfo.msg }, errinfo.func, errinfo.file,
+                errinfo.line, errinfo.os_code, errinfo.os_msg };
         }
 
         sirfileid add_file(const std::string& path, const sir_levels& levels,
