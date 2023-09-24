@@ -208,15 +208,17 @@ bool sir::tests::error_handling() {
 
     auto print_error = [&log]() {
         TEST_MSG_0("get error with logger::get_error...");
-        const auto [ code, message ] = log.get_error();
-        TEST_MSG("error: code = %" PRIu16 ", message = '%s'", code, message.c_str());
+        const auto err = log.get_error();
+        TEST_MSG("error: os error = %s, code = %" PRIu16 ", message = '%s'",
+            (err.is_os_error() ? "yes" : "no"), err.code, err.message.c_str());
     };
 
     auto print_error_info = [&log]() {
         TEST_MSG_0("get error information with logger::get_error_info...");
         const auto errinfo = log.get_error_info();
-        TEST_MSG("error info: code = %" PRIu16 ", message = '%s', function = '%s',"
-            " file = '%s', line = %" PRIu32 ", OS code = %d, OS message = '%s'",
+        TEST_MSG("error info: os error = %s, code = %" PRIu16 ", message = '%s',"
+            " function = '%s', file = '%s', line = %" PRIu32 ", OS code = %d,"
+            " OS message = '%s'", (errinfo.is_os_error() ? "yes" : "no"),
             errinfo.code, errinfo.message.c_str(), errinfo.func.c_str(),
             errinfo.file.c_str(), errinfo.line, errinfo.os_code,
             errinfo.os_message.c_str());

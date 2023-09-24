@@ -238,10 +238,10 @@ namespace sir
      * adapter can coexist with any other adapters that are applied to the logger
      * template.
      *
-     * @see ::std_format_adapter
-     * @see ::boost_format_adapter
-     * @see ::fmt_format_adapter
-     * @see ::std_iostream_adapter
+     * @see std_format_adapter
+     * @see boost_format_adapter
+     * @see fmt_format_adapter
+     * @see std_iostream_adapter
      */
     class adapter {
     protected:
