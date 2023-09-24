@@ -134,7 +134,7 @@ enum {
 typedef uint32_t sir_textcolor;
 
 /**
- * @struct sir_error
+ * @struct sir_errinfo
  * @brief Information about an error that occurred.
  *
  * Granular error information in order to provide the caller with flexibility in
