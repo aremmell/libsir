@@ -146,76 +146,71 @@ namespace sir
      * @class policy
      * @brief Defines the partially abstract interface for a policy which
      * controls the behavior of logger at runtime.
+     *
+     * @note Only the default constructors may be used. Other constructors will
+     * not be called, and if the default constructor is deleted, compilation
+     * errors will result.
      */
     class policy {
-    public:
+    protected:
         policy() = default;
         virtual ~policy() = default;
 
+    public:
         /**
          * Called by logger before initializing libsir. Provides the policy with
-         * an opportunity to customize the initial libsir configuration.
+         * an opportunity to customize the initial configuration.
          *
-         * @param data initial libisr configuration data.
+         * @see sirinit
+         * @see sir_makeinit
          *
-         * @see ::sirinit
-         * @see ::sir_makeinit
+         * @note For the default configuration, pass the address of data to
+         * ::sir_makeinit.
          *
          * @note Most, if not all of the options chosen during initialization
-         * can be modified at runtime using functions provided by libsir.
+         * can be modified post-initialization.
          *
-         * @note For the default configuration, pass the address of the ::sirinit
-         * structure to ::sir_makeinit.
+         * @param data Reference to a ::sirinit struct representing the initial
+         * configuration.
          *
-         * @returns true if data was successfully configured, or false if an
+         * @returns true if data is ready to pass to ::sir_init, or false if an
          * error occurred. Returning false will cause logger to abort the
-         * initialization process–either by throwing an exception, or by entering
-         * an 'invalid' state (determined by policy::throw_on_error).
+         * initialization process, and possibly throw an exception.
          */
         virtual bool get_init_data(sirinit& data) const noexcept = 0;
 
         /**
          * Called by logger immediately after libsir has been initialized. This
          * is the moment in time which should be utilized for further configuration
-         * than is possible via ::sirinit alone.
+         * than is possible via ::sir_init alone.
          *
-         * Some items include:
-         * - Setting the ::sir_colormode for stdio (::sir_setcolormode)
-         * - Setting ::sir_textstyle on a per-level basis for stdio (::sir_settextstyle)
+         * Some potential actions include:
+         * - Setting the color mode for stdio (::sir_setcolormode)
+         * - Setting text styles on a per-level basis for stdio (::sir_settextstyle)
          * - Adding log files (::sir_addfile)
          * - Loading plugins (::sir_loadplugin)
          *
          * @returns true if configuration was completed successfully, or false if
          * an error occurred. Returning false will cause logger to abort the
-         * initialization process–either by throwing an exception, or by entering
-         * an 'invalid' state (determined by policy::throw_on_error).
+         * initialization process, and possibly throw an exception.
          */
         virtual bool on_init_complete() const noexcept = 0;
 
         /**
-         * Determines whether or not exceptions are thrown in the event that a
-         * libsir or OS-level error is encountered by logger or its associated
+         * Determines whether or not exceptions are thrown in the event that an
+         * unercoverable error is encountered by logger or its associated
          * adapter(s).
          *
          * @note If exceptions are not enabled, the caller of a method that could
-         * potentially fail is responsible for obtaining error information by
-         * calling logger::get_error and reacting accordingly.
+         * potentially fail is responsible for obtaining last error information
+         * and reacting accordingly.
          *
-         * @returns true if logger should throw exceptions (derived from std::
-         * exception) when errors are encountered, or false if errors should
-         * simply be communicated through a pass/fail Boolean return value.
+         * @returns true if logger should throw exceptions, or false if errors
+         * should simply be communicated through a pass/fail Boolean return value.
          */
         static constexpr bool throw_on_error() noexcept {
             return false;
         }
-
-        /**
-         * Useful when complications arise; the question "which policy caused that
-         * to happen?!" is then easy to answer.
-         *
-         * @returns A unique name for the policy.
-         */
-        virtual constexpr const char* get_name() const = 0;
     };
 
     /** Ensures that T derives from policy. */
@@ -227,7 +222,7 @@ namespace sir
      * @brief In the event that no custom configuration or behavior is desired,
      * provides defaults for everything.
      *
-     * - Uses all default values for sir_init
+     * - Uses all default values for ::sir_init
      * - Performs no post-initialization configuration
      * - Exceptions are thrown when errors are encountered
      */
@@ -247,10 +242,6 @@ namespace sir
         static constexpr bool throw_on_error() noexcept {
             return true;
         }
-
-        constexpr const char* get_name() const final {
-            return "Default";
-        }
     };
 
     /**
@@ -264,11 +255,6 @@ namespace sir
      * @note One must take care to ensure that the methods implemented by an
      * adapter can coexist with any other adapters that are applied to the logger
      * template.
-     *
-     * @see std_format_adapter
-     * @see boost_format_adapter
-     * @see fmt_format_adapter
-     * @see std_iostream_adapter
      */
     class adapter {
     protected:
