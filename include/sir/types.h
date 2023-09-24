@@ -144,10 +144,10 @@ typedef struct {
     const char* func;          /**< Name of the function in which the error occurred. */
     const char* file;          /**< Name of the file in which the error occurred. */
     uint32_t line;             /**< Line number at which the error occurred. */
-    int os_code;               /**< If an OS/libc error, the associated code. */
-    char os_msg[SIR_MAXERROR]; /**< If an OS/libc error, the associated message. */
-    uint16_t code;             /**< libsir error code. */
-    char msg[SIR_MAXERROR];    /**< libsir error message. */
+    int os_code;               /**< If an OS/libc error, the relevant code. */
+    char os_msg[SIR_MAXERROR]; /**< If an OS/libc error, the relevant message. */
+    uint16_t code;             /**< Numeric error code (see ::sir_errorcode). */
+    char msg[SIR_MAXERROR];    /**< Error message associated with code. */
 } sir_errinfo;
 
 /**
