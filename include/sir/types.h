@@ -141,9 +141,9 @@ typedef uint32_t sir_textcolor;
  * regards to error handling and formatting.
 */
 typedef struct {
-    const char* func;          /**< Function name. */
-    const char* file;          /**< File name. */
-    uint32_t line;             /**< Line number. */
+    const char* func;          /**< Name of the function in which the error occurred. */
+    const char* file;          /**< Name of the file in which the error occurred. */
+    uint32_t line;             /**< Line number at which the error occurred. */
     int os_code;               /**< If an OS/libc error, the associated code. */
     char os_msg[SIR_MAXERROR]; /**< If an OS/libc error, the associated message. */
     uint16_t code;             /**< libsir error code. */
