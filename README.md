@@ -1,6 +1,6 @@
 # libsir
 
-libsir&mdash;a cross-platform, thread-safe logging library
+libsir&mdash;a lightweight, cross-platform library for information distribution
 
 <!-- SPDX-License-Identifier: MIT -->
 <!-- Copyright (c) 2018-current Ryan M. Lederman <lederman@gmail.com> -->
@@ -125,19 +125,19 @@ This output is from the `example` application, whose source code can be located 
 
 ## <a id="building-from-source" /> Building from source
 
-There are several options if you would like to build libsir from source:
+There are several options available for building libsir from source:
 
 ### <a id="visual-studio-code" /> Visual Studio Code
 
-There is a `code‑workspace` in the repository. As of right now, the build and launch tasks are not fully functional for every platform, but everything else should be good to go.
+A VS Code workspace file is located in the root of the repository. Currently, the build and launch tasks are not fully functional for all platforms, but it is otherwise production-ready (*using the integrated terminal, run [make](#unix-makefile) to build*).
 
 ### <a id="visual-studio-2022" /> Visual Studio 2022
 
-A recent addition is `sln` and `vcxproj` files in the [`msvc`](https://github.com/aremmell/libsir/tree/master/msvs) directory. They are confirmed to work correctly on Windows 11 (x86, x64, Arm64) with Visual Studio 17.6+.
+A Visual Studio 2022 solution containing appropriate projects can be found in the [msvs](https://github.com/aremmell/libsir/tree/master/msvs) directory. Tested on Windows 11 (*x86, x64, and Arm64*) with Visual Studio 17.6+. See the [README](https://github.com/aremmell/libsir/tree/master/msvs/README.md) for more information.
 
 ### <a id="unix-makefile" /> Unix Makefile
 
-The Makefiles are compatible with **GNU Make** version **3.81** and later (**4.4** recommended) and support most Unix-like operating systems: AIX, Solaris, Linux, illumos, macOS, Cygwin, FreeBSD, OpenBSD, NetBSD, DragonFly BSD, GNU/Hurd, Haiku, etc.
+The Makefiles are compatible with **GNU Make** version **3.81** and later (**4.4** recommended) and support most Unix-like operating systems: AIX, Solaris, Linux, illumos, macOS, Cygwin, BSD, GNU/Hurd, Haiku, etc.
 
 |   Recipe Type    |     Command      | &nbsp;&nbsp;&nbsp;&nbsp;Output file(s)         |
 |:----------------:|:----------------:|:-----------------------------------------------|
