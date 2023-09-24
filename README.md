@@ -138,7 +138,7 @@ The Makefiles are compatible with **GNU Make** version **3.81** and later (**4.4
 
 #### <a id="unix-makefile-envvars" /> Environment variables
 
-A number of environment variables are available which affect the way in which libsir and its various build artifacts are created (*e.g., turning off optimizations and enabling debug symbols*). Information about these variables and how to use them along with make can be found in the [online documentation](https://libsir.rml.dev/config.html).
+A number of environment variables are available which affect the way in which libsir and its various build artifacts are created (*e.g., turning off optimizations and enabling debug symbols*). Information about these variables and how to use them with GNU make can be found in the [online documentation](https://libsir.rml.dev/config.html).
 
 #### <a id="unix-makefile-recipes" /> Recipes
 
@@ -153,22 +153,24 @@ A number of environment variables are available which affect the way in which li
 
 ### <a id="visual-studio-code" /> Visual Studio Code
 
-A VS Code workspace file is located in the root of the repository (`sir.code-workspace`). Build tasks are only configured for macOS and Linux; on other platforms, use the integrated terminal to run GNU [make](#unix-makefile) manually.
+A VS Code workspace file is located in the root of the repository (`sir.code-workspace`). Build tasks are only configured for macOS and Linux. On other platforms, use the integrated terminal to run GNU [make](#unix-makefile) manually.
 
 #### <a id="vs-code-build-tasks" /> Build Tasks
 
-| Build Task            | Equivalent `make` Command                          |
-|:---------------------:|:---------------------------------------------------|
-| Clean                 | `make clean`                                       |
-| Static Library        | `make static`                                      |
-| DBG: Static Library   | `env SIR_DEBUG=1 SIR_SELFLOG=1 make static`        |
-| Shared Library        | `make shared`                                      |
-| DBG: Shared Library   | `env SIR_DEBUG=1 SIR_SELFLOG=1 make shared`        |
-| Test Suite (C)        | `make tests`                                       |
-| DBG: Test Suite (C)   | `env SIR_DEBUG=1 SIR_SELFLOG=1 make tests`         |
-| Test Suite (C++)      | `make tests++`                                     |
-| DBG: Test Suite (C++) | `env SIR_DEBUG=1 SIR_SELFLOG=1 make tests++`       |
-| Example App (C)       | `make example`                                     |
+The VS Code build tasks execute `make` under the hood. To run a task, open the command list (by default, <kbd>&#8984;</kbd> + <kbd>&#8679;</kbd> + <kbd>P</kbd> on macOS, <kbd>&#8963;</kbd> + <kbd>&#8679;</kbd> + <kbd>P</kbd> on Linux), then start typing "run task" until you see "Tasks: Run Task". Click the item or press the key combination listed next to it in the list. You should then see a drop-down menu containing all of the build tasks for libsir, which are listed here:
+
+| Build Task            | Description                                                      |
+|:----------------------|:-----------------------------------------------------------------|
+| Clean                 | Deletes all intermediate files and previously compiled binaries. |
+| Static Library        | Compiles libsir as a static library.                             |
+| DBG: Static Library   | Compiles libsir as a static library with debug symbols.          |
+| Shared Library        | Compiles libsir as a shared library.                             |
+| DBG: Shared Library   | Compiles libsir as a shared library with debug symbols.          |
+| Test Suite (C)        | Compiles the C test suite.                                       |
+| DBG: Test Suite (C)   | Compiles the C test suite with debug symbols.                    |
+| Test Suite (C++)      | Compiles the C++ test suite.                                     |
+| DBG: Test Suite (C++) | Compiles the C++ test suite with debug symbols.                  |
+| Example App (C)       | Compiles the C sample application.                               |
 
 ### <a id="visual-studio-2022" /> Visual Studio 2022
 
