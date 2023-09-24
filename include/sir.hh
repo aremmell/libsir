@@ -267,10 +267,10 @@ namespace sir
      * in place requires throwing an exception, retrieves the associated error
      * code and message from libsir, then throws.
      *
-     * @tparam TPolicy policy A derived class of policy which determines whether
+     * @tparam TPolicy A derived class of policy which determines whether
      * or not to throw exceptions upon encountering an error.
      *
-     * @param expr bool An expression that is evaluated against false. If false,
+     * @param expr An expression that is evaluated against false. If false,
      *  an error is determined to have occurred and an exception will be thrown
      * if the policy requires it.
      *
@@ -295,7 +295,7 @@ namespace sir
      * Utilizes the same code path that the C interface itself does, in order to
      * achieve maximum performance (i.e., no unnecessary bloat is added).
      *
-     * @tparam TPolicy policy A derived class of policy which controls the behavior
+     * @tparam TPolicy A derived class of policy which controls the behavior
      * of logger and by association, its adapters.
      */
     template<DerivedFromPolicy TPolicy>
@@ -458,7 +458,7 @@ namespace sir
      *
      * TODO: update description
      *
-     * @tparam TPolicy policy A derived class of policy which controls the behavior
+     * @tparam TPolicy A derived class of policy which controls the behavior
      * of logger and by association, its adapters.
      */
     template<DerivedFromPolicy TPolicy>
@@ -516,7 +516,7 @@ namespace sir
      *
      * TODO: update description
      *
-     * @tparam TPolicy policy A derived class of policy which controls the behavior
+     * @tparam TPolicy A derived class of policy which controls the behavior
      * of logger and by association, its adapters.
      */
     template<DerivedFromPolicy TPolicy>
@@ -598,7 +598,7 @@ namespace sir
      * @note Use std::endl or std::flush to indicate the end of a log message if
      * using the iostream << operator.
      *
-     * @tparam TPolicy policy A derived class of policy which controls the behavior
+     * @tparam TPolicy A derived class of policy which controls the behavior
      * of logger and by association, its adapters.
      */
     template<DerivedFromPolicy TPolicy>
