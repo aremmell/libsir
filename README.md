@@ -30,9 +30,13 @@ libsir&mdash;a lightweight, cross-platform library for information distribution
   - [Language Bindings](#language-bindings)
 - [An example](#an-example)
 - [Building from source](#building-from-source)
-  - [Visual Studio Code](#visual-studio-code)
-  - [Visual Studio 2022](#visual-studio-2022)
   - [Unix Makefile](#unix-makefile)
+    - [Environment Variables](#unix-makefile-envvars)
+    - [Recipes](#unix-makefile-recipes)
+  - [Visual Studio Code](#visual-studio-code)
+    - [Build Tasks](#vs-code-build-tasks)
+  - [Visual Studio 2022](#visual-studio-2022)
+
 - [Dig in](#dig-in)
 - [SAST Tools](#sast-tools)
 - [Other Tools](#other-tools)
@@ -117,27 +121,27 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 
 ## <a id="an-example" /> An example
 
-Some sample terminal output from libsir demonstrating the default configuration:
+Some sample terminal output from libsir demonstrating the default text styling settings for stdio (*note that this is just a sample; libsir supports 4, 8, and 24-bit color modes, so a virtually limitless number of configurations are possible*):
 
 ![sample terminal output](./docs/res/sample-terminal.png)
 
-This output is from the `example` application, whose source code can be located in the [`example`](https://github.com/aremmell/libsir/tree/master/example) directory. If you're curious about a basic implementation of libsir in a practical context, that's a good place to start.
+This output is from the `example` application, whose source code can be located in the [example](https://github.com/aremmell/libsir/tree/master/example) directory. If you're curious about a very basic implementation of libsir in a practical context, that's a good place to start.
+
+**Coming soon:** A C++20 version of the example program.
 
 ## <a id="building-from-source" /> Building from source
 
 There are several options available for building libsir from source:
 
-### <a id="visual-studio-code" /> Visual Studio Code
-
-A VS Code workspace file is located in the root of the repository. Currently, the build and launch tasks are not fully functional for all platforms, but it is otherwise production-ready (*using the integrated terminal, run [make](#unix-makefile) to build*).
-
-### <a id="visual-studio-2022" /> Visual Studio 2022
-
-A Visual Studio 2022 solution containing appropriate projects can be found in the [msvs](https://github.com/aremmell/libsir/tree/master/msvs) directory. Tested on Windows 11 (*x86, x64, and Arm64*) with Visual Studio 17.6+. See the [README](https://github.com/aremmell/libsir/tree/master/msvs/README.md) for more information.
-
 ### <a id="unix-makefile" /> Unix Makefile
 
 The Makefiles are compatible with **GNU Make** version **3.81** and later (**4.4** recommended) and support most Unix-like operating systems: AIX, Solaris, Linux, illumos, macOS, Cygwin, BSD, GNU/Hurd, Haiku, etc.
+
+#### <a id="unix-makefile-envvars" /> Environment variables
+
+A number of environment variables are available which affect the way in which libsir and its various build artifacts are created (*e.g., turning off optimizations and enabling debug symbols*). Information about these variables and how to use them along with make can be found in the [online documentation](https://libsir.rml.dev/config.html).
+
+#### <a id="unix-makefile-recipes" /> Recipes
 
 |   Recipe Type    |     Command      | &nbsp;&nbsp;&nbsp;&nbsp;Output file(s)         |
 |:----------------:|:----------------:|:-----------------------------------------------|
@@ -147,6 +151,29 @@ The Makefiles are compatible with **GNU Make** version **3.81** and later (**4.4
 | Static library   |  `make static`   | <ul><li>*build/lib/libsir_s.a*</li></ul>       |
 | Shared library   |  `make shared`   | <ul><li>*build/lib/libsir.so*</il></ul>        |
 | Installation     |  `make install`  | <ul><li>*$PREFIX/lib/libsir_s.a*</li><li>*$PREFIX/lib/libsir.so*</li><li>*$PREFIX/include/sir.h*</li><li>*$PREFIX/include/sir/\*.h*</li></ul> |
+
+### <a id="visual-studio-code" /> Visual Studio Code
+
+A VS Code workspace file is located in the root of the repository (`sir.code-workspace`). Build tasks are only configured for macOS and Linux; on other platforms, use the integrated terminal to run GNU [make](#unix-makefile) manually.
+
+#### <a id="vs-code-build-tasks" /> Build Tasks
+
+| Build Task            | Equivalent `make` Command                          |
+|:---------------------:|:---------------------------------------------------|
+| Clean                 | `make clean`                                       |
+| Static Library        | `make static`                                      |
+| DBG: Static Library   | `env SIR_DEBUG=1 SIR_SELFLOG=1 make static`        |
+| Shared Library        | `make shared`                                      |
+| DBG: Shared Library   | `env SIR_DEBUG=1 SIR_SELFLOG=1 make shared`        |
+| Test Suite (C)        | `make tests`                                       |
+| DBG: Test Suite (C)   | `env SIR_DEBUG=1 SIR_SELFLOG=1 make tests`         |
+| Test Suite (C++)      | `make tests++`                                     |
+| DBG: Test Suite (C++) | `env SIR_DEBUG=1 SIR_SELFLOG=1 make tests++`       |
+| Example App (C)       | `make example`                                     |
+
+### <a id="visual-studio-2022" /> Visual Studio 2022
+
+A Visual Studio 2022 solution containing appropriate project files can be found in the [msvs](https://github.com/aremmell/libsir/tree/master/msvs) directory. Tested on Windows 11 (*x86, x64, and Arm64*) with Visual Studio 17.6+. See the [README](https://github.com/aremmell/libsir/tree/master/msvs/README.md) for more information.
 
 ## <a id="dig-in" /> Dig in
 
