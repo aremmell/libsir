@@ -244,7 +244,7 @@ bool sir::tests::error_handling() {
 }
 
 bool sir::tests::exception_handling() {
-    bool pass = true;
+    _SIR_TEST_COMMENCE
 
     try {
         TEST_MSG_0("throw a sir::exception with a string message...");
@@ -271,7 +271,26 @@ bool sir::tests::exception_handling() {
         _sir_eqland(pass, _sir_validstrnofail(ex.what()));
     }
 
-    return PRINT_RESULT_RETURN(pass);
+    /* ensure that exceptions are not thrown with a policy that does not
+     * enable exceptions. */
+    class nothrow_policy : public default_policy {
+    public:
+        nothrow_policy() = default;
+        ~nothrow_policy() override = default;
+
+        static constexpr bool throw_on_error() noexcept {
+            return false;
+        }
+    };
+
+    TEST_MSG_0("create a logger with a no-throw policy...");
+    logger<true, nothrow_policy, default_adapter> log;
+
+    TEST_MSG_0("created; call a method that would normally throw...");
+    _sir_eqland(pass, !log.load_plugin(""));
+    TEST_MSG_0("if you can read this, no exception was thrown");
+
+    _SIR_TEST_COMPLETE
 }
 
 bool sir::tests::std_format() {
