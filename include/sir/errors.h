@@ -35,29 +35,29 @@
 
 /** Error codes. */
 enum sir_errorcode {
-    SIR_E_NOERROR   = 0,    /**< The operation completed successfully */
-    SIR_E_NOTREADY  = 1,    /**< libsir has not been initialized */
-    SIR_E_ALREADY   = 2,    /**< libsir is already initialized */
-    SIR_E_DUPITEM   = 3,    /**< Item already managed by libsir */
-    SIR_E_NOITEM    = 4,    /**< Item not managed by libsir */
-    SIR_E_NOROOM    = 5,    /**< Maximum number of items already stored */
-    SIR_E_OPTIONS   = 6,    /**< Option flags are invalid */
-    SIR_E_LEVELS    = 7,    /**< Level flags are invalid */
-    SIR_E_TEXTSTYLE = 8,    /**< Text style is invalid */
-    SIR_E_STRING    = 9,    /**< Invalid string argument */
-    SIR_E_NULLPTR   = 10,   /**< NULL pointer argument */
-    SIR_E_INVALID   = 11,   /**< Invalid argument */
-    SIR_E_NODEST    = 12,   /**< No destinations registered for level */
-    SIR_E_UNAVAIL   = 13,   /**< Feature is disabled or unavailable */
-    SIR_E_INTERNAL  = 14,   /**< An internal error has occurred */
-    SIR_E_COLORMODE = 15,   /**< Color mode is invalid */
-    SIR_E_TEXTATTR  = 16,   /**< Text attributes are invalid */
-    SIR_E_TEXTCOLOR = 17,   /**< Text color is invalid for mode */
-    SIR_E_PLUGINBAD = 18,   /**< Plugin module is malformed */
-    SIR_E_PLUGINDAT = 19,   /**< Data produced by plugin is invalid */
-    SIR_E_PLUGINVER = 20,   /**< Plugin interface version unsupported */
-    SIR_E_PLUGINERR = 21,   /**< Plugin reported failure */
-    SIR_E_PLATFORM  = 22,   /**< Platform error code %%d: %%s */
+    SIR_E_NOERROR   = 1,    /**< The operation completed successfully */
+    SIR_E_NOTREADY  = 2,    /**< libsir has not been initialized */
+    SIR_E_ALREADY   = 3,    /**< libsir is already initialized */
+    SIR_E_DUPITEM   = 4,    /**< Item already managed by libsir */
+    SIR_E_NOITEM    = 5,    /**< Item not managed by libsir */
+    SIR_E_NOROOM    = 6,    /**< Maximum number of items already stored */
+    SIR_E_OPTIONS   = 7,    /**< Option flags are invalid */
+    SIR_E_LEVELS    = 8,    /**< Level flags are invalid */
+    SIR_E_TEXTSTYLE = 9,    /**< Text style is invalid */
+    SIR_E_STRING    = 10,    /**< Invalid string argument */
+    SIR_E_NULLPTR   = 11,   /**< NULL pointer argument */
+    SIR_E_INVALID   = 12,   /**< Invalid argument */
+    SIR_E_NODEST    = 13,   /**< No destinations registered for level */
+    SIR_E_UNAVAIL   = 14,   /**< Feature is disabled or unavailable */
+    SIR_E_INTERNAL  = 15,   /**< An internal error has occurred */
+    SIR_E_COLORMODE = 16,   /**< Color mode is invalid */
+    SIR_E_TEXTATTR  = 17,   /**< Text attributes are invalid */
+    SIR_E_TEXTCOLOR = 18,   /**< Text color is invalid for mode */
+    SIR_E_PLUGINBAD = 19,   /**< Plugin module is malformed */
+    SIR_E_PLUGINDAT = 20,   /**< Data produced by plugin is invalid */
+    SIR_E_PLUGINVER = 21,   /**< Plugin interface version unsupported */
+    SIR_E_PLUGINERR = 22,   /**< Plugin reported failure */
+    SIR_E_PLATFORM  = 23,   /**< Platform error code %%d: %%s */
     SIR_E_UNKNOWN   = 4095, /**< Unknown error */
 };
 
@@ -85,7 +85,7 @@ uint16_t _sir_geterrcode(uint32_t err) {
 }
 
 /** Internal error codes. */
-# define _SIR_E_NOERROR   _sir_mkerror(SIR_E_NOERROR)
+# define _SIR_E_NOERROR   _sir_mkerror(SIR_E_NOERROR) //-V616
 # define _SIR_E_NOTREADY  _sir_mkerror(SIR_E_NOTREADY)
 # define _SIR_E_ALREADY   _sir_mkerror(SIR_E_ALREADY)
 # define _SIR_E_DUPITEM   _sir_mkerror(SIR_E_DUPITEM)
