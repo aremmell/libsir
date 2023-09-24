@@ -468,7 +468,21 @@ namespace sir
      * @class boost_format_adapter
      * @brief Adapter for boost::format (when available).
      *
-     * TODO: update description
+     * Enabled when boost::format is available on this platform and
+     * SIR_NO_BOOST_FORMAT is not defined.
+     *
+     * Allows for the use of boost::format in place of (or in addition to)
+     * C-style variadic argument methods.
+     *
+     * **Example:**
+     *
+     * ~~~
+     * using my_logger = logger<true, default_policy, boost_format_adapter>;
+     * my_logger log;
+     * log.info_bf(boost::format("This is from %1%!" % "boost::format"));
+     * ~~~
+     *
+     * @see boost_logger
      *
      * @tparam TPolicy A derived class of policy which controls the behavior
      * of logger and by association, its adapters.
@@ -479,42 +493,42 @@ namespace sir
         boost_format_adapter() = default;
         ~boost_format_adapter() override = default;
 
-        bool debug_boost(const boost::format& fmt) const {
+        bool debug_bf(const boost::format& fmt) const {
             const bool ret = sir_debug("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        bool info_boost(const boost::format& fmt) const {
+        bool info_bf(const boost::format& fmt) const {
             const bool ret = sir_info("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        bool notice_boost(const boost::format& fmt) const {
+        bool notice_bf(const boost::format& fmt) const {
             const bool ret = sir_notice("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        bool warn_boost(const boost::format& fmt) const {
+        bool warn_bf(const boost::format& fmt) const {
             const bool ret = sir_warn("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        bool error_boost(const boost::format& fmt) const {
+        bool error_bf(const boost::format& fmt) const {
             const bool ret = sir_error("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        bool crit_boost(const boost::format& fmt) const {
+        bool crit_bf(const boost::format& fmt) const {
             const bool ret = sir_crit("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        bool alert_boost(const boost::format& fmt) const {
+        bool alert_bf(const boost::format& fmt) const {
             const bool ret = sir_alert("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        bool emerg_boost(const boost::format& fmt) const {
+        bool emerg_bf(const boost::format& fmt) const {
             const bool ret = sir_emerg("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }

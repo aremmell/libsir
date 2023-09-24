@@ -321,14 +321,14 @@ bool sir::tests::boost_format() {
 #if defined(__SIR_HAVE_BOOST_FORMAT__)
     using bf = boost::format;
     boost_logger log;
-    _sir_eqland(pass, log.debug_boost(bf("Testing %1% %2%")  % "boost" % "Howdy"));
-    _sir_eqland(pass, log.info_boost(bf("Testing %1% %2%")   % "boost" % true));
-    _sir_eqland(pass, log.notice_boost(bf("Testing %1% %2%") % "boost" % (1.0 / 1e9)));
-    _sir_eqland(pass, log.warn_boost(bf("Testing %1% %2%")   % "boost" % std::to_string(123456789)));
-    _sir_eqland(pass, log.error_boost(bf("Testing %1% %2%")  % "boost" % std::numeric_limits<uint64_t>::max()));
-    _sir_eqland(pass, log.crit_boost(bf("Testing %1% %2%")   % "boost" % 0b10101010));
-    _sir_eqland(pass, log.alert_boost(bf("Testing %1% %2%")  % "boost" % 0x80000000U));
-    _sir_eqland(pass, log.emerg_boost(bf("Testing %1% %2%")  % "boost" % 3.14));
+    _sir_eqland(pass, log.debug_bf(bf("Testing %1% %2%")  % "boost" % "Howdy"));
+    _sir_eqland(pass, log.info_bf(bf("Testing %1% %2%")   % "boost" % true));
+    _sir_eqland(pass, log.notice_bf(bf("Testing %1% %2%") % "boost" % (1.0 / 1e9)));
+    _sir_eqland(pass, log.warn_bf(bf("Testing %1% %2%")   % "boost" % std::to_string(123456789)));
+    _sir_eqland(pass, log.error_bf(bf("Testing %1% %2%")  % "boost" % std::numeric_limits<uint64_t>::max()));
+    _sir_eqland(pass, log.crit_bf(bf("Testing %1% %2%")   % "boost" % 0b10101010));
+    _sir_eqland(pass, log.alert_bf(bf("Testing %1% %2%")  % "boost" % 0x80000000U));
+    _sir_eqland(pass, log.emerg_bf(bf("Testing %1% %2%")  % "boost" % 3.14));
 #else
     TEST_MSG_0(EMPH(BBLUE("boost::format support not enabled; skipping")));
 #endif // !__SIR_HAVE_BOOST_FORMAT__
