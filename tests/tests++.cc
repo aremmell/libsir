@@ -147,8 +147,6 @@ bool sir::tests::raii_init_cleanup() {
         default_logger log;
         TEST_MSG_0("RAII logger created; creating another which should throw...");
         default_logger log2;
-        TEST_MSG_0("this message should not appear if the current policy throws"
-            " on error");
     } catch (std::exception& ex) {
         TEST_MSG("caught exception: '%s'", ex.what());
         _sir_eqland(pass, _sir_validstrnofail(ex.what()));
