@@ -161,7 +161,7 @@ int main(void) {
     (void)sir_debug("If this was real, we would be exiting with code %d now!", 1);
 
     /* Deregister (and close) the log file. */
-    if (fileid && !sir_remfile(fileid))
+    if (!sir_remfile(fileid))
         report_warning("Failed to deregister log file");
 
     /*
