@@ -36,7 +36,6 @@ libsir&mdash;a lightweight, cross-platform library for information distribution
   - [Visual Studio Code](#visual-studio-code)
     - [Build Tasks](#vs-code-build-tasks)
   - [Visual Studio 2022](#visual-studio-2022)
-
 - [Dig in](#dig-in)
 - [SAST Tools](#sast-tools)
 - [Other Tools](#other-tools)
