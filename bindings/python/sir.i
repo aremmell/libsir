@@ -54,7 +54,7 @@
 %rename(TextColor) sir_textcolor;
 %ignore sir_colormode;
 %rename(ColorMode) sir_colormode;
-%ignore sir_errinfo
+%ignore sir_errinfo;
 %rename(ErrorInfo) sir_errinfo;
 
 /* constants/enums. */
