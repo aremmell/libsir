@@ -25,7 +25,7 @@
             }
         },
         {
-            "label": "Static library",
+            "label": "Static Library",
             "type": "process",
             "command": "make",
             "args": [
@@ -36,7 +36,7 @@
                 "kind": "build",
                 "isDefault": false
             },
-            "dependsOn": "Clean",
+            "dependsOn": "",
             "linux": {
                 "problemMatcher": [
                       "$gcc"
@@ -64,7 +64,7 @@
             }
         },
         {
-            "label": "DBG: Static library",
+            "label": "DBG: Static Library",
             "type": "process",
             "command": "make",
             "args": [
@@ -76,7 +76,7 @@
             "group": {
                 "kind": "build"
             },
-            "dependsOn": "Clean",
+            "dependsOn": "",
             "linux": {
                 "problemMatcher": [
                       "$gcc"
@@ -104,7 +104,7 @@
             }
         },
         {
-            "label": "Shared library",
+            "label": "Shared Library",
             "type": "process",
             "command": "make",
             "args": [
@@ -114,7 +114,7 @@
             "group": {
                 "kind": "build"
             },
-            "dependsOn": "Clean",
+            "dependsOn": "",
             "linux": {
                 "problemMatcher": [
                       "$gcc"
@@ -142,7 +142,7 @@
             }
         },
         {
-            "label": "DBG: Shared library",
+            "label": "DBG: Shared Library",
             "type": "process",
             "command": "make",
             "args": [
@@ -154,7 +154,7 @@
             "group": {
                 "kind": "build"
             },
-            "dependsOn": "Clean",
+            "dependsOn": "",
             "linux": {
                 "problemMatcher": [
                       "$gcc"
@@ -182,7 +182,7 @@
             }
         },
         {
-            "label": "Test suite (C)",
+            "label": "Test Suite (C)",
             "type": "process",
             "command": "make",
             "args": [
@@ -193,7 +193,7 @@
                 "kind": "build",
                 "isDefault": true
             },
-            "dependsOn": "Static library",
+            "dependsOn": "",
             "linux": {
                 "problemMatcher": [
                       "$gcc"
@@ -221,7 +221,7 @@
             }
         },
         {
-            "label": "DBG: Test suite (C)",
+            "label": "DBG: Test Suite (C)",
             "type": "process",
             "command": "make",
             "args": [
@@ -233,7 +233,7 @@
             "group": {
                 "kind": "build"
             },
-            "dependsOn": "DBG: Static library",
+            "dependsOn": "",
             "linux": {
                "problemMatcher": [
                     "$gcc"
@@ -261,7 +261,7 @@
             }
         },
         {
-            "label": "Test suite (C++)",
+            "label": "Test Suite (C++)",
             "type": "process",
             "command": "make",
             "args": [
@@ -271,7 +271,7 @@
             "group": {
                 "kind": "build"
             },
-            "dependsOn": "Static library",
+            "dependsOn": "",
             "linux": {
                 "problemMatcher": [
                       "$gcc"
@@ -299,7 +299,7 @@
             }
         },
         {
-            "label": "DBG: Test suite (C++)",
+            "label": "DBG: Test Suite (C++)",
             "type": "process",
             "command": "make",
             "args": [
@@ -311,7 +311,7 @@
             "group": {
                 "kind": "build"
             },
-            "dependsOn": "DBG: Static library",
+            "dependsOn": "",
             "linux": {
                "problemMatcher": [
                     "$gcc"
@@ -339,17 +339,17 @@
             }
         },
         {
-            "label": "Example C application",
+            "label": "Example App (C)",
             "type": "process",
             "command": "make",
             "args": [
                 "example"
             ],
-            "detail": "Compiles the sample C application demonstrating basic usage of libsir.",
+            "detail": "Compiles the C sample application.",
             "group": {
                 "kind": "build"
             },
-            "dependsOn": "Static library",
+            "dependsOn": "",
             "linux": {
                 "problemMatcher": [
                       "$gcc"
