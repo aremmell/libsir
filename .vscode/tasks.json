@@ -10,7 +10,7 @@
             "args": [
                 "clean"
             ],
-            "detail": "Delete all intermediate files and previously compiled binaries",
+            "detail": "Deletes all intermediate files and previously compiled binaries.",
             "group": {
                 "kind": "build",
                 "isDefault": false
@@ -142,13 +142,53 @@
             }
         },
         {
-            "label": "Test suite",
+            "label": "DBG: Shared library",
+            "type": "process",
+            "command": "make",
+            "args": [
+                "SIR_SELFLOG=1",
+                "SIR_DEBUG=1",
+                "shared"
+            ],
+            "detail": "Compiles libsir as a shared library with debug symbols.",
+            "group": {
+                "kind": "build"
+            },
+            "dependsOn": "Clean",
+            "linux": {
+                "problemMatcher": [
+                      "$gcc"
+                ]
+            },
+            "osx": {
+                "problemMatcher": [
+                    {
+                        "owner": "c_cpp",
+                        "fileLocation": ["relative", "${workspaceRoot}"],
+                        "pattern": {
+                            "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
+                            "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
+                        }
+                    }
+                ]
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        {
+            "label": "Test suite (C)",
             "type": "process",
             "command": "make",
             "args": [
                 "tests"
             ],
-            "detail": "Compiles a test suite binary to ensure libsir is functioning properly.",
+            "detail": "Compiles the C test suite.",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -181,7 +221,7 @@
             }
         },
         {
-            "label": "DBG: Test suite",
+            "label": "DBG: Test suite (C)",
             "type": "process",
             "command": "make",
             "args": [
@@ -189,7 +229,85 @@
                 "SIR_DEBUG=1",
                 "tests"
             ],
-            "detail": "Compiles a test suite binary with debug symbols to ensure libsir is functioning properly.",
+            "detail": "Compiles the C test suite with debug symbols.",
+            "group": {
+                "kind": "build"
+            },
+            "dependsOn": "DBG: Static library",
+            "linux": {
+               "problemMatcher": [
+                    "$gcc"
+               ]
+            },
+            "osx": {
+                "problemMatcher": [
+                    {
+                        "owner": "c_cpp",
+                        "fileLocation": ["relative", "${workspaceRoot}"],
+                        "pattern": {
+                            "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
+                            "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
+                        }
+                    }
+                ]
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        {
+            "label": "Test suite (C++)",
+            "type": "process",
+            "command": "make",
+            "args": [
+                "tests++"
+            ],
+            "detail": "Compiles the C++ test suite.",
+            "group": {
+                "kind": "build"
+            },
+            "dependsOn": "Static library",
+            "linux": {
+                "problemMatcher": [
+                      "$gcc"
+                ]
+            },
+            "osx": {
+                "problemMatcher": [
+                    {
+                        "owner": "c_cpp",
+                        "fileLocation": ["relative", "${workspaceRoot}"],
+                        "pattern": {
+                            "regexp": "^(?:.\/)(.+):([\\d]+):([\\d]+):\\s(.+):\\s(.*)$",
+                            "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
+                        }
+                    }
+                ]
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        {
+            "label": "DBG: Test suite (C++)",
+            "type": "process",
+            "command": "make",
+            "args": [
+                "SIR_SELFLOG=1",
+                "SIR_DEBUG=1",
+                "tests++"
+            ],
+            "detail": "Compiles the C++ test suite with debug symbols.",
             "group": {
                 "kind": "build"
             },
@@ -227,7 +345,7 @@
             "args": [
                 "example"
             ],
-            "detail": "Compiles a sample C application demonstrating basic usage of libsir.",
+            "detail": "Compiles the sample C application demonstrating basic usage of libsir.",
             "group": {
                 "kind": "build"
             },
