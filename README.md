@@ -156,8 +156,7 @@ A number of environment variables are available which affect the way in which li
 A VS Code workspace file is located in the root of the repository (`sir.code-workspace`). Build tasks are only configured for macOS and Linux. On other platforms, use the integrated terminal to run GNU [make](#unix-makefile) manually.
 
 #### <a id="vs-code-build-tasks" /> Build Tasks
-
-The VS Code build tasks execute `make` under the hood. To run a task, open the command list (by default, <kbd>&#8984;</kbd> + <kbd>&#8679;</kbd> + <kbd>P</kbd> on macOS, <kbd>&#8963;</kbd> + <kbd>&#8679;</kbd> + <kbd>P</kbd> on Linux), then start typing "run task" until you see "Tasks: Run Task". Click the item or press the key combination listed next to it in the list. You should then see a drop-down menu containing all of the build tasks for libsir, which are listed here:
+To run a task, open the command list (<kbd>&#8984;</kbd> + <kbd>&#8679;</kbd> + <kbd>P</kbd> on macOS, <kbd>&#8963;</kbd> + <kbd>&#8679;</kbd> + <kbd>P</kbd> on Linux), then start typing `"run task"` until you see `"Tasks: Run Task"`. Click the item or press the key combination listed next to it. You should then see a drop-down menu containing all of the build tasks for libsir, which are listed here:
 
 | Build Task            | Description                                                      |
 |:----------------------|:-----------------------------------------------------------------|
@@ -171,6 +170,8 @@ The VS Code build tasks execute `make` under the hood. To run a task, open the c
 | Test Suite (C++)      | Compiles the C++ test suite.                                     |
 | DBG: Test Suite (C++) | Compiles the C++ test suite with debug symbols.                  |
 | Example App (C)       | Compiles the C sample application.                               |
+
+The VS Code build tasks execute `make` under the hood&mdash;the non-debug tasks map directly to the [recipes](#unix-makefile-recipes) listed under Unix Makefile; the debug tasks utilize libsir's custom [environment variables](#unix-makefile-envvars) to control the build process.
 
 ### <a id="visual-studio-2022" /> Visual Studio 2022
 
