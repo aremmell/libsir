@@ -71,20 +71,40 @@ namespace sir
 {
     /**
      * @struct error
-     * @brief A libsir error object, containing a numeric error code and associated
-     * message.
+     * @brief Contains a numeric error code and formatted error message.
+     *
+     * Provides the default libsir error message formatting. In the event that
+     * the default error message formatting is undesirable, or to access more
+     * information about an error, use error_info.
+     *
+     * @see SIR_ERRORFORMAT
+     * @see sir_errorcode
+     * @see error_info
      */
     struct error {
         uint16_t code {};    /**< libsir error code (see ::sir_errorcode). */
         std::string message; /**< Message describing the error that occurred. */
+
+        constexpr bool is_os_error() const noexcept {
+            return code == SIR_E_PLATFORM;
+        }
+
+        static error from_last_error() {
+            std::string message(SIR_MAXERROR, '\0');
+            const auto code = sir_geterror(message.data());
+            return { code, std::move(message) };
+        }
     };
 
     /**
      * @struct error_info
-     * @brief Extends ::error to provide granular information about an error.
+     * @brief Contains granular information about an error.
      *
-     * In order to enable custom error handling, provides all available infor-
-     * mation about an error, without applying the default message formatting.
+     * Provides extended information about an error that occurred in order to
+     * allow for custom error handling. If the numeric error code and default
+     * error message formatting are sufficient, use error instead.
+     *
+     * @see error
      */
     struct error_info : public error {
         std::string func;       /**< Name of the function in which the error occurred. */
@@ -92,13 +112,27 @@ namespace sir
         uint32_t line {};       /**< Line number at which the error occurred. */
         int os_code {};         /**< If an OS/libc error, the associated code. */
         std::string os_message; /**< If an OS/libc error, the associated message. */
+
+        static error_info from_last_error() {
+            sir_errinfo errinfo {};
+            sir_geterrorinfo(&errinfo);
+            return { { errinfo.code, errinfo.msg }, errinfo.func, errinfo.file,
+                errinfo.line, errinfo.os_code, errinfo.os_msg };
+        }
     };
 
     /**
      * @class exception
-     * @brief Derives from std::runtime_error in order to be caught easily by
-     * standard try/catch blocks, as well as to provide useful error messages
-     * by way of the what() method.
+     * @brief The exception type thrown by libsir.
+     *
+     * Derives from std::runtime_error in order to be caught easily by standard
+     * try/catch blocks, as well as to provide useful error messages by way of
+     * the std::exception::what() method.
+     *
+     * To obtain additional information about the error that caused an exception,
+     * use error_info.
+     *
+     * @see error_info
      */
     class exception : public std::runtime_error {
     public:
@@ -107,12 +141,6 @@ namespace sir
         exception() = delete;
         explicit exception(const error& err) : exception(err.message) { }
         ~exception() override = default;
-
-        static exception from_libsir_error() {
-            std::array<char, SIR_MAXERROR> msg {};
-            const auto code = sir_geterror(msg.data());
-            return exception({ code, msg.data() });
-        }
     };
 
     /**
@@ -269,7 +297,7 @@ namespace sir
         if (!expr) {
             SIR_ASSERT(expr);
             if constexpr(TPolicy::throw_on_error()) {
-                throw exception::from_libsir_error();
+                throw exception(error::from_last_error());
             }
         }
         return expr;
@@ -767,16 +795,11 @@ namespace sir
         }
 
         error get_error() const {
-            std::array<char, SIR_MAXERROR> message {};
-            const auto code = sir_geterror(message.data());
-            return { code, message.data() };
+            return error::from_last_error();
         }
 
         error_info get_error_info() const {
-            sir_errinfo errinfo {};
-            sir_geterrorinfo(&errinfo);
-            return { { errinfo.code, errinfo.msg }, errinfo.func, errinfo.file,
-                errinfo.line, errinfo.os_code, errinfo.os_msg };
+            return error_info::from_last_error();
         }
 
         sirfileid add_file(const std::string& path, const sir_levels& levels,
