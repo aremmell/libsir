@@ -71,19 +71,18 @@ namespace sir
 {
     /**
      * @struct error
-     * @brief Contains a numeric error code and formatted error message.
+     * @brief Contains basic information about an error.
      *
-     * Provides the default libsir error message formatting. In the event that
-     * the default error message formatting is undesirable, or to access more
-     * information about an error, use error_info.
+     * Provides the default error message formatting (SIR_ERRORFORMAT). In
+     * the event that the default formatting is undesirable, or to obtain
+     * additional information about an error, use the error_info struct.
      *
      * @see SIR_ERRORFORMAT
-     * @see sir_errorcode
      * @see error_info
      */
     struct error {
-        uint16_t code {};    /**< libsir error code (see ::sir_errorcode). */
-        std::string message; /**< Message describing the error that occurred. */
+        uint16_t code {};    /**< Numeric error code (see sir_errorcode). */
+        std::string message; /**< Formatted error message. */
 
         constexpr bool is_os_error() const noexcept {
             return code == SIR_E_PLATFORM;
@@ -98,11 +97,11 @@ namespace sir
 
     /**
      * @struct error_info
-     * @brief Contains granular information about an error.
+     * @brief Contains all available information about an error.
      *
      * Provides extended information about an error that occurred in order to
      * allow for custom error handling. If the numeric error code and default
-     * error message formatting are sufficient, use error instead.
+     * error message formatting are sufficient, use the error struct instead.
      *
      * @see error
      */
@@ -282,7 +281,7 @@ namespace sir
      * in place requires throwing an exception, retrieves the associated error
      * code and message from libsir, then throws.
      *
-     * @param TPolicy policy A derived class of policy which determines whether
+     * @tparam TPolicy policy A derived class of policy which determines whether
      * or not to throw exceptions upon encountering an error.
      *
      * @param expr bool An expression that is evaluated against false. If false,
@@ -310,7 +309,7 @@ namespace sir
      * Utilizes the same code path that the C interface itself does, in order to
      * achieve maximum performance (i.e., no unnecessary bloat is added).
      *
-     * @param TPolicy policy A derived class of policy which controls the behavior
+     * @tparam TPolicy policy A derived class of policy which controls the behavior
      * of logger and by association, its adapters.
      */
     template<DerivedFromPolicy TPolicy>
@@ -399,7 +398,7 @@ namespace sir
      *
      * TODO: update description
      *
-     * @param TPolicy policy A derived class of policy which controls the behavior
+     * @tparam TPolicy policy A derived class of policy which controls the behavior
      * of logger and by association, its adapters.
      */
     template<DerivedFromPolicy TPolicy>
@@ -473,7 +472,7 @@ namespace sir
      *
      * TODO: update description
      *
-     * @param TPolicy policy A derived class of policy which controls the behavior
+     * @tparam TPolicy policy A derived class of policy which controls the behavior
      * of logger and by association, its adapters.
      */
     template<DerivedFromPolicy TPolicy>
@@ -531,7 +530,7 @@ namespace sir
      *
      * TODO: update description
      *
-     * @param TPolicy policy A derived class of policy which controls the behavior
+     * @tparam TPolicy policy A derived class of policy which controls the behavior
      * of logger and by association, its adapters.
      */
     template<DerivedFromPolicy TPolicy>
@@ -613,7 +612,7 @@ namespace sir
      * @note Use std::endl or std::flush to indicate the end of a log message if
      * using the iostream << operator.
      *
-     * @param TPolicy policy A derived class of policy which controls the behavior
+     * @tparam TPolicy policy A derived class of policy which controls the behavior
      * of logger and by association, its adapters.
      */
     template<DerivedFromPolicy TPolicy>
@@ -748,13 +747,13 @@ namespace sir
      * Instantiate this class in order to access libsir with all the benefits
      * of C++, including RAII initialization/cleanup, custom adapters, and more.
      *
-     * @param RAII      Set to `true` to enable 'resource acquisition is
+     * @tparam RAII      Set to `true` to enable 'resource acquisition is
      *                  initialization' behavior (i.e., libsir is initialized by
      *                  the ctor, and cleaned up by the dtor). Set to `false` for
      *                  manual management of initialization/cleanup.
-     * @param TPolicy   A policy class which will be responsible for certain
+     * @tparam TPolicy   A policy class which will be responsible for certain
      *                  aspects of logger's behavior.
-     * @param TAdapters One or more adapter classes whose public methods will be
+     * @tparam TAdapters One or more adapter classes whose public methods will be
      *                  exposed by this class.
      */
     template<bool RAII, DerivedFromPolicy TPolicy, template<class> class ...TAdapters>
