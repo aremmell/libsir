@@ -150,8 +150,8 @@ uint16_t sir_geterror(char message[SIR_MAXERROR]);
  * the same thread that encountered a failed library call be the one to retrieve
  * the error message.
  *
- * @param   err  Pointer to a ::sir_errinfo structure into which the error infor-
- *               mation is placed.
+ * @param err Pointer to a ::sir_errinfo structure into which the error infor-
+ *            mation is placed.
  */
 void sir_geterrorinfo(sir_errinfo* err);
 
