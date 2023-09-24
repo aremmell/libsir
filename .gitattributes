@@ -20,3 +20,6 @@ sir.code-workspace linguist-vendored
 sirplatform.mk linguist-vendored
 utils/mcmb/** linguist-vendored
 .vscode linguist-vendored
+*.ch linguist-language=C
+*.chf linguist-language=C
+*.chi linguist-language=C
