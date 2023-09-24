@@ -174,15 +174,50 @@ bool sir::tests::manual_init_cleanup() {
 bool sir::tests::error_handling() {
     _SIR_TEST_COMMENCE
 
-    /* test retrieval of libsir errors from logger::get_error(). */
+    /* test retrieval of libsir errors from logger::get_error() and
+     * logger::get_error_info(). */
+    TEST_MSG_0("create RAII logger...");
     default_logger log;
 
-    _sir_eqland(pass, log.debug("Testing get_error by doing something stupid..."));
-    _sir_eqland(pass, !log.debug(nullptr));
+    TEST_MSG_0("RAII logger created; pass bad sirfileid to logger::rem_file...");
 
-    const auto [ code, message ] = log.get_error();
-    _sir_eqland(pass, log.debug("Error info: code = %u, message = '%s'", code,
-        message.c_str()));
+    try {
+        _sir_eqland(pass, !log.rem_file(1234));
+    } catch (sir::exception& ex) {
+        _SIR_TEST_ON_EXPECTED_EXCEPTION(ex.what());
+    }
+
+    auto print_error = [&log]() {
+        TEST_MSG_0("get error with logger::get_error...");
+        const auto [ code, message ] = log.get_error();
+        TEST_MSG("error: code = %" PRIu16 ", message = '%s'", code, message.c_str());
+    };
+
+    auto print_error_info = [&log]() {
+        TEST_MSG_0("get error information with logger::get_error_info...");
+        const auto errinfo = log.get_error_info();
+        TEST_MSG("error info: code = %" PRIu16 ", message = '%s', function = '%s',"
+            " file = '%s', line = %" PRIu32 ", OS code = %d, OS message = '%s'",
+            errinfo.code, errinfo.message.c_str(), errinfo.func.c_str(),
+            errinfo.file.c_str(), errinfo.line, errinfo.os_code,
+            errinfo.os_message.c_str());
+    };
+
+    print_error();
+    print_error_info();
+    _sir_eqland(pass, log.debug("ensure logging still operational"));
+
+    TEST_MSG_0("pass invalid file name to logger::add_file...");
+
+    try {
+        _sir_eqland(pass, !log.add_file("nonexistent/file", SIRL_ALL, SIRO_DEFAULT));
+    } catch (sir::exception& ex) {
+        _SIR_TEST_ON_EXPECTED_EXCEPTION(ex.what());
+    }
+
+    print_error();
+    print_error_info();
+    _sir_eqland(pass, log.debug("ensure logging still operational"));
 
     _SIR_TEST_COMPLETE
 }
