@@ -135,8 +135,8 @@ bool sir_isinitialized(void);
  *
  * @param   message  A buffer of ::SIR_MAXERROR chars into which the error message
  *                   is placed.
- * @returns uint16_t An error code. Codes are listed in ::sir_errorcode. If no
- *                   error has occurred, returns ::SIR_E_NOERROR.
+ * @returns uint16_t An error code (see ::sir_errorcode). Returns ::SIR_E_NOERROR
+ *                   if no error has occurred.
  */
 uint16_t sir_geterror(char message[SIR_MAXERROR]);
 
@@ -150,10 +150,10 @@ uint16_t sir_geterror(char message[SIR_MAXERROR]);
  * the same thread that encountered a failed library call be the one to retrieve
  * the error message.
  *
- * @param err Pointer to a ::sir_errinfo structure into which the error infor-
+ * @param err Pointer to a ::sir_errorinfo structure into which the error infor-
  *            mation is placed.
  */
-void sir_geterrorinfo(sir_errinfo* err);
+void sir_geterrorinfo(sir_errorinfo* err);
 
 /**
  * @brief Dispatches a ::SIRL_DEBUG level message.

@@ -113,7 +113,7 @@ namespace sir
         std::string os_message; /**< If an OS/libc error, the associated message. */
 
         static error_info from_last_error() {
-            sir_errinfo errinfo {};
+            sir_errorinfo errinfo {};
             sir_geterrorinfo(&errinfo);
             return { { errinfo.code, errinfo.msg }, errinfo.func, errinfo.file,
                 errinfo.line, errinfo.os_code, errinfo.os_msg };

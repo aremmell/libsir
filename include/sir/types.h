@@ -134,7 +134,7 @@ enum {
 typedef uint32_t sir_textcolor;
 
 /**
- * @struct sir_errinfo
+ * @struct sir_errorinfo
  * @brief Information about an error that occurred.
  *
  * Granular error information in order to provide the caller with flexibility in
@@ -148,7 +148,7 @@ typedef struct {
     char os_msg[SIR_MAXERROR]; /**< If an OS/libc error, the relevant message. */
     uint16_t code;             /**< Numeric error code (see ::sir_errorcode). */
     char msg[SIR_MAXERROR];    /**< Error message associated with code. */
-} sir_errinfo;
+} sir_errorinfo;
 
 /**
  * @struct sir_textstyle

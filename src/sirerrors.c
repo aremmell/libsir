@@ -233,11 +233,11 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
     return retval;
 }
 
-void _sir_geterrorinfo(sir_errinfo* err) {
+void _sir_geterrorinfo(sir_errorinfo* err) {
     if (!_sir_validptr(err))
         return;
 
-    memset(err, 0, sizeof(sir_errinfo));
+    memset(err, 0, sizeof(sir_errorinfo));
 
     err->func = _sir_te.loc.func;
     err->file = _sir_te.loc.file;

@@ -813,7 +813,7 @@ bool sirtest_errorsanity(void) {
 
         /* ensure that sir_geterrorinfo agrees with sir_geterror, and
          * that it returns sane data. */
-        sir_errinfo errinfo = {0};
+        sir_errorinfo errinfo = {0};
         sir_geterrorinfo(&errinfo);
 
         TEST_MSG("errinfo = {'%s', '%s', %"PRIu32", %"PRIu16", '%s', %d, '%s'}",

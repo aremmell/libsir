@@ -133,7 +133,7 @@ bool __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32
 uint32_t _sir_geterror(char message[SIR_MAXERROR]);
 
 /** Returns information about the last error that occurred on the calling thread. */
-void _sir_geterrorinfo(sir_errinfo* err);
+void _sir_geterrorinfo(sir_errorinfo* err);
 
 /** Resets TLS error information. */
 void _sir_reset_tls_error(void);
