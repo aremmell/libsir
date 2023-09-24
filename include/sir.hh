@@ -396,6 +396,8 @@ namespace sir
      * log.info_std("This is from {}!", "std::format");
      * ~~~
      *
+     * @see std_format_logger
+     *
      * @tparam TPolicy A derived class of policy which controls the behavior
      * of logger and by association, its adapters.
      */
@@ -538,9 +540,23 @@ namespace sir
 # if defined(__SIR_HAVE_FMT_FORMAT__)
     /**
      * @class fmt_format_adapter
-     * @brief Adapter for fmt (when available).
+     * @brief Adapter for {fmt} (when available).
      *
-     * TODO: update description
+     * Enabled when {fmt} is available on this platform and SIR_NO_FMT_FORMAT is
+     * not defined.
+     *
+     * Allows for the use of fmt::format in place of (or in addition to) C-style
+     * variadic argument methods.
+     *
+     * **Example:**
+     *
+     * ~~~
+     * using my_logger = logger<true, default_policy, fmt_format_adapter>;
+     * my_logger log;
+     * log.info_fmt("This is from {}}!", "fmt::format"));
+     * ~~~
+     *
+     * @see fmt_logger
      *
      * @tparam TPolicy A derived class of policy which controls the behavior
      * of logger and by association, its adapters.
