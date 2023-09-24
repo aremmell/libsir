@@ -382,9 +382,21 @@ namespace sir
      * @class std_format_adapter
      * @brief Adapter for std::format (when available).
      *
-     * TODO: update description
+     * Enabled when std::format is available on this platform and SIR_NO_STD_FORMAT
+     * is not defined.
      *
-     * @tparam TPolicy policy A derived class of policy which controls the behavior
+     * Allows for the use of std::format in place of (or in addition to) C-style
+     * variadic argument methods.
+     *
+     * **Example:**
+     *
+     * ~~~
+     * using my_logger = logger<true, default_policy, std_format_adapter>;
+     * my_logger log;
+     * log.info_std("This is from {}!", "std::format");
+     * ~~~
+     *
+     * @tparam TPolicy A derived class of policy which controls the behavior
      * of logger and by association, its adapters.
      */
     template<DerivedFromPolicy TPolicy>
