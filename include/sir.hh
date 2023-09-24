@@ -787,14 +787,16 @@ namespace sir
      * Instantiate this class in order to access libsir with all the benefits
      * of C++, including RAII initialization/cleanup, custom adapters, and more.
      *
-     * @tparam RAII      Set to `true` to enable 'resource acquisition is
-     *                  initialization' behavior (i.e., libsir is initialized by
-     *                  the ctor, and cleaned up by the dtor). Set to `false` for
-     *                  manual management of initialization/cleanup.
+     * @see default_logger
+     *
+     * @tparam RAII      Set to true to enable 'resource acquisition is
+     *                   initialization' behavior (i.e., libsir is initialized by
+     *                   the ctor, and cleaned up by the dtor). Set to false for
+     *                   manual management of initialization/cleanup.
      * @tparam TPolicy   A policy class which will be responsible for certain
-     *                  aspects of logger's behavior.
+     *                   aspects of logger's behavior.
      * @tparam TAdapters One or more adapter classes whose public methods will be
-     *                  exposed by this class.
+     *                   exposed by this class.
      */
     template<bool RAII, DerivedFromPolicy TPolicy, template<class> class ...TAdapters>
     requires DerivedFromT<adapter, TAdapters<TPolicy>...>
@@ -965,6 +967,11 @@ namespace sir
     using default_logger = logger<true, default_policy, default_adapter>;
 
 # if defined(__SIR_HAVE_STD_FORMAT__)
+    /**
+     * @typedef std_format_logger
+     * @brief A logger that implements the default adapter and the std::format
+     * adapter.
+     */
     using std_format_logger = logger
     <
         true,
@@ -975,6 +982,11 @@ namespace sir
 # endif
 
 # if defined(__SIR_HAVE_BOOST_FORMAT__)
+    /**
+     * @typedef boost_logger
+     * @brief A logger that implements the default adapter and the boost::format
+     * adapter.
+     */
     using boost_logger = logger
     <
         true,
@@ -985,6 +997,11 @@ namespace sir
 # endif
 
 # if defined(__SIR_HAVE_FMT_FORMAT__)
+    /**
+     * @typedef fmt_logger
+     * @brief A logger that implements the default adapter and the fmt::format
+     * adapter.
+     */
     using fmt_logger = logger
     <
         true,
@@ -995,6 +1012,11 @@ namespace sir
 # endif
 
 # if !defined(SIR_NO_STD_IOSTREAM)
+    /**
+     * @typedef iostream_logger
+     * @brief A logger that implements the default adapter and the std::iostream
+     * adapter.
+     */
     using iostream_logger = logger
     <
         true,
