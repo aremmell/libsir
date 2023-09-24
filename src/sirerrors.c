@@ -51,7 +51,8 @@ static _sir_thread_local sir_thread_err _sir_te = {
     _SIR_E_NOERROR, 0, {0}, {SIR_UNKNOWN, SIR_UNKNOWN, 0}
 };
 
-#define _SIR_E_PLATFORM_ERRORFORMAT "Platform error code %d: %s"
+#define _SIR_E_PLATFORM_ERRORMSG "Platform error"
+#define _SIR_E_PLATFORM_ERRORFORMAT _SIR_E_PLATFORM_ERRORMSG " code %d: %s"
 
 static const struct {
     uint32_t e;
@@ -255,8 +256,11 @@ void _sir_geterrorinfo(sir_errinfo* err) {
     _SIR_BEGIN_BIN_SEARCH()
 
     if (sir_errors[_mid].e == _sir_te.lasterror) {
-        err->code = _sir_geterrcode(_sir_te.lasterror);
-        (void)_sir_strncpy(err->msg, SIR_MAXERROR, sir_errors[_mid].msg, SIR_MAXERROR);
+        err->code = _sir_geterrcode(sir_errors[_mid].e);
+        if (_SIR_E_PLATFORM == sir_errors[_mid].e)
+            (void)_sir_strncpy(err->msg, SIR_MAXERROR, _SIR_E_PLATFORM_ERRORMSG, SIR_MAXERROR);
+        else
+            (void)_sir_strncpy(err->msg, SIR_MAXERROR, sir_errors[_mid].msg, SIR_MAXERROR);
         break;
     }
 

@@ -803,8 +803,6 @@ bool sirtest_errorsanity(void) {
         {SIR_E_UNKNOWN,   "SIR_E_UNKNOWN"},   /**< Unknown error (4095) */
     };
 
-    // TODO: add test for geterrorinfo.
-
     char message[SIR_MAXERROR] = {0};
     for (size_t n = 0; n < _sir_countof(errors); n++) {
         (void)_sir_seterror(_sir_mkerror(errors[n].code));
@@ -812,6 +810,26 @@ bool sirtest_errorsanity(void) {
         uint16_t err = sir_geterror(message);
         _sir_eqland(pass, errors[n].code == err && *message != '\0');
         TEST_MSG("%s = %s", errors[n].name, message);
+
+        /* ensure that sir_geterrorinfo agrees with sir_geterror, and
+         * that it returns sane data. */
+        sir_errinfo errinfo = {0};
+        sir_geterrorinfo(&errinfo);
+
+        TEST_MSG("errinfo = {'%s', '%s', %"PRId32", %"PRId16", '%s', %d, '%s'}",
+            errinfo.func, errinfo.file, errinfo.line, errinfo.code, errinfo.msg,
+            errinfo.os_code, errinfo.os_msg);
+
+        _sir_eqland(pass, errinfo.code == err);
+        _sir_eqland(pass, _sir_strsame(__func__, errinfo.func, strlen(__func__)));
+        _sir_eqland(pass, _sir_strsame(__file__, errinfo.file, SIR_MAXPATH));
+        _sir_eqland(pass, errinfo.line != 0U);
+        _sir_eqland(pass, _sir_validstrnofail(errinfo.msg));
+
+        if (errinfo.code == SIR_E_PLATFORM) {
+            _sir_eqland(pass, errinfo.code != 0);
+            _sir_eqland(pass, _sir_validstrnofail(errinfo.os_msg));
+        }
     }
 
     _sir_eqland(pass, sir_cleanup());

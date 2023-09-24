@@ -85,7 +85,7 @@ uint16_t _sir_geterrcode(uint32_t err) {
 }
 
 /** Internal error codes. */
-# define _SIR_E_NOERROR   SIR_E_NOERROR
+# define _SIR_E_NOERROR   _sir_mkerror(SIR_E_NOERROR)
 # define _SIR_E_NOTREADY  _sir_mkerror(SIR_E_NOTREADY)
 # define _SIR_E_ALREADY   _sir_mkerror(SIR_E_ALREADY)
 # define _SIR_E_DUPITEM   _sir_mkerror(SIR_E_DUPITEM)
