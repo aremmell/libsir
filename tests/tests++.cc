@@ -123,9 +123,11 @@ bool sir::tests::raii_init_cleanup() {
      * initializes and cleans up libsir. */
     do
     {
+        TEST_MSG_0("create scoped RAII logger...");
         default_logger log;
 
-        _sir_eqland(pass, log.debug("RAII logger initialized via constructor"));
+        TEST_MSG_0("scoped RAII logger created; test logging...");
+        _sir_eqland(pass, log.debug("Testing debug level"));
         _sir_eqland(pass, log.info("Testing info level"));
         _sir_eqland(pass, log.notice("Testing notice level"));
         _sir_eqland(pass, log.warn("Testing warning level"));
@@ -133,8 +135,9 @@ bool sir::tests::raii_init_cleanup() {
         _sir_eqland(pass, log.crit("Testing critical level"));
         _sir_eqland(pass, log.alert("Testing alert level"));
         _sir_eqland(pass, log.emerg("Testing emergency level"));
-        _sir_eqland(pass, log.debug("Cleanup will be performed via destructor"));
     } while (false);
+
+    TEST_MSG_0("confirm cleaned up...");
 
      /* should fail; already cleaned up. */
     _sir_eqland(pass, !sir_cleanup());
@@ -143,14 +146,14 @@ bool sir::tests::raii_init_cleanup() {
      * to instantiate another. when using the default policy, this will result
      * in an exception being thrown. */
     try {
-        TEST_MSG_0("creating RAII logger...");
+        TEST_MSG_0("create RAII logger...");
         default_logger log;
-        TEST_MSG_0("RAII logger created; creating another which should throw...");
+        TEST_MSG_0("RAII logger created; create another which should throw...");
         default_logger log2;
         TEST_MSG_0("this message should not appear if the current policy throws"
             " on error");
     } catch (std::exception& ex) {
-        TEST_MSG("caught exception: '%s'", ex.what());
+        _SIR_TEST_ON_EXPECTED_EXCEPTION(ex.what());
         _sir_eqland(pass, _sir_validstrnofail(ex.what()));
     }
 
@@ -160,13 +163,29 @@ bool sir::tests::raii_init_cleanup() {
 bool sir::tests::manual_init_cleanup() {
     _SIR_TEST_COMMENCE
 
+    TEST_MSG_0("manually initialize logger...");
     logger<false, default_policy, default_adapter> log;
     _sir_eqland(pass, log.init());
 
-    _sir_eqland(pass, log.debug("Manually initialized"));
-    _sir_eqland(pass, log.debug("Will not clean up in the destructor; cleaning up manually"));
+    TEST_MSG_0("manually initialized; initialize again...");
+    _sir_eqland(pass, !log.init());
 
+    TEST_MSG_0("test logging...");
+
+    _sir_eqland(pass, log.debug("Testing debug level"));
+    _sir_eqland(pass, log.info("Testing info level"));
+    _sir_eqland(pass, log.notice("Testing notice level"));
+    _sir_eqland(pass, log.warn("Testing warning level"));
+    _sir_eqland(pass, log.error("Testing error level"));
+    _sir_eqland(pass, log.crit("Testing critical level"));
+    _sir_eqland(pass, log.alert("Testing alert level"));
+    _sir_eqland(pass, log.emerg("Testing emergency level"));
+
+    TEST_MSG_0("manually clean up logger...");
     _sir_eqland(pass, log.cleanup());
+
+    TEST_MSG_0("clean up again...");
+    _sir_eqland(pass, !log.cleanup());
 
     _SIR_TEST_COMPLETE
 }
@@ -226,27 +245,27 @@ bool sir::tests::exception_handling() {
     bool pass = true;
 
     try {
-        TEST_MSG_0("throw an exception with a string message...");
+        TEST_MSG_0("throw a sir::exception with a string message...");
         throw exception("something has gone terribly wrong!");
     } catch (sir::exception& ex) {
-        TEST_MSG("caught exception: '%s'", ex.what());
+        _SIR_TEST_ON_EXPECTED_EXCEPTION(ex.what());
         _sir_eqland(pass, _sir_validstrnofail(ex.what()));
     }
 
     try {
         default_logger log;
-        TEST_MSG_0("throw an exception from a libsir error...");
+        TEST_MSG_0("throw a sir::exception from a libsir error...");
         _sir_eqland(pass, !log.add_file("", SIRL_NONE, SIRO_ALL));
     } catch (sir::exception& ex) {
-        TEST_MSG("caught exception: '%s'", ex.what());
+        _SIR_TEST_ON_EXPECTED_EXCEPTION(ex.what());
         _sir_eqland(pass, _sir_validstrnofail(ex.what()));
     }
 
     try {
-        TEST_MSG_0("throw an exception from an error struct...");
+        TEST_MSG_0("throw a sir::exception from an error struct...");
         throw exception({ 1234, "a fake error"});
     } catch (sir::exception& ex) {
-        TEST_MSG("caught exception: '%s'", ex.what());
+        _SIR_TEST_ON_EXPECTED_EXCEPTION(ex.what());
         _sir_eqland(pass, _sir_validstrnofail(ex.what()));
     }
 
@@ -353,7 +372,7 @@ bool sir::tests::std_iostream_format() {
 
     log.debug_stream << "If you can see this, std::iostream is working." << flush;
     _sir_eqland(pass, log.debug_stream.good());
-    log.debug_stream << "With flush as a deliminator," << flush;
+    log.debug_stream << "With flush as a deliminator..." << flush;
     _sir_eqland(pass, log.debug_stream.good());
     log.debug_stream << "and newlines, too." << endl;
     _sir_eqland(pass, log.debug_stream.good());
