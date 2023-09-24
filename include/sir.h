@@ -152,7 +152,6 @@ uint16_t sir_geterror(char message[SIR_MAXERROR]);
  *
  * @param   err  Pointer to a ::sir_errinfo structure into which the error infor-
  *               mation is placed.
- * @returns void
  */
 void sir_geterrorinfo(sir_errinfo* err);
 
