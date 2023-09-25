@@ -28,6 +28,7 @@
 
 # if (defined(__TURBOC__) || defined(__BORLANDC__) || \
      defined(__BCPLUSPLUS__) || defined(__CODEGEARC__))
+#  undef SIR_EVENTLOG_ENABLED
 #  if !defined(__EMBARCADEROC__)
 #   define __EMBARCADEROC__
 #  endif
