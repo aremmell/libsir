@@ -28,7 +28,6 @@
 
 # if (defined(__TURBOC__) || defined(__BORLANDC__) || \
      defined(__BCPLUSPLUS__) || defined(__CODEGEARC__))
-#  include <stdint.h>
 #  if !defined(__EMBARCADEROC__)
 #   define __EMBARCADEROC__
 #  endif
@@ -54,6 +53,12 @@
 #   undef PRIXPTR
 #   define PRIXPTR SIR_UIPTRX
 #  endif
+# if defined(__WIN__)
+# undef __HAVE_EMBARCADEROC_PRAGMA__
+#  if defined(_WIN64)
+#   define __HAVE_EMBARCADEROC_PRAGMA__
+#  endif
+# endif
 # endif
 
 #endif /* !_SIR_PLATFORM_EMBARCADERO_H_INCLUDED */

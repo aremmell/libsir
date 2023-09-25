@@ -26,9 +26,13 @@
 #include "sir/filesystem.h"
 #include "sir/internal.h"
 
-#if defined(__WIN__)
-# pragma comment(lib, WIN_LIBRARY("shlwapi"))
-#endif
+# if defined(__WIN__)
+#  if defined(__HAVE_EMBARCADEROC_PRAGMA__)
+#   pragma comment(lib, "shlwapi.a")
+#  else
+#   pragma comment(lib, "shlwapi.lib")
+#  endif
+# endif
 
 bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_rel_to rel_to) {
     if (!_sir_validstr(path) || !_sir_validptr(st))

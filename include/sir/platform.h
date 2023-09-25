@@ -610,12 +610,6 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 # include "sir/platform_embarcadero.h"
 
-# if defined(__EMBARCADEROC__) && defined(_WIN64)
-#  LINK_WIN_LIBRARY(lib) lib ".a"
-# else
-#  define WIN_LIBRARY(lib) lib ".lib"
-# endif
-
 # if (defined(__clang__) || defined(__GNUC__)) && defined(__FILE_NAME__)
 #  define __file__ __FILE_NAME__
 # elif defined(__BASE_FILE__)
