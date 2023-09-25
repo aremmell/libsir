@@ -363,6 +363,8 @@ _set_thread_local_invalid_parameter_handler(
 #   undef SIR_EVENTLOG_ENABLED
 #   if !defined(__EMBARCADEROC__) && !defined(__ORANGEC__)
 #    define SIR_EVENTLOG_ENABLED
+#   else
+#    define SIR_NO_SYSTEM_LOGGERS
 #   endif
 #  else
 #   undef SIR_OS_LOG_ENABLED
