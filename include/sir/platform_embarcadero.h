@@ -53,13 +53,6 @@
 #   undef PRIXPTR
 #   define PRIXPTR SIR_UIPTRX
 #  endif
-#  if defined(__WIN__)
-#   undef SIR_EVENTLOG_ENABLED
-#   undef __HAVE_EMBARCADEROC_PRAGMA__
-#   if defined(_WIN64)
-#    define __HAVE_EMBARCADEROC_PRAGMA__
-#   endif
-#  endif
 # endif
 
 #endif /* !_SIR_PLATFORM_EMBARCADERO_H_INCLUDED */

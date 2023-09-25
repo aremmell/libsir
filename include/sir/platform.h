@@ -352,25 +352,6 @@ _set_thread_local_invalid_parameter_handler(
 # include <limits.h>
 # include <time.h>
 
-# if !defined(SIR_NO_SYSTEM_LOGGERS)
-#  if defined(__MACOS__) && !defined(__IMPORTC__) && \
-      ((defined(__clang__) || defined(__clang_version__)) && \
-      !(defined(__INTEL_COMPILER) && !defined(__llvm__)) && \
-      defined(__clang_major__) && defined(__clang_minor__) && defined(__clang_patchlevel__))
-#   undef SIR_OS_LOG_ENABLED
-#   define SIR_OS_LOG_ENABLED
-#  elif defined(__WIN__)
-#   undef SIR_EVENTLOG_ENABLED
-#   define SIR_EVENTLOG_ENABLED
-#  else
-#   undef SIR_OS_LOG_ENABLED
-#   define SIR_SYSLOG_ENABLED
-#  endif
-# else
-#  undef SIR_OS_LOG_ENABLED
-#  undef SIR_SYSLOG_ENABLED
-# endif
-
 # define SIR_MAXHOST 256
 
 # if !defined(__WIN__)
@@ -609,6 +590,25 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 # endif
 
 # include "sir/platform_embarcadero.h"
+
+# if !defined(SIR_NO_SYSTEM_LOGGERS)
+#  if defined(__MACOS__) && !defined(__IMPORTC__) && \
+      ((defined(__clang__) || defined(__clang_version__)) && \
+      !(defined(__INTEL_COMPILER) && !defined(__llvm__)) && \
+      defined(__clang_major__) && defined(__clang_minor__) && defined(__clang_patchlevel__))
+#   undef SIR_OS_LOG_ENABLED
+#   define SIR_OS_LOG_ENABLED
+#  elif defined(__WIN__) && !defined(__EMBARCADEROC__) && !defined(__ORANGEC__)
+#   undef SIR_EVENTLOG_ENABLED
+#   define SIR_EVENTLOG_ENABLED
+#  else
+#   undef SIR_OS_LOG_ENABLED
+#   define SIR_SYSLOG_ENABLED
+#  endif
+# else
+#  undef SIR_OS_LOG_ENABLED
+#  undef SIR_SYSLOG_ENABLED
+# endif
 
 # if (defined(__clang__) || defined(__GNUC__)) && defined(__FILE_NAME__)
 #  define __file__ __FILE_NAME__
