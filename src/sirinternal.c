@@ -33,6 +33,9 @@
 #include "sir/mutex.h"
 
 #if defined(__WIN__)
+# if defined(SIR_EVENTLOG_ENABLED)
+#  include "sir/wineventlog.h"
+# endif
 # if defined(__EMBARCADEROC__) && defined(_WIN64)
 #  pragma comment(lib, "ws2_32.a")
 # else
@@ -888,6 +891,16 @@ bool _sir_syslog_open(sir_syslog_dest* ctx) {
 
     openlog(ctx->identity, logopt, facility);
     _sir_selflog("opened syslog('%s', %x, %x)", ctx->identity, logopt, facility);
+# elif defined(SIR_EVENTLOG_ENABLED)
+    DWORD reg = EventRegister(&SIR_EVENTLOG_GUID, NULL, NULL,
+        (PREGHANDLE)&ctx->_state.logger);
+    if (ERROR_SUCCESS == reg) {
+        _sir_selflog("opened eventlog('%s')", ctx->identity);
+    } else {
+        /* not fatal; logging calls will just silently fail. */
+        _sir_selflog("failed to open eventlog! error: %lu", reg);
+        (void)_sir_handlewin32err(reg);
+    }
 # endif
 
     _sir_setbitshigh(&ctx->_state.mask, SIRSL_IS_OPEN);
@@ -917,7 +930,7 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, const sir_syslog_dest
         os_log_info((os_log_t)ctx->_state.logger, SIR_OS_LOG_FORMAT, buf->message);
     else if (SIRL_WARN == level || SIRL_ERROR == level)
         os_log_error((os_log_t)ctx->_state.logger, SIR_OS_LOG_FORMAT, buf->message);
-    else if (SIRL_ALERT == level || SIRL_CRIT == level || SIRL_EMERG == level)
+    else if (SIRL_CRIT == level || SIRL_ALERT == level || SIRL_EMERG == level)
         os_log_fault((os_log_t)ctx->_state.logger, SIR_OS_LOG_FORMAT, buf->message);
 
     return true;
@@ -940,6 +953,52 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, const sir_syslog_dest
     }
 
     syslog(syslog_level, "%s", buf->message);
+    return true;
+# elif defined(SIR_EVENTLOG_ENABLED)
+    // TODO: figure out how to create a new channel that isn't the application log for the
+    // entire system, so that we can add a new event targeted for the verbose level. for now,
+    // debug will have to be ignored.
+    const EVENT_DESCRIPTOR* edesc = NULL;
+    if (/*SIRL_DEBUG == level ||*/ SIRL_INFO == level || SIRL_NOTICE == level)
+        edesc = &SIR_EVT_INFO;
+    else if (SIRL_WARN == level)
+        edesc = &SIR_EVT_WARNING;
+    else if (SIRL_ERROR == level)
+        edesc = &SIR_EVT_ERROR;
+    else if (SIRL_CRIT == level || SIRL_ALERT == level || SIRL_EMERG == level)
+        edesc = &SIR_EVT_CRITICAL;
+
+    if (NULL != edesc) {
+#  if defined(__HAVE_STDC_SECURE_OR_EXT1__)
+        size_t msg_len = strnlen_s(buf->message, SIR_MAXMESSAGE) + 1;
+#  else
+        size_t msg_len = strnlen(buf->message, SIR_MAXMESSAGE) + 1;
+#  endif
+        int wlen = MultiByteToWideChar(CP_UTF8, 0UL, buf->message, (int)msg_len, NULL, 0);
+        if (wlen <= 0)
+            return _sir_handlewin32err(GetLastError());
+
+        DWORD write = 0xffffffffUL;
+        wchar_t* wmsg = calloc(sizeof(wchar_t), wlen);
+        if (NULL != wmsg) {
+            int conv = MultiByteToWideChar(CP_UTF8, 0UL, buf->message, (int)msg_len, wmsg, wlen);
+            if (conv > 0) {
+                EVENT_DATA_DESCRIPTOR eddesc = {0};
+                EventDataDescCreate(&eddesc, wmsg, (ULONG)(wlen * sizeof(wchar_t)));
+
+                write = EventWrite((REGHANDLE)ctx->_state.logger, edesc, 1UL, &eddesc);
+                if (ERROR_SUCCESS != write) {
+                    _sir_selflog("failed to write eventlog! error: %lu", write);
+                    (void)_sir_handlewin32err(write);
+                }
+            }
+            _sir_safefree(&wmsg);
+        }
+
+        return ERROR_SUCCESS == write;
+    }
+
+    // TODO: change to false when debug is implemented.
     return true;
 # else
     SIR_UNUSED(level);
@@ -973,34 +1032,35 @@ bool _sir_syslog_updated(sirinit* si, const sir_update_config_data* data) {
                      levels, options, category, identity, is_init, is_open);
 
         bool must_init = false;
-
 # if defined(SIR_OS_LOG_ENABLED)
-        /*
-         * for os_log, if initialized and open already, only need to reconfigure
-         * if identity or category changed.
-         */
+        /* for os_log, if initialized and open already, only need to reconfigure
+         * if identity or category changed. */
         must_init = (!is_init || !is_open) || (identity || category);
 # elif defined(SIR_SYSLOG_ENABLED)
-        /*
-         * for os_log, if initialized and open already, only need to reconfigure
-         * if identity or options changed.
-         */
+        /* for syslog, if initialized and open already, only need to reconfigure
+         * if identity or options changed. */
         must_init = (!is_init || !is_open) || (identity || options);
+# elif defined(SIR_EVENTLOG_ENABLED)
+        /* for event log, if initialized and open already, only need to reconfigure
+         * if identity changed. */
+        must_init = (!is_init || !is_open) || identity;
 # endif
         bool init = true;
         if (must_init) {
+            if (is_open) /* close first; open will fail otherwise. */
+                init = _sir_syslog_close(&si->d_syslog);
+
             _sir_selflog("re-init...");
-            init = _sir_syslog_init(si->name, &si->d_syslog);
+            _sir_eqland(init, _sir_syslog_init(si->name, &si->d_syslog));
             _sir_selflog("re-init %s", init ? "succeeded" : "failed");
         } else {
             _sir_selflog("no re-init necessary");
         }
 
         return init;
-    } else {
-        _sir_selflog("BUG: called without 'updated' flag set!");
-        return false;
     }
+
+    return false;
 #else
     SIR_UNUSED(si);
     SIR_UNUSED(data);
@@ -1030,6 +1090,15 @@ bool _sir_syslog_close(sir_syslog_dest* ctx) {
     _sir_setbitslow(&ctx->_state.mask, SIRSL_IS_OPEN);
     _sir_selflog("closed log");
     return true;
+# elif defined(SIR_EVENTLOG_ENABLED)
+    ULONG unreg = EventUnregister((REGHANDLE)ctx->_state.logger);
+    _sir_setbitslow(&ctx->_state.mask, SIRSL_IS_OPEN);
+    if (ERROR_SUCCESS == unreg)
+        _sir_selflog("closed log");
+    else
+        _sir_selflog("error: failed to close log");
+
+    return ERROR_SUCCESS == unreg;
 # else
     SIR_UNUSED(ctx);
     return false;
