@@ -41,11 +41,11 @@
 #   pragma comment(lib, "advapi32.lib")
 #  endif
 # endif
-#  if defined(__HAVE_EMBARCADEROC_PRAGMA__)
-#   pragma comment(lib, "ws2_32.a")
-#  else
-#   pragma comment(lib, "ws2_32.lib")
-#  endif
+# if defined(__HAVE_EMBARCADEROC_PRAGMA__)
+#  pragma comment(lib, "ws2_32.a")
+# else
+#  pragma comment(lib, "ws2_32.lib")
+# endif
 #endif
 
 static sirconfig _sir_cfg      = {0};
