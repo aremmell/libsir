@@ -13,7 +13,7 @@
 EXTERN_C __declspec(selectany) const GUID PROVIDER_GUID = {0x7ef5932c, 0xc0f3, 0x4c8b, {0xa0, 0xf7, 0x7c, 0xfa, 0xe9, 0xc6, 0x0b, 0x0e}};
 
 #ifndef PROVIDER_GUID_Traits
-#define PROVIDER_GUID_Traits NULL
+# define PROVIDER_GUID_Traits NULL
 #endif // PROVIDER_GUID_Traits
 
 //
