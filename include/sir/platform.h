@@ -598,9 +598,11 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
       defined(__clang_major__) && defined(__clang_minor__) && defined(__clang_patchlevel__))
 #   undef SIR_OS_LOG_ENABLED
 #   define SIR_OS_LOG_ENABLED
-#  elif defined(__WIN__) && !defined(__EMBARCADEROC__) && !defined(__ORANGEC__)
+#  elif defined(__WIN__)
 #   undef SIR_EVENTLOG_ENABLED
-#   define SIR_EVENTLOG_ENABLED
+#   if !defined(__EMBARCADEROC__) && !defined(__ORANGEC__)
+#    define SIR_EVENTLOG_ENABLED
+#   endif
 #  else
 #   undef SIR_OS_LOG_ENABLED
 #   define SIR_SYSLOG_ENABLED
