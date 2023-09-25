@@ -35,11 +35,7 @@
 #if defined(__WIN__)
 # if defined(SIR_EVENTLOG_ENABLED)
 #  include "sir/wineventlog.h"
-#  if defined(__HAVE_EMBARCADEROC_PRAGMA__)
-#   pragma comment(lib, "advapi32.a")
-#  else
 #   pragma comment(lib, "advapi32.lib")
-#  endif
 # endif
 # if defined(__HAVE_EMBARCADEROC_PRAGMA__)
 #  pragma comment(lib, "ws2_32.a")
