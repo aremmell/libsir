@@ -1404,7 +1404,7 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
 # if !defined(__WIN__)
     uint32_t rnd = (uint32_t)(_sir_getpid() + _sir_gettid());
 # else
-    uint32_t rnd = (uint32_t)GetTickCount();
+    uint32_t rnd = (uint32_t)GetTickCount64();
 # endif
 
     bool pass = true;
