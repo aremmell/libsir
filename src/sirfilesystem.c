@@ -27,7 +27,7 @@
 #include "sir/internal.h"
 
 #if defined(__WIN__)
-#  pragma comment(lib, WIN_LIBRARY("shlwapi"))
+# pragma comment(lib, WIN_LIBRARY("shlwapi"))
 #endif
 
 bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_rel_to rel_to) {
