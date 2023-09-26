@@ -136,8 +136,11 @@ Functions</h2></td></tr>
 <tr class="memdesc:gac4cfb0e00a47760eb1778d78dd84b290"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether or not libsir is in the initialized state.  <br /></td></tr>
 <tr class="separator:gac4cfb0e00a47760eb1778d78dd84b290"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac0c399c73c25d1128befc6b75cbae300" id="r_gac0c399c73c25d1128befc6b75cbae300"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300">sir_geterror</a> (char message[<a class="el" href="config_8h.html#ad6fce840144259e992c33fb611f31262">SIR_MAXERROR</a>])</td></tr>
-<tr class="memdesc:gac0c399c73c25d1128befc6b75cbae300"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves information about the last error that occurred.  <br /></td></tr>
+<tr class="memdesc:gac0c399c73c25d1128befc6b75cbae300"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves a formatted message for the last error that occurred on the calling thread and returns the associated error code.  <br /></td></tr>
 <tr class="separator:gac0c399c73c25d1128befc6b75cbae300"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaedefdc4fb0546a210740ad0fb87f7b34" id="r_gaedefdc4fb0546a210740ad0fb87f7b34"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#gaedefdc4fb0546a210740ad0fb87f7b34">sir_geterrorinfo</a> (<a class="el" href="group__publictypes.html#structsir__errorinfo">sir_errorinfo</a> *err)</td></tr>
+<tr class="memdesc:gaedefdc4fb0546a210740ad0fb87f7b34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves granular information about the last error that occurred on the calling thread.  <br /></td></tr>
+<tr class="separator:gaedefdc4fb0546a210740ad0fb87f7b34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7e2563198d16d5c7ba7bdf55fec9215c" id="r_ga7e2563198d16d5c7ba7bdf55fec9215c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publicfuncs.html#ga7e2563198d16d5c7ba7bdf55fec9215c">sir_debug</a> (PRINTF_FORMAT const char *format,...)</td></tr>
 <tr class="memdesc:ga7e2563198d16d5c7ba7bdf55fec9215c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispatches a <a class="el" href="group__publictypes.html#gaa2927c260f1d8fac96513442e50105fc" title="Debugging/diagnostic output.">SIRL_DEBUG</a> level message.  <br /></td></tr>
 <tr class="separator:ga7e2563198d16d5c7ba7bdf55fec9215c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -280,7 +283,7 @@ To change the file's level registrations or options after adding it, call <a cla
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>sirfileid If successful, a unique identifier that can later be used to modify level registrations, options, or remove the file from libsir. Upon failure, returns zero. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>sirfileid If successful, a unique identifier that can later be used to modify level registrations, options, or remove the file from libsir. Upon failure, returns zero. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -325,7 +328,7 @@ To change the file's level registrations or options after adding it, call <a cla
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the message was dispatched successfully to all registered destinations, <code>false</code> otherwise. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the message was dispatched successfully to all registered destinations, <code>false</code> otherwise. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -346,9 +349,9 @@ To change the file's level registrations or options after adding it, call <a cla
 </div><div class="memdoc">
 
 <p>Tears down and cleans up libsir after use. </p>
-<p>Deallocates resources such as memory buffers, file descriptors, etc. and resets the internal state. No calls into libsir will succeed after calling <a class="el" href="group__publicfuncs.html#ga9bf3e92cefac01de4e3c6c359a58706f" title="Tears down and cleans up libsir after use.">sir_cleanup</a> (with the exception of <a class="el" href="group__publicfuncs.html#gac21fb86ac7e7710400bf8b642887ad96" title="Fills out a sirinit structure with default values.">sir_makeinit</a>, <a class="el" href="group__publicfuncs.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes libsir for use.">sir_init</a>, and <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a>).</p>
+<p>Deallocates resources such as memory buffers, file descriptors, etc. and resets the internal state. No calls into libsir will succeed after calling <a class="el" href="group__publicfuncs.html#ga9bf3e92cefac01de4e3c6c359a58706f" title="Tears down and cleans up libsir after use.">sir_cleanup</a> (with the exception of <a class="el" href="group__publicfuncs.html#gac21fb86ac7e7710400bf8b642887ad96" title="Fills out a sirinit structure with default values.">sir_makeinit</a>, <a class="el" href="group__publicfuncs.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes libsir for use.">sir_init</a>, <a class="el" href="group__publicfuncs.html#gac4cfb0e00a47760eb1778d78dd84b290" title="Determines whether or not libsir is in the initialized state.">sir_isinitialized</a>,<a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a>, and <a class="el" href="group__publicfuncs.html#gaedefdc4fb0546a210740ad0fb87f7b34" title="Retrieves granular information about the last error that occurred on the calling thread.">sir_geterrorinfo</a>).</p>
 <p>May be called from any thread. If you wish to utilize libsir again during the same process' lifetime, simply call <a class="el" href="group__publicfuncs.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes libsir for use.">sir_init</a> again.</p>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if cleanup was successful, <code>false otherwise</code>. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if cleanup was successful, <code>false otherwise</code>. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -393,7 +396,7 @@ To change the file's level registrations or options after adding it, call <a cla
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the message was dispatched successfully to all registered destinations, <code>false</code> otherwise. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the message was dispatched successfully to all registered destinations, <code>false</code> otherwise. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -438,7 +441,7 @@ To change the file's level registrations or options after adding it, call <a cla
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the message was dispatched successfully to all registered destinations, <code>false</code> otherwise. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the message was dispatched successfully to all registered destinations, <code>false</code> otherwise. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -483,7 +486,7 @@ To change the file's level registrations or options after adding it, call <a cla
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the message was dispatched successfully to all registered destinations, <code>false</code> otherwise. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the message was dispatched successfully to all registered destinations, <code>false</code> otherwise. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -528,7 +531,7 @@ To change the file's level registrations or options after adding it, call <a cla
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the message was dispatched successfully to all registered destinations, <code>false</code> otherwise. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the message was dispatched successfully to all registered destinations, <code>false</code> otherwise. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -571,7 +574,7 @@ To change the file's level registrations or options after adding it, call <a cla
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the file is known to libsir and was successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the file is known to libsir and was successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -615,7 +618,7 @@ To change the file's level registrations or options after adding it, call <a cla
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the file is known to libsir and was successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the file is known to libsir and was successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -635,15 +638,44 @@ To change the file's level registrations or options after adding it, call <a cla
       </table>
 </div><div class="memdoc">
 
-<p>Retrieves information about the last error that occurred. </p>
-<p>libsir maintains errors on a per-thread basis, so it's important that the same thread that encountered a failed library call be the one to get the error information.</p>
+<p>Retrieves a formatted message for the last error that occurred on the calling thread and returns the associated error code. </p>
+<p>To retrieve more granular information about an error, or to customize the error message format, use <a class="el" href="group__publicfuncs.html#gaedefdc4fb0546a210740ad0fb87f7b34" title="Retrieves granular information about the last error that occurred on the calling thread.">sir_geterrorinfo</a>.</p>
+<dl class="section remark"><dt>Remarks</dt><dd>libsir maintains errors on a per-thread basis, so it's important that the same thread that encountered a failed library call be the one to retrieve the error message.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">message</td><td>A buffer of <a class="el" href="config_8h.html#ad6fce840144259e992c33fb611f31262" title="The maximum size, in characters, of an error message.">SIR_MAXERROR</a> chars to receive an error message. </td></tr>
+    <tr><td class="paramname">message</td><td>A buffer of <a class="el" href="config_8h.html#ad6fce840144259e992c33fb611f31262" title="The maximum size, in characters, of an error message.">SIR_MAXERROR</a> chars into which the error message is placed. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>uint16_t The error code. Possible error codes are listed in <a class="el" href="group__publictypes.html#ga861df9be69c6bcd01d29b77bd28ff7d3" title="Error codes.">sir_errorcode</a>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>uint16_t An error code (see <a class="el" href="group__publictypes.html#ga861df9be69c6bcd01d29b77bd28ff7d3" title="Error codes.">sir_errorcode</a>). Returns <a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3ae9cf0dd9b54a0e456a565c6a8bf107f7" title="The operation completed successfully.">SIR_E_NOERROR</a> if no error has occurred. </dd></dl>
+
+</div>
+</div>
+<a id="gaedefdc4fb0546a210740ad0fb87f7b34" name="gaedefdc4fb0546a210740ad0fb87f7b34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaedefdc4fb0546a210740ad0fb87f7b34">&#9670;&#160;</a></span>sir_geterrorinfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sir_geterrorinfo </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__publictypes.html#structsir__errorinfo">sir_errorinfo</a> *&#160;</td>
+          <td class="paramname"><em>err</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieves granular information about the last error that occurred on the calling thread. </p>
+<p>To retrieve just an error code and a formatted message, use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a>.</p>
+<dl class="section remark"><dt>Remarks</dt><dd>libsir maintains errors on a per-thread basis, so it's important that the same thread that encountered a failed library call be the one to retrieve the error message.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">err</td><td>Pointer to a <a class="el" href="group__publictypes.html#structsir__errorinfo" title="Information about an error that occurred.">sir_errorinfo</a> structure into which the error infor- mation is placed. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -734,7 +766,7 @@ To change the file's level registrations or options after adding it, call <a cla
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the message was dispatched successfully to all registered destinations, <code>false</code> otherwise. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the message was dispatched successfully to all registered destinations, <code>false</code> otherwise. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -766,7 +798,7 @@ To change the file's level registrations or options after adding it, call <a cla
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if initialization was successful, <code>false</code> otherwise. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if initialization was successful, <code>false</code> otherwise. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -845,7 +877,7 @@ The return value from this function is only valid for the lifetime of the proces
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>sirpluginid If successful, a unique identifier that may later be used to unload the plugin module. Upon failure, returns zero. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>sirpluginid If successful, a unique identifier that may later be used to unload the plugin module. Upon failure, returns zero. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -970,7 +1002,7 @@ The return value from this function is only valid for the lifetime of the proces
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the message was dispatched successfully to all registered destinations, <code>false</code> otherwise. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the message was dispatched successfully to all registered destinations, <code>false</code> otherwise. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -1002,7 +1034,7 @@ The return value from this function is only valid for the lifetime of the proces
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the file is known to libsir and was successfully removed, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the file is known to libsir and was successfully removed, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -1029,7 +1061,7 @@ The return value from this function is only valid for the lifetime of the proces
 <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a> </dd>
 <dd>
 <a class="el" href="group__default.html" title="Default sir_option bitmasks, sir_level registrations, and sir_textstyle bitmasks.">Defaults</a></dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successfully reset, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successfully reset, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -1070,7 +1102,7 @@ When you change the color mode, all previously set text styles will be reset to 
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the color mode was changed successfully, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the color mode was changed successfully, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -1128,7 +1160,7 @@ When you change the color mode, all previously set text styles will be reset to 
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -1164,7 +1196,7 @@ When you change the color mode, all previously set text styles will be reset to 
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -1200,7 +1232,7 @@ When you change the color mode, all previously set text styles will be reset to 
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -1236,7 +1268,7 @@ When you change the color mode, all previously set text styles will be reset to 
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -1272,7 +1304,7 @@ When you change the color mode, all previously set text styles will be reset to 
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -1307,7 +1339,7 @@ When you change the color mode, all previously set text styles will be reset to 
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -1343,7 +1375,7 @@ When you change the color mode, all previously set text styles will be reset to 
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -1380,7 +1412,7 @@ When you change the color mode, all previously set text styles will be reset to 
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -1413,7 +1445,7 @@ When you change the color mode, all previously set text styles will be reset to 
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if successfully updated, <code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -1445,7 +1477,7 @@ When you change the color mode, all previously set text styles will be reset to 
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the plugin was located and successfully unloaded,<code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the plugin was located and successfully unloaded,<code>false</code> otherwise. Use <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>
@@ -1490,7 +1522,7 @@ When you change the color mode, all previously set text styles will be reset to 
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the message was dispatched successfully to all registered destinations, <code>false</code> otherwise. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool <code>true</code> if the message was dispatched successfully to all registered destinations, <code>false</code> otherwise. Call <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a> to obtain information about any error that may have occurred. </dd></dl>
 
 </div>
 </div>

@@ -58,7 +58,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classsir_1_1fmt__format__adapter.html" target="_top" xlink:title="Adapter for fmt (when available).">
+<g id="a_Node000004"><a xlink:href="classsir_1_1fmt__format__adapter.html" target="_top" xlink:title="Adapter for {fmt} (when available).">
 <polygon fill="white" stroke="#666666" points="222.88,-128.5 105.62,-128.5 105.62,-98 222.88,-98 222.88,-128.5"/>
 <text text-anchor="start" x="113.62" y="-115" font-family="Helvetica,sans-Serif" font-size="10.00">sir::fmt_format_adapter</text>
 <text text-anchor="middle" x="164.25" y="-103.75" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; TPolicy &gt;</text>

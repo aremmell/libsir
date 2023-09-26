@@ -22,5 +22,6 @@ var dir_89aa746955889ced97536d9f51ce6c73 =
     [ "textstyle.h", "textstyle_8h_source.html", null ],
     [ "threadpool.h", "threadpool_8h_source.html", null ],
     [ "types.h", "types_8h_source.html", null ],
-    [ "version.h", "version_8h_source.html", null ]
+    [ "version.h", "version_8h_source.html", null ],
+    [ "wineventlog.h", "wineventlog_8h_source.html", null ]
 ];

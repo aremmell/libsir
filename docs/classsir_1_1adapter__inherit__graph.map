@@ -4,7 +4,7 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="66,129,97,92,138,57,160,44,163,49,141,61,101,96,70,133"/>
 <area shape="rect" id="Node000003" href="$classsir_1_1default__adapter.html" title="The default adapter implementation." alt="" coords="158,71,291,111"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="98,135,167,109,168,114,100,140"/>
-<area shape="rect" id="Node000004" href="$classsir_1_1fmt__format__adapter.html" title="Adapter for fmt (when available)." alt="" coords="146,136,303,177"/>
+<area shape="rect" id="Node000004" href="$classsir_1_1fmt__format__adapter.html" title="Adapter for {fmt} (when available)." alt="" coords="146,136,303,177"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="107,154,146,154,146,159,107,159"/>
 <area shape="rect" id="Node000005" href="$classsir_1_1std__format__adapter.html" title="Adapter for std::format (when available)." alt="" coords="147,201,302,242"/>
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="100,173,168,198,167,203,98,178"/>

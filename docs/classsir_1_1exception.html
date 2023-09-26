@@ -114,12 +114,15 @@ $(document).ready(function(){initNavTree('classsir_1_1exception.html',''); initR
 </div><!--header-->
 <div class="contents">
 
-<p>Derives from std::runtime_error in order to be caught easily by standard try/catch blocks, as well as to provide useful error messages by way of the <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119" title="Handles a potential error; if an error is present and the policy in place requires throwing an except...">what()</a> method.  
+<p>The exception type thrown by libsir.  
  <a href="classsir_1_1exception.html#details">More...</a></p>
 
 <p>Inherits std::runtime_error.</p>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Derives from std::runtime_error in order to be caught easily by standard try/catch blocks, as well as to provide useful error messages by way of the <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119" title="Handles a potential error; if an error is present and the policy in place requires throwing an except...">what()</a> method. </p>
+<div class="textblock"><p>The exception type thrown by libsir. </p>
+<p>Derives from std::runtime_error in order to be caught easily by standard try/catch blocks, as well as to provide useful error messages by way of the std::exception::what() method.</p>
+<p>To obtain additional information about the error that caused an exception, use <a class="el" href="structsir_1_1error__info.html" title="Contains all available information about an error.">error_info</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structsir_1_1error__info.html" title="Contains all available information about an error.">error_info</a> </dd></dl>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/<a class="el" href="sir_8hh_source.html">sir.hh</a></li>
 </ul>
