@@ -48,16 +48,17 @@
 
 /** Per-thread error data */
 static _sir_thread_local sir_thread_err _sir_te = {
-    _SIR_E_NOERROR, 0, {0}, {SIR_UNKNOWN, SIR_UNKNOWN, 0} //-V616
+    _SIR_E_NOERROR, 0, {0}, {SIR_UNKNOWN, SIR_UNKNOWN, 0}
 };
 
-#define _SIR_E_PLATFORM_ERRORFORMAT "Platform error code %d: %s"
+#define _SIR_E_PLATFORM_ERRORMSG "Platform error"
+#define _SIR_E_PLATFORM_ERRORFORMAT _SIR_E_PLATFORM_ERRORMSG " code %d: %s"
 
 static const struct {
     uint32_t e;
     const char* msg;
 } sir_errors[] = {
-    {_SIR_E_NOERROR,   "The operation completed successfully"}, //-V616
+    {_SIR_E_NOERROR,   "The operation completed successfully"},
     {_SIR_E_NOTREADY,  "libsir has not been initialized"},
     {_SIR_E_ALREADY,   "libsir is already initialized"},
     {_SIR_E_DUPITEM,   "Item already managed by libsir"},
@@ -89,25 +90,28 @@ bool __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t l
         _sir_te.loc.func  = func;
         _sir_te.loc.file  = file;
         _sir_te.loc.line  = line;
+
+        if (_SIR_E_PLATFORM != err) {
+            _sir_te.os_code = 0;
+            _sir_resetstr(_sir_te.os_msg);
+        }
     }
 #if defined(DEBUG) && defined(SIR_SELFLOG)
-    if (_SIR_E_NOERROR != err) { //-V616
+    if (_SIR_E_NOERROR != err) {
         char errmsg[SIR_MAXERROR] = {0};
-        uint32_t code             = _sir_geterror(errmsg);
-        SIR_UNUSED(code);
+        _sir_geterror(errmsg);
         __sir_selflog(func, file, line, "%s", errmsg);
     }
 #endif
     return false;
 }
 
-void __sir_setoserror(int code, const char* msg, const char* func, const char* file,
-    uint32_t line) {
-    _sir_te.os_error = code;
-    _sir_resetstr(_sir_te.os_errmsg);
+void __sir_setoserror(int code, const char* msg, const char* func, const char* file, uint32_t line) {
+    _sir_te.os_code = code;
+    _sir_resetstr(_sir_te.os_msg);
 
     if (_sir_validstrnofail(msg))
-        _sir_strncpy(_sir_te.os_errmsg, SIR_MAXERROR, msg, SIR_MAXERROR);
+        _sir_strncpy(_sir_te.os_msg, SIR_MAXERROR, msg, SIR_MAXERROR);
 
     (void)__sir_seterror(_SIR_E_PLATFORM, func, file, line);
 }
@@ -207,8 +211,8 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
         if (_SIR_E_PLATFORM == sir_errors[_mid].e) {
             heap_msg = calloc(SIR_MAXERROR, sizeof(char));
             if (_sir_validptrnofail(heap_msg)) {
-                _sir_snprintf_trunc(heap_msg, SIR_MAXERROR, _SIR_E_PLATFORM_ERRORFORMAT, _sir_te.os_error,
-                    (_sir_validstrnofail(_sir_te.os_errmsg) ? _sir_te.os_errmsg : SIR_UNKNOWN));
+                _sir_snprintf_trunc(heap_msg, SIR_MAXERROR, _SIR_E_PLATFORM_ERRORFORMAT, _sir_te.os_code,
+                    (_sir_validstrnofail(_sir_te.os_msg) ? _sir_te.os_msg : SIR_UNKNOWN));
             }
         }
 
@@ -229,10 +233,45 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
     return retval;
 }
 
+void _sir_geterrorinfo(sir_errorinfo* err) {
+    if (!_sir_validptr(err))
+        return;
+
+    memset(err, 0, sizeof(sir_errorinfo));
+
+    err->func = _sir_te.loc.func;
+    err->file = _sir_te.loc.file;
+    err->line = _sir_te.loc.line;
+
+    err->os_code = _sir_te.os_code;
+    (void)_sir_strncpy(err->os_msg, SIR_MAXERROR, (_sir_validstrnofail(_sir_te.os_msg)
+        ? _sir_te.os_msg : SIR_UNKNOWN), SIR_MAXERROR);
+
+    err->code = _sir_geterrcode(SIR_E_UNKNOWN);
+
+    static const size_t low  = 0;
+    static const size_t high = _sir_countof(sir_errors) - 1;
+
+    _SIR_DECLARE_BIN_SEARCH(low, high);
+    _SIR_BEGIN_BIN_SEARCH()
+
+    if (sir_errors[_mid].e == _sir_te.lasterror) {
+        err->code = _sir_geterrcode(sir_errors[_mid].e);
+        if (_SIR_E_PLATFORM == sir_errors[_mid].e)
+            (void)_sir_strncpy(err->msg, SIR_MAXERROR, _SIR_E_PLATFORM_ERRORMSG, SIR_MAXERROR);
+        else
+            (void)_sir_strncpy(err->msg, SIR_MAXERROR, sir_errors[_mid].msg, SIR_MAXERROR);
+        break;
+    }
+
+    _SIR_ITERATE_BIN_SEARCH((sir_errors[_mid].e < _sir_te.lasterror ? 1 : -1));
+    _SIR_END_BIN_SEARCH();
+}
+
 void _sir_reset_tls_error(void) {
-    _sir_te.lasterror = _SIR_E_NOERROR; //-V616
-    _sir_te.os_error  = 0;
-    _sir_resetstr(_sir_te.os_errmsg);
+    _sir_te.lasterror = _SIR_E_NOERROR;
+    _sir_te.os_code  = 0;
+    _sir_resetstr(_sir_te.os_msg);
     _sir_te.loc.func = SIR_UNKNOWN;
     _sir_te.loc.file = SIR_UNKNOWN;
     _sir_te.loc.line = 0U;

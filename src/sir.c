@@ -54,6 +54,10 @@ uint16_t sir_geterror(char message[SIR_MAXERROR]) {
     return _sir_geterrcode(_sir_geterror(message));
 }
 
+void sir_geterrorinfo(sir_errorinfo* err) {
+    _sir_geterrorinfo(err);
+}
+
 PRINTF_FORMAT_ATTR(1, 2)
 bool sir_debug(PRINTF_FORMAT const char* format, ...) {
     _SIR_L_START(format);

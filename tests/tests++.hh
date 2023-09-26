@@ -116,11 +116,16 @@ namespace sir::tests
     bool pass = true; \
     try {
 
-/** Implements recovery in the event that an exception is caught. */
-# define _SIR_TEST_ON_EXCEPTION(excpt) \
-    ERROR_MSG("exception in %s: '%s'", __PRETTY_FUNCTION__, excpt); \
+/** Implements recovery in the event that an unexpected exception is caught. */
+# define _SIR_TEST_ON_EXCEPTION(what) \
+    ERROR_MSG("unexpected exception in %s: '%s'", __PRETTY_FUNCTION__, what); \
     pass = false; \
-    (void)sir_cleanup()
+    if (sir_isinitialized()) \
+        (void)sir_cleanup()
+
+/** Handles an expected exception. */
+# define _SIR_TEST_ON_EXPECTED_EXCEPTION(what) \
+    TEST_MSG(GREEN("expected exception in %s: '%s'"), __PRETTY_FUNCTION__, what)
 
 /** Ends a test by closing the try/catch block and implementing exception handling. */
 # define _SIR_TEST_COMPLETE \
