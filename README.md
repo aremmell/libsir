@@ -145,7 +145,7 @@ The Makefiles are compatible with **GNU Make** version **3.81** and later (**4.4
 | Test suite (C++) |  `make tests++`  | <ul><li>*build/bin/sirtests++[.exe]*</li></ul> |
 | Example app      |  `make example`  | <ul><li>*build/bin/sirexample[.exe]*</li></ul> |
 | Static library   |  `make static`   | <ul><li>*build/lib/libsir_s.a*</li></ul>       |
-| Shared library   |  `make shared`   | <ul><li>*build/lib/libsir.so*</il></ul>        |
+| Shared library   |  `make shared`   | <ul><li>*build/lib/libsir.so*</li></ul>        |
 | Installation     |  `make install`  | <ul><li>*$PREFIX/lib/libsir_s.a*</li><li>*$PREFIX/lib/libsir.so*</li><li>*$PREFIX/include/sir.h*</li><li>*$PREFIX/include/sir/\*.h*</li></ul> |
 
 ## <a id="dig-in" /> Dig in
