@@ -462,9 +462,10 @@ test_cppcheck()
       rm -f ./cppcheck.xml
       mkdir -p cppcheck; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      # shellcheck disable=SC2046
+      # shellcheck disable=SC2046,SC2155
       export EXTRA_INCLUDES="$(gcc -Wp,-v -x c++ - -fsyntax-only < /dev/null 2>&1 | grep '^ /' | sed 's/^ /-I/' | awk '{ print $1 }')" || \
           export EXTRA_INCLUDES="-I/usr/include"
+      # shellcheck disable=SC2086,SC2046
       cppcheck \
       ${EXTRA_INCLUDES:-I/usr/include} \
       --enable="all" \
@@ -540,6 +541,7 @@ test_pvs()
   # shellcheck disable=SC2140
   printf '%s\n' "set -e;" > ./.extra.sh
   ret="${?}"; test "${ret:-0}" -eq 99 && exit 99
+  # shellcheck disable=SC2140
   eval ./build/bin/mcmb "${SIR_OPTIONS:?}" | xargs -I{} \
     printf '%s\n' "export PVS_FLAGS=\""{}"\";./.lint.sh pvs_real" | \
     sort -u >> ./.extra.sh
