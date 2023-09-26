@@ -57,7 +57,7 @@ static sir_test sir_tests[] = {
     {"sanity-file-write",       sirtest_logwritesanity, false, true},
     {"syslog",                  sirtest_syslog, false, true},
     {"os_log",                  sirtest_os_log, false, true},
-    {"win-eventlog",            sirtest_win_eventlog, false, true},
+    {"wineventlog",             sirtest_win_eventlog, false, true},
     {"filesystem",              sirtest_filesystem, false, true},
     {"squelch-spam",            sirtest_squelchspam, false, true},
     {"plugin-loader",           sirtest_pluginloader, false, true},
