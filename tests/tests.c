@@ -1823,11 +1823,12 @@ bool sirtest_squelchspam(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    static const size_t alternate   = 50;
-    static const size_t sequence[3] = {
+    static const size_t alternate  = 50;
+    static const size_t sequence[] = {
         1000, /* non-repeating messages. */
         1000, /* repeating messages. */
-        1000  /* alternating repeating and non-repeating messages. */
+        1000, /* alternating repeating and non-repeating messages. */
+        100   /* repeating messages, but on different levels. */
     };
 
     sir_time timer;
@@ -1854,8 +1855,8 @@ bool sirtest_squelchspam(void) {
             _sir_eqland(pass, ret);
     }
 
-    TEST_MSG(BLUE("%zu alternating repeating and non-repeating messages...")
-           "\n", sequence[2]);
+    TEST_MSG(BLUE("%zu alternating repeating and non-repeating messages..."),
+        sequence[2]);
 
     bool repeating   = false;
     size_t counter   = 0;
@@ -1881,6 +1882,15 @@ bool sirtest_squelchspam(void) {
 
         if (ascii_idx == 125)
             ascii_idx = 33;
+    }
+
+    TEST_MSG(BLUE("%zu repeating messages, but on different levels..."), sequence[3]);
+
+    for (size_t n = 0; n < sequence[3]; n++) {
+        if (n % 2 == 0)
+            _sir_eqland(pass, sir_debug("a repeating message"));
+        else
+            _sir_eqland(pass, sir_info("a repeating message"));
     }
 
     _sir_eqland(pass, sir_cleanup());
