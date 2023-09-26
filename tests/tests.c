@@ -57,6 +57,7 @@ static sir_test sir_tests[] = {
     {"sanity-file-write",       sirtest_logwritesanity, false, true},
     {"syslog",                  sirtest_syslog, false, true},
     {"os_log",                  sirtest_os_log, false, true},
+    {"wineventlog",             sirtest_win_eventlog, false, true},
     {"filesystem",              sirtest_filesystem, false, true},
     {"squelch-spam",            sirtest_squelchspam, false, true},
     {"plugin-loader",           sirtest_pluginloader, false, true},
@@ -1419,7 +1420,8 @@ bool sirtest_updatesanity(void) {
     return PRINT_RESULT_RETURN(pass);
 }
 
-#if defined(SIR_SYSLOG_ENABLED) || defined(SIR_OS_LOG_ENABLED)
+#if defined(SIR_SYSLOG_ENABLED) || defined(SIR_OS_LOG_ENABLED) || \
+    defined(SIR_EVENTLOG_ENABLED)
 static
 bool generic_syslog_test(const char* sl_name, const char* identity, const char* category) {
     static const int runs = 5;
@@ -1431,7 +1433,7 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
 # if !defined(__WIN__)
     uint32_t rnd = (uint32_t)(_sir_getpid() + _sir_gettid());
 # else
-    uint32_t rnd = (uint32_t)GetTickCount();
+    uint32_t rnd = (uint32_t)GetTickCount64();
 # endif
 
     bool pass = true;
@@ -1575,10 +1577,30 @@ bool sirtest_syslog(void) {
 
 bool sirtest_os_log(void) {
 #if !defined(SIR_OS_LOG_ENABLED)
+# if defined(SIR_NO_SYSTEM_LOGGERS)
+    bool pass = generic_disabled_syslog_test("os_log", "com.aremmell.libsir.tests", "tests");
+    return PRINT_RESULT_RETURN(pass);
+# else
     TEST_MSG_0(DGRAY("SIR_OS_LOG_ENABLED is not defined; skipping"));
     return true;
+# endif
 #else
     bool pass = generic_syslog_test("os_log", "com.aremmell.libsir.tests", "tests");
+    return PRINT_RESULT_RETURN(pass);
+#endif
+}
+
+bool sirtest_win_eventlog(void) {
+#if !defined(SIR_EVENTLOG_ENABLED)
+# if defined(SIR_NO_SYSTEM_LOGGERS)
+    bool pass = generic_disabled_syslog_test("eventlog", "sirtests", "tests");
+    return PRINT_RESULT_RETURN(pass);
+# else
+    TEST_MSG_0(DGRAY("SIR_EVENTLOG_ENABLED is not defined; skipping"));
+    return true;
+# endif
+#else
+    bool pass = generic_syslog_test("eventlog", "sirtests", "tests");
     return PRINT_RESULT_RETURN(pass);
 #endif
 }

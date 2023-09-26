@@ -241,8 +241,6 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  endif
 # else /* _WIN32 */
 #  define __WIN__
-#  undef SIR_NO_SYSTEM_LOGGERS
-#  define SIR_NO_SYSTEM_LOGGERS
 #  define __WANT_STDC_SECURE_LIB__ 1
 #  define WIN32_LEAN_AND_MEAN
 #  undef WINVER
@@ -265,6 +263,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #  include <winsock2.h>
 #  include <conio.h>
 #  include <shlwapi.h>
+#  include <evntprov.h>
 #  undef __HAVE_ATOMIC_H__
 #  if defined(_MSC_VER) && _MSC_VER >= 1933 && \
       !defined(__cplusplus) && !defined(__IMPORTC__)
@@ -283,6 +282,7 @@ _invalid_parameter_handler
 _set_thread_local_invalid_parameter_handler(
  _invalid_parameter_handler pNew);
 #  endif
+#  include "sir/platform_embarcadero.h"
 # endif
 
 # if !defined(__MACOS__) && !defined(__BSD__) && !defined(__SOLARIS__) && \
@@ -358,7 +358,15 @@ _set_thread_local_invalid_parameter_handler(
       ((defined(__clang__) || defined(__clang_version__)) && \
       !(defined(__INTEL_COMPILER) && !defined(__llvm__)) && \
       defined(__clang_major__) && defined(__clang_minor__) && defined(__clang_patchlevel__))
+#   undef SIR_OS_LOG_ENABLED
 #   define SIR_OS_LOG_ENABLED
+#  elif defined(__WIN__)
+#   undef SIR_EVENTLOG_ENABLED
+#   if defined(__EMBARCADEROC__) || defined(__ORANGEC__)
+#    define SIR_NO_SYSTEM_LOGGERS
+#   else
+#    define SIR_EVENTLOG_ENABLED
+#   endif
 #  else
 #   undef SIR_OS_LOG_ENABLED
 #   define SIR_SYSLOG_ENABLED
@@ -604,8 +612,6 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 # elif defined(__STDC_ALLOC_LIB__)
 #  define __HAVE_STDC_EXT2__
 # endif
-
-# include "sir/platform_embarcadero.h"
 
 # if (defined(__clang__) || defined(__GNUC__)) && defined(__FILE_NAME__)
 #  define __file__ __FILE_NAME__
