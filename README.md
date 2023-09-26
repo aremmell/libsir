@@ -98,35 +98,36 @@ libsir currently supports the following system logging facilities:
 
 ### <a id="c---compatibility" /> C++ compatibility
 
-* A C++20 [header-only wrapper](https://github.com/aremmell/libsir/blob/master/include/sir.hh) is available which allows for easy integration with C++ projects, with optional support for popular formatting libraries:
+* A C++20 [header-only wrapper](https://github.com/aremmell/libsir/blob/master/include/sir.hh) is available which allows for easy integration with C++ projects, including optional support for popular formatting libraries:
 
-<table align="center">
- <tbody>
+  <table align="center">
+  <tbody>
   <tr>
-   <td align="center"><center>&nbsp;<a href="https://fmt.dev/"><b>{fmt}</b></a>&nbsp;</center></td>
-   <td align="center"><center>&nbsp;<a href="https://en.cppreference.com/w/cpp/utility/format/format"><b>std</b>::<b>format</b></a>&nbsp;</center></td>
-   <td align="center"><center>&nbsp;<a href="https://theboostcpplibraries.com/boost.format"><b>Boost</b>.<b>Format</b></a>&nbsp;</center></td>
-   <td align="center"><center>&nbsp;<a href="https://cplusplus.com/reference/istream/iostream"><b>std</b>::<b>iostream</b></a>&nbsp;</center></td>
+   <td align="center"><center>&nbsp;<ul><li><a href="https://fmt.dev/"><b>{fmt}</b></a>&nbsp;</center></td>
+   <td align="center"><center>&nbsp;<ul><li><a href="https://en.cppreference.com/w/cpp/utility/format/format"><b>std</b>::<b>format</b></a></li></ul>&nbsp;</center></td>
+   <td align="center"><center>&nbsp;<ul><li><a href="https://theboostcpplibraries.com/boost.format"><b>Boost</b>.<b>Format</b></a></li></ul>&nbsp;</center></td>
+   <td align="center"><center>&nbsp;<ul><li><a href="https://cplusplus.com/reference/istream/iostream"><b>std</b>::<b>iostream</b></a></li></ul>&nbsp;</center></td>
   </tr>
   <!--<tr>
    <td align="center"><center>&nbsp;<a href="https://github.com/c42f/tinyformat"><b>tinyformat</b></a>&nbsp;</center></td>
    <td align="center"><center>&nbsp;<a href="https://github.com/seanbaxter/circle/blob/master/new-circle/README.md#string-constant-formatting"><b>Circle</b>.<b>format</b></a>&nbsp;</center></td>
   </tr>-->
- </tbody>
-</table>
+  </tbody>
+  </table>
 
 ### <a id="language-bindings" /> Language Bindings
 
 * [Bindings](https://github.com/aremmell/libsir/tree/master/bindings) for scripting tools and other high-level programming languages are being developed, including support for:
 
-<table align="center">
- <tbody>
+  <table align="center">
+  <tbody>
   <tr>
-   <td align="center"><center>&nbsp;<a href="https://www.softintegration.com/"><b>Ch</b></a>&nbsp;</center></td>
-   <td align="center"><center>&nbsp;<a href="https://www.python.org/"><b>Python</b></a>&nbsp;</center></td>
+   <td align="center"><center>&nbsp;<ul><li><a href="https://www.softintegration.com/"><b>Ch</b></a></li></ul>&nbsp;</center></td>
+   <!--<td align="center"><center>&nbsp;<ul><li><a href="https://factorcode.org/"><b>Factor</b></a></li></ul>&nbsp;</center></td>-->
+   <td align="center"><center>&nbsp;<ul><li><a href="https://www.python.org/"><b>Python 3</b></a></li></ul>&nbsp;</center></td>
   </tr>
- </tbody>
-</table>
+  </tbody>
+  </table>
 
 ## <a id="an-example" /> An example
 
