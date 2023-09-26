@@ -98,7 +98,7 @@ libsir currently supports the following system logging facilities:
 
 ### <a id="c---compatibility" /> C++ compatibility
 
-* A wrapper header is under development which will allow libsir to be used in C++20 projects, optionally integrating with popular formatting libraries:
+* A C++20 [header-only wrapper](https://github.com/aremmell/libsir/blob/master/include/sir.hh) is available which allows for easy integration with C++ projects, with optional support for popular formatting libraries:
 
 <table align="center">
  <tbody>
@@ -106,12 +106,12 @@ libsir currently supports the following system logging facilities:
    <td align="center"><center>&nbsp;<a href="https://fmt.dev/"><b>{fmt}</b></a>&nbsp;</center></td>
    <td align="center"><center>&nbsp;<a href="https://en.cppreference.com/w/cpp/utility/format/format"><b>std</b>::<b>format</b></a>&nbsp;</center></td>
    <td align="center"><center>&nbsp;<a href="https://theboostcpplibraries.com/boost.format"><b>Boost</b>.<b>Format</b></a>&nbsp;</center></td>
-  </tr>
-  <tr>
    <td align="center"><center>&nbsp;<a href="https://cplusplus.com/reference/istream/iostream"><b>std</b>::<b>iostream</b></a>&nbsp;</center></td>
+  </tr>
+  <!--<tr>
    <td align="center"><center>&nbsp;<a href="https://github.com/c42f/tinyformat"><b>tinyformat</b></a>&nbsp;</center></td>
    <td align="center"><center>&nbsp;<a href="https://github.com/seanbaxter/circle/blob/master/new-circle/README.md#string-constant-formatting"><b>Circle</b>.<b>format</b></a>&nbsp;</center></td>
-  </tr>
+  </tr>-->
  </tbody>
 </table>
 
