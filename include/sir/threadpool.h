@@ -23,15 +23,16 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#ifndef _SIR_THREADPOOL_H_INCLUDED
-# define _SIR_THREADPOOL_H_INCLUDED
+#ifndef _SIR_THRDPL_H_INCLUDED
+# define _SIR_THRDPL_H_INCLUDED
 
 # include "sir/types.h"
 
-# define SIR_THREADPOOL_MAX_THREADS 386
+# define SIR_THRDPL_MAX_THREADS 386
 
-bool _sir_threadpool_create(sir_threadpool** pool, size_t num);
-bool _sir_threadpool_add_job(sir_threadpool* pool, sir_threadpool_job* job);
-bool _sir_threadpool_destroy(sir_threadpool** pool);
+bool _sir_thrdpl_create(sir_thrdpl** pool, size_t num,
+    sir_thrdpl_free ffn);
+bool _sir_thrdpl_add_job(sir_thrdpl* pool, sir_thrdpl_job* job);
+bool _sir_thrdpl_destroy(sir_thrdpl** pool);
 
-#endif /* !_SIR_THREADPOOL_H_INCLUDED */
+#endif /* !_SIR_THRDPL_H_INCLUDED */

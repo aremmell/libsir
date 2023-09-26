@@ -376,4 +376,9 @@
  */
 # define SIR_SQUELCH_MSG_FORMAT "previous message repeated %zu times"
 
+/**
+ * The number of threads to use when asynchronous write is enabled.
+ */
+# define SIR_THRDPL_SIZE 4
+
 #endif /* !_SIR_CONFIG_H_INCLUDED */

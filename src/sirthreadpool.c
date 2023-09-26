@@ -35,13 +35,15 @@ static void* thread_pool_proc(void* arg);
 static unsigned __stdcall thread_pool_proc(void* arg);
 #endif
 
-bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
-    if (!pool || !num_threads || num_threads > SIR_THREADPOOL_MAX_THREADS)
+bool _sir_thrdpl_create(sir_thrdpl** pool, size_t num_threads, sir_thrdpl_free ffn) {
+    if (!pool || !num_threads || num_threads > SIR_THRDPL_MAX_THREADS)
         return _sir_seterror(_SIR_E_INVALID);
 
-    *pool = calloc(1, sizeof(sir_threadpool));
+    *pool = calloc(1, sizeof(sir_thrdpl));
     if (!*pool)
         return _sir_handleerr(errno);
+
+    (*pool)->ffn = ffn;
 
     (*pool)->threads = calloc(num_threads, sizeof(sir_thread));
     if (!(*pool)->threads) {
@@ -54,7 +56,7 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
 
     if (!_sir_queue_create(&(*pool)->jobs) || !_sir_condcreate(&(*pool)->cond) ||
         !_sir_mutexcreate(&(*pool)->mutex)) {
-        bool destroy = _sir_threadpool_destroy(pool);
+        bool destroy = _sir_thrdpl_destroy(pool);
         SIR_ASSERT_UNUSED(destroy, destroy);
         return false;
     }
@@ -63,7 +65,7 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
     pthread_attr_t attr = {0};
     int op = pthread_attr_init(&attr);
     if (0 != op) {
-        bool destroy = _sir_threadpool_destroy(pool);
+        bool destroy = _sir_thrdpl_destroy(pool);
         SIR_ASSERT_UNUSED(destroy, destroy);
         return _sir_handleerr(op);
     }
@@ -97,7 +99,7 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
 #endif
 
     if (!thrd_create) {
-        bool destroy = _sir_threadpool_destroy(pool);
+        bool destroy = _sir_thrdpl_destroy(pool);
         SIR_ASSERT_UNUSED(destroy, destroy);
         return _sir_handleerr(thrd_err);
     }
@@ -105,7 +107,7 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
     return !!*pool;
 }
 
-bool _sir_threadpool_add_job(sir_threadpool* pool, sir_threadpool_job* job) {
+bool _sir_thrdpl_add_job(sir_thrdpl* pool, sir_thrdpl_job* job) {
     bool retval = false;
 
     if (pool && pool->jobs && job && job->fn && job->data) {
@@ -126,7 +128,7 @@ bool _sir_threadpool_add_job(sir_threadpool* pool, sir_threadpool_job* job) {
     return retval;
 }
 
-bool _sir_threadpool_destroy(sir_threadpool** pool) {
+bool _sir_thrdpl_destroy(sir_thrdpl** pool) {
     if (!pool || !*pool)
         return _sir_seterror(_SIR_E_INVALID);
 
@@ -161,6 +163,14 @@ bool _sir_threadpool_destroy(sir_threadpool** pool) {
 #endif
     }
 
+    if (NULL != (*pool)->ffn) {
+        sir_thrdpl_job* job = NULL;
+        while (_sir_queue_pop((*pool)->jobs, (void**)&job)) {
+            (*pool)->ffn(job->data);
+            _sir_safefree(&job);
+        }
+    }
+
     _sir_eqland(destroy, _sir_queue_destroy(&(*pool)->jobs));
     SIR_ASSERT(destroy);
 
@@ -182,7 +192,7 @@ static void* thread_pool_proc(void* arg)
 static unsigned __stdcall thread_pool_proc(void* arg)
 #endif
 {
-    sir_threadpool* pool = (sir_threadpool*)arg;
+    sir_thrdpl* pool = (sir_thrdpl*)arg;
     while (true) {
         bool locked = _sir_mutexlock(&pool->mutex);
         SIR_ASSERT_UNUSED(locked, locked);
@@ -199,7 +209,7 @@ static unsigned __stdcall thread_pool_proc(void* arg)
         }
 
         if (!pool->cancel) {
-            sir_threadpool_job* job = NULL;
+            sir_thrdpl_job* job = NULL;
             bool job_popped         = _sir_queue_pop(pool->jobs, (void**)&job);
 
             bool unlocked = _sir_mutexunlock(&pool->mutex);

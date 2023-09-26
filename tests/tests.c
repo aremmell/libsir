@@ -2123,18 +2123,18 @@ bool sirtest_threadpool(void) {
     bool pass = si_init;
 
     static const size_t num_jobs = 30;
-    sir_threadpool* pool         = NULL;
+    sir_thrdpl* pool         = NULL;
 
-    _sir_eqland(pass, _sir_threadpool_create(&pool, NUM_THREADS));
+    _sir_eqland(pass, _sir_thrdpl_create(&pool, NUM_THREADS, NULL));
     if (pass) {
         /* dispatch a whole bunch of jobs. */
         for (size_t n = 0; n < num_jobs; n++) {
-            sir_threadpool_job* job = calloc(1, sizeof(sir_threadpool_job));
+            sir_thrdpl_job* job = calloc(1, sizeof(sir_thrdpl_job));
             _sir_eqland(pass, NULL != job);
             if (job) {
                 job->fn = &threadpool_pseudojob;
                 job->data = (void*)(n + 1);
-                _sir_eqland(pass, _sir_threadpool_add_job(pool, job));
+                _sir_eqland(pass, _sir_thrdpl_add_job(pool, job));
                 _sir_eqland(pass, sir_info("dispatched job (fn: %"PRIxPTR", data: %p)",
                     (uintptr_t)job->fn, job->data));
             }
@@ -2147,7 +2147,7 @@ bool sirtest_threadpool(void) {
 #endif
 
         _sir_eqland(pass, sir_info("destroying thread pool..."));
-        _sir_eqland(pass, _sir_threadpool_destroy(&pool));
+        _sir_eqland(pass, _sir_thrdpl_destroy(&pool));
     }
 
     _sir_eqland(pass, sir_cleanup());

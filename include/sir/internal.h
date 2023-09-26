@@ -187,6 +187,12 @@ bool _sir_setthreadname(const char* name);
 /** Retrieves the hostname of this machine. */
 bool _sir_gethostname(char name[SIR_MAXHOST]);
 
+/** Callback that runs a job for the primary job queue. */
+bool _sir_thrdpl_run(void* data);
+
+/** Callback that frees job data for the primary job queue. */
+void _sir_thrdpl_free(void* data);
+
 # if defined(__cplusplus)
 }
 # endif

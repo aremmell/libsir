@@ -302,6 +302,21 @@ typedef struct {
     } state;
 } sirconfig;
 
+/** Formatted output container. */
+typedef struct {
+    char style[SIR_MAXSTYLE];
+    char* timestamp;
+    char msec[SIR_MAXMSEC];
+    const char* hostname;
+    const char* pid;
+    const char* level;
+    const char* name;
+    char tid[SIR_MAXPID];
+    char message[SIR_MAXMESSAGE];
+    char output[SIR_MAXOUTPUT];
+    size_t output_len;
+} sirbuf;
+
 /** Internally-used log file data. */
 typedef struct {
     const char* path;
@@ -385,11 +400,21 @@ typedef struct {
     sir_queue_node* head; /**< The first node in the linked list. */
 } sir_queue;
 
+/** Job data for the primary job queue. */
+typedef struct {
+    sirinit* si;
+    sir_level level;
+    sirbuf* buf;
+} sir_thrdpl_job_data;
+
 /** Job used by a job queue. */
 typedef struct {
-    bool (*fn)(void*); /**< Callback to be executed as part of the job. */
-    void* data;        /**< Data to pass to the callback. */
-} sir_threadpool_job;
+    bool (*fn)(void*); /**< Callback to be executed. */
+    void* data;        /**< Job data passed to the callback. */
+} sir_thrdpl_job;
+
+/** Function called with remaining job data when a job queue is destroyed. */
+typedef void (*sir_thrdpl_free)(void*);
 
 /** Thread pool/job queue data container. */
 typedef struct {
@@ -399,22 +424,8 @@ typedef struct {
     sir_condition cond;  /**< A condition which indicates that a job is ready. */
     sir_mutex mutex;     /**< A mutex to be paired with the condition variable. */
     bool cancel;         /**< Causes threads in the pool to exit when true. */
-} sir_threadpool;
-
-/** Formatted output container. */
-typedef struct {
-    char style[SIR_MAXSTYLE];
-    char* timestamp;
-    char msec[SIR_MAXMSEC];
-    const char* hostname;
-    const char* pid;
-    const char* level;
-    const char* name;
-    char tid[SIR_MAXPID];
-    char message[SIR_MAXMESSAGE];
-    char output[SIR_MAXOUTPUT];
-    size_t output_len;
-} sirbuf;
+    sir_thrdpl_free ffn; /**< Callback for orphaned job data on destroy. */
+} sir_thrdpl;
 
 /** ::sir_level <-> ::sir_textstyle mapping. */
 typedef struct {

@@ -30,6 +30,7 @@
 #include "sir/plugins.h"
 #include "sir/textstyle.h"
 #include "sir/filesystem.h"
+#include "sir/threadpool.h"
 #include "sir/mutex.h"
 
 #if defined(__WIN__)
@@ -47,6 +48,7 @@
 static sirconfig _sir_cfg      = {0};
 static sirfcache _sir_fc       = {0};
 static sir_plugincache _sir_pc = {0};
+static sir_thrdpl* _sir_tp = NULL;
 
 static sir_mutex cfg_mutex  = SIR_MUTEX_INIT;
 static sir_mutex fc_mutex   = SIR_MUTEX_INIT;
@@ -195,18 +197,17 @@ bool _sir_cleanup(void) {
 
     _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, false);
     bool cleanup   = true;
-    bool destroyfc = _sir_fcache_destroy(sfc);
-    SIR_ASSERT(destroyfc);
-
+    bool destroy = _sir_fcache_destroy(sfc);
     _SIR_UNLOCK_SECTION(SIRMI_FILECACHE);
-    _sir_eqland(cleanup, destroyfc);
+    SIR_ASSERT(destroy);
+    _sir_eqland(cleanup, destroy);
 
 #if !defined(SIR_NO_PLUGINS)
     _SIR_LOCK_SECTION(sir_plugincache, spc, SIRMI_PLUGINCACHE, false);
-    bool destroypc = _sir_plugin_cache_destroy(spc);
-    SIR_ASSERT(destroypc);
+    destroy = _sir_plugin_cache_destroy(spc);
     _SIR_UNLOCK_SECTION(SIRMI_PLUGINCACHE);
-    _sir_eqland(cleanup, destroypc);
+    SIR_ASSERT(destroy);
+    _sir_eqland(cleanup, destroy);
 #endif
 
     _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false);
@@ -223,6 +224,12 @@ bool _sir_cleanup(void) {
     if (!_sir_resettextstyles()) {
         cleanup = false;
         _sir_selflog("error: failed to reset text styles!");
+    }
+
+    if (NULL != _sir_tp) {
+        destroy = _sir_thrdpl_destroy(&_sir_tp);
+        SIR_ASSERT(destroy);
+        _sir_eqland(cleanup, destroy);
     }
 
 #if defined(__HAVE_ATOMIC_H__)
@@ -499,6 +506,10 @@ bool _sir_init_common_static(void) {
     SIR_ASSERT(created);
 
     _sir_eqland(created, _sir_mutexcreate(&ts_mutex));
+    SIR_ASSERT(created);
+
+    _sir_eqland(created, _sir_thrdpl_create(&_sir_tp, SIR_THRDPL_SIZE,
+        &_sir_thrdpl_free));
     SIR_ASSERT(created);
 
     return created;
@@ -1385,4 +1396,25 @@ bool _sir_gethostname(char name[SIR_MAXHOST]) {
     WSACleanup();
     return true;
 #endif /* !__WIN__ */
+}
+
+bool _sir_thrdpl_run(void* data) {
+    bool retval = _sir_validptrnofail(data);
+
+    if (retval) {
+        sir_thrdpl_job_data* my_data = (sir_thrdpl_job_data*)data;
+        _sir_selflog("dispatching in pool thread %d...", PID_CAST _sir_gettid());
+        retval = _sir_dispatch(my_data->si, my_data->level, my_data->buf);
+    }
+
+    return retval;
+}
+
+void _sir_thrdpl_free(void* data) {
+    if (_sir_validptrnofail(data)) {
+        _sir_selflog("warning: discarding job data (%p)", data);
+        sir_thrdpl_job_data* job_data = (sir_thrdpl_job_data*)data;
+        _sir_safefree(&job_data->si);
+        _sir_safefree(&job_data->buf);
+    }
 }

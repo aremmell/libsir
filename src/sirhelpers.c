@@ -288,9 +288,6 @@ int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename
 }
 
 bool _sir_getchar(char* input) {
-    if (!_sir_validptr(input))
-        return false;
-
 #if defined(__WIN__)
 # if defined(__EMBARCADEROC__)
      *input = (char)getch();
@@ -303,14 +300,16 @@ bool _sir_getchar(char* input) {
     if (0 != tcgetattr(STDIN_FILENO, &cur))
         return _sir_handleerr(errno);
 
-    struct termios new = {0};
-    memcpy(&new, &cur, sizeof(struct termios));
+    struct termios new = cur;
     new.c_lflag &= ~(ICANON | ECHO);
 
     if (0 != tcsetattr(STDIN_FILENO, TCSANOW, &new))
         return _sir_handleerr(errno);
 
-    *input = (char)getchar();
+    int ch = getchar();
+
+    if (NULL != input)
+        *input = (char)ch;
 
     return 0 == tcsetattr(STDIN_FILENO, TCSANOW, &cur) ? true
         : _sir_handleerr(errno);
