@@ -1,11 +1,11 @@
 #Requires -RunAsAdministrator
 
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
+
 param(
     [Parameter(Mandatory=$true)][string]$provider
 )
-
-# SPDX-License-Identifier: MIT
-# SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 
 $dir = split-path $MyInvocation.MyCommand.Definition -Parent
 try {
