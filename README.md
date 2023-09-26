@@ -36,6 +36,7 @@ libsir&mdash;a lightweight, cross-platform library for information distribution
   - [Visual Studio Code](#visual-studio-code)
     - [Build Tasks](#vs-code-build-tasks)
   - [Visual Studio 2022](#visual-studio-2022)
+    - [MSBuild](#ms-build-tools)
 - [Dig in](#dig-in)
 - [SAST Tools](#sast-tools)
 - [Other Tools](#other-tools)
@@ -158,24 +159,36 @@ A VS Code workspace file is located in the root of the repository (`sir.code-wor
 #### <a id="vs-code-build-tasks" /> Build Tasks
 To run a task, open the command list (<kbd>&#8984;</kbd> + <kbd>&#8679;</kbd> + <kbd>P</kbd> on macOS, <kbd>&#8963;</kbd> + <kbd>&#8679;</kbd> + <kbd>P</kbd> on Linux), then start typing `"run task"` until you see `"Tasks: Run Task"`. Click the item or press the key combination listed next to it. You should then see a drop-down menu containing all of the build tasks for libsir, which are listed here:
 
-| Build Task            | Description                                                      |
-|:----------------------|:-----------------------------------------------------------------|
-| Clean                 | Deletes all intermediate files and previously compiled binaries. |
-| Static Library        | Compiles libsir as a static library.                             |
-| DBG: Static Library   | Compiles libsir as a static library with debug symbols.          |
-| Shared Library        | Compiles libsir as a shared library.                             |
-| DBG: Shared Library   | Compiles libsir as a shared library with debug symbols.          |
-| Test Suite (C)        | Compiles the C test suite.                                       |
-| DBG: Test Suite (C)   | Compiles the C test suite with debug symbols.                    |
-| Test Suite (C++)      | Compiles the C++ test suite.                                     |
-| DBG: Test Suite (C++) | Compiles the C++ test suite with debug symbols.                  |
-| Example App (C)       | Compiles the C sample application.                               |
+| Build Task           | Description                                                      |
+|:---------------------|:-----------------------------------------------------------------|
+| Clean                | Deletes all intermediate files and previously compiled binaries. |
+| Static Library       | Compiles libsir as a static library.                             |
+| Static Library [DBG] | Compiles libsir as a static library with debug symbols.          |
+| Shared Library       | Compiles libsir as a shared library.                             |
+| Shared Library [DBG] | Compiles libsir as a shared library with debug symbols.          |
+| C Test Suite         | Compiles the C test suite.                                       |
+| C Test Suite [DBG]   | Compiles the C test suite with debug symbols.                    |
+| C++ Test Suite       | Compiles the C++ test suite.                                     |
+| C++ Test Suite [DBG] | Compiles the C++ test suite with debug symbols.                  |
+| C Example App        | Compiles the C sample application.                               |
 
 The VS Code build tasks execute `make` under the hood&mdash;the non-debug tasks map directly to the [recipes](#unix-makefile-recipes) listed under Unix Makefile; the debug tasks utilize libsir's custom [environment variables](#unix-makefile-envvars) to control the build process.
 
 ### <a id="visual-studio-2022" /> Visual Studio 2022
 
 A Visual Studio 2022 solution containing appropriate project files can be found in the [msvs](https://github.com/aremmell/libsir/tree/master/msvs) directory. Tested on Windows 11 (*x86, x64, and Arm64*) with Visual Studio 17.6+. See the [README](https://github.com/aremmell/libsir/tree/master/msvs/README.md) for more information.
+
+#### <a id="ms-build-tools" /> MSBuild
+
+Visual Studio is technically not required in order to build the Visual Studio 2022 solution; this may also be accomplished using Build Tools for Visual Studio 2022 ([download](https://aka.ms/vs/17/release/vs_BuildTools.exe), [reference](https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2022)) Despite its name, this is actually a stand-alone set of tools which includes MSBuild.
+
+**Using MSBuild from the command-line**
+
+Using MSBuild is pretty straightforward. Start a Developer Command Prompt, and then just supply the path to the `.sln` file, task (*e.g. `build`*), configuration (*e.g. `release`*), and platform (*e.g. `x64`*). Here's an example that builds libsir in release mode for x86_64 when executed from the root of the libsir repository:
+
+```ps
+MSBuild .\msvs\libsir.sln -t:Rebuild -p:Config=Release -p:Platform=x64
+```
 
 ## <a id="dig-in" /> Dig in
 

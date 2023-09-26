@@ -64,7 +64,7 @@
             }
         },
         {
-            "label": "DBG: Static Library",
+            "label": "Static Library [DBG]",
             "type": "process",
             "command": "make",
             "args": [
@@ -142,7 +142,7 @@
             }
         },
         {
-            "label": "DBG: Shared Library",
+            "label": "Shared Library [DBG]",
             "type": "process",
             "command": "make",
             "args": [
@@ -182,7 +182,7 @@
             }
         },
         {
-            "label": "Test Suite (C)",
+            "label": "C Test Suite",
             "type": "process",
             "command": "make",
             "args": [
@@ -221,7 +221,7 @@
             }
         },
         {
-            "label": "DBG: Test Suite (C)",
+            "label": "C Test Suite [DBG]",
             "type": "process",
             "command": "make",
             "args": [
@@ -261,7 +261,7 @@
             }
         },
         {
-            "label": "Test Suite (C++)",
+            "label": "C++ Test Suite",
             "type": "process",
             "command": "make",
             "args": [
@@ -299,7 +299,7 @@
             }
         },
         {
-            "label": "DBG: Test Suite (C++)",
+            "label": "C++ Test Suite [DBG]",
             "type": "process",
             "command": "make",
             "args": [
@@ -339,7 +339,7 @@
             }
         },
         {
-            "label": "Example App (C)",
+            "label": "C Example App",
             "type": "process",
             "command": "make",
             "args": [
