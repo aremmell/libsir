@@ -282,6 +282,7 @@ _invalid_parameter_handler
 _set_thread_local_invalid_parameter_handler(
  _invalid_parameter_handler pNew);
 #  endif
+#  include "sir/platform_embarcadero.h"
 # endif
 
 # if !defined(__MACOS__) && !defined(__BSD__) && !defined(__SOLARIS__) && \
@@ -611,8 +612,6 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 # elif defined(__STDC_ALLOC_LIB__)
 #  define __HAVE_STDC_EXT2__
 # endif
-
-# include "sir/platform_embarcadero.h"
 
 # if (defined(__clang__) || defined(__GNUC__)) && defined(__FILE_NAME__)
 #  define __file__ __FILE_NAME__
