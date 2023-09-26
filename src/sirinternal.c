@@ -612,7 +612,8 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     bool update_last_props = true;
     uint64_t hash          = 0ULL;
 
-    if (cfg.state.last.prefix[0] == buf.message[0]  &&
+    if (cfg.state.last.level == level &&
+        cfg.state.last.prefix[0] == buf.message[0]  &&
         cfg.state.last.prefix[1] == buf.message[1]) {
         hash  = FNV64_1a(buf.message);
         match = cfg.state.last.hash == hash;
@@ -632,8 +633,8 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
             cfg.state.last.squelch = true;
 
             _sir_selflog("hit squelch threshold of %zu; setting new threshold"
-                         " to %zu (factor: %d)",
-                old_threshold, cfg.state.last.threshold, SIR_SQUELCH_BACKOFF_FACTOR);
+                         " to %zu (factor: %d)", old_threshold,
+                         cfg.state.last.threshold, SIR_SQUELCH_BACKOFF_FACTOR);
 
             (void)snprintf(buf.message, SIR_MAXMESSAGE, SIR_SQUELCH_MSG_FORMAT, old_threshold);
         } else if (cfg.state.last.squelch) {
@@ -653,6 +654,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     _cfg->state.last.squelch = cfg.state.last.squelch;
 
     if (update_last_props) {
+        _cfg->state.last.level     = level;
         _cfg->state.last.hash      = hash;
         _cfg->state.last.prefix[0] = buf.message[0];
         _cfg->state.last.prefix[1] = buf.message[1];
