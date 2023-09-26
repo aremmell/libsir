@@ -15,3 +15,11 @@ function Echo-Green($msg)
 {
     write-host -ForegroundColor Green $msg
 }
+
+function Exit-On-Failure($msg)
+{
+    if (!$?) {
+        echo-red $msg
+        exit 1
+    }
+}
