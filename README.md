@@ -26,6 +26,7 @@ libsir&mdash;a lightweight, cross-platform library for information distribution
 - [Synopsis](#synopsis)
 - [Notables](#notables)
 - [Cross-platform compatibility](#cross-platform-compatibility)
+  - [System Loggers](#system-loggers)
   - [C++ compatibility](#c---compatibility)
   - [Language Bindings](#language-bindings)
 - [An example](#an-example)
@@ -86,6 +87,14 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 
 * libsir is known to work on most common (and many uncommon) architectures. It has actually been built and tested on **Intel** (x86\_64, i686, x32), **ARM** (ARMv6, ARMv7HF, ARMv8‑A), **POWER** (PowerPC, PPC64, PPC64le), **MIPS** (MIPS64, MIPS32, 74Kc), **SPARC** (SPARC64, V8, LEON3), **z/Architecture** (S390X), **SuperH** (SH‑4A), **RISC‑V** (RV64), **OpenRISC** (OR1200), and **m68k** (68020+).
 * This table only lists toolchains that have actually been tested and is by no means exhaustive&mdash;newer (or older) versions are likely to work without fanfare. In fact, if it *doesn't* work on your machine, it's probably a bug.
+
+### <a id="system-loggers" /> System Loggers
+
+libsir currently supports the following system logging facilities:
+
+* `Event Log` on Windows: the system-wide log viewable with Event Viewer
+* `os_log` on macOS: the system-wide log viewable with Console or the `log` command
+* `syslog` on any OS that provides it
 
 ### <a id="c---compatibility" /> C++ compatibility
 
