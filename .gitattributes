@@ -9,6 +9,7 @@ build-aux/** linguist-vendored
 docs/** linguist-vendored
 .editorconfig linguist-vendored
 .github linguist-vendored
+.gitlab-ci/msvc/msvctricks.cpp linguist-vendored
 .gitlab-ci/** linguist-vendored
 .gitlab-ci/msvc/** linguist-vendored
 .gitlab-ci.yml linguist-vendored
@@ -24,3 +25,10 @@ utils/mcmb/** linguist-vendored
 *.ch linguist-language=C
 *.chf linguist-language=C
 *.chi linguist-language=C
+.sonarcloud.properties linguist-vendored
+.semgrepignore linguist-vendored
+.gitignore linguist-vendored
+.gitattributes linguist-vendored
+.editorconfig linguist-vendored
+.clang-format linguist-vendored
+*.code-workspace linguist-vendored
