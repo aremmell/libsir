@@ -954,11 +954,10 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, const sir_syslog_dest
     syslog(syslog_level, "%s", buf->message);
     return true;
 # elif defined(SIR_EVENTLOG_ENABLED)
-    // TODO: figure out how to create a new channel that isn't the application log for the
-    // entire system, so that we can add a new event targeted for the verbose level. for now,
-    // debug will have to be ignored.
     const EVENT_DESCRIPTOR* edesc = NULL;
-    if (/*SIRL_DEBUG == level ||*/ SIRL_INFO == level || SIRL_NOTICE == level)
+    if (SIRL_DEBUG == level)
+        edesc = &SIR_EVT_DEBUG;
+    else if (SIRL_INFO == level || SIRL_NOTICE == level)
         edesc = &SIR_EVT_INFO;
     else if (SIRL_WARN == level)
         edesc = &SIR_EVT_WARNING;
@@ -967,38 +966,37 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, const sir_syslog_dest
     else if (SIRL_CRIT == level || SIRL_ALERT == level || SIRL_EMERG == level)
         edesc = &SIR_EVT_CRITICAL;
 
-    if (NULL != edesc) {
+    SIR_ASSERT(NULL != edesc);
+    if (NULL == edesc)
+        return _sir_seterror(_SIR_E_INTERNAL);
+
 #  if defined(__HAVE_STDC_SECURE_OR_EXT1__)
-        size_t msg_len = strnlen_s(buf->message, SIR_MAXMESSAGE) + 1;
+    size_t msg_len = strnlen_s(buf->message, SIR_MAXMESSAGE) + 1;
 #  else
-        size_t msg_len = strnlen(buf->message, SIR_MAXMESSAGE) + 1;
+    size_t msg_len = strnlen(buf->message, SIR_MAXMESSAGE) + 1;
 #  endif
-        int wlen = MultiByteToWideChar(CP_UTF8, 0UL, buf->message, (int)msg_len, NULL, 0);
-        if (wlen <= 0)
-            return _sir_handlewin32err(GetLastError());
+    int wlen = MultiByteToWideChar(CP_UTF8, 0UL, buf->message, (int)msg_len, NULL, 0);
+    if (wlen <= 0)
+        return _sir_handlewin32err(GetLastError());
 
-        DWORD write = 0xffffffffUL;
-        wchar_t* wmsg = calloc(sizeof(wchar_t), wlen);
-        if (NULL != wmsg) {
-            int conv = MultiByteToWideChar(CP_UTF8, 0UL, buf->message, (int)msg_len, wmsg, wlen);
-            if (conv > 0) {
-                EVENT_DATA_DESCRIPTOR eddesc = {0};
-                EventDataDescCreate(&eddesc, wmsg, (ULONG)(wlen * sizeof(wchar_t)));
+    DWORD write = 1UL;
+    wchar_t* wmsg = calloc(sizeof(wchar_t), wlen);
+    if (NULL != wmsg) {
+        int conv = MultiByteToWideChar(CP_UTF8, 0UL, buf->message, (int)msg_len, wmsg, wlen);
+        if (conv > 0) {
+            EVENT_DATA_DESCRIPTOR eddesc = {0};
+            EventDataDescCreate(&eddesc, wmsg, (ULONG)(wlen * sizeof(wchar_t)));
 
-                write = EventWrite((REGHANDLE)ctx->_state.logger, edesc, 1UL, &eddesc);
-                if (ERROR_SUCCESS != write) {
-                    _sir_selflog("failed to write eventlog! error: %lu", write);
-                    (void)_sir_handlewin32err(write);
-                }
+            write = EventWrite((REGHANDLE)ctx->_state.logger, edesc, 1UL, &eddesc);
+            if (ERROR_SUCCESS != write) {
+                _sir_selflog("failed to write eventlog! error: %lu", write);
+                (void)_sir_handlewin32err(write);
             }
-            _sir_safefree(&wmsg);
         }
-
-        return ERROR_SUCCESS == write;
+        _sir_safefree(&wmsg);
     }
 
-    // TODO: change to false when debug is implemented.
-    return true;
+    return ERROR_SUCCESS == write;
 # else
     SIR_UNUSED(level);
     SIR_UNUSED(buf);
