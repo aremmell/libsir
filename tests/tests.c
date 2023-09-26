@@ -57,7 +57,7 @@ static sir_test sir_tests[] = {
     {"sanity-file-write",       sirtest_logwritesanity, false, true},
     {"syslog",                  sirtest_syslog, false, true},
     {"os_log",                  sirtest_os_log, false, true},
-    {"win_eventlog",            sirtest_win_eventlog, false, true},
+    {"win-eventlog",            sirtest_win_eventlog, false, true},
     {"filesystem",              sirtest_filesystem, false, true},
     {"squelch-spam",            sirtest_squelchspam, false, true},
     {"plugin-loader",           sirtest_pluginloader, false, true},
@@ -1564,14 +1564,14 @@ bool sirtest_os_log(void) {
 bool sirtest_win_eventlog(void) {
 #if !defined(SIR_EVENTLOG_ENABLED)
 # if defined(SIR_NO_SYSTEM_LOGGERS)
-    bool pass = generic_disabled_syslog_test("win_eventlog", "sirtests", "tests");
+    bool pass = generic_disabled_syslog_test("eventlog", "sirtests", "tests");
     return PRINT_RESULT_RETURN(pass);
 # else
     TEST_MSG_0(DGRAY("SIR_EVENTLOG_ENABLED is not defined; skipping"));
     return true;
 # endif
 #else
-    bool pass = generic_syslog_test("win_eventlog", "sirtests", "tests");
+    bool pass = generic_syslog_test("eventlog", "sirtests", "tests");
     return PRINT_RESULT_RETURN(pass);
 #endif
 }
