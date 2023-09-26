@@ -276,12 +276,13 @@ bool _sir_plugin_unload(sir_plugin* plugin) {
 
 sirpluginid _sir_plugin_add(sir_plugin* plugin) {
 #if !defined(SIR_NO_PLUGINS)
-    if (!_sir_validptr(plugin))
-        return 0U;
+    sirpluginid retval = 0U;
 
-    _SIR_LOCK_SECTION(sir_plugincache, spc, SIRMI_PLUGINCACHE, 0U);
-    sirpluginid retval = _sir_plugin_cache_add(spc, plugin);
-    _SIR_UNLOCK_SECTION(SIRMI_PLUGINCACHE);
+    if (_sir_validptr(plugin)) {
+        _SIR_LOCK_SECTION(sir_plugincache, spc, SIRMI_PLUGINCACHE, 0U);
+        retval = _sir_plugin_cache_add(spc, plugin);
+        _SIR_UNLOCK_SECTION(SIRMI_PLUGINCACHE);
+    }
 
     return retval;
 #else

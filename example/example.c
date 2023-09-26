@@ -30,7 +30,8 @@
 #include "sir/helpers.h"
 #include "sir/internal.h"
 
-void report_error(void);
+int report_error(void);
+void report_warning(const char* warning);
 
 /**
  * @brief This is a basic example of initializing and configuring libsir for use.
@@ -47,17 +48,14 @@ void report_error(void);
  */
 int main(void) {
     /**
-     * Instantiate the libsir initialization struct and customize the
-     * configuration.
+     * Instantiate the libsir initialization struct and customize the configuration.
      *
      * NOTE: It is not necessary to retain this structure in memory;
      * libsir makes a copy of it before returning from ::sir_init.
      */
     sirinit si;
-    if (!sir_makeinit(&si)) {
-        report_error();
-        return EXIT_FAILURE;
-    }
+    if (!sir_makeinit(&si))
+        return report_error();
 
     /* Levels for stdout: send debug, information, warning, and notice there. */
     si.d_stdout.levels = SIRL_DEBUG | SIRL_INFO | SIRL_WARN | SIRL_NOTICE;
@@ -82,10 +80,8 @@ int main(void) {
     (void)_sir_strncpy(si.name, SIR_MAXNAME, appname, strnlen(appname, SIR_MAXNAME));
 
     /* Initialize libsir. */
-    if (!sir_init(&si)) {
-        report_error();
-        return EXIT_FAILURE;
-    }
+    if (!sir_init(&si))
+        return report_error();
 
     /* Set a friendly name for the current thread. */
     static const char* thread_name = "example[main]";
@@ -97,7 +93,7 @@ int main(void) {
      */
     sirfileid fileid = sir_addfile("libsir-example.log", SIRL_ALL, SIRO_NONAME | SIRO_NOHOST);
     if (0 == fileid)
-        report_error();
+        return report_error();
 
     /*
      * Ready to start logging. The messages passed to sir_debug() will be sent
@@ -136,8 +132,7 @@ int main(void) {
                     " %s", "connection reset by peer. Retry in 30sec");
 
     /*
-     * Let's decide we better set up logging to the system logger; things seem
-     * to be going poorly.
+     * We better set up logging to the system logger; things seem to be going poorly.
      *
      * Set up an identity, some options, and register for error and higher.
      *
@@ -145,17 +140,14 @@ int main(void) {
      * SIR_NO_SYSTEM_LOGGERS preprocessor define was set when libsir was
      * compiled, these calls will fail and have no effect.
      */
-
-#if !defined(SIR_NO_SYSTEM_LOGGERS)
     if (!sir_syslogid(appname))
-        report_error();
+        report_warning("Failed to set system logger ID");
 
     if (!sir_syslogopts(SIRO_NOPID))
-        report_error();
+        report_warning("Failed to set system logger options");
 
-    if (!sir_sysloglevels(SIRL_ERROR | SIRL_CRIT | SIRL_EMERG))
-        report_error();
-#endif
+    if (!sir_sysloglevels(SIRL_ERROR | SIRL_CRIT | SIRL_ALERT | SIRL_EMERG))
+        report_warning("Failed to set system logger levels");
 
     /* Okay, syslog should be configured now. Continue executing. */
     (void)sir_crit("Database query failure! Ignoring incoming client requests while"
@@ -169,8 +161,8 @@ int main(void) {
     (void)sir_debug("If this was real, we would be exiting with code %d now!", 1);
 
     /* Deregister (and close) the log file. */
-    if (fileid && !sir_remfile(fileid))
-        report_error();
+    if (!sir_remfile(fileid))
+        report_warning("Failed to deregister log file");
 
     /*
      * Now, you can examine the terminal output, libsir-example.log, and
@@ -178,17 +170,26 @@ int main(void) {
      *
      * The last thing we have to do is uninitialize libsir by calling sir_cleanup().
      */
-    if (!sir_cleanup())
-        report_error();
-
-    return EXIT_SUCCESS;
+    return sir_cleanup() ? EXIT_SUCCESS : report_error();
 }
 
 /**
- * Prints the last libsir error to stderr.
+ * Prints the last libsir error to stderr and returns EXIT_FAILURE.
  */
-void report_error(void) {
+int report_error(void) {
     char message[SIR_MAXERROR] = {0};
-    uint16_t code              = sir_geterror(message);
-    (void)fprintf(stderr, "libsir error: (%"PRIu16", %s)\n", code, message);
+    (void)sir_geterror(message);
+    (void)fprintf(stderr, "\x1b[31mlibsir error: %s\x1b[0m\n", message);
+    return EXIT_FAILURE;
+}
+
+/**
+ * Prints a warning message along with the last libsir error to stderr.
+ */
+void report_warning(const char* warning) {
+    if (_sir_validstrnofail(warning)) {
+        char message[SIR_MAXERROR] = {0};
+        (void)sir_geterror(message);
+        (void)fprintf(stderr, "\x1b[33m%s! libsir error: %s\x1b[0m\n", warning, message);
+    }
 }
