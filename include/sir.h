@@ -96,8 +96,8 @@ bool sir_init(sirinit* si);
  *
  * Deallocates resources such as memory buffers, file descriptors, etc. and
  * resets the internal state. No calls into libsir will succeed after calling
- * ::sir_cleanup (with the exception of ::sir_makeinit, ::sir_init, and
- * ::sir_geterror).
+ * ::sir_cleanup (with the exception of ::sir_makeinit, ::sir_init,
+ * ::sir_isinitialized,::sir_geterror, and ::sir_geterrorinfo).
  *
  * May be called from any thread. If you wish to utilize libsir again during the
  * same process' lifetime, simply call ::sir_init again.
@@ -123,17 +123,37 @@ bool sir_cleanup(void);
 bool sir_isinitialized(void);
 
 /**
- * @brief Retrieves information about the last error that occurred.
+ * @brief Retrieves a formatted message for the last error that occurred on the
+ * calling thread and returns the associated error code.
  *
- * libsir maintains errors on a per-thread basis, so it's important that the
- * same thread that encountered a failed library call be the one to get the
- * error information.
+ * To retrieve more granular information about an error, or to customize the
+ * error message format, use ::sir_geterrorinfo.
  *
- * @param   message  A buffer of ::SIR_MAXERROR chars to receive an error message.
- * @returns uint16_t The error code. Possible error codes are listed in
- *                   ::sir_errorcode.
+ * @remark libsir maintains errors on a per-thread basis, so it's important that
+ * the same thread that encountered a failed library call be the one to retrieve
+ * the error message.
+ *
+ * @param   message  A buffer of ::SIR_MAXERROR chars into which the error message
+ *                   is placed.
+ * @returns uint16_t An error code (see ::sir_errorcode). Returns ::SIR_E_NOERROR
+ *                   if no error has occurred.
  */
 uint16_t sir_geterror(char message[SIR_MAXERROR]);
+
+/**
+ * @brief Retrieves granular information about the last error that occurred on
+ * the calling thread.
+ *
+ * To retrieve just an error code and a formatted message, use ::sir_geterror.
+ *
+ * @remark libsir maintains errors on a per-thread basis, so it's important that
+ * the same thread that encountered a failed library call be the one to retrieve
+ * the error message.
+ *
+ * @param err Pointer to a ::sir_errorinfo structure into which the error infor-
+ *            mation is placed.
+ */
+void sir_geterrorinfo(sir_errorinfo* err);
 
 /**
  * @brief Dispatches a ::SIRL_DEBUG level message.
