@@ -335,13 +335,13 @@ typedef struct {
 # define SIR_PLUGIN_V1 1
 # define SIR_PLUGIN_VCURRENT SIR_PLUGIN_V1
 
-/** Plugin export names for v1 */
+/** Plugin export names for v1. */
 # define SIR_PLUGIN_EXPORT_QUERY   "sir_plugin_query"
 # define SIR_PLUGIN_EXPORT_INIT    "sir_plugin_init"
 # define SIR_PLUGIN_EXPORT_WRITE   "sir_plugin_write"
 # define SIR_PLUGIN_EXPORT_CLEANUP "sir_plugin_cleanup"
 
-/** Plugin export typedefs for v1 */
+/** Plugin export typedefs for v1. */
 typedef bool (*sir_plugin_queryfn)(sir_plugininfo*);
 typedef bool (*sir_plugin_initfn)(void);
 typedef bool (*sir_plugin_writefn)(sir_level, const char*);

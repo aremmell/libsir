@@ -133,19 +133,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa799babbc9291dcdef56556b46edadd0" id="r_aa799babbc9291dcdef56556b46edadd0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">virtual</a> <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsir_1_1policy.html#aa799babbc9291dcdef56556b46edadd0">on_init_complete</a> () <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">const</a> <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">noexcept</a>=0</td></tr>
 <tr class="memdesc:aa799babbc9291dcdef56556b46edadd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called by logger immediately after libsir has been initialized.  <br /></td></tr>
 <tr class="separator:aa799babbc9291dcdef56556b46edadd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac57980cada12876390d6666b0d5d9909" id="r_ac57980cada12876390d6666b0d5d9909"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">virtual</a> <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">constexpr</a> <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">const</a> <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">char</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsir_1_1policy.html#ac57980cada12876390d6666b0d5d9909">get_name</a> () <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">const</a> =0</td></tr>
-<tr class="memdesc:ac57980cada12876390d6666b0d5d9909"><td class="mdescLeft">&#160;</td><td class="mdescRight">Useful when complications arise; the question "which policy caused that
-to happen?!" is then easy to answer.  <br /></td></tr>
-<tr class="separator:ac57980cada12876390d6666b0d5d9909"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:abd4159da84207f2bcbd9fd2ce78e2640" id="r_abd4159da84207f2bcbd9fd2ce78e2640"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">static</a> <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">constexpr</a> <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsir_1_1policy.html#abd4159da84207f2bcbd9fd2ce78e2640">throw_on_error</a> () <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">noexcept</a></td></tr>
-<tr class="memdesc:abd4159da84207f2bcbd9fd2ce78e2640"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether or not exceptions are thrown in the event that a libsir or OS-level error is encountered by logger or its associated adapter(s).  <br /></td></tr>
+<tr class="memdesc:abd4159da84207f2bcbd9fd2ce78e2640"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether or not exceptions are thrown in the event that an unercoverable error is encountered by logger or its associated adapter(s).  <br /></td></tr>
 <tr class="separator:abd4159da84207f2bcbd9fd2ce78e2640"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Defines the partially abstract interface for a policy which controls the behavior of logger at runtime. </p>
+<dl class="section note"><dt>Note</dt><dd>Only the default constructors may be used. Other constructors will not be called, and if the default constructor is deleted, compilation errors will result. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ad90f4955785ed7bc45c9a5136f0f6a4d" name="ad90f4955785ed7bc45c9a5136f0f6a4d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad90f4955785ed7bc45c9a5136f0f6a4d">&#9670;&#160;</a></span>get_init_data()</h2>
@@ -172,53 +169,22 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Called by logger before initializing libsir. </p>
-<p>Provides the policy with an opportunity to customize the initial libsir configuration.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">data</td><td>initial libisr configuration data.</td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Provides the policy with an opportunity to customize the initial configuration.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publictypes.html#structsirinit" title="libsir initialization and configuration data.">sirinit</a> </dd>
 <dd>
 <a class="el" href="group__publicfuncs.html#gac21fb86ac7e7710400bf8b642887ad96" title="Fills out a sirinit structure with default values.">sir_makeinit</a></dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Most, if not all of the options chosen during initialization can be modified at runtime using functions provided by libsir.</dd>
+<dl class="section note"><dt>Note</dt><dd>For the default configuration, pass the address of data to <a class="el" href="group__publicfuncs.html#gac21fb86ac7e7710400bf8b642887ad96" title="Fills out a sirinit structure with default values.">sir_makeinit</a>.</dd>
 <dd>
-For the default configuration, pass the address of the <a class="el" href="group__publictypes.html#structsirinit" title="libsir initialization and configuration data.">sirinit</a> structure to <a class="el" href="group__publicfuncs.html#gac21fb86ac7e7710400bf8b642887ad96" title="Fills out a sirinit structure with default values.">sir_makeinit</a>.</dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>true if data was successfully configured, or false if an error occurred. Returning false will cause logger to abort the initialization process–either by throwing an exception, or by entering an 'invalid' state (determined by <a class="el" href="classsir_1_1policy.html#abd4159da84207f2bcbd9fd2ce78e2640" title="Determines whether or not exceptions are thrown in the event that a libsir or OS-level error is encou...">policy::throw_on_error</a>). </dd></dl>
+Most, if not all of the options chosen during initialization can be modified post-initialization.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>Reference to a <a class="el" href="group__publictypes.html#structsirinit" title="libsir initialization and configuration data.">sirinit</a> struct representing the initial configuration.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if data is ready to pass to <a class="el" href="group__publicfuncs.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes libsir for use.">sir_init</a>, or false if an error occurred. Returning false will cause logger to abort the initialization process, and possibly throw an exception. </dd></dl>
 
 <p>Implemented in <a class="el" href="classsir_1_1default__policy.html#a1acad8a59d338fcdba4b6a7bfa7711f4">sir::default_policy</a>.</p>
-
-</div>
-</div>
-<a id="ac57980cada12876390d6666b0d5d9909" name="ac57980cada12876390d6666b0d5d9909"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac57980cada12876390d6666b0d5d9909">&#9670;&#160;</a></span>get_name()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">virtual</a> <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">constexpr</a> <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">const</a> <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">char</a> * sir::policy::get_name </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Useful when complications arise; the question "which policy caused that
-to happen?!" is then easy to answer. </p>
-<dl class="section return"><dt>Returns</dt><dd>A unique name for the policy. </dd></dl>
-
-<p>Implemented in <a class="el" href="classsir_1_1default__policy.html#aa5a2ba27c5d1a2bdd2e90bb422180cdb">sir::default_policy</a>.</p>
 
 </div>
 </div>
@@ -246,14 +212,14 @@ to happen?!" is then easy to answer. </p>
 </div><div class="memdoc">
 
 <p>Called by logger immediately after libsir has been initialized. </p>
-<p>This is the moment in time which should be utilized for further configuration than is possible via <a class="el" href="group__publictypes.html#structsirinit" title="libsir initialization and configuration data.">sirinit</a> alone.</p>
-<p>Some items include:</p><ul>
-<li>Setting the <a class="el" href="group__publictypes.html#ga26686b620930358e8b50f287d6c96e51" title="Color mode selection.">sir_colormode</a> for stdio (<a class="el" href="group__publicfuncs.html#ga31639aba9a825f957a73689ef509f33d" title="Sets the ANSI color mode for stdio destinations.">sir_setcolormode</a>)</li>
-<li>Setting <a class="el" href="group__publictypes.html#structsir__textstyle" title="Container for all the information associated with the appearance of text in the context of stdio.">sir_textstyle</a> on a per-level basis for stdio (<a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>)</li>
+<p>This is the moment in time which should be utilized for further configuration than is possible via <a class="el" href="group__publicfuncs.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes libsir for use.">sir_init</a> alone.</p>
+<p>Some potential actions include:</p><ul>
+<li>Setting the color mode for stdio (<a class="el" href="group__publicfuncs.html#ga31639aba9a825f957a73689ef509f33d" title="Sets the ANSI color mode for stdio destinations.">sir_setcolormode</a>)</li>
+<li>Setting text styles on a per-level basis for stdio (<a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>)</li>
 <li>Adding log files (<a class="el" href="group__publicfuncs.html#gaa04f4ca1fc06e1d99ca4f0fd6422b573" title="Adds a log file and registers it to receive log output.">sir_addfile</a>)</li>
 <li>Loading plugins (<a class="el" href="group__publicfuncs.html#ga1a50b52b3ce1af7543b76a219ff01060" title="Loads a plugin module from disk.">sir_loadplugin</a>)</li>
 </ul>
-<dl class="section return"><dt>Returns</dt><dd>true if configuration was completed successfully, or false if an error occurred. Returning false will cause logger to abort the initialization process–either by throwing an exception, or by entering an 'invalid' state (determined by <a class="el" href="classsir_1_1policy.html#abd4159da84207f2bcbd9fd2ce78e2640" title="Determines whether or not exceptions are thrown in the event that a libsir or OS-level error is encou...">policy::throw_on_error</a>). </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if configuration was completed successfully, or false if an error occurred. Returning false will cause logger to abort the initialization process, and possibly throw an exception. </dd></dl>
 
 <p>Implemented in <a class="el" href="classsir_1_1default__policy.html#ae73d8edbd0dc7ba668c59634511efa87">sir::default_policy</a>.</p>
 
@@ -282,9 +248,9 @@ to happen?!" is then easy to answer. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Determines whether or not exceptions are thrown in the event that a libsir or OS-level error is encountered by logger or its associated adapter(s). </p>
-<dl class="section note"><dt>Note</dt><dd>If exceptions are not enabled, the caller of a method that could potentially fail is responsible for obtaining error information by calling logger::get_error and reacting accordingly.</dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>true if logger should throw exceptions (derived from std:: exception) when errors are encountered, or false if errors should simply be communicated through a pass/fail Boolean return value. </dd></dl>
+<p>Determines whether or not exceptions are thrown in the event that an unercoverable error is encountered by logger or its associated adapter(s). </p>
+<dl class="section note"><dt>Note</dt><dd>If exceptions are not enabled, the caller of a method that could potentially fail is responsible for obtaining last error information and reacting accordingly.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if logger should throw exceptions, or false if errors should simply be communicated through a pass/fail Boolean return value. </dd></dl>
 
 </div>
 </div>

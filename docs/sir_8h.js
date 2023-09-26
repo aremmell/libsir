@@ -10,6 +10,7 @@ var sir_8h =
     [ "sir_filelevels", "group__publicfuncs.html#ga5a776d3d55e9f993eb0fad82788e1160", null ],
     [ "sir_fileopts", "group__publicfuncs.html#gaf14164a64eca824a2bae72ef4e9689cd", null ],
     [ "sir_geterror", "group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300", null ],
+    [ "sir_geterrorinfo", "group__publicfuncs.html#gaedefdc4fb0546a210740ad0fb87f7b34", null ],
     [ "sir_getversionhex", "group__publicfuncs.html#ga747855ef6deb460266e79629d19451ab", null ],
     [ "sir_getversionstring", "group__publicfuncs.html#gad1e38749df3016bd75c3d7442b708ee9", null ],
     [ "sir_info", "group__publicfuncs.html#ga9aa2c092ae4ff0bf75043dce10166661", null ],

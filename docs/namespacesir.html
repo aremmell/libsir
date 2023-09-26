@@ -143,14 +143,17 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsir_1_1default__policy.html">default_policy</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">In the event that no custom configuration or behavior is desired, provides defaults for everything.  <a href="classsir_1_1default__policy.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:structsir_1_1error" id="r_structsir_1_1error"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesir.html#structsir_1_1error">error</a></td></tr>
-<tr class="memdesc:structsir_1_1error"><td class="mdescLeft">&#160;</td><td class="mdescRight">A libsir error object, containing a numeric error code and associated message.  <a href="namespacesir.html#structsir_1_1error">More...</a><br /></td></tr>
-<tr class="separator:structsir_1_1error"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsir_1_1error.html">error</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains basic information about an error.  <a href="structsir_1_1error.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsir_1_1error__info.html">error_info</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains all available information about an error.  <a href="structsir_1_1error__info.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsir_1_1exception.html">exception</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derives from std::runtime_error in order to be caught easily by standard try/catch blocks, as well as to provide useful error messages by way of the <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119" title="Handles a potential error; if an error is present and the policy in place requires throwing an except...">what()</a> method.  <a href="classsir_1_1exception.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The exception type thrown by libsir.  <a href="classsir_1_1exception.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsir_1_1fmt__format__adapter.html">fmt_format_adapter</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adapter for fmt (when available).  <a href="classsir_1_1fmt__format__adapter.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adapter for {fmt} (when available).  <a href="classsir_1_1fmt__format__adapter.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsir_1_1logger.html">logger</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The primary C++ interface to libsir.  <a href="classsir_1_1logger.html#details">More...</a><br /></td></tr>
@@ -188,6 +191,22 @@ template&lt;<a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424
 <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">using</a>&#160;</td><td class="memItemRight" valign="bottom"><b>default_logger</b> = <a class="el" href="classsir_1_1logger.html">logger</a>&lt; <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">true</a>, <a class="el" href="classsir_1_1default__policy.html">default_policy</a>, <a class="el" href="classsir_1_1default__adapter.html">default_adapter</a> &gt;</td></tr>
 <tr class="memdesc:a2e7cab525e97a45497b7e849b4990a03"><td class="mdescLeft">&#160;</td><td class="mdescRight">A logger that implements the default adapter. <br /></td></tr>
 <tr class="separator:a2e7cab525e97a45497b7e849b4990a03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a761e9525ba93e5eb99533ef06a8a6b3a" id="r_a761e9525ba93e5eb99533ef06a8a6b3a"><td class="memItemLeft" align="right" valign="top"><a id="a761e9525ba93e5eb99533ef06a8a6b3a" name="a761e9525ba93e5eb99533ef06a8a6b3a"></a>
+<a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">using</a>&#160;</td><td class="memItemRight" valign="bottom"><b>std_format_logger</b> = <a class="el" href="classsir_1_1logger.html">logger</a>&lt; <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">true</a>, <a class="el" href="classsir_1_1default__policy.html">default_policy</a>, <a class="el" href="classsir_1_1default__adapter.html">default_adapter</a>, <a class="el" href="classsir_1_1std__format__adapter.html">std_format_adapter</a> &gt;</td></tr>
+<tr class="memdesc:a761e9525ba93e5eb99533ef06a8a6b3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A logger that implements the default adapter and the std::format adapter. <br /></td></tr>
+<tr class="separator:a761e9525ba93e5eb99533ef06a8a6b3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38bc2bfac3662aae8464a2434960743e" id="r_a38bc2bfac3662aae8464a2434960743e"><td class="memItemLeft" align="right" valign="top"><a id="a38bc2bfac3662aae8464a2434960743e" name="a38bc2bfac3662aae8464a2434960743e"></a>
+<a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">using</a>&#160;</td><td class="memItemRight" valign="bottom"><b>boost_logger</b> = <a class="el" href="classsir_1_1logger.html">logger</a>&lt; <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">true</a>, <a class="el" href="classsir_1_1default__policy.html">default_policy</a>, <a class="el" href="classsir_1_1default__adapter.html">default_adapter</a>, <a class="el" href="classsir_1_1boost__format__adapter.html">boost_format_adapter</a> &gt;</td></tr>
+<tr class="memdesc:a38bc2bfac3662aae8464a2434960743e"><td class="mdescLeft">&#160;</td><td class="mdescRight">A logger that implements the default adapter and the boost::format adapter. <br /></td></tr>
+<tr class="separator:a38bc2bfac3662aae8464a2434960743e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91028ca8545f69febe43f6f9d0e5da1c" id="r_a91028ca8545f69febe43f6f9d0e5da1c"><td class="memItemLeft" align="right" valign="top"><a id="a91028ca8545f69febe43f6f9d0e5da1c" name="a91028ca8545f69febe43f6f9d0e5da1c"></a>
+<a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">using</a>&#160;</td><td class="memItemRight" valign="bottom"><b>fmt_logger</b> = <a class="el" href="classsir_1_1logger.html">logger</a>&lt; <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">true</a>, <a class="el" href="classsir_1_1default__policy.html">default_policy</a>, <a class="el" href="classsir_1_1default__adapter.html">default_adapter</a>, <a class="el" href="classsir_1_1fmt__format__adapter.html">fmt_format_adapter</a> &gt;</td></tr>
+<tr class="memdesc:a91028ca8545f69febe43f6f9d0e5da1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A logger that implements the default adapter and the fmt::format adapter. <br /></td></tr>
+<tr class="separator:a91028ca8545f69febe43f6f9d0e5da1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6902d374ee08b56589c88c531748e22" id="r_ad6902d374ee08b56589c88c531748e22"><td class="memItemLeft" align="right" valign="top"><a id="ad6902d374ee08b56589c88c531748e22" name="ad6902d374ee08b56589c88c531748e22"></a>
+<a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">using</a>&#160;</td><td class="memItemRight" valign="bottom"><b>iostream_logger</b> = <a class="el" href="classsir_1_1logger.html">logger</a>&lt; <a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">true</a>, <a class="el" href="classsir_1_1default__policy.html">default_policy</a>, <a class="el" href="classsir_1_1default__adapter.html">default_adapter</a>, <a class="el" href="classsir_1_1std__iostream__adapter.html">std_iostream_adapter</a> &gt;</td></tr>
+<tr class="memdesc:ad6902d374ee08b56589c88c531748e22"><td class="mdescLeft">&#160;</td><td class="mdescRight">A logger that implements the default adapter and the std::iostream adapter. <br /></td></tr>
+<tr class="separator:ad6902d374ee08b56589c88c531748e22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -203,38 +222,7 @@ template&lt;<a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>libsir C++ wrapper implementation. </p>
-</div><hr/><h2 class="groupheader">Data Structure Documentation</h2>
-<a name="structsir_1_1error" id="structsir_1_1error"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structsir_1_1error">&#9670;&#160;</a></span>sir::error</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct sir::error</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<div class="textblock"><p>A libsir error object, containing a numeric error code and associated message. </p>
-</div><table class="fieldtable">
-<tr><th colspan="3">Data Fields</th></tr>
-<tr><td class="fieldtype">
-<a id="a4859a24ff453b0a05a7824a824e7117a" name="a4859a24ff453b0a05a7824a824e7117a"></a><a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">uint16_t</a></td>
-<td class="fieldname">
-code = 0</td>
-<td class="fielddoc">
-The error code associated with the message. </td></tr>
-<tr><td class="fieldtype">
-<a id="a9f669faed973601b349f315ca7b3c053" name="a9f669faed973601b349f315ca7b3c053"></a><a class="el" href="namespacesir.html#aeeaffc9b61a4a185d0376489c7424119">string</a></td>
-<td class="fieldname">
-message</td>
-<td class="fielddoc">
-Description of the error that occurred. </td></tr>
-</table>
-
-</div>
-</div>
-<h2 class="groupheader">Function Documentation</h2>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a id="aeeaffc9b61a4a185d0376489c7424119" name="aeeaffc9b61a4a185d0376489c7424119"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeeaffc9b61a4a185d0376489c7424119">&#9670;&#160;</a></span>throw_on_policy()</h2>
 
@@ -262,10 +250,15 @@ template&lt;DerivedFromPolicy TPolicy&gt; </div>
 </div><div class="memdoc">
 
 <p>Handles a potential error; if an error is present and the policy in place requires throwing an exception, retrieves the associated error code and message from libsir, then throws. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TPolicy</td><td>A derived class of policy which determines whether or not to throw exceptions upon encountering an error.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">TPolicy</td><td>policy A derived class of policy which determines whether or not to throw exceptions upon encountering an error.</td></tr>
-    <tr><td class="paramname">expr</td><td>bool An expression that is evaluated against false. If false, an error is determined to have occurred and an exception will be thrown if the policy requires it.</td></tr>
+    <tr><td class="paramname">expr</td><td>An expression that is evaluated against false. If false, an error is determined to have occurred and an exception will be thrown if the policy requires it.</td></tr>
   </table>
   </dd>
 </dl>

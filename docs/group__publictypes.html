@@ -126,6 +126,9 @@ Collaboration diagram for Types:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
+<tr class="memitem:structsir__errorinfo" id="r_structsir__errorinfo"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publictypes.html#structsir__errorinfo">sir_errorinfo</a></td></tr>
+<tr class="memdesc:structsir__errorinfo"><td class="mdescLeft">&#160;</td><td class="mdescRight">Information about an error that occurred.  <a href="group__publictypes.html#structsir__errorinfo">More...</a><br /></td></tr>
+<tr class="separator:structsir__errorinfo"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:structsir__textstyle" id="r_structsir__textstyle"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a></td></tr>
 <tr class="memdesc:structsir__textstyle"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container for all the information associated with the appearance of text in the context of stdio.  <a href="group__publictypes.html#structsir__textstyle">More...</a><br /></td></tr>
 <tr class="separator:structsir__textstyle"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -267,51 +270,51 @@ typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>sir_textc
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:ga861df9be69c6bcd01d29b77bd28ff7d3" id="r_ga861df9be69c6bcd01d29b77bd28ff7d3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__publictypes.html#ga861df9be69c6bcd01d29b77bd28ff7d3">sir_errorcode</a> { <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3ae9cf0dd9b54a0e456a565c6a8bf107f7">SIR_E_NOERROR</a> = 0
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3ae9cf0dd9b54a0e456a565c6a8bf107f7">SIR_E_NOERROR</a> = 1
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a87dc9e5593942f7413b84a17c64a01eb">SIR_E_NOTREADY</a> = 1
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a87dc9e5593942f7413b84a17c64a01eb">SIR_E_NOTREADY</a> = 2
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a96e01762a7feb2dbbd6f3c4504ba3470">SIR_E_ALREADY</a> = 2
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a96e01762a7feb2dbbd6f3c4504ba3470">SIR_E_ALREADY</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a1b1cb52b01bb034e47cf015ebb49b3f1">SIR_E_DUPITEM</a> = 3
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a1b1cb52b01bb034e47cf015ebb49b3f1">SIR_E_DUPITEM</a> = 4
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a50f94f27851a7d56cec2d32b00ac383e">SIR_E_NOITEM</a> = 4
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a50f94f27851a7d56cec2d32b00ac383e">SIR_E_NOITEM</a> = 5
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3ae0cbdf962c6cdc1985795e07a705244b">SIR_E_NOROOM</a> = 5
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3ae0cbdf962c6cdc1985795e07a705244b">SIR_E_NOROOM</a> = 6
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a502a8e20f25ecee09eb75576238bb797">SIR_E_OPTIONS</a> = 6
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a502a8e20f25ecee09eb75576238bb797">SIR_E_OPTIONS</a> = 7
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a909ed133cf8d178dd98b24b51fe844bf">SIR_E_LEVELS</a> = 7
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a909ed133cf8d178dd98b24b51fe844bf">SIR_E_LEVELS</a> = 8
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a3f34b13f811b5ddc9e4c216f5432fa1d">SIR_E_TEXTSTYLE</a> = 8
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a3f34b13f811b5ddc9e4c216f5432fa1d">SIR_E_TEXTSTYLE</a> = 9
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a014d92769313bc513bd580461d8ebcd3">SIR_E_STRING</a> = 9
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a014d92769313bc513bd580461d8ebcd3">SIR_E_STRING</a> = 10
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a8e6f10a1b3f9eb256aaa4f9c1504b43d">SIR_E_NULLPTR</a> = 10
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a8e6f10a1b3f9eb256aaa4f9c1504b43d">SIR_E_NULLPTR</a> = 11
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3aba1600c4a3cb92f8f2cdf7be820606d3">SIR_E_INVALID</a> = 11
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3aba1600c4a3cb92f8f2cdf7be820606d3">SIR_E_INVALID</a> = 12
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3ad8d3e0a7ff09ea46a966d07ad08536af">SIR_E_NODEST</a> = 12
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3ad8d3e0a7ff09ea46a966d07ad08536af">SIR_E_NODEST</a> = 13
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a3b567998a2ca4da43348b5edb38dd865">SIR_E_UNAVAIL</a> = 13
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a3b567998a2ca4da43348b5edb38dd865">SIR_E_UNAVAIL</a> = 14
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a1cc3cc0a607357ce4e6e8931c5b26190">SIR_E_INTERNAL</a> = 14
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a1cc3cc0a607357ce4e6e8931c5b26190">SIR_E_INTERNAL</a> = 15
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3aa8be0c34a6b8a73f40cb8895ee3c43ca">SIR_E_COLORMODE</a> = 15
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3aa8be0c34a6b8a73f40cb8895ee3c43ca">SIR_E_COLORMODE</a> = 16
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3af4f4ba84fa79d43fa816717db4403abe">SIR_E_TEXTATTR</a> = 16
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3af4f4ba84fa79d43fa816717db4403abe">SIR_E_TEXTATTR</a> = 17
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a078991e5214a2846ddaa2779f3f1c336">SIR_E_TEXTCOLOR</a> = 17
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a078991e5214a2846ddaa2779f3f1c336">SIR_E_TEXTCOLOR</a> = 18
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3aa8ed1f05c3de1319d6eba4c3f44ec183">SIR_E_PLUGINBAD</a> = 18
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3aa8ed1f05c3de1319d6eba4c3f44ec183">SIR_E_PLUGINBAD</a> = 19
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a80c1d698c56a8b54ae747dc5c4c969a8">SIR_E_PLUGINDAT</a> = 19
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a80c1d698c56a8b54ae747dc5c4c969a8">SIR_E_PLUGINDAT</a> = 20
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a72ce4f1dddbcac7f0a5d2224c5164927">SIR_E_PLUGINVER</a> = 20
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a72ce4f1dddbcac7f0a5d2224c5164927">SIR_E_PLUGINVER</a> = 21
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a99ffe5bf9046a13802a9e0680e7f5e57">SIR_E_PLUGINERR</a> = 21
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a99ffe5bf9046a13802a9e0680e7f5e57">SIR_E_PLUGINERR</a> = 22
 , <br />
-&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a0f293a6020f98a7e41b8afea0e402046">SIR_E_PLATFORM</a> = 22
+&#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a0f293a6020f98a7e41b8afea0e402046">SIR_E_PLATFORM</a> = 23
 , <br />
 &#160;&#160;<a class="el" href="group__publictypes.html#gga861df9be69c6bcd01d29b77bd28ff7d3a8090c8bc79ae660da7e58b2d0a47d785">SIR_E_UNKNOWN</a> = 4095
 <br />
@@ -385,6 +388,67 @@ Enumerations</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <hr/><h2 class="groupheader">Data Structure Documentation</h2>
+<a name="structsir__errorinfo" id="structsir__errorinfo"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structsir__errorinfo">&#9670;&#160;</a></span>sir_errorinfo</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct sir_errorinfo</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><p>Information about an error that occurred. </p>
+<p>Granular error information in order to provide the caller with flexibility in regards to error handling and formatting. </p>
+</div><table class="fieldtable">
+<tr><th colspan="3">Data Fields</th></tr>
+<tr><td class="fieldtype">
+<a id="a1b19b7713ae46decdf5c2f25afe6db2b" name="a1b19b7713ae46decdf5c2f25afe6db2b"></a>uint16_t</td>
+<td class="fieldname">
+code</td>
+<td class="fielddoc">
+Numeric error code (see <a class="el" href="group__publictypes.html#ga861df9be69c6bcd01d29b77bd28ff7d3" title="Error codes.">sir_errorcode</a>). </td></tr>
+<tr><td class="fieldtype">
+<a id="a0f1ca5e5f040ff432ec2f28ac23b1504" name="a0f1ca5e5f040ff432ec2f28ac23b1504"></a>const char *</td>
+<td class="fieldname">
+file</td>
+<td class="fielddoc">
+Name of the file in which the error occurred. </td></tr>
+<tr><td class="fieldtype">
+<a id="af4a1521a69e33827d65f58ae91652eea" name="af4a1521a69e33827d65f58ae91652eea"></a>const char *</td>
+<td class="fieldname">
+func</td>
+<td class="fielddoc">
+Name of the function in which the error occurred. </td></tr>
+<tr><td class="fieldtype">
+<a id="aac81443950636231618b982dfb5b122f" name="aac81443950636231618b982dfb5b122f"></a>uint32_t</td>
+<td class="fieldname">
+line</td>
+<td class="fielddoc">
+Line number at which the error occurred. </td></tr>
+<tr><td class="fieldtype">
+<a id="a0650ec340669782fe39c6272e47d50f6" name="a0650ec340669782fe39c6272e47d50f6"></a>char</td>
+<td class="fieldname">
+msg[<a class="el" href="config_8h.html#ad6fce840144259e992c33fb611f31262">SIR_MAXERROR</a>]</td>
+<td class="fielddoc">
+Error message associated with code. </td></tr>
+<tr><td class="fieldtype">
+<a id="a2765f5ddb8a50349623160cc96c81a4e" name="a2765f5ddb8a50349623160cc96c81a4e"></a>int</td>
+<td class="fieldname">
+os_code</td>
+<td class="fielddoc">
+If an OS/libc error, the relevant code. </td></tr>
+<tr><td class="fieldtype">
+<a id="a742a53b19bb736a6da11298c3bc5ff93" name="a742a53b19bb736a6da11298c3bc5ff93"></a>char</td>
+<td class="fieldname">
+os_msg[<a class="el" href="config_8h.html#ad6fce840144259e992c33fb611f31262">SIR_MAXERROR</a>]</td>
+<td class="fielddoc">
+If an OS/libc error, the relevant message. </td></tr>
+</table>
+
+</div>
+</div>
 <a name="structsir__textstyle" id="structsir__textstyle"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#structsir__textstyle">&#9670;&#160;</a></span>sir_textstyle</h2>
 

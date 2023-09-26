@@ -35,5 +35,6 @@ var group__tests =
     [ "sirtest_threadidsanity", "group__tests.html#gaf7edbef2bba9459091aa48d8b9512ede", null ],
     [ "sirtest_threadpool", "group__tests.html#ga9ec172056871a719049c1c40ffdaf292", null ],
     [ "sirtest_threadrace", "group__tests.html#gacfda68c218d184e7a6998d9f2837481f", null ],
-    [ "sirtest_updatesanity", "group__tests.html#gaf3428b620d3540baf058f6b7dd42c075", null ]
+    [ "sirtest_updatesanity", "group__tests.html#gaf3428b620d3540baf058f6b7dd42c075", null ],
+    [ "sirtest_win_eventlog", "group__tests.html#ga2e0a749564af876b85a717616e1182c6", null ]
 ];

@@ -20,8 +20,9 @@ var searchData=
   ['bold_17',['BOLD',['../ansimacros_8h.html#a64dae5ea663596bf818ce1a65188b599',1,'ansimacros.h']]],
   ['boost_5fformat_18',['boost_format',['../namespacesir_1_1tests.html#a85d1727f9d755e549e2c0eec9156c937',1,'sir::tests']]],
   ['boost_5fformat_5fadapter_19',['boost_format_adapter',['../classsir_1_1boost__format__adapter.html',1,'sir']]],
-  ['bred_20',['BRED',['../ansimacros_8h.html#a6bde256f1cbf05d5d369d4421fcf4f28',1,'ansimacros.h']]],
-  ['bredb_21',['BREDB',['../ansimacros_8h.html#a18a36402fac2d201107a21c646acaf52',1,'ansimacros.h']]],
-  ['byellow_22',['BYELLOW',['../ansimacros_8h.html#a5f6343cd8e63298510397eea5a17327f',1,'ansimacros.h']]],
-  ['byellowb_23',['BYELLOWB',['../ansimacros_8h.html#aa6336e235f41ae33d5102dddae595505',1,'ansimacros.h']]]
+  ['boost_5flogger_20',['boost_logger',['../namespacesir.html#a38bc2bfac3662aae8464a2434960743e',1,'sir']]],
+  ['bred_21',['BRED',['../ansimacros_8h.html#a6bde256f1cbf05d5d369d4421fcf4f28',1,'ansimacros.h']]],
+  ['bredb_22',['BREDB',['../ansimacros_8h.html#a18a36402fac2d201107a21c646acaf52',1,'ansimacros.h']]],
+  ['byellow_23',['BYELLOW',['../ansimacros_8h.html#a5f6343cd8e63298510397eea5a17327f',1,'ansimacros.h']]],
+  ['byellowb_24',['BYELLOWB',['../ansimacros_8h.html#aa6336e235f41ae33d5102dddae595505',1,'ansimacros.h']]]
 ];
