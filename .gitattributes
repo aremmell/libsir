@@ -10,6 +10,7 @@ docs/** linguist-vendored
 .editorconfig linguist-vendored
 .github linguist-vendored
 .gitlab-ci/** linguist-vendored
+.gitlab-ci/msvc/** linguist-vendored
 .gitlab-ci.yml linguist-vendored
 LICENSES/** linguist-vendored
 .lint.sh linguist-vendored
@@ -20,7 +21,6 @@ sir.code-workspace linguist-vendored
 sirplatform.mk linguist-vendored
 utils/mcmb/** linguist-vendored
 .vscode linguist-vendored
-CODEOWNERS linguist-vendored
 *.ch linguist-language=C
 *.chf linguist-language=C
 *.chi linguist-language=C
