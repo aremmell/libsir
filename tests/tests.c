@@ -805,7 +805,13 @@ bool sirtest_errorsanity(void) {
 
     char message[SIR_MAXERROR] = {0};
     for (size_t n = 0; n < _sir_countof(errors); n++) {
-        (void)_sir_seterror(_sir_mkerror(errors[n].code));
+        if (SIR_E_PLATFORM == errors[n].code) {
+            /* cause an actual platform error. */
+            (void)sir_addfile("invalid/file!name", SIRL_ALL, SIRO_DEFAULT);
+        } else {
+            (void)_sir_seterror(_sir_mkerror(errors[n].code));
+        }
+
         memset(message, 0, SIR_MAXERROR);
         uint16_t err = sir_geterror(message);
         _sir_eqland(pass, errors[n].code == err && *message != '\0');
@@ -821,14 +827,17 @@ bool sirtest_errorsanity(void) {
             errinfo.os_code, errinfo.os_msg);
 
         _sir_eqland(pass, errinfo.code == err);
-        _sir_eqland(pass, _sir_strsame(__func__, errinfo.func, strlen(__func__)));
-        _sir_eqland(pass, _sir_strsame(__file__, errinfo.file, SIR_MAXPATH));
         _sir_eqland(pass, errinfo.line != 0U);
         _sir_eqland(pass, _sir_validstrnofail(errinfo.msg));
 
         if (errinfo.code == SIR_E_PLATFORM) {
             _sir_eqland(pass, errinfo.os_code != 0);
             _sir_eqland(pass, _sir_validstrnofail(errinfo.os_msg));
+            _sir_eqland(pass, _sir_validstrnofail(errinfo.func));
+            _sir_eqland(pass, _sir_validstrnofail(errinfo.file));
+        } else {
+            _sir_eqland(pass, _sir_strsame(__func__, errinfo.func, strlen(__func__)));
+            _sir_eqland(pass, _sir_strsame(__file__, errinfo.file, SIR_MAXPATH));
         }
     }
 
