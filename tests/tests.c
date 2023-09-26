@@ -827,7 +827,7 @@ bool sirtest_errorsanity(void) {
         _sir_eqland(pass, _sir_validstrnofail(errinfo.msg));
 
         if (errinfo.code == SIR_E_PLATFORM) {
-            _sir_eqland(pass, errinfo.code != 0);
+            _sir_eqland(pass, errinfo.os_code != 0);
             _sir_eqland(pass, _sir_validstrnofail(errinfo.os_msg));
         }
     }
