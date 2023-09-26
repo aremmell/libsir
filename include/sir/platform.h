@@ -96,7 +96,8 @@
 #  if defined(SUNLINT)
 #   undef __HAVE_ATOMIC_H__
 #  endif
-#  if defined(__NVCOMPILER) || (defined(__INTEL_COMPILER) && !defined(__llvm__))
+#  if (defined(__INTEL_COMPILER) && !defined(__llvm__)) || \
+     defined(__NVCOMPILER) || defined(__COVERITY__)
 #   if !defined(_BITS_FLOATN_H)
 #    define _BITS_FLOATN_H
 #   endif
