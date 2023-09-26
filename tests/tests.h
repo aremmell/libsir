@@ -247,6 +247,14 @@ bool sirtest_syslog(void);
 bool sirtest_os_log(void);
 
 /**
+ * @test sirtest_event_log
+ * @brief Properly open, configure, and send messages to the Windows event log.
+ * @note Only enabled on Windows.
+ * @returns bool `true` if the test succeeded, `false` otherwise.
+ */
+bool sirtest_win_eventlog(void);
+
+/**
  * @test sirtest_filesystem
  * @brief Ensure the proper functionality of portable filesystem implementation.
  * @returns bool `true` if the test succeeded, `false` otherwise.

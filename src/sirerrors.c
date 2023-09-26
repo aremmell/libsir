@@ -26,14 +26,6 @@
 #include "sir/errors.h"
 #include "sir/helpers.h"
 
-#if defined(__WIN__)
-# if defined(__EMBARCADEROC__) && defined(_WIN64)
-#  pragma comment(lib, "shlwapi.a")
-# else
-#  pragma comment(lib, "shlwapi.lib")
-# endif
-#endif
-
 #if defined(__MACOS__) || defined(__BSD__) || \
     (defined(_POSIX_C_SOURCE) && (_POSIX_C_SOURCE >= 200112L && !defined(_GNU_SOURCE)))
 # define __HAVE_XSI_STRERROR_R__

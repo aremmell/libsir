@@ -3224,6 +3224,7 @@ Linux/x86_64 (AOCC, Fedora Python):
 
 Semgrep (Cloud Rules):
   allow_failure: true
+  timeout: 15 minutes
   tags:
     - Docker-x64
     - Linux
@@ -3253,6 +3254,7 @@ Semgrep (Cloud Rules):
 
 Semgrep (GitLab Rules):
   allow_failure: true
+  timeout: 15 minutes
   tags:
     - Docker-x64
     - Linux

@@ -208,10 +208,14 @@ tar zxf "${COVERITY_DLDIR:?}/coverity_tool.tgz"                  \
 ##############################################################################
 
 printf '%s\n' '#### Notice: Building libsir for Coverity analysis.'
-make clean &&                                 \
-env TZ=UTC PATH="./.coverity/bin:${PATH:?}"   \
-    ./.coverity/bin/cov-build --dir "cov-int" \
-      make all tests++
+make clean &&                                     \
+env TZ=UTC                                        \
+    PATH="./.coverity/bin:${PATH:?}"              \
+    CXXFLAGS="-DSIR_NO_FMT_FORMAT=1               \
+              -DSIR_NO_BOOST_FORMAT=1             \
+              -DSIR_NO_STD_FORMAT=1"              \
+        ./.coverity/bin/cov-build --dir "cov-int" \
+            make all tests++
 
 ##############################################################################
 
