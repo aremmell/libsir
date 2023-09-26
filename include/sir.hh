@@ -166,14 +166,6 @@ namespace sir
         static constexpr bool throw_on_error() noexcept {
             return false;
         }
-
-        /**
-         * Useful when complications arise; the question "which policy caused that
-         * to happen?!" is then easy to answer.
-         *
-         * @returns A unique name for the policy.
-         */
-        virtual constexpr const char* get_name() const = 0;
     };
 
     /** Ensures that T derives from policy. */
@@ -204,10 +196,6 @@ namespace sir
 
         static constexpr bool throw_on_error() noexcept {
             return true;
-        }
-
-        constexpr const char* get_name() const final {
-            return "Default";
         }
     };
 

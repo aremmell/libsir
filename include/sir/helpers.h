@@ -143,22 +143,16 @@ bool _sir_bittest(uint32_t flags, uint32_t test) {
 
 /** Sets a specific set of bits high in a bitmask. */
 static inline
-bool _sir_setbitshigh(uint32_t* flags, uint32_t set) {
-    if (!flags)
-        return false;
-
-    *flags |= set;
-    return true;
+void _sir_setbitshigh(uint32_t* flags, uint32_t set) {
+    if (NULL != flags)
+        *flags |= set;
 }
 
 /** Sets a specific set of bits low in a bitmask. */
 static inline
-bool _sir_setbitslow(uint32_t* flags, uint32_t set) {
-    if (!flags)
-        return false;
-
-    *flags &= ~set;
-    return true;
+void _sir_setbitslow(uint32_t* flags, uint32_t set) {
+    if (NULL != flags)
+        *flags &= ~set;
 }
 
 /** Effectively performs b &= expr without the linter warnings about using
