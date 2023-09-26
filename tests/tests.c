@@ -777,39 +777,68 @@ bool sirtest_errorsanity(void) {
         uint16_t code;
         const char* name;
     } errors[] = {
-        {SIR_E_NOERROR,   "SIR_E_NOERROR"},   /**< The operation completed successfully (0) */
-        {SIR_E_NOTREADY,  "SIR_E_NOTREADY"},  /**< libsir has not been initialized (1) */
-        {SIR_E_ALREADY,   "SIR_E_ALREADY"},   /**< libsir is already initialized (2) */
-        {SIR_E_DUPITEM,   "SIR_E_DUPITEM"},   /**< Item already managed by libsir (3) */
-        {SIR_E_NOITEM,    "SIR_E_NOITEM"},    /**< Item not managed by libsir (4) */
-        {SIR_E_NOROOM,    "SIR_E_NOROOM"},    /**< Maximum number of items already stored (5) */
-        {SIR_E_OPTIONS,   "SIR_E_OPTIONS"},   /**< Option flags are invalid (6) */
-        {SIR_E_LEVELS,    "SIR_E_LEVELS"},    /**< Level flags are invalid (7) */
-        {SIR_E_TEXTSTYLE, "SIR_E_TEXTSTYLE"}, /**< Text style is invalid (8) */
-        {SIR_E_STRING,    "SIR_E_STRING"},    /**< Invalid string argument (9) */
-        {SIR_E_NULLPTR,   "SIR_E_NULLPTR"},   /**< NULL pointer argument (10) */
-        {SIR_E_INVALID,   "SIR_E_INVALID"},   /**< Invalid argument (11) */
-        {SIR_E_NODEST,    "SIR_E_NODEST"},    /**< No destinations registered for level (12) */
-        {SIR_E_UNAVAIL,   "SIR_E_UNAVAIL"},   /**< Feature is disabled or unavailable (13) */
-        {SIR_E_INTERNAL,  "SIR_E_INTERNAL"},  /**< An internal error has occurred (14) */
-        {SIR_E_COLORMODE, "SIR_E_COLORMODE"}, /**< Invalid color mode (15) */
-        {SIR_E_TEXTATTR,  "SIR_E_TEXTATTR"},  /**< Invalid text attributes (16) */
-        {SIR_E_TEXTCOLOR, "SIR_E_TEXTCOLOR"}, /**< Invalid text color (17) */
-        {SIR_E_PLUGINBAD, "SIR_E_PLUGINBAD"}, /**< Plugin module is malformed (18) */
-        {SIR_E_PLUGINDAT, "SIR_E_PLUGINDAT"}, /**< Data produced by plugin is invalid (19) */
-        {SIR_E_PLUGINVER, "SIR_E_PLUGINVER"}, /**< Plugin interface version unsupported (20) */
-        {SIR_E_PLUGINERR, "SIR_E_PLUGINERR"}, /**< Plugin reported failure (21) */
-        {SIR_E_PLATFORM,  "SIR_E_PLATFORM"},  /**< Platform error code %d: %s (22) */
+        {SIR_E_NOERROR,   "SIR_E_NOERROR"},   /**< The operation completed successfully (1) */
+        {SIR_E_NOTREADY,  "SIR_E_NOTREADY"},  /**< libsir has not been initialized (2) */
+        {SIR_E_ALREADY,   "SIR_E_ALREADY"},   /**< libsir is already initialized (3) */
+        {SIR_E_DUPITEM,   "SIR_E_DUPITEM"},   /**< Item already managed by libsir (4) */
+        {SIR_E_NOITEM,    "SIR_E_NOITEM"},    /**< Item not managed by libsir (5) */
+        {SIR_E_NOROOM,    "SIR_E_NOROOM"},    /**< Maximum number of items already stored (6) */
+        {SIR_E_OPTIONS,   "SIR_E_OPTIONS"},   /**< Option flags are invalid (7) */
+        {SIR_E_LEVELS,    "SIR_E_LEVELS"},    /**< Level flags are invalid (8) */
+        {SIR_E_TEXTSTYLE, "SIR_E_TEXTSTYLE"}, /**< Text style is invalid (9) */
+        {SIR_E_STRING,    "SIR_E_STRING"},    /**< Invalid string argument (10) */
+        {SIR_E_NULLPTR,   "SIR_E_NULLPTR"},   /**< NULL pointer argument (11) */
+        {SIR_E_INVALID,   "SIR_E_INVALID"},   /**< Invalid argument (12) */
+        {SIR_E_NODEST,    "SIR_E_NODEST"},    /**< No destinations registered for level (13) */
+        {SIR_E_UNAVAIL,   "SIR_E_UNAVAIL"},   /**< Feature is disabled or unavailable (14) */
+        {SIR_E_INTERNAL,  "SIR_E_INTERNAL"},  /**< An internal error has occurred (15) */
+        {SIR_E_COLORMODE, "SIR_E_COLORMODE"}, /**< Invalid color mode (16) */
+        {SIR_E_TEXTATTR,  "SIR_E_TEXTATTR"},  /**< Invalid text attributes (17) */
+        {SIR_E_TEXTCOLOR, "SIR_E_TEXTCOLOR"}, /**< Invalid text color (18) */
+        {SIR_E_PLUGINBAD, "SIR_E_PLUGINBAD"}, /**< Plugin module is malformed (19) */
+        {SIR_E_PLUGINDAT, "SIR_E_PLUGINDAT"}, /**< Data produced by plugin is invalid (20) */
+        {SIR_E_PLUGINVER, "SIR_E_PLUGINVER"}, /**< Plugin interface version unsupported (21) */
+        {SIR_E_PLUGINERR, "SIR_E_PLUGINERR"}, /**< Plugin reported failure (22) */
+        {SIR_E_PLATFORM,  "SIR_E_PLATFORM"},  /**< Platform error code %d: %s (23) */
         {SIR_E_UNKNOWN,   "SIR_E_UNKNOWN"},   /**< Unknown error (4095) */
     };
 
     char message[SIR_MAXERROR] = {0};
     for (size_t n = 0; n < _sir_countof(errors); n++) {
-        (void)_sir_seterror(_sir_mkerror(errors[n].code));
+        if (SIR_E_PLATFORM == errors[n].code) {
+            /* cause an actual platform error. */
+            (void)sir_addfile("invalid/file!name", SIRL_ALL, SIRO_DEFAULT);
+        } else {
+            (void)_sir_seterror(_sir_mkerror(errors[n].code));
+        }
+
         memset(message, 0, SIR_MAXERROR);
         uint16_t err = sir_geterror(message);
         _sir_eqland(pass, errors[n].code == err && *message != '\0');
         TEST_MSG("%s = %s", errors[n].name, message);
+
+        /* ensure that sir_geterrorinfo agrees with sir_geterror, and
+         * that it returns sane data. */
+        sir_errorinfo errinfo = {0};
+        sir_geterrorinfo(&errinfo);
+
+        TEST_MSG("errinfo = {'%s', '%s', %"PRIu32", %"PRIu16", '%s', %d, '%s'}",
+            errinfo.func, errinfo.file, errinfo.line, errinfo.code, errinfo.msg,
+            errinfo.os_code, errinfo.os_msg);
+
+        _sir_eqland(pass, errinfo.code == err);
+        _sir_eqland(pass, errinfo.line != 0U);
+        _sir_eqland(pass, _sir_validstrnofail(errinfo.msg));
+
+        if (errinfo.code == SIR_E_PLATFORM) {
+            _sir_eqland(pass, errinfo.os_code != 0);
+            _sir_eqland(pass, _sir_validstrnofail(errinfo.os_msg));
+            _sir_eqland(pass, _sir_validstrnofail(errinfo.func));
+            _sir_eqland(pass, _sir_validstrnofail(errinfo.file));
+        } else {
+            _sir_eqland(pass, _sir_strsame(__func__, errinfo.func, strlen(__func__)));
+            _sir_eqland(pass, _sir_strsame(__file__, errinfo.file, SIR_MAXPATH));
+        }
     }
 
     _sir_eqland(pass, sir_cleanup());
@@ -2333,7 +2362,7 @@ void os_log_child_activity(void* ctx) {
 bool filter_error(bool pass, uint16_t err) {
     if (!pass) {
         char msg[SIR_MAXERROR] = {0};
-        if (sir_geterror(msg) != err)
+        if (sir_geterror(msg) != err) // TODO: use sir_geterror
             return false;
     }
     return true;
