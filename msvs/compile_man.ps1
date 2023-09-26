@@ -12,6 +12,7 @@ try {
     . ("$dir\util.ps1")
 } catch {
     echo-red "failed to load required PowerShell scripts!"
+    exit 1
 }
 
 $machine  = "x64"
@@ -46,13 +47,12 @@ exit-on-failure "failed to copy .\$filename.man to .\$provider.man!"
 
 # replace the provider name with the one from the command line
 echo-blue "replacing provider name with '$provider'..."
-(Get-Content ".\$provider.man") -replace 'provider name="([\w-.]+)"',
-    "provider name=`"${provider}`"" | Set-Content ".\$provider.man"
+(get-content ".\$provider.man") -replace 'provider name="([\w-.]+)"',
+    "provider name=`"${provider}`"" | set-content ".\$provider.man"
 exit-on-failure "failed to replace provider name with '$provider' in .\$provider.man!"
 
 # copy the DLL to the system directory
 $target_dir = "${env:SystemRoot}\System32"
-
 echo-blue "copying .\$dll_file to $target_dir..."
 copy-item -Force ".\$dll_file" "${target_dir}\$dll_file"
 exit-on-failure "failed to copy .\$dll_file to $target_dir! is event viewer running?"
