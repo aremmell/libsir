@@ -71,19 +71,67 @@ namespace sir
 {
     /**
      * @struct error
-     * @brief A libsir error object, containing a numeric error code and associated
-     * message.
+     * @brief Contains basic information about an error.
+     *
+     * Provides the default error message formatting (SIR_ERRORFORMAT). In
+     * the event that the default formatting is undesirable, or to obtain
+     * additional information about an error, use the error_info struct.
+     *
+     * @see SIR_ERRORFORMAT
+     * @see error_info
      */
     struct error {
-        uint16_t code = 0;   /**< The error code associated with the message. */
-        std::string message; /**< Description of the error that occurred. */
+        uint16_t code {};    /**< Numeric error code (see sir_errorcode). */
+        std::string message; /**< Formatted error message. */
+
+        constexpr bool is_os_error() const noexcept {
+            return code == SIR_E_PLATFORM;
+        }
+
+        static error from_last_error() {
+            std::string message(SIR_MAXERROR, '\0');
+            const auto code = sir_geterror(message.data());
+            return { code, std::move(message) };
+        }
+    };
+
+    /**
+     * @struct error_info
+     * @brief Contains all available information about an error.
+     *
+     * Provides extended information about an error that occurred in order to
+     * allow for custom error handling. If the numeric error code and default
+     * error message formatting are sufficient, use the error struct instead.
+     *
+     * @see error
+     */
+    struct error_info : public error {
+        std::string func;       /**< Name of the function in which the error occurred. */
+        std::string file;       /**< Name of the file in which the error occurred. */
+        uint32_t line {};       /**< Line number at which the error occurred. */
+        int os_code {};         /**< If an OS/libc error, the associated code. */
+        std::string os_message; /**< If an OS/libc error, the associated message. */
+
+        static error_info from_last_error() {
+            sir_errorinfo errinfo {};
+            sir_geterrorinfo(&errinfo);
+            return { { errinfo.code, errinfo.msg }, errinfo.func, errinfo.file,
+                errinfo.line, errinfo.os_code, errinfo.os_msg };
+        }
     };
 
     /**
      * @class exception
-     * @brief Derives from std::runtime_error in order to be caught easily by
-     * standard try/catch blocks, as well as to provide useful error messages
-     * by way of the what() method.
+     * @brief The exception type thrown by libsir.
+     *
+     * Derives from std::runtime_error in order to be caught easily by standard
+     * try/catch blocks, as well as to provide useful error messages by way of
+     * the std::exception::what() method.
+     *
+     * To obtain additional information about the error that caused an exception,
+     * use error_info.
+     *
+     * @see error_info
      */
     class exception : public std::runtime_error {
     public:
@@ -92,88 +140,77 @@ namespace sir
         exception() = delete;
         explicit exception(const error& err) : exception(err.message) { }
         ~exception() override = default;
-
-        static exception from_libsir_error() {
-            std::array<char, SIR_MAXERROR> msg {};
-            const auto code = sir_geterror(msg.data());
-            return exception({ code, msg.data() });
-        }
     };
 
     /**
      * @class policy
      * @brief Defines the partially abstract interface for a policy which
      * controls the behavior of logger at runtime.
+     *
+     * @note Only the default constructors may be used. Other constructors will
+     * not be called, and if the default constructor is deleted, compilation
+     * errors will result.
      */
     class policy {
-    public:
+    protected:
         policy() = default;
         virtual ~policy() = default;
 
+    public:
         /**
          * Called by logger before initializing libsir. Provides the policy with
-         * an opportunity to customize the initial libsir configuration.
+         * an opportunity to customize the initial configuration.
          *
-         * @param data initial libisr configuration data.
+         * @see sirinit
+         * @see sir_makeinit
          *
-         * @see ::sirinit
-         * @see ::sir_makeinit
+         * @note For the default configuration, pass the address of data to
+         * ::sir_makeinit.
          *
          * @note Most, if not all of the options chosen during initialization
-         * can be modified at runtime using functions provided by libsir.
+         * can be modified post-initialization.
          *
-         * @note For the default configuration, pass the address of the ::sirinit
-         * structure to ::sir_makeinit.
+         * @param data Reference to a ::sirinit struct representing the initial
+         * configuration.
          *
-         * @returns true if data was successfully configured, or false if an
+         * @returns true if data is ready to pass to ::sir_init, or false if an
          * error occurred. Returning false will cause logger to abort the
-         * initialization process–either by throwing an exception, or by entering
-         * an 'invalid' state (determined by policy::throw_on_error).
+         * initialization process, and possibly throw an exception.
          */
         virtual bool get_init_data(sirinit& data) const noexcept = 0;
 
         /**
          * Called by logger immediately after libsir has been initialized. This
          * is the moment in time which should be utilized for further configuration
-         * than is possible via ::sirinit alone.
+         * than is possible via ::sir_init alone.
          *
-         * Some items include:
-         * - Setting the ::sir_colormode for stdio (::sir_setcolormode)
-         * - Setting ::sir_textstyle on a per-level basis for stdio (::sir_settextstyle)
+         * Some potential actions include:
+         * - Setting the color mode for stdio (::sir_setcolormode)
+         * - Setting text styles on a per-level basis for stdio (::sir_settextstyle)
          * - Adding log files (::sir_addfile)
          * - Loading plugins (::sir_loadplugin)
          *
          * @returns true if configuration was completed successfully, or false if
          * an error occurred. Returning false will cause logger to abort the
-         * initialization process–either by throwing an exception, or by entering
-         * an 'invalid' state (determined by policy::throw_on_error).
+         * initialization process, and possibly throw an exception.
          */
         virtual bool on_init_complete() const noexcept = 0;
 
         /**
-         * Determines whether or not exceptions are thrown in the event that a
-         * libsir or OS-level error is encountered by logger or its associated
+         * Determines whether or not exceptions are thrown in the event that an
+         * unercoverable error is encountered by logger or its associated
          * adapter(s).
          *
          * @note If exceptions are not enabled, the caller of a method that could
-         * potentially fail is responsible for obtaining error information by
-         * calling logger::get_error and reacting accordingly.
+         * potentially fail is responsible for obtaining last error information
+         * and reacting accordingly.
          *
-         * @returns true if logger should throw exceptions (derived from std::
-         * exception) when errors are encountered, or false if errors should
-         * simply be communicated through a pass/fail Boolean return value.
+         * @returns true if logger should throw exceptions, or false if errors
+         * should simply be communicated through a pass/fail Boolean return value.
          */
         static constexpr bool throw_on_error() noexcept {
             return false;
         }
-
-        /**
-         * Useful when complications arise; the question "which policy caused that
-         * to happen?!" is then easy to answer.
-         *
-         * @returns A unique name for the policy.
-         */
-        virtual constexpr const char* get_name() const = 0;
     };
 
     /** Ensures that T derives from policy. */
@@ -185,7 +222,7 @@ namespace sir
      * @brief In the event that no custom configuration or behavior is desired,
      * provides defaults for everything.
      *
-     * - Uses all default values for sir_init
+     * - Uses all default values for ::sir_init
      * - Performs no post-initialization configuration
      * - Exceptions are thrown when errors are encountered
      */
@@ -205,10 +242,6 @@ namespace sir
         static constexpr bool throw_on_error() noexcept {
             return true;
         }
-
-        constexpr const char* get_name() const final {
-            return "Default";
-        }
     };
 
     /**
@@ -222,11 +255,6 @@ namespace sir
      * @note One must take care to ensure that the methods implemented by an
      * adapter can coexist with any other adapters that are applied to the logger
      * template.
-     *
-     * @see ::std_format_adapter
-     * @see ::boost_format_adapter
-     * @see ::fmt_format_adapter
-     * @see ::std_iostream_adapter
      */
     class adapter {
     protected:
@@ -239,10 +267,10 @@ namespace sir
      * in place requires throwing an exception, retrieves the associated error
      * code and message from libsir, then throws.
      *
-     * @param TPolicy policy A derived class of policy which determines whether
+     * @tparam TPolicy A derived class of policy which determines whether
      * or not to throw exceptions upon encountering an error.
      *
-     * @param expr bool An expression that is evaluated against false. If false,
+     * @param expr An expression that is evaluated against false. If false,
      *  an error is determined to have occurred and an exception will be thrown
      * if the policy requires it.
      *
@@ -254,7 +282,7 @@ namespace sir
         if (!expr) {
             SIR_ASSERT(expr);
             if constexpr(TPolicy::throw_on_error()) {
-                throw exception::from_libsir_error();
+                throw exception(error::from_last_error());
             }
         }
         return expr;
@@ -267,7 +295,7 @@ namespace sir
      * Utilizes the same code path that the C interface itself does, in order to
      * achieve maximum performance (i.e., no unnecessary bloat is added).
      *
-     * @param TPolicy policy A derived class of policy which controls the behavior
+     * @tparam TPolicy A derived class of policy which controls the behavior
      * of logger and by association, its adapters.
      */
     template<DerivedFromPolicy TPolicy>
@@ -354,9 +382,23 @@ namespace sir
      * @class std_format_adapter
      * @brief Adapter for std::format (when available).
      *
-     * TODO: update description
+     * Enabled when std::format is available on this platform and SIR_NO_STD_FORMAT
+     * is not defined.
      *
-     * @param TPolicy policy A derived class of policy which controls the behavior
+     * Allows for the use of std::format in place of (or in addition to) C-style
+     * variadic argument methods.
+     *
+     * **Example:**
+     *
+     * ~~~
+     * using my_logger = logger<true, default_policy, std_format_adapter>;
+     * my_logger log;
+     * log.info_std("This is from {}!", "std::format");
+     * ~~~
+     *
+     * @see std_format_logger
+     *
+     * @tparam TPolicy A derived class of policy which controls the behavior
      * of logger and by association, its adapters.
      */
     template<DerivedFromPolicy TPolicy>
@@ -428,9 +470,23 @@ namespace sir
      * @class boost_format_adapter
      * @brief Adapter for boost::format (when available).
      *
-     * TODO: update description
+     * Enabled when boost::format is available on this platform and
+     * SIR_NO_BOOST_FORMAT is not defined.
      *
-     * @param TPolicy policy A derived class of policy which controls the behavior
+     * Allows for the use of boost::format in place of (or in addition to)
+     * C-style variadic argument methods.
+     *
+     * **Example:**
+     *
+     * ~~~
+     * using my_logger = logger<true, default_policy, boost_format_adapter>;
+     * my_logger log;
+     * log.info_bf(boost::format("This is from %1%!" % "boost::format"));
+     * ~~~
+     *
+     * @see boost_logger
+     *
+     * @tparam TPolicy A derived class of policy which controls the behavior
      * of logger and by association, its adapters.
      */
     template<DerivedFromPolicy TPolicy>
@@ -439,42 +495,42 @@ namespace sir
         boost_format_adapter() = default;
         ~boost_format_adapter() override = default;
 
-        bool debug_boost(const boost::format& fmt) const {
+        bool debug_bf(const boost::format& fmt) const {
             const bool ret = sir_debug("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        bool info_boost(const boost::format& fmt) const {
+        bool info_bf(const boost::format& fmt) const {
             const bool ret = sir_info("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        bool notice_boost(const boost::format& fmt) const {
+        bool notice_bf(const boost::format& fmt) const {
             const bool ret = sir_notice("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        bool warn_boost(const boost::format& fmt) const {
+        bool warn_bf(const boost::format& fmt) const {
             const bool ret = sir_warn("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        bool error_boost(const boost::format& fmt) const {
+        bool error_bf(const boost::format& fmt) const {
             const bool ret = sir_error("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        bool crit_boost(const boost::format& fmt) const {
+        bool crit_bf(const boost::format& fmt) const {
             const bool ret = sir_crit("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        bool alert_boost(const boost::format& fmt) const {
+        bool alert_bf(const boost::format& fmt) const {
             const bool ret = sir_alert("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
 
-        bool emerg_boost(const boost::format& fmt) const {
+        bool emerg_bf(const boost::format& fmt) const {
             const bool ret = sir_emerg("%s", fmt.str().c_str());
             return throw_on_policy<TPolicy>(ret);
         }
@@ -484,11 +540,25 @@ namespace sir
 # if defined(__SIR_HAVE_FMT_FORMAT__)
     /**
      * @class fmt_format_adapter
-     * @brief Adapter for fmt (when available).
+     * @brief Adapter for {fmt} (when available).
      *
-     * TODO: update description
+     * Enabled when {fmt} is available on this platform and SIR_NO_FMT_FORMAT is
+     * not defined.
      *
-     * @param TPolicy policy A derived class of policy which controls the behavior
+     * Allows for the use of fmt::format in place of (or in addition to) C-style
+     * variadic argument methods.
+     *
+     * **Example:**
+     *
+     * ~~~
+     * using my_logger = logger<true, default_policy, fmt_format_adapter>;
+     * my_logger log;
+     * log.info_fmt("This is from {}}!", "fmt::format"));
+     * ~~~
+     *
+     * @see fmt_logger
+     *
+     * @tparam TPolicy A derived class of policy which controls the behavior
      * of logger and by association, its adapters.
      */
     template<DerivedFromPolicy TPolicy>
@@ -564,13 +634,25 @@ namespace sir
      * @class std_iostream_adapter
      * @brief Provides a std::iostream interface to libsir's logging functions.
      *
+     * Enabled so long as SIR_NO_STD_IOSTREAM is not defined.
+     *
      * Implements a public std::ostream member for each available logging level
      * (e.g. debug_stream, info_stream, ..., emerg_stream).
      *
-     * @note Use std::endl or std::flush to indicate the end of a log message if
-     * using the iostream << operator.
+     * **Example:**
      *
-     * @param TPolicy policy A derived class of policy which controls the behavior
+     * ~~~
+     * using my_logger = logger<true, default_policy, std_iostream_adapter>;
+     * my_logger log;
+     * log.info_stream << "This is from std::iostream!" << std::endl;
+     * ~~~
+     *
+     * @see std_iostream_logger
+     *
+     * @note Use std::endl or std::flush to indicate the end of a log message if
+     * using the ostream << operator.
+     *
+     * @tparam TPolicy A derived class of policy which controls the behavior
      * of logger and by association, its adapters.
      */
     template<DerivedFromPolicy TPolicy>
@@ -705,14 +787,16 @@ namespace sir
      * Instantiate this class in order to access libsir with all the benefits
      * of C++, including RAII initialization/cleanup, custom adapters, and more.
      *
-     * @param RAII      Set to `true` to enable 'resource acquisition is
-     *                  initialization' behavior (i.e., libsir is initialized by
-     *                  the ctor, and cleaned up by the dtor). Set to `false` for
-     *                  manual management of initialization/cleanup.
-     * @param TPolicy   A policy class which will be responsible for certain
-     *                  aspects of logger's behavior.
-     * @param TAdapters One or more adapter classes whose public methods will be
-     *                  exposed by this class.
+     * @see default_logger
+     *
+     * @tparam RAII      Set to true to enable 'resource acquisition is
+     *                   initialization' behavior (i.e., libsir is initialized by
+     *                   the ctor, and cleaned up by the dtor). Set to false for
+     *                   manual management of initialization/cleanup.
+     * @tparam TPolicy   A policy class which will be responsible for certain
+     *                   aspects of logger's behavior.
+     * @tparam TAdapters One or more adapter classes whose public methods will be
+     *                   exposed by this class.
      */
     template<bool RAII, DerivedFromPolicy TPolicy, template<class> class ...TAdapters>
     requires DerivedFromT<adapter, TAdapters<TPolicy>...>
@@ -752,9 +836,11 @@ namespace sir
         }
 
         error get_error() const {
-            std::array<char, SIR_MAXERROR> message {};
-            const auto code = sir_geterror(message.data());
-            return { code, message.data() };
+            return error::from_last_error();
+        }
+
+        error_info get_error_info() const {
+            return error_info::from_last_error();
         }
 
         sirfileid add_file(const std::string& path, const sir_levels& levels,
@@ -881,6 +967,11 @@ namespace sir
     using default_logger = logger<true, default_policy, default_adapter>;
 
 # if defined(__SIR_HAVE_STD_FORMAT__)
+    /**
+     * @typedef std_format_logger
+     * @brief A logger that implements the default adapter and the std::format
+     * adapter.
+     */
     using std_format_logger = logger
     <
         true,
@@ -891,6 +982,11 @@ namespace sir
 # endif
 
 # if defined(__SIR_HAVE_BOOST_FORMAT__)
+    /**
+     * @typedef boost_logger
+     * @brief A logger that implements the default adapter and the boost::format
+     * adapter.
+     */
     using boost_logger = logger
     <
         true,
@@ -901,6 +997,11 @@ namespace sir
 # endif
 
 # if defined(__SIR_HAVE_FMT_FORMAT__)
+    /**
+     * @typedef fmt_logger
+     * @brief A logger that implements the default adapter and the fmt::format
+     * adapter.
+     */
     using fmt_logger = logger
     <
         true,
@@ -911,6 +1012,11 @@ namespace sir
 # endif
 
 # if !defined(SIR_NO_STD_IOSTREAM)
+    /**
+     * @typedef iostream_logger
+     * @brief A logger that implements the default adapter and the std::iostream
+     * adapter.
+     */
     using iostream_logger = logger
     <
         true,

@@ -41,6 +41,7 @@ bool _sirfile_write(sirfile* sf, const char* output);
 bool _sirfile_writeheader(sirfile* sf, const char* msg);
 bool _sirfile_needsroll(sirfile* sf);
 bool _sirfile_roll(sirfile* sf, char** newpath);
+void _sirfile_rollifneeded(sirfile* sf);
 bool _sirfile_archive(sirfile* sf, const char* newpath);
 bool _sirfile_splitpath(const sirfile* sf, char** name, char** ext);
 void _sirfile_destroy(sirfile** sf);
@@ -51,6 +52,7 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
     sir_options opts);
 bool _sir_fcache_update(const sirfcache* sfc, sirfileid id, const sir_update_config_data* data);
 bool _sir_fcache_rem(sirfcache* sfc, sirfileid id);
+void _sir_fcache_shift(sirfcache* sfc, size_t idx);
 
 bool _sir_fcache_pred_path(const void* match, const sirfile* iter);
 bool _sir_fcache_pred_id(const void* match, const sirfile* iter);
