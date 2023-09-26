@@ -1,3 +1,7 @@
+<!--
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
+-->
 <?xml version="1.0"?>
 <instrumentationManifest xsi:schemaLocation="http://schemas.microsoft.com/win/2004/08/events eventman.xsd" xmlns="http://schemas.microsoft.com/win/2004/08/events" xmlns:win="http://manifests.microsoft.com/win/2004/08/windows/events" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:trace="http://schemas.microsoft.com/win/2004/08/events/trace">
 	<instrumentation>
@@ -5,9 +9,9 @@
 			<provider name="sir_wineventlog"
                       guid="{7EF5932C-C0F3-4C8B-A0F7-7CFAE9C60B0E}"
                       symbol="SIR_EVENTLOG_GUID"
-                      resourceFileName="C:\Users\ryan\Documents\Development\libsir\msvs\sir_wineventlog_x64.dll"
-                      messageFileName="C:\Users\ryan\Documents\Development\libsir\msvs\sir_wineventlog_x64.dll"
-                      parameterFileName="C:\Users\ryan\Documents\Development\libsir\msvs\sir_wineventlog_x64.dll">
+                      resourceFileName=""
+                      messageFileName=""
+                      parameterFileName="">
 				<events>
 					<event symbol="SIR_EVT_CRITICAL" value="1" version="1" channel="Application" level="win:Critical" task="win:None" opcode="win:Info" template="SIR_MSG_TEMPLATE" message="$(string.sir_wineventlog.event.1.message)"></event>
 					<event symbol="SIR_EVT_ERROR" value="2" version="1" channel="Application" level="win:Error" task="win:None" opcode="win:Info" template="SIR_MSG_TEMPLATE" message="$(string.sir_wineventlog.event.2.message)"></event>
