@@ -134,10 +134,6 @@ bool _sir_init(sirinit* si) {
 
     bool init = true;
 
-#if !defined(__WIN__)
-    tzset();
-#endif
-
 #if defined(__HAVE_ATOMIC_H__)
     atomic_store(&_sir_magic, _SIR_MAGIC);
 #else
@@ -148,6 +144,8 @@ bool _sir_init(sirinit* si) {
 
 #if defined(__WIN__)
     _sir_initialize_stdio();
+#else
+    tzset();
 #endif
 
     if (!_sir_setcolormode(SIRCM_16)) {
