@@ -470,7 +470,7 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
 }
 
 void _sir_fcache_shift(sirfcache* sfc, size_t idx) {
-    if (_sir_validptr(sfc) && idx < SIR_MAXFILES) {
+    if (_sir_validptr(sfc) && idx < SIR_MAXFILES - 1) {
         for (size_t n = idx; n < sfc->count - 1; n++) {
             sfc->files[n] = sfc->files[n + 1];
             sfc->files[n + 1] = NULL;
