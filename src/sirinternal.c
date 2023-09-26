@@ -37,7 +37,7 @@
 #  include "sir/wineventlog.h"
 #  pragma comment(lib, "advapi32.lib")
 # endif
-# if defined(__HAVE_EMBARCADEROC_PRAGMA__)
+# if defined(__EMBARCADEROC__) && defined(_WIN64)
 #  pragma comment(lib, "ws2_32.a")
 # else
 #  pragma comment(lib, "ws2_32.lib")
