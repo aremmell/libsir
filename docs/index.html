@@ -113,22 +113,33 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
   <div class="headertitle"><div class="title">libsir </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md__r_e_a_d_m_e"></a> libsir&mdash;a cross-platform, thread-safe logging library</p>
+<div class="textblock"><p><a class="anchor" id="md__r_e_a_d_m_e"></a> libsir&mdash;a lightweight, cross-platform library for information distribution</p>
 <p><a href="https://github.com/aremmell/libsir/releases/latest"><img src="https://img.shields.io/github/v/release/aremmell/libsir?color=%2340b900&amp;cacheSeconds=60" alt="Release" class="inline"/></a> <a href="https://github.com/aremmell/libsir/commits/master"><img src="https://img.shields.io/github/commits-since/aremmell/libsir/latest?cacheSeconds=60&amp;color=%2340b900" alt="Commits" class="inline"/></a> <a href="https://github.com/aremmell/libsir/blob/master/LICENSE"><img src="https://img.shields.io/github/license/aremmell/libsir?color=%2340b900&amp;cacheSeconds=60" alt="License" class="inline"/></a> <a href="https://www.openhub.net/p/libsir/"><img src="https://img.shields.io/badge/openhub-libsir-ok.svg?color=%2340b900&amp;cacheSeconds=60" alt="OpenHub" style="pointer-events: none;" class="inline"/></a> <a href="https://gitlab.com/libsir/libsir/pipelines/master/latest"><img src="https://gitlab.com/libsir/libsir/badges/master/pipeline.svg?" alt="GitLab" style="pointer-events: none;" class="inline"/></a> <a href="https://coveralls.io/github/aremmell/libsir"><img src="https://img.shields.io/coverallsCoverage/github/aremmell/libsir?color=%2340b900&amp;cacheSeconds=60" alt="Coverage" class="inline"/></a> <a href="https://scan.coverity.com/projects/aremmell-libsir"><img src="https://img.shields.io/coverity/scan/28843.svg?color=%2340b900&amp;cacheSeconds=60" alt="Coverity" style="pointer-events: none;" class="inline"/></a> <a href="https://api.reuse.software/info/github.com/aremmell/libsir"><img src="https://img.shields.io/reuse/compliance/github.com%2Faremmell%2Flibsir?label=REUSE3&amp;color=%2340b900&amp;cacheSeconds=60" alt="REUSE" class="inline"/></a> <a href="https://sonarcloud.io/component_measures?id=aremmell_libsir&amp;metric=new_maintainability_rating&amp;view=list"><img src="https://sonarcloud.io/api/project_badges/measure?project=aremmell_libsir&amp;metric=sqale_rating" alt="Maintainability" class="inline"/></a> <a href="https://sonarcloud.io/component_measures?id=aremmell_libsir&amp;metric=new_reliability_rating&amp;view=list"><img src="https://sonarcloud.io/api/project_badges/measure?project=aremmell_libsir&amp;metric=reliability_rating" alt="Reliability" class="inline"/></a> <a href="https://sonarcloud.io/component_measures?id=aremmell_libsir&amp;metric=new_security_rating&amp;view=list"><img src="https://sonarcloud.io/api/project_badges/measure?project=aremmell_libsir&amp;metric=security_rating" alt="Security" class="inline"/></a> <a href="https://securityscorecards.dev/viewer/?uri=github.com/aremmell/libsir"><img src="https://img.shields.io/ossf-scorecard/github.com/aremmell/libsir?label=openssf%20scorecard&amp;style=flat&amp;color=%2340b900&amp;cacheSeconds=60" alt="Scorecard" class="inline"/></a> <a href="https://www.bestpractices.dev/en/projects/7861"><img src="https://img.shields.io/cii/level/7861?label=openssf%20best%20practices&amp;color=2340b900&amp;cacheSeconds=60" alt="Practices" class="inline"/></a></p>
 <h1><a class="anchor" id="overview"></a> Overview</h1>
 <ul>
 <li><a class="el" href="index.html#synopsis">Synopsis</a></li>
 <li><a class="el" href="index.html#notables">Notables</a></li>
 <li><a class="el" href="index.html#cross-platform-compatibility">Cross-platform compatibility</a><ul>
+<li><a class="el" href="index.html#system-loggers">System Loggers</a></li>
 <li><a class="el" href="index.html#c---compatibility">C++ compatibility</a></li>
 <li><a class="el" href="index.html#language-bindings">Language Bindings</a></li>
 </ul>
 </li>
 <li><a class="el" href="index.html#an-example">An example</a></li>
 <li><a class="el" href="index.html#building-from-source">Building from source</a><ul>
-<li><a class="el" href="index.html#visual-studio-code">Visual Studio Code</a></li>
-<li><a class="el" href="index.html#visual-studio-2022">Visual Studio 2022</a></li>
-<li><a class="el" href="index.html#unix-makefile">Unix Makefile</a></li>
+<li><a class="el" href="index.html#unix-makefile">Unix Makefile</a><ul>
+<li><a class="el" href="index.html#unix-makefile-envvars">Environment Variables</a></li>
+<li><a class="el" href="index.html#unix-makefile-recipes">Recipes</a></li>
+</ul>
+</li>
+<li><a class="el" href="index.html#visual-studio-code">Visual Studio Code</a><ul>
+<li><a class="el" href="index.html#vs-code-build-tasks">Build Tasks</a></li>
+</ul>
+</li>
+<li><a class="el" href="index.html#visual-studio-2022">Visual Studio 2022</a><ul>
+<li><a class="el" href="index.html#ms-build-tools">MSBuild</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="el" href="index.html#dig-in">Dig in</a></li>
@@ -193,15 +204,21 @@ libsir visual graph</div></div>
 <li>libsir is known to work on most common (and many uncommon) architectures. It has actually been built and tested on <b>Intel</b> (x86_64, i686, x32), <b>ARM</b> (ARMv6, ARMv7HF, ARMv8‑A), <b>POWER</b> (PowerPC, PPC64, PPC64le), <b>MIPS</b> (MIPS64, MIPS32, 74Kc), <b>SPARC</b> (SPARC64, V8, LEON3), <b>z/Architecture</b> (S390X), <b>SuperH</b> (SH‑4A), <b>RISC‑V</b> (RV64), <b>OpenRISC</b> (OR1200), and <b>m68k</b> (68020+).</li>
 <li>This table only lists toolchains that have actually been tested and is by no means exhaustive&mdash;newer (or older) versions are likely to work without fanfare. In fact, if it <em>doesn't</em> work on your machine, it's probably a bug.</li>
 </ul>
+<h2><a class="anchor" id="system-loggers"></a> System Loggers</h2>
+<p>libsir currently supports the following system logging facilities:</p>
+<ul>
+<li><code>Event Log</code> on Windows: the system-wide log viewable with Event Viewer</li>
+<li><code>os_log</code> on macOS: the system-wide log viewable with Console or the <code>log</code> command</li>
+<li><code>syslog</code> on any OS that provides it</li>
+</ul>
 <h2><a class="anchor" id="c---compatibility"></a> C++ compatibility</h2>
 <ul>
-<li>A wrapper header is under development which will allow libsir to be used in C++20 projects, optionally integrating with popular formatting libraries:</li>
+<li>A C++20 <a href="https://github.com/aremmell/libsir/blob/master/include/sir.hh">header-only wrapper</a> is available which allows for easy integration with C++ projects, with optional support for popular formatting libraries:</li>
 </ul>
 <table align="center">
 <tr>
-<td align="center"><center>&#160;<a href="https://fmt.dev/"><b>{fmt}</b></a>&#160;</center> </td><td align="center"><center>&#160;<a href="https://en.cppreference.com/w/cpp/utility/format/format"><b>std</b>::<b>format</b></a>&#160;</center> </td><td align="center"><center>&#160;<a href="https://theboostcpplibraries.com/boost.format"><b>Boost</b>.<b>Format</b></a>&#160;</center>  </td></tr>
-<tr>
-<td align="center"><center>&#160;<a href="https://cplusplus.com/reference/istream/iostream"><b>std</b>::<b>iostream</b></a>&#160;</center> </td><td align="center"><center>&#160;<a href="https://github.com/c42f/tinyformat"><b>tinyformat</b></a>&#160;</center> </td><td align="center"><center>&#160;<a href="https://github.com/seanbaxter/circle/blob/master/new-circle/README.md#string-constant-formatting"><b>Circle</b>.<b>format</b></a>&#160;</center>   </td></tr>
+<td align="center"><center>&#160;<a href="https://fmt.dev/"><b>{fmt}</b></a>&#160;</center> </td><td align="center"><center>&#160;<a href="https://en.cppreference.com/w/cpp/utility/format/format"><b>std</b>::<b>format</b></a>&#160;</center> </td><td align="center"><center>&#160;<a href="https://theboostcpplibraries.com/boost.format"><b>Boost</b>.<b>Format</b></a>&#160;</center> </td><td align="center"><center>&#160;<a href="https://cplusplus.com/reference/istream/iostream"><b>std</b>::<b>iostream</b></a>&#160;</center> <p class="endtd"></p>
+</td></tr>
 </table>
 <h2><a class="anchor" id="language-bindings"></a> Language Bindings</h2>
 <ul>
@@ -212,20 +229,20 @@ libsir visual graph</div></div>
 <td align="center"><center>&#160;<a href="https://www.softintegration.com/"><b>Ch</b></a>&#160;</center> </td><td align="center"><center>&#160;<a href="https://www.python.org/"><b>Python</b></a>&#160;</center>   </td></tr>
 </table>
 <h1><a class="anchor" id="an-example"></a> An example</h1>
-<p>Some sample terminal output from libsir demonstrating the default configuration:</p>
+<p>Some sample terminal output from libsir demonstrating the default text styling settings for stdio (<em>note that this is just a sample; libsir supports 4, 8, and 24-bit color modes, so a virtually limitless number of configurations are possible</em>):</p>
 <div class="image">
 <img src="sample-terminal.png" alt=""/>
 <div class="caption">
 sample terminal output</div></div>
-    <p>This output is from the <code>example</code> application, whose source code can be located in the <a href="https://github.com/aremmell/libsir/tree/master/example"><code>example</code></a> directory. If you're curious about a basic implementation of libsir in a practical context, that's a good place to start.</p>
+    <p>This output is from the <code>example</code> application, whose source code can be located in the <a href="https://github.com/aremmell/libsir/tree/master/example">example</a> directory. If you're curious about a very basic implementation of libsir in a practical context, that's a good place to start.</p>
+<p><b>Coming soon:</b> A C++20 version of the example program.</p>
 <h1><a class="anchor" id="building-from-source"></a> Building from source</h1>
-<p>There are several options if you would like to build libsir from source:</p>
-<h2><a class="anchor" id="visual-studio-code"></a> Visual Studio Code</h2>
-<p>There is a <code>code‑workspace</code> in the repository. As of right now, the build and launch tasks are not fully functional for every platform, but everything else should be good to go.</p>
-<h2><a class="anchor" id="visual-studio-2022"></a> Visual Studio 2022</h2>
-<p>A recent addition is <code>sln</code> and <code>vcxproj</code> files in the <a href="https://github.com/aremmell/libsir/tree/master/msvs"><code>msvc</code></a> directory. They are confirmed to work correctly on Windows 11 (x86, x64, Arm64) with Visual Studio 17.6+.</p>
+<p>There are several options available for building libsir from source:</p>
 <h2><a class="anchor" id="unix-makefile"></a> Unix Makefile</h2>
-<p>The Makefiles are compatible with <b>GNU Make</b> version <b>3.81</b> and later (<b>4.4</b> recommended) and support most Unix-like operating systems: AIX, Solaris, Linux, illumos, macOS, Cygwin, FreeBSD, OpenBSD, NetBSD, DragonFly BSD, GNU/Hurd, Haiku, etc.</p>
+<p>The Makefiles are compatible with <b>GNU Make</b> version <b>3.81</b> and later (<b>4.4</b> recommended) and support most Unix-like operating systems: AIX, Solaris, Linux, illumos, macOS, Cygwin, BSD, GNU/Hurd, Haiku, etc.</p>
+<h3><a class="anchor" id="unix-makefile-envvars"></a> Environment variables</h3>
+<p>A number of environment variables are available which affect the way in which libsir and its various build artifacts are created (<em>e.g., turning off optimizations and enabling debug symbols</em>). Information about these variables and how to use them with GNU make can be found in the <a href="https://libsir.rml.dev/config.html">online documentation</a>.</p>
+<h3><a class="anchor" id="unix-makefile-recipes"></a> Recipes</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadCenter">Recipe Type   </th><th class="markdownTableHeadCenter">Command   </th><th class="markdownTableHeadLeft">&#160;&#160;&#160;&#160;Output file(s)    </th></tr>
@@ -256,7 +273,7 @@ sample terminal output</div></div>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyCenter">Shared library   </td><td class="markdownTableBodyCenter"><code>make shared</code>   </td><td class="markdownTableBodyLeft"><ul>
 <li>
-<em>build/lib/libsir.so</em>&lt;/il&gt;</li>
+<em>build/lib/libsir.so</em></li>
 </ul>
 </td></tr>
 <tr class="markdownTableRowEven">
@@ -272,7 +289,43 @@ sample terminal output</div></div>
 </ul>
 </td></tr>
 </table>
-<h1><a class="anchor" id="dig-in"></a> Dig in</h1>
+<h2><a class="anchor" id="visual-studio-code"></a> Visual Studio Code</h2>
+<p>A VS Code workspace file is located in the root of the repository (<code>sir.code-workspace</code>). Build tasks are only configured for macOS and Linux. On other platforms, use the integrated terminal to run GNU <a class="el" href="index.html#unix-makefile">make</a> manually.</p>
+<h3><a class="anchor" id="vs-code-build-tasks"></a> Build Tasks</h3>
+<p>To run a task, open the command list (<code>&amp;#8984;</code> + <code>&amp;#8679;</code> + <code>P</code> on macOS, <code>&amp;#8963;</code> + <code>&amp;#8679;</code> + <code>P</code> on Linux), then start typing <code>"run task"</code> until you see <code>"Tasks: Run Task"</code>. Click the item or press the key combination listed next to it. You should then see a drop-down menu containing all of the build tasks for libsir, which are listed here:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadLeft">Build Task   </th><th class="markdownTableHeadLeft">Description    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft">Clean   </td><td class="markdownTableBodyLeft">Deletes all intermediate files and previously compiled binaries.    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft">Static Library   </td><td class="markdownTableBodyLeft">Compiles libsir as a static library.    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft">Static Library [DBG]   </td><td class="markdownTableBodyLeft">Compiles libsir as a static library with debug symbols.    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft">Shared Library   </td><td class="markdownTableBodyLeft">Compiles libsir as a shared library.    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft">Shared Library [DBG]   </td><td class="markdownTableBodyLeft">Compiles libsir as a shared library with debug symbols.    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft">C Test Suite   </td><td class="markdownTableBodyLeft">Compiles the C test suite.    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft">C Test Suite [DBG]   </td><td class="markdownTableBodyLeft">Compiles the C test suite with debug symbols.    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft">C++ Test Suite   </td><td class="markdownTableBodyLeft">Compiles the C++ test suite.    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft">C++ Test Suite [DBG]   </td><td class="markdownTableBodyLeft">Compiles the C++ test suite with debug symbols.    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft">C Example App   </td><td class="markdownTableBodyLeft">Compiles the C sample application.   </td></tr>
+</table>
+<p>The VS Code build tasks execute <code>make</code> under the hood&mdash;the non-debug tasks map directly to the <a class="el" href="index.html#unix-makefile-recipes">recipes</a> listed under Unix Makefile; the debug tasks utilize libsir's custom <a class="el" href="index.html#unix-makefile-envvars">environment variables</a> to control the build process.</p>
+<h2><a class="anchor" id="visual-studio-2022"></a> Visual Studio 2022</h2>
+<p>A Visual Studio 2022 solution containing appropriate project files can be found in the <a href="https://github.com/aremmell/libsir/tree/master/msvs">msvs</a> directory. Tested on Windows 11 (<em>x86, x64, and Arm64</em>) with Visual Studio 17.6+. See the <a href="https://github.com/aremmell/libsir/tree/master/msvs/README.md">README</a> for more information.</p>
+<h3><a class="anchor" id="ms-build-tools"></a> MSBuild</h3>
+<p>Visual Studio is technically not required in order to build the Visual Studio 2022 solution; this may also be accomplished using Build Tools for Visual Studio 2022 (<a href="https://aka.ms/vs/17/release/vs_BuildTools.exe">download</a>, <a href="https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2022">reference</a>) Despite its name, this is actually a stand-alone set of tools which includes MSBuild.</p>
+<p><b>Using MSBuild from the command-line</b></p>
+<p>Using MSBuild is pretty straightforward. Start a Developer Command Prompt, and then just supply the path to the <code>.sln</code> file, task (<em>e.g. <code>build</code></em>), configuration (<em>e.g. <code>release</code></em>), and platform (<em>e.g. <code>x64</code></em>). Here's an example that builds libsir in release mode for x86_64 when executed from the root of the libsir repository:</p>
+<div class="fragment"><div class="line">MSBuild .\msvs\libsir.sln -t:Rebuild -p:Config=Release -p:Platform=x64</div>
+</div><!-- fragment --><h1><a class="anchor" id="dig-in"></a> Dig in</h1>
 <p>If you are genuinely interested in utilizing libsir, you are encouraged to read the <a href="https://libsir.rml.dev">full online documentation</a> to get a better understanding of the library's capabilities and interfaces.</p>
 <p>Suggested initial sections:</p><ul>
 <li><a href="https://libsir.rml.dev/group__publicfuncs.html">Public Functions</a></li>
