@@ -1732,8 +1732,6 @@ Coverage:
 
 Style check:
   stage: style
-  needs:
-    - job: Style check
   tags:
     - Docker-x64
     - Linux
