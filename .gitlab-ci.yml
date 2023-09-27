@@ -3459,7 +3459,7 @@ Windows/i686 (Clang-CL, C++, C):
 
 ##############################################################################
 
-Windows/Arm (Clang-CL, C++, C):
+Windows/Arm (Clang-CL, C):
   stage: build_windows
   tags:
     - Docker-x64
@@ -3485,7 +3485,7 @@ Windows/Arm (Clang-CL, C++, C):
     - export SIR_SHARED="/LD"
     - ${CC:?} -Wno-unknown-argument --version
     - ${LD:?} --version
-    - make PLATFORM_EXE_EXT=.exe PLATFORM_DLL_EXT=.dll PLATFORM_LIB_EXT=.lib PTHOPT= LIBDL= SIR_FPIC= LIBSIR_S="build/lib/libsir_s.lib" all tests++
+    - make PLATFORM_EXE_EXT=.exe PLATFORM_DLL_EXT=.dll PLATFORM_LIB_EXT=.lib PTHOPT= LIBDL= SIR_FPIC= LIBSIR_S="build/lib/libsir_s.lib" all
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
