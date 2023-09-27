@@ -2384,7 +2384,7 @@ void os_log_child_activity(void* ctx) {
 bool filter_error(bool pass, uint16_t err) {
     if (!pass) {
         char msg[SIR_MAXERROR] = {0};
-        if (sir_geterror(msg) != err) // TODO: use sir_geterror
+        if (sir_geterror(msg) != err)
             return false;
     }
     return true;
