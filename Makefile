@@ -501,6 +501,32 @@ $(PLUGPREFIX)%: $(OUT_SHARED) $(TUS)
 endif # ifneq ($(SIR_NO_PLUGINS),1)
 
 ##############################################################################
+# Tags
+
+.PHONY: ctags tags TAGS GPATH GRTAGS GTAGS
+
+ctags tags TAGS GPATH GRTAGS GTAGS:
+	-@rm -f tags TAGS GPATH GRTAGS GTAGS > /dev/null 2>&1 || true; \
+	  FDIRS="bindings example include plugins src tests"; \
+	  FLIST="$$(2> /dev/null find $${FDIRS} | \
+	            2> /dev/null xargs -I{} \
+	            2> /dev/null printf %s\\n \"{}\" | \
+	            2> /dev/null xargs)"; \
+	  etags $${FLIST:-} > /dev/null 2>&1; \
+	  ctags -e $${FLIST:-} > /dev/null 2>&1; \
+	  ctags $${FLIST:-} > /dev/null 2>&1; \
+	  printf %s\\n $${FLIST:-} 2> /dev/null | \
+	      gtags -f - > /dev/null 2>&1; \
+	  ls tags TAGS GPATH GRTAGS GTAGS 2> /dev/null | \
+	      grep -q '.' 2> /dev/null && { \
+	  (tput bold 2> /dev/null || true; tput setaf 2 2> /dev/null || true) && \
+	  printf '[tags] regenerated %s successfully.\n' "tags" 2> /dev/null; \
+	  (tput sgr0 2> /dev/null || true); exit 0; } || { \
+	  (tput bold 2> /dev/null || true; tput setaf 1 2> /dev/null || true) && \
+	  printf '[tags] failed to regenerate %s.\n' "tags" 2> /dev/null; \
+	  (tput sgr0 2> /dev/null || true); } ; exit 1
+
+##############################################################################
 # Common rules
 
 include sircommon.mk
