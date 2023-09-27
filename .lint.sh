@@ -266,11 +266,16 @@ test_extra()
             CXX="${CCACHE:-env} clang++"
             CFLAGS="-DSIR_LINT=1
                     -Werror
-                    -Wno-unknown-warning-option
                     -Wassign-enum
                     -Wbad-function-cast
                     -Wconversion
                     -Wdisabled-macro-expansion
+                    -Wdocumentation
+                    -Wdocumentation-deprecated-sync
+                    -Wdocumentation-html
+                    -Wdocumentation-pedantic
+                    -Wdocumentation-unknown-command
+                    -Wdollar-in-identifier-extension
                     -Wdouble-promotion
                     -Wextra-semi-stmt
                     -Wformat=2
@@ -280,6 +285,7 @@ test_extra()
                     -Wmissing-variable-declarations
                     -Wno-sign-conversion
                     -Wno-string-conversion
+                    -Wno-unknown-warning-option
                     -Wshift-overflow
                     -Wstring-conversion
                     -Wswitch-enum"
