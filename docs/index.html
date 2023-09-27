@@ -242,45 +242,45 @@ sample terminal output</div></div>
 <h1><a class="anchor" id="building-from-source"></a> Building from source</h1>
 <p>There are several options available for building libsir from source:</p>
 <h2><a class="anchor" id="unix-makefile"></a> Unix Makefile</h2>
-<p>The Makefiles are compatible with <b>GNU Make</b> version <b>3.81</b> and later (<b>4.4</b> recommended) and support most Unix-like operating systems: AIX, Solaris, Linux, illumos, macOS, Cygwin, BSD, GNU/Hurd, Haiku, etc.</p>
+<p>The Makefiles are compatible with <b>GNU Make</b> version <b>3.81</b> and later (<b>4.4</b> <em>recommended</em>) and support both native and cross-compilation builds on most Unix-like operating systems: AIX, Solaris, illumos, Linux, macOS, Cygwin, BSD, GNU/Hurd, Haiku, etc.</p>
 <h3><a class="anchor" id="unix-makefile-envvars"></a> Environment variables</h3>
 <p>A number of environment variables are available which affect the way in which libsir and its various build artifacts are created (<em>e.g., turning off optimizations and enabling debug symbols</em>). Information about these variables and how to use them with GNU make can be found in the <a href="https://libsir.rml.dev/config.html">online documentation</a>.</p>
 <h3><a class="anchor" id="unix-makefile-recipes"></a> Recipes</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadCenter">Recipe Type   </th><th class="markdownTableHeadCenter">Command   </th><th class="markdownTableHeadLeft">&#160;&#160;&#160;&#160;Output file(s)    </th></tr>
+<th class="markdownTableHeadRight">Recipe Type   </th><th class="markdownTableHeadCenter">Command   </th><th class="markdownTableHeadLeft">&#160;&#160;&#160;&#160;Output file(s)    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter">Test suite (C)   </td><td class="markdownTableBodyCenter"><code>make tests</code>   </td><td class="markdownTableBodyLeft"><ul>
+<td class="markdownTableBodyRight">Test suite (C)   </td><td class="markdownTableBodyCenter"><code>make tests</code>   </td><td class="markdownTableBodyLeft"><ul>
 <li>
 <em>build/bin/sirtests[.exe]</em></li>
 </ul>
 </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter">Test suite (C++)   </td><td class="markdownTableBodyCenter"><code>make tests++</code>   </td><td class="markdownTableBodyLeft"><ul>
+<td class="markdownTableBodyRight">Test suite (C++)   </td><td class="markdownTableBodyCenter"><code>make tests++</code>   </td><td class="markdownTableBodyLeft"><ul>
 <li>
 <em>build/bin/sirtests++[.exe]</em></li>
 </ul>
 </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter">Example app   </td><td class="markdownTableBodyCenter"><code>make example</code>   </td><td class="markdownTableBodyLeft"><ul>
+<td class="markdownTableBodyRight">Example app   </td><td class="markdownTableBodyCenter"><code>make example</code>   </td><td class="markdownTableBodyLeft"><ul>
 <li>
 <em>build/bin/sirexample[.exe]</em></li>
 </ul>
 </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter">Static library   </td><td class="markdownTableBodyCenter"><code>make static</code>   </td><td class="markdownTableBodyLeft"><ul>
+<td class="markdownTableBodyRight">Static library   </td><td class="markdownTableBodyCenter"><code>make static</code>   </td><td class="markdownTableBodyLeft"><ul>
 <li>
 <em>build/lib/libsir_s.a</em></li>
 </ul>
 </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter">Shared library   </td><td class="markdownTableBodyCenter"><code>make shared</code>   </td><td class="markdownTableBodyLeft"><ul>
+<td class="markdownTableBodyRight">Shared library   </td><td class="markdownTableBodyCenter"><code>make shared</code>   </td><td class="markdownTableBodyLeft"><ul>
 <li>
 <em>build/lib/libsir.so</em></li>
 </ul>
 </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter">Installation   </td><td class="markdownTableBodyCenter"><code>make install</code>   </td><td class="markdownTableBodyLeft"><ul>
+<td class="markdownTableBodyRight">Installation   </td><td class="markdownTableBodyCenter"><code>make install</code>   </td><td class="markdownTableBodyLeft"><ul>
 <li>
 <em>$PREFIX/lib/libsir_s.a</em></li>
 <li>
@@ -292,33 +292,36 @@ sample terminal output</div></div>
 </ul>
 </td></tr>
 </table>
+<ul>
+<li>Review the <a href="https://github.com/aremmell/libsir/blob/master/.gitlab-ci.yml">GitLab CI/CD configuration file</a> for many practical examples of <code>make</code> invocations.</li>
+</ul>
 <h2><a class="anchor" id="visual-studio-code"></a> Visual Studio Code</h2>
-<p>A VS Code workspace file is located in the root of the repository (<code>sir.code-workspace</code>). Build tasks are only configured for macOS and Linux. On other platforms, use the integrated terminal to run GNU <a class="el" href="index.html#unix-makefile">make</a> manually.</p>
+<p>A VS Code workspace file is located in the root of the repository (<code>sir.code-workspace</code>). Build tasks are only configured for macOS and Linux. On other platforms, use the integrated terminal to run GNU <a class="el" href="index.html#unix-makefile">`make`</a> manually.</p>
 <h3><a class="anchor" id="vs-code-build-tasks"></a> Build Tasks</h3>
 <p>To run a task, open the command list (<code>&amp;#8984;</code> + <code>&amp;#8679;</code> + <code>P</code> on macOS, <code>&amp;#8963;</code> + <code>&amp;#8679;</code> + <code>P</code> on Linux), then start typing <code>"run task"</code> until you see <code>"Tasks: Run Task"</code>. Click the item or press the key combination listed next to it. You should then see a drop-down menu containing all of the build tasks for libsir, which are listed here:</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadLeft">Build Task   </th><th class="markdownTableHeadLeft">Description    </th></tr>
+<th class="markdownTableHeadRight">Build Task   </th><th class="markdownTableHeadLeft">Description    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft">Clean   </td><td class="markdownTableBodyLeft">Deletes all intermediate files and previously compiled binaries.    </td></tr>
+<td class="markdownTableBodyRight">Clean   </td><td class="markdownTableBodyLeft">Deletes all intermediate files and previously compiled binaries.    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyLeft">Static Library   </td><td class="markdownTableBodyLeft">Compiles libsir as a static library.    </td></tr>
+<td class="markdownTableBodyRight">Static Library   </td><td class="markdownTableBodyLeft">Compiles libsir as a static library.    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft">Static Library [DBG]   </td><td class="markdownTableBodyLeft">Compiles libsir as a static library with debug symbols.    </td></tr>
+<td class="markdownTableBodyRight">Static Library [DBG]   </td><td class="markdownTableBodyLeft">Compiles libsir as a static library with debug symbols.    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyLeft">Shared Library   </td><td class="markdownTableBodyLeft">Compiles libsir as a shared library.    </td></tr>
+<td class="markdownTableBodyRight">Shared Library   </td><td class="markdownTableBodyLeft">Compiles libsir as a shared library.    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft">Shared Library [DBG]   </td><td class="markdownTableBodyLeft">Compiles libsir as a shared library with debug symbols.    </td></tr>
+<td class="markdownTableBodyRight">Shared Library [DBG]   </td><td class="markdownTableBodyLeft">Compiles libsir as a shared library with debug symbols.    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyLeft">C Test Suite   </td><td class="markdownTableBodyLeft">Compiles the C test suite.    </td></tr>
+<td class="markdownTableBodyRight">C Test Suite   </td><td class="markdownTableBodyLeft">Compiles the C test suite.    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft">C Test Suite [DBG]   </td><td class="markdownTableBodyLeft">Compiles the C test suite with debug symbols.    </td></tr>
+<td class="markdownTableBodyRight">C Test Suite [DBG]   </td><td class="markdownTableBodyLeft">Compiles the C test suite with debug symbols.    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyLeft">C++ Test Suite   </td><td class="markdownTableBodyLeft">Compiles the C++ test suite.    </td></tr>
+<td class="markdownTableBodyRight">C++ Test Suite   </td><td class="markdownTableBodyLeft">Compiles the C++ test suite.    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft">C++ Test Suite [DBG]   </td><td class="markdownTableBodyLeft">Compiles the C++ test suite with debug symbols.    </td></tr>
+<td class="markdownTableBodyRight">C++ Test Suite [DBG]   </td><td class="markdownTableBodyLeft">Compiles the C++ test suite with debug symbols.    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyLeft">C Example App   </td><td class="markdownTableBodyLeft">Compiles the C sample application.   </td></tr>
+<td class="markdownTableBodyRight">C Example App   </td><td class="markdownTableBodyLeft">Compiles the C sample application.   </td></tr>
 </table>
 <p>The VS Code build tasks execute <code>make</code> under the hood&mdash;the non-debug tasks map directly to the <a class="el" href="index.html#unix-makefile-recipes">recipes</a> listed under Unix Makefile; the debug tasks utilize libsir's custom <a class="el" href="index.html#unix-makefile-envvars">environment variables</a> to control the build process.</p>
 <h2><a class="anchor" id="visual-studio-2022"></a> Visual Studio 2022</h2>
