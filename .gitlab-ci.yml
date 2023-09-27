@@ -27,6 +27,8 @@ stages:
   export DISABLE_WARNINGS="-Wno-bad-function-cast -Wno-cast-align -Wno-cast-function-type -Wno-cast-function-type-strict -Wno-cast-qual -Wno-covered-switch-default -Wno-declaration-after-statement -Wno-deprecated-declarations -Wno-incompatible-pointer-types-discards-qualifiers -Wno-missing-variable-declarations -Wno-nonportable-system-include-path -Wno-reserved-identifier -Wno-reserved-macro-identifier -Wno-sign-conversion -Wno-unknown-argument -Wno-unsafe-buffer-usage -Wno-unused-command-line-argument -Wno-language-extension-token"
   echo -e "section_end:`date +%s`:DClW_section\r\e[0K" || true
 
+##############################################################################
+
 .Configuration: &Configuration |
   # *Configuration - CI/CD Configuration
   echo -e "section_start:`date +%s`:Configuration_section[collapsed=false]\r\e[0K\033[0;36mCI/CD Configuration ...\033[0m" || true
@@ -96,6 +98,52 @@ Linux/x86_64 (G++, GCC):
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
+Verify Rollover:
+  stage: lint_dynamic
+  needs:
+    - job: Style check
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - make
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - *BuildInformation
+    - |
+      # Start of Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - stdbuf -o L ./build/bin/sirtests --perf --leave-logs
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # Check logs/* to ensure rollover
+      echo -e "section_start:`date +%s`:CheckLogsRolled_section[collapsed=false]\r\e[0K\033[0;36mCheck logs output to ensure rollover ...\033[0m" || true
+      ls -1 logs/libsir-perf* | wc -l | grep -q -Ev '(^1$|^0$)' || exit $?; true
+      echo -e "section_end:`date +%s`:CheckLogsRolled_section\r\e[0K" || true
+    - make clean
+    - mkdir -p logs
+    - mkdir -p build
   dependencies: []
   artifacts:
     when: always
