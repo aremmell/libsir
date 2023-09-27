@@ -3352,7 +3352,7 @@ Windows/x64 (Clang-CL, C++, C):
     - export COMMON_FLAGS="--target=x86_64-windows-msvc -fuse-ld=lld-link"
     - export CFLAGS="${COMMON_FLAGS:?} ${DISABLE_WARNINGS:?}"
     - export CXXFLAGS="${COMMON_FLAGS:?} ${DISABLE_WARNINGS:?}"
-    - export LDFLAGS="/clang:/SUBSYSTEM:console ${COMMON_FLAGS:?} -Wno-unknown-argument"
+    - export LDFLAGS="${COMMON_FLAGS:?} -Wno-unknown-argument"
     - export SIR_SHARED="/LD"
     - ${CC:?} -Wno-unknown-argument --version
     - ${LD:?} --version
@@ -3410,7 +3410,7 @@ Windows/i686 (Clang-CL, C++, C):
     - export COMMON_FLAGS="--target=i686-windows-msvc -fuse-ld=lld-link"
     - export CFLAGS="${COMMON_FLAGS:?} ${DISABLE_WARNINGS:?}"
     - export CXXFLAGS="${COMMON_FLAGS:?} ${DISABLE_WARNINGS:?}"
-    - export LDFLAGS="/clang:/SUBSYSTEM:console ${COMMON_FLAGS:?} -Wno-unknown-argument"
+    - export LDFLAGS="${COMMON_FLAGS:?} -Wno-unknown-argument"
     - export SIR_SHARED="/LD"
     - ${CC:?} -Wno-unknown-argument --version
     - ${LD:?} --version
@@ -3468,7 +3468,7 @@ Windows/Arm (Clang-CL, C++, C):
     - export COMMON_FLAGS="--target=arm-windows-msvc -fuse-ld=lld-link"
     - export CFLAGS="${COMMON_FLAGS:?} ${DISABLE_WARNINGS:?}"
     - export CXXFLAGS="${COMMON_FLAGS:?} ${DISABLE_WARNINGS:?}"
-    - export LDFLAGS="/clang:/SUBSYSTEM:console ${COMMON_FLAGS:?} -Wno-unknown-argument"
+    - export LDFLAGS="${COMMON_FLAGS:?} -Wno-unknown-argument"
     - export SIR_SHARED="/LD"
     - ${CC:?} -Wno-unknown-argument --version
     - ${LD:?} --version
@@ -3512,7 +3512,7 @@ Windows/Arm64 (Clang-CL, C++, C):
     - export COMMON_FLAGS="--target=arm64-windows-msvc -fuse-ld=lld-link"
     - export CFLAGS="${COMMON_FLAGS:?} ${DISABLE_WARNINGS:?}"
     - export CXXFLAGS="${COMMON_FLAGS:?} ${DISABLE_WARNINGS:?}"
-    - export LDFLAGS="/clang:/SUBSYSTEM:console ${COMMON_FLAGS:?} -Wno-unknown-argument"
+    - export LDFLAGS="${COMMON_FLAGS:?} -Wno-unknown-argument"
     - export SIR_SHARED="/LD"
     - ${CC:?} -Wno-unknown-argument --version
     - ${LD:?} --version
