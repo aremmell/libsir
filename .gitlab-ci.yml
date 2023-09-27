@@ -377,7 +377,7 @@ Linux/i686 (AOCC++, AOCC):
 
 ##############################################################################
 
-Linux/x86_64 (Intel C Classic, ICC):
+Linux/x86_64 (Intel C Classic, ICC, C-only):
   stage: build_linux
   tags:
     - Docker-x64
@@ -463,7 +463,7 @@ Linux/x86_64 (Intel oneAPI, ICPX, ICX):
 
 ##############################################################################
 
-Linux/x86_64 (Oracle Studio C):
+Linux/x86_64 (Oracle Studio C, C-only):
   stage: build_linux
   tags:
     - Docker-x64
@@ -503,7 +503,7 @@ Linux/x86_64 (Oracle Studio C):
 
 ##############################################################################
 
-Linux/i686 (Oracle Studio C):
+Linux/i686 (Oracle Studio C, C-only):
   stage: build_linux
   tags:
     - Docker-x64
@@ -594,7 +594,7 @@ Linux/x86_64 (NVIDIA HPC SDK C++, C):
 
 ##############################################################################
 
-Linux/x86_64 (Chibicc, C):
+Linux/x86_64 (Chibicc, C-only):
   stage: build_linux
   tags:
     - Docker-x64
@@ -773,7 +773,7 @@ Windows/Arm64 (LLVM-MinGW, Clang++, Clang):
 
 ##############################################################################
 
-Linux/x86_64 (AMD Open64, C):
+Linux/x86_64 (AMD Open64, C-only):
   allow_failure: true
   stage: build_linux
   tags:
@@ -1585,7 +1585,7 @@ Cygwin/x86_64 (G++, GCC):
 
 ##############################################################################
 
-Cygwin/i686 (GCC):
+Cygwin/i686 (GCC, C-only):
   stage: build_cygwin
   tags:
     - Docker-x64
@@ -1995,7 +1995,7 @@ Coverity:
 
 ##############################################################################
 
-Windows/i686 (OrangeC, C):
+Windows/i686 (OrangeC, C-only):
   stage: build_windows
   tags:
     - Docker-x64
@@ -2043,7 +2043,7 @@ Windows/i686 (OrangeC, C):
 
 ##############################################################################
 
-Linux/x86_64 (DMD64 ImportC, C):
+Linux/x86_64 (DMD64 ImportC, C-only):
   stage: build_linux
   tags:
     - Docker-x64
@@ -2094,7 +2094,7 @@ Linux/x86_64 (DMD64 ImportC, C):
 
 ##############################################################################
 
-Linux/i686 (DMD64 ImportC, C):
+Linux/i686 (DMD64 ImportC, C-only):
   stage: build_linux
   tags:
     - Docker-x64
@@ -2190,7 +2190,7 @@ GCC Static Analyzer:
 
 ##############################################################################
 
-Windows/x64 (Embarcadero, C):
+Windows/x64 (Embarcadero, C-only):
   stage: build_windows
   tags:
     - Docker-x64
@@ -2240,7 +2240,7 @@ Windows/x64 (Embarcadero, C):
 
 ##############################################################################
 
-Windows/i686 (Embarcadero, C):
+Windows/i686 (Embarcadero, C-only):
   stage: build_windows
   tags:
     - Docker-x64
@@ -2290,7 +2290,7 @@ Windows/i686 (Embarcadero, C):
 
 ##############################################################################
 
-Clang Sanitizer (UB, 32-bit, C):
+Clang Sanitizer (UB, 32-bit, C-only):
   stage: lint
   needs:
     - job: Linux/x86_64 (Clang++, Clang)
@@ -2336,7 +2336,7 @@ Clang Sanitizer (UB, 32-bit, C):
 
 ##############################################################################
 
-Clang Sanitizer (UB, 64-bit, C):
+Clang Sanitizer (UB, 64-bit, C-only):
   stage: lint
   needs:
     - job: Linux/x86_64 (Clang++, Clang)
@@ -2382,7 +2382,7 @@ Clang Sanitizer (UB, 64-bit, C):
 
 ##############################################################################
 
-Clang Sanitizer (Memory, C):
+Clang Sanitizer (Memory, C-only):
   stage: lint
   needs:
     - job: Linux/x86_64 (Clang++, Clang)
@@ -2594,7 +2594,7 @@ Oracle Lint:
 
 ##############################################################################
 
-Linux/x86_64 (musl-libc, Kefir, C):
+Linux/x86_64 (musl-libc, Kefir, C-only):
   stage: build_linux
   tags:
     - Docker-x64
@@ -2637,7 +2637,7 @@ Linux/x86_64 (musl-libc, Kefir, C):
 
 ##############################################################################
 
-Linux/x86_64 (Kefir, C):
+Linux/x86_64 (Kefir, C-only):
   stage: build_linux
   tags:
     - Docker-x64
@@ -2726,7 +2726,7 @@ Linux/x86_64 (uClibc-ng, G++, GCC):
 
 ##############################################################################
 
-Linux/x86_64 (Circle C++, GCC):
+Linux/x86_64 (Circle, C++-only):
   stage: build_linux
   tags:
     - Docker-x64
@@ -3298,7 +3298,7 @@ Semgrep (GitLab Rules):
 
 ##############################################################################
 
-Linux/x86_64 (Ch 8.5):
+Linux/x86_64 (Ch Professional 8.5):
   stage: build_ch
   needs:
     - job: Linux/x86_64 (G++, GCC)
@@ -3459,7 +3459,7 @@ Windows/i686 (Clang-CL, C++, C):
 
 ##############################################################################
 
-Windows/Arm (Clang-CL, C):
+Windows/Arm (Clang-CL, C-only):
   stage: build_windows
   tags:
     - Docker-x64
