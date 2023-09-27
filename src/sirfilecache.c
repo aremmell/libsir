@@ -270,8 +270,8 @@ void _sirfile_rollifneeded(sirfile* sf) {
         bool rolled   = false;
         char* newpath = NULL;
 
-        _sir_selflog("file (path: '%s', id: %"PRIx32") reached ~%d bytes"
-            " in size; rolling...", sf->path, sf->id, SIR_FROLLSIZE);
+        _sir_selflog("file (path: '%s', id: %"PRIx32") reached ~%d bytes in size;"
+            " rolling...", sf->path, sf->id, SIR_FROLLSIZE);
 
         _sir_fflush(sf->f);
 
@@ -283,8 +283,8 @@ void _sirfile_rollifneeded(sirfile* sf) {
 
         _sir_safefree(&newpath);
         if (!rolled) /* write anyway; don't want to lose data. */
-            _sir_selflog("error: failed to roll file (path: '%s', id: %"
-                PRIx32")!", sf->path, sf->id);
+            _sir_selflog("error: failed to roll file (path: '%s', id: %"PRIx32")!",
+                sf->path, sf->id);
     }
 }
 
