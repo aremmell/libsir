@@ -15,7 +15,8 @@ stages:
   - build_python
   - build_ch
   - coverage
-  - lint
+  - lint_static
+  - lint_dynamic
   - coverity
 
 ##############################################################################
@@ -1770,7 +1771,7 @@ Style check:
 ##############################################################################
 
 MSVC Static Analyzer:
-  stage: lint
+  stage: lint_static
   needs:
     - job: Style check
     - job: Windows/x64 (MSVC, C++, C)
@@ -1805,7 +1806,7 @@ MSVC Static Analyzer:
 ##############################################################################
 
 Clang Static Analyzer:
-  stage: lint
+  stage: lint_static
   needs:
     - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
@@ -1837,7 +1838,7 @@ Clang Static Analyzer:
 ##############################################################################
 
 Clang (Extra Warnings):
-  stage: lint
+  stage: lint_static
   needs:
     - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
@@ -1869,7 +1870,7 @@ Clang (Extra Warnings):
 ##############################################################################
 
 GCC (Extra Warnings):
-  stage: lint
+  stage: lint_static
   needs:
     - job: Style check
     - job: Linux/x86_64 (G++, GCC)
@@ -1903,7 +1904,7 @@ GCC (Extra Warnings):
 Flawfinder:
   needs:
     - job: Style check
-  stage: lint
+  stage: lint_static
   tags:
     - Docker-x64
     - Linux
@@ -1927,7 +1928,7 @@ Flawfinder:
 Cppcheck:
   needs:
     - job: Style check
-  stage: lint
+  stage: lint_static
   tags:
     - Docker-x64
     - Linux
@@ -1959,7 +1960,7 @@ Cppcheck:
 Valgrind:
   needs:
     - job: Style check
-  stage: lint
+  stage: lint_dynamic
   tags:
     - Docker-x64
     - Linux
@@ -1989,7 +1990,7 @@ Valgrind:
 REUSE:
   needs:
     - job: Style check
-  stage: lint
+  stage: lint_static
   tags:
     - Docker-x64
     - Linux
@@ -2013,7 +2014,7 @@ REUSE:
 PVS-Studio:
   needs:
     - job: Style check
-  stage: lint
+  stage: lint_static
   tags:
     - Docker-x64
     - Linux
@@ -2241,7 +2242,7 @@ Linux/i686 (DMD64 ImportC, C-only):
 ##############################################################################
 
 GCC Static Analyzer:
-  stage: lint
+  stage: lint_static
   needs:
     - job: Style check
     - job: Linux/x86_64 (G++, GCC)
@@ -2391,7 +2392,7 @@ Windows/i686 (Embarcadero, C-only):
 ##############################################################################
 
 Clang Sanitizer (UB, 32-bit, C-only):
-  stage: lint
+  stage: lint_dynamic
   needs:
     - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
@@ -2438,7 +2439,7 @@ Clang Sanitizer (UB, 32-bit, C-only):
 ##############################################################################
 
 Clang Sanitizer (UB, 64-bit, C-only):
-  stage: lint
+  stage: lint_dynamic
   needs:
     - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
@@ -2485,7 +2486,7 @@ Clang Sanitizer (UB, 64-bit, C-only):
 ##############################################################################
 
 Clang Sanitizer (Memory, C-only):
-  stage: lint
+  stage: lint_dynamic
   needs:
     - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
@@ -2531,7 +2532,7 @@ Clang Sanitizer (Memory, C-only):
 ##############################################################################
 
 Clang Sanitizer (Address, 64-bit, C++, C):
-  stage: lint
+  stage: lint_dynamic
   needs:
     - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
@@ -2582,7 +2583,7 @@ Clang Sanitizer (Address, 64-bit, C++, C):
 ##############################################################################
 
 Clang Sanitizer (Address, 32-bit, C++, C):
-  stage: lint
+  stage: lint_dynamic
   needs:
     - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
@@ -2633,7 +2634,7 @@ Clang Sanitizer (Address, 32-bit, C++, C):
 ##############################################################################
 
 DUMA:
-  stage: lint
+  stage: lint_dynamic
   needs:
     - job: Style check
   tags:
@@ -2665,7 +2666,7 @@ DUMA:
 ##############################################################################
 
 Oracle Lint:
-  stage: lint
+  stage: lint_static
   needs:
     - job: Style check
   tags:
@@ -3370,7 +3371,7 @@ Semgrep (Cloud Rules):
   tags:
     - Docker-x64
     - Linux
-  stage: lint
+  stage: lint_static
   needs:
     - job: Linux/x86_64 (G++, GCC)
   image:
@@ -3402,7 +3403,7 @@ Semgrep (GitLab Rules):
   tags:
     - Docker-x64
     - Linux
-  stage: lint
+  stage: lint_static
   needs:
     - job: Linux/x86_64 (G++, GCC)
   image:
