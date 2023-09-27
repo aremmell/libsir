@@ -200,6 +200,7 @@ Linux/x86_64 (Clang++, Clang):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export RANLIB="llvm-ranlib"
     - export CC="ccache clang"
     - export CXX="ccache clang++"
     - ${CC:?} --version
@@ -244,6 +245,7 @@ Linux/i686 (Clang++, Clang):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export RANLIB="llvm-ranlib"
     - export CFLAGS="-m32"
     - export CXXFLAGS="-m32 -DSIR_NO_BOOST_FORMAT=1"
     - export LDFLAGS="-m32"
@@ -641,6 +643,7 @@ Windows/x64 (LLVM-MinGW, Clang++, Clang):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
+    - export RANLIB="llvm-ranlib"
     - export CC="x86_64-w64-mingw32-clang"
     - export CXX="x86_64-w64-mingw32-clang++"
     - ${CC:?} --version
@@ -699,6 +702,7 @@ Windows/Arm (LLVM-MinGW, Clang++, Clang):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
+    - export RANLIB="llvm-ranlib"
     - export CC="armv7-w64-mingw32-clang"
     - export CXX="armv7-w64-mingw32-clang++"
     - ${CC:?} --version
@@ -738,6 +742,7 @@ Windows/Arm64 (LLVM-MinGW, Clang++, Clang):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
+    - export RANLIB="llvm-ranlib"
     - export CC="aarch64-w64-mingw32-clang"
     - export CXX="aarch64-w64-mingw32-clang++"
     - ${CC:?} --version
@@ -824,6 +829,7 @@ Windows/i686 (LLVM-MinGW, Clang++, Clang):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
+    - export RANLIB="llvm-ranlib"
     - export CC="i686-w64-mingw32-clang"
     - export CXX="i686-w64-mingw32-clang++"
     - ${CC:?} --version
@@ -2978,6 +2984,7 @@ Linux/x86_64 (Clang, Fedora Python):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export RANLIB="llvm-ranlib"
     - export CC="ccache clang"
     - command -v python3
     - python3 --version
@@ -3346,6 +3353,7 @@ Windows/x64 (Clang-CL, C++, C):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/msvc/bin/x64:${PATH:?}"
     - BIN=/opt/msvc/bin/x64 . /opt/msvc/msvcenv-native.sh
+    - export RANLIB="llvm-ranlib"
     - export CXX="clang++"
     - export CC="clang-cl"
     - export LD="lld-link"
@@ -3404,6 +3412,7 @@ Windows/i686 (Clang-CL, C++, C):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/msvc/bin/x86:${PATH:?}"
     - BIN=/opt/msvc/bin/x86 . /opt/msvc/msvcenv-native.sh
+    - export RANLIB="llvm-ranlib"
     - export CXX="clang++"
     - export CC="clang-cl"
     - export LD="lld-link"
@@ -3462,6 +3471,7 @@ Windows/Arm (Clang-CL, C++, C):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/msvc/bin/arm:${PATH:?}"
     - BIN=/opt/msvc/bin/arm . /opt/msvc/msvcenv-native.sh
+    - export RANLIB="llvm-ranlib"
     - export CXX="clang++"
     - export CC="clang-cl"
     - export LD="lld-link"
@@ -3506,6 +3516,7 @@ Windows/Arm64 (Clang-CL, C++, C):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/msvc/bin/arm64:${PATH:?}"
     - BIN=/opt/msvc/bin/arm64 . /opt/msvc/msvcenv-native.sh
+    - export RANLIB="llvm-ranlib"
     - export CXX="clang++"
     - export CC="clang-cl"
     - export LD="lld-link"
