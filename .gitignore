@@ -100,3 +100,11 @@ bindings/ch/sir_error.chf
 bindings/ch/sir_info.chf
 bindings/ch/sir_notice.chf
 bindings/ch/sir_warn.chf
+
+# Tags
+tags
+TAGS
+GPATH
+GRTAGS
+GTAGS
+docs/HTML
