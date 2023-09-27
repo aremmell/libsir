@@ -679,21 +679,21 @@ bool sirtest_failwithoutinit(void) {
 }
 
 bool sirtest_isinitialized(void) {
-    // TODO: replace printfs with TEST_MSG_0 after python branch is merged in.
+
     bool pass = true;
 
-    (void)printf("\tchecking sir_isinitialized before initialization...");
+    TEST_MSG_0("checking sir_isinitialized before initialization...");
     _sir_eqland(pass, !sir_isinitialized());
 
     INIT(si, SIRL_ALL, 0, 0, 0);
     _sir_eqland(pass, si_init);
 
-    (void)printf("\tchecking sir_isinitialized after initialization...");
+    TEST_MSG_0("checking sir_isinitialized after initialization...");
     _sir_eqland(pass, sir_isinitialized());
 
     _sir_eqland(pass, sir_cleanup());
 
-    (void)printf("\tchecking sir_isinitialized after cleanup...");
+    TEST_MSG_0("checking sir_isinitialized after cleanup...");
     _sir_eqland(pass, !sir_isinitialized());
 
     return PRINT_RESULT_RETURN(pass);
