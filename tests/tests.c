@@ -1303,11 +1303,11 @@ bool sirtest_perf(void) {
                 perflines, printfelapsed / 1e3, (double)perflines / (printfelapsed / 1e3));
 #endif
             TEST_MSG(WHITEB("libsir (stdout): ")
-                   CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n", perflines,
+                   CYAN("%zu lines in %.3fsec (%.1f lines/sec)"), perflines,
                     stdioelapsed / 1e3, (double)perflines / (stdioelapsed / 1e3));
 
             TEST_MSG(WHITEB("libsir (file): ")
-                   CYAN("%zu lines in %.3fsec (%.1f lines/sec)") "\n", perflines,
+                   CYAN("%zu lines in %.3fsec (%.1f lines/sec)"), perflines,
                     fileelapsed / 1e3, (double)perflines / (fileelapsed / 1e3));
 
             TEST_MSG(WHITEB("timer resolution: ") CYAN("~%ldnsec"), sir_timer_getres());
