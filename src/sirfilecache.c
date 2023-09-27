@@ -322,7 +322,7 @@ bool _sirfile_splitpath(const sirfile* sf, char** name, char** ext) {
             return _sir_handleerr(errno);
 
         const char* lastfullstop = strrchr(tmp, '.');
-        if (lastfullstop) {
+        if (lastfullstop && lastfullstop != tmp) {
             uintptr_t namesize = lastfullstop - tmp;
             SIR_ASSERT(namesize < SIR_MAXPATH);
 
@@ -336,6 +336,7 @@ bool _sirfile_splitpath(const sirfile* sf, char** name, char** ext) {
             _sir_strncpy(*name, namesize + 1, tmp, namesize);
             *ext = strndup(sf->path + namesize, strnlen(sf->path + namesize, SIR_MAXPATH));
         } else {
+            lastfullstop = NULL;
             *name = strndup(sf->path, strnlen(sf->path, SIR_MAXPATH));
         }
 
