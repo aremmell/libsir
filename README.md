@@ -145,7 +145,7 @@ There are several options available for building libsir from source:
 
 ### <a id="unix-makefile" /> Unix Makefile
 
-The Makefiles are compatible with **GNU Make** version **3.81** and later (**4.4** recommended) and support most Unix-like operating systems: AIX, Solaris, Linux, illumos, macOS, Cygwin, BSD, GNU/Hurd, Haiku, etc.
+The Makefiles are compatible with **GNU Make** version **3.81** and later (**4.4** *recommended*) and support both native and cross-compilation builds on most Unix-like operating systems: AIX, Solaris, illumos, Linux, macOS, Cygwin, BSD, GNU/Hurd, Haiku, etc.
 
 #### <a id="unix-makefile-envvars" /> Environment variables
 
@@ -153,8 +153,8 @@ A number of environment variables are available which affect the way in which li
 
 #### <a id="unix-makefile-recipes" /> Recipes
 
-|   Recipe Type    |     Command      | &nbsp;&nbsp;&nbsp;&nbsp;Output file(s)         |
-|:----------------:|:----------------:|:-----------------------------------------------|
+|      Recipe Type |     Command      | &nbsp;&nbsp;&nbsp;&nbsp;Output file(s)         |
+|-----------------:|:----------------:|:-----------------------------------------------|
 | Test suite (C)   |  `make tests`    | <ul><li>*build/bin/sirtests[.exe]*</li></ul>   |
 | Test suite (C++) |  `make tests++`  | <ul><li>*build/bin/sirtests++[.exe]*</li></ul> |
 | Example app      |  `make example`  | <ul><li>*build/bin/sirexample[.exe]*</li></ul> |
@@ -162,15 +162,17 @@ A number of environment variables are available which affect the way in which li
 | Shared library   |  `make shared`   | <ul><li>*build/lib/libsir.so*</li></ul>        |
 | Installation     |  `make install`  | <ul><li>*$PREFIX/lib/libsir_s.a*</li><li>*$PREFIX/lib/libsir.so*</li><li>*$PREFIX/include/sir.h*</li><li>*$PREFIX/include/sir/\*.h*</li></ul> |
 
+- Review the [GitLab CI/CD configuration file](https://github.com/aremmell/libsir/blob/master/.gitlab-ci.yml) for many practical examples of `make` invocations.
+
 ### <a id="visual-studio-code" /> Visual Studio Code
 
-A VS Code workspace file is located in the root of the repository (`sir.code-workspace`). Build tasks are only configured for macOS and Linux. On other platforms, use the integrated terminal to run GNU [make](#unix-makefile) manually.
+A VS Code workspace file is located in the root of the repository (`sir.code-workspace`). Build tasks are only configured for macOS and Linux. On other platforms, use the integrated terminal to run GNU [`make`](#unix-makefile) manually.
 
 #### <a id="vs-code-build-tasks" /> Build Tasks
 To run a task, open the command list (<kbd>&#8984;</kbd> + <kbd>&#8679;</kbd> + <kbd>P</kbd> on macOS, <kbd>&#8963;</kbd> + <kbd>&#8679;</kbd> + <kbd>P</kbd> on Linux), then start typing `"run task"` until you see `"Tasks: Run Task"`. Click the item or press the key combination listed next to it. You should then see a drop-down menu containing all of the build tasks for libsir, which are listed here:
 
-| Build Task           | Description                                                      |
-|:---------------------|:-----------------------------------------------------------------|
+|           Build Task | Description                                                      |
+|---------------------:|:-----------------------------------------------------------------|
 | Clean                | Deletes all intermediate files and previously compiled binaries. |
 | Static Library       | Compiles libsir as a static library.                             |
 | Static Library [DBG] | Compiles libsir as a static library with debug symbols.          |
