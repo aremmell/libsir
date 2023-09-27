@@ -270,8 +270,8 @@ void _sirfile_rollifneeded(sirfile* sf) {
         bool rolled   = false;
         char* newpath = NULL;
 
-        _sir_selflog("file (path: '%s', id: %"PRIx32") reached ~%d bytes"
-            " in size; rolling...", sf->path, sf->id, SIR_FROLLSIZE);
+        _sir_selflog("file (path: '%s', id: %"PRIx32") reached ~%d bytes in size;"
+            " rolling...", sf->path, sf->id, SIR_FROLLSIZE);
 
         _sir_fflush(sf->f);
 
@@ -283,8 +283,8 @@ void _sirfile_rollifneeded(sirfile* sf) {
 
         _sir_safefree(&newpath);
         if (!rolled) /* write anyway; don't want to lose data. */
-            _sir_selflog("error: failed to roll file (path: '%s', id: %"
-                PRIx32")!", sf->path, sf->id);
+            _sir_selflog("error: failed to roll file (path: '%s', id: %"PRIx32")!",
+                sf->path, sf->id);
     }
 }
 
@@ -322,7 +322,7 @@ bool _sirfile_splitpath(const sirfile* sf, char** name, char** ext) {
             return _sir_handleerr(errno);
 
         const char* lastfullstop = strrchr(tmp, '.');
-        if (lastfullstop) {
+        if (lastfullstop && lastfullstop != tmp) {
             uintptr_t namesize = lastfullstop - tmp;
             SIR_ASSERT(namesize < SIR_MAXPATH);
 
@@ -336,6 +336,7 @@ bool _sirfile_splitpath(const sirfile* sf, char** name, char** ext) {
             _sir_strncpy(*name, namesize + 1, tmp, namesize);
             *ext = strndup(sf->path + namesize, strnlen(sf->path + namesize, SIR_MAXPATH));
         } else {
+            lastfullstop = NULL;
             *name = strndup(sf->path, strnlen(sf->path, SIR_MAXPATH));
         }
 

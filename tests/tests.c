@@ -679,21 +679,21 @@ bool sirtest_failwithoutinit(void) {
 }
 
 bool sirtest_isinitialized(void) {
-    // TODO: replace printfs with TEST_MSG_0 after python branch is merged in.
+
     bool pass = true;
 
-    (void)printf("\tchecking sir_isinitialized before initialization...");
+    TEST_MSG_0("checking sir_isinitialized before initialization...");
     _sir_eqland(pass, !sir_isinitialized());
 
     INIT(si, SIRL_ALL, 0, 0, 0);
     _sir_eqland(pass, si_init);
 
-    (void)printf("\tchecking sir_isinitialized after initialization...");
+    TEST_MSG_0("checking sir_isinitialized after initialization...");
     _sir_eqland(pass, sir_isinitialized());
 
     _sir_eqland(pass, sir_cleanup());
 
-    (void)printf("\tchecking sir_isinitialized after cleanup...");
+    TEST_MSG_0("checking sir_isinitialized after cleanup...");
     _sir_eqland(pass, !sir_isinitialized());
 
     return PRINT_RESULT_RETURN(pass);
@@ -962,10 +962,6 @@ bool sirtest_textstylesanity(void) {
     return PRINT_RESULT_RETURN(pass);
 }
 
-#if defined(__clang__) && !defined(__EMBARCADEROC__)
-/* only Clang has implicit-conversion; GCC BZ#87454 */
-SANITIZE_SUPPRESS("implicit-conversion")
-#endif
 bool sirtest_optionssanity(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
@@ -1060,7 +1056,7 @@ bool sirtest_optionssanity(void) {
     }
 
     /* greater than SIRO_NOHDR. */
-    invalid = (0xFFFF0000 & ~SIRO_NOHDR); /* implicit-conversion */
+    invalid = (0xFFFF0000 & ~SIRO_NOHDR);
     _sir_eqland(pass, !_sir_validopts(invalid));
     printf(INDENT_ITEM WHITE("greater than SIRO_NOHDR: %08"PRIx32) "\n", invalid);
 
@@ -2384,7 +2380,7 @@ void os_log_child_activity(void* ctx) {
 bool filter_error(bool pass, uint16_t err) {
     if (!pass) {
         char msg[SIR_MAXERROR] = {0};
-        if (sir_geterror(msg) != err) // TODO: use sir_geterror
+        if (sir_geterror(msg) != err)
             return false;
     }
     return true;
