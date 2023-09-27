@@ -162,7 +162,7 @@ A number of environment variables are available which affect the way in which li
 | Shared library   |  `make shared`   | <ul><li>*build/lib/libsir.so*</li></ul>        |
 | Installation     |  `make install`  | <ul><li>*$PREFIX/lib/libsir_s.a*</li><li>*$PREFIX/lib/libsir.so*</li><li>*$PREFIX/include/sir.h*</li><li>*$PREFIX/include/sir/\*.h*</li></ul> |
 
-- Review the [GitLab CI/CD configuration file](https://github.com/aremmell/libsir/blob/master/.gitlab-ci.yml) for many practical examples of `make` invocations.
+- See the [CI configuration file](https://github.com/aremmell/libsir/blob/master/.gitlab-ci.yml) for practical examples.
 
 ### <a id="visual-studio-code" /> Visual Studio Code
 
