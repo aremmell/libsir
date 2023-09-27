@@ -63,6 +63,8 @@ stages:
 
 Linux/x86_64 (G++, GCC):
   stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -107,6 +109,8 @@ Linux/x86_64 (G++, GCC):
 
 Linux/i686 (G++, GCC):
   stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -154,6 +158,8 @@ Linux/i686 (G++, GCC):
 
 Linux/x86_64 (musl-libc, G++, GCC):
   stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -194,6 +200,8 @@ Linux/x86_64 (musl-libc, G++, GCC):
 
 Linux/x86_64 (Clang++, Clang):
   stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -239,6 +247,8 @@ Linux/x86_64 (Clang++, Clang):
 
 Linux/i686 (Clang++, Clang):
   stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -286,6 +296,8 @@ Linux/i686 (Clang++, Clang):
 
 Linux/x86_64 (AOCC++, AOCC):
   stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -331,6 +343,8 @@ Linux/x86_64 (AOCC++, AOCC):
 
 Linux/i686 (AOCC++, AOCC):
   stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -379,6 +393,8 @@ Linux/i686 (AOCC++, AOCC):
 
 Linux/x86_64 (Intel C Classic, ICC, C-only):
   stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -420,6 +436,8 @@ Linux/x86_64 (Intel C Classic, ICC, C-only):
 
 Linux/x86_64 (Intel oneAPI, ICPX, ICX):
   stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -465,6 +483,8 @@ Linux/x86_64 (Intel oneAPI, ICPX, ICX):
 
 Linux/x86_64 (Oracle Studio C, C-only):
   stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -505,6 +525,8 @@ Linux/x86_64 (Oracle Studio C, C-only):
 
 Linux/i686 (Oracle Studio C, C-only):
   stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -547,6 +569,8 @@ Linux/i686 (Oracle Studio C, C-only):
 
 Linux/x86_64 (NVIDIA HPC SDK C++, C):
   stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -596,6 +620,8 @@ Linux/x86_64 (NVIDIA HPC SDK C++, C):
 
 Linux/x86_64 (Chibicc, C-only):
   stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -636,6 +662,8 @@ Linux/x86_64 (Chibicc, C-only):
 
 Windows/x64 (LLVM-MinGW, Clang++, Clang):
   stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -695,6 +723,8 @@ Windows/x64 (LLVM-MinGW, Clang++, Clang):
 
 Windows/Arm (LLVM-MinGW, Clang++, Clang):
   stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -735,6 +765,8 @@ Windows/Arm (LLVM-MinGW, Clang++, Clang):
 
 Windows/Arm64 (LLVM-MinGW, Clang++, Clang):
   stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -775,6 +807,8 @@ Windows/Arm64 (LLVM-MinGW, Clang++, Clang):
 
 Linux/x86_64 (AMD Open64, C-only):
   allow_failure: true
+  needs:
+    - job: Style check
   stage: build_linux
   tags:
     - Docker-x64
@@ -821,6 +855,8 @@ Linux/x86_64 (AMD Open64, C-only):
 
 Windows/i686 (LLVM-MinGW, Clang++, Clang):
   stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -880,6 +916,8 @@ Windows/i686 (LLVM-MinGW, Clang++, Clang):
 
 Android/x86_64 (API Level 21, Clang++, Clang):
   stage: build_android
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -926,6 +964,8 @@ Android/x86_64 (API Level 21, Clang++, Clang):
 
 Android/i686 (API Level 21, Clang++, Clang):
   stage: build_android
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -972,6 +1012,8 @@ Android/i686 (API Level 21, Clang++, Clang):
 
 Android/ARM64 (API Level 21, Clang++, Clang):
   stage: build_android
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1006,6 +1048,8 @@ Android/ARM64 (API Level 21, Clang++, Clang):
 
 Android/ARMv7A (API Level 21, Clang++, Clang):
   stage: build_android
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1040,6 +1084,8 @@ Android/ARMv7A (API Level 21, Clang++, Clang):
 
 Android/x86_64 (API Level 33, Clang++, Clang):
   stage: build_android
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1084,6 +1130,8 @@ Android/x86_64 (API Level 33, Clang++, Clang):
 
 Android/i686 (API Level 33, Clang++, Clang):
   stage: build_android
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1130,6 +1178,8 @@ Android/i686 (API Level 33, Clang++, Clang):
 
 Android/ARM64 (API Level 33, Clang++, Clang):
   stage: build_android
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1162,6 +1212,8 @@ Android/ARM64 (API Level 33, Clang++, Clang):
 
 Android/ARMv7A (API Level 33, Clang++, Clang):
   stage: build_android
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1196,6 +1248,8 @@ Android/ARMv7A (API Level 33, Clang++, Clang):
 
 Windows/Arm64 (MSVC, C++, C):
   stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1233,6 +1287,8 @@ Windows/Arm64 (MSVC, C++, C):
 
 Windows/Arm (MSVC, C++, C):
   stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1270,6 +1326,8 @@ Windows/Arm (MSVC, C++, C):
 
 Windows/x64 (MSVC, C++, C):
   stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1326,6 +1384,8 @@ Windows/x64 (MSVC, C++, C):
 
 Windows/i686 (MSVC, C++, C):
   stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1381,6 +1441,8 @@ Windows/i686 (MSVC, C++, C):
 
 Windows/x64 (MinGW-MSVCRT, G++, GCC):
   stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1439,6 +1501,8 @@ Windows/x64 (MinGW-MSVCRT, G++, GCC):
 
 Windows/x64 (MinGW-UCRT, G++, GCC):
   stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1496,6 +1560,8 @@ Windows/x64 (MinGW-UCRT, G++, GCC):
 
 Windows/i686 (MinGW, G++, GCC):
   stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1554,6 +1620,8 @@ Windows/i686 (MinGW, G++, GCC):
 
 Cygwin/x86_64 (G++, GCC):
   stage: build_cygwin
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1587,6 +1655,8 @@ Cygwin/x86_64 (G++, GCC):
 
 Cygwin/i686 (GCC, C-only):
   stage: build_cygwin
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1618,6 +1688,7 @@ Cygwin/i686 (GCC, C-only):
 Coverage:
   stage: coverage
   needs:
+    - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
     - job: Linux/x86_64 (G++, GCC)
     - job: Windows/x64 (MSVC, C++, C)
@@ -1660,6 +1731,8 @@ Coverage:
 
 Style check:
   stage: style
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1699,6 +1772,7 @@ Style check:
 MSVC Static Analyzer:
   stage: lint
   needs:
+    - job: Style check
     - job: Windows/x64 (MSVC, C++, C)
   tags:
     - Docker-x64
@@ -1733,6 +1807,7 @@ MSVC Static Analyzer:
 Clang Static Analyzer:
   stage: lint
   needs:
+    - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
@@ -1764,6 +1839,7 @@ Clang Static Analyzer:
 Clang (Extra Warnings):
   stage: lint
   needs:
+    - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
@@ -1795,6 +1871,7 @@ Clang (Extra Warnings):
 GCC (Extra Warnings):
   stage: lint
   needs:
+    - job: Style check
     - job: Linux/x86_64 (G++, GCC)
   tags:
     - Docker-x64
@@ -1824,6 +1901,8 @@ GCC (Extra Warnings):
 ##############################################################################
 
 Flawfinder:
+  needs:
+    - job: Style check
   stage: lint
   tags:
     - Docker-x64
@@ -1846,6 +1925,8 @@ Flawfinder:
 ##############################################################################
 
 Cppcheck:
+  needs:
+    - job: Style check
   stage: lint
   tags:
     - Docker-x64
@@ -1876,6 +1957,8 @@ Cppcheck:
 ##############################################################################
 
 Valgrind:
+  needs:
+    - job: Style check
   stage: lint
   tags:
     - Docker-x64
@@ -1904,6 +1987,8 @@ Valgrind:
 ##############################################################################
 
 REUSE:
+  needs:
+    - job: Style check
   stage: lint
   tags:
     - Docker-x64
@@ -1926,6 +2011,8 @@ REUSE:
 ##############################################################################
 
 PVS-Studio:
+  needs:
+    - job: Style check
   stage: lint
   tags:
     - Docker-x64
@@ -1966,6 +2053,8 @@ PVS-Studio:
 ##############################################################################
 
 Coverity:
+  needs:
+    - job: Style check
   only:
     - master
   when: manual
@@ -1996,6 +2085,8 @@ Coverity:
 ##############################################################################
 
 Windows/i686 (OrangeC, C-only):
+  needs:
+    - job: Style check
   stage: build_windows
   tags:
     - Docker-x64
@@ -2045,6 +2136,8 @@ Windows/i686 (OrangeC, C-only):
 
 Linux/x86_64 (DMD64 ImportC, C-only):
   stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2096,6 +2189,8 @@ Linux/x86_64 (DMD64 ImportC, C-only):
 
 Linux/i686 (DMD64 ImportC, C-only):
   stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2148,6 +2243,7 @@ Linux/i686 (DMD64 ImportC, C-only):
 GCC Static Analyzer:
   stage: lint
   needs:
+    - job: Style check
     - job: Linux/x86_64 (G++, GCC)
   tags:
     - Docker-x64
@@ -2192,6 +2288,8 @@ GCC Static Analyzer:
 
 Windows/x64 (Embarcadero, C-only):
   stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2242,6 +2340,8 @@ Windows/x64 (Embarcadero, C-only):
 
 Windows/i686 (Embarcadero, C-only):
   stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2293,6 +2393,7 @@ Windows/i686 (Embarcadero, C-only):
 Clang Sanitizer (UB, 32-bit, C-only):
   stage: lint
   needs:
+    - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
@@ -2339,6 +2440,7 @@ Clang Sanitizer (UB, 32-bit, C-only):
 Clang Sanitizer (UB, 64-bit, C-only):
   stage: lint
   needs:
+    - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
@@ -2385,6 +2487,7 @@ Clang Sanitizer (UB, 64-bit, C-only):
 Clang Sanitizer (Memory, C-only):
   stage: lint
   needs:
+    - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
@@ -2430,6 +2533,7 @@ Clang Sanitizer (Memory, C-only):
 Clang Sanitizer (Address, 64-bit, C++, C):
   stage: lint
   needs:
+    - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
@@ -2480,6 +2584,7 @@ Clang Sanitizer (Address, 64-bit, C++, C):
 Clang Sanitizer (Address, 32-bit, C++, C):
   stage: lint
   needs:
+    - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
@@ -2529,6 +2634,8 @@ Clang Sanitizer (Address, 32-bit, C++, C):
 
 DUMA:
   stage: lint
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2559,6 +2666,8 @@ DUMA:
 
 Oracle Lint:
   stage: lint
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2596,6 +2705,8 @@ Oracle Lint:
 
 Linux/x86_64 (musl-libc, Kefir, C-only):
   stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2639,6 +2750,8 @@ Linux/x86_64 (musl-libc, Kefir, C-only):
 
 Linux/x86_64 (Kefir, C-only):
   stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2682,6 +2795,8 @@ Linux/x86_64 (Kefir, C-only):
 
 Linux/x86_64 (uClibc-ng, G++, GCC):
   stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2728,6 +2843,8 @@ Linux/x86_64 (uClibc-ng, G++, GCC):
 
 Linux/x86_64 (Circle, C++-only):
   stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2773,6 +2890,8 @@ Linux/x86_64 (Circle, C++-only):
 
 Node.js/WebAssembly (Emscripten, Em++, Emcc):
   stage: build_js
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2824,6 +2943,8 @@ Node.js/WebAssembly (Emscripten, Em++, Emcc):
 
 Node.js/JavaScript (Emscripten, Em++, Emcc):
   stage: build_js
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2876,6 +2997,7 @@ Node.js/JavaScript (Emscripten, Em++, Emcc):
 Linux/x86_64 (GCC, Fedora Python):
   stage: build_python
   needs:
+    - job: Style check
     - job: Linux/x86_64 (G++, GCC)
   tags:
     - Docker-x64
@@ -2926,7 +3048,8 @@ Linux/x86_64 (GCC, Fedora Python):
 Linux/x86_64 (Oracle Studio C, Fedora Python):
   stage: build_python
   needs:
-    - job: Linux/x86_64 (Oracle Studio C)
+    - job: Style check
+    - job: Linux/x86_64 (Oracle Studio C, C-only)
   tags:
     - Docker-x64
     - Linux
@@ -2976,6 +3099,7 @@ Linux/x86_64 (Oracle Studio C, Fedora Python):
 Linux/x86_64 (Clang, Fedora Python):
   stage: build_python
   needs:
+    - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
@@ -3027,6 +3151,7 @@ Linux/x86_64 (Clang, Fedora Python):
 Linux/x86_64 (NVIDIA HPC SDK C, Fedora Python):
   stage: build_python
   needs:
+    - job: Style check
     - job: Linux/x86_64 (NVIDIA HPC SDK C++, C)
   tags:
     - Docker-x64
@@ -3080,6 +3205,7 @@ Linux/x86_64 (NVIDIA HPC SDK C, Fedora Python):
 Linux/x86_64 (Intel oneAPI, Intel Python):
   stage: build_python
   needs:
+    - job: Style check
     - job: Linux/x86_64 (Intel oneAPI, ICPX, ICX)
   tags:
     - Docker-x64
@@ -3131,6 +3257,7 @@ Linux/x86_64 (Intel oneAPI, Intel Python):
 Linux/x86_64 (GCC, Anaconda Python):
   stage: build_python
   needs:
+    - job: Style check
     - job: Linux/x86_64 (G++, GCC)
   tags:
     - Docker-x64
@@ -3186,6 +3313,7 @@ Linux/x86_64 (GCC, Anaconda Python):
 Linux/x86_64 (AOCC, Fedora Python):
   stage: build_python
   needs:
+    - job: Style check
     - job: Linux/x86_64 (AOCC++, AOCC)
   tags:
     - Docker-x64
@@ -3235,6 +3363,8 @@ Linux/x86_64 (AOCC, Fedora Python):
 ##############################################################################
 
 Semgrep (Cloud Rules):
+  needs:
+    - job: Style check
   allow_failure: true
   timeout: 15 minutes
   tags:
@@ -3265,6 +3395,8 @@ Semgrep (Cloud Rules):
 ##############################################################################
 
 Semgrep (GitLab Rules):
+  needs:
+    - job: Style check
   allow_failure: true
   timeout: 15 minutes
   tags:
@@ -3301,6 +3433,7 @@ Semgrep (GitLab Rules):
 Linux/x86_64 (Ch Professional 8.5):
   stage: build_ch
   needs:
+    - job: Style check
     - job: Linux/x86_64 (G++, GCC)
   tags:
     - Docker-x64
@@ -3343,6 +3476,8 @@ Linux/x86_64 (Ch Professional 8.5):
 
 Windows/x64 (Clang-CL, C++, C):
   stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -3402,6 +3537,8 @@ Windows/x64 (Clang-CL, C++, C):
 
 Windows/i686 (Clang-CL, C++, C):
   stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -3461,6 +3598,8 @@ Windows/i686 (Clang-CL, C++, C):
 
 Windows/Arm (Clang-CL, C-only):
   stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -3506,6 +3645,8 @@ Windows/Arm (Clang-CL, C-only):
 
 Windows/Arm64 (Clang-CL, C++, C):
   stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
