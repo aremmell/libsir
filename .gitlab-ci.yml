@@ -3415,7 +3415,7 @@ Semgrep (Cloud Rules):
   needs:
     - job: Style check
   allow_failure: true
-  timeout: 15 minutes
+  timeout: 8 minutes
   tags:
     - Docker-x64
     - Linux
@@ -3447,7 +3447,7 @@ Semgrep (GitLab Rules):
   needs:
     - job: Style check
   allow_failure: true
-  timeout: 15 minutes
+  timeout: 8 minutes
   tags:
     - Docker-x64
     - Linux
