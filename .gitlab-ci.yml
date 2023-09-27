@@ -139,8 +139,8 @@ Verify Rollover:
     - |
       # Check logs/* to ensure rollover
       echo -e "section_start:`date +%s`:CheckLogsRolled_section[collapsed=false]\r\e[0K\033[0;36mCheck logs output to ensure rollover ...\033[0m" || true
-      ls -latr logs/
-      ls -1 logs/libsir-perf* | wc -l | grep -q -Ev '(^1$|^0$)' && exit 1; true
+      ls -lat logs/libsir-perf*
+      ls -1 logs/libsir-perf* | wc -l | grep -q -Ev '(^1$|^0$)' || exit $?; true
       echo -e "section_end:`date +%s`:CheckLogsRolled_section\r\e[0K" || true
     - make clean
     - mkdir -p logs
