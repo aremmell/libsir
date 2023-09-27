@@ -7,18 +7,32 @@
 
 stages:
   - style
-  - build
+  - build_linux
+  - build_android
+  - build_windows
+  - build_cygwin
+  - build_js
   - build_python
   - build_ch
   - coverage
-  - lint
+  - lint_static
+  - lint_dynamic
   - coverity
+
+##############################################################################
+
+.ClangDisableWarnings: &ClangDisableWarnings |
+  # *ClangDisableWarnings - Disable excessive Clang-CL Warnings
+  echo -e "section_start:`date +%s`:DClW_section[collapsed=false]\r\e[0K\033[0;36mDisable excessive Clang-CL Warnings ...\033[0m" || true
+  export DISABLE_WARNINGS="-Wno-bad-function-cast -Wno-cast-align -Wno-cast-function-type -Wno-cast-function-type-strict -Wno-cast-qual -Wno-covered-switch-default -Wno-declaration-after-statement -Wno-deprecated-declarations -Wno-incompatible-pointer-types-discards-qualifiers -Wno-missing-variable-declarations -Wno-nonportable-system-include-path -Wno-reserved-identifier -Wno-reserved-macro-identifier -Wno-sign-conversion -Wno-unknown-argument -Wno-unsafe-buffer-usage -Wno-unused-command-line-argument -Wno-language-extension-token"
+  echo -e "section_end:`date +%s`:DClW_section\r\e[0K" || true
 
 ##############################################################################
 
 .Configuration: &Configuration |
   # *Configuration - CI/CD Configuration
   echo -e "section_start:`date +%s`:Configuration_section[collapsed=false]\r\e[0K\033[0;36mCI/CD Configuration ...\033[0m" || true
+  export TERM=xterm-color
   ulimit -n 65535 > /dev/null 2>&1 || true
   ccache -X uncompressed > /dev/null 2>&1 || true
   ccache -F 0 -M 0 > /dev/null 2>&1 || true
@@ -52,7 +66,9 @@ stages:
 ##############################################################################
 
 Linux/x86_64 (G++, GCC):
-  stage: build
+  stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -95,8 +111,57 @@ Linux/x86_64 (G++, GCC):
 
 ##############################################################################
 
+Verify Rollover:
+  stage: lint_dynamic
+  needs:
+    - job: Style check
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - make
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - *BuildInformation
+    - |
+      # Start of Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - stdbuf -o L ./build/bin/sirtests --perf --leave-logs > /dev/null 2>&1
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - |
+      # Check logs/* to ensure rollover
+      echo -e "section_start:`date +%s`:CheckLogsRolled_section[collapsed=false]\r\e[0K\033[0;36mCheck logs output to ensure rollover ...\033[0m" || true
+      ls -lat logs/libsir-perf*
+      ls -1 logs/libsir-perf* | wc -l | grep -q -Ev '(^1$|^0$)' || exit $?; true
+      echo -e "section_end:`date +%s`:CheckLogsRolled_section\r\e[0K" || true
+    - make clean
+    - mkdir -p logs
+    - mkdir -p build
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
 Linux/i686 (G++, GCC):
-  stage: build
+  stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -143,7 +208,9 @@ Linux/i686 (G++, GCC):
 ##############################################################################
 
 Linux/x86_64 (musl-libc, G++, GCC):
-  stage: build
+  stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -183,7 +250,9 @@ Linux/x86_64 (musl-libc, G++, GCC):
 ##############################################################################
 
 Linux/x86_64 (Clang++, Clang):
-  stage: build
+  stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -194,6 +263,7 @@ Linux/x86_64 (Clang++, Clang):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export RANLIB="llvm-ranlib"
     - export CC="ccache clang"
     - export CXX="ccache clang++"
     - ${CC:?} --version
@@ -227,7 +297,9 @@ Linux/x86_64 (Clang++, Clang):
 ##############################################################################
 
 Linux/i686 (Clang++, Clang):
-  stage: build
+  stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -238,6 +310,7 @@ Linux/i686 (Clang++, Clang):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export RANLIB="llvm-ranlib"
     - export CFLAGS="-m32"
     - export CXXFLAGS="-m32 -DSIR_NO_BOOST_FORMAT=1"
     - export LDFLAGS="-m32"
@@ -273,7 +346,9 @@ Linux/i686 (Clang++, Clang):
 ##############################################################################
 
 Linux/x86_64 (AOCC++, AOCC):
-  stage: build
+  stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -318,7 +393,9 @@ Linux/x86_64 (AOCC++, AOCC):
 ##############################################################################
 
 Linux/i686 (AOCC++, AOCC):
-  stage: build
+  stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -365,8 +442,10 @@ Linux/i686 (AOCC++, AOCC):
 
 ##############################################################################
 
-Linux/x86_64 (Intel C Classic, ICC):
-  stage: build
+Linux/x86_64 (Intel C Classic, ICC, C-only):
+  stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -407,7 +486,9 @@ Linux/x86_64 (Intel C Classic, ICC):
 ##############################################################################
 
 Linux/x86_64 (Intel oneAPI, ICPX, ICX):
-  stage: build
+  stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -451,8 +532,10 @@ Linux/x86_64 (Intel oneAPI, ICPX, ICX):
 
 ##############################################################################
 
-Linux/x86_64 (Oracle Studio C):
-  stage: build
+Linux/x86_64 (Oracle Studio C, C-only):
+  stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -491,8 +574,10 @@ Linux/x86_64 (Oracle Studio C):
 
 ##############################################################################
 
-Linux/i686 (Oracle Studio C):
-  stage: build
+Linux/i686 (Oracle Studio C, C-only):
+  stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -534,7 +619,9 @@ Linux/i686 (Oracle Studio C):
 ##############################################################################
 
 Linux/x86_64 (NVIDIA HPC SDK C++, C):
-  stage: build
+  stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -582,8 +669,10 @@ Linux/x86_64 (NVIDIA HPC SDK C++, C):
 
 ##############################################################################
 
-Linux/x86_64 (Chibicc, C):
-  stage: build
+Linux/x86_64 (Chibicc, C-only):
+  stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -623,7 +712,9 @@ Linux/x86_64 (Chibicc, C):
 ##############################################################################
 
 Windows/x64 (LLVM-MinGW, Clang++, Clang):
-  stage: build
+  stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -635,6 +726,7 @@ Windows/x64 (LLVM-MinGW, Clang++, Clang):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
+    - export RANLIB="llvm-ranlib"
     - export CC="x86_64-w64-mingw32-clang"
     - export CXX="x86_64-w64-mingw32-clang++"
     - ${CC:?} --version
@@ -681,7 +773,9 @@ Windows/x64 (LLVM-MinGW, Clang++, Clang):
 ##############################################################################
 
 Windows/Arm (LLVM-MinGW, Clang++, Clang):
-  stage: build
+  stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -693,6 +787,7 @@ Windows/Arm (LLVM-MinGW, Clang++, Clang):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
+    - export RANLIB="llvm-ranlib"
     - export CC="armv7-w64-mingw32-clang"
     - export CXX="armv7-w64-mingw32-clang++"
     - ${CC:?} --version
@@ -720,7 +815,9 @@ Windows/Arm (LLVM-MinGW, Clang++, Clang):
 ##############################################################################
 
 Windows/Arm64 (LLVM-MinGW, Clang++, Clang):
-  stage: build
+  stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -732,6 +829,7 @@ Windows/Arm64 (LLVM-MinGW, Clang++, Clang):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
+    - export RANLIB="llvm-ranlib"
     - export CC="aarch64-w64-mingw32-clang"
     - export CXX="aarch64-w64-mingw32-clang++"
     - ${CC:?} --version
@@ -758,10 +856,11 @@ Windows/Arm64 (LLVM-MinGW, Clang++, Clang):
 
 ##############################################################################
 
-
-Linux/x86_64 (AMD Open64, C):
+Linux/x86_64 (AMD Open64, C-only):
   allow_failure: true
-  stage: build
+  needs:
+    - job: Style check
+  stage: build_linux
   tags:
     - Docker-x64
     - Linux
@@ -806,7 +905,9 @@ Linux/x86_64 (AMD Open64, C):
 ##############################################################################
 
 Windows/i686 (LLVM-MinGW, Clang++, Clang):
-  stage: build
+  stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -818,6 +919,7 @@ Windows/i686 (LLVM-MinGW, Clang++, Clang):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
+    - export RANLIB="llvm-ranlib"
     - export CC="i686-w64-mingw32-clang"
     - export CXX="i686-w64-mingw32-clang++"
     - ${CC:?} --version
@@ -864,7 +966,9 @@ Windows/i686 (LLVM-MinGW, Clang++, Clang):
 ##############################################################################
 
 Android/x86_64 (API Level 21, Clang++, Clang):
-  stage: build
+  stage: build_android
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -910,7 +1014,9 @@ Android/x86_64 (API Level 21, Clang++, Clang):
 ##############################################################################
 
 Android/i686 (API Level 21, Clang++, Clang):
-  stage: build
+  stage: build_android
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -956,7 +1062,9 @@ Android/i686 (API Level 21, Clang++, Clang):
 ##############################################################################
 
 Android/ARM64 (API Level 21, Clang++, Clang):
-  stage: build
+  stage: build_android
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -990,7 +1098,9 @@ Android/ARM64 (API Level 21, Clang++, Clang):
 ##############################################################################
 
 Android/ARMv7A (API Level 21, Clang++, Clang):
-  stage: build
+  stage: build_android
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1024,7 +1134,9 @@ Android/ARMv7A (API Level 21, Clang++, Clang):
 ##############################################################################
 
 Android/x86_64 (API Level 33, Clang++, Clang):
-  stage: build
+  stage: build_android
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1068,7 +1180,9 @@ Android/x86_64 (API Level 33, Clang++, Clang):
 ##############################################################################
 
 Android/i686 (API Level 33, Clang++, Clang):
-  stage: build
+  stage: build_android
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1114,7 +1228,9 @@ Android/i686 (API Level 33, Clang++, Clang):
 ##############################################################################
 
 Android/ARM64 (API Level 33, Clang++, Clang):
-  stage: build
+  stage: build_android
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1146,7 +1262,9 @@ Android/ARM64 (API Level 33, Clang++, Clang):
 ##############################################################################
 
 Android/ARMv7A (API Level 33, Clang++, Clang):
-  stage: build
+  stage: build_android
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1180,7 +1298,9 @@ Android/ARMv7A (API Level 33, Clang++, Clang):
 ##############################################################################
 
 Windows/Arm64 (MSVC, C++, C):
-  stage: build
+  stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1217,7 +1337,9 @@ Windows/Arm64 (MSVC, C++, C):
 ##############################################################################
 
 Windows/Arm (MSVC, C++, C):
-  stage: build
+  stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1228,8 +1350,7 @@ Windows/Arm (MSVC, C++, C):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - PATH="/opt/msvc/bin/arm:${PATH:?}"
-    - export PATH
+    - export PATH="/opt/msvc/bin/arm:${PATH:?}"
     - cl.exe 2>&1 | head -3 | grep -v '^$' || true
     - mkdir -p build/bin
     - cl.exe src/*.c example/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe /DSIR_NO_PLUGINS=1
@@ -1255,7 +1376,9 @@ Windows/Arm (MSVC, C++, C):
 ##############################################################################
 
 Windows/x64 (MSVC, C++, C):
-  stage: build
+  stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1266,8 +1389,7 @@ Windows/x64 (MSVC, C++, C):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - PATH="/opt/msvc/bin/x64:${PATH:?}"
-    - export PATH
+    - export PATH="/opt/msvc/bin/x64:${PATH:?}"
     - cl.exe 2>&1 | head -3 | grep -v '^$' || true
     - mkdir -p build/bin
     - cl.exe src/*.c example/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe /DSIR_NO_PLUGINS=1
@@ -1312,7 +1434,9 @@ Windows/x64 (MSVC, C++, C):
 ##############################################################################
 
 Windows/i686 (MSVC, C++, C):
-  stage: build
+  stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1323,8 +1447,7 @@ Windows/i686 (MSVC, C++, C):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - PATH="/opt/msvc/bin/x86:${PATH:?}"
-    - export PATH
+    - export PATH="/opt/msvc/bin/x86:${PATH:?}"
     - mkdir -p build/bin
     - cl.exe src/*.c example/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe /DSIR_NO_PLUGINS=1
     - cl.exe src/*.c tests/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe /DSIR_NO_PLUGINS=1
@@ -1368,7 +1491,9 @@ Windows/i686 (MSVC, C++, C):
 ##############################################################################
 
 Windows/x64 (MinGW-MSVCRT, G++, GCC):
-  stage: build
+  stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1426,7 +1551,9 @@ Windows/x64 (MinGW-MSVCRT, G++, GCC):
 ##############################################################################
 
 Windows/x64 (MinGW-UCRT, G++, GCC):
-  stage: build
+  stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1483,7 +1610,9 @@ Windows/x64 (MinGW-UCRT, G++, GCC):
 ##############################################################################
 
 Windows/i686 (MinGW, G++, GCC):
-  stage: build
+  stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1541,7 +1670,9 @@ Windows/i686 (MinGW, G++, GCC):
 ##############################################################################
 
 Cygwin/x86_64 (G++, GCC):
-  stage: build
+  stage: build_cygwin
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1573,8 +1704,10 @@ Cygwin/x86_64 (G++, GCC):
 
 ##############################################################################
 
-Cygwin/i686 (GCC):
-  stage: build
+Cygwin/i686 (GCC, C-only):
+  stage: build_cygwin
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -1606,6 +1739,7 @@ Cygwin/i686 (GCC):
 Coverage:
   stage: coverage
   needs:
+    - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
     - job: Linux/x86_64 (G++, GCC)
     - job: Windows/x64 (MSVC, C++, C)
@@ -1685,8 +1819,9 @@ Style check:
 ##############################################################################
 
 MSVC Static Analyzer:
-  stage: lint
+  stage: lint_static
   needs:
+    - job: Style check
     - job: Windows/x64 (MSVC, C++, C)
   tags:
     - Docker-x64
@@ -1698,8 +1833,7 @@ MSVC Static Analyzer:
     - |
       # Start of MSVC Analyzer ...
       echo -e "section_start:`date +%s`:MSVCA_section[collapsed=true]\r\e[0K\033[0;36mMSVC Analyzer test ...\033[0m" || true
-    - PATH="/opt/msvc/bin/x64:${PATH:?}"
-    - export PATH
+    - export PATH="/opt/msvc/bin/x64:${PATH:?}"
     - cl.exe 2>&1 | head -3 | grep -v '^$' || true
     - cl.exe src/*.c example/*.c -Iinclude /Oi /O2 /GL /W4 /WX /analyze /std:c11 /experimental:c11atomics /sdl /wd4996 /wd28251 /DSIR_NO_PLUGINS=1
     - cl.exe src/*.c tests/*.c -Iinclude /Oi /O2 /GL /W4 /WX /analyze /std:c11 /experimental:c11atomics /sdl /wd4996 /wd28251 /DSIR_NO_PLUGINS=1
@@ -1720,8 +1854,9 @@ MSVC Static Analyzer:
 ##############################################################################
 
 Clang Static Analyzer:
-  stage: lint
+  stage: lint_static
   needs:
+    - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
@@ -1751,8 +1886,9 @@ Clang Static Analyzer:
 ##############################################################################
 
 Clang (Extra Warnings):
-  stage: lint
+  stage: lint_static
   needs:
+    - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
@@ -1782,8 +1918,9 @@ Clang (Extra Warnings):
 ##############################################################################
 
 GCC (Extra Warnings):
-  stage: lint
+  stage: lint_static
   needs:
+    - job: Style check
     - job: Linux/x86_64 (G++, GCC)
   tags:
     - Docker-x64
@@ -1813,7 +1950,9 @@ GCC (Extra Warnings):
 ##############################################################################
 
 Flawfinder:
-  stage: lint
+  needs:
+    - job: Style check
+  stage: lint_static
   tags:
     - Docker-x64
     - Linux
@@ -1835,7 +1974,9 @@ Flawfinder:
 ##############################################################################
 
 Cppcheck:
-  stage: lint
+  needs:
+    - job: Style check
+  stage: lint_static
   tags:
     - Docker-x64
     - Linux
@@ -1865,7 +2006,9 @@ Cppcheck:
 ##############################################################################
 
 Valgrind:
-  stage: lint
+  needs:
+    - job: Style check
+  stage: lint_dynamic
   tags:
     - Docker-x64
     - Linux
@@ -1893,7 +2036,9 @@ Valgrind:
 ##############################################################################
 
 REUSE:
-  stage: lint
+  needs:
+    - job: Style check
+  stage: lint_static
   tags:
     - Docker-x64
     - Linux
@@ -1915,7 +2060,9 @@ REUSE:
 ##############################################################################
 
 PVS-Studio:
-  stage: lint
+  needs:
+    - job: Style check
+  stage: lint_static
   tags:
     - Docker-x64
     - Linux
@@ -1955,6 +2102,8 @@ PVS-Studio:
 ##############################################################################
 
 Coverity:
+  needs:
+    - job: Style check
   only:
     - master
   when: manual
@@ -1984,8 +2133,10 @@ Coverity:
 
 ##############################################################################
 
-Windows/i686 (OrangeC, C):
-  stage: build
+Windows/i686 (OrangeC, C-only):
+  needs:
+    - job: Style check
+  stage: build_windows
   tags:
     - Docker-x64
     - Linux
@@ -2032,8 +2183,10 @@ Windows/i686 (OrangeC, C):
 
 ##############################################################################
 
-Linux/x86_64 (DMD64 ImportC, C):
-  stage: build
+Linux/x86_64 (DMD64 ImportC, C-only):
+  stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2083,8 +2236,10 @@ Linux/x86_64 (DMD64 ImportC, C):
 
 ##############################################################################
 
-Linux/i686 (DMD64 ImportC, C):
-  stage: build
+Linux/i686 (DMD64 ImportC, C-only):
+  stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2135,8 +2290,9 @@ Linux/i686 (DMD64 ImportC, C):
 ##############################################################################
 
 GCC Static Analyzer:
-  stage: lint
+  stage: lint_static
   needs:
+    - job: Style check
     - job: Linux/x86_64 (G++, GCC)
   tags:
     - Docker-x64
@@ -2179,8 +2335,10 @@ GCC Static Analyzer:
 
 ##############################################################################
 
-Windows/x64 (Embarcadero, C):
-  stage: build
+Windows/x64 (Embarcadero, C-only):
+  stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2229,8 +2387,10 @@ Windows/x64 (Embarcadero, C):
 
 ##############################################################################
 
-Windows/i686 (Embarcadero, C):
-  stage: build
+Windows/i686 (Embarcadero, C-only):
+  stage: build_windows
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2279,9 +2439,10 @@ Windows/i686 (Embarcadero, C):
 
 ##############################################################################
 
-Clang Sanitizer (UB, 32-bit, C):
-  stage: lint
+Clang Sanitizer (UB, 32-bit, C-only):
+  stage: lint_dynamic
   needs:
+    - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
@@ -2325,9 +2486,10 @@ Clang Sanitizer (UB, 32-bit, C):
 
 ##############################################################################
 
-Clang Sanitizer (UB, 64-bit, C):
-  stage: lint
+Clang Sanitizer (UB, 64-bit, C-only):
+  stage: lint_dynamic
   needs:
+    - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
@@ -2371,9 +2533,10 @@ Clang Sanitizer (UB, 64-bit, C):
 
 ##############################################################################
 
-Clang Sanitizer (Memory, C):
-  stage: lint
+Clang Sanitizer (Memory, C-only):
+  stage: lint_dynamic
   needs:
+    - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
@@ -2417,8 +2580,9 @@ Clang Sanitizer (Memory, C):
 ##############################################################################
 
 Clang Sanitizer (Address, 64-bit, C++, C):
-  stage: lint
+  stage: lint_dynamic
   needs:
+    - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
@@ -2467,8 +2631,9 @@ Clang Sanitizer (Address, 64-bit, C++, C):
 ##############################################################################
 
 Clang Sanitizer (Address, 32-bit, C++, C):
-  stage: lint
+  stage: lint_dynamic
   needs:
+    - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
@@ -2517,7 +2682,9 @@ Clang Sanitizer (Address, 32-bit, C++, C):
 ##############################################################################
 
 DUMA:
-  stage: lint
+  stage: lint_dynamic
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2547,7 +2714,9 @@ DUMA:
 ##############################################################################
 
 Oracle Lint:
-  stage: lint
+  stage: lint_static
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2583,8 +2752,10 @@ Oracle Lint:
 
 ##############################################################################
 
-Linux/x86_64 (musl-libc, Kefir, C):
-  stage: build
+Linux/x86_64 (musl-libc, Kefir, C-only):
+  stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2626,8 +2797,10 @@ Linux/x86_64 (musl-libc, Kefir, C):
 
 ##############################################################################
 
-Linux/x86_64 (Kefir, C):
-  stage: build
+Linux/x86_64 (Kefir, C-only):
+  stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2670,7 +2843,9 @@ Linux/x86_64 (Kefir, C):
 ##############################################################################
 
 Linux/x86_64 (uClibc-ng, G++, GCC):
-  stage: build
+  stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2715,8 +2890,10 @@ Linux/x86_64 (uClibc-ng, G++, GCC):
 
 ##############################################################################
 
-Linux/x86_64 (Circle C++, GCC):
-  stage: build
+Linux/x86_64 (Circle, C++-only):
+  stage: build_linux
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2761,7 +2938,9 @@ Linux/x86_64 (Circle C++, GCC):
 ##############################################################################
 
 Node.js/WebAssembly (Emscripten, Em++, Emcc):
-  stage: build
+  stage: build_js
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2812,7 +2991,9 @@ Node.js/WebAssembly (Emscripten, Em++, Emcc):
 ##############################################################################
 
 Node.js/JavaScript (Emscripten, Em++, Emcc):
-  stage: build
+  stage: build_js
+  needs:
+    - job: Style check
   tags:
     - Docker-x64
     - Linux
@@ -2865,6 +3046,7 @@ Node.js/JavaScript (Emscripten, Em++, Emcc):
 Linux/x86_64 (GCC, Fedora Python):
   stage: build_python
   needs:
+    - job: Style check
     - job: Linux/x86_64 (G++, GCC)
   tags:
     - Docker-x64
@@ -2915,7 +3097,8 @@ Linux/x86_64 (GCC, Fedora Python):
 Linux/x86_64 (Oracle Studio C, Fedora Python):
   stage: build_python
   needs:
-    - job: Linux/x86_64 (Oracle Studio C)
+    - job: Style check
+    - job: Linux/x86_64 (Oracle Studio C, C-only)
   tags:
     - Docker-x64
     - Linux
@@ -2965,6 +3148,7 @@ Linux/x86_64 (Oracle Studio C, Fedora Python):
 Linux/x86_64 (Clang, Fedora Python):
   stage: build_python
   needs:
+    - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
   tags:
     - Docker-x64
@@ -2976,6 +3160,7 @@ Linux/x86_64 (Clang, Fedora Python):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export RANLIB="llvm-ranlib"
     - export CC="ccache clang"
     - command -v python3
     - python3 --version
@@ -3015,6 +3200,7 @@ Linux/x86_64 (Clang, Fedora Python):
 Linux/x86_64 (NVIDIA HPC SDK C, Fedora Python):
   stage: build_python
   needs:
+    - job: Style check
     - job: Linux/x86_64 (NVIDIA HPC SDK C++, C)
   tags:
     - Docker-x64
@@ -3068,6 +3254,7 @@ Linux/x86_64 (NVIDIA HPC SDK C, Fedora Python):
 Linux/x86_64 (Intel oneAPI, Intel Python):
   stage: build_python
   needs:
+    - job: Style check
     - job: Linux/x86_64 (Intel oneAPI, ICPX, ICX)
   tags:
     - Docker-x64
@@ -3119,6 +3306,7 @@ Linux/x86_64 (Intel oneAPI, Intel Python):
 Linux/x86_64 (GCC, Anaconda Python):
   stage: build_python
   needs:
+    - job: Style check
     - job: Linux/x86_64 (G++, GCC)
   tags:
     - Docker-x64
@@ -3174,6 +3362,7 @@ Linux/x86_64 (GCC, Anaconda Python):
 Linux/x86_64 (AOCC, Fedora Python):
   stage: build_python
   needs:
+    - job: Style check
     - job: Linux/x86_64 (AOCC++, AOCC)
   tags:
     - Docker-x64
@@ -3223,12 +3412,14 @@ Linux/x86_64 (AOCC, Fedora Python):
 ##############################################################################
 
 Semgrep (Cloud Rules):
+  needs:
+    - job: Style check
   allow_failure: true
-  timeout: 15 minutes
+  timeout: 8 minutes
   tags:
     - Docker-x64
     - Linux
-  stage: lint
+  stage: lint_static
   needs:
     - job: Linux/x86_64 (G++, GCC)
   image:
@@ -3240,9 +3431,9 @@ Semgrep (Cloud Rules):
       echo -e "section_start:`date +%s`:SemgrepCloud_section[collapsed=true]\r\e[0K\033[0;36mSemgrep Cloud ...\033[0m" || true
     - apk update > /dev/null 2>&1 || true
     - apk upgrade > /dev/null 2>&1 || true
-    - semgrep login
+    - semgrep login > /dev/null
     - semgrep install-semgrep-pro || true
-    - semgrep ci -q
+    - semgrep ci
     - |
       # End of Semgrep Cloud ...
       echo -e "section_end:`date +%s`:SemgrepCloud_section\r\e[0K" || true
@@ -3253,12 +3444,14 @@ Semgrep (Cloud Rules):
 ##############################################################################
 
 Semgrep (GitLab Rules):
+  needs:
+    - job: Style check
   allow_failure: true
-  timeout: 15 minutes
+  timeout: 8 minutes
   tags:
     - Docker-x64
     - Linux
-  stage: lint
+  stage: lint_static
   needs:
     - job: Linux/x86_64 (G++, GCC)
   image:
@@ -3268,13 +3461,13 @@ Semgrep (GitLab Rules):
     - |
       # Start of Semgrep GitLab ...
       echo -e "section_start:`date +%s`:SemgrepGitLab_section[collapsed=true]\r\e[0K\033[0;36mSemgrep GitLab ...\033[0m" || true
-    - semgrep login
-    - semgrep install-semgrep-pro || true
     - apk update > /dev/null 2>&1 || true
     - apk upgrade > /dev/null 2>&1 || true
     - apk add make ruby ruby-dev yaml yaml-dev gawk sed gcc libc-dev > /dev/null 2>&1 || true
     - gem update > /dev/null 2>&1 || true
     - gem install psych yaml fileutils > /dev/null 2>&1 || true
+    - semgrep login > /dev/null
+    - semgrep install-semgrep-pro || true
     - ( mkdir -p /tmp/gitlab-sast && cd /tmp/gitlab-sast && git clone -q --depth=1 https://gitlab.com/gitlab-org/security-products/sast-rules.git && cd sast-rules && ./ci/join.rb > /dev/null 2>&1 && sed '/ id. / s/\//./g' combined.yml > combined2.yml && mv -f combined2.yml combined.yml ) || true
     - semgrep scan --config /tmp/gitlab-sast/sast-rules/combined.yml . --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-char_TCHAR.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.race.rule-readlink.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-printf_vprintf.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-realpath.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-memcpy_CopyMemory.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-getenv_curl_getenv.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.misc.rule-fopen_open.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-memcpy_CopyMemory.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-getchar_fgetc.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-strlen_wcslen.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-printf_vprintf.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-snprintf_vsnprintf.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.misc.rule-InitializeCriticalSection.yml" --error
     - |
@@ -3286,9 +3479,10 @@ Semgrep (GitLab Rules):
 
 ##############################################################################
 
-Linux/x86_64 (Ch 8.5):
+Linux/x86_64 (Ch Professional 8.5):
   stage: build_ch
   needs:
+    - job: Style check
     - job: Linux/x86_64 (G++, GCC)
   tags:
     - Docker-x64
@@ -3324,6 +3518,222 @@ Linux/x86_64 (Ch 8.5):
       - bindings/ch/*.o
       - bindings/ch/*.log
       - logs/
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
+Windows/x64 (Clang-CL, C++, C):
+  stage: build_windows
+  needs:
+    - job: Style check
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/msvc:latest
+  script:
+    - *Configuration
+    - *ClangDisableWarnings
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export PATH="/opt/msvc/bin/x64:${PATH:?}"
+    - BIN=/opt/msvc/bin/x64 . /opt/msvc/msvcenv-native.sh
+    - export RANLIB="llvm-ranlib"
+    - export CXX="clang++"
+    - export CC="clang-cl"
+    - export LD="lld-link"
+    - export COMMON_FLAGS="--target=x86_64-windows-msvc -fuse-ld=lld-link"
+    - export CFLAGS="${COMMON_FLAGS:?} ${DISABLE_WARNINGS:?}"
+    - export CXXFLAGS="${COMMON_FLAGS:?} ${DISABLE_WARNINGS:?}"
+    - export LDFLAGS="${COMMON_FLAGS:?} -Wno-unknown-argument"
+    - export SIR_SHARED="/LD"
+    - ${CC:?} -Wno-unknown-argument --version
+    - ${LD:?} --version
+    - make PLATFORM_EXE_EXT=.exe PLATFORM_DLL_EXT=.dll PLATFORM_LIB_EXT=.lib PTHOPT= LIBDL= SIR_FPIC= LIBSIR_S="build/lib/libsir_s.lib" all tests++
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - *BuildInformation
+    - |
+      # Start of Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - export WINEDEBUG=-all
+    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - mv -f screenlog.0 sirexample.out
+    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - mv -f screenlog.0 sirtests.out
+    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - mv -f screenlog.0 sirtests++.out
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+      - screenlog.0
+      - ./*.out
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
+Windows/i686 (Clang-CL, C++, C):
+  stage: build_windows
+  needs:
+    - job: Style check
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/msvc:latest
+  script:
+    - *Configuration
+    - *ClangDisableWarnings
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export PATH="/opt/msvc/bin/x86:${PATH:?}"
+    - BIN=/opt/msvc/bin/x86 . /opt/msvc/msvcenv-native.sh
+    - export RANLIB="llvm-ranlib"
+    - export CXX="clang++"
+    - export CC="clang-cl"
+    - export LD="lld-link"
+    - export COMMON_FLAGS="--target=i686-windows-msvc -fuse-ld=lld-link"
+    - export CFLAGS="${COMMON_FLAGS:?} ${DISABLE_WARNINGS:?}"
+    - export CXXFLAGS="${COMMON_FLAGS:?} ${DISABLE_WARNINGS:?}"
+    - export LDFLAGS="${COMMON_FLAGS:?} -Wno-unknown-argument"
+    - export SIR_SHARED="/LD"
+    - ${CC:?} -Wno-unknown-argument --version
+    - ${LD:?} --version
+    - make PLATFORM_EXE_EXT=.exe PLATFORM_DLL_EXT=.dll PLATFORM_LIB_EXT=.lib PTHOPT= LIBDL= SIR_FPIC= LIBSIR_S="build/lib/libsir_s.lib" all tests++
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - *BuildInformation
+    - |
+      # Start of Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - export WINEDEBUG=-all
+    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - mv -f screenlog.0 sirexample.out
+    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - mv -f screenlog.0 sirtests.out
+    - screen -mDL sh -c 'wine64 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - mv -f screenlog.0 sirtests++.out
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+      - screenlog.0
+      - ./*.out
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
+Windows/Arm (Clang-CL, C-only):
+  stage: build_windows
+  needs:
+    - job: Style check
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/msvc:latest
+  script:
+    - *Configuration
+    - *ClangDisableWarnings
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export PATH="/opt/msvc/bin/arm:${PATH:?}"
+    - BIN=/opt/msvc/bin/arm . /opt/msvc/msvcenv-native.sh
+    - export RANLIB="llvm-ranlib"
+    - export CXX="clang++"
+    - export CC="clang-cl"
+    - export LD="lld-link"
+    - export COMMON_FLAGS="--target=arm-windows-msvc -fuse-ld=lld-link"
+    - export CFLAGS="${COMMON_FLAGS:?} ${DISABLE_WARNINGS:?}"
+    - export CXXFLAGS="${COMMON_FLAGS:?} ${DISABLE_WARNINGS:?}"
+    - export LDFLAGS="${COMMON_FLAGS:?} -Wno-unknown-argument"
+    - export SIR_SHARED="/LD"
+    - ${CC:?} -Wno-unknown-argument --version
+    - ${LD:?} --version
+    - make PLATFORM_EXE_EXT=.exe PLATFORM_DLL_EXT=.dll PLATFORM_LIB_EXT=.lib PTHOPT= LIBDL= SIR_FPIC= LIBSIR_S="build/lib/libsir_s.lib" all
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - *BuildInformation
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+      - screenlog.0
+      - ./*.out
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
+Windows/Arm64 (Clang-CL, C++, C):
+  stage: build_windows
+  needs:
+    - job: Style check
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/msvc:latest
+  script:
+    - *Configuration
+    - *ClangDisableWarnings
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export PATH="/opt/msvc/bin/arm64:${PATH:?}"
+    - BIN=/opt/msvc/bin/arm64 . /opt/msvc/msvcenv-native.sh
+    - export RANLIB="llvm-ranlib"
+    - export CXX="clang++"
+    - export CC="clang-cl"
+    - export LD="lld-link"
+    - export COMMON_FLAGS="--target=arm64-windows-msvc -fuse-ld=lld-link"
+    - export CFLAGS="${COMMON_FLAGS:?} ${DISABLE_WARNINGS:?}"
+    - export CXXFLAGS="${COMMON_FLAGS:?} ${DISABLE_WARNINGS:?}"
+    - export LDFLAGS="${COMMON_FLAGS:?} -Wno-unknown-argument"
+    - export SIR_SHARED="/LD"
+    - ${CC:?} -Wno-unknown-argument --version
+    - ${LD:?} --version
+    - make PLATFORM_EXE_EXT=.exe PLATFORM_DLL_EXT=.dll PLATFORM_LIB_EXT=.lib PTHOPT= LIBDL= SIR_FPIC= LIBSIR_S="build/lib/libsir_s.lib" all tests++
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - *BuildInformation
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+      - screenlog.0
+      - ./*.out
   retry: 2
   interruptible: true
 

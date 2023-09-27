@@ -70,9 +70,9 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 | System | Toolchain |
 | ------:|:--------- |
 | **Linux**&nbsp;≳2.6.32<br>(glibc&nbsp;≳2.4, musl&nbsp;≳1.2.3, uClibc‑ng&nbsp;1.0.43, Bionic&nbsp;19) | **GCC**&nbsp;(4.8.4&nbsp;‑&nbsp;13.2.1),&nbsp; **Clang**&nbsp;(3.8&nbsp;‑&nbsp;17.0.1),&nbsp; **Oracle&nbsp;Studio&nbsp;C/C++**&nbsp;(≳12.6),&nbsp; **Circle**&nbsp;(*C++*,&nbsp;1.0.0‑200),&nbsp; **IBM&nbsp;Advance&nbsp;Toolchain**&nbsp;(14&nbsp;‑&nbsp;16),&nbsp; **IBM&nbsp;XL&nbsp;C/C++**&nbsp;(16.1),&nbsp; **IBM&nbsp;Open&nbsp;XL&nbsp;C/C++**&nbsp;(17.1.1),&nbsp; **NVIDIA&nbsp;HPC&nbsp;SDK&nbsp;C/C++**&nbsp;(23.5&nbsp;‑&nbsp;23.7),&nbsp; **Arm&nbsp;HPC&nbsp;C/C++**&nbsp;(22.1&nbsp;‑&nbsp;23.04.1),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.104.2&nbsp;‑&nbsp;2.105.2),&nbsp; **AMD&nbsp;Optimizing&nbsp;C/C++**&nbsp;(4&nbsp;‑&nbsp;4.1),&nbsp; **Intel&nbsp;oneAPI&nbsp;DPC++/C++**&nbsp;(2023.1&nbsp;‑&nbsp;2023.2.1),&nbsp; **Open64**&nbsp;(5,&nbsp;AMD&nbsp;4.5.2.1),&nbsp; **Intel&nbsp;C++&nbsp;Compiler&nbsp;Classic**&nbsp;(2021.9.0&nbsp;‑&nbsp;2021.10.0),&nbsp; **Android&nbsp;NDK**&nbsp;(r25c),&nbsp; **Portable&nbsp;C&nbsp;Compiler**&nbsp;(1.2.0.DEVEL‑20230730),&nbsp; **Kefir**&nbsp;(≳0.3.0),&nbsp; **Chibicc**&nbsp;(2020.12.6) |
-| **AIX**&nbsp;7.2,&nbsp;7.3 | **GCC**&nbsp;(8.3&nbsp;‑&nbsp;11.3),&nbsp; **IBM&nbsp;XL&nbsp;C/C++**&nbsp;(16.1),&nbsp; **IBM&nbsp;Open&nbsp;XL&nbsp;C/C++**&nbsp;(17.1) |
+| **AIX**&nbsp;7.2,&nbsp;7.3 | **GCC**&nbsp;(8.3&nbsp;‑&nbsp;12.3),&nbsp; **IBM&nbsp;XL&nbsp;C/C++**&nbsp;(16.1),&nbsp; **IBM&nbsp;Open&nbsp;XL&nbsp;C/C++**&nbsp;(17.1) |
 | **macOS**&nbsp;≳10.15 | **Xcode**&nbsp;(11.7&nbsp;‑&nbsp;15),&nbsp; **GCC**&nbsp;(10.4&nbsp;‑&nbsp;13.2.1),&nbsp; **Clang**&nbsp;(11.0.3&nbsp;‑&nbsp;17.0.1),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.105.0&nbsp;‑&nbsp;2.105.2),&nbsp; **Intel&nbsp;C++&nbsp;Compiler&nbsp;Classic**&nbsp;(2021.9.0&nbsp;‑&nbsp;2021.10.0) |
-| **Windows**&nbsp;≳10,&nbsp;11 | **Microsoft&nbsp;Visual&nbsp;C/C++**&nbsp;(17.6&nbsp;‑&nbsp;17.7.4),&nbsp; **Clang‑CL**&nbsp;(16.0.6),&nbsp; **GCC‑MinGW**&nbsp;(12.2.1&nbsp;‑&nbsp;13.2.1),&nbsp; **LLVM‑MinGW**&nbsp;(15.0&nbsp;‑&nbsp;16.0.6),&nbsp; **Embarcadero&nbsp;C++**&nbsp;(7.20&nbsp;‑&nbsp;7.60),&nbsp; **OrangeC**&nbsp;(≳6.0.71.10) |
+| **Windows**&nbsp;≳10,&nbsp;11 | **Microsoft&nbsp;Visual&nbsp;C/C++**&nbsp;(17.6&nbsp;‑&nbsp;17.7.4),&nbsp; **Clang‑CL**&nbsp;(16.0.6&nbsp;‑&nbsp;17.0.1),&nbsp; **GCC‑MinGW**&nbsp;(12.2.1&nbsp;‑&nbsp;13.2.1),&nbsp; **LLVM‑MinGW**&nbsp;(15.0&nbsp;‑&nbsp;16.0.6),&nbsp; **Embarcadero&nbsp;C++**&nbsp;(7.20&nbsp;‑&nbsp;7.60),&nbsp; **OrangeC**&nbsp;(≳6.71.10) |
 | **Cygwin**&nbsp;3.4 | **GCC**&nbsp;(11.2&nbsp;‑&nbsp;13.2) |
 | **FreeBSD**&nbsp;≳11.3 | **GCC**&nbsp;(11.4&nbsp;‑&nbsp;13.1),&nbsp; **Clang**&nbsp;(10&nbsp;‑&nbsp;17.0.1),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.105.0&nbsp;‑&nbsp;2.105.2) |
 | **NetBSD**&nbsp;9.2 | **GCC**&nbsp;(7.5&nbsp;‑&nbsp;13.2),&nbsp; **Clang**&nbsp;(15.0.7) |
@@ -145,7 +145,7 @@ There are several options available for building libsir from source:
 
 ### <a id="unix-makefile" /> Unix Makefile
 
-The Makefiles are compatible with **GNU Make** version **3.81** and later (**4.4** recommended) and support most Unix-like operating systems: AIX, Solaris, Linux, illumos, macOS, Cygwin, BSD, GNU/Hurd, Haiku, etc.
+The Makefiles are compatible with **GNU Make** version **3.81** and later (**4.4** *recommended*) and support both native and cross-compilation builds on most Unix-like operating systems: AIX, Solaris, illumos, Linux, macOS, Cygwin, BSD, GNU/Hurd, Haiku, etc.
 
 #### <a id="unix-makefile-envvars" /> Environment variables
 
@@ -153,8 +153,8 @@ A number of environment variables are available which affect the way in which li
 
 #### <a id="unix-makefile-recipes" /> Recipes
 
-|   Recipe Type    |     Command      | &nbsp;&nbsp;&nbsp;&nbsp;Output file(s)         |
-|:----------------:|:----------------:|:-----------------------------------------------|
+|      Recipe Type |     Command      | &nbsp;&nbsp;&nbsp;&nbsp;Output file(s)         |
+|-----------------:|:----------------:|:-----------------------------------------------|
 | Test suite (C)   |  `make tests`    | <ul><li>*build/bin/sirtests[.exe]*</li></ul>   |
 | Test suite (C++) |  `make tests++`  | <ul><li>*build/bin/sirtests++[.exe]*</li></ul> |
 | Example app      |  `make example`  | <ul><li>*build/bin/sirexample[.exe]*</li></ul> |
@@ -162,15 +162,17 @@ A number of environment variables are available which affect the way in which li
 | Shared library   |  `make shared`   | <ul><li>*build/lib/libsir.so*</li></ul>        |
 | Installation     |  `make install`  | <ul><li>*$PREFIX/lib/libsir_s.a*</li><li>*$PREFIX/lib/libsir.so*</li><li>*$PREFIX/include/sir.h*</li><li>*$PREFIX/include/sir/\*.h*</li></ul> |
 
+- See the [CI configuration file](https://github.com/aremmell/libsir/blob/master/.gitlab-ci.yml) for practical examples.
+
 ### <a id="visual-studio-code" /> Visual Studio Code
 
-A VS Code workspace file is located in the root of the repository (`sir.code-workspace`). Build tasks are only configured for macOS and Linux. On other platforms, use the integrated terminal to run GNU [make](#unix-makefile) manually.
+A VS Code workspace file is located in the root of the repository (`sir.code-workspace`). Build tasks are only configured for macOS and Linux. On other platforms, use the integrated terminal to run GNU [`make`](#unix-makefile) manually.
 
 #### <a id="vs-code-build-tasks" /> Build Tasks
 To run a task, open the command list (<kbd>&#8984;</kbd> + <kbd>&#8679;</kbd> + <kbd>P</kbd> on macOS, <kbd>&#8963;</kbd> + <kbd>&#8679;</kbd> + <kbd>P</kbd> on Linux), then start typing `"run task"` until you see `"Tasks: Run Task"`. Click the item or press the key combination listed next to it. You should then see a drop-down menu containing all of the build tasks for libsir, which are listed here:
 
-| Build Task           | Description                                                      |
-|:---------------------|:-----------------------------------------------------------------|
+|           Build Task | Description                                                      |
+|---------------------:|:-----------------------------------------------------------------|
 | Clean                | Deletes all intermediate files and previously compiled binaries. |
 | Static Library       | Compiles libsir as a static library.                             |
 | Static Library [DBG] | Compiles libsir as a static library with debug symbols.          |
