@@ -575,98 +575,16 @@ bool sirtest_failremovebadfile(void) {
 }
 
 bool sirtest_rollandarchivefile(void) {
-    /* roll size minus 1KiB so we can write until it maxes. */
-    static const long deltasize    = 1024L;
-    const long fillsize            = SIR_FROLLSIZE - deltasize;
-    static const char* logbasename = "rollandarchive";
-    static const char* logext      = ".log";
-    static const char* line        = "hello, i am some data. nice to meet you.";
+    static const char* filename = "rollandarchive";
+    static const char* ext1     = ".log";
+    static const char* ext2     = "";
 
-    char logfilename[SIR_MAXPATH] = {0};
-    (void)snprintf(logfilename, SIR_MAXPATH, MAKE_LOG_NAME("%s%s"), logbasename, logext);
+    bool pass = true;
 
-    TEST_MSG_0("deleting any stale logs from a previous run...");
+    _sir_eqland(pass, roll_and_archive(filename, ext1));
+    _sir_eqland(pass, roll_and_archive(filename, ext2));
 
-    unsigned delcount = 0U;
-    if (!enumfiles(SIR_TESTLOGDIR, logbasename, !cl_cfg.leave_logs, &delcount)) {
-        HANDLE_OS_ERROR(false, "failed to enumerate log files with base name: %s!",
-            logbasename);
-        return false;
-    }
-
-    if (delcount > 0U)
-        TEST_MSG("found and removed %u log file(s)", delcount);
-
-    FILE* f = NULL;
-    _sir_fopen(&f, logfilename, "w");
-
-    if (!f)
-        return print_test_error(false, false);
-
-    TEST_MSG("filling %s nearly to SIR_FROLLSIZE...", logfilename);
-
-    if (0 != fseek(f, fillsize, SEEK_SET)) {
-        HANDLE_OS_ERROR(true, "fseek in file %s failed!", logfilename);
-        _sir_safefclose(&f);
-        return false;
-    }
-
-    if (EOF == fputc('\0', f)) {
-        HANDLE_OS_ERROR(true, "fputc in file %s failed!", logfilename);
-        _sir_safefclose(&f);
-        return false;
-    }
-
-    _sir_safefclose(&f);
-
-    INIT(si, 0, 0, 0, 0);
-    bool pass = si_init;
-
-    TEST_MSG("adding %s to libsir...", logfilename);
-
-    sirfileid fileid = sir_addfile(logfilename, SIRL_DEBUG, SIRO_MSGONLY | SIRO_NOHDR);
-    _sir_eqland(pass, 0U != fileid);
-
-    print_test_error(pass, false);
-
-    if (pass) {
-        TEST_MSG("writing to %s until SIR_FROLLSIZE has been exceeded...", logfilename);
-        /* write an (approximately) known quantity until we should have rolled */
-        size_t written  = 0;
-        size_t linesize = strnlen(line, SIR_MAXMESSAGE);
-
-        do {
-            _sir_eqland(pass, sir_debug("%zu %s", written, line));
-            written += linesize;
-        } while (pass && (written < deltasize + (linesize * 50)));
-
-        TEST_MSG_0("looking for two log files, since it should have been rolled...");
-
-        /* look for files matching the original name. */
-        unsigned foundlogs = 0U;
-        if (!enumfiles(SIR_TESTLOGDIR, logbasename, false, &foundlogs)) {
-            HANDLE_OS_ERROR(false, "failed to enumerate log files with base name: %s!", logbasename);
-            pass = false;
-        }
-
-        /* if two (or more) are present, the test is a pass. */
-        TEST_MSG("found %u log files with base name: %s", foundlogs, logbasename);
-        _sir_eqland(pass, foundlogs >= 2U);
-    }
-
-    _sir_eqland(pass, sir_remfile(fileid));
-
-    delcount = 0U;
-    if (!enumfiles(SIR_TESTLOGDIR, logbasename, !cl_cfg.leave_logs, &delcount)) {
-        HANDLE_OS_ERROR(false, "failed to enumerate log files with base name: %s!", logbasename);
-        pass = false;
-    }
-
-    if (delcount > 0U)
-        TEST_MSG("found and removed %u log file(s)", delcount);
-
-    _sir_eqland(pass, sir_cleanup());
-    return PRINT_RESULT_RETURN(pass);
+    return pass;
 }
 
 bool sirtest_failwithoutinit(void) {
@@ -2404,4 +2322,96 @@ char *get_wineversion(void) {
     }
     return NULL;
 #endif
+}
+
+bool roll_and_archive(const char* filename, const char* extension) {
+    /* roll size minus 1KiB so we can write until it maxes. */
+    static const long deltasize    = 1024L;
+    static const long fillsize     = SIR_FROLLSIZE - deltasize;
+    static const char* line        = "hello, i am some data. nice to meet you.";
+
+    char logfilename[SIR_MAXPATH] = {0};
+    (void)snprintf(logfilename, SIR_MAXPATH, MAKE_LOG_NAME("%s%s"), filename, extension);
+
+    TEST_MSG_0("deleting any stale logs from a previous run...");
+
+    unsigned delcount = 0U;
+    if (!enumfiles(SIR_TESTLOGDIR, filename, !cl_cfg.leave_logs, &delcount)) {
+        HANDLE_OS_ERROR(false, "failed to enumerate log files with base name: %s!", filename);
+        return false;
+    }
+
+    if (delcount > 0U)
+        TEST_MSG("found and removed %u log file(s)", delcount);
+
+    FILE* f = NULL;
+    _sir_fopen(&f, logfilename, "w");
+
+    if (NULL == f)
+        return print_test_error(false, false);
+
+    TEST_MSG("filling %s nearly to SIR_FROLLSIZE...", logfilename);
+
+    if (0 != fseek(f, fillsize, SEEK_SET)) {
+        HANDLE_OS_ERROR(true, "fseek in file %s failed!", logfilename);
+        _sir_safefclose(&f);
+        return false;
+    }
+
+    if (EOF == fputc('\0', f)) {
+        HANDLE_OS_ERROR(true, "fputc in file %s failed!", logfilename);
+        _sir_safefclose(&f);
+        return false;
+    }
+
+    _sir_safefclose(&f);
+
+    INIT(si, 0, 0, 0, 0);
+    bool pass = si_init;
+
+    TEST_MSG("adding %s to libsir...", logfilename);
+
+    sirfileid fileid = sir_addfile(logfilename, SIRL_DEBUG, SIRO_MSGONLY | SIRO_NOHDR);
+    _sir_eqland(pass, 0U != fileid);
+
+    print_test_error(pass, false);
+
+    if (pass) {
+        TEST_MSG("writing to %s until SIR_FROLLSIZE has been exceeded...", logfilename);
+        /* write an (approximately) known quantity until we should have rolled */
+        size_t written  = 0;
+        size_t linesize = strnlen(line, SIR_MAXMESSAGE);
+
+        do {
+            _sir_eqland(pass, sir_debug("%zu %s", written, line));
+            written += linesize;
+        } while (pass && (written < deltasize + (linesize * 50)));
+
+        TEST_MSG_0("looking for two log files, since it should have been rolled...");
+
+        /* look for files matching the original name. */
+        unsigned foundlogs = 0U;
+        if (!enumfiles(SIR_TESTLOGDIR, filename, false, &foundlogs)) {
+            HANDLE_OS_ERROR(false, "failed to enumerate log files with base name: %s!", filename);
+            pass = false;
+        }
+
+        /* if two (or more) are present, the test is a pass. */
+        TEST_MSG("found %u log files with base name: %s", foundlogs, filename);
+        _sir_eqland(pass, foundlogs >= 2U);
+    }
+
+    _sir_eqland(pass, sir_remfile(fileid));
+
+    delcount = 0U;
+    if (!enumfiles(SIR_TESTLOGDIR, filename, !cl_cfg.leave_logs, &delcount)) {
+        HANDLE_OS_ERROR(false, "failed to enumerate log files with base name: %s!", filename);
+        pass = false;
+    }
+
+    if (delcount > 0U)
+        TEST_MSG("found and removed %u log file(s)", delcount);
+
+    _sir_eqland(pass, sir_cleanup());
+    return PRINT_RESULT_RETURN(pass);
 }
