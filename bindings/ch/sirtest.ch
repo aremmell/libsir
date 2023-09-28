@@ -123,11 +123,12 @@ main(void) {
     (void)sir_emerg("%s %b Testing %s output", __TIME__, __LINE__, ULINE("emergency"));
 
     /* Set up a syslog output. */
-    char message[SIR_MAXERROR];
     (void)sir_syslogid(appname);
-    if (SIR_E_UNAVAIL == sir_geterror(message)) {
+    if (SIR_E_UNAVAIL == sir_geterror(NULL)) {
         (void)fprintf(_stderr, "\nLogging to syslog is not supported, skipping.\n");
     } else {
+        (void)fprintf(_stderr, "\nLogging two libsir messages to stderr and syslog:\n");
+
         /* Don't log PID; syslog has us covered. */
         if (!sir_syslogopts(SIRO_NOPID))
             report_error();
@@ -137,7 +138,6 @@ main(void) {
             report_error();
 
         /* Log to syslog. */
-        (void)fprintf(_stderr, "\nLogging two libsir messages to stderr and syslog:\n");
         (void)sir_alert("%b Testing %s output", __LINE__, "alert");
         (void)sir_emerg("%b Testing %s output", __LINE__, "emergency");
     }
