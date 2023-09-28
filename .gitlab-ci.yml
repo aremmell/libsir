@@ -2595,9 +2595,9 @@ Clang Sanitizer (CFI, 64-bit, C++, C):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build64_section[collapsed=true]\r\e[0K\033[0;36mBuild 64-bit ...\033[0m" || true
     - export CSAN_FLAGS="-fsanitize=cfi -fvisibility=hidden -fcomplete-member-pointers"
-    - export CSAN_CFLAGS="${CSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover -flto=thin"
-    - export CC="ccache clang -m64 ${CSAN_CFLAGS:?} -Werror -fuse-ld=lld"
-    - export CXX="ccache clang++ -m64 ${CSAN_CFLAGS:?} -Werror -fuse-ld=lld"
+    - export CSAN_CFLAGS="${CSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover -flto"
+    - export CC="ccache clang -m64 ${CSAN_CFLAGS:?} -Werror"
+    - export CXX="ccache clang++ -m64 ${CSAN_CFLAGS:?} -Werror"
     - export CXXFLAGS="-DSIR_NO_BOOST_FORMAT=1"
     - export LDFLAGS="${CSAN_FLAGS:?}"
     - ${CC:?} --version
@@ -2646,9 +2646,9 @@ Clang Sanitizer (CFI, 32-bit, C++, C):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build32_section[collapsed=true]\r\e[0K\033[0;36mBuild 32-bit ...\033[0m" || true
     - export CSAN_FLAGS="-fsanitize=cfi -fvisibility=hidden -fcomplete-member-pointers"
-    - export CSAN_CFLAGS="${CSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover -flto=thin"
-    - export CC="ccache clang -m32 ${CSAN_CFLAGS:?} -Werror -fuse-ld=lld"
-    - export CXX="ccache clang++ -m32 ${CSAN_CFLAGS:?} -Werror -fuse-ld=lld"
+    - export CSAN_CFLAGS="${CSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover -flto"
+    - export CC="ccache clang -m32 ${CSAN_CFLAGS:?} -Werror"
+    - export CXX="ccache clang++ -m32 ${CSAN_CFLAGS:?} -Werror"
     - export CXXFLAGS="-DSIR_NO_BOOST_FORMAT=1"
     - export LDFLAGS="${CSAN_FLAGS:?}"
     - ${CC:?} --version
