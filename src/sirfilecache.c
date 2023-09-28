@@ -321,9 +321,9 @@ bool _sirfile_splitpath(const sirfile* sf, char** name, char** ext) {
         if (!tmp)
             return _sir_handleerr(errno);
 
-        const char* lastfullstop = strrchr(tmp, '.');
-        if (lastfullstop && lastfullstop != tmp) {
-            uintptr_t namesize = lastfullstop - tmp;
+        const char* fullstop = strrchr(tmp, '.');
+        if (fullstop && fullstop != tmp) {
+            uintptr_t namesize = fullstop - tmp;
             SIR_ASSERT(namesize < SIR_MAXPATH);
 
             tmp[namesize] = '\0';
@@ -336,12 +336,12 @@ bool _sirfile_splitpath(const sirfile* sf, char** name, char** ext) {
             _sir_strncpy(*name, namesize + 1, tmp, namesize);
             *ext = strndup(sf->path + namesize, strnlen(sf->path + namesize, SIR_MAXPATH));
         } else {
-            lastfullstop = NULL;
+            fullstop = NULL;
             *name = strndup(sf->path, strnlen(sf->path, SIR_MAXPATH));
         }
 
         _sir_safefree(&tmp);
-        retval = _sir_validstr(*name) && (!lastfullstop || _sir_validstr(*ext));
+        retval = _sir_validstrnofail(*name) && (!fullstop || _sir_validstrnofail(*ext));
     }
 
     return retval;
@@ -471,7 +471,7 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
 }
 
 void _sir_fcache_shift(sirfcache* sfc, size_t idx) {
-    if (_sir_validptr(sfc) && idx < SIR_MAXFILES - 1) {
+    if (_sir_validptr(sfc) && sfc->count <= SIR_MAXFILES) {
         for (size_t n = idx; n < sfc->count - 1; n++) {
             sfc->files[n] = sfc->files[n + 1];
             sfc->files[n + 1] = NULL;
