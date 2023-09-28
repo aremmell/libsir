@@ -151,7 +151,7 @@ bool _sirfile_writeheader(sirfile* sf, const char* msg) {
 
     if (retval) {
         time_t now = -1;
-        time(&now);
+        (void)time(&now);
 
         char timestamp[SIR_MAXTIME] = {0};
         bool fmttime = _sir_formattime(now, timestamp, SIR_FHTIMEFORMAT);
@@ -201,7 +201,7 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
     if (split) {
         time_t now = -1;
 
-        time(&now);
+        (void)time(&now);
         SIR_ASSERT(-1 != now);
 
         if (-1 != now) {
@@ -333,7 +333,7 @@ bool _sirfile_splitpath(const sirfile* sf, char** name, char** ext) {
                 return _sir_handleerr(errno);
             }
 
-            _sir_strncpy(*name, namesize + 1, tmp, namesize);
+            (void)_sir_strncpy(*name, namesize + 1, tmp, namesize);
             *ext = strndup(sf->path + namesize, strnlen(sf->path + namesize, SIR_MAXPATH));
         } else {
             fullstop = NULL;
@@ -421,7 +421,7 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
         sfc->files[sfc->count++] = sf;
 
         if (!_sir_bittest(sf->opts, SIRO_NOHDR))
-            _sirfile_writeheader(sf, SIR_FHBEGIN);
+            (void)_sirfile_writeheader(sf, SIR_FHBEGIN);
 
         return sf->id;
     }
@@ -579,7 +579,7 @@ bool _sir_fcache_destroy(sirfcache* sfc) {
             sfc->count--;
         }
 
-        memset(sfc, 0, sizeof(sirfcache));
+        (void)memset(sfc, 0, sizeof(sirfcache));
     }
 
     return retval;

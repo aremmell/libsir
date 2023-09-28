@@ -315,7 +315,7 @@ void os_log_child_activity(void* ctx);
     var.d_stderr.opts   = (o_stderr) > 0 ? (o_stderr) : SIRO_DEFAULT; \
     var.d_stderr.levels = (l_stderr); \
     if (_sir_validstrnofail(p_name)) \
-        _sir_strncpy(var.name, SIR_MAXNAME, (p_name), SIR_MAXNAME); \
+        (void)_sir_strncpy(var.name, SIR_MAXNAME, (p_name), SIR_MAXNAME); \
     bool var##_init = false; \
     if (init) \
         var##_init = sir_init(&var); \
