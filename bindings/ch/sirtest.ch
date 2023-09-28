@@ -122,8 +122,10 @@ main(void) {
     (void)sir_alert("%s %b Testing %s output", __TIME__, __LINE__, ULINE("alert"));
     (void)sir_emerg("%s %b Testing %s output", __TIME__, __LINE__, ULINE("emergency"));
 
-    /* Set up a syslog output. */
+    /* Set up for syslog output. */
     (void)sir_syslogid(appname);
+
+    /* Check if syslog is available. */
     if (SIR_E_UNAVAIL == sir_geterror(NULL)) {
         (void)fprintf(_stderr, "\nLogging to syslog is not supported, skipping.\n");
     } else {
@@ -133,7 +135,7 @@ main(void) {
         if (!sir_syslogopts(SIRO_NOPID))
             report_error();
 
-        /* Send all levels */
+        /* Send all levels. */
         if (!sir_sysloglevels(SIRL_ALL))
             report_error();
 
