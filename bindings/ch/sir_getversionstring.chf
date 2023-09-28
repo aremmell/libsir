@@ -27,7 +27,7 @@
 
 const char*
 sir_getversionstring(void) {
-    void* fptr;
+    void*       fptr;
     const char* retval;
 
     fptr = dlsym(_Chsir_handle, "sir_getversionstring_chdl");

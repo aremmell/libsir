@@ -28,7 +28,7 @@
 bool
 sir_isprerelease(void) {
     void* fptr;
-    bool retval;
+    bool  retval;
 
     fptr = dlsym(_Chsir_handle, "sir_isprerelease_chdl");
     if (fptr == NULL) {

@@ -28,7 +28,7 @@
 bool
 sir_unloadplugin(sirpluginid id) {
     void* fptr;
-    bool retval;
+    bool  retval;
 
     fptr = dlsym(_Chsir_handle, "sir_unloadplugin_chdl");
     if (fptr == NULL) {

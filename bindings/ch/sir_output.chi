@@ -30,10 +30,10 @@
 
 bool
 SIR_OUTPUT(const char* message...) {
-    void* fptr;
-    bool retval;
+    void*   fptr;
+    bool    retval;
     va_list ap;
-    char fmt_message[SIR_MAXOUTPUT];
+    char    fmt_message[SIR_MAXOUTPUT];
 
     va_start(ap, message);
 

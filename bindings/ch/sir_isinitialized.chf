@@ -28,7 +28,7 @@
 bool
 sir_isinitialized(void) {
     void* fptr;
-    bool retval;
+    bool  retval;
 
     fptr = dlsym(_Chsir_handle, "sir_isinitialized_chdl");
     if (fptr == NULL) {

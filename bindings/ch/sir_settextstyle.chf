@@ -28,14 +28,14 @@
 bool
 sir_settextstyle(sir_level level, sir_textattr attr, sir_textcolor fg, sir_textcolor bg) {
     void* fptr;
-    bool retval;
+    bool  retval;
 
     fptr = dlsym(_Chsir_handle, "sir_settextstyle_chdl");
     if (fptr == NULL) {
         (void)fprintf(_stderr, "Error: %s(%d): dlsym(): %s\n",
                       __func__, __LINE__, dlerror());
 
-        return 0;
+        return false;
     }
 
     dlrunfun(fptr, &retval, sir_settextstyle, level, attr, fg, bg);
