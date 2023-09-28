@@ -38,7 +38,7 @@ sir_unloadplugin(sirpluginid id) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, sir_unloadplugin, id);
+    (void)dlrunfun(fptr, &retval, sir_unloadplugin, id);
 
     return retval;
 }

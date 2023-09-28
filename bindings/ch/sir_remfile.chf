@@ -38,7 +38,7 @@ sir_remfile(sirfileid id) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, sir_remfile, id);
+    (void)dlrunfun(fptr, &retval, sir_remfile, id);
 
     return retval;
 }

@@ -38,7 +38,7 @@ sir_makergb(sir_textcolor r, sir_textcolor g, sir_textcolor b) {
         return (sir_textcolor)0;
     }
 
-    dlrunfun(fptr, &retval, sir_makergb, r, g, b);
+    (void)dlrunfun(fptr, &retval, sir_makergb, r, g, b);
 
     return retval;
 }

@@ -38,7 +38,7 @@ sir_addfile(const char *path, sir_levels levels, sir_options opts) {
         return (sirfileid)0;
     }
 
-    dlrunfun(fptr, &retval, sir_addfile, path, levels, opts);
+    (void)dlrunfun(fptr, &retval, sir_addfile, path, levels, opts);
 
     return retval;
 }

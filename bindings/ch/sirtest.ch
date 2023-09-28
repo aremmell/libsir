@@ -26,11 +26,9 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "chsir.h"
-#include "sir/errors.h"
-#include <stdio.h>
-#include <string.h>
-#include <locale.h>
-#include <chshell.h>
+#include "sir/errors.h" /* SIR_E_UNAVAIL */
+#include <locale.h> /* setlocale */
+#include <chshell.h> /* chinfo */
 
 void report_error(void);
 

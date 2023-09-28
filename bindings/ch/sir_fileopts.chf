@@ -38,7 +38,7 @@ sir_fileopts(sirfileid id, sir_options opts) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, sir_fileoptions, id, opts);
+    (void)dlrunfun(fptr, &retval, sir_fileoptions, id, opts);
 
     return retval;
 }

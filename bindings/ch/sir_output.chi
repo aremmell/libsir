@@ -59,7 +59,7 @@ SIR_OUTPUT(const char* message...) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, SIR_OUTPUT, format);
+    (void)dlrunfun(fptr, &retval, SIR_OUTPUT, format);
 
     free(format);
 

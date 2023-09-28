@@ -38,7 +38,7 @@ sir_settextstyle(sir_level level, sir_textattr attr, sir_textcolor fg, sir_textc
         return false;
     }
 
-    dlrunfun(fptr, &retval, sir_settextstyle, level, attr, fg, bg);
+    (void)dlrunfun(fptr, &retval, sir_settextstyle, level, attr, fg, bg);
 
     return retval;
 }

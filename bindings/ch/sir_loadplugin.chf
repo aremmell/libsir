@@ -38,7 +38,7 @@ sir_loadplugin(const char* path) {
         return (sirpluginid)0;
     }
 
-    dlrunfun(fptr, &retval, sir_loadplugin, path);
+    (void)dlrunfun(fptr, &retval, sir_loadplugin, path);
 
     return retval;
 }

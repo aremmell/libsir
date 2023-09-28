@@ -38,7 +38,7 @@ sir_isinitialized(void) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, sir_isinitialized);
+    (void)dlrunfun(fptr, &retval, sir_isinitialized);
 
     return retval;
 }

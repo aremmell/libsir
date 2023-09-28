@@ -97,6 +97,20 @@ sir_geterror_chdl(void *varg) {
     return retval;
 }
 
+EXPORTCH void
+sir_geterrorinfo_chdl(void *varg) {
+    ChInterp_t     interp;
+    ChVaList_t     ap;
+    sir_errorinfo* err;
+
+    Ch_VaStart(interp, ap, varg);
+
+    err = Ch_VaArg(interp, ap, sir_errorinfo*);
+    sir_geterrorinfo(err);
+
+    Ch_VaEnd(interp, ap);
+}
+
 EXPORTCH const char*
 sir_getversionstring_chdl(void) {
 

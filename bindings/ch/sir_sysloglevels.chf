@@ -38,7 +38,7 @@ sir_sysloglevels(sir_levels levels) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, sir_sysloglevels, levels);
+    (void)dlrunfun(fptr, &retval, sir_sysloglevels, levels);
 
     return retval;
 }

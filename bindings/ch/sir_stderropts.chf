@@ -38,7 +38,7 @@ sir_stderropts(sir_options opts) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, sir_stderropts, opts);
+    (void)dlrunfun(fptr, &retval, sir_stderropts, opts);
 
     return retval;
 }

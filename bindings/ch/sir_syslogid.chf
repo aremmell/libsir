@@ -38,7 +38,7 @@ sir_syslogid(const char* identity) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, sir_syslogid, identity);
+    (void)dlrunfun(fptr, &retval, sir_syslogid, identity);
 
     return retval;
 }

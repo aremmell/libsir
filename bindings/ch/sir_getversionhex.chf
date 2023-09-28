@@ -38,7 +38,7 @@ sir_getversionhex(void) {
         return (uint32_t)0;
     }
 
-    dlrunfun(fptr, &retval, sir_getversionhex);
+    (void)dlrunfun(fptr, &retval, sir_getversionhex);
 
     return retval;
 }

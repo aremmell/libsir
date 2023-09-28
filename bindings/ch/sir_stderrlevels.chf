@@ -38,7 +38,7 @@ sir_stderrlevels(sir_levels levels) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, sir_stderrlevels, levels);
+    (void)dlrunfun(fptr, &retval, sir_stderrlevels, levels);
 
     return retval;
 }

@@ -38,7 +38,7 @@ sir_setcolormode(sir_colormode mode) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, sir_setcolormode, mode);
+    (void)dlrunfun(fptr, &retval, sir_setcolormode, mode);
 
     return retval;
 }

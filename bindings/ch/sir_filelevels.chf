@@ -38,7 +38,7 @@ sir_filelevels(sirfileid id, sir_levels levels) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, sir_filelevels, id, levels);
+    (void)dlrunfun(fptr, &retval, sir_filelevels, id, levels);
 
     return retval;
 }

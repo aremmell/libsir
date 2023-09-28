@@ -38,7 +38,7 @@ sir_getversionstring(void) {
         return NULL;
     }
 
-    dlrunfun(fptr, &retval, sir_getversionstring);
+    (void)dlrunfun(fptr, &retval, sir_getversionstring);
 
     return retval;
 }

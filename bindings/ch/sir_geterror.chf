@@ -38,7 +38,7 @@ sir_geterror(char message[SIR_MAXERROR]) {
         return (uint16_t)0;
     }
 
-    dlrunfun(fptr, &retval, sir_geterror, message);
+    (void)dlrunfun(fptr, &retval, sir_geterror, message);
 
     return retval;
 }

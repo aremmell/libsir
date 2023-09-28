@@ -38,7 +38,7 @@ sir_syslogopts(sir_options opts) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, sir_syslogopts, opts);
+    (void)dlrunfun(fptr, &retval, sir_syslogopts, opts);
 
     return retval;
 }

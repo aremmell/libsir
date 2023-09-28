@@ -38,7 +38,7 @@ sir_syslogcat(const char* category) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, sir_syslogcat, category);
+    (void)dlrunfun(fptr, &retval, sir_syslogcat, category);
 
     return retval;
 }

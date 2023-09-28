@@ -38,7 +38,7 @@ sir_isprerelease(void) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, sir_isprerelease);
+    (void)dlrunfun(fptr, &retval, sir_isprerelease);
 
     return retval;
 }

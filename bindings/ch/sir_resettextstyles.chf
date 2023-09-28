@@ -38,7 +38,7 @@ sir_resettextstyles(void) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, sir_resettextstyles);
+    (void)dlrunfun(fptr, &retval, sir_resettextstyles);
 
     return retval;
 }
