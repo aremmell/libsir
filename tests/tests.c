@@ -2326,9 +2326,9 @@ char *get_wineversion(void) {
 
 bool roll_and_archive(const char* filename, const char* extension) {
     /* roll size minus 1KiB so we can write until it maxes. */
-    static const long deltasize    = 1024L;
-    static const long fillsize     = SIR_FROLLSIZE - deltasize;
-    static const char* line        = "hello, i am some data. nice to meet you.";
+    static const long deltasize = 1024L;
+    const long fillsize         = SIR_FROLLSIZE - deltasize;
+    static const char* line     = "hello, i am some data. nice to meet you.";
 
     char logfilename[SIR_MAXPATH] = {0};
     (void)snprintf(logfilename, SIR_MAXPATH, MAKE_LOG_NAME("%s%s"), filename, extension);
