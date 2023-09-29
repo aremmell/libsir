@@ -420,8 +420,9 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
 
         sfc->files[sfc->count++] = sf;
 
-        if (!_sir_bittest(sf->opts, SIRO_NOHDR))
-            (void)_sirfile_writeheader(sf, SIR_FHBEGIN);
+        if (!_sir_bittest(sf->opts, SIRO_NOHDR) && !_sirfile_writeheader(sf, SIR_FHBEGIN))
+            _sir_selflog("warning: failed to write file header (path: '%s', id: %"PRIx32")",
+                sf->path, sf->id);
 
         return sf->id;
     }
