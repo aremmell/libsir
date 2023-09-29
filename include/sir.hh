@@ -35,6 +35,7 @@
 # include <algorithm>
 # include <exception>
 # include <iostream>
+# include <cstring>
 # include <memory>
 # include <tuple>
 # include <string>
@@ -723,7 +724,7 @@ namespace sir
 
                     auto this_write = std::min(static_cast<std::streamsize>(left),
                         count - written);
-                    (void)memcpy(pptr(), s + written, static_cast<size_t>(this_write));
+                    std::memcpy(pptr(), s + written, static_cast<std::size_t>(this_write));
                     pbump(static_cast<int>(this_write));
                     written += this_write;
                 } while (written < count);
