@@ -2136,11 +2136,7 @@ bool sirtest_threadpool(void) {
             }
         }
 
-#if !defined(__WIN__)
-        (void)sleep(1);
-#else
-        Sleep(1000);
-#endif
+        sir_sleep_msec(1000);
 
         _sir_eqland(pass, sir_info("destroying thread pool..."));
         _sir_eqland(pass, _sir_threadpool_destroy(&pool));
