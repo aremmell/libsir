@@ -45,3 +45,5 @@ RUN dnf -y clean all && \
 WORKDIR /
 
 USER 10000
+
+RUN printf '\n%s\n' "BUILD SUCCESS"

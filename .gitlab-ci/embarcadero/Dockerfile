@@ -29,3 +29,5 @@ RUN cd ~user && \
     curl -fsSL ${URL:-http://192.168.1.187:8088/~jhj/cache/EMB22.tar} | tar xvf -
 
 USER 10000
+
+RUN printf '\n%s\n' "BUILD SUCCESS"

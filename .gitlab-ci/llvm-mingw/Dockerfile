@@ -34,3 +34,5 @@ RUN apt -y update && \
 WORKDIR /
 
 USER 10000
+
+RUN printf '\n%s\n' "BUILD SUCCESS"

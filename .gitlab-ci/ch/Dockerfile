@@ -47,3 +47,5 @@ USER 10000
 RUN cp -f /usr/local/ch/config/.chrc /home/user/.chrc && \
     cd && \
     ch -v
+
+RUN printf '\n%s\n' "BUILD SUCCESS"

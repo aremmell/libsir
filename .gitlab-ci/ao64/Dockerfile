@@ -28,3 +28,5 @@ RUN dnf --refresh -y upgrade && dnf --nogpgcheck -y install \
       ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true)
 
 USER 10000
+
+RUN printf '\n%s\n' "BUILD SUCCESS"

@@ -30,3 +30,5 @@ RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && mkdir -p /home/l
     cd
 
 USER 10000
+
+RUN printf '\n%s\n' "BUILD SUCCESS"

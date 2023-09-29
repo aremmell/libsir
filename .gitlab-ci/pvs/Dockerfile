@@ -15,6 +15,7 @@ RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
          "name=Viva64 - PVS-Studio - Stable" \
          "baseurl=https://cdn.pvs-studio.com/rpm" \
          "gpgcheck=0" \
+	 "skip_if_unavailable=True" \
          "enabled=1" > /etc/yum.repos.d/viva64.repo && \
     (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
           pvs-studio) || \
@@ -27,7 +28,7 @@ RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
          "gpgcheck=0" \
          "enabled=1" \
          "skip_if_unavailable=True" > /etc/yum.repos.d/viva64-beta.repo && \
-    dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True upgrade && \
+    (dnf -y --refresh --setopt=install_weak_deps=True --setopt=keepcache=True upgrade || true) && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
@@ -35,3 +36,5 @@ RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
     ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true )
 
 USER 10000
+
+RUN printf '\n%s\n' "BUILD SUCCESS"
