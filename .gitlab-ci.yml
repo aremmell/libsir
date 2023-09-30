@@ -3538,7 +3538,7 @@ Semgrep (Cloud Rules):
     - apk upgrade > /dev/null 2>&1 || true
     - semgrep login > /dev/null
     - semgrep install-semgrep-pro || true
-    - semgrep ci
+    - semgrep ci --no-suppress-errors --pro --pro-intrafile --pro-languages --exclude-rule="c.lang.security.insecure-use-memset.insecure-use-memset"
     - |
       # End of Semgrep Cloud ...
       echo -e "section_end:`date +%s`:SemgrepCloud_section\r\e[0K" || true
