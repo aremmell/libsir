@@ -1435,13 +1435,13 @@ long _sir_nprocs(void) {
     if (tprocs > nprocs)
         nprocs = tprocs;
 #endif
-#if defined(CTL_HW) && defined(HW_NCPU) && !defined(_HW_AVAILCPU)
-    int ntprocs = 0;
-    size_t sntprocs = sizeof(ntprocs);
-    if (sysctl ((int[2]) {CTL_HW, HW_NCPU}, 2, &ntprocs, &sntprocs, NULL, 0)) {
+#if defined(CTL_HW) && defined(HW_NCPU) && !defined(HW_AVAILCPU)
+    int hntprocs = 0;
+    size_t hsntprocs = sizeof(hntprocs);
+    if (sysctl ((int[2]) {CTL_HW, HW_NCPU}, 2, &hntprocs, &hsntprocs, NULL, 0)) {
         tprocs = 0;
     } else {
-        tprocs = (long)ntprocs;
+        tprocs = (long)hntprocs;
         if (tprocs > nprocs)
             nprocs = tprocs;
     }
