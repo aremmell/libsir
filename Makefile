@@ -79,9 +79,9 @@ endif
 ##############################################################################
 # Enable internal diagnostic logging?
 
-ifeq ($(SIR_SELFLOG),1)
+# ifeq ($(SIR_SELFLOG),1)
   SIR_CFLAGS += -DSIR_SELFLOG
-endif
+# endif
 
 ##############################################################################
 # Enable assertions?

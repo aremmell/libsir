@@ -1391,66 +1391,67 @@ long _sir_nprocs(void) {
     long nprocs = 0;
 
 #if defined(_AIX)
-    SIR_UNUSED(nprocs);
-    return (long)_system_configuration.ncpus;
+    nprocs = (long)_system_configuration.ncpus;
+    _sir_selflog("AIX _system_configuration.ncpus reports %ld processor(s)", nprocs);
+    return nprocs;
 #endif
+
 #if defined(__WIN__)
     SYSTEM_INFO system_info;
     ZeroMemory(&system_info, sizeof(system_info));
     GetSystemInfo(&system_info);
-    SIR_UNUSED(nprocs);
-    return (long)system_info.dwNumberOfProcessors;
+    nprocs = (long)system_info.dwNumberOfProcessors;
+    _sir_selflog("Windows GetSystemInfo() reports %ld processor(s)", nprocs);
+    return nprocs;
 #endif
+
 #if defined(__HAIKU__)
     system_info hinfo;
     get_system_info(&hinfo);
-    SIR_UNUSED(nprocs);
-    return (long)hinfo.cpu_count;
+    nprocs = (long)hinfo.cpu_count;
+    _sir_selflog("Haiku get_system_info() reports %ld processor(s)", nprocs);
+    return nprocs;
 #endif
-    long tprocs = 0;
-#if defined(SC_NPROCESSORS_ONLN)
-    tprocs = sysconf(SC_NPROCESSORS_ONLN);
-    if (tprocs > nprocs)
-        nprocs = tprocs;
-#endif
-#if defined(_SC_NPROCESSORS_ONLN)
-    tprocs = sysconf(_SC_NPROCESSORS_ONLN);
-    if (tprocs > nprocs)
-        nprocs = tprocs;
-#endif
-#if defined(__linux__) && defined(__GLIBC__) && !defined(__ANDROID__) && !defined(__UCLIBC__)
-    tprocs = (long)get_nprocs();
-    if (tprocs > nprocs)
-        nprocs = tprocs;
 
+#if defined(SC_NPROCESSORS_ONLN)
+    long tprocs = sysconf(SC_NPROCESSORS_ONLN);
+    _sir_selflog("sysconf(SC_NPROCESSORS_ONLN) reports %ld processor(s)", tprocs);
+    if (tprocs > nprocs)
+        nprocs = tprocs;
+#elif defined(_SC_NPROCESSORS_ONLN)
+    long tprocs = sysconf(_SC_NPROCESSORS_ONLN);
+    _sir_selflog("sysconf(_SC_NPROCESSORS_ONLN) reports %ld processor(s)", tprocs);
+    if (tprocs > nprocs)
+        nprocs = tprocs;
+#endif
+
+#if defined(__linux__) && defined(__GLIBC__) && !defined(__ANDROID__) && !defined(__UCLIBC__)
+    long gtprocs = (long)get_nprocs();
+    _sir_selflog("get_nprocs() reports %ld processor(s)", gtprocs);
+    if (gtprocs > nprocs)
+        nprocs = gtprocs;
+
+    long ctprocs;
     cpu_set_t p_aff;
     memset( &p_aff, 0, sizeof(p_aff) );
     if (!(sched_getaffinity(0, sizeof(p_aff), &p_aff))) {
-        tprocs = 0;
+        ctprocs = 0;
     } else {
 # if defined(CPU_COUNT)
-        tprocs = CPU_COUNT(&p_aff);
+        ctprocs = CPU_COUNT(&p_aff);
+        _sir_selflog("CPU_COUNT() reports %ld processor(s)", ctprocs);
 # else
-        int ntprocs = 0;
+        int cntprocs = 0;
         for (size_t bit = 0; bit < (8 * sizeof(p_aff)); bit++ )
-            ntprocs += (((uint8_t *)&p_aff)[bit / 8] >> (bit % 8)) & 1;
-        tprocs = ntprocs;
+            cntprocs += (((uint8_t *)&p_aff)[bit / 8] >> (bit % 8)) & 1;
+        ctprocs = cntprocs;
+        _sir_selflog("sched_getaffinity() reports %ld processor(s)", ctprocs);
 # endif
     }
-    if (tprocs > nprocs)
-        nprocs = tprocs;
+    if (ctprocs > nprocs)
+        nprocs = ctprocs;
 #endif
-#if defined(CTL_HW) && defined(HW_NCPU) && !defined(HW_AVAILCPU)
-    int hntprocs = 0;
-    size_t hsntprocs = sizeof(hntprocs);
-    if (sysctl ((int[2]) {CTL_HW, HW_NCPU}, 2, &hntprocs, &hsntprocs, NULL, 0)) {
-        tprocs = 0;
-    } else {
-        tprocs = (long)hntprocs;
-        if (tprocs > nprocs)
-            nprocs = tprocs;
-    }
-#endif
+
 #if defined(CTL_HW) && defined(HW_AVAILCPU)
     int ntprocs = 0;
     size_t sntprocs = sizeof(ntprocs);
@@ -1458,10 +1459,23 @@ long _sir_nprocs(void) {
         tprocs = 0;
     } else {
         tprocs = (long)ntprocs;
+        _sir_selflog("sysctl(CTL_HW, HW_AVAILCPU) reports %ld processor(s)", ntprocs);
+        if (tprocs > nprocs)
+            nprocs = tprocs;
+    }
+#elif defined(CTL_HW) && defined(HW_NCPU)
+    int ntprocs = 0;
+    size_t sntprocs = sizeof(ntprocs);
+    if (sysctl ((int[2]) {CTL_HW, HW_NCPU}, 2, &ntprocs, &sntprocs, NULL, 0)) {
+        tprocs = 0;
+    } else {
+        tprocs = (long)ntprocs;
+        _sir_selflog("sysctl(CTL_HW, HW_NCPU) reports %ld processor(s)", ntprocs);
         if (tprocs > nprocs)
             nprocs = tprocs;
     }
 #endif
+
 #if defined(__APPLE__) && defined(__MACH__)
     int antprocs = 0;
     size_t asntprocs = sizeof(antprocs);
@@ -1469,13 +1483,17 @@ long _sir_nprocs(void) {
         tprocs = 0;
     } else {
         tprocs = (long)antprocs;
+        _sir_selflog("sysctlbyname(\"hw.ncpu\") reports %ld processor(s)", tprocs);
         if (tprocs > nprocs)
             nprocs = tprocs;
     }
 #endif
+
     if (nprocs < 1) {
+        _sir_selflog("Unable to determine processor count!");
         return 1;
     } else {
+        _sir_selflog("Processor count: %ld", nprocs);
         return nprocs;
     }
 }
