@@ -403,6 +403,9 @@ _set_thread_local_invalid_parameter_handler(
 #   include <fcntl.h>
 #  endif
 #  include <unistd.h>
+#  if defined(__APPLE__) && defined(__MACH__)
+#   include <sys/sysctl.h>
+#  endif
 #  if !defined(__CYGWIN__) && !defined(__HAIKU__) && \
       !defined(__serenity__) && !defined(_AIX) && \
       !defined(_CH_) && !defined(__CH__)
