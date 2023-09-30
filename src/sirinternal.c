@@ -1394,7 +1394,6 @@ long _sir_nprocs(void) {
     SIR_UNUSED(nprocs);
     return (long)_system_configuration.ncpus;
 #endif
-
 #if defined(__WIN__)
     SYSTEM_INFO system_info;
     ZeroMemory(&system_info, sizeof(system_info));
@@ -1402,29 +1401,24 @@ long _sir_nprocs(void) {
     SIR_UNUSED(nprocs);
     return (long)system_info.dwNumberOfProcessors;
 #endif
-
 #if defined(__HAIKU__)
     system_info hinfo;
     get_system_info(&hinfo);
     SIR_UNUSED(nprocs);
     return (long)hinfo.cpu_count;
 #endif
-
     long tprocs = 0;
-
 #if defined(SC_NPROCESSORS_ONLN)
     tprocs = sysconf(SC_NPROCESSORS_ONLN);
     if (tprocs > nprocs)
         nprocs = tprocs;
 #endif
-
 #if defined(_SC_NPROCESSORS_ONLN)
     tprocs = sysconf(_SC_NPROCESSORS_ONLN);
     if (tprocs > nprocs)
         nprocs = tprocs;
 #endif
-
-#if defined(__linux__) && !defined(__ANDROID__) && !defined(__UCLIBC__)
+#if defined(__linux__) && defined(__GLIBC__) && !defined(__ANDROID__) && !defined(__UCLIBC__)
     tprocs = (long)get_nprocs();
     if (tprocs > nprocs)
         nprocs = tprocs;
