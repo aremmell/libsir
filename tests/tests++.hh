@@ -23,8 +23,8 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#ifndef _TESTSXX_HH_INCLUDED
-# define _TESTSXX_HH_INCLUDED
+#ifndef _SIR_TESTSXX_HH_INCLUDED
+# define _SIR_TESTSXX_HH_INCLUDED
 
 # include "sir.hh"
 # include "tests_shared.h"
@@ -136,4 +136,4 @@ namespace sir::tests
     } \
     return PRINT_RESULT_RETURN(pass);
 
-#endif // !_TESTSXX_HH_INCLUDED
+#endif // !_SIR_TESTSXX_HH_INCLUDED
