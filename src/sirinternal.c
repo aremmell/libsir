@@ -1389,10 +1389,12 @@ bool _sir_gethostname(char name[SIR_MAXHOST]) {
 
 long _sir_nprocs(void) {
     long nprocs = 0;
+
 #if defined(_AIX)
     SIR_UNUSED(nprocs);
     return (long)_system_configuration.ncpus;
 #endif
+
 #if defined(__WIN__)
     SYSTEM_INFO system_info;
     ZeroMemory(&system_info, sizeof(system_info));
@@ -1400,25 +1402,28 @@ long _sir_nprocs(void) {
     SIR_UNUSED(nprocs);
     return (long)system_info.dwNumberOfProcessors;
 #endif
+
 #if defined(__HAIKU__)
     system_info hinfo;
     get_system_info(&hinfo);
     SIR_UNUSED(nprocs);
     return (long)hinfo.cpu_count;
 #endif
+
     long tprocs = 0;
+
 #if defined(SC_NPROCESSORS_ONLN)
     tprocs = sysconf(SC_NPROCESSORS_ONLN);
-    if (tprocs > 0)
+    if (tprocs > nprocs)
         nprocs = tprocs;
 #endif
-#if defined(SC_NPROCESSORS_CONF)
-    if (nprocs < 1) {
-        tprocs = sysconf(SC_NPROCESSORS_CONF);
-        if (tprocs > nprocs)
-            nprocs = tprocs;
-    }
+
+#if defined(_SC_NPROCESSORS_ONLN)
+    tprocs = sysconf(_SC_NPROCESSORS_ONLN);
+    if (tprocs > nprocs) {
+        nprocs = tprocs;
 #endif
+
 #if defined(__linux__) && !defined(__ANDROID__) && !defined(__UCLIBC__)
     tprocs = (long)get_nprocs();
     if (tprocs > nprocs)
