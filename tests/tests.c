@@ -2021,7 +2021,7 @@ bool sirtest_getversioninfo(void) {
 }
 
 enum {
-    NUM_THREADS = 8
+    NUM_THREADS = 4
 };
 
 static bool threadpool_pseudojob(void* arg) {

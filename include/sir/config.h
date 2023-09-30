@@ -225,7 +225,7 @@
 # define SIRL_S_DEBUG  "debg"
 
 /** The maximum number of log files that may be registered at one time. */
-# define SIR_MAXFILES 32
+# define SIR_MAXFILES 16
 
 /** The maximum number of plugin modules that may be loaded at one time. */
 # define SIR_MAXPLUGINS 16
