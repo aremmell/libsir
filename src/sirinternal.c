@@ -1413,7 +1413,7 @@ long _sir_nprocs(void) {
     if (tprocs > nprocs)
         nprocs = tprocs;
 #endif
-#if !defined(__ANDROID__)
+#if !defined(__ANDROID__) && !defined(__APPLE__) && !defined(__MACH__)
     cpu_set_t p_aff;
     memset( &p_aff, 0, sizeof(p_aff) );
     if (!(sched_getaffinity(0, sizeof(p_aff), &p_aff))) {
