@@ -1422,7 +1422,7 @@ long _sir_nprocs(void) {
             nprocs = tprocs;
     }
 #endif
-#if defined(__linux__) && defined(__GLIBC__) && !defined(__ANDROID__) && !defined(__UCLIBC__)
+#if defined(__linux__) && !defined(__ANDROID__) && !defined(__UCLIBC__)
     tprocs = (long)get_nprocs();
     if (tprocs > nprocs)
         nprocs = tprocs;

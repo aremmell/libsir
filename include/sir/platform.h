@@ -207,6 +207,8 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #    if defined(__GLIBC__) && GLIBC_VERSION > 0 && \
        !defined(__SUNPRO_C) && !defined(__SUNPRO_CC)
 #     include <sys/sysinfo.h>
+#    else
+int get_nprocs(void);
 #    endif
 #   endif
 #   if defined(__CYGWIN__)
