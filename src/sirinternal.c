@@ -1388,14 +1388,19 @@ bool _sir_gethostname(char name[SIR_MAXHOST]) {
 }
 
 long _sir_nprocs(void) {
-    long nprocs = 0;
-    long tprocs = 0;
-
+#if defined(__WIN__)
+    SYSTEM_INFO system_info;
+    ZeroMemory(&system_info, sizeof(system_info));
+    GetSystemInfo(&system_info);
+    return (long)system_info.dwNumberOfProcessors;
+#endif
 #if defined(__HAIKU__)
     system_info hinfo;
     get_system_info(&hinfo);
     return (long)hinfo.cpu_count;
 #endif
+    long nprocs = 0;
+    long tprocs = 0;
 #if defined(SC_NPROCESSORS_ONLN)
     tprocs = sysconf(SC_NPROCESSORS_ONLN);
     if (tprocs > 0)
@@ -1408,7 +1413,7 @@ long _sir_nprocs(void) {
             nprocs = tprocs;
     }
 #endif
-#if defined(__linux__) && !defined(__ANDROID__)
+#if defined(__linux__) && defined(__GLIBC__) && !defined(__ANDROID__) && !defined(__UCLIBC__)
     tprocs = (long)get_nprocs();
     if (tprocs > nprocs)
         nprocs = tprocs;
@@ -1430,10 +1435,21 @@ long _sir_nprocs(void) {
     if (tprocs > nprocs)
         nprocs = tprocs;
 #endif
-#if defined(CTL_HW) && defined(HW_NCPU)
+#if defined(CTL_HW) && defined(HW_NCPU) && !defined(_HW_AVAILCPU)
     int ntprocs = 0;
     size_t sntprocs = sizeof(ntprocs);
     if (sysctl ((int[2]) {CTL_HW, HW_NCPU}, 2, &ntprocs, &sntprocs, NULL, 0)) {
+        tprocs = 0;
+    } else {
+        tprocs = (long)ntprocs;
+        if (tprocs > nprocs)
+            nprocs = tprocs;
+    }
+#endif
+#if defined(CTL_HW) && defined(HW_AVAILCPU)
+    int ntprocs = 0;
+    size_t sntprocs = sizeof(ntprocs);
+    if (sysctl ((int[2]) {CTL_HW, HW_AVAILCPU}, 2, &ntprocs, &sntprocs, NULL, 0)) {
         tprocs = 0;
     } else {
         tprocs = (long)ntprocs;

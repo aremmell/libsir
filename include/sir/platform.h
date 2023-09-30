@@ -199,11 +199,14 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #    endif
 #    if defined(__GLIBC__) && GLIBC_VERSION >= 21200
 #     define SIR_PTHREAD_GETNAME_NP
-#     include <sys/sysinfo.h>
 #    endif
 #    if defined(__GLIBC__) && GLIBC_VERSION > 0 && GLIBC_VERSION < 21200
 #     undef SIR_NO_THREAD_NAMES
 #     define SIR_NO_THREAD_NAMES
+#    endif
+#    if defined(__GLIBC__) && GLIBC_VERSION > 0 && \
+       !defined(__SUNPRO_C) && !defined(__SUNPRO_CC)
+#     include <sys/sysinfo.h>
 #    endif
 #   endif
 #   if defined(__CYGWIN__)
