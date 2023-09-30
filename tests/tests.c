@@ -2370,7 +2370,7 @@ bool roll_and_archive(const char* filename, const char* extension) {
     sirfileid fileid = sir_addfile(logfilename, SIRL_DEBUG, SIRO_MSGONLY | SIRO_NOHDR);
     _sir_eqland(pass, 0U != fileid);
 
-    print_test_error(pass, false);
+    (void)print_test_error(pass, false);
 
     if (pass) {
         TEST_MSG("writing to %s until SIR_FROLLSIZE has been exceeded...", logfilename);
