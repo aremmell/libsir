@@ -1419,14 +1419,14 @@ long _sir_nprocs(void) {
     if (!(sched_getaffinity(0, sizeof(p_aff), &p_aff))) {
         tprocs = 0;
     } else {
-#if defined(CPU_COUNT)
+# if defined(CPU_COUNT)
         tprocs = CPU_COUNT(&p_aff);
-#else
+# else
         int ntprocs = 0;
         for (size_t bit = 0; bit < (8 * sizeof(p_aff)); bit++ )
             ntprocs += (((uint8_t *)&p_aff)[bit / 8] >> (bit % 8)) & 1;
         tprocs = ntprocs;
-#endif
+# endif
     }
     if (tprocs > nprocs)
         nprocs = tprocs;
