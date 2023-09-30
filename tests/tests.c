@@ -1312,10 +1312,10 @@ bool sirtest_updatesanity(void) {
 
     if (pass) {
         /* restore to default config and run again */
-        (void)sir_stdoutlevels(SIRL_DEFAULT);
-        (void)sir_stderrlevels(SIRL_DEFAULT);
-        (void)sir_stdoutopts(SIRO_DEFAULT);
-        (void)sir_stderropts(SIRO_DEFAULT);
+        _sir_eqland(pass, sir_stdoutlevels(SIRL_DEFAULT));
+        _sir_eqland(pass, sir_stderrlevels(SIRL_DEFAULT));
+        _sir_eqland(pass, sir_stdoutopts(SIRO_DEFAULT));
+        _sir_eqland(pass, sir_stderropts(SIRO_DEFAULT));
 
         _sir_eqland(pass, sir_debug("default config (debug)"));
         _sir_eqland(pass, sir_info("default config (info)"));
