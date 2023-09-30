@@ -28,7 +28,7 @@
 bool
 sir_unloadplugin(sirpluginid id) {
     void* fptr;
-    bool retval;
+    bool  retval;
 
     fptr = dlsym(_Chsir_handle, "sir_unloadplugin_chdl");
     if (fptr == NULL) {
@@ -38,7 +38,7 @@ sir_unloadplugin(sirpluginid id) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, sir_unloadplugin, id);
+    (void)dlrunfun(fptr, &retval, sir_unloadplugin, id);
 
     return retval;
 }

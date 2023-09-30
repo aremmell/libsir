@@ -28,7 +28,7 @@
 bool
 _sir_setthreadname(const char* name) {
     void* fptr;
-    bool retval;
+    bool  retval;
 
     fptr = dlsym(_Chsir_handle, "_sir_setthreadname_chdl");
     if (fptr == NULL) {
@@ -38,7 +38,7 @@ _sir_setthreadname(const char* name) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, _sir_setthreadname, name);
+    (void)dlrunfun(fptr, &retval, _sir_setthreadname, name);
 
     return retval;
 }

@@ -103,7 +103,7 @@ void __sir_setoserror(int code, const char* msg, const char* func, const char* f
     _sir_resetstr(_sir_te.os_msg);
 
     if (_sir_validstrnofail(msg))
-        _sir_strncpy(_sir_te.os_msg, SIR_MAXERROR, msg, SIR_MAXERROR);
+        (void)_sir_strncpy(_sir_te.os_msg, SIR_MAXERROR, msg, SIR_MAXERROR);
 
     (void)__sir_seterror(_SIR_E_PLATFORM, func, file, line);
 }
@@ -126,14 +126,14 @@ bool __sir_handleerr(int code, const char* func, const char* file, uint32_t line
         _sir_selflog("using GNU strerror_r");
         const char* tmp = strerror_r(code, message, SIR_MAXERROR);
         if (tmp != message)
-            _sir_strncpy(message, SIR_MAXERROR, tmp, SIR_MAXERROR);
+            (void)_sir_strncpy(message, SIR_MAXERROR, tmp, SIR_MAXERROR);
 #elif defined(__HAVE_STRERROR_S__)
         _sir_selflog("using strerror_s");
         finderr = (int)strerror_s(message, SIR_MAXERROR, code);
 #else
         _sir_selflog("using strerror");
         const char* tmp = strerror(code);
-        _sir_strncpy(message, SIR_MAXERROR, tmp, strnlen(tmp, SIR_MAXERROR));
+        (void)_sir_strncpy(message, SIR_MAXERROR, tmp, strnlen(tmp, SIR_MAXERROR));
 #endif
         if (0 == finderr) { //-V547
             __sir_setoserror(code, message, func, file, line);
@@ -229,7 +229,7 @@ void _sir_geterrorinfo(sir_errorinfo* err) {
     if (!_sir_validptr(err))
         return;
 
-    memset(err, 0, sizeof(sir_errorinfo));
+    (void)memset(err, 0, sizeof(sir_errorinfo));
 
     err->func = _sir_te.loc.func;
     err->file = _sir_te.loc.file;

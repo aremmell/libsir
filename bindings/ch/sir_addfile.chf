@@ -26,8 +26,8 @@
 #include "chsir.h"
 
 sirfileid
-sir_addfile(const char* path, sir_levels levels, sir_options opts) {
-    void* fptr;
+sir_addfile(const char *path, sir_levels levels, sir_options opts) {
+    void*     fptr;
     sirfileid retval;
 
     fptr = dlsym(_Chsir_handle, "sir_addfile_chdl");
@@ -35,10 +35,10 @@ sir_addfile(const char* path, sir_levels levels, sir_options opts) {
         (void)fprintf(_stderr, "Error: %s(%d): dlsym(): %s\n",
                       __func__, __LINE__, dlerror());
 
-        return 0;
+        return (sirfileid)0;
     }
 
-    dlrunfun(fptr, &retval, sir_addfile, path, levels, opts);
+    (void)dlrunfun(fptr, &retval, sir_addfile, path, levels, opts);
 
     return retval;
 }
