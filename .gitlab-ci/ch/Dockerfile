@@ -18,7 +18,7 @@ RUN dnf --refresh -y upgrade && \
     cd /tmp && \
     curl -fsSL ${URL1:-http://192.168.1.187:8088/~jhj/cache/chprofessional-8.5.linux64-4.18.0.intel.tar.gz} | \
         gzip -dc | \
-	tar xf - && \
+        tar xf - && \
     cd chprofessional-8.5.linux64-4.18.0.intel && \
     sed -i 's/^more .*license.txt$//' install.sh && \
     sed -i 's/read TARGET$//' install.sh && \

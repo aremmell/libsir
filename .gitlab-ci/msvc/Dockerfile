@@ -32,7 +32,9 @@ RUN stdbuf -o L \
 
 COPY msvcenv-native.sh /opt/msvc
 
-RUN curl -fsSL https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks > /usr/bin/winetricks && chmod a+x /usr/bin/winetricks
+RUN curl \
+      -fsSL https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
+        > /usr/bin/winetricks && chmod a+x /usr/bin/winetricks
 
 RUN ln -s /opt/msvc /opt/MSVC
 

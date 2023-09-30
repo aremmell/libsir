@@ -20,7 +20,7 @@ RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
          dnf -y install ${URL1:-http://192.168.1.187;8088/~jhj/cache/libnsl-2.38-1.fc39.x86_64.rpm}) || true ) && \
     curl -fsSL ${URL2:-http://192.168.1.187:8088/~jhj/cache/oracle126.tar.gz} | \
         pigz -dc | \
-	tar xvf - && \
+        tar xvf - && \
     dnf -y upgrade --setopt=install_weak_deps=True && \
     dnf -y clean all && \
     rm -rf ~/.cache && \

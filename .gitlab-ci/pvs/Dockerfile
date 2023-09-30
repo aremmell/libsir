@@ -15,7 +15,7 @@ RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
          "name=Viva64 - PVS-Studio - Stable" \
          "baseurl=https://cdn.pvs-studio.com/rpm" \
          "gpgcheck=0" \
-	 "skip_if_unavailable=True" \
+         "skip_if_unavailable=True" \
          "enabled=1" > /etc/yum.repos.d/viva64.repo && \
     (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
           pvs-studio) || \

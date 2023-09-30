@@ -469,7 +469,8 @@ test_cppcheck()
       mkdir -p cppcheck; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       # shellcheck disable=SC2046,SC2155
-      export EXTRA_INCLUDES="$(gcc -Wp,-v -x c++ - -fsyntax-only < /dev/null 2>&1 | grep '^ /' | sed 's/^ /-I/' | awk '{ print $1 }')" || \
+      export EXTRA_INCLUDES="$(gcc -Wp,-v -x c++ - -fsyntax-only < /dev/null 2>&1 | \
+                              grep '^ /' | sed 's/^ /-I/' | awk '{ print $1 }')" || \
           export EXTRA_INCLUDES="-I/usr/include"
       # shellcheck disable=SC2086,SC2046
       cppcheck \

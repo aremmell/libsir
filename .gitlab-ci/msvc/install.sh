@@ -145,7 +145,8 @@ fi
 
 SDKVER=$(basename $(echo kits/10/include/* | awk '{print $NF}'))
 MSVCVER=$(basename $(echo vc/tools/msvc/* | awk '{print $1}'))
-cat $ORIG/wrappers/msvcenv.sh | sed 's/MSVCVER=.*/MSVCVER='$MSVCVER/ | sed 's/SDKVER=.*/SDKVER='$SDKVER/ | sed s/x64/$host/ > msvcenv.sh
+cat $ORIG/wrappers/msvcenv.sh | sed 's/MSVCVER=.*/MSVCVER='$MSVCVER/ | \
+    sed 's/SDKVER=.*/SDKVER='$SDKVER/ | sed s/x64/$host/ > msvcenv.sh
 for arch in x86 x64 arm arm64; do
     if [ ! -d "vc/tools/msvc/$MSVCVER/bin/Hostx64/$arch" ]; then
         continue
