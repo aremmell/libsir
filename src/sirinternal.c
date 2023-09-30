@@ -1386,3 +1386,76 @@ bool _sir_gethostname(char name[SIR_MAXHOST]) {
     return true;
 #endif /* !__WIN__ */
 }
+
+long _sir_nprocs(void) {
+    long nprocs = 0;
+    long tprocs = 0;
+
+#if defined(__HAIKU__)
+    system_info hinfo;
+    get_system_info(&hinfo);
+    return (long)hinfo.cpu_count;
+#endif
+#if defined(SC_NPROCESSORS_ONLN)
+    tprocs = sysconf(SC_NPROCESSORS_ONLN);
+    if (tprocs > 0)
+        nprocs = tprocs;
+#endif
+#if defined(SC_NPROCESSORS_CONF)
+    if (nprocs < 1) {
+        tprocs = sysconf(SC_NPROCESSORS_CONF);
+        if (tprocs > nprocs)
+            nprocs = tprocs;
+    }
+#endif
+#if defined(__linux__) && !defined(__ANDROID__)
+    tprocs = (long)get_nprocs();
+    if (tprocs > nprocs)
+        nprocs = tprocs;
+#endif
+#if !defined(__ANDROID__)
+    cpu_set_t p_aff;
+    memset( &p_aff, 0, sizeof(p_aff) );
+    if (!(sched_getaffinity(0, sizeof(p_aff), &p_aff))) {
+        tprocs = 0;
+    } else {
+#if defined(CPU_COUNT)
+        tprocs = CPU_COUNT(&p_aff);
+#else
+        int ntprocs = 0;
+        for (size_t bit = 0; bit < (8 * sizeof(p_aff)); bit++ )
+            ntprocs += (((uint8_t *)&p_aff)[bit / 8] >> (bit % 8)) & 1;
+        tprocs = ntprocs;
+#endif
+    }
+    if (tprocs > nprocs)
+        nprocs = tprocs;
+#endif
+#if defined(CTL_HW) && defined(HW_NCPU)
+    int ntprocs = 0;
+    size_t sntprocs = sizeof(ntprocs);
+    if (sysctl ((int[2]) {CTL_HW, HW_NCPU}, 2, &ntprocs, &sntprocs, NULL, 0)) {
+        tprocs = 0;
+    } else {
+        tprocs = (long)ntprocs;
+        if (tprocs > nprocs)
+            nprocs = tprocs;
+    }
+#endif
+#if defined(__APPLE__) && defined(__MACH__)
+    int ntprocs = 0;
+    size_t sntprocs = sizeof(ntprocs);
+    if (sysctlbyname("hw.ncpu", &ntprocs, &sntprocs, NULL, 0)) {
+        tprocs = 0;
+    } else {
+        tprocs = (long)ntprocs;
+        if (tprocs > nprocs)
+            nprocs = tprocs;
+    }
+#endif
+    if (nprocs < 1) {
+        return 1;
+    } else {
+        return nprocs;
+    }
+}

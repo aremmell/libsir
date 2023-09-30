@@ -26,6 +26,7 @@
 #include "tests_shared.h"
 
 void print_intro(size_t tgt_tests) {
+    long nproc = _sir_nprocs(); (void)printf("*** %ld processors.\n\n", nproc); if (nproc < 1) abort(); exit(0);
     (void)printf(WHITEB("\n" ULINE("libsir") " %s (%s) running %zu %s...") "\n",
         sir_getversionstring(), (sir_isprerelease() ? "prerelease" : "release"),
         tgt_tests, TEST_S(tgt_tests));

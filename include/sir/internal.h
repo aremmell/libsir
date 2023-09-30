@@ -187,6 +187,9 @@ bool _sir_setthreadname(const char* name);
 /** Retrieves the hostname of this machine. */
 bool _sir_gethostname(char name[SIR_MAXHOST]);
 
+/** Retrieves the number of processors on this machine. */
+long _sir_nprocs(void);
+
 # if defined(__cplusplus)
 }
 # endif
