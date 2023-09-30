@@ -2020,9 +2020,7 @@ bool sirtest_getversioninfo(void) {
     return PRINT_RESULT_RETURN(pass);
 }
 
-enum {
-    NUM_THREADS = 4
-};
+#define NUM_THREADS (size_t)(2 * _sir_nprocs())
 
 static bool threadpool_pseudojob(void* arg) {
     char thread_name[SIR_MAXPID] = {0};
@@ -2082,9 +2080,9 @@ typedef struct {
 
 bool sirtest_threadrace(void) {
 #if !defined(__WIN__)
-    pthread_t thrds[NUM_THREADS] = {0};
+    pthread_t thrds[NUM_THREADS];
 #else /* __WIN__ */
-    uintptr_t thrds[NUM_THREADS] = {0};
+    uintptr_t thrds[NUM_THREADS];
 #endif
 
     INIT_N(si, SIRL_DEFAULT, SIRO_NOPID | SIRO_NOHOST, 0, 0, "thread-race");

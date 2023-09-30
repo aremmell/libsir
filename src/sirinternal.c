@@ -1425,27 +1425,22 @@ long _sir_nprocs(void) {
         nprocs = tprocs;
 #endif
 
-#if defined(__linux__) && defined(__GLIBC__) && !defined(__ANDROID__) && !defined(__UCLIBC__)
-    long gtprocs = (long)get_nprocs();
-    _sir_selflog("get_nprocs() reports %ld processor(s)", gtprocs);
-    if (gtprocs > nprocs)
-        nprocs = gtprocs;
-
+#if defined(__linux__) && !defined(__ANDROID__) && !defined(__UCLIBC__)
     long ctprocs;
     cpu_set_t p_aff;
     memset( &p_aff, 0, sizeof(p_aff) );
-    if (!(sched_getaffinity(0, sizeof(p_aff), &p_aff))) {
+    if (sched_getaffinity(0, sizeof(p_aff), &p_aff)) {
         ctprocs = 0;
     } else {
 # if defined(CPU_COUNT)
         ctprocs = CPU_COUNT(&p_aff);
-        _sir_selflog("CPU_COUNT() reports %ld processor(s)", ctprocs);
+        _sir_selflog("sched_getaffinity(CPU_COUNT) reports %ld processor(s)", ctprocs);
 # else
         int cntprocs = 0;
         for (size_t bit = 0; bit < (8 * sizeof(p_aff)); bit++ )
             cntprocs += (((uint8_t *)&p_aff)[bit / 8] >> (bit % 8)) & 1;
         ctprocs = cntprocs;
-        _sir_selflog("sched_getaffinity() reports %ld processor(s)", ctprocs);
+        _sir_selflog("sched_getaffinity(cntprocs) reports %ld processor(s)", ctprocs);
 # endif
     }
     if (ctprocs > nprocs)
@@ -1490,10 +1485,10 @@ long _sir_nprocs(void) {
 #endif
 
     if (nprocs < 1) {
-        _sir_selflog("Unable to determine processor count!");
+        _sir_selflog(BRED("Failed to determine processor count!"));
         return 1;
     } else {
-        _sir_selflog("Processor count: %ld", nprocs);
+        _sir_selflog("Reporting %ld processor(s)", nprocs);
         return nprocs;
     }
 }
