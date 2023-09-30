@@ -1786,7 +1786,7 @@ Style check:
     - Docker-x64
     - Linux
   image:
-    name: registry.gitlab.com/libsir/libsir/base:latest
+    name: registry.gitlab.com/libsir/libsir/style:latest
   script:
     - *Configuration
     - |
@@ -1809,6 +1809,9 @@ Style check:
       # Checking for extra newlines ...
       git ls-files '*.c' '*.h' '*.cc' '*.hh' | xargs -L1 sed -i -e '/./,$!d' -e :a -e '/^\n*$/{$d;N;ba' -e '}' || true
       git diff | grep '.' && { printf '%s\n' "whitespace check failed!"; exit 1; } || true
+    - |
+      # Checking compliance with editorconfig ...
+      ${HOME:?}/go/bin/editorconfig-checker
     - |
       # End of Style ...
       echo -e "section_end:`date +%s`:Style_section\r\e[0K" || true
