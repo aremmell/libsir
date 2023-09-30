@@ -343,4 +343,9 @@ bool filter_error(bool pass, uint16_t err);
  */
 char* get_wineversion(void);
 
+/**
+ * Used by the file-archive-large test to try multiple variations of filenames.
+ */
+bool roll_and_archive(const char* filename, const char* extension);
+
 #endif /* !_SIR_TESTS_H_INCLUDED */
