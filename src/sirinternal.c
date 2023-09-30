@@ -1420,7 +1420,7 @@ long _sir_nprocs(void) {
 
 #if defined(_SC_NPROCESSORS_ONLN)
     tprocs = sysconf(_SC_NPROCESSORS_ONLN);
-    if (tprocs > nprocs) {
+    if (tprocs > nprocs)
         nprocs = tprocs;
 #endif
 
