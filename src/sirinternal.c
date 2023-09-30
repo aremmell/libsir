@@ -1443,12 +1443,12 @@ long _sir_nprocs(void) {
     }
 #endif
 #if defined(__APPLE__) && defined(__MACH__)
-    int ntprocs = 0;
-    size_t sntprocs = sizeof(ntprocs);
-    if (sysctlbyname("hw.ncpu", &ntprocs, &sntprocs, NULL, 0)) {
+    int antprocs = 0;
+    size_t asntprocs = sizeof(antprocs);
+    if (sysctlbyname("hw.ncpu", &antprocs, &asntprocs, NULL, 0)) {
         tprocs = 0;
     } else {
-        tprocs = (long)ntprocs;
+        tprocs = (long)antprocs;
         if (tprocs > nprocs)
             nprocs = tprocs;
     }
