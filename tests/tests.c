@@ -152,7 +152,7 @@ bool sirtest_exceedmaxsize(void) {
     bool pass = si_init;
 
     char toobig[SIR_MAXMESSAGE + 100] = {0};
-    memset(toobig, 'a', SIR_MAXMESSAGE + 100);
+    (void)memset(toobig, 'a', SIR_MAXMESSAGE + 100);
     toobig[SIR_MAXMESSAGE + 99] = '\0';
 
     _sir_eqland(pass, sir_info("%s", toobig));
@@ -182,18 +182,18 @@ bool sirtest_logwritesanity(void) {
     sirfileid id = sir_addfile(logfilename, SIRL_DEBUG, SIRO_NOHDR | SIRO_NOHOST);
     _sir_eqland(pass, 0U != id);
 
-    print_test_error(pass, false);
+    (void)print_test_error(pass, false);
 
     TEST_MSG("writing message to stdout and %s...", logfilename);
 
     _sir_eqland(pass, sir_debug("%s", message));
 
-    print_test_error(pass, false);
+    (void)print_test_error(pass, false);
 
     TEST_MSG("removing %s from libsir...", logfilename);
     _sir_eqland(pass, sir_remfile(id));
 
-    print_test_error(pass, false);
+    (void)print_test_error(pass, false);
 
     TEST_MSG("opening %s for reading...", logfilename);
 
@@ -237,7 +237,7 @@ bool sirtest_threadidsanity(void)
     sirfileid id = sir_addfile(logfilename, SIRL_DEBUG, SIRO_NOHDR | SIRO_NOHOST);
     _sir_eqland(pass, 0U != id);
 
-    print_test_error(pass, false);
+    (void)print_test_error(pass, false);
 
     TEST_MSG_0("logging a message normally...");
     _sir_eqland(pass, sir_debug("this is a test of the libsir system"));
@@ -247,7 +247,7 @@ bool sirtest_threadidsanity(void)
     _sir_eqland(pass, _sir_setthreadname(thread_name));
     sir_sleep_msec((uint32_t)SIR_THRD_CHK_INTERVAL + 200U);
 
-    print_test_error(pass, false);
+    (void)print_test_error(pass, false);
 
     _sir_eqland(pass, sir_debug("this is a test of the libsir system after setting thread name"));
 
@@ -256,7 +256,7 @@ bool sirtest_threadidsanity(void)
     _sir_eqland(pass, _sir_setthreadname(""));
     sir_sleep_msec((uint32_t)SIR_THRD_CHK_INTERVAL + 200U);
 
-    print_test_error(pass, false);
+    (void)print_test_error(pass, false);
 
     _sir_eqland(pass, sir_debug("this is a test of the libsir system after clearing thread name"));
 
@@ -407,7 +407,7 @@ bool sirtest_filecachesanity(void) {
 
     /* now remove previously added files in a different order. */
     size_t removeorder[SIR_MAXFILES];
-    memset(removeorder, -1, sizeof(removeorder));
+    (void)memset(removeorder, -1, sizeof(removeorder));
 
     long processed = 0L;
     TEST_MSG_0("creating random file ID order...");
@@ -635,7 +635,7 @@ bool sirtest_failinvalidinitdata(void) {
     sirinit si;
 
     /* fill with bad data. */
-    memset(&si, 0xab, sizeof(sirinit));
+    (void)memset(&si, 0xab, sizeof(sirinit));
 
     TEST_MSG_0("calling sir_init with invalid data...");
     bool pass = !sir_init(&si);
@@ -731,7 +731,7 @@ bool sirtest_errorsanity(void) {
             (void)_sir_seterror(_sir_mkerror(errors[n].code));
         }
 
-        memset(message, 0, SIR_MAXERROR);
+        (void)memset(message, 0, SIR_MAXERROR);
         uint16_t err = sir_geterror(message);
         _sir_eqland(pass, errors[n].code == err && *message != '\0');
         TEST_MSG("%s = %s", errors[n].name, message);
@@ -889,23 +889,23 @@ bool sirtest_optionssanity(void) {
     /* these should all be valid. */
     TEST_MSG_0(WHITEB("--- individual valid options ---"));
     _sir_eqland(pass, _sir_validopts(SIRO_ALL));
-    printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_ALL);
+    (void)printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_ALL);
     _sir_eqland(pass, _sir_validopts(SIRO_NOTIME));
-    printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NOTIME);
+    (void)printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NOTIME);
     _sir_eqland(pass, _sir_validopts(SIRO_NOHOST));
-    printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NOHOST);
+    (void)printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NOHOST);
     _sir_eqland(pass, _sir_validopts(SIRO_NOLEVEL));
-    printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NOLEVEL);
+    (void)printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NOLEVEL);
     _sir_eqland(pass, _sir_validopts(SIRO_NONAME));
-    printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NONAME);
+    (void)printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NONAME);
     _sir_eqland(pass, _sir_validopts(SIRO_NOPID));
-    printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NOPID);
+    (void)printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NOPID);
     _sir_eqland(pass, _sir_validopts(SIRO_NOTID));
-    printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NOTID);
+    (void)printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NOTID);
     _sir_eqland(pass, _sir_validopts(SIRO_NOHDR));
-    printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NOHDR);
+    (void)printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_NOHDR);
     _sir_eqland(pass, _sir_validopts(SIRO_MSGONLY));
-    printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_MSGONLY);
+    (void)printf(INDENT_ITEM WHITE("valid option: %08"PRIx32) "\n", SIRO_MSGONLY);
     PASSFAIL_MSG(pass, "\t--- individual valid options: %s ---\n\n", PRN_PASS(pass));
 
     /* any combination these bitwise OR'd together
@@ -949,7 +949,7 @@ bool sirtest_optionssanity(void) {
         }
 
         _sir_eqland(pass, _sir_validopts(opts));
-        printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %"PRIu32
+        (void)printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %"PRIu32
             ", options: %08"PRIx32")") "\n", n + 1, iterations, rand_count, opts);
     }
     PASSFAIL_MSG(pass, "\t--- random bitmask of valid options: %s ---\n\n", PRN_PASS(pass));
@@ -959,24 +959,24 @@ bool sirtest_optionssanity(void) {
     /* the lowest byte is not valid. */
     sir_options invalid = 0x000000ff;
     _sir_eqland(pass, !_sir_validopts(invalid));
-    printf(INDENT_ITEM WHITE("lowest byte: %08"PRIx32) "\n", invalid);
+    (void)printf(INDENT_ITEM WHITE("lowest byte: %08"PRIx32) "\n", invalid);
 
     /* gaps inbetween valid options. */
     invalid = 0x0001ff00U & ~(SIRO_NOTIME | SIRO_NOHOST | SIRO_NOLEVEL | SIRO_NONAME |
                              SIRO_NOMSEC | SIRO_NOPID | SIRO_NOTID  | SIRO_NOHDR);
     _sir_eqland(pass, !_sir_validopts(invalid));
-    printf(INDENT_ITEM WHITE("gaps in 0x001ff00U: %08"PRIx32) "\n", invalid);
+    (void)printf(INDENT_ITEM WHITE("gaps in 0x001ff00U: %08"PRIx32) "\n", invalid);
 
     /* greater than SIRO_MSGONLY and less than SIRO_NOHDR. */
     for (sir_option o = 0x00008f00U; o < SIRO_NOHDR; o += 0x1000U) {
         _sir_eqland(pass, !_sir_validopts(o));
-        printf(INDENT_ITEM WHITE("SIRO_MSGONLY >< SIRO_NOHDR: %08"PRIx32) "\n", o);
+        (void)printf(INDENT_ITEM WHITE("SIRO_MSGONLY >< SIRO_NOHDR: %08"PRIx32) "\n", o);
     }
 
     /* greater than SIRO_NOHDR. */
     invalid = (0xFFFF0000 & ~SIRO_NOHDR);
     _sir_eqland(pass, !_sir_validopts(invalid));
-    printf(INDENT_ITEM WHITE("greater than SIRO_NOHDR: %08"PRIx32) "\n", invalid);
+    (void)printf(INDENT_ITEM WHITE("greater than SIRO_NOHDR: %08"PRIx32) "\n", invalid);
 
     PASSFAIL_MSG(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 
@@ -993,25 +993,25 @@ bool sirtest_levelssanity(void) {
     /* these should all be valid. */
     TEST_MSG_0(WHITEB("--- individual valid levels ---"));
     _sir_eqland(pass, _sir_validlevel(SIRL_INFO) && _sir_validlevels(SIRL_INFO));
-    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_INFO);
+    (void)printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_INFO);
     _sir_eqland(pass, _sir_validlevel(SIRL_DEBUG) && _sir_validlevels(SIRL_DEBUG));
-    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_DEBUG);
+    (void)printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_DEBUG);
     _sir_eqland(pass, _sir_validlevel(SIRL_NOTICE) && _sir_validlevels(SIRL_NOTICE));
-    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_NOTICE);
+    (void)printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_NOTICE);
     _sir_eqland(pass, _sir_validlevel(SIRL_WARN) && _sir_validlevels(SIRL_WARN));
-    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_WARN);
+    (void)printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_WARN);
     _sir_eqland(pass, _sir_validlevel(SIRL_ERROR) && _sir_validlevels(SIRL_ERROR));
-    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_ERROR);
+    (void)printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_ERROR);
     _sir_eqland(pass, _sir_validlevel(SIRL_CRIT) && _sir_validlevels(SIRL_CRIT));
-    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_CRIT);
+    (void)printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_CRIT);
     _sir_eqland(pass, _sir_validlevel(SIRL_ALERT) && _sir_validlevels(SIRL_ALERT));
-    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_ALERT);
+    (void)printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_ALERT);
     _sir_eqland(pass, _sir_validlevel(SIRL_EMERG) && _sir_validlevels(SIRL_EMERG));
-    printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_EMERG);
+    (void)printf(INDENT_ITEM WHITE("valid level: %04x") "\n", SIRL_EMERG);
     _sir_eqland(pass, _sir_validlevels(SIRL_ALL));
-    printf(INDENT_ITEM WHITE("valid levels: %04x") "\n", SIRL_ALL);
+    (void)printf(INDENT_ITEM WHITE("valid levels: %04x") "\n", SIRL_ALL);
     _sir_eqland(pass, _sir_validlevels(SIRL_NONE));
-    printf(INDENT_ITEM WHITE("valid levels: %04x") "\n", SIRL_NONE);
+    (void)printf(INDENT_ITEM WHITE("valid levels: %04x") "\n", SIRL_NONE);
     PASSFAIL_MSG(pass, "\t--- individual valid levels: %s ---\n\n", PRN_PASS(pass));
 
     /* any combination these bitwise OR'd together
@@ -1055,7 +1055,7 @@ bool sirtest_levelssanity(void) {
         }
 
         _sir_eqland(pass, _sir_validlevels(levels));
-        printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %"PRIu32", levels:"
+        (void)printf(INDENT_ITEM WHITE("(%zu/%zu): random valid (count: %"PRIu32", levels:"
                                  " %04"PRIx16) ")\n", n + 1, iterations, rand_count, levels);
     }
     PASSFAIL_MSG(pass, "\t--- random bitmask of valid levels: %s ---\n\n", PRN_PASS(pass));
@@ -1065,12 +1065,12 @@ bool sirtest_levelssanity(void) {
     /* greater than SIRL_ALL. */
     sir_levels invalid = (0xffffu & ~SIRL_ALL);
     _sir_eqland(pass, !_sir_validlevels(invalid));
-    printf(INDENT_ITEM WHITE("greater than SIRL_ALL: %04"PRIx16) "\n", invalid);
+    (void)printf(INDENT_ITEM WHITE("greater than SIRL_ALL: %04"PRIx16) "\n", invalid);
 
     /* individual invalid level. */
     sir_level invalid2 = 0x1337U;
     _sir_eqland(pass, !_sir_validlevel(invalid2));
-    printf(INDENT_ITEM WHITE("individual invalid level: %04"PRIx16) "\n", invalid2);
+    (void)printf(INDENT_ITEM WHITE("individual invalid level: %04"PRIx16) "\n", invalid2);
 
     PASSFAIL_MSG(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
 
@@ -1083,52 +1083,52 @@ bool sirtest_mutexsanity(void) {
     bool pass = si_init;
 
     TEST_MSG_0(WHITEB("create, lock, unlock, destroy"));
-    printf(INDENT_ITEM WHITE("creating mutex...") "\n");
+    (void)printf(INDENT_ITEM WHITE("creating mutex...") "\n");
 
     sir_mutex m1 = SIR_MUTEX_INIT;
     _sir_eqland(pass, _sir_mutexcreate(&m1));
 
-    print_test_error(pass, pass);
+    (void)print_test_error(pass, pass);
 
     if (pass) {
-        printf(INDENT_ITEM WHITE("locking (wait)...") "\n");
+        (void)printf(INDENT_ITEM WHITE("locking (wait)...") "\n");
         _sir_eqland(pass, _sir_mutexlock(&m1));
 
-        print_test_error(pass, pass);
+        (void)print_test_error(pass, pass);
 
-        printf(INDENT_ITEM WHITE("entered; unlocking...") "\n");
+        (void)printf(INDENT_ITEM WHITE("entered; unlocking...") "\n");
         _sir_eqland(pass, _sir_mutexunlock(&m1));
 
-        print_test_error(pass, pass);
+        (void)print_test_error(pass, pass);
 
-        printf(INDENT_ITEM WHITE("locking (without wait)...") "\n");
+        (void)printf(INDENT_ITEM WHITE("locking (without wait)...") "\n");
         _sir_eqland(pass, _sir_mutextrylock(&m1));
 
-        print_test_error(pass, pass);
+        (void)print_test_error(pass, pass);
 
-        printf(INDENT_ITEM WHITE("unlocking...") "\n");
+        (void)printf(INDENT_ITEM WHITE("unlocking...") "\n");
         _sir_eqland(pass, _sir_mutexunlock(&m1));
 
-        print_test_error(pass, pass);
+        (void)print_test_error(pass, pass);
 
-        printf(INDENT_ITEM WHITE("destryoing...") "\n");
+        (void)printf(INDENT_ITEM WHITE("destryoing...") "\n");
         _sir_eqland(pass, _sir_mutexdestroy(&m1));
 
-        print_test_error(pass, pass);
+        (void)print_test_error(pass, pass);
 
     }
     PASSFAIL_MSG(pass, "\t--- create, lock, unlock, destroy: %s ---\n\n", PRN_PASS(pass));
 
     TEST_MSG_0(WHITEB("invalid arguments"));
-    printf(INDENT_ITEM WHITE("create with NULL pointer...") "\n");
+    (void)printf(INDENT_ITEM WHITE("create with NULL pointer...") "\n");
     _sir_eqland(pass, !_sir_mutexcreate(NULL));
-    printf(INDENT_ITEM WHITE("lock with NULL pointer...") "\n");
+    (void)printf(INDENT_ITEM WHITE("lock with NULL pointer...") "\n");
     _sir_eqland(pass, !_sir_mutexlock(NULL));
-    printf(INDENT_ITEM WHITE("trylock with NULL pointer...") "\n");
+    (void)printf(INDENT_ITEM WHITE("trylock with NULL pointer...") "\n");
     _sir_eqland(pass, !_sir_mutextrylock(NULL));
-    printf(INDENT_ITEM WHITE("unlock with NULL pointer...") "\n");
+    (void)printf(INDENT_ITEM WHITE("unlock with NULL pointer...") "\n");
     _sir_eqland(pass, !_sir_mutexunlock(NULL));
-    printf(INDENT_ITEM WHITE("destroy with NULL pointer...") "\n");
+    (void)printf(INDENT_ITEM WHITE("destroy with NULL pointer...") "\n");
     _sir_eqland(pass, !_sir_mutexdestroy(NULL));
     PASSFAIL_MSG(pass, "\t--- pass invalid arguments: %s ---\n\n", PRN_PASS(pass));
 
@@ -1169,7 +1169,7 @@ bool sirtest_perf(void) {
         sir_timer_start(&printftimer);
 
         for (size_t n = 0; n < perflines; n++)
-            printf(WHITE("%.2f: lorem ipsum foo bar %s: %zu") "\n",
+            (void)printf(WHITE("%.2f: lorem ipsum foo bar %s: %zu") "\n",
                 sir_timer_elapsed(&printftimer), "baz", 1234 + n);
 
         printfelapsed = sir_timer_elapsed(&printftimer);
@@ -1312,10 +1312,10 @@ bool sirtest_updatesanity(void) {
 
     if (pass) {
         /* restore to default config and run again */
-        sir_stdoutlevels(SIRL_DEFAULT);
-        sir_stderrlevels(SIRL_DEFAULT);
-        sir_stdoutopts(SIRO_DEFAULT);
-        sir_stderropts(SIRO_DEFAULT);
+        _sir_eqland(pass, sir_stdoutlevels(SIRL_DEFAULT));
+        _sir_eqland(pass, sir_stderrlevels(SIRL_DEFAULT));
+        _sir_eqland(pass, sir_stdoutopts(SIRO_DEFAULT));
+        _sir_eqland(pass, sir_stderropts(SIRO_DEFAULT));
 
         _sir_eqland(pass, sir_debug("default config (debug)"));
         _sir_eqland(pass, sir_info("default config (info)"));
@@ -1341,8 +1341,8 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
     static const int runs = 5;
 
     /* repeat initializing, opening, logging, closing, cleaning up n times. */
-    printf("\trunning %d passes of random configs (system logger: '%s', "
-           "identity: '%s', category: '%s')...\n", runs, sl_name, identity, category);
+    (void)printf("\trunning %d passes of random configs (system logger: '%s', "
+                 "identity: '%s', category: '%s')...\n", runs, sl_name, identity, category);
 
 # if !defined(__WIN__)
     uint32_t rnd = (uint32_t)(_sir_getpid() + _sir_gettid());
@@ -1367,10 +1367,10 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
         si.d_syslog.levels = SIRL_DEFAULT;
 
         if (set_identity)
-            _sir_strncpy(si.d_syslog.identity, SIR_MAX_SYSLOG_CAT, identity, SIR_MAX_SYSLOG_ID);
+            (void)_sir_strncpy(si.d_syslog.identity, SIR_MAX_SYSLOG_CAT, identity, SIR_MAX_SYSLOG_ID);
 
         if (set_category)
-            _sir_strncpy(si.d_syslog.category, SIR_MAX_SYSLOG_CAT, category, SIR_MAX_SYSLOG_CAT);
+            (void)_sir_strncpy(si.d_syslog.category, SIR_MAX_SYSLOG_CAT, category, SIR_MAX_SYSLOG_CAT);
 
         si_init = sir_init(&si); //-V519
         _sir_eqland(pass, si_init);
@@ -1912,7 +1912,7 @@ bool sirtest_pluginloader(void) {
     sirpluginid id = sir_loadplugin(plugin1);
     _sir_eqland(pass, 0 != id);
 
-    print_test_error(pass, pass);
+    (void)print_test_error(pass, pass);
 
     _sir_eqland(pass, sir_info("this message will be dispatched to the plugin."));
     _sir_eqland(pass, sir_warn("this message will *not* be dispatched to the plugin."));
@@ -1922,38 +1922,38 @@ bool sirtest_pluginloader(void) {
     sirpluginid badid = sir_loadplugin(plugin1);
     _sir_eqland(pass, 0 == badid);
 
-    print_test_error(pass, pass);
+    (void)print_test_error(pass, pass);
 
     /* the following are all invalid or misbehaved, and should all fail. */
     TEST_MSG("loading bad plugin: '%s'...", plugin2);
     badid = sir_loadplugin(plugin2);
     _sir_eqland(pass, 0 == badid);
 
-    print_test_error(pass, pass);
+    (void)print_test_error(pass, pass);
 
     TEST_MSG("loading bad plugin: '%s'...", plugin3);
     badid = sir_loadplugin(plugin3);
     _sir_eqland(pass, 0 == badid);
 
-    print_test_error(pass, pass);
+    (void)print_test_error(pass, pass);
 
     TEST_MSG("loading bad plugin: '%s'...", plugin4);
     badid = sir_loadplugin(plugin4);
     _sir_eqland(pass, 0 == badid);
 
-    print_test_error(pass, pass);
+    (void)print_test_error(pass, pass);
 
     TEST_MSG("loading bad plugin: '%s'...", plugin5);
     badid = sir_loadplugin(plugin5);
     _sir_eqland(pass, 0 == badid);
 
-    print_test_error(pass, pass);
+    (void)print_test_error(pass, pass);
 
     TEST_MSG("loading bad plugin: '%s'...", plugin6);
     badid = sir_loadplugin(plugin6);
     _sir_eqland(pass, 0 == badid);
 
-    print_test_error(pass, pass);
+    (void)print_test_error(pass, pass);
 
     TEST_MSG("loading bad plugin: '%s'...", plugin7);
     badid = sir_loadplugin(plugin7);
@@ -1961,32 +1961,32 @@ bool sirtest_pluginloader(void) {
 
     _sir_eqland(pass, !sir_info("should fail; a plugin failed to process the message."));
 
-    print_test_error(pass, pass);
+    (void)print_test_error(pass, pass);
 
     TEST_MSG("loading nonexistent plugin: '%s'...", plugin8);
     badid = sir_loadplugin(plugin8);
     _sir_eqland(pass, 0 == badid);
 
-    print_test_error(pass, pass);
+    (void)print_test_error(pass, pass);
 
     /* unload the good plugin manually. */
     TEST_MSG("unloading good plugin: '%s'...", plugin1);
     _sir_eqland(pass, sir_unloadplugin(id));
 
-    print_test_error(pass, pass);
+    (void)print_test_error(pass, pass);
 
     /* try to unload the plugin again. */
     TEST_MSG("unloading already unloaded plugin '%s'...", plugin1);
     _sir_eqland(pass, !sir_unloadplugin(id));
 
-    print_test_error(pass, pass);
+    (void)print_test_error(pass, pass);
 
     /* test bad paths. */
     TEST_MSG_0("trying to load plugin with NULL path...");
     badid = sir_loadplugin(NULL);
     _sir_eqland(pass, 0 == badid);
 
-    print_test_error(pass, pass);
+    (void)print_test_error(pass, pass);
 #endif
     _sir_eqland(pass, sir_cleanup());
     return PRINT_RESULT_RETURN(pass);
@@ -2054,11 +2054,7 @@ bool sirtest_threadpool(void) {
             }
         }
 
-#if !defined(__WIN__)
-        sleep(1);
-#else
-        Sleep(1000);
-#endif
+        sir_sleep_msec(1000);
 
         _sir_eqland(pass, sir_info("destroying thread pool..."));
         _sir_eqland(pass, _sir_threadpool_destroy(&pool));
@@ -2374,7 +2370,7 @@ bool roll_and_archive(const char* filename, const char* extension) {
     sirfileid fileid = sir_addfile(logfilename, SIRL_DEBUG, SIRO_MSGONLY | SIRO_NOHDR);
     _sir_eqland(pass, 0U != fileid);
 
-    print_test_error(pass, false);
+    (void)print_test_error(pass, false);
 
     if (pass) {
         TEST_MSG("writing to %s until SIR_FROLLSIZE has been exceeded...", logfilename);

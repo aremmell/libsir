@@ -30,7 +30,7 @@
 sir_queue_node* _sir_queue_node_create(void* data) {
     sir_queue_node* retval = calloc(1, sizeof(sir_queue_node));
     if (!retval)
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
     else
         retval->data = data;
 
@@ -56,7 +56,7 @@ bool _sir_queue_create(sir_queue** q) {
     if (valid) {
         *q = calloc(1, sizeof(sir_queue));
         if (!_sir_validptrnofail(*q))
-            _sir_handleerr(errno);
+            (void)_sir_handleerr(errno);
     }
 
     return valid && _sir_validptrnofail(*q);

@@ -44,7 +44,7 @@ enum sir_errorcode {
     SIR_E_OPTIONS   = 7,    /**< Option flags are invalid */
     SIR_E_LEVELS    = 8,    /**< Level flags are invalid */
     SIR_E_TEXTSTYLE = 9,    /**< Text style is invalid */
-    SIR_E_STRING    = 10,    /**< Invalid string argument */
+    SIR_E_STRING    = 10,   /**< Invalid string argument */
     SIR_E_NULLPTR   = 11,   /**< NULL pointer argument */
     SIR_E_INVALID   = 12,   /**< Invalid argument */
     SIR_E_NODEST    = 13,   /**< No destinations registered for level */
