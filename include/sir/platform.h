@@ -431,6 +431,7 @@ _set_thread_local_invalid_parameter_handler(
 #  endif
 #  if defined(_AIX)
 #   include <sys/procfs.h>
+#   include <sys/systemcfg.h>
 #   undef SIR_NO_THREAD_NAMES
 #   define SIR_NO_THREAD_NAMES
 #  endif
