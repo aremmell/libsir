@@ -1478,7 +1478,7 @@ long _sir_nprocs(void) {
         tprocs = 0;
     } else {
         tprocs = (long)antprocs;
-        _sir_selflog("sysctlbyname(\"hw.ncpu\") reports %ld processor(s)", tprocs);
+        _sir_selflog("sysctlbyname(hw.ncpu) reports %ld processor(s)", tprocs);
         if (tprocs > nprocs)
             nprocs = tprocs;
     }
