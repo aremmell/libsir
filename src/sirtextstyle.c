@@ -73,7 +73,7 @@ bool _sir_settextstyle(sir_level level, const sir_textstyle* style) {
     _SIR_BEGIN_BIN_SEARCH()
 
     if (data->map[_mid].level == level) {
-        memcpy(&data->map[_mid].style, style, sizeof(sir_textstyle));
+        (void)memcpy(&data->map[_mid].style, style, sizeof(sir_textstyle));
         updated = _sir_formatstyle(*data->color_mode, style, data->map[_mid].str);
         break;
     }
@@ -113,7 +113,7 @@ bool _sir_resettextstyles(void) {
     _SIR_LOCK_SECTION(sir_text_style_data, data, SIRMI_TEXTSTYLE, false);
     bool all_ok = true;
     for (size_t n = 0; n < SIR_NUMLEVELS; n++) {
-        memcpy(&data->map[n].style, _sir_getdefstyle(data->map[n].level),
+        (void)memcpy(&data->map[n].style, _sir_getdefstyle(data->map[n].level),
              sizeof(sir_textstyle));
         _sir_eqland(all_ok, _sir_formatstyle(*data->color_mode, &data->map[n].style,
             data->map[n].str));

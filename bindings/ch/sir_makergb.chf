@@ -28,17 +28,17 @@
 sir_textcolor
 sir_makergb(sir_textcolor r, sir_textcolor g, sir_textcolor b) {
     void* fptr;
-    bool retval;
+    bool  retval;
 
     fptr = dlsym(_Chsir_handle, "sir_makergb_chdl");
     if (fptr == NULL) {
         (void)fprintf(_stderr, "Error: %s(%d): dlsym(): %s\n",
                       __func__, __LINE__, dlerror());
 
-        return 0;
+        return (sir_textcolor)0;
     }
 
-    dlrunfun(fptr, &retval, sir_makergb, r, g, b);
+    (void)dlrunfun(fptr, &retval, sir_makergb, r, g, b);
 
     return retval;
 }

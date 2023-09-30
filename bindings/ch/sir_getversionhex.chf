@@ -27,7 +27,7 @@
 
 uint32_t
 sir_getversionhex(void) {
-    void* fptr;
+    void*    fptr;
     uint32_t retval;
 
     fptr = dlsym(_Chsir_handle, "sir_getversionhex_chdl");
@@ -35,10 +35,10 @@ sir_getversionhex(void) {
         (void)fprintf(_stderr, "Error: %s(%d): dlsym(): %s\n",
                       __func__, __LINE__, dlerror());
 
-        return 0;
+        return (uint32_t)0;
     }
 
-    dlrunfun(fptr, &retval, sir_getversionhex);
+    (void)dlrunfun(fptr, &retval, sir_getversionhex);
 
     return retval;
 }

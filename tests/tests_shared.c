@@ -157,7 +157,7 @@ bool parse_cmd_line(int argc, char** argv, const sir_cl_arg* args, size_t num_ar
     if (!argv || !args || !tests || !config)
         return false;
 
-    memset(config, 0, sizeof(sir_cl_config));
+    (void)memset(config, 0, sizeof(sir_cl_config));
 
     for (int n = 1; n < argc; n++) {
         const sir_cl_arg* this_arg = find_cl_arg(argv[n], args, num_args);
@@ -316,7 +316,7 @@ bool enumfiles(const char* path, const char* search, bool del, unsigned* count) 
     rewinddir(d);
     const struct dirent* di = readdir(d);
     if (!di) {
-        closedir(d);
+        (void)closedir(d);
         return print_test_error(false, false);
     }
 
@@ -332,7 +332,7 @@ bool enumfiles(const char* path, const char* search, bool del, unsigned* count) 
         di = readdir(d);
     }
 
-    closedir(d);
+    (void)closedir(d);
     d = NULL;
 #else /* __WIN__ */
     WIN32_FIND_DATA finddata = {0};

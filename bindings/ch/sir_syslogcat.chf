@@ -28,17 +28,17 @@
 bool
 sir_syslogcat(const char* category) {
     void* fptr;
-    bool retval;
+    bool  retval;
 
     fptr = dlsym(_Chsir_handle, "sir_syslogcat_chdl");
     if (fptr == NULL) {
         (void)fprintf(_stderr, "Error: %s(%d): dlsym(): %s\n",
                       __func__, __LINE__, dlerror());
 
-        return 0;
+        return false;
     }
 
-    dlrunfun(fptr, &retval, sir_syslogcat, category);
+    (void)dlrunfun(fptr, &retval, sir_syslogcat, category);
 
     return retval;
 }

@@ -26,11 +26,9 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "chsir.h"
-#include "sir/errors.h"
-#include <stdio.h>
-#include <string.h>
-#include <locale.h>
-#include <chshell.h>
+#include "sir/errors.h" /* SIR_E_UNAVAIL */
+#include <locale.h> /* setlocale */
+#include <chshell.h> /* chinfo */
 
 void report_error(void);
 
@@ -124,22 +122,24 @@ main(void) {
     (void)sir_alert("%s %b Testing %s output", __TIME__, __LINE__, ULINE("alert"));
     (void)sir_emerg("%s %b Testing %s output", __TIME__, __LINE__, ULINE("emergency"));
 
-    /* Set up a syslog output. */
-    char message[SIR_MAXERROR];
+    /* Set up for syslog output. */
     (void)sir_syslogid(appname);
-    if (SIR_E_UNAVAIL == sir_geterror(message)) {
+
+    /* Check if syslog is available. */
+    if (SIR_E_UNAVAIL == sir_geterror(NULL)) {
         (void)fprintf(_stderr, "\nLogging to syslog is not supported, skipping.\n");
     } else {
+        (void)fprintf(_stderr, "\nLogging two libsir messages to stderr and syslog:\n");
+
         /* Don't log PID; syslog has us covered. */
         if (!sir_syslogopts(SIRO_NOPID))
             report_error();
 
-        /* Send all levels */
+        /* Send all levels. */
         if (!sir_sysloglevels(SIRL_ALL))
             report_error();
 
         /* Log to syslog. */
-        (void)fprintf(_stderr, "\nLogging two libsir messages to stderr and syslog:\n");
         (void)sir_alert("%b Testing %s output", __LINE__, "alert");
         (void)sir_emerg("%b Testing %s output", __LINE__, "emergency");
     }

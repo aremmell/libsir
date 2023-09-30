@@ -24,11 +24,12 @@
 #include <limits.h>
 #include <string.h>
 
-char *
+char*
 chsir_basename(char *path) {
     static char bname[PATH_MAX];
-    size_t len;
-    const char *endp, *startp;
+    size_t      len;
+    const char* endp;
+    const char* startp;
 
     if (path == NULL || *path == '\0') {
         bname[0] = '.';

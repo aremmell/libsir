@@ -38,7 +38,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
     if (!_sir_validstr(path) || !_sir_validptr(st))
         return false;
 
-    memset(st, 0, sizeof(struct stat));
+    (void)memset(st, 0, sizeof(struct stat));
 
     int stat_ret          = -1;
     bool relative         = false;
@@ -182,7 +182,7 @@ char* _sir_getcwd(void) {
 
     char* cur = calloc(size, sizeof(char));
     if (!cur) {
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
         return NULL;
     }
 
@@ -471,7 +471,7 @@ int _sir_aixself(char* buffer, size_t* size) {
 
         res = _sir_readlink(symlink, temp_buffer, SIR_MAXPATH);
         if (res < 0)
-            _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
+            (void)_sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
         else
             (void)snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink),
                 temp_buffer);
@@ -492,7 +492,7 @@ int _sir_aixself(char* buffer, size_t* size) {
 
         res = _sir_readlink(symlink, temp_buffer, SIR_MAXPATH);
         if (res < 0)
-            _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
+            (void)_sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
         else
             (void)snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
@@ -509,7 +509,7 @@ int _sir_aixself(char* buffer, size_t* size) {
 
         res = _sir_readlink(symlink, temp_buffer, SIR_MAXPATH);
         if (res < 0)
-            _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
+            (void)_sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
         else
             (void)snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
@@ -524,7 +524,7 @@ int _sir_aixself(char* buffer, size_t* size) {
         if (sizeof(clonedpath) <= strnlen(path, SIR_MAXPATH))
             return -1;
 
-        _sir_strncpy(clonedpath, SIR_MAXPATH, path, SIR_MAXPATH);
+        (void)_sir_strncpy(clonedpath, SIR_MAXPATH, path, SIR_MAXPATH);
 
         token = strtok_r(clonedpath, ":", &tokptr);
 
@@ -547,7 +547,7 @@ int _sir_aixself(char* buffer, size_t* size) {
                 if (stat(symlink, &statstruct) != -1) {
                     res = _sir_readlink(symlink, temp_buffer, SIR_MAXPATH);
                     if (res < 0)
-                        _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
+                        (void)_sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
                     else
                         (void)snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
@@ -559,7 +559,7 @@ int _sir_aixself(char* buffer, size_t* size) {
                 if (stat(symlink, &statstruct) != -1) {
                     res = _sir_readlink(symlink, temp_buffer, SIR_MAXPATH);
                     if (res < 0)
-                        _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
+                        (void)_sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
                     else
                         (void)snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
@@ -628,9 +628,9 @@ int _sir_openbsdself(char* out, int capacity, int* dirname_length) {
                     if (*(end - 1) == '/')
                         --end;
                     if (((end - begin) + 1UL + argv0_length + 1UL) <= sizeof(buffer2)) {
-                        memcpy(buffer2, begin, end - begin);
+                        (void)memcpy(buffer2, begin, end - begin);
                         buffer2[end - begin] = '/';
-                        memcpy(buffer2 + (end - begin) + 1, argv[0], argv0_length + 1);
+                        (void)memcpy(buffer2 + (end - begin) + 1, argv[0], argv0_length + 1);
                         resolved = realpath(buffer2, buffer3);
                         if (resolved)
                             break;
@@ -646,7 +646,7 @@ int _sir_openbsdself(char* out, int capacity, int* dirname_length) {
 
         length = (int)strnlen(resolved, SIR_MAXPATH);
         if (length <= capacity) {
-            memcpy(out, resolved, (unsigned long)length);
+            (void)memcpy(out, resolved, (unsigned long)length);
             if (dirname_length) {
                 int i;
                 for (i = length - 1; i >= 0; --i) {

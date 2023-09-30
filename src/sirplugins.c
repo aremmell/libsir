@@ -434,7 +434,7 @@ bool _sir_plugin_cache_destroy(sir_plugincache* spc) {
         spc->count--;
     }
 
-    memset(spc, 0, sizeof(sir_plugincache));
+    (void)memset(spc, 0, sizeof(sir_plugincache));
     return true;
 #else
     SIR_UNUSED(spc);
