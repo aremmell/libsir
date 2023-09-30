@@ -6,7 +6,7 @@
 ##############################################################################
 
 stages:
-  - style
+  - sanity
   - build_linux
   - build_android
   - build_windows
@@ -1780,8 +1780,30 @@ Coverage:
 
 ##############################################################################
 
+Generate tags:
+  stage: sanity
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/style:latest
+  script:
+    - *Configuration
+    - |
+      # Start of tag generation ...
+      echo -e "section_start:`date +%s`:tag_section[collapsed=false]\r\e[0K\033[0;36mTag generation ...\033[0m" || true
+    - make tags
+    - |
+      # End of tag generation ...
+      echo -e "section_end:`date +%s`:tag_section\r\e[0K" || true
+  dependencies: []
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
 Style check:
-  stage: style
+  stage: sanity
   tags:
     - Docker-x64
     - Linux
