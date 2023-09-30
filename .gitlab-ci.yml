@@ -3565,12 +3565,13 @@ Semgrep (GitLab Rules):
       echo -e "section_start:`date +%s`:SemgrepGitLab_section[collapsed=true]\r\e[0K\033[0;36mSemgrep GitLab ...\033[0m" || true
     - apk update > /dev/null 2>&1 || true
     - apk upgrade > /dev/null 2>&1 || true
-    - apk add make ruby ruby-dev yaml yaml-dev gawk sed gcc libc-dev > /dev/null 2>&1 || true
+    - apk add make ruby ruby-dev yaml yaml-dev gawk sed gcc libc-dev openssl openssl-dev > /dev/null 2>&1 || true
+    - gem update --system > /dev/null 2>&1 || true
     - gem update > /dev/null 2>&1 || true
     - gem install psych yaml fileutils > /dev/null 2>&1 || true
     - semgrep login > /dev/null
     - semgrep install-semgrep-pro || true
-    - ( mkdir -p /tmp/gitlab-sast && cd /tmp/gitlab-sast && git clone -q --depth=1 https://gitlab.com/gitlab-org/security-products/sast-rules.git && cd sast-rules && ./ci/join.rb > /dev/null 2>&1 && sed '/ id. / s/\//./g' combined.yml > combined2.yml && mv -f combined2.yml combined.yml ) || true
+    - ( mkdir -p /tmp/gitlab-sast && cd /tmp/gitlab-sast && git clone -q --depth=1 https://gitlab.com/gitlab-org/security-products/sast-rules.git && cd sast-rules && curl -fsSL https://gitlab.com/gitlab-org/security-products/sast-rules/-/raw/a1926c1522a3d07ec68131b38653f1f9742731e1/ci/join.rb -o ./ci/join.rb && chmod a+x ./ci/join.rb && ./ci/join.rb > /dev/null 2>&1 && sed '/ id. / s/\//./g' combined.yml > combined2.yml && mv -f combined2.yml combined.yml ) || true
     - semgrep scan --config /tmp/gitlab-sast/sast-rules/combined.yml . --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-char_TCHAR.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.race.rule-readlink.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-printf_vprintf.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-realpath.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-memcpy_CopyMemory.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-getenv_curl_getenv.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.misc.rule-fopen_open.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-memcpy_CopyMemory.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-getchar_fgetc.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-strlen_wcslen.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-printf_vprintf.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-snprintf_vsnprintf.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.misc.rule-InitializeCriticalSection.yml" --error
     - |
       # End of Semgrep ...
