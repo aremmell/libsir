@@ -121,7 +121,7 @@ namespace sir::tests
     ERROR_MSG("unexpected exception in %s: '%s'", __PRETTY_FUNCTION__, what); \
     pass = false; \
     if (sir_isinitialized()) \
-        (void)sir_cleanup()
+        [[maybe_unused]] bool unused = sir_cleanup()
 
 /** Handles an expected exception. */
 # define _SIR_TEST_ON_EXPECTED_EXCEPTION(what) \
