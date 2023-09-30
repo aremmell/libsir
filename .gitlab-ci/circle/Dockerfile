@@ -46,3 +46,5 @@ RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && dnf -y install \
     touch /OK
 
 USER 10000
+
+RUN printf '\n%s\n' "BUILD SUCCESS"

@@ -1786,7 +1786,7 @@ Style check:
     - Docker-x64
     - Linux
   image:
-    name: registry.gitlab.com/libsir/libsir/base:latest
+    name: registry.gitlab.com/libsir/libsir/style:latest
   script:
     - *Configuration
     - |
@@ -1809,6 +1809,9 @@ Style check:
       # Checking for extra newlines ...
       git ls-files '*.c' '*.h' '*.cc' '*.hh' | xargs -L1 sed -i -e '/./,$!d' -e :a -e '/^\n*$/{$d;N;ba' -e '}' || true
       git diff | grep '.' && { printf '%s\n' "whitespace check failed!"; exit 1; } || true
+    - |
+      # Checking compliance with editorconfig ...
+      ${HOME:?}/go/bin/editorconfig-checker
     - |
       # End of Style ...
       echo -e "section_end:`date +%s`:Style_section\r\e[0K" || true
@@ -3535,7 +3538,7 @@ Semgrep (Cloud Rules):
     - apk upgrade > /dev/null 2>&1 || true
     - semgrep login > /dev/null
     - semgrep install-semgrep-pro || true
-    - semgrep ci
+    - semgrep ci --no-suppress-errors --pro --pro-intrafile --pro-languages --exclude-rule="c.lang.security.insecure-use-memset.insecure-use-memset"
     - |
       # End of Semgrep Cloud ...
       echo -e "section_end:`date +%s`:SemgrepCloud_section\r\e[0K" || true
@@ -3572,7 +3575,7 @@ Semgrep (GitLab Rules):
     - semgrep login > /dev/null
     - semgrep install-semgrep-pro || true
     - ( mkdir -p /tmp/gitlab-sast && cd /tmp/gitlab-sast && git clone -q --depth=1 https://gitlab.com/gitlab-org/security-products/sast-rules.git && cd sast-rules && curl -fsSL https://gitlab.com/gitlab-org/security-products/sast-rules/-/raw/a1926c1522a3d07ec68131b38653f1f9742731e1/ci/join.rb -o ./ci/join.rb && chmod a+x ./ci/join.rb && ./ci/join.rb > /dev/null 2>&1 && sed '/ id. / s/\//./g' combined.yml > combined2.yml && mv -f combined2.yml combined.yml ) || true
-    - semgrep scan --config /tmp/gitlab-sast/sast-rules/combined.yml . --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-char_TCHAR.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.race.rule-readlink.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-printf_vprintf.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-realpath.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-memcpy_CopyMemory.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-getenv_curl_getenv.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.misc.rule-fopen_open.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-memcpy_CopyMemory.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-getchar_fgetc.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-strlen_wcslen.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-printf_vprintf.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-snprintf_vsnprintf.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.misc.rule-InitializeCriticalSection.yml" --error
+    - semgrep scan --config /tmp/gitlab-sast/sast-rules/combined.yml . --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-char_TCHAR.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.race.rule-readlink.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-printf_vprintf.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-realpath.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-memcpy_CopyMemory.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-getenv_curl_getenv.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.misc.rule-fopen_open.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-memcpy_CopyMemory.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-getchar_fgetc.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-strlen_wcslen.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-printf_vprintf.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-snprintf_vsnprintf.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.misc.rule-InitializeCriticalSection.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.random.rule-drand48_erand48.yml" --error
     - |
       # End of Semgrep ...
       echo -e "section_end:`date +%s`:SemgrepGitLab_section\r\e[0K" || true

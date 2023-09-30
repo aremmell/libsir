@@ -886,6 +886,11 @@ bool sirtest_optionssanity(void) {
 
     static const size_t iterations = 10;
 
+    /*
+     * TODO(aremmell): Update printf -> TEST_MSG,
+     * rename INDENT_ITEM to BULLETED_ITEM.
+     */
+
     /* these should all be valid. */
     TEST_MSG_0(WHITEB("--- individual valid options ---"));
     _sir_eqland(pass, _sir_validopts(SIRO_ALL));

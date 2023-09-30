@@ -32,3 +32,5 @@ RUN cd ~user && \
     rm -f x86_64-pc-linux-uclibc/build.log.lz && cd
 
 USER 10000
+
+RUN printf '\n%s\n' "BUILD SUCCESS"
