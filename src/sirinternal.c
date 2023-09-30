@@ -1389,10 +1389,8 @@ bool _sir_gethostname(char name[SIR_MAXHOST]) {
 
 long _sir_nprocs(void) {
     long nprocs = 0;
-    long tprocs = 0;
 #if defined(_AIX)
     SIR_UNUSED(nprocs);
-    SIR_UNUSED(tprocs);
     return (long)_system_configuration.ncpus;
 #endif
 #if defined(__WIN__)
@@ -1400,16 +1398,15 @@ long _sir_nprocs(void) {
     ZeroMemory(&system_info, sizeof(system_info));
     GetSystemInfo(&system_info);
     SIR_UNUSED(nprocs);
-    SIR_UNUSED(tprocs);
     return (long)system_info.dwNumberOfProcessors;
 #endif
 #if defined(__HAIKU__)
     system_info hinfo;
     get_system_info(&hinfo);
     SIR_UNUSED(nprocs);
-    SIR_UNUSED(tprocs);
     return (long)hinfo.cpu_count;
 #endif
+    long tprocs = 0;
 #if defined(SC_NPROCESSORS_ONLN)
     tprocs = sysconf(SC_NPROCESSORS_ONLN);
     if (tprocs > 0)
