@@ -1389,7 +1389,7 @@ bool _sir_gethostname(char name[SIR_MAXHOST]) {
 
 long _sir_nprocs(void) {
 #if defined(_AIX)
-    return (long)_system_connfiguration.ncpus;
+    return (long)_system_configuration.ncpus;
 #endif
 #if defined(__WIN__)
     SYSTEM_INFO system_info;
