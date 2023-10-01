@@ -204,6 +204,10 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #     undef SIR_NO_THREAD_NAMES
 #     define SIR_NO_THREAD_NAMES
 #    endif
+#    if defined(__GLIBC__) && GLIBC_VERSION > 0 && \
+       !defined(__SUNPRO_C) && !defined(__SUNPRO_CC)
+#     include <sys/sysinfo.h>
+#    endif
 #   endif
 #   if defined(__CYGWIN__)
 #    if !defined(_GNU_SOURCE)
@@ -402,6 +406,9 @@ _set_thread_local_invalid_parameter_handler(
 #   include <fcntl.h>
 #  endif
 #  include <unistd.h>
+#  if defined(__MACOS__)
+#   include <sys/sysctl.h>
+#  endif
 #  if !defined(__CYGWIN__) && !defined(__HAIKU__) && \
       !defined(__serenity__) && !defined(_AIX) && \
       !defined(_CH_) && !defined(__CH__)
@@ -424,6 +431,7 @@ _set_thread_local_invalid_parameter_handler(
 #  endif
 #  if defined(_AIX)
 #   include <sys/procfs.h>
+#   include <sys/systemcfg.h>
 #   undef SIR_NO_THREAD_NAMES
 #   define SIR_NO_THREAD_NAMES
 #  endif

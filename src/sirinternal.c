@@ -1386,3 +1386,140 @@ bool _sir_gethostname(char name[SIR_MAXHOST]) {
     return true;
 #endif /* !__WIN__ */
 }
+
+long __sir_nprocs(bool test_mode) {
+    long nprocs = 0;
+
+#if defined(_AIX)
+    nprocs = (long)_system_configuration.ncpus;
+    _sir_selflog("AIX _system_configuration.ncpus reports %ld processor(s)", nprocs);
+#endif
+
+#if defined(__WIN__)
+    SYSTEM_INFO system_info;
+    ZeroMemory(&system_info, sizeof(system_info));
+    GetSystemInfo(&system_info);
+    nprocs = (long)system_info.dwNumberOfProcessors;
+    _sir_selflog("Windows GetSystemInfo() reports %ld processor(s)", nprocs);
+#endif
+
+#if defined(__HAIKU__)
+    system_info hinfo;
+    get_system_info(&hinfo);
+    nprocs = (long)hinfo.cpu_count;
+    _sir_selflog("Haiku get_system_info() reports %ld processor(s)", nprocs);
+#endif
+
+#if defined(SC_NPROCESSORS_ONLN)
+    long tprocs = sysconf(SC_NPROCESSORS_ONLN);
+    _sir_selflog("sysconf(SC_NPROCESSORS_ONLN) reports %ld processor(s)", tprocs);
+    if (tprocs > nprocs)
+        nprocs = tprocs;
+#elif defined(_SC_NPROCESSORS_ONLN)
+    long tprocs = sysconf(_SC_NPROCESSORS_ONLN);
+    _sir_selflog("sysconf(_SC_NPROCESSORS_ONLN) reports %ld processor(s)", tprocs);
+    if (tprocs > nprocs)
+        nprocs = tprocs;
+#endif
+
+#if defined(__linux__) && !defined(__ANDROID__) && !defined(__UCLIBC__)
+    long ctprocs;
+    cpu_set_t p_aff;
+    memset(&p_aff, 0, sizeof(p_aff));
+    if (sched_getaffinity(0, sizeof(p_aff), &p_aff)) {
+        ctprocs = 0;
+    } else {
+# if defined(CPU_COUNT)
+        ctprocs = CPU_COUNT(&p_aff);
+        _sir_selflog("sched_getaffinity(CPU_COUNT) reports %ld processor(s)", ctprocs);
+# else
+        int cntprocs = 0;
+        for (size_t bit = 0; bit < (8 * sizeof(p_aff)); bit++)
+            cntprocs += (((uint8_t *)&p_aff)[bit / 8] >> (bit % 8)) & 1;
+        ctprocs = cntprocs;
+        _sir_selflog("sched_getaffinity(cntprocs) reports %ld processor(s)", ctprocs);
+# endif
+    }
+    if (ctprocs > nprocs)
+        nprocs = ctprocs;
+#endif
+
+#if defined(CTL_HW) && defined(HW_AVAILCPU)
+    int ntprocs = 0;
+    size_t sntprocs = sizeof(ntprocs);
+    if (sysctl ((int[2]) {CTL_HW, HW_AVAILCPU}, 2, &ntprocs, &sntprocs, NULL, 0)) {
+        ntprocs = 0;
+    } else {
+        _sir_selflog("sysctl(CTL_HW, HW_AVAILCPU) reports %d processor(s)", ntprocs);
+        if (ntprocs > nprocs)
+            nprocs = (long)ntprocs;
+    }
+#elif defined(CTL_HW) && defined(HW_NCPU)
+    int ntprocs = 0;
+    size_t sntprocs = sizeof(ntprocs);
+    if (sysctl ((int[2]) {CTL_HW, HW_NCPU}, 2, &ntprocs, &sntprocs, NULL, 0)) {
+        ntprocs = 0;
+    } else {
+        _sir_selflog("sysctl(CTL_HW, HW_NCPU) reports %d processor(s)", ntprocs);
+        if (ntprocs > nprocs)
+            nprocs = (long)ntprocs;
+    }
+#elif defined(CTL_HW) && defined(HW_NCPUFOUND)
+    int ntprocs = 0;
+    size_t sntprocs = sizeof(ntprocs);
+    if (sysctl ((int[2]) {CTL_HW, HW_NCPUFOUND}, 2, &ntprocs, &sntprocs, NULL, 0)) {
+        ntprocs = 0;
+    } else {
+        _sir_selflog("sysctl(CTL_HW, HW_NCPUFOUND) reports %d processor(s)", ntprocs);
+        if (ntprocs > nprocs)
+            nprocs = (long)ntprocs;
+    }
+#endif
+
+#if defined(__MACOS__)
+    int antprocs = 0;
+    size_t asntprocs = sizeof(antprocs);
+    if (sysctlbyname("hw.ncpu", &antprocs, &asntprocs, NULL, 0)) {
+        antprocs = 0;
+    } else {
+        _sir_selflog("sysctlbyname(hw.ncpu) reports %d processor(s)", antprocs);
+        if (antprocs > nprocs)
+            nprocs = (long)antprocs;
+    }
+#endif
+
+#if defined(__QNX__) || defined(__QNXNTO__)
+    long qtprocs = (long)_syspage_ptr->num_cpu;
+    _sir_selflog("QNX _syspage_ptr->num_cpu reports %ld processor(s)", qtprocs);
+    if (qtprocs > nprocs)
+        nprocs = qtprocs;
+#endif
+
+#if defined(__VXWORKS__)
+# if defined(_WRS_CONFIG_SMP)
+    long vtprocs = 0;
+    cpuset_t vset = vxCpuEnabledGet();
+    for (int count = 0; count < 512 && !CPUSET_ISZERO(vset); ++count) {
+        if (CPUSET_ISSET(vset, count)) {
+            CPUSET_CLR(vset, count);
+            vtprocs++;
+        }
+    }
+    _sir_selflog("VxWorks vxCpuEnabledGet() reports %ld processor(s)", vtprocs);
+# else
+    long vtprocs = 1;
+    _sir_selflog("Uniprocessor system or VxWorks SMP is not enabled");
+# endif
+    if (vtprocs > nprocs)
+        nprocs = vtprocs;
+#endif
+
+    if (nprocs < 1) {
+        _sir_selflog(BRED("Failed to determine processor count!"));
+        if (!test_mode)
+            nprocs = 1;
+    }
+
+    _sir_selflog("Detected %ld processor(s)", nprocs);
+    return nprocs;
+}

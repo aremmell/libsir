@@ -278,6 +278,13 @@ bool sirtest_squelchspam(void);
 bool sirtest_pluginloader(void);
 
 /**
+ * @test sirtest_getcpucount
+ * @brief Ensure the processor counting routines are functioning properly.
+ * @returns bool `true` if the test succeeded, `false` otherwise.
+ */
+bool sirtest_getcpucount(void);
+
+/**
  * @test sirtest_getversioninfo
  * @brief Ensure that version retrieval exports are functioning properly.
  * @returns bool `true` if the test succeeded, `false` otherwise.
