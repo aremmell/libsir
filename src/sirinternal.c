@@ -1523,3 +1523,22 @@ long __sir_nprocs(bool test_mode) {
     _sir_selflog("Detected %ld processor(s)", nprocs);
     return nprocs;
 }
+
+const char* _sir_progname(void) {
+#if defined(_AIX)
+    static char *progname;
+    static bool flag = true;
+    if (flag) {
+        flag = false;
+        pid_t pid = _sir_getpid();
+        struct procentry64 process;
+        progname = (0 < getprocs64(&process, sizeof(process), NULL, 0, &pid, 1)
+                      ? strndup(process.pi_comm, SIR_MAXPID) : NULL);
+        if (!progname)
+            progname = "";
+    }
+    return progname;
+#else
+    return NULL;
+#endif
+}

@@ -192,6 +192,9 @@ long __sir_nprocs(bool test_mode);
 # define _sir_nprocs() __sir_nprocs(0)
 # define _sir_nprocs_test() __sir_nprocs(1)
 
+/** XXX: Retrieves the program name. */
+const char* _sir_programname(void);
+
 # if defined(__cplusplus)
 }
 # endif
