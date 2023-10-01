@@ -1451,34 +1451,31 @@ long _sir_nprocs(void) {
     int ntprocs = 0;
     size_t sntprocs = sizeof(ntprocs);
     if (sysctl ((int[2]) {CTL_HW, HW_AVAILCPU}, 2, &ntprocs, &sntprocs, NULL, 0)) {
-        tprocs = 0;
+        ntprocs = 0;
     } else {
-        tprocs = (long)ntprocs;
-        _sir_selflog("sysctl(CTL_HW, HW_AVAILCPU) reports %ld processor(s)", ntprocs);
-        if (tprocs > nprocs)
-            nprocs = tprocs;
+        _sir_selflog("sysctl(CTL_HW, HW_AVAILCPU) reports %d processor(s)", ntprocs);
+        if (ntprocs > nprocs)
+            nprocs = (long)ntprocs;
     }
 #elif defined(CTL_HW) && defined(HW_NCPU)
     int ntprocs = 0;
     size_t sntprocs = sizeof(ntprocs);
     if (sysctl ((int[2]) {CTL_HW, HW_NCPU}, 2, &ntprocs, &sntprocs, NULL, 0)) {
-        tprocs = 0;
+        ntprocs = 0;
     } else {
-        tprocs = (long)ntprocs;
-        _sir_selflog("sysctl(CTL_HW, HW_NCPU) reports %ld processor(s)", ntprocs);
-        if (tprocs > nprocs)
-            nprocs = tprocs;
+        _sir_selflog("sysctl(CTL_HW, HW_NCPU) reports %d processor(s)", ntprocs);
+        if (ntprocs > nprocs)
+            nprocs = (long)ntprocs;
     }
 #elif defined(CTL_HW) && defined(HW_NCPUFOUND)
     int ntprocs = 0;
     size_t sntprocs = sizeof(ntprocs);
     if (sysctl ((int[2]) {CTL_HW, HW_NCPUFOUND}, 2, &ntprocs, &sntprocs, NULL, 0)) {
-        tprocs = 0;
+        ntprocs = 0;
     } else {
-        tprocs = (long)ntprocs;
-        _sir_selflog("sysctl(CTL_HW, HW_NCPUFOUND) reports %ld processor(s)", ntprocs);
-        if (tprocs > nprocs)
-            nprocs = tprocs;
+        _sir_selflog("sysctl(CTL_HW, HW_NCPUFOUND) reports %d processor(s)", ntprocs);
+        if (ntprocs > nprocs)
+            nprocs = (long)ntprocs;
     }
 #endif
 
@@ -1486,20 +1483,42 @@ long _sir_nprocs(void) {
     int antprocs = 0;
     size_t asntprocs = sizeof(antprocs);
     if (sysctlbyname("hw.ncpu", &antprocs, &asntprocs, NULL, 0)) {
-        tprocs = 0;
+        antprocs = 0;
     } else {
-        tprocs = (long)antprocs;
-        _sir_selflog("sysctlbyname(hw.ncpu) reports %ld processor(s)", tprocs);
-        if (tprocs > nprocs)
-            nprocs = tprocs;
+        _sir_selflog("sysctlbyname(hw.ncpu) reports %d processor(s)", antprocs);
+        if (antprocs > nprocs)
+            nprocs = (long)antprocs;
     }
 #endif
 
-    if (nprocs < 1) {
-        _sir_selflog(BRED("Failed to determine processor count!"));
-        return 1;
-    } else {
-        _sir_selflog("Reporting %ld processor(s)", nprocs);
-        return nprocs;
+#if defined(__QNX__) || defined(__QNXNTO__)
+    long qtprocs = (long)_syspage_ptr->num_cpu;
+    _sir_selflog("QNX _syspage_ptr->num_cpu reports %ld processor(s)", qtprocs);
+    if (qtprocs > nprocs)
+        nprocs = qtprocs;
+#endif
+
+#if defined(__VXWORKS__)
+# if defined(_WRS_CONFIG_SMP)
+    long vtprocs = 0;
+    cpuset_t vset = vxCpuEnabledGet();
+    for (int count = 0; count < 512 && !CPUSET_ISZERO(vset); ++count) {
+        if (CPUSET_ISSET(vset, count)) {
+            CPUSET_CLR(vset, count);
+            vtprocs++;
+        }
     }
+    _sir_selflog("VxWorks vxCpuEnabledGet() reports %ld processor(s)", vtprocs);
+# else
+    long vtprocs = 1;
+    _sir_selflog("VxWorks SMP is not enabled");
+# endif
+    if (vtprocs > nprocs)
+        nprocs = vtprocs;
+#endif
+
+    if (nprocs < 1)
+        _sir_selflog(BRED("Failed to determine processor count!"));
+    _sir_selflog("Detected %ld processor(s)", nprocs);
+    return nprocs;
 }
