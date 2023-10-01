@@ -27,6 +27,7 @@
 #include <ch.h>
 #include <stdbool.h>
 #include "chsir.h"
+#include "sir/internal.h"
 
 EXPORTCH bool
 sir_makeinit_chdl(void *varg) {
@@ -259,10 +260,6 @@ sir_emerg_chdl(void *varg) {
     return retval;
 }
 
-#if !defined(_SIR_INTERNAL_H_INCLUDED)
-bool _sir_setthreadname(const char *name);
-#endif /* if !defined(_SIR_INTERNAL_H_INCLUDED) */
-
 EXPORTCH bool
 _sir_setthreadname_chdl(void *varg) {
     ChInterp_t  interp;
@@ -274,6 +271,23 @@ _sir_setthreadname_chdl(void *varg) {
 
     name   = Ch_VaArg(interp, ap, const char *);
     retval = _sir_setthreadname(name);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH long
+__sir_nprocs_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    bool       test_mode;
+    long       retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    test_mode = Ch_VaArg(interp, ap, bool);
+    retval    = __sir_nprocs(test_mode);
 
     Ch_VaEnd(interp, ap);
 
