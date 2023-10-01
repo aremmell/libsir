@@ -1393,7 +1393,6 @@ long __sir_nprocs(bool test_mode) {
 #if defined(_AIX)
     nprocs = (long)_system_configuration.ncpus;
     _sir_selflog("AIX _system_configuration.ncpus reports %ld processor(s)", nprocs);
-    return nprocs;
 #endif
 
 #if defined(__WIN__)
@@ -1402,7 +1401,6 @@ long __sir_nprocs(bool test_mode) {
     GetSystemInfo(&system_info);
     nprocs = (long)system_info.dwNumberOfProcessors;
     _sir_selflog("Windows GetSystemInfo() reports %ld processor(s)", nprocs);
-    return nprocs;
 #endif
 
 #if defined(__HAIKU__)
@@ -1410,7 +1408,6 @@ long __sir_nprocs(bool test_mode) {
     get_system_info(&hinfo);
     nprocs = (long)hinfo.cpu_count;
     _sir_selflog("Haiku get_system_info() reports %ld processor(s)", nprocs);
-    return nprocs;
 #endif
 
 #if defined(SC_NPROCESSORS_ONLN)
@@ -1511,7 +1508,7 @@ long __sir_nprocs(bool test_mode) {
     _sir_selflog("VxWorks vxCpuEnabledGet() reports %ld processor(s)", vtprocs);
 # else
     long vtprocs = 1;
-    _sir_selflog("VxWorks SMP is not enabled");
+    _sir_selflog("Uniprocessor system or VxWorks SMP is not enabled");
 # endif
     if (vtprocs > nprocs)
         nprocs = vtprocs;
