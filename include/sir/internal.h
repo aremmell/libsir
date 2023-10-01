@@ -188,7 +188,7 @@ bool _sir_setthreadname(const char* name);
 bool _sir_gethostname(char name[SIR_MAXHOST]);
 
 /** Retrieves the number of available logical processors on this machine. */
-long _sir_nprocs(void);
+long _sir_nprocs(int *test_allow_zero);
 
 # if defined(__cplusplus)
 }

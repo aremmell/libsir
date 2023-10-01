@@ -2004,7 +2004,7 @@ bool sirtest_getcpucount(void) {
 
     TEST_MSG_0("checking CPU counting routines...");
 
-    const long cpus = _sir_nprocs();
+    const long cpus = _sir_nprocs((int*)1);
     _sir_eqland(pass, 0 < cpus);
 
     TEST_MSG("CPUs detected: '%ld'", cpus);
