@@ -2002,12 +2002,12 @@ bool sirtest_getcpucount(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    TEST_MSG_0("checking CPU counting routines...");
+    TEST_MSG_0("checking processor counting function...");
 
     const long cpus = _sir_nprocs_test();
     _sir_eqland(pass, 0 < cpus);
 
-    TEST_MSG("CPUs detected: '%ld'", cpus);
+    TEST_MSG("Processor(s) detected: %ld", cpus);
 
     _sir_eqland(pass, sir_cleanup());
     return PRINT_RESULT_RETURN(pass);
