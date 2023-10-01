@@ -7,6 +7,7 @@
     "settings": {
         "files.associations": {
             "*.i": "swig",
+            "CODEOWNERS": "ignore",
         }
     }
 }

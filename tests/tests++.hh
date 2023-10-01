@@ -23,8 +23,8 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#ifndef _TESTSXX_HH_INCLUDED
-# define _TESTSXX_HH_INCLUDED
+#ifndef _SIR_TESTSXX_HH_INCLUDED
+# define _SIR_TESTSXX_HH_INCLUDED
 
 # include "sir.hh"
 # include "tests_shared.h"
@@ -121,7 +121,7 @@ namespace sir::tests
     ERROR_MSG("unexpected exception in %s: '%s'", __PRETTY_FUNCTION__, what); \
     pass = false; \
     if (sir_isinitialized()) \
-        (void)sir_cleanup()
+        [[maybe_unused]] bool unused = sir_cleanup()
 
 /** Handles an expected exception. */
 # define _SIR_TEST_ON_EXPECTED_EXCEPTION(what) \
@@ -136,4 +136,4 @@ namespace sir::tests
     } \
     return PRINT_RESULT_RETURN(pass);
 
-#endif // !_TESTSXX_HH_INCLUDED
+#endif // !_SIR_TESTSXX_HH_INCLUDED
