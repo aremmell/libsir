@@ -8,11 +8,6 @@
         "files.associations": {
             "*.i": "swig",
             "CODEOWNERS": "ignore",
-            "typeinfo": "c",
-            "sirtypes.h": "c",
-            "sirconfig.h": "c",
-            "sirplatform.h": "c",
-            "ansimacros.h": "c"
         }
     }
 }

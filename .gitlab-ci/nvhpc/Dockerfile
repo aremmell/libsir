@@ -18,3 +18,5 @@ RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
     ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true)
 
 USER 10000
+
+RUN printf '\n%s\n' "BUILD SUCCESS"

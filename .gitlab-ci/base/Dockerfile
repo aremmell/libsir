@@ -237,3 +237,5 @@ RUN \
 #     chown user:user -R /codechecker
 
 USER 10000
+
+RUN printf '\n%s\n' "BUILD SUCCESS"

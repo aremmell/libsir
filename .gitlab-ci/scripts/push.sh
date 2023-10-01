@@ -4,7 +4,7 @@
 # Copyright (c) 2018-current Ryan M. Lederman
 
 printf '%s\n' "Sanity check ..."
-test -f Dockerfile ||
+test -f Dockerfile 2> /dev/null ||
   {
     printf '%s\n' "ERROR: No Dockerfile in current working directory."
     exit 1

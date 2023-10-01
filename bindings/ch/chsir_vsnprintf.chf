@@ -38,8 +38,8 @@ chsir_vsnprintf(char *str, size_t n, const char *fmt, va_list args) {
         while (*format) {
             _Bool long_int   = false;
             _Bool extra_long = false;
-            char c;
-            char *string_arg;
+            char  c;
+            char* string_arg;
 
             c = *format++;
 

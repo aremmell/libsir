@@ -28,7 +28,7 @@
 bool
 sir_makeinit(sirinit* si) {
     void* fptr;
-    bool retval;
+    bool  retval;
 
     fptr = dlsym(_Chsir_handle, "sir_makeinit_chdl");
     if (fptr == NULL) {
@@ -38,7 +38,7 @@ sir_makeinit(sirinit* si) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, sir_makeinit, si);
+    (void)dlrunfun(fptr, &retval, sir_makeinit, si);
 
     return retval;
 }

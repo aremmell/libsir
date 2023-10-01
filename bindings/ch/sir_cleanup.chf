@@ -28,7 +28,7 @@
 bool
 sir_cleanup(void) {
     void* fptr;
-    bool retval;
+    bool  retval;
 
     fptr = dlsym(_Chsir_handle, "sir_cleanup_chdl");
     if (fptr == NULL) {
@@ -38,7 +38,7 @@ sir_cleanup(void) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, sir_cleanup);
+    (void)dlrunfun(fptr, &retval, sir_cleanup);
 
     return retval;
 }

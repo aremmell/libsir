@@ -9,12 +9,12 @@ RUN apt -y update && \
     apt -y upgrade && \
     apt -y full-upgrade && \
     apt -y install \
-	dos2unix \
-	screen \
+        dos2unix \
+        screen \
         tmux \
-	git \
-	libfmt-dev \
-	libboost-all-dev \
+        git \
+        libfmt-dev \
+        libboost-all-dev \
         wine && \
     yes | dpkg --add-architecture i386 && \
     apt -y update && \
@@ -34,3 +34,5 @@ RUN apt -y update && \
 WORKDIR /
 
 USER 10000
+
+RUN printf '\n%s\n' "BUILD SUCCESS"
