@@ -1469,6 +1469,17 @@ long _sir_nprocs(void) {
         if (tprocs > nprocs)
             nprocs = tprocs;
     }
+#elif defined(CTL_HW) && defined(HW_NCPUFOUND)
+    int ntprocs = 0;
+    size_t sntprocs = sizeof(ntprocs);
+    if (sysctl ((int[2]) {CTL_HW, HW_NCPUFOUND}, 2, &ntprocs, &sntprocs, NULL, 0)) {
+        tprocs = 0;
+    } else {
+        tprocs = (long)ntprocs;
+        _sir_selflog("sysctl(CTL_HW, HW_NCPUFOUND) reports %ld processor(s)", ntprocs);
+        if (tprocs > nprocs)
+            nprocs = tprocs;
+    }
 #endif
 
 #if defined(__APPLE__) && defined(__MACH__)
