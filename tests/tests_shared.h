@@ -119,10 +119,10 @@ extern "C" {
 # define TEST_MSG_0(msg) (void)printf("\t" msg "\n")
 
 /** Prints `msg` in red to stderr. */
-# define ERROR_MSG(msg, ...) (void)fprintf(stderr, RED(msg) "\n", __VA_ARGS__)
+# define ERROR_MSG(msg, ...) TEST_MSG(RED(msg), __VA_ARGS__)
 
 /** ERROR_MSG but no varargs. Use when `msg` is just a string. */
-# define ERROR_MSG_0(msg) (void)fprintf(stderr, RED(msg) "\n")
+# define ERROR_MSG_0(msg) TEST_MSG_0(RED(msg))
 
 /** Prints `msg` in green if `expr` is true, or in red if false. */
 # define PASSFAIL_MSG(expr, msg, ...) \
