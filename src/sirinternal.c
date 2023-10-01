@@ -1425,7 +1425,7 @@ long __sir_nprocs(bool test_mode) {
 #if defined(__linux__) && !defined(__ANDROID__) && !defined(__UCLIBC__)
     long ctprocs;
     cpu_set_t p_aff;
-    memset( &p_aff, 0, sizeof(p_aff) );
+    memset(&p_aff, 0, sizeof(p_aff));
     if (sched_getaffinity(0, sizeof(p_aff), &p_aff)) {
         ctprocs = 0;
     } else {
@@ -1434,7 +1434,7 @@ long __sir_nprocs(bool test_mode) {
         _sir_selflog("sched_getaffinity(CPU_COUNT) reports %ld processor(s)", ctprocs);
 # else
         int cntprocs = 0;
-        for (size_t bit = 0; bit < (8 * sizeof(p_aff)); bit++ )
+        for (size_t bit = 0; bit < (8 * sizeof(p_aff)); bit++)
             cntprocs += (((uint8_t *)&p_aff)[bit / 8] >> (bit % 8)) & 1;
         ctprocs = cntprocs;
         _sir_selflog("sched_getaffinity(cntprocs) reports %ld processor(s)", ctprocs);
@@ -1476,7 +1476,7 @@ long __sir_nprocs(bool test_mode) {
     }
 #endif
 
-#if defined(__APPLE__) && defined(__MACH__)
+#if defined(__MACOS__)
     int antprocs = 0;
     size_t asntprocs = sizeof(antprocs);
     if (sysctlbyname("hw.ncpu", &antprocs, &asntprocs, NULL, 0)) {
