@@ -1387,15 +1387,8 @@ bool _sir_gethostname(char name[SIR_MAXHOST]) {
 #endif /* !__WIN__ */
 }
 
-long _sir_nprocs(int *test_allow_zero) {
+long __sir_nprocs(bool test_mode) {
     long nprocs = 0;
-    bool allow_zero;
-
-    if (test_allow_zero) {
-        allow_zero = true;
-    } else {
-        allow_zero = false;
-    }
 
 #if defined(_AIX)
     nprocs = (long)_system_configuration.ncpus;
@@ -1526,7 +1519,7 @@ long _sir_nprocs(int *test_allow_zero) {
 
     if (nprocs < 1) {
         _sir_selflog(BRED("Failed to determine processor count!"));
-        if (!allow_zero)
+        if (!test_mode)
             nprocs = 1;
     }
 
