@@ -62,6 +62,7 @@ static sir_test sir_tests[] = {
     {"squelch-spam",            sirtest_squelchspam, false, true},
     {"plugin-loader",           sirtest_pluginloader, false, true},
     {"get-cpu-count",           sirtest_getcpucount, false, true},
+    {"get-program-name",        sirtest_programname, false, true},
     {"get-version-info",        sirtest_getversioninfo, false, true}
 };
 
@@ -1994,6 +1995,21 @@ bool sirtest_pluginloader(void) {
 
     (void)print_test_error(pass, pass);
 #endif
+    _sir_eqland(pass, sir_cleanup());
+    return PRINT_RESULT_RETURN(pass);
+}
+
+bool sirtest_programname(void) {
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+    TEST_MSG_0("checking program name retrieval...");
+
+    const char* programname = _sir_getprogramname();
+    _sir_eqland(pass, programname);
+
+    TEST_MSG("_sir_getprogramname returned: '%s'", programname);
+
     _sir_eqland(pass, sir_cleanup());
     return PRINT_RESULT_RETURN(pass);
 }

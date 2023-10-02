@@ -260,6 +260,12 @@ sir_emerg_chdl(void *varg) {
     return retval;
 }
 
+EXPORTCH const char*
+_sir_getprogramname_chdl(void) {
+
+    return _sir_getprogramname();
+}
+
 EXPORTCH bool
 _sir_setthreadname_chdl(void *varg) {
     ChInterp_t  interp;

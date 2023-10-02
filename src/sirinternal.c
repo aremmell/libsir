@@ -1524,20 +1524,35 @@ long __sir_nprocs(bool test_mode) {
     return nprocs;
 }
 
-const char* _sir_progname(void) {
+const char* _sir_getprogramname(void) {
 #if defined(_AIX)
-    static char *progname;
+    _sir_selflog("Getting program name via AIX getprocs64(process.pi_comm)");
+    static const char *programname = NULL;
     static bool flag = true;
-    if (flag) {
+    do {
         flag = false;
         pid_t pid = _sir_getpid();
         struct procentry64 process;
-        progname = (0 < getprocs64(&process, sizeof(process), NULL, 0, &pid, 1)
-                      ? strndup(process.pi_comm, SIR_MAXPID) : NULL);
-        if (!progname)
-            progname = "";
-    }
-    return progname;
+        programname = (0 < getprocs64(&process, sizeof(process), NULL, 0, &pid, 1)
+                         ? strndup(process.pi_comm, SIR_MAXPID) : NULL);
+    } while(flag);
+    return programname;
+#elif defined(__CYGWIN__) || defined(__ANDROID__) || defined(__FreeBSD__) || \
+      defined(__NetBSD__) || defined(__OpenBSD__) || defined(__DragonFly__)
+    _sir_selflog("Getting program name via getprogname()");
+    return getprogname();
+#elif defined(__SOLARIS__)
+    _sir_selflog("Getting program name via getexecname()");
+    return getexecname() ? basename(getexecname()) : NULL;
+#elif (defined(__linux__) && defined(_GNU_SOURCE) && (defined(__GLIBC__) || defined(__UCLIBC__))) || \
+       defined(__HAIKU__) || defined(__EMSCRIPTEN__)
+    _sir_selflog("Getting program name via program_invocation_short_name");
+    return program_invocation_short_name;
+#elif defined(__linux__) || defined(__QNX__) || defined(__QNXNTO__)
+    _sir_selflog("Getting program name via __progname");
+    extern char* __progname;
+    char *programname = __progname;
+    return programname && basename(&programname[0]) ? programname : NULL;
 #else
     return NULL;
 #endif

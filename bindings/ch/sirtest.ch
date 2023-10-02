@@ -88,8 +88,8 @@ main(void) {
     if (0 == fileid)
         report_error();
 
-    /* Set a friendly name for the current thread. */
-    const char* thread_name = _argv[0] ? chsir_basename(_argv[0]) : "sirtest";
+    /* Set a friendly name for the current thread (the program name). */
+    const char* thread_name = _sir_getprogramname();
     (void)_sir_setthreadname(thread_name);
 
     /* Get libsir version. */
@@ -140,8 +140,8 @@ main(void) {
             report_error();
 
         /* Log to syslog. */
-        (void)sir_alert("%b Testing %s output", __LINE__, "alert");
-        (void)sir_emerg("%b Testing %s output", __LINE__, "emergency");
+        (void)sir_alert("%b Testing %s output: lp0 is on fire!", __LINE__, "alert");
+        (void)sir_emerg("%b Testing %s output: %'ld CPU(s) burning!", __LINE__, "emergency", _sir_nprocs());
     }
 
     /* Deregister (and close) the log file. */
@@ -149,7 +149,7 @@ main(void) {
         report_error();
 
     /* Clean up. */
-    sir_cleanup();
+    (void)sir_cleanup();
 
     /* We made it! */
     (void)fprintf(_stdout, WHITE("\nCh ") "binding test: " BGREEN("completed") BGRAY(".\n"));

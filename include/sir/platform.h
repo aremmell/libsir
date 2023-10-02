@@ -342,6 +342,14 @@ _set_thread_local_invalid_parameter_handler(
 #  define restrict //-V1059
 # endif
 
+# if defined(_AIX) && !defined(_ALL_SOURCE)
+#  define _ALL_SOURCE 1
+#  include <procinfo.h>
+#  undef _ALL_SOURCE
+# elif defined(_AIX)
+#  include <procinfo.h>
+# endif
+
 # include <errno.h>
 # include <stdarg.h>
 # include <stdbool.h>
@@ -349,10 +357,12 @@ _set_thread_local_invalid_parameter_handler(
 # include <inttypes.h>
 # include <stdio.h>
 # include <stdlib.h>
+
 # include <string.h>
 # if defined(DUMA)
 #  include <duma.h>
 # endif
+
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <limits.h>
@@ -430,7 +440,6 @@ _set_thread_local_invalid_parameter_handler(
 #   define SIR_NO_THREAD_NAMES
 #  endif
 #  if defined(_AIX)
-#   include <procinfo.h>
 #   include <sys/procfs.h>
 #   include <sys/systemcfg.h>
 #   undef SIR_NO_THREAD_NAMES

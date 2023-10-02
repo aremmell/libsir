@@ -278,6 +278,13 @@ bool sirtest_squelchspam(void);
 bool sirtest_pluginloader(void);
 
 /**
+ * @test sirtest_programname
+ * @brief Ensure that program name retrieval routines are functioning properly.
+ * @returns bool `true` if the test succeeded, `false` otherwise.
+ */
+bool sirtest_programname(void);
+
+/**
  * @test sirtest_getcpucount
  * @brief Ensure the processor counting routines are functioning properly.
  * @returns bool `true` if the test succeeded, `false` otherwise.
