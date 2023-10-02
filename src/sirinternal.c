@@ -1543,7 +1543,7 @@ const char* _sir_getprogramname(void) {
     return getprogname();
 #elif defined(__SOLARIS__)
     _sir_selflog("Getting program name via getexecname()");
-    return getexecname() ? basename(getexecname()) : NULL;
+    return (const char *)(getexecname() ? basename((char *)getexecname()) : NULL);
 #elif (defined(__linux__) && defined(_GNU_SOURCE) && (defined(__GLIBC__) || defined(__UCLIBC__))) || \
        defined(__HAIKU__) || defined(__EMSCRIPTEN__)
     _sir_selflog("Getting program name via program_invocation_short_name");
