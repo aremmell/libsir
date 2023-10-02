@@ -1525,7 +1525,10 @@ long __sir_nprocs(bool test_mode) {
 }
 
 const char* _sir_getprogramname(void) {
-#if defined(_AIX)
+#if defined(__WIN__)
+    _sir_selflog("Getting program name via Windows __argv");
+    return (const char *)(__argv && __argv[0] ? __argv[0] : NULL);
+#elif defined(_AIX)
     _sir_selflog("Getting program name via AIX getprocs64(process.pi_comm)");
     static const char *programname = NULL;
     static bool flag = true;
