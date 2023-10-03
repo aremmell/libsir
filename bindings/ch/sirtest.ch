@@ -149,7 +149,7 @@ main(void) {
         report_error();
 
     /* Clean up. */
-    sir_cleanup();
+    (void)sir_cleanup();
 
     /* We made it! */
     (void)fprintf(_stdout, WHITE("\nCh ") "binding test: " BGREEN("completed") BGRAY(".\n"));
