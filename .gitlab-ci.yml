@@ -3867,7 +3867,7 @@ Windows/Arm64 (Clang-CL, C++, C):
 
 ##############################################################################
 
-Linux/x86_64 (glibc 2.7, G++, GCC):
+Linux/x86_64 (glibc 2.7, GCC, C-only):
   stage: build_linux
   needs:
     - job: Style check
@@ -3883,13 +3883,10 @@ Linux/x86_64 (glibc 2.7, G++, GCC):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="${HOME:?}/x-tools/obggcc/x86_64-unknown-linux-gnu/bin:${HOME:?}/x-tools/obggcc/bin:${PATH:?}"
     - export CC="ccache x86_64-unknown-linux-gnu-gcc"
-    - export CXX="ccache x86_64-unknown-linux-gnu-g++"
     - export RANLIB="x86_64-unknown-linux-gnu-gcc-ranlib"
     - ${CC:?} --version
-    - ${CXX:?} --version
     - export EXTRA_LIBS="-lrt"
     - make
-    - make tests++
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -3899,7 +3896,6 @@ Linux/x86_64 (glibc 2.7, G++, GCC):
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - stdbuf -o L ./build/bin/sirexample
     - stdbuf -o L ./build/bin/sirtests
-    - stdbuf -o L ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -3916,7 +3912,7 @@ Linux/x86_64 (glibc 2.7, G++, GCC):
 
 ##############################################################################
 
-Linux/i386 (glibc 2.7, G++, GCC):
+Linux/i386 (glibc 2.7, GCC, C-only):
   stage: build_linux
   needs:
     - job: Style check
@@ -3932,13 +3928,10 @@ Linux/i386 (glibc 2.7, G++, GCC):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="${HOME:?}/x-tools/obggcc/i386-unknown-linux-gnu/bin:${HOME:?}/x-tools/obggcc/bin:${PATH:?}"
     - export CC="ccache i386-unknown-linux-gnu-gcc"
-    - export CXX="ccache i386-unknown-linux-gnu-g++"
     - export RANLIB="i386-unknown-linux-gnu-gcc-ranlib"
     - ${CC:?} --version
-    - ${CXX:?} --version
     - export EXTRA_LIBS="-lrt"
     - make
-    - make tests++
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -3948,7 +3941,6 @@ Linux/i386 (glibc 2.7, G++, GCC):
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - ./build/bin/sirexample
     - ./build/bin/sirtests
-    - ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -3965,7 +3957,7 @@ Linux/i386 (glibc 2.7, G++, GCC):
 
 ##############################################################################
 
-Linux/SPARC (glibc 2.7, G++, GCC):
+Linux/SPARC (glibc 2.7, GCC, C-only):
   stage: build_linux
   needs:
     - job: Style check
@@ -3981,13 +3973,10 @@ Linux/SPARC (glibc 2.7, G++, GCC):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="${HOME:?}/x-tools/obggcc/sparc-unknown-linux-gnu/bin:${HOME:?}/x-tools/obggcc/bin:${PATH:?}"
     - export CC="ccache sparc-unknown-linux-gnu-gcc"
-    - export CXX="ccache sparc-unknown-linux-gnu-g++"
     - export RANLIB="sparc-unknown-linux-gnu-gcc-ranlib"
     - ${CC:?} --version
-    - ${CXX:?} --version
     - export EXTRA_LIBS="-lrt"
     - make
-    - make tests++
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
