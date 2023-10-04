@@ -276,6 +276,18 @@ ifeq ($(CIRCLECPP),1)
 endif
 
 ##############################################################################
+# Enable GCC's `-fweb` optimization
+
+ifneq ($(SIR_DEBUG),1)
+  ifneq "$(findstring gcc,$(CC))" ""
+    SIR_CFLAGS+=-fweb
+  endif
+  ifneq "$(findstring g++,$(CXX))" ""
+    SIR_XFLAGS+=-fweb
+  endif
+endif
+
+##############################################################################
 # Default flags for linking a shared library?
 
 SIR_SHARED?=-shared
