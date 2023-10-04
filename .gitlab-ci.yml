@@ -3912,7 +3912,7 @@ Linux/x86_64 (glibc 2.7, GCC, C-only):
 
 ##############################################################################
 
-Linux/i386 (glibc 2.7, GCC, C-only):
+Linux/i686 (glibc 2.7, GCC, C-only):
   stage: build_linux
   needs:
     - job: Style check
