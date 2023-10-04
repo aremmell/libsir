@@ -3,10 +3,32 @@
 # SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
 root = true
 
-[*.{c,cc,ch,chf,chi,h,hh,i,py,sh}]
+[*.{c,cc,ch,chf,chi,h,hh,i,ps1,py,sh}]
 charset = utf-8
 end_of_line = lf
 indent_style = space
+insert_final_newline = true
+max_line_length = 132
+trim_trailing_whitespace = true
+
+[Doxyfile]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+insert_final_newline = true
+max_line_length = 80
+trim_trailing_whitespace = true
+
+[Makefile]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+max_line_length = 132
+trim_trailing_whitespace = true
+
+[*.mk]
+charset = utf-8
+end_of_line = lf
 insert_final_newline = true
 max_line_length = 132
 trim_trailing_whitespace = true
