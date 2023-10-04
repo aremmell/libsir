@@ -24,11 +24,10 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "tests++.hh"
-#include <cstdio>
-#include <cstdlib>
 #include <limits>
+#include <cstdlib>
+#include <cstdio>
 #include <vector>
-#include <cinttypes>
 
 using namespace std;
 using namespace sir;
