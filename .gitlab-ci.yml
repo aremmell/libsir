@@ -3957,7 +3957,7 @@ Linux/i686 (glibc 2.7, GCC, C-only):
 
 ##############################################################################
 
-Linux/SPARC (glibc 2.7, GCC, C-only):
+Linux/ppc (glibc 2.7, GCC, C-only):
   stage: build_linux
   needs:
     - job: Style check
@@ -3971,9 +3971,9 @@ Linux/SPARC (glibc 2.7, GCC, C-only):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export PATH="${HOME:?}/x-tools/obggcc/sparc-unknown-linux-gnu/bin:${HOME:?}/x-tools/obggcc/bin:${PATH:?}"
-    - export CC="ccache sparc-unknown-linux-gnu-gcc"
-    - export RANLIB="sparc-unknown-linux-gnu-gcc-ranlib"
+    - export PATH="${HOME:?}/x-tools/obggcc/powerpc-unknown-linux-gnu/bin:${HOME:?}/x-tools/obggcc/bin:${PATH:?}"
+    - export CC="ccache powerpc-unknown-linux-gnu-gcc"
+    - export RANLIB="powerpc-unknown-linux-gnu-gcc-ranlib"
     - ${CC:?} --version
     - export EXTRA_LIBS="-lrt"
     - make
@@ -3987,7 +3987,6 @@ Linux/SPARC (glibc 2.7, GCC, C-only):
     expire_in: 7 days
     paths:
       - build/
-      - logs/
   retry: 2
   interruptible: true
 
