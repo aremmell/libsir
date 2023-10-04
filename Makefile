@@ -252,7 +252,7 @@ $(INTDIR)/%.o: %.c $(DEPS)
 ##############################################################################
 # Compile tests++
 
-SIR_XFLAGS  := $(SIR_CFLAGS) $(CXXFLAGS)
+SIR_XFLAGS := $(strip $(patsubst $(SIR_CXFLAGS), ,$(SIR_CFLAGS) $(CXXFLAGS)))
 
 $(OBJ_TESTSXX): $(TESTS)/$(TESTSXX).cc $(DEPS)
 	@mkdir -p $(@D)

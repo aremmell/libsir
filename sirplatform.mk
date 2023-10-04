@@ -281,9 +281,7 @@ endif
 ifneq ($(SIR_DEBUG),1)
   ifneq "$(findstring gcc,$(CC))" ""
     SIR_CFLAGS+=-fweb
-  endif
-  ifneq "$(findstring g++,$(CXX))" ""
-    SIR_XFLAGS+=-fweb
+    SIR_CXFLAGS+=-fweb
   endif
 endif
 
