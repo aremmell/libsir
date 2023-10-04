@@ -288,7 +288,8 @@ test_extra()
                     -Wno-unknown-warning-option
                     -Wshift-overflow
                     -Wstring-conversion
-                    -Wswitch-enum"
+                    -Wswitch-enum
+                    -Wvla"
             ${MAKE:-make} all tests++
                 -j "${CPUS:-1}" ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
       printf '%s\n' ' && true' >> ./.extra.sh; ret="${?}"
@@ -356,7 +357,8 @@ test_gccextra()
                     -Wmissing-prototypes
                     -Wno-sign-conversion
                     -Wno-string-conversion
-                    -Wswitch-enum"
+                    -Wswitch-enum
+                    -Wvla"
             ${MAKE:-make} all tests++
                 -j 1 ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
       printf '%s\n' ' && true' >> ./.extra.sh; ret="${?}"
