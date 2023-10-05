@@ -1434,8 +1434,8 @@ long __sir_nprocs(bool test_mode) {
         _sir_selflog("sched_getaffinity(CPU_COUNT) reports %ld processor(s)", ctprocs);
 # else
         int cntprocs = 0;
-        for (size_t bit = 0; bit < (8 * sizeof(p_aff)); bit++)
-            cntprocs += (((uint8_t *)&p_aff)[bit / 8] >> (bit % 8)) & 1;
+        for (size_t bit = 0; bit < (CHAR_BIT * sizeof(p_aff)); bit++)
+            cntprocs += (((uint8_t *)&p_aff)[bit / CHAR_BIT] >> (bit % CHAR_BIT)) & 1;
         ctprocs = cntprocs;
         _sir_selflog("sched_getaffinity(cntprocs) reports %ld processor(s)", ctprocs);
 # endif
