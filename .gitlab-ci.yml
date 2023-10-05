@@ -1793,10 +1793,19 @@ Generate tags:
       # Start of tag generation ...
       echo -e "section_start:`date +%s`:tag_section[collapsed=false]\r\e[0K\033[0;36mTag generation ...\033[0m" || true
     - make tags
+    - htags --map-file --auto-completion --colorize-warned-line -h -I --tabs 4 -v -n -o -s --table-flist --statistics docs
     - |
       # End of tag generation ...
       echo -e "section_end:`date +%s`:tag_section\r\e[0K" || true
   dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - ./docs/HTML
+      - ./tags
+      - ./TAGS
+      - ./G*
   retry: 2
   interruptible: true
 
