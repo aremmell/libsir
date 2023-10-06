@@ -348,11 +348,25 @@ _set_thread_local_invalid_parameter_handler(
 # include <stdint.h>
 # include <inttypes.h>
 # include <stdio.h>
+
+# if defined(__cplusplus) && defined(__NVCOMPILER) && defined(__FLOAT128__)
+#  define NVIDIA_FLOAT128 __FLOAT128__
+#  undef __FLOAT128__
+# endif
+
 # include <stdlib.h>
+
+# if defined(NVIDIA_FLOAT128)
+#  define __FLOAT128__ NVIDIA_FLOAT128
+#  undef NVIDIA_FLOAT128
+# endif
+
 # include <string.h>
+
 # if defined(DUMA)
 #  include <duma.h>
 # endif
+
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <limits.h>
