@@ -119,8 +119,8 @@ libsir currently supports the following system logging facilities:
   <table align="center">
   <tbody>
   <tr>
-   <td align="center"><center>&nbsp;<a href="https://www.softintegration.com/"><b>Ch</b></a>&nbsp;<br>&nbsp;<a href="https://github.com/aremmell/libsir/blob/master/bindings/ch/sirtest.ch">Example</a>&nbsp;</center></td>
-   <td align="center"><center>&nbsp;<a href="https://www.python.org/"><b>Python</b></a>&nbsp;<br>&nbsp;<a href="https://github.com/aremmell/libsir/blob/master/bindings/python/sirtest.py">Example</a>&nbsp;</center></td>
+   <td align="center"><center>&nbsp;<a href="https://www.softintegration.com/"><b>Ch</b></a>&nbsp;</center></td>
+   <td align="center"><center>&nbsp;<a href="https://www.python.org/"><b>Python</b></a>&nbsp;</center></td>
   </tr>
   </tbody>
   </table>
