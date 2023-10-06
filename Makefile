@@ -252,7 +252,7 @@ $(INTDIR)/%.o: %.c $(DEPS)
 ##############################################################################
 # Compile tests++
 
-SIR_XFLAGS  := $(SIR_CFLAGS) $(CXXFLAGS)
+SIR_XFLAGS := $(strip $(patsubst $(SIR_CXFLAGS), ,$(SIR_CFLAGS) $(CXXFLAGS)))
 
 $(OBJ_TESTSXX): $(TESTS)/$(TESTSXX).cc $(DEPS)
 	@mkdir -p $(@D)
@@ -507,7 +507,7 @@ endif # ifneq ($(SIR_NO_PLUGINS),1)
 
 ctags tags TAGS GPATH GRTAGS GTAGS:
 	-@rm -f tags TAGS GPATH GRTAGS GTAGS > /dev/null 2>&1 || true; \
-	  FDIRS="bindings example include plugins src tests"; \
+	  FDIRS="LICENSE Makefile *.mk bindings example include plugins src tests"; \
 	  FLIST="$$(2> /dev/null find $${FDIRS} | \
 	            2> /dev/null xargs -I{} \
 	            2> /dev/null printf %s\\n \"{}\" | \
