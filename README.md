@@ -107,11 +107,8 @@ libsir currently supports the following system logging facilities:
    <td align="center"><center>&nbsp;<a href="https://en.cppreference.com/w/cpp/utility/format/format"><b>std</b>::<b>format</b></a>&nbsp;</center></td>
    <td align="center"><center>&nbsp;<a href="https://theboostcpplibraries.com/boost.format"><b>Boost</b>.<b>Format</b></a>&nbsp;</center></td>
    <td align="center"><center>&nbsp;<a href="https://cplusplus.com/reference/istream/iostream"><b>std</b>::<b>iostream</b></a>&nbsp;</center></td>
+   <!--<td align="center"><center>&nbsp;<a href="https://github.com/c42f/tinyformat"><b>tinyformat</b></a>&nbsp;</center></td>-->
   </tr>
-  <!--<tr>
-   <td align="center"><center>&nbsp;<a href="https://github.com/c42f/tinyformat"><b>tinyformat</b></a>&nbsp;</center></td>
-   <td align="center"><center>&nbsp;<a href="https://github.com/seanbaxter/circle/blob/master/new-circle/README.md#string-constant-formatting"><b>Circle</b>.<b>format</b></a>&nbsp;</center></td>
-  </tr>-->
   </tbody>
   </table>
 
@@ -122,9 +119,16 @@ libsir currently supports the following system logging facilities:
   <table align="center">
   <tbody>
   <tr>
+   <td align="center"><center>&nbsp;<b><u>Language</u></b>&nbsp;</center></td>
+   <td align="center"><center>&nbsp;<b><u>Example</u></b>&nbsp;</center></td>
+  </tr>
+  <tr>
    <td align="center"><center>&nbsp;<a href="https://www.softintegration.com/"><b>Ch</b></a>&nbsp;</center></td>
-   <!--<td align="center"><center>&nbsp;<a href="https://factorcode.org/"><b>Factor</b></a>&nbsp;</center></td>-->
-   <td align="center"><center>&nbsp;<a href="https://www.python.org/"><b>Python 3</b></a>&nbsp;</center></td>
+   <td align="center"><center>&nbsp;<a href="https://github.com/aremmell/libsir/blob/master/bindings/ch/sirtest.ch"><b>sirtest.ch</b></a>&nbsp;</center></td>
+  </tr>
+  <tr>
+   <td align="center"><center>&nbsp;<a href="https://www.python.org/">Python</a>&nbsp;</center></td>
+   <td align="center"><center>&nbsp;<a href="https://github.com/aremmell/libsir/blob/master/bindings/python/sirtest.py">sirtest.py</a>&nbsp;</center></td>
   </tr>
   </tbody>
   </table>
