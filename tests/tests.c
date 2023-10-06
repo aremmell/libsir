@@ -2007,7 +2007,7 @@ bool sirtest_getcpucount(void) {
     const long cpus = _sir_nprocs_test();
     _sir_eqland(pass, 0 < cpus);
 
-    TEST_MSG("Processor(s) detected: %ld", cpus);
+    TEST_MSG("processor(s) detected: %ld", cpus);
 
     _sir_eqland(pass, sir_cleanup());
     return PRINT_RESULT_RETURN(pass);
