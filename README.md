@@ -119,16 +119,8 @@ libsir currently supports the following system logging facilities:
   <table align="center">
   <tbody>
   <tr>
-   <td align="center"><center>&nbsp;<b><u>Language</u></b>&nbsp;</center></td>
-   <td align="center"><center>&nbsp;<b><u>Example</u></b>&nbsp;</center></td>
-  </tr>
-  <tr>
-   <td align="center"><center>&nbsp;<a href="https://www.softintegration.com/"><b>Ch</b></a>&nbsp;</center></td>
-   <td align="center"><center>&nbsp;<a href="https://github.com/aremmell/libsir/blob/master/bindings/ch/sirtest.ch"><b>sirtest.ch</b></a>&nbsp;</center></td>
-  </tr>
-  <tr>
-   <td align="center"><center>&nbsp;<a href="https://www.python.org/">Python</a>&nbsp;</center></td>
-   <td align="center"><center>&nbsp;<a href="https://github.com/aremmell/libsir/blob/master/bindings/python/sirtest.py">sirtest.py</a>&nbsp;</center></td>
+   <td align="center"><center>&nbsp;<a href="https://www.softintegration.com/"><b>Ch</b></a>&nbsp;<a href="https://github.com/aremmell/libsir/blob/master/bindings/ch/sirtest.ch">(Example)</a></center></td>
+   <td align="center"><center>&nbsp;<a href="https://www.python.org/">Python</a>&nbsp;<a href="https://github.com/aremmell/libsir/blob/master/bindings/python/sirtest.py">(Example)</a></center></td>
   </tr>
   </tbody>
   </table>
