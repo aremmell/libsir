@@ -114,7 +114,7 @@ libsir currently supports the following system logging facilities:
 
 ### <a id="language-bindings" /> Language Bindings
 
-* [Bindings](https://github.com/aremmell/libsir/tree/master/bindings) for scripting tools and other high-level programming languages are being developed, including support for:
+* [Bindings](https://github.com/aremmell/libsir/tree/master/bindings) for scripting tools and other high-level programming languages are available, including support for:
 
   <table align="center">
   <tbody>
