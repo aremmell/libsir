@@ -1422,23 +1422,15 @@ long __sir_nprocs(bool test_mode) {
         nprocs = tprocs;
 #endif
 
-#if defined(__linux__) && !defined(__ANDROID__) && !defined(__UCLIBC__)
+#if defined(__linux__) /*&& defined(CPU_COUNT)*/ && !defined(__ANDROID__) && !defined(__UCLIBC__)
     long ctprocs;
     cpu_set_t p_aff;
     memset(&p_aff, 0, sizeof(p_aff));
     if (sched_getaffinity(0, sizeof(p_aff), &p_aff)) {
         ctprocs = 0;
     } else {
-# if defined(CPU_COUNT)
         ctprocs = CPU_COUNT(&p_aff);
         _sir_selflog("sched_getaffinity(CPU_COUNT) reports %ld processor(s)", ctprocs);
-# else
-        int cntprocs = 0;
-        for (size_t bit = 0; bit < (CHAR_BIT * sizeof(p_aff)); bit++)
-            cntprocs += (((uint8_t *)&p_aff)[bit / CHAR_BIT] >> (bit % CHAR_BIT)) & 1;
-        ctprocs = cntprocs;
-        _sir_selflog("sched_getaffinity(cntprocs) reports %ld processor(s)", ctprocs);
-# endif
     }
     if (ctprocs > nprocs)
         nprocs = ctprocs;
