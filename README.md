@@ -110,9 +110,11 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 
 libsir currently supports the following system logging facilities:
 
-* `Event Log` on Windows: the system-wide log viewable with Event Viewer
-* `os_log` on macOS: the system-wide log viewable with Console or the `log` command
-* `syslog` on any OS that provides it
+| **Facility** | **Operating System** | **Description**                                                        |
+|-------------:|:--------------------:|:-----------------------------------------------------------------------|
+|  `Event Log` |   Microsoft Windows  | the system-wide log viewable with **Event Viewer**                     |
+|     `os_log` |      Apple macOS     | the system-wide log viewable with **Console** (*or the `log` command*) |
+|     `syslog` |        (*any*)       | BSD-style system logging via `syslog()` libc function (*local only*)   |
 
 ### <a id="c---compatibility" /> C++ compatibility
 
