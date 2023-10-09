@@ -19,7 +19,7 @@ var group__publictypes =
       [ "opts", "group__publictypes.html#a7e1370c46de95363162d1c7879fca723", null ]
     ] ],
     [ "sir_syslog_dest", "group__publictypes.html#structsir__syslog__dest", [
-      [ "_state", "group__publictypes.html#adb7f555cb381826a0aedfdbb58e96bd1", null ],
+      [ "_state", "group__publictypes.html#aad08e3b5649d10481b87bf507cacb1a5", null ],
       [ "category", "group__publictypes.html#ace79b2f2bd4d08d0c6e4151dafb3266b", null ],
       [ "identity", "group__publictypes.html#acbc738f8c0f9dc404ac85e13cb43c7c5", null ],
       [ "levels", "group__publictypes.html#a2fb4c11cdb645a46f008c34678260bbc", null ],
