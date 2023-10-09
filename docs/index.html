@@ -206,11 +206,16 @@ libsir visual graph</div></div>
 </ul>
 <h2><a class="anchor" id="system-loggers"></a> System Loggers</h2>
 <p>libsir currently supports the following system logging facilities:</p>
-<ul>
-<li><code>Event Log</code> on Windows: the system-wide log viewable with Event Viewer</li>
-<li><code>os_log</code> on macOS: the system-wide log viewable with Console or the <code>log</code> command</li>
-<li><code>syslog</code> on any OS that provides it</li>
-</ul>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadRight"><b>Log&#160;Facility</b>   </th><th class="markdownTableHeadLeft"><b>System</b>   </th><th class="markdownTableHeadLeft"><b>Description</b>    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyRight">Event&#160;Log   </td><td class="markdownTableBodyLeft">Windows   </td><td class="markdownTableBodyLeft">System log viewable with <b>Event Viewer</b>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyRight">os_log   </td><td class="markdownTableBodyLeft">macOS   </td><td class="markdownTableBodyLeft">System log viewable with <b>Console</b> (<em>or the <code>log</code> command</em>)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyRight">syslog   </td><td class="markdownTableBodyLeft">(<em>many</em>)   </td><td class="markdownTableBodyLeft">BSD-style system logging via <code>syslog()</code> (<em>local only</em>)   </td></tr>
+</table>
 <h2><a class="anchor" id="c---compatibility"></a> C++ compatibility</h2>
 <ul>
 <li><p class="startli">A C++20 <a href="https://github.com/aremmell/libsir/blob/master/include/sir.hh">header-only wrapper</a> is available which allows for easy integration with C++ projects, including optional support for popular formatting libraries:</p>
