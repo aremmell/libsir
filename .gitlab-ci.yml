@@ -188,9 +188,9 @@ Linux/i686 (G++, GCC):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - stdbuf -o L ./build/bin/sirexample
-    - stdbuf -o L ./build/bin/sirtests
-    - stdbuf -o L ./build/bin/sirtests++
+    - ./build/bin/sirexample
+    - ./build/bin/sirtests
+    - ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -326,9 +326,9 @@ Linux/i686 (Clang++, Clang):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - stdbuf -o L ./build/bin/sirexample
-    - stdbuf -o L ./build/bin/sirtests
-    - stdbuf -o L ./build/bin/sirtests++
+    - ./build/bin/sirexample
+    - ./build/bin/sirtests
+    - ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -423,9 +423,9 @@ Linux/i686 (AOCC++, AOCC):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - stdbuf -o L ./build/bin/sirexample
-    - stdbuf -o L ./build/bin/sirtests
-    - stdbuf -o L ./build/bin/sirtests++
+    - ./build/bin/sirexample
+    - ./build/bin/sirtests
+    - ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -600,8 +600,8 @@ Linux/i686 (Oracle Studio C, C-only):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - stdbuf -o L ./build/bin/sirexample
-    - stdbuf -o L ./build/bin/sirtests
+    - ./build/bin/sirexample
+    - ./build/bin/sirtests
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -2305,8 +2305,8 @@ Linux/i686 (DMD64 ImportC, C-only):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - stdbuf -o L ./build/bin/sirexample
-    - stdbuf -o L ./build/bin/sirtests
+    - ./build/bin/sirexample
+    - ./build/bin/sirtests
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
