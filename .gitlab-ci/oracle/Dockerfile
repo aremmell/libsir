@@ -1,9 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-current Ryan M. Lederman
-
-# Use --build-arg URL1="..." to override default libnsl link
-# Use --build-arg URL2="..." to override default Oracle link
-# oracle126.tar.gz is an archive of Oracle Studio 12.6
+# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
 
 FROM registry.gitlab.com/libsir/libsir/base:latest
 

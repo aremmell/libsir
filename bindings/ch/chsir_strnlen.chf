@@ -6,6 +6,7 @@
  * strnlen from: $OpenBSD: strnlen.c,v 1.9  2019/01/25 00:19:25 millert Exp $
  *
  * Copyright (c) 1998, 2010, 2015 Todd C. Miller <millert@openbsd.org>
+ * Copyright (c) 2023 Jeffrey H. Johnson <trnsz@pobox.com>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above

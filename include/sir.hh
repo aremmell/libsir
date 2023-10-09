@@ -1,5 +1,6 @@
 /*
  * @file sir.hh
+ *
  * @brief C++ interface to libsir
  *
  * @author    Ryan M. Lederman \<lederman@gmail.com\>

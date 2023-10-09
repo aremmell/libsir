@@ -1,5 +1,6 @@
 /**
  * @file defaults.h
+ *
  * @brief Default levels, options, and text styling.
  *
  * The values herein represent the defaults for output destinations if defaults
