@@ -47,12 +47,13 @@ void report_warning(const char* warning);
  * if an error occurs.
  */
 int main(void) {
-    /**
+    /*
      * Instantiate the libsir initialization struct and customize the configuration.
      *
      * NOTE: It is not necessary to retain this structure in memory;
      * libsir makes a copy of it before returning from ::sir_init.
      */
+
     sirinit si;
     if (!sir_makeinit(&si))
         return report_error();
@@ -91,6 +92,7 @@ int main(void) {
      * Configure and add a log file; don't log the process name or hostname,
      * and send all levels there.
      */
+
     sirfileid fileid = sir_addfile("libsir-example.log", SIRL_ALL, SIRO_NONAME | SIRO_NOHOST);
     if (0 == fileid)
         return report_error();
@@ -118,6 +120,7 @@ int main(void) {
      * 'notice' will the messages be emitted from stdout; the rest will come from
      * stderr.
      */
+
     (void)sir_info("MyFooServer v%d.%d.%d (amd64) started successfully in %.2fsec.",
                    2, 9, 4, (double)1.94f);
 
@@ -140,6 +143,7 @@ int main(void) {
      * SIR_NO_SYSTEM_LOGGERS preprocessor define was set when libsir was
      * compiled, these calls will fail and have no effect.
      */
+
     if (!sir_syslogid(appname))
         report_warning("Failed to set system logger ID");
 
@@ -170,11 +174,15 @@ int main(void) {
      *
      * The last thing we have to do is uninitialize libsir by calling sir_cleanup().
      */
+
     return sir_cleanup() ? EXIT_SUCCESS : report_error();
 }
 
 /**
- * Prints the last libsir error to stderr and returns EXIT_FAILURE.
+ * @brief Prints the last libsir error to stderr.
+ *
+ * @returns EXIT_SUCCESS if execution completes successfully, or
+ *          EXIT_FAILURE if an error occurs.
  */
 int report_error(void) {
     char message[SIR_MAXERROR] = {0};
@@ -184,7 +192,12 @@ int report_error(void) {
 }
 
 /**
- * Prints a warning message along with the last libsir error to stderr.
+ * @brief Prints a warning message along with the last libsir error to stderr.
+ *
+ * @param warning The warning message text.
+ *
+ * @returns EXIT_SUCCESS if execution completes successfully, or
+ *          EXIT_FAILURE if an error occurs.
  */
 void report_warning(const char* warning) {
     if (_sir_validstrnofail(warning)) {
