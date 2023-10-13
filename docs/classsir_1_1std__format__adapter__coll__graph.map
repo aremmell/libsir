@@ -1,0 +1,5 @@
+<map id="sir::std_format_adapter&lt; TPolicy &gt;" name="sir::std_format_adapter&lt; TPolicy &gt;">
+<area shape="rect" id="Node000001" title="Adapter for std::format (when available)." alt="" coords="5,78,161,117"/>
+<area shape="rect" id="Node000002" href="$classsir_1_1adapter.html" title="Defines the abstract interface for an adapter, which ultimately becomes a public base class of logger..." alt="" coords="40,5,126,30"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="86,45,86,77,80,77,80,45"/>
+</map>

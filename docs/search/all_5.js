@@ -2,7 +2,7 @@ var searchData=
 [
   ['emerg_0',['emerg',['../classsir_1_1default__adapter.html#ac6cc004d815f3a236f871d1207df6753',1,'sir::default_adapter']]],
   ['emph_1',['EMPH',['../ansimacros_8h.html#a83167d57009cd2bb4a9116de97039bf3',1,'ansimacros.h']]],
-  ['error_2',['error',['../classsir_1_1default__adapter.html#a97abc9b8dd4bce5e866ddc3687c3f334',1,'sir::default_adapter::error()'],['../structsir_1_1error.html',1,'sir::error']]],
+  ['error_2',['error',['../structsir_1_1error.html',1,'sir::error'],['../classsir_1_1default__adapter.html#a97abc9b8dd4bce5e866ddc3687c3f334',1,'sir::default_adapter::error()']]],
   ['error_5fhandling_3',['error_handling',['../namespacesir_1_1tests.html#a5970ea209e461a40f026ff101d45535b',1,'sir::tests']]],
   ['error_5finfo_4',['error_info',['../structsir_1_1error__info.html',1,'sir']]],
   ['example_2ec_5',['example.c',['../example_8c.html',1,'']]],

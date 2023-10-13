@@ -1,0 +1,5 @@
+<map id="sir::default_adapter&lt; TPolicy &gt;" name="sir::default_adapter&lt; TPolicy &gt;">
+<area shape="rect" id="Node000001" title="The default adapter implementation." alt="" coords="5,78,138,117"/>
+<area shape="rect" id="Node000002" href="$classsir_1_1adapter.html" title="Defines the abstract interface for an adapter, which ultimately becomes a public base class of logger..." alt="" coords="28,5,115,30"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="74,45,74,77,69,77,69,45"/>
+</map>

@@ -195,9 +195,6 @@ int report_error(void) {
  * @brief Prints a warning message along with the last libsir error to stderr.
  *
  * @param warning The warning message text.
- *
- * @returns EXIT_SUCCESS if execution completes successfully, or
- *          EXIT_FAILURE if an error occurs.
  */
 void report_warning(const char* warning) {
     if (_sir_validstrnofail(warning)) {

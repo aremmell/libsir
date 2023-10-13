@@ -1,0 +1,5 @@
+<map id="sir_queue" name="sir_queue">
+<area shape="rect" id="Node000001" title="FIFO queue." alt="" coords="23,92,100,117"/>
+<area shape="rect" id="Node000002" href="$structsir__queue__node.html" title="A node in a sir_queue." alt="" coords="5,5,118,30"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="64,45,64,92,59,92,59,45"/>
+</map>
