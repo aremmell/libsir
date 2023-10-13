@@ -1,4 +1,4 @@
-/*
+/**
  * @file sir.hh
  *
  * @brief C++ interface to libsir
