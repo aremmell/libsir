@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['test_20suite_0',['Test suite',['../testsuite.html',1,'']]],
+  ['test_20suite_0',['Test suite',['../md_docs_2sources_2sirtests.html',1,'']]],
   ['tests_1',['Tests',['../group__tests.html',1,'']]],
   ['threads_2',['threads',['../structsir__threadpool.html#ab7832daed4aced16c462f2340c79c436',1,'sir_threadpool']]],
   ['throw_5fon_5ferror_3',['throw_on_error',['../classsir_1_1policy.html#abd4159da84207f2bcbd9fd2ce78e2640',1,'sir::policy']]],

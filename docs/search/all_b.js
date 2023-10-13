@@ -4,5 +4,5 @@ var searchData=
   ['levels_1',['levels',['../group__publictypes.html#a3dc07c2b3fbe96d9c6f4d8af2ef90687',1,'sir_stdio_dest::levels'],['../group__publictypes.html#a2fb4c11cdb645a46f008c34678260bbc',1,'sir_syslog_dest::levels'],['../structsir__plugininfo.html#ab3d8e14fb3f09579052cfc6f48e638b7',1,'sir_plugininfo::levels'],['../structsir__update__config__data.html#a76c8c666c84b831bf2cc77f92c5fa16b',1,'sir_update_config_data::levels']]],
   ['libsir_2',['libsir',['../index.html',1,'']]],
   ['line_3',['line',['../structsir_1_1error__info.html#af75e59110165c3b9956b033f6d8b2fa3',1,'sir::error_info::line'],['../group__publictypes.html#aac81443950636231618b982dfb5b122f',1,'sir_errorinfo::line']]],
-  ['logger_4',['logger',['../classsir_1_1logger.html',1,'sir::logger&lt; RAII, TPolicy, TAdapters &gt;'],['../group__publictypes.html#a6db435f352d7ea4a67807a3feb447bf7',1,'sir_syslog_dest._state::logger']]]
+  ['logger_4',['logger',['../group__publictypes.html#a6db435f352d7ea4a67807a3feb447bf7',1,'sir_syslog_dest._state::logger'],['../classsir_1_1logger.html',1,'sir::logger&lt; RAII, TPolicy, TAdapters &gt;']]]
 ];

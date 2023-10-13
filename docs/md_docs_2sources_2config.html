@@ -45,7 +45,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">libsir<span id="projectnumber">&#160;2.2.3</span>
+   <div id="projectname">libsir<span id="projectnumber">&#160;2.2.4</span>
    </div>
    <div id="projectbrief">Standard Incident Reporter</div>
   </td>
@@ -114,18 +114,18 @@ $(document).ready(function(){initNavTree('md_docs_2sources_2config.html',''); in
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>Compile-time configuration of libsir.</p>
-<h1>Preprocessor macros</h1>
-<p>The following are applied at compile-time when executing <code>make</code>:</p>
+<h1>Environment variables</h1>
+<p>The variables in the following table are applied at compile-time when executing <code>make</code>.</p>
+<p><b>Example:</b></p>
 <div class="fragment"><div class="line">env SIR_PREPROCESSOR_FOO=1 make ...</div>
-</div><!-- fragment --><p>The Makefile takes care of the rest; you may also feel free to edit the Makefile to suit your needs, avoiding this step entirely.</p>
-<p><b>Available preprocessor macros:</b></p>
+</div><!-- fragment --><p>The Makefile takes care of the rest; for each environment variable that is known to the Makefile, it adds or removes compiler options based on the values provided. This may be a simple mapping of <code>VAR=1</code> to <code>-DVAR</code>, or a more nuanced configuration:</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadCenter">Macro (default)   </th><th class="markdownTableHeadCenter">State   </th><th class="markdownTableHeadCenter">Compiler settings   </th><th class="markdownTableHeadLeft">Description    </th></tr>
+<th class="markdownTableHeadCenter">Variable (default)   </th><th class="markdownTableHeadCenter">State   </th><th class="markdownTableHeadCenter">Compiler settings   </th><th class="markdownTableHeadLeft">Description    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter" rowspan="2"><code>SIR_DEBUG (0)</code>   </td><td class="markdownTableBodyCenter"><code>0</code>   </td><td class="markdownTableBodyCenter"><code>-O3 -DNDEBUG</code>   </td><td class="markdownTableBodyLeft">Full optimization is applied, and no debugging symbols are included.    </td></tr>
+<td class="markdownTableBodyCenter" rowspan="2"><code>SIR_DEBUG (0)</code>   </td><td class="markdownTableBodyCenter"><code>0</code>   </td><td class="markdownTableBodyCenter"><code>-O3 -DNDEBUG -D_FORTIFY_SOURCE=2</code>   </td><td class="markdownTableBodyLeft">Full optimization is applied, source fortification is set to level 2, and no debugging symbols are included.    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter"><code>1</code>   </td><td class="markdownTableBodyCenter"><code>-g3 -00 -DDEBUG</code>   </td><td class="markdownTableBodyLeft">No optimizations are applied, and full debugging symbols are included.    </td></tr>
+<td class="markdownTableBodyCenter"><code>1</code>   </td><td class="markdownTableBodyCenter"><code>-g3 -00 -DDEBUG -U_FORTIFY_SOURCE</code>   </td><td class="markdownTableBodyLeft">No optimizations are applied, source fortification is disabled, and full debugging symbols are included.    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyCenter" rowspan="2"><code>SIR_SELFLOG (0)</code>   </td><td class="markdownTableBodyCenter"><code>0</code>   </td><td class="markdownTableBodyCenter"><code>N/A</code>   </td><td class="markdownTableBodyLeft">NOOP    </td></tr>
 <tr class="markdownTableRowEven">
@@ -144,7 +144,7 @@ $(document).ready(function(){initNavTree('md_docs_2sources_2config.html',''); in
 <td class="markdownTableBodyCenter"><code>1</code>   </td><td class="markdownTableBodyCenter"><code>-DSIR_NO_PLUGINS</code>   </td><td class="markdownTableBodyLeft">The plugin system's functionality will be disabled (<em>and most of it compiled out</em>).   </td></tr>
 </table>
 <hr  />
-<dl class="section note"><dt>Note</dt><dd>If you plan to use the Visual Studio solution, see <code>README.md</code> under <code>Help</code> once the solution is loaded.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>If you plan to use the Visual Studio 2022 solution, see <code>README.md</code> under <code>Help</code> once the solution is loaded.</dd></dl>
 <h1>sirconfig.h</h1>
 <p>All of the fine-grained compile-time constants, such as (but not limited to):</p>
 <ol type="1">

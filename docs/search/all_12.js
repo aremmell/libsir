@@ -1,12 +1,12 @@
 var searchData=
 [
-  ['sir_0',['sir',['../namespacesir.html',1,'']]],
-  ['sir_2ec_1',['sir.c',['../sir_8c.html',1,'']]],
-  ['sir_2eh_2',['sir.h',['../sir_8h.html',1,'']]],
-  ['sir_3a_3aderivedfrompolicy_3',['DerivedFromPolicy',['../conceptsir_1_1_derived_from_policy.html',1,'sir']]],
-  ['sir_3a_3aderivedfromstreambuf_4',['DerivedFromStreamBuf',['../conceptsir_1_1_derived_from_stream_buf.html',1,'sir']]],
-  ['sir_3a_3aderivedfromt_5',['DerivedFromT',['../conceptsir_1_1_derived_from_t.html',1,'sir']]],
-  ['sir_3a_3atests_6',['tests',['../namespacesir_1_1tests.html',1,'sir']]],
+  ['derivedfrompolicy_0',['DerivedFromPolicy',['../conceptsir_1_1_derived_from_policy.html',1,'sir']]],
+  ['derivedfromstreambuf_1',['DerivedFromStreamBuf',['../conceptsir_1_1_derived_from_stream_buf.html',1,'sir']]],
+  ['derivedfromt_2',['DerivedFromT',['../conceptsir_1_1_derived_from_t.html',1,'sir']]],
+  ['sir_3',['sir',['../namespacesir.html',1,'']]],
+  ['sir_2ec_4',['sir.c',['../sir_8c.html',1,'']]],
+  ['sir_2eh_5',['sir.h',['../sir_8h.html',1,'']]],
+  ['sir_2ehh_6',['sir.hh',['../sir_8hh.html',1,'']]],
   ['sir_5faddfile_7',['sir_addfile',['../group__publicfuncs.html#gaa04f4ca1fc06e1d99ca4f0fd6422b573',1,'sir_addfile(const char *path, sir_levels levels, sir_options opts):&#160;sir.c'],['../group__publicfuncs.html#gaa04f4ca1fc06e1d99ca4f0fd6422b573',1,'sir_addfile(const char *path, sir_levels levels, sir_options opts):&#160;sir.c']]],
   ['sir_5falert_8',['sir_alert',['../group__publicfuncs.html#ga235d760d94e67fcf82ccc16c77a8249e',1,'sir_alert(PRINTF_FORMAT const char *format,...):&#160;sir.c'],['../group__publicfuncs.html#ga235d760d94e67fcf82ccc16c77a8249e',1,'sir_alert(PRINTF_FORMAT const char *format,...):&#160;sir.c']]],
   ['sir_5fcl_5farg_9',['sir_cl_arg',['../structsir__cl__arg.html',1,'']]],
@@ -277,5 +277,5 @@ var searchData=
   ['str_274',['str',['../structsir__level__style__tuple.html#a5f67704e0d74d266d0a5d2d3c9459816',1,'sir_level_style_tuple']]],
   ['strike_275',['STRIKE',['../ansimacros_8h.html#a1319b1d6256ace654ff3bad6275ead00',1,'ansimacros.h']]],
   ['style_276',['style',['../structsir__level__style__tuple.html#a8fed0d03eeb0003783ccec5e26665a53',1,'sir_level_style_tuple']]],
-  ['suite_277',['Test suite',['../testsuite.html',1,'']]]
+  ['tests_277',['tests',['../namespacesir_1_1tests.html',1,'sir']]]
 ];
