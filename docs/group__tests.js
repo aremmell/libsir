@@ -17,6 +17,7 @@ var group__tests =
     [ "sirtest_failwithoutinit", "group__tests.html#ga4f238c5ad2114b9a746e64b003165bd1", null ],
     [ "sirtest_filecachesanity", "group__tests.html#ga47f8191761084c5b3673b0efac0197d0", null ],
     [ "sirtest_filesystem", "group__tests.html#gaa0b035b71e6a6e6df6b8a7bb95722e2a", null ],
+    [ "sirtest_getcpucount", "group__tests.html#ga5899d280207b0f5ab7c3e10b829ee79a", null ],
     [ "sirtest_getversioninfo", "group__tests.html#ga3b90eec512f445effa4990dbc130ac82", null ],
     [ "sirtest_initcleanupinit", "group__tests.html#ga9f7ccc25d41c5980dae048951ba60c8b", null ],
     [ "sirtest_initmakeinit", "group__tests.html#gaa55b1ea9a036318bfdc44823ad704a9b", null ],

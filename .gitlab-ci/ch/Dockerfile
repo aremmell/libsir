@@ -1,8 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-current Ryan M. Lederman
-
-# Use --build-arg URL1="..." to override default local URL
-# Use --build-arg URL2="..." to override default local URL
+# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
 
 FROM registry.gitlab.com/libsir/libsir/base:latest
 

@@ -1,0 +1,10 @@
+<map id="sir_plugincache" name="sir_plugincache">
+<area shape="rect" id="Node000001" title="Plugin module cache." alt="" coords="5,265,117,290"/>
+<area shape="rect" id="Node000002" href="$structsir__plugin.html" title="Internally&#45;used plugin module data." alt="" coords="23,179,99,203"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="64,218,64,265,58,265,58,218"/>
+<area shape="rect" id="Node000003" href="$structsir__plugininfo.html" title="The libsir&#45;to&#45;plugin query data structure." alt="" coords="12,5,110,30"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="60,45,55,92,56,140,61,178,56,179,51,140,49,92,54,44"/>
+<area shape="rect" id="Node000004" href="$structsir__pluginifacev1.html" title="Plugin interface for v1." alt="" coords="89,92,207,117"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="85,38,138,90,134,94,81,42"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="128,129,74,180,71,177,124,125"/>
+</map>

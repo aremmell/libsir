@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: ISC and MIT
 # Copyright (c) 2018-2019 Martin Storsjo
-# Copyright (c) 2018-current Ryan M. Lederman
+# Copyright (c) 2018-current Ryan M. Lederman <lederman@gmail.com>
+# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
 
 FROM registry.gitlab.com/libsir/libsir/base:latest
 

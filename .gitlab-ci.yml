@@ -1,7 +1,26 @@
 # .gitlab-ci.yml
 # libsir: https://github.com/aremmell/libsir
+
 # SPDX-License-Identifier: MIT
-# SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
+# Copyright (c) 2018-current Ryan M. Lederman <lederman@gmail.com>
+# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+# the Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ##############################################################################
 
@@ -188,9 +207,9 @@ Linux/i686 (G++, GCC):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - stdbuf -o L ./build/bin/sirexample
-    - stdbuf -o L ./build/bin/sirtests
-    - stdbuf -o L ./build/bin/sirtests++
+    - ./build/bin/sirexample
+    - ./build/bin/sirtests
+    - ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -326,9 +345,9 @@ Linux/i686 (Clang++, Clang):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - stdbuf -o L ./build/bin/sirexample
-    - stdbuf -o L ./build/bin/sirtests
-    - stdbuf -o L ./build/bin/sirtests++
+    - ./build/bin/sirexample
+    - ./build/bin/sirtests
+    - ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -423,9 +442,9 @@ Linux/i686 (AOCC++, AOCC):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - stdbuf -o L ./build/bin/sirexample
-    - stdbuf -o L ./build/bin/sirtests
-    - stdbuf -o L ./build/bin/sirtests++
+    - ./build/bin/sirexample
+    - ./build/bin/sirtests
+    - ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -600,8 +619,8 @@ Linux/i686 (Oracle Studio C, C-only):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - stdbuf -o L ./build/bin/sirexample
-    - stdbuf -o L ./build/bin/sirtests
+    - ./build/bin/sirexample
+    - ./build/bin/sirtests
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -2305,8 +2324,8 @@ Linux/i686 (DMD64 ImportC, C-only):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - stdbuf -o L ./build/bin/sirexample
-    - stdbuf -o L ./build/bin/sirtests
+    - ./build/bin/sirexample
+    - ./build/bin/sirtests
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -3606,7 +3625,7 @@ Semgrep (GitLab Rules):
     - semgrep login > /dev/null
     - semgrep install-semgrep-pro || true
     - ( mkdir -p /tmp/gitlab-sast && cd /tmp/gitlab-sast && git clone -q --depth=1 https://gitlab.com/gitlab-org/security-products/sast-rules.git && cd sast-rules && curl -fsSL https://gitlab.com/gitlab-org/security-products/sast-rules/-/raw/a1926c1522a3d07ec68131b38653f1f9742731e1/ci/join.rb -o ./ci/join.rb && chmod a+x ./ci/join.rb && ./ci/join.rb > /dev/null 2>&1 && sed '/ id. / s/\//./g' combined.yml > combined2.yml && mv -f combined2.yml combined.yml ) || true
-    - semgrep scan --config /tmp/gitlab-sast/sast-rules/combined.yml . --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-char_TCHAR.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.race.rule-readlink.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-printf_vprintf.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-realpath.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-memcpy_CopyMemory.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-getenv_curl_getenv.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.misc.rule-fopen_open.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-memcpy_CopyMemory.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-getchar_fgetc.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-strlen_wcslen.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-printf_vprintf.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-snprintf_vsnprintf.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.misc.rule-InitializeCriticalSection.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.random.rule-drand48_erand48.yml" --error
+    - semgrep scan --config /tmp/gitlab-sast/sast-rules/combined.yml . --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.race.rule-readlink.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-printf-vprintf.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-realpath.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-memcpy-CopyMemory.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-getenv-curl-getenv.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.misc.rule-fopen-open.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-memcpy-CopyMemory.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-getchar-fgetc.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-strlen-wcslen.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-printf-vprintf.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.format.rule-snprintf-vsnprintf.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.misc.rule-InitializeCriticalSection.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.random.rule-drand48-erand48.yml" --exclude-rule="tmp.gitlab-sast.sast-rules....sast-rules.c.buffer.rule-char-TCHAR.yml" --error
     - |
       # End of Semgrep ...
       echo -e "section_end:`date +%s`:SemgrepGitLab_section\r\e[0K" || true
