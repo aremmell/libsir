@@ -1,6 +1,8 @@
 #!/usr/bin/env ch
 
 /*
+ * SPDX-License-Identifier: MIT
+ *
  * sirtest.ch
  *
  * Author:    Jeffrey H. Johnson <trnsz@pobox.com>

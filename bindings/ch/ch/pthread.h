@@ -1,4 +1,6 @@
 /*
+ * SPDX-License-Identifier: MIT
+ *
  * ch/pthread.h
  *
  * Author:    Jeffrey H. Johnson <trnsz@pobox.com>

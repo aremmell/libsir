@@ -1,4 +1,6 @@
 /*
+ * SPDX-License-Identifier: MIT
+ *
  * chsir.h
  *
  * Author:    Jeffrey H. Johnson <trnsz@pobox.com>

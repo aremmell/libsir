@@ -1,5 +1,7 @@
 /*
- * sir_getversionstring.h
+ * SPDX-License-Identifier: MIT
+ *
+ * sir_getversionstring.chf
  *
  * Author:    Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023

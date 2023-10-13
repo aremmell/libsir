@@ -1,4 +1,6 @@
 /*
+ * SPDX-License-Identifier: MIT
+ *
  * sir_chdl.c
  *
  * Author:    Jeffrey H. Johnson <trnsz@pobox.com>
