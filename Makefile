@@ -377,8 +377,11 @@ $(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS_SHX) $(OBJ_TESTS)
 
 .PHONY: docs doc
 
-docs doc: $(OUT_STATIC)
+docs doc: $(OUT_STATIC) GTAGS
 	@doxygen Doxyfile
+	@rm -rf docs/HTML/* > /dev/null 2>&1 || true
+	@htags --map-file --auto-completion --colorize-warned-line \
+            -h -I --tabs 4 -n -o -s --table-flist docs
 	-@find docs -name '*.png' \
 	    -not -path 'docs/res/*' \
 	    -not -path 'docs/sources/*' -print | \
