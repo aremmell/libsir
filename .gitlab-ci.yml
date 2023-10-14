@@ -4035,6 +4035,9 @@ pages:
     - |
       # Start of HTML generation ...
       echo -e "section_start:`date +%s`:HTML_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - grep -rl 'PRINTF_FORMAT_ATTR([0-9]\+, [0-9]\+)$' | xargs -I{} sed -i "{}" -e 's/PRINTF_FORMAT_ATTR([0-9]\+, [0-9]\+)$//g'
+    - grep -rl 'SANITIZE_SUPPRESS(.*)$' | xargs -I{} sed -i "{}" -e 's/SANITIZE_SUPPRESS(.*)$//g'
+    - git restore "include/sir/platform.h"
     - make docs
     - mv -f docs/HTML public
     - |
