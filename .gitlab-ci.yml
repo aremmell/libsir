@@ -4021,10 +4021,10 @@ Linux/ppc (glibc 2.7, GCC, C-only):
 
 ##############################################################################
 
-# rules:
-#   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 pages:
   stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   needs:
     - job: Style check
   tags:
