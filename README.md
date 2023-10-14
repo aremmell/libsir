@@ -232,7 +232,7 @@ Suggested initial sections:
 ### <a id="gnu-global" /> GNU GLOBAL
 
 * [A GNU GLOBAL-generated tagged and cross-referenced hypertext source code listing is available.](https://libsir.gitlab.io/libsir)
-* This tagged listing is a valuable aids for new developers seeking an understanding of the libsir source code.
+* This tagged listing is a valuable aid for new developers seeking an understanding of the libsir source code.
 
 ## <a id="sast-tools" /> SAST Tools
 
