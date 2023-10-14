@@ -36,6 +36,7 @@ stages:
   - coverage
   - lint_static
   - lint_dynamic
+  - deploy
   - coverity
 
 ##############################################################################
@@ -3588,7 +3589,7 @@ Semgrep (Cloud Rules):
     - apk upgrade > /dev/null 2>&1 || true
     - semgrep login > /dev/null
     - semgrep install-semgrep-pro || true
-    - semgrep ci --no-suppress-errors --pro --pro-intrafile --pro-languages --exclude-rule="c.lang.security.insecure-use-memset.insecure-use-memset"
+    - semgrep ci --no-suppress-errors --pro-intrafile --exclude-rule="c.lang.security.insecure-use-memset.insecure-use-memset"
     - |
       # End of Semgrep Cloud ...
       echo -e "section_end:`date +%s`:SemgrepCloud_section\r\e[0K" || true
@@ -4017,5 +4018,54 @@ Linux/ppc (glibc 2.7, GCC, C-only):
       - build/
   retry: 2
   interruptible: true
+
+##############################################################################
+
+pages:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  needs:
+    - job: Style check
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
+    - |
+      # Start of HTML generation ...
+      echo -e "section_start:`date +%s`:HTML_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - grep -rl 'PRINTF_FORMAT_ATTR([0-9]\+, [0-9]\+)$' | xargs -I{} sed -i "{}" -e 's/PRINTF_FORMAT_ATTR([0-9]\+, [0-9]\+)$//g'
+    - grep -rl 'SANITIZE_SUPPRESS(.*)$' | xargs -I{} sed -i "{}" -e 's/SANITIZE_SUPPRESS(.*)$//g'
+    - git restore "include/sir/platform.h"
+    - make docs
+    - mv -f docs/HTML public
+    - |
+      # End of HTML generation ...
+      echo -e "section_end:`date +%s`:HTML_section\r\e[0K" || true
+    - |
+      # Start of HTML compression ...
+      echo -e "section_start:`date +%s`:HTMc_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - find "public" -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec brotli -f -k -v -Z -- "{}" \; || true
+    - find "public" -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec pigz -9 -f -k -m -v -- "{}" \; || true
+    - |
+      # End of HTML compression ...
+      echo -e "section_end:`date +%s`:HTMc_section\r\e[0K" || true
+    - |
+      # Start of file listing ...
+      echo -e "section_start:`date +%s`:flst_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - ls -laR -- "public" || true
+    - |
+      # End of file listing ...
+      echo -e "section_end:`date +%s`:flst_section\r\e[0K" || true
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - public
+  retry: 2
+  timeout: 30 minutes
+  interruptible: false
 
 ##############################################################################

@@ -377,8 +377,23 @@ $(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS_SHX) $(OBJ_TESTS)
 
 .PHONY: docs doc
 
-docs doc: $(OUT_STATIC)
+docs doc: $(OUT_STATIC) GTAGS
 	@doxygen Doxyfile
+	@rm -rf docs/HTML/* > /dev/null 2>&1 || true
+	@env GTAGSCONF="$$(pwd)/docs/res/gtags.conf" htags --map-file \
+	    --auto-completion --colorize-warned-line -I -h --tabs 4 \
+	    -t "libsir: The Standard Incident Reporter library" \
+	    --show-position -n -o -s --table-flist docs
+	@cp -f "docs/res/style.css" "docs/HTML/"
+	@cp -f "docs/res/libsir-icon192.png" "docs/HTML/icons/pglobe.png"
+	@sed \
+	   -e "s/http:\/\/www.gnu.org\/software\/global\//https:\/\/github.com\/aremmell\/libsir/" \
+	   -e "s/ title='Go to the GLOBAL project page.'//" \
+	   -e "s/ alt='\[Powered by GLOBAL-.*\]'//" \
+	   -e "s/^<a href='http/<br \/><a href='http/" \
+	       "docs/HTML/index.html" > "docs/HTML/index.html.tmp" && \
+	 mv -f "docs/HTML/index.html.tmp" "docs/HTML/index.html" && \
+	 cp -f "docs/HTML/index.html" "docs/HTML/mains.html"
 	-@find docs -name '*.png' \
 	    -not -path 'docs/res/*' \
 	    -not -path 'docs/sources/*' -print | \
@@ -526,7 +541,7 @@ endif # ifneq ($(SIR_NO_PLUGINS),1)
 
 ctags tags TAGS GPATH GRTAGS GTAGS:
 	-@rm -f tags TAGS GPATH GRTAGS GTAGS > /dev/null 2>&1 || true; \
-	  FDIRS="LICENSE Makefile *.mk bindings example include plugins src tests"; \
+	  FDIRS="LICENSE Makefile bindings/python/*.py *.mk bindings example include plugins src tests"; \
 	  FLIST="$$(2> /dev/null find $${FDIRS} | \
 	            2> /dev/null xargs -I{} \
 	            2> /dev/null printf %s\\n \"{}\" | \
@@ -535,7 +550,8 @@ ctags tags TAGS GPATH GRTAGS GTAGS:
 	  ctags -e $${FLIST:-} > /dev/null 2>&1; \
 	  ctags $${FLIST:-} > /dev/null 2>&1; \
 	  printf %s\\n $${FLIST:-} 2> /dev/null | \
-	      gtags -f - > /dev/null 2>&1; \
+	      env GTAGSCONF="$$(pwd)/docs/res/gtags.conf" \
+	        gtags -f - > /dev/null 2>&1; \
 	  ls tags TAGS GPATH GRTAGS GTAGS 2> /dev/null | \
 	      grep -q '.' 2> /dev/null && { \
 	  (tput bold 2> /dev/null || true; tput setaf 2 2> /dev/null || true) && \
