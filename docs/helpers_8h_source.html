@@ -483,25 +483,24 @@ $(document).ready(function(){initNavTree('helpers_8h_source.html',''); initResiz
 <div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>    <span class="keywordflow">return</span> hash;</div>
 <div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>}</div>
 <div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span> </div>
-<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span><span class="keyword">static</span> <span class="keyword">inline</span></div>
-<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span><span class="preprocessor"># if defined(__clang__) </span><span class="comment">/* only Clang has unsigned-integer-overflow; GCC BZ#96829 */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span>SANITIZE_SUPPRESS(<span class="stringliteral">&quot;unsigned-integer-overflow&quot;</span>)</div>
-<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>uint64_t FNV64_1a</div>
-<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>(<span class="keyword">const</span> <span class="keywordtype">char</span>* str) {</div>
-<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>    uint64_t hash = 14695981039346656037ULL;</div>
-<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keywordtype">char</span>* c = str; *c; c++) {</div>
-<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span>        hash ^= (uint64_t)(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>)(*c);</div>
-<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span>        hash *= 1099511628211ULL; <span class="comment">/* unsigned-integer-overflow */</span></div>
-<div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span>    }</div>
-<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span>    <span class="keywordflow">return</span> hash;</div>
-<div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span>}</div>
-<div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span> </div>
-<div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span><span class="preprocessor"># if defined(__cplusplus)</span></div>
-<div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span>}</div>
-<div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span> </div>
-<div class="line"><a id="l00476" name="l00476"></a><span class="lineno">  476</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_HELPERS_H_INCLUDED */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span><span class="preprocessor"># if defined(__clang__) </span><span class="comment">/* only Clang has unsigned-integer-overflow; GCC BZ#96829 */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>SANITIZE_SUPPRESS(<span class="stringliteral">&quot;unsigned-integer-overflow&quot;</span>)</div>
+<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span><span class="preprocessor"># endif</span></div>
+<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span><span class="keyword">static</span> <span class="keyword">inline</span></div>
+<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>uint64_t FNV64_1a(<span class="keyword">const</span> <span class="keywordtype">char</span>* str) {</div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>    uint64_t hash = 14695981039346656037ULL;</div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keywordtype">char</span>* c = str; *c; c++) {</div>
+<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span>        hash ^= (uint64_t)(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>)(*c);</div>
+<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span>        hash *= 1099511628211ULL; <span class="comment">/* unsigned-integer-overflow */</span></div>
+<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span>    }</div>
+<div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span>    <span class="keywordflow">return</span> hash;</div>
+<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span>}</div>
+<div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span> </div>
+<div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span><span class="preprocessor"># if defined(__cplusplus)</span></div>
+<div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span>}</div>
+<div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span><span class="preprocessor"># endif</span></div>
+<div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span> </div>
+<div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_HELPERS_H_INCLUDED */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aconfig_8h_html_ac1e50274f913ef71f196f20b9dfbbba6"><div class="ttname"><a href="config_8h.html#ac1e50274f913ef71f196f20b9dfbbba6">SIR_MAXTIME</a></div><div class="ttdeci">#define SIR_MAXTIME</div><div class="ttdoc">The size, in characters, of the buffer used to hold time format strings.</div><div class="ttdef"><b>Definition</b> config.h:244</div></div>
 <div class="ttc" id="agroup__publictypes_html_ga076e759e9aa36cde2977f754a7ea186c"><div class="ttname"><a href="group__publictypes.html#ga076e759e9aa36cde2977f754a7ea186c">sir_level</a></div><div class="ttdeci">uint16_t sir_level</div><div class="ttdoc">The sir_level type.</div><div class="ttdef"><b>Definition</b> types.h:65</div></div>
 <div class="ttc" id="agroup__publictypes_html_ga0da4ab4b4468b6b71cd8e924b2adf2e2"><div class="ttname"><a href="group__publictypes.html#ga0da4ab4b4468b6b71cd8e924b2adf2e2">sirfileid</a></div><div class="ttdeci">uint32_t sirfileid</div><div class="ttdoc">Log file identifier type.</div><div class="ttdef"><b>Definition</b> types.h:43</div></div>

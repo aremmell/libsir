@@ -383,7 +383,7 @@ docs doc: $(OUT_STATIC) GTAGS
 	@env GTAGSCONF="$$(pwd)/docs/res/gtags.conf" htags --map-file \
 	    --auto-completion --colorize-warned-line -I -h --tabs 4 \
 	    -t "libsir: The Standard Incident Reporter library" \
-	    -n -o -s --table-flist docs
+	    --show-position -n -o -s --table-flist docs
 	@cp -f "docs/res/style.css" "docs/HTML/"
 	@cp -f "docs/res/libsir-icon192.png" "docs/HTML/icons/pglobe.png"
 	@sed \
