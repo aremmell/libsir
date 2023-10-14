@@ -15,7 +15,7 @@
  * Souce code
  */
 
-body            { color: #f8f8f8; background-color: #1a1a2c; font-size: 125%; }
+body            { color: #f8f8f8; background-color: #1a1a2c; font-size: 115%; }
 a.visited       { color: gray;                                                }
 a               { color: #05a2f2;                                             }
 .title          { color: #3cccc6; text-align: center;                         }
