@@ -57,7 +57,7 @@ libsir&mdash;a lightweight, cross-platform library for information distribution
   - [Visual Studio 2022](#visual-studio-2022)
     - [MSBuild](#ms-build-tools)
 - [Dig in](#dig-in)
-  - [GNU GLOBAL](#gnu-global)
+  - [GNU Global](#gnu-global)
 - [SAST Tools](#sast-tools)
 - [Other Tools](#other-tools)
 
@@ -229,9 +229,9 @@ Suggested initial sections:
  * [Configuration](https://libsir.rml.dev/config.html)
  * [Test suite](https://libsir.rml.dev/testsuite.html)
 
-### <a id="gnu-global" /> GNU GLOBAL
+### <a id="gnu-global" /> GNU Global
 
-* [A GNU GLOBAL-generated tagged and cross-referenced hypertext source code listing is available.](https://libsir.gitlab.io/libsir)
+* [A GNU Global-generated tagged and cross-referenced hypertext source code listing is available.](https://libsir.gitlab.io/libsir)
 * This tagged listing is a valuable aid for new developers seeking an understanding of the libsir source code.
 
 ## <a id="sast-tools" /> SAST Tools
