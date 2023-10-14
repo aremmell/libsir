@@ -1420,7 +1420,7 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
                 OS_ACTIVITY_NONE, OS_ACTIVITY_FLAG_DETACHED);
 
             /* execution now passes to os_log_parent_activity(), where some logging
-            * will occur, then a sub-activity will be created, and more logging. */
+             * will occur, then a sub-activity will be created, and more logging. */
             os_activity_apply_f(parent, (void*)parent, os_log_parent_activity);
         }
 #  endif
