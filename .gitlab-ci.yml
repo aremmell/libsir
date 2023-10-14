@@ -36,6 +36,7 @@ stages:
   - coverage
   - lint_static
   - lint_dynamic
+  - deploy
   - coverity
 
 ##############################################################################
@@ -4017,5 +4018,51 @@ Linux/ppc (glibc 2.7, GCC, C-only):
       - build/
   retry: 2
   interruptible: true
+
+##############################################################################
+
+pages:
+  stage: deploy
+  needs:
+    - job: Style check
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - *Configuration
+    - |
+      # Start of HTML generation ...
+      echo -e "section_start:`date +%s`:HTML_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - make docs
+    - mv -f docs/HTML public
+    - |
+      # End of HTML generation ...
+      echo -e "section_end:`date +%s`:HTML_section\r\e[0K" || true
+    - |
+      # Start of HTML compression ...
+      echo -e "section_start:`date +%s`:HTMc_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - find "public" -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec brotli -f -k -v -Z -- "{}" \; || true
+    - find "public" -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec pigz -9 -f -k -m -v -- "{}" \; || true
+    - |
+      # End of HTML compression ...
+      echo -e "section_end:`date +%s`:HTMc_section\r\e[0K" || true
+    - |
+      # Start of file listing ...
+      echo -e "section_start:`date +%s`:flst_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - ls -laR -- "public" || true
+    - |
+      # End of file listing ...
+      echo -e "section_end:`date +%s`:flst_section\r\e[0K" || true
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - public
+  retry: 2
+  timeout: 30 minutes
+  interruptible: false
 
 ##############################################################################
