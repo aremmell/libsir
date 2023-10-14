@@ -4023,6 +4023,8 @@ Linux/ppc (glibc 2.7, GCC, C-only):
 
 pages:
   stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   needs:
     - job: Style check
   tags:
@@ -4065,7 +4067,5 @@ pages:
   retry: 2
   timeout: 30 minutes
   interruptible: false
-# rules:
-#   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 ##############################################################################
