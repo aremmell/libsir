@@ -4085,7 +4085,8 @@ FreeBSD/AMD64 (G++, GCC):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CC="/usr/local/bin/ccache /usr/local/bin/gcc13"
     - export CXX="/usr/local/bin/ccache /usr/local/bin/g++13"
-    - export LDFLAGS="-Wl,-rpath=/usr/local/lib/gcc13"
+    - export CFLAGS="-I/usr/local/include"
+    - export LDFLAGS="-Wl,-rpath=/usr/local/lib/gcc13 -L/usr/local/lib/gcc13 -L/usr/local/lib"
     - ${CC:?} --version
     - ${CXX:?} --version
     - gmake
@@ -4130,7 +4131,8 @@ FreeBSD/AMD64 (Clang++, Clang):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CC="/usr/local/bin/ccache /usr/local/bin/clang17"
     - export CXX="/usr/local/bin/ccache /usr/local/bin/clang++17"
-    - export LDFLAGS="-Wl,-rpath=/usr/local/llvm17/lib/"
+    - export CFLAGS="-I/usr/local/include"
+    - export LDFLAGS="-Wl,-rpath=/usr/local/llvm17/lib/ -L/usr/local/llvm17/lib/ -L/usr/local/lib"
     - ${CC:?} --version
     - ${CXX:?} --version
     - gmake
@@ -4174,7 +4176,8 @@ FreeBSD/AMD64 (DMD64 ImportC, C-only):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/dmd2/freebsd/bin64:${PATH:-}"
-    - export LDFLAGS="-Wl,-rpath=/opt/dmd2/freebsd/lib64 -L/opt/dmd2/freebsd/lib64"
+    - export CFLAGS="-I/usr/local/include"
+    - export LDFLAGS="-Wl,-rpath=/opt/dmd2/freebsd/lib64 -L/opt/dmd2/freebsd/lib64 -L/usr/local/lib"
     - mkdir -p build/bin
     - touch build/bin/file.exists
     - mkdir -p logs
