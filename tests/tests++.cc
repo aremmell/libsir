@@ -139,7 +139,7 @@ bool sir::tests::raii_init_cleanup() {
 
     TEST_MSG_0("confirm cleaned up...");
 
-     /* should fail; already cleaned up. */
+    /* should fail; already cleaned up. */
     _sir_eqland(pass, !sir_cleanup());
 
     /* create a RAII logger object that will initialize libsir, then attempt
