@@ -4087,6 +4087,7 @@ FreeBSD/AMD64 (G++, GCC):
     - export CXX="/usr/local/bin/ccache /usr/local/bin/g++13"
     - export CFLAGS="-I/usr/local/include"
     - export LDFLAGS="-Wl,-rpath=/usr/local/lib/gcc13 -L/usr/local/lib/gcc13 -L/usr/local/lib"
+    - freebsd-version
     - ${CC:?} --version
     - ${CXX:?} --version
     - gmake
@@ -4133,6 +4134,7 @@ FreeBSD/AMD64 (Clang++, Clang):
     - export CXX="/usr/local/bin/ccache /usr/local/bin/clang++17"
     - export CFLAGS="-I/usr/local/include"
     - export LDFLAGS="-Wl,-rpath=/usr/local/llvm17/lib/ -L/usr/local/llvm17/lib/ -L/usr/local/lib"
+    - freebsd-version
     - ${CC:?} --version
     - ${CXX:?} --version
     - gmake
@@ -4186,6 +4188,7 @@ FreeBSD/AMD64 (DMD64 ImportC, C-only):
     - ln -s ../src/* ../include/sir/* ../include/sir.h .
     - ln -s . sir
     - ln -s ../example/* .
+    - freebsd-version
     - dmd --version
     - dmd -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirexample
     - rm -f example*
