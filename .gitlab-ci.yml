@@ -4088,8 +4088,8 @@ FreeBSD/AMD64 (G++, GCC):
     - export LDFLAGS="-Wl,-rpath=/usr/local/lib/gcc13"
     - ${CC:?} --version
     - ${CXX:?} --version
-    - make
-    - make tests++
+    - gmake
+    - gmake tests++
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -4133,8 +4133,8 @@ FreeBSD/AMD64 (Clang++, Clang):
     - export LDFLAGS="-Wl,-rpath=/usr/local/llvm17/lib/"
     - ${CC:?} --version
     - ${CXX:?} --version
-    - make
-    - make tests++
+    - gmake
+    - gmake tests++
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
