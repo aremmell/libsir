@@ -447,7 +447,7 @@ rm -f bad.so > /dev/null 2>&1
 # Run 28 - Break readdir function
 "${DO_MAKE:-make}" -j "${JOBS:?}" clean
 "${DO_MAKE:-make}" -j "${JOBS:?}" SIR_DEBUG=1 SIR_SELFLOG=1
-printf '%s\n' "int readdir() { return -1; }" > bad.c
+printf '%s\n' "#include <stddef.h>" "void* readdir() { return NULL; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
