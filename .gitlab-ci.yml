@@ -4086,6 +4086,7 @@ FreeBSD/amd64 (G++, GCC):
     - export CC="/usr/local/bin/ccache /usr/local/bin/gcc13"
     - export CXX="/usr/local/bin/ccache /usr/local/bin/g++13"
     - export CFLAGS="-I/usr/local/include"
+    - export CXXFLAGS="-I/usr/local/include"
     - export LDFLAGS="-Wl,-rpath=/usr/local/lib/gcc13 -L/usr/local/lib/gcc13 -L/usr/local/lib"
     - freebsd-version
     - ${CC:?} --version
@@ -4133,6 +4134,7 @@ FreeBSD/amd64 (Clang++, Clang):
     - export CC="/usr/local/bin/ccache /usr/local/bin/clang17"
     - export CXX="/usr/local/bin/ccache /usr/local/bin/clang++17"
     - export CFLAGS="-I/usr/local/include"
+    - export CXXFLAGS="-I/usr/local/include"
     - export LDFLAGS="-Wl,-rpath=/usr/local/llvm17/lib/ -L/usr/local/llvm17/lib/ -L/usr/local/lib"
     - freebsd-version
     - ${CC:?} --version
@@ -4226,8 +4228,8 @@ FreeBSD/amd64 (GCC, FreeBSD Python):
     - job: Style check
     - job: FreeBSD/amd64 (G++, GCC)
   tags:
-    - Docker-x64
-    - Linux
+    - Shell-x64
+    - FreeBSD
   script:
     - *Configuration
     - |
@@ -4236,6 +4238,7 @@ FreeBSD/amd64 (GCC, FreeBSD Python):
     - export CC="/usr/local/bin/ccache /usr/local/bin/gcc13"
     - export CXX="/usr/local/bin/ccache /usr/local/bin/g++13"
     - export CFLAGS="-I/usr/local/include"
+    - export CXXFLAGS="-I/usr/local/include"
     - export LDFLAGS="-Wl,-rpath=/usr/local/lib/gcc13 -L/usr/local/lib/gcc13 -L/usr/local/lib"
     - freebsd-version
     - command -v python3
