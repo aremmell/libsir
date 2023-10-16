@@ -154,6 +154,8 @@ bool _sir_threadpool_destroy(sir_threadpool** pool) {
 #if !defined(__WIN__)
         int join = pthread_join((*pool)->threads[n], NULL);
         SIR_ASSERT(0 == join);
+        if (join)
+            return false;
         _sir_eqland(destroy, 0 == join);
 #else /* __WIN__ */
         DWORD join = WaitForSingleObject((*pool)->threads[n], INFINITE);
