@@ -66,7 +66,7 @@ char* sir_strreplace (char *str, const char c, const char n);
  *        in string "str" with character 'n', returning
  *        the number of replacements performed.
  */
-size_t sir_strcreplace(char *str, const char c, const char n, ssize_t max);
+size_t sir_strcreplace(char *str, const char c, const char n, int32_t max);
 
 # if defined(__cplusplus)
 }

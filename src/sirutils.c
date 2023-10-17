@@ -88,7 +88,7 @@ char* sir_strreplace (char *str, const char c, const char n) {
   return str;
 }
 
-size_t sir_strcreplace(char *str, const char c, const char n, ssize_t max) {
+size_t sir_strcreplace(char *str, const char c, const char n, int32_t max) {
   char*  i   = str;
   size_t cnt = 0;
 
