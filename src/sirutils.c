@@ -55,7 +55,7 @@ char* sir_strremove(char *str, const char *sub) {
 char* sir_strsqueeze(char *str) {
   unsigned long j;
 
-  for (unsigned i = j = 0; str[i]; ++i)
+  for (unsigned long i = j = 0; str[i]; ++i)
       if ((i > 0 && !isspace((unsigned char)(str[i - 1])))
                  || !isspace((unsigned char)(str[i])))
           str[j++] = str[i];
