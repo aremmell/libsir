@@ -32,8 +32,8 @@
 char* sir_strremove(char *str, const char *sub) {
 
   const char* p;
+  const char* r;
   char*       q;
-  char*       r;
 
   if (!sub)
       return str;
