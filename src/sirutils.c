@@ -45,8 +45,7 @@ char* sir_strremove(char *str, const char *sub) {
           while (p < r)
               *q++ = *p++;
 
-      while ((*q++ = *p++) != '\0')
-          continue;
+      while ((*q++ = *p++) != '\0');
   }
 
   return str;
