@@ -62,6 +62,7 @@ static sir_test sir_tests[] = {
     {"filesystem",              sirtest_filesystem, false, true},
     {"squelch-spam",            sirtest_squelchspam, false, true},
     {"plugin-loader",           sirtest_pluginloader, false, true},
+    {"strutils",                sirtest_strutils, false, true},
     {"get-cpu-count",           sirtest_getcpucount, false, true},
     {"get-version-info",        sirtest_getversioninfo, false, true}
 };
@@ -1995,6 +1996,31 @@ bool sirtest_pluginloader(void) {
 
     (void)print_test_error(pass, pass);
 #endif
+    _sir_eqland(pass, sir_cleanup());
+    return PRINT_RESULT_RETURN(pass);
+}
+
+bool sirtest_strutils(void) {
+    INIT(si, SIRL_ALL, 0, 0, 0);
+    bool pass = si_init;
+
+    char str[] = "Kneel  \f \n  before  \t \r \v  Zod!?";
+
+    _sir_eqland(pass, sir_strsqueeze(str) && 0 == strncmp(str, "Kneel before Zod!?", 18));
+    TEST_MSG("sir_strsqueeze result:  '%s'", str);
+
+    _sir_eqland(pass, sir_strremove(str, "!") && 0 == strncmp(str, "Kneel before Zod?", 17));
+    TEST_MSG("sir_strremove result:   '%s'", str);
+
+    _sir_eqland(pass, sir_strreplace(str, '?', '.') && 0 == strncmp(str, "Kneel before Zod.", 17));
+    TEST_MSG("sir_strreplace result:  '%s'", str);
+
+    _sir_eqland(pass, 1 == sir_strcreplace(str, '.', '!', 1) && 0 == strncmp(str, "Kneel before Zod!", 17));
+    TEST_MSG("sir_strcreplace result: '%s'", str);
+
+    _sir_eqland(pass, sir_strredact(str, "Kneel", '*') && 0 == strncmp(str, "***** before Zod!", 17));
+    TEST_MSG("sir_strredact result:   '%s'", str);
+
     _sir_eqland(pass, sir_cleanup());
     return PRINT_RESULT_RETURN(pass);
 }
