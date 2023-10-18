@@ -31,6 +31,7 @@ var group__tests =
     [ "sirtest_pluginloader", "group__tests.html#ga1b5a43deceffa8c36174e7b04576f6a3", null ],
     [ "sirtest_rollandarchivefile", "group__tests.html#ga1b17632b25d61e85f6ff1fa08371959e", null ],
     [ "sirtest_squelchspam", "group__tests.html#ga3ad5e95b1114eba573969077ebb40cb5", null ],
+    [ "sirtest_stringutils", "group__tests.html#ga7a99bdb359288b2ace8f0e7c27f473c7", null ],
     [ "sirtest_syslog", "group__tests.html#ga8db924f756e0ee2f04ff3e044a10f283", null ],
     [ "sirtest_textstylesanity", "group__tests.html#ga18ccd68f2c37d9798a06c403380c9308", null ],
     [ "sirtest_threadidsanity", "group__tests.html#gaf7edbef2bba9459091aa48d8b9512ede", null ],

@@ -496,11 +496,21 @@ $(document).ready(function(){initNavTree('helpers_8h_source.html',''); initResiz
 <div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span>    <span class="keywordflow">return</span> hash;</div>
 <div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span>}</div>
 <div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span> </div>
-<div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span><span class="preprocessor"># if defined(__cplusplus)</span></div>
-<div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span>}</div>
-<div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span> </div>
-<div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_HELPERS_H_INCLUDED */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span><span class="keywordtype">char</span>* _sir_strremove(<span class="keywordtype">char</span> *str, <span class="keyword">const</span> <span class="keywordtype">char</span> *sub);</div>
+<div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span> </div>
+<div class="line"><a id="l00481" name="l00481"></a><span class="lineno">  481</span><span class="keywordtype">char</span>* _sir_strsqueeze(<span class="keywordtype">char</span> *str);</div>
+<div class="line"><a id="l00482" name="l00482"></a><span class="lineno">  482</span> </div>
+<div class="line"><a id="l00486" name="l00486"></a><span class="lineno">  486</span><span class="keywordtype">char</span>* _sir_strredact(<span class="keywordtype">char</span> *str, <span class="keyword">const</span> <span class="keywordtype">char</span> *sub, <span class="keyword">const</span> <span class="keywordtype">char</span> c);</div>
+<div class="line"><a id="l00487" name="l00487"></a><span class="lineno">  487</span> </div>
+<div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span><span class="keywordtype">char</span>* _sir_strreplace(<span class="keywordtype">char</span> *str, <span class="keyword">const</span> <span class="keywordtype">char</span> c, <span class="keyword">const</span> <span class="keywordtype">char</span> n);</div>
+<div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span> </div>
+<div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span><span class="keywordtype">size_t</span> _sir_strcreplace(<span class="keywordtype">char</span> *str, <span class="keyword">const</span> <span class="keywordtype">char</span> c, <span class="keyword">const</span> <span class="keywordtype">char</span> n, int32_t max);</div>
+<div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span> </div>
+<div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span><span class="preprocessor"># if defined(__cplusplus)</span></div>
+<div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span>}</div>
+<div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span><span class="preprocessor"># endif</span></div>
+<div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span> </div>
+<div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_HELPERS_H_INCLUDED */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aconfig_8h_html_ac1e50274f913ef71f196f20b9dfbbba6"><div class="ttname"><a href="config_8h.html#ac1e50274f913ef71f196f20b9dfbbba6">SIR_MAXTIME</a></div><div class="ttdeci">#define SIR_MAXTIME</div><div class="ttdoc">The size, in characters, of the buffer used to hold time format strings.</div><div class="ttdef"><b>Definition</b> config.h:244</div></div>
 <div class="ttc" id="agroup__publictypes_html_ga076e759e9aa36cde2977f754a7ea186c"><div class="ttname"><a href="group__publictypes.html#ga076e759e9aa36cde2977f754a7ea186c">sir_level</a></div><div class="ttdeci">uint16_t sir_level</div><div class="ttdoc">The sir_level type.</div><div class="ttdef"><b>Definition</b> types.h:65</div></div>
 <div class="ttc" id="agroup__publictypes_html_ga0da4ab4b4468b6b71cd8e924b2adf2e2"><div class="ttname"><a href="group__publictypes.html#ga0da4ab4b4468b6b71cd8e924b2adf2e2">sirfileid</a></div><div class="ttdeci">uint32_t sirfileid</div><div class="ttdoc">Log file identifier type.</div><div class="ttdef"><b>Definition</b> types.h:43</div></div>
