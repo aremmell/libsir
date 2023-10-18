@@ -107,8 +107,13 @@ main(void) {
                   WHITE("Ch") " binding test: " CYAN("libsir ") BCYAN("%s"),
                   sir_versionstring);
     (void)fprintf(_stdout,
-                  BGRAY(" on ") CYAN("Ch ") BCYAN("%d.%d.%d.%d") BGRAY(".\n"),
+                  BGRAY(" on ") CYAN("Ch ") BCYAN("%d.%d.%d.%d") BGRAY(".\n\n"),
                   ch.vermajor, ch.verminor, ch.vermicro, ch.verbuild);
+
+    /* Demo string utilities. */
+    (void)fprintf(_stdout, _sir_strredact(_sir_strreplace(_sir_strsqueeze(
+                  "\r \nxxx Welcome  \r  to  \f  the  Ch  \v  demo   xx!\n \n"),
+                  '!', 'x'), "x", '*'));
 
     /* Log to stdout. */
     (void)fprintf(_stdout, "\nLogging four libsir messages to stdout:\n");

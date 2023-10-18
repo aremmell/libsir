@@ -343,6 +343,7 @@ _set_thread_local_invalid_parameter_handler(
 #  define restrict //-V1059
 # endif
 
+# include <ctype.h>
 # include <errno.h>
 # include <stdarg.h>
 # include <stdbool.h>
