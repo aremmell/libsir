@@ -541,7 +541,7 @@ endif # ifneq ($(SIR_NO_PLUGINS),1)
 
 ctags tags TAGS GPATH GRTAGS GTAGS:
 	-@rm -f tags TAGS GPATH GRTAGS GTAGS > /dev/null 2>&1 || true; \
-	  FDIRS="LICENSE Makefile bindings/python/*.py *.mk bindings example include plugins src tests"; \
+	  FDIRS="LICENSE Makefile bindings/python/*.py *.mk *.md bindings example include plugins src tests"; \
 	  FLIST="$$(2> /dev/null find $${FDIRS} | \
 	            2> /dev/null xargs -I{} \
 	            2> /dev/null printf %s\\n \"{}\" | \
