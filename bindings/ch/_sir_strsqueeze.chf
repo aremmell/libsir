@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: MIT
  *
- * sir_strredact.chf
+ * _sir_strsqueeze.chf
  *
  * Author:    Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
@@ -28,11 +28,11 @@
 #include "chsir.h"
 
 char*
-sir_strredact(char *str, const char *sub, const char c) {
-    void*  fptr;
+_sir_strsqueeze(char *str) {
+    void* fptr;
     char* retval;
 
-    fptr = dlsym(_Chsir_handle, "sir_strredact_chdl");
+    fptr = dlsym(_Chsir_handle, "_sir_strsqueeze_chdl");
     if (fptr == NULL) {
         (void)fprintf(_stderr, "Error: %s(%d): dlsym(): %s\n",
                       __func__, __LINE__, dlerror());
@@ -40,7 +40,7 @@ sir_strredact(char *str, const char *sub, const char c) {
         return NULL;
     }
 
-    (void)dlrunfun(fptr, &retval, sir_strredact, str, sub, c);
+    (void)dlrunfun(fptr, &retval, _sir_strsqueeze, str);
 
     return retval;
 }

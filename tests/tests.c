@@ -62,7 +62,7 @@ static sir_test sir_tests[] = {
     {"filesystem",              sirtest_filesystem, false, true},
     {"squelch-spam",            sirtest_squelchspam, false, true},
     {"plugin-loader",           sirtest_pluginloader, false, true},
-    {"strutils",                sirtest_strutils, false, true},
+    {"string-utils",            sirtest_stringutils, false, true},
     {"get-cpu-count",           sirtest_getcpucount, false, true},
     {"get-version-info",        sirtest_getversioninfo, false, true}
 };
@@ -2010,80 +2010,80 @@ bool sirtest_pluginloader(void) {
     return PRINT_RESULT_RETURN(pass);
 }
 
-bool sirtest_strutils(void) {
+bool sirtest_stringutils(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
     char str[] = "Kneel  \f \n  before  \t \r \v  Zod!?";
 
-    TEST_MSG_0(WHITEB("--- valid strutils usage ---"));
+    TEST_MSG_0(WHITEB("--- valid string utility usage ---"));
 
-    _sir_eqland(pass, sir_strsqueeze(str) && 0 == strncmp(str, "Kneel before Zod!?", 18));
-    TEST_MSG("sir_strsqueeze:            '%s'", str);
+    _sir_eqland(pass, _sir_strsqueeze(str) && 0 == strncmp(str, "Kneel before Zod!?", 18));
+    TEST_MSG("_sir_strsqueeze:            '%s'", str);
 
-    _sir_eqland(pass, sir_strremove(str, "!") && 0 == strncmp(str, "Kneel before Zod?", 17));
-    TEST_MSG("sir_strremove(\"!\"):        '%s'", str);
+    _sir_eqland(pass, _sir_strremove(str, "!") && 0 == strncmp(str, "Kneel before Zod?", 17));
+    TEST_MSG("_sir_strremove(\"!\"):        '%s'", str);
 
-    _sir_eqland(pass, sir_strreplace(str, '?', '.') && 0 == strncmp(str, "Kneel before Zod.", 17));
-    TEST_MSG("sir_strreplace(\"?\", \".\"):  '%s'", str);
+    _sir_eqland(pass, _sir_strreplace(str, '?', '.') && 0 == strncmp(str, "Kneel before Zod.", 17));
+    TEST_MSG("_sir_strreplace(\"?\", \".\"):  '%s'", str);
 
-    _sir_eqland(pass, 1 == sir_strcreplace(str, '.', '!', 1) && 0 == strncmp(str, "Kneel before Zod!", 17));
-    TEST_MSG("sir_strcreplace(\".\", \"!\"): '%s'", str);
+    _sir_eqland(pass, 1 == _sir_strcreplace(str, '.', '!', 1) && 0 == strncmp(str, "Kneel before Zod!", 17));
+    TEST_MSG("_sir_strcreplace(\".\", \"!\"): '%s'", str);
 
-    _sir_eqland(pass, sir_strredact(str, "e", '*') && 0 == strncmp(str, "Kn**l b*for* Zod!", 17));
-    TEST_MSG("sir_strredact(\"e\", \"*\"):   '%s'", str);
+    _sir_eqland(pass, _sir_strredact(str, "e", '*') && 0 == strncmp(str, "Kn**l b*for* Zod!", 17));
+    TEST_MSG("_sir_strredact(\"e\", \"*\"):   '%s'", str);
 
-    _sir_eqland(pass, sir_strredact(str, "X", 'Y') && 0 == strncmp(str, "Kn**l b*for* Zod!", 17));
-    TEST_MSG("sir_strredact(\"X\", \"Y\"):   '%s'", str);
+    _sir_eqland(pass, _sir_strredact(str, "X", 'Y') && 0 == strncmp(str, "Kn**l b*for* Zod!", 17));
+    TEST_MSG("_sir_strredact(\"X\", \"Y\"):   '%s'", str);
 
-    PASSFAIL_MSG(pass, "\t--- valid strutils usage: %s ---\n\n", PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- valid string utility usage: %s ---\n\n", PRN_PASS(pass));
 
-    TEST_MSG_0(WHITEB("--- invalid strutils usage - NULL pointer ---"));
+    TEST_MSG_0(WHITEB("--- invalid string utility usage - NULL pointer ---"));
 
-    TEST_MSG_0("sir_strsqueeze:  NULL pointer");
-    _sir_eqland(pass, !sir_strsqueeze(NULL));
+    TEST_MSG_0("_sir_strsqueeze:  NULL pointer");
+    _sir_eqland(pass, !_sir_strsqueeze(NULL));
 
-    TEST_MSG_0("sir_strremove:   NULL pointer");
-    _sir_eqland(pass, !sir_strremove(NULL, "sub"));
+    TEST_MSG_0("_sir_strremove:   NULL pointer");
+    _sir_eqland(pass, !_sir_strremove(NULL, "sub"));
 
-    TEST_MSG_0("sir_strreplace:  NULL pointer");
-    _sir_eqland(pass, !sir_strreplace(NULL, 'c', 'n'));
+    TEST_MSG_0("_sir_strreplace:  NULL pointer");
+    _sir_eqland(pass, !_sir_strreplace(NULL, 'c', 'n'));
 
-    TEST_MSG_0("sir_strcreplace: NULL pointer");
-    _sir_eqland(pass, !sir_strcreplace(NULL, 'c', 'n', -1));
+    TEST_MSG_0("_sir_strcreplace: NULL pointer");
+    _sir_eqland(pass, !_sir_strcreplace(NULL, 'c', 'n', -1));
 
-    TEST_MSG_0("sir_strredact:   NULL pointer");
-    _sir_eqland(pass, !sir_strredact(NULL, "s", '*'));
+    TEST_MSG_0("_sir_strredact:   NULL pointer");
+    _sir_eqland(pass, !_sir_strredact(NULL, "s", '*'));
 
-    PASSFAIL_MSG(pass, "\t--- invalid strutils usage - NULL pointer: %s ---\n\n", PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- invalid string utility usage - NULL pointer: %s ---\n\n", PRN_PASS(pass));
 
-    TEST_MSG_0(WHITEB("--- invalid strutils usage - bad parameters ---"));
+    TEST_MSG_0(WHITEB("--- invalid string utility usage - bad parameters ---"));
 
-    TEST_MSG_0("sir_strremove:   bad parameter \"sub\"");
-    _sir_eqland(pass, sir_strremove(str, NULL));
+    TEST_MSG_0("_sir_strremove:   bad parameter \"sub\"");
+    _sir_eqland(pass, _sir_strremove(str, NULL));
 
-    TEST_MSG_0("sir_strreplace:  bad parameter 'c'");
-    _sir_eqland(pass, sir_strreplace(str, 0, 'n'));
+    TEST_MSG_0("_sir_strreplace:  bad parameter 'c'");
+    _sir_eqland(pass, _sir_strreplace(str, 0, 'n'));
 
-    TEST_MSG_0("sir_strreplace:  bad parameter 'n'");
-    _sir_eqland(pass, sir_strreplace(str, 'c', 0));
+    TEST_MSG_0("_sir_strreplace:  bad parameter 'n'");
+    _sir_eqland(pass, _sir_strreplace(str, 'c', 0));
 
-    TEST_MSG_0("sir_strcreplace: bad parameter 'c'");
-    _sir_eqland(pass, !sir_strcreplace(str, 0, 'n', -1));
+    TEST_MSG_0("_sir_strcreplace: bad parameter 'c'");
+    _sir_eqland(pass, !_sir_strcreplace(str, 0, 'n', -1));
 
-    TEST_MSG_0("sir_strcreplace: bad parameter 'n'");
-    _sir_eqland(pass, !sir_strcreplace(str, 'c', 0, -1));
+    TEST_MSG_0("_sir_strcreplace: bad parameter 'n'");
+    _sir_eqland(pass, !_sir_strcreplace(str, 'c', 0, -1));
 
-    TEST_MSG_0("sir_strcreplace: bad parameter 'max'");
-    _sir_eqland(pass, !sir_strcreplace(str, 'c', 'n', 0));
+    TEST_MSG_0("_sir_strcreplace: bad parameter 'max'");
+    _sir_eqland(pass, !_sir_strcreplace(str, 'c', 'n', 0));
 
-    TEST_MSG_0("sir_strredact:   bad parameter \"sub\"");
-    _sir_eqland(pass, sir_strredact(str, NULL, '*'));
+    TEST_MSG_0("_sir_strredact:   bad parameter \"sub\"");
+    _sir_eqland(pass, _sir_strredact(str, NULL, '*'));
 
-    TEST_MSG_0("sir_strredact:   bad parameter 'c'");
-    _sir_eqland(pass, sir_strredact(str, "sub", 0));
+    TEST_MSG_0("_sir_strredact:   bad parameter 'c'");
+    _sir_eqland(pass, _sir_strredact(str, "sub", 0));
 
-    PASSFAIL_MSG(pass, "\t--- invalid strutils usage - bad parameters: %s ---\n", PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- invalid string utility usage - bad parameters: %s ---\n", PRN_PASS(pass));
 
     _sir_eqland(pass, sir_cleanup());
     return PRINT_RESULT_RETURN(pass);

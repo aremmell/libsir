@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: MIT
  *
- * sir_strcreplace.chf
+ * _sir_strreplace.chf
  *
  * Author:    Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
@@ -27,20 +27,20 @@
  */
 #include "chsir.h"
 
-size_t
-sir_strcreplace(char *str, const char c, const char n, int32_t max) {
-    void*  fptr;
-    size_t retval;
+char*
+_sir_strreplace(char *str, const char c, const char n) {
+    void* fptr;
+    char* retval;
 
-    fptr = dlsym(_Chsir_handle, "sir_strcreplace_chdl");
+    fptr = dlsym(_Chsir_handle, "_sir_strreplace_chdl");
     if (fptr == NULL) {
         (void)fprintf(_stderr, "Error: %s(%d): dlsym(): %s\n",
                       __func__, __LINE__, dlerror());
 
-        return (size_t)0;
+        return NULL;
     }
 
-    (void)dlrunfun(fptr, &retval, sir_strcreplace, str, c, n, max);
+    (void)dlrunfun(fptr, &retval, _sir_strreplace, str, c, n);
 
     return retval;
 }

@@ -468,6 +468,34 @@ uint64_t FNV64_1a(const char* str) {
     return hash;
 }
 
+/**
+ * Remove all occurrences of substring "sub" in string "str".
+ */
+char* _sir_strremove(char *str, const char *sub);
+
+/**
+ * Replace all occurrences of repeating whitespace characters
+ * (i.e. ` `, `\f`, `\n`, `\r`, `\t`) in string "str" with a
+ * single space character.
+ */
+char* _sir_strsqueeze(char *str);
+
+/**
+ * Redact all occurrences of substring "sub" in string "str" with character 'c'.
+ */
+char* _sir_strredact(char *str, const char *sub, const char c);
+
+/**
+ * Replace all occurrences of character 'c' in string "str" with character 'n'.
+ */
+char* _sir_strreplace(char *str, const char c, const char n);
+
+/**
+ * Replace up to 'max' occurrences of character 'c' in string "str"
+ * with character 'n', returning the number of replacements performed.
+ */
+size_t _sir_strcreplace(char *str, const char c, const char n, int32_t max);
+
 # if defined(__cplusplus)
 }
 # endif

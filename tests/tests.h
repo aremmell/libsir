@@ -32,7 +32,6 @@
 # include "sir/textstyle.h"
 # include "sir/mutex.h"
 # include "sir/threadpool.h"
-# include "sir/utils.h"
 # include "sir/queue.h"
 
 /**
@@ -280,11 +279,11 @@ bool sirtest_squelchspam(void);
 bool sirtest_pluginloader(void);
 
 /**
- * @test sirtest_strutils
+ * @test sirtest_stringutils
  * @brief Ensure the string utility routines are functioning properly.
  * @returns bool `true` if the test succeeded, `false` otherwise.
  */
-bool sirtest_strutils(void);
+bool sirtest_stringutils(void);
 
 /**
  * @test sirtest_getcpucount
