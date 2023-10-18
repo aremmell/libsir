@@ -140,7 +140,7 @@ typedef uint32_t sir_textcolor;
  *
  * Granular error information in order to provide the caller with flexibility in
  * regards to error handling and formatting.
-*/
+ */
 typedef struct {
     const char* func;          /**< Name of the function in which the error occurred. */
     const char* file;          /**< Name of the file in which the error occurred. */
