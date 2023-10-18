@@ -44,27 +44,26 @@ extern "C" {
 char* sir_strremove(char *str, const char *sub);
 
 /*
- * @brief Replace all occurrences of repeating whitespace characters
- *        in string "str" with a single space character.
+ * @brief Replace all occurrences of repeating whitespace
+ * characters in string "str" with a single space character.
  */
 char* sir_strsqueeze(char *str);
 
 /*
- * @brief Redact all occurrences of substring "sub" in
- *        string "str" with character 'c'.
+ * @brief Redact all occurrences of substring
+ * "sub" in string "str" with character 'c'.
  */
 char* sir_strredact(char *str, const char *sub, const char c);
 
 /*
- * @brief Replace all occurrences of character 'c' in
- *        string "str" with character 'n'.
+ * @brief Replace all occurrences of character
+ * 'c' in string "str" with character 'n'.
  */
-char* sir_strreplace (char *str, const char c, const char n);
+char* sir_strreplace(char *str, const char c, const char n);
 
 /*
- * @brief Replace up to 'max' occurrences of character 'c'
- *        in string "str" with character 'n', returning
- *        the number of replacements performed.
+ * @brief Replace up to 'max' occurrences of character 'c' in string "str"
+ * with character 'n', returning the number of replacements performed.
  */
 size_t sir_strcreplace(char *str, const char c, const char n, int32_t max);
 

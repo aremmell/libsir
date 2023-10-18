@@ -30,6 +30,7 @@
 #include <stdbool.h>
 #include "chsir.h"
 #include "sir/internal.h"
+#include "sir/utils.h"
 
 EXPORTCH bool
 sir_makeinit_chdl(void *varg) {
@@ -603,6 +604,107 @@ sir_fileopts_chdl(void *varg) {
     id     = Ch_VaArg(interp, ap, sirfileid);
     opts   = Ch_VaArg(interp, ap, sir_options);
     retval = sir_fileopts(id, opts);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH char*
+sir_strremove_chdl(void *varg) {
+    ChInterp_t  interp;
+    ChVaList_t  ap;
+    char*       str;
+    const char* sub;
+    char*       retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    str    = Ch_VaArg(interp, ap, char*);
+    sub    = Ch_VaArg(interp, ap, const char*);
+    retval = sir_strremove(str, sub);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH char*
+sir_strsqueeze_chdl(void *varg) {
+    ChInterp_t  interp;
+    ChVaList_t  ap;
+    char*       str;
+    char*       retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    str    = Ch_VaArg(interp, ap, char*);
+    retval = sir_strsqueeze(str);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH char*
+sir_strredact_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    char*      str;
+    char*      sub;
+    char       c;
+    char*      retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    str    = Ch_VaArg(interp, ap, char*);
+    sub    = Ch_VaArg(interp, ap, char*);
+    c      = Ch_VaArg(interp, ap, char);
+    retval = sir_strredact(str, sub, c);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH char*
+sir_strreplace_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    char*      str;
+    char       c;
+    char       n;
+    char*      retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    str    = Ch_VaArg(interp, ap, char*);
+    c      = Ch_VaArg(interp, ap, char);
+    n      = Ch_VaArg(interp, ap, char);
+    retval = sir_strreplace(str, c, n);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH size_t
+sir_strcreplace_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    char*      str;
+    char       c;
+    char       n;
+    int32_t    max;
+    size_t     retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    str    = Ch_VaArg(interp, ap, char*);
+    c      = Ch_VaArg(interp, ap, char);
+    n      = Ch_VaArg(interp, ap, char);
+    max    = Ch_VaArg(interp, ap, int32_t);
+    retval = sir_strcreplace(str, c, n, max);
 
     Ch_VaEnd(interp, ap);
 
