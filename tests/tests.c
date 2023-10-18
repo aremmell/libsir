@@ -2020,7 +2020,7 @@ bool sirtest_strutils(void) {
     _sir_eqland(pass, 1 == sir_strcreplace(str, '.', '!', 1) && 0 == strncmp(str, "Kneel before Zod!", 17));
     TEST_MSG("sir_strcreplace result: '%s'", str);
 
-    _sir_eqland(pass, sir_strredact(str, "Kneel", '*') && 0 == strncmp(str, "***** before Zod!", 17));
+    _sir_eqland(pass, sir_strredact(str, "e", '*') && 0 == strncmp(str, "Kn**l b*for* Zod!", 17));
     TEST_MSG("sir_strredact result:   '%s'", str);
 
     PASSFAIL_MSG(pass, "\t--- valid strutils usage: %s ---\n\n", PRN_PASS(pass));
@@ -2029,6 +2029,9 @@ bool sirtest_strutils(void) {
 
     TEST_MSG_0("sir_strsqueeze:  NULL pointer");
     _sir_eqland(pass, !sir_strsqueeze(NULL));
+
+    TEST_MSG_0("sir_strremove:   NULL pointer");
+    _sir_eqland(pass, !sir_strremove(NULL, "sub"));
 
     TEST_MSG_0("sir_strreplace:  NULL pointer");
     _sir_eqland(pass, !sir_strreplace(NULL, 'c', 'n'));
@@ -2042,6 +2045,9 @@ bool sirtest_strutils(void) {
     PASSFAIL_MSG(pass, "\t--- invalid strutils usage - NULL pointer: %s ---\n\n", PRN_PASS(pass));
 
     TEST_MSG_0(WHITEB("--- invalid strutils usage - bad parameters ---"));
+
+    TEST_MSG_0("sir_strremove:   bad parameter: \"sub\"");
+    _sir_eqland(pass, sir_strremove(str, NULL));
 
     TEST_MSG_0("sir_strreplace:  bad parameter: 'c'");
     _sir_eqland(pass, sir_strreplace(str, 0, 'n'));
