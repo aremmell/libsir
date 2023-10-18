@@ -49,7 +49,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         return false;
 
     if (relative) {
-#if !defined(__WIN__)
+#if !defined(__WIN__) && !defined(__VXWORKS__)
 # if defined(__MACOS__) || defined(_AIX) || defined(__EMSCRIPTEN__)
 #  if !defined(O_SEARCH)
         int open_flags = O_DIRECTORY;
@@ -321,7 +321,9 @@ char* _sir_getappfilename(void) {
             break;
         }
 # else
-#  error "no implementation for your platform; please contact the author."
+#  if !defined(__VXWORKS__) /* XXX(jhj): Implement for VxWorks */
+#   error "no implementation for your platform; please contact the author."
+#  endif
 # endif
 #else /* __WIN__ */
         DWORD ret = GetModuleFileNameA(NULL, buffer, (DWORD)size);

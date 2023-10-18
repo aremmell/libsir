@@ -268,7 +268,7 @@ int _sir_strncat(char* restrict dest, size_t destsz, const char* restrict src,
 int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename,
     const char* restrict mode) {
     if (_sir_validptrptr(streamptr) && _sir_validstr(filename) && _sir_validstr(mode)) {
-#if defined(__HAVE_STDC_SECURE_OR_EXT1__)
+#if defined(__HAVE_STDC_SECURE_OR_EXT1__) && !defined(__VXWORKS__)
         int ret = fopen_s(streamptr, filename, mode);
         if (0 != ret) {
             (void)_sir_handleerr(ret);

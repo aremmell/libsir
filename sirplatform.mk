@@ -165,10 +165,28 @@ ifeq ($(SUNPRO),1)
   FORTIFY_FLAGS=-U_FORTIFY_SOURCE
   MMDOPT=-xMMD
   PTHOPT=-mt=yes
-else
+else # Defaults
   FORTIFY_FLAGS?=-D_FORTIFY_SOURCE=2
   MMDOPT=-MMD
   PTHOPT=-pthread
+endif
+
+##############################################################################
+# VxWorks 7
+
+ifneq "$(findstring wr-cc,$(CC))" ""
+  VXWORKS?=1
+endif
+
+ifneq "$(findstring wr-c++,$(CXX))" ""
+  VXWORKS?=1
+endif
+
+ifeq ($(VXWORKS),1)
+  LIBDL=
+  PTHOPT=
+  PLATFORM_EXE_EXT=.vxe
+  RANLIB=wr-ranlib
 endif
 
 ##############################################################################

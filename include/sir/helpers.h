@@ -374,7 +374,8 @@ static inline
 struct tm* _sir_localtime(const time_t* timer, struct tm* buf) {
     if (!timer || !buf)
         return NULL;
-# if defined(__HAVE_STDC_SECURE_OR_EXT1__) && !defined(__EMBARCADEROC__)
+# if defined(__HAVE_STDC_SECURE_OR_EXT1__) && !defined(__EMBARCADEROC__) && \
+    !defined(__VXWORKS__)
 #  if !defined(__WIN__)
     struct tm* ret = localtime_s(timer, buf);
     if (!ret) {
