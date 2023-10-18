@@ -2006,6 +2006,8 @@ bool sirtest_strutils(void) {
 
     char str[] = "Kneel  \f \n  before  \t \r \v  Zod!?";
 
+    TEST_MSG_0(WHITEB("--- valid strutils usage ---"));
+
     _sir_eqland(pass, sir_strsqueeze(str) && 0 == strncmp(str, "Kneel before Zod!?", 18));
     TEST_MSG("sir_strsqueeze result:  '%s'", str);
 
@@ -2020,6 +2022,49 @@ bool sirtest_strutils(void) {
 
     _sir_eqland(pass, sir_strredact(str, "Kneel", '*') && 0 == strncmp(str, "***** before Zod!", 17));
     TEST_MSG("sir_strredact result:   '%s'", str);
+
+    PASSFAIL_MSG(pass, "\t--- valid strutils usage: %s ---\n\n", PRN_PASS(pass));
+
+    TEST_MSG_0(WHITEB("--- invalid strutils usage - NULL pointer ---"));
+
+    TEST_MSG_0("sir_strsqueeze:  NULL pointer");
+    _sir_eqland(pass, !sir_strsqueeze(NULL));
+
+    TEST_MSG_0("sir_strreplace:  NULL pointer");
+    _sir_eqland(pass, !sir_strreplace(NULL, 'c', 'n'));
+
+    TEST_MSG_0("sir_strcreplace: NULL pointer");
+    _sir_eqland(pass, !sir_strcreplace(NULL, 'c', 'n', -1));
+
+    TEST_MSG_0("sir_strredact:   NULL pointer");
+    _sir_eqland(pass, !sir_strredact(NULL, "s", '*'));
+
+    PASSFAIL_MSG(pass, "\t--- invalid strutils usage - NULL pointer: %s ---\n\n", PRN_PASS(pass));
+
+    TEST_MSG_0(WHITEB("--- invalid strutils usage - bad parameters ---"));
+
+    TEST_MSG_0("sir_strreplace:  bad parameter: 'c'");
+    _sir_eqland(pass, sir_strreplace(str, 0, 'n'));
+
+    TEST_MSG_0("sir_strreplace:  bad parameter: 'n'");
+    _sir_eqland(pass, sir_strreplace(str, 'c', 0));
+
+    TEST_MSG_0("sir_strcreplace: bad parameter: 'c'");
+    _sir_eqland(pass, !sir_strcreplace(str, 0, 'n', -1));
+
+    TEST_MSG_0("sir_strcreplace: bad parameter: 'n'");
+    _sir_eqland(pass, !sir_strcreplace(str, 'c', 0, -1));
+
+    TEST_MSG_0("sir_strcreplace: bad parameter: 'max'");
+    _sir_eqland(pass, !sir_strcreplace(str, 'c', 'n', 0));
+
+    TEST_MSG_0("sir_strredact:   bad parameter: \"sub\"");
+    _sir_eqland(pass, sir_strredact(str, NULL, '*'));
+
+    TEST_MSG_0("sir_strredact:   bad parameter: 'c'");
+    _sir_eqland(pass, sir_strredact(str, "sub", 0));
+
+    PASSFAIL_MSG(pass, "\t--- invalid strutils usage - bad parsmeters: %s ---\n", PRN_PASS(pass));
 
     _sir_eqland(pass, sir_cleanup());
     return PRINT_RESULT_RETURN(pass);
