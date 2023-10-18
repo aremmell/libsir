@@ -279,6 +279,13 @@ bool sirtest_squelchspam(void);
 bool sirtest_pluginloader(void);
 
 /**
+ * @test sirtest_stringutils
+ * @brief Ensure the string utility routines are functioning properly.
+ * @returns bool `true` if the test succeeded, `false` otherwise.
+ */
+bool sirtest_stringutils(void);
+
+/**
  * @test sirtest_getcpucount
  * @brief Ensure the processor counting routines are functioning properly.
  * @returns bool `true` if the test succeeded, `false` otherwise.
