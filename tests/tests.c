@@ -917,7 +917,7 @@ bool sirtest_optionssanity(void) {
     PASSFAIL_MSG(pass, "\t--- individual valid options: %s ---\n\n", PRN_PASS(pass));
 
     /* any combination these bitwise OR'd together
-       to form a bitmask should also be valid. */
+     * to form a bitmask should also be valid. */
     static const sir_option option_arr[SIR_NUMOPTIONS] = {
         SIRO_NOTIME,
         SIRO_NOHOST,
@@ -1023,7 +1023,7 @@ bool sirtest_levelssanity(void) {
     PASSFAIL_MSG(pass, "\t--- individual valid levels: %s ---\n\n", PRN_PASS(pass));
 
     /* any combination these bitwise OR'd together
-       to form a bitmask should also be valid. */
+     * to form a bitmask should also be valid. */
     static const sir_levels levels_arr[SIR_NUMLEVELS] = {
         SIRL_EMERG,
         SIRL_ALERT,
@@ -1255,18 +1255,28 @@ bool sirtest_updatesanity(void) {
     static const char* logfile = MAKE_LOG_NAME("update-sanity.log");
     static const sir_options opts_array[UPDATE_SANITY_ARRSIZE] = {
         SIRO_NOHOST | SIRO_NOTIME | SIRO_NOLEVEL,
-        SIRO_MSGONLY, SIRO_NONAME | SIRO_NOTID,
+        SIRO_MSGONLY,
+        SIRO_NONAME | SIRO_NOTID,
         SIRO_NOPID | SIRO_NOTIME,
         SIRO_NOTIME | SIRO_NOLEVEL | SIRO_NONAME,
-        SIRO_NOTIME, SIRO_NOMSEC | SIRO_NOHOST,
+        SIRO_NOTIME,
+        SIRO_NOMSEC | SIRO_NOHOST,
         SIRO_NOPID | SIRO_NOTID,
-        SIRO_NOHOST | SIRO_NOTID, SIRO_ALL
+        SIRO_NOHOST | SIRO_NOTID,
+        SIRO_ALL
     };
 
     static const sir_levels levels_array[UPDATE_SANITY_ARRSIZE] = {
-        SIRL_NONE, SIRL_ALL, SIRL_EMERG, SIRL_ALERT,
-        SIRL_CRIT, SIRL_ERROR, SIRL_WARN, SIRL_NOTICE,
-        SIRL_INFO, SIRL_DEBUG
+        SIRL_NONE,
+        SIRL_ALL,
+        SIRL_EMERG,
+        SIRL_ALERT,
+        SIRL_CRIT,
+        SIRL_ERROR,
+        SIRL_WARN,
+        SIRL_NOTICE,
+        SIRL_INFO,
+        SIRL_DEBUG
     };
 
     rmfile(logfile, cl_cfg.leave_logs);
