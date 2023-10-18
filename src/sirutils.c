@@ -65,9 +65,9 @@ char* sir_strsqueeze(char *str) {
 }
 
 char* sir_strredact(char *str, const char *sub, const char c) {
-  char *p;
+  char *p = strstr(str, sub);
 
-  if (!sub || !c || !(p = strstr(str, sub)))
+  if (!sub || !c || !p)
       return str;
 
   (void)memset(p, c, strnlen(sub, strlen (str)));
