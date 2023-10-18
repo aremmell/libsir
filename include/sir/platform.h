@@ -470,18 +470,7 @@ _set_thread_local_invalid_parameter_handler(
 #    include <os/activity.h>
 #   endif
 #  elif defined(__VXWORKS__)
-#   include <vxWorks.h>
-#   include <vxCpuLib.h>
-#   include <vxWorksCommon.h>
-#   if !defined(CPUSET_ISZERO)
-#    define CPUSET_ISZERO(cpuset) ((cpuset) == 0)
-#   endif
-#   if !defined(CPUSET_ISSET)
-#    define CPUSET_ISSET(cpuset, n) ((cpuset) & (1U << (n)))
-#   endif
-#   if !defined(CPUSET_CLR)
-#    define CPUSET_CLR(cpuset, n) ((cpuset) &= ~(1U << (n)))
-#   endif
+#   include "sir/platform_vxworks.h"
 #  endif
 
 #  if defined(PATH_MAX)
