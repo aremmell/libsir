@@ -41,7 +41,7 @@ char* sir_strremove(char *str, const char *sub) {
       return str;
 
   if (*sub && (q = r = strstr(str, sub)) != NULL) {
-      size_t len = strnlen(sub, strlen (str));
+      size_t len = strnlen(sub, strlen(str));
 
       while ((r = strstr(p = r + len, sub)) != NULL)
           while (p < r)
@@ -81,12 +81,12 @@ char* sir_strredact(char *str, const char *sub, const char c) {
   if (!c || !p)
       return str;
 
-  (void)memset(p, c, strnlen(sub, strlen (str)));
+  (void)memset(p, c, strnlen(sub, strlen(str)));
 
   return sir_strredact(str, sub, c);
 }
 
-char* sir_strreplace (char *str, const char c, const char n) {
+char* sir_strreplace(char *str, const char c, const char n) {
   if (!str)
       return NULL;
 
