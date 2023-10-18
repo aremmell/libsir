@@ -30,6 +30,8 @@
 #include "sir/utils.h"
 
 char* sir_strremove(char *str, const char *sub) {
+  if (!str)
+      return NULL;
 
   const char* p;
   char* r;
@@ -52,6 +54,9 @@ char* sir_strremove(char *str, const char *sub) {
 }
 
 char* sir_strsqueeze(char *str) {
+  if (!str)
+      return NULL;
+
   unsigned long j;
 
   for (unsigned long i = j = 0; str[i]; ++i)
@@ -65,9 +70,15 @@ char* sir_strsqueeze(char *str) {
 }
 
 char* sir_strredact(char *str, const char *sub, const char c) {
+  if (!str)
+      return NULL;
+
+  if (!sub)
+      return str;
+
   char *p = strstr(str, sub);
 
-  if (!sub || !c || !p)
+  if (!c || !p)
       return str;
 
   (void)memset(p, c, strnlen(sub, strlen (str)));
@@ -76,6 +87,9 @@ char* sir_strredact(char *str, const char *sub, const char c) {
 }
 
 char* sir_strreplace (char *str, const char c, const char n) {
+  if (!str)
+      return NULL;
+
   char *i = str;
 
   if (!c || !n)
@@ -91,7 +105,7 @@ size_t sir_strcreplace(char *str, const char c, const char n, int32_t max) {
   char*  i   = str;
   size_t cnt = 0;
 
-  if (!c || !n || !max)
+  if (!str || !c || !n || !max)
       return cnt;
 
   while (cnt < (size_t)max && (i = strchr(i, c)) != NULL) {
