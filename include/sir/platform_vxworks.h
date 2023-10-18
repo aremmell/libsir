@@ -26,20 +26,20 @@
 #ifndef _SIR_PLATFORM_VXWORKS_H_INCLUDED
 # define _SIR_PLATFORM_VXWORKS_H_INCLUDED
 
-#   include <vxWorks.h>
-#   include <vxCpuLib.h>
-#   include <vxWorksCommon.h>
+# include <vxWorks.h>
+# include <vxCpuLib.h>
+# include <vxWorksCommon.h>
 
-#   if !defined(CPUSET_ISZERO)
-#    define CPUSET_ISZERO(cpuset) ((cpuset) == 0)
-#   endif
+# if !defined(CPUSET_ISZERO)
+#  define CPUSET_ISZERO(cpuset) ((cpuset) == 0)
+# endif
 
-#   if !defined(CPUSET_ISSET)
-#    define CPUSET_ISSET(cpuset, n) ((cpuset) & (1U << (n)))
-#   endif
+# if !defined(CPUSET_ISSET)
+#  define CPUSET_ISSET(cpuset, n) ((cpuset) & (1U << (n)))
+# endif
 
-#   if !defined(CPUSET_CLR)
-#    define CPUSET_CLR(cpuset, n) ((cpuset) &= ~(1U << (n)))
-#   endif
+# if !defined(CPUSET_CLR)
+#  define CPUSET_CLR(cpuset, n) ((cpuset) &= ~(1U << (n)))
+# endif
 
 #endif /* !_SIR_PLATFORM_VXWORKS_H_INCLUDED */
