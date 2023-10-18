@@ -475,8 +475,8 @@ char* _sir_strremove(char *str, const char *sub);
 
 /**
  * Replace all occurrences of repeating whitespace characters
- * (i.e. ` `, `\f`, `\n`, `\r`, `\t`) in string "str" with a
- * single space character.
+ * (i.e. ` `, `\\f`, `\\n`, `\\r`, `\\t`) in string "str" with
+ * a single space character.
  */
 char* _sir_strsqueeze(char *str);
 
