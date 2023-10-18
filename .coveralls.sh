@@ -447,7 +447,7 @@ rm -f bad.so > /dev/null 2>&1
 # Run 28 - Break readdir function
 "${DO_MAKE:-make}" -j "${JOBS:?}" clean
 "${DO_MAKE:-make}" -j "${JOBS:?}" SIR_DEBUG=1 SIR_SELFLOG=1
-printf '%s\n' "int readdir() { return -1; }" > bad.c
+printf '%s\n' "#include <stddef.h>" "void* readdir() { return NULL; }" > bad.c
 gcc -shared -fPIC bad.c -o bad.so || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirexample || true
 env LD_PRELOAD="$(pwd)/bad.so" build/bin/sirtests || true
@@ -546,6 +546,45 @@ build/bin/sirtests++ || true
 # shellcheck disable=SC2310
 remove_sample || true
 run_gcovr run-35.json
+remove_coverage
+
+# Run 36 - C++ init-cleanup-raii test
+"${DO_MAKE:-make}" -j "${JOBS:?}" clean
+"${DO_MAKE:-make}" -j "${JOBS:?}" tests++ SIR_DEBUG=1 SIR_SELFLOG=1 SIR_NO_PLUGINS=1
+build/bin/sirexample || true
+build/bin/sirtests++ --only init-cleanup-raii || true
+# shellcheck disable=SC2310
+remove_sample || true
+run_gcovr run-36.json
+remove_coverage
+
+# Run 37 - C++ bad option test
+"${DO_MAKE:-make}" -j "${JOBS:?}" clean
+"${DO_MAKE:-make}" -j "${JOBS:?}" tests++ SIR_DEBUG=1 SIR_SELFLOG=1 SIR_NO_PLUGINS=1
+build/bin/sirexample || true
+build/bin/sirtests++ --badoptions || true
+# shellcheck disable=SC2310
+remove_sample || true
+run_gcovr run-37.json
+remove_coverage
+
+# Run 38 - Interactive
+printf '%s\n' '#!/usr/bin/env expect' > r.sh
+# shellcheck disable=SC2129
+printf '%s\n' 'spawn ./build/bin/sirtests++ --wait' >> r.sh
+printf '%s\n' 'set timeout 999'                     >> r.sh
+printf '%s\n' 'expect "press any key to exit..."'   >> r.sh
+printf '%s\n' 'send -- "\r"'                        >> r.sh
+printf '%s\n' 'expect eof'                          >> r.sh
+"${DO_MAKE:-make}" -j "${JOBS:?}" clean
+"${DO_MAKE:-make}" -j "${JOBS:?}" SIR_SELFLOG=1
+build/bin/sirexample || true
+chmod a+x r.sh
+./r.sh || true
+# shellcheck disable=SC2310
+remove_sample || true
+rm -f r.sh || true
+run_gcovr run-38.json
 remove_coverage
 
 # Undo redirect
