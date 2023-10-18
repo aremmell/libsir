@@ -151,7 +151,7 @@ bool _sir_openfile(FILE* restrict* restrict f, const char* restrict path,
     return 0 == _sir_fopen(f, path, mode);
 }
 
-#if defined(_AIX)
+#if defined(_AIX) || defined(__VXWORKS__)
 static char cur_cwd[SIR_MAXPATH];
 #endif
 char* _sir_getcwd(void) {
@@ -161,7 +161,7 @@ char* _sir_getcwd(void) {
     if (!_sir_validptrnofail(cur))
         (void)_sir_handleerr(errno);
     return cur;
-# elif defined(_AIX)
+# elif defined(_AIX) || defined(__VXWORKS__)
     if (getcwd(cur_cwd, sizeof(cur_cwd)) == 0) {
         (void)_sir_handleerr(errno);
         return NULL;
