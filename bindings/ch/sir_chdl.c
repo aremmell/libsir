@@ -648,17 +648,17 @@ sir_strsqueeze_chdl(void *varg) {
 
 EXPORTCH char*
 sir_strredact_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
-    char*      str;
-    char*      sub;
-    char       c;
-    char*      retval;
+    ChInterp_t  interp;
+    ChVaList_t  ap;
+    char*       str;
+    const char* sub;
+    char        c;
+    char*       retval;
 
     Ch_VaStart(interp, ap, varg);
 
     str    = Ch_VaArg(interp, ap, char*);
-    sub    = Ch_VaArg(interp, ap, char*);
+    sub    = Ch_VaArg(interp, ap, const char*);
     c      = Ch_VaArg(interp, ap, char);
     retval = sir_strredact(str, sub, c);
 
