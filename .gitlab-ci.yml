@@ -4427,7 +4427,7 @@ OpenBSD/amd64 (GCC, OpenBSD Python):
 
 ##############################################################################
 
-OpenBSD/amd64 (c++, cc):
+OpenBSD/amd64 (C++, CC):
   stage: build_openbsd
   needs:
     - job: Style check
@@ -4475,7 +4475,7 @@ OpenBSD/amd64 (c++, cc):
 
 ##############################################################################
 
-FreeBSD/amd64 (c++, cc):
+FreeBSD/amd64 (C++, CC):
   stage: build_freebsd
   needs:
     - job: Style check
