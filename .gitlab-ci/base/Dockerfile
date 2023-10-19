@@ -113,7 +113,7 @@ RUN \
 && \
   dnf4 -y --allowerasing reinstall compiler-rt && \
   dnf4 -y --allowerasing install \
-    https://rpm.nodesource.com/pub_20.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm && \
+    https://rpm.nodesource.com/pub_21.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm && \
   dnf -y --refresh update && \
   dnf4 -y --refresh update && \
   dnf4 -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
