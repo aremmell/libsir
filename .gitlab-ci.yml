@@ -4292,7 +4292,7 @@ OpenBSD/amd64 (G++, GCC):
     - export CC="/usr/local/bin/ccache /usr/local/bin/egcc"
     - export CXX="/usr/local/bin/ccache /usr/local/bin/eg++"
     - export CFLAGS="-I/usr/local/include"
-    - export CXXFLAGS="-I/usr/local/include"
+    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -I/usr/local/include"
     - export LDFLAGS="-L/usr/local/lib"
     - uname -a
     - ${CC:?} --version
@@ -4308,7 +4308,7 @@ OpenBSD/amd64 (G++, GCC):
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - gstdbuf -o L ./build/bin/sirexample
     - gstdbuf -o L ./build/bin/sirtests
-    - true gstdbuf -o L ./build/bin/sirtests++
+    - gstdbuf -o L ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -4340,7 +4340,7 @@ OpenBSD/amd64 (Clang++, Clang):
     - export CC="/usr/local/bin/ccache /usr/local/bin/clang-16"
     - export CXX="/usr/local/bin/ccache /usr/local/bin/clang++-16"
     - export CFLAGS="-I/usr/local/include"
-    - export CXXFLAGS="-I/usr/local/include"
+    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -I/usr/local/include"
     - export LDFLAGS="-Wl,-rpath=/usr/local/llvm16/lib/ -L/usr/local/llvm16/lib/ -L/usr/local/lib"
     - uname -a
     - ${CC:?} --version
@@ -4356,7 +4356,7 @@ OpenBSD/amd64 (Clang++, Clang):
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - gstdbuf -o L ./build/bin/sirexample
     - gstdbuf -o L ./build/bin/sirtests
-    - true gstdbuf -o L ./build/bin/sirtests++
+    - gstdbuf -o L ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -4389,7 +4389,7 @@ OpenBSD/amd64 (GCC, OpenBSD Python):
     - export CC="/usr/local/bin/ccache /usr/local/bin/egcc"
     - export CXX="/usr/local/bin/ccache /usr/local/bin/eg++"
     - export CFLAGS="-I/usr/local/include"
-    - export CXXFLAGS="-I/usr/local/include"
+    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -I/usr/local/include"
     - export LDFLAGS="-L/usr/local/lib"
     - uname -a
     - command -v python3
@@ -4442,7 +4442,7 @@ OpenBSD/amd64 (C++, CC):
     - export CC="/usr/local/bin/ccache cc"
     - export CXX="/usr/local/bin/ccache c++"
     - export CFLAGS="-I/usr/local/include"
-    - export CXXFLAGS="-I/usr/local/include"
+    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -I/usr/local/include"
     - export LDFLAGS="-L/usr/local/lib"
     - uname -a
     - ${CC:?} --version
@@ -4458,7 +4458,7 @@ OpenBSD/amd64 (C++, CC):
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - gstdbuf -o L ./build/bin/sirexample
     - gstdbuf -o L ./build/bin/sirtests
-    - true gstdbuf -o L ./build/bin/sirtests++
+    - gstdbuf -o L ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
