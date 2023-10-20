@@ -87,7 +87,7 @@ int main(int argc, char** argv) {
 
 #include "tests_malloc.h"
 
-#if !defined(__WIN__) && !defined(__HAIKU__) && !defined(__EMSCRIPTEN__)
+#if !defined(__WIN__) && !defined(__HAIKU__) && !defined(__EMSCRIPTEN__) && !defined(__VXWORKS__)
     /* Disallow execution by root / sudo; some of the tests rely on lack of permissions. */
     if (geteuid() == 0) {
         (void)fprintf(stderr, "Sorry, but this program may not be executed by root.\n");
@@ -2293,7 +2293,7 @@ unsigned __stdcall threadrace_thread(void* arg) {
     TEST_MSG("hi, i'm thread (id: %d), logging to: '%s'...",
             PID_CAST threadid, my_args->log_file);
 
-#if !defined(DUMA)
+#if !defined(DUMA) && !defined(__VXWORKS__)
 # if !defined(__EMSCRIPTEN__)
 #  define NUM_ITERATIONS 1000
 # else

@@ -320,10 +320,10 @@ char* _sir_getappfilename(void) {
             resolved = _sir_handleerr(errno);
             break;
         }
+# elif defined(__VXWORKS__)
+        break;
 # else
-#  if !defined(__VXWORKS__) /* XXX(jhj): Implement for VxWorks */
 #   error "no implementation for your platform; please contact the author."
-#  endif
 # endif
 #else /* __WIN__ */
         DWORD ret = GetModuleFileNameA(NULL, buffer, (DWORD)size);

@@ -30,6 +30,9 @@
 # include <vxCpuLib.h>
 # include <vxWorksCommon.h>
 
+# undef SIR_NO_THREAD_NAMES
+# define SIR_NO_THREAD_NAMES
+
 # if !defined(CPUSET_ISZERO)
 #  define CPUSET_ISZERO(cpuset) ((cpuset) == 0)
 # endif

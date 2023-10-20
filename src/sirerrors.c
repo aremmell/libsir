@@ -302,7 +302,7 @@ void __sir_selflog(const char* func, const char* file, uint32_t line,
                 bool error = false;
                 bool warn  = false;
                 if (write2 > 0) {
-# if !defined(_AIX)
+# if !defined(_AIX) && !defined(__VXWORKS__)
 #  if !defined(__WIN__)
                     if (NULL != strcasestr(buf, "error") ||
                         NULL != strcasestr(buf, "assert")) {
