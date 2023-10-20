@@ -4327,7 +4327,7 @@ OpenBSD/amd64 (CC, OpenBSD Python):
   stage: build_python
   needs:
     - job: Style check
-    - job: OpenBSD/amd64 (G++, GCC)
+    - job: OpenBSD/amd64 (C++, CC)
   tags:
     - Shell-x64
     - OpenBSD
