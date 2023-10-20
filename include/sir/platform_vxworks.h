@@ -26,12 +26,48 @@
 #ifndef _SIR_PLATFORM_VXWORKS_H_INCLUDED
 # define _SIR_PLATFORM_VXWORKS_H_INCLUDED
 
-# include <vxWorks.h>
-# include <vxCpuLib.h>
-# include <vxWorksCommon.h>
+#if !defined(_WRS_FUNC_NORETURN_)
+# define _WRS_FUNC_NORETURN __attribute__((__noreturn__))
+#endif
 
-# undef SIR_NO_THREAD_NAMES
-# define SIR_NO_THREAD_NAMES
+typedef int64_t        INT64;
+typedef uint64_t       UINT64;
+
+typedef _Vx_ARGINT     ARGINT;
+typedef _Vx_BOOL       BOOL;
+typedef _Vx_FUNCPTR    FUNCPTR;
+typedef _Vx_INT16      INT16;
+typedef _Vx_INT32      INT32;
+typedef _Vx_INT8       INT8;
+typedef _Vx_MSG_Q_ID   MSG_Q_ID;
+typedef _Vx_OBJ_HANDLE OBJ_HANDLE;
+typedef _Vx_PART_ID    PART_ID;
+typedef _Vx_REG_SET    REG_SET;
+typedef _Vx_SEM_ID     SEM_ID;
+typedef _Vx_STATUS     STATUS;
+typedef _Vx_UCHAR      UCHAR;
+typedef _Vx_UINT16     UINT16;
+typedef _Vx_UINT32     UINT32;
+typedef _Vx_UINT8      UINT8;
+typedef _Vx_UINT       UINT;
+typedef _Vx_ULONG      ULONG;
+typedef _Vx_USHORT     USHORT;
+typedef _Vx_VOID       VOID;
+
+typedef OBJ_HANDLE     CONDVAR_ID;
+typedef OBJ_HANDLE     MSG_Q_ID_KERNEL;
+typedef OBJ_HANDLE     RTP_ID;
+typedef OBJ_HANDLE     SD_ID;
+typedef OBJ_HANDLE     SEM_ID_KERNEL;
+typedef OBJ_HANDLE     TASK_ID;
+
+# include <vxWorks.h>
+# include <types/vxWind.h>
+# include <vxCpuLib.h>
+# include <taskLib.h>
+
+/* # undef SIR_NO_THREAD_NAMES */
+/* # define SIR_NO_THREAD_NAMES */
 
 # if !defined(CPUSET_ISZERO)
 #  define CPUSET_ISZERO(cpuset) ((cpuset) == 0)

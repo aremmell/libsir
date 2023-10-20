@@ -1225,8 +1225,12 @@ double _sir_msec_since(const sir_time* when, sir_time* out) {
 }
 
 pid_t _sir_getpid(void) {
-#if !defined(__WIN__)
+#if !defined(__WIN__) || defined(__VXWORKS__)
+# if defined(__VXWORKS__)
+    return taskIdSelf();
+# else
     return getpid();
+# endif
 #else /* __WIN__ */
     return (pid_t)GetCurrentProcessId();
 #endif
@@ -1247,12 +1251,14 @@ pid_t _sir_gettid(void) {
     tid = (pid_t)getthrid();
 #elif defined(__SOLARIS__) || defined(__NetBSD__) || defined(__HURD__) || \
       defined(__DragonFly__) || defined(__CYGWIN__) || defined(_AIX) || \
-      defined(__EMSCRIPTEN__) || defined(__VXWORKS__)
+      defined(__EMSCRIPTEN__)
 # if defined(__CYGWIN__)
     tid = (pid_t)(uintptr_t)pthread_self();
 # else
     tid = (pid_t)pthread_self();
 # endif
+#elif defined(__VXWORKS__)
+    tid = (pid_t)taskIdSelf();
 #elif defined(__HAIKU__)
     tid = get_pthread_thread_id(pthread_self());
 #elif defined(__linux__) || defined(__serenity__)
@@ -1287,6 +1293,10 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     return _sir_validstrnofail(name);
 #elif defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
     pthread_get_name_np(pthread_self(), name, SIR_MAXPID);
+    return _sir_validstrnofail(name);
+#elif defined(__VXWORKS__)
+    name = taskName(taskIdSelf());
+    _sir_selflog("task name = '%s'", name);
     return _sir_validstrnofail(name);
 #elif defined(__WIN__)
     wchar_t* wname = NULL;
