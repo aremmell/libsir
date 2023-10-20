@@ -4237,9 +4237,7 @@ FreeBSD/amd64 (GCC, FreeBSD Python):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CC="/usr/local/bin/ccache /usr/local/bin/gcc13"
-    - export CXX="/usr/local/bin/ccache /usr/local/bin/g++13"
     - export CFLAGS="-I/usr/local/include"
-    - export CXXFLAGS="-I/usr/local/include"
     - export LDFLAGS="-Wl,-rpath=/usr/local/lib/gcc13 -L/usr/local/lib/gcc13 -L/usr/local/lib"
     - freebsd-version
     - command -v python3
@@ -4387,9 +4385,7 @@ OpenBSD/amd64 (GCC, OpenBSD Python):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CC="/usr/local/bin/ccache /usr/local/bin/egcc"
-    - export CXX="/usr/local/bin/ccache /usr/local/bin/eg++"
     - export CFLAGS="-I/usr/local/include"
-    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -I/usr/local/include"
     - export LDFLAGS="-L/usr/local/lib"
     - uname -a
     - command -v python3
