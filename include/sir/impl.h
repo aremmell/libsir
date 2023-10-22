@@ -1,10 +1,16 @@
-/* SPDX-License-Identifier: ISC and MIT */
-
 /*
+ * impl.h
+ *
+ * -----------------------------------------------------------------------------
+ *
  * strlcat from: $OpenBSD: strlcat.c,v 1.19 2019/01/25 00:19:25 millert Exp $
  * strlcpy from: $OpenBSD: strlcpy.c,v 1.16 2019/01/25 00:19:25 millert Exp $
  * strnlen from: $OpenBSD: strnlen.c,v 1.9  2019/01/25 00:19:25 millert Exp $
  * strndup from: $OpenBSD: strndup.c,v 1.3  2019/01/25 00:19:25 millert Exp $
+ *
+ * -----------------------------------------------------------------------------
+ *
+ * SPDX-License-Identifier: ISC
  *
  * Copyright (c) 1998, 2010, 2015 Todd C. Miller <millert@openbsd.org>
  * Copyright (c) 2018-2023 Ryan M. Lederman <lederman@gmail.com>
@@ -21,10 +27,15 @@
  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *
+ * -----------------------------------------------------------------------------
  */
 
-/******************************************************************************/
-/* OpenBSD strlcat() */
+/*
+ * -----------------------------------------------------------------------------
+ * OpenBSD strlcat()
+ * -----------------------------------------------------------------------------
+ */
 
 #if defined(SIR_IMPL_STRLCAT) && !defined(SIR_IMPL_STRLCAT_DEF)
 # undef strlcat
@@ -76,8 +87,12 @@ _sir_strlcat(char *dst, const char *src, size_t dsize)
 # define SIR_IMPL_STRLCAT_DEF 1
 #endif /* SIR_IMPL_STRLCAT */
 
-/******************************************************************************/
-/* OpenBSD strlcpy */
+/*
+ * -----------------------------------------------------------------------------
+ * OpenBSD strlcpy
+ *-----------------------------------------------------------------------------
+ */
+
 
 #if defined(SIR_IMPL_STRLCPY) && !defined(SIR_IMPL_STRLCPY_DEF)
 # undef strlcpy
@@ -123,8 +138,11 @@ _sir_strlcpy(char *dst, const char *src, size_t dsize)
 # define SIR_IMPL_STRLCPY_DEF 1
 #endif /* SIR_IMPL_STRLCPY */
 
-/******************************************************************************/
-/* OpenBSD strnlen */
+/*
+ * -----------------------------------------------------------------------------
+ * OpenBSD strnlen
+ * -----------------------------------------------------------------------------
+ */
 
 #if (defined(SIR_IMPL_STRNLEN) || defined(SIR_IMPL_STRNDUP)) && \
      !defined(SIR_IMPL_STRNLEN_DEF)
@@ -144,8 +162,11 @@ _sir_strnlen(const char *str, size_t maxlen)
 # define SIR_IMPL_STRNLEN_DEF 1
 #endif /* SIR_IMPL_STRNLEN */
 
-/******************************************************************************/
-/* OpenBSD strndup */
+/*
+ * -----------------------------------------------------------------------------
+ * OpenBSD strndup
+ * -----------------------------------------------------------------------------
+ */
 
 #if defined(SIR_IMPL_STRNDUP) && !defined(SIR_IMPL_STRNDUP_DEF)
 # undef strndup

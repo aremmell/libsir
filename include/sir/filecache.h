@@ -2,9 +2,17 @@
  * filecache.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
+ *
+ * -----------------------------------------------------------------------------
+ *
+ * SPDX-License-Identifier: MIT
+ *
+ * Copyright (c) 2018-2023 Ryan M. Lederman <lederman@gmail.com>
+ * Copyright (c) 2018-2023 Jeffrey H. Johnson <trnsz@pobox.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -22,7 +30,10 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * -----------------------------------------------------------------------------
  */
+
 #ifndef _SIR_FILECACHE_H_INCLUDED
 # define _SIR_FILECACHE_H_INCLUDED
 

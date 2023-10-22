@@ -3,8 +3,8 @@
 libsir&mdash;a lightweight, cross-platform library for information distribution
 
 <!-- SPDX-License-Identifier: MIT -->
-<!-- Copyright (c) 2018-current Ryan M. Lederman <lederman@gmail.com> -->
-<!-- Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com> -->
+<!-- -->
+<!-- Copyright (c) 2018-2023 Ryan M. Lederman <lederman@gmail.com> -->
 <!-- -->
 <!-- Permission is hereby granted, free of charge, to any person obtaining a copy of -->
 <!-- this software and associated documentation files (the "Software"), to deal in -->

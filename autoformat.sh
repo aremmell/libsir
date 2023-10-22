@@ -1,11 +1,12 @@
 #!/usr/bin/env sh
 
-########################################################################
-
+################################################################################
+#
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-current Ryan M. Lederman <lederman@gmail.com>
-# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
-
+#
+# Copyright (c) 2018-2023 Ryan M. Lederman <lederman@gmail.com>
+# Copyright (c) 2018-2023 Jeffrey H. Johnson <trnsz@pobox.com>
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
 # the Software without restriction, including without limitation the rights to
@@ -22,30 +23,33 @@
 # COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#
+################################################################################
 
-########################################################################
-# Sanity checks
-
+################################################################################
 # Check for csh as sh
+
 # shellcheck disable=SC2006,SC2046,SC2065,SC2116
 test _`echo asdf 2>/dev/null` != _asdf >/dev/null &&\
     printf '%s\n' "Error: csh as sh is not supported." &&\
     exit 1
 
+################################################################################
 # Check directory
+
 # shellcheck disable=SC2065
 test -f "./${0##*/}" > /dev/null 2>&1 || {
     printf '%s\n' "Error: cannot locate script in current directory."
     exit 1
 }
 
-########################################################################
+################################################################################
 # Fail early on pipelines, if possible
 
 # shellcheck disable=SC3040
 (set -o pipefail > /dev/null 2>&1) && set -o pipefail
 
-########################################################################
+################################################################################
 # Cppi
 
 run_cppi()
@@ -58,7 +62,7 @@ run_cppi()
   ) && printf '%s\n' "complete."
 }
 
-########################################################################
+################################################################################
 # Run tool(s)
 
 command -v cppi > /dev/null 2>&1 ||
@@ -68,4 +72,4 @@ command -v cppi > /dev/null 2>&1 ||
   }
 run_cppi
 
-########################################################################
+################################################################################

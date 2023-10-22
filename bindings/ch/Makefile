@@ -1,9 +1,11 @@
 # bindings/ch/Makefile
-# libsir: https://github.com/aremmell/libsir
 
+################################################################################
+#
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
-
+#
+# Copyright (c) 2018-2023 Jeffrey H. Johnson <trnsz@pobox.com>
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
 # the Software without restriction, including without limitation the rights to
@@ -20,20 +22,22 @@
 # COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#
+################################################################################
 
-##############################################################################
+################################################################################
 # Defaults
 
 .NOTPARALLEL:
 RANLIB   ?= ranlib
 AR       ?= ar
 
-##############################################################################
+################################################################################
 # Platform specifics
 
 include ../../sirplatform.mk
 
-##############################################################################
+################################################################################
 # Targets
 
 .PHONY: all
@@ -45,7 +49,7 @@ all:
 	-@printf '[binding] built ch binding successfully.\n' 2> /dev/null
 	-@tput sgr0 2> /dev/null || true
 
-##############################################################################
+################################################################################
 # Ch functions
 
 GEN_FUNCS=sir_alert.chf sir_crit.chf sir_debug.chf sir_emerg.chf \
@@ -58,7 +62,7 @@ $(GEN_FUNCS): sir_output.chi sir_chdl.c chsir.h
 	   printf '[binding] generated %s.\n' "$(@)" 2> /dev/null || true; \
 	   tput sgr0 2> /dev/null || true )
 
-##############################################################################
+################################################################################
 # Ch dynamic module
 
 .PHONY: module-ch
@@ -77,7 +81,7 @@ sir_chdl.o: sir_chdl.c chsir.h
 
 chsir.h: ../../include/sir.h
 
-##############################################################################
+################################################################################
 # Check main build files
 
 .PHONY: check_main
@@ -97,7 +101,7 @@ check_main:
 	       $(MAKE) --no-print-directory -C ../..; \
 	  }
 
-##############################################################################
+################################################################################
 # Clean-up
 
 .PHONY: clean-all distclean
@@ -124,9 +128,9 @@ clean:
 	-@printf '[clean] bindings/ch cleaned successfully.\n' 2> /dev/null
 	-@tput sgr0 2> /dev/null || true
 
-##############################################################################
+################################################################################
 # Common rules
 
 include ../../sircommon.mk
 
-##############################################################################
+################################################################################

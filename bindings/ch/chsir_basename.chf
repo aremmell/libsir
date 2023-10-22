@@ -1,12 +1,16 @@
 /*
- * SPDX-License-Identifier: ISC and MIT
- *
  * chsir_basename.chf
+ *
+ * -----------------------------------------------------------------------------
  *
  * basename from: $OpenBSD: basename.c,v 1.17  2020/10/20 19:30:14 naddy Exp $
  *
+ * -----------------------------------------------------------------------------
+ *
+ * SPDX-License-Identifier: ISC and MIT
+ *
  * Copyright (c) 1997, 2004 Todd C. Miller <millert@openbsd.org>
- * Copyright (c) 2023 Jeffrey H. Johnson <trnsz@pobox.com>
+ * Copyright (c) 2018-2023 Jeffrey H. Johnson <trnsz@pobox.com>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -19,7 +23,10 @@
  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *
+ * -----------------------------------------------------------------------------
  */
+
 #include <errno.h>
 #include <libgen.h>
 #include <limits.h>

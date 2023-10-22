@@ -5,115 +5,26 @@ Source: https://github.com/aremmell/libsir
 
 # Documentation
 Files: docs/*
-Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
-License: MIT
-
-# MSVC wrappers
-Files: .gitlab-ci/msvc/wrappers/*
-Copyright: Copyright (c) 2019 Martin Storsjo
-License: ISC
-
-# SVGPan
-Files: docs/svgpan.js
-Copyright: 2009-2010 Andrea Leofreddi <a.leofreddi@itcharm.com>
-License: BSD-2-Clause-Views
-
-# SVG.js
-Files: docs/svg.min.js
-Copyright: Wout Fierens <wout@mick-wout.com>
-License: MIT
-
-# JQuery
-Files: docs/jquery.js
-Copyright: OpenJS Foundation and other contributors
-License: MIT
-
-# Menu
-Files: docs/menu.js
-Copyright: 1997-2020 by Dimitri van Heesch
-License: MIT
-
-# Menudata
-Files: docs/menudata.js
-Copyright: 1997-2020 by Dimitri van Heesch
-License: MIT
-
-# Navtree
-Files: docs/navtree.js
-Copyright: 1997-2020 by Dimitri van Heesch
-License: MIT
-
-# Navtreedata
-Files: docs/navtreedata.js
-Copyright: 1997-2020 by Dimitri van Heesch
-License: MIT
-
-# Search
-Files: docs/search.js
-Copyright: 1997-2020 by Dimitri van Heesch
-License: MIT
-
-# Resize
-Files: docs/resize.js
-Copyright: 1997-2020 by Dimitri van Heesch
-License: MIT
-
-# Dynsections
-Files: docs/dynsections.js
-Copyright: 1997-2020 by Dimitri van Heesch
+Copyright: 2018-2023 Ryan M. Lederman <lederman@gmail.com>
+           2018-2023 Jeffrey H. Johnson <trnsz@pobox.com>
 License: MIT
 
 # GitHub templates
 Files: .github/ISSUE_TEMPLATE/*.md
-Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
-License: MIT
-
-# Plugin code files
-Files: plugins/*
-Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
-License: MIT
-
-# Test suite
-Files: tests/*
-Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
-License: MIT
-
-# Example code files
-Files: example/*
-Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
+Copyright: 2018-2023 Ryan M. Lederman <lederman@gmail.com>
 License: MIT
 
 # Visual Studio Code files
 Files: .vscode/*
-Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
+Copyright: 2018-2023 Ryan M. Lederman <lederman@gmail.com>
 License: MIT
 
 # Microsoft Visual Studio files
 Files: msvs/*
-Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
+Copyright: 2018-2023 Ryan M. Lederman <lederman@gmail.com>
 License: MIT
 
 # Workspace files
 Files: sir.code-workspace
-Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
-License: MIT
-
-# All other C source files
-Files: src/*.c
-Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
-License: MIT
-
-# All other C header files
-Files: include/*.h
-Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
-License: MIT
-
-# C++ header files
-Files: include/*.hh
-Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
-License: MIT
-
-# Ch bindings
-Files: bindings/ch/*
-Copyright: 2018-current Ryan M. Lederman <lederman@gmail.com>
+Copyright: 2018-2023 Ryan M. Lederman <lederman@gmail.com>
 License: MIT

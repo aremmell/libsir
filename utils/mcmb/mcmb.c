@@ -1,9 +1,11 @@
 /*
- * vim: filetype=c:tabstop=4:ai:expandtab
- * SPDX-License-Identifier: BSD-2-Clause
+ * mcmb.c
+ *
  * scspell-id: ec490dbd-f630-11ec-a71d-80ee73e9b8e7
  *
  * ---------------------------------------------------------------------------
+ *
+ * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 2002-2019 Devin Teske <dteske@FreeBSD.org>
  * Copyright (c) 2020-2023 Jeffrey H. Johnson <trnsz@pobox.com>
@@ -36,6 +38,7 @@
  *
  * ---------------------------------------------------------------------------
  */
+
 //-V::550,575,629,701,1048,1059
 
 /*
@@ -3011,3 +3014,5 @@ static CMB_TRANSFORM_OP_FIND(*, cmb_mul_find)
 static CMB_TRANSFORM_OP_FIND(/, cmb_div_find)
 static CMB_TRANSFORM_OP_FIND(+, cmb_add_find)
 static CMB_TRANSFORM_OP_FIND(-, cmb_sub_find)
+
+// vim: filetype=c:tabstop=4:ai:expandtab

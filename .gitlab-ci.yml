@@ -1,10 +1,13 @@
 # .gitlab-ci.yml
-# libsir: https://github.com/aremmell/libsir
 
+# GitLab CI/CD configuration
+################################################################################
+#
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-current Ryan M. Lederman <lederman@gmail.com>
-# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
-
+#
+# Copyright (c) 2018-2023 Ryan M. Lederman <lederman@gmail.com>
+# Copyright (c) 2018-2023 Jeffrey H. Johnson <trnsz@pobox.com>
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
 # the Software without restriction, including without limitation the rights to
@@ -21,8 +24,10 @@
 # COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#
+################################################################################
 
-##############################################################################
+################################################################################
 
 stages:
   - sanity
@@ -41,7 +46,7 @@ stages:
   - deploy
   - coverity
 
-##############################################################################
+################################################################################
 
 .ClangDisableWarnings: &ClangDisableWarnings |
   # *ClangDisableWarnings - Disable excessive Clang-CL Warnings
@@ -49,7 +54,7 @@ stages:
   export DISABLE_WARNINGS="-Wno-bad-function-cast -Wno-cast-align -Wno-cast-function-type -Wno-cast-function-type-strict -Wno-cast-qual -Wno-covered-switch-default -Wno-declaration-after-statement -Wno-deprecated-declarations -Wno-incompatible-pointer-types-discards-qualifiers -Wno-missing-variable-declarations -Wno-nonportable-system-include-path -Wno-reserved-identifier -Wno-reserved-macro-identifier -Wno-sign-conversion -Wno-unknown-argument -Wno-unsafe-buffer-usage -Wno-unused-command-line-argument -Wno-language-extension-token"
   echo -e "section_end:`date +%s`:DClW_section\r\e[0K" || true
 
-##############################################################################
+################################################################################
 
 .Configuration: &Configuration |
   # *Configuration - CI/CD Configuration
@@ -69,7 +74,7 @@ stages:
   echo "GitLab CI Runner Details  : ${CI_RUNNER_VERSION:-Unknown} (${CI_RUNNER_REVISION:-Unknown})"
   echo -e "section_end:`date +%s`:Configuration_section\r\e[0K" || true
 
-##############################################################################
+################################################################################
 
 .CheckLogRemnants: &CheckLogRemnants |
   # *CheckLogRemnants - Check logs/* for remaining files
@@ -77,7 +82,7 @@ stages:
   test -f logs/* && { ls -l logs/* && exit 1; false; }; true
   echo -e "section_end:`date +%s`:CheckLogRemnants_section\r\e[0K" || true
 
-##############################################################################
+################################################################################
 
 .BuildInformation: &BuildInformation |
   # *BuildInformation - Show build information
@@ -85,7 +90,7 @@ stages:
   find build/bin build/lib -type f -exec sh -c "ls -la {};file {}" \; 2> /dev/null | grep -v "file\.exists" 2> /dev/null || true
   echo -e "section_end:`date +%s`:BuildInformation_section\r\e[0K" || true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (G++, GCC):
   stage: build_linux
@@ -131,7 +136,7 @@ Linux/x86_64 (G++, GCC):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Verify Rollover:
   stage: lint_dynamic
@@ -178,7 +183,7 @@ Verify Rollover:
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/i686 (G++, GCC):
   stage: build_linux
@@ -227,7 +232,7 @@ Linux/i686 (G++, GCC):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (musl-libc, G++, GCC):
   stage: build_linux
@@ -269,7 +274,7 @@ Linux/x86_64 (musl-libc, G++, GCC):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (Clang++, Clang):
   stage: build_linux
@@ -316,7 +321,7 @@ Linux/x86_64 (Clang++, Clang):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/i686 (Clang++, Clang):
   stage: build_linux
@@ -365,7 +370,7 @@ Linux/i686 (Clang++, Clang):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (AOCC++, AOCC):
   stage: build_linux
@@ -412,7 +417,7 @@ Linux/x86_64 (AOCC++, AOCC):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/i686 (AOCC++, AOCC):
   stage: build_linux
@@ -462,7 +467,7 @@ Linux/i686 (AOCC++, AOCC):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (Intel C Classic, ICC, C-only):
   stage: build_linux
@@ -505,7 +510,7 @@ Linux/x86_64 (Intel C Classic, ICC, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (Intel oneAPI, ICPX, ICX):
   stage: build_linux
@@ -552,7 +557,7 @@ Linux/x86_64 (Intel oneAPI, ICPX, ICX):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (Oracle Studio C, C-only):
   stage: build_linux
@@ -594,7 +599,7 @@ Linux/x86_64 (Oracle Studio C, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/i686 (Oracle Studio C, C-only):
   stage: build_linux
@@ -638,7 +643,7 @@ Linux/i686 (Oracle Studio C, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (NVIDIA HPC SDK C++, C):
   stage: build_linux
@@ -689,7 +694,7 @@ Linux/x86_64 (NVIDIA HPC SDK C++, C):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (Chibicc, C-only):
   stage: build_linux
@@ -731,7 +736,7 @@ Linux/x86_64 (Chibicc, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/x64 (LLVM-MinGW, Clang++, Clang):
   stage: build_windows
@@ -792,7 +797,7 @@ Windows/x64 (LLVM-MinGW, Clang++, Clang):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/Arm (LLVM-MinGW, Clang++, Clang):
   stage: build_windows
@@ -834,7 +839,7 @@ Windows/Arm (LLVM-MinGW, Clang++, Clang):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/Arm64 (LLVM-MinGW, Clang++, Clang):
   stage: build_windows
@@ -876,7 +881,7 @@ Windows/Arm64 (LLVM-MinGW, Clang++, Clang):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (AMD Open64, C-only):
   allow_failure: true
@@ -924,7 +929,7 @@ Linux/x86_64 (AMD Open64, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/i686 (LLVM-MinGW, Clang++, Clang):
   stage: build_windows
@@ -985,7 +990,7 @@ Windows/i686 (LLVM-MinGW, Clang++, Clang):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Android/x86_64 (API Level 21, Clang++, Clang):
   stage: build_android
@@ -1033,7 +1038,7 @@ Android/x86_64 (API Level 21, Clang++, Clang):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Android/i686 (API Level 21, Clang++, Clang):
   stage: build_android
@@ -1081,7 +1086,7 @@ Android/i686 (API Level 21, Clang++, Clang):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Android/ARM64 (API Level 21, Clang++, Clang):
   stage: build_android
@@ -1117,7 +1122,7 @@ Android/ARM64 (API Level 21, Clang++, Clang):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Android/ARMv7A (API Level 21, Clang++, Clang):
   stage: build_android
@@ -1153,7 +1158,7 @@ Android/ARMv7A (API Level 21, Clang++, Clang):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Android/x86_64 (API Level 33, Clang++, Clang):
   stage: build_android
@@ -1199,7 +1204,7 @@ Android/x86_64 (API Level 33, Clang++, Clang):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Android/i686 (API Level 33, Clang++, Clang):
   stage: build_android
@@ -1247,7 +1252,7 @@ Android/i686 (API Level 33, Clang++, Clang):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Android/ARM64 (API Level 33, Clang++, Clang):
   stage: build_android
@@ -1281,7 +1286,7 @@ Android/ARM64 (API Level 33, Clang++, Clang):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Android/ARMv7A (API Level 33, Clang++, Clang):
   stage: build_android
@@ -1317,7 +1322,7 @@ Android/ARMv7A (API Level 33, Clang++, Clang):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/Arm64 (MSVC, C++, C):
   stage: build_windows
@@ -1356,7 +1361,7 @@ Windows/Arm64 (MSVC, C++, C):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/Arm (MSVC, C++, C):
   stage: build_windows
@@ -1395,7 +1400,7 @@ Windows/Arm (MSVC, C++, C):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/x64 (MSVC, C++, C):
   stage: build_windows
@@ -1453,7 +1458,7 @@ Windows/x64 (MSVC, C++, C):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/i686 (MSVC, C++, C):
   stage: build_windows
@@ -1510,7 +1515,7 @@ Windows/i686 (MSVC, C++, C):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/x64 (MinGW-MSVCRT, G++, GCC):
   stage: build_windows
@@ -1570,7 +1575,7 @@ Windows/x64 (MinGW-MSVCRT, G++, GCC):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/x64 (MinGW-UCRT, G++, GCC):
   stage: build_windows
@@ -1629,7 +1634,7 @@ Windows/x64 (MinGW-UCRT, G++, GCC):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/i686 (MinGW, G++, GCC):
   stage: build_windows
@@ -1689,7 +1694,7 @@ Windows/i686 (MinGW, G++, GCC):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Cygwin/x86_64 (G++, GCC):
   stage: build_cygwin
@@ -1724,7 +1729,7 @@ Cygwin/x86_64 (G++, GCC):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Cygwin/i686 (GCC, C-only):
   stage: build_cygwin
@@ -1756,7 +1761,7 @@ Cygwin/i686 (GCC, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Coverage:
   stage: coverage
@@ -1800,7 +1805,7 @@ Coverage:
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Generate tags:
   stage: sanity
@@ -1831,7 +1836,7 @@ Generate tags:
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Style check:
   stage: sanity
@@ -1872,7 +1877,7 @@ Style check:
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 MSVC Static Analyzer:
   stage: lint_static
@@ -1907,7 +1912,7 @@ MSVC Static Analyzer:
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Clang Static Analyzer:
   stage: lint_static
@@ -1939,7 +1944,7 @@ Clang Static Analyzer:
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Clang (Extra Warnings):
   stage: lint_static
@@ -1971,7 +1976,7 @@ Clang (Extra Warnings):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 GCC (Extra Warnings):
   stage: lint_static
@@ -2003,7 +2008,7 @@ GCC (Extra Warnings):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Flawfinder:
   needs:
@@ -2027,7 +2032,7 @@ Flawfinder:
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Cppcheck:
   needs:
@@ -2059,7 +2064,7 @@ Cppcheck:
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Valgrind:
   needs:
@@ -2089,7 +2094,7 @@ Valgrind:
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 REUSE:
   needs:
@@ -2113,7 +2118,7 @@ REUSE:
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 PVS-Studio:
   needs:
@@ -2155,7 +2160,7 @@ PVS-Studio:
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Coverity:
   needs:
@@ -2187,7 +2192,7 @@ Coverity:
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/i686 (OrangeC, C-only):
   needs:
@@ -2237,7 +2242,7 @@ Windows/i686 (OrangeC, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (DMD64 ImportC, C-only):
   stage: build_linux
@@ -2290,7 +2295,7 @@ Linux/x86_64 (DMD64 ImportC, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/i686 (DMD64 ImportC, C-only):
   stage: build_linux
@@ -2343,7 +2348,7 @@ Linux/i686 (DMD64 ImportC, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 GCC Static Analyzer:
   stage: lint_static
@@ -2389,7 +2394,7 @@ GCC Static Analyzer:
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/x64 (Embarcadero, C-only):
   stage: build_windows
@@ -2441,7 +2446,7 @@ Windows/x64 (Embarcadero, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/i686 (Embarcadero, C-only):
   stage: build_windows
@@ -2493,7 +2498,7 @@ Windows/i686 (Embarcadero, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Clang Sanitizer (UB, 32-bit, C-only):
   stage: lint_dynamic
@@ -2540,7 +2545,7 @@ Clang Sanitizer (UB, 32-bit, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Clang Sanitizer (UB, 64-bit, C-only):
   stage: lint_dynamic
@@ -2587,7 +2592,7 @@ Clang Sanitizer (UB, 64-bit, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Clang Sanitizer (Memory, C-only):
   stage: lint_dynamic
@@ -2633,7 +2638,7 @@ Clang Sanitizer (Memory, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Clang Sanitizer (CFI, 64-bit, C++, C):
   stage: lint_dynamic
@@ -2684,7 +2689,7 @@ Clang Sanitizer (CFI, 64-bit, C++, C):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Clang Sanitizer (CFI, 32-bit, C++, C):
   stage: lint_dynamic
@@ -2735,7 +2740,7 @@ Clang Sanitizer (CFI, 32-bit, C++, C):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Clang Sanitizer (Address, 64-bit, C++, C):
   stage: lint_dynamic
@@ -2786,7 +2791,7 @@ Clang Sanitizer (Address, 64-bit, C++, C):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Clang Sanitizer (Address, 32-bit, C++, C):
   stage: lint_dynamic
@@ -2837,7 +2842,7 @@ Clang Sanitizer (Address, 32-bit, C++, C):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 DUMA:
   stage: lint_dynamic
@@ -2869,7 +2874,7 @@ DUMA:
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Oracle Lint:
   stage: lint_static
@@ -2908,7 +2913,7 @@ Oracle Lint:
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (musl-libc, Kefir, C-only):
   stage: build_linux
@@ -2953,7 +2958,7 @@ Linux/x86_64 (musl-libc, Kefir, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (Kefir, C-only):
   stage: build_linux
@@ -2998,7 +3003,7 @@ Linux/x86_64 (Kefir, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (uClibc-ng, G++, GCC):
   stage: build_linux
@@ -3046,7 +3051,7 @@ Linux/x86_64 (uClibc-ng, G++, GCC):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (Circle, C++-only):
   stage: build_linux
@@ -3093,7 +3098,7 @@ Linux/x86_64 (Circle, C++-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Node.js/WebAssembly (Emscripten, Em++, Emcc):
   stage: build_js
@@ -3146,7 +3151,7 @@ Node.js/WebAssembly (Emscripten, Em++, Emcc):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Node.js/JavaScript (Emscripten, Em++, Emcc):
   stage: build_js
@@ -3199,7 +3204,7 @@ Node.js/JavaScript (Emscripten, Em++, Emcc):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (GCC, Fedora Python):
   stage: build_python
@@ -3250,7 +3255,7 @@ Linux/x86_64 (GCC, Fedora Python):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (Oracle Studio C, Fedora Python):
   stage: build_python
@@ -3301,7 +3306,7 @@ Linux/x86_64 (Oracle Studio C, Fedora Python):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (Clang, Fedora Python):
   stage: build_python
@@ -3353,7 +3358,7 @@ Linux/x86_64 (Clang, Fedora Python):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (NVIDIA HPC SDK C, Fedora Python):
   stage: build_python
@@ -3407,7 +3412,7 @@ Linux/x86_64 (NVIDIA HPC SDK C, Fedora Python):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (Intel oneAPI, Intel Python):
   stage: build_python
@@ -3459,7 +3464,7 @@ Linux/x86_64 (Intel oneAPI, Intel Python):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (GCC, Anaconda Python):
   stage: build_python
@@ -3515,7 +3520,7 @@ Linux/x86_64 (GCC, Anaconda Python):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (AOCC, Fedora Python):
   stage: build_python
@@ -3567,7 +3572,7 @@ Linux/x86_64 (AOCC, Fedora Python):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Semgrep (Cloud Rules):
   needs:
@@ -3599,7 +3604,7 @@ Semgrep (Cloud Rules):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Semgrep (GitLab Rules):
   needs:
@@ -3636,7 +3641,7 @@ Semgrep (GitLab Rules):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (Ch Professional 8.5):
   stage: build_ch
@@ -3680,7 +3685,7 @@ Linux/x86_64 (Ch Professional 8.5):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/x64 (Clang-CL, C++, C):
   stage: build_windows
@@ -3741,7 +3746,7 @@ Windows/x64 (Clang-CL, C++, C):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/i686 (Clang-CL, C++, C):
   stage: build_windows
@@ -3802,7 +3807,7 @@ Windows/i686 (Clang-CL, C++, C):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/Arm (Clang-CL, C-only):
   stage: build_windows
@@ -3849,7 +3854,7 @@ Windows/Arm (Clang-CL, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/Arm64 (Clang-CL, C++, C):
   stage: build_windows
@@ -3896,7 +3901,7 @@ Windows/Arm64 (Clang-CL, C++, C):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (glibc 2.7, GCC, C-only):
   stage: build_linux
@@ -3941,7 +3946,7 @@ Linux/x86_64 (glibc 2.7, GCC, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/i686 (glibc 2.7, GCC, C-only):
   stage: build_linux
@@ -3986,7 +3991,7 @@ Linux/i686 (glibc 2.7, GCC, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/ppc (glibc 2.7, GCC, C-only):
   stage: build_linux
@@ -4021,7 +4026,7 @@ Linux/ppc (glibc 2.7, GCC, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 pages:
   stage: deploy
@@ -4070,7 +4075,7 @@ pages:
   timeout: 30 minutes
   interruptible: false
 
-##############################################################################
+################################################################################
 
 FreeBSD/amd64 (G++, GCC):
   stage: build_freebsd
@@ -4118,7 +4123,7 @@ FreeBSD/amd64 (G++, GCC):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 FreeBSD/amd64 (Clang++, Clang):
   stage: build_freebsd
@@ -4166,7 +4171,7 @@ FreeBSD/amd64 (Clang++, Clang):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 FreeBSD/amd64 (DMD64 ImportC, C-only):
   stage: build_freebsd
@@ -4221,7 +4226,7 @@ FreeBSD/amd64 (DMD64 ImportC, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 FreeBSD/amd64 (GCC, FreeBSD Python):
   stage: build_python
@@ -4273,7 +4278,7 @@ FreeBSD/amd64 (GCC, FreeBSD Python):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 OpenBSD/amd64 (Clang++, Clang):
   stage: build_openbsd
@@ -4321,7 +4326,7 @@ OpenBSD/amd64 (Clang++, Clang):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 OpenBSD/amd64 (CC, OpenBSD Python):
   stage: build_python
@@ -4373,7 +4378,7 @@ OpenBSD/amd64 (CC, OpenBSD Python):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 OpenBSD/amd64 (C++, CC):
   stage: build_openbsd
@@ -4421,7 +4426,7 @@ OpenBSD/amd64 (C++, CC):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 FreeBSD/amd64 (C++, CC):
   stage: build_freebsd
@@ -4469,3 +4474,4 @@ FreeBSD/amd64 (C++, CC):
   retry: 2
   interruptible: true
 
+################################################################################
