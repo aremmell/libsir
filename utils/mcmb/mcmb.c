@@ -1,6 +1,14 @@
 /*
  * mcmb.c
  *
+ * Author:    Devin Teske <dtseke@FreeBSD.org>
+ * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
+ * Copyright: Copyright (c) 2002-2023
+ * Version:   2120.4.16-dps (libcmb 3.5.6)
+ * License:   The 2-Clause BSD License (BSD-2-Clause)
+ *
+ * -----------------------------------------------------------------------------
+ *
  * scspell-id: ec490dbd-f630-11ec-a71d-80ee73e9b8e7
  *
  * ---------------------------------------------------------------------------
