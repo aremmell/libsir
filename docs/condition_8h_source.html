@@ -119,32 +119,32 @@ $(document).ready(function(){initNavTree('condition_8h_source.html',''); initRes
 </div><!--header-->
 <div class="contents">
 <a href="condition_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#ifndef _SIR_CONDITION_H_INCLUDED</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor"># define _SIR_CONDITION_H_INCLUDED</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor"># include &quot;sir/types.h&quot;</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keywordtype">bool</span> <a class="code hl_function" href="condition_8h.html#ae93cd64b12a564792d3bb0a48a8ddc32">_sir_condcreate</a>(sir_condition* cond);</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor"># if 0</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keywordtype">bool</span> _sir_condsignal(sir_condition* cond);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keywordtype">bool</span> <a class="code hl_function" href="condition_8h.html#ae8d6edc94bcfb430cf584b27a91e4040">_sir_condbroadcast</a>(sir_condition* cond);</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keywordtype">bool</span> <a class="code hl_function" href="condition_8h.html#a150dd1b33dee56d4b02442f2f30f09c5">_sir_conddestroy</a>(sir_condition* cond);</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor"># if 0</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="keywordtype">bool</span> _sir_condwait(sir_condition* cond, sir_mutex* mutex);</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="keywordtype">bool</span> <a class="code hl_function" href="condition_8h.html#ad3a334d6709db41f5a96327c90b44e83">_sir_condwait_timeout</a>(sir_condition* cond, sir_mutex* mutex, <span class="keyword">const</span> sir_wait* howlong);</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_CONDITION_H_INCLUDED */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="acondition_8h_html_a150dd1b33dee56d4b02442f2f30f09c5"><div class="ttname"><a href="condition_8h.html#a150dd1b33dee56d4b02442f2f30f09c5">_sir_conddestroy</a></div><div class="ttdeci">bool _sir_conddestroy(sir_condition *cond)</div><div class="ttdoc">Destroys a condition variable.</div><div class="ttdef"><b>Definition</b> sircondition.c:77</div></div>
-<div class="ttc" id="acondition_8h_html_ad3a334d6709db41f5a96327c90b44e83"><div class="ttname"><a href="condition_8h.html#ad3a334d6709db41f5a96327c90b44e83">_sir_condwait_timeout</a></div><div class="ttdeci">bool _sir_condwait_timeout(sir_condition *cond, sir_mutex *mutex, const sir_wait *howlong)</div><div class="ttdoc">Waits a given amount of time for a condition variable to become signaled.</div><div class="ttdef"><b>Definition</b> sircondition.c:110</div></div>
-<div class="ttc" id="acondition_8h_html_ae8d6edc94bcfb430cf584b27a91e4040"><div class="ttname"><a href="condition_8h.html#ae8d6edc94bcfb430cf584b27a91e4040">_sir_condbroadcast</a></div><div class="ttdeci">bool _sir_condbroadcast(sir_condition *cond)</div><div class="ttdoc">Broadcast signals a condition variable.</div><div class="ttdef"><b>Definition</b> sircondition.c:62</div></div>
-<div class="ttc" id="acondition_8h_html_ae93cd64b12a564792d3bb0a48a8ddc32"><div class="ttname"><a href="condition_8h.html#ae93cd64b12a564792d3bb0a48a8ddc32">_sir_condcreate</a></div><div class="ttdeci">bool _sir_condcreate(sir_condition *cond)</div><div class="ttdoc">Creates/initializes a new condition variable.</div><div class="ttdef"><b>Definition</b> sircondition.c:30</div></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#ifndef _SIR_CONDITION_H_INCLUDED</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor"># define _SIR_CONDITION_H_INCLUDED</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor"># include &quot;sir/types.h&quot;</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keywordtype">bool</span> <a class="code hl_function" href="condition_8h.html#ae93cd64b12a564792d3bb0a48a8ddc32">_sir_condcreate</a>(sir_condition* cond);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor"># if 0</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keywordtype">bool</span> _sir_condsignal(sir_condition* cond);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor"># endif</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keywordtype">bool</span> <a class="code hl_function" href="condition_8h.html#ae8d6edc94bcfb430cf584b27a91e4040">_sir_condbroadcast</a>(sir_condition* cond);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="keywordtype">bool</span> <a class="code hl_function" href="condition_8h.html#a150dd1b33dee56d4b02442f2f30f09c5">_sir_conddestroy</a>(sir_condition* cond);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="preprocessor"># if 0</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="keywordtype">bool</span> _sir_condwait(sir_condition* cond, sir_mutex* mutex);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="preprocessor"># endif</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="keywordtype">bool</span> <a class="code hl_function" href="condition_8h.html#ad3a334d6709db41f5a96327c90b44e83">_sir_condwait_timeout</a>(sir_condition* cond, sir_mutex* mutex, <span class="keyword">const</span> sir_wait* howlong);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_CONDITION_H_INCLUDED */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="acondition_8h_html_a150dd1b33dee56d4b02442f2f30f09c5"><div class="ttname"><a href="condition_8h.html#a150dd1b33dee56d4b02442f2f30f09c5">_sir_conddestroy</a></div><div class="ttdeci">bool _sir_conddestroy(sir_condition *cond)</div><div class="ttdoc">Destroys a condition variable.</div><div class="ttdef"><b>Definition</b> sircondition.c:86</div></div>
+<div class="ttc" id="acondition_8h_html_ad3a334d6709db41f5a96327c90b44e83"><div class="ttname"><a href="condition_8h.html#ad3a334d6709db41f5a96327c90b44e83">_sir_condwait_timeout</a></div><div class="ttdeci">bool _sir_condwait_timeout(sir_condition *cond, sir_mutex *mutex, const sir_wait *howlong)</div><div class="ttdoc">Waits a given amount of time for a condition variable to become signaled.</div><div class="ttdef"><b>Definition</b> sircondition.c:119</div></div>
+<div class="ttc" id="acondition_8h_html_ae8d6edc94bcfb430cf584b27a91e4040"><div class="ttname"><a href="condition_8h.html#ae8d6edc94bcfb430cf584b27a91e4040">_sir_condbroadcast</a></div><div class="ttdeci">bool _sir_condbroadcast(sir_condition *cond)</div><div class="ttdoc">Broadcast signals a condition variable.</div><div class="ttdef"><b>Definition</b> sircondition.c:71</div></div>
+<div class="ttc" id="acondition_8h_html_ae93cd64b12a564792d3bb0a48a8ddc32"><div class="ttname"><a href="condition_8h.html#ae93cd64b12a564792d3bb0a48a8ddc32">_sir_condcreate</a></div><div class="ttdeci">bool _sir_condcreate(sir_condition *cond)</div><div class="ttdoc">Creates/initializes a new condition variable.</div><div class="ttdef"><b>Definition</b> sircondition.c:39</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.7-->

@@ -127,135 +127,145 @@ $(document).ready(function(){initNavTree('internal_8h_source.html',''); initResi
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"> * Version:   2.2.4</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"> * License:   The MIT License (MIT)</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment"> * this software and associated documentation files (the &quot;Software&quot;), to deal in</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"> * the Software without restriction, including without limitation the rights to</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * the Software, and to permit persons to whom the Software is furnished to do so,</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * subject to the following conditions:</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"> * -----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"> * SPDX-License-Identifier: MIT</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * Copyright (c) 2018-2023 Ryan M. Lederman &lt;lederman@gmail.com&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * Copyright (c) 2018-2023 Jeffrey H. Johnson &lt;trnsz@pobox.com&gt;</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> * The above copyright notice and this permission notice shall be included in all</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> * copies or substantial portions of the Software.</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"> * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#ifndef _SIR_INTERNAL_H_INCLUDED</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor"># define _SIR_INTERNAL_H_INCLUDED</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor"># include &quot;sir/helpers.h&quot;</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor"># include &quot;sir/maps.h&quot;</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor"># include &quot;sir/errors.h&quot;</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor"># if defined(__cplusplus)</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keywordtype">bool</span> _sir_makeinit(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si);</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> * this software and associated documentation files (the &quot;Software&quot;), to deal in</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> * the Software without restriction, including without limitation the rights to</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> * the Software, and to permit persons to whom the Software is furnished to do so,</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> * subject to the following conditions:</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> * The above copyright notice and this permission notice shall be included in all</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"> * copies or substantial portions of the Software.</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"> * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment"> * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment"> * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment"> * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment"> * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"> * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment"> * -----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#ifndef _SIR_INTERNAL_H_INCLUDED</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor"># define _SIR_INTERNAL_H_INCLUDED</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor"># include &quot;sir/helpers.h&quot;</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor"># include &quot;sir/maps.h&quot;</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor"># include &quot;sir/errors.h&quot;</span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keywordtype">bool</span> _sir_init(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si);</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="keywordtype">bool</span> _sir_cleanup(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="keywordtype">bool</span> _sir_isinitialized(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keywordtype">bool</span> _sir_sanity(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="keywordtype">bool</span> _sir_init_sanity(<span class="keyword">const</span> <a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keywordtype">void</span> _sir_reset_tls(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="keywordtype">bool</span> _sir_stdoutlevels(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <span class="keyword">const</span> <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data);</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keywordtype">bool</span> _sir_stdoutopts(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <span class="keyword">const</span> <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data);</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="keywordtype">bool</span> _sir_stderrlevels(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <span class="keyword">const</span> <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data);</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="keywordtype">bool</span> _sir_stderropts(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <span class="keyword">const</span> <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data);</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="keywordtype">bool</span> _sir_sysloglevels(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <span class="keyword">const</span> <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data);</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="keywordtype">bool</span> _sir_syslogopts(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <span class="keyword">const</span> <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data);</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="keywordtype">bool</span> _sir_syslogid(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <span class="keyword">const</span> <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data);</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="keywordtype">bool</span> _sir_syslogcat(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <span class="keyword">const</span> <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data);</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="keyword">typedef</span> bool (*sirinit_update)(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>*, <span class="keyword">const</span> <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>*);</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="keywordtype">bool</span> _sir_writeinit(<span class="keyword">const</span> <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data, sirinit_update update);</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="keywordtype">void</span>* _sir_locksection(sir_mutex_id mid);</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="keywordtype">void</span> _sir_unlocksection(sir_mutex_id mid);</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="keywordtype">bool</span> _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, <span class="keywordtype">void</span>** section);</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="preprocessor"># if !defined(__WIN__)</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="keywordtype">void</span> _sir_init_static_once(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="preprocessor"># else </span><span class="comment">/* __WIN__ */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>BOOL CALLBACK _sir_init_static_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="keywordtype">bool</span> _sir_init_common_static(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="keywordtype">bool</span> _sir_once(sir_once* once, sir_once_fn func);</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>PRINTF_FORMAT_ATTR(2, 0)</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>bool _sir_logv(<a class="code hl_typedef" href="group__publictypes.html#ga076e759e9aa36cde2977f754a7ea186c">sir_level</a> level, PRINTF_FORMAT const <span class="keywordtype">char</span>* format, va_list args);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor"># if defined(__cplusplus)</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor"># endif</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keywordtype">bool</span> _sir_makeinit(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keywordtype">bool</span> _sir_init(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keywordtype">bool</span> _sir_cleanup(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keywordtype">bool</span> _sir_isinitialized(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="keywordtype">bool</span> _sir_sanity(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="keywordtype">bool</span> _sir_init_sanity(<span class="keyword">const</span> <a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="keywordtype">void</span> _sir_reset_tls(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="keywordtype">bool</span> _sir_stdoutlevels(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <span class="keyword">const</span> <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="keywordtype">bool</span> _sir_stdoutopts(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <span class="keyword">const</span> <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="keywordtype">bool</span> _sir_stderrlevels(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <span class="keyword">const</span> <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="keywordtype">bool</span> _sir_stderropts(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <span class="keyword">const</span> <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data);</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="keywordtype">bool</span> _sir_sysloglevels(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <span class="keyword">const</span> <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="keywordtype">bool</span> _sir_syslogopts(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <span class="keyword">const</span> <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="keywordtype">bool</span> _sir_syslogid(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <span class="keyword">const</span> <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="keywordtype">bool</span> _sir_syslogcat(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <span class="keyword">const</span> <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="keyword">typedef</span> bool (*sirinit_update)(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>*, <span class="keyword">const</span> <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>*);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="keywordtype">bool</span> _sir_writeinit(<span class="keyword">const</span> <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data, sirinit_update update);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="keywordtype">void</span>* _sir_locksection(sir_mutex_id mid);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="keywordtype">void</span> _sir_unlocksection(sir_mutex_id mid);</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="keywordtype">bool</span> _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, <span class="keywordtype">void</span>** section);</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="preprocessor"># if !defined(__WIN__)</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="keywordtype">void</span> _sir_init_static_once(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="preprocessor"># else </span><span class="comment">/* __WIN__ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>BOOL CALLBACK _sir_init_static_once(PINIT_ONCE ponce, PVOID param, PVOID* ctx);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="preprocessor"># endif</span></div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="keywordtype">bool</span> _sir_dispatch(const <a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <a class="code hl_typedef" href="group__publictypes.html#ga076e759e9aa36cde2977f754a7ea186c">sir_level</a> level, <a class="code hl_struct" href="structsirbuf.html">sirbuf</a>* buf);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="keywordtype">bool</span> _sir_init_common_static(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>const <span class="keywordtype">char</span>* _sir_format(<span class="keywordtype">bool</span> styling, <a class="code hl_typedef" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> opts, <a class="code hl_struct" href="structsirbuf.html">sirbuf</a>* buf);</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="keywordtype">bool</span> _sir_once(sir_once* once, sir_once_fn func);</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="keywordtype">bool</span> _sir_syslog_init(const <span class="keywordtype">char</span>* name, <a class="code hl_struct" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a>* ctx);</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="keywordtype">bool</span> _sir_syslog_open(<a class="code hl_struct" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a>* ctx);</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="keywordtype">bool</span> _sir_syslog_write(<a class="code hl_typedef" href="group__publictypes.html#ga076e759e9aa36cde2977f754a7ea186c">sir_level</a> level, const <a class="code hl_struct" href="structsirbuf.html">sirbuf</a>* buf, const <a class="code hl_struct" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a>* ctx);</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="keywordtype">bool</span> _sir_syslog_updated(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, const <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data);</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="keywordtype">bool</span> _sir_syslog_close(<a class="code hl_struct" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a>* ctx);</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="keywordtype">void</span> _sir_syslog_reset(<a class="code hl_struct" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a>* ctx);</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>const <span class="keywordtype">char</span>* _sir_formattedlevelstr(<a class="code hl_typedef" href="group__publictypes.html#ga076e759e9aa36cde2977f754a7ea186c">sir_level</a> level);</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="keywordtype">bool</span> _sir_clock_gettime(<span class="keywordtype">int</span> clock, time_t* tbuf, <span class="keywordtype">long</span>* msecbuf);</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="keywordtype">double</span> _sir_msec_since(const <a class="code hl_struct" href="structsir__time.html">sir_time</a>* when, <a class="code hl_struct" href="structsir__time.html">sir_time</a>* out);</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>pid_t _sir_getpid(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>pid_t _sir_gettid(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="keywordtype">bool</span> _sir_getthreadname(<span class="keywordtype">char</span> name[SIR_MAXPID]);</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="keywordtype">bool</span> _sir_setthreadname(const <span class="keywordtype">char</span>* name);</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="keywordtype">bool</span> _sir_gethostname(<span class="keywordtype">char</span> name[SIR_MAXHOST]);</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="keywordtype">long</span> __sir_nprocs(<span class="keywordtype">bool</span> test_mode);</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="preprocessor"># define _sir_nprocs() __sir_nprocs(0)</span></div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="preprocessor"># define _sir_nprocs_test() __sir_nprocs(1)</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span> </div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="preprocessor"># if defined(__cplusplus)</span></div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>}</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_INTERNAL_H_INCLUDED */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="agroup__publictypes_html_ga076e759e9aa36cde2977f754a7ea186c"><div class="ttname"><a href="group__publictypes.html#ga076e759e9aa36cde2977f754a7ea186c">sir_level</a></div><div class="ttdeci">uint16_t sir_level</div><div class="ttdoc">The sir_level type.</div><div class="ttdef"><b>Definition</b> types.h:65</div></div>
-<div class="ttc" id="agroup__publictypes_html_gafb659914aac0129182d86f7d3414e85d"><div class="ttname"><a href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a></div><div class="ttdeci">uint32_t sir_options</div><div class="ttdoc">sir_option bitmask type.</div><div class="ttdef"><b>Definition</b> types.h:90</div></div>
-<div class="ttc" id="agroup__publictypes_html_structsir__syslog__dest"><div class="ttname"><a href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a></div><div class="ttdoc">Configuration for the system logger destination.</div><div class="ttdef"><b>Definition</b> types.h:189</div></div>
-<div class="ttc" id="agroup__publictypes_html_structsirinit"><div class="ttname"><a href="group__publictypes.html#structsirinit">sirinit</a></div><div class="ttdoc">libsir initialization and configuration data.</div><div class="ttdef"><b>Definition</b> types.h:238</div></div>
-<div class="ttc" id="astructsir__time_html"><div class="ttname"><a href="structsir__time.html">sir_time</a></div><div class="ttdoc">Internally-used time value type.</div><div class="ttdef"><b>Definition</b> types.h:275</div></div>
-<div class="ttc" id="astructsir__update__config__data_html"><div class="ttname"><a href="structsir__update__config__data.html">sir_update_config_data</a></div><div class="ttdoc">Encapsulates dynamic updating of current configuration.</div><div class="ttdef"><b>Definition</b> types.h:470</div></div>
-<div class="ttc" id="astructsirbuf_html"><div class="ttname"><a href="structsirbuf.html">sirbuf</a></div><div class="ttdoc">Formatted output container.</div><div class="ttdef"><b>Definition</b> types.h:406</div></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>PRINTF_FORMAT_ATTR(2, 0)</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>bool _sir_logv(<a class="code hl_typedef" href="group__publictypes.html#ga076e759e9aa36cde2977f754a7ea186c">sir_level</a> level, PRINTF_FORMAT const <span class="keywordtype">char</span>* format, va_list args);</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="keywordtype">bool</span> _sir_dispatch(const <a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, <a class="code hl_typedef" href="group__publictypes.html#ga076e759e9aa36cde2977f754a7ea186c">sir_level</a> level, <a class="code hl_struct" href="structsirbuf.html">sirbuf</a>* buf);</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>const <span class="keywordtype">char</span>* _sir_format(<span class="keywordtype">bool</span> styling, <a class="code hl_typedef" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> opts, <a class="code hl_struct" href="structsirbuf.html">sirbuf</a>* buf);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="keywordtype">bool</span> _sir_syslog_init(const <span class="keywordtype">char</span>* name, <a class="code hl_struct" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a>* ctx);</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="keywordtype">bool</span> _sir_syslog_open(<a class="code hl_struct" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a>* ctx);</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="keywordtype">bool</span> _sir_syslog_write(<a class="code hl_typedef" href="group__publictypes.html#ga076e759e9aa36cde2977f754a7ea186c">sir_level</a> level, const <a class="code hl_struct" href="structsirbuf.html">sirbuf</a>* buf, const <a class="code hl_struct" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a>* ctx);</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="keywordtype">bool</span> _sir_syslog_updated(<a class="code hl_struct" href="group__publictypes.html#structsirinit">sirinit</a>* si, const <a class="code hl_struct" href="structsir__update__config__data.html">sir_update_config_data</a>* data);</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="keywordtype">bool</span> _sir_syslog_close(<a class="code hl_struct" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a>* ctx);</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="keywordtype">void</span> _sir_syslog_reset(<a class="code hl_struct" href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a>* ctx);</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>const <span class="keywordtype">char</span>* _sir_formattedlevelstr(<a class="code hl_typedef" href="group__publictypes.html#ga076e759e9aa36cde2977f754a7ea186c">sir_level</a> level);</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="keywordtype">bool</span> _sir_clock_gettime(<span class="keywordtype">int</span> clock, time_t* tbuf, <span class="keywordtype">long</span>* msecbuf);</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="keywordtype">double</span> _sir_msec_since(const <a class="code hl_struct" href="structsir__time.html">sir_time</a>* when, <a class="code hl_struct" href="structsir__time.html">sir_time</a>* out);</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>pid_t _sir_getpid(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>pid_t _sir_gettid(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="keywordtype">bool</span> _sir_getthreadname(<span class="keywordtype">char</span> name[SIR_MAXPID]);</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="keywordtype">bool</span> _sir_setthreadname(const <span class="keywordtype">char</span>* name);</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="keywordtype">bool</span> _sir_gethostname(<span class="keywordtype">char</span> name[SIR_MAXHOST]);</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="keywordtype">long</span> __sir_nprocs(<span class="keywordtype">bool</span> test_mode);</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="preprocessor"># define _sir_nprocs() __sir_nprocs(0)</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="preprocessor"># define _sir_nprocs_test() __sir_nprocs(1)</span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="preprocessor"># if defined(__cplusplus)</span></div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>}</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="preprocessor"># endif</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span> </div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_INTERNAL_H_INCLUDED */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="agroup__publictypes_html_ga076e759e9aa36cde2977f754a7ea186c"><div class="ttname"><a href="group__publictypes.html#ga076e759e9aa36cde2977f754a7ea186c">sir_level</a></div><div class="ttdeci">uint16_t sir_level</div><div class="ttdoc">The sir_level type.</div><div class="ttdef"><b>Definition</b> types.h:75</div></div>
+<div class="ttc" id="agroup__publictypes_html_gafb659914aac0129182d86f7d3414e85d"><div class="ttname"><a href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a></div><div class="ttdeci">uint32_t sir_options</div><div class="ttdoc">sir_option bitmask type.</div><div class="ttdef"><b>Definition</b> types.h:100</div></div>
+<div class="ttc" id="agroup__publictypes_html_structsir__syslog__dest"><div class="ttname"><a href="group__publictypes.html#structsir__syslog__dest">sir_syslog_dest</a></div><div class="ttdoc">Configuration for the system logger destination.</div><div class="ttdef"><b>Definition</b> types.h:199</div></div>
+<div class="ttc" id="agroup__publictypes_html_structsirinit"><div class="ttname"><a href="group__publictypes.html#structsirinit">sirinit</a></div><div class="ttdoc">libsir initialization and configuration data.</div><div class="ttdef"><b>Definition</b> types.h:248</div></div>
+<div class="ttc" id="astructsir__time_html"><div class="ttname"><a href="structsir__time.html">sir_time</a></div><div class="ttdoc">Internally-used time value type.</div><div class="ttdef"><b>Definition</b> types.h:285</div></div>
+<div class="ttc" id="astructsir__update__config__data_html"><div class="ttname"><a href="structsir__update__config__data.html">sir_update_config_data</a></div><div class="ttdoc">Encapsulates dynamic updating of current configuration.</div><div class="ttdef"><b>Definition</b> types.h:480</div></div>
+<div class="ttc" id="astructsirbuf_html"><div class="ttname"><a href="structsirbuf.html">sirbuf</a></div><div class="ttdoc">Formatted output container.</div><div class="ttdef"><b>Definition</b> types.h:416</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.7-->
