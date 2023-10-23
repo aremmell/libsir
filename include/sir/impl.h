@@ -1,6 +1,12 @@
 /*
  * impl.h
  *
+ * Author:    Todd C. Miller <millter@openbsd.org>
+ * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
+ * Copyright: Copyright (c) 1998-2023
+ * Version:   2.2.4
+ * License:   ISC License (ISC)
+ *
  * -----------------------------------------------------------------------------
  *
  * strlcat from: $OpenBSD: strlcat.c,v 1.19 2019/01/25 00:19:25 millert Exp $
@@ -13,7 +19,6 @@
  * SPDX-License-Identifier: ISC
  *
  * Copyright (c) 1998, 2010, 2015 Todd C. Miller <millert@openbsd.org>
- * Copyright (c) 2018-2023 Ryan M. Lederman <lederman@gmail.com>
  * Copyright (c) 2018-2023 Jeffrey H. Johnson <trnsz@pobox.com>
  *
  * Permission to use, copy, modify, and distribute this software for any

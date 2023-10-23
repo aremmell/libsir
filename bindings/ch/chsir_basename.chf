@@ -1,13 +1,19 @@
 /*
  * chsir_basename.chf
  *
+ * Author:    Todd C. Miller <millter@openbsd.org>
+ * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
+ * Copyright: Copyright (c) 1998-2023
+ * Version:   2.2.4
+ * License:   ISC License (ISC)
+ *
  * -----------------------------------------------------------------------------
  *
  * basename from: $OpenBSD: basename.c,v 1.17  2020/10/20 19:30:14 naddy Exp $
  *
  * -----------------------------------------------------------------------------
  *
- * SPDX-License-Identifier: ISC and MIT
+ * SPDX-License-Identifier: ISC
  *
  * Copyright (c) 1997, 2004 Todd C. Miller <millert@openbsd.org>
  * Copyright (c) 2018-2023 Jeffrey H. Johnson <trnsz@pobox.com>

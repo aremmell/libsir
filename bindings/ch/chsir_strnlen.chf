@@ -1,6 +1,12 @@
 /*
  * chsir_strnlen.chf
  *
+ * Author:    Todd C. Miller <millter@openbsd.org>
+ * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
+ * Copyright: Copyright (c) 1998-2023
+ * Version:   2.2.4
+ * License:   ISC License (ISC)
+ *
  * -----------------------------------------------------------------------------
  *
  * strnlen from: $OpenBSD: strnlen.c,v 1.9  2019/01/25 00:19:25 millert Exp $
