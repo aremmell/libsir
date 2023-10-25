@@ -4593,11 +4593,10 @@ NetBSD/amd64 (Clang++, Clang):
     - export CXX="/usr/pkg/bin/ccache clang++"
     - export CFLAGS="-I/usr/pkg/include -I/usr/local/include"
     - export CXXFLAGS="-I/usr/pkg/include -I/usr/local/include"
-    - export LDFLAGS="-L/usr/lib -L/usr/pkg/lib -L/usr/local/lib --ld-path=$(command -v ld.lld)"
+    - export LDFLAGS="-L/usr/pkg/lib -L/usr/local/lib"
     - uname -prs
     - ${CC:?} --version
     - ${CXX:?} --version
-    - $(command -v ld.lld) --version
     - gmake
     - gmake tests++
     - |
