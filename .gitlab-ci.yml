@@ -4496,7 +4496,7 @@ NetBSD/amd64 (C++, CC):
     - export CC="/usr/pkg/bin/ccache cc"
     - export CXX="/usr/pkg/bin/ccache c++"
     - export CFLAGS="-I/usr/pkg/include -I/usr/local/include"
-    - export CXXFLAGS="-I/usr/pkg/include -I/usr/local/include"
+    - export CXXFLAGS="-Wno-stringop-overflow -I/usr/pkg/include -I/usr/local/include"
     - export LDFLAGS="-L/usr/pkg/lib -L/usr/local/lib"
     - uname -prs
     - ${CC:?} --version
