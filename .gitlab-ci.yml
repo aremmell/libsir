@@ -3219,7 +3219,8 @@ Linux/x86_64 (GCC, Fedora Python):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CC="ccache gcc"
     - command -v python3
-    - python3 --version
+    - $(command -v python3) --version
+    - swig -version
     - ${CC:?} --version
     - make
     - cd bindings/python
@@ -3270,7 +3271,8 @@ Linux/x86_64 (Oracle Studio C, Fedora Python):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CC="ccache /opt/oracle/developerstudio-latest/bin/suncc"
     - command -v python3
-    - python3 --version
+    - $(command -v python3) --version
+    - swig -version
     - ${CC:?} -V
     - make
     - cd bindings/python
@@ -3322,7 +3324,8 @@ Linux/x86_64 (Clang, Fedora Python):
     - export RANLIB="llvm-ranlib"
     - export CC="ccache clang"
     - command -v python3
-    - python3 --version
+    - $(command -v python3) --version
+    - swig -version
     - ${CC:?} --version
     - make
     - cd bindings/python
@@ -3376,7 +3379,8 @@ Linux/x86_64 (NVIDIA HPC SDK C, Fedora Python):
     - export NVC
     - export CC="ccache ${NVC:?}"
     - command -v python3
-    - python3 --version
+    - $(command -v python3) --version
+    - swig -version
     - ${CC:?} -V
     - make
     - cd bindings/python
@@ -3428,7 +3432,8 @@ Linux/x86_64 (Intel oneAPI, Intel Python):
     - . /opt/intel/oneapi/setvars.sh
     - export CC="ccache icx"
     - command -v python3
-    - python3 --version
+    - $(command -v python3) --version
+    - swig -version
     - ${CC:?} --version
     - make
     - cd bindings/python
@@ -3484,7 +3489,8 @@ Linux/x86_64 (GCC, Anaconda Python):
     - export CC="ccache gcc"
     - conda --version
     - command -v python3
-    - python3 --version
+    - $(command -v python3) --version
+    - swig -version
     - ${CC:?} --version
     - make
     - cd bindings/python
@@ -3536,7 +3542,8 @@ Linux/x86_64 (AOCC, Fedora Python):
     - . /opt/AMD/aocc-compiler-4.1.0/setenv_AOCC.sh
     - export CC="ccache clang"
     - command -v python3
-    - python3 --version
+    - $(command -v python3) --version
+    - swig -version
     - ${CC:?} --version
     - make
     - cd bindings/python
@@ -4242,7 +4249,8 @@ FreeBSD/amd64 (GCC, FreeBSD Python):
     - export LDFLAGS="-Wl,-rpath=/usr/local/lib/gcc13 -L/usr/local/lib/gcc13 -L/usr/local/lib"
     - freebsd-version
     - command -v python3
-    - python3 --version
+    - $(command -v python3) --version
+    - swig -version
     - ${CC:?} --version
     - gmake
     - cd bindings/python
@@ -4342,7 +4350,8 @@ OpenBSD/amd64 (CC, OpenBSD Python):
     - export LDFLAGS="-L/usr/local/lib"
     - uname -a
     - command -v python3
-    - python3 --version
+    - $(command -v python3) --version
+    - swig -version
     - ${CC:?} --version
     - gmake
     - cd bindings/python
@@ -4484,11 +4493,11 @@ NetBSD/amd64 (C++, CC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="cc"
-    - export CXX="c++"
-    - export CFLAGS="-I/usr/local/include"
-    - export CXXFLAGS="-I/usr/local/include"
-    - export LDFLAGS="-L/usr/local/lib"
+    - export CC="/usr/pkg/bin/ccache cc"
+    - export CXX="/usr/pkg/bin/ccache c++"
+    - export CFLAGS="-I/usr/pkg/include -I/usr/local/include"
+    - export CXXFLAGS="-I/usr/pkg/include -I/usr/local/include"
+    - export LDFLAGS="-L/usr/pkg/lib -L/usr/local/lib"
     - uname -prs
     - ${CC:?} --version
     - ${CXX:?} --version
@@ -4501,9 +4510,9 @@ NetBSD/amd64 (C++, CC):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - ./build/bin/sirexample
-    - ./build/bin/sirtests
-    - ./build/bin/sirtests++
+    - gstdbuf -o L ./build/bin/sirexample
+    - gstdbuf -o L ./build/bin/sirtests
+    - gstdbuf -o L ./build/bin/sirtests++
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -4514,6 +4523,156 @@ NetBSD/amd64 (C++, CC):
     expire_in: 7 days
     paths:
       - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
+NetBSD/amd64 (G++, GCC):
+  stage: build_netbsd
+  needs:
+    - job: Style check
+  tags:
+    - Shell-x64
+    - NetBSD
+  script:
+    - *Configuration
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export CC="/usr/pkg/bin/ccache /usr/pkg/gcc13/bin/gcc"
+    - export CXX="/usr/pkg/bin/ccache /usr/pkg/gcc13/bin/g++"
+    - export CFLAGS="-I/usr/pkg/include -I/usr/local/include"
+    - export CXXFLAGS="-I/usr/pkg/include -I/usr/local/include"
+    - export LDFLAGS="-Wl,-rpath,/usr/pkg/gcc13/lib -L/usr/pkg/gcc13/lib -L/usr/pkg/lib -L/usr/local/lib"
+    - uname -prs
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - gmake
+    - gmake tests++
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - *BuildInformation
+    - |
+      # Start of Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - gstdbuf -o L ./build/bin/sirexample
+    - gstdbuf -o L ./build/bin/sirtests
+    - gstdbuf -o L ./build/bin/sirtests++
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
+NetBSD/amd64 (Clang++, Clang):
+  stage: build_netbsd
+  needs:
+    - job: Style check
+  tags:
+    - Shell-x64
+    - NetBSD
+  script:
+    - *Configuration
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export CC="/usr/pkg/bin/ccache clang"
+    - export CXX="/usr/pkg/bin/ccache clang++"
+    - export CFLAGS="-I/usr/pkg/include -I/usr/local/include"
+    - export CXXFLAGS="-I/usr/pkg/include -I/usr/local/include"
+    - export LDFLAGS="-L/usr/lib -L/usr/pkg/lib -L/usr/local/lib --ld-path=$(command -v ld.lld)"
+    - uname -prs
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - $(command -v ld.lld) --version
+    - gmake
+    - gmake tests++
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - *BuildInformation
+    - |
+      # Start of Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - gstdbuf -o L ./build/bin/sirexample
+    - gstdbuf -o L ./build/bin/sirtests
+    - gstdbuf -o L ./build/bin/sirtests++
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
+NetBSD/amd64 (CC, NetBSD Python):
+  stage: build_python
+  needs:
+    - job: Style check
+    - job: NetBSD/amd64 (C++, CC)
+  tags:
+    - Shell-x64
+    - NetBSD
+  script:
+    - *Configuration
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export CC="/usr/local/bin/ccache cc"
+    - export CFLAGS="-I/usr/pkg/include -I/usr/local/include"
+    - export LDFLAGS="-L/usr/pkg/lib -L/usr/local/lib"
+    - uname -prs
+    - command -v python3
+    - $(command -v python3) --version
+    - swig -version
+    - ${CC:?} --version
+    - gmake
+    - cd bindings/python
+    - gmake
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - |
+      # Start of Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - gstdbuf -o L ./sirtest.py
+    - gstdbuf -o L cat sir-python.log
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - bindings/python/*.so
+      - bindings/python/build/
+      - bindings/python/sir.py
+      - bindings/python/*.log
+      - bindings/python/*cache*
+      - bindings/python/*wrap.c
       - logs/
   retry: 2
   interruptible: true
