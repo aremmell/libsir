@@ -4638,7 +4638,7 @@ NetBSD/amd64 (CC, NetBSD Python):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin/ccache cc"
+    - export CC="/usr/pkg/bin/ccache cc"
     - export CFLAGS="-I/usr/pkg/include -I/usr/local/include"
     - export LDFLAGS="-L/usr/pkg/lib -L/usr/local/lib"
     - uname -prs
