@@ -64,7 +64,9 @@ typedef OBJ_HANDLE     TASK_ID;
 # include <vxWorks.h>
 # include <types/vxWind.h>
 # include <vxCpuLib.h>
-# include <taskLib.h>
+# if !defined(__cplusplus)
+#  include <taskLib.h>
+# endif
 
 /* # undef SIR_NO_THREAD_NAMES */
 /* # define SIR_NO_THREAD_NAMES */
