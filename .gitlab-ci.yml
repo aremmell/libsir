@@ -4116,6 +4116,7 @@ FreeBSD/amd64 (G++, GCC):
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
+    - /usr/local/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4164,6 +4165,7 @@ FreeBSD/amd64 (Clang++, Clang):
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
+    - /usr/local/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4219,6 +4221,7 @@ FreeBSD/amd64 (DMD64 ImportC, C-only):
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
+    - /usr/local/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4266,6 +4269,7 @@ FreeBSD/amd64 (GCC, FreeBSD Python):
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - /usr/local/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4320,6 +4324,7 @@ OpenBSD/amd64 (Clang++, Clang):
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
+    - /usr/local/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4367,6 +4372,7 @@ OpenBSD/amd64 (CC, OpenBSD Python):
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - /usr/local/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4421,6 +4427,7 @@ OpenBSD/amd64 (C++, CC):
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
+    - /usr/local/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4469,6 +4476,7 @@ FreeBSD/amd64 (C++, CC):
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
+    - /usr/local/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4517,6 +4525,7 @@ NetBSD/amd64 (C++, CC):
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
+    - /usr/pkg/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4565,6 +4574,7 @@ NetBSD/amd64 (G++, GCC):
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
+    - /usr/pkg/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4613,6 +4623,7 @@ NetBSD/amd64 (Clang++, Clang):
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
+    - /usr/pkg/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4660,6 +4671,7 @@ NetBSD/amd64 (CC, NetBSD Python):
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - /usr/pkg/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
