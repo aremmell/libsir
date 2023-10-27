@@ -264,8 +264,7 @@ Additional tools used for libsir development and testing include:
 
 | Tool | Usage |
 |-----:|:------|
-| [CBMC](http://www.cprover.org/cbmc/)                                                                         | Bounded Model Checker for C and C++ programs                        |
-| [ESBMC](http://esbmc.org/)                                                                                   | Efficient SMT-based Bounded Model Checker for C and C++ programs    |
+| [CBMC](http://www.cprover.org/cbmc/), [ESBMC](http://esbmc.org/)                                             | Bounded Model Checkers for C and C++ programs                       |
 | [Frama-C](https://frama-c.com)                                                                               | Framework for Modular Analysis of C programs                        |
 | [GNU Global](https://www.gnu.org/software/global/)                                                           | Source code indexing and tagging system                             |
 | [Intel® VTune™ Profiler](https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler.html) | Performance analysis and profiling tools for Intel systems          |
