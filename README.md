@@ -209,7 +209,7 @@ A Visual Studio 2022 solution containing appropriate project files can be found 
 
 #### <a id="ms-build-tools" /> MSBuild
 
-Visual Studio is technically not required in order to build the Visual Studio 2022 solution; this may also be accomplished using Build Tools for Visual Studio 2022 ([download](https://aka.ms/vs/17/release/vs_BuildTools.exe), [reference](https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2022)). Despite its name, this is a stand-alone set of tools which includes MSBuild.
+Visual Studio is technically not required in order to build the Visual Studio 2022 solution; this may also be accomplished using "Build Tools for Visual Studio 2022" ([download](https://aka.ms/vs/17/release/vs_BuildTools.exe), [reference](https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2022)). This is a stand-alone toolchain that does *not* require Visual Studio 2022 and includes compilers and MSBuild.
 
 **Using MSBuild from the command-line**
 
