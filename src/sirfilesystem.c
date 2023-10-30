@@ -323,7 +323,7 @@ char* _sir_getappfilename(void) {
 # elif defined(__VXWORKS__)
         break;
 # else
-#   error "no implementation for your platform; please contact the author."
+#  error "no implementation for your platform; please contact the author."
 # endif
 #else /* __WIN__ */
         DWORD ret = GetModuleFileNameA(NULL, buffer, (DWORD)size);

@@ -26,9 +26,9 @@
 #ifndef _SIR_PLATFORM_VXWORKS_H_INCLUDED
 # define _SIR_PLATFORM_VXWORKS_H_INCLUDED
 
-#if !defined(_WRS_FUNC_NORETURN_)
-# define _WRS_FUNC_NORETURN __attribute__((__noreturn__))
-#endif
+# if !defined(_WRS_FUNC_NORETURN_)
+#  define _WRS_FUNC_NORETURN __attribute__((__noreturn__))
+# endif
 
 typedef int64_t        INT64;
 typedef uint64_t       UINT64;
