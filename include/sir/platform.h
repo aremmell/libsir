@@ -65,7 +65,7 @@
 # endif
 
 # undef HAS_ATTRIBUTE
-# if defined __has_attribute  && (defined(__clang__) || defined(__GNUC__))
+# if defined __has_attribute && (defined(__clang__) || defined(__GNUC__))
 #  define HAS_ATTRIBUTE(atr) __has_attribute(atr)
 # else
 #  define HAS_ATTRIBUTE(atr) 0
@@ -290,7 +290,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #   undef __USE_MINGW_ANSI_STDIO
 #   define __USE_MINGW_ANSI_STDIO 1
 #   include <pthread.h>
-typedef  /* Workaround a MinGW bug */
+typedef /* Workaround a MinGW bug */
 void (__cdecl* _invalid_parameter_handler)(
  wchar_t const*, wchar_t const*, wchar_t const*,
  unsigned int, uintptr_t);
