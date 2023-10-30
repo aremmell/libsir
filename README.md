@@ -104,8 +104,8 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 | **SerenityOS** | **GCC**&nbsp;(13.1) |
 | **WebAssembly/JS** | **Emscripten**&nbsp;(3.1.45&nbsp;‑&nbsp;3.1.46),&nbsp; **Node.js**&nbsp;(20.5&nbsp;‑&nbsp;21.1) |
 
-* libsir is known to work on most common (and many uncommon) architectures. It has actually been built and tested on **Intel** (x86\_64, i686, x32), **ARM** (ARMv6, ARMv7HF, ARMv8‑A), **POWER** (PowerPC, PPC64, PPC64le), **MIPS** (MIPS64, MIPS32, 74Kc), **SPARC** (SPARC64, V8, LEON3), **z/Architecture** (S390X), **SuperH** (SH‑4A), **RISC‑V** (RV64), **OpenRISC** (OR1200), and **m68k** (68020+).
-* This table only lists toolchains that have actually been tested and is by no means exhaustive&mdash;newer (or older) versions are likely to work without fanfare. In fact, if it *doesn't* work on your machine, it's probably a bug.
+* libsir is known to work on most common (and many uncommon) architectures. It has been built and tested on **Intel** (x86\_64, i686, x32), **ARM** (ARMv6, ARMv7HF, ARMv8‑A), **POWER** (PowerPC, PPC64, PPC64le), **MIPS** (MIPS64, MIPS32, 74Kc), **SPARC** (SPARC64, V8, LEON3), **z/Architecture** (S390X), **SuperH** (SH‑4A), **RISC‑V** (RV64), **OpenRISC** (OR1200), and **m68k** (68020+).
+* This table only lists toolchains that have been tested and is by no means exhaustive&mdash;newer (or older) versions are likely to work without fanfare. In fact, if it *doesn't* work on your machine, it's probably a bug.
 
 ### <a id="system-loggers" /> System Loggers
 
@@ -209,7 +209,7 @@ A Visual Studio 2022 solution containing appropriate project files can be found 
 
 #### <a id="ms-build-tools" /> MSBuild
 
-Visual Studio is technically not required in order to build the Visual Studio 2022 solution; this may also be accomplished using Build Tools for Visual Studio 2022 ([download](https://aka.ms/vs/17/release/vs_BuildTools.exe), [reference](https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2022)) Despite its name, this is actually a stand-alone set of tools which includes MSBuild.
+Visual Studio is technically not required in order to build the Visual Studio 2022 solution; this may also be accomplished using Build Tools for Visual Studio 2022 ([download](https://aka.ms/vs/17/release/vs_BuildTools.exe), [reference](https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2022)). Despite its name, this is a stand-alone set of tools which includes MSBuild.
 
 **Using MSBuild from the command-line**
 
