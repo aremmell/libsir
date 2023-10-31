@@ -3,6 +3,7 @@
  *
  * Author:    Devin Teske <dtseke@FreeBSD.org>
  * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
+ * Co-author: The DPS8M Development Team
  * Copyright: Copyright (c) 2002-2023
  * Version:   2120.4.16-dps (libcmb 3.5.6)
  * License:   The 2-Clause BSD License (BSD-2-Clause)

@@ -3,10 +3,15 @@
 # libsir Python module setup script
 ################################################################################
 #
-# SPDX-License-Identifier: MIT
+# Author:    Ryan M. Lederman <lederman@gmail.com>
+# Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
+# Copyright: Copyright (c) 2018-2023
+# Version:   2.2.4
+# License:   The MIT License (MIT)
 #
-# Copyright (c) 2018-2023 Ryan M. Lederman <lederman@gmail.com>
-# Copyright (c) 2018-2023 Jeffrey H. Johnson <trnsz@pobox.com>
+################################################################################
+#
+# SPDX-License-Identifier: MIT
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in

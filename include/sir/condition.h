@@ -2,15 +2,13 @@
  * @file condition.h
  *
  * @author    Ryan M. Lederman \<lederman@gmail.com\>
- * @date      2018-2023
+ * @date      Copyright (c) 2018-2023
  * @version   2.2.4
  * @copyright The MIT License (MIT)
  *
  * -----------------------------------------------------------------------------
  *
  * SPDX-License-Identifier: MIT
- *
- * Copyright (c) 2018-2023 Ryan M. Lederman <lederman@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in

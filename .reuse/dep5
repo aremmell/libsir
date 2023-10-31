@@ -14,17 +14,17 @@ Files: .github/ISSUE_TEMPLATE/*.md
 Copyright: 2018-2023 Ryan M. Lederman <lederman@gmail.com>
 License: MIT
 
-# Visual Studio Code files
-Files: .vscode/*
-Copyright: 2018-2023 Ryan M. Lederman <lederman@gmail.com>
-License: MIT
-
 # Microsoft Visual Studio files
 Files: msvs/*
 Copyright: 2018-2023 Ryan M. Lederman <lederman@gmail.com>
 License: MIT
 
-# Workspace files
+# VSCode files
+Files: .vscode/*
+Copyright: 2018-2023 Ryan M. Lederman <lederman@gmail.com>
+License: MIT
+
+# VSCode workspace
 Files: sir.code-workspace
 Copyright: 2018-2023 Ryan M. Lederman <lederman@gmail.com>
 License: MIT
