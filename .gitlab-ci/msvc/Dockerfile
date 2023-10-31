@@ -1,5 +1,14 @@
 ################################################################################
 #
+# Author:    Martin Storsjo
+# Co-author: Ryan M. Lederman <lederman@gmail.com>
+# Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
+# Copyright: Copyright (c) 2018-2023
+# Version:   2.2.4
+# License:   ISC License (ISC)
+#
+################################################################################
+#
 # SPDX-License-Identifier: ISC
 #
 # Copyright (c) 2018-2019 Martin Storsjo
