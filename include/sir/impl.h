@@ -98,7 +98,6 @@ _sir_strlcat(char *dst, const char *src, size_t dsize)
  *-----------------------------------------------------------------------------
  */
 
-
 #if defined(SIR_IMPL_STRLCPY) && !defined(SIR_IMPL_STRLCPY_DEF)
 # undef strlcpy
 
