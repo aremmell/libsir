@@ -130,56 +130,54 @@ $(document).ready(function(){initNavTree('plugin__sample_8h_source.html',''); in
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment"> * SPDX-License-Identifier: MIT</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> * Copyright (c) 2018-2023 Ryan M. Lederman &lt;lederman@gmail.com&gt;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * this software and associated documentation files (the &quot;Software&quot;), to deal in</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> * the Software without restriction, including without limitation the rights to</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> * the Software, and to permit persons to whom the Software is furnished to do so,</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> * subject to the following conditions:</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> * The above copyright notice and this permission notice shall be included in all</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> * copies or substantial portions of the Software.</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"> * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"> * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"> * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment"> * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment"> * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment"> * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"> * -----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#ifndef _SIR_PLUGIN_SAMPLE_H_INCLUDED</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor"># define _SIR_PLUGIN_SAMPLE_H_INCLUDED</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor"># include &quot;sir/platform.h&quot;</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor"># include &quot;sir/types.h&quot;</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor"># if defined(__WIN__)</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved);</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#  define PLUGIN_EXPORT __declspec(dllexport) </span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor"># else</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#  define PLUGIN_EXPORT</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>PLUGIN_EXPORT <span class="keywordtype">bool</span> <a class="code hl_function" href="group__plugins.html#ga938b693a1eae42f7d93b136b8851f176">sir_plugin_query</a>(<a class="code hl_struct" href="structsir__plugininfo.html">sir_plugininfo</a>* info);</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>PLUGIN_EXPORT <span class="keywordtype">bool</span> <a class="code hl_function" href="group__plugins.html#ga16ed2c82f4bf0b4571c2d79bb946ce2d">sir_plugin_init</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>PLUGIN_EXPORT <span class="keywordtype">bool</span> <a class="code hl_function" href="group__plugins.html#ga8bcc79c4667749f5c81e6b1f22db0f1d">sir_plugin_write</a>(<a class="code hl_typedef" href="group__publictypes.html#ga076e759e9aa36cde2977f754a7ea186c">sir_level</a> level, <span class="keyword">const</span> <span class="keywordtype">char</span>* message);</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>PLUGIN_EXPORT <span class="keywordtype">bool</span> <a class="code hl_function" href="group__plugins.html#ga43748071f13fd42b462fab8e3ea9faef">sir_plugin_cleanup</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_PLUGIN_SAMPLE_H_INCLUDED */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="agroup__plugins_html_ga16ed2c82f4bf0b4571c2d79bb946ce2d"><div class="ttname"><a href="group__plugins.html#ga16ed2c82f4bf0b4571c2d79bb946ce2d">sir_plugin_init</a></div><div class="ttdeci">PLUGIN_EXPORT bool sir_plugin_init(void)</div><div class="ttdoc">Called by libsir after the plugin is queried and successfully validated.</div><div class="ttdef"><b>Definition</b> plugin_sample.c:73</div></div>
-<div class="ttc" id="agroup__plugins_html_ga43748071f13fd42b462fab8e3ea9faef"><div class="ttname"><a href="group__plugins.html#ga43748071f13fd42b462fab8e3ea9faef">sir_plugin_cleanup</a></div><div class="ttdeci">PLUGIN_EXPORT bool sir_plugin_cleanup(void)</div><div class="ttdoc">Called by libsir when the plugin is about to be unloaded.</div><div class="ttdef"><b>Definition</b> plugin_sample.c:84</div></div>
-<div class="ttc" id="agroup__plugins_html_ga8bcc79c4667749f5c81e6b1f22db0f1d"><div class="ttname"><a href="group__plugins.html#ga8bcc79c4667749f5c81e6b1f22db0f1d">sir_plugin_write</a></div><div class="ttdeci">PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char *message)</div><div class="ttdoc">Called by libsir when a message is dispatched on any level whose bit was set in the levels bitmask of...</div><div class="ttdef"><b>Definition</b> plugin_sample.c:78</div></div>
-<div class="ttc" id="agroup__plugins_html_ga938b693a1eae42f7d93b136b8851f176"><div class="ttname"><a href="group__plugins.html#ga938b693a1eae42f7d93b136b8851f176">sir_plugin_query</a></div><div class="ttdeci">PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo *info)</div><div class="ttdoc">Called by libsir after the plugin library object is loaded, but before any other functions are probed...</div><div class="ttdef"><b>Definition</b> plugin_sample.c:58</div></div>
-<div class="ttc" id="agroup__publictypes_html_ga076e759e9aa36cde2977f754a7ea186c"><div class="ttname"><a href="group__publictypes.html#ga076e759e9aa36cde2977f754a7ea186c">sir_level</a></div><div class="ttdeci">uint16_t sir_level</div><div class="ttdoc">The sir_level type.</div><div class="ttdef"><b>Definition</b> types.h:75</div></div>
-<div class="ttc" id="astructsir__plugininfo_html"><div class="ttname"><a href="structsir__plugininfo.html">sir_plugininfo</a></div><div class="ttdoc">The libsir-to-plugin query data structure.</div><div class="ttdef"><b>Definition</b> types.h:333</div></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * this software and associated documentation files (the &quot;Software&quot;), to deal in</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * the Software without restriction, including without limitation the rights to</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> * the Software, and to permit persons to whom the Software is furnished to do so,</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> * subject to the following conditions:</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> * The above copyright notice and this permission notice shall be included in all</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> * copies or substantial portions of the Software.</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"> * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"> * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"> * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment"> * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment"> * -----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#ifndef _SIR_PLUGIN_SAMPLE_H_INCLUDED</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor"># define _SIR_PLUGIN_SAMPLE_H_INCLUDED</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor"># include &quot;sir/platform.h&quot;</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor"># include &quot;sir/types.h&quot;</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor"># if defined(__WIN__)</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>BOOL APIENTRY DllMain(HMODULE module, DWORD ul_reason_for_call, LPVOID reserved);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">#  define PLUGIN_EXPORT __declspec(dllexport) </span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor"># else</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#  define PLUGIN_EXPORT</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor"># endif</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>PLUGIN_EXPORT <span class="keywordtype">bool</span> <a class="code hl_function" href="group__plugins.html#ga938b693a1eae42f7d93b136b8851f176">sir_plugin_query</a>(<a class="code hl_struct" href="structsir__plugininfo.html">sir_plugininfo</a>* info);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>PLUGIN_EXPORT <span class="keywordtype">bool</span> <a class="code hl_function" href="group__plugins.html#ga16ed2c82f4bf0b4571c2d79bb946ce2d">sir_plugin_init</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>PLUGIN_EXPORT <span class="keywordtype">bool</span> <a class="code hl_function" href="group__plugins.html#ga8bcc79c4667749f5c81e6b1f22db0f1d">sir_plugin_write</a>(<a class="code hl_typedef" href="group__publictypes.html#ga076e759e9aa36cde2977f754a7ea186c">sir_level</a> level, <span class="keyword">const</span> <span class="keywordtype">char</span>* message);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>PLUGIN_EXPORT <span class="keywordtype">bool</span> <a class="code hl_function" href="group__plugins.html#ga43748071f13fd42b462fab8e3ea9faef">sir_plugin_cleanup</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_PLUGIN_SAMPLE_H_INCLUDED */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="agroup__plugins_html_ga16ed2c82f4bf0b4571c2d79bb946ce2d"><div class="ttname"><a href="group__plugins.html#ga16ed2c82f4bf0b4571c2d79bb946ce2d">sir_plugin_init</a></div><div class="ttdeci">PLUGIN_EXPORT bool sir_plugin_init(void)</div><div class="ttdoc">Called by libsir after the plugin is queried and successfully validated.</div><div class="ttdef"><b>Definition</b> plugin_sample.c:71</div></div>
+<div class="ttc" id="agroup__plugins_html_ga43748071f13fd42b462fab8e3ea9faef"><div class="ttname"><a href="group__plugins.html#ga43748071f13fd42b462fab8e3ea9faef">sir_plugin_cleanup</a></div><div class="ttdeci">PLUGIN_EXPORT bool sir_plugin_cleanup(void)</div><div class="ttdoc">Called by libsir when the plugin is about to be unloaded.</div><div class="ttdef"><b>Definition</b> plugin_sample.c:82</div></div>
+<div class="ttc" id="agroup__plugins_html_ga8bcc79c4667749f5c81e6b1f22db0f1d"><div class="ttname"><a href="group__plugins.html#ga8bcc79c4667749f5c81e6b1f22db0f1d">sir_plugin_write</a></div><div class="ttdeci">PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char *message)</div><div class="ttdoc">Called by libsir when a message is dispatched on any level whose bit was set in the levels bitmask of...</div><div class="ttdef"><b>Definition</b> plugin_sample.c:76</div></div>
+<div class="ttc" id="agroup__plugins_html_ga938b693a1eae42f7d93b136b8851f176"><div class="ttname"><a href="group__plugins.html#ga938b693a1eae42f7d93b136b8851f176">sir_plugin_query</a></div><div class="ttdeci">PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo *info)</div><div class="ttdoc">Called by libsir after the plugin library object is loaded, but before any other functions are probed...</div><div class="ttdef"><b>Definition</b> plugin_sample.c:56</div></div>
+<div class="ttc" id="agroup__publictypes_html_ga076e759e9aa36cde2977f754a7ea186c"><div class="ttname"><a href="group__publictypes.html#ga076e759e9aa36cde2977f754a7ea186c">sir_level</a></div><div class="ttdeci">uint16_t sir_level</div><div class="ttdoc">The sir_level type.</div><div class="ttdef"><b>Definition</b> types.h:72</div></div>
+<div class="ttc" id="astructsir__plugininfo_html"><div class="ttname"><a href="structsir__plugininfo.html">sir_plugininfo</a></div><div class="ttdoc">The libsir-to-plugin query data structure.</div><div class="ttdef"><b>Definition</b> types.h:330</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.7-->
