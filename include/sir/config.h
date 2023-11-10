@@ -7,14 +7,13 @@
  * appearance and content of log messages, default values, and various
  * thresholds (e.g. file and buffer sizes).
  *
- * @author    Ryan M. Lederman \<lederman@gmail.com\>
- * @date      Copyright (c) 2018-2023
- * @version   2.2.4
- * @copyright The MIT License (MIT)
+ * @version 2.2.4
  *
  * -----------------------------------------------------------------------------
  *
  * SPDX-License-Identifier: MIT
+ *
+ * Copyright (c) 2018-2023 Ryan M. Lederman <lederman@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in

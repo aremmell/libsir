@@ -1,11 +1,7 @@
 /*
  * chsir_basename.chf
  *
- * Author:    Todd C. Miller <millter@openbsd.org>
- * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
- * Copyright: Copyright (c) 1998-2023
- * Version:   2.2.4
- * License:   ISC License (ISC)
+ * Version: 2.2.4
  *
  * -----------------------------------------------------------------------------
  *

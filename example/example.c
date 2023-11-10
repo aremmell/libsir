@@ -4,14 +4,14 @@
  * A simple demonstration of initialization, configuration, and basic usage of
  * libsir.
  *
- * @author    Ryan M. Lederman \<lederman@gmail.com\>
- * @date      Copyright (c) 2018-2023
- * @version   2.2.4
- * @copyright The MIT License (MIT)
+ * @version 2.2.4
  *
  * -----------------------------------------------------------------------------
  *
  * SPDX-License-Identifier: MIT
+ *
+ * Copyright (c) 2018-2023 Ryan M. Lederman <lederman@gmail.com>
+ * Copyright (c) 2018-2023 Jeffrey H. Johnson <trnsz@pobox.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
