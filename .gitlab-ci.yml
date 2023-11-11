@@ -2392,7 +2392,7 @@ GCC Static Analyzer:
 
 ##############################################################################
 
-Windows/x64 (Embarcadero, C-only):
+Windows/x64 (Embarcadero Alexandria, BCC64, C-only):
   stage: build_windows
   needs:
     - job: Style check
@@ -2444,7 +2444,7 @@ Windows/x64 (Embarcadero, C-only):
 
 ##############################################################################
 
-Windows/i686 (Embarcadero, C-only):
+Windows/i686 (Embarcadero Alexandria, BCC32X, C-only):
   stage: build_windows
   needs:
     - job: Style check
@@ -2464,6 +2464,162 @@ Windows/i686 (Embarcadero, C-only):
     - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc32x.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
     - mv tests.exe build/bin/sirtests.exe
     - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc32x.exe example/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
+    - mv example.exe build/bin/sirexample.exe
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - *BuildInformation
+    - |
+      # Start of Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - mkdir -p logs
+    - touch build/bin/file.exists
+    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - mv -f screenlog.0 sirexample.out
+    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - mv -f screenlog.0 sirtests.out
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+      - screenlog.0
+      - ./*.out
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
+Windows/x64 (Embarcadero Athens, BCC64, C-only):
+  stage: build_windows
+  needs:
+    - job: Style check
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/embarcadero23:latest
+  script:
+    - *Configuration
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export WINEDEBUG=-all
+    - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc64.exe --version
+    - mkdir -p build/bin
+    - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc64.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
+    - mv tests.exe build/bin/sirtests.exe
+    - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc64.exe example/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
+    - mv example.exe build/bin/sirexample.exe
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - *BuildInformation
+    - |
+      # Start of Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - mkdir -p logs
+    - touch build/bin/file.exists
+    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - mv -f screenlog.0 sirexample.out
+    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - mv -f screenlog.0 sirtests.out
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+      - screenlog.0
+      - ./*.out
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
+Windows/x64 (Embarcadero Athens, BCC64X, C-only):
+  stage: build_windows
+  needs:
+    - job: Style check
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/embarcadero23:latest
+  script:
+    - *Configuration
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export WINEDEBUG=-all
+    - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc64x.exe --version
+    - mkdir -p build/bin
+    - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc64x.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers -std=c11 -Wno-pragma-pack -Wno-unknown-pragmas -Wno-nonportable-include-path -Wno-macro-redefined -Wno-microsoft-anon-tag -I~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/include/windows/sdk
+    - mv tests.exe build/bin/sirtests.exe
+    - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc64x.exe example/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers -std=c11 -Wno-pragma-pack -Wno-unknown-pragmas -Wno-nonportable-include-path -Wno-macro-redefined -Wno-microsoft-anon-tag -I~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/include/windows/sdk
+    - mv example.exe build/bin/sirexample.exe
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - *BuildInformation
+    - |
+      # Start of Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - mkdir -p logs
+    - touch build/bin/file.exists
+    - screen -mDL sh -c 'wine64 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - mv -f screenlog.0 sirexample.out
+    - screen -mDL sh -c 'wine64 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - mv -f screenlog.0 sirtests.out
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+      - screenlog.0
+      - ./*.out
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
+Windows/i686 (Embarcadero Athens, BCC32X, C-only):
+  stage: build_windows
+  needs:
+    - job: Style check
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/embarcadero23:latest
+  script:
+    - *Configuration
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export WINEDEBUG=-all
+    - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc32x.exe --version
+    - mkdir -p build/bin
+    - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc32x.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
+    - mv tests.exe build/bin/sirtests.exe
+    - wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc32x.exe example/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
     - mv example.exe build/bin/sirexample.exe
     - |
       # End of Build ...

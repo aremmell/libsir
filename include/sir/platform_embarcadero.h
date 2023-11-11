@@ -53,6 +53,13 @@
 #   undef PRIXPTR
 #   define PRIXPTR SIR_UIPTRX
 #  endif
+#  if defined(__clang_major__)
+#   if defined(SIR_PTHREAD_GETNAME_NP) && (__clang_major < 15)
+#    undef SIR_PTHREAD_GETNAME_NP
+#   endif
+#  else
+#   define __clang_major__ 0
+#  endif
 # endif
 
 #endif /* !_SIR_PLATFORM_EMBARCADERO_H_INCLUDED */

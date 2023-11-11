@@ -290,7 +290,7 @@ int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename
 
 bool _sir_getchar(char* input) {
 #if defined(__WIN__)
-# if defined(__EMBARCADEROC__)
+# if defined(__EMBARCADEROC__) && (__clang_major__ < 15)
     if (input)
         *input = (char)getch();
 # else
