@@ -54,7 +54,7 @@
 #   define PRIXPTR SIR_UIPTRX
 #  endif
 #  if defined(__clang_major__)
-#   if defined(SIR_PTHREAD_GETNAME_NP) && (__clang_major < 15)
+#   if defined(SIR_PTHREAD_GETNAME_NP) && (__clang_major__ < 15)
 #    undef SIR_PTHREAD_GETNAME_NP
 #   endif
 #  else
