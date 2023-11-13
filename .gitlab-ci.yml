@@ -2496,6 +2496,56 @@ Windows/i686 (Embarcadero, C-only):
 
 ##############################################################################
 
+Funcheck:
+  stage: lint_dynamic
+  needs:
+    - job: Style check
+    - job: Linux/x86_64 (Clang++, Clang)
+    - job: Linux/x86_64 (G++, GCC)
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/funcheck:latest
+  script:
+    - *Configuration
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:BuildFC_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export PATH="/opt/funcheck/host:${PATH:-}"
+    - export LD_LIBRARY_PATH="/opt/funcheck/library:${LD_LIBRARY_PATH:-}"
+    - export CC="ccache gcc"
+    - export CXX="ccache g++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - funcheck --version
+    - make SIR_DEBUG=1 SIR_SELFLOG=1
+    - make tests++ SIR_DEBUG=1 SIR_SELFLOG=1
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:BuildFC_section\r\e[0K" || true
+    - *BuildInformation
+    - |
+      # Start of Test ...
+      echo -e "section_start:`date +%s`:TestFC_section[collapsed=true]\r\e[0K\033[0;36mFuncheck Test ...\033[0m" || true
+    - stdbuf -o L funcheck ./build/bin/sirexample 2>&1
+    - stdbuf -o L funcheck ./build/bin/sirtests 2>&1
+    - stdbuf -o L funcheck ./build/bin/sirtests++ 2>&1
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:TestFC_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
 Clang Sanitizer (UB, 32-bit, C-only):
   stage: lint_dynamic
   needs:
