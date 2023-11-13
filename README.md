@@ -238,7 +238,7 @@ Suggested initial sections:
 
 The developers are obsessed with the quality, reliability, and correctness of libsir.
 
-The following **SAST** (*static application*/*analysis security*/*software testing*) and verification tools are used&mdash;on **every commit**&mdash;as part of our comprehensive [continuous integration](https://gitlab.com/libsir/libsir/-/pipelines) testing process:
+The following **SAST** (*static application*/*analysis security*/*software testing*) and dynamic verification tools are used&mdash;on **every commit**&mdash;as part of our comprehensive [continuous integration](https://gitlab.com/libsir/libsir/-/pipelines) testing process:
 
 | Tool | Usage |
 |-----:|:------|
