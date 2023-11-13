@@ -2519,8 +2519,8 @@ Funcheck:
     - ${CC:?} --version
     - ${CXX:?} --version
     - funcheck --version
-    - make SIR_DEBUG=1 SIR_SELFLOG=1 SIR_NO_PLUGINS=1
-    - make tests++ SIR_DEBUG=1 SIR_SELFLOG=1 SIR_NO_PLUGINS=1
+    - make SIR_DEBUG=1 SIR_NO_PLUGINS=1
+    - make tests++ SIR_DEBUG=1 SIR_NO_PLUGINS=1
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:BuildFC_section\r\e[0K" || true
