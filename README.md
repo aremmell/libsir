@@ -266,9 +266,10 @@ Additional tools used for libsir development and testing include:
 | Tool | Usage |
 |-----:|:------|
 | [CBMC](http://www.cprover.org/cbmc/), [ESBMC](http://esbmc.org/)                                             | Bounded Model Checkers for C and C++ programs                       |
-| [Frama-C](https://frama-c.com)                                                                               | Framework for Modular Analysis of C programs                        |
+| [Frama-C](https://frama-c.com/)                                                                              | Framework for Modular Analysis of C programs                        |
 | [GNU Global](https://www.gnu.org/software/global/)                                                           | Source code indexing and tagging system                             |
 | [Intel® VTune™ Profiler](https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler.html) | Performance analysis and profiling tools for Intel systems          |
+| [Luke Stackwalker](https://lukestackwalker.sf.net/)                                                          | A sampling C/C++ code profiler that runs on Microsoft Windows       |
 | [PurifyPlus™](https://www.teamblue.unicomsi.com/products/purifyplus/)                                        | Run-time analysis tools for application reliability and performance |
 | [SoftIntegration Ch](https://www.softintegration.com/)                                                       | C/C++ interpreter and interactive platform for scientific computing |
 | [Very Sleepy](http://www.codersnotes.com/sleepy/)                                                            | Sampling CPU profiler for Microsoft Windows applications            |
