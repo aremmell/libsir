@@ -264,7 +264,7 @@ size_t sir_readline(FILE* f, char* buf, size_t size) {
 }
 
 uint32_t getrand(uint32_t upper_bound) {
-#if !defined(__WIN__) || defined(__EMBARCADEROC__)
+#if !defined(__WIN__) || (defined(__EMBARCADEROC__) && (__clang_major__ < 15))
 # if defined(__MACOS__) || defined(__BSD__) || defined(__serenity__) || \
      defined(__SOLARIS__) || defined(__ANDROID__) || defined(__CYGWIN__) || \
      (defined(__linux__) && defined(__GLIBC__) && GLIBC_VERSION >= 23600)
@@ -272,7 +272,7 @@ uint32_t getrand(uint32_t upper_bound) {
         upper_bound = 2U;
     return arc4random_uniform(upper_bound);
 # else
-#  if defined(__EMBARCADEROC__)
+#  if defined(__EMBARCADEROC__) && (__clang_major__ < 15)
     return (uint32_t)(random(upper_bound));
 #  else
     return (uint32_t)(random() % upper_bound);

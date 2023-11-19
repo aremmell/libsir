@@ -87,9 +87,9 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         char abs_path[SIR_MAXPATH] = {0};
         (void)snprintf(abs_path, SIR_MAXPATH, "%s\\%s", base_path, path);
 
-# if defined(__EMBARCADEROC__)
-        /* Embarcadero does not like paths that end in slashes, nor does it appreciate
-         * paths like './' and '../'; this is a hack until those defects are resolved. */
+# if defined(__EMBARCADEROC__) && (__clang_major__ < 15)
+        /* Embarcadero <12 does not like paths that end in slashes, nor does it appreciate
+         * paths like './' and '../'; this hack is needed for RAD Studio 11.3 and earlier. */
         char resolved_path[SIR_MAXPATH] = {0};
 
         if (!GetFullPathNameA(abs_path, SIR_MAXPATH, resolved_path, NULL)) {

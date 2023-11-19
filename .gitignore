@@ -25,6 +25,9 @@
 *.o
 *.slo
 
+# Pre-compiled headers
+*.hh.gch
+
 # Compiled Dynamic libraries
 *.dylib
 *.so
