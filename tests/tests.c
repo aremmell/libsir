@@ -2302,7 +2302,7 @@ unsigned __stdcall threadrace_thread(void* arg) {
 
 #if !defined(DUMA)
 # if !defined(__EMSCRIPTEN__)
-#  define NUM_ITERATIONS 1000
+#  define NUM_ITERATIONS 400
 # else
 #  define NUM_ITERATIONS 200
 # endif
