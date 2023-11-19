@@ -2514,6 +2514,7 @@ Funcheck:
   tags:
     - Docker-x64
     - Linux
+    - Docker-x64-fast
   image:
     name: registry.gitlab.com/libsir/libsir/funcheck:latest
   script:
