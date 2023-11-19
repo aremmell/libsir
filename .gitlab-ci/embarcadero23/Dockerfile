@@ -1,5 +1,3 @@
-# .gitignore
-
 ################################################################################
 #
 # Version: 2.2.4
@@ -8,7 +6,6 @@
 #
 # SPDX-License-Identifier: MIT
 #
-# Copyright (c) 2018-2023 Ryan M. Lederman <lederman@gmail.com>
 # Copyright (c) 2018-2023 Jeffrey H. Johnson <trnsz@pobox.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -30,113 +27,31 @@
 #
 ################################################################################
 
-# Compiled Object files
-*.dll
-*.lo
-*.o
-*.slo
+FROM registry.gitlab.com/libsir/libsir/base:latest
 
-# Pre-compiled headers
-*.hh.gch
+WORKDIR /
 
-# Compiled Dynamic libraries
-*.dylib
-*.so
+ARG URL
 
-# Compiled Static libraries
-*.a
-*.la
-*.lai
+USER 0
 
-# build products
-build/
+RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
+    dnf -y clean all && \
+    rm -rf ~/.cache && \
+    rm -rf /var/tmp/* && \
+    rm -rf /var/log/dnf* && \
+    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true)
 
-# compiled documentation
-docs/html/
-docs/xml/
-index.md
+USER 10000
 
-# test artifacts
-*.log
-logs/
+RUN cd ~user && \
+    export WINEDEBUG=-all && \
+    ((yes | wine64 -h) || true) && \
+    cd .wine/drive_c/Program\ Files\ \(x86\)/ && \
+    mkdir -p Embarcadero/Studio && \
+    cd Embarcadero/Studio && \
+    curl -fsSL ${URL:-http://192.168.1.187:8088/~jhj/cache/EMB23.tar} | tar xvf -
 
-# annoying macOS files
-.DS_Store
+USER 10000
 
-# Visual Studio files
-.vs/
-msvs/libsir*.user
-msvs/plugin*.user
-
-# ReSharper caches
-_ReSharper.Caches/
-
-# Emacs temporary files
-*.bak
-*~
-
-# Automatic dependencies
-*.d
-
-# Advpng temporary files
-*.png.tmp*
-
-# Cppcheck and .lint.sh
-cppcheck/
-cppcheck.xml
-.extra.sh
-.extraN.sh
-
-# Oracle Lint
-*.ln
-orstlint.txt
-
-# Clang Analzyer
-.scan-build.sh
-
-# PVS
-compile_commands.json
-*.pvs
-pvsreport/*
-*.PVS-Studio.i
-
-# Coverage
-*.gcno
-*.gcda
-coveralls.json
-run*.json
-coverage-out*.*
-coveralls
-
-# Coverity
-.coverity
-cov-int
-
-# Direnv
-.envrc
-
-# Python bindings
-bindings/python/build
-bindings/python/__pycache__
-bindings/python/sir.py
-bindings/python/sir_wrap.c
-bindings/python/src
-
-# Ch bindings
-bindings/ch/libsir.dl
-bindings/ch/sir_alert.chf
-bindings/ch/sir_crit.chf
-bindings/ch/sir_debug.chf
-bindings/ch/sir_emerg.chf
-bindings/ch/sir_error.chf
-bindings/ch/sir_info.chf
-bindings/ch/sir_notice.chf
-bindings/ch/sir_warn.chf
-
-# Tags
-tags
-TAGS
-GPATH
-GRTAGS
-GTAGS
-docs/HTML
+RUN printf '\n%s\n' "BUILD SUCCESS"

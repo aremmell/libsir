@@ -396,7 +396,8 @@ struct tm* _sir_localtime(const time_t* timer, struct tm* buf) {
 #  endif
     return buf;
 # else /* !__HAVE_STDC_SECURE_OR_EXT1__ */
-#  if !defined(__WIN__) || defined(__EMBARCADEROC__)
+#  if !defined(__WIN__) || \
+     (defined(__EMBARCADEROC__) && (__clang_major__ < 15))
     struct tm* ret = localtime_r(timer, buf);
 #  else
     struct tm* ret = localtime(timer);

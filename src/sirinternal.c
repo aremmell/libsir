@@ -1302,7 +1302,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     bool success = true;
 # if defined(__HAVE_STDC_SECURE_OR_EXT1__)
     size_t wlen = wcsnlen_s(wname, SIR_MAXPID);
-# elif defined(__EMBARCADEROC__)
+# elif defined(__EMBARCADEROC__) && (__clang_major__ < 15)
     size_t wlen = wcslen(wname);
 # else
     size_t wlen = wcsnlen(wname, SIR_MAXPID);
