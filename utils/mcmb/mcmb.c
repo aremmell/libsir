@@ -1,7 +1,7 @@
 /*
  * mcmb.c
  *
- * Version: 2120.4.16-dps (libcmb 3.5.6)
+ * Version: 2120.4.17-dps (libcmb 3.5.6)
  *
  * -----------------------------------------------------------------------------
  *
@@ -495,7 +495,7 @@ static struct cmb_xitem *cmb_transform_find;
 # define CMB_PARSE_FRAGSIZE 512
 #endif /* ifndef CMB_PARSE_FRAGSIZE */
 
-static const char mcmbver[]         = "2120.4.16-dps";
+static const char mcmbver[]         = "2120.4.17-dps";
 static const char libversion[]      = "libcmb 3.5.6";
 
 /*
