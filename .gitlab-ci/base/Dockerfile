@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-current Ryan M. Lederman
-
-# Use --build-arg URL="..." to override default AOCC 4.1.0 link
+# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
 
 FROM quay.io/fedora/fedora:rawhide
 
@@ -115,7 +113,7 @@ RUN \
 && \
   dnf4 -y --allowerasing reinstall compiler-rt && \
   dnf4 -y --allowerasing install \
-    https://rpm.nodesource.com/pub_20.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm && \
+    https://rpm.nodesource.com/pub_21.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm && \
   dnf -y --refresh update && \
   dnf4 -y --refresh update && \
   dnf4 -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
@@ -237,3 +235,5 @@ RUN \
 #     chown user:user -R /codechecker
 
 USER 10000
+
+RUN printf '\n%s\n' "BUILD SUCCESS"

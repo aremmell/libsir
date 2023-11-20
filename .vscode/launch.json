@@ -2,26 +2,23 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(lldb) Attach (sirtests++)",
-            "type": "cppdbg",
-            "request": "attach",
-            "program": "${workspaceFolder}/build/bin/sirtests++",
-            "MIMode": "lldb"
-        },
-        {
-            "name": "(lldb) Launch (sirtests++)",
+            "name": "(lldb) Launch (sirtests)",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/bin/sirtests++",
-            "args": [],
+            "program": "${workspaceFolder}/build/bin/sirtests",
+            "args": [
+              /*"",
+                "",
+                "" */
+            ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
-            "externalConsole": false,
+            "externalConsole": true,
             "MIMode": "lldb"
         },
         {
-            "name": "(lldb) Attach",
+            "name": "(lldb) Attach (sirtests)",
             "type": "cppdbg",
             "request": "attach",
             "program": "${workspaceFolder}/build/bin/sirtests",
@@ -40,7 +37,7 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
-            "externalConsole": false,
+            "externalConsole": true,
             "MIMode": "gdb",
             "setupCommands": [
                 {
@@ -56,10 +53,29 @@
             ]
         },
         {
-            "name": "(lldb) Launch (sirtests)",
+            "name": "(lldb) Launch (sirtests++)",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/bin/sirtests",
+            "program": "${workspaceFolder}/build/bin/sirtests++",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb"
+        },
+        {
+            "name": "(lldb) Attach (sirtests++)",
+            "type": "cppdbg",
+            "request": "attach",
+            "program": "${workspaceFolder}/build/bin/sirtests++",
+            "MIMode": "lldb"
+        },
+        {
+            "name": "(gdb) Launch (sirtests++)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/bin/sirtests++",
             "args": [
               /*"",
                 "",
@@ -69,19 +85,19 @@
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": true,
-            "MIMode": "lldb"
-        },
-        {
-            "name": "(lldb) Launch (sirexample)",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/build/bin/sirexample",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": true,
-            "MIMode": "lldb"
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ]
         }
     ]
 }

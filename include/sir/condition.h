@@ -33,7 +33,7 @@
  *
  * @param cond Pointer to a sir_condition to initialize
  * @returns bool `true` if successful, `false` otherwise.
-*/
+ */
 bool _sir_condcreate(sir_condition* cond);
 
 # if 0
@@ -42,7 +42,7 @@ bool _sir_condcreate(sir_condition* cond);
  *
  * @param cond Pointer to a sir_condition to signal.
  * @returns bool `true` if successful, `false` otherwise.
- * */
+ */
 bool _sir_condsignal(sir_condition* cond);
 # endif
 
@@ -51,7 +51,7 @@ bool _sir_condsignal(sir_condition* cond);
  *
  * @param cond Pointer to a sir_condition to broadcast on.
  * @returns bool `true` if successful, `false` otherwise.
- * */
+ */
 bool _sir_condbroadcast(sir_condition* cond);
 
 /**
@@ -59,7 +59,7 @@ bool _sir_condbroadcast(sir_condition* cond);
  *
  * @param cond Pointer to a sir_condition to destroy.
  * @returns bool `true` if successful, `false` otherwise.
- * */
+ */
 bool _sir_conddestroy(sir_condition* cond);
 
 # if 0
@@ -68,7 +68,7 @@ bool _sir_conddestroy(sir_condition* cond);
  *
  * @param cond Pointer to a sir_condition to wait on.
  * @returns bool `true` if successful, `false` otherwise.
- * */
+ */
 bool _sir_condwait(sir_condition* cond, sir_mutex* mutex);
 # endif
 
@@ -80,7 +80,7 @@ bool _sir_condwait(sir_condition* cond, sir_mutex* mutex);
  * @param howlong How long to wait before timing out.
  * @returns bool `true` if successful, `false` if an error occurred or the operation
  * timed out..
- * */
+ */
 bool _sir_condwait_timeout(sir_condition* cond, sir_mutex* mutex, const sir_wait* howlong);
 
 #endif /* !_SIR_CONDITION_H_INCLUDED */

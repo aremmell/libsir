@@ -3,7 +3,7 @@
  *
  * chsir_vsnprintf.chf
  *
- * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Author:    Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -38,8 +38,8 @@ chsir_vsnprintf(char *str, size_t n, const char *fmt, va_list args) {
         while (*format) {
             _Bool long_int   = false;
             _Bool extra_long = false;
-            char c;
-            char *string_arg;
+            char  c;
+            char* string_arg;
 
             c = *format++;
 

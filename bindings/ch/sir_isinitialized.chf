@@ -1,7 +1,9 @@
 /*
+ * SPDX-License-Identifier: MIT
+ *
  * sir_isinitialized.chf
  *
- * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Author:    Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -28,7 +30,7 @@
 bool
 sir_isinitialized(void) {
     void* fptr;
-    bool retval;
+    bool  retval;
 
     fptr = dlsym(_Chsir_handle, "sir_isinitialized_chdl");
     if (fptr == NULL) {
@@ -38,7 +40,7 @@ sir_isinitialized(void) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, sir_isinitialized);
+    (void)dlrunfun(fptr, &retval, sir_isinitialized);
 
     return retval;
 }

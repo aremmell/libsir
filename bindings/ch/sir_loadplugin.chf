@@ -1,7 +1,9 @@
 /*
- * sir_loadugin.chf
+ * SPDX-License-Identifier: MIT
  *
- * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * sir_loadplugin.chf
+ *
+ * Author:    Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -27,7 +29,7 @@
 
 sirpluginid
 sir_loadplugin(const char* path) {
-    void* fptr;
+    void*       fptr;
     sirpluginid retval;
 
     fptr = dlsym(_Chsir_handle, "sir_loadplugin_chdl");
@@ -35,10 +37,10 @@ sir_loadplugin(const char* path) {
         (void)fprintf(_stderr, "Error: %s(%d): dlsym(): %s\n",
                       __func__, __LINE__, dlerror());
 
-        return 0;
+        return (sirpluginid)0;
     }
 
-    dlrunfun(fptr, &retval, sir_loadplugin, path);
+    (void)dlrunfun(fptr, &retval, sir_loadplugin, path);
 
     return retval;
 }

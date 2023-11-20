@@ -1,5 +1,6 @@
 /**
  * @file sir.c
+ *
  * @brief Public interface to libsir
  *
  * The functions and types defined here comprise the entire set intended for

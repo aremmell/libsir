@@ -1,7 +1,26 @@
 # Makefile
 # libsir: https://github.com/aremmell/libsir
+
 # SPDX-License-Identifier: MIT
-# SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
+# Copyright (c) 2018-current Ryan M. Lederman <lederman@gmail.com>
+# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+# the Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ##############################################################################
 # Defaults
@@ -252,7 +271,7 @@ $(INTDIR)/%.o: %.c $(DEPS)
 ##############################################################################
 # Compile tests++
 
-SIR_XFLAGS  := $(SIR_CFLAGS) $(CXXFLAGS)
+SIR_XFLAGS := $(strip $(patsubst $(SIR_CXFLAGS), ,$(SIR_CFLAGS) $(CXXFLAGS)))
 
 $(OBJ_TESTSXX): $(TESTS)/$(TESTSXX).cc $(DEPS)
 	@mkdir -p $(@D)
@@ -358,8 +377,23 @@ $(OUT_TESTS): $(OUT_STATIC) $(OBJ_TESTS_SHX) $(OBJ_TESTS)
 
 .PHONY: docs doc
 
-docs doc: $(OUT_STATIC)
+docs doc: $(OUT_STATIC) GTAGS
 	@doxygen Doxyfile
+	@rm -rf docs/HTML/* > /dev/null 2>&1 || true
+	@env GTAGSCONF="$$(pwd)/docs/res/gtags.conf" htags --map-file \
+	    --auto-completion --colorize-warned-line -I -h --tabs 4 \
+	    -t "libsir: The Standard Incident Reporter library" \
+	    --show-position -n -o -s --table-flist docs
+	@cp -f "docs/res/style.css" "docs/HTML/"
+	@cp -f "docs/res/libsir-icon192.png" "docs/HTML/icons/pglobe.png"
+	@sed \
+	   -e "s/http:\/\/www.gnu.org\/software\/global\//https:\/\/github.com\/aremmell\/libsir/" \
+	   -e "s/ title='Go to the GLOBAL project page.'//" \
+	   -e "s/ alt='\[Powered by GLOBAL-.*\]'//" \
+	   -e "s/^<a href='http/<br \/><a href='http/" \
+	       "docs/HTML/index.html" > "docs/HTML/index.html.tmp" && \
+	 mv -f "docs/HTML/index.html.tmp" "docs/HTML/index.html" && \
+	 cp -f "docs/HTML/index.html" "docs/HTML/mains.html"
 	-@find docs -name '*.png' \
 	    -not -path 'docs/res/*' \
 	    -not -path 'docs/sources/*' -print | \
@@ -499,6 +533,33 @@ $(PLUGPREFIX)%: $(OUT_SHARED) $(TUS)
 	  (tput sgr0 2> /dev/null || true); }
 
 endif # ifneq ($(SIR_NO_PLUGINS),1)
+
+##############################################################################
+# Tags
+
+.PHONY: ctags tags TAGS GPATH GRTAGS GTAGS
+
+ctags tags TAGS GPATH GRTAGS GTAGS:
+	-@rm -f tags TAGS GPATH GRTAGS GTAGS > /dev/null 2>&1 || true; \
+	  FDIRS="LICENSE Makefile bindings/python/*.py *.mk *.md bindings example include plugins src tests"; \
+	  FLIST="$$(2> /dev/null find $${FDIRS} | \
+	            2> /dev/null xargs -I{} \
+	            2> /dev/null printf %s\\n \"{}\" | \
+	            2> /dev/null xargs)"; \
+	  etags $${FLIST:-} > /dev/null 2>&1; \
+	  ctags -e $${FLIST:-} > /dev/null 2>&1; \
+	  ctags $${FLIST:-} > /dev/null 2>&1; \
+	  printf %s\\n $${FLIST:-} 2> /dev/null | \
+	      env GTAGSCONF="$$(pwd)/docs/res/gtags.conf" \
+	        gtags -f - > /dev/null 2>&1; \
+	  ls tags TAGS GPATH GRTAGS GTAGS 2> /dev/null | \
+	      grep -q '.' 2> /dev/null && { \
+	  (tput bold 2> /dev/null || true; tput setaf 2 2> /dev/null || true) && \
+	  printf '[tags] regenerated %s successfully.\n' "tags" 2> /dev/null; \
+	  (tput sgr0 2> /dev/null || true); exit 0; } || { \
+	  (tput bold 2> /dev/null || true; tput setaf 1 2> /dev/null || true) && \
+	  printf '[tags] failed to regenerate %s.\n' "tags" 2> /dev/null; \
+	  (tput sgr0 2> /dev/null || true); } ; exit 1
 
 ##############################################################################
 # Common rules

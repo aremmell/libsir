@@ -2,6 +2,7 @@
  * sirerrors.c
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -103,7 +104,7 @@ void __sir_setoserror(int code, const char* msg, const char* func, const char* f
     _sir_resetstr(_sir_te.os_msg);
 
     if (_sir_validstrnofail(msg))
-        _sir_strncpy(_sir_te.os_msg, SIR_MAXERROR, msg, SIR_MAXERROR);
+        (void)_sir_strncpy(_sir_te.os_msg, SIR_MAXERROR, msg, SIR_MAXERROR);
 
     (void)__sir_seterror(_SIR_E_PLATFORM, func, file, line);
 }
@@ -126,14 +127,14 @@ bool __sir_handleerr(int code, const char* func, const char* file, uint32_t line
         _sir_selflog("using GNU strerror_r");
         const char* tmp = strerror_r(code, message, SIR_MAXERROR);
         if (tmp != message)
-            _sir_strncpy(message, SIR_MAXERROR, tmp, SIR_MAXERROR);
+            (void)_sir_strncpy(message, SIR_MAXERROR, tmp, SIR_MAXERROR);
 #elif defined(__HAVE_STRERROR_S__)
         _sir_selflog("using strerror_s");
         finderr = (int)strerror_s(message, SIR_MAXERROR, code);
 #else
         _sir_selflog("using strerror");
         const char* tmp = strerror(code);
-        _sir_strncpy(message, SIR_MAXERROR, tmp, strnlen(tmp, SIR_MAXERROR));
+        (void)_sir_strncpy(message, SIR_MAXERROR, tmp, strnlen(tmp, SIR_MAXERROR));
 #endif
         if (0 == finderr) { //-V547
             __sir_setoserror(code, message, func, file, line);
@@ -229,7 +230,7 @@ void _sir_geterrorinfo(sir_errorinfo* err) {
     if (!_sir_validptr(err))
         return;
 
-    memset(err, 0, sizeof(sir_errorinfo));
+    (void)memset(err, 0, sizeof(sir_errorinfo));
 
     err->func = _sir_te.loc.func;
     err->file = _sir_te.loc.file;
@@ -301,22 +302,23 @@ void __sir_selflog(const char* func, const char* file, uint32_t line,
                 bool error = false;
                 bool warn  = false;
                 if (write2 > 0) {
-# if !defined(__WIN__)
+# if !defined(_AIX)
+#  if !defined(__WIN__)
                     if (NULL != strcasestr(buf, "error") ||
                         NULL != strcasestr(buf, "assert")) {
-# else /* __WIN__ */
+#  else /* __WIN__ */
                     if (NULL != StrStrIA(buf, "error") ||
                         NULL != StrStrIA(buf, "assert")) {
-# endif
+#  endif
                         error = true;
-# if !defined(__WIN__)
+#  if !defined(__WIN__)
                     } else if (NULL != strcasestr(buf, "warn")) {
-# else /* __WIN__ */
+#  else /* __WIN__ */
                     } else if (NULL != StrStrIA(buf, "warn")) {
-# endif
+#  endif
                         warn = true;
                     }
-
+# endif
                     write2 = fprintf(stderr, (error ? BRED("%s%s") "\n" :
                         (warn ? YELLOW("%s%s") "\n" : "%s%s\n")), prefix, buf);
                     _sir_eqland(success, write2 > 0);

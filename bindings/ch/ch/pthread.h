@@ -1,7 +1,9 @@
 /*
+ * SPDX-License-Identifier: MIT
+ *
  * ch/pthread.h
  *
- * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Author:    Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -40,11 +42,11 @@ struct _pthread_queue {
 };
 
 typedef struct {
-    int m_spinlock;
-    int m_count;
+    int            m_spinlock;
+    int            m_count;
     _pthread_descr m_owner;
-    int m_kind;
-    struct _pthread_queue m_waiting;
+    int            m_kind;
+    struct         _pthread_queue m_waiting;
 } pthread_mutex_t;
 
 # define PTHREAD_MUTEX_INITIALIZER \
@@ -54,7 +56,7 @@ typedef struct {
     { 0, 0, 0, PTHREAD_MUTEX_RECURSIVE_NP, { 0, 0 } }
 
 typedef struct {
-    int c_spinlock;
+    int    c_spinlock;
     struct _pthread_queue c_waiting;
 } pthread_cond_t;
 
@@ -77,11 +79,11 @@ enum {
 };
 
 typedef struct {
-    int detachstate;
-    int schedpolicy;
+    int    detachstate;
+    int    schedpolicy;
     struct sched_param schedparam;
-    int inheritsched;
-    int scope;
+    int    inheritsched;
+    int    scope;
 } pthread_attr_t;
 
 enum {

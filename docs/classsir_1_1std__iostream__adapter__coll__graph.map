@@ -1,0 +1,5 @@
+<map id="sir::std_iostream_adapter&lt; TPolicy &gt;" name="sir::std_iostream_adapter&lt; TPolicy &gt;">
+<area shape="rect" id="Node000001" title="Provides a std::iostream interface to libsir&#39;s logging functions." alt="" coords="5,78,174,117"/>
+<area shape="rect" id="Node000002" href="$classsir_1_1adapter.html" title="Defines the abstract interface for an adapter, which ultimately becomes a public base class of logger..." alt="" coords="46,5,133,30"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="92,45,92,77,87,77,87,45"/>
+</map>

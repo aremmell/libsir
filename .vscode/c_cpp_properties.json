@@ -5,9 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/include/**"
             ],
-            "defines": [
-
-            ],
+            "defines": [],
             "macFrameworkPath": [
                 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
             ],

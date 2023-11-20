@@ -1,7 +1,9 @@
 /*
- * sir_fileopts.h
+ * SPDX-License-Identifier: MIT
  *
- * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * sir_fileopts.chf
+ *
+ * Author:    Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -28,17 +30,17 @@
 bool
 sir_fileopts(sirfileid id, sir_options opts) {
     void* fptr;
-    bool retval;
+    bool  retval;
 
     fptr = dlsym(_Chsir_handle, "sir_fileopts_chdl");
     if (fptr == NULL) {
         (void)fprintf(_stderr, "Error: %s(%d): dlsym(): %s\n",
                       __func__, __LINE__, dlerror());
 
-        return 0;
+        return false;
     }
 
-    dlrunfun(fptr, &retval, sir_fileoptions, id, opts);
+    (void)dlrunfun(fptr, &retval, sir_fileoptions, id, opts);
 
     return retval;
 }

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-current Ryan M. Lederman
+# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
 
 FROM registry.gitlab.com/libsir/libsir/base:latest
 
@@ -30,3 +30,5 @@ RUN dnf --nogpgcheck --refresh -y upgrade --setopt=install_weak_deps=True && \
     ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true ) && cd
 
 USER 10000
+
+RUN printf '\n%s\n' "BUILD SUCCESS"

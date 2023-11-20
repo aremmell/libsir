@@ -4,7 +4,6 @@
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
- *
  * License:   The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -434,7 +433,7 @@ bool _sir_plugin_cache_destroy(sir_plugincache* spc) {
         spc->count--;
     }
 
-    memset(spc, 0, sizeof(sir_plugincache));
+    (void)memset(spc, 0, sizeof(sir_plugincache));
     return true;
 #else
     SIR_UNUSED(spc);

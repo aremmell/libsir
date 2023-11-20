@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: ISC and MIT
 # Copyright (c) 2018-2019 Martin Storsjo
-# Copyright (c) 2018-current Ryan M. Lederman
+# Copyright (c) 2018-current Ryan M. Lederman <lederman@gmail.com>
+# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
 
 FROM registry.gitlab.com/libsir/libsir/base:latest
 
@@ -32,7 +33,9 @@ RUN stdbuf -o L \
 
 COPY msvcenv-native.sh /opt/msvc
 
-RUN curl -fsSL https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks > /usr/bin/winetricks && chmod a+x /usr/bin/winetricks
+RUN curl \
+      -fsSL https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
+        > /usr/bin/winetricks && chmod a+x /usr/bin/winetricks
 
 RUN ln -s /opt/msvc /opt/MSVC
 
@@ -45,3 +48,5 @@ RUN dnf -y clean all && \
 WORKDIR /
 
 USER 10000
+
+RUN printf '\n%s\n' "BUILD SUCCESS"

@@ -1,0 +1,5 @@
+<map id="sir::default_policy" name="sir::default_policy">
+<area shape="rect" id="Node000001" title="In the event that no custom configuration or behavior is desired, provides defaults for everything." alt="" coords="5,78,129,103"/>
+<area shape="rect" id="Node000002" href="$classsir_1_1policy.html" title="Defines the partially abstract interface for a policy which controls the behavior of logger at runtim..." alt="" coords="28,5,106,30"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="70,45,70,78,64,78,64,45"/>
+</map>

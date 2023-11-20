@@ -2,6 +2,7 @@
  * platform.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -54,7 +55,7 @@
 # endif
 
 # undef HAS_ATTRIBUTE
-# if defined __has_attribute  && (defined(__clang__) || defined(__GNUC__))
+# if defined __has_attribute && (defined(__clang__) || defined(__GNUC__))
 #  define HAS_ATTRIBUTE(atr) __has_attribute(atr)
 # else
 #  define HAS_ATTRIBUTE(atr) 0
@@ -204,6 +205,10 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #     undef SIR_NO_THREAD_NAMES
 #     define SIR_NO_THREAD_NAMES
 #    endif
+#    if defined(__GLIBC__) && GLIBC_VERSION > 0 && \
+       !defined(__SUNPRO_C) && !defined(__SUNPRO_CC)
+#     include <sys/sysinfo.h>
+#    endif
 #   endif
 #   if defined(__CYGWIN__)
 #    if !defined(_GNU_SOURCE)
@@ -275,7 +280,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #   undef __USE_MINGW_ANSI_STDIO
 #   define __USE_MINGW_ANSI_STDIO 1
 #   include <pthread.h>
-typedef  /* Workaround a MinGW bug */
+typedef /* Workaround a MinGW bug */
 void (__cdecl* _invalid_parameter_handler)(
  wchar_t const*, wchar_t const*, wchar_t const*,
  unsigned int, uintptr_t);
@@ -338,17 +343,32 @@ _set_thread_local_invalid_parameter_handler(
 #  define restrict //-V1059
 # endif
 
+# include <ctype.h>
 # include <errno.h>
 # include <stdarg.h>
 # include <stdbool.h>
 # include <stdint.h>
 # include <inttypes.h>
 # include <stdio.h>
+
+# if defined(__cplusplus) && defined(__NVCOMPILER) && defined(__FLOAT128__)
+#  define NVIDIA_FLOAT128 __FLOAT128__
+#  undef __FLOAT128__
+# endif
+
 # include <stdlib.h>
+
+# if defined(NVIDIA_FLOAT128)
+#  define __FLOAT128__ NVIDIA_FLOAT128
+#  undef NVIDIA_FLOAT128
+# endif
+
 # include <string.h>
+
 # if defined(DUMA)
 #  include <duma.h>
 # endif
+
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <limits.h>
@@ -402,6 +422,9 @@ _set_thread_local_invalid_parameter_handler(
 #   include <fcntl.h>
 #  endif
 #  include <unistd.h>
+#  if defined(__MACOS__)
+#   include <sys/sysctl.h>
+#  endif
 #  if !defined(__CYGWIN__) && !defined(__HAIKU__) && \
       !defined(__serenity__) && !defined(_AIX) && \
       !defined(_CH_) && !defined(__CH__)
@@ -424,6 +447,7 @@ _set_thread_local_invalid_parameter_handler(
 #  endif
 #  if defined(_AIX)
 #   include <sys/procfs.h>
+#   include <sys/systemcfg.h>
 #   undef SIR_NO_THREAD_NAMES
 #   define SIR_NO_THREAD_NAMES
 #  endif

@@ -7,7 +7,9 @@ var hierarchy =
       [ "sir::std_format_adapter< TPolicy >", "classsir_1_1std__format__adapter.html", null ],
       [ "sir::std_iostream_adapter< TPolicy >", "classsir_1_1std__iostream__adapter.html", null ]
     ] ],
-    [ "sir::error", "namespacesir.html#structsir_1_1error", null ],
+    [ "sir::error", "structsir_1_1error.html", [
+      [ "sir::error_info", "structsir_1_1error__info.html", null ]
+    ] ],
     [ "sir::exception", "classsir_1_1exception.html", null ],
     [ "sir::logger< RAII, TPolicy, TAdapters >", "classsir_1_1logger.html", null ],
     [ "sir::policy", "classsir_1_1policy.html", [
@@ -15,6 +17,7 @@ var hierarchy =
     ] ],
     [ "sir_cl_arg", "structsir__cl__arg.html", null ],
     [ "sir_cl_config", "structsir__cl__config.html", null ],
+    [ "sir_errorinfo", "group__publictypes.html#structsir__errorinfo", null ],
     [ "sir_level_str_pair", "structsir__level__str__pair.html", null ],
     [ "sir_level_style_tuple", "structsir__level__style__tuple.html", null ],
     [ "sir_plugin", "structsir__plugin.html", null ],
@@ -37,7 +40,6 @@ var hierarchy =
     [ "sirbuf", "structsirbuf.html", null ],
     [ "sirconfig", "structsirconfig.html", null ],
     [ "sirconfig.state.last", "structsirconfig_8state_8last.html", null ],
-    [ "sirerror", "structsirerror.html", null ],
     [ "sirfcache", "structsirfcache.html", null ],
     [ "sirfile", "structsirfile.html", null ],
     [ "sirinit", "group__publictypes.html#structsirinit", null ]

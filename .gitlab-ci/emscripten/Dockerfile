@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-current Ryan M. Lederman
+# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
 
 FROM registry.gitlab.com/libsir/libsir/base:latest
 
@@ -20,7 +20,7 @@ RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && mkdir -p /home/l
     sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; brew developer on )" && \
     sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; brew update -v )" && \
     sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; brew upgrade -v )" && \
-    sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; brew install --display-times -v emscripten )" && \
+    sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; brew install -v emscripten )" && \
     sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; brew cleanup -s --prune=all )" && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
@@ -30,3 +30,5 @@ RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && mkdir -p /home/l
     cd
 
 USER 10000
+
+RUN printf '\n%s\n' "BUILD SUCCESS"

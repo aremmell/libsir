@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-current Ryan M. Lederman
-
-# Use --build-arg URL="..." to override default
+# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
 
 FROM registry.gitlab.com/libsir/libsir/base:latest
 
@@ -29,3 +27,5 @@ RUN cd ~user && \
     curl -fsSL ${URL:-http://192.168.1.187:8088/~jhj/cache/EMB22.tar} | tar xvf -
 
 USER 10000
+
+RUN printf '\n%s\n' "BUILD SUCCESS"

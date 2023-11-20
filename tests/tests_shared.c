@@ -2,6 +2,7 @@
  * tests_shared.c
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -157,7 +158,7 @@ bool parse_cmd_line(int argc, char** argv, const sir_cl_arg* args, size_t num_ar
     if (!argv || !args || !tests || !config)
         return false;
 
-    memset(config, 0, sizeof(sir_cl_config));
+    (void)memset(config, 0, sizeof(sir_cl_config));
 
     for (int n = 1; n < argc; n++) {
         const sir_cl_arg* this_arg = find_cl_arg(argv[n], args, num_args);
@@ -263,7 +264,7 @@ size_t sir_readline(FILE* f, char* buf, size_t size) {
 }
 
 uint32_t getrand(uint32_t upper_bound) {
-#if !defined(__WIN__) || defined(__EMBARCADEROC__)
+#if !defined(__WIN__) || (defined(__EMBARCADEROC__) && (__clang_major__ < 15))
 # if defined(__MACOS__) || defined(__BSD__) || defined(__serenity__) || \
      defined(__SOLARIS__) || defined(__ANDROID__) || defined(__CYGWIN__) || \
      (defined(__linux__) && defined(__GLIBC__) && GLIBC_VERSION >= 23600)
@@ -271,7 +272,7 @@ uint32_t getrand(uint32_t upper_bound) {
         upper_bound = 2U;
     return arc4random_uniform(upper_bound);
 # else
-#  if defined(__EMBARCADEROC__)
+#  if defined(__EMBARCADEROC__) && (__clang_major__ < 15)
     return (uint32_t)(random(upper_bound));
 #  else
     return (uint32_t)(random() % upper_bound);
@@ -316,7 +317,7 @@ bool enumfiles(const char* path, const char* search, bool del, unsigned* count) 
     rewinddir(d);
     const struct dirent* di = readdir(d);
     if (!di) {
-        closedir(d);
+        (void)closedir(d);
         return print_test_error(false, false);
     }
 
@@ -332,7 +333,7 @@ bool enumfiles(const char* path, const char* search, bool del, unsigned* count) 
         di = readdir(d);
     }
 
-    closedir(d);
+    (void)closedir(d);
     d = NULL;
 #else /* __WIN__ */
     WIN32_FIND_DATA finddata = {0};

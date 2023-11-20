@@ -1,9 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-current Ryan M. Lederman
-
-# Use --build-arg URL1="..." to override default libnsl link
-# Use --build-arg URL2="..." to override default Oracle link
-# oracle126.tar.gz is an archive of Oracle Studio 12.6
+# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
 
 FROM registry.gitlab.com/libsir/libsir/base:latest
 
@@ -20,7 +16,7 @@ RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
          dnf -y install ${URL1:-http://192.168.1.187;8088/~jhj/cache/libnsl-2.38-1.fc39.x86_64.rpm}) || true ) && \
     curl -fsSL ${URL2:-http://192.168.1.187:8088/~jhj/cache/oracle126.tar.gz} | \
         pigz -dc | \
-	tar xvf - && \
+        tar xvf - && \
     dnf -y upgrade --setopt=install_weak_deps=True && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
@@ -29,3 +25,5 @@ RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
     ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true )
 
 USER 10000
+
+RUN printf '\n%s\n' "BUILD SUCCESS"

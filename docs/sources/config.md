@@ -2,23 +2,22 @@
 
 Compile-time configuration of libsir.
 
-## Preprocessor macros
+## Environment variables
 
-The following are applied at compile-time when executing `make`:
+The variables in the following table are applied at compile-time when executing `make`.
 
-```sh
+**Example:**
+
+~~~
 env SIR_PREPROCESSOR_FOO=1 make ...
-```
+~~~
 
-The Makefile takes care of the rest; you may also feel free to edit the Makefile
-to suit your needs, avoiding this step entirely.
+The Makefile takes care of the rest; for each environment variable that is known to the Makefile, it adds or removes compiler options based on the values provided. This may be a simple mapping of `VAR=1` to `-DVAR`, or a more nuanced configuration:
 
-**Available preprocessor macros:**
-
-| Macro (default)      | State | Compiler settings            | Description |
+| Variable (default)      | State | Compiler settings            | Description |
 | :------------------: | :---: | :--------------------------: | :---------- |
-| `SIR_DEBUG (0)`      | `0`   | `-O3 -DNDEBUG`               | Full optimization is applied, and no debugging symbols are included. |
-| ^                    | `1`   | `-g3 -00 -DDEBUG`            | No optimizations are applied, and full debugging symbols are included. |
+| `SIR_DEBUG (0)`      | `0`   | `-O3 -DNDEBUG -D_FORTIFY_SOURCE=2` | Full optimization is applied, source fortification is set to level 2, and no debugging symbols are included. |
+| ^                    | `1`   | `-g3 -00 -DDEBUG -U_FORTIFY_SOURCE`            | No optimizations are applied, source fortification is disabled, and full debugging symbols are included. |
 | `SIR_SELFLOG (0)`    | `0`   | `N/A`                        | NOOP |
 | ^                    | `1`   | `-DSIR_SELFLOG`              | Diagnostic information is sent to `stderr` to report certain events that may aid in debugging. Includes the function name, source file, and line where the event took place. If `SIR_DEBUG` and `SIR_SELFLOG` are enabled, each error handled internally will be logged in real time as it is captured. |
 | `SIR_ASSERT_ENABLED (0)` | `0` | `N/A` | `assert` will never be called. If `SIR_SELFLOG` is enabled, where asserts normally would take place, a `_sir_selflog` call is made, producing output to stderr such as '`somefunc (file.c:123): !!! would be asserting (NULL != ptr)`'. |
@@ -29,7 +28,7 @@ to suit your needs, avoiding this step entirely.
 | ^                    | `1`   | `-DSIR_NO_PLUGINS`           | The plugin system's functionality will be disabled (_and most of it compiled out_).|
 ---
 
-@note If you plan to use the Visual Studio solution, see `README.md` under `Help` once the solution is loaded.
+@note If you plan to use the Visual Studio 2022 solution, see `README.md` under `Help` once the solution is loaded.
 
 ## sirconfig.h
 

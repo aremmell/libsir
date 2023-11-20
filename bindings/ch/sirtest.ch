@@ -1,9 +1,11 @@
 #!/usr/bin/env ch
 
 /*
+ * SPDX-License-Identifier: MIT
+ *
  * sirtest.ch
  *
- * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Author:    Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -26,11 +28,9 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "chsir.h"
-#include "sir/errors.h"
-#include <stdio.h>
-#include <string.h>
-#include <locale.h>
-#include <chshell.h>
+#include "sir/errors.h" /* SIR_E_UNAVAIL */
+#include <locale.h> /* setlocale */
+#include <chshell.h> /* chinfo */
 
 void report_error(void);
 
@@ -107,8 +107,13 @@ main(void) {
                   WHITE("Ch") " binding test: " CYAN("libsir ") BCYAN("%s"),
                   sir_versionstring);
     (void)fprintf(_stdout,
-                  BGRAY(" on ") CYAN("Ch ") BCYAN("%d.%d.%d.%d") BGRAY(".\n"),
+                  BGRAY(" on ") CYAN("Ch ") BCYAN("%d.%d.%d.%d") BGRAY(".\n\n"),
                   ch.vermajor, ch.verminor, ch.vermicro, ch.verbuild);
+
+    /* Demo string utilities. */
+    (void)fprintf(_stdout, _sir_strredact(_sir_strreplace(_sir_strsqueeze(
+                  "\r \nxxx Welcome  \r  to  \f  the  Ch  \v  demo   xx!\n \n"),
+                  '!', 'x'), "x", '*'));
 
     /* Log to stdout. */
     (void)fprintf(_stdout, "\nLogging four libsir messages to stdout:\n");
@@ -124,22 +129,24 @@ main(void) {
     (void)sir_alert("%s %b Testing %s output", __TIME__, __LINE__, ULINE("alert"));
     (void)sir_emerg("%s %b Testing %s output", __TIME__, __LINE__, ULINE("emergency"));
 
-    /* Set up a syslog output. */
-    char message[SIR_MAXERROR];
+    /* Set up for syslog output. */
     (void)sir_syslogid(appname);
-    if (SIR_E_UNAVAIL == sir_geterror(message)) {
+
+    /* Check if syslog is available. */
+    if (SIR_E_UNAVAIL == sir_geterror(NULL)) {
         (void)fprintf(_stderr, "\nLogging to syslog is not supported, skipping.\n");
     } else {
+        (void)fprintf(_stderr, "\nLogging two libsir messages to stderr and syslog:\n");
+
         /* Don't log PID; syslog has us covered. */
         if (!sir_syslogopts(SIRO_NOPID))
             report_error();
 
-        /* Send all levels */
+        /* Send all levels. */
         if (!sir_sysloglevels(SIRL_ALL))
             report_error();
 
         /* Log to syslog. */
-        (void)fprintf(_stderr, "\nLogging two libsir messages to stderr and syslog:\n");
         (void)sir_alert("%b Testing %s output", __LINE__, "alert");
         (void)sir_emerg("%b Testing %s output", __LINE__, "emergency");
     }
@@ -149,7 +156,7 @@ main(void) {
         report_error();
 
     /* Clean up. */
-    sir_cleanup();
+    (void)sir_cleanup();
 
     /* We made it! */
     (void)fprintf(_stdout, WHITE("\nCh ") "binding test: " BGREEN("completed") BGRAY(".\n"));

@@ -1,7 +1,9 @@
 /*
+ * SPDX-License-Identifier: MIT
+ *
  * sir_makergb.chf
  *
- * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Author:    Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -28,17 +30,17 @@
 sir_textcolor
 sir_makergb(sir_textcolor r, sir_textcolor g, sir_textcolor b) {
     void* fptr;
-    bool retval;
+    bool  retval;
 
     fptr = dlsym(_Chsir_handle, "sir_makergb_chdl");
     if (fptr == NULL) {
         (void)fprintf(_stderr, "Error: %s(%d): dlsym(): %s\n",
                       __func__, __LINE__, dlerror());
 
-        return 0;
+        return (sir_textcolor)0;
     }
 
-    dlrunfun(fptr, &retval, sir_makergb, r, g, b);
+    (void)dlrunfun(fptr, &retval, sir_makergb, r, g, b);
 
     return retval;
 }

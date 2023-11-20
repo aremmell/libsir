@@ -1,7 +1,9 @@
 /*
+ * SPDX-License-Identifier: MIT
+ *
  * sir_geterror.chf
  *
- * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Author:    Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -24,21 +26,26 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "chsir.h"
+#include "sir/errors.h"
 
 uint16_t
 sir_geterror(char message[SIR_MAXERROR]) {
-    void* fptr;
+    void*    fptr;
     uint16_t retval;
+    char     temp_message[SIR_MAXERROR];
 
     fptr = dlsym(_Chsir_handle, "sir_geterror_chdl");
     if (fptr == NULL) {
         (void)fprintf(_stderr, "Error: %s(%d): dlsym(): %s\n",
                       __func__, __LINE__, dlerror());
 
-        return 0;
+        return (uint16_t)SIR_E_UNKNOWN;
     }
 
-    dlrunfun(fptr, &retval, sir_geterror, message);
+    if (!message)
+        message = temp_message;
+
+    (void)dlrunfun(fptr, &retval, sir_geterror, message);
 
     return retval;
 }

@@ -2,6 +2,7 @@
  * tests.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -278,6 +279,20 @@ bool sirtest_squelchspam(void);
 bool sirtest_pluginloader(void);
 
 /**
+ * @test sirtest_stringutils
+ * @brief Ensure the string utility routines are functioning properly.
+ * @returns bool `true` if the test succeeded, `false` otherwise.
+ */
+bool sirtest_stringutils(void);
+
+/**
+ * @test sirtest_getcpucount
+ * @brief Ensure the processor counting routines are functioning properly.
+ * @returns bool `true` if the test succeeded, `false` otherwise.
+ */
+bool sirtest_getcpucount(void);
+
+/**
  * @test sirtest_getversioninfo
  * @brief Ensure that version retrieval exports are functioning properly.
  * @returns bool `true` if the test succeeded, `false` otherwise.
@@ -315,7 +330,7 @@ void os_log_child_activity(void* ctx);
     var.d_stderr.opts   = (o_stderr) > 0 ? (o_stderr) : SIRO_DEFAULT; \
     var.d_stderr.levels = (l_stderr); \
     if (_sir_validstrnofail(p_name)) \
-        _sir_strncpy(var.name, SIR_MAXNAME, (p_name), SIR_MAXNAME); \
+        (void)_sir_strncpy(var.name, SIR_MAXNAME, (p_name), SIR_MAXNAME); \
     bool var##_init = false; \
     if (init) \
         var##_init = sir_init(&var); \
@@ -342,5 +357,10 @@ bool filter_error(bool pass, uint16_t err);
  * If running under Wine, returns the Wine version. Returns NULL otherwise.
  */
 char* get_wineversion(void);
+
+/**
+ * Used by the file-archive-large test to try multiple variations of filenames.
+ */
+bool roll_and_archive(const char* filename, const char* extension);
 
 #endif /* !_SIR_TESTS_H_INCLUDED */

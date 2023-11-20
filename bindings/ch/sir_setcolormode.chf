@@ -1,7 +1,9 @@
 /*
+ * SPDX-License-Identifier: MIT
+ *
  * sir_setcolormode.chf
  *
- * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Author:    Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -28,17 +30,17 @@
 bool
 sir_setcolormode(sir_colormode mode) {
     void* fptr;
-    bool retval;
+    bool  retval;
 
     fptr = dlsym(_Chsir_handle, "sir_setcolormode_chdl");
     if (fptr == NULL) {
         (void)fprintf(_stderr, "Error: %s(%d): dlsym(): %s\n",
                       __func__, __LINE__, dlerror());
 
-        return 0;
+        return false;
     }
 
-    dlrunfun(fptr, &retval, sir_setcolormode, mode);
+    (void)dlrunfun(fptr, &retval, sir_setcolormode, mode);
 
     return retval;
 }

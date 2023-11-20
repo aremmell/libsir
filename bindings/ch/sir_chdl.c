@@ -1,7 +1,9 @@
 /*
+ * SPDX-License-Identifier: MIT
+ *
  * sir_chdl.c
  *
- * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Author:    Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -27,13 +29,14 @@
 #include <ch.h>
 #include <stdbool.h>
 #include "chsir.h"
+#include "sir/internal.h"
 
 EXPORTCH bool
 sir_makeinit_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
-    sirinit *si;
-    bool retval;
+    sirinit*   si;
+    bool       retval;
 
     Ch_VaStart(interp, ap, varg);
 
@@ -49,8 +52,8 @@ EXPORTCH bool
 sir_init_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
-    sirinit *si;
-    bool retval;
+    sirinit*   si;
+    bool       retval;
 
     Ch_VaStart(interp, ap, varg);
 
@@ -84,8 +87,8 @@ EXPORTCH uint16_t
 sir_geterror_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
-    char *message;
-    uint16_t retval;
+    char*      message;
+    uint16_t   retval;
 
     Ch_VaStart(interp, ap, varg);
 
@@ -97,7 +100,21 @@ sir_geterror_chdl(void *varg) {
     return retval;
 }
 
-EXPORTCH const char *
+EXPORTCH void
+sir_geterrorinfo_chdl(void *varg) {
+    ChInterp_t     interp;
+    ChVaList_t     ap;
+    sir_errorinfo* err;
+
+    Ch_VaStart(interp, ap, varg);
+
+    err = Ch_VaArg(interp, ap, sir_errorinfo*);
+    sir_geterrorinfo(err);
+
+    Ch_VaEnd(interp, ap);
+}
+
+EXPORTCH const char*
 sir_getversionstring_chdl(void) {
 
     return sir_getversionstring();
@@ -111,10 +128,10 @@ sir_getversionhex_chdl(void) {
 
 EXPORTCH bool
 sir_debug_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
-    const char *message;
-    bool retval;
+    ChInterp_t  interp;
+    ChVaList_t  ap;
+    const char* message;
+    bool        retval;
 
     Ch_VaStart(interp, ap, varg);
 
@@ -128,10 +145,10 @@ sir_debug_chdl(void *varg) {
 
 EXPORTCH bool
 sir_info_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
-    const char *message;
-    bool retval;
+    ChInterp_t  interp;
+    ChVaList_t  ap;
+    const char* message;
+    bool        retval;
 
     Ch_VaStart(interp, ap, varg);
 
@@ -145,10 +162,10 @@ sir_info_chdl(void *varg) {
 
 EXPORTCH bool
 sir_warn_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
-    const char *message;
-    bool retval;
+    ChInterp_t  interp;
+    ChVaList_t  ap;
+    const char* message;
+    bool        retval;
 
     Ch_VaStart(interp, ap, varg);
 
@@ -162,10 +179,10 @@ sir_warn_chdl(void *varg) {
 
 EXPORTCH bool
 sir_alert_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
-    const char *message;
-    bool retval;
+    ChInterp_t  interp;
+    ChVaList_t  ap;
+    const char* message;
+    bool        retval;
 
     Ch_VaStart(interp, ap, varg);
 
@@ -179,10 +196,10 @@ sir_alert_chdl(void *varg) {
 
 EXPORTCH bool
 sir_notice_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
-    const char *message;
-    bool retval;
+    ChInterp_t  interp;
+    ChVaList_t  ap;
+    const char* message;
+    bool        retval;
 
     Ch_VaStart(interp, ap, varg);
 
@@ -196,10 +213,10 @@ sir_notice_chdl(void *varg) {
 
 EXPORTCH bool
 sir_error_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
-    const char *message;
-    bool retval;
+    ChInterp_t  interp;
+    ChVaList_t  ap;
+    const char* message;
+    bool        retval;
 
     Ch_VaStart(interp, ap, varg);
 
@@ -213,10 +230,10 @@ sir_error_chdl(void *varg) {
 
 EXPORTCH bool
 sir_crit_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
-    const char *message;
-    bool retval;
+    ChInterp_t  interp;
+    ChVaList_t  ap;
+    const char* message;
+    bool        retval;
 
     Ch_VaStart(interp, ap, varg);
 
@@ -230,10 +247,10 @@ sir_crit_chdl(void *varg) {
 
 EXPORTCH bool
 sir_emerg_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
-    const char *message;
-    bool retval;
+    ChInterp_t  interp;
+    ChVaList_t  ap;
+    const char* message;
+    bool        retval;
 
     Ch_VaStart(interp, ap, varg);
 
@@ -245,16 +262,12 @@ sir_emerg_chdl(void *varg) {
     return retval;
 }
 
-#if !defined(_SIR_INTERNAL_H_INCLUDED)
-bool _sir_setthreadname(const char *name);
-#endif /* if !defined(_SIR_INTERNAL_H_INCLUDED) */
-
 EXPORTCH bool
 _sir_setthreadname_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
-    const char *name;
-    bool retval;
+    ChInterp_t  interp;
+    ChVaList_t  ap;
+    const char* name;
+    bool        retval;
 
     Ch_VaStart(interp, ap, varg);
 
@@ -266,14 +279,31 @@ _sir_setthreadname_chdl(void *varg) {
     return retval;
 }
 
-EXPORTCH sirfileid
-sir_addfile_chdl(void *varg) {
+EXPORTCH long
+__sir_nprocs_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
-    const char *path;
-    sir_levels levels;
+    bool       test_mode;
+    long       retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    test_mode = Ch_VaArg(interp, ap, bool);
+    retval    = __sir_nprocs(test_mode);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH sirfileid
+sir_addfile_chdl(void *varg) {
+    ChInterp_t  interp;
+    ChVaList_t  ap;
+    const char* path;
+    sir_levels  levels;
     sir_options opts;
-    sirfileid retval;
+    sirfileid   retval;
 
     Ch_VaStart(interp, ap, varg);
 
@@ -291,8 +321,8 @@ EXPORTCH bool
 sir_remfile_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
-    sirfileid id;
-    bool retval;
+    sirfileid  id;
+    bool       retval;
 
     Ch_VaStart(interp, ap, varg);
 
@@ -306,8 +336,8 @@ sir_remfile_chdl(void *varg) {
 
 EXPORTCH sirpluginid
 sir_loadplugin_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
+    ChInterp_t  interp;
+    ChVaList_t  ap;
     const char* path;
     sirpluginid retval;
 
@@ -323,10 +353,10 @@ sir_loadplugin_chdl(void *varg) {
 
 EXPORTCH bool
 sir_unloadplugin_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
+    ChInterp_t  interp;
+    ChVaList_t  ap;
     sirpluginid id;
-    bool retval;
+    bool        retval;
 
     Ch_VaStart(interp, ap, varg);
 
@@ -346,14 +376,14 @@ sir_resettextstyles_chdl(void) {
 
 EXPORTCH bool
 sir_setcolormode_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
+    ChInterp_t    interp;
+    ChVaList_t    ap;
     sir_colormode mode;
-    bool retval;
+    bool          retval;
 
     Ch_VaStart(interp, ap, varg);
 
-    mode = Ch_VaArg(interp, ap, sir_colormode);
+    mode   = Ch_VaArg(interp, ap, sir_colormode);
     retval = sir_setcolormode(mode);
 
     Ch_VaEnd(interp, ap);
@@ -366,7 +396,7 @@ sir_stdoutlevels_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
     sir_levels levels;
-    bool retval;
+    bool       retval;
 
     Ch_VaStart(interp, ap, varg);
 
@@ -380,14 +410,14 @@ sir_stdoutlevels_chdl(void *varg) {
 
 EXPORTCH bool
 sir_stdoutopts_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
+    ChInterp_t  interp;
+    ChVaList_t  ap;
     sir_options opts;
-    bool retval;
+    bool        retval;
 
     Ch_VaStart(interp, ap, varg);
 
-    opts = Ch_VaArg(interp, ap, sir_options);
+    opts   = Ch_VaArg(interp, ap, sir_options);
     retval = sir_stdoutopts(opts);
 
     Ch_VaEnd(interp, ap);
@@ -400,7 +430,7 @@ sir_stderrlevels_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
     sir_levels levels;
-    bool retval;
+    bool       retval;
 
     Ch_VaStart(interp, ap, varg);
 
@@ -414,14 +444,14 @@ sir_stderrlevels_chdl(void *varg) {
 
 EXPORTCH bool
 sir_stderropts_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
+    ChInterp_t  interp;
+    ChVaList_t  ap;
     sir_options opts;
-    bool retval;
+    bool        retval;
 
     Ch_VaStart(interp, ap, varg);
 
-    opts = Ch_VaArg(interp, ap, sir_options);
+    opts   = Ch_VaArg(interp, ap, sir_options);
     retval = sir_stderropts(opts);
 
     Ch_VaEnd(interp, ap);
@@ -434,7 +464,7 @@ sir_sysloglevels_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
     sir_levels levels;
-    bool retval;
+    bool       retval;
 
     Ch_VaStart(interp, ap, varg);
 
@@ -448,14 +478,14 @@ sir_sysloglevels_chdl(void *varg) {
 
 EXPORTCH bool
 sir_syslogopts_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
+    ChInterp_t  interp;
+    ChVaList_t  ap;
     sir_options opts;
-    bool retval;
+    bool        retval;
 
     Ch_VaStart(interp, ap, varg);
 
-    opts = Ch_VaArg(interp, ap, sir_options);
+    opts   = Ch_VaArg(interp, ap, sir_options);
     retval = sir_syslogopts(opts);
 
     Ch_VaEnd(interp, ap);
@@ -465,15 +495,15 @@ sir_syslogopts_chdl(void *varg) {
 
 EXPORTCH bool
 sir_syslogid_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
+    ChInterp_t  interp;
+    ChVaList_t  ap;
     const char* identity;
-    bool retval;
+    bool        retval;
 
     Ch_VaStart(interp, ap, varg);
 
     identity = Ch_VaArg(interp, ap, const char*);
-    retval = sir_syslogid(identity);
+    retval   = sir_syslogid(identity);
 
     Ch_VaEnd(interp, ap);
 
@@ -482,15 +512,15 @@ sir_syslogid_chdl(void *varg) {
 
 EXPORTCH bool
 sir_syslogcat_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
+    ChInterp_t  interp;
+    ChVaList_t  ap;
     const char* category;
-    bool retval;
+    bool        retval;
 
     Ch_VaStart(interp, ap, varg);
 
     category = Ch_VaArg(interp, ap, const char*);
-    retval = sir_syslogcat(category);
+    retval   = sir_syslogcat(category);
 
     Ch_VaEnd(interp, ap);
 
@@ -499,8 +529,8 @@ sir_syslogcat_chdl(void *varg) {
 
 EXPORTCH sir_textcolor
 sir_makergb_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
+    ChInterp_t    interp;
+    ChVaList_t    ap;
     sir_textcolor r;
     sir_textcolor g;
     sir_textcolor b;
@@ -508,9 +538,9 @@ sir_makergb_chdl(void *varg) {
 
     Ch_VaStart(interp, ap, varg);
 
-    r = Ch_VaArg(interp, ap, sir_textcolor);
-    g = Ch_VaArg(interp, ap, sir_textcolor);
-    b = Ch_VaArg(interp, ap, sir_textcolor);
+    r      = Ch_VaArg(interp, ap, sir_textcolor);
+    g      = Ch_VaArg(interp, ap, sir_textcolor);
+    b      = Ch_VaArg(interp, ap, sir_textcolor);
     retval = sir_makergb(r, g, b);
 
     Ch_VaEnd(interp, ap);
@@ -520,20 +550,20 @@ sir_makergb_chdl(void *varg) {
 
 EXPORTCH bool
 sir_settextstyle_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
-    sir_level level;
-    sir_textattr attr;
+    ChInterp_t    interp;
+    ChVaList_t    ap;
+    sir_level     level;
+    sir_textattr  attr;
     sir_textcolor fg;
     sir_textcolor bg;
-    bool retval;
+    bool          retval;
 
     Ch_VaStart(interp, ap, varg);
 
-    level = Ch_VaArg(interp, ap, sir_level);
-    attr = Ch_VaArg(interp, ap, sir_textattr);
-    fg = Ch_VaArg(interp, ap, sir_textcolor);
-    bg = Ch_VaArg(interp, ap, sir_textcolor);
+    level  = Ch_VaArg(interp, ap, sir_level);
+    attr   = Ch_VaArg(interp, ap, sir_textattr);
+    fg     = Ch_VaArg(interp, ap, sir_textcolor);
+    bg     = Ch_VaArg(interp, ap, sir_textcolor);
     retval = sir_settextstyle(level, attr, fg, bg);
 
     Ch_VaEnd(interp, ap);
@@ -545,13 +575,13 @@ EXPORTCH bool
 sir_filelevels_chdl(void *varg) {
     ChInterp_t interp;
     ChVaList_t ap;
-    sirfileid id;
+    sirfileid  id;
     sir_levels levels;
-    bool retval;
+    bool       retval;
 
     Ch_VaStart(interp, ap, varg);
 
-    id = Ch_VaArg(interp, ap, sirfileid);
+    id     = Ch_VaArg(interp, ap, sirfileid);
     levels = Ch_VaArg(interp, ap, sir_levels);
     retval = sir_filelevels(id, levels);
 
@@ -562,17 +592,118 @@ sir_filelevels_chdl(void *varg) {
 
 EXPORTCH bool
 sir_fileopts_chdl(void *varg) {
-    ChInterp_t interp;
-    ChVaList_t ap;
-    sirfileid id;
+    ChInterp_t  interp;
+    ChVaList_t  ap;
+    sirfileid   id;
     sir_options opts;
-    bool retval;
+    bool        retval;
 
     Ch_VaStart(interp, ap, varg);
 
-    id = Ch_VaArg(interp, ap, sirfileid);
-    opts = Ch_VaArg(interp, ap, sir_options);
+    id     = Ch_VaArg(interp, ap, sirfileid);
+    opts   = Ch_VaArg(interp, ap, sir_options);
     retval = sir_fileopts(id, opts);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH char*
+_sir_strremove_chdl(void *varg) {
+    ChInterp_t  interp;
+    ChVaList_t  ap;
+    char*       str;
+    const char* sub;
+    char*       retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    str    = Ch_VaArg(interp, ap, char*);
+    sub    = Ch_VaArg(interp, ap, const char*);
+    retval = _sir_strremove(str, sub);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH char*
+_sir_strsqueeze_chdl(void *varg) {
+    ChInterp_t  interp;
+    ChVaList_t  ap;
+    char*       str;
+    char*       retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    str    = Ch_VaArg(interp, ap, char*);
+    retval = _sir_strsqueeze(str);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH char*
+_sir_strredact_chdl(void *varg) {
+    ChInterp_t  interp;
+    ChVaList_t  ap;
+    char*       str;
+    const char* sub;
+    char        c;
+    char*       retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    str    = Ch_VaArg(interp, ap, char*);
+    sub    = Ch_VaArg(interp, ap, const char*);
+    c      = Ch_VaArg(interp, ap, char);
+    retval = _sir_strredact(str, sub, c);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH char*
+_sir_strreplace_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    char*      str;
+    char       c;
+    char       n;
+    char*      retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    str    = Ch_VaArg(interp, ap, char*);
+    c      = Ch_VaArg(interp, ap, char);
+    n      = Ch_VaArg(interp, ap, char);
+    retval = _sir_strreplace(str, c, n);
+
+    Ch_VaEnd(interp, ap);
+
+    return retval;
+}
+
+EXPORTCH size_t
+_sir_strcreplace_chdl(void *varg) {
+    ChInterp_t interp;
+    ChVaList_t ap;
+    char*      str;
+    char       c;
+    char       n;
+    int32_t    max;
+    size_t     retval;
+
+    Ch_VaStart(interp, ap, varg);
+
+    str    = Ch_VaArg(interp, ap, char*);
+    c      = Ch_VaArg(interp, ap, char);
+    n      = Ch_VaArg(interp, ap, char);
+    max    = Ch_VaArg(interp, ap, int32_t);
+    retval = _sir_strcreplace(str, c, n, max);
 
     Ch_VaEnd(interp, ap);
 

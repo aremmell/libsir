@@ -1,7 +1,9 @@
 /*
- * sir_getversionstring.h
+ * SPDX-License-Identifier: MIT
  *
- * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * sir_getversionstring.chf
+ *
+ * Author:    Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -27,7 +29,7 @@
 
 const char*
 sir_getversionstring(void) {
-    void* fptr;
+    void*       fptr;
     const char* retval;
 
     fptr = dlsym(_Chsir_handle, "sir_getversionstring_chdl");
@@ -38,7 +40,7 @@ sir_getversionstring(void) {
         return NULL;
     }
 
-    dlrunfun(fptr, &retval, sir_getversionstring);
+    (void)dlrunfun(fptr, &retval, sir_getversionstring);
 
     return retval;
 }

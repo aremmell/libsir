@@ -1,8 +1,10 @@
 /*
+ * SPDX-License-Identifier: MIT
+ *
  * SIR_OUTPUT.chf
  * vim: filetype=ch:autoindent:expandtab
  *
- * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Author:    Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -30,10 +32,10 @@
 
 bool
 SIR_OUTPUT(const char* message...) {
-    void* fptr;
-    bool retval;
+    void*   fptr;
+    bool    retval;
     va_list ap;
-    char fmt_message[SIR_MAXOUTPUT];
+    char    fmt_message[SIR_MAXOUTPUT];
 
     va_start(ap, message);
 
@@ -59,7 +61,7 @@ SIR_OUTPUT(const char* message...) {
         return false;
     }
 
-    dlrunfun(fptr, &retval, SIR_OUTPUT, format);
+    (void)dlrunfun(fptr, &retval, SIR_OUTPUT, format);
 
     free(format);
 

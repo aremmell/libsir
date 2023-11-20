@@ -1,10 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-current Ryan M. Lederman
-
-# Use --build-arg URL="..." to override default
-
-# x86_64-pc-linux-uclibc.tar.bz2 is a toolchain built
-# using crosstool-ng with the included .config file.
+# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
 
 FROM registry.gitlab.com/libsir/libsir/base:latest
 
@@ -32,3 +27,5 @@ RUN cd ~user && \
     rm -f x86_64-pc-linux-uclibc/build.log.lz && cd
 
 USER 10000
+
+RUN printf '\n%s\n' "BUILD SUCCESS"

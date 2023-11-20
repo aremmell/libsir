@@ -1,7 +1,25 @@
 #!/usr/bin/env sh
 # shellcheck disable=SC2312,SC2317
+
 # SPDX-License-Identifier: MIT
-# SPDX-FileCopyrightText: Copyright (c) 2018-current Ryan M. Lederman
+# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+# the Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ################################################################################
 
@@ -266,11 +284,16 @@ test_extra()
             CXX="${CCACHE:-env} clang++"
             CFLAGS="-DSIR_LINT=1
                     -Werror
-                    -Wno-unknown-warning-option
                     -Wassign-enum
                     -Wbad-function-cast
                     -Wconversion
                     -Wdisabled-macro-expansion
+                    -Wdocumentation
+                    -Wdocumentation-deprecated-sync
+                    -Wdocumentation-html
+                    -Wdocumentation-pedantic
+                    -Wdocumentation-unknown-command
+                    -Wdollar-in-identifier-extension
                     -Wdouble-promotion
                     -Wextra-semi-stmt
                     -Wformat=2
@@ -280,9 +303,11 @@ test_extra()
                     -Wmissing-variable-declarations
                     -Wno-sign-conversion
                     -Wno-string-conversion
+                    -Wno-unknown-warning-option
                     -Wshift-overflow
                     -Wstring-conversion
-                    -Wswitch-enum"
+                    -Wswitch-enum
+                    -Wvla"
             ${MAKE:-make} all tests++
                 -j "${CPUS:-1}" ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
       printf '%s\n' ' && true' >> ./.extra.sh; ret="${?}"
@@ -350,7 +375,8 @@ test_gccextra()
                     -Wmissing-prototypes
                     -Wno-sign-conversion
                     -Wno-string-conversion
-                    -Wswitch-enum"
+                    -Wswitch-enum
+                    -Wvla"
             ${MAKE:-make} all tests++
                 -j 1 ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
       printf '%s\n' ' && true' >> ./.extra.sh; ret="${?}"
@@ -463,7 +489,8 @@ test_cppcheck()
       mkdir -p cppcheck; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       # shellcheck disable=SC2046,SC2155
-      export EXTRA_INCLUDES="$(gcc -Wp,-v -x c++ - -fsyntax-only < /dev/null 2>&1 | grep '^ /' | sed 's/^ /-I/' | awk '{ print $1 }')" || \
+      export EXTRA_INCLUDES="$(gcc -Wp,-v -x c++ - -fsyntax-only < /dev/null 2>&1 | \
+                              grep '^ /' | sed 's/^ /-I/' | awk '{ print $1 }')" || \
           export EXTRA_INCLUDES="-I/usr/include"
       # shellcheck disable=SC2086,SC2046
       cppcheck \

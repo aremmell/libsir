@@ -2,6 +2,7 @@
  * sirhelpers.c
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -289,10 +290,12 @@ int _sir_fopen(FILE* restrict* restrict streamptr, const char* restrict filename
 
 bool _sir_getchar(char* input) {
 #if defined(__WIN__)
-# if defined(__EMBARCADEROC__)
-     *input = (char)getch();
+# if defined(__EMBARCADEROC__) && (__clang_major__ < 15)
+    if (input)
+        *input = (char)getch();
 # else
-     *input = (char)_getch();
+    if (input)
+        *input = (char)_getch();
 # endif
      return true;
 #else /* !__WIN__ */
@@ -314,4 +317,91 @@ bool _sir_getchar(char* input) {
     return 0 == tcsetattr(STDIN_FILENO, TCSANOW, &cur) ? true
         : _sir_handleerr(errno);
 #endif
+}
+
+char* _sir_strremove(char *str, const char *sub) {
+    if (!str)
+        return NULL;
+
+    if (!sub)
+        return str;
+
+    const char* p;
+    char* r;
+    char* q;
+
+    if (*sub && (q = r = strstr(str, sub)) != NULL) {
+        size_t len = strnlen(sub, strlen(str));
+
+        while ((r = strstr(p = r + len, sub)) != NULL)
+            while (p < r)
+                *q++ = *p++;
+
+        while ((*q++ = *p++) != '\0');
+    }
+
+    return str;
+}
+
+char* _sir_strsqueeze(char *str) {
+    if (!str)
+        return NULL;
+
+    unsigned long j;
+
+    for (unsigned long i = j = 0; str[i]; ++i)
+        if ((i > 0 && !isspace((unsigned char)(str[i - 1])))
+                   || !isspace((unsigned char)(str[i])))
+            str[j++] = str[i];
+
+    str[j] = '\0';
+
+    return str;
+}
+
+char* _sir_strredact(char *str, const char *sub, const char c) {
+    if (!str)
+        return NULL;
+
+    if (!sub)
+        return str;
+
+    char *p = strstr(str, sub);
+
+    if (!c || !p)
+        return str;
+
+    (void)memset(p, c, strnlen(sub, strlen(str)));
+
+    return _sir_strredact(str, sub, c);
+}
+
+char* _sir_strreplace(char *str, const char c, const char n) {
+    if (!str)
+        return NULL;
+
+    char *i = str;
+
+    if (!c || !n)
+        return str;
+
+    while ((i = strchr(i, c)) != NULL)
+        *i++ = n;
+
+    return str;
+}
+
+size_t _sir_strcreplace(char *str, const char c, const char n, int32_t max) {
+    char*  i   = str;
+    size_t cnt = 0;
+
+    if (!str || !c || !n || !max)
+        return cnt;
+
+    while (cnt < (size_t)max && (i = strchr(i, c)) != NULL) {
+        *i++ = n;
+        cnt++;
+    }
+
+    return cnt;
 }

@@ -3,9 +3,10 @@
  *
  * chsir_basename.chf
  *
- * basename from: $OpenBSD: basename.c,v 1.17 2020/10/20 19:30:14 naddy Exp $
+ * basename from: $OpenBSD: basename.c,v 1.17  2020/10/20 19:30:14 naddy Exp $
  *
  * Copyright (c) 1997, 2004 Todd C. Miller <millert@openbsd.org>
+ * Copyright (c) 2023 Jeffrey H. Johnson <trnsz@pobox.com>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -24,11 +25,12 @@
 #include <limits.h>
 #include <string.h>
 
-char *
+char*
 chsir_basename(char *path) {
     static char bname[PATH_MAX];
-    size_t len;
-    const char *endp, *startp;
+    size_t      len;
+    const char* endp;
+    const char* startp;
 
     if (path == NULL || *path == '\0') {
         bname[0] = '.';
