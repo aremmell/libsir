@@ -2,6 +2,7 @@
  * version.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -35,7 +36,7 @@
 # define SIR_VERSION_MINOR 2
 
 /** The current libsir patch version component. */
-# define SIR_VERSION_PATCH 3
+# define SIR_VERSION_PATCH 4
 
 /** 1 if this is a release version of libsir, 0 otherwise. */
 # define SIR_VERSION_IS_RELEASE 0

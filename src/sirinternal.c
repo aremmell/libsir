@@ -2,6 +2,7 @@
  * sirinternal.c
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -33,6 +34,10 @@
 #include "sir/mutex.h"
 
 #if defined(__WIN__)
+# if defined(SIR_EVENTLOG_ENABLED)
+#  include "sir/wineventlog.h"
+#  pragma comment(lib, "advapi32.lib")
+# endif
 # if defined(__EMBARCADEROC__) && defined(_WIN64)
 #  pragma comment(lib, "ws2_32.a")
 # else
@@ -68,7 +73,7 @@ bool _sir_makeinit(sirinit* si) {
     bool retval = _sir_validptr(si);
 
     if (retval) {
-        memset(si, 0, sizeof(sirinit));
+        (void)memset(si, 0, sizeof(sirinit));
 
         si->d_stdout.opts   = SIRO_DEFAULT;
         si->d_stdout.levels = SIRL_DEFAULT;
@@ -128,9 +133,7 @@ bool _sir_init(sirinit* si) {
 
     _SIR_LOCK_SECTION(sirconfig, _cfg, SIRMI_CONFIG, false);
 
-#if !defined(__WIN__)
-    tzset();
-#endif
+    bool init = true;
 
 #if defined(__HAVE_ATOMIC_H__)
     atomic_store(&_sir_magic, _SIR_MAGIC);
@@ -142,15 +145,22 @@ bool _sir_init(sirinit* si) {
 
 #if defined(__WIN__)
     _sir_initialize_stdio();
+#else
+    tzset();
 #endif
 
-    _sir_setcolormode(SIRCM_16);
+    if (!_sir_setcolormode(SIRCM_16)) {
+        init = false;
+        _sir_selflog("error: failed to set color mode!");
+    }
 
-    if (!_sir_resettextstyles())
+    if (!_sir_resettextstyles()) {
+        init = false;
         _sir_selflog("error: failed to reset text styles!");
+    }
 
-    memset(&_cfg->state, 0, sizeof(_cfg->state));
-    memcpy(&_cfg->si, si, sizeof(sirinit));
+    (void)memset(&_cfg->state, 0, sizeof(_cfg->state));
+    (void)memcpy(&_cfg->si, si, sizeof(sirinit));
 
     /* forcibly null-terminate the process name. */
     _cfg->si.name[SIR_MAXNAME - 1] = '\0';
@@ -167,13 +177,17 @@ bool _sir_init(sirinit* si) {
 
     if (_cfg->si.d_syslog.levels != SIRL_NONE &&
         !_sir_syslog_init(_cfg->si.name, &_cfg->si.d_syslog)) {
+        init = false;
         _sir_selflog("failed to initialize system logger!");
     }
 #endif
 
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
 
-    return true;
+    _sir_selflog("initialized %s", (init ? "successfully" : "with errors"));
+
+    SIR_ASSERT(init);
+    return init;
 }
 
 bool _sir_cleanup(void) {
@@ -220,16 +234,16 @@ bool _sir_cleanup(void) {
 
     _sir_reset_tls();
 
-    memset(_cfg, 0, sizeof(sirconfig));
+    (void)memset(_cfg, 0, sizeof(sirconfig));
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
 
-    _sir_selflog("cleanup: %s", (cleanup ? "successful" : "with errors"));
+    _sir_selflog("cleaned up %s", (cleanup ? "successfully" : "with errors"));
 
     SIR_ASSERT(cleanup);
     return cleanup;
 }
 
-bool _sir_sanity(void) {
+bool _sir_isinitialized(void) {
 #if defined(__HAVE_ATOMIC_H__)
     if (_SIR_MAGIC == atomic_load(&_sir_magic))
         return true;
@@ -237,6 +251,12 @@ bool _sir_sanity(void) {
     if (_SIR_MAGIC == _sir_magic)
         return true;
 #endif
+    return false;
+}
+
+bool _sir_sanity(void) {
+    if (_sir_isinitialized())
+        return true;
     return _sir_seterror(_SIR_E_NOTREADY);
 }
 
@@ -248,9 +268,17 @@ bool _sir_init_sanity(const sirinit* si) {
     _sir_eqland(levelcheck, _sir_validlevels(si->d_stdout.levels));
     _sir_eqland(levelcheck, _sir_validlevels(si->d_stderr.levels));
 
+    bool regcheck = true;
+    _sir_eqland(regcheck, SIRL_NONE == si->d_stdout.levels);
+    _sir_eqland(regcheck, SIRL_NONE == si->d_stderr.levels);
+
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     _sir_eqland(levelcheck, _sir_validlevels(si->d_syslog.levels));
+    _sir_eqland(regcheck, SIRL_NONE == si->d_syslog.levels);
 #endif
+
+    if (regcheck)
+        _sir_selflog("warning: no level registrations set!");
 
     bool optscheck = true;
     _sir_eqland(optscheck, _sir_validopts(si->d_stdout.opts));
@@ -265,7 +293,7 @@ bool _sir_init_sanity(const sirinit* si) {
 
 void _sir_reset_tls(void) {
     _sir_resetstr(_sir_tid);
-    memset(&_sir_last_thrd_chk, 0, sizeof(sir_time));
+    (void)memset(&_sir_last_thrd_chk, 0, sizeof(sir_time));
     _sir_last_timestamp = 0;
     _sir_reset_tls_error();
 }
@@ -333,7 +361,7 @@ bool _sir_syslogid(sirinit* si, const sir_update_config_data* data) {
     if (!cur_valid || 0 != strncmp(si->d_syslog.identity, data->sl_identity, SIR_MAX_SYSLOG_ID)) {
         _sir_selflog("updating %s identity from '%s' to '%s'", SIR_DESTNAME_SYSLOG,
             si->d_syslog.identity, data->sl_identity);
-        _sir_strncpy(si->d_syslog.identity, SIR_MAX_SYSLOG_ID, data->sl_identity,
+        (void)_sir_strncpy(si->d_syslog.identity, SIR_MAX_SYSLOG_ID, data->sl_identity,
             strnlen(data->sl_identity, SIR_MAX_SYSLOG_ID));
     } else {
         _sir_selflog("skipped superfluous update of %s identity: '%s'", SIR_DESTNAME_SYSLOG,
@@ -353,7 +381,7 @@ bool _sir_syslogcat(sirinit* si, const sir_update_config_data* data) {
     if (!cur_valid || 0 != strncmp(si->d_syslog.category, data->sl_category, SIR_MAX_SYSLOG_CAT)) {
         _sir_selflog("updating %s category from '%s' to '%s'", SIR_DESTNAME_SYSLOG,
             si->d_syslog.category, data->sl_category);
-        _sir_strncpy(si->d_syslog.category, SIR_MAX_SYSLOG_CAT, data->sl_category,
+        (void)_sir_strncpy(si->d_syslog.category, SIR_MAX_SYSLOG_CAT, data->sl_category,
             strnlen(data->sl_category, SIR_MAX_SYSLOG_CAT));
     } else {
         _sir_selflog("skipped superfluous update of %s category: '%s'", SIR_DESTNAME_SYSLOG,
@@ -425,7 +453,7 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
             break;
         // GCOVR_EXCL_START
         default: /* this should never happen. */
-            SIR_ASSERT(mid);
+            SIR_ASSERT(false);
             tmpm   = NULL;
             tmpsec = NULL;
             break;
@@ -501,7 +529,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     /* from time to time, update the host name in the config, just in case. */
     time_t now_sec = -1;
     if (-1 != time(&now_sec) &&
-        (now_sec - _cfg->state.last_hname_chk) > SIR_HNAME_CHK_INTERVAL) { //-V522
+        (now_sec - _cfg->state.last_hname_chk) > SIR_HNAME_CHK_INTERVAL) {
         _sir_selflog("updating hostname...");
         if (!_sir_gethostname(_cfg->state.hostname)) {
             _sir_selflog("error: failed to get hostname!");
@@ -554,7 +582,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     }
 
     sirconfig cfg;
-    memcpy(&cfg, _cfg, sizeof(sirconfig));
+    (void)memcpy(&cfg, _cfg, sizeof(sirconfig));
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
 
     buf.timestamp = cfg.state.timestamp;
@@ -585,7 +613,8 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     bool update_last_props = true;
     uint64_t hash          = 0ULL;
 
-    if (cfg.state.last.prefix[0] == buf.message[0]  &&
+    if (cfg.state.last.level == level &&
+        cfg.state.last.prefix[0] == buf.message[0]  &&
         cfg.state.last.prefix[1] == buf.message[1]) {
         hash  = FNV64_1a(buf.message);
         match = cfg.state.last.hash == hash;
@@ -605,8 +634,8 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
             cfg.state.last.squelch = true;
 
             _sir_selflog("hit squelch threshold of %zu; setting new threshold"
-                         " to %zu (factor: %d)",
-                old_threshold, cfg.state.last.threshold, SIR_SQUELCH_BACKOFF_FACTOR);
+                         " to %zu (factor: %d)", old_threshold,
+                         cfg.state.last.threshold, SIR_SQUELCH_BACKOFF_FACTOR);
 
             (void)snprintf(buf.message, SIR_MAXMESSAGE, SIR_SQUELCH_MSG_FORMAT, old_threshold);
         } else if (cfg.state.last.squelch) {
@@ -626,6 +655,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     _cfg->state.last.squelch = cfg.state.last.squelch;
 
     if (update_last_props) {
+        _cfg->state.last.level     = level;
         _cfg->state.last.hash      = hash;
         _cfg->state.last.prefix[0] = buf.message[0];
         _cfg->state.last.prefix[1] = buf.message[1];
@@ -713,37 +743,37 @@ const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
         _sir_resetstr(buf->output);
 
         if (styling)
-            _sir_strncat(buf->output, SIR_MAXOUTPUT, buf->style, SIR_MAXSTYLE);
+            (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, buf->style, SIR_MAXSTYLE);
 
         if (!_sir_bittest(opts, SIRO_NOTIME)) {
-            _sir_strncat(buf->output, SIR_MAXOUTPUT, buf->timestamp, SIR_MAXTIME);
+            (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, buf->timestamp, SIR_MAXTIME);
             first = false;
 
 #if defined(SIR_MSEC_TIMER)
             if (!_sir_bittest(opts, SIRO_NOMSEC))
-                _sir_strncat(buf->output, SIR_MAXOUTPUT, buf->msec, SIR_MAXMSEC);
+                (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, buf->msec, SIR_MAXMSEC);
 #endif
         }
 
         if (!_sir_bittest(opts, SIRO_NOHOST) && _sir_validstrnofail(buf->hostname)) {
             if (!first)
-                _sir_strncat(buf->output, SIR_MAXOUTPUT, " ", 1);
-            _sir_strncat(buf->output, SIR_MAXOUTPUT, buf->hostname, SIR_MAXHOST);
+                (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, " ", 1);
+            (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, buf->hostname, SIR_MAXHOST);
             first = false;
         }
 
         if (!_sir_bittest(opts, SIRO_NOLEVEL)) {
             if (!first)
-                _sir_strncat(buf->output, SIR_MAXOUTPUT, " ", 1);
-            _sir_strncat(buf->output, SIR_MAXOUTPUT, buf->level, SIR_MAXLEVEL);
+                (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, " ", 1);
+            (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, buf->level, SIR_MAXLEVEL);
             first = false;
         }
 
         bool name = false;
         if (!_sir_bittest(opts, SIRO_NONAME) && _sir_validstrnofail(buf->name)) {
             if (!first)
-                _sir_strncat(buf->output, SIR_MAXOUTPUT, " ", 1);
-            _sir_strncat(buf->output, SIR_MAXOUTPUT, buf->name, SIR_MAXNAME);
+                (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, " ", 1);
+            (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, buf->name, SIR_MAXNAME);
             first = false;
             name  = true;
         }
@@ -753,35 +783,34 @@ const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
 
         if (wantpid || wanttid) {
             if (name)
-                _sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_PIDPREFIX, 1);
+                (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_PIDPREFIX, 1);
             else if (!first)
-                _sir_strncat(buf->output, SIR_MAXOUTPUT, " ", 1);
+                (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, " ", 1);
 
             if (wantpid)
-                _sir_strncat(buf->output, SIR_MAXOUTPUT, buf->pid, SIR_MAXPID);
+                (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, buf->pid, SIR_MAXPID);
 
             if (wanttid) {
                 if (wantpid)
-                    _sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_PIDSEPARATOR, 1);
-                _sir_strncat(buf->output, SIR_MAXOUTPUT, buf->tid, SIR_MAXPID);
+                    (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_PIDSEPARATOR, 1);
+                (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, buf->tid, SIR_MAXPID);
             }
 
             if (name)
-                _sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_PIDSUFFIX, 1);
+                (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_PIDSUFFIX, 1);
 
-            if (first)
-                first = false;
+            first = false;
         }
 
         if (!first)
-            _sir_strncat(buf->output, SIR_MAXOUTPUT, ": ", 2);
+            (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, ": ", 2);
 
-        _sir_strncat(buf->output, SIR_MAXOUTPUT, buf->message, SIR_MAXMESSAGE);
+        (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, buf->message, SIR_MAXMESSAGE);
 
         if (styling)
-            _sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_ESC_RST, SIR_MAXSTYLE);
+            (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_ESC_RST, SIR_MAXSTYLE);
 
-        _sir_strncat(buf->output, SIR_MAXOUTPUT, "\n", 1);
+        (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, "\n", 1);
 
         buf->output_len = strnlen(buf->output, SIR_MAXOUTPUT);
 
@@ -801,17 +830,17 @@ bool _sir_syslog_init(const char* name, sir_syslog_dest* ctx) {
         _sir_selflog("ctx->identity is no good; trying name");
         if (_sir_validstrnofail(name)) {
             _sir_selflog("using name");
-            _sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, name, strnlen(name, SIR_MAX_SYSLOG_ID));
+            (void)_sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, name, strnlen(name, SIR_MAX_SYSLOG_ID));
         } else {
             _sir_selflog("name is no good; trying filename");
             char* appbasename = _sir_getappbasename();
             if (_sir_validstrnofail(appbasename)) {
                 _sir_selflog("filename is good: %s", appbasename);
-                _sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, appbasename,
+                (void)_sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, appbasename,
                     strnlen(appbasename, SIR_MAX_SYSLOG_ID));
             } else {
                 _sir_selflog("filename no good; using fallback");
-                _sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, SIR_FALLBACK_SYSLOG_ID,
+                (void)_sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, SIR_FALLBACK_SYSLOG_ID,
                     strnlen(SIR_FALLBACK_SYSLOG_ID, SIR_MAX_SYSLOG_ID));
             }
             _sir_safefree(&appbasename);
@@ -823,7 +852,7 @@ bool _sir_syslog_init(const char* name, sir_syslog_dest* ctx) {
     /* category */
     if (!_sir_validstrnofail(ctx->category)) {
         _sir_selflog("category not set; using fallback");
-        _sir_strncpy(ctx->category, SIR_MAX_SYSLOG_CAT, SIR_FALLBACK_SYSLOG_CAT,
+        (void)_sir_strncpy(ctx->category, SIR_MAX_SYSLOG_CAT, SIR_FALLBACK_SYSLOG_CAT,
             strnlen(SIR_FALLBACK_SYSLOG_CAT, SIR_MAX_SYSLOG_CAT));
     } else {
         _sir_selflog("already have category");
@@ -864,6 +893,16 @@ bool _sir_syslog_open(sir_syslog_dest* ctx) {
 
     openlog(ctx->identity, logopt, facility);
     _sir_selflog("opened syslog('%s', %x, %x)", ctx->identity, logopt, facility);
+# elif defined(SIR_EVENTLOG_ENABLED)
+    DWORD reg = EventRegister(&SIR_EVENTLOG_GUID, NULL, NULL,
+        (PREGHANDLE)&ctx->_state.logger);
+    if (ERROR_SUCCESS == reg) {
+        _sir_selflog("opened eventlog('%s')", ctx->identity);
+    } else {
+        /* not fatal; logging calls will just silently fail. */
+        _sir_selflog("failed to open eventlog! error: %lu", reg);
+        (void)_sir_handlewin32err(reg);
+    }
 # endif
 
     _sir_setbitshigh(&ctx->_state.mask, SIRSL_IS_OPEN);
@@ -893,7 +932,7 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, const sir_syslog_dest
         os_log_info((os_log_t)ctx->_state.logger, SIR_OS_LOG_FORMAT, buf->message);
     else if (SIRL_WARN == level || SIRL_ERROR == level)
         os_log_error((os_log_t)ctx->_state.logger, SIR_OS_LOG_FORMAT, buf->message);
-    else if (SIRL_ALERT == level || SIRL_CRIT == level || SIRL_EMERG == level)
+    else if (SIRL_CRIT == level || SIRL_ALERT == level || SIRL_EMERG == level)
         os_log_fault((os_log_t)ctx->_state.logger, SIR_OS_LOG_FORMAT, buf->message);
 
     return true;
@@ -917,6 +956,55 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, const sir_syslog_dest
 
     syslog(syslog_level, "%s", buf->message);
     return true;
+# elif defined(SIR_EVENTLOG_ENABLED)
+    const EVENT_DESCRIPTOR* edesc = NULL;
+    if (SIRL_DEBUG == level)
+        edesc = &SIR_EVT_DEBUG;
+    else if (SIRL_INFO == level || SIRL_NOTICE == level)
+        edesc = &SIR_EVT_INFO;
+    else if (SIRL_WARN == level)
+        edesc = &SIR_EVT_WARNING;
+    else if (SIRL_ERROR == level)
+        edesc = &SIR_EVT_ERROR;
+    else if (SIRL_CRIT == level || SIRL_ALERT == level || SIRL_EMERG == level)
+        edesc = &SIR_EVT_CRITICAL;
+
+    SIR_ASSERT(NULL != edesc);
+    if (NULL == edesc)
+        return _sir_seterror(_SIR_E_INTERNAL);
+
+#  if defined(__HAVE_STDC_SECURE_OR_EXT1__)
+    size_t msg_len = strnlen_s(buf->message, SIR_MAXMESSAGE) + 1;
+#  else
+    size_t msg_len = strnlen(buf->message, SIR_MAXMESSAGE) + 1;
+#  endif
+    int wlen = MultiByteToWideChar(CP_UTF8, 0UL, buf->message, (int)msg_len, NULL, 0);
+    if (wlen <= 0)
+        return _sir_handlewin32err(GetLastError());
+
+    DWORD write = 1UL;
+    wchar_t* wmsg = calloc(sizeof(wchar_t), wlen);
+    if (NULL != wmsg) {
+        int conv = MultiByteToWideChar(CP_UTF8, 0UL, buf->message, (int)msg_len, wmsg, wlen);
+        if (conv > 0) {
+            EVENT_DATA_DESCRIPTOR eddesc = {0};
+            EventDataDescCreate(&eddesc, wmsg, (ULONG)(wlen * sizeof(wchar_t)));
+
+            write = EventWrite((REGHANDLE)ctx->_state.logger, edesc, 1UL, &eddesc);
+            if (ERROR_SUCCESS != write) {
+                _sir_selflog("failed to write eventlog! error: %lu", write);
+                (void)_sir_handlewin32err(write);
+            }
+        }
+        _sir_safefree(&wmsg);
+    }
+
+    return ERROR_SUCCESS == write;
+# else
+    SIR_UNUSED(level);
+    SIR_UNUSED(buf);
+    SIR_UNUSED(ctx);
+    return false;
 # endif
 #else
     SIR_UNUSED(level);
@@ -944,34 +1032,35 @@ bool _sir_syslog_updated(sirinit* si, const sir_update_config_data* data) {
                      levels, options, category, identity, is_init, is_open);
 
         bool must_init = false;
-
 # if defined(SIR_OS_LOG_ENABLED)
-        /*
-         * for os_log, if initialized and open already, only need to reconfigure
-         * if identity or category changed.
-         */
+        /* for os_log, if initialized and open already, only need to reconfigure
+         * if identity or category changed. */
         must_init = (!is_init || !is_open) || (identity || category);
 # elif defined(SIR_SYSLOG_ENABLED)
-        /*
-         * for os_log, if initialized and open already, only need to reconfigure
-         * if identity or options changed.
-         */
+        /* for syslog, if initialized and open already, only need to reconfigure
+         * if identity or options changed. */
         must_init = (!is_init || !is_open) || (identity || options);
+# elif defined(SIR_EVENTLOG_ENABLED)
+        /* for event log, if initialized and open already, only need to reconfigure
+         * if identity changed. */
+        must_init = (!is_init || !is_open) || identity;
 # endif
         bool init = true;
         if (must_init) {
+            if (is_open) /* close first; open will fail otherwise. */
+                init = _sir_syslog_close(&si->d_syslog);
+
             _sir_selflog("re-init...");
-            init = _sir_syslog_init(si->name, &si->d_syslog);
+            _sir_eqland(init, _sir_syslog_init(si->name, &si->d_syslog));
             _sir_selflog("re-init %s", init ? "succeeded" : "failed");
         } else {
             _sir_selflog("no re-init necessary");
         }
 
         return init;
-    } else {
-        _sir_selflog("BUG: called without 'updated' flag set!");
-        return false;
     }
+
+    return false;
 #else
     SIR_UNUSED(si);
     SIR_UNUSED(data);
@@ -990,7 +1079,7 @@ bool _sir_syslog_close(sir_syslog_dest* ctx) {
     }
 
 # if defined(SIR_OS_LOG_ENABLED)
-    /* evidently, you don't need to close the handle returned from os_log_create(), and
+    /* Evidently, you don't need to close the handle returned from os_log_create(), and
      * if you make that call again, you'll get the same cached value. so let's keep the
      * value we've got in the global context. */
     _sir_setbitslow(&ctx->_state.mask, SIRSL_IS_OPEN);
@@ -1001,6 +1090,18 @@ bool _sir_syslog_close(sir_syslog_dest* ctx) {
     _sir_setbitslow(&ctx->_state.mask, SIRSL_IS_OPEN);
     _sir_selflog("closed log");
     return true;
+# elif defined(SIR_EVENTLOG_ENABLED)
+    ULONG unreg = EventUnregister((REGHANDLE)ctx->_state.logger);
+    _sir_setbitslow(&ctx->_state.mask, SIRSL_IS_OPEN);
+    if (ERROR_SUCCESS == unreg)
+        _sir_selflog("closed log");
+    else
+        _sir_selflog("error: failed to close log");
+
+    return ERROR_SUCCESS == unreg;
+# else
+    SIR_UNUSED(ctx);
+    return false;
 # endif
 #else
     SIR_UNUSED(ctx);
@@ -1082,7 +1183,7 @@ bool _sir_clock_gettime(int clock, time_t* tbuf, long* msecbuf) {
         }
 #else
         SIR_UNUSED(clock);
-        time(tbuf);
+        (void)time(tbuf);
         if (msecbuf)
             *msecbuf = 0L;
 #endif
@@ -1145,8 +1246,13 @@ pid_t _sir_gettid(void) {
 #elif defined(__OpenBSD__)
     tid = (pid_t)getthrid();
 #elif defined(__SOLARIS__) || defined(__NetBSD__) || defined(__HURD__) || \
-      defined(__DragonFly__) || defined(__CYGWIN__) || defined(_AIX)
+      defined(__DragonFly__) || defined(__CYGWIN__) || defined(_AIX) || \
+      defined(__EMSCRIPTEN__)
+# if defined(__CYGWIN__)
+    tid = (pid_t)(uintptr_t)pthread_self();
+# else
     tid = (pid_t)pthread_self();
+# endif
 #elif defined(__HAIKU__)
     tid = get_pthread_thread_id(pthread_self());
 #elif defined(__linux__) || defined(__serenity__)
@@ -1190,7 +1296,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     bool success = true;
 # if defined(__HAVE_STDC_SECURE_OR_EXT1__)
     size_t wlen = wcsnlen_s(wname, SIR_MAXPID);
-# elif defined(__EMBARCADEROC__)
+# elif defined(__EMBARCADEROC__) && (__clang_major__ < 15)
     size_t wlen = wcslen(wname);
 # else
     size_t wlen = wcsnlen(wname, SIR_MAXPID);
@@ -1205,7 +1311,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     (void)LocalFree(wname);
     return success && _sir_validstrnofail(name);
 #else
-# if !defined(_AIX) && !defined(__HURD__) && !defined(SUNLINT)
+# if !defined(SUNLINT) && !defined(_AIX) && !defined(__HURD__)
 #  pragma message("unable to determine how to get a thread name")
 # endif
     SIR_UNUSED(name);
@@ -1253,7 +1359,7 @@ bool _sir_setthreadname(const char* name) {
     HRESULT hr = SetThreadDescription(GetCurrentThread(), buf);
     return FAILED(hr) ? _sir_handlewin32err(hr) : true;
 #else
-# if !defined(SUNLINT)
+# if !defined(SUNLINT) && !defined(_AIX)
 #  pragma message("unable to determine how to set a thread name")
 # endif
     SIR_UNUSED(name);
@@ -1280,4 +1386,133 @@ bool _sir_gethostname(char name[SIR_MAXHOST]) {
     WSACleanup();
     return true;
 #endif /* !__WIN__ */
+}
+
+long __sir_nprocs(bool test_mode) {
+    long nprocs = 0;
+
+#if defined(_AIX)
+    nprocs = (long)_system_configuration.ncpus;
+    _sir_selflog("AIX _system_configuration.ncpus reports %ld processor(s)", nprocs);
+#endif
+
+#if defined(__WIN__)
+    SYSTEM_INFO system_info;
+    ZeroMemory(&system_info, sizeof(system_info));
+    GetSystemInfo(&system_info);
+    nprocs = (long)system_info.dwNumberOfProcessors;
+    _sir_selflog("Windows GetSystemInfo() reports %ld processor(s)", nprocs);
+#endif
+
+#if defined(__HAIKU__)
+    system_info hinfo;
+    get_system_info(&hinfo);
+    nprocs = (long)hinfo.cpu_count;
+    _sir_selflog("Haiku get_system_info() reports %ld processor(s)", nprocs);
+#endif
+
+#if defined(SC_NPROCESSORS_ONLN)
+# define SIR_SC_NPROCESSORS SC_NPROCESSORS_ONLN
+#elif defined(_SC_NPROCESSORS_ONLN)
+# define SIR_SC_NPROCESSORS _SC_NPROCESSORS_ONLN
+#endif
+#if defined(SIR_SC_NPROCESSORS)
+    long tprocs = sysconf(SIR_SC_NPROCESSORS);
+    _sir_selflog("sysconf() reports %ld processor(s)", tprocs);
+    if (tprocs > nprocs)
+        nprocs = tprocs;
+#endif
+
+#if defined(__linux__) && defined(CPU_COUNT) && !defined(__ANDROID__) && !defined(__UCLIBC__)
+    long ctprocs;
+    cpu_set_t p_aff;
+    memset(&p_aff, 0, sizeof(p_aff));
+    if (sched_getaffinity(0, sizeof(p_aff), &p_aff)) {
+        ctprocs = 0;
+    } else {
+        ctprocs = CPU_COUNT(&p_aff);
+        _sir_selflog("sched_getaffinity() reports %ld processor(s)", ctprocs);
+    }
+    if (ctprocs > nprocs)
+        nprocs = ctprocs;
+#endif
+
+#if defined(CTL_HW) && defined(HW_AVAILCPU)
+    int ntprocs = 0;
+    size_t sntprocs = sizeof(ntprocs);
+    if (sysctl ((int[2]) {CTL_HW, HW_AVAILCPU}, 2, &ntprocs, &sntprocs, NULL, 0)) {
+        ntprocs = 0;
+    } else {
+        _sir_selflog("sysctl(CTL_HW, HW_AVAILCPU) reports %d processor(s)", ntprocs);
+        if (ntprocs > nprocs)
+            nprocs = (long)ntprocs;
+    }
+#elif defined(CTL_HW) && defined(HW_NCPU)
+    int ntprocs = 0;
+    size_t sntprocs = sizeof(ntprocs);
+    if (sysctl ((int[2]) {CTL_HW, HW_NCPU}, 2, &ntprocs, &sntprocs, NULL, 0)) {
+        ntprocs = 0;
+    } else {
+        _sir_selflog("sysctl(CTL_HW, HW_NCPU) reports %d processor(s)", ntprocs);
+        if (ntprocs > nprocs)
+            nprocs = (long)ntprocs;
+    }
+#elif defined(CTL_HW) && defined(HW_NCPUFOUND)
+    int ntprocs = 0;
+    size_t sntprocs = sizeof(ntprocs);
+    if (sysctl ((int[2]) {CTL_HW, HW_NCPUFOUND}, 2, &ntprocs, &sntprocs, NULL, 0)) {
+        ntprocs = 0;
+    } else {
+        _sir_selflog("sysctl(CTL_HW, HW_NCPUFOUND) reports %d processor(s)", ntprocs);
+        if (ntprocs > nprocs)
+            nprocs = (long)ntprocs;
+    }
+#endif
+
+#if defined(__MACOS__)
+    int antprocs = 0;
+    size_t asntprocs = sizeof(antprocs);
+    if (sysctlbyname("hw.ncpu", &antprocs, &asntprocs, NULL, 0)) {
+        antprocs = 0;
+    } else {
+        _sir_selflog("sysctlbyname(hw.ncpu) reports %d processor(s)", antprocs);
+        if (antprocs > nprocs)
+            nprocs = (long)antprocs;
+    }
+#endif
+
+#if defined(__QNX__) || defined(__QNXNTO__)
+    long qtprocs = (long)_syspage_ptr->num_cpu;
+    _sir_selflog("QNX _syspage_ptr->num_cpu reports %ld processor(s)", qtprocs);
+    if (qtprocs > nprocs)
+        nprocs = qtprocs;
+#endif
+
+#if defined(__VXWORKS__)
+# if defined(_WRS_CONFIG_SMP)
+    long vtprocs = 0;
+    cpuset_t vset = vxCpuEnabledGet();
+    for (int count = 0; count < 512 && !CPUSET_ISZERO(vset); ++count) {
+        if (CPUSET_ISSET(vset, count)) {
+            CPUSET_CLR(vset, count);
+            vtprocs++;
+        }
+    }
+    _sir_selflog("VxWorks vxCpuEnabledGet() reports %ld processor(s)", vtprocs);
+# else
+    long vtprocs = 1;
+    _sir_selflog("Uniprocessor system or VxWorks SMP is not enabled");
+# endif
+    if (vtprocs > nprocs)
+        nprocs = vtprocs;
+#endif
+
+    if (nprocs < 1) {
+        _sir_selflog(BRED("Failed to determine processor count!"));
+        if (!test_mode)
+            nprocs = 1;
+    }
+
+    _sir_selflog("Detected %ld processor(s)", nprocs);
+    return nprocs;
 }

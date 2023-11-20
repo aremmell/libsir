@@ -2,6 +2,7 @@
  * internal.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -30,6 +31,10 @@
 # include "sir/maps.h"
 # include "sir/errors.h"
 
+# if defined(__cplusplus)
+extern "C" {
+# endif
+
 /**
  * Initializes a ::sirinit structure suitable to pass to ::sir_init
  * without modification.
@@ -43,6 +48,12 @@ bool _sir_init(sirinit* si);
 bool _sir_cleanup(void);
 
 /** Evaluates whether or not libsir has been initialized. */
+bool _sir_isinitialized(void);
+
+/**
+ * Evaluates whether or not libsir has been initialized, and sets the last
+ * error to SIR_E_NOTREADY if not initialized.
+ */
 bool _sir_sanity(void);
 
 /** Validates the configuration passed to ::sir_init. */
@@ -176,5 +187,14 @@ bool _sir_setthreadname(const char* name);
 
 /** Retrieves the hostname of this machine. */
 bool _sir_gethostname(char name[SIR_MAXHOST]);
+
+/** Retrieves the number of available logical processors on this machine. */
+long __sir_nprocs(bool test_mode);
+# define _sir_nprocs() __sir_nprocs(0)
+# define _sir_nprocs_test() __sir_nprocs(1)
+
+# if defined(__cplusplus)
+}
+# endif
 
 #endif /* !_SIR_INTERNAL_H_INCLUDED */

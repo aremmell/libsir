@@ -149,51 +149,19 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>cancel</b></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Thread pool/job queue data container. </p>
 </div><h2 class="groupheader">Field Documentation</h2>
-<a id="ab7832daed4aced16c462f2340c79c436" name="ab7832daed4aced16c462f2340c79c436"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab7832daed4aced16c462f2340c79c436">&#9670;&#160;</a></span>threads</h2>
+<a id="af4d0701b3a4985e08870b75db4fe2a75" name="af4d0701b3a4985e08870b75db4fe2a75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4d0701b3a4985e08870b75db4fe2a75">&#9670;&#160;</a></span>cancel</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">sir_thread* sir_threadpool::threads</td>
+          <td class="memname">bool sir_threadpool::cancel</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>A list of thread handles. </p>
-
-</div>
-</div>
-<a id="a0502c0ce1c0e33fc5f93966956f06c99" name="a0502c0ce1c0e33fc5f93966956f06c99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0502c0ce1c0e33fc5f93966956f06c99">&#9670;&#160;</a></span>num_threads</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t sir_threadpool::num_threads</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The number of threads in the pool. </p>
-
-</div>
-</div>
-<a id="a4b5c66ba993a304ae29152ba2cd00dde" name="a4b5c66ba993a304ae29152ba2cd00dde"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4b5c66ba993a304ae29152ba2cd00dde">&#9670;&#160;</a></span>jobs</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structsir__queue.html">sir_queue</a>* sir_threadpool::jobs</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>A queue of jobs to run (FIFO). </p>
+<p>Causes threads in the pool to exit when true. </p>
 
 </div>
 </div>
@@ -213,6 +181,22 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>cancel</b></td></tr>
 
 </div>
 </div>
+<a id="a4b5c66ba993a304ae29152ba2cd00dde" name="a4b5c66ba993a304ae29152ba2cd00dde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b5c66ba993a304ae29152ba2cd00dde">&#9670;&#160;</a></span>jobs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structsir__queue.html">sir_queue</a>* sir_threadpool::jobs</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A queue of jobs to run (FIFO). </p>
+
+</div>
+</div>
 <a id="af0a4d59c2d0cf18b34d11820b1fd2a5b" name="af0a4d59c2d0cf18b34d11820b1fd2a5b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af0a4d59c2d0cf18b34d11820b1fd2a5b">&#9670;&#160;</a></span>mutex</h2>
 
@@ -229,19 +213,35 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>cancel</b></td></tr>
 
 </div>
 </div>
-<a id="af4d0701b3a4985e08870b75db4fe2a75" name="af4d0701b3a4985e08870b75db4fe2a75"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4d0701b3a4985e08870b75db4fe2a75">&#9670;&#160;</a></span>cancel</h2>
+<a id="a0502c0ce1c0e33fc5f93966956f06c99" name="a0502c0ce1c0e33fc5f93966956f06c99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0502c0ce1c0e33fc5f93966956f06c99">&#9670;&#160;</a></span>num_threads</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool sir_threadpool::cancel</td>
+          <td class="memname">size_t sir_threadpool::num_threads</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Causes threads in the pool to exit when true. </p>
+<p>The number of threads in the pool. </p>
+
+</div>
+</div>
+<a id="ab7832daed4aced16c462f2340c79c436" name="ab7832daed4aced16c462f2340c79c436"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7832daed4aced16c462f2340c79c436">&#9670;&#160;</a></span>threads</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">sir_thread* sir_threadpool::threads</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A list of thread handles. </p>
 
 </div>
 </div>

@@ -1,7 +1,7 @@
 /*
- * platform-importc.h
+ * platform_importc.h
  *
- * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Author:    Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -94,16 +94,16 @@
 #  define __builtin_bswap64
 #  define BSWAP_REDEFINED 1
 # endif
-# undef  __builtin___snprintf_chk
+# undef __builtin___snprintf_chk
 # define __builtin___snprintf_chk(s, c, flag, os, fmt, ...) snprintf(s, c, fmt, __VA_ARGS__)
-# undef  __builtin___sprintf_chk
+# undef __builtin___sprintf_chk
 # define __builtin___sprintf_chk(s, flag, os, fmt, ...) sprintf(s, fmt, __VA_ARGS__)
-# undef  __builtin___vsnprintf_chk
+# undef __builtin___vsnprintf_chk
 # define __builtin___vsnprintf_chk(s, c, flag, os, fmt, ...) vsnprintf(s, c, fmt, __VA_ARGS__)
-# undef  __builtin___strlcat_chk
-# define __builtin___strlcat_chk(dest, src, x, n) strlcat(dest,src,x)
-# undef  __builtin___strlcpy_chk
-# define __builtin___strlcpy_chk(dest, src, x, n) strlcpy(dest,src,x)
+# undef __builtin___strlcat_chk
+# define __builtin___strlcat_chk(dest, src, x, n) strlcat(dest, src, x)
+# undef __builtin___strlcpy_chk
+# define __builtin___strlcpy_chk(dest, src, x, n) strlcpy(dest, src, x)
 # undef __builtin_object_size
 # define __builtin_object_size
 # undef __extension__

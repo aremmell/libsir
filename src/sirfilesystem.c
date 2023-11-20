@@ -2,6 +2,7 @@
  * sirfilesystem.c
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -38,7 +39,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
     if (!_sir_validstr(path) || !_sir_validptr(st))
         return false;
 
-    memset(st, 0, sizeof(struct stat));
+    (void)memset(st, 0, sizeof(struct stat));
 
     int stat_ret          = -1;
     bool relative         = false;
@@ -49,7 +50,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
 
     if (relative) {
 #if !defined(__WIN__)
-# if defined(__MACOS__) || defined(_AIX)
+# if defined(__MACOS__) || defined(_AIX) || defined(__EMSCRIPTEN__)
 #  if !defined(O_SEARCH)
         int open_flags = O_DIRECTORY;
 #  else
@@ -86,9 +87,9 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         char abs_path[SIR_MAXPATH] = {0};
         (void)snprintf(abs_path, SIR_MAXPATH, "%s\\%s", base_path, path);
 
-# if defined(__EMBARCADEROC__)
-        /* Embarcadero does not like paths that end in slashes, nor does it appreciate
-         * paths like './' and '../'; this is a hack until those defects are resolved. */
+# if defined(__EMBARCADEROC__) && (__clang_major__ < 15)
+        /* Embarcadero <12 does not like paths that end in slashes, nor does it appreciate
+         * paths like './' and '../'; this hack is needed for RAD Studio 11.3 and earlier. */
         char resolved_path[SIR_MAXPATH] = {0};
 
         if (!GetFullPathNameA(abs_path, SIR_MAXPATH, resolved_path, NULL)) {
@@ -182,7 +183,7 @@ char* _sir_getcwd(void) {
 
     char* cur = calloc(size, sizeof(char));
     if (!cur) {
-        _sir_handleerr(errno);
+        (void)_sir_handleerr(errno);
         return NULL;
     }
 
@@ -199,10 +200,10 @@ char* _sir_getcwd(void) {
 char* _sir_getappfilename(void) {
 #if defined(__linux__) || defined(__NetBSD__) || defined(__SOLARIS__) || \
     defined(__DragonFly__) || defined(__CYGWIN__) || defined(__serenity__) || \
-    defined(__HURD__)
+    defined(__HURD__) || defined(__EMSCRIPTEN__)
 # define __READLINK_OS__
 # if defined(__linux__) || defined(__CYGWIN__) || \
-     defined(__serenity__) || defined(__HURD__)
+     defined(__serenity__) || defined(__HURD__) || defined(__EMSCRIPTEN__)
 #  define PROC_SELF "/proc/self/exe"
 # elif defined(__NetBSD__)
 #  define PROC_SELF "/proc/curproc/exe"
@@ -471,7 +472,7 @@ int _sir_aixself(char* buffer, size_t* size) {
 
         res = _sir_readlink(symlink, temp_buffer, SIR_MAXPATH);
         if (res < 0)
-            _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
+            (void)_sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
         else
             (void)snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink),
                 temp_buffer);
@@ -492,7 +493,7 @@ int _sir_aixself(char* buffer, size_t* size) {
 
         res = _sir_readlink(symlink, temp_buffer, SIR_MAXPATH);
         if (res < 0)
-            _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
+            (void)_sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
         else
             (void)snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
@@ -509,7 +510,7 @@ int _sir_aixself(char* buffer, size_t* size) {
 
         res = _sir_readlink(symlink, temp_buffer, SIR_MAXPATH);
         if (res < 0)
-            _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
+            (void)_sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
         else
             (void)snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
@@ -524,7 +525,7 @@ int _sir_aixself(char* buffer, size_t* size) {
         if (sizeof(clonedpath) <= strnlen(path, SIR_MAXPATH))
             return -1;
 
-        _sir_strncpy(clonedpath, SIR_MAXPATH, path, SIR_MAXPATH);
+        (void)_sir_strncpy(clonedpath, SIR_MAXPATH, path, SIR_MAXPATH);
 
         token = strtok_r(clonedpath, ":", &tokptr);
 
@@ -547,7 +548,7 @@ int _sir_aixself(char* buffer, size_t* size) {
                 if (stat(symlink, &statstruct) != -1) {
                     res = _sir_readlink(symlink, temp_buffer, SIR_MAXPATH);
                     if (res < 0)
-                        _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
+                        (void)_sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
                     else
                         (void)snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
@@ -559,7 +560,7 @@ int _sir_aixself(char* buffer, size_t* size) {
                 if (stat(symlink, &statstruct) != -1) {
                     res = _sir_readlink(symlink, temp_buffer, SIR_MAXPATH);
                     if (res < 0)
-                        _sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
+                        (void)_sir_strncpy(buffer, SIR_MAXPATH, symlink, SIR_MAXPATH);
                     else
                         (void)snprintf(buffer, *size - 1, "%s/%s", (char*)dirname(symlink), temp_buffer);
 
@@ -628,9 +629,9 @@ int _sir_openbsdself(char* out, int capacity, int* dirname_length) {
                     if (*(end - 1) == '/')
                         --end;
                     if (((end - begin) + 1UL + argv0_length + 1UL) <= sizeof(buffer2)) {
-                        memcpy(buffer2, begin, end - begin);
+                        (void)memcpy(buffer2, begin, end - begin);
                         buffer2[end - begin] = '/';
-                        memcpy(buffer2 + (end - begin) + 1, argv[0], argv0_length + 1);
+                        (void)memcpy(buffer2 + (end - begin) + 1, argv[0], argv0_length + 1);
                         resolved = realpath(buffer2, buffer3);
                         if (resolved)
                             break;
@@ -646,7 +647,7 @@ int _sir_openbsdself(char* out, int capacity, int* dirname_length) {
 
         length = (int)strnlen(resolved, SIR_MAXPATH);
         if (length <= capacity) {
-            memcpy(out, resolved, (unsigned long)length);
+            (void)memcpy(out, resolved, (unsigned long)length);
             if (dirname_length) {
                 int i;
                 for (i = length - 1; i >= 0; --i) {

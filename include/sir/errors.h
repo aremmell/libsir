@@ -2,6 +2,7 @@
  * errors.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -35,33 +36,37 @@
 
 /** Error codes. */
 enum sir_errorcode {
-    SIR_E_NOERROR   = 0,    /**< The operation completed successfully */
-    SIR_E_NOTREADY  = 1,    /**< libsir has not been initialized */
-    SIR_E_ALREADY   = 2,    /**< libsir is already initialized */
-    SIR_E_DUPITEM   = 3,    /**< Item already managed by libsir */
-    SIR_E_NOITEM    = 4,    /**< Item not managed by libsir */
-    SIR_E_NOROOM    = 5,    /**< Maximum number of items already stored */
-    SIR_E_OPTIONS   = 6,    /**< Option flags are invalid */
-    SIR_E_LEVELS    = 7,    /**< Level flags are invalid */
-    SIR_E_TEXTSTYLE = 8,    /**< Text style is invalid */
-    SIR_E_STRING    = 9,    /**< Invalid string argument */
-    SIR_E_NULLPTR   = 10,   /**< NULL pointer argument */
-    SIR_E_INVALID   = 11,   /**< Invalid argument */
-    SIR_E_NODEST    = 12,   /**< No destinations registered for level */
-    SIR_E_UNAVAIL   = 13,   /**< Feature is disabled or unavailable */
-    SIR_E_INTERNAL  = 14,   /**< An internal error has occurred */
-    SIR_E_COLORMODE = 15,   /**< Color mode is invalid */
-    SIR_E_TEXTATTR  = 16,   /**< Text attributes are invalid */
-    SIR_E_TEXTCOLOR = 17,   /**< Text color is invalid for mode */
-    SIR_E_PLUGINBAD = 18,   /**< Plugin module is malformed */
-    SIR_E_PLUGINDAT = 19,   /**< Data produced by plugin is invalid */
-    SIR_E_PLUGINVER = 20,   /**< Plugin interface version unsupported */
-    SIR_E_PLUGINERR = 21,   /**< Plugin reported failure */
-    SIR_E_PLATFORM  = 22,   /**< Platform error code %%d: %%s */
+    SIR_E_NOERROR   = 1,    /**< The operation completed successfully */
+    SIR_E_NOTREADY  = 2,    /**< libsir has not been initialized */
+    SIR_E_ALREADY   = 3,    /**< libsir is already initialized */
+    SIR_E_DUPITEM   = 4,    /**< Item already managed by libsir */
+    SIR_E_NOITEM    = 5,    /**< Item not managed by libsir */
+    SIR_E_NOROOM    = 6,    /**< Maximum number of items already stored */
+    SIR_E_OPTIONS   = 7,    /**< Option flags are invalid */
+    SIR_E_LEVELS    = 8,    /**< Level flags are invalid */
+    SIR_E_TEXTSTYLE = 9,    /**< Text style is invalid */
+    SIR_E_STRING    = 10,   /**< Invalid string argument */
+    SIR_E_NULLPTR   = 11,   /**< NULL pointer argument */
+    SIR_E_INVALID   = 12,   /**< Invalid argument */
+    SIR_E_NODEST    = 13,   /**< No destinations registered for level */
+    SIR_E_UNAVAIL   = 14,   /**< Feature is disabled or unavailable */
+    SIR_E_INTERNAL  = 15,   /**< An internal error has occurred */
+    SIR_E_COLORMODE = 16,   /**< Color mode is invalid */
+    SIR_E_TEXTATTR  = 17,   /**< Text attributes are invalid */
+    SIR_E_TEXTCOLOR = 18,   /**< Text color is invalid for mode */
+    SIR_E_PLUGINBAD = 19,   /**< Plugin module is malformed */
+    SIR_E_PLUGINDAT = 20,   /**< Data produced by plugin is invalid */
+    SIR_E_PLUGINVER = 21,   /**< Plugin interface version unsupported */
+    SIR_E_PLUGINERR = 22,   /**< Plugin reported failure */
+    SIR_E_PLATFORM  = 23,   /**< Platform error code %%d: %%s */
     SIR_E_UNKNOWN   = 4095, /**< Unknown error */
 };
 
 /** @} */
+
+# if defined(__cplusplus)
+extern "C" {
+# endif
 
 /** Creates an error code that (hopefully) doesn't conflict with any of those
  * defined by the platform. */
@@ -106,32 +111,30 @@ uint16_t _sir_geterrcode(uint32_t err) {
 # define _SIR_E_PLATFORM  _sir_mkerror(SIR_E_PLATFORM)
 # define _SIR_E_UNKNOWN   _sir_mkerror(SIR_E_UNKNOWN)
 
-//-V:_sir_seterror:616
 bool __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t line);
 # define _sir_seterror(err) __sir_seterror(err, __func__, __file__, __LINE__)
 
 void __sir_setoserror(int code, const char* msg, const char* func,
     const char* file, uint32_t line);
 
-/** Handle a C library error. */
-bool __sir_handleerr(int code, const char* func, const char* file, uint32_t line); //-V1071
+/** Handle an OS/libc error. */
+bool __sir_handleerr(int code, const char* func, const char* file, uint32_t line);
 # define _sir_handleerr(code) __sir_handleerr(code, __func__, __file__, __LINE__)
 
 # if defined(__WIN__)
 void _sir_invalidparameter(const wchar_t* expr, const wchar_t* func, const wchar_t* file,
     unsigned int line, uintptr_t reserved);
 
-/**
- * Some Win32 API error codes overlap C library error codes, so they need to be handled separately.
- * Mapping them sounds great, but in practice, valuable information about what went wrong is totally
- * lost in translation.
- */
 bool __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32_t line);
 #  define _sir_handlewin32err(code) __sir_handlewin32err((DWORD)code, __func__, __file__, __LINE__)
 # endif
 
-/** Returns information about the last error that occurred. */
+/** Retrieves a formatted message for the last error that occurred on the calling
+ * thread and returns the associated internal error code. */
 uint32_t _sir_geterror(char message[SIR_MAXERROR]);
+
+/** Returns information about the last error that occurred on the calling thread. */
+void _sir_geterrorinfo(sir_errorinfo* err);
 
 /** Resets TLS error information. */
 void _sir_reset_tls_error(void);
@@ -145,6 +148,10 @@ void __sir_selflog(const char* func, const char* file, uint32_t line, PRINTF_FOR
 static inline
 void __sir_fakefunc(const char* format, ...) { (void)format; }
 #  define _sir_selflog(...) __sir_fakefunc(__VA_ARGS__)
+# endif
+
+# if defined(__cplusplus)
+}
 # endif
 
 #endif /* !_SIR_ERRORS_H_INCLUDED */

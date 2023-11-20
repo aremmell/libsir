@@ -1,5 +1,6 @@
 /**
  * @file sir.c
+ *
  * @brief Public interface to libsir
  *
  * The functions and types defined here comprise the entire set intended for
@@ -46,8 +47,16 @@ bool sir_cleanup(void) {
     return _sir_cleanup();
 }
 
+bool sir_isinitialized(void) {
+    return _sir_isinitialized();
+}
+
 uint16_t sir_geterror(char message[SIR_MAXERROR]) {
     return _sir_geterrcode(_sir_geterror(message));
+}
+
+void sir_geterrorinfo(sir_errorinfo* err) {
+    _sir_geterrorinfo(err);
 }
 
 PRINTF_FORMAT_ATTR(1, 2)

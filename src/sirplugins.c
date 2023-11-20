@@ -4,7 +4,6 @@
  * Author:    Ryan M. Lederman <lederman@gmail.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
- *
  * License:   The MIT License (MIT)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -276,12 +275,13 @@ bool _sir_plugin_unload(sir_plugin* plugin) {
 
 sirpluginid _sir_plugin_add(sir_plugin* plugin) {
 #if !defined(SIR_NO_PLUGINS)
-    if (!_sir_validptr(plugin))
-        return 0U;
+    sirpluginid retval = 0U;
 
-    _SIR_LOCK_SECTION(sir_plugincache, spc, SIRMI_PLUGINCACHE, 0U);
-    sirpluginid retval = _sir_plugin_cache_add(spc, plugin);
-    _SIR_UNLOCK_SECTION(SIRMI_PLUGINCACHE);
+    if (_sir_validptr(plugin)) {
+        _SIR_LOCK_SECTION(sir_plugincache, spc, SIRMI_PLUGINCACHE, 0U);
+        retval = _sir_plugin_cache_add(spc, plugin);
+        _SIR_UNLOCK_SECTION(SIRMI_PLUGINCACHE);
+    }
 
     return retval;
 #else
@@ -433,7 +433,7 @@ bool _sir_plugin_cache_destroy(sir_plugincache* spc) {
         spc->count--;
     }
 
-    memset(spc, 0, sizeof(sir_plugincache));
+    (void)memset(spc, 0, sizeof(sir_plugincache));
     return true;
 #else
     SIR_UNUSED(spc);

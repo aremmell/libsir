@@ -6,10 +6,8 @@
     ],
     "settings": {
         "files.associations": {
-            "typeinfo": "c",
-            "sirtypes.h": "c",
-            "sirconfig.h": "c",
-            "sirplatform.h": "c"
+            "*.i": "swig",
+            "CODEOWNERS": "ignore",
         }
     }
 }

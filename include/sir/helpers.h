@@ -2,6 +2,7 @@
  * helpers.h
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -28,6 +29,10 @@
 
 # include "sir/types.h"
 # include "sir/errors.h"
+
+# if defined(__cplusplus)
+extern "C" {
+# endif
 
 /** Computes the size of an array. */
 # define _sir_countof(arr) (sizeof(arr) / sizeof(arr[0]))
@@ -139,22 +144,16 @@ bool _sir_bittest(uint32_t flags, uint32_t test) {
 
 /** Sets a specific set of bits high in a bitmask. */
 static inline
-bool _sir_setbitshigh(uint32_t* flags, uint32_t set) {
-    if (!flags)
-        return false;
-
-    *flags |= set;
-    return true;
+void _sir_setbitshigh(uint32_t* flags, uint32_t set) {
+    if (NULL != flags)
+        *flags |= set;
 }
 
 /** Sets a specific set of bits low in a bitmask. */
 static inline
-bool _sir_setbitslow(uint32_t* flags, uint32_t set) {
-    if (!flags)
-        return false;
-
-    *flags &= ~set;
-    return true;
+void _sir_setbitslow(uint32_t* flags, uint32_t set) {
+    if (NULL != flags)
+        *flags &= ~set;
 }
 
 /** Effectively performs b &= expr without the linter warnings about using
@@ -391,7 +390,8 @@ struct tm* _sir_localtime(const time_t* timer, struct tm* buf) {
 #  endif
     return buf;
 # else /* !__HAVE_STDC_SECURE_OR_EXT1__ */
-#  if !defined(__WIN__) || defined(__EMBARCADEROC__)
+#  if !defined(__WIN__) || \
+     (defined(__EMBARCADEROC__) && (__clang_major__ < 15))
     struct tm* ret = localtime_r(timer, buf);
 #  else
     struct tm* ret = localtime(timer);
@@ -468,5 +468,37 @@ uint64_t FNV64_1a(const char* str) {
     }
     return hash;
 }
+
+/**
+ * Remove all occurrences of substring "sub" in string "str".
+ */
+char* _sir_strremove(char *str, const char *sub);
+
+/**
+ * Replace all occurrences of repeating whitespace characters
+ * (i.e. ` `, `\\f`, `\\n`, `\\r`, `\\t`) in string "str" with
+ * a single space character.
+ */
+char* _sir_strsqueeze(char *str);
+
+/**
+ * Redact all occurrences of substring "sub" in string "str" with character 'c'.
+ */
+char* _sir_strredact(char *str, const char *sub, const char c);
+
+/**
+ * Replace all occurrences of character 'c' in string "str" with character 'n'.
+ */
+char* _sir_strreplace(char *str, const char c, const char n);
+
+/**
+ * Replace up to 'max' occurrences of character 'c' in string "str"
+ * with character 'n', returning the number of replacements performed.
+ */
+size_t _sir_strcreplace(char *str, const char c, const char n, int32_t max);
+
+# if defined(__cplusplus)
+}
+# endif
 
 #endif /* !_SIR_HELPERS_H_INCLUDED */

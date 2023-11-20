@@ -1,0 +1,16 @@
+<map id="include/sir.h" name="include/sir.h">
+<area shape="rect" id="Node000001" title="Public interface to libsir." alt="" coords="219,5,311,30"/>
+<area shape="rect" id="Node000002" href="$example_8c.html" title="A simple demonstration of initialization, configuration, and basic usage of libsir." alt="" coords="5,78,138,103"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,38,104,80,103,75,219,33"/>
+<area shape="rect" id="Node000003" href="$sir_8hh.html" title="C++ interface to libsir." alt="" coords="162,78,261,103"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="249,44,222,79,218,76,245,40"/>
+<area shape="rect" id="Node000005" href="$sir_8c.html" title="Public interface to libsir." alt="" coords="285,78,354,103"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="285,40,313,76,309,79,281,44"/>
+<area shape="rect" id="Node000006" href="$tests__shared_8h_source.html" title=" " alt="" coords="377,78,518,103"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="310,33,418,75,416,80,308,38"/>
+<area shape="rect" id="Node000004" href="$tests_09_09_8hh_source.html" title=" " alt="" coords="206,151,324,175"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="231,113,258,149,254,152,227,116"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="405,111,296,153,294,148,403,106"/>
+<area shape="rect" id="Node000007" href="$tests_8h_source.html" title=" " alt="" coords="400,151,495,175"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="450,118,450,150,445,150,445,118"/>
+</map>

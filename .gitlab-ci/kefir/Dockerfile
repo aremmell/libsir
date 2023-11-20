@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-current Ryan M. Lederman
+# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
 
 FROM registry.gitlab.com/libsir/libsir/base:latest
 
@@ -9,7 +9,7 @@ WORKDIR /
 
 ARG URL
 
-RUN cd /tmp && \
+RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && cd /tmp && \
     git clone -v https://git.sr.ht/\~jprotopopov/kefir && \
     cd kefir && \
     gmake clean && \
@@ -55,6 +55,13 @@ RUN cd /tmp && \
       DESTDIR="/" && \
     cd && \
     rm -rf /tmp/kefir && \
+    dnf -y clean all && \
+    rm -rf ~/.cache && \
+    rm -rf /var/tmp/* && \
+    rm -rf /var/log/dnf* && \
+    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true ) && \
     touch /OK
 
 USER 10000
+
+RUN printf '\n%s\n' "BUILD SUCCESS"

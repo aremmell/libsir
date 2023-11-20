@@ -2,6 +2,7 @@
  * sirerrors.c
  *
  * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -26,14 +27,6 @@
 #include "sir/errors.h"
 #include "sir/helpers.h"
 
-#if defined(__WIN__)
-# if defined(__EMBARCADEROC__) && defined(_WIN64)
-#  pragma comment(lib, "shlwapi.a")
-# else
-#  pragma comment(lib, "shlwapi.lib")
-# endif
-#endif
-
 #if defined(__MACOS__) || defined(__BSD__) || \
     (defined(_POSIX_C_SOURCE) && (_POSIX_C_SOURCE >= 200112L && !defined(_GNU_SOURCE)))
 # define __HAVE_XSI_STRERROR_R__
@@ -48,16 +41,17 @@
 
 /** Per-thread error data */
 static _sir_thread_local sir_thread_err _sir_te = {
-    _SIR_E_NOERROR, 0, {0}, {SIR_UNKNOWN, SIR_UNKNOWN, 0} //-V616
+    _SIR_E_NOERROR, 0, {0}, {SIR_UNKNOWN, SIR_UNKNOWN, 0}
 };
 
-#define _SIR_E_PLATFORM_ERRORFORMAT "Platform error code %d: %s"
+#define _SIR_E_PLATFORM_ERRORMSG "Platform error"
+#define _SIR_E_PLATFORM_ERRORFORMAT _SIR_E_PLATFORM_ERRORMSG " code %d: %s"
 
 static const struct {
     uint32_t e;
     const char* msg;
 } sir_errors[] = {
-    {_SIR_E_NOERROR,   "The operation completed successfully"}, //-V616
+    {_SIR_E_NOERROR,   "The operation completed successfully"},
     {_SIR_E_NOTREADY,  "libsir has not been initialized"},
     {_SIR_E_ALREADY,   "libsir is already initialized"},
     {_SIR_E_DUPITEM,   "Item already managed by libsir"},
@@ -89,25 +83,28 @@ bool __sir_seterror(uint32_t err, const char* func, const char* file, uint32_t l
         _sir_te.loc.func  = func;
         _sir_te.loc.file  = file;
         _sir_te.loc.line  = line;
+
+        if (_SIR_E_PLATFORM != err) {
+            _sir_te.os_code = 0;
+            _sir_resetstr(_sir_te.os_msg);
+        }
     }
 #if defined(DEBUG) && defined(SIR_SELFLOG)
-    if (_SIR_E_NOERROR != err) { //-V616
+    if (_SIR_E_NOERROR != err) {
         char errmsg[SIR_MAXERROR] = {0};
-        uint32_t code             = _sir_geterror(errmsg);
-        SIR_UNUSED(code);
+        _sir_geterror(errmsg);
         __sir_selflog(func, file, line, "%s", errmsg);
     }
 #endif
     return false;
 }
 
-void __sir_setoserror(int code, const char* msg, const char* func, const char* file,
-    uint32_t line) {
-    _sir_te.os_error = code;
-    _sir_resetstr(_sir_te.os_errmsg);
+void __sir_setoserror(int code, const char* msg, const char* func, const char* file, uint32_t line) {
+    _sir_te.os_code = code;
+    _sir_resetstr(_sir_te.os_msg);
 
     if (_sir_validstrnofail(msg))
-        _sir_strncpy(_sir_te.os_errmsg, SIR_MAXERROR, msg, SIR_MAXERROR);
+        (void)_sir_strncpy(_sir_te.os_msg, SIR_MAXERROR, msg, SIR_MAXERROR);
 
     (void)__sir_seterror(_SIR_E_PLATFORM, func, file, line);
 }
@@ -130,16 +127,15 @@ bool __sir_handleerr(int code, const char* func, const char* file, uint32_t line
         _sir_selflog("using GNU strerror_r");
         const char* tmp = strerror_r(code, message, SIR_MAXERROR);
         if (tmp != message)
-            _sir_strncpy(message, SIR_MAXERROR, tmp, SIR_MAXERROR);
+            (void)_sir_strncpy(message, SIR_MAXERROR, tmp, SIR_MAXERROR);
 #elif defined(__HAVE_STRERROR_S__)
         _sir_selflog("using strerror_s");
         finderr = (int)strerror_s(message, SIR_MAXERROR, code);
 #else
         _sir_selflog("using strerror");
         const char* tmp = strerror(code);
-        _sir_strncpy(message, SIR_MAXERROR, tmp, strnlen(tmp, SIR_MAXERROR));
+        (void)_sir_strncpy(message, SIR_MAXERROR, tmp, strnlen(tmp, SIR_MAXERROR));
 #endif
-        /* cppcheck-suppress knownConditionTrueFalse */
         if (0 == finderr) { //-V547
             __sir_setoserror(code, message, func, file, line);
 #if defined(__HAVE_XSI_STRERROR_R__) || defined(__HAVE_STRERROR_S__)
@@ -208,8 +204,8 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
         if (_SIR_E_PLATFORM == sir_errors[_mid].e) {
             heap_msg = calloc(SIR_MAXERROR, sizeof(char));
             if (_sir_validptrnofail(heap_msg)) {
-                _sir_snprintf_trunc(heap_msg, SIR_MAXERROR, _SIR_E_PLATFORM_ERRORFORMAT, _sir_te.os_error,
-                    (_sir_validstrnofail(_sir_te.os_errmsg) ? _sir_te.os_errmsg : SIR_UNKNOWN));
+                _sir_snprintf_trunc(heap_msg, SIR_MAXERROR, _SIR_E_PLATFORM_ERRORFORMAT, _sir_te.os_code,
+                    (_sir_validstrnofail(_sir_te.os_msg) ? _sir_te.os_msg : SIR_UNKNOWN));
             }
         }
 
@@ -230,10 +226,45 @@ uint32_t _sir_geterror(char message[SIR_MAXERROR]) {
     return retval;
 }
 
+void _sir_geterrorinfo(sir_errorinfo* err) {
+    if (!_sir_validptr(err))
+        return;
+
+    (void)memset(err, 0, sizeof(sir_errorinfo));
+
+    err->func = _sir_te.loc.func;
+    err->file = _sir_te.loc.file;
+    err->line = _sir_te.loc.line;
+
+    err->os_code = _sir_te.os_code;
+    (void)_sir_strncpy(err->os_msg, SIR_MAXERROR, (_sir_validstrnofail(_sir_te.os_msg)
+        ? _sir_te.os_msg : SIR_UNKNOWN), SIR_MAXERROR);
+
+    err->code = _sir_geterrcode(SIR_E_UNKNOWN);
+
+    static const size_t low  = 0;
+    static const size_t high = _sir_countof(sir_errors) - 1;
+
+    _SIR_DECLARE_BIN_SEARCH(low, high);
+    _SIR_BEGIN_BIN_SEARCH()
+
+    if (sir_errors[_mid].e == _sir_te.lasterror) {
+        err->code = _sir_geterrcode(sir_errors[_mid].e);
+        if (_SIR_E_PLATFORM == sir_errors[_mid].e)
+            (void)_sir_strncpy(err->msg, SIR_MAXERROR, _SIR_E_PLATFORM_ERRORMSG, SIR_MAXERROR);
+        else
+            (void)_sir_strncpy(err->msg, SIR_MAXERROR, sir_errors[_mid].msg, SIR_MAXERROR);
+        break;
+    }
+
+    _SIR_ITERATE_BIN_SEARCH((sir_errors[_mid].e < _sir_te.lasterror ? 1 : -1));
+    _SIR_END_BIN_SEARCH();
+}
+
 void _sir_reset_tls_error(void) {
-    _sir_te.lasterror = _SIR_E_NOERROR; //-V616
-    _sir_te.os_error  = 0;
-    _sir_resetstr(_sir_te.os_errmsg);
+    _sir_te.lasterror = _SIR_E_NOERROR;
+    _sir_te.os_code  = 0;
+    _sir_resetstr(_sir_te.os_msg);
     _sir_te.loc.func = SIR_UNKNOWN;
     _sir_te.loc.file = SIR_UNKNOWN;
     _sir_te.loc.line = 0U;
@@ -271,22 +302,23 @@ void __sir_selflog(const char* func, const char* file, uint32_t line,
                 bool error = false;
                 bool warn  = false;
                 if (write2 > 0) {
-# if !defined(__WIN__)
+# if !defined(_AIX)
+#  if !defined(__WIN__)
                     if (NULL != strcasestr(buf, "error") ||
                         NULL != strcasestr(buf, "assert")) {
-# else /* __WIN__ */
+#  else /* __WIN__ */
                     if (NULL != StrStrIA(buf, "error") ||
                         NULL != StrStrIA(buf, "assert")) {
-# endif
+#  endif
                         error = true;
-# if !defined(__WIN__)
+#  if !defined(__WIN__)
                     } else if (NULL != strcasestr(buf, "warn")) {
-# else /* __WIN__ */
+#  else /* __WIN__ */
                     } else if (NULL != StrStrIA(buf, "warn")) {
-# endif
+#  endif
                         warn = true;
                     }
-
+# endif
                     write2 = fprintf(stderr, (error ? BRED("%s%s") "\n" :
                         (warn ? YELLOW("%s%s") "\n" : "%s%s\n")), prefix, buf);
                     _sir_eqland(success, write2 > 0);

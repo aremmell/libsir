@@ -42,6 +42,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plugin_dummy_bad5", "plugin
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plugin_dummy_bad6", "plugin_dummy_bad6.vcxproj", "{891EB2B1-8B26-493A-B60C-9CCFAC420D4F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sirtests++", "sirtests++.vcxproj", "{7C621737-CD4B-4E6A-B73D-17B816E51806}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|arm64 = Debug|arm64
@@ -162,6 +164,18 @@ Global
 		{891EB2B1-8B26-493A-B60C-9CCFAC420D4F}.Release|arm64.Build.0 = Release|arm64
 		{891EB2B1-8B26-493A-B60C-9CCFAC420D4F}.Release|x64.ActiveCfg = Release|x64
 		{891EB2B1-8B26-493A-B60C-9CCFAC420D4F}.Release|x64.Build.0 = Release|x64
+		{7C621737-CD4B-4E6A-B73D-17B816E51806}.Debug|arm64.ActiveCfg = Debug|arm64
+		{7C621737-CD4B-4E6A-B73D-17B816E51806}.Debug|arm64.Build.0 = Debug|arm64
+		{7C621737-CD4B-4E6A-B73D-17B816E51806}.Debug|x64.ActiveCfg = Debug|x64
+		{7C621737-CD4B-4E6A-B73D-17B816E51806}.Debug|x64.Build.0 = Debug|x64
+		{7C621737-CD4B-4E6A-B73D-17B816E51806}.Profiling|arm64.ActiveCfg = Profiling|arm64
+		{7C621737-CD4B-4E6A-B73D-17B816E51806}.Profiling|arm64.Build.0 = Profiling|arm64
+		{7C621737-CD4B-4E6A-B73D-17B816E51806}.Profiling|x64.ActiveCfg = Profiling|x64
+		{7C621737-CD4B-4E6A-B73D-17B816E51806}.Profiling|x64.Build.0 = Profiling|x64
+		{7C621737-CD4B-4E6A-B73D-17B816E51806}.Release|arm64.ActiveCfg = Release|arm64
+		{7C621737-CD4B-4E6A-B73D-17B816E51806}.Release|arm64.Build.0 = Release|arm64
+		{7C621737-CD4B-4E6A-B73D-17B816E51806}.Release|x64.ActiveCfg = Release|x64
+		{7C621737-CD4B-4E6A-B73D-17B816E51806}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

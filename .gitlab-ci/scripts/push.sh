@@ -1,10 +1,10 @@
 #!/usr/bin/env sh
 
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-current Ryan M. Lederman
+# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
 
 printf '%s\n' "Sanity check ..."
-test -f Dockerfile ||
+test -f Dockerfile 2> /dev/null ||
   {
     printf '%s\n' "ERROR: No Dockerfile in current working directory."
     exit 1

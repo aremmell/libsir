@@ -102,6 +102,9 @@
     <ClInclude Include="..\include\sir\condition.h">
       <Filter>Include\sir</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\sir\impl.h">
+      <Filter>Include\sir</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">

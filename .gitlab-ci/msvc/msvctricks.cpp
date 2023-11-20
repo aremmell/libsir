@@ -2,6 +2,7 @@
  * SPDX-License-Identifier: ISC
  *
  * Copyright (c) 2023 Huang Qinjin
+ * Copyright (c) 2023 Jeffrey H. Johnson <trnsz@pobox.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -15,16 +16,13 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-
 #include <windows.h>
 #include <shlwapi.h>
-
 
 #pragma comment(lib, "shell32.lib")
 #pragma comment(lib, "shlwapi.lib")
 #pragma comment(linker, "/ENTRY:wWinMainCRTStartup")
 #pragma comment(linker, "/SUBSYSTEM:CONSOLE")
-
 
 static HANDLE hStdIn  = INVALID_HANDLE_VALUE;
 static HANDLE hStdOut = INVALID_HANDLE_VALUE;
@@ -33,13 +31,12 @@ static HANDLE hChildJob;
 
 static DWORD run(LPWSTR lpCmdLine)
 {
-    STARTUPINFOW si = {};
-    si.cb = sizeof(si);
-    si.dwFlags = STARTF_USESTDHANDLES;
-    si.hStdInput = hStdIn;
-    si.hStdOutput = hStdOut;
-    si.hStdError = hStdErr;
-
+    STARTUPINFOW si        = {};
+    si.cb                  = sizeof(si);
+    si.dwFlags             = STARTF_USESTDHANDLES;
+    si.hStdInput           = hStdIn;
+    si.hStdOutput          = hStdOut;
+    si.hStdError           = hStdErr;
     PROCESS_INFORMATION pi = {};
 
     DWORD dwExitCode;
@@ -91,8 +88,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     if (GetEnvironmentVariableW(L"WINE_MSVC_STDIN", buf, ARRAYSIZE(buf)))
     {
         SECURITY_ATTRIBUTES attr = {};
-        attr.nLength = sizeof(attr);
-        attr.bInheritHandle = TRUE;
+        attr.nLength             = sizeof(attr);
+        attr.bInheritHandle      = TRUE;
 
         hStdIn = CreateFileW(buf, GENERIC_READ,
             FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
@@ -101,8 +98,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     if (GetEnvironmentVariableW(L"WINE_MSVC_STDOUT", buf, ARRAYSIZE(buf)))
     {
         SECURITY_ATTRIBUTES attr = {};
-        attr.nLength = sizeof(attr);
-        attr.bInheritHandle = TRUE;
+        attr.nLength             = sizeof(attr);
+        attr.bInheritHandle      = TRUE;
 
         hStdOut = CreateFileW(buf, GENERIC_WRITE,
             FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
@@ -111,8 +108,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     if (GetEnvironmentVariableW(L"WINE_MSVC_STDERR", buf, ARRAYSIZE(buf)))
     {
         SECURITY_ATTRIBUTES attr = {};
-        attr.nLength = sizeof(attr);
-        attr.bInheritHandle = TRUE;
+        attr.nLength             = sizeof(attr);
+        attr.bInheritHandle      = TRUE;
 
         hStdErr = CreateFileW(buf, GENERIC_WRITE,
             FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,

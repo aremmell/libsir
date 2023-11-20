@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-current Ryan M. Lederman
+# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
 
 FROM mstorsjo/llvm-mingw:latest
 
@@ -9,10 +9,12 @@ RUN apt -y update && \
     apt -y upgrade && \
     apt -y full-upgrade && \
     apt -y install \
-	dos2unix \
-	screen \
+        dos2unix \
+        screen \
         tmux \
-	git \
+        git \
+        libfmt-dev \
+        libboost-all-dev \
         wine && \
     yes | dpkg --add-architecture i386 && \
     apt -y update && \
@@ -27,8 +29,10 @@ RUN apt -y update && \
       rm -rf ansifilter && \
     ansifilter --version && \
     apt -y clean all && \
-    useradd -m -U -G 0 --uid 10000 -c "CI/CD User" user
+    useradd -m -U -G 0 --uid 10000 -c "CI/CD User" user && cd
 
 WORKDIR /
 
 USER 10000
+
+RUN printf '\n%s\n' "BUILD SUCCESS"

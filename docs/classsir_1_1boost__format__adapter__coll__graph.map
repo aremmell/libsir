@@ -1,0 +1,5 @@
+<map id="sir::boost_format_adapter&lt; TPolicy &gt;" name="sir::boost_format_adapter&lt; TPolicy &gt;">
+<area shape="rect" id="Node000001" title="Adapter for boost::format (when available)." alt="" coords="5,78,175,117"/>
+<area shape="rect" id="Node000002" href="$classsir_1_1adapter.html" title="Defines the abstract interface for an adapter, which ultimately becomes a public base class of logger..." alt="" coords="47,5,133,30"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,45,93,77,87,77,87,45"/>
+</map>

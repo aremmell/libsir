@@ -176,8 +176,8 @@ Variables</h2></td></tr>
 <dd>
 <a class="el" href="group__publictypes.html#ga640c1b7e6daea59af42137e10e3c3b29" title="Default levels for this type of destination.">SIRL_DEFAULT</a> </dd></dl>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="ga47b9f4b74ed2b3d81d34c0d0237b100f" name="ga47b9f4b74ed2b3d81d34c0d0237b100f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga47b9f4b74ed2b3d81d34c0d0237b100f">&#9670;&#160;</a></span>sir_stdout_def_lvls</h2>
+<a id="ga1337de627cb0dd234f34b07b4d77a931" name="ga1337de627cb0dd234f34b07b4d77a931"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1337de627cb0dd234f34b07b4d77a931">&#9670;&#160;</a></span>sir_file_def_lvls</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -186,7 +186,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a> sir_stdout_def_lvls = <a class="el" href="group__publictypes.html#gaa2927c260f1d8fac96513442e50105fc">SIRL_DEBUG</a> | <a class="el" href="group__publictypes.html#ga9e73defcee82050f038956ad7e911621">SIRL_INFO</a> | <a class="el" href="group__publictypes.html#gad4aefd62d77b020460d32c9350bec7d5">SIRL_NOTICE</a> | <a class="el" href="group__publictypes.html#ga91b18adc2526599377583951c29e84b9">SIRL_WARN</a></td>
+          <td class="memname">const <a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a> sir_file_def_lvls = <a class="el" href="group__publictypes.html#gac393a8a8f335fe44d28f39c91293af1f">SIRL_ALL</a></td>
         </tr>
       </table>
   </td>
@@ -196,14 +196,16 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Default levels for stdout. </p>
-<p>The stdout destination is registered for these levels if <a class="el" href="group__publictypes.html#ga640c1b7e6daea59af42137e10e3c3b29" title="Default levels for this type of destination.">SIRL_DEFAULT</a> is set on the <a class="el" href="group__publictypes.html#structsir__stdio__dest" title="Configuration for stdio destinations (stdout and stderr).">sir_stdio_dest</a> when <a class="el" href="group__publicfuncs.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes libsir for use.">sir_init</a> is called.</p>
-<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a>. </dd></dl>
+<p>Default levels for log files. </p>
+<p>Log file destinations are registered for these levels if <a class="el" href="group__publictypes.html#ga640c1b7e6daea59af42137e10e3c3b29" title="Default levels for this type of destination.">SIRL_DEFAULT</a> is passed to <a class="el" href="group__publicfuncs.html#gaa04f4ca1fc06e1d99ca4f0fd6422b573" title="Adds a log file and registers it to receive log output.">sir_addfile</a>.</p>
+<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga5a776d3d55e9f993eb0fad82788e1160" title="Set new level registrations for a log file already managed by libsir.">sir_filelevels</a>.</dd>
+<dd>
+<a class="el" href="group__publictypes.html#gac393a8a8f335fe44d28f39c91293af1f" title="Include all logging levels.">SIRL_ALL</a> includes every logging level from debug to emergency. </dd></dl>
 
 </div>
 </div>
-<a id="ga570e5f904a2aacfaf3284276784d4ddb" name="ga570e5f904a2aacfaf3284276784d4ddb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga570e5f904a2aacfaf3284276784d4ddb">&#9670;&#160;</a></span>sir_stdout_def_opts</h2>
+<a id="ga7b82b6fc3f0701c4db31d05a0b7a17ba" name="ga7b82b6fc3f0701c4db31d05a0b7a17ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7b82b6fc3f0701c4db31d05a0b7a17ba">&#9670;&#160;</a></span>sir_file_def_opts</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -212,7 +214,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> sir_stdout_def_opts = <a class="el" href="group__publictypes.html#gac3370e3a2be554f93e9e67bea177c8a0">SIRO_NOTIME</a> | <a class="el" href="group__publictypes.html#gaf6a215c540807f3ba15f97d372feeaf0">SIRO_NOHOST</a> | <a class="el" href="group__publictypes.html#gafd6f47db95d87395d4a37529f839c6de">SIRO_NOPID</a> | <a class="el" href="group__publictypes.html#ga093cea38ace2acb674162a0f7fb153a6">SIRO_NOTID</a></td>
+          <td class="memname">const <a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> sir_file_def_opts = <a class="el" href="group__publictypes.html#ga40584e96084fe85a8ad8a7be98ff5fc9">SIRO_ALL</a> | <a class="el" href="group__publictypes.html#gaf6a215c540807f3ba15f97d372feeaf0">SIRO_NOHOST</a></td>
         </tr>
       </table>
   </td>
@@ -222,9 +224,267 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Default options for stdout. </p>
-<p>These options are applied to the stdout destination if <a class="el" href="group__publictypes.html#ga2a7a55618343c4cb76d7e428af72232b" title="Default options for this type of destination.">SIRO_DEFAULT</a> is set on the <a class="el" href="group__publictypes.html#structsir__stdio__dest" title="Configuration for stdio destinations (stdout and stderr).">sir_stdio_dest</a> when <a class="el" href="group__publicfuncs.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes libsir for use.">sir_init</a> is called.</p>
-<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a>. </dd></dl>
+<p>Default options for log files. </p>
+<p>Applied to log file destinations if <a class="el" href="group__publictypes.html#ga2a7a55618343c4cb76d7e428af72232b" title="Default options for this type of destination.">SIRO_DEFAULT</a> is passed to <a class="el" href="group__publicfuncs.html#gaa04f4ca1fc06e1d99ca4f0fd6422b573" title="Adds a log file and registers it to receive log output.">sir_addfile</a>.</p>
+<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#gaf14164a64eca824a2bae72ef4e9689cd" title="Set new formatting options for a log file already managed by libsir.">sir_fileopts</a>. </dd></dl>
+
+</div>
+</div>
+<a id="gafdb5a00e97fee751fe4018bf7c754bc7" name="gafdb5a00e97fee751fe4018bf7c754bc7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafdb5a00e97fee751fe4018bf7c754bc7">&#9670;&#160;</a></span>sir_lvl_alert_def_style</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a> sir_lvl_alert_def_style</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2dabd921418f53873c49dea5f9f3ea81f4b">SIRTA_BOLD</a>,</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a67abb820e54b6f4eb6c36889cdb161a1">SIRTC_BLACK</a>,</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a17661620bd839f5e015a43d5e6913c0f">SIRTC_BYELLOW</a></div>
+<div class="line">}</div>
+<div class="ttc" id="agroup__publictypes_html_gga1bf5e489a6af0dcb905788c1e7a5ec2dabd921418f53873c49dea5f9f3ea81f4b"><div class="ttname"><a href="group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2dabd921418f53873c49dea5f9f3ea81f4b">SIRTA_BOLD</a></div><div class="ttdeci">@ SIRTA_BOLD</div><div class="ttdoc">Bold text.</div><div class="ttdef"><b>Definition</b> types.h:103</div></div>
+<div class="ttc" id="agroup__publictypes_html_ggadf764cbdea00d65edcd07bb9953ad2b7a17661620bd839f5e015a43d5e6913c0f"><div class="ttname"><a href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a17661620bd839f5e015a43d5e6913c0f">SIRTC_BYELLOW</a></div><div class="ttdeci">@ SIRTC_BYELLOW</div><div class="ttdoc">Bright yellow.</div><div class="ttdef"><b>Definition</b> types.h:123</div></div>
+<div class="ttc" id="agroup__publictypes_html_ggadf764cbdea00d65edcd07bb9953ad2b7a67abb820e54b6f4eb6c36889cdb161a1"><div class="ttname"><a href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a67abb820e54b6f4eb6c36889cdb161a1">SIRTC_BLACK</a></div><div class="ttdeci">@ SIRTC_BLACK</div><div class="ttdoc">Black.</div><div class="ttdef"><b>Definition</b> types.h:112</div></div>
+</div><!-- fragment -->
+<p>Default <a class="el" href="group__publictypes.html#structsir__textstyle" title="Container for all the information associated with the appearance of text in the context of stdio.">sir_textstyle</a> for <a class="el" href="group__publictypes.html#ga8549494d396c96ba66b5b78b298cff7d" title="Action required ASAP.">SIRL_ALERT</a>. </p>
+<p>Applied to stdio destinations upon library initialization.</p>
+<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>. </dd></dl>
+
+</div>
+</div>
+<a id="ga9eb15ab392a9376c2d1b0ac5b3d9d40c" name="ga9eb15ab392a9376c2d1b0ac5b3d9d40c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9eb15ab392a9376c2d1b0ac5b3d9d40c">&#9670;&#160;</a></span>sir_lvl_crit_def_style</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a> sir_lvl_crit_def_style</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2dabd921418f53873c49dea5f9f3ea81f4b">SIRTA_BOLD</a>,</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7aa62b22cd035e89e52f4f51e5ccc9802c">SIRTC_RED</a>,</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a6435ad1ff8e5c1495342f96398f73d8b">SIRTC_DEFAULT</a></div>
+<div class="line">}</div>
+<div class="ttc" id="agroup__publictypes_html_ggadf764cbdea00d65edcd07bb9953ad2b7a6435ad1ff8e5c1495342f96398f73d8b"><div class="ttname"><a href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a6435ad1ff8e5c1495342f96398f73d8b">SIRTC_DEFAULT</a></div><div class="ttdeci">@ SIRTC_DEFAULT</div><div class="ttdoc">Represents the default color.</div><div class="ttdef"><b>Definition</b> types.h:131</div></div>
+<div class="ttc" id="agroup__publictypes_html_ggadf764cbdea00d65edcd07bb9953ad2b7aa62b22cd035e89e52f4f51e5ccc9802c"><div class="ttname"><a href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7aa62b22cd035e89e52f4f51e5ccc9802c">SIRTC_RED</a></div><div class="ttdeci">@ SIRTC_RED</div><div class="ttdoc">Red.</div><div class="ttdef"><b>Definition</b> types.h:113</div></div>
+</div><!-- fragment -->
+<p>Default <a class="el" href="group__publictypes.html#structsir__textstyle" title="Container for all the information associated with the appearance of text in the context of stdio.">sir_textstyle</a> for <a class="el" href="group__publictypes.html#gac559a9050c927bf0dc9f88dfc3905e06" title="Critical errors.">SIRL_CRIT</a>. </p>
+<p>Applied to stdio destinations upon library initialization.</p>
+<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>. </dd></dl>
+
+</div>
+</div>
+<a id="ga421e032fc253010c055403f1dc1688c2" name="ga421e032fc253010c055403f1dc1688c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga421e032fc253010c055403f1dc1688c2">&#9670;&#160;</a></span>sir_lvl_debug_def_style</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a> sir_lvl_debug_def_style</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2daa0d426c2ea1dfa48ad6e29a69f03d04c">SIRTA_NORMAL</a>,</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7afc39eaef40fe161644258c9465c537bd">SIRTC_DGRAY</a>,</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a6435ad1ff8e5c1495342f96398f73d8b">SIRTC_DEFAULT</a></div>
+<div class="line">}</div>
+<div class="ttc" id="agroup__publictypes_html_gga1bf5e489a6af0dcb905788c1e7a5ec2daa0d426c2ea1dfa48ad6e29a69f03d04c"><div class="ttname"><a href="group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2daa0d426c2ea1dfa48ad6e29a69f03d04c">SIRTA_NORMAL</a></div><div class="ttdeci">@ SIRTA_NORMAL</div><div class="ttdoc">Normal text.</div><div class="ttdef"><b>Definition</b> types.h:102</div></div>
+<div class="ttc" id="agroup__publictypes_html_ggadf764cbdea00d65edcd07bb9953ad2b7afc39eaef40fe161644258c9465c537bd"><div class="ttname"><a href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7afc39eaef40fe161644258c9465c537bd">SIRTC_DGRAY</a></div><div class="ttdeci">@ SIRTC_DGRAY</div><div class="ttdoc">Dark gray.</div><div class="ttdef"><b>Definition</b> types.h:120</div></div>
+</div><!-- fragment -->
+<p>Default <a class="el" href="group__publictypes.html#structsir__textstyle" title="Container for all the information associated with the appearance of text in the context of stdio.">sir_textstyle</a> for <a class="el" href="group__publictypes.html#gaa2927c260f1d8fac96513442e50105fc" title="Debugging/diagnostic output.">SIRL_DEBUG</a>. </p>
+<p>Applied to stdio destinations upon library initialization.</p>
+<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>. </dd></dl>
+
+</div>
+</div>
+<a id="gab6726fccfc830dfe0bc5e0640e8d253e" name="gab6726fccfc830dfe0bc5e0640e8d253e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab6726fccfc830dfe0bc5e0640e8d253e">&#9670;&#160;</a></span>sir_lvl_emerg_def_style</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a> sir_lvl_emerg_def_style</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2dabd921418f53873c49dea5f9f3ea81f4b">SIRTA_BOLD</a>,</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a17661620bd839f5e015a43d5e6913c0f">SIRTC_BYELLOW</a>,</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7aa62b22cd035e89e52f4f51e5ccc9802c">SIRTC_RED</a></div>
+<div class="line">}</div>
+</div><!-- fragment -->
+<p>Default <a class="el" href="group__publictypes.html#structsir__textstyle" title="Container for all the information associated with the appearance of text in the context of stdio.">sir_textstyle</a> for <a class="el" href="group__publictypes.html#ga2409f97357f1eb510ababeb6e0a030e8" title="Nuclear war, Armageddon, etc.">SIRL_EMERG</a>. </p>
+<p>Applied to stdio destinations upon library initialization.</p>
+<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>. </dd></dl>
+
+</div>
+</div>
+<a id="ga49e4babaece2219023aae3f747f60e3a" name="ga49e4babaece2219023aae3f747f60e3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga49e4babaece2219023aae3f747f60e3a">&#9670;&#160;</a></span>sir_lvl_error_def_style</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a> sir_lvl_error_def_style</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2daa0d426c2ea1dfa48ad6e29a69f03d04c">SIRTA_NORMAL</a>,</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7aa62b22cd035e89e52f4f51e5ccc9802c">SIRTC_RED</a>,</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a6435ad1ff8e5c1495342f96398f73d8b">SIRTC_DEFAULT</a></div>
+<div class="line">}</div>
+</div><!-- fragment -->
+<p>Default <a class="el" href="group__publictypes.html#structsir__textstyle" title="Container for all the information associated with the appearance of text in the context of stdio.">sir_textstyle</a> for <a class="el" href="group__publictypes.html#ga39dffb8c9c5100251098820cb5b48446" title="Errors.">SIRL_ERROR</a>. </p>
+<p>Applied to stdio destinations upon library initialization.</p>
+<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>. </dd></dl>
+
+</div>
+</div>
+<a id="ga8aca18483225a6b4940155f979b83fe5" name="ga8aca18483225a6b4940155f979b83fe5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8aca18483225a6b4940155f979b83fe5">&#9670;&#160;</a></span>sir_lvl_info_def_style</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a> sir_lvl_info_def_style</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2daa0d426c2ea1dfa48ad6e29a69f03d04c">SIRTA_NORMAL</a>,</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a79f980cfe1c098f99358b9250c52491b">SIRTC_WHITE</a>,</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a6435ad1ff8e5c1495342f96398f73d8b">SIRTC_DEFAULT</a></div>
+<div class="line">}</div>
+<div class="ttc" id="agroup__publictypes_html_ggadf764cbdea00d65edcd07bb9953ad2b7a79f980cfe1c098f99358b9250c52491b"><div class="ttname"><a href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a79f980cfe1c098f99358b9250c52491b">SIRTC_WHITE</a></div><div class="ttdeci">@ SIRTC_WHITE</div><div class="ttdoc">White.</div><div class="ttdef"><b>Definition</b> types.h:127</div></div>
+</div><!-- fragment -->
+<p>Default <a class="el" href="group__publictypes.html#structsir__textstyle" title="Container for all the information associated with the appearance of text in the context of stdio.">sir_textstyle</a> for <a class="el" href="group__publictypes.html#ga9e73defcee82050f038956ad7e911621" title="Informational messages.">SIRL_INFO</a>. </p>
+<p>Applied to stdio destinations upon library initialization.</p>
+<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>. </dd></dl>
+
+</div>
+</div>
+<a id="gaf52b39bf2ea92d31b9d52949eae5cace" name="gaf52b39bf2ea92d31b9d52949eae5cace"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf52b39bf2ea92d31b9d52949eae5cace">&#9670;&#160;</a></span>sir_lvl_notice_def_style</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a> sir_lvl_notice_def_style</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2daa0d426c2ea1dfa48ad6e29a69f03d04c">SIRTA_NORMAL</a>,</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a283e06452d5e663666c4274a94ccab2a">SIRTC_CYAN</a>,</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a6435ad1ff8e5c1495342f96398f73d8b">SIRTC_DEFAULT</a></div>
+<div class="line">}</div>
+<div class="ttc" id="agroup__publictypes_html_ggadf764cbdea00d65edcd07bb9953ad2b7a283e06452d5e663666c4274a94ccab2a"><div class="ttname"><a href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a283e06452d5e663666c4274a94ccab2a">SIRTC_CYAN</a></div><div class="ttdeci">@ SIRTC_CYAN</div><div class="ttdoc">Cyan.</div><div class="ttdef"><b>Definition</b> types.h:118</div></div>
+</div><!-- fragment -->
+<p>Default <a class="el" href="group__publictypes.html#structsir__textstyle" title="Container for all the information associated with the appearance of text in the context of stdio.">sir_textstyle</a> for <a class="el" href="group__publictypes.html#gad4aefd62d77b020460d32c9350bec7d5" title="Normal but significant.">SIRL_NOTICE</a>. </p>
+<p>Applied to stdio destinations upon library initialization.</p>
+<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>. </dd></dl>
+
+</div>
+</div>
+<a id="gaef2e615ebaeeb41f46322754a2f56c98" name="gaef2e615ebaeeb41f46322754a2f56c98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaef2e615ebaeeb41f46322754a2f56c98">&#9670;&#160;</a></span>sir_lvl_warn_def_style</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a> sir_lvl_warn_def_style</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2dabd921418f53873c49dea5f9f3ea81f4b">SIRTA_BOLD</a>,</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a2c5ba8731523096ff871e27e82d9a9ba">SIRTC_YELLOW</a>,</div>
+<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a6435ad1ff8e5c1495342f96398f73d8b">SIRTC_DEFAULT</a></div>
+<div class="line">}</div>
+<div class="ttc" id="agroup__publictypes_html_ggadf764cbdea00d65edcd07bb9953ad2b7a2c5ba8731523096ff871e27e82d9a9ba"><div class="ttname"><a href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a2c5ba8731523096ff871e27e82d9a9ba">SIRTC_YELLOW</a></div><div class="ttdeci">@ SIRTC_YELLOW</div><div class="ttdoc">Yellow.</div><div class="ttdef"><b>Definition</b> types.h:115</div></div>
+</div><!-- fragment -->
+<p>Default <a class="el" href="group__publictypes.html#structsir__textstyle" title="Container for all the information associated with the appearance of text in the context of stdio.">sir_textstyle</a> for <a class="el" href="group__publictypes.html#ga91b18adc2526599377583951c29e84b9" title="Warnings that could likely be ignored.">SIRL_WARN</a>. </p>
+<p>Applied to stdio destinations upon library initialization.</p>
+<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>. </dd></dl>
 
 </div>
 </div>
@@ -280,6 +540,58 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="ga47b9f4b74ed2b3d81d34c0d0237b100f" name="ga47b9f4b74ed2b3d81d34c0d0237b100f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga47b9f4b74ed2b3d81d34c0d0237b100f">&#9670;&#160;</a></span>sir_stdout_def_lvls</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a> sir_stdout_def_lvls = <a class="el" href="group__publictypes.html#gaa2927c260f1d8fac96513442e50105fc">SIRL_DEBUG</a> | <a class="el" href="group__publictypes.html#ga9e73defcee82050f038956ad7e911621">SIRL_INFO</a> | <a class="el" href="group__publictypes.html#gad4aefd62d77b020460d32c9350bec7d5">SIRL_NOTICE</a> | <a class="el" href="group__publictypes.html#ga91b18adc2526599377583951c29e84b9">SIRL_WARN</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default levels for stdout. </p>
+<p>The stdout destination is registered for these levels if <a class="el" href="group__publictypes.html#ga640c1b7e6daea59af42137e10e3c3b29" title="Default levels for this type of destination.">SIRL_DEFAULT</a> is set on the <a class="el" href="group__publictypes.html#structsir__stdio__dest" title="Configuration for stdio destinations (stdout and stderr).">sir_stdio_dest</a> when <a class="el" href="group__publicfuncs.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes libsir for use.">sir_init</a> is called.</p>
+<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga6f17febe99cb0beb6f8119283cc62d42" title="Set new level registrations for stdout.">sir_stdoutlevels</a>. </dd></dl>
+
+</div>
+</div>
+<a id="ga570e5f904a2aacfaf3284276784d4ddb" name="ga570e5f904a2aacfaf3284276784d4ddb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga570e5f904a2aacfaf3284276784d4ddb">&#9670;&#160;</a></span>sir_stdout_def_opts</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> sir_stdout_def_opts = <a class="el" href="group__publictypes.html#gac3370e3a2be554f93e9e67bea177c8a0">SIRO_NOTIME</a> | <a class="el" href="group__publictypes.html#gaf6a215c540807f3ba15f97d372feeaf0">SIRO_NOHOST</a> | <a class="el" href="group__publictypes.html#gafd6f47db95d87395d4a37529f839c6de">SIRO_NOPID</a> | <a class="el" href="group__publictypes.html#ga093cea38ace2acb674162a0f7fb153a6">SIRO_NOTID</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default options for stdout. </p>
+<p>These options are applied to the stdout destination if <a class="el" href="group__publictypes.html#ga2a7a55618343c4cb76d7e428af72232b" title="Default options for this type of destination.">SIRO_DEFAULT</a> is set on the <a class="el" href="group__publictypes.html#structsir__stdio__dest" title="Configuration for stdio destinations (stdout and stderr).">sir_stdio_dest</a> when <a class="el" href="group__publicfuncs.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes libsir for use.">sir_init</a> is called.</p>
+<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#gac117aaf4a045115e58ba4471f9a4747f" title="Set new formatting options for stdout.">sir_stdoutopts</a>. </dd></dl>
+
+</div>
+</div>
 <a id="ga7a0b53f25f5140db6a320d815097e268" name="ga7a0b53f25f5140db6a320d815097e268"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga7a0b53f25f5140db6a320d815097e268">&#9670;&#160;</a></span>sir_syslog_def_lvls</h2>
 
@@ -301,12 +613,12 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= <a class="code hl_define" href="group__publictypes.html#gad4aefd62d77b020460d32c9350bec7d5">SIRL_NOTICE</a> | <a class="code hl_define" href="group__publictypes.html#ga91b18adc2526599377583951c29e84b9">SIRL_WARN</a> | <a class="code hl_define" href="group__publictypes.html#ga39dffb8c9c5100251098820cb5b48446">SIRL_ERROR</a> | <a class="code hl_define" href="group__publictypes.html#gac559a9050c927bf0dc9f88dfc3905e06">SIRL_CRIT</a> |</div>
 <div class="line">      <a class="code hl_define" href="group__publictypes.html#ga8549494d396c96ba66b5b78b298cff7d">SIRL_ALERT</a> | <a class="code hl_define" href="group__publictypes.html#ga2409f97357f1eb510ababeb6e0a030e8">SIRL_EMERG</a></div>
-<div class="ttc" id="agroup__publictypes_html_ga2409f97357f1eb510ababeb6e0a030e8"><div class="ttname"><a href="group__publictypes.html#ga2409f97357f1eb510ababeb6e0a030e8">SIRL_EMERG</a></div><div class="ttdeci">#define SIRL_EMERG</div><div class="ttdoc">Nuclear war, Armageddon, etc.</div><div class="ttdef"><b>Definition</b> types.h:52</div></div>
-<div class="ttc" id="agroup__publictypes_html_ga39dffb8c9c5100251098820cb5b48446"><div class="ttname"><a href="group__publictypes.html#ga39dffb8c9c5100251098820cb5b48446">SIRL_ERROR</a></div><div class="ttdeci">#define SIRL_ERROR</div><div class="ttdoc">Errors.</div><div class="ttdef"><b>Definition</b> types.h:55</div></div>
-<div class="ttc" id="agroup__publictypes_html_ga8549494d396c96ba66b5b78b298cff7d"><div class="ttname"><a href="group__publictypes.html#ga8549494d396c96ba66b5b78b298cff7d">SIRL_ALERT</a></div><div class="ttdeci">#define SIRL_ALERT</div><div class="ttdoc">Action required ASAP.</div><div class="ttdef"><b>Definition</b> types.h:53</div></div>
-<div class="ttc" id="agroup__publictypes_html_ga91b18adc2526599377583951c29e84b9"><div class="ttname"><a href="group__publictypes.html#ga91b18adc2526599377583951c29e84b9">SIRL_WARN</a></div><div class="ttdeci">#define SIRL_WARN</div><div class="ttdoc">Warnings that could likely be ignored.</div><div class="ttdef"><b>Definition</b> types.h:56</div></div>
-<div class="ttc" id="agroup__publictypes_html_gac559a9050c927bf0dc9f88dfc3905e06"><div class="ttname"><a href="group__publictypes.html#gac559a9050c927bf0dc9f88dfc3905e06">SIRL_CRIT</a></div><div class="ttdeci">#define SIRL_CRIT</div><div class="ttdoc">Critical errors.</div><div class="ttdef"><b>Definition</b> types.h:54</div></div>
-<div class="ttc" id="agroup__publictypes_html_gad4aefd62d77b020460d32c9350bec7d5"><div class="ttname"><a href="group__publictypes.html#gad4aefd62d77b020460d32c9350bec7d5">SIRL_NOTICE</a></div><div class="ttdeci">#define SIRL_NOTICE</div><div class="ttdoc">Normal but significant.</div><div class="ttdef"><b>Definition</b> types.h:57</div></div>
+<div class="ttc" id="agroup__publictypes_html_ga2409f97357f1eb510ababeb6e0a030e8"><div class="ttname"><a href="group__publictypes.html#ga2409f97357f1eb510ababeb6e0a030e8">SIRL_EMERG</a></div><div class="ttdeci">#define SIRL_EMERG</div><div class="ttdoc">Nuclear war, Armageddon, etc.</div><div class="ttdef"><b>Definition</b> types.h:53</div></div>
+<div class="ttc" id="agroup__publictypes_html_ga39dffb8c9c5100251098820cb5b48446"><div class="ttname"><a href="group__publictypes.html#ga39dffb8c9c5100251098820cb5b48446">SIRL_ERROR</a></div><div class="ttdeci">#define SIRL_ERROR</div><div class="ttdoc">Errors.</div><div class="ttdef"><b>Definition</b> types.h:56</div></div>
+<div class="ttc" id="agroup__publictypes_html_ga8549494d396c96ba66b5b78b298cff7d"><div class="ttname"><a href="group__publictypes.html#ga8549494d396c96ba66b5b78b298cff7d">SIRL_ALERT</a></div><div class="ttdeci">#define SIRL_ALERT</div><div class="ttdoc">Action required ASAP.</div><div class="ttdef"><b>Definition</b> types.h:54</div></div>
+<div class="ttc" id="agroup__publictypes_html_ga91b18adc2526599377583951c29e84b9"><div class="ttname"><a href="group__publictypes.html#ga91b18adc2526599377583951c29e84b9">SIRL_WARN</a></div><div class="ttdeci">#define SIRL_WARN</div><div class="ttdoc">Warnings that could likely be ignored.</div><div class="ttdef"><b>Definition</b> types.h:57</div></div>
+<div class="ttc" id="agroup__publictypes_html_gac559a9050c927bf0dc9f88dfc3905e06"><div class="ttname"><a href="group__publictypes.html#gac559a9050c927bf0dc9f88dfc3905e06">SIRL_CRIT</a></div><div class="ttdeci">#define SIRL_CRIT</div><div class="ttdoc">Critical errors.</div><div class="ttdef"><b>Definition</b> types.h:55</div></div>
+<div class="ttc" id="agroup__publictypes_html_gad4aefd62d77b020460d32c9350bec7d5"><div class="ttname"><a href="group__publictypes.html#gad4aefd62d77b020460d32c9350bec7d5">SIRL_NOTICE</a></div><div class="ttdeci">#define SIRL_NOTICE</div><div class="ttdoc">Normal but significant.</div><div class="ttdef"><b>Definition</b> types.h:58</div></div>
 </div><!-- fragment -->
 <p>Default levels for the system logger. </p>
 <p>The system logger destination is registered for these levels if <a class="el" href="group__publictypes.html#ga640c1b7e6daea59af42137e10e3c3b29" title="Default levels for this type of destination.">SIRL_DEFAULT</a> is set on the <a class="el" href="group__publictypes.html#structsir__syslog__dest" title="Configuration for the system logger destination.">sir_syslog_dest</a> when <a class="el" href="group__publicfuncs.html#gaa4f5707f5e4ed9702cde75a8c80c4e4a" title="Initializes libsir for use.">sir_init</a> is called.</p>
@@ -339,318 +651,6 @@ Variables</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga5b32a04501257df43bbe56169ab383c2" title="Set new formatting options for the system logger destination.">sir_syslogopts</a>.</dd>
 <dd>
 <a class="el" href="group__publictypes.html#gafdc3b32bdee26cd4f457a4cecd2771ad" title="Sets all other options except SIRO_NOHDR.">SIRO_MSGONLY</a> disables all output formatting, leaving just the message text itself. </dd></dl>
-
-</div>
-</div>
-<a id="ga1337de627cb0dd234f34b07b4d77a931" name="ga1337de627cb0dd234f34b07b4d77a931"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1337de627cb0dd234f34b07b4d77a931">&#9670;&#160;</a></span>sir_file_def_lvls</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a> sir_file_def_lvls = <a class="el" href="group__publictypes.html#gac393a8a8f335fe44d28f39c91293af1f">SIRL_ALL</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Default levels for log files. </p>
-<p>Log file destinations are registered for these levels if <a class="el" href="group__publictypes.html#ga640c1b7e6daea59af42137e10e3c3b29" title="Default levels for this type of destination.">SIRL_DEFAULT</a> is passed to <a class="el" href="group__publicfuncs.html#gaa04f4ca1fc06e1d99ca4f0fd6422b573" title="Adds a log file and registers it to receive log output.">sir_addfile</a>.</p>
-<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga5a776d3d55e9f993eb0fad82788e1160" title="Set new level registrations for a log file already managed by libsir.">sir_filelevels</a>.</dd>
-<dd>
-<a class="el" href="group__publictypes.html#gac393a8a8f335fe44d28f39c91293af1f" title="Include all logging levels.">SIRL_ALL</a> includes every logging level from debug to emergency. </dd></dl>
-
-</div>
-</div>
-<a id="ga7b82b6fc3f0701c4db31d05a0b7a17ba" name="ga7b82b6fc3f0701c4db31d05a0b7a17ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga7b82b6fc3f0701c4db31d05a0b7a17ba">&#9670;&#160;</a></span>sir_file_def_opts</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> sir_file_def_opts = <a class="el" href="group__publictypes.html#ga40584e96084fe85a8ad8a7be98ff5fc9">SIRO_ALL</a> | <a class="el" href="group__publictypes.html#gaf6a215c540807f3ba15f97d372feeaf0">SIRO_NOHOST</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Default options for log files. </p>
-<p>Applied to log file destinations if <a class="el" href="group__publictypes.html#ga2a7a55618343c4cb76d7e428af72232b" title="Default options for this type of destination.">SIRO_DEFAULT</a> is passed to <a class="el" href="group__publicfuncs.html#gaa04f4ca1fc06e1d99ca4f0fd6422b573" title="Adds a log file and registers it to receive log output.">sir_addfile</a>.</p>
-<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#gaf14164a64eca824a2bae72ef4e9689cd" title="Set new formatting options for a log file already managed by libsir.">sir_fileopts</a>. </dd></dl>
-
-</div>
-</div>
-<a id="gab6726fccfc830dfe0bc5e0640e8d253e" name="gab6726fccfc830dfe0bc5e0640e8d253e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab6726fccfc830dfe0bc5e0640e8d253e">&#9670;&#160;</a></span>sir_lvl_emerg_def_style</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a> sir_lvl_emerg_def_style</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2dabd921418f53873c49dea5f9f3ea81f4b">SIRTA_BOLD</a>,</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a17661620bd839f5e015a43d5e6913c0f">SIRTC_BYELLOW</a>,</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7aa62b22cd035e89e52f4f51e5ccc9802c">SIRTC_RED</a></div>
-<div class="line">}</div>
-<div class="ttc" id="agroup__publictypes_html_gga1bf5e489a6af0dcb905788c1e7a5ec2dabd921418f53873c49dea5f9f3ea81f4b"><div class="ttname"><a href="group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2dabd921418f53873c49dea5f9f3ea81f4b">SIRTA_BOLD</a></div><div class="ttdeci">@ SIRTA_BOLD</div><div class="ttdoc">Bold text.</div><div class="ttdef"><b>Definition</b> types.h:102</div></div>
-<div class="ttc" id="agroup__publictypes_html_ggadf764cbdea00d65edcd07bb9953ad2b7a17661620bd839f5e015a43d5e6913c0f"><div class="ttname"><a href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a17661620bd839f5e015a43d5e6913c0f">SIRTC_BYELLOW</a></div><div class="ttdeci">@ SIRTC_BYELLOW</div><div class="ttdoc">Bright yellow.</div><div class="ttdef"><b>Definition</b> types.h:122</div></div>
-<div class="ttc" id="agroup__publictypes_html_ggadf764cbdea00d65edcd07bb9953ad2b7aa62b22cd035e89e52f4f51e5ccc9802c"><div class="ttname"><a href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7aa62b22cd035e89e52f4f51e5ccc9802c">SIRTC_RED</a></div><div class="ttdeci">@ SIRTC_RED</div><div class="ttdoc">Red.</div><div class="ttdef"><b>Definition</b> types.h:112</div></div>
-</div><!-- fragment -->
-<p>Default <a class="el" href="group__publictypes.html#structsir__textstyle" title="Container for all the information associated with the appearance of text in the context of stdio.">sir_textstyle</a> for <a class="el" href="group__publictypes.html#ga2409f97357f1eb510ababeb6e0a030e8" title="Nuclear war, Armageddon, etc.">SIRL_EMERG</a>. </p>
-<p>Applied to stdio destinations upon library initialization.</p>
-<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>. </dd></dl>
-
-</div>
-</div>
-<a id="gafdb5a00e97fee751fe4018bf7c754bc7" name="gafdb5a00e97fee751fe4018bf7c754bc7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gafdb5a00e97fee751fe4018bf7c754bc7">&#9670;&#160;</a></span>sir_lvl_alert_def_style</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a> sir_lvl_alert_def_style</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2dabd921418f53873c49dea5f9f3ea81f4b">SIRTA_BOLD</a>,</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a67abb820e54b6f4eb6c36889cdb161a1">SIRTC_BLACK</a>,</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a17661620bd839f5e015a43d5e6913c0f">SIRTC_BYELLOW</a></div>
-<div class="line">}</div>
-<div class="ttc" id="agroup__publictypes_html_ggadf764cbdea00d65edcd07bb9953ad2b7a67abb820e54b6f4eb6c36889cdb161a1"><div class="ttname"><a href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a67abb820e54b6f4eb6c36889cdb161a1">SIRTC_BLACK</a></div><div class="ttdeci">@ SIRTC_BLACK</div><div class="ttdoc">Black.</div><div class="ttdef"><b>Definition</b> types.h:111</div></div>
-</div><!-- fragment -->
-<p>Default <a class="el" href="group__publictypes.html#structsir__textstyle" title="Container for all the information associated with the appearance of text in the context of stdio.">sir_textstyle</a> for <a class="el" href="group__publictypes.html#ga8549494d396c96ba66b5b78b298cff7d" title="Action required ASAP.">SIRL_ALERT</a>. </p>
-<p>Applied to stdio destinations upon library initialization.</p>
-<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>. </dd></dl>
-
-</div>
-</div>
-<a id="ga9eb15ab392a9376c2d1b0ac5b3d9d40c" name="ga9eb15ab392a9376c2d1b0ac5b3d9d40c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9eb15ab392a9376c2d1b0ac5b3d9d40c">&#9670;&#160;</a></span>sir_lvl_crit_def_style</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a> sir_lvl_crit_def_style</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2dabd921418f53873c49dea5f9f3ea81f4b">SIRTA_BOLD</a>,</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7aa62b22cd035e89e52f4f51e5ccc9802c">SIRTC_RED</a>,</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a6435ad1ff8e5c1495342f96398f73d8b">SIRTC_DEFAULT</a></div>
-<div class="line">}</div>
-<div class="ttc" id="agroup__publictypes_html_ggadf764cbdea00d65edcd07bb9953ad2b7a6435ad1ff8e5c1495342f96398f73d8b"><div class="ttname"><a href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a6435ad1ff8e5c1495342f96398f73d8b">SIRTC_DEFAULT</a></div><div class="ttdeci">@ SIRTC_DEFAULT</div><div class="ttdoc">Represents the default color.</div><div class="ttdef"><b>Definition</b> types.h:130</div></div>
-</div><!-- fragment -->
-<p>Default <a class="el" href="group__publictypes.html#structsir__textstyle" title="Container for all the information associated with the appearance of text in the context of stdio.">sir_textstyle</a> for <a class="el" href="group__publictypes.html#gac559a9050c927bf0dc9f88dfc3905e06" title="Critical errors.">SIRL_CRIT</a>. </p>
-<p>Applied to stdio destinations upon library initialization.</p>
-<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>. </dd></dl>
-
-</div>
-</div>
-<a id="ga49e4babaece2219023aae3f747f60e3a" name="ga49e4babaece2219023aae3f747f60e3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga49e4babaece2219023aae3f747f60e3a">&#9670;&#160;</a></span>sir_lvl_error_def_style</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a> sir_lvl_error_def_style</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2daa0d426c2ea1dfa48ad6e29a69f03d04c">SIRTA_NORMAL</a>,</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7aa62b22cd035e89e52f4f51e5ccc9802c">SIRTC_RED</a>,</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a6435ad1ff8e5c1495342f96398f73d8b">SIRTC_DEFAULT</a></div>
-<div class="line">}</div>
-<div class="ttc" id="agroup__publictypes_html_gga1bf5e489a6af0dcb905788c1e7a5ec2daa0d426c2ea1dfa48ad6e29a69f03d04c"><div class="ttname"><a href="group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2daa0d426c2ea1dfa48ad6e29a69f03d04c">SIRTA_NORMAL</a></div><div class="ttdeci">@ SIRTA_NORMAL</div><div class="ttdoc">Normal text.</div><div class="ttdef"><b>Definition</b> types.h:101</div></div>
-</div><!-- fragment -->
-<p>Default <a class="el" href="group__publictypes.html#structsir__textstyle" title="Container for all the information associated with the appearance of text in the context of stdio.">sir_textstyle</a> for <a class="el" href="group__publictypes.html#ga39dffb8c9c5100251098820cb5b48446" title="Errors.">SIRL_ERROR</a>. </p>
-<p>Applied to stdio destinations upon library initialization.</p>
-<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>. </dd></dl>
-
-</div>
-</div>
-<a id="gaef2e615ebaeeb41f46322754a2f56c98" name="gaef2e615ebaeeb41f46322754a2f56c98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaef2e615ebaeeb41f46322754a2f56c98">&#9670;&#160;</a></span>sir_lvl_warn_def_style</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a> sir_lvl_warn_def_style</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2dabd921418f53873c49dea5f9f3ea81f4b">SIRTA_BOLD</a>,</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a2c5ba8731523096ff871e27e82d9a9ba">SIRTC_YELLOW</a>,</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a6435ad1ff8e5c1495342f96398f73d8b">SIRTC_DEFAULT</a></div>
-<div class="line">}</div>
-<div class="ttc" id="agroup__publictypes_html_ggadf764cbdea00d65edcd07bb9953ad2b7a2c5ba8731523096ff871e27e82d9a9ba"><div class="ttname"><a href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a2c5ba8731523096ff871e27e82d9a9ba">SIRTC_YELLOW</a></div><div class="ttdeci">@ SIRTC_YELLOW</div><div class="ttdoc">Yellow.</div><div class="ttdef"><b>Definition</b> types.h:114</div></div>
-</div><!-- fragment -->
-<p>Default <a class="el" href="group__publictypes.html#structsir__textstyle" title="Container for all the information associated with the appearance of text in the context of stdio.">sir_textstyle</a> for <a class="el" href="group__publictypes.html#ga91b18adc2526599377583951c29e84b9" title="Warnings that could likely be ignored.">SIRL_WARN</a>. </p>
-<p>Applied to stdio destinations upon library initialization.</p>
-<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>. </dd></dl>
-
-</div>
-</div>
-<a id="gaf52b39bf2ea92d31b9d52949eae5cace" name="gaf52b39bf2ea92d31b9d52949eae5cace"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf52b39bf2ea92d31b9d52949eae5cace">&#9670;&#160;</a></span>sir_lvl_notice_def_style</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a> sir_lvl_notice_def_style</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2daa0d426c2ea1dfa48ad6e29a69f03d04c">SIRTA_NORMAL</a>,</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a283e06452d5e663666c4274a94ccab2a">SIRTC_CYAN</a>,</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a6435ad1ff8e5c1495342f96398f73d8b">SIRTC_DEFAULT</a></div>
-<div class="line">}</div>
-<div class="ttc" id="agroup__publictypes_html_ggadf764cbdea00d65edcd07bb9953ad2b7a283e06452d5e663666c4274a94ccab2a"><div class="ttname"><a href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a283e06452d5e663666c4274a94ccab2a">SIRTC_CYAN</a></div><div class="ttdeci">@ SIRTC_CYAN</div><div class="ttdoc">Cyan.</div><div class="ttdef"><b>Definition</b> types.h:117</div></div>
-</div><!-- fragment -->
-<p>Default <a class="el" href="group__publictypes.html#structsir__textstyle" title="Container for all the information associated with the appearance of text in the context of stdio.">sir_textstyle</a> for <a class="el" href="group__publictypes.html#gad4aefd62d77b020460d32c9350bec7d5" title="Normal but significant.">SIRL_NOTICE</a>. </p>
-<p>Applied to stdio destinations upon library initialization.</p>
-<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>. </dd></dl>
-
-</div>
-</div>
-<a id="ga8aca18483225a6b4940155f979b83fe5" name="ga8aca18483225a6b4940155f979b83fe5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8aca18483225a6b4940155f979b83fe5">&#9670;&#160;</a></span>sir_lvl_info_def_style</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a> sir_lvl_info_def_style</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2daa0d426c2ea1dfa48ad6e29a69f03d04c">SIRTA_NORMAL</a>,</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a79f980cfe1c098f99358b9250c52491b">SIRTC_WHITE</a>,</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a6435ad1ff8e5c1495342f96398f73d8b">SIRTC_DEFAULT</a></div>
-<div class="line">}</div>
-<div class="ttc" id="agroup__publictypes_html_ggadf764cbdea00d65edcd07bb9953ad2b7a79f980cfe1c098f99358b9250c52491b"><div class="ttname"><a href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a79f980cfe1c098f99358b9250c52491b">SIRTC_WHITE</a></div><div class="ttdeci">@ SIRTC_WHITE</div><div class="ttdoc">White.</div><div class="ttdef"><b>Definition</b> types.h:126</div></div>
-</div><!-- fragment -->
-<p>Default <a class="el" href="group__publictypes.html#structsir__textstyle" title="Container for all the information associated with the appearance of text in the context of stdio.">sir_textstyle</a> for <a class="el" href="group__publictypes.html#ga9e73defcee82050f038956ad7e911621" title="Informational messages.">SIRL_INFO</a>. </p>
-<p>Applied to stdio destinations upon library initialization.</p>
-<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>. </dd></dl>
-
-</div>
-</div>
-<a id="ga421e032fc253010c055403f1dc1688c2" name="ga421e032fc253010c055403f1dc1688c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga421e032fc253010c055403f1dc1688c2">&#9670;&#160;</a></span>sir_lvl_debug_def_style</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="group__publictypes.html#structsir__textstyle">sir_textstyle</a> sir_lvl_debug_def_style</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#gga1bf5e489a6af0dcb905788c1e7a5ec2daa0d426c2ea1dfa48ad6e29a69f03d04c">SIRTA_NORMAL</a>,</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7afc39eaef40fe161644258c9465c537bd">SIRTC_DGRAY</a>,</div>
-<div class="line">    <a class="code hl_enumvalue" href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7a6435ad1ff8e5c1495342f96398f73d8b">SIRTC_DEFAULT</a></div>
-<div class="line">}</div>
-<div class="ttc" id="agroup__publictypes_html_ggadf764cbdea00d65edcd07bb9953ad2b7afc39eaef40fe161644258c9465c537bd"><div class="ttname"><a href="group__publictypes.html#ggadf764cbdea00d65edcd07bb9953ad2b7afc39eaef40fe161644258c9465c537bd">SIRTC_DGRAY</a></div><div class="ttdeci">@ SIRTC_DGRAY</div><div class="ttdoc">Dark gray.</div><div class="ttdef"><b>Definition</b> types.h:119</div></div>
-</div><!-- fragment -->
-<p>Default <a class="el" href="group__publictypes.html#structsir__textstyle" title="Container for all the information associated with the appearance of text in the context of stdio.">sir_textstyle</a> for <a class="el" href="group__publictypes.html#gaa2927c260f1d8fac96513442e50105fc" title="Debugging/diagnostic output.">SIRL_DEBUG</a>. </p>
-<p>Applied to stdio destinations upon library initialization.</p>
-<dl class="section note"><dt>Note</dt><dd>Can be modified at runtime by calling <a class="el" href="group__publicfuncs.html#ga1a4726075fbcea9fc311f059e342213f" title="Set new text styling for stdio (stdout/stderr) destinations on a per-level basis.">sir_settextstyle</a>. </dd></dl>
 
 </div>
 </div>

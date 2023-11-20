@@ -1,7 +1,7 @@
 /*
  * platform_embarcadero.h
  *
- * Author:    Ryan M. Lederman <lederman@gmail.com>
+ * Author:    Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright: Copyright (c) 2018-2023
  * Version:   2.2.4
  * License:   The MIT License (MIT)
@@ -28,7 +28,6 @@
 
 # if (defined(__TURBOC__) || defined(__BORLANDC__) || \
      defined(__BCPLUSPLUS__) || defined(__CODEGEARC__))
-#  include <stdint.h>
 #  if !defined(__EMBARCADEROC__)
 #   define __EMBARCADEROC__
 #  endif
@@ -44,6 +43,22 @@
 #  if defined(SIR_UIPTRx)
 #   undef PRIxPTR
 #   define PRIxPTR SIR_UIPTRx
+#  endif
+#  if defined(__UINTPTR_FMTX__)
+#   define SIR_UIPTRX __UINTPTR_FMTX__
+#  elif defined(PRIXPTR)
+#   define SIR_UIPTRx PRIXPTR
+#  endif
+#  if defined(SIR_UIPTRX)
+#   undef PRIXPTR
+#   define PRIXPTR SIR_UIPTRX
+#  endif
+#  if defined(__clang_major__)
+#   if defined(SIR_PTHREAD_GETNAME_NP) && (__clang_major__ >= 15)
+#    undef SIR_PTHREAD_GETNAME_NP
+#   endif
+#  else
+#   define __clang_major__ 0
 #  endif
 # endif
 

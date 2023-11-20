@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{7879321a-3829-4b13-9cce-85c13bf56a46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include">
+      <UniqueIdentifier>{cac0ac3d-42cb-4932-86e4-10b5b2f8cc86}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\sir.hh">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tests\tests_shared.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tests\tests++.hh">
+      <Filter>Include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\tests\tests_shared.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\tests++.cc">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

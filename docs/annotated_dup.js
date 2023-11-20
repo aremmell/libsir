@@ -1,6 +1,22 @@
 var annotated_dup =
 [
+    [ "sir", "namespacesir.html", [
+      [ "adapter", "classsir_1_1adapter.html", null ],
+      [ "boost_format_adapter", "classsir_1_1boost__format__adapter.html", null ],
+      [ "default_adapter", "classsir_1_1default__adapter.html", "classsir_1_1default__adapter" ],
+      [ "default_policy", "classsir_1_1default__policy.html", "classsir_1_1default__policy" ],
+      [ "error", "structsir_1_1error.html", "structsir_1_1error" ],
+      [ "error_info", "structsir_1_1error__info.html", "structsir_1_1error__info" ],
+      [ "exception", "classsir_1_1exception.html", null ],
+      [ "fmt_format_adapter", "classsir_1_1fmt__format__adapter.html", null ],
+      [ "logger", "classsir_1_1logger.html", null ],
+      [ "policy", "classsir_1_1policy.html", "classsir_1_1policy" ],
+      [ "std_format_adapter", "classsir_1_1std__format__adapter.html", null ],
+      [ "std_iostream_adapter", "classsir_1_1std__iostream__adapter.html", null ]
+    ] ],
     [ "sir_cl_arg", "structsir__cl__arg.html", "structsir__cl__arg" ],
+    [ "sir_cl_config", "structsir__cl__config.html", "structsir__cl__config" ],
+    [ "sir_errorinfo", "group__publictypes.html#structsir__errorinfo", "group__publictypes_structsir__errorinfo" ],
     [ "sir_level_str_pair", "structsir__level__str__pair.html", "structsir__level__str__pair" ],
     [ "sir_level_style_tuple", "structsir__level__style__tuple.html", "structsir__level__style__tuple" ],
     [ "sir_plugin", "structsir__plugin.html", null ],
@@ -12,7 +28,7 @@ var annotated_dup =
     [ "sir_stdio_dest", "group__publictypes.html#structsir__stdio__dest", "group__publictypes_structsir__stdio__dest" ],
     [ "sir_syslog_dest", "group__publictypes.html#structsir__syslog__dest", "group__publictypes_structsir__syslog__dest" ],
     [ "sir_syslog_dest._state", "group__publictypes.html#structsir__syslog__dest_8__state", "group__publictypes_structsir__syslog__dest_8__state" ],
-    [ "sir_test", "structsir__test.html", null ],
+    [ "sir_test", "structsir__test.html", "structsir__test" ],
     [ "sir_text_style_data", "structsir__text__style__data.html", null ],
     [ "sir_textstyle", "group__publictypes.html#structsir__textstyle", "group__publictypes_structsir__textstyle" ],
     [ "sir_thread_err", "structsir__thread__err.html", null ],
@@ -23,9 +39,7 @@ var annotated_dup =
     [ "sirbuf", "structsirbuf.html", null ],
     [ "sirconfig", "structsirconfig.html", null ],
     [ "sirconfig.state.last", "structsirconfig_8state_8last.html", null ],
-    [ "sirerror", "structsirerror.html", null ],
     [ "sirfcache", "structsirfcache.html", null ],
     [ "sirfile", "structsirfile.html", null ],
-    [ "sirinit", "group__publictypes.html#structsirinit", "group__publictypes_structsirinit" ],
-    [ "thread_args", "structthread__args.html", null ]
+    [ "sirinit", "group__publictypes.html#structsirinit", "group__publictypes_structsirinit" ]
 ];

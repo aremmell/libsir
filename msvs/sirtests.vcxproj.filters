@@ -12,9 +12,15 @@
     <ClCompile Include="..\tests\tests.c">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\tests\tests_shared.c">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tests\tests.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tests\tests_shared.h">
       <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>

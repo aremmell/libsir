@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['interface_0',['Public Interface',['../group__public.html',1,'']]]
+  ['functions_0',['Functions',['../group__publicfuncs.html',1,'']]]
 ];

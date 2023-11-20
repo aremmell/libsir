@@ -118,7 +118,12 @@ $(document).ready(function(){initNavTree('config_8h.html',''); initResizable(); 
 
 <p>Compile-time configuration.  
 <a href="#details">More...</a></p>
-
+<div class="textblock"><div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="config_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+</div>
 <p><a href="config_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -263,7 +268,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:ad6fce840144259e992c33fb611f31262"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum size, in characters, of an error message. <br /></td></tr>
 <tr class="separator:ad6fce840144259e992c33fb611f31262"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a060398bb73afb43df07b1587bcec98ba" id="r_a060398bb73afb43df07b1587bcec98ba"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#a060398bb73afb43df07b1587bcec98ba">SIR_ERRORFORMAT</a>&#160;&#160;&#160;&quot;Error in %s (%s:%u): '%s'&quot;</td></tr>
-<tr class="memdesc:a060398bb73afb43df07b1587bcec98ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">The format string for error messages returned by <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a>.  <br /></td></tr>
+<tr class="memdesc:a060398bb73afb43df07b1587bcec98ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">The format string for error messages returned by <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a>.  <br /></td></tr>
 <tr class="separator:a060398bb73afb43df07b1587bcec98ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9776f0b7cf01f82f2580a29c9efb6d6" id="r_af9776f0b7cf01f82f2580a29c9efb6d6"><td class="memItemLeft" align="right" valign="top"><a id="af9776f0b7cf01f82f2580a29c9efb6d6" name="af9776f0b7cf01f82f2580a29c9efb6d6"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SIR_UNKNOWN</b>&#160;&#160;&#160;&quot;&lt;unknown&gt;&quot;</td></tr>
@@ -332,42 +337,196 @@ Macros</h2></td></tr>
 <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
 <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ab1531d6b0d9c880b793362322542794c" name="ab1531d6b0d9c880b793362322542794c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1531d6b0d9c880b793362322542794c">&#9670;&#160;</a></span>SIR_TIMEFORMAT</h2>
+<a id="a060398bb73afb43df07b1587bcec98ba" name="a060398bb73afb43df07b1587bcec98ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a060398bb73afb43df07b1587bcec98ba">&#9670;&#160;</a></span>SIR_ERRORFORMAT</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define SIR_TIMEFORMAT&#160;&#160;&#160;&quot;%H:%M:%S&quot;</td>
+          <td class="memname">#define SIR_ERRORFORMAT&#160;&#160;&#160;&quot;Error in %s (%s:%u): '%s'&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The time stamp format string at the start of log messages-not including milliseconds (as::SIR_MSECFORMAT), which is added separately. </p>
-<dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#gac3370e3a2be554f93e9e67bea177c8a0" title="Exclude time stamps (implies SIRO_NOMSEC).">SIRO_NOTIME</a> is not set.</dd></dl>
-<p><b>Example</b> </p><div class="fragment"><div class="line">23:30:26</div>
+<p>The format string for error messages returned by <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves a formatted message for the last error that occurred on the calling thread and returns the ...">sir_geterror</a>. </p>
+<ul>
+<li>The first <code>%s</code> format specifier is the function name.</li>
+<li>The second <code>%s</code> is the file name.</li>
+<li>The <code>%lu</code> is the line number in the file.</li>
+<li>The third <code>%s</code> is the error message.</li>
+</ul>
+<p><b>Example</b> </p><div class="fragment"><div class="line">Error in findneedle (haystack.c:384): <span class="stringliteral">&#39;Too much hay&#39;</span></div>
 </div><!-- fragment --> 
 </div>
 </div>
-<a id="a11214c8798ccdaab052c3bc9db2e3e78" name="a11214c8798ccdaab052c3bc9db2e3e78"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a11214c8798ccdaab052c3bc9db2e3e78">&#9670;&#160;</a></span>SIR_MSECFORMAT</h2>
+<a id="aeb4e44bc613c57c3c49e27b66e69e933" name="aeb4e44bc613c57c3c49e27b66e69e933"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb4e44bc613c57c3c49e27b66e69e933">&#9670;&#160;</a></span>SIR_FHBEGIN</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define SIR_MSECFORMAT&#160;&#160;&#160;&quot;.%03ld&quot;</td>
+          <td class="memname">#define SIR_FHBEGIN&#160;&#160;&#160;&quot;session begin @&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The format for milliseconds (1000ths of a second) in time stamps. </p>
-<dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#gac3370e3a2be554f93e9e67bea177c8a0" title="Exclude time stamps (implies SIRO_NOMSEC).">SIRO_NOTIME</a> <em>or</em> <a class="el" href="group__publictypes.html#ga0bdfbd616c096c6dfbb481b54fd1e397" title="Exclude millisecond-resolution in time stamps.">SIRO_NOMSEC</a> are not set. </dd>
-<dd>
-<a class="el" href="group__publictypes.html#gac3370e3a2be554f93e9e67bea177c8a0" title="Exclude time stamps (implies SIRO_NOMSEC).">SIRO_NOTIME</a> implies <a class="el" href="group__publictypes.html#ga0bdfbd616c096c6dfbb481b54fd1e397" title="Exclude millisecond-resolution in time stamps.">SIRO_NOMSEC</a>.</dd></dl>
-<p><b>Example</b> </p><div class="fragment"><div class="line">.034</div>
+<p>The string included in <a class="el" href="config_8h.html#a7c652578740e372edeac33d14f6408fd" title="The format string written to a log file when logging begins or the file is rolled/archived.">SIR_FHFORMAT</a> when a logging session begins. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#ga7b417924811962ca0aeaca30bdf38cf6" title="Don&#39;t write header messages to log files.">SIRO_NOHDR</a> is not set. </dd></dl>
+
+</div>
+</div>
+<a id="a7c652578740e372edeac33d14f6408fd" name="a7c652578740e372edeac33d14f6408fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c652578740e372edeac33d14f6408fd">&#9670;&#160;</a></span>SIR_FHFORMAT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_FHFORMAT&#160;&#160;&#160;&quot;\n\n----- %s %s -----\n\n&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The format string written to a log file when logging begins or the file is rolled/archived. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#ga7b417924811962ca0aeaca30bdf38cf6" title="Don&#39;t write header messages to log files.">SIRO_NOHDR</a> is not set.</dd></dl>
+<ul>
+<li>The first <code>%s</code> format specifier is the message:<ul>
+<li><a class="el" href="config_8h.html#aeb4e44bc613c57c3c49e27b66e69e933" title="The string included in SIR_FHFORMAT when a logging session begins.">SIR_FHBEGIN</a></li>
+<li><a class="el" href="config_8h.html#aca213e22f32a371da7ca82eb86a16c9a" title="The string included in SIR_FHFORMAT when a file is rolled/archived due to becoming larger than SIR_FR...">SIR_FHROLLED</a></li>
+</ul>
+</li>
+<li>The second <code>%s</code> is the current date/time in the format specified by <a class="el" href="config_8h.html#a90d4862e769fd5effefb1e1dedf520c8" title="The time format string used in file headers (see SIR_FHFORMAT).">SIR_FHTIMEFORMAT</a>. </li>
+</ul>
+
+</div>
+</div>
+<a id="aca213e22f32a371da7ca82eb86a16c9a" name="aca213e22f32a371da7ca82eb86a16c9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca213e22f32a371da7ca82eb86a16c9a">&#9670;&#160;</a></span>SIR_FHROLLED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_FHROLLED&#160;&#160;&#160;&quot;archived as %s due to size @&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The string included in <a class="el" href="config_8h.html#a7c652578740e372edeac33d14f6408fd" title="The format string written to a log file when logging begins or the file is rolled/archived.">SIR_FHFORMAT</a> when a file is rolled/archived due to becoming larger than <a class="el" href="config_8h.html#a019fb62b107343bafedb0f5ad84f7d3a" title="The size, in bytes, at which a log file will be rolled/archived.">SIR_FROLLSIZE</a> bytes in size. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#ga7b417924811962ca0aeaca30bdf38cf6" title="Don&#39;t write header messages to log files.">SIRO_NOHDR</a> is not set.</dd></dl>
+<p>The <code>%s</code> format specifier is the path of the archived file. </p>
+
+</div>
+</div>
+<a id="a90d4862e769fd5effefb1e1dedf520c8" name="a90d4862e769fd5effefb1e1dedf520c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90d4862e769fd5effefb1e1dedf520c8">&#9670;&#160;</a></span>SIR_FHTIMEFORMAT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_FHTIMEFORMAT&#160;&#160;&#160;&quot;%H:%M:%S %a %d %b %Y (%z)&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The time format string used in file headers (see <a class="el" href="config_8h.html#a7c652578740e372edeac33d14f6408fd" title="The format string written to a log file when logging begins or the file is rolled/archived.">SIR_FHFORMAT</a>). </p>
+<dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#ga7b417924811962ca0aeaca30bdf38cf6" title="Don&#39;t write header messages to log files.">SIRO_NOHDR</a> is not set.</dd></dl>
+<p><b>Example</b> </p><div class="fragment"><div class="line">15:13:41 Fri 9 Jun 2023 (-0600)</div>
 </div><!-- fragment --> 
+</div>
+</div>
+<a id="a30cae1b7b493f9be429ff683b9d77677" name="a30cae1b7b493f9be429ff683b9d77677"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30cae1b7b493f9be429ff683b9d77677">&#9670;&#160;</a></span>SIR_FNAMEFORMAT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_FNAMEFORMAT&#160;&#160;&#160;&quot;%s-%s%s%s&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The format string for rolled/archived log file names. </p>
+<ul>
+<li>The first %s format specifier is the original file name, up to but not including the last full stop (.), if any exist.</li>
+<li>The second %s is the time stamp as defined by <a class="el" href="config_8h.html#aeb4949a438cb054dbd261eead7e9d6c9" title="The time format string for rolled/archived log files (see SIR_FNAMEFORMAT).">SIR_FNAMETIMEFORMAT</a>.</li>
+<li>The third %s is a sequence number, which may be used in the event that a log file with the same name already exists (i.e., 2 or more files are rolled/archived within a second). Its format is defined by <a class="el" href="config_8h.html#a0dbd6db580edf1d367220202e3dff944" title="The sequence number format string for rolled/archived log files (see SIR_FNAMEFORMAT).">SIR_FNAMESEQFORMAT</a>.</li>
+<li>The fourth %s is the original file name including, and beyond the last full stop, if one was found.</li>
+</ul>
+<p><b>Example</b> </p><div class="fragment"><div class="line">`oldname.log`  -&gt;  `oldname-23-06-09-122049-1.log`</div>
+</div><!-- fragment --> 
+</div>
+</div>
+<a id="a0dbd6db580edf1d367220202e3dff944" name="a0dbd6db580edf1d367220202e3dff944"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0dbd6db580edf1d367220202e3dff944">&#9670;&#160;</a></span>SIR_FNAMESEQFORMAT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_FNAMESEQFORMAT&#160;&#160;&#160;&quot;-%hu&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The sequence number format string for rolled/archived log files (see <a class="el" href="config_8h.html#a30cae1b7b493f9be429ff683b9d77677" title="The format string for rolled/archived log file names.">SIR_FNAMEFORMAT</a>). </p>
+<p><b>Example</b> </p><div class="fragment"><div class="line">-1</div>
+</div><!-- fragment --> 
+</div>
+</div>
+<a id="aeb4949a438cb054dbd261eead7e9d6c9" name="aeb4949a438cb054dbd261eead7e9d6c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb4949a438cb054dbd261eead7e9d6c9">&#9670;&#160;</a></span>SIR_FNAMETIMEFORMAT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_FNAMETIMEFORMAT&#160;&#160;&#160;&quot;%Y-%m-%d-%H%M%S&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The time format string for rolled/archived log files (see <a class="el" href="config_8h.html#a30cae1b7b493f9be429ff683b9d77677" title="The format string for rolled/archived log file names.">SIR_FNAMEFORMAT</a>). </p>
+<p><b>Example</b> </p><div class="fragment"><div class="line">2023-06-09-122049</div>
+</div><!-- fragment --> 
+</div>
+</div>
+<a id="a019fb62b107343bafedb0f5ad84f7d3a" name="a019fb62b107343bafedb0f5ad84f7d3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a019fb62b107343bafedb0f5ad84f7d3a">&#9670;&#160;</a></span>SIR_FROLLSIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_FROLLSIZE&#160;&#160;&#160;(1024 * 1024 * 5)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The size, in bytes, at which a log file will be rolled/archived. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>Default = 5 MiB. </dd></dl>
+
+</div>
+</div>
+<a id="a46e195050794e32a234cda5f1af57a2a" name="a46e195050794e32a234cda5f1af57a2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46e195050794e32a234cda5f1af57a2a">&#9670;&#160;</a></span>SIR_HNAME_CHK_INTERVAL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_HNAME_CHK_INTERVAL&#160;&#160;&#160;60</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The number of seconds to let elapse before checking if the hostname needs refreshing. </p>
+<p>The default is an eager 1 minute. Better safe than wrong? </p>
+
 </div>
 </div>
 <a id="a359b781cc4fde8dd09e30b95328b3ab0" name="a359b781cc4fde8dd09e30b95328b3ab0"></a>
@@ -404,38 +563,41 @@ Macros</h2></td></tr>
 
 </div>
 </div>
-<a id="a783092ff31da5f9acc116c9f4657f671" name="a783092ff31da5f9acc116c9f4657f671"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a783092ff31da5f9acc116c9f4657f671">&#9670;&#160;</a></span>SIR_PIDPREFIX</h2>
+<a id="a5f006a2e9ce93ae8d693a2928af33bb2" name="a5f006a2e9ce93ae8d693a2928af33bb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f006a2e9ce93ae8d693a2928af33bb2">&#9670;&#160;</a></span>SIR_MAXMESSAGE</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define SIR_PIDPREFIX&#160;&#160;&#160;&quot;(&quot;</td>
+          <td class="memname">#define SIR_MAXMESSAGE&#160;&#160;&#160;4096</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The string placed directly before process and thread IDs. </p>
-<dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#ga0d3bc4aa34b9399e72621632b877b16a" title="Exclude process/app name.">SIRO_NONAME</a> is not set. </dd></dl>
+<p>The maximum number of characters allowable in one log message. </p>
+<p>This does not include accompanying formatted output (see <a class="el" href="config_8h.html#ab3e26cb9ac224cb9a695ddf1ed099218" title="The maximum size, in characters, of final formatted output.">SIR_MAXOUTPUT</a>). </p>
 
 </div>
 </div>
-<a id="abd5132131479030a120c289812e38363" name="abd5132131479030a120c289812e38363"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd5132131479030a120c289812e38363">&#9670;&#160;</a></span>SIR_PIDSUFFIX</h2>
+<a id="a11214c8798ccdaab052c3bc9db2e3e78" name="a11214c8798ccdaab052c3bc9db2e3e78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11214c8798ccdaab052c3bc9db2e3e78">&#9670;&#160;</a></span>SIR_MSECFORMAT</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define SIR_PIDSUFFIX&#160;&#160;&#160;&quot;)&quot;</td>
+          <td class="memname">#define SIR_MSECFORMAT&#160;&#160;&#160;&quot;.%03ld&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The character placed directly after process and thread IDs. </p>
-<dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#ga0d3bc4aa34b9399e72621632b877b16a" title="Exclude process/app name.">SIRO_NONAME</a> is not set. </dd></dl>
-
+<p>The format for milliseconds (1000ths of a second) in time stamps. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#gac3370e3a2be554f93e9e67bea177c8a0" title="Exclude time stamps (implies SIRO_NOMSEC).">SIRO_NOTIME</a> <em>or</em> <a class="el" href="group__publictypes.html#ga0bdfbd616c096c6dfbb481b54fd1e397" title="Exclude millisecond-resolution in time stamps.">SIRO_NOMSEC</a> are not set. </dd>
+<dd>
+<a class="el" href="group__publictypes.html#gac3370e3a2be554f93e9e67bea177c8a0" title="Exclude time stamps (implies SIRO_NOMSEC).">SIRO_NOTIME</a> implies <a class="el" href="group__publictypes.html#ga0bdfbd616c096c6dfbb481b54fd1e397" title="Exclude millisecond-resolution in time stamps.">SIRO_NOMSEC</a>.</dd></dl>
+<p><b>Example</b> </p><div class="fragment"><div class="line">.034</div>
+</div><!-- fragment --> 
 </div>
 </div>
 <a id="a88267c5f76d8f1f3f0b6a7903bfddc0b" name="a88267c5f76d8f1f3f0b6a7903bfddc0b"></a>
@@ -452,6 +614,23 @@ Macros</h2></td></tr>
 
 <p>The format for the current process/thread ID. </p>
 <dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#gafd6f47db95d87395d4a37529f839c6de" title="Exclude process ID.">SIRO_NOPID</a> or <a class="el" href="group__publictypes.html#ga093cea38ace2acb674162a0f7fb153a6" title="Exclude thread ID/name.">SIRO_NOTID</a> are not set. </dd></dl>
+
+</div>
+</div>
+<a id="a783092ff31da5f9acc116c9f4657f671" name="a783092ff31da5f9acc116c9f4657f671"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a783092ff31da5f9acc116c9f4657f671">&#9670;&#160;</a></span>SIR_PIDPREFIX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_PIDPREFIX&#160;&#160;&#160;&quot;(&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The string placed directly before process and thread IDs. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#ga0d3bc4aa34b9399e72621632b877b16a" title="Exclude process/app name.">SIRO_NONAME</a> is not set. </dd></dl>
 
 </div>
 </div>
@@ -473,213 +652,39 @@ Macros</h2></td></tr>
 </div><!-- fragment --> 
 </div>
 </div>
-<a id="a019fb62b107343bafedb0f5ad84f7d3a" name="a019fb62b107343bafedb0f5ad84f7d3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a019fb62b107343bafedb0f5ad84f7d3a">&#9670;&#160;</a></span>SIR_FROLLSIZE</h2>
+<a id="abd5132131479030a120c289812e38363" name="abd5132131479030a120c289812e38363"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd5132131479030a120c289812e38363">&#9670;&#160;</a></span>SIR_PIDSUFFIX</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define SIR_FROLLSIZE&#160;&#160;&#160;(1024 * 1024 * 5)</td>
+          <td class="memname">#define SIR_PIDSUFFIX&#160;&#160;&#160;&quot;)&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The size, in bytes, at which a log file will be rolled/archived. </p>
-<dl class="section remark"><dt>Remarks</dt><dd>Default = 5 MiB. </dd></dl>
+<p>The character placed directly after process and thread IDs. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#ga0d3bc4aa34b9399e72621632b877b16a" title="Exclude process/app name.">SIRO_NONAME</a> is not set. </dd></dl>
 
 </div>
 </div>
-<a id="a90d4862e769fd5effefb1e1dedf520c8" name="a90d4862e769fd5effefb1e1dedf520c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90d4862e769fd5effefb1e1dedf520c8">&#9670;&#160;</a></span>SIR_FHTIMEFORMAT</h2>
+<a id="ab1531d6b0d9c880b793362322542794c" name="ab1531d6b0d9c880b793362322542794c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1531d6b0d9c880b793362322542794c">&#9670;&#160;</a></span>SIR_TIMEFORMAT</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define SIR_FHTIMEFORMAT&#160;&#160;&#160;&quot;%H:%M:%S %a %d %b %Y (%z)&quot;</td>
+          <td class="memname">#define SIR_TIMEFORMAT&#160;&#160;&#160;&quot;%H:%M:%S&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The time format string used in file headers (see <a class="el" href="config_8h.html#a7c652578740e372edeac33d14f6408fd" title="The format string written to a log file when logging begins or the file is rolled/archived.">SIR_FHFORMAT</a>). </p>
-<dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#ga7b417924811962ca0aeaca30bdf38cf6" title="Don&#39;t write header messages to log files.">SIRO_NOHDR</a> is not set.</dd></dl>
-<p><b>Example</b> </p><div class="fragment"><div class="line">15:13:41 Fri 9 Jun 2023 (-0600)</div>
+<p>The time stamp format string at the start of log messages-not including milliseconds (as::SIR_MSECFORMAT), which is added separately. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#gac3370e3a2be554f93e9e67bea177c8a0" title="Exclude time stamps (implies SIRO_NOMSEC).">SIRO_NOTIME</a> is not set.</dd></dl>
+<p><b>Example</b> </p><div class="fragment"><div class="line">23:30:26</div>
 </div><!-- fragment --> 
-</div>
-</div>
-<a id="a7c652578740e372edeac33d14f6408fd" name="a7c652578740e372edeac33d14f6408fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7c652578740e372edeac33d14f6408fd">&#9670;&#160;</a></span>SIR_FHFORMAT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SIR_FHFORMAT&#160;&#160;&#160;&quot;\n\n----- %s %s -----\n\n&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The format string written to a log file when logging begins or the file is rolled/archived. </p>
-<dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#ga7b417924811962ca0aeaca30bdf38cf6" title="Don&#39;t write header messages to log files.">SIRO_NOHDR</a> is not set.</dd></dl>
-<ul>
-<li>The first <code>%s</code> format specifier is the message:<ul>
-<li><a class="el" href="config_8h.html#aeb4e44bc613c57c3c49e27b66e69e933" title="The string included in SIR_FHFORMAT when a logging session begins.">SIR_FHBEGIN</a></li>
-<li><a class="el" href="config_8h.html#aca213e22f32a371da7ca82eb86a16c9a" title="The string included in SIR_FHFORMAT when a file is rolled/archived due to becoming larger than SIR_FR...">SIR_FHROLLED</a></li>
-</ul>
-</li>
-<li>The second <code>%s</code> is the current date/time in the format specified by <a class="el" href="config_8h.html#a90d4862e769fd5effefb1e1dedf520c8" title="The time format string used in file headers (see SIR_FHFORMAT).">SIR_FHTIMEFORMAT</a>. </li>
-</ul>
-
-</div>
-</div>
-<a id="aeb4e44bc613c57c3c49e27b66e69e933" name="aeb4e44bc613c57c3c49e27b66e69e933"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb4e44bc613c57c3c49e27b66e69e933">&#9670;&#160;</a></span>SIR_FHBEGIN</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SIR_FHBEGIN&#160;&#160;&#160;&quot;session begin @&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The string included in <a class="el" href="config_8h.html#a7c652578740e372edeac33d14f6408fd" title="The format string written to a log file when logging begins or the file is rolled/archived.">SIR_FHFORMAT</a> when a logging session begins. </p>
-<dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#ga7b417924811962ca0aeaca30bdf38cf6" title="Don&#39;t write header messages to log files.">SIRO_NOHDR</a> is not set. </dd></dl>
-
-</div>
-</div>
-<a id="aca213e22f32a371da7ca82eb86a16c9a" name="aca213e22f32a371da7ca82eb86a16c9a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca213e22f32a371da7ca82eb86a16c9a">&#9670;&#160;</a></span>SIR_FHROLLED</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SIR_FHROLLED&#160;&#160;&#160;&quot;archived as %s due to size @&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The string included in <a class="el" href="config_8h.html#a7c652578740e372edeac33d14f6408fd" title="The format string written to a log file when logging begins or the file is rolled/archived.">SIR_FHFORMAT</a> when a file is rolled/archived due to becoming larger than <a class="el" href="config_8h.html#a019fb62b107343bafedb0f5ad84f7d3a" title="The size, in bytes, at which a log file will be rolled/archived.">SIR_FROLLSIZE</a> bytes in size. </p>
-<dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#ga7b417924811962ca0aeaca30bdf38cf6" title="Don&#39;t write header messages to log files.">SIRO_NOHDR</a> is not set.</dd></dl>
-<p>The <code>%s</code> format specifier is the path of the archived file. </p>
-
-</div>
-</div>
-<a id="aeb4949a438cb054dbd261eead7e9d6c9" name="aeb4949a438cb054dbd261eead7e9d6c9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb4949a438cb054dbd261eead7e9d6c9">&#9670;&#160;</a></span>SIR_FNAMETIMEFORMAT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SIR_FNAMETIMEFORMAT&#160;&#160;&#160;&quot;%Y-%m-%d-%H%M%S&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The time format string for rolled/archived log files (see <a class="el" href="config_8h.html#a30cae1b7b493f9be429ff683b9d77677" title="The format string for rolled/archived log file names.">SIR_FNAMEFORMAT</a>). </p>
-<p><b>Example</b> </p><div class="fragment"><div class="line">2023-06-09-122049</div>
-</div><!-- fragment --> 
-</div>
-</div>
-<a id="a0dbd6db580edf1d367220202e3dff944" name="a0dbd6db580edf1d367220202e3dff944"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0dbd6db580edf1d367220202e3dff944">&#9670;&#160;</a></span>SIR_FNAMESEQFORMAT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SIR_FNAMESEQFORMAT&#160;&#160;&#160;&quot;-%hu&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The sequence number format string for rolled/archived log files (see <a class="el" href="config_8h.html#a30cae1b7b493f9be429ff683b9d77677" title="The format string for rolled/archived log file names.">SIR_FNAMEFORMAT</a>). </p>
-<p><b>Example</b> </p><div class="fragment"><div class="line">-1</div>
-</div><!-- fragment --> 
-</div>
-</div>
-<a id="a30cae1b7b493f9be429ff683b9d77677" name="a30cae1b7b493f9be429ff683b9d77677"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a30cae1b7b493f9be429ff683b9d77677">&#9670;&#160;</a></span>SIR_FNAMEFORMAT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SIR_FNAMEFORMAT&#160;&#160;&#160;&quot;%s-%s%s%s&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The format string for rolled/archived log file names. </p>
-<ul>
-<li>The first %s format specifier is the original file name, up to but not including the last full stop (.), if any exist.</li>
-<li>The second %s is the time stamp as defined by <a class="el" href="config_8h.html#aeb4949a438cb054dbd261eead7e9d6c9" title="The time format string for rolled/archived log files (see SIR_FNAMEFORMAT).">SIR_FNAMETIMEFORMAT</a>.</li>
-<li>The third %s is a sequence number, which may be used in the event that a log file with the same name already exists (i.e., 2 or more files are rolled/archived within a second). Its format is defined by <a class="el" href="config_8h.html#a0dbd6db580edf1d367220202e3dff944" title="The sequence number format string for rolled/archived log files (see SIR_FNAMEFORMAT).">SIR_FNAMESEQFORMAT</a>.</li>
-<li>The fourth %s is the original file name including, and beyond the last full stop, if one was found.</li>
-</ul>
-<p><b>Example</b> </p><div class="fragment"><div class="line">`oldname.log`  -&gt;  `oldname-23-06-09-122049-1.log`</div>
-</div><!-- fragment --> 
-</div>
-</div>
-<a id="a5f006a2e9ce93ae8d693a2928af33bb2" name="a5f006a2e9ce93ae8d693a2928af33bb2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f006a2e9ce93ae8d693a2928af33bb2">&#9670;&#160;</a></span>SIR_MAXMESSAGE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SIR_MAXMESSAGE&#160;&#160;&#160;4096</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The maximum number of characters allowable in one log message. </p>
-<p>This does not include accompanying formatted output (see <a class="el" href="config_8h.html#ab3e26cb9ac224cb9a695ddf1ed099218" title="The maximum size, in characters, of final formatted output.">SIR_MAXOUTPUT</a>). </p>
-
-</div>
-</div>
-<a id="a060398bb73afb43df07b1587bcec98ba" name="a060398bb73afb43df07b1587bcec98ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a060398bb73afb43df07b1587bcec98ba">&#9670;&#160;</a></span>SIR_ERRORFORMAT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SIR_ERRORFORMAT&#160;&#160;&#160;&quot;Error in %s (%s:%u): '%s'&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The format string for error messages returned by <a class="el" href="group__publicfuncs.html#gac0c399c73c25d1128befc6b75cbae300" title="Retrieves information about the last error that occurred.">sir_geterror</a>. </p>
-<ul>
-<li>The first <code>%s</code> format specifier is the function name.</li>
-<li>The second <code>%s</code> is the file name.</li>
-<li>The <code>%lu</code> is the line number in the file.</li>
-<li>The third <code>%s</code> is the error message.</li>
-</ul>
-<p><b>Example</b> </p><div class="fragment"><div class="line">Error in findneedle (haystack.c:384): <span class="stringliteral">&#39;Too much hay&#39;</span></div>
-</div><!-- fragment --> 
-</div>
-</div>
-<a id="a46e195050794e32a234cda5f1af57a2a" name="a46e195050794e32a234cda5f1af57a2a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a46e195050794e32a234cda5f1af57a2a">&#9670;&#160;</a></span>SIR_HNAME_CHK_INTERVAL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SIR_HNAME_CHK_INTERVAL&#160;&#160;&#160;60</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The number of seconds to let elapse before checking if the hostname needs refreshing. </p>
-<p>The default is an eager 1 minute. Better safe than wrong? </p>
-
 </div>
 </div>
 </div><!-- contents -->

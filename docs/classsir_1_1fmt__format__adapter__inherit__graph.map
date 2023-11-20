@@ -1,0 +1,5 @@
+<map id="sir::fmt_format_adapter&lt; TPolicy &gt;" name="sir::fmt_format_adapter&lt; TPolicy &gt;">
+<area shape="rect" id="Node000001" title="Adapter for {fmt} (when available)." alt="" coords="5,79,162,120"/>
+<area shape="rect" id="Node000002" href="$classsir_1_1adapter.html" title="Defines the abstract interface for an adapter, which ultimately becomes a public base class of logger..." alt="" coords="40,5,127,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="86,46,86,79,81,79,81,46"/>
+</map>
