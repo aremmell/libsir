@@ -104,7 +104,7 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 | **SerenityOS** | **GCC**&nbsp;(13.1) |
 | **WebAssembly/JS** | **Emscripten**&nbsp;(3.1.45&nbsp;‑&nbsp;3.1.48),&nbsp; **Node.js**&nbsp;(20.5&nbsp;‑&nbsp;21.2) |
 
-* libsir is known to work on most common (and many uncommon) architectures. It has been built and tested on **Intel** (x86\_64, i686, x32), **ARM** (ARMv6, ARMv7HF, ARMv8‑A), **POWER** (PowerPC, PPC64, PPC64le), **MIPS** (MIPS64, MIPS32, 74Kc), **SPARC** (SPARC64, V8, LEON3), **z/Architecture** (S390X), **SuperH** (SH‑4A), **RISC‑V** (RV64), **OpenRISC** (OR1200), and **m68k** (68020+).
+* libsir is known to work on most common (and many uncommon) architectures. It has been built and tested on **Intel** (x86\_64, i686, x32), **Kalray MPPA®** (Coolidge™, KVX), **ARM** (ARMv6, ARMv7HF, ARMv8‑A), **POWER** (PowerPC, PPC64, PPC64le), **MIPS** (MIPS64, MIPS32, 74Kc), **SPARC** (SPARC64, V8, LEON3), **z/Architecture** (S390X), **SuperH** (SH‑4A), **RISC‑V** (RV64), **OpenRISC** (OR1200), and **m68k** (68020+).
 * This table only lists toolchains that have been tested and is by no means exhaustive&mdash;newer (or older) versions are likely to work without fanfare. In fact, if it *doesn't* work on your machine, it's probably a bug.
 
 ### <a id="system-loggers" /> System Loggers
