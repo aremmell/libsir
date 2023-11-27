@@ -283,6 +283,23 @@ ifeq ($(AIXTLS),1)
 endif
 
 ##############################################################################
+# CompCert (WIP)
+
+ifneq "$(findstring compcert,$(CC))" ""
+  COMPCERT?=1
+endif
+
+ifeq ($(COMPCERT),1)
+  MMDOPT=
+  PTHOPT=
+  WPEDANTIC=
+  SIR_FPIC=
+  FORTIFY_FLAGS=-U_FORTIFY_SOURCE
+  WARNEXTRA=-Wno-zero-length-array
+  SIR_NO_SHARED=1
+endif
+
+##############################################################################
 # Circle (C++ only)
 
 ifneq "$(findstring circle,$(CXX))" ""

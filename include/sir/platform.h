@@ -613,6 +613,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 # endif /* !__WIN__ */
 
+#if !defined(_sir_thread_local)
 # if (__STDC_VERSION__ >= 201112 && !defined(__STDC_NO_THREADS__)) || \
      (defined(__SUNPRO_C) || defined(__SUNPRO_CC))
 #  if defined(_AIX) && defined(__GNUC__)
@@ -629,6 +630,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #   error "unable to resolve thread local attribute; please contact the author."
 #  endif
 # endif
+#endif
 
 # if defined(__WIN__) && defined(__STDC_SECURE_LIB__)
 #  define __HAVE_STDC_SECURE_OR_EXT1__
