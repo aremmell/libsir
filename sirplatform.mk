@@ -295,7 +295,7 @@ ifeq ($(COMPCERT),1)
   WPEDANTIC=
   SIR_FPIC=
   FORTIFY_FLAGS=-U_FORTIFY_SOURCE
-  WARNEXTRA=-Wno-zero-length-array
+  WARNEXTRA=-Wno-zero-length-array -Wno-c11-extensions
   SIR_NO_SHARED=1
 endif
 
