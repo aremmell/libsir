@@ -627,7 +627,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #   define _sir_thread_local __thread
 #  else
 #   if !defined(_CH_) && !defined(__CH__)
-#    error "unable to resolve thread local attribute; please contact the author."
+#    error "unable to resolve thread local attribute; please contact the developers."
 #   endif
 #  endif
 # endif
