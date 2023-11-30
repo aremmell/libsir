@@ -512,6 +512,92 @@ Linux/x86_64 (Intel oneAPI, ICPX, ICX):
 
 ##############################################################################
 
+Linux/x86_64 (Chamois-CompCert, C-only):
+  stage: build_linux
+  needs:
+    - job: Style check
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/chamois-compcert:latest
+  script:
+    - *Configuration
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export PATH="/opt/chamois-compcert/bin:${PATH:-}"
+    - export CC="ccache /opt/chamois-compcert/bin/ccomp"
+    - ${CC:?} --version
+    - env CFLAGS="-D_sir_thread_local=_Thread_local ${CFLAGS:-}" make
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - *BuildInformation
+    - |
+      # Start of Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
+Linux/i386 (Chamois-CompCert, C-only):
+  stage: build_linux
+  needs:
+    - job: Style check
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/chamois-compcert:latest
+  script:
+    - *Configuration
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export PATH="/opt/chamois-compcert-i386/bin:${PATH:-}"
+    - export CC="ccache /opt/chamois-compcert-i386/bin/ccomp"
+    - ${CC:?} --version
+    - env CFLAGS="-D_sir_thread_local=_Thread_local ${CFLAGS:-}" make
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - *BuildInformation
+    - |
+      # Start of Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - ./build/bin/sirexample
+    - ./build/bin/sirtests
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+##############################################################################
+
 Linux/x86_64 (Oracle Studio C, C-only):
   stage: build_linux
   needs:

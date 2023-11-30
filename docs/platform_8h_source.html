@@ -175,7 +175,7 @@ $(document).ready(function(){initNavTree('platform_8h_source.html',''); initResi
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor"># endif</span></div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor"># undef HAS_ATTRIBUTE</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor"># if defined __has_attribute  &amp;&amp; (defined(__clang__) || defined(__GNUC__))</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor"># if defined __has_attribute &amp;&amp; (defined(__clang__) || defined(__GNUC__))</span></div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#  define HAS_ATTRIBUTE(atr) __has_attribute(atr)</span></div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor"># else</span></div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#  define HAS_ATTRIBUTE(atr) 0</span></div>
@@ -400,7 +400,7 @@ $(document).ready(function(){initNavTree('platform_8h_source.html',''); initResi
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="preprocessor">#   undef __USE_MINGW_ANSI_STDIO</span></div>
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="preprocessor">#   define __USE_MINGW_ANSI_STDIO 1</span></div>
 <div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span><span class="preprocessor">#   include &lt;pthread.h&gt;</span></div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span><span class="keyword">typedef</span>  <span class="comment">/* Workaround a MinGW bug */</span></div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span><span class="keyword">typedef</span> <span class="comment">/* Workaround a MinGW bug */</span></div>
 <div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>void (__cdecl* _invalid_parameter_handler)(</div>
 <div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> <span class="keywordtype">wchar_t</span> <span class="keyword">const</span>*, <span class="keywordtype">wchar_t</span> <span class="keyword">const</span>*, <span class="keywordtype">wchar_t</span> <span class="keyword">const</span>*,</div>
 <div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> <span class="keywordtype">unsigned</span> int, uintptr_t);</div>
@@ -710,53 +710,55 @@ $(document).ready(function(){initNavTree('platform_8h_source.html',''); initResi
 <div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span> </div>
 <div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span><span class="preprocessor"># endif </span><span class="comment">/* !__WIN__ */</span><span class="preprocessor"></span></div>
 <div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span> </div>
-<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span><span class="preprocessor"># if (__STDC_VERSION__ &gt;= 201112 &amp;&amp; !defined(__STDC_NO_THREADS__)) || \</span></div>
-<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span><span class="preprocessor">     (defined(__SUNPRO_C) || defined(__SUNPRO_CC))</span></div>
-<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span><span class="preprocessor">#  if defined(_AIX) &amp;&amp; defined(__GNUC__)</span></div>
-<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span><span class="preprocessor">#   define _sir_thread_local __thread</span></div>
-<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span><span class="preprocessor">#  else</span></div>
-<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span><span class="preprocessor">#   define _sir_thread_local _Thread_local</span></div>
-<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span><span class="preprocessor">#  endif</span></div>
-<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span><span class="preprocessor"># elif defined(__WIN__)</span></div>
-<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span><span class="preprocessor">#  define _sir_thread_local __declspec(thread)</span></div>
-<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span><span class="preprocessor"># elif defined(__GNUC__) || (defined(_AIX) &amp;&amp; (defined(__xlC_ver__) || defined(__ibmxl__)))</span></div>
-<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span><span class="preprocessor">#  define _sir_thread_local __thread</span></div>
-<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span><span class="preprocessor"># else</span></div>
-<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span><span class="preprocessor">#  if !defined(_CH_) &amp;&amp; !defined(__CH__)</span></div>
-<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span><span class="preprocessor">#   error &quot;unable to resolve thread local attribute; please contact the author.&quot;</span></div>
-<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span><span class="preprocessor">#  endif</span></div>
-<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span> </div>
-<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span><span class="preprocessor"># if defined(__WIN__) &amp;&amp; defined(__STDC_SECURE_LIB__)</span></div>
-<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span><span class="preprocessor">#  define __HAVE_STDC_SECURE_OR_EXT1__</span></div>
-<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span><span class="preprocessor"># elif defined(__STDC_LIB_EXT1__)</span></div>
+<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span><span class="preprocessor"># if !defined(_sir_thread_local)</span></div>
+<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span><span class="preprocessor">#  if (__STDC_VERSION__ &gt;= 201112 &amp;&amp; !defined(__STDC_NO_THREADS__)) || \</span></div>
+<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span><span class="preprocessor">     (defined(__SUNPRO_C) || defined(__SUNPRO_CC))</span></div>
+<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span><span class="preprocessor">#   if defined(_AIX) &amp;&amp; defined(__GNUC__)</span></div>
+<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span><span class="preprocessor">#    define _sir_thread_local __thread</span></div>
+<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span><span class="preprocessor">#   else</span></div>
+<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span><span class="preprocessor">#    define _sir_thread_local _Thread_local</span></div>
+<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span><span class="preprocessor">#   endif</span></div>
+<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span><span class="preprocessor">#  elif defined(__WIN__)</span></div>
+<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span><span class="preprocessor">#   define _sir_thread_local __declspec(thread)</span></div>
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span><span class="preprocessor">#  elif defined(__GNUC__) || (defined(_AIX) &amp;&amp; (defined(__xlC_ver__) || defined(__ibmxl__)))</span></div>
+<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span><span class="preprocessor">#   define _sir_thread_local __thread</span></div>
+<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span><span class="preprocessor">#  else</span></div>
+<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span><span class="preprocessor">#   if !defined(_CH_) &amp;&amp; !defined(__CH__)</span></div>
+<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span><span class="preprocessor">#    error &quot;unable to resolve thread local attribute; please contact the developers.&quot;</span></div>
+<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span><span class="preprocessor">#   endif</span></div>
+<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span><span class="preprocessor">#  endif</span></div>
+<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span><span class="preprocessor"># endif</span></div>
+<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span> </div>
+<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span><span class="preprocessor"># if defined(__WIN__) &amp;&amp; defined(__STDC_SECURE_LIB__)</span></div>
 <div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span><span class="preprocessor">#  define __HAVE_STDC_SECURE_OR_EXT1__</span></div>
-<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span><span class="preprocessor"># elif defined(__STDC_ALLOC_LIB__)</span></div>
-<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span><span class="preprocessor">#  define __HAVE_STDC_EXT2__</span></div>
-<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span> </div>
-<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span><span class="preprocessor"># if (defined(__clang__) || defined(__GNUC__)) &amp;&amp; defined(__FILE_NAME__)</span></div>
-<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span><span class="preprocessor">#  define __file__ __FILE_NAME__</span></div>
-<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span><span class="preprocessor"># elif defined(__BASE_FILE__)</span></div>
-<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span><span class="preprocessor">#  define __file__ __BASE_FILE__</span></div>
-<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span><span class="preprocessor"># else</span></div>
-<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span><span class="preprocessor">#  define __file__ __FILE__</span></div>
-<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span> </div>
-<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_PLATFORM_H_INCLUDED */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span><span class="preprocessor"># elif defined(__STDC_LIB_EXT1__)</span></div>
+<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span><span class="preprocessor">#  define __HAVE_STDC_SECURE_OR_EXT1__</span></div>
+<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span><span class="preprocessor"># elif defined(__STDC_ALLOC_LIB__)</span></div>
+<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span><span class="preprocessor">#  define __HAVE_STDC_EXT2__</span></div>
+<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span><span class="preprocessor"># endif</span></div>
+<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span> </div>
+<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span><span class="preprocessor"># if (defined(__clang__) || defined(__GNUC__)) &amp;&amp; defined(__FILE_NAME__)</span></div>
+<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span><span class="preprocessor">#  define __file__ __FILE_NAME__</span></div>
+<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span><span class="preprocessor"># elif defined(__BASE_FILE__)</span></div>
+<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span><span class="preprocessor">#  define __file__ __BASE_FILE__</span></div>
+<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span><span class="preprocessor"># else</span></div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span><span class="preprocessor">#  define __file__ __FILE__</span></div>
+<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span><span class="preprocessor"># endif</span></div>
 <div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span> </div>
-<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span><span class="preprocessor">#include &quot;sir/impl.h&quot;</span></div>
+<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_PLATFORM_H_INCLUDED */</span><span class="preprocessor"></span></div>
 <div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span> </div>
-<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span><span class="comment">/* Support Clang&#39;s -Wdisabled-macro-expansion check on Linux/glibc */</span></div>
-<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span><span class="preprocessor">#if defined(SIR_LINT) &amp;&amp; (defined(__linux__) &amp;&amp; defined(__GLIBC__)) &amp;&amp; \</span></div>
-<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span><span class="preprocessor">    (defined(__STDC_VERSION__) &amp;&amp; __STDC_VERSION__ &gt;= 201112L) &amp;&amp; \</span></div>
-<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span><span class="preprocessor">    (defined(__clang__) || defined(__clang_version__))</span></div>
-<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span><span class="preprocessor"># undef stdin</span></div>
-<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span><span class="preprocessor"># undef stdout</span></div>
-<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span><span class="preprocessor"># undef stderr</span></div>
-<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span> </div>
-<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span><span class="comment">/* End of platform.h */</span></div>
+<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span><span class="preprocessor">#include &quot;sir/impl.h&quot;</span></div>
+<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span> </div>
+<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span><span class="comment">/* Support Clang&#39;s -Wdisabled-macro-expansion check on Linux/glibc */</span></div>
+<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span><span class="preprocessor">#if defined(SIR_LINT) &amp;&amp; (defined(__linux__) &amp;&amp; defined(__GLIBC__)) &amp;&amp; \</span></div>
+<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span><span class="preprocessor">    (defined(__STDC_VERSION__) &amp;&amp; __STDC_VERSION__ &gt;= 201112L) &amp;&amp; \</span></div>
+<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span><span class="preprocessor">    (defined(__clang__) || defined(__clang_version__))</span></div>
+<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span><span class="preprocessor"># undef stdin</span></div>
+<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span><span class="preprocessor"># undef stdout</span></div>
+<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span><span class="preprocessor"># undef stderr</span></div>
+<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span> </div>
+<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span><span class="comment">/* End of platform.h */</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.7-->
