@@ -2706,6 +2706,7 @@ Windows/i686 (Embarcadero Athens, BCC32X, C-only):
 
 Funcheck:
   stage: lint_dynamic
+  timeout: 25 minutes
   needs:
     - job: Style check
     - job: Linux/x86_64 (Clang++, Clang)
