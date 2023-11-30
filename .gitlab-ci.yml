@@ -529,7 +529,7 @@ Linux/x86_64 (Chamois-CompCert, C-only):
     - export PATH="/opt/chamois-compcert/bin:${PATH:-}"
     - export CC="ccache /opt/chamois-compcert/bin/ccomp"
     - ${CC:?} --version
-    - make
+    - env CFLAGS="-D_sir_thread_local=_Thread_local" ${CFLAGS:-}" make
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -572,7 +572,7 @@ Linux/i386 (Chamois-CompCert, C-only):
     - export PATH="/opt/chamois-compcert-i386/bin:${PATH:-}"
     - export CC="ccache /opt/chamois-compcert-i386/bin/ccomp"
     - ${CC:?} --version
-    - make
+    - env CFLAGS="-D_sir_thread_local=_Thread_local" ${CFLAGS:-}" make
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
