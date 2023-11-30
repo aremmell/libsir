@@ -26,6 +26,8 @@ The Makefile takes care of the rest; for each environment variable that is known
 | ^ | `1`     | `-DSIR_NO_SYSTEM_LOGGERS`                     | Even if the current platform has a system logger facility, the functionality will be disabled (_and most of it compiled out_). |
 | `SIR_NO_PLUGINS (0)` | `0`   | `N/A`                        | The plugin system is available for use. Call ::sir_loadplugin to load a plugin, and ::sir_unloadplugin to unload one.|
 | ^                    | `1`   | `-DSIR_NO_PLUGINS`           | The plugin system's functionality will be disabled (_and most of it compiled out_).|
+| `SIR_NO_SHARED (0)`  | `0`   | `N/A`                        | Shared libraries are created when building the *`all`* target, and installed with *`make install`*. |
+| ^                    | `1`   | `-DSIR_NO_PLUGINS`           | The `SIR_NO_PLUGINS` variable is set (to `1`), shared libraries are not created when building the *`all`* target, and are not installed with *`make install`*. |
 ---
 
 @note If you plan to use the Visual Studio 2022 solution, see `README.md` under `Help` once the solution is loaded.

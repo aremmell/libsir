@@ -291,6 +291,26 @@ ifeq ($(AIXTLS),1)
 endif
 
 ################################################################################
+# CompCert-C - https://www.absint.com/compcert - https://compcert.org
+# Tested with (Kalray, Verimag) Chamois CompCert (2023-09-15) with TLS.
+# https://gricad-gitlab.univ-grenoble-alpes.fr/certicompil/
+# Chamois-CompCert/uploads/c92b50379c4dea713bb07a52918a2a53/chamois-tls.diff
+
+ifneq "$(findstring compcert,$(CC))" ""
+  COMPCERT?=1
+endif
+
+ifeq ($(COMPCERT),1)
+  MMDOPT=
+  PTHOPT=
+  WPEDANTIC=
+  SIR_FPIC=
+  FORTIFY_FLAGS=-U_FORTIFY_SOURCE
+  WARNEXTRA=-Wno-zero-length-array -Wno-c11-extensions
+  SIR_NO_SHARED=1
+endif
+
+################################################################################
 # Circle (C++ only)
 
 ifneq "$(findstring circle,$(CXX))" ""
