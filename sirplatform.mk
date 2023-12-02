@@ -84,7 +84,7 @@ ifeq ($(EMSCRIPTEN),1)
   SIR_XFLAGS+=-pthread
   SIR_CSTD=-std=gnu11
   SIR_XSTD=-std=gnu++20
-  SIR_LDFLAGS+=-lnoderawfs.js -lnodefs.js
+  SIR_LDFLAGS+=-lnoderawfs.js -lnodefs.js -s ASYNCIFY
   SIR_NO_PLUGINS=1
 endif
 
