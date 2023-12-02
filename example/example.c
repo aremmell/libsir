@@ -37,6 +37,10 @@
 #include "sir/helpers.h"
 #include "sir/internal.h"
 
+#if defined(__EMSCRIPTEN__)
+# include <emscripten/emscripten.h>
+#endif
+
 int report_error(void);
 void report_warning(const char* warning);
 
