@@ -1,0 +1,29 @@
+{
+    "name": "libsir",
+    "version": "2.2.4",
+    "description": "Standard Incident Reporter: The best logging library on the planet.",
+    "keywords": "log,logging,logger",
+    "repoistory": {
+        "type": "git",
+        "url": "https://github.com/aremmell/libsir.git"
+    },
+    "authors": [
+        {
+            "name": "Ryan M. Lederman",
+            "email": "lederman@gmail.com",
+            "url": "https://rml.dev/",
+            "maintainer": true
+        },
+        {
+            "name": "Jeffrey H. Johnson",
+            "email": "trnsz@pobox.com",
+            "url": "",
+            "maintainer": true
+        },        
+    ],
+    "license": "MIT",
+    "dependencies": {
+    },
+    "frameworks": "*",
+    "platforms": "*"
+}
