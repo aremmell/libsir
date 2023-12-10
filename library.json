@@ -2,7 +2,7 @@
     "name": "libsir",
     "version": "2.2.4",
     "description": "Standard Incident Reporter: The best logging library on the planet.",
-    "keywords": "log,logging,logger",
+    "keywords": "log,logging,logger,logfile",
     "repoistory": {
         "type": "git",
         "url": "https://github.com/aremmell/libsir.git"
