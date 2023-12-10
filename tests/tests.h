@@ -40,10 +40,6 @@
 # include "sir/threadpool.h"
 # include "sir/queue.h"
 
-# if defined(__EMSCRIPTEN__)
-#  include <emscripten/emscripten.h>
-# endif
-
 /**
  * @defgroup tests Tests
  *
