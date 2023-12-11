@@ -175,14 +175,14 @@ bool _sir_init(sirinit* si) {
     /* forcibly null-terminate the process name. */
     _cfg->si.name[SIR_MAXNAME - 1] = '\0';
 
-    /* Store PID. */
+    /* store PID. */
     _cfg->state.pid = _sir_getpid();
 
     if (_cfg->state.pid != -1 && _cfg->state.pid != 0) {
         (void)snprintf(_cfg->state.pidbuf, SIR_MAXPID, SIR_PIDFORMAT,
             PID_CAST _cfg->state.pid);
     } else {
-        _sir_resetstr(_cfg->state.pid);
+        _sir_resetstr(_cfg->state.pidbuf);
     }
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
