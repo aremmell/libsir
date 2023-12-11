@@ -443,12 +443,8 @@ void _sir_unlocksection(sir_mutex_id mid) {
 }
 
 bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
-    sir_mutex* tmpm = NULL;
-    void* tmpsec = NULL;
-#if defined(SIR_NO_CONSOLE)
-    SIR_UNUSED(tmpm);
-    SIR_UNUSED(tmpsec);
-#endif
+    sir_mutex* tmpm;
+    void* tmpsec;
 
     switch (mid) {
         case SIRMI_CONFIG:
@@ -467,6 +463,9 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
 #if !defined(SIR_NO_CONSOLE)
             tmpm   = &ts_mutex;
             tmpsec = &sir_text_style_section;
+#else
+            tmpm   = NULL;
+            tmpsec = NULL;
 #endif
             break;
         // GCOVR_EXCL_START
@@ -478,12 +477,10 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
         // GCOVR_EXCL_STOP
     }
 
-#if !defined(SIR_NO_CONSOLE)
     *m = tmpm;
 
     if (section)
         *section = tmpsec;
-#endif
 
     return *m != NULL && (!section || *section != NULL);
 }
