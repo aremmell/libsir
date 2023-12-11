@@ -553,7 +553,8 @@ _set_thread_local_invalid_parameter_handler(
 /** The clock used to measure intervals. */
 #  if defined(CLOCK_UPTIME)
 #   define SIR_INTERVALCLOCK CLOCK_UPTIME
-#  elif defined(CLOCK_BOOTTIME) && !defined(__EMSCRIPTEN__)
+#  elif defined(CLOCK_BOOTTIME) && !defined(__EMSCRIPTEN__) && \
+  !(defined(ESP32) || defined(ESP8266))
 #   define SIR_INTERVALCLOCK CLOCK_BOOTTIME
 #  elif defined(CLOCK_HIGHRES)
 #   define SIR_INTERVALCLOCK CLOCK_HIGHRES
