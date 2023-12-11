@@ -1269,6 +1269,8 @@ pid_t _sir_gettid(void) {
 # endif
 #elif defined(__WIN__)
     tid = (pid_t)GetCurrentThreadId();
+#elif defined(PLATFORMIO)
+    tid = 0;
 #else
 # error "unable to determine how to get a thread identifier"
 #endif
@@ -1375,6 +1377,10 @@ bool _sir_setthreadname(const char* name) {
 
 bool _sir_gethostname(char name[SIR_MAXHOST]) {
 #if !defined(__WIN__)
+# if defined(PLATFORMIO)
+    memset(name, 0, SIR_MAXHOST);
+    return true;
+# endif
     int ret = gethostname(name, SIR_MAXHOST - 1);
     return 0 == ret ? true : _sir_handleerr(errno);
 #else

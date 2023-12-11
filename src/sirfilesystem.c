@@ -56,7 +56,8 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
 
     if (relative) {
 #if !defined(__WIN__)
-# if defined(__MACOS__) || defined(_AIX) || defined(__EMSCRIPTEN__)
+# if defined(__MACOS__) || defined(_AIX) || defined(__EMSCRIPTEN__) || \
+     defined(PLATFORMIO)
 #  if !defined(O_SEARCH)
         int open_flags = O_DIRECTORY;
 #  else
@@ -83,7 +84,13 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
             return _sir_handleerr(errno);
         }
 
+#if !defined(PLATFORMIO)
         stat_ret = fstatat(fd, path, st, AT_SYMLINK_NOFOLLOW);
+#else
+        stat_ret = -1;
+        errno = ENOENT;
+#endif
+
         _sir_safeclose(&fd);
         _sir_safefree(&base_path);
     } else {
@@ -326,6 +333,10 @@ char* _sir_getappfilename(void) {
             resolved = _sir_handleerr(errno);
             break;
         }
+# elif defined(PLATFORMIO)
+        memset(buffer, 0, size);
+        resolved = true;
+        break;
 # else
 #  error "no implementation for your platform; please contact the developers."
 # endif
@@ -398,6 +409,9 @@ char* _sir_getdirname(char* restrict path) {
         return ".";
 
 #if !defined(__WIN__)
+# if defined(PLATFORMIO)
+    return ".";
+# endif
     return dirname(path);
 #else /* __WIN__ */
     (void)PathRemoveFileSpecA((LPSTR)path);

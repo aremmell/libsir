@@ -629,6 +629,8 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #   endif
 #  elif defined(__WIN__)
 #   define _sir_thread_local __declspec(thread)
+#  elif defined(PLATFORMIO)
+#   define _sir_thread_local
 #  elif defined(__GNUC__) || (defined(_AIX) && (defined(__xlC_ver__) || defined(__ibmxl__)))
 #   define _sir_thread_local __thread
 #  else
