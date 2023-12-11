@@ -445,6 +445,10 @@ void _sir_unlocksection(sir_mutex_id mid) {
 bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
     sir_mutex* tmpm = NULL;
     void* tmpsec = NULL;
+#if defined(SIR_NO_CONSOLE)
+    SIR_UNUSED(tmpm);
+    SIR_UNUSED(tmpsec);
+#endif
 
     switch (mid) {
         case SIRMI_CONFIG:
