@@ -2,11 +2,7 @@
     "name": "libsir",
     "version": "2.2.4",
     "description": "Standard Incident Reporter: The best logging library on the planet.",
-<<<<<<< HEAD
     "keywords": "log,logging,logger,logfile",
-=======
-    "keywords": "log,logging,logger",
->>>>>>> e532842b (add PlatformIO library manifest)
     "repoistory": {
         "type": "git",
         "url": "https://github.com/aremmell/libsir.git"
@@ -23,7 +19,7 @@
             "email": "trnsz@pobox.com",
             "url": "",
             "maintainer": true
-        },        
+        },
     ],
     "license": "MIT",
     "dependencies": {
