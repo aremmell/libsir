@@ -84,12 +84,12 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
             return _sir_handleerr(errno);
         }
 
-#if !defined(SIR_EMBEDDED)
+# if !defined(SIR_EMBEDDED)
         stat_ret = fstatat(fd, path, st, AT_SYMLINK_NOFOLLOW);
-#else
+# else
         stat_ret = -1;
         errno = ENOENT;
-#endif
+# endif
 
         _sir_safeclose(&fd);
         _sir_safefree(&base_path);

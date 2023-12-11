@@ -1395,11 +1395,11 @@ bool _sir_setthreadname(const char* name) {
 }
 
 bool _sir_gethostname(char name[SIR_MAXHOST]) {
-# if defined(SIR_EMBEDDED)
-#  pragma message("obtaining the machine's hostname is not implemented.")
+#if defined(SIR_EMBEDDED)
+# pragma message("obtaining the machine's hostname is not implemented.")
     _sir_resetstr(name);
     return true;
-# endif
+#endif
 #if !defined(__WIN__)
     int ret = gethostname(name, SIR_MAXHOST - 1);
     return 0 == ret ? true : _sir_handleerr(errno);
