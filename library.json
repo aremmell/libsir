@@ -19,7 +19,7 @@
             "email": "trnsz@pobox.com",
             "url": "",
             "maintainer": true
-        },
+        }
     ],
     "license": "MIT",
     "dependencies": {
