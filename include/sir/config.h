@@ -98,9 +98,9 @@
  * @remark Only applies if ::SIRO_NOPID or ::SIRO_NOTID are not set.
  */
 # if !(defined(ESP32) || defined(ESP8266))
-# define SIR_PIDFORMAT "%d"
+#  define SIR_PIDFORMAT "%d"
 # else
-# define SIR_PIDFORMAT "%x"
+#  define SIR_PIDFORMAT "%x"
 # endif
 
 /**
