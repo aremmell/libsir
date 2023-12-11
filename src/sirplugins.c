@@ -116,7 +116,7 @@ sirpluginid _sir_plugin_probe(sir_plugin* plugin) {
             return _sir_seterror(_SIR_E_PLUGINBAD);
         }
 # else
-#  error "plugin version not implemented"
+#  error "plugin version not implemented."
 # endif
         /* query the plugin for information. */
         if (!plugin->iface.query(&plugin->info)) {
