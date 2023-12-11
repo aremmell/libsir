@@ -540,7 +540,7 @@ _set_thread_local_invalid_parameter_handler(
 /** The clock used to obtain timestamps. */
 #  if defined(CLOCK_REALTIME_FAST)
 #   define SIR_WALLCLOCK CLOCK_REALTIME_FAST
-#  elif defined(CLOCK_REALTIME_COARSE)
+#  elif defined(CLOCK_REALTIME_COARSE) && !(defined(ESP32) || defined(ESP8266))
 #   define SIR_WALLCLOCK CLOCK_REALTIME_COARSE
 #  else
 #   define SIR_WALLCLOCK CLOCK_REALTIME
