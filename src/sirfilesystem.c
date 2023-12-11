@@ -84,7 +84,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
             return _sir_handleerr(errno);
         }
 
-#if !defined(PLATFORMIO)
+#if !defined(SIR_EMBEDDED)
         stat_ret = fstatat(fd, path, st, AT_SYMLINK_NOFOLLOW);
 #else
         stat_ret = -1;
@@ -410,7 +410,7 @@ char* _sir_getdirname(char* restrict path) {
         return ".";
 
 #if !defined(__WIN__)
-# if defined(PLATFORMIO)
+# if defined(SIR_EMBEDDED)
     return ".";
 # endif
     return dirname(path);
