@@ -17,9 +17,9 @@
         {
             "name": "Jeffrey H. Johnson",
             "email": "trnsz@pobox.com",
-            "url": "",
+            "url": "https://keybase.io/trnsz",
             "maintainer": true
-        },        
+        }
     ],
     "license": "MIT",
     "dependencies": {
