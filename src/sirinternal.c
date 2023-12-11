@@ -549,6 +549,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     sirbuf buf = {0};
 
+#if !defined(SIR_EMBEDDED)
     /* from time to time, update the host name in the config, just in case. */
     time_t now_sec = -1;
     if (-1 != time(&now_sec) &&
@@ -561,6 +562,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
             _sir_selflog("hostname: '%s'", _cfg->state.hostname);
         }
     }
+#endif
 
     /* format timestamp (h/m/s only if the integer time has changed). */
     long now_msec = 0L;
