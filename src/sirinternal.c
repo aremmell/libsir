@@ -459,12 +459,12 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
             tmpm   = &pc_mutex;
             tmpsec = &_sir_pc;
             break;
-#if !defined(SIR_NO_CONSOLE)
         case SIRMI_TEXTSTYLE:
+#if !defined(SIR_NO_CONSOLE)
             tmpm   = &ts_mutex;
             tmpsec = &sir_text_style_section;
-            break;
 #endif
+            break;
         // GCOVR_EXCL_START
         default: /* this should never happen. */
             SIR_ASSERT(false);
