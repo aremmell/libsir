@@ -549,20 +549,21 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     sirbuf buf = {0};
 
-#if !defined(SIR_EMBEDDED)
     /* from time to time, update the host name in the config, just in case. */
     time_t now_sec = -1;
-    if (-1 != time(&now_sec) &&
-        (now_sec - _cfg->state.last_hname_chk) > SIR_HNAME_CHK_INTERVAL) {
-        _sir_selflog("updating hostname...");
-        if (!_sir_gethostname(_cfg->state.hostname)) {
-            _sir_selflog("error: failed to get hostname!");
-        } else {
-            _cfg->state.last_hname_chk = now_sec;
-            _sir_selflog("hostname: '%s'", _cfg->state.hostname);
+    if (-1 != time(&now_sec)) {
+#if !defined(SIR_EMBEDDED)
+        if (now_sec - _cfg->state.last_hname_chk > SIR_HNAME_CHK_INTERVAL) {
+            _sir_selflog("updating hostname...");
+            if (!_sir_gethostname(_cfg->state.hostname)) {
+                _sir_selflog("error: failed to get hostname!");
+            } else {
+                _cfg->state.last_hname_chk = now_sec;
+                _sir_selflog("hostname: '%s'", _cfg->state.hostname);
+            }
         }
-    }
 #endif
+    }
 
     /* format timestamp (h/m/s only if the integer time has changed). */
     long now_msec = 0L;
