@@ -474,10 +474,12 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
         // GCOVR_EXCL_STOP
     }
 
+#if !defined(SIR_NO_CONSOLE)
     *m = tmpm;
 
     if (section)
         *section = tmpsec;
+#endif
 
     return *m != NULL && (!section || *section != NULL);
 }
