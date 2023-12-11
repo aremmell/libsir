@@ -1,10 +1,16 @@
 # bindings/python/Makefile
-# libsir: https://github.com/aremmell/libsir
 
+################################################################################
+#
+# Version: 2.2.4
+#
+################################################################################
+#
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-current Ryan M. Lederman <lederman@gmail.com>
-# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
-
+#
+# Copyright (c) 2018-2023 Ryan M. Lederman <lederman@gmail.com>
+# Copyright (c) 2018-2023 Jeffrey H. Johnson <trnsz@pobox.com>
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
 # the Software without restriction, including without limitation the rights to
@@ -21,20 +27,22 @@
 # COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#
+################################################################################
 
-##############################################################################
+################################################################################
 # Defaults
 
 .NOTPARALLEL:
 RANLIB   ?= ranlib
 AR       ?= ar
 
-##############################################################################
+################################################################################
 # Platform specifics
 
 include ../../sirplatform.mk
 
-##############################################################################
+################################################################################
 # Targets
 
 .PHONY: all
@@ -46,7 +54,7 @@ all:
 	-@printf '[binding] built python binding successfully.\n' 2> /dev/null
 	-@tput sgr0 2> /dev/null || true
 
-##############################################################################
+################################################################################
 # Python module
 
 .PHONY: module-python
@@ -56,7 +64,7 @@ module-python: sir_wrap.c sir.py
 	  CC="$(CC) $(OPTFLAGS) $(CFLAGS) $(SIR_CFLAGS)" \
 	python3 setup.py build_ext --inplace
 
-##############################################################################
+################################################################################
 # Swig
 
 sir.py sir_wrap.c: sir.i
@@ -67,7 +75,7 @@ sir.py sir_wrap.c: sir.i
 	-@printf '[binding] generated wrappers.\n' 2> /dev/null
 	-@tput sgr0 2> /dev/null || true
 
-##############################################################################
+################################################################################
 # Check main build files
 
 .PHONY: check_main
@@ -87,7 +95,7 @@ check_main:
 	       $(MAKE) --no-print-directory -C ../..; \
 	  }
 
-##############################################################################
+################################################################################
 # Clean-up
 
 .PHONY: clean-all distclean
@@ -113,9 +121,9 @@ clean:
 	-@printf '[clean] bindings/python cleaned successfully.\n' 2> /dev/null
 	-@tput sgr0 2> /dev/null || true
 
-##############################################################################
+################################################################################
 # Common rules
 
 include ../../sircommon.mk
 
-##############################################################################
+################################################################################

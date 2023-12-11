@@ -40,9 +40,6 @@ RUN set -x && \
     cd /opt/src && \
     git clone https://gricad-gitlab.univ-grenoble-alpes.fr/certicompil/Chamois-CompCert.git && \
     cd Chamois-CompCert && \
-    wget https://gricad-gitlab.univ-grenoble-alpes.fr/certicompil/Chamois-CompCert/uploads/c92b50379c4dea713bb07a52918a2a53/chamois-tls.diff && \
-    patch -p1 < chamois-tls.diff && \
-    rm -f chamois-tls.diff && \
     opam switch chamois-compcert && \
     eval $(opam env) && \
     ./configure -prefix /opt/chamois-compcert x86_64-linux && \

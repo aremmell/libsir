@@ -1,5 +1,5 @@
 <map id="include/sir/defaults.h" name="include/sir/defaults.h">
-<area shape="rect" id="Node000001" title="Default levels, options, and text styling." alt="" coords="5,5,147,31"/>
-<area shape="rect" id="Node000002" href="$sir_8c.html" title="Public interface to libsir." alt="" coords="42,79,110,105"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,46,79,79,73,79,73,46"/>
+<area shape="rect" id="Node000001" title="Default levels, options, and text styling." alt="" coords="5,5,147,30"/>
+<area shape="rect" id="Node000002" href="$sir_8c.html" title="Public interface to libsir." alt="" coords="42,78,110,103"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,45,79,78,73,78,73,45"/>
 </map>
