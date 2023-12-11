@@ -58,7 +58,9 @@ static sir_plugincache _sir_pc = {0};
 static sir_mutex cfg_mutex  = SIR_MUTEX_INIT;
 static sir_mutex fc_mutex   = SIR_MUTEX_INIT;
 static sir_mutex pc_mutex   = SIR_MUTEX_INIT;
+#if !defined(SIR_NO_CONSOLE)
 static sir_mutex ts_mutex   = SIR_MUTEX_INIT;
+#endif
 static sir_once static_once = SIR_ONCE_INIT;
 
 #if defined(__WIN__)
@@ -155,6 +157,7 @@ bool _sir_init(sirinit* si) {
     tzset();
 #endif
 
+#if !defined(SIR_NO_CONSOLE)
     if (!_sir_setcolormode(SIRCM_16)) {
         init = false;
         _sir_selflog("error: failed to set color mode!");
@@ -164,6 +167,7 @@ bool _sir_init(sirinit* si) {
         init = false;
         _sir_selflog("error: failed to reset text styles!");
     }
+#endif
 
     (void)memset(&_cfg->state, 0, sizeof(_cfg->state));
     (void)memcpy(&_cfg->si, si, sizeof(sirinit));
@@ -227,10 +231,12 @@ bool _sir_cleanup(void) {
     _sir_syslog_reset(&_cfg->si.d_syslog);
 #endif
 
+#if !defined(SIR_NO_CONSOLE)
     if (!_sir_resettextstyles()) {
         cleanup = false;
         _sir_selflog("error: failed to reset text styles!");
     }
+#endif
 
 #if defined(__HAVE_ATOMIC_H__)
     atomic_store(&_sir_magic, 0);
@@ -453,10 +459,12 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
             tmpm   = &pc_mutex;
             tmpsec = &_sir_pc;
             break;
+#if !defined(SIR_NO_CONSOLE)
         case SIRMI_TEXTSTYLE:
             tmpm   = &ts_mutex;
             tmpsec = &sir_text_style_section;
             break;
+#endif
         // GCOVR_EXCL_START
         default: /* this should never happen. */
             SIR_ASSERT(false);
@@ -505,8 +513,10 @@ bool _sir_init_common_static(void) {
     _sir_eqland(created, _sir_mutexcreate(&pc_mutex));
     SIR_ASSERT(created);
 
+#if !defined(SIR_NO_CONSOLE)
     _sir_eqland(created, _sir_mutexcreate(&ts_mutex));
     SIR_ASSERT(created);
+#endif
 
     return created;
 }
@@ -596,12 +606,14 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     buf.pid       = cfg.state.pidbuf;
     buf.name      = cfg.si.name;
 
+#if !defined(SIR_NO_CONSOLE)
     const char* style_str = _sir_gettextstyle(level);
 
     SIR_ASSERT(NULL != style_str);
     if (NULL != style_str)
         (void)_sir_strncpy(buf.style, SIR_MAXSTYLE, style_str,
             strnlen(style_str, SIR_MAXSTYLE));
+#endif
 
     buf.level = _sir_formattedlevelstr(level);
 
@@ -684,8 +696,14 @@ bool _sir_dispatch(const sirinit* si, sir_level level, sirbuf* buf) {
     size_t dispatched = 0;
     size_t wanted     = 0;
 
+#if !defined(SIR_NO_CONSOLE)
+    static const bool styling = true;
+#else
+    static const bool styling = false;
+#endif
+
     if (_sir_bittest(si->d_stdout.levels, level)) {
-        const char* write = _sir_format(true, si->d_stdout.opts, buf);
+        const char* write = _sir_format(styling, si->d_stdout.opts, buf);
         bool wrote        = _sir_validstrnofail(write) &&
             _sir_write_stdout(write, buf->output_len);
         _sir_eqland(retval, wrote);
@@ -696,7 +714,7 @@ bool _sir_dispatch(const sirinit* si, sir_level level, sirbuf* buf) {
     }
 
     if (_sir_bittest(si->d_stderr.levels, level)) {
-        const char* write = _sir_format(true, si->d_stderr.opts, buf);
+        const char* write = _sir_format(styling, si->d_stderr.opts, buf);
         bool wrote        = _sir_validstrnofail(write) &&
             _sir_write_stderr(write, buf->output_len);
         _sir_eqland(retval, wrote);
@@ -1269,10 +1287,11 @@ pid_t _sir_gettid(void) {
 # endif
 #elif defined(__WIN__)
     tid = (pid_t)GetCurrentThreadId();
-#elif defined(PLATFORMIO)
+#elif defined(SIR_EMBEDDED)
+# pragma warning("obtaining the current thread identifier is not implemented.")
     tid = 0;
 #else
-# error "unable to determine how to get a thread identifier"
+# error "unable to determine how to obtain the current thread identifier."
 #endif
     return tid;
 }
@@ -1376,11 +1395,12 @@ bool _sir_setthreadname(const char* name) {
 }
 
 bool _sir_gethostname(char name[SIR_MAXHOST]) {
-#if !defined(__WIN__)
-# if defined(PLATFORMIO)
-    memset(name, 0, SIR_MAXHOST);
+# if defined(SIR_EMBEDDED)
+#  pragma message("obtaining the machine's hostname is not implemented.")
+    name[0] = '\0';
     return true;
 # endif
+#if !defined(__WIN__)
     int ret = gethostname(name, SIR_MAXHOST - 1);
     return 0 == ret ? true : _sir_handleerr(errno);
 #else

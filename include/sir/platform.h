@@ -103,6 +103,23 @@
 #  if defined(SUNLINT)
 #   undef __HAVE_ATOMIC_H__
 #  endif
+#  if defined(PLATFORMIO) || defined(ARDUINO)
+#   if !defined(SIR_EMBEDDED)
+#    define SIR_EMBEDDED
+#   endif
+#   if !defined(SIR_NO_CONSOLE)
+#    define SIR_NO_CONSOLE
+#   endif
+#   if !defined(SIR_NO_SYSTEM_LOGGERS)
+#    define SIR_NO_SYSTEM_LOGGERS
+#   endif
+#   if !defined(SIR_NO_PLUGINS)
+#    define SIR_NO_PLUGINS
+#   endif
+#   ifdef (SIR_SELFLOG)
+#    undef SIR_SELFLOG
+#   endif
+#  endif
 #  if (defined(__INTEL_COMPILER) && !defined(__llvm__)) || \
      defined(__NVCOMPILER) || defined(__COVERITY__)
 #   if !defined(_BITS_FLOATN_H)
@@ -403,7 +420,6 @@ _set_thread_local_invalid_parameter_handler(
 #  undef SIR_SYSLOG_ENABLED
 # endif
 
-# define SIR_MAXHOST 256
 
 # if !defined(__WIN__)
 #  if !defined(SIR_NO_PLUGINS)
@@ -433,7 +449,7 @@ _set_thread_local_invalid_parameter_handler(
 #  endif
 #  if !defined(__CYGWIN__) && !defined(__HAIKU__) && \
       !defined(__serenity__) && !defined(_AIX) && \
-      !defined(_CH_) && !defined(__CH__) && !defined(PLATFORMIO)
+      !defined(_CH_) && !defined(__CH__) && !defined(SIR_EMBEDDED)
 #   include <sys/syscall.h>
 #  endif
 #  include <sys/time.h>
@@ -629,8 +645,6 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #   endif
 #  elif defined(__WIN__)
 #   define _sir_thread_local __declspec(thread)
-#  elif defined(PLATFORMIO)
-#   define _sir_thread_local
 #  elif defined(__GNUC__) || (defined(_AIX) && (defined(__xlC_ver__) || defined(__ibmxl__)))
 #   define _sir_thread_local __thread
 #  else

@@ -240,11 +240,22 @@
 /** The size, in characters, of the buffer used to hold file header format strings. */
 # define SIR_MAXFHEADER 128
 
+/** The size, in characters, of the buffer used to hold hostnames. */
+# if !defined(SIR_EMBEDDED)
+#  define SIR_MAXHOST 256
+# else
+#  define SIR_MAXHOST 1
+# endif
+
 /**
  * The maximum number of characters allowable in one log message. This
  * does not include accompanying formatted output (see ::SIR_MAXOUTPUT).
  */
-# define SIR_MAXMESSAGE 4096
+# if !defined(SIR_EMBEDDED)
+#  define SIR_MAXMESSAGE 4096
+# else
+#  define SIR_MAXMESSAGE 256
+# endif
 
 /** The size, in characters, of the buffer used to hold time format strings. */
 # define SIR_MAXTIME 64
@@ -265,13 +276,21 @@
  * The size, in characters, of the buffer used to hold system logger identity
  * strings.
  */
-# define SIR_MAX_SYSLOG_ID 128
+# if !defined(SIR_EMBEDDED)
+#  define SIR_MAX_SYSLOG_ID 128
+# else
+#  define SIR_MAX_SYSLOG_ID 1
+# endif
 
 /**
  * The size, in characters, of the buffer used to hold system logger category
  * strings.
  */
-# define SIR_MAX_SYSLOG_CAT 64
+# if !defined(SIR_EMBEDDED)
+#  define SIR_MAX_SYSLOG_CAT 64
+# else
+#  define SIR_MAX_SYSLOG_CAT 1
+# endif
 
 /** The maximum number of whitespace and miscellaneous characters included in output. */
 # define SIR_MAXMISC 7
@@ -281,7 +300,11 @@
  * data in any color mode (the largest possible sequence, which is:
  * `\x1b[a;fb;m;rrr;ggg;bbb;fb;m;rrr;ggg;bbbm`) plus a null terminator.
  */
-# define SIR_MAXSTYLE 43
+# if !defined(SIR_NO_CONSOLE)
+#  define SIR_MAXSTYLE 43
+# else
+#  define SIR_MAXSTYLE 1
+# endif
 
 /** The maximum size, in characters, of final formatted output. */
 # define SIR_MAXOUTPUT \

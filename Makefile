@@ -105,6 +105,16 @@ else
 endif
 
 ##############################################################################
+# Embedded platform?
+
+ifeq ($(SIR_EMBEDDED),1)
+	SIR_NO_SYSTEM_LOGGERS=1
+	SIR_NO_PLUGINS=1
+	SIR_NO_CONSOLE=1
+	SIR_SELFLOG=1
+endif
+
+##############################################################################
 # Enable internal diagnostic logging?
 
 ifeq ($(SIR_SELFLOG),1)
@@ -142,6 +152,13 @@ else
   PGOALS  = plugins
 endif
 
+##############################################################################
+# Disable ANSI text styling (no console available)?
+
+ifeq ($(SIR_NO_CONSOLE),1)
+	SIR_CFLAGS += -DSIR_NO_CONSOLE
+endif
+
 #############################################################################
 # Developer profiling build?
 
@@ -153,13 +170,13 @@ ifeq ($(SIR_PERF_PROFILE),1)
     $(warning Warning: SIR_PERF_PROFILE set without SIR_NO_SYSTEM_LOGGERS.)
   endif
   ifeq ($(SIR_SELFLOG),1)
-    $(error Error: Both SIR_SELFLOG and SIR_PERF_PROFILE are set..)
+    $(error Error: Both SIR_SELFLOG and SIR_PERF_PROFILE are set.)
   endif
   ifeq ($(SIR_DEBUG),1)
-    $(error Error: Both SIR_DEBUG and SIR_PERF_PROFILE are set..)
+    $(error Error: Both SIR_DEBUG and SIR_PERF_PROFILE are set.)
   endif
   ifeq ($(DUMA),1)
-    $(error Error: Both DUMA and SIR_PERF_PROFILE are set..)
+    $(error Error: Both DUMA and SIR_PERF_PROFILE are set.)
   endif
   SIR_CFLAGS += -DSIR_PERF_PROFILE
 endif

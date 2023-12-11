@@ -57,7 +57,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
     if (relative) {
 #if !defined(__WIN__)
 # if defined(__MACOS__) || defined(_AIX) || defined(__EMSCRIPTEN__) || \
-     defined(PLATFORMIO)
+     defined(SIR_EMBEDDED)
 #  if !defined(O_SEARCH)
         int open_flags = O_DIRECTORY;
 #  else
@@ -333,7 +333,8 @@ char* _sir_getappfilename(void) {
             resolved = _sir_handleerr(errno);
             break;
         }
-# elif defined(PLATFORMIO)
+# elif defined(SIR_EMBEDDED)
+#  pragma message("obtaining the current binary filename is not implemented.")
         memset(buffer, 0, size);
         resolved = true;
         break;
