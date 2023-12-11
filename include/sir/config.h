@@ -97,7 +97,11 @@
  *
  * @remark Only applies if ::SIRO_NOPID or ::SIRO_NOTID are not set.
  */
+# if !(defined(ESP32) || defined(ESP8266))
 # define SIR_PIDFORMAT "%d"
+# else
+# define SIR_PIDFORMAT "%x"
+# endif
 
 /**
  * The string to place between process and thread IDs.
