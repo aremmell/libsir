@@ -1,15 +1,19 @@
 #!/usr/bin/env sh
-# install - install a program, script, or datafile
-# SPDX-License-Identifier: X11
 
 scriptversion=2020-11-14.01; # UTC
 
-# This originates from X11R5 (mit/util/scripts/install.sh), which was
-# later released in X11R6 (xc/config/util/install.sh) with the
-# following copyright and license.
+# install - install a program, script, or datafile
+################################################################################
+#
+# This originates from X11R5 (mit/util/scripts/install.sh), which was later
+# released in X11R6 (xc/config/util/install.sh) with the following copyright
+# and license.
+#
+################################################################################
+#
+# SPDX-License-Identifier: X11
 #
 # Copyright (C) 1994 X Consortium
-# Copyright (C) 2023 Jeffrey H. Johnson <trnsz@pobox.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to
@@ -33,8 +37,11 @@ scriptversion=2020-11-14.01; # UTC
 # ings in this Software without prior written authorization from the X Consor-
 # tium.
 #
+################################################################################
 #
 # FSF changes to this file are in the public domain.
+#
+################################################################################
 #
 # Calling this script install-sh is preferred over install.sh, to prevent
 # 'make' implicit rules from creating a file called install from it
@@ -42,6 +49,8 @@ scriptversion=2020-11-14.01; # UTC
 #
 # This script is compatible with the BSD install script, but was written
 # from scratch.
+#
+################################################################################
 
 tab='	'
 nl='
@@ -49,13 +58,11 @@ nl='
 IFS=" $tab$nl"
 
 # Set DOITPROG to "echo" to test this script.
-
 doit=${DOITPROG-}
 doit_exec=${doit:-exec}
 
 # Put in absolute file names if you don't have them in your path;
 # or use environment vars.
-
 chgrpprog=${CHGRPPROG-chgrp}
 chmodprog=${CHMODPROG-chmod}
 chownprog=${CHOWNPROG-chown}
@@ -187,7 +194,6 @@ done
 
 # We allow the use of options -d and -T together, by making -d
 # take the precedence; this is for compatibility with GNU install.
-
 if test -n "$dir_arg"; then
   if test -n "$dst_arg"; then
     echo "$0: target directory not allowed when installing a directory." >&2
@@ -392,7 +398,6 @@ do
       # mkdir does not conform to POSIX,
       # or it failed possibly due to a race condition.  Create the
       # directory the slow way, step by step, checking for races as we go.
-
       case $dstdir in
         /*) prefix='/';;
         [-=\(\)!]*) prefix='./';;
@@ -471,12 +476,10 @@ do
      } &&
      $doit_exec $cpprog "$src" "$dsttmp") &&
 
-    # and set any options; do chmod last to preserve setuid bits.
-    #
+    # Now set any options; do chmod last to preserve setuid bits.
     # If any of these fail, we abort the whole thing.  If we want to
     # ignore errors from any of these, just make sure not to ignore
     # errors from the above "$doit $cpprog $src $dsttmp" command.
-    #
     { test -z "$chowncmd" || $doit $chowncmd "$dsttmp"; } &&
     { test -z "$chgrpcmd" || $doit $chgrpcmd "$dsttmp"; } &&
     { test -z "$stripcmd" || $doit $stripcmd "$dsttmp"; } &&
