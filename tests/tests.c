@@ -778,7 +778,7 @@ bool sirtest_textstylesanity(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-#if !defined(SIR_NO_CONSOLE)
+#if !defined(SIR_NO_TEXT_STYLING)
     TEST_MSG_0(WHITEB("--- explicitly invalid ---"));
     _sir_eqland(pass, !sir_settextstyle(SIRL_INFO, (sir_textattr)0xbbb, 800, 920));
     _sir_eqland(pass, sir_info("I have set an invalid text style."));
@@ -886,7 +886,7 @@ bool sirtest_textstylesanity(void) {
         SIRTC_BMAGENTA));
     PASSFAIL_MSG(pass, "\t--- change mode: 16-color: %s ---\n\n", PRN_PASS(pass));
 #else
-    TEST_MSG_0("SIR_NO_CONSOLE is defined; skipping");
+    TEST_MSG_0("SIR_NO_TEXT_STYLING is defined; skipping");
 #endif
 
     _sir_eqland(pass, sir_cleanup());

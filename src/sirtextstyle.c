@@ -33,7 +33,7 @@
 #include "sir/internal.h"
 #include "sir/defaults.h"
 
-#if !defined(SIR_NO_CONSOLE)
+#if !defined(SIR_NO_TEXT_STYLING)
 static sir_colormode sir_color_mode = SIRCM_16;
 
 /** Wrapper around the level-to-style map and the color mode. This is the data
@@ -216,7 +216,7 @@ bool _sir_setcolormode(sir_colormode mode) {
 
     return true;
 }
-#else /* SIR_NO_CONSOLE */
+#else /* SIR_NO_TEXT_STYLING */
 const char* _sir_gettextstyle(sir_level level) {
     SIR_UNUSED(level);
     return NULL;

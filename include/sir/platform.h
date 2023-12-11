@@ -109,8 +109,8 @@
 #   endif
 #  endif
 #  if defined(SIR_EMBEDDED)
-#   if !defined(SIR_NO_CONSOLE)
-#    define SIR_NO_CONSOLE
+#   if !defined(SIR_NO_TEXT_STYLING)
+#    define SIR_NO_TEXT_STYLING
 #   endif
 #   if !defined(SIR_NO_SYSTEM_LOGGERS)
 #    define SIR_NO_SYSTEM_LOGGERS

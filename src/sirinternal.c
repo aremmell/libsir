@@ -58,7 +58,7 @@ static sir_plugincache _sir_pc = {0};
 static sir_mutex cfg_mutex  = SIR_MUTEX_INIT;
 static sir_mutex fc_mutex   = SIR_MUTEX_INIT;
 static sir_mutex pc_mutex   = SIR_MUTEX_INIT;
-#if !defined(SIR_NO_CONSOLE)
+#if !defined(SIR_NO_TEXT_STYLING)
 static sir_mutex ts_mutex   = SIR_MUTEX_INIT;
 #endif
 static sir_once static_once = SIR_ONCE_INIT;
@@ -157,7 +157,7 @@ bool _sir_init(sirinit* si) {
     tzset();
 #endif
 
-#if !defined(SIR_NO_CONSOLE)
+#if !defined(SIR_NO_TEXT_STYLING)
     if (!_sir_setcolormode(SIRCM_16)) {
         init = false;
         _sir_selflog("error: failed to set color mode!");
@@ -231,7 +231,7 @@ bool _sir_cleanup(void) {
     _sir_syslog_reset(&_cfg->si.d_syslog);
 #endif
 
-#if !defined(SIR_NO_CONSOLE)
+#if !defined(SIR_NO_TEXT_STYLING)
     if (!_sir_resettextstyles()) {
         cleanup = false;
         _sir_selflog("error: failed to reset text styles!");
@@ -460,7 +460,7 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
             tmpsec = &_sir_pc;
             break;
         case SIRMI_TEXTSTYLE:
-#if !defined(SIR_NO_CONSOLE)
+#if !defined(SIR_NO_TEXT_STYLING)
             tmpm   = &ts_mutex;
             tmpsec = &sir_text_style_section;
 #else
@@ -516,7 +516,7 @@ bool _sir_init_common_static(void) {
     _sir_eqland(created, _sir_mutexcreate(&pc_mutex));
     SIR_ASSERT(created);
 
-#if !defined(SIR_NO_CONSOLE)
+#if !defined(SIR_NO_TEXT_STYLING)
     _sir_eqland(created, _sir_mutexcreate(&ts_mutex));
     SIR_ASSERT(created);
 #endif
@@ -609,7 +609,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     buf.pid       = cfg.state.pidbuf;
     buf.name      = cfg.si.name;
 
-#if !defined(SIR_NO_CONSOLE)
+#if !defined(SIR_NO_TEXT_STYLING)
     const char* style_str = _sir_gettextstyle(level);
 
     SIR_ASSERT(NULL != style_str);
@@ -699,7 +699,7 @@ bool _sir_dispatch(const sirinit* si, sir_level level, sirbuf* buf) {
     size_t dispatched = 0;
     size_t wanted     = 0;
 
-#if !defined(SIR_NO_CONSOLE)
+#if !defined(SIR_NO_TEXT_STYLING)
     static const bool styling = true;
 #else
     static const bool styling = false;

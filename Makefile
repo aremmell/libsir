@@ -110,7 +110,7 @@ endif
 ifeq ($(SIR_EMBEDDED),1)
   SIR_NO_SYSTEM_LOGGERS := 1
   SIR_NO_PLUGINS        := 1
-  SIR_NO_CONSOLE        := 1
+  SIR_NO_TEXT_STYLING        := 1
   SIR_SELFLOG           := 0
 endif
 
@@ -155,8 +155,8 @@ endif
 ##############################################################################
 # Disable ANSI text styling (no console available)?
 
-ifeq ($(SIR_NO_CONSOLE),1)
-  SIR_CFLAGS += -DSIR_NO_CONSOLE
+ifeq ($(SIR_NO_TEXT_STYLING),1)
+  SIR_CFLAGS += -DSIR_NO_TEXT_STYLING
 endif
 
 #############################################################################

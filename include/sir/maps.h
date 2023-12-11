@@ -34,7 +34,7 @@
 
 # include "sir/types.h"
 
-# if !defined(SIR_NO_CONSOLE)
+# if !defined(SIR_NO_TEXT_STYLING)
 extern sir_level_style_tuple sir_level_to_style_map[SIR_NUMLEVELS];
 # endif
 
