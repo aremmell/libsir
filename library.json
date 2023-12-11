@@ -1,6 +1,6 @@
 {
     "name": "libsir",
-    "version": "2.2.7",
+    "version": "2.2.8",
     "description": "Standard Incident Reporter: The best logging library on the planet.",
     "keywords": "log,logging,logger,logfile",
     "repoistory": {
