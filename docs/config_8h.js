@@ -24,6 +24,7 @@ var config_8h =
     [ "SIR_MAXERROR", "config_8h.html#ad6fce840144259e992c33fb611f31262", null ],
     [ "SIR_MAXFHEADER", "config_8h.html#ad0d5f453c3eb6a7a0e9d507b122bfac4", null ],
     [ "SIR_MAXFILES", "config_8h.html#aa1080a4bec531adb6d25c87ac4734399", null ],
+    [ "SIR_MAXHOST", "config_8h.html#a581abf05992a752a68f0fd564d235760", null ],
     [ "SIR_MAXLEVEL", "config_8h.html#abac0b7b0c1ea5afc9d0708a4421b1a57", null ],
     [ "SIR_MAXMESSAGE", "config_8h.html#a5f006a2e9ce93ae8d693a2928af33bb2", null ],
     [ "SIR_MAXMISC", "config_8h.html#ac42033f35206a8adbf1a4377c8e0d290", null ],

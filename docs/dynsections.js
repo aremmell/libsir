@@ -42,6 +42,7 @@ function toggleVisibility(linkObj)
  }
  return false;
 }
+
 function updateStripes()
 {
   $('table.directory tr').
@@ -49,6 +50,7 @@ function updateStripes()
   $('table.directory tr').
        removeClass('odd').filter(':visible:odd').addClass('odd');
 }
+
 function toggleLevel(level)
 {
   $('table.directory tr').each(function() {
@@ -69,15 +71,20 @@ function toggleLevel(level)
   });
   updateStripes();
 }
+
 function toggleFolder(id)
 {
   // the clicked row
   var currentRow = $('#row_'+id);
+
   // all rows after the clicked row
   var rows = currentRow.nextAll("tr");
+
   var re = new RegExp('^row_'+id+'\\d+_$', "i"); //only one sub
+
   // only match elements AFTER this one (can't hide elements before)
   var childRows = rows.filter(function() { return this.id.match(re); });
+
   // first row is visible we are HIDING
   if (childRows.filter(':first').is(':visible')===true) {
     // replace down arrow by right arrow for current row
@@ -98,6 +105,8 @@ function toggleFolder(id)
   }
   updateStripes();
 }
+
+
 function toggleInherit(id)
 {
   var rows = $('tr.inherit.'+id);
@@ -111,10 +120,12 @@ function toggleInherit(id)
     $(img).attr('src',src.substring(0,src.length-10)+'open.png');
   }
 }
+
 var opened=true;
 // in case HTML_COLORSTYLE is LIGHT or DARK the vars will be replaced, so we write them out explicitly and use double quotes
 var plusImg  = [ "url('plusd.svg')",  "url('../../plusd.svg')" ];
 var minusImg = [ "url('minusd.svg')", "url('../../minusd.svg')" ];
+
 // toggle all folding blocks
 function codefold_toggle_all(relPath) {
  if (opened) {
@@ -128,6 +139,7 @@ function codefold_toggle_all(relPath) {
  }
  opened=!opened;
 }
+
 // toggle single folding block
 function codefold_toggle(id) {
   $('#foldopen'+id).toggle();
@@ -176,4 +188,5 @@ function init_codefold(relPath) {
     $('#foldclosed'+id).html(line);
   });
 }
+
 /* @license-end */
