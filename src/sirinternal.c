@@ -602,8 +602,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
         /* fall back on tid. */
         if (!resolved_tid)
-            _sir_snprintf_trunc(_sir_tid, SIR_MAXPID, SIR_PIDFORMAT,
-                PID_CAST tid);
+            _sir_snprintf_trunc(_sir_tid, SIR_MAXPID, SIR_PIDFORMAT, PID_CAST tid);
     }
 
     sirconfig cfg;
