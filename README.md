@@ -131,7 +131,6 @@ libsir currently supports the following system logging facilities:
    <td align="center"><center>&nbsp;<a href="https://en.cppreference.com/w/cpp/utility/format/format"><b>std</b>::<b>format</b></a>&nbsp;</center></td>
    <td align="center"><center>&nbsp;<a href="https://theboostcpplibraries.com/boost.format"><b>Boost</b>.<b>Format</b></a>&nbsp;</center></td>
    <td align="center"><center>&nbsp;<a href="https://cplusplus.com/reference/istream/iostream"><b>std</b>::<b>iostream</b></a>&nbsp;</center></td>
-   <!--<td align="center"><center>&nbsp;<a href="https://github.com/c42f/tinyformat"><b>tinyformat</b></a>&nbsp;</center></td>-->
   </tr>
   </tbody>
   </table>
