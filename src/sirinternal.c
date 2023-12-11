@@ -589,12 +589,19 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
         pid_t tid         = _sir_gettid();
         bool resolved_tid = false;
+        bool valid_tid    = tid != -1 && tid != 0;
 
+#if !defined(SIR_NO_PREFER_THREAD_NAMES)
         /* prefer thread names. */
         resolved_tid = _sir_getthreadname(_sir_tid);
+#else
+        /* only use thread names if tid is invalid. */
+        if (!valid_tid)
+            resolved_tid = _sir_getthreadname(_sir_tid);
+#endif
 
-        /* if tid is identical to pid... */
-        if (!resolved_tid && tid == _cfg->state.pid) {
+        /* if unresolved and tid is invalid or identical to pid... */
+        if (!resolved_tid && (!valid_tid || tid == _cfg->state.pid)) {
             /* don't use anything to identify the thread. */
             _sir_resetstr(_sir_tid);
             resolved_tid = true;
