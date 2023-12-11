@@ -164,19 +164,19 @@ endif
 
 ifeq ($(SIR_PERF_PROFILE),1)
   ifneq ($(SIR_NO_PLUGINS),1)
-    $(warning Warning: SIR_PERF_PROFILE set without SIR_NO_PLUGINS.)
+    $(warning Warning: SIR_PERF_PROFILE set without SIR_NO_PLUGINS..)
   endif
   ifneq ($(SIR_NO_SYSTEM_LOGGERS),1)
-    $(warning Warning: SIR_PERF_PROFILE set without SIR_NO_SYSTEM_LOGGERS.)
+    $(warning Warning: SIR_PERF_PROFILE set without SIR_NO_SYSTEM_LOGGERS..)
   endif
   ifeq ($(SIR_SELFLOG),1)
-    $(error Error: Both SIR_SELFLOG and SIR_PERF_PROFILE are set.)
+    $(error Error: Both SIR_SELFLOG and SIR_PERF_PROFILE are set..)
   endif
   ifeq ($(SIR_DEBUG),1)
-    $(error Error: Both SIR_DEBUG and SIR_PERF_PROFILE are set.)
+    $(error Error: Both SIR_DEBUG and SIR_PERF_PROFILE are set..)
   endif
   ifeq ($(DUMA),1)
-    $(error Error: Both DUMA and SIR_PERF_PROFILE are set.)
+    $(error Error: Both DUMA and SIR_PERF_PROFILE are set..)
   endif
   SIR_CFLAGS += -DSIR_PERF_PROFILE
 endif
