@@ -429,6 +429,10 @@ _set_thread_local_invalid_parameter_handler(
 #  endif
 #  if !defined(_CH_) && !defined(__CH__)
 #   include <pthread.h>
+#   if defined(ESP32) || defined(ESP8266)
+#    include <FreeRTOS.h>
+#    include <task.h>
+#   endif
 #  else
 #   include <sched.h>
 #   include <ch/pthread.h>
