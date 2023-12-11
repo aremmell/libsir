@@ -107,6 +107,8 @@
 #   if !defined(SIR_EMBEDDED)
 #    define SIR_EMBEDDED
 #   endif
+#  endif
+#  if defined(SIR_EMBEDDED)
 #   if !defined(SIR_NO_CONSOLE)
 #    define SIR_NO_CONSOLE
 #   endif
@@ -645,6 +647,8 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #   endif
 #  elif defined(__WIN__)
 #   define _sir_thread_local __declspec(thread)
+#  elif defined(SIR_EMBEDDED)
+#   define _sir_thread_local
 #  elif defined(__GNUC__) || (defined(_AIX) && (defined(__xlC_ver__) || defined(__ibmxl__)))
 #   define _sir_thread_local __thread
 #  else
