@@ -116,7 +116,7 @@
 #   if !defined(SIR_NO_PLUGINS)
 #    define SIR_NO_PLUGINS
 #   endif
-#   ifdef (SIR_SELFLOG)
+#   if defined(SIR_SELFLOG)
 #    undef SIR_SELFLOG
 #   endif
 #  endif
