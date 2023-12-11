@@ -153,7 +153,7 @@ else
 endif
 
 ##############################################################################
-# Disable ANSI text styling (no console available)?
+# Disable ANSI text style encoding?
 
 ifeq ($(SIR_NO_TEXT_STYLING),1)
   SIR_CFLAGS += -DSIR_NO_TEXT_STYLING
