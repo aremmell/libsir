@@ -1397,7 +1397,7 @@ bool _sir_setthreadname(const char* name) {
 bool _sir_gethostname(char name[SIR_MAXHOST]) {
 # if defined(SIR_EMBEDDED)
 #  pragma message("obtaining the machine's hostname is not implemented.")
-    name[0] = '\0';
+    _sir_resetstr(name);
     return true;
 # endif
 #if !defined(__WIN__)
