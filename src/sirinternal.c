@@ -194,7 +194,11 @@ bool _sir_init(sirinit* si) {
 
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
 
+#if !defined(SIR_EMBEDDED)
     _sir_selflog("initialized %s", (init ? "successfully" : "with errors"));
+#else
+    _sir_selflog("initialized");
+#endif
 
     SIR_ASSERT(init);
     return init;
