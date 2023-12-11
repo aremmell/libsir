@@ -1290,9 +1290,8 @@ pid_t _sir_gettid(void) {
 # endif
 #elif defined(__WIN__)
     tid = (pid_t)GetCurrentThreadId();
-#elif defined(SIR_EMBEDDED)
-# pragma warning("obtaining the current thread identifier is not implemented.")
-    tid = 0;
+#elif defined(ESP32) || defined(ESP8266)
+    tid = (pid_t)(uintptr_t)xTaskGetCurrentTaskHandle();
 #else
 # error "unable to determine how to obtain the current thread identifier."
 #endif
