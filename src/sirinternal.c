@@ -178,8 +178,12 @@ bool _sir_init(sirinit* si) {
     /* Store PID. */
     _cfg->state.pid = _sir_getpid();
 
-    (void)snprintf(_cfg->state.pidbuf, SIR_MAXPID, SIR_PIDFORMAT,
-        PID_CAST _cfg->state.pid);
+    if (_cfg->state.pid != -1 && _cfg->state.pid != 0) {
+        (void)snprintf(_cfg->state.pidbuf, SIR_MAXPID, SIR_PIDFORMAT,
+            PID_CAST _cfg->state.pid);
+    } else {
+        _sir_resetstr(_cfg->state.pid);
+    }
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     /* initialize system logger. */
