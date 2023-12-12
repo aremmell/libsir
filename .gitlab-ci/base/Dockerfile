@@ -105,12 +105,11 @@ RUN \
       perl-core \
       perl-devel \
       pigz \
+      procps-ng \
       python3 \
       python3-devel \
       python3-setuptools \
       python-setuptools \
-      R \
-      R-devel \
       reuse \
       ruby \
       ruby-devel \
