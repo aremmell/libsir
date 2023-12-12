@@ -33,7 +33,7 @@ USER 0
 
 WORKDIR /
 
-RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
+RUN set -x && dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
     dnf -y install elinks --setopt=install_weak_deps=True && \
     (wget https://downloads.dlang.org/pre-releases/2.x/2.106.0/dmd-2.106.0~beta.1-0.fedora.x86_64.rpm || true) && \
     (wget "$(elinks -dump https://dlang.org/download.html | \

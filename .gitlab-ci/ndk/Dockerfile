@@ -35,7 +35,7 @@ WORKDIR /opt
 
 ARG URL
 
-RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
+RUN set -x && dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
     curl -fsSL ${URL:-http://192.168.1.187:8088/~jhj/cache/android-ndk.tar.gz} | pigz -dc | tar xvf - && \
     dnf -y clean all && \
     rm -rf ~/.cache && \

@@ -35,7 +35,7 @@ WORKDIR /
 
 ARG URL
 
-RUN \
+RUN set -x && \
   (sed -i 's/tsflags=nodocs//' /etc/dnf/dnf.conf || true) && \
   dnf -y --refresh update && \
   dnf -y install dnf-plugins-core dnf-utils && \

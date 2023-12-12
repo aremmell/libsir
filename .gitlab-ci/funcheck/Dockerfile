@@ -33,7 +33,7 @@ USER 0
 
 WORKDIR /
 
-RUN dnf --refresh -y upgrade && \
+RUN set -x && dnf --refresh -y upgrade && \
     cd /opt && \
     git clone -v https://github.com/tmatis/funcheck.git && \
     cd funcheck/library && \
