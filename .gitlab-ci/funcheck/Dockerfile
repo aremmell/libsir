@@ -33,7 +33,7 @@ USER 0
 
 WORKDIR /
 
-RUN set -x && dnf --refresh -y upgrade && dnf install -y --nogpgcheck libX11-devel && \
+RUN set -x && dnf --refresh -y upgrade && dnf install -y libX11-devel && \
     cd /opt && \
     git clone -v https://github.com/tmatis/funcheck.git && \
     cd funcheck/library && \
