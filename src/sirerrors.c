@@ -269,7 +269,7 @@ void _sir_geterrorinfo(sir_errorinfo* err) {
 
 void _sir_reset_tls_error(void) {
     _sir_te.lasterror = _SIR_E_NOERROR;
-    _sir_te.os_code  = 0;
+    _sir_te.os_code   = 0;
     _sir_resetstr(_sir_te.os_msg);
     _sir_te.loc.func = SIR_UNKNOWN;
     _sir_te.loc.file = SIR_UNKNOWN;
