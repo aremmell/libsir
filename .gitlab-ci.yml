@@ -61,12 +61,6 @@ stages:
 
 ################################################################################
 
-.CopyToTmpfs: &CopyToTmpfs |
-  # *CopyToTmpfs - Copy current working directory to /tmpfs/
-  test -d /tmpfs/ && mkdir -p /tmpfs/user && cp -ax . /tmpfs/user/ && cd /tmpfs/user/ && echo "New working directory: $(pwd)" || true
-
-################################################################################
-
 .Configuration: &Configuration |
   # *Configuration - CI/CD Configuration
   echo -e "section_start:`date +%s`:Configuration_section[collapsed=false]\r\e[0K\033[0;36mCI/CD Configuration ...\033[0m" || true
@@ -621,12 +615,12 @@ Linux/x86_64 (Oracle Studio C, C-only):
     - job: Style check
   tags:
     - Docker-x64
+    - Docker-x64-SmallFS
     - Linux
   image:
     name: registry.gitlab.com/libsir/libsir/oracle:latest
   script:
     - *Configuration
-    - *CopyToTmpfs
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -645,7 +639,6 @@ Linux/x86_64 (Oracle Studio C, C-only):
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
-    - cp -f /tmpfs/user/logs/* "${CI_PROJECT_DIR:?}/logs" 2> /dev/null || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -664,12 +657,12 @@ Linux/i686 (Oracle Studio C, C-only):
     - job: Style check
   tags:
     - Docker-x64
+    - Docker-x64-SmallFS
     - Linux
   image:
     name: registry.gitlab.com/libsir/libsir/oracle:latest
   script:
     - *Configuration
-    - *CopyToTmpfs
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -690,7 +683,6 @@ Linux/i686 (Oracle Studio C, C-only):
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
-    - cp -f /tmpfs/user/logs/* "${CI_PROJECT_DIR:?}/logs" 2> /dev/null || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -698,7 +690,6 @@ Linux/i686 (Oracle Studio C, C-only):
     expire_in: 7 days
     paths:
       - logs/
-      - /tmpfs/use/logs/
   retry: 2
   interruptible: true
 
@@ -1105,6 +1096,7 @@ Android/i686 (API Level 21, Clang++, Clang):
     - job: Style check
   tags:
     - Docker-x64
+    - Docker-x64-SmallFS
     - Linux
   image:
     name: registry.gitlab.com/libsir/libsir/ndk:latest
@@ -1127,7 +1119,6 @@ Android/i686 (API Level 21, Clang++, Clang):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
-    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -1137,7 +1128,6 @@ Android/i686 (API Level 21, Clang++, Clang):
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
-    - cp -f /tmpfs/user/logs/* "${CI_PROJECT_DIR:?}/logs" 2> /dev/null || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -1275,6 +1265,7 @@ Android/i686 (API Level 33, Clang++, Clang):
     - job: Style check
   tags:
     - Docker-x64
+    - Docker-x64-SmallFS
     - Linux
   image:
     name: registry.gitlab.com/libsir/libsir/ndk:latest
@@ -1297,7 +1288,6 @@ Android/i686 (API Level 33, Clang++, Clang):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
-    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -1307,7 +1297,6 @@ Android/i686 (API Level 33, Clang++, Clang):
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
-    - cp -f /tmpfs/user/logs/* "${CI_PROJECT_DIR:?}/logs" 2> /dev/null || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -2396,7 +2385,6 @@ Linux/i686 (DMD64 ImportC, C-only):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
-    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -2405,7 +2393,6 @@ Linux/i686 (DMD64 ImportC, C-only):
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
-    - cp -f /tmpfs/user/logs/* "${CI_PROJECT_DIR:?}/logs" 2> /dev/null || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -3107,12 +3094,12 @@ Oracle Lint:
     - job: Style check
   tags:
     - Docker-x64
+    - Docker-x64-SmallFS
     - Linux
   image:
     name: registry.gitlab.com/libsir/libsir/oracle:latest
   script:
     - *Configuration
-    - *CopyToTmpfs
     - |
       # Start of Lint ...
       echo -e "section_start:`date +%s`:Lint_section[collapsed=true]\r\e[0K\033[0;36mLint ...\033[0m" || true
@@ -3492,12 +3479,12 @@ Linux/x86_64 (Oracle Studio C, Fedora Python):
     - job: Linux/x86_64 (Oracle Studio C, C-only)
   tags:
     - Docker-x64
+    - Docker-x64-SmallFS
     - Linux
   image:
     name: registry.gitlab.com/libsir/libsir/oracle:latest
   script:
     - *Configuration
-    - *CopyToTmpfs
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
