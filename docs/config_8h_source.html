@@ -134,167 +134,6 @@ $(document).ready(function(){initNavTree('config_8h_source.html',''); initResiza
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="config_8h.html#abd5132131479030a120c289812e38363">   93</a></span><span class="preprocessor"># define SIR_PIDSUFFIX &quot;)&quot;</span></div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<<<<<<< HEAD
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="preprocessor"># if !(defined(ESP32) || defined(ESP8266))</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="config_8h.html#a88267c5f76d8f1f3f0b6a7903bfddc0b">  101</a></span><span class="preprocessor">#  define SIR_PIDFORMAT &quot;%d&quot;</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="preprocessor"># else</span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="preprocessor">#  define SIR_PIDFORMAT &quot;%x&quot;</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="config_8h.html#a22d306c921d111c9722a11c9a9ad628e">  116</a></span><span class="preprocessor"># define SIR_PIDSEPARATOR &quot;.&quot;</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="config_8h.html#aad514de31d1178e0a91dcd7434230965">  119</a></span><span class="preprocessor"># define SIR_FOPENMODE &quot;a&quot;</span></div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="config_8h.html#a019fb62b107343bafedb0f5ad84f7d3a">  125</a></span><span class="preprocessor"># define SIR_FROLLSIZE (1024 * 1024 * 5)</span></div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno"><a class="line" href="config_8h.html#a90d4862e769fd5effefb1e1dedf520c8">  137</a></span><span class="preprocessor"># define SIR_FHTIMEFORMAT &quot;%H:%M:%S %a %d %b %Y (%z)&quot;</span></div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="config_8h.html#a7c652578740e372edeac33d14f6408fd">  152</a></span><span class="preprocessor"># define SIR_FHFORMAT &quot;\n\n----- %s %s -----\n\n&quot;</span></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno"><a class="line" href="config_8h.html#aeb4e44bc613c57c3c49e27b66e69e933">  159</a></span><span class="preprocessor"># define SIR_FHBEGIN &quot;session begin @&quot;</span></div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno"><a class="line" href="config_8h.html#aca213e22f32a371da7ca82eb86a16c9a">  169</a></span><span class="preprocessor"># define SIR_FHROLLED &quot;archived as %s due to size @&quot;</span></div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno"><a class="line" href="config_8h.html#aeb4949a438cb054dbd261eead7e9d6c9">  179</a></span><span class="preprocessor"># define SIR_FNAMETIMEFORMAT &quot;%Y-%m-%d-%H%M%S&quot;</span></div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> </div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno"><a class="line" href="config_8h.html#a0dbd6db580edf1d367220202e3dff944">  190</a></span><span class="preprocessor"># define SIR_FNAMESEQFORMAT &quot;-%hu&quot;</span></div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno"><a class="line" href="config_8h.html#a30cae1b7b493f9be429ff683b9d77677">  212</a></span><span class="preprocessor"># define SIR_FNAMEFORMAT &quot;%s-%s%s%s&quot;</span></div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno"><a class="line" href="config_8h.html#a777d150774244d2707818f2c4a1b9538">  215</a></span><span class="preprocessor"># define SIRL_S_EMERG  &quot;emrg&quot;</span></div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> </div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno"><a class="line" href="config_8h.html#a4e02d1cb5e4a8d8535227657781d4a29">  218</a></span><span class="preprocessor"># define SIRL_S_ALERT  &quot;alrt&quot;</span></div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span> </div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno"><a class="line" href="config_8h.html#a362f77b1b5555a0ea57fdfb64ae09229">  221</a></span><span class="preprocessor"># define SIRL_S_CRIT   &quot;crit&quot;</span></div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span> </div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno"><a class="line" href="config_8h.html#a4237f9dff053a17cf7a134dbbebc5210">  224</a></span><span class="preprocessor"># define SIRL_S_ERROR  &quot;erro&quot;</span></div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span> </div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno"><a class="line" href="config_8h.html#a7a2838316cfd52f1af743952e667d9f5">  227</a></span><span class="preprocessor"># define SIRL_S_WARN   &quot;warn&quot;</span></div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span> </div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno"><a class="line" href="config_8h.html#a6195821fca239b40498e847d50b82623">  230</a></span><span class="preprocessor"># define SIRL_S_NOTICE &quot;noti&quot;</span></div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno"><a class="line" href="config_8h.html#a1f7c2763d5e7afb0f2b49d4f0636276d">  233</a></span><span class="preprocessor"># define SIRL_S_INFO   &quot;info&quot;</span></div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno"><a class="line" href="config_8h.html#a04d05c434823f0e5a353a31bb47af16e">  236</a></span><span class="preprocessor"># define SIRL_S_DEBUG  &quot;debg&quot;</span></div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno"><a class="line" href="config_8h.html#aa1080a4bec531adb6d25c87ac4734399">  239</a></span><span class="preprocessor"># define SIR_MAXFILES 16</span></div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span> </div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno"><a class="line" href="config_8h.html#a98d559e1620108074d776bd6f33f85a4">  242</a></span><span class="preprocessor"># define SIR_MAXPLUGINS 16</span></div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno"><a class="line" href="config_8h.html#ad0d5f453c3eb6a7a0e9d507b122bfac4">  245</a></span><span class="preprocessor"># define SIR_MAXFHEADER 128</span></div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><span class="preprocessor"># if !defined(SIR_EMBEDDED)</span></div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno"><a class="line" href="config_8h.html#a581abf05992a752a68f0fd564d235760">  249</a></span><span class="preprocessor">#  define SIR_MAXHOST 256</span></div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span><span class="preprocessor"># else</span></div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="preprocessor">#  define SIR_MAXHOST 1</span></div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span><span class="preprocessor"># if !defined(SIR_EMBEDDED)</span></div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno"><a class="line" href="config_8h.html#a5f006a2e9ce93ae8d693a2928af33bb2">  259</a></span><span class="preprocessor">#  define SIR_MAXMESSAGE 4096</span></div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="preprocessor"># else</span></div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span><span class="preprocessor">#  define SIR_MAXMESSAGE 256</span></div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno"><a class="line" href="config_8h.html#ac1e50274f913ef71f196f20b9dfbbba6">  265</a></span><span class="preprocessor"># define SIR_MAXTIME 64</span></div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno"><a class="line" href="config_8h.html#ab048f63b09b424f84e19055dc0ec4a29">  268</a></span><span class="preprocessor"># define SIR_MAXMSEC 5</span></div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span> </div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno"><a class="line" href="config_8h.html#abac0b7b0c1ea5afc9d0708a4421b1a57">  271</a></span><span class="preprocessor"># define SIR_MAXLEVEL 7</span></div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno"><a class="line" href="config_8h.html#a85ed3139018ee9e7545c74c0885dff55">  277</a></span><span class="preprocessor"># define SIR_MAXNAME 32</span></div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span><span class="preprocessor"># if !defined(SIR_EMBEDDED)</span></div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno"><a class="line" href="config_8h.html#a24a907a8ba87d4355d11dca2476383b2">  284</a></span><span class="preprocessor">#  define SIR_MAX_SYSLOG_ID 128</span></div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="preprocessor"># else</span></div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span><span class="preprocessor">#  define SIR_MAX_SYSLOG_ID 1</span></div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span> </div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span><span class="preprocessor"># if !defined(SIR_EMBEDDED)</span></div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno"><a class="line" href="config_8h.html#acf0d0fad6a98c920cced53dbe9b54d26">  294</a></span><span class="preprocessor">#  define SIR_MAX_SYSLOG_CAT 64</span></div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span><span class="preprocessor"># else</span></div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span><span class="preprocessor">#  define SIR_MAX_SYSLOG_CAT 1</span></div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span> </div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno"><a class="line" href="config_8h.html#ac42033f35206a8adbf1a4377c8e0d290">  300</a></span><span class="preprocessor"># define SIR_MAXMISC 7</span></div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span> </div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span><span class="preprocessor"># if !defined(SIR_NO_TEXT_STYLING)</span></div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno"><a class="line" href="config_8h.html#a5cdaa944bfe2228355cc4c34c3d315e8">  308</a></span><span class="preprocessor">#  define SIR_MAXSTYLE 43</span></div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span><span class="preprocessor"># else</span></div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span><span class="preprocessor">#  define SIR_MAXSTYLE 1</span></div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span> </div>
-<div class="foldopen" id="foldopen00314" data-start="" data-end="">
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno"><a class="line" href="config_8h.html#ab3e26cb9ac224cb9a695ddf1ed099218">  314</a></span><span class="preprocessor"># define SIR_MAXOUTPUT \</span></div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span><span class="preprocessor">    (SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME + SIR_MAXLEVEL + \</span></div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span><span class="preprocessor">        SIR_MAXNAME + (SIR_MAXPID   * 2) + SIR_MAXMISC + 1)</span></div>
-||||||| 9d87d4c
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="config_8h.html#a88267c5f76d8f1f3f0b6a7903bfddc0b">  100</a></span><span class="preprocessor"># define SIR_PIDFORMAT &quot;%d&quot;</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="config_8h.html#a22d306c921d111c9722a11c9a9ad628e">  112</a></span><span class="preprocessor"># define SIR_PIDSEPARATOR &quot;.&quot;</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="config_8h.html#aad514de31d1178e0a91dcd7434230965">  115</a></span><span class="preprocessor"># define SIR_FOPENMODE &quot;a&quot;</span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="config_8h.html#a019fb62b107343bafedb0f5ad84f7d3a">  121</a></span><span class="preprocessor"># define SIR_FROLLSIZE (1024 * 1024 * 5)</span></div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="config_8h.html#a90d4862e769fd5effefb1e1dedf520c8">  133</a></span><span class="preprocessor"># define SIR_FHTIMEFORMAT &quot;%H:%M:%S %a %d %b %Y (%z)&quot;</span></div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno"><a class="line" href="config_8h.html#a7c652578740e372edeac33d14f6408fd">  148</a></span><span class="preprocessor"># define SIR_FHFORMAT &quot;\n\n----- %s %s -----\n\n&quot;</span></div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="config_8h.html#aeb4e44bc613c57c3c49e27b66e69e933">  155</a></span><span class="preprocessor"># define SIR_FHBEGIN &quot;session begin @&quot;</span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno"><a class="line" href="config_8h.html#aca213e22f32a371da7ca82eb86a16c9a">  165</a></span><span class="preprocessor"># define SIR_FHROLLED &quot;archived as %s due to size @&quot;</span></div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno"><a class="line" href="config_8h.html#aeb4949a438cb054dbd261eead7e9d6c9">  175</a></span><span class="preprocessor"># define SIR_FNAMETIMEFORMAT &quot;%Y-%m-%d-%H%M%S&quot;</span></div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno"><a class="line" href="config_8h.html#a0dbd6db580edf1d367220202e3dff944">  186</a></span><span class="preprocessor"># define SIR_FNAMESEQFORMAT &quot;-%hu&quot;</span></div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno"><a class="line" href="config_8h.html#a30cae1b7b493f9be429ff683b9d77677">  208</a></span><span class="preprocessor"># define SIR_FNAMEFORMAT &quot;%s-%s%s%s&quot;</span></div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span> </div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno"><a class="line" href="config_8h.html#a777d150774244d2707818f2c4a1b9538">  211</a></span><span class="preprocessor"># define SIRL_S_EMERG  &quot;emrg&quot;</span></div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span> </div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno"><a class="line" href="config_8h.html#a4e02d1cb5e4a8d8535227657781d4a29">  214</a></span><span class="preprocessor"># define SIRL_S_ALERT  &quot;alrt&quot;</span></div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno"><a class="line" href="config_8h.html#a362f77b1b5555a0ea57fdfb64ae09229">  217</a></span><span class="preprocessor"># define SIRL_S_CRIT   &quot;crit&quot;</span></div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno"><a class="line" href="config_8h.html#a4237f9dff053a17cf7a134dbbebc5210">  220</a></span><span class="preprocessor"># define SIRL_S_ERROR  &quot;erro&quot;</span></div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno"><a class="line" href="config_8h.html#a7a2838316cfd52f1af743952e667d9f5">  223</a></span><span class="preprocessor"># define SIRL_S_WARN   &quot;warn&quot;</span></div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno"><a class="line" href="config_8h.html#a6195821fca239b40498e847d50b82623">  226</a></span><span class="preprocessor"># define SIRL_S_NOTICE &quot;noti&quot;</span></div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span> </div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno"><a class="line" href="config_8h.html#a1f7c2763d5e7afb0f2b49d4f0636276d">  229</a></span><span class="preprocessor"># define SIRL_S_INFO   &quot;info&quot;</span></div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno"><a class="line" href="config_8h.html#a04d05c434823f0e5a353a31bb47af16e">  232</a></span><span class="preprocessor"># define SIRL_S_DEBUG  &quot;debg&quot;</span></div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno"><a class="line" href="config_8h.html#aa1080a4bec531adb6d25c87ac4734399">  235</a></span><span class="preprocessor"># define SIR_MAXFILES 16</span></div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> </div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno"><a class="line" href="config_8h.html#a98d559e1620108074d776bd6f33f85a4">  238</a></span><span class="preprocessor"># define SIR_MAXPLUGINS 16</span></div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span> </div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno"><a class="line" href="config_8h.html#ad0d5f453c3eb6a7a0e9d507b122bfac4">  241</a></span><span class="preprocessor"># define SIR_MAXFHEADER 128</span></div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span> </div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno"><a class="line" href="config_8h.html#a5f006a2e9ce93ae8d693a2928af33bb2">  247</a></span><span class="preprocessor"># define SIR_MAXMESSAGE 4096</span></div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno"><a class="line" href="config_8h.html#ac1e50274f913ef71f196f20b9dfbbba6">  250</a></span><span class="preprocessor"># define SIR_MAXTIME 64</span></div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span> </div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno"><a class="line" href="config_8h.html#ab048f63b09b424f84e19055dc0ec4a29">  253</a></span><span class="preprocessor"># define SIR_MAXMSEC 5</span></div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span> </div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno"><a class="line" href="config_8h.html#abac0b7b0c1ea5afc9d0708a4421b1a57">  256</a></span><span class="preprocessor"># define SIR_MAXLEVEL 7</span></div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno"><a class="line" href="config_8h.html#a85ed3139018ee9e7545c74c0885dff55">  262</a></span><span class="preprocessor"># define SIR_MAXNAME 32</span></div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno"><a class="line" href="config_8h.html#a24a907a8ba87d4355d11dca2476383b2">  268</a></span><span class="preprocessor"># define SIR_MAX_SYSLOG_ID 128</span></div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span> </div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno"><a class="line" href="config_8h.html#acf0d0fad6a98c920cced53dbe9b54d26">  274</a></span><span class="preprocessor"># define SIR_MAX_SYSLOG_CAT 64</span></div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno"><a class="line" href="config_8h.html#ac42033f35206a8adbf1a4377c8e0d290">  277</a></span><span class="preprocessor"># define SIR_MAXMISC 7</span></div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno"><a class="line" href="config_8h.html#a5cdaa944bfe2228355cc4c34c3d315e8">  284</a></span><span class="preprocessor"># define SIR_MAXSTYLE 43</span></div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
-<div class="foldopen" id="foldopen00287" data-start="" data-end="">
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno"><a class="line" href="config_8h.html#ab3e26cb9ac224cb9a695ddf1ed099218">  287</a></span><span class="preprocessor"># define SIR_MAXOUTPUT \</span></div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="preprocessor">    (SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME + SIR_MAXLEVEL + \</span></div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span><span class="preprocessor">        SIR_MAXNAME + (SIR_MAXPID   * 2) + SIR_MAXMISC + 1)</span></div>
-=======
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="config_8h.html#a88267c5f76d8f1f3f0b6a7903bfddc0b">  100</a></span><span class="preprocessor"># define SIR_PIDFORMAT &quot;%d&quot;</span></div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="preprocessor"># if defined(__USE_HEX_TIDS__)</span></div>
@@ -345,148 +184,89 @@ $(document).ready(function(){initNavTree('config_8h_source.html',''); initResiza
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno"><a class="line" href="config_8h.html#ad0d5f453c3eb6a7a0e9d507b122bfac4">  252</a></span><span class="preprocessor"># define SIR_MAXFHEADER 128</span></div>
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno"><a class="line" href="config_8h.html#a5f006a2e9ce93ae8d693a2928af33bb2">  258</a></span><span class="preprocessor"># define SIR_MAXMESSAGE 4096</span></div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno"><a class="line" href="config_8h.html#ac1e50274f913ef71f196f20b9dfbbba6">  261</a></span><span class="preprocessor"># define SIR_MAXTIME 64</span></div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno"><a class="line" href="config_8h.html#ab048f63b09b424f84e19055dc0ec4a29">  264</a></span><span class="preprocessor"># define SIR_MAXMSEC 5</span></div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno"><a class="line" href="config_8h.html#abac0b7b0c1ea5afc9d0708a4421b1a57">  267</a></span><span class="preprocessor"># define SIR_MAXLEVEL 7</span></div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno"><a class="line" href="config_8h.html#a85ed3139018ee9e7545c74c0885dff55">  273</a></span><span class="preprocessor"># define SIR_MAXNAME 32</span></div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span> </div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno"><a class="line" href="config_8h.html#a24a907a8ba87d4355d11dca2476383b2">  279</a></span><span class="preprocessor"># define SIR_MAX_SYSLOG_ID 128</span></div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span> </div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno"><a class="line" href="config_8h.html#acf0d0fad6a98c920cced53dbe9b54d26">  285</a></span><span class="preprocessor"># define SIR_MAX_SYSLOG_CAT 64</span></div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno"><a class="line" href="config_8h.html#ac42033f35206a8adbf1a4377c8e0d290">  288</a></span><span class="preprocessor"># define SIR_MAXMISC 7</span></div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span> </div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno"><a class="line" href="config_8h.html#a5cdaa944bfe2228355cc4c34c3d315e8">  295</a></span><span class="preprocessor"># define SIR_MAXSTYLE 43</span></div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
-<div class="foldopen" id="foldopen00298" data-start="" data-end="">
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno"><a class="line" href="config_8h.html#ab3e26cb9ac224cb9a695ddf1ed099218">  298</a></span><span class="preprocessor"># define SIR_MAXOUTPUT \</span></div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span><span class="preprocessor">    (SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME + SIR_MAXLEVEL + \</span></div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span><span class="preprocessor">        SIR_MAXNAME + (SIR_MAXPID   * 2) + SIR_MAXMISC + 1)</span></div>
->>>>>>> master
-</div>
-<<<<<<< HEAD
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno"><a class="line" href="config_8h.html#ad6fce840144259e992c33fb611f31262">  319</a></span><span class="preprocessor"># define SIR_MAXERROR 256</span></div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span> </div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno"><a class="line" href="config_8h.html#a060398bb73afb43df07b1587bcec98ba">  334</a></span><span class="preprocessor"># define SIR_ERRORFORMAT &quot;Error in %s (%s:%u): &#39;%s&#39;&quot;</span></div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span> </div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno"><a class="line" href="config_8h.html#af9776f0b7cf01f82f2580a29c9efb6d6">  337</a></span><span class="preprocessor"># define SIR_UNKNOWN &quot;&lt;unknown&gt;&quot;</span></div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span> </div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno"><a class="line" href="config_8h.html#a926d6358221d41053fc26e9c7b3ab00d">  340</a></span><span class="preprocessor"># define SIR_DESTNAME_STDERR     &quot;stderr&quot;</span></div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span> </div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno"><a class="line" href="config_8h.html#ae39d0ceab6c56fb66a8f036302ac90a2">  343</a></span><span class="preprocessor"># define SIR_DESTNAME_STDOUT     &quot;stdout&quot;</span></div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span> </div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno"><a class="line" href="config_8h.html#ae5e1886a3fa12d37256da4b20347b9b0">  346</a></span><span class="preprocessor"># define SIR_DESTNAME_SYSLOG     &quot;syslog&quot;</span></div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span> </div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno"><a class="line" href="config_8h.html#a08083686de6372fdeb9b52e73a6d6808">  349</a></span><span class="preprocessor"># define SIR_FALLBACK_SYSLOG_ID  &quot;libsir&quot;</span></div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span> </div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno"><a class="line" href="config_8h.html#a9b99ae577cedc922bded630216627070">  352</a></span><span class="preprocessor"># define SIR_FALLBACK_SYSLOG_CAT &quot;general&quot;</span></div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span> </div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno"><a class="line" href="config_8h.html#a54ab03b03f20338146a5ab69fcd90177">  358</a></span><span class="preprocessor"># define SIR_NUMLEVELS 8</span></div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span> </div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno"><a class="line" href="config_8h.html#a3d40d22ca5d641892fc7b3cb8d0bb283">  364</a></span><span class="preprocessor"># define SIR_NUMOPTIONS 8</span></div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span> </div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno"><a class="line" href="config_8h.html#a46e195050794e32a234cda5f1af57a2a">  370</a></span><span class="preprocessor"># define SIR_HNAME_CHK_INTERVAL 60</span></div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span> </div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno"><a class="line" href="config_8h.html#aa9d8a09e5e0f6e384370950a13173f78">  376</a></span><span class="preprocessor"># define SIR_THRD_CHK_INTERVAL 333.0</span></div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span> </div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno"><a class="line" href="config_8h.html#ac7f6d6130d1078eae1a28008eea32a92">  382</a></span><span class="preprocessor"># define SIR_FILE_CHK_SIZE_WRITES 10</span></div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span> </div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span><span class="preprocessor"># if defined(SIR_OS_LOG_ENABLED)</span></div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span><span class="preprocessor">#  define SIR_OS_LOG_FORMAT &quot;%{public}s&quot;</span></div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span> </div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno"><a class="line" href="config_8h.html#a3e733628ed19a474bdfc6fa3fcc45790">  398</a></span><span class="preprocessor"># define SIR_SQUELCH_THRESHOLD 5</span></div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span> </div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno"><a class="line" href="config_8h.html#ab84ea2d42dc216fad92bde1811dc4632">  405</a></span><span class="preprocessor"># define SIR_SQUELCH_BACKOFF_FACTOR 2</span></div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span> </div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno"><a class="line" href="config_8h.html#a3b6b481d57fc3e954accee882d143a9a">  411</a></span><span class="preprocessor"># define SIR_SQUELCH_MSG_FORMAT &quot;previous message repeated %zu times&quot;</span></div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span> </div>
-<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_CONFIG_H_INCLUDED */</span><span class="preprocessor"></span></div>
-||||||| 9d87d4c
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span> </div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno"><a class="line" href="config_8h.html#ad6fce840144259e992c33fb611f31262">  292</a></span><span class="preprocessor"># define SIR_MAXERROR 256</span></div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span> </div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno"><a class="line" href="config_8h.html#a060398bb73afb43df07b1587bcec98ba">  307</a></span><span class="preprocessor"># define SIR_ERRORFORMAT &quot;Error in %s (%s:%u): &#39;%s&#39;&quot;</span></div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="preprocessor"># if !defined(SIR_EMBEDDED)</span></div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno"><a class="line" href="config_8h.html#a581abf05992a752a68f0fd564d235760">  256</a></span><span class="preprocessor">#  define SIR_MAXHOST 256</span></div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="preprocessor"># else</span></div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span><span class="preprocessor">#  define SIR_MAXHOST 1</span></div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span><span class="preprocessor"># endif</span></div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span><span class="preprocessor"># if !defined(SIR_EMBEDDED)</span></div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno"><a class="line" href="config_8h.html#a5f006a2e9ce93ae8d693a2928af33bb2">  266</a></span><span class="preprocessor">#  define SIR_MAXMESSAGE 4096</span></div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><span class="preprocessor"># else</span></div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span><span class="preprocessor">#  define SIR_MAXMESSAGE 256</span></div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span><span class="preprocessor"># endif</span></div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno"><a class="line" href="config_8h.html#ac1e50274f913ef71f196f20b9dfbbba6">  272</a></span><span class="preprocessor"># define SIR_MAXTIME 64</span></div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span> </div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno"><a class="line" href="config_8h.html#ab048f63b09b424f84e19055dc0ec4a29">  275</a></span><span class="preprocessor"># define SIR_MAXMSEC 5</span></div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span> </div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno"><a class="line" href="config_8h.html#abac0b7b0c1ea5afc9d0708a4421b1a57">  278</a></span><span class="preprocessor"># define SIR_MAXLEVEL 7</span></div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span> </div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno"><a class="line" href="config_8h.html#a85ed3139018ee9e7545c74c0885dff55">  284</a></span><span class="preprocessor"># define SIR_MAXNAME 32</span></div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><span class="preprocessor"># if !defined(SIR_EMBEDDED)</span></div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno"><a class="line" href="config_8h.html#a24a907a8ba87d4355d11dca2476383b2">  291</a></span><span class="preprocessor">#  define SIR_MAX_SYSLOG_ID 128</span></div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span><span class="preprocessor"># else</span></div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span><span class="preprocessor">#  define SIR_MAX_SYSLOG_ID 1</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span><span class="preprocessor"># endif</span></div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span> </div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span><span class="preprocessor"># if !defined(SIR_EMBEDDED)</span></div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno"><a class="line" href="config_8h.html#acf0d0fad6a98c920cced53dbe9b54d26">  301</a></span><span class="preprocessor">#  define SIR_MAX_SYSLOG_CAT 64</span></div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span><span class="preprocessor"># else</span></div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span><span class="preprocessor">#  define SIR_MAX_SYSLOG_CAT 1</span></div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span><span class="preprocessor"># endif</span></div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span> </div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno"><a class="line" href="config_8h.html#ac42033f35206a8adbf1a4377c8e0d290">  307</a></span><span class="preprocessor"># define SIR_MAXMISC 7</span></div>
 <div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno"><a class="line" href="config_8h.html#af9776f0b7cf01f82f2580a29c9efb6d6">  310</a></span><span class="preprocessor"># define SIR_UNKNOWN &quot;&lt;unknown&gt;&quot;</span></div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span> </div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno"><a class="line" href="config_8h.html#a926d6358221d41053fc26e9c7b3ab00d">  313</a></span><span class="preprocessor"># define SIR_DESTNAME_STDERR     &quot;stderr&quot;</span></div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span> </div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno"><a class="line" href="config_8h.html#ae39d0ceab6c56fb66a8f036302ac90a2">  316</a></span><span class="preprocessor"># define SIR_DESTNAME_STDOUT     &quot;stdout&quot;</span></div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno"><a class="line" href="config_8h.html#ae5e1886a3fa12d37256da4b20347b9b0">  319</a></span><span class="preprocessor"># define SIR_DESTNAME_SYSLOG     &quot;syslog&quot;</span></div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span> </div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno"><a class="line" href="config_8h.html#a08083686de6372fdeb9b52e73a6d6808">  322</a></span><span class="preprocessor"># define SIR_FALLBACK_SYSLOG_ID  &quot;libsir&quot;</span></div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span> </div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno"><a class="line" href="config_8h.html#a9b99ae577cedc922bded630216627070">  325</a></span><span class="preprocessor"># define SIR_FALLBACK_SYSLOG_CAT &quot;general&quot;</span></div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span> </div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno"><a class="line" href="config_8h.html#a54ab03b03f20338146a5ab69fcd90177">  331</a></span><span class="preprocessor"># define SIR_NUMLEVELS 8</span></div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span> </div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno"><a class="line" href="config_8h.html#a3d40d22ca5d641892fc7b3cb8d0bb283">  337</a></span><span class="preprocessor"># define SIR_NUMOPTIONS 8</span></div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span> </div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno"><a class="line" href="config_8h.html#a46e195050794e32a234cda5f1af57a2a">  343</a></span><span class="preprocessor"># define SIR_HNAME_CHK_INTERVAL 60</span></div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span> </div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno"><a class="line" href="config_8h.html#aa9d8a09e5e0f6e384370950a13173f78">  349</a></span><span class="preprocessor"># define SIR_THRD_CHK_INTERVAL 333.0</span></div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span> </div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno"><a class="line" href="config_8h.html#ac7f6d6130d1078eae1a28008eea32a92">  355</a></span><span class="preprocessor"># define SIR_FILE_CHK_SIZE_WRITES 10</span></div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span> </div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span><span class="preprocessor"># if defined(SIR_OS_LOG_ENABLED)</span></div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span><span class="preprocessor">#  define SIR_OS_LOG_FORMAT &quot;%{public}s&quot;</span></div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span> </div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno"><a class="line" href="config_8h.html#a3e733628ed19a474bdfc6fa3fcc45790">  371</a></span><span class="preprocessor"># define SIR_SQUELCH_THRESHOLD 5</span></div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span> </div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno"><a class="line" href="config_8h.html#ab84ea2d42dc216fad92bde1811dc4632">  378</a></span><span class="preprocessor"># define SIR_SQUELCH_BACKOFF_FACTOR 2</span></div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span> </div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno"><a class="line" href="config_8h.html#a3b6b481d57fc3e954accee882d143a9a">  384</a></span><span class="preprocessor"># define SIR_SQUELCH_MSG_FORMAT &quot;previous message repeated %zu times&quot;</span></div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span> </div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_CONFIG_H_INCLUDED */</span><span class="preprocessor"></span></div>
-=======
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span> </div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno"><a class="line" href="config_8h.html#ad6fce840144259e992c33fb611f31262">  303</a></span><span class="preprocessor"># define SIR_MAXERROR 256</span></div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span> </div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno"><a class="line" href="config_8h.html#a060398bb73afb43df07b1587bcec98ba">  318</a></span><span class="preprocessor"># define SIR_ERRORFORMAT &quot;Error in %s (%s:%u): &#39;%s&#39;&quot;</span></div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span><span class="preprocessor"># if !defined(SIR_NO_TEXT_STYLING)</span></div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno"><a class="line" href="config_8h.html#a5cdaa944bfe2228355cc4c34c3d315e8">  315</a></span><span class="preprocessor">#  define SIR_MAXSTYLE 43</span></div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span><span class="preprocessor"># else</span></div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span><span class="preprocessor">#  define SIR_MAXSTYLE 1</span></div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span><span class="preprocessor"># endif</span></div>
 <div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span> </div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno"><a class="line" href="config_8h.html#af9776f0b7cf01f82f2580a29c9efb6d6">  321</a></span><span class="preprocessor"># define SIR_UNKNOWN &quot;&lt;unknown&gt;&quot;</span></div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span> </div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno"><a class="line" href="config_8h.html#a926d6358221d41053fc26e9c7b3ab00d">  324</a></span><span class="preprocessor"># define SIR_DESTNAME_STDERR     &quot;stderr&quot;</span></div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span> </div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno"><a class="line" href="config_8h.html#ae39d0ceab6c56fb66a8f036302ac90a2">  327</a></span><span class="preprocessor"># define SIR_DESTNAME_STDOUT     &quot;stdout&quot;</span></div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span> </div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno"><a class="line" href="config_8h.html#ae5e1886a3fa12d37256da4b20347b9b0">  330</a></span><span class="preprocessor"># define SIR_DESTNAME_SYSLOG     &quot;syslog&quot;</span></div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span> </div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno"><a class="line" href="config_8h.html#a08083686de6372fdeb9b52e73a6d6808">  333</a></span><span class="preprocessor"># define SIR_FALLBACK_SYSLOG_ID  &quot;libsir&quot;</span></div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span> </div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno"><a class="line" href="config_8h.html#a9b99ae577cedc922bded630216627070">  336</a></span><span class="preprocessor"># define SIR_FALLBACK_SYSLOG_CAT &quot;general&quot;</span></div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno"><a class="line" href="config_8h.html#a54ab03b03f20338146a5ab69fcd90177">  342</a></span><span class="preprocessor"># define SIR_NUMLEVELS 8</span></div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span> </div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno"><a class="line" href="config_8h.html#a3d40d22ca5d641892fc7b3cb8d0bb283">  348</a></span><span class="preprocessor"># define SIR_NUMOPTIONS 8</span></div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span> </div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno"><a class="line" href="config_8h.html#a46e195050794e32a234cda5f1af57a2a">  354</a></span><span class="preprocessor"># define SIR_HNAME_CHK_INTERVAL 60</span></div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span> </div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno"><a class="line" href="config_8h.html#aa9d8a09e5e0f6e384370950a13173f78">  360</a></span><span class="preprocessor"># define SIR_THRD_CHK_INTERVAL 333.0</span></div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span> </div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno"><a class="line" href="config_8h.html#ac7f6d6130d1078eae1a28008eea32a92">  366</a></span><span class="preprocessor"># define SIR_FILE_CHK_SIZE_WRITES 10</span></div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span> </div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span><span class="preprocessor"># if defined(SIR_OS_LOG_ENABLED)</span></div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span><span class="preprocessor">#  define SIR_OS_LOG_FORMAT &quot;%{public}s&quot;</span></div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span><span class="preprocessor"># endif</span></div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span> </div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno"><a class="line" href="config_8h.html#a3e733628ed19a474bdfc6fa3fcc45790">  382</a></span><span class="preprocessor"># define SIR_SQUELCH_THRESHOLD 5</span></div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span> </div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno"><a class="line" href="config_8h.html#ab84ea2d42dc216fad92bde1811dc4632">  389</a></span><span class="preprocessor"># define SIR_SQUELCH_BACKOFF_FACTOR 2</span></div>
+<div class="foldopen" id="foldopen00321" data-start="" data-end="">
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno"><a class="line" href="config_8h.html#ab3e26cb9ac224cb9a695ddf1ed099218">  321</a></span><span class="preprocessor"># define SIR_MAXOUTPUT \</span></div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span><span class="preprocessor">    (SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME + SIR_MAXLEVEL + \</span></div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span><span class="preprocessor">        SIR_MAXNAME + (SIR_MAXPID   * 2) + SIR_MAXMISC + 1)</span></div>
+</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span> </div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno"><a class="line" href="config_8h.html#ad6fce840144259e992c33fb611f31262">  326</a></span><span class="preprocessor"># define SIR_MAXERROR 256</span></div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span> </div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno"><a class="line" href="config_8h.html#a060398bb73afb43df07b1587bcec98ba">  341</a></span><span class="preprocessor"># define SIR_ERRORFORMAT &quot;Error in %s (%s:%u): &#39;%s&#39;&quot;</span></div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span> </div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno"><a class="line" href="config_8h.html#af9776f0b7cf01f82f2580a29c9efb6d6">  344</a></span><span class="preprocessor"># define SIR_UNKNOWN &quot;&lt;unknown&gt;&quot;</span></div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span> </div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno"><a class="line" href="config_8h.html#a926d6358221d41053fc26e9c7b3ab00d">  347</a></span><span class="preprocessor"># define SIR_DESTNAME_STDERR     &quot;stderr&quot;</span></div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span> </div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno"><a class="line" href="config_8h.html#ae39d0ceab6c56fb66a8f036302ac90a2">  350</a></span><span class="preprocessor"># define SIR_DESTNAME_STDOUT     &quot;stdout&quot;</span></div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span> </div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno"><a class="line" href="config_8h.html#ae5e1886a3fa12d37256da4b20347b9b0">  353</a></span><span class="preprocessor"># define SIR_DESTNAME_SYSLOG     &quot;syslog&quot;</span></div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span> </div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno"><a class="line" href="config_8h.html#a08083686de6372fdeb9b52e73a6d6808">  356</a></span><span class="preprocessor"># define SIR_FALLBACK_SYSLOG_ID  &quot;libsir&quot;</span></div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span> </div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno"><a class="line" href="config_8h.html#a9b99ae577cedc922bded630216627070">  359</a></span><span class="preprocessor"># define SIR_FALLBACK_SYSLOG_CAT &quot;general&quot;</span></div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span> </div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno"><a class="line" href="config_8h.html#a54ab03b03f20338146a5ab69fcd90177">  365</a></span><span class="preprocessor"># define SIR_NUMLEVELS 8</span></div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span> </div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno"><a class="line" href="config_8h.html#a3d40d22ca5d641892fc7b3cb8d0bb283">  371</a></span><span class="preprocessor"># define SIR_NUMOPTIONS 8</span></div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span> </div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno"><a class="line" href="config_8h.html#a46e195050794e32a234cda5f1af57a2a">  377</a></span><span class="preprocessor"># define SIR_HNAME_CHK_INTERVAL 60</span></div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span> </div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno"><a class="line" href="config_8h.html#aa9d8a09e5e0f6e384370950a13173f78">  383</a></span><span class="preprocessor"># define SIR_THRD_CHK_INTERVAL 333.0</span></div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span> </div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno"><a class="line" href="config_8h.html#ac7f6d6130d1078eae1a28008eea32a92">  389</a></span><span class="preprocessor"># define SIR_FILE_CHK_SIZE_WRITES 10</span></div>
 <div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span> </div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno"><a class="line" href="config_8h.html#a3b6b481d57fc3e954accee882d143a9a">  395</a></span><span class="preprocessor"># define SIR_SQUELCH_MSG_FORMAT &quot;previous message repeated %zu times&quot;</span></div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span> </div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_CONFIG_H_INCLUDED */</span><span class="preprocessor"></span></div>
->>>>>>> master
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span><span class="preprocessor"># if defined(SIR_OS_LOG_ENABLED)</span></div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span><span class="preprocessor">#  define SIR_OS_LOG_FORMAT &quot;%{public}s&quot;</span></div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span><span class="preprocessor"># endif</span></div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span> </div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno"><a class="line" href="config_8h.html#a3e733628ed19a474bdfc6fa3fcc45790">  405</a></span><span class="preprocessor"># define SIR_SQUELCH_THRESHOLD 5</span></div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span> </div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno"><a class="line" href="config_8h.html#ab84ea2d42dc216fad92bde1811dc4632">  412</a></span><span class="preprocessor"># define SIR_SQUELCH_BACKOFF_FACTOR 2</span></div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span> </div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno"><a class="line" href="config_8h.html#a3b6b481d57fc3e954accee882d143a9a">  418</a></span><span class="preprocessor"># define SIR_SQUELCH_MSG_FORMAT &quot;previous message repeated %zu times&quot;</span></div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span> </div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span><span class="preprocessor">#endif </span><span class="comment">/* !_SIR_CONFIG_H_INCLUDED */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.7-->
