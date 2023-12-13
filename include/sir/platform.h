@@ -165,6 +165,7 @@
 #    define _NETBSD_SOURCE 1
 #   endif
 #   define SIR_PTHREAD_GETNAME_NP
+#   define __USE_HEX_TIDS__
 #  elif defined(__FreeBSD__) || defined(__DragonFly__)
 #   define __BSD__
 #   define _BSD_SOURCE
@@ -432,6 +433,7 @@ _set_thread_local_invalid_parameter_handler(
 #   if defined(ESP32) || defined(ESP8266)
 #    include <FreeRTOS.h>
 #    include <task.h>
+#    define __USE_HEX_TIDS__
 #   endif
 #  else
 #   include <sched.h>

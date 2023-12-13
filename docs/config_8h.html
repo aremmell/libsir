@@ -147,8 +147,11 @@ Macros</h2></td></tr>
 <tr class="memdesc:abd5132131479030a120c289812e38363"><td class="mdescLeft">&#160;</td><td class="mdescRight">The character placed directly after process and thread IDs.  <br /></td></tr>
 <tr class="separator:abd5132131479030a120c289812e38363"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88267c5f76d8f1f3f0b6a7903bfddc0b" id="r_a88267c5f76d8f1f3f0b6a7903bfddc0b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#a88267c5f76d8f1f3f0b6a7903bfddc0b">SIR_PIDFORMAT</a>&#160;&#160;&#160;&quot;%d&quot;</td></tr>
-<tr class="memdesc:a88267c5f76d8f1f3f0b6a7903bfddc0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The format for the current process/thread ID.  <br /></td></tr>
+<tr class="memdesc:a88267c5f76d8f1f3f0b6a7903bfddc0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The format for the current process ID.  <br /></td></tr>
 <tr class="separator:a88267c5f76d8f1f3f0b6a7903bfddc0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb5fc90a79d366d19985c2e7f9b771c6" id="r_abb5fc90a79d366d19985c2e7f9b771c6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#abb5fc90a79d366d19985c2e7f9b771c6">SIR_TIDFORMAT</a>&#160;&#160;&#160;&quot;%d&quot;</td></tr>
+<tr class="memdesc:abb5fc90a79d366d19985c2e7f9b771c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The format for the current thread ID.  <br /></td></tr>
+<tr class="separator:abb5fc90a79d366d19985c2e7f9b771c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22d306c921d111c9722a11c9a9ad628e" id="r_a22d306c921d111c9722a11c9a9ad628e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#a22d306c921d111c9722a11c9a9ad628e">SIR_PIDSEPARATOR</a>&#160;&#160;&#160;&quot;.&quot;</td></tr>
 <tr class="memdesc:a22d306c921d111c9722a11c9a9ad628e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The string to place between process and thread IDs.  <br /></td></tr>
 <tr class="separator:a22d306c921d111c9722a11c9a9ad628e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -617,8 +620,8 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>The format for the current process/thread ID. </p>
-<dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#gafd6f47db95d87395d4a37529f839c6de" title="Exclude process ID.">SIRO_NOPID</a> or <a class="el" href="group__publictypes.html#ga093cea38ace2acb674162a0f7fb153a6" title="Exclude thread ID/name.">SIRO_NOTID</a> are not set. </dd></dl>
+<p>The format for the current process ID. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#gafd6f47db95d87395d4a37529f839c6de" title="Exclude process ID.">SIRO_NOPID</a> is not set. </dd></dl>
 
 </div>
 </div>
@@ -671,6 +674,23 @@ Macros</h2></td></tr>
 
 <p>The character placed directly after process and thread IDs. </p>
 <dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#ga0d3bc4aa34b9399e72621632b877b16a" title="Exclude process/app name.">SIRO_NONAME</a> is not set. </dd></dl>
+
+</div>
+</div>
+<a id="abb5fc90a79d366d19985c2e7f9b771c6" name="abb5fc90a79d366d19985c2e7f9b771c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb5fc90a79d366d19985c2e7f9b771c6">&#9670;&#160;</a></span>SIR_TIDFORMAT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIR_TIDFORMAT&#160;&#160;&#160;&quot;%d&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The format for the current thread ID. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>Only applies if <a class="el" href="group__publictypes.html#ga093cea38ace2acb674162a0f7fb153a6" title="Exclude thread ID/name.">SIRO_NOTID</a> is not set. </dd></dl>
 
 </div>
 </div>

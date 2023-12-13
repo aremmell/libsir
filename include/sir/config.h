@@ -93,14 +93,21 @@
 # define SIR_PIDSUFFIX ")"
 
 /**
- * The format for the current process/thread ID.
+ * The format for the current process ID.
  *
- * @remark Only applies if ::SIRO_NOPID or ::SIRO_NOTID are not set.
+ * @remark Only applies if ::SIRO_NOPID is not set.
  */
-# if !(defined(ESP32) || defined(ESP8266))
-#  define SIR_PIDFORMAT "%d"
+# define SIR_PIDFORMAT "%d"
+
+/**
+ * The format for the current thread ID.
+ *
+ * @remark Only applies if ::SIRO_NOTID is not set.
+ */
+# if defined(__USE_HEX_TIDS__)
+#  define SIR_TIDFORMAT "%x"
 # else
-#  define SIR_PIDFORMAT "%x"
+#  define SIR_TIDFORMAT "%d"
 # endif
 
 /**

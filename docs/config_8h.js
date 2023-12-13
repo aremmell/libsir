@@ -45,6 +45,7 @@ var config_8h =
     [ "SIR_SQUELCH_MSG_FORMAT", "config_8h.html#a3b6b481d57fc3e954accee882d143a9a", null ],
     [ "SIR_SQUELCH_THRESHOLD", "config_8h.html#a3e733628ed19a474bdfc6fa3fcc45790", null ],
     [ "SIR_THRD_CHK_INTERVAL", "config_8h.html#aa9d8a09e5e0f6e384370950a13173f78", null ],
+    [ "SIR_TIDFORMAT", "config_8h.html#abb5fc90a79d366d19985c2e7f9b771c6", null ],
     [ "SIR_TIMEFORMAT", "config_8h.html#ab1531d6b0d9c880b793362322542794c", null ],
     [ "SIR_UNKNOWN", "config_8h.html#af9776f0b7cf01f82f2580a29c9efb6d6", null ],
     [ "SIRL_S_ALERT", "config_8h.html#a4e02d1cb5e4a8d8535227657781d4a29", null ],
