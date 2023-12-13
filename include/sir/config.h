@@ -104,7 +104,7 @@
  *
  * @remark Only applies if ::SIRO_NOTID is not set.
  */
-# if defined(__NetBSD__)
+# if defined(__USE_HEX_TIDS__)
 #  define SIR_TIDFORMAT "%x"
 # else
 #  define SIR_TIDFORMAT "%d"
