@@ -95,14 +95,14 @@
 /**
  * The format for the current process ID.
  *
- * @remark Only applies if ::SIRO_NOPID or ::SIRO_NOTID are not set.
+ * @remark Only applies if ::SIRO_NOPID is not set.
  */
 # define SIR_PIDFORMAT "%d"
 
 /**
  * The format for the current thread ID.
  *
- * @remark Only applies if ::SIRO_NOPID or ::SIRO_NOTID are not set.
+ * @remark Only applies if ::SIRO_NOTID is not set.
  */
 # if defined(__NetBSD__)
 #  define SIR_TIDFORMAT "%x"
