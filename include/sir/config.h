@@ -93,11 +93,22 @@
 # define SIR_PIDSUFFIX ")"
 
 /**
- * The format for the current process/thread ID.
+ * The format for the current process ID.
  *
  * @remark Only applies if ::SIRO_NOPID or ::SIRO_NOTID are not set.
  */
 # define SIR_PIDFORMAT "%d"
+
+/**
+ * The format for the current thread ID.
+ *
+ * @remark Only applies if ::SIRO_NOPID or ::SIRO_NOTID are not set.
+ */
+# if defined(__NetBSD__)
+#  define SIR_TIDFORMAT "%x"
+# else
+#  define SIR_TIDFORMAT "%d"
+# endif
 
 /**
  * The string to place between process and thread IDs.

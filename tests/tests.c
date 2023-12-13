@@ -290,7 +290,7 @@ bool sirtest_threadidsanity(void)
             switch (n) {
                 case 0:
                 case 2:
-                    (void)snprintf(search, SIR_MAXPID, SIR_PIDFORMAT, _sir_gettid());
+                    (void)snprintf(search, SIR_MAXPID, SIR_TIDFORMAT, _sir_gettid());
                 break;
                 case 1:
                     (void)_sir_strncpy(search, SIR_MAXPID, thread_name, strlen(thread_name));
