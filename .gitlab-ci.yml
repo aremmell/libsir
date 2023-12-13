@@ -63,7 +63,7 @@ stages:
 
 .CopyToTmpfs: &CopyToTmpfs |
   # *CopyToTmpfs - rsync current working directory to /tmpfs/
-  test -d /tmpfs/ && rsync -axHAX . /tmpfs/ && cd /tmpfs
+  test -d /tmpfs/ && mkdir -p /tmpfs/user && rsync -axHAX . /tmpfs/user/ && cd /tmpfs/user/
   echo "New working directory: $(pwd)"
 
 ################################################################################
