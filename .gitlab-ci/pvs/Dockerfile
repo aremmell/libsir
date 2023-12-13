@@ -35,7 +35,7 @@ WORKDIR /
 
 ARG URL
 
-RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
+RUN set -x && dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
     printf '%s\n' \
          "[viva64]" \
          "name=Viva64 - PVS-Studio - Stable" \

@@ -36,7 +36,7 @@ WORKDIR /
 ARG URL1
 ARG URL2
 
-RUN dnf --refresh -y upgrade && \
+RUN set -x && dnf --refresh -y upgrade && \
     dnf install -y ncurses-compat-libs libxcrypt-compat xdelta moreutils && \
     cd /tmp && \
     curl -fsSL ${URL1:-http://192.168.1.187:8088/~jhj/cache/chprofessional-8.5.linux64-4.18.0.intel.tar.gz} | \
@@ -67,7 +67,7 @@ RUN dnf --refresh -y upgrade && \
 
 USER 10000
 
-RUN cp -f /usr/local/ch/config/.chrc /home/user/.chrc && \
+RUN set -x && cp -f /usr/local/ch/config/.chrc /home/user/.chrc && \
     cd && \
     ch -v
 

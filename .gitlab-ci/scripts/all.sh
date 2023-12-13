@@ -57,6 +57,7 @@ for dir in $(printf '%s\n' * | grep -Ev '(^base$|^scripts$)' ); do
     (cd "${dir:?}" && ../scripts/build.sh && ../scripts/push.sh) ||
       {
         printf 'ERROR: %s processing failed.\n' "${dir:?}"
+        exit 2
       }
     printf 'Successfully processed %s image.\n' "${dir:?}"
 done

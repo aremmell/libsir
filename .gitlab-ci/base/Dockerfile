@@ -35,7 +35,7 @@ WORKDIR /
 
 ARG URL
 
-RUN \
+RUN set -x && \
   (sed -i 's/tsflags=nodocs//' /etc/dnf/dnf.conf || true) && \
   dnf -y --refresh update && \
   dnf -y install dnf-plugins-core dnf-utils && \
@@ -105,12 +105,11 @@ RUN \
       perl-core \
       perl-devel \
       pigz \
+      procps-ng \
       python3 \
       python3-devel \
       python3-setuptools \
       python-setuptools \
-      R \
-      R-devel \
       reuse \
       ruby \
       ruby-devel \

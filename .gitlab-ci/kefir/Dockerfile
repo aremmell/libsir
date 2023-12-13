@@ -35,7 +35,8 @@ WORKDIR /
 
 ARG URL
 
-RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && cd /tmp && \
+RUN set -x && \
+    dnf --refresh -y upgrade --setopt=install_weak_deps=True && cd /tmp && \
     git clone -v https://git.sr.ht/\~jprotopopov/kefir && \
     cd kefir && \
     gmake clean && \

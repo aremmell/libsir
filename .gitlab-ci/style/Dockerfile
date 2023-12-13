@@ -33,7 +33,7 @@ USER 0
 
 WORKDIR /
 
-RUN PATH="${HOME:?}/go/bin:${PATH:?}" && \
+RUN set -x && PATH="${HOME:?}/go/bin:${PATH:?}" && \
     export PATH && \
     sudo -s -u user sh -xc \
       'go install -v github.com/editorconfig-checker/editorconfig-checker/v2/cmd/editorconfig-checker@latest' && \

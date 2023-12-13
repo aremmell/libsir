@@ -35,7 +35,7 @@ ARG URL
 
 USER 0
 
-RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
+RUN set -x && dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
