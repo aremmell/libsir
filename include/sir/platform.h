@@ -146,6 +146,7 @@
 #    define _NETBSD_SOURCE 1
 #   endif
 #   define SIR_PTHREAD_GETNAME_NP
+#   define __USE_HEX_TIDS__
 #  elif defined(__FreeBSD__) || defined(__DragonFly__)
 #   define __BSD__
 #   define _BSD_SOURCE
