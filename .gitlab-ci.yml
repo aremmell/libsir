@@ -63,8 +63,7 @@ stages:
 
 .CopyToTmpfs: &CopyToTmpfs |
   # *CopyToTmpfs - Copy current working directory to /tmpfs/
-  test -d /tmpfs/ && mkdir -p /tmpfs/user && cp -ax . /tmpfs/user/ && cd /tmpfs/user/
-  echo "New working directory: $(pwd)"
+  test -d /tmpfs/ && mkdir -p /tmpfs/user && cp -ax . /tmpfs/user/ && cd /tmpfs/user/ && echo "New working directory: $(pwd)" || true
 
 ################################################################################
 
@@ -84,8 +83,6 @@ stages:
   echo "GitLab CI Job ID          : ${CI_JOB_ID:-Unknown}"
   echo "GitLab CI Job Stage       : ${CI_JOB_STAGE:-Unknown}"
   echo "GitLab CI Runner Details  : ${CI_RUNNER_VERSION:-Unknown} (${CI_RUNNER_REVISION:-Unknown})"
-  df -h || true
-  ls -lad /tmpfs || true
   echo -e "section_end:`date +%s`:Configuration_section\r\e[0K" || true
 
 ################################################################################
@@ -213,8 +210,8 @@ Linux/i686 (G++, GCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CFLAGS="-m32"
-    - export CXXFLAGS="-m32 -DSIR_NO_BOOST_FORMAT=1"
+    - export CFLAGS="-m32 -D_FILE_OFFSET_BITS=64"
+    - export CXXFLAGS="-m32 -DSIR_NO_BOOST_FORMAT=1 -D_FILE_OFFSET_BITS=64"
     - export LDFLAGS="-m32"
     - export CC="ccache gcc"
     - export CXX="ccache g++"
@@ -226,7 +223,6 @@ Linux/i686 (G++, GCC):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
-    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -353,8 +349,8 @@ Linux/i686 (Clang++, Clang):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export RANLIB="llvm-ranlib"
-    - export CFLAGS="-m32"
-    - export CXXFLAGS="-m32 -DSIR_NO_BOOST_FORMAT=1"
+    - export CFLAGS="-m32 -D_FILE_OFFSET_BITS=64"
+    - export CXXFLAGS="-m32 -DSIR_NO_BOOST_FORMAT=1 -D_FILE_OFFSET_BITS=64"
     - export LDFLAGS="-m32"
     - export CC="ccache clang"
     - export CXX="ccache clang++"
@@ -365,7 +361,6 @@ Linux/i686 (Clang++, Clang):
     - |
       # End of Build ... echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
-    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -452,8 +447,8 @@ Linux/i686 (AOCC++, AOCC):
     - . /opt/AMD/aocc-compiler-4.1.0/setenv_AOCC.sh
     - export CC="ccache clang"
     - export CXX="ccache clang++"
-    - export CFLAGS="-m32"
-    - export CXXFLAGS="-m32 -DSIR_NO_BOOST_FORMAT=1"
+    - export CFLAGS="-m32 -D_FILE_OFFSET_BITS=64"
+    - export CXXFLAGS="-m32 -DSIR_NO_BOOST_FORMAT=1 -D_FILE_OFFSET_BITS=64"
     - export LDFLAGS="-m32"
     - ${CC:?} --version
     - ${CXX:?} --version
@@ -463,7 +458,6 @@ Linux/i686 (AOCC++, AOCC):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
-    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -593,12 +587,11 @@ Linux/i386 (Chamois-CompCert, C-only):
     - export PATH="/opt/chamois-compcert-i386/bin:${PATH:-}"
     - export CC="ccache /opt/chamois-compcert-i386/bin/ccomp"
     - ${CC:?} --version
-    - env CFLAGS="-D_sir_thread_local=_Thread_local ${CFLAGS:-}" make
+    - env CFLAGS="-D_sir_thread_local=_Thread_local -D_FILE_OFFSET_BITS=64 ${CFLAGS:-}" make
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
-    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -631,6 +624,7 @@ Linux/x86_64 (Oracle Studio C, C-only):
     name: registry.gitlab.com/libsir/libsir/oracle:latest
   script:
     - *Configuration
+    - *CopyToTmpfs
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -641,7 +635,6 @@ Linux/x86_64 (Oracle Studio C, C-only):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
-    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -658,6 +651,7 @@ Linux/x86_64 (Oracle Studio C, C-only):
     paths:
       - build/
       - logs/
+      - /tmpfs/user/logs/
   retry: 2
   interruptible: true
 
@@ -674,19 +668,19 @@ Linux/i686 (Oracle Studio C, C-only):
     name: registry.gitlab.com/libsir/libsir/oracle:latest
   script:
     - *Configuration
+    - *CopyToTmpfs
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CC="ccache /opt/oracle/developerstudio-latest/bin/suncc"
-    - export CFLAGS="-m32"
-    - export LDFLAGS="-m32"
+    - export CFLAGS="-m32 -D_FILE_OFFSET_BITS=64"
+    - export LDFLAGS="-m32 -D_FILE_OFFSET_BITS=64"
     - ${CC:?} -V
     - make
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
-    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -703,6 +697,7 @@ Linux/i686 (Oracle Studio C, C-only):
     paths:
       - build/
       - logs/
+      - /tmpfs/use/logs/
   retry: 2
   interruptible: true
 
@@ -1025,7 +1020,6 @@ Windows/i686 (LLVM-MinGW, Clang++, Clang):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
-    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -1122,6 +1116,8 @@ Android/i686 (API Level 21, Clang++, Clang):
     - export LDFLAGS="-static"
     - export CC="ccache i686-linux-android21-clang"
     - export CXX="ccache i686-linux-android21-clang++"
+    - export CFLAGS="-D_FILE_OFFSET_BITS=64"
+    - export CXXFLAGS="-D_FILE_OFFSET_BITS=64"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make SIR_NO_PLUGINS=1
@@ -1130,7 +1126,6 @@ Android/i686 (API Level 21, Clang++, Clang):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
-    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -1289,6 +1284,8 @@ Android/i686 (API Level 33, Clang++, Clang):
     - export LDFLAGS="-static"
     - export CC="ccache i686-linux-android33-clang"
     - export CXX="ccache i686-linux-android33-clang++"
+    - export CFLAGS="-D_FILE_OFFSET_BITS=64"
+    - export CXXFLAGS="-D_FILE_OFFSET_BITS=64"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make SIR_NO_PLUGINS=1
@@ -1297,7 +1294,6 @@ Android/i686 (API Level 33, Clang++, Clang):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
-    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -1553,7 +1549,6 @@ Windows/i686 (MSVC, C++, C):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
-    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -1733,7 +1728,6 @@ Windows/i686 (MinGW, G++, GCC):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
-    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -1810,7 +1804,6 @@ Cygwin/i686 (GCC, C-only):
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
-    - *CopyToTmpfs
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -2274,7 +2267,6 @@ Windows/i686 (OrangeC, C-only):
     name: registry.gitlab.com/libsir/libsir/orangec:latest
   script:
     - *Configuration
-    - *CopyToTmpfs
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -2378,7 +2370,6 @@ Linux/i686 (DMD64 ImportC, C-only):
     name: registry.gitlab.com/libsir/libsir/dmd:latest
   script:
     - *Configuration
-    - *CopyToTmpfs
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -2391,10 +2382,10 @@ Linux/i686 (DMD64 ImportC, C-only):
     - ln -s . sir
     - ln -s ../example/* .
     - dmd --version
-    - dmd -m32 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirexample
+    - dmd -m32 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-D_FILE_OFFSET_BITS=64 -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirexample
     - rm -f example*
     - ln -s ../tests/* .
-    - dmd -m32 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirtests
+    - dmd -m32 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-D_FILE_OFFSET_BITS=64 -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirtests
     - cd ..
     - |
       # End of Build ...
@@ -2417,6 +2408,7 @@ Linux/i686 (DMD64 ImportC, C-only):
     paths:
       - build/
       - logs/
+      - /tmpfs/user/logs/
   retry: 2
   interruptible: true
 
@@ -2531,7 +2523,6 @@ Windows/i686 (Embarcadero Alexandria, BCC32X, C-only):
     name: registry.gitlab.com/libsir/libsir/embarcadero:latest
   script:
     - *Configuration
-    - *CopyToTmpfs
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -2688,7 +2679,6 @@ Windows/i686 (Embarcadero Athens, BCC32X, C-only):
     name: registry.gitlab.com/libsir/libsir/embarcadero23:latest
   script:
     - *Configuration
-    - *CopyToTmpfs
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -2795,7 +2785,7 @@ Clang Sanitizer (UB, 32-bit, C-only):
       echo -e "section_start:`date +%s`:Build32_section[collapsed=true]\r\e[0K\033[0;36mBuild 32-bit ...\033[0m" || true
     - export UBSAN_OPTIONS="print_stacktrace=1"
     - export UBSAN_FLAGS="-fsanitize=undefined,float-divide-by-zero,unsigned-integer-overflow,implicit-conversion,local-bounds,nullability-arg,nullability-assign,nullability-return"
-    - export UBSAN_CFLAGS="${UBSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
+    - export UBSAN_CFLAGS="-D_FILE_OFFSET_BITS=64 ${UBSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
     - export CC="ccache clang -m32 ${UBSAN_CFLAGS:?} -Werror"
     - export LDFLAGS="${UBSAN_FLAGS:?}"
     - ${CC:?} --version
@@ -2804,7 +2794,6 @@ Clang Sanitizer (UB, 32-bit, C-only):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
     - *BuildInformation
-    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test32_section[collapsed=true]\r\e[0K\033[0;36mTest 32-bit ...\033[0m" || true
@@ -2986,7 +2975,7 @@ Clang Sanitizer (CFI, 32-bit, C++, C):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build32_section[collapsed=true]\r\e[0K\033[0;36mBuild 32-bit ...\033[0m" || true
     - export CSAN_FLAGS="-fsanitize=cfi -fvisibility=hidden -fcomplete-member-pointers"
-    - export CSAN_CFLAGS="${CSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover -flto"
+    - export CSAN_CFLAGS="-D_FILE_OFFSET_BITS=64 ${CSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover -flto"
     - export CC="ccache clang -m32 ${CSAN_CFLAGS:?} -Werror"
     - export CXX="ccache clang++ -m32 ${CSAN_CFLAGS:?} -Werror"
     - export CXXFLAGS="-DSIR_NO_BOOST_FORMAT=1"
@@ -2999,7 +2988,6 @@ Clang Sanitizer (CFI, 32-bit, C++, C):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
     - *BuildInformation
-    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test32_section[collapsed=true]\r\e[0K\033[0;36mTest 32-bit ...\033[0m" || true
@@ -3090,7 +3078,7 @@ Clang Sanitizer (Address, 32-bit, C++, C):
       echo -e "section_start:`date +%s`:Build32_section[collapsed=true]\r\e[0K\033[0;36mBuild 32-bit ...\033[0m" || true
     - export ASAN_OPTIONS="check_initialization_order=1"
     - export ASAN_FLAGS="-fsanitize=address -fsanitize-address-use-after-scope"
-    - export ASAN_CFLAGS="${ASAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
+    - export ASAN_CFLAGS="-D_FILE_OFFSET_BITS=64 ${ASAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
     - export CC="ccache clang -m32 ${ASAN_CFLAGS:?} -Werror"
     - export CXX="ccache clang++ -m32 ${ASAN_CFLAGS:?} -Werror"
     - export LDFLAGS="${ASAN_FLAGS:?}"
@@ -3102,7 +3090,6 @@ Clang Sanitizer (Address, 32-bit, C++, C):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
     - *BuildInformation
-    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test32_section[collapsed=true]\r\e[0K\033[0;36mTest 32-bit ...\033[0m" || true
@@ -3175,7 +3162,7 @@ Oracle Lint:
     - /opt/oracle/developerstudio-latest/bin/lint -V
     - make clean
     - rm -f orstlint.txt > /dev/null 2>&1 || true
-    - export CFLAGS="-errsecurity=extended -errtags=yes -erroff=E_GLOBAL_COULD_BE_STATIC2,E_FUNC_RET_ALWAYS_IGNOR2,E_FUNC_RET_MAYBE_IGNORED2,E_NAME_DEF_NOT_USED2,E_SEC_READLINK_WARN,E_CONST_EXPR,E_SEC_RAND_WARN,E_PTRDIFF_OVERFLOW,E_CONSTANT_CONDITION,E_STATIC_UNUSED -fd -m64 -XCC=yes -errchk=structarg,parentheses,signext,locfmtchk -errfmt=src -errtags=yes -Xalias_level=any"
+    - export CFLAGS="-D_FILE_OFFSET_BITS=64 -errsecurity=extended -errtags=yes -erroff=E_GLOBAL_COULD_BE_STATIC2,E_FUNC_RET_ALWAYS_IGNOR2,E_FUNC_RET_MAYBE_IGNORED2,E_NAME_DEF_NOT_USED2,E_SEC_READLINK_WARN,E_CONST_EXPR,E_SEC_RAND_WARN,E_PTRDIFF_OVERFLOW,E_CONSTANT_CONDITION,E_STATIC_UNUSED -fd -m64 -XCC=yes -errchk=structarg,parentheses,signext,locfmtchk -errfmt=src -errtags=yes -Xalias_level=any"
     - eval /opt/oracle/developerstudio-latest/bin/lint -DSUNPRO=1 -DSUNLINT=1 ${CFLAGS:?} src/*.c -Iinclude -Itests tests/*.c 2>&1 | tee orstlint.txt
     - eval /opt/oracle/developerstudio-latest/bin/lint -DSUNPRO=1 -DSUNLINT=1 ${CFLAGS:?} src/*.c -Iinclude -Iexample example/*.c 2>&1 | tee -a orstlint.txt
     - ( grep "E_" orstlint.txt || exit 0 && exit 1 )
@@ -3192,6 +3179,9 @@ Oracle Lint:
       - orstlint.txt
       - build/
       - logs/
+      - /tmpfs/user/orstlint.txt
+      - /tmpfs/user/build/
+      - /tmpfs/user/logs/
   retry: 2
   interruptible: true
 
@@ -3557,6 +3547,7 @@ Linux/x86_64 (Oracle Studio C, Fedora Python):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CC="ccache /opt/oracle/developerstudio-latest/bin/suncc"
+    - export CFLAGS="-D_FILE_OFFSET_BITS=64"
     - command -v python3
     - $(command -v python3) --version
     - swig -version
@@ -3588,6 +3579,14 @@ Linux/x86_64 (Oracle Studio C, Fedora Python):
       - bindings/python/*cache*
       - bindings/python/*wrap.c
       - logs/
+      - /tmpfs/user/build/
+      - /tmpfs/user/bindings/python/*.so
+      - /tmpfs/user/bindings/python/build/
+      - /tmpfs/user/bindings/python/sir.py
+      - /tmpfs/user/bindings/python/*.log
+      - /tmpfs/user/bindings/python/*cache*
+      - /tmpfs/user/bindings/python/*wrap.c
+      - /tmpfs/user/logs/
   retry: 2
   interruptible: true
 
@@ -4049,7 +4048,6 @@ Windows/i686 (Clang-CL, C++, C):
     name: registry.gitlab.com/libsir/libsir/msvc:latest
   script:
     - *Configuration
-    - *CopyToTmpfs
     - *ClangDisableWarnings
     - |
       # Start of Build ...
@@ -4256,6 +4254,7 @@ Linux/i686 (glibc 2.7, GCC, C-only):
     - export PATH="${HOME:?}/x-tools/obggcc/i386-unknown-linux-gnu/bin:${HOME:?}/x-tools/obggcc/bin:${PATH:?}"
     - export CC="ccache i386-unknown-linux-gnu-gcc"
     - export RANLIB="i386-unknown-linux-gnu-gcc-ranlib"
+    - export CFLAGS="-D_FILE_OFFSET_BITS=64"
     - ${CC:?} --version
     - export EXTRA_LIBS="-lrt"
     - make
@@ -4263,7 +4262,6 @@ Linux/i686 (glibc 2.7, GCC, C-only):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
-    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
