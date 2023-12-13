@@ -1,8 +1,0 @@
-<map id="sir_plugin" name="sir_plugin">
-<area shape="rect" id="Node000001" title="Internally&#45;used plugin module data." alt="" coords="16,179,92,203"/>
-<area shape="rect" id="Node000002" href="$structsir__plugininfo.html" title="The libsir&#45;to&#45;plugin query data structure." alt="" coords="5,5,103,30"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="53,45,48,92,49,140,54,178,49,179,44,140,42,92,47,44"/>
-<area shape="rect" id="Node000003" href="$structsir__pluginifacev1.html" title="Plugin interface for v1." alt="" coords="82,92,200,117"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="78,38,131,90,127,94,74,42"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="121,129,67,180,64,177,117,125"/>
-</map>

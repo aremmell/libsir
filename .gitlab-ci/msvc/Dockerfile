@@ -1,13 +1,34 @@
-# SPDX-License-Identifier: ISC and MIT
+################################################################################
+#
+# Version: 2.2.4
+#
+################################################################################
+#
+# SPDX-License-Identifier: ISC
+#
 # Copyright (c) 2018-2019 Martin Storsjo
-# Copyright (c) 2018-current Ryan M. Lederman <lederman@gmail.com>
-# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
+# Copyright (c) 2018-2023 Ryan M. Lederman <lederman@gmail.com>
+# Copyright (c) 2018-2023 Jeffrey H. Johnson <trnsz@pobox.com>
+#
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+################################################################################
 
 FROM registry.gitlab.com/libsir/libsir/base:latest
 
 USER 0
 
-RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
+RUN set -x && dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
     dnf --refresh -y install --setopt=install_weak_deps=True \
         msitools \
         cabextract \
@@ -23,7 +44,7 @@ WORKDIR /opt/msvc
 COPY lowercase fixinclude install.sh vsdownload.py msvctricks.cpp ./
 COPY wrappers/* ./wrappers/
 
-RUN stdbuf -o L \
+RUN set -x && stdbuf -o L \
         env PYTHONUNBUFFERED=1 ./vsdownload.py \
         --accept-license \
         --dest /opt/msvc && \
@@ -33,13 +54,13 @@ RUN stdbuf -o L \
 
 COPY msvcenv-native.sh /opt/msvc
 
-RUN curl \
+RUN set -x && curl \
       -fsSL https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
         > /usr/bin/winetricks && chmod a+x /usr/bin/winetricks
 
-RUN ln -s /opt/msvc /opt/MSVC
+RUN set -x && ln -s /opt/msvc /opt/MSVC
 
-RUN dnf -y clean all && \
+RUN set -x && dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
     rm -rf /var/log/dnf* && \

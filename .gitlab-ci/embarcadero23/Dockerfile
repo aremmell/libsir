@@ -35,7 +35,7 @@ ARG URL
 
 USER 0
 
-RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
+RUN set -x && dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
@@ -44,7 +44,7 @@ RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
 
 USER 10000
 
-RUN cd ~user && \
+RUN set -x && cd ~user && \
     export WINEDEBUG=-all && \
     ((yes | wine64 -h) || true) && \
     cd .wine/drive_c/Program\ Files\ \(x86\)/ && \

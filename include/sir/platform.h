@@ -1,11 +1,14 @@
 /*
  * platform.h
  *
- * Author:    Ryan M. Lederman <lederman@gmail.com>
- * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
- * Copyright: Copyright (c) 2018-2023
- * Version:   2.2.4
- * License:   The MIT License (MIT)
+ * Version: 2.2.4
+ *
+ * -----------------------------------------------------------------------------
+ *
+ * SPDX-License-Identifier: MIT
+ *
+ * Copyright (c) 2018-2023 Ryan M. Lederman <lederman@gmail.com>
+ * Copyright (c) 2018-2023 Jeffrey H. Johnson <trnsz@pobox.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,7 +26,10 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * -----------------------------------------------------------------------------
  */
+
 #ifndef _SIR_PLATFORM_H_INCLUDED
 # define _SIR_PLATFORM_H_INCLUDED
 
@@ -613,20 +619,22 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 
 # endif /* !__WIN__ */
 
-# if (__STDC_VERSION__ >= 201112 && !defined(__STDC_NO_THREADS__)) || \
+# if !defined(_sir_thread_local)
+#  if (__STDC_VERSION__ >= 201112 && !defined(__STDC_NO_THREADS__)) || \
      (defined(__SUNPRO_C) || defined(__SUNPRO_CC))
-#  if defined(_AIX) && defined(__GNUC__)
+#   if defined(_AIX) && defined(__GNUC__)
+#    define _sir_thread_local __thread
+#   else
+#    define _sir_thread_local _Thread_local
+#   endif
+#  elif defined(__WIN__)
+#   define _sir_thread_local __declspec(thread)
+#  elif defined(__GNUC__) || (defined(_AIX) && (defined(__xlC_ver__) || defined(__ibmxl__)))
 #   define _sir_thread_local __thread
 #  else
-#   define _sir_thread_local _Thread_local
-#  endif
-# elif defined(__WIN__)
-#  define _sir_thread_local __declspec(thread)
-# elif defined(__GNUC__) || (defined(_AIX) && (defined(__xlC_ver__) || defined(__ibmxl__)))
-#  define _sir_thread_local __thread
-# else
-#  if !defined(_CH_) && !defined(__CH__)
-#   error "unable to resolve thread local attribute; please contact the author."
+#   if !defined(_CH_) && !defined(__CH__)
+#    error "unable to resolve thread local attribute; please contact the developers."
+#   endif
 #  endif
 # endif
 

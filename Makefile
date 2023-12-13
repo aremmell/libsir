@@ -1,10 +1,16 @@
 # Makefile
-# libsir: https://github.com/aremmell/libsir
 
+################################################################################
+#
+# Version: 2.2.4
+#
+##############################################################################
+#
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-current Ryan M. Lederman <lederman@gmail.com>
-# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
-
+#
+# Copyright (c) 2018-2023 Jeffrey H. Johnson <trnsz@pobox.com>
+# Copyright (c) 2018-2023 Ryan M. Lederman <lederman@gmail.com>
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
 # the Software without restriction, including without limitation the rights to
@@ -21,6 +27,8 @@
 # COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#
+##############################################################################
 
 ##############################################################################
 # Defaults
@@ -54,6 +62,7 @@ SIR_FPIC    ?= -fPIC
 AR          ?= ar
 AR_CR       ?= $(AR) -cr
 WPEDANTIC   ?= -Wpedantic
+WARNEXTRA   ?= -Wextra
 
 ##############################################################################
 # Flags
@@ -78,7 +87,7 @@ SIR_XSTD ?= -std=c++20
 # Base CFLAGS
 
 ifneq ($(NO_DEFAULT_CFLAGS),1)
-  SIR_CFLAGS += -Wall -Wextra $(strip $(strip $(WPEDANTIC) -Iinclude) $(SIR_FPIC))
+  SIR_CFLAGS += -Wall $(strip $(WARNEXTRA) $(WPEDANTIC) $(SIR_FPIC) -Iinclude)
 endif
 
 ##############################################################################
@@ -114,6 +123,13 @@ endif
 
 ifeq ($(SIR_NO_SYSTEM_LOGGERS),1)
   SIR_CFLAGS += -DSIR_NO_SYSTEM_LOGGERS
+endif
+
+##############################################################################
+# Disable shared library support?
+
+ifeq ($(SIR_NO_SHARED),1)
+  SIR_NO_PLUGINS = 1
 endif
 
 ##############################################################################
@@ -222,9 +238,15 @@ OUT_MCMB       = $(BINDIR)/mcmb$(PLATFORM_EXE_EXT)
 
 .DEFAULT_GOAL := all
 
+ifeq ($(SIR_NO_SHARED),1)
+  ALL_GOALS = $(PGOALS) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS)
+else
+  ALL_GOALS = $(PGOALS) $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS)
+endif
+
 .PHONY: all
 
-all: $(PGOALS) $(OUT_SHARED) $(OUT_STATIC) $(OUT_EXAMPLE) $(OUT_TESTS)
+all: $(ALL_GOALS)
 
 ##############################################################################
 # Automatic dependencies
@@ -298,9 +320,9 @@ $(OUT_SHARED): $(OBJ_SHARED)
 
 static: $(OUT_STATIC)
 
-$(OUT_STATIC): $(OUT_SHARED)
+$(OUT_STATIC): $(OBJ_STATIC)
 	@mkdir -p $(@D)
-	$(AR_CR) $(OUT_STATIC) $(OBJ_SHARED)
+	$(AR_CR) $(OUT_STATIC) $(OBJ_STATIC)
 	-@($(RANLIB) "$(OUT_STATIC)" || true) > /dev/null 2>&1
 	-@tput bold 2> /dev/null || true; tput setaf 2 2> /dev/null || true
 	-@printf '[static] built %s successfully.\n' "$(OUT_STATIC)" 2> /dev/null
@@ -450,11 +472,15 @@ install: $(INSTALLSH)
 	    printf 'Error: %s not executable.\n' "$(INSTALLSH)" \
 	      2> /dev/null; (tput sgr0 2> /dev/null || true); exit 1; }
 	@test -f "$(OUT_STATIC)" || $(MAKE) --no-print-directory static
+ifneq ($(SIR_NO_SHARED),1)
 	@test -f "$(OUT_SHARED)" || $(MAKE) --no-print-directory shared
+endif
 	-@printf '[install] installing libraries to %s and headers to %s...' "$(INSTALLLIB)" "$(INSTALLINC)" 2> /dev/null
 	$(INSTALLSH) -m 755 -d "$(INSTALLLIB)"
+ifneq ($(SIR_NO_SHARED),1)
 	$(INSTALLSH) -C -m 755 "$(OUT_SHARED)" "$(INSTALLLIB)"
 	-($(LDCONFIG) || true) > /dev/null 2>&1
+endif
 	$(INSTALLSH) -C -m 644 "$(OUT_STATIC)" "$(INSTALLLIB)"
 	-($(RANLIB) "$(INSTALLLIB)/$(OUT_STATIC_FN)" || true) > /dev/null 2>&1
 	$(INSTALLSH) -m 755 -d "$(INSTALLINC)"

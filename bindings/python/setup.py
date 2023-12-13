@@ -1,9 +1,17 @@
 #!/usr/bin/env python3
-# libsir Python module setup script
-# SPDX-License-Identifier: MIT
-# Copyright (c) 2018-current Ryan M. Lederman <lederman@gmail.com>
-# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
 
+# libsir Python module setup script
+################################################################################
+#
+# Version: 2.2.4
+#
+################################################################################
+#
+# SPDX-License-Identifier: MIT
+#
+# Copyright (c) 2018-2023 Ryan M. Lederman <lederman@gmail.com>
+# Copyright (c) 2018-2023 Jeffrey H. Johnson <trnsz@pobox.com>
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
 # the Software without restriction, including without limitation the rights to
@@ -20,6 +28,8 @@
 # COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#
+################################################################################
 
 from setuptools.command.build_ext import build_ext
 from distutils.core import setup, Extension

@@ -1,11 +1,14 @@
 /*
  * sirfilesystem.c
  *
- * Author:    Ryan M. Lederman <lederman@gmail.com>
- * Co-author: Jeffrey H. Johnson <trnsz@pobox.com>
- * Copyright: Copyright (c) 2018-2023
- * Version:   2.2.4
- * License:   The MIT License (MIT)
+ * Version: 2.2.4
+ *
+ * -----------------------------------------------------------------------------
+ *
+ * SPDX-License-Identifier: MIT
+ *
+ * Copyright (c) 2018-2023 Ryan M. Lederman <lederman@gmail.com>
+ * Copyright (c) 2018-2023 Jeffrey H. Johnson <trnsz@pobox.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,7 +26,10 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * -----------------------------------------------------------------------------
  */
+
 #include "sir/filesystem.h"
 #include "sir/internal.h"
 
@@ -68,7 +74,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
        defined(__NetBSD__) || defined(__HAIKU__) || defined(__OpenBSD__)
         int open_flags = O_DIRECTORY;
 # else
-#  error "unknown open_flags for your platform; please contact the author."
+#  error "unknown open_flags for your platform; please contact the developers."
 # endif
 
         int fd = open(base_path, open_flags);
@@ -321,7 +327,7 @@ char* _sir_getappfilename(void) {
             break;
         }
 # else
-#  error "no implementation for your platform; please contact the author."
+#  error "no implementation for your platform; please contact the developers."
 # endif
 #else /* __WIN__ */
         DWORD ret = GetModuleFileNameA(NULL, buffer, (DWORD)size);

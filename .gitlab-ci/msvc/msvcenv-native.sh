@@ -1,5 +1,7 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
+################################################################################
+#
 # SPDX-License-Identifier: ISC
 #
 # Copyright (c) 2019 Martin Storsjo
@@ -15,18 +17,27 @@
 # WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+################################################################################
 
-#####
+################################################################################
+#
 # This is a script for setting up env variables for letting native tools
 # find headers and libraries installed by the other msvc-wine scripts.
 #
 # To use this script, execute it like this:
+#
 #     BIN=<path-to-msvc-wine-install>/bin/x64 . ./msvcenv-native.sh
+#
 # (Note the "." between the BIN variable and the msvcenv-native.sh script.)
+#
 # After executing this, you should be able to run clang-cl and lld-link
 # without needing to configure paths manually anywhere.
+#
 # (If linking by invoking clang or clang-cl, instead of directly calling
 # lld-link, it's recommended to use -fuse-ld=lld.)
+#
+################################################################################
 
 if [ -z "$BIN" ]; then
     echo Set BIN to point to the directory before launching

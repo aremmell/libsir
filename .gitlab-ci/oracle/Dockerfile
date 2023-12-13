@@ -1,5 +1,31 @@
+################################################################################
+#
+# Version: 2.2.4
+#
+################################################################################
+#
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-current Jeffrey H. Johnson <trnsz@pobox.com>
+#
+# Copyright (c) 2018-2023 Jeffrey H. Johnson <trnsz@pobox.com>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+# the Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#
+################################################################################
 
 FROM registry.gitlab.com/libsir/libsir/base:latest
 
@@ -10,7 +36,7 @@ WORKDIR /
 ARG URL1
 ARG URL2
 
-RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
+RUN set -x && dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
     ( dnf --refresh -y install libnsl2.x86_64 libnsl2.i686 libnsl.i686 libnsl.x86_64 ) && \
     ( ( (rpm -qa | grep 'libnsl-.*x86_64') || \
          dnf -y install ${URL1:-http://192.168.1.187;8088/~jhj/cache/libnsl-2.38-1.fc39.x86_64.rpm}) || true ) && \
