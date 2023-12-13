@@ -61,6 +61,13 @@ stages:
 
 ################################################################################
 
+.CopyToTmpfs: &CopyToTmpfs |
+  # *CopyToTmpfs - rsync current working directory to /tmpfs/
+  test -d /tmpfs/ && rsync -axHAX . /tmpfs/ && cd /tmpfs
+  echo "New working directory: $(pwd)"
+
+################################################################################
+
 .Configuration: &Configuration |
   # *Configuration - CI/CD Configuration
   echo -e "section_start:`date +%s`:Configuration_section[collapsed=false]\r\e[0K\033[0;36mCI/CD Configuration ...\033[0m" || true
@@ -77,9 +84,6 @@ stages:
   echo "GitLab CI Job ID          : ${CI_JOB_ID:-Unknown}"
   echo "GitLab CI Job Stage       : ${CI_JOB_STAGE:-Unknown}"
   echo "GitLab CI Runner Details  : ${CI_RUNNER_VERSION:-Unknown} (${CI_RUNNER_REVISION:-Unknown})"
-  echo "Home Directory            : ${HOME:-Unknown}"
-  echo "Current Working Directory : $(pwd -L 2> /dev/null || true) ($(pwd -P 2> /dev/null || true))" || true
-  df -h || true
   echo -e "section_end:`date +%s`:Configuration_section\r\e[0K" || true
 
 ################################################################################
@@ -220,6 +224,7 @@ Linux/i686 (G++, GCC):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
+    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -358,6 +363,7 @@ Linux/i686 (Clang++, Clang):
     - |
       # End of Build ... echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
+    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -455,6 +461,7 @@ Linux/i686 (AOCC++, AOCC):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
+    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -589,6 +596,7 @@ Linux/i386 (Chamois-CompCert, C-only):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
+    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -631,6 +639,7 @@ Linux/x86_64 (Oracle Studio C, C-only):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
+    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -675,6 +684,7 @@ Linux/i686 (Oracle Studio C, C-only):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
+    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -1013,6 +1023,7 @@ Windows/i686 (LLVM-MinGW, Clang++, Clang):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
+    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -1117,6 +1128,7 @@ Android/i686 (API Level 21, Clang++, Clang):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
+    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -1283,6 +1295,7 @@ Android/i686 (API Level 33, Clang++, Clang):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
+    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -1538,6 +1551,7 @@ Windows/i686 (MSVC, C++, C):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
+    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -1717,6 +1731,7 @@ Windows/i686 (MinGW, G++, GCC):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
+    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -1793,6 +1808,7 @@ Cygwin/i686 (GCC, C-only):
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
+    - *CopyToTmpfs
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -2256,6 +2272,7 @@ Windows/i686 (OrangeC, C-only):
     name: registry.gitlab.com/libsir/libsir/orangec:latest
   script:
     - *Configuration
+    - *CopyToTmpfs
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -2359,6 +2376,7 @@ Linux/i686 (DMD64 ImportC, C-only):
     name: registry.gitlab.com/libsir/libsir/dmd:latest
   script:
     - *Configuration
+    - *CopyToTmpfs
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -2380,6 +2398,7 @@ Linux/i686 (DMD64 ImportC, C-only):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
+    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
@@ -2510,6 +2529,7 @@ Windows/i686 (Embarcadero Alexandria, BCC32X, C-only):
     name: registry.gitlab.com/libsir/libsir/embarcadero:latest
   script:
     - *Configuration
+    - *CopyToTmpfs
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -2666,6 +2686,7 @@ Windows/i686 (Embarcadero Athens, BCC32X, C-only):
     name: registry.gitlab.com/libsir/libsir/embarcadero23:latest
   script:
     - *Configuration
+    - *CopyToTmpfs
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -2781,6 +2802,7 @@ Clang Sanitizer (UB, 32-bit, C-only):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
     - *BuildInformation
+    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test32_section[collapsed=true]\r\e[0K\033[0;36mTest 32-bit ...\033[0m" || true
@@ -2975,6 +2997,7 @@ Clang Sanitizer (CFI, 32-bit, C++, C):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
     - *BuildInformation
+    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test32_section[collapsed=true]\r\e[0K\033[0;36mTest 32-bit ...\033[0m" || true
@@ -3077,6 +3100,7 @@ Clang Sanitizer (Address, 32-bit, C++, C):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
     - *BuildInformation
+    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test32_section[collapsed=true]\r\e[0K\033[0;36mTest 32-bit ...\033[0m" || true
@@ -3142,6 +3166,7 @@ Oracle Lint:
     name: registry.gitlab.com/libsir/libsir/oracle:latest
   script:
     - *Configuration
+    - *CopyToTmpfs
     - |
       # Start of Lint ...
       echo -e "section_start:`date +%s`:Lint_section[collapsed=true]\r\e[0K\033[0;36mLint ...\033[0m" || true
@@ -3525,6 +3550,7 @@ Linux/x86_64 (Oracle Studio C, Fedora Python):
     name: registry.gitlab.com/libsir/libsir/oracle:latest
   script:
     - *Configuration
+    - *CopyToTmpfs
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -4021,6 +4047,7 @@ Windows/i686 (Clang-CL, C++, C):
     name: registry.gitlab.com/libsir/libsir/msvc:latest
   script:
     - *Configuration
+    - *CopyToTmpfs
     - *ClangDisableWarnings
     - |
       # Start of Build ...
@@ -4234,6 +4261,7 @@ Linux/i686 (glibc 2.7, GCC, C-only):
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
     - *BuildInformation
+    - *CopyToTmpfs
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
