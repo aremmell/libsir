@@ -84,6 +84,8 @@ stages:
   echo "GitLab CI Job ID          : ${CI_JOB_ID:-Unknown}"
   echo "GitLab CI Job Stage       : ${CI_JOB_STAGE:-Unknown}"
   echo "GitLab CI Runner Details  : ${CI_RUNNER_VERSION:-Unknown} (${CI_RUNNER_REVISION:-Unknown})"
+  df -h || true
+  ls -lad /tmpfs || true
   echo -e "section_end:`date +%s`:Configuration_section\r\e[0K" || true
 
 ################################################################################
