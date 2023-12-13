@@ -31,7 +31,8 @@ FROM mstorsjo/llvm-mingw:latest
 
 USER 0
 
-RUN apt -y update && \
+RUN set -x && \
+    apt -y update && \
     apt -y upgrade && \
     apt -y full-upgrade && \
     apt -y install \

@@ -33,7 +33,8 @@ USER 0
 
 WORKDIR /
 
-RUN dnf --nogpgcheck --refresh -y upgrade --setopt=install_weak_deps=True && \
+RUN set -x && \
+    dnf --nogpgcheck --refresh -y upgrade --setopt=install_weak_deps=True && \
     ( rpm --import https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB ) && \
     printf '%s\n' \
       "[oneAPI]" \

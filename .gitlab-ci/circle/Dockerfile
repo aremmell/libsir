@@ -35,7 +35,8 @@ WORKDIR /
 
 ARG URL
 
-RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && dnf -y install \
+RUN set -x && \
+    dnf --refresh -y upgrade --setopt=install_weak_deps=True && dnf -y install \
               pigz \
               sharutils \
               xdelta && \

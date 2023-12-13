@@ -33,7 +33,7 @@ USER 0
 
 WORKDIR /
 
-RUN dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
+RUN set -x && dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
     rpm --import https://developer.download.nvidia.com/hpc-sdk/rhel/RPM-GPG-KEY-NVIDIA-HPC-SDK && \
     curl -fsSL https://developer.download.nvidia.com/hpc-sdk/rhel/nvhpc.repo > /etc/yum.repos.d/nvhpc.repo && \
     dnf --refresh -y install nvhpc --setopt=install_weak_deps=True && \
