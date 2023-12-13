@@ -116,9 +116,9 @@ int main(int argc, char** argv) {
 
     size_t first     = (cl_cfg.only ? 0 : 1);
     size_t tgt_tests = (cl_cfg.only ? cl_cfg.to_run : _sir_countof(sir_tests) - first);
-    size_t passed    = 0;
-    size_t ran       = 0;
-    sir_time timer  = {0};
+    size_t passed    =  0;
+    size_t ran       =  0;
+    sir_time timer   = {0};
 
     print_intro(tgt_tests);
     sir_timer_start(&timer);
