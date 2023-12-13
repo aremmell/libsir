@@ -79,7 +79,7 @@ stages:
   echo "GitLab CI Runner Details  : ${CI_RUNNER_VERSION:-Unknown} (${CI_RUNNER_REVISION:-Unknown})"
   echo "Home Directory            : ${HOME:-Unknown}"
   echo "Current Working Directory : $(pwd -L 2> /dev/null || true) ($(pwd -P 2> /dev/null || true))" || true
-  df -h /builds || true
+  df -h || true
   echo -e "section_end:`date +%s`:Configuration_section\r\e[0K" || true
 
 ################################################################################
