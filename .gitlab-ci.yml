@@ -77,6 +77,14 @@ stages:
   echo "GitLab CI Job ID          : ${CI_JOB_ID:-Unknown}"
   echo "GitLab CI Job Stage       : ${CI_JOB_STAGE:-Unknown}"
   echo "GitLab CI Runner Details  : ${CI_RUNNER_VERSION:-Unknown} (${CI_RUNNER_REVISION:-Unknown})"
+  test -f "/.dockerenv" && test -d "/tmpfs" && echo "Found /tmpfs." || true
+  test -f "/.dockerenv" && test -d "/tmpfs" && rsync -avxHAX "${HOME:?}" "/tmpfs/" || true
+  test -f "/.dockerenv" && test -d "/tmpfs/${HOME:?}" && export OLD_HOME="${HOME:?}" || true
+  test -f "/.dockerenv" && test -d "/tmpfs/${HOME:?}" && test -n "${OLD_HOME:-}" && export HOME="/tmpfs/${HOME:?}" || true
+  test -f "/.dockerenv" && test -d "/tmpfs/${OLD_HOME:?}" && { ( cd "/tmpfs/${OLD_HOME:?}" && rm -rf "${OLD_HOME:?}" && ln -fs "${OLD_HOME}" "/tmpfs"; ); } || true
+  test -f "/.dockerenv" && test -d "/tmpfs/${OLD_HOME:?}" && cd || true
+  echo -n "pwd -L: " && pwd -L || true
+  echo -n "pwd -P: " && pwd -P || true
   echo -e "section_end:`date +%s`:Configuration_section\r\e[0K" || true
 
 ################################################################################
