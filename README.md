@@ -253,6 +253,7 @@ The following **SAST** (*static application*/*analysis security*/*software testi
 | [Flawfinder](https://dwheeler.com/flawfinder/)                                                                     | Scans C and C++ source code for potential security weaknesses                      |
 | [GCC Static Analyzer](https://gcc.gnu.org/onlinedocs/gcc/Static-Analyzer-Options.html)                             | Coverage-guided symbolic execution static analyzer for C code                      |
 | [GNU Cppi](https://www.gnu.org/software/cppi/)                                                                     | C preprocessor directive linting, indenting, and regularization                    |
+| [GNU Global](https://www.gnu.org/software/global/)                                                                 | Source code indexing and tagging system                                            |
 | [Oracle Developer Studio](https://www.oracle.com/application-development/developerstudio/)                         | Performance, security, and thread analysis tools for C, C++, and Fortran           |
 | [REUSE](https://api.reuse.software/info/github.com/aremmell/libsir)                                                | Verifies compliance with the [REUSE](https://reuse.software/) licensing guidelines |
 | [Semgrep](https://semgrep.dev)                                                                                     | A fast, open-source, static analysis engine for many languages                     |
@@ -269,7 +270,6 @@ Additional tools used for libsir development and testing include:
 | [CBMC](http://www.cprover.org/cbmc/), [ESBMC](http://esbmc.org/)                                             | Bounded Model Checkers for C and C++ programs                       |
 | [Funcheck](https://github.com/tmatis/funcheck)                                                               | A tool for checking function call return protections                |
 | [Frama-C](https://frama-c.com/)                                                                              | Framework for Modular Analysis of C programs                        |
-| [GNU Global](https://www.gnu.org/software/global/)                                                           | Source code indexing and tagging system                             |
 | [Intel® VTune™ Profiler](https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler.html) | Performance analysis and profiling tools for Intel systems          |
 | [Luke Stackwalker](https://lukestackwalker.sf.net/)                                                          | Sampling C/C++ code profiler for Microsoft Windows                  |
 | [PurifyPlus™](https://www.teamblue.unicomsi.com/products/purifyplus/)                                        | Run-time analysis tools for application reliability and performance |
