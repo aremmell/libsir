@@ -2323,10 +2323,10 @@ Linux/x86_64 (DMD64 ImportC, C-only):
     - ln -s . sir
     - ln -s ../example/* .
     - dmd --version
-    - dmd -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirexample
+    - dmd -nothrow -betterC -inline -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirexample
     - rm -f example*
     - ln -s ../tests/* .
-    - dmd -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirtests
+    - dmd -nothrow -betterC -inline -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirtests
     - cd ..
     - |
       # End of Build ...
@@ -2376,10 +2376,10 @@ Linux/i686 (DMD64 ImportC, C-only):
     - ln -s . sir
     - ln -s ../example/* .
     - dmd --version
-    - dmd -m32 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-D_FILE_OFFSET_BITS=64 -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirexample
+    - dmd -nothrow -betterC -inline -m32 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-D_FILE_OFFSET_BITS=64 -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirexample
     - rm -f example*
     - ln -s ../tests/* .
-    - dmd -m32 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-D_FILE_OFFSET_BITS=64 -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirtests
+    - dmd -nothrow -betterC -inline -m32 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-D_FILE_OFFSET_BITS=64 -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirtests
     - cd ..
     - |
       # End of Build ...
