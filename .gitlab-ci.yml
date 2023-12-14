@@ -4463,10 +4463,10 @@ OpenBSD/amd64 (DMD64 ImportC, C-only):
     - ln -s . sir
     - ln -s ../example/* .
     - dmd --version
-    - dmd -betterC -inline -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirexample
+    - dmd -inline -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirexample
     - rm -f example*
     - ln -s ../tests/* .
-    - dmd -betterC -inline -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirtests
+    - dmd -inline -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirtests
     - cd ..
     - |
       # End of Build ...
