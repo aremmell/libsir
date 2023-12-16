@@ -2297,7 +2297,7 @@ unsigned __stdcall threadrace_thread(void* arg) {
 #endif
     }
 
-    TEST_MSG("hi, i'm thread (id: %d), logging to: '%s'...",
+    TEST_MSG("hi, i'm thread (id: " SIR_TIDFORMAT "), logging to: '%s'...",
             PID_CAST threadid, my_args->log_file);
 
 #if !defined(DUMA)

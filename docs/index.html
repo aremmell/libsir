@@ -187,7 +187,7 @@ libsir visual graph</div></div>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyRight"><b>NetBSD</b>&#160;9.2   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(7.5&#160;‑&#160;13.2),&#160; <b>Clang</b>&#160;(15.0.7&#160;‑&#160;17.0.6)    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyRight"><b>OpenBSD</b>&#160;7.3   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(11.2),&#160; <b>Clang</b>&#160;(13)    </td></tr>
+<td class="markdownTableBodyRight"><b>OpenBSD</b>&#160;7.3   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(11.2),&#160; <b>Clang</b>&#160;(13),&#160; <b>DMD&#160;ImportC</b>&#160;(2.104.0)    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyRight"><b>DragonFly</b>&#160;<b>BSD</b>&#160;6.4   </td><td class="markdownTableBodyLeft"><b>GCC</b>&#160;(8.3&#160;‑&#160;13),&#160; <b>Clang</b>&#160;(10.0.1&#160;‑&#160;17.0.6)    </td></tr>
 <tr class="markdownTableRowEven">
@@ -204,7 +204,7 @@ libsir visual graph</div></div>
 <td class="markdownTableBodyRight"><b>WebAssembly/JS</b>   </td><td class="markdownTableBodyLeft"><b>Emscripten</b>&#160;(3.1.45&#160;‑&#160;3.1.50),&#160; <b>Node.js</b>&#160;(20.5&#160;‑&#160;21.4)   </td></tr>
 </table>
 <ul>
-<li>libsir is known to work on most common (and many uncommon) architectures. It has been built and tested on <b>Intel</b> (x86_64, i686, x32), <b>ARM</b> (ARMv6, ARMv7HF, ARMv8‑A), <b>POWER</b> (PowerPC, PPC64, PPC64le), <b>MIPS</b> (MIPS64, MIPS32, 74Kc), <b>SPARC</b> (SPARC64, V8, LEON3), <b>z/Architecture</b> (S390X), <b>SuperH</b> (SH‑4A), <b>RISC‑V</b> (RV64), <b>OpenRISC</b> (OR1200), <b>Kalray MPPA®</b> (Coolidge™, KVX), and <b>m68k</b> (ColdFire, 68020+).</li>
+<li>libsir is known to work on most common (and many uncommon) architectures. It has been built and tested on <b>Intel</b> (x86_64, i686, x32), <b>ARM</b> (ARMv6, ARMv7HF, ARMv8‑A), <b>POWER</b> (PowerPC, PPC64, PPC64le), <b>MIPS</b> (MIPS64, MIPS32, 74Kc), <b>SPARC</b> (SPARC64, V8, LEON3), <b>z/Architecture</b> (S390X), <b>SuperH</b> (SH‑4A), <b>RISC‑V</b> (RV32, RV64), <b>OpenRISC</b> (OR1200), <b>Kalray MPPA®</b> (Coolidge™, KVX), and <b>m68k</b> (ColdFire, 68020+).</li>
 <li>This table only lists toolchains that have been tested and is by no means exhaustive&mdash;newer (or older) versions are likely to work without fanfare. In fact, if it <em>doesn't</em> work on your machine, it's probably a bug.</li>
 </ul>
 <h2><a class="anchor" id="system-loggers"></a> System Loggers</h2>
@@ -371,11 +371,11 @@ sample terminal output</div></div>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyRight"><a href="https://dwheeler.com/flawfinder/">Flawfinder</a>   </td><td class="markdownTableBodyLeft">Scans C and C++ source code for potential security weaknesses    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyRight"><a href="https://github.com/tmatis/funcheck">Funcheck</a>   </td><td class="markdownTableBodyLeft">A tool for checking function call return protections    </td></tr>
-<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyRight"><a href="https://gcc.gnu.org/onlinedocs/gcc/Static-Analyzer-Options.html">GCC Static Analyzer</a>   </td><td class="markdownTableBodyLeft">Coverage-guided symbolic execution static analyzer for C code    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyRight"><a href="https://www.gnu.org/software/cppi/">GNU Cppi</a>   </td><td class="markdownTableBodyLeft">C preprocessor directive linting, indenting, and regularization    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyRight"><a href="https://www.gnu.org/software/global/">GNU Global</a>   </td><td class="markdownTableBodyLeft">Source code indexing and tagging system    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyRight"><a href="https://www.oracle.com/application-development/developerstudio/">Oracle Developer Studio</a>   </td><td class="markdownTableBodyLeft">Performance, security, and thread analysis tools for C, C++, and Fortran    </td></tr>
 <tr class="markdownTableRowEven">
@@ -397,9 +397,9 @@ sample terminal output</div></div>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyRight"><a href="http://www.cprover.org/cbmc/">CBMC</a>, <a href="http://esbmc.org/">ESBMC</a>   </td><td class="markdownTableBodyLeft">Bounded Model Checkers for C and C++ programs    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyRight"><a href="https://frama-c.com/">Frama-C</a>   </td><td class="markdownTableBodyLeft">Framework for Modular Analysis of C programs    </td></tr>
+<td class="markdownTableBodyRight"><a href="https://github.com/tmatis/funcheck">Funcheck</a>   </td><td class="markdownTableBodyLeft">A tool for checking function call return protections    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyRight"><a href="https://www.gnu.org/software/global/">GNU Global</a>   </td><td class="markdownTableBodyLeft">Source code indexing and tagging system    </td></tr>
+<td class="markdownTableBodyRight"><a href="https://frama-c.com/">Frama-C</a>   </td><td class="markdownTableBodyLeft">Framework for Modular Analysis of C programs    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyRight"><a href="https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler.html">Intel® VTune™ Profiler</a>   </td><td class="markdownTableBodyLeft">Performance analysis and profiling tools for Intel systems    </td></tr>
 <tr class="markdownTableRowOdd">
