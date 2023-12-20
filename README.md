@@ -93,12 +93,12 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 | ------:|:--------- |
 | **Linux**&nbsp;≳2.6.32<br>(glibc&nbsp;≳2.4, musl&nbsp;≳1.2.3, uClibc‑ng&nbsp;1.0.43, Bionic&nbsp;19) | **GCC**&nbsp;(4.8.4&nbsp;‑&nbsp;13.2.1),&nbsp; **Clang**&nbsp;(3.8&nbsp;‑&nbsp;17.0.6),&nbsp; **Oracle&nbsp;Studio&nbsp;C/C++**&nbsp;(≳12.6),&nbsp; **Circle**&nbsp;(1.0.0‑200),&nbsp; **IBM&nbsp;Advance&nbsp;Toolchain**&nbsp;(14&nbsp;‑&nbsp;17),&nbsp; **IBM&nbsp;XL&nbsp;C/C++**&nbsp;(16.1.1.2&nbsp;‑&nbsp;16.1.1.15),&nbsp; **IBM&nbsp;Open&nbsp;XL&nbsp;C/C++**&nbsp;(17.1.1.0&nbsp;‑&nbsp;17.1.1.1),&nbsp; **NVIDIA&nbsp;HPC&nbsp;SDK&nbsp;C/C++**&nbsp;(23.5&nbsp;‑&nbsp;23.11),&nbsp; **Arm&nbsp;HPC&nbsp;C/C++**&nbsp;(22.1&nbsp;‑&nbsp;23.10),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.104.2&nbsp;‑&nbsp;2.106.0),&nbsp; **AMD&nbsp;Optimizing&nbsp;C/C++**&nbsp;(4.0&nbsp;‑&nbsp;4.1),&nbsp; **Intel&nbsp;oneAPI&nbsp;DPC++/C++**&nbsp;(2023.1&nbsp;‑&nbsp;2024.0.1),&nbsp; **Open64**&nbsp;(5,&nbsp;AMD&nbsp;4.5.2.1),&nbsp; **Intel&nbsp;C++&nbsp;Compiler&nbsp;Classic**&nbsp;(2021.9.0&nbsp;‑&nbsp;2021.10.0),&nbsp; **Android&nbsp;NDK**&nbsp;(r25c&nbsp;‑&nbsp;r26b),&nbsp; **Portable&nbsp;C&nbsp;Compiler**&nbsp;(1.2.0.DEVEL‑20230730),&nbsp; **Kefir**&nbsp;(≳0.3.0),&nbsp; **Chibicc**&nbsp;(2020.12.6),&nbsp; **CompCert&nbsp;C**&nbsp;(3.11&nbsp;‑&nbsp;3.14,&nbsp;no‑TLS),&nbsp; **Chamois‑CompCert&nbsp;C**&nbsp;(3.14‑20231130,&nbsp;TLS) |
 | **AIX**&nbsp;7.2,&nbsp;7.3 | **GCC**&nbsp;(8.3&nbsp;‑&nbsp;12.3),&nbsp; **IBM&nbsp;XL&nbsp;C/C++**&nbsp;(16.1.0.3&nbsp;‑&nbsp;16.1.0.15),&nbsp; **IBM&nbsp;Open&nbsp;XL&nbsp;C/C++**&nbsp;(17.1.1.1&nbsp;‑&nbsp;17.1.2.1) |
-| **macOS**&nbsp;≳10.15 | **Xcode**&nbsp;(11.7&nbsp;‑&nbsp;15.1),&nbsp; **GCC**&nbsp;(10.4&nbsp;‑&nbsp;13.2.1),&nbsp; **Clang**&nbsp;(11.0.3&nbsp;‑&nbsp;17.0.6),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.105.0&nbsp;‑&nbsp;2.106.0),&nbsp; **Intel&nbsp;C++&nbsp;Compiler&nbsp;Classic**&nbsp;(2021.9.0&nbsp;‑&nbsp;2021.10.0) |
+| **macOS**&nbsp;≳10.15 | **Xcode**&nbsp;(11.7&nbsp;‑&nbsp;15.2),&nbsp; **GCC**&nbsp;(10.4&nbsp;‑&nbsp;13.2.1),&nbsp; **Clang**&nbsp;(11.0.3&nbsp;‑&nbsp;17.0.6),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.105.0&nbsp;‑&nbsp;2.106.0),&nbsp; **Intel&nbsp;C++&nbsp;Compiler&nbsp;Classic**&nbsp;(2021.9.0&nbsp;‑&nbsp;2021.10.0) |
 | **Windows**&nbsp;≳10,&nbsp;11 | **Microsoft&nbsp;Visual&nbsp;C/C++**&nbsp;(17.6&nbsp;‑&nbsp;17.8.3),&nbsp; **Clang‑CL**&nbsp;(16.0.6&nbsp;‑&nbsp;17.0.6),&nbsp; **GCC‑MinGW**&nbsp;(12.2.1&nbsp;‑&nbsp;13.2.1),&nbsp; **LLVM‑MinGW**&nbsp;(15.0&nbsp;‑&nbsp;17.0.6),&nbsp; **Embarcadero&nbsp;C++**&nbsp;(7.20&nbsp;‑&nbsp;7.70),&nbsp; **OrangeC**&nbsp;(≳6.71.10) |
 | **Cygwin**&nbsp;3.4 | **GCC**&nbsp;(11.2&nbsp;‑&nbsp;13.2.1) |
 | **FreeBSD**&nbsp;≳11.3 | **GCC**&nbsp;(11.4&nbsp;‑&nbsp;13.2.1),&nbsp; **Clang**&nbsp;(10&nbsp;‑&nbsp;17.0.6),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.105.0&nbsp;‑&nbsp;2.106.0) |
 | **NetBSD**&nbsp;9.2 | **GCC**&nbsp;(7.5&nbsp;‑&nbsp;13.2),&nbsp; **Clang**&nbsp;(15.0.7&nbsp;‑&nbsp;17.0.6) |
-| **OpenBSD**&nbsp;7.3 | **GCC**&nbsp;(11.2),&nbsp; **Clang**&nbsp;(13) |
+| **OpenBSD**&nbsp;7.3 | **GCC**&nbsp;(11.2),&nbsp; **Clang**&nbsp;(13),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.104.0) |
 | **DragonFly**&nbsp;**BSD**&nbsp;6.4 | **GCC**&nbsp;(8.3&nbsp;‑&nbsp;13),&nbsp; **Clang**&nbsp;(10.0.1&nbsp;‑&nbsp;17.0.6) |
 | **GNU/Hurd** | **GCC**&nbsp;(9.5&nbsp;‑&nbsp;13.2),&nbsp; **Clang**&nbsp;(9.0.1&nbsp;‑&nbsp;13.0.1) |
 | **Haiku**&nbsp;R1b4 | **GCC**&nbsp;(11.2&nbsp;‑&nbsp;13.2),&nbsp; **Clang**&nbsp;(12.0.1&nbsp;‑&nbsp;16.0.6) |
@@ -107,7 +107,7 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 | **SerenityOS** | **GCC**&nbsp;(13.1) |
 | **WebAssembly/JS** | **Emscripten**&nbsp;(3.1.45&nbsp;‑&nbsp;3.1.50),&nbsp; **Node.js**&nbsp;(20.5&nbsp;‑&nbsp;21.4) |
 
-* libsir is known to work on most common (and many uncommon) architectures. It has been built and tested on **Intel** (x86\_64, i686, x32), **ARM** (ARMv6, ARMv7HF, ARMv8‑A), **POWER** (PowerPC, PPC64, PPC64le), **MIPS** (MIPS64, MIPS32, 74Kc), **SPARC** (SPARC64, V8, LEON3), **z/Architecture** (S390X), **SuperH** (SH‑4A), **RISC‑V** (RV64), **OpenRISC** (OR1200), **Kalray MPPA®** (Coolidge™, KVX), and **m68k** (ColdFire, 68020+).
+* libsir is known to work on most common (and many uncommon) architectures. It has been built and tested on **Intel** (x86\_64, i686, x32), **ARM** (ARMv6, ARMv7HF, ARMv8‑A), **POWER** (PowerPC, PPC64, PPC64le), **MIPS** (MIPS64, MIPS32, 74Kc), **SPARC** (SPARC64, V8, LEON3), **z/Architecture** (S390X), **SuperH** (SH‑4A), **RISC‑V** (RV32, RV64), **OpenRISC** (OR1200), **Kalray MPPA®** (Coolidge™, KVX), and **m68k** (ColdFire, 68020+).
 * This table only lists toolchains that have been tested and is by no means exhaustive&mdash;newer (or older) versions are likely to work without fanfare. In fact, if it *doesn't* work on your machine, it's probably a bug.
 
 ### <a id="system-loggers" /> System Loggers
@@ -251,9 +251,9 @@ The following **SAST** (*static application*/*analysis security*/*software testi
 | [Cppcheck](https://cppchecksolutions.com/)                                                                         | Static analysis tool for C and C++ code                                            |
 | [DUMA](https://github.com/johnsonjh/duma)                                                                          | Detect Unintended Memory Access, a memory debugger                                 |
 | [Flawfinder](https://dwheeler.com/flawfinder/)                                                                     | Scans C and C++ source code for potential security weaknesses                      |
-| [Funcheck](https://github.com/tmatis/funcheck)                                                                     | A tool for checking function call return protections                               |
 | [GCC Static Analyzer](https://gcc.gnu.org/onlinedocs/gcc/Static-Analyzer-Options.html)                             | Coverage-guided symbolic execution static analyzer for C code                      |
 | [GNU Cppi](https://www.gnu.org/software/cppi/)                                                                     | C preprocessor directive linting, indenting, and regularization                    |
+| [GNU Global](https://www.gnu.org/software/global/)                                                                 | Source code indexing and tagging system                                            |
 | [Oracle Developer Studio](https://www.oracle.com/application-development/developerstudio/)                         | Performance, security, and thread analysis tools for C, C++, and Fortran           |
 | [REUSE](https://api.reuse.software/info/github.com/aremmell/libsir)                                                | Verifies compliance with the [REUSE](https://reuse.software/) licensing guidelines |
 | [Semgrep](https://semgrep.dev)                                                                                     | A fast, open-source, static analysis engine for many languages                     |
@@ -268,8 +268,8 @@ Additional tools used for libsir development and testing include:
 | Tool | Usage |
 |-----:|:------|
 | [CBMC](http://www.cprover.org/cbmc/), [ESBMC](http://esbmc.org/)                                             | Bounded Model Checkers for C and C++ programs                       |
+| [Funcheck](https://github.com/tmatis/funcheck)                                                               | A tool for checking function call return protections                |
 | [Frama-C](https://frama-c.com/)                                                                              | Framework for Modular Analysis of C programs                        |
-| [GNU Global](https://www.gnu.org/software/global/)                                                           | Source code indexing and tagging system                             |
 | [Intel® VTune™ Profiler](https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler.html) | Performance analysis and profiling tools for Intel systems          |
 | [Luke Stackwalker](https://lukestackwalker.sf.net/)                                                          | Sampling C/C++ code profiler for Microsoft Windows                  |
 | [PurifyPlus™](https://www.teamblue.unicomsi.com/products/purifyplus/)                                        | Run-time analysis tools for application reliability and performance |
