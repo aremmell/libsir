@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+# shellcheck disable=SC2003,SC2006,SC2016,SC2064,SC2086,SC2121,SC2248,SC2249,SC2250
 
 scriptversion=2020-11-14.01; # UTC
 
@@ -137,6 +138,7 @@ Email bug reports to bug-automake@gnu.org.
 Automake home page: https://www.gnu.org/software/automake/
 "
 
+# shellcheck disable=SC2320
 while test $# -ne 0; do
   case $1 in
     -c) ;;
@@ -244,6 +246,7 @@ if test -z "$dir_arg"; then
   do_exit='(exit $ret); exit $ret'
   trap "ret=129; $do_exit" 1
   trap "ret=130; $do_exit" 2
+  # shellcheck disable=SC2172
   trap "ret=141; $do_exit" 13
   trap "ret=143; $do_exit" 15
 
@@ -344,8 +347,10 @@ do
         posix_mkdir=false
         # The $RANDOM variable is not portable (e.g., dash).  Use it
         # here however when possible just to lower collision chance.
+        # shellcheck disable=SC3028
         tmpdir=${TMPDIR-/tmp}/ins$RANDOM-$$
 
+        # shellcheck disable=SC2154
         trap '
           ret=$?
           rmdir "$tmpdir/a/b" "$tmpdir/a" "$tmpdir" 2>/dev/null
