@@ -308,23 +308,21 @@ void __sir_selflog(const char* func, const char* file, uint32_t line,
                 bool error = false;
                 bool warn  = false;
                 if (write2 > 0) {
-# if !defined(_AIX)
-#  if !defined(__WIN__)
+# if !defined(__WIN__)
                     if (NULL != strcasestr(buf, "error") ||
                         NULL != strcasestr(buf, "assert")) {
-#  else /* __WIN__ */
+# else /* __WIN__ */
                     if (NULL != StrStrIA(buf, "error") ||
                         NULL != StrStrIA(buf, "assert")) {
-#  endif
+# endif
                         error = true;
-#  if !defined(__WIN__)
+# if !defined(__WIN__)
                     } else if (NULL != strcasestr(buf, "warn")) {
-#  else /* __WIN__ */
+# else /* __WIN__ */
                     } else if (NULL != StrStrIA(buf, "warn")) {
-#  endif
+# endif
                         warn = true;
                     }
-# endif
                     write2 = fprintf(stderr, (error ? BRED("%s%s") "\n" :
                         (warn ? YELLOW("%s%s") "\n" : "%s%s\n")), prefix, buf);
                     _sir_eqland(success, write2 > 0);
