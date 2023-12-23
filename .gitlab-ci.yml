@@ -1402,7 +1402,7 @@ Windows/Arm64 (MSVC, C++, C):
     - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /DSIR_NO_PLUGINS=1
     - rm -f tests.obj > /dev/null 2>&1 || true
     - rm -f example.obj > /dev/null 2>&1 || true
-    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /wd4127 /DSIR_NO_PLUGINS=1
+    - cl.exe tests/*.cc -c -Iinclude /permissive- /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /wd4127 /DSIR_NO_PLUGINS=1
     - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
     - |
       # End of Build ...
@@ -1441,7 +1441,7 @@ Windows/Arm (MSVC, C++, C):
     - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /DSIR_NO_PLUGINS=1
     - rm -f tests.obj > /dev/null 2>&1 || true
     - rm -f example.obj > /dev/null 2>&1 || true
-    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /wd4127 /DSIR_NO_PLUGINS=1
+    - cl.exe tests/*.cc -c -Iinclude /permissive- /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /wd4127 /DSIR_NO_PLUGINS=1
     - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
     - |
       # End of Build ...
@@ -1480,7 +1480,7 @@ Windows/x64 (MSVC, C++, C):
     - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /DSIR_NO_PLUGINS=1
     - rm -f tests.obj > /dev/null 2>&1 || true
     - rm -f example.obj > /dev/null 2>&1 || true
-    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /wd4127 /DSIR_NO_PLUGINS=1
+    - cl.exe tests/*.cc -c -Iinclude /permissive- /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /wd4127 /DSIR_NO_PLUGINS=1
     - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
     - |
       # End of Build ...
@@ -1537,7 +1537,7 @@ Windows/i686 (MSVC, C++, C):
     - cl.exe src/*.c tests/*.c -c -Itests -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /DSIR_NO_PLUGINS=1
     - rm -f tests.obj > /dev/null 2>&1 || true
     - rm -f example.obj > /dev/null 2>&1 || true
-    - cl.exe tests/*.cc -c -Iinclude /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /wd4127 /DSIR_NO_PLUGINS=1
+    - cl.exe tests/*.cc -c -Iinclude /permissive- /EHsc /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c++20 /wd4996 /wd4127 /DSIR_NO_PLUGINS=1
     - link.exe /OUT:build\\bin\\sirtests++.exe *.obj
     - |
       # End of Build ...
@@ -1956,7 +1956,7 @@ MSVC Static Analyzer:
     - cl.exe src/*.c tests/*.c -Iinclude /Oi /O2 /GL /W4 /WX /analyze /std:c11 /experimental:c11atomics /sdl /wd4996 /wd28251 /DSIR_NO_PLUGINS=1
     - rm -f tests.obj > /dev/null 2>&1 || true
     - rm -f example.obj > /dev/null 2>&1 || true
-    - cl.exe tests/*.cc -c -Itests -Iinclude /GL /analyze /EHsc /Ob3 /volatile:iso /Oi /O2 /W4 /std:c++20 /wd4996 /wd28251 /wd4127 /sdl /DSIR_NO_PLUGINS=1
+    - cl.exe tests/*.cc -c -Itests -Iinclude /permissive- /GL /analyze /EHsc /Ob3 /volatile:iso /Oi /O2 /W4 /std:c++20 /wd4996 /wd28251 /wd4127 /sdl /DSIR_NO_PLUGINS=1
     - link.exe /LTCG /OUT:sirtests++.exe *.obj
     - |
       # End of MSVC Analyzer ...
