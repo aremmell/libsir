@@ -9,7 +9,7 @@
 - Add support for logging to the Windows Event Log.
 - Add support for building as WebAssembly/JS with Emscripten.
 - Add support for building via VSCode Tasks.
-- Add `tags` target Makefile.
+- Add `tags` target to Makefile.
 - Add `sirtests++` test rig for testing the C++ wrapper.
 - Add `sir_isinitialized` convenience function.
 - Fix bug preventing rolling of `./`-prefixed log files with no extension.
