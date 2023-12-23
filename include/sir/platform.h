@@ -308,6 +308,10 @@ _set_thread_local_invalid_parameter_handler(
 #  define SIR_IMPL_STRNDUP 1
 # endif
 
+# if defined(_AIX)
+#  define SIR_IMPL_STRCASESTR 1
+# endif
+
 # if defined(__MINGW64__)
 #  define PID_CAST (int)
 # else
