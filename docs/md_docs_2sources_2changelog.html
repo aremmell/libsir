@@ -113,7 +113,52 @@ $(document).ready(function(){initNavTree('md_docs_2sources_2changelog.html','');
   <div class="headertitle"><div class="title">Changelog</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1>2.2.3</h1>
+<div class="textblock"><h1>2.2.4</h1>
+<h2>December 23, 2023</h2>
+<ul>
+<li>Add language bindings for Ch Professional and Python 3.</li>
+<li>No longer squelch repeating messages when sent to different levels.</li>
+<li>Add support for logging to the Windows Event Log.</li>
+<li>Add support for building as WebAssembly/JS with Emscripten.</li>
+<li>Add support for building via VSCode Tasks.</li>
+<li>Add <code>tags</code> target to Makefile.</li>
+<li>Add <code>sirtests++</code> test rig for testing the C++ wrapper.</li>
+<li>Add <code>sir_isinitialized</code> convenience function.</li>
+<li>Fix bug preventing rolling of <code>./</code>-prefixed log files with no extension.</li>
+<li>Add test for rolling <code>./</code>-prefixed log files with no extension.</li>
+<li>Add <code>sir_geterrorinfo</code> function for fine-grained error information.</li>
+<li>Add a helper script to rebuild all Docker CI images.</li>
+<li>Fix potential null pointer dereference in <code>_sir_getchar</code> on Windows.</li>
+<li>Fix compilation on AIX when <code>SIR_SELFLOG</code> is enabled.</li>
+<li>Add <code>_sir_nprocs</code> function to portably query processor count.</li>
+<li>Generate HTML cross-referenced source listing using GNU Global.</li>
+<li>Add in-place string mangling utilities:<ul>
+<li><code>strreplace</code> - substring replacement</li>
+<li><code>strcreplace</code> - counting substring replacement</li>
+<li><code>strremove</code> - substring removal</li>
+<li><code>strsqueeze</code> - whitespace normalization</li>
+<li><code>strredact</code> - substring redaction</li>
+</ul>
+</li>
+<li>Improve test runtime (by reducing test iterations).</li>
+<li>Add support for the Embarcadero Athens (RAD Studio 12, BCC 7.70) compiler.</li>
+<li>Allow overriding keyword for declaring thread local variables (<code>-D_sir_thread_local=</code>).</li>
+<li>Add <code>SIR_NO_SHARED</code> option to disable building or installing shared libraries.</li>
+<li>Add support for the CompCert-C and Chamois-CompCert compilers.</li>
+<li>Stricter REUSE3/SPDX compliance.</li>
+<li>Print thread IDs in hexadecimal format on NetBSD.</li>
+<li>Annotate shell scripts to appease ShellCheck.</li>
+<li>Add internal <code>strcasestr</code> implementation.</li>
+<li>Adjust compiler invocation in GitLab CI configuration.</li>
+<li>Improve CI testing on NetBSD and OpenBSD.</li>
+<li>Fix usage of automatic dependency information generated during the build.</li>
+<li>Update Doxygen to 1.9.8.</li>
+<li>Silence some warnings when building on IBM AIX using IBM XL C/C++.</li>
+<li>Update tooling and tested toolchains in documentation.</li>
+<li>General portability and performance improvements.</li>
+<li>General linter and static analyzer conformance improvements.</li>
+</ul>
+<h1>2.2.3</h1>
 <h2>September 8, 2023</h2>
 <ul>
 <li>Fixed a bug that caused some log file messages to be truncated.</li>

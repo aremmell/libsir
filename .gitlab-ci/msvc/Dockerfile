@@ -7,8 +7,8 @@
 # SPDX-License-Identifier: ISC
 #
 # Copyright (c) 2018-2019 Martin Storsjo
-# Copyright (c) 2018-2023 Ryan M. Lederman <lederman@gmail.com>
-# Copyright (c) 2018-2023 Jeffrey H. Johnson <trnsz@pobox.com>
+# Copyright (c) 2018-2024 Ryan M. Lederman <lederman@gmail.com>
+# Copyright (c) 2018-2024 Jeffrey H. Johnson <trnsz@pobox.com>
 #
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above

@@ -1,5 +1,49 @@
 # Changelog
 
+## 2.2.4
+
+### December 23, 2023
+
+- Add language bindings for Ch Professional and Python 3.
+- No longer squelch repeating messages when sent to different levels.
+- Add support for logging to the Windows Event Log.
+- Add support for building as WebAssembly/JS with Emscripten.
+- Add support for building via VSCode Tasks.
+- Add `tags` target to Makefile.
+- Add `sirtests++` test rig for testing the C++ wrapper.
+- Add `sir_isinitialized` convenience function.
+- Fix bug preventing rolling of `./`-prefixed log files with no extension.
+- Add test for rolling `./`-prefixed log files with no extension.
+- Add `sir_geterrorinfo` function for fine-grained error information.
+- Add a helper script to rebuild all Docker CI images.
+- Fix potential null pointer dereference in `_sir_getchar` on Windows.
+- Fix compilation on AIX when `SIR_SELFLOG` is enabled.
+- Add `_sir_nprocs` function to portably query processor count.
+- Generate HTML cross-referenced source listing using GNU Global.
+- Add in-place string mangling utilities:
+  * `strreplace` - substring replacement
+  * `strcreplace` - counting substring replacement
+  * `strremove` - substring removal
+  * `strsqueeze` - whitespace normalization
+  * `strredact` - substring redaction
+- Improve test runtime (by reducing test iterations).
+- Add support for the Embarcadero Athens (RAD Studio 12, BCC 7.70) compiler.
+- Allow overriding keyword for declaring thread local variables (`-D_sir_thread_local=`).
+- Add `SIR_NO_SHARED` option to disable building or installing shared libraries.
+- Add support for the CompCert-C and Chamois-CompCert compilers.
+- Stricter REUSE3/SPDX compliance.
+- Print thread IDs in hexadecimal format on NetBSD.
+- Annotate shell scripts to appease ShellCheck.
+- Add internal `strcasestr` implementation.
+- Adjust compiler invocation in GitLab CI configuration.
+- Improve CI testing on NetBSD and OpenBSD.
+- Fix usage of automatic dependency information generated during the build.
+- Update Doxygen to 1.9.8.
+- Silence some warnings when building on IBM AIX using IBM XL C/C++.
+- Update tooling and tested toolchains in documentation.
+- General portability and performance improvements.
+- General linter and static analyzer conformance improvements.
+
 ## 2.2.3
 
 ### September 8, 2023

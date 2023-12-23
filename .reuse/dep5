@@ -5,31 +5,31 @@ Source: https://github.com/aremmell/libsir
 
 # Documentation
 Files: docs/*
-Copyright: 2018-2023 Ryan M. Lederman <lederman@gmail.com>
-           2018-2023 Jeffrey H. Johnson <trnsz@pobox.com>
+Copyright: 2018-2024 Ryan M. Lederman <lederman@gmail.com>
+           2018-2024 Jeffrey H. Johnson <trnsz@pobox.com>
 License: MIT
 
 # GitHub templates
 Files: .github/ISSUE_TEMPLATE/*.md
-Copyright: 2018-2023 Ryan M. Lederman <lederman@gmail.com>
+Copyright: 2018-2024 Ryan M. Lederman <lederman@gmail.com>
 License: MIT
 
 # Microsoft Visual Studio files
 Files: msvs/*
-Copyright: 2018-2023 Ryan M. Lederman <lederman@gmail.com>
+Copyright: 2018-2024 Ryan M. Lederman <lederman@gmail.com>
 License: MIT
 
 # VSCode files
 Files: .vscode/*
-Copyright: 2018-2023 Ryan M. Lederman <lederman@gmail.com>
+Copyright: 2018-2024 Ryan M. Lederman <lederman@gmail.com>
 License: MIT
 
 # VSCode workspace
 Files: sir.code-workspace
-Copyright: 2018-2023 Ryan M. Lederman <lederman@gmail.com>
+Copyright: 2018-2024 Ryan M. Lederman <lederman@gmail.com>
 License: MIT
 
 # PlatformIO
 Files: library.json
-Copyright: 2018-2023 Ryan M. Lederman <lederman@gmail.com>
+Copyright: 2018-2024 Ryan M. Lederman <lederman@gmail.com>
 License: MIT
