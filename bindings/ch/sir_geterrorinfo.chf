@@ -1,7 +1,7 @@
 /*
  * sir_geterrorinfo.chf
  *
- * Version: 2.2.4
+ * Version: 2.2.5
  *
  * -----------------------------------------------------------------------------
  *
@@ -33,7 +33,7 @@
 
 void
 sir_geterrorinfo(sir_errorinfo* err) {
-    void*    fptr;
+    void* fptr;
 
     fptr = dlsym(_Chsir_handle, "sir_geterrorinfo_chdl");
     if (fptr != NULL) {
