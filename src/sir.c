@@ -6,7 +6,7 @@
  * The functions and types defined here comprise the entire set intended for
  * use by an implementer of the library-unless modification is desired.
  *
- * @version 2.2.4
+ * @version 2.2.5
  *
  * -----------------------------------------------------------------------------
  *
