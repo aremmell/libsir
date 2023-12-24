@@ -550,7 +550,7 @@ test_cppcheck()
             getconf _NPROCESSORS_ONLN 2> /dev/null || \
             nproc 2> /dev/null || printf '%s\n' 4)" \
       $(find . -name '*.[ch]' -o -name '*.cc' -o -name '*.hh' \
-        | grep -v 'mcmb.c') \
+        | grep -v 'mcmb\.c' | grep -v '\.git/.*') \
           --xml --xml-version=2 2> cppcheck.xml \
         && cppcheck-htmlreport --source-dir="." \
           --report-dir="./cppcheck" \
