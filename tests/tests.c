@@ -1773,11 +1773,9 @@ bool sirtest_filesystem(void) {
         1234
     };
 
-#if defined(__WIN__)
     if (get_wineversion()) {
         bad_fds[3] = 0;
     }
-#endif
 
     for (size_t n = 0; n < _sir_countof(bad_fds); n++) {
         if (_sir_validfd(bad_fds[n])) {
