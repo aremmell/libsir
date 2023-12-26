@@ -504,7 +504,7 @@ test_cppcheck()
       # shellcheck disable=SC2086,SC2046
       cppcheck \
       ${EXTRA_INCLUDES:-I/usr/include} \
-      --enable="all,style,performance" \
+      --enable="all" \
       --inline-suppr \
       --inconclusive \
       --library=posix \
@@ -512,12 +512,9 @@ test_cppcheck()
       --suppress=*:/Applications/* \
       --suppress=badBitmaskCheck:include/sir/defaults.h \
       --suppress=comparisonError:tests/tests.c \
-      --suppress=constVariablePointer \
-      --suppress=cstyleCast \
       --suppress=*:/Library/Developer/* \
       --suppress=missingIncludeSystem \
       --suppress=readdirCalled \
-      --suppress=redundantAssignment \
       --suppress=knownConditionTrueFalse \
       --suppress=unmatchedSuppression \
       --suppress=unreadVariable \
