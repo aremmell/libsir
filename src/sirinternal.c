@@ -695,9 +695,9 @@ bool _sir_dispatch(const sirinit* si, sir_level level, sirbuf* buf) {
     size_t wanted     = 0;
 
     if (_sir_bittest(si->d_stdout.levels, level)) {
-        const char* write = _sir_format(true, si->d_stdout.opts, buf);
-        bool wrote        = _sir_validstrnofail(write) &&
-            _sir_write_stdout(write, buf->output_len);
+        const char* writef = _sir_format(true, si->d_stdout.opts, buf);
+        bool wrote         = _sir_validstrnofail(writef) &&
+            _sir_write_stdout(writef, buf->output_len);
         _sir_eqland(retval, wrote);
 
         if (wrote)
@@ -706,9 +706,9 @@ bool _sir_dispatch(const sirinit* si, sir_level level, sirbuf* buf) {
     }
 
     if (_sir_bittest(si->d_stderr.levels, level)) {
-        const char* write = _sir_format(true, si->d_stderr.opts, buf);
-        bool wrote        = _sir_validstrnofail(write) &&
-            _sir_write_stderr(write, buf->output_len);
+        const char* writef = _sir_format(true, si->d_stderr.opts, buf);
+        bool wrote         = _sir_validstrnofail(writef) &&
+            _sir_write_stderr(writef, buf->output_len);
         _sir_eqland(retval, wrote);
 
         if (wrote)
