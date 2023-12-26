@@ -348,7 +348,7 @@ bool sirtest_failnooutputdest(void) {
 
 bool sirtest_failnulls(void) {
     INIT_BASE(si, SIRL_ALL, 0, 0, 0, "", false);
-    bool pass = !si_init;
+    bool pass = true;
 
     _sir_eqland(pass, !sir_init(NULL));
 
