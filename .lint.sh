@@ -504,8 +504,9 @@ test_cppcheck()
       # shellcheck disable=SC2086,SC2046
       cppcheck \
       ${EXTRA_INCLUDES:-I/usr/include} \
-      --enable="all" \
+      --enable="all,style,performance" \
       --inline-suppr \
+      --inconclusive \
       --library=posix \
       --platform=unix64 \
       --suppress=*:/Applications/* \
@@ -517,12 +518,10 @@ test_cppcheck()
       --suppress=missingIncludeSystem \
       --suppress=readdirCalled \
       --suppress=redundantAssignment \
-      --suppress=shadowFunction \
       --suppress=knownConditionTrueFalse \
       --suppress=unmatchedSuppression \
       --suppress=unreadVariable \
       --suppress=*:/usr/include/* \
-      --suppress=variableScope \
       -DCLOCK_REALTIME=1 \
       -DCLOCK_MONOTONIC=6 \
       -D_POSIX_TIMERS=2 \
