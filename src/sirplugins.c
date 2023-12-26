@@ -454,7 +454,7 @@ bool _sir_plugin_cache_dispatch(const sir_plugincache* spc, sir_level level, sir
         !_sir_validptr(dispatched) || !_sir_validptr(wanted))
         return false;
 
-    const char* write    = NULL;
+    const char* wrote    = NULL;
     sir_options lastopts = 0;
 
     *dispatched = 0;
@@ -471,13 +471,13 @@ bool _sir_plugin_cache_dispatch(const sir_plugincache* spc, sir_level level, sir
 
         (*wanted)++;
 
-        if (!write || spc->plugins[n]->info.opts != lastopts) {
-            write = _sir_format(false, spc->plugins[n]->info.opts, buf);
-            SIR_ASSERT(write);
+        if (!wrote || spc->plugins[n]->info.opts != lastopts) {
+            wrote = _sir_format(false, spc->plugins[n]->info.opts, buf);
+            SIR_ASSERT(wrote);
             lastopts = spc->plugins[n]->info.opts;
         }
 
-        if (write && spc->plugins[n]->iface.write(level, write)) {
+        if (wrote && spc->plugins[n]->iface.write(level, wrote)) {
             (*dispatched)++;
         } else {
             _sir_selflog("error: write to plugin (path: '%s', id: %08"PRIx32")"

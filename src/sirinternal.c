@@ -306,24 +306,28 @@ void _sir_reset_tls(void) {
 
 static
 bool _sir_updatelevels(const char* name, sir_levels* old, const sir_levels* new) {
+    bool retval = false;
     if (*old != *new) {
         _sir_selflog("updating %s levels from %04"PRIx16" to %04"PRIx16, name, *old, *new);
         *old = *new;
+        retval = true;
     } else {
         _sir_selflog("skipped superfluous update of %s levels: %04"PRIx16, name, *old);
     }
-    return true;
+    return retval;
 }
 
 static
 bool _sir_updateopts(const char* name, sir_options* old, const sir_options* new) {
+    bool retval = false;
     if (*old != *new) {
         _sir_selflog("updating %s options from %08"PRIx32" to %08"PRIx32, name, *old, *new);
         *old = *new;
+        retval = true;
     } else {
         _sir_selflog("skipped superfluous update of %s options: %08"PRIx32, name, *old);
     }
-    return true;
+    return retval;
 }
 
 bool _sir_stdoutlevels(sirinit* si, const sir_update_config_data* data) {
@@ -363,43 +367,41 @@ bool _sir_syslogopts(sirinit* si, const sir_update_config_data* data) {
 }
 
 bool _sir_syslogid(sirinit* si, const sir_update_config_data* data) {
+    bool retval    = false;
     bool cur_valid = _sir_validstrnofail(si->d_syslog.identity);
     if (!cur_valid || 0 != strncmp(si->d_syslog.identity, data->sl_identity, SIR_MAX_SYSLOG_ID)) {
         _sir_selflog("updating %s identity from '%s' to '%s'", SIR_DESTNAME_SYSLOG,
             si->d_syslog.identity, data->sl_identity);
         (void)_sir_strncpy(si->d_syslog.identity, SIR_MAX_SYSLOG_ID, data->sl_identity,
             strnlen(data->sl_identity, SIR_MAX_SYSLOG_ID));
+        _sir_setbitshigh(&si->d_syslog._state.mask, SIRSL_UPDATED | SIRSL_IDENTITY);
+        retval = _sir_syslog_updated(si, data);
+        _sir_setbitslow(&si->d_syslog._state.mask, SIRSL_UPDATED | SIRSL_IDENTITY);
     } else {
         _sir_selflog("skipped superfluous update of %s identity: '%s'", SIR_DESTNAME_SYSLOG,
             si->d_syslog.identity);
-        return true;
     }
 
-    _sir_setbitshigh(&si->d_syslog._state.mask, SIRSL_UPDATED | SIRSL_IDENTITY);
-    bool updated = _sir_syslog_updated(si, data);
-    _sir_setbitslow(&si->d_syslog._state.mask, SIRSL_UPDATED | SIRSL_IDENTITY);
-
-    return updated;
+    return retval;
 }
 
 bool _sir_syslogcat(sirinit* si, const sir_update_config_data* data) {
+    bool retval    = false;
     bool cur_valid = _sir_validstrnofail(si->d_syslog.category);
     if (!cur_valid || 0 != strncmp(si->d_syslog.category, data->sl_category, SIR_MAX_SYSLOG_CAT)) {
         _sir_selflog("updating %s category from '%s' to '%s'", SIR_DESTNAME_SYSLOG,
             si->d_syslog.category, data->sl_category);
         (void)_sir_strncpy(si->d_syslog.category, SIR_MAX_SYSLOG_CAT, data->sl_category,
             strnlen(data->sl_category, SIR_MAX_SYSLOG_CAT));
+        _sir_setbitshigh(&si->d_syslog._state.mask, SIRSL_UPDATED | SIRSL_CATEGORY);
+        retval = _sir_syslog_updated(si, data);
+        _sir_setbitslow(&si->d_syslog._state.mask, SIRSL_UPDATED | SIRSL_CATEGORY);
     } else {
         _sir_selflog("skipped superfluous update of %s category: '%s'", SIR_DESTNAME_SYSLOG,
             si->d_syslog.identity);
-        return true;
     }
 
-    _sir_setbitshigh(&si->d_syslog._state.mask, SIRSL_UPDATED | SIRSL_CATEGORY);
-    bool updated = _sir_syslog_updated(si, data);
-    _sir_setbitslow(&si->d_syslog._state.mask, SIRSL_UPDATED | SIRSL_CATEGORY);
-
-    return updated;
+    return retval;
 }
 
 bool _sir_writeinit(const sir_update_config_data* data, sirinit_update update) {
@@ -714,7 +716,7 @@ bool _sir_dispatch(const sirinit* si, sir_level level, sirbuf* buf) {
     }
 #endif
 
-    _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, false);
+    _SIR_LOCK_SECTION(const sirfcache, sfc, SIRMI_FILECACHE, false);
     size_t fdispatched = 0;
     size_t fwanted     = 0;
     _sir_eqland(retval, _sir_fcache_dispatch(sfc, level, buf, &fdispatched, &fwanted));
@@ -724,7 +726,7 @@ bool _sir_dispatch(const sirinit* si, sir_level level, sirbuf* buf) {
     wanted += fwanted;
 
 #if !defined(SIR_NO_PLUGINS)
-    _SIR_LOCK_SECTION(sir_plugincache, spc, SIRMI_PLUGINCACHE, false);
+    _SIR_LOCK_SECTION(const sir_plugincache, spc, SIRMI_PLUGINCACHE, false);
     size_t pdispatched = 0;
     size_t pwanted     = 0;
     _sir_eqland(retval, _sir_plugin_cache_dispatch(spc, level, buf, &pdispatched, &pwanted));
