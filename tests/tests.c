@@ -348,7 +348,7 @@ bool sirtest_failnooutputdest(void) {
 
 bool sirtest_failnulls(void) {
     INIT_BASE(si, SIRL_ALL, 0, 0, 0, "", false);
-    bool pass = si_init;
+    bool pass = !si_init;
 
     _sir_eqland(pass, !sir_init(NULL));
 
@@ -2493,7 +2493,7 @@ bool roll_and_archive(const char* filename, const char* extension) {
     if (pass) {
         static const char* line = "hello, i am some data. nice to meet you.";
         TEST_MSG("writing to %s until SIR_FROLLSIZE has been exceeded...", logfilename);
-        
+
         /* write an (approximately) known quantity until we should have rolled */
         size_t written  = 0;
         size_t linesize = strnlen(line, SIR_MAXMESSAGE);
