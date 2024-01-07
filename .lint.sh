@@ -506,23 +506,19 @@ test_cppcheck()
       ${EXTRA_INCLUDES:-I/usr/include} \
       --enable="all" \
       --inline-suppr \
+      --inconclusive \
       --library=posix \
       --platform=unix64 \
       --suppress=*:/Applications/* \
       --suppress=badBitmaskCheck:include/sir/defaults.h \
       --suppress=comparisonError:tests/tests.c \
-      --suppress=constVariablePointer \
-      --suppress=cstyleCast \
       --suppress=*:/Library/Developer/* \
       --suppress=missingIncludeSystem \
       --suppress=readdirCalled \
-      --suppress=redundantAssignment \
-      --suppress=shadowFunction \
       --suppress=knownConditionTrueFalse \
       --suppress=unmatchedSuppression \
       --suppress=unreadVariable \
       --suppress=*:/usr/include/* \
-      --suppress=variableScope \
       -DCLOCK_REALTIME=1 \
       -DCLOCK_MONOTONIC=6 \
       -D_POSIX_TIMERS=2 \

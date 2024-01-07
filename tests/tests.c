@@ -320,11 +320,10 @@ bool sirtest_failnooutputdest(void) {
     INIT(si, 0, 0, 0, 0);
     bool pass = si_init;
 
-    static const char* logfilename = MAKE_LOG_NAME("nodestination.log");
-
     _sir_eqland(pass, !sir_notice("this goes nowhere!"));
 
     if (pass) {
+        static const char* logfilename = MAKE_LOG_NAME("nodestination.log");
         PRINT_EXPECTED_ERROR();
 
         _sir_eqland(pass, sir_stdoutlevels(SIRL_INFO));
@@ -1397,8 +1396,7 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
         if (set_category)
             (void)_sir_strncpy(si.d_syslog.category, SIR_MAX_SYSLOG_CAT, category, SIR_MAX_SYSLOG_CAT);
 
-        si_init = sir_init(&si); //-V519
-        _sir_eqland(pass, si_init);
+        _sir_eqland(pass, sir_init(&si));
 
         if (do_update)
             _sir_eqland(pass, sir_sysloglevels(SIRL_ALL));
@@ -2443,7 +2441,6 @@ bool roll_and_archive(const char* filename, const char* extension) {
     /* roll size minus 1KiB so we can write until it maxes. */
     static const long deltasize = 1024L;
     const long fillsize         = SIR_FROLLSIZE - deltasize;
-    static const char* line     = "hello, i am some data. nice to meet you.";
 
     char logfilename[SIR_MAXPATH] = {0};
     (void)snprintf(logfilename, SIR_MAXPATH, MAKE_LOG_NAME("%s%s"), filename, extension);
@@ -2492,7 +2489,9 @@ bool roll_and_archive(const char* filename, const char* extension) {
     (void)print_test_error(pass, false);
 
     if (pass) {
+        static const char* line = "hello, i am some data. nice to meet you.";
         TEST_MSG("writing to %s until SIR_FROLLSIZE has been exceeded...", logfilename);
+
         /* write an (approximately) known quantity until we should have rolled */
         size_t written  = 0;
         size_t linesize = strnlen(line, SIR_MAXMESSAGE);

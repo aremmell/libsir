@@ -242,14 +242,14 @@ char* _sir_getappfilename(void) {
 
 #if !defined(__WIN__)
 # if defined(__READLINK_OS__)
-        ssize_t read = _sir_readlink(PROC_SELF, buffer, size - 1);
-        if (-1L != read && read < (ssize_t)size - 1) {
+        ssize_t rdlink = _sir_readlink(PROC_SELF, buffer, size - 1);
+        if (-1L != rdlink && rdlink < (ssize_t)size - 1) {
             resolved = true;
             break;
-        } else if (-1L == read) {
+        } else if (-1L == rdlink) {
             resolved = _sir_handleerr(errno);
             break;
-        } else if (read == (ssize_t)size - 1L) {
+        } else if (rdlink == (ssize_t)size - 1L) {
             /* it is possible that truncation occurred. as a security
              * precaution, fail; someone may have tampered with the link. */
             _sir_selflog("warning: readlink reported truncation; not using result!");
@@ -376,10 +376,10 @@ char* _sir_getappdir(void) {
     }
 
     const char* retval = _sir_getdirname(filename);
-    char* dirname = strndup(retval, strnlen(retval, SIR_MAXPATH));
+    char* dname = strndup(retval, strnlen(retval, SIR_MAXPATH));
 
     _sir_safefree(&filename);
-    return dirname;
+    return dname;
 }
 
 char* _sir_getbasename(char* restrict path) {
