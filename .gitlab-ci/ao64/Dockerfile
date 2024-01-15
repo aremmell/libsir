@@ -35,7 +35,7 @@ WORKDIR /
 
 ARG URL
 
-RUN set -x && dnf --refresh -y upgrade && dnf --nogpgcheck -y install \
+RUN set -x && dnf --refresh -y upgrade && dnf -y install \
       ${URL:-http://192.168.1.187:8088/~jhj/cache/x86_open64-4.5.2.1-1.x86_64.rpm} && \
       printf '%s\n' 'int matherr=0;' 'char* _LIB_VERSION="";' > tmp.c && \
       gcc -o libmcompat.o -c tmp.c && \
