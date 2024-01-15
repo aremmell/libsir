@@ -509,6 +509,7 @@ test_cppcheck()
       --inconclusive \
       --library=posix \
       --platform=unix64 \
+      --suppress=checkersReport \
       --suppress=*:/Applications/* \
       --suppress=badBitmaskCheck:include/sir/defaults.h \
       --suppress=comparisonError:tests/tests.c \
