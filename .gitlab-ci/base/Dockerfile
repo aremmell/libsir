@@ -67,6 +67,7 @@ RUN set -x && \
       doxygen \
       expect \
       fakeroot \
+      file \
       flawfinder \
       fmt \
       fmt-devel \
@@ -137,6 +138,7 @@ RUN set -x && \
       libubsan.i686 \
 && \
   dnf4 -y --allowerasing reinstall compiler-rt && \
+  rpm --import https://rpm.nodesource.com/gpgkey/ns-operations-public.key || true && \
   dnf4 -y --allowerasing install \
     https://rpm.nodesource.com/pub_21.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm && \
   dnf -y --refresh update && \

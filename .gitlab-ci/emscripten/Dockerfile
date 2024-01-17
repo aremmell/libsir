@@ -36,7 +36,7 @@ WORKDIR /
 ARG URL
 
 RUN set -x && \
-    dnf --refresh -y upgrade --nogpgcheck --setopt=install_weak_deps=True && mkdir -p /home/linuxbrew && \
+    dnf --refresh -y upgrade --setopt=install_weak_deps=True && mkdir -p /home/linuxbrew && \
     chown user:user -R /home/linuxbrew && \
     export UNATTENDED=1 && \
     export NONINTERACTIVE=1 && \
