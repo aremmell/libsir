@@ -38,7 +38,7 @@
 
 Unless you are experiencing issues with libsir and want to step through in a debugger, we recommend that you build the Release configuration (x64 or arm64), even when running the test suite.
 
-In the event that you *do* wish to start a debug session, you should first add `SIR_SELFLOG=1` to the Preprocessor Definitions in the libsir project under project properties -> C++ -> Preprocessor. This will cause a ton of additional diagnostic output to be produced. 
+In the event that you *do* wish to start a debug session, you should first add `SIR_SELFLOG=1` to the Preprocessor Definitions in the libsir project under project properties -> C++ -> Preprocessor. This will cause a ton of additional diagnostic output to be produced.
 
 Note that if you start the test suite with Ctrl+F5, it will scroll by very quickly and exit unless you pass the `--wait` argument on the command line (this is already set for Debug configurations). This can be done through project settings under Debugging -> Command Arguments. Alternatively, you can just open your own console window, change directories to the root of this repository, and run `build/bin/sirtests.exe`.
 
