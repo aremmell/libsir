@@ -39,45 +39,23 @@ RUN set -x && \
     dnf --refresh -y upgrade --setopt=install_weak_deps=True && cd /tmp && \
     git clone -v https://git.sr.ht/\~jprotopopov/kefir && \
     cd kefir && \
-    gmake clean && \
-    gmake all -j "$(nproc 2> /dev/null || echo 1)" \
-      CC="musl-gcc -fPIC -fpie" \
-      OPT="-O3 -march=x86-64 -DNDEBUG -fPIC -fpie" \
-      DBG="" \
-      USE_SHARED="no" \
-      USE_STATIC="yes" && \
-    env \
-      LC_ALL="C.UTF-8" \
-        make test all -j "$(nproc 2> /dev/null || echo 1)" \
-          OPT="-O3 -fPIC -fpie" \
-          USE_SHARED="no" \
-          USE_STATIC="yes" && \
-    gmake clean && \
-    gmake all  -j "$(nproc 2> /dev/null || echo 1)" \
-      CC="musl-gcc -fPIC -fpie" \
-      OPT="-O3 -march=x86-64 -DNDEBUG -fPIC -fpie" \
-      DBG="" \
-      USE_SHARED="no" \
-      USE_STATIC="yes" && \
     mkdir -p /opt/kefir && \
+    gmake clean && \
+    env LC_ALL="C.UTF-8" gmake all test -j "$(nproc 2> /dev/null || echo 1)" \
+      CC="musl-gcc" \
+      EXTRA_CFLAGS="-march=x86-64 -DNDEBUG -fPIC -fpie" \
+      PROFILE="release" \
+      USE_SHARED="no" \
+      USE_STATIC="yes" && \
     gmake install \
       DESTDIR="/" && \
     mv /opt/kefir /opt/kefir-musl && \
     mkdir -p /opt/kefir && \
     gmake clean && \
-    gmake all -j "$(nproc 2> /dev/null || echo 1)" \
-      CC="gcc -fPIC" \
-      OPT="-O3 -march=x86-64 -DNDEBUG -fPIC" \
-      DBG="" && \
-    env \
-      LC_ALL="C.UTF-8" \
-        make test all -j "$(nproc 2> /dev/null || echo 1)" \
-          OPT="-O3 -fPIC" && \
-    gmake clean && \
-    gmake all  -j "$(nproc 2> /dev/null || echo 1)" \
-      CC="gcc -fPIC" \
-      OPT="-O3 -march=x86-64 -DNDEBUG -fPIC" \
-      DBG="" && \
+    env LC_ALL="C.UTF-8" gmake all test -j "$(nproc 2> /dev/null || echo 1)" \
+      CC="gcc" \
+      EXTRA_CFLAGS="-march=x86-64 -DNDEBUG -fPIC" \
+      PROFILE="release" && \
     gmake install \
       DESTDIR="/" && \
     cd && \
