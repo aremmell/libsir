@@ -40,6 +40,8 @@ RUN set -x && \
     chown user:user -R /home/linuxbrew && \
     export UNATTENDED=1 && \
     export NONINTERACTIVE=1 && \
+    export HOMEBREW_NO_ENV_HINTS=1 && \
+    export HOMEBREW_NO_INSTALL_CLEANUP=1 && \
     cd /tmp && \
     wget https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh && \
     sudo -s -u user bash ./install.sh && \
@@ -48,7 +50,7 @@ RUN set -x && \
     sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; brew update -v )" && \
     sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; brew upgrade -v )" && \
     sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; brew install -v emscripten )" && \
-    sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; brew cleanup -s --prune=all )" && \
+    sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; brew cleanup -s --prune=all || true)" && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \

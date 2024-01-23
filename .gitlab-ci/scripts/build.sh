@@ -63,7 +63,7 @@ TMPLOG="$(mktemp 2> /dev/null)" ||
 
 # shellcheck disable=SC2312
 stdbuf -o L \
-    docker build \
+    env DOCKER_BUILDKIT=1 docker build \
       --ulimit nofile="$(env ulimit -n)":"$(env ulimit -n)" --no-cache --squash -t \
         registry.gitlab.com/libsir/libsir/"$(basename "$(pwd -P)")":latest . "${@}" 2>&1 | \
     stdbuf -o L tee "${TMPLOG:?}"
