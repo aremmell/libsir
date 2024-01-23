@@ -33,7 +33,7 @@ USER 0
 
 WORKDIR /
 
-RUN set -x && dnf --refresh -y upgrade && \
+RUN set -x && \
     cd /tmp && \
     wget -vS \
       https://github.com/AmanoTeam/obggcc/releases/download/0.5/x86_64-unknown-linux-gnu.tar.xz && \

@@ -36,13 +36,14 @@ WORKDIR /
 ARG URL
 
 RUN set -x && \
-    dnf --refresh -y upgrade --setopt=install_weak_deps=True && mkdir -p /home/linuxbrew && \
+    mkdir -p /home/linuxbrew && \
     chown user:user -R /home/linuxbrew && \
     export UNATTENDED=1 && \
     export NONINTERACTIVE=1 && \
     export HOMEBREW_NO_ENV_HINTS=1 && \
     export HOMEBREW_NO_INSTALL_CLEANUP=1 && \
     cd /tmp && \
+    dnf -y --best --allowerasing nodejs || true && \
     wget https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh && \
     sudo -s -u user bash ./install.sh && \
     rm -f ./install.sh && \

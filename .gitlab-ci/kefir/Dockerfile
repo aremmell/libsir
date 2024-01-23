@@ -36,7 +36,7 @@ WORKDIR /
 ARG URL
 
 RUN set -x && \
-    dnf --refresh -y upgrade --setopt=install_weak_deps=True && cd /tmp && \
+    cd /tmp && \
     git clone -v https://git.sr.ht/\~jprotopopov/kefir && \
     cd kefir && \
     mkdir -p /opt/kefir && \

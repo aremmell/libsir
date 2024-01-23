@@ -8,7 +8,6 @@ USER 0
 WORKDIR /
 
 RUN set -x && \
-    dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
     dnf -y install opam --setopt=install_weak_deps=True && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
