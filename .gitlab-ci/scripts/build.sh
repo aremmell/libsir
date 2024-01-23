@@ -45,7 +45,8 @@ command -v docker > /dev/null 2>&1 ||
   }
 
 printf '%s\n' "Testing docker ..."
-docker run --rm -it "hello-world:latest" > /dev/null ||
+docker run --ulimit nofile="$(env ulimit -n)":"$(env ulimit -n)" --rm -it \
+  "hello-world:latest" > /dev/null ||
   {
     printf '%s\n' "ERROR: Docker cannot run containers."
     exit 1
@@ -63,7 +64,7 @@ TMPLOG="$(mktemp 2> /dev/null)" ||
 # shellcheck disable=SC2312
 stdbuf -o L \
     docker build \
-      --no-cache --squash -t \
+      --ulimit nofile="$(env ulimit -n)":"$(env ulimit -n)" --no-cache --squash -t \
         registry.gitlab.com/libsir/libsir/"$(basename "$(pwd -P)")":latest . "${@}" 2>&1 | \
     stdbuf -o L tee "${TMPLOG:?}"
 
