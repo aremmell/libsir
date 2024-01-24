@@ -291,6 +291,7 @@ test_extra()
         ' && ${MAKE:-make} clean &&
         env CC="${CCACHE:-env} clang"
             CXX="${CCACHE:-env} clang++"
+            CXXFLAGS="-DSIR_NO_STD_FORMAT=1"
             CFLAGS="-DSIR_LINT=1
                     -Werror
                     -Wassign-enum
@@ -455,6 +456,7 @@ test_scanbuild()
         ' && ${MAKE:-make} clean && ${MAKE:-make} mcmb &&
          env CC="${CCACHE:-env} clang"
              CXX="${CCACHE:-env} clang++"
+             CXXFLAGS="-DSIR_NO_STD_FORMAT=1"
            scan-build -no-failure-reports
                --status-bugs
                -enable-checker optin.portability.UnixAPI
