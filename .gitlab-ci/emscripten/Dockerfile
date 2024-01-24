@@ -43,7 +43,7 @@ RUN set -x && \
     export HOMEBREW_NO_ENV_HINTS=1 && \
     export HOMEBREW_NO_INSTALL_CLEANUP=1 && \
     cd /tmp && \
-    dnf -y --best --allowerasing nodejs || true && \
+    dnf -y --best --allowerasing --skip-broken upgrade nodejs || true && \
     wget https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh && \
     sudo -s -u user bash ./install.sh && \
     rm -f ./install.sh && \
@@ -56,7 +56,6 @@ RUN set -x && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
     rm -rf /var/log/dnf* && \
-    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true) && \
     cd
 
 USER 10000

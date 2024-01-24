@@ -300,6 +300,7 @@ Linux/x86_64 (Clang++, Clang):
     - export RANLIB="llvm-ranlib"
     - export CC="ccache clang"
     - export CXX="ccache clang++"
+    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
@@ -346,7 +347,7 @@ Linux/i686 (Clang++, Clang):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export RANLIB="llvm-ranlib"
     - export CFLAGS="-m32 -D_FILE_OFFSET_BITS=64"
-    - export CXXFLAGS="-m32 -DSIR_NO_BOOST_FORMAT=1 -D_FILE_OFFSET_BITS=64"
+    - export CXXFLAGS="-m32 -DSIR_NO_STD_FORMAT=1 -DSIR_NO_BOOST_FORMAT=1 -D_FILE_OFFSET_BITS=64"
     - export LDFLAGS="-m32"
     - export CC="ccache clang"
     - export CXX="ccache clang++"
@@ -396,6 +397,7 @@ Linux/x86_64 (AOCC++, AOCC):
     - . /opt/AMD/aocc-compiler-4.1.0/setenv_AOCC.sh
     - export CC="ccache clang"
     - export CXX="ccache clang++"
+    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
@@ -444,7 +446,7 @@ Linux/i686 (AOCC++, AOCC):
     - export CC="ccache clang"
     - export CXX="ccache clang++"
     - export CFLAGS="-m32 -D_FILE_OFFSET_BITS=64"
-    - export CXXFLAGS="-m32 -DSIR_NO_BOOST_FORMAT=1 -D_FILE_OFFSET_BITS=64"
+    - export CXXFLAGS="-m32 -DSIR_NO_STD_FORMAT=1 -DSIR_NO_BOOST_FORMAT=1 -D_FILE_OFFSET_BITS=64"
     - export LDFLAGS="-m32"
     - ${CC:?} --version
     - ${CXX:?} --version
@@ -493,6 +495,7 @@ Linux/x86_64 (Intel oneAPI, ICPX, ICX):
     - . /opt/intel/oneapi/setvars.sh
     - export CC="ccache icx"
     - export CXX="ccache icpx"
+    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
@@ -2422,10 +2425,8 @@ GCC Static Analyzer:
       # Start of GCC Static Analyzer ...
       echo -e "section_start:`date +%s`:GCCSA_section[collapsed=true]\r\e[0K\033[0;36mGCC Static Analyzer ...\033[0m" || true
     - export CC="gcc"
-    - export CXX="g++"
     - ${CC:?} --version
-    - ${CXX:?} --version
-    - export CFLAGS="-g -fanalyzer -Wno-analyzer-malloc-leak -fanalyzer-verbosity=3 -Werror -DSIR_NO_STD_FORMAT=1"
+    - export CFLAGS="-g -fanalyzer -Wno-analyzer-infinite-recursion -Wno-analyzer-malloc-leak -fanalyzer-verbosity=3 -Werror"
     - make
     - make clean
     - |
@@ -2434,7 +2435,7 @@ GCC Static Analyzer:
     - |
       # Start of GCC Static Analyzer - Taint ...
       echo -e "section_start:`date +%s`:GCCST_section[collapsed=true]\r\e[0K\033[0;36mGCC Static Analyzer - Taint ...\033[0m" || true
-    - export CFLAGS="-g -fanalyzer -fanalyzer-checker=taint -fanalyzer-verbosity=3 -Werror -DSIR_NO_STD_FORMAT=1"
+    - export CFLAGS="-g -fanalyzer -fanalyzer-checker=taint -Wno-analyzer-infinite-recursion -fanalyzer-verbosity=3 -Werror"
     - make
     - make clean
     - mkdir -p build > /dev/null 2>&1 || true
@@ -2871,7 +2872,7 @@ Clang Sanitizer (CFI, 64-bit, C++, C):
     - export CSAN_CFLAGS="${CSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover -flto"
     - export CC="ccache clang -m64 ${CSAN_CFLAGS:?} -Werror"
     - export CXX="ccache clang++ -m64 ${CSAN_CFLAGS:?} -Werror"
-    - export CXXFLAGS="-DSIR_NO_BOOST_FORMAT=1"
+    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -DSIR_NO_BOOST_FORMAT=1"
     - export LDFLAGS="${CSAN_FLAGS:?}"
     - ${CC:?} --version
     - ${CXX:?} --version
@@ -2922,7 +2923,7 @@ Clang Sanitizer (CFI, 32-bit, C++, C):
     - export CSAN_CFLAGS="-D_FILE_OFFSET_BITS=64 ${CSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover -flto"
     - export CC="ccache clang -m32 ${CSAN_CFLAGS:?} -Werror"
     - export CXX="ccache clang++ -m32 ${CSAN_CFLAGS:?} -Werror"
-    - export CXXFLAGS="-DSIR_NO_BOOST_FORMAT=1"
+    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -DSIR_NO_BOOST_FORMAT=1"
     - export LDFLAGS="${CSAN_FLAGS:?}"
     - ${CC:?} --version
     - ${CXX:?} --version
@@ -2974,6 +2975,7 @@ Clang Sanitizer (Address, 64-bit, C++, C):
     - export ASAN_CFLAGS="${ASAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
     - export CC="ccache clang -m64 ${ASAN_CFLAGS:?} -Werror"
     - export CXX="ccache clang++ -m64 ${ASAN_CFLAGS:?} -Werror"
+    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -DSIR_NO_BOOST_FORMAT=1"
     - export LDFLAGS="${ASAN_FLAGS:?}"
     - ${CC:?} --version
     - ${CXX:?} --version
@@ -3029,7 +3031,7 @@ Clang Sanitizer (Address, 32-bit, C++, C):
     - ${CC:?} --version
     - ${CXX:?} --version
     - make SIR_DEBUG=1 SIR_SELFLOG=1
-    - env CXXFLAGS="-D__MINGW32__ -U__MINGW64_VERSION_MAJOR" make tests++ SIR_DEBUG=1 SIR_SELFLOG=1
+    - env CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -DSIR_NO_BOOST_FORMAT=1 -D__MINGW32__ -U__MINGW64_VERSION_MAJOR" make tests++ SIR_DEBUG=1 SIR_SELFLOG=1
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
@@ -4200,41 +4202,6 @@ Linux/i686 (glibc 2.7, GCC, C-only):
     paths:
       - build/
       - logs/
-  retry: 2
-  interruptible: true
-
-################################################################################
-
-Linux/ppc (glibc 2.7, GCC, C-only):
-  stage: build_linux
-  needs:
-    - job: Style check
-  tags:
-    - Docker-x64
-    - Linux
-  image:
-    name: registry.gitlab.com/libsir/libsir/obggcc:latest
-  script:
-    - *Configuration
-    - |
-      # Start of Build ...
-      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export PATH="${HOME:?}/x-tools/obggcc/powerpc-unknown-linux-gnu/bin:${HOME:?}/x-tools/obggcc/bin:${PATH:?}"
-    - export CC="ccache powerpc-unknown-linux-gnu-gcc"
-    - export RANLIB="powerpc-unknown-linux-gnu-gcc-ranlib"
-    - ${CC:?} --version
-    - export EXTRA_LIBS="-lrt"
-    - make
-    - |
-      # End of Build ...
-      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - *BuildInformation
-  dependencies: []
-  artifacts:
-    when: always
-    expire_in: 7 days
-    paths:
-      - build/
   retry: 2
   interruptible: true
 

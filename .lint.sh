@@ -281,6 +281,7 @@ test_extra()
       rm -f ./.extra.sh
       env CC="${CCACHE:-env} clang" \
          CXX="${CCACHE:-env} clang++" \
+         CXXFLAGS="-DSIR_NO_STD_FORMAT=1" \
         "${MAKE:-make}" all tests++ \
         -j "${CPUS:-1}" \
         mcmb; ret="${?}"
@@ -291,6 +292,7 @@ test_extra()
         ' && ${MAKE:-make} clean &&
         env CC="${CCACHE:-env} clang"
             CXX="${CCACHE:-env} clang++"
+            CXXFLAGS="-DSIR_NO_STD_FORMAT=1"
             CFLAGS="-DSIR_LINT=1
                     -Werror
                     -Wassign-enum
@@ -445,6 +447,7 @@ test_scanbuild()
       test "${ret}" -ne 0 && exit 99
       env CC="${CCACHE:-env} clang" \
           CXX="${CCACHE:-env} clang++" \
+          CXXFLAGS="-DSIR_NO_STD_FORMAT=1" \
           "${MAKE:-make}" \
         -j "${CPUS:-1}" all tests++ \
         mcmb; ret="${?}"
@@ -455,6 +458,7 @@ test_scanbuild()
         ' && ${MAKE:-make} clean && ${MAKE:-make} mcmb &&
          env CC="${CCACHE:-env} clang"
              CXX="${CCACHE:-env} clang++"
+             CXXFLAGS="-DSIR_NO_STD_FORMAT=1"
            scan-build -no-failure-reports
                --status-bugs
                -enable-checker optin.portability.UnixAPI
@@ -593,16 +597,16 @@ test_pvs()
 test_pvs_real()
 { (
   export P_FLAGS="${PVS_FLAGS:-}"
-  command -v clang++ > /dev/null 2>&1 \
+  command -v c++ > /dev/null 2>&1 \
     || {
       printf '%s\n' \
-        "NOTICE: clang++ not found, skipping PVS-Studio checks."
+        "NOTICE: c++ not found, skipping PVS-Studio checks."
       exit 1
     }
-  command -v clang > /dev/null 2>&1 \
+  command -v cc > /dev/null 2>&1 \
     || {
       printf '%s\n' \
-        "NOTICE: clang not found, skipping PVS-Studio checks."
+        "NOTICE: cc not found, skipping PVS-Studio checks."
       exit 1
     }
   command -v bear > /dev/null 2>&1 \
@@ -632,8 +636,8 @@ test_pvs_real()
       ${MAKE:-make} mcmb; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       # shellcheck disable=SC2086
-      env CXX="${CCACHE:-env} clang++" \
-           CC="${CCACHE:-env} clang" \
+      env CXX="${CCACHE:-env} c++" \
+           CC="${CCACHE:-env} cc" \
               bear -- "${MAKE:-make}" all tests++ ${P_FLAGS:-} \
                  -j "${CPUS:-1}"; ret="${?}"
       test "${ret}" -ne 0 && exit 99
@@ -666,23 +670,23 @@ test_valgrind()
         "NOTICE: valgrind not found, skipping checks."
       exit 1
     }
-  command -v clang++ > /dev/null 2>&1 \
+  command -v c++ > /dev/null 2>&1 \
     || {
       printf '%s\n' \
-        "NOTICE: clang++ not found, skipping valgrind checks."
+        "NOTICE: c++ not found, skipping valgrind checks."
       exit 1
     }
-  command -v clang > /dev/null 2>&1 \
+  command -v cc > /dev/null 2>&1 \
     || {
       printf '%s\n' \
-        "NOTICE: clang not found, skipping valgrind checks."
+        "NOTICE: cc not found, skipping valgrind checks."
       exit 1
     }
       printf '%s\n' "running valgrind checks ..."
       ${MAKE:-make} clean; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      env CXX="${CCACHE:-env} clang++" \
-           CC="${CCACHE:-env} clang" \
+      env CXX="${CCACHE:-env} c++" \
+           CC="${CCACHE:-env} cc" \
                "${MAKE:-make}" all tests++ \
                    -j "${CPUS:-1}" \
                    SIR_DEBUG=1 \
