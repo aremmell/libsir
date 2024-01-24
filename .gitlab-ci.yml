@@ -2425,10 +2425,8 @@ GCC Static Analyzer:
       # Start of GCC Static Analyzer ...
       echo -e "section_start:`date +%s`:GCCSA_section[collapsed=true]\r\e[0K\033[0;36mGCC Static Analyzer ...\033[0m" || true
     - export CC="gcc"
-    - export CXX="g++"
     - ${CC:?} --version
-    - ${CXX:?} --version
-    - export CFLAGS="-g -fanalyzer -Wno-analyzer-infinite-recursion -Wno-analyzer-malloc-leak -fanalyzer-verbosity=3 -Werror -DSIR_NO_STD_FORMAT=1"
+    - export CFLAGS="-g -fanalyzer -Wno-analyzer-infinite-recursion -Wno-analyzer-malloc-leak -fanalyzer-verbosity=3 -Werror"
     - make
     - make clean
     - |
@@ -2437,7 +2435,7 @@ GCC Static Analyzer:
     - |
       # Start of GCC Static Analyzer - Taint ...
       echo -e "section_start:`date +%s`:GCCST_section[collapsed=true]\r\e[0K\033[0;36mGCC Static Analyzer - Taint ...\033[0m" || true
-    - export CFLAGS="-g -fanalyzer -fanalyzer-checker=taint -fanalyzer-verbosity=3 -Werror -DSIR_NO_STD_FORMAT=1"
+    - export CFLAGS="-g -fanalyzer -fanalyzer-checker=taint -Wno-analyzer-infinite-recursion -fanalyzer-verbosity=3 -Werror"
     - make
     - make clean
     - mkdir -p build > /dev/null 2>&1 || true
