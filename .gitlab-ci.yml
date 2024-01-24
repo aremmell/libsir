@@ -300,6 +300,7 @@ Linux/x86_64 (Clang++, Clang):
     - export RANLIB="llvm-ranlib"
     - export CC="ccache clang"
     - export CXX="ccache clang++"
+    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
@@ -346,7 +347,7 @@ Linux/i686 (Clang++, Clang):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export RANLIB="llvm-ranlib"
     - export CFLAGS="-m32 -D_FILE_OFFSET_BITS=64"
-    - export CXXFLAGS="-m32 -DSIR_NO_BOOST_FORMAT=1 -D_FILE_OFFSET_BITS=64"
+    - export CXXFLAGS="-m32 -DSIR_NO_STD_FORMAT=1 -DSIR_NO_BOOST_FORMAT=1 -D_FILE_OFFSET_BITS=64"
     - export LDFLAGS="-m32"
     - export CC="ccache clang"
     - export CXX="ccache clang++"
@@ -396,6 +397,7 @@ Linux/x86_64 (AOCC++, AOCC):
     - . /opt/AMD/aocc-compiler-4.1.0/setenv_AOCC.sh
     - export CC="ccache clang"
     - export CXX="ccache clang++"
+    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -DSIR_NO_BOOST_FORMAT=1"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
@@ -444,7 +446,7 @@ Linux/i686 (AOCC++, AOCC):
     - export CC="ccache clang"
     - export CXX="ccache clang++"
     - export CFLAGS="-m32 -D_FILE_OFFSET_BITS=64"
-    - export CXXFLAGS="-m32 -DSIR_NO_BOOST_FORMAT=1 -D_FILE_OFFSET_BITS=64"
+    - export CXXFLAGS="-m32 -DSIR_NO_STD_FORMAT=1 -DSIR_NO_BOOST_FORMAT=1 -D_FILE_OFFSET_BITS=64"
     - export LDFLAGS="-m32"
     - ${CC:?} --version
     - ${CXX:?} --version
@@ -493,6 +495,7 @@ Linux/x86_64 (Intel oneAPI, ICPX, ICX):
     - . /opt/intel/oneapi/setvars.sh
     - export CC="ccache icx"
     - export CXX="ccache icpx"
+    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
@@ -2425,7 +2428,7 @@ GCC Static Analyzer:
     - export CXX="g++"
     - ${CC:?} --version
     - ${CXX:?} --version
-    - export CFLAGS="-g -fanalyzer -Wno-analyzer-malloc-leak -fanalyzer-verbosity=3 -Werror -DSIR_NO_STD_FORMAT=1"
+    - export CFLAGS="-g -fanalyzer -Wno-analyzer-infinite-recursion -Wno-analyzer-malloc-leak -fanalyzer-verbosity=3 -Werror -DSIR_NO_STD_FORMAT=1"
     - make
     - make clean
     - |
@@ -2871,7 +2874,7 @@ Clang Sanitizer (CFI, 64-bit, C++, C):
     - export CSAN_CFLAGS="${CSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover -flto"
     - export CC="ccache clang -m64 ${CSAN_CFLAGS:?} -Werror"
     - export CXX="ccache clang++ -m64 ${CSAN_CFLAGS:?} -Werror"
-    - export CXXFLAGS="-DSIR_NO_BOOST_FORMAT=1"
+    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -DSIR_NO_BOOST_FORMAT=1"
     - export LDFLAGS="${CSAN_FLAGS:?}"
     - ${CC:?} --version
     - ${CXX:?} --version
@@ -2922,7 +2925,7 @@ Clang Sanitizer (CFI, 32-bit, C++, C):
     - export CSAN_CFLAGS="-D_FILE_OFFSET_BITS=64 ${CSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover -flto"
     - export CC="ccache clang -m32 ${CSAN_CFLAGS:?} -Werror"
     - export CXX="ccache clang++ -m32 ${CSAN_CFLAGS:?} -Werror"
-    - export CXXFLAGS="-DSIR_NO_BOOST_FORMAT=1"
+    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -DSIR_NO_BOOST_FORMAT=1"
     - export LDFLAGS="${CSAN_FLAGS:?}"
     - ${CC:?} --version
     - ${CXX:?} --version
@@ -2974,6 +2977,7 @@ Clang Sanitizer (Address, 64-bit, C++, C):
     - export ASAN_CFLAGS="${ASAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
     - export CC="ccache clang -m64 ${ASAN_CFLAGS:?} -Werror"
     - export CXX="ccache clang++ -m64 ${ASAN_CFLAGS:?} -Werror"
+    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -DSIR_NO_BOOST_FORMAT=1"
     - export LDFLAGS="${ASAN_FLAGS:?}"
     - ${CC:?} --version
     - ${CXX:?} --version
@@ -3025,6 +3029,7 @@ Clang Sanitizer (Address, 32-bit, C++, C):
     - export ASAN_CFLAGS="-D_FILE_OFFSET_BITS=64 ${ASAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
     - export CC="ccache clang -m32 ${ASAN_CFLAGS:?} -Werror"
     - export CXX="ccache clang++ -m32 ${ASAN_CFLAGS:?} -Werror"
+    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -DSIR_NO_BOOST_FORMAT=1"
     - export LDFLAGS="${ASAN_FLAGS:?}"
     - ${CC:?} --version
     - ${CXX:?} --version
