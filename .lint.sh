@@ -666,23 +666,23 @@ test_valgrind()
         "NOTICE: valgrind not found, skipping checks."
       exit 1
     }
-  command -v clang++ > /dev/null 2>&1 \
+  command -v c++ > /dev/null 2>&1 \
     || {
       printf '%s\n' \
-        "NOTICE: clang++ not found, skipping valgrind checks."
+        "NOTICE: c++ not found, skipping valgrind checks."
       exit 1
     }
-  command -v clang > /dev/null 2>&1 \
+  command -v cc > /dev/null 2>&1 \
     || {
       printf '%s\n' \
-        "NOTICE: clang not found, skipping valgrind checks."
+        "NOTICE: cc not found, skipping valgrind checks."
       exit 1
     }
       printf '%s\n' "running valgrind checks ..."
       ${MAKE:-make} clean; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      env CXX="${CCACHE:-env} clang++" \
-           CC="${CCACHE:-env} clang" \
+      env CXX="${CCACHE:-env} c++" \
+           CC="${CCACHE:-env} cc" \
                "${MAKE:-make}" all tests++ \
                    -j "${CPUS:-1}" \
                    SIR_DEBUG=1 \
