@@ -593,16 +593,16 @@ test_pvs()
 test_pvs_real()
 { (
   export P_FLAGS="${PVS_FLAGS:-}"
-  command -v clang++ > /dev/null 2>&1 \
+  command -v c++ > /dev/null 2>&1 \
     || {
       printf '%s\n' \
-        "NOTICE: clang++ not found, skipping PVS-Studio checks."
+        "NOTICE: c++ not found, skipping PVS-Studio checks."
       exit 1
     }
-  command -v clang > /dev/null 2>&1 \
+  command -v cc > /dev/null 2>&1 \
     || {
       printf '%s\n' \
-        "NOTICE: clang not found, skipping PVS-Studio checks."
+        "NOTICE: cc not found, skipping PVS-Studio checks."
       exit 1
     }
   command -v bear > /dev/null 2>&1 \
@@ -632,8 +632,8 @@ test_pvs_real()
       ${MAKE:-make} mcmb; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       # shellcheck disable=SC2086
-      env CXX="${CCACHE:-env} clang++" \
-           CC="${CCACHE:-env} clang" \
+      env CXX="${CCACHE:-env} c++" \
+           CC="${CCACHE:-env} cc" \
               bear -- "${MAKE:-make}" all tests++ ${P_FLAGS:-} \
                  -j "${CPUS:-1}"; ret="${?}"
       test "${ret}" -ne 0 && exit 99
