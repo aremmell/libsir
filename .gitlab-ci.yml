@@ -397,7 +397,7 @@ Linux/x86_64 (AOCC++, AOCC):
     - . /opt/AMD/aocc-compiler-4.1.0/setenv_AOCC.sh
     - export CC="ccache clang"
     - export CXX="ccache clang++"
-    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -DSIR_NO_BOOST_FORMAT=1"
+    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
