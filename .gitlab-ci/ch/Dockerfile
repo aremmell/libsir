@@ -36,7 +36,7 @@ WORKDIR /
 ARG URL1
 ARG URL2
 
-RUN set -x && dnf --refresh -y upgrade && \
+RUN set -x && \
     dnf install -y ncurses-compat-libs libxcrypt-compat xdelta moreutils && \
     cd /tmp && \
     curl -fsSL ${URL1:-http://192.168.1.187:8088/~jhj/cache/chprofessional-8.5.linux64-4.18.0.intel.tar.gz} | \

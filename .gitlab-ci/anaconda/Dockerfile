@@ -35,7 +35,7 @@ WORKDIR /
 
 ARG URL
 
-RUN set -x && dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
+RUN set -x && \
     cd /tmp && \
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
     chmod a+x Miniconda3-latest-Linux-x86_64.sh && \

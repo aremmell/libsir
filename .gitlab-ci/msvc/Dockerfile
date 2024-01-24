@@ -28,7 +28,7 @@ FROM registry.gitlab.com/libsir/libsir/base:latest
 
 USER 0
 
-RUN set -x && dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
+RUN set -x && \
     dnf --refresh -y install --setopt=install_weak_deps=True \
         msitools \
         cabextract \
