@@ -281,6 +281,7 @@ test_extra()
       rm -f ./.extra.sh
       env CC="${CCACHE:-env} clang" \
          CXX="${CCACHE:-env} clang++" \
+         CXXFLAGS="-DSIR_NO_STD_FORMAT=1" \
         "${MAKE:-make}" all tests++ \
         -j "${CPUS:-1}" \
         mcmb; ret="${?}"
@@ -446,6 +447,7 @@ test_scanbuild()
       test "${ret}" -ne 0 && exit 99
       env CC="${CCACHE:-env} clang" \
           CXX="${CCACHE:-env} clang++" \
+          CXXFLAGS="-DSIR_NO_STD_FORMAT=1" \
           "${MAKE:-make}" \
         -j "${CPUS:-1}" all tests++ \
         mcmb; ret="${?}"

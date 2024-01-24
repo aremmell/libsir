@@ -3027,12 +3027,11 @@ Clang Sanitizer (Address, 32-bit, C++, C):
     - export ASAN_CFLAGS="-D_FILE_OFFSET_BITS=64 ${ASAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
     - export CC="ccache clang -m32 ${ASAN_CFLAGS:?} -Werror"
     - export CXX="ccache clang++ -m32 ${ASAN_CFLAGS:?} -Werror"
-    - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -DSIR_NO_BOOST_FORMAT=1"
     - export LDFLAGS="${ASAN_FLAGS:?}"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make SIR_DEBUG=1 SIR_SELFLOG=1
-    - env CXXFLAGS="-D__MINGW32__ -U__MINGW64_VERSION_MAJOR" make tests++ SIR_DEBUG=1 SIR_SELFLOG=1
+    - env CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -DSIR_NO_BOOST_FORMAT=1 -D__MINGW32__ -U__MINGW64_VERSION_MAJOR" make tests++ SIR_DEBUG=1 SIR_SELFLOG=1
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build32_section\r\e[0K" || true
