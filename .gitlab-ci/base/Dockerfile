@@ -39,11 +39,17 @@ RUN set -x && \
   (sed -i 's/tsflags=nodocs//' /etc/dnf/dnf.conf || true) && \
   dnf -y --refresh update && \
   dnf -y install dnf-plugins-core dnf-utils && \
+  dnf -y install -y 'dnf-command(config-manager)' && \
+  dnf config-manager --add-repo https://dl.winehq.org/wine-builds/fedora/39/winehq.repo && \
   dnf -y --refresh update && \
   dnf -y install rpmconf && \
   (rpmconf --all --unattended use_maintainer || true) && \
   (rpmconf --all --unattended use_maintainer --clean || true) && \
   dnf -y --refresh update && \
+  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
+      harfbuzz.i686 \
+      harfbuzz.x86_64 \
+&& \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
       advancecomp \
       ansifilter \
@@ -59,7 +65,8 @@ RUN set -x && \
       clang-analyzer \
       clang-tools-extra \
       cmake \
-      compiler-rt \
+      compiler-rt.i686 \
+      compiler-rt.x86_64 \
       cppcheck \
       cppcheck-htmlreport \
       cppi \
@@ -71,12 +78,17 @@ RUN set -x && \
       flawfinder \
       fmt \
       fmt-devel \
+      fontconfig.i686 \
+      fontconfig.x86_64 \
       g++ \
       gawk \
       gcc \
+      gcc-gm2 \
       gcovr \
       git \
       glibc-devel \
+      glibc-devel.i686 \
+      glibc-devel.x86_64 \
       glibc-headers-x86 \
       glibc-static \
       global \
@@ -84,10 +96,20 @@ RUN set -x && \
       guile \
       guile-devel \
       libasan \
+      libasan.i686 \
+      libasan.x86_64 \
       libnsl \
       libnsl2 \
+      libnsl2.i686 \
+      libnsl2.x86_64 \
+      libnsl.i686 \
+      libnsl.x86_64 \
       libtirpc \
+      libtirpc.i686 \
+      libtirpc.x86_64 \
       libubsan \
+      libubsan.i686 \
+      libubsan.x86_64 \
       libxml2-devel \
       libxslt-devel \
       lld \
@@ -128,24 +150,10 @@ RUN set -x && \
       zip \
       zpaq \
 && \
-  dnf4 -y --allowerasing --setopt=install_weak_deps=True --setopt=keepcache=True install \
-      compiler-rt.i686 \
-      glibc-devel.i686 \
-      libasan.i686 \
-      libnsl2.i686 \
-      libnsl.i686 \
-      libtirpc.i686 \
-      libubsan.i686 \
-&& \
-  dnf4 -y --allowerasing reinstall compiler-rt && \
-  rpm --import https://rpm.nodesource.com/gpgkey/ns-operations-public.key || true && \
-  dnf4 -y --allowerasing install \
-    https://rpm.nodesource.com/pub_21.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm && \
-  dnf -y --refresh update && \
-  dnf4 -y --refresh update && \
-  dnf4 -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-    nodejs --setopt=nodesource-nodejs.module_hotfixes=1 && \
-  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True group install \
+  curl -fsSL https://rpm.nodesource.com/setup_21.x | bash - && \
+  dnf install -y --setopt=install_weak_deps=True --setopt=keepcache=True nodejs && \
+  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True \
+    --skip-broken --best --allowerasing group install \
       development-tools \
       c-development \
 && \
@@ -200,7 +208,7 @@ RUN set -x && \
       cygwin64-gcc-c++ \
       cygwin-w32api-headers \
 && \
-  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install wine && \
+  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install winehq-staging && \
   mkdir -p /opt && \
   cd /opt && \
   git clone -v --depth=1 https://github.com/rui314/chibicc && \
@@ -224,12 +232,10 @@ RUN set -x && \
   cd / && \
   rm -rf /tmp/duma-build && \
   ldconfig && \
-  (dnf4 -y clean > /dev/null 2>&1 ; dnf4 -y clean all > /dev/null 2>&1 || true) && \
   dnf -y clean all && \
   rm -rf ~/.cache && \
   rm -rf /var/tmp/* && \
   rm -rf /var/log/dnf* && \
-  ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true) && \
   rm -f /etc/crypto-policies/back-ends/opensslcnf.config && \
   printf '%s\n' \
     "CipherString = @SECLEVEL=2:kEECDH:kRSA:kEDH:kPSK:kDHEPSK:kECDHEPSK:kRSAPSK:-aDSS:-3DES:!DES:!RC4:!RC2:!IDEA:-SEED:!eNULL:!aNULL:!MD5:-SHA384:-CAMELLIA:-ARIA:-AESCCM8" \
@@ -240,12 +246,10 @@ RUN set -x && \
     "" \
     "[evp_properties]" \
     "" > /etc/crypto-policies/back-ends/opensslcnf.config && \
-    dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
     dnf -y clean all && \
     rm -rf ~/.cache > /dev/null 2>&1 && \
     rm -rf /var/tmp/* > /dev/null 2>&1 && \
     rm -rf /var/log/dnf* > /dev/null 2>&1 && \
-    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true )&& \
     adduser -m -U -G wheel --uid 10000 -c "CI/CD User" user && \
     touch /.OK
 

@@ -13,7 +13,6 @@ RUN set -x && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
     rm -rf /var/log/dnf* && \
-    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true) && \
     mkdir -p /opt/src && \
     mkdir -p /opt/chamois-compcert && \
     mkdir -p /opt/chamois-compcert-i386 && \

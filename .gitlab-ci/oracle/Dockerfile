@@ -33,19 +33,16 @@ USER 0
 
 WORKDIR /
 
-ARG URL1
-ARG URL2
+ARG URL
 
 RUN set -x && \
-    ( dnf --refresh -y install libnsl2.x86_64 libnsl2.i686 libnsl.i686 libnsl.x86_64 ) && \
-    curl -fsSL ${URL2:-http://192.168.1.187:8088/~jhj/cache/oracle126.tar.gz} | \
+    curl -fsSL ${URL:-http://192.168.1.187:8088/~jhj/cache/oracle126.tar.gz} | \
         pigz -dc | \
         tar xvf - && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
-    rm -rf /var/log/dnf* && \
-    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true )
+    rm -rf /var/log/dnf*
 
 USER 10000
 
