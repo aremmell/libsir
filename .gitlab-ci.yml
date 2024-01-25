@@ -2428,7 +2428,6 @@ GCC Static Analyzer (Release):
     - ${CC:?} --version
     - export CFLAGS="-O3 -g3 -fanalyzer -Wno-analyzer-infinite-recursion -Wno-analyzer-malloc-leak -fanalyzer-verbosity=3 -Werror"
     - make
-    - make clean
     - |
       # End of GCC Static Analyzer ...
       echo -e "section_end:`date +%s`:GCCSA_section\r\e[0K" || true
@@ -2462,7 +2461,6 @@ GCC Static Analyzer (Debug):
     - ${CC:?} --version
     - export CFLAGS="-O0 -fno-inline -g3 -fanalyzer -Wno-analyzer-infinite-recursion -Wno-analyzer-malloc-leak -fanalyzer-verbosity=3 -Werror"
     - make SIR_DEBUG=1
-    - make clean
     - |
       # End of GCC Static Analyzer ...
       echo -e "section_end:`date +%s`:GCCDA_section\r\e[0K" || true
