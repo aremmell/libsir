@@ -2409,7 +2409,7 @@ Linux/i686 (DMD64 ImportC, C-only):
 
 ################################################################################
 
-GCC Static Analyzer:
+GCC Static Analyzer (Release):
   stage: lint_static
   needs:
     - job: Style check
@@ -2426,22 +2426,46 @@ GCC Static Analyzer:
       echo -e "section_start:`date +%s`:GCCSA_section[collapsed=true]\r\e[0K\033[0;36mGCC Static Analyzer ...\033[0m" || true
     - export CC="gcc"
     - ${CC:?} --version
-    - export CFLAGS="-g -fanalyzer -Wno-analyzer-infinite-recursion -Wno-analyzer-malloc-leak -fanalyzer-verbosity=3 -Werror"
+    - export CFLAGS="-O3 -g3 -fanalyzer -Wno-analyzer-infinite-recursion -Wno-analyzer-malloc-leak -fanalyzer-verbosity=3 -Werror"
     - make
     - make clean
     - |
-      # ENd of GCC Static Analyzer ...
+      # End of GCC Static Analyzer ...
       echo -e "section_end:`date +%s`:GCCSA_section\r\e[0K" || true
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+  retry: 2
+  interruptible: true
+
+################################################################################
+
+GCC Static Analyzer (Debug):
+  stage: lint_static
+  needs:
+    - job: Style check
+    - job: Linux/x86_64 (G++, GCC)
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/base:latest
+  script:
+    - *Configuration
     - |
-      # Start of GCC Static Analyzer - Taint ...
-      echo -e "section_start:`date +%s`:GCCST_section[collapsed=true]\r\e[0K\033[0;36mGCC Static Analyzer - Taint ...\033[0m" || true
-    - export CFLAGS="-g -fanalyzer -fanalyzer-checker=taint -Wno-analyzer-infinite-recursion -fanalyzer-verbosity=3 -Werror"
-    - make
+      # Start of GCC Static Analyzer ...
+      echo -e "section_start:`date +%s`:GCCDA_section[collapsed=true]\r\e[0K\033[0;36mGCC Static Analyzer ...\033[0m" || true
+    - export CC="gcc"
+    - ${CC:?} --version
+    - export CFLAGS="-O0 -fno-inline -g3 -fanalyzer -Wno-analyzer-infinite-recursion -Wno-analyzer-malloc-leak -fanalyzer-verbosity=3 -Werror"
+    - make SIR_DEBUG=1
     - make clean
-    - mkdir -p build > /dev/null 2>&1 || true
     - |
-      # End of GCC Static Analyzer - Taint ...
-      echo -e "section_end:`date +%s`:GCCST_section\r\e[0K" || true
+      # End of GCC Static Analyzer ...
+      echo -e "section_end:`date +%s`:GCCDA_section\r\e[0K" || true
   dependencies: []
   artifacts:
     when: always
