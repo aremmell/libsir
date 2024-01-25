@@ -129,7 +129,7 @@ libsir currently supports the following system logging facilities:
   <tr>
    <td align="center"><center>&nbsp;<a href="https://fmt.dev/"><b>{fmt}</b></a>&nbsp;</center></td>
    <td align="center"><center>&nbsp;<a href="https://en.cppreference.com/w/cpp/utility/format/format"><b>std</b>::<b>format</b></a>&nbsp;</center></td>
-   <td align="center"><center>&nbsp;<a href="https://theboostcpplibraries.com/boost.format"><b>Boost</b>.<b>Format</b></a>&nbsp;</center></td>
+   <td align="center"><center>&nbsp;<a href="https://www.boost.org/libs/format"><b>Boost</b>.<b>Format</b></a>&nbsp;</center></td>
    <td align="center"><center>&nbsp;<a href="https://cplusplus.com/reference/istream/iostream"><b>std</b>::<b>iostream</b></a>&nbsp;</center></td>
   </tr>
   </tbody>
