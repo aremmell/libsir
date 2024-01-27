@@ -175,7 +175,11 @@ ifeq ($(SUNPRO),1)
   MMDOPT=-xMMD
   PTHOPT=-mt=yes
 else
-  FORTIFY_FLAGS?=-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2
+  ifneq "$(findstring circle,$(CXX))" ""
+    FORTIFY_FLAGS?=-D_FORTIFY_SOURCE=2
+  else
+    FORTIFY_FLAGS?=-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2
+  endif
   MMDOPT=-MMD
   PTHOPT=-pthread
 endif
