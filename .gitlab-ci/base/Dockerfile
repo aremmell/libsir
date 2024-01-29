@@ -208,7 +208,7 @@ RUN set -x && \
       cygwin64-gcc-c++ \
       cygwin-w32api-headers \
 && \
-  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install winehq-staging && \
+  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install wine && \
   mkdir -p /opt && \
   cd /opt && \
   git clone -v --depth=1 https://github.com/rui314/chibicc && \

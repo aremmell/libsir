@@ -33,3 +33,8 @@ License: MIT
 Files: library.json
 Copyright: 2018-2024 Ryan M. Lederman <lederman@gmail.com>
 License: MIT
+
+# MSVC-Wine
+Files: .gitlab-ci/msvc/msvc-wine/*
+Copyright: 2019-2024 Martin Storsjo
+License: ISC

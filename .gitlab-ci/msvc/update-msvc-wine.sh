@@ -1,10 +1,14 @@
-#!/usr/bin/env bash
-
+#!/usr/bin/env sh
+################################################################################
+#
+# Version: 2.2.5
+#
 ################################################################################
 #
 # SPDX-License-Identifier: ISC
 #
-# Copyright (c) 2018 Martin Storsjo
+# Copyright (c) 2018-2024 Martin Storsjo
+# Copyright (c) 2018-2024 Jeffrey H. Johnson <trnsz@pobox.com>
 #
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -20,5 +24,10 @@
 #
 ################################################################################
 
-. $(dirname $0)/msvcenv.sh
-$(dirname $0)/wine-msvc.sh $SDKBINDIR/mt.exe "$@"
+( set -eu;                                       \
+  cd ../..;                                      \
+  git subtree pull                               \
+    --prefix .gitlab-ci/msvc/msvc-wine           \
+    https://github.com/mstorsjo/msvc-wine master \
+    --squash
+)
