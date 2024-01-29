@@ -37,4 +37,5 @@ License: MIT
 # MSVC-Wine
 Files: .gitlab-ci/msvc/msvc-wine/*
 Copyright: 2019-2024 Martin Storsjo
+           2024 Sergey Kvachonok
 License: ISC
