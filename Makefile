@@ -513,9 +513,17 @@ endif
 ##############################################################################
 # Cleanup
 
-.PHONY: clean clean-all distclean
+.PHONY: distclean
 
-clean clean-all distclean:
+distclean: clean
+	@rm -f GRTAGS > /dev/null 2>&1 || true
+	@rm -f GPATH > /dev/null 2>&1 || true
+	@rm -f GTAGS > /dev/null 2>&1 || true
+	@rm -f TAGS > /dev/null 2>&1 || true
+	@rm -f tags > /dev/null 2>&1 || true
+
+.PHONY: clean clean-all
+clean clean-all:
 	@rm -rf $(BUILDDIR) > /dev/null 2>&1 || true
 	@rm -rf ./src/*.ln > /dev/null 2>&1 || true
 	@rm -rf $(LOGDIR) > /dev/null 2>&1 || true
@@ -563,9 +571,9 @@ endif # ifneq ($(SIR_NO_PLUGINS),1)
 ##############################################################################
 # Tags
 
-.PHONY: ctags tags TAGS GPATH GRTAGS GTAGS
+.PHONY: ctags tags TAGS GPATH GRTAGS GTAGS tag
 
-ctags tags TAGS GPATH GRTAGS GTAGS:
+ctags tags TAGS GPATH GRTAGS GTAGS tag:
 	-@rm -f tags TAGS GPATH GRTAGS GTAGS > /dev/null 2>&1 || true; \
 	  FDIRS="LICENSE Makefile bindings/python/*.py *.mk *.md bindings example include plugins src tests"; \
 	  FLIST="$$(2> /dev/null find $${FDIRS} | \
