@@ -1,0 +1,98 @@
+name: Builds
+on:
+  push:
+  pull_request:
+
+env:
+  # See <https://wiki.winehq.org/Mono#Versions> before changing.
+  WINE_MONO_VERSION: "8.1.0"
+
+jobs:
+  test-msvc-wine-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install prerequisites
+        run: |
+          sudo mkdir -pm755 /etc/apt/keyrings
+          sudo wget -nv -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+          sudo wget -nv -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
+          sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install winehq-stable python3 msitools python3-simplejson python3-six ca-certificates cmake ninja-build winbind meson
+          wget -nv -P /var/tmp https://dl.winehq.org/wine/wine-mono/${WINE_MONO_VERSION}/wine-mono-${WINE_MONO_VERSION}-x86.tar.xz
+          sudo mkdir -p /opt/wine/mono && sudo tar -xf /var/tmp/wine-mono-${WINE_MONO_VERSION}-x86.tar.xz -C /opt/wine/mono
+          wine64 wineboot
+      - uses: actions/checkout@v3
+      - name: Download MSVC
+        run: |
+          ./vsdownload.py --accept-license --dest $(pwd)/msvc
+          ./install.sh $(pwd)/msvc
+      - name: Test using the installed tools
+        run: |
+          test/test.sh $(pwd)/msvc
+      # Intentionally not storing any artifacts with the downloaded tools;
+      # the installed files aren't redistributable!
+
+  test-msvc-wine-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Install prerequisites
+        run: |
+          brew update && brew install wine-stable msitools cmake ninja meson
+          wine64 wineboot
+      - uses: actions/checkout@v3
+      - name: Download MSVC
+        run: |
+          ./vsdownload.py --accept-license --dest $(pwd)/msvc
+          ./install.sh $(pwd)/msvc
+      - name: Test using the installed tools
+        run: |
+          test/test.sh $(pwd)/msvc
+      # Intentionally not storing any artifacts with the downloaded tools;
+      # the installed files aren't redistributable!
+
+  test-clang-lld:
+    # Ubuntu 22.04 comes with Clang/LLD 14; at least 13 is required for providing
+    # __guard_eh_cont_table and __guard_eh_cont_count which are required with
+    # MSVC 2019 16.8 or newer.
+    # Since Clang 13, it's possible to point out the installed MSVC/WinSDK with
+    # the /winsysroot parameter. LLD also provides the same parameter since
+    # version 15. (For versions 13 and 14, this parameter can still be used
+    # for linking, as long as linking is done via Clang.)
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Install prerequisites
+        run: |
+          sudo apt-get update && sudo apt-get install python3 msitools python3-simplejson python3-six ca-certificates clang lld llvm cmake ninja-build
+      - name: Set up clang-cl/lld-link symlinks
+        run: |
+          if [ ! -e /usr/bin/clang-cl ]; then
+              sudo ln -s /usr/bin/clang /usr/bin/clang-cl
+          fi
+          if [ ! -e /usr/bin/lld-link ]; then
+              sudo ln -s /usr/bin/lld /usr/bin/lld-link
+          fi
+      - uses: actions/checkout@v3
+      - name: Download MSVC
+        run: |
+          ./vsdownload.py --accept-license --dest $(pwd)/msvc
+          ./install.sh $(pwd)/msvc
+      - name: Test using the installed tools
+        run: |
+          test/test-clang-cl.sh $(pwd)/msvc
+      # Intentionally not storing any artifacts with the downloaded tools;
+      # the installed files aren't redistributable!
+
+  test-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the main msvc-wine docker image
+        run: |
+          docker build -t msvc-wine -f Dockerfile .
+      - name: Test using the installed tools
+        run: |
+          docker build -f Dockerfile.hello .
+      - name: Test using the installation with Clang
+        run: |
+          docker build -f Dockerfile.clang .
+      # Intentionally not pushing the built docker images;
+      # the installed files aren't redistributable!
