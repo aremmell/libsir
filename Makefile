@@ -516,11 +516,12 @@ endif
 .PHONY: distclean
 
 distclean: clean
-	@rm -f GRTAGS > /dev/null 2>&1 || true
-	@rm -f GPATH > /dev/null 2>&1 || true
-	@rm -f GTAGS > /dev/null 2>&1 || true
-	@rm -f TAGS > /dev/null 2>&1 || true
-	@rm -f tags > /dev/null 2>&1 || true
+	@rm -rf ./docs/HTML > /dev/null 2>&1 || true
+	@rm -f ./GRTAGS > /dev/null 2>&1 || true
+	@rm -f ./GPATH > /dev/null 2>&1 || true
+	@rm -f ./GTAGS > /dev/null 2>&1 || true
+	@rm -f ./TAGS > /dev/null 2>&1 || true
+	@rm -f ./tags > /dev/null 2>&1 || true
 
 .PHONY: clean clean-all
 clean clean-all:
