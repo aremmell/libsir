@@ -69,6 +69,13 @@
 # endif
 
 /**
+ * Define to use <CR><NL> line endings, otherwise use <NL>.
+ */
+# if !defined(SIR_EOL_CRNL)
+#  undef SIR_EOL_CRNL
+# endif
+
+/**
  * The string placed directly before the human-readable logging level.
  *
  * @remark Only applies if ::SIRO_NOLEVEL is not set.

@@ -826,7 +826,11 @@ const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
         if (styling)
             (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_ESC_RST, SIR_MAXSTYLE);
 
+#if defined(SIR_EOL_CRNL)
+        (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, "\r\n", 2);
+#else
         (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, "\n", 1);
+#endif
 
         buf->output_len = strnlen(buf->output, SIR_MAXOUTPUT);
 
