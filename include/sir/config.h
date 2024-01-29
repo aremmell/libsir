@@ -372,9 +372,9 @@
 
 /** The maximum size, in characters, of final formatted output. */
 # if !defined(SIR_MAXOUTPUT)
-# define SIR_MAXOUTPUT \
-    (SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME + SIR_MAXLEVEL + \
-        SIR_MAXNAME + (SIR_MAXPID   * 2) + SIR_MAXMISC + 1)
+#  define SIR_MAXOUTPUT \
+     (SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME + SIR_MAXLEVEL + \
+         SIR_MAXNAME + (SIR_MAXPID   * 2) + SIR_MAXMISC + 1)
 # endif
 
 /** The maximum size, in characters, of an error message. */
@@ -401,7 +401,7 @@
 
 /** The string that represents any unknown. */
 # if !defined(SIR_UNKNOWN)
-# define SIR_UNKNOWN "<unknown>"
+#  define SIR_UNKNOWN "<unknown>"
 # endif
 
 /** stderr destination string. */
