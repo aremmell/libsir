@@ -40,7 +40,6 @@ RUN set -x && \
   dnf -y --refresh update && \
   dnf -y install dnf-plugins-core dnf-utils && \
   dnf -y install -y 'dnf-command(config-manager)' && \
-  dnf config-manager --add-repo https://dl.winehq.org/wine-builds/fedora/39/winehq.repo && \
   dnf -y --refresh update && \
   dnf -y install rpmconf && \
   (rpmconf --all --unattended use_maintainer || true) && \
