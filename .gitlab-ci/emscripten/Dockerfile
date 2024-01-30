@@ -27,6 +27,11 @@
 #
 ################################################################################
 
+################################################################################
+# NOTE: Recommend adding 'LimitNOFILE=infinity' to docker.service and
+#       systemctl daemon-reload and then restarting docker.service.
+################################################################################
+
 FROM registry.gitlab.com/libsir/libsir/base:latest
 
 USER 0
