@@ -70,4 +70,9 @@ WORKDIR /
 
 USER 10000
 
+RUN set -x && \
+    wine64 wineboot --init && \
+    cp -f /usr/i686-w64-mingw32/sys-root/mingw/bin/iconv.dll ~user/.wine/drive_c/windows/system/ && \
+    cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/iconv.dll ~user/.wine/drive_c/windows/system32/
+
 RUN printf '\n%s\n' "BUILD SUCCESS"
