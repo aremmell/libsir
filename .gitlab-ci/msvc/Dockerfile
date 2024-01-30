@@ -41,8 +41,8 @@ RUN set -x && \
 
 WORKDIR /opt/msvc
 
-COPY lowercase fixinclude install.sh vsdownload.py msvctricks.cpp ./
-COPY wrappers/* ./wrappers/
+COPY msvc-wine/lowercase msvc-wine/fixinclude msvc-wine/install.sh msvc-wine/vsdownload.py msvc-wine/msvctricks.cpp ./
+COPY msvc-wine/wrappers/* ./wrappers/
 
 RUN set -x && stdbuf -o L \
         env PYTHONUNBUFFERED=1 ./vsdownload.py \
@@ -52,7 +52,7 @@ RUN set -x && stdbuf -o L \
     rm -f lowercase fixinclude install.sh vsdownload.py && \
     rm -rf wrappers
 
-COPY msvcenv-native.sh /opt/msvc
+COPY msvc-wine/msvcenv-native.sh /opt/msvc
 
 RUN set -x && curl \
       -fsSL https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
