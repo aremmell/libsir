@@ -45,7 +45,8 @@ WORKDIR /opt/msvc
 COPY msvc-wine/lowercase msvc-wine/fixinclude msvc-wine/install.sh msvc-wine/vsdownload.py msvc-wine/msvctricks.cpp ./
 COPY msvc-wine/wrappers/* ./wrappers/
 
-RUN set -x && stdbuf -o L \
+RUN set -x && \
+    stdbuf -o L \
         env PYTHONUNBUFFERED=1 ./vsdownload.py \
         --accept-license \
         --dest /opt/msvc && \
@@ -55,13 +56,17 @@ RUN set -x && stdbuf -o L \
 
 COPY msvc-wine/msvcenv-native.sh /opt/msvc
 
-RUN set -x && curl \
+RUN set -x && \
+    curl \
       -fsSL https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
         > /usr/bin/winetricks && chmod a+x /usr/bin/winetricks
 
-RUN set -x && ln -s /opt/msvc /opt/MSVC
+RUN set -x && \
+    ln -s /opt/msvc /opt/MSVC
 
-RUN set -x && dnf -y clean all && \
+RUN set -x && \
+    rm -f /opt/msvc/msvctricks.cpp && \
+    dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
     rm -rf /var/log/dnf*
