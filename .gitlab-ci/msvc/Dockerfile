@@ -30,12 +30,13 @@ USER 0
 
 RUN set -x && \
     dnf --refresh -y install --setopt=install_weak_deps=True \
-        msitools \
         cabextract \
-        zip \
-        unzip \
         libwbclient.i686 \
-        libwbclient.x86_64 && \
+        libwbclient.x86_64 \
+        msitools \
+        samba-winbind \
+        unzip \
+        zip && \
     wine64 wineboot --init && \
     while pgrep wineserver > /dev/null; do sleep 10; done
 
