@@ -224,7 +224,6 @@ RUN set -x && \
   cd / && \
   (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
      --nogpgcheck ${URL:-http://192.168.1.187:8088/~jhj/cache/aocc-compiler.x86_64.rpm}) && \
-  (ln -fs /opt/AMD/aocc-compiler-4.1.0 /opt/AMD/aocc-compiler-4.0.0 || true) && \
   mkdir -p /tmp/duma-build && \
   cd /tmp/duma-build && \
   git clone -v https://github.com/johnsonjh/duma && \
