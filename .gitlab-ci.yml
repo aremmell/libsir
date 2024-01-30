@@ -94,7 +94,7 @@ stages:
 .WineBoot: &WineBoot |
   # *WineBoot - Start Wine
   echo -e "section_start:`date +%s`:WineBoot_section[collapsed=false]\r\e[0K\033[0;36mStart Wine ...\033[0m" || true
-  wine64 wineboot --init > /dev/null
+  wine64 wineboot --init
   cp -f /usr/i686-w64-mingw32/sys-root/mingw/bin/iconv.dll ~/.wine/drive_c/windows/system/ || true
   cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/iconv.dll ~/.wine/drive_c/windows/system32/ || true
   while pgrep wineserver > /dev/null; do sleep 10; done
