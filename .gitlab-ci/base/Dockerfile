@@ -69,6 +69,7 @@ RUN set -x && \
       cppcheck \
       cppcheck-htmlreport \
       cppi \
+      croc \
       curl \
       doxygen \
       expect \
@@ -171,6 +172,7 @@ RUN set -x && \
       mingw32-gcc \
       mingw32-gcc-c++ \
       mingw32-headers \
+      mingw32-win-iconv \
       mingw32-winpthreads \
       mingw32-winpthreads-static \
       mingw64-binutils \
@@ -183,6 +185,7 @@ RUN set -x && \
       mingw64-gcc \
       mingw64-gcc-c++ \
       mingw64-headers \
+      mingw64-win-iconv \
       mingw64-winpthreads \
       mingw64-winpthreads-static \
       mingw-binutils-generic \
