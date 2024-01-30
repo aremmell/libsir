@@ -91,6 +91,17 @@ stages:
 
 ################################################################################
 
+.WineBoot: &WineBoot |
+  # *WineBoot - Start Wine
+  echo -e "section_start:`date +%s`:WineBoot_section[collapsed=false]\r\e[0K\033[0;36mStart Wine ...\033[0m" || true
+  wine64 wineboot --init > /dev/null
+  cp -f /usr/i686-w64-mingw32/sys-root/mingw/bin/iconv.dll ~/.wine/drive_c/windows/system/ || true
+  cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/iconv.dll ~user/.wine/drive_c/windows/system32/ || true
+  while pgrep wineserver > /dev/null; do sleep 10; done
+  echo -e "section_end:`date +%s`:WineBoot_section\r\e[0K" || true
+
+################################################################################
+
 .BuildInformation: &BuildInformation |
   # *BuildInformation - Show build information
   echo -e "section_start:`date +%s`:BuildInformation_section[collapsed=true]\r\e[0K\033[0;36mBuild information ...\033[0m" || true
@@ -802,6 +813,7 @@ Windows/x64 (LLVM-MinGW, Clang++, Clang):
     name: registry.gitlab.com/libsir/libsir/llvm-mingw:latest
   script:
     - *Configuration
+    - *WineBoot
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -863,6 +875,7 @@ Windows/Arm (LLVM-MinGW, Clang++, Clang):
     name: registry.gitlab.com/libsir/libsir/llvm-mingw:latest
   script:
     - *Configuration
+    - *WineBoot
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -905,6 +918,7 @@ Windows/Arm64 (LLVM-MinGW, Clang++, Clang):
     name: registry.gitlab.com/libsir/libsir/llvm-mingw:latest
   script:
     - *Configuration
+    - *WineBoot
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -995,6 +1009,7 @@ Windows/i686 (LLVM-MinGW, Clang++, Clang):
     name: registry.gitlab.com/libsir/libsir/llvm-mingw:latest
   script:
     - *Configuration
+    - *WineBoot
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -1394,6 +1409,7 @@ Windows/Arm64 (MSVC, C++, C):
     name: registry.gitlab.com/libsir/libsir/msvc:latest
   script:
     - *Configuration
+    - *WineBoot
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -1433,6 +1449,7 @@ Windows/Arm (MSVC, C++, C):
     name: registry.gitlab.com/libsir/libsir/msvc:latest
   script:
     - *Configuration
+    - *WineBoot
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -1472,6 +1489,7 @@ Windows/x64 (MSVC, C++, C):
     name: registry.gitlab.com/libsir/libsir/msvc:latest
   script:
     - *Configuration
+    - *WineBoot
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -1530,6 +1548,7 @@ Windows/i686 (MSVC, C++, C):
     name: registry.gitlab.com/libsir/libsir/msvc:latest
   script:
     - *Configuration
+    - *WineBoot
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -1587,6 +1606,7 @@ Windows/x64 (MinGW-MSVCRT, G++, GCC):
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
+    - *WineBoot
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -1647,6 +1667,7 @@ Windows/x64 (MinGW-UCRT, G++, GCC):
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
+    - *WineBoot
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -1706,6 +1727,7 @@ Windows/i686 (MinGW, G++, GCC):
     name: registry.gitlab.com/libsir/libsir/base:latest
   script:
     - *Configuration
+    - *WineBoot
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -2264,6 +2286,7 @@ Windows/i686 (OrangeC, C-only):
     name: registry.gitlab.com/libsir/libsir/orangec:latest
   script:
     - *Configuration
+    - *WineBoot
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -2486,6 +2509,7 @@ Windows/x64 (Embarcadero Alexandria, BCC64, C-only):
     name: registry.gitlab.com/libsir/libsir/embarcadero:latest
   script:
     - *Configuration
+    - *WineBoot
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -2538,6 +2562,7 @@ Windows/i686 (Embarcadero Alexandria, BCC32X, C-only):
     name: registry.gitlab.com/libsir/libsir/embarcadero:latest
   script:
     - *Configuration
+    - *WineBoot
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -2590,6 +2615,7 @@ Windows/x64 (Embarcadero Athens, BCC64, C-only):
     name: registry.gitlab.com/libsir/libsir/embarcadero23:latest
   script:
     - *Configuration
+    - *WineBoot
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -2642,6 +2668,7 @@ Windows/x64 (Embarcadero Athens, BCC64X, C-only):
     name: registry.gitlab.com/libsir/libsir/embarcadero23:latest
   script:
     - *Configuration
+    - *WineBoot
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -2694,6 +2721,7 @@ Windows/i686 (Embarcadero Athens, BCC32X, C-only):
     name: registry.gitlab.com/libsir/libsir/embarcadero23:latest
   script:
     - *Configuration
+    - *WineBoot
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
@@ -3933,6 +3961,7 @@ Windows/x64 (Clang-CL, C++, C):
     name: registry.gitlab.com/libsir/libsir/msvc:latest
   script:
     - *Configuration
+    - *WineBoot
     - *ClangDisableWarnings
     - |
       # Start of Build ...
@@ -3994,6 +4023,7 @@ Windows/i686 (Clang-CL, C++, C):
     name: registry.gitlab.com/libsir/libsir/msvc:latest
   script:
     - *Configuration
+    - *WineBoot
     - *ClangDisableWarnings
     - |
       # Start of Build ...
@@ -4055,6 +4085,7 @@ Windows/Arm (Clang-CL, C-only):
     name: registry.gitlab.com/libsir/libsir/msvc:latest
   script:
     - *Configuration
+    - *WineBoot
     - *ClangDisableWarnings
     - |
       # Start of Build ...
@@ -4102,6 +4133,7 @@ Windows/Arm64 (Clang-CL, C++, C):
     name: registry.gitlab.com/libsir/libsir/msvc:latest
   script:
     - *Configuration
+    - *WineBoot
     - *ClangDisableWarnings
     - |
       # Start of Build ...
