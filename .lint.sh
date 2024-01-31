@@ -646,7 +646,13 @@ test_pvs_real()
       test -f log.pvs; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       printf '%s\n' "PVS-Studio run completed ..."
-      plog-converter -a "GA:1,2,3;OP:1,2,3;64:1,2,3;CS:1,2,3;MISRA:1,2,3;OWASP:1,2,3;AUTOSAR:1,2,3" -t fullhtml log.pvs -o pvsreport
+      plog-converter -a "GA:1,2,3;OP:1,2,3;64:1,2,3;CS:1,2,3;MISRA:1,2,3;OWASP:1,2,3;AUTOSAR:1,2,3" -t fullhtml log.pvs -o pvsreport 2>&1 | \
+          grep -q 'Exception: No valid messages' && \
+            { mkdir -p ./pvsreport;
+              printf '%s\n' "Congratulations!" > ./pvsreport/index.html;
+            } || true
+      mkdir -p ./pvsreport || true
+      touch ./pvsreport/index.html
       grep -q 'Congratulations!' ./pvsreport/index.html \
         || {
           printf '%s\n' "ERROR: PVS-Studio failed ..."
