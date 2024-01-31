@@ -4898,9 +4898,9 @@ Windows/x64 (MSVC, MSBuild, Release, C++, C):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/msvc/bin/x64:${PATH:?}"
     - BIN=/opt/msvc/bin/x64 . /opt/msvc/msvcenv-native.sh
+    - export UseEnv=true
     - msbuild /version 2>&1 | ansifilter | xargs || true
     - cl.exe 2>&1 | head -3 | grep -v '^$' || true
-    - export UseEnv=true
     - msbuild ./msvs/libsir.sln -t:Rebuild -p:Configuration=Release -p:Platform=x64
     - |
       # End of Build ...
@@ -4951,9 +4951,9 @@ Windows/x64 (MSVC, MSBuild, Debug, C++, C):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/msvc/bin/x64:${PATH:?}"
     - BIN=/opt/msvc/bin/x64 . /opt/msvc/msvcenv-native.sh
+    - export UseEnv=true
     - msbuild /version 2>&1 | ansifilter | xargs || true
     - cl.exe 2>&1 | head -3 | grep -v '^$' || true
-    - export UseEnv=true
     - msbuild ./msvs/libsir.sln -t:Rebuild -p:Configuration=Debug -p:Platform=x64
     - |
       # End of Build ...
@@ -5004,9 +5004,9 @@ Windows/x64 (MSVC, MSBuild, Profiling, C++, C):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/msvc/bin/x64:${PATH:?}"
     - BIN=/opt/msvc/bin/x64 . /opt/msvc/msvcenv-native.sh
+    - export UseEnv=true
     - msbuild /version 2>&1 | ansifilter | xargs || true
     - cl.exe 2>&1 | head -3 | grep -v '^$' || true
-    - export UseEnv=true
     - msbuild ./msvs/libsir.sln -t:Rebuild -p:Configuration=Profiling -p:Platform=x64
     - |
       # End of Build ...
@@ -5057,9 +5057,9 @@ Windows/Arm64 (MSVC, MSBuild, Release, C++, C):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/msvc/bin/arm64:${PATH:?}"
     - BIN=/opt/msvc/bin/arm64 . /opt/msvc/msvcenv-native.sh
+    - export UseEnv=true
     - msbuild /version 2>&1 | ansifilter | xargs || true
     - cl.exe 2>&1 | head -3 | grep -v '^$' || true
-    - export UseEnv=true
     - msbuild ./msvs/libsir.sln -t:Rebuild -p:Configuration=Release -p:Platform=Arm64
     - |
       # End of Build ...
@@ -5096,9 +5096,9 @@ Windows/Arm64 (MSVC, MSBuild, Debug, C++, C):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/msvc/bin/arm64:${PATH:?}"
     - BIN=/opt/msvc/bin/arm64 . /opt/msvc/msvcenv-native.sh
+    - export UseEnv=true
     - msbuild /version 2>&1 | ansifilter | xargs || true
     - cl.exe 2>&1 | head -3 | grep -v '^$' || true
-    - export UseEnv=true
     - msbuild ./msvs/libsir.sln -t:Rebuild -p:Configuration=Debug -p:Platform=Arm64
     - |
       # End of Build ...
@@ -5135,9 +5135,9 @@ Windows/Arm64 (MSVC, MSBuild, Profiling, C++, C):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/msvc/bin/arm64:${PATH:?}"
     - BIN=/opt/msvc/bin/arm64 . /opt/msvc/msvcenv-native.sh
+    - export UseEnv=true
     - msbuild /version 2>&1 | ansifilter | xargs || true
     - cl.exe 2>&1 | head -3 | grep -v '^$' || true
-    - export UseEnv=true
     - msbuild ./msvs/libsir.sln -t:Rebuild -p:Configuration=Profiling -p:Platform=Arm64
     - |
       # End of Build ...
