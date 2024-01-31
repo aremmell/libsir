@@ -218,7 +218,7 @@ Visual Studio is technically not required in order to build the Visual Studio 20
 Using MSBuild is pretty straightforward. Start a Developer Command Prompt, and then just supply the path to the `.sln` file, task (*e.g. `build`*), configuration (*e.g. `release`*), and platform (*e.g. `x64`*). Here's an example that builds libsir in release mode for x86_64 when executed from the root of the libsir repository:
 
 ```ps
-MSBuild .\msvs\libsir.sln -t:Rebuild -p:Config=Release -p:Platform=x64
+MSBuild .\msvs\libsir.sln -t:Rebuild -p:Configuration=Release -p:Platform=x64
 ```
 
 ## <a id="dig-in" /> Dig in
