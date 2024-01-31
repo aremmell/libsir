@@ -4912,7 +4912,6 @@ Windows/x64 (MSVC, MSBuild, Release, C++, C):
     - mkdir -p logs
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
-    - . /opt/msvc/bin/x64/msvcenv.sh
     - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirexample.out
     - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
@@ -4968,7 +4967,6 @@ Windows/x64 (MSVC, MSBuild, Debug, C++, C):
     - mkdir -p logs
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
-    - . /opt/msvc/bin/x64/msvcenv.sh
     - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirexample.out
     - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
