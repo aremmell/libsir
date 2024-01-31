@@ -336,7 +336,7 @@ sample terminal output</div></div>
 <p>Visual Studio is technically not required in order to build the Visual Studio 2022 solution; this may also be accomplished using "Build Tools for Visual Studio 2022" (<a href="https://aka.ms/vs/17/release/vs_BuildTools.exe">download</a>, <a href="https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2022">reference</a>). This is a stand-alone toolchain that does <em>not</em> require Visual Studio 2022 and includes compilers and MSBuild.</p>
 <p><b>Using MSBuild from the command-line</b></p>
 <p>Using MSBuild is pretty straightforward. Start a Developer Command Prompt, and then just supply the path to the <code>.sln</code> file, task (<em>e.g. <code>build</code></em>), configuration (<em>e.g. <code>release</code></em>), and platform (<em>e.g. <code>x64</code></em>). Here's an example that builds libsir in release mode for x86_64 when executed from the root of the libsir repository:</p>
-<div class="fragment"><div class="line">MSBuild .\msvs\libsir.sln -t:Rebuild -p:Config=Release -p:Platform=x64</div>
+<div class="fragment"><div class="line">MSBuild .\msvs\libsir.sln -t:Rebuild -p:Configuration=Release -p:Platform=x64</div>
 </div><!-- fragment --><h1><a class="anchor" id="dig-in"></a> Dig in</h1>
 <p>If you are genuinely interested in utilizing libsir, you are encouraged to read the <a href="https://libsir.rml.dev">full online documentation</a> to get a better understanding of the library's capabilities and interfaces.</p>
 <p>Suggested initial sections:</p><ul>
