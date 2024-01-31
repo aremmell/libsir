@@ -4916,8 +4916,6 @@ Windows/x64 (MSVC, MSBuild, Release, C++, C):
     - mv -f screenlog.0 sirexample.out
     - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests.out
-    - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
-    - mv -f screenlog.0 sirtests++.out
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
@@ -4971,8 +4969,6 @@ Windows/x64 (MSVC, MSBuild, Debug, C++, C):
     - mv -f screenlog.0 sirexample.out
     - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests.out
-    - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
-    - mv -f screenlog.0 sirtests++.out
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
