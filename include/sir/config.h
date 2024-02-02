@@ -378,11 +378,9 @@
 # endif
 
 /** The maximum size, in characters, of final formatted output. */
-# if !defined(SIR_MAXOUTPUT)
-#  define SIR_MAXOUTPUT \
-     (SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME + SIR_MAXLEVEL + \
-         SIR_MAXNAME + (SIR_MAXPID   * 2) + SIR_MAXMISC + 1)
-# endif
+# define SIR_MAXOUTPUT \
+    (SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME + SIR_MAXLEVEL + \
+        SIR_MAXNAME + (SIR_MAXPID   * 2) + SIR_MAXMISC + 2)
 
 /** The maximum size, in characters, of an error message. */
 # if !defined(SIR_MAXERROR)
@@ -402,9 +400,7 @@
  *   Error in findneedle (haystack.c:384): 'Too much hay'
  *   ~~~
  */
-# if !defined(SIR_ERRORFORMAT)
-#  define SIR_ERRORFORMAT "Error in %s (%s:%u): '%s'"
-# endif
+# define SIR_ERRORFORMAT "Error in %s (%s:%u): '%s'"
 
 /** The string that represents any unknown. */
 # if !defined(SIR_UNKNOWN)
@@ -440,17 +436,13 @@
  * The number of actual levels; ::SIRL_NONE, ::SIRL_ALL, and ::SIRL_DEFAULT
  * are pseudo levels and end up being mapped (or not) to the others.
  */
-# if !defined(SIR_NUMLEVELS)
-#  define SIR_NUMLEVELS 8
-# endif
+# define SIR_NUMLEVELS 8
 
 /**
  * The number of actual options; ::SIRO_ALL, ::SIRO_DEFAULT, and ::SIRO_MSGONLY
  * are pseudo options that end up being mapped (or not) to the others.
  */
-# if !defined(SIR_NUMOPTIONS)
-#  define SIR_NUMOPTIONS 8
-# endif
+# define SIR_NUMOPTIONS 8
 
 /**
  * The number of seconds to let elapse before checking if the hostname needs
