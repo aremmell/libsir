@@ -171,11 +171,15 @@ ifneq "$(findstring suncc,$(CC))" ""
 endif
 
 ifeq ($(SUNPRO),1)
-  FORTIFY_FLAGS=-U_FORTIFY_SOURCE
+  FORTIFY_FLAGS?=-U_FORTIFY_SOURCE
   MMDOPT=-xMMD
   PTHOPT=-mt=yes
 else
-  FORTIFY_FLAGS?=-D_FORTIFY_SOURCE=2
+  ifneq "$(findstring circle,$(CXX))" ""
+    FORTIFY_FLAGS?=-D_FORTIFY_SOURCE=2
+  else
+    FORTIFY_FLAGS?=-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2
+  endif
   MMDOPT=-MMD
   PTHOPT=-pthread
 endif
@@ -293,9 +297,8 @@ endif
 
 ################################################################################
 # CompCert-C - https://www.absint.com/compcert - https://compcert.org
-# Tested with (Kalray, Verimag) Chamois CompCert (2023-09-15) with TLS.
-# https://gricad-gitlab.univ-grenoble-alpes.fr/certicompil/
-# Chamois-CompCert/uploads/c92b50379c4dea713bb07a52918a2a53/chamois-tls.diff
+# https://gricad-gitlab.univ-grenoble-alpes.fr/certicompil/Chamois-CompCert
+# Tested with Kalray/Verimag Chamois CompCert as of 2023-11-30
 
 ifneq "$(findstring compcert,$(CC))" ""
   COMPCERT?=1

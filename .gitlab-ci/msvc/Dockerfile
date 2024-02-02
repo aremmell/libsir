@@ -30,21 +30,23 @@ USER 0
 
 RUN set -x && \
     dnf --refresh -y install --setopt=install_weak_deps=True \
-        msitools \
         cabextract \
-        zip \
-        unzip \
         libwbclient.i686 \
-        libwbclient.x86_64 && \
+        libwbclient.x86_64 \
+        msitools \
+        samba-winbind \
+        unzip \
+        zip && \
     wine64 wineboot --init && \
     while pgrep wineserver > /dev/null; do sleep 10; done
 
 WORKDIR /opt/msvc
 
-COPY lowercase fixinclude install.sh vsdownload.py msvctricks.cpp ./
-COPY wrappers/* ./wrappers/
+COPY msvc-wine/lowercase msvc-wine/fixinclude msvc-wine/install.sh msvc-wine/vsdownload.py msvc-wine/msvctricks.cpp ./
+COPY msvc-wine/wrappers/* ./wrappers/
 
-RUN set -x && stdbuf -o L \
+RUN set -x && \
+    stdbuf -o L \
         env PYTHONUNBUFFERED=1 ./vsdownload.py \
         --accept-license \
         --dest /opt/msvc && \
@@ -52,15 +54,19 @@ RUN set -x && stdbuf -o L \
     rm -f lowercase fixinclude install.sh vsdownload.py && \
     rm -rf wrappers
 
-COPY msvcenv-native.sh /opt/msvc
+COPY msvc-wine/msvcenv-native.sh /opt/msvc
 
-RUN set -x && curl \
+RUN set -x && \
+    curl \
       -fsSL https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
         > /usr/bin/winetricks && chmod a+x /usr/bin/winetricks
 
-RUN set -x && ln -s /opt/msvc /opt/MSVC
+RUN set -x && \
+    ln -s /opt/msvc /opt/MSVC
 
-RUN set -x && dnf -y clean all && \
+RUN set -x && \
+    rm -f /opt/msvc/msvctricks.cpp && \
+    dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
     rm -rf /var/log/dnf*

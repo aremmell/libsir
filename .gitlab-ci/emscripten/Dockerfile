@@ -27,6 +27,11 @@
 #
 ################################################################################
 
+################################################################################
+# NOTE: Recommend adding 'LimitNOFILE=infinity' to docker.service and
+#       systemctl daemon-reload and then restarting docker.service.
+################################################################################
+
 FROM registry.gitlab.com/libsir/libsir/base:latest
 
 USER 0
@@ -40,18 +45,16 @@ RUN set -x && \
     chown user:user -R /home/linuxbrew && \
     export UNATTENDED=1 && \
     export NONINTERACTIVE=1 && \
-    export HOMEBREW_NO_ENV_HINTS=1 && \
-    export HOMEBREW_NO_INSTALL_CLEANUP=1 && \
     cd /tmp && \
     dnf -y --best --allowerasing --skip-broken upgrade nodejs || true && \
     wget https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh && \
     sudo -s -u user bash ./install.sh && \
     rm -f ./install.sh && \
-    sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; brew developer on )" && \
-    sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; brew update -v )" && \
-    sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; brew upgrade -v )" && \
-    sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; brew install -v emscripten )" && \
-    sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; brew cleanup -s --prune=all || true)" && \
+    sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; env HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew developer on )" && \
+    sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; env HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew update -v )" && \
+    sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; env HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew upgrade -v )" && \
+    sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; env HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install -v emscripten )" && \
+    sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; env HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew cleanup -s --prune=all || true)" && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \

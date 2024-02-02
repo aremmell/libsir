@@ -91,10 +91,10 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 
 | System | Toolchain |
 | ------:|:--------- |
-| **Linux**&nbsp;≳2.6.32<br>(glibc&nbsp;≳2.4, musl&nbsp;≳1.2.3, uClibc‑ng&nbsp;1.0.43, Bionic&nbsp;19) | **GCC**&nbsp;(4.8.4&nbsp;‑&nbsp;14.0.1),&nbsp; **Clang**&nbsp;(3.8&nbsp;‑&nbsp;17.0.6),&nbsp; **Oracle&nbsp;Studio&nbsp;C/C++**&nbsp;(≳12.6),&nbsp; **Circle**&nbsp;(1.0.0‑200),&nbsp; **IBM&nbsp;Advance&nbsp;Toolchain**&nbsp;(14&nbsp;‑&nbsp;17),&nbsp; **IBM&nbsp;XL&nbsp;C/C++**&nbsp;(16.1.1.2&nbsp;‑&nbsp;16.1.1.15),&nbsp; **IBM&nbsp;Open&nbsp;XL&nbsp;C/C++**&nbsp;(17.1.1.0&nbsp;‑&nbsp;17.1.1.1),&nbsp; **NVIDIA&nbsp;HPC&nbsp;SDK&nbsp;C/C++**&nbsp;(23.5&nbsp;‑&nbsp;23.11),&nbsp; **Arm&nbsp;HPC&nbsp;C/C++**&nbsp;(22.1&nbsp;‑&nbsp;23.10),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.104.2&nbsp;‑&nbsp;2.106.1),&nbsp; **AMD&nbsp;Optimizing&nbsp;C/C++**&nbsp;(4.0.0&nbsp;‑&nbsp;4.1.0),&nbsp; **Intel&nbsp;oneAPI&nbsp;DPC++/C++**&nbsp;(2023.1&nbsp;‑&nbsp;2024.0.2),&nbsp; **Open64**&nbsp;(5,&nbsp;AMD&nbsp;4.5.2.1),&nbsp; **Intel&nbsp;C++&nbsp;Compiler&nbsp;Classic**&nbsp;(2021.9.0&nbsp;‑&nbsp;2021.10.0),&nbsp; **Android&nbsp;NDK**&nbsp;(r25c&nbsp;‑&nbsp;r26b),&nbsp; **Portable&nbsp;C&nbsp;Compiler**&nbsp;(1.2.0.DEVEL‑20230730),&nbsp; **Kefir**&nbsp;(≳0.3.0),&nbsp; **Chibicc**&nbsp;(2020.12.6),&nbsp; **CompCert&nbsp;C**&nbsp;(3.11&nbsp;‑&nbsp;3.14,&nbsp;no‑TLS),&nbsp; **Chamois‑CompCert&nbsp;C**&nbsp;(3.14‑20231130,&nbsp;TLS) |
+| **Linux**&nbsp;≳2.6.32<br>(glibc&nbsp;≳2.4, musl&nbsp;≳1.2.3, uClibc‑ng&nbsp;1.0.43, Bionic&nbsp;19) | **GCC**&nbsp;(4.8.4&nbsp;‑&nbsp;14.0.1),&nbsp; **Clang**&nbsp;(3.8&nbsp;‑&nbsp;17.0.6),&nbsp; **Oracle&nbsp;Studio&nbsp;C/C++**&nbsp;(≳12.6),&nbsp; **Circle**&nbsp;(1.0.0‑200),&nbsp; **IBM&nbsp;Advance&nbsp;Toolchain**&nbsp;(14&nbsp;‑&nbsp;17),&nbsp; **IBM&nbsp;XL&nbsp;C/C++**&nbsp;(16.1.1.2&nbsp;‑&nbsp;16.1.1.15),&nbsp; **IBM&nbsp;Open&nbsp;XL&nbsp;C/C++**&nbsp;(17.1.1.0&nbsp;‑&nbsp;17.1.1.1),&nbsp; **NVIDIA&nbsp;HPC&nbsp;SDK&nbsp;C/C++**&nbsp;(23.5&nbsp;‑&nbsp;24.1),&nbsp; **Arm&nbsp;HPC&nbsp;C/C++**&nbsp;(22.1&nbsp;‑&nbsp;23.10),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.104.2&nbsp;‑&nbsp;2.106.1),&nbsp; **AMD&nbsp;Optimizing&nbsp;C/C++**&nbsp;(4.0.0&nbsp;‑&nbsp;4.1.0),&nbsp; **Intel&nbsp;oneAPI&nbsp;DPC++/C++**&nbsp;(2023.1&nbsp;‑&nbsp;2024.0.2),&nbsp; **Open64**&nbsp;(5,&nbsp;AMD&nbsp;4.5.2.1),&nbsp; **Intel&nbsp;C++&nbsp;Compiler&nbsp;Classic**&nbsp;(2021.9.0&nbsp;‑&nbsp;2021.10.0),&nbsp; **Android&nbsp;NDK**&nbsp;(r25c&nbsp;‑&nbsp;r26b),&nbsp; **Portable&nbsp;C&nbsp;Compiler**&nbsp;(1.2.0.DEVEL‑20230730),&nbsp; **Kefir**&nbsp;(≳0.3.0),&nbsp; **Chibicc**&nbsp;(2020.12.6),&nbsp; **CompCert&nbsp;C**&nbsp;(3.11&nbsp;‑&nbsp;3.14,&nbsp;no‑TLS),&nbsp; **Chamois‑CompCert&nbsp;C**&nbsp;(3.14‑20231130,&nbsp;TLS) |
 | **AIX**&nbsp;7.2,&nbsp;7.3 | **GCC**&nbsp;(8.3&nbsp;‑&nbsp;12.3),&nbsp; **IBM&nbsp;XL&nbsp;C/C++**&nbsp;(16.1.0.3&nbsp;‑&nbsp;16.1.0.15),&nbsp; **IBM&nbsp;Open&nbsp;XL&nbsp;C/C++**&nbsp;(17.1.1.1&nbsp;‑&nbsp;17.1.2.1) |
 | **macOS**&nbsp;≳10.15 | **Xcode**&nbsp;(11.7&nbsp;‑&nbsp;15.2),&nbsp; **GCC**&nbsp;(10.4&nbsp;‑&nbsp;13.2.1),&nbsp; **Clang**&nbsp;(11.0.3&nbsp;‑&nbsp;17.0.6),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.105.0&nbsp;‑&nbsp;2.106.1),&nbsp; **Intel&nbsp;C++&nbsp;Compiler&nbsp;Classic**&nbsp;(2021.9.0&nbsp;‑&nbsp;2021.10.0) |
-| **Windows**&nbsp;≳10,&nbsp;11 | **Microsoft&nbsp;Visual&nbsp;C/C++**&nbsp;(17.6&nbsp;‑&nbsp;17.8.5),&nbsp; **Clang‑CL**&nbsp;(16.0.6&nbsp;‑&nbsp;17.0.6),&nbsp; **GCC‑MinGW**&nbsp;(12.2.1&nbsp;‑&nbsp;13.2.1),&nbsp; **LLVM‑MinGW**&nbsp;(15.0&nbsp;‑&nbsp;17.0.6),&nbsp; **Embarcadero&nbsp;C++**&nbsp;(7.20&nbsp;‑&nbsp;7.70),&nbsp; **OrangeC**&nbsp;(≳6.71.10) |
+| **Windows**&nbsp;≳10,&nbsp;11 | **Microsoft&nbsp;Visual&nbsp;C/C++**&nbsp;(17.6&nbsp;‑&nbsp;17.8.6),&nbsp; **Clang‑CL**&nbsp;(16.0.6&nbsp;‑&nbsp;17.0.6),&nbsp; **GCC‑MinGW**&nbsp;(12.2.1&nbsp;‑&nbsp;13.2.1),&nbsp; **LLVM‑MinGW**&nbsp;(15.0&nbsp;‑&nbsp;17.0.6),&nbsp; **Embarcadero&nbsp;C++**&nbsp;(7.20&nbsp;‑&nbsp;7.70),&nbsp; **OrangeC**&nbsp;(≳6.71.10) |
 | **Cygwin**&nbsp;3.4 | **GCC**&nbsp;(11.2&nbsp;‑&nbsp;13.2.1) |
 | **FreeBSD**&nbsp;≳11.3 | **GCC**&nbsp;(11.4&nbsp;‑&nbsp;13.2.1),&nbsp; **Clang**&nbsp;(10&nbsp;‑&nbsp;17.0.6),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.105.0&nbsp;‑&nbsp;2.106.1) |
 | **NetBSD**&nbsp;9.2 | **GCC**&nbsp;(7.5&nbsp;‑&nbsp;13.2),&nbsp; **Clang**&nbsp;(15.0.7&nbsp;‑&nbsp;17.0.6) |
@@ -127,9 +127,9 @@ libsir currently supports the following system logging facilities:
   <table align="center">
   <tbody>
   <tr>
-   <td align="center"><center>&nbsp;<a href="https://fmt.dev/"><b>{fmt}</b></a>&nbsp;</center></td>
+   <td align="center"><center>&nbsp;<a href="https://fmt.dev"><b>{fmt}</b></a>&nbsp;</center></td>
    <td align="center"><center>&nbsp;<a href="https://en.cppreference.com/w/cpp/utility/format/format"><b>std</b>::<b>format</b></a>&nbsp;</center></td>
-   <td align="center"><center>&nbsp;<a href="https://theboostcpplibraries.com/boost.format"><b>Boost</b>.<b>Format</b></a>&nbsp;</center></td>
+   <td align="center"><center>&nbsp;<a href="https://www.boost.org/libs/format"><b>Boost</b>.<b>Format</b></a>&nbsp;</center></td>
    <td align="center"><center>&nbsp;<a href="https://cplusplus.com/reference/istream/iostream"><b>std</b>::<b>iostream</b></a>&nbsp;</center></td>
   </tr>
   </tbody>
@@ -142,8 +142,8 @@ libsir currently supports the following system logging facilities:
   <table align="center">
   <tbody>
   <tr>
-   <td align="center"><center>&nbsp;<a href="https://www.softintegration.com/"><b>Ch</b></a>&nbsp;</center></td>
-   <td align="center"><center>&nbsp;<a href="https://www.python.org/"><b>Python</b></a>&nbsp;</center></td>
+   <td align="center"><center>&nbsp;<a href="https://www.softintegration.com"><b>Ch</b></a>&nbsp;</center></td>
+   <td align="center"><center>&nbsp;<a href="https://www.python.org"><b>Python</b></a>&nbsp;</center></td>
   </tr>
   </tbody>
   </table>
@@ -218,7 +218,7 @@ Visual Studio is technically not required in order to build the Visual Studio 20
 Using MSBuild is pretty straightforward. Start a Developer Command Prompt, and then just supply the path to the `.sln` file, task (*e.g. `build`*), configuration (*e.g. `release`*), and platform (*e.g. `x64`*). Here's an example that builds libsir in release mode for x86_64 when executed from the root of the libsir repository:
 
 ```ps
-MSBuild .\msvs\libsir.sln -t:Rebuild -p:Config=Release -p:Platform=x64
+MSBuild .\msvs\libsir.sln -t:Rebuild -p:Configuration=Release -p:Platform=x64
 ```
 
 ## <a id="dig-in" /> Dig in

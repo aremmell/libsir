@@ -40,7 +40,6 @@ RUN set -x && \
   dnf -y --refresh update && \
   dnf -y install dnf-plugins-core dnf-utils && \
   dnf -y install -y 'dnf-command(config-manager)' && \
-  dnf config-manager --add-repo https://dl.winehq.org/wine-builds/fedora/39/winehq.repo && \
   dnf -y --refresh update && \
   dnf -y install rpmconf && \
   (rpmconf --all --unattended use_maintainer || true) && \
@@ -70,6 +69,7 @@ RUN set -x && \
       cppcheck \
       cppcheck-htmlreport \
       cppi \
+      croc \
       curl \
       doxygen \
       expect \
@@ -172,6 +172,7 @@ RUN set -x && \
       mingw32-gcc \
       mingw32-gcc-c++ \
       mingw32-headers \
+      mingw32-win-iconv \
       mingw32-winpthreads \
       mingw32-winpthreads-static \
       mingw64-binutils \
@@ -184,6 +185,7 @@ RUN set -x && \
       mingw64-gcc \
       mingw64-gcc-c++ \
       mingw64-headers \
+      mingw64-win-iconv \
       mingw64-winpthreads \
       mingw64-winpthreads-static \
       mingw-binutils-generic \
@@ -208,7 +210,7 @@ RUN set -x && \
       cygwin64-gcc-c++ \
       cygwin-w32api-headers \
 && \
-  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install winehq-staging && \
+  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install wine && \
   mkdir -p /opt && \
   cd /opt && \
   git clone -v --depth=1 https://github.com/rui314/chibicc && \
@@ -222,7 +224,6 @@ RUN set -x && \
   cd / && \
   (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
      --nogpgcheck ${URL:-http://192.168.1.187:8088/~jhj/cache/aocc-compiler.x86_64.rpm}) && \
-  (ln -fs /opt/AMD/aocc-compiler-4.1.0 /opt/AMD/aocc-compiler-4.0.0 || true) && \
   mkdir -p /tmp/duma-build && \
   cd /tmp/duma-build && \
   git clone -v https://github.com/johnsonjh/duma && \
@@ -252,18 +253,6 @@ RUN set -x && \
     rm -rf /var/log/dnf* > /dev/null 2>&1 && \
     adduser -m -U -G wheel --uid 10000 -c "CI/CD User" user && \
     touch /.OK
-
-# RUN git clone -v https://github.com/Ericsson/codechecker.git --depth=1 && \
-#     cd codechecker && \
-#     (grep 'lxml==4\.9\.2' -rl . | xargs -I{} sed -i 's/lxml==4.9.2/lxml==4.9.3/' "{}" || true) && \
-#     make venv && \
-#     . $(pwd)/venv/bin/activate && \
-#     pip install setuptools && \
-#     env BUILD_LOGGER_64_BIT_ONLY=YES \
-#                    BUILD_UI_DIST=NO \
-# 	make package standalone_package && \
-#     export PATH=/codechecker/build/CodeChecker/bin:$PATH && \
-#     chown user:user -R /codechecker
 
 USER 10000
 

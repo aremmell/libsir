@@ -49,7 +49,9 @@
  *   23:30:26
  *   ~~~
  */
-# define SIR_TIMEFORMAT "%H:%M:%S"
+# if !defined(SIR_TIMEFORMAT)
+#  define SIR_TIMEFORMAT "%H:%M:%S"
+# endif
 
 /**
  * The format for milliseconds (1000ths of a second) in time stamps.
@@ -62,52 +64,73 @@
  *   .034
  *   ~~~
  */
-# define SIR_MSECFORMAT ".%03ld"
+# if !defined(SIR_MSECFORMAT)
+#  define SIR_MSECFORMAT ".%03ld"
+# endif
+
+/**
+ * Define to use <CR><LF> line endings, otherwise use <LF>.
+ */
+# if !defined(SIR_EOL_CRLF)
+#  undef SIR_EOL_CRLF
+# endif
 
 /**
  * The string placed directly before the human-readable logging level.
  *
  * @remark Only applies if ::SIRO_NOLEVEL is not set.
  */
-# define SIR_LEVELPREFIX "["
+# if !defined(SIR_LEVELPREFIX)
+#  define SIR_LEVELPREFIX "["
+# endif
 
 /**
  * The string placed directly after the human-readable logging level.
  *
  * @remark Only applies if ::SIRO_NOLEVEL is not set.
  */
-# define SIR_LEVELSUFFIX "]"
+# if !defined(SIR_LEVELSUFFIX)
+#  define SIR_LEVELSUFFIX "]"
+# endif
 
 /**
  * The string placed directly before process and thread IDs.
  *
  * @remark Only applies if ::SIRO_NONAME is not set.
  */
-# define SIR_PIDPREFIX "("
+# if !defined(SIR_PIDPREFIX)
+#  define SIR_PIDPREFIX "("
+# endif
 
 /**
  * The character placed directly after process and thread IDs.
  *
  * @remark Only applies if ::SIRO_NONAME is not set.
  */
-# define SIR_PIDSUFFIX ")"
+# if !defined(SIR_PIDSUFFIX)
+#  define SIR_PIDSUFFIX ")"
+# endif
 
 /**
  * The format for the current process ID.
  *
  * @remark Only applies if ::SIRO_NOPID is not set.
  */
-# define SIR_PIDFORMAT "%d"
+# if !defined(SIR_PIDFORMAT)
+#  define SIR_PIDFORMAT "%d"
+# endif
 
 /**
  * The format for the current thread ID.
  *
  * @remark Only applies if ::SIRO_NOTID is not set.
  */
-# if defined(__USE_HEX_TIDS__)
-#  define SIR_TIDFORMAT "%x"
-# else
-#  define SIR_TIDFORMAT "%d"
+# if !defined(SIR_TIDFORMAT)
+#  if defined(__USE_HEX_TIDS__)
+#   define SIR_TIDFORMAT "%x"
+#  else
+#   define SIR_TIDFORMAT "%d"
+#  endif
 # endif
 
 /**
@@ -120,16 +143,22 @@
  *   3435.1189
  *   ~~~
  */
-# define SIR_PIDSEPARATOR "."
+# if !defined(SIR_PIDSEPARATOR)
+#  define SIR_PIDSEPARATOR "."
+# endif
 
 /** The string passed to fopen/fopen_s for log files. */
-# define SIR_FOPENMODE "a"
+# if !defined(SIR_FOPENMODE)
+#  define SIR_FOPENMODE "a"
+# endif
 
 /**
  * The size, in bytes, at which a log file will be rolled/archived.
  * @remark Default = 5 MiB.
  */
-# define SIR_FROLLSIZE (1024 * 1024 * 5)
+# if !defined(SIR_FROLLSIZE)
+#  define SIR_FROLLSIZE (1024 * 1024 * 5)
+# endif
 
 /**
  * The time format string used in file headers (see ::SIR_FHFORMAT).
@@ -141,7 +170,9 @@
  *   15:13:41 Fri 9 Jun 2023 (-0600)
  *   ~~~
  */
-# define SIR_FHTIMEFORMAT "%H:%M:%S %a %d %b %Y (%z)"
+# if !defined(SIR_FHTIMEFORMAT)
+#  define SIR_FHTIMEFORMAT "%H:%M:%S %a %d %b %Y (%z)"
+# endif
 
 /**
  * The format string written to a log file when logging begins or the file
@@ -156,14 +187,18 @@
  * - The second `%%s` is the current date/time in the format specified by
  *   ::SIR_FHTIMEFORMAT.
  */
-# define SIR_FHFORMAT "\n\n----- %s %s -----\n\n"
+# if !defined(SIR_FHFORMAT)
+#  define SIR_FHFORMAT "\n\n----- %s %s -----\n\n"
+# endif
 
 /**
  * The string included in ::SIR_FHFORMAT when a logging session begins.
  *
  * @remark Only applies if ::SIRO_NOHDR is not set.
  */
-# define SIR_FHBEGIN "session begin @"
+# if !defined(SIR_FHBEGIN)
+#  define SIR_FHBEGIN "session begin @"
+# endif
 
 /**
  * The string included in ::SIR_FHFORMAT when a file is rolled/archived due to
@@ -173,7 +208,9 @@
  *
  * The `%%s` format specifier is the path of the archived file.
  */
-# define SIR_FHROLLED "archived as %s due to size @"
+# if !defined(SIR_FHROLLED)
+#  define SIR_FHROLLED "archived as %s due to size @"
+# endif
 
 /**
  * The time format string for rolled/archived log files (see ::SIR_FNAMEFORMAT).
@@ -183,7 +220,9 @@
  *   2023-06-09-122049
  *   ~~~
  */
-# define SIR_FNAMETIMEFORMAT "%Y-%m-%d-%H%M%S"
+# if !defined(SIR_FNAMETIMEFORMAT)
+#  define SIR_FNAMETIMEFORMAT "%Y-%m-%d-%H%M%S"
+# endif
 
 /**
  * The sequence number format string for rolled/archived log files (see
@@ -194,7 +233,9 @@
  *   -1
  *   ~~~
  */
-# define SIR_FNAMESEQFORMAT "-%hu"
+# if !defined(SIR_FNAMESEQFORMAT)
+#  define SIR_FNAMESEQFORMAT "-%hu"
+# endif
 
 /**
  * The format string for rolled/archived log file names.
@@ -216,91 +257,135 @@
  *   `oldname.log`  ->  `oldname-23-06-09-122049-1.log`
  *   ~~~
  */
-# define SIR_FNAMEFORMAT "%s-%s%s%s"
+# if !defined(SIR_FNAMEFORMAT)
+#  define SIR_FNAMEFORMAT "%s-%s%s%s"
+# endif
 
 /** The human-readable form of the ::SIRL_EMERG level. */
-# define SIRL_S_EMERG  "emrg"
+# if !defined(SIRL_S_EMERG)
+#  define SIRL_S_EMERG  "emrg"
+# endif
 
 /** The human-readable form of the ::SIRL_ALERT level. */
-# define SIRL_S_ALERT  "alrt"
+# if !defined(SIRL_S_ALERT)
+#  define SIRL_S_ALERT  "alrt"
+# endif
 
 /** The human-readable form of the ::SIRL_CRIT level. */
-# define SIRL_S_CRIT   "crit"
+# if !defined(SIRL_S_CRIT)
+#  define SIRL_S_CRIT   "crit"
+# endif
 
 /** The human-readable form of the ::SIRL_ERROR level. */
-# define SIRL_S_ERROR  "erro"
+# if !defined(SIRL_S_ERROR)
+#  define SIRL_S_ERROR  "erro"
+# endif
 
 /** The human-readable form of the ::SIRL_WARN level. */
-# define SIRL_S_WARN   "warn"
+# if !defined(SIRL_S_WARN)
+#  define SIRL_S_WARN   "warn"
+# endif
 
 /** The human-readable form of the ::SIRL_NOTICE level. */
-# define SIRL_S_NOTICE "noti"
+# if !defined(SIRL_S_NOTICE)
+#  define SIRL_S_NOTICE "noti"
+# endif
 
 /** The human-readable form of the ::SIRL_INFO level. */
-# define SIRL_S_INFO   "info"
+# if !defined(SIRL_S_INFO)
+#  define SIRL_S_INFO   "info"
+# endif
 
 /** The human-readable form of the ::SIRL_DEBUG level. */
-# define SIRL_S_DEBUG  "debg"
+# if !defined(SIRL_S_DEBUG)
+#  define SIRL_S_DEBUG  "debg"
+# endif
 
 /** The maximum number of log files that may be registered at one time. */
-# define SIR_MAXFILES 16
+# if !defined(SIR_MAXFILES)
+#  define SIR_MAXFILES 16
+# endif
 
 /** The maximum number of plugin modules that may be loaded at one time. */
-# define SIR_MAXPLUGINS 16
+# if !defined(SIR_MAXPLUGINS)
+#  define SIR_MAXPLUGINS 16
+# endif
 
 /** The size, in characters, of the buffer used to hold file header format strings. */
-# define SIR_MAXFHEADER 128
+# if !defined(SIR_MAXFHEADER)
+#  define SIR_MAXFHEADER 128
+# endif
 
 /**
  * The maximum number of characters allowable in one log message. This
  * does not include accompanying formatted output (see ::SIR_MAXOUTPUT).
  */
-# define SIR_MAXMESSAGE 4096
+# if !defined(SIR_MAXMESSAGE)
+#  define SIR_MAXMESSAGE 4096
+# endif
 
 /** The size, in characters, of the buffer used to hold time format strings. */
-# define SIR_MAXTIME 64
+# if !defined(SIR_MAXTIME)
+#  define SIR_MAXTIME 64
+# endif
 
 /** The size, in characters, of the buffer used to hold millisecond strings. */
-# define SIR_MAXMSEC 5
+# if !defined(SIR_MAXMSEC)
+#  define SIR_MAXMSEC 5
+# endif
 
 /** The size, in characters, of the buffer used to hold level format strings. */
-# define SIR_MAXLEVEL 7
+# if !defined(SIR_MAXLEVEL)
+#  define SIR_MAXLEVEL 7
+# endif
 
 /**
  * The size, in characters, of the buffer used to hold process/appname
  * format strings.
  */
-# define SIR_MAXNAME 32
+# if !defined(SIR_MAXNAME)
+#  define SIR_MAXNAME 32
+# endif
 
 /**
  * The size, in characters, of the buffer used to hold system logger identity
  * strings.
  */
-# define SIR_MAX_SYSLOG_ID 128
+# if !defined(SIR_MAX_SYSLOG_ID)
+#  define SIR_MAX_SYSLOG_ID 128
+# endif
 
 /**
  * The size, in characters, of the buffer used to hold system logger category
  * strings.
  */
-# define SIR_MAX_SYSLOG_CAT 64
+# if !defined(SIR_MAX_SYSLOG_CAT)
+#  define SIR_MAX_SYSLOG_CAT 64
+# endif
 
 /** The maximum number of whitespace and miscellaneous characters included in output. */
-# define SIR_MAXMISC 7
+# if !defined(SIR_MAXMISC)
+#  define SIR_MAXMISC 7
+# endif
 
 /**
  * The size, in characters, of the buffer used to hold a sequence of styling
  * data in any color mode (the largest possible sequence, which is:
  * `\x1b[a;fb;m;rrr;ggg;bbb;fb;m;rrr;ggg;bbbm`) plus a null terminator.
  */
-# define SIR_MAXSTYLE 43
+# if !defined(SIR_MAXSTYLE)
+#  define SIR_MAXSTYLE 43
+# endif
 
 /** The maximum size, in characters, of final formatted output. */
 # define SIR_MAXOUTPUT \
     (SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME + SIR_MAXLEVEL + \
-        SIR_MAXNAME + (SIR_MAXPID   * 2) + SIR_MAXMISC + 1)
+        SIR_MAXNAME + (SIR_MAXPID   * 2) + SIR_MAXMISC + 2 + 1)
 
 /** The maximum size, in characters, of an error message. */
-# define SIR_MAXERROR 256
+# if !defined(SIR_MAXERROR)
+#  define SIR_MAXERROR 256
+# endif
 
 /**
  * The format string for error messages returned by ::sir_geterror.
@@ -318,22 +403,34 @@
 # define SIR_ERRORFORMAT "Error in %s (%s:%u): '%s'"
 
 /** The string that represents any unknown. */
-# define SIR_UNKNOWN "<unknown>"
+# if !defined(SIR_UNKNOWN)
+#  define SIR_UNKNOWN "<unknown>"
+# endif
 
 /** stderr destination string. */
-# define SIR_DESTNAME_STDERR     "stderr"
+# if !defined(SIR_DESTNAME_STDERR)
+#  define SIR_DESTNAME_STDERR     "stderr"
+# endif
 
 /** stdout destination string. */
-# define SIR_DESTNAME_STDOUT     "stdout"
+# if !defined(SIR_DESTNAME_STDOUT)
+#  define SIR_DESTNAME_STDOUT     "stdout"
+# endif
 
 /** System logger destination string. */
-# define SIR_DESTNAME_SYSLOG     "syslog"
+# if !defined(SIR_DESTNAME_SYSLOG)
+#  define SIR_DESTNAME_SYSLOG     "syslog"
+# endif
 
 /** Fallback system logger identity. */
-# define SIR_FALLBACK_SYSLOG_ID  "libsir"
+# if !defined(SIR_FALLBACK_SYSLOG_ID)
+#  define SIR_FALLBACK_SYSLOG_ID  "libsir"
+# endif
 
 /** Fallback system logger category. */
-# define SIR_FALLBACK_SYSLOG_CAT "general"
+# if !defined(SIR_FALLBACK_SYSLOG_CAT)
+#  define SIR_FALLBACK_SYSLOG_CAT "general"
+# endif
 
 /**
  * The number of actual levels; ::SIRL_NONE, ::SIRL_ALL, and ::SIRL_DEFAULT
@@ -351,19 +448,25 @@
  * The number of seconds to let elapse before checking if the hostname needs
  * refreshing. The default is an eager 1 minute. Better safe than wrong?
  */
-# define SIR_HNAME_CHK_INTERVAL 60
+# if !defined(SIR_HNAME_CHK_INTERVAL)
+#  define SIR_HNAME_CHK_INTERVAL 60
+# endif
 
 /**
  * The number of milliseconds to let elapse before re-formatting the current
  * thread identifier and/or name.
  */
-# define SIR_THRD_CHK_INTERVAL 333.0
+# if !defined(SIR_THRD_CHK_INTERVAL)
+#  define SIR_THRD_CHK_INTERVAL 333.0
+# endif
 
 /**
  * The number of writes to a file to let occur before checking its current size to
  * determine if it needs to be rolled.
  */
-# define SIR_FILE_CHK_SIZE_WRITES 10
+# if !defined(SIR_FILE_CHK_SIZE_WRITES)
+#  define SIR_FILE_CHK_SIZE_WRITES 10
+# endif
 
 # if defined(SIR_OS_LOG_ENABLED)
 /**
@@ -371,7 +474,9 @@
  * show "<private>" in place of the original message. By using "%{public}s", the
  * message contents will be visible in the log.
  */
-#  define SIR_OS_LOG_FORMAT "%{public}s"
+#  if !defined(SIR_OS_LOG_FORMAT)
+#   define SIR_OS_LOG_FORMAT "%{public}s"
+#  endif
 # endif
 
 /**
@@ -379,19 +484,25 @@
  * squelch further identical messages, and instead log the message
  * ::SIR_SQUELCH_MSG_FORMAT.
  */
-# define SIR_SQUELCH_THRESHOLD 5
+# if !defined(SIR_SQUELCH_THRESHOLD)
+#  define SIR_SQUELCH_THRESHOLD 5
+# endif
 
 /**
  * If duplicate messages continue to be logged after the threshold is met, the
  * threshold will be multiplied by this number, resulting in longer intervals
  * between ::SIR_SQUELCH_MSG_FORMAT messages.
  */
-# define SIR_SQUELCH_BACKOFF_FACTOR 2
+# if !defined(SIR_SQUELCH_BACKOFF_FACTOR)
+#  define SIR_SQUELCH_BACKOFF_FACTOR 2
+# endif
 
 /**
  * The message to be logged when ::SIR_SQUELCH_THRESHOLD (or a multiple thereof)
  * consecutive duplicate messages are logged.
  */
-# define SIR_SQUELCH_MSG_FORMAT "previous message repeated %zu times"
+# if !defined(SIR_SQUELCH_MSG_FORMAT)
+#  define SIR_SQUELCH_MSG_FORMAT "previous message repeated %zu times"
+# endif
 
 #endif /* !_SIR_CONFIG_H_INCLUDED */
