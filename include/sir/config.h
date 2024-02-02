@@ -69,10 +69,10 @@
 # endif
 
 /**
- * Define to use <CR><NL> line endings, otherwise use <NL>.
+ * Define to use <CR><LF> line endings, otherwise use <LF>.
  */
-# if !defined(SIR_EOL_CRNL)
-#  undef SIR_EOL_CRNL
+# if !defined(SIR_EOL_CRLF)
+#  undef SIR_EOL_CRLF
 # endif
 
 /**
