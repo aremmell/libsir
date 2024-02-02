@@ -380,7 +380,7 @@
 /** The maximum size, in characters, of final formatted output. */
 # define SIR_MAXOUTPUT \
     (SIR_MAXMESSAGE + (SIR_MAXSTYLE * 2) + SIR_MAXTIME + SIR_MAXLEVEL + \
-        SIR_MAXNAME + (SIR_MAXPID   * 2) + SIR_MAXMISC + 2)
+        SIR_MAXNAME + (SIR_MAXPID   * 2) + SIR_MAXMISC + 2 + 1)
 
 /** The maximum size, in characters, of an error message. */
 # if !defined(SIR_MAXERROR)
