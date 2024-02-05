@@ -620,11 +620,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #  define SIR_ONCE_INIT INIT_ONCE_STATIC_INIT
 
 /** The mutex initializer. */
-#  if !defined(__IMPORTC__)
-#   define SIR_MUTEX_INIT {0}
-#  else
-#   define SIR_MUTEX_INIT 0
-#  endif
+#  define SIR_MUTEX_INIT {0}
 
 # endif /* !__WIN__ */
 
