@@ -325,9 +325,8 @@ _set_thread_local_invalid_parameter_handler(
 # endif
 
 # if defined(_AIX)
-#  if defined(_LINUX_SOURCE_COMPAT) && defined(_ALL_SOURCE)
-#   undef _LINUX_SOURCE_COMPAT
-#   undef _ALL_SOURCE
+#  if !defined(_ALL_SOURCE)
+#   define _ALL_SOURCE
 #  endif
 #  if defined(_GNU_SOURCE)
 #   undef _GNU_SOURCE
@@ -450,7 +449,9 @@ _set_thread_local_invalid_parameter_handler(
 #   include <stdatomic.h>
 #  endif
 #  if defined(SIR_SYSLOG_ENABLED)
-#   include <syslog.h>
+#   if !defined(__cplusplus)
+#    include <syslog.h>
+#   endif
 #  endif
 #  if defined(__CYGWIN__)
 #   undef SIR_NO_THREAD_NAMES

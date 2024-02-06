@@ -242,6 +242,30 @@ ifeq ($(KEFIR),1)
 endif
 
 ################################################################################
+# IBM i (OS/400) PASE
+
+ifneq "$(findstring OS400,$(UNAME_S))" ""
+  IBMOS400?=1
+endif
+
+ifeq ($(IBMOS400),1)
+  DBGFLAGS=-Og
+  OBJECT_MODE=64
+  export OBJECT_MODE
+  ifneq "$(findstring gcc,$(CC))" ""
+    OS400GCC=1
+    SIR_CFLAGS+=-fPIC -maix64 -Wl,-b64 -Wl,-brtl
+  endif
+  ifneq "$(findstring g++,$(CXX))" ""
+    OS400GCC=1
+    SIR_XFLAGS+=-fPIC -maix64 -Wl,-b64 -Wl,-brtl
+  endif
+  ifeq ($(OS400GCC),1)
+    SIR_LDFLAGS+=-fPIC -maix64 -Wl,-b64 -Wl,-brtl
+  endif
+endif
+
+################################################################################
 # IBM XL C/C++ and GCC for AIX
 
 ifneq "$(findstring AIX,$(UNAME_S))" ""
