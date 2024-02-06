@@ -331,6 +331,9 @@ _set_thread_local_invalid_parameter_handler(
 #  if defined(_GNU_SOURCE)
 #   undef _GNU_SOURCE
 #  endif
+#  if !defined(_THREAD_SAFE)
+#   define _THREAD_SAFE
+#  endif
 # endif
 
 # if defined(SIR_ASSERT_ENABLED)
