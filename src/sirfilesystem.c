@@ -441,7 +441,7 @@ bool _sir_getrelbasepath(const char* restrict path, bool* restrict relative,
 
 #if defined(_AIX)
 # if !defined(__PASE__)
-# define SIR_MAXSLPATH (SIR_MAXPATH + 16)
+#  define SIR_MAXSLPATH (SIR_MAXPATH + 16)
 int _sir_aixself(char* buffer, size_t* size) {
     ssize_t res;
     char cwd[SIR_MAXPATH], cwdl[SIR_MAXPATH];
@@ -693,7 +693,7 @@ int _sir_openbsdself(char* buffer, int size) {
 }
 #endif
 
-# if defined(__OpenBSD__) || (defined(_AIX) && defined(__PASE__))
+#if defined(__OpenBSD__) || (defined(_AIX) && defined(__PASE__))
 int _sir_resolvepath(const char* restrict path, char* restrict buffer, size_t size) {
     if (!_sir_validstr(path) || !_sir_validptr(buffer))
         return -1;
@@ -734,4 +734,4 @@ int _sir_resolvepath(const char* restrict path, char* restrict buffer, size_t si
 
     return length;
 }
-# endif
+#endif
