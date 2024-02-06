@@ -1,7 +1,7 @@
 /*
  * mcmb.c
  *
- * Version: 2120.4.17-dps (libcmb 3.5.6)
+ * Version: 2120.4.18-dps (libcmb 3.5.6)
  *
  * -----------------------------------------------------------------------------
  *
@@ -495,7 +495,7 @@ static struct cmb_xitem *cmb_transform_find;
 # define CMB_PARSE_FRAGSIZE 512
 #endif /* ifndef CMB_PARSE_FRAGSIZE */
 
-static const char mcmbver[]         = "2120.4.17-dps";
+static const char mcmbver[]         = "2120.4.18-dps";
 static const char libversion[]      = "libcmb 3.5.6";
 
 /*
@@ -2380,6 +2380,7 @@ main(int argc, char *argv[])
               h = hash32s(&ptr, sizeof(ptr), h);
               time_t t = time(0);
               h = hash32s(&t, sizeof(t), h);
+#if !defined(_AIX)
               for (int i = 0; i < 1000; i++)
                 {
                   unsigned long counter = 0;
@@ -2391,6 +2392,7 @@ main(int argc, char *argv[])
                   h = hash32s(&start, sizeof(start), h);
                   h = hash32s(&counter, sizeof(counter), h);
                 }
+#endif
               int mypid = (int)getpid();
               h = hash32s(&mypid, sizeof(mypid), h);
               char rnd[4];

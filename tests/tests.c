@@ -1099,7 +1099,11 @@ bool sirtest_mutexsanity(void) {
     TEST_MSG_0(WHITEB("create, lock, unlock, destroy"));
     (void)printf(INDENT_ITEM WHITE("creating mutex...") "\n");
 
+#if !defined(__IMPORTC__)
     sir_mutex m1 = SIR_MUTEX_INIT;
+#else
+    sir_mutex m1 = {0};
+#endif
     _sir_eqland(pass, _sir_mutexcreate(&m1));
 
     (void)print_test_error(pass, pass);
