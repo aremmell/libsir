@@ -77,7 +77,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
 #  error "unknown open_flags for your platform; please contact the developers."
 # endif
 
-        int fd = open(base_path, open_flags);
+        int fd = (rel_to == SIR_PATH_REL_TO_CWD) ? AT_FDCWD : open(base_path, open_flags);
         if (-1 == fd) {
             _sir_safefree(&base_path);
             return _sir_handleerr(errno);
@@ -457,21 +457,29 @@ int _sir_aixself(char* buffer, size_t* size) {
     (void)snprintf(pp, sizeof(pp), "/proc/%llu/psinfo", (unsigned long long)_sir_getpid());
 
     fd = open(pp, O_RDONLY);
-    if (fd < 0)
+    if (fd < 0) {
+    _sir_selflog("failed to open %s; errno: %d", pp, errno);
         return -1;
+    }
 
     res = read(fd, &ps, sizeof(ps));
     close(fd);
-    if (res < 0)
+    if (res < 0) {
+        _sir_selflog("failed to read %d; errno: %d", fd, errno);
         return -1;
+    }
 
-    if (ps.pr_argv == 0)
+    if (ps.pr_argv == 0) {
+        _sir_selflog("error: ps.pr_argv == 0");
         return -1;
+    }
 
     argv = (char**)*((char***)(intptr_t)ps.pr_argv);
 
-    if ((argv == NULL) || (argv[0] == NULL))
+    if ((argv == NULL) || (argv[0] == NULL)) {
+        _sir_selflog("error: argv[0] is empty");
         return -1;
+    }
 
     if (argv[0][0] == '/') {
         (void)snprintf(symlink, SIR_MAXPATH, "%s", argv[0]);
@@ -487,8 +495,10 @@ int _sir_aixself(char* buffer, size_t* size) {
         return 0;
     } else if (argv[0][0] == '.') {
         char* relative = strchr(argv[0], '/');
-        if (relative == NULL)
+        if (relative == NULL) {
+            _sir_selflog("error: argv[0] contains no /");
             return -1;
+        }
 
         (void)snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
         res = _sir_readlink(cwd, cwdl, sizeof(cwdl) - 1);
@@ -509,8 +519,10 @@ int _sir_aixself(char* buffer, size_t* size) {
         (void)snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
 
         res = _sir_readlink(cwd, cwdl, sizeof(cwdl) - 1);
-        if (res < 0)
+        if (res < 0) {
+            _sir_selflog("failed to readlink %s; errno: %d", cwd, errno);
             return -1;
+        }
 
         (void)snprintf(symlink, SIR_MAXPATH, "%s%s", cwdl, argv[0]);
 
@@ -528,8 +540,10 @@ int _sir_aixself(char* buffer, size_t* size) {
         struct stat statstruct;
 
         char* path = getenv("PATH");
-        if (sizeof(clonedpath) <= strnlen(path, SIR_MAXPATH))
+        if (sizeof(clonedpath) <= strnlen(path, SIR_MAXPATH)) {
+            _sir_selflog("error: sizeof(clonedpath) <= strnlen(path, SIR_MAXPATH)");
             return -1;
+        }
 
         (void)_sir_strncpy(clonedpath, SIR_MAXPATH, path, SIR_MAXPATH);
 
@@ -538,8 +552,10 @@ int _sir_aixself(char* buffer, size_t* size) {
         (void)snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
 
         res = _sir_readlink(cwd, cwdl, sizeof(cwdl) - 1);
-        if (res < 0)
+        if (res < 0) {
+            _sir_selflog("failed to readlink %s; errno: %d", cwd, errno);
             return -1;
+        }
 
         while (token != NULL) {
             if (token[0] == '.') {
