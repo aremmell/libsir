@@ -584,14 +584,10 @@ bool sirtest_failremovebadfile(void) {
 }
 
 bool sirtest_rollandarchivefile(void) {
-    static const char* filename = "rollandarchive";
-    static const char* ext1     = ".log";
-    static const char* ext2     = "";
-
     bool pass = true;
 
-    _sir_eqland(pass, roll_and_archive(filename, ext1));
-    _sir_eqland(pass, roll_and_archive(filename, ext2));
+    _sir_eqland(pass, roll_and_archive("rollandarchive1", ".log"));
+    _sir_eqland(pass, roll_and_archive("rollandarchive2", ""));
 
     return pass;
 }
