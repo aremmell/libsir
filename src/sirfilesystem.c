@@ -460,26 +460,22 @@ int _sir_aixself(char* buffer, size_t* size) {
 
     fd = open(pp, O_RDONLY);
     if (fd < 0) {
-    _sir_selflog("failed to open %s; errno: %d", pp, errno);
         return -1;
     }
 
     res = read(fd, &ps, sizeof(ps));
     close(fd);
     if (res < 0) {
-        _sir_selflog("failed to read %d; errno: %d", fd, errno);
         return -1;
     }
 
     if (ps.pr_argv == 0) {
-        _sir_selflog("error: ps.pr_argv == 0");
         return -1;
     }
 
     argv = (char**)*((char***)(intptr_t)ps.pr_argv);
 
     if ((argv == NULL) || (argv[0] == NULL)) {
-        _sir_selflog("error: argv[0] is empty");
         return -1;
     }
 
@@ -498,7 +494,6 @@ int _sir_aixself(char* buffer, size_t* size) {
     } else if (argv[0][0] == '.') {
         char* relative = strchr(argv[0], '/');
         if (relative == NULL) {
-            _sir_selflog("error: argv[0] contains no /");
             return -1;
         }
 
@@ -522,7 +517,6 @@ int _sir_aixself(char* buffer, size_t* size) {
 
         res = _sir_readlink(cwd, cwdl, sizeof(cwdl) - 1);
         if (res < 0) {
-            _sir_selflog("failed to readlink %s; errno: %d", cwd, errno);
             return -1;
         }
 
@@ -543,7 +537,6 @@ int _sir_aixself(char* buffer, size_t* size) {
 
         char* path = getenv("PATH");
         if (sizeof(clonedpath) <= strnlen(path, SIR_MAXPATH)) {
-            _sir_selflog("error: sizeof(clonedpath) <= strnlen(path, SIR_MAXPATH)");
             return -1;
         }
 
@@ -555,7 +548,6 @@ int _sir_aixself(char* buffer, size_t* size) {
 
         res = _sir_readlink(cwd, cwdl, sizeof(cwdl) - 1);
         if (res < 0) {
-            _sir_selflog("failed to readlink %s; errno: %d", cwd, errno);
             return -1;
         }
 
