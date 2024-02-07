@@ -458,25 +458,21 @@ int _sir_aixself(char* buffer, size_t* size) {
     (void)snprintf(pp, sizeof(pp), "/proc/%llu/psinfo", (unsigned long long)_sir_getpid());
 
     fd = open(pp, O_RDONLY);
-    if (fd < 0) {
+    if (fd < 0)
         return -1;
-    }
 
     res = read(fd, &ps, sizeof(ps));
     close(fd);
-    if (res < 0) {
+    if (res < 0)
         return -1;
-    }
 
-    if (ps.pr_argv == 0) {
+    if (ps.pr_argv == 0)
         return -1;
-    }
 
     argv = (char**)*((char***)(intptr_t)ps.pr_argv);
 
-    if ((argv == NULL) || (argv[0] == NULL)) {
+    if ((argv == NULL) || (argv[0] == NULL))
         return -1;
-    }
 
     if (argv[0][0] == '/') {
         (void)snprintf(symlink, SIR_MAXPATH, "%s", argv[0]);
@@ -492,9 +488,8 @@ int _sir_aixself(char* buffer, size_t* size) {
         return 0;
     } else if (argv[0][0] == '.') {
         char* relative = strchr(argv[0], '/');
-        if (relative == NULL) {
+        if (relative == NULL)
             return -1;
-        }
 
         (void)snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
         res = _sir_readlink(cwd, cwdl, sizeof(cwdl) - 1);
@@ -515,9 +510,8 @@ int _sir_aixself(char* buffer, size_t* size) {
         (void)snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
 
         res = _sir_readlink(cwd, cwdl, sizeof(cwdl) - 1);
-        if (res < 0) {
+        if (res < 0)
             return -1;
-        }
 
         (void)snprintf(symlink, SIR_MAXPATH, "%s%s", cwdl, argv[0]);
 
@@ -535,9 +529,8 @@ int _sir_aixself(char* buffer, size_t* size) {
         struct stat statstruct;
 
         char* path = getenv("PATH");
-        if (sizeof(clonedpath) <= strnlen(path, SIR_MAXPATH)) {
+        if (sizeof(clonedpath) <= strnlen(path, SIR_MAXPATH))
             return -1;
-        }
 
         (void)_sir_strncpy(clonedpath, SIR_MAXPATH, path, SIR_MAXPATH);
 
@@ -546,9 +539,8 @@ int _sir_aixself(char* buffer, size_t* size) {
         (void)snprintf(cwd, SIR_MAXPATH, "/proc/%llu/cwd", (unsigned long long)_sir_getpid());
 
         res = _sir_readlink(cwd, cwdl, sizeof(cwdl) - 1);
-        if (res < 0) {
+        if (res < 0)
             return -1;
-        }
 
         while (token != NULL) {
             if (token[0] == '.') {
