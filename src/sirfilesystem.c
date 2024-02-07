@@ -89,6 +89,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         SIR_UNUSED(open_flags);
         int fd = AT_FDCWD;
         if (rel_to == SIR_PATH_REL_TO_CWD) {
+            /* cppcheck-suppress invalidFunctionArg */
             stat_ret = fstatat(fd, path, st, AT_SYMLINK_NOFOLLOW);
         } else if (rel_to == SIR_PATH_REL_TO_APP) {
             char abs_path[SIR_MAXPATH] = {0};
