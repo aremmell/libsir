@@ -255,7 +255,7 @@ Linux/i686 (G++, GCC):
 
 ################################################################################
 
-Linux/x86_64 (musl-libc, G++, GCC):
+.Linux/x86_64 (musl-libc, G++, GCC):
   stage: build_linux
   needs:
     - job: Style check
