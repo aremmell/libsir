@@ -252,6 +252,8 @@ ifeq ($(IBMOS400),1)
   DBGFLAGS=-Og
   OBJECT_MODE=64
   export OBJECT_MODE
+  SIR_CFLAGS+=-D_THREAD_SAFE
+  SIR_XFLAGS+=-D_THREAD_SAFE
   ifneq "$(findstring gcc,$(CC))" ""
     OS400GCC=1
     SIR_CFLAGS+=-fPIC -maix64 -Wl,-b64 -Wl,-brtl
@@ -283,6 +285,8 @@ ifeq ($(IBMAIX),1)
   DBGFLAGS=-g
   OBJECT_MODE=64
   export OBJECT_MODE
+  SIR_CFLAGS+=-D_THREAD_SAFE
+  SIR_XFLAGS+=-D_THREAD_SAFE
   ifneq "$(findstring gcc,$(CC))" ""
     IBMAIX_GCC=1
     SIR_CFLAGS+=-fPIC -maix64 -ftls-model=global-dynamic
