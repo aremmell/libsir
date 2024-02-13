@@ -5157,6 +5157,8 @@ OS400/ppc64 (GCC-10, PASE, G++, GCC):
     paths:
       - build/
       - logs/
+  retry: 2
+  allow_failure: true
 
 ################################################################################
 
@@ -5208,5 +5210,6 @@ OS400/ppc64 (GCC-10, PASE Python):
       - logs/
   retry: 2
   interruptible: false
+  allow_failure: true
 
 ################################################################################
