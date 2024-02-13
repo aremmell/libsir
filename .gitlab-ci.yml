@@ -35,6 +35,7 @@
 
 stages:
   - sanity
+  - build_os400
   - build_linux
   - build_freebsd
   - build_openbsd
@@ -5125,21 +5126,21 @@ Windows/Arm64 (MSVC, MSBuild, Profiling, C++, C):
 OS400 Runner check:
   stage: sanity
   needs:
-    - job: Sanity check
+    - job: Style check
   tags:
     - OS400
     - SSH-ppc64
   script:
-    - false
+    - env false
   dependencies: []
   retry: 2
   interruptible: false
   allow_failure: true
 
-################################################################################
+#################################################################################
 
 OS400/ppc64 (GCC-10, PASE, G++, GCC):
-  stage: build
+  stage: build_os400
   needs:
     - job: OS400 Runner check
   tags:
@@ -5180,4 +5181,4 @@ OS400/ppc64 (GCC-10, PASE, G++, GCC):
       - logs/
       - screenlog.0
 
-################################################################################
+#################################################################################
