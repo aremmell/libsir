@@ -5126,7 +5126,7 @@ Windows/Arm64 (MSVC, MSBuild, Profiling, C++, C):
 OS400/ppc64 (GCC-10, PASE, G++, GCC):
   stage: build_os400
   needs:
-    - job: Sanity check
+    - job: Style check
   tags:
     - OS400
     - SSH-ppc64
