@@ -4116,7 +4116,6 @@ Windows/Arm (Clang-CL, C-only):
     paths:
       - build/
       - logs/
-      - screenlog.0
       - ./*.out
   retry: 2
   interruptible: true
@@ -4164,7 +4163,6 @@ Windows/Arm64 (Clang-CL, C++, C):
     paths:
       - build/
       - logs/
-      - screenlog.0
       - ./*.out
   retry: 2
   interruptible: true
@@ -4964,7 +4962,6 @@ Windows/x64 (MSVC, MSBuild, Debug, C++, C):
     paths:
       - build/
       - logs/
-      - screenlog.0
       - ./*.out
   retry: 2
   interruptible: true
@@ -5002,7 +4999,6 @@ Windows/x64 (MSVC, MSBuild, Profiling, C++, C):
     paths:
       - build/
       - logs/
-      - screenlog.0
       - ./*.out
   retry: 2
   interruptible: true
@@ -5040,7 +5036,6 @@ Windows/Arm64 (MSVC, MSBuild, Release, C++, C):
     paths:
       - build/
       - logs/
-      - screenlog.0
       - ./*.out
   retry: 2
   interruptible: true
@@ -5078,7 +5073,6 @@ Windows/Arm64 (MSVC, MSBuild, Debug, C++, C):
     paths:
       - build/
       - logs/
-      - screenlog.0
       - ./*.out
   retry: 2
   interruptible: true
@@ -5116,7 +5110,6 @@ Windows/Arm64 (MSVC, MSBuild, Profiling, C++, C):
     paths:
       - build/
       - logs/
-      - screenlog.0
       - ./*.out
   retry: 2
   interruptible: true
@@ -5164,7 +5157,6 @@ OS400/ppc64 (GCC-10, PASE, G++, GCC):
     paths:
       - build/
       - logs/
-      - screenlog.0
 
 #################################################################################
 
