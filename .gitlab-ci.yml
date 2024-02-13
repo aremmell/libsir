@@ -579,7 +579,7 @@ Linux/x86_64 (Chamois-CompCert, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/i386 (Chamois-CompCert, C-only):
   stage: build_linux
@@ -622,7 +622,7 @@ Linux/i386 (Chamois-CompCert, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (Oracle Studio C, C-only):
   stage: build_linux
@@ -2656,7 +2656,7 @@ Windows/x64 (Embarcadero Athens, BCC64, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/x64 (Embarcadero Athens, BCC64X, C-only):
   stage: build_windows
@@ -2709,7 +2709,7 @@ Windows/x64 (Embarcadero Athens, BCC64X, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/i686 (Embarcadero Athens, BCC32X, C-only):
   stage: build_windows
@@ -2762,7 +2762,7 @@ Windows/i686 (Embarcadero Athens, BCC32X, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Clang Sanitizer (UB, 32-bit, C-only):
   stage: lint_dynamic
@@ -5158,7 +5158,7 @@ OS400/ppc64 (GCC-10, PASE, G++, GCC):
       - build/
       - logs/
 
-#################################################################################
+################################################################################
 
 OS400/ppc64 (GCC-10, PASE Python):
   stage: build_python
