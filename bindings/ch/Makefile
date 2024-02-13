@@ -77,11 +77,13 @@ libsir.dl: sir_chdl.o chsir.h ../../build/lib/libsir_s.a $(GEN_FUNCS)
 	env LDFLAGS="$(LDFLAGS) $(SIR_LDFLAGS)" \
 	  CC="$(CC) $(OPTFLAGS) $(CFLAGS) $(SIR_CFLAGS)" \
 	ch dllink libsir.dl sir_chdl.o ../../build/lib/libsir_s.a
+	@test -f libsir.dl
 
 sir_chdl.o: sir_chdl.c chsir.h
 	env LDFLAGS="$(LDFLAGS) $(SIR_LDFLAGS)" \
 	  CC="$(CC) $(OPTFLAGS) $(CFLAGS) $(SIR_CFLAGS)" \
 	ch dlcomp libsir.dl sir_chdl.c -I. -I../../include -D_CH_BUILD
+	@test -f sir_chdl.o
 
 chsir.h: ../../include/sir.h
 

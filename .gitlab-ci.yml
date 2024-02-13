@@ -44,6 +44,7 @@ stages:
   - build_windows_msbuild
   - build_cygwin
   - build_js
+  - build_os400
   - build_python
   - build_ch
   - coverage
@@ -578,7 +579,7 @@ Linux/x86_64 (Chamois-CompCert, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/i386 (Chamois-CompCert, C-only):
   stage: build_linux
@@ -621,7 +622,7 @@ Linux/i386 (Chamois-CompCert, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Linux/x86_64 (Oracle Studio C, C-only):
   stage: build_linux
@@ -2655,7 +2656,7 @@ Windows/x64 (Embarcadero Athens, BCC64, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/x64 (Embarcadero Athens, BCC64X, C-only):
   stage: build_windows
@@ -2708,7 +2709,7 @@ Windows/x64 (Embarcadero Athens, BCC64X, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Windows/i686 (Embarcadero Athens, BCC32X, C-only):
   stage: build_windows
@@ -2761,7 +2762,7 @@ Windows/i686 (Embarcadero Athens, BCC32X, C-only):
   retry: 2
   interruptible: true
 
-##############################################################################
+################################################################################
 
 Clang Sanitizer (UB, 32-bit, C-only):
   stage: lint_dynamic
@@ -4115,7 +4116,6 @@ Windows/Arm (Clang-CL, C-only):
     paths:
       - build/
       - logs/
-      - screenlog.0
       - ./*.out
   retry: 2
   interruptible: true
@@ -4163,7 +4163,6 @@ Windows/Arm64 (Clang-CL, C++, C):
     paths:
       - build/
       - logs/
-      - screenlog.0
       - ./*.out
   retry: 2
   interruptible: true
@@ -4963,7 +4962,6 @@ Windows/x64 (MSVC, MSBuild, Debug, C++, C):
     paths:
       - build/
       - logs/
-      - screenlog.0
       - ./*.out
   retry: 2
   interruptible: true
@@ -5001,7 +4999,6 @@ Windows/x64 (MSVC, MSBuild, Profiling, C++, C):
     paths:
       - build/
       - logs/
-      - screenlog.0
       - ./*.out
   retry: 2
   interruptible: true
@@ -5039,7 +5036,6 @@ Windows/Arm64 (MSVC, MSBuild, Release, C++, C):
     paths:
       - build/
       - logs/
-      - screenlog.0
       - ./*.out
   retry: 2
   interruptible: true
@@ -5077,7 +5073,6 @@ Windows/Arm64 (MSVC, MSBuild, Debug, C++, C):
     paths:
       - build/
       - logs/
-      - screenlog.0
       - ./*.out
   retry: 2
   interruptible: true
@@ -5115,9 +5110,54 @@ Windows/Arm64 (MSVC, MSBuild, Profiling, C++, C):
     paths:
       - build/
       - logs/
-      - screenlog.0
       - ./*.out
   retry: 2
   interruptible: true
+
+################################################################################
+
+OS400/ppc64 (GCC-10, PASE, G++, GCC):
+  stage: build_os400
+  needs:
+    - job: Style check
+  tags:
+    - OS400
+    - SSH-ppc64
+  script:
+    - *Configuration
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export CC="ccache gcc-10"
+    - export CXX="ccache g++-10"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - gmake
+    - gmake tests++
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - ccache -cC > /dev/null 2>&1 || true
+    - *BuildInformation
+    - |
+      # Start of Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests++
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
+  dependencies: []
+  interruptible: false
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  allow_failure: true
 
 ################################################################################
