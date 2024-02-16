@@ -2209,6 +2209,7 @@ PVS-Studio:
   tags:
     - Docker-x64
     - Linux
+    - AVX
   image:
     name: registry.gitlab.com/libsir/libsir/pvs:latest
   script:
