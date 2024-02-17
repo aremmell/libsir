@@ -249,7 +249,7 @@ ifneq "$(findstring OS400,$(UNAME_S))" ""
 endif
 
 ifeq ($(IBMOS400),1)
-  DBGFLAGS=-Og
+  DBGFLAGS=-g
   OBJECT_MODE=64
   export OBJECT_MODE
   SIR_CFLAGS+=-D_THREAD_SAFE
@@ -263,6 +263,8 @@ ifeq ($(IBMOS400),1)
     SIR_XFLAGS+=-fPIC -maix64 -Wl,-b64 -Wl,-brtl
   endif
   ifeq ($(OS400GCC),1)
+    DBGFLAGS=-Og
+    WPEDANTIC=
     SIR_LDFLAGS+=-fPIC -maix64 -Wl,-b64 -Wl,-brtl
   endif
 endif
