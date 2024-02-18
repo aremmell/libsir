@@ -1673,7 +1673,7 @@ main(int argc, char *argv[])
    * Calculate number of items
    */
 
-  if (nitems == 0 || nitems > (uint32_t)argc) // -V560
+  if (nitems == 0 || nitems > (uint32_t)argc) //-V560
     {
       nitems = (uint32_t)argc;
     }
