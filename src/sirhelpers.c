@@ -327,13 +327,13 @@ bool _sir_getchar(char* input) {
 
 #if !defined(GCC_STATIC_ANALYZER)
 typedef void*(*_sir_explicit_memset_t)(void*, int, size_t);
-static const volatile _sir_explicit_memset_t _sir_explicit_memset_function = memset;
+static const volatile _sir_explicit_memset_t _sir_explicit_memset_impl = memset;
 #else
-# define _sir_explicit_memset_function(s, c, n) memset(s, c, n)
+# define _sir_explicit_memset_impl(s, c, n) memset(s, c, n)
 #endif
-void* _sir_explicit_memset(void *ptr, int c, size_t len)
+void* _sir_explicit_memset(void* ptr, int c, size_t len)
 {
-    return _sir_explicit_memset_function(ptr, c, len);
+    return _sir_explicit_memset_impl(ptr, c, len);
 }
 
 char* _sir_strremove(char *str, const char *sub) {
