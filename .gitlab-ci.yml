@@ -2451,7 +2451,7 @@ GCC Static Analyzer (Release):
       echo -e "section_start:`date +%s`:GCCSA_section[collapsed=true]\r\e[0K\033[0;36mGCC Static Analyzer ...\033[0m" || true
     - export CC="gcc"
     - ${CC:?} --version
-    - export CFLAGS="-fanalyzer -fanalyzer-verbosity=3 -Werror"
+    - export CFLAGS="-fanalyzer -fanalyzer-verbosity=3 -DGCC_STATIC_ANALYZER -Werror"
     - make FORTIFY_FLAGS="-U_FORTIFY_SOURCE"
     - |
       # End of GCC Static Analyzer ...
@@ -2484,7 +2484,7 @@ GCC Static Analyzer (Debug):
       echo -e "section_start:`date +%s`:GCCDA_section[collapsed=true]\r\e[0K\033[0;36mGCC Static Analyzer ...\033[0m" || true
     - export CC="gcc"
     - ${CC:?} --version
-    - export CFLAGS="-fno-inline -fanalyzer -fanalyzer-verbosity=3 -Werror"
+    - export CFLAGS="-fno-inline -fanalyzer -fanalyzer-verbosity=3 -DGCC_STATIC_ANALYZER -Werror"
     - make SIR_DEBUG=1 FORTIFY_FLAGS="-U_FORTIFY_SOURCE"
     - |
       # End of GCC Static Analyzer ...

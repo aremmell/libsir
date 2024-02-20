@@ -476,6 +476,12 @@ uint64_t FNV64_1a(const char* str) {
 }
 
 /**
+ * Unconditionally and explicitly fill the first "len" bytes of
+ * the memory area pointed to by "ptr" with the constant byte "c".
+ */
+void* _sir_explicit_memset(void *ptr, int c, size_t len);
+
+/**
  * Remove all occurrences of substring "sub" in string "str".
  */
 char* _sir_strremove(char *str, const char *sub);

@@ -587,7 +587,7 @@ bool _sir_fcache_destroy(sirfcache* sfc) {
             sfc->count--;
         }
 
-        (void)memset(sfc, 0, sizeof(sirfcache));
+        (void)_sir_explicit_memset(sfc, 0, sizeof(sirfcache));
     }
 
     return retval;
