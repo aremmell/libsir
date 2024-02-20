@@ -366,7 +366,11 @@ char* _sir_strsqueeze(char *str) {
 }
 
 char* _sir_strredact(char *str, const char *sub, const char c) {
+#if !defined(GCC_STATIC_ANALYZER)
     void*(*const volatile explicit_memset) (void*, int, size_t) = memset;
+#else
+# define explicit_memset memset
+#endif
 
     if (!str)
         return NULL;

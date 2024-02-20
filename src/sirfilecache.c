@@ -577,11 +577,7 @@ sirfile* _sir_fcache_find(const sirfcache* sfc, const void* match, sir_fcache_pr
 
 bool _sir_fcache_destroy(sirfcache* sfc) {
     bool retval = _sir_validptr(sfc);
-#if !defined(GCC_STATIC_ANALYZER)
     void*(*const volatile explicit_memset) (void*, int, size_t) = memset;
-#else
-# define explicit_memset memset
-#endif
 
     if (retval) {
         while (sfc->count > 0) {
