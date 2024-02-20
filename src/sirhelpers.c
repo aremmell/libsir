@@ -366,6 +366,8 @@ char* _sir_strsqueeze(char *str) {
 }
 
 char* _sir_strredact(char *str, const char *sub, const char c) {
+    void*(*const volatile explicit_memset) (void*, int, size_t) = memset;
+
     if (!str)
         return NULL;
 
@@ -377,7 +379,7 @@ char* _sir_strredact(char *str, const char *sub, const char c) {
     if (!c || !p)
         return str;
 
-    (void)memset(p, c, strnlen(sub, strlen(str)));
+    (void)explicit_memset(p, c, strnlen(sub, strlen(str)));
 
     return _sir_strredact(str, sub, c);
 }

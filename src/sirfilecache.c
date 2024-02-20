@@ -576,6 +576,7 @@ sirfile* _sir_fcache_find(const sirfcache* sfc, const void* match, sir_fcache_pr
 }
 
 bool _sir_fcache_destroy(sirfcache* sfc) {
+    void*(*const volatile explicit_memset) (void*, int, size_t) = memset;
     bool retval = _sir_validptr(sfc);
 
     if (retval) {
@@ -587,7 +588,7 @@ bool _sir_fcache_destroy(sirfcache* sfc) {
             sfc->count--;
         }
 
-        (void)memset(sfc, 0, sizeof(sirfcache));
+        (void)explicit_memset(sfc, 0, sizeof(sirfcache));
     }
 
     return retval;
