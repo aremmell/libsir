@@ -1335,7 +1335,7 @@ static const char
 {
   int saved = errno;
   const char *ret = NULL;
-  static __thread char buf[256];
+  static /* __thread */ char buf[_POSIX_SSIZE_MAX];
 
 #if __APPLE__
   if (strerror_r(errnum, buf, sizeof(buf)) == 0)
