@@ -76,7 +76,7 @@
 #include <unistd.h>
 #include <ctype.h>
 #if defined(__APPLE__)
-#include <xlocale.h>
+# include <xlocale.h>
 #endif
 #include <locale.h>
 
@@ -1341,11 +1341,11 @@ static const char
   if (strerror_r(errnum, buf, sizeof(buf)) == 0)
     ret = buf;
 #else
-#  if __NetBSD__
+# if __NetBSD__
   locale_t loc = LC_GLOBAL_LOCALE;
-#  else
+# else
   locale_t loc = uselocale((locale_t)0);
-#  endif
+# endif
   locale_t copy = loc;
   if (copy == LC_GLOBAL_LOCALE)
     copy = duplocale(copy);
