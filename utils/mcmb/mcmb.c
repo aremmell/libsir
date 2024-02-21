@@ -1,7 +1,7 @@
 /*
  * mcmb.c
  *
- * Version: 2120.5.01-dps (libcmb 3.5.6)
+ * Version: 2120.5.02-dps (libcmb 3.5.6)
  *
  * -----------------------------------------------------------------------------
  *
@@ -54,6 +54,10 @@
  * under the terms of a two-clause BSD license.
  */
 
+#if !defined(_GNU_SOURCE)
+# define _GNU_SOURCE
+#endif
+
 #include <sys/param.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -71,6 +75,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
+#if defined(__APPLE__)
+#include <xlocale.h>
+#endif
 #include <locale.h>
 
 #if defined(__MACH__) && defined(__APPLE__) && \
@@ -475,7 +482,7 @@ static struct cmb_xitem *cmb_transform_find;
 # define CMB_PARSE_FRAGSIZE 512
 #endif /* ifndef CMB_PARSE_FRAGSIZE */
 
-static const char mcmbver[]         = "2120.5.01-dps";
+static const char mcmbver[]         = "2120.5.02-dps";
 static const char libversion[]      = "libcmb 3.5.6";
 
 /*
@@ -1323,9 +1330,49 @@ static struct cmb_xfdef cmb_xforms[] = {
 #endif /* if  ( defined(__VERSION__) && defined(__GNUC__) ) ||
            ( defined(__VERSION__) && defined(__clang_version__) */
 
+static const char
+*xstrerror_l(int errnum)
+{
+  int saved = errno;
+  const char *ret = NULL;
+  static __thread char buf[256];
+
+#if __APPLE__
+  if (strerror_r(errnum, buf, sizeof(buf)) == 0)
+    ret = buf;
+#else
+#  if __NetBSD__
+  locale_t loc = LC_GLOBAL_LOCALE;
+#  else
+  locale_t loc = uselocale((locale_t)0);
+#  endif
+  locale_t copy = loc;
+  if (copy == LC_GLOBAL_LOCALE)
+    copy = duplocale(copy);
+
+  if (copy != (locale_t)0)
+    {
+      ret = strerror_l(errnum, copy);
+      if (loc == LC_GLOBAL_LOCALE)
+        {
+          freelocale(copy);
+        }
+    }
+#endif
+
+  if (!ret)
+    {
+      (void)snprintf(buf, sizeof(buf), "Unknown error %d", errnum);
+      ret = buf;
+    }
+
+  errno = saved;
+  return ret;
+}
+
 static locale_t locale;
 
-int
+static int
 init_locale(void)
 {
   locale = newlocale(LC_ALL_MASK, "", (locale_t)0);
@@ -1337,7 +1384,7 @@ init_locale(void)
 int
 main(int argc, char *argv[])
 {
-  setlocale(LC_NUMERIC, "");
+  (void)setlocale(LC_ALL, "");
   (void)init_locale();
   uint8_t free_find         = FALSE;
   uint8_t opt_empty         = FALSE;
@@ -1409,7 +1456,7 @@ main(int argc, char *argv[])
           if (( optlen = strlen(optarg)) == 0 || unumlen(optarg) != optlen)
             {
               (void)fprintf(stderr, "Error: -c: %s `%s'\n",
-                strerror_l(EINVAL, locale), optarg);
+                xstrerror_l(EINVAL), optarg);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -1419,7 +1466,7 @@ main(int argc, char *argv[])
           if (errno != 0)
             {
               (void)fprintf(stderr, "Error: -c: %s `%s'\n",
-                strerror_l(errno, locale), optarg);
+                xstrerror_l(errno), optarg);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -1463,7 +1510,7 @@ main(int argc, char *argv[])
                 }
 
               (void)fprintf(stderr, "Error: -F: %s `%s'\n",
-                strerror_l(errno, locale), optarg);
+                xstrerror_l(errno), optarg);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -1485,7 +1532,7 @@ main(int argc, char *argv[])
           else if (optlen == 0 || numlen(optarg) != optlen)
             {
               (void)fprintf(stderr, "Error: -i: %s `%s'\n",
-                strerror_l(EINVAL, locale), optarg);
+                xstrerror_l(EINVAL), optarg);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -1505,7 +1552,7 @@ main(int argc, char *argv[])
               if (errno != 0)
                 {
                   (void)fprintf(stderr, "Error: -i: %s `%s'\n",
-                    strerror_l(errno, locale), optarg);
+                    xstrerror_l(errno), optarg);
                   _Exit(EXIT_FAILURE);
                   /*NOTREACHED*/ /* unreachable */
                 }
@@ -1518,7 +1565,7 @@ main(int argc, char *argv[])
                &( config->size_max )))
             {
               (void)fprintf(stderr, "Error: -k: %s `%s'\n",
-                strerror_l(errno, locale), optarg);
+                xstrerror_l(errno), optarg);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -1533,7 +1580,7 @@ main(int argc, char *argv[])
           if (!parse_unum(optarg, (uint32_t *)&cmb_transform_precision))
             {
               (void)fprintf(stderr, "Error: -n: %s `%s'\n",
-                strerror_l(errno, locale), optarg);
+                xstrerror_l(errno), optarg);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -1685,7 +1732,7 @@ main(int argc, char *argv[])
           if (!parse_urange(argv[n], &rstart, &rstop))
             {
               (void)fprintf(stderr, "Error: -r: %s `%s'\n",
-                strerror_l(errno, locale), argv[n]);
+                xstrerror_l(errno), argv[n]);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -1726,7 +1773,7 @@ main(int argc, char *argv[])
 
       if (errno)
         {
-          (void)fprintf(stderr, "Error: %s\n", strerror_l(errno, locale));
+          (void)fprintf(stderr, "Error: %s\n", xstrerror_l(errno));
           /*NOTREACHED*/ /* unreachable */
         }
 
@@ -1795,7 +1842,7 @@ main(int argc, char *argv[])
     {
       if (( optlen = strlen(opt_transform)) == 0)
         {
-          (void)fprintf(stderr, "Error: -X %s\n", strerror_l(EINVAL, locale));
+          (void)fprintf(stderr, "Error: -X %s\n", xstrerror_l(EINVAL));
           _Exit(EXIT_FAILURE);
           /*NOTREACHED*/ /* unreachable */
         }
@@ -1822,7 +1869,7 @@ main(int argc, char *argv[])
       if (config->action == NULL)
         {
           (void)fprintf(stderr, "Error: -X: %s `%s'\n",
-            strerror_l(EINVAL, locale), opt_transform);
+            xstrerror_l(EINVAL), opt_transform);
           _Exit(EXIT_FAILURE);
           /*NOTREACHED*/ /* unreachable */
         }
@@ -1864,7 +1911,7 @@ main(int argc, char *argv[])
                     }
 
                   (void)fprintf(stderr, "Error: -X: %s `%s'\n",
-                    strerror_l(errno, locale), items[n]);
+                    xstrerror_l(errno), items[n]);
                   _Exit(EXIT_FAILURE);
                   /*NOTREACHED*/ /* unreachable */
                 }
@@ -1966,7 +2013,7 @@ main(int argc, char *argv[])
 
       if (errno)
         {
-          (void)fprintf(stderr, "FATAL: %s\n", strerror_l(errno, locale));
+          (void)fprintf(stderr, "FATAL: %s\n", xstrerror_l(errno));
           _Exit(EXIT_FAILURE);
           /*NOTREACHED*/ /* unreachable */
         }
@@ -1980,7 +2027,7 @@ main(int argc, char *argv[])
           count = cmb_count(config, nitems);
           if (errno)
             {
-              (void)fprintf(stderr, "FATAL: %s\n", strerror_l(errno, locale));
+              (void)fprintf(stderr, "FATAL: %s\n", xstrerror_l(errno));
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -2032,7 +2079,7 @@ main(int argc, char *argv[])
             }
           else
             {
-              (void)fprintf(stderr, "FATAL: %s\n", strerror_l(errno, locale));
+              (void)fprintf(stderr, "FATAL: %s\n", xstrerror_l(errno));
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -2042,7 +2089,7 @@ main(int argc, char *argv[])
           count = cmb_count(config, nitems);
           if (errno)
             {
-              (void)fprintf(stderr, "FATAL: %s\n", strerror_l(errno, locale));
+              (void)fprintf(stderr, "FATAL: %s\n", xstrerror_l(errno));
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -2060,7 +2107,7 @@ main(int argc, char *argv[])
       retval = cmb(config, nitems, items);
       if (errno)
         {
-          (void)fprintf(stderr, "FATAL: %s\n", strerror_l(errno, locale));
+          (void)fprintf(stderr, "FATAL: %s\n", xstrerror_l(errno));
           _Exit(EXIT_FAILURE);
           /*NOTREACHED*/ /* unreachable */
         }
