@@ -1,7 +1,7 @@
 /*
  * mcmb.c
  *
- * Version: 2120.5.02-dps (libcmb 3.5.6)
+ * Version: 2120.5.03-dps (libcmb 3.5.6)
  *
  * -----------------------------------------------------------------------------
  *
@@ -56,6 +56,10 @@
 
 #if !defined(_GNU_SOURCE)
 # define _GNU_SOURCE
+#endif
+
+#if !defined(__EXTENSIONS__)
+# define __EXTENSIONS__
 #endif
 
 #include <sys/param.h>
@@ -482,7 +486,7 @@ static struct cmb_xitem *cmb_transform_find;
 # define CMB_PARSE_FRAGSIZE 512
 #endif /* ifndef CMB_PARSE_FRAGSIZE */
 
-static const char mcmbver[]         = "2120.5.02-dps";
+static const char mcmbver[]         = "2120.5.03-dps";
 static const char libversion[]      = "libcmb 3.5.6";
 
 /*
@@ -1330,12 +1334,19 @@ static struct cmb_xfdef cmb_xforms[] = {
 #endif /* if  ( defined(__VERSION__) && defined(__GNUC__) ) ||
            ( defined(__VERSION__) && defined(__clang_version__) */
 
+#undef XSTR_EMAXLEN
+#if defined(_POSIX_SSIZE_MAX)
+# define XSTR_EMAXLEN _POSIX_SSIZE_MAX
+#else
+# define XSTR_EMAXLEN 32767
+#endif
+
 static const char
 *xstrerror_l(int errnum)
 {
   int saved = errno;
   const char *ret = NULL;
-  static /* __thread */ char buf[_POSIX_SSIZE_MAX];
+  static /* __thread */ char buf[XSTR_EMAXLEN];
 
 #if defined(__APPLE__)
   if (strerror_r(errnum, buf, sizeof(buf)) == 0)
