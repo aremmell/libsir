@@ -1337,11 +1337,11 @@ static const char
   const char *ret = NULL;
   static /* __thread */ char buf[_POSIX_SSIZE_MAX];
 
-#if __APPLE__
+#if defined(__APPLE__)
   if (strerror_r(errnum, buf, sizeof(buf)) == 0)
     ret = buf;
 #else
-# if __NetBSD__
+# if defined(__NetBSD__)
   locale_t loc = LC_GLOBAL_LOCALE;
 # else
   locale_t loc = uselocale((locale_t)0);
