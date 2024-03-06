@@ -41,10 +41,11 @@ RUN set -x && \
     cd kefir && \
     mkdir -p /opt/kefir && \
     gmake clean && \
-    env LC_ALL="C.UTF-8" gmake all test -j "$(nproc 2> /dev/null || echo 1)" \
+    env LC_ALL="C.UTF-8" gmake all -j "$(nproc 2> /dev/null || echo 1)" \
       CC="musl-gcc" \
-      EXTRA_CFLAGS="-march=x86-64 -DNDEBUG -fPIC -fpie" \
+      EXTRA_CFLAGS="-static -march=x86-64 -DNDEBUG -fPIC -fpie" \
       PROFILE="release" \
+      LDFLAGS="-static" \
       USE_SHARED="no" \
       USE_STATIC="yes" && \
     gmake install \

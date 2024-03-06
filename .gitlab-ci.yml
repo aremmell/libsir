@@ -3199,6 +3199,7 @@ Linux/x86_64 (musl-libc, Kefir, C-only):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export KEFIR_RTINC="/opt/kefir-musl/include/kefir/runtime"
     - export PATH="/opt/kefir-musl/bin:${PATH:?}"
+    - export LDFLAGS="-static"
     - export CC="ccache kefir"
     - ${CC:?} --compiler-info
     - ${CC:?} --environment-info
