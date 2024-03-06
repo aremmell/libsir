@@ -408,7 +408,7 @@ Linux/x86_64 (AOCC++, AOCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - . /opt/AMD/aocc-compiler-4.1.0/setenv_AOCC.sh
+    - . /opt/AMD/aocc-compiler-4.2.0/setenv_AOCC.sh
     - export CC="ccache clang"
     - export CXX="ccache clang++"
     - ${CC:?} --version
@@ -455,7 +455,7 @@ Linux/i686 (AOCC++, AOCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - . /opt/AMD/aocc-compiler-4.1.0/setenv_AOCC.sh
+    - . /opt/AMD/aocc-compiler-4.2.0/setenv_AOCC.sh
     - export CC="ccache clang"
     - export CXX="ccache clang++"
     - export CFLAGS="-m32 -D_FILE_OFFSET_BITS=64"
@@ -3801,7 +3801,7 @@ Linux/x86_64 (AOCC, Fedora Python):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - . /opt/AMD/aocc-compiler-4.1.0/setenv_AOCC.sh
+    - . /opt/AMD/aocc-compiler-4.2.0/setenv_AOCC.sh
     - export CC="ccache clang"
     - command -v python3
     - $(command -v python3) --version
