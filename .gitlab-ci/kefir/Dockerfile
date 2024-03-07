@@ -33,8 +33,6 @@ USER 0
 
 WORKDIR /
 
-ARG URL
-
 RUN set -x && \
     cd /tmp && \
     git clone -v https://git.sr.ht/\~jprotopopov/kefir && \
