@@ -41,7 +41,7 @@ RUN set -x && \
     cd pcc && \
     mkdir -p /opt/pcc && \
     ./configure --prefix=/opt/pcc --enable-native --enable-tls --disable-Werror && \
-    gmake && \
+    gmake -j "$(nproc 2> /dev/null || echo 1)" && \
     gmake install && \
     cd && \
     rm -rf /tmp/pcc && \
