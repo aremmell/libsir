@@ -459,7 +459,7 @@ $(document).ready(function(){initNavTree('helpers_8h_source.html',''); initResiz
 <div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>    <span class="keywordflow">if</span> (!buffer || !format)</div>
 <div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span><span class="preprocessor"># if defined(__GNUC__) &amp;&amp; !defined(__clang__) &amp;&amp; \</span></div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span><span class="preprocessor">    !(defined(__OPEN64__) || defined(__OPENCC__))</span></div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span><span class="preprocessor">    !(defined(__OPEN64__) || defined(__OPENCC__) || defined(__PCC__))</span></div>
 <div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span><span class="preprocessor">#  pragma GCC diagnostic push</span></div>
 <div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span><span class="preprocessor">#  pragma GCC diagnostic ignored &quot;-Wformat-nonliteral&quot;</span></div>
 <div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span><span class="preprocessor"># endif</span></div>
@@ -467,7 +467,7 @@ $(document).ready(function(){initNavTree('helpers_8h_source.html',''); initResiz
 <div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>    <span class="keyword">const</span> <span class="keyword">struct </span>tm* ptb = _sir_localtime(&amp;now, &amp;timebuf);</div>
 <div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>    <span class="keywordflow">return</span> NULL != ptb &amp;&amp; 0 != strftime(buffer, <a class="code hl_define" href="config_8h.html#ac1e50274f913ef71f196f20b9dfbbba6">SIR_MAXTIME</a>, format, ptb);</div>
 <div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span><span class="preprocessor"># if defined(__GNUC__) &amp;&amp; !defined(__clang__) &amp;&amp; \</span></div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span><span class="preprocessor">    !(defined(__OPEN64__) || defined(__OPENCC__))</span></div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span><span class="preprocessor">    !(defined(__OPEN64__) || defined(__OPENCC__) || defined(__PCC__))</span></div>
 <div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span><span class="preprocessor">#  pragma GCC diagnostic pop</span></div>
 <div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span><span class="preprocessor"># endif</span></div>
 <div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>}</div>
