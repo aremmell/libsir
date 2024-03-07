@@ -60,7 +60,7 @@
 #    include <byteswap.h>
 #   endif
 #  endif
-#  if defined(__GLIBC__)
+#  if defined(__GLIBC__) && !defined(bswap_16) && !defined(bswap_32) && !defined(bswap_64)
 #   undef __builtin_bswap16
 #   define __builtin_bswap16(x) swap_16(x)
 #   undef __builtin_bswap32
