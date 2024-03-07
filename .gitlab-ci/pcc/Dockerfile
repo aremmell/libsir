@@ -35,7 +35,8 @@ WORKDIR /
 
 RUN set -x && \
     cd /tmp && \
-    git clone -v https://github.com/johnsonjh/pcc-revived.git -b johnsonjh/rawhide && \
+    git clone -v https://github.com/johnsonjh/pcc-revived.git \
+      -b johnsonjh/rawhide && \
     cd pcc-revived/pcc-libs && \
     mkdir -p /opt/pcc && \
     ./configure --prefix=/opt/pcc && \
@@ -43,11 +44,13 @@ RUN set -x && \
     gmake install && \
     cd ../pcc && \
     env CFLAGS="-Wno-int-conversion" \
-      ./configure --prefix=/opt/pcc --enable-native --enable-tls --disable-Werror && \
+      ./configure --prefix=/opt/pcc \
+        --enable-native --enable-tls --disable-Werror && \
     gmake -j "$(nproc 2> /dev/null || echo 1)" && \
     gmake install && \
     mkdir -p /opt/pcc/include && \
-    ln -fs /opt/pcc/lib/pcc/x86_64-pc-linux-gnu/1.2.0.DEVEL/include/ /opt/pcc/include/pcc && \
+    ln -fs /opt/pcc/lib/pcc/x86_64-pc-linux-gnu/1.2.0.DEVEL/include/ \
+      /opt/pcc/include/pcc && \
     cd && \
     rm -rf /tmp/pcc && \
     dnf -y clean all && \
