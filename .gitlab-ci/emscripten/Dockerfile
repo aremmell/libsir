@@ -38,8 +38,6 @@ USER 0
 
 WORKDIR /
 
-ARG URL
-
 RUN set -x && \
     mkdir -p /home/linuxbrew && \
     chown user:user -R /home/linuxbrew && \

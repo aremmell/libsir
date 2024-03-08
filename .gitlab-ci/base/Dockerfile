@@ -147,6 +147,7 @@ RUN set -x && \
       valgrind \
       vim \
       wget \
+      yasm \
       zip \
       zpaq \
 && \

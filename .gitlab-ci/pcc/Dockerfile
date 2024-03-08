@@ -35,18 +35,29 @@ WORKDIR /
 
 RUN set -x && \
     cd /tmp && \
-    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
-    chmod a+x Miniconda3-latest-Linux-x86_64.sh && \
-    export PATH="/opt/anaconda/bin:/opt/anaconda/sbin:${PATH:-}" && \
-    ./Miniconda3-latest-Linux-x86_64.sh -b -t -p /opt/anaconda -t && \
-    rm -f ./Miniconda3-latest-Linux-x86_64.sh && \
-    conda build purge && \
-    conda update --update-all --verbose --yes && \
+    git clone -v https://github.com/johnsonjh/pcc-revived.git \
+      -b johnsonjh/rawhide && \
+    cd pcc-revived/pcc-libs && \
+    mkdir -p /opt/pcc && \
+    ./configure --prefix=/opt/pcc && \
+    gmake -j "$(nproc 2> /dev/null || echo 1)" && \
+    gmake install && \
+    cd ../pcc && \
+    env CFLAGS="-Wno-int-conversion" \
+      ./configure --prefix=/opt/pcc \
+        --enable-native --enable-tls --disable-Werror && \
+    gmake -j "$(nproc 2> /dev/null || echo 1)" && \
+    gmake install && \
+    mkdir -p /opt/pcc/include && \
+    ln -fs /opt/pcc/lib/pcc/x86_64-pc-linux-gnu/1.2.0.DEVEL/include/ \
+      /opt/pcc/include/pcc && \
+    cd && \
+    rm -rf /tmp/pcc && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
     rm -rf /var/log/dnf* && \
-    cd
+    touch /OK
 
 USER 10000
 

@@ -408,7 +408,7 @@ Linux/x86_64 (AOCC++, AOCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - . /opt/AMD/aocc-compiler-4.1.0/setenv_AOCC.sh
+    - . /opt/AMD/aocc-compiler-4.2.0/setenv_AOCC.sh
     - export CC="ccache clang"
     - export CXX="ccache clang++"
     - ${CC:?} --version
@@ -455,7 +455,7 @@ Linux/i686 (AOCC++, AOCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - . /opt/AMD/aocc-compiler-4.1.0/setenv_AOCC.sh
+    - . /opt/AMD/aocc-compiler-4.2.0/setenv_AOCC.sh
     - export CC="ccache clang"
     - export CXX="ccache clang++"
     - export CFLAGS="-m32 -D_FILE_OFFSET_BITS=64"
@@ -3199,6 +3199,7 @@ Linux/x86_64 (musl-libc, Kefir, C-only):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export KEFIR_RTINC="/opt/kefir-musl/include/kefir/runtime"
     - export PATH="/opt/kefir-musl/bin:${PATH:?}"
+    - export LDFLAGS="-static"
     - export CC="ccache kefir"
     - ${CC:?} --compiler-info
     - ${CC:?} --environment-info
@@ -3247,6 +3248,50 @@ Linux/x86_64 (Kefir, C-only):
     - export CC="ccache kefir"
     - ${CC:?} --compiler-info
     - ${CC:?} --environment-info
+    - make
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - *BuildInformation
+    - |
+      # Start of Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+################################################################################
+
+Linux/x86_64 (PCC, C-only):
+  stage: build_linux
+  needs:
+    - job: Style check
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/pcc:latest
+  script:
+    - *Configuration
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export PATH="/opt/pcc/bin:${PATH:?}"
+    - export CC="ccache pcc"
+    - export CFLAGS="-Wno-attributes"
+    - ${CC:?} --version
     - make
     - |
       # End of Build ...
@@ -3801,7 +3846,7 @@ Linux/x86_64 (AOCC, Fedora Python):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - . /opt/AMD/aocc-compiler-4.1.0/setenv_AOCC.sh
+    - . /opt/AMD/aocc-compiler-4.2.0/setenv_AOCC.sh
     - export CC="ccache clang"
     - command -v python3
     - $(command -v python3) --version
@@ -4490,11 +4535,11 @@ OpenBSD/amd64 (Clang++, Clang):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin/ccache /usr/local/bin/clang-16"
-    - export CXX="/usr/local/bin/ccache /usr/local/bin/clang++-16"
+    - export CC="/usr/local/bin/ccache /usr/local/bin/clang-17"
+    - export CXX="/usr/local/bin/ccache /usr/local/bin/clang++-17"
     - export CFLAGS="-I/usr/local/include"
     - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -I/usr/local/include"
-    - export LDFLAGS="-Wl,-rpath=/usr/local/llvm16/lib/ -L/usr/local/llvm16/lib/ -L/usr/local/lib"
+    - export LDFLAGS="-Wl,-rpath=/usr/local/llvm17/lib/ -L/usr/local/llvm17/lib/ -L/usr/local/lib"
     - uname -a
     - ${CC:?} --version
     - ${CXX:?} --version

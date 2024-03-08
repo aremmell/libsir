@@ -1,7 +1,7 @@
 /*
  * mcmb.c
  *
- * Version: 2120.5.03-dps (libcmb 3.5.6)
+ * Version: 2120.5.04-dps (libcmb 3.5.6)
  *
  * -----------------------------------------------------------------------------
  *
@@ -486,7 +486,7 @@ static struct cmb_xitem *cmb_transform_find;
 # define CMB_PARSE_FRAGSIZE 512
 #endif /* ifndef CMB_PARSE_FRAGSIZE */
 
-static const char mcmbver[]         = "2120.5.03-dps";
+static const char mcmbver[]         = "2120.5.04-dps";
 static const char libversion[]      = "libcmb 3.5.6";
 
 /*
@@ -1334,12 +1334,7 @@ static struct cmb_xfdef cmb_xforms[] = {
 #endif /* if  ( defined(__VERSION__) && defined(__GNUC__) ) ||
            ( defined(__VERSION__) && defined(__clang_version__) */
 
-#undef XSTR_EMAXLEN
-#if defined(_POSIX_SSIZE_MAX)
-# define XSTR_EMAXLEN _POSIX_SSIZE_MAX
-#else
-# define XSTR_EMAXLEN 32767
-#endif
+#define XSTR_EMAXLEN 32767
 
 static const char
 *xstrerror_l(int errnum)
@@ -1348,9 +1343,15 @@ static const char
   const char *ret = NULL;
   static /* __thread */ char buf[XSTR_EMAXLEN];
 
-#if defined(__APPLE__)
-  if (strerror_r(errnum, buf, sizeof(buf)) == 0)
-    ret = buf;
+#if defined(__APPLE__) || defined(_AIX) || \
+      defined(__MINGW32__) || defined(__MINGW64__) || \
+        defined(CROSS_MINGW32) || defined(CROSS_MINGW64)
+# if defined(__MINGW32__) || defined(__MINGW64__) || \
+        defined(CROSS_MINGW32) || defined(CROSS_MINGW64)
+  if (strerror_s(buf, sizeof(buf), errnum) == 0) ret = buf; /*LINTOK: xstrerror_l*/
+# else
+  if (strerror_r(errnum, buf, sizeof(buf)) == 0) ret = buf; /*LINTOK: xstrerror_l*/
+# endif
 #else
 # if defined(__NetBSD__)
   locale_t loc = LC_GLOBAL_LOCALE;
@@ -1363,7 +1364,7 @@ static const char
 
   if (copy != (locale_t)0)
     {
-      ret = strerror_l(errnum, copy);
+      ret = strerror_l(errnum, copy); /*LINTOK: xstrerror_l*/
       if (loc == LC_GLOBAL_LOCALE)
         {
           freelocale(copy);
@@ -1380,6 +1381,7 @@ static const char
   errno = saved;
   return ret;
 }
+
 
 static locale_t locale;
 
@@ -1784,7 +1786,7 @@ main(int argc, char *argv[])
 
       if (errno)
         {
-          (void)fprintf(stderr, "Error: %s\n", xstrerror_l(errno));
+          (void)fprintf(stderr, "Error: %s (%d)\r\n", xstrerror_l(errno), errno);
           /*NOTREACHED*/ /* unreachable */
         }
 
@@ -2024,7 +2026,7 @@ main(int argc, char *argv[])
 
       if (errno)
         {
-          (void)fprintf(stderr, "FATAL: %s\n", xstrerror_l(errno));
+          (void)fprintf(stderr, "FATAL: %s (%d)\r\n", xstrerror_l(errno), errno);
           _Exit(EXIT_FAILURE);
           /*NOTREACHED*/ /* unreachable */
         }
@@ -2038,7 +2040,7 @@ main(int argc, char *argv[])
           count = cmb_count(config, nitems);
           if (errno)
             {
-              (void)fprintf(stderr, "FATAL: %s\n", xstrerror_l(errno));
+              (void)fprintf(stderr, "FATAL: %s (%d)\r\n", xstrerror_l(errno), errno);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -2090,7 +2092,7 @@ main(int argc, char *argv[])
             }
           else
             {
-              (void)fprintf(stderr, "FATAL: %s\n", xstrerror_l(errno));
+              (void)fprintf(stderr, "FATAL: %s (%d)\r\n", xstrerror_l(errno), errno);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -2100,7 +2102,7 @@ main(int argc, char *argv[])
           count = cmb_count(config, nitems);
           if (errno)
             {
-              (void)fprintf(stderr, "FATAL: %s\n", xstrerror_l(errno));
+              (void)fprintf(stderr, "FATAL: %s (%d)\r\n", xstrerror_l(errno), errno);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -2118,7 +2120,7 @@ main(int argc, char *argv[])
       retval = cmb(config, nitems, items);
       if (errno)
         {
-          (void)fprintf(stderr, "FATAL: %s\n", xstrerror_l(errno));
+          (void)fprintf(stderr, "FATAL: %s (%d)\n", xstrerror_l(errno), errno);
           _Exit(EXIT_FAILURE);
           /*NOTREACHED*/ /* unreachable */
         }
