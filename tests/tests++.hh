@@ -131,7 +131,7 @@ namespace sir::tests
 
 /** Handles an expected exception. */
 # define _SIR_TEST_ON_EXPECTED_EXCEPTION(what) \
-    TEST_MSG(GREEN("expected exception in %s: '%s'"), __PRETTY_FUNCTION__, what)
+    TEST_MSG(SIR_GREEN("expected exception in %s: '%s'"), __PRETTY_FUNCTION__, what)
 
 /** Ends a test by closing the try/catch block and implementing exception handling. */
 # define _SIR_TEST_COMPLETE \

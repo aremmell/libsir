@@ -312,7 +312,7 @@ bool sir::tests::std_format() {
     _sir_eqland(pass, log.alert_std("Testing {} {}",  "std::format", 0x80000000U));
     _sir_eqland(pass, log.emerg_std("Testing {} {}",  "std::format", 3.14));
 #else
-    TEST_MSG_0(EMPH(BBLUE("std::format support not enabled; skipping")));
+    TEST_MSG_0(SIR_EMPH(SIR_BBLUE("std::format support not enabled; skipping")));
 #endif // !__SIR_HAVE_STD_FORMAT__
 
     _SIR_TEST_COMPLETE
@@ -334,7 +334,7 @@ bool sir::tests::boost_format() {
     _sir_eqland(pass, log.alert_bf(bf("Testing %1% %2%")  % "boost" % 0x80000000U));
     _sir_eqland(pass, log.emerg_bf(bf("Testing %1% %2%")  % "boost" % 3.14));
 #else
-    TEST_MSG_0(EMPH(BBLUE("boost::format support not enabled; skipping")));
+    TEST_MSG_0(SIR_EMPH(SIR_BBLUE("boost::format support not enabled; skipping")));
 #endif // !__SIR_HAVE_BOOST_FORMAT__
 
     _SIR_TEST_COMPLETE
@@ -355,7 +355,7 @@ bool sir::tests::fmt_format() {
     _sir_eqland(pass, log.alert_fmt("Testing {} {}",  "fmt", 0x80000000U));
     _sir_eqland(pass, log.emerg_fmt("Testing {} {}",  "fmt", 3.14));
 #else
-    TEST_MSG_0(EMPH(BBLUE("fmt::format support not enabled; skipping")));
+    TEST_MSG_0(SIR_EMPH(SIR_BBLUE("fmt::format support not enabled; skipping")));
 #endif // !__SIR_HAVE_FMT_FORMAT__
 
     _SIR_TEST_COMPLETE
@@ -429,7 +429,7 @@ bool sir::tests::std_iostream_format() {
     log.info_stream << large_buffer.data() << endl;
     _sir_eqland(pass, log.info_stream.good());
 #else
-    TEST_MSG_0(EMPH(BBLUE("std::iostream support not enabled; skipping")));
+    TEST_MSG_0(SIR_EMPH(SIR_BBLUE("std::iostream support not enabled; skipping")));
 #endif
 
     _SIR_TEST_COMPLETE
