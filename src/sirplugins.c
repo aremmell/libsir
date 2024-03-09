@@ -255,11 +255,11 @@ bool _sir_plugin_unload(sir_plugin* plugin) {
                      " cleanup!", plugin->path, plugin->handle);
 
 # if !defined(__WIN__)
-    if (0 != dlclose(plugin->handle)) {
+    if (0 != dlclose(plugin->handle)) { // GCOVR_EXCL_START
         const char* err = dlerror();
         _sir_selflog("error: dlclose(%p) failed (%s)", plugin->handle, _SIR_PRNSTR(err));
         return _sir_handleerr(errno);
-    }
+    } // GCOVR_EXCL_STOP
 # else /* __WIN__ */
     if (!FreeLibrary(plugin->handle)) {
         DWORD err = GetLastError();
@@ -343,10 +343,10 @@ sirpluginid _sir_plugin_cache_add(sir_plugincache* spc, sir_plugin* plugin) {
     if (!_sir_validptr(spc) || !_sir_validptr(plugin))
         return 0U;
 
-    if (spc->count >= SIR_MAXPLUGINS) {
+    if (spc->count >= SIR_MAXPLUGINS) { // GCOVR_EXCL_START
         (void)_sir_seterror(_SIR_E_NOROOM);
         return 0U;
-    }
+    } // GCOVR_EXCL_STOP
 
     const sir_plugin* existing = _sir_plugin_cache_find_id(spc, plugin->id);
     if (NULL != existing) {

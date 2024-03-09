@@ -205,11 +205,11 @@ bool _sir_setcolormode(sir_colormode mode) {
         /* when the color mode changes, it's necessary to regenerate the text styles
          * we're holding. for example in the case of downgrading color modes, the
          * styles in memory could be incompatible with the new mode. */
-        if (!_sir_resettextstyles()) {
+        if (!_sir_resettextstyles()) { // GCOVR_EXCL_START
             _sir_selflog("error: failed to reset text styles!");
             _SIR_UNLOCK_SECTION(SIRMI_TEXTSTYLE);
             return false;
-        }
+        } // GCOVR_EXCL_STOP
     } else {
         _sir_selflog("skipped superfluous update of color mode: %"PRId32, mode);
     }
@@ -218,16 +218,16 @@ bool _sir_setcolormode(sir_colormode mode) {
     return true;
 }
 #else /* SIR_NO_TEXT_STYLING */
-const char* _sir_gettextstyle(sir_level level) {
-    SIR_UNUSED(level);
-    SIR_ASSERT(false);
-    return NULL;
-}
-
 bool _sir_settextstyle(sir_level level, const sir_textstyle* style) {
     SIR_UNUSED(level);
     SIR_UNUSED(style);
     return false;
+}
+
+const char* _sir_gettextstyle(sir_level level) { // GCOVR_EXCL_START
+    SIR_UNUSED(level);
+    SIR_ASSERT(false);
+    return NULL;
 }
 
 const sir_textstyle* _sir_getdefstyle(sir_level level) {
@@ -257,5 +257,5 @@ bool _sir_validtextstyle(sir_colormode mode, const sir_textstyle* style) {
 bool _sir_setcolormode(sir_colormode mode) {
     SIR_UNUSED(mode);
     return false;
-}
+} // GCOVR_EXCL_STOP
 #endif
