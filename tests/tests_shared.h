@@ -132,8 +132,13 @@ extern "C" {
 # define ERROR_MSG_0(msg) TEST_MSG_0(RED(msg))
 
 /** Prints `msg` in green if `expr` is true, or in red if false. */
-# define PASSFAIL_MSG(expr, msg, ...) \
-    (void)printf(expr ? GREEN(msg) : RED(msg), __VA_ARGS__) //-V583
+# if !defined(SIR_NO_TEXT_STYLING)
+#  define PASSFAIL_MSG(expr, msg, ...) \
+     (void)printf(expr ? GREEN(msg) : RED(msg), __VA_ARGS__)
+# else
+#  define PASSFAIL_MSG(expr, msg, ...) \
+     (void)printf(msg, __VA_ARGS__) //-V583
+# endif
 
 /** Prints an expected error in green. */
 # define PRINT_EXPECTED_ERROR() (void)print_test_error(true, true)
