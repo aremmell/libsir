@@ -142,6 +142,7 @@
 #  define SIR_EMPH(s)      s
 #  define SIR_BOLD(s)      s
 #  define SIR_BLINK(s)     s
+
 #  define SIR_BLACK(s)     s
 #  define SIR_BLACKB(s)    s
 

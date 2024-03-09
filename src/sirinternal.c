@@ -487,7 +487,7 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
             tmpm   = &ts_mutex;
             tmpsec = &sir_text_style_section;
 #else
-            tmpm = NULL;
+            tmpm   = NULL;
             tmpsec = NULL;
 #endif
             break;
