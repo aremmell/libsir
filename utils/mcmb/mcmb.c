@@ -1382,7 +1382,6 @@ static const char
   return ret;
 }
 
-
 static locale_t locale;
 
 static int
