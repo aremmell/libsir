@@ -203,11 +203,7 @@ bool _sir_init(sirinit* si) {
 
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
 
-#if defined(SIR_NO_TEXT_STYLING) && defined(SIR_NO_SYSTEM_LOGGERS)
-    _sir_selflog("initialized successfully");
-#else
-    _sir_selflog("initialized %s", (init ? "successfully" : "with errors"));
-#endif
+    _sir_selflog("initialized %s", (init ? "successfully" : "with errors")); //-V547
 
     SIR_ASSERT(init);
     return init;
