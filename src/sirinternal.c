@@ -59,12 +59,16 @@ static sir_plugincache _sir_pc = {0};
 static sir_mutex cfg_mutex  = SIR_MUTEX_INIT;
 static sir_mutex fc_mutex   = SIR_MUTEX_INIT;
 static sir_mutex pc_mutex   = SIR_MUTEX_INIT;
+# if !defined(SIR_NO_TEXT_STYLING)
 static sir_mutex ts_mutex   = SIR_MUTEX_INIT;
+# endif
 #else
 static sir_mutex cfg_mutex  = {0};
 static sir_mutex fc_mutex   = {0};
 static sir_mutex pc_mutex   = {0};
+# if !defined(SIR_NO_TEXT_STYLING)
 static sir_mutex ts_mutex   = {0};
+# endif
 #endif
 static sir_once static_once = SIR_ONCE_INIT;
 
@@ -162,6 +166,7 @@ bool _sir_init(sirinit* si) {
     tzset();
 #endif
 
+#if !defined(SIR_NO_TEXT_STYLING)
     if (!_sir_setcolormode(SIRCM_16)) {
         init = false;
         _sir_selflog("error: failed to set color mode!");
@@ -171,6 +176,7 @@ bool _sir_init(sirinit* si) {
         init = false;
         _sir_selflog("error: failed to reset text styles!");
     }
+#endif
 
     (void)memset(&_cfg->state, 0, sizeof(_cfg->state));
     (void)memcpy(&_cfg->si, si, sizeof(sirinit));
@@ -178,7 +184,7 @@ bool _sir_init(sirinit* si) {
     /* forcibly null-terminate the process name. */
     _cfg->si.name[SIR_MAXNAME - 1] = '\0';
 
-    /* Store PID. */
+    /* store PID. */
     _cfg->state.pid = _sir_getpid();
 
     (void)snprintf(_cfg->state.pidbuf, SIR_MAXPID, SIR_PIDFORMAT,
@@ -234,10 +240,12 @@ bool _sir_cleanup(void) {
     _sir_syslog_reset(&_cfg->si.d_syslog);
 #endif
 
+#if !defined(SIR_NO_TEXT_STYLING)
     if (!_sir_resettextstyles()) {
         cleanup = false;
         _sir_selflog("error: failed to reset text styles!");
     }
+#endif
 
 #if defined(__HAVE_ATOMIC_H__)
     atomic_store(&_sir_magic, 0);
@@ -471,8 +479,13 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
             tmpsec = &_sir_pc;
             break;
         case SIRMI_TEXTSTYLE:
+#if !defined(SIR_NO_TEXT_STYLING)
             tmpm   = &ts_mutex;
             tmpsec = &sir_text_style_section;
+#else
+            tmpm = NULL;
+            tmpsec = NULL;
+#endif
             break;
         // GCOVR_EXCL_START
         default: /* this should never happen. */
@@ -522,8 +535,10 @@ bool _sir_init_common_static(void) {
     _sir_eqland(created, _sir_mutexcreate(&pc_mutex));
     SIR_ASSERT(created);
 
+#if !defined(SIR_NO_TEXT_STYLING)
     _sir_eqland(created, _sir_mutexcreate(&ts_mutex));
     SIR_ASSERT(created);
+#endif
 
     return created;
 }
@@ -613,12 +628,14 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     buf.pid       = cfg.state.pidbuf;
     buf.name      = cfg.si.name;
 
+#if !defined(SIR_NO_TEXT_STYLING)
     const char* style_str = _sir_gettextstyle(level);
 
     SIR_ASSERT(NULL != style_str);
     if (NULL != style_str)
         (void)_sir_strncpy(buf.style, SIR_MAXSTYLE, style_str,
             strnlen(style_str, SIR_MAXSTYLE));
+#endif
 
     buf.level = _sir_formattedlevelstr(level);
 
@@ -701,8 +718,14 @@ bool _sir_dispatch(const sirinit* si, sir_level level, sirbuf* buf) {
     size_t dispatched = 0;
     size_t wanted     = 0;
 
+#if !defined(SIR_NO_TEXT_STYLING)
+    static const bool styling = true;
+#else
+    static const bool styling = false;
+#endif
+
     if (_sir_bittest(si->d_stdout.levels, level)) {
-        const char* writef = _sir_format(true, si->d_stdout.opts, buf);
+        const char* writef = _sir_format(styling, si->d_stdout.opts, buf);
         bool wrote         = _sir_validstrnofail(writef) &&
             _sir_write_stdout(writef, buf->output_len);
         _sir_eqland(retval, wrote);
@@ -713,7 +736,7 @@ bool _sir_dispatch(const sirinit* si, sir_level level, sirbuf* buf) {
     }
 
     if (_sir_bittest(si->d_stderr.levels, level)) {
-        const char* writef = _sir_format(true, si->d_stderr.opts, buf);
+        const char* writef = _sir_format(styling, si->d_stderr.opts, buf);
         bool wrote         = _sir_validstrnofail(writef) &&
             _sir_write_stderr(writef, buf->output_len);
         _sir_eqland(retval, wrote);

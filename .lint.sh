@@ -122,6 +122,7 @@ test_mcmb()
   SIR_OPTIONS="SIR_DEBUG=1 \
                SIR_NO_SYSTEM_LOGGERS=1 \
                SIR_NO_PLUGINS=1 \
+               SIR_NO_TEXT_STYLING=1 \
                SIR_SELFLOG=1"
   # shellcheck disable=SC2090
   printf '%s\n' "exported SIR_OPTIONS=' ${SIR_OPTIONS} '" | tr -s ' '
