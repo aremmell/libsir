@@ -106,7 +106,7 @@ bool __sir_validupdatedata(const sir_update_config_data* data, const char* func,
         valid = _sir_validstrnofail(data->sl_category);
 
     if (!valid) {
-        SIR_ASSERT(valid);
+        SIR_ASSERT(valid); // GCOVR_EXCL_LINE
         (void)__sir_seterror(_SIR_E_INVALID, func, file, line);
     }
 
