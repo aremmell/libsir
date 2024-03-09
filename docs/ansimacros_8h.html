@@ -144,7 +144,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SIR_R_ARROW</b>&#160;&#160;&#160;&quot;\xe2\x86\x92&quot;</td></tr>
 <tr class="memdesc:afe296ab1f6b488fd5e23ebd50c780b80"><td class="mdescLeft">&#160;</td><td class="mdescRight">A few fun characters. <br /></td></tr>
 <tr class="separator:afe296ab1f6b488fd5e23ebd50c780b80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ebf33726fd433028ef8313fcc97fe02" id="r_a1ebf33726fd433028ef8313fcc97fe02"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ansimacros_8h.html#a1ebf33726fd433028ef8313fcc97fe02">COLOR</a>(attr,  fg,  bg,  s)&#160;&#160;&#160;    SIR_ESC_SEQ(#attr &quot;;&quot; #fg &quot;;&quot; #bg, s) SIR_ESC_SEQE(&quot;0;39;49&quot;)</td></tr>
+<tr class="memitem:a1ebf33726fd433028ef8313fcc97fe02" id="r_a1ebf33726fd433028ef8313fcc97fe02"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ansimacros_8h.html#a1ebf33726fd433028ef8313fcc97fe02">COLOR</a>(attr,  fg,  bg,  s)&#160;&#160;&#160;     SIR_ESC_SEQ(#attr &quot;;&quot; #fg &quot;;&quot; #bg, s) SIR_ESC_SEQE(&quot;0;39;49&quot;)</td></tr>
 <tr class="memdesc:a1ebf33726fd433028ef8313fcc97fe02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a sequence of colored characters 's' with foreground color 'fg', background color 'bg', and attributes 'attr' (<code>0=normal, 1=bold, 2=dim, 3=italic, 4=underlined, 5=blinking, 7=inverted, 9=strikethrough</code>).  <br /></td></tr>
 <tr class="separator:a1ebf33726fd433028ef8313fcc97fe02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1319b1d6256ace654ff3bad6275ead00" id="r_a1319b1d6256ace654ff3bad6275ead00"><td class="memItemLeft" align="right" valign="top"><a id="a1319b1d6256ace654ff3bad6275ead00" name="a1319b1d6256ace654ff3bad6275ead00"></a>
@@ -304,7 +304,7 @@ Macros</h2></td></tr>
 <div class="textblock"><p>ANSI escape sequence macros. </p>
 <p>A collection of macros that can be used with libsir's logging functions as well as [f]printf, puts, etc. to manipulate terminal output.</p>
 <p><b>Example</b> </p><div class="fragment"><div class="line">printf(<a class="code hl_define" href="ansimacros_8h.html#ae96a94895f9559215e6fb40c3c23c740">RED</a>(<span class="stringliteral">&quot;Something terrible happened!\n&quot;</span>));</div>
-<div class="ttc" id="aansimacros_8h_html_ae96a94895f9559215e6fb40c3c23c740"><div class="ttname"><a href="ansimacros_8h.html#ae96a94895f9559215e6fb40c3c23c740">RED</a></div><div class="ttdeci">#define RED(s)</div><div class="ttdoc">Red foreground text.</div><div class="ttdef"><b>Definition</b> ansimacros.h:90</div></div>
+<div class="ttc" id="aansimacros_8h_html_ae96a94895f9559215e6fb40c3c23c740"><div class="ttname"><a href="ansimacros_8h.html#ae96a94895f9559215e6fb40c3c23c740">RED</a></div><div class="ttdeci">#define RED(s)</div><div class="ttdoc">Red foreground text.</div><div class="ttdef"><b>Definition</b> ansimacros.h:151</div></div>
 </div><!-- fragment --><dl class="section version"><dt>Version</dt><dd>2.2.5</dd></dl>
 <hr  />
 <p>SPDX-License-Identifier: MIT</p>
@@ -347,7 +347,7 @@ Macros</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;    SIR_ESC_SEQ(#attr &quot;;&quot; #fg &quot;;&quot; #bg, s) SIR_ESC_SEQE(&quot;0;39;49&quot;)</td>
+          <td></td><td>&#160;&#160;&#160;     SIR_ESC_SEQ(#attr &quot;;&quot; #fg &quot;;&quot; #bg, s) SIR_ESC_SEQE(&quot;0;39;49&quot;)</td>
         </tr>
       </table>
 </div><div class="memdoc">

@@ -69,7 +69,7 @@
 # endif
 
 /**
- * Define to use <CR><LF> line endings, otherwise use <LF>.
+ * Define to use CRLF line endings, otherwise use LF.
  */
 # if !defined(SIR_EOL_CRLF)
 #  undef SIR_EOL_CRLF
