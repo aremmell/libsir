@@ -203,7 +203,7 @@ bool _sir_init(sirinit* si) {
 
     _SIR_UNLOCK_SECTION(SIRMI_CONFIG);
 
-    _sir_selflog("initialized %s", (init ? "successfully" : "with errors"));
+    _sir_selflog("initialized %s", (init ? "successfully" : "with errors")); //-V547
 
     SIR_ASSERT(init);
     return init;

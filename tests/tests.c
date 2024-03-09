@@ -773,6 +773,7 @@ bool sirtest_textstylesanity(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
+#if !defined(SIR_NO_TEXT_STYLING)
     TEST_MSG_0(WHITEB("--- explicitly invalid ---"));
     _sir_eqland(pass, !sir_settextstyle(SIRL_INFO, (sir_textattr)0xbbb, 800, 920));
     _sir_eqland(pass, sir_info("I have set an invalid text style."));
@@ -879,9 +880,8 @@ bool sirtest_textstylesanity(void) {
     _sir_eqland(pass, sir_debug("this is 16-color mode (fg: %"PRId32", bg: default)",
         SIRTC_BMAGENTA));
     PASSFAIL_MSG(pass, "\t--- change mode: 16-color: %s ---\n\n", PRN_PASS(pass));
-#if defined(SIR_NO_TEXT_STYLING)
-    pass = si_init;
-    TEST_MSG_0("SIR_NO_TEXT_STYLING is defined; failures are expected.");
+#else /* SIR_NO_TEXT_STYLING */
+    TEST_MSG_0("SIR_NO_TEXT_STYLING is defined; skipping");
 #endif
 
     _sir_eqland(pass, sir_cleanup());
