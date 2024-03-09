@@ -10,7 +10,5 @@ var searchData=
   ['default_5fpolicy_7',['default_policy',['../classsir_1_1default__policy.html',1,'sir']]],
   ['defaults_8',['Defaults',['../group__default.html',1,'']]],
   ['defaults_2eh_9',['defaults.h',['../defaults_8h.html',1,'']]],
-  ['desc_10',['desc',['../structsir__plugininfo.html#aa52c4fcccd437ab1a4349bd8e6f64922',1,'sir_plugininfo::desc'],['../structsir__cl__arg.html#aea028faff6351db0e5ab6385f2d3a4a2',1,'sir_cl_arg::desc']]],
-  ['dgray_11',['DGRAY',['../ansimacros_8h.html#aa2c113dbbb07cf163d87b13d8ba6477b',1,'ansimacros.h']]],
-  ['dgrayb_12',['DGRAYB',['../ansimacros_8h.html#a155cb79be252611ae9cbe908850230a6',1,'ansimacros.h']]]
+  ['desc_10',['desc',['../structsir__plugininfo.html#aa52c4fcccd437ab1a4349bd8e6f64922',1,'sir_plugininfo::desc'],['../structsir__cl__arg.html#aea028faff6351db0e5ab6385f2d3a4a2',1,'sir_cl_arg::desc']]]
 ];

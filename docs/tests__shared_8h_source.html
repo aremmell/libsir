@@ -180,9 +180,9 @@ $(document).ready(function(){initNavTree('tests__shared_8h_source.html',''); ini
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor"># define TEST_S(n) ((n) &gt; 1 ? &quot;tests&quot; : &quot;test&quot;)</span></div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor"># define PRN_STR(str) ((str) ? (str) : RED(&quot;NULL&quot;))</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor"># define PRN_STR(str) ((str) ? (str) : SIR_RED(&quot;NULL&quot;))</span></div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="preprocessor"># define PRN_PASS(pass) ((pass) ? GREENB(&quot;PASS&quot;) : REDB(&quot;FAIL&quot;))</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="preprocessor"># define PRN_PASS(pass) ((pass) ? SIR_GREENB(&quot;PASS&quot;) : SIR_REDB(&quot;FAIL&quot;))</span></div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor"># define INDENT_ITEM &quot;\t  &quot; SIR_BULLET &quot; &quot;</span></div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
@@ -200,13 +200,13 @@ $(document).ready(function(){initNavTree('tests__shared_8h_source.html',''); ini
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="preprocessor"># define SIR_CL_VERSIONFLAG   &quot;--version&quot;</span></div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="preprocessor"># define SIR_CL_HELPFLAG      &quot;--help&quot;</span></div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="preprocessor"># define SIR_CL_ONLYUSAGE     ULINE(&quot;name&quot;) &quot; [, &quot; ULINE(&quot;name&quot;) &quot;, ...]&quot;</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="preprocessor"># define SIR_CL_ONLYUSAGE     SIR_ULINE(&quot;name&quot;) &quot; [, &quot; SIR_ULINE(&quot;name&quot;) &quot;, ...]&quot;</span></div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="preprocessor"># define SIR_CL_PERFNAME      &quot;performance&quot;</span></div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="preprocessor"># define SIR_CL_PERFDESC      &quot;Only run the performance measurement test&quot;</span></div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="preprocessor"># define SIR_CL_ONLYDESC      &quot;Only run the test(s) specified&quot;</span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="preprocessor"># define SIR_CL_LISTDESC      &quot;Prints a list of available test names for use with &#39;&quot; BOLD(&quot;--only&quot;) &quot;&#39;&quot;</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="preprocessor"># define SIR_CL_LISTDESC      &quot;Prints a list of available test names for use with &#39;&quot; SIR_BOLD(&quot;--only&quot;) &quot;&#39;&quot;</span></div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="preprocessor"># define SIR_CL_LEAVELOGSDESC &quot;Log files are not deleted so that they may be examined&quot;</span></div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="preprocessor"># define SIR_CL_WAITDESC      &quot;After running test(s), wait for a keypress before exiting&quot;</span></div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="preprocessor"># define SIR_CL_VERSIONDESC   &quot;Prints the version of libsir that the test suite was built with&quot;</span></div>
@@ -216,13 +216,13 @@ $(document).ready(function(){initNavTree('tests__shared_8h_source.html',''); ini
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="preprocessor"># define TEST_MSG_0(msg) (void)printf(&quot;\t&quot; msg &quot;\n&quot;)</span></div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="preprocessor"># define ERROR_MSG(msg, ...) TEST_MSG(RED(msg), __VA_ARGS__)</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="preprocessor"># define ERROR_MSG(msg, ...) TEST_MSG(SIR_RED(msg), __VA_ARGS__)</span></div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="preprocessor"># define ERROR_MSG_0(msg) TEST_MSG_0(RED(msg))</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="preprocessor"># define ERROR_MSG_0(msg) TEST_MSG_0(SIR_RED(msg))</span></div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="preprocessor"># if !defined(SIR_NO_TEXT_STYLING)</span></div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="preprocessor">#  define PASSFAIL_MSG(expr, msg, ...) \</span></div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="preprocessor">     (void)printf(expr ? GREEN(msg) : RED(msg), __VA_ARGS__)</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="preprocessor">     (void)printf(expr ? SIR_GREEN(msg) : SIR_RED(msg), __VA_ARGS__)</span></div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="preprocessor"># else</span></div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="preprocessor">#  define PASSFAIL_MSG(expr, msg, ...) \</span></div>
 <div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="preprocessor">     (void)printf(msg, __VA_ARGS__)</span></div>

@@ -194,7 +194,7 @@ int main(void) {
 int report_error(void) {
     char message[SIR_MAXERROR] = {0};
     (void)sir_geterror(message);
-    (void)fprintf(stderr, BREDB("libsir error: ") RED("%s") "\r\n", message);
+    (void)fprintf(stderr, SIR_BREDB("libsir error: ") SIR_RED("%s") "\n", message);
     return EXIT_FAILURE;
 }
 
@@ -207,6 +207,6 @@ void report_warning(const char* warning) {
     if (_sir_validstrnofail(warning)) {
         char message[SIR_MAXERROR] = {0};
         (void)sir_geterror(message);
-        (void)fprintf(stderr, BYELLOWB("%s! ") YELLOW("libsir error: %s") "\r\n", warning, message);
+        (void)fprintf(stderr, SIR_BYELLOWB("%s! ") SIR_YELLOW("libsir error: %s") "\n", warning, message);
     }
 }

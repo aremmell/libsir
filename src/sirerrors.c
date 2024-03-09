@@ -323,8 +323,8 @@ void __sir_selflog(const char* func, const char* file, uint32_t line,
 # endif
                         warn = true;
                     }
-                    write2 = fprintf(stderr, (error ? BRED("%s%s") "\n" :
-                        (warn ? YELLOW("%s%s") "\n" : "%s%s\n")), prefix, buf);
+                    write2 = fprintf(stderr, (error ? SIR_BRED("%s%s") "\n" :
+                        (warn ? SIR_YELLOW("%s%s") "\n" : "%s%s\n")), prefix, buf);
                     _sir_eqland(success, write2 > 0);
                 }
 

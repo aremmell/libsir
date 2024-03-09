@@ -375,11 +375,19 @@
  */
 # if !defined(SIR_NO_TEXT_STYLING)
 #  if !defined(SIR_MAXSTYLE)
-#   define SIR_MAXSTYLE 43
+#   if !defined(SIR_EOL_CRLF)
+#    define SIR_MAXSTYLE 43
+#   else
+#    define SIR_MAXSTYLE 44
+#   endif
 #  endif
 # else
 #  if !defined(SIR_MAXSTYLE)
-#   define SIR_MAXSTYLE 1
+#   if !defined(SIR_EOL_CRLF)
+#    define SIR_MAXSTYLE 1
+#   else
+#    define SIR_MAXSTYLE 2
+#   endif
 #  endif
 # endif
 

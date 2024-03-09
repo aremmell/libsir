@@ -47,7 +47,7 @@ main(void) {
     chinfo_t ch;
     if (chinfo(&ch)) {
         (void)fprintf(_stderr,
-                      BREDB("Ch error: ") RED("Failure reading Ch version.") "\r\n");
+                      SIR_BREDB("Ch error: ") SIR_RED("Failure reading Ch version.") "\n");
 
         return EXIT_FAILURE;
     }
@@ -108,10 +108,10 @@ main(void) {
 
     /* Print startup herald with version info. */
     (void)fprintf(_stdout,
-                  WHITE("Ch") " binding test: " CYAN("libsir ") BCYAN("%s"),
+                  SIR_WHITE("Ch") " binding test: " SIR_CYAN("libsir ") SIR_BCYAN("%s"),
                   sir_versionstring);
     (void)fprintf(_stdout,
-                  BGRAY(" on ") CYAN("Ch ") BCYAN("%d.%d.%d.%d") BGRAY(".") "\r\n\r\n",
+                  SIR_BGRAY(" on ") SIR_CYAN("Ch ") SIR_BCYAN("%d.%d.%d.%d") SIR_BGRAY(".") "\n\n",
                   ch.vermajor, ch.verminor, ch.vermicro, ch.verbuild);
 
     /* Demo string utilities. */
@@ -120,27 +120,27 @@ main(void) {
                   '!', 'x'), "x", '*'));
 
     /* Log to stdout. */
-    (void)fprintf(_stdout, "\r\nLogging four libsir messages to stdout:\r\n");
-    (void)sir_debug("%b Testing %s output", __LINE__, ULINE("debug"));
-    (void)sir_info("%b Testing %s output", __LINE__, ULINE("information"));
-    (void)sir_notice("%b Testing %s output", __LINE__, ULINE("notice"));
-    (void)sir_warn("%b Testing %s output", __LINE__, ULINE("warning"));
+    (void)fprintf(_stdout, "\nLogging four libsir messages to stdout:\n");
+    (void)sir_debug("%b Testing %s output", __LINE__, SIR_ULINE("debug"));
+    (void)sir_info("%b Testing %s output", __LINE__, SIR_ULINE("information"));
+    (void)sir_notice("%b Testing %s output", __LINE__, SIR_ULINE("notice"));
+    (void)sir_warn("%b Testing %s output", __LINE__, SIR_ULINE("warning"));
 
     /* Log to stderr. */
-    (void)fprintf(_stderr, "\r\nLogging four libsir messages to stderr:\r\n");
-    (void)sir_error("%s %b Testing %s output", __TIME__, __LINE__, ULINE("error"));
-    (void)sir_crit("%s %b Testing %s output", __TIME__, __LINE__, ULINE("critical"));
-    (void)sir_alert("%s %b Testing %s output", __TIME__, __LINE__, ULINE("alert"));
-    (void)sir_emerg("%s %b Testing %s output", __TIME__, __LINE__, ULINE("emergency"));
+    (void)fprintf(_stderr, "\nLogging four libsir messages to stderr:\n");
+    (void)sir_error("%s %b Testing %s output", __TIME__, __LINE__, SIR_ULINE("error"));
+    (void)sir_crit("%s %b Testing %s output", __TIME__, __LINE__, SIR_ULINE("critical"));
+    (void)sir_alert("%s %b Testing %s output", __TIME__, __LINE__, SIR_ULINE("alert"));
+    (void)sir_emerg("%s %b Testing %s output", __TIME__, __LINE__, SIR_ULINE("emergency"));
 
     /* Set up for syslog output. */
     (void)sir_syslogid(appname);
 
     /* Check if syslog is available. */
     if (SIR_E_UNAVAIL == sir_geterror(NULL)) {
-        (void)fprintf(_stderr, "\r\nLogging to syslog is not supported, skipping.\r\n");
+        (void)fprintf(_stderr, "\nLogging to syslog is not supported, skipping.\n");
     } else {
-        (void)fprintf(_stderr, "\r\nLogging two libsir messages to stderr and syslog:\r\n");
+        (void)fprintf(_stderr, "\nLogging two libsir messages to stderr and syslog:\n");
 
         /* Don't log PID; syslog has us covered. */
         if (!sir_syslogopts(SIRO_NOPID))
@@ -163,7 +163,7 @@ main(void) {
     (void)sir_cleanup();
 
     /* We made it! */
-    (void)fprintf(_stdout, "\r\n" WHITE("Ch ") "binding test: " BGREEN("completed") BGRAY(".") "\r\n");
+    (void)fprintf(_stdout, "\n" SIR_WHITE("Ch ") "binding test: " SIR_BGREEN("completed") SIR_BGRAY(".") "\n");
 
     /* All done. */
     return EXIT_SUCCESS;
@@ -174,6 +174,6 @@ void
 report_error(void) {
     char message[SIR_MAXERROR] = {0};
     uint16_t code              = sir_geterror(message);
-    (void)fprintf(_stderr, BREDB("libsir error: ") RED("%" PRIu16 ", %s") BGRAY("." "\r\n"),
+    (void)fprintf(_stderr, SIR_BREDB("libsir error: ") SIR_RED("%" PRIu16 ", %s") SIR_BGRAY("." "\n"),
                   code, message);
 }

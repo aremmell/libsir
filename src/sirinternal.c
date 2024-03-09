@@ -667,9 +667,6 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
     if (match) {
         cfg.state.last.counter++;
 
-        /* _sir_selflog("message '%s' matches last; incremented counter to %zu", buf.message,
-            cfg.state.last.counter); */
-
         if (cfg.state.last.counter >= cfg.state.last.threshold - 2) {
             size_t old_threshold = cfg.state.last.threshold;
 
@@ -1562,7 +1559,7 @@ long __sir_nprocs(bool test_mode) {
 #endif
 
     if (nprocs < 1) {
-        _sir_selflog(BRED("Failed to determine processor count!"));
+        _sir_selflog(SIR_BRED("Failed to determine processor count!"));
         if (!test_mode)
             nprocs = 1;
     }

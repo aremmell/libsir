@@ -220,6 +220,7 @@ bool _sir_setcolormode(sir_colormode mode) {
 #else /* SIR_NO_TEXT_STYLING */
 const char* _sir_gettextstyle(sir_level level) {
     SIR_UNUSED(level);
+    SIR_ASSERT(false);
     return NULL;
 }
 
@@ -231,6 +232,7 @@ bool _sir_settextstyle(sir_level level, const sir_textstyle* style) {
 
 const sir_textstyle* _sir_getdefstyle(sir_level level) {
     SIR_UNUSED(level);
+    SIR_ASSERT(false);
     return NULL;
 }
 
