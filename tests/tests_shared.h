@@ -137,7 +137,7 @@ extern "C" {
      (void)printf(expr ? GREEN(msg) : RED(msg), __VA_ARGS__)
 # else
 #  define PASSFAIL_MSG(expr, msg, ...) \
-     (void)printf(msg, __VA_ARGS__) //-V583
+     (void)printf(msg, __VA_ARGS__)
 # endif
 
 /** Prints an expected error in green. */
