@@ -464,7 +464,7 @@ $(document).ready(function(){initNavTree('platform_8h_source.html',''); initResi
 <div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span><span class="preprocessor">#   define SIR_ASSERT(...) \</span></div>
 <div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span><span class="preprocessor">     do { \</span></div>
 <div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span><span class="preprocessor">          if (!(__VA_ARGS__)) { \</span></div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span><span class="preprocessor">               _sir_selflog(BRED(&quot;!!! would be asserting: &quot; #__VA_ARGS__ &quot;&quot;)); \</span></div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span><span class="preprocessor">               _sir_selflog(SIR_BRED(&quot;!!! would be asserting: &quot; #__VA_ARGS__ &quot;&quot;)); \</span></div>
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span><span class="preprocessor">          } \</span></div>
 <div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span><span class="preprocessor">     } while (false)</span></div>
 <div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span><span class="preprocessor">#  else</span></div>
