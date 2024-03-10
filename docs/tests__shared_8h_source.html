@@ -212,9 +212,9 @@ $(document).ready(function(){initNavTree('tests__shared_8h_source.html',''); ini
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="preprocessor"># define SIR_CL_VERSIONDESC   &quot;Prints the version of libsir that the test suite was built with&quot;</span></div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="preprocessor"># define SIR_CL_HELPDESC      &quot;Shows this message&quot;</span></div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="preprocessor"># define TEST_MSG(msg, ...) (void)printf(&quot;\t&quot; msg &quot;\n&quot;, __VA_ARGS__)</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="preprocessor"># define TEST_MSG(msg, ...) (void)printf(&quot;\t&quot; msg SIR_EOL, __VA_ARGS__)</span></div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="preprocessor"># define TEST_MSG_0(msg) (void)printf(&quot;\t&quot; msg &quot;\n&quot;)</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="preprocessor"># define TEST_MSG_0(msg) (void)printf(&quot;\t&quot; msg SIR_EOL)</span></div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="preprocessor"># define ERROR_MSG(msg, ...) TEST_MSG(SIR_RED(msg), __VA_ARGS__)</span></div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
