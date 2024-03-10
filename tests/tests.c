@@ -220,7 +220,7 @@ bool sirtest_logwritesanity(void) {
         if (found)
             TEST_MSG(SIR_GREEN("found '%s'"), message);
         else
-            TEST_MSG(SIR_RED("did not find '%s'"), message);
+            TEST_MSG(SIR_RED("did not find '%s'"), message); // GCOVR_EXCL_LINE
 
         _sir_safefclose(&f);
         TEST_MSG("deleting %s...", logfilename);

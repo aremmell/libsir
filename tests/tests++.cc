@@ -96,7 +96,7 @@ int main(int argc, char** argv) {
 
         print_test_summary(tgt_tests, passed, sir_timer_elapsed(&timer));
 
-        if (passed != tgt_tests) {
+        if (passed != tgt_tests) { // GCOVR_EXCL_START
             print_failed_test_intro(tgt_tests, passed);
 
             for (const auto& test : sirxx_tests) {
@@ -110,7 +110,7 @@ int main(int argc, char** argv) {
 
         if (cl_cfg.wait) {
             wait_for_keypress();
-        }
+        } // GCOVR_EXCL_START
 
         return passed == tgt_tests ? EXIT_SUCCESS : EXIT_FAILURE;
     } catch (const std::exception& ex) {
