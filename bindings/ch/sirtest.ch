@@ -138,9 +138,9 @@ main(void) {
 
     /* Check if syslog is available. */
     if (SIR_E_UNAVAIL == sir_geterror(NULL)) {
-        (void)fprintf(_stderr, SIR_EOL"Logging to syslog is not supported, skipping." SIR_EOL);
+        (void)fprintf(_stderr, SIR_EOL "Logging to syslog is not supported, skipping." SIR_EOL);
     } else {
-        (void)fprintf(_stderr, SIR_EOL"Logging two libsir messages to stderr and syslog:" SIR_EOL);
+        (void)fprintf(_stderr, SIR_EOL "Logging two libsir messages to stderr and syslog:" SIR_EOL);
 
         /* Don't log PID; syslog has us covered. */
         if (!sir_syslogopts(SIRO_NOPID))
