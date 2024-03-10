@@ -120,10 +120,10 @@ extern "C" {
 # define SIR_CL_HELPDESC      "Shows this message"
 
 /** Prints `msg` indented with a tab. Used for output during a test's execution. */
-# define TEST_MSG(msg, ...) (void)printf("\t" msg "\n", __VA_ARGS__)
+# define TEST_MSG(msg, ...) (void)printf("\t" msg SIR_EOL, __VA_ARGS__)
 
 /** TEST_MSG but no varargs. Use when `msg` is just a string. */
-# define TEST_MSG_0(msg) (void)printf("\t" msg "\n")
+# define TEST_MSG_0(msg) (void)printf("\t" msg SIR_EOL)
 
 /** Prints `msg` in red to stderr. */
 # define ERROR_MSG(msg, ...) TEST_MSG(SIR_RED(msg), __VA_ARGS__)

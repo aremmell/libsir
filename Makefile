@@ -150,6 +150,13 @@ ifeq ($(SIR_NO_TEXT_STYLING),1)
 endif
 
 #############################################################################
+# Use CRLF line endings?
+
+ifeq ($(SIR_USE_EOL_CRLF),1)
+  SIR_CFLAGS += -DSIR_USE_EOL_CRLF
+endif
+
+#############################################################################
 # Developer profiling build?
 
 ifeq ($(SIR_PERF_PROFILE),1)

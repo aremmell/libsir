@@ -8,7 +8,7 @@
  *
  * **Example**
  *   ~~~
- *   printf(RED("Something terrible happened!\n"));
+ *   printf(RED("Something terrible happened!" SIR_EOL));
  *   ~~~
  *
  * @version 2.2.5

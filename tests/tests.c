@@ -97,7 +97,7 @@ int main(int argc, char** argv) {
 #if !defined(__WIN__) && !defined(__HAIKU__) && !defined(__EMSCRIPTEN__)
     /* Disallow execution by root / sudo; some of the tests rely on lack of permissions. */
     if (geteuid() == 0) {
-        (void)fprintf(stderr, "Sorry, but this program may not be executed by root.\n");
+        (void)fprintf(stderr, "Sorry, but this program may not be executed by root." SIR_EOL);
         return EXIT_FAILURE;
     }
 #else /* __WIN__ */
@@ -148,7 +148,7 @@ int main(int argc, char** argv) {
         for (size_t t = 0; t < _sir_countof(sir_tests); t++)
             if (!sir_tests[t].pass)
                 print_failed_test(sir_tests[t].name);
-        (void)printf("\n");
+        (void)printf(SIR_EOL);
     }
 
     if (cl_cfg.wait)
@@ -443,7 +443,7 @@ bool sirtest_filecachesanity(void) {
     (void)printf("\tremove order: {");
     for (size_t n = 0; n < SIR_MAXFILES; n++)
         (void)printf(" %zu%s", removeorder[n], (n < SIR_MAXFILES - 1) ? "," : "");
-    (void)printf(" }...\n");
+    (void)printf(" }..." SIR_EOL);
 
     for (size_t n = 0; n < SIR_MAXFILES; n++) {
         _sir_eqland(pass, sir_remfile(ids[removeorder[n]]));
@@ -783,12 +783,12 @@ bool sirtest_textstylesanity(void) {
 
     _sir_eqland(pass, !sir_settextstyle(SIRL_ALERT, SIRTA_NORMAL, 0xff, 0xff));
     _sir_eqland(pass, sir_info("and again."));
-    PASSFAIL_MSG(pass, "\t--- explicitly invalid: %s ---\n\n", PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- explicitly invalid: %s ---" SIR_EOL SIR_EOL, PRN_PASS(pass));
 
     TEST_MSG_0(SIR_WHITEB("--- unusual but valid ---"));
     _sir_eqland(pass, sir_settextstyle(SIRL_INFO, SIRTA_NORMAL, SIRTC_DEFAULT, SIRTC_DEFAULT));
     _sir_eqland(pass, sir_info("system default fg and bg"));
-    PASSFAIL_MSG(pass, "\t--- unusual but valid: %s ---\n\n", PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- unusual but valid: %s ---" SIR_EOL SIR_EOL, PRN_PASS(pass));
 
     TEST_MSG_0(SIR_WHITEB("--- override defaults ---"));
     _sir_eqland(pass, sir_resettextstyles());
@@ -824,7 +824,7 @@ bool sirtest_textstylesanity(void) {
     _sir_eqland(pass, sir_emerg("default style"));
     _sir_eqland(pass, sir_settextstyle(SIRL_EMERG, SIRTA_BOLD, SIRTC_DGRAY, SIRTC_DEFAULT));
     _sir_eqland(pass, sir_emerg("override style"));
-    PASSFAIL_MSG(pass, "\t--- override defaults: %s ---\n\n", PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- override defaults: %s ---" SIR_EOL SIR_EOL, PRN_PASS(pass));
 
     TEST_MSG_0(SIR_WHITEB("--- reset to defaults ---"));
     _sir_eqland(pass, sir_resettextstyles());
@@ -837,7 +837,7 @@ bool sirtest_textstylesanity(void) {
     _sir_eqland(pass, sir_crit("default style (crit)"));
     _sir_eqland(pass, sir_alert("default style (alert)"));
     _sir_eqland(pass, sir_emerg("default style (emergency)"));
-    PASSFAIL_MSG(pass, "\t--- reset to defaults: %s ---\n\n", PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- reset to defaults: %s ---" SIR_EOL SIR_EOL, PRN_PASS(pass));
 
     TEST_MSG_0(SIR_WHITEB("--- change mode: 256-color ---"));
     _sir_eqland(pass, sir_setcolormode(SIRCM_256));
@@ -850,7 +850,7 @@ bool sirtest_textstylesanity(void) {
         }
     }
 
-    PASSFAIL_MSG(pass, "\t--- change mode: 256-color: %s ---\n\n", PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- change mode: 256-color: %s ---" SIR_EOL SIR_EOL, PRN_PASS(pass));
 
     TEST_MSG_0(SIR_WHITEB("--- change mode: RGB-color ---"));
     _sir_eqland(pass, sir_setcolormode(SIRCM_RGB));
@@ -864,7 +864,7 @@ bool sirtest_textstylesanity(void) {
             _sir_getgreenfromcolor(fg), _sir_getbluefromcolor(fg), _sir_getredfromcolor(bg),
             _sir_getgreenfromcolor(bg), _sir_getbluefromcolor(bg)));
     }
-    PASSFAIL_MSG(pass, "\t--- change mode: RGB-color: %s ---\n\n", PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- change mode: RGB-color: %s ---" SIR_EOL SIR_EOL, PRN_PASS(pass));
 
     TEST_MSG_0(SIR_WHITEB("--- change mode: invalid mode ---"));
     _sir_eqland(pass, !sir_setcolormode(SIRCM_INVALID));
@@ -872,14 +872,14 @@ bool sirtest_textstylesanity(void) {
     sir_textcolor bg = sir_makergb(0, 0, 0);
     _sir_eqland(pass, sir_settextstyle(SIRL_DEBUG, SIRTA_NORMAL, fg, bg));
     _sir_eqland(pass, sir_debug("this is still RGB color mode"));
-    PASSFAIL_MSG(pass, "\t--- change mode: invalid mode %s ---\n\n", PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- change mode: invalid mode %s ---" SIR_EOL SIR_EOL, PRN_PASS(pass));
 
     TEST_MSG_0(SIR_WHITEB("--- change mode: 16-color ---"));
     _sir_eqland(pass, sir_setcolormode(SIRCM_16));
     _sir_eqland(pass, sir_settextstyle(SIRL_DEBUG, SIRTA_EMPH, SIRTC_BMAGENTA, SIRTC_DEFAULT));
     _sir_eqland(pass, sir_debug("this is 16-color mode (fg: %"PRId32", bg: default)",
         SIRTC_BMAGENTA));
-    PASSFAIL_MSG(pass, "\t--- change mode: 16-color: %s ---\n\n", PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- change mode: 16-color: %s ---" SIR_EOL SIR_EOL, PRN_PASS(pass));
 #else /* SIR_NO_TEXT_STYLING */
     TEST_MSG_0("SIR_NO_TEXT_STYLING is defined; skipping");
 #endif
@@ -903,24 +903,24 @@ bool sirtest_optionssanity(void) {
     /* these should all be valid. */
     TEST_MSG_0(SIR_WHITEB("--- individual valid options ---"));
     _sir_eqland(pass, _sir_validopts(SIRO_ALL));
-    (void)printf(INDENT_ITEM SIR_WHITE("valid option: %08"PRIx32) "\n", SIRO_ALL);
+    (void)printf(INDENT_ITEM SIR_WHITE("valid option: %08"PRIx32) SIR_EOL, SIRO_ALL);
     _sir_eqland(pass, _sir_validopts(SIRO_NOTIME));
-    (void)printf(INDENT_ITEM SIR_WHITE("valid option: %08"PRIx32) "\n", SIRO_NOTIME);
+    (void)printf(INDENT_ITEM SIR_WHITE("valid option: %08"PRIx32) SIR_EOL, SIRO_NOTIME);
     _sir_eqland(pass, _sir_validopts(SIRO_NOHOST));
-    (void)printf(INDENT_ITEM SIR_WHITE("valid option: %08"PRIx32) "\n", SIRO_NOHOST);
+    (void)printf(INDENT_ITEM SIR_WHITE("valid option: %08"PRIx32) SIR_EOL, SIRO_NOHOST);
     _sir_eqland(pass, _sir_validopts(SIRO_NOLEVEL));
-    (void)printf(INDENT_ITEM SIR_WHITE("valid option: %08"PRIx32) "\n", SIRO_NOLEVEL);
+    (void)printf(INDENT_ITEM SIR_WHITE("valid option: %08"PRIx32) SIR_EOL, SIRO_NOLEVEL);
     _sir_eqland(pass, _sir_validopts(SIRO_NONAME));
-    (void)printf(INDENT_ITEM SIR_WHITE("valid option: %08"PRIx32) "\n", SIRO_NONAME);
+    (void)printf(INDENT_ITEM SIR_WHITE("valid option: %08"PRIx32) SIR_EOL, SIRO_NONAME);
     _sir_eqland(pass, _sir_validopts(SIRO_NOPID));
-    (void)printf(INDENT_ITEM SIR_WHITE("valid option: %08"PRIx32) "\n", SIRO_NOPID);
+    (void)printf(INDENT_ITEM SIR_WHITE("valid option: %08"PRIx32) SIR_EOL, SIRO_NOPID);
     _sir_eqland(pass, _sir_validopts(SIRO_NOTID));
-    (void)printf(INDENT_ITEM SIR_WHITE("valid option: %08"PRIx32) "\n", SIRO_NOTID);
+    (void)printf(INDENT_ITEM SIR_WHITE("valid option: %08"PRIx32) SIR_EOL, SIRO_NOTID);
     _sir_eqland(pass, _sir_validopts(SIRO_NOHDR));
-    (void)printf(INDENT_ITEM SIR_WHITE("valid option: %08"PRIx32) "\n", SIRO_NOHDR);
+    (void)printf(INDENT_ITEM SIR_WHITE("valid option: %08"PRIx32) SIR_EOL, SIRO_NOHDR);
     _sir_eqland(pass, _sir_validopts(SIRO_MSGONLY));
-    (void)printf(INDENT_ITEM SIR_WHITE("valid option: %08"PRIx32) "\n", SIRO_MSGONLY);
-    PASSFAIL_MSG(pass, "\t--- individual valid options: %s ---\n\n", PRN_PASS(pass));
+    (void)printf(INDENT_ITEM SIR_WHITE("valid option: %08"PRIx32) SIR_EOL, SIRO_MSGONLY);
+    PASSFAIL_MSG(pass, "\t--- individual valid options: %s ---" SIR_EOL SIR_EOL, PRN_PASS(pass));
 
     /* any combination these bitwise OR'd together
      * to form a bitmask should also be valid. */
@@ -964,35 +964,35 @@ bool sirtest_optionssanity(void) {
 
         _sir_eqland(pass, _sir_validopts(opts));
         (void)printf(INDENT_ITEM SIR_WHITE("(%zu/%zu): random valid (count: %"PRIu32
-            ", options: %08"PRIx32")") "\n", n + 1, iterations, rand_count, opts);
+            ", options: %08"PRIx32")") SIR_EOL, n + 1, iterations, rand_count, opts);
     }
-    PASSFAIL_MSG(pass, "\t--- random bitmask of valid options: %s ---\n\n", PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- random bitmask of valid options: %s ---" SIR_EOL SIR_EOL, PRN_PASS(pass));
 
     TEST_MSG_0(SIR_WHITEB("--- invalid values ---"));
 
     /* the lowest byte is not valid. */
     sir_options invalid = 0x000000ff;
     _sir_eqland(pass, !_sir_validopts(invalid));
-    (void)printf(INDENT_ITEM SIR_WHITE("lowest byte: %08"PRIx32) "\n", invalid);
+    (void)printf(INDENT_ITEM SIR_WHITE("lowest byte: %08"PRIx32) SIR_EOL, invalid);
 
     /* gaps inbetween valid options. */
     invalid = 0x0001ff00U & ~(SIRO_NOTIME | SIRO_NOHOST | SIRO_NOLEVEL | SIRO_NONAME |
                              SIRO_NOMSEC | SIRO_NOPID | SIRO_NOTID  | SIRO_NOHDR);
     _sir_eqland(pass, !_sir_validopts(invalid));
-    (void)printf(INDENT_ITEM SIR_WHITE("gaps in 0x001ff00U: %08"PRIx32) "\n", invalid);
+    (void)printf(INDENT_ITEM SIR_WHITE("gaps in 0x001ff00U: %08"PRIx32) SIR_EOL, invalid);
 
     /* greater than SIRO_MSGONLY and less than SIRO_NOHDR. */
     for (sir_option o = 0x00008f00U; o < SIRO_NOHDR; o += 0x1000U) {
         _sir_eqland(pass, !_sir_validopts(o));
-        (void)printf(INDENT_ITEM SIR_WHITE("SIRO_MSGONLY >< SIRO_NOHDR: %08"PRIx32) "\n", o);
+        (void)printf(INDENT_ITEM SIR_WHITE("SIRO_MSGONLY >< SIRO_NOHDR: %08"PRIx32) SIR_EOL, o);
     }
 
     /* greater than SIRO_NOHDR. */
     invalid = (0xFFFF0000 & ~SIRO_NOHDR);
     _sir_eqland(pass, !_sir_validopts(invalid));
-    (void)printf(INDENT_ITEM SIR_WHITE("greater than SIRO_NOHDR: %08"PRIx32) "\n", invalid);
+    (void)printf(INDENT_ITEM SIR_WHITE("greater than SIRO_NOHDR: %08"PRIx32) SIR_EOL, invalid);
 
-    PASSFAIL_MSG(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- invalid values: %s ---" SIR_EOL SIR_EOL, PRN_PASS(pass));
 
     _sir_eqland(pass, sir_cleanup());
     return PRINT_RESULT_RETURN(pass);
@@ -1007,26 +1007,26 @@ bool sirtest_levelssanity(void) {
     /* these should all be valid. */
     TEST_MSG_0(SIR_WHITEB("--- individual valid levels ---"));
     _sir_eqland(pass, _sir_validlevel(SIRL_INFO) && _sir_validlevels(SIRL_INFO));
-    (void)printf(INDENT_ITEM SIR_WHITE("valid level: %04x") "\n", SIRL_INFO);
+    (void)printf(INDENT_ITEM SIR_WHITE("valid level: %04x") SIR_EOL, SIRL_INFO);
     _sir_eqland(pass, _sir_validlevel(SIRL_DEBUG) && _sir_validlevels(SIRL_DEBUG));
-    (void)printf(INDENT_ITEM SIR_WHITE("valid level: %04x") "\n", SIRL_DEBUG);
+    (void)printf(INDENT_ITEM SIR_WHITE("valid level: %04x") SIR_EOL, SIRL_DEBUG);
     _sir_eqland(pass, _sir_validlevel(SIRL_NOTICE) && _sir_validlevels(SIRL_NOTICE));
-    (void)printf(INDENT_ITEM SIR_WHITE("valid level: %04x") "\n", SIRL_NOTICE);
+    (void)printf(INDENT_ITEM SIR_WHITE("valid level: %04x") SIR_EOL, SIRL_NOTICE);
     _sir_eqland(pass, _sir_validlevel(SIRL_WARN) && _sir_validlevels(SIRL_WARN));
-    (void)printf(INDENT_ITEM SIR_WHITE("valid level: %04x") "\n", SIRL_WARN);
+    (void)printf(INDENT_ITEM SIR_WHITE("valid level: %04x") SIR_EOL, SIRL_WARN);
     _sir_eqland(pass, _sir_validlevel(SIRL_ERROR) && _sir_validlevels(SIRL_ERROR));
-    (void)printf(INDENT_ITEM SIR_WHITE("valid level: %04x") "\n", SIRL_ERROR);
+    (void)printf(INDENT_ITEM SIR_WHITE("valid level: %04x") SIR_EOL, SIRL_ERROR);
     _sir_eqland(pass, _sir_validlevel(SIRL_CRIT) && _sir_validlevels(SIRL_CRIT));
-    (void)printf(INDENT_ITEM SIR_WHITE("valid level: %04x") "\n", SIRL_CRIT);
+    (void)printf(INDENT_ITEM SIR_WHITE("valid level: %04x") SIR_EOL, SIRL_CRIT);
     _sir_eqland(pass, _sir_validlevel(SIRL_ALERT) && _sir_validlevels(SIRL_ALERT));
-    (void)printf(INDENT_ITEM SIR_WHITE("valid level: %04x") "\n", SIRL_ALERT);
+    (void)printf(INDENT_ITEM SIR_WHITE("valid level: %04x") SIR_EOL, SIRL_ALERT);
     _sir_eqland(pass, _sir_validlevel(SIRL_EMERG) && _sir_validlevels(SIRL_EMERG));
-    (void)printf(INDENT_ITEM SIR_WHITE("valid level: %04x") "\n", SIRL_EMERG);
+    (void)printf(INDENT_ITEM SIR_WHITE("valid level: %04x") SIR_EOL, SIRL_EMERG);
     _sir_eqland(pass, _sir_validlevels(SIRL_ALL));
-    (void)printf(INDENT_ITEM SIR_WHITE("valid levels: %04x") "\n", SIRL_ALL);
+    (void)printf(INDENT_ITEM SIR_WHITE("valid levels: %04x") SIR_EOL, SIRL_ALL);
     _sir_eqland(pass, _sir_validlevels(SIRL_NONE));
-    (void)printf(INDENT_ITEM SIR_WHITE("valid levels: %04x") "\n", SIRL_NONE);
-    PASSFAIL_MSG(pass, "\t--- individual valid levels: %s ---\n\n", PRN_PASS(pass));
+    (void)printf(INDENT_ITEM SIR_WHITE("valid levels: %04x") SIR_EOL, SIRL_NONE);
+    PASSFAIL_MSG(pass, "\t--- individual valid levels: %s ---" SIR_EOL SIR_EOL, PRN_PASS(pass));
 
     /* any combination these bitwise OR'd together
      * to form a bitmask should also be valid. */
@@ -1070,23 +1070,23 @@ bool sirtest_levelssanity(void) {
 
         _sir_eqland(pass, _sir_validlevels(levels));
         (void)printf(INDENT_ITEM SIR_WHITE("(%zu/%zu): random valid (count: %"PRIu32", levels:"
-                                 " %04"PRIx16) ")\n", n + 1, iterations, rand_count, levels);
+                                 " %04"PRIx16) ")" SIR_EOL, n + 1, iterations, rand_count, levels);
     }
-    PASSFAIL_MSG(pass, "\t--- random bitmask of valid levels: %s ---\n\n", PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- random bitmask of valid levels: %s ---" SIR_EOL SIR_EOL, PRN_PASS(pass));
 
     TEST_MSG_0(SIR_WHITEB("--- invalid values ---"));
 
     /* greater than SIRL_ALL. */
     sir_levels invalid = (0xffffu & ~SIRL_ALL);
     _sir_eqland(pass, !_sir_validlevels(invalid));
-    (void)printf(INDENT_ITEM SIR_WHITE("greater than SIRL_ALL: %04"PRIx16) "\n", invalid);
+    (void)printf(INDENT_ITEM SIR_WHITE("greater than SIRL_ALL: %04"PRIx16) SIR_EOL, invalid);
 
     /* individual invalid level. */
     sir_level invalid2 = 0x1337U;
     _sir_eqland(pass, !_sir_validlevel(invalid2));
-    (void)printf(INDENT_ITEM SIR_WHITE("individual invalid level: %04"PRIx16) "\n", invalid2);
+    (void)printf(INDENT_ITEM SIR_WHITE("individual invalid level: %04"PRIx16) SIR_EOL, invalid2);
 
-    PASSFAIL_MSG(pass, "\t--- invalid values: %s ---\n\n", PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- invalid values: %s ---" SIR_EOL, PRN_PASS(pass));
 
     _sir_eqland(pass, sir_cleanup());
     return PRINT_RESULT_RETURN(pass);
@@ -1097,7 +1097,7 @@ bool sirtest_mutexsanity(void) {
     bool pass = si_init;
 
     TEST_MSG_0(SIR_WHITEB("create, lock, unlock, destroy"));
-    (void)printf(INDENT_ITEM SIR_WHITE("creating mutex...") "\n");
+    (void)printf(INDENT_ITEM SIR_WHITE("creating mutex...") SIR_EOL);
 
 #if !defined(__IMPORTC__)
     sir_mutex m1 = SIR_MUTEX_INIT;
@@ -1109,46 +1109,46 @@ bool sirtest_mutexsanity(void) {
     (void)print_test_error(pass, pass);
 
     if (pass) {
-        (void)printf(INDENT_ITEM SIR_WHITE("locking (wait)...") "\n");
+        (void)printf(INDENT_ITEM SIR_WHITE("locking (wait)...") SIR_EOL);
         _sir_eqland(pass, _sir_mutexlock(&m1));
 
         (void)print_test_error(pass, pass);
 
-        (void)printf(INDENT_ITEM SIR_WHITE("entered; unlocking...") "\n");
+        (void)printf(INDENT_ITEM SIR_WHITE("entered; unlocking...") SIR_EOL);
         _sir_eqland(pass, _sir_mutexunlock(&m1));
 
         (void)print_test_error(pass, pass);
 
-        (void)printf(INDENT_ITEM SIR_WHITE("locking (without wait)...") "\n");
+        (void)printf(INDENT_ITEM SIR_WHITE("locking (without wait)...") SIR_EOL);
         _sir_eqland(pass, _sir_mutextrylock(&m1));
 
         (void)print_test_error(pass, pass);
 
-        (void)printf(INDENT_ITEM SIR_WHITE("unlocking...") "\n");
+        (void)printf(INDENT_ITEM SIR_WHITE("unlocking...") SIR_EOL);
         _sir_eqland(pass, _sir_mutexunlock(&m1));
 
         (void)print_test_error(pass, pass);
 
-        (void)printf(INDENT_ITEM SIR_WHITE("destryoing...") "\n");
+        (void)printf(INDENT_ITEM SIR_WHITE("destryoing...") SIR_EOL);
         _sir_eqland(pass, _sir_mutexdestroy(&m1));
 
         (void)print_test_error(pass, pass);
 
     }
-    PASSFAIL_MSG(pass, "\t--- create, lock, unlock, destroy: %s ---\n\n", PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- create, lock, unlock, destroy: %s ---" SIR_EOL SIR_EOL, PRN_PASS(pass));
 
     TEST_MSG_0(SIR_WHITEB("invalid arguments"));
-    (void)printf(INDENT_ITEM SIR_WHITE("create with NULL pointer...") "\n");
+    (void)printf(INDENT_ITEM SIR_WHITE("create with NULL pointer...") SIR_EOL);
     _sir_eqland(pass, !_sir_mutexcreate(NULL));
-    (void)printf(INDENT_ITEM SIR_WHITE("lock with NULL pointer...") "\n");
+    (void)printf(INDENT_ITEM SIR_WHITE("lock with NULL pointer...") SIR_EOL);
     _sir_eqland(pass, !_sir_mutexlock(NULL));
-    (void)printf(INDENT_ITEM SIR_WHITE("trylock with NULL pointer...") "\n");
+    (void)printf(INDENT_ITEM SIR_WHITE("trylock with NULL pointer...") SIR_EOL);
     _sir_eqland(pass, !_sir_mutextrylock(NULL));
-    (void)printf(INDENT_ITEM SIR_WHITE("unlock with NULL pointer...") "\n");
+    (void)printf(INDENT_ITEM SIR_WHITE("unlock with NULL pointer...") SIR_EOL);
     _sir_eqland(pass, !_sir_mutexunlock(NULL));
-    (void)printf(INDENT_ITEM SIR_WHITE("destroy with NULL pointer...") "\n");
+    (void)printf(INDENT_ITEM SIR_WHITE("destroy with NULL pointer...") SIR_EOL);
     _sir_eqland(pass, !_sir_mutexdestroy(NULL));
-    PASSFAIL_MSG(pass, "\t--- pass invalid arguments: %s ---\n\n", PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- pass invalid arguments: %s ---" SIR_EOL SIR_EOL, PRN_PASS(pass));
 
     _sir_eqland(pass, sir_cleanup());
     return PRINT_RESULT_RETURN(pass); //-V1020
@@ -1187,7 +1187,7 @@ bool sirtest_perf(void) {
         sir_timer_start(&printftimer);
 
         for (size_t n = 0; n < perflines; n++)
-            (void)printf(SIR_WHITE("%.2f: lorem ipsum foo bar %s: %zu") "\n",
+            (void)printf(SIR_WHITE("%.2f: lorem ipsum foo bar %s: %zu") SIR_EOL,
                 sir_timer_elapsed(&printftimer), "baz", 1234 + n);
 
         printfelapsed = sir_timer_elapsed(&printftimer);
@@ -1370,7 +1370,7 @@ bool generic_syslog_test(const char* sl_name, const char* identity, const char* 
 
     /* repeat initializing, opening, logging, closing, cleaning up n times. */
     (void)printf("\trunning %d passes of random configs (system logger: '%s', "
-                 "identity: '%s', category: '%s')...\n", runs, sl_name, identity, category);
+                 "identity: '%s', category: '%s')..." SIR_EOL, runs, sl_name, identity, category);
 
 # if !defined(__WIN__)
     uint32_t rnd = (uint32_t)(_sir_getpid() + _sir_gettid());
@@ -2023,7 +2023,7 @@ bool sirtest_stringutils(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    char str[] = "Kneel  \f \n  before  \t \r \v  Zod!?";
+    char str[] = "Kneel  \f \x0a  before  \t \x0d \v  Zod!?";
 
     TEST_MSG_0(SIR_WHITEB("--- valid string utility usage ---"));
 
@@ -2045,7 +2045,7 @@ bool sirtest_stringutils(void) {
     _sir_eqland(pass, _sir_strredact(str, "X", 'Y') && 0 == strncmp(str, "Kn**l b*for* Zod!", 17));
     TEST_MSG("_sir_strredact(\"X\", \"Y\"):   '%s'", str);
 
-    PASSFAIL_MSG(pass, "\t--- valid string utility usage: %s ---\n\n", PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- valid string utility usage: %s ---" SIR_EOL SIR_EOL, PRN_PASS(pass));
 
     TEST_MSG_0(SIR_WHITEB("--- invalid string utility usage - NULL pointer ---"));
 
@@ -2064,7 +2064,7 @@ bool sirtest_stringutils(void) {
     TEST_MSG_0("_sir_strredact:   NULL pointer");
     _sir_eqland(pass, !_sir_strredact(NULL, "s", '*'));
 
-    PASSFAIL_MSG(pass, "\t--- invalid string utility usage - NULL pointer: %s ---\n\n", PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- invalid string utility usage - NULL pointer: %s ---" SIR_EOL SIR_EOL, PRN_PASS(pass));
 
     TEST_MSG_0(SIR_WHITEB("--- invalid string utility usage - bad parameters ---"));
 
@@ -2092,7 +2092,7 @@ bool sirtest_stringutils(void) {
     TEST_MSG_0("_sir_strredact:   bad parameter 'c'");
     _sir_eqland(pass, _sir_strredact(str, "sub", 0));
 
-    PASSFAIL_MSG(pass, "\t--- invalid string utility usage - bad parameters: %s ---\n", PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- invalid string utility usage - bad parameters: %s ---" SIR_EOL SIR_EOL, PRN_PASS(pass));
 
     _sir_eqland(pass, sir_cleanup());
     return PRINT_RESULT_RETURN(pass);

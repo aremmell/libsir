@@ -97,7 +97,7 @@ PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
 #endif
     info->caps      = caps;
 
-    (void)printf("\t" SIR_DGRAY("" PLUGIN_NAME " ('%s')") "\n", __func__);
+    (void)printf("\t" SIR_DGRAY("" PLUGIN_NAME " ('%s')") SIR_EOL, __func__);
 
 #if defined(PLUGINDUMMY_BADBEHAVIOR1)
     return false;
@@ -108,7 +108,7 @@ PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
 
 #if !defined(PLUGINDUMMY_BADBEHAVIOR4)
 PLUGIN_EXPORT bool sir_plugin_init(void) {
-    (void)printf("\t" SIR_DGRAY("" PLUGIN_NAME " ('%s')") "\n", __func__);
+    (void)printf("\t" SIR_DGRAY("" PLUGIN_NAME " ('%s')") SIR_EOL, __func__);
 # if defined(PLUGINDUMMY_BADBEHAVIOR5)
     return false;
 # else
@@ -130,7 +130,7 @@ PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message) {
 }
 
 PLUGIN_EXPORT bool sir_plugin_cleanup(void) { //-V524
-    (void)printf("\t" SIR_DGRAY("" PLUGIN_NAME " ('%s')") "\n", __func__);
+    (void)printf("\t" SIR_DGRAY("" PLUGIN_NAME " ('%s')") SIR_EOL, __func__);
 #if defined(PLUGINDUMMY_BADBEHAVIOR6)
     return false;
 #else

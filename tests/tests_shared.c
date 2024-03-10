@@ -33,39 +33,39 @@
 #include "tests_shared.h"
 
 void print_intro(size_t tgt_tests) {
-    (void)printf(SIR_WHITEB("\n" SIR_ULINE("libsir") " %s (%s) running %zu %s...") "\n",
+    (void)printf(SIR_WHITEB(SIR_EOL SIR_ULINE("libsir") " %s (%s) running %zu %s...") SIR_EOL,
         sir_getversionstring(), (sir_isprerelease() ? "prerelease" : "release"),
         tgt_tests, TEST_S(tgt_tests));
 }
 
 void print_test_intro(size_t num, size_t tgt_tests, const char* const name) {
-    (void)printf(SIR_WHITEB("\n(%zu/%zu) '%s'...") "\n\n", num, tgt_tests, name);
+    (void)printf(SIR_EOL SIR_WHITEB("(%zu/%zu) '%s'...") SIR_EOL SIR_EOL, num, tgt_tests, name);
 }
 
 void print_test_outro(size_t num, size_t tgt_tests, const char* const name, bool pass) {
-    (void)printf(SIR_WHITEB("\n(%zu/%zu) '%s' finished: ") "%s\n", num, tgt_tests, name,
+    (void)printf(SIR_EOL SIR_WHITEB("(%zu/%zu) '%s' finished: ") "%s" SIR_EOL, num, tgt_tests, name,
                 PRN_PASS(pass));
 }
 
 void print_test_summary(size_t tgt_tests, size_t passed, double elapsed) {
     elapsed = (elapsed / 1e3);
     if (tgt_tests == passed) {
-        (void)printf("\n" SIR_WHITEB("done: ")
+        (void)printf(SIR_EOL SIR_WHITEB("done: ")
             SIR_GREENB("%s%zu " SIR_ULINE("libsir") " %s " SIR_EMPH("passed") " in %.03fsec!")
-            "\n\n", tgt_tests > 1 ? "all " : "", tgt_tests, TEST_S(tgt_tests), elapsed);
+            SIR_EOL SIR_EOL, tgt_tests > 1 ? "all " : "", tgt_tests, TEST_S(tgt_tests), elapsed);
     } else {
-        (void)printf("\n" SIR_WHITEB("done: ")
+        (void)printf(SIR_EOL SIR_WHITEB("done: ")
             SIR_REDB("%zu of %zu " SIR_ULINE("libsir") " %s " SIR_EMPH("failed") " in %.03fsec")
-            "\n\n", tgt_tests - passed, tgt_tests, TEST_S(tgt_tests), elapsed);
+            SIR_EOL SIR_EOL, tgt_tests - passed, tgt_tests, TEST_S(tgt_tests), elapsed);
     }
 }
 
 void print_failed_test_intro(size_t tgt_tests, size_t passed) {
-    (void)printf(SIR_REDB("Failed %s:") "\n\n", TEST_S(tgt_tests - passed));
+    (void)printf(SIR_REDB("Failed %s:") SIR_EOL SIR_EOL, TEST_S(tgt_tests - passed));
 }
 
 void print_failed_test(const char* const name) {
-    (void)printf(SIR_RED(INDENT_ITEM "%s\n"), name);
+    (void)printf(SIR_RED(INDENT_ITEM "%s") SIR_EOL, name);
 }
 
 bool mark_test_to_run(const char* const name, sir_test* tests, size_t num_tests) {
@@ -89,7 +89,7 @@ void print_test_list(const sir_test* tests, size_t num_tests) {
             longest = len;
     }
 
-    (void)printf("\n" SIR_WHITE("Available tests:") "\n\n");
+    (void)printf(SIR_EOL SIR_WHITE("Available tests:") SIR_EOL SIR_EOL);
 
     for (size_t i = 0; i < num_tests; i++) {
         (void)printf("\t%s", tests[i].name);
@@ -101,10 +101,10 @@ void print_test_list(const sir_test* tests, size_t num_tests) {
         }
 
         if ((i % 2) != 0 || i == num_tests - 1)
-            (void)printf("\n");
+            (void)printf(SIR_EOL);
     }
 
-    (void)printf("\n");
+    (void)printf(SIR_EOL);
 }
 
 void print_usage_info(const sir_cl_arg* args, size_t num_args) {
@@ -115,7 +115,7 @@ void print_usage_info(const sir_cl_arg* args, size_t num_args) {
             longest = len;
     }
 
-    (void)fprintf(stderr, "\n" SIR_WHITE("Usage:") "\n\n");
+    (void)fprintf(stderr, SIR_EOL SIR_WHITE("Usage:") SIR_EOL SIR_EOL);
 
     for (size_t i = 0; i < num_args; i++) {
         (void)fprintf(stderr, "\t%s ", args[i].flag);
@@ -125,11 +125,11 @@ void print_usage_info(const sir_cl_arg* args, size_t num_args) {
             for (size_t n = len; n < longest; n++)
                 (void)fprintf(stderr, " ");
 
-        (void)fprintf(stderr, "%s%s%s\n", args[i].usage,
+        (void)fprintf(stderr, "%s%s%s" SIR_EOL, args[i].usage,
             strnlen(args[i].usage, SIR_CL_MAXUSAGE) > 0 ? " " : "", args[i].desc);
     }
 
-    (void)fprintf(stderr, "\n");
+    (void)fprintf(stderr, SIR_EOL);
 }
 
 bool print_test_error(bool result, bool expected) {
@@ -145,7 +145,7 @@ bool print_test_error(bool result, bool expected) {
 }
 
 void print_libsir_version(void) {
-    (void)printf("\n" SIR_ULINE("libsir") " %s (%s)\n\n", sir_getversionstring(),
+    (void)printf(SIR_EOL SIR_ULINE("libsir") " %s (%s)" SIR_EOL SIR_EOL, sir_getversionstring(),
         sir_isprerelease() ? "prerelease" : "release");
 }
 
@@ -216,7 +216,7 @@ bool parse_cmd_line(int argc, char** argv, const sir_cl_arg* args, size_t num_ar
 }
 
 void wait_for_keypress(void) {
-    (void)printf(SIR_WHITEB(SIR_EMPH("press any key to exit...")) "\n");
+    (void)printf(SIR_WHITEB(SIR_EMPH("press any key to exit...")) SIR_EOL);
     char ch = '\0';
     (void)_sir_getchar(&ch);
     SIR_UNUSED(ch);
@@ -261,7 +261,7 @@ size_t sir_readline(FILE* f, char* buf, size_t size) {
 
     while (idx < size) {
         int ch = getc(f);
-        if (EOF == ch || '\n' == ch)
+        if (EOF == ch || '\x0a' == ch || '\x0d' == ch)
             break;
         buf[idx++] = (char)ch;
     }

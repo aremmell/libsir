@@ -706,7 +706,32 @@ run_gcovr run-40.json
 remove_coverage
 
 ################################################################################
+
+# Run 41 - Debug and self-log with CRLF
+"${DO_MAKE:-make}" -j "${JOBS:?}" clean
+"${DO_MAKE:-make}" -j "${JOBS:?}" SIR_DEBUG=1 SIR_SELFLOG=1 SIR_USE_EOL_CRLF=1
+build/bin/sirexample || true
+build/bin/sirtests || true
+# shellcheck disable=SC2310
+remove_sample || true
+run_gcovr run-41.json
+remove_coverage
+
+################################################################################
+
+# Run 42 - Debug and self-log with text styling disabled with CRLF
+"${DO_MAKE:-make}" -j "${JOBS:?}" clean
+"${DO_MAKE:-make}" -j "${JOBS:?}" SIR_DEBUG=1 SIR_SELFLOG=1 SIR_NO_TEXT_STYLING=1 SIR_USE_EOL_CRLF=1
+build/bin/sirexample || true
+build/bin/sirtests || true
+# shellcheck disable=SC2310
+remove_sample || true
+run_gcovr run-42.json
+remove_coverage
+
+################################################################################
 # Undo redirect
+
 test -n "${NO_REDIRECT:-}" \
   || {
        exec 1>&5

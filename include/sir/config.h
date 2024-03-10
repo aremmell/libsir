@@ -69,10 +69,33 @@
 # endif
 
 /**
- * Define to use CRLF line endings, otherwise use LF.
+ * Define the system carriage return (CR) character.
  */
-# if !defined(SIR_EOL_CRLF)
-#  undef SIR_EOL_CRLF
+# if !defined(SIR_EOL_CR)
+#  define SIR_EOL_CR "\x0d"
+# endif
+
+/**
+ * Define the system line feed (LF) character.
+ */
+# if !defined(SIR_EOL_LF)
+#  define SIR_EOL_LF "\x0a"
+# endif
+
+/**
+ * Define to have libsir use CRLF line endings, otherwise use LF.
+ */
+# if !defined(SIR_USE_EOL_CRLF)
+#  undef SIR_USE_EOL_CRLF
+# endif
+
+/**
+ * Define the end of line sequence.
+ */
+# if !defined(SIR_USE_EOL_CRLF)
+#  define SIR_EOL SIR_EOL_LF
+# else
+#  define SIR_EOL SIR_EOL_CR SIR_EOL_LF
 # endif
 
 /**
@@ -188,7 +211,7 @@
  *   ::SIR_FHTIMEFORMAT.
  */
 # if !defined(SIR_FHFORMAT)
-#  define SIR_FHFORMAT "\n\n----- %s %s -----\n\n"
+#  define SIR_FHFORMAT SIR_EOL SIR_EOL "----- %s %s -----" SIR_EOL SIR_EOL
 # endif
 
 /**

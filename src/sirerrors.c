@@ -176,7 +176,7 @@ bool __sir_handlewin32err(DWORD code, const char* func, const char* file, uint32
 
     DWORD fmtmsg = FormatMessageA(flags, NULL, code, 0, (LPSTR)&errbuf, SIR_MAXERROR, NULL);
     if (0 < fmtmsg && _sir_validstrnofail(errbuf)) {
-        if (errbuf[fmtmsg - 1] == '\n' || errbuf[fmtmsg - 1] == ' ')
+        if (errbuf[fmtmsg - 1] == '\x0a' || errbuf[fmtmsg - 1] == ' ')
             errbuf[fmtmsg - 1] = '\0';
         __sir_setoserror((int)code, errbuf, func, file, line);
     } else {
@@ -323,8 +323,8 @@ void __sir_selflog(const char* func, const char* file, uint32_t line,
 # endif
                         warn = true;
                     }
-                    write2 = fprintf(stderr, (error ? SIR_BRED("%s%s") "\n" :
-                        (warn ? SIR_YELLOW("%s%s") "\n" : "%s%s\n")), prefix, buf);
+                    write2 = fprintf(stderr, (error ? SIR_BRED("%s%s") SIR_EOL :
+                        (warn ? SIR_YELLOW("%s%s") SIR_EOL : "%s%s" SIR_EOL)), prefix, buf);
                     _sir_eqland(success, write2 > 0);
                 }
 
