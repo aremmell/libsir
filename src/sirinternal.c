@@ -1551,11 +1551,11 @@ long __sir_nprocs(bool test_mode) {
         nprocs = vtprocs;
 #endif
 
-    if (nprocs < 1) {
+    if (nprocs < 1) { // GCOVR_EXCL_START
         _sir_selflog(SIR_BRED("Failed to determine processor count!"));
         if (!test_mode)
             nprocs = 1;
-    }
+    } // GCOVR_EXCL_STOP
 
     _sir_selflog("Detected %ld processor(s)", nprocs);
     return nprocs;

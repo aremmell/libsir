@@ -105,7 +105,7 @@ int main(int argc, char** argv) {
                 }
             }
 
-            (void)printf(SIR_EOL);
+            (void)printf("%s", SIR_EOL);
         }
 
         if (cl_cfg.wait) {

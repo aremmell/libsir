@@ -101,10 +101,10 @@ void print_test_list(const sir_test* tests, size_t num_tests) {
         }
 
         if ((i % 2) != 0 || i == num_tests - 1)
-            (void)printf(SIR_EOL);
+            (void)printf("%s", SIR_EOL);
     }
 
-    (void)printf(SIR_EOL);
+    (void)printf("%s", SIR_EOL);
 }
 
 void print_usage_info(const sir_cl_arg* args, size_t num_args) {
@@ -216,7 +216,7 @@ bool parse_cmd_line(int argc, char** argv, const sir_cl_arg* args, size_t num_ar
 }
 
 void wait_for_keypress(void) {
-    (void)printf(SIR_WHITEB(SIR_EMPH("press any key to exit...")) SIR_EOL);
+    (void)printf(SIR_WHITEB(SIR_EMPH("press any key to exit...%s")), SIR_EOL);
     char ch = '\0';
     (void)_sir_getchar(&ch);
     SIR_UNUSED(ch);
