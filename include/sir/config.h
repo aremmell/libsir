@@ -71,12 +71,16 @@
 /**
  * Define the system carriage return (CR) character.
  */
-# define SIR_EOL_CR "\x0d"
+# if !defined(SIR_EOL_CR)
+#  define SIR_EOL_CR "\x0d"
+# endif
 
 /**
  * Define the system line feed (LF) character.
  */
-# define SIR_EOL_LF "\x0a"
+# if !defined(SIR_EOL_LF)
+#  define SIR_EOL_LF "\x0a"
+# endif
 
 /**
  * Define to have libsir use CRLF line endings, otherwise use LF.
