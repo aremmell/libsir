@@ -743,18 +743,6 @@ run_gcovr run-43.json
 remove_coverage
 
 ################################################################################
-
-# Run 44 - Filesystem test with forced failure
-"${DO_MAKE:-make}" -j "${JOBS:?}" clean
-env CFLAGS="-DCOVERAGE_FAIL_FILESYSTEM_TEST" "${DO_MAKE:-make}" -j "${JOBS:?}" SIR_DEBUG=1
-build/bin/sirexample || true
-build/bin/sirtests --only filesystem || true
-# shellcheck disable=SC2310
-remove_sample || true
-run_gcovr run-44.json
-remove_coverage
-
-################################################################################
 # Undo redirect
 
 test -n "${NO_REDIRECT:-}" \

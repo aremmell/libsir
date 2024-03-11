@@ -1683,9 +1683,6 @@ bool sirtest_filesystem(void) {
         const char* const path;
         bool abs;
     } abs_or_rel_paths[] = {
-#if defined(COVERAGE_FAIL_FILESYSTEM_TEST)
-        {"/", false},
-#endif
         {"this/is/relative", false},
         {"relative", false},
         {"./relative", false},
