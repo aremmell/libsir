@@ -115,7 +115,7 @@ void print_usage_info(const sir_cl_arg* args, size_t num_args) {
             longest = len;
     }
 
-    (void)fprintf(stderr, SIR_WHITE("%sUsage:%s%s"), SIR_EOL, SIR_EOL, SIR_EOL);
+    (void)fprintf(stderr, SIR_WHITE("%s  Usage:%s%s"), SIR_EOL, SIR_EOL, SIR_EOL);
 
     for (size_t i = 0; i < num_args; i++) {
         (void)fprintf(stderr, "\t%s ", args[i].flag);
