@@ -110,7 +110,7 @@ int main(int argc, char** argv) {
 
         if (cl_cfg.wait) {
             wait_for_keypress();
-        } // GCOVR_EXCL_START
+        } // GCOVR_EXCL_STOP
 
         return passed == tgt_tests ? EXIT_SUCCESS : EXIT_FAILURE;
     } catch (const std::exception& ex) {
