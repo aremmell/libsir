@@ -1670,7 +1670,7 @@ main(int argc, char *argv[])
 #   if !defined (__clang_version__) || defined(__INTEL_COMPILER)
       char xcmp[2];
       /* cppcheck-suppress invalidPrintfArgType_s */
-      sprintf(xcmp, "%.1s", __VERSION__ );
+      (void)sprintf(xcmp, "%.1s", __VERSION__ );
       if (!isdigit((int)xcmp[0]))
         {
           /* cppcheck-suppress invalidPrintfArgType_s */

@@ -730,6 +730,19 @@ run_gcovr run-42.json
 remove_coverage
 
 ################################################################################
+
+# Run 43 - Filesystem test without ./build/bin/file.exists existint
+"${DO_MAKE:-make}" -j "${JOBS:?}" clean
+"${DO_MAKE:-make}" -j "${JOBS:?}" SIR_DEBUG=1
+rm -f "./build/bin/file.exists"
+build/bin/sirexample || true
+build/bin/sirtests --only filesystem || true
+# shellcheck disable=SC2310
+remove_sample || true
+run_gcovr run-43.json
+remove_coverage
+
+################################################################################
 # Undo redirect
 
 test -n "${NO_REDIRECT:-}" \
