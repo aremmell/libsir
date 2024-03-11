@@ -731,7 +731,7 @@ remove_coverage
 
 ################################################################################
 
-# Run 43 - Filesystem test without ./build/bin/file.exists existint
+# Run 43 - Filesystem test without ./build/bin/file.exists existing
 "${DO_MAKE:-make}" -j "${JOBS:?}" clean
 "${DO_MAKE:-make}" -j "${JOBS:?}" SIR_DEBUG=1
 rm -f "./build/bin/file.exists"
