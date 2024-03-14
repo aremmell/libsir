@@ -220,7 +220,7 @@ Functions</h2></td></tr>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line">PLUGIN_EXPORT <span class="keywordtype">bool</span> <a class="code hl_function" href="group__plugins.html#ga8bcc79c4667749f5c81e6b1f22db0f1d">sir_plugin_write</a>(<a class="code hl_typedef" href="group__publictypes.html#ga076e759e9aa36cde2977f754a7ea186c">sir_level</a> level, <span class="keyword">const</span> <span class="keywordtype">char</span>* message) {</div>
-<div class="line">    (void)printf(<span class="stringliteral">&quot;\t&quot;</span> <a class="code hl_define" href="ansimacros_8h.html#a431770ad1899e2c03d8b005c1eadaee2">SIR_DGRAY</a>(<span class="stringliteral">&quot;plugin_sample (%s): level: %04&quot;</span>PRIx16<span class="stringliteral">&quot;, message: %s&quot;</span>),</div>
+<div class="line">    (void)printf(<span class="stringliteral">&quot;\t&quot;</span> <a class="code hl_define" href="ansimacros_8h.html#a431770ad1899e2c03d8b005c1eadaee2">SIR_DGRAY</a>(<span class="stringliteral">&quot;plugin_sample (%s): level: %04&quot;</span>PRIx16<span class="stringliteral">&quot;, message: %s&quot;</span>) <a class="code hl_define" href="config_8h.html#a1cd3bda6ec91d6c0b14b352aa40344d5">SIR_EOL</a>,</div>
 <div class="line">                 __func__, level, message);</div>
 <div class="line">    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line">}</div>
