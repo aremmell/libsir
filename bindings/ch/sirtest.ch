@@ -116,7 +116,7 @@ main(void) {
 
     /* Demo string utilities. */
     (void)fprintf(_stdout, _sir_strredact(_sir_strreplace(_sir_strsqueeze(
-                  "xxx Welcome  \x0d  to  \f  the  Ch  \v  demo    xx!" SIR_EOL SIR_EOL),
+                  "xxx Welcome  \n  to  \f  the  Ch  \v  demo    xx!" SIR_EOL SIR_EOL),
                   '!', 'x'), "x", '*'));
 
     /* Log to stdout. */
