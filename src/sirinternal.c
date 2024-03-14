@@ -851,9 +851,9 @@ const char* _sir_format(bool styling, sir_options opts, sirbuf* buf) {
             (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_ESC_RST, SIR_MAXSTYLE);
 
 #if defined(SIR_USE_EOL_CRLF)
-        (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_EOL_CR SIR_EOL_LF, 2);
+        (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_EOL, 2);
 #else
-        (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_EOL_LF, 1);
+        (void)_sir_strncat(buf->output, SIR_MAXOUTPUT, SIR_EOL, 1);
 #endif
 
         buf->output_len = strnlen(buf->output, SIR_MAXOUTPUT);
@@ -1551,11 +1551,11 @@ long __sir_nprocs(bool test_mode) {
         nprocs = vtprocs;
 #endif
 
-    if (nprocs < 1) { // GCOVR_EXCL_START
+    if (nprocs < 1) {
         _sir_selflog(SIR_BRED("Failed to determine processor count!"));
         if (!test_mode)
             nprocs = 1;
-    } // GCOVR_EXCL_STOP
+    }
 
     _sir_selflog("Detected %ld processor(s)", nprocs);
     return nprocs;

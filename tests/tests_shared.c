@@ -215,12 +215,12 @@ bool parse_cmd_line(int argc, char** argv, const sir_cl_arg* args, size_t num_ar
     return true;
 }
 
-void wait_for_keypress(void) { // GCOVR_EXCL_START
-    (void)printf(SIR_WHITEB(SIR_EMPH("press any key to exit...%s")), SIR_EOL);
+void wait_for_keypress(void) {
+    (void)printf(SIR_WHITEB(SIR_EMPH("press any key to exit...")) SIR_EOL);
     char ch = '\0';
     (void)_sir_getchar(&ch);
     SIR_UNUSED(ch);
-} // GCOVR_EXCL_STOP
+}
 
 long sir_timer_getres(void) {
     long retval = 0L;
@@ -261,7 +261,7 @@ size_t sir_readline(FILE* f, char* buf, size_t size) {
 
     while (idx < size) {
         int ch = getc(f);
-        if (EOF == ch || '\x0a' == ch || '\x0d' == ch)
+        if (EOF == ch || '\r' == ch || '\n' == ch)
             break;
         buf[idx++] = (char)ch;
     }

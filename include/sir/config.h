@@ -72,14 +72,14 @@
  * Define the system carriage return (CR) character.
  */
 # if !defined(SIR_EOL_CR)
-#  define SIR_EOL_CR "\x0d"
+#  define SIR_EOL_CR "\r"
 # endif
 
 /**
  * Define the system line feed (LF) character.
  */
 # if !defined(SIR_EOL_LF)
-#  define SIR_EOL_LF "\x0a"
+#  define SIR_EOL_LF "\n"
 # endif
 
 /**

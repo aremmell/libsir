@@ -220,7 +220,7 @@ bool sirtest_logwritesanity(void) {
         if (found)
             TEST_MSG(SIR_GREEN("found '%s'"), message);
         else
-            TEST_MSG(SIR_RED("did not find '%s'"), message); // GCOVR_EXCL_LINE
+            TEST_MSG(SIR_RED("did not find '%s'"), message);
 
         _sir_safefclose(&f);
         TEST_MSG("deleting %s...", logfilename);
@@ -1077,7 +1077,7 @@ bool sirtest_levelssanity(void) {
     TEST_MSG_0(SIR_WHITEB("--- invalid values ---"));
 
     /* greater than SIRL_ALL. */
-    sir_levels invalid = (0xffffu & ~SIRL_ALL);
+    sir_levels invalid = (0xffffU & ~SIRL_ALL);
     _sir_eqland(pass, !_sir_validlevels(invalid));
     (void)printf(INDENT_ITEM SIR_WHITE("greater than SIRL_ALL: %04"PRIx16) SIR_EOL, invalid);
 
@@ -2023,7 +2023,7 @@ bool sirtest_stringutils(void) {
     INIT(si, SIRL_ALL, 0, 0, 0);
     bool pass = si_init;
 
-    char str[] = "Kneel  \f \x0a  before  \t \x0d \v  Zod!?";
+    char str[] = "Kneel  \f \n  before  \t \r \v  Zod!?";
 
     TEST_MSG_0(SIR_WHITEB("--- valid string utility usage ---"));
 

@@ -105,10 +105,10 @@ bool __sir_validupdatedata(const sir_update_config_data* data, const char* func,
     if (valid && _sir_bittest(data->fields, SIRU_SYSLOG_CAT))
         valid = _sir_validstrnofail(data->sl_category);
 
-    if (!valid) { // GCOVR_EXCL_START
+    if (!valid) {
         SIR_ASSERT(valid);
         (void)__sir_seterror(_SIR_E_INVALID, func, file, line);
-    } // GCOVR_EXCL_STOP
+    }
 
     return valid;
 }

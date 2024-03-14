@@ -205,11 +205,11 @@ bool _sir_setcolormode(sir_colormode mode) {
         /* when the color mode changes, it's necessary to regenerate the text styles
          * we're holding. for example in the case of downgrading color modes, the
          * styles in memory could be incompatible with the new mode. */
-        if (!_sir_resettextstyles()) { // GCOVR_EXCL_START
+        if (!_sir_resettextstyles()) {
             _sir_selflog("error: failed to reset text styles!");
             _SIR_UNLOCK_SECTION(SIRMI_TEXTSTYLE);
             return false;
-        } // GCOVR_EXCL_STOP
+        }
     } else {
         _sir_selflog("skipped superfluous update of color mode: %"PRId32, mode);
     }

@@ -73,7 +73,7 @@ PLUGIN_EXPORT bool sir_plugin_init(void) {
 }
 
 PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message) {
-    (void)printf("\t" SIR_DGRAY("plugin_sample (%s): level: %04"PRIx16", message: %s"),
+    (void)printf("\t" SIR_DGRAY("plugin_sample (%s): level: %04"PRIx16", message: %s") SIR_EOL,
                  __func__, level, message);
     return true;
 }
