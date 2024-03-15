@@ -3274,7 +3274,7 @@ Linux/x86_64 (Kefir, C-only):
 
 ################################################################################
 
-Linux/x86_64 (PCC, C-only):
+Linux/x86_64 (Portable C Compiler, C-only):
   stage: build_linux
   needs:
     - job: Style check
