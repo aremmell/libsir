@@ -276,3 +276,4 @@ Additional tools used for libsir development and testing include:
 | [PurifyPlus™](https://www.teamblue.unicomsi.com/products/purifyplus/)                                        | Run-time analysis tools for application reliability and performance |
 | [SoftIntegration Ch](https://www.softintegration.com/)                                                       | C/C++ interpreter and interactive platform for scientific computing |
 | [Very Sleepy](http://www.codersnotes.com/sleepy/)                                                            | Sampling CPU profiler for Microsoft Windows applications            |
+| [Vftrace](https://github.com/SX-Aurora/Vftrace)                                                              | A performance profiling library with a focus on HPC applications    |
