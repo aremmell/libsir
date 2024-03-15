@@ -247,7 +247,7 @@ The following **SAST** (*static application*/*analysis security*/*software testi
 |-----:|:------|
 | [**PVS-Studio**](https://pvs-studio.com/pvs-studio/?utm_source=website&utm_medium=github&utm_campaign=open_source) | Static analysis tool for C, C++, C#, and Java code                                 |
 | [Clang Static Analyzer](https://clang-analyzer.llvm.org/)                                                          | Static analysis tool for C, C++, and Objective-C code                              |
-| [Coveralls](https://coveralls.io/github/aremmell/libsir)                                                           | Line-by-line test coverage reporting and statistical analysis                      |
+| [Coveralls](https://coveralls.io/github/aremmell/libsir), [gcovr](https://gcovr.com/)                              | Line-by-line test coverage reporting and statistical analysis                      |
 | [Coverity® Scan](https://scan.coverity.com/projects/aremmell-libsir)                                               | Find and fix defects in Java, C/C++, C#, JS, Ruby, and Python code                 |
 | [Cppcheck](https://cppchecksolutions.com/)                                                                         | Static analysis tool for C and C++ code                                            |
 | [DUMA](https://github.com/johnsonjh/duma)                                                                          | Detect Unintended Memory Access, a memory debugger                                 |
@@ -257,7 +257,7 @@ The following **SAST** (*static application*/*analysis security*/*software testi
 | [GNU Global](https://www.gnu.org/software/global/)                                                                 | Source code indexing and tagging system                                            |
 | [Oracle Developer Studio](https://www.oracle.com/application-development/developerstudio/)                         | Performance, security, and thread analysis tools for C, C++, and Fortran           |
 | [REUSE](https://api.reuse.software/info/github.com/aremmell/libsir)                                                | Verifies compliance with the [REUSE](https://reuse.software/) licensing guidelines |
-| [Semgrep](https://semgrep.dev)                                                                                     | A fast, open-source, static analysis engine for many languages                     |
+| [Semgrep](https://semgrep.dev/)                                                                                    | A fast, open-source, static analysis engine for many languages                     |
 | [SonarCloud](https://sonarcloud.io/project/overview?id=aremmell_libsir)                                            | Cloud-based code quality and security analysis tools                               |
 | [Valgrind](https://valgrind.org/)                                                                                  | Tools for memory debugging, memory leak detection, and profiling                   |
 | [Visual Studio Code Analyzer](https://learn.microsoft.com/en-us/cpp/code-quality/)                                 | Tools to analyze and improve C/C++ source code quality                             |
