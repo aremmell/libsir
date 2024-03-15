@@ -102,6 +102,7 @@ stages:
   cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/iconv.dll ~/.wine/drive_c/windows/system32/ > /dev/null 2>&1 || true
   while pgrep wineserver > /dev/null 2>&1; do sleep 1; done
   echo "OK."
+  wine64 --version 2> /dev/null || wine --version 2> /dev/null || true
   echo -e "section_end:`date +%s`:WineBoot_section\r\e[0K" || true
 
 ################################################################################
@@ -1250,6 +1251,8 @@ Android/x86_64 (API Level 33, Clang++, Clang):
     - export LDFLAGS="-static"
     - export CC="ccache x86_64-linux-android33-clang"
     - export CXX="ccache x86_64-linux-android33-clang++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
     - make SIR_NO_PLUGINS=1
     - make tests++ SIR_NO_PLUGINS=1
     - |
@@ -1346,6 +1349,8 @@ Android/ARM64 (API Level 33, Clang++, Clang):
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
     - export CC="ccache aarch64-linux-android33-clang"
     - export CXX="ccache aarch64-linux-android33-clang++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
     - make
     - make tests++
     - |
@@ -1554,6 +1559,7 @@ Windows/i686 (MSVC, C++, C):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/msvc/bin/x86:${PATH:?}"
+    - cl.exe 2>&1 | head -3 | grep -v '^$' || true
     - mkdir -p build/bin
     - cl.exe src/*.c example/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirexample.exe /DNDEBUG=1 /DSIR_NO_PLUGINS=1
     - cl.exe src/*.c tests/*.c -Iinclude /Ob3 /volatile:iso /GS- /Oi /O2 /W4 /std:c11 /experimental:c11atomics /wd4996 /Febuild\\bin\\sirtests.exe /DNDEBUG=1 /DSIR_NO_PLUGINS=1
@@ -3435,6 +3441,7 @@ Node.js/WebAssembly (Emscripten, Em++, Emcc):
     - export LDFLAGS="-sWASM=1 -fwasm-exceptions"
     - ${CC:?} --version
     - ${CXX:?} --version
+    - node --version
     - make
     - make tests++
     - |
@@ -3488,6 +3495,7 @@ Node.js/JavaScript (Emscripten, Em++, Emcc):
     - export LDFLAGS="-sWASM=0 -fexceptions -sNO_DISABLE_EXCEPTION_CATCHING=1"
     - ${CC:?} --version
     - ${CXX:?} --version
+    - node --version
     - make
     - make tests++
     - |
@@ -3968,6 +3976,7 @@ Linux/x86_64 (Ch Professional 8.5):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - ch -v | grep version | tr -cd '.[0-9]\n'
     - make
     - cd bindings/ch
     - make
@@ -4025,6 +4034,7 @@ Windows/x64 (Clang-CL, C++, C):
     - export LDFLAGS="${COMMON_FLAGS:?} -Wno-unknown-argument"
     - export SIR_SHARED="/LD"
     - ${CC:?} -Wno-unknown-argument --version
+    - ${CXX:?} -Wno-unknown-argument --version
     - ${LD:?} --version
     - make PLATFORM_EXE_EXT=.exe PLATFORM_DLL_EXT=.dll PLATFORM_LIB_EXT=.lib PTHOPT= LIBDL= SIR_FPIC= LIBSIR_S="build/lib/libsir_s.lib" all tests++
     - |
@@ -4087,6 +4097,7 @@ Windows/i686 (Clang-CL, C++, C):
     - export LDFLAGS="${COMMON_FLAGS:?} -Wno-unknown-argument"
     - export SIR_SHARED="/LD"
     - ${CC:?} -Wno-unknown-argument --version
+    - ${CXX:?} -Wno-unknown-argument --version
     - ${LD:?} --version
     - make PLATFORM_EXE_EXT=.exe PLATFORM_DLL_EXT=.dll PLATFORM_LIB_EXT=.lib PTHOPT= LIBDL= SIR_FPIC= LIBSIR_S="build/lib/libsir_s.lib" all tests++
     - |
@@ -4196,6 +4207,7 @@ Windows/Arm64 (Clang-CL, C++, C):
     - export LDFLAGS="${COMMON_FLAGS:?} -Wno-unknown-argument"
     - export SIR_SHARED="/LD"
     - ${CC:?} -Wno-unknown-argument --version
+    - ${CXX:?} -Wno-unknown-argument --version
     - ${LD:?} --version
     - make PLATFORM_EXE_EXT=.exe PLATFORM_DLL_EXT=.dll PLATFORM_LIB_EXT=.lib PTHOPT= LIBDL= SIR_FPIC= LIBSIR_S="build/lib/libsir_s.lib" all tests++
     - |
