@@ -505,7 +505,7 @@ Linux/x86_64 (Intel oneAPI, ICPX, ICX):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - . /opt/intel/oneapi/setvars.sh
+    - . /opt/intel/oneapi/setvars.sh > /dev/null 2>&1
     - export CC="ccache icx"
     - export CXX="ccache icpx"
     - ${CC:?} --version
