@@ -246,7 +246,7 @@ The following **SAST** (*static application*/*analysis security*/*software testi
 | Tool | Usage |
 |-----:|:------|
 | [**PVS-Studio**](https://pvs-studio.com/pvs-studio/?utm_source=website&utm_medium=github&utm_campaign=open_source) | Static analysis tool for C, C++, C#, and Java code                                 |
-| [Clang Static Analyzer](https://clang-analyzer.llvm.org/), [Sanitizers](https://github.com/google/sanitizers)      | Static and dynamic analysis tool for C, C++, and Objective-C code                  |
+| [Clang Analyzer](https://clang-analyzer.llvm.org/), [Sanitizers](https://github.com/google/sanitizers)             | Static and dynamic analysis tools for C, C++, and Objective-C code                 |
 | [Coveralls](https://coveralls.io/github/aremmell/libsir), [gcovr](https://gcovr.com/)                              | Line-by-line test coverage reporting and statistical analysis                      |
 | [Coverity® Scan](https://scan.coverity.com/projects/aremmell-libsir)                                               | Find and fix defects in Java, C/C++, C#, JS, Ruby, and Python code                 |
 | [Cppcheck](https://cppchecksolutions.com/)                                                                         | Static analysis tool for C and C++ code                                            |
