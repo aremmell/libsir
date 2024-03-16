@@ -246,7 +246,7 @@ The following **SAST** (*static application*/*analysis security*/*software testi
 | Tool | Usage |
 |-----:|:------|
 | [**PVS-Studio**](https://pvs-studio.com/pvs-studio/?utm_source=website&utm_medium=github&utm_campaign=open_source) | Static analysis tool for C, C++, C#, and Java code                                 |
-| [Clang Static Analyzer](https://clang-analyzer.llvm.org/)                                                          | Static analysis tool for C, C++, and Objective-C code                              |
+| [Clang Static Analyzer](https://clang-analyzer.llvm.org/), [Sanitizers](https://github.com/google/sanitizers)      | Static and dynamic analysis tool for C, C++, and Objective-C code                  |
 | [Coveralls](https://coveralls.io/github/aremmell/libsir), [gcovr](https://gcovr.com/)                              | Line-by-line test coverage reporting and statistical analysis                      |
 | [Coverity® Scan](https://scan.coverity.com/projects/aremmell-libsir)                                               | Find and fix defects in Java, C/C++, C#, JS, Ruby, and Python code                 |
 | [Cppcheck](https://cppchecksolutions.com/)                                                                         | Static analysis tool for C and C++ code                                            |
@@ -269,6 +269,7 @@ Additional tools used for libsir development and testing include:
 | Tool | Usage |
 |-----:|:------|
 | [CBMC](http://www.cprover.org/cbmc/), [ESBMC](http://esbmc.org/)                                             | Bounded Model Checkers for C and C++ programs                       |
+| [Dr. Memory](https://drmemory.org/)                                                                          | Memory debugging tool for Windows, Linux, macOS, and Android        |
 | [Funcheck](https://github.com/tmatis/funcheck)                                                               | A tool for checking function call return protections                |
 | [Frama-C](https://frama-c.com/)                                                                              | Framework for Modular Analysis of C programs                        |
 | [Intel® VTune™ Profiler](https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler.html) | Performance analysis and profiling tools for Intel systems          |
