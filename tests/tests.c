@@ -2092,7 +2092,7 @@ bool sirtest_stringutils(void) {
     TEST_MSG_0("_sir_strredact:   bad parameter 'c'");
     _sir_eqland(pass, _sir_strredact(str, "sub", 0));
 
-    PASSFAIL_MSG(pass, "\t--- invalid string utility usage - bad parameters: %s ---" SIR_EOL SIR_EOL, PRN_PASS(pass));
+    PASSFAIL_MSG(pass, "\t--- invalid string utility usage - bad parameters: %s ---" SIR_EOL, PRN_PASS(pass));
 
     _sir_eqland(pass, sir_cleanup());
     return PRINT_RESULT_RETURN(pass);
