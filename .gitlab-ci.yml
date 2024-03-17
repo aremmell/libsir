@@ -508,8 +508,8 @@ Linux/x86_64 (Intel oneAPI, ICPX, ICX):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="${PATH:-}:/opt/anaconda/bin:/opt/anaconda/sbin"
     - source /opt/anaconda/bin/activate
-    - export CC="ccache icx"
-    - export CXX="ccache icpx"
+    - export CC="icx"
+    - export CXX="icpx"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
@@ -3747,7 +3747,7 @@ Linux/x86_64 (Intel oneAPI, Intel Python):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="${PATH:-}:/opt/anaconda/bin:/opt/anaconda/sbin"
     - source /opt/anaconda/bin/activate intelpython3
-    - export CC="ccache icx"
+    - export CC="icx"
     - command -v python3
     - $(command -v python3) --version
     - swig -version
@@ -3801,7 +3801,7 @@ Linux/x86_64 (GCC, conda-forge Python):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/anaconda/bin:/opt/anaconda/sbin:${PATH:-}"
     - source /opt/anaconda/bin/activate
-    - export CC="ccache gcc"
+    - export CC="gcc"
     - conda --version
     - command -v python3
     - $(command -v python3) --version
