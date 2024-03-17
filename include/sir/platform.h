@@ -74,12 +74,23 @@
 #  define HAS_INCLUDE(inc) 0
 # endif
 
+# undef HAS_FEATURE
+# if defined __has_feature
+#  define HAS_FEATURE(fea) __has_feature(fea)
+# else
+#  define HAS_FEATURE(fea) 0
+# endif
+
 # undef SANITIZE_SUPPRESS
 # if HAS_ATTRIBUTE(no_sanitize)
 #  define SANITIZE_SUPPRESS(str) __attribute__((no_sanitize(str)))
 # endif
 # if !defined(SANITIZE_SUPPRESS)
 #  define SANITIZE_SUPPRESS(str)
+# endif
+
+# if HAS_FEATURE(safe_stack) && !defined(SIR_NO_PLUGINS)
+#  error "linking DSO with SafeStack is unsupported; disable SafeStack or enable SIR_NO_PLUGINS"
 # endif
 
 # if !defined(_WIN32)
@@ -643,7 +654,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #   define _sir_thread_local __thread
 #  else
 #   if !defined(_CH_) && !defined(__CH__)
-#    error "unable to resolve thread local attribute; please contact the developers."
+#    error "unable to resolve thread local attribute; please contact the developers"
 #   endif
 #  endif
 # endif
