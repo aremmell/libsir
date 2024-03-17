@@ -4286,8 +4286,8 @@ FreeBSD/amd64 (G++, GCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin//usr/local/bin/gcc13"
-    - export CXX="/usr/local/bin//usr/local/bin/g++13"
+    - export CC="/usr/local/bin/gcc13"
+    - export CXX="/usr/local/bin/g++13"
     - export CFLAGS="-I/usr/local/include"
     - export CXXFLAGS="-I/usr/local/include"
     - export LDFLAGS="-Wl,-rpath=/usr/local/lib/gcc13 -L/usr/local/lib/gcc13 -L/usr/local/lib"
@@ -4334,8 +4334,8 @@ FreeBSD/amd64 (Clang++, Clang):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin//usr/local/bin/clang17"
-    - export CXX="/usr/local/bin//usr/local/bin/clang++17"
+    - export CC="/usr/local/bin/clang17"
+    - export CXX="/usr/local/bin/clang++17"
     - export CFLAGS="-I/usr/local/include"
     - export CXXFLAGS="-I/usr/local/include"
     - export LDFLAGS="-Wl,-rpath=/usr/local/llvm17/lib/ -L/usr/local/llvm17/lib/ -L/usr/local/lib"
@@ -4490,7 +4490,7 @@ FreeBSD/amd64 (GCC, FreeBSD Python):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin//usr/local/bin/gcc13"
+    - export CC="/usr/local/bin/gcc13"
     - export CFLAGS="-I/usr/local/include"
     - export LDFLAGS="-Wl,-rpath=/usr/local/lib/gcc13 -L/usr/local/lib/gcc13 -L/usr/local/lib"
     - freebsd-version -kru | xargs
@@ -4542,8 +4542,8 @@ OpenBSD/amd64 (Clang++, Clang):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin//usr/local/bin/clang-17"
-    - export CXX="/usr/local/bin//usr/local/bin/clang++-17"
+    - export CC="/usr/local/bin/clang-17"
+    - export CXX="/usr/local/bin/clang++-17"
     - export CFLAGS="-I/usr/local/include"
     - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -I/usr/local/include"
     - export LDFLAGS="-Wl,-rpath=/usr/local/llvm17/lib/ -L/usr/local/llvm17/lib/ -L/usr/local/lib"
@@ -4787,8 +4787,8 @@ NetBSD/amd64 (G++, GCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/pkg/bin//usr/pkg/gcc13/bin/gcc"
-    - export CXX="/usr/pkg/bin//usr/pkg/gcc13/bin/g++"
+    - export CC="/usr/pkg/gcc13/bin/gcc"
+    - export CXX="/usr/pkg/gcc13/bin/g++"
     - export CFLAGS="-I/usr/pkg/include -I/usr/local/include"
     - export CXXFLAGS="-I/usr/pkg/include -I/usr/local/include"
     - export LDFLAGS="-Wl,-rpath,/usr/pkg/gcc13/lib -L/usr/pkg/gcc13/lib -L/usr/pkg/lib -L/usr/local/lib"
