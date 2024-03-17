@@ -4591,7 +4591,7 @@ OpenBSD/amd64 (CC, OpenBSD Python):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin/cc"
+    - export CC="cc"
     - export CFLAGS="-I/usr/local/include"
     - export LDFLAGS="-L/usr/local/lib"
     - uname -a
@@ -4643,7 +4643,7 @@ OpenBSD/amd64 (C++, CC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin/cc"
+    - export CC="cc"
     - export CXX="/usr/local/bin/c++"
     - export CFLAGS="-I/usr/local/include"
     - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -I/usr/local/include"
@@ -4691,8 +4691,8 @@ FreeBSD/amd64 (C++, CC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin/cc"
-    - export CXX="/usr/local/bin/c++"
+    - export CC="cc"
+    - export CXX="c++"
     - export CFLAGS="-I/usr/local/include"
     - export CXXFLAGS="-I/usr/local/include"
     - export LDFLAGS="-L/usr/local/lib"
@@ -4739,8 +4739,8 @@ NetBSD/amd64 (C++, CC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/pkg/bin/cc"
-    - export CXX="/usr/pkg/bin/c++"
+    - export CC="cc"
+    - export CXX="c++"
     - export CFLAGS="-I/usr/pkg/include -I/usr/local/include"
     - export CXXFLAGS="-Wno-stringop-overflow -I/usr/pkg/include -I/usr/local/include"
     - export LDFLAGS="-L/usr/pkg/lib -L/usr/local/lib"
@@ -4884,7 +4884,7 @@ NetBSD/amd64 (CC, NetBSD Python):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/pkg/bin/cc"
+    - export CC="cc"
     - export CFLAGS="-I/usr/pkg/include -I/usr/local/include"
     - export LDFLAGS="-L/usr/pkg/lib -L/usr/local/lib"
     - uname -prs
