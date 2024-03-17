@@ -41,7 +41,9 @@ RUN set -x && \
     ./Miniconda3-latest-Linux-x86_64.sh -b -t -p /opt/anaconda -t && \
     rm -f ./Miniconda3-latest-Linux-x86_64.sh && \
     conda build purge && \
-    conda update --update-all --verbose --yes && \
+    conda config --add channels "conda-forge" && \
+    conda config --set channel_priority "strict" && \
+    conda update --update-all --yes && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \

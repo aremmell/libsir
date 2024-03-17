@@ -27,31 +27,24 @@
 #
 ################################################################################
 
-FROM registry.gitlab.com/libsir/libsir/base:latest
+FROM registry.gitlab.com/libsir/libsir/anaconda:latest
 
 USER 0
 
 WORKDIR /
 
 RUN set -x && \
-    ( rpm --import https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB ) && \
-    printf '%s\n' \
-      "[oneAPI]" \
-      "name=Intel® oneAPI repository" \
-      "baseurl=https://yum.repos.intel.com/oneapi" \
-      "enabled=1" \
-      "gpgcheck=1" \
-      "repo_gpgcheck=1" \
-      "gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB" \
-        > /etc/yum.repos.d/oneAPI.repo && \
-    dnf -y --refresh --setopt=install_weak_deps=True install \
-      intel-basekit \
-      intel-hpckit \
-      intel-oneapi-python && \
+    export PATH="/opt/anaconda/bin:/opt/anaconda/sbin:${PATH:-}" && \
+    conda build purge && \
+    conda update --update-all --yes && \
+    conda install --yes "conda-forge::sysroot_linux-64" && \
+    conda install --yes --channel intel "dpcpp_linux-64>=2024.0.3" && \
+    conda create --name "intelpython3" --channel intel --override-channels "intelpython3_core" --yes && \
     dnf -y clean all && \
-    rm -rf ~/.cache > /dev/null 2>&1 && \
-    rm -rf /var/tmp/* > /dev/null 2>&1 && \
-    rm -rf /var/log/dnf* > /dev/null 2>&1
+    rm -rf ~/.cache && \
+    rm -rf /var/tmp/* && \
+    rm -rf /var/log/dnf* && \
+    cd
 
 USER 10000
 
