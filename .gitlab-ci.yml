@@ -68,8 +68,6 @@ stages:
   echo -e "section_start:`date +%s`:Configuration_section[collapsed=false]\r\e[0K\033[0;36mCI/CD Configuration ...\033[0m" || true
   export TERM=xterm-color
   ulimit -n 65535 > /dev/null 2>&1 || true
-  ccache -X uncompressed > /dev/null 2>&1 || true
-  ccache -F 0 -M 0 > /dev/null 2>&1 || true
   test -f 2> /dev/null /.dockerenv && { git config --global --add safe.directory '*' > /dev/null 2>&1 || true; } || true
   echo "Project Name                : ${CI_PROJECT_TITLE:-Unknown}"
   echo "Project Git Commit          : ${CI_COMMIT_SHA:-Unknown}"
@@ -129,8 +127,8 @@ Linux/x86_64 (G++, GCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="ccache gcc"
-    - export CXX="ccache g++"
+    - export CC="gcc"
+    - export CXX="g++"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
@@ -225,8 +223,8 @@ Linux/i686 (G++, GCC):
     - export CFLAGS="-m32 -D_FILE_OFFSET_BITS=64"
     - export CXXFLAGS="-m32 -DSIR_NO_BOOST_FORMAT=1 -D_FILE_OFFSET_BITS=64"
     - export LDFLAGS="-m32"
-    - export CC="ccache gcc"
-    - export CXX="ccache g++"
+    - export CC="gcc"
+    - export CXX="g++"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
@@ -271,7 +269,7 @@ Linux/i686 (G++, GCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="ccache musl-gcc"
+    - export CC="musl-gcc"
     - ${CC:?} --version
     - make
     - |
@@ -314,8 +312,8 @@ Linux/x86_64 (Clang++, Clang):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export RANLIB="llvm-ranlib"
-    - export CC="ccache clang"
-    - export CXX="ccache clang++"
+    - export CC="clang"
+    - export CXX="clang++"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
@@ -364,8 +362,8 @@ Linux/i686 (Clang++, Clang):
     - export CFLAGS="-m32 -D_FILE_OFFSET_BITS=64"
     - export CXXFLAGS="-m32 -DSIR_NO_BOOST_FORMAT=1 -D_FILE_OFFSET_BITS=64"
     - export LDFLAGS="-m32"
-    - export CC="ccache clang"
-    - export CXX="ccache clang++"
+    - export CC="clang"
+    - export CXX="clang++"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
@@ -410,8 +408,8 @@ Linux/x86_64 (AOCC++, AOCC):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - . /opt/AMD/aocc-compiler-4.2.0/setenv_AOCC.sh
-    - export CC="ccache clang"
-    - export CXX="ccache clang++"
+    - export CC="clang"
+    - export CXX="clang++"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
@@ -457,8 +455,8 @@ Linux/i686 (AOCC++, AOCC):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - . /opt/AMD/aocc-compiler-4.2.0/setenv_AOCC.sh
-    - export CC="ccache clang"
-    - export CXX="ccache clang++"
+    - export CC="clang"
+    - export CXX="clang++"
     - export CFLAGS="-m32 -D_FILE_OFFSET_BITS=64"
     - export CXXFLAGS="-m32 -DSIR_NO_BOOST_FORMAT=1 -D_FILE_OFFSET_BITS=64"
     - export LDFLAGS="-m32"
@@ -555,7 +553,7 @@ Linux/x86_64 (Chamois-CompCert, C-only):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/chamois-compcert/bin:${PATH:-}"
-    - export CC="ccache /opt/chamois-compcert/bin/ccomp"
+    - export CC="/opt/chamois-compcert/bin/ccomp"
     - ${CC:?} --version
     - env CFLAGS="-D_sir_thread_local=_Thread_local ${CFLAGS:-}" make
     - |
@@ -598,7 +596,7 @@ Linux/i386 (Chamois-CompCert, C-only):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/chamois-compcert-i386/bin:${PATH:-}"
-    - export CC="ccache /opt/chamois-compcert-i386/bin/ccomp"
+    - export CC="/opt/chamois-compcert-i386/bin/ccomp"
     - ${CC:?} --version
     - env CFLAGS="-D_sir_thread_local=_Thread_local -D_FILE_OFFSET_BITS=64 ${CFLAGS:-}" make
     - |
@@ -641,7 +639,7 @@ Linux/x86_64 (Oracle Studio C, C-only):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="ccache /opt/oracle/developerstudio-latest/bin/suncc -m64"
+    - export CC="/opt/oracle/developerstudio-latest/bin/suncc -m64"
     - ${CC:?} -V
     - make
     - |
@@ -683,7 +681,7 @@ Linux/i686 (Oracle Studio C, C-only):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="ccache /opt/oracle/developerstudio-latest/bin/suncc"
+    - export CC="/opt/oracle/developerstudio-latest/bin/suncc"
     - export CFLAGS="-m32 -D_FILE_OFFSET_BITS=64"
     - export LDFLAGS="-m32 -D_FILE_OFFSET_BITS=64"
     - ${CC:?} -V
@@ -729,11 +727,11 @@ Linux/x86_64 (NVIDIA HPC SDK C++, C):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - NVC="$(command -v /opt/nvidia/hpc_sdk/Linux_x86_64/*/compilers/bin/nvc | sort -V | head -n 1)"
     - export NVC
-    - export CC="ccache ${NVC:?}"
+    - export CC="${NVC:?}"
     - ${CC:?} -V
     - NVCC="$(command -v /opt/nvidia/hpc_sdk/Linux_x86_64/*/compilers/bin/nvc++ | sort -V | head -n 1)"
     - export NVCC
-    - export CXX="ccache ${NVCC:?}"
+    - export CXX="${NVCC:?}"
     - ${CXX:?} -V
     - make
     - make tests++
@@ -778,7 +776,7 @@ Linux/x86_64 (Chibicc, C-only):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/chibicc:${PATH:?}"
-    - export CC="ccache chibicc"
+    - export CC="chibicc"
     - make
     - |
       # End of Build ...
@@ -1079,8 +1077,8 @@ Android/x86_64 (API Level 21, Clang++, Clang):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
     - export LDFLAGS="-static"
-    - export CC="ccache x86_64-linux-android21-clang"
-    - export CXX="ccache x86_64-linux-android21-clang++"
+    - export CC="x86_64-linux-android21-clang"
+    - export CXX="x86_64-linux-android21-clang++"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make SIR_NO_PLUGINS=1
@@ -1128,8 +1126,8 @@ Android/i686 (API Level 21, Clang++, Clang):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
     - export LDFLAGS="-static"
-    - export CC="ccache i686-linux-android21-clang"
-    - export CXX="ccache i686-linux-android21-clang++"
+    - export CC="i686-linux-android21-clang"
+    - export CXX="i686-linux-android21-clang++"
     - export CFLAGS="-D_FILE_OFFSET_BITS=64"
     - export CXXFLAGS="-D_FILE_OFFSET_BITS=64"
     - ${CC:?} --version
@@ -1177,8 +1175,8 @@ Android/ARM64 (API Level 21, Clang++, Clang):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
-    - export CC="ccache aarch64-linux-android21-clang"
-    - export CXX="ccache aarch64-linux-android21-clang++"
+    - export CC="aarch64-linux-android21-clang"
+    - export CXX="aarch64-linux-android21-clang++"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
@@ -1213,8 +1211,8 @@ Android/ARMv7A (API Level 21, Clang++, Clang):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
-    - export CC="ccache armv7a-linux-androideabi21-clang"
-    - export CXX="ccache armv7a-linux-androideabi21-clang++"
+    - export CC="armv7a-linux-androideabi21-clang"
+    - export CXX="armv7a-linux-androideabi21-clang++"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
@@ -1250,8 +1248,8 @@ Android/x86_64 (API Level 33, Clang++, Clang):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
     - export LDFLAGS="-static"
-    - export CC="ccache x86_64-linux-android33-clang"
-    - export CXX="ccache x86_64-linux-android33-clang++"
+    - export CC="x86_64-linux-android33-clang"
+    - export CXX="x86_64-linux-android33-clang++"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make SIR_NO_PLUGINS=1
@@ -1299,8 +1297,8 @@ Android/i686 (API Level 33, Clang++, Clang):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
     - export LDFLAGS="-static"
-    - export CC="ccache i686-linux-android33-clang"
-    - export CXX="ccache i686-linux-android33-clang++"
+    - export CC="i686-linux-android33-clang"
+    - export CXX="i686-linux-android33-clang++"
     - export CFLAGS="-D_FILE_OFFSET_BITS=64"
     - export CXXFLAGS="-D_FILE_OFFSET_BITS=64"
     - ${CC:?} --version
@@ -1348,8 +1346,8 @@ Android/ARM64 (API Level 33, Clang++, Clang):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
-    - export CC="ccache aarch64-linux-android33-clang"
-    - export CXX="ccache aarch64-linux-android33-clang++"
+    - export CC="aarch64-linux-android33-clang"
+    - export CXX="aarch64-linux-android33-clang++"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
@@ -1384,8 +1382,8 @@ Android/ARMv7A (API Level 33, Clang++, Clang):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
-    - export CC="ccache armv7a-linux-androideabi33-clang"
-    - export CXX="ccache armv7a-linux-androideabi33-clang++"
+    - export CC="armv7a-linux-androideabi33-clang"
+    - export CXX="armv7a-linux-androideabi33-clang++"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
@@ -1619,8 +1617,8 @@ Windows/x64 (MinGW-MSVCRT, G++, GCC):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
-    - export CC="ccache x86_64-w64-mingw32-gcc"
-    - export CXX="ccache x86_64-w64-mingw32-g++"
+    - export CC="x86_64-w64-mingw32-gcc"
+    - export CXX="x86_64-w64-mingw32-g++"
     - export SIR_MSVCRT_MINGW="1"
     - ${CC:?} --version
     - ${CXX:?} --version
@@ -1680,8 +1678,8 @@ Windows/x64 (MinGW-UCRT, G++, GCC):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
-    - export CC="ccache x86_64-w64-mingw32ucrt-gcc"
-    - export CXX="ccache x86_64-w64-mingw32ucrt-g++"
+    - export CC="x86_64-w64-mingw32ucrt-gcc"
+    - export CXX="x86_64-w64-mingw32ucrt-g++"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
@@ -1740,8 +1738,8 @@ Windows/i686 (MinGW, G++, GCC):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - mkdir -p build/bin && touch -f build/bin/mcmb.exe
-    - export CC="ccache i686-w64-mingw32-gcc"
-    - export CXX="ccache i686-w64-mingw32-g++"
+    - export CC="i686-w64-mingw32-gcc"
+    - export CXX="i686-w64-mingw32-g++"
     - export SIR_MSVCRT_MINGW="1"
     - ${CC:?} --version
     - ${CXX:?} --version
@@ -1799,8 +1797,8 @@ Cygwin/x86_64 (G++, GCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="ccache x86_64-pc-cygwin-gcc"
-    - export CXX="ccache x86_64-pc-cygwin-g++"
+    - export CC="x86_64-pc-cygwin-gcc"
+    - export CXX="x86_64-pc-cygwin-g++"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
@@ -1834,7 +1832,7 @@ Cygwin/i686 (GCC, C-only):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="ccache i686-pc-cygwin-gcc"
+    - export CC="i686-pc-cygwin-gcc"
     - ${CC:?} --version
     - make
     - |
@@ -2790,7 +2788,7 @@ Clang Sanitizer (UB, 32-bit, C-only):
     - export UBSAN_OPTIONS="print_stacktrace=1"
     - export UBSAN_FLAGS="-fsanitize=undefined,float-divide-by-zero,unsigned-integer-overflow,implicit-conversion,local-bounds,nullability-arg,nullability-assign,nullability-return"
     - export UBSAN_CFLAGS="-D_FILE_OFFSET_BITS=64 ${UBSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
-    - export CC="ccache clang -m32 ${UBSAN_CFLAGS:?} -Werror"
+    - export CC="clang -m32 ${UBSAN_CFLAGS:?} -Werror"
     - export LDFLAGS="${UBSAN_FLAGS:?}"
     - ${CC:?} --version
     - make SIR_DEBUG=1 SIR_SELFLOG=1
@@ -2837,7 +2835,7 @@ Clang Sanitizer (UB, 64-bit, C-only):
     - export UBSAN_OPTIONS="print_stacktrace=1"
     - export UBSAN_FLAGS="-fsanitize=undefined,float-divide-by-zero,unsigned-integer-overflow,implicit-conversion,local-bounds,nullability-arg,nullability-assign,nullability-return"
     - export UBSAN_CFLAGS="${UBSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
-    - export CC="ccache clang -m64 ${UBSAN_CFLAGS:?} -Werror"
+    - export CC="clang -m64 ${UBSAN_CFLAGS:?} -Werror"
     - export LDFLAGS="${UBSAN_FLAGS:?}"
     - ${CC:?} --version
     - make SIR_DEBUG=1 SIR_SELFLOG=1
@@ -2883,7 +2881,7 @@ Clang Sanitizer (Memory, C-only):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export MSAN_FLAGS="-fsanitize=memory -fsanitize-memory-track-origins=2"
     - export MSAN_CFLAGS="${MSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
-    - export CC="ccache clang -m64 ${MSAN_CFLAGS:?} -Werror"
+    - export CC="clang -m64 ${MSAN_CFLAGS:?} -Werror"
     - export LDFLAGS="${MSAN_FLAGS:?}"
     - ${CC:?} --version
     - make SIR_DEBUG=1 SIR_SELFLOG=1
@@ -2929,8 +2927,8 @@ Clang Sanitizer (CFI, 64-bit, C++, C):
       echo -e "section_start:`date +%s`:Build64_section[collapsed=true]\r\e[0K\033[0;36mBuild 64-bit ...\033[0m" || true
     - export CSAN_FLAGS="-fsanitize=cfi -fvisibility=hidden -fcomplete-member-pointers"
     - export CSAN_CFLAGS="${CSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover -flto"
-    - export CC="ccache clang -m64 ${CSAN_CFLAGS:?} -Werror"
-    - export CXX="ccache clang++ -m64 ${CSAN_CFLAGS:?} -Werror"
+    - export CC="clang -m64 ${CSAN_CFLAGS:?} -Werror"
+    - export CXX="clang++ -m64 ${CSAN_CFLAGS:?} -Werror"
     - export CXXFLAGS="-DSIR_NO_BOOST_FORMAT=1"
     - export LDFLAGS="${CSAN_FLAGS:?}"
     - ${CC:?} --version
@@ -2980,8 +2978,8 @@ Clang Sanitizer (CFI, 32-bit, C++, C):
       echo -e "section_start:`date +%s`:Build32_section[collapsed=true]\r\e[0K\033[0;36mBuild 32-bit ...\033[0m" || true
     - export CSAN_FLAGS="-fsanitize=cfi -fvisibility=hidden -fcomplete-member-pointers"
     - export CSAN_CFLAGS="-D_FILE_OFFSET_BITS=64 ${CSAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover -flto"
-    - export CC="ccache clang -m32 ${CSAN_CFLAGS:?} -Werror"
-    - export CXX="ccache clang++ -m32 ${CSAN_CFLAGS:?} -Werror"
+    - export CC="clang -m32 ${CSAN_CFLAGS:?} -Werror"
+    - export CXX="clang++ -m32 ${CSAN_CFLAGS:?} -Werror"
     - export CXXFLAGS="-DSIR_NO_BOOST_FORMAT=1"
     - export LDFLAGS="${CSAN_FLAGS:?}"
     - ${CC:?} --version
@@ -3032,8 +3030,8 @@ Clang Sanitizer (Address, 64-bit, C++, C):
     - export ASAN_OPTIONS="check_initialization_order=1"
     - export ASAN_FLAGS="-fsanitize=address -fsanitize-address-use-after-scope"
     - export ASAN_CFLAGS="${ASAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
-    - export CC="ccache clang -m64 ${ASAN_CFLAGS:?} -Werror"
-    - export CXX="ccache clang++ -m64 ${ASAN_CFLAGS:?} -Werror"
+    - export CC="clang -m64 ${ASAN_CFLAGS:?} -Werror"
+    - export CXX="clang++ -m64 ${ASAN_CFLAGS:?} -Werror"
     - export CXXFLAGS="-DSIR_NO_BOOST_FORMAT=1"
     - export LDFLAGS="${ASAN_FLAGS:?}"
     - ${CC:?} --version
@@ -3084,8 +3082,8 @@ Clang Sanitizer (Address, 32-bit, C++, C):
     - export ASAN_OPTIONS="check_initialization_order=1"
     - export ASAN_FLAGS="-fsanitize=address -fsanitize-address-use-after-scope"
     - export ASAN_CFLAGS="-D_FILE_OFFSET_BITS=64 ${ASAN_FLAGS:?} -fno-omit-frame-pointer -fno-sanitize-trap -fno-sanitize-recover"
-    - export CC="ccache clang -m32 ${ASAN_CFLAGS:?} -Werror"
-    - export CXX="ccache clang++ -m32 ${ASAN_CFLAGS:?} -Werror"
+    - export CC="clang -m32 ${ASAN_CFLAGS:?} -Werror"
+    - export CXX="clang++ -m32 ${ASAN_CFLAGS:?} -Werror"
     - export LDFLAGS="${ASAN_FLAGS:?}"
     - ${CC:?} --version
     - ${CXX:?} --version
@@ -3207,7 +3205,7 @@ Linux/x86_64 (musl-libc, Kefir, C-only):
     - export KEFIR_RTINC="/opt/kefir-musl/include/kefir/runtime"
     - export PATH="/opt/kefir-musl/bin:${PATH:?}"
     - export LDFLAGS="-static"
-    - export CC="ccache kefir"
+    - export CC="kefir"
     - ${CC:?} --compiler-info
     - ${CC:?} --environment-info
     - make SIR_NO_PLUGINS=1
@@ -3252,7 +3250,7 @@ Linux/x86_64 (Kefir, C-only):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export KEFIR_RTINC="/opt/kefir/include/kefir/runtime"
     - export PATH="/opt/kefir/bin:${PATH:?}"
-    - export CC="ccache kefir"
+    - export CC="kefir"
     - ${CC:?} --compiler-info
     - ${CC:?} --environment-info
     - make
@@ -3296,7 +3294,7 @@ Linux/x86_64 (Portable C Compiler, C-only):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/pcc/bin:${PATH:?}"
-    - export CC="ccache pcc"
+    - export CC="pcc"
     - export CFLAGS="-Wno-attributes"
     - ${CC:?} --version
     - make
@@ -3341,8 +3339,8 @@ Linux/x86_64 (uClibc-ng, G++, GCC):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="${HOME:?}/x-tools/x86_64-pc-linux-uclibc/x86_64-pc-linux-uclibc/bin:${HOME:?}/x-tools/x86_64-pc-linux-uclibc/bin:${PATH:?}"
     - export LDFLAGS="-static"
-    - export CC="ccache x86_64-pc-linux-uclibc-gcc"
-    - export CXX="ccache x86_64-pc-linux-uclibc-g++"
+    - export CC="x86_64-pc-linux-uclibc-gcc"
+    - export CXX="x86_64-pc-linux-uclibc-g++"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make SIR_NO_PLUGINS=1
@@ -3387,8 +3385,8 @@ Linux/x86_64 (Circle, C++-only):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="ccache gcc"
-    - export CXX="ccache circle"
+    - export CC="gcc"
+    - export CXX="circle"
     - export CXXFLAGS="-DSIR_NO_STD_IOSTREAM=1"
     - ${CC:?} --version
     - ${CXX:?} --version
@@ -3435,8 +3433,8 @@ Node.js/WebAssembly (Emscripten, Em++, Emcc):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    - export CC="ccache emcc"
-    - export CXX="ccache em++"
+    - export CC="emcc"
+    - export CXX="em++"
     - export CFLAGS="-flto=full -fwasm-exceptions"
     - export CXXFLAGS="-flto=full -fwasm-exceptions"
     - export LDFLAGS="-sWASM=1 -fwasm-exceptions"
@@ -3489,8 +3487,8 @@ Node.js/JavaScript (Emscripten, Em++, Emcc):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    - export CC="ccache emcc"
-    - export CXX="ccache em++"
+    - export CC="emcc"
+    - export CXX="em++"
     - export CFLAGS="-flto=full -fexceptions"
     - export CXXFLAGS="-flto=full -fexceptions"
     - export LDFLAGS="-sWASM=0 -fexceptions -sNO_DISABLE_EXCEPTION_CATCHING=1"
@@ -3543,7 +3541,7 @@ Linux/x86_64 (GCC, Fedora Python):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="ccache gcc"
+    - export CC="gcc"
     - command -v python3
     - $(command -v python3) --version
     - swig -version
@@ -3596,7 +3594,7 @@ Linux/x86_64 (Oracle Studio C, Fedora Python):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="ccache /opt/oracle/developerstudio-latest/bin/suncc"
+    - export CC="/opt/oracle/developerstudio-latest/bin/suncc"
     - export CFLAGS="-D_FILE_OFFSET_BITS=64"
     - command -v python3
     - $(command -v python3) --version
@@ -3638,7 +3636,7 @@ Linux/x86_64 (Clang, Fedora Python):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export RANLIB="llvm-ranlib"
-    - export CC="ccache clang"
+    - export CC="clang"
     - command -v python3
     - $(command -v python3) --version
     - swig -version
@@ -3693,7 +3691,7 @@ Linux/x86_64 (NVIDIA HPC SDK C, Fedora Python):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - NVC="$(command -v /opt/nvidia/hpc_sdk/Linux_x86_64/*/compilers/bin/nvc | sort -V | head -n 1)"
     - export NVC
-    - export CC="ccache ${NVC:?}"
+    - export CC="${NVC:?}"
     - command -v python3
     - $(command -v python3) --version
     - swig -version
@@ -3855,7 +3853,7 @@ Linux/x86_64 (AOCC, Fedora Python):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - . /opt/AMD/aocc-compiler-4.2.0/setenv_AOCC.sh
-    - export CC="ccache clang"
+    - export CC="clang"
     - command -v python3
     - $(command -v python3) --version
     - swig -version
@@ -4288,8 +4286,8 @@ FreeBSD/amd64 (G++, GCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin/ccache /usr/local/bin/gcc13"
-    - export CXX="/usr/local/bin/ccache /usr/local/bin/g++13"
+    - export CC="/usr/local/bin//usr/local/bin/gcc13"
+    - export CXX="/usr/local/bin//usr/local/bin/g++13"
     - export CFLAGS="-I/usr/local/include"
     - export CXXFLAGS="-I/usr/local/include"
     - export LDFLAGS="-Wl,-rpath=/usr/local/lib/gcc13 -L/usr/local/lib/gcc13 -L/usr/local/lib"
@@ -4312,7 +4310,6 @@ FreeBSD/amd64 (G++, GCC):
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
-    - /usr/local/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4337,8 +4334,8 @@ FreeBSD/amd64 (Clang++, Clang):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin/ccache /usr/local/bin/clang17"
-    - export CXX="/usr/local/bin/ccache /usr/local/bin/clang++17"
+    - export CC="/usr/local/bin//usr/local/bin/clang17"
+    - export CXX="/usr/local/bin//usr/local/bin/clang++17"
     - export CFLAGS="-I/usr/local/include"
     - export CXXFLAGS="-I/usr/local/include"
     - export LDFLAGS="-Wl,-rpath=/usr/local/llvm17/lib/ -L/usr/local/llvm17/lib/ -L/usr/local/lib"
@@ -4361,7 +4358,6 @@ FreeBSD/amd64 (Clang++, Clang):
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
-    - /usr/local/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4494,7 +4490,7 @@ FreeBSD/amd64 (GCC, FreeBSD Python):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin/ccache /usr/local/bin/gcc13"
+    - export CC="/usr/local/bin//usr/local/bin/gcc13"
     - export CFLAGS="-I/usr/local/include"
     - export LDFLAGS="-Wl,-rpath=/usr/local/lib/gcc13 -L/usr/local/lib/gcc13 -L/usr/local/lib"
     - freebsd-version -kru | xargs
@@ -4516,7 +4512,6 @@ FreeBSD/amd64 (GCC, FreeBSD Python):
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
-    - /usr/local/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4547,8 +4542,8 @@ OpenBSD/amd64 (Clang++, Clang):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin/ccache /usr/local/bin/clang-17"
-    - export CXX="/usr/local/bin/ccache /usr/local/bin/clang++-17"
+    - export CC="/usr/local/bin//usr/local/bin/clang-17"
+    - export CXX="/usr/local/bin//usr/local/bin/clang++-17"
     - export CFLAGS="-I/usr/local/include"
     - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -I/usr/local/include"
     - export LDFLAGS="-Wl,-rpath=/usr/local/llvm17/lib/ -L/usr/local/llvm17/lib/ -L/usr/local/lib"
@@ -4571,7 +4566,6 @@ OpenBSD/amd64 (Clang++, Clang):
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
-    - /usr/local/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4597,7 +4591,7 @@ OpenBSD/amd64 (CC, OpenBSD Python):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin/ccache cc"
+    - export CC="/usr/local/bin/cc"
     - export CFLAGS="-I/usr/local/include"
     - export LDFLAGS="-L/usr/local/lib"
     - uname -a
@@ -4619,7 +4613,6 @@ OpenBSD/amd64 (CC, OpenBSD Python):
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
-    - /usr/local/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4650,8 +4643,8 @@ OpenBSD/amd64 (C++, CC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin/ccache cc"
-    - export CXX="/usr/local/bin/ccache c++"
+    - export CC="/usr/local/bin/cc"
+    - export CXX="/usr/local/bin/c++"
     - export CFLAGS="-I/usr/local/include"
     - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -I/usr/local/include"
     - export LDFLAGS="-L/usr/local/lib"
@@ -4674,7 +4667,6 @@ OpenBSD/amd64 (C++, CC):
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
-    - /usr/local/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4699,8 +4691,8 @@ FreeBSD/amd64 (C++, CC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin/ccache cc"
-    - export CXX="/usr/local/bin/ccache c++"
+    - export CC="/usr/local/bin/cc"
+    - export CXX="/usr/local/bin/c++"
     - export CFLAGS="-I/usr/local/include"
     - export CXXFLAGS="-I/usr/local/include"
     - export LDFLAGS="-L/usr/local/lib"
@@ -4723,7 +4715,6 @@ FreeBSD/amd64 (C++, CC):
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
-    - /usr/local/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4748,8 +4739,8 @@ NetBSD/amd64 (C++, CC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/pkg/bin/ccache cc"
-    - export CXX="/usr/pkg/bin/ccache c++"
+    - export CC="/usr/pkg/bin/cc"
+    - export CXX="/usr/pkg/bin/c++"
     - export CFLAGS="-I/usr/pkg/include -I/usr/local/include"
     - export CXXFLAGS="-Wno-stringop-overflow -I/usr/pkg/include -I/usr/local/include"
     - export LDFLAGS="-L/usr/pkg/lib -L/usr/local/lib"
@@ -4772,7 +4763,6 @@ NetBSD/amd64 (C++, CC):
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
-    - /usr/pkg/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4797,8 +4787,8 @@ NetBSD/amd64 (G++, GCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/pkg/bin/ccache /usr/pkg/gcc13/bin/gcc"
-    - export CXX="/usr/pkg/bin/ccache /usr/pkg/gcc13/bin/g++"
+    - export CC="/usr/pkg/bin//usr/pkg/gcc13/bin/gcc"
+    - export CXX="/usr/pkg/bin//usr/pkg/gcc13/bin/g++"
     - export CFLAGS="-I/usr/pkg/include -I/usr/local/include"
     - export CXXFLAGS="-I/usr/pkg/include -I/usr/local/include"
     - export LDFLAGS="-Wl,-rpath,/usr/pkg/gcc13/lib -L/usr/pkg/gcc13/lib -L/usr/pkg/lib -L/usr/local/lib"
@@ -4821,7 +4811,6 @@ NetBSD/amd64 (G++, GCC):
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
-    - /usr/pkg/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4846,8 +4835,8 @@ NetBSD/amd64 (Clang++, Clang):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/pkg/bin/ccache clang"
-    - export CXX="/usr/pkg/bin/ccache clang++"
+    - export CC="/usr/pkg/bin/clang"
+    - export CXX="/usr/pkg/bin/clang++"
     - export CFLAGS="-I/usr/pkg/include -I/usr/local/include"
     - export CXXFLAGS="-I/usr/pkg/include -I/usr/local/include"
     - export LDFLAGS="-L/usr/pkg/lib -L/usr/local/lib"
@@ -4870,7 +4859,6 @@ NetBSD/amd64 (Clang++, Clang):
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
-    - /usr/pkg/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -4896,7 +4884,7 @@ NetBSD/amd64 (CC, NetBSD Python):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/pkg/bin/ccache cc"
+    - export CC="/usr/pkg/bin/cc"
     - export CFLAGS="-I/usr/pkg/include -I/usr/local/include"
     - export LDFLAGS="-L/usr/pkg/lib -L/usr/local/lib"
     - uname -prs
@@ -4918,7 +4906,6 @@ NetBSD/amd64 (CC, NetBSD Python):
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
-    - /usr/pkg/bin/ccache -cC > /dev/null 2>&1 || true
   dependencies: []
   artifacts:
     when: always
@@ -5186,8 +5173,8 @@ OS400/ppc64 (GCC-10, PASE, G++, GCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="ccache gcc-10"
-    - export CXX="ccache g++-10"
+    - export CC="gcc-10"
+    - export CXX="g++-10"
     - ${CC:?} --version
     - ${CXX:?} --version
     - gmake
@@ -5195,7 +5182,6 @@ OS400/ppc64 (GCC-10, PASE, G++, GCC):
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - ccache -cC > /dev/null 2>&1 || true
     - *BuildInformation
     - |
       # Start of Test ...
