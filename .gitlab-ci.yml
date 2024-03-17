@@ -507,6 +507,7 @@ Linux/x86_64 (Intel oneAPI, ICPX, ICX):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="${PATH:-}:/opt/anaconda/bin:/opt/anaconda/sbin"
+    - source /opt/anaconda/bin/activate
     - export CC="ccache icx"
     - export CXX="ccache icpx"
     - ${CC:?} --version
