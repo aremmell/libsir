@@ -4644,7 +4644,7 @@ OpenBSD/amd64 (C++, CC):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CC="cc"
-    - export CXX="/usr/local/bin/c++"
+    - export CXX="c++"
     - export CFLAGS="-I/usr/local/include"
     - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -I/usr/local/include"
     - export LDFLAGS="-L/usr/local/lib"
