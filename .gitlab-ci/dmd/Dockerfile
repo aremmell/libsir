@@ -35,7 +35,7 @@ WORKDIR /
 
 RUN set -x && \
     dnf -y install elinks --setopt=install_weak_deps=True && \
-    (wget https://downloads.dlang.org/pre-releases/2.x/2.108.0/dmd-2.108.0~rc.1-0.fedora.x86_64.rpm || true) && \
+    (wget https://downloads.dlang.org/pre-releases/2.x/2.108.0/dmd-2.108.0~beta.1-0.fedora.x86_64.rpm || true) && \
     (wget "$(elinks -dump https://dlang.org/download.html 2> /dev/null | \
            awk '/\/releases\/.*fedora.*x86_64.rpm$/ { print $2 }' 2> /dev/null | \
               head -1)" || true) && \
