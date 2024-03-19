@@ -243,7 +243,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #    endif
 #   endif
 #   if defined(__illumos__) || ((defined(__sun) || defined(__sun__)) && \
-              (defined(__SVR4) || defined(__svr4__)))
+           (defined(__SVR4) || defined(__svr4__)))
 #    define __SOLARIS__
 #    define SIR_PTHREAD_GETNAME_NP
 #    if !defined(_ATFILE_SOURCE)
