@@ -250,8 +250,8 @@ $(document).ready(function(){initNavTree('platform_8h_source.html',''); initResi
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="preprocessor">#    endif</span></div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="preprocessor">#   endif</span></div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="preprocessor">#  endif</span></div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="preprocessor">#  if !defined(__open_xl__) &amp;&amp; defined(__xlC_ver__)</span></div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="preprocessor">#   if __xlC_ver__ &lt;= 0x0000000e</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="preprocessor">#  if !defined(__open_xl__) &amp;&amp; defined(__xlC_ver__) &amp;&amp; defined(__IBMC__)</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="preprocessor">#   if __IBMC__ &lt;= 1610</span></div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="preprocessor">#    undef __HAVE_ATOMIC_H__</span></div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="preprocessor">#   endif</span></div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="preprocessor">#   define __XLC16__ 1</span></div>
