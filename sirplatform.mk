@@ -277,6 +277,9 @@ ifneq "$(findstring AIX,$(UNAME_S))" ""
   ifneq "$(findstring xlc,$(CC))" ""
     IBMXLC?=1
   endif
+  ifneq "$(findstring clang++,$(CXX))" ""
+    AIXCLANGXX?=1
+  endif
 endif
 
 ifneq "$(findstring powerpc-ibm-aix7,$(CC))" ""
@@ -316,6 +319,10 @@ ifeq ($(IBMXLC),1)
     SIR_CFLAGS+=$(OPTFLAGS) -DNDEBUG $(AIX_STDFLAGS)
     SIR_XFLAGS+=$(OPTFLAGS) -DNDEBUG $(AIX_STDFLAGS)
   endif
+endif
+
+ifeq ($(AIXCLANGXX),1)
+  SIR_XFLAGS+=-D_LIBCPP_NO_ABI_TAG
 endif
 
 ifeq ($(AIXTLS),1)
