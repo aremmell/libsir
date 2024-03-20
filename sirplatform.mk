@@ -322,7 +322,7 @@ ifeq ($(IBMXLC),1)
 endif
 
 ifeq ($(AIXCLANGXX),1)
-  SIR_XFLAGS+=-D_LIBCPP_NO_ABI_TAG
+  SIR_CFLAGS+=-D_LIBCPP_NO_ABI_TAG
 endif
 
 ifeq ($(AIXTLS),1)
