@@ -130,8 +130,8 @@
 #    endif
 #   endif
 #  endif
-#  if !defined(__open_xl__) && defined(__xlC_ver__)
-#   if __xlC_ver__ <= 0x0000000e
+#  if !defined(__open_xl__) && defined(__xlC_ver__) && defined(__IBMC__)
+#   if __IBMC__ <= 1610
 #    undef __HAVE_ATOMIC_H__
 #   endif
 #   define __XLC16__ 1
