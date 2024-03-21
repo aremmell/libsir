@@ -36,7 +36,8 @@ WORKDIR /opt
 ARG URL
 
 RUN set -x && \
-    curl -fsSL ${URL:-http://192.168.1.187:8088/~jhj/cache/android-ndk.tar.gz} | pigz -dc | tar xvf - && \
+    curl -fsSL ${URL:-https://github.com/johnsonjh/ndk/releases/download/r26c/android-ndk-r28-1160465.tar.lz} | \
+      lzip -dc | tar xvf - && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \

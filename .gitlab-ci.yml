@@ -1234,7 +1234,7 @@ Android/ARMv7A (API Level 21, Clang++, Clang):
 
 ################################################################################
 
-Android/x86_64 (API Level 33, Clang++, Clang):
+Android/x86_64 (API Level 35, Clang++, Clang):
   stage: build_android
   needs:
     - job: Style check
@@ -1250,8 +1250,8 @@ Android/x86_64 (API Level 33, Clang++, Clang):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
     - export LDFLAGS="-static"
-    - export CC="x86_64-linux-android33-clang"
-    - export CXX="x86_64-linux-android33-clang++"
+    - export CC="x86_64-linux-android35-clang"
+    - export CXX="x86_64-linux-android35-clang++"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make SIR_NO_PLUGINS=1
@@ -1282,7 +1282,7 @@ Android/x86_64 (API Level 33, Clang++, Clang):
 
 ################################################################################
 
-Android/i686 (API Level 33, Clang++, Clang):
+Android/i686 (API Level 35, Clang++, Clang):
   stage: build_android
   needs:
     - job: Style check
@@ -1299,8 +1299,8 @@ Android/i686 (API Level 33, Clang++, Clang):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
     - export LDFLAGS="-static"
-    - export CC="i686-linux-android33-clang"
-    - export CXX="i686-linux-android33-clang++"
+    - export CC="i686-linux-android35-clang"
+    - export CXX="i686-linux-android35-clang++"
     - export CFLAGS="-D_FILE_OFFSET_BITS=64"
     - export CXXFLAGS="-D_FILE_OFFSET_BITS=64"
     - ${CC:?} --version
@@ -1333,7 +1333,7 @@ Android/i686 (API Level 33, Clang++, Clang):
 
 ################################################################################
 
-Android/ARM64 (API Level 33, Clang++, Clang):
+Android/ARM64 (API Level 35, Clang++, Clang):
   stage: build_android
   needs:
     - job: Style check
@@ -1348,8 +1348,8 @@ Android/ARM64 (API Level 33, Clang++, Clang):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
-    - export CC="aarch64-linux-android33-clang"
-    - export CXX="aarch64-linux-android33-clang++"
+    - export CC="aarch64-linux-android35-clang"
+    - export CXX="aarch64-linux-android35-clang++"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
@@ -1369,7 +1369,7 @@ Android/ARM64 (API Level 33, Clang++, Clang):
 
 ################################################################################
 
-Android/ARMv7A (API Level 33, Clang++, Clang):
+Android/ARMv7A (API Level 35, Clang++, Clang):
   stage: build_android
   needs:
     - job: Style check
@@ -1384,8 +1384,8 @@ Android/ARMv7A (API Level 33, Clang++, Clang):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
-    - export CC="armv7a-linux-androideabi33-clang"
-    - export CXX="armv7a-linux-androideabi33-clang++"
+    - export CC="armv7a-linux-androideabi35-clang"
+    - export CXX="armv7a-linux-androideabi35-clang++"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make
