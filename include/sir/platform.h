@@ -90,7 +90,7 @@
 # endif
 
 # if HAS_FEATURE(safe_stack) && !defined(SIR_NO_PLUGINS)
-#  error "linking dynamically shared objects with SafeStack is unsupported; disable SafeStack or enable SIR_NO_PLUGINS"
+#  error "linking DSOs with SafeStack is unsupported; disable SafeStack or enable SIR_NO_PLUGINS"
 # endif
 
 # if !defined(_WIN32)
