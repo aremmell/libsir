@@ -33,7 +33,7 @@
 #include "tests_shared.h"
 
 void print_intro(size_t tgt_tests) {
-    (void)printf(SIR_WHITEB(SIR_EOL SIR_ULINE("libsir") " %s (%s) running %zu %s...") SIR_EOL,
+    (void)printf(EOL SIR_WHITEB(SIR_ULINE("libsir") " %s (%s) running %zu %s...") SIR_EOL,
         sir_getversionstring(), (sir_isprerelease() ? "prerelease" : "release"),
         tgt_tests, TEST_S(tgt_tests));
 }

@@ -136,14 +136,14 @@ Macros</h2></td></tr>
 <tr class="separator:a11214c8798ccdaab052c3bc9db2e3e78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb2ecae48d2a27a6ff5339615e28ea6f" id="r_adb2ecae48d2a27a6ff5339615e28ea6f"><td class="memItemLeft" align="right" valign="top"><a id="adb2ecae48d2a27a6ff5339615e28ea6f" name="adb2ecae48d2a27a6ff5339615e28ea6f"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SIR_EOL_CR</b>&#160;&#160;&#160;&quot;\r&quot;</td></tr>
-<tr class="memdesc:adb2ecae48d2a27a6ff5339615e28ea6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the system carriage return (CR) character. <br /></td></tr>
+<tr class="memdesc:adb2ecae48d2a27a6ff5339615e28ea6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The carriage return (CR) character to use in the end of line sequence when SIR_USE_EOL_CRLF is defined. <br /></td></tr>
 <tr class="separator:adb2ecae48d2a27a6ff5339615e28ea6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5e7996cb2e7e51dc45acc6a1e2d1a45" id="r_ab5e7996cb2e7e51dc45acc6a1e2d1a45"><td class="memItemLeft" align="right" valign="top"><a id="ab5e7996cb2e7e51dc45acc6a1e2d1a45" name="ab5e7996cb2e7e51dc45acc6a1e2d1a45"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SIR_EOL_LF</b>&#160;&#160;&#160;&quot;\n&quot;</td></tr>
-<tr class="memdesc:ab5e7996cb2e7e51dc45acc6a1e2d1a45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the system line feed (LF) character. <br /></td></tr>
+<tr class="memdesc:ab5e7996cb2e7e51dc45acc6a1e2d1a45"><td class="mdescLeft">&#160;</td><td class="mdescRight">The line feed (LF) character to use in the end of line sequence. <br /></td></tr>
 <tr class="separator:ab5e7996cb2e7e51dc45acc6a1e2d1a45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cd3bda6ec91d6c0b14b352aa40344d5" id="r_a1cd3bda6ec91d6c0b14b352aa40344d5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#a1cd3bda6ec91d6c0b14b352aa40344d5">SIR_EOL</a>&#160;&#160;&#160;<a class="el" href="config_8h.html#ab5e7996cb2e7e51dc45acc6a1e2d1a45">SIR_EOL_LF</a></td></tr>
-<tr class="memdesc:a1cd3bda6ec91d6c0b14b352aa40344d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define to have libsir use CRLF line endings, otherwise use LF.  <br /></td></tr>
+<tr class="memdesc:a1cd3bda6ec91d6c0b14b352aa40344d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The end of line sequence.  <br /></td></tr>
 <tr class="separator:a1cd3bda6ec91d6c0b14b352aa40344d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a359b781cc4fde8dd09e30b95328b3ab0" id="r_a359b781cc4fde8dd09e30b95328b3ab0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="config_8h.html#a359b781cc4fde8dd09e30b95328b3ab0">SIR_LEVELPREFIX</a>&#160;&#160;&#160;&quot;[&quot;</td></tr>
 <tr class="memdesc:a359b781cc4fde8dd09e30b95328b3ab0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The string placed directly before the human-readable logging level.  <br /></td></tr>
@@ -364,8 +364,8 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Define to have libsir use CRLF line endings, otherwise use LF. </p>
-<p>Define the end of line sequence. </p>
+<p>The end of line sequence. </p>
+<p>If SIR_USE_EOL_CRLF is defined, the sequence will be SIR_EOL_CR + SIR_EOL_LF; otherwise just SIR_EOL_LF. </p>
 
 </div>
 </div>

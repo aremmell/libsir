@@ -69,28 +69,23 @@
 # endif
 
 /**
- * Define the system carriage return (CR) character.
+ * The carriage return (CR) character to use in the end of line
+ * sequence when SIR_USE_EOL_CRLF is defined.
  */
 # if !defined(SIR_EOL_CR)
 #  define SIR_EOL_CR "\r"
 # endif
 
 /**
- * Define the system line feed (LF) character.
+ * The line feed (LF) character to use in the end of line sequence.
  */
 # if !defined(SIR_EOL_LF)
 #  define SIR_EOL_LF "\n"
 # endif
 
 /**
- * Define to have libsir use CRLF line endings, otherwise use LF.
- */
-# if !defined(SIR_USE_EOL_CRLF)
-#  undef SIR_USE_EOL_CRLF
-# endif
-
-/**
- * Define the end of line sequence.
+ * The end of line sequence. If SIR_USE_EOL_CRLF is defined, the
+ * sequence will be SIR_EOL_CR + SIR_EOL_LF; otherwise just SIR_EOL_LF.
  */
 # if !defined(SIR_USE_EOL_CRLF)
 #  define SIR_EOL SIR_EOL_LF
