@@ -1,5 +1,8 @@
 var NAVTREEINDEX1 =
 {
+"group__publictypes.html#ga2a7a55618343c4cb76d7e428af72232b":[3,0,1,18],
+"group__publictypes.html#ga2b9222b9d95807e7e1d16bd9c86c130b":[3,0,1,14],
+"group__publictypes.html#ga39dffb8c9c5100251098820cb5b48446":[3,0,1,12],
 "group__publictypes.html#ga3c68d15a3b9b9d5a4f4c8fd092b0e73d":[3,0,1,22],
 "group__publictypes.html#ga40584e96084fe85a8ad8a7be98ff5fc9":[3,0,1,17],
 "group__publictypes.html#ga640c1b7e6daea59af42137e10e3c3b29":[3,0,1,10],
@@ -123,8 +126,8 @@ var NAVTREEINDEX1 =
 "maps_8h_source.html":[5,0,1,0,11],
 "md_docs_2sources_2changelog.html":[0],
 "mutex_8h_source.html":[5,0,1,0,12],
-"namespacesir.html":[3,3,0],
 "namespacesir.html":[3,0,2,0],
+"namespacesir.html":[3,3,0],
 "namespacesir_1_1tests.html":[3,3,1],
 "pages.html":[],
 "platform_8h_source.html":[5,0,1,0,13],

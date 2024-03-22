@@ -68,10 +68,10 @@ extern "C" {
 # define TEST_S(n) ((n) > 1 ? "tests" : "test")
 
 /** Helper for printing a possibly-null string. */
-# define PRN_STR(str) ((str) ? (str) : RED("NULL"))
+# define PRN_STR(str) ((str) ? (str) : SIR_RED("NULL"))
 
 /** Prints 'PASS' in green if `pass` is true, or 'FAIL' in red otherwise. */
-# define PRN_PASS(pass) ((pass) ? GREENB("PASS") : REDB("FAIL"))
+# define PRN_PASS(pass) ((pass) ? SIR_GREENB("PASS") : SIR_REDB("FAIL"))
 
 /** Useful for printing items in a list. */
 # define INDENT_ITEM "\t  " SIR_BULLET " "
@@ -101,7 +101,7 @@ extern "C" {
  * Command line usage messages.
  */
 
-# define SIR_CL_ONLYUSAGE     ULINE("name") " [, " ULINE("name") ", ...]"
+# define SIR_CL_ONLYUSAGE     SIR_ULINE("name") " [, " SIR_ULINE("name") ", ...]"
 
 /** The name for the performance test. It is referenced by name in the
  * CLI parser, so this is our single source of truth. */
@@ -113,27 +113,32 @@ extern "C" {
 
 # define SIR_CL_PERFDESC      "Only run the performance measurement test"
 # define SIR_CL_ONLYDESC      "Only run the test(s) specified"
-# define SIR_CL_LISTDESC      "Prints a list of available test names for use with '" BOLD("--only") "'"
+# define SIR_CL_LISTDESC      "Prints a list of available test names for use with '" SIR_BOLD("--only") "'"
 # define SIR_CL_LEAVELOGSDESC "Log files are not deleted so that they may be examined"
 # define SIR_CL_WAITDESC      "After running test(s), wait for a keypress before exiting"
 # define SIR_CL_VERSIONDESC   "Prints the version of libsir that the test suite was built with"
 # define SIR_CL_HELPDESC      "Shows this message"
 
 /** Prints `msg` indented with a tab. Used for output during a test's execution. */
-# define TEST_MSG(msg, ...) (void)printf("\t" msg "\n", __VA_ARGS__)
+# define TEST_MSG(msg, ...) (void)printf("\t" msg SIR_EOL, __VA_ARGS__)
 
 /** TEST_MSG but no varargs. Use when `msg` is just a string. */
-# define TEST_MSG_0(msg) (void)printf("\t" msg "\n")
+# define TEST_MSG_0(msg) (void)printf("\t" msg SIR_EOL)
 
 /** Prints `msg` in red to stderr. */
-# define ERROR_MSG(msg, ...) TEST_MSG(RED(msg), __VA_ARGS__)
+# define ERROR_MSG(msg, ...) TEST_MSG(SIR_RED(msg), __VA_ARGS__)
 
 /** ERROR_MSG but no varargs. Use when `msg` is just a string. */
-# define ERROR_MSG_0(msg) TEST_MSG_0(RED(msg))
+# define ERROR_MSG_0(msg) TEST_MSG_0(SIR_RED(msg))
 
 /** Prints `msg` in green if `expr` is true, or in red if false. */
-# define PASSFAIL_MSG(expr, msg, ...) \
-    (void)printf(expr ? GREEN(msg) : RED(msg), __VA_ARGS__)
+# if !defined(SIR_NO_TEXT_STYLING)
+#  define PASSFAIL_MSG(expr, msg, ...) \
+     (void)printf(expr ? SIR_GREEN(msg) : SIR_RED(msg), __VA_ARGS__)
+# else
+#  define PASSFAIL_MSG(expr, msg, ...) \
+     (void)printf(msg, __VA_ARGS__)
+# endif
 
 /** Prints an expected error in green. */
 # define PRINT_EXPECTED_ERROR() (void)print_test_error(true, true)

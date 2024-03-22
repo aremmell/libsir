@@ -38,6 +38,7 @@
  * ::sir_settextstyle and ::sir_resettextstyles modify the style
  * values in this array at runtime; only the SIRL_* values are constant.
  */
+#if !defined(SIR_NO_TEXT_STYLING)
 sir_level_style_tuple sir_level_to_style_map[SIR_NUMLEVELS] = {
     {SIRL_EMERG,  {0}, {0}},
     {SIRL_ALERT,  {0}, {0}},
@@ -48,6 +49,7 @@ sir_level_style_tuple sir_level_to_style_map[SIR_NUMLEVELS] = {
     {SIRL_INFO,   {0}, {0}},
     {SIRL_DEBUG,  {0}, {0}}
 };
+#endif
 
 /**
  * @brief Mapping of ::sir_level <-> human-readable string forms.

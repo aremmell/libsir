@@ -1,7 +1,7 @@
 /*
  * mcmb.c
  *
- * Version: 2120.5.04-dps (libcmb 3.5.6)
+ * Version: 2120.5.05-dps (libcmb 3.5.6)
  *
  * -----------------------------------------------------------------------------
  *
@@ -306,7 +306,7 @@ struct cmb_xitem
     if (suffix != NULL && !opt_quiet)                                         \
       (void)fprintf(stdout, "%s", suffix);                                    \
     (void)fprintf(stdout,                                                     \
-      "%s%.*Lf\n",                                                            \
+      "%s%.*Lf\r\n",                                                          \
       opt_quiet ? "" : " = ",                                                 \
       cmb_transform_precision,                                                \
       total);                                                                 \
@@ -413,7 +413,7 @@ static struct cmb_xitem *cmb_transform_find;
     if (suffix != NULL && !opt_quiet)                                         \
       (void)fprintf(stdout, "%s", suffix);                                    \
     (void)fprintf(stdout,                                                     \
-      "%s%.*Lf\n",                                                            \
+      "%s%.*Lf\r\n",                                                          \
       opt_quiet ? "" : " = ",                                                 \
       cmb_transform_precision,                                                \
       total);                                                                 \
@@ -486,7 +486,7 @@ static struct cmb_xitem *cmb_transform_find;
 # define CMB_PARSE_FRAGSIZE 512
 #endif /* ifndef CMB_PARSE_FRAGSIZE */
 
-static const char mcmbver[]         = "2120.5.04-dps";
+static const char mcmbver[]         = "2120.5.05-dps";
 static const char libversion[]      = "libcmb 3.5.6";
 
 /*
@@ -1202,7 +1202,7 @@ CMB_ACTION(cmb_print)
       (void)fprintf(stdout, "%s", suffix);
     }
 
-  (void)fprintf(stdout, "\n");
+  (void)fprintf(stdout, "\r\n");
 
   return 0;
 }
@@ -1382,7 +1382,6 @@ static const char
   return ret;
 }
 
-
 static locale_t locale;
 
 static int
@@ -1468,7 +1467,7 @@ main(int argc, char *argv[])
         case 'c': /* count */
           if (( optlen = strlen(optarg)) == 0 || unumlen(optarg) != optlen)
             {
-              (void)fprintf(stderr, "Error: -c: %s `%s'\n",
+              (void)fprintf(stderr, "Error: -c: %s `%s'\r\n",
                 xstrerror_l(EINVAL), optarg);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
@@ -1478,7 +1477,7 @@ main(int argc, char *argv[])
           config->count = strtoull(optarg, (char **)NULL, 10);
           if (errno != 0)
             {
-              (void)fprintf(stderr, "Error: -c: %s `%s'\n",
+              (void)fprintf(stderr, "Error: -c: %s `%s'\r\n",
                 xstrerror_l(errno), optarg);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
@@ -1522,7 +1521,7 @@ main(int argc, char *argv[])
                   errno = EINVAL;
                 }
 
-              (void)fprintf(stderr, "Error: -F: %s `%s'\n",
+              (void)fprintf(stderr, "Error: -F: %s `%s'\r\n",
                 xstrerror_l(errno), optarg);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
@@ -1544,7 +1543,7 @@ main(int argc, char *argv[])
             }
           else if (optlen == 0 || numlen(optarg) != optlen)
             {
-              (void)fprintf(stderr, "Error: -i: %s `%s'\n",
+              (void)fprintf(stderr, "Error: -i: %s `%s'\r\n",
                 xstrerror_l(EINVAL), optarg);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
@@ -1564,7 +1563,7 @@ main(int argc, char *argv[])
 
               if (errno != 0)
                 {
-                  (void)fprintf(stderr, "Error: -i: %s `%s'\n",
+                  (void)fprintf(stderr, "Error: -i: %s `%s'\r\n",
                     xstrerror_l(errno), optarg);
                   _Exit(EXIT_FAILURE);
                   /*NOTREACHED*/ /* unreachable */
@@ -1577,7 +1576,7 @@ main(int argc, char *argv[])
           if (!parse_range(optarg, &( config->size_min ),
                &( config->size_max )))
             {
-              (void)fprintf(stderr, "Error: -k: %s `%s'\n",
+              (void)fprintf(stderr, "Error: -k: %s `%s'\r\n",
                 xstrerror_l(errno), optarg);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
@@ -1592,7 +1591,7 @@ main(int argc, char *argv[])
         case 'P': /* precision */
           if (!parse_unum(optarg, (uint32_t *)&cmb_transform_precision))
             {
-              (void)fprintf(stderr, "Error: -n: %s `%s'\n",
+              (void)fprintf(stderr, "Error: -n: %s `%s'\r\n",
                 xstrerror_l(errno), optarg);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
@@ -1650,7 +1649,7 @@ main(int argc, char *argv[])
   if (opt_version)
     {
       (void)fprintf(stdout, "mcmb: (miniature) combinatorics utility"
-        " %s (cmb %s + %s)\n", mcmbver, cmdver, libver);
+        " %s (cmb %s + %s)\r\n", mcmbver, cmdver, libver);
 #ifdef HAVE_BUILD
       if (!opt_build)
         {
@@ -1671,24 +1670,24 @@ main(int argc, char *argv[])
 #   if !defined (__clang_version__) || defined(__INTEL_COMPILER)
       char xcmp[2];
       /* cppcheck-suppress invalidPrintfArgType_s */
-      sprintf(xcmp, "%.1s", __VERSION__ );
+      (void)sprintf(xcmp, "%.1s", __VERSION__ );
       if (!isdigit((int)xcmp[0]))
         {
           /* cppcheck-suppress invalidPrintfArgType_s */
-          (void)fprintf(stdout, "Compiler: %s\n", __VERSION__ );
+          (void)fprintf(stdout, "Compiler: %s\r\n", __VERSION__ );
         }
       else
         {
           /* cppcheck-suppress invalidPrintfArgType_s */
-          (void)fprintf(stdout, "Compiler: GCC %s\n", __VERSION__ );
+          (void)fprintf(stdout, "Compiler: GCC %s\r\n", __VERSION__ );
         }
 #   else
       /* cppcheck-suppress invalidPrintfArgType_s */
-      (void)fprintf(stdout, "Compiler: Clang %s\n", __clang_version__ );
+      (void)fprintf(stdout, "Compiler: Clang %s\r\n", __clang_version__ );
 #   endif /* if !defined (__clang_version__) || defined(__INTEL_COMPILER) */
 #  else
       /* cppcheck-suppress invalidPrintfArgType_s */
-      (void)fprintf(stdout, "Compiler: %s\n", __VERSION__ );
+      (void)fprintf(stdout, "Compiler: %s\r\n", __VERSION__ );
 #  endif /* ifdef __GNUC__ */
 # endif /* ifdef __VERSION__ */
       FREE(config);
@@ -1713,7 +1712,7 @@ main(int argc, char *argv[])
 
   if (opt_find && opt_transform == NULL)
     {
-      (void)fprintf(stderr, "Error: `-X op' required when using `-F num'\n");
+      (void)fprintf(stderr, "Error: `-X op' required when using `-F num'\r\n");
       _Exit(EXIT_FAILURE);
       /*NOTREACHED*/ /* unreachable */
     }
@@ -1724,7 +1723,7 @@ main(int argc, char *argv[])
 
   if (opt_precision && opt_transform == NULL)
     {
-      (void)fprintf(stderr, "Error: `-X op' required when using `-P num'\n");
+      (void)fprintf(stderr, "Error: `-X op' required when using `-P num'\r\n");
       _Exit(EXIT_FAILURE);
       /*NOTREACHED*/ /* unreachable */
     }
@@ -1744,7 +1743,7 @@ main(int argc, char *argv[])
         {
           if (!parse_urange(argv[n], &rstart, &rstop))
             {
-              (void)fprintf(stderr, "Error: -r: %s `%s'\n",
+              (void)fprintf(stderr, "Error: -r: %s `%s'\r\n",
                 xstrerror_l(errno), argv[n]);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
@@ -1767,7 +1766,7 @@ main(int argc, char *argv[])
 
           if (ritems + ull > UINT_MAX)
             {
-              (void)fprintf(stderr, "Error: -r: Too many items\n");
+              (void)fprintf(stderr, "Error: -r: Too many items\r\n");
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -1790,7 +1789,7 @@ main(int argc, char *argv[])
           /*NOTREACHED*/ /* unreachable */
         }
 
-      (void)fprintf(stdout, "%" PRIu64 "%s", count, "\n");
+      (void)fprintf(stdout, "%" PRIu64 "%s", count, "\r\n");
       FREE(config);
       exit(EXIT_SUCCESS);
       /*NOTREACHED*/ /* unreachable */
@@ -1855,7 +1854,7 @@ main(int argc, char *argv[])
     {
       if (( optlen = strlen(opt_transform)) == 0)
         {
-          (void)fprintf(stderr, "Error: -X %s\n", xstrerror_l(EINVAL));
+          (void)fprintf(stderr, "Error: -X %s\r\n", xstrerror_l(EINVAL));
           _Exit(EXIT_FAILURE);
           /*NOTREACHED*/ /* unreachable */
         }
@@ -1881,7 +1880,7 @@ main(int argc, char *argv[])
         }
       if (config->action == NULL)
         {
-          (void)fprintf(stderr, "Error: -X: %s `%s'\n",
+          (void)fprintf(stderr, "Error: -X: %s `%s'\r\n",
             xstrerror_l(EINVAL), opt_transform);
           _Exit(EXIT_FAILURE);
           /*NOTREACHED*/ /* unreachable */
@@ -1923,7 +1922,7 @@ main(int argc, char *argv[])
                       errno = EINVAL;
                     }
 
-                  (void)fprintf(stderr, "Error: -X: %s `%s'\n",
+                  (void)fprintf(stderr, "Error: -X: %s `%s'\r\n",
                     xstrerror_l(errno), items[n]);
                   _Exit(EXIT_FAILURE);
                   /*NOTREACHED*/ /* unreachable */
@@ -2026,12 +2025,12 @@ main(int argc, char *argv[])
 
       if (errno)
         {
-          (void)fprintf(stderr, "FATAL: %s (%d)\r\n", xstrerror_l(errno), errno);
+          (void)fprintf(stderr, "\rFATAL: %s (%d)\r\n", xstrerror_l(errno), errno);
           _Exit(EXIT_FAILURE);
           /*NOTREACHED*/ /* unreachable */
         }
 
-      (void)fprintf(stdout, "%" PRIu64 "%s", count, "\n");
+      (void)fprintf(stdout, "%" PRIu64 "%s", count, "\r\n");
     }
   else
     {
@@ -2040,7 +2039,7 @@ main(int argc, char *argv[])
           count = cmb_count(config, nitems);
           if (errno)
             {
-              (void)fprintf(stderr, "FATAL: %s (%d)\r\n", xstrerror_l(errno), errno);
+              (void)fprintf(stderr, "\rFATAL: %s (%d)\r\n", xstrerror_l(errno), errno);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -2092,7 +2091,7 @@ main(int argc, char *argv[])
             }
           else
             {
-              (void)fprintf(stderr, "FATAL: %s (%d)\r\n", xstrerror_l(errno), errno);
+              (void)fprintf(stderr, "\rFATAL: %s (%d)\r\n", xstrerror_l(errno), errno);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -2102,7 +2101,7 @@ main(int argc, char *argv[])
           count = cmb_count(config, nitems);
           if (errno)
             {
-              (void)fprintf(stderr, "FATAL: %s (%d)\r\n", xstrerror_l(errno), errno);
+              (void)fprintf(stderr, "\rFATAL: %s (%d)\r\n", xstrerror_l(errno), errno);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -2120,7 +2119,7 @@ main(int argc, char *argv[])
       retval = cmb(config, nitems, items);
       if (errno)
         {
-          (void)fprintf(stderr, "FATAL: %s (%d)\n", xstrerror_l(errno), errno);
+          (void)fprintf(stderr, "\rFATAL: %s (%d)\r\n", xstrerror_l(errno), errno);
           _Exit(EXIT_FAILURE);
           /*NOTREACHED*/ /* unreachable */
         }
@@ -2178,8 +2177,8 @@ main(int argc, char *argv[])
  * Print short usage statement to stderr and exit with error status.
  */
 
-#define OPTFMT    "  %-10s  %s\n"
-#define OPTFMT_1U "  %-10s  %s%u%s\n"
+#define OPTFMT    "  %-10s  %s\r\n"
+#define OPTFMT_1U "  %-10s  %s%u%s\r\n"
 
 static void
 cmb_usage(void)
@@ -2187,7 +2186,7 @@ cmb_usage(void)
   (void)fprintf(stderr,
     "Usage: %s { [SWITCHES] } { <ITEMS> ... }\n\n", pgm);
   (void)fprintf(stderr,
-    " Switches:\n");
+    " Switches:\r\n");
   (void)fprintf(stderr, OPTFMT,
     "-c num", "Produce num combinations (defaults to '0' for all)");
   (void)fprintf(stderr, OPTFMT,
@@ -2239,7 +2238,7 @@ cmb_rand_range(uint64_t range)
 
   if (range == 0)
     {
-      (void)fprintf(stderr, "FATAL: Range cannot be zero!\n");
+      (void)fprintf(stderr, "\rFATAL: Range cannot be zero!\r\n");
       _Exit(EXIT_FAILURE);
       /*NOTREACHED*/ /* unreachable */
     }

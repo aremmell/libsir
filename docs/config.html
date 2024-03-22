@@ -145,7 +145,11 @@ $(document).ready(function(){initNavTree('config.html',''); initResizable(); });
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyCenter" rowspan="2"><code>SIR_NO_SHARED (0)</code>   </td><td class="markdownTableBodyCenter"><code>0</code>   </td><td class="markdownTableBodyCenter"><code>N/A</code>   </td><td class="markdownTableBodyLeft">Shared libraries are created when building the *<code>all</code>* target, and installed with *<code>make install</code>*.    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter"><code>1</code>   </td><td class="markdownTableBodyCenter"><code>-DSIR_NO_PLUGINS</code>   </td><td class="markdownTableBodyLeft">The <code>SIR_NO_PLUGINS</code> variable is set (to <code>1</code>), shared libraries are not created when building the *<code>all</code>* target, and are not installed with *<code>make install</code>*.   </td></tr>
+<td class="markdownTableBodyCenter"><code>1</code>   </td><td class="markdownTableBodyCenter"><code>-DSIR_NO_PLUGINS</code>   </td><td class="markdownTableBodyLeft">The <code>SIR_NO_PLUGINS</code> variable is set (to <code>1</code>), shared libraries are not created when building the *<code>all</code>* target, and are not installed with *<code>make install</code>*.    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter" rowspan="2"><code>SIR_USE_EOL_CRLF (0)</code>   </td><td class="markdownTableBodyCenter"><code>0</code>   </td><td class="markdownTableBodyCenter"><code>N/A</code>   </td><td class="markdownTableBodyLeft">The end of line sequence will be SIR_EOL_LF.    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyCenter"><code>1</code>   </td><td class="markdownTableBodyCenter"><code>-DSIR_USE_EOL_CRLF</code>   </td><td class="markdownTableBodyLeft">The end of line sequence will be SIR_EOL_CR + SIR_EOL_LF.   </td></tr>
 </table>
 <hr  />
 <dl class="section note"><dt>Note</dt><dd>If you plan to use the Visual Studio 2022 solution, see <code>README.md</code> under <code>Help</code> once the solution is loaded.</dd></dl>

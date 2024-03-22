@@ -74,12 +74,23 @@
 #  define HAS_INCLUDE(inc) 0
 # endif
 
+# undef HAS_FEATURE
+# if defined __has_feature
+#  define HAS_FEATURE(fea) __has_feature(fea)
+# else
+#  define HAS_FEATURE(fea) 0
+# endif
+
 # undef SANITIZE_SUPPRESS
 # if HAS_ATTRIBUTE(no_sanitize)
 #  define SANITIZE_SUPPRESS(str) __attribute__((no_sanitize(str)))
 # endif
 # if !defined(SANITIZE_SUPPRESS)
 #  define SANITIZE_SUPPRESS(str)
+# endif
+
+# if HAS_FEATURE(safe_stack) && !defined(SIR_NO_PLUGINS)
+#  error "linking DSOs with SafeStack is unsupported; disable SafeStack or enable SIR_NO_PLUGINS"
 # endif
 
 # if !defined(_WIN32)
@@ -119,8 +130,8 @@
 #    endif
 #   endif
 #  endif
-#  if !defined(__open_xl__) && defined(__xlC_ver__)
-#   if __xlC_ver__ <= 0x0000000e
+#  if !defined(__open_xl__) && defined(__xlC_ver__) && defined(__IBMC__)
+#   if __IBMC__ <= 1610
 #    undef __HAVE_ATOMIC_H__
 #   endif
 #   define __XLC16__ 1
@@ -232,7 +243,7 @@ int pthread_getname_np(pthread_t thread, char* buffer, size_t length);
 #    endif
 #   endif
 #   if defined(__illumos__) || ((defined(__sun) || defined(__sun__)) && \
-              (defined(__SVR4) || defined(__svr4__)))
+           (defined(__SVR4) || defined(__svr4__)))
 #    define __SOLARIS__
 #    define SIR_PTHREAD_GETNAME_NP
 #    if !defined(_ATFILE_SOURCE)
@@ -344,7 +355,7 @@ _set_thread_local_invalid_parameter_handler(
 #   define SIR_ASSERT(...) \
      do { \
           if (!(__VA_ARGS__)) { \
-               _sir_selflog(BRED("!!! would be asserting: " #__VA_ARGS__ "")); \
+               _sir_selflog(SIR_BRED("!!! would be asserting: " #__VA_ARGS__ "")); \
           } \
      } while (false)
 #  else
@@ -643,7 +654,7 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #   define _sir_thread_local __thread
 #  else
 #   if !defined(_CH_) && !defined(__CH__)
-#    error "unable to resolve thread local attribute; please contact the developers."
+#    error "unable to resolve thread local attribute; please contact the developers"
 #   endif
 #  endif
 # endif

@@ -447,7 +447,9 @@ typedef enum {
     SIRMI_CONFIG = 0,  /**< The ::sirconfig section. */
     SIRMI_FILECACHE,   /**< The ::sirfcache section. */
     SIRMI_PLUGINCACHE, /**< The ::sir_plugincache section. */
+# if !defined(SIR_NO_TEXT_STYLING)
     SIRMI_TEXTSTYLE,   /**< The ::sir_level_style_tuple section. */
+# endif
 } sir_mutex_id;
 
 /** Per-thread error type. */

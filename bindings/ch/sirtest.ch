@@ -47,7 +47,7 @@ main(void) {
     chinfo_t ch;
     if (chinfo(&ch)) {
         (void)fprintf(_stderr,
-                      RED("Ch error: ") BRED("Failure reading Ch version.\n"));
+                      SIR_BREDB("Ch error: ") SIR_RED("Failure reading Ch version.") SIR_EOL);
 
         return EXIT_FAILURE;
     }
@@ -108,39 +108,39 @@ main(void) {
 
     /* Print startup herald with version info. */
     (void)fprintf(_stdout,
-                  WHITE("Ch") " binding test: " CYAN("libsir ") BCYAN("%s"),
+                  SIR_WHITE("Ch") " binding test: " SIR_CYAN("libsir ") SIR_BCYAN("%s"),
                   sir_versionstring);
     (void)fprintf(_stdout,
-                  BGRAY(" on ") CYAN("Ch ") BCYAN("%d.%d.%d.%d") BGRAY(".\n\n"),
+                  SIR_BGRAY(" on ") SIR_CYAN("Ch ") SIR_BCYAN("%d.%d.%d.%d") SIR_BGRAY(".") SIR_EOL SIR_EOL,
                   ch.vermajor, ch.verminor, ch.vermicro, ch.verbuild);
 
     /* Demo string utilities. */
     (void)fprintf(_stdout, _sir_strredact(_sir_strreplace(_sir_strsqueeze(
-                  "\r \nxxx Welcome  \r  to  \f  the  Ch  \v  demo   xx!\n \n"),
+                  "xxx Welcome  \n  to  \f  the  Ch  \v  demo    xx!" SIR_EOL SIR_EOL),
                   '!', 'x'), "x", '*'));
 
     /* Log to stdout. */
-    (void)fprintf(_stdout, "\nLogging four libsir messages to stdout:\n");
-    (void)sir_debug("%b Testing %s output", __LINE__, ULINE("debug"));
-    (void)sir_info("%b Testing %s output", __LINE__, ULINE("information"));
-    (void)sir_notice("%b Testing %s output", __LINE__, ULINE("notice"));
-    (void)sir_warn("%b Testing %s output", __LINE__, ULINE("warning"));
+    (void)fprintf(_stdout, SIR_EOL "Logging four libsir messages to stdout:" SIR_EOL);
+    (void)sir_debug("%b Testing %s output", __LINE__, SIR_ULINE("debug"));
+    (void)sir_info("%b Testing %s output", __LINE__, SIR_ULINE("information"));
+    (void)sir_notice("%b Testing %s output", __LINE__, SIR_ULINE("notice"));
+    (void)sir_warn("%b Testing %s output", __LINE__, SIR_ULINE("warning"));
 
     /* Log to stderr. */
-    (void)fprintf(_stderr, "\nLogging four libsir messages to stderr:\n");
-    (void)sir_error("%s %b Testing %s output", __TIME__, __LINE__, ULINE("error"));
-    (void)sir_crit("%s %b Testing %s output", __TIME__, __LINE__, ULINE("critical"));
-    (void)sir_alert("%s %b Testing %s output", __TIME__, __LINE__, ULINE("alert"));
-    (void)sir_emerg("%s %b Testing %s output", __TIME__, __LINE__, ULINE("emergency"));
+    (void)fprintf(_stderr, SIR_EOL "Logging four libsir messages to stderr:" SIR_EOL);
+    (void)sir_error("%s %b Testing %s output", __TIME__, __LINE__, SIR_ULINE("error"));
+    (void)sir_crit("%s %b Testing %s output", __TIME__, __LINE__, SIR_ULINE("critical"));
+    (void)sir_alert("%s %b Testing %s output", __TIME__, __LINE__, SIR_ULINE("alert"));
+    (void)sir_emerg("%s %b Testing %s output", __TIME__, __LINE__, SIR_ULINE("emergency"));
 
     /* Set up for syslog output. */
     (void)sir_syslogid(appname);
 
     /* Check if syslog is available. */
     if (SIR_E_UNAVAIL == sir_geterror(NULL)) {
-        (void)fprintf(_stderr, "\nLogging to syslog is not supported, skipping.\n");
+        (void)fprintf(_stderr, SIR_EOL "Logging to syslog is not supported, skipping." SIR_EOL);
     } else {
-        (void)fprintf(_stderr, "\nLogging two libsir messages to stderr and syslog:\n");
+        (void)fprintf(_stderr, SIR_EOL "Logging two libsir messages to stderr and syslog:" SIR_EOL);
 
         /* Don't log PID; syslog has us covered. */
         if (!sir_syslogopts(SIRO_NOPID))
@@ -163,7 +163,7 @@ main(void) {
     (void)sir_cleanup();
 
     /* We made it! */
-    (void)fprintf(_stdout, WHITE("\nCh ") "binding test: " BGREEN("completed") BGRAY(".\n"));
+    (void)fprintf(_stdout, SIR_EOL SIR_WHITE("Ch ") "binding test: " SIR_BGREEN("completed") SIR_BGRAY(".") SIR_EOL);
 
     /* All done. */
     return EXIT_SUCCESS;
@@ -174,6 +174,6 @@ void
 report_error(void) {
     char message[SIR_MAXERROR] = {0};
     uint16_t code              = sir_geterror(message);
-    (void)fprintf(_stderr, BRED("libsir error: (%" PRIu16 ", %s)") BGRAY("\n"),
+    (void)fprintf(_stderr, SIR_BREDB("libsir error: ") SIR_RED("%" PRIu16 ", %s") SIR_BGRAY(".") SIR_EOL,
                   code, message);
 }

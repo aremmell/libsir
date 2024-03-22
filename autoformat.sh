@@ -42,10 +42,11 @@ test _`echo asdf 2>/dev/null` != _asdf >/dev/null &&\
 # Check directory
 
 # shellcheck disable=SC2065
-test -f "./${0##*/}" > /dev/null 2>&1 || {
+test -f "./${0##*/}" > /dev/null 2>&1 ||
+  {
     printf '%s\n' "Error: cannot locate script in current directory."
     exit 1
-}
+  }
 
 ################################################################################
 # Fail early on pipelines, if possible

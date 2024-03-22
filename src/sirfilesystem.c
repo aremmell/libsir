@@ -74,7 +74,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
        defined(__NetBSD__) || defined(__HAIKU__) || defined(__OpenBSD__)
         int open_flags = O_DIRECTORY;
 # else
-#  error "unknown open_flags for your platform; please contact the developers."
+#  error "unknown open_flags for your platform; please contact the developers"
 # endif
 
 # if !(defined(_AIX) || !defined(__PASE__))
@@ -328,7 +328,7 @@ char* _sir_getappfilename(void) {
             break;
         }
 # else
-#  error "no implementation for your platform; please contact the developers."
+#  error "no implementation for your platform; please contact the developers"
 # endif
 #else /* __WIN__ */
         DWORD ret = GetModuleFileNameA(NULL, buffer, (DWORD)size);

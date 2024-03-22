@@ -69,10 +69,28 @@
 # endif
 
 /**
- * Define to use <CR><LF> line endings, otherwise use <LF>.
+ * The carriage return (CR) character to use in the end of line
+ * sequence when SIR_USE_EOL_CRLF is defined.
  */
-# if !defined(SIR_EOL_CRLF)
-#  undef SIR_EOL_CRLF
+# if !defined(SIR_EOL_CR)
+#  define SIR_EOL_CR "\r"
+# endif
+
+/**
+ * The line feed (LF) character to use in the end of line sequence.
+ */
+# if !defined(SIR_EOL_LF)
+#  define SIR_EOL_LF "\n"
+# endif
+
+/**
+ * The end of line sequence. If SIR_USE_EOL_CRLF is defined, the
+ * sequence will be SIR_EOL_CR + SIR_EOL_LF; otherwise just SIR_EOL_LF.
+ */
+# if !defined(SIR_USE_EOL_CRLF)
+#  define SIR_EOL SIR_EOL_LF
+# else
+#  define SIR_EOL SIR_EOL_CR SIR_EOL_LF
 # endif
 
 /**
@@ -188,7 +206,7 @@
  *   ::SIR_FHTIMEFORMAT.
  */
 # if !defined(SIR_FHFORMAT)
-#  define SIR_FHFORMAT "\n\n----- %s %s -----\n\n"
+#  define SIR_FHFORMAT SIR_EOL SIR_EOL "----- %s %s -----" SIR_EOL SIR_EOL
 # endif
 
 /**
@@ -373,8 +391,22 @@
  * data in any color mode (the largest possible sequence, which is:
  * `\x1b[a;fb;m;rrr;ggg;bbb;fb;m;rrr;ggg;bbbm`) plus a null terminator.
  */
-# if !defined(SIR_MAXSTYLE)
-#  define SIR_MAXSTYLE 43
+# if !defined(SIR_NO_TEXT_STYLING)
+#  if !defined(SIR_MAXSTYLE)
+#   if !defined(SIR_USE_EOL_CRLF)
+#    define SIR_MAXSTYLE 43
+#   else
+#    define SIR_MAXSTYLE 44
+#   endif
+#  endif
+# else
+#  if !defined(SIR_MAXSTYLE)
+#   if !defined(SIR_USE_EOL_CRLF)
+#    define SIR_MAXSTYLE 1
+#   else
+#    define SIR_MAXSTYLE 2
+#   endif
+#  endif
 # endif
 
 /** The maximum size, in characters, of final formatted output. */

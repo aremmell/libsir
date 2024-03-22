@@ -38,7 +38,7 @@ _sir_setthreadname(const char* name) {
 
     fptr = dlsym(_Chsir_handle, "_sir_setthreadname_chdl");
     if (fptr == NULL) {
-        (void)fprintf(_stderr, "Error: %s(%d): dlsym(): %s\n",
+        (void)fprintf(_stderr, "Error: %s(%d): dlsym(): %s" SIR_EOL,
                       __func__, __LINE__, dlerror());
 
         return false;
