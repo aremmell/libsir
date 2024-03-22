@@ -101,10 +101,10 @@ void print_test_list(const sir_test* tests, size_t num_tests) {
         }
 
         if ((i % 2) != 0 || i == num_tests - 1)
-            (void)printf("%s", SIR_EOL);
+            (void)printf(SIR_EOL);
     }
 
-    (void)printf("%s", SIR_EOL);
+    (void)printf(SIR_EOL);
 }
 
 void print_usage_info(const sir_cl_arg* args, size_t num_args) {
@@ -115,7 +115,7 @@ void print_usage_info(const sir_cl_arg* args, size_t num_args) {
             longest = len;
     }
 
-    (void)fprintf(stderr, SIR_WHITE("%s  Usage:%s%s"), SIR_EOL, SIR_EOL, SIR_EOL);
+    (void)fprintf(stderr, SIR_EOL SIR_WHITE("  Usage:%s%s") SIR_EOL SIR_EOL);
 
     for (size_t i = 0; i < num_args; i++) {
         (void)fprintf(stderr, "\t%s ", args[i].flag);
@@ -129,7 +129,7 @@ void print_usage_info(const sir_cl_arg* args, size_t num_args) {
             strnlen(args[i].usage, SIR_CL_MAXUSAGE) > 0 ? " " : "", args[i].desc);
     }
 
-    (void)fprintf(stderr, "%s", SIR_EOL);
+    (void)fprintf(stderr, SIR_EOL);
 }
 
 bool print_test_error(bool result, bool expected) {

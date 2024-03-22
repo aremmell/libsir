@@ -148,7 +148,7 @@ int main(int argc, char** argv) {
         for (size_t t = 0; t < _sir_countof(sir_tests); t++)
             if (!sir_tests[t].pass)
                 print_failed_test(sir_tests[t].name);
-        (void)printf("%s", SIR_EOL);
+        (void)printf(SIR_EOL);
     }
 
     if (cl_cfg.wait)
