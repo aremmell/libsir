@@ -33,9 +33,7 @@ USER 0
 
 WORKDIR /
 
-ARG URL
-
-RUN set -x && dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
+RUN set -x && \
     cd /tmp && \
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
     chmod a+x Miniconda3-latest-Linux-x86_64.sh && \
@@ -43,12 +41,13 @@ RUN set -x && dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
     ./Miniconda3-latest-Linux-x86_64.sh -b -t -p /opt/anaconda -t && \
     rm -f ./Miniconda3-latest-Linux-x86_64.sh && \
     conda build purge && \
-    conda update --update-all --verbose --yes && \
+    conda config --add channels "conda-forge" && \
+    conda config --set channel_priority "strict" && \
+    conda update --update-all --yes && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
     rm -rf /var/log/dnf* && \
-    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true) && \
     cd
 
 USER 10000

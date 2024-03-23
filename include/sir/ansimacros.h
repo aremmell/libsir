@@ -8,7 +8,7 @@
  *
  * **Example**
  *   ~~~
- *   printf(RED("Something terrible happened!\n"));
+ *   printf(RED("Something terrible happened!" SIR_EOL));
  *   ~~~
  *
  * @version 2.2.5
@@ -42,14 +42,28 @@
 #ifndef _SIR_ANSI_MACROS_H_INCLUDED
 # define _SIR_ANSI_MACROS_H_INCLUDED
 
-# define SIR_ESC "\x1b[" /**< Begins an ANSI escape sequence. */
-# define SIR_ESC_M "m"   /**< Marks the end of a sequence. */
+# if !defined(SIR_NO_TEXT_STYLING)
+#  define SIR_ESC   "\x1b[" /**< Begins an ANSI escape sequence. */
+#  define SIR_ESC_M "m"     /**< Marks the end of a sequence. */
+# else
+#  define SIR_ESC   ""
+#  define SIR_ESC_M ""
+# endif
 
-# define SIR_ESC_SEQ(codes, s) SIR_ESC codes SIR_ESC_M s
+# if !defined(SIR_NO_TEXT_STYLING)
+#  define SIR_ESC_SEQ(codes, s) SIR_ESC codes SIR_ESC_M s
+# else
+#  define SIR_ESC_SEQ(codes, s) s
+# endif
+
 # define SIR_ESC_SEQE(codes)   SIR_ESC_SEQ(codes, "")
 
 /** Resets all previously applied colors and effects/attributes. */
-# define SIR_ESC_RST SIR_ESC_SEQE("0")
+# if !defined(SIR_NO_TEXT_STYLING)
+#  define SIR_ESC_RST SIR_ESC_SEQE("0")
+# else
+#  define SIR_ESC_RST ""
+# endif
 
 /** A few fun characters. */
 # if !defined(__WIN__)
@@ -68,68 +82,106 @@
  * 3=italic, 4=underlined, 5=blinking, 7=inverted, 9=strikethrough`).
  * Ends by resetting to the default fg/bg color, and normal attr.
  */
-# define COLOR(attr, fg, bg, s) \
-    SIR_ESC_SEQ(#attr ";" #fg ";" #bg, s) SIR_ESC_SEQE("0;39;49")
+# if !defined(SIR_NO_TEXT_STYLING)
+#  define SIR_COLOR(attr, fg, bg, s) \
+                           SIR_ESC_SEQ(#attr ";" #fg ";" #bg, s) SIR_ESC_SEQE("0;39;49")
 
-# undef STRIKE
-# define STRIKE(s) SIR_ESC_SEQ("9", s) SIR_ESC_SEQE("29") /**< Strike-through. */
-# undef INVERT
-# define INVERT(s) SIR_ESC_SEQ("7", s) SIR_ESC_SEQE("27") /**< Inverted fg/bg. */
-# undef ULINE
-# define ULINE(s)  SIR_ESC_SEQ("4", s) SIR_ESC_SEQE("24") /**< Underlined. */
-# undef EMPH
-# define EMPH(s)   SIR_ESC_SEQ("3", s) SIR_ESC_SEQE("23") /**< Emphasis/italic. */
-# undef BOLD
-# define BOLD(s)   SIR_ESC_SEQ("1", s) SIR_ESC_SEQE("22") /**< Bold. */
-# undef BLINK
-# define BLINK(s)  SIR_ESC_SEQ("5", s) SIR_ESC_SEQE("25") /**< Blinking text. */
+#  define SIR_STRIKE(s)    SIR_ESC_SEQ("9", s) SIR_ESC_SEQE("29") /**< Strike-through. */
+#  define SIR_INVERT(s)    SIR_ESC_SEQ("7", s) SIR_ESC_SEQE("27") /**< Inverted fg/bg. */
+#  define SIR_ULINE(s)     SIR_ESC_SEQ("4", s) SIR_ESC_SEQE("24") /**< Underlined. */
+#  define SIR_EMPH(s)      SIR_ESC_SEQ("3", s) SIR_ESC_SEQE("23") /**< Emphasis/italic. */
+#  define SIR_BOLD(s)      SIR_ESC_SEQ("1", s) SIR_ESC_SEQE("22") /**< Bold. */
+#  define SIR_BLINK(s)     SIR_ESC_SEQ("5", s) SIR_ESC_SEQE("25") /**< Blinking text. */
 
-# define BLACK(s)     COLOR(0, 30, 49, s) /**< Black foreground text. */
-# define BLACKB(s)    COLOR(1, 30, 49, s) /**< Bold black foreground text. */
+#  define SIR_BLACK(s)     SIR_COLOR(0, 30, 49, s) /**< Black foreground text. */
+#  define SIR_BLACKB(s)    SIR_COLOR(1, 30, 49, s) /**< Bold black foreground text. */
 
-# define RED(s)       COLOR(0, 31, 49, s) /**< Red foreground text. */
-# define REDB(s)      COLOR(1, 31, 49, s) /**< Bold red foreground text. */
+#  define SIR_RED(s)       SIR_COLOR(0, 31, 49, s) /**< Red foreground text. */
+#  define SIR_REDB(s)      SIR_COLOR(1, 31, 49, s) /**< Bold red foreground text. */
+#  define SIR_BRED(s)      SIR_COLOR(0, 91, 49, s) /**< Bright red foreground text. */
+#  define SIR_BREDB(s)     SIR_COLOR(1, 91, 49, s) /**< Bold bright red foreground text. */
 
-# define BRED(s)      COLOR(0, 91, 49, s) /**< Bright red foreground text. */
-# define BREDB(s)     COLOR(1, 91, 49, s) /**< Bold bright red foreground text. */
+#  define SIR_GREEN(s)     SIR_COLOR(0, 32, 49, s) /**< Green foreground text. */
+#  define SIR_GREENB(s)    SIR_COLOR(1, 32, 49, s) /**< Bold green foreground text. */
+#  define SIR_BGREEN(s)    SIR_COLOR(0, 92, 49, s) /**< Bright green foreground text. */
+#  define SIR_BGREENB(s)   SIR_COLOR(1, 92, 49, s) /**< Bold bright green foreground text. */
 
-# define GREEN(s)     COLOR(0, 32, 49, s) /**< Green foreground text. */
-# define GREENB(s)    COLOR(1, 32, 49, s) /**< Bold green foreground text. */
+#  define SIR_YELLOW(s)    SIR_COLOR(0, 33, 49, s) /**< Yellow foreground text. */
+#  define SIR_YELLOWB(s)   SIR_COLOR(1, 33, 49, s) /**< Bold yellow foreground text. */
+#  define SIR_BYELLOW(s)   SIR_COLOR(0, 93, 49, s) /**< Bright yellow foreground text. */
+#  define SIR_BYELLOWB(s)  SIR_COLOR(1, 93, 49, s) /**< Bold bright yellow foreground text. */
 
-# define BGREEN(s)    COLOR(0, 92, 49, s) /**< Bright green foreground text. */
-# define BGREENB(s)   COLOR(1, 92, 49, s) /**< Bold bright green foreground text. */
+#  define SIR_BLUE(s)      SIR_COLOR(0, 34, 49, s) /**< Blue foreground text. */
+#  define SIR_BLUEB(s)     SIR_COLOR(1, 34, 49, s) /**< Bold blue foreground text. */
+#  define SIR_BBLUE(s)     SIR_COLOR(0, 94, 49, s) /**< Bright blue foreground text. */
+#  define SIR_BBLUEB(s)    SIR_COLOR(1, 94, 49, s) /**< Bold bright blue foreground text. */
 
-# define YELLOW(s)    COLOR(0, 33, 49, s) /**< Yellow foreground text. */
-# define YELLOWB(s)   COLOR(1, 33, 49, s) /**< Bold yellow foreground text. */
+#  define SIR_MAGENTA(s)   SIR_COLOR(0, 35, 49, s) /**< Magenta foreground text. */
+#  define SIR_MAGENTAB(s)  SIR_COLOR(1, 35, 49, s) /**< Bold magenta foreground text. */
+#  define SIR_BMAGENTA(s)  SIR_COLOR(0, 95, 49, s) /**< Bright magenta foreground text. */
+#  define SIR_BMAGENTAB(s) SIR_COLOR(1, 95, 49, s) /**< Bold bright magenta foreground text. */
 
-# define BYELLOW(s)   COLOR(0, 93, 49, s) /**< Bright yellow foreground text. */
-# define BYELLOWB(s)  COLOR(1, 93, 49, s) /**< Bold bright yellow foreground text. */
+#  define SIR_CYAN(s)      SIR_COLOR(0, 36, 49, s) /**< Cyan foreground text. */
+#  define SIR_CYANB(s)     SIR_COLOR(1, 36, 49, s) /**< Bold cyan foreground text. */
+#  define SIR_BCYAN(s)     SIR_COLOR(0, 96, 49, s) /**< Bright cyan foreground text. */
+#  define SIR_BCYANB(s)    SIR_COLOR(1, 96, 49, s) /**< Bold bright cyan foreground text. */
 
-# define BLUE(s)      COLOR(0, 34, 49, s) /**< Blue foreground text. */
-# define BLUEB(s)     COLOR(1, 34, 49, s) /**< Bold blue foreground text. */
+#  define SIR_BGRAY(s)     SIR_COLOR(0, 37, 49, s) /**< Bright gray foreground text. */
+#  define SIR_BGRAYB(s)    SIR_COLOR(1, 37, 49, s) /**< Bold bright gray foreground text. */
+#  define SIR_DGRAY(s)     SIR_COLOR(0, 90, 49, s) /**< Dark gray foreground text. */
+#  define SIR_DGRAYB(s)    SIR_COLOR(1, 90, 49, s) /**< Bold dark gray foreground text. */
 
-# define BBLUE(s)     COLOR(0, 94, 49, s) /**< Bright blue foreground text. */
-# define BBLUEB(s)    COLOR(1, 94, 49, s) /**< Bold bright blue foreground text. */
+#  define SIR_WHITE(s)     SIR_COLOR(0, 97, 49, s) /**< White foreground text. */
+#  define SIR_WHITEB(s)    SIR_COLOR(1, 97, 49, s) /**< Bold white foreground text. */
+# else /* SIR_NO_TEXT_STYLING */
+#  define SIR_COLOR(attr, fg, bg, s) s
 
-# define MAGENTA(s)   COLOR(0, 35, 49, s) /**< Magenta foreground text. */
-# define MAGENTAB(s)  COLOR(1, 35, 49, s) /**< Bold magenta foreground text. */
+#  define SIR_STRIKE(s)    s
+#  define SIR_INVERT(s)    s
+#  define SIR_ULINE(s)     s
+#  define SIR_EMPH(s)      s
+#  define SIR_BOLD(s)      s
+#  define SIR_BLINK(s)     s
 
-# define BMAGENTA(s)  COLOR(0, 95, 49, s) /**< Bright magenta foreground text. */
-# define BMAGENTAB(s) COLOR(1, 95, 49, s) /**< Bold bright magenta foreground text. */
+#  define SIR_BLACK(s)     s
+#  define SIR_BLACKB(s)    s
 
-# define CYAN(s)      COLOR(0, 36, 49, s) /**< Cyan foreground text. */
-# define CYANB(s)     COLOR(1, 36, 49, s) /**< Bold cyan foreground text. */
+#  define SIR_RED(s)       s
+#  define SIR_REDB(s)      s
+#  define SIR_BRED(s)      s
+#  define SIR_BREDB(s)     s
 
-# define BCYAN(s)     COLOR(0, 96, 49, s) /**< Bright cyan foreground text. */
-# define BCYANB(s)    COLOR(1, 96, 49, s) /**< Bold bright cyan foreground text. */
+#  define SIR_GREEN(s)     s
+#  define SIR_GREENB(s)    s
+#  define SIR_BGREEN(s)    s
+#  define SIR_BGREENB(s)   s
 
-# define BGRAY(s)     COLOR(0, 37, 49, s) /**< Bright gray foreground text. */
-# define BGRAYB(s)    COLOR(1, 37, 49, s) /**< Bold bright gray foreground text. */
+#  define SIR_YELLOW(s)    s
+#  define SIR_YELLOWB(s)   s
+#  define SIR_BYELLOW(s)   s
+#  define SIR_BYELLOWB(s)  s
 
-# define DGRAY(s)     COLOR(0, 90, 49, s) /**< Dark gray foreground text. */
-# define DGRAYB(s)    COLOR(1, 90, 49, s) /**< Bold dark gray foreground text. */
+#  define SIR_BLUE(s)      s
+#  define SIR_BLUEB(s)     s
+#  define SIR_BBLUE(s)     s
+#  define SIR_BBLUEB(s)    s
 
-# define WHITE(s)     COLOR(0, 97, 49, s) /**< White foreground text. */
-# define WHITEB(s)    COLOR(1, 97, 49, s) /**< Bold white foreground text. */
+#  define SIR_MAGENTA(s)   s
+#  define SIR_MAGENTAB(s)  s
+#  define SIR_BMAGENTA(s)  s
+#  define SIR_BMAGENTAB(s) s
 
+#  define SIR_CYAN(s)      s
+#  define SIR_CYANB(s)     s
+#  define SIR_BCYAN(s)     s
+#  define SIR_BCYANB(s)    s
+
+#  define SIR_BGRAY(s)     s
+#  define SIR_BGRAYB(s)    s
+#  define SIR_DGRAY(s)     s
+#  define SIR_DGRAYB(s)    s
+
+#  define SIR_WHITE(s)     s
+#  define SIR_WHITEB(s)    s
+# endif
 #endif /* ! _SIR_ANSI_MACROS_H_INCLUDED */

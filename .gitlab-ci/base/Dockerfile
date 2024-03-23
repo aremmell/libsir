@@ -39,11 +39,16 @@ RUN set -x && \
   (sed -i 's/tsflags=nodocs//' /etc/dnf/dnf.conf || true) && \
   dnf -y --refresh update && \
   dnf -y install dnf-plugins-core dnf-utils && \
+  dnf -y install -y 'dnf-command(config-manager)' && \
   dnf -y --refresh update && \
   dnf -y install rpmconf && \
   (rpmconf --all --unattended use_maintainer || true) && \
   (rpmconf --all --unattended use_maintainer --clean || true) && \
   dnf -y --refresh update && \
+  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
+      harfbuzz.i686 \
+      harfbuzz.x86_64 \
+&& \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
       advancecomp \
       ansifilter \
@@ -59,23 +64,31 @@ RUN set -x && \
       clang-analyzer \
       clang-tools-extra \
       cmake \
-      compiler-rt \
+      compiler-rt.i686 \
+      compiler-rt.x86_64 \
       cppcheck \
       cppcheck-htmlreport \
       cppi \
+      croc \
       curl \
       doxygen \
       expect \
       fakeroot \
+      file \
       flawfinder \
       fmt \
       fmt-devel \
+      fontconfig.i686 \
+      fontconfig.x86_64 \
       g++ \
       gawk \
       gcc \
+      gcc-gm2 \
       gcovr \
       git \
       glibc-devel \
+      glibc-devel.i686 \
+      glibc-devel.x86_64 \
       glibc-headers-x86 \
       glibc-static \
       global \
@@ -83,10 +96,20 @@ RUN set -x && \
       guile \
       guile-devel \
       libasan \
+      libasan.i686 \
+      libasan.x86_64 \
       libnsl \
       libnsl2 \
+      libnsl2.i686 \
+      libnsl2.x86_64 \
+      libnsl.i686 \
+      libnsl.x86_64 \
       libtirpc \
+      libtirpc.i686 \
+      libtirpc.x86_64 \
       libubsan \
+      libubsan.i686 \
+      libubsan.x86_64 \
       libxml2-devel \
       libxslt-devel \
       lld \
@@ -124,26 +147,14 @@ RUN set -x && \
       valgrind \
       vim \
       wget \
+      yasm \
       zip \
       zpaq \
 && \
-  dnf4 -y --allowerasing --setopt=install_weak_deps=True --setopt=keepcache=True install \
-      compiler-rt.i686 \
-      glibc-devel.i686 \
-      libasan.i686 \
-      libnsl2.i686 \
-      libnsl.i686 \
-      libtirpc.i686 \
-      libubsan.i686 \
-&& \
-  dnf4 -y --allowerasing reinstall compiler-rt && \
-  dnf4 -y --allowerasing install \
-    https://rpm.nodesource.com/pub_21.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm && \
-  dnf -y --refresh update && \
-  dnf4 -y --refresh update && \
-  dnf4 -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-    nodejs --setopt=nodesource-nodejs.module_hotfixes=1 && \
-  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True group install \
+  curl -fsSL https://rpm.nodesource.com/setup_21.x | bash - && \
+  dnf install -y --setopt=install_weak_deps=True --setopt=keepcache=True nodejs && \
+  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True \
+    --skip-broken --best --allowerasing group install \
       development-tools \
       c-development \
 && \
@@ -162,6 +173,7 @@ RUN set -x && \
       mingw32-gcc \
       mingw32-gcc-c++ \
       mingw32-headers \
+      mingw32-win-iconv \
       mingw32-winpthreads \
       mingw32-winpthreads-static \
       mingw64-binutils \
@@ -174,6 +186,7 @@ RUN set -x && \
       mingw64-gcc \
       mingw64-gcc-c++ \
       mingw64-headers \
+      mingw64-win-iconv \
       mingw64-winpthreads \
       mingw64-winpthreads-static \
       mingw-binutils-generic \
@@ -212,7 +225,6 @@ RUN set -x && \
   cd / && \
   (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
      --nogpgcheck ${URL:-http://192.168.1.187:8088/~jhj/cache/aocc-compiler.x86_64.rpm}) && \
-  (ln -fs /opt/AMD/aocc-compiler-4.1.0 /opt/AMD/aocc-compiler-4.0.0 || true) && \
   mkdir -p /tmp/duma-build && \
   cd /tmp/duma-build && \
   git clone -v https://github.com/johnsonjh/duma && \
@@ -222,12 +234,10 @@ RUN set -x && \
   cd / && \
   rm -rf /tmp/duma-build && \
   ldconfig && \
-  (dnf4 -y clean > /dev/null 2>&1 ; dnf4 -y clean all > /dev/null 2>&1 || true) && \
   dnf -y clean all && \
   rm -rf ~/.cache && \
   rm -rf /var/tmp/* && \
   rm -rf /var/log/dnf* && \
-  ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true) && \
   rm -f /etc/crypto-policies/back-ends/opensslcnf.config && \
   printf '%s\n' \
     "CipherString = @SECLEVEL=2:kEECDH:kRSA:kEDH:kPSK:kDHEPSK:kECDHEPSK:kRSAPSK:-aDSS:-3DES:!DES:!RC4:!RC2:!IDEA:-SEED:!eNULL:!aNULL:!MD5:-SHA384:-CAMELLIA:-ARIA:-AESCCM8" \
@@ -238,26 +248,12 @@ RUN set -x && \
     "" \
     "[evp_properties]" \
     "" > /etc/crypto-policies/back-ends/opensslcnf.config && \
-    dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
     dnf -y clean all && \
     rm -rf ~/.cache > /dev/null 2>&1 && \
     rm -rf /var/tmp/* > /dev/null 2>&1 && \
     rm -rf /var/log/dnf* > /dev/null 2>&1 && \
-    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true )&& \
     adduser -m -U -G wheel --uid 10000 -c "CI/CD User" user && \
     touch /.OK
-
-# RUN git clone -v https://github.com/Ericsson/codechecker.git --depth=1 && \
-#     cd codechecker && \
-#     (grep 'lxml==4\.9\.2' -rl . | xargs -I{} sed -i 's/lxml==4.9.2/lxml==4.9.3/' "{}" || true) && \
-#     make venv && \
-#     . $(pwd)/venv/bin/activate && \
-#     pip install setuptools && \
-#     env BUILD_LOGGER_64_BIT_ONLY=YES \
-#                    BUILD_UI_DIST=NO \
-# 	make package standalone_package && \
-#     export PATH=/codechecker/build/CodeChecker/bin:$PATH && \
-#     chown user:user -R /codechecker
 
 USER 10000
 

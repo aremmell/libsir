@@ -42,10 +42,11 @@ test _`echo asdf 2>/dev/null` != _asdf >/dev/null &&\
 # Check directory
 
 # shellcheck disable=SC2065
-test -f "./${0##*/}" > /dev/null 2>&1 || {
+test -f "./${0##*/}" > /dev/null 2>&1 ||
+  {
     printf '%s\n' "Error: cannot locate script in current directory."
     exit 1
-}
+  }
 
 ################################################################################
 # Fail early on pipelines, if possible
@@ -61,8 +62,9 @@ run_cppi()
   printf '%s' "Formatting with cppi ..."
   ( # shellcheck disable=SC2038
     find . -name "*.[ch]" -o -name "*.cc" -o -name "*.hh" | \
-      xargs -I{} "${SHELL:-sh}" -c \
-        'set -e; cppi "{}" > "{}.cppi" && mv -f "{}.cppi" "{}"'
+      grep -Ev '(build/.*|mcmb\.c$|\.git/.*)' | \
+        xargs -I{} "${SHELL:-sh}" -c \
+          'set -e; cppi "{}" > "{}.cppi" && mv -f "{}.cppi" "{}"'
   ) && printf '%s\n' "complete."
 }
 

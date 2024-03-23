@@ -1,7 +1,7 @@
 /*
  * mcmb.c
  *
- * Version: 2120.4.17-dps (libcmb 3.5.6)
+ * Version: 2120.5.05-dps (libcmb 3.5.6)
  *
  * -----------------------------------------------------------------------------
  *
@@ -12,8 +12,8 @@
  * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 2002-2019 Devin Teske <dteske@FreeBSD.org>
- * Copyright (c) 2020-2023 Jeffrey H. Johnson <trnsz@pobox.com>
- * Copyright (c) 2021-2023 The DPS8M Development Team
+ * Copyright (c) 2020-2024 Jeffrey H. Johnson <trnsz@pobox.com>
+ * Copyright (c) 2021-2024 The DPS8M Development Team
  *
  * All rights reserved.
  *
@@ -54,6 +54,14 @@
  * under the terms of a two-clause BSD license.
  */
 
+#if !defined(_GNU_SOURCE)
+# define _GNU_SOURCE
+#endif
+
+#if !defined(__EXTENSIONS__)
+# define __EXTENSIONS__
+#endif
+
 #include <sys/param.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -71,6 +79,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
+#if defined(__APPLE__)
+# include <xlocale.h>
+#endif
 #include <locale.h>
 
 #if defined(__MACH__) && defined(__APPLE__) && \
@@ -115,8 +126,6 @@
  * Macros for cmb_config options bitmask
  */
 struct cmb_config;             /* Forward declaration               */
-#define CMB_OPT_NULPARSE 0x02  /* NUL delimit cmb_parse*()          */
-#define CMB_OPT_NULPRINT 0x04  /* NUL delimit cmb_print*()          */
 #define CMB_OPT_EMPTY    0x08  /* Show empty set with no items      */
 #define CMB_OPT_NUMBERS  0x10  /* Show combination sequence numbers */
 #define CMB_OPT_RESERVED 0x20  /* Reserved for future use by cmb(3) */
@@ -165,12 +174,6 @@ struct cmb_config
 static int cmb(struct cmb_config *_config, uint32_t _nitems, char *_items[]);
 
 static uint64_t cmb_count(struct cmb_config *_config, uint32_t _nitems);
-
-static char **cmb_parse(struct cmb_config *_config, int _fd, uint32_t *_nitems,
-                        uint32_t _max);
-
-static char **cmb_parse_file(struct cmb_config *_config, char *_path,
-                             uint32_t *_nitems, uint32_t _max);
 
 static int cmb_print(struct cmb_config *_config, uint64_t _seq,
                      uint32_t _nitems, char *_items[]);
@@ -273,18 +276,15 @@ struct cmb_xitem
         prefix = config->prefix;                                              \
         suffix = config->suffix;                                              \
       }                                                                       \
-    if (!opt_silent)                                                          \
-      {                                                                       \
-        if (show_numbers)                                                     \
-        seqp(seq);                                                            \
-        if (prefix != NULL && !opt_quiet)                                     \
-        (void)fprintf(stdout, "%s", prefix);                                  \
-      }                                                                       \
+    if (show_numbers)                                                         \
+      seqp(seq);                                                              \
+    if (prefix != NULL && !opt_quiet)                                         \
+      (void)fprintf(stdout, "%s", prefix);                                    \
     if (nitems > 0)                                                           \
       {                                                                       \
         (void)memcpy(&xitem, &items[0], sizeof ( struct cmb_xitem * ));       \
         total = xitem->as.ld;                                                 \
-        if (!opt_silent && !opt_quiet)                                        \
+        if (!opt_quiet)                                                       \
           {                                                                   \
             (void)fprintf(stdout, "%s", xitem->cp);                           \
             if (nitems > 1)                                                   \
@@ -296,23 +296,20 @@ struct cmb_xitem
         (void)memcpy(&xitem, &items[n], sizeof ( struct cmb_xitem * ));       \
         ld = xitem->as.ld;                                                    \
         total = eq;                                                           \
-        if (!opt_silent && !opt_quiet)                                        \
+        if (!opt_quiet)                                                       \
           {                                                                   \
             (void)fprintf(stdout, "%s", xitem->cp);                           \
             if (n < nitems - 1)                                               \
             (void)fprintf(stdout, "%s" #op "%s", delimiter, delimiter);       \
           }                                                                   \
       }                                                                       \
-    if (!opt_silent)                                                          \
-      {                                                                       \
-        if (suffix != NULL && !opt_quiet)                                     \
-        (void)fprintf(stdout, "%s", suffix);                                  \
-        (void)fprintf(stdout,                                                 \
-          "%s%.*Lf\n",                                                        \
-          opt_quiet ? "" : " = ",                                             \
-          cmb_transform_precision,                                            \
-          total);                                                             \
-      }                                                                       \
+    if (suffix != NULL && !opt_quiet)                                         \
+      (void)fprintf(stdout, "%s", suffix);                                    \
+    (void)fprintf(stdout,                                                     \
+      "%s%.*Lf\r\n",                                                          \
+      opt_quiet ? "" : " = ",                                                 \
+      cmb_transform_precision,                                                \
+      total);                                                                 \
     return 0;                                                                 \
   }
 
@@ -389,17 +386,14 @@ static struct cmb_xitem *cmb_transform_find;
         prefix = config->prefix;                                              \
         suffix = config->suffix;                                              \
       }                                                                       \
-    if (!opt_silent)                                                          \
-      {                                                                       \
-        if (show_numbers)                                                     \
-        seqp(seq);                                                            \
-        if (prefix != NULL && !opt_quiet)                                     \
-        (void)fprintf(stdout, "%s", prefix);                                  \
-      }                                                                       \
+    if (show_numbers)                                                         \
+      seqp(seq);                                                              \
+    if (prefix != NULL && !opt_quiet)                                         \
+      (void)fprintf(stdout, "%s", prefix);                                    \
     if (nitems > 0)                                                           \
       {                                                                       \
         (void)memcpy(&xitem, &items[0], sizeof ( struct cmb_xitem * ));       \
-        if (!opt_silent && !opt_quiet)                                        \
+        if (!opt_quiet)                                                       \
           {                                                                   \
             (void)fprintf(stdout, "%s", xitem->cp);                           \
             if (nitems > 1)                                                   \
@@ -409,23 +403,20 @@ static struct cmb_xitem *cmb_transform_find;
     for (n = 1; n < nitems; n++)                                              \
       {                                                                       \
         (void)memcpy(&xitem, &items[n], sizeof ( struct cmb_xitem * ));       \
-        if (!opt_silent && !opt_quiet)                                        \
+        if (!opt_quiet)                                                       \
           {                                                                   \
             (void)fprintf(stdout, "%s", xitem->cp);                           \
             if (n < nitems - 1)                                               \
             (void)fprintf(stdout, "%s" #op "%s", delimiter, delimiter);       \
           }                                                                   \
       }                                                                       \
-    if (!opt_silent)                                                          \
-      {                                                                       \
-        if (suffix != NULL && !opt_quiet)                                     \
-        (void)fprintf(stdout, "%s", suffix);                                  \
-        (void)fprintf(stdout,                                                 \
-          "%s%.*Lf\n",                                                        \
-          opt_quiet ? "" : " = ",                                             \
-          cmb_transform_precision,                                            \
-          total);                                                             \
-      }                                                                       \
+    if (suffix != NULL && !opt_quiet)                                         \
+      (void)fprintf(stdout, "%s", suffix);                                    \
+    (void)fprintf(stdout,                                                     \
+      "%s%.*Lf\r\n",                                                          \
+      opt_quiet ? "" : " = ",                                                 \
+      cmb_transform_precision,                                                \
+      total);                                                                 \
     return 0;                                                                 \
   }
 
@@ -495,7 +486,7 @@ static struct cmb_xitem *cmb_transform_find;
 # define CMB_PARSE_FRAGSIZE 512
 #endif /* ifndef CMB_PARSE_FRAGSIZE */
 
-static const char mcmbver[]         = "2120.4.17-dps";
+static const char mcmbver[]         = "2120.5.05-dps";
 static const char libversion[]      = "libcmb 3.5.6";
 
 /*
@@ -518,241 +509,6 @@ libcmb_version(int type)
     default:
       return "not available";
     }
-}
-
-/*
- * Takes pointer to `struct cmb_config' options, file path to read items from,
- * pointer to uint32_t (written-to, containing number of items read), and
- * uint32_t to optionally maximum number of items read from file. Returns
- * allocated array of char * items read from file.
- */
-
-static char **
-cmb_parse_file(struct cmb_config *config, char *path, uint32_t *nitems,
-               uint32_t max)
-{
-  int fd;
-  char rpath[PATH_MAX];
-
-  /*
-   * Resolve the file path
-   */
-
-  if (path == NULL || ( path[0] == '-' && path[1] == '\0' ))
-    {
-      (void)strncpy(rpath, "/dev/stdin", PATH_MAX - 1);
-      rpath[PATH_MAX - 1] = '\0';
-    }
-  else if (realpath(path, rpath) == 0)
-    {
-      return NULL;
-    }
-
-  /*
-   * Open the file
-   */
-
-  if (( fd = open(rpath, O_RDONLY)) < 0)
-    {
-      return NULL;
-    }
-
-  return cmb_parse(config, fd, nitems, max);
-}
-
-/*
- * Takes pointer to `struct cmb_config' options, file descriptor to read items
- * from, pointer to uint32_t (written-to, containing number of items read), and
- * uint32_t to optionally maximum number of items read from file. Returns
- * allocated array of char * items read from file.
- */
-
-static char **
-cmb_parse(struct cmb_config *config, int fd, uint32_t *nitems, uint32_t max)
-{
-  char d = '\n';
-
-  uint32_t _nitems;
-  char **items = NULL;
-  char *b, *buf;
-  char *p;
-  uint64_t n;
-  size_t bufsize, buflen;
-  size_t datasize = 0;
-  size_t fragsize = sizeof ( char * ) * CMB_PARSE_FRAGSIZE;
-  size_t itemsize = fragsize;
-  ssize_t r = 1;
-  struct stat sb;
-
-  errno = 0;
-
-  /*
-   * Process config options
-   */
-
-  if (config != NULL)
-    {
-      if (( config->options & CMB_OPT_NULPARSE ) != 0)
-        {
-          d = '\0';
-        }
-      else if (config->delimiter != NULL)
-        {
-          if (*( config->delimiter ) != '\0')
-            {
-              d = *( config->delimiter );
-            }
-        }
-    }
-
-  /*
-   * Use output block size as buffer size if available
-   */
-
-  if (fstat(fd, &sb) != 0)
-    {
-      if (S_ISREG(sb.st_mode))
-        {
-#if !defined(__serenity__)
-# if !defined(MACOSXPPC)
-          if (sysconf(_SC_PHYS_PAGES) > PHYSPAGES_THRESHOLD)
-            {
-              bufsize = MIN(BUFSIZE_MAX, MAXPHYS * 8);
-            }
-          else
-# endif /* if !defined(MACOSXPPC) */
-#endif /* if !defined(__serenity__) */
-            {
-              bufsize = BUFSIZE_SMALL;
-            }
-        }
-      else
-        {
-          bufsize =
-            (size_t)MAX(sb.st_blksize, (blksize_t)sysconf(_SC_PAGESIZE));
-        }
-    }
-  else
-    {
-      bufsize = MIN(BUFSIZE_MAX, MAXPHYS * 8);
-    }
-
-  /*
-   * Initialize buffer/pointers
-   */
-
-  if (( buf = malloc(bufsize)) == NULL)
-    {
-      return NULL;
-    }
-
-  buflen = bufsize;
-  if (( items = malloc(itemsize)) == NULL)
-    {
-      FREE (buf);
-      return NULL;
-    }
-
-  /*
-   * Read the file until EOF
-   */
-
-  b = buf;
-  *nitems = _nitems = 0;
-  while (r != 0)
-    {
-      r = read(fd, b, bufsize);
-
-      /*
-       * Test for Error/EOF
-       */
-
-      if (r <= 0)
-        {
-          break;
-        }
-
-      /*
-       * Resize the buffer if necessary
-       */
-
-      datasize += (size_t)r;
-      if (buflen - datasize < bufsize)
-        {
-          buflen += bufsize;
-          if (( buf = realloc(buf, buflen)) == NULL)
-            {
-              FREE(buf);
-              FREE(items);
-              return NULL;
-            }
-        }
-
-      b = &buf[datasize];
-    }
-
-  if (datasize == 0)
-    {
-      FREE(buf);
-      FREE(items);
-      return NULL;
-    }
-
-  /*
-   * Chomp trailing newlines
-   */
-
-  if (buf[datasize - 1] == '\n')
-    {
-      buf[datasize - 1] = '\0';
-    }
-
-  /*
-   * Look for delimiter
-   */
-
-  p = buf;
-  for (n = 0; n < datasize; n++)
-    {
-      if (buf[n] != d)
-        {
-          continue;
-        }
-
-      items[_nitems++] = p;
-      buf[n] = '\0';
-      p = buf + n + 1;
-      if (max > 0 && _nitems >= max)
-        {
-          goto cmb_parse_return;
-        }
-
-      if (_nitems >= 0xffffffff)
-        {
-          items = NULL;
-          errno = EFBIG;
-          goto cmb_parse_return;
-        }
-      else if (_nitems % CMB_PARSE_FRAGSIZE == 0)
-        {
-          itemsize += fragsize;
-          /* cppcheck-suppress memleakOnRealloc */
-          if (( items = realloc(items, itemsize)) == NULL)
-            {
-              goto cmb_parse_return;
-            }
-        }
-    }
-
-  if (p < buf + datasize)
-    {
-      items[_nitems++] = p;
-    }
-
-cmb_parse_return:
-  *nitems = _nitems;
-  (void)close(fd);
-  return items;
 }
 
 /*
@@ -1396,7 +1152,6 @@ cmb_return:
 
 CMB_ACTION(cmb_print)
 {
-  uint8_t nul           = FALSE;
   uint8_t show_numbers  = FALSE;
   uint32_t n;
   const char *delimiter = " ";
@@ -1412,11 +1167,6 @@ CMB_ACTION(cmb_print)
       if (config->delimiter != NULL)
         {
           delimiter = config->delimiter;
-        }
-
-      if (( config->options & CMB_OPT_NULPRINT ) != 0)
-        {
-          nul = TRUE;
         }
 
       if (( config->options & CMB_OPT_NUMBERS ) != 0)
@@ -1452,14 +1202,7 @@ CMB_ACTION(cmb_print)
       (void)fprintf(stdout, "%s", suffix);
     }
 
-  if (nul)
-    {
-      (void)fprintf(stdout, "%c", 0);
-    }
-  else
-    {
-      (void)fprintf(stdout, "\n");
-    }
+  (void)fprintf(stdout, "\r\n");
 
   return 0;
 }
@@ -1481,7 +1224,6 @@ static char *pgm; /* set to argv[0] by main() */
  */
 
 static uint8_t opt_quiet    = FALSE;
-static uint8_t opt_silent   = FALSE;
 static const char digit[11] = "0123456789";
 
 #ifndef __attribute__
@@ -1503,7 +1245,6 @@ static uint64_t cmb_rand_range(uint64_t range);
 static CMB_ACTION(cmb_add);
 static CMB_ACTION(cmb_div);
 static CMB_ACTION(cmb_mul);
-static CMB_ACTION(cmb_nop);
 static CMB_ACTION(cmb_sub);
 
 static CMB_ACTION(cmb_add_find);
@@ -1593,16 +1334,73 @@ static struct cmb_xfdef cmb_xforms[] = {
 #endif /* if  ( defined(__VERSION__) && defined(__GNUC__) ) ||
            ( defined(__VERSION__) && defined(__clang_version__) */
 
+#define XSTR_EMAXLEN 32767
+
+static const char
+*xstrerror_l(int errnum)
+{
+  int saved = errno;
+  const char *ret = NULL;
+  static /* __thread */ char buf[XSTR_EMAXLEN];
+
+#if defined(__APPLE__) || defined(_AIX) || \
+      defined(__MINGW32__) || defined(__MINGW64__) || \
+        defined(CROSS_MINGW32) || defined(CROSS_MINGW64)
+# if defined(__MINGW32__) || defined(__MINGW64__) || \
+        defined(CROSS_MINGW32) || defined(CROSS_MINGW64)
+  if (strerror_s(buf, sizeof(buf), errnum) == 0) ret = buf; /*LINTOK: xstrerror_l*/
+# else
+  if (strerror_r(errnum, buf, sizeof(buf)) == 0) ret = buf; /*LINTOK: xstrerror_l*/
+# endif
+#else
+# if defined(__NetBSD__)
+  locale_t loc = LC_GLOBAL_LOCALE;
+# else
+  locale_t loc = uselocale((locale_t)0);
+# endif
+  locale_t copy = loc;
+  if (copy == LC_GLOBAL_LOCALE)
+    copy = duplocale(copy);
+
+  if (copy != (locale_t)0)
+    {
+      ret = strerror_l(errnum, copy); /*LINTOK: xstrerror_l*/
+      if (loc == LC_GLOBAL_LOCALE)
+        {
+          freelocale(copy);
+        }
+    }
+#endif
+
+  if (!ret)
+    {
+      (void)snprintf(buf, sizeof(buf), "Unknown error %d", errnum);
+      ret = buf;
+    }
+
+  errno = saved;
+  return ret;
+}
+
+static locale_t locale;
+
+static int
+init_locale(void)
+{
+  locale = newlocale(LC_ALL_MASK, "", (locale_t)0);
+  if (locale == (locale_t)0)
+      return 0;
+  return 1;
+}
+
 int
 main(int argc, char *argv[])
 {
-  setlocale(LC_NUMERIC, "");
+  (void)setlocale(LC_ALL, "");
+  (void)init_locale();
   uint8_t free_find         = FALSE;
   uint8_t opt_empty         = FALSE;
-  uint8_t opt_file          = FALSE;
   uint8_t opt_find          = FALSE;
-  uint8_t opt_nulparse      = FALSE;
-  uint8_t opt_nulprint      = FALSE;
   uint8_t opt_precision     = FALSE;
   uint8_t opt_randi         = FALSE;
   uint8_t opt_range         = FALSE;
@@ -1627,12 +1425,10 @@ main(int argc, char *argv[])
   uint32_t rstart           = 0;
   uint32_t rstop            = 0;
   size_t config_size        = sizeof ( struct cmb_config ) + 1;
-  size_t cp_size            = sizeof ( char * );
   size_t optlen             = 0;
   struct cmb_config *config = NULL;
   struct cmb_xitem *xitem   = NULL;
   uint64_t count            = 0;
-  uint64_t fitems           = 0;
   uint64_t nstart           = 0; /* negative start */
   uint64_t ritems           = 0;
   uint64_t ull              = 0;
@@ -1663,21 +1459,16 @@ main(int argc, char *argv[])
    * Process command-line options
    */
 
-#define OPTSTRING "0c:d:eF:f:hi:k:Nn:P:p:qrSs:tVvX:z"
+#define OPTSTRING "c:d:eF:hi:k:NP:p:qrs:tVvX:"
   while (( ch = getopt(argc, argv, OPTSTRING)) != -1)
     {
       switch (ch)
         {
-        case '0': /* NUL terminate */
-          config->options ^= CMB_OPT_NULPARSE;
-          opt_nulparse = TRUE;
-          break;
-
         case 'c': /* count */
           if (( optlen = strlen(optarg)) == 0 || unumlen(optarg) != optlen)
             {
-              (void)fprintf(stderr, "Error: -c: %s `%s'\n",
-                strerror(EINVAL), optarg);
+              (void)fprintf(stderr, "Error: -c: %s `%s'\r\n",
+                xstrerror_l(EINVAL), optarg);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -1686,8 +1477,8 @@ main(int argc, char *argv[])
           config->count = strtoull(optarg, (char **)NULL, 10);
           if (errno != 0)
             {
-              (void)fprintf(stderr, "Error: -c: %s `%s'\n",
-                strerror(errno), optarg);
+              (void)fprintf(stderr, "Error: -c: %s `%s'\r\n",
+                xstrerror_l(errno), optarg);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -1730,17 +1521,12 @@ main(int argc, char *argv[])
                   errno = EINVAL;
                 }
 
-              (void)fprintf(stderr, "Error: -F: %s `%s'\n",
-                strerror(errno), optarg);
+              (void)fprintf(stderr, "Error: -F: %s `%s'\r\n",
+                xstrerror_l(errno), optarg);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
 
-          break;
-
-        case 'f': /* file */
-          opt_file = TRUE;
-          opt_range = FALSE;
           break;
 
         case 'h': /* help */
@@ -1757,8 +1543,8 @@ main(int argc, char *argv[])
             }
           else if (optlen == 0 || numlen(optarg) != optlen)
             {
-              (void)fprintf(stderr, "Error: -i: %s `%s'\n",
-                strerror(EINVAL), optarg);
+              (void)fprintf(stderr, "Error: -i: %s `%s'\r\n",
+                xstrerror_l(EINVAL), optarg);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -1777,8 +1563,8 @@ main(int argc, char *argv[])
 
               if (errno != 0)
                 {
-                  (void)fprintf(stderr, "Error: -i: %s `%s'\n",
-                    strerror(errno), optarg);
+                  (void)fprintf(stderr, "Error: -i: %s `%s'\r\n",
+                    xstrerror_l(errno), optarg);
                   _Exit(EXIT_FAILURE);
                   /*NOTREACHED*/ /* unreachable */
                 }
@@ -1790,8 +1576,8 @@ main(int argc, char *argv[])
           if (!parse_range(optarg, &( config->size_min ),
                &( config->size_max )))
             {
-              (void)fprintf(stderr, "Error: -k: %s `%s'\n",
-                strerror(errno), optarg);
+              (void)fprintf(stderr, "Error: -k: %s `%s'\r\n",
+                xstrerror_l(errno), optarg);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -1802,22 +1588,11 @@ main(int argc, char *argv[])
           config->options ^= CMB_OPT_NUMBERS;
           break;
 
-        case 'n': /* n-args */
-          if (!parse_unum(optarg, &nitems))
-            {
-              (void)fprintf(stderr, "Error: -n: %s `%s'\n",
-                strerror(errno), optarg);
-              _Exit(EXIT_FAILURE);
-              /*NOTREACHED*/ /* unreachable */
-            }
-
-          break;
-
         case 'P': /* precision */
           if (!parse_unum(optarg, (uint32_t *)&cmb_transform_precision))
             {
-              (void)fprintf(stderr, "Error: -n: %s `%s'\n",
-                strerror(errno), optarg);
+              (void)fprintf(stderr, "Error: -n: %s `%s'\r\n",
+                xstrerror_l(errno), optarg);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -1835,11 +1610,6 @@ main(int argc, char *argv[])
 
         case 'r': /* range */
           opt_range = TRUE;
-          opt_file = FALSE;
-          break;
-
-        case 'S': /* silent */
-          opt_silent = TRUE;
           break;
 
         case 's': /* suffix */
@@ -1864,11 +1634,6 @@ main(int argc, char *argv[])
           opt_transform = optarg;
           break;
 
-        case 'z': /* zero */
-          opt_nulprint = TRUE;
-          config->options ^= CMB_OPT_NULPRINT;
-          break;
-
         default: /* unhandled argument (based on switch) */
           cmb_usage();
           /*NOTREACHED*/ /* unreachable */
@@ -1884,7 +1649,7 @@ main(int argc, char *argv[])
   if (opt_version)
     {
       (void)fprintf(stdout, "mcmb: (miniature) combinatorics utility"
-        " %s (cmb %s + %s)\n", mcmbver, cmdver, libver);
+        " %s (cmb %s + %s)\r\n", mcmbver, cmdver, libver);
 #ifdef HAVE_BUILD
       if (!opt_build)
         {
@@ -1905,24 +1670,24 @@ main(int argc, char *argv[])
 #   if !defined (__clang_version__) || defined(__INTEL_COMPILER)
       char xcmp[2];
       /* cppcheck-suppress invalidPrintfArgType_s */
-      sprintf(xcmp, "%.1s", __VERSION__ );
+      (void)sprintf(xcmp, "%.1s", __VERSION__ );
       if (!isdigit((int)xcmp[0]))
         {
           /* cppcheck-suppress invalidPrintfArgType_s */
-          (void)fprintf(stdout, "Compiler: %s\n", __VERSION__ );
+          (void)fprintf(stdout, "Compiler: %s\r\n", __VERSION__ );
         }
       else
         {
           /* cppcheck-suppress invalidPrintfArgType_s */
-          (void)fprintf(stdout, "Compiler: GCC %s\n", __VERSION__ );
+          (void)fprintf(stdout, "Compiler: GCC %s\r\n", __VERSION__ );
         }
 #   else
       /* cppcheck-suppress invalidPrintfArgType_s */
-      (void)fprintf(stdout, "Compiler: Clang %s\n", __clang_version__ );
+      (void)fprintf(stdout, "Compiler: Clang %s\r\n", __clang_version__ );
 #   endif /* if !defined (__clang_version__) || defined(__INTEL_COMPILER) */
 #  else
       /* cppcheck-suppress invalidPrintfArgType_s */
-      (void)fprintf(stdout, "Compiler: %s\n", __VERSION__ );
+      (void)fprintf(stdout, "Compiler: %s\r\n", __VERSION__ );
 #  endif /* ifdef __GNUC__ */
 # endif /* ifdef __VERSION__ */
       FREE(config);
@@ -1947,7 +1712,7 @@ main(int argc, char *argv[])
 
   if (opt_find && opt_transform == NULL)
     {
-      (void)fprintf(stderr, "Error: `-X op' required when using `-F num'\n");
+      (void)fprintf(stderr, "Error: `-X op' required when using `-F num'\r\n");
       _Exit(EXIT_FAILURE);
       /*NOTREACHED*/ /* unreachable */
     }
@@ -1958,18 +1723,7 @@ main(int argc, char *argv[])
 
   if (opt_precision && opt_transform == NULL)
     {
-      (void)fprintf(stderr, "Error: `-X op' required when using `-P num'\n");
-      _Exit(EXIT_FAILURE);
-      /*NOTREACHED*/ /* unreachable */
-    }
-
-  /*
-   * `-f' required if given `-0'
-   */
-
-  if (opt_nulparse && !opt_file)
-    {
-      (void)fprintf(stderr, "Error: `-f' required when using `-0'\n");
+      (void)fprintf(stderr, "Error: `-X op' required when using `-P num'\r\n");
       _Exit(EXIT_FAILURE);
       /*NOTREACHED*/ /* unreachable */
     }
@@ -1978,7 +1732,7 @@ main(int argc, char *argv[])
    * Calculate number of items
    */
 
-  if (nitems == 0 || nitems > (uint32_t)argc)
+  if (nitems == 0 || nitems > (uint32_t)argc) //-V560
     {
       nitems = (uint32_t)argc;
     }
@@ -1989,8 +1743,8 @@ main(int argc, char *argv[])
         {
           if (!parse_urange(argv[n], &rstart, &rstop))
             {
-              (void)fprintf(stderr, "Error: -r: %s `%s'\n",
-                strerror(errno), argv[n]);
+              (void)fprintf(stderr, "Error: -r: %s `%s'\r\n",
+                xstrerror_l(errno), argv[n]);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -2012,7 +1766,7 @@ main(int argc, char *argv[])
 
           if (ritems + ull > UINT_MAX)
             {
-              (void)fprintf(stderr, "Error: -r: Too many items\n");
+              (void)fprintf(stderr, "Error: -r: Too many items\r\n");
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -2028,20 +1782,14 @@ main(int argc, char *argv[])
   if (opt_total && opt_range)
     {
       count = cmb_count(config, (uint32_t)ritems);
-      if (opt_silent)
-        {
-          FREE(config);
-          exit(EXIT_SUCCESS);
-          /*NOTREACHED*/ /* unreachable */
-        }
 
       if (errno)
         {
-          (void)fprintf(stderr, "Error: %s\n", strerror(errno));
+          (void)fprintf(stderr, "Error: %s (%d)\r\n", xstrerror_l(errno), errno);
           /*NOTREACHED*/ /* unreachable */
         }
 
-      (void)fprintf(stdout, "%" PRIu64 "%s", count, opt_nulprint ? "" : "\n");
+      (void)fprintf(stdout, "%" PRIu64 "%s", count, "\r\n");
       FREE(config);
       exit(EXIT_SUCCESS);
       /*NOTREACHED*/ /* unreachable */
@@ -2051,61 +1799,7 @@ main(int argc, char *argv[])
    * Read arguments ...
    */
 
-  if (opt_file)
-    {
-/* Suppress Clang Analyzer's possible memory leak warning */
-#if !defined ( __clang_analyzer__ )
-
-      /*
-       * ... as a series of files if given `-f'
-       */
-
-      for (n = 0; n < nitems; n++)
-        {
-          items_tmp = cmb_parse_file(config, argv[n], &i, 0);
-
-          if (items_tmp == NULL)
-            {
-              (void)fprintf(stderr, "\rFATAL: Bugcheck! %s\r\n",
-                errno ? strerror(errno) : "Out of memory?!");
-              _Exit(EXIT_FAILURE);
-              /*NOTREACHED*/ /* unreachable */
-            }
-
-          if (fitems + i > UINT_MAX)
-            {
-              FREE(items_tmp);
-              (void)fprintf(stderr, "FATAL: -f: Too many items\n");
-              _Exit(EXIT_FAILURE);
-              /*NOTREACHED*/ /* unreachable */
-            }
-
-          fitems += (uint64_t)i;
-          items = realloc(items, (size_t)( fitems * cp_size ));
-
-          if (items == NULL)
-            {
-              (void)fprintf(stderr, "\rFATAL: Out of memory?! Aborting at %s[%s:%d]\r\n",
-                            __func__, __FILE__, __LINE__);
-              abort();
-              /*NOTREACHED*/ /* unreachable */
-            }
-
-          if (items_tmp == NULL) //-V547
-            {
-              (void)fprintf(stderr, "\rFATAL: Out of memory?! Aborting at %s[%s:%d]\r\n",
-                            __func__, __FILE__, __LINE__);
-              abort();
-              /*NOTREACHED*/ /* unreachable */
-            }
-
-          (void)memcpy(&items[fitems - i], items_tmp, i * cp_size);
-        }
-
-      nitems = (uint32_t)fitems;
-#endif /* if !defined ( __clang_analyzer__ ) */
-    }
-  else if (opt_range)
+  if (opt_range)
     {
 
       /*
@@ -2153,20 +1847,14 @@ main(int argc, char *argv[])
     }
 
   /*
-   * Time-based benchmarking (-S for silent) and transforms (-X op).
+   * Transforms (-X op).
    */
 
-  if (opt_silent && opt_transform == NULL)
-    {
-      FREE(items_tmp);
-      config->action = cmb_nop;
-      config->options &= ~CMB_OPT_NUMBERS;
-    }
-  else if (opt_transform != NULL)
+  if (opt_transform != NULL)
     {
       if (( optlen = strlen(opt_transform)) == 0)
         {
-          (void)fprintf(stderr, "Error: -X %s\n", strerror(EINVAL));
+          (void)fprintf(stderr, "Error: -X %s\r\n", xstrerror_l(EINVAL));
           _Exit(EXIT_FAILURE);
           /*NOTREACHED*/ /* unreachable */
         }
@@ -2192,8 +1880,8 @@ main(int argc, char *argv[])
         }
       if (config->action == NULL)
         {
-          (void)fprintf(stderr, "Error: -X: %s `%s'\n",
-            strerror(EINVAL), opt_transform);
+          (void)fprintf(stderr, "Error: -X: %s `%s'\r\n",
+            xstrerror_l(EINVAL), opt_transform);
           _Exit(EXIT_FAILURE);
           /*NOTREACHED*/ /* unreachable */
         }
@@ -2234,8 +1922,8 @@ main(int argc, char *argv[])
                       errno = EINVAL;
                     }
 
-                  (void)fprintf(stderr, "Error: -X: %s `%s'\n",
-                    strerror(errno), items[n]);
+                  (void)fprintf(stderr, "Error: -X: %s `%s'\r\n",
+                    xstrerror_l(errno), items[n]);
                   _Exit(EXIT_FAILURE);
                   /*NOTREACHED*/ /* unreachable */
                 }
@@ -2334,21 +2022,15 @@ main(int argc, char *argv[])
   if (opt_total)
     {
       count = cmb_count(config, nitems);
-      if (opt_silent)
-        {
-          FREE(config);
-          exit(EXIT_SUCCESS);
-          /*NOTREACHED*/ /* unreachable */
-        }
 
       if (errno)
         {
-          (void)fprintf(stderr, "FATAL: %s\n", strerror(errno));
+          (void)fprintf(stderr, "\rFATAL: %s (%d)\r\n", xstrerror_l(errno), errno);
           _Exit(EXIT_FAILURE);
           /*NOTREACHED*/ /* unreachable */
         }
 
-      (void)fprintf(stdout, "%" PRIu64 "%s", count, opt_nulprint ? "" : "\n");
+      (void)fprintf(stdout, "%" PRIu64 "%s", count, "\r\n");
     }
   else
     {
@@ -2357,7 +2039,7 @@ main(int argc, char *argv[])
           count = cmb_count(config, nitems);
           if (errno)
             {
-              (void)fprintf(stderr, "FATAL: %s\n", strerror(errno));
+              (void)fprintf(stderr, "\rFATAL: %s (%d)\r\n", xstrerror_l(errno), errno);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -2380,6 +2062,7 @@ main(int argc, char *argv[])
               h = hash32s(&ptr, sizeof(ptr), h);
               time_t t = time(0);
               h = hash32s(&t, sizeof(t), h);
+#if !defined(_AIX)
               for (int i = 0; i < 1000; i++)
                 {
                   unsigned long counter = 0;
@@ -2391,6 +2074,7 @@ main(int argc, char *argv[])
                   h = hash32s(&start, sizeof(start), h);
                   h = hash32s(&counter, sizeof(counter), h);
                 }
+#endif
               int mypid = (int)getpid();
               h = hash32s(&mypid, sizeof(mypid), h);
               char rnd[4];
@@ -2407,7 +2091,7 @@ main(int argc, char *argv[])
             }
           else
             {
-              (void)fprintf(stderr, "FATAL: %s\n", strerror(errno));
+              (void)fprintf(stderr, "\rFATAL: %s (%d)\r\n", xstrerror_l(errno), errno);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -2417,7 +2101,7 @@ main(int argc, char *argv[])
           count = cmb_count(config, nitems);
           if (errno)
             {
-              (void)fprintf(stderr, "FATAL: %s\n", strerror(errno));
+              (void)fprintf(stderr, "\rFATAL: %s (%d)\r\n", xstrerror_l(errno), errno);
               _Exit(EXIT_FAILURE);
               /*NOTREACHED*/ /* unreachable */
             }
@@ -2435,7 +2119,7 @@ main(int argc, char *argv[])
       retval = cmb(config, nitems, items);
       if (errno)
         {
-          (void)fprintf(stderr, "FATAL: %s\n", strerror(errno));
+          (void)fprintf(stderr, "\rFATAL: %s (%d)\r\n", xstrerror_l(errno), errno);
           _Exit(EXIT_FAILURE);
           /*NOTREACHED*/ /* unreachable */
         }
@@ -2445,7 +2129,7 @@ main(int argc, char *argv[])
    * Clean up
    */
 
-  if (opt_file || opt_range)
+  if (opt_range)
     {
       for (n = 0; n < nitems; n++)
         {
@@ -2493,8 +2177,8 @@ main(int argc, char *argv[])
  * Print short usage statement to stderr and exit with error status.
  */
 
-#define OPTFMT    "  %-10s  %s\n"
-#define OPTFMT_1U "  %-10s  %s%u%s\n"
+#define OPTFMT    "  %-10s  %s\r\n"
+#define OPTFMT_1U "  %-10s  %s%u%s\r\n"
 
 static void
 cmb_usage(void)
@@ -2502,9 +2186,7 @@ cmb_usage(void)
   (void)fprintf(stderr,
     "Usage: %s { [SWITCHES] } { <ITEMS> ... }\n\n", pgm);
   (void)fprintf(stderr,
-    " Switches:\n");
-  (void)fprintf(stderr, OPTFMT,
-    "-0", "Read item(s) terminated by NULL when given '-f'");
+    " Switches:\r\n");
   (void)fprintf(stderr, OPTFMT,
     "-c num", "Produce num combinations (defaults to '0' for all)");
   (void)fprintf(stderr, OPTFMT,
@@ -2514,8 +2196,6 @@ cmb_usage(void)
   (void)fprintf(stderr, OPTFMT,
     "-F num", "Find '-X op' results matching num");
   (void)fprintf(stderr, OPTFMT,
-    "-f", "Treat arguments as files to read item(s) from; '-' for stdin");
-  (void)fprintf(stderr, OPTFMT,
     "-h", "Print this help text and exit");
   (void)fprintf(stderr, OPTFMT,
     "-i num", "Skip the first num minus one combinations");
@@ -2524,8 +2204,6 @@ cmb_usage(void)
   (void)fprintf(stderr, OPTFMT,
     "-N", "Show combination sequence numbers");
   (void)fprintf(stderr, OPTFMT,
-    "-n num", "Limit arguments taken from the command-line");
-  (void)fprintf(stderr, OPTFMT,
     "-P num", "Set floating point precision when given '-X op'");
   (void)fprintf(stderr, OPTFMT,
     "-p text", "Prefix text for each line of output");
@@ -2533,8 +2211,6 @@ cmb_usage(void)
     "-q", "Quiet mode; do not print item(s) from set when given '-X op'");
   (void)fprintf(stderr, OPTFMT_1U,
     "-r", "Treat arguments as ranges (of up-to ", UINT_MAX, " items)");
-  (void)fprintf(stderr, OPTFMT,
-    "-S", "Silent mode (for performance benchmarks)");
   (void)fprintf(stderr, OPTFMT,
     "-s text", "Suffix text for each line of output");
   (void)fprintf(stderr, OPTFMT,
@@ -2547,8 +2223,6 @@ cmb_usage(void)
     "-v", "Print version information and exit");
   (void)fprintf(stderr, OPTFMT,
     "-X op", "Perform math on item(s) where 'op' is add, sub, div, or mul");
-  (void)fprintf(stderr, OPTFMT,
-    "-z", "Print combinations NULL terminated (use with GNU 'xargs -0')");
 
   _Exit(EXIT_FAILURE);
 }
@@ -2564,7 +2238,7 @@ cmb_rand_range(uint64_t range)
 
   if (range == 0)
     {
-      (void)fprintf(stderr, "FATAL: Range cannot be zero!\n");
+      (void)fprintf(stderr, "\rFATAL: Range cannot be zero!\r\n");
       _Exit(EXIT_FAILURE);
       /*NOTREACHED*/ /* unreachable */
     }
@@ -2986,19 +2660,6 @@ range_float(uint32_t start, uint32_t stop, uint32_t idx, char *dst[])
     }
 
   return idx;
-}
-
-/*
- * Performance benchmarking
- */
-
-static CMB_ACTION(cmb_nop)
-{
-  (void)config;
-  (void)seq;
-  (void)nitems;
-  (void)items;
-  return 0;
 }
 
 /*

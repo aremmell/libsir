@@ -35,7 +35,7 @@ WORKDIR /
 
 ARG URL
 
-RUN set -x && dnf --refresh -y upgrade && dnf --nogpgcheck -y install \
+RUN set -x && dnf -y install \
       ${URL:-http://192.168.1.187:8088/~jhj/cache/x86_open64-4.5.2.1-1.x86_64.rpm} && \
       printf '%s\n' 'int matherr=0;' 'char* _LIB_VERSION="";' > tmp.c && \
       gcc -o libmcompat.o -c tmp.c && \
@@ -47,8 +47,7 @@ RUN set -x && dnf --refresh -y upgrade && dnf --nogpgcheck -y install \
       dnf -y clean all && \
       rm -rf ~/.cache > /dev/null 2>&1 && \
       rm -rf /var/tmp/* > /dev/null 2>&1 && \
-      rm -rf /var/log/dnf* > /dev/null 2>&1 && \
-      ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true)
+      rm -rf /var/log/dnf* > /dev/null 2>&1
 
 USER 10000
 

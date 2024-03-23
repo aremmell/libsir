@@ -37,7 +37,7 @@
 
 # define SIR_THREADPOOL_MAX_THREADS 386
 
-bool _sir_threadpool_create(sir_threadpool** pool, size_t num);
+bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads);
 bool _sir_threadpool_add_job(sir_threadpool* pool, sir_threadpool_job* job);
 bool _sir_threadpool_destroy(sir_threadpool** pool);
 

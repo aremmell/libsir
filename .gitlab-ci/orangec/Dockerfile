@@ -36,15 +36,14 @@ WORKDIR /
 ARG URL
 
 RUN set -x && \
-    dnf --refresh -y upgrade --setopt=install_weak_deps=True && cd /opt && \
+    cd /opt && \
     wget ${URL:-http://192.168.1.187:8088/~jhj/cache/OrangeC.zip} && \
     atool -x OrangeC.zip && \
     env rm OrangeC.zip && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
-    rm -rf /var/log/dnf* && \
-    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true)
+    rm -rf /var/log/dnf*
 
 USER 10000
 

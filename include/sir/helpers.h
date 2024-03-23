@@ -417,7 +417,7 @@ bool _sir_formattime(time_t now, char* buffer, const char* format) {
     if (!buffer || !format)
         return false;
 # if defined(__GNUC__) && !defined(__clang__) && \
-    !(defined(__OPEN64__) || defined(__OPENCC__))
+    !(defined(__OPEN64__) || defined(__OPENCC__) || defined(__PCC__))
 #  pragma GCC diagnostic push
 #  pragma GCC diagnostic ignored "-Wformat-nonliteral"
 # endif
@@ -425,7 +425,7 @@ bool _sir_formattime(time_t now, char* buffer, const char* format) {
     const struct tm* ptb = _sir_localtime(&now, &timebuf);
     return NULL != ptb && 0 != strftime(buffer, SIR_MAXTIME, format, ptb);
 # if defined(__GNUC__) && !defined(__clang__) && \
-    !(defined(__OPEN64__) || defined(__OPENCC__))
+    !(defined(__OPEN64__) || defined(__OPENCC__) || defined(__PCC__))
 #  pragma GCC diagnostic pop
 # endif
 }
@@ -474,6 +474,12 @@ uint64_t FNV64_1a(const char* str) {
     }
     return hash;
 }
+
+/**
+ * Unconditionally and explicitly fill the first "len" bytes of
+ * the memory area pointed to by "ptr" with the constant byte "c".
+ */
+void* _sir_explicit_memset(void *ptr, int c, size_t len);
 
 /**
  * Remove all occurrences of substring "sub" in string "str".

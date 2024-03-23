@@ -48,19 +48,19 @@
 *.la
 *.lai
 
-# build products
+# Build products
 build/
 
-# compiled documentation
+# Compiled documentation
 docs/html/
 docs/xml/
 index.md
 
-# test artifacts
+# Test artifacts
 *.log
 logs/
 
-# annoying macOS files
+# Annoying macOS files
 .DS_Store
 
 # Visual Studio files
@@ -140,3 +140,6 @@ GPATH
 GRTAGS
 GTAGS
 docs/HTML
+
+# Valgrind files
+*.out.[0-9]*

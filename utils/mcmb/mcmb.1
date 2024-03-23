@@ -1,7 +1,7 @@
 .\"
 .\" mcmb.1
 .\"
-.\" Version: 2120.4.17-dps (libcmb 3.5.6)
+.\" Version: 2120.5.05-dps (libcmb 3.5.6)
 .\"
 .\" -----------------------------------------------------------------------------
 .\"
@@ -12,8 +12,8 @@
 .\" SPDX-License-Identifier: BSD-2-Clause
 .\"
 .\" Copyright (c) 2002-2019 Devin Teske <dteske@FreeBSD.org>
-.\" Copyright (c) 2020-2023 Jeffrey H. Johnson <trnsz@pobox.com>
-.\" Copyright (c) 2021-2023 The DPS8M Development Team
+.\" Copyright (c) 2020-2024 Jeffrey H. Johnson <trnsz@pobox.com>
+.\" Copyright (c) 2021-2024 The DPS8M Development Team
 .\"
 .\" All rights reserved.
 .\"
@@ -42,7 +42,7 @@
 .\"
 .\" --------------------------------------------------------------------------
 .\"
-.Dd November 23, 2023
+.Dd March 10, 2024
 .Dt MCMB 1
 .Os
 .Sh NAME
@@ -50,7 +50,7 @@
 .Nd (miniature) combinatorics utility
 .Sh SYNOPSIS
 .Nm
-.Op Fl 0efNrStvz
+.Op Fl ertv
 .Op Fl c Ar num
 .Op Fl d Ar str
 .Op Fl F Ar num
@@ -84,12 +84,6 @@ is dependent upon the order of items on the command-line.
 .Pp
 Available options:
 .Bl -tag -width ".Fl r Ar range"
-.It Fl 0
-Change the behavior of
-.Ql Fl f
-to read items separated by NUL character
-.Pq character code 0
-instead of newline.
 .It Fl c Ar num
 Produce at-most
 .Ar num
@@ -116,19 +110,6 @@ values that equal
 .Ar num .
 Requires
 .Sq Fl X Ar op .
-.It Fl f
-Treat each command-line argument as a file containing items,
-one item per line
-.Pq default .
-With
-.Ql Fl 0 ,
-read items separated by NUL character.
-If an argument is
-.Ql Li - ,
-read from stdin.
-The sum of items read from all files cannot exceed the value of
-.Va UINT_MAX
-(4,294,967,295 on most systems).
 .It Fl h
 Print help text to stderr and exit.
 .It Fl i Ar num
@@ -184,11 +165,6 @@ The sequence number can be used as a value to
 to start at that combination.
 Ignored when given
 .Ql Fl t .
-.It Fl n Ar num
-Limit the number of arguments taken from the command-line.
-No effect if
-.Va num
-is greater than the number of arguments.
 .It Fl P Ar num
 Change the behavior of
 .Ql Fl X Ar op
@@ -217,14 +193,6 @@ If a range
 .Pq Qo min..max Qc or Qo min-max Qc ,
 expand to numbers min to max.
 Numbers must be whole positive integers between 0 and 4,294,967,295.
-.It Fl S
-Silent mode.
-Do not print combinations to stdout.
-Useful with
-.Xr time 1
-to determine
-.Xr stdio 3
-overhead.
 With
 .Ql Fl t ,
 do not print result.
@@ -258,14 +226,6 @@ for
 .Ql Li add .
 Ignored when given
 .Ql Fl t .
-.It Fl z
-Print combinations followed by ASCII NUL character
-.Pq character code 0
-instead of newline
-.Pq character code 10 .
-With
-.Ql Fl t ,
-do not print a trailing character after the result.
 .El
 .Sh EXAMPLES
 Print all two-word combinations

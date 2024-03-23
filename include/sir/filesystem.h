@@ -85,11 +85,15 @@ ssize_t _sir_readlink(const char* restrict path, char* restrict buf, size_t bufs
 # endif
 
 # if defined(_AIX)
-int _sir_aixself(char *buffer, size_t *size);
+int _sir_aixself(char* buffer, size_t* size);
 # endif
 
 # if defined(__OpenBSD__)
-int _sir_openbsdself(char* out, int capacity, int* dirname_length);
+int _sir_openbsdself(char* buffer, int size);
+# endif
+
+# if defined(__OpenBSD__) || (defined(_AIX) && defined(__PASE__))
+int _sir_resolvepath(const char* restrict path, char* restrict buffer, size_t size);
 # endif
 
 # if defined(__cplusplus)

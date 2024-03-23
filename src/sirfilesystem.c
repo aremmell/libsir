@@ -75,22 +75,36 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
        defined(__NetBSD__) || defined(__HAIKU__) || defined(__OpenBSD__)
         int open_flags = O_DIRECTORY;
 # else
-#  error "unknown open_flags for your platform; please contact the developers."
+#  error "unknown open_flags for your platform; please contact the developers"
 # endif
 
+# if !(defined(_AIX) || !defined(__PASE__))
         int fd = open(base_path, open_flags);
         if (-1 == fd) {
             _sir_safefree(&base_path);
             return _sir_handleerr(errno);
         }
 
-# if !defined(SIR_EMBEDDED)
+#  if !defined(SIR_EMBEDDED)
         stat_ret = fstatat(fd, path, st, AT_SYMLINK_NOFOLLOW);
-# else
+#  else
         stat_ret = -1;
         errno = ENOENT;
+#  endif
+      
+# else
+        // HACKHACK: fstatat does not work properly for any fd other than AT_FDCWD.
+        SIR_UNUSED(open_flags);
+        int fd = AT_FDCWD;
+        if (rel_to == SIR_PATH_REL_TO_CWD) {
+            /* cppcheck-suppress invalidFunctionArg */
+            stat_ret = fstatat(fd, path, st, AT_SYMLINK_NOFOLLOW);
+        } else if (rel_to == SIR_PATH_REL_TO_APP) {
+            char abs_path[SIR_MAXPATH] = {0};
+            (void)snprintf(abs_path, SIR_MAXPATH, "%s/%s", base_path, path);
+            stat_ret = stat(abs_path, st);
+        }
 # endif
-
         _sir_safeclose(&fd);
         _sir_safefree(&base_path);
     } else {
@@ -104,7 +118,6 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         /* Embarcadero <12 does not like paths that end in slashes, nor does it appreciate
          * paths like './' and '../'; this hack is needed for RAD Studio 11.3 and earlier. */
         char resolved_path[SIR_MAXPATH] = {0};
-
         if (!GetFullPathNameA(abs_path, SIR_MAXPATH, resolved_path, NULL)) {
             _sir_safefree(&base_path);
             return _sir_handlewin32err(GetLastError());
@@ -249,14 +262,14 @@ char* _sir_getappfilename(void) {
 
 #if !defined(__WIN__)
 # if defined(__READLINK_OS__)
-        ssize_t read = _sir_readlink(PROC_SELF, buffer, size - 1);
-        if (-1L != read && read < (ssize_t)size - 1) {
+        ssize_t rdlink = _sir_readlink(PROC_SELF, buffer, size - 1);
+        if (-1L != rdlink && rdlink < (ssize_t)size - 1) {
             resolved = true;
             break;
-        } else if (-1L == read) {
+        } else if (-1L == rdlink) {
             resolved = _sir_handleerr(errno);
             break;
-        } else if (read == (ssize_t)size - 1L) {
+        } else if (rdlink == (ssize_t)size - 1L) {
             /* it is possible that truncation occurred. as a security
              * precaution, fail; someone may have tampered with the link. */
             _sir_selflog("warning: readlink reported truncation; not using result!");
@@ -269,17 +282,10 @@ char* _sir_getappfilename(void) {
             continue;
         }
         int ret = _sir_aixself(buffer, &size);
-        if (ret == 0) {
-            resolved = true;
-            break;
-        } else {
-            resolved = _sir_handleerr(errno);
-            break;
-        }
+        resolved = ret == 0 ? true : _sir_handleerr(errno);
+        break;
 # elif defined(__OpenBSD__)
-        size_t length;
-        int dirname_length;
-        length = _sir_openbsdself(NULL, 0, &dirname_length);
+        size_t length = (size_t)_sir_openbsdself(NULL, 0);
         if (length < 1) {
             resolved = _sir_handleerr(errno);
             break;
@@ -288,12 +294,8 @@ char* _sir_getappfilename(void) {
             size = length + 1;
             continue;
         }
-        (void)_sir_openbsdself(buffer, length, &dirname_length);
-        if (!buffer) {
-            resolved = false;
-            break;
-        }
-        resolved = true;
+        (void)_sir_openbsdself(buffer, length);
+        resolved = _sir_validptrnofail(buffer);
         break;
 # elif defined(__BSD__)
         int mib[4] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
@@ -339,7 +341,7 @@ char* _sir_getappfilename(void) {
         resolved = true;
         break;
 # else
-#  error "no implementation for your platform; please contact the developers."
+#  error "no implementation for your platform; please contact the developers"
 # endif
 #else /* __WIN__ */
         DWORD ret = GetModuleFileNameA(NULL, buffer, (DWORD)size);
@@ -388,10 +390,10 @@ char* _sir_getappdir(void) {
     }
 
     const char* retval = _sir_getdirname(filename);
-    char* dirname = strndup(retval, strnlen(retval, SIR_MAXPATH));
+    char* dname = strndup(retval, strnlen(retval, SIR_MAXPATH));
 
     _sir_safefree(&filename);
-    return dirname;
+    return dname;
 }
 
 char* _sir_getbasename(char* restrict path) {
@@ -455,7 +457,8 @@ bool _sir_getrelbasepath(const char* restrict path, bool* restrict relative,
 }
 
 #if defined(_AIX)
-# define SIR_MAXSLPATH (SIR_MAXPATH + 16)
+# if !defined(__PASE__)
+#  define SIR_MAXSLPATH (SIR_MAXPATH + 16)
 int _sir_aixself(char* buffer, size_t* size) {
     ssize_t res;
     char cwd[SIR_MAXPATH], cwdl[SIR_MAXPATH];
@@ -595,6 +598,42 @@ int _sir_aixself(char* buffer, size_t* size) {
         return -1;
     }
 }
+# elif defined(__PASE__)
+int _sir_aixself(char* buffer, size_t* size) {
+    struct procsinfo pinfo[16] = {0};
+    int numproc = 0;
+    int index = 0;
+    pid_t pid = _sir_getpid();
+    while ((numproc = getprocs(pinfo, sizeof(struct procsinfo), NULL, 0, &index, 16)) > 0) {
+        for (int n = 0; n < numproc; n++) {
+            if (pinfo[n].pi_state == SZOMB)
+                continue;
+            if (pinfo[n].pi_pid == pid) {
+                char tmp[SIR_MAXPATH + 2] = {0};
+                if (-1 == getargs(&pinfo[n], sizeof(struct procsinfo), tmp, sizeof(tmp))) {
+                    (void)_sir_handleerr(errno);
+                    break;
+                }
+                if (strchr(tmp, '/')) {
+                    char tmp2[SIR_MAXPATH] = {0};
+                    const char* rp = realpath(tmp, tmp2);
+                    if (!rp) {
+                        (void)_sir_handleerr(errno);
+                        break;
+                    }
+                    (void)_sir_strncpy(buffer, *size, tmp2, strnlen(tmp2, *size - 1));
+                } else {
+                    (void)_sir_resolvepath(tmp, buffer, *size);
+                }
+                if (_sir_validstrnofail(buffer))
+                    return 0;
+                break;
+            }
+        }
+    }
+    return -1;
+}
+# endif
 #endif
 
 bool _sir_deletefile(const char* restrict path) {
@@ -609,28 +648,27 @@ bool _sir_deletefile(const char* restrict path) {
 }
 
 #if defined(__OpenBSD__)
-int _sir_openbsdself(char* out, int capacity, int* dirname_length) {
+int _sir_openbsdself(char* buffer, int size) {
     char buffer1[4096];
     char buffer2[SIR_MAXPATH];
-    char buffer3[SIR_MAXPATH];
     char** argv    = (char**)buffer1;
     char* resolved = NULL;
     int length     = -1;
 
-    while (1) {
+    while (true) {
+        size_t mib_size = 0;
         int mib[4] = { CTL_KERN, KERN_PROC_ARGS, getpid(), KERN_PROC_ARGV };
-        size_t size;
 
-        if (sysctl(mib, 4, NULL, &size, NULL, 0) != 0)
+        if (sysctl(mib, 4, NULL, &mib_size, NULL, 0) != 0)
             break;
 
-        if (size > sizeof(buffer1)) {
-            argv = (char**)malloc(size);
+        if (mib_size > sizeof(buffer1)) {
+            argv = (char**)malloc(mib_size);
             if (!argv)
                 break;
         }
 
-        if (sysctl(mib, 4, argv, &size, NULL, 0) != 0)
+        if (sysctl(mib, 4, argv, &mib_size, NULL, 0) != 0)
             break;
 
         if (strchr(argv[0], '/')) {
@@ -638,51 +676,62 @@ int _sir_openbsdself(char* out, int capacity, int* dirname_length) {
             if (!resolved)
                 break;
         } else {
-            const char* PATH = getenv("PATH");
-            if (!PATH)
-                break;
-            size_t argv0_length = strnlen(argv[0], SIR_MAXPATH);
-            const char* begin   = PATH;
-            while (1) {
-                const char* separator = strchr(begin, ':');
-                const char* end = separator ? separator : begin + strnlen(begin, SIR_MAXPATH);
-                if (end - begin > 0) {
-                    if (*(end - 1) == '/')
-                        --end;
-                    if (((end - begin) + 1UL + argv0_length + 1UL) <= sizeof(buffer2)) {
-                        (void)memcpy(buffer2, begin, end - begin);
-                        buffer2[end - begin] = '/';
-                        (void)memcpy(buffer2 + (end - begin) + 1, argv[0], argv0_length + 1);
-                        resolved = realpath(buffer2, buffer3);
-                        if (resolved)
-                            break;
-                    }
-                }
-                if (!separator)
-                    break;
-                begin = ++separator;
-            }
+            if (-1 != _sir_resolvepath(argv[0], buffer2, sizeof(buffer2)))
+                resolved = buffer2;
             if (!resolved)
                 break;
         }
 
         length = (int)strnlen(resolved, SIR_MAXPATH);
-        if (length <= capacity) {
-            (void)memcpy(out, resolved, (unsigned long)length);
-            if (dirname_length) {
-                int i;
-                for (i = length - 1; i >= 0; --i) {
-                    if (out[i] == '/') {
-                        *dirname_length = i;
-                        break;
-                    }
-                }
-            }
-        }
+        if (length <= size)
+            (void)memcpy(buffer, resolved, (size_t)length);
         break;
     }
     if (argv != (char**)buffer1)
-        free(argv);
+        _sir_safefree(&argv);
+
+    return length;
+}
+#endif
+
+#if defined(__OpenBSD__) || (defined(_AIX) && defined(__PASE__))
+int _sir_resolvepath(const char* restrict path, char* restrict buffer, size_t size) {
+    if (!_sir_validstr(path) || !_sir_validptr(buffer))
+        return -1;
+
+    const char* envvar = getenv("PATH");
+    if (!_sir_validstr(envvar))
+        return -1;
+
+    size_t pathlen         = strnlen(path, SIR_MAXPATH);
+    const char* cursor     = envvar;
+    char tmp[SIR_MAXPATH]  = {0};
+    char tmp2[SIR_MAXPATH] = {0};
+    int length             = -1;
+
+    while (true) {
+        const char* separator = strchr(cursor, ':');
+        const char* end = separator ? separator : cursor + strnlen(cursor, SIR_MAXPATH);
+        if (end - cursor > 0) {
+            if (*(end - 1) == '/')
+                --end;
+            if (((end - cursor) + 1UL + pathlen + 1UL) <= sizeof(tmp)) {
+                (void)memcpy(tmp, cursor, end - cursor);
+                tmp[end - cursor] = '/';
+                (void)memcpy(tmp + (end - cursor) + 1, path, pathlen + 1);
+                if (realpath(tmp, tmp2))
+                    break;
+            }
+        }
+        if (!separator)
+            break;
+        cursor = ++separator;
+    }
+
+    if (_sir_validstrnofail(tmp2)) {
+        length = (int)strnlen(tmp2, SIR_MAXPATH);
+        (void)_sir_strncpy(buffer, size, tmp2, (size_t)length);
+    }
 
     return length;
 }

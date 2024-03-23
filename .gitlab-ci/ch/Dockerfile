@@ -36,7 +36,7 @@ WORKDIR /
 ARG URL1
 ARG URL2
 
-RUN set -x && dnf --refresh -y upgrade && \
+RUN set -x && \
     dnf install -y ncurses-compat-libs libxcrypt-compat xdelta moreutils && \
     cd /tmp && \
     curl -fsSL ${URL1:-http://192.168.1.187:8088/~jhj/cache/chprofessional-8.5.linux64-4.18.0.intel.tar.gz} | \
@@ -62,8 +62,7 @@ RUN set -x && dnf --refresh -y upgrade && \
     dnf -y clean all && \
     rm -rf ~/.cache > /dev/null 2>&1 && \
     rm -rf /var/tmp/* > /dev/null 2>&1 && \
-    rm -rf /var/log/dnf* > /dev/null 2>&1 && \
-    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true)
+    rm -rf /var/log/dnf* > /dev/null 2>&1
 
 USER 10000
 

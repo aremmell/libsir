@@ -36,7 +36,8 @@
 #if !defined(SIR_NO_TEXT_STYLING)
 static sir_colormode sir_color_mode = SIRCM_16;
 
-/** Wrapper around the level-to-style map and the color mode. This is the data
+/**
+ * Wrapper around the level-to-style map and the color mode. This is the data
  * structure protected by the SIRMI_TEXTSTYLE mutex. */
 sir_text_style_data sir_text_style_section = {
     &sir_level_to_style_map[0],
@@ -217,19 +218,21 @@ bool _sir_setcolormode(sir_colormode mode) {
     return true;
 }
 #else /* SIR_NO_TEXT_STYLING */
-const char* _sir_gettextstyle(sir_level level) {
-    SIR_UNUSED(level);
-    return NULL;
-}
-
 bool _sir_settextstyle(sir_level level, const sir_textstyle* style) {
     SIR_UNUSED(level);
     SIR_UNUSED(style);
     return false;
 }
 
+const char* _sir_gettextstyle(sir_level level) { // GCOVR_EXCL_START
+    SIR_UNUSED(level);
+    SIR_ASSERT(false);
+    return NULL;
+}
+
 const sir_textstyle* _sir_getdefstyle(sir_level level) {
     SIR_UNUSED(level);
+    SIR_ASSERT(false);
     return NULL;
 }
 
@@ -254,5 +257,5 @@ bool _sir_validtextstyle(sir_colormode mode, const sir_textstyle* style) {
 bool _sir_setcolormode(sir_colormode mode) {
     SIR_UNUSED(mode);
     return false;
-}
+} // GCOVR_EXCL_STOP
 #endif

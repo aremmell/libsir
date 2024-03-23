@@ -123,12 +123,15 @@ test_mcmb()
                SIR_NO_SYSTEM_LOGGERS=1 \
                SIR_NO_PLUGINS=1 \
                SIR_NO_TEXT_STYLING=1 \
-               SIR_EMBEDDED=1 \
+               SIR_USE_EOL_CRLF=1 \
                SIR_SELFLOG=1"
   # shellcheck disable=SC2090
   printf '%s\n' "exported SIR_OPTIONS=' ${SIR_OPTIONS} '" | tr -s ' '
   # shellcheck disable=SC2090
   export SIR_OPTIONS
+  # shellcheck disable=SC2086
+  printf 'mcmb: Configured for %d combinations.\n' \
+      "$("${MCMB:-build/bin/mcmb}" -et ${SIR_OPTIONS} 2>&1 | tr -d '\r\n')"
 }
 
 ################################################################################
@@ -320,7 +323,7 @@ test_extra()
                     -Wswitch-enum
                     -Wvla"
             ${MAKE:-make} all tests++
-                -j "${CPUS:-1}" ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
+                -j "${CPUS:-1}" ' | tr '\r' ' ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
       printf '%s\n' ' && true' >> ./.extra.sh; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       chmod a+x ./.extra.sh > /dev/null 2>&1 || true
@@ -389,7 +392,7 @@ test_gccextra()
                     -Wswitch-enum
                     -Wvla"
             ${MAKE:-make} all tests++
-                -j 1 ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
+                -j 1 ' | tr '\r' ' ' | tr '\n' ' ' | tr -s ' ' >> ./.extra.sh
       printf '%s\n' ' && true' >> ./.extra.sh; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       chmod a+x ./.extra.sh > /dev/null 2>&1 || true
@@ -465,7 +468,7 @@ test_scanbuild()
                -enable-checker security.insecureAPI.bcopy
                    ${MAKE:-make} all tests++
                        -j "${CPUS:-1}" ' \
-        | tr '\n' ' ' | tr -s ' ' >> ./.scan-build.sh; ret="${?}"
+        | tr '\r' ' ' | tr '\n' ' ' | tr -s ' ' >> ./.scan-build.sh; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       printf '%s\n' ' && true' >> ./.scan-build.sh
       chmod a+x ./.scan-build.sh
@@ -508,23 +511,20 @@ test_cppcheck()
       ${EXTRA_INCLUDES:-I/usr/include} \
       --enable="all" \
       --inline-suppr \
+      --inconclusive \
       --library=posix \
       --platform=unix64 \
+      --suppress=checkersReport \
       --suppress=*:/Applications/* \
       --suppress=badBitmaskCheck:include/sir/defaults.h \
       --suppress=comparisonError:tests/tests.c \
-      --suppress=constVariablePointer \
-      --suppress=cstyleCast \
       --suppress=*:/Library/Developer/* \
       --suppress=missingIncludeSystem \
       --suppress=readdirCalled \
-      --suppress=redundantAssignment \
-      --suppress=shadowFunction \
       --suppress=knownConditionTrueFalse \
       --suppress=unmatchedSuppression \
       --suppress=unreadVariable \
       --suppress=*:/usr/include/* \
-      --suppress=variableScope \
       -DCLOCK_REALTIME=1 \
       -DCLOCK_MONOTONIC=6 \
       -D_POSIX_TIMERS=2 \
@@ -598,16 +598,16 @@ test_pvs()
 test_pvs_real()
 { (
   export P_FLAGS="${PVS_FLAGS:-}"
-  command -v clang++ > /dev/null 2>&1 \
+  command -v c++ > /dev/null 2>&1 \
     || {
       printf '%s\n' \
-        "NOTICE: clang++ not found, skipping PVS-Studio checks."
+        "NOTICE: c++ not found, skipping PVS-Studio checks."
       exit 1
     }
-  command -v clang > /dev/null 2>&1 \
+  command -v cc > /dev/null 2>&1 \
     || {
       printf '%s\n' \
-        "NOTICE: clang not found, skipping PVS-Studio checks."
+        "NOTICE: cc not found, skipping PVS-Studio checks."
       exit 1
     }
   command -v bear > /dev/null 2>&1 \
@@ -637,8 +637,8 @@ test_pvs_real()
       ${MAKE:-make} mcmb; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       # shellcheck disable=SC2086
-      env CXX="${CCACHE:-env} clang++" \
-           CC="${CCACHE:-env} clang" \
+      env CXX="${CCACHE:-env} c++" \
+           CC="${CCACHE:-env} cc" \
               bear -- "${MAKE:-make}" all tests++ ${P_FLAGS:-} \
                  -j "${CPUS:-1}"; ret="${?}"
       test "${ret}" -ne 0 && exit 99
@@ -647,7 +647,15 @@ test_pvs_real()
       test -f log.pvs; ret="${?}"
       test "${ret}" -ne 0 && exit 99
       printf '%s\n' "PVS-Studio run completed ..."
-      plog-converter -a "GA:1,2,3;OP:1,2,3;64:1,2,3;CS:1,2,3;MISRA:1,2,3;OWASP:1,2,3;AUTOSAR:1,2,3" -t fullhtml log.pvs -o pvsreport
+      # shellcheck disable=SC2015
+      plog-converter -a "GA:1,2,3;OP:1,2,3;64:1,2,3;CS:1,2,3;MISRA:1,2,3;OWASP:1,2,3;AUTOSAR:1,2,3" \
+        -t fullhtml log.pvs -o pvsreport 2>&1 | tee /dev/stderr | \
+          grep -q 'Exception: No valid messages' && \
+            { mkdir -p ./pvsreport;
+              printf '%s\n' "Congratulations!" > ./pvsreport/index.html;
+            } || true
+      mkdir -p ./pvsreport || true
+      touch ./pvsreport/index.html
       grep -q 'Congratulations!' ./pvsreport/index.html \
         || {
           printf '%s\n' "ERROR: PVS-Studio failed ..."
@@ -671,23 +679,23 @@ test_valgrind()
         "NOTICE: valgrind not found, skipping checks."
       exit 1
     }
-  command -v clang++ > /dev/null 2>&1 \
+  command -v c++ > /dev/null 2>&1 \
     || {
       printf '%s\n' \
-        "NOTICE: clang++ not found, skipping valgrind checks."
+        "NOTICE: c++ not found, skipping valgrind checks."
       exit 1
     }
-  command -v clang > /dev/null 2>&1 \
+  command -v cc > /dev/null 2>&1 \
     || {
       printf '%s\n' \
-        "NOTICE: clang not found, skipping valgrind checks."
+        "NOTICE: cc not found, skipping valgrind checks."
       exit 1
     }
       printf '%s\n' "running valgrind checks ..."
       ${MAKE:-make} clean; ret="${?}"
       test "${ret}" -ne 0 && exit 99
-      env CXX="${CCACHE:-env} clang++" \
-           CC="${CCACHE:-env} clang" \
+      env CXX="${CCACHE:-env} c++" \
+           CC="${CCACHE:-env} cc" \
                "${MAKE:-make}" all tests++ \
                    -j "${CPUS:-1}" \
                    SIR_DEBUG=1 \

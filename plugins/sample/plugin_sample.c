@@ -63,22 +63,22 @@ PLUGIN_EXPORT bool sir_plugin_query(sir_plugininfo* info) {
     info->desc      = desc;
     info->caps      = caps;
 
-    (void)printf("\t" DGRAY("plugin_sample ('%s')") "\n", __func__);
+    (void)printf("\t" SIR_DGRAY("plugin_sample ('%s')") SIR_EOL, __func__);
     return true;
 }
 
 PLUGIN_EXPORT bool sir_plugin_init(void) {
-    (void)printf("\t" DGRAY("plugin_sample ('%s')") "\n", __func__);
+    (void)printf("\t" SIR_DGRAY("plugin_sample ('%s')") SIR_EOL, __func__);
     return true;
 }
 
 PLUGIN_EXPORT bool sir_plugin_write(sir_level level, const char* message) {
-    (void)printf("\t" DGRAY("plugin_sample (%s): level: %04"PRIx16", message: %s"),
+    (void)printf("\t" SIR_DGRAY("plugin_sample (%s): level: %04"PRIx16", message: %s") SIR_EOL,
                  __func__, level, message);
     return true;
 }
 
 PLUGIN_EXPORT bool sir_plugin_cleanup(void) { //-V524
-    (void)printf("\t" DGRAY("plugin_sample ('%s')") "\n", __func__);
+    (void)printf("\t" SIR_DGRAY("plugin_sample ('%s')") SIR_EOL, __func__);
     return true;
 }

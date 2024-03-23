@@ -35,13 +35,13 @@ WORKDIR /opt
 
 ARG URL
 
-RUN set -x && dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
-    curl -fsSL ${URL:-http://192.168.1.187:8088/~jhj/cache/android-ndk.tar.gz} | pigz -dc | tar xvf - && \
+RUN set -x && \
+    curl -fsSL ${URL:-https://github.com/johnsonjh/ndk/releases/download/r26c/android-ndk-r28-1160465.tar.lz} | \
+      lzip -dc | tar xvf - && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
-    rm -rf /var/log/dnf* && \
-    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true)
+    rm -rf /var/log/dnf*
 
 USER 10000
 

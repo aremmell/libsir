@@ -35,7 +35,7 @@ WORKDIR /
 
 ARG URL
 
-RUN set -x && dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
+RUN set -x && \
     printf '%s\n' \
          "[viva64]" \
          "name=Viva64 - PVS-Studio - Stable" \
@@ -46,7 +46,7 @@ RUN set -x && dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
     (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
           pvs-studio) || \
     (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-          --nogpgcheck ${URL:-http://192.168.1.187:8088/~jhj/cache/pvs-studio.x86_64.rpm}) && \
+          ${URL:-http://192.168.1.187:8088/~jhj/cache/pvs-studio.x86_64.rpm}) && \
     printf '%s\n' \
          "[viva64-beta]" \
          "name=Viva64 - PVS-Studio - Beta" \
@@ -54,12 +54,12 @@ RUN set -x && dnf --refresh -y upgrade --setopt=install_weak_deps=True && \
          "gpgcheck=0" \
          "enabled=1" \
          "skip_if_unavailable=True" > /etc/yum.repos.d/viva64-beta.repo && \
-    (dnf -y --refresh --setopt=install_weak_deps=True --setopt=keepcache=True upgrade || true) && \
+    (dnf -y --refresh --setopt=install_weak_deps=True \
+       --setopt=keepcache=True upgrade pvs-studio || true) && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
-    rm -rf /var/log/dnf* && \
-    ((symlinks -r -d /usr 2>&1 | tee /dev/stderr | grep dangling) || true )
+    rm -rf /var/log/dnf*
 
 USER 10000
 

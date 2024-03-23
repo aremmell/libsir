@@ -41,7 +41,7 @@ extern void* _Chsir_handle = dlopen("libsir.dl", RTLD_LAZY);
 int
 _chsir_early_abort(void) {
     (void)fprintf(_stderr, "Error: dlopen(): %s"
-                  "\n       Cannot get _Chsir_handle in %s:%d\n",
+                  "\r\n       Cannot get _Chsir_handle in %s:%d\r\n",
                   dlerror(), __FILE__, __LINE__);
     _abort();
     return 1;

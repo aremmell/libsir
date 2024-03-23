@@ -58,7 +58,7 @@ bool _sir_updatefile(sirfileid id, const sir_update_config_data* data) {
     if (!_sir_sanity() || !_sir_validfileid(id) || !_sir_validupdatedata(data))
         return false;
 
-    _SIR_LOCK_SECTION(sirfcache, sfc, SIRMI_FILECACHE, false);
+    _SIR_LOCK_SECTION(const sirfcache, sfc, SIRMI_FILECACHE, false);
     bool retval = _sir_fcache_update(sfc, id, data);
     _SIR_UNLOCK_SECTION(SIRMI_FILECACHE);
 
@@ -138,16 +138,16 @@ bool _sirfile_write(sirfile* sf, const char* output) {
         }
 
         size_t writeLen = strnlen(output, SIR_MAXOUTPUT);
-        size_t write    = fwrite(output, sizeof(char), writeLen, sf->f);
+        size_t wrote    = fwrite(output, sizeof(char), writeLen, sf->f);
 
-        SIR_ASSERT(write == writeLen);
+        SIR_ASSERT(wrote == writeLen);
 
-        if (write < writeLen) {
+        if (wrote < writeLen) {
             (void)_sir_handleerr(errno);
             clearerr(sf->f);
         }
 
-        retval = write == writeLen;
+        retval = wrote == writeLen;
     }
 
     return retval;
@@ -587,7 +587,7 @@ bool _sir_fcache_destroy(sirfcache* sfc) {
             sfc->count--;
         }
 
-        (void)memset(sfc, 0, sizeof(sirfcache));
+        (void)_sir_explicit_memset(sfc, 0, sizeof(sirfcache));
     }
 
     return retval;
@@ -600,7 +600,7 @@ bool _sir_fcache_dispatch(const sirfcache* sfc, sir_level level, sirbuf* buf,
                   _sir_validptr(wanted);
 
     if (retval) {
-        const char* write    = NULL;
+        const char* wrote    = NULL;
         sir_options lastopts = 0U;
 
         *dispatched = 0;
@@ -619,13 +619,13 @@ bool _sir_fcache_dispatch(const sirfcache* sfc, sir_level level, sirbuf* buf,
 
             (*wanted)++;
 
-            if (!write || sfc->files[n]->opts != lastopts) {
-                write = _sir_format(false, sfc->files[n]->opts, buf);
-                SIR_ASSERT(write);
+            if (!wrote || sfc->files[n]->opts != lastopts) {
+                wrote = _sir_format(false, sfc->files[n]->opts, buf);
+                SIR_ASSERT(wrote);
                 lastopts = sfc->files[n]->opts;
             }
 
-            if (write && _sirfile_write(sfc->files[n], write)) {
+            if (wrote && _sirfile_write(sfc->files[n], wrote)) {
                 (*dispatched)++;
             } else {
                 _sir_selflog("error: write to file (path: '%s', id: %"PRIx32") failed!",

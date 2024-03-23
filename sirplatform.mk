@@ -171,11 +171,15 @@ ifneq "$(findstring suncc,$(CC))" ""
 endif
 
 ifeq ($(SUNPRO),1)
-  FORTIFY_FLAGS=-U_FORTIFY_SOURCE
+  FORTIFY_FLAGS?=-U_FORTIFY_SOURCE
   MMDOPT=-xMMD
   PTHOPT=-mt=yes
 else
-  FORTIFY_FLAGS?=-D_FORTIFY_SOURCE=2
+  ifneq "$(findstring circle,$(CXX))" ""
+    FORTIFY_FLAGS?=-D_FORTIFY_SOURCE=2
+  else
+    FORTIFY_FLAGS?=-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2
+  endif
   MMDOPT=-MMD
   PTHOPT=-pthread
 endif
@@ -238,12 +242,43 @@ ifeq ($(KEFIR),1)
 endif
 
 ################################################################################
+# IBM i (OS/400) PASE
+
+ifneq "$(findstring OS400,$(UNAME_S))" ""
+  IBMOS400?=1
+endif
+
+ifeq ($(IBMOS400),1)
+  DBGFLAGS=-g
+  OBJECT_MODE=64
+  export OBJECT_MODE
+  SIR_CFLAGS+=-D_THREAD_SAFE
+  SIR_XFLAGS+=-D_THREAD_SAFE
+  ifneq "$(findstring gcc,$(CC))" ""
+    OS400GCC=1
+    SIR_CFLAGS+=-fPIC -maix64 -Wl,-b64 -Wl,-brtl
+  endif
+  ifneq "$(findstring g++,$(CXX))" ""
+    OS400GCC=1
+    SIR_XFLAGS+=-fPIC -maix64 -Wl,-b64 -Wl,-brtl
+  endif
+  ifeq ($(OS400GCC),1)
+    DBGFLAGS=-Og
+    WPEDANTIC=
+    SIR_LDFLAGS+=-fPIC -maix64 -Wl,-b64 -Wl,-brtl
+  endif
+endif
+
+################################################################################
 # IBM XL C/C++ and GCC for AIX
 
 ifneq "$(findstring AIX,$(UNAME_S))" ""
   IBMAIX?=1
   ifneq "$(findstring xlc,$(CC))" ""
     IBMXLC?=1
+  endif
+  ifneq "$(findstring clang++,$(CXX))" ""
+    AIXCLANGXX?=1
   endif
 endif
 
@@ -255,6 +290,8 @@ ifeq ($(IBMAIX),1)
   DBGFLAGS=-g
   OBJECT_MODE=64
   export OBJECT_MODE
+  SIR_CFLAGS+=-D_THREAD_SAFE
+  SIR_XFLAGS+=-D_THREAD_SAFE
   ifneq "$(findstring gcc,$(CC))" ""
     IBMAIX_GCC=1
     SIR_CFLAGS+=-fPIC -maix64 -ftls-model=global-dynamic
@@ -284,6 +321,10 @@ ifeq ($(IBMXLC),1)
   endif
 endif
 
+ifeq ($(AIXCLANGXX),1)
+  SIR_CFLAGS+=-D_LIBCPP_NO_ABI_TAG
+endif
+
 ifeq ($(AIXTLS),1)
   DBGFLAGS=-g
   SIR_CFLAGS+=-fPIC -ftls-model=global-dynamic
@@ -293,9 +334,8 @@ endif
 
 ################################################################################
 # CompCert-C - https://www.absint.com/compcert - https://compcert.org
-# Tested with (Kalray, Verimag) Chamois CompCert (2023-09-15) with TLS.
-# https://gricad-gitlab.univ-grenoble-alpes.fr/certicompil/
-# Chamois-CompCert/uploads/c92b50379c4dea713bb07a52918a2a53/chamois-tls.diff
+# https://gricad-gitlab.univ-grenoble-alpes.fr/certicompil/Chamois-CompCert
+# Tested with Kalray/Verimag Chamois CompCert as of 2023-11-30
 
 ifneq "$(findstring compcert,$(CC))" ""
   COMPCERT?=1
