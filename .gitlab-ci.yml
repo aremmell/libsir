@@ -3195,7 +3195,7 @@ OpenOSC (GCC):
 
 ################################################################################
 
-OpenOSC (GCC):
+OpenOSC (Clang):
   stage: lint_dynamic
   needs:
     - job: Style check
