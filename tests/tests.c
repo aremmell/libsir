@@ -2498,7 +2498,7 @@ bool roll_and_archive(const char* filename, const char* extension) {
 
         /* write an (approximately) known quantity until we should have rolled */
         size_t written  = 0;
-        size_t linesize = strnlen(line, SIR_MAXMESSAGE);
+        size_t linesize = strnlen_trunc(line, SIR_MAXMESSAGE);
 
         do {
             _sir_eqland(pass, sir_debug("%zu %s", written, line));

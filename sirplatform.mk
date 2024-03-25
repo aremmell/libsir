@@ -50,6 +50,17 @@ ifeq ($(DUMA),1)
 endif
 
 ################################################################################
+# OpenOSC?
+
+ifeq ($(OPENOSC),1)
+  EXTRA_LIBS+=-lopenosc
+  FORTIFY_FLAGS=-U_FORTIFY_SOURCE
+  SIR_CFLAGS+=-include openosc.h
+  SIR_CSTD=-std=gnu11
+  SIR_XSTD=-std=gnu++20
+endif
+
+################################################################################
 # MinGW-w64 and standard Unix
 
 ifneq "$(findstring mingw,$(CC))" ""

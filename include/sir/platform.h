@@ -93,6 +93,12 @@
 #  error "linking DSOs with SafeStack is unsupported; disable SafeStack or enable SIR_NO_PLUGINS"
 # endif
 
+# if defined(__OPENOSC_H__)
+#  define strnlen_trunc(s, l) strlen(s)
+# else
+#  define strnlen_trunc(s, l) strnlen(s, l)
+# endif
+
 # if !defined(_WIN32)
 #  if defined(__STDC_NO_ATOMICS__)
 #   undef __HAVE_ATOMIC_H__

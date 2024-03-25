@@ -874,18 +874,19 @@ bool _sir_syslog_init(const char* name, sir_syslog_dest* ctx) {
         _sir_selflog("ctx->identity is no good; trying name");
         if (_sir_validstrnofail(name)) {
             _sir_selflog("using name");
-            (void)_sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, name, strnlen(name, SIR_MAX_SYSLOG_ID));
+            (void)_sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, name,
+                strnlen_trunc(name, SIR_MAX_SYSLOG_ID));
         } else {
             _sir_selflog("name is no good; trying filename");
             char* appbasename = _sir_getappbasename();
             if (_sir_validstrnofail(appbasename)) {
                 _sir_selflog("filename is good: %s", appbasename);
                 (void)_sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, appbasename,
-                    strnlen(appbasename, SIR_MAX_SYSLOG_ID));
+                    strnlen_trunc(appbasename, SIR_MAX_SYSLOG_ID));
             } else {
                 _sir_selflog("filename no good; using fallback");
                 (void)_sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, SIR_FALLBACK_SYSLOG_ID,
-                    strnlen(SIR_FALLBACK_SYSLOG_ID, SIR_MAX_SYSLOG_ID));
+                    strnlen_trunc(SIR_FALLBACK_SYSLOG_ID, SIR_MAX_SYSLOG_ID));
             }
             _sir_safefree(&appbasename);
         }
@@ -897,7 +898,7 @@ bool _sir_syslog_init(const char* name, sir_syslog_dest* ctx) {
     if (!_sir_validstrnofail(ctx->category)) {
         _sir_selflog("category not set; using fallback");
         (void)_sir_strncpy(ctx->category, SIR_MAX_SYSLOG_CAT, SIR_FALLBACK_SYSLOG_CAT,
-            strnlen(SIR_FALLBACK_SYSLOG_CAT, SIR_MAX_SYSLOG_CAT));
+            strnlen_trunc(SIR_FALLBACK_SYSLOG_CAT, SIR_MAX_SYSLOG_CAT));
     } else {
         _sir_selflog("already have category");
     }
