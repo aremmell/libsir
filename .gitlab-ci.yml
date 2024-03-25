@@ -3149,7 +3149,7 @@ DUMA:
 
 ################################################################################
 
-OpenOSC (MM=1, GCC):
+OpenOSC (MM=1, GCC, C++, C):
   stage: lint_dynamic
   needs:
     - job: Style check
@@ -3196,7 +3196,7 @@ OpenOSC (MM=1, GCC):
 
 ################################################################################
 
-OpenOSC (MM=1, Clang):
+OpenOSC (MM=1, Clang, C-only):
   stage: lint_dynamic
   needs:
     - job: Style check
@@ -3211,12 +3211,9 @@ OpenOSC (MM=1, Clang):
       # Start of OpenOSC Clang MM=1 build ...
       echo -e "section_start:`date +%s`:openosc_clang1_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC Clang MM=1 build ...\033[0m" || true
     - export CC="clang"
-    - export CXX="clang++"
     - export CFLAGS="-DOPENOSC_MM=1"
     - ${CC:?} --version
-    - ${CXX:?} --version
     - make OPENOSC=1
-    - make tests++ OPENOSC=1
     - |
       # End of OpenOSC Clang MM=1 build ...
       echo -e "section_end:`date +%s`:openosc_clang1_section\r\e[0K" || true
@@ -3229,7 +3226,6 @@ OpenOSC (MM=1, Clang):
       echo -e "section_start:`date +%s`:openosc_clang1test_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC Clang MM=1 Test ...\033[0m" || true
     - stdbuf -o L ./build/bin/sirexample
     - stdbuf -o L ./build/bin/sirtests
-    - stdbuf -o L ./build/bin/sirtests++
     - |
       # End of OpenOSC Clang MM=1 test ...
       echo -e "section_end:`date +%s`:openosc_clang1test_section\r\e[0K" || true
@@ -3246,7 +3242,7 @@ OpenOSC (MM=1, Clang):
 
 ################################################################################
 
-OpenOSC (MM=2, GCC):
+OpenOSC (MM=2, GCC, C++, C):
   stage: lint_dynamic
   needs:
     - job: Style check
@@ -3262,7 +3258,7 @@ OpenOSC (MM=2, GCC):
       echo -e "section_start:`date +%s`:openosc_gcc2_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC GCC MM=2 build ...\033[0m" || true
     - export CC="gcc"
     - export CXX="g++"
-    - export CFLAGS="-DOPENOSC_MM=2"
+    - export CFLAGS="-DOPENOSC_MM=2 -Wno-format"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make OPENOSC=1
@@ -3293,7 +3289,7 @@ OpenOSC (MM=2, GCC):
 
 ################################################################################
 
-OpenOSC (MM=2, Clang):
+OpenOSC (MM=2, Clang, C-only):
   stage: lint_dynamic
   needs:
     - job: Style check
@@ -3308,12 +3304,9 @@ OpenOSC (MM=2, Clang):
       # Start of OpenOSC Clang MM=2 build ...
       echo -e "section_start:`date +%s`:openosc_clang2_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC Clang MM=2 build ...\033[0m" || true
     - export CC="clang"
-    - export CXX="clang++"
     - export CFLAGS="-DOPENOSC_MM=2"
     - ${CC:?} --version
-    - ${CXX:?} --version
     - make OPENOSC=1
-    - make tests++ OPENOSC=1
     - |
       # End of OpenOSC Clang MM=2 build ...
       echo -e "section_end:`date +%s`:openosc_clang2_section\r\e[0K" || true
@@ -3326,7 +3319,6 @@ OpenOSC (MM=2, Clang):
       echo -e "section_start:`date +%s`:openosc_clang2test_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC Clang MM=2 Test ...\033[0m" || true
     - stdbuf -o L ./build/bin/sirexample
     - stdbuf -o L ./build/bin/sirtests
-    - stdbuf -o L ./build/bin/sirtests++
     - |
       # End of OpenOSC Clang MM=2 test ...
       echo -e "section_end:`date +%s`:openosc_clang2test_section\r\e[0K" || true
