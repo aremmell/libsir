@@ -3219,9 +3219,6 @@ OpenOSC (MM=1, Clang, C-only):
       echo -e "section_end:`date +%s`:openosc_clang1_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Start of cleanup ...
-      echo -e "section_start:`date +%s`:openosc_clean_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC Clang MM=1 cleanup ...\033[0m" || true
-    - |
       # Start of OpenOSC Clang MM=1 test ...
       echo -e "section_start:`date +%s`:openosc_clang1test_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC Clang MM=1 Test ...\033[0m" || true
     - stdbuf -o L ./build/bin/sirexample
@@ -3311,9 +3308,6 @@ OpenOSC (MM=2, Clang, C-only):
       # End of OpenOSC Clang MM=2 build ...
       echo -e "section_end:`date +%s`:openosc_clang2_section\r\e[0K" || true
     - *BuildInformation
-    - |
-      # Start of cleanup ...
-      echo -e "section_start:`date +%s`:openosc_clean_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC Clang MM=2 cleanup ...\033[0m" || true
     - |
       # Start of OpenOSC Clang MM=2 test ...
       echo -e "section_start:`date +%s`:openosc_clang2test_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC Clang MM=2 Test ...\033[0m" || true
