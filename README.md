@@ -255,7 +255,7 @@ The following **SAST** (*static application*/*analysis security*/*software testi
 | [GCC Static Analyzer](https://gcc.gnu.org/onlinedocs/gcc/Static-Analyzer-Options.html)                             | Coverage-guided symbolic execution static analyzer for C code                      |
 | [GNU Cppi](https://www.gnu.org/software/cppi/)                                                                     | C preprocessor directive linting, indenting, and regularization                    |
 | [GNU Global](https://www.gnu.org/software/global/)                                                                 | Source code indexing and tagging system                                            |
-| [OpenOSC](https://github.com/cisco/OpenOSC)                                                                        | Open Object Size Checking library to detect buffer overflows in C/C++ code         |
+| [OpenOSC](https://github.com/cisco/OpenOSC)                                                                        | Object size checking library to detect buffer overflows in C/C++ code              |
 | [Oracle Developer Studio](https://www.oracle.com/application-development/developerstudio/)                         | Performance, security, and thread analysis tools for C, C++, and Fortran           |
 | [REUSE](https://api.reuse.software/info/github.com/aremmell/libsir)                                                | Verifies compliance with the [REUSE](https://reuse.software/) licensing guidelines |
 | [Semgrep](https://semgrep.dev/)                                                                                    | A fast, open-source, static analysis engine for many languages                     |
