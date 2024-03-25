@@ -3161,27 +3161,58 @@ OpenOSC (GCC):
   script:
     - *Configuration
     - |
-      # Start of OpenOSC GCC build ...
-      echo -e "section_start:`date +%s`:openosc_gcc_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC GCC build ...\033[0m" || true
+      # Start of OpenOSC GCC MM=1 build ...
+      echo -e "section_start:`date +%s`:openosc_gcc1_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC GCC MM=1 build ...\033[0m" || true
     - export CC="gcc"
     - export CXX="g++"
+    - export CFLAGS="-DOPENOSC_MM=1"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make OPENOSC=1
     - make tests++ OPENOSC=1
     - |
-      # End of OpenOSC GCC build ...
-      echo -e "section_end:`date +%s`:openosc_gcc_section\r\e[0K" || true
+      # End of OpenOSC GCC MM=1 build ...
+      echo -e "section_end:`date +%s`:openosc_gcc1_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Start of OpenOSC GCC test ...
-      echo -e "section_start:`date +%s`:openosc_gcctest_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC GCC test ...\033[0m" || true
+      # Start of OpenOSC GCC MM=1 test ...
+      echo -e "section_start:`date +%s`:openosc_gcc1test_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC GCC MM=1 test ...\033[0m" || true
     - stdbuf -o L ./build/bin/sirexample
     - stdbuf -o L ./build/bin/sirtests
     - stdbuf -o L ./build/bin/sirtests++
     - |
-      # End of OpenOSC GCC test ...
-      echo -e "section_end:`date +%s`:openosc_gcctest_section\r\e[0K" || true
+      # End of OpenOSC GCC MM=1 test ...
+      echo -e "section_end:`date +%s`:openosc_gcc1test_section\r\e[0K" || true
+    - *CheckLogRemnants
+    - |
+      # Start of cleanup ...
+      echo -e "section_start:`date +%s`:openosc_clean_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC cleanup ...\033[0m" || true
+    - make distclean
+    - |
+      # End of cleanup ...
+      echo -e "section_end:`date +%s`:openosc_clean_section\r\e[0K" || true
+    - |
+      # Start of OpenOSC MM=2 GCC build ...
+      echo -e "section_start:`date +%s`:openosc_gcc2_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC GCC MM=2 build ...\033[0m" || true
+    - export CC="gcc"
+    - export CXX="g++"
+    - export CFLAGS="-DOPENOSC_MM=2"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make OPENOSC=1
+    - make tests++ OPENOSC=1
+    - |
+      # End of OpenOSC GCC MM=2 build ...
+      echo -e "section_end:`date +%s`:openosc_gcc2_section\r\e[0K" || true
+    - |
+      # Start of OpenOSC GCC MM=2 test ...
+      echo -e "section_start:`date +%s`:openosc_gcc2test_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC GCC MM=2 test ...\033[0m" || true
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests++
+    - |
+      # End of OpenOSC GCC MM=2 test ...
+      echo -e "section_end:`date +%s`:openosc_gcc2test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
@@ -3207,27 +3238,59 @@ OpenOSC (Clang):
   script:
     - *Configuration
     - |
-      # Start of OpenOSC Clang build ...
-      echo -e "section_start:`date +%s`:openosc_Clang_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC Clang build ...\033[0m" || true
+      # Start of OpenOSC Clang MM=1 build ...
+      echo -e "section_start:`date +%s`:openosc_Clang1_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC Clang MM=1 build ...\033[0m" || true
     - export CC="clang"
     - export CXX="clang++"
+    - export CFLAGS="-DOPENOSC_MM=1"
     - ${CC:?} --version
     - ${CXX:?} --version
     - make OPENOSC=1
     - make tests++ OPENOSC=1
     - |
-      # End of OpenOSC Clang build ...
-      echo -e "section_end:`date +%s`:openosc_Clang_section\r\e[0K" || true
+      # End of OpenOSC Clang MM=1 build ...
+      echo -e "section_end:`date +%s`:openosc_Clang1_section\r\e[0K" || true
     - *BuildInformation
     - |
-      # Start of OpenOSC Clang test ...
-      echo -e "section_start:`date +%s`:openosc_clangtest_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC Clang Test ...\033[0m" || true
+      # Start of cleanup ...
+      echo -e "section_start:`date +%s`:openosc_clean_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC Clang MM=1 cleanup ...\033[0m" || true
+    - |
+      # Start of OpenOSC Clang MM=1 test ...
+      echo -e "section_start:`date +%s`:openosc_clang1test_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC Clang MM=1 Test ...\033[0m" || true
     - stdbuf -o L ./build/bin/sirexample
     - stdbuf -o L ./build/bin/sirtests
     - stdbuf -o L ./build/bin/sirtests++
     - |
-      # End of OpenOSC Clang test ...
-      echo -e "section_end:`date +%s`:openosc_clangtest_section\r\e[0K" || true
+      # End of OpenOSC Clang MM=2 test ...
+      echo -e "section_end:`date +%s`:openosc_clang1test_section\r\e[0K" || true
+    - *CheckLogRemnants
+    - make distclean
+    - |
+      # End of cleanup ...
+      echo -e "section_end:`date +%s`:openosc_clean_section\r\e[0K" || true
+    - |
+      # Start of OpenOSC Clang MM=2 build ...
+      echo -e "section_start:`date +%s`:openosc_Clang2_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC Clang MM=2 build ...\033[0m" || true
+    - export CC="clang"
+    - export CXX="clang++"
+    - export CFLAGS="-DOPENOSC_MM=2"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make OPENOSC=1
+    - make tests++ OPENOSC=1
+    - |
+      # End of OpenOSC Clang MM=2 build ...
+      echo -e "section_end:`date +%s`:openosc_Clang2_section\r\e[0K" || true
+    - *BuildInformation
+    - |
+      # Start of OpenOSC Clang MM=2 test ...
+      echo -e "section_start:`date +%s`:openosc_clang2test_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC Clang MM=2 Test ...\033[0m" || true
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests++
+    - |
+      # End of OpenOSC Clang MM=2 test ...
+      echo -e "section_end:`date +%s`:openosc_clang2test_section\r\e[0K" || true
     - *CheckLogRemnants
   dependencies: []
   artifacts:
