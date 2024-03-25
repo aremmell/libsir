@@ -3149,6 +3149,98 @@ DUMA:
 
 ################################################################################
 
+OpenOSC (GCC):
+  stage: lint_dynamic
+  needs:
+    - job: Style check
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/openosc:latest
+  script:
+    - *Configuration
+    - |
+      # Start of OpenOSC GCC build ...
+      echo -e "section_start:`date +%s`:openosc_gcc_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC GCC build ...\033[0m" || true
+    - export CC="gcc"
+    - export CXX="g++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make OPENOSC=1
+    - make tests++ OPENOSC=1
+    - |
+      # End of OpenOSC GCC build ...
+      echo -e "section_end:`date +%s`:openosc_gcc_section\r\e[0K" || true
+    - *BuildInformation
+    - |
+      # Start of OpenOSC GCC test ...
+      echo -e "section_start:`date +%s`:openosc_gcctest_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC GCC test ...\033[0m" || true
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests++
+    - |
+      # End of OpenOSC GCC test ...
+      echo -e "section_end:`date +%s`:openosc_gcctest_section\r\e[0K" || true
+    - *CheckLogRemnants
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+################################################################################
+
+OpenOSC (GCC):
+  stage: lint_dynamic
+  needs:
+    - job: Style check
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/openosc:latest
+  script:
+    - *Configuration
+    - |
+      # Start of OpenOSC Clang build ...
+      echo -e "section_start:`date +%s`:openosc_Clang_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC Clang build ...\033[0m" || true
+    - export CC="clang"
+    - export CXX="clang++"
+    - ${CC:?} --version
+    - ${CXX:?} --version
+    - make OPENOSC=1
+    - make tests++ OPENOSC=1
+    - |
+      # End of OpenOSC Clang build ...
+      echo -e "section_end:`date +%s`:openosc_Clang_section\r\e[0K" || true
+    - *BuildInformation
+    - |
+      # Start of OpenOSC Clang test ...
+      echo -e "section_start:`date +%s`:openosc_clangtest_section[collapsed=true]\r\e[0K\033[0;36mOpenOSC Clang Test ...\033[0m" || true
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirtests++
+    - |
+      # End of OpenOSC Clang test ...
+      echo -e "section_end:`date +%s`:openosc_clangtest_section\r\e[0K" || true
+    - *CheckLogRemnants
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+################################################################################
+
 Oracle Lint:
   stage: lint_static
   needs:
