@@ -874,8 +874,7 @@ bool _sir_syslog_init(const char* name, sir_syslog_dest* ctx) {
         _sir_selflog("ctx->identity is no good; trying name");
         if (_sir_validstrnofail(name)) {
             _sir_selflog("using name");
-            (void)_sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, name,
-                strnlen(name, SIR_MAX_SYSLOG_ID));
+            (void)_sir_strncpy(ctx->identity, SIR_MAX_SYSLOG_ID, name, strnlen(name, SIR_MAX_SYSLOG_ID));
         } else {
             _sir_selflog("name is no good; trying filename");
             char* appbasename = _sir_getappbasename();
