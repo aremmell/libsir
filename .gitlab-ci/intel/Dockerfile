@@ -35,10 +35,11 @@ WORKDIR /
 
 RUN set -x && \
     export PATH="/opt/anaconda/bin:/opt/anaconda/sbin:${PATH:-}" && \
+    conda config --set channel_priority "flexible" && \
     conda build purge && \
     conda update --update-all --yes && \
     conda install --yes "conda-forge::sysroot_linux-64" && \
-    conda install --yes --channel intel "dpcpp_linux-64>=2024.0.3" && \
+    conda install --yes --channel intel "intel/label/validation::dpcpp_linux-64>=2024.1.0" && \
     conda create --name "intelpython3" --channel intel --override-channels "intelpython3_core" --yes && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
