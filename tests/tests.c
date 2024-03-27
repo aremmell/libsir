@@ -1568,7 +1568,7 @@ bool sirtest_filesystem(void) {
         if (NULL != filename) {
             /* _sir_get[base|dir]name() can potentially modify filename,
              * so make a copy for each call. */
-            char* filename2 = strndup(filename, strnlen_trunc(filename, SIR_MAXPATH));
+            char* filename2 = strndup(filename, strnlen(filename, SIR_MAXPATH));
             _sir_eqland(pass, NULL != filename2);
 
             if (NULL != filename2) {
@@ -1644,7 +1644,7 @@ bool sirtest_filesystem(void) {
     };
 
     for (size_t n = 0; n < _sir_countof(dubious_dirnames); n++) {
-        char* tmp = strndup(dubious_dirnames[n], strnlen_trunc(dubious_dirnames[n], SIR_MAXPATH));
+        char* tmp = strndup(dubious_dirnames[n], strnlen(dubious_dirnames[n], SIR_MAXPATH));
         if (NULL != tmp) {
             TEST_MSG("_sir_getdirname(" SIR_WHITE("'%s'") ") = " SIR_WHITE("'%s'") "",
                 tmp, _sir_getdirname(tmp));
@@ -1670,7 +1670,7 @@ bool sirtest_filesystem(void) {
     };
 
     for (size_t n = 0; n < _sir_countof(dubious_filenames); n++) {
-        char* tmp = strndup(dubious_filenames[n], strnlen_trunc(dubious_filenames[n], SIR_MAXPATH));
+        char* tmp = strndup(dubious_filenames[n], strnlen(dubious_filenames[n], SIR_MAXPATH));
         if (NULL != tmp) {
             TEST_MSG("_sir_getbasename(" SIR_WHITE("'%s'") ") = " SIR_WHITE("'%s'") "",
                 tmp, _sir_getbasename(tmp));
@@ -2498,7 +2498,7 @@ bool roll_and_archive(const char* filename, const char* extension) {
 
         /* write an (approximately) known quantity until we should have rolled */
         size_t written  = 0;
-        size_t linesize = strnlen_trunc(line, SIR_MAXMESSAGE);
+        size_t linesize = strnlen(line, SIR_MAXMESSAGE);
 
         do {
             _sir_eqland(pass, sir_debug("%zu %s", written, line));

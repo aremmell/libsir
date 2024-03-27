@@ -94,9 +94,7 @@
 # endif
 
 # if defined(__OPENOSC_H__)
-#  define strnlen_trunc(s, l) strlen(s)
-# else
-#  define strnlen_trunc(s, l) strnlen(s, l)
+#  define SIR_IMPL_STRNLEN
 # endif
 
 # if !defined(_WIN32)
