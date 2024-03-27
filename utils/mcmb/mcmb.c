@@ -1,7 +1,7 @@
 /*
  * mcmb.c
  *
- * Version: 2120.5.05-dps (libcmb 3.5.6)
+ * Version: 2120.5.06-dps (libcmb 3.5.6)
  *
  * -----------------------------------------------------------------------------
  *
@@ -306,7 +306,7 @@ struct cmb_xitem
     if (suffix != NULL && !opt_quiet)                                         \
       (void)fprintf(stdout, "%s", suffix);                                    \
     (void)fprintf(stdout,                                                     \
-      "%s%.*Lf\r\n",                                                          \
+      "%s%.*Lf\n",                                                            \
       opt_quiet ? "" : " = ",                                                 \
       cmb_transform_precision,                                                \
       total);                                                                 \
@@ -413,7 +413,7 @@ static struct cmb_xitem *cmb_transform_find;
     if (suffix != NULL && !opt_quiet)                                         \
       (void)fprintf(stdout, "%s", suffix);                                    \
     (void)fprintf(stdout,                                                     \
-      "%s%.*Lf\r\n",                                                          \
+      "%s%.*Lf\n",                                                            \
       opt_quiet ? "" : " = ",                                                 \
       cmb_transform_precision,                                                \
       total);                                                                 \
@@ -486,7 +486,7 @@ static struct cmb_xitem *cmb_transform_find;
 # define CMB_PARSE_FRAGSIZE 512
 #endif /* ifndef CMB_PARSE_FRAGSIZE */
 
-static const char mcmbver[]         = "2120.5.05-dps";
+static const char mcmbver[]         = "2120.5.06-dps";
 static const char libversion[]      = "libcmb 3.5.6";
 
 /*
@@ -1202,7 +1202,7 @@ CMB_ACTION(cmb_print)
       (void)fprintf(stdout, "%s", suffix);
     }
 
-  (void)fprintf(stdout, "\r\n");
+  (void)fprintf(stdout, "\n");
 
   return 0;
 }
@@ -1789,7 +1789,7 @@ main(int argc, char *argv[])
           /*NOTREACHED*/ /* unreachable */
         }
 
-      (void)fprintf(stdout, "%" PRIu64 "%s", count, "\r\n");
+      (void)fprintf(stdout, "%" PRIu64 "%s", count, "\n");
       FREE(config);
       exit(EXIT_SUCCESS);
       /*NOTREACHED*/ /* unreachable */
@@ -2030,7 +2030,7 @@ main(int argc, char *argv[])
           /*NOTREACHED*/ /* unreachable */
         }
 
-      (void)fprintf(stdout, "%" PRIu64 "%s", count, "\r\n");
+      (void)fprintf(stdout, "%" PRIu64 "%s", count, "\n");
     }
   else
     {

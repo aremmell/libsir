@@ -93,6 +93,10 @@
 #  error "linking DSOs with SafeStack is unsupported; disable SafeStack or enable SIR_NO_PLUGINS"
 # endif
 
+# if defined(__OPENOSC_H__)
+#  define SIR_IMPL_STRNLEN
+# endif
+
 # if !defined(_WIN32)
 #  if defined(__STDC_NO_ATOMICS__)
 #   undef __HAVE_ATOMIC_H__
