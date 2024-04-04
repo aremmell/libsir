@@ -1820,38 +1820,6 @@ Cygwin/x86_64 (G++, GCC):
 
 ################################################################################
 
-Cygwin/i686 (GCC, C-only):
-  stage: build_cygwin
-  needs:
-    - job: Style check
-  tags:
-    - Docker-x64
-    - Linux
-  image:
-    name: registry.gitlab.com/libsir/libsir/base:latest
-  script:
-    - *Configuration
-    - |
-      # Start of Build ...
-      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="i686-pc-cygwin-gcc"
-    - ${CC:?} --version
-    - make
-    - |
-      # End of Build ...
-      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - *BuildInformation
-  dependencies: []
-  artifacts:
-    when: always
-    expire_in: 7 days
-    paths:
-      - build/
-  retry: 2
-  interruptible: true
-
-################################################################################
-
 Coverage:
   stage: coverage
   needs:

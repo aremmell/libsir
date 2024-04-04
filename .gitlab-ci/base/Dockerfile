@@ -203,9 +203,6 @@ RUN set -x && \
   (yes | dnf -y copr enable yselkowitz/cygwin fedora-rawhide-x86_64) && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
       cygport \
-      cygwin32 \
-      cygwin32-binutils \
-      cygwin32-gcc \
       cygwin64 \
       cygwin64-binutils \
       cygwin64-gcc-c++ \
