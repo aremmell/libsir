@@ -163,19 +163,6 @@ RUN set -x && \
   (rpmconf --all --unattended use_maintainer --clean || true) && \
   (curl -fsSL https://coveralls.io/coveralls-linux.tar.gz | tar -zxv -C /usr/bin) && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-      mingw32-binutils \
-      mingw32-boost \
-      mingw32-boost-static \
-      mingw32-cpp \
-      mingw32-crt \
-      mingw32-dlfcn \
-      mingw32-dlfcn-static \
-      mingw32-gcc \
-      mingw32-gcc-c++ \
-      mingw32-headers \
-      mingw32-win-iconv \
-      mingw32-winpthreads \
-      mingw32-winpthreads-static \
       mingw64-binutils \
       mingw64-boost \
       mingw64-boost-static \
