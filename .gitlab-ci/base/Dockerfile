@@ -71,6 +71,7 @@ RUN set -x && \
       cppi \
       croc \
       curl \
+      dos2unix \
       doxygen \
       expect \
       fakeroot \
