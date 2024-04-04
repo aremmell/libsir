@@ -41,11 +41,11 @@ RUN set -x && \
     opam switch chamois-compcert && \
     eval $(opam env) && \
     ./configure -prefix /opt/chamois-compcert x86_64-linux && \
-    make -j $(nproc 2> /dev/null || echo 1) && \
+    make -j "$(nproc 2> /dev/null || echo 1)" && \
     make install && \
     make clean && \
     ./configure -prefix /opt/chamois-compcert-i386 i386-linux && \
-    make -j $(nproc 2> /dev/null || echo 1) && \
+    make -j "$(nproc 2> /dev/null || echo 1)" && \
     make install && \
     make clean && \
     rm -rf /opt/src/*

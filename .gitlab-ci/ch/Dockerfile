@@ -39,7 +39,7 @@ ARG URL2
 RUN set -x && \
     dnf install -y ncurses-compat-libs libxcrypt-compat xdelta moreutils && \
     cd /tmp && \
-    curl -fsSL ${URL1:-http://192.168.1.187:8088/~jhj/cache/chprofessional-8.5.linux64-4.18.0.intel.tar.gz} | \
+    curl -fsSL "${URL1:-http://192.168.1.187:8088/~jhj/cache/chprofessional-8.5.linux64-4.18.0.intel.tar.gz}" | \
         gzip -dc | \
         tar xf - && \
     cd chprofessional-8.5.linux64-4.18.0.intel && \
@@ -53,11 +53,11 @@ RUN set -x && \
     cd && \
     rm -rf /tmp/chprofessional-8.5.linux64-4.18.0.intel && \
     ln -fs /usr/local/ch /opt/ch && \
-    curl -fsSL ${URL2:-http://192.168.1.187:8088/~jhj/cache/ch-apply.tar.gz} | \
+    curl -fsSL "${URL2:-http://192.168.1.187:8088/~jhj/cache/ch-apply.tar.gz}" | \
       gzip -dc | \
       tar xf - && \
     ./apply.sh && \
-    rm -f *.vcdiff && \
+    rm -f ./*.vcdiff && \
     ( rm -f /opt/ch/license/* 2> /dev/null || true ) && \
     dnf -y clean all && \
     rm -rf ~/.cache > /dev/null 2>&1 && \

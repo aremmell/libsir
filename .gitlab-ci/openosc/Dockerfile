@@ -36,7 +36,7 @@ WORKDIR /
 RUN set -x && \
     dnf -y erase 'openosc-\*' || true && \
     cd /tmp && \
-    git clone -v https://github.com/cisco/OpenOSC.git && \
+    git clone https://github.com/cisco/OpenOSC.git && \
     cd OpenOSC && \
     autoreconf -vfi && \
     env CFLAGS="-fPIC -fPIE" ./configure --prefix=/usr && \

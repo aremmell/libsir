@@ -36,7 +36,7 @@ WORKDIR /opt
 ARG URL
 
 RUN set -x && \
-    curl -fsSL ${URL:-https://github.com/johnsonjh/ndk/releases/download/r26c/android-ndk-r28-1160465.tar.lz} | \
+    curl -fsSL "${URL:-https://github.com/johnsonjh/ndk/releases/download/r26c/android-ndk-r28-1160465.tar.lz}" | \
       lzip -dc | tar xvf - && \
     dnf -y clean all && \
     rm -rf ~/.cache && \

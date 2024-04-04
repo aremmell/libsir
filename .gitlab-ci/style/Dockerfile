@@ -36,7 +36,7 @@ WORKDIR /
 RUN set -x && PATH="${HOME:?}/go/bin:${PATH:?}" && \
     export PATH && \
     sudo -s -u user sh -xc \
-      'go install -v github.com/editorconfig-checker/editorconfig-checker/v2/cmd/editorconfig-checker@latest' && \
+      'go install github.com/editorconfig-checker/editorconfig-checker/v2/cmd/editorconfig-checker@latest' && \
     dnf -y clean all && \
     rm -rf ~/.cache > /dev/null 2>&1 && \
     rm -rf /var/tmp/* > /dev/null 2>&1 && \

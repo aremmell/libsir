@@ -46,7 +46,7 @@ RUN set -x && \
     (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
           pvs-studio) || \
     (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-          ${URL:-http://192.168.1.187:8088/~jhj/cache/pvs-studio.x86_64.rpm}) && \
+          "${URL:-http://192.168.1.187:8088/~jhj/cache/pvs-studio.x86_64.rpm}") && \
     printf '%s\n' \
          "[viva64-beta]" \
          "name=Viva64 - PVS-Studio - Beta" \

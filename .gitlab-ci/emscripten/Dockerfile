@@ -45,7 +45,7 @@ RUN set -x && \
     export NONINTERACTIVE=1 && \
     cd /tmp && \
     dnf -y --best --allowerasing --skip-broken upgrade nodejs || true && \
-    wget https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh && \
+    wget -q https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh && \
     sudo -s -u user bash ./install.sh && \
     rm -f ./install.sh && \
     sudo -s -u user bash -c "( set -e; eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; env HOMEBREW_NO_ENV_HINTS=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew developer on )" && \
