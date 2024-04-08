@@ -29,5 +29,5 @@
   git subtree pull                                   \
     --prefix .gitlab-ci/msvc/msvc-wine               \
     https://github.com/mstorsjo/msvc-wine.git master \
-    --squash
+    --squash "${@}"
 )
