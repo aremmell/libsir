@@ -1,0 +1,100 @@
+name: Builds
+on:
+  push:
+  pull_request:
+
+env:
+  # From https://learn.microsoft.com/en-us/windows-hardware/drivers/download-the-wdk#download-icon-step-3-install-wdk
+  WDK_INSTALLER_URL: "https://go.microsoft.com/fwlink/?linkid=2249371"
+
+jobs:
+  test-msvc-wine-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install prerequisites
+        run: |
+          sudo dpkg --add-architecture i386 && sudo apt-get update
+          sudo apt-get install wine64 wine32 python3 msitools ca-certificates cmake ninja-build winbind meson
+          wine64 wineboot
+          curl -s -L -O https://github.com/madewokherd/wine-mono/releases/download/wine-mono-5.1.1/wine-mono-5.1.1-x86.msi
+          wine64 msiexec /i wine-mono-5.1.1-x86.msi
+      - uses: actions/checkout@v4
+      - name: Download MSVC
+        run: |
+          WDK_INSTALLERS=$(./wdk-download.sh --cache /var/tmp/msvc-wine "$WDK_INSTALLER_URL")
+          echo Downloaded WDK installers to $WDK_INSTALLERS
+          ./vsdownload.py --accept-license --dest $(pwd)/msvc --cache /var/tmp/msvc-wine --with-wdk-installers "$WDK_INSTALLERS"
+          ./install.sh $(pwd)/msvc
+      - name: Test using the installed tools
+        run: |
+          HAVE_WDK=1 test/test.sh $(pwd)/msvc
+      # Intentionally not storing any artifacts with the downloaded tools;
+      # the installed files aren't redistributable!
+
+  test-msvc-wine-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Install prerequisites
+        run: |
+          brew install wine-stable msitools cmake ninja meson
+          wine64 wineboot
+          curl -s -L -O https://github.com/madewokherd/wine-mono/releases/download/wine-mono-9.0.0/wine-mono-9.0.0-x86.msi
+          wine64 msiexec /i wine-mono-9.0.0-x86.msi
+      - uses: actions/checkout@v4
+      - name: Download MSVC
+        run: |
+          ./vsdownload.py --accept-license --dest $(pwd)/msvc
+          ./install.sh $(pwd)/msvc
+      - name: Test using the installed tools
+        run: |
+          test/test.sh $(pwd)/msvc
+      # Intentionally not storing any artifacts with the downloaded tools;
+      # the installed files aren't redistributable!
+
+  test-clang-lld:
+    # Ubuntu 22.04 comes with Clang/LLD 14; at least 13 is required for providing
+    # __guard_eh_cont_table and __guard_eh_cont_count which are required with
+    # MSVC 2019 16.8 or newer.
+    # Since Clang 13, it's possible to point out the installed MSVC/WinSDK with
+    # the /winsysroot parameter. LLD also provides the same parameter since
+    # version 15. (For versions 13 and 14, this parameter can still be used
+    # for linking, as long as linking is done via Clang.)
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Install prerequisites
+        run: |
+          sudo apt-get update && sudo apt-get install python3 msitools ca-certificates clang lld llvm cmake ninja-build
+      - name: Set up clang-cl/lld-link symlinks
+        run: |
+          if [ ! -e /usr/bin/clang-cl ]; then
+              sudo ln -s /usr/bin/clang /usr/bin/clang-cl
+          fi
+          if [ ! -e /usr/bin/lld-link ]; then
+              sudo ln -s /usr/bin/lld /usr/bin/lld-link
+          fi
+      - uses: actions/checkout@v4
+      - name: Download MSVC
+        run: |
+          ./vsdownload.py --accept-license --dest $(pwd)/msvc
+          ./install.sh $(pwd)/msvc
+      - name: Test using the installed tools
+        run: |
+          test/test-clang-cl.sh $(pwd)/msvc
+      # Intentionally not storing any artifacts with the downloaded tools;
+      # the installed files aren't redistributable!
+
+  test-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the main msvc-wine docker image
+        run: |
+          docker build -t msvc-wine -f Dockerfile .
+      - name: Test using the installed tools
+        run: |
+          docker build -f Dockerfile.hello .
+      - name: Test using the installation with Clang
+        run: |
+          docker build -f Dockerfile.clang .
+      # Intentionally not pushing the built docker images;
+      # the installed files aren't redistributable!
