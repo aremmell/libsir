@@ -3,7 +3,7 @@
 	"File header comment block": {
 		"scope": "c,cpp",
 		"prefix": "hdr",
-		"body": [
+		"body": [ /* REUSE-IgnoreStart */
 			"/*",
 			" * $TM_FILENAME",
 			" *",
@@ -35,7 +35,7 @@
 			" * -----------------------------------------------------------------------------",
 			" */",
 			"",
-		],
+		], /* REUSE-IgnoreEnd */
 		"description": [
 			"Inserts a file header comment block for files that are *NOT*",
 			" intended to be parsed as a '@file' by Doxygen."
@@ -45,7 +45,7 @@
 	"File header comment block (Doxygen)": {
 		"scope": "c,cpp",
 		"prefix": "doxyhdr",
-		"body": [
+		"body": [ /* REUSE-IgnoreStart */
 			"/**",
 			" * @file $TM_FILENAME",
 			" *",
@@ -81,7 +81,7 @@
 			" * -----------------------------------------------------------------------------",
 			" */",
 			"",
-		],
+		], /* REUSE-IgnoreEnd */
 		"description": [
 			"Inserts a file header comment block for files that are intended to be parsed as a ",
 			"'@file' by Doxygen."
