@@ -4,8 +4,8 @@ on:
   pull_request:
 
 env:
-  # See <https://wiki.winehq.org/Mono#Versions> before changing.
-  WINE_MONO_VERSION: "8.1.0"
+  # From https://learn.microsoft.com/en-us/windows-hardware/drivers/download-the-wdk#download-icon-step-3-install-wdk
+  WDK_INSTALLER_URL: "https://go.microsoft.com/fwlink/?linkid=2249371"
 
 jobs:
   test-msvc-wine-linux:
@@ -13,21 +13,21 @@ jobs:
     steps:
       - name: Install prerequisites
         run: |
-          sudo mkdir -pm755 /etc/apt/keyrings
-          sudo wget -nv -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
-          sudo wget -nv -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
-          sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install winehq-stable python3 msitools python3-simplejson python3-six ca-certificates cmake ninja-build winbind meson
-          wget -nv -P /var/tmp https://dl.winehq.org/wine/wine-mono/${WINE_MONO_VERSION}/wine-mono-${WINE_MONO_VERSION}-x86.tar.xz
-          sudo mkdir -p /opt/wine/mono && sudo tar -xf /var/tmp/wine-mono-${WINE_MONO_VERSION}-x86.tar.xz -C /opt/wine/mono
+          sudo dpkg --add-architecture i386 && sudo apt-get update
+          sudo apt-get install wine64 wine32 python3 msitools ca-certificates cmake ninja-build winbind meson
           wine64 wineboot
-      - uses: actions/checkout@v3
+          curl -s -L -O https://github.com/madewokherd/wine-mono/releases/download/wine-mono-5.1.1/wine-mono-5.1.1-x86.msi
+          wine64 msiexec /i wine-mono-5.1.1-x86.msi
+      - uses: actions/checkout@v4
       - name: Download MSVC
         run: |
-          ./vsdownload.py --accept-license --dest $(pwd)/msvc
+          WDK_INSTALLERS=$(./wdk-download.sh --cache /var/tmp/msvc-wine "$WDK_INSTALLER_URL")
+          echo Downloaded WDK installers to $WDK_INSTALLERS
+          ./vsdownload.py --accept-license --dest $(pwd)/msvc --cache /var/tmp/msvc-wine --with-wdk-installers "$WDK_INSTALLERS"
           ./install.sh $(pwd)/msvc
       - name: Test using the installed tools
         run: |
-          test/test.sh $(pwd)/msvc
+          HAVE_WDK=1 test/test.sh $(pwd)/msvc
       # Intentionally not storing any artifacts with the downloaded tools;
       # the installed files aren't redistributable!
 
@@ -36,9 +36,11 @@ jobs:
     steps:
       - name: Install prerequisites
         run: |
-          brew update && brew install wine-stable msitools cmake ninja meson
+          brew install wine-stable msitools cmake ninja meson
           wine64 wineboot
-      - uses: actions/checkout@v3
+          curl -s -L -O https://github.com/madewokherd/wine-mono/releases/download/wine-mono-9.0.0/wine-mono-9.0.0-x86.msi
+          wine64 msiexec /i wine-mono-9.0.0-x86.msi
+      - uses: actions/checkout@v4
       - name: Download MSVC
         run: |
           ./vsdownload.py --accept-license --dest $(pwd)/msvc
@@ -61,7 +63,7 @@ jobs:
     steps:
       - name: Install prerequisites
         run: |
-          sudo apt-get update && sudo apt-get install python3 msitools python3-simplejson python3-six ca-certificates clang lld llvm cmake ninja-build
+          sudo apt-get update && sudo apt-get install python3 msitools ca-certificates clang lld llvm cmake ninja-build
       - name: Set up clang-cl/lld-link symlinks
         run: |
           if [ ! -e /usr/bin/clang-cl ]; then
@@ -70,7 +72,7 @@ jobs:
           if [ ! -e /usr/bin/lld-link ]; then
               sudo ln -s /usr/bin/lld /usr/bin/lld-link
           fi
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Download MSVC
         run: |
           ./vsdownload.py --accept-license --dest $(pwd)/msvc
@@ -84,7 +86,7 @@ jobs:
   test-docker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build the main msvc-wine docker image
         run: |
           docker build -t msvc-wine -f Dockerfile .

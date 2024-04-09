@@ -71,6 +71,7 @@ RUN set -x && \
       cppi \
       croc \
       curl \
+      dos2unix \
       doxygen \
       expect \
       fakeroot \
@@ -202,19 +203,14 @@ RUN set -x && \
 && \
   (yes | dnf -y copr enable yselkowitz/cygwin fedora-rawhide-x86_64) && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-      cygport \
-      cygwin32 \
-      cygwin32-binutils \
-      cygwin32-gcc \
       cygwin64 \
       cygwin64-binutils \
       cygwin64-gcc-c++ \
-      cygwin-w32api-headers \
 && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install wine && \
   mkdir -p /opt && \
   cd /opt && \
-  git clone -v --depth=1 https://github.com/rui314/chibicc && \
+  git clone --depth=1 https://github.com/rui314/chibicc.git && \
   cd chibicc && \
   (sed -i 's/^CFLAGS=/CFLAGS+=/' Makefile || true) && \
   env CFLAGS='-O2 -flto=auto' LDFLAGS='-flto=auto' make test && \
@@ -224,10 +220,10 @@ RUN set -x && \
   strip chibicc && \
   cd / && \
   (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-     --nogpgcheck ${URL:-http://192.168.1.187:8088/~jhj/cache/aocc-compiler.x86_64.rpm}) && \
+     --nogpgcheck "${URL:-http://192.168.1.187:8088/~jhj/cache/aocc-compiler.x86_64.rpm}") && \
   mkdir -p /tmp/duma-build && \
   cd /tmp/duma-build && \
-  git clone -v https://github.com/johnsonjh/duma && \
+  git clone https://github.com/johnsonjh/duma.git && \
   cd duma && \
   make && \
   make install && \

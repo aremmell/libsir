@@ -29,6 +29,7 @@ FROM registry.gitlab.com/libsir/libsir/base:latest
 USER 0
 
 RUN set -x && \
+    export WINEDEBUG=-all && \
     dnf --refresh -y install --setopt=install_weak_deps=True \
         cabextract \
         libwbclient.i686 \
@@ -37,6 +38,7 @@ RUN set -x && \
         samba-winbind \
         unzip \
         zip && \
+    dnf -y clean all && \
     wine64 wineboot --init && \
     while pgrep wineserver > /dev/null; do sleep 10; done
 
@@ -46,6 +48,7 @@ COPY msvc-wine/lowercase msvc-wine/fixinclude msvc-wine/install.sh msvc-wine/vsd
 COPY msvc-wine/wrappers/* ./wrappers/
 
 RUN set -x && \
+    export WINEDEBUG=-all && \
     stdbuf -o L \
         env PYTHONUNBUFFERED=1 ./vsdownload.py \
         --accept-license \

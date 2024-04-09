@@ -1,14 +1,6 @@
-#!/usr/bin/env sh
-################################################################################
+#!/bin/bash
 #
-# Version: 2.2.5
-#
-################################################################################
-#
-# SPDX-License-Identifier: ISC
-#
-# Copyright (c) 2018-2024 Martin Storsjo
-# Copyright (c) 2018-2024 Jeffrey H. Johnson <trnsz@pobox.com>
+# Copyright (c) 2024 Sergey Kvachonok
 #
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -21,13 +13,17 @@
 # WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-#
-################################################################################
 
-( set -eu;                                           \
-  cd ../..;                                          \
-  git subtree pull                                   \
-    --prefix .gitlab-ci/msvc/msvc-wine               \
-    https://github.com/mstorsjo/msvc-wine.git master \
-    --squash "${@}"
-)
+. "${0%/*}/test.sh"
+
+for config in Debug Release; do
+    # Trailing slash is required in MSBuild directory properties.
+    OUTDIR="Z:${CWD}/${config}/"
+    OUTDIR="${OUTDIR//\//\\}"
+
+    EXEC "" ${BIN}msbuild /p:Configuration=${config} \
+      /p:IntDir="${OUTDIR}" /p:OutDir="${OUTDIR}" \
+      "${TESTS}/wdk/test.vcxproj"
+done
+
+EXIT

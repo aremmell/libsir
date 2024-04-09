@@ -36,7 +36,7 @@ WORKDIR /
 ARG URL
 
 RUN set -x && \
-    curl -fsSL ${URL:-http://192.168.1.187:8088/~jhj/cache/oracle126.tar.gz} | \
+    curl -fsSL "${URL:-http://192.168.1.187:8088/~jhj/cache/oracle126.tar.gz}" | \
         pigz -dc | \
         tar xvf - && \
     dnf -y clean all && \

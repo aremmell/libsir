@@ -37,7 +37,7 @@ ARG URL
 
 RUN set -x && \
     cd /opt && \
-    wget ${URL:-http://192.168.1.187:8088/~jhj/cache/OrangeC.zip} && \
+    wget -q "${URL:-http://192.168.1.187:8088/~jhj/cache/OrangeC.zip}" && \
     atool -x OrangeC.zip && \
     env rm OrangeC.zip && \
     dnf -y clean all && \

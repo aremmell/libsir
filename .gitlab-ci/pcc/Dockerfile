@@ -35,7 +35,7 @@ WORKDIR /
 
 RUN set -x && \
     cd /tmp && \
-    git clone -v https://github.com/johnsonjh/pcc-revived.git \
+    git clone https://github.com/johnsonjh/pcc-revived.git \
       -b johnsonjh/rawhide && \
     cd pcc-revived/pcc-libs && \
     mkdir -p /opt/pcc && \

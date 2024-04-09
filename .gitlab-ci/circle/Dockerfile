@@ -41,8 +41,8 @@ RUN set -x && \
               sharutils \
               xdelta && \
     cd /tmp && mkdir -p circle && cd circle && \
-    ( wget -S -v -c -t 0 https://www.circle-lang.org/linux/build_200.tgz || \
-      wget -S -v -c -t 0 ${URL:-http://192.168.1.187:8088/~jhj/cache/build_200.tgz} ) && \
+    ( wget -q https://www.circle-lang.org/linux/build_200.tgz || \
+      wget -q "${URL:-http://192.168.1.187:8088/~jhj/cache/build_200.tgz}" ) && \
     pigz -dvc build_200.tgz | tar xvf - circle && \
     printf '%s\n' \
       'begin 644 circle200.vcdiff'                                        \
