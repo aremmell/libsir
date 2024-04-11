@@ -96,6 +96,7 @@ orstlint.txt
 
 # PVS
 compile_commands.json
+compile_commands.events.json
 *.pvs
 pvsreport/*
 *.PVS-Studio.i

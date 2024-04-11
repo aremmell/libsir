@@ -356,7 +356,7 @@ bool sirtest_failnulls(void) {
         PRINT_EXPECTED_ERROR();
 
     _sir_eqland(pass, sir_init(&si));
-    _sir_eqland(pass, !sir_info(NULL)); //-V618
+    _sir_eqland(pass, !sir_info(NULL)); //-V618 //-V575
 
     if (pass)
         PRINT_EXPECTED_ERROR();
