@@ -51,7 +51,6 @@ RUN set -x && cd ~user && \
     cd Embarcadero/Studio && \
     curl -fsSL "${URL:-http://192.168.1.187:8088/~jhj/cache/EMB23-1-min.tar}" | tar xvf -
 
-
 USER 10000
 
 RUN printf '\n%s\n' "BUILD SUCCESS"
