@@ -49,7 +49,7 @@ RUN set -x && cd ~user && \
     cd .wine/drive_c/Program\ Files\ \(x86\)/ && \
     mkdir -p Embarcadero/Studio && \
     cd Embarcadero/Studio && \
-    curl -fsSL "${URL:-http://192.168.1.187:8088/~jhj/cache/EMB23.tar}" | tar xvf -
+    curl -fsSL "${URL:-http://192.168.1.187:8088/~jhj/cache/EMB23-1-min.tar}" | tar xvf -
 
 USER 10000
 

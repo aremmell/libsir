@@ -2650,11 +2650,11 @@ Windows/x64 (Embarcadero Athens, BCC64X, C-only):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export WINEDEBUG=-all
-    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc64x.exe --version
+    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin64/bcc64x.exe --version
     - mkdir -p build/bin
-    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc64x.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers -std=c11 -Wno-pragma-pack -Wno-unknown-pragmas -Wno-nonportable-include-path -Wno-macro-redefined -Wno-microsoft-anon-tag -I${HOME:-/home/user}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/include/windows/sdk
+    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin64/bcc64x.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers -std=c11 -Wno-pragma-pack -Wno-unknown-pragmas -Wno-nonportable-include-path -Wno-macro-redefined -Wno-microsoft-anon-tag -I${HOME:-/home/user}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/include/windows/sdk -L${HOME:-/home/user}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/lib/win64/release/psdk
     - mv tests.exe build/bin/sirtests.exe
-    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc64x.exe example/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers -std=c11 -Wno-pragma-pack -Wno-unknown-pragmas -Wno-nonportable-include-path -Wno-macro-redefined -Wno-microsoft-anon-tag -I${HOME:-/home/user}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/include/windows/sdk
+    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin64/bcc64x.exe example/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers -std=c11 -Wno-pragma-pack -Wno-unknown-pragmas -Wno-nonportable-include-path -Wno-macro-redefined -Wno-microsoft-anon-tag -I${HOME:-/home/user}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/include/windows/sdk -L${HOME:-/home/user}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/lib/win64/release/psdk
     - mv example.exe build/bin/sirexample.exe
     - |
       # End of Build ...
