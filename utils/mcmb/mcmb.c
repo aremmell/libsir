@@ -1,7 +1,7 @@
 /*
  * mcmb.c
  *
- * Version: 2120.5.07-dps (libcmb 3.5.6)
+ * Version: 2120.5.08-dps (libcmb 3.5.6)
  *
  * -----------------------------------------------------------------------------
  *
@@ -79,10 +79,12 @@
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
-#if defined(__APPLE__)
-# include <xlocale.h>
-#endif
-#include <locale.h>
+#if !defined(NO_LOCALE)
+# if defined(__APPLE__)
+#  include <xlocale.h>
+# endif
+# include <locale.h>
+#endif /* if !defined(NO_LOCALE) */
 
 #if defined(__MACH__) && defined(__APPLE__) && \
   ( defined(__PPC__) || defined(_ARCH_PPC) )
@@ -431,7 +433,7 @@ static struct cmb_xitem *cmb_transform_find;
 # define CMB_PARSE_FRAGSIZE 512
 #endif /* if !defined(CMB_PARSE_FRAGSIZE) */
 
-static const char mcmbver[]         = "2120.5.07-dps";
+static const char mcmbver[]         = "2120.5.08-dps";
 static const char libversion[]      = "libcmb 3.5.6";
 
 /*
@@ -1288,7 +1290,7 @@ static const char
   const char *ret = NULL;
   static /* __thread */ char buf[XSTR_EMAXLEN];
 
-#if defined(__APPLE__) || defined(_AIX) || \
+#if defined(NO_LOCALE) || defined(__APPLE__) || defined(_AIX) || \
       defined(__MINGW32__) || defined(__MINGW64__) || \
         defined(CROSS_MINGW32) || defined(CROSS_MINGW64)
 # if defined(__MINGW32__) || defined(__MINGW64__) || \
@@ -1327,6 +1329,7 @@ static const char
   return ret;
 }
 
+#if !defined(NO_LOCALE)
 static locale_t locale;
 
 static int
@@ -1337,12 +1340,15 @@ init_locale(void)
       return 0;
   return 1;
 }
+#endif /* if !defined(NO_LOCALE) */
 
 int
 main(int argc, char *argv[])
 {
+#if !defined(NO_LOCALE)
   (void)setlocale(LC_ALL, "");
   (void)init_locale();
+#endif /* if !defined(NO_LOCALE) */
   uint8_t free_find         = FALSE;
   uint8_t opt_empty         = FALSE;
   uint8_t opt_find          = FALSE;
