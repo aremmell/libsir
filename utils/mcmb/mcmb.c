@@ -1,7 +1,7 @@
 /*
  * mcmb.c
  *
- * Version: 2120.5.06-dps (libcmb 3.5.6)
+ * Version: 2120.5.08-dps (libcmb 3.5.6)
  *
  * -----------------------------------------------------------------------------
  *
@@ -79,39 +79,37 @@
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
-#if defined(__APPLE__)
-# include <xlocale.h>
-#endif
-#include <locale.h>
+#if !defined(NO_LOCALE)
+# if defined(__APPLE__)
+#  include <xlocale.h>
+# endif
+# include <locale.h>
+#endif /* if !defined(NO_LOCALE) */
 
 #if defined(__MACH__) && defined(__APPLE__) && \
   ( defined(__PPC__) || defined(_ARCH_PPC) )
 # include <mach/clock.h>
 # include <mach/mach.h>
-# ifdef MACOSXPPC
+# if defined(MACOSXPPC)
 #  undef MACOSXPPC
-# endif /* ifdef MACOSXPPC */
+# endif /* if defined(MACOSXPPC) */
 # define MACOSXPPC 1
 #endif /* if defined(__MACH__) && defined(__APPLE__) &&
            ( defined(__PPC__) || defined(_ARCH_PPC) ) */
-#ifndef TRUE
+#if !defined(TRUE)
 # define TRUE 1
-#endif /* ifndef TRUE */
+#endif /* if !defined(TRUE) */
 
-#ifndef FALSE
+#if !defined(FALSE)
 # define FALSE 0
-#endif /* ifndef FALSE */
+#endif /* if !defined(FALSE) */
 
 #undef FREE
-#ifdef TESTING
-# define FREE(p) free(p)
-#else
-# define FREE(p) do  \
-  {                  \
-    free((p));       \
-    (p) = NULL;      \
+#define FREE(p) do  \
+  {                 \
+    free((p));      \
+    (p) = NULL;     \
   } while(0)
-#endif /* ifdef TESTING */
 
 /*
  * Version information
@@ -179,57 +177,6 @@ static int cmb_print(struct cmb_config *_config, uint64_t _seq,
                      uint32_t _nitems, char *_items[]);
 
 static const char *libcmb_version(int _type);
-
-/*
- * TESTING realloc
- */
-
-#ifdef TESTING
-void *trealloc(void *ptr, size_t size);
-
-void *
-trealloc(void *ptr, size_t size)
-{
-  void *r = realloc(ptr, size);
-
-  if (r != ptr)
-    {
-      return r;
-    }
-  else if (r)
-    {
-      void *rm = malloc(size);
-      if (!rm)
-        {
-          (void)fprintf(
-            stderr,
-            "\rFATAL: Out of memory?! Aborting at %s[%s:%d]\r\n",
-            __func__, __FILE__, __LINE__);
-          abort();
-          /*NOTREACHED*/ /* unreachable */
-        }
-
-      if (!memcpy(rm, r, size))
-        {
-          (void)fprintf(
-            stderr,
-            "\rFATAL: Impossible memcpy result! Aborting at %s[%s:%d]\r\n",
-            __func__, __FILE__, __LINE__);
-          abort();
-          /*NOTREACHED*/ /* unreachable */
-        }
-      FREE(r);
-      return rm;
-    }
-  else
-    {
-      return r;
-    }
-}
-
-# undef realloc
-# define realloc trealloc
-#endif /* ifdef TESTING */
 
 /*
  * Inline functions
@@ -427,27 +374,27 @@ static struct cmb_xitem *cmb_transform_find;
  * Limits
  */
 
-#ifdef BUFSIZE_MAX
+#if defined(BUFSIZE_MAX)
 # undef BUFSIZE_MAX
-#endif /* ifdef BUFSIZE_MAX */
+#endif /* if defined(BUFSIZE_MAX) */
 #define BUFSIZE_MAX ( 2 * 1024 * 1024 )
 
 /*
  * Buffer size for read(2) input
  */
 
-#ifndef MAXPHYS
+#if !defined(MAXPHYS)
 # define MAXPHYS ( 128 * 1024 )
-#endif /* ifndef MAXPHYS */
+#endif /* if !defined(MAXPHYS) */
 
 /*
  * Memory strategy threshold, in pages; if physmem
  * is larger than this, use a large buffer.
  */
 
-#ifndef PHYSPAGES_THRESHOLD
+#if !defined(PHYSPAGES_THRESHOLD)
 # define PHYSPAGES_THRESHOLD ( 32 * 1024 )
-#endif /* ifndef PHYSPAGES_THRESHOLD */
+#endif /* if !defined(PHYSPAGES_THRESHOLD) */
 
 /*
  * Small (default) buffer size in bytes.
@@ -460,33 +407,33 @@ static struct cmb_xitem *cmb_transform_find;
  * Math macros
  */
 
-#ifdef MIN
+#if defined(MIN)
 # undef MIN
-#endif /* ifdef MIN */
+#endif /* if defined(MIN) */
 #define MIN(x, y) (( x ) < ( y ) ? ( x ) : ( y ))
 
-#ifdef MAX
+#if defined(MAX)
 # undef MAX
-#endif /* ifdef MAX */
+#endif /* if defined(MAX) */
 #define MAX(x, y) (( x ) > ( y ) ? ( x ) : ( y ))
 
-#ifndef MAXPATHLEN
+#if !defined(MAXPATHLEN)
 # if defined(PATH_MAX) && PATH_MAX > 1024
 #  define MAXPATHLEN PATH_MAX
 # else
 #  define MAXPATHLEN 1024
 # endif /* if defined(PATH_MAX) && PATH_MAX > 1024 */
-#endif /* ifndef MAXPATHLEN */
+#endif /* if !defined(MAXPATHLEN) */
 
-#ifndef PATH_MAX
+#if !defined(PATH_MAX)
 # define PATH_MAX MAXPATHLEN
-#endif /* ifndef PATH_MAX */
+#endif /* if !defined(PATH_MAX) */
 
-#ifndef CMB_PARSE_FRAGSIZE
+#if !defined(CMB_PARSE_FRAGSIZE)
 # define CMB_PARSE_FRAGSIZE 512
-#endif /* ifndef CMB_PARSE_FRAGSIZE */
+#endif /* if !defined(CMB_PARSE_FRAGSIZE) */
 
-static const char mcmbver[]         = "2120.5.06-dps";
+static const char mcmbver[]         = "2120.5.08-dps";
 static const char libversion[]      = "libcmb 3.5.6";
 
 /*
@@ -1207,9 +1154,9 @@ CMB_ACTION(cmb_print)
   return 0;
 }
 
-#ifndef UINT_MAX
+#if !defined(UINT_MAX)
 # define UINT_MAX 0xFFFFFFFF
-#endif /* ifndef UINT_MAX */
+#endif /* if !defined(UINT_MAX) */
 
 static char version[] = "3.9.5";
 
@@ -1226,13 +1173,13 @@ static char *pgm; /* set to argv[0] by main() */
 static uint8_t opt_quiet    = FALSE;
 static const char digit[11] = "0123456789";
 
-#ifndef __attribute__
+#if !defined(__attribute__)
 # define __attribute__(xyz) /* Ignore */
-#endif /* ifndef __attribute__ */
+#endif /* if !defined(__attribute__) */
 
-#ifndef _Noreturn
+#if !defined(_Noreturn)
 # define _Noreturn __attribute__ (( noreturn ))
-#endif /* ifndef _Noreturn */
+#endif /* if !defined(_Noreturn) */
 
 /*
  * Function prototypes
@@ -1328,9 +1275,9 @@ static struct cmb_xfdef cmb_xforms[] = {
 
 #if ( defined(__VERSION__) && defined(__GNUC__) ) || \
   ( defined(__VERSION__) && defined(__clang_version__) )
-# ifndef HAVE_BUILD
+# if !defined(HAVE_BUILD)
 #  define HAVE_BUILD
-# endif /* ifndef HAVE_BUILD */
+# endif /* if !defined(HAVE_BUILD) */
 #endif /* if  ( defined(__VERSION__) && defined(__GNUC__) ) ||
            ( defined(__VERSION__) && defined(__clang_version__) */
 
@@ -1343,7 +1290,7 @@ static const char
   const char *ret = NULL;
   static /* __thread */ char buf[XSTR_EMAXLEN];
 
-#if defined(__APPLE__) || defined(_AIX) || \
+#if defined(NO_LOCALE) || defined(__APPLE__) || defined(_AIX) || \
       defined(__MINGW32__) || defined(__MINGW64__) || \
         defined(CROSS_MINGW32) || defined(CROSS_MINGW64)
 # if defined(__MINGW32__) || defined(__MINGW64__) || \
@@ -1382,6 +1329,7 @@ static const char
   return ret;
 }
 
+#if !defined(NO_LOCALE)
 static locale_t locale;
 
 static int
@@ -1392,12 +1340,15 @@ init_locale(void)
       return 0;
   return 1;
 }
+#endif /* if !defined(NO_LOCALE) */
 
 int
 main(int argc, char *argv[])
 {
+#if !defined(NO_LOCALE)
   (void)setlocale(LC_ALL, "");
   (void)init_locale();
+#endif /* if !defined(NO_LOCALE) */
   uint8_t free_find         = FALSE;
   uint8_t opt_empty         = FALSE;
   uint8_t opt_find          = FALSE;
@@ -1406,9 +1357,9 @@ main(int argc, char *argv[])
   uint8_t opt_range         = FALSE;
   uint8_t opt_total         = FALSE;
   uint8_t opt_version       = FALSE;
-#ifdef HAVE_BUILD
+#if defined(HAVE_BUILD)
   uint8_t opt_build         = FALSE;
-#endif /* ifdef HAVE_BUILD */
+#endif /* if defined(HAVE_BUILD) */
   const char *cp            = NULL;
   char *cmdver              = version;
   char *endptr              = NULL;
@@ -1449,9 +1400,9 @@ main(int argc, char *argv[])
       /*NOTREACHED*/ /* unreachable */
     }
 
-#ifndef bzero
+#if !defined(bzero)
 # define bzero(b,len) ((void)memset((b), '\0', (len)), (void) 0)
-#endif /* ifndef bzero */
+#endif /* if !defined(bzero) */
 
   bzero(config, sizeof ( struct cmb_config ));
 
@@ -1620,11 +1571,11 @@ main(int argc, char *argv[])
           opt_total = TRUE;
           break;
 
-#ifdef HAVE_BUILD
+#if defined(HAVE_BUILD)
         case 'V': /* build */
           opt_build = TRUE;
           break;
-#endif /* ifdef HAVE_BUILD */
+#endif /* if defined(HAVE_BUILD) */
 
         case 'v': /* version */
           opt_version = TRUE;
@@ -1650,24 +1601,23 @@ main(int argc, char *argv[])
     {
       (void)fprintf(stdout, "mcmb: (miniature) combinatorics utility"
         " %s (cmb %s + %s)\r\n", mcmbver, cmdver, libver);
-#ifdef HAVE_BUILD
+#if defined(HAVE_BUILD)
       if (!opt_build)
         {
-#endif /* ifdef HAVE_BUILD */
+#endif /* if defined(HAVE_BUILD) */
           FREE(config);
           exit(EXIT_SUCCESS);
           /*NOTREACHED*/ /* unreachable */
-#ifdef HAVE_BUILD
+#if defined(HAVE_BUILD)
         }
-#endif /* ifdef HAVE_BUILD */
+#endif /* if defined(HAVE_BUILD) */
     }
 
-#ifdef HAVE_BUILD
+#if defined(HAVE_BUILD)
   if (opt_build)
     {
-# ifdef __VERSION__
-#  ifdef __GNUC__
-#   if !defined (__clang_version__) || defined(__INTEL_COMPILER)
+# if defined(__VERSION__) && defined(__GNUC__)
+#  if !defined (__clang_version__) || defined(__INTEL_COMPILER)
       char xcmp[2];
       /* cppcheck-suppress invalidPrintfArgType_s */
       (void)sprintf(xcmp, "%.1s", __VERSION__ );
@@ -1681,20 +1631,19 @@ main(int argc, char *argv[])
           /* cppcheck-suppress invalidPrintfArgType_s */
           (void)fprintf(stdout, "Compiler: GCC %s\r\n", __VERSION__ );
         }
-#   else
-      /* cppcheck-suppress invalidPrintfArgType_s */
-      (void)fprintf(stdout, "Compiler: Clang %s\r\n", __clang_version__ );
-#   endif /* if !defined (__clang_version__) || defined(__INTEL_COMPILER) */
 #  else
       /* cppcheck-suppress invalidPrintfArgType_s */
+      (void)fprintf(stdout, "Compiler: Clang %s\r\n", __clang_version__ );
+#  endif /* if !defined (__clang_version__) || defined(__INTEL_COMPILER) */
+# else
+      /* cppcheck-suppress invalidPrintfArgType_s */
       (void)fprintf(stdout, "Compiler: %s\r\n", __VERSION__ );
-#  endif /* ifdef __GNUC__ */
-# endif /* ifdef __VERSION__ */
+# endif /* if defined(__VERSION__) && defined(__GNUC__) */
       FREE(config);
       exit(EXIT_SUCCESS);
       /*NOTREACHED*/ /* unreachable */
     }
-#endif /* ifdef HAVE_BUILD */
+#endif /* if defined(HAVE_BUILD) */
 
   /*
    * At least one non-option argument is required unless `-e' is given
@@ -2215,10 +2164,10 @@ cmb_usage(void)
     "-s text", "Suffix text for each line of output");
   (void)fprintf(stderr, OPTFMT,
     "-t", "Print total number of combinations and exit");
-#ifdef HAVE_BUILD
+#if defined(HAVE_BUILD)
   (void)fprintf(stderr, OPTFMT,
     "-V", "Print build information and exit");
-#endif
+#endif /* if defined(HAVE_BUILD) */
   (void)fprintf(stderr, OPTFMT,
     "-v", "Print version information and exit");
   (void)fprintf(stderr, OPTFMT,
