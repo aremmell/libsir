@@ -1,7 +1,7 @@
 /*
  * mcmb.c
  *
- * Version: 2120.5.08-dps (libcmb 3.5.6)
+ * Version: 2120.5.09-dps (libcmb 3.5.6)
  *
  * -----------------------------------------------------------------------------
  *
@@ -104,7 +104,9 @@
 # define FALSE 0
 #endif /* if !defined(FALSE) */
 
-#undef FREE
+#if defined(FREE)
+# undef FREE
+#endif /* if defined(FREE) */
 #define FREE(p) do  \
   {                 \
     free((p));      \
@@ -433,7 +435,7 @@ static struct cmb_xitem *cmb_transform_find;
 # define CMB_PARSE_FRAGSIZE 512
 #endif /* if !defined(CMB_PARSE_FRAGSIZE) */
 
-static const char mcmbver[]         = "2120.5.08-dps";
+static const char mcmbver[]         = "2120.5.09-dps";
 static const char libversion[]      = "libcmb 3.5.6";
 
 /*
