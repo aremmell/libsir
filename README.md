@@ -278,6 +278,7 @@ Additional tools used for libsir development and testing include:
 | [Luke Stackwalker](https://lukestackwalker.sf.net/)                                                          | Sampling C/C++ code profiler for Microsoft Windows                  |
 | [PurifyPlus™](https://www.teamblue.unicomsi.com/products/purifyplus/)                                        | Run-time analysis tools for application reliability and performance |
 | [ShellCheck](https://www.shellcheck.net/)                                                                    | A static analysis tool for Unix shell scripts                       |
+| [Smatch](https://repo.or.cz/w/smatch.git)                                                                    | Smatch (Source Matcher) is a static analysis tool for C code        |
 | [SoftIntegration Ch](https://www.softintegration.com/)                                                       | C/C++ interpreter and interactive platform for scientific computing |
 | [Very Sleepy](http://www.codersnotes.com/sleepy/)                                                            | Sampling CPU profiler for Microsoft Windows applications            |
 | [Vftrace](https://github.com/SX-Aurora/Vftrace)                                                              | A performance profiling library with a focus on HPC applications    |
