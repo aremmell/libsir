@@ -701,7 +701,7 @@ int _sir_resolvepath(const char* restrict path, char* restrict buffer, size_t si
                 --end;
             if (((end - cursor) + 1UL + pathlen + 1UL) <= sizeof(tmp)) {
                 (void)memcpy(tmp, cursor, end - cursor);
-                tmp[end - cursor] = '/';
+                tmp[end - cursor] = '/'; // nosemgrep
                 (void)memcpy(tmp + (end - cursor) + 1, path, pathlen + 1);
                 if (realpath(tmp, tmp2))
                     break;
