@@ -152,7 +152,7 @@ RUN set -x && \
       zip \
       zpaq \
 && \
-  curl -fsSL https://rpm.nodesource.com/setup_21.x | bash - && \
+  curl -fsSL https://rpm.nodesource.com/setup_22.x | bash - && \
   dnf install -y --setopt=install_weak_deps=True --setopt=keepcache=True nodejs && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True \
     --skip-broken --best --allowerasing group install \
