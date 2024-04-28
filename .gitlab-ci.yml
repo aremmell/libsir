@@ -2834,7 +2834,7 @@ Clang Sanitizer (UB, 64-bit, C-only):
 
 ################################################################################
 
-Clang Sanitizer (Memory, C-only):
+Clang Sanitizer (Memory, 64-bit, C-only):
   stage: lint_dynamic
   needs:
     - job: Style check
