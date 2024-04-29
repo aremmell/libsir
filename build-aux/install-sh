@@ -57,6 +57,7 @@ scriptversion=2020-11-14.01; # UTC
 tab='	'
 nl='
 '
+# nosemgrep
 IFS=" $tab$nl"
 
 # Set DOITPROG to "echo" to test this script.
@@ -411,11 +412,13 @@ do
       esac
 
       oIFS=$IFS
+      # nosemgrep
       IFS=/
       set -f
       set fnord $dstdir
       shift
       set +f
+      # nosemgrep
       IFS=$oIFS
 
       prefixes=
