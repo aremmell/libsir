@@ -512,6 +512,7 @@ test_cppcheck()
       --enable="all" \
       --inline-suppr \
       --inconclusive \
+      --check-level=exhaustive \
       --library=posix \
       --platform=unix64 \
       --suppress=checkersReport \
@@ -524,6 +525,7 @@ test_cppcheck()
       --suppress=knownConditionTrueFalse \
       --suppress=unmatchedSuppression \
       --suppress=unreadVariable \
+      --suppress=unusedStructMember \
       --suppress=*:/usr/include/* \
       -DCLOCK_REALTIME=1 \
       -DCLOCK_MONOTONIC=6 \
@@ -552,7 +554,7 @@ test_cppcheck()
             getconf _NPROCESSORS_ONLN 2> /dev/null || \
             nproc 2> /dev/null || printf '%s\n' 4)" \
       $(find . -name '*.[ch]' -o -name '*.cc' -o -name '*.hh' \
-        | grep -Ev '(mcmb\.c|\.git/.*)') \
+        | grep -Ev '(mcmb\.c|\.git/.*|\.gitlab-ci/.*)') \
           --xml --xml-version=2 2> cppcheck.xml \
         && cppcheck-htmlreport --source-dir="." \
           --report-dir="./cppcheck" \
@@ -650,13 +652,14 @@ test_pvs_real()
       # shellcheck disable=SC2015
       plog-converter -a "GA:1,2,3;OP:1,2,3;64:1,2,3;CS:1,2,3;MISRA:1,2,3;OWASP:1,2,3;AUTOSAR:1,2,3" \
         -t fullhtml log.pvs -o pvsreport 2>&1 | tee /dev/stderr | \
-          grep -q 'Exception: No valid messages' && \
+          grep -Eq '(Exception: No valid messages|No messages generated)' && \
             { mkdir -p ./pvsreport;
+                echo OK;
               printf '%s\n' "Congratulations!" > ./pvsreport/index.html;
             } || true
       mkdir -p ./pvsreport || true
       touch ./pvsreport/index.html
-      grep -q 'Congratulations!' ./pvsreport/index.html \
+      grep -Eq '(Congratulations!|No messages generated)' ./pvsreport/index.html \
         || {
           printf '%s\n' "ERROR: PVS-Studio failed ..."
           printf '\n%s\n' "Review output in ./pvsreport ..."

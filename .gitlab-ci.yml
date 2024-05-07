@@ -255,7 +255,7 @@ Linux/i686 (G++, GCC):
 
 ################################################################################
 
-.Linux/x86_64 (musl-libc, G++, GCC):
+Linux/x86_64 (musl-libc, GCC, C-only):
   stage: build_linux
   needs:
     - job: Style check
@@ -270,8 +270,9 @@ Linux/i686 (G++, GCC):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export CC="musl-gcc"
+    - export LDFLAGS="-static"
     - ${CC:?} --version
-    - make
+    - make SIR_NO_PLUGINS=1
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -279,8 +280,8 @@ Linux/i686 (G++, GCC):
     - |
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - ./build/bin/sirexample
-    - ./build/bin/sirtests
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
     - |
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
