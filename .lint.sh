@@ -654,11 +654,12 @@ test_pvs_real()
         -t fullhtml log.pvs -o pvsreport 2>&1 | tee /dev/stderr | \
           grep -Eq '(Exception: No valid messages|No messages generated)' && \
             { mkdir -p ./pvsreport;
+                echo OK;
               printf '%s\n' "Congratulations!" > ./pvsreport/index.html;
             } || true
       mkdir -p ./pvsreport || true
       touch ./pvsreport/index.html
-      grep -q 'Congratulations!' ./pvsreport/index.html \
+      grep -Eq '(Congratulations!|No messages generated)' ./pvsreport/index.html \
         || {
           printf '%s\n' "ERROR: PVS-Studio failed ..."
           printf '\n%s\n' "Review output in ./pvsreport ..."
