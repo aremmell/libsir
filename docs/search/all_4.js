@@ -6,7 +6,7 @@ var searchData=
   ['data_3',['data',['../structsir__threadpool__job.html#a77b8d07917b5c1ae32f72f7ce71a6d8c',1,'sir_threadpool_job']]],
   ['debug_4',['debug',['../classsir_1_1default__adapter.html#a5c8728d42da733f00f5c0ce939978228',1,'sir::default_adapter']]],
   ['default_5fadapter_5',['default_adapter',['../classsir_1_1default__adapter.html',1,'sir']]],
-  ['default_5flogger_6',['default_logger',['../namespacesir.html#a2e7cab525e97a45497b7e849b4990a03',1,'sir']]],
+  ['default_5flogger_6',['default_logger',['../namespacesir.html#ac3c8132d7d64f839a8eebb8f91c3d43c',1,'sir']]],
   ['default_5fpolicy_7',['default_policy',['../classsir_1_1default__policy.html',1,'sir']]],
   ['defaults_8',['Defaults',['../group__default.html',1,'']]],
   ['defaults_2eh_9',['defaults.h',['../defaults_8h.html',1,'']]],

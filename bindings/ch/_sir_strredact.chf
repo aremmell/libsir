@@ -33,7 +33,7 @@
 
 char*
 _sir_strredact(char *str, const char *sub, const char c) {
-    void*  fptr;
+    void* fptr;
     char* retval;
 
     fptr = dlsym(_Chsir_handle, "_sir_strredact_chdl");
