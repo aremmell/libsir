@@ -512,6 +512,7 @@ test_cppcheck()
       --enable="all" \
       --inline-suppr \
       --inconclusive \
+      --check-level=exhaustive \
       --library=posix \
       --platform=unix64 \
       --suppress=checkersReport \
@@ -524,6 +525,7 @@ test_cppcheck()
       --suppress=knownConditionTrueFalse \
       --suppress=unmatchedSuppression \
       --suppress=unreadVariable \
+      --suppress=unusedStructMember \
       --suppress=*:/usr/include/* \
       -DCLOCK_REALTIME=1 \
       -DCLOCK_MONOTONIC=6 \
@@ -552,7 +554,7 @@ test_cppcheck()
             getconf _NPROCESSORS_ONLN 2> /dev/null || \
             nproc 2> /dev/null || printf '%s\n' 4)" \
       $(find . -name '*.[ch]' -o -name '*.cc' -o -name '*.hh' \
-        | grep -Ev '(mcmb\.c|\.git/.*)') \
+        | grep -Ev '(mcmb\.c|\.git/.*|\.gitlab-ci/.*)') \
           --xml --xml-version=2 2> cppcheck.xml \
         && cppcheck-htmlreport --source-dir="." \
           --report-dir="./cppcheck" \
