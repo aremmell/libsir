@@ -652,7 +652,7 @@ test_pvs_real()
       # shellcheck disable=SC2015
       plog-converter -a "GA:1,2,3;OP:1,2,3;64:1,2,3;CS:1,2,3;MISRA:1,2,3;OWASP:1,2,3;AUTOSAR:1,2,3" \
         -t fullhtml log.pvs -o pvsreport 2>&1 | tee /dev/stderr | \
-          grep -q 'Exception: No valid messages' && \
+          grep -Eq '(Exception: No valid messages|No messages generated)' && \
             { mkdir -p ./pvsreport;
               printf '%s\n' "Congratulations!" > ./pvsreport/index.html;
             } || true
