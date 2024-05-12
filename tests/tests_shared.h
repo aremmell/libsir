@@ -227,7 +227,7 @@ void print_test_summary(size_t tgt_tests, size_t passed, double elapsed);
 /** Prints a message if any tests failed, announcing the failed test(s). */
 void print_failed_test_intro(size_t tgt_tests, size_t passed);
 
-/** Printes a message containing the name of a failed test. */
+/** Prints a message containing the name of a failed test. */
 void print_failed_test(const char* const name);
 
 /**

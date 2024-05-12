@@ -89,5 +89,5 @@ wevtutil im /rf:${target_dir}\$dll_file /mf:${target_dir}\$dll_file `
     /pf:${target_dir}\$dll_file ".\$provider.man"
 exit-on-failure "failed to register logging provider!"
 
-echo-green ("sucessfully registered logging provider as '$provider'. to unregister, run" +
+echo-green ("successfully registered logging provider as '$provider'. to unregister, run" +
     " 'wevtutil um $provider.man' `ndone.")

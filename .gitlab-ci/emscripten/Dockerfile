@@ -44,7 +44,7 @@ RUN set -x && \
     export UNATTENDED=1 && \
     export NONINTERACTIVE=1 && \
     cd /tmp && \
-    dnf -y --best --allowerasing --skip-broken upgrade nodejs || true && \
+    dnf -y --best upgrade nodejs || true && \
     wget -q https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh && \
     sudo -s -u user bash ./install.sh && \
     rm -f ./install.sh && \

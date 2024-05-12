@@ -975,7 +975,7 @@ bool sirtest_optionssanity(void) {
     _sir_eqland(pass, !_sir_validopts(invalid));
     (void)printf(INDENT_ITEM SIR_WHITE("lowest byte: %08"PRIx32) SIR_EOL, invalid);
 
-    /* gaps inbetween valid options. */
+    /* gaps in between valid options. */
     invalid = 0x0001ff00U & ~(SIRO_NOTIME | SIRO_NOHOST | SIRO_NOLEVEL | SIRO_NONAME |
                              SIRO_NOMSEC | SIRO_NOPID | SIRO_NOTID  | SIRO_NOHDR);
     _sir_eqland(pass, !_sir_validopts(invalid));
@@ -1129,7 +1129,7 @@ bool sirtest_mutexsanity(void) {
 
         (void)print_test_error(pass, pass);
 
-        (void)printf(INDENT_ITEM SIR_WHITE("destryoing...") SIR_EOL);
+        (void)printf(INDENT_ITEM SIR_WHITE("destroying...") SIR_EOL);
         _sir_eqland(pass, _sir_mutexdestroy(&m1));
 
         (void)print_test_error(pass, pass);

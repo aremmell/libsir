@@ -316,7 +316,7 @@ var searchData=
   ['sl_5fidentity_313',['sl_identity',['../structsir__update__config__data.html#a58f88542d9e282860be66fcbba694223',1,'sir_update_config_data']]],
   ['std_5fformat_314',['std_format',['../namespacesir_1_1tests.html#aaf745facf6a22357d78827e5e5105626',1,'sir::tests']]],
   ['std_5fformat_5fadapter_315',['std_format_adapter',['../classsir_1_1std__format__adapter.html',1,'sir']]],
-  ['std_5fformat_5flogger_316',['std_format_logger',['../namespacesir.html#a761e9525ba93e5eb99533ef06a8a6b3a',1,'sir']]],
+  ['std_5fformat_5flogger_316',['std_format_logger',['../namespacesir.html#a50f9ed69f68f697c0839d6ea235f3685',1,'sir']]],
   ['std_5fiostream_5fadapter_317',['std_iostream_adapter',['../classsir_1_1std__iostream__adapter.html',1,'sir']]],
   ['std_5fiostream_5fformat_318',['std_iostream_format',['../namespacesir_1_1tests.html#ab2d06b735ad2009d320c24227d346367',1,'sir::tests']]],
   ['str_319',['str',['../structsir__level__style__tuple.html#a5f67704e0d74d266d0a5d2d3c9459816',1,'sir_level_style_tuple']]],
