@@ -1249,6 +1249,7 @@ p2(uint64_t x)
 {
   return x == ( x & -x );
 }
+
 static inline uint64_t
 urand64(void)
 {
