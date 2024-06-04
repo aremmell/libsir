@@ -4351,7 +4351,7 @@ FreeBSD/amd64 (Clang++, Clang):
     - export CXX="/usr/local/bin/clang++18"
     - export CFLAGS="-I/usr/local/include"
     - export CXXFLAGS="-I/usr/local/include"
-    - export LDFLAGS="-Wl,-rpath=/usr/local/llvm17/lib/ -L/usr/local/llvm17/lib/ -L/usr/local/lib"
+    - export LDFLAGS="-Wl,-rpath=/usr/local/llvm18/lib/ -L/usr/local/llvm18/lib/ -L/usr/local/lib"
     - freebsd-version -kru | xargs
     - ${CC:?} --version
     - ${CXX:?} --version
