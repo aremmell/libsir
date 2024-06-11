@@ -1027,7 +1027,7 @@ bool _sir_syslog_write(sir_level level, const sirbuf* buf, const sir_syslog_dest
         return _sir_handlewin32err(GetLastError());
 
     DWORD write = 1UL;
-    wchar_t* wmsg = calloc(sizeof(wchar_t), wlen);
+    wchar_t* wmsg = calloc(wlen, sizeof(wchar_t));
     if (NULL != wmsg) {
         int conv = MultiByteToWideChar(CP_UTF8, 0UL, buf->message, (int)msg_len, wmsg, wlen);
         if (conv > 0) {
