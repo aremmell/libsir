@@ -3777,61 +3777,6 @@ Linux/x86_64 (NVIDIA HPC SDK C, Fedora Python):
 
 ################################################################################
 
-Linux/x86_64 (Intel oneAPI, Intel Python):
-  stage: build_python
-  needs:
-    - job: Style check
-    - job: Linux/x86_64 (Intel oneAPI, ICPX, ICX)
-  tags:
-    - Docker-x64
-    - Linux
-  image:
-    name: registry.gitlab.com/libsir/libsir/intel:latest
-  script:
-    - *Configuration
-    - |
-      # Start of Build ...
-      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export PATH="${PATH:-}:/opt/anaconda/bin:/opt/anaconda/sbin"
-    - source /opt/anaconda/bin/activate intelpython3
-    - export WPEDANTIC="-Wno-gnu-include-next -Wno-tautological-constant-compare"
-    - export CC="icx"
-    - command -v python3
-    - $(command -v python3) --version
-    - swig -version
-    - ${CC:?} --version
-    - make
-    - cd bindings/python
-    - make
-    - |
-      # End of Build ...
-      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - |
-      # Start of Test ...
-      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - stdbuf -o L ./sirtest.py
-    - stdbuf -o L cat sir-python.log
-    - |
-      # End of Test ...
-      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
-  dependencies: []
-  artifacts:
-    when: always
-    expire_in: 7 days
-    paths:
-      - build/
-      - bindings/python/*.so
-      - bindings/python/build/
-      - bindings/python/sir.py
-      - bindings/python/*.log
-      - bindings/python/*cache*
-      - bindings/python/*wrap.c
-      - logs/
-  retry: 2
-  interruptible: true
-
-################################################################################
-
 Linux/x86_64 (GCC, conda-forge Python):
   stage: build_python
   needs:
