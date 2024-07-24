@@ -39,8 +39,7 @@ RUN set -x && \
     conda build purge && \
     conda update --update-all --yes && \
     conda install --yes "conda-forge::sysroot_linux-64" && \
-    conda install --yes --channel intel "dpcpp_linux-64>=2024.1.0" && \
-    conda create --name "intelpython3" --channel intel --override-channels "intelpython3_core" --yes && \
+    conda install --yes --channel "https://software.repos.intel.com/python/conda/" "dpcpp_linux-64>=2024.1.0" && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
