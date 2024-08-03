@@ -1,0 +1,50 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2018-2024 Jeffrey H. Johnson <trnsz@pobox.com>
+# Copyright (c) 2018-2024 Ryan M. Lederman <lederman@gmail.com>
+
+version = 1
+SPDX-PackageName = "libsir"
+SPDX-PackageSupplier = "Ryan M. Lederman <lederman@gmail.com>"
+SPDX-PackageDownloadLocation = "https://github.com/aremmell/libsir"
+
+[[annotations]]
+path = "docs/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = ["2018-2024 Ryan M. Lederman <lederman@gmail.com>", "2018-2024 Jeffrey H. Johnson <trnsz@pobox.com>"]
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ".github/ISSUE_TEMPLATE/**.md"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2018-2024 Ryan M. Lederman <lederman@gmail.com>"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = "msvs/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2018-2024 Ryan M. Lederman <lederman@gmail.com>"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ".vscode/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2018-2024 Ryan M. Lederman <lederman@gmail.com>"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = "sir.code-workspace"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2018-2024 Ryan M. Lederman <lederman@gmail.com>"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = "library.json"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2018-2024 Ryan M. Lederman <lederman@gmail.com>"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ".gitlab-ci/msvc/msvc-wine/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = ["2019-2024 Martin Storsjo", "2024 Sergey Kvachonok"]
+SPDX-License-Identifier = "ISC"
