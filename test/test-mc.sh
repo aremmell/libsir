@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2023 Huang Qinjin
+# Copyright (c) 2024 Mark Harmstone
 #
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -17,33 +17,33 @@
 . "${0%/*}/test.sh"
 
 
-MSVCDIR=$(. "${BIN}msvcenv.sh" && echo $MSVCDIR)
-MSVCDIR=${MSVCDIR//\\//}
-MSVCDIR=${MSVCDIR#z:}
-
-CMAKE_ARGS=(
-    -DMSVCDIR="$MSVCDIR"
-    -DCMAKE_BUILD_TYPE=RelWithDebInfo
-    -DCMAKE_SYSTEM_NAME=Windows
+cat >test-mc.mc <<EOF
+SeverityNames=(
+    Success=0x0:STATUS_SEVERITY_SUCCESS
+    Informational=0x1:STATUS_SEVERITY_INFORMATIONAL
+    Warning=0x2:STATUS_SEVERITY_WARNING
+    Error=0x3:STATUS_SEVERITY_ERROR
 )
 
-case $OSTYPE in
-    darwin*)
-        CMAKE_ARGS+=(
-            # No winbind package available on macOS.
-            # https://github.com/mstorsjo/msvc-wine/issues/6
-            -DCMAKE_MSVC_DEBUG_INFORMATION_FORMAT=Embedded
-        ) ;;
-esac
+LanguageNames=(English=0x409:MSG00409)
 
-EXEC "" CC=${BIN}cl CXX=${BIN}cl RC=${BIN}rc cmake -S"$TESTS" -GNinja "${CMAKE_ARGS[@]}"
-EXEC "" ninja -v
+MessageIdTypedef=DWORD
 
-# Rerun ninja to make sure that dependencies aren't broken.
-EXEC ninja-rerun ninja -d explain -v
-DIFF ninja-rerun.out - <<EOF || cat ninja-rerun.err
-ninja: no work to do.
+MessageId=0x100
+Severity=Informational
+SymbolicName=MSG_FOO
+Language=English
+foo
+.
+
+MessageId=0x101
+Severity=Warning
+SymbolicName=MSG_BAR
+Language=English
+bar
+.
 EOF
 
+EXEC "" ${BIN}mc test-mc.mc
 
 EXIT
