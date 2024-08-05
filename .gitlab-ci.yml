@@ -1250,7 +1250,7 @@ Android/x86_64 (API Level 35, Clang++, Clang):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
-    - export LDFLAGS="-static"
+    - export LDFLAGS="-static -Wl,-z,max-page-size=16384"
     - export CC="x86_64-linux-android35-clang"
     - export CXX="x86_64-linux-android35-clang++"
     - ${CC:?} --version
@@ -1349,6 +1349,7 @@ Android/ARM64 (API Level 35, Clang++, Clang):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export PATH="/opt/android-ndk/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH:?}"
+    - export LDFLAGS="-Wl,-z,max-page-size=16384"
     - export CC="aarch64-linux-android35-clang"
     - export CXX="aarch64-linux-android35-clang++"
     - ${CC:?} --version
