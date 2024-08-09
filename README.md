@@ -276,6 +276,7 @@ Additional tools used for libsir development and testing include:
 | [Frama-C](https://frama-c.com/)                                                                              | Framework for Modular Analysis of C programs                        |
 | [Intel® VTune™ Profiler](https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler.html) | Performance analysis and profiling tools for Intel systems          |
 | [Luke Stackwalker](https://lukestackwalker.sf.net/)                                                          | Sampling C/C++ code profiler for Microsoft Windows                  |
+| [NetBSD lint(1)](https://man.netbsd.org/lint.1)                                                              | A C (C90/C99/C11/C17/C23) program verifier                          |
 | [PurifyPlus™](https://www.teamblue.unicomsi.com/products/purifyplus/)                                        | Run-time analysis tools for application reliability and performance |
 | [ShellCheck](https://www.shellcheck.net/)                                                                    | A static analysis tool for Unix shell scripts                       |
 | [Smatch](https://repo.or.cz/w/smatch.git)                                                                    | Smatch (Source Matcher) is a static analysis tool for C code        |
