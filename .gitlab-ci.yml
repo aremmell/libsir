@@ -3474,6 +3474,7 @@ Node.js/WebAssembly (Emscripten, Em++, Emcc):
   tags:
     - Docker-x64
     - Linux
+    - AVX
   image:
     name: registry.gitlab.com/libsir/libsir/emscripten:latest
   script:
@@ -3528,6 +3529,7 @@ Node.js/JavaScript (Emscripten, Em++, Emcc):
   tags:
     - Docker-x64
     - Linux
+    - AVX
   image:
     name: registry.gitlab.com/libsir/libsir/emscripten:latest
   script:
