@@ -115,6 +115,9 @@
 #    undef __HAVE_ATOMIC_H__
 #   endif
 #  endif
+#  if defined(__circle_lang__)
+#   undef __HAVE_ATOMIC_H__
+#  endif
 #  if defined(SUNLINT)
 #   undef __HAVE_ATOMIC_H__
 #  endif
