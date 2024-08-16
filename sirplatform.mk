@@ -370,7 +370,7 @@ ifneq "$(findstring circle,$(CXX))" ""
 endif
 
 ifeq ($(CIRCLECPP),1)
-  CXXFLAGS+=-DSIR_NO_STD_FORMAT=1
+  CXXFLAGS+=-DSIR_NO_STD_IOSTREAM=1
   WPEDANTIC=
 endif
 

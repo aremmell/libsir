@@ -37,9 +37,9 @@ ARG URL
 
 RUN set -x && \
     cd /tmp && mkdir -p circle && cd circle && \
-    ( wget -q https://www.circle-lang.org/linux/build_208.tgz || \
-      wget -q "${URL:-http://192.168.1.187:8088/~jhj/cache/build_208.tgz}" ) && \
-    gzip -dc build_208.tgz | tar xvf - circle && \
+    ( wget -q https://www.circle-lang.org/linux/build_210.tgz || \
+      wget -q "${URL:-http://192.168.1.187:8088/~jhj/cache/build_210.tgz}" ) && \
+    gzip -dc build_210.tgz | tar xvf - circle && \
     cp -f circle /usr/bin/circle && \
     chmod a+x /usr/bin/circle && \
     strip --strip-all /usr/bin/circle && \

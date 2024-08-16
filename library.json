@@ -3,7 +3,7 @@
     "version": "2.2.5",
     "description": "Standard Incident Reporter: The best logging library on the planet.",
     "keywords": "log,logging,logger,logfile",
-    "repoistory": {
+    "repository": {
         "type": "git",
         "url": "https://github.com/aremmell/libsir.git"
     },
