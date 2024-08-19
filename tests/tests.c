@@ -87,6 +87,8 @@ static const sir_cl_arg cl_args[] = {
 
 static sir_cl_config cl_cfg = {0};
 
+#include "tests_malloc_bsd.h"
+
 int main(int argc, char** argv) {
 #if defined(__HAIKU__) && !defined(DEBUG)
     disable_debugger(1);
