@@ -1,5 +1,5 @@
 /*
- * tests_malloc.h
+ * tests_malloc_bsd.h
  *
  * Version: 2.2.5
  *
@@ -29,59 +29,27 @@
  * -----------------------------------------------------------------------------
  */
 
-#ifndef _SIR_TESTS_MALLOC_H_INCLUDED
-# define _SIR_TESTS_MALLOC_H_INCLUDED
+#ifndef _SIR_TESTS_MALLOC_BSD_H_INCLUDED
+# define _SIR_TESTS_MALLOC_BSD_H_INCLUDED
 
-# if defined(MTMALLOC)
-#  include <mtmalloc.h>
-#  if !defined(DEBUG)
-mallocctl(MTDOUBLEFREE, 0);
+# if defined(__FreeBSD__) && defined(DEBUG)
+#  if !(__FreeBSD_version < 1000011)
+const char *malloc_conf = "abort:true,confirm_conf:true,junk:true";
 #  else
-mallocctl(MTDOUBLEFREE, 1);
-mallocctl(MTINITBUFFER, 1);
-mallocctl(MTDEBUGPATTERN, 1);
+const char *malloc_conf = "JR";
 #  endif
 # endif
 
-# if !defined(DEBUG_MALLOC_FILL_BYTE)
-#  define DEBUG_MALLOC_FILL_BYTE 0x2E
+# if defined(__NetBSD__) && defined(DEBUG)
+const char *malloc_conf = "abort:true,junk:true";
 # endif
 
-# if defined(DUMA)
-#  if defined(DUMA_EXPLICIT_INIT)
-duma_init();
-#  endif
-#  if defined(DUMA_MIN_ALIGNMENT)
-#   if DUMA_MIN_ALIGNMENT > 0
-DUMA_SET_ALIGNMENT(DUMA_MIN_ALIGNMENT);
-#   endif
-#  endif
-DUMA_SET_FILL(DEBUG_MALLOC_FILL_BYTE);
-# endif
-
-# if defined(DEBUG)
-#  if defined(__GLIBC__)
-#   if !defined(_GNU_SOURCE)
-#    define _GNU_SOURCE 1
-#   endif
-#   if !defined(DUMA)
-#    include <malloc.h>
-#   endif
-#   if GLIBC_VERSION >= 20400 && defined(M_PERTURB)
-mallopt(M_PERTURB, DEBUG_MALLOC_FILL_BYTE);
-#   endif
-#   if defined(M_CHECK_ACTION)
-mallopt(M_CHECK_ACTION, 3);
-#   endif
+# if defined(__OpenBSD__)
+#  if defined(DEBUG)
+char *malloc_options = "CFGJRU";
+#  else
+char *malloc_options = "j";
 #  endif
 # endif
 
-# if defined(__WIN__) && defined(DEBUG) && defined(_DEBUG)
-#  if defined(_CRTDBG_CHECK_ALWAYS_DF) && \
-      defined(_CRTDBG_DELAY_FREE_MEM_DF) && \
-      defined(_CRTDBG_LEAK_CHECK_DF)
-_CrtSetDbgFlag(_CRTDBG_CHECK_ALWAYS_DF | _CRTDBG_DELAY_FREE_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-#  endif
-# endif
-
-#endif /* !_SIR_TESTS_MALLOC_H_INCLUDED */
+#endif /* !_SIR_TESTS_MALLOC_BSD_H_INCLUDED */

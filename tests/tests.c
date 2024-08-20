@@ -33,6 +33,7 @@
 //-V:_sir_logv:575
 
 #include "tests.h"
+#include "tests_malloc_bsd.h"
 
 static sir_test sir_tests[] = {
     {SIR_CL_PERFNAME,           sirtest_perf, false, true},
