@@ -46,7 +46,7 @@ const char *malloc_conf = "abort:true,junk:true";
 
 # if defined(__OpenBSD__)
 #  if defined(DEBUG)
-char *malloc_options = "CFGJRSU";
+char *malloc_options = "CFGJRU";
 #  else
 char *malloc_options = "j";
 #  endif
