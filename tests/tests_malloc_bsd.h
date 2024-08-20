@@ -34,15 +34,22 @@
 
 # if defined(__FreeBSD__) && defined(DEBUG)
 #  if !(__FreeBSD_version < 1000011)
-#   include <malloc_np.h>
 const char *malloc_conf = "abort:true,confirm_conf:true,junk:true";
 #  else
 const char *malloc_conf = "JR";
 #  endif
 # endif
 
-# if defined(__OpenBSD__) && defined(DEBUG)
-char *malloc_options = "CFGRSU";
+# if defined(__NetBSD__) && defined(DEBUG)
+const char *malloc_conf = "abort:true,junk:true";
+# endif
+
+# if defined(__OpenBSD__)
+#  if defined(DEBUG)
+char *malloc_options = "CFGJRSU";
+#  else
+char *malloc_options = "j";
+#  endif
 # endif
 
 #endif /* !_SIR_TESTS_MALLOC_BSD_H_INCLUDED */
