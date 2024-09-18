@@ -3387,14 +3387,15 @@ Linux/x86_64 (uClibc-ng, G++, GCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export PATH="${HOME:?}/x-tools/x86_64-pc-linux-uclibc/x86_64-pc-linux-uclibc/bin:${HOME:?}/x-tools/x86_64-pc-linux-uclibc/bin:${PATH:?}"
+    - export PATH="${HOME:?}/x-tools/x86_64-loca-linux-uclibc/x86_64-local-linux-uclibc/bin:${HOME:?}/x-tools/x86_64-local-linux-uclibc/bin:${PATH:?}"
+    - export CTNG_LD_IS="gold"
     - export LDFLAGS="-static"
-    - export CC="x86_64-pc-linux-uclibc-gcc"
-    - export CXX="x86_64-pc-linux-uclibc-g++"
+    - export CC="x86_64-local-linux-uclibc-gcc"
+    - export CXX="x86_64-local-linux-uclibc-g++"
     - ${CC:?} --version
     - ${CXX:?} --version
-    - make SIR_NO_PLUGINS=1
-    - make tests++ SIR_NO_PLUGINS=1
+    - make SIR_NO_SHARED=1
+    - make tests++ SIR_NO_SHARED=1
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
