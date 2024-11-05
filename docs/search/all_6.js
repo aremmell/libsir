@@ -6,7 +6,7 @@ var searchData=
   ['fmt_3',['fmt',['../structsir__level__str__pair.html#abb5bc77ea76db28a9896bad436e4f2d6',1,'sir_level_str_pair']]],
   ['fmt_5fformat_4',['fmt_format',['../namespacesir_1_1tests.html#a89d68cd63083102fedee80ae3b5c3c11',1,'sir::tests']]],
   ['fmt_5fformat_5fadapter_5',['fmt_format_adapter',['../classsir_1_1fmt__format__adapter.html',1,'sir']]],
-  ['fmt_5flogger_6',['fmt_logger',['../namespacesir.html#a6ca56fffad9f46909d2df3e7664fc72d',1,'sir']]],
+  ['fmt_5flogger_6',['fmt_logger',['../namespacesir.html#abcbcc21fee81bc437c75083b90688e6a',1,'sir']]],
   ['fn_7',['fn',['../structsir__threadpool__job.html#a03b1cec323ce1973b55356fd9e374322',1,'sir_threadpool_job::fn'],['../structsir__test.html#a97462eb5ce36fd1356a8a7ba8124194e',1,'sir_test::fn']]],
   ['func_8',['func',['../structsir_1_1error__info.html#a61fbf2aa83f633e14d555d776678293c',1,'sir::error_info::func'],['../group__publictypes.html#af4a1521a69e33827d65f58ae91652eea',1,'sir_errorinfo::func']]],
   ['functions_9',['Functions',['../group__publicfuncs.html',1,'']]]

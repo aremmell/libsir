@@ -15,12 +15,12 @@ var sir_8hh =
     [ "sir::DerivedFromPolicy", "conceptsir_1_1_derived_from_policy.html", null ],
     [ "sir::DerivedFromStreamBuf", "conceptsir_1_1_derived_from_stream_buf.html", null ],
     [ "sir::DerivedFromT", "conceptsir_1_1_derived_from_t.html", null ],
-    [ "boost_logger", "sir_8hh.html#a27b8dfbb87bdf40379a55b9d4bb105b5", null ],
-    [ "default_logger", "sir_8hh.html#ac3c8132d7d64f839a8eebb8f91c3d43c", null ],
-    [ "fmt_logger", "sir_8hh.html#a6ca56fffad9f46909d2df3e7664fc72d", null ],
-    [ "iostream_logger", "sir_8hh.html#ae34b82a699369460553c660f4b2bcba3", null ],
+    [ "boost_logger", "sir_8hh.html#a9a3c14fe6dc0ce95abd6a5d823f3dada", null ],
+    [ "default_logger", "sir_8hh.html#afea168ed2dc59a4b8ab004364a6f4112", null ],
+    [ "fmt_logger", "sir_8hh.html#abcbcc21fee81bc437c75083b90688e6a", null ],
+    [ "iostream_logger", "sir_8hh.html#adf1c3a7184436b3e0e7145325e867f0a", null ],
     [ "NthTypeOf", "sir_8hh.html#af7e07997ea6e1fd2886a5ddc09eb91f7", null ],
-    [ "std_format_logger", "sir_8hh.html#a50f9ed69f68f697c0839d6ea235f3685", null ],
+    [ "std_format_logger", "sir_8hh.html#ae08772b1ec0bd141c79d99fc4ba2d6ce", null ],
     [ "all_derived_from_t", "sir_8hh.html#a5f417c5e60499d22d51b5128a66dbe1a", null ],
     [ "throw_on_policy", "sir_8hh.html#aeeaffc9b61a4a185d0376489c7424119", null ]
 ];

@@ -1,7 +1,5 @@
 var group__tests =
 [
-    [ "sir", "namespacesir.html", null ],
-    [ "sir::tests", "namespacesir_1_1tests.html", null ],
     [ "sirtest_errorsanity", "group__tests.html#ga1d9150c929ba0b79bf06592563ea81e1", null ],
     [ "sirtest_exceedmaxsize", "group__tests.html#ga90b7633a39946d2c201758aafbce43fa", null ],
     [ "sirtest_failaftercleanup", "group__tests.html#gabf5a4643e79df2f6b06956ffd6a465ab", null ],
