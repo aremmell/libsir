@@ -3387,7 +3387,7 @@ Linux/x86_64 (uClibc-ng, G++, GCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export PATH="${HOME:?}/x-tools/x86_64-loca-linux-uclibc/x86_64-local-linux-uclibc/bin:${HOME:?}/x-tools/x86_64-local-linux-uclibc/bin:${PATH:?}"
+    - export PATH="${HOME:?}/x-tools/x86_64-local-linux-uclibc/x86_64-local-linux-uclibc/bin:${HOME:?}/x-tools/x86_64-local-linux-uclibc/bin:${PATH:?}"
     - export CTNG_LD_IS="gold"
     - export LDFLAGS="-static"
     - export CC="x86_64-local-linux-uclibc-gcc"
@@ -4247,11 +4247,11 @@ FreeBSD/amd64 (G++, GCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin/gcc13"
-    - export CXX="/usr/local/bin/g++13"
+    - export CC="/usr/local/bin/gcc14"
+    - export CXX="/usr/local/bin/g++14"
     - export CFLAGS="-I/usr/local/include"
     - export CXXFLAGS="-I/usr/local/include"
-    - export LDFLAGS="-Wl,-rpath=/usr/local/lib/gcc13 -L/usr/local/lib/gcc13 -L/usr/local/lib"
+    - export LDFLAGS="-Wl,-rpath=/usr/local/lib/gcc14 -L/usr/local/lib/gcc14 -L/usr/local/lib"
     - freebsd-version -kru | xargs
     - ${CC:?} --version
     - ${CXX:?} --version
@@ -4295,11 +4295,11 @@ FreeBSD/amd64 (Clang++, Clang):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin/clang18"
-    - export CXX="/usr/local/bin/clang++18"
+    - export CC="/usr/local/bin/clang19"
+    - export CXX="/usr/local/bin/clang++19"
     - export CFLAGS="-I/usr/local/include"
     - export CXXFLAGS="-I/usr/local/include"
-    - export LDFLAGS="-Wl,-rpath=/usr/local/llvm18/lib/ -L/usr/local/llvm18/lib/ -L/usr/local/lib"
+    - export LDFLAGS="-Wl,-rpath=/usr/local/llvm19/lib/ -L/usr/local/llvm19/lib/ -L/usr/local/lib"
     - freebsd-version -kru | xargs
     - ${CC:?} --version
     - ${CXX:?} --version
@@ -4451,9 +4451,9 @@ FreeBSD/amd64 (GCC, FreeBSD Python):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin/gcc13"
+    - export CC="/usr/local/bin/gcc14"
     - export CFLAGS="-I/usr/local/include"
-    - export LDFLAGS="-Wl,-rpath=/usr/local/lib/gcc13 -L/usr/local/lib/gcc13 -L/usr/local/lib"
+    - export LDFLAGS="-Wl,-rpath=/usr/local/lib/gcc14 -L/usr/local/lib/gcc14 -L/usr/local/lib"
     - freebsd-version -kru | xargs
     - command -v python3
     - $(command -v python3) --version
