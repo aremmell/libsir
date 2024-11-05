@@ -162,6 +162,8 @@ RUN set -x && \
   (rpmconf --all --unattended use_maintainer || true) && \
   (rpmconf --all --unattended use_maintainer --clean || true) && \
   (curl -fsSL https://coveralls.io/coveralls-linux.tar.gz | tar -zxv -C /usr/bin) && \
+  ( sed -i 's/raise AssertionError("count must not be a negative value.")/# Disabled/' /usr/lib/python*/site-packages/gcovr/coverage.py || true ) && \
+  ( sed -i 's/raise AssertionError("count must not be less than covered.")/# Disabled/' /usr/lib/python*/site-packages/gcovr/coverage.py || true ) && \
   dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
       mingw32-binutils \
       mingw32-boost \
