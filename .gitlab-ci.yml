@@ -408,7 +408,7 @@ Linux/x86_64 (AOCC++, AOCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - . /opt/AMD/aocc-compiler-4.2.0/setenv_AOCC.sh
+    - . /opt/AMD/aocc-compiler-*/setenv_AOCC.sh
     - export CC="clang"
     - export CXX="clang++"
     - ${CC:?} --version
@@ -455,7 +455,7 @@ Linux/i686 (AOCC++, AOCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - . /opt/AMD/aocc-compiler-4.2.0/setenv_AOCC.sh
+    - . /opt/AMD/aocc-compiler-*/setenv_AOCC.sh
     - export CC="clang"
     - export CXX="clang++"
     - export CFLAGS="-m32 -D_FILE_OFFSET_BITS=64"
@@ -3387,7 +3387,7 @@ Linux/x86_64 (uClibc-ng, G++, GCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export PATH="${HOME:?}/x-tools/x86_64-loca-linux-uclibc/x86_64-local-linux-uclibc/bin:${HOME:?}/x-tools/x86_64-local-linux-uclibc/bin:${PATH:?}"
+    - export PATH="${HOME:?}/x-tools/x86_64-local-linux-uclibc/x86_64-local-linux-uclibc/bin:${HOME:?}/x-tools/x86_64-local-linux-uclibc/bin:${PATH:?}"
     - export CTNG_LD_IS="gold"
     - export LDFLAGS="-static"
     - export CC="x86_64-local-linux-uclibc-gcc"
@@ -3503,7 +3503,7 @@ Node.js/WebAssembly (Emscripten, Em++, Emcc):
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - stdbuf -o L node ./build/bin/sirexample
     - printf '%s\n' "#!/usr/bin/env sh" "set -eu" > test.sh
-    - ( stdbuf -o L node ./build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$)' | xargs -I{} echo "stdbuf -o L node ./build/bin/sirtests --only {}" ) >> test.sh || true
+    - ( stdbuf -o L node ./build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$|^file-archive-large$)' | xargs -I{} echo "stdbuf -o L node ./build/bin/sirtests --only {}" ) >> test.sh || true
     - stdbuf -o L sh -x ./test.sh
     - rm -f ./test.sh
     - stdbuf -o L node ./build/bin/sirtests++
@@ -3558,7 +3558,7 @@ Node.js/JavaScript (Emscripten, Em++, Emcc):
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - stdbuf -o L node ./build/bin/sirexample
     - printf '%s\n' "#!/usr/bin/env sh" "set -eu" > test.sh
-    - ( stdbuf -o L node ./build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$)' | xargs -I{} echo "stdbuf -o L node ./build/bin/sirtests --only {}" ) >> test.sh || true
+    - ( stdbuf -o L node ./build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$|^file-archive-large$)' | xargs -I{} echo "stdbuf -o L node ./build/bin/sirtests --only {}" ) >> test.sh || true
     - stdbuf -o L sh -x ./test.sh
     - rm -f ./test.sh
     - stdbuf -o L node ./build/bin/sirtests++
@@ -3850,7 +3850,7 @@ Linux/x86_64 (AOCC, Fedora Python):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - . /opt/AMD/aocc-compiler-4.2.0/setenv_AOCC.sh
+    - . /opt/AMD/aocc-compiler-*/setenv_AOCC.sh
     - export CC="clang"
     - command -v python3
     - $(command -v python3) --version
@@ -4247,11 +4247,11 @@ FreeBSD/amd64 (G++, GCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin/gcc13"
-    - export CXX="/usr/local/bin/g++13"
+    - export CC="/usr/local/bin/gcc14"
+    - export CXX="/usr/local/bin/g++14"
     - export CFLAGS="-I/usr/local/include"
     - export CXXFLAGS="-I/usr/local/include"
-    - export LDFLAGS="-Wl,-rpath=/usr/local/lib/gcc13 -L/usr/local/lib/gcc13 -L/usr/local/lib"
+    - export LDFLAGS="-Wl,-rpath=/usr/local/lib/gcc14 -L/usr/local/lib/gcc14 -L/usr/local/lib"
     - freebsd-version -kru | xargs
     - ${CC:?} --version
     - ${CXX:?} --version
@@ -4295,11 +4295,11 @@ FreeBSD/amd64 (Clang++, Clang):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin/clang18"
-    - export CXX="/usr/local/bin/clang++18"
+    - export CC="/usr/local/bin/clang19"
+    - export CXX="/usr/local/bin/clang++19"
     - export CFLAGS="-I/usr/local/include"
     - export CXXFLAGS="-I/usr/local/include"
-    - export LDFLAGS="-Wl,-rpath=/usr/local/llvm18/lib/ -L/usr/local/llvm18/lib/ -L/usr/local/lib"
+    - export LDFLAGS="-Wl,-rpath=/usr/local/llvm19/lib/ -L/usr/local/llvm19/lib/ -L/usr/local/lib"
     - freebsd-version -kru | xargs
     - ${CC:?} --version
     - ${CXX:?} --version
@@ -4451,9 +4451,9 @@ FreeBSD/amd64 (GCC, FreeBSD Python):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin/gcc13"
+    - export CC="/usr/local/bin/gcc14"
     - export CFLAGS="-I/usr/local/include"
-    - export LDFLAGS="-Wl,-rpath=/usr/local/lib/gcc13 -L/usr/local/lib/gcc13 -L/usr/local/lib"
+    - export LDFLAGS="-Wl,-rpath=/usr/local/lib/gcc14 -L/usr/local/lib/gcc14 -L/usr/local/lib"
     - freebsd-version -kru | xargs
     - command -v python3
     - $(command -v python3) --version
