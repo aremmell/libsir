@@ -797,7 +797,7 @@ bool sir_syslogcat(const char* category);
  * **Example:**
  *
  * ~~~
- * 2.2.5-dev
+ * 2.2.5
  * ~~~
  *
  * @returns const char* The current libsir version string.
