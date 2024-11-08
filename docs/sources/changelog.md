@@ -2,7 +2,7 @@
 
 ## 2.2.5
 
-### November 7, 2024
+### November 8, 2024
 
 - Improve malloc debugging on OpenBSD, NetBSD, and FreeBSD in the test suite.
 - Update REUSE metadata to comply with version 3.2 of the REUSE specification.
