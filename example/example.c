@@ -4,7 +4,7 @@
  * A simple demonstration of initialization, configuration, and basic usage of
  * libsir.
  *
- * @version 2.2.5
+ * @version 2.2.6
  *
  * -----------------------------------------------------------------------------
  *

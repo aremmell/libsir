@@ -7,7 +7,7 @@
  * appearance and content of log messages, default values, and various
  * thresholds (e.g. file and buffer sizes).
  *
- * @version 2.2.5
+ * @version 2.2.6
  *
  * -----------------------------------------------------------------------------
  *

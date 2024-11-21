@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.6
+
+### TBA
+
+* TBD
+
 ## 2.2.5
 
 ### November 21, 2024

@@ -2,7 +2,7 @@
 
 libsir&mdash;a lightweight, cross-platform library for information distribution
 
-<!-- Version: 2.2.5 -->
+<!-- Version: 2.2.6 -->
 <!-- -->
 <!-- SPDX-License-Identifier: MIT -->
 <!-- -->

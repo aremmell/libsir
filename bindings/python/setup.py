@@ -3,7 +3,7 @@
 # libsir Python module setup script
 ################################################################################
 #
-# Version: 2.2.5
+# Version: 2.2.6
 #
 ################################################################################
 #
@@ -68,7 +68,7 @@ sir_module = Extension(
 setup(
     cmdclass={"build_ext": BuildExt},
     name="sir",
-    version="2.2.5",
+    version="2.2.6",
     author="libsir contributors",
     description="""The Standard Incident Reporter Library""",
     ext_modules=[sir_module],

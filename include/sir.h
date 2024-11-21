@@ -6,7 +6,7 @@
  * The functions and types defined here comprise the entire set intended for
  * use by an implementer of the library-unless modification is desired.
  *
- * @version 2.2.5
+ * @version 2.2.6
  *
  * -----------------------------------------------------------------------------
  *
@@ -797,7 +797,7 @@ bool sir_syslogcat(const char* category);
  * **Example:**
  *
  * ~~~
- * 2.2.5-dev
+ * 2.2.6-dev
  * ~~~
  *
  * @returns const char* The current libsir version string.
