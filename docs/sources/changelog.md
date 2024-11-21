@@ -2,9 +2,20 @@
 
 ## 2.2.5
 
-### TBA
+### November 21, 2024
 
-- TBD
+- Improve malloc debugging on OpenBSD, NetBSD, and FreeBSD in the test suite.
+- Update REUSE metadata to comply with version 3.2 of the REUSE specification.
+- Update Doxygen to 1.12.0.
+- Support building with the Cisco OpenOSC (Open Object Size Checking) library.
+- Add `SIR_USE_EOL_CRLF` option to use `CR`+`LF` line endings.
+- Add `SIR_NO_TEXT_STYLING` option to disable all ANSI output styling.
+- Add new operating system support for PASE for IBM i (OS/400).
+- Update CI/CD configurations and Docker images.
+- Improve error checking when building Ch bindings.
+- Update the list of tested compilers and toolchains.
+- Eliminate all warnings from current GCC Static Analyzer and Cppcheck.
+- Miscellaneous documentation updates and corrections.
 
 ## 2.2.4
 

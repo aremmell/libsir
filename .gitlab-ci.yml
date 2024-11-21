@@ -2001,6 +2001,7 @@ Clang Static Analyzer:
       - build/
       - logs/
   retry: 2
+  timeout: 90 minutes
   interruptible: true
 
 ################################################################################
