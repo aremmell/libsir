@@ -6,7 +6,7 @@
  * The values herein represent the defaults for output destinations if defaults
  * are requested upon initialization.
  *
- * @version 2.2.5
+ * @version 2.2.6
  *
  * -----------------------------------------------------------------------------
  *

@@ -3,7 +3,7 @@
  *
  * Functions, types, and macros that are used by both the C and C++ test rigs.
  *
- * Version: 2.2.5
+ * Version: 2.2.6
  *
  * ----------------------------------------------------------------------------
  *
