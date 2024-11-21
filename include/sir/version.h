@@ -48,7 +48,7 @@
 # define SIR_VERSION_IS_RELEASE 0
 
 /** The current libsir version suffix. */
-# define SIR_VERSION_SUFFIX "dev"
+# define SIR_VERSION_SUFFIX "-dev"
 
 /** The current libsir version as a number. */
 # define SIR_VERSION_HEX ((SIR_VERSION_MAJOR << 16) | \
