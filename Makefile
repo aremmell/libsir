@@ -34,7 +34,7 @@
 # Defaults
 
 .NOTPARALLEL:
-SHELL       := $(shell env sh -c 'PATH="$$(command -p getconf PATH)" command -v sh')
+SHELL       := $(shell env sh -c 'PATH="$$(command -p getconf PATH 2> /dev/null):$${PATH:-/bin:/usr/bin}" command -v sh')
 BUILDDIR     = ./build
 LOGDIR       = ./logs
 LINTSH       = ./.lint.sh
