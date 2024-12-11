@@ -4504,11 +4504,11 @@ OpenBSD/amd64 (Clang++, Clang):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/local/bin/clang-17"
-    - export CXX="/usr/local/bin/clang++-17"
+    - export CC="/usr/local/bin/clang-18"
+    - export CXX="/usr/local/bin/clang++-18"
     - export CFLAGS="-I/usr/local/include"
     - export CXXFLAGS="-DSIR_NO_STD_FORMAT=1 -I/usr/local/include"
-    - export LDFLAGS="-Wl,-rpath=/usr/local/llvm17/lib/ -L/usr/local/llvm17/lib/ -L/usr/local/lib"
+    - export LDFLAGS="-Wl,-rpath=/usr/local/llvm18/lib/ -L/usr/local/llvm18/lib/ -L/usr/local/lib"
     - uname -a
     - ${CC:?} --version
     - ${CXX:?} --version
