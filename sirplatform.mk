@@ -217,13 +217,17 @@ ifeq ($(INTELC),1)
 endif
 
 ################################################################################
-# QNX C Compiler
+# QNX C/C++ Compiler
 
 ifneq "$(findstring qcc,$(CC))" ""
-  QCC?=1
+  QNX?=1
 endif
 
-ifeq ($(QCC),1)
+ifneq "$(findstring q++,$(CXX))" ""
+  QNX?=1
+endif
+
+ifeq ($(QNX),1)
   LIBDL=
   PTHOPT=
 endif
