@@ -1291,7 +1291,7 @@ pid_t _sir_gettid(void) {
     tid = (pid_t)getthrid();
 #elif defined(__SOLARIS__) || defined(__NetBSD__) || defined(__HURD__) || \
       defined(__DragonFly__) || defined(__CYGWIN__) || defined(_AIX) || \
-      defined(__EMSCRIPTEN__)
+      defined(__EMSCRIPTEN__) || defined(__QNX__)
 # if defined(__CYGWIN__)
     tid = (pid_t)(uintptr_t)pthread_self();
 # else
@@ -1320,7 +1320,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     (defined(__GLIBC__) && GLIBC_VERSION >= 21200 && defined(_GNU_SOURCE)) || \
     (defined(__ANDROID__) &&  __ANDROID_API__ >= 26) || defined(SIR_PTHREAD_GETNAME_NP) || \
     defined(__serenity__) || (defined(__linux__) && !defined(__GLIBC__) && \
-    defined(_GNU_SOURCE) && defined(__NEED_pthread_t))
+    defined(_GNU_SOURCE) && defined(__NEED_pthread_t)) || defined(__QNX__)
     int ret = pthread_getname_np(pthread_self(), name, SIR_MAXPID);
     if (0 != ret)
         return _sir_handleerr(ret);

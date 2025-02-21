@@ -217,6 +217,18 @@ ifeq ($(INTELC),1)
 endif
 
 ################################################################################
+# QNX C Compiler
+
+ifneq "$(findstring qcc,$(CC))" ""
+  QCC?=1
+endif
+
+ifeq ($(QCC),1)
+  LIBDL=
+  PTHOPT=
+endif
+
+################################################################################
 # NVIDIA HPC SDK C Compiler
 
 ifneq "$(findstring nvc,$(CC))" ""
