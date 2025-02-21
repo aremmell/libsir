@@ -278,7 +278,7 @@ char* _sir_getappfilename(void) {
         size_t length = 0;
         while ((ch = fgetc(self)) != EOF) {
             if (length > size) {
-                size = length +1;
+                size = length + 1;
                 continue;
             }
             buffer[length++] = ch;
