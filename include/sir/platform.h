@@ -127,6 +127,9 @@
 #    define _BITS_FLOATN_H
 #   endif
 #  endif
+#  if defined(__QNX__)
+#   define _QNX_SOURCE
+#  endif
 #  if defined(__IMPORTC__)
 #   include "sir/platform_importc.h"
 #  endif
@@ -458,8 +461,11 @@ _set_thread_local_invalid_parameter_handler(
 #  endif
 #  if !defined(__CYGWIN__) && !defined(__HAIKU__) && \
       !defined(__serenity__) && !defined(_AIX) && \
-      !defined(_CH_) && !defined(__CH__)
+      !defined(_CH_) && !defined(__CH__) && !defined(__QNX__)
 #   include <sys/syscall.h>
+#  endif
+#  if defined(__QNX__)
+#   include <sys/syspage.h>
 #  endif
 #  include <sys/time.h>
 #  include <strings.h>

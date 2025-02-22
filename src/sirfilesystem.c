@@ -62,7 +62,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
 #  else
         int open_flags = O_SEARCH;
 #  endif
-# elif defined(__linux__) || defined(__HURD__)
+# elif defined(__linux__) || defined(__HURD__) || defined(__QNX__)
 #  if !defined(__SUNPRO_C) && !defined(__SUNPRO_CC) && defined(O_PATH)
         int open_flags = O_PATH | O_DIRECTORY;
 #  else
@@ -268,6 +268,24 @@ char* _sir_getappfilename(void) {
             resolved = false;
             break;
         }
+# elif defined(__QNX__)
+        FILE *self = fopen("/proc/self/exefile", "r");
+        if (!self) {
+            resolved = _sir_handleerr(errno);
+            break;
+        }
+        int ch;
+        size_t length = 0;
+        while ((ch = fgetc(self)) != EOF) {
+            if (length > size) {
+                size = length + 1;
+                continue;
+            }
+            buffer[length++] = ch;
+        }
+        int ret = fclose(self);
+        resolved = ret == 0 ? true : _sir_handleerr(errno);
+        break;
 # elif defined(_AIX)
         if (size <= SIR_MAXPATH) {
             size = size + SIR_MAXPATH + 1L;
