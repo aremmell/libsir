@@ -100,7 +100,7 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 | **Windows**&nbsp;≳10,&nbsp;11 | **Microsoft&nbsp;Visual&nbsp;C/C++**&nbsp;(17.6&nbsp;‑&nbsp;17.13.1),&nbsp; **Clang‑CL**&nbsp;(16.0.6&nbsp;‑&nbsp;19.1.7),&nbsp; **GCC‑MinGW**&nbsp;(12.2.1&nbsp;‑&nbsp;14.2.1),&nbsp; **LLVM‑MinGW**&nbsp;(15.0&nbsp;‑&nbsp;19.1.7),&nbsp; **Embarcadero&nbsp;C++**&nbsp;(7.20&nbsp;‑&nbsp;7.70),&nbsp; **OrangeC**&nbsp;(≳6.71.10) |
 | **Cygwin**&nbsp;3.4 | **GCC**&nbsp;(11.2&nbsp;‑&nbsp;13.2.1) |
 | **FreeBSD**&nbsp;≳11.3 | **GCC**&nbsp;(11.4&nbsp;‑&nbsp;13.2.1),&nbsp; **Clang**&nbsp;(10&nbsp;‑&nbsp;19.1.7),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.105.0&nbsp;‑&nbsp;2.110.0) |
-| **NetBSD**&nbsp;9.2 | **GCC**&nbsp;(7.5&nbsp;‑&nbsp;13.2),&nbsp; **Clang**&nbsp;(15.0.7&nbsp;‑&nbsp;17.0.6) |
+| **NetBSD**&nbsp;9.2,&nbsp;10 | **GCC**&nbsp;(7.5&nbsp;‑&nbsp;14.2),&nbsp; **Clang**&nbsp;(15.0.7&nbsp;‑&nbsp;18.1.8) |
 | **OpenBSD**&nbsp;7.3 | **GCC**&nbsp;(11.2),&nbsp; **Clang**&nbsp;(13&nbsp;‑&nbsp;18.1.8),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.106.0&nbsp;‑&nbsp;2.110.0) |
 | **DragonFly**&nbsp;**BSD**&nbsp;6.4 | **GCC**&nbsp;(8.3&nbsp;‑&nbsp;13),&nbsp; **Clang**&nbsp;(10.0.1&nbsp;‑&nbsp;17.0.6) |
 | **GNU/Hurd** | **GCC**&nbsp;(9.5&nbsp;‑&nbsp;13.2),&nbsp; **Clang**&nbsp;(9.0.1&nbsp;‑&nbsp;13.0.1) |
