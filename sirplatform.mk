@@ -227,14 +227,6 @@ ifneq "$(findstring q++,$(CXX))" ""
   QNX?=1
 endif
 
-ifneq "$(findstring nto-qnx,$(CC))" ""
-  QNX?=1
-endif
-
-ifneq "$(findstring nto-qnx,$(CXX))" ""
-  QNX?=1
-endif
-
 ifeq ($(QNX),1)
   LIBDL=
   PTHOPT=
