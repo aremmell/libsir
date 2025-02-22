@@ -91,16 +91,16 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 
 | System | Toolchain |
 | ------:|:--------- |
-| **Linux**&nbsp;≳2.6.32<br>(glibc&nbsp;≳2.4, musl&nbsp;≳1.2.3, uClibc‑ng&nbsp;≳1.0.43) | **GCC**&nbsp;(4.4.7&nbsp;‑&nbsp;14.2.1),&nbsp; **Clang**&nbsp;(3.8&nbsp;‑&nbsp;19.1.3),&nbsp; **Oracle&nbsp;Studio&nbsp;C/C++**&nbsp;(≳12.6),&nbsp; **Circle**&nbsp;(1.0.0‑210&nbsp;‑&nbsp;1.0.0‑223),&nbsp; **IBM&nbsp;Advance&nbsp;Toolchain**&nbsp;(14&nbsp;‑&nbsp;17),&nbsp; **IBM&nbsp;XL&nbsp;C/C++**&nbsp;(16.1.1.2&nbsp;‑&nbsp;16.1.1.15),&nbsp; **IBM&nbsp;Open&nbsp;XL&nbsp;C/C++**&nbsp;(17.1.1.0&nbsp;‑&nbsp;17.1.1.2),&nbsp; **NVIDIA&nbsp;HPC&nbsp;SDK&nbsp;C/C++**&nbsp;(23.5&nbsp;‑&nbsp;24.11),&nbsp; **Arm&nbsp;HPC&nbsp;C/C++**&nbsp;(22.1&nbsp;‑&nbsp;24.10),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.104.2&nbsp;‑&nbsp;2.110.0),&nbsp; **AMD&nbsp;Optimizing&nbsp;C/C++**&nbsp;(4.0.0&nbsp;‑&nbsp;5.0.0),&nbsp; **Intel&nbsp;oneAPI&nbsp;DPC++/C++**&nbsp;(2023.1&nbsp;‑&nbsp;2025.0.1),&nbsp; **Open64**&nbsp;(5,&nbsp;AMD&nbsp;4.5.2.1),&nbsp; **Intel&nbsp;C++&nbsp;Compiler&nbsp;Classic**&nbsp;(2021.9.0&nbsp;‑&nbsp;2021.10.0),&nbsp; **Portable&nbsp;C&nbsp;Compiler**&nbsp;(1.2.0.DEVEL‑20230730),&nbsp; **Kefir**&nbsp;(≳0.3.0),&nbsp; **Chibicc**&nbsp;(2020.12.6),&nbsp; **CompCert&nbsp;C**&nbsp;(3.11&nbsp;‑&nbsp;3.15,&nbsp;no‑TLS),&nbsp; **Chamois‑CompCert&nbsp;C**&nbsp;(3.14‑20231130+,&nbsp;TLS) |
-| **Android**&nbsp;≳5 | **Android&nbsp;NDK**&nbsp;(r25c&nbsp;‑&nbsp;r27b) |
-| **QNX**&nbsp;≳8.0 | **QCC**&nbsp;(GCC&nbsp;12.2) |
-| **IBM AIX**&nbsp;7.2,&nbsp;7.3 | **GCC**&nbsp;(8.3&nbsp;‑&nbsp;12.3),&nbsp; **Clang**&nbsp;(18.1.2&nbsp;‑&nbsp;19.1.3),&nbsp; **IBM&nbsp;XL&nbsp;C/C++**&nbsp;(16.1.0.3&nbsp;‑&nbsp;16.1.0.19),&nbsp; **IBM&nbsp;Open&nbsp;XL&nbsp;C/C++**&nbsp;(17.1.1.1&nbsp;‑&nbsp;17.1.2.13) |
-| **IBM i**&nbsp;(**PASE**)&nbsp;7.5 | **GCC**&nbsp;(10.3.0&nbsp;‑&nbsp;10.5.0),&nbsp; **IBM&nbsp;XL&nbsp;C/C++**&nbsp;(16.1.0.15&nbsp;‑&nbsp;16.1.0.19) |
-| **macOS**&nbsp;≳10.15 | **Xcode**&nbsp;(11.7&nbsp;‑&nbsp;16.2),&nbsp; **GCC**&nbsp;(10.4&nbsp;‑&nbsp;14.2.0),&nbsp; **Clang**&nbsp;(11.0.3&nbsp;‑&nbsp;19.1.3),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.105.0&nbsp;‑&nbsp;2.110.0),&nbsp; **Intel&nbsp;C++&nbsp;Compiler&nbsp;Classic**&nbsp;(2021.9.0&nbsp;‑&nbsp;2021.10.0) |
-| **Windows**&nbsp;≳10,&nbsp;11 | **Microsoft&nbsp;Visual&nbsp;C/C++**&nbsp;(17.6&nbsp;‑&nbsp;17.11.5),&nbsp; **Clang‑CL**&nbsp;(16.0.6&nbsp;‑&nbsp;19.1.3),&nbsp; **GCC‑MinGW**&nbsp;(12.2.1&nbsp;‑&nbsp;14.2.1),&nbsp; **LLVM‑MinGW**&nbsp;(15.0&nbsp;‑&nbsp;19.1.3),&nbsp; **Embarcadero&nbsp;C++**&nbsp;(7.20&nbsp;‑&nbsp;7.70),&nbsp; **OrangeC**&nbsp;(≳6.71.10) |
+| **Linux**&nbsp;≳2.6.32<br>(glibc&nbsp;≳2.4, musl&nbsp;≳1.2.3, uClibc‑ng&nbsp;≳1.0.43) | **GCC**&nbsp;(4.4.7&nbsp;‑&nbsp;14.2.1),&nbsp; **Clang**&nbsp;(3.8&nbsp;‑&nbsp;19.1.7),&nbsp; **Oracle&nbsp;Studio&nbsp;C/C++**&nbsp;(≳12.6),&nbsp; **Circle**&nbsp;(1.0.0‑210&nbsp;‑&nbsp;1.0.0‑226),&nbsp; **IBM&nbsp;Advance&nbsp;Toolchain**&nbsp;(14&nbsp;‑&nbsp;17),&nbsp; **IBM&nbsp;XL&nbsp;C/C++**&nbsp;(16.1.1.2&nbsp;‑&nbsp;16.1.1.15),&nbsp; **IBM&nbsp;Open&nbsp;XL&nbsp;C/C++**&nbsp;(17.1.1.0&nbsp;‑&nbsp;17.1.1.2),&nbsp; **NVIDIA&nbsp;HPC&nbsp;SDK&nbsp;C/C++**&nbsp;(23.5&nbsp;‑&nbsp;25.1),&nbsp; **Arm&nbsp;HPC&nbsp;C/C++**&nbsp;(22.1&nbsp;‑&nbsp;24.10.1),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.104.2&nbsp;‑&nbsp;2.110.0),&nbsp; **AMD&nbsp;Optimizing&nbsp;C/C++**&nbsp;(4.0.0&nbsp;‑&nbsp;5.0.0),&nbsp; **Intel&nbsp;oneAPI&nbsp;DPC++/C++**&nbsp;(2023.1&nbsp;‑&nbsp;2025.0.4),&nbsp; **Open64**&nbsp;(5,&nbsp;AMD&nbsp;4.5.2.1),&nbsp; **Intel&nbsp;C++&nbsp;Compiler&nbsp;Classic**&nbsp;(2021.9.0&nbsp;‑&nbsp;2021.10.0),&nbsp; **Portable&nbsp;C&nbsp;Compiler**&nbsp;(1.2.0.DEVEL‑20230730),&nbsp; **Kefir**&nbsp;(≳0.3.0),&nbsp; **Chibicc**&nbsp;(2020.12.6),&nbsp; **CompCert&nbsp;C**&nbsp;(3.11&nbsp;‑&nbsp;3.15,&nbsp;no‑TLS),&nbsp; **Chamois‑CompCert&nbsp;C**&nbsp;(3.14‑20231130+,&nbsp;TLS),&nbsp; **МЦСТ&nbsp;LCC**&nbsp;(1.25&nbsp;‑&nbsp;1.29) |
+| **Android**&nbsp;≳5 | **Android&nbsp;NDK**&nbsp;(r25c&nbsp;‑&nbsp;r27c) |
+| **QNX**&nbsp;8.0 | **QCC**&nbsp;(GCC&nbsp;12.2) |
+| **IBM AIX**&nbsp;7.2,&nbsp;7.3 | **GCC**&nbsp;(8.3&nbsp;‑&nbsp;12.3),&nbsp; **Clang**&nbsp;(18.1.2&nbsp;‑&nbsp;19.1.7),&nbsp; **IBM&nbsp;XL&nbsp;C/C++**&nbsp;(16.1.0.3&nbsp;‑&nbsp;16.1.0.20),&nbsp; **IBM&nbsp;Open&nbsp;XL&nbsp;C/C++**&nbsp;(17.1.1.1&nbsp;‑&nbsp;17.1.3.0) |
+| **IBM i**&nbsp;(**PASE**)&nbsp;7.5 | **GCC**&nbsp;(10.3.0&nbsp;‑&nbsp;10.5.0),&nbsp; **IBM&nbsp;XL&nbsp;C/C++**&nbsp;(16.1.0.15&nbsp;‑&nbsp;16.1.0.20) |
+| **macOS**&nbsp;≳10.15 | **Xcode**&nbsp;(11.7&nbsp;‑&nbsp;16.2),&nbsp; **GCC**&nbsp;(10.4&nbsp;‑&nbsp;14.2.0),&nbsp; **Clang**&nbsp;(11.0.3&nbsp;‑&nbsp;19.1.7),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.105.0&nbsp;‑&nbsp;2.110.0),&nbsp; **Intel&nbsp;C++&nbsp;Compiler&nbsp;Classic**&nbsp;(2021.9.0&nbsp;‑&nbsp;2021.10.0) |
+| **Windows**&nbsp;≳10,&nbsp;11 | **Microsoft&nbsp;Visual&nbsp;C/C++**&nbsp;(17.6&nbsp;‑&nbsp;17.13.1),&nbsp; **Clang‑CL**&nbsp;(16.0.6&nbsp;‑&nbsp;19.1.7),&nbsp; **GCC‑MinGW**&nbsp;(12.2.1&nbsp;‑&nbsp;14.2.1),&nbsp; **LLVM‑MinGW**&nbsp;(15.0&nbsp;‑&nbsp;19.1.7),&nbsp; **Embarcadero&nbsp;C++**&nbsp;(7.20&nbsp;‑&nbsp;7.70),&nbsp; **OrangeC**&nbsp;(≳6.71.10) |
 | **Cygwin**&nbsp;3.4 | **GCC**&nbsp;(11.2&nbsp;‑&nbsp;13.2.1) |
-| **FreeBSD**&nbsp;≳11.3 | **GCC**&nbsp;(11.4&nbsp;‑&nbsp;13.2.1),&nbsp; **Clang**&nbsp;(10&nbsp;‑&nbsp;19.1.3),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.105.0&nbsp;‑&nbsp;2.110.0) |
-| **NetBSD**&nbsp;9.2 | **GCC**&nbsp;(7.5&nbsp;‑&nbsp;13.2),&nbsp; **Clang**&nbsp;(15.0.7&nbsp;‑&nbsp;17.0.6) |
+| **FreeBSD**&nbsp;≳11.3 | **GCC**&nbsp;(11.4&nbsp;‑&nbsp;13.2.1),&nbsp; **Clang**&nbsp;(10&nbsp;‑&nbsp;19.1.7),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.105.0&nbsp;‑&nbsp;2.110.0) |
+| **NetBSD**&nbsp;9.2,&nbsp;10 | **GCC**&nbsp;(7.5&nbsp;‑&nbsp;14.2),&nbsp; **Clang**&nbsp;(15.0.7&nbsp;‑&nbsp;18.1.8) |
 | **OpenBSD**&nbsp;7.3 | **GCC**&nbsp;(11.2),&nbsp; **Clang**&nbsp;(13&nbsp;‑&nbsp;18.1.8),&nbsp; **DMD&nbsp;ImportC**&nbsp;(2.106.0&nbsp;‑&nbsp;2.110.0) |
 | **DragonFly**&nbsp;**BSD**&nbsp;6.4 | **GCC**&nbsp;(8.3&nbsp;‑&nbsp;13),&nbsp; **Clang**&nbsp;(10.0.1&nbsp;‑&nbsp;17.0.6) |
 | **GNU/Hurd** | **GCC**&nbsp;(9.5&nbsp;‑&nbsp;13.2),&nbsp; **Clang**&nbsp;(9.0.1&nbsp;‑&nbsp;13.0.1) |
@@ -108,9 +108,9 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 | **Solaris**&nbsp;11.4 | **GCC**&nbsp;(10.3&nbsp;‑&nbsp;11.2),&nbsp; **Clang**&nbsp;(6&nbsp;‑&nbsp;18.1.8),&nbsp; **Oracle&nbsp;Studio&nbsp;C/C++**&nbsp;(≳12.6) |
 | **illumos** | **GCC**&nbsp;(7.5&nbsp;‑&nbsp;13.2),&nbsp; **Clang**&nbsp;(15.0.7&nbsp;‑&nbsp;18.1.8),&nbsp; **Oracle&nbsp;Studio&nbsp;C/C++**&nbsp;(≳12.6) |
 | **SerenityOS** | **GCC**&nbsp;(13.1) |
-| **WebAssembly/JS** | **Emscripten**&nbsp;(3.1.45&nbsp;‑&nbsp;3.1.72),&nbsp; **Node.js**&nbsp;(20.5.0&nbsp;‑&nbsp;23.2.0) |
+| **WebAssembly/JS** | **Emscripten**&nbsp;(3.1.45&nbsp;‑&nbsp;4.0.1),&nbsp; **Node.js**&nbsp;(20.5.0&nbsp;‑&nbsp;23.7.0) |
 
-* libsir is known to work on most common (and many uncommon) architectures. It has been built and tested on **Intel** (x86\_64, i686, x32), **ARM** (ARMv6, ARMv7HF, ARMv8‑A), **POWER** (PowerPC, PPC64, PPC64le), **MIPS** (MIPS64, MIPS32, 74Kc), **SPARC** (SPARC64, V8, LEON3), **z/Architecture** (S390X), **SuperH** (SH‑4A), **RISC‑V** (RV32, RV64), **OpenRISC** (OR1200), **Kalray MPPA®** (Coolidge™, KVX), and **m68k** (ColdFire, 68020+).
+* libsir is known to work on most common (and many uncommon) architectures. It has been built and tested on **Intel** (x86\_64, i686, x32), **ARM** (ARMv6, ARMv7HF, ARMv8‑A), **POWER** (PowerPC, PPC64, PPC64le), **MIPS** (MIPS64, MIPS32, 74Kc), **SPARC** (SPARC64, V8, LEON3), **z/Architecture** (S390X), **SuperH** (SH‑4A), **RISC‑V** (RV32, RV64), **OpenRISC** (OR1200), **Kalray MPPA®** (Coolidge™, KVX), **МЦСТ Эльбрус** (E2K), and **m68k** (ColdFire, 68020+).
 * This table only lists toolchains that have been tested and is by no means exhaustive&mdash;newer (or older) versions are likely to work without fanfare. In fact, if it *doesn't* work on your machine, it's probably a bug.
 
 ### <a id="system-loggers" /> System Loggers
@@ -167,7 +167,7 @@ There are several options available for building libsir from source:
 
 ### <a id="unix-makefile" /> Unix Makefile
 
-The Makefiles are compatible with **GNU Make** version **3.81** and later (**4.4** *recommended*) and support both native and cross-compilation builds on most Unix-like operating systems: AIX, Solaris, illumos, Linux, macOS, Cygwin, BSD, GNU/Hurd, Haiku, etc.
+The Makefiles are compatible with **GNU Make** version **3.81** and later (**4.4** *recommended*) and support both native and cross-compilation builds on most Unix-like operating systems: AIX, Solaris, illumos, Linux, macOS, Cygwin, BSD, GNU/Hurd, Haiku, QNX, etc.
 
 #### <a id="unix-makefile-envvars" /> Environment variables
 
