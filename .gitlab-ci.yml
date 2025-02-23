@@ -4886,7 +4886,7 @@ NetBSD/amd64 (CC, NetBSD Python):
 
 ################################################################################
 
-Windows/x64 (MSVC, MSBuild, Release, C++, C):
+.Windows/x64 (MSVC, MSBuild, Release, C++, C):
   stage: build_windows_msbuild
   needs:
     - job: Style check
@@ -4938,7 +4938,7 @@ Windows/x64 (MSVC, MSBuild, Release, C++, C):
 
 ################################################################################
 
-Windows/x64 (MSVC, MSBuild, Debug, C++, C):
+.Windows/x64 (MSVC, MSBuild, Debug, C++, C):
   stage: build_windows_msbuild
   needs:
     - job: Style check
@@ -4975,7 +4975,7 @@ Windows/x64 (MSVC, MSBuild, Debug, C++, C):
 
 ################################################################################
 
-Windows/x64 (MSVC, MSBuild, Profiling, C++, C):
+.Windows/x64 (MSVC, MSBuild, Profiling, C++, C):
   stage: build_windows_msbuild
   needs:
     - job: Style check
@@ -5012,7 +5012,7 @@ Windows/x64 (MSVC, MSBuild, Profiling, C++, C):
 
 ################################################################################
 
-Windows/Arm64 (MSVC, MSBuild, Release, C++, C):
+.Windows/Arm64 (MSVC, MSBuild, Release, C++, C):
   stage: build_windows_msbuild
   needs:
     - job: Style check
@@ -5049,7 +5049,7 @@ Windows/Arm64 (MSVC, MSBuild, Release, C++, C):
 
 ################################################################################
 
-Windows/Arm64 (MSVC, MSBuild, Debug, C++, C):
+.Windows/Arm64 (MSVC, MSBuild, Debug, C++, C):
   stage: build_windows_msbuild
   needs:
     - job: Style check
@@ -5086,7 +5086,7 @@ Windows/Arm64 (MSVC, MSBuild, Debug, C++, C):
 
 ################################################################################
 
-Windows/Arm64 (MSVC, MSBuild, Profiling, C++, C):
+.Windows/Arm64 (MSVC, MSBuild, Profiling, C++, C):
   stage: build_windows_msbuild
   needs:
     - job: Style check
