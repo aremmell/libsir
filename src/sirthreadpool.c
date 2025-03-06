@@ -82,7 +82,7 @@ bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
 #if !defined(__WIN__)
         op = pthread_create(&(*pool)->threads[n], &attr, &thread_pool_proc, *pool);
         if (0 != op) {
-            (*pool)->threads[n] = 0;
+            (void)memset(&(*pool)->threads[n], 0, sizeof(pthread_t));
             thrd_err    = op;
             thrd_create = false;
             break;
@@ -152,9 +152,11 @@ bool _sir_threadpool_destroy(sir_threadpool** pool) {
     }
 
     bool destroy = true;
+    sir_thread zero_thread;
+    (void)memset(&zero_thread, 0, sizeof(sir_thread));
     for (size_t n = 0; n < (*pool)->num_threads; n++) {
-        SIR_ASSERT(0 != (*pool)->threads[n]);
-        if (0 == (*pool)->threads[n])
+        SIR_ASSERT(0 != memcmp(&(*pool)->threads[n], &zero_thread, sizeof(sir_thread)));
+        if (0 == memcmp(&(*pool)->threads[n], &zero_thread, sizeof(sir_thread)))
             continue;
         _sir_selflog("joining thread %zu of %zu...", n + 1, (*pool)->num_threads);
 #if !defined(__WIN__)
