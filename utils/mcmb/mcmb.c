@@ -1,7 +1,7 @@
 /*
  * mcmb.c
  *
- * Version: 2120.6.01-dps (libcmb 3.5.6)
+ * Version: 2120.6.02-dps (libcmb 3.5.6)
  *
  * -----------------------------------------------------------------------------
  *
@@ -450,7 +450,7 @@ static struct cmb_xitem *cmb_transform_find;
 # define CMB_PARSE_FRAGSIZE 512
 #endif /* if !defined(CMB_PARSE_FRAGSIZE) */
 
-static const char mcmbver[]         = "2120.6.01-dps";
+static const char mcmbver[]         = "2120.6.02-dps";
 static const char libversion[]      = "libcmb 3.5.6";
 
 /*
@@ -1259,11 +1259,32 @@ p2(uint64_t x)
   return x == ( x & -x );
 }
 
+static uint64_t xlrand48_state = 0x1234ABCD330EULL;
+
+static void
+xsrand48(long seed)
+{
+  xlrand48_state = ( ( (uint64_t)seed ) << 16 ) | 0x330E;
+}
+
+static long
+xlrand48(void)
+{
+  const uint64_t A = 0x5DEECE66DULL;
+  const uint64_t C = 0xBULL;
+  const uint64_t M = (1ULL << 48) - 1;
+
+  xlrand48_state = (xlrand48_state * A + C) & M;
+
+  return (long)(xlrand48_state >> 17);
+}
+
 static inline uint64_t
 urand64(void)
 {
-  return ( (uint64_t)lrand48() << 42 ) + ( (uint64_t)lrand48() << 21 )
-         + (uint64_t)lrand48();
+  return ( (uint64_t)xlrand48() << 42 ) +
+         ( (uint64_t)xlrand48() << 21 ) +
+           (uint64_t)xlrand48();
 }
 
 /*
@@ -2045,7 +2066,7 @@ main(int argc, char *argv[])
                       h = hash32s(rnd, sizeof(rnd), h);
                     }
                 }
-              srand48((long)(h));
+              xsrand48((long)(h));
               config->start = cmb_rand_range(count) + 1;
             }
           else
