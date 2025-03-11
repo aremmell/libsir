@@ -157,8 +157,7 @@ bool _sir_threadpool_destroy(sir_threadpool** pool) {
 
     bool destroy = true;
 #if defined(__MVS__)
-    sir_thread zero_thread;
-    (void)memset(&zero_thread, 0, sizeof(sir_thread));
+    sir_thread zero_thread = {0};
 #endif
     for (size_t n = 0; n < (*pool)->num_threads; n++) {
 #if !defined(__MVS__)
