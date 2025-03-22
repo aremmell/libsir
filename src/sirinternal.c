@@ -55,20 +55,11 @@ static sirconfig _sir_cfg      = {0};
 static sirfcache _sir_fc       = {0};
 static sir_plugincache _sir_pc = {0};
 
-#if !defined(__IMPORTC__)
 static sir_mutex cfg_mutex  = SIR_MUTEX_INIT;
 static sir_mutex fc_mutex   = SIR_MUTEX_INIT;
 static sir_mutex pc_mutex   = SIR_MUTEX_INIT;
-# if !defined(SIR_NO_TEXT_STYLING)
+#if !defined(SIR_NO_TEXT_STYLING)
 static sir_mutex ts_mutex   = SIR_MUTEX_INIT;
-# endif
-#else
-static sir_mutex cfg_mutex  = {0};
-static sir_mutex fc_mutex   = {0};
-static sir_mutex pc_mutex   = {0};
-# if !defined(SIR_NO_TEXT_STYLING)
-static sir_mutex ts_mutex   = {0};
-# endif
 #endif
 static sir_once static_once = SIR_ONCE_INIT;
 
