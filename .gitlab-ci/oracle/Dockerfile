@@ -42,7 +42,12 @@ RUN set -x && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
-    rm -rf /var/log/dnf*
+    rm -rf /var/log/dnf* \
+    rm -rf /opt/oracle/developerstudio12.6/share/man && \
+    rm -rf /opt/oracle/developerstudio12.6/OIC && \
+    rm -rf /opt/oracle/developerstudio12.6/lib/dbxtool && \
+    rm -rf /opt/oracle/developerstudio12.6/lib/devstudio && \
+    rm -rf /opt/oracle/developerstudio12.6/lib/netbeans
 
 USER 10000
 
