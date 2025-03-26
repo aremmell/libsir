@@ -27,7 +27,7 @@
 #
 ################################################################################
 
-FROM quay.io/fedora/fedora:rawhide
+FROM quay.io/fedora/fedora:42
 
 USER 0
 
