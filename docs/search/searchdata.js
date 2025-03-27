@@ -12,7 +12,7 @@ var indexSectionsWithContent =
   9: "s",
   10: "cdfiptw",
   11: "clst",
-  12: "s"
+  12: "d"
 };
 
 var indexSectionNames =

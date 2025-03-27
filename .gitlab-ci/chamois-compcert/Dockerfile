@@ -28,7 +28,7 @@ RUN set -x && \
     opam update && \
     opam upgrade && \
     eval $(opam env) && \
-    opam switch create chamois-compcert 4.14.1 && \
+    opam switch create chamois-compcert 4.14.2 && \
     eval $(opam env --switch=chamois-compcert) && \
     opam pin add coq 8.16.1 && \
     eval $(opam env) && \

@@ -30,6 +30,7 @@
  * -----------------------------------------------------------------------------
  */
 
+//-V::522
 #include "sir/internal.h"
 #include "sir/console.h"
 #include "sir/defaults.h"
