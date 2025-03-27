@@ -2309,7 +2309,7 @@ Windows/i686 (OrangeC, C-only):
 
 ################################################################################
 
-Linux/x86_64 (DMD64 ImportC, C-only):
+.Linux/x86_64 (DMD64 ImportC, C-only):
   stage: build_linux
   needs:
     - job: Style check
@@ -2362,7 +2362,7 @@ Linux/x86_64 (DMD64 ImportC, C-only):
 
 ################################################################################
 
-Linux/i686 (DMD64 ImportC, C-only):
+.Linux/i686 (DMD64 ImportC, C-only):
   stage: build_linux
   needs:
     - job: Style check
