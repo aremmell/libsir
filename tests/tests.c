@@ -31,7 +31,6 @@
  */
 
 //-V:_sir_logv:575
-//-V::522
 
 #include "tests.h"
 #include "tests_malloc_bsd.h"

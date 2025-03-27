@@ -29,7 +29,6 @@
  * -----------------------------------------------------------------------------
  */
 
-//-V::522
 #include "sir/mutex.h"
 #include "sir/internal.h"
 #include "sir/platform.h"

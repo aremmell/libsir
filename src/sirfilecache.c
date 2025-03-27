@@ -30,7 +30,6 @@
  * -----------------------------------------------------------------------------
  */
 
-//-V::522
 #include "sir/filecache.h"
 #include "sir/filesystem.h"
 #include "sir/internal.h"
