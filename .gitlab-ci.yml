@@ -1043,11 +1043,11 @@ Windows/i686 (LLVM-MinGW, Clang++, Clang):
     - mkdir -p logs
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
-    - screen -mDL sh -c 'env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'wine build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirexample.out
-    - screen -mDL sh -c 'env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'wine build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests.out
-    - screen -mDL sh -c 'env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'wine build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests++.out
     - |
       # End of Test ...
@@ -2498,6 +2498,8 @@ Windows/x64 (Embarcadero Alexandria, BCC64, C-only):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export WINEDEBUG=-all
     - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc64.exe --version
+    - mkdir -p ${HOME}/.wine32/drive_c/Program\ Files\ \(x86\)
+    - ln -s ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero ${HOME}/.wine32/drive_c/Program\ Files\ \(x86\)/Embarcadero
     - mkdir -p build/bin
     - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc64.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
     - mv tests.exe build/bin/sirtests.exe
@@ -2551,6 +2553,8 @@ Windows/i686 (Embarcadero Alexandria, BCC32X, C-only):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export WINEDEBUG=-all
     - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc32x.exe --version
+    - mkdir -p ${HOME}/.wine32/drive_c/Program\ Files\ \(x86\)
+    - ln -s ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero ${HOME}/.wine32/drive_c/Program\ Files\ \(x86\)/Embarcadero
     - mkdir -p build/bin
     - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc32x.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
     - mv tests.exe build/bin/sirtests.exe
@@ -2604,6 +2608,8 @@ Windows/x64 (Embarcadero Athens, BCC64, C-only):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export WINEDEBUG=-all
     - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc64.exe --version
+    - mkdir -p ${HOME}/.wine32/drive_c/Program\ Files\ \(x86\)
+    - ln -s ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero ${HOME}/.wine32/drive_c/Program\ Files\ \(x86\)/Embarcadero
     - mkdir -p build/bin
     - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc64.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
     - mv tests.exe build/bin/sirtests.exe
@@ -2710,6 +2716,8 @@ Windows/i686 (Embarcadero Athens, BCC32X, C-only):
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export WINEDEBUG=-all
     - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc32x.exe --version
+    - mkdir -p ${HOME}/.wine32/drive_c/Program\ Files\ \(x86\)
+    - ln -s ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero ${HOME}/.wine32/drive_c/Program\ Files\ \(x86\)/Embarcadero
     - mkdir -p build/bin
     - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc32x.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
     - mv tests.exe build/bin/sirtests.exe
