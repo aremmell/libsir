@@ -87,3 +87,9 @@ trim_trailing_whitespace = true
 
 [{.gitlab-ci/msvc/msvc-wine/test/*,.gitlab-ci/msvc/msvc-wine/*}]
 max_line_length = 512
+
+[.gitlab-ci/msvc/msvc-wine/wrappers/wine-msvc.sh]
+indent_style = tabs
+
+[.gitlab-ci/msvc/msvc-wine/test/test-cl.sh]
+indent_style = tabs
