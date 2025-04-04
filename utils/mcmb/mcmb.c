@@ -1,7 +1,7 @@
 /*
  * mcmb.c
  *
- * Version: 2120.5.10-dps (libcmb 3.5.6)
+ * Version: 2120.6.02-dps (libcmb 3.5.6)
  *
  * -----------------------------------------------------------------------------
  *
@@ -12,8 +12,8 @@
  * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 2002-2019 Devin Teske <dteske@FreeBSD.org>
- * Copyright (c) 2020-2024 Jeffrey H. Johnson <trnsz@pobox.com>
- * Copyright (c) 2021-2024 The DPS8M Development Team
+ * Copyright (c) 2020-2025 Jeffrey H. Johnson <trnsz@pobox.com>
+ * Copyright (c) 2021-2025 The DPS8M Development Team
  *
  * All rights reserved.
  *
@@ -56,13 +56,32 @@
 
 #if !defined(_GNU_SOURCE)
 # define _GNU_SOURCE
-#endif
+#endif /* if !defined(_GNU_SOURCE) */
 
 #if !defined(__EXTENSIONS__)
 # define __EXTENSIONS__
-#endif
+#endif /* if !defined(__EXTENSIONS__) */
 
-#include <sys/param.h>
+#if !defined(__MVS__)
+# include <sys/param.h>
+#else
+# if !defined(NO_LOCALE)
+#  define NO_LOCALE
+# endif /* if !defined(NO_LOCALE) */
+# if !defined(_UNIX03_SOURCE)
+#  define _UNIX03_SOURCE
+# endif /* if !defined(_UNIX03_SOURCE) */
+# if !defined(_XOPEN_SOURCE)
+#  define _XOPEN_SOURCE
+# endif /* if !defined(_XOPEN_SOURCE) */
+# if !defined(_XOPEN_SOURCE_EXTENDED)
+#  define _XOPEN_SOURCE_EXTENDED 1
+# endif /* if !defined(_XOPEN_SOURCE_EXTENDED) */
+# if !defined(_ISOC99_SOURCE)
+#  define _ISOC99_SOURCE
+# endif /* if !defined(_ISOC99_SOURCE) */
+#endif /* if !defined(__MVS__) */
+
 #include <sys/stat.h>
 #include <time.h>
 #include <sys/time.h>
@@ -73,6 +92,7 @@
 #include <limits.h>
 #include <math.h>
 #include <stddef.h>
+#include <limits.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -82,7 +102,7 @@
 #if !defined(NO_LOCALE)
 # if defined(__APPLE__)
 #  include <xlocale.h>
-# endif
+# endif /* if defined(__APPLE__) */
 # include <locale.h>
 #endif /* if !defined(NO_LOCALE) */
 
@@ -93,6 +113,11 @@
 #if !defined(FALSE)
 # define FALSE 0
 #endif /* if !defined(FALSE) */
+
+#if defined(__MVS__) && !defined(__clang_version__)
+# undef inline
+# define inline
+#endif /* if defined(__MVS__) && !defined(__clang_version__) */
 
 #if defined(FREE)
 # undef FREE
@@ -425,7 +450,7 @@ static struct cmb_xitem *cmb_transform_find;
 # define CMB_PARSE_FRAGSIZE 512
 #endif /* if !defined(CMB_PARSE_FRAGSIZE) */
 
-static const char mcmbver[]         = "2120.5.10-dps";
+static const char mcmbver[]         = "2120.6.02-dps";
 static const char libversion[]      = "libcmb 3.5.6";
 
 /*
@@ -560,7 +585,7 @@ cmb_count(struct cmb_config *config, uint32_t nitems)
           /* cppcheck-suppress shiftTooManyBits */
           return 1 << nitems;
         }
-      return ULLONG_MAX >> ( 64 - nitems );
+      return UINT64_MAX >> ( 64 - nitems );
     }
 
   /*
@@ -609,7 +634,7 @@ cmb_count(struct cmb_config *config, uint32_t nitems)
           return 0;
         }
 
-      if (ncombos > ULLONG_MAX - count)
+      if (ncombos > UINT64_MAX - count)
         {
           errno = ERANGE;
           return 0;
@@ -1144,10 +1169,6 @@ CMB_ACTION(cmb_print)
   return 0;
 }
 
-#if !defined(UINT_MAX)
-# define UINT_MAX 0xFFFFFFFF
-#endif /* if !defined(UINT_MAX) */
-
 static char version[] = "3.9.5";
 
 /*
@@ -1238,11 +1259,32 @@ p2(uint64_t x)
   return x == ( x & -x );
 }
 
+static uint64_t xlrand48_state = 0x1234ABCD330EULL;
+
+static void
+xsrand48(long seed)
+{
+  xlrand48_state = ( ( (uint64_t)seed ) << 16 ) | 0x330E;
+}
+
+static long
+xlrand48(void)
+{
+  const uint64_t A = 0x5DEECE66DULL;
+  const uint64_t C = 0xBULL;
+  const uint64_t M = (1ULL << 48) - 1;
+
+  xlrand48_state = (xlrand48_state * A + C) & M;
+
+  return (long)(xlrand48_state >> 17);
+}
+
 static inline uint64_t
 urand64(void)
 {
-  return ( (uint64_t)lrand48() << 42 ) + ( (uint64_t)lrand48() << 21 )
-         + (uint64_t)lrand48();
+  return ( (uint64_t)xlrand48() << 42 ) +
+         ( (uint64_t)xlrand48() << 21 ) +
+           (uint64_t)xlrand48();
 }
 
 /*
@@ -1830,7 +1872,9 @@ main(int argc, char *argv[])
 
       if (!opt_range)
         {
-          ul = sizeof ( struct cmb_xitem * );
+          /* ul = sizeof ( struct cmb_xitem * ); */ // per Clang Analyzer
+          ul = sizeof ( struct cmb_xitem );
+          if (nitems < 1) nitems = 1; // Appease Clang Analyzer
           if (( items_tmp = calloc(nitems, ul)) == NULL)
             {
               (void)fprintf(stderr, "\rFATAL: Out of memory?! Aborting at %s[%s:%d]\r\n",
@@ -2000,7 +2044,7 @@ main(int argc, char *argv[])
               h = hash32s(&ptr, sizeof(ptr), h);
               time_t t = time(0);
               h = hash32s(&t, sizeof(t), h);
-#if !defined(_AIX)
+#if !defined(_AIX) && !defined(__MVS__)
               for (int i = 0; i < 1000; i++)
                 {
                   unsigned long counter = 0;
@@ -2024,7 +2068,7 @@ main(int argc, char *argv[])
                       h = hash32s(rnd, sizeof(rnd), h);
                     }
                 }
-              srand48((long)(h));
+              xsrand48((long)(h));
               config->start = cmb_rand_range(count) + 1;
             }
           else

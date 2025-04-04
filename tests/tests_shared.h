@@ -35,6 +35,7 @@
 #ifndef _SIR_TESTS_SHARED_H_INCLUDED
 # define _SIR_TESTS_SHARED_H_INCLUDED
 
+//-V::522
 # include "sir.h"
 # include "sir/errors.h"
 # include "sir/internal.h"
