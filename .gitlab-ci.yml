@@ -95,9 +95,12 @@ stages:
   # *WineBoot - Start Wine
   echo -e "section_start:`date +%s`:WineBoot_section[collapsed=true]\r\e[0K\033[0;36mStart Wine ...\033[0m" || true
   echo -n "Starting Wine... "
+  mkdir -p /tmp/rtd
+  chmod 700 /tmp/rtd
+  export XDG_RUNTIME_DIR=/tmp/rtd
   env WINEDEBUG=-all $(command -v wine64 || command -v wine || false) wineboot --init > /dev/null 2>&1
-  cp -f /usr/i686-w64-mingw32/sys-root/mingw/bin/iconv.dll ~/.wine/drive_c/windows/system/ > /dev/null 2>&1 || true
-  cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/iconv.dll ~/.wine/drive_c/windows/system32/ > /dev/null 2>&1 || true
+  cp -f /usr/i686-w64-mingw32/sys-root/mingw/bin/iconv.dll ${HOME}/.wine/drive_c/windows/system/ > /dev/null 2>&1 || true
+  cp -f /usr/x86_64-w64-mingw32/sys-root/mingw/bin/iconv.dll ${HOME}/.wine/drive_c/windows/system32/ > /dev/null 2>&1 || true
   while pgrep wineserver > /dev/null 2>&1; do sleep 1; done
   echo "OK."
   wine64 --version 2> /dev/null || wine --version 2> /dev/null || true
@@ -1040,11 +1043,11 @@ Windows/i686 (LLVM-MinGW, Clang++, Clang):
     - mkdir -p logs
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
-    - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'wine build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirexample.out
-    - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'wine build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests.out
-    - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'wine build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests++.out
     - |
       # End of Test ...
@@ -1581,11 +1584,11 @@ Windows/i686 (MSVC, C++, C):
     - mkdir -p logs
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
-    - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirexample.out
-    - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests.out
-    - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests++.out
     - |
       # End of Test ...
@@ -1763,11 +1766,11 @@ Windows/i686 (MinGW, G++, GCC):
     - mkdir -p logs
     - touch build/bin/file.exists
     - export WINEDEBUG=-all
-    - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirexample.out
-    - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests.out
-    - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests++.out
     - |
       # End of Test ...
@@ -2271,10 +2274,10 @@ Windows/i686 (OrangeC, C-only):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export WINEDEBUG=-all
-    - $(command -v wine64 || command -v wine || false) /opt/orangec/bin/occ.exe --version
+    - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 /opt/orangec/bin/occ.exe --version
     - mkdir -p build/bin
-    - $(command -v wine64 || command -v wine || false) /opt/orangec/bin/occ.exe /1 /O2 -Iinclude src/*.c example/*.c -o build/bin/sirexample.exe -DSIR_NO_PLUGINS=1
-    - $(command -v wine64 || command -v wine || false) /opt/orangec/bin/occ.exe /1 /O2 -Iinclude src/*.c tests/*.c -o build/bin/sirtests.exe -DSIR_NO_PLUGINS=1
+    - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 /opt/orangec/bin/occ.exe /1 /O2 -Iinclude src/*.c example/*.c -o build/bin/sirexample.exe -DSIR_NO_PLUGINS=1
+    - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 /opt/orangec/bin/occ.exe /1 /O2 -Iinclude src/*.c tests/*.c -o build/bin/sirtests.exe -DSIR_NO_PLUGINS=1
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
@@ -2284,9 +2287,9 @@ Windows/i686 (OrangeC, C-only):
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
-    - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirexample.out
-    - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests.out
     - |
       # End of Test ...
@@ -2306,7 +2309,7 @@ Windows/i686 (OrangeC, C-only):
 
 ################################################################################
 
-Linux/x86_64 (DMD64 ImportC, C-only):
+.Linux/x86_64 (DMD64 ImportC, C-only):
   stage: build_linux
   needs:
     - job: Style check
@@ -2329,10 +2332,10 @@ Linux/x86_64 (DMD64 ImportC, C-only):
     - ln -s . sir
     - ln -s ../example/* .
     - dmd --version
-    - dmd -betterC -nothrow -inline -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirexample
+    - dmd -betterC -nothrow -inline -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 -P=-Dbool=_Bool *.c -of=../build/bin/sirexample
     - rm -f example*
     - ln -s ../tests/* .
-    - dmd -betterC -nothrow -inline -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirtests
+    - dmd -betterC -nothrow -inline -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 -P=-Dbool=_Bool *.c -of=../build/bin/sirtests
     - cd ..
     - |
       # End of Build ...
@@ -2359,7 +2362,7 @@ Linux/x86_64 (DMD64 ImportC, C-only):
 
 ################################################################################
 
-Linux/i686 (DMD64 ImportC, C-only):
+.Linux/i686 (DMD64 ImportC, C-only):
   stage: build_linux
   needs:
     - job: Style check
@@ -2382,10 +2385,10 @@ Linux/i686 (DMD64 ImportC, C-only):
     - ln -s . sir
     - ln -s ../example/* .
     - dmd --version
-    - dmd -betterC -nothrow -inline -m32 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-D_FILE_OFFSET_BITS=64 -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirexample
+    - dmd -betterC -nothrow -inline -m32 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-D_FILE_OFFSET_BITS=64 -P=-DSIR_NO_PLUGINS=1 -P=-Dbool=_Bool *.c -of=../build/bin/sirexample
     - rm -f example*
     - ln -s ../tests/* .
-    - dmd -betterC -nothrow -inline -m32 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-D_FILE_OFFSET_BITS=64 -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirtests
+    - dmd -betterC -nothrow -inline -m32 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-D_FILE_OFFSET_BITS=64 -P=-DSIR_NO_PLUGINS=1 -P=-Dbool=_Bool *.c -of=../build/bin/sirtests
     - cd ..
     - |
       # End of Build ...
@@ -2494,11 +2497,13 @@ Windows/x64 (Embarcadero Alexandria, BCC64, C-only):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export WINEDEBUG=-all
-    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc64.exe --version
+    - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc64.exe --version
+    - mkdir -p ${HOME}/.wine32/drive_c/Program\ Files\ \(x86\)
+    - ln -s ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero ${HOME}/.wine32/drive_c/Program\ Files\ \(x86\)/Embarcadero
     - mkdir -p build/bin
-    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc64.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
+    - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc64.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
     - mv tests.exe build/bin/sirtests.exe
-    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc64.exe example/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
+    - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc64.exe example/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
     - mv example.exe build/bin/sirexample.exe
     - |
       # End of Build ...
@@ -2547,11 +2552,13 @@ Windows/i686 (Embarcadero Alexandria, BCC32X, C-only):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export WINEDEBUG=-all
-    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc32x.exe --version
+    - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc32x.exe --version
+    - mkdir -p ${HOME}/.wine32/drive_c/Program\ Files\ \(x86\)
+    - ln -s ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero ${HOME}/.wine32/drive_c/Program\ Files\ \(x86\)/Embarcadero
     - mkdir -p build/bin
-    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc32x.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
+    - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc32x.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
     - mv tests.exe build/bin/sirtests.exe
-    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc32x.exe example/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
+    - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/22.0/bin/bcc32x.exe example/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
     - mv example.exe build/bin/sirexample.exe
     - |
       # End of Build ...
@@ -2562,9 +2569,9 @@ Windows/i686 (Embarcadero Alexandria, BCC32X, C-only):
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
-    - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirexample.out
-    - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests.out
     - |
       # End of Test ...
@@ -2600,11 +2607,13 @@ Windows/x64 (Embarcadero Athens, BCC64, C-only):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export WINEDEBUG=-all
-    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc64.exe --version
+    - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc64.exe --version
+    - mkdir -p ${HOME}/.wine32/drive_c/Program\ Files\ \(x86\)
+    - ln -s ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero ${HOME}/.wine32/drive_c/Program\ Files\ \(x86\)/Embarcadero
     - mkdir -p build/bin
-    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc64.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
+    - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc64.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
     - mv tests.exe build/bin/sirtests.exe
-    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc64.exe example/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
+    - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc64.exe example/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
     - mv example.exe build/bin/sirexample.exe
     - |
       # End of Build ...
@@ -2653,11 +2662,11 @@ Windows/x64 (Embarcadero Athens, BCC64X, C-only):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export WINEDEBUG=-all
-    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin64/bcc64x.exe --version
+    - $(command -v wine64 || command -v wine || false) ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin64/bcc64x.exe --version
     - mkdir -p build/bin
-    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin64/bcc64x.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers -std=c11 -Wno-pragma-pack -Wno-unknown-pragmas -Wno-nonportable-include-path -Wno-macro-redefined -Wno-microsoft-anon-tag -I${HOME:-/home/user}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/include/windows/sdk -L${HOME:-/home/user}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/lib/win64/release/psdk
+    - $(command -v wine64 || command -v wine || false) ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin64/bcc64x.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers -std=c11 -Wno-pragma-pack -Wno-unknown-pragmas -Wno-nonportable-include-path -Wno-macro-redefined -Wno-microsoft-anon-tag -I${HOME:-/home/user}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/include/windows/sdk -L${HOME:-/home/user}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/lib/win64/release/psdk
     - mv tests.exe build/bin/sirtests.exe
-    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin64/bcc64x.exe example/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers -std=c11 -Wno-pragma-pack -Wno-unknown-pragmas -Wno-nonportable-include-path -Wno-macro-redefined -Wno-microsoft-anon-tag -I${HOME:-/home/user}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/include/windows/sdk -L${HOME:-/home/user}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/lib/win64/release/psdk
+    - $(command -v wine64 || command -v wine || false) ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin64/bcc64x.exe example/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers -std=c11 -Wno-pragma-pack -Wno-unknown-pragmas -Wno-nonportable-include-path -Wno-macro-redefined -Wno-microsoft-anon-tag -I${HOME:-/home/user}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/include/windows/sdk -L${HOME:-/home/user}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/lib/win64/release/psdk
     - mv example.exe build/bin/sirexample.exe
     - |
       # End of Build ...
@@ -2706,11 +2715,13 @@ Windows/i686 (Embarcadero Athens, BCC32X, C-only):
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
     - export WINEDEBUG=-all
-    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc32x.exe --version
+    - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc32x.exe --version
+    - mkdir -p ${HOME}/.wine32/drive_c/Program\ Files\ \(x86\)
+    - ln -s ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero ${HOME}/.wine32/drive_c/Program\ Files\ \(x86\)/Embarcadero
     - mkdir -p build/bin
-    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc32x.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
+    - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc32x.exe tests/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
     - mv tests.exe build/bin/sirtests.exe
-    - $(command -v wine64 || command -v wine || false) ~/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc32x.exe example/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
+    - env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 ${HOME}/.wine/drive_c/Program\ Files\ \(x86\)/Embarcadero/Studio/23.0/bin/bcc32x.exe example/*.c src/* -Iinclude -tM -DSIR_NO_PLUGINS=1 -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers
     - mv example.exe build/bin/sirexample.exe
     - |
       # End of Build ...
@@ -2721,9 +2732,9 @@ Windows/i686 (Embarcadero Athens, BCC32X, C-only):
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - mkdir -p logs
     - touch build/bin/file.exists
-    - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirexample.out
-    - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests.out
     - |
       # End of Test ...
@@ -3423,52 +3434,6 @@ Linux/x86_64 (uClibc-ng, G++, GCC):
 
 ################################################################################
 
-Linux/x86_64 (Circle, C++-only):
-  stage: build_linux
-  needs:
-    - job: Style check
-  tags:
-    - Docker-x64
-    - Linux
-  image:
-    name: registry.gitlab.com/libsir/libsir/circle:latest
-  script:
-    - *Configuration
-    - |
-      # Start of Build ...
-      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="gcc"
-    - export CXX="circle"
-    - ${CC:?} --version
-    - ${CXX:?} --version
-    - make
-    - make tests++ SIR_FPIC="--fPIC"
-    - |
-      # End of Build ...
-      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - *BuildInformation
-    - |
-      # Start of Test ...
-      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - stdbuf -o L ./build/bin/sirexample
-    - stdbuf -o L ./build/bin/sirtests
-    - stdbuf -o L ./build/bin/sirtests++
-    - |
-      # End of Test ...
-      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
-    - *CheckLogRemnants
-  dependencies: []
-  artifacts:
-    when: always
-    expire_in: 7 days
-    paths:
-      - build/
-      - logs/
-  retry: 2
-  interruptible: true
-
-################################################################################
-
 Node.js/WebAssembly (Emscripten, Em++, Emcc):
   stage: build_js
   needs:
@@ -3503,8 +3468,8 @@ Node.js/WebAssembly (Emscripten, Em++, Emcc):
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - stdbuf -o L node ./build/bin/sirexample
-    - printf '%s\n' "#!/usr/bin/env sh" "set -eu" > test.sh
-    - ( stdbuf -o L node ./build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$|^file-archive-large$)' | xargs -I{} echo "stdbuf -o L node ./build/bin/sirtests --only {}" ) >> test.sh || true
+    - printf '%s\n' '#!/usr/bin/env sh' "set -eu" > test.sh
+    - ( stdbuf -o L node ./build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$)' | xargs -I{} echo "stdbuf -o L node ./build/bin/sirtests --only {}" ) >> test.sh || true
     - stdbuf -o L sh -x ./test.sh
     - rm -f ./test.sh
     - stdbuf -o L node ./build/bin/sirtests++
@@ -3558,8 +3523,8 @@ Node.js/JavaScript (Emscripten, Em++, Emcc):
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - stdbuf -o L node ./build/bin/sirexample
-    - printf '%s\n' "#!/usr/bin/env sh" "set -eu" > test.sh
-    - ( stdbuf -o L node ./build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$|^file-archive-large$)' | xargs -I{} echo "stdbuf -o L node ./build/bin/sirtests --only {}" ) >> test.sh || true
+    - printf '%s\n' '#!/usr/bin/env sh' "set -eu" > test.sh
+    - ( stdbuf -o L node ./build/bin/sirtests --list | grep "$(printf '\t')" | tr "$(printf '\t')" "\n" | tr -d " $(printf '\t')" | grep -Ev '(^$|^filesystem$|^performance$)' | xargs -I{} echo "stdbuf -o L node ./build/bin/sirtests --only {}" ) >> test.sh || true
     - stdbuf -o L sh -x ./test.sh
     - rm -f ./test.sh
     - stdbuf -o L node ./build/bin/sirtests++
@@ -3626,48 +3591,6 @@ Linux/x86_64 (GCC, Fedora Python):
       - bindings/python/*cache*
       - bindings/python/*wrap.c
       - logs/
-  retry: 2
-  interruptible: true
-
-################################################################################
-
-Linux/x86_64 (Oracle Studio C, Fedora Python):
-  stage: build_python
-  needs:
-    - job: Style check
-    - job: Linux/x86_64 (Oracle Studio C, C-only)
-  tags:
-    - Docker-x64
-    - Docker-x64-SmallFS
-    - Linux
-  image:
-    name: registry.gitlab.com/libsir/libsir/oracle:latest
-  script:
-    - *Configuration
-    - |
-      # Start of Build ...
-      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/opt/oracle/developerstudio-latest/bin/suncc"
-    - export CFLAGS="-D_FILE_OFFSET_BITS=64"
-    - command -v python3
-    - $(command -v python3) --version
-    - swig -version
-    - ${CC:?} -V
-    - make
-    - cd bindings/python
-    - make
-    - |
-      # End of Build ...
-      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
-    - |
-      # Start of Test ...
-      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
-    - stdbuf -o L ./sirtest.py
-    - stdbuf -o L cat sir-python.log
-    - |
-      # End of Test ...
-      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
-  dependencies: []
   retry: 2
   interruptible: true
 
@@ -4068,11 +3991,11 @@ Windows/i686 (Clang-CL, C++, C):
       # Start of Test ...
       echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
     - export WINEDEBUG=-all
-    - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 build/bin/sirexample.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirexample.out
-    - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 build/bin/sirtests.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests.out
-    - screen -mDL sh -c '$(command -v wine64 || command -v wine || false) build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
+    - screen -mDL sh -c 'env WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine32 build/bin/sirtests++.exe; printf "\n%s\n" "$?"' && tail -1 screenlog.0 | dos2unix -f | ansifilter | grep -qE '^0$'
     - mv -f screenlog.0 sirtests++.out
     - |
       # End of Test ...
@@ -4357,10 +4280,10 @@ FreeBSD/amd64 (DMD64 ImportC, C-only):
     - ln -s ../example/* .
     - freebsd-version -kru | xargs
     - dmd --version
-    - dmd -nothrow -inline -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirexample
+    - dmd -nothrow -inline -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 -P=-Dbool=_Bool *.c -of=../build/bin/sirexample
     - rm -f example*
     - ln -s ../tests/* .
-    - dmd -nothrow -inline -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirtests
+    - dmd -nothrow -inline -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 -P=-Dbool=_Bool *.c -of=../build/bin/sirtests
     - cd ..
     - |
       # End of Build ...
@@ -4409,10 +4332,10 @@ OpenBSD/amd64 (DMD64 ImportC, C-only):
     - ln -s ../example/* .
     - uname -a
     - dmd --version
-    - dmd -inline -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirexample
+    - dmd -inline -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 -P=-Dbool=_Bool *.c -of=../build/bin/sirexample
     - rm -f example*
     - ln -s ../tests/* .
-    - dmd -inline -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 *.c -of=../build/bin/sirtests
+    - dmd -inline -m64 -fPIC -fPIE -O -release -check=off -boundscheck=off -P=-DSIR_NO_PLUGINS=1 -P=-Dbool=_Bool *.c -of=../build/bin/sirtests
     - cd ..
     - |
       # End of Build ...

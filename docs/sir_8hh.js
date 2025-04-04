@@ -15,12 +15,12 @@ var sir_8hh =
     [ "sir::DerivedFromPolicy", "conceptsir_1_1_derived_from_policy.html", null ],
     [ "sir::DerivedFromStreamBuf", "conceptsir_1_1_derived_from_stream_buf.html", null ],
     [ "sir::DerivedFromT", "conceptsir_1_1_derived_from_t.html", null ],
-    [ "boost_logger", "sir_8hh.html#a9a3c14fe6dc0ce95abd6a5d823f3dada", null ],
-    [ "default_logger", "sir_8hh.html#afea168ed2dc59a4b8ab004364a6f4112", null ],
-    [ "fmt_logger", "sir_8hh.html#abcbcc21fee81bc437c75083b90688e6a", null ],
-    [ "iostream_logger", "sir_8hh.html#adf1c3a7184436b3e0e7145325e867f0a", null ],
-    [ "NthTypeOf", "sir_8hh.html#af7e07997ea6e1fd2886a5ddc09eb91f7", null ],
-    [ "std_format_logger", "sir_8hh.html#ae08772b1ec0bd141c79d99fc4ba2d6ce", null ],
-    [ "all_derived_from_t", "sir_8hh.html#a5f417c5e60499d22d51b5128a66dbe1a", null ],
-    [ "throw_on_policy", "sir_8hh.html#aeeaffc9b61a4a185d0376489c7424119", null ]
+    [ "sir::boost_logger", "namespacesir.html#a9a3c14fe6dc0ce95abd6a5d823f3dada", null ],
+    [ "sir::default_logger", "namespacesir.html#afea168ed2dc59a4b8ab004364a6f4112", null ],
+    [ "sir::fmt_logger", "namespacesir.html#abcbcc21fee81bc437c75083b90688e6a", null ],
+    [ "sir::iostream_logger", "namespacesir.html#adf1c3a7184436b3e0e7145325e867f0a", null ],
+    [ "sir::NthTypeOf", "namespacesir.html#af7e07997ea6e1fd2886a5ddc09eb91f7", null ],
+    [ "sir::std_format_logger", "namespacesir.html#ae08772b1ec0bd141c79d99fc4ba2d6ce", null ],
+    [ "sir::all_derived_from_t", "namespacesir.html#a5f417c5e60499d22d51b5128a66dbe1a", null ],
+    [ "sir::throw_on_policy", "namespacesir.html#aeeaffc9b61a4a185d0376489c7424119", null ]
 ];

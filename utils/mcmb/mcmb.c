@@ -12,7 +12,7 @@
  * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 2002-2019 Devin Teske <dteske@FreeBSD.org>
- * Copyright (c) 2020-2024 Jeffrey H. Johnson <trnsz@pobox.com>
+ * Copyright (c) 2020-2025 Jeffrey H. Johnson <trnsz@pobox.com>
  * Copyright (c) 2021-2025 The DPS8M Development Team
  *
  * All rights reserved.
@@ -1872,7 +1872,9 @@ main(int argc, char *argv[])
 
       if (!opt_range)
         {
-          ul = sizeof ( struct cmb_xitem * );
+          /* ul = sizeof ( struct cmb_xitem * ); */ // per Clang Analyzer
+          ul = sizeof ( struct cmb_xitem );
+          if (nitems < 1) nitems = 1; // Appease Clang Analyzer
           if (( items_tmp = calloc(nitems, ul)) == NULL)
             {
               (void)fprintf(stderr, "\rFATAL: Out of memory?! Aborting at %s[%s:%d]\r\n",

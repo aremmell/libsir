@@ -2,7 +2,13 @@ var hierarchy =
 [
     [ "sir::adapter", "classsir_1_1adapter.html", [
       [ "sir::boost_format_adapter< TPolicy >", "classsir_1_1boost__format__adapter.html", null ],
-      [ "sir::default_adapter< TPolicy >", "classsir_1_1default__adapter.html", null ],
+      [ "sir::default_adapter< TPolicy >", "classsir_1_1default__adapter.html", [
+        [ "sir::logger< true, default_policy, default_adapter >", "classsir_1_1logger.html", null ],
+        [ "sir::logger< true, default_policy, default_adapter, std_format_adapter >", "classsir_1_1logger.html", null ],
+        [ "sir::logger< true, default_policy, default_adapter, boost_format_adapter >", "classsir_1_1logger.html", null ],
+        [ "sir::logger< true, default_policy, default_adapter, fmt_format_adapter >", "classsir_1_1logger.html", null ],
+        [ "sir::logger< true, default_policy, default_adapter, std_iostream_adapter >", "classsir_1_1logger.html", null ]
+      ] ],
       [ "sir::fmt_format_adapter< TPolicy >", "classsir_1_1fmt__format__adapter.html", null ],
       [ "sir::std_format_adapter< TPolicy >", "classsir_1_1std__format__adapter.html", null ],
       [ "sir::std_iostream_adapter< TPolicy >", "classsir_1_1std__iostream__adapter.html", null ]
