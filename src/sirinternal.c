@@ -1300,8 +1300,9 @@ pid_t _sir_gettid(void) {
 # endif
 #elif defined(__HAIKU__)
     tid = get_pthread_thread_id(pthread_self());
-#elif defined(__linux__) || defined(__serenity__)
-# if (defined(__GLIBC__) && GLIBC_VERSION >= 23000) || defined(__serenity__)
+#elif defined(__linux__) || defined(__serenity__) || defined(__managarm__)
+# if (defined(__GLIBC__) && GLIBC_VERSION >= 23000) || defined(__serenity__) || \
+     defined(__managarm__)
     tid = gettid();
 # else
     tid = syscall(SYS_gettid);
@@ -1321,7 +1322,8 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     (defined(__GLIBC__) && GLIBC_VERSION >= 21200 && defined(_GNU_SOURCE)) || \
     (defined(__ANDROID__) &&  __ANDROID_API__ >= 26) || defined(SIR_PTHREAD_GETNAME_NP) || \
     defined(__serenity__) || (defined(__linux__) && !defined(__GLIBC__) && \
-    defined(_GNU_SOURCE) && defined(__NEED_pthread_t)) || defined(__QNX__)
+    defined(_GNU_SOURCE) && defined(__NEED_pthread_t)) || defined(__QNX__) || \
+    defined(__managarm__)
     int ret = pthread_getname_np(pthread_self(), name, SIR_MAXPID);
     if (0 != ret)
         return _sir_handleerr(ret);
@@ -1382,7 +1384,7 @@ bool _sir_setthreadname(const char* name) {
        defined(__QNXNTO__) || defined(__SOLARIS__) || defined(SIR_PTHREAD_GETNAME_NP) || \
        defined(__ANDROID__) && !defined(__OpenBSD__) || defined(__serenity__) || \
       (defined(__linux__) && !defined(__GLIBC__) && \
-       defined(_GNU_SOURCE) && defined(__NEED_pthread_t))
+       defined(_GNU_SOURCE) && defined(__NEED_pthread_t)) || defined(__managarm__)
     int ret = pthread_setname_np(pthread_self(), name);
     return (0 != ret) ? _sir_handleerr(ret) : true;
 #elif defined(__OpenBSD__) || defined(__BSD__) && defined(__FreeBSD_PTHREAD_NP_11_3__)
