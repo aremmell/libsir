@@ -108,6 +108,7 @@ At this time, libsir is supported (*that is, it compiles and passes the test sui
 | **Solaris**&nbsp;11.4 | **GCC**&nbsp;(10.3&nbsp;‑&nbsp;11.2),&nbsp; **Clang**&nbsp;(6&nbsp;‑&nbsp;18.1.8),&nbsp; **Oracle&nbsp;Studio&nbsp;C/C++**&nbsp;(≳12.6) |
 | **illumos** | **GCC**&nbsp;(7.5&nbsp;‑&nbsp;14.2),&nbsp; **Clang**&nbsp;(15.0.7&nbsp;‑&nbsp;19.1.7),&nbsp; **Oracle&nbsp;Studio&nbsp;C/C++**&nbsp;(≳12.6) |
 | **SerenityOS** | **GCC**&nbsp;(13.1) |
+| **Managarm** | **GCC**&nbsp;(14.2) |
 | **WebAssembly/JS** | **Emscripten**&nbsp;(3.1.45&nbsp;‑&nbsp;4.0.5),&nbsp; **Node.js**&nbsp;(20.5.0&nbsp;‑&nbsp;23.10.0) |
 
 * libsir is known to work on most common (and many uncommon) architectures. It has been built and tested on **Intel** (x86\_64, i686, x32), **ARM** (ARMv6, ARMv7HF, ARMv8‑A), **POWER** (PowerPC, PPC64, PPC64le), **MIPS** (MIPS64, MIPS32, 74Kc), **SPARC** (SPARC64, V8, LEON3), **z/Architecture** (S390X), **SuperH** (SH‑4A), **RISC‑V** (RV32, RV64), **OpenRISC** (OR1200), **Kalray MPPA®** (Coolidge™, KVX), **МЦСТ Эльбрус** (E2K), and **m68k** (ColdFire, 68020+).

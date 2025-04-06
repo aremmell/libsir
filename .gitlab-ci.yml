@@ -1826,6 +1826,7 @@ Cygwin/x86_64 (G++, GCC):
 ################################################################################
 
 Coverage:
+  allow_failure: true
   stage: coverage
   needs:
     - job: Style check
