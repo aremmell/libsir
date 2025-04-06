@@ -461,7 +461,8 @@ _set_thread_local_invalid_parameter_handler(
 #  endif
 #  if !defined(__CYGWIN__) && !defined(__HAIKU__) && \
       !defined(__serenity__) && !defined(_AIX) && \
-      !defined(_CH_) && !defined(__CH__) && !defined(__QNX__)
+      !defined(_CH_) && !defined(__CH__) && !defined(__QNX__) && \
+      !defined(__managarm__)
 #   include <sys/syscall.h>
 #  endif
 #  if defined(__QNX__)
