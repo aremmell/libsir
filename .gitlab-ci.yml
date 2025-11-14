@@ -4311,7 +4311,7 @@ FreeBSD/amd64 (DMD64 ImportC, C-only):
 
 ################################################################################
 
-OpenBSD/amd64 (DMD64 ImportC, C-only):
+.OpenBSD/amd64 (DMD64 ImportC, C-only):
   stage: build_openbsd
   needs:
     - job: Style check
