@@ -12,7 +12,7 @@
  * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 2002-2019 Devin Teske <dteske@FreeBSD.org>
- * Copyright (c) 2020-2025 Jeffrey H. Johnson <trnsz@pobox.com>
+ * Copyright (c) 2020-2025 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
  * Copyright (c) 2021-2025 The DPS8M Development Team
  *
  * All rights reserved.

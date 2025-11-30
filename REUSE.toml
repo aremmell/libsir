@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-2024 Jeffrey H. Johnson <trnsz@pobox.com>
+# Copyright (c) 2018-2024 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
 # Copyright (c) 2018-2024 Ryan M. Lederman <lederman@gmail.com>
 
 version = 1
@@ -10,7 +10,7 @@ SPDX-PackageDownloadLocation = "https://github.com/aremmell/libsir"
 [[annotations]]
 path = "docs/**"
 precedence = "aggregate"
-SPDX-FileCopyrightText = ["2018-2024 Ryan M. Lederman <lederman@gmail.com>", "2018-2024 Jeffrey H. Johnson <trnsz@pobox.com>"]
+SPDX-FileCopyrightText = ["2018-2024 Ryan M. Lederman <lederman@gmail.com>", "2018-2024 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>"]
 SPDX-License-Identifier = "MIT"
 
 [[annotations]]

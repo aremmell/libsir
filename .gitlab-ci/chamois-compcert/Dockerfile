@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-2024 Jeffrey H. Johnson <trnsz@pobox.com>
+# Copyright (c) 2018-2024 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
 
 FROM registry.gitlab.com/libsir/libsir/base:latest
 

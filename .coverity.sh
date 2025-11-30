@@ -10,7 +10,7 @@
 # SPDX-License-Identifier: MIT
 #
 # Copyright (c) 2018-2024 Ryan M. Lederman <lederman@gmail.com>
-# Copyright (c) 2018-2024 Jeffrey H. Johnson <trnsz@pobox.com>
+# Copyright (c) 2018-2024 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -88,7 +88,7 @@ test -z "${COVERITY_TOKEN:-}" &&
 ##############################################################################
 
 # XXX(johnsonjh): Read from environment?
-COVERITY_EMAIL="trnsz@pobox.com" && export COVERITY_EMAIL
+COVERITY_EMAIL="johnsonjh.dev@gmail.com" && export COVERITY_EMAIL
 
 test -z "${COVERITY_EMAIL:-}" &&
   {
