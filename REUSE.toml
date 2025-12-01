@@ -9,7 +9,7 @@ SPDX-PackageDownloadLocation = "https://github.com/aremmell/libsir"
 
 [[annotations]]
 path = "docs/**"
-precedence = "aggregate"
+precedence = "override"
 SPDX-FileCopyrightText = ["2018-2025 Ryan M. Lederman <lederman@gmail.com>", "2018-2025 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>"]
 SPDX-License-Identifier = "MIT"
 
