@@ -1,7 +1,7 @@
 /*
  * mcmb.c
  *
- * Version: 2120.6.02-dps (libcmb 3.5.6)
+ * Version: 2120.6.03-dps (libcmb 3.5.6)
  *
  * -----------------------------------------------------------------------------
  *
@@ -119,6 +119,8 @@
 # define inline
 #endif /* if defined(__MVS__) && !defined(__clang_version__) */
 
+static const int never = FALSE;
+
 #if defined(FREE)
 # undef FREE
 #endif /* if defined(FREE) */
@@ -126,7 +128,7 @@
   {                 \
     free((p));      \
     (p) = NULL;     \
-  } while(0)
+  } while(never)
 
 /*
  * Version information
@@ -450,7 +452,7 @@ static struct cmb_xitem *cmb_transform_find;
 # define CMB_PARSE_FRAGSIZE 512
 #endif /* if !defined(CMB_PARSE_FRAGSIZE) */
 
-static const char mcmbver[]         = "2120.6.02-dps";
+static const char mcmbver[]         = "2120.6.03-dps";
 static const char libversion[]      = "libcmb 3.5.6";
 
 /*
