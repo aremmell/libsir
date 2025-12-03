@@ -1,7 +1,7 @@
 /*
  * mcmb.c
  *
- * Version: 2120.6.02-dps (libcmb 3.5.6)
+ * Version: 2120.6.03-dps (libcmb 3.5.6)
  *
  * -----------------------------------------------------------------------------
  *
@@ -12,7 +12,7 @@
  * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 2002-2019 Devin Teske <dteske@FreeBSD.org>
- * Copyright (c) 2020-2025 Jeffrey H. Johnson <trnsz@pobox.com>
+ * Copyright (c) 2020-2025 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
  * Copyright (c) 2021-2025 The DPS8M Development Team
  *
  * All rights reserved.
@@ -119,6 +119,8 @@
 # define inline
 #endif /* if defined(__MVS__) && !defined(__clang_version__) */
 
+static const int never = FALSE;
+
 #if defined(FREE)
 # undef FREE
 #endif /* if defined(FREE) */
@@ -126,7 +128,7 @@
   {                 \
     free((p));      \
     (p) = NULL;     \
-  } while(0)
+  } while(never)
 
 /*
  * Version information
@@ -450,7 +452,7 @@ static struct cmb_xitem *cmb_transform_find;
 # define CMB_PARSE_FRAGSIZE 512
 #endif /* if !defined(CMB_PARSE_FRAGSIZE) */
 
-static const char mcmbver[]         = "2120.6.02-dps";
+static const char mcmbver[]         = "2120.6.03-dps";
 static const char libversion[]      = "libcmb 3.5.6";
 
 /*
