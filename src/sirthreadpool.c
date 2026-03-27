@@ -165,6 +165,11 @@ bool _sir_threadpool_destroy(sir_threadpool** pool) {
         DWORD join = WaitForSingleObject((*pool)->threads[n], INFINITE);
         SIR_ASSERT(WAIT_OBJECT_0 == join);
         _sir_eqland(destroy, WAIT_OBJECT_0 == join);
+        if (WAIT_OBJECT_0 == join) {
+            BOOL closed = CloseHandle((*pool)->threads[n]);
+            SIR_ASSERT_UNUSED(closed, closed);
+            _sir_eqland(destroy, closed);
+        }
 #endif
     }
 
