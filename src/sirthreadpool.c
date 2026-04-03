@@ -40,7 +40,8 @@
 static void* thread_pool_proc(void* arg);
 #else
 static unsigned __stdcall thread_pool_proc(void* arg);
-# pragma warning(push, 6001)
+# pragma warning(push)
+# pragma warning(disable: 6001)
 #endif
 
 bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
@@ -235,7 +236,7 @@ static unsigned __stdcall thread_pool_proc(void* arg)
 #if !defined(__WIN__)
     return NULL;
 #else /* __WIN__ */
-# pragma warning(pop, 6001)
+# pragma warning(pop)
     return 0U;
 #endif
 }
