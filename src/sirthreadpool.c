@@ -7,8 +7,8 @@
  *
  * SPDX-License-Identifier: MIT
  *
- * Copyright (c) 2018-2024 Ryan M. Lederman <lederman@gmail.com>
- * Copyright (c) 2018-2024 Jeffrey H. Johnson <trnsz@pobox.com>
+ * Copyright (c) 2018-2025 Ryan M. Lederman <lederman@gmail.com>
+ * Copyright (c) 2018-2025 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -40,6 +40,8 @@
 static void* thread_pool_proc(void* arg);
 #else
 static unsigned __stdcall thread_pool_proc(void* arg);
+# pragma warning(push)
+# pragma warning(disable: 6001)
 #endif
 
 bool _sir_threadpool_create(sir_threadpool** pool, size_t num_threads) {
@@ -177,6 +179,11 @@ bool _sir_threadpool_destroy(sir_threadpool** pool) {
         DWORD join = WaitForSingleObject((*pool)->threads[n], INFINITE);
         SIR_ASSERT(WAIT_OBJECT_0 == join);
         _sir_eqland(destroy, WAIT_OBJECT_0 == join);
+        if (WAIT_OBJECT_0 == join) {
+            BOOL closed = CloseHandle((*pool)->threads[n]);
+            SIR_ASSERT_UNUSED(closed, closed);
+            _sir_eqland(destroy, closed);
+        }
 #endif
     }
 
@@ -241,6 +248,7 @@ static unsigned __stdcall thread_pool_proc(void* arg)
 #if !defined(__WIN__)
     return NULL;
 #else /* __WIN__ */
+# pragma warning(pop)
     return 0U;
 #endif
 }
