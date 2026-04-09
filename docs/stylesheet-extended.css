@@ -1,25 +1,12 @@
-/* The standard CSS for doxygen 1.16.1*/
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Righteous&family=Source+Code+Pro:ital@0;1&family=Fira+Code:wght@300;400;500&display=swap');
-
-body {
-    background-color: #0D0817;
-    color: #C9D1D9;
-}
-
-body, table, div, p, dl {
-    font-weight: 400;
-    font-size: 15px;
-    font-family: 'Montserrat', sans-serif;
-    line-height: 24px;
-}
-
-body.resizing {
-	user-select: none;
-	-webkit-user-select: none;
-}
-
-#doc-content {
-	scrollbar-width: thin;
+code {
+    /* background-color: #110c25; */
+    text-shadow: 1px 1px #372c62;
+    border-radius: 3px;
+    font-family: 'Fira Code', monospace, fixed;
+    font-size: 14x;
+    font-weight: 500;
+    line-height: 15px;
+    padding: 2px;
 }
 
 /* @group Heading Levels */
@@ -218,7 +205,7 @@ dt.alphachar{
 /* @group Link Styling */
 
 a {
-	color: #9173CC;
+	color: #90A5CE;
 	font-weight: normal;
 	text-decoration: none;
 }
@@ -363,12 +350,12 @@ pre.fragment {
 	word-wrap: break-word;
 	font-size:  10pt;
 	line-height: 125%;
-	font-family: 'JetBrains Mono',Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace,fixed;
+    font-family: 'Fira Code', monospace, fixed;
 }
 
 span.tt {
         white-space: pre;
-	font-family: 'JetBrains Mono',Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace,fixed;
+    font-family: 'Fira Code', monospace, fixed;
 	background-color: #06040B;
 }
 
@@ -412,7 +399,7 @@ span.tt {
 }
 
 div.line {
-	font-family: 'JetBrains Mono',Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace,fixed;
+    font-family: 'Fira Code', monospace, fixed;
 	font-size: 13px;
 	min-height: 13px;
 	line-height: 1.2;
@@ -722,7 +709,7 @@ table.memberdecls {
 }
 
 .memberdecls tr[class^='memitem'] {
-	font-family: 'JetBrains Mono',Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace,fixed;
+    font-family: 'Fira Code', monospace, fixed;
 }
 
 .mdescLeft, .mdescRight,
@@ -862,7 +849,7 @@ tr.template .memItemLeft, tr.template .memItemRight {
 	margin-bottom: -1px;
 	background-color: #160E27;
 	line-height: 1.25;
-	font-family: 'JetBrains Mono',Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace,fixed;
+    font-family: 'Fira Code', monospace, fixed;
 	font-weight: 500;
 	font-size: 16px;
 	float:left;
@@ -885,7 +872,7 @@ tr.template .memItemLeft, tr.template .memItemRight {
 
 .permalink
 {
-	font-family: 'JetBrains Mono',Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace,fixed;
+    font-family: 'Fira Code', monospace, fixed;
 	font-weight: 500;
 	line-height: 1.25;
 	font-size: 16px;
@@ -896,7 +883,7 @@ tr.template .memItemLeft, tr.template .memItemRight {
 .memtemplate {
 	font-size: 80%;
 	color: #7E5BC4;
-	font-family: 'JetBrains Mono',Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace,fixed;
+    font-family: 'Fira Code', monospace, fixed;
 	font-weight: normal;
 	margin-left: 9px;
 }
@@ -920,7 +907,7 @@ tr.template .memItemLeft, tr.template .memItemRight {
 }
 
 .memname {
-	font-family: 'JetBrains Mono',Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace,fixed;
+    font-family: 'Fira Code', monospace, fixed;
 	font-size: 13px;
 	font-weight: 400;
 	margin-left: 6px;
@@ -943,7 +930,7 @@ tr.template .memItemLeft, tr.template .memItemRight {
 }
 
 .overload {
-	font-family: 'JetBrains Mono',Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace,fixed;
+    font-family: 'Fira Code', monospace, fixed;
 	font-size: 65%;
 }
 
@@ -990,7 +977,7 @@ dl.reflist dd {
 }
 
 .paramname .paramdefval {
-	font-family: 'JetBrains Mono',Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace,fixed;
+    font-family: 'Fira Code', monospace, fixed;
 }
 
 .params, .retval, .exception, .tparams {
@@ -1009,7 +996,7 @@ dl.reflist dd {
 }
 
 .params .paramdir, .tparams .paramdir {
-	font-family: 'JetBrains Mono',Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace,fixed;
+    font-family: 'Fira Code', monospace, fixed;
 	vertical-align: top;
 }
 
@@ -1676,66 +1663,48 @@ dl.bug dd, dl.deprecated dd, dl.todo dd, dl.test dd {
 	margin-inline-start: 0px;
 }
 
-
-/*#projectrow
-{
-	height: 56px;
+#projectname {
+    font-size: 2.5em;
+    font-family: 'Righteous', cursive;
+    text-shadow: 2px 2px 2px #9173cc;
 }
 
-#projectlogo
-{
-	text-align: center;
-	vertical-align: bottom;
-	border-collapse: separate;
-}
-
-#projectlogo img
-{
-	border: 0px none;
-}
-
-#projectalign
-{
-	vertical-align: middle;
-	padding-left: 0.5em;
-}
-
-#projectname
-{
-	font-size: 200%;
-	font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-	margin: 0;
-	padding: 0;
-}
-
-#side-nav #projectname
+/*#side-nav #projectname
 {
 	font-size: 130%;
-}
-
-#projectbrief
-{
-	font-size: 90%;
-	font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-	margin: 0px;
-	padding: 0px;
-}
-
-#projectnumber
-{
-	font-size: 50%;
-	font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-	margin: 0px;
-	padding: 0px;
-}
-
-#titlearea
-{
-	padding: 0 0 0 5px;
-	margin: 0px;
-	border-bottom: 1px solid #1F1336;
-	background-color: #06040B;
 }*/
+
+#projectbrief {
+    font-size: 15px;
+    font-family: 'Righteous', cursive;
+    text-shadow: 2px 2px 2px #9173cc;
+    margin: 0px;
+    padding: 0px;
+}
+
+
+#projectnumber {
+    font-size: 50%;
+    font-family: 'Righteous', cursive;
+    text-shadow: 2px 2px 2px #9173cc;
+    margin: 0px;
+    padding: 0px;
+}
+
+
+#titlearea {
+    padding-left: 1em;
+    padding-top: 1em;
+    margin: 0px;
+    height: 86px;
+    border-bottom: 1px solid #354C79;
+    background-color: #110c26;
+}
+
+#titlearea table {
+    padding-top: 1px;
+    padding-bottom: 2px;
+}
 
 .image
 {
