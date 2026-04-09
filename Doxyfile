@@ -71,7 +71,7 @@ PROJECT_LOGO           =
 # when the HTML document is shown. Doxygen will copy the logo to the output
 # directory.
 
-PROJECT_ICON           =
+PROJECT_ICON           = docs/res/libsir-icon.png
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) path
 # into which the generated documentation will be written. If a relative path is
@@ -1391,7 +1391,7 @@ HTML_FOOTER            = docs/sources/footer.html
 # obsolete.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_STYLESHEET        = docs/sources/stylesheet.css
+HTML_STYLESHEET        =  docs/sources/stylesheet.css
 
 # The HTML_EXTRA_STYLESHEET tag can be used to specify additional user-defined
 # cascading style sheets that are included after the standard style sheets
@@ -1409,7 +1409,7 @@ HTML_STYLESHEET        = docs/sources/stylesheet.css
 # documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_STYLESHEET  = docs/sources/rml-navtree.css
+HTML_EXTRA_STYLESHEET  = docs/sources/stylesheet-extended.css
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note
@@ -1420,6 +1420,17 @@ HTML_EXTRA_STYLESHEET  = docs/sources/rml-navtree.css
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
 HTML_EXTRA_FILES       =
+
+#docs/res/libsir-icon.svg \
+                         #docs/res/libsir-icon192.png \
+                         #docs/res/libsir-flow.gif \
+                         #docs/res/libsir-alpha.png \
+                         #docs/res/sample-terminal.gif \
+                         #docs/res/sample-terminal.png \
+                         #docs/res/sample-terminal.svg \
+                         #docs/res/libsir-github.png \
+                         #docs/res/libsir-og.png \
+                         #docs/res/icons.webmanifest
 
 # The HTML_COLORSTYLE tag can be used to specify if the generated HTML output
 # should be rendered with a dark or light theme.
