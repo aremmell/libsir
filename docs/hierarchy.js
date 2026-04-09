@@ -17,7 +17,7 @@ var hierarchy =
       [ "sir::error_info", "structsir_1_1error__info.html", null ]
     ] ],
     [ "sir::exception", "classsir_1_1exception.html", null ],
-    [ "sir::logger< RAII, TPolicy, TAdapters >", "classsir_1_1logger.html", null ],
+    [ "sir::logger&lt; RAII, TPolicy, TAdapters &gt;", "classsir_1_1logger.html", null ],
     [ "sir::policy", "classsir_1_1policy.html", [
       [ "sir::default_policy", "classsir_1_1default__policy.html", null ]
     ] ],
@@ -33,7 +33,7 @@ var hierarchy =
     [ "sir_queue", "structsir__queue.html", null ],
     [ "sir_queue_node", "structsir__queue__node.html", null ],
     [ "sir_stdio_dest", "group__publictypes.html#structsir__stdio__dest", null ],
-    [ "sir_syslog_dest", "group__publictypes.html#structsir__syslog__dest", null ],
+    [ "sir_syslog_dest", "structsir__syslog__dest.html", null ],
     [ "sir_syslog_dest._state", "group__publictypes.html#structsir__syslog__dest_8__state", null ],
     [ "sir_test", "structsir__test.html", null ],
     [ "sir_text_style_data", "structsir__text__style__data.html", null ],

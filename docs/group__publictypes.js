@@ -18,12 +18,12 @@ var group__publictypes =
       [ "levels", "group__publictypes.html#a3dc07c2b3fbe96d9c6f4d8af2ef90687", null ],
       [ "opts", "group__publictypes.html#a7e1370c46de95363162d1c7879fca723", null ]
     ] ],
-    [ "sir_syslog_dest", "group__publictypes.html#structsir__syslog__dest", [
-      [ "_state", "group__publictypes.html#a239bed29c66896051d82c286901e6bb5", null ],
-      [ "category", "group__publictypes.html#ace79b2f2bd4d08d0c6e4151dafb3266b", null ],
-      [ "identity", "group__publictypes.html#acbc738f8c0f9dc404ac85e13cb43c7c5", null ],
-      [ "levels", "group__publictypes.html#a2fb4c11cdb645a46f008c34678260bbc", null ],
-      [ "opts", "group__publictypes.html#ad8f026edd9c8667d897eb24016f2e81f", null ]
+    [ "sir_syslog_dest", "structsir__syslog__dest.html", [
+      [ "_state", "structsir__syslog__dest.html#a239bed29c66896051d82c286901e6bb5", null ],
+      [ "category", "structsir__syslog__dest.html#ace79b2f2bd4d08d0c6e4151dafb3266b", null ],
+      [ "identity", "structsir__syslog__dest.html#acbc738f8c0f9dc404ac85e13cb43c7c5", null ],
+      [ "levels", "structsir__syslog__dest.html#a2fb4c11cdb645a46f008c34678260bbc", null ],
+      [ "opts", "structsir__syslog__dest.html#ad8f026edd9c8667d897eb24016f2e81f", null ]
     ] ],
     [ "sirinit", "group__publictypes.html#structsirinit", [
       [ "d_stderr", "group__publictypes.html#ac66a688f2db4be6a408b8c570ffd0811", null ],
