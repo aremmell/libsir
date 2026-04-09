@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['fmt_5flogger_0',['fmt_logger',['../namespacesir.html#abcbcc21fee81bc437c75083b90688e6a',1,'sir']]]
+  ['fmt_5flogger_0',['fmt_logger',['../namespacesir.html#a13ab256a999a70ecca251fe1d6144315',1,'sir']]]
 ];

@@ -87,7 +87,7 @@ $(function() { codefold.init(); });
   </div>
 </div>
 <script type="text/javascript">
-$(function(){initNavTree('structsir__pluginifacev1.html','',''); });
+$(function(){initNavTree('structsir__syslog__dest.html','',''); });
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
@@ -120,92 +120,89 @@ $(function() {
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">sir_pluginifacev1 Struct Reference</div></div>
+  <div class="headertitle"><div class="title">sir_syslog_dest Struct Reference<div class="ingroups"><a class="el" href="group__public.html">Public Interface</a> &raquo; <a class="el" href="group__publictypes.html">Types</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Plugin interface for v1.  
+<p>Configuration for the system logger destination.  
  <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a48761a407679ba47dd18f2a52ddeb422" id="r_a48761a407679ba47dd18f2a52ddeb422"><td class="memItemLeft"><a id="a48761a407679ba47dd18f2a52ddeb422" name="a48761a407679ba47dd18f2a52ddeb422"></a>
-sir_plugin_queryfn&#160;</td><td class="memItemRight"><b>query</b></td></tr>
-<tr class="memdesc:a48761a407679ba47dd18f2a52ddeb422"><td class="mdescLeft">&#160;</td><td class="mdescRight">Address of sir_plugin_query. <br /></td></tr>
-<tr class="memitem:af8ba5a3a8a30ff6decd9c1795003cfcf" id="r_af8ba5a3a8a30ff6decd9c1795003cfcf"><td class="memItemLeft"><a id="af8ba5a3a8a30ff6decd9c1795003cfcf" name="af8ba5a3a8a30ff6decd9c1795003cfcf"></a>
-sir_plugin_initfn&#160;</td><td class="memItemRight"><b>init</b></td></tr>
-<tr class="memdesc:af8ba5a3a8a30ff6decd9c1795003cfcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Address of sir_plugin_init. <br /></td></tr>
-<tr class="memitem:a7be5d9cb671d562cdc031bb6962c9258" id="r_a7be5d9cb671d562cdc031bb6962c9258"><td class="memItemLeft"><a id="a7be5d9cb671d562cdc031bb6962c9258" name="a7be5d9cb671d562cdc031bb6962c9258"></a>
-sir_plugin_writefn&#160;</td><td class="memItemRight"><b>write</b></td></tr>
-<tr class="memdesc:a7be5d9cb671d562cdc031bb6962c9258"><td class="mdescLeft">&#160;</td><td class="mdescRight">Address of sir_plugin_write. <br /></td></tr>
-<tr class="memitem:a17698cba1d7ed214a11774078526c615" id="r_a17698cba1d7ed214a11774078526c615"><td class="memItemLeft"><a id="a17698cba1d7ed214a11774078526c615" name="a17698cba1d7ed214a11774078526c615"></a>
-sir_plugin_cleanupfn&#160;</td><td class="memItemRight"><b>cleanup</b></td></tr>
-<tr class="memdesc:a17698cba1d7ed214a11774078526c615"><td class="mdescLeft">&#160;</td><td class="mdescRight">Address of sir_plugin_cleanup. <br /></td></tr>
+<tr class="memitem:a2fb4c11cdb645a46f008c34678260bbc" id="r_a2fb4c11cdb645a46f008c34678260bbc"><td class="memItemLeft"><a id="a2fb4c11cdb645a46f008c34678260bbc" name="a2fb4c11cdb645a46f008c34678260bbc"></a>
+<a class="el" href="group__publictypes.html#ga7ee5f2908abd2df9e89bcab0b6608edd">sir_levels</a>&#160;</td><td class="memItemRight"><b>levels</b></td></tr>
+<tr class="memdesc:a2fb4c11cdb645a46f008c34678260bbc"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="group__publictypes.html#ga076e759e9aa36cde2977f754a7ea186c" title="The sir_level type.">sir_level</a> bitmask defining levels to register for. <br /></td></tr>
+<tr class="memitem:ad8f026edd9c8667d897eb24016f2e81f" id="r_ad8f026edd9c8667d897eb24016f2e81f"><td class="memItemLeft"><a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a>&#160;</td><td class="memItemRight"><a class="el" href="#ad8f026edd9c8667d897eb24016f2e81f">opts</a></td></tr>
+<tr class="memdesc:ad8f026edd9c8667d897eb24016f2e81f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="group__publictypes.html#gac28da6e48402cc15ead5b5384bccb6fd" title="The sir_option type.">sir_option</a> bitmask defining the formatting of output.  <br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft anon"><a id="a239bed29c66896051d82c286901e6bb5" name="a239bed29c66896051d82c286901e6bb5"></a>
+struct {&#160;</td><td class="memItemRight"></td></tr>
+<tr class="memitem:aa4c0439f548f3c223c12af6ab8101fe5" id="r_aa4c0439f548f3c223c12af6ab8101fe5"><td class="memItemLeft"><a id="aa4c0439f548f3c223c12af6ab8101fe5" name="aa4c0439f548f3c223c12af6ab8101fe5"></a>
+uint32_t&#160;</td><td class="memItemRight"><b>mask</b></td></tr>
+<tr class="memdesc:aa4c0439f548f3c223c12af6ab8101fe5"><td class="mdescLeft">&#160;</td><td class="mdescRight">State bitmask. <br /></td></tr>
+<tr class="memitem:ad3b06b45fd2e18aa39e03a83173f0655" id="r_ad3b06b45fd2e18aa39e03a83173f0655"><td class="memItemLeft"><a id="ad3b06b45fd2e18aa39e03a83173f0655" name="ad3b06b45fd2e18aa39e03a83173f0655"></a>
+void *&#160;</td><td class="memItemRight"><b>logger</b></td></tr>
+<tr class="memdesc:ad3b06b45fd2e18aa39e03a83173f0655"><td class="mdescLeft">&#160;</td><td class="mdescRight">System logger handle/identifier. <br /></td></tr>
+<tr class="memitem:a239bed29c66896051d82c286901e6bb5" id="r_a239bed29c66896051d82c286901e6bb5"><td class="memItemLeft anonEnd">}&#160;</td><td class="memItemRight"><b>_state</b></td></tr>
+<tr class="memdesc:a239bed29c66896051d82c286901e6bb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reserved for internal use; do not modify. <br /></td></tr>
+<tr class="memitem:acbc738f8c0f9dc404ac85e13cb43c7c5" id="r_acbc738f8c0f9dc404ac85e13cb43c7c5"><td class="memItemLeft">char&#160;</td><td class="memItemRight"><a class="el" href="#acbc738f8c0f9dc404ac85e13cb43c7c5">identity</a> [<a class="el" href="config_8h.html#a24a907a8ba87d4355d11dca2476383b2">SIR_MAX_SYSLOG_ID</a>]</td></tr>
+<tr class="memdesc:acbc738f8c0f9dc404ac85e13cb43c7c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The identity string to pass to the system logger.  <br /></td></tr>
+<tr class="memitem:ace79b2f2bd4d08d0c6e4151dafb3266b" id="r_ace79b2f2bd4d08d0c6e4151dafb3266b"><td class="memItemLeft">char&#160;</td><td class="memItemRight"><a class="el" href="#ace79b2f2bd4d08d0c6e4151dafb3266b">category</a> [<a class="el" href="config_8h.html#acf0d0fad6a98c920cced53dbe9b54d26">SIR_MAX_SYSLOG_CAT</a>]</td></tr>
+<tr class="memdesc:ace79b2f2bd4d08d0c6e4151dafb3266b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The category string to pass to the system logger.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Plugin interface for v1. </p>
+<div class="textblock"><p>Configuration for the system logger destination. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publictypes.html#structsir__stdio__dest" title="Configuration for stdio destinations (stdout and stderr).">sir_stdio_dest</a> </dd></dl>
 </div><a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Field Documentation</h2>
-<a id="a17698cba1d7ed214a11774078526c615" name="a17698cba1d7ed214a11774078526c615"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17698cba1d7ed214a11774078526c615">&#9670;&#160;</a></span>cleanup</h2>
+<a id="ace79b2f2bd4d08d0c6e4151dafb3266b" name="ace79b2f2bd4d08d0c6e4151dafb3266b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace79b2f2bd4d08d0c6e4151dafb3266b">&#9670;&#160;</a></span>category</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">sir_plugin_cleanupfn sir_pluginifacev1::cleanup</td>
+          <td class="memname">char sir_syslog_dest::category[<a class="el" href="config_8h.html#acf0d0fad6a98c920cced53dbe9b54d26">SIR_MAX_SYSLOG_CAT</a>]</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Address of sir_plugin_cleanup. </p>
+<p>The category string to pass to the system logger. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#gac48e99ced63f02c6999f50aca7c56efd" title="Set new system logger category.">sir_syslogcat</a> </dd></dl>
 
 </div>
 </div>
-<a id="af8ba5a3a8a30ff6decd9c1795003cfcf" name="af8ba5a3a8a30ff6decd9c1795003cfcf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8ba5a3a8a30ff6decd9c1795003cfcf">&#9670;&#160;</a></span>init</h2>
+<a id="acbc738f8c0f9dc404ac85e13cb43c7c5" name="acbc738f8c0f9dc404ac85e13cb43c7c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbc738f8c0f9dc404ac85e13cb43c7c5">&#9670;&#160;</a></span>identity</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">sir_plugin_initfn sir_pluginifacev1::init</td>
+          <td class="memname">char sir_syslog_dest::identity[<a class="el" href="config_8h.html#a24a907a8ba87d4355d11dca2476383b2">SIR_MAX_SYSLOG_ID</a>]</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Address of sir_plugin_init. </p>
+<p>The identity string to pass to the system logger. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__publicfuncs.html#gabc5831ef9b59c181b6ad7944c2ef1d5f" title="Set new system logger identity.">sir_syslogid</a> </dd></dl>
 
 </div>
 </div>
-<a id="a48761a407679ba47dd18f2a52ddeb422" name="a48761a407679ba47dd18f2a52ddeb422"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48761a407679ba47dd18f2a52ddeb422">&#9670;&#160;</a></span>query</h2>
+<a id="ad8f026edd9c8667d897eb24016f2e81f" name="ad8f026edd9c8667d897eb24016f2e81f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8f026edd9c8667d897eb24016f2e81f">&#9670;&#160;</a></span>opts</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">sir_plugin_queryfn sir_pluginifacev1::query</td>
+          <td class="memname"><a class="el" href="group__publictypes.html#gafb659914aac0129182d86f7d3414e85d">sir_options</a> sir_syslog_dest::opts</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Address of sir_plugin_query. </p>
-
-</div>
-</div>
-<a id="a7be5d9cb671d562cdc031bb6962c9258" name="a7be5d9cb671d562cdc031bb6962c9258"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7be5d9cb671d562cdc031bb6962c9258">&#9670;&#160;</a></span>write</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">sir_plugin_writefn sir_pluginifacev1::write</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Address of sir_plugin_write. </p>
+<p><a class="el" href="group__publictypes.html#gac28da6e48402cc15ead5b5384bccb6fd" title="The sir_option type.">sir_option</a> bitmask defining the formatting of output. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>Unlike the stdio and log file destinations, not all options are supported. This is due to the fact that system logging facilities typically already include the information represented by <a class="el" href="group__publictypes.html#gac28da6e48402cc15ead5b5384bccb6fd" title="The sir_option type.">sir_option</a> on their own.</dd></dl>
+<p>Furthermore, the supported options vary based on the system logging facility in use.</p>
+<dl class="section note"><dt>Note</dt><dd>If your system supports syslog, and libsir is compiled with the intent to use it (SIR_SYSLOG_ENABLED is defined), then at least SIRO_NOPID is supported. </dd></dl>
 
 </div>
 </div>
@@ -226,7 +223,7 @@ sir_plugin_cleanupfn&#160;</td><td class="memItemRight"><b>cleanup</b></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a href="structsir__pluginifacev1.html">sir_pluginifacev1</a></li>
+    <li class="navelem"><a href="structsir__syslog__dest.html">sir_syslog_dest</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1 </li>
   </ul>
 </div>
