@@ -1,0 +1,23 @@
+<map id="sir::adapter" name="sir::adapter">
+<area shape="rect" id="Node000001" title="Defines the abstract interface for an adapter, which ultimately becomes a public base class of logger..." alt="" coords="5,252,92,278"/>
+<area shape="rect" id="Node000002" href="$classsir_1_1boost__format__adapter.html" title="Adapter for boost::format (when available)." alt="" coords="140,114,309,155"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="66,238,97,201,138,166,164,153,160,157,141,170,101,205,70,241"/>
+<area shape="rect" id="Node000003" href="$classsir_1_1default__adapter.html" title="The default adapter implementation." alt="" coords="158,180,290,220"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="98,244,169,219,166,223,101,249"/>
+<area shape="rect" id="Node000009" href="$classsir_1_1fmt__format__adapter.html" title="Adapter for {fmt} (when available)." alt="" coords="146,245,302,286"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="106,263,148,264,143,267,108,268"/>
+<area shape="rect" id="Node000010" href="$classsir_1_1std__format__adapter.html" title="Adapter for std::format (when available)." alt="" coords="147,310,302,351"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="99,281,170,308,165,311,99,287"/>
+<area shape="rect" id="Node000011" href="$classsir_1_1std__iostream__adapter.html" title="Provides a std::iostream interface to libsir&#39;s logging functions." alt="" coords="140,376,308,416"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="69,288,101,325,141,360,164,375,159,375,138,365,97,329,68,293"/>
+<area shape="rect" id="Node000004" href="$classsir_1_1logger.html" title=" " alt="" coords="384,5,534,61"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="301,169,307,165,324,142,330,119,337,95,355,71,385,54,381,57,359,75,342,98,336,121,329,144,311,168,305,173"/>
+<area shape="rect" id="Node000005" href="$classsir_1_1logger.html" title=" " alt="" coords="358,85,560,141"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="295,171,383,140,379,143,297,176"/>
+<area shape="rect" id="Node000006" href="$classsir_1_1logger.html" title=" " alt="" coords="382,164,536,235"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="305,197,384,199,379,201,307,202"/>
+<area shape="rect" id="Node000007" href="$classsir_1_1logger.html" title=" " alt="" coords="357,259,560,314"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="296,223,384,257,379,259,296,229"/>
+<area shape="rect" id="Node000008" href="$classsir_1_1logger.html" title=" " alt="" coords="382,338,535,408"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="303,226,311,231,329,255,336,279,343,302,359,325,384,345,379,344,355,328,338,304,331,280,324,258,307,235,303,231"/>
+</map>

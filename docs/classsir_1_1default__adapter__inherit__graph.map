@@ -1,0 +1,15 @@
+<map id="sir::default_adapter&lt; TPolicy &gt;" name="sir::default_adapter&lt; TPolicy &gt;">
+<area shape="rect" id="Node000001" title="The default adapter implementation." alt="" coords="140,180,272,220"/>
+<area shape="rect" id="Node000003" href="$classsir_1_1logger.html" title=" " alt="" coords="346,5,497,61"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="228,165,267,117,292,93,318,71,348,57,344,60,322,75,295,97,271,121,232,169"/>
+<area shape="rect" id="Node000004" href="$classsir_1_1logger.html" title=" " alt="" coords="320,85,523,141"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="268,171,319,149,348,140,343,143,321,154,271,175"/>
+<area shape="rect" id="Node000005" href="$classsir_1_1logger.html" title=" " alt="" coords="344,164,499,235"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="287,197,347,199,342,201,288,202"/>
+<area shape="rect" id="Node000006" href="$classsir_1_1logger.html" title=" " alt="" coords="320,259,523,314"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="269,224,321,245,348,258,343,258,319,250,269,229"/>
+<area shape="rect" id="Node000007" href="$classsir_1_1logger.html" title=" " alt="" coords="345,338,498,408"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="231,230,272,278,322,324,347,342,342,342,318,329,268,282,230,235"/>
+<area shape="rect" id="Node000002" href="$classsir_1_1adapter.html" title="Defines the abstract interface for an adapter, which ultimately becomes a public base class of logger..." alt="" coords="5,187,92,213"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="106,197,141,198,137,201,108,202"/>
+</map>
