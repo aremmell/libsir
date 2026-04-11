@@ -1448,14 +1448,12 @@ HTML_EXTRA_STYLESHEET  = docs/sources/stylesheet-extended.css
 # files will be copied as-is; there are no commands or markers available.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_FILES       =
-
+HTML_EXTRA_FILES       =  docs/res/sample-terminal.png
 #docs/res/libsir-icon.svg \
                          #docs/res/libsir-icon192.png \
                          #docs/res/libsir-flow.gif \
                          #docs/res/libsir-alpha.png \
                          #docs/res/sample-terminal.gif \
-                         #docs/res/sample-terminal.png \
                          #docs/res/sample-terminal.svg \
                          #docs/res/libsir-github.png \
                          #docs/res/libsir-og.png \
