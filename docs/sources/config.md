@@ -2,7 +2,7 @@
 
 ## Build-time Configuration
 
-The preprocessor macros in the following table are evaluated at build-time when compiling libsir from source. The libsir Makefile will automatically self-configure based on the absence or preseence of each variable known to the Makefile. Compiler and linker options are massaged, and preprocessor macros will affect the code generated, depending on the values provided: either in variables set explicitly as part of the make command (e.g., `env MY_VAR=1 make ...`), or previously defined variables in the current shell's environment.
+The preprocessor macros in the following table are evaluated at build-time when compiling libsir from source. The libsir Makefile will automatically self-configure based on the absence or presence of each variable known to the Makefile. Compiler and linker options are massaged, and preprocessor macros will affect the code generated, depending on the values provided: either in variables set explicitly as part of the make command (e.g., `env MY_VAR=1 make ...`), or previously defined variables in the current shell's environment.
 
 The following are the most common libsir preprocessor macros, as well as a description of the effect of each variable upon the build process for each. All variables have a default value of zero (`0`):
 
