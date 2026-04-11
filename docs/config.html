@@ -1,6 +1,11 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html lang="en-US">
+=======
 <!-- HTML header for doxygen 1.16.1-->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+>>>>>>> update-docs
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
@@ -129,47 +134,30 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_docs_2sources_2config"></a></p>
-<p>Compile-time configuration of libsir.</p>
-<h1>Environment variables</h1>
-<p>The variables in the following table are applied at compile-time when executing <span class="tt">make</span>.</p>
-<p><b>Example:</b></p>
-<div class="fragment"><div class="line">env SIR_PREPROCESSOR_FOO=1 make ...</div>
-</div><!-- fragment --><p>The Makefile takes care of the rest; for each environment variable that is known to the Makefile, it adds or removes compiler options based on the values provided. This may be a simple mapping of <span class="tt">VAR=1</span> to <span class="tt">-DVAR</span>, or a more nuanced configuration:</p>
+<h1>Build-time Configuration</h1>
+<p>The preprocessor macros in the following table are evaluated at build-time when compiling libsir from source. The libsir Makefile will automatically self-configure based on the absence or preseence of each variable known to the Makefile. Compiler and linker options are massaged, and preprocessor macros will affect the code generated, depending on the values provided: either in variables set explicitly as part of the make command (e.g., <span class="tt">env MY_VAR=1 make ...</span>), or previously defined variables in the current shell's environment.</p>
+<p>The following are the most common libsir preprocessor macros, as well as a description of the effect of each variable upon the build process for each. All variables have a default value of zero (<span class="tt">0</span>):</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadCenter">Variable (default)  </th><th class="markdownTableHeadCenter">State  </th><th class="markdownTableHeadCenter">Compiler settings  </th><th class="markdownTableHeadLeft">Description  </th></tr>
+<th class="markdownTableHeadLeft">Variable Name  </th><th class="markdownTableHeadLeft">Default Behavior  </th><th class="markdownTableHeadLeft">Behavior When Set to one (<span class="tt">1</span>)  </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter" rowspan="2"><span class="tt">SIR_DEBUG (0)</span>  </td><td class="markdownTableBodyCenter"><span class="tt">0</span>  </td><td class="markdownTableBodyCenter"><span class="tt">-O3 -DNDEBUG -D_FORTIFY_SOURCE=2</span>  </td><td class="markdownTableBodyLeft">Full optimization is applied, source fortification is set to level 2, and no debugging symbols are included.  </td></tr>
+<td class="markdownTableBodyLeft"><span class="tt">SIR_DEBUG</span>  </td><td class="markdownTableBodyLeft"><span class="tt">-g3 -00 -DDEBUG -U_FORTIFY_SOURCE</span> : No optimizations are applied, source fortification is disabled, and full debugging symbols are included.  </td><td class="markdownTableBodyLeft"><span class="tt">-DSIR_DEBUG=1 -O3 -DNDEBUG -D_FORTIFY_SOURCE=2</span> : Full optimization is applied; source fortification is set to level 2, and no debugging symbols are included.  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter"><span class="tt">1</span>  </td><td class="markdownTableBodyCenter"><span class="tt">-g3 -00 -DDEBUG -U_FORTIFY_SOURCE</span>  </td><td class="markdownTableBodyLeft">No optimizations are applied, source fortification is disabled, and full debugging symbols are included.  </td></tr>
+<td class="markdownTableBodyLeft"><span class="tt">SIR_SELFLOG</span>  </td><td class="markdownTableBodyLeft">Internal diagnostics are not included in the build.  </td><td class="markdownTableBodyLeft"><span class="tt">-DSIR_SELFLOG=1</span> : Diagnostic information is sent to stderr to report certain events that may aid in debugging. Includes the function name, source file, and line where the event took place. If <span class="tt">SIR_DEBUG</span> and <span class="tt">SIR_SELFLOG</span> are enabled, each error handled internally will be logged in real time as it is captured.  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter" rowspan="2"><span class="tt">SIR_SELFLOG (0)</span>  </td><td class="markdownTableBodyCenter"><span class="tt">0</span>  </td><td class="markdownTableBodyCenter"><span class="tt">N/A</span>  </td><td class="markdownTableBodyLeft">NOOP  </td></tr>
+<td class="markdownTableBodyLeft"><span class="tt">SIR_ASSERT_ENABLE</span>  </td><td class="markdownTableBodyLeft"><span class="tt">assert</span> will never be called. If <span class="tt">SIR_SELFLOG</span> is set to one (<span class="tt">1</span>), where asserts normally would take place, libsir will instead produce output to stderr such as '<span class="tt">somefunc (file.c:123): !!! would be asserting (NULL != ptr)</span>'.  </td><td class="markdownTableBodyLeft"><span class="tt">-DSIR_ASSERT_ENABLED=1</span> : <span class="tt">assert</span> will be used. Note that assert has no effect if <span class="tt">NDEBUG</span> is defined, so in order for this to be useful, you will also need <span class="tt">-DSIR_DEBUG=1</span> (<em>or manually change <span class="tt">-DNDEBUG</span> to <span class="tt">-DDEBUG</span> in the Makefile</em>).  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter"><span class="tt">1</span>  </td><td class="markdownTableBodyCenter"><span class="tt">-DSIR_SELFLOG</span>  </td><td class="markdownTableBodyLeft">Diagnostic information is sent to <span class="tt">stderr</span> to report certain events that may aid in debugging. Includes the function name, source file, and line where the event took place. If <span class="tt">SIR_DEBUG</span> and <span class="tt">SIR_SELFLOG</span> are enabled, each error handled internally will be logged in real time as it is captured.  </td></tr>
+<td class="markdownTableBodyLeft"><span class="tt">SIR_NO_SYSTEM_LOGGERS</span>  </td><td class="markdownTableBodyLeft">If the current platform has a system logger facility (<em>currently all platforms do by default, but on Windows, you must execute <span class="tt">msvs/compile_man.ps1</span> as Administrator before compiling libsir in order to use the Windows Event Viewer functionality</em>), you can utilize it as a destination in libsir.  </td><td class="markdownTableBodyLeft"><span class="tt">-DSIR_NO_SYSTEM_LOGGERS</span> : Even if the current platform has a system logger facility, the functionality will be disabled (<em>and most of it compiled out</em>).  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter" rowspan="2"><span class="tt">SIR_ASSERT_ENABLED (0)</span>  </td><td class="markdownTableBodyCenter"><span class="tt">0</span>  </td><td class="markdownTableBodyCenter"><span class="tt">N/A</span>  </td><td class="markdownTableBodyLeft"><span class="tt">assert</span> will never be called. If <span class="tt">SIR_SELFLOG</span> is enabled, where asserts normally would take place, a <span class="tt">_sir_selflog</span> call is made, producing output to stderr such as '<span class="tt">somefunc (file.c:123): !!! would be asserting (NULL != ptr)</span>'.  </td></tr>
+<td class="markdownTableBodyLeft"><span class="tt">SIR_NO_PLUGINS</span>  </td><td class="markdownTableBodyLeft">The plugin system is available for use. Call <a class="el" href="group__publicfuncs.html#ga1a50b52b3ce1af7543b76a219ff01060" title="Loads a plugin module from disk.">sir_loadplugin</a> to load a plugin, and <a class="el" href="group__publicfuncs.html#ga6796c068e61eb505e8dd8e230fbc1423" title="Unloads a previously registered plugin module.">sir_unloadplugin</a> to unload one.  </td><td class="markdownTableBodyLeft"><span class="tt">-DSIR_NO_PLUGINS=1</span> : The plugin system's functionality will be disabled (<em>and most of it compiled out</em>).  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter"><span class="tt">1</span>  </td><td class="markdownTableBodyCenter"><span class="tt">-DSIR_ASSERT_ENABLED</span>  </td><td class="markdownTableBodyLeft"><span class="tt">assert</span> will be used. Note that assert has no effect if <span class="tt">NDEBUG</span> is defined, so in order for this to be useful, you will also need <span class="tt">SIR_DEBUG=1</span> (<em>or manually change <span class="tt">-DNDEBUG</span> to <span class="tt">-DDEBUG</span> in the Makefile</em>).  </td></tr>
+<td class="markdownTableBodyLeft"><span class="tt">SIR_NO_SHARED</span>  </td><td class="markdownTableBodyLeft">Shared libraries are created when building the <em><span class="tt">all</span></em> target, and installed with <em><span class="tt">make install</span></em>.  </td><td class="markdownTableBodyLeft"><span class="tt">-DSIR_NO_PLUGINS=1 -DSIR_NO_SHARED=1</span> : Shared libraries are not created when building the <em><span class="tt">all</span></em> target, and are not installed with <em><span class="tt">make install</span></em>.  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter" rowspan="2"><span class="tt">SIR_NO_SYSTEM_LOGGERS (0)</span>  </td><td class="markdownTableBodyCenter"><span class="tt">0</span>  </td><td class="markdownTableBodyCenter"><span class="tt">N/A</span>  </td><td class="markdownTableBodyLeft">If the current platform has a system logger facility (<em>currently all platforms do by default except Windows</em>), you can utilize it as a destination in libsir.  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter"><span class="tt">1</span>  </td><td class="markdownTableBodyCenter"><span class="tt">-DSIR_NO_SYSTEM_LOGGERS</span>  </td><td class="markdownTableBodyLeft">Even if the current platform has a system logger facility, the functionality will be disabled (<em>and most of it compiled out</em>).  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter" rowspan="2"><span class="tt">SIR_NO_PLUGINS (0)</span>  </td><td class="markdownTableBodyCenter"><span class="tt">0</span>  </td><td class="markdownTableBodyCenter"><span class="tt">N/A</span>  </td><td class="markdownTableBodyLeft">The plugin system is available for use. Call <a class="el" href="group__publicfuncs.html#ga1a50b52b3ce1af7543b76a219ff01060" title="Loads a plugin module from disk.">sir_loadplugin</a> to load a plugin, and <a class="el" href="group__publicfuncs.html#ga6796c068e61eb505e8dd8e230fbc1423" title="Unloads a previously registered plugin module.">sir_unloadplugin</a> to unload one.  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter"><span class="tt">1</span>  </td><td class="markdownTableBodyCenter"><span class="tt">-DSIR_NO_PLUGINS</span>  </td><td class="markdownTableBodyLeft">The plugin system's functionality will be disabled (<em>and most of it compiled out</em>).  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter" rowspan="2"><span class="tt">SIR_NO_SHARED (0)</span>  </td><td class="markdownTableBodyCenter"><span class="tt">0</span>  </td><td class="markdownTableBodyCenter"><span class="tt">N/A</span>  </td><td class="markdownTableBodyLeft">Shared libraries are created when building the <em><span class="tt">all</span></em> target, and installed with <em><span class="tt">make install</span></em>.  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter"><span class="tt">1</span>  </td><td class="markdownTableBodyCenter"><span class="tt">-DSIR_NO_PLUGINS</span>  </td><td class="markdownTableBodyLeft">The <span class="tt">SIR_NO_PLUGINS</span> variable is set (to <span class="tt">1</span>), shared libraries are not created when building the <em><span class="tt">all</span></em> target, and are not installed with <em><span class="tt">make install</span></em>.  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter" rowspan="2"><span class="tt">SIR_USE_EOL_CRLF (0)</span>  </td><td class="markdownTableBodyCenter"><span class="tt">0</span>  </td><td class="markdownTableBodyCenter"><span class="tt">N/A</span>  </td><td class="markdownTableBodyLeft">The end of line sequence will be SIR_EOL_LF.  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter"><span class="tt">1</span>  </td><td class="markdownTableBodyCenter"><span class="tt">-DSIR_USE_EOL_CRLF</span>  </td><td class="markdownTableBodyLeft">The end of line sequence will be SIR_EOL_CR + SIR_EOL_LF.  </td></tr>
+<td class="markdownTableBodyLeft"><span class="tt">SIR_USE_EOL_CRLF</span>  </td><td class="markdownTableBodyLeft">The end of line sequence will be <span class="tt"><a class="el" href="config_8h.html#ab5e7996cb2e7e51dc45acc6a1e2d1a45" title="The line feed (LF) character to use in the end of line sequence.">SIR_EOL_LF</a></span>.  </td><td class="markdownTableBodyLeft"><span class="tt">-DSIR_USE_EOL_CRLF=1</span> : The end of line sequence will be <span class="tt"><a class="el" href="config_8h.html#adb2ecae48d2a27a6ff5339615e28ea6f" title="The carriage return (CR) character to use in the end of line sequence when SIR_USE_EOL_CRLF is define...">SIR_EOL_CR</a></span> followed by <span class="tt"><a class="el" href="config_8h.html#ab5e7996cb2e7e51dc45acc6a1e2d1a45" title="The line feed (LF) character to use in the end of line sequence.">SIR_EOL_LF</a></span>.  </td></tr>
 </table>
 <hr  />
 <dl class="section note"><dt>Note</dt><dd>If you plan to use the Visual Studio 2022 solution, see <span class="tt">README.md</span> under <span class="tt">Help</span> once the solution is loaded.</dd></dl>
-<h1>sirconfig.h</h1>
+<h1><a class="el" href="config_8h.html" title="Compile-time configuration.">sir/config.h</a></h1>
 <p>All of the fine-grained compile-time constants, such as (but not limited to):</p>
 <ol type="1">
 <li>Date/time format strings</li>
