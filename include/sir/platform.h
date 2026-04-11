@@ -7,8 +7,8 @@
  *
  * SPDX-License-Identifier: MIT
  *
- * Copyright (c) 2018-2025 Ryan M. Lederman <lederman@gmail.com>
- * Copyright (c) 2018-2025 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
+ * Copyright (c) 2018-2026 Ryan M. Lederman <lederman@gmail.com>
+ * Copyright (c) 2018-2026 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -175,7 +175,7 @@
 #    define _DEFAULT_SOURCE
 #   endif
 #   include <sys/param.h>
-#   if __FreeBSD_version >= 1202500
+#   if __FreeBSD_version >= 1202600
 #    define __FreeBSD_PTHREAD_NP_12_2__
 #   elif __FreeBSD_version >= 1103500
 #    define __FreeBSD_PTHREAD_NP_11_3__
