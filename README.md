@@ -74,7 +74,7 @@ Using libsir, you can make a single call that simultaneously sends information t
 
 Each 'level' or 'priority' of output can be visually styled however you wish for `stdio` destinations. This allows for immediate visual confirmation that a message appeared in the terminal that you should pay attention to, while less pressing information is more subtle in appearance.
 
-![libsir visual graph](./docs/res/libsir-alpha.png)
+<img src="https://libsir.rml.dev/libsir-alpha.png" alt="libsir flow graph" max-width="1024" width="768">
 
 ## <a id="notables" /> Notables
 
