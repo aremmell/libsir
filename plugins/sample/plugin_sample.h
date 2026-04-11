@@ -156,18 +156,17 @@ PLUGIN_EXPORT bool sir_plugin_cleanup(void);
  *
  * @include plugin_sample.c
  *
- * - `cd` back into the root directory of the repository and run `make clean
- * plugins`. If everything goes smoothly, your shiny new plugin should now be
- * located in `build/lib`. If you named your directory 'foo', you should see a
- * `plugin_foo.[so/dll]`.
- * - You can now move the plugin wherever you'd like, and use ::sir_loadplugin
- * to load it (after you've called ::sir_init, of course).
+ * - `cd` back into the root directory of the repo and run `make clean %plugins`.
+ * If everything goes smoothly, your shiny new plugin should now be located at
+ * `build/lib/plugin_foo.[so/dll]`.
+ * - You may now move `plugin_foo.[so/dll]` wherever you'd like, and use
+ * ::sir_loadplugin to load it (after you've called ::sir_init, of course).
  *
- * If you encounter any problems, rebuild with `env SIR_SELFLOG=1 SIR_DEBUG=1
- * make clean plugins`. This will enable diagnostic output from libsir that
- * should aid in the diagnosis of any issues you encounter. If you're still stuck,
- * [reach out](https://github.com/aremmell/libsir/discussions/new?category=q-a)
- * and somebody will assist you within a reasonable amount of time.
+ * If you encounter problems, rebuild libsir and your plugin with internal
+ * diagnostics enabled: `env SIR_SELFLOG=1 SIR_DEBUG=1 make clean all`.
+ *
+ * Ideally, the additional output from the innards of libsir will aid in the
+ * diagnosis and resolution of any potential hangups.
  */
 
 /**

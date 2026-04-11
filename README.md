@@ -156,11 +156,9 @@ libsir currently supports the following system logging facilities:
 
 Some sample terminal output from libsir demonstrating the default text styling settings for stdio (*note that this is just a sample; libsir supports 4, 8, and 24-bit color modes, so a virtually limitless number of configurations are possible*):
 
-![sample terminal output](./docs/res/sample-terminal.png)
+<img src="https://libsir.rml.dev/sample-terminal.png" alt="sample terminal output" max-width="1024" width="768">
 
 This output is from the `example` application, whose source code can be located in the [example](https://github.com/aremmell/libsir/tree/master/example) directory. If you're curious about a very basic implementation of libsir in a practical context, that's a good place to start.
-
-**Coming soon:** A C++20 version of the example program.
 
 ## <a id="building-from-source" /> Building from source
 
