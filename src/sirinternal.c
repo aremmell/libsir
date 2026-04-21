@@ -1285,6 +1285,11 @@ pid_t _sir_gettid(void) {
     if (0 != gettid)
         (void)_sir_handleerr(gettid);
     tid = (pid_t)tid64;
+#elif defined(__MVS__)
+    pthread_t thread = pthread_self();
+    uint64_t thread_id = 0;
+    (void)memcpy(&thread_id, &thread, sizeof(pthread_t));
+    tid = (pid_t)thread_id;
 #elif (defined(__BSD__) && !defined(__NetBSD__) && !defined(__OpenBSD__)) || \
       defined(__DragonFly_getthreadid__)
     tid = (pid_t)pthread_getthreadid_np();
