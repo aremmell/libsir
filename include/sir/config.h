@@ -349,7 +349,7 @@
 #  if !defined(SIR_EMBEDDED)
 #   define SIR_MAXMESSAGE 4096
 #  else
-#   define SIR_MAXMESSAGE 256
+#   define SIR_MAXMESSAGE 512
 #  endif
 # endif
 
@@ -397,6 +397,7 @@
 #   define SIR_MAX_SYSLOG_CAT 64
 #  else
 #   define SIR_MAX_SYSLOG_CAT 1
+#  endif
 # endif
 
 /** The maximum number of whitespace and miscellaneous characters included in output. */
