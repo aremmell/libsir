@@ -152,13 +152,6 @@ else
   PGOALS  = plugins
 endif
 
-##############################################################################
-# Disable ANSI text style encoding?
-
-ifeq ($(SIR_NO_TEXT_STYLING),1)
-  SIR_CFLAGS += -DSIR_NO_TEXT_STYLING
-endif
-
 #############################################################################
 # Disable ANSI text style encoding?
 

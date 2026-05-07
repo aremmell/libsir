@@ -93,7 +93,7 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
         stat_ret = -1;
         errno = ENOENT;
 #  endif
-      
+
 # else
         // HACKHACK: fstatat does not work properly for any fd other than AT_FDCWD.
         SIR_UNUSED(open_flags);
@@ -358,7 +358,7 @@ char* _sir_getappfilename(void) {
         }
 # elif defined(SIR_EMBEDDED)
 #  pragma message("obtaining the current binary filename is not implemented.")
-        memset(buffer, 0, size);
+        buffer[0] = '\0';
         resolved = true;
         break;
 # else
