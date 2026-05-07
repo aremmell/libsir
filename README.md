@@ -70,7 +70,7 @@ Embedded. Mission-critical. Performance-obsessed. Polyglot. 20+ operating system
 
 I know what you're thinking. You're thinking about rolling your own quaint, single-use, disposable logging implementation. Again.
 
-Let me stop you right there. libsir is what you'd end up building if you had the next 4 years to do it. It's subjected to scrutiny by every static analyzer we could get our hands on, and compiles using toolchains you've never heard of (ditto architectures and OSes)&mdash;bet. Logging is a solved problem.
+Let me stop you right there. libsir is what you'd end up building if you were able to take the next 4 years off of work to do it. It's subject to scrutiny by every static analyzer we could get our hands on, and compiles using toolchains you've never heard of (ditto architectures and OSes)&mdash;bet. Logging is a solved problem.
 
 The correct thing to do at this juncture is: read the following snippet, clone the repo, [peruse the documentation](https://libsir.rml.dev), and simply get back to work on your project&mdash;you know, the code you set out to write but somehow now you're reading this.
 
