@@ -358,7 +358,7 @@ char* _sir_getappfilename(void) {
         }
 # elif defined(SIR_EMBEDDED)
 #  pragma message("obtaining the current binary filename is not implemented.")
-        buffer[0] = '\0';
+        _sir_resetstr(buffer);
         resolved = true;
         break;
 # else

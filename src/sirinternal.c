@@ -1373,7 +1373,7 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     (void)LocalFree(wname);
     return success && _sir_validstrnofail(name);
 #elif defined(ESP32) || defined(ESP8266)
-    char *task_name = pcTaskGetName(NULL);
+    char* task_name = pcTaskGetName(NULL);
     if (_sir_validstr(task_name)) {
         (void)_sir_strncpy(name, SIR_MAXPID, task_name, strnlen(task_name, SIR_MAXPID));
         return true;
