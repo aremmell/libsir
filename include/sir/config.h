@@ -334,12 +334,23 @@
 #  define SIR_MAXFHEADER 128
 # endif
 
+/** The size, in characters, of the buffer used to hold hostnames. */
+# if !defined(SIR_EMBEDDED)
+#  define SIR_MAXHOST 256
+# else
+#  define SIR_MAXHOST 1
+# endif
+
 /**
  * The maximum number of characters allowable in one log message. This
  * does not include accompanying formatted output (see ::SIR_MAXOUTPUT).
  */
 # if !defined(SIR_MAXMESSAGE)
-#  define SIR_MAXMESSAGE 4096
+#  if !defined(SIR_EMBEDDED)
+#   define SIR_MAXMESSAGE 4096
+#  else
+#   define SIR_MAXMESSAGE 256
+#  endif
 # endif
 
 /** The size, in characters, of the buffer used to hold time format strings. */
@@ -370,7 +381,11 @@
  * strings.
  */
 # if !defined(SIR_MAX_SYSLOG_ID)
-#  define SIR_MAX_SYSLOG_ID 128
+#  if !defined(SIR_EMBEDDED)
+#   define SIR_MAX_SYSLOG_ID 128
+#  else
+#   define SIR_MAX_SYSLOG_ID 1
+#  endif
 # endif
 
 /**
@@ -378,7 +393,10 @@
  * strings.
  */
 # if !defined(SIR_MAX_SYSLOG_CAT)
-#  define SIR_MAX_SYSLOG_CAT 64
+#  if !defined(SIR_EMBEDDED)
+#   define SIR_MAX_SYSLOG_CAT 64
+#  else
+#   define SIR_MAX_SYSLOG_CAT 1
 # endif
 
 /** The maximum number of whitespace and miscellaneous characters included in output. */

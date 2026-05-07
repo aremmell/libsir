@@ -188,8 +188,12 @@ bool _sir_init(sirinit* si) {
     /* store PID. */
     _cfg->state.pid = _sir_getpid();
 
-    (void)snprintf(_cfg->state.pidbuf, SIR_MAXPID, SIR_PIDFORMAT,
-        PID_CAST _cfg->state.pid);
+    if (_cfg->state.pid != -1 && _cfg->state.pid != 0) {
+        (void)snprintf(_cfg->state.pidbuf, SIR_MAXPID, SIR_PIDFORMAT,
+            PID_CAST _cfg->state.pid);
+    } else {
+        _sir_resetstr(_cfg->state.pidbuf);
+    }
 
 #if !defined(SIR_NO_SYSTEM_LOGGERS)
     /* initialize system logger. */
@@ -481,8 +485,13 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
             break;
 #if !defined(SIR_NO_TEXT_STYLING)
         case SIRMI_TEXTSTYLE:
+#if !defined(SIR_NO_TEXT_STYLING)
             tmpm   = &ts_mutex;
             tmpsec = &sir_text_style_section;
+#else
+            tmpm   = NULL;
+            tmpsec = NULL;
+#endif
             break;
 #endif
         default: // GCOVR_EXCL_START
@@ -564,15 +573,18 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
     /* from time to time, update the host name in the config, just in case. */
     time_t now_sec = -1;
-    if (-1 != time(&now_sec) &&
-        (now_sec - _cfg->state.last_hname_chk) > SIR_HNAME_CHK_INTERVAL) {
-        _sir_selflog("updating hostname...");
-        if (!_sir_gethostname(_cfg->state.hostname)) {
-            _sir_selflog("error: failed to get hostname!");
-        } else {
-            _cfg->state.last_hname_chk = now_sec;
-            _sir_selflog("hostname: '%s'", _cfg->state.hostname);
+    if (-1 != time(&now_sec)) {
+#if !defined(SIR_EMBEDDED)
+        if (now_sec - _cfg->state.last_hname_chk > SIR_HNAME_CHK_INTERVAL) {
+            _sir_selflog("updating hostname...");
+            if (!_sir_gethostname(_cfg->state.hostname)) {
+                _sir_selflog("error: failed to get hostname!");
+            } else {
+                _cfg->state.last_hname_chk = now_sec;
+                _sir_selflog("hostname: '%s'", _cfg->state.hostname);
+            }
         }
+#endif
     }
 
     /* format timestamp (h/m/s only if the integer time has changed). */
@@ -600,12 +612,19 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
         pid_t tid         = _sir_gettid();
         bool resolved_tid = false;
+        bool valid_tid    = tid != -1 && tid != 0;
 
+#if !defined(SIR_NO_PREFER_THREAD_NAMES)
         /* prefer thread names. */
         resolved_tid = _sir_getthreadname(_sir_tid);
+#else
+        /* only use thread names if tid is invalid. */
+        if (!valid_tid)
+            resolved_tid = _sir_getthreadname(_sir_tid);
+#endif
 
-        /* if tid is identical to pid... */
-        if (!resolved_tid && tid == _cfg->state.pid) {
+        /* if unresolved and tid is invalid or identical to pid... */
+        if (!resolved_tid && (!valid_tid || tid == _cfg->state.pid)) {
             /* don't use anything to identify the thread. */
             _sir_resetstr(_sir_tid);
             resolved_tid = true;
@@ -613,8 +632,7 @@ bool _sir_logv(sir_level level, PRINTF_FORMAT const char* format, va_list args) 
 
         /* fall back on tid. */
         if (!resolved_tid)
-            _sir_snprintf_trunc(_sir_tid, SIR_MAXPID, SIR_TIDFORMAT,
-                PID_CAST tid);
+            _sir_snprintf_trunc(_sir_tid, SIR_MAXPID, SIR_TIDFORMAT, PID_CAST tid);
     }
 
     sirconfig cfg;
@@ -1309,8 +1327,10 @@ pid_t _sir_gettid(void) {
 # endif
 #elif defined(__WIN__)
     tid = (pid_t)GetCurrentThreadId();
+#elif defined(ESP32) || defined(ESP8266)
+    tid = (pid_t)(uintptr_t)xTaskGetCurrentTaskHandle();
 #else
-# error "unable to determine how to get a thread identifier"
+# error "unable to determine how to obtain the current thread identifier."
 #endif
     return tid;
 }
@@ -1357,6 +1377,13 @@ bool _sir_getthreadname(char name[SIR_MAXPID]) {
     }
     (void)LocalFree(wname);
     return success && _sir_validstrnofail(name);
+#elif defined(ESP32) || defined(ESP8266)
+    char *task_name = pcTaskGetName(NULL);
+    if (_sir_validstr(task_name)) {
+        (void)_sir_strncpy(name, SIR_MAXPID, task_name, strnlen(task_name, SIR_MAXPID));
+        return true;
+    }
+    return false;
 #else
 # if !defined(SUNLINT) && !defined(_AIX) && !defined(__HURD__)
 #  pragma message("unable to determine how to get a thread name")
@@ -1415,6 +1442,11 @@ bool _sir_setthreadname(const char* name) {
 }
 
 bool _sir_gethostname(char name[SIR_MAXHOST]) {
+#if defined(SIR_EMBEDDED)
+# pragma message("obtaining the machine's hostname is not implemented.")
+    _sir_resetstr(name);
+    return true;
+#endif
 #if !defined(__WIN__)
     int ret = gethostname(name, SIR_MAXHOST - 1);
     return 0 == ret ? true : _sir_handleerr(errno);

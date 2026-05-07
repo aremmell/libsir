@@ -121,6 +121,25 @@
 #  if defined(SUNLINT)
 #   undef __HAVE_ATOMIC_H__
 #  endif
+#  if defined(PLATFORMIO) || defined(ARDUINO)
+#   if !defined(SIR_EMBEDDED)
+#    define SIR_EMBEDDED
+#   endif
+#  endif
+#  if defined(SIR_EMBEDDED)
+#   if !defined(SIR_NO_TEXT_STYLING)
+#    define SIR_NO_TEXT_STYLING
+#   endif
+#   if !defined(SIR_NO_SYSTEM_LOGGERS)
+#    define SIR_NO_SYSTEM_LOGGERS
+#   endif
+#   if !defined(SIR_NO_PLUGINS)
+#    define SIR_NO_PLUGINS
+#   endif
+#   if defined(SIR_SELFLOG)
+#    undef SIR_SELFLOG
+#   endif
+#  endif
 #  if (defined(__INTEL_COMPILER) && !defined(__llvm__)) || \
      defined(__NVCOMPILER) || defined(__COVERITY__)
 #   if !defined(_BITS_FLOATN_H)
@@ -431,7 +450,6 @@ _set_thread_local_invalid_parameter_handler(
 #  undef SIR_SYSLOG_ENABLED
 # endif
 
-# define SIR_MAXHOST 256
 
 # if !defined(__WIN__)
 #  if !defined(SIR_NO_PLUGINS)
@@ -439,6 +457,11 @@ _set_thread_local_invalid_parameter_handler(
 #  endif
 #  if !defined(_CH_) && !defined(__CH__)
 #   include <pthread.h>
+#   if defined(ESP32) || defined(ESP8266)
+#    include <FreeRTOS.h>
+#    include <task.h>
+#    define __USE_HEX_TIDS__
+#   endif
 #  else
 #   include <sched.h>
 #   include <ch/pthread.h>
@@ -462,7 +485,7 @@ _set_thread_local_invalid_parameter_handler(
 #  if !defined(__CYGWIN__) && !defined(__HAIKU__) && \
       !defined(__serenity__) && !defined(_AIX) && \
       !defined(_CH_) && !defined(__CH__) && !defined(__QNX__) && \
-      !defined(__managarm__)
+      !defined(__managarm__) && !defined(SIR_EMBEDDED)
 #   include <sys/syscall.h>
 #  endif
 #  if defined(__QNX__)
@@ -557,7 +580,7 @@ _set_thread_local_invalid_parameter_handler(
 /** The clock used to obtain timestamps. */
 #  if defined(CLOCK_REALTIME_FAST)
 #   define SIR_WALLCLOCK CLOCK_REALTIME_FAST
-#  elif defined(CLOCK_REALTIME_COARSE)
+#  elif defined(CLOCK_REALTIME_COARSE) && !(defined(ESP32) || defined(ESP8266))
 #   define SIR_WALLCLOCK CLOCK_REALTIME_COARSE
 #  else
 #   define SIR_WALLCLOCK CLOCK_REALTIME
@@ -566,7 +589,8 @@ _set_thread_local_invalid_parameter_handler(
 /** The clock used to measure intervals. */
 #  if defined(CLOCK_UPTIME)
 #   define SIR_INTERVALCLOCK CLOCK_UPTIME
-#  elif defined(CLOCK_BOOTTIME) && !defined(__EMSCRIPTEN__)
+#  elif defined(CLOCK_BOOTTIME) && !defined(__EMSCRIPTEN__) && \
+  !(defined(ESP32) || defined(ESP8266))
 #   define SIR_INTERVALCLOCK CLOCK_BOOTTIME
 #  elif defined(CLOCK_HIGHRES)
 #   define SIR_INTERVALCLOCK CLOCK_HIGHRES
@@ -664,6 +688,8 @@ typedef BOOL(CALLBACK* sir_once_fn)(PINIT_ONCE, PVOID, PVOID*);
 #   endif
 #  elif defined(__WIN__)
 #   define _sir_thread_local __declspec(thread)
+#  elif defined(SIR_EMBEDDED)
+#   define _sir_thread_local
 #  elif defined(__GNUC__) || (defined(_AIX) && (defined(__xlC_ver__) || defined(__ibmxl__)))
 #   define _sir_thread_local __thread
 #  else

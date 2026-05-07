@@ -57,7 +57,8 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
 
     if (relative) {
 #if !defined(__WIN__)
-# if defined(__MACOS__) || defined(_AIX) || defined(__EMSCRIPTEN__)
+# if defined(__MACOS__) || defined(_AIX) || defined(__EMSCRIPTEN__) || \
+     defined(SIR_EMBEDDED)
 #  if !defined(O_SEARCH)
         int open_flags = O_DIRECTORY;
 #  else
@@ -85,7 +86,14 @@ bool _sir_pathgetstat(const char* restrict path, struct stat* restrict st, sir_r
             _sir_safefree(&base_path);
             return _sir_handleerr(errno);
         }
+
+#  if !defined(SIR_EMBEDDED)
         stat_ret = fstatat(fd, path, st, AT_SYMLINK_NOFOLLOW);
+#  else
+        stat_ret = -1;
+        errno = ENOENT;
+#  endif
+      
 # else
         // HACKHACK: fstatat does not work properly for any fd other than AT_FDCWD.
         SIR_UNUSED(open_flags);
@@ -348,6 +356,11 @@ char* _sir_getappfilename(void) {
             resolved = _sir_handleerr(errno);
             break;
         }
+# elif defined(SIR_EMBEDDED)
+#  pragma message("obtaining the current binary filename is not implemented.")
+        memset(buffer, 0, size);
+        resolved = true;
+        break;
 # else
 #  error "no implementation for your platform; please contact the developers"
 # endif
@@ -420,6 +433,9 @@ char* _sir_getdirname(char* restrict path) {
         return ".";
 
 #if !defined(__WIN__)
+# if defined(SIR_EMBEDDED)
+    return ".";
+# endif
     return dirname(path);
 #else /* __WIN__ */
     (void)PathRemoveFileSpecA((LPSTR)path);
