@@ -1,6 +1,8 @@
 # libsir
 
-libsir&mdash;a lightweight, cross-platform library for information distribution
+<b>The C logging library.</b>
+
+Embedded. Mission-critical. Performance-obsessed. Polyglot. 20+ operating systems. 50+ compiler toolchains. ESP32 to mainframe. Any language with a C FFI rides for free.
 
 <!-- Version: 2.2.6 -->
 <!-- -->
@@ -40,11 +42,9 @@ libsir&mdash;a lightweight, cross-platform library for information distribution
 [![Scorecard](https://img.shields.io/ossf-scorecard/github.com/aremmell/libsir?label=openssf%20scorecard&style=flat&color=%2340b900&cacheSeconds=60)](https://securityscorecards.dev/viewer/?uri=github.com/aremmell/libsir)
 [![Practices](https://img.shields.io/cii/level/7861?label=openssf%20best%20practices&color=2340b900&cacheSeconds=60)](https://www.bestpractices.dev/en/projects/7861)
 
-## <a id="overview" /> Overview
-
 <!-- toc -->
 
-- [Synopsis](#synopsis)
+- [Introduction](#intro)
 - [Notables](#notables)
 - [Cross-platform compatibility](#cross-platform-compatibility)
   - [System Loggers](#system-loggers)
@@ -66,15 +66,34 @@ libsir&mdash;a lightweight, cross-platform library for information distribution
 
 <!-- tocstop -->
 
-## <a id="synopsis" /> Synopsis
+## <a id="intro" /> Introduction
 
-libsir is a cross-platform, thread-safe logging library written in C (*ISO/IEC 9899:2011 C11*) that is designed to simplify and streamline the generation and distribution of human-readable information in software.
+I know what you're thinking. You're thinking about rolling your own quaint, single-use, disposable logging implementation. Again.
 
-Using libsir, you can make a single call that simultaneously sends information to multiple destinations, *each with their own individual preference for format and levels*.
+Let me stop you right there. libsir is what you'd end up building if you had the next 4 years to do it. It's subjected to scrutiny by every static analyzer we could get our hands on, and compiles using toolchains you've never heard of (ditto architectures and OSes)&mdash;bet. Logging is a solved problem.
 
-Each 'level' or 'priority' of output can be visually styled however you wish for `stdio` destinations. This allows for immediate visual confirmation that a message appeared in the terminal that you should pay attention to, while less pressing information is more subtle in appearance.
+The correct thing to do at this juncture is: read the following snippet, clone the repo, [peruse the documentation](https://libsir.rml.dev), and simply get back to work on your project&mdash;you know, the code you set out to write but somehow now you're reading this.
 
-<img src="https://libsir.rml.dev/libsir-alpha.png" alt="libsir flow graph" max-width="1024" width="768">
+```c
+#include <sir/sir.h>
+#include <assert.h>
+
+int main(void) {
+  sirinit si;
+  sir_makeinit(&si);
+
+  bool ok = sir_init(&si);
+  assert(ok);
+
+  ok = 0 != sir_addfile("app.log", SIRL_DEFAULT, SIRO_DEFAULT);
+  assert(ok);
+
+  /* sir_[debug|info|notice|warn|error|crit|alert|emerg]("beep boop. %x", 0x6969); */
+
+  sir_cleanup();
+  return 0;
+}
+```
 
 ## <a id="notables" /> Notables
 
@@ -180,7 +199,7 @@ A number of environment variables are available which affect the way in which li
 | Test&nbsp;suite (C++) |  `make tests++`  | <ul><li>*build/bin/sirtests++[.exe]*</li></ul> |
 |      Example&nbsp;app |  `make example`  | <ul><li>*build/bin/sirexample[.exe]*</li></ul> |
 |   Static&nbsp;library |  `make static`   | <ul><li>*build/lib/libsir_s.a*</li></ul>       |
-|  nShared&nbsp;library |  `make shared`   | <ul><li>*build/lib/libsir.so*</li></ul>        |
+|  Shared&nbsp;library  |  `make shared`   | <ul><li>*build/lib/libsir.so*</li></ul>        |
 |          Installation |  `make install`  | <ul><li>*$PREFIX/lib/libsir_s.a*</li><li>*$PREFIX/lib/libsir.so*</li><li>*$PREFIX/include/sir.h*</li><li>*$PREFIX/include/sir/\*.h*</li></ul> |
 
 - See the [CI configuration file](https://github.com/aremmell/libsir/blob/master/.gitlab-ci.yml) for practical examples.
