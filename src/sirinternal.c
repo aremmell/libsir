@@ -485,7 +485,6 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
             break;
 #if !defined(SIR_NO_TEXT_STYLING)
         case SIRMI_TEXTSTYLE:
-#if !defined(SIR_NO_TEXT_STYLING)
             tmpm   = &ts_mutex;
             tmpsec = &sir_text_style_section;
 #else
@@ -493,11 +492,7 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
             tmpsec = NULL;
 #endif
             break;
-#endif
         default: // GCOVR_EXCL_START
-#if !defined(SIR_NO_TEXT_STYLING)
-            SIR_ASSERT(false);
-#endif
             tmpm   = NULL;
             tmpsec = NULL;
             break;
