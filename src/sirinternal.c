@@ -467,8 +467,8 @@ void _sir_unlocksection(sir_mutex_id mid) {
 }
 
 bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
-    sir_mutex* tmpm;
-    void* tmpsec;
+    sir_mutex* tmpm = NULL;
+    void* tmpsec = NULL;
 
     switch (mid) {
         case SIRMI_CONFIG:
@@ -491,9 +491,6 @@ bool _sir_mapmutexid(sir_mutex_id mid, sir_mutex** m, void** section) {
 #endif
         default: // GCOVR_EXCL_START
 #if !defined(SIR_NO_TEXT_STYLING)
-            tmpm   = NULL;
-            tmpsec = NULL;
-#else
             SIR_ASSERT(false);
 #endif
             break;
