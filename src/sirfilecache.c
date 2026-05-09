@@ -111,13 +111,21 @@ bool _sirfile_open(sirfile* sf) {
     bool retval = _sir_validptr(sf) && _sir_validstr(sf->path);
 
     if (retval) {
-        FILE* f  = NULL;
+        if (_sir_validptrnofail(sf->f)) {
+            _sir_selflog("file has non-null handle; closing (path: '%s', id: %"PRIx32", f: %"PRIxPTR")...",
+                sf->path, sf->id, (uintptr_t)sf->f);
+            _sirfile_close(sf);
+        }
+
+        FILE* f = NULL;
         retval = _sir_openfile(&f, sf->path, SIR_FOPENMODE, SIR_PATH_REL_TO_CWD);
         if (retval && NULL != f) {
-            _sirfile_close(sf);
 
             sf->f  = f;
             sf->id = FNV32_1a((const uint8_t*)sf->path, strnlen(sf->path, SIR_MAXPATH));
+
+            _sir_selflog("opened file (path: '%s', id: %"PRIx32", f: %"PRIxPTR")...",
+                sf->path, sf->id, (uintptr_t)sf->f);
         }
     }
 
@@ -125,8 +133,16 @@ bool _sirfile_open(sirfile* sf) {
 }
 
 void _sirfile_close(sirfile* sf) {
-    if (_sir_validptrnofail(sf))
+    if (_sir_validptrnofail(sf)) {
+        if (_sirfile_validate(sf)) {
+            _sir_selflog("closing valid file (path: '%s', id: %"PRIx32", f: %"PRIxPTR")",
+                sf->path, sf->id, (uintptr_t)sf->f);
+        } else {
+            _sir_selflog("closing dubious file (ptr: %"PRIxPTR", path: %"PRIxPTR", id: %"PRIx32", f: %"PRIxPTR")!",
+                (uintptr_t)sf, (uintptr_t)sf->path, sf->id, (uintptr_t)sf->f);
+        }
         _sir_safefclose(&sf->f);
+    }
 }
 
 bool _sirfile_write(sirfile* sf, const char* output) {
@@ -261,7 +277,17 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                         _sir_selflog("error: unable to determine suitable path for '%s';"
                                         " not rolling!", sf->path);
 
-                    retval = resolved && _sirfile_archive(sf, *newpath);
+                    bool archived = resolved ? _sirfile_archive(sf, *newpath) : false;
+                    if (resolved && !archived) {
+                        /* TODO: failed to successfully move the log file to *newpath.
+                         * - Planned fix will land elsewhere, so for now, we're just doing
+                         * diagnostics here.
+                         */
+                        _sir_selflog("error: unable to obtain a writable file descriptor for '%s'!",
+                            *newpath);
+                    }
+
+                    retval = resolved && archived;
                 }
             }
         }
@@ -278,8 +304,8 @@ void _sirfile_rollifneeded(sirfile* sf) {
         bool rolled   = false;
         char* newpath = NULL;
 
-        _sir_selflog("file (path: '%s', id: %"PRIx32") reached ~%d bytes in size;"
-            " rolling...", sf->path, sf->id, SIR_FROLLSIZE);
+        _sir_selflog("file (path: '%s', id: %"PRIx32", f: %"PRIxPTR") reached ~%d bytes in size;"
+            " rolling...", sf->path, sf->id, (uintptr_t)sf->f, SIR_FROLLSIZE);
 
         _sir_fflush(sf->f);
 
@@ -291,8 +317,8 @@ void _sirfile_rollifneeded(sirfile* sf) {
 
         _sir_safefree(&newpath);
         if (!rolled) /* write anyway; don't want to lose data. */
-            _sir_selflog("error: failed to roll file (path: '%s', id: %"PRIx32")!",
-                sf->path, sf->id);
+            _sir_selflog("error: failed to roll file (path: '%s', id: %"PRIx32", f: %"PRIxPTR")!",
+                sf->path, sf->id, (uintptr_t)sf->f);
     }
 }
 
@@ -309,7 +335,8 @@ bool _sirfile_archive(sirfile* sf, const char* newpath) {
         } else {
             retval = _sirfile_open(sf);
             if (retval)
-                _sir_selflog("archived '%s' " SIR_R_ARROW " '%s'", sf->path, newpath);
+                _sir_selflog("archived file (path: '%s' " SIR_R_ARROW " '%s', f: %"PRIxPTR")", sf->path,
+                    newpath, (uintptr_t)sf->f);
         }
     }
 
@@ -423,14 +450,14 @@ sirfileid _sir_fcache_add(sirfcache* sfc, const char* path, sir_levels levels,
 
     sirfile* sf = _sirfile_create(path, levels, opts);
     if (_sirfile_validate(sf)) {
-        _sir_selflog("adding file (path: '%s', id: %"PRIx32"); count = %zu", //-V522
-            sf->path, sf->id, sfc->count + 1);
+        _sir_selflog("adding file (path: '%s', id: %"PRIx32", f: %"PRIxPTR"); count = %zu", //-V522
+            sf->path, sf->id, (uintptr_t)sf->f, sfc->count + 1);
 
         sfc->files[sfc->count++] = sf;
 
         if (!_sir_bittest(sf->opts, SIRO_NOHDR) && !_sirfile_writeheader(sf, SIR_FHBEGIN))
-            _sir_selflog("warning: failed to write file header (path: '%s', id: %"PRIx32")",
-                sf->path, sf->id);
+            _sir_selflog("warning: failed to write file header (path: '%s', id: %"PRIx32", f: %"PRIxPTR")",
+                sf->path, sf->id, (uintptr_t)sf->f);
 
         return sf->id;
     }
@@ -460,8 +487,8 @@ bool _sir_fcache_rem(sirfcache* sfc, sirfileid id) {
             SIR_ASSERT(_sirfile_validate(sfc->files[n]));
 
             if (sfc->files[n]->id == id) {
-                _sir_selflog("removing file (path: '%s', id: %"PRIx32"); count = %zu",
-                    sfc->files[n]->path, sfc->files[n]->id, sfc->count - 1);
+                _sir_selflog("removing file (path: '%s', id: %"PRIx32", f: %"PRIxPTR"); count = %zu",
+                    sfc->files[n]->path, sfc->files[n]->id, (uintptr_t)sfc->files[n]->f, sfc->count - 1);
 
                 _sirfile_destroy(&sfc->files[n]);
                 _sir_fcache_shift(sfc, n);
