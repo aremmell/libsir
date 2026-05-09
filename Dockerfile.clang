@@ -2,7 +2,7 @@ ARG BASE=msvc-wine
 FROM $BASE
 
 RUN apt-get update && \
-    apt-get install -y curl && \
+    apt-get install -y curl xz-utils && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
 
@@ -20,6 +20,7 @@ COPY test/hello.c ./
 
 RUN \
     for arch in x86 x64 arm arm64; do \
+        [ ! -d /opt/msvc/kits/10/lib/*/um/$arch ] || \
         (BIN=/opt/msvc/bin/$arch . /opt/msvc/msvcenv-native.sh && \
             clang-cl --target=$TARGET_TRIPLE hello.c -fuse-ld=lld -Fehello-$arch.exe && \
             clang --target=$TARGET_TRIPLE hello.c -fuse-ld=lld -o hello-$arch.exe \

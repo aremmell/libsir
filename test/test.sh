@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Copyright (c) 2023 Huang Qinjin
 #
@@ -90,14 +90,28 @@ for arch in x86 x64 arm arm64; do
     if [ ! -d "$BIN" ]; then
         continue
     fi
+    # Windows SDK 10.0.26100.0 no long targets Arm32.
+    if [ "$arch" = "arm" ] && printf "%s\n" 10.0.26100.0 $(. "${BIN}msvcenv.sh" && echo "$SDKVER") | sort -VC; then
+        continue
+    fi
 
     EXEC "" BIN=$BIN ./test-cl.sh
     EXEC "" BIN=$BIN ./test-mt.sh
     EXEC "" BIN=$BIN ./test-dumpbin.sh
     EXEC "" BIN=$BIN ./test-asm.sh
     EXEC "" BIN=$BIN ./test-midl.sh
+    EXEC "" BIN=$BIN ./test-mc.sh
+    EXEC "" BIN=$BIN ./test-vcvars.sh
     EXEC "" BIN=$BIN ./test-cmake.sh
     EXEC "" BIN=$BIN ./test-meson.sh
+
+    # Github runners define VCPKG_INSTALLATION_ROOT.
+    if [[ -z "$VCPKG_ROOT" && -n "$VCPKG_INSTALLATION_ROOT" ]]; then
+        export VCPKG_ROOT=$VCPKG_INSTALLATION_ROOT
+    fi
+    if [[ -n "$VCPKG_ROOT" ]]; then
+        EXEC "" BIN=$BIN ./test-vcpkg.sh
+    fi
 
     # MSBuild requires .NET framework v4.x or Mono to run.
     # Wine will search for Wine Mono in the following places:
@@ -110,9 +124,11 @@ for arch in x86 x64 arm arm64; do
          || -d /opt/wine/mono ]]; then
         EXEC "" BIN=$BIN ./test-msbuild.sh
 
-        if [[ -n $HAVE_WDK && ($arch == "x64" || $arch == "arm64") ]]; then
-            EXEC "" BIN=$BIN ./test-wdk-msbuild.sh
-        fi
+        # Disable WDK test for now as it doesn't work on Visual Studio 2026.
+        # https://developercommunity.visualstudio.com/t/10973856
+        # if [[ -n $HAVE_WDK && ($arch == "x64" || $arch == "arm64") ]]; then
+        #     EXEC "" BIN=$BIN ./test-wdk-msbuild.sh
+        # fi
     fi
 done
 

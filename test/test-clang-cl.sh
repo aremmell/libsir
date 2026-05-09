@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Copyright (c) 2023 Martin Storsjo
 #
@@ -21,6 +21,10 @@ cd "$TESTS"
 for arch in x86 x64 arm arm64; do
     BIN="${1:-/opt/msvc}/bin/$arch/"
     if [ ! -d "$BIN" ]; then
+        continue
+    fi
+    # Windows SDK 10.0.26100.0 no long targets Arm32.
+    if [ "$arch" = "arm" ] && printf "%s\n" 10.0.26100.0 $(. "${BIN}msvcenv.sh" && echo "$SDKVER") | sort -VC; then
         continue
     fi
 

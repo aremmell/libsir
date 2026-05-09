@@ -15,12 +15,13 @@ jobs:
     steps:
       - name: Install prerequisites
         run: |
-          sudo apt-get update && sudo apt-get install wine64-development python3 msitools ca-certificates ninja-build winbind meson nasm
-          wine64 wineboot
+          sudo apt-get update && sudo apt-get install wine64 python3 msitools ca-certificates ninja-build winbind meson nasm
+          WINE=$(command -v wine64 || command -v wine || false)
+          $WINE wineboot
       - uses: actions/checkout@v4
       - name: Download MSVC
         run: |
-          ./vsdownload.py --accept-license --dest $(pwd)/msvc
+          ./vsdownload.py --accept-license --dest $(pwd)/msvc --architecture arm64
           ./install.sh $(pwd)/msvc
       - name: Checkout gas-preprocessor
         uses: actions/checkout@v4
@@ -78,12 +79,13 @@ jobs:
     steps:
       - name: Install prerequisites
         run: |
-          sudo apt-get update && sudo apt-get install wine64-development python3 msitools ca-certificates winbind nasm
-          wine64 wineboot
+          sudo apt-get update && sudo apt-get install wine64 python3 msitools ca-certificates winbind nasm
+          WINE=$(command -v wine64 || command -v wine || false)
+          $WINE wineboot
       - uses: actions/checkout@v4
       - name: Download MSVC
         run: |
-          ./vsdownload.py --accept-license --dest $(pwd)/msvc
+          ./vsdownload.py --accept-license --dest $(pwd)/msvc --architecture arm64
           ./install.sh $(pwd)/msvc
       - name: Checkout gas-preprocessor
         uses: actions/checkout@v4
@@ -98,7 +100,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: ffmpeg/ffmpeg
-          ref: n6.0
+          ref: n7.1
           path: ffmpeg
       - name: Build ffmpeg
         run: |
@@ -122,12 +124,13 @@ jobs:
     steps:
       - name: Install prerequisites
         run: |
-          sudo apt-get update && sudo apt-get install wine64-development python3 msitools ca-certificates cmake ninja-build winbind
-          wine64 wineboot
+          sudo apt-get update && sudo apt-get install wine64 python3 msitools ca-certificates cmake ninja-build winbind
+          WINE=$(command -v wine64 || command -v wine || false)
+          $WINE wineboot
       - uses: actions/checkout@v4
       - name: Download MSVC
         run: |
-          ./vsdownload.py --accept-license --dest $(pwd)/msvc
+          ./vsdownload.py --accept-license --dest $(pwd)/msvc --architecture x64
           ./install.sh $(pwd)/msvc
       - name: Checkout llvm-project
         uses: actions/checkout@v4
