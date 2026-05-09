@@ -27,26 +27,22 @@
 #
 ################################################################################
 
-FROM registry.gitlab.com/libsir/libsir/anaconda:latest
+FROM registry.gitlab.com/libsir/libsir/base:latest
 
 USER 0
 
 WORKDIR /
 
+ARG URL
+
 RUN set -x && \
-    echo "[oneAPI]" > /etc/yum.repos.d/intel.repo && \
-    echo "name=Intel® oneAPI repository" >> /etc/yum.repos.d/intel.repo && \
-    echo "baseurl=https://yum.repos.intel.com/oneapi" >> /etc/yum.repos.d/intel.repo && \
-    echo "enabled=1" >> /etc/yum.repos.d/intel.repo && \
-    echo "gpgcheck=1" >> /etc/yum.repos.d/intel.repo && \
-    echo "repo_gpgcheck=1" >> /etc/yum.repos.d/intel.repo && \
-    echo "gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB" >> /etc/yum.repos.d/intel.repo && \
-    dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install intel-oneapi-dpcpp-cpp-2026\* && \
-    dnf -y clean all && \
-    rm -rf ~/.cache && \
-    rm -rf /var/tmp/* && \
-    rm -rf /var/log/dnf* && \
-    cd
+      wget "${URL:-https://download.amd.com/developer/eula/aocc/aocc-5-1/aocc-compiler-5.1.0-1.x86_64.rpm}" && \
+      rpm -ivh --nodigest --nofiledigest aocc-compiler-5.1.0-1.x86_64.rpm && \
+      rm -f aocc-compiler-5.1.0-1.x86_64.rpm && \
+      dnf -y clean all && \
+      rm -rf ~/.cache > /dev/null 2>&1 && \
+      rm -rf /var/tmp/* > /dev/null 2>&1 && \
+      rm -rf /var/log/dnf* > /dev/null 2>&1
 
 USER 10000
 

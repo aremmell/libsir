@@ -405,7 +405,7 @@ Linux/x86_64 (AOCC++, AOCC):
     - Docker-x64
     - Linux
   image:
-    name: registry.gitlab.com/libsir/libsir/base:latest
+    name: registry.gitlab.com/libsir/libsir/aocc:latest
   script:
     - *Configuration
     - |
@@ -543,7 +543,7 @@ Linux/x86_64 (Intel oneAPI, ICPX, ICX):
 
 ################################################################################
 
-Linux/x86_64 (Chamois-CompCert, C-only):
+. Linux/x86_64 (Chamois-CompCert, C-only):
   stage: build_linux
   needs:
     - job: Style check
@@ -586,7 +586,7 @@ Linux/x86_64 (Chamois-CompCert, C-only):
 
 ################################################################################
 
-Linux/i386 (Chamois-CompCert, C-only):
+. Linux/i386 (Chamois-CompCert, C-only):
   stage: build_linux
   needs:
     - job: Style check

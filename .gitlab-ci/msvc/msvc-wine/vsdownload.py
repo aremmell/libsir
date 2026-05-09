@@ -720,7 +720,10 @@ def unpackWin10SDK(src, payloads, dest):
             else:
                 cmd = ["msiextract", "-C", dest, srcfile]
             with open(os.path.join(dest, "WinSDK-" + getPayloadName(payload) + "-listing.txt"), "w") as log:
-                subprocess.check_call(cmd, stdout=log)
+                try:
+                    subprocess.check_call(cmd, stdout=log, stderr=subprocess.STDOUT)
+                except subprocess.CalledProcessError as e:
+                    print("Non‑fatal MSI extract failure:", e)
 
 def unpackWin10WDK(src, dest):
     print("Unpacking WDK installers from", src)

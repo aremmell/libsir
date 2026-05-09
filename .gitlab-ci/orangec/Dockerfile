@@ -37,9 +37,10 @@ ARG URL
 
 RUN set -x && \
     cd /opt && \
-    wget -q "${URL:-http://192.168.1.187:8088/~jhj/cache/OrangeC.zip}" && \
-    atool -x OrangeC.zip && \
-    env rm OrangeC.zip && \
+    wget -q "${URL:-https://github.com/LADSoft/OrangeC/releases/download/v7.0.7/ZippedBinaries707.zip}" && \
+    atool -x ZippedBinaries707.zip && \
+    env rm ZippedBinaries707.zip && \
+    ln -s orangec OrangeC && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \

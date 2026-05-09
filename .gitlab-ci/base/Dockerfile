@@ -27,7 +27,7 @@
 #
 ################################################################################
 
-FROM quay.io/fedora/fedora:42
+FROM quay.io/fedora/fedora:44
 
 USER 0
 
@@ -220,9 +220,6 @@ RUN set -x && \
   env CFLAGS='-O2 -flto=auto' LDFLAGS='-flto=auto' make && \
   (rm -rf ./test ./.git ./*.o ./*.c ./*.h .gitignore LICENSE Makefile README.md || true) && \
   strip chibicc && \
-  cd / && \
-  (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-     --nogpgcheck "${URL:-http://192.168.1.187:8088/~jhj/cache/aocc-compiler.x86_64.rpm}") && \
   mkdir -p /tmp/duma-build && \
   cd /tmp/duma-build && \
   git clone https://github.com/johnsonjh/duma.git && \

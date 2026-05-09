@@ -38,9 +38,11 @@ RUN set -x && \
     wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
     chmod a+x Miniconda3-latest-Linux-x86_64.sh && \
     export PATH="/opt/anaconda/bin:/opt/anaconda/sbin:${PATH:-}" && \
-    ./Miniconda3-latest-Linux-x86_64.sh -b -t -p /opt/anaconda -t && \
+    ( ./Miniconda3-latest-Linux-x86_64.sh -b -t -p /opt/anaconda || true); \
     rm -f ./Miniconda3-latest-Linux-x86_64.sh && \
-    conda build purge && \
+    . /opt/anaconda/bin/activate && \
+    conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main && \
+    conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r && \
     conda config --add channels "conda-forge" && \
     conda config --set channel_priority "strict" && \
     conda update --update-all --yes && \

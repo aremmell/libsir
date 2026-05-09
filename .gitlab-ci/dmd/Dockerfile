@@ -34,12 +34,16 @@ USER 0
 WORKDIR /
 
 RUN set -x && \
-    dnf -y install elinks --setopt=install_weak_deps=True && \
-    (wget -q https://downloads.dlang.org/pre-releases/2.x/2.111.0/dmd-2.111.0~beta.1-0.fedora.x86_64.rpm || true) && \
-    (wget -q "$(elinks -dump https://dlang.org/download.html 2> /dev/null | \
-           awk '/\/releases\/.*fedora.*x86_64.rpm$/ { print $2 }' 2> /dev/null | \
-              head -1)" || true) && \
-    dnf --nogpgcheck -y install "$(find . -name '*.rpm' | sort -rV | head -1)" --setopt=install_weak_deps=True && \
+    cd /tmp && \
+    wget -q https://downloads.dlang.org/releases/2.x/2.112.0/dmd.2.112.0.linux.tar.xz && \
+    cd /opt && \
+    tar axvf /tmp/dmd.2.112.0.linux.tar.xz && \
+    rm -f dmd.2.112.0.linux.tar.xz && \
+    ln -s /opt/dmd2/linux/bin64/ddemangle /usr/bin/ddemangle && \
+    ln -s /opt/dmd2/linux/bin64/dmd /usr/bin/dmd && \
+    ln -s /opt/dmd2/linux/bin64/dub /usr/bin/dub && \
+    ln -s /opt/dmd2/linux/bin64/dustmite /usr/bin/dustmite && \
+    ln -s /opt/dmd2/linux/bin64/rdmd /usr/bin/rdmd && \
     rm -f ./*.rpm* && \
     dnf -y clean all && \
     rm -rf ~/.cache && \

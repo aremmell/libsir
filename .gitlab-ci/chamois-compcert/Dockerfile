@@ -28,11 +28,11 @@ RUN set -x && \
     opam update && \
     opam upgrade && \
     eval $(opam env) && \
-    opam switch create chamois-compcert 4.14.2 && \
+    opam switch create chamois-compcert 4.11.2+flambda && \
     eval $(opam env --switch=chamois-compcert) && \
-    opam pin add coq 8.16.1 && \
+    opam pin add coq 8.12.2 && \
     eval $(opam env) && \
-    opam install menhir coq && \
+    opam install menhir ocamlbuild coq && \
     eval $(opam env) && \
     coqc --version && \
     cd /opt/src && \
