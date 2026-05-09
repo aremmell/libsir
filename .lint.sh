@@ -301,7 +301,6 @@ test_extra()
                     -Wassign-enum
                     -Wbad-function-cast
                     -Wconversion
-                    -Wdisabled-macro-expansion
                     -Wdocumentation
                     -Wdocumentation-deprecated-sync
                     -Wdocumentation-html

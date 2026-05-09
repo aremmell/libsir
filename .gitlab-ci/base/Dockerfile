@@ -99,6 +99,8 @@ RUN set -x && \
       libasan \
       libasan.i686 \
       libasan.x86_64 \
+      libatomic.i686 \
+      libatomic.x86_64 \
       libnsl \
       libnsl2 \
       libnsl2.i686 \
@@ -209,7 +211,8 @@ RUN set -x && \
       cygwin64-binutils \
       cygwin64-gcc-c++ \
 && \
-  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install wine && \
+  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install wine wine32 wine64 && \
+  mkdir -p /etc/apt/apt.conf.d && \
   mkdir -p /opt && \
   cd /opt && \
   git clone --depth=1 https://github.com/rui314/chibicc.git && \
