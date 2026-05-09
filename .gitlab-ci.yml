@@ -4673,11 +4673,11 @@ NetBSD/amd64 (G++, GCC):
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
-    - export CC="/usr/pkg/gcc13/bin/gcc"
-    - export CXX="/usr/pkg/gcc13/bin/g++"
+    - export CC="/usr/pkg/gcc15/bin/gcc"
+    - export CXX="/usr/pkg/gcc15/bin/g++"
     - export CFLAGS="-I/usr/pkg/include -I/usr/local/include"
     - export CXXFLAGS="-I/usr/pkg/include -I/usr/local/include"
-    - export LDFLAGS="-Wl,-rpath,/usr/pkg/gcc13/lib -L/usr/pkg/gcc13/lib -L/usr/pkg/lib -L/usr/local/lib"
+    - export LDFLAGS="-Wl,-rpath,/usr/pkg/gcc15/lib -L/usr/pkg/gcc15/lib -L/usr/pkg/lib -L/usr/local/lib"
     - uname -prs
     - ${CC:?} --version
     - ${CXX:?} --version
