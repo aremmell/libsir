@@ -98,7 +98,7 @@ Remove-Item Alias:DIFF -Force
 
 function DIFF {
     $global:LASTEXITCODE = 1
-    $input | git --no-pager diff --no-index -R @args 
+    $input | git --no-pager diff --no-index -R @args
     $global:num_of_tests++
     if ($global:LASTEXITCODE -ne 0) {
         $global:num_of_fails++

@@ -24,7 +24,7 @@ if ($Setup -eq 'InvokeCmd') {
     $vcvars_bat = [IO.Path]::Combine($Root, 'VC', 'Auxiliary', 'Build', 'vcvarsall.bat')
     $vcvars_arch = if ($HostArch -eq $Arch) { $Arch } else { "${HostArch}_$Arch" }
     $dumpenv = "Get-ChildItem Env: | Select-Object Name,Value | ConvertTo-Json | Out-File env.json -Encoding utf8"
-    
+
     EXEC "" cmd /c """$vcvars_bat"" $vcvars_arch && $($PWSH[0]) -Command ""& { $dumpenv }"""
     # https://stackoverflow.com/questions/63388883
     # Parentheses are needed before powershell 7 to enumerate the array produced by ConvertFrom-Json.
