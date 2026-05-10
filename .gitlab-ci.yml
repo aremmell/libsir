@@ -2250,7 +2250,7 @@ Coverity:
 
 ################################################################################
 
-.Linux/x86_64 (DMD64 ImportC, C-only):
+Linux/x86_64 (DMD64 ImportC, C-only):
   stage: build_linux
   needs:
     - job: Style check
@@ -2264,6 +2264,9 @@ Coverity:
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export PATH="/opt/dmd2/linux/bin64:${PATH:-}"
+    - export CFLAGS="-I/usr/local/include"
+    - export LDFLAGS="-Wl,-rpath=/opt/dmd2/linux/lib64 -L/opt/dmd2/linux/lib64 -L/usr/local/lib"
     - mkdir -p build/bin
     - touch build/bin/file.exists
     - mkdir -p logs
@@ -2303,7 +2306,7 @@ Coverity:
 
 ################################################################################
 
-.Linux/i686 (DMD64 ImportC, C-only):
+Linux/i686 (DMD64 ImportC, C-only):
   stage: build_linux
   needs:
     - job: Style check
@@ -2317,6 +2320,9 @@ Coverity:
     - |
       # Start of Build ...
       echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export PATH="/opt/dmd2/linux/bin64:${PATH:-}"
+    - export CFLAGS="-I/usr/local/include"
+    - export LDFLAGS="-Wl,-rpath=/opt/dmd2/linux/lib32 -L/opt/dmd2/linux/lib32 -L/usr/local/lib"
     - mkdir -p build/bin
     - touch build/bin/file.exists
     - mkdir -p logs

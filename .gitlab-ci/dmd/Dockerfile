@@ -34,17 +34,8 @@ USER 0
 WORKDIR /
 
 RUN set -x && \
-    cd /tmp && \
-    wget -q https://downloads.dlang.org/releases/2.x/2.112.0/dmd.2.112.0.linux.tar.xz && \
     cd /opt && \
-    tar axvf /tmp/dmd.2.112.0.linux.tar.xz && \
-    rm -f dmd.2.112.0.linux.tar.xz && \
-    ln -s /opt/dmd2/linux/bin64/ddemangle /usr/bin/ddemangle && \
-    ln -s /opt/dmd2/linux/bin64/dmd /usr/bin/dmd && \
-    ln -s /opt/dmd2/linux/bin64/dub /usr/bin/dub && \
-    ln -s /opt/dmd2/linux/bin64/dustmite /usr/bin/dustmite && \
-    ln -s /opt/dmd2/linux/bin64/rdmd /usr/bin/rdmd && \
-    rm -f ./*.rpm* && \
+    curl -fsSL https://github.com/dlang/dmd/releases/download/nightly/dmd.master.linux.tar.xz | xz -dc | tar xvf - && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
