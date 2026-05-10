@@ -15,17 +15,9 @@ jobs:
     steps:
       - name: Install prerequisites
         run: |
-<<<<<<< HEAD
-          sudo apt-get update && sudo apt-get install wine64 python3 msitools ca-certificates ninja-build winbind meson nasm
-          wine64 wineboot
-||||||| f9f42386
-          sudo apt-get update && sudo apt-get install wine64-development python3 msitools ca-certificates ninja-build winbind meson nasm
-          wine64 wineboot
-=======
           sudo apt-get update && sudo apt-get install wine64 python3 msitools ca-certificates ninja-build winbind meson nasm
           WINE=$(command -v wine64 || command -v wine || false)
           $WINE wineboot
->>>>>>> c80389b3248ab3dc8f72c6bc6a561e455ebc45a4
       - uses: actions/checkout@v4
       - name: Download MSVC
         run: |
@@ -87,17 +79,10 @@ jobs:
     steps:
       - name: Install prerequisites
         run: |
-<<<<<<< HEAD
           sudo apt-get update && sudo apt-get install wine64 python3 msitools ca-certificates winbind nasm
           wine64 wineboot
-||||||| f9f42386
-          sudo apt-get update && sudo apt-get install wine64-development python3 msitools ca-certificates winbind nasm
-          wine64 wineboot
-=======
-          sudo apt-get update && sudo apt-get install wine64 python3 msitools ca-certificates winbind nasm
           WINE=$(command -v wine64 || command -v wine || false)
           $WINE wineboot
->>>>>>> c80389b3248ab3dc8f72c6bc6a561e455ebc45a4
       - uses: actions/checkout@v4
       - name: Download MSVC
         run: |
@@ -140,17 +125,9 @@ jobs:
     steps:
       - name: Install prerequisites
         run: |
-<<<<<<< HEAD
-          sudo apt-get update && sudo apt-get install wine64 python3 msitools ca-certificates cmake ninja-build winbind
-          wine64 wineboot
-||||||| f9f42386
-          sudo apt-get update && sudo apt-get install wine64-development python3 msitools ca-certificates cmake ninja-build winbind
-          wine64 wineboot
-=======
           sudo apt-get update && sudo apt-get install wine64 python3 msitools ca-certificates cmake ninja-build winbind
           WINE=$(command -v wine64 || command -v wine || false)
           $WINE wineboot
->>>>>>> c80389b3248ab3dc8f72c6bc6a561e455ebc45a4
       - uses: actions/checkout@v4
       - name: Download MSVC
         run: |
