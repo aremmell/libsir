@@ -343,10 +343,10 @@ char* _sir_strremove(char *str, const char *sub) {
     if (!sub)
         return str;
 
-    char* r;
+    const char* r;
     char* q;
 
-    if (*sub && (q = r = strstr(str, sub)) != NULL) {
+    if (*sub && (q = (char*)(r = strstr(str, sub))) != NULL) {
         size_t len = strnlen(sub, strlen(str));
         const char* p;
 
