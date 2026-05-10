@@ -58,7 +58,7 @@ stages:
 .ClangDisableWarnings: &ClangDisableWarnings |
   # *ClangDisableWarnings - Disable excessive Clang-CL Warnings
   echo -e "section_start:`date +%s`:DClW_section[collapsed=false]\r\e[0K\033[0;36mDisable excessive Clang-CL Warnings ...\033[0m" || true
-  export DISABLE_WARNINGS="-Wno-bad-function-cast -Wno-cast-align -Wno-cast-function-type -Wno-cast-function-type-strict -Wno-cast-qual -Wno-covered-switch-default -Wno-declaration-after-statement -Wno-deprecated-declarations -Wno-incompatible-pointer-types-discards-qualifiers -Wno-missing-variable-declarations -Wno-nonportable-system-include-path -Wno-reserved-identifier -Wno-reserved-macro-identifier -Wno-sign-conversion -Wno-unknown-argument -Wno-unsafe-buffer-usage -Wno-unused-command-line-argument -Wno-language-extension-token"
+  export DISABLE_WARNINGS="-Wno-padded -Wno-implicit-int-enum-cast -Wno-implicit-void-ptr-cast -Wno-c++-keyword -Wno-bad-function-cast -Wno-cast-align -Wno-cast-function-type -Wno-cast-function-type-strict -Wno-cast-qual -Wno-covered-switch-default -Wno-declaration-after-statement -Wno-deprecated-declarations -Wno-incompatible-pointer-types-discards-qualifiers -Wno-missing-variable-declarations -Wno-nonportable-system-include-path -Wno-reserved-identifier -Wno-reserved-macro-identifier -Wno-sign-conversion -Wno-unknown-argument -Wno-unsafe-buffer-usage -Wno-unused-command-line-argument -Wno-language-extension-token"
   echo -e "section_end:`date +%s`:DClW_section\r\e[0K" || true
 
 ################################################################################
@@ -920,7 +920,7 @@ Windows/i686 (LLVM-MinGW, Clang++, Clang):
     - export CXX="i686-w64-mingw32-clang++"
     - ${CC:?} --version
     - ${CXX:?} --version
-    - export CFLAGS="-Wno-ignored-attributes -Wno-incompatible-function-pointer-types -Wno-unknown-pragmas"
+    - export CFLAGS="-Wno-ignored-attributes -Wno-incompatible-pointer-types-discards-qualifiers -Wno-incompatible-function-pointer-types -Wno-unknown-pragmas"
     - make PLATFORM_LIB_EXT=".a"
     - make tests++ PLATFORM_LIB_EXT=".a"
     - cp -f /opt/llvm-mingw/i686-w64-mingw32/bin/libwinpthread-1.dll build/bin
