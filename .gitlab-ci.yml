@@ -4092,8 +4092,8 @@ FreeBSD/amd64 (Clang++, Clang):
     - freebsd-version -kru | xargs
     - ${CC:?} --version
     - ${CXX:?} --version
-    - gmake
-    - gmake tests++
+    - gmake FORTIFY_FLAGS=-U_FORTIFY_SOURCE
+    - gmake tests++ FORTIFY_FLAGS=-U_FORTIFY_SOURCE
     - |
       # End of Build ...
       echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
