@@ -448,7 +448,7 @@ Linux/i686 (AOCC, C-only):
     - Docker-x64
     - Linux
   image:
-    name: registry.gitlab.com/libsir/libsir/base:latest
+    name: registry.gitlab.com/libsir/libsir/aocc:latest
   script:
     - *Configuration
     - |
