@@ -899,6 +899,54 @@ Linux/x86_64 (AMD Open64, C-only):
 
 ################################################################################
 
+Linux/i686 (AMD Open64, C-only):
+  allow_failure: true
+  needs:
+    - job: Style check
+  stage: build_linux
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/ao64:latest
+  script:
+    - *Configuration
+    - /opt/x86_open64-4.5.2.1/bin/opencc --version
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export PATH="/opt/x86_open64-4.5.2.1/bin:${PATH:?}"
+    - export CC="opencc"
+    - export NO_DEFAULT_CFLAGS="1"
+    - export SIR_CSTD="-std=gnu9x"
+    - export CFLAGS="-m32 -D_FILE_OFFSET_BITS=64 -Iinclude -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers -Wno-strict-aliasing -fno-strict-aliasing -fPIC -O3"
+    - export LDFLAGS="-m32 -lmcompat"
+    - make
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
+    - *BuildInformation
+    - |
+      # Start of Test ...
+      echo -e "section_start:`date +%s`:Test_section[collapsed=true]\r\e[0K\033[0;36mTest ...\033[0m" || true
+    - stdbuf -o L ./build/bin/sirexample
+    - stdbuf -o L ./build/bin/sirtests
+    - |
+      # End of Test ...
+      echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
+    - *CheckLogRemnants
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+################################################################################
+
 Linux/x86_64 (Open64 5, C-only):
   allow_failure: true
   needs:

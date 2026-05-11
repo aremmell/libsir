@@ -42,9 +42,13 @@ RUN set -x && \
       printf '%s\n' 'int matherr=0;' 'char* _LIB_VERSION="";' > tmp.c && \
       gcc -o libmcompat.o -c tmp.c && \
       ar -crs /usr/lib64/libmcompat.a libmcompat.o && \
-      env rm -f libmcompat.o && \
-      env rm -f tmp.c && \
+      rm -f libmcompat.o && \
+      gcc -m32 -o libmcompat.o -c tmp.c && \
+      ar -crs /usr/lib/libmcompat.a libmcompat.o && \
+      rm -f libmcompat.o && \
+      rm -f tmp.c && \
       ranlib /usr/lib64/libmcompat.a && \
+      ranlib /usr/lib/libmcompat.a && \
       ldconfig -v && \
       dnf -y clean all && \
       rm -rf ~/.cache > /dev/null 2>&1 && \
