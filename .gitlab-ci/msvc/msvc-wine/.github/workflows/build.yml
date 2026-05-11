@@ -5,19 +5,24 @@ on:
 
 env:
   # From https://learn.microsoft.com/en-us/windows-hardware/drivers/download-the-wdk#download-icon-step-3-install-wdk
-  WDK_INSTALLER_URL: "https://go.microsoft.com/fwlink/?linkid=2249371"
+  WDK_INSTALLER_URL: "https://go.microsoft.com/fwlink/?linkid=2307500"
 
 jobs:
   test-msvc-wine-linux:
-    runs-on: ubuntu-latest
+    # Using a pinned version of Ubuntu here; this determines the version of
+    # Wine that gets installed - the version of wine-mono that is installed
+    # below depends on the host version of Wine.
+    runs-on: ubuntu-24.04
     steps:
       - name: Install prerequisites
         run: |
           sudo dpkg --add-architecture i386 && sudo apt-get update
-          sudo apt-get install wine64 wine32 python3 msitools ca-certificates cmake ninja-build winbind meson
-          wine64 wineboot
-          curl -s -L -O https://github.com/madewokherd/wine-mono/releases/download/wine-mono-5.1.1/wine-mono-5.1.1-x86.msi
-          wine64 msiexec /i wine-mono-5.1.1-x86.msi
+          sudo apt-get update && sudo apt-get install wine64 wine32 python3 msitools ca-certificates cmake ninja-build winbind meson
+          WINE=$(command -v wine64 || command -v wine || false)
+          $WINE wineboot
+          # Check https://gitlab.winehq.org/wine/wine/-/wikis/Wine-Mono#versions before updating the WINE package!
+          curl -s -L -O https://github.com/madewokherd/wine-mono/releases/download/wine-mono-8.1.0/wine-mono-8.1.0-x86.msi
+          $WINE msiexec /i wine-mono-8.1.0-x86.msi
       - uses: actions/checkout@v4
       - name: Download MSVC
         run: |
@@ -31,15 +36,68 @@ jobs:
       # Intentionally not storing any artifacts with the downloaded tools;
       # the installed files aren't redistributable!
 
+  test-msvc-wine-linux-arm:
+    runs-on: ubuntu-24.04-arm
+    # Use a custom base container for providing wine; the base Wine package
+    # in Ubuntu 24.04 is broken on aarch64, see
+    # https://bugs.launchpad.net/ubuntu/+source/wine/+bug/2102681 and
+    # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1100695. (Fixed in
+    # Debian for now, but not yet in Ubuntu.) MSVC on wine on aarch64 requires
+    # Wine 8.4 or newer.
+    container: ghcr.io/mstorsjo/wine
+    steps:
+      - name: Install prerequisites
+        run: |
+          sudo apt-get update && sudo apt-get install python3 msitools ca-certificates cmake ninja-build winbind meson
+          WINE=$(command -v wine64 || command -v wine || false)
+          $WINE wineboot
+      - uses: actions/checkout@v4
+      - name: Download MSVC
+        run: |
+          ./vsdownload.py --accept-license --dest $(pwd)/msvc
+          ./install.sh $(pwd)/msvc
+      - name: Test using the installed tools
+        run: |
+          test/test.sh $(pwd)/msvc
+      # Intentionally not storing any artifacts with the downloaded tools;
+      # the installed files aren't redistributable!
+
+  test-msvc-wine-linux-arm-target-host-only:
+    runs-on: ubuntu-24.04-arm
+    # Use a custom base container for providing wine; the base Wine package
+    # in Ubuntu 24.04 is broken on aarch64, see
+    # https://bugs.launchpad.net/ubuntu/+source/wine/+bug/2102681 and
+    # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1100695. (Fixed in
+    # Debian for now, but not yet in Ubuntu.) MSVC on wine on aarch64 requires
+    # Wine 8.4 or newer.
+    container: ghcr.io/mstorsjo/wine
+    steps:
+      - name: Install prerequisites
+        run: |
+          sudo apt-get update && sudo apt-get install python3 msitools ca-certificates cmake ninja-build winbind meson
+          WINE=$(command -v wine64 || command -v wine || false)
+          $WINE wineboot
+      - uses: actions/checkout@v4
+      - name: Download MSVC
+        run: |
+          ./vsdownload.py --accept-license --architecture host --dest $(pwd)/msvc
+          ./install.sh $(pwd)/msvc
+      - name: Test using the installed tools
+        run: |
+          test/test.sh $(pwd)/msvc
+      # Intentionally not storing any artifacts with the downloaded tools;
+      # the installed files aren't redistributable!
+
   test-msvc-wine-macos:
     runs-on: macos-latest
     steps:
       - name: Install prerequisites
         run: |
-          brew install wine-stable msitools cmake ninja meson
-          wine64 wineboot
+          brew install wine-stable msitools ninja meson
+          WINE=$(command -v wine64 || command -v wine || false)
+          $WINE wineboot
           curl -s -L -O https://github.com/madewokherd/wine-mono/releases/download/wine-mono-9.0.0/wine-mono-9.0.0-x86.msi
-          wine64 msiexec /i wine-mono-9.0.0-x86.msi
+          $WINE msiexec /i wine-mono-9.0.0-x86.msi
       - uses: actions/checkout@v4
       - name: Download MSVC
         run: |
@@ -98,3 +156,86 @@ jobs:
           docker build -f Dockerfile.clang .
       # Intentionally not pushing the built docker images;
       # the installed files aren't redistributable!
+
+  test-vsdownload-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Install prerequisites
+        run: |
+          choco upgrade --no-progress cmake
+      - uses: actions/checkout@v4
+      - name: Download MSVC
+        run: |
+          python vsdownload.py --accept-license --dest c:/msvc
+      - name: Test using the installed tools
+        run: |
+          test\test.bat c:\msvc
+
+  test-vsdownload-windows-arm:
+    runs-on: windows-11-arm
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download MSVC
+        run: |
+          python vsdownload.py --accept-license --dest c:/msvc
+      - name: Test using the installed tools
+        run: |
+          test\test.bat c:\msvc
+
+  test-vsdownload-windows-arm-target-host-only:
+    runs-on: windows-11-arm
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download MSVC
+        run: |
+          python vsdownload.py --accept-license --architecture host --dest c:/msvc
+      - name: Test using the installed tools
+        run: |
+          test\test.bat c:\msvc
+
+  test-msvc-wine-versions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install prerequisites
+        run: |
+          sudo dpkg --add-architecture i386 && sudo apt-get update
+          sudo apt-get update && sudo apt-get install wine64 wine32 python3 msitools ca-certificates winbind
+          WINE=$(command -v wine64 || command -v wine || false)
+          $WINE wineboot
+      - uses: actions/checkout@v4
+      - name: Download MSVC 2017 latest
+        run: |
+          ./vsdownload.py --accept-license --dest $(pwd)/msvc --major 15
+          ./install.sh $(pwd)/msvc
+          ./msvc/bin/x64/cl test/hello.c -Fehello.exe
+          rm -rf msvc
+      - name: Download MSVC 2019 latest
+        run: |
+          ./vsdownload.py --accept-license --dest $(pwd)/msvc --major 16
+          ./install.sh $(pwd)/msvc
+          ./msvc/bin/x64/cl test/hello.c -Fehello.exe
+          rm -rf msvc
+      - name: Download MSVC 2017 specific version
+        run: |
+          ./vsdownload.py --accept-license --dest $(pwd)/msvc --major 15 --msvc-version 15.9
+          ./install.sh $(pwd)/msvc
+          ./msvc/bin/x64/cl test/hello.c -Fehello.exe
+          rm -rf msvc
+      - name: Download MSVC 2019 specific version
+        run: |
+          ./vsdownload.py --accept-license --dest $(pwd)/msvc --major 16 --msvc-version 16.9
+          ./install.sh $(pwd)/msvc
+          ./msvc/bin/x64/cl test/hello.c -Fehello.exe
+          rm -rf msvc
+      - name: Download MSVC 2022 specific version
+        run: |
+          ./vsdownload.py --accept-license --dest $(pwd)/msvc --major 17 --msvc-version 17.0
+          ./install.sh $(pwd)/msvc
+          ./msvc/bin/x64/cl test/hello.c -Fehello.exe
+          rm -rf msvc
+      - name: Download MSVC 2022 with non-default SDK
+        run: |
+          ./vsdownload.py --accept-license --dest $(pwd)/msvc --major 17 --sdk-version 10.0.26100
+          ./install.sh $(pwd)/msvc
+          ./msvc/bin/x64/cl test/hello.c -Fehello.exe
+          rm -rf msvc

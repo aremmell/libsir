@@ -268,8 +268,7 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                             break;
                         }
 
-                        if (sequence > 0)
-                            (void)snprintf(seqbuf, 7, SIR_FNAMESEQFORMAT, sequence);
+                        (void)snprintf(seqbuf, 7, SIR_FNAMESEQFORMAT, sequence);
 
                     } while (sequence <= 999U);
 

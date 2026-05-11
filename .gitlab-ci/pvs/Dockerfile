@@ -44,9 +44,7 @@ RUN set -x && \
          "skip_if_unavailable=True" \
          "enabled=1" > /etc/yum.repos.d/viva64.repo && \
     (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-          pvs-studio) || \
-    (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-          "${URL:-http://192.168.1.187:8088/~jhj/cache/pvs-studio.x86_64.rpm}") && \
+          pvs-studio) && \
     printf '%s\n' \
          "[viva64-beta]" \
          "name=Viva64 - PVS-Studio - Beta" \
@@ -55,7 +53,9 @@ RUN set -x && \
          "enabled=1" \
          "skip_if_unavailable=True" > /etc/yum.repos.d/viva64-beta.repo && \
     (dnf -y --refresh --setopt=install_weak_deps=True \
-       --setopt=keepcache=True upgrade pvs-studio || true) && \
+       --setopt=keepcache=True upgrade pvs-studio || :) && \
+    (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
+          pvs-golang || :) && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
