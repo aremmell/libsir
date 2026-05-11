@@ -120,7 +120,7 @@ int main(void) {
     (void)sir_debug("Database connection established.");
     (void)sir_debug("Binding a TCP socket to interface '%s'"
                     " (IPv4: %s) on port %u and listening for connections...",
-                    "eth0", "120.22.140.8", 5500);
+                    "eth0", "120.22.140.8", 5500U);
 
     /*
      * Log a message for each of the remaining severity levels. Only up to
@@ -132,7 +132,7 @@ int main(void) {
                    2, 9, 4, (double)1.94f);
 
     (void)sir_notice("Client at %s:%u (username: %s) failed 5 authentication attempts!",
-                     "210.10.54.3", 43113, "bob");
+                     "210.10.54.3", 43113U, "bob");
 
     (void)sir_warn("Detected downgraded link speed on %s: last transfer rate: %.1f KiB/s",
                    "eth0", (double)219.4f);
