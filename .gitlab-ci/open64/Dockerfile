@@ -40,6 +40,8 @@ RUN set -x && \
     apt upgrade -y && \
     apt full-upgrade -y && \
     apt install -y \
+        apt-utils && \
+    apt install -y \
         bash \
         binutils \
         bison \
@@ -77,7 +79,7 @@ WORKDIR /
 COPY --from=builder /opt/open64 /opt/open64
 
 RUN set -x && \
-    cd /opt/open64/lib/gcc-lib/x86_64-open64-linux/5.0 && \
+    cd /opt/open64/open64-gcc-4.2.0/lib/gcc/x86_64-linux-gnu/4.2.0 && \
     for i in "$(dirname "$(gcc -print-file-name=crti.o)")"/*.o; do ln -s $i . || :; done && \
     dnf -y clean all && \
     rm -rf ~/.cache > /dev/null 2>&1 && \
