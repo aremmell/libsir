@@ -35,8 +35,8 @@ RUN set -x && \
     make -j "$(nproc 2> /dev/null || echo 1)" && \
     make install && \
     make clean && \
-    opam switch remove chamois-compcert --yes || : && \
-    rm -rf /opt/src/* || : && \
-    rm -rf "${HOME:-}"/.opam || :
+    opam switch remove chamois-compcert --yes && \
+    rm -rf /opt/src/* && \
+    rm -rf "${HOME:-}"/.opam
 
 RUN printf '\n%s\n' "BUILD SUCCESS"
