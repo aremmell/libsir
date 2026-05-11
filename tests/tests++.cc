@@ -404,7 +404,10 @@ bool sir::tests::std_iostream_format() {
 
     TEST_MSG_0("a longer message...");
 
-    log.debug_stream << "Lorem ipsum dolor sit amet, vix essent aliquid ut, "
+    log.debug_stream << "This is my dstream, op() is pfun; check all my strbufs, "
+                     << "as I'm off by one"
+                     << endl << endl
+                     << "Lorem ipsum dolor sit amet, vix essent aliquid ut, "
                      << "modus propriae praesent ius ei. Ut nam sale feugait "
                      << "petentium, no quem diceret mel. At assum apeirian "
                      << "verterem qui. Ius ei illud quidam periculis. "
