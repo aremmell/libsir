@@ -1494,7 +1494,7 @@ long __sir_nprocs(bool test_mode) {
         if (ntprocs > nprocs)
             nprocs = (long)ntprocs;
     }
-#elif defined(CTL_HW) && defined(HW_NCPU)
+#elif defined(CTL_HW) && defined(HW_NCPU) && !defined(__IMPORTC__)
     int ntprocs = 0;
     size_t sntprocs = sizeof(ntprocs);
     if (sysctl ((int[2]) {CTL_HW, HW_NCPU}, 2, &ntprocs, &sntprocs, NULL, 0)) {

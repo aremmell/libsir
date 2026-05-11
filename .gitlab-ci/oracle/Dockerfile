@@ -36,7 +36,7 @@ WORKDIR /
 ARG URL
 
 RUN set -x && \
-    curl -fsSL "${URL:-https://github.com/johnsonjh/osc126/releases/download/osc126/126-15.tar.gz}" | \
+    curl -fsSL "${URL:-https://github.com/johnsonjh/osc126/releases/download/osc126/126-16.tar.gz}" | \
         pigz -dc | \
         tar xvf - && \
     dnf -y clean all && \
