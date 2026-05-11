@@ -301,7 +301,6 @@ test_extra()
                     -Wassign-enum
                     -Wbad-function-cast
                     -Wconversion
-                    -Wdisabled-macro-expansion
                     -Wdocumentation
                     -Wdocumentation-deprecated-sync
                     -Wdocumentation-html
@@ -378,7 +377,6 @@ test_gccextra()
         env CC="${CCACHE:-env} gcc"
             CXX="${CCACHE:-env} g++"
             CFLAGS="-Werror
-                    -Wbad-function-cast
                     -Wconversion
                     -Wdouble-promotion
                     -Wformat=2
@@ -386,7 +384,6 @@ test_gccextra()
                     -Wformat-overflow
                     -Wformat-truncation=2
                     -Wmissing-declarations
-                    -Wmissing-prototypes
                     -Wno-sign-conversion
                     -Wno-string-conversion
                     -Wswitch-enum

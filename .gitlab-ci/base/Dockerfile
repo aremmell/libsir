@@ -27,7 +27,7 @@
 #
 ################################################################################
 
-FROM quay.io/fedora/fedora:42
+FROM quay.io/fedora/fedora:44
 
 USER 0
 
@@ -99,6 +99,8 @@ RUN set -x && \
       libasan \
       libasan.i686 \
       libasan.x86_64 \
+      libatomic.i686 \
+      libatomic.x86_64 \
       libnsl \
       libnsl2 \
       libnsl2.i686 \
@@ -209,7 +211,8 @@ RUN set -x && \
       cygwin64-binutils \
       cygwin64-gcc-c++ \
 && \
-  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install wine && \
+  dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install wine wine32 wine64 && \
+  mkdir -p /etc/apt/apt.conf.d && \
   mkdir -p /opt && \
   cd /opt && \
   git clone --depth=1 https://github.com/rui314/chibicc.git && \
@@ -220,9 +223,6 @@ RUN set -x && \
   env CFLAGS='-O2 -flto=auto' LDFLAGS='-flto=auto' make && \
   (rm -rf ./test ./.git ./*.o ./*.c ./*.h .gitignore LICENSE Makefile README.md || true) && \
   strip chibicc && \
-  cd / && \
-  (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-     --nogpgcheck "${URL:-http://192.168.1.187:8088/~jhj/cache/aocc-compiler.x86_64.rpm}") && \
   mkdir -p /tmp/duma-build && \
   cd /tmp/duma-build && \
   git clone https://github.com/johnsonjh/duma.git && \
