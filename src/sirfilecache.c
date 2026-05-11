@@ -7,8 +7,8 @@
  *
  * SPDX-License-Identifier: MIT
  *
- * Copyright (c) 2018-2025 Ryan M. Lederman <lederman@gmail.com>
- * Copyright (c) 2018-2025 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
+ * Copyright (c) 2018-2026 Ryan M. Lederman <lederman@gmail.com>
+ * Copyright (c) 2018-2026 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -252,8 +252,7 @@ bool _sirfile_roll(sirfile* sf, char** newpath) {
                             break;
                         }
 
-                        if (sequence > 0)
-                            (void)snprintf(seqbuf, 7, SIR_FNAMESEQFORMAT, sequence);
+                        (void)snprintf(seqbuf, 7, SIR_FNAMESEQFORMAT, sequence);
 
                     } while (sequence <= 999U);
 

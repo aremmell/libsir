@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['iostream_5flogger_0',['iostream_logger',['../namespacesir.html#adf1c3a7184436b3e0e7145325e867f0a',1,'sir']]]
+  ['iostream_5flogger_0',['iostream_logger',['../namespacesir.html#aecb8a67e226581a4d149fcfe6f68bcb0',1,'sir']]]
 ];

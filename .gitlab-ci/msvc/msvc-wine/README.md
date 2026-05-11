@@ -131,6 +131,36 @@ MSVC/WinSDK. Currently, at least Clang/LLD 13 seems to be required for MSVC 2019
 
 Yes, but the install scripts won't work because `msitools` is too old. You'll need to install either via Docker or on a real Ubuntu 20.04 LTS machine; and later copy paste the files under `/opt/msvc`.
 
+## Does it run on Windows?
+
+Yes, after downloading with the script, no further installation is required:
+```cmd
+python vsdownload.py --accept-license --dest C:\msvc
+```
+
+To set up the developer command prompt, run one of the `vcvars` batch files from Windows CMD, for example:
+```cmd
+call C:\msvc\VC\Auxiliary\Build\vcvars64.bat
+```
+
+If you are using [VSCode CMake Tools](https://aka.ms/vscode-cmake-tools), you can add a [kit](https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/kits.md) as shown below:
+```json
+  {
+    "name": "MSVC x64",
+    "vendor": "MSVC",
+    "compilers": {
+      "C": "cl",
+      "CXX": "cl"
+    },
+    "environmentSetupScript": "C:\\msvc\\VC\\Auxiliary\\Build\\vcvars64.bat",
+    "preferredGenerator": {
+      "name": "Ninja"
+    },
+    "isTrusted": true,
+    "keep": true
+  }
+```
+
 ## Does it work with CMake?
 
 Yes, but you need CMake 3.23, and either need `winbind` installed, or
@@ -182,6 +212,32 @@ Other generators are untested and may or may not work. Use it at your own peril.
 ## Do I _need_ CMake to use msvc-wine?
 
 No. Using Ninja or GNU Make directly should work.
+
+## How to integrate with vcpkg?
+
+On Windows, you just define the two environment variables before invoking `vcpkg`:
+```cmd
+set VS170COMNTOOLS=C:\msvc\Common7\Tools\
+set VCPKG_VISUAL_STUDIO_PATH=C:\msvc
+```
+
+On Unix, you need define your own triplets, e.g. `my-triplets/x64-windows.cmake`:
+```cmake
+set(VCPKG_TARGET_ARCHITECTURE x64)
+set(VCPKG_CRT_LINKAGE dynamic)
+set(VCPKG_LIBRARY_LINKAGE dynamic)
+set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE ${VCPKG_ROOT_DIR}/scripts/toolchains/windows.cmake)
+
+set(ENV{CC} cl.exe)
+set(ENV{CXX} cl.exe)
+set(ENV{PATH} "/opt/msvc/bin/x64:$ENV{PATH}")
+```
+
+Then you can install packages using overlay triplets:
+```bash
+vcpkg install sqlite3:x64-windows --overlay-triplets=my-triplets
+```
+See examples [here](test/test-vcpkg.sh).
 
 ## I get `ninja: error: build.ninja:225: bad $-escape (literal $ must be written as $$)`
 

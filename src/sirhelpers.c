@@ -7,8 +7,8 @@
  *
  * SPDX-License-Identifier: MIT
  *
- * Copyright (c) 2018-2025 Ryan M. Lederman <lederman@gmail.com>
- * Copyright (c) 2018-2025 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
+ * Copyright (c) 2018-2026 Ryan M. Lederman <lederman@gmail.com>
+ * Copyright (c) 2018-2026 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -343,12 +343,13 @@ char* _sir_strremove(char *str, const char *sub) {
     if (!sub)
         return str;
 
-    char* r;
+    const char* r;
+    const char* p;
     char* q;
 
-    if (*sub && (q = r = strstr(str, sub)) != NULL) {
+    if (*sub && (r = strstr(str, sub)) != NULL) {
+        q = (char*)r;
         size_t len = strnlen(sub, strlen(str));
-        const char* p;
 
         while ((r = strstr(p = r + len, sub)) != NULL)
             while (p < r)

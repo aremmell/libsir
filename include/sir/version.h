@@ -7,8 +7,8 @@
  *
  * SPDX-License-Identifier: MIT
  *
- * Copyright (c) 2018-2025 Ryan M. Lederman <lederman@gmail.com>
- * Copyright (c) 2018-2025 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
+ * Copyright (c) 2018-2026 Ryan M. Lederman <lederman@gmail.com>
+ * Copyright (c) 2018-2026 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -45,10 +45,10 @@
 # define SIR_VERSION_PATCH 6
 
 /** 1 if this is a release version of libsir, 0 otherwise. */
-# define SIR_VERSION_IS_RELEASE 0
+# define SIR_VERSION_IS_RELEASE 1
 
 /** The current libsir version suffix. */
-# define SIR_VERSION_SUFFIX "-dev"
+# define SIR_VERSION_SUFFIX ""
 
 /** The current libsir version as a number. */
 # define SIR_VERSION_HEX ((SIR_VERSION_MAJOR << 16) | \

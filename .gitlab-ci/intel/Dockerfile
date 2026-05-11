@@ -6,7 +6,7 @@
 #
 # SPDX-License-Identifier: MIT
 #
-# Copyright (c) 2018-2025 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
+# Copyright (c) 2018-2026 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -34,12 +34,14 @@ USER 0
 WORKDIR /
 
 RUN set -x && \
-    export PATH="/opt/anaconda/bin:/opt/anaconda/sbin:${PATH:-}" && \
-    conda config --set channel_priority "flexible" && \
-    conda build purge && \
-    conda update --update-all --yes && \
-    conda install --yes "conda-forge::sysroot_linux-64" && \
-    conda install --yes --channel "https://software.repos.intel.com/python/conda/" "dpcpp_linux-64>=2024.1.0" && \
+    echo "[oneAPI]" > /etc/yum.repos.d/intel.repo && \
+    echo "name=Intel® oneAPI repository" >> /etc/yum.repos.d/intel.repo && \
+    echo "baseurl=https://yum.repos.intel.com/oneapi" >> /etc/yum.repos.d/intel.repo && \
+    echo "enabled=1" >> /etc/yum.repos.d/intel.repo && \
+    echo "gpgcheck=1" >> /etc/yum.repos.d/intel.repo && \
+    echo "repo_gpgcheck=1" >> /etc/yum.repos.d/intel.repo && \
+    echo "gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB" >> /etc/yum.repos.d/intel.repo && \
+    dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install intel-oneapi-dpcpp-cpp-2026\* && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \

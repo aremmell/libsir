@@ -6,7 +6,7 @@
 #
 # SPDX-License-Identifier: MIT
 #
-# Copyright (c) 2018-2025 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
+# Copyright (c) 2018-2026 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -37,9 +37,10 @@ ARG URL
 
 RUN set -x && \
     cd /opt && \
-    wget -q "${URL:-http://192.168.1.187:8088/~jhj/cache/OrangeC.zip}" && \
-    atool -x OrangeC.zip && \
-    env rm OrangeC.zip && \
+    wget -q "${URL:-http://172.17.0.1:8088/OrangeC-20260509.zip}" && \
+    atool -x OrangeC-20260509.zip && \
+    env rm OrangeC-20260509.zip && \
+    (test -d orangec && ln -s orangec OrangeC || :) && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \

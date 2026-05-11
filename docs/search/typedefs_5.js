@@ -7,5 +7,5 @@ var searchData=
   ['sir_5ftextcolor_4',['sir_textcolor',['../group__publictypes.html#gab4214e294af5ac3c91f21c1d379e10c5',1,'types.h']]],
   ['sirfileid_5',['sirfileid',['../group__publictypes.html#ga0da4ab4b4468b6b71cd8e924b2adf2e2',1,'types.h']]],
   ['sirpluginid_6',['sirpluginid',['../group__publictypes.html#gadbc71df98df765cddfed4aa11c805470',1,'types.h']]],
-  ['std_5fformat_5flogger_7',['std_format_logger',['../namespacesir.html#ae08772b1ec0bd141c79d99fc4ba2d6ce',1,'sir']]]
+  ['std_5fformat_5flogger_7',['std_format_logger',['../namespacesir.html#ad8f1a61f458a87a9909265364321b2fd',1,'sir']]]
 ];

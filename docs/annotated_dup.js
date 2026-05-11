@@ -1,18 +1,18 @@
 var annotated_dup =
 [
     [ "sir", "namespacesir.html", [
-      [ "adapter", "classsir_1_1adapter.html", null ],
-      [ "boost_format_adapter", "classsir_1_1boost__format__adapter.html", null ],
-      [ "default_adapter", "classsir_1_1default__adapter.html", "classsir_1_1default__adapter" ],
-      [ "default_policy", "classsir_1_1default__policy.html", "classsir_1_1default__policy" ],
       [ "error", "structsir_1_1error.html", "structsir_1_1error" ],
       [ "error_info", "structsir_1_1error__info.html", "structsir_1_1error__info" ],
       [ "exception", "classsir_1_1exception.html", null ],
-      [ "fmt_format_adapter", "classsir_1_1fmt__format__adapter.html", null ],
-      [ "logger", "classsir_1_1logger.html", null ],
       [ "policy", "classsir_1_1policy.html", "classsir_1_1policy" ],
+      [ "default_policy", "classsir_1_1default__policy.html", "classsir_1_1default__policy" ],
+      [ "adapter", "classsir_1_1adapter.html", null ],
+      [ "default_adapter", "classsir_1_1default__adapter.html", "classsir_1_1default__adapter" ],
       [ "std_format_adapter", "classsir_1_1std__format__adapter.html", null ],
-      [ "std_iostream_adapter", "classsir_1_1std__iostream__adapter.html", null ]
+      [ "boost_format_adapter", "classsir_1_1boost__format__adapter.html", null ],
+      [ "fmt_format_adapter", "classsir_1_1fmt__format__adapter.html", null ],
+      [ "std_iostream_adapter", "classsir_1_1std__iostream__adapter.html", null ],
+      [ "logger", "classsir_1_1logger.html", null ]
     ] ],
     [ "sir_cl_arg", "structsir__cl__arg.html", "structsir__cl__arg" ],
     [ "sir_cl_config", "structsir__cl__config.html", "structsir__cl__config" ],
@@ -26,7 +26,7 @@ var annotated_dup =
     [ "sir_queue", "structsir__queue.html", "structsir__queue" ],
     [ "sir_queue_node", "structsir__queue__node.html", null ],
     [ "sir_stdio_dest", "group__publictypes.html#structsir__stdio__dest", "group__publictypes_structsir__stdio__dest" ],
-    [ "sir_syslog_dest", "group__publictypes.html#structsir__syslog__dest", "group__publictypes_structsir__syslog__dest" ],
+    [ "sir_syslog_dest", "structsir__syslog__dest.html", "structsir__syslog__dest" ],
     [ "sir_syslog_dest._state", "group__publictypes.html#structsir__syslog__dest_8__state", "group__publictypes_structsir__syslog__dest_8__state" ],
     [ "sir_test", "structsir__test.html", "structsir__test" ],
     [ "sir_text_style_data", "structsir__text__style__data.html", null ],

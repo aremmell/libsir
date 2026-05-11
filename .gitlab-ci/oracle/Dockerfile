@@ -6,7 +6,7 @@
 #
 # SPDX-License-Identifier: MIT
 #
-# Copyright (c) 2018-2025 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
+# Copyright (c) 2018-2026 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -36,7 +36,7 @@ WORKDIR /
 ARG URL
 
 RUN set -x && \
-    curl -fsSL "${URL:-https://github.com/johnsonjh/osc126/releases/download/osc126/126-15.tar.gz}" | \
+    curl -fsSL "${URL:-https://github.com/johnsonjh/osc126/releases/download/osc126/126-16.tar.gz}" | \
         pigz -dc | \
         tar xvf - && \
     dnf -y clean all && \

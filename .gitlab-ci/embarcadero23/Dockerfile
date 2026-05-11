@@ -6,7 +6,7 @@
 #
 # SPDX-License-Identifier: MIT
 #
-# Copyright (c) 2018-2025 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
+# Copyright (c) 2018-2026 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -49,7 +49,7 @@ RUN set -x && cd ~user && \
     cd .wine/drive_c/Program\ Files\ \(x86\)/ && \
     mkdir -p Embarcadero/Studio && \
     cd Embarcadero/Studio && \
-    curl -fsSL "${URL:-http://192.168.1.187:8088/~jhj/cache/EMB23-1-min.tar}" | tar xvf -
+    curl -fsSL "${URL:-http://172.17.0.1:8088/EMB23-1-min.tar}" | tar xvf -
 
 USER 10000
 

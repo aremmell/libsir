@@ -12,7 +12,7 @@ var searchData=
   ['sir_5fqueue_9',['sir_queue',['../structsir__queue.html',1,'']]],
   ['sir_5fqueue_5fnode_10',['sir_queue_node',['../structsir__queue__node.html',1,'']]],
   ['sir_5fstdio_5fdest_11',['sir_stdio_dest',['../group__publictypes.html#structsir__stdio__dest',1,'']]],
-  ['sir_5fsyslog_5fdest_12',['sir_syslog_dest',['../group__publictypes.html#structsir__syslog__dest',1,'']]],
+  ['sir_5fsyslog_5fdest_12',['sir_syslog_dest',['../structsir__syslog__dest.html',1,'']]],
   ['sir_5fsyslog_5fdest_2e_5fstate_13',['sir_syslog_dest._state',['../group__publictypes.html#structsir__syslog__dest_8__state',1,'']]],
   ['sir_5ftest_14',['sir_test',['../structsir__test.html',1,'']]],
   ['sir_5ftext_5fstyle_5fdata_15',['sir_text_style_data',['../structsir__text__style__data.html',1,'']]],

@@ -7,8 +7,8 @@
  *
  * SPDX-License-Identifier: MIT
  *
- * Copyright (c) 2018-2025 Ryan M. Lederman <lederman@gmail.com>
- * Copyright (c) 2018-2025 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
+ * Copyright (c) 2018-2026 Ryan M. Lederman <lederman@gmail.com>
+ * Copyright (c) 2018-2026 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -1499,7 +1499,7 @@ long __sir_nprocs(bool test_mode) {
         if (ntprocs > nprocs)
             nprocs = (long)ntprocs;
     }
-#elif defined(CTL_HW) && defined(HW_NCPU)
+#elif defined(CTL_HW) && defined(HW_NCPU) && !defined(__IMPORTC__)
     int ntprocs = 0;
     size_t sntprocs = sizeof(ntprocs);
     if (sysctl ((int[2]) {CTL_HW, HW_NCPU}, 2, &ntprocs, &sntprocs, NULL, 0)) {

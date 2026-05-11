@@ -6,7 +6,7 @@
 #
 # SPDX-License-Identifier: MIT
 #
-# Copyright (c) 2018-2025 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
+# Copyright (c) 2018-2026 Jeffrey H. Johnson <johnsonjh.dev@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -44,9 +44,7 @@ RUN set -x && \
          "skip_if_unavailable=True" \
          "enabled=1" > /etc/yum.repos.d/viva64.repo && \
     (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-          pvs-studio) || \
-    (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
-          "${URL:-http://192.168.1.187:8088/~jhj/cache/pvs-studio.x86_64.rpm}") && \
+          pvs-studio) && \
     printf '%s\n' \
          "[viva64-beta]" \
          "name=Viva64 - PVS-Studio - Beta" \
@@ -55,7 +53,9 @@ RUN set -x && \
          "enabled=1" \
          "skip_if_unavailable=True" > /etc/yum.repos.d/viva64-beta.repo && \
     (dnf -y --refresh --setopt=install_weak_deps=True \
-       --setopt=keepcache=True upgrade pvs-studio || true) && \
+       --setopt=keepcache=True upgrade pvs-studio || :) && \
+    (dnf -y --setopt=install_weak_deps=True --setopt=keepcache=True install \
+          pvs-golang || :) && \
     dnf -y clean all && \
     rm -rf ~/.cache && \
     rm -rf /var/tmp/* && \
