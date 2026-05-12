@@ -23,9 +23,9 @@ USER 10000
 RUN set -x && \
     export OPAMYES="true" && \
     opam init --bare -ni && \
-    opam switch create chamois-compcert 4.14.3 && \
+    opam switch create chamois-compcert 5.4.1 && \
     eval $(opam env --switch=chamois-compcert) && \
-    opam pin add coq 8.17.1 && \
+    opam pin add coq 9.1.1 && \
     opam install menhir coq && \
     coqc --version && \
     cd /opt/src && \
