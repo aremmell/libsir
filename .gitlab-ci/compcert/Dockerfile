@@ -14,33 +14,33 @@ RUN set -x && \
     rm -rf /var/tmp/* && \
     rm -rf /var/log/dnf* && \
     mkdir -p /opt/src && \
-    mkdir -p /opt/chamois-compcert && \
+    mkdir -p /opt/compcert && \
     chown -R 10000:10000 /opt/src && \
-    chown -R 10000:10000 /opt/chamois-compcert*
+    chown -R 10000:10000 /opt/compcert*
 
 USER 10000
 
 RUN set -x && \
     export OPAMYES="true" && \
     opam init --disable-sandboxing --bare -ni && \
-    opam switch create chamois-compcert 5.4.1 && \
-    eval $(opam env --switch=chamois-compcert) && \
+    opam switch create compcert 5.4.1 && \
+    eval $(opam env --switch=compcert) && \
     opam repo add rocq-released https://rocq-prover.org/opam/released && \
     opam pin add -n coq 9.1.1 && \
     opam install menhir coq coq-flocq && \
     coqc --version && \
     cd /opt/src && \
-    git clone https://gricad-gitlab.univ-grenoble-alpes.fr/certicompil/Chamois-CompCert.git && \
-    cd Chamois-CompCert && \
+    git clone https://github.com/absint/compcert && \
+    cd compcert && \
     ./configure \
       -ignore-coq-version \
       -ignore-ocaml-version \
       -use-external-Flocq \
-      -prefix /opt/chamois-compcert x86_64-linux && \
+      -prefix /opt/compcert x86_64-linux && \
     make -j "$(nproc 2> /dev/null || echo 1)" && \
     make install && \
     make clean && \
-    opam switch remove chamois-compcert --yes && \
+    opam switch remove compcert --yes && \
     rm -rf /opt/src/* && \
     rm -rf "${HOME:-}"/.opam
 
