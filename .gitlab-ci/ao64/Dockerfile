@@ -37,7 +37,7 @@ ARG URL
 
 RUN set -x && \
       wget "${URL:-http://172.17.0.1:8088/x86_open64-4.5.2.1-1.x86_64.rpm}" && \
-      rpm -ivh --nodigest --nofiledigest x86_open64-4.5.2.1-1.x86_64.rpm && \
+      rpm -ivh --nodigest --nofiledigest --nosignature x86_open64-4.5.2.1-1.x86_64.rpm && \
       rm -f x86_open64-4.5.2.1-1.x86_64.rpm && \
       printf '%s\n' 'int matherr=0;' 'char* _LIB_VERSION="";' > tmp.c && \
       gcc -o libmcompat.o -c tmp.c && \

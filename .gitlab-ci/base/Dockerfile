@@ -27,7 +27,7 @@
 #
 ################################################################################
 
-FROM quay.io/fedora/fedora:44
+FROM quay.io/fedora/fedora:45
 
 USER 0
 
@@ -69,7 +69,6 @@ RUN set -x && \
       cppcheck \
       cppcheck-htmlreport \
       cppi \
-      croc \
       curl \
       dos2unix \
       doxygen \

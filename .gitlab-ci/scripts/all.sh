@@ -40,9 +40,21 @@ test -f ./scripts/all.sh 2> /dev/null ||
 
 set -eu > /dev/null 2>&1
 
+if [ "${NO_BUILD:-0}" = 1 ]; then
+    BUILD_CMD="true"
+else
+    BUILD_CMD="../scripts/build.sh"
+fi
+
+if [ "${NO_PUSH:-0}" = 1 ]; then
+    PUSH_CMD="true"
+else
+    PUSH_CMD="../scripts/push.sh"
+fi
+
 printf '\n%s\n' "Processing base ..."
 
-(cd base && ../scripts/build.sh && ../scripts/push.sh) ||
+(cd base && "${BUILD_CMD:?}" && "${PUSH_CMD:?}") ||
   {
     printf '%s\n' "ERROR: base processing failed."
     exit 1
@@ -54,7 +66,7 @@ printf '\n%s\n' "Processing all CI images ..."
 
 for dir in $(printf '%s\n' * | grep -Ev '(^base$|^scripts$)' ); do
     printf '\nProcessing %s ...\n' "${dir:?}"
-    (cd "${dir:?}" && ../scripts/build.sh && ../scripts/push.sh) ||
+    (cd "${dir:?}" && ${BUILD_CMD:?} && "${PUSH_CMD:?}") ||
       {
         printf 'ERROR: %s processing failed.\n' "${dir:?}"
         exit 2
