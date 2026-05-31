@@ -37,7 +37,7 @@ ARG URL
 
 RUN set -x && \
       wget "${URL:-https://download.amd.com/developer/eula/aocc/aocc-5-1/aocc-compiler-5.1.0-1.x86_64.rpm}" && \
-      rpm -ivh --nodigest --nofiledigest aocc-compiler-5.1.0-1.x86_64.rpm && \
+      rpm -ivh --nodigest --nofiledigest --nosignature aocc-compiler-5.1.0-1.x86_64.rpm && \
       rm -f aocc-compiler-5.1.0-1.x86_64.rpm && \
       dnf -y clean all && \
       rm -rf ~/.cache > /dev/null 2>&1 && \
