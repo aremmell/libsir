@@ -12,7 +12,7 @@
             "compilerPath": "/usr/bin/clang",
             "cStandard": "c17",
             "cppStandard": "c++20",
-            "intelliSenseMode": "macos-clang-x64"
+            "intelliSenseMode": "macos-clang-arm64"
         },
         {
             "name": "Linux",
@@ -23,7 +23,7 @@
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "gnu17",
             "cppStandard": "gnu++20",
-            "intelliSenseMode": "linux-gcc-x64"
+            "intelliSenseMode": "linux-gcc-arm64"
         }
     ],
     "version": 4
