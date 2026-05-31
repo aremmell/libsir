@@ -46,9 +46,10 @@ USER 10000
 RUN cd ~user && \
     mkdir -p x-tools && \
     cd x-tools && \
-    curl "${URL:-http://192.168.1.187:8088/~jhj/cache/x86_64-local-linux-uclibc.tar.lz}" | \
+    curl "${URL:-http://172.17.0.1:8088/x86_64-local-linux-uclibc.tar.lz}" | \
       lzip -dc | \
       tar xvf - && \
+    ln -s /x86_64-pc-linux-uclibc x86_64-local-linux-uclibc && \
     rm -f x86_64-local-linux-uclibc/build.log.bz2 && cd
 
 USER 10000

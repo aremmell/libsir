@@ -536,6 +536,10 @@ _set_thread_local_invalid_parameter_handler(
 #   endif
 #  endif
 
+#  if defined(__PATHCC__) && !defined(__OPEN64__)
+#   define __OPEN64__ __PATHCC__
+#  endif
+
 #  if defined(PATH_MAX)
 #   define SIR_MAXPATH PATH_MAX
 #  elif defined(MAXPATHLEN)

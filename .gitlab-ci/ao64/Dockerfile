@@ -35,14 +35,20 @@ WORKDIR /
 
 ARG URL
 
-RUN set -x && dnf -y install \
-      "${URL:-http://192.168.1.187:8088/~jhj/cache/x86_open64-4.5.2.1-1.x86_64.rpm}" && \
+RUN set -x && \
+      wget "${URL:-http://172.17.0.1:8088/x86_open64-4.5.2.1-1.x86_64.rpm}" && \
+      rpm -ivh --nodigest --nofiledigest --nosignature x86_open64-4.5.2.1-1.x86_64.rpm && \
+      rm -f x86_open64-4.5.2.1-1.x86_64.rpm && \
       printf '%s\n' 'int matherr=0;' 'char* _LIB_VERSION="";' > tmp.c && \
       gcc -o libmcompat.o -c tmp.c && \
       ar -crs /usr/lib64/libmcompat.a libmcompat.o && \
-      env rm -f libmcompat.o && \
-      env rm -f tmp.c && \
+      rm -f libmcompat.o && \
+      gcc -m32 -o libmcompat.o -c tmp.c && \
+      ar -crs /usr/lib/libmcompat.a libmcompat.o && \
+      rm -f libmcompat.o && \
+      rm -f tmp.c && \
       ranlib /usr/lib64/libmcompat.a && \
+      ranlib /usr/lib/libmcompat.a && \
       ldconfig -v && \
       dnf -y clean all && \
       rm -rf ~/.cache > /dev/null 2>&1 && \

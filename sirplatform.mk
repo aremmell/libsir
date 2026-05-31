@@ -362,7 +362,7 @@ endif
 ################################################################################
 # CompCert-C - https://www.absint.com/compcert - https://compcert.org
 # https://gricad-gitlab.univ-grenoble-alpes.fr/certicompil/Chamois-CompCert
-# Tested with Kalray/Verimag Chamois CompCert as of 2023-11-30
+# Tested with Kalray/Verimag Chamois CompCert as of 2026-05-11
 
 ifneq "$(findstring compcert,$(CC))" ""
   COMPCERT?=1
@@ -374,7 +374,7 @@ ifeq ($(COMPCERT),1)
   WPEDANTIC=
   SIR_FPIC=
   FORTIFY_FLAGS=-U_FORTIFY_SOURCE
-  WARNEXTRA=-Wno-zero-length-array -Wno-c11-extensions
+  WARNEXTRA=-Wno-unknown-pragmas -Wno-zero-length-array -Wno-c11-extensions
   SIR_NO_SHARED=1
 endif
 
