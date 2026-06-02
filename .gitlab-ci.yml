@@ -459,6 +459,7 @@ PlatformIO (Arduino/um_pros3):
     - pio --version
     - rm -f tests/tests++.cc
     - printf '%s\n' "void setup() {}" "void loop() {}" > tests/dummy.cpp
+    - mkdir -p logs
     - pio ci tests --lib="." --board=um_pros3 > logs/build.txt
     - |
       # End of Build ...
