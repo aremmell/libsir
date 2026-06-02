@@ -35,6 +35,7 @@
 
 stages:
   - sanity
+  - build_embedded
   - build_linux
   - build_freebsd
   - build_openbsd
@@ -428,6 +429,40 @@ Linux/x86_64 (AOCC, C-only):
       # End of Test ...
       echo -e "section_end:`date +%s`:Test_section\r\e[0K" || true
     - *CheckLogRemnants
+  dependencies: []
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - build/
+      - logs/
+  retry: 2
+  interruptible: true
+
+################################################################################
+
+PlatformIO (Arduino/um_pros3):
+  stage: build_embedded
+  needs:
+    - job: Style check
+  tags:
+    - Docker-x64
+    - Linux
+  image:
+    name: registry.gitlab.com/libsir/libsir/platformio:latest
+  script:
+    - *Configuration
+    - |
+      # Start of Build ...
+      echo -e "section_start:`date +%s`:Build_section[collapsed=true]\r\e[0K\033[0;36mBuild ...\033[0m" || true
+    - export PATH=$HOME/.platformio/penv/bin:$PATH
+    - pio --version
+    - rm -f tests/tests++.cc
+    - printf '%\s' "void setup() {}" "void loop() {}" > tests/dummy.cpp
+    - pio ci tests --lib="." --board=um_pros3 > logs/build.txt
+    - |
+      # End of Build ...
+      echo -e "section_end:`date +%s`:Build_section\r\e[0K" || true
   dependencies: []
   artifacts:
     when: always
