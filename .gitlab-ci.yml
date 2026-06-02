@@ -458,7 +458,7 @@ PlatformIO (Arduino/um_pros3):
     - export PATH=$HOME/.platformio/penv/bin:$PATH
     - pio --version
     - rm -f tests/tests++.cc
-    - printf '%\n' "void setup() {}" "void loop() {}" > tests/dummy.cpp
+    - printf '%s\n' "void setup() {}" "void loop() {}" > tests/dummy.cpp
     - pio ci tests --lib="." --board=um_pros3 > logs/build.txt
     - |
       # End of Build ...
