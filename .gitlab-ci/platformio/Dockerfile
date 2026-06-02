@@ -29,23 +29,26 @@
 
 FROM registry.gitlab.com/libsir/libsir/base:latest
 
-USER 0
+USER 10000
 
 WORKDIR /
 
 ARG URL
 
 RUN set -x && \
+      cd && \
       wget -O /tmp/get-platformio.py \
         https://raw.githubusercontent.com/platformio/platformio-core-installer/master/get-platformio.py && \
       (python3 /tmp/get-platformio.py || true) && \
       export PATH="$HOME/.platformio/penv/bin:$PATH" && \
       pio --version && rm -f /tmp/get-platformio.py && \
-      dnf -y clean all && \
-      rm -rf ~/.cache > /dev/null 2>&1 && \
-      rm -rf /var/tmp/* > /dev/null 2>&1 && \
-      rm -rf /var/log/dnf* > /dev/null 2>&1
-
-USER 10000
+      printf '%s\n' \
+        "[env]" \
+        "platform = espressif32" \
+        "framework = arduino" \
+        "[env:um_pros3]" \
+        "board = um_pros3" > "$HOME/platformio.ini" && \
+      pio pkg install -d . && \
+      rm -f "$HOME/platformio.ini"
 
 RUN printf '\n%s\n' "BUILD SUCCESS"
