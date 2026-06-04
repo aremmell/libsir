@@ -1,8 +1,10 @@
 {
+    "$schema": "https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/schema/library.json",
     "name": "libsir",
-    "version": "2.2.6",
-    "description": "Standard Incident Reporter: The best logging library on the planet.",
+    "version": "2.3.0",
+    "description": "The most portable, extensible, and configurable C logging library. Thread-safe, native syslog/os_log/EventLog, custom plugins. C17 core w/ C++20 wrapper, bindings. Adapters for fmt, std::format, std::iostream, and boost::format.",
     "keywords": "log,logging,logger,logfile",
+    "homepage": "https://libsir.rml.dev",
     "repository": {
         "type": "git",
         "url": "https://github.com/aremmell/libsir.git"
@@ -22,8 +24,41 @@
         }
     ],
     "license": "MIT",
-    "dependencies": {
+    "headers": ["sir.h"],
+    "export": {
+        "exclude": [
+            ".claude/*",
+            ".github/*",
+            ".gitlab-ci/*",
+            ".vscode/*",
+            "bindings/*",
+            "docs/*",
+            "msvs/*",
+            "utils/*",
+            "Makefile",
+            "autoformat.sh",
+            ".coveralls.sh",
+            ".coverity.sh",
+            ".lint.sh",
+            ".editorconfig",
+            ".envrc",
+            ".gitattributes",
+            ".gitlab-ci.yml",
+            "sir.code-workspace",
+            ".semgrepignore",
+            ".sonarcloud.properties",
+            "Doxyfile",
+            "sircommon.mk",
+            "sirplatform.mk",
+            "include/sir.hh",
+            "tests/tests++.cc",
+            "tests/tests++.hh"
+        ]
     },
-    "frameworks": "*",
-    "platforms": "*"
+    "build": {
+        "flags": "-DSIR_EMBEDDED -std=c++17",
+        "unflags": "-std=gnu++11"
+    },
+    "frameworks": ["arduino", "espidf", "freertos"],
+    "platforms": ["espressif32", "linux_arm", "linux_i686", "linux_x86_64", "windows_x86", "native"]
 }
