@@ -28,7 +28,6 @@ libsir&mdash;a lightweight, cross-platform library for information distribution
 
 [![Release](https://img.shields.io/github/v/release/aremmell/libsir?color=%2340b900&cacheSeconds=60)](https://github.com/aremmell/libsir/releases/latest)
 [![Commits](https://img.shields.io/github/commits-since/aremmell/libsir/latest?cacheSeconds=60&color=%2340b900)](https://github.com/aremmell/libsir/commits/master)
-[![License](https://img.shields.io/github/license/aremmell/libsir?color=%2340b900&cacheSeconds=60)](https://github.com/aremmell/libsir/blob/master/LICENSE)
 [![OpenHub](https://img.shields.io/badge/openhub-libsir-ok.svg?color=%2340b900&cacheSeconds=60)](https://www.openhub.net/p/libsir/)
 [![GitLab](https://gitlab.com/libsir/libsir/badges/master/pipeline.svg?)](https://gitlab.com/libsir/libsir/pipelines/master/latest)
 [![Coverage](https://img.shields.io/coverallsCoverage/github/aremmell/libsir?color=%2340b900&cacheSeconds=60)](https://coveralls.io/github/aremmell/libsir)
