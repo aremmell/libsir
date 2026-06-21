@@ -29,11 +29,18 @@
 
 FROM registry.gitlab.com/libsir/libsir/base:latest
 
-USER 10000
+ARG URL
 
 WORKDIR /
 
-ARG URL
+USER 0
+
+RUN set -x && \
+      cd && \
+      dnf --refresh -y install libffi-devel openssl-devel --setopt=install_weak_deps=True && \
+      dnf -y clean all && rm -rf ~/.cache && rm -rf /var/tmp/* && rm -rf /var/log/dnf*
+
+USER 10000
 
 RUN set -x && \
       cd && \
@@ -42,12 +49,26 @@ RUN set -x && \
       (python3 /tmp/get-platformio.py || true) && \
       export PATH="$HOME/.platformio/penv/bin:$PATH" && \
       pio --version && rm -f /tmp/get-platformio.py && \
-      printf '%s\n' \
-        "[env]" \
-        "platform = espressif32" \
-        "framework = arduino" \
-        "[env:um_pros3]" \
-        "board = um_pros3" > "$HOME/platformio.ini" && \
+      printf '%s\n' "[env]" "platform = espressif32" "framework = arduino" \
+        "[env:um_pros3]" "board = um_pros3" > "$HOME/platformio.ini" && \
+      pio pkg install -d . && \
+      printf '%s\n' "[env]" "platform = espressif8266" "framework = arduino" \
+        "[env:um_pros3]" "board = um_pros3" > "$HOME/platformio.ini" && \
+      pio pkg install -d . && \
+      printf '%s\n' "[env]" "platform = ststm32" "framework = arduino" \
+        "[env:bluepill]" "board = bluepill_f103c8" > "$HOME/platformio.ini" && \
+      pio pkg install -d . && \
+      printf '%s\n' "[env]" "platform = atmelmegaavr" "framework = arduino" \
+        "[env:uno_wifi_rev2]" "board = uno_wifi_rev2" > "$HOME/platformio.ini" && \
+      pio pkg install -d . && \
+      printf '%s\n' "[env]" "platform = teensy" "framework = arduino" \
+        "[env:teensy41]" "board = teensy41" > "$HOME/platformio.ini" && \
+      pio pkg install -d . && \
+      printf '%s\n' "[env]" "platform = atmelsam" "framework = arduino" \
+        "[env:mkrwifi1010]" "board = mkrwifi1010" > "$HOME/platformio.ini" && \
+      pio pkg install -d . && \
+      printf '%s\n' "[env]" "platform = atmelavr" "framework = arduino" \
+        "[env:uno]" "board = uno" > "$HOME/platformio.ini" && \
       pio pkg install -d . && \
       rm -f "$HOME/platformio.ini"
 
